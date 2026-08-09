@@ -9,9 +9,9 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Picha ya pasipoti, visa na ID | AfroTools">
 <meta property="og:description" content="Andaa picha ya pasipoti, visa au ID kwa ukubwa, mandharinyuma na orodha ya ukaguzi ya kawaida ya nchi za Afrika. Matokeo ni mwongozo, si uthibitisho rasmi.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/passport-photo.webp">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="450">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/picha-ya-pasipoti/">
 <meta property="og:site_name" content="AfroTools">
@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Picha ya pasipoti, visa na ID | AfroTools">
 <meta name="twitter:description" content="Andaa picha ya pasipoti, visa au ID kwa ukubwa, mandharinyuma na orodha ya ukaguzi ya kawaida ya nchi za Afrika. Matokeo ni mwongozo, si uthibitisho rasmi.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/passport-photo.webp">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Picha ya pasipoti, visa na ID","url":"https://afrotools.com/sw/zana/picha-ya-pasipoti/","description":"Andaa picha ya pasipoti, visa au ID kwa ukubwa, mandharinyuma na orodha ya ukaguzi ya kawaida ya nchi za Afrika. Matokeo ni mwongozo, si uthibitisho rasmi.","applicationCategory":"GovernmentApplication","operatingSystem":"Web","inLanguage":"sw","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":2,"name":"Serikali na nyaraka","item":"https://afrotools.com/sw/serikali-na-nyaraka/"},{"@type":"ListItem","position":3,"name":"Picha ya pasipoti, visa na ID","item":"https://afrotools.com/sw/zana/picha-ya-pasipoti/"}]},{"@type":"FAQPage","inLanguage":"sw","mainEntity":[{"@type":"Question","name":"Je, ukurasa huu ni huduma rasmi ya serikali?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ni zana ya kupanga na orodha ya ukaguzi. Thibitisha mahitaji, ada, muda na matokeo na mamlaka rasmi au mtaalamu mwenye sifa."}},{"@type":"Question","name":"Kwa nini baadhi ya maneno yamebaki kwa Kiingereza?","acceptedAnswer":{"@type":"Answer","text":"Maneno kama pasipoti, visa, KYC, POPIA, NAFDAC, ARIPO, OAPI na AfCFTA yanatumika kwenye fomu rasmi na utafutaji. Tunayaweka pale yanaposaidia, kisha kuyaeleza kwa Kiswahili."}}]}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/passport-photo-studio.css?v=396820f5">
 <script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
@@ -55,7 +56,213 @@
   <p class="sub">Pakia picha, chagua nchi au ukubwa, kisha pata muonekano wa kukata picha na orodha ya ukaguzi ya mandharinyuma. Tumia kama maandalizi kabla ya kuwasilisha kwenye portal rasmi.</p>
   <div class="badges"><span class="badge">Mwongozo wa kupanga</span><span class="badge">Thibitisha na mamlaka rasmi</span><span class="badge">Hakuna ahadi ya idhini</span></div>
 </div></header>
-<main class="main"><div class="wrap"><div class="layout"><section><div class="card"><h2>Unda muonekano wa awali wa picha</h2><div class="form-grid"><div class="field"><label for="country">Ukubwa</label><select class="select" id="country"><option value="35x45">Pasipoti 35x45mm</option><option value="50x50">Visa/ID 50x50mm</option><option value="45x35">Kenya/region 45x35mm</option></select></div><div class="field"><label for="bg">Mandharinyuma</label><select class="select" id="bg"><option value="#ffffff">Nyeupe</option><option value="#dbeafe">Bluu nyepesi</option></select></div><div class="field"><label for="file">Picha</label><input class="input" id="file" type="file" accept="image/*"></div></div><button type="button" class="btn" onclick="makePhoto()">Tengeneza muonekano wa awali</button><div class="result" id="result"><canvas id="canvas" width="420" height="540"></canvas><p id="photoNote"></p><button type="button" class="btn" onclick="downloadPhoto()">Pakua PNG</button></div></div></section><aside><div class="card"><h3>Jinsi ya kutumia</h3><p>Chagua nchi au hali inayokaribiana na kazi yako, soma matokeo, kisha thibitisha kwenye portal rasmi kabla ya kulipa, kusafiri au kuwasilisha nyaraka.</p></div><div class="note"><strong>Kanusho:</strong> Zana hizi ni za taarifa na maandalizi. Si huduma rasmi ya serikali, ushauri wa kisheria, uamuzi wa visa, idhini ya leseni au uthibitisho wa uzingatiaji.</div></aside></div></div></main>
+<!-- Source owner: scripts/build-sw-passport-photo.js; engine: assets/js/lib/passport-photo-studio.js -->
+<main class="pp-studio" id="main-content">
+  <div class="pp-workspace">
+    <section class="pp-stack" aria-label="Kihariri cha picha ya pasipoti">
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">1. Pakia picha</span>
+            <h2 class="pp-panel-title">Anza na picha ya mbele yenye mandharinyuma yasiyo na michoro</h2>
+            <p class="pp-panel-copy">Studio huweka fremu na saizi ya picha. Haibadilishi uso wala kuondoa mandharinyuma, kwa sababu baadhi ya mamlaka hukataa picha za pasipoti zilizohaririwa.</p>
+          </div>
+          <div class="pp-status" id="ppStatus" role="status" aria-live="polite">Inapakia kihariri...</div>
+        </div>
+        <div class="pp-drop" id="ppDropZone" role="button" tabindex="0" aria-label="Chagua au dondosha picha chanzo ya pasipoti">
+          <div class="pp-drop-main">
+            <span class="pp-drop-mark">ID</span>
+            <span><strong>Chagua picha</strong><span>Buruta faili hapa, bandika kutoka clipboard, au bofya uchague.</span></span>
+          </div>
+          <div class="pp-drop-side">Ndani ya kifaa tu<br>JPG, PNG, WebP</div>
+          <input aria-label="Faili ya picha" type="file" id="ppInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp">
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">2. Chagua mahitaji</span>
+            <h2 class="pp-panel-title">Mipangilio ya nchi za Afrika na maeneo maarufu</h2>
+            <p class="pp-panel-copy">Kila mpangilio huonyesha saizi ya matokeo, mwongozo wa kichwa, mandharinyuma, kiwango cha uhakika wa chanzo na maelezo ya kuwasilisha.</p>
+          </div>
+        </div>
+        <div class="pp-filter-row" aria-label="Makundi ya mahitaji">
+          <button type="button" class="pp-filter active" data-pp-group="all" aria-pressed="true">Zote</button>
+          <button type="button" class="pp-filter" data-pp-group="African passports" aria-pressed="false">Pasipoti za Afrika</button>
+          <button type="button" class="pp-filter" data-pp-group="African visa and ID" aria-pressed="false">Visa na ID za Afrika</button>
+          <button type="button" class="pp-filter" data-pp-group="Popular destinations" aria-pressed="false">Maeneo maarufu</button>
+          <button type="button" class="pp-filter" data-pp-group="Common sizes" aria-pressed="false">Saizi za kawaida</button>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Tafuta mipangilio</span>
+            <input aria-label="Nigeria, Canada, Schengen" class="pp-input" id="ppSearch" type="search" placeholder="Nigeria, Canada, Schengen...">
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Mahitaji</span>
+            <select class="pp-select" id="ppSpecSelect"></select>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Rangi ya mandharinyuma</span>
+            <input aria-label="Rangi ya mandharinyuma" class="pp-input" id="ppBackground" type="color" value="#ffffff">
+            <span class="pp-help">Hii hujaza canvas nyuma ya sehemu iliyokatwa. Kwa matumizi rasmi, anza na mandharinyuma halisi yasiyo na michoro.</span>
+          </label>
+          <div class="pp-field">
+            <span class="pp-label">Mwongozo juu ya picha</span>
+            <label class="pp-check-row"><input aria-label="Onyesha miongozo ya kichwa" type="checkbox" id="ppShowGuides" checked><span>Onyesha miongozo ya utosi na kidevu kwenye muonekano.</span></label>
+          </div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">3. Pangilia uso</span>
+            <h2 class="pp-panel-title">Kuza, sogeza na zungusha bila kuvuta picha</h2>
+            <p class="pp-panel-copy">Tumia mwongozo wa bluu kuweka utosi na kidevu. Faili zinazotolewa hazijumuishi miongozo hiyo.</p>
+          </div>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Kuza</span>
+            <span class="pp-range"><input aria-label="Kuza picha" class="pp-input" id="ppZoom" type="range" min="60" max="220" value="100"><span class="pp-range-value" id="ppZoomValue">100%</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Sogeza kushoto/kulia</span>
+            <span class="pp-range"><input aria-label="Sogeza picha kushoto au kulia" class="pp-input" id="ppOffsetX" type="range" min="-50" max="50" value="0"><span class="pp-range-value" id="ppOffsetXValue">0</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Sogeza juu/chini</span>
+            <span class="pp-range"><input aria-label="Sogeza picha juu au chini" class="pp-input" id="ppOffsetY" type="range" min="-50" max="50" value="0"><span class="pp-range-value" id="ppOffsetYValue">0</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Nyoosha</span>
+            <span class="pp-range"><input aria-label="Zungusha picha" class="pp-input" id="ppRotation" type="range" min="-15" max="15" step="0.5" value="0"><span class="pp-range-value" id="ppRotationValue">0 deg</span></span>
+          </label>
+        </div>
+        <div class="pp-preview-wrap">
+          <div class="pp-preview-frame" id="ppPreviewFrame">
+            <div class="pp-preview-empty" id="ppPreviewEmpty">Pakia picha ya mbele ili kuanza kuweka fremu.</div>
+            <canvas id="ppPreviewCanvas" hidden></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">4. Toa faili</span>
+            <h2 class="pp-panel-title">Pakua picha moja au karatasi iliyo tayari kuchapishwa</h2>
+            <p class="pp-panel-copy">Karatasi ya inchi 4 x 6 inafaa kwa uchapishaji wa duka la picha. A4 inafaa unapohitaji nakala nyingi za kukata kwenye ukurasa mmoja.</p>
+          </div>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Mpangilio</span>
+            <select class="pp-select" id="ppLayout">
+              <option value="sheet-4x6">Karatasi ya kuchapisha ya inchi 4 x 6</option>
+              <option value="single">Picha moja ya kidijitali</option>
+              <option value="a4">Karatasi ya kuchapisha ya A4</option>
+            </select>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Format</span>
+            <select class="pp-select" id="ppFormat">
+              <option value="image/jpeg">JPG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </label>
+          <label class="pp-field wide">
+            <span class="pp-label">Ubora</span>
+            <span class="pp-range"><input aria-label="Ubora wa faili" class="pp-input" id="ppQuality" type="range" min="70" max="100" value="92"><span class="pp-range-value" id="ppQualityValue">92%</span></span>
+          </label>
+        </div>
+        <div class="pp-actions">
+          <button type="button" class="pp-btn" id="ppRenderBtn" disabled>Andaa faili</button>
+          <button type="button" class="pp-btn secondary" id="ppDownloadBtn" disabled>Pakua</button>
+          <button type="button" class="pp-btn warning" id="ppCopyBtn" disabled>Nakili muhtasari wa mahitaji</button>
+          <button type="button" class="pp-btn secondary" id="ppResetBtn">Rudisha upunguzaji</button>
+          <share-result-button tool-name="Studio ya Picha ya Pasipoti" tool-slug="passport-photo"></share-result-button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="pp-stack" aria-label="Mwongozo wa picha ya pasipoti">
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Mahitaji</span>
+            <h2 class="pp-panel-title" id="ppSpecTitle">Maelezo ya mahitaji</h2>
+            <p class="pp-panel-copy">Tumia kama msaada wa maandalizi, kisha thibitisha na mamlaka inayotoa hati kabla ya kuwasilisha.</p>
+          </div>
+        </div>
+        <div class="pp-requirement-card">
+          <div class="pp-spec-grid">
+            <div class="pp-spec"><span>Saizi</span><strong id="ppSpecSize">-</strong></div>
+            <div class="pp-spec"><span>Mwongozo wa kichwa</span><strong id="ppSpecHead">-</strong></div>
+            <div class="pp-spec"><span>Mandharinyuma</span><strong id="ppSpecBackground">-</strong></div>
+            <div class="pp-spec"><span>Nakala</span><strong id="ppSpecCopies">-</strong></div>
+          </div>
+          <div class="pp-spec"><span>Kiwango cha uhakika</span><strong id="ppSpecConfidence">-</strong></div>
+          <div class="pp-source-box" id="ppSourceBox"></div>
+          <div id="ppNotesList"></div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Matokeo</span>
+            <h2 class="pp-panel-title">Faili ya sasa</h2>
+            <p class="pp-panel-copy">Canvas ya faili huandaliwa kwa 300 DPI kulingana na mpangilio uliochaguliwa.</p>
+          </div>
+        </div>
+        <div class="pp-stat-grid" style="padding:18px 20px 20px;">
+          <div class="pp-stat"><span>Chanzo</span><strong id="ppSourceFile">-</strong></div>
+          <div class="pp-stat"><span>Matokeo</span><strong id="ppOutputType">-</strong></div>
+          <div class="pp-stat"><span>Canvas</span><strong id="ppOutputDimensions">-</strong></div>
+          <div class="pp-stat"><span>Ukubwa wa faili</span><strong id="ppOutputBytes">-</strong></div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Orodha ya ukaguzi</span>
+            <h2 class="pp-panel-title">Ukaguzi wa kukubalika unaofanywa na mtu</h2>
+            <p class="pp-panel-copy">Kivinjari hakiwezi kuthibitisha kufuata masharti ya picha ya utambulisho. Tumia ukaguzi huu kabla ya kuchapisha au kupakia.</p>
+          </div>
+        </div>
+        <div class="pp-score">
+          <strong id="ppScoreText">Ukaguzi 0 kati ya 7 umekamilika</strong>
+          <div class="pp-score-bar"><span id="ppScoreBar"></span></div>
+        </div>
+        <div class="pp-checklist">
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="recent"><span>Picha ni ya karibuni na bado inafanana na mwombaji.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="lighting"><span>Mwanga ni sawa bila vivuli, mng'ao au macho mekundu.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="background"><span>Mandharinyuma hayana michoro, yanafanana kote na yanatimiza mahitaji yaliyochaguliwa.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="pose"><span>Uso umeelekea kamera moja kwa moja, haujainama na kingo zote mbili zinaonekana.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="expression"><span>Mwonekano wa uso ni wa kawaida na mdomo umefungwa pale inapohitajika.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="accessories"><span>Miwani, kofia, kifuniko cha kichwa, nywele na mapambo vinafuata mahitaji.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="authority"><span>Mwongozo rasmi wa hivi karibuni umehakikiwa kabla ya kuwasilisha.</span></label>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Hali iliyohifadhiwa</span>
+            <h2 class="pp-panel-title">Faili za karibuni</h2>
+            <p class="pp-panel-copy">Mipangilio ya faili za karibuni huhifadhiwa ndani ya kifaa hiki.</p>
+          </div>
+        </div>
+        <div class="pp-history" id="ppHistoryList"></div>
+      </article>
+    </aside>
+  </div>
+</main>
 <section class="main"><div class="wrap">
 <div class="card"><h2>Angalia pia</h2><div class="link-grid"><a class="link-card" href="/sw/serikali-na-nyaraka/"><strong>Serikali na nyaraka</strong><span>Kitovu cha ID, pasipoti, visa, kura, vyeti na vibali.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/zana/mwongozo-kitambulisho-taifa/"><strong>National ID</strong><span>NIN, Ghana Card, Huduma na ID za taifa.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/zana/mwongozo-tin/"><strong>Mwongozo wa TIN</strong><span>Namba ya utambulisho wa kodi kwa nchi 54.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/zana/usajili-biashara/"><strong>Usajili wa biashara</strong><span>Hatua za kuanza biashara rasmi.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/vat-na-kodi/"><strong>VAT na kodi</strong><span>VAT, TIN, ankara na bei.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/biashara-ya-nje/"><strong>Biashara ya nje</strong><span>Forodha, AfCFTA, uingizaji na usafirishaji bidhaa nje na nyaraka.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/fintech/"><strong>Fintech na KYC</strong><span>Malipo, akaunti, uhamisho na uhakiki wa mteja.</span><em>Fungua &rarr;</em></a><a class="link-card" href="/sw/usafiri-na-magari/"><strong>Usafiri na visa</strong><span>Safari, magari, ruti na mipango ya usafiri.</span><em>Fungua &rarr;</em></a></div></div>
 <div class="card faq"><h2>Maswali ya mara kwa mara</h2>
@@ -88,7 +295,7 @@
 <afro-related-tools category="government" current="picha-ya-pasipoti"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script>let img=null;document.getElementById('file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{img=new Image();img.onload=makePhoto;img.src=r.result};r.readAsDataURL(f)});function makePhoto(){const c=document.getElementById('canvas'),ctx=c.getContext('2d');ctx.fillStyle=document.getElementById('bg').value;ctx.fillRect(0,0,c.width,c.height);if(img){const scale=Math.max(c.width/img.width,c.height/img.height);const w=img.width*scale,h=img.height*scale;ctx.drawImage(img,(c.width-w)/2,(c.height-h)/2,w,h)}else{ctx.fillStyle='#64748b';ctx.font='18px DM Sans';ctx.fillText('Pakia picha ili kuona muonekano wa awali',70,260)}document.getElementById('result').classList.add('on');document.getElementById('photoNote').textContent='Hakiki ukubwa, mandharinyuma, uso, mwanga na kivuli kwenye tovuti rasmi kabla ya kuwasilisha.'}function downloadPhoto(){const a=document.createElement('a');a.href=document.getElementById('canvas').toDataURL('image/png');a.download='picha-ya-pasipoti.png';a.click();}</script>
+<script type="application/x-afrotools-retired-passport-photo">let img=null;document.getElementById('file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{img=new Image();img.onload=makePhoto;img.src=r.result};r.readAsDataURL(f)});function makePhoto(){const c=document.getElementById('canvas'),ctx=c.getContext('2d');ctx.fillStyle=document.getElementById('bg').value;ctx.fillRect(0,0,c.width,c.height);if(img){const scale=Math.max(c.width/img.width,c.height/img.height);const w=img.width*scale,h=img.height*scale;ctx.drawImage(img,(c.width-w)/2,(c.height-h)/2,w,h)}else{ctx.fillStyle='#64748b';ctx.font='18px DM Sans';ctx.fillText('Pakia picha ili kuona muonekano wa awali',70,260)}document.getElementById('result').classList.add('on');document.getElementById('photoNote').textContent='Hakiki ukubwa, mandharinyuma, uso, mwanga na kivuli kwenye tovuti rasmi kabla ya kuwasilisha.'}function downloadPhoto(){const a=document.createElement('a');a.href=document.getElementById('canvas').toDataURL('image/png');a.download='picha-ya-pasipoti.png';a.click();}</script>
 <script data-sw-image-design-proof-script>
 (function(){
   document.querySelectorAll('[data-sw-proof-copy]').forEach(function(btn){
@@ -117,6 +324,8 @@
   draw();
 })();
 </script>
+<script src="/assets/js/lib/passport-photo-studio.js?v=2b49056e" defer></script>
+<script src="/assets/js/lib/passport-photo-studio-sw.js?v=7245fa52" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body></html>

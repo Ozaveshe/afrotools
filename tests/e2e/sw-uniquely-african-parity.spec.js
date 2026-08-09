@@ -219,8 +219,8 @@ test.afterAll(() => {
       servedSha256: process.env.AFROTOOLS_SERVER_IDENTITY_SERVED_SHA256 || null,
       matched: Boolean(process.env.AFROTOOLS_SERVER_IDENTITY_SHA256) && process.env.AFROTOOLS_SERVER_IDENTITY_SHA256 === process.env.AFROTOOLS_SERVER_IDENTITY_SERVED_SHA256
     },
-    scope: { denominator: 34, candidates: rows.length, preExistingBlockers: 14 },
-    acceptance: { accepted, failed: rows.length - accepted, blockedTotal: 14 + (rows.length - accepted), result: accepted === rows.length ? "PASS" : "FAIL_CLOSED" },
+    scope: { denominator: 34, candidates: rows.length, preExistingBlockers: 6 },
+    acceptance: { accepted, failed: rows.length - accepted, blockedTotal: 6 + (rows.length - accepted), result: accepted === rows.length ? "PASS" : "FAIL_CLOSED" },
     parsedOrReopenedFormats: outputCounts,
     privacy: { unexpectedExternalRequests: 0, unexpectedApiRequests: 0, stateChangingRequests: 0, rawInputLeakRequests: 0 },
     routes: results

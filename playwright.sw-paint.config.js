@@ -1,0 +1,25 @@
+const { defineConfig, devices } = require("@playwright/test");
+const port = 43155;
+module.exports = defineConfig({
+  testDir: "./tests/e2e",
+  testMatch: "sw-paint-parity.spec.js",
+  workers: 1,
+  fullyParallel: false,
+  timeout: 30000,
+  use: {
+    ...devices["Desktop Chrome"],
+    baseURL: `http://127.0.0.1:${port}`,
+    serviceWorkers: "block",
+    launchOptions: {
+      executablePath:
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    },
+  },
+  webServer: {
+    command: "node tests/support/static-server.js",
+    url: `http://127.0.0.1:${port}`,
+    env: { PORT: String(port) },
+    reuseExistingServer: false,
+    timeout: 30000,
+  },
+});

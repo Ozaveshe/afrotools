@@ -128,7 +128,8 @@
       slidingTierDays: SLIDING_TIER_DAYS,
       secondTierRate: SECOND_TIER_RATE,
       maternityRate: MATERNITY_RATE,
-      maternityMaximumDays: MATERNITY_MAX_DAYS
+      maternityMaximumDays: MATERNITY_MAX_DAYS,
+      verifiedThrough: '2026-08-09'
     }
   };
 });

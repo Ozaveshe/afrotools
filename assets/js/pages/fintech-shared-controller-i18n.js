@@ -1,6 +1,33 @@
 (function (global) {
   'use strict';
 
+  var SW_STRINGS = {
+    'fixed-deposit': {
+      invalid: 'Weka mtaji ulio juu ya sifuri, pamoja na riba ya mwaka na kodi ya zuio kati ya 0% na 100%.',
+      principal: 'Mtaji',
+      netInterest: 'Riba halisi',
+      month: 'Mwezi'
+    },
+    'tbill-calc': {
+      invalid: 'Weka thamani ya ukomavu iliyo juu ya sifuri, pamoja na kiwango kilichotajwa na kodi ya zuio kati ya 0% na 100%.',
+      invalidDiscount: 'Masharti haya ya kiwango cha punguzo yanatoa bei ya ununuzi ya sifuri au hasi. Kagua kiwango na aina yake.',
+      faceValue: 'Thamani ya ukomavu',
+      youPay: 'Bei unayolipa'
+    },
+    'real-return': {
+      invalid: 'Weka kiasi kilicho juu ya sifuri, pamoja na faida ya kawaida na mfumuko wa bei iliyo juu ya -100%.',
+      yearShort: 'mwaka',
+      yearsShort: 'miaka',
+      nominal: 'Faida ya kawaida',
+      inflation: 'Mfumuko wa bei',
+      negative: 'Katika hali hii ya viwango visivyobadilika, faida halisi ni hasi; kiasi kinachokadiriwa kinapoteza uwezo wa kununua. Kagua kodi, ada na kipimo cha mfumuko kabla ya kutumia matokeo.',
+      positiveStart: 'Faida yako halisi ni chanya kwa',
+      positiveMiddle: 'Uwezo wako wa kununua unaongezeka. Baada ya',
+      positiveEnd: 'itakuwa na uwezo wa kununua wa',
+      today: 'kwa thamani ya leo'
+    }
+  };
+
   var STRINGS = {
     'mobile-vs-bank': {
       invalid: 'Saisissez un montant supérieur à zéro et des frais compris entre 0 % et 100 %.',
@@ -415,19 +442,217 @@
       total: 'Jumla',
       people: 'watu',
       ofTotal: 'ya jumla'
+    },
+    'sacco-calc': {
+      invalid: 'Weka mchango chanya wa mwezi, viwango kutoka 0% hadi 100%, na kizidishi cha mkopo kutoka 0 hadi 20.',
+      year: 'mwaka',
+      years: 'miaka',
+      contributions: 'michango ya mwisho wa mwezi'
+    },
+    'credit-score': {
+      invalid: 'Chagua thamani halali kutoka 0 hadi 100 kwa kila kipengele kati ya vitano.',
+      strongProfile: 'Wasifu thabiti wa kujikagua',
+      mixedProfile: 'Wasifu mchanganyiko wa kujikagua',
+      reviewProfile: 'Vipengele vinahitaji uhakiki',
+      paymentHistory: 'Historia ya malipo',
+      utilization: 'Matumizi ya kikomo cha mkopo',
+      historyAge: 'Umri wa historia ya mkopo',
+      creditMix: 'Mchanganyiko wa mikopo',
+      newInquiries: 'Maombi mapya ya mkopo',
+      strong: 'Thabiti',
+      mixed: 'Mchanganyiko',
+      review: 'Kagua',
+      paymentTip: 'Kagua tarehe za mwisho, rekodi za malipo na madeni yaliyochelewa kwenye ripoti yako rasmi.',
+      utilizationTip: 'Linganisha salio na vikomo kwenye ripoti ya sasa dhidi ya rekodi zako.',
+      ageTip: 'Historia fupi si kosa yenyewe; hakikisha akaunti za zamani zinazostahili hazijaachwa kwenye ripoti.',
+      mixTip: 'Usifungue mkopo ili kubadilisha orodha hii pekee. Hakikisha aina za akaunti ulizo nazo zimeripotiwa kwa usahihi.',
+      inquiriesTip: 'Kagua maombi ya hivi karibuni na uliza kuhusu uchunguzi wowote usioufahamu.',
+      strongTip: 'Majibu ya kujikagua yanaonekana thabiti. Ripoti rasmi bado inaweza kuwa na makosa au kutumia vipengele tofauti.'
+    },
+    'loan-shark-compare': {
+      invalid: 'Weka kiasi cha mkopo zaidi ya sifuri, riba tambarare ya mwezi kati ya 0% na 100%, na riba ya benki kwa mwaka kati ya 0% na 1,000%.',
+      sameTotal: 'Ofa ulizoingiza zina jumla sawa ya kulipa',
+      flatCosts: 'Ofa ya riba tambarare inagharimu',
+      reducingCosts: 'Ofa ya salio linalopungua inagharimu',
+      moreOver: 'zaidi kwa muda wa',
+      months: 'miezi',
+      monthly: 'Kwa mwezi',
+      totalInterest: 'Riba yote',
+      effectiveAnnual: 'Kiwango halisi cha mwaka',
+      same: 'Sawa',
+      notFinite: 'Haiwezi kukokotolewa'
+    },
+    'microfinance-loan': {
+      invalid: 'Weka mkopo zaidi ya sifuri, riba ya mwezi kati ya 0% na 100%, ada chini ya kiasi cha mkopo, na riba ya kulinganisha kati ya 0% na 1,000%.',
+      flat: 'Riba tambarare',
+      reducing: 'Salio linalopungua',
+      payments: 'malipo',
+      netProceeds: 'Kiasi halisi unachopokea',
+      same: 'Sawa',
+      more: 'zaidi',
+      less: 'pungufu'
+    },
+    'digital-lending': {
+      offer: 'Ofa',
+      invalid: 'Weka kiasi zaidi ya sifuri, muda wa siku 1 hadi 3,650, na jumla za kulipa zisizopungua kiasi ulichopokea.',
+      lowest: 'JUMLA NDOGO ZAIDI'
+    },
+    'bnpl-calc': {
+      invalid: 'Weka bei zaidi ya sifuri, malipo kamili 2 hadi 24, na ada ya jumla kati ya 0% na 100%.',
+      invalidCheckout: 'Malipo ya mwanzo ni makubwa sawa na bei ya bidhaa, kwa hiyo APR yenye kikomo haiwezi kukokotolewa. Punguza ada au chagua malipo ya kwanza baada ya mwezi mmoja.',
+      totalPayable: 'Jumla ya kulipa',
+      cashPrice: 'Bei taslimu',
+      installment: 'Malipo',
+      now: 'Sasa',
+      month: 'Mwezi'
+    },
+    'emergency-fund': {
+      invalid: 'Weka gharama muhimu zilizo zaidi ya sifuri, miezi kamili 1 hadi 24, akiba isiyo hasi, mfumuko wa bei wa 0% hadi 100%, na miaka kamili 0 hadi 10.',
+      goalReached: 'Lengo limefikiwa',
+      months: 'miezi',
+      addSaving: 'Ongeza akiba ya kila mwezi',
+      expenses: 'miezi ya gharama',
+      monthly: 'Kwa mwezi',
+      inflationAdjusted: 'Lengo baada ya mfumuko wa bei',
+      year: 'mwaka',
+      years: 'miaka'
+    },
+    'debt-snowball': {
+      debt: 'Deni', debtName: 'Jina la deni', debtBalance: 'Salio la deni',
+      minimumPayment: 'Malipo ya chini kwa mwezi', annualRate: 'Riba kwa mwaka',
+      removeDebt: 'Ondoa deni',
+      invalidDebt: 'Kila deni linahitaji salio na malipo ya chini yaliyo zaidi ya sifuri, pamoja na riba ya mwaka kati ya 0% na 1,000%.',
+      addDebt: 'Ongeza angalau deni moja lenye salio chanya.',
+      invalidExtra: 'Malipo ya ziada kwa mwezi lazima yawe sifuri au zaidi.',
+      months: 'miezi', years: 'miaka',
+      notRepaid: 'Halijalipwa ndani ya miezi 600',
+      modelledInterest: 'Riba ya makadirio', modelledTotal: 'Jumla ya makadirio iliyolipwa',
+      planNotRepaid: 'Angalau mpango mmoja haukulipa madeni ndani ya miezi 600.',
+      increaseBudget: 'Ongeza bajeti ya malipo au kagua riba na malipo ya chini.',
+      avalancheSaves: 'Avalanche inaokoa',
+      scheduledAssumption: 'katika makadirio haya. Ulinganisho hudhani kila malipo yaliyopangwa yanafanywa.',
+      sameInterest: 'Riba ya makadirio ni sawa',
+      displayedPrecision: 'kwa usahihi unaoonyeshwa kwa taarifa hizi.',
+      notRepaidShort: 'Halijalipwa'
+    },
+    'loan-consolidation': {
+      loan: 'Mkopo', balance: 'Salio', monthlyPayment: 'Malipo kwa mwezi',
+      annualRate: 'Riba kwa mwaka (%)', loanBalance: 'salio',
+      loanPayment: 'malipo kwa mwezi', loanRate: 'riba kwa mwaka', remove: 'Ondoa mkopo',
+      addOne: 'Ongeza angalau mkopo mmoja wa sasa.',
+      invalidLoan: 'Kila mkopo wa sasa unahitaji salio na malipo chanya, pamoja na riba ya mwaka kati ya 0% na 1,000%.',
+      invalidAmortization: 'Kila malipo ya sasa lazima yafidie riba ya mwezi na kulipa mkopo ndani ya miezi 600.',
+      invalidOffer: 'Kagua riba, muda na ada ya kuunganisha. Riba lazima iwe 0% hadi 1,000% na ada 0% hadi 100%.',
+      lower: 'Jumla ya makadirio ya malipo ni ndogo',
+      higher: 'Jumla ya makadirio ya malipo ni kubwa',
+      equal: 'Jumla ya makadirio ya malipo ni sawa',
+      currentTotal: 'Jumla ya sasa', overUpTo: 'kwa hadi', months: 'miezi',
+      consolidationTotal: 'jumla ya kuunganisha', over: 'kwa', including: 'ikijumuisha',
+      financedFee: 'ya ada iliyofadhiliwa', sameTerm: 'Muda sawa', longer: 'zaidi', shorter: 'pungufu'
+    },
+    'bond-yield': {
+      invalid: 'Weka thamani chanya ya uso na bei, kuponi kati ya 0% na 1,000%, na muda unaotoa idadi kamili ya vipindi vya kuponi.',
+      coupon: 'Kuponi', price: 'Bei', ofFace: 'ya thamani ya uso', periods: 'vipindi'
+    },
+    'money-market': {
+      invalid: 'Weka kiasi zaidi ya sifuri na viwango vya mwaka zaidi ya -100% na visivyozidi 1,000%.',
+      totalValue: 'Thamani yote', period: 'Kipindi', days: 'siku', fund: 'Mfuko wa soko la fedha', annualEffective: 'halisi kwa mwaka',
+      deposit: 'Amana ya muda', simpleAnnual: 'rahisi kwa mwaka', summary: 'Ulinganisho wa soko la fedha', estimatedReturn: 'ya mapato ya MMF kwa',
+      daily: 'ongezeko la siku', weekly: 'mapato ya siku 7', difference: 'tofauti dhidi ya amana ya muda',
+      verify: 'Hakiki factsheet ya sasa ya mfuko, ada, ukwasi, kodi na hali ya udhibiti kabla ya kuwekeza.', copied: 'Imenakiliwa', copy: 'Nakili muhtasari wa ulinganisho'
+    },
+    'invoice-factoring': {
+      invalid:'Weka ankara zaidi ya sifuri, kiwango cha advance kati ya 0% na 100%, ada zisizo hasi na siku 1 hadi 3,650.',
+      invalidFees:'Jumla ya ada lazima iwe chini ya thamani ya ankara.',dayFacility:'siku za ufadhili',nonRecourse:'mfumo bila recourse',recourse:'mfumo wenye recourse',invoice:'Ankara',advance:'Advance',fees:'Ada',reserveRelease:'Reserve inayotolewa',totalReceived:'Jumla inayopokelewa',annualizedProxy:'Kadirio la gharama ya mwaka',compare:'Linganisha ofa hii na njia nyingine kwa kiasi na muda sawa.',feeExceeds:'Ada inazidi reserve kwa',askDeduction:'Uliza kama sehemu itakatwa kwenye advance.',reserveCovers:'Reserve inaweza kufidia ada za makadirio iwapo mdaiwa atalipa kwa wakati.',decision:'Hatua za uamuzi',askReserve:'Uliza reserve itatolewa lini na kama mdaiwa lazima ajulishwe.',compareAlternatives:'Linganisha na overdraft, mkopo wa msambazaji, punguzo la mteja au kusubiri malipo.',localStatus:'Hali ya factoring imekokotolewa kwenye kivinjari. Hakuna data ya ankara iliyotumwa.',copied:'Muhtasari umenakiliwa.',downloaded:'Faili ya CSV imepakuliwa.',estimate:'Kadirio la factoring ya ankara',grossAdvance:'advance ghafi',totalFee:'Jumla ya ada',costProxy:'Kadirio la gharama ya mwaka',summaryPrefix:'Kadirio la factoring: ankara',summaryAdvance:'advance ghafi',summaryFee:'jumla ya ada',summaryReserve:'reserve inayotolewa',summaryReceived:'jumla inayopokelewa',summaryCost:'kadirio la gharama ya mwaka',verify:'Hakiki recourse, taarifa kwa mdaiwa, muda wa ada, kutolewa kwa reserve, adhabu na kodi kabla ya kusaini.'
+    },
+    'payment-gateway': {
+      invalid: 'Weka thamani ya muamala zaidi ya sifuri na idadi kamili ya miamala ya mwezi isiyopungua 1.',
+      invalidQuote: 'Weka jina la kila ofa, asilimia kati ya 0% na 100%, na ada tambarare pamoja na kikomo visivyo hasi.',
+      lowest: 'ofa uliyoingiza yenye gharama ndogo zaidi',
+      monthlyFees: 'Ada za mwezi',
+      effectiveRate: 'Kiwango halisi'
+    },
+    'merchant-fees': {
+      invalidAmounts: 'Mauzo ya mwezi na thamani ya wastani ya muamala lazima ziwe zaidi ya sifuri.',
+      invalidMix: 'Mgawanyo wa malipo lazima uwe jumla ya 100%. Jumla ya sasa:',
+      invalidRates: 'Kila kiwango cha ada lazima kiwe kati ya 0% na 100%.',
+      on: 'Kwenye', monthlyRevenue: 'ya mapato ya mwezi', blendedRate: 'kiwango cha ada kilichochanganywa',
+      card: 'Kadi au POS', mobileMoney: 'Pesa kwa simu', bankTransfer: 'Uhamisho wa benki', cash: 'Taslimu',
+      method: 'Njia', volume: 'Kiasi', mix: 'Mgawanyo', fees: 'Ada', effectiveRate: 'Kiwango halisi', total: 'JUMLA'
+    },
+    'pos-fees': {
+      invalid: 'Kagua masharti ya ada na kiasi: namba haziwezi kuwa hasi, sehemu ya kadi lazima iwe zaidi ya 0% na isizidi 100%, na siku za kazi ziwe 1 hadi 31.',
+      on: 'Kwenye', monthlyVolume: 'ya kiasi cha kadi kwa mwezi', cardAcceptance: 'ya malipo kwa kadi'
+    },
+    'asset-finance': {
+      invalid: 'Weka bei chanya, amana chini ya 100%, riba kati ya 0% na 1,000%, na jumla ya amana pamoja na balloon isiyozidi 100% ya bei.',
+      financed: 'Kiasi kilichofadhiliwa', over: 'kwa', months: 'miezi', none: 'Hakuna'
+    },
+    'trade-credit': {
+      invalid: 'Weka ankara chanya, tarehe ya mwisho baada ya tarehe ya punguzo, punguzo chini ya 100%, na riba ya kukopa pamoja na ujazo zisizo hasi.',
+      days: 'siku', payEarly: 'Gharama ndogo ya makadirio: lipa mapema',
+      earlySub: 'Punguzo linalookolewa linazidi gharama ya kukopa ya makadirio kwa',
+      earlyVerdict: 'Kwa masharti uliyoingiza, kulipa mapema kuna faida halisi ya',
+      perInvoice: 'kwa ankara baada ya', borrowingCost: 'ya gharama ya kukopa ya makadirio. Hakiki ada za mkopeshaji, ukwasi na masharti ya msambazaji.',
+      payNet: 'Gharama ndogo ya makadirio: lipa tarehe ya mwisho',
+      netSub: 'Gharama ya kukopa ya makadirio si ndogo kuliko punguzo',
+      netVerdict: 'Kwa masharti uliyoingiza, kukopa ili kulipa mapema kunagharimu',
+      versus: 'dhidi ya punguzo la', planning: 'Huu ni ulinganisho wa kupanga, si agizo la malipo.',
+      terms: 'Masharti', discount: 'Punguzo', implied: 'Riba ya mwaka inayodokezwa', action: 'Hatua',
+      earlyAdvantage: 'Kulipa mapema kuna faida ya makadirio', netAdvantage: 'Kulipa tarehe ya mwisho kuna faida ya makadirio'
+    },
+    'thrift-calc': {
+      invalid: 'Weka wanachama 2–100, nafasi iliyo ndani ya kundi, mchango chanya, na viwango vya mwaka visivyo hasi.',
+      atMonth: 'Mwezi wa',
+      of: 'kati ya',
+      groupTotal: 'Jumla ya kundi',
+      months: 'miezi',
+      rotation: 'Mzunguko usio na ada: unachangia',
+      overCycle: 'katika mzunguko mzima na unapokea fungu lilelile kwa thamani ya kawaida mwezi wa',
+      timing: 'Nafasi hubadilisha muda wa kupokea, si faida ya kawaida.',
+      atRate: 'Kwa kiwango halisi cha mwaka ulichoingiza cha',
+      planEnds: 'mpango wa michango unafikia',
+      bankEnds: 'Michango ileile ya mwisho wa mwezi kwa kiwango cha benki ulichoingiza inafikia'
+    },
+    'dca-calc': {
+      invalid: 'Weka michango isiyo hasi na angalau kiasi kimoja zaidi ya sifuri, pamoja na faida ya mwaka zaidi ya -100% na isiyozidi 1,000%.',
+      totalInvested: 'Jumla iliyowekezwa', over: 'Kwa', years: 'miaka',
+      lowerScenario: 'Hali ya chini', enteredScenario: 'Hali uliyoingiza', higherScenario: 'Hali ya juu'
+    },
+    'dividend-yield': {
+      invalid: 'Weka bei ya hisa zaidi ya sifuri, pamoja na gawio na idadi ya hisa zisizo hasi.',
+      invalidEps: 'Mapato kwa kila hisa lazima yaachwe wazi au yawe zaidi ya sifuri.',
+      invalidRates: 'Kagua asilimia: kodi lazima iwe 0% hadi 100%, na viwango vingine viwe zaidi ya -100% na visizidi 1,000%.',
+      afterTax: 'Mavuno baada ya kodi ya', enteredTax: ' uliyoingiza', notAvailable: 'Haipatikani', years: 'miaka',
+      verdictPrefix: 'Mavuno ya gawio baada ya kodi ni', points: 'pointi za asilimia', above: 'juu ya', below: 'chini ya',
+      verdictSuffix: 'mavuno ya ulinganisho uliyoingiza. Hesabu hii haifanyi hatari kuwa sawa wala kupendekeza chaguo.'
+    },
+    'net-worth': {
+      itemName: 'Jina la kipengele', amount: 'Kiasi cha kipengele', remove: 'Ondoa kipengele',
+      invalid: 'Kila kiasi cha mali na deni lazima kiwe sifuri au zaidi.',
+      empty: 'Weka angalau kiasi kimoja cha mali au deni.', assets: 'Mali', liabilities: 'Madeni',
+      ratioPrefix: 'Madeni ni', ratioSuffix: 'ya mali uliyoingiza. Uwiano huu ni maelezo, si alama ya afya ya kifedha.',
+      noAssets: 'Hakuna mali iliyoingizwa; uwiano wa madeni kwa mali hauna maana.'
     }
   };
 
+  function locale() {
+    return String(document.documentElement.lang || '').toLowerCase().split('-')[0];
+  }
+
   function isFrench() {
-    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'fr';
+    return locale() === 'fr';
   }
 
   function isSwahili() {
-    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'sw';
+    return locale() === 'sw';
   }
 
   function text(toolId, key, englishFallback) {
-    var routeStrings = isFrench() ? (STRINGS[toolId] || {}) : (isSwahili() ? (SW_STRINGS[toolId] || {}) : {});
+    var routeStrings;
+    if (locale() === 'fr') routeStrings = STRINGS[toolId] || {};
+    else if (locale() === 'sw') routeStrings = SW_STRINGS[toolId] || {};
+    else return englishFallback;
     return Object.prototype.hasOwnProperty.call(routeStrings, key) ? routeStrings[key] : englishFallback;
   }
 

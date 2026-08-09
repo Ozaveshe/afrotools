@@ -516,6 +516,7 @@ ${tags}
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="${tool.id}"></section>
 </main>
 <afro-footer></afro-footer>
+${['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>' : ''}
 <script src="/assets/js/religious-cultural-apps.js" defer></script>
 </body>
 </html>
@@ -528,7 +529,7 @@ function jsString(value) {
 
 function runtimeTemplate() {
   const runtimePath = path.join(ROOT, 'assets/js/religious-cultural-apps.js');
-  if (fs.existsSync(runtimePath)) return fs.readFileSync(runtimePath, 'utf8');
+  if (fs.existsSync(runtimePath) && !process.argv.includes('--rebuild-runtime')) return fs.readFileSync(runtimePath, 'utf8');
   const publicTools = tools.map((tool) => ({
     id: tool.id,
     category: tool.category,
@@ -640,26 +641,25 @@ function runtimeTemplate() {
         };
       }
       case 'prayer': {
-        var city = CITY_TIMES[v.city] || CITY_TIMES.Lagos;
-        var methodShift = { MWL: 0, Egypt: -4, ISNA: 8, UmmQura: 5 }[v.method] || 0;
-        var asrShift = v.school === 'hanafi' ? 35 : 0;
-        var qibla = bearingToKaaba(city.lat, city.lon);
+        var prayerEngine = window.AfroTools && window.AfroTools.prayerTimes;
+        var prayer = prayerEngine && prayerEngine.calculateDay({ city: v.city, method: v.method, school: v.school, date: v.date });
+        if (!prayer || !prayer.ok) throw new Error(prayer ? prayer.code : 'Prayer engine unavailable');
+        var p = prayer.values;
         return {
-          metrics: [['Fajr', minutesToTime(city.fajr, methodShift)], ['Dhuhr', city.dhuhr], ['Asr', minutesToTime(city.asr, asrShift)], ['Qibla bearing', qibla.toFixed(1) + ' deg']],
-          verdict: 'Planning estimate for ' + v.city + '. Confirm with your local mosque, especially for Fajr, Isha and Ramadan.',
-          rows: [['Sunrise', city.sunrise], ['Maghrib', city.maghrib], ['Isha', minutesToTime(city.isha, methodShift)], ['Method', v.method + ', ' + v.school + ' Asr']]
+          metrics: [['Fajr', p.fajr], ['Dhuhr', p.dhuhr], ['Asr', p.asr], ['Qibla bearing', p.qibla + ' deg']],
+          verdict: 'Date-aware planning estimate for ' + v.city + ' on ' + v.date + '. Confirm every time with your local mosque.',
+          rows: [['Sunrise', p.sunrise], ['Maghrib', p.maghrib], ['Isha', p.isha], ['Method', p.method + ', ' + p.school + ' Asr'], ['Time zone', p.timeZone]]
         };
       }
       case 'ramadan': {
-        var base = CITY_TIMES[v.city] || CITY_TIMES.Lagos;
-        var days = Math.min(30, Math.max(1, v.days || 30));
-        var sample = [];
-        for (var i = 0; i < Math.min(days, 7); i++) {
-          sample.push(['Day ' + (i + 1), 'Suhoor stop ' + minutesToTime(base.fajr, -Math.abs(v.suhoorBuffer || 0) + i), 'Iftar ' + minutesToTime(base.maghrib, (v.iftarBuffer || 0) + i)]);
-        }
+        var ramadanEngine = window.AfroTools && window.AfroTools.prayerTimes;
+        var result = ramadanEngine && ramadanEngine.calculateRamadan({ city: v.city, method: v.method || 'MWL', school: v.school || 'standard', startDate: v.startDate, days: v.days, suhoorBuffer: v.suhoorBuffer, iftarBuffer: v.iftarBuffer });
+        if (!result || !result.ok) throw new Error(result ? result.code : 'Prayer engine unavailable');
+        var timetable = result.values;
+        var sample = timetable.rows.slice(0, 7).map(function (row) { return [row.date, 'Suhoor stop ' + row.suhoor, 'Iftar ' + row.iftar]; });
         return {
-          metrics: [['City', v.city], ['Ramadan days', days], ['Last ten nights start', 'Day ' + Math.max(1, days - 9)], ['Eid planning', 'Day ' + (days + 1)]],
-          verdict: 'Generated a working timetable from ' + v.startDate + '. Adjust by local moon sighting before publishing.',
+          metrics: [['City', v.city], ['Ramadan days', timetable.days], ['First suhoor stop', timetable.firstSuhoor], ['First iftar', timetable.firstIftar]],
+          verdict: 'Generated a date-aware planning timetable from ' + v.startDate + '. Confirm the first day by local moon sighting and every time with your mosque before publishing.',
           rows: sample
         };
       }
@@ -876,19 +876,113 @@ function runtimeTemplate() {
       }).join('') + '</div>';
   }
 
+  function reportText(tool, result, values) {
+    return [
+      tool.title,
+      'AfroTools Religious & Cultural planning pack',
+      '',
+      'Result',
+      result.metrics.map(function (item) { return item[0] + ': ' + item[1]; }).join('\\n'),
+      '',
+      'Interpretation',
+      result.verdict,
+      '',
+      'Inputs',
+      Object.keys(values).map(function (key) { return key + ': ' + values[key]; }).join('\\n'),
+      '',
+      'Action checklist',
+      tool.checklist.map(function (item) { return '- ' + item; }).join('\\n'),
+      '',
+      'Planning boundary',
+      'Confirm changing prices, dates, religious interpretation and cultural practice with the relevant local authority before acting.'
+    ].join('\\n');
+  }
+
+  function copyReport(text, status) {
+    function fallback() {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+      area.remove();
+      status.textContent = copied ? 'Summary copied.' : 'Copy was blocked; use Print or Create PDF.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { status.textContent = 'Summary copied.'; }).catch(fallback);
+    } else fallback();
+  }
+
+  function ensurePdfLibrary() {
+    if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    return new Promise(function (resolve, reject) {
+      var existing = document.getElementById('afro-rc-jspdf');
+      if (existing) {
+        existing.addEventListener('load', function () { resolve(window.jspdf && window.jspdf.jsPDF); }, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        return;
+      }
+      var script = document.createElement('script');
+      script.id = 'afro-rc-jspdf';
+      script.src = '/assets/vendor/jspdf/jspdf.umd.min.js';
+      script.onload = function () {
+        if (window.jspdf && window.jspdf.jsPDF) resolve(window.jspdf.jsPDF);
+        else reject(new Error('PDF library unavailable'));
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function createPdf(tool, result, values, status) {
+    var text = reportText(tool, result, values);
+    status.textContent = 'Preparing local PDF.';
+    ensurePdfLibrary().then(function (JsPdf) {
+      var doc = new JsPdf({ unit: 'pt', format: 'a4' });
+      var y = 48;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text(tool.title, 42, y);
+      y += 24;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      text.split('\\n').forEach(function (line) {
+        doc.splitTextToSize(line || ' ', 510).forEach(function (part) {
+          if (y > 760) { doc.addPage(); y = 48; }
+          doc.text(part, 42, y);
+          y += 14;
+        });
+      });
+      doc.save(tool.id + '-planning-pack.pdf');
+      status.textContent = 'PDF generated locally.';
+    }).catch(function () {
+      status.textContent = 'PDF generation was unavailable; opening the print dialog instead.';
+      window.print();
+    });
+  }
+
   function renderTool(host, tool) {
     var isFull = host.classList.contains('rs-full-app');
     var fieldMarkup = Object.keys(tool.inputs).map(function (key) { return fieldHtml(key, tool.inputs[key]); }).join('');
     host.innerHTML = '<div class="rs-wrap rs-faith">' +
       '<div class="rs-header"><div><span class="rs-kicker">' + (isFull ? 'Interactive app' : 'Deep improvement') + '</span><h2>' + tool.title + '</h2><p>' + tool.summary + '</p></div><a class="rs-parent-link" href="' + tool.parent + '">Category</a></div>' +
       '<div class="rs-tags">' + tool.tags.map(function (tag) { return '<span>' + tag + '</span>'; }).join('') + '</div>' +
-      '<div class="rs-main"><form class="rs-form">' + fieldMarkup + '<button type="submit">Update plan</button></form><div class="rs-output" aria-live="polite"></div></div>' +
+      '<div class="rs-main"><form class="rs-form">' + fieldMarkup + '<button type="submit">Update plan</button></form><div><div class="rs-output" aria-live="polite"></div><div class="rs-actions"><button type="button" data-rs-action="copy">Copy summary</button><button type="button" data-rs-action="pdf">Create PDF pack</button><button type="button" data-rs-action="print">Print</button></div><p class="rs-action-status" role="status" aria-live="polite"></p></div></div>' +
       '<div class="rs-bottom"><div><h3>Action checklist</h3><ul>' + tool.checklist.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul></div><div><h3>Feature sources</h3><ul>' + tool.sources.map(function (src) { return '<li><a href="' + src.href + '">' + src.label + '</a></li>'; }).join('') + '</ul></div></div>' +
       '</div>';
     var form = host.querySelector('form');
     var output = host.querySelector('.rs-output');
+    var status = host.querySelector('.rs-action-status');
+    var currentValues;
+    var currentResult;
     function update() {
-      renderResult(output, tool, calc(tool, readValues(form, tool)));
+      currentValues = readValues(form, tool);
+      currentResult = calc(tool, currentValues);
+      renderResult(output, tool, currentResult);
     }
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -897,6 +991,15 @@ function runtimeTemplate() {
     Array.prototype.forEach.call(form.elements, function (field) {
       field.addEventListener('input', update);
       field.addEventListener('change', update);
+    });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-rs-action]'), function (button) {
+      button.addEventListener('click', function () {
+        update();
+        var action = button.getAttribute('data-rs-action');
+        if (action === 'copy') copyReport(reportText(tool, currentResult, currentValues), status);
+        if (action === 'pdf') createPdf(tool, currentResult, currentValues, status);
+        if (action === 'print') window.print();
+      });
     });
     update();
   }
@@ -964,7 +1067,8 @@ function attachExistingPages() {
     if (!fs.existsSync(filePath)) continue;
     let html = fs.readFileSync(filePath, 'utf8');
     if (!html.includes(`data-rs-tool-id="${tool.id}"`)) {
-      const section = `\n<section class="rs-upgrade-shell" data-rs-tool-id="${tool.id}"></section>\n<script src="/assets/js/religious-cultural-apps.js" defer></script>\n`;
+      const prayerScript = ['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>\n' : '';
+      const section = `\n<section class="rs-upgrade-shell" data-rs-tool-id="${tool.id}"></section>\n${prayerScript}<script src="/assets/js/religious-cultural-apps.js" defer></script>\n`;
       if (html.includes('<afro-footer')) {
         html = html.replace(/<afro-footer/i, section + '<afro-footer');
       } else {
@@ -1082,6 +1186,10 @@ function writeSummaryDoc() {
 
 function main() {
   writeFile(path.join(ROOT, 'assets/js/religious-cultural-apps.js'), runtimeTemplate());
+  if (process.argv.includes('--runtime-only')) {
+    console.log('Religious-cultural runtime rebuilt.');
+    return;
+  }
   writeFile(path.join(ROOT, 'assets/css/religious-cultural-apps.css'), cssTemplate());
   writeMissingPages();
   attachExistingPages();

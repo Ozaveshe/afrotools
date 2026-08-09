@@ -528,6 +528,7 @@
 <link rel="canonical" href="https://afrotools.com/tools/favicon-generator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/favicon-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-favicon/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-favicon/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/favicon-generator/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -570,7 +571,7 @@
           <span class="card-title">Upload Image</span>
         </div>
         <div class="card-body">
-          <div class="upload-area" id="uploadArea">
+          <div class="upload-area" id="uploadArea" role="button" tabindex="0" aria-label="Choose an image for the favicon">
             <div class="upload-icon">??</div>
             <div class="upload-text">Choose an image or drag it here</div>
             <div class="upload-hint">PNG, JPG, WebP (Square recommended)</div>
@@ -613,6 +614,7 @@
       <div class="card">
         <div class="card-body">
           <button type="button" class="calc-btn" id="generateBtn" disabled>Generate Favicons</button>
+          <button type="button" class="act-btn" id="resetBtn">Reset</button>
         </div>
       </div>
     </div>
@@ -748,180 +750,7 @@
 </div></section>
 <afro-footer></afro-footer>
 
-<script>
-  const modeButtons = document.querySelectorAll('.mode-btn');
-  const imageMode = document.getElementById('imageMode');
-  const textMode = document.getElementById('textMode');
-  const uploadArea = document.getElementById('uploadArea');
-  const imageInput = document.getElementById('imageInput');
-  const textInput = document.getElementById('textInput');
-  const bgColor = document.getElementById('bgColor');
-  const textColor = document.getElementById('textColor');
-  const generateBtn = document.getElementById('generateBtn');
-  const previewCard = document.getElementById('previewCard');
-  const faviconGrid = document.getElementById('faviconGrid');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const faviconStatus = document.getElementById('faviconStatus');
-
-  let currentMode = 'image';
-  let sourceImage = null;
-  const sizes = [16, 32, 48, 64];
-  const canvases = {};
-
-  modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentMode = btn.dataset.mode;
-      modeButtons.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-
-      if (currentMode === 'image') {
-        imageMode.style.display = 'block';
-        textMode.style.display = 'none';
-        sourceImage = null;
-      } else {
-        imageMode.style.display = 'none';
-        textMode.style.display = 'block';
-      }
-      generateBtn.disabled = currentMode === 'image' ? !sourceImage : !textInput.value;
-    });
-  });
-
-  uploadArea.addEventListener('click', () => imageInput.click());
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('active');
-  });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('active');
-    if (e.dataTransfer.files.length) {
-      imageInput.files = e.dataTransfer.files;
-      handleImageUpload();
-    }
-  });
-
-  imageInput.addEventListener('change', handleImageUpload);
-
-  function handleImageUpload() {
-    const file = imageInput.files[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      sourceImage = null;
-      generateBtn.disabled = true;
-      faviconStatus.textContent = 'Choose a valid PNG, JPG, or WebP image file.';
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        sourceImage = img;
-        generateBtn.disabled = false;
-        faviconStatus.textContent = `${file.name} is ready. Generate your favicon sizes.`;
-      };
-      img.onerror = () => {
-        sourceImage = null;
-        generateBtn.disabled = true;
-        faviconStatus.textContent = 'This image could not be decoded. Choose another PNG, JPG, or WebP file.';
-      };
-      img.src = e.target.result;
-    };
-    reader.onerror = () => {
-      sourceImage = null;
-      generateBtn.disabled = true;
-      faviconStatus.textContent = 'This image could not be read. Choose another file.';
-    };
-    reader.readAsDataURL(file);
-  }
-
-  textInput.addEventListener('input', () => {
-    generateBtn.disabled = !textInput.value;
-  });
-
-  generateBtn.addEventListener('click', () => {
-    faviconGrid.innerHTML = '';
-    Object.keys(canvases).forEach(k => delete canvases[k]);
-
-    sizes.forEach(size => {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-
-        if (!ctx) {
-          console.error(`Failed to get 2D context for ${size}x${size} canvas`);
-          return;
-        }
-
-        if (currentMode === 'image' && sourceImage) {
-          ctx.drawImage(sourceImage, 0, 0, size, size);
-        } else {
-          ctx.fillStyle = bgColor.value;
-          ctx.fillRect(0, 0, size, size);
-          ctx.fillStyle = textColor.value;
-          ctx.font = `bold ${size * 0.6}px Arial`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(textInput.value, size / 2, size / 2);
-        }
-
-        canvases[size] = canvas;
-
-        const item = document.createElement('div');
-        item.className = 'favicon-item';
-        const clonedCanvas = canvas.cloneNode();
-        clonedCanvas.width = 80;
-        clonedCanvas.height = 80;
-        const clonedCtx = clonedCanvas.getContext('2d');
-        if (clonedCtx) {
-          clonedCtx.drawImage(canvas, 0, 0, 80, 80);
-        }
-        item.appendChild(clonedCanvas);
-        item.innerHTML += `<div class="favicon-size">${size}x${size}</div>`;
-        faviconGrid.appendChild(item);
-      } catch (err) {
-        console.error(`Error generating ${size}x${size} favicon:`, err);
-      }
-    });
-
-    previewCard.classList.add('on');
-    faviconStatus.textContent = 'Favicons generated in four sizes. Your ZIP is ready to download.';
-  });
-
-  downloadBtn.addEventListener('click', async () => {
-    const zip = new JSZip();
-
-    try {
-      const blobPromises = Object.entries(canvases).map(([size, canvas]) => {
-        return new Promise((resolve, reject) => {
-          canvas.toBlob(blob => {
-            if (!blob) {
-              reject(new Error(`Failed to create blob for ${size}x${size}`));
-              return;
-            }
-            zip.file(`favicon-${size}x${size}.png`, blob);
-            resolve();
-          }, 'image/png');
-        });
-      });
-
-      await Promise.all(blobPromises);
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(zipBlob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'favicons.zip';
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Error creating favicon ZIP:', err);
-      alert('Failed to generate favicon ZIP. Please try again.');
-    }
-  });
-</script>
+<script src="/assets/js/lib/favicon-generator-studio.js?v=7eccfbe5" defer></script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>

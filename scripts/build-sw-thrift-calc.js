@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+
+const ROOT = path.resolve(__dirname, "..");
+const WRITE = process.argv.includes("--write");
+const route = "/sw/zana/kikokotoo-vikundi-vya-akiba-na-mzunguko/";
+const target = path.join(
+  ROOT,
+  "sw",
+  "zana",
+  "kikokotoo-vikundi-vya-akiba-na-mzunguko",
+  "index.html",
+);
+const countries =
+  '<option value="KE">Kenya</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="BI">Burundi</option><option value="NG">Nigeria</option><option value="GH">Ghana</option><option value="ZA">Afrika Kusini</option><option value="OTHER">Nchi nyingine</option>';
+
+function render() {
+  const title = "Kikokotoo cha vikundi vya akiba na mzunguko";
+  const description =
+    "Kadiria fungu, muda wa kupokea na ulinganisho wa benki kwa Ajo, Esusu, Susu, Tontine, Chama, Stokvel au ushirika kwa masharti yako.";
+  const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: title,
+    url: `https://afrotools.com${route}`,
+    description,
+    inLanguage: "sw",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    image: "https://afrotools.com/assets/img/tools/thrift-calc.webp",
+  });
+  return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title} | AfroTools</title><meta name="description" content="${description}"><meta name="robots" content="index,follow"><meta name="x-source-owner" content="scripts/build-sw-thrift-calc.js"><link rel="canonical" href="https://afrotools.com${route}"><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/thrift-calc/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-tontine-cooperative/"><link rel="alternate" hreflang="sw" href="https://afrotools.com${route}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/thrift-calc/"><meta property="og:type" content="website"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/thrift-calc.webp"><meta property="og:image:width" content="800"><meta property="og:image:height" content="450"><meta property="og:locale" content="sw_TZ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/thrift-calc.webp"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5"><link rel="stylesheet" href="/assets/css/sw-thrift-calc.css"><script>(function(){try{var t=localStorage.getItem('aft_theme'),d=matchMedia('(prefers-color-scheme:dark)').matches,a=t==='dark'||t==='light'?t:(d?'dark':'light');document.documentElement.dataset.theme=a;document.documentElement.dataset.themeChoice=t==='dark'||t==='light'?t:'auto';document.documentElement.style.colorScheme=a}catch(_){}})();</script><script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script><script type="application/ld+json">${schema}</script></head><body data-sw-thrift-app="thrift-calc"><a class="skip-link" href="#main-content">Ruka hadi maudhui</a><afro-navbar theme="dark" active="tools"></afro-navbar><header class="tool-hero"><div class="container hero-grid"><div><nav class="breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a> / <a href="/sw/fintech/">Fintech</a> / ${title}</nav><h1>${title}</h1><p>${description}</p><div class="badges"><span class="badge">Mzunguko wa akiba</span><span class="badge">Masharti yako</span><span class="badge">Hesabu ya ndani</span></div></div><img class="hero-art" src="/assets/img/tools/thrift-calc.webp" width="800" height="450" alt="Mchoro wa ${title}"></div></header><main class="container" id="main-content"><form class="card" data-sw-thrift-form novalidate><h2>Weka sheria za kikundi chako</h2><div class="form-grid"><div class="form-group"><label for="context-country">Nchi ya kikundi</label><select id="context-country">${countries}</select></div><div class="form-group"><label for="tc-group-name">Jina la kikundi au ushirika</label><input id="tc-group-name" value="Kikundi changu" maxlength="80" required></div><div class="form-group"><label for="tc-rules-month">Mwezi wa sheria ulizokagua</label><input type="month" id="tc-rules-month" value="2026-08" required></div><div class="form-group"><label for="tc-currency">Sarafu</label><select id="tc-currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option><option value="UGX">UGX</option><option value="TZS">TZS</option><option value="RWF">RWF</option><option value="BIF">BIF</option><option value="USD">USD</option><option value="XOF">XOF</option></select></div><div class="form-group"><label for="tc-type">Aina ya mpango</label><select id="tc-type"><option value="rotating">Mzunguko wa akiba (Ajo, Esusu, Susu, Tontine, Chama au Stokvel)</option><option value="thrift">Kikundi cha akiba chenye riba</option><option value="cooperative">Ushirika wenye gawio</option></select></div><div class="form-group"><label for="tc-members">Idadi ya wanachama</label><input type="number" id="tc-members" value="10" min="2" max="100" step="1" required></div><div class="form-group"><label for="tc-monthly">Mchango wa mwezi kwa kila mwanachama</label><input type="number" id="tc-monthly" value="10000" min="0.01" step="0.01" required></div><div class="form-group"><label for="tc-your-pos">Nafasi yako kwenye mzunguko</label><input type="number" id="tc-your-pos" value="5" min="1" step="1" required aria-describedby="tc-position-help"><span class="field-help" id="tc-position-help">1 ni wa kwanza; nafasi haiwezi kuzidi idadi ya wanachama.</span></div><div class="form-group"><label for="tc-rate">Riba au gawio halisi kwa mwaka (%)</label><input type="number" id="tc-rate" value="0" min="0" step="0.5" required></div><div class="form-group"><label for="tc-bank-rate">Kiwango sawa cha akiba benki kwa mwaka (%)</label><input type="number" id="tc-bank-rate" value="4" min="0" step="0.1" required></div></div><button type="submit" class="btn-calc">Kokotoa mpango wa kikundi</button><p class="form-error" id="tc-error" role="alert"></p><div class="results" id="tc-results" role="region" aria-live="polite" aria-label="Matokeo ya kikundi cha akiba" tabindex="-1"><div class="res-hero"><div>Kiasi unachopokea</div><div class="res-val" id="tc-lump"></div><div class="res-sub" id="tc-sub"></div></div><div class="metrics"><div class="metric"><div class="metric-val" id="tc-contributed"></div><div class="metric-label">Jumla unayochangia</div></div><div class="metric"><div class="metric-val" id="tc-receive"></div><div class="metric-label">Kiasi unachopokea</div></div><div class="metric"><div class="metric-val" id="tc-months-wait"></div><div class="metric-label">Miezi hadi zamu yako</div></div><div class="metric"><div class="metric-val" id="tc-implicit-return"></div><div class="metric-label">Kiwango cha mwaka kilichoingizwa</div></div><div class="metric"><div class="metric-val" id="tc-bank-equiv"></div><div class="metric-label">Thamani sawa benki</div></div><div class="metric"><div class="metric-val" id="tc-cycle-total"></div><div class="metric-label">Fungu la mzunguko</div></div></div><div id="tc-verdict" class="verdict"></div></div><div class="source-box"><strong>Chanzo, upya na uhakika:</strong> Tumia sheria za kikundi zilizoandikwa kuhusu mchango, nafasi, ada, uhifadhi wa fedha, kuchelewa, kushindwa kulipa na utatuzi wa malalamiko. Kwa ushirika, thibitisha rejesta rasmi na taarifa za sasa. Mbinu ilikaguliwa Agosti 2026; uhakika wa hesabu ni wa juu lakini uhakika wa matokeo ni wa kati kwa sababu uaminifu, ada, kodi, kuchelewa na upotevu wa mtaji havikokotolewi. Udhamini au ushirika wa kibiashara hauathiri fomula, nafasi wala ulinganisho.</div><div class="privacy-box"><strong>Faragha ya ndani:</strong> Nchi, jina la kikundi, mchango, nafasi na viwango hubaki kwenye kivinjari hiki; hakuna majina ya wanachama au taarifa ya fedha inayotumwa au kuhifadhiwa. Usaidizi wa AI ni wa hiari na unahitaji ridhaa ya wazi kabla ya kutuma taarifa yoyote.</div><a class="ai-handoff" data-shared-ai-handoff data-ai-candidate-tool-id="thrift-calc" href="/sw/ai/?tool=thrift-calc">Fungua usaidizi wa AI wa hiari</a></form><section class="card method-box"><h2>Jinsi hesabu inavyofanya kazi</h2><p>Katika mzunguko usio na ada, fungu ni mchango wa kila mwanachama mara idadi ya wanachama; nafasi hubadilisha mwezi wa kupokea, si jumla ya kawaida. Mpango wenye riba au gawio na ulinganisho wa benki hutumia michango ya mwisho wa mwezi na viwango halisi vya mwaka ulivyoingiza.</p><p>Hili ni kadirio la kupanga, si ahadi ya kikundi, dhamana ya fedha, idhini ya mkopo au ushauri wa kifedha.</p></section><section class="card"><h2>Zana zinazohusiana</h2><ul class="related-links"><li><a href="/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/">SACCO na vyama vya akiba</a></li><li><a href="/sw/zana/kikokotoo-mfuko-wa-dharura/">Mfuko wa dharura</a></li><li><a href="/sw/zana/kikokotoo-amana-ya-muda/">Amana ya muda</a></li></ul></section></main><afro-footer></afro-footer><script src="/assets/js/pages/fintech-shared-controller-i18n.js"></script><script src="/assets/js/pages/fintech-shared-controllers/thrift-calc.js"></script><script src="/assets/js/pages/sw-thrift-calc.js"></script><script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script><script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script></body></html>\n`;
+}
+
+const next = render().replace(
+  '/sw/zana/kikokotoo-mfuko-wa-dharura/',
+  '/sw/zana/mfuko-wa-dharura/'
+);
+const current = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
+if (current !== next) {
+  if (!WRITE) {
+    console.error(
+      "Swahili thrift calculator route is stale or missing. Run with --write.",
+    );
+    process.exit(1);
+  }
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, next);
+  console.log(`Wrote ${route}`);
+} else console.log(`Swahili thrift calculator current: ${route}`);

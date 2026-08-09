@@ -90,8 +90,9 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <style data-localized-verification-style>
 .localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
 </style>
-<meta name="afrotools-language-fallback" content="en">
-<meta name="afrotools-language-fallback-owner" content="sw-reviewed-tool-reference-copy: Swahili localization">
+<meta name="afrotools-source-owner" content="data/localization/sw-developer-parity.json">
+<meta name="afrotools-sw-native-owner" content="ussd-simulator">
+<meta name="afrotools-content-id" content="content:301d76d9e73a6e0f">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kiigaji-ussd/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-simulator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/simulateur-ussd/">
@@ -106,7 +107,6 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <p>Hii si nukuu rasmi, ushauri wa kitaalamu wala idhini ya mwisho. Tumia kama hatua ya kwanza, kisha thibitisha na chanzo kinachowajibika.</p>
 </section>
 <afro-navbar></afro-navbar>
-<aside data-language-fallback-notice="sw-reviewed-tool-reference-copy" lang="sw" role="note" style="max-width:1120px;margin:16px auto;padding:14px 18px;border:1px solid #d9a441;border-left-width:4px;border-radius:10px;background:#fff8e6;color:#4b3a16;line-height:1.55">Baadhi ya maelezo ya marejeo bado yako kwa Kiingereza. Kila sehemu hiyo imewekewa alama wazi ili isionekane kama tafsiri ya Kiswahili.</aside>
 <section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kiigaji USSD kwa Kiswahili.</strong> Jaribu menu za USSD na navigation kabla ya kuwasilisha kwa telco au mtoa huduma (provider). Hii si dhamana ya deployment readiness. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source matokeo, provider docs na production environment kabla ya launch.</span></div></section>
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/sw/zana-zote/">Zana</a> / <span>USSD Simulator</span></div>
@@ -150,7 +150,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 
 <div class="info-card">
 <h4>How USSD Works</h4>
-<p lang="en" data-explicit-language-fallback="true">USSD (Unstructured Supplementary Service Data) is a real-time messaging protocol used on GSM networks. Unlike SMS, USSD sessions are interactive and real-time. Dial a code like *123#, navigate menus by entering numbers, and the session closes automatically after ~180 seconds of inactivity.</p>
+<p>USSD ni itifaki ya ujumbe wa moja kwa moja kwenye mitandao ya GSM. Tofauti na SMS, kikao cha USSD huendelea kwa majibu ya mtumiaji. Piga msimbo kama *123#, chagua namba za menyu, kisha thibitisha muda halisi wa kikao na mtoa huduma kabla ya kuzindua.</p>
 </div>
 <div class="info-card" style="margin-top:10px">
 <h4>Common Afrikan USSD Codes</h4>
@@ -257,6 +257,22 @@ const PRESETS={
 let currentFlow=null;
 let currentState='start';
 let sessionVars={};
+let currentPreset=false;
+
+function swUssd(text){
+  if(!currentPreset)return text;
+  const terms=[
+    [/Welcome to /g,'Karibu '],[/Send Money/g,'Tuma pesa'],[/Withdraw Cash/g,'Toa pesa'],[/Buy Airtime/g,'Nunua muda wa maongezi'],
+    [/Loans & Savings/g,'Mikopo na akiba'],[/My Account/g,'Akaunti yangu'],[/Enter Phone Number:/g,'Weka namba ya simu:'],
+    [/Enter Amount(?: \([^)]*\))?:/g,'Weka kiasi:'],[/Enter Agent Number:/g,'Weka namba ya wakala:'],[/Enter Account Number:/g,'Weka namba ya akaunti:'],
+    [/Enter Business Number:/g,'Weka namba ya biashara:'],[/Enter Till Number:/g,'Weka namba ya till:'],[/Enter (?:your )?(?:M-Pesa |MoMo |4-digit )?PIN:/g,'Weka PIN:'],
+    [/Transfer/g,'Hamisha'],[/Other Banks/g,'Benki nyingine'],[/Phone Number/g,'Namba ya simu'],[/Pay Bills/g,'Lipa bili'],[/Balance/g,'Salio'],
+    [/Account Opening/g,'Kufungua akaunti'],[/Cardless Withdrawal/g,'Kutoa pesa bila kadi'],[/Financial Services/g,'Huduma za kifedha'],[/Cash Out/g,'Toa pesa'],
+    [/Confirm transaction\?/g,'Thibitisha muamala?'],[/Confirm/g,'Thibitisha'],[/Cancel/g,'Ghairi'],[/Select Bank:/g,'Chagua benki:'],[/Select Amount:/g,'Chagua kiasi:'],
+    [/Processing\.\.\./g,'Inachakata...'],[/Your balance is/g,'Salio lako ni'],[/Last transaction:/g,'Muamala wa mwisho:'],[/Send /g,'Tuma '],[/Pay /g,'Lipa ']
+  ];
+  return terms.reduce((value,pair)=>value.replace(pair[0],pair[1]),String(text||''));
+}
 
 function initPresets(){
   const el=document.getElementById('presets');
@@ -273,6 +289,7 @@ function loadPreset(key){
   const preset=PRESETS[key];
   document.getElementById('ussdCode').value=preset.code;
   currentFlow=preset.flow;
+  currentPreset=true;
   document.getElementById('flowEditor').value=JSON.stringify(preset.flow,null,2);
   startSession();
 }
@@ -280,9 +297,10 @@ function loadPreset(key){
 function loadCustomFlow(){
   try{
     currentFlow=JSON.parse(document.getElementById('flowEditor').value);
+    currentPreset=false;
     startSession();
   }catch(e){
-    alert('Invalid JSON. Please check your flow definition.');
+    alert('JSON si sahihi. Hakiki muundo wa mtiririko wako.');
   }
 }
 
@@ -300,7 +318,7 @@ function renderScreen(){
   Object.entries(sessionVars).forEach(([k,v])=>{
     text=text.replace(new RegExp('\\{'+k+'\\}','g'),v);
   });
-  document.getElementById('ussdText').textContent=text;
+  document.getElementById('ussdText').textContent=swUssd(text);
   document.getElementById('ussdInput').value='';
   document.getElementById('ussdInput').focus();
 }
@@ -330,11 +348,11 @@ function sendResponse(){
       currentState='_inline_'+Date.now();
       // Store inline for back navigation
     }else if(next.end){
-      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
+      document.getElementById('ussdText').textContent=swUssd(replaceVars(next.text))+'\n\n[Kikao kimeisha]';
       return;
     }
     if(next.text&&!next.next&&!next.options){
-      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
+      document.getElementById('ussdText').textContent=swUssd(replaceVars(next.text))+'\n\n[Kikao kimeisha]';
       return;
     }
     if(next.text&&next.options){
@@ -346,7 +364,7 @@ function sendResponse(){
   }else if(screen.next){
     currentState=screen.next;
   }else if(screen.end){
-    document.getElementById('ussdText').textContent=replaceVars(screen.text)+'\n\n[Session Ended]';
+    document.getElementById('ussdText').textContent=swUssd(replaceVars(screen.text))+'\n\n[Kikao kimeisha]';
     return;
   }
 
@@ -362,10 +380,11 @@ function replaceVars(text){
 }
 
 function cancelSession(){
-  document.getElementById('ussdText').textContent='Session cancelled.\n\nDial a USSD code to start again.';
+  document.getElementById('ussdText').textContent='Kikao kimeghairiwa.\n\nPiga msimbo wa USSD ili kuanza tena.';
   currentFlow=null;
   currentState='start';
   sessionVars={};
+  currentPreset=false;
 }
 
 // Init

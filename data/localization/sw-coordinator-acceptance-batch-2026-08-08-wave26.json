@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "74ada6ea",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Solar Calculator only after English and Swahili share the same DOM-free sizing engine, the maintained data snapshot is visibly stale and low-confidence, invalid load/site/backup inputs fail closed, every advertised output parses or reopens, and privacy, mobile/reflow, themes, keyboard/accessibility and reciprocal metadata pass coordinator review.",
+  "candidates": [
+    {
+      "id": "solar-calculator-sw-parity",
+      "commit": "74ada6ea97b610bd3a7efd0479640e47009ba515",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-solar-calculator-parity.spec.js",
+          "engineTest": "tests/swahili-solar-calculator-parity.test.js",
+          "workflow": "The coordinator reviewed the English engine extraction and reran 4/4 formula/fail-closed contracts plus 3/3 focused browser workflows. Load, panel, battery, inverter, MPPT, roof and cost outputs preserve the existing English fixture while the Swahili route states that the March 2026 snapshot is stale and the result is planning-only, not installer design, grid approval or a quote.",
+          "export": "JSON was parsed and reopened; CSV and TXT parsed; PDF reopened through the repository parser. No raw load or cost inputs left the browser; 320/375px, 200% reflow, light/dark, keyboard/focus, canonical/OG/schema/hreflang and artwork passed."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/scope/denominator", "equals": 55 },
+            { "pointer": "/outcome/acceptedCandidates", "equals": 25 },
+            { "pointer": "/outcome/blocked", "equals": 30 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "solar-calculator", "swahiliRoute": "/sw/zana/kikokotoo-cha-solar/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

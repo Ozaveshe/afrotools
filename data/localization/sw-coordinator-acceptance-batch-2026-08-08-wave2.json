@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 8,
+  "expectedAcceptedRoutes": 227,
+  "preservedBlockedEntries": 0,
+  "policy": "Only rows explicitly accepted by the independently reviewed candidate receipts are recorded. The recorder must fail closed on inventory identity, receipt counts, route ownership, duplicate IDs or routes, blocked rows, missing lang=sw owners, or missing test evidence.",
+  "candidates": [
+    {
+      "id": "creative-image-four",
+      "commit": "9b633e686096f5db8a10fc9afa24e93179739bc7",
+      "expectedRoutes": 4,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 4,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-qr-generator-parity.spec.js",
+          "engineTest": "tests/qr-payload-engine.test.js",
+          "workflow": "Four Creative and Image owners passed their focused QR, color-family and bulk-watermark workflows, responsive/theme/keyboard checks, local privacy inspection, and invalid-state proof.",
+          "export": "QR PNG and SVG, color-family outputs, and bulk-watermark artifacts were downloaded and parsed or reopened by the focused browser suites; the other 49 rows remain excluded."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-creative-image-parity-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/acceptedCandidates", "equals": 4 },
+            { "pointer": "/exactScope/blocked", "equals": 49 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/creativeImage",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "education-developer-fifty-eight",
+      "commit": "7975cf7dbd13a3b2f172657c1f2aeddba18f8dd0",
+      "expectedRoutes": 58,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 58,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-education-workflow-parity.spec.js",
+          "engineTest": "tests/swahili-education-owner-oracles.test.js",
+          "workflow": "All 32 Education and 26 Developer owners passed native workflow, owner-oracle, mobile/reflow, theme, keyboard, privacy, metadata and discovery proof.",
+          "export": "Advertised JSON, CSV, XML, SQL, SQLite, HTML, text and manifest outputs were parsed or reopened; routes without an export do not claim one."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-education-developer-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/acceptedCount", "equals": 58 },
+            { "pointer": "/blockedCount", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/educationDeveloper",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "fintech-small-business-fifty-seven",
+      "commit": "01bbca4e08071b139b1f31ed74a03950667b8a7f",
+      "expectedRoutes": 57,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 57,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-small-business-parity.spec.js",
+          "engineTest": "tests/sw-small-business-engine-parity.test.js",
+          "workflow": "All 29 Fintech and 28 Small Business owners passed exact shared-engine oracles, native workflows, invalid/reset behavior, responsive/theme/keyboard checks, metadata, privacy and artwork proof.",
+          "export": "Every advertised download was parsed or reopened by the assigned family suites; local-first processing and sanitized metadata-only telemetry were preserved."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-fintech-small-business-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 57 },
+            { "pointer": "/blocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/fintechSmallBusiness",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "energy-seventeen",
+      "commit": "a858323a9c7d7af29cfcfaf2b72861663a751496",
+      "expectedRoutes": 17,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 17,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
+          "engineTest": "tests/swahili-energy-remaining-static.test.js",
+          "workflow": "Seventeen Energy owners passed shared-engine calculation and invalid-state oracles, native UI, 320/375/200-percent reflow, themes, keyboard, source disclosure and no-network privacy proof.",
+          "export": "Every advertised Energy JSON, CSV, TXT and PDF output was downloaded and parsed or reopened; the 38 Engineering and Transport blockers remain excluded."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/outcome/acceptedCandidates", "equals": 17 },
+            { "pointer": "/outcome/blocked", "equals": 38 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/energy",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "religious-cultural-african-twenty-five",
+      "commit": "55c029e64415e0b9ba3572a27fb03ae3db083aea",
+      "expectedRoutes": 25,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 25,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-religious-cultural-african-lane.spec.js",
+          "engineTest": "tests/sw-religious-cultural-african-lane.test.js",
+          "workflow": "Twenty-five native Religious, Cultural and Uniquely African owners passed calculation/content oracles, invalid/reset, mobile/reflow, themes, keyboard, metadata, privacy and source-boundary proof.",
+          "export": "Every advertised JSON or TXT download was parsed or reopened, and copy/print actions were invoked; the eight source-sensitive blockers remain excluded."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-religious-cultural-african-lane-candidate.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/candidateAccepted", "equals": 25 },
+            { "pointer": "/totals/blocked", "equals": 8 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/religiousCulturalAfrican",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "agriculture-trade-thirty-six",
+      "commit": "0373e81f0c789b1f1b65a470a74190b2143331b3",
+      "expectedRoutes": 36,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 36,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-agriculture-assigned-parity.spec.js",
+          "engineTest": "tests/sw-trade-core-oracle.test.js",
+          "workflow": "All 20 Agriculture and 16 Trade owners passed source-owner and formula oracles, native workflows, reset/invalid states, responsive/reflow, theme, keyboard, metadata, privacy and freshness-boundary proof.",
+          "export": "Advertised PDF, CSV, JSON and TXT outputs were downloaded and parsed or reopened, and JSON was imported back into its originating workflow."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-agriculture-trade-parity-candidate-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 36 },
+            { "pointer": "/blocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/agricultureTrade",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "financial-shard-b-sixteen",
+      "commit": "9daef07dd944e3ae1d695c13954f1d9915870709",
+      "expectedRoutes": 16,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 16,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-financial-shard-b.spec.js",
+          "engineTest": "tests/swahili-financial-shard-b.test.js",
+          "workflow": "Sixteen Finance shard-B owners passed exact formula/source boundaries, native calculation and reset/invalid workflows, mobile/reflow, themes, keyboard, metadata and raw-input privacy proof.",
+          "export": "Advertised outputs, including the corrected Liberia PAYE PDF, were downloaded and parser-reopened; the 30 blocked rows remain excluded."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-financial-shard-b-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 16 },
+            { "pointer": "/blocked", "equals": 30 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/financialShardB",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "financial-shard-a-fourteen",
+      "commit": "436d8534bb5413877670f4cdd382bc6a9c987eec",
+      "expectedRoutes": 14,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 14,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-financial-shard-a.spec.js",
+          "engineTest": "tests/swahili-financial-shard-a.test.js",
+          "workflow": "Fourteen Finance shard-A owners passed formula and source-owner proof, native calculations, invalid/reset, 320/375/200-percent reflow, themes, keyboard, metadata and raw-input privacy checks.",
+          "export": "All advertised accepted-route outputs, including four newly proved PAYE PDFs, were downloaded and parsed or reopened; the 32 blockers remain excluded."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-financial-shard-a-candidate.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/accepted", "equals": 14 },
+            { "pointer": "/totals/blocked", "equals": 32 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-coordinator-accepted-rows-2026-08-08-wave2.json",
+          "rowsPointer": "/candidates/financialShardA",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    }
+  ]
+}

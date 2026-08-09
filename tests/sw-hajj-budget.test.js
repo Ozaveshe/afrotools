@@ -85,7 +85,11 @@ assert.match(fr, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/bajeti
 assert.match(hub, /href="\/sw\/zana\/bajeti-ya-hajj-na-umrah\/"/);
 assert.equal(fs.existsSync(path.join(root, manifest.artwork.replace(/^\//, ''))), true);
 assert.match(registry, /id: "zana-bajeti-ya-hajj-na-umrah-sw".+href: "\/sw\/zana\/bajeti-ya-hajj-na-umrah\/".+lang: 'sw'/);
-assert.match(read('assets/js/pages/english-df-app-upgrades.js'), /\(r\(i,"packageCost",6200\)\+r\(i,"cashBudget",800\)\)\*q\*\(1\+r\(i,"buffer",12\)\/100\)/);
-assert.match(read('assets/js/religious-cultural-apps.js'), /\(H\*Z\+K\)\*o\.travelers\*O\.multiplier/);
+const engineSource = read('assets/js/engines/hajj-budget.js');
+assert.match(engineSource, /var subtotal = \(packageCost \+ cashBudget\) \* travelers;/);
+assert.match(engineSource, /var subtotal = \(basePackageUsd \+ dailyAllowancePerTraveler\) \* travelers \* originData\.multiplier;/);
+assert.match(engineSource, /var total = subtotal \* \(1 \+ buffer \/ 100\);/);
+assert.match(engineSource, /'\(\(packageCost \+ cashBudget\) \* travelers\) \* \(1 \+ buffer \/ 100\)'/);
+assert.match(engineSource, /'\(\(packageUsd \* tripFactor \+ 45 \* days\) \* travelers \* originMultiplier\) \* \(1 \+ buffer \/ 100\)'/);
 
 console.log('sw-hajj-budget.test.js passed: both English-owner formulas, boundaries, native source, exports and existing discovery');

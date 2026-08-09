@@ -11,6 +11,16 @@ function mbText(key,fallback){
 function fillMB(){
   document.getElementById('mb-results').classList.remove('on');
 }
+function mbProviderName(id,fallback){
+  var node=document.getElementById(id);
+  var value=node?String(node.value||'').trim():'';
+  return value||fallback;
+}
+function mbEscape(value){
+  return String(value).replace(/[&<>"']/g,function(character){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];
+  });
+}
 function calcMB(){
   var country=document.getElementById('mb-country').value;
   var amount=parseFloat(document.getElementById('mb-amount').value);
@@ -30,8 +40,8 @@ function calcMB(){
   error.classList.remove('on');
   var currency=MB_DATA[country]||mbText('amount','Amount');
   var d={
-    mmName:mbText('mobileQuote','Mobile money quote'),
-    bankName:mbText('bankQuote','Bank transfer quote')
+    mmName:mbProviderName('mb-mm-provider',mbText('mobileQuote','Mobile money quote')),
+    bankName:mbProviderName('mb-bank-provider',mbText('bankQuote','Bank transfer quote'))
   };
   var mmFee=mmFlat+amount*mmPct;
   var bankFee=bankFlat+amount*bankPct;
@@ -61,7 +71,7 @@ function calcMB(){
   }
   // Build comparison table for different amounts
   var amounts=[amount*0.1,amount*0.5,amount,amount*2,amount*5];
-  var headers='<tr><th>'+mbText('amount','Amount')+'</th><th>'+d.mmName+'</th><th>'+d.bankName+'</th><th>'+mbText('cheaper','Cheaper')+'</th></tr>';
+  var headers='<tr><th>'+mbEscape(mbText('amount','Amount'))+'</th><th>'+mbEscape(d.mmName)+'</th><th>'+mbEscape(d.bankName)+'</th><th>'+mbEscape(mbText('cheaper','Cheaper'))+'</th></tr>';
   var rows='';
   for(var i=0;i<amounts.length;i++){
     var a=amounts[i];
@@ -73,7 +83,7 @@ function calcMB(){
       +'<td>'+fmt(a)+'</td>'
       +'<td>'+fmt(mf)+'</td>'
       +'<td>'+fmt(bf)+'</td>'
-      +'<td>'+cheaper+'</td>'
+      +'<td>'+mbEscape(cheaper)+'</td>'
       +'</tr>';
   }
   document.getElementById('mb-table').innerHTML=headers+rows;

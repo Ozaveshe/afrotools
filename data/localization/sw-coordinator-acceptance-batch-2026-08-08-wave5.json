@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "0309f079",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the independently reviewed Image Resize row beyond the six-row Creative and Image Design checkpoint; fail closed on receipt drift, duplicate identity, missing native ownership, incomplete export reopen proof, or missing browser evidence.",
+  "candidates": [
+    {
+      "id": "image-resize-native-parity",
+      "commit": "16847271a9d99853a57893fca8fdba631d6bf379",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-image-resize-parity.spec.js",
+          "engineTest": "tests/e2e/swahili-image-resize-parity.spec.js",
+          "workflow": "Image Resize loads the maintained English image-resize-studio owner and passed presets, fit/fill/pad/stretch geometry, focal coordinates, no-upscale, format, quality, naming, history, invalid/reset, responsive, theme, keyboard, metadata and no-network parity checks.",
+          "export": "English and Swahili 60x40 PNG output was byte-identical; direct PNG, JPG and WebP, all four fit modes, and eight batch files were parser-reopened at their exact 60x40 or 512x512 dimensions."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-creative-image-parity-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/acceptedCandidates", "equals": 7 },
+            { "pointer": "/exactScope/blocked", "equals": 46 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "image-resize", "swahiliRoute": "/sw/zana/kubadilisha-ukubwa-wa-picha/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

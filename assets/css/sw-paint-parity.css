@@ -1,0 +1,217 @@
+:root {
+  --swp-bg: #f6f7fb;
+  --swp-card: #fff;
+  --swp-text: #17233a;
+  --swp-muted: #59677c;
+  --swp-line: #d9dfeb;
+  --swp-accent: #6b357b;
+  --swp-warn: #fff4dc;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--swp-bg);
+  color: var(--swp-text);
+}
+.swp-shell {
+  max-width: 1180px;
+  margin: auto;
+  padding: 28px 18px 64px;
+}
+.swp-hero {
+  background: #27153d;
+  color: #fff;
+  border-radius: 20px;
+  padding: clamp(24px, 5vw, 52px);
+}
+.swp-kicker {
+  color: #e8b6ff;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.swp-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  margin: 0.5rem 0;
+}
+.swp-hero p {
+  max-width: 760px;
+  line-height: 1.65;
+}
+.swp-boundary {
+  background: var(--swp-warn);
+  border-left: 5px solid #b56b00;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 20px 0;
+}
+.swp-boundary h2,
+.swp-boundary p {
+  margin: 0.25rem 0;
+}
+.swp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.8fr);
+  gap: 20px;
+}
+.swp-panel,
+.swp-evidence article {
+  background: var(--swp-card);
+  border: 1px solid var(--swp-line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.swp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.swp-panel label {
+  display: grid;
+  gap: 6px;
+  font-weight: 750;
+}
+.swp-panel input,
+.swp-panel select,
+.swp-panel button {
+  font: inherit;
+  min-height: 44px;
+  border-radius: 9px;
+}
+.swp-panel input,
+.swp-panel select {
+  width: 100%;
+  border: 1px solid var(--swp-line);
+  padding: 9px;
+  background: var(--swp-card);
+  color: var(--swp-text);
+}
+.swp-check {
+  align-content: center;
+  grid-template-columns: 24px 1fr !important;
+}
+.swp-check input {
+  width: 20px !important;
+}
+fieldset {
+  border: 1px solid var(--swp-line);
+  border-radius: 12px;
+  margin: 0 0 18px;
+  padding: 14px;
+}
+legend {
+  font-weight: 850;
+}
+.swp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+.swp-actions button,
+#swpAdd {
+  border: 0;
+  background: var(--swp-accent);
+  color: #fff;
+  font-weight: 800;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+.swp-secondary {
+  background: #e9eaf2 !important;
+  color: #31203e !important;
+}
+#swpRooms {
+  padding-left: 24px;
+  color: var(--swp-muted);
+}
+#swpRooms li {
+  margin: 8px 0;
+}
+#swpRooms button {
+  min-height: 34px;
+  margin-left: 8px;
+  border: 0;
+  color: #8f1d38;
+  background: transparent;
+  font-weight: 800;
+}
+#swpError {
+  background: #fee2e2;
+  color: #8b1b1b;
+  padding: 12px;
+  border-radius: 9px;
+}
+#swpMetrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#swpMetrics div {
+  border: 1px solid var(--swp-line);
+  border-radius: 10px;
+  padding: 10px;
+}
+#swpMetrics dt {
+  color: var(--swp-muted);
+  font-size: 0.82rem;
+}
+#swpMetrics dd {
+  font-size: 1.15rem;
+  font-weight: 850;
+  margin: 4px 0 0;
+}
+.swp-output p,
+.swp-evidence p {
+  color: var(--swp-muted);
+  line-height: 1.6;
+}
+.swp-evidence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.swp-evidence h2 {
+  font-size: 1.05rem;
+}
+.swp-panel button:focus-visible,
+.swp-panel input:focus-visible,
+.swp-panel select:focus-visible {
+  outline: 3px solid #f4b941;
+  outline-offset: 2px;
+}
+@media (max-width: 820px) {
+  .swp-layout,
+  .swp-evidence {
+    grid-template-columns: 1fr;
+  }
+  .swp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --swp-bg: #10131d;
+    --swp-card: #1b2030;
+    --swp-text: #f7f5fa;
+    --swp-muted: #c9c5d1;
+    --swp-line: #474258;
+    --swp-warn: #3b2b0d;
+  }
+  .swp-secondary {
+    background: #383345 !important;
+    color: #fff !important;
+  }
+}
+html.dark:root {
+  --swp-bg: #10131d;
+  --swp-card: #1b2030;
+  --swp-text: #f7f5fa;
+  --swp-muted: #c9c5d1;
+  --swp-line: #474258;
+  --swp-warn: #3b2b0d;
+}

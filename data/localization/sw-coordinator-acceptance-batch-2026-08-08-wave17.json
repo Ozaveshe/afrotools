@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "c8b90412",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Vehicle Operating Cost only through the maintained shared transport engine, with all changing costs user-entered, fixed planning assumptions visibly disclosed, exact English/Swahili outputs, parsed local exports, mobile reflow, accessibility, reciprocal metadata and no raw-input egress.",
+  "candidates": [
+    {
+      "id": "vehicle-operating-cost-parity",
+      "commit": "6cbfa22193ae4a04377299d862d43e4f3ba0ee41",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-transport-cost-parity.spec.js",
+          "engineTest": "tests/swahili-transport-cost-parity.test.js",
+          "workflow": "English and Swahili share the DOM-free transport-cost engine; fuel, distance and changing costs are user-entered while fixed maintenance, registration and depreciation assumptions are visibly bounded as planning inputs.",
+          "export": "The coordinator reran 7/7 static engine and ownership tests plus 5/5 Chromium tests using the lane's isolated-port config. JSON parsed and reopened, CSV/TXT parsed, PDF reopened with vendored PDF.js, and invalid/reset, 320/375/200-percent reflow, theme, keyboard/labels and privacy passed."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/outcome/acceptedCandidates", "equals": 23 },
+            { "pointer": "/outcome/blocked", "equals": 32 },
+            { "pointer": "/scope/denominator", "equals": 55 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "vehicle-operating-cost", "swahiliRoute": "/sw/zana/gharama-uendeshaji-gari/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

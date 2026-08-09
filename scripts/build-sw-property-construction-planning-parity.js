@@ -44,6 +44,13 @@ const APPS = [
     description: 'Jenga makisio ya bajeti kutoka kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba ulizoingiza; hakuna gharama ya nchi au daraja la ubora linalodhaniwa.',
     intro: 'Hesabu hii hutumia kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba yako.',
     artworkWidth: 800, artworkHeight: 450
+  },
+  {
+    englishId: 'home-renovation-cost', englishRoute: '/tools/home-renovation-cost/', frenchRoute: '/fr/tools/cout-renovation/', swahiliRoute: '/sw/zana/gharama-ukarabati-wa-nyumba/',
+    name: 'Mpangaji wa gharama za ukarabati wa nyumba',
+    description: 'Jenga makisio ya ukarabati kutoka eneo au kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba ulizoingiza; hakuna bei ya nchi, nukuu ya mkandarasi au ongezeko la thamani linalodhaniwa.',
+    intro: 'Hesabu hii hutumia eneo au kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba yako.',
+    artworkWidth: 800, artworkHeight: 450
   }
 ].map((app) => ({ ...app, fields, results: [{ key: 'total', label: 'Jumla ya makisio', format: 'money' }], formula: 'jumla = (kiasi × gharamaKwaKipimo + gharamaZisizobadilika) × (1 + akiba ÷ 100)', fixture: { currency: 'KES', quantity: '10', unitCost: '100', fixed: '50', contingency: '10' }, expected: { total: 1155 }, source: SOURCE, sharedEngine: 'property-assumption', exports: ['copy', 'txt', 'json', 'pdf', 'print'], privacy: 'local-only-no-storage-no-ai-no-account' }));
 
@@ -85,5 +92,5 @@ for (const [relative, content] of Object.entries(outputs)) {
   const file = path.join(ROOT, relative), current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
   if (!localizedGeneratorEquivalent(current, content)) { changed += 1; if (WRITE) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, content, 'utf8'); } }
 }
-console.log(`${WRITE ? 'Built' : 'Checked'} Swahili property construction-planning family: 2/2; ${changed} changed outputs.`);
+console.log(`${WRITE ? 'Built' : 'Checked'} Swahili property construction-planning family: ${APPS.length}/${APPS.length}; ${changed} changed outputs.`);
 if (CHECK && changed) process.exitCode = 1;

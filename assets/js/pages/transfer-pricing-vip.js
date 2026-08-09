@@ -4,7 +4,7 @@
   const engine = window.AfroTools && window.AfroTools.TransferPricingPlanner;
   if (!app || !engine) return;
   const form = app.querySelector("[data-form]");
-  const locale = app.dataset.locale === "fr" ? "fr" : "en";
+  const locale = app.dataset.locale === "fr" ? "fr" : app.dataset.locale === "sw" ? "sw" : "en";
   const text = {
     en: {
       ready: "Comparison ready.",
@@ -47,6 +47,16 @@
       copied: "Mémo copié.", txt: "TXT téléchargé.", json: "JSON téléchargé.",
       title: "Feuille de comparabilité prix de transfert", filename: "comparabilite-prix-transfert",
     },
+    sw: {
+      ready: "Ulinganisho uko tayari.",
+      status: { below: "Chini ya masafa uliyoingiza", inside: "Ndani ya masafa uliyoingiza", above: "Juu ya masafa uliyoingiza" },
+      names: { tnmm: "Ukingo wa uendeshaji wa TNMM", costPlus: "Ongezeko juu ya gharama", resale: "Ukingo ghafi wa uuzaji tena", cup: "Bei ya kitengo kinachodhibitiwa", loan: "Kiwango cha riba cha mwaka kilichotumika" },
+      labels: { tnmm: ["Mapato / mauzo", "Gharama za uendeshaji"], costPlus: ["Malipo ya kampuni husika", "Msingi wa gharama"], resale: ["Mapato ya uuzaji tena", "Bei ya ununuzi unaodhibitiwa"], cup: ["Bei ya kitengo kinachodhibitiwa", "Kumbukumbu (ingiza 0)"], loan: ["Mtaji wa mkopo", "Kiwango cha riba cha mwaka (%)"] },
+      errors: {
+        "Choose a supported comparison method.": "Chagua mbinu ya ulinganisho inayotumika.", "Name the jurisdiction whose domestic rules you will verify.": "Taja nchi au mamlaka ambayo sheria zake utathibitisha.", "Enter the transaction or tested period.": "Ingiza kipindi cha muamala au kipindi kinachopimwa.", "Confirm that the range is user-supplied and not an AfroTools benchmark.": "Thibitisha masafa yametoka kwenye chanzo chako, si kiwango cha AfroTools.", "Describe the source and period of the comparable range.": "Eleza chanzo na kipindi cha masafa ya kulinganisha.", "Enter a positive primary amount.": "Ingiza kiasi kikuu kilicho zaidi ya sifuri.", "Enter a valid secondary amount.": "Ingiza kiasi cha pili kilicho halali.", "Enter the low, median and high values from your comparable source.": "Ingiza thamani ya chini, kati na juu kutoka chanzo chako.", "Comparable values must be ordered low, median, then high.": "Thamani lazima zipangwe chini, kati, kisha juu.", "Cost base must be greater than zero for cost plus.": "Msingi wa gharama lazima uwe zaidi ya sifuri kwa mbinu ya kuongeza gharama."
+      },
+      copied: "Kumbukumbu imenakiliwa.", txt: "TXT imepakuliwa.", json: "JSON imepakuliwa.", title: "Karatasi ya ulinganisho wa bei za uhamisho", filename: "ulinganisho-bei-za-uhamisho",
+    },
   }[locale];
   let last = null;
 
@@ -64,6 +74,7 @@
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + " " + form.elements.currency.value;
   }
   function memo(result) {
+    if (locale === "sw") return [text.title, "Nchi au mamlaka: " + form.elements.jurisdiction.value.trim(), "Kipindi: " + form.elements.period.value.trim(), "Muamala: " + form.elements.transactionType.value.trim(), "Mbinu: " + form.elements.method.options[form.elements.method.selectedIndex].text, "Kiashiria: " + formatNumber(result.indicator, result.unit), "Masafa ya mtumiaji: " + formatNumber(result.range.low, result.unit) + " / " + formatNumber(result.range.median, result.unit) + " / " + formatNumber(result.range.high, result.unit), "Nafasi: " + text.status[result.status], "Tofauti na thamani ya kati: " + formatNumber(result.differenceToMedian, result.unit), "Chanzo cha ulinganisho: " + result.comparableSource, "Kikomo: karatasi ya kupanga tu. Si hitimisho la bei huru, uwasilishaji, ripoti ya ukaguzi, marekebisho ya kodi au utafiti wa nyaraka.", "Toleo la chanzo: " + result.sourceVersion].join("\n");
     return [
       text.title,
       "Jurisdiction: " + form.elements.jurisdiction.value.trim(),
@@ -111,6 +122,7 @@
     const link = document.createElement("a"); link.href = url; link.download = text.filename + suffix; link.click(); URL.revokeObjectURL(url);
   }
   form.addEventListener("submit", (event) => { event.preventDefault(); render(engine.analyze(values())); });
+  form.addEventListener("reset", () => setTimeout(() => { last = null; app.querySelector("[data-error]").textContent = ""; app.querySelector("[data-result]").hidden = true; app.querySelector("[data-status]").textContent = ""; updateMethod(); }, 0));
   form.elements.method.addEventListener("change", updateMethod);
   app.querySelector("[data-copy]").addEventListener("click", async () => { if (!last) return; await navigator.clipboard.writeText(memo(last)); app.querySelector("[data-status]").textContent = text.copied; });
   app.querySelector("[data-txt]").addEventListener("click", () => { if (!last) return; download(memo(last), "text/plain;charset=utf-8", ".txt"); app.querySelector("[data-status]").textContent = text.txt; });

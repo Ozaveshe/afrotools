@@ -4,7 +4,7 @@
   var root = document.querySelector('[data-crypto-prices]');
   if (!root) return;
 
-  var lang = document.documentElement.lang === 'fr' ? 'fr' : 'en';
+  var lang = ['fr', 'sw'].indexOf(document.documentElement.lang) >= 0 ? document.documentElement.lang : 'en';
   var copy = {
     en: {
       loading: 'Checking CoinGecko for a fresh market snapshot…',
@@ -60,7 +60,10 @@
       exported: 'Instantané téléchargé avec la source et les horodatages.',
       noExport: 'Chargez un instantané récent avant l’export.',
       cached: 'Cache de fonction de 60 secondes',
-      direct: 'Nouvelle réponse fournisseur'
+      direct: 'Nouvelle réponse fournisseur', unavailableState:'Indisponible', freshState:'Récent', trendUnavailable:'Tendance indisponible', trendPoints:'Tendance sur sept jours pour '
+    },
+    sw: {
+      loading:'Inakagua CoinGecko kwa muhtasari mpya wa soko…', ready:function(count,currency){return count+' safu mpya za soko zinaonyeshwa kwa '+currency+'. Ni thamani za dalili, si bei tekelezekaji za exchange.';}, unavailable:'Data mpya ya mtoa huduma haipatikani. Hakuna bei ya cache au makadirio inayoonyeshwa.', rateLimited:'CoinGecko imepunguza maombi kwa muda. Subiri kidogo kisha sasisha.', empty:'Hakuna sarafu inayolingana na utafutaji huu.', row:'Maelezo', hide:'Ficha', rank:'Nafasi', coin:'Sarafu', price:'Bei', day:'Mabadiliko ya saa 24', week:'Mabadiliko ya siku 7', marketCap:'Thamani ya soko', volume:'Kiasi cha saa 24', trend:'Mwelekeo wa siku 7', action:'Maelezo', ath:'Bei ya juu kabisa', atl:'Bei ya chini kabisa', supply:'Kiasi kinachozunguka', providerTime:'Ilisasishwa na mtoa huduma', exported:'Muhtasari umepakuliwa pamoja na risiti za chanzo na muda.', noExport:'Pakia muhtasari mpya kabla ya kupakua.', cached:'Cache ya sekunde 60 ya function', direct:'Jibu jipya la mtoa huduma', unavailableState:'Haipatikani', freshState:'Mpya', trendUnavailable:'Mwelekeo haupatikani', trendPoints:'Mwelekeo wa siku saba kwa pointi '
     }
   }[lang];
 
@@ -92,7 +95,7 @@
     cache: root.querySelector('[data-cache]')
   };
 
-  var numberLocale = lang === 'fr' ? 'fr-FR' : 'en-GB';
+  var numberLocale = lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-KE' : 'en-GB';
 
   function safeNumber(value) {
     var parsed = Number(value);
@@ -156,7 +159,7 @@
   function setUnavailable(message) {
     state.rows = [];
     state.receipt = null;
-    els.status.textContent = lang === 'fr' ? 'Indisponible' : 'Unavailable';
+    els.status.textContent = copy.unavailableState || 'Unavailable';
     els.status.className = 'cp-status-value cp-unavailable';
     els.count.textContent = '0';
     els.sourceTime.textContent = '—';
@@ -167,7 +170,7 @@
   }
 
   function updateReceipt(receipt) {
-    els.status.textContent = lang === 'fr' ? 'Récent' : 'Fresh';
+    els.status.textContent = copy.freshState || 'Fresh';
     els.status.className = 'cp-status-value cp-fresh';
     els.count.textContent = String(receipt.count);
     els.sourceTime.textContent = formatTime(receipt.sourceUpdatedAt);
@@ -246,7 +249,7 @@
 
   function drawSparkline(canvas, prices) {
     if (!Array.isArray(prices) || prices.length < 2) {
-      canvas.setAttribute('aria-label', lang === 'fr' ? 'Tendance indisponible' : 'Trend unavailable');
+      canvas.setAttribute('aria-label', copy.trendUnavailable || 'Trend unavailable');
       return;
     }
 
@@ -273,7 +276,7 @@
       else context.lineTo(x, y);
     });
     context.stroke();
-    canvas.setAttribute('aria-label', (lang === 'fr' ? 'Tendance sur sept jours pour ' : 'Seven-day trend for ') + clean.length + ' points');
+    canvas.setAttribute('aria-label', (copy.trendPoints || 'Seven-day trend for ') + clean.length + (lang === 'sw' ? '' : ' points'));
   }
 
   function detailRow(row) {

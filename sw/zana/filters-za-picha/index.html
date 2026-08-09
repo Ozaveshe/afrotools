@@ -8,15 +8,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Vichujio vya Picha | AfroTools">
   <meta property="og:description" content="Tumia mwanga, utofauti wa rangi, grayscale, sepia na ukungu kwenye picha kabla ya kupakua.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-filters.webp">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="450">
   <meta property="og:url" content="https://afrotools.com/sw/zana/filters-za-picha/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Vichujio vya Picha | AfroTools">
   <meta name="twitter:description" content="Tumia mwanga, utofauti wa rangi, grayscale, sepia na ukungu kwenye picha kabla ya kupakua.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-filters.webp">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+  <link rel="stylesheet" href="/assets/css/image-filters-studio.css?v=98a90869">
   <style>
     body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f9fb;color:#182233}
     .wrap{max-width:1120px;margin:0 auto;padding:36px 20px 56px}.hero{display:grid;gap:14px;padding:34px 0 24px}
@@ -76,13 +77,233 @@
 </head>
 <body class="top-level-page-ui-refresh">
   <afro-navbar></afro-navbar>
-  <main class="wrap">
-    <section class="hero">
+  <div class="wrap"><section class="hero">
       <div class="eyebrow">Picha na design</div>
       <h1>Vichujio vya picha</h1>
       <p>Tumia mwanga, utofauti wa rangi, grayscale, sepia na ukungu kwenye picha kabla ya kupakua.</p>
+    </section></div>
+<!-- Source owner: scripts/build-sw-image-filters.js; engine: assets/js/lib/image-filters-studio.js -->
+<main class="filters-studio" id="main-content">
+  <div class="filters-workspace">
+    <section class="filters-stack" aria-label="Kihariri cha vichujio vya picha">
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">1. Pakia picha</span>
+            <h2 class="filters-panel-title">Dondosha, bandika au chagua kundi</h2>
+            <p class="filters-panel-copy">Hariri JPG, PNG, WebP, SVG, GIF, AVIF, HEIC na picha nyingine zinazoungwa mkono bila kuzipakia mtandaoni.</p>
+          </div>
+          <div class="filters-status" id="filtersStatus" role="status" aria-live="polite">Inapakia kihariri...</div>
+        </div>
+        <div class="filters-drop" id="filtersDropZone" role="button" tabindex="0" aria-label="Chagua au dondosha picha">
+          <div class="filters-drop-main">
+            <span class="filters-drop-mark">IMG</span>
+            <span><strong>Chagua picha</strong><span>Dondosha faili hapa, bandika kutoka clipboard au bofya kuchagua.</span></span>
+          </div>
+          <div class="filters-drop-side">Ndani tu<br>Inakubali kundi</div>
+          <input aria-label="Chagua picha za kuchuja" type="file" id="filtersInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+        </div>
+        <div class="filters-queue" id="filtersQueue"></div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">2. Chagua mwonekano</span>
+            <h2 class="filters-panel-title">Presets za kazi halisi za uhariri</h2>
+            <p class="filters-panel-copy">Anza na mwonekano wa matumizi yako, kisha tumia vidhibiti kwa marekebisho zaidi.</p>
+          </div>
+        </div>
+        <div class="filters-look-grid" aria-label="Presets za vichujio">
+          <button type="button" class="filters-look" data-filters-look="neutral" aria-pressed="false"><strong>Picha safi</strong><span>Mwanzo uliosawazika</span></button>
+          <button type="button" class="filters-look" data-filters-look="market" aria-pressed="false"><strong>Soko lenye joto</strong><span>Rejareja na nje</span></button>
+          <button type="button" class="filters-look" data-filters-look="dusk" aria-pressed="false"><strong>Jioni tulivu</strong><span>Mandhari ya hafla</span></button>
+          <button type="button" class="filters-look" data-filters-look="vintage" aria-pressed="false"><strong>Chapisho la zamani</strong><span>Muundo wa uhariri</span></button>
+          <button type="button" class="filters-look" data-filters-look="mono" aria-pressed="false"><strong>Gazeti nyeusi na nyeupe</strong><span>Nyeusi na nyeupe</span></button>
+          <button type="button" class="filters-look" data-filters-look="portrait" aria-pressed="false"><strong>Picha laini ya mtu</strong><span>Picha za profaili</span></button>
+          <button type="button" class="filters-look" data-filters-look="product" aria-pressed="true"><strong>Uwazi wa bidhaa</strong><span>Orodha na menyu</span></button>
+          <button type="button" class="filters-look" data-filters-look="food" aria-pressed="false"><strong>Chakula angavu</strong><span>Chakula na ukarimu</span></button>
+          <button type="button" class="filters-look" data-filters-look="document" aria-pressed="false"><strong>Scan ya hati</strong><span>Risiti na noti</span></button>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">3. Rekebisha kwa kina</span>
+            <h2 class="filters-panel-title">Rekebisha rangi, uwazi, muundo na kingo</h2>
+            <p class="filters-panel-copy">Mapishi huhifadhiwa kwenye kifaa hiki ili kundi lijalo lianze na mipangilio ya mwisho.</p>
+          </div>
+        </div>
+        <div class="filters-control-grid">
+          <label class="filters-field">
+            <span class="filters-label">Mwangaza</span>
+            <span class="filters-range"><input aria-label="FiltersBrightness" class="filters-input" id="filtersBrightness" data-filter-control="brightness" type="range" min="-60" max="60" value="10"><span class="filters-range-value" id="filtersBrightnessValue">+10</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Utofauti</span>
+            <span class="filters-range"><input aria-label="FiltersContrast" class="filters-input" id="filtersContrast" data-filter-control="contrast" type="range" min="-60" max="90" value="18"><span class="filters-range-value" id="filtersContrastValue">+18</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Ukolezi</span>
+            <span class="filters-range"><input aria-label="FiltersSaturation" class="filters-input" id="filtersSaturation" data-filter-control="saturation" type="range" min="-100" max="140" value="12"><span class="filters-range-value" id="filtersSaturationValue">+12</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Joto la rangi</span>
+            <span class="filters-range"><input aria-label="FiltersWarmth" class="filters-input" id="filtersWarmth" data-filter-control="warmth" type="range" min="-50" max="50" value="3"><span class="filters-range-value" id="filtersWarmthValue">+3</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Mgeuko wa rangi</span>
+            <span class="filters-range"><input aria-label="FiltersHue" class="filters-input" id="filtersHue" data-filter-control="hue" type="range" min="-180" max="180" value="0"><span class="filters-range-value" id="filtersHueValue">0 deg</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Kijivu</span>
+            <span class="filters-range"><input aria-label="FiltersGrayscale" class="filters-input" id="filtersGrayscale" data-filter-control="grayscale" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersGrayscaleValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Sepia</span>
+            <span class="filters-range"><input aria-label="FiltersSepia" class="filters-input" id="filtersSepia" data-filter-control="sepia" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersSepiaValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Ukungu</span>
+            <span class="filters-range"><input aria-label="FiltersBlur" class="filters-input" id="filtersBlur" data-filter-control="blur" type="range" min="0" max="8" step="0.1" value="0"><span class="filters-range-value" id="filtersBlurValue">0 px</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Ongeza ukali</span>
+            <span class="filters-range"><input aria-label="FiltersSharpen" class="filters-input" id="filtersSharpen" data-filter-control="sharpen" type="range" min="0" max="80" value="28"><span class="filters-range-value" id="filtersSharpenValue">+28</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Vignette</span>
+            <span class="filters-range"><input aria-label="FiltersVignette" class="filters-input" id="filtersVignette" data-filter-control="vignette" type="range" min="0" max="80" value="0"><span class="filters-range-value" id="filtersVignetteValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Chembechembe</span>
+            <span class="filters-range"><input aria-label="FiltersGrain" class="filters-input" id="filtersGrain" data-filter-control="grain" type="range" min="0" max="40" value="0"><span class="filters-range-value" id="filtersGrainValue">0</span></span>
+          </label>
+          <div class="filters-field">
+            <span class="filters-label">Udhibiti wa mapishi</span>
+            <button type="button" class="filters-btn secondary" id="filtersReset">Rudisha kuwa safi</button>
+            <span class="filters-help">Kurejesha hubadilisha mapishi pekee; faili hubaki kwenye foleni.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">4. Linganisha na utoe</span>
+            <h2 class="filters-panel-title">Kagua kabla na baada, kisha toa kifurushi sahihi</h2>
+            <p class="filters-panel-copy">Tumia JPG kwa portal na marketplace, PNG kwa uwazi au kingo kali, na WebP kwa tovuti za kisasa.</p>
+          </div>
+        </div>
+        <div class="filters-compare">
+          <div class="filters-compare-frame" id="filtersCompareFrame">
+            <div class="filters-preview-empty" id="filtersPreviewEmpty">Pakia picha ili kulinganisha chanzo na matokeo.</div>
+            <img id="filtersOriginalImage" alt="" hidden>
+            <canvas id="filtersPreviewCanvas" hidden></canvas>
+          </div>
+          <div class="filters-compare-controls">
+            <span>Chanzo</span>
+            <input id="filtersCompareRange" type="range" min="0" max="100" value="50" aria-label="Ulinganisho wa kabla na baada">
+            <span>Iliyohaririwa</span>
+          </div>
+        </div>
+        <div class="filters-control-grid">
+          <div class="filters-output-row filters-field wide">
+            <label class="filters-field">
+              <span class="filters-label">Format</span>
+              <select class="filters-select" id="filtersFormat">
+                <option value="image/jpeg">JPG</option>
+                <option value="image/png">PNG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </label>
+            <label class="filters-field">
+              <span class="filters-label">Ubora</span>
+              <span class="filters-range"><input aria-label="FiltersQuality" class="filters-input" id="filtersQuality" type="range" min="35" max="100" value="86"><span class="filters-range-value" id="filtersQualityValue">86%</span></span>
+            </label>
+            <label class="filters-field">
+              <span class="filters-label">Mandharinyuma ya JPG</span>
+              <input aria-label="FiltersBackground" class="filters-input" id="filtersBackground" type="color" value="#ffffff">
+            </label>
+          </div>
+          <label class="filters-field">
+            <span class="filters-label">Upana wa juu</span>
+            <input aria-label="Hakuna kikomo" class="filters-input" id="filtersMaxWidth" type="number" min="1" max="12000" inputmode="numeric" placeholder="Hakuna kikomo">
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Urefu wa juu</span>
+            <input aria-label="Hakuna kikomo" class="filters-input" id="filtersMaxHeight" type="number" min="1" max="12000" inputmode="numeric" placeholder="Hakuna kikomo">
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Kiambishi cha faili</span>
+            <input aria-label="FiltersSuffix" class="filters-input" id="filtersSuffix" type="text" value="filtered" maxlength="42">
+          </label>
+        </div>
+        <div class="filters-actions">
+          <button type="button" class="filters-btn" id="filtersExportCurrent" disabled>Toa ya sasa</button>
+          <button type="button" class="filters-btn secondary" id="filtersDownloadCurrent" disabled>Pakua ya sasa</button>
+          <button type="button" class="filters-btn" id="filtersBuildBatch" disabled>Tengeneza ZIP ya kundi</button>
+          <button type="button" class="filters-btn secondary" id="filtersDownloadBatch" disabled>Pakua ZIP</button>
+          <button type="button" class="filters-btn warning" id="filtersCopyRecipe" disabled>Nakili mapishi</button>
+          <share-result-button tool-name="Photo Filter Studio" tool-slug="image-filters"></share-result-button>
+        </div>
+      </article>
     </section>
-    <section class="grid"><div class="panel"><h2>Faili na mipangilio</h2><div class="form-grid"><label>Chagua picha<input aria-label="File" id="file" type="file" accept="image/*"></label><label>Mwanga (%)<input aria-label="Brightness" id="brightness" type="number" value="105" ></label><label>Utofauti wa rangi (%)<input aria-label="Contrast" id="contrast" type="number" value="110" ></label><label>Grayscale (%)<input aria-label="Grayscale" id="grayscale" type="number" value="0" ></label><label>Sepia (%)<input aria-label="Sepia" id="sepia" type="number" value="0" ></label><label>Ukungu px<input aria-label="Blur" id="blur" type="number" value="0" ></label></div><div class="actions"><button type="button" id="calculate">Tengeneza</button><button type="button" class="secondary" id="reset">Mfano</button><button type="button" class="secondary" id="download">Pakua</button></div></div><div class="panel"><h2>Muonekano wa kichujio</h2><div id="results" class="results"></div><canvas id="canvas" width="1080" height="1080"></canvas><div id="detail"></div></div></section>
+
+    <aside class="filters-stack" aria-label="Mwongozo wa vichujio">
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Muhtasari</span>
+            <h2 class="filters-panel-title">Matokeo ya sasa</h2>
+            <p class="filters-panel-copy">Toa faili moja kabla ya kufungasha kundi zima.</p>
+          </div>
+        </div>
+        <div class="filters-stat-grid">
+          <div class="filters-stat"><span>Chanzo</span><strong id="filtersSourceTotal">-</strong></div>
+          <div class="filters-stat"><span>Ukubwa wa matokeo</span><strong id="filtersOutputSize">-</strong></div>
+          <div class="filters-stat"><span>Mapishi</span><strong id="filtersRecipeName">Uwazi wa bidhaa</strong></div>
+          <div class="filters-stat"><span>Tokeo la mwisho</span><strong id="filtersLastExport">-</strong></div>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Uwezo wa kivinjari</span>
+            <h2 class="filters-panel-title">Ukaguzi wa vichujio na encoder</h2>
+            <p class="filters-panel-copy">Studio hukagua Canvas ya ndani kabla ya kuruhusu format za matokeo.</p>
+          </div>
+        </div>
+        <div class="filters-support" id="filtersSupportList"></div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Mapishi ya sasa</span>
+            <h2 class="filters-panel-title" id="filtersGuideTitle">Uwazi wa bidhaa</h2>
+            <p class="filters-panel-copy" id="filtersGuideIntro">Matokeo makali na angavu kwa orodha, katalogi na picha za duka.</p>
+          </div>
+        </div>
+        <ul class="filters-guide-list" id="filtersGuideList"></ul>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Hali iliyohifadhiwa</span>
+            <h2 class="filters-panel-title">Historia ya vichujio</h2>
+            <p class="filters-panel-copy">Matokeo na mapishi ya karibuni huhifadhiwa kwenye kifaa hiki tu.</p>
+          </div>
+        </div>
+        <div class="filters-history" id="filtersHistoryList"></div>
+      </article>
+    </aside>
+  </div>
+</main>
+<div class="wrap">
 <section class="section panel"><h2>Angalia pia</h2><div class="link-list"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a>
         <a href="/sw/zana/picha-ya-pasipoti/">Picha ya pasipoti</a>
         <a href="/sw/zana/hook-za-video/">Hook za video</a>
@@ -104,18 +325,21 @@
 </section>
 <section class="section note"><strong>Angalizo:</strong> Zana hizi ni za kupanga na kuhariri picha na design kwenye kivinjari. Hazihakikishi ubora wa AI, usahihi wa OCR, kukubaliwa na jukwaa, kusambaa sana, leseni ya stock media, kufutwa kwa faili, kiwango cha kubana faili au matokeo ya brand. Hakiki faili zako, leseni, sera za majukwaa na mahitaji ya mteja kabla ya kuchapisha.</section>
 <section class="section panel"><h2>Maswali ya haraka</h2><h3>Je, faili zangu zinabaki za faragha?</h3><p>Kurasa hizi hutumia kivinjari na tabia ya chanzo kilichopo, lakini usipakie au kushiriki faili nyeti bila kuhakiki mazingira yako na sera za zana unayotumia.</p><h3>Je, matokeo yatakubaliwa na jukwaa?</h3><p>Hapana. Hakiki ukubwa, muundo, copyright, leseni na sera za TikTok, Instagram, YouTube, LinkedIn au portal husika.</p></section>
-  </main>
-  <afro-footer></afro-footer>
+  </div>
+<afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=f1fd60f9"></script>
   <script src="/assets/js/components/footer.min.js?v=506bb75a"></script>
   <script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
   <script src="/assets/js/components/share-button.js?v=f8342961"></script>
   <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316"></script>
-  <script>
+  <script type="application/x-afrotools-retired-filter">
 const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').trim();const num=id=>Number(q(id)?.value||0);function metric(l,v,h){return '<div class="metric"><span>'+l+'</span><strong>'+v+'</strong>'+(h?'<small>'+h+'</small>':'')+'</div>'}function setResults(h){q('results').innerHTML=h}function setDetail(h){q('detail').innerHTML=h}function rows(a){return '<div class="output-list">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>'}function bind(c,r){q('calculate').addEventListener('click',c);q('reset').addEventListener('click',()=>{r();c()});if(q('download'))q('download').addEventListener('click',downloadCanvas);c()}function canvas(){return q('canvas')}function ctx(){return canvas().getContext('2d')}function downloadCanvas(){const a=document.createElement('a');a.href=canvas().toDataURL('image/png');a.download='afrotools-design.png';a.click()}function drawTextBox(c,t,x,y,w,size,color){c.fillStyle=color;c.font='800 '+size+'px Inter, Arial';const words=t.split(' ');let line='',yy=y;words.forEach(word=>{const test=line+word+' ';if(c.measureText(test).width>w&&line){c.fillText(line,x,yy);line=word+' ';yy+=size*1.15}else line=test});c.fillText(line,x,yy)}function basicCanvas(title,sub,bg='#1d4ed8',fg='#fff'){const c=ctx();c.fillStyle=bg;c.fillRect(0,0,canvas().width,canvas().height);drawTextBox(c,title,70,180,920,72,fg);drawTextBox(c,sub,70,520,900,34,fg);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(70,790,420,90);c.fillStyle=fg;c.font='700 28px Inter, Arial';c.fillText('Imetengenezwa na AfroTools',95,845)}function readImage(file,cb){const img=new Image();img.onload=()=>cb(img);img.src=URL.createObjectURL(file)}function money(n,c='USD'){try{return new Intl.NumberFormat('sw',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n)||0)}catch(e){return Math.round(Number(n)||0).toLocaleString('sw')}}
 function calc(){const f=q('file').files[0];if(!f){basicCanvas('Photo filters','Chagua picha');setResults(metric('Hali','Hakuna faili','Pakia picha'));return}readImage(f,img=>{canvas().width=img.width;canvas().height=img.height;const c=ctx();c.filter='brightness('+num('brightness')+'%) contrast('+num('contrast')+'%) grayscale('+num('grayscale')+'%) sepia('+num('sepia')+'%) blur('+num('blur')+'px)';c.drawImage(img,0,0);c.filter='none';setResults(metric('Filter','Imetumika','Pakua PNG'))})}function reset(){q('brightness').value=105;q('contrast').value=110;q('grayscale').value=0;q('sepia').value=0;q('blur').value=0;basicCanvas('Vichujio','Chagua picha')}bind(calc,reset);
   </script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f"></script>
+<script src="/assets/js/lib/image-filters-studio.js?v=f9b2148a" defer></script>
+<script src="/assets/js/lib/image-filters-studio-sw.js?v=7fcb2e0d" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>

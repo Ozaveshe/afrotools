@@ -7,26 +7,39 @@ const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const en = read("crypto/mining-calculator/index.html");
 const fr = read("fr/crypto/mining-calculator/index.html");
+const sw = read("sw/zana/kikokotoo-margin-uchimbaji-crypto/index.html");
 const controller = read("assets/js/pages/crypto-mining-margin.js");
 const registry = read("assets/js/components/tool-registry.js");
 const ai = read("assets/js/ai/tool-manifest.js");
 const context = JSON.parse(read("data/ai/tool-context/crypto-mining.json"));
 
-for (const html of [en, fr]) {
+for (const html of [en, fr, sw]) {
   assert.match(html, /crypto-mining-margin\.js/);
   assert.match(html, /data-mining-export="csv"/);
   assert.match(html, /data-mining-export="json"/);
   assert.match(html, /data-mining-export="pdf"/);
+  assert.ok(html.includes('pattern="[A-Za-z0-9._ \\-]{1,12}"'));
   assert.match(html, /"@type"\s*:\s*"WebApplication"/);
   assert.doesNotMatch(html, /iframe|coinGecko|CryptoData|Chart|cdn\.jsdelivr|difficulty|countrySelect|buying is cheaper/i);
 }
 assert.match(fr, /<html\b[^>]*\blang="fr"/);
 assert.doesNotMatch(fr, /traduction .*venir|available in English/i);
+assert.match(sw, /<html\b[^>]*\blang="sw"/);
+assert.match(sw, /data-mining-reset/);
+assert.match(sw, /assets\/img\/tools\/crypto-mining\.webp/);
+assert.match(sw, /Hakuna thamani ya karatasi inayotumwa kwa API/);
+assert.match(en, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-margin-uchimbaji-crypto\/"/);
+assert.match(fr, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-margin-uchimbaji-crypto\/"/);
+assert.match(sw, /hreflang="en" href="https:\/\/afrotools\.com\/crypto\/mining-calculator\/"/);
+assert.match(sw, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/crypto\/mining-calculator\/"/);
 assert.match(controller, /Blob/);
 assert.match(controller, /window\.jspdf\.jsPDF/);
 assert.match(controller, /window\.print/);
 assert.doesNotMatch(controller, /fetch\(|localStorage|sessionStorage/);
+assert.match(controller, /pageLang === "sw"/);
+assert.match(controller, /Karatasi imefutwa/);
 assert.match(registry, /id: 'crypto-mining'.*User-entered mining evidence/);
+assert.match(registry, /id: 'crypto-mining-sw'.*sourceId: 'crypto-mining'/);
 assert.match(ai, /MAJOR_TOOL_OVERRIDES\['crypto-mining'\]/);
 assert.match(ai, /crypto-mining-operating-arithmetic/);
 assert.strictEqual(context.status, "unverified-static");

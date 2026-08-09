@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
+const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
 const ROOT = path.resolve(__dirname, '..');
 const apps = [
@@ -17,6 +18,7 @@ const acceptance = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audits/swahi
 const accepted = new Set(acceptance.entries.filter((row) => row.status === 'accepted').map((row) => row.englishId));
 const normalizeRoute = (route) => `/${String(route || '').replace(/^\/+|\/+$/g, '')}/`;
 assert.strictEqual(inventory.rows.length, 1257);
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: apps.map(([id,,swahiliRoute]) => ({ id, swahiliRoute })) });
 
 for (const [id, file, sw, en, fr] of apps) {
   const inventoryRow = inventory.rows.find((row) => row.englishId === id);

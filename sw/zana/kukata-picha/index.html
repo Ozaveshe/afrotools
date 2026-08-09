@@ -8,15 +8,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Kukata Picha | Zana ya Kukata | AfroTools">
   <meta property="og:description" content="Kata, zungusha na hakiki muonekano wa awali kabla ya kupakua toleo jipya.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-crop.webp">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="450">
   <meta property="og:url" content="https://afrotools.com/sw/zana/kukata-picha/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Kukata Picha | Zana ya Kukata | AfroTools">
   <meta name="twitter:description" content="Kata, zungusha na hakiki muonekano wa awali kabla ya kupakua toleo jipya.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-crop.webp">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+  <link rel="stylesheet" href="/assets/css/image-crop-studio.css?v=a163360d">
   <style>
     body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f9fb;color:#182233}
     .wrap{max-width:1120px;margin:0 auto;padding:36px 20px 56px}.hero{display:grid;gap:14px;padding:34px 0 24px}
@@ -31,6 +32,7 @@
     table{width:100%;border-collapse:collapse;margin-top:14px}th,td{text-align:left;border-bottom:1px solid #e2e8f0;padding:10px;vertical-align:top}th{background:#eff6ff;color:#1e3a8a}
     .note{border-left:4px solid #2563eb;background:#eff6ff;border-radius:8px;padding:14px 16px;color:#213a62}.link-list{display:flex;flex-wrap:wrap;gap:10px}.link-list a{border:1px solid #bfdbfe;background:#fff;border-radius:999px;padding:9px 12px;text-decoration:none;font-weight:750}
     .output-list{display:grid;gap:10px;margin-top:14px}.output-list div{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px}@media(max-width:640px){.wrap{padding:24px 14px 42px}th,td{font-size:.92rem;padding:8px 6px}}
+    html[data-theme="dark"] body{background:#0f172a;color:#e2e8f0}html[data-theme="dark"] h2{color:#f8fafc}html[data-theme="dark"] p{color:#cbd5e1}html[data-theme="dark"] .crop-panel,html[data-theme="dark"] .crop-panel-head,html[data-theme="dark"] .crop-target-card,html[data-theme="dark"] .crop-input,html[data-theme="dark"] .crop-select,html[data-theme="dark"] .crop-tool-btn,html[data-theme="dark"] .crop-nudge-btn,html[data-theme="dark"] .crop-history-item{background:#172033;color:#f8fafc;border-color:#475569}html[data-theme="dark"] .crop-panel-title,html[data-theme="dark"] .crop-label,html[data-theme="dark"] .crop-detail strong,html[data-theme="dark"] .crop-drop-main strong{color:#f8fafc}html[data-theme="dark"] .crop-panel-copy,html[data-theme="dark"] .crop-help,html[data-theme="dark"] .crop-target-card span,html[data-theme="dark"] .crop-drop-main span{color:#cbd5e1}html[data-theme="dark"] .crop-detail{background:#1e293b;border-color:#475569}
   </style>
   <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -82,7 +84,61 @@
       <h1>Kukata picha</h1>
       <p>Kata, zungusha na hakiki muonekano wa awali kabla ya kupakua toleo jipya.</p>
     </section>
-    <section class="grid"><div class="panel"><h2>Faili na mipangilio</h2><div class="form-grid"><label>Chagua picha<input aria-label="File" id="file" type="file" accept="image/*"></label><label>Upana wa kukata<input aria-label="CropW" id="cropW" type="number" value="800" ></label><label>Urefu wa kukata<input aria-label="CropH" id="cropH" type="number" value="800" ></label><label>Digrii za kuzungusha<input aria-label="Zungusha" id="zungusha" type="number" value="0" ></label><label>Muundo<select id="format"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option></select></label></div><div class="actions"><button type="button" id="calculate">Tengeneza</button><button type="button" class="secondary" id="reset">Mfano</button><button type="button" class="secondary" id="download">Pakua</button></div></div><div class="panel"><h2>Muonekano wa kukata</h2><div id="results" class="results"></div><canvas id="canvas" width="1080" height="1080"></canvas><div id="detail"></div></div></section>
+    <section class="crop-studio" aria-label="Studio ya kukata picha">
+      <div class="crop-workspace">
+        <section class="crop-stack" aria-label="Kihariri cha kukata picha">
+          <div class="crop-panel">
+            <div class="crop-panel-head"><div><span class="crop-eyebrow">1. Chagua picha</span><h2 class="crop-panel-title">Buruta, bandika au chagua picha ya faragha</h2><p class="crop-panel-copy">Faili hubaki kwenye kivinjari hiki. Tumia PNG, JPG, WebP au picha nyingine inayofunguliwa na kivinjari, hadi MB 25.</p></div><div class="crop-status" id="cropStudioStatus" role="status" aria-live="polite">Chagua picha ili uanze.</div></div>
+            <div class="crop-drop" id="cropDropZone" role="button" tabindex="0" aria-label="Chagua au buruta picha"><div class="crop-drop-main"><span class="crop-drop-mark" aria-hidden="true">IMG</span><span><strong>Chagua picha</strong><span>Buruta faili hapa, bandika kutoka ubao wa kunakili au bofya kuchagua.</span></span></div><div class="crop-drop-side">Ndani ya kifaa<br>PNG, JPG, WebP</div><input aria-label="Picha ya kukata" type="file" id="cropInput" accept="image/*"></div>
+          </div>
+          <div class="crop-panel">
+            <div class="crop-panel-head"><div><span class="crop-eyebrow">2. Chagua uwiano</span><h2 class="crop-panel-title">Vipimo vya kazi halisi</h2><p class="crop-panel-copy">Badilisha kutoka picha za mitandao hadi pasipoti, bidhaa na bango bila kubadili faili asili.</p></div></div>
+            <div class="crop-target-grid" role="list" aria-label="Uwiano wa kukata picha">
+              <button type="button" class="crop-target-card" data-crop-target="free" aria-pressed="true"><strong>Huru</strong><span>Chagua mwenyewe</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="square" aria-pressed="false"><strong>Mraba</strong><span>Wasifu wa 1:1</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="portrait" aria-pressed="false"><strong>Wima</strong><span>Chapisho la 4:5</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="story" aria-pressed="false"><strong>Story</strong><span>Wima wa 9:16</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="landscape" aria-pressed="false"><strong>Mlalo</strong><span>Jalada la 16:9</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="photo" aria-pressed="false"><strong>Picha</strong><span>Chapisho la 3:2</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="passport" aria-pressed="false"><strong>Pasipoti</strong><span>Kata 35:45</span></button>
+              <button type="button" class="crop-target-card" data-crop-target="banner" aria-pressed="false"><strong>Bango</strong><span>Kichwa cha 4:1</span></button>
+            </div>
+          </div>
+          <div class="crop-panel">
+            <div class="crop-panel-head"><div><span class="crop-eyebrow">3. Panga picha</span><h2 class="crop-panel-title">Buruta kisanduku, badili pembe, sogeza au andika pikseli kamili</h2><p class="crop-panel-copy">Tumia mistari ya sehemu tatu kupanga nyuso, bidhaa, thumbnail na eneo kamili la kukata.</p></div></div>
+            <div class="crop-stage-wrap"><div class="crop-stage" id="cropStage"><div class="crop-empty" id="cropStageEmpty">Kihariri cha picha kitaonekana hapa.</div><canvas id="cropStageCanvas" aria-label="Turubai ya kukata picha" hidden></canvas></div></div>
+            <div class="crop-button-grid" aria-label="Vidhibiti vya kubadili picha">
+              <button type="button" class="crop-tool-btn" id="cropRotateLeft" disabled>Zungusha kushoto</button><button type="button" class="crop-tool-btn" id="cropRotateRight" disabled>Zungusha kulia</button><button type="button" class="crop-tool-btn" id="cropFlipH" disabled>Geuza mlalo</button><button type="button" class="crop-tool-btn" id="cropFlipV" disabled>Geuza wima</button><button type="button" class="crop-nudge-btn" data-crop-nudge="up" disabled>Sogeza juu</button><button type="button" class="crop-nudge-btn" data-crop-nudge="left" disabled>Sogeza kushoto</button><button type="button" class="crop-nudge-btn" data-crop-nudge="right" disabled>Sogeza kulia</button><button type="button" class="crop-nudge-btn" data-crop-nudge="down" disabled>Sogeza chini</button>
+            </div>
+            <div class="crop-actions"><button type="button" class="crop-btn secondary" id="cropReset" disabled>Weka mabadiliko upya</button></div>
+            <div class="crop-control-grid crop-selection-grid" aria-label="Eneo kamili la kukata">
+              <label class="crop-field"><span class="crop-label">X ya kukata</span><input aria-label="X ya kukata" class="crop-input" id="cropSelectionX" type="number" min="0" step="1" placeholder="Otomatiki"></label>
+              <label class="crop-field"><span class="crop-label">Y ya kukata</span><input aria-label="Y ya kukata" class="crop-input" id="cropSelectionY" type="number" min="0" step="1" placeholder="Otomatiki"></label>
+              <label class="crop-field"><span class="crop-label">Upana wa kukata</span><input aria-label="Upana wa kukata" class="crop-input" id="cropSelectionW" type="number" min="1" step="1" placeholder="Otomatiki"></label>
+              <label class="crop-field"><span class="crop-label">Urefu wa kukata</span><input aria-label="Urefu wa kukata" class="crop-input" id="cropSelectionH" type="number" min="1" step="1" placeholder="Otomatiki"></label>
+              <div class="crop-field crop-control-wide"><button type="button" class="crop-tool-btn crop-apply-selection" id="cropApplySelection" disabled>Tumia eneo kamili</button><span class="crop-help">Thamani ni pikseli za picha iliyobadilishwa. Uwiano maalum huhifadhi uwiano wake.</span></div>
+            </div>
+          </div>
+          <div class="crop-panel">
+            <div class="crop-panel-head"><div><span class="crop-eyebrow">4. Pakua</span><h2 class="crop-panel-title">Chagua ukubwa, umbizo, ubora na jina la faili</h2><p class="crop-panel-copy">Acha upana na urefu wazi kutumia pikseli zilizochaguliwa, au andika vipimo kamili.</p></div></div>
+            <div class="crop-control-grid">
+              <label class="crop-field"><span class="crop-label">Upana</span><input aria-label="Upana wa matokeo" class="crop-input" id="cropExportWidth" type="number" min="1" max="12000" placeholder="Otomatiki"></label>
+              <label class="crop-field"><span class="crop-label">Urefu</span><input aria-label="Urefu wa matokeo" class="crop-input" id="cropExportHeight" type="number" min="1" max="12000" placeholder="Otomatiki"></label>
+              <label class="crop-field"><span class="crop-label">Umbizo</span><select class="crop-select" id="cropFormat"><option value="same">Hifadhi umbizo linalofaa</option><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WebP</option></select></label>
+              <label class="crop-field crop-control-wide"><span class="crop-label">Ubora</span><span class="crop-range"><input aria-label="Ubora wa picha" class="crop-input" id="cropQuality" type="range" min="40" max="100" value="88"><span class="crop-range-value" id="cropQualityValue">88%</span></span><span class="crop-help">Hutumika kwa JPG na WebP. PNG haipotezi ubora.</span></label>
+              <label class="crop-field"><span class="crop-label">Mandharinyuma ya JPG</span><input aria-label="Mandharinyuma ya JPG" class="crop-input" id="cropBackground" type="color" value="#ffffff"></label>
+              <label class="crop-field crop-control-wide"><span class="crop-label">Kiambishi cha faili</span><input aria-label="Kiambishi cha faili" class="crop-input" id="cropSuffix" type="text" value="iliyokatwa" maxlength="40"></label>
+            </div>
+            <div class="crop-actions"><button type="button" class="crop-btn" id="cropExportBtn" disabled>Andaa picha</button><button type="button" class="crop-btn secondary" id="cropDownloadBtn" disabled>Pakua</button><button type="button" class="crop-btn warning" id="cropCopyRecipeBtn" disabled>Nakili maelekezo</button></div>
+          </div>
+        </section>
+        <aside class="crop-stack" aria-label="Matokeo ya kukata picha">
+          <div class="crop-panel"><div class="crop-panel-head"><div><span class="crop-eyebrow">Hakiki papo hapo</span><h2 class="crop-panel-title">Picha ya matokeo</h2><p class="crop-panel-copy">Hakiki hubadilika unapokata, kuzungusha au kubadili vipimo.</p></div></div><div class="crop-preview-stage"><div class="crop-preview-frame"><div class="crop-preview-empty" id="cropPreviewEmpty">Hakiki itaonekana baada ya kuchagua picha.</div><canvas id="cropPreviewCanvas" hidden></canvas></div><div class="crop-detail-grid"><div class="crop-detail"><span>Eneo</span><strong id="cropDetailSelection">Hakuna picha</strong></div><div class="crop-detail"><span>Matokeo</span><strong id="cropDetailOutput">-</strong></div><div class="crop-detail"><span>Mabadiliko</span><strong id="cropDetailTransform">-</strong></div></div></div></div>
+          <div class="crop-panel"><div class="crop-panel-head"><div><span class="crop-eyebrow">Historia ya kifaa</span><h2 class="crop-panel-title">Picha zilizotayarishwa karibuni</h2><p class="crop-panel-copy">Maelekezo matano ya mwisho huhifadhiwa kwenye kifaa hiki.</p></div></div><div class="crop-history" id="cropHistoryList"></div></div>
+          <div class="crop-panel"><div class="crop-panel-head"><div><span class="crop-eyebrow">Mtiririko</span><h2 class="crop-panel-title">Maandalizi sahihi ya picha</h2><ul class="crop-feature-list"><li>Kisanduku cha kukata chenye pembe zinazobadilika.</li><li>Uwiano wa mitandao, pasipoti, bidhaa na mabango.</li><li>Zungusha, geuza, sogeza na weka vipimo kamili.</li><li>Pakua JPG, PNG au WebP ndani ya kifaa.</li></ul></div></div></div>
+        </aside>
+      </div>
+    </section>
 <section class="section panel"><h2>Angalia pia</h2><div class="link-list"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a>
         <a href="/sw/zana/picha-ya-pasipoti/">Picha ya pasipoti</a>
         <a href="/sw/zana/hook-za-video/">Hook za video</a>
@@ -123,10 +179,8 @@
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
   <script src="/assets/js/components/share-button.js?v=f8342961"></script>
   <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316"></script>
-  <script>
-const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').trim();const num=id=>Number(q(id)?.value||0);function metric(l,v,h){return '<div class="metric"><span>'+l+'</span><strong>'+v+'</strong>'+(h?'<small>'+h+'</small>':'')+'</div>'}function setResults(h){q('results').innerHTML=h}function setDetail(h){q('detail').innerHTML=h}function rows(a){return '<div class="output-list">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>'}function bind(c,r){q('calculate').addEventListener('click',c);q('reset').addEventListener('click',()=>{r();c()});if(q('download'))q('download').addEventListener('click',downloadCanvas);c()}function canvas(){return q('canvas')}function ctx(){return canvas().getContext('2d')}function downloadCanvas(){const a=document.createElement('a');a.href=canvas().toDataURL('image/png');a.download='afrotools-design.png';a.click()}function drawTextBox(c,t,x,y,w,size,color){c.fillStyle=color;c.font='800 '+size+'px Inter, Arial';const words=t.split(' ');let line='',yy=y;words.forEach(word=>{const test=line+word+' ';if(c.measureText(test).width>w&&line){c.fillText(line,x,yy);line=word+' ';yy+=size*1.15}else line=test});c.fillText(line,x,yy)}function basicCanvas(title,sub,bg='#1d4ed8',fg='#fff'){const c=ctx();c.fillStyle=bg;c.fillRect(0,0,canvas().width,canvas().height);drawTextBox(c,title,70,180,920,72,fg);drawTextBox(c,sub,70,520,900,34,fg);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(70,790,420,90);c.fillStyle=fg;c.font='700 28px Inter, Arial';c.fillText('Imetengenezwa na AfroTools',95,845)}function readImage(file,cb){const img=new Image();img.onload=()=>cb(img);img.src=URL.createObjectURL(file)}function money(n,c='USD'){try{return new Intl.NumberFormat('sw',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n)||0)}catch(e){return Math.round(Number(n)||0).toLocaleString('sw')}}
-function calc(){const f=q('file').files[0];if(!f){basicCanvas('Muonekano wa kukata','Chagua picha');setResults(metric('Hali','Hakuna faili','Pakia picha'));return}readImage(f,img=>{canvas().width=num('cropW');canvas().height=num('cropH');const c=ctx();c.save();c.translate(canvas().width/2,canvas().height/2);c.zungusha(num('zungusha')*Math.PI/180);const scale=Math.max(canvas().width/img.width,canvas().height/img.height);c.drawImage(img,-img.width*scale/2,-img.height*scale/2,img.width*scale,img.height*scale);c.restore();setResults(metric('Kukata',canvas().width+' x '+canvas().height+' px','Rotate '+num('zungusha')+' degrees'))})}function reset(){q('cropW').value=800;q('cropH').value=800;q('zungusha').value=0;q('format').value='image/png';basicCanvas('Kukata image','Chagua picha')}bind(calc,reset);
-  </script>
+  <script src="/assets/js/lib/image-crop-studio.js?v=f55f0896" defer></script>
+  <script src="/assets/js/lib/image-crop-studio-sw.js?v=6bcb9f8b" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>

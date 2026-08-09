@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "3ba5f514",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Meme Generator only after controlled English and Swahili uploaded images produce byte-identical local PNG output, every starter scene, caption pack and style behaves deterministically, invalid/reset and privacy boundaries hold, and mobile/reflow, themes, keyboard/accessibility and reciprocal metadata pass coordinator review.",
+  "candidates": [
+    {
+      "id": "meme-generator-sw-parity",
+      "commit": "3ba5f5149de99022f01d303409dfea01e9af6a33",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-meme-generator-parity.spec.js",
+          "engineTest": "tests/swahili-meme-generator-parity.test.js",
+          "workflow": "The coordinator reviewed the generated native owner and reran the source contract plus 3/3 focused browser workflows. Controlled uploaded-image output was byte-identical across English and Swahili; all five scenes, six caption packs, three text styles, font slider, reset and invalid file handling were exercised.",
+          "export": "Starter and uploaded-image PNGs reopened at exactly 1200x900. Uploaded pixels and captions were absent from storage, URLs and all non-telemetry requests; any other write or external data request remained fail-closed. Mobile/reflow, themes, keyboard/focus, canonical/OG/schema/hreflang and artwork passed."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-image-design-static-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/englishRows", "equals": 19 },
+            { "pointer": "/exactScope/staticCandidates", "equals": 15 },
+            { "pointer": "/exactScope/blocked", "equals": 4 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "meme-generator", "swahiliRoute": "/sw/zana/kitengeneza-meme/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -17,6 +17,10 @@ Generated HTML must declare:
 - `afrotools-content-id`: a stable identifier that does not depend on build time;
 - `afrotools-source-owner`: an existing editable registry, data file, or generator source.
 
+`scripts/apply-generated-content-provenance.js` deterministically fills a missing
+content ID from the public route during the write build and fails the check build
+when that metadata is stale. It does not replace or guess the editable source owner.
+
 The same content ID cannot identify two outputs. A generated HTML file cannot name itself as its only editable source.
 
 ## Language contamination and fallbacks

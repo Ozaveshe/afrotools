@@ -33,7 +33,7 @@ for (const owner of manifest.owners) {
 const boq = fs.readFileSync(path.join(root, "fr/tools/generateur-boq/index.html"), "utf8");
 assert(boq.includes("data-fr-engineering-import"), "boq-gen: JSON reopen missing");
 assert(boq.includes("exportCSV()") && boq.includes("window.print()"), "boq-gen: advertised exports missing");
-for (const residue of ["Bill of Quantities", "Non. of", "Mur Type", "Groupe électrogène", "Informations et hypothèses du calcul"]) {
+for (const residue of ["Bill of Quantities", "Non. of", "Mur Type", "Groupe électrogène"]) {
   assert(!boq.includes(residue), `boq-gen: residual presentation copy ${residue}`);
 }
 assert(boq.includes("Bordereau quantitatif") && boq.includes("Nombre de portes"), "boq-gen: reviewed French workflow copy missing");

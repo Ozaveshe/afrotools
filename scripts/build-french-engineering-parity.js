@@ -84,11 +84,15 @@ function structuralHtmlSignature(html) {
 }
 
 function sourceEquivalent(relativePath, current, expected) {
-  const equivalent = /\.html?$/i.test(relativePath)
+  const isHtml = /\.html?$/i.test(relativePath);
+  const metaContent = (html, property) => html.match(
+    new RegExp(`<meta\\b(?=[^>]*\\bproperty=["']${property}["'])[^>]*\\bcontent=["']([^"']+)["'][^>]*>`, 'i')
+  )?.[1] || '';
+  const equivalent = isHtml
     ? (
       normalizeGeneratedHtml(current) === normalizeGeneratedHtml(expected)
       || structuralHtmlSignature(current) === structuralHtmlSignature(expected)
-    )
+    ) && metaContent(current, 'og:url') === metaContent(expected, 'og:url')
     : current === expected;
   return equivalent;
 }
@@ -485,7 +489,7 @@ function applyFrenchMetadata(row, html, frenchRoute) {
     `<meta property="og:description" content="${copy.purpose}">`
   );
   html = html.replace(
-    /<meta property="og:url" content="[^"]*">/i,
+    /<meta\b(?=[^>]*\bproperty="og:url")[^>]*>/i,
     `<meta property="og:url" content="${frenchUrl}">`
   );
   html = html.replace(

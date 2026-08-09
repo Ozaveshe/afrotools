@@ -7,6 +7,16 @@ function qrText(key,fallback){
     ? window.AfroToolsFintechI18n.text('qr-payment',key,fallback)
     : fallback;
 }
+function qrMethodName(id,fallback){
+  var node=document.getElementById(id);
+  var value=node?String(node.value||'').trim():'';
+  return value||fallback;
+}
+function qrEscape(value){
+  return String(value).replace(/[&<>"']/g,function(character){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];
+  });
+}
 function calcQR(){
   var ids=['qr-avg-txn','qr-daily-txns','qr-days','qr-rate','qr-flat','qr-pos-rate','qr-pos-flat','qr-mm-rate','qr-mm-flat','qr-cash-cost'];
   var v={};
@@ -38,16 +48,16 @@ function calcQR(){
   document.getElementById('qr-monthly-fee').textContent=fmt(monthlyQRFee);
   document.getElementById('qr-sub').textContent=qrText('on','On')+' '+fmt(monthlyVol)+' '+qrText('monthlyVolume','monthly volume')+' · '+monthlyTxns.toLocaleString()+' '+qrText('transactions','transactions');
   var methods=[
-    {name:qrText('qr','QR Payments'),fee:monthlyQRFee,rate:effectiveRate},
-    {name:qrText('mobileMoney','Mobile Money'),fee:mmFee,rate:mmFee/monthlyVol*100},
-    {name:qrText('card','POS / Card'),fee:posFee,rate:posFee/monthlyVol*100},
-    {name:qrText('cash','Cash Handling'),fee:cashFee,rate:cashFee/monthlyVol*100}
+    {name:qrMethodName('qr-provider',qrText('qr','QR Payments')),fee:monthlyQRFee,rate:effectiveRate},
+    {name:qrMethodName('qr-mm-provider',qrText('mobileMoney','Mobile Money')),fee:mmFee,rate:mmFee/monthlyVol*100},
+    {name:qrMethodName('qr-pos-provider',qrText('card','POS / Card')),fee:posFee,rate:posFee/monthlyVol*100},
+    {name:qrMethodName('qr-cash-label',qrText('cash','Cash Handling')),fee:cashFee,rate:cashFee/monthlyVol*100}
   ];
   methods.sort(function(a,b){return a.fee-b.fee;});
   var compareHTML='';
   for(var i=0;i<methods.length;i++){
     var m=methods[i];
-    compareHTML+='<div class="method-item'+(i===0?' best':'')+'"><div class="method-name">'+m.name+(i===0?' · '+qrText('lowest','Lowest entered cost'):'')+'</div><div class="method-fee">'+fmt(m.fee)+'/'+qrText('perMonth','mo')+'</div><div class="method-rate">'+m.rate.toFixed(2)+'% '+qrText('ofVolume','of volume')+'</div></div>';
+    compareHTML+='<div class="method-item'+(i===0?' best':'')+'"><div class="method-name">'+qrEscape(m.name)+(i===0?' · '+qrEscape(qrText('lowest','Lowest entered cost')):'')+'</div><div class="method-fee">'+fmt(m.fee)+'/'+qrEscape(qrText('perMonth','mo'))+'</div><div class="method-rate">'+m.rate.toFixed(2)+'% '+qrEscape(qrText('ofVolume','of volume'))+'</div></div>';
   }
   document.getElementById('qr-compare').innerHTML=compareHTML;
   document.getElementById('qr-results').classList.add('on');

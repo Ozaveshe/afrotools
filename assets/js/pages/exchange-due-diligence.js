@@ -3,8 +3,12 @@
   var engine = window.AfroTools && window.AfroTools.ExchangeDueDiligence;
   var form = document.getElementById('exchangeWorkbookForm');
   if (!engine || !form) return;
-  var fr = document.documentElement.lang === 'fr';
-  var labels = fr ? {
+  var lang = String(document.documentElement.lang || 'en').toLowerCase().split('-')[0];
+  var fr = lang === 'fr', sw = lang === 'sw';
+  var labels = sw ? {
+    items:{'official-domain':'Kikoa rasmi','country-availability':'Upatikanaji katika nchi iliyokusudiwa','regulator-register':'Sajili ya msimamizi','fee-schedule':'Jedwali la ada','fiat-deposit':'Njia ya kuweka sarafu ya ndani','fiat-withdrawal':'Njia ya kutoa sarafu ya ndani','custody-withdrawal':'Sera ya custody na uondoaji','security-disclosure':'Taarifa ya usalama au akiba','support-incident':'Msaada na njia ya tukio','small-withdrawal-test':'Jaribio dogo la uondoaji'},
+    statuses:{confirmed:'Imethibitishwa kwa chanzo',unclear:'Haijawa wazi','not-checked':'Haijakaguliwa','not-applicable':'Haitumiki'},source:'URL ya chanzo',notes:'Maelezo ya ukweli',sourceHint:'https://…',notesHint:'Chanzo kinasema nini na nini bado hakijawa wazi',documented:'vipengele vilivyoandikwa',unresolved:'vipengele visivyotatuliwa',na:'havitumiki',fix:'Jaza majina, nchi na tarehe halali za watoa huduma wote, kisha sahihisha URL yoyote batili.',ready:'Rekodi ya ndani imeundwa. Hakuna upangaji wala uamuzi wa usalama uliotolewa.',stale:'Maingizo yamebadilika. Unda rekodi tena kabla ya kupakua.',staleResult:'Rekodi ya awali imepitwa na wakati na imeondolewa. Iunde tena kutoka maingizo ya sasa.',invalidResult:'Hakuna rekodi halali. Sahihisha sehemu zilizoonyeshwa kisha ujaribu tena.',json:'Pakua JSON',txt:'Pakua maandishi',pdf:'Pakua PDF',print:'Chapisha / Hifadhi PDF'
+  } : fr ? {
     items: {'official-domain':'Domaine officiel','country-availability':'Disponibilité dans le pays prévu','regulator-register':'Registre du régulateur','fee-schedule':'Barème des frais','fiat-deposit':'Dépôt en monnaie locale','fiat-withdrawal':'Retrait en monnaie locale','custody-withdrawal':'Politique de garde et de retrait','security-disclosure':'Publication de sécurité ou de réserves','support-incident':'Assistance et procédure d’incident','small-withdrawal-test':'Petit test de retrait'},
     statuses:{confirmed:'Confirmé avec une source',unclear:'Incertain', 'not-checked':'Non vérifié','not-applicable':'Sans objet'},
     source:'URL de la source', notes:'Notes factuelles', sourceHint:'https://…', notesHint:'Ce que la source indique et ce qui reste incertain',
@@ -44,7 +48,7 @@
       var row = element('div', 'exchange-evidence-row');
       row.dataset.item = code;
       var title = element('h3', '', labels.items[code]);
-      var selectLabel = element('label', '', fr ? 'État de la preuve' : 'Evidence status');
+      var selectLabel = element('label', '', sw ? 'Hali ya ushahidi' : fr ? 'État de la preuve' : 'Evidence status');
       var select = element('select');
       select.name = 'provider-' + slot + '-' + code + '-status';
       selectLabel.htmlFor = select.name;
@@ -77,17 +81,17 @@
     var wrap = element('div', 'exchange-summary-grid');
     report.providers.forEach(function (provider) {
       var card = element('article', 'exchange-summary');
-      card.append(element('span', 'exchange-summary-kicker', (fr ? 'Prestataire ' : 'Provider ') + provider.slot), element('h3', '', provider.name));
+      card.append(element('span', 'exchange-summary-kicker', (sw ? 'Mtoa huduma ' : fr ? 'Prestataire ' : 'Provider ') + provider.slot), element('h3', '', provider.name));
       var counts = element('div', 'exchange-counts');
       counts.append(element('strong', '', provider.counts.documented + ' / ' + provider.counts.applicable), element('span', '', labels.documented), element('strong', '', String(provider.counts.unresolved)), element('span', '', labels.unresolved), element('strong', '', String(provider.counts.notApplicable)), element('span', '', labels.na));
       card.append(counts);
-      if (provider.evidenceStale) card.appendChild(element('p', 'exchange-freshness-warning', fr ? 'Date ancienne (' + provider.ageDays + ' jours) : actualisez les sources. Les éléments confirmés restent non résolus.' : 'Old checked date (' + provider.ageDays + ' days): refresh the sources. Confirmed items remain unresolved.'));
+      if (provider.evidenceStale) card.appendChild(element('p', 'exchange-freshness-warning', sw ? 'Tarehe ni ya zamani (' + provider.ageDays + ' siku): sasisha vyanzo. Vipengele vilivyothibitishwa vinabaki bila kutatuliwa.' : fr ? 'Date ancienne (' + provider.ageDays + ' jours) : actualisez les sources. Les éléments confirmés restent non résolus.' : 'Old checked date (' + provider.ageDays + ' days): refresh the sources. Confirmed items remain unresolved.'));
       var unresolved = element('ul');
       provider.items.filter(function (item) { return item.status !== 'not-applicable' && !item.documented; }).forEach(function (item) { unresolved.appendChild(element('li', '', labels.items[item.code] + ' — ' + labels.statuses[item.status])); });
-      if (!unresolved.childElementCount) unresolved.appendChild(element('li', '', fr ? 'Aucun élément applicable non résolu.' : 'No unresolved applicable item.'));
+      if (!unresolved.childElementCount) unresolved.appendChild(element('li', '', sw ? 'Hakuna kipengele kinachotumika ambacho hakijatatuliwa.' : fr ? 'Aucun élément applicable non résolu.' : 'No unresolved applicable item.'));
       card.append(unresolved); wrap.appendChild(card);
     });
-    var boundary = element('p', 'exchange-result-boundary', fr ? 'Comparaison de couverture documentaire uniquement. Aucun score de confiance, classement, conseil, verdict de sécurité, décision réglementaire ou recommandation.' : report.boundary);
+    var boundary = element('p', 'exchange-result-boundary', sw ? 'Ulinganisho wa ufunikaji wa ushahidi pekee. Hakuna alama ya uaminifu, upangaji, ushauri, uamuzi wa usalama, uamuzi wa leseni au pendekezo.' : fr ? 'Comparaison de couverture documentaire uniquement. Aucun score de confiance, classement, conseil, verdict de sécurité, décision réglementaire ou recommandation.' : report.boundary);
     result.replaceChildren(wrap, boundary);
     result.focus({ preventScroll:true });
   }
@@ -110,11 +114,11 @@
     var url = URL.createObjectURL(new Blob([content], {type:type}));
     var link = element('a'); link.href = url; link.download = 'crypto-exchange-due-diligence.' + extension; document.body.appendChild(link); link.click(); link.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 0);
   }
-  function reportText() { return engine.text(current, fr ? 'fr' : 'en', labels); }
+  function reportText() { return engine.text(current, sw ? 'sw' : fr ? 'fr' : 'en', labels); }
   function pdfExport() {
-    if (!window.jspdf || !window.jspdf.jsPDF) { status.textContent = fr ? 'Le moteur PDF local est indisponible.' : 'The local PDF engine is unavailable.'; return; }
+    if (!window.jspdf || !window.jspdf.jsPDF) { status.textContent = sw ? 'Injini ya ndani ya PDF haipatikani.' : fr ? 'Le moteur PDF local est indisponible.' : 'The local PDF engine is unavailable.'; return; }
     var doc = new window.jspdf.jsPDF({unit:'pt',format:'a4'}), y = 48, margin = 46, width = 503;
-    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.text(fr ? 'Dossier de vérification d’une plateforme crypto' : 'Crypto exchange due-diligence record', margin, y); y += 24;
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.text(sw ? 'Rekodi ya ukaguzi wa mtoa huduma wa crypto' : fr ? 'Dossier de vérification d’une plateforme crypto' : 'Crypto exchange due-diligence record', margin, y); y += 24;
     doc.setFont('helvetica','normal'); doc.setFontSize(9);
     doc.splitTextToSize(reportText(), width).forEach(function (line) { if (y > 790) { doc.addPage(); y = 48; } doc.text(line, margin, y); y += 12; });
     doc.save('crypto-exchange-due-diligence.pdf');

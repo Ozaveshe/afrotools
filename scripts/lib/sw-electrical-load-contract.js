@@ -1,0 +1,2 @@
+"use strict";
+module.exports=Object.freeze({id:"electrical-load",categoryKey:"engineering",englishRoute:"/tools/electrical-load/",englishFile:"tools/electrical-load/index.html",swRoute:"/sw/zana/kikokotoo-mzigo-wa-umeme/",file:"sw/zana/kikokotoo-mzigo-wa-umeme/index.html",frenchRoute:"/fr/tools/charge-electrique/",image:"assets/img/tools/electrical-load.webp",engine:"assets/js/engines/electrical-load-engine.js"});

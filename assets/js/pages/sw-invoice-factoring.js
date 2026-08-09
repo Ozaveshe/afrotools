@@ -1,0 +1,1 @@
+(function(){'use strict';function clear(e){if(e.target&&!e.target.matches('input,select'))return;var r=document.getElementById('if-results');if(r)r.classList.remove('on');if(typeof lastFactoringResult!=='undefined')lastFactoringResult=null}document.addEventListener('input',clear);document.addEventListener('change',clear)}());

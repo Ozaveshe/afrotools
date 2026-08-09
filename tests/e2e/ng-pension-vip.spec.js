@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
-const routes = ['/tools/ng-pension/', '/fr/tools/ng-pension/', '/ha/kayan-aiki/fansho-najeriya/'];
+const routes = ['/tools/ng-pension/', '/fr/tools/ng-pension/', '/ha/kayan-aiki/fansho-najeriya/', '/sw/zana/kikokotoo-pensheni-nigeria/'];
 
 for (const route of routes) {
   test(route + ' calculates locally without overflow', async ({ page }) => {

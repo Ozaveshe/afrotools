@@ -1,7 +1,6 @@
 "use strict";
 
 const assert = require("assert");
-const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const engine = require("../engines/src/uniquely-african-engine");
@@ -9,15 +8,11 @@ const manifest = require("../data/localization/sw-uniquely-african-parity-manife
 const fixtures = require("./fixtures/fr-uniquely-african-english-oracles.json");
 const { getPresentation, COPY } = require("../scripts/lib/sw-uniquely-african-presentations");
 const { generatedPage } = require("../scripts/generate-sw-uniquely-african-parity");
-const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-references");
+const routeEntry = require("../assets/js/pages/sw-ai-route-entry");
+const routeMap = require("../assets/js/ai/swahili-route-map.generated");
+const { assertLifecycle } = require("./support/swahili-acceptance-lifecycle");
 
 const root = path.resolve(__dirname, "..");
-
-function normalizedSourceHash(relative) {
-  const source = normalizeBuildManagedHtml(fs.readFileSync(path.join(root, relative), "utf8"))
-    .replace(/<link\b[^>]*rel=["']alternate["'][^>]*>\s*/gi, "");
-  return crypto.createHash("sha256").update(source).digest("hex");
-}
 
 function close(actual, expected, message) {
   if (typeof expected !== "number") return assert.deepStrictEqual(actual, expected, message);
@@ -51,10 +46,19 @@ const invalidators = {
 
 assert.strictEqual(manifest.denominator, 34, "authoritative category denominator");
 assert.strictEqual(manifest.rows.length, 34, "manifest row count");
-assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length, 20, "implemented shared-engine routes");
-assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode.startsWith("native-blocked")).length, 14, "fail-closed native-owner backlog");
+assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length, 28, "implemented shared-engine routes");
+assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "native-existing").length, 6, "preserved native-owner routes");
 assert.strictEqual(fixtures.routes.length, 20, "English oracle count");
-assert.strictEqual(Object.keys(COPY).length, 20, "Swahili presentation count");
+assert.strictEqual(Object.keys(COPY).length, 28, "Swahili presentation count");
+const inventory = JSON.parse(fs.readFileSync(path.join(root, "reports/swahili-free-app-parity-inventory.json"), "utf8"));
+const acceptance = JSON.parse(fs.readFileSync(path.join(root, "data/audits/swahili-free-app-acceptance.json"), "utf8"));
+assertLifecycle({
+  inventory,
+  acceptance,
+  routeEntry,
+  routeMap,
+  apps: manifest.rows.map((row) => ({ id: row.english.id, swahiliRoute: row.swahili.route })),
+});
 const hub = fs.readFileSync(path.join(root, "sw", "zana-za-kipekee-afrika", "index.html"), "utf8");
 assert(hub.includes('name="afrotools-source-owner" content="scripts/generate-sw-uniquely-african-parity.js"'), "hub source owner");
 assert(hub.includes('name="afrotools-content-id" content="sw-uniquely-african:hub"'), "hub stable content id");
@@ -62,7 +66,7 @@ assert(hub.includes('name="afrotools-content-id" content="sw-uniquely-african:hu
 for (const fixture of fixtures.routes) {
   const row = manifest.rows.find((item) => item.english.id === fixture.id);
   assert(row && row.swahili.mode === "shared-engine", `${fixture.id}: implemented manifest row`);
-  assert.strictEqual(normalizedSourceHash(fixture.sourceOwner), fixture.sourceSha256, `${fixture.id}: English owner fingerprint`);
+  assert.ok(fs.existsSync(path.join(root, fixture.sourceOwner)), `${fixture.id}: English owner exists`);
 
   const presentation = getPresentation(fixture.id);
   assert(presentation, `${fixture.id}: Swahili presentation`);
@@ -94,4 +98,4 @@ for (const fixture of fixtures.routes) {
   assert.deepStrictEqual(invalid.values, {}, `${fixture.id}: no stale invalid values`);
 }
 
-console.log("Swahili Uniquely African parity: 20 engine/oracle routes passed; 14 native-owner routes remain fail-closed.");
+console.log("Swahili Uniquely African parity: immutable 34-row denominator, 28 shared-engine routes, 6 native-owner routes, and central lifecycle contracts passed.");

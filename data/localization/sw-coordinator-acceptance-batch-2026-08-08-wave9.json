@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "39ed10c4",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 3,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only Student Loan, Staff Cost and Pension Projection beyond Finance shard B's seventeen-row checkpoint. Each must retain user-entered evidence assumptions, shared deterministic engines, stale-source rejection, parsed local exports and coordinator browser proof; the legacy pension-projection row remains excluded.",
+  "candidates": [
+    {
+      "id": "financial-shard-b-three",
+      "commit": "f4ae49dd35683293d2c95a9506494ddf9e687a72",
+      "expectedRoutes": 3,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 3,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-financial-shard-b.spec.js",
+          "engineTest": "tests/swahili-financial-shard-b.test.js",
+          "workflow": "Student Loan, Staff Cost and Pension Projection use maintained deterministic engines with user-confirmed terms or evidence, reject stale or invalid input, add no statutory rate or entitlement claim, and preserve local-only reset, responsive, theme, keyboard and metadata contracts.",
+          "export": "The coordinator reran 26 browser cases: all three new workflows passed engine oracles and parser-readable CSV/PDF or local export checks; 25 matrix cases passed directly and the one inherited Rent-vs-Buy reflow defect was repaired and rerun green."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-financial-shard-b-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 20 },
+            { "pointer": "/blocked", "equals": 26 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "student-loan", "swahiliRoute": "/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/" },
+            { "englishId": "staff-cost", "swahiliRoute": "/sw/zana/bajeti-ya-gharama-za-wafanyakazi/" },
+            { "englishId": "pension-proj", "swahiliRoute": "/sw/zana/makadirio-ya-pensheni/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

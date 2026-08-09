@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "29677009",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Image Compress only after the original English implementation is extracted byte-for-byte into one shared local owner, English and Swahili output parity is proved, every advertised codec and batch output reopens at exact dimensions, target-size behavior is bounded, mobile/accessibility/metadata pass, and no image or tool-data leaves the browser.",
+  "candidates": [
+    {
+      "id": "image-compress-shared-owner",
+      "commit": "5a55b21bda3294f250ecdc1809b75bd32266f3b5",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-image-compress-parity.spec.js",
+          "engineTest": "tests/image-compress-shared-owner.test.js",
+          "workflow": "The pre-change English controller body is fingerprinted and extracted unchanged into the shared image-compress studio used by both languages; there is no fetch, XHR or WebSocket image path.",
+          "export": "The coordinator reran 3/3 Chromium tests. Controlled PNGs were byte-identical; PNG, JPEG, WebP, auto selection, a 600x400 target-size JPEG, and both download-all WebPs reopened at exact dimensions. Invalid/clear, presets, reflow, themes, keyboard, contrast, SEO and no image/tool-data egress passed; consent-mode route telemetry was measured separately."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-image-design-static-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/staticCandidates", "equals": 11 },
+            { "pointer": "/exactScope/blocked", "equals": 8 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "image-compress", "swahiliRoute": "/sw/zana/kubana-picha/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

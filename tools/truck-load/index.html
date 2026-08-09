@@ -105,7 +105,7 @@ details[open] summary::after{content:'\2212'}
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/truck-load.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Truck Load Optimizer Africa?","acceptedAnswer":{"@type":"Answer","text":"Enter your route, distance and costs in the fields above. The Truck Load Optimizer Africa then gives you a cost or income estimate you can plan around you can use straight away."}},{"@type":"Question","name":"How accurate is the Truck Load Optimizer Africa?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it."}},{"@type":"Question","name":"Is the Truck Load Optimizer Africa free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is the legal truck load limit in Africa?","acceptedAnswer":{"@type":"Answer","text":"Load limits vary by country and road type. In Kenya, the legal gross vehicle weight for a rigid truck is 48 tonnes, but axle loads are strictly monitored. Nigeria enforces 12 tonnes per single axle on federal highways. South Africa uses a sophisticated axle load management system. Overloading in Africa is common but leads to road damage and heavy fines at weigh stations."}},{"@type":"Question","name":"What does cost per tonne-km mean in logistics?","acceptedAnswer":{"@type":"Answer","text":"Cost per tonne-km is a standard logistics efficiency metric: total cost of a trip divided by the tonnes carried and the kilometres travelled. It allows comparison across different routes, loads, and transport modes. In Africa, cost per tonne-km averages $0.05-0.15 for large trucks, but can exceed $0.30 for inefficient or partial loads, compared to $0.02-0.05 in Europe."}},{"@type":"Question","name":"When should I consolidate loads?","acceptedAnswer":{"@type":"Answer","text":"Load consolidation (combining multiple small loads into one truck) makes financial sense when: (1) utilization is below 70%, (2) customers are in similar directions, (3) waiting time to consolidate is less than 24-48 hours. An empty or half-loaded truck costs almost as much to run as a full one. Consolidation can reduce per-unit logistics costs by 30-50%."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Truck Load Optimizer Africa?","acceptedAnswer":{"@type":"Answer","text":"Enter your route, distance and costs in the fields above. The Truck Load Optimizer Africa then gives you a cost or income estimate you can plan around you can use straight away."}},{"@type":"Question","name":"How accurate is the Truck Load Optimizer Africa?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it."}},{"@type":"Question","name":"Is the Truck Load Optimizer Africa free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Does this calculate a legal truck load limit?","acceptedAnswer":{"@type":"Answer","text":"No. Capacity is a value you enter. Confirm the vehicle plate and registration plus current axle, gross-weight and route restrictions with the responsible authority before dispatch."}},{"@type":"Question","name":"What does cost per tonne-km mean?","acceptedAnswer":{"@type":"Answer","text":"It is the total trip cost you entered divided by the load in tonnes and trip distance in kilometres. The calculator does not supply a fare, tariff or market benchmark."}},{"@type":"Question","name":"When should I compare consolidation?","acceptedAnswer":{"@type":"Answer","text":"Compare scenarios when utilization is below your target, but also check delivery timing, cargo compatibility, safety and current legal restrictions. The calculator does not recommend a dispatch decision."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -150,26 +150,22 @@ details[open] summary::after{content:'\2212'}
         </select>
       </div>
       <div class="field">
-        <label>Truck Capacity (tonnes)</label>
-        <input aria-label="TruckCapacity" type="number" id="truckCapacity" value="10" min="0.5" step="0.5">
+        <label for="truckCapacity">Entered Truck Capacity (tonnes)</label>
+        <input type="number" id="truckCapacity" value="10" min="0.5" step="0.5">
+        <span class="hint">Verify the vehicle plate, registration and route/axle restrictions. This input is not a legal approval.</span>
       </div>
       <div class="field">
-        <label>Actual Load Weight (tonnes)</label>
-        <input aria-label="E.g. 7.5" type="number" id="truckLoad" placeholder="e.g. 7.5" min="0" step="0.5">
+        <label for="truckLoad">Actual Load Weight (tonnes)</label>
+        <input type="number" id="truckLoad" placeholder="e.g. 7.5" min="0" step="0.5">
       </div>
       <div class="field">
-        <label>Trip Distance (km)</label>
-        <input aria-label="E.g. 500" type="number" id="truckDistance" placeholder="e.g. 500" min="1">
+        <label for="truckDistance">Trip Distance (km)</label>
+        <input type="number" id="truckDistance" placeholder="e.g. 500" min="1">
       </div>
       <div class="field">
-        <label>Total Trip Cost (fuel + driver + tolls)</label>
-        <input aria-label="E.g. 50000" type="number" id="truckTripCost" placeholder="e.g. 50000" min="0">
+        <label for="truckTripCost">Total Trip Cost</label>
+        <input type="number" id="truckTripCost" placeholder="e.g. 50000" min="0">
         <span class="hint">In your local currency for this specific trip</span>
-      </div>
-      <div class="field">
-        <label>Fuel Consumption (L/100km)</label>
-        <input aria-label="TruckFuelL" type="number" id="truckFuelL" value="30" min="1" step="0.5">
-        <span class="hint">Loaded truck — empty may be 15-25% less</span>
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcTruckLoad()">Optimize Load</button>
@@ -212,9 +208,9 @@ details[open] summary::after{content:'\2212'}
 </section>
   <div class="faq-section">
     <h2>Frequently Asked Questions</h2>
-    <details><summary>What is the legal truck load limit in Africa?</summary><div class="faq-body">Load limits vary by country and road type. In Kenya, the legal gross vehicle weight for a rigid truck is 48 tonnes, but axle loads are strictly monitored. Nigeria enforces 12 tonnes per single axle on federal highways. South Africa uses a sophisticated axle load management system. Overloading in Africa is common but leads to road damage and heavy fines at weigh stations.</div></details>
-    <details><summary>What does cost per tonne-km mean in logistics?</summary><div class="faq-body">Cost per tonne-km is a standard logistics efficiency metric: total cost of a trip divided by the tonnes carried and the kilometres travelled. It allows comparison across different routes, loads, and transport modes. In Africa, cost per tonne-km averages $0.05-0.15 for large trucks, but can exceed $0.30 for inefficient or partial loads, compared to $0.02-0.05 in Europe.</div></details>
-    <details><summary>When should I consolidate loads?</summary><div class="faq-body">Load consolidation (combining multiple small loads into one truck) makes financial sense when: (1) utilization is below 70%, (2) customers are in similar directions, (3) waiting time to consolidate is less than 24-48 hours. An empty or half-loaded truck costs almost as much to run as a full one. Consolidation can reduce per-unit logistics costs by 30-50%.</div></details>
+    <details><summary>Does this calculate a legal truck load limit?</summary><div class="faq-body">No. Capacity is a value you enter. Confirm the vehicle plate and registration plus current axle, gross-weight and route restrictions with the responsible authority before dispatch.</div></details>
+    <details><summary>What does cost per tonne-km mean?</summary><div class="faq-body">It is the total trip cost you entered divided by the load in tonnes and trip distance in kilometres. The calculator does not supply a fare, tariff or market benchmark.</div></details>
+    <details><summary>When should I compare consolidation?</summary><div class="faq-body">Compare scenarios when utilization is below your target, but also check delivery timing, cargo compatibility, safety and current legal restrictions. The calculator does not recommend a dispatch decision.</div></details>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="transport" current="truck-load">
@@ -236,60 +232,9 @@ function prefillTruck() {
   document.getElementById('truckCapacity').value = TRUCK_PRESETS[type] || 10;
 }
 
-function calcTruckLoad() {
-  var capacity = parseFloat(document.getElementById('truckCapacity').value) || 0;
-  var load = parseFloat(document.getElementById('truckLoad').value) || 0;
-  var dist = parseFloat(document.getElementById('truckDistance').value) || 0;
-  var cost = parseFloat(document.getElementById('truckTripCost').value) || 0;
-  var fuelL = parseFloat(document.getElementById('truckFuelL').value) || 30;
-
-  if (capacity === 0 || load === 0 || dist === 0) { alert('Please fill in truck capacity, load, and distance.'); return; }
-
-  var efficiency = (load / capacity * 100);
-  var tonneKm = load * dist;
-  var costPerTonneKm = cost > 0 ? cost / tonneKm : 0;
-  var costPerTonne = cost > 0 ? cost / load : 0;
-  var emptyCapacity = capacity - load;
-  var potentialSaving = cost > 0 ? (emptyCapacity / capacity) * cost : 0;
-
-  var effClass = efficiency >= 80 ? 'good' : (efficiency >= 60 ? 'mid' : 'low');
-  var effBar = document.getElementById('effBar');
-  effBar.style.width = efficiency.toFixed(0) + '%';
-  effBar.className = 'efficiency-bar ' + effClass;
-  document.getElementById('effPct').textContent = efficiency.toFixed(0) + '% utilization';
-
-  var fmt = function(n){ return n.toLocaleString('en', {maximumFractionDigits:0}); };
-
-  document.getElementById('truckMetrics').innerHTML = [
-    [efficiency.toFixed(0) + '%', 'Load Utilization'],
-    [fmt(Math.round(tonneKm)), 'Tonne-km'],
-    [cost > 0 ? fmt(Math.round(costPerTonneKm)) : 'N/A', 'Cost/Tonne-km'],
-    [cost > 0 ? fmt(Math.round(costPerTonne)) : 'N/A', 'Cost/Tonne'],
-    [fmt(emptyCapacity.toFixed(1)) + 't', 'Empty Capacity'],
-    [cost > 0 ? fmt(Math.round(potentialSaving)) : 'N/A', 'Wasted Capacity Cost']
-  ].map(function(m){
-    return '<div class="metric"><div class="metric-val">' + m[0] + '</div><div class="metric-label">' + m[1] + '</div></div>';
-  }).join('');
-
-  var rec, recClass;
-  if (efficiency >= 85) {
-    rec = '&#x2705; Excellent load efficiency (' + efficiency.toFixed(0) + '%). Your truck is well-utilized on this route. Estimated wasted capacity cost: ' + (cost > 0 ? fmt(Math.round(potentialSaving)) : 'N/A');
-    recClass = 'good';
-  } else if (efficiency >= 65) {
-    rec = '&#x26a0;&#xfe0f; Moderate efficiency (' + efficiency.toFixed(0) + '%). You have ' + emptyCapacity.toFixed(1) + ' tonnes of unused capacity. Consider consolidating with other shipments to reduce the cost per tonne-km by up to ' + ((1 - efficiency/100) * 50).toFixed(0) + '%.';
-    recClass = 'warn';
-  } else {
-    rec = '&#x274c; Low efficiency (' + efficiency.toFixed(0) + '%). Running at less than 65% capacity significantly increases your cost per tonne-km. Consolidate loads, postpone the trip until you have more cargo, or use a smaller truck for this load.';
-    recClass = 'bad';
-  }
-  var recEl = document.getElementById('truckRec');
-  recEl.textContent = '';
-  recEl.innerHTML = rec;
-  recEl.className = 'rec-box ' + recClass;
-
-  document.getElementById('truckResults').classList.add('on');
-}
 </script>
+<script src="/assets/js/engines/transport-cost-engine.js?v=00ba7a97"></script>
+<script src="/assets/js/pages/transport-cost-english-bridge.js?v=de9593dd"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>

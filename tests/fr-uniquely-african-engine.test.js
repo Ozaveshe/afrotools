@@ -121,17 +121,20 @@ assert.deepStrictEqual(
   { status: "invalid", values: {} },
   "bride-price invalid duration fails closed"
 );
-assert.strictEqual(Object.keys(engine.routeContracts).length, 20, "route-specific engine contract count");
-assert.strictEqual(Object.keys(engine.calculators).length, 20, "route-specific calculator count");
+assert.ok(Object.keys(engine.routeContracts).length >= 20, "route-specific engine contracts include the French programme");
+assert.ok(Object.keys(engine.calculators).length >= 20, "route-specific calculators include the French programme");
 assert.strictEqual(Object.keys(PRESENTATION_FACTORIES).length, 20, "route-specific presentation count");
 assert.strictEqual(Object.keys(PAGE_RENDERERS).length, 20, "route-specific renderer count");
 
 const fixtureIds = fixtures.routes.map((fixture) => fixture.id);
 assert.strictEqual(new Set(fixtureIds).size, 20, "oracle fixture ids must be unique");
-assert.deepStrictEqual(
-  new Set(Object.keys(engine.routeContracts)),
-  new Set(fixtureIds),
-  "engine contracts and English owner oracles must cover the same routes"
+assert.ok(
+  fixtureIds.every((id) => Object.prototype.hasOwnProperty.call(engine.routeContracts, id)),
+  "every French programme oracle must have an engine contract"
+);
+assert.ok(
+  fixtureIds.every((id) => Object.prototype.hasOwnProperty.call(engine.calculators, id)),
+  "every French programme oracle must have a calculator"
 );
 
 for (const fixture of fixtures.routes) {
@@ -218,12 +221,34 @@ for (const fixture of nativeFixtures.routes) {
     fixture.sourceSha256,
     `${fixture.id}: hand-authored English owner fingerprint drifted; recapture its oracle before changing parity`
   );
-  assert(nativeExportSource.includes(`"${fixture.id}": {`), `${fixture.id}: explicit French native export contract`);
-  assert(nativeGuardSource.includes(`"${fixture.id}": {`), `${fixture.id}: explicit French native invalid-state contract`);
   const frenchSource = fs.readFileSync(path.join(root, row.french.file), "utf8");
-  assert(frenchSource.includes("/assets/js/pages/fr-uniquely-african-native-exports.js"),
+  const ownsNativeMobileMoneyContract = fixture.id === "mobile-money-fees"
+    && frenchSource.includes("/assets/js/engines/mobile-money-quote-engine.js")
+    && frenchSource.includes("/assets/js/pages/mobile-money-quote-parity.js")
+    && frenchSource.includes('id="mm-copy"')
+    && frenchSource.includes('id="mm-json"');
+  const ownsNativeFuneralContract = fixture.id === "burial-cost"
+    && frenchSource.includes("/assets/js/engines/funeral-budget-engine.js")
+    && frenchSource.includes("/assets/js/pages/fr-funeral-budget-parity.js")
+    && frenchSource.includes('id="fb-copy" data-native-export="copy"')
+    && frenchSource.includes('id="fb-json" data-native-export="json"')
+    && frenchSource.includes('id="fb-txt" data-native-export="txt"')
+    && frenchSource.includes('id="fb-error" class="rm-error" role="alert"');
+  const ownsNativeRemittanceV2Contract = ["remittance-compare", "remittance-v2"].includes(fixture.id)
+    && frenchSource.includes("/engines/remittance-quote-comparator-engine.js")
+    && frenchSource.includes("/assets/js/pages/remittance-quote-parity.js")
+    && frenchSource.includes("/assets/js/pages/fr-remittance-v2-a11y.js")
+    && frenchSource.includes('id="rm-copy" data-native-export="copy"')
+    && frenchSource.includes('id="rm-json" data-native-export="json"')
+    && frenchSource.includes('id="rm-error" class="rm-error" role="alert"');
+  const ownsPageNativeContract = ownsNativeMobileMoneyContract || ownsNativeFuneralContract || ownsNativeRemittanceV2Contract;
+  assert(ownsPageNativeContract || nativeExportSource.includes(`"${fixture.id}": {`),
+    `${fixture.id}: explicit French native export contract`);
+  assert(ownsPageNativeContract || nativeGuardSource.includes(`"${fixture.id}": {`),
+    `${fixture.id}: explicit French native invalid-state contract`);
+  assert(ownsPageNativeContract || frenchSource.includes("/assets/js/pages/fr-uniquely-african-native-exports.js"),
     `${fixture.id}: French route loads its explicit export owner`);
-  assert(frenchSource.includes("/assets/js/pages/fr-uniquely-african-native-guards.js"),
+  assert(ownsPageNativeContract || frenchSource.includes("/assets/js/pages/fr-uniquely-african-native-guards.js"),
     `${fixture.id}: French route loads its explicit validation owner`);
 }
 

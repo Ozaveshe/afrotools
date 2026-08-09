@@ -253,7 +253,7 @@ function buildRegistry(asOf) {
     toolsByRoute.get(route).push(tool.id);
   });
 
-  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
+  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|gepf|transfer-duty|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
   const entries = new Map(
     existing.sources
       .filter(function (source) {
@@ -414,7 +414,7 @@ function buildRegistry(asOf) {
   add({ id:'savings-goal-user-input-method', sourceName:'Savings Goal Planner user-input methodology with FSCA consumer financial-goal context', sourceType:'regulator', sourceUrl:'https://www.fsca.co.za/Consumers/', countryCodes:['ALL'], appliesTo:['savings','goals','personal-finance'], lastCheckedAt:today, lastReviewedAt:today, freshnessStatus:'fresh', confidence:'reviewed', reviewCadenceDays:365, notes:'Local constant-return plan using user-entered goal, current savings, month-end contribution, period, effective annual return assumption, source and checked date within 365 days. No product or country rates, presets, guarantee, recommendation, tax claim, AI or network request.', displayDisclaimer:'User-entered constant-return plan only. Confirm interest method, fees, tax, access restrictions, risk and current provider terms.', toolIds:['savings-goal','objectif-epargne-fr','zana-lengo-la-akiba-sw'], routes:['/tools/savings-goal/','/fr/tools/objectif-epargne/','/sw/zana/lengo-la-akiba/'] });
   add({id:'car-loan-user-input-method',sourceName:'Car Loan Cost Planner user-input methodology with Central Bank of Kenya total-cost-of-credit context',sourceType:'regulator',sourceUrl:'https://www.centralbank.go.ke/uploads/press_releases/712400338_Press%20Release-Launch%20of%20Cost%20of%20Credit%20Website-June%202017.pdf',countryCodes:['ALL'],appliesTo:['vehicle-finance','loans','amortization','personal-finance'],lastCheckedAt:'2026-07-22',lastReviewedAt:'2026-07-22',freshnessStatus:freshnessStatus('2026-07-22','2026-07-22',365,today),confidence:'reviewed',reviewCadenceDays:365,notes:'Local fixed-rate vehicle-finance plan using user-entered offer and operating-cost assumptions checked within 365 days. No lender/country rates, approval verdict, ranking, depreciation, insurance rule, deposit advice, AI or network request.',displayDisclaimer:'User-entered loan and operating-cost plan only. Confirm rate basis, APR, fees, tax, balloon, insurance and repayment schedule with the provider.',toolIds:['car-loan','pret-automobile-fr','zana-mkopo-wa-gari-sw'],routes:['/tools/car-loan/','/fr/tools/pret-automobile/','/sw/zana/mkopo-wa-gari/']});
   add({id:'student-loan-user-input-method',sourceName:'Student Loan Repayment Planner user-input methodology with official HELB, NSFAS and TETFund boundary context',sourceType:'official',sourceUrl:'https://www.helb.co.ke/helb-products/helb-loans/undergraduate-loans/',countryCodes:['ALL'],appliesTo:['student-finance','loans','amortization','education'],lastCheckedAt:'2026-07-22',lastReviewedAt:'2026-07-22',freshnessStatus:freshnessStatus('2026-07-22','2026-07-22',365,today),confidence:'reviewed',reviewCadenceDays:365,notes:'Local fixed-rate repayment plan using a user-entered recent statement, rate, fees, grace treatment and term. No NSFAS, HELB, TETFund, SOBA or private-provider preset, eligibility or approval verdict, income-contingent schedule, recommendation, AI or network request.',displayDisclaimer:'User-entered fixed-rate plan only. Confirm the official balance, rate method, fees, interest during study or grace, deductions, penalties, waivers and repayment schedule with the provider.',toolIds:['student-loan','pret-etudiant-fr'],routes:['/tools/student-loan/','/fr/tools/pret-etudiant/']});
-  add({id:'ng-pension-cps-scenario-method',sourceName:'Nigeria CPS contribution and RSA scenario methodology with PenCom PRA 2014 context',sourceType:'official',sourceUrl:'https://www.pencom.gov.ng/pra2014/',countryCodes:['NG'],appliesTo:['pensions','retirement','salary','financial-planning'],lastCheckedAt:'2026-07-23',lastReviewedAt:'2026-07-23',freshnessStatus:freshnessStatus('2026-07-23','2026-07-23',365,today),confidence:'reviewed',reviewCadenceDays:365,notes:'PenCom PRA 2014 section 4 supports the 10% employer and 8% employee minimum contribution defaults for covered employment. The local engine uses editable user-entered contribution rates, RSA balance, pensionable emoluments, voluntary contribution, salary growth and a separately sourced net-return assumption checked within 365 days. It does not rank PFAs or calculate lump sums, programmed withdrawals, annuities, gratuity, tax treatment or guaranteed benefits.',displayDisclaimer:'User-entered CPS contribution and RSA planning scenario only. Confirm coverage, pensionable emoluments, rates, balances, fees, returns and benefit options with PenCom, the employer and a licensed provider.',toolIds:['ng-pension','ng-pension-fr','ng-pension-ha'],routes:['/tools/ng-pension/','/fr/tools/ng-pension/','/ha/kayan-aiki/fansho-najeriya/']});
+  add({id:'ng-pension-cps-scenario-method',sourceName:'Nigeria CPS contribution and RSA scenario methodology with PenCom PRA 2014 context',sourceType:'official',sourceUrl:'https://www.pencom.gov.ng/pra2014/',countryCodes:['NG'],appliesTo:['pensions','retirement','salary','financial-planning'],lastCheckedAt:'2026-08-09',lastReviewedAt:'2026-08-09',freshnessStatus:freshnessStatus('2026-08-09','2026-08-09',365,today),confidence:'reviewed',reviewCadenceDays:365,notes:'PenCom PRA 2014 section 4 supports the 10% employer and 8% employee minimum contribution defaults for covered employment. The local engine uses editable user-entered contribution rates, RSA balance, pensionable emoluments, voluntary contribution, salary growth and a separately sourced net-return assumption checked within 365 days. It does not rank PFAs or calculate lump sums, programmed withdrawals, annuities, gratuity, tax treatment or guaranteed benefits.',displayDisclaimer:'User-entered CPS contribution and RSA planning scenario only. Confirm coverage, pensionable emoluments, rates, balances, fees, returns and benefit options with PenCom, the employer and a licensed provider.',toolIds:['ng-pension','ng-pension-fr','ng-pension-ha','ng-pension-sw-parity'],routes:['/tools/ng-pension/','/fr/tools/ng-pension/','/ha/kayan-aiki/fansho-najeriya/','/sw/zana/kikokotoo-pensheni-nigeria']});
 
   const rates = entries.get('afrorates-policy-rate-pack');
   updateLiveMetaEntry(rates, meta.rates, today, {
@@ -480,7 +480,8 @@ function buildRegistry(asOf) {
   }
 
   const payeRoutes = formulas.filter(function (formula) {
-    return formula.formulaFamily === 'paye-route';
+    return formula.formulaFamily === 'paye-route'
+      && /(?:paye|salary|mshahara|salaire|paie)/i.test([formula.id, formula.artifactPath].join(' '));
   });
   const vatRoutes = formulas.filter(function (formula) {
     return formula.formulaFamily === 'vat-route';
@@ -1071,6 +1072,34 @@ function buildRegistry(asOf) {
     );
   }
 
+  const southAfricaGepfVerification = toolVerification.tools && toolVerification.tools['za-gepf'];
+  if (southAfricaGepfVerification) {
+    const routes = (southAfricaGepfVerification.routes || []).map(normalizedRoute);
+    add(
+      withOptional(
+        { id: 'south-africa-gepf-source', sourceName: (southAfricaGepfVerification.source_titles || [])[0] || 'Government Employees Pension Fund', sourceType: 'official', sourceUrl: (southAfricaGepfVerification.source_urls || [])[0], countryCodes: ['ZA'], appliesTo: ['salary', 'retirement'], lastCheckedAt: southAfricaGepfVerification.last_verified, lastReviewedAt: southAfricaGepfVerification.last_verified, effectiveFrom: southAfricaGepfVerification.effective_from, freshnessStatus: freshnessStatus(southAfricaGepfVerification.last_verified, southAfricaGepfVerification.last_verified, 90, today), confidence: 'reviewed', reviewCadenceDays: 90, notes: 'The local GEPF retirement planner uses published three-service gratuity and annuity factors for members with at least ten vested-service years, plus current contribution rates. It requires user-entered service-record values and fails closed outside the supported public formula.', displayDisclaimer: 'GEPF planning estimate only. Confirm service records, actuarial factors, tax, early-retirement approval and final benefits with GEPF before acting.' },
+        {
+          toolIds: unique(routes.flatMap(function (route) { return toolsByRoute.get(route) || []; }).concat(['za-gepf'])),
+          routes,
+        },
+      ),
+    );
+  }
+
+  const southAfricaTransferDutyVerification = toolVerification.tools && toolVerification.tools['za-transfer-duty'];
+  if (southAfricaTransferDutyVerification) {
+    const routes = (southAfricaTransferDutyVerification.routes || []).map(normalizedRoute);
+    add(
+      withOptional(
+        { id: 'south-africa-transfer-duty-source', sourceName: (southAfricaTransferDutyVerification.source_titles || [])[0] || 'SARS Transfer Duty rates', sourceType: 'official', sourceUrl: (southAfricaTransferDutyVerification.source_urls || [])[0], countryCodes: ['ZA'], appliesTo: ['tax', 'property'], lastCheckedAt: southAfricaTransferDutyVerification.last_verified, lastReviewedAt: southAfricaTransferDutyVerification.last_verified, effectiveFrom: southAfricaTransferDutyVerification.effective_from, freshnessStatus: freshnessStatus(southAfricaTransferDutyVerification.last_verified, southAfricaTransferDutyVerification.last_verified, 90, today), confidence: 'reviewed', reviewCadenceDays: 90, notes: 'The local transfer-duty engine applies the SARS 2027 progressive table to the greater of fair market value and total consideration. VAT status is supplied by the user; the tool does not decide VAT scope or calculate VAT.', displayDisclaimer: 'South Africa transfer-duty planning estimate only. Confirm the acquisition date, declared value, VAT treatment, exemptions, filing and payment with SARS and the conveyancer.' },
+        {
+          toolIds: unique(routes.flatMap(function (route) { return toolsByRoute.get(route) || []; }).concat(['za-transfer-duty'])),
+          routes,
+        },
+      ),
+    );
+  }
+
   const transferPricingVerification = toolVerification.tools && toolVerification.tools['transfer-pricing'];
   if (transferPricingVerification) {
     const routes = (transferPricingVerification.routes || []).map(normalizedRoute);
@@ -1281,16 +1310,7 @@ function buildRegistry(asOf) {
   delete electricityEntry.sourceUrl;
   add(electricityEntry);
 
-  const remittanceFormula = formulas.find(function (formula) {
-    return formula.formulaFamily === 'assets-js-engines-remittance-v2';
-  });
-  const remittanceEntry = formulaEntry(remittanceFormula, { id: 'remittance-fx-planning', countryCode: 'ALL', fallbackName: 'AfroTools remittance and FX planning model', appliesTo: ['fx', 'business'], routes: ['/tools/remittance-compare/'], toolIds: ['remittance-compare'], notes: 'Indicative remittance comparison using the FX snapshot plus modeled provider fees and spreads.', disclaimer: 'Remittance costs and exchange rates are indicative. Obtain a current provider quote before sending money.' }, today);
-  remittanceEntry.lastCheckedAt = forex.lastCheckedAt;
-  remittanceEntry.lastReviewedAt = forex.lastReviewedAt;
-  remittanceEntry.freshnessStatus = forex.freshnessStatus;
-  remittanceEntry.confidence = 'estimated';
-  remittanceEntry.reviewCadenceDays = 7;
-  add(remittanceEntry);
+  add({ id: 'remittance-fx-planning', sourceName: 'Remittance Quote Comparator user-evidence methodology with World Bank RPW context', sourceType: 'multilateral', sourceUrl: 'https://remittanceprices.worldbank.org/', countryCodes: ['ALL'], appliesTo: ['fx', 'business', 'remittance'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 365, notes: 'Local comparison using only two or three user-entered provider quote receipts and their checked/expiry times. No provider price, fee, FX rate, ranking, recommendation, forecast, AI request or network request is supplied. World Bank Remittance Prices Worldwide is context only and is not copied into the calculator.', displayDisclaimer: 'User-entered quote comparison only. Recheck the provider quote, expiry, total debit, recipient amount, payout route, limits, identity requirements and safety before sending money.', toolIds: ['remittance-compare'], routes: ['/tools/remittance-compare/'] });
 
   const ledgerConfigs = [
     {

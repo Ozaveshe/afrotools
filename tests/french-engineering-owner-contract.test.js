@@ -104,7 +104,10 @@ for (const row of manifest.routes) {
   assert.match(frenchHtml, /"privacy":"local-first","aiConsent":"explicit"/);
   assert.match(frenchHtml, /\/assets\/js\/pages\/fr-engineering-export\.js/);
   assert.match(frenchHtml, new RegExp(`data-fr-engineering-export="${row.id}"`));
-  assert.match(frenchHtml, /property="og:image" content="https:\/\/afrotools\.com\/assets\/img\/tools\//);
+  assert.match(
+    frenchHtml,
+    /<meta\b(?=[^>]*\bproperty="og:image")(?=[^>]*\bcontent="https:\/\/afrotools\.com\/assets\/img\/tools\/)[^>]*>/i
+  );
   assert.doesNotMatch(frenchHtml, /fr-engineering-localizer|MutationObserver|mountSource|SOURCE_URL|<iframe/i);
   assert.doesNotMatch(frenchHtml, /\/assets\/js\/pages\/english-df-app-upgrades\.js/i);
   assert.doesNotMatch(frenchHtml, />Informations et hypothèses du calcul<\/button>/);

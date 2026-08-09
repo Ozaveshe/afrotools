@@ -1,19 +1,19 @@
 (function initReligiousCulturalParity(root, factory) {
-  if (typeof module === 'object' && module.exports) module.exports = factory();
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./prayer-times.js'));
   else {
     root.AfroTools = root.AfroTools || {};
-    root.AfroTools.religiousCulturalParity = factory();
+    root.AfroTools.religiousCulturalParity = factory(root.AfroTools.prayerTimes);
   }
-})(typeof globalThis !== 'undefined' ? globalThis : this, function createReligiousCulturalParity() {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function createReligiousCulturalParity(prayerTimes) {
   'use strict';
 
-  const PRAYER_PRESETS = Object.freeze({
-    Nairobi: { fajr: '05:18', sunrise: '06:30', dhuhr: '12:32', asr: '15:51', maghrib: '18:35', isha: '19:42', qibla: 7 },
-    Lagos: { fajr: '05:10', sunrise: '06:28', dhuhr: '12:45', asr: '15:58', maghrib: '18:52', isha: '20:03', qibla: 68 },
-    Caire: { fajr: '04:02', sunrise: '05:25', dhuhr: '11:53', asr: '15:29', maghrib: '18:21', isha: '19:41', qibla: 136 },
-    Accra: { fajr: '04:48', sunrise: '05:58', dhuhr: '12:02', asr: '15:17', maghrib: '18:06', isha: '19:14', qibla: 71 },
-    Johannesburg: { fajr: '05:04', sunrise: '06:24', dhuhr: '12:05', asr: '15:14', maghrib: '17:47', isha: '19:01', qibla: 12 },
-    Casablanca: { fajr: '04:47', sunrise: '06:21', dhuhr: '13:28', asr: '17:11', maghrib: '20:28', isha: '21:52', qibla: 93 }
+  const LEGACY_PRAYER_PRESETS = Object.freeze({
+    Nairobi: { fajr:'05:18', sunrise:'06:30', dhuhr:'12:32', asr:'15:51', maghrib:'18:35', isha:'19:42', qibla:7 },
+    Lagos: { fajr:'05:10', sunrise:'06:28', dhuhr:'12:45', asr:'15:58', maghrib:'18:52', isha:'20:03', qibla:68 },
+    Caire: { fajr:'04:02', sunrise:'05:25', dhuhr:'11:53', asr:'15:29', maghrib:'18:21', isha:'19:41', qibla:136 },
+    Accra: { fajr:'04:48', sunrise:'05:58', dhuhr:'12:02', asr:'15:17', maghrib:'18:06', isha:'19:14', qibla:71 },
+    Johannesburg: { fajr:'05:04', sunrise:'06:24', dhuhr:'12:05', asr:'15:14', maghrib:'17:47', isha:'19:01', qibla:12 },
+    Casablanca: { fajr:'04:47', sunrise:'06:21', dhuhr:'13:28', asr:'17:11', maghrib:'20:28', isha:'21:52', qibla:93 }
   });
 
   const PROVERBS = Object.freeze({
@@ -161,18 +161,30 @@
       return { netAssets: money(netAssets), nisab: money(nisab), eligible: netAssets >= nisab, zakat: netAssets >= nisab ? money(netAssets * 0.025) : 0 };
     },
     prayer(input) {
-      const city = text(input, 'city');
-      const preset = PRAYER_PRESETS[city];
-      if (!preset) throw failure('UNSUPPORTED', 'city');
-      parseDate(input.date, 'date');
-      return Object.assign({ city, method: text(input, 'method'), date: input.date }, preset);
+      if (typeof input.school === 'undefined') {
+        const city = text(input, 'city');
+        const preset = LEGACY_PRAYER_PRESETS[city];
+        if (!preset) throw failure('UNSUPPORTED', 'city');
+        parseDate(input.date, 'date');
+        return Object.assign({ city, method:text(input, 'method'), date:input.date }, preset);
+      }
+      if (!prayerTimes) throw failure('ENGINE_UNAVAILABLE', null);
+      const result = prayerTimes.calculateDay({ city: text(input, 'city'), method: text(input, 'method'), school: input.school || 'standard', date: input.date });
+      if (!result.ok) throw failure(result.code, result.code.includes('CITY') ? 'city' : result.code.includes('METHOD') ? 'method' : 'date');
+      return result.values;
     },
     ramadan(input) {
-      parseDate(input.startDate, 'startDate');
-      const days = number(input, 'days', { min: 1, max: 30, integer: true });
-      const suhoorBuffer = number(input, 'suhoorBuffer', { min: 0, max: 120, integer: true });
-      const iftarBuffer = number(input, 'iftarBuffer', { min: 0, max: 120, integer: true });
-      return { startDate: input.startDate, days, suhoor: addMinutes(text(input, 'fajr'), -suhoorBuffer), iftar: addMinutes(text(input, 'maghrib'), iftarBuffer) };
+      if (!input.city && input.fajr && input.maghrib) {
+        parseDate(input.startDate, 'startDate');
+        const days = number(input, 'days', { min:1, max:30, integer:true });
+        const suhoorBuffer = number(input, 'suhoorBuffer', { min:0, max:120, integer:true });
+        const iftarBuffer = number(input, 'iftarBuffer', { min:0, max:120, integer:true });
+        return { startDate:input.startDate, days, suhoor:addMinutes(text(input, 'fajr'), -suhoorBuffer), iftar:addMinutes(text(input, 'maghrib'), iftarBuffer) };
+      }
+      if (!prayerTimes) throw failure('ENGINE_UNAVAILABLE', null);
+      const result = prayerTimes.calculateRamadan({ city: text(input, 'city'), method: text(input, 'method'), school: input.school || 'standard', startDate: input.startDate, days: number(input, 'days', { min: 1, max: 30, integer: true }), suhoorBuffer: number(input, 'suhoorBuffer', { min: 0, max: 120, integer: true }), iftarBuffer: number(input, 'iftarBuffer', { min: 0, max: 120, integer: true }) });
+      if (!result.ok) throw failure(result.code, result.code.includes('DATE') ? 'startDate' : null);
+      return result.values;
     },
     faraid(input) {
       const estate = number(input, 'estate', { min: 0 });
@@ -289,7 +301,7 @@
     calculate,
     calculators: Object.freeze(Object.keys(calculators)),
     fixtures: Object.freeze({
-      prayerPresets: PRAYER_PRESETS,
+      prayerCities: prayerTimes ? prayerTimes.CITIES : Object.freeze({}),
       proverbs: PROVERBS,
       akanNames: AKAN_NAMES
     })

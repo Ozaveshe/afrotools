@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "95692683",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 4,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the two remittance workflows, Mobile Money Fees and Burial Cost beyond the 27-row Culture checkpoint. They must use user-entered timestamped quotes or family-confirmed costs, shared local engines, parsed exports and the coordinator's 31-app browser matrix; Japa and Brideprice remain fail-closed.",
+  "candidates": [
+    {
+      "id": "culture-user-evidence-four",
+      "commit": "b90c43453b5a2ab16f64ef3502550e7bfeec77d0",
+      "expectedRoutes": 4,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 4,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-religious-cultural-african-lane.spec.js",
+          "engineTest": "tests/sw-religious-cultural-african-lane.test.js",
+          "workflow": "Remittance Compare, Remittance V2 and Mobile Money Fees compare only timestamped user-entered quote receipts; Burial Cost sums only family-confirmed line items and benefits. No provider tariff, religious multiplier, insurance-price or generalized cultural claim remains in the calculation owner.",
+          "export": "The coordinator reran six Chromium workflows covering all 31 accepted lane apps at mobile and 200-percent reflow, parsed every advertised JSON/TXT export, checked invalid/reset and privacy, and proved the corresponding English owners use the same local engines."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-religious-cultural-african-lane-candidate.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/candidateAccepted", "equals": 31 },
+            { "pointer": "/totals/blocked", "equals": 2 },
+            { "pointer": "/totals/denominator", "equals": 33 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "remittance-compare", "swahiliRoute": "/sw/zana/ulinganisho-uhamishaji-pesa/" },
+            { "englishId": "remittance-v2", "swahiliRoute": "/sw/zana/ulinganisho-uhamishaji-pesa-kina/" },
+            { "englishId": "mobile-money-fees", "swahiliRoute": "/sw/zana/ada-pesa-simu/" },
+            { "englishId": "burial-cost", "swahiliRoute": "/sw/zana/gharama-za-mazishi/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

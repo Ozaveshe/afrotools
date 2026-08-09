@@ -1,125 +1,490 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
-<head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de bordereau quantitatif | AfroTools</title>
-<meta name="description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
-<link rel="icon" href="/assets/img/favicon.ico">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
-<script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
-<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<style>
-.boq-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+  <head>
+    <script
+      src="/assets/js/analytics-bootstrap.js?v=03318ee7"
+      data-loader-version="d378a891"
+      async
+    ></script>
+    <meta charset="UTF-8" />
+    <meta name="view-transition" content="same-origin" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Générateur de bordereau quantitatif | AfroTools</title>
+    <meta name="description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+    <meta property="og:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
+    <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8" />
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69" />
+    <script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+    <style>
+      .boq-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px 20px 60px;
+      }
 
-/* HERO */
-.boq-hero{background:linear-gradient(135deg,var(--color-text) 0%,#1e293b 60%,#0c1a0c 100%);border-radius:20px;padding:44px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
-.boq-hero::before{content:'';position:absolute;top:-20%;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.08),transparent 70%);pointer-events:none;}
-.boq-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2);color:#60A5FA;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
-.boq-hero h1{font-size:clamp(1.35rem,5.5vw,2.2rem);color:#fff;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.15;}
-.boq-hero p{color:rgba(255,255,255,.72);font-size:.9rem;max-width:520px;line-height:1.6;}
-.boq-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
-.boq-hero-tags span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;}
+      /* HERO */
+      .boq-hero {
+        background: linear-gradient(
+          135deg,
+          var(--color-text) 0%,
+          #1e293b 60%,
+          #0c1a0c 100%
+        );
+        border-radius: 20px;
+        padding: 44px 40px;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .boq-hero::before {
+        content: "";
+        position: absolute;
+        top: -20%;
+        right: 0;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.08),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .boq-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        color: #60a5fa;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .boq-hero h1 {
+        font-size: clamp(1.35rem, 5.5vw, 2.2rem);
+        color: #fff;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+        line-height: 1.15;
+      }
+      .boq-hero p {
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.9rem;
+        max-width: 520px;
+        line-height: 1.6;
+      }
+      .boq-hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .boq-hero-tags span {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 5px 12px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 600;
+      }
 
-/* LAYOUT */
-.boq-layout{display:grid;grid-template-columns:320px 1fr;gap:20px;}
-@media(max-width:800px){.boq-layout{grid-template-columns:1fr;}}
+      /* LAYOUT */
+      .boq-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 800px) {
+        .boq-layout {
+          grid-template-columns: 1fr;
+        }
+      }
 
-/* PANELS */
-.boq-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:24px;}
-.boq-card h3{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+      /* PANELS */
+      .boq-card {
+        background: #fff;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .boq-card h3 {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #9ca3af;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
 
-/* FORM */
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:.72rem;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
-.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:.85rem;color:#111;background:#fafafa;transition:border-color .2s;}
-.field input:focus,.field select:focus{outline:none;border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.1);background:#fff;}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+      /* FORM */
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 5px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        font-size: 0.85rem;
+        color: #111;
+        background: #fafafa;
+        transition: border-color 0.2s;
+      }
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: #fff;
+      }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
 
-/* SECTIONS */
-.section-toggle{width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:9px;background:#fafafa;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:8px;transition:all .15s;}
-.section-toggle:hover{border-color:#2563EB;color:#2563EB;}
-.section-toggle.active{border-color:#2563EB;background:#EFF6FF;color:#1D4ED8;}
-.section-toggle .s-arrow{transition:transform .2s;}
-.section-toggle.active .s-arrow{transform:rotate(180deg);}
-.section-body{display:none;padding:12px;border:1px solid #e5e7eb;border-radius:0 0 9px 9px;margin-top:-8px;margin-bottom:10px;background:#fafafa;}
-.section-body.open{display:block;}
-.section-input-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:8px;font-size:.78rem;}
-.section-input-row label{color:#374151;font-weight:600;}
-.section-input-row input{width:90px;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.78rem;text-align:right;}
+      /* SECTIONS */
+      .section-toggle {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        background: #fafafa;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 8px;
+        transition: all 0.15s;
+      }
+      .section-toggle:hover {
+        border-color: #2563eb;
+        color: #2563eb;
+      }
+      .section-toggle.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .section-toggle .s-arrow {
+        transition: transform 0.2s;
+      }
+      .section-toggle.active .s-arrow {
+        transform: rotate(180deg);
+      }
+      .section-body {
+        display: none;
+        padding: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 0 0 9px 9px;
+        margin-top: -8px;
+        margin-bottom: 10px;
+        background: #fafafa;
+      }
+      .section-body.open {
+        display: block;
+      }
+      .section-input-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.78rem;
+      }
+      .section-input-row label {
+        color: #374151;
+        font-weight: 600;
+      }
+      .section-input-row input {
+        width: 90px;
+        padding: 5px 8px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        text-align: right;
+      }
 
-/* BTN */
-.gen-btn{width:100%;padding:13px;background:linear-gradient(135deg,#2563EB,#1D4ED8);border:none;border-radius:11px;color:#fff;font-size:.88rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;margin-top:8px;transition:transform .15s,box-shadow .15s;}
-.gen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.3);}
+      /* BTN */
+      .gen-btn {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        border-radius: 11px;
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 800;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 8px;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .gen-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+      }
 
-/* RESULTS */
-.boq-table-wrap{overflow-x:auto;}
-.boq-table{width:100%;border-collapse:collapse;font-size:.82rem;}
-.boq-table thead tr{background:#f9fafb;border-bottom:2px solid #e5e7eb;}
-.boq-table th{padding:10px 12px;text-align:left;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;white-space:nowrap;}
-.boq-table th.right{text-align:right;}
-.boq-table td{padding:9px 12px;border-bottom:1px solid #f3f4f6;color:#374151;}
-.boq-table td.right{text-align:right;font-weight:700;color:#111;}
-.boq-table .section-row{background:#EFF6FF;}
-.boq-table .section-row td{font-weight:800;color:#1D4ED8;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;}
-.boq-table .total-row{background:#EFF6FF;border-top:2px solid #93C5FD;}
-.boq-table .total-row td{font-weight:900;font-size:.9rem;color:#1E3A5F;}
-.boq-table tr:hover:not(.section-row):not(.total-row) td{background:#fafafa;}
+      /* RESULTS */
+      .boq-table-wrap {
+        overflow-x: auto;
+      }
+      .boq-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+      .boq-table thead tr {
+        background: #f9fafb;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .boq-table th {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 0.67rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #9ca3af;
+        white-space: nowrap;
+      }
+      .boq-table th.right {
+        text-align: right;
+      }
+      .boq-table td {
+        padding: 9px 12px;
+        border-bottom: 1px solid #f3f4f6;
+        color: #374151;
+      }
+      .boq-table td.right {
+        text-align: right;
+        font-weight: 700;
+        color: #111;
+      }
+      .boq-table .section-row {
+        background: #eff6ff;
+      }
+      .boq-table .section-row td {
+        font-weight: 800;
+        color: #1d4ed8;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .boq-table .total-row {
+        background: #eff6ff;
+        border-top: 2px solid #93c5fd;
+      }
+      .boq-table .total-row td {
+        font-weight: 900;
+        font-size: 0.9rem;
+        color: #1e3a5f;
+      }
+      .boq-table tr:hover:not(.section-row):not(.total-row) td {
+        background: #fafafa;
+      }
 
-/* SUMMARY CARDS */
-.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
-@media(max-width:640px){.summary-grid{grid-template-columns:1fr 1fr;}}
-.sum-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;text-align:center;}
-.sum-card.green{background:#EFF6FF;border-color:#93C5FD;}
-.sum-val{font-size:1.4rem;font-weight:900;color:#111;line-height:1;}
-.sum-lbl{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+      /* SUMMARY CARDS */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 640px) {
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .sum-card {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 14px;
+        text-align: center;
+      }
+      .sum-card.green {
+        background: #eff6ff;
+        border-color: #93c5fd;
+      }
+      .sum-val {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #111;
+        line-height: 1;
+      }
+      .sum-lbl {
+        font-size: 0.65rem;
+        color: #9ca3af;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 3px;
+      }
 
-/* EXPORT BTNS */
-.export-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-.export-btn{flex:1;padding:10px;border-radius:9px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;text-transform:uppercase;letter-spacing:.05em;min-width:100px;}
-.export-btn.pdf{background:#ef4444;color:#fff;}
-.export-btn.csv{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;}
-.export-btn.print{background:#374151;color:#fff;}
-.export-btn:hover{opacity:.88;}
+      /* EXPORT BTNS */
+      .export-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .export-btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 9px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        min-width: 100px;
+      }
+      .export-btn.pdf {
+        background: #ef4444;
+        color: #fff;
+      }
+      .export-btn.csv {
+        background: linear-gradient(135deg, #0062cc, #0055d4);
+        box-shadow: 0 4px 14px rgba(0, 98, 204, 0.35);
+        color: #fff;
+      }
+      .export-btn.print {
+        background: #374151;
+        color: #fff;
+      }
+      .export-btn:hover {
+        opacity: 0.88;
+      }
 
-/* CONTINGENCY BAR */
-.cont-bar{background:#fffbeb;border:1px solid #fbbf24;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:.82rem;}
-.cont-bar strong{font-weight:800;color:#92400e;}
+      /* CONTINGENCY BAR */
+      .cont-bar {
+        background: #fffbeb;
+        border: 1px solid #fbbf24;
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        font-size: 0.82rem;
+      }
+      .cont-bar strong {
+        font-weight: 800;
+        color: #92400e;
+      }
 
-/* PRICE UPDATE NOTE */
-.price-note{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;font-size:.72rem;color:#0369a1;margin-bottom:16px;}
-</style>
+      /* PRICE UPDATE NOTE */
+      .price-note {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.72rem;
+        color: #0369a1;
+        margin-bottom: 16px;
+      }
+    </style>
 
 
 
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Générateur de bordereau quantitatif | AfroTools">
-<meta name="twitter:description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
+    <script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
+    <script
+      src="/assets/js/components/share-card-generator.js?v=1d440fc6"
+      defer
+    ></script>
+    <script
+      src="/assets/js/components/share-button.js?v=f8342961"
+      defer
+    ></script>
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:site_name" content="AfroTools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Générateur de bordereau quantitatif | AfroTools">
+    <meta name="twitter:description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.">
+    <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
 
-<meta property="og:title" content="Générateur de bordereau quantitatif | AfroTools">
-<meta property="og:description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.">
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
+    <meta property="og:title" content="Générateur de bordereau quantitatif | AfroTools">
+    <meta property="og:description" content="Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.">
+    <meta property="article:modified_time" content="2026-03-28" />
+    <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08" />
+
 <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-boq/">
-  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
-  <link rel="stylesheet" href="/assets/css/engineering-vip-reflow.css?v=1c1c293c">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
+    <link
+      rel="stylesheet"
+      href="/assets/css/engineering-enhancements.css?v=b4d7dd3f"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/engineering-vip-reflow.css?v=1c1c293c"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/english-df-app-upgrades.css?v=71f122b6"
+    />
 
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
+    <link
+      rel="stylesheet"
+      href="/assets/css/design-system.min.css?v=1e4c3b11"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3"
+    />
+    <!-- tool-structured-data:auto -->
 
-<style>@media(max-width:420px){.boq-layout,.boq-grid{grid-template-columns:minmax(0,1fr)!important}.boq-layout>*,.boq-card,.boq-card>*{min-inline-size:0!important;max-inline-size:100%!important}.boq-card select,.boq-card input{max-inline-size:100%!important}.boq-table-wrap{max-inline-size:100%;overflow-x:auto}}</style>
+    <style>
+      @media (max-width: 420px) {
+        .boq-layout,
+        .boq-grid {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+        .boq-layout > *,
+        .boq-card,
+        .boq-card > * {
+          min-inline-size: 0 !important;
+          max-inline-size: 100% !important;
+        }
+        .boq-card select,
+        .boq-card input {
+          max-inline-size: 100% !important;
+        }
+        .boq-table-wrap {
+          max-inline-size: 100%;
+          overflow-x: auto;
+        }
+      }
+    </style>
 <meta name="afrotools-content-id" content="fr-engineering:boq-gen">
 <meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
 <meta name="afrotools-source-route" content="/tools/boq-generator/">
@@ -183,239 +548,473 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-orodha-ya-kiasi/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/boq-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
+  <body class="top-level-page-ui-refresh">
+    <afro-navbar></afro-navbar>
 
-<div class="boq-wrap">
-  <!-- HERO -->
-  <div class="boq-hero">
-    <div class="boq-badge">📋 Générateur de bordereau</div>
-    <h1>Bordereau quantitatif<br>pour les projets de construction en Afrique</h1>
-    <p>Obtenez une liste détaillée des matériaux avec des prix indicatifs par pays africain. Exportez le résultat en CSV ou imprimez-le.</p>
-    <div class="boq-hero-tags">
-      <span>🌍 15 pays africains et plus</span>
-      <span>📦 Plus de 60 postes de matériaux</span>
-      <span>💰 Prix locaux indicatifs</span>
-      <span>📤 Exporter CSV / impression</span>
-      <span>🏗️ Résidentiel et commercial</span>
-    </div>
-  </div>
-
-  <div class="boq-layout">
-    <!-- LEFT: INPUTS -->
-    <div>
-      <div class="boq-card">
-        <h3>⚙️ Paramètres du projet</h3>
-
-        <div class="field">
-          <label for="country">Pays du projet</label>
-          <select id="country" onchange="updateCurrency()">
-            <option value="NG">🇳🇬 Nigeria</option>
-            <option value="KE">🇰🇪 Kenya</option>
-            <option value="GH">🇬🇭 Ghana</option>
-            <option value="ZA">🇿🇦 Afrique du Sud</option>
-            <option value="UG">🇺🇬 Ouganda</option>
-            <option value="TZ">🇹🇿 Tanzanie</option>
-            <option value="RW">🇷🇼 Rwanda</option>
-            <option value="ET">🇪🇹 Éthiopie</option>
-            <option value="SN">🇸🇳 Sénégal</option>
-            <option value="CI">🇨🇮 Côte d'Ivoire</option>
-            <option value="CM">🇨🇲 Cameroun</option>
-            <option value="ZM">🇿🇲 Zambie</option>
-            <option value="ZW">🇿🇼 Zimbabwe</option>
-            <option value="EG">🇪🇬 Égypte</option>
-            <option value="MA">🇲🇦 Maroc</option>
-          </select>
+    <div class="boq-wrap">
+      <!-- HERO -->
+      <div class="boq-hero">
+        <div class="boq-badge">📋 Générateur de bordereau</div>
+        <h1>Bordereau quantitatif<br />pour les projets de construction en Afrique</h1>
+        <p>Le bordereau doit être remétré sur les plans définitifs avant achat ou appel d’offres.</p>
+        <div class="boq-hero-tags">
+          <span>🌍 15 pays africains et plus</span>
+          <span>📦 Plus de 60 postes de matériaux</span>
+          <span>Q1 2025 stale rate snapshot</span>
+          <span>📤 Exporter CSV / impression</span>
+          <span>🏗️ Résidentiel et commercial</span>
         </div>
+      </div>
 
-        <div class="field">
-          <label for="buildType">Type de bâtiment</label>
-          <select id="buildType">
-            <option value="res1">Résidentiel – bungalow 1 chambre</option>
-            <option value="res2">Résidentiel – bungalow 2 chambres</option>
-            <option value="res3" selected>Résidentiel – bungalow 3 chambres</option>
-            <option value="res4">Résidentiel – maison 4 chambres</option>
-            <option value="res5">Résidentiel – duplex 5 chambres</option>
-            <option value="comm">Commercial – petit bureau (100 m²)</option>
-            <option value="warehouse">Entrepôt ou magasin (200 m²)</option>
-            <option value="custom">Personnalisé (saisir la surface ci-dessous)</option>
-          </select>
-        </div>
+      <div class="boq-layout">
+        <!-- LEFT: INPUTS -->
+        <div>
+          <div class="boq-card">
+            <h3>⚙️ Paramètres du projet</h3>
 
-        <div class="field-row">
-          <div class="field">
-            <label>Surface au sol (m²)</label>
-            <input aria-label="Surface au sol" type="number" id="floorArea" value="120" min="20" max="5000">
-          </div>
-          <div class="field">
-            <label>Nombre de niveaux</label>
-            <select id="floors" aria-label="Nombre de niveaux">
-              <option value="1" selected>1 (Bungalow)</option>
-              <option value="2">2 (Duplex)</option>
-              <option value="3">3 niveaux</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>Hauteur des murs (m)</label>
-            <input aria-label="Hauteur des murs" type="number" id="wallHeight" value="3" min="2.4" max="6" step="0.1">
-          </div>
-          <div class="field">
-            <label>Type de mur</label>
-            <select id="wallType" aria-label="Type de mur">
-              <option value="block9">Bloc de 225 mm</option>
-              <option value="block6">Bloc de 150 mm</option>
-              <option value="brick">Brique en terre cuite</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Type de toiture</label>
-          <select id="roofType" aria-label="Type de toiture">
-            <option value="zinc" selected>Tôle ondulée ou bac acier longue portée</option>
-            <option value="tiles">Tuiles en terre cuite</option>
-            <option value="concrete">Toiture-terrasse ou dalle en béton</option>
-            <option value="shingles">Bardeaux bitumés</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Niveau de finition</label>
-          <select id="finishing" aria-label="Niveau de finition">
-            <option value="basic">Basique (enduit et peinture)</option>
-            <option value="standard" selected>Standard (carrelage et peinture)</option>
-            <option value="premium">Supérieur (finitions complètes)</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Imprévus (%)</label>
-          <input aria-label="Imprévus" type="number" id="contingency" value="10" min="0" max="30">
-        </div>
-
-        <!-- SECTION OVERRIDES -->
-        <div style="margin-top:16px;border-top:1px solid #f3f4f6;padding-top:14px;">
-          <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Ajuster les quantités (facultatif)</div>
-          <button type="button" class="section-toggle" onclick="toggleSection('doors-sec',this)">
-            🚪 Portes & Fenêtres <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="doors-sec">
-            <div class="section-input-row"><label>Nombre de portes</label><input aria-label="Nombre de portes" type="number" id="numDoors" value="5" min="0"></div>
-            <div class="section-input-row"><label>Nombre de fenêtres</label><input aria-label="Nombre de fenêtres" type="number" id="numWindows" value="8" min="0"></div>
-            <div class="section-input-row"><label>Portes vitrées</label><input aria-label="Nombre de portes vitrées" type="number" id="numGlazed" value="1" min="0"></div>
-          </div>
-
-          <button type="button" class="section-toggle" onclick="toggleSection('plumb-sec',this)">
-            🚰 Plomberie <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="plumb-sec">
-            <div class="section-input-row"><label>Nombre de WC</label><input aria-label="Nombre de WC" type="number" id="numWC" value="2" min="0"></div>
-            <div class="section-input-row"><label>Nombre de douches</label><input aria-label="Nombre de douches" type="number" id="numShowers" value="2" min="0"></div>
-            <div class="section-input-row"><label>Nombre d’éviers de cuisine</label><input aria-label="Nombre d’éviers" type="number" id="numSinks" value="1" min="0"></div>
-          </div>
-
-          <button type="button" class="section-toggle" onclick="toggleSection('elec-sec',this)">
-            ⚡ Électricité <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="elec-sec">
-            <div class="section-input-row"><label>Nombre de chambres</label><input aria-label="Nombre de chambres" type="number" id="numBeds" value="3" min="0"></div>
-            <div class="section-input-row"><label>Nombre de prises par pièce</label><input aria-label="Nombre de prises" type="number" id="numSockets" value="4" min="0"></div>
-            <div class="section-input-row"><label>Inclure un onduleur ?</label>
-              <select id="inverterYN" style="width:90px;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.78rem;" aria-label="Inclure un onduleur">
-                <option value="1">Oui</option>
-                <option value="0">Non</option>
+            <div class="field">
+              <label for="country">Pays du projet</label>
+              <select id="country" onchange="updateCurrency()">
+                <option value="NG">🇳🇬 Nigeria</option>
+                <option value="KE">🇰🇪 Kenya</option>
+                <option value="GH">🇬🇭 Ghana</option>
+                <option value="ZA">🇿🇦 Afrique du Sud</option>
+                <option value="UG">🇺🇬 Ouganda</option>
+                <option value="TZ">🇹🇿 Tanzanie</option>
+                <option value="RW">🇷🇼 Rwanda</option>
+                <option value="ET">🇪🇹 Éthiopie</option>
+                <option value="SN">🇸🇳 Sénégal</option>
+                <option value="CI">🇨🇮 Côte d'Ivoire</option>
+                <option value="CM">🇨🇲 Cameroun</option>
+                <option value="ZM">🇿🇲 Zambie</option>
+                <option value="ZW">🇿🇼 Zimbabwe</option>
+                <option value="EG">🇪🇬 Égypte</option>
+                <option value="MA">🇲🇦 Maroc</option>
               </select>
+            </div>
+
+            <div class="field">
+              <label for="buildType">Type de bâtiment</label>
+              <select id="buildType">
+                <option value="res1">Résidentiel – bungalow 1 chambre</option>
+                <option value="res2">Résidentiel – bungalow 2 chambres</option>
+                <option value="res3" selected>
+                  Résidentiel – bungalow 3 chambres
+                </option>
+                <option value="res4">Résidentiel – maison 4 chambres</option>
+                <option value="res5">Résidentiel – duplex 5 chambres</option>
+                <option value="comm">Commercial – petit bureau (100 m²)</option>
+                <option value="warehouse">Entrepôt ou magasin (200 m²)</option>
+                <option value="custom">Personnalisé (saisir la surface ci-dessous)</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>Surface au sol (m²)</label>
+                <input
+                  aria-label="Surface au sol"
+                  type="number"
+                  id="floorArea"
+                  value="120"
+                  min="20"
+                  max="5000"
+                />
+              </div>
+              <div class="field">
+                <label>Nombre de niveaux</label>
+                <select id="floors" aria-label="Nombre de niveaux">
+                  <option value="1" selected>1 (Bungalow)</option>
+                  <option value="2">2 (Duplex)</option>
+                  <option value="3">3 niveaux</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>Hauteur des murs (m)</label>
+                <input
+                  aria-label="Hauteur des murs"
+                  type="number"
+                  id="wallHeight"
+                  value="3"
+                  min="2.4"
+                  max="6"
+                  step="0.1"
+                />
+              </div>
+              <div class="field">
+                <label>Type de mur</label>
+                <select id="wallType" aria-label="Type de mur">
+                  <option value="block9">Bloc de 225 mm</option>
+                  <option value="block6">Bloc de 150 mm</option>
+                  <option value="brick">Brique en terre cuite</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Type de toiture</label>
+              <select id="roofType" aria-label="Type de toiture">
+                <option value="zinc" selected>
+                  Tôle ondulée ou bac acier longue portée
+                </option>
+                <option value="tiles">Tuiles en terre cuite</option>
+                <option value="concrete">Toiture-terrasse ou dalle en béton</option>
+                <option value="shingles">Bardeaux bitumés</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Niveau de finition</label>
+              <select id="finishing" aria-label="Niveau de finition">
+                <option value="basic">Basique (enduit et peinture)</option>
+                <option value="standard" selected>
+                  Standard (carrelage et peinture)
+                </option>
+                <option value="premium">Supérieur (finitions complètes)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Imprévus (%)</label>
+              <input
+                aria-label="Imprévus"
+                type="number"
+                id="contingency"
+                value="10"
+                min="0"
+                max="30"
+              />
+            </div>
+
+            <!-- SECTION OVERRIDES -->
+            <div
+              style="
+                margin-top: 16px;
+                border-top: 1px solid #f3f4f6;
+                padding-top: 14px;
+              "
+            >
+              <div
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 800;
+                  text-transform: uppercase;
+                  letter-spacing: 0.08em;
+                  color: #9ca3af;
+                  margin-bottom: 10px;
+                "
+              >
+                Ajuster les quantités (facultatif)
+              </div>
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('doors-sec', this)"
+              >
+                🚪 Portes & Fenêtres <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="doors-sec">
+                <div class="section-input-row">
+                  <label>Nombre de portes</label
+                  ><input
+                    aria-label="Nombre de portes"
+                    type="number"
+                    id="numDoors"
+                    value="5"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Nombre de fenêtres</label
+                  ><input
+                    aria-label="Nombre de fenêtres"
+                    type="number"
+                    id="numWindows"
+                    value="8"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Portes vitrées</label
+                  ><input
+                    aria-label="Nombre de portes vitrées"
+                    type="number"
+                    id="numGlazed"
+                    value="1"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('plumb-sec', this)"
+              >
+                🚰 Plomberie <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="plumb-sec">
+                <div class="section-input-row">
+                  <label>Nombre de WC</label
+                  ><input
+                    aria-label="Nombre de WC"
+                    type="number"
+                    id="numWC"
+                    value="2"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Nombre de douches</label
+                  ><input
+                    aria-label="Nombre de douches"
+                    type="number"
+                    id="numShowers"
+                    value="2"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Nombre d’éviers de cuisine</label
+                  ><input
+                    aria-label="Nombre d’éviers"
+                    type="number"
+                    id="numSinks"
+                    value="1"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('elec-sec', this)"
+              >
+                ⚡ Électricité <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="elec-sec">
+                <div class="section-input-row">
+                  <label>Nombre de chambres</label
+                  ><input
+                    aria-label="Nombre de chambres"
+                    type="number"
+                    id="numBeds"
+                    value="3"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Nombre de prises par pièce</label
+                  ><input
+                    aria-label="Nombre de prises"
+                    type="number"
+                    id="numSockets"
+                    value="4"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Inclure un onduleur ?</label>
+                  <select
+                    id="inverterYN"
+                    style="
+                      width: 90px;
+                      padding: 5px 8px;
+                      border: 1.5px solid #e5e7eb;
+                      border-radius: 6px;
+                      font-size: 0.78rem;
+                    "
+                    aria-label="Inclure un onduleur"
+                  >
+                    <option value="1">Oui</option>
+                    <option value="0">Non</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="gen-btn" onclick="generate()">
+              📋 Générer le bordereau quantitatif
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: RESULTS -->
+        <div>
+          <div class="boq-card" id="resultsCard" style="display: none">
+            <h3>📊 Bordereau quantitatif</h3>
+
+            <div class="price-note" id="priceNote"></div>
+
+            <div class="summary-grid">
+              <div class="sum-card green">
+                <div class="sum-val" id="sumTotal">—</div>
+                <div class="sum-lbl">Coût estimé des matériaux</div>
+              </div>
+              <div class="sum-card">
+                <div class="sum-val" id="sumLabour">—</div>
+                <div class="sum-lbl">Main-d’œuvre estimée (40 %)</div>
+              </div>
+              <div class="sum-card">
+                <div class="sum-val" id="sumGrand">—</div>
+                <div class="sum-lbl">Total général (main-d’œuvre incluse)</div>
+              </div>
+            </div>
+
+            <div class="cont-bar">
+              <span>Imprévus (<span id="contPct">10</span>%)</span>
+              <strong id="contAmt">—</strong>
+            </div>
+
+            <div class="export-row">
+              <button
+                type="button"
+                class="export-btn csv"
+                onclick="exportCSV()"
+              >
+                📊 Exporter CSV
+              </button>
+              <button
+                type="button"
+                class="export-btn print"
+                onclick="window.print()"
+              >
+                🖨️ Imprimer le bordereau
+              </button>
+            </div>
+            <div
+              class="result-actions"
+              style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap"
+            >
+              <share-result-button
+                tool-name="Générateur de bordereau"
+                tool-slug="boq-generator"
+              >
+              </share-result-button>
+            </div>
+
+            <div style="margin-top: 20px">
+              <div class="boq-table-wrap" id="boqTableWrap"></div>
+            </div>
+          </div>
+
+          <!-- Placeholder before generate -->
+          <div class="boq-card" id="placeholderCard">
+            <div style="text-align: center; padding: 60px 20px">
+              <div style="font-size: 3rem; margin-bottom: 16px">📋</div>
+              <div
+                style="
+                  font-size: 1rem;
+                  font-weight: 700;
+                  color: #374151;
+                  margin-bottom: 8px;
+                "
+              >
+                Prêt à générer votre bordereau
+              </div>
+              <div
+                style="
+                  font-size: 0.85rem;
+                  color: #9ca3af;
+                  line-height: 1.6;
+                  max-width: 300px;
+                  margin: 0 auto;
+                "
+              >Générer</div>
             </div>
           </div>
         </div>
-
-        <button type="button" class="gen-btn" onclick="generate()">📋 Générer le bordereau quantitatif</button>
       </div>
     </div>
 
-    <!-- RIGHT: RESULTS -->
-    <div>
-      <div class="boq-card" id="resultsCard" style="display:none;">
-        <h3>📊 Bordereau quantitatif</h3>
-
-        <div class="price-note" id="priceNote"></div>
-
-        <div class="summary-grid">
-          <div class="sum-card green">
-            <div class="sum-val" id="sumTotal">—</div>
-            <div class="sum-lbl">Coût estimé des matériaux</div>
+    <section class="df-upgrade" data-df-upgrade="boq-gen">
+      <div class="df-upgrade__card">
+        <div>
+          <span class="df-upgrade__kicker">Parcours pratique</span>
+          <h2>Générateur de bordereau quantitatif : guide rapide</h2>
+          <p>Créer</p>
+          <ul class="df-upgrade__bullets">
+            <li>
+              <strong>Résultat obtenu :</strong>Le bordereau doit être remétré sur les plans définitifs avant achat ou appel d’offres.</li>
+            <li>
+              <strong>Formula repair:</strong>Le bordereau doit être remétré sur les plans définitifs avant achat ou appel d’offres.</li>
+            <li>
+              <strong>Points à vérifier :</strong>Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.</li>
+          </ul>
+          <p class="df-upgrade__note">
+            <strong>Informations et hypothèses du calcul</strong>Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.</p>
+        </div>
+        <form class="df-form" data-df-form="boq-gen">
+          <label
+            >Pays<select name="country" aria-label="Pays">
+              <option value="Nigeria">Nigeria</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Ghana">Ghana</option>
+              <option value="South Africa">Afrique du Sud</option>
+            </select></label
+          >
+          <label
+            >Montant ou quantité<input
+              name="amount"
+              type="number"
+              value="100"
+              min="0"
+              step="any"
+              aria-label="Montant ou quantité"
+          /></label>
+          <label
+            >Priorité<select name="priority" aria-label="Priorité">
+              <option value="cost">Coût</option>
+              <option value="speed">rapidité</option>
+              <option value="quality">qualité</option>
+              <option value="risk">risque</option>
+            </select></label
+          >
+          <label
+            >Pourcentage de réserve<input
+              name="buffer"
+              type="number"
+              value="10"
+              min="0"
+              step="any"
+              aria-label="Pourcentage de réserve"
+          /></label>
+          <button type="submit">Créer le résumé</button>
+          <output
+            class="df-result"
+            data-df-result="boq-gen"
+            data-df-base="Générateur de bordereau quantitatif — saisissez les données ci-dessus pour afficher votre résultat."
+            aria-live="polite"
+            >Renseignez les données demandées.</output
+          >
+          <div class="df-actions">
+            <button type="button" data-df-copy="boq-gen">Copier le résumé</button>
           </div>
-          <div class="sum-card">
-            <div class="sum-val" id="sumLabour">—</div>
-            <div class="sum-lbl">Main-d’œuvre estimée (40 %)</div>
-          </div>
-          <div class="sum-card">
-            <div class="sum-val" id="sumGrand">—</div>
-            <div class="sum-lbl">Total général (main-d’œuvre incluse)</div>
-          </div>
-        </div>
-
-        <div class="cont-bar">
-          <span>Imprévus (<span id="contPct">10</span>%)</span>
-          <strong id="contAmt">—</strong>
-        </div>
-
-        <div class="export-row">
-          <button type="button" class="export-btn csv" onclick="exportCSV()">📊 Exporter CSV</button>
-          <button type="button" class="export-btn print" onclick="window.print()">🖨️ Imprimer le bordereau</button>
-        </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Générateur de bordereau"
-    tool-slug="boq-generator">
-  </share-result-button>
-</div>
-
-        <div style="margin-top:20px;">
-          <div class="boq-table-wrap" id="boqTableWrap"></div>
-        </div>
+        </form>
       </div>
-
-      <!-- Placeholder before generate -->
-      <div class="boq-card" id="placeholderCard">
-        <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:3rem;margin-bottom:16px;">📋</div>
-          <div style="font-size:1rem;font-weight:700;color:#374151;margin-bottom:8px;">Prêt à générer votre bordereau</div>
-          <div style="font-size:.85rem;color:#9ca3af;line-height:1.6;max-width:300px;margin:0 auto;">Renseignez les paramètres du projet à gauche, puis cliquez sur « Générer le bordereau quantitatif » pour obtenir la liste chiffrée des matériaux.</div>
-        </div>
+    </section>
+    <section class="df-faq" aria-labelledby="boq-gen-faq-title">
+      <h2 id="boq-gen-faq-title">Questions fréquentes sur le bordereau quantitatif</h2>
+      <div class="df-faq__grid">
+        <details>
+          <summary>Comment utiliser le générateur de bordereau quantitatif ?</summary>
+          <p>Estimer</p>
+        </details>
+        <details>
+          <summary>Quelle est la précision du bordereau quantitatif ?</summary>
+          <p>Le calcul applique les postes et rendements du modèle, puis ventile quantités et coûts.</p>
+        </details>
+        <details>
+          <summary>Générez un bordereau indicatif à partir du type, de la surface et du niveau de finition.</summary>
+          <p>Le calcul applique les postes et rendements du modèle, puis ventile quantités et coûts.</p>
+        </details>
       </div>
-    </div>
-  </div>
-</div>
-
-<section class="df-upgrade" data-df-upgrade="boq-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Parcours pratique</span>
-      <h2>Générateur de bordereau quantitatif : guide rapide</h2>
-      <p>Saisissez les dimensions et quantités du projet pour obtenir une estimation chiffrée des matériaux et de la main-d’œuvre, adaptée au pays sélectionné.</p>
-      <ul class="df-upgrade__bullets"><li><strong>Résultat obtenu :</strong> une estimation chiffrée des matériaux et de la main-d’œuvre pour préparer une décision concrète.</li><li><strong>Fonctionnement:</strong> Le générateur applique vos mesures et quantités et présente le détail du calcul, pas seulement un total.</li><li><strong>Points à vérifier :</strong> confirmez les prix locaux actuels et les conditions propres au chantier avant de vous fier au résultat.</li></ul>
-      <p class="df-upgrade__note"><strong>Révisé en 2026.</strong>Le calcul applique les postes et rendements du modèle, puis ventile quantités et coûts.</p>
-    </div>
-    <form class="df-form" data-df-form="boq-gen">
-      <label>Pays<select name="country" aria-label="Pays"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">Afrique du Sud</option></select></label>
-      <label>Montant ou quantité<input name="amount" type="number" value="100" min="0" step="any" aria-label="Montant ou quantité"></label>
-      <label>Priorité<select name="priority" aria-label="Priorité"><option value="cost">Coût</option><option value="speed">rapidité</option><option value="quality">qualité</option><option value="risk">risque</option></select></label>
-      <label>Pourcentage de réserve<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Pourcentage de réserve"></label>
-      <button type="submit">Créer le résumé</button>
-      <output class="df-result" data-df-result="boq-gen" data-df-base="Générateur de bordereau quantitatif — saisissez les données ci-dessus pour afficher votre résultat." aria-live="polite">Générateur de bordereau quantitatif — saisissez les données ci-dessus pour afficher votre résultat.</output>
-      <div class="df-actions"><button type="button" data-df-copy="boq-gen">Copier le résumé</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="boq-gen-faq-title">
-  <h2 id="boq-gen-faq-title">Questions fréquentes sur le bordereau quantitatif</h2>
-  <div class="df-faq__grid"><details><summary>Comment utiliser le générateur de bordereau quantitatif ?</summary><p>Saisissez vos mesures et quantités ci-dessus. Le générateur produit alors une estimation détaillée des matériaux et de la main-d’œuvre.</p></details><details><summary>Quelle est la précision du bordereau quantitatif ?</summary><p>La précision dépend des valeurs saisies et des hypothèses affichées. Confirmez toujours les prix locaux et les conditions du chantier avant utilisation.</p></details><details><summary>Le générateur est-il gratuit et couvre-t-il mon pays ?</summary><p>Oui. L’outil est gratuit, fonctionne sur téléphone ou ordinateur sans inscription et couvre les pays africains proposés dans le sélecteur.</p></details></div>
-</section>
-<!-- seo-cluster-block:start -->
+    </section>
+    <!-- seo-cluster-block:start -->
 <section class="seo-cluster-shell" aria-label="Étapes suivantes utiles">
   <div class="seo-cluster seo-cluster--tool" data-seo-cluster="/tools/boq-generator/">
     <div class="seo-cluster__inner">
@@ -481,7 +1080,7 @@
   </div>
 </section>
 <!-- seo-cluster-block:end -->
-<nav class="fr-engineering-related-tools" aria-labelledby="boq-gen-related-title">
+    <nav class="fr-engineering-related-tools" aria-labelledby="boq-gen-related-title">
   <h2 id="boq-gen-related-title">Outils d’ingénierie associés</h2>
   <ul>
       <li><a href="/fr/tools/cout-renovation/">Estimateur de rénovation</a></li>
@@ -489,15 +1088,22 @@
       <li><a href="/fr/tools/cout-cloture/">Estimateur de coût de clôture</a></li>
   </ul>
 </nav>
-<afro-footer></afro-footer>
+    <afro-footer></afro-footer>
 
-<script src="/assets/js/pages/engineering-parity/fr/boq-gen-1.js?v=b5db378c"></script>
-  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+    <script src="/assets/js/engines/boq-gen-engine.js?v=40be557e"></script>
+    <script src="/assets/js/pages/engineering-parity/fr/boq-gen-1.js?v=62d67e7b"></script>
+    <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
 <script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
-<script src="/assets/js/pages/fr-engineering-df-app-upgrades.js?v=a0a76258" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<section class="fr-engineering-native-guide" data-fr-engineering-owner="boq-gen" aria-labelledby="boq-gen-fr-guide-title">
+    <script
+      src="/assets/js/pages/fr-engineering-df-app-upgrades.js?v=a0a76258"
+      defer
+    ></script>
+    <script
+      src="/assets/js/components/related-tools.min.js?v=9de30883"
+      defer
+    ></script>
+    <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+  <section class="fr-engineering-native-guide" data-fr-engineering-owner="boq-gen" aria-labelledby="boq-gen-fr-guide-title">
   <p class="fr-engineering-eyebrow">Parcours français natif</p>
   <h2 id="boq-gen-fr-guide-title">Générateur de bordereau quantitatif : méthode, limites et confidentialité</h2>
   <figure class="fr-engineering-owner-artwork">

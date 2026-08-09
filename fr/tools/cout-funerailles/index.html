@@ -1,829 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="afrotools-source-owner" content="scripts/build-french-funeral-budget-parity.js">
   <title>Estimateur coût funérailles Afrique | AfroTools</title>
-  <meta name="description" content="Préparez un budget de funérailles avec cercueil, mortuaire, repas, transport, formalites, soutien familial, marge d'urgence et export TXT.">
-  <meta property="og:title" content="Estimateur coût funérailles Afrique | AfroTools">
-  <meta property="og:description" content="Calculez un budget indicatif de funérailles avec postes de dépense, financement disponible et prochaines actions.">
-  <meta property="og:image" content="https://afrotools.com/assets/img/tools/burial-cost.webp">
-  <meta property="og:url" content="https://afrotools.com/fr/tools/cout-funerailles/">
+  <meta name="description" content="Préparez un budget de funérailles avec cercueil, mortuaire, repas, transport, formalités, soutien familial, marge d’urgence et export TXT.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Estimateur coût funérailles Afrique | AfroTools">
+  <meta property="og:description" content="Calculez un budget indicatif de funérailles avec postes de dépense, financement disponible et prochaines actions.">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/cout-funerailles/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/burial-cost.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Estimateur coût funérailles Afrique | AfroTools">
   <meta name="twitter:description" content="Préparez un budget respectueux et clair pour les principaux coûts de funérailles.">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/burial-cost.webp">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-  <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-    :root {
-      --funeral-ink: #151820;
-      --funeral-muted: #626b7a;
-      --funeral-line: #dde3ec;
-      --funeral-card: #ffffff;
-      --funeral-blue: #2459c7;
-      --funeral-green: #0f7a55;
-      --funeral-gold: #a15c09;
-      --funeral-bg: #f5f7fb;
-    }
-
-    body {
-      margin: 0;
-      background: var(--funeral-bg);
-      color: var(--funeral-ink);
-    }
-
-    .page {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 30px 20px 72px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
-      gap: 24px;
-      align-items: stretch;
-      border: 1px solid var(--funeral-line);
-      border-radius: 18px;
-      padding: 34px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.96), rgba(241,246,255,.96)),
-        url("/assets/img/tools/burial-cost.webp") center/cover;
-      box-shadow: 0 20px 70px rgba(22, 31, 53, .08);
-    }
-
-    .kicker {
-      display: inline-flex;
-      width: fit-content;
-      margin-bottom: 14px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #eef4ff;
-      color: #1746a2;
-      font-size: .74rem;
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 760px;
-      margin: 0;
-      font-size: clamp(2.05rem, 5vw, 4rem);
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .lead {
-      max-width: 690px;
-      margin: 18px 0 0;
-      color: var(--funeral-muted);
-      font-size: 1.02rem;
-      line-height: 1.75;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 1px solid var(--funeral-line);
-      border-radius: 10px;
-      background: #fff;
-      color: var(--funeral-ink);
-      font-weight: 850;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .button.primary {
-      border-color: var(--funeral-blue);
-      background: var(--funeral-blue);
-      color: #fff;
-    }
-
-    .hero-panel {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-      padding: 20px;
-      border: 1px solid var(--funeral-line);
-      border-radius: 16px;
-      background: rgba(255,255,255,.88);
-    }
-
-    .pill-row {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 13px;
-      border: 1px solid var(--funeral-line);
-      border-radius: 13px;
-      background: #fff;
-    }
-
-    .pill-row span:first-child {
-      display: grid;
-      width: 40px;
-      height: 40px;
-      place-items: center;
-      border-radius: 11px;
-      background: #eef4ff;
-      color: var(--funeral-blue);
-      font-weight: 950;
-    }
-
-    .pill-row strong,
-    .pill-row small {
-      display: block;
-    }
-
-    .pill-row small {
-      margin-top: 4px;
-      color: var(--funeral-muted);
-      line-height: 1.5;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, .96fr) minmax(360px, 1.04fr);
-      gap: 22px;
-      margin-top: 24px;
-      align-items: start;
-    }
-
-    .panel {
-      border: 1px solid var(--funeral-line);
-      border-radius: 16px;
-      background: var(--funeral-card);
-      box-shadow: 0 16px 46px rgba(22, 31, 53, .06);
-      overflow: hidden;
-    }
-
-    .panel-head {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--funeral-line);
-      background: #fbfcff;
-    }
-
-    .panel-head h2 {
-      margin: 0;
-      font-size: 1.06rem;
-    }
-
-    .panel-head p {
-      margin: 6px 0 0;
-      color: var(--funeral-muted);
-      font-size: .9rem;
-      line-height: 1.55;
-    }
-
-    .panel-body {
-      padding: 20px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 7px;
-      color: #334155;
-      font-size: .82rem;
-      font-weight: 850;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      min-height: 44px;
-      box-sizing: border-box;
-      border: 1px solid #cdd7e5;
-      border-radius: 10px;
-      background: #fff;
-      color: var(--funeral-ink);
-      font: inherit;
-      padding: 10px 12px;
-    }
-
-    textarea {
-      min-height: 86px;
-      resize: vertical;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus,
-    button:focus-visible,
-    a:focus-visible {
-      outline: 3px solid rgba(36, 89, 199, .24);
-      outline-offset: 2px;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
-      padding: 16px;
-      border: 1px solid var(--funeral-line);
-      border-radius: 14px;
-      background: #f8fbff;
-    }
-
-    .metric span {
-      display: block;
-      color: var(--funeral-muted);
-      font-size: .75rem;
-      font-weight: 900;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
-
-    .metric strong {
-      display: block;
-      margin-top: 8px;
-      font-size: clamp(1.25rem, 4vw, 1.9rem);
-      line-height: 1.05;
-    }
-
-    .metric.wide {
-      grid-column: 1 / -1;
-    }
-
-    .metric.good {
-      border-left: 5px solid var(--funeral-green);
-    }
-
-    .metric.warn {
-      border-left: 5px solid var(--funeral-gold);
-    }
-
-    .breakdown {
-      margin-top: 16px;
-      border: 1px solid var(--funeral-line);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .line-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      padding: 12px 14px;
-      border-bottom: 1px solid #eef2f7;
-      align-items: center;
-    }
-
-    .line-item:last-child {
-      border-bottom: 0;
-    }
-
-    .line-item span {
-      color: var(--funeral-muted);
-      font-size: .88rem;
-    }
-
-    .line-item strong {
-      text-align: right;
-    }
-
-    .advice {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 13px;
-      background: #fff8e7;
-      color: #684100;
-      line-height: 1.65;
-    }
-
-    .status {
-      min-height: 22px;
-      margin-top: 12px;
-      color: var(--funeral-muted);
-      font-size: .88rem;
-      font-weight: 800;
-    }
-
-    .source-grid,
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 22px;
-    }
-
-    .source-card,
-    details {
-      border: 1px solid var(--funeral-line);
-      border-radius: 14px;
-      background: #fff;
-      padding: 16px;
-    }
-
-    .source-card h3 {
-      margin: 0 0 8px;
-      font-size: .96rem;
-    }
-
-    .source-card p,
-    details p {
-      margin: 0 0 12px;
-      color: var(--funeral-muted);
-      font-size: .88rem;
-      line-height: 1.6;
-    }
-
-    .source-card a {
-      color: var(--funeral-blue);
-      font-weight: 850;
-    }
-
-    summary {
-      cursor: pointer;
-      font-weight: 900;
-    }
-
-    details p {
-      margin-top: 10px;
-    }
-
-    .note {
-      margin-top: 22px;
-      padding: 16px;
-      border: 1px solid #f6d99a;
-      border-radius: 14px;
-      background: #fff8e7;
-      color: #684100;
-      line-height: 1.65;
-    }
-
-    @media (max-width: 880px) {
-      .hero,
-      .workspace,
-      .source-grid,
-      .faq-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding: 24px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .page {
-        padding: 18px 14px 56px;
-      }
-
-      .form-grid,
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .button {
-        width: 100%;
-      }
-    }
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Estimateur coût funérailles Afrique","url":"https://afrotools.com/fr/tools/cout-funerailles/","description":"Estimateur de budget funérailles avec postes de coût, financement disponible, marge et export.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/burial-cost.webp"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Ce budget de funérailles est-il une facture officielle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s'agit d'une estimation éducative basée sur les montants saisis. Demandez toujours des devis locaux et vérifiez les formalites officielles."}},{"@type":"Question","name":"Quels postes dois-je vérifier avant de payer ?","acceptedAnswer":{"@type":"Answer","text":"Vérifiez le certificat de décès, permis ou ordre d'inhumation, morgue, cercueil, transport, lieu, repas, annonce, rites religieux ou culturels et eventuels frais de rapatriement."}},{"@type":"Question","name":"Pourquoi ajouter une marge d'urgence ?","acceptedAnswer":{"@type":"Answer","text":"Les décisions sont souvent prises vite. Une marge aide à absorber transport supplementaire, documents, accueil familial ou changement de lieu sans emprunt precipite."}}]}</script>
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+  <link rel="stylesheet" href="/assets/css/remittance-quote-comparator.css?v=40486059">
+  <style>.ua-native-artwork{margin:1rem 0;max-width:100%}.ua-native-artwork img{display:block;max-width:100%;height:auto}.rm-hero h1,.rm-hero p{overflow-wrap:anywhere}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Estimateur coût funérailles Afrique","url":"https://afrotools.com/fr/tools/cout-funerailles/","description":"Planificateur familial fondé uniquement sur les montants saisis, avec marge, financement disponible et exports locaux.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","image":"https://afrotools.com/assets/img/tools/burial-cost.webp","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Ce budget de funérailles est-il une facture officielle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s’agit d’un plan familial basé uniquement sur les montants saisis. Confirmez chaque service et formalité auprès des prestataires et autorités concernés."}},{"@type":"Question","name":"Le calcul utilise-t-il des prix moyens par pays ou religion ?","acceptedAnswer":{"@type":"Answer","text":"Non. Aucun tarif de pays, de religion, de prestataire ou d’assurance n’est intégré. Le calcul additionne uniquement vos montants."}},{"@type":"Question","name":"Pourquoi ajouter une marge d’urgence ?","acceptedAnswer":{"@type":"Answer","text":"La marge permet de réserver une part du sous-total pour les dépenses confirmées tardivement. Le pourcentage reste entièrement choisi par la famille."}}]}</script>
+<meta name="afrotools-content-id" content="content:b160e78ef56a8244">
 <link rel="canonical" href="https://afrotools.com/fr/tools/cout-funerailles/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/burial-cost/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-funerailles/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-mazishi/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/burial-cost/">
 </head>
-<body class="top-level-page-ui-refresh" data-fr-ua-app="burial-cost">
+<body data-fr-ua-app="burial-cost">
   <afro-navbar></afro-navbar>
-
-  <main class="page">
-    <section class="hero">
-      <div>
-        <span class="kicker">Budget familial - funérailles</span>
-        <h1>Planifier avec respect, sans perdre le contrôle du budget.</h1><figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/burial-cost.webp" width="320" height="180" alt="" loading="eager"></figure>
-        <p class="lead">Listez les coûts probables, ajoutez une marge, comparez avec les contributions disponibles et exportez un résumé simple à partager avec la famille. Les montants restent indicatifs et doivent être confirmes avec des prestataires locaux.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#planner">Commencer le budget</a>
-          <button class="button" type="button" id="sampleBtn">Charger un exemple</button>
-        </div>
+  <header class="rm-hero">
+    <div class="rm-wrap">
+      <nav class="rm-crumb" aria-label="Fil d’Ariane"><a href="/fr/uniquely-african/">Outils africains</a></nav>
+      <h1>Planificateur de budget funéraire familial</h1>
+      <figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/burial-cost.webp" width="320" height="180" alt="Illustration du planificateur de budget funéraire familial" loading="eager"></figure>
+      <p>Planifiez avec les coûts confirmés par votre famille, sans supposer de prix moyen, d’obligation religieuse ou de règle communautaire.</p>
+      <div class="rm-badges"><span>Privé dans votre navigateur</span><span>Coûts saisis par la famille</span><span>JSON et TXT</span></div>
+      <p><a class="rm-btn rm-btn-secondary" href="/fr/ai/?tool=burial-cost">Ouvrir avec AfroTools AI</a></p>
+    </div>
+  </header>
+  <main class="rm-main" data-funeral-budget-fr>
+    <div class="rm-wrap">
+      <div class="rm-grid">
+        <section class="rm-card" aria-labelledby="fb-input-title">
+          <h2 id="fb-input-title">Saisissez les coûts confirmés</h2>
+          <p class="rm-privacy">N’indiquez aucun nom, numéro de téléphone, renseignement sur la personne décédée, compte ou numéro de police. Rien n’est envoyé ni sauvegardé automatiquement.</p>
+          <form id="fb-form" novalidate>
+            <div class="rm-fields">
+              <label class="rm-field" for="fb-currency"><span>Devise</span><input id="fb-currency" maxlength="8" value="XOF" required></label>
+              <label class="rm-field" for="fb-care"><span data-item-label="care">Soins et préparation</span><input id="fb-care" type="number" min="0" step="any" value="0" required></label><label class="rm-field" for="fb-venue"><span data-item-label="venue">Lieu et équipements</span><input id="fb-venue" type="number" min="0" step="any" value="0" required></label><label class="rm-field" for="fb-food"><span data-item-label="food">Repas et rafraîchissements</span><input id="fb-food" type="number" min="0" step="any" value="0" required></label><label class="rm-field" for="fb-transport"><span data-item-label="transport">Transport</span><input id="fb-transport" type="number" min="0" step="any" value="0" required></label><label class="rm-field" for="fb-documents"><span data-item-label="documents">Documents et communication</span><input id="fb-documents" type="number" min="0" step="any" value="0" required></label><label class="rm-field" for="fb-other"><span data-item-label="other">Autre coût confirmé</span><input id="fb-other" type="number" min="0" step="any" value="0" required></label>
+              <label class="rm-field" for="fb-buffer"><span>Marge d’urgence (%)</span><input id="fb-buffer" type="number" min="0" max="100" step="any" value="10" required></label>
+              <label class="rm-field" for="fb-fund"><span>Fonds familial disponible</span><input id="fb-fund" type="number" min="0" step="any" value="0" required></label>
+              <label class="rm-field" for="fb-benefit"><span>Prestation ou assurance confirmée</span><input id="fb-benefit" type="number" min="0" step="any" value="0" required></label>
+              <label class="rm-field" for="fb-contributors"><span>Foyers ou contributeurs</span><input id="fb-contributors" type="number" min="1" step="1" value="1" required></label>
+              <label class="rm-field" for="fb-days"><span>Jours de préparation</span><input id="fb-days" type="number" min="1" step="1" value="7" required></label>
+            </div>
+            <p id="fb-error" class="rm-error" role="alert" aria-live="assertive"></p>
+            <div class="rm-actions">
+              <button class="rm-btn" type="submit">Calculer le plan</button>
+              <button class="rm-btn rm-btn-secondary" type="reset">Réinitialiser</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-copy" data-native-export="copy" type="button">Copier</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-json" data-native-export="json" type="button">Télécharger JSON</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-txt" data-native-export="txt" type="button">Télécharger TXT</button>
+              <label class="rm-btn rm-btn-secondary" for="fb-import">Rouvrir JSON<input id="fb-import" type="file" accept="application/json,.json" hidden></label>
+            </div>
+            <p id="fb-status" class="rm-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="rm-card rm-results" aria-labelledby="fb-results-title">
+          <h2 id="fb-results-title">Résultats</h2>
+          <div class="rm-primary"><span>Total du plan</span><strong id="fb-primary-value">—</strong></div>
+          <div id="fb-result-list" class="rm-result-list" role="status" aria-live="polite"></div>
+          <p class="rm-warning">Respectez les décisions de la famille, de la foi et de la communauté. Confirmez directement chaque service, prestation et échéance : l’outil ne choisit aucune cérémonie.</p>
+        </section>
       </div>
-      <aside class="hero-panel" aria-label="Structure du budget">
-        <div class="pill-row">
-          <span>1</span>
-          <div><strong>Postes essentiels</strong><small>Morgue, cercueil, transport, lieu, repas, documents.</small></div>
-        </div>
-        <div class="pill-row">
-          <span>2</span>
-          <div><strong>Famille et communauté</strong><small>Invites, jours d'accueil, soutien reçu, contribution restante.</small></div>
-        </div>
-        <div class="pill-row">
-          <span>3</span>
-          <div><strong>Décision plus calme</strong><small>Top dépenses, manque à financer, prochaines actions.</small></div>
-        </div>
-      </aside>
-    </section>
-
-    <section class="workspace" id="planner">
-      <form class="panel" id="funeralForm">
-        <div class="panel-head">
-          <h2>Hypothèses du budget</h2>
-          <p>Utilisez vos devis, vos traditions et les prix locaux. Les exemples ne sont pas des prix officiels.</p>
-        </div>
-        <div class="panel-body">
-          <div class="form-grid">
-            <div class="field">
-              <label for="country">Pays ou contexte</label>
-              <select id="country">
-                <option value="NG">Nigeria</option>
-                <option value="KE">Kenya</option>
-                <option value="ZA">Afrique du Sud</option>
-                <option value="GH">Ghana</option>
-                <option value="TZ">Tanzanie</option>
-                <option value="UG">Ouganda</option>
-                <option value="ET">Éthiopie</option>
-                <option value="CI">Côte d’Ivoire</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="budget">Niveau de budget</label>
-              <select id="budget">
-                <option value="basic">Essentiel</option>
-                <option value="standard" selected>Standard</option>
-                <option value="premium">Premium</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="guestSlider">Invités attendus : <strong id="guestLabel">200</strong></label>
-              <input id="guestSlider" type="range" min="20" max="2000" step="10" value="200"
-                oninput="document.getElementById('guestLabel').textContent=this.value">
-            </div>
-            <div class="field">
-              <label for="location">Lieu</label>
-              <select id="location">
-                <option value="city">Ville / zone urbaine</option>
-                <option value="hometown">Village / ville d’origine</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="ceremony">Type de cérémonie</label>
-              <select id="ceremony">
-                <option value="christian">Chrétienne</option>
-                <option value="muslim">Musulmane</option>
-                <option value="traditional">Traditionnelle</option>
-                <option value="secular">Civile / laïque</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="availableFund">Fonds familial disponible</label>
-              <input id="availableFund" type="number" min="0" step="1000" value="0" inputmode="decimal">
-            </div>
-            <div class="field">
-              <label for="insurancePayout">Indemnité d’assurance attendue</label>
-              <input id="insurancePayout" type="number" min="0" step="1000" value="0" inputmode="decimal">
-            </div>
-            <div class="field">
-              <label for="contributors">Foyers contributeurs</label>
-              <input id="contributors" type="number" min="1" step="1" value="10" inputmode="numeric">
-            </div>
-            <div class="field">
-              <label for="deadlineDays">Jours avant l’échéance</label>
-              <input id="deadlineDays" type="number" min="1" step="1" value="30" inputmode="numeric">
-            </div>
-            <div class="field full">
-              <fieldset>
-                <legend>Postes inclus</legend>
-                <div id="itemGrid" class="form-grid"></div>
-              </fieldset>
-            </div>
-          </div>
-          <div class="controls">
-            <button class="button primary" type="submit">Calculer le budget</button>
-            <button class="button" type="button" id="copyBtn">Copier</button>
-            <button class="button" type="button" id="downloadBtn">Télécharger TXT</button>
-            <button class="button" type="button" id="saveBtn">Sauver localement</button>
-          </div>
-          <p class="status" id="status" aria-live="polite"></p>
-        </div>
-      </form>
-
-      <section class="panel" aria-labelledby="resultTitle">
-        <div class="panel-head">
-          <h2 id="resultTitle">Résumé du budget</h2>
-          <p>Le résultat met en avant le total, le manque à financer et les principaux postes de coût.</p>
-        </div>
-        <div class="panel-body">
-          <div class="result-grid" id="result" aria-live="polite"></div>
-          <div class="breakdown" id="breakdown"></div>
-          <p class="advice" id="advice">Entrez les montants et lancez le calcul pour obtenir une priorité de discussion familiale.</p>
-        </div>
+      <section class="rm-content" aria-label="Méthode et limites">
+        <article><h2>Limite des sources</h2><p>Aucun prix de pays, de religion, de prestataire ou d’assurance n’est intégré. Le calcul utilise uniquement les montants que vous saisissez.</p></article>
+        <article><h2>Formule</h2><p>Total = coûts saisis + marge. Besoin restant = total − fonds disponible − prestation confirmée, sans descendre sous zéro.</p></article>
       </section>
-    </section>
-
-    <section class="source-grid" data-tool-verification-panel aria-label="Sources et vérification">
-      <article class="source-card">
-        <h3>Kenya CRS</h3>
-        <p>Le service civil kenyan indique les exigences de certificat de décès, dont permis d'inhumation et identifiants.</p>
-        <a href="https://usajili.go.ke/current-death" target="_blank" rel="noopener">Vérifier Kenya</a>
-      </article>
-      <article class="source-card">
-        <h3>Ghana BDR</h3>
-        <p>Le registre national présenté l'enregistrement des décès et les copies certifiées de documents.</p>
-        <a href="https://bdr.gov.gh/" target="_blank" rel="noopener">Vérifier Ghana</a>
-      </article>
-      <article class="source-card">
-        <h3>Afrique du Sud DIRCO</h3>
-        <p>Les exigences de certificat de décès rappellent les formulaires et pièces a joindre pour les documents.</p>
-        <a href="https://dirco.gov.za/uk/death-certificate/" target="_blank" rel="noopener">Vérifier Afrique du Sud</a>
-      </article>
-    </section>
-
-    <section class="note">
-      <strong>Avertissement.</strong> Cette estimation est non officielle et ne remplace pas un devis, une facture, un conseil professionnel ou une vérification avec l'autorite locale. Vérifier avec le prestataire, la morgue, le lieu de culte, la mairie ou le registre civil avant de payer. Les coûts de funérailles dependent fortement de la ville, de la tradition, du lieu, des devis, du transport, des documents et des choix familiaux. Sources administratives revues le 17 juin 2026.
-    </section>
-
-    <section class="faq-grid" aria-label="Questions fréquentes">
-      <details>
-        <summary>Quels coûts dois-je prioriser ?</summary>
-        <p>Confirmez d'abord les documents, la morgue, le transport du corps, le cercueil ou la préparation, puis le lieu, les repas et les annonces. Les postes culturels ou religieux doivent être discutes avec la famille.</p>
-      </details>
-      <details>
-        <summary>Comment eviter les dépenses d'urgence ?</summary>
-        <p>Demandez deux ou trois devis pour les postes chers, nommez une personne chargee des paiements, gardez une marge et notez les promesses de contribution pour eviter les doubles comptes.</p>
-      </details>
-      <details>
-        <summary>Le calcul inclut-il le rapatriement ?</summary>
-        <p>Il peut être saisi dans transport ou formalites. Pour un rapatriement international, vérifiez les permis consulaires, la compagnie aérienne, le funeraire local et les exigences sanitaires.</p>
-      </details>
-    </section>
-
-    <afro-business-cta
-      tool-name="Estimateur cout funerailles"
-      save-note="Sauvez un budget familial, exportez un resume et gardez les hypotheses avant de demander des devis locaux."></afro-business-cta>
-    <afro-related-tools category="personal-finance" current="cout-funerailles-fr"></afro-related-tools>
+    </div>
   </main>
-
   <afro-footer></afro-footer>
-
-  <script>
-    (function () {
-      'use strict';
-
-      var COUNTRIES = {
-        NG: { name: 'Nigeria', sym: '₦' },
-        KE: { name: 'Kenya', sym: 'KES ' },
-        ZA: { name: 'Afrique du Sud', sym: 'R' },
-        GH: { name: 'Ghana', sym: 'GH₵' },
-        TZ: { name: 'Tanzanie', sym: 'TZS ' },
-        UG: { name: 'Ouganda', sym: 'UGX ' },
-        ET: { name: 'Éthiopie', sym: 'Br ' },
-        CI: { name: 'Côte d’Ivoire', sym: 'CFA ' }
-      };
-      var ITEMS = [
-        { id: 'mortuary', name: 'Morgue / embaumement' },
-        { id: 'casket', name: 'Cercueil' },
-        { id: 'venue', name: 'Lieu / église' },
-        { id: 'catering', name: 'Repas', perGuest: true },
-        { id: 'transport', name: 'Transport / corbillard' },
-        { id: 'cemetery', name: 'Cimetière / concession' },
-        { id: 'program', name: 'Programmes imprimés' },
-        { id: 'music', name: 'Musique / groupe' },
-        { id: 'canopy', name: 'Tente / auvent' },
-        { id: 'asoebi', name: 'Asoebi / tenue familiale' },
-        { id: 'video', name: 'Couverture vidéo' },
-        { id: 'obituary', name: 'Avis de décès' }
-      ];
-      var COSTS = {
-        NG:{basic:{mortuary:100000,casket:80000,venue:50000,catering:1500,transport:80000,cemetery:100000,program:30000,music:80000,canopy:60000,asoebi:200000,video:50000,obituary:30000},standard:{mortuary:200000,casket:250000,venue:100000,catering:3000,transport:150000,cemetery:200000,program:60000,music:150000,canopy:120000,asoebi:400000,video:100000,obituary:60000},premium:{mortuary:400000,casket:600000,venue:250000,catering:5000,transport:300000,cemetery:500000,program:100000,music:300000,canopy:250000,asoebi:800000,video:200000,obituary:100000}},
-        KE:{basic:{mortuary:30000,casket:25000,venue:15000,catering:500,transport:25000,cemetery:30000,program:8000,music:20000,canopy:15000,asoebi:50000,video:15000,obituary:10000},standard:{mortuary:60000,casket:60000,venue:30000,catering:1000,transport:50000,cemetery:60000,program:15000,music:40000,canopy:30000,asoebi:100000,video:30000,obituary:20000},premium:{mortuary:120000,casket:150000,venue:60000,catering:2000,transport:100000,cemetery:150000,program:25000,music:80000,canopy:60000,asoebi:200000,video:60000,obituary:40000}},
-        ZA:{basic:{mortuary:3000,casket:3500,venue:2000,catering:80,transport:3000,cemetery:4000,program:1500,music:3000,canopy:2500,asoebi:5000,video:2000,obituary:1500},standard:{mortuary:6000,casket:8000,venue:4000,catering:150,transport:5000,cemetery:8000,program:3000,music:6000,canopy:5000,asoebi:10000,video:4000,obituary:3000},premium:{mortuary:12000,casket:20000,venue:8000,catering:300,transport:10000,cemetery:15000,program:5000,music:12000,canopy:10000,asoebi:20000,video:8000,obituary:5000}},
-        GH:{basic:{mortuary:2000,casket:2500,venue:1500,catering:50,transport:2000,cemetery:3000,program:800,music:2000,canopy:1500,asoebi:4000,video:1500,obituary:1000},standard:{mortuary:5000,casket:6000,venue:3000,catering:100,transport:4000,cemetery:6000,program:2000,music:4000,canopy:3000,asoebi:8000,video:3000,obituary:2000},premium:{mortuary:10000,casket:15000,venue:6000,catering:200,transport:8000,cemetery:12000,program:4000,music:8000,canopy:6000,asoebi:15000,video:6000,obituary:4000}},
-        TZ:{basic:{mortuary:200000,casket:300000,venue:150000,catering:10000,transport:200000,cemetery:250000,program:50000,music:200000,canopy:150000,asoebi:400000,video:150000,obituary:80000},standard:{mortuary:500000,casket:700000,venue:300000,catering:20000,transport:400000,cemetery:500000,program:100000,music:400000,canopy:300000,asoebi:800000,video:300000,obituary:150000},premium:{mortuary:1000000,casket:1500000,venue:600000,catering:40000,transport:800000,cemetery:1000000,program:200000,music:800000,canopy:600000,asoebi:1500000,video:600000,obituary:300000}},
-        UG:{basic:{mortuary:300000,casket:400000,venue:200000,catering:15000,transport:300000,cemetery:400000,program:80000,music:300000,canopy:200000,asoebi:600000,video:200000,obituary:100000},standard:{mortuary:700000,casket:1000000,venue:400000,catering:30000,transport:600000,cemetery:800000,program:150000,music:600000,canopy:400000,asoebi:1200000,video:400000,obituary:200000},premium:{mortuary:1500000,casket:2500000,venue:800000,catering:60000,transport:1200000,cemetery:1500000,program:300000,music:1200000,canopy:800000,asoebi:2500000,video:800000,obituary:400000}},
-        ET:{basic:{mortuary:2000,casket:3000,venue:2000,catering:100,transport:3000,cemetery:5000,program:500,music:3000,canopy:2000,asoebi:8000,video:2000,obituary:1000},standard:{mortuary:5000,casket:8000,venue:5000,catering:200,transport:6000,cemetery:10000,program:1500,music:6000,canopy:4000,asoebi:20000,video:5000,obituary:2500},premium:{mortuary:10000,casket:20000,venue:10000,catering:400,transport:12000,cemetery:20000,program:3000,music:12000,canopy:8000,asoebi:40000,video:10000,obituary:5000}},
-        CI:{basic:{mortuary:100000,casket:120000,venue:80000,catering:3000,transport:100000,cemetery:150000,program:30000,music:100000,canopy:80000,asoebi:200000,video:80000,obituary:40000},standard:{mortuary:250000,casket:350000,venue:200000,catering:6000,transport:250000,cemetery:300000,program:70000,music:250000,canopy:200000,asoebi:500000,video:200000,obituary:100000},premium:{mortuary:500000,casket:800000,venue:400000,catering:12000,transport:500000,cemetery:600000,program:150000,music:500000,canopy:400000,asoebi:1000000,video:400000,obituary:200000}}
-      };
-      var selectedItems = { mortuary:true,casket:true,venue:true,catering:true,transport:true,cemetery:true,program:false,music:false,canopy:false,asoebi:false,video:false,obituary:false };
-      var fields = ['country', 'budget', 'guestSlider', 'location', 'ceremony', 'availableFund', 'insurancePayout', 'contributors', 'deadlineDays'];
-      var state = { summary: '' };
-
-      function el(id) {
-        return document.getElementById(id);
-      }
-
-      function num(id) {
-        return Number(el(id).value || 0);
-      }
-
-      function money(value, country) {
-        return country.sym + Math.round(value).toLocaleString('fr-FR');
-      }
-
-      function setStatus(text) {
-        el('status').textContent = text;
-      }
-
-      function renderItems() {
-        el('itemGrid').innerHTML = ITEMS.map(function (item) {
-          return '<label class="field"><input type="checkbox" data-burial-item="' + item.id + '"' +
-            (selectedItems[item.id] ? ' checked' : '') + '> <span>' + item.name +
-            (item.perGuest ? ' (par invité)' : '') + '</span></label>';
-        }).join('');
-        el('itemGrid').querySelectorAll('[data-burial-item]').forEach(function (input) {
-          input.addEventListener('change', function () {
-            selectedItems[input.getAttribute('data-burial-item')] = input.checked;
-          });
-        });
-      }
-
-      function calculate() {
-        var invalid = [el('contributors'), el('deadlineDays')].filter(function (input) {
-          return Number(input.value) < 1;
-        });
-        [el('contributors'), el('deadlineDays')].forEach(function (input) {
-          input.removeAttribute('aria-invalid');
-        });
-        if (invalid.length) {
-          invalid.forEach(function (input) { input.setAttribute('aria-invalid', 'true'); });
-          el('result').innerHTML = '';
-          el('breakdown').innerHTML = '';
-          el('advice').textContent = '';
-          setStatus('Saisissez au moins un foyer contributeur et un jour avant l’échéance.');
-          return '';
-        }
-        var countryCode = el('country').value;
-        var country = COUNTRIES[countryCode];
-        var budget = el('budget').value;
-        var guests = parseInt(el('guestSlider').value, 10);
-        var locationValue = el('location').value;
-        var ceremony = el('ceremony').value;
-        var availableFund = Math.max(0, num('availableFund'));
-        var insurancePayout = Math.max(0, num('insurancePayout'));
-        var contributors = parseInt(el('contributors').value, 10);
-        var deadlineDays = parseInt(el('deadlineDays').value, 10);
-        var locMult = locationValue === 'hometown' ? 0.7 : 1;
-        var cerMult = ceremony === 'muslim' ? 0.5 : ceremony === 'secular' ? 0.8 : ceremony === 'traditional' ? 1.1 : 1;
-        var items = [];
-        ITEMS.forEach(function (item) {
-          if (!selectedItems[item.id]) return;
-          var cost = COSTS[countryCode][budget][item.id];
-          if (item.perGuest) cost *= guests;
-          items.push({ label: item.name, value: Math.round(cost * locMult * cerMult) });
-        });
-        var total = items.reduce(function (sum, item) { return sum + item.value; }, 0);
-        var covered = availableFund + insurancePayout;
-        var gap = Math.max(0, total - covered);
-        var perHousehold = gap / contributors;
-        var dailyTarget = gap / deadlineDays;
-        var perGuest = guests > 0 ? total / guests : total;
-        var topItems = items.slice().sort(function (a, b) { return b.value - a.value; }).slice(0, 3);
-
-        el('result').innerHTML = [
-          '<div class="metric"><span>Total estimé</span><strong>' + money(total, country) + '</strong></div>',
-          '<div class="metric ' + (gap > 0 ? 'warn' : 'good') + '"><span>Manque à financer</span><strong>' + money(gap, country) + '</strong></div>',
-          '<div class="metric"><span>Par foyer</span><strong>' + money(perHousehold, country) + '</strong></div>',
-          '<div class="metric"><span>Objectif quotidien</span><strong>' + money(dailyTarget, country) + '</strong></div>',
-          '<div class="metric"><span>Coût par invité</span><strong>' + money(perGuest, country) + '</strong></div>',
-          '<div class="metric wide"><span>Priorite</span><strong>' + topItems.map(function (item) { return item.label; }).join(', ') + '</strong></div>'
-        ].join('');
-
-        el('breakdown').innerHTML = items.map(function (item) {
-          return '<div class="line-item"><span>' + item.label + '</span><strong>' + money(item.value, country) + '</strong></div>';
-        }).join('');
-
-        el('advice').textContent = gap > 0
-          ? 'Il manque environ ' + money(gap, country) + ', soit ' + money(perHousehold, country) + ' par foyer.'
-          : 'Les fonds disponibles et l’assurance couvrent cette estimation.';
-
-        state.summary = [
-          'AfroTools - Estimateur cout funerailles',
-          'Pays/contexte: ' + country.name,
-          'Invites: ' + guests,
-          'Total estime: ' + money(total, country),
-          'Fonds et assurance: ' + money(covered, country),
-          'Manque a financer: ' + money(gap, country),
-          'Par foyer: ' + money(perHousehold, country),
-          'Objectif quotidien: ' + money(dailyTarget, country),
-          'Top postes: ' + topItems.map(function (item) { return item.label + ' (' + money(item.value, country) + ')' }).join('; '),
-          'Limite: estimation educative. Confirmer les devis, documents et exigences locales.'
-        ].join('\\n');
-        window.AfroToolsFrenchBurialPayload = {
-          total: total,
-          perGuest: perGuest,
-          fundingGap: gap,
-          perHousehold: perHousehold,
-          dailyTarget: dailyTarget,
-          covered: covered,
-          guests: guests,
-          country: countryCode,
-          budget: budget,
-          location: locationValue,
-          ceremony: ceremony
-        };
-
-        setStatus('Budget calcule. Resume pret a copier, telecharger ou sauver.');
-        return state.summary;
-      }
-
-      function copySummary() {
-        var summary = state.summary || calculate();
-        if (!navigator.clipboard || !navigator.clipboard.writeText) {
-          setStatus('Copie bloquee par le navigateur. Utilisez le telechargement TXT.');
-          return;
-        }
-        navigator.clipboard.writeText(summary).then(function () {
-          setStatus('Resume copie.');
-        }).catch(function () {
-          setStatus('Copie bloquee par le navigateur. Utilisez le telechargement TXT.');
-        });
-      }
-
-      function downloadText() {
-        var summary = state.summary || calculate();
-        var blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = 'budget-funerailles-afrotools.txt';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(url);
-        setStatus('Fichier TXT prepare.');
-      }
-
-      function saveLocal() {
-        var payload = {
-          savedAt: new Date().toISOString(),
-          inputs: fields.reduce(function (acc, id) {
-            acc[id] = el(id).value;
-            return acc;
-          }, {}),
-          summary: state.summary || calculate()
-        };
-        localStorage.setItem('afrotools:cout-funerailles-fr:last', JSON.stringify(payload));
-        setStatus('Budget sauve dans ce navigateur.');
-      }
-
-      el('sampleBtn').addEventListener('click', function () {
-        el('country').value = 'GH';
-        el('budget').value = 'standard';
-        el('guestSlider').value = '200';
-        el('guestLabel').textContent = '200';
-        calculate();
-        location.hash = '#planner';
-      });
-
-      el('funeralForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        calculate();
-      });
-
-      el('copyBtn').addEventListener('click', copySummary);
-      el('downloadBtn').addEventListener('click', downloadText);
-      el('saveBtn').addEventListener('click', saveLocal);
-
-      renderItems();
-      calculate();
-    }());
-  </script>
+  <script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script src="/assets/js/engines/funeral-budget-engine.js?v=9df142ea"></script>
+  <script src="/assets/js/pages/fr-funeral-budget-parity.js?v=41656c02"></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js?v=d703e731"></script>
-  <script src="/assets/js/pages/fr-uniquely-african-native-exports.js?v=afa89491"></script>
-  <aside class="ua-native-ai-route" aria-label="Continuer avec AfroTools AI"><a href="/fr/ai/?tool=burial-cost&route=%2Ffr%2Ftools%2Fcout-funerailles%2F">Préparer ce workflow dans AfroTools AI</a></aside>
 </body>
 </html>

@@ -9,11 +9,21 @@
   var status = app.querySelector('[data-status]');
   var lastSummary = '';
   var french = document.documentElement.lang === 'fr';
-  function t(english, frenchCopy) { return french ? frenchCopy : english; }
+  var swahili = document.documentElement.lang === 'sw';
+  var swahiliCopy = {
+    'Not a SARS return, assessment, filing instruction or payment amount.': 'Si fomu ya SARS, tathmini, maagizo ya kuwasilisha wala kiasi cha kulipa.',
+    'Confirm the calculator scope before calculating.': 'Thibitisha upeo wa kikokotoo kabla ya kukokotoa.',
+    'Choose a disposal date from 1 March 2026 to 28 February 2027.': 'Chagua tarehe ya uuzaji kati ya 1 Machi 2026 na 28 Februari 2027.',
+    'Check that every amount is zero or more and each percentage is between 0 and 100.': 'Kagua kuwa kila kiasi ni sifuri au zaidi na kila asilimia iko kati ya 0 na 100.',
+    'Summary copied.': 'Muhtasari umenakiliwa.',
+    'Copy unavailable; select the calculation steps manually.': 'Kunakili hakupatikani; chagua hatua za hesabu mwenyewe.',
+    'TXT summary downloaded.': 'Muhtasari wa TXT umepakuliwa.'
+  };
+  function t(english, frenchCopy) { return swahili ? (swahiliCopy[english] || english) : french ? frenchCopy : english; }
   function field(name) { return app.querySelector('[name="' + name + '"]'); }
   function number(name) { return Number(field(name).value); }
   function checked(name) { return field(name).checked; }
-  function money(value) { return new Intl.NumberFormat(french ? 'fr-ZA' : 'en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 2 }).format(value); }
+  function money(value) { return new Intl.NumberFormat(swahili ? 'sw-ZA' : french ? 'fr-ZA' : 'en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 2 }).format(value); }
   function updateFields() {
     var individual = field('taxpayerType').value === 'individual';
     var residence = field('assetType').value === 'residence';
@@ -46,7 +56,13 @@
     app.querySelector('[data-exclusions]').textContent = money(out.residenceExclusion + Math.abs(out.annualExclusionApplied));
     app.querySelector('[data-taxable]').textContent = money(out.taxableCapitalGain);
     app.querySelector('[data-carried]').textContent = money(out.carriedCapitalLoss);
-    var rows = french ? [
+    var rows = swahili ? [
+      'Mapato ya mauzo ' + money(out.proceeds) + ' ukiondoa gharama ya msingi yenye ushahidi ' + money(out.baseCost) + ' = ' + money(out.transactionAmount) + '.',
+      'Jumla ya faida au hasara kabla ya msamaha wa mwaka: ' + money(out.aggregateBeforeAnnual) + '.',
+      'Baada ya msamaha wa mwaka na hasara ya mtaji iliyoletwa mbele: faida halisi ya mtaji ' + money(out.netCapitalGain) + '.',
+      'Kiwango cha kujumuisha cha ' + (out.inclusionRate * 100).toFixed(0) + '% kinatoa faida ya mtaji inayotozwa kodi ya ' + money(out.taxableCapitalGain) + '.',
+      'Makadirio ya ongezeko la kodi ya kawaida: ' + money(out.tax) + '.'
+    ] : french ? [
       'Produit de cession ' + money(out.proceeds) + ' moins prix de base justifié ' + money(out.baseCost) + ' = ' + money(out.transactionAmount) + '.',
       'Gain ou perte global avant l’exclusion annuelle : ' + money(out.aggregateBeforeAnnual) + '.',
       'Après l’exclusion annuelle et la perte en capital reportée : gain en capital net ' + money(out.netCapitalGain) + '.',
@@ -61,6 +77,7 @@
     ];
     app.querySelector('[data-steps]').innerHTML = rows.map(function (row) { return '<li>' + row + '</li>'; }).join('');
     lastSummary = (french ? ['Estimation de planification AfroTools de la plus-value en Afrique du Sud', 'Année d’imposition 2027', 'Date de cession : ' + out.disposalDate] : ['AfroTools South Africa CGT planning estimate', '2027 assessment year', 'Disposal date: ' + out.disposalDate]).concat(rows).concat([t('Not a SARS return, assessment, filing instruction or payment amount.','Ni déclaration SARS, ni avis d’imposition, instruction de dépôt ou montant à payer.')]).join('\n');
+    if (swahili) lastSummary = ['Makadirio ya kupanga ya CGT ya Afrika Kusini ya AfroTools', 'Mwaka wa tathmini 2027', 'Tarehe ya uuzaji: ' + out.disposalDate].concat(rows).concat([swahiliCopy['Not a SARS return, assessment, filing instruction or payment amount.']]).join('\n');
     result.hidden = false;
     result.focus({ preventScroll: true });
     result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -80,7 +97,7 @@
     var url = URL.createObjectURL(new Blob([lastSummary], { type: 'text/plain;charset=utf-8' }));
     var link = document.createElement('a');
     link.href = url;
-    link.download = french ? 'estimation-plus-value-afrique-du-sud-2027.txt' : 'south-africa-cgt-2027-estimate.txt';
+    link.download = swahili ? 'makadirio-cgt-afrika-kusini-2027.txt' : french ? 'estimation-plus-value-afrique-du-sud-2027.txt' : 'south-africa-cgt-2027-estimate.txt';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -89,5 +106,28 @@
   });
   field('taxpayerType').addEventListener('change', updateFields);
   field('assetType').addEventListener('change', updateFields);
+  form.addEventListener('input', function () {
+    if (!lastSummary) return;
+    lastSummary = '';
+    result.hidden = true;
+    status.textContent = swahili ? 'Data imebadilika; kokotoa tena kabla ya kutumia matokeo.' : french ? 'Les entrées ont changé ; recalculez avant d’utiliser le résultat.' : 'Inputs changed; calculate again before using the result.';
+  });
+  form.addEventListener('reset', function () {
+    setTimeout(function () {
+      updateFields();
+      lastSummary = '';
+      result.hidden = true;
+      error.textContent = '';
+      status.textContent = swahili ? 'Fomu imerudishwa mwanzo.' : french ? 'Formulaire réinitialisé.' : 'Form reset.';
+    }, 0);
+  });
+  form.addEventListener('submit', function () {
+    setTimeout(function () {
+      if (!error.textContent) return;
+      if (!field('scopeConfirmed').checked) field('scopeConfirmed').focus();
+      else if (field('disposalDate').value < engine.RULES.effectiveFrom || field('disposalDate').value > engine.RULES.effectiveTo) field('disposalDate').focus();
+      else field('proceeds').focus();
+    }, 0);
+  });
   updateFields();
 })();

@@ -1,0 +1,788 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "lane": "creative-image-design-unaccepted",
+  "baseCommit": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+  "exactScope": {
+    "denominator": 53,
+    "categories": {
+      "creative": 34,
+      "image-design": 19
+    },
+    "acceptedCandidates": 16,
+    "blocked": 37,
+    "centralAcceptanceLedgerEdited": false
+  },
+  "verdict": "PARTIAL — FAIL CLOSED",
+  "rows": [
+    {
+      "englishId": "image-compress",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-compress/",
+      "swahiliRoute": "/sw/zana/kubana-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-compress.js + assets/js/lib/image-compress-studio.js",
+      "oracle": "The English inline IIFE was extracted byte-for-byte into the maintained shared owner (baseline SHA-256 47a6a29e4f9e61559c16525c3d73e09589400324caf1b6f65129a897e0ab6cfa); English and Swahili now execute that exact queue, target-size, resize, codec, comparison, filename, settings and history engine.",
+      "exports": "English and Swahili 160x90 PNG output was byte-identical. Swahili PNG, JPG, WebP and auto-selected files reopened at 160x90; a 20 KB target JPEG reopened at 600x400 within target; Download all emitted two WebP files that reopened at exact 120x68 and 90x90 dimensions.",
+      "browser": "tests/e2e/swahili-image-compress-parity.spec.js (Chromium, one worker, final run on port 4410): shared-owner parity, all advertised codecs, auto selection, target search, two-file downloads, presets, invalid/clear behavior, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-compress.webp"
+    },
+    {
+      "englishId": "image-resize",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-resize/",
+      "swahiliRoute": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/lib/image-resize-studio.js",
+      "oracle": "Swahili now loads the exact English local batch resizer for presets, fit/fill/pad/stretch geometry, focal coordinates, no-upscale, format, quality, naming, history and download semantics; a bounded adapter localizes dynamic UI only.",
+      "exports": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP plus fit/fill/pad/stretch outputs reopened at exact dimensions; two files across custom and thumbnail targets produced four individually reopened files and four more reopened through Download all at 60x40 or 512x512.",
+      "browser": "tests/e2e/swahili-image-resize-parity.spec.js (Chromium, one worker, final run on port 4406): shared-engine parity, all resize modes, codecs, multi-file multi-target exports, clear/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-resize.webp"
+    },
+    {
+      "englishId": "qr-generator",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/qr-generator/",
+      "swahiliRoute": "/sw/zana/kitengeneza-qr/",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/engines/qr-payload-engine.js",
+      "oracle": "Shared DOM-free engine preserves English text, URL, escaped WiFi and vCard payload semantics and high error correction; Swahili invalid/reset states clear stale output.",
+      "exports": "PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths.",
+      "browser": "tests/e2e/swahili-qr-generator-parity.spec.js (Chromium, one worker, final run on port 4401): English/Swahili payload and PNG/SVG export parity, stale invalid/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/qr-generator.webp"
+    },
+    {
+      "englishId": "background-remover",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/background-remover/",
+      "swahiliRoute": "/sw/zana/kiondoa-mandharinyuma/",
+      "status": "blocked-english-fallback",
+      "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.",
+      "sourceOwner": "sw/zana/kiondoa-mandharinyuma/index.html",
+      "artwork": "assets/img/tools/background-remover.webp"
+    },
+    {
+      "englishId": "passport-photo",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/passport-photo/",
+      "swahiliRoute": "/sw/zana/picha-ya-pasipoti/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-passport-photo.js + assets/js/lib/passport-photo-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio DOM contract and translates text nodes and accessible labels only; both locales execute the same country/destination presets, source-confidence data, manual crop, 300 DPI layout and codec engine.",
+      "exports": "Controlled English and Swahili single-photo PNG output was byte-identical at 413x531. All nine advertised PNG, JPG and WebP combinations reopened in the browser at exact single 413x531, 4x6-sheet 1800x1200 and A4 2480x3508 dimensions; the localized requirement brief retained exact preset dimensions, source URL and 300 DPI contract.",
+      "browser": "tests/e2e/swahili-passport-photo-parity.spec.js (Chromium, one worker, final run on port 4409): shared renderer, all advertised formats and layouts, source facts, clipboard brief, invalid input, crop reset, checklist, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/passport-photo.webp"
+    },
+    {
+      "englishId": "image-crop",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-crop/",
+      "swahiliRoute": "/sw/zana/kukata-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/lib/image-crop-studio.js",
+      "oracle": "Swahili now uses the exact English interactive crop owner for free/fixed selection, rotate, flip, nudge, exact coordinates, output sizing, format, quality, local settings and history.",
+      "exports": "English and Swahili 64x48 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads were each reopened by format parser at exactly 64x48; the localized clipboard recipe was also read back.",
+      "browser": "tests/e2e/swahili-image-crop-parity.spec.js (Chromium, one worker, final run on port 4404): shared-engine parity, all advertised codecs, stale invalid/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-crop.webp"
+    },
+    {
+      "englishId": "color-picker",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/color-picker/",
+      "swahiliRoute": "/sw/zana/kichagua-rangi/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-color-family.js",
+      "oracle": "Exact HEX/RGB/HSL/OKLCH/CMYK values, stale invalid-state clearing and gradient/contrast results match English.",
+      "exports": "CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values.",
+      "browser": "tests/e2e/swahili-image-color-family.spec.js (Chromium, one worker, final combined run on port 4398): 320/375, 200% reflow, themes, keyboard/focus, contrast, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/color-picker.webp"
+    },
+    {
+      "englishId": "favicon-generator",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/favicon-generator/",
+      "swahiliRoute": "/sw/zana/kizalishaji-favicon/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-favicon-generator.js + assets/js/lib/favicon-generator-studio.js",
+      "oracle": "English and Swahili execute the exact shared local canvas owner. The existing four PNG sizes remain unchanged, while the formerly advertised-but-missing ICO plus a matching site.webmanifest are now generated inside the same ZIP.",
+      "exports": "Controlled English and Swahili text output was byte-identical. The ZIP parsed with exactly four PNGs, one ICO and one site.webmanifest; all PNGs and every ICO-embedded PNG reopened at 16, 32, 48 and 64 pixels, and the manifest referenced the exact four files.",
+      "browser": "tests/e2e/swahili-favicon-generator-parity.spec.js (Chromium, one worker, final run on port 4415): shared rendering, image and text input, parsed PNG/ICO/manifest/archive, invalid/reset, 320/375, true 200% reflow, themes, keyboard/focus, a11y, SEO, console and no-user-data-egress passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/favicon-generator.webp"
+    },
+    {
+      "englishId": "image-to-text",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-to-text/",
+      "swahiliRoute": "/sw/zana/kutoa-maandishi-kwenye-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-to-text.js + assets/js/lib/image-to-text-ocr-local.js + assets/js/lib/image-to-text-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English OCR studio DOM. Both locales execute the same local Tesseract adapter and shared queue, cleanup, OCR, field extraction, history and export owner; a thin Swahili adapter translates dynamic presentation and clipboard copy only.",
+      "exports": "A controlled synthetic image produced equivalent English and Swahili OCR text. TXT and Markdown reopened as text; JSON parsed with source, language, result and field contracts; CSV parsed with stable type/value columns; the localized handoff brief was read back.",
+      "browser": "tests/e2e/swahili-image-to-text-parity.spec.js (Chromium, one worker, final run on isolated port): local OCR parity, queue, four parsed export formats, localized handoff, invalid/reset, same-origin model requests with no user-data writes, 320/375, true 200% zoom reflow, light/dark, keyboard/focus, SEO, artwork and console passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-to-text.webp"
+    },
+    {
+      "englishId": "meme-generator",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/meme-generator/",
+      "swahiliRoute": "/sw/zana/kitengeneza-meme/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-meme-generator.js + tools/meme-generator/index.html deterministic inline canvas owner",
+      "oracle": "A bounded idempotent generator copies the exact English 1200x900 canvas, starter/upload, caption, style, reset and download owner. A thin Swahili adapter replaces only scene/caption data and dynamic presentation.",
+      "exports": "Controlled uploaded-image output was byte-identical in English and Swahili. Starter-scene and uploaded-image PNG downloads reopened at exactly 1200x900; all five scenes, six caption packs and three text styles remained functional.",
+      "browser": "tests/e2e/swahili-meme-generator-parity.spec.js (Chromium, one worker, isolated port): shared deterministic canvas parity, starter/upload PNGs, scenes, packs, styles, reset, invalid input, 320/375, true 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/meme-generator.webp"
+    },
+    {
+      "englishId": "logo-maker",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/logo-maker/",
+      "swahiliRoute": "/sw/zana/kitengeneza-logo/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-logo-maker.js + tools/logo-maker/index.html deterministic inline SVG/PNG owner",
+      "oracle": "A bounded idempotent generator copies the exact English six-preset, six-font, three-layout and nine-icon SVG/PNG runtime. A thin Swahili adapter translates error presentation only.",
+      "exports": "Controlled English and Swahili SVG and 400x300 PNG files were byte-identical. SVG parsed with the exact 200x150 viewBox and controlled text; PNG reopened at exactly 400x300; all presets and source fallback behavior remained functional.",
+      "browser": "tests/e2e/swahili-logo-maker-parity.spec.js (Chromium, one worker, final focused run on port 4436; full matrix on 4441): shared deterministic rendering, SVG/PNG, presets, fonts, layouts, icons, fallback, 320/375, true 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/logo-maker.webp"
+    },
+    {
+      "englishId": "image-filters",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-filters/",
+      "swahiliRoute": "/sw/zana/filters-za-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-filters.js + assets/js/lib/image-filters-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio DOM contract and translates text nodes/accessible labels only; both locales execute the same preset, pixel-filter, resize, codec, recipe, history and ZIP engine.",
+      "exports": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back.",
+      "browser": "tests/e2e/swahili-image-filters-parity.spec.js (Chromium, one worker, final run on port 4407): shared-engine parity, codecs, two-file ZIP, recipe copy, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-filters.webp"
+    },
+    {
+      "englishId": "social-card",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/social-card/",
+      "swahiliRoute": "/sw/zana/kadi-ya-mitandao/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-social-card.js + assets/js/lib/social-card-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio workspace contract and translates text nodes/accessible labels only; both locales execute the same platform, layout, palette, canvas, contrast, history and export engine.",
+      "exports": "Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed.",
+      "browser": "tests/e2e/swahili-social-card-parity.spec.js (Chromium, one worker, final run on port 4408): shared renderer, all codecs, six platform exports, clipboard handoffs, reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/social-card.webp"
+    },
+    {
+      "englishId": "certificate-maker",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/certificate-maker/",
+      "swahiliRoute": "/sw/zana/kitengeneza-cheti/",
+      "status": "blocked-english-fallback",
+      "blocker": "The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.",
+      "sourceOwner": "sw/zana/kitengeneza-cheti/index.html",
+      "artwork": "assets/img/tools/certificate-maker.webp"
+    },
+    {
+      "englishId": "flyer-maker",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/flyer-maker/",
+      "swahiliRoute": "/sw/zana/kitengeneza-flyer/",
+      "status": "blocked-feature-parity",
+      "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior.",
+      "sourceOwner": "sw/zana/kitengeneza-flyer/index.html",
+      "artwork": "assets/img/tools/flyer-maker.webp"
+    },
+    {
+      "englishId": "thumbnail-maker",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/thumbnail-maker/",
+      "swahiliRoute": "/sw/zana/kitengeneza-thumbnail/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-thumbnail-maker.js + assets/js/lib/thumbnail-maker-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio DOM contract; both locales execute the same five-size, layout, palette, hook, brand-kit, readiness, local FileReader/canvas and codec/export owner, while a thin adapter localizes dynamic text and clipboard output.",
+      "exports": "Controlled English and Swahili 1280x720 PNG output was byte-identical. All 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; all three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized upload brief, checklist and design-link exports were parsed.",
+      "browser": "tests/e2e/swahili-thumbnail-maker-parity.spec.js (Chromium, one worker, final run on port 4411): shared-renderer parity, five sizes, three codecs, three A/B outputs, local assets, reset/invalid, 320/375, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/thumbnail-maker.webp"
+    },
+    {
+      "englishId": "watermark-bulk",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/watermark-bulk/",
+      "swahiliRoute": "/sw/zana/watermark-nyingi/",
+      "status": "accepted-candidate",
+      "sourceOwner": "sw/zana/watermark-nyingi/index.html",
+      "oracle": "English full-resolution canvas, placement, opacity, filename and multi-file behavior is retained with native Swahili presets, validation and live status.",
+      "exports": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30.",
+      "browser": "tests/e2e/swahili-watermark-bulk-parity.spec.js (Chromium, one worker, final combined run on port 4398): English/Swahili parity, 320/375, 200% reflow, themes, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/watermark-bulk.webp"
+    },
+    {
+      "englishId": "image-format-convert",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/image-format-convert/",
+      "swahiliRoute": "/sw/zana/kubadilisha-format-ya-picha/",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/lib/image-format-convert-studio.js",
+      "oracle": "Swahili now loads the exact English local converter for presets, dimensions, quality, codec detection, batch processing, manifest contents and filename semantics; a bounded adapter localizes dynamic UI only.",
+      "exports": "English and Swahili 60x40 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads reopened at exactly 60x40; unsupported AVIF stayed disabled; a two-source, three-format ZIP manifest parsed and all six nested files reopened at 60x40; copied picture markup was read back.",
+      "browser": "tests/e2e/swahili-image-format-convert-parity.spec.js (Chromium, one worker, final run on port 4405): shared-engine parity, codec fail-closed behavior, direct and batch exports, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/image-format-convert.webp"
+    },
+    {
+      "englishId": "colour-palette",
+      "categoryKey": "image-design",
+      "englishRoute": "/tools/colour-palette/",
+      "swahiliRoute": "/sw/zana/paleti-ya-rangi/",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-color-family.js",
+      "oracle": "English dataset remains exact at 45 palettes and 225 colors; category filtering and keyboard clipboard flow passed.",
+      "exports": "Per-palette CSS, all-palette CSS and JSON downloads were reopened; JSON parsed to all 45 records and CSS parsed to all 225 colors.",
+      "browser": "tests/e2e/swahili-image-color-family.spec.js (Chromium, one worker, final combined run on port 4398): 320/375, 200% reflow, themes, keyboard/focus, contrast, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
+      "artwork": "assets/img/tools/colour-palette.webp"
+    },
+    {
+      "englishId": "afrostream",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/afrostream/",
+      "swahiliRoute": "/sw/zana/afrostream/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The English owner is a network-backed streaming hub. Route-specific fallback, freshness and no-network proof is not complete.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/afrostream.webp"
+    },
+    {
+      "englishId": "creator-analytics",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-analytics/",
+      "swahiliRoute": "/sw/zana/takwimu-za-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-analytics.webp"
+    },
+    {
+      "englishId": "creator-bios",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-bios/",
+      "swahiliRoute": "/sw/zana/bio-za-mitandao/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-bios.webp"
+    },
+    {
+      "englishId": "creator-brand",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-brand/",
+      "swahiliRoute": "/sw/zana/brand-kit-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-brand.webp"
+    },
+    {
+      "englishId": "creator-calendar",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-calendar/",
+      "swahiliRoute": "/sw/zana/kalenda-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-calendar.webp"
+    },
+    {
+      "englishId": "creator-canvas",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-canvas/",
+      "swahiliRoute": "/sw/zana/canvas-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-canvas.webp"
+    },
+    {
+      "englishId": "creator-captions",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-captions/",
+      "swahiliRoute": "/sw/zana/caption-za-maudhui/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-captions.webp"
+    },
+    {
+      "englishId": "creator-carousel",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-carousel/",
+      "swahiliRoute": "/sw/zana/carousel-ya-mitandao/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-carousel.webp"
+    },
+    {
+      "englishId": "creator-clip",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-clip/",
+      "swahiliRoute": "/sw/zana/kukata-video-za-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "Real-device capture and reopened codec proof is unavailable; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-clip.webp"
+    },
+    {
+      "englishId": "creator-desk",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-desk/",
+      "swahiliRoute": "/sw/zana/dawati-la-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no route-specific project-state and portable export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-desk.webp"
+    },
+    {
+      "englishId": "creator-hashtags",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-hashtags/",
+      "swahiliRoute": "/sw/zana/hashtag-za-maudhui/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-hashtags.webp"
+    },
+    {
+      "englishId": "creator-hooks",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-hooks/",
+      "swahiliRoute": "/sw/zana/hook-za-video/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-hooks.webp"
+    },
+    {
+      "englishId": "creator-invoice",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-invoice/",
+      "swahiliRoute": "/sw/zana/ankara-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-invoice.webp"
+    },
+    {
+      "englishId": "creator-kit",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-kit/",
+      "swahiliRoute": "/sw/zana/media-kit-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-kit.webp"
+    },
+    {
+      "englishId": "creator-mail",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-mail/",
+      "swahiliRoute": "/sw/zana/barua-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no reopened HTML/TXT newsletter export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-mail.webp"
+    },
+    {
+      "englishId": "creator-mind",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-mind/",
+      "swahiliRoute": "/sw/zana/mawazo-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no route-specific idea-generation and JSON/TXT export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-mind.webp"
+    },
+    {
+      "englishId": "creator-money",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-money/",
+      "swahiliRoute": "/sw/zana/mapato-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-money.webp"
+    },
+    {
+      "englishId": "creator-page",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-page/",
+      "swahiliRoute": "/sw/zana/ukurasa-wa-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-page.webp"
+    },
+    {
+      "englishId": "creator-polish",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-polish/",
+      "swahiliRoute": "/sw/zana/boresha-maudhui-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no route-specific analysis and rewritten-text export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-polish.webp"
+    },
+    {
+      "englishId": "creator-pricing",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-pricing/",
+      "swahiliRoute": "/sw/zana/bei-za-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-pricing.webp"
+    },
+    {
+      "englishId": "creator-record",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-record/",
+      "swahiliRoute": "/sw/zana/kirekodi-skrini/",
+      "status": "blocked-parity-unproved",
+      "blocker": "Real-device capture and reopened codec proof is unavailable; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-record.webp"
+    },
+    {
+      "englishId": "creator-repurpose",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-repurpose/",
+      "swahiliRoute": "/sw/zana/kubadilisha-maudhui-kwa-majukwaa/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-repurpose.webp"
+    },
+    {
+      "englishId": "creator-resize",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-resize/",
+      "swahiliRoute": "/sw/zana/resize-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-resize.webp"
+    },
+    {
+      "englishId": "creator-schedule",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-schedule/",
+      "swahiliRoute": "/sw/zana/ratiba-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no route-specific calendar-state and parsed CSV/iCal oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-schedule.webp"
+    },
+    {
+      "englishId": "creator-scripts",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-scripts/",
+      "swahiliRoute": "/sw/zana/script-za-video/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-scripts.webp"
+    },
+    {
+      "englishId": "creator-split",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-split/",
+      "swahiliRoute": "/sw/zana/mgawanyo-wa-mapato-ya-watayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no collaborator mutation, exact-total and parsed export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-split.webp"
+    },
+    {
+      "englishId": "creator-stock",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-stock/",
+      "swahiliRoute": "/sw/zana/maktaba-ya-stock-media/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-stock.webp"
+    },
+    {
+      "englishId": "creator-team",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-team/",
+      "swahiliRoute": "/sw/zana/timu-ya-watayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The legacy Swahili route has no task-state mutation and parsed CSV/JSON export oracle.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-team.webp"
+    },
+    {
+      "englishId": "creator-thumb",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-thumb/",
+      "swahiliRoute": "/sw/zana/thumbnail-ya-mtayarishi/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-thumb.webp"
+    },
+    {
+      "englishId": "creator-titles",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-titles/",
+      "swahiliRoute": "/sw/zana/vichwa-vya-maudhui/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-titles.webp"
+    },
+    {
+      "englishId": "creator-voice",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/creator-voice/",
+      "swahiliRoute": "/sw/zana/rekodi-na-hariri-sauti/",
+      "status": "blocked-parity-unproved",
+      "blocker": "Real-device capture and reopened codec proof is unavailable; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/creator-voice.webp"
+    },
+    {
+      "englishId": "linkedin-optimizer",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/linkedin-optimizer/",
+      "swahiliRoute": "/sw/zana/boresha-linkedin/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/linkedin-optimizer.webp"
+    },
+    {
+      "englishId": "personal-brand-audit",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/personal-brand-audit/",
+      "swahiliRoute": "/sw/zana/ukaguzi-wa-personal-brand/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/personal-brand-audit.webp"
+    },
+    {
+      "englishId": "social-media-calendar",
+      "categoryKey": "creative",
+      "englishRoute": "/tools/social-media-calendar/",
+      "swahiliRoute": "/sw/zana/kalenda-ya-mitandao-ya-kijamii/",
+      "status": "blocked-parity-unproved",
+      "blocker": "The localized route is usable, but a route-specific shared-engine, invalid-state and complete parsed export oracle is not yet present; acceptance fails closed.",
+      "sourceOwner": "scripts/build-sw-creative-parity.js",
+      "artwork": "assets/img/tools/social-media-calendar.webp"
+    }
+  ],
+  "sourceDecisions": [
+    "Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.",
+    "Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.",
+    "Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.",
+    "Image Compress now loads the byte-exact extracted English image-compress-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue and history without changing batch, target-size, resize, codec, comparison, filename or download calculations.",
+    "Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.",
+    "Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.",
+    "Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.",
+    "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
+    "Image to Text is generated from the English studio DOM and executes the exact same local Tesseract adapter and OCR studio; a bounded adapter localizes dynamic presentation without changing OCR, cleanup, field extraction or export semantics.",
+    "Meme Generator is generated from the exact English local canvas owner; a bounded adapter localizes starter scenes, caption packs and dynamic guidance without changing uploaded-image decoding, canvas dimensions, text rendering controls or PNG download semantics.",
+    "Logo Maker is generated from the exact English local SVG/PNG owner; a bounded adapter localizes error presentation without changing presets, fonts, icons, layouts, SVG serialization or 400x300 PNG rendering.",
+    "Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.",
+    "Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.",
+    "Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.",
+    "Favicon Generator is generated from the English studio DOM contract and loads favicon-generator-studio.js; the shared engine owns local image/text rendering, four PNG sizes, multi-image ICO construction, site.webmanifest and ZIP output.",
+    "Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof."
+  ],
+  "browserMatrix": {
+    "engine": "Chromium",
+    "workers": 1,
+    "isolatedPorts": [
+      4398,
+      4401,
+      4404,
+      4405,
+      4406,
+      4407,
+      4408,
+      4409,
+      4410,
+      4411,
+      4415,
+      4418,
+      4420,
+      4425,
+      4426,
+      4436,
+      4441
+    ],
+    "widths": [
+      320,
+      375,
+      640
+    ],
+    "reflow": "320/375 px narrow widths plus explicit true 200% browser zoom checks for Thumbnail Maker, Favicon Generator, Image to Text, Meme Generator and Logo Maker; earlier candidates retain their recorded 640 px equivalent checks",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "checked": [
+      "keyboard/focus",
+      "computed contrast",
+      "canonical/OG/schema/hreflang",
+      "console/page/resource errors",
+      "network writes",
+      "invalid-state behavior"
+    ]
+  },
+  "exportParseProof": [
+    {
+      "englishId": "image-compress",
+      "proof": "English and Swahili 160x90 PNG output was byte-identical. Swahili PNG, JPG, WebP and auto-selected files reopened at 160x90; a 20 KB target JPEG reopened at 600x400 within target; Download all emitted two WebP files that reopened at exact 120x68 and 90x90 dimensions."
+    },
+    {
+      "englishId": "image-resize",
+      "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP plus fit/fill/pad/stretch outputs reopened at exact dimensions; two files across custom and thumbnail targets produced four individually reopened files and four more reopened through Download all at 60x40 or 512x512."
+    },
+    {
+      "englishId": "qr-generator",
+      "proof": "PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths."
+    },
+    {
+      "englishId": "passport-photo",
+      "proof": "Controlled English and Swahili single-photo PNG output was byte-identical at 413x531. All nine advertised PNG, JPG and WebP combinations reopened in the browser at exact single 413x531, 4x6-sheet 1800x1200 and A4 2480x3508 dimensions; the localized requirement brief retained exact preset dimensions, source URL and 300 DPI contract."
+    },
+    {
+      "englishId": "image-crop",
+      "proof": "English and Swahili 64x48 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads were each reopened by format parser at exactly 64x48; the localized clipboard recipe was also read back."
+    },
+    {
+      "englishId": "color-picker",
+      "proof": "CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values."
+    },
+    {
+      "englishId": "favicon-generator",
+      "proof": "Controlled English and Swahili text output was byte-identical. The ZIP parsed with exactly four PNGs, one ICO and one site.webmanifest; all PNGs and every ICO-embedded PNG reopened at 16, 32, 48 and 64 pixels, and the manifest referenced the exact four files."
+    },
+    {
+      "englishId": "image-to-text",
+      "proof": "A controlled synthetic image produced equivalent English and Swahili OCR text. TXT and Markdown reopened as text; JSON parsed with source, language, result and field contracts; CSV parsed with stable type/value columns; the localized handoff brief was read back."
+    },
+    {
+      "englishId": "meme-generator",
+      "proof": "Controlled uploaded-image output was byte-identical in English and Swahili. Starter-scene and uploaded-image PNG downloads reopened at exactly 1200x900; all five scenes, six caption packs and three text styles remained functional."
+    },
+    {
+      "englishId": "logo-maker",
+      "proof": "Controlled English and Swahili SVG and 400x300 PNG files were byte-identical. SVG parsed with the exact 200x150 viewBox and controlled text; PNG reopened at exactly 400x300; all presets and source fallback behavior remained functional."
+    },
+    {
+      "englishId": "image-filters",
+      "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back."
+    },
+    {
+      "englishId": "social-card",
+      "proof": "Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed."
+    },
+    {
+      "englishId": "thumbnail-maker",
+      "proof": "Controlled English and Swahili 1280x720 PNG output was byte-identical. All 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; all three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized upload brief, checklist and design-link exports were parsed."
+    },
+    {
+      "englishId": "watermark-bulk",
+      "proof": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30."
+    },
+    {
+      "englishId": "image-format-convert",
+      "proof": "English and Swahili 60x40 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads reopened at exactly 60x40; unsupported AVIF stayed disabled; a two-source, three-format ZIP manifest parsed and all six nested files reopened at 60x40; copied picture markup was read back."
+    },
+    {
+      "englishId": "colour-palette",
+      "proof": "Per-palette CSS, all-palette CSS and JSON downloads were reopened; JSON parsed to all 45 records and CSS parsed to all 225 colors."
+    }
+  ],
+  "privacyAiProof": "Accepted candidates make no raw-input network writes and contain no AI path. Analytics was declined in the browser test storage state; fetch/XHR/WebSocket and non-GET requests were asserted empty.",
+  "artwork": {
+    "required": 53,
+    "present": 53,
+    "missing": 0
+  },
+  "prohibitedSurfacesChanged": [],
+  "reciprocalHreflangMetadataEdits": [
+    "tools/thumbnail-maker/index.html",
+    "fr/tools/createur-miniatures/index.html"
+  ],
+  "missingMandatoryReference": ".claude/rules/i18n.md was absent on the mandated base; coordinator explicitly declared this non-blocking.",
+  "validationCommands": [
+    "node scripts/build-sw-image-color-family.js",
+    "node scripts/audit-sw-image-color-family.js",
+    "node scripts/audit-sw-image-design-parity.js",
+    "node tests/qr-payload-engine.test.js",
+    "node tests/image-compress-shared-owner.test.js",
+    "node tests/swahili-thumbnail-maker-parity.test.js",
+    "node tests/swahili-favicon-generator-parity.test.js",
+    "node tests/swahili-image-to-text-parity.test.js",
+    "node tests/swahili-meme-generator-parity.test.js",
+    "node tests/swahili-logo-maker-parity.test.js",
+    "playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-crop-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-format-convert-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-resize-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-filters-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-compress-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-favicon-generator-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-to-text-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-meme-generator-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-logo-maker-parity.spec.js --project=chromium --workers=1",
+    "npm run build:i18n:validate",
+    "npm run validate:hreflang",
+    "npm run check-links",
+    "npm run audit",
+    "npm run lint",
+    "npm run type-check",
+    "npm run test:privacy-ai-consent",
+    "git diff --check"
+  ],
+  "gateResults": {
+    "thumbnailStaticOracle": "pass",
+    "thumbnailBrowser": "pass: 3 tests, one worker, isolated port 4411",
+    "imageToTextStaticOracle": "pass",
+    "imageToTextBrowser": "pass: 3 focused tests on port 4418; included in the full 42-test Image & Design matrix on port 4426",
+    "memeGeneratorStaticOracle": "pass",
+    "memeGeneratorBrowser": "pass: 3 focused tests on port 4425; full 42-test Image & Design matrix on port 4426",
+    "logoMakerStaticOracle": "pass",
+    "logoMakerBrowser": "pass: 3 focused tests on port 4436; full 45-test Image & Design matrix on port 4441",
+    "hreflang": "pass: 33,430 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,310 links / 11,512 HTML files",
+    "registryAudit": "pass with carried baseline debt: two unrelated missing-page rows",
+    "lint": "pass: 49 JavaScript files",
+    "typeCheck": "pass",
+    "privacyAiConsent": "pass: server test plus 3 Chromium tests",
+    "buildI18nValidate": "blocked at prohibited ownership boundary: coordinator-owned locale-page-coverage and localization-coverage artifacts are stale on this branch"
+  },
+  "baselineDebt": "Rows marked blocked were already unaccepted at the recorded origin/main baseline. Registry audit still reports the same unrelated job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 missing-page rows. This lane does not present inherited parity or registry gaps as regressions.",
+  "netNewCoordinatorFollowUp": "Regenerate coordinator-owned locale-page-coverage and localization-coverage artifacts after integrating the candidate series, then rerun build:i18n:validate."
+}

@@ -1,429 +1,1075 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
-<head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools</title>
-<meta name="description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
-<link rel="icon" href="/assets/img/favicon.ico">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
-<script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
-<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<style>
-.boq-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+  <head>
+    <script
+      src="/assets/js/analytics-bootstrap.js?v=03318ee7"
+      data-loader-version="d378a891"
+      async
+    ></script>
+    <meta charset="UTF-8" />
+    <meta name="view-transition" content="same-origin" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools</title>
+    <meta name="description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
+    <meta
+      property="og:image"
+      content="https://afrotools.com/assets/img/tools/boq-gen.webp"
+    />
+    <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8" />
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69" />
+    <script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+    <style>
+      .boq-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px 20px 60px;
+      }
 
-/* HERO */
-.boq-hero{background:linear-gradient(135deg,var(--color-text) 0%,#1e293b 60%,#0c1a0c 100%);border-radius:20px;padding:44px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
-.boq-hero::before{content:'';position:absolute;top:-20%;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.08),transparent 70%);pointer-events:none;}
-.boq-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2);color:#60A5FA;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
-.boq-hero h1{font-size:clamp(1.35rem,5.5vw,2.2rem);color:#fff;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.15;}
-.boq-hero p{color:rgba(255,255,255,.72);font-size:.9rem;max-width:520px;line-height:1.6;}
-.boq-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
-.boq-hero-tags span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;}
+      /* HERO */
+      .boq-hero {
+        background: linear-gradient(
+          135deg,
+          var(--color-text) 0%,
+          #1e293b 60%,
+          #0c1a0c 100%
+        );
+        border-radius: 20px;
+        padding: 44px 40px;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .boq-hero::before {
+        content: "";
+        position: absolute;
+        top: -20%;
+        right: 0;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.08),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .boq-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        color: #60a5fa;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .boq-hero h1 {
+        font-size: clamp(1.35rem, 5.5vw, 2.2rem);
+        color: #fff;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+        line-height: 1.15;
+      }
+      .boq-hero p {
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.9rem;
+        max-width: 520px;
+        line-height: 1.6;
+      }
+      .boq-hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .boq-hero-tags span {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 5px 12px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 600;
+      }
 
-/* LAYOUT */
-.boq-layout{display:grid;grid-template-columns:320px 1fr;gap:20px;}
-@media(max-width:800px){.boq-layout{grid-template-columns:1fr;}}
+      /* LAYOUT */
+      .boq-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 800px) {
+        .boq-layout {
+          grid-template-columns: 1fr;
+        }
+      }
 
-/* PANELS */
-.boq-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:24px;}
-.boq-card h3{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+      /* PANELS */
+      .boq-card {
+        background: #fff;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .boq-card h3 {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #9ca3af;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
 
-/* FORM */
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:.72rem;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
-.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:.85rem;color:#111;background:#fafafa;transition:border-color .2s;}
-.field input:focus,.field select:focus{outline:none;border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.1);background:#fff;}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+      /* FORM */
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 5px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        font-size: 0.85rem;
+        color: #111;
+        background: #fafafa;
+        transition: border-color 0.2s;
+      }
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: #fff;
+      }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
 
-/* SECTIONS */
-.section-toggle{width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:9px;background:#fafafa;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:8px;transition:all .15s;}
-.section-toggle:hover{border-color:#2563EB;color:#2563EB;}
-.section-toggle.active{border-color:#2563EB;background:#EFF6FF;color:#1D4ED8;}
-.section-toggle .s-arrow{transition:transform .2s;}
-.section-toggle.active .s-arrow{transform:rotate(180deg);}
-.section-body{display:none;padding:12px;border:1px solid #e5e7eb;border-radius:0 0 9px 9px;margin-top:-8px;margin-bottom:10px;background:#fafafa;}
-.section-body.open{display:block;}
-.section-input-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:8px;font-size:.78rem;}
-.section-input-row label{color:#374151;font-weight:600;}
-.section-input-row input{width:90px;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.78rem;text-align:right;}
+      /* SECTIONS */
+      .section-toggle {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        background: #fafafa;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 8px;
+        transition: all 0.15s;
+      }
+      .section-toggle:hover {
+        border-color: #2563eb;
+        color: #2563eb;
+      }
+      .section-toggle.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .section-toggle .s-arrow {
+        transition: transform 0.2s;
+      }
+      .section-toggle.active .s-arrow {
+        transform: rotate(180deg);
+      }
+      .section-body {
+        display: none;
+        padding: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 0 0 9px 9px;
+        margin-top: -8px;
+        margin-bottom: 10px;
+        background: #fafafa;
+      }
+      .section-body.open {
+        display: block;
+      }
+      .section-input-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.78rem;
+      }
+      .section-input-row label {
+        color: #374151;
+        font-weight: 600;
+      }
+      .section-input-row input {
+        width: 90px;
+        padding: 5px 8px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        text-align: right;
+      }
 
-/* BTN */
-.gen-btn{width:100%;padding:13px;background:linear-gradient(135deg,#2563EB,#1D4ED8);border:none;border-radius:11px;color:#fff;font-size:.88rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;margin-top:8px;transition:transform .15s,box-shadow .15s;}
-.gen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.3);}
+      /* BTN */
+      .gen-btn {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        border-radius: 11px;
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 800;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 8px;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .gen-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+      }
 
-/* RESULTS */
-.boq-table-wrap{overflow-x:auto;}
-.boq-table{width:100%;border-collapse:collapse;font-size:.82rem;}
-.boq-table thead tr{background:#f9fafb;border-bottom:2px solid #e5e7eb;}
-.boq-table th{padding:10px 12px;text-align:left;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;white-space:nowrap;}
-.boq-table th.right{text-align:right;}
-.boq-table td{padding:9px 12px;border-bottom:1px solid #f3f4f6;color:#374151;}
-.boq-table td.right{text-align:right;font-weight:700;color:#111;}
-.boq-table .section-row{background:#EFF6FF;}
-.boq-table .section-row td{font-weight:800;color:#1D4ED8;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;}
-.boq-table .total-row{background:#EFF6FF;border-top:2px solid #93C5FD;}
-.boq-table .total-row td{font-weight:900;font-size:.9rem;color:#1E3A5F;}
-.boq-table tr:hover:not(.section-row):not(.total-row) td{background:#fafafa;}
+      /* RESULTS */
+      .boq-table-wrap {
+        overflow-x: auto;
+      }
+      .boq-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+      .boq-table thead tr {
+        background: #f9fafb;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .boq-table th {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 0.67rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #9ca3af;
+        white-space: nowrap;
+      }
+      .boq-table th.right {
+        text-align: right;
+      }
+      .boq-table td {
+        padding: 9px 12px;
+        border-bottom: 1px solid #f3f4f6;
+        color: #374151;
+      }
+      .boq-table td.right {
+        text-align: right;
+        font-weight: 700;
+        color: #111;
+      }
+      .boq-table .section-row {
+        background: #eff6ff;
+      }
+      .boq-table .section-row td {
+        font-weight: 800;
+        color: #1d4ed8;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .boq-table .total-row {
+        background: #eff6ff;
+        border-top: 2px solid #93c5fd;
+      }
+      .boq-table .total-row td {
+        font-weight: 900;
+        font-size: 0.9rem;
+        color: #1e3a5f;
+      }
+      .boq-table tr:hover:not(.section-row):not(.total-row) td {
+        background: #fafafa;
+      }
 
-/* SUMMARY CARDS */
-.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
-@media(max-width:640px){.summary-grid{grid-template-columns:1fr 1fr;}}
-.sum-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;text-align:center;}
-.sum-card.green{background:#EFF6FF;border-color:#93C5FD;}
-.sum-val{font-size:1.4rem;font-weight:900;color:#111;line-height:1;}
-.sum-lbl{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+      /* SUMMARY CARDS */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 640px) {
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .sum-card {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 14px;
+        text-align: center;
+      }
+      .sum-card.green {
+        background: #eff6ff;
+        border-color: #93c5fd;
+      }
+      .sum-val {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #111;
+        line-height: 1;
+      }
+      .sum-lbl {
+        font-size: 0.65rem;
+        color: #9ca3af;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 3px;
+      }
 
-/* EXPORT BTNS */
-.export-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-.export-btn{flex:1;padding:10px;border-radius:9px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;text-transform:uppercase;letter-spacing:.05em;min-width:100px;}
-.export-btn.pdf{background:#ef4444;color:#fff;}
-.export-btn.csv{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;}
-.export-btn.print{background:#374151;color:#fff;}
-.export-btn:hover{opacity:.88;}
+      /* EXPORT BTNS */
+      .export-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .export-btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 9px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        min-width: 100px;
+      }
+      .export-btn.pdf {
+        background: #ef4444;
+        color: #fff;
+      }
+      .export-btn.csv {
+        background: linear-gradient(135deg, #0062cc, #0055d4);
+        box-shadow: 0 4px 14px rgba(0, 98, 204, 0.35);
+        color: #fff;
+      }
+      .export-btn.print {
+        background: #374151;
+        color: #fff;
+      }
+      .export-btn:hover {
+        opacity: 0.88;
+      }
 
-/* CONTINGENCY BAR */
-.cont-bar{background:#fffbeb;border:1px solid #fbbf24;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:.82rem;}
-.cont-bar strong{font-weight:800;color:#92400e;}
+      /* CONTINGENCY BAR */
+      .cont-bar {
+        background: #fffbeb;
+        border: 1px solid #fbbf24;
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        font-size: 0.82rem;
+      }
+      .cont-bar strong {
+        font-weight: 800;
+        color: #92400e;
+      }
 
-/* PRICE UPDATE NOTE */
-.price-note{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;font-size:.72rem;color:#0369a1;margin-bottom:16px;}
-</style>
+      /* PRICE UPDATE NOTE */
+      .price-note {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.72rem;
+        color: #0369a1;
+        margin-bottom: 16px;
+      }
+    </style>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "BOQ Generator",
-  "description": "Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.",
-  "url": "https://afrotools.com/",
-  "inLanguage": "en",
-  "applicationCategory": "WebApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/boq-gen.webp"
-}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BOQ Generator",
+        "description": "Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.",
+        "url": "https://afrotools.com/",
+        "inLanguage": "en",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "AfroTools",
+          "url": "https://afrotools.com/"
+        },
+        "image": "https://afrotools.com/assets/img/tools/boq-gen.webp"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "BOQ Generator | Bill of Quantities and Cost Estimate Tool",
+        "url": "https://afrotools.com/tools/boq-generator/",
+        "description": "Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "AfroTools",
+          "url": "https://afrotools.com/"
+        },
+        "image": "https://afrotools.com/assets/img/tools/boq-gen.webp"
+      }
+    </script>
+    <script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
+    <script
+      src="/assets/js/components/share-card-generator.js?v=1d440fc6"
+      defer
+    ></script>
+    <script
+      src="/assets/js/components/share-button.js?v=f8342961"
+      defer
+    ></script>
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:site_name" content="AfroTools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools">
+    <meta name="twitter:description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
+    <meta
+      name="twitter:image"
+      content="https://afrotools.com/assets/img/tools/boq-gen.webp"
+    />
+
+    <meta property="og:title" content="BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools">
+    <meta property="og:description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
+    <meta property="article:modified_time" content="2026-03-28" />
+    <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08" />
+
+<meta
+      property="og:url"
+      content="https://afrotools.com/tools/boq-generator/"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/engineering-enhancements.css?v=b4d7dd3f"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/engineering-vip-reflow.css?v=1c1c293c"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/english-df-app-upgrades.css?v=71f122b6"
+    />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Bill of Quantities Generator?","acceptedAnswer":{"@type":"Answer","text":"Enter your measurements and quantities in the fields above. The Bill of Quantities Generator then gives you a costed material and labour estimate you can use straight away."}},{"@type":"Question","name":"How accurate is the Bill of Quantities Generator?","acceptedAnswer":{"@type":"Answer","text":"It is a low-confidence planning schedule using an unverified Q1 2025 rate snapshot. A quantity surveyor must verify measurements, specifications, current prices and tax."}},{"@type":"Question","name":"Is the Bill of Quantities Generator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"It is free and currently provides embedded rate snapshots for 15 countries. Replace every snapshot with current local evidence."}},{"@type":"Question","name":"What causes the biggest BOQ errors?","acceptedAnswer":{"@type":"Answer","text":"Scope drift, outdated material assumptions, and missing contingency are the most common drivers."}},{"@type":"Question","name":"When should I move from a blog guide into the tool?","acceptedAnswer":{"@type":"Answer","text":"As soon as you have a draft scope, price assumptions, or a client brief worth turning into an estimate."}}]}
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "BOQ Generator | Bill of Quantities and Cost Estimate Tool",
-  "url": "https://afrotools.com/tools/boq-generator/",
-  "description": "Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/boq-gen.webp"
-}
-</script>
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools">
-<meta name="twitter:description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/boq-gen.webp">
-
-<meta property="og:title" content="BOQ Generator | Bill of Quantities and Cost Estimate Tool | AfroTools">
-<meta property="og:description" content="Create a faster bill of quantities and turn construction pricing assumptions into a cleaner project estimate.">
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
-<meta property="og:url" content="https://afrotools.com/tools/boq-generator/">
-  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
-  <link rel="stylesheet" href="/assets/css/engineering-vip-reflow.css?v=1c1c293c">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Bill of Quantities Generator?","acceptedAnswer":{"@type":"Answer","text":"Enter your measurements and quantities in the fields above. The Bill of Quantities Generator then gives you a costed material and labour estimate you can use straight away."}},{"@type":"Question","name":"How accurate is the Bill of Quantities Generator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current local material prices and site specifics before you rely on it."}},{"@type":"Question","name":"Is the Bill of Quantities Generator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What causes the biggest BOQ errors?","acceptedAnswer":{"@type":"Answer","text":"Scope drift, outdated material assumptions, and missing contingency are the most common drivers."}},{"@type":"Question","name":"When should I move from a blog guide into the tool?","acceptedAnswer":{"@type":"Answer","text":"As soon as you have a draft scope, price assumptions, or a client brief worth turning into an estimate."}}]}
-</script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "All Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "BOQ Generator",
-      "item": "https://afrotools.com/tools/boq-generator/"
-    }
-  ]
-}
-</script>
-<style>@media(max-width:420px){.boq-layout,.boq-grid{grid-template-columns:minmax(0,1fr)!important}.boq-layout>*,.boq-card,.boq-card>*{min-inline-size:0!important;max-inline-size:100%!important}.boq-card select,.boq-card input{max-inline-size:100%!important}.boq-table-wrap{max-inline-size:100%;overflow-x:auto}}</style>
-<link rel="canonical" href="https://afrotools.com/tools/boq-generator/">
+    <link
+      rel="stylesheet"
+      href="/assets/css/design-system.min.css?v=1e4c3b11"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3"
+    />
+    <!-- tool-structured-data:auto -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AfroTools",
+            "item": "https://afrotools.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "All Tools",
+            "item": "https://afrotools.com/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "BOQ Generator",
+            "item": "https://afrotools.com/tools/boq-generator/"
+          }
+        ]
+      }
+    </script>
+    <style>
+      @media (max-width: 420px) {
+        .boq-layout,
+        .boq-grid {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+        .boq-layout > *,
+        .boq-card,
+        .boq-card > * {
+          min-inline-size: 0 !important;
+          max-inline-size: 100% !important;
+        }
+        .boq-card select,
+        .boq-card input {
+          max-inline-size: 100% !important;
+        }
+        .boq-table-wrap {
+          max-inline-size: 100%;
+          overflow-x: auto;
+        }
+      }
+    </style>
+    <link rel="canonical" href="https://afrotools.com/tools/boq-generator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/boq-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-boq/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-orodha-ya-kiasi/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/boq-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
+  <body class="top-level-page-ui-refresh">
+    <afro-navbar></afro-navbar>
 
-<div class="boq-wrap">
-  <!-- HERO -->
-  <div class="boq-hero">
-    <div class="boq-badge">📋 BOQ Generator</div>
-    <h1>Bill of Quantities<br>for African Construction</h1>
-    <p>Get a detailed material list with local African prices. Nigeria, Kenya, Ghana, South Africa, and 15+ more countries. Export to CSV or print.</p>
-    <div class="boq-hero-tags">
-      <span>🌍 15+ African Countries</span>
-      <span>📦 60+ Material Items</span>
-      <span>💰 Local Prices</span>
-      <span>📤 Export CSV / Print</span>
-      <span>🏗️ Residential + Commercial</span>
-    </div>
-  </div>
-
-  <div class="boq-layout">
-    <!-- LEFT: INPUTS -->
-    <div>
-      <div class="boq-card">
-        <h3>⚙️ Project Details</h3>
-
-        <div class="field">
-          <label for="country">Project Country</label>
-          <select id="country" onchange="updateCurrency()">
-            <option value="NG">🇳🇬 Nigeria</option>
-            <option value="KE">🇰🇪 Kenya</option>
-            <option value="GH">🇬🇭 Ghana</option>
-            <option value="ZA">🇿🇦 South Africa</option>
-            <option value="UG">🇺🇬 Uganda</option>
-            <option value="TZ">🇹🇿 Tanzania</option>
-            <option value="RW">🇷🇼 Rwanda</option>
-            <option value="ET">🇪🇹 Ethiopia</option>
-            <option value="SN">🇸🇳 Senegal</option>
-            <option value="CI">🇨🇮 Côte d'Ivoire</option>
-            <option value="CM">🇨🇲 Cameroon</option>
-            <option value="ZM">🇿🇲 Zambia</option>
-            <option value="ZW">🇿🇼 Zimbabwe</option>
-            <option value="EG">🇪🇬 Egypt</option>
-            <option value="MA">🇲🇦 Morocco</option>
-          </select>
+    <div class="boq-wrap">
+      <!-- HERO -->
+      <div class="boq-hero">
+        <div class="boq-badge">📋 BOQ Generator</div>
+        <h1>Bill of Quantities<br />for African Construction</h1>
+        <p>
+          Build a planning material schedule from project geometry and a stale
+          Q1 2025 rate snapshot. Replace every rate and quantity with current
+          supplier and quantity-surveyor evidence.
+        </p>
+        <div class="boq-hero-tags">
+          <span>🌍 15+ African Countries</span>
+          <span>📦 60+ Material Items</span>
+          <span>Q1 2025 stale rate snapshot</span>
+          <span>📤 Export CSV / Print</span>
+          <span>🏗️ Residential + Commercial</span>
         </div>
+      </div>
 
-        <div class="field">
-          <label for="buildType">Building Type</label>
-          <select id="buildType">
-            <option value="res1">Residential – 1-Bedroom Bungalow</option>
-            <option value="res2">Residential – 2-Bedroom Bungalow</option>
-            <option value="res3" selected>Residential – 3-Bedroom Bungalow</option>
-            <option value="res4">Residential – 4-Bedroom House</option>
-            <option value="res5">Residential – 5-Bedroom Duplex</option>
-            <option value="comm">Commercial – Small Office (100m²)</option>
-            <option value="warehouse">Warehouse / Store (200m²)</option>
-            <option value="custom">Custom (Enter Area Below)</option>
-          </select>
-        </div>
+      <div class="boq-layout">
+        <!-- LEFT: INPUTS -->
+        <div>
+          <div class="boq-card">
+            <h3>⚙️ Project Details</h3>
 
-        <div class="field-row">
-          <div class="field">
-            <label>Floor Area (m²)</label>
-            <input aria-label="FloorArea" type="number" id="floorArea" value="120" min="20" max="5000">
-          </div>
-          <div class="field">
-            <label>Floors</label>
-            <select id="floors" aria-label="Floors">
-              <option value="1" selected>1 (Bungalow)</option>
-              <option value="2">2 (Duplex)</option>
-              <option value="3">3 Floors</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>Wall Height (m)</label>
-            <input aria-label="WallHeight" type="number" id="wallHeight" value="3" min="2.4" max="6" step="0.1">
-          </div>
-          <div class="field">
-            <label>Wall Type</label>
-            <select id="wallType" aria-label="Wall Type">
-              <option value="block9">9″ Block (225mm)</option>
-              <option value="block6">6″ Block (150mm)</option>
-              <option value="brick">Clay Brick</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Roof Type</label>
-          <select id="roofType" aria-label="Roof Type">
-            <option value="zinc" selected>Corrugated Iron / Long-Span Zinc</option>
-            <option value="tiles">Clay Roof Tiles</option>
-            <option value="concrete">Concrete Flat Roof / Slab</option>
-            <option value="shingles">Asphalt Shingles</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Finishing Level</label>
-          <select id="finishing" aria-label="Finishing">
-            <option value="basic">Basic (Plaster + Paint)</option>
-            <option value="standard" selected>Standard (Tiles + Paint)</option>
-            <option value="premium">Premium (Full Finishes)</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Contingency (%)</label>
-          <input aria-label="Contingency" type="number" id="contingency" value="10" min="0" max="30">
-        </div>
-
-        <!-- SECTION OVERRIDES -->
-        <div style="margin-top:16px;border-top:1px solid #f3f4f6;padding-top:14px;">
-          <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Adjust Quantities (Optional)</div>
-          <button type="button" class="section-toggle" onclick="toggleSection('doors-sec',this)">
-            🚪 Doors & Windows <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="doors-sec">
-            <div class="section-input-row"><label>No. of Doors</label><input aria-label="NumDoors" type="number" id="numDoors" value="5" min="0"></div>
-            <div class="section-input-row"><label>No. of Windows</label><input aria-label="NumWindows" type="number" id="numWindows" value="8" min="0"></div>
-            <div class="section-input-row"><label>Glazed Doors</label><input aria-label="NumGlazed" type="number" id="numGlazed" value="1" min="0"></div>
-          </div>
-
-          <button type="button" class="section-toggle" onclick="toggleSection('plumb-sec',this)">
-            🚰 Plumbing <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="plumb-sec">
-            <div class="section-input-row"><label>No. of WC / Toilets</label><input aria-label="NumWC" type="number" id="numWC" value="2" min="0"></div>
-            <div class="section-input-row"><label>No. of Showers</label><input aria-label="NumShowers" type="number" id="numShowers" value="2" min="0"></div>
-            <div class="section-input-row"><label>No. of Kitchen Sinks</label><input aria-label="NumSinks" type="number" id="numSinks" value="1" min="0"></div>
-          </div>
-
-          <button type="button" class="section-toggle" onclick="toggleSection('elec-sec',this)">
-            ⚡ Electrical <span class="s-arrow">▼</span>
-          </button>
-          <div class="section-body" id="elec-sec">
-            <div class="section-input-row"><label>No. of Bedrooms</label><input aria-label="NumBeds" type="number" id="numBeds" value="3" min="0"></div>
-            <div class="section-input-row"><label>No. of Sockets/Room</label><input aria-label="NumSockets" type="number" id="numSockets" value="4" min="0"></div>
-            <div class="section-input-row"><label>Include Inverter?</label>
-              <select id="inverterYN" style="width:90px;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.78rem;" aria-label="Inverter YN">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
+            <div class="field">
+              <label for="country">Project Country</label>
+              <select id="country" onchange="updateCurrency()">
+                <option value="NG">🇳🇬 Nigeria</option>
+                <option value="KE">🇰🇪 Kenya</option>
+                <option value="GH">🇬🇭 Ghana</option>
+                <option value="ZA">🇿🇦 South Africa</option>
+                <option value="UG">🇺🇬 Uganda</option>
+                <option value="TZ">🇹🇿 Tanzania</option>
+                <option value="RW">🇷🇼 Rwanda</option>
+                <option value="ET">🇪🇹 Ethiopia</option>
+                <option value="SN">🇸🇳 Senegal</option>
+                <option value="CI">🇨🇮 Côte d'Ivoire</option>
+                <option value="CM">🇨🇲 Cameroon</option>
+                <option value="ZM">🇿🇲 Zambia</option>
+                <option value="ZW">🇿🇼 Zimbabwe</option>
+                <option value="EG">🇪🇬 Egypt</option>
+                <option value="MA">🇲🇦 Morocco</option>
               </select>
+            </div>
+
+            <div class="field">
+              <label for="buildType">Building Type</label>
+              <select id="buildType">
+                <option value="res1">Residential – 1-Bedroom Bungalow</option>
+                <option value="res2">Residential – 2-Bedroom Bungalow</option>
+                <option value="res3" selected>
+                  Residential – 3-Bedroom Bungalow
+                </option>
+                <option value="res4">Residential – 4-Bedroom House</option>
+                <option value="res5">Residential – 5-Bedroom Duplex</option>
+                <option value="comm">Commercial – Small Office (100m²)</option>
+                <option value="warehouse">Warehouse / Store (200m²)</option>
+                <option value="custom">Custom (Enter Area Below)</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>Floor Area (m²)</label>
+                <input
+                  aria-label="FloorArea"
+                  type="number"
+                  id="floorArea"
+                  value="120"
+                  min="20"
+                  max="5000"
+                />
+              </div>
+              <div class="field">
+                <label>Floors</label>
+                <select id="floors" aria-label="Floors">
+                  <option value="1" selected>1 (Bungalow)</option>
+                  <option value="2">2 (Duplex)</option>
+                  <option value="3">3 Floors</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>Wall Height (m)</label>
+                <input
+                  aria-label="WallHeight"
+                  type="number"
+                  id="wallHeight"
+                  value="3"
+                  min="2.4"
+                  max="6"
+                  step="0.1"
+                />
+              </div>
+              <div class="field">
+                <label>Wall Type</label>
+                <select id="wallType" aria-label="Wall Type">
+                  <option value="block9">9″ Block (225mm)</option>
+                  <option value="block6">6″ Block (150mm)</option>
+                  <option value="brick">Clay Brick</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Roof Type</label>
+              <select id="roofType" aria-label="Roof Type">
+                <option value="zinc" selected>
+                  Corrugated Iron / Long-Span Zinc
+                </option>
+                <option value="tiles">Clay Roof Tiles</option>
+                <option value="concrete">Concrete Flat Roof / Slab</option>
+                <option value="shingles">Asphalt Shingles</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Finishing Level</label>
+              <select id="finishing" aria-label="Finishing">
+                <option value="basic">Basic (Plaster + Paint)</option>
+                <option value="standard" selected>
+                  Standard (Tiles + Paint)
+                </option>
+                <option value="premium">Premium (Full Finishes)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Contingency (%)</label>
+              <input
+                aria-label="Contingency"
+                type="number"
+                id="contingency"
+                value="10"
+                min="0"
+                max="30"
+              />
+            </div>
+
+            <!-- SECTION OVERRIDES -->
+            <div
+              style="
+                margin-top: 16px;
+                border-top: 1px solid #f3f4f6;
+                padding-top: 14px;
+              "
+            >
+              <div
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 800;
+                  text-transform: uppercase;
+                  letter-spacing: 0.08em;
+                  color: #9ca3af;
+                  margin-bottom: 10px;
+                "
+              >
+                Adjust Quantities (Optional)
+              </div>
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('doors-sec', this)"
+              >
+                🚪 Doors & Windows <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="doors-sec">
+                <div class="section-input-row">
+                  <label>No. of Doors</label
+                  ><input
+                    aria-label="NumDoors"
+                    type="number"
+                    id="numDoors"
+                    value="5"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>No. of Windows</label
+                  ><input
+                    aria-label="NumWindows"
+                    type="number"
+                    id="numWindows"
+                    value="8"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Glazed Doors</label
+                  ><input
+                    aria-label="NumGlazed"
+                    type="number"
+                    id="numGlazed"
+                    value="1"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('plumb-sec', this)"
+              >
+                🚰 Plumbing <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="plumb-sec">
+                <div class="section-input-row">
+                  <label>No. of WC / Toilets</label
+                  ><input
+                    aria-label="NumWC"
+                    type="number"
+                    id="numWC"
+                    value="2"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>No. of Showers</label
+                  ><input
+                    aria-label="NumShowers"
+                    type="number"
+                    id="numShowers"
+                    value="2"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>No. of Kitchen Sinks</label
+                  ><input
+                    aria-label="NumSinks"
+                    type="number"
+                    id="numSinks"
+                    value="1"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="section-toggle"
+                onclick="toggleSection('elec-sec', this)"
+              >
+                ⚡ Electrical <span class="s-arrow">▼</span>
+              </button>
+              <div class="section-body" id="elec-sec">
+                <div class="section-input-row">
+                  <label>No. of Bedrooms</label
+                  ><input
+                    aria-label="NumBeds"
+                    type="number"
+                    id="numBeds"
+                    value="3"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>No. of Sockets/Room</label
+                  ><input
+                    aria-label="NumSockets"
+                    type="number"
+                    id="numSockets"
+                    value="4"
+                    min="0"
+                  />
+                </div>
+                <div class="section-input-row">
+                  <label>Include Inverter?</label>
+                  <select
+                    id="inverterYN"
+                    style="
+                      width: 90px;
+                      padding: 5px 8px;
+                      border: 1.5px solid #e5e7eb;
+                      border-radius: 6px;
+                      font-size: 0.78rem;
+                    "
+                    aria-label="Inverter YN"
+                  >
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="gen-btn" onclick="generate()">
+              📋 Generate Bill of Quantities
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: RESULTS -->
+        <div>
+          <div class="boq-card" id="resultsCard" style="display: none">
+            <h3>📊 Bill of Quantities</h3>
+
+            <div class="price-note" id="priceNote"></div>
+
+            <div class="summary-grid">
+              <div class="sum-card green">
+                <div class="sum-val" id="sumTotal">—</div>
+                <div class="sum-lbl">Est. Material Cost</div>
+              </div>
+              <div class="sum-card">
+                <div class="sum-val" id="sumLabour">—</div>
+                <div class="sum-lbl">Est. Labour (40%)</div>
+              </div>
+              <div class="sum-card">
+                <div class="sum-val" id="sumGrand">—</div>
+                <div class="sum-lbl">Grand Total (+ Labour)</div>
+              </div>
+            </div>
+
+            <div class="cont-bar">
+              <span>Contingency (<span id="contPct">10</span>%)</span>
+              <strong id="contAmt">—</strong>
+            </div>
+
+            <div class="export-row">
+              <button
+                type="button"
+                class="export-btn csv"
+                onclick="exportCSV()"
+              >
+                📊 Export CSV
+              </button>
+              <button
+                type="button"
+                class="export-btn print"
+                onclick="window.print()"
+              >
+                🖨️ Print BOQ
+              </button>
+            </div>
+            <div
+              class="result-actions"
+              style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap"
+            >
+              <share-result-button
+                tool-name="BOQ Generator"
+                tool-slug="boq-generator"
+              >
+              </share-result-button>
+            </div>
+
+            <div style="margin-top: 20px">
+              <div class="boq-table-wrap" id="boqTableWrap"></div>
+            </div>
+          </div>
+
+          <!-- Placeholder before generate -->
+          <div class="boq-card" id="placeholderCard">
+            <div style="text-align: center; padding: 60px 20px">
+              <div style="font-size: 3rem; margin-bottom: 16px">📋</div>
+              <div
+                style="
+                  font-size: 1rem;
+                  font-weight: 700;
+                  color: #374151;
+                  margin-bottom: 8px;
+                "
+              >
+                Ready to Generate Your BOQ
+              </div>
+              <div
+                style="
+                  font-size: 0.85rem;
+                  color: #9ca3af;
+                  line-height: 1.6;
+                  max-width: 300px;
+                  margin: 0 auto;
+                "
+              >
+                Fill in your project details on the left and click "Generate
+                Bill of Quantities" to get a full material list with local
+                prices.
+              </div>
             </div>
           </div>
         </div>
-
-        <button type="button" class="gen-btn" onclick="generate()">📋 Generate Bill of Quantities</button>
       </div>
     </div>
 
-    <!-- RIGHT: RESULTS -->
-    <div>
-      <div class="boq-card" id="resultsCard" style="display:none;">
-        <h3>📊 Bill of Quantities</h3>
-
-        <div class="price-note" id="priceNote"></div>
-
-        <div class="summary-grid">
-          <div class="sum-card green">
-            <div class="sum-val" id="sumTotal">—</div>
-            <div class="sum-lbl">Est. Material Cost</div>
+    <section class="df-upgrade" data-df-upgrade="boq-gen">
+      <div class="df-upgrade__card">
+        <div>
+          <span class="df-upgrade__kicker">Practical workflow</span>
+          <h2>Bill of Quantities Generator: quick guide</h2>
+          <p>
+            Enter project geometry and fixture counts to create an indicative
+            material schedule. Embedded rates are an unverified Q1 2025
+            snapshot, not current market prices or a measured BOQ.
+          </p>
+          <ul class="df-upgrade__bullets">
+            <li>
+              <strong>What you get:</strong> seven indicative material sections,
+              an illustrative labour ratio and contingency.
+            </li>
+            <li>
+              <strong>Formula repair:</strong> multi-floor wall materials are
+              counted once from total wall area, removing the earlier
+              double-floor multiplier.
+            </li>
+            <li>
+              <strong>What to check:</strong> drawings, measurement rules,
+              specifications, waste, procurement units, current supplier quotes
+              and tax.
+            </li>
+          </ul>
+          <p class="df-upgrade__note">
+            <strong>Planning estimate only.</strong> A qualified quantity
+            surveyor must measure and price the project before procurement or
+            contract use.
+          </p>
+        </div>
+        <form class="df-form" data-df-form="boq-gen">
+          <label
+            >Country<select name="country" aria-label="Country">
+              <option value="Nigeria">Nigeria</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Ghana">Ghana</option>
+              <option value="South Africa">South Africa</option>
+            </select></label
+          >
+          <label
+            >Amount or count<input
+              name="amount"
+              type="number"
+              value="100"
+              min="0"
+              step="any"
+              aria-label="Amount or count"
+          /></label>
+          <label
+            >Priority<select name="priority" aria-label="Priority">
+              <option value="cost">cost</option>
+              <option value="speed">speed</option>
+              <option value="quality">quality</option>
+              <option value="risk">risk</option>
+            </select></label
+          >
+          <label
+            >Buffer percent<input
+              name="buffer"
+              type="number"
+              value="10"
+              min="0"
+              step="any"
+              aria-label="Buffer percent"
+          /></label>
+          <button type="submit">Create summary</button>
+          <output
+            class="df-result"
+            data-df-result="boq-gen"
+            data-df-base="Bill of Quantities Generator — enter your details above to see your result."
+            aria-live="polite"
+            >Bill of Quantities Generator — enter your details above to see your
+            result.</output
+          >
+          <div class="df-actions">
+            <button type="button" data-df-copy="boq-gen">Copy summary</button>
           </div>
-          <div class="sum-card">
-            <div class="sum-val" id="sumLabour">—</div>
-            <div class="sum-lbl">Est. Labour (40%)</div>
-          </div>
-          <div class="sum-card">
-            <div class="sum-val" id="sumGrand">—</div>
-            <div class="sum-lbl">Grand Total (+ Labour)</div>
-          </div>
-        </div>
-
-        <div class="cont-bar">
-          <span>Contingency (<span id="contPct">10</span>%)</span>
-          <strong id="contAmt">—</strong>
-        </div>
-
-        <div class="export-row">
-          <button type="button" class="export-btn csv" onclick="exportCSV()">📊 Export CSV</button>
-          <button type="button" class="export-btn print" onclick="window.print()">🖨️ Print BOQ</button>
-        </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="BOQ Generator"
-    tool-slug="boq-generator">
-  </share-result-button>
-</div>
-
-        <div style="margin-top:20px;">
-          <div class="boq-table-wrap" id="boqTableWrap"></div>
-        </div>
+        </form>
       </div>
-
-      <!-- Placeholder before generate -->
-      <div class="boq-card" id="placeholderCard">
-        <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:3rem;margin-bottom:16px;">📋</div>
-          <div style="font-size:1rem;font-weight:700;color:#374151;margin-bottom:8px;">Ready to Generate Your BOQ</div>
-          <div style="font-size:.85rem;color:#9ca3af;line-height:1.6;max-width:300px;margin:0 auto;">Fill in your project details on the left and click "Generate Bill of Quantities" to get a full material list with local prices.</div>
-        </div>
+    </section>
+    <section class="df-faq" aria-labelledby="boq-gen-faq-title">
+      <h2 id="boq-gen-faq-title">Bill of Quantities Generator FAQ</h2>
+      <div class="df-faq__grid">
+        <details>
+          <summary>How do I use the Bill of Quantities Generator?</summary>
+          <p>
+            Enter your measurements and quantities in the fields above. The Bill
+            of Quantities Generator then gives you a costed material and labour
+            estimate you can use straight away.
+          </p>
+        </details>
+        <details>
+          <summary>How accurate is the Bill of Quantities Generator?</summary>
+          <p>
+            It is a low-confidence planning schedule using an unverified Q1 2025
+            rate snapshot. A quantity surveyor must verify measurements,
+            specifications, current prices and tax.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Is the Bill of Quantities Generator free, and does it cover my
+            country?
+          </summary>
+          <p>
+            It is free and currently provides embedded rate snapshots for 15
+            countries. Replace every snapshot with current local evidence.
+          </p>
+        </details>
       </div>
-    </div>
-  </div>
-</div>
-
-<section class="df-upgrade" data-df-upgrade="boq-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Bill of Quantities Generator: quick guide</h2>
-      <p>Not sure how to get the most from the Bill of Quantities Generator? Enter your measurements and quantities and it returns a costed material and labour estimate — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a costed material and labour estimate, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Bill of Quantities Generator takes your measurements and quantities and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current local material prices and site specifics before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current local material prices and site specifics before acting.</p>
-    </div>
-    <form class="df-form" data-df-form="boq-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="boq-gen" data-df-base="Bill of Quantities Generator — enter your details above to see your result." aria-live="polite">Bill of Quantities Generator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="boq-gen">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="boq-gen-faq-title">
-  <h2 id="boq-gen-faq-title">Bill of Quantities Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Bill of Quantities Generator?</summary><p>Enter your measurements and quantities in the fields above. The Bill of Quantities Generator then gives you a costed material and labour estimate you can use straight away.</p></details><details><summary>How accurate is the Bill of Quantities Generator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current local material prices and site specifics before you rely on it.</p></details><details><summary>Is the Bill of Quantities Generator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-<!-- seo-cluster-block:start -->
+    </section>
+    <!-- seo-cluster-block:start -->
 <section class="seo-cluster-shell" aria-label="Helpful next steps">
   <div class="seo-cluster seo-cluster--tool" data-seo-cluster="/tools/boq-generator/">
     <div class="seo-cluster__inner">
@@ -489,7 +1135,7 @@
   </div>
 </section>
 <!-- seo-cluster-block:end -->
-<afro-related-tools category="engineering" current="boq-gen" data-ssr="1">
+    <afro-related-tools category="engineering" current="boq-gen" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
@@ -497,12 +1143,19 @@
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-footer></afro-footer>
+    <afro-footer></afro-footer>
 
-<script src="/assets/js/pages/engineering-parity/boq-gen-1.js?v=ee42c13f"></script>
-  <script src="/assets/js/engineering-toolkit.js?v=1a8b385b" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-</body>
+    <script src="/assets/js/engines/boq-gen-engine.js?v=40be557e"></script>
+    <script src="/assets/js/pages/engineering-parity/boq-gen-1.js?v=48dfa8d5"></script>
+    <script src="/assets/js/engineering-toolkit.js?v=1a8b385b" defer></script>
+    <script
+      src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d"
+      defer
+    ></script>
+    <script
+      src="/assets/js/components/related-tools.min.js?v=9de30883"
+      defer
+    ></script>
+    <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+  </body>
 </html>

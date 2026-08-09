@@ -14,39 +14,41 @@ const MANIFEST_PATH = path.join(ROOT, "data", "localization", "sw-uniquely-afric
 const HUB_FILE = path.join(ROOT, "sw", "zana-za-kipekee-afrika", "index.html");
 const SHARED_CSS_SOURCE = path.join(ROOT, "assets", "css", "fr-uniquely-african.css");
 const SW_CSS_FILE = path.join(ROOT, "assets", "css", "sw-uniquely-african.css");
+const LANE_IDS = new Set(["naira-to-words", "amount-words-ke", "amount-words-gh", "susu-tracker", "whatsapp-link", "ajo-interest", "market-days", "ajo-chama-calc"]);
+const FULL = process.argv.includes("--full");
 
 const ROUTES = Object.freeze({
-  "japa-calculator": ["/sw/zana/kikokotoo-uhamishaji/", "native-blocked-handoff"],
-  "mobile-money-fees": ["/sw/zana/ada-pesa-simu/", "native-blocked-inline-engine"],
+  "japa-calculator": ["/sw/zana/kikokotoo-uhamishaji/", "native-existing"],
+  "mobile-money-fees": ["/sw/zana/ada-pesa-simu/", "native-existing"],
   "fintech-fee-watch": ["/sw/zana/ufuatiliaji-ada-fintech/", "shared-engine"],
   "ajo-chama": ["/sw/zana/kifuatiliaji-ajo-chama/", "shared-engine"],
   "electricity-estimator": ["/sw/zana/makisio-ya-bili-ya-umeme/", "shared-engine"],
   "fuel-cost": ["/sw/zana/gharama-za-mafuta/", "shared-engine"],
   "hawala-tracker": ["/sw/zana/ufuatiliaji-hawala/", "shared-engine"],
-  "burial-cost": ["/sw/zana/gharama-za-mazishi/", "native-blocked-runtime-wrapper"],
+  "burial-cost": ["/sw/zana/gharama-za-mazishi/", "native-existing"],
   "staple-basket": ["/sw/zana/kikapu-cha-bidhaa-msingi/", "shared-engine"],
   "wholesale-retail-spread": ["/sw/zana/tofauti-bei-jumla-rejareja/", "shared-engine"],
   "land-size": ["/sw/zana/ukubwa-wa-ardhi/", "shared-engine"],
-  "naira-to-words": ["/sw/zana/naira-kwa-maneno/", "native-blocked-missing"],
-  "amount-words-ke": ["/sw/zana/kiasi-kwa-maneno-kenya/", "native-blocked-shell"],
-  "amount-words-gh": ["/sw/zana/kiasi-kwa-maneno-ghana/", "native-blocked-shell"],
-  "susu-tracker": ["/sw/zana/kifuatiliaji-susu/", "native-blocked-inline-engine"],
-  "whatsapp-link": ["/sw/zana/kiungo-cha-whatsapp/", "native-blocked-missing"],
-  "remittance-compare": ["/sw/zana/ulinganisho-uhamishaji-pesa/", "native-blocked-inline-engine"],
+  "naira-to-words": ["/sw/zana/naira-kwa-maneno/", "shared-engine"],
+  "amount-words-ke": ["/sw/zana/kiasi-kwa-maneno-kenya/", "shared-engine"],
+  "amount-words-gh": ["/sw/zana/kiasi-kwa-maneno-ghana/", "shared-engine"],
+  "susu-tracker": ["/sw/zana/kifuatiliaji-susu/", "shared-engine"],
+  "whatsapp-link": ["/sw/zana/kiungo-cha-whatsapp/", "shared-engine"],
+  "remittance-compare": ["/sw/zana/ulinganisho-uhamishaji-pesa/", "native-existing"],
   "informal-fx-watch": ["/sw/zana/ufuatiliaji-soko-la-fedha/", "shared-engine"],
-  "remittance-v2": ["/sw/zana/ulinganisho-uhamishaji-pesa-kina/", "native-blocked-missing"],
+  "remittance-v2": ["/sw/zana/ulinganisho-uhamishaji-pesa-kina/", "native-existing"],
   "cost-of-living": ["/sw/zana/gharama-za-maisha/", "shared-engine"],
   "afroatlas": ["/sw/zana/afroatlas/", "shared-engine"],
   "afropoints": ["/sw/zana/afropoints/", "shared-engine"],
   "afrokitchen": ["/sw/zana/jikoni/", "shared-engine"],
   "africa-conflict": ["/sw/zana/migogoro-ya-afrika/", "shared-engine"],
-  "brideprice-advisor": ["/sw/zana/mshauri-wa-mahari/", "native-blocked-shell"],
-  "ajo-interest": ["/sw/zana/riba-ya-ajo-esusu-stokvel/", "native-blocked-inline-engine"],
+  "brideprice-advisor": ["/sw/zana/mshauri-wa-mahari/", "native-existing"],
+  "ajo-interest": ["/sw/zana/riba-ya-ajo-esusu-stokvel/", "shared-engine"],
   "diaspora-guide": ["/sw/zana/mwongozo-wa-diaspora/", "shared-engine"],
   "nollywood-pitch": ["/sw/zana/bajeti-ya-filamu-afrika/", "shared-engine"],
   "okada-income": ["/sw/zana/mapato-ya-okada-boda/", "shared-engine"],
-  "market-days": ["/sw/zana/kalenda-ya-siku-za-soko/", "native-blocked-missing"],
-  "ajo-chama-calc": ["/sw/zana/kikokotoo-ajo-chama-tontine/", "native-blocked-inline-engine"],
+  "market-days": ["/sw/zana/kalenda-ya-siku-za-soko/", "shared-engine"],
+  "ajo-chama-calc": ["/sw/zana/kikokotoo-ajo-chama-tontine/", "shared-engine"],
   "afroprices": ["/sw/zana/afroprices/", "shared-engine"],
   "ankara-kente-cost": ["/sw/zana/gharama-ya-ankara-na-kente/", "shared-engine"],
   "fabric-cost": ["/sw/zana/gharama-ya-kitambaa/", "shared-engine"]
@@ -70,6 +72,14 @@ const NATIVE_COPY = Object.freeze({
 });
 
 const CULTURAL_SCOPE_SW = Object.freeze({
+  "naira-to-words": "Maneno ya nyaraka za NGN na kobo; output ya Kiingereza imehifadhiwa kwa ulinganifu wa mmiliki wa Nigeria huku UI ikiwa Kiswahili.",
+  "amount-words-ke": "Maneno ya nyaraka za KES na senti; output ya Kiingereza imehifadhiwa kwa ulinganifu wa mmiliki wa Kenya huku UI ikiwa Kiswahili.",
+  "amount-words-gh": "Maneno ya nyaraka za GHS na pesewa; output ya Kiingereza imehifadhiwa kwa ulinganifu wa mmiliki wa Ghana huku UI ikiwa Kiswahili.",
+  "susu-tracker": "Mipango ya Susu, Esusu na Chama inayohifadhi majina ya eneo, michango, ada, akiba na malipo yaliyokosekana bila kuahidi payout.",
+  "whatsapp-link": "Uundaji wa kiungo cha wa.me kwa namba ya kimataifa; namba na ujumbe hubaki kwenye kivinjari na hazithibitishwi kuwa mali ya mtu fulani.",
+  "ajo-interest": "Ulinganisho wa nafasi ya zamu ya Ajo au Esusu kwa mfuko, ada, akiba na wanachama waliochelewa; si mkopo wala ahadi ya riba.",
+  "market-days": "Mzunguko wa siku nne wa Igbo kwa Eke, Orie, Afor na Nkwo; marejeo ya 2026 na matumizi ya soko la eneo hubaki wazi.",
+  "ajo-chama-calc": "Ratiba ya Ajo, Chama na Tontine kwa zamu, payout, adhabu na akiba bila kufuta kanuni za kikundi cha eneo.",
   "fintech-fee-watch": "Ada za uhamisho, utoaji, kadi, wafanyabiashara na ubadilishaji wa fedha barani Afrika; usidai kuwa bei ni za moja kwa moja wakati chanzo hakipatikani.",
   "ajo-chama": "Ufuatiliaji wa akiba ya mzunguko kwa istilahi za Ajo, Esusu, Chama, Stokvel na Tontine bila kufuta tofauti za taratibu za eneo.",
   "electricity-estimator": "Mipango ya matumizi ya umeme kwa kaya na biashara ndogo; ushuru huwekwa na mtumiaji kama makisio, si viwango rasmi vya moja kwa moja.",
@@ -121,19 +131,19 @@ function buildManifest() {
       english: row.english,
       french: row.french,
       swahili: { route: target[0], file: path.relative(ROOT, swFile).replace(/\\/g, "/"), mode: target[1] },
-      culturalScope: row.culturalScope,
+      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.english.id === "burial-cost" ? "Respectful family funeral budget using only user-entered costs; no country, faith, ceremony, provider or insurance price assumptions." : row.english.id === "japa-calculator" ? "User-entered relocation budget with verified official fees and quotes; no embedded visa, eligibility, FX, price, tax or legal claims." : row.english.id === "brideprice-advisor" ? "Consent-first family conversation and user-entered affordability plan; no cultural price list, average, authenticity claim or universal custom." : row.culturalScope,
       countryCodes: row.countryCodes,
-      engineOwner: row.engineOwner,
-      dataOwner: row.dataOwner,
-      exports: row.exports,
+      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.english.id === "burial-cost" ? "assets/js/engines/funeral-budget-engine.js" : row.english.id === "japa-calculator" ? "assets/js/engines/relocation-budget-engine.js" : row.english.id === "brideprice-advisor" ? "assets/js/engines/marriage-conversation-engine.js" : row.engineOwner,
+      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.english.id === "burial-cost" ? "user-entered-confirmed-family-costs" : row.english.id === "japa-calculator" ? "user-entered-verified-official-fees-and-local-quotes" : row.english.id === "brideprice-advisor" ? "user-entered-consent-and-agreed-budget" : row.dataOwner,
+      exports: row.english.id === "japa-calculator" ? ["copy","txt","json"] : row.exports,
       artwork: row.artwork
     };
   });
   return {
     schemaVersion: 1,
     programme: "sw-uniquely-african-parity",
-    foundation: "0f6990118d9ac8b9dcde446a6ede10a017b9a2db",
-    coordinatorSnapshot: { head: "20ad8fa8e76e98f3886f222bf3fc2c1ff463bcb9", acceptedGlobal: 708, categoryAccepted: 0 },
+    foundation: "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+    coordinatorSnapshot: { head: "6edacda8437e1fa9b9e5a512138cbdd3169e38be", acceptedGlobal: 873, categoryAccepted: 20 },
     category: { key: "african", englishName: "Uniquely African", englishHub: "/uniquely-african/", swahiliHub: "/sw/zana-za-kipekee-afrika/" },
     denominator: 34,
     sourceOwner: "scripts/generate-sw-uniquely-african-parity.js",
@@ -236,7 +246,7 @@ function hubHtmlBase(manifest) {
     const ready = row.swahili.mode === "shared-engine" || row.swahili.mode === "native-existing";
     return `<article class="ua-hub-card" data-state="${ready ? "candidate" : "blocked"}"><img src="/${row.artwork.path}" width="240" height="135" alt="" loading="lazy"><div><p>${esc(description)}</p><h2>${ready ? `<a href="${row.swahili.route}">${esc(title)}</a>` : esc(title)}</h2><span>${ready ? "Programu ya Kiswahili" : "Inasubiri injini ya pamoja"}</span></div></article>`;
   }).join("\n");
-  return `<!doctype html><html lang="sw" data-theme="system"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana 34 za kipekee Afrika kwa Kiswahili | AfroTools</title><meta name="description" content="Zana 34 za AfroTools zinazohusu maisha, masoko, vikundi, diaspora, mapishi na utamaduni wa Afrika kwa Kiswahili."><meta name="robots" content="index,follow"><link rel="canonical" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Zana 34 za kipekee Afrika kwa Kiswahili"><meta property="og:description" content="Zana za kupanga maisha na biashara za Afrika kwa Kiswahili, zikiwa na vyanzo na mipaka inayoonekana."><meta property="og:url" content="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-uniquely-african.css"><script type="application/ld+json">${json({"@context":"https://schema.org","@type":"CollectionPage",name:"Zana 34 za kipekee Afrika kwa Kiswahili",url:"https://afrotools.com/sw/zana-za-kipekee-afrika/",inLanguage:"sw",numberOfItems:34})}</script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body data-sw-ua-hub><a class="ua-skip" href="#ua-hub">Nenda kwenye zana</a><afro-navbar></afro-navbar><main id="ua-hub" class="ua-page ua-hub"><nav class="ua-breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a><span aria-hidden="true">›</span><span>Zana za kipekee Afrika</span></nav><header class="ua-hub-hero"><p class="ua-eyebrow">Imeundwa kwa muktadha wa Afrika</p><h1>Zana 34 za kipekee Afrika</h1><p>Majina ya eneo, nchi, sarafu, vipimo, vyanzo na mipaka hubaki wazi. Programu saba bado zimezuiwa hadi injini au route zake za pamoja zikamilike; hazihesabiwi kama zimekubaliwa.</p></header><div class="ua-hub-count"><strong>27 / 34</strong><span>programu zenye route ya Kiswahili ya kufanya kazi</span></div><section class="ua-hub-grid" aria-label="Orodha ya programu 34">${cards}</section></main><afro-footer></afro-footer></body></html>\n`;
+  return `<!doctype html><html lang="sw" data-theme="system"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana 34 za kipekee Afrika kwa Kiswahili | AfroTools</title><meta name="description" content="Zana 34 za AfroTools zinazohusu maisha, masoko, vikundi, diaspora, mapishi na utamaduni wa Afrika kwa Kiswahili."><meta name="robots" content="index,follow"><link rel="canonical" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Zana 34 za kipekee Afrika kwa Kiswahili"><meta property="og:description" content="Zana za kupanga maisha na biashara za Afrika kwa Kiswahili, zikiwa na vyanzo na mipaka inayoonekana."><meta property="og:url" content="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-uniquely-african.css"><script type="application/ld+json">${json({"@context":"https://schema.org","@type":"CollectionPage",name:"Zana 34 za kipekee Afrika kwa Kiswahili",url:"https://afrotools.com/sw/zana-za-kipekee-afrika/",inLanguage:"sw",numberOfItems:34})}</script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body data-sw-ua-hub><a class="ua-skip" href="#ua-hub">Nenda kwenye zana</a><afro-navbar></afro-navbar><main id="ua-hub" class="ua-page ua-hub"><nav class="ua-breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a><span aria-hidden="true">›</span><span>Zana za kipekee Afrika</span></nav><header class="ua-hub-hero"><p class="ua-eyebrow">Imeundwa kwa muktadha wa Afrika</p><h1>Zana 34 za kipekee Afrika</h1><p>Majina ya eneo, nchi, sarafu, vipimo, vyanzo na mipaka hubaki wazi. Programu 6 bado zimezuiwa kwa sababu data, fomula au uthibitisho wa chanzo haujatosha; hazihesabiwi kama zimekubaliwa.</p></header><div class="ua-hub-count"><strong>28 / 34</strong><span>programu za Kiswahili zilizo tayari kwa uthibitisho wa kivinjari</span></div><section class="ua-hub-grid" aria-label="Orodha ya programu 34">${cards}</section></main><afro-footer></afro-footer></body></html>\n`;
 }
 
 function hubHtml(manifest) {
@@ -268,36 +278,45 @@ function ensureReciprocalSwahiliAlternate(html, row) {
   throw new Error(`${row.english.id}: English owner has no canonical anchor for reciprocal hreflang`);
 }
 
+function reciprocalOwnerFiles(row) {
+  const files = new Set([path.join(ROOT, row.english.file), path.join(ROOT, row.french.file)]);
+  const english = fs.readFileSync(path.join(ROOT, row.english.file), 'utf8');
+  for (const match of english.matchAll(/<link\b[^>]*rel=["']alternate["'][^>]*href=["']https:\/\/afrotools\.com(\/[^"']+)["'][^>]*>/gi)) {
+    const candidate = routeFile(match[1]);
+    if (fs.existsSync(candidate)) files.add(candidate);
+  }
+  return [...files];
+}
+
 function main() {
   const manifest = buildManifest();
   if (manifest.rows.length !== 34 || new Set(manifest.rows.map((row) => row.english.id)).size !== 34) throw new Error("African denominator must be exactly 34 unique apps");
-  if (Object.keys(COPY).length !== 20) throw new Error("Expected exactly 20 shared-engine presentations");
+  if (Object.keys(COPY).length !== 28) throw new Error("Expected exactly 28 shared-engine presentations");
   const changed = [];
   writeOrCheck(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, changed);
   writeOrCheck(SW_CSS_FILE, fs.readFileSync(SHARED_CSS_SOURCE, "utf8").replace(/data-fr-ua/g, "data-sw-ua"), changed);
-  for (const row of manifest.rows.filter((item) => item.swahili.mode === "shared-engine")) {
+  for (const row of manifest.rows.filter((item) => item.swahili.mode === "shared-engine" && (FULL || LANE_IDS.has(item.english.id)))) {
     const presentation = getPresentation(row.english.id);
     if (!presentation) throw new Error(`Missing presentation for ${row.english.id}`);
     writeOrCheck(routeFile(row.swahili.route), generatedPage(row, presentation), changed);
-    const englishFile = path.join(ROOT, row.english.file);
-    writeOrCheck(englishFile, ensureReciprocalSwahiliAlternate(fs.readFileSync(englishFile, "utf8"), row), changed);
+    for (const ownerFile of reciprocalOwnerFiles(row)) {
+      writeOrCheck(ownerFile, ensureReciprocalSwahiliAlternate(fs.readFileSync(ownerFile, "utf8"), row), changed);
+    }
   }
   for (const row of manifest.rows.filter((item) => item.swahili.mode === "native-existing")) {
     const file = routeFile(row.swahili.route);
     if (!fs.existsSync(file)) throw new Error(`Missing native Swahili owner ${row.english.id}`);
     writeOrCheck(file, hardenNative(row, fs.readFileSync(file, "utf8")), changed);
   }
+  const readyCount = manifest.rows.filter((row) => row.swahili.mode === "shared-engine" || row.swahili.mode === "native-existing").length;
+  const blockedCount = manifest.rows.length - readyCount;
   const hub = hubHtml(manifest)
+    .replace('Programu 6 bado zimezuiwa', `Programu ${blockedCount} bado zimezuiwa`)
+    .replace('<strong>28 / 34</strong>', `<strong>${readyCount} / 34</strong>`)
     .replace(
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">',
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">'
-    )
-    .replace(
-      "Programu saba bado zimezuiwa hadi injini au route zake za pamoja zikamilike; hazihesabiwi kama zimekubaliwa.",
-      "Programu 14 bado zimezuiwa kwa sababu injini za pamoja, route kamili au uthibitisho wa export haujakamilika; hazihesabiwi kama zimekubaliwa."
-    )
-    .replace("<strong>27 / 34</strong>", "<strong>20 / 34</strong>")
-    .replace("programu zenye route ya Kiswahili ya kufanya kazi", "programu za Kiswahili zilizo tayari kwa uthibitisho wa kivinjari");
+    );
   const ownedHub = upsertMeta(
     upsertMeta(hub, "name", "afrotools-source-owner", "scripts/generate-sw-uniquely-african-parity.js"),
     "name",

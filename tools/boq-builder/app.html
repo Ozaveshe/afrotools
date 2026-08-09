@@ -258,6 +258,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 
 <input aria-label="CsvFileInput" type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVImport(event)">
 
+<script src="/assets/js/engines/boq-builder-engine.js?v=e556f7fb"></script>
 <script>
 /* -- Data -- */
 var CATEGORIES = [
@@ -435,18 +436,12 @@ function activeItems(){
 }
 
 function getFinancialTotals(){
-  var subtotal=0;
-  CATEGORIES.forEach(function(cat){subtotal+=(cat._total||0);});
-  var contPct=parseFloat(document.getElementById('contingencyPct').value)||0;
-  var vatPct=parseFloat(document.getElementById('vatPct').value)||0;
-  var markupPct=parseFloat(document.getElementById('markupPct').value)||0;
-  var contingency=subtotal*contPct/100;
-  var subtotalPlusCont=subtotal+contingency;
-  var vat=subtotalPlusCont*vatPct/100;
-  var beforeMarkup=subtotalPlusCont+vat;
-  var markup=beforeMarkup*markupPct/100;
-  var grand=beforeMarkup+markup;
-  return {subtotal:subtotal,contPct:contPct,vatPct:vatPct,markupPct:markupPct,contingency:contingency,vat:vat,markup:markup,grand:grand};
+  return BOQBuilderEngine.calculate({
+    items:activeItems().map(function(row){return row.item;}),
+    contingencyPct:document.getElementById('contingencyPct').value,
+    vatPct:document.getElementById('vatPct').value,
+    markupPct:document.getElementById('markupPct').value
+  });
 }
 
 function qaCheck(type,title,body){return{type:type,title:title,body:body};}

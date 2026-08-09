@@ -359,6 +359,7 @@ const pages = [
     hero: 'Kwatanta tura kudi ta waya da banki kafin biya.',
     cards: ['Duba caji, iyakar kudi da lokacin da kudi zai isa.', 'Yi laakari da wakili, ATM, manhaja, matsalar hanyar sadarwa ko banki.', 'Tabbatar da sabon caji daga manhaja, banki ko wakili kafin aika kudi.'],
     warning: 'Caji da iyaka na iya sauyawa daga banki, kamfanin waya ko manhajar biya. Wannan sakamako kiyasi ne.',
+    extraAlternates: [{ lang: 'sw', href: '/sw/zana/pesa-simu-dhidi-ya-benki/' }],
     related: [['/ha/kayan-aiki/kudin-tura-kudi-ta-waya/', 'Kudin tura kudi'], ['/ha/kayan-aiki/cajin-banki/', 'Cajin banki']],
     registry: {
       id: 'mobile-vs-bank-ha',
@@ -492,6 +493,7 @@ function head(page) {
   <link rel="canonical" href="${site}${page.route}">
   <link rel="alternate" hreflang="en" href="${site}${page.source}">
   <link rel="alternate" hreflang="ha" href="${site}${page.route}">
+  ${(page.extraAlternates || []).map((alternate) => `<link rel="alternate" hreflang="${esc(alternate.lang)}" href="${site}${alternate.href}">`).join('\n  ')}
   <link rel="alternate" hreflang="x-default" href="${site}${page.source}">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <meta property="og:title" content="${esc(page.title)} | AfroTools Hausa">

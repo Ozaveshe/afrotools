@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "ee69eb08",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 2,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the two newly reviewed Creative and Image Design rows beyond the original four-row lane checkpoint; reject duplicate IDs or routes, missing native owners, receipt drift, incomplete browser/export evidence, or non-Swahili route ownership.",
+  "candidates": [
+    {
+      "id": "image-crop-native-parity",
+      "commit": "906434ddcd808054a79028a59cfedefcc7fa46c8",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-image-crop-parity.spec.js",
+          "engineTest": "tests/e2e/swahili-image-crop-parity.spec.js",
+          "workflow": "Image Crop loads the maintained English image-crop-studio owner and passed exact crop-coordinate, rotate, flip, nudge, size, format, quality, invalid/reset, responsive, theme, keyboard, metadata and no-network parity checks.",
+          "export": "English and Swahili 64x48 PNG output was byte-identical; Swahili PNG, JPG and WebP downloads were parser-reopened at exactly 64x48 and the localized clipboard recipe was read back."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-creative-image-parity-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/acceptedCandidates", "equals": 6 },
+            { "pointer": "/exactScope/blocked", "equals": 47 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "image-crop", "swahiliRoute": "/sw/zana/kukata-picha/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "image-format-convert-native-parity",
+      "commit": "ad5c2438f06cb521c6b3c904bb97df284f215c3e",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-image-format-convert-parity.spec.js",
+          "engineTest": "tests/e2e/swahili-image-format-convert-parity.spec.js",
+          "workflow": "Image Format Convert loads the maintained English image-format-convert-studio owner and passed codec, sizing, batch, manifest, unsupported-format fail-closed, invalid/reset, responsive, theme, keyboard, metadata and no-network parity checks.",
+          "export": "English and Swahili 60x40 PNG output was byte-identical; PNG, JPG and WebP outputs reopened at 60x40, and a two-source three-format ZIP manifest plus all six nested images were parsed and reopened."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-creative-image-parity-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/acceptedCandidates", "equals": 6 },
+            { "pointer": "/exactScope/blocked", "equals": 47 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "image-format-convert", "swahiliRoute": "/sw/zana/kubadilisha-format-ya-picha/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

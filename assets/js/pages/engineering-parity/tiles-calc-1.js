@@ -40,33 +40,9 @@ function calculate() {
   const wastePct = +document.getElementById('wastage').value;
   const price = +document.getElementById('pricePerTile').value;
 
-  // Tile area including grout
-  const tileL = (tile.l / 100) + grout;
-  const tileW = (tile.w / 100) + grout;
-  const tileArea = tileL * tileW;
-
-  let totalArea = 0;
-  let floorArea = 0;
-  let wallArea = 0;
-
-  if (st === 'floor' || st === 'both') {
-    floorArea = rl * rw;
-    totalArea += floorArea;
-  }
-  if (st === 'wall' || st === 'both') {
-    const perimeter = 2 * (rl + rw);
-    wallArea = perimeter * wh;
-    wallArea -= doors * 1.68; // standard door 0.8m x 2.1m
-    wallArea -= windows * 1.44; // standard window 1.2m x 1.2m
-    wallArea = Math.max(0, wallArea);
-    totalArea += wallArea;
-  }
-
-  const tilesExact = totalArea / tileArea;
-  const wasteTiles = Math.ceil(tilesExact * (wastePct / 100));
-  const totalTiles = Math.ceil(tilesExact) + wasteTiles;
-  const tilesPerSqm = 1 / ((tile.l / 100) * (tile.w / 100));
-  const boxesNeeded = Math.ceil(totalTiles / 8); // typical box of 8
+  const result = EngineeringMaterialsEngine.tiles({roomLength:rl,roomWidth:rw,surface:st,wallHeight:wh,doors:doors,windows:windows,tileLengthCm:tile.l,tileWidthCm:tile.w,groutWidthMm:grout*1000,wastagePct:wastePct,pricePerTile:price});
+  if (result.error) { alert('Please enter valid dimensions.'); return; }
+  const totalArea=result.totalArea,tilesExact=result.tilesExact,wasteTiles=result.wasteTiles,totalTiles=result.totalTiles,tilesPerSqm=result.tilesPerSqm,boxesNeeded=result.boxesNeeded;
 
   let html = '';
   html += `<div class="result-box"><div class="num">${totalArea.toFixed(1)} m2</div><div class="lbl">Total Area</div></div>`;
@@ -82,7 +58,7 @@ function calculate() {
   // Cost
   if (price > 0) {
     document.getElementById('costSection').style.display = 'block';
-    const cost = totalTiles * price;
+    const cost = result.cost;
     document.getElementById('costValue').textContent = cost.toLocaleString('en-NG', { maximumFractionDigits: 0 });
     document.getElementById('costNote').textContent = `${totalTiles} tiles x ${price.toLocaleString()} per tile`;
   } else {

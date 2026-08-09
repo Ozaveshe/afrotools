@@ -5,42 +5,37 @@
   "routes": [
     {
       "id": "japa-calculator",
-      "sourceSha256": "e01a24b7245edebcd8e27808c17075746075f826012cf4a82db15ee7138dd0c6",
-      "sourceOwner": "tools/japa-calculator/index.html#calculate",
-      "action": "button[onclick=\"calculate()\"]",
-      "result": "#results",
-      "fields": {"#monthlyIncome": "5000", "#savingsRate": "25"},
-      "mutation": {"#monthlyIncome": "7000"},
-      "invalid": {"#savingsRate": "-1"}
+      "sourceSha256": "42f2bd26d7126d0412f4fc94bf8a38fc6f4eee0eb2374aff61bf3685d05f1786",
+      "sourceOwner": "assets/js/engines/relocation-budget-engine.js#calculate",
+      "action": "#jb-form button[type=\"submit\"]",
+      "result": "#jb-result-list",
+      "fields": {"#jb-pre": "500", "#jb-official": "1000", "#jb-travel": "1500", "#jb-housing": "2000", "#jb-arrival": "500", "#jb-monthly": "1000", "#jb-runway": "3", "#jb-buffer": "10", "#jb-savings": "5000", "#jb-saving-months": "5"},
+      "mutation": {"#jb-monthly": "1200"},
+      "invalid": {"#jb-buffer": "-1"}
     },
     {
       "id": "mobile-money-fees",
-      "sourceSha256": "f19355413a2de48f79b24f6bfd14c0e4ebb91e2301bf4430ace5db0d0b85da14",
-      "sourceOwner": "tools/mobile-money-fees/index.html#compare",
-      "action": "button[onclick=\"compare()\"]",
-      "result": "#resultsSection",
-      "fields": {"#mmAmount": "5000"},
-      "mutation": {"#mmAmount": "12000"},
-      "invalid": {"#mmAmount": "0"}
+      "sourceSha256": "f7e563d2972f2da038fb17854c012c8f139e03ce6ae034209ffbbf8c47249496",
+      "sourceOwner": "assets/js/engines/mobile-money-quote-engine.js#calculate",
+      "action": "#mm-form button[type=\"submit\"]",
+      "result": "#mm-result-list",
+      "fields": {"#mm-a-label": "Option A", "#mm-a-market": "Kenya", "#mm-a-currency": "KES", "#mm-a-type": "send", "#mm-a-amount": "5000", "#mm-a-sender": "50", "#mm-a-recipient": "20", "#mm-a-observed": "2026-08-01T10:00", "#mm-a-expires": "2026-12-01T10:00", "#mm-b-label": "Option B", "#mm-b-market": "Kenya", "#mm-b-currency": "KES", "#mm-b-type": "send", "#mm-b-amount": "5000", "#mm-b-sender": "60", "#mm-b-recipient": "30", "#mm-b-observed": "2026-08-01T10:00", "#mm-b-expires": "2026-12-01T10:00"},
+      "mutation": {"#mm-b-sender": "40"},
+      "invalid": {"#mm-a-amount": "0"}
     },
     {
       "id": "burial-cost",
-      "sourceSha256": "11887cf39b3c96c9ce2c4f4e12e3975c7584f425dac1dcd84eaccc0e9cd08863",
-      "sourceOwner": "tools/burial-cost/index.html#calculate",
-      "action": "#funeralForm button[type=\"submit\"]",
-      "result": "#breakdown",
-      "fields": {"#country": "NG", "#budget": "standard", "#guestSlider": "200", "#location": "city", "#ceremony": "christian", "#availableFund": "0", "#insurancePayout": "0", "#contributors": "10", "#deadlineDays": "30"},
-      "mutation": {"#guestSlider": "350"},
-      "invalid": {"#contributors": "0"},
-      "english": {
-        "action": "button[onclick=\"calculate()\"]",
-        "result": "#resultSection",
-        "fields": {"#guestSlider": "200", "#availableFund": "0", "#insurancePayout": "0", "#contributors": "10", "#deadlineDays": "30"}
-      }
+      "sourceSha256": "f26a4ce094715b4200643ca00666384580f85cc865ca8e59b02d3f508a091d41",
+      "sourceOwner": "assets/js/engines/funeral-budget-engine.js#calculate",
+      "action": "#fb-form button[type=\"submit\"]",
+      "result": "#fb-result-list",
+      "fields": {"#fb-currency": "XOF", "#fb-care": "1000", "#fb-venue": "2000", "#fb-food": "3000", "#fb-transport": "4000", "#fb-documents": "500", "#fb-other": "500", "#fb-buffer": "10", "#fb-fund": "2000", "#fb-benefit": "1000", "#fb-contributors": "7", "#fb-days": "7"},
+      "mutation": {"#fb-care": "2000"},
+      "invalid": {"#fb-care": "-1"}
     },
     {
       "id": "naira-to-words",
-      "sourceSha256": "6865341aa0d470a1bb44e1038f8600e6920a67935e394029597b39d9d5eab5f1",
+      "sourceSha256": "e8f3e0e0bf78e6709f546c7cea9967bb9343aded0b9ee48b10659b56c3cc6db6",
       "sourceOwner": "tools/naira-to-words/index.html#amountToWords",
       "action": "#ngn-form button[type=\"submit\"]",
       "result": "#summary-output",
@@ -88,7 +83,7 @@
     },
     {
       "id": "whatsapp-link",
-      "sourceSha256": "4a1bfde37bcba1f004d8791d225a91756cb984f07d8f0fc4e8a20eaede53632b",
+      "sourceSha256": "20d8a3e8c34a693455a50e6151d82fa201182fd663d63da07e56f9820f082564",
       "sourceOwner": "tools/whatsapp-link/index.html#generateLink",
       "action": "#waForm button[type=\"submit\"]",
       "result": "#waLink",
@@ -103,29 +98,27 @@
     },
     {
       "id": "remittance-compare",
-      "sourceSha256": "f34b7a45f38da2873fe6ff05862480e3573c417fabb2effd13a58627c2c66bf0",
-      "sourceOwner": "tools/remittance-compare/index.html#compare",
-      "action": "button[onclick=\"compare()\"]",
-      "result": "#providerCards",
-      "fields": {"#amount": "500"},
-      "mutation": {"#amount": "900"},
-      "invalid": {"#amount": "0"},
-      "english": {"action": "#rcCompareBtn", "result": "#rcResults", "fields": {"#rcAmount": "500"}}
+      "sourceSha256": "a713c4d42c90c58236a561ec54c5e29b6f46b08294c4d60eda59c735fbe9a32d",
+      "sourceOwner": "engines/src/remittance-quote-comparator-engine.js#calculate",
+      "action": "#rm-form button[type=\"submit\"]",
+      "result": "#rm-result-list",
+      "fields": {"#rm-a-label": "Devis A", "#rm-a-send": "USD", "#rm-a-debit": "500", "#rm-a-receive": "NGN", "#rm-a-recipient": "780000", "#rm-a-fee": "5", "#rm-a-payout": "bank", "#rm-a-delivery": "60", "#rm-a-observed": "2026-08-08T10:00", "#rm-a-expires": "", "#rm-b-label": "Devis B", "#rm-b-send": "USD", "#rm-b-debit": "500", "#rm-b-receive": "NGN", "#rm-b-recipient": "790000", "#rm-b-fee": "5", "#rm-b-payout": "bank", "#rm-b-delivery": "60", "#rm-b-observed": "2026-08-08T10:05", "#rm-b-expires": ""},
+      "mutation": {"#rm-b-recipient": "800000"},
+      "invalid": {"#rm-b-recipient": "0"}
     },
     {
       "id": "remittance-v2",
-      "sourceSha256": "43ada5171874335a1b4ebc30200b093df2981bce3ed3e8a6328adb1c78eb6f73",
-      "sourceOwner": "tools/remittance-v2/index.html#compare",
-      "action": "#remitForm button[type=\"submit\"]",
-      "result": "#resultPanel",
-      "fields": {"#fromCurrency": "USD", "#toCurrency": "NGN", "#amount": "500", "#midRate": "1535"},
-      "mutation": {"#amount": "900"},
-      "invalid": {"#amount": "0"},
-      "english": {"action": "button[onclick=\"compare()\"]", "result": "#results", "fields": {"#fromCountry": "US", "#toCountry": "NG", "#amount": "500", "#providerFee": "3", "#fxMargin": "0.8"}}
+      "sourceSha256": "a896287ed66c5a2f7999bcf7d6d042bfc84fd510b82ba5d0631d55f20bee3560",
+      "sourceOwner": "engines/src/remittance-quote-comparator-engine.js#calculate",
+      "action": "#rm-form button[type=\"submit\"]",
+      "result": "#rm-result-list",
+      "fields": {"#rm-a-label": "Devis A", "#rm-a-send": "USD", "#rm-a-debit": "500", "#rm-a-receive": "NGN", "#rm-a-recipient": "780000", "#rm-a-fee": "5", "#rm-a-payout": "bank", "#rm-a-delivery": "60", "#rm-a-observed": "2026-08-08T10:00", "#rm-a-expires": "", "#rm-b-label": "Devis B", "#rm-b-send": "USD", "#rm-b-debit": "500", "#rm-b-receive": "NGN", "#rm-b-recipient": "790000", "#rm-b-fee": "5", "#rm-b-payout": "bank", "#rm-b-delivery": "60", "#rm-b-observed": "2026-08-08T10:05", "#rm-b-expires": ""},
+      "mutation": {"#rm-b-recipient": "800000"},
+      "invalid": {"#rm-b-recipient": "0"}
     },
     {
       "id": "brideprice-advisor",
-      "sourceSha256": "5e807b252d95a3da52c717d39834ea94becad14c49b681d0c17aa5ff6385be44",
+      "sourceSha256": "b78c3aefcec233093f4d192f4bb8db3359369d0bf494dd7ce337670be5f7a3cb",
       "sourceOwner": "engines/src/brideprice-culture-engine.js",
       "action": "#ua-bp-show",
       "result": "#ua-bp-result",
@@ -151,7 +144,7 @@
     },
     {
       "id": "market-days",
-      "sourceSha256": "53dfda8babfbeab0a69105f980e752a0a85ce7119d836d629c57e1296e8b3dae",
+      "sourceSha256": "8219ce015dc5425e6c8e6dd9bdfdc32fce4160ecdae3c28fc672245ea03fe30d",
       "sourceOwner": "assets/js/engines/igbo-market-days.js",
       "action": "#market-form button[type=\"submit\"]",
       "result": "#summary-output",

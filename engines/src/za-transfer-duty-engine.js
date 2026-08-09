@@ -3,7 +3,7 @@
   var RULES=Object.freeze({
     scheme:"South Africa transfer duty 2027",
     effectiveFrom:"2026-04-01",
-    verifiedThrough:"2026-07-23",
+    verifiedThrough:"2026-08-09",
     source:"SARS Transfer Duty rates, 2027 (effective 1 April 2026)",
     brackets:Object.freeze([
       Object.freeze({upper:1210000,rate:0,base:0,offset:0}),

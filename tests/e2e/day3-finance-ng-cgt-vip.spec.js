@@ -3,7 +3,8 @@ const { test, expect } = require('@playwright/test');
 const routes = [
   { name: 'en', path: '/tools/ng-cgt/', lang: 'en', width: 320, heading: 'Estimate disposal tax without the repealed flat 10% shortcut.', button: 'Calculate gain estimate' },
   { name: 'fr', path: '/fr/tools/ng-plus-value/', lang: 'fr', width: 360, heading: 'Estimez la plus-value sans appliquer l’ancien forfait de 10 %.', button: 'Calculer la plus-value' },
-  { name: 'ha', path: '/ha/kayan-aiki/cgt-najeriya/', lang: 'ha', width: 390, heading: 'Kimanta harajin ribar kadara ba tare da tsohon flat 10% ba.', button: 'Lissafa ribar kadara' }
+  { name: 'ha', path: '/ha/kayan-aiki/cgt-najeriya/', lang: 'ha', width: 390, heading: 'Kimanta harajin ribar kadara ba tare da tsohon flat 10% ba.', button: 'Lissafa ribar kadara' },
+  { name: 'sw', path: '/sw/zana/kikokotoo-cgt-nigeria/', lang: 'sw', width: 375, heading: 'Kadiria kodi ya uuzaji wa mali bila kutumia kiwango bapa cha 10% kilichoondolewa.', button: 'Kokotoa makadirio ya faida' }
 ];
 
 function channel(value){value/=255;return value<=.03928?value/12.92:Math.pow((value+.055)/1.055,2.4)}
@@ -11,16 +12,16 @@ function contrast(a,b){const parse=value=>value.match(/\d+/g).slice(0,3).map(Num
 
 for(const route of routes){
   test(`${route.name} Nigeria CGT route is native, local and mobile-safe`,async({page})=>{
-    const errors=[],nonGet=[],dataRequests=[];
+    const errors=[],sensitiveWrites=[],dataRequests=[];
     page.on('pageerror',e=>errors.push(e.message));
     page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-    page.on('request',r=>{if(r.method()!=='GET')nonGet.push(`${r.method()} ${r.url()}`);if(/\.netlify\/functions|\/api\//i.test(r.url()))dataRequests.push(r.url())});
+    page.on('request',r=>{if(r.method()!=='GET'&&r.postData())sensitiveWrites.push({url:r.url(),body:r.postData()});if(/\.netlify\/functions|\/api\//i.test(r.url()))dataRequests.push(r.url())});
     await page.emulateMedia({colorScheme:'dark',reducedMotion:'reduce'});
     await page.setViewportSize({width:route.width,height:820});
     await page.goto(route.path,{waitUntil:'networkidle'});
     await expect(page.locator('html')).toHaveAttribute('lang',route.lang);
     await expect(page.locator('h1')).toHaveText(route.heading);
-    await expect(page.locator('link[rel="alternate"]')).toHaveCount(4);
+    await expect(page.locator('link[rel="alternate"]')).toHaveCount(5);
     await page.locator('[name="scopeConfirmed"]').check();
     await page.getByRole('button',{name:route.button}).click();
     await expect(page.locator('[data-result]')).toBeVisible();
@@ -31,7 +32,7 @@ for(const route of routes){
     expect(contrast(colors.fg,colors.bg)).toBeGreaterThanOrEqual(4.5);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
     expect((await page.locator('body').innerText())).not.toMatch(/\uFFFD|\u00C3.|\u00C2.|\u00E2\u20AC/);
-    expect(dataRequests).toEqual([]);expect(nonGet).toEqual([]);expect(errors).toEqual([]);
+    expect(dataRequests).toEqual([]);expect(sensitiveWrites).toEqual([]);expect(errors).toEqual([]);
     await page.screenshot({path:`artifacts/day3-finance-ng-cgt/ng-cgt-${route.name}-${route.width}-dark.png`,fullPage:true});
   });
 }
