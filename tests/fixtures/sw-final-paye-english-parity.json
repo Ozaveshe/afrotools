@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "frozenEnglishBase": "2f5fb8988ddd40e28eb17123fe653b18ff0801c3",
+  "note": "Fixed outcomes transcribed from the canonical English owner formula branches. Tunisia is the documented correction boundary: the Ministry table replaces the stale inline page scale and applies the official 10% salary deduction capped at TND 2,000.",
+  "cases": [
+    { "id": "ng-paye", "basis": "nigeria/ng-salary-tax.html calcNTA defaults", "input": { "gross": 5000000 }, "expected": { "contribution": 525000, "taxable": 4475000, "tax": 595500, "net": 3879500 } },
+    { "id": "ng-paye", "basis": "nigeria/ng-salary-tax.html calcPITA defaults", "input": { "gross": 5000000, "regime": "PITA_2025" }, "expected": { "contribution": 525000, "taxable": 3275000, "tax": 578000, "net": 3897000 } },
+    { "id": "za-paye", "basis": "south-africa/za-paye.html computePAYE under65 defaults", "input": { "gross": 1000000 }, "expected": { "contribution": 2125.44, "taxable": 1000000, "tax": 292284, "net": 705590.56 } },
+    { "id": "za-paye", "basis": "south-africa/za-paye.html age, retirement and medical-credit branch", "input": { "gross": 1000000, "ageGroup": "75plus", "retirement": 50000, "medMembers": 3 }, "expected": { "contribution": 2125.44, "taxable": 950000, "tax": 247507, "net": 750367.56 } },
+    { "id": "ma-paye", "basis": "netlify/functions/_engines/ma-paye.js maintained CNSS and AMO contract", "input": { "gross": 1000000 }, "expected": { "contribution": 25825.6, "taxable": 974174.4, "tax": 345786.272, "net": 628388.128 } },
+    { "id": "dz-paye", "basis": "algeria/dz-paye.html annual IRG owner", "input": { "gross": 1000000 }, "expected": { "contribution": 90000, "taxable": 910000, "tax": 177000, "net": 733000 } },
+    { "id": "tn-paye", "basis": "Tunisia Ministry IRPP table and salary-deduction correction checked 2026-08-09", "input": { "gross": 100000 }, "expected": { "contribution": 9180, "taxable": 88820, "tax": 26687, "net": 64133 } },
+    { "id": "ly-paye", "basis": "libya/ly-paye.html PAYE, SSF, SUF and stamp owner", "input": { "gross": 2000 }, "expected": { "contribution": 122.5, "taxable": 1877.5, "tax": 137.75, "postTax": 8.69875, "net": 1731.05125 } },
+    { "id": "sd-paye", "basis": "sudan/sd-paye.html monthly band owner", "input": { "gross": 100000 }, "expected": { "contribution": 8000, "taxable": 92000, "tax": 7800, "net": 84200 } },
+    { "id": "mz-paye", "basis": "mozambique/mz-paye.html monthly IRPS owner", "input": { "gross": 100000 }, "expected": { "contribution": 3000, "taxable": 97000, "tax": 21275, "net": 75725 } },
+    { "id": "na-paye", "basis": "namibia/na-paye.html annual PAYE and SSC owner", "input": { "gross": 2000000 }, "expected": { "contribution": 1188, "taxable": 2000000, "tax": 595500, "net": 1403312 } },
+    { "id": "mg-paye", "basis": "madagascar/mg-paye.html cap, minimum tax and dependent branch", "input": { "gross": 1000000, "dependents": 2 }, "expected": { "contribution": 10000, "taxable": 990000, "tax": 101500, "net": 888500 } },
+    { "id": "cd-paye", "basis": "dr-congo/cd-paye.html ten-band IPR owner", "input": { "gross": 30000000 }, "expected": { "contribution": 1500000, "taxable": 28500000, "tax": 7518715.2, "net": 20981284.8 } },
+    { "id": "cg-paye", "basis": "congo/cg-paye.html annualized IRPP and capped CNSS owner", "input": { "gross": 1000000 }, "expected": { "contribution": 40000, "taxable": 960000, "tax": 238613.33333333334, "net": 721386.6666666666 } },
+    { "id": "sl-paye", "basis": "sierra-leone/sl-paye.html primary-employment owner", "input": { "gross": 5000 }, "expected": { "contribution": 250, "taxable": 4750, "tax": 1065, "net": 3685 } },
+    { "id": "sl-paye", "basis": "sierra-leone/sl-paye.html secondary-employment branch", "input": { "gross": 5000, "secondary": true }, "expected": { "contribution": 250, "taxable": 5000, "tax": 1500, "net": 3250 } }
+  ]
+}
