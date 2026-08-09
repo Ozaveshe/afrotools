@@ -80,7 +80,7 @@ const nativeCopySelectors = {
   "amount-words-gh": "#copyBtn",
   "susu-tracker": "#copySusu",
   "whatsapp-link": "#copyLink",
-  "remittance-compare": "#frRemitCopy",
+  "remittance-compare": "#rm-copy",
   "remittance-v2": "#rm-copy",
   "brideprice-advisor": "#ua-bp-copy",
   "ajo-interest": "#copyBtn",
@@ -96,7 +96,7 @@ const nativeEnglishMutations = {
   "amount-words-gh": { "#amount": "9250.25" },
   "susu-tracker": { "#contribution": "400" },
   "whatsapp-link": { "#phoneNumber": "7087654321" },
-  "remittance-compare": { "#rcAmount": "900" },
+  "remittance-compare": { "#rm-b-recipient": "800000" },
   "remittance-v2": { "#rm-b-recipient": "800000" },
   "brideprice-advisor": { "#bpSaved": "50000" },
   "ajo-interest": { "#contribution": "40000" },
@@ -105,6 +105,7 @@ const nativeEnglishMutations = {
 };
 const nativeDownloadSelectors = {
   "burial-cost": { json: "#fb-json", txt: "#fb-txt" },
+  "remittance-compare": { json: "#rm-json" },
   "remittance-v2": { json: "#rm-json" }
 };
 
@@ -377,7 +378,7 @@ async function captureNativeSemantic(page, id, locale) {
         : text("#waLink");
       return { url: value || "" };
     }
-    if (routeId === "remittance-compare") {
+    if (routeId === "remittance-compare-legacy") {
       if (language === "fr") {
         return window.frRemittancePayload.providers.map((provider) => ({
           provider: words(provider.name),
@@ -398,7 +399,7 @@ async function captureNativeSemantic(page, id, locale) {
         };
       }).sort((a, b) => a.provider.localeCompare(b.provider));
     }
-    if (routeId === "remittance-v2") {
+    if (routeId === "remittance-v2" || routeId === "remittance-compare") {
       const readQuote = (letter) => ({
         label: document.querySelector(`#rm-${letter}-label`).value,
         sendCurrency: document.querySelector(`#rm-${letter}-send`).value,
@@ -1031,7 +1032,7 @@ async function verifyNativeExports(page, row, pdfExpectation) {
       const selector = nativeDownloadSelectors[row.english.id]?.[format] ||
         (format === "qr" ? "#downloadQr" :
         row.english.id === "ajo-chama-calc" && format === "csv" ? "#csvBtn" :
-        row.english.id === "remittance-compare" && format === "json" ? "#frRemitJson" :
+        row.english.id === "remittance-compare" && format === "json" ? "#rm-json" :
           `[data-native-export="${format}"]`);
       exports[format] = await verifyDownload(page, selector, format, pdfExpectation);
     }
@@ -1308,7 +1309,7 @@ for (const row of manifest.rows) {
     await page.goto(row.french.route, { waitUntil: "domcontentloaded" });
 
     await expect(page.locator("body")).toHaveAttribute("data-fr-ua-app", row.english.id);
-    if (row.english.id === "remittance-v2") {
+    if (row.english.id === "remittance-v2" || row.english.id === "remittance-compare") {
       await expect(page.locator("#rm-form"), "remittance-v2: page-owned accessibility adapter").toHaveAttribute("data-fr-a11y-owner", "active");
     }
     const hreflangGroup = await assertMetadata(page, row);

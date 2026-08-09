@@ -3,7 +3,7 @@
 
   var form = document.getElementById('rm-form');
   var error = document.getElementById('rm-error');
-  if (!form || !document.querySelector('[data-remittance-parity][data-locale="fr"][data-tool="remittance-v2"]')) return;
+  if (!form || !document.querySelector('[data-remittance-parity][data-locale="fr"]')) return;
   form.dataset.frA11yOwner = 'active';
 
   function clearInvalidState() {

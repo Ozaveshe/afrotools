@@ -234,7 +234,7 @@ for (const fixture of nativeFixtures.routes) {
     && frenchSource.includes('id="fb-json" data-native-export="json"')
     && frenchSource.includes('id="fb-txt" data-native-export="txt"')
     && frenchSource.includes('id="fb-error" class="rm-error" role="alert"');
-  const ownsNativeRemittanceV2Contract = fixture.id === "remittance-v2"
+  const ownsNativeRemittanceV2Contract = ["remittance-compare", "remittance-v2"].includes(fixture.id)
     && frenchSource.includes("/engines/remittance-quote-comparator-engine.js")
     && frenchSource.includes("/assets/js/pages/remittance-quote-parity.js")
     && frenchSource.includes("/assets/js/pages/fr-remittance-v2-a11y.js")
