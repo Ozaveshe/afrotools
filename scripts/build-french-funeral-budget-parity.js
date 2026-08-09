@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 
 const ROOT = path.resolve(__dirname, '..');
 const TARGET = path.join(ROOT, 'fr', 'tools', 'cout-funerailles', 'index.html');
@@ -157,7 +158,7 @@ function page() {
 function build() {
   const expected = page();
   const current = fs.existsSync(TARGET) ? fs.readFileSync(TARGET, 'utf8') : '';
-  const changed = current === expected ? [] : ['fr/tools/cout-funerailles/index.html'];
+  const changed = normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(expected, { stripReleaseMetadata: true }) ? [] : ['fr/tools/cout-funerailles/index.html'];
   if (WRITE && changed.length) writeFileSyncWithRetry(TARGET, expected, 'utf8');
   console.log(JSON.stringify({ mode: WRITE ? 'write' : 'check', routes: 1, changed }, null, 2));
   if (!WRITE && changed.length) process.exitCode = 1;

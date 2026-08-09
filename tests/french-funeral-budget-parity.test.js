@@ -4,12 +4,13 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const { page, build } = require('../scripts/build-french-funeral-budget-parity.js');
+const { normalizeReleaseOwnedHtml } = require('../scripts/lib/release-owned-html-normalizer');
 
 const root = path.resolve(__dirname, '..');
 const routeFile = path.join(root, 'fr', 'tools', 'cout-funerailles', 'index.html');
 const html = fs.readFileSync(routeFile, 'utf8');
 
-assert.equal(html, page(), 'French funeral route must be generated from its narrow source owner');
+assert.equal(normalizeReleaseOwnedHtml(html, { stripReleaseMetadata: true }), normalizeReleaseOwnedHtml(page(), { stripReleaseMetadata: true }), 'French funeral route must be generated from its narrow source owner');
 assert.deepEqual(build(), [], 'French funeral generator must be current');
 assert.match(html, /<html lang="fr">/);
 assert.match(html, /data-funeral-budget-fr/);

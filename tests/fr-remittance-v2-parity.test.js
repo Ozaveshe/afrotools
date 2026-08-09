@@ -3,12 +3,13 @@ const assert=require('assert');
 const fs=require('fs');
 const path=require('path');
 const generator=require('../scripts/build-remittance-quote-parity.js');
+const {normalizeReleaseOwnedHtml}=require('../scripts/lib/release-owned-html-normalizer');
 const ROOT=path.resolve(__dirname,'..');
 const app=generator.APPS.find((row)=>row.id==='remittance-v2');
 const routePath=path.join(ROOT,'fr','tools','transfert-v2','index.html');
 const html=fs.readFileSync(routePath,'utf8');
 
-assert.strictEqual(html,generator.pageFr(app),'French remittance-v2 output must be generator-current');
+assert.strictEqual(normalizeReleaseOwnedHtml(html,{stripReleaseMetadata:true}),normalizeReleaseOwnedHtml(generator.pageFr(app),{stripReleaseMetadata:true}),'French remittance-v2 output must be generator-current');
 assert.match(html,/<html lang="fr">/);
 assert.match(html,/data-remittance-parity data-locale="fr" data-tool="remittance-v2"/);
 assert.match(html,/\/engines\/remittance-quote-comparator-engine\.js/);
