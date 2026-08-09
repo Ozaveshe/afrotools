@@ -1,0 +1,21 @@
+'use strict';
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const engine = require('../assets/js/engines/ke-cgt.js');
+const root = path.resolve(__dirname, '..');
+const sw = fs.readFileSync(path.join(root, 'sw/zana/kikokotoo-cgt-kenya/index.html'), 'utf8');
+
+const out = engine.calculate({scopeConfirmed:true, exemptionClaimed:false, exemptionConfirmed:false, transferValue:15000000, transferCosts:300000, acquisitionCost:8000000, acquisitionCosts:200000, enhancementCosts:500000, preservationCosts:0});
+assert.strictEqual(out.netTransferValue, 14700000);
+assert.strictEqual(out.adjustedCost, 8700000);
+assert.strictEqual(out.rawGain, 6000000);
+assert.strictEqual(out.tax, 900000);
+assert.throws(() => engine.calculate({scopeConfirmed:false}), /scope/);
+assert.match(sw, /lang="sw"/);
+assert.match(sw, /data-ke-cgt-app/);
+assert.match(sw, /assets\/js\/engines\/ke-cgt\.js/);
+assert.match(sw, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-cgt-kenya\/"/);
+assert.match(sw, /assets\/img\/tools\/ke-cgt\.webp/);
+assert.doesNotMatch(sw, /iframe/i);
+console.log('Swahili Kenya CGT static and oracle checks passed');
