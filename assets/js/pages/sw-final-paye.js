@@ -1,10 +1,10 @@
 (function () {
   'use strict';
-  var engine = window.AfroTools && window.AfroTools.swFinalParity;
+  var engine = window.AfroTools && window.AfroTools.swPayeEngine;
   if (!engine) return;
-  var root = document.querySelector('[data-sw-final-app]');
+  var root = document.querySelector('[data-sw-paye-app]');
   if (!root) return;
-  var type = root.dataset.swFinalApp;
+  var type = root.dataset.swPayeApp;
   var id = root.dataset.toolId || '';
   var result = null;
 

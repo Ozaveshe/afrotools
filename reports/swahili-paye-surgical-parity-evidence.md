@@ -12,6 +12,8 @@
 
 The 13 Swahili pages preserve the frozen-base editorial, FAQ, schema, and internal-link surface. The generator replaces only the obsolete calculator/workflow region and removes the legacy lead modal and calculator scripts. Each owner now exposes:
 
+The readable calculation owner is `engines/src/sw-final-paye-engine.js`; `engines/sw-final-paye-engine.js` is its generated minified public runtime. Page behavior is wired by `assets/js/pages/sw-final-paye.js`, and `scripts/build-sw-final-paye.js` owns the surgical 13-page output.
+
 - gross salary, monthly/annual period conversion, and five salary presets;
 - country-specific option branches;
 - calculate, invalid-input handling, reset, and net-to-gross search;
@@ -82,7 +84,7 @@ Rows older than 90 days render `data-source-status="stale"` and instruct the use
 
 ## Validation
 
-- `node scripts/build-sw-final-finance-engineering-transport.js --check` — 13/13 owners and 13/13 reciprocal pairs current.
-- `node tests/sw-final-finance-engineering-transport.test.js` — 13/13 owners and 16/16 formula fixtures pass.
+- `node scripts/build-sw-final-paye.js --check` — 13/13 owners and 13/13 reciprocal pairs current.
+- `node tests/sw-final-paye.test.js` — 13/13 owners and 16/16 formula fixtures pass.
 - focused one-worker Chromium — 15/15 tests pass: all 13 workflows, portable export reopen/parse, invalid/reset, privacy, consent payload, 320/375/effective-200% layout, themes, keyboard, console, resources, SEO, schema, and artwork.
 - Repository i18n, hreflang, links, lint, type, whitespace, and zero-deletion gates are recorded in the coordinator handoff.

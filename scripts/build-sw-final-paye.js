@@ -4,8 +4,9 @@ const childProcess = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
-const ENGINE = '/assets/js/engines/sw-final-parity.js';
-const CONTROLLER = '/assets/js/pages/sw-final-parity.js';
+const FROZEN_BASE = '2f5fb8988ddd40e28eb17123fe653b18ff0801c3';
+const ENGINE = '/engines/sw-final-paye-engine.js';
+const CONTROLLER = '/assets/js/pages/sw-final-paye.js';
 const reviewed = '2026-08-09';
 
 const PAYE = [
@@ -40,7 +41,7 @@ function shell({title,description,route,englishRoute,image='default-og',appType,
   const canonical=absRoute(route), en=absRoute(englishRoute);
   const scopedBody=body.replace(/\b(id|for)="([^"]+)"/g,(_,attribute,value)=>`${attribute}="${value.startsWith('swf-')?value:`swf-${id}-${value}`}"`).replace(/<form>/g,'<form novalidate>');
   const schema={ '@context':'https://schema.org','@type':schemaType,name:title,description,url:canonical,inLanguage:'sw',isAccessibleForFree:true,operatingSystem:'Web',image:`https://afrotools.com/assets/img/tools/${image}.webp`,dateModified:reviewed };
-  return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | AfroTools</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="sw" href="${canonical}"><link rel="alternate" hreflang="en" href="${en}"><link rel="alternate" hreflang="x-default" href="${en}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:locale" content="sw"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${image}.webp"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${pageStyle}</style></head><body><header><a class="brand" href="/sw/">AFROTOOLS</a><nav aria-label="Urambazaji mkuu"><a href="/sw/zana-zote/">Zana</a><a href="/sw/mshahara-na-kodi/">Mshahara na kodi</a><a href="/sw/usafiri-na-magari/">Usafiri</a></nav></header><main data-sw-final-app="${appType}" data-tool-id="${id}">${scopedBody}</main><footer><p>AfroTools · Zana za kupanga kwa faragha. Thibitisha taarifa zinazobadilika na chanzo rasmi.</p></footer><script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="${ENGINE}"></script><script src="${CONTROLLER}"></script></body></html>`;
+  return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | AfroTools</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="sw" href="${canonical}"><link rel="alternate" hreflang="en" href="${en}"><link rel="alternate" hreflang="x-default" href="${en}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:locale" content="sw"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${image}.webp"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${pageStyle}</style></head><body><header><a class="brand" href="/sw/">AFROTOOLS</a><nav aria-label="Urambazaji mkuu"><a href="/sw/zana-zote/">Zana</a><a href="/sw/mshahara-na-kodi/">Mshahara na kodi</a><a href="/sw/usafiri-na-magari/">Usafiri</a></nav></header><main data-sw-paye-app="${appType}" data-tool-id="${id}">${scopedBody}</main><footer><p>AfroTools · Zana za kupanga kwa faragha. Thibitisha taarifa zinazobadilika na chanzo rasmi.</p></footer><script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="${ENGINE}"></script><script src="${CONTROLLER}"></script></body></html>`;
 }
 
 function payeOptions(id,currency){
@@ -87,8 +88,8 @@ function removeUnsafeRuntime(html){
     .replace(/<p><strong>2025\/26:<\/strong> IRPP Tunisia:[\s\S]*?CNSS mfanyakazi <strong>9\.18%<\/strong>\.<\/p>/i,'<p><strong>Jedwali rasmi limekaguliwa 9 Agosti 2026:</strong> IRPP ni 0% hadi TND 5,000; 26% kwa TND 5,000.001–20,000; 28% kwa TND 20,000.001–30,000; 32% kwa TND 30,000.001–50,000; na 35% juu ya TND 50,000. Punguzo la mshahara ni 10% hadi TND 2,000 kwa mwaka. CNSS 9.18% ni dhana ya kupanga inayohitaji uthibitisho wa payroll.</p>')
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,block=>/var RESULT|function calculate\s*\(|salarySlider|grossSalary|pdfModal|ai-advisor|calcSave|chatIn|toggleSaveTool|_grossToNet/i.test(block)?'':block)
     .replace(/\s*<script src="\/assets\/js\/lib\/net-to-gross[^>]*><\/script>/gi,'')
-    .replace(/\s*<script src="\/assets\/js\/pages\/sw-final-parity\.js[^>]*><\/script>/gi,'')
-    .replace(/\s*<script src="\/assets\/js\/engines\/sw-final-parity\.js[^>]*><\/script>/gi,'');
+    .replace(/\s*<script src="\/assets\/js\/pages\/sw-final-(?:parity|paye)\.js[^>]*><\/script>/gi,'')
+    .replace(/\s*<script src="\/(?:assets\/js\/engines\/sw-final-parity|engines\/sw-final-paye-engine)\.js[^>]*><\/script>/gi,'');
 }
 function correctTunisiaCopy(html){
   return html
@@ -120,13 +121,13 @@ function preservedReference(block){
 function surgicalPaye(existing,generated,id){
   const startMatch=existing.match(/<(?:main|div) class="(?:tool-main|calc-page-wrap)"[^>]*>/i);if(!startMatch)throw new Error(`${id}: calculator start not found`);const start=startMatch.index;
   const tail=existing.slice(start+startMatch[0].length);const markers=[/\n<section class="ng-save-sec"/i,/\n<section data-tool-verification-panel/i,/\n<section class="faq-sec"/i,/\n<div class="modal-bg"/i,/\n<section class="faq-section"/i];const ends=markers.map(re=>tail.search(re)).filter(n=>n>=0);if(!ends.length)throw new Error(`${id}: calculator end not found`);const end=start+startMatch[0].length+Math.min(...ends)+1;
-  const oldBlock=existing.slice(start,end);const generatedMain=generated.match(/<main\s+data-sw-final-app="paye"[\s\S]*?<\/main>/i);if(!generatedMain)throw new Error(`${id}: generated PAYE owner missing`);let newMain=generatedMain[0].replace(/<section class="hero">[\s\S]*?<\/section>/i,'').replace('<main ','<main class="sw-final-paye-owner tool-main" id="main-content" ').replace(/<\/main>$/i,preservedReference(oldBlock)+'</main>');
+  const oldBlock=existing.slice(start,end);const generatedMain=generated.match(/<main\s+data-sw-paye-app="paye"[\s\S]*?<\/main>/i);if(!generatedMain)throw new Error(`${id}: generated PAYE owner missing`);let newMain=generatedMain[0].replace(/<section class="hero">[\s\S]*?<\/section>/i,'').replace('<main ','<main class="sw-final-paye-owner tool-main" id="main-content" ').replace(/<\/main>$/i,preservedReference(oldBlock)+'</main>');
   let out=existing.slice(0,start)+newMain+'\n'+existing.slice(end);out=removeLeadModal(out);out=removeUnsafeRuntime(out).replace("Replaces CRA as the primary non-pension deduction. Calculated as the <strong>lower of 20% of rent actually paid</strong> or &#8358;500,000/mwaka. If you own your home and don't pay rent, you cannot claim this relief.",'Unachukua nafasi ya CRA kama punguzo kuu lisilo la pensheni. Hukokotolewa kama kiasi cha chini kati ya <strong>20% ya kodi ya nyumba iliyolipwa</strong> au &#8358;500,000 kwa mwaka. Ukiwa mmiliki wa nyumba na hulipi kodi, huwezi kudai unafuu huu.').replace(/\s+lang="en"\s+data-explicit-language-fallback="true"/g,'');if(id==='tn-paye')out=correctTunisiaCopy(out);
   const style=`<style data-sw-final-paye>${pageStyle}</style>`;if(!out.includes('data-sw-final-paye'))out=out.replace(/<\/head>/i,style+'\n</head>');
   const runtime=`<script src="${ENGINE}"></script><script src="${CONTROLLER}"></script>`;out=out.replace(/<\/body>/i,runtime+'\n</body>');return out;
 }
 
 let drift=[];
-for(const [rel,generated] of outputs){const file=path.join(ROOT,rel);if(!fs.existsSync(file)){drift.push(`missing:${rel}`);continue;}const before=fs.readFileSync(file,'utf8'),base=childProcess.execFileSync('git',['show',`HEAD:${rel}`],{cwd:ROOT,encoding:'utf8'}),id=PAYE.find(row=>rel.includes(`/`+row[2]+`/`))[0],after=surgicalPaye(base,generated,id);if(before!==after){if(CHECK)drift.push(rel);else fs.writeFileSync(file,after,'utf8');}}
+for(const [rel,generated] of outputs){const file=path.join(ROOT,rel);if(!fs.existsSync(file)){drift.push(`missing:${rel}`);continue;}const before=fs.readFileSync(file,'utf8'),base=childProcess.execFileSync('git',['show',`${FROZEN_BASE}:${rel}`],{cwd:ROOT,encoding:'utf8'}),id=PAYE.find(row=>rel.includes(`/`+row[2]+`/`))[0],after=surgicalPaye(base,generated,id);if(before!==after){if(CHECK)drift.push(rel);else fs.writeFileSync(file,after,'utf8');}}
 for(const [enRoute,swRoute] of englishPairs){const file=routeFile(enRoute);if(!fs.existsSync(file)){drift.push(`missing:${enRoute}`);continue;}const before=fs.readFileSync(file,'utf8'),after=withReciprocal(before,swRoute);if(before!==after){if(CHECK)drift.push(path.relative(ROOT,file));else fs.writeFileSync(file,after,'utf8');}}
-if(drift.length){console.error(`Sw final parity drift: ${drift.length}`);drift.forEach(x=>console.error(`- ${x}`));process.exitCode=1;}else console.log(`Sw final parity owners current: ${outputs.size} pages, ${englishPairs.length} reciprocal pairs.`);
+if(drift.length){console.error(`Sw PAYE parity drift: ${drift.length}`);drift.forEach(x=>console.error(`- ${x}`));process.exitCode=1;}else console.log(`Sw PAYE parity owners current: ${outputs.size} pages, ${englishPairs.length} reciprocal pairs.`);

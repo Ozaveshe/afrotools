@@ -2,7 +2,7 @@ const assert = require('assert');
 const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const engine = require('../assets/js/engines/sw-final-parity.js');
+const engine = require('../engines/src/sw-final-paye-engine.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const BASE = '2f5fb8988ddd40e28eb17123fe653b18ff0801c3';
@@ -40,14 +40,14 @@ for (const [id,file,englishRoute,profileControls] of rows) {
   const baseline=childProcess.execFileSync('git',['show',`${BASE}:${file}`],{cwd:ROOT,encoding:'utf8'});
   const before=metrics(baseline),after=metrics(html);metricReceipt.push({id,before,after});
   assert.match(html,/<html\b[^>]*\blang="sw"/i,`${id}: Swahili owner`);
-  assert.ok(html.includes(`data-tool-id="${id}"`)&&html.includes('data-sw-final-app="paye"'),`${id}: exact source-owned PAYE identity`);
+  assert.ok(html.includes(`data-tool-id="${id}"`)&&html.includes('data-sw-paye-app="paye"'),`${id}: exact source-owned PAYE identity`);
   for(const name of ['inputPeriod','gross','desiredNet','aiConsent',...profileControls])assert.ok(html.includes(`name="${name}"`),`${id}: control ${name}`);
   for(const action of ['data-reset','data-net-to-gross','data-copy','data-save','data-load','data-print','data-explain','data-ai'])assert.ok(html.includes(action),`${id}: action ${action}`);
   assert.strictEqual((html.match(/data-preset=/g)||[]).length,5,`${id}: five salary presets`);
   assert.ok(html.includes('data-breakdown')&&html.includes('data-chart'),`${id}: result breakdown and chart`);
   for(const format of ['json','csv','txt','pdf'])assert.ok(html.includes(`data-export="${format}"`),`${id}: export ${format}`);
   assert.doesNotMatch(html,/form-name="pdf-leads"|name="pdfEmail"|data-explicit-language-fallback/i,`${id}: no email gate or fallback`);
-  assert.ok(html.includes('/assets/js/engines/sw-final-parity.js')&&html.includes('/assets/js/pages/sw-final-parity.js'),`${id}: maintained engine/controller`);
+  assert.ok(html.includes('/engines/sw-final-paye-engine.js')&&html.includes('/assets/js/pages/sw-final-paye.js'),`${id}: maintained engine/controller`);
   assert.match(html,/data-source-status="(?:stale|reviewed)"/,`${id}: visible freshness state`);
   assert.strictEqual(after.schema,before.schema,`${id}: schema count preserved`);
   assert.ok(after.h2>=before.h2,`${id}: H2 depth preserved`);
@@ -57,7 +57,7 @@ for (const [id,file,englishRoute,profileControls] of rows) {
   const enPath=englishRoute.replace(/^\//,'').replace(/\/$/,'');const direct=path.join(ROOT,`${enPath}.html`);const owner=fs.existsSync(direct)?direct:path.join(ROOT,enPath,'index.html');const english=fs.readFileSync(owner,'utf8');const canonical=html.match(/<link rel="canonical" href="([^"]+)"/i)[1];assert.ok(english.includes(`hreflang="sw" href="${canonical}"`),`${id}: reciprocal English hreflang`);
 }
 
-const controller=fs.readFileSync(path.join(ROOT,'assets/js/pages/sw-final-parity.js'),'utf8');
+const controller=fs.readFileSync(path.join(ROOT,'assets/js/pages/sw-final-paye.js'),'utf8');
 assert.match(controller,/aiConsent[\s\S]*consent\.checked[\s\S]*fetch\('\/.netlify\/functions\/ai-advisor'/, 'AI transport is behind explicit consent');
 assert.match(controller,/maelezo ya ndani bila mtandao/i, 'local explanation fallback is present');
 

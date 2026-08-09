@@ -2,7 +2,7 @@
   var api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.AfroTools = root.AfroTools || {};
-  root.AfroTools.swFinalParity = api;
+  root.AfroTools.swPayeEngine = api;
 }(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 

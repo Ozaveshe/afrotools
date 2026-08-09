@@ -10,7 +10,7 @@ const routes=[
 test.describe.configure({mode:'serial'});
 for(const route of routes){
   test(`complete PAYE workflow ${route}`,async({page})=>{
-    await page.setViewportSize({width:320,height:900});const requests=[];page.on('request',r=>requests.push(r));await page.goto(route);const app=page.locator('[data-sw-final-app=paye]');await expect(app).toHaveCount(1);await expect(page.locator('html')).toHaveAttribute('lang','sw');
+    await page.setViewportSize({width:320,height:900});const requests=[];page.on('request',r=>requests.push(r));await page.goto(route);const app=page.locator('[data-sw-paye-app=paye]');await expect(app).toHaveCount(1);await expect(page.locator('html')).toHaveAttribute('lang','sw');
     await app.locator('[name=gross]').fill('1000000');await app.locator('form button[type=submit]').click();await expect(app.locator('[data-result] strong')).toBeVisible();
     await app.locator('[data-save]').click();await app.locator('[name=gross]').fill('2000000');await app.locator('[data-load]').click();await expect(app.locator('[name=gross]')).toHaveValue('1000000');
     await app.locator('[data-explain]').click();await expect(app.locator('[data-ai-result]')).toContainText('bila mtandao');
@@ -24,7 +24,7 @@ for(const route of routes){
 
 test('AI remains disabled without consent and sends only the disclosed result payload',async({page})=>{
   let payload=null;await page.route('**/.netlify/functions/ai-advisor',async route=>{payload=route.request().postDataJSON();await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({text:'Maelezo salama ya mfano.'})});});
-  await page.goto('/sw/tunisia/kikokotoo-kodi-mshahara/');const app=page.locator('[data-sw-final-app=paye]');await app.locator('[name=gross]').fill('100000');await app.locator('form button[type=submit]').click();await expect(app.locator('[data-ai]')).toBeDisabled();await app.locator('[name=aiConsent]').check();await expect(app.locator('[data-ai]')).toBeEnabled();await app.locator('[data-ai]').click();await expect(app.locator('[data-ai-result]')).toContainText('Maelezo salama');expect(payload.consent).toBe(true);expect(Object.keys(payload.context).sort()).toEqual(['contribution','currency','gross','locale','net','sourceReviewed','tax','toolId'].sort());expect(JSON.stringify(payload)).not.toMatch(/email|name|file|document|password|otp/i);
+  await page.goto('/sw/tunisia/kikokotoo-kodi-mshahara/');const app=page.locator('[data-sw-paye-app=paye]');await app.locator('[name=gross]').fill('100000');await app.locator('form button[type=submit]').click();await expect(app.locator('[data-ai]')).toBeDisabled();await app.locator('[name=aiConsent]').check();await expect(app.locator('[data-ai]')).toBeEnabled();await app.locator('[data-ai]').click();await expect(app.locator('[data-ai-result]')).toContainText('Maelezo salama');expect(payload.consent).toBe(true);expect(Object.keys(payload.context).sort()).toEqual(['contribution','currency','gross','locale','net','sourceReviewed','tax','toolId'].sort());expect(JSON.stringify(payload)).not.toMatch(/email|name|file|document|password|otp/i);
 });
 
 test('all 13 owners preserve SEO depth and reflow at 320px, 375px and effective 200%',async({page})=>{
