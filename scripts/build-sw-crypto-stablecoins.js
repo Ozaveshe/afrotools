@@ -88,6 +88,23 @@ const p = [
 ];
 for (const [a, b] of p) s = s.replaceAll(a, b);
 s = s
+  .replaceAll("What the snapshot measures", "Muhtasari huu unapima nini")
+  .replaceAll("AfroTools requests three fixed CoinGecko asset IDs through a dedicated server function. Each asset must include positive USD and local reference prices plus a provider timestamp no more than 30 minutes old. A row that fails those checks is withheld. If no row survives, the table closes safely.", "AfroTools huomba vitambulisho vitatu maalumu vya mali kutoka CoinGecko kupitia huduma ya server iliyotengwa. Kila mali lazima iwe na bei chanya ya marejeo ya USD na sarafu ya ndani, pamoja na muda wa mtoa data usiozidi dakika 30. Safu isiyopita ukaguzi huo haionyeshwi. Ikiwa hakuna safu halali, jedwali hufungwa kwa usalama.")
+  .replaceAll("is derived only as the percentage difference between the CoinGecko Rejeo la USD and 1 USD. It can help describe the provider snapshot, but it is not an exchange premium, platform spread, fee, savings yield or forecast.", "hukokotolewa tu kama tofauti ya asilimia kati ya rejeo la USD la CoinGecko na USD 1. Husaidia kueleza muhtasari wa mtoa data, lakini si nyongeza ya bei ya ubadilishaji, tofauti ya jukwaa, ada, faida ya akiba wala utabiri.")
+  .replaceAll("Use the right evidence", "Tumia ushahidi unaofaa")
+  .replaceAll("These values are indicative provider references, not executable quotes.", "Thamani hizi ni marejeo ya mtoa data, si nukuu zinazoweza kutekelezwa.")
+  .replaceAll("Verify the exact platform, payment method, network, fees and withdrawal conditions before acting.", "Thibitisha jukwaa, njia ya malipo, mtandao, ada na masharti ya kutoa fedha kabla ya kuchukua hatua.")
+  .replaceAll("NGN and ZAR are shown because they are the African quote currencies verified directly with this provider contract.", "NGN na ZAR zinaonyeshwa kwa sababu ndizo sarafu za Afrika zilizothibitishwa moja kwa moja katika mkataba huu wa mtoa data.")
+  .replaceAll("Exports include the source, scope, quote currency and timestamps. PDF is not offered because structured CSV and JSON preserve the receipt.", "Faili zina chanzo, upeo, sarafu ya nukuu na mihuri ya muda. PDF haitolewi kwa sababu CSV na JSON zenye muundo huhifadhi risiti kwa usahihi.")
+  .replaceAll("This is market information, not financial advice.", "Hii ni taarifa ya soko, si ushauri wa kifedha.")
+  .replaceAll("Stablecoin reference FAQ", "Maswali kuhusu marejeo ya stablecoin")
+  .replaceAll("Does the lowest peg distance identify the best stablecoin?", "Je, umbali mdogo zaidi kutoka USD 1 unaonyesha stablecoin bora?")
+  .replaceAll("No. A single provider price does not assess issuer reserves, redemption access, smart-contract risk, network availability, regulation, liquidity or your platformâ€™s executable price.", "Hapana. Bei ya mtoa data mmoja haitathmini akiba ya mtoaji, uwezo wa kukomboa, hatari ya smart contract, upatikanaji wa mtandao, kanuni, ukwasi wala bei inayotekelezeka kwenye jukwaa lako.")
+  .replaceAll("Why are there no platform rankings?", "Kwa nini hakuna orodha ya ubora wa majukwaa?")
+  .replaceAll("This app has no current, complete platform-quote source for USDT, USDC and DAI. It therefore does not invent platform rates, trust scores, fees, processing times, spreads or recommendations.", "Programu haina chanzo cha sasa na kamili cha nukuu za majukwaa kwa USDT, USDC na DAI. Kwa hiyo haitungi viwango, alama za uaminifu, ada, muda wa uchakataji, tofauti za bei wala mapendekezo.")
+  .replaceAll("What happens when the provider is unavailable?", "Nini hutokea mtoa data asipopatikana?")
+  .replaceAll("No expired cache, hard-coded fallback or estimated local conversion is shown. The page reports that fresh provider data is unavailable and keeps exports disabled until a fresh snapshot loads.", "Hakuna akiba iliyoisha, thamani mbadala iliyowekwa moja kwa moja wala ubadilishaji wa ndani uliokadiriwa unaoonyeshwa. Ukurasa husema data mpya haipatikani na huzuia faili hadi muhtasari mpya upatikane.");
+s = s
   .replace(
     /<script src="\/assets\/js\/analytics-bootstrap[^>]*><\/script>\s*/,
     "",
