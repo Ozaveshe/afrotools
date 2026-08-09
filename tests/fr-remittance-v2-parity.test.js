@@ -10,7 +10,8 @@ const routePath=path.join(ROOT,'fr','tools','transfert-v2','index.html');
 const html=fs.readFileSync(routePath,'utf8');
 
 assert.strictEqual(normalizeReleaseOwnedHtml(html,{stripReleaseMetadata:true}),normalizeReleaseOwnedHtml(generator.hardenFr(generator.pageFr(app),app),{stripReleaseMetadata:true}),'French remittance-v2 output must be generator-current');
-assert.match(html,/<html lang="fr">/);
+// Release builds may prepend owned attributes such as data-chat-bundle to <html>.
+assert.match(html,/<html\b(?=[^>]*\blang="fr")[^>]*>/i);
 assert.match(html,/data-remittance-parity data-locale="fr" data-tool="remittance-v2"/);
 assert.match(html,/\/engines\/remittance-quote-comparator-engine\.js/);
 assert.match(html,/\/assets\/js\/pages\/remittance-quote-parity\.js/);
