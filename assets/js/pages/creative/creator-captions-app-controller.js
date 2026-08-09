@@ -52,6 +52,19 @@
     return true;
   }
 
+  function pageLanguage() {
+    return document.documentElement.lang === 'sw' ? 'swahili' : document.documentElement.lang === 'fr' ? 'french' : 'english';
+  }
+
+  function toneLabel(tone) {
+    var labels = {
+      swahili: { casual: 'Ya kawaida', professional: 'Ya kitaalamu', bold: 'Ya ujasiri', playful: 'Ya kufurahisha', inspirational: 'Ya kutia moyo', educational: 'Ya kuelimisha' },
+      french: { casual: 'Décontracté', professional: 'Professionnel', bold: 'Audacieux', playful: 'Ludique', inspirational: 'Inspirant', educational: 'Éducatif' }
+    };
+    var language = pageLanguage();
+    return labels[language] && labels[language][tone] ? labels[language][tone] : tone;
+  }
+
   function initAuth() {
     document.getElementById('authGate').style.display = 'none';
     document.getElementById('appTopbar').style.display = '';
@@ -490,7 +503,7 @@
       saveToHistory(platform, topic, tone, localCaptions);
       incrementTodayCount(localCaptions.length);
       updateStats();
-      toast(lang === 'french' ? '3 légendes créées localement' : '3 captions created locally');
+      toast(lang === 'french' ? '3 légendes créées localement' : lang === 'swahili' ? 'Caption 3 zimetengenezwa kwenye kifaa chako' : '3 captions created locally');
       return;
     }
 
@@ -565,7 +578,7 @@
 
     var platform = getActivePill('rewritePlatformPills');
     var useAI = document.getElementById('aiRewriteConsent').checked;
-    var rewriteLanguage = document.documentElement.lang === 'fr' ? 'french' : 'english';
+    var rewriteLanguage = document.documentElement.lang === 'fr' ? 'french' : document.documentElement.lang === 'sw' ? 'swahili' : 'english';
 
     if (!useAI) {
       var localResult = E.rewriteLocal(platform, caption, rewriteLanguage);
@@ -574,7 +587,7 @@
         return;
       }
       renderCaptions(localResult, platform, 'rewriteOutput');
-      toast(rewriteLanguage === 'french' ? '3 versions créées localement' : '3 rewrites created locally');
+      toast(rewriteLanguage === 'french' ? '3 versions créées localement' : rewriteLanguage === 'swahili' ? 'Matoleo 3 yametengenezwa kwenye kifaa chako' : '3 rewrites created locally');
       return;
     }
 
@@ -632,6 +645,7 @@
     history.unshift(E.createHistoryEntry(platform, topic, tone, captions));
     if (history.length > 100) history = history.slice(0, 100);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    renderHistory();
   }
 
   function renderHistory() {
@@ -648,11 +662,11 @@
       var platformLabel = E.PLATFORMS[entry.platform] ? E.PLATFORMS[entry.platform].label : entry.platform;
       var captionCount = entry.captions ? entry.captions.length : 0;
 
-      html += '<div class="ccr-history-item" data-idx="' + i + '">';
+      html += '<div class="ccr-history-item" data-idx="' + i + '" role="button" tabindex="0">';
       html += '<div class="ccr-history-meta">';
       html += '<span class="ccr-history-platform">' + escapeHtml(platformLabel) + '</span>';
-      if (entry.tone) html += '<span class="ccr-history-tone">' + escapeHtml(entry.tone) + '</span>';
-      html += '<span class="ccr-history-time">' + E.formatTimestamp(entry.createdAt) + '</span>';
+      if (entry.tone) html += '<span class="ccr-history-tone">' + escapeHtml(toneLabel(entry.tone)) + '</span>';
+      html += '<span class="ccr-history-time">' + E.formatTimestamp(entry.createdAt, pageLanguage()) + '</span>';
       html += '</div>';
       html += '<div class="ccr-history-topic">' + escapeHtml(entry.topic || 'Untitled') + '</div>';
       html += '<div class="ccr-history-count">' + captionCount + ' caption' + (captionCount !== 1 ? 's' : '') + ' generated</div>';
@@ -663,7 +677,7 @@
 
     // Wire clicks
     container.querySelectorAll('.ccr-history-item').forEach(function(item) {
-      item.onclick = function() {
+      function restoreEntry() {
         var idx = parseInt(item.getAttribute('data-idx'));
         var entry = history[idx];
         if (!entry || !entry.captions) return;
@@ -675,20 +689,32 @@
         // Set platform pill
         var pPills = document.getElementById('platformPills');
         pPills.querySelectorAll('.ccr-pill-v2').forEach(function(p) {
-          p.classList.toggle('active', p.getAttribute('data-val') === entry.platform);
+          var active = p.getAttribute('data-val') === entry.platform;
+          p.classList.toggle('active', active);
+          p.setAttribute('aria-checked', active ? 'true' : 'false');
+          p.setAttribute('tabindex', active ? '0' : '-1');
         });
 
         // Set tone pill
         if (entry.tone) {
           var tPills = document.getElementById('tonePills');
           tPills.querySelectorAll('.ccr-pill-v2').forEach(function(p) {
-            p.classList.toggle('active', p.getAttribute('data-val') === entry.tone);
+            var active = p.getAttribute('data-val') === entry.tone;
+            p.classList.toggle('active', active);
+            p.setAttribute('aria-checked', active ? 'true' : 'false');
+            p.setAttribute('tabindex', active ? '0' : '-1');
           });
         }
 
         // Render captions
         renderCaptions({ captions: entry.captions }, entry.platform, 'writeOutput');
         toast('Restored from history');
+      }
+      item.onclick = restoreEntry;
+      item.onkeydown = function(event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        restoreEntry();
       };
     });
   }
@@ -750,7 +776,7 @@
     favs.forEach(function(fav, i) {
       var platformLabel = E.PLATFORMS[fav.platform] ? E.PLATFORMS[fav.platform].label : (fav.platform || '');
       html += '<div class="ccr-fav-card" data-idx="' + i + '">';
-      html += '<button type="button" class="ccr-fav-remove" data-remove="' + i + '">&times;</button>';
+      html += '<button type="button" class="ccr-fav-remove" data-remove="' + i + '" aria-label="Remove favorite">&times;</button>';
       html += '<div class="ccr-fav-card-platform">' + escapeHtml(platformLabel) + '</div>';
       html += '<div class="ccr-fav-card-text">' + escapeHtml(fav.text || '') + '</div>';
       if (fav.hashtags && fav.hashtags.length) {
@@ -814,10 +840,11 @@
   // ===== EXPORT =====
   function exportCaptions(captions, platform) {
     var platformLabel = E.PLATFORMS[platform] ? E.PLATFORMS[platform].label : platform;
-    var lines = ['CaptionCraft Export - ' + platformLabel, 'Generated: ' + new Date().toLocaleString(), ''];
+    var isSwahili = document.documentElement.lang === 'sw';
+    var lines = [(isSwahili ? 'Pakua CaptionCraft - ' : 'CaptionCraft Export - ') + platformLabel, (isSwahili ? 'Imetengenezwa: ' : 'Generated: ') + new Date().toLocaleString(isSwahili ? 'sw' : undefined), ''];
 
     captions.forEach(function(cap, i) {
-      lines.push('--- ' + (cap.label || 'Variation ' + (i + 1)) + ' ---');
+      lines.push('--- ' + (cap.label || (isSwahili ? 'Toleo ' : 'Variation ') + (i + 1)) + ' ---');
       lines.push('');
       lines.push(cap.text || '');
       if (cap.hashtags && cap.hashtags.length) {
@@ -825,7 +852,7 @@
         lines.push(cap.hashtags.join(' '));
       }
       lines.push('');
-      lines.push('Characters: ' + (cap.charCount || (cap.text || '').length));
+      lines.push((isSwahili ? 'Herufi: ' : 'Characters: ') + (cap.charCount || (cap.text || '').length));
       lines.push('');
     });
 
@@ -836,7 +863,7 @@
     a.download = 'captions-' + platform + '-' + Date.now() + '.txt';
     a.click();
     URL.revokeObjectURL(url);
-    toast('Exported!');
+    toast(isSwahili ? 'Imepakuliwa!' : 'Exported!');
   }
 
   // ===== STATS =====

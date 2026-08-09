@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const crypto = require("node:crypto");
 const {
   localizeVisibleLanguage,
 } = require("./lib/french-visible-language");
@@ -10,6 +11,13 @@ const root = path.resolve(__dirname, "..");
 const source = path.join(root, "tools", "creator-captions", "app.html");
 const outputDir = path.join(root, "fr", "tools", "legendes-createur");
 const output = path.join(outputDir, "app.html");
+const assetVersion = (relativePath) => crypto.createHash("md5")
+  .update(fs.readFileSync(path.join(root, relativePath), "utf8").replace(/\r\n?/g, "\n"))
+  .digest("hex")
+  .slice(0, 8);
+const frLocalizerVersion = assetVersion("assets/js/pages/creative/fr-creator-captions-localizer.js");
+const frProofCssVersion = assetVersion("assets/css/fr-creative-route-real-proof.css");
+const frReflowVersion = assetVersion("assets/js/pages/creative/fr-creative-route-real-reflow.js");
 
 let html = fs.readFileSync(source, "utf8");
 html = html
@@ -21,12 +29,14 @@ html = html
       '<link rel="canonical" href="https://afrotools.com/tools/creator-captions/app">',
       '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-captions/app">',
       '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/legendes-createur/app">',
+      '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/caption-za-maudhui/app">',
       '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-captions/app">'
     ].join("\n"),
     [
       '<link rel="canonical" href="https://afrotools.com/fr/tools/legendes-createur/app">',
       '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-captions/app">',
       '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/legendes-createur/app">',
+      '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/caption-za-maudhui/app">',
       '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-captions/app">'
     ].join("\n")
   )
@@ -35,21 +45,22 @@ html = html
     '<meta property="og:url" content="https://afrotools.com/fr/tools/legendes-createur/app">\n<meta property="og:locale" content="fr_FR">'
   )
   .replaceAll('href="index.html"', 'href="/fr/tools/legendes-createur/"')
+  .replace(/\s*<script src="\/assets\/js\/pages\/creative\/fr-creator-captions-localizer\.js(?:\?v=[a-f0-9]+)?"><\/script>\s*/g, "\n")
   .replace(
-    '<script src="/assets/js/pages/creative/creator-captions-app-controller.js"></script>',
-    '<script src="/assets/js/pages/creative/fr-creator-captions-localizer.js"></script>\n<script src="/assets/js/pages/creative/creator-captions-app-controller.js"></script>'
+    /(<script src="\/assets\/js\/pages\/creative\/creator-captions-app-controller\.js(?:\?v=[a-f0-9]+)?"><\/script>)/,
+    `<script src="/assets/js/pages/creative/fr-creator-captions-localizer.js?v=${frLocalizerVersion}"></script>\n$1`
   );
 
 if (!html.includes("/assets/css/fr-creative-route-real-proof.css")) {
   html = html.replace(
     "</head>",
-    '<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css">\n</head>'
+    `<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css?v=${frProofCssVersion}">\n</head>`
   );
 }
 if (!html.includes("/assets/js/pages/creative/fr-creative-route-real-reflow.js")) {
   html = html.replace(
     "</body>",
-    '<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js" defer></script>\n</body>'
+    `<script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js?v=${frReflowVersion}" defer></script>\n</body>`
   );
 }
 

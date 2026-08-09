@@ -160,11 +160,11 @@
       if (!l) {
         return {
           ok: !1,
-          error: n === "french" ? "Décrivez d’abord votre publication." : "Describe your post first.",
+          error: n === "french" ? "Décrivez d’abord votre publication." : n === "swahili" ? "Eleza chapisho lako kwanza." : "Describe your post first.",
           captions: []
         };
       }
-      var c = n === "french", d = String(i || "casual"), u = s || {},
+      var c = n === "french", w = n === "swahili", d = String(i || "casual"), u = s || {},
       p = l.replace(/\s+/g, " "), h = p.split(" ").filter(function(e) {
         return e.length > 3;
       }).slice(0, a === "x" ? 2 : 5).map(function(e) {
@@ -178,6 +178,13 @@
         ctas: [ "Enregistrez cette publication pour plus tard.", "Partagez-la avec une personne concernée.", "Dites-nous ce que vous en pensez." ],
         question: "Quelle est votre expérience ?",
         tip: "Gardez la première ligne autonome : elle doit rester claire avant le bouton « voir plus »."
+      } : w ? {
+        labels: [ "Toleo lililo wazi", "Toleo la ujasiri", "Toleo la simulizi" ],
+        hooks: [ "Hili ndilo jambo muhimu:", "Wazo moja la kuzingatia:", "Yote huanza na swali rahisi:" ],
+        bodies: [ "Mtazamo wa vitendo kuhusu " + p + ".", p + " inastahili kuangaliwa kwa karibu.", "Leo tunaangalia " + p + "." ],
+        ctas: [ "Hifadhi chapisho hili kwa baadaye.", "Shiriki na mtu anayelihitaji.", "Tuambie maoni yako." ],
+        question: "Uzoefu wako umekuwaje?",
+        tip: "Fanya mstari wa kwanza uwe na maana pekee yake ili uendelee kueleweka kabla ya kitufe cha kuona zaidi."
       } : {
         labels: [ "The Clear One", "The Bold One", "The Story One" ],
         hooks: [ "Here is what matters:", "One idea worth your attention:", "It starts with a simple question:" ],
@@ -188,7 +195,7 @@
       }, g = r === "short" ? 0 : r === "long" ? 2 : 1,
       m = [ 0, 1, 2 ].map(function(e) {
         var t = f.hooks[e] + "\n\n" + f.bodies[e];
-        return 2 === g && (t += "\n\n" + (c ? "Ajoutez un exemple concret, un résultat ou une leçon afin que le lecteur puisse agir." : "Add a concrete example, result, or lesson so the reader can act.")),
+        return 2 === g && (t += "\n\n" + (c ? "Ajoutez un exemple concret, un résultat ou une leçon afin que le lecteur puisse agir." : w ? "Ongeza mfano halisi, matokeo au somo ili msomaji aweze kuchukua hatua." : "Add a concrete example, result, or lesson so the reader can act.")),
         u.question && (t += "\n\n" + f.question), u.cta && (t += "\n\n" + f.ctas[e]),
         u.emoji && (t = [ "✨ ", "📌 ", "💡 " ][e] + t),
         a === "x" && t.length > o.maxChars && (t = t.slice(0, o.maxChars - 1).trimEnd() + "…"),
@@ -207,24 +214,24 @@
         ok: !0,
         mode: "local",
         tone: d,
-        language: c ? "french" : n || "english",
+        language: c ? "french" : w ? "swahili" : n || "english",
         captions: m,
         platformTip: f.tip
       };
     },
     rewriteLocal: function(a, t, i) {
-      var s = String(t || "").trim(), r = i === "french";
+      var s = String(t || "").trim(), r = i === "french", w = i === "swahili";
       if (!s) {
         return {
           ok: !1,
-          error: r ? "Collez d’abord une légende à améliorer." : "Paste a caption to rewrite.",
+          error: r ? "Collez d’abord une légende à améliorer." : w ? "Bandika caption ya kuboresha kwanza." : "Paste a caption to rewrite.",
           captions: []
         };
       }
       var n = s.replace(/\s+/g, " "), o = e[a] || e.instagram,
-      l = r ? [ "À retenir :", "Regard neuf :", "Question du jour :" ] : [ "Key takeaway:", "A fresh angle:", "Question for today:" ],
-      c = r ? [ "Enregistrez cette publication.", "Partagez-la si elle peut aider.", "Qu’en pensez-vous ?" ] : [ "Save this post.", "Share it if it helps.", "What do you think?" ],
-      d = r ? [ "La version structurée", "La version directe", "La version conversationnelle" ] : [ "The Structured One", "The Direct One", "The Conversational One" ],
+      l = r ? [ "À retenir :", "Regard neuf :", "Question du jour :" ] : w ? [ "Jambo la kukumbuka:", "Mtazamo mpya:", "Swali la leo:" ] : [ "Key takeaway:", "A fresh angle:", "Question for today:" ],
+      c = r ? [ "Enregistrez cette publication.", "Partagez-la si elle peut aider.", "Qu’en pensez-vous ?" ] : w ? [ "Hifadhi chapisho hili.", "Lishiriki kama linaweza kusaidia.", "Una maoni gani?" ] : [ "Save this post.", "Share it if it helps.", "What do you think?" ],
+      d = r ? [ "La version structurée", "La version directe", "La version conversationnelle" ] : w ? [ "Toleo lililopangwa", "Toleo la moja kwa moja", "Toleo la mazungumzo" ] : [ "The Structured One", "The Direct One", "The Conversational One" ],
       u = [ 0, 1, 2 ].map(function(e) {
         var t = l[e] + "\n\n" + n + "\n\n" + c[e];
         return a === "x" && t.length > o.maxChars && (t = t.slice(0, o.maxChars - 1).trimEnd() + "…"),
@@ -242,9 +249,9 @@
       return {
         ok: !0,
         mode: "local",
-        language: r ? "french" : "english",
+        language: r ? "french" : w ? "swahili" : "english",
         captions: u,
-        platformTip: r ? "Relisez chaque proposition et conservez uniquement les faits que vous pouvez vérifier." : "Review each option and keep only claims you can verify."
+        platformTip: r ? "Relisez chaque proposition et conservez uniquement les faits que vous pouvez vérifier." : w ? "Soma kila pendekezo tena na uhifadhi madai unayoweza kuthibitisha pekee." : "Review each option and keep only claims you can verify."
       };
     },
     createHistoryEntry: function(e, a, t, i) {
@@ -257,9 +264,9 @@
         createdAt: Date.now()
       };
     },
-    formatTimestamp: function(e) {
-      var a = new Date(e), t = new Date - a;
-      return t < 6e4 ? "Just now" : t < 36e5 ? Math.floor(t / 6e4) + "m ago" : t < 864e5 ? Math.floor(t / 36e5) + "h ago" : t < 6048e5 ? Math.floor(t / 864e5) + "d ago" : a.toLocaleDateString("en-GB", {
+    formatTimestamp: function(e, i) {
+      var a = new Date(e), t = new Date - a, s = i === "swahili", r = i === "french";
+      return t < 6e4 ? s ? "Sasa hivi" : r ? "À l’instant" : "Just now" : t < 36e5 ? Math.floor(t / 6e4) + (s ? " dk zilizopita" : r ? " min" : "m ago") : t < 864e5 ? Math.floor(t / 36e5) + (s ? " saa zilizopita" : r ? " h" : "h ago") : t < 6048e5 ? Math.floor(t / 864e5) + (s ? " siku zilizopita" : r ? " j" : "d ago") : a.toLocaleDateString(s ? "sw-TZ" : r ? "fr-FR" : "en-GB", {
         day: "numeric",
         month: "short"
       });
