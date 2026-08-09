@@ -8,13 +8,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 |---|---:|
 | Public pages | 11383 |
 | Indexable pages | 10394 |
-| Permanent and temporary redirects | 2931 |
+| Permanent and temporary redirects | 2937 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
 | Genuine equivalence groups | 5350 |
-| Documented fallbacks | 14604 |
+| Documented fallbacks | 14610 |
 | Routes eligible for primary sitemaps | 10394 |
 
 ## Locale Coverage
@@ -2027,6 +2027,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/sw/tools/remittance-compare/` -> `/sw/zana/ulinganisho-uhamishaji-pesa/` (301, owner: _redirects)
 - `/sw/tools/reorganiser-pdf/` -> `/fr/tools/reorganiser-pdf/` (301, owner: _redirects)
 - `/sw/tools/vat-calculator/` -> `/sw/zana/kikokotoo-vat/` (301, owner: _redirects)
+- `/sw/zana/bio-za-mitandao/app.html` -> `/sw/zana/bio-za-mitandao/app` (301, owner: _redirects)
+- `/sw/zana/brand-kit-ya-mtayarishi/app.html` -> `/sw/zana/brand-kit-ya-mtayarishi/app` (301, owner: _redirects)
+- `/sw/zana/canvas-ya-mtayarishi/app.html` -> `/sw/zana/canvas-ya-mtayarishi/app` (301, owner: _redirects)
+- `/sw/zana/caption-za-maudhui/app.html` -> `/sw/zana/caption-za-maudhui/app` (301, owner: _redirects)
+- `/sw/zana/kalenda-ya-mtayarishi/app.html` -> `/sw/zana/kalenda-ya-mtayarishi/app` (301, owner: _redirects)
+- `/sw/zana/takwimu-za-mtayarishi/app.html` -> `/sw/zana/takwimu-za-mtayarishi/app` (301, owner: _redirects)
 - `/tanzania/kikokotoo-gharama-ya-mfanyakazi/` -> `/tanzania/tz-paye` (301, owner: _redirects)
 - `/tanzania/tz-paye.html` -> `/tanzania/tz-paye` (301, owner: _redirects)
 - `/tanzania/tz-vat.html` -> `/tanzania/tz-vat` (301, owner: _redirects)
@@ -8625,7 +8631,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:967)
 - `/tools/return-migration` -> `/diaspora/` (_redirects:969)
 - `/tools/double-taxation` -> `/salary-tax/` (_redirects:971)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3637)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3643)
 - `/admin` -> `/404.html` (netlify.toml:172)
 - `/admin/` -> `/404.html` (netlify.toml:178)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:190)
