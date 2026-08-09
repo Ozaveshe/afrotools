@@ -32,7 +32,7 @@ As of: 2026-08-09
 ## External data
 
 - Registered datasets: 3
-- Stale: forex-live-rates
+- Stale: none
 - Incompatible: none
 
 ## Findings
@@ -40,4 +40,3 @@ As of: 2026-08-09
 - WARNING CURRENCY_OVERRIDE_REVIEW_REQUIRED formula-registry: 3 formula currency override remains explicitly review-required.
 - WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 201 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
 - WARNING SOURCE_REVIEW_REQUIRED formula-registry: 0 high-risk and 38 medium-risk formula records still require authoritative-source review.
-- WARNING STALE_EXTERNAL_DATA forex-live-rates: Stale exchange-rate estimate
