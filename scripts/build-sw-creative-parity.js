@@ -6,6 +6,9 @@ const path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
 const INVENTORY_FILE = path.join(ROOT, "reports", "swahili-free-app-parity-inventory.json");
 const SOURCE_OWNER = "scripts/build-sw-creative-parity.js";
+const DEDICATED_SOURCE_OWNERS = Object.freeze({
+  "creator-record": "scripts/build-sw-creator-record-final.js",
+});
 const CREATIVE_HUB_FILE = path.join(ROOT, "sw", "ubunifu-na-watayarishi", "index.html");
 const IMAGE_HUB_FILE = path.join(ROOT, "sw", "picha-na-design", "index.html");
 const HUB_REFLOW_STYLE = `<style data-sw-creative-parity-hub-reflow>
@@ -400,15 +403,23 @@ function run() {
       fs.writeFileSync(swFile, page(row, CONFIGS[row.englishId], frRoute));
     } else {
       if (!fs.existsSync(swFile)) throw new Error(`${row.englishId}: expected existing Swahili owner missing`);
-      let html = polishExisting(fs.readFileSync(swFile, "utf8"));
-      html = ensureMeta(html, "afrotools-sw-native-owner", row.englishId);
-      html = ensureMeta(html, "afrotools-sw-source-owner", SOURCE_OWNER);
-      html = ensureAsset(html, '<link rel="stylesheet" href="/assets/css/sw-creative-parity.css">', "sw-creative-parity.css");
-      html = ensureAlternate(html, "en", `${row.englishRoute}/`);
-      if (frRoute) html = ensureAlternate(html, "fr", frRoute);
-      html = ensureAlternate(html, "sw", `${row.primarySwahiliRoute}/`);
-      html = ensureAlternate(html, "x-default", `${row.englishRoute}/`);
-      fs.writeFileSync(swFile, html);
+      const dedicatedOwner = DEDICATED_SOURCE_OWNERS[row.englishId];
+      if (dedicatedOwner) {
+        const html = fs.readFileSync(swFile, "utf8");
+        if (!html.includes(`name="afrotools-sw-source-owner" content="${dedicatedOwner}"`)) {
+          throw new Error(`${row.englishId}: dedicated owner output is stale; run ${dedicatedOwner}`);
+        }
+      } else {
+        let html = polishExisting(fs.readFileSync(swFile, "utf8"));
+        html = ensureMeta(html, "afrotools-sw-native-owner", row.englishId);
+        html = ensureMeta(html, "afrotools-sw-source-owner", SOURCE_OWNER);
+        html = ensureAsset(html, '<link rel="stylesheet" href="/assets/css/sw-creative-parity.css">', "sw-creative-parity.css");
+        html = ensureAlternate(html, "en", `${row.englishRoute}/`);
+        if (frRoute) html = ensureAlternate(html, "fr", frRoute);
+        html = ensureAlternate(html, "sw", `${row.primarySwahiliRoute}/`);
+        html = ensureAlternate(html, "x-default", `${row.englishRoute}/`);
+        fs.writeFileSync(swFile, html);
+      }
     }
 
     const isDeviceBlocked = DEVICE_BLOCKED.has(row.englishId);
@@ -422,8 +433,8 @@ function run() {
       frenchRoute: frRoute,
       swahiliRoute: `${row.primarySwahiliRoute}/`,
       swahiliFile: row.primarySwahiliFile,
-      sourceOwner: SOURCE_OWNER,
-      engineOwner: CONFIGS[row.englishId] ? `/engines/${CONFIGS[row.englishId].engine}.js` : row.sourceOwner,
+      sourceOwner: DEDICATED_SOURCE_OWNERS[row.englishId] || SOURCE_OWNER,
+      engineOwner: CONFIGS[row.englishId] ? `/engines/${CONFIGS[row.englishId].engine}.js` : row.englishId === "creator-record" ? "/assets/js/pages/creative/creator-record-app-controller.js" : row.sourceOwner,
       artwork: `/assets/img/tools/${row.englishId}.webp`,
       status: accepted ? "accepted-candidate" : "blocked",
       blocker: accepted ? "" : blocker,
