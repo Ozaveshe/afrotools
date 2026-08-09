@@ -24,21 +24,21 @@
     "canonicalPublishedEnglishRows": 1258,
     "excludedPaidRows": 1,
     "englishFreeApps": 1257,
-    "swahiliPhysicalHtmlPages": 1528,
-    "swahiliCoverageRecords": 1525,
-    "native-candidate": 590,
-    "localized-shell-candidate": 648,
+    "swahiliPhysicalHtmlPages": 1530,
+    "swahiliCoverageRecords": 1527,
+    "native-candidate": 589,
+    "localized-shell-candidate": 650,
     "english-fallback": 2,
     "english-iframe": 0,
     "bridge-handoff": 0,
     "alias-utility": 0,
     "unclassified-candidate": 0,
-    "missing": 17,
-    "mappedCandidateRows": 1238,
-    "unavailableOrFallbackRows": 19,
-    "accepted": 1167,
-    "remainingUnaccepted": 90,
-    "nativeCandidatePercent": 46.94
+    "missing": 16,
+    "mappedCandidateRows": 1239,
+    "unavailableOrFallbackRows": 18,
+    "accepted": 1170,
+    "remainingUnaccepted": 87,
+    "nativeCandidatePercent": 46.86
   },
   "categories": [
     {
@@ -193,21 +193,21 @@
       "alias-utility": 0,
       "unclassified-candidate": 0,
       "missing": 0,
-      "accepted": 20
+      "accepted": 21
     },
     {
       "category": "Finance, Tax & Market Data",
       "categoryKey": "financial",
       "englishFreeApps": 132,
-      "native-candidate": 6,
-      "localized-shell-candidate": 108,
+      "native-candidate": 5,
+      "localized-shell-candidate": 110,
       "english-fallback": 2,
       "english-iframe": 0,
       "bridge-handoff": 0,
       "alias-utility": 0,
       "unclassified-candidate": 0,
-      "missing": 16,
-      "accepted": 99
+      "missing": 15,
+      "accepted": 101
     },
     {
       "category": "Fintech & Banking",
@@ -1243,6 +1243,16 @@
         "routes": [
           "/sw/zana/faida-ya-kilimo",
           "/sw/kilimo"
+        ]
+      },
+      {
+        "englishId": "crypto-prices",
+        "englishRoute": "/crypto/prices",
+        "category": "Finance, Tax & Market Data",
+        "primarySwahiliRoute": "/sw/zana/bei-za-crypto",
+        "routes": [
+          "/sw/zana/bei-za-crypto",
+          "/sw/mshahara-na-kodi/crypto"
         ]
       },
       {
@@ -46441,14 +46451,54 @@
       "englishRoute": "/crypto/prices",
       "categoryKey": "financial",
       "category": "Finance, Tax & Market Data",
-      "state": "native-candidate",
-      "accepted": false,
-      "acceptanceEvidence": null,
-      "primarySwahiliRoute": "/sw/mshahara-na-kodi/crypto",
-      "primarySwahiliFile": "sw/mshahara-na-kodi/crypto/index.html",
-      "sourceOwner": "sw/mshahara-na-kodi/crypto/index.html",
-      "coverageState": "native",
+      "state": "localized-shell-candidate",
+      "accepted": true,
+      "acceptanceEvidence": {
+        "englishId": "crypto-prices",
+        "swahiliRoute": "/sw/zana/bei-za-crypto/",
+        "status": "accepted",
+        "categoryKey": "financial",
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-finance-a-remainder-crypto-prices.spec.js",
+          "engineTest": "tests/swahili-finance-a-remainder-crypto-prices.test.js",
+          "workflow": "The coordinator reran fresh and unavailable-provider states, bounded CoinGecko request parameters, search and details without adding synthetic or stale market values.",
+          "export": "CSV and JSON were parsed or reopened; privacy, 320/375px, 200% reflow, dark mode, keyboard, metadata and artwork passed."
+        }
+      },
+      "primarySwahiliRoute": "/sw/zana/bei-za-crypto",
+      "primarySwahiliFile": "sw/zana/bei-za-crypto/index.html",
+      "sourceOwner": "Swahili localized shell and shared deterministic engine",
+      "coverageState": "localized-shell",
       "candidates": [
+        {
+          "route": "/sw/zana/bei-za-crypto",
+          "file": "sw/zana/bei-za-crypto/index.html",
+          "state": "localized-shell-candidate",
+          "canonical": "/sw/zana/bei-za-crypto",
+          "flags": {
+            "noindex": false,
+            "redirectLike": false,
+            "canonicalMismatch": false,
+            "englishIframe": false,
+            "englishHtmlFetch": false,
+            "explicitFallback": false,
+            "generatedBridge": false
+          },
+          "coverageState": "localized-shell",
+          "sourceOwner": "Swahili localized shell and shared deterministic engine",
+          "engineLocaleNeutral": true,
+          "ownerWeight": 100,
+          "ownerEvidence": [
+            {
+              "kind": "coverage-equivalent-route",
+              "detail": "coverage:4bedaee2fbe0"
+            },
+            {
+              "kind": "hreflang-en",
+              "detail": "/crypto/prices"
+            }
+          ]
+        },
         {
           "route": "/sw/mshahara-na-kodi/crypto",
           "file": "sw/mshahara-na-kodi/crypto/index.html",
@@ -46475,7 +46525,13 @@
           ]
         }
       ],
-      "ambiguity": null
+      "ambiguity": {
+        "kind": "multiple-live-owner-candidates",
+        "routes": [
+          "/sw/zana/bei-za-crypto",
+          "/sw/mshahara-na-kodi/crypto"
+        ]
+      }
     },
     {
       "englishId": "crypto-stablecoins",
@@ -46576,14 +46632,55 @@
       "englishRoute": "/crypto/portfolio",
       "categoryKey": "financial",
       "category": "Finance, Tax & Market Data",
-      "state": "missing",
-      "accepted": false,
-      "acceptanceEvidence": null,
-      "primarySwahiliRoute": null,
-      "primarySwahiliFile": null,
-      "sourceOwner": null,
-      "coverageState": null,
-      "candidates": [],
+      "state": "localized-shell-candidate",
+      "accepted": true,
+      "acceptanceEvidence": {
+        "englishId": "crypto-portfolio",
+        "swahiliRoute": "/sw/zana/portfolio-ya-crypto/",
+        "status": "accepted",
+        "categoryKey": "financial",
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-finance-a-remainder-crypto-portfolio.spec.js",
+          "engineTest": "tests/swahili-finance-a-remainder-crypto-portfolio.test.js",
+          "workflow": "The coordinator reran the maintained lot engine and 30-minute CoinGecko freshness boundary across fresh, stale and invalid-import states.",
+          "export": "JSON export/import, CSV and PDF were parsed or reopened and print was exercised; request privacy, 320/375px, 200% reflow, themes, keyboard/dialog behavior, metadata and artwork passed."
+        }
+      },
+      "primarySwahiliRoute": "/sw/zana/portfolio-ya-crypto",
+      "primarySwahiliFile": "sw/zana/portfolio-ya-crypto/index.html",
+      "sourceOwner": "Swahili localized shell and shared deterministic engine",
+      "coverageState": "localized-shell",
+      "candidates": [
+        {
+          "route": "/sw/zana/portfolio-ya-crypto",
+          "file": "sw/zana/portfolio-ya-crypto/index.html",
+          "state": "localized-shell-candidate",
+          "canonical": "/sw/zana/portfolio-ya-crypto",
+          "flags": {
+            "noindex": false,
+            "redirectLike": false,
+            "canonicalMismatch": false,
+            "englishIframe": false,
+            "englishHtmlFetch": false,
+            "explicitFallback": false,
+            "generatedBridge": false
+          },
+          "coverageState": "localized-shell",
+          "sourceOwner": "Swahili localized shell and shared deterministic engine",
+          "engineLocaleNeutral": true,
+          "ownerWeight": 100,
+          "ownerEvidence": [
+            {
+              "kind": "coverage-equivalent-route",
+              "detail": "coverage:1cddf45d54c9"
+            },
+            {
+              "kind": "hreflang-en",
+              "detail": "/crypto/portfolio"
+            }
+          ]
+        }
+      ],
       "ambiguity": null
     },
     {
@@ -47662,8 +47759,19 @@
       "categoryKey": "engineering",
       "category": "Engineering & Construction",
       "state": "localized-shell-candidate",
-      "accepted": false,
-      "acceptanceEvidence": null,
+      "accepted": true,
+      "acceptanceEvidence": {
+        "englishId": "home-renovation-cost",
+        "swahiliRoute": "/sw/zana/gharama-ukarabati-wa-nyumba/",
+        "status": "accepted",
+        "categoryKey": "engineering",
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-home-renovation-parity.spec.js",
+          "engineTest": "tests/sw-property-construction-planning-parity.test.js",
+          "workflow": "The coordinator reran the user-entered quantity, unit-cost, fixed-cost and contingency engine after repairing the English page's missing engine include; Stats SA remains context-only and supplies no price.",
+          "export": "Copy, TXT, JSON and PDF were parsed or reopened and print was exercised; invalid/reset, privacy, mobile/reflow, themes, keyboard, metadata and artwork passed."
+        }
+      },
       "primarySwahiliRoute": "/sw/zana/gharama-ukarabati-wa-nyumba",
       "primarySwahiliFile": "sw/zana/gharama-ukarabati-wa-nyumba/index.html",
       "sourceOwner": "Swahili localized shell and shared deterministic engine",
@@ -47693,7 +47801,15 @@
               "detail": "coverage:38f5b18b4d46"
             },
             {
+              "kind": "registry-source-id",
+              "detail": "zana-gharama-ukarabati-wa-nyumba-sw"
+            },
+            {
               "kind": "hreflang-en",
+              "detail": "/tools/home-renovation-cost"
+            },
+            {
+              "kind": "schema-is-based-on",
               "detail": "/tools/home-renovation-cost"
             }
           ]

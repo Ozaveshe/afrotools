@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1528 |
-| Swahili coverage records | 1525 |
-| Native candidates | 590 |
-| Localized shell candidates | 648 |
+| Swahili physical HTML pages | 1530 |
+| Swahili coverage records | 1527 |
+| Native candidates | 589 |
+| Localized shell candidates | 650 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 17 |
-| **Accepted** | **1167** |
+| Missing | 16 |
+| **Accepted** | **1170** |
 
 ## Category reconciliation
 
@@ -37,8 +37,8 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Finance, Tax & Market Data | 132 | 6 | 108 | 2 | 0 | 0 | 0 | 0 | 16 | 99 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 21 |
+| Finance, Tax & Market Data | 132 | 5 | 110 | 2 | 0 | 0 | 0 | 0 | 15 | 101 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -63,7 +63,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 ## Ambiguous ownership
 
 - Swahili routes with conflicting owner evidence: 5
-- English apps with multiple live Swahili owner candidates: 63
+- English apps with multiple live Swahili owner candidates: 64
 - Swahili registry source IDs outside the free denominator: 22
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
@@ -819,11 +819,11 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | CAC / Business Name Checker | Mortgage & Property | `/tools/cac-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-jina-cac-nigeria` | Yes |
 | African IP Rights Guide | Mortgage & Property | `/tools/ip-rights-africa` | Localized shell candidate | `/sw/zana/haki-miliki-afrika` | Yes |
 | P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Localized shell candidate | `/sw/zana/kilinganisha-bei-p2p` | Yes |
-| Crypto Market Snapshot | Finance, Tax & Market Data | `/crypto/prices` | Native candidate | `/sw/mshahara-na-kodi/crypto` | No |
+| Crypto Market Snapshot | Finance, Tax & Market Data | `/crypto/prices` | Localized shell candidate | `/sw/zana/bei-za-crypto` | Yes |
 | Stablecoin Reference Snapshot | Finance, Tax & Market Data | `/crypto/stablecoins` | Missing | None | No |
 | Remittance Quote Comparator | Finance, Tax & Market Data | `/crypto/remittance` | Missing | None | No |
 | Crypto Arbitrage Feasibility Worksheet | Finance, Tax & Market Data | `/crypto/arbitrage` | Localized shell candidate | `/sw/zana/karatasi-ya-arbitrage-ya-crypto` | Yes |
-| Local Crypto Portfolio Snapshot | Finance, Tax & Market Data | `/crypto/portfolio` | Missing | None | No |
+| Local Crypto Portfolio Snapshot | Finance, Tax & Market Data | `/crypto/portfolio` | Localized shell candidate | `/sw/zana/portfolio-ya-crypto` | Yes |
 | Historical Crypto DCA Replay | Finance, Tax & Market Data | `/crypto/dca-calculator` | Localized shell candidate | `/sw/zana/urejeshaji-wa-dca-ya-crypto` | Yes |
 | Crypto Profit or Loss Worksheet | Finance, Tax & Market Data | `/crypto/profit-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-faida-crypto` | Yes |
 | Crypto Mining Operating Margin Worksheet | Finance, Tax & Market Data | `/crypto/mining-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-margin-uchimbaji-crypto` | Yes |
@@ -843,7 +843,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Pregnancy Date Range Estimator | Health & Wellness | `/tools/due-date` | Native candidate | `/sw/zana/kikokotoo-tarehe-ya-kujifungua` | Yes |
 | First Home Buyer Readiness Pack | Finance, Tax & Market Data | `/tools/first-home-buyer` | Localized shell candidate | `/sw/zana/mnunuzi-wa-kwanza-wa-nyumba` | Yes |
 | Home Loan Application File Checklist | Finance, Tax & Market Data | `/tools/home-loan-eligibility` | Localized shell candidate | `/sw/zana/ustahiki-wa-mkopo-wa-nyumba` | Yes |
-| Renovation Cost Calculator | Engineering & Construction | `/tools/home-renovation-cost` | Localized shell candidate | `/sw/zana/gharama-ukarabati-wa-nyumba` | No |
+| Renovation Cost Calculator | Engineering & Construction | `/tools/home-renovation-cost` | Localized shell candidate | `/sw/zana/gharama-ukarabati-wa-nyumba` | Yes |
 | Septic Tank Size Calculator | Engineering & Construction | `/tools/septic-tank` | Localized shell candidate | `/sw/zana/ukubwa-wa-septic-tank` | Yes |
 | Fence Cost Calculator | Engineering & Construction | `/tools/fence-cost` | Localized shell candidate | `/sw/zana/gharama-ya-uzio` | No |
 | Swimming Pool Cost Estimator | Engineering & Construction | `/tools/swimming-pool-cost` | Localized shell candidate | `/sw/zana/gharama-ya-dimbwi-la-kuogelea` | No |
