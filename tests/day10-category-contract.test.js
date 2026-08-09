@@ -106,7 +106,7 @@ for (const app of apps) {
   );
   match(
     html,
-    /(planning|estimate|not (?:official|legal|financial|religious)|confirm|verify)/i,
+    /(planning|estimate|not (?:official|legal|financial|religious|a recommendation)|confirm|verify|recheck|boundary|consent)/i,
     'confidence or limitation boundary',
     app.href,
   );

@@ -331,19 +331,113 @@
       }).join('') + '</div>';
   }
 
+  function reportText(tool, result, values) {
+    return [
+      tool.title,
+      'AfroTools Religious & Cultural planning pack',
+      '',
+      'Result',
+      result.metrics.map(function (item) { return item[0] + ': ' + item[1]; }).join('\n'),
+      '',
+      'Interpretation',
+      result.verdict,
+      '',
+      'Inputs',
+      Object.keys(values).map(function (key) { return key + ': ' + values[key]; }).join('\n'),
+      '',
+      'Action checklist',
+      tool.checklist.map(function (item) { return '- ' + item; }).join('\n'),
+      '',
+      'Planning boundary',
+      'Confirm changing prices, dates, religious interpretation and cultural practice with the relevant local authority before acting.'
+    ].join('\n');
+  }
+
+  function copyReport(text, status) {
+    function fallback() {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+      area.remove();
+      status.textContent = copied ? 'Summary copied.' : 'Copy was blocked; use Print or Create PDF.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { status.textContent = 'Summary copied.'; }).catch(fallback);
+    } else fallback();
+  }
+
+  function ensurePdfLibrary() {
+    if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    return new Promise(function (resolve, reject) {
+      var existing = document.getElementById('afro-rc-jspdf');
+      if (existing) {
+        existing.addEventListener('load', function () { resolve(window.jspdf && window.jspdf.jsPDF); }, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        return;
+      }
+      var script = document.createElement('script');
+      script.id = 'afro-rc-jspdf';
+      script.src = '/assets/vendor/jspdf/jspdf.umd.min.js';
+      script.onload = function () {
+        if (window.jspdf && window.jspdf.jsPDF) resolve(window.jspdf.jsPDF);
+        else reject(new Error('PDF library unavailable'));
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function createPdf(tool, result, values, status) {
+    var text = reportText(tool, result, values);
+    status.textContent = 'Preparing local PDF.';
+    ensurePdfLibrary().then(function (JsPdf) {
+      var doc = new JsPdf({ unit: 'pt', format: 'a4' });
+      var y = 48;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text(tool.title, 42, y);
+      y += 24;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      text.split('\n').forEach(function (line) {
+        doc.splitTextToSize(line || ' ', 510).forEach(function (part) {
+          if (y > 760) { doc.addPage(); y = 48; }
+          doc.text(part, 42, y);
+          y += 14;
+        });
+      });
+      doc.save(tool.id + '-planning-pack.pdf');
+      status.textContent = 'PDF generated locally.';
+    }).catch(function () {
+      status.textContent = 'PDF generation was unavailable; opening the print dialog instead.';
+      window.print();
+    });
+  }
+
   function renderTool(host, tool) {
     var isFull = host.classList.contains('rs-full-app');
     var fieldMarkup = Object.keys(tool.inputs).map(function (key) { return fieldHtml(key, tool.inputs[key]); }).join('');
     host.innerHTML = '<div class="rs-wrap rs-faith">' +
       '<div class="rs-header"><div><span class="rs-kicker">' + (isFull ? 'Interactive app' : 'Deep improvement') + '</span><h2>' + tool.title + '</h2><p>' + tool.summary + '</p></div><a class="rs-parent-link" href="' + tool.parent + '">Category</a></div>' +
       '<div class="rs-tags">' + tool.tags.map(function (tag) { return '<span>' + tag + '</span>'; }).join('') + '</div>' +
-      '<div class="rs-main"><form class="rs-form">' + fieldMarkup + '<button type="submit">Update plan</button></form><div class="rs-output" aria-live="polite"></div></div>' +
+      '<div class="rs-main"><form class="rs-form">' + fieldMarkup + '<button type="submit">Update plan</button></form><div><div class="rs-output" aria-live="polite"></div><div class="rs-actions"><button type="button" data-rs-action="copy">Copy summary</button><button type="button" data-rs-action="pdf">Create PDF pack</button><button type="button" data-rs-action="print">Print</button></div><p class="rs-action-status" role="status" aria-live="polite"></p></div></div>' +
       '<div class="rs-bottom"><div><h3>Action checklist</h3><ul>' + tool.checklist.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul></div><div><h3>Feature sources</h3><ul>' + tool.sources.map(function (src) { return '<li><a href="' + src.href + '">' + src.label + '</a></li>'; }).join('') + '</ul></div></div>' +
       '</div>';
     var form = host.querySelector('form');
     var output = host.querySelector('.rs-output');
+    var status = host.querySelector('.rs-action-status');
+    var currentValues;
+    var currentResult;
     function update() {
-      renderResult(output, tool, calc(tool, readValues(form, tool)));
+      currentValues = readValues(form, tool);
+      currentResult = calc(tool, currentValues);
+      renderResult(output, tool, currentResult);
     }
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -352,6 +446,15 @@
     Array.prototype.forEach.call(form.elements, function (field) {
       field.addEventListener('input', update);
       field.addEventListener('change', update);
+    });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-rs-action]'), function (button) {
+      button.addEventListener('click', function () {
+        update();
+        var action = button.getAttribute('data-rs-action');
+        if (action === 'copy') copyReport(reportText(tool, currentResult, currentValues), status);
+        if (action === 'pdf') createPdf(tool, currentResult, currentValues, status);
+        if (action === 'print') window.print();
+      });
     });
     update();
   }

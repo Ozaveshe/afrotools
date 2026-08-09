@@ -480,7 +480,8 @@ function buildRegistry(asOf) {
   }
 
   const payeRoutes = formulas.filter(function (formula) {
-    return formula.formulaFamily === 'paye-route';
+    return formula.formulaFamily === 'paye-route'
+      && /(?:paye|salary|mshahara|salaire|paie)/i.test([formula.id, formula.artifactPath].join(' '));
   });
   const vatRoutes = formulas.filter(function (formula) {
     return formula.formulaFamily === 'vat-route';
@@ -1309,16 +1310,7 @@ function buildRegistry(asOf) {
   delete electricityEntry.sourceUrl;
   add(electricityEntry);
 
-  const remittanceFormula = formulas.find(function (formula) {
-    return formula.formulaFamily === 'assets-js-engines-remittance-v2';
-  });
-  const remittanceEntry = formulaEntry(remittanceFormula, { id: 'remittance-fx-planning', countryCode: 'ALL', fallbackName: 'AfroTools remittance and FX planning model', appliesTo: ['fx', 'business'], routes: ['/tools/remittance-compare/'], toolIds: ['remittance-compare'], notes: 'Indicative remittance comparison using the FX snapshot plus modeled provider fees and spreads.', disclaimer: 'Remittance costs and exchange rates are indicative. Obtain a current provider quote before sending money.' }, today);
-  remittanceEntry.lastCheckedAt = forex.lastCheckedAt;
-  remittanceEntry.lastReviewedAt = forex.lastReviewedAt;
-  remittanceEntry.freshnessStatus = forex.freshnessStatus;
-  remittanceEntry.confidence = 'estimated';
-  remittanceEntry.reviewCadenceDays = 7;
-  add(remittanceEntry);
+  add({ id: 'remittance-fx-planning', sourceName: 'Remittance Quote Comparator user-evidence methodology with World Bank RPW context', sourceType: 'multilateral', sourceUrl: 'https://remittanceprices.worldbank.org/', countryCodes: ['ALL'], appliesTo: ['fx', 'business', 'remittance'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 365, notes: 'Local comparison using only two or three user-entered provider quote receipts and their checked/expiry times. No provider price, fee, FX rate, ranking, recommendation, forecast, AI request or network request is supplied. World Bank Remittance Prices Worldwide is context only and is not copied into the calculator.', displayDisclaimer: 'User-entered quote comparison only. Recheck the provider quote, expiry, total debit, recipient amount, payout route, limits, identity requirements and safety before sending money.', toolIds: ['remittance-compare'], routes: ['/tools/remittance-compare/'] });
 
   const ledgerConfigs = [
     {

@@ -73,7 +73,7 @@ const generatedInvalid = {
 
 const nativeCopySelectors = {
   "japa-calculator": '[data-native-export="copy"]',
-  "mobile-money-fees": '[data-native-export="copy"]',
+  "mobile-money-fees": "#mm-copy",
   "burial-cost": "#copyBtn",
   "naira-to-words": "#copy-result",
   "amount-words-ke": "#copyBtn",
@@ -88,8 +88,8 @@ const nativeCopySelectors = {
   "ajo-chama-calc": "#copyBtn"
 };
 const nativeEnglishMutations = {
-  "japa-calculator": { "#monthlyIncome": "7000" },
-  "mobile-money-fees": { "#mmAmount": "12000" },
+  "japa-calculator": { "#jb-monthly": "1200" },
+  "mobile-money-fees": { "#mm-b-sender": "40" },
   "burial-cost": { "#guestSlider": "350" },
   "naira-to-words": { "#amount": "7800.50" },
   "amount-words-ke": { "#amount": "8200.25" },
@@ -123,6 +123,7 @@ function pdfComparable(value) {
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u00a0\u202f]/g, " ")
     .replace(/[^\x20-\x7E\n]/g, "?")
     .replace(/\s+/g, " ")
     .trim();
@@ -154,15 +155,15 @@ function nativePdfExpectation(row, payload) {
   if (row.english.id !== "japa-calculator") return null;
   return {
     id: row.english.id,
-    title: "Calculateur Japa",
+    title: "Planificateur de budget Japa",
     exactResultLines: [
-      `route: /fr/tools/calculateur-japa/`,
-      `totalUsd: ${payload.totalUsd}`,
-      `totalLocal: ${payload.totalLocal}`
+      `Budget total: ${payload.total}`,
+      `Ecart de financement: ${payload.gap}`,
+      `Epargne mensuelle cible: ${payload.target}`
     ],
     boundaryLines: [
-      `planningRange: ${payload.planningRange}`,
-      "ownerSource: /tools/japa-calculator/"
+      "Budget fonde uniquement sur vos montants verifies",
+      "aucun conseil de visa"
     ]
   };
 }
@@ -276,57 +277,48 @@ async function captureNativeSemantic(page, id, locale) {
       return row ? Array.from(row.children).map((cell) => cell.textContent.trim()) : [];
     }
     if (routeId === "japa-calculator") {
-      const source = language === "en"
-        ? (() => {
-          const result = window.lastResult;
-          const totals = result.items.reduce((sum, item) => ({
-            total: sum.total + item.usd,
-            low: sum.low + item.lo,
-            high: sum.high + item.hi,
-            local: sum.local + item.local
-          }), { total: 0, low: 0, high: 0, local: 0 });
-          const monthlySavings = Number(document.querySelector("#monthlyIncome").value) *
-            Number(document.querySelector("#savingsRate").value) / 100;
-          const saved = Number(document.querySelector("#alreadySaved").value) || 0;
-          return {
-            ...totals,
-            monthlySavings,
-            savingsMonths: monthlySavings > 0 ? Math.ceil(Math.max(0, totals.total - saved) / monthlySavings) : null,
-            items: result.items.map((item) => ({
-              name: item.name, category: item.cat, usd: item.usd, low: item.lo, high: item.hi, local: item.local
-            }))
-          };
-        })()
-        : window.AfroToolsFrenchJapaPayload;
+      const source = window.RelocationBudgetEngine.calculate({
+        currency: document.querySelector("#jb-currency").value,
+        preDeparture: document.querySelector("#jb-pre").value,
+        verifiedOfficialFees: document.querySelector("#jb-official").value,
+        travel: document.querySelector("#jb-travel").value,
+        housing: document.querySelector("#jb-housing").value,
+        arrivalSetup: document.querySelector("#jb-arrival").value,
+        monthlyLiving: document.querySelector("#jb-monthly").value,
+        runwayMonths: document.querySelector("#jb-runway").value,
+        bufferPercent: document.querySelector("#jb-buffer").value,
+        availableSavings: document.querySelector("#jb-savings").value,
+        savingMonths: document.querySelector("#jb-saving-months").value
+      });
       return {
         total: rounded(source.total, 6),
-        low: rounded(source.low, 6),
-        high: rounded(source.high, 6),
-        local: rounded(source.local, 6),
-        monthlySavings: rounded(source.monthlySavings, 6),
-        savingsMonths: source.savingsMonths,
-        items: source.items.map((item) => ({
-          name: item.name,
-          category: item.category,
-          usd: rounded(item.usd, 6),
-          low: rounded(item.low, 6),
-          high: rounded(item.high, 6),
-          local: rounded(item.local, 6)
-        }))
+        base: rounded(source.base, 6),
+        runwayCost: rounded(source.runwayCost, 6),
+        buffer: rounded(source.buffer, 6),
+        gap: rounded(source.gap, 6),
+        monthlySavingsTarget: rounded(source.monthlySavingsTarget, 6)
       };
     }
     if (routeId === "mobile-money-fees") {
-      return Array.from(document.querySelectorAll("#mmTableBody tr")).map((node) => {
-        const row = Array.from(node.children).map((cell) => cell.textContent.trim());
-        return {
-          provider: words(row[0]),
-          fee: /free|gratuit/i.test(row[1] || "") ? 0 : numeric(row[1]),
-          feePercent: numeric(row[2]),
-          senderTotal: numeric(row[3]),
-          recipientAmount: numeric(row[4]),
-          bandPercent: numeric(row[5])
-        };
+      const read = (letter) => ({
+        label: document.querySelector(`#mm-${letter}-label`).value,
+        market: document.querySelector(`#mm-${letter}-market`).value,
+        currency: document.querySelector(`#mm-${letter}-currency`).value,
+        transactionType: document.querySelector(`#mm-${letter}-type`).value,
+        amount: document.querySelector(`#mm-${letter}-amount`).value,
+        senderFee: document.querySelector(`#mm-${letter}-sender`).value,
+        recipientFee: document.querySelector(`#mm-${letter}-recipient`).value,
+        observedAt: document.querySelector(`#mm-${letter}-observed`).value,
+        expiresAt: document.querySelector(`#mm-${letter}-expires`).value
       });
+      const result = window.MobileMoneyQuoteEngine.calculate({
+        asOf: "2026-08-09T10:00:00.000Z",
+        quotes: [read("a"), read("b")]
+      });
+      return {
+        groups: result.groups.map((group) => ({ currency: group.currency, amount: rounded(group.amount), lowestTotalFee: rounded(group.lowestTotalFee) })),
+        quotes: result.quotes.map((row) => ({ label: words(row.label), totalFee: rounded(row.totalFee), feePercent: rounded(row.feePercent), differenceFromLowest: rounded(row.differenceFromLowest || 0) }))
+      };
     }
     if (routeId === "burial-cost") {
       if (language === "fr") {
@@ -1096,9 +1088,9 @@ async function nativeWorkflow(page, row, fixture) {
   const resultA11y = await assertResultA11y(page, row, fixture.result);
   const nativePdfPayload = row.english.id === "japa-calculator"
     ? await page.evaluate(() => ({
-      totalUsd: document.querySelector("#totUsd").textContent.trim(),
-      totalLocal: document.querySelector("#totLocal").textContent.trim(),
-      planningRange: document.querySelector("#pwNote").textContent.trim()
+      total: document.querySelector("#jb-primary-value").textContent.trim(),
+      gap: document.querySelector("#jb-result-list .rm-result:nth-child(4) strong").textContent.trim(),
+      target: document.querySelector("#jb-result-list .rm-result:nth-child(5) strong").textContent.trim()
     }))
     : null;
   const exports = await verifyNativeExports(page, row, nativePdfExpectation(row, nativePdfPayload));

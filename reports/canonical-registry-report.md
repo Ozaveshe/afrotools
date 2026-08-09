@@ -10,9 +10,9 @@ Counts with different membership rules intentionally use different labels.
 | Raw tool registry rows | 3797 |
 | Explicit redirect aliases | 5 |
 | Canonical published tool records | 3792 |
-| Canonical published English tool records | 1261 |
-| Localized published tool records | 2531 |
-| Expanded live tool experiences | 2615 |
+| Canonical published English tool records | 1258 |
+| Localized published tool records | 2534 |
+| Expanded live tool experiences | 2612 |
 | Indexable tool destinations | 3792 |
 | Widget-enabled tool records | 156 |
 | Published widgets | 223 |
@@ -48,12 +48,12 @@ Counts with different membership rules intentionally use different labels.
 | Locale | State | Published tool records |
 |---|---|---:|
 | ar | unsupported | 0 |
-| en | default | 1261 |
+| en | default | 1258 |
 | fr | published | 1484 |
 | ha | partial | 87 |
 | ig | unsupported | 0 |
 | pt | unsupported | 0 |
-| sw | published | 915 |
+| sw | published | 918 |
 | yo | partial | 45 |
 
 ## Category coverage
@@ -138,15 +138,15 @@ Counts with different membership rules intentionally use different labels.
 | tools.category.trade.published | Trade & Import published tool records | 69 | Canonical published non-redirect tool records in category trade. |
 | tools.category.transport.published | Transport & Logistics published tool records | 55 | Canonical published non-redirect tool records in category transport. |
 | tools.category.travel-tourism.published | Travel & Tourism published tool records | 32 | Canonical published non-redirect tool records in category travel-tourism. |
-| tools.english_canonical_published | Canonical published English tool records | 1261 | Canonical published non-redirect tool records whose locale coverage includes English. |
+| tools.english_canonical_published | Canonical published English tool records | 1258 | Canonical published non-redirect tool records whose locale coverage includes English. |
 | tools.indexable_destinations | Indexable tool destinations | 3792 | Canonical published non-redirect tool records marked indexable. |
-| tools.live_experiences | Live tool experiences | 2615 | Unique English published destinations plus declared hidden country variants from toolCount families. |
-| tools.locale.en.published | en published tool records | 1261 | Canonical published non-redirect tool records whose locale coverage includes en. |
+| tools.live_experiences | Live tool experiences | 2612 | Unique English published destinations plus declared hidden country variants from toolCount families. |
+| tools.locale.en.published | en published tool records | 1258 | Canonical published non-redirect tool records whose locale coverage includes en. |
 | tools.locale.fr.published | fr published tool records | 1484 | Canonical published non-redirect tool records whose locale coverage includes fr. |
 | tools.locale.ha.published | ha published tool records | 87 | Canonical published non-redirect tool records whose locale coverage includes ha. |
-| tools.locale.sw.published | sw published tool records | 915 | Canonical published non-redirect tool records whose locale coverage includes sw. |
+| tools.locale.sw.published | sw published tool records | 918 | Canonical published non-redirect tool records whose locale coverage includes sw. |
 | tools.locale.yo.published | yo published tool records | 45 | Canonical published non-redirect tool records whose locale coverage includes yo. |
-| tools.localized_records | Localized published tool records | 2531 | Canonical published tool records whose locale coverage does not include English. |
+| tools.localized_records | Localized published tool records | 2534 | Canonical published tool records whose locale coverage does not include English. |
 | tools.raw_rows | Raw tool registry rows | 3797 | Every row in the legacy browser tool registry, including localized rows and explicit redirect aliases. |
 | tools.unpublished | Unpublished tool records | 0 | Canonical tool records that are neither published nor redirect aliases. |
 | tools.widget_enabled | Widget-enabled tool records | 156 | Canonical published tool records linked to at least one published widget by canonical full-tool route. |
