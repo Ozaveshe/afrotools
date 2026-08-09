@@ -12,7 +12,8 @@ const html = fs.readFileSync(routeFile, 'utf8');
 
 assert.equal(normalizeReleaseOwnedHtml(html, { stripReleaseMetadata: true }), normalizeReleaseOwnedHtml(page(), { stripReleaseMetadata: true }), 'French funeral route must be generated from its narrow source owner');
 assert.deepEqual(build(), [], 'French funeral generator must be current');
-assert.match(html, /<html lang="fr">/);
+const htmlTag = html.match(/<html\b[^>]*>/i)?.[0] || '';
+assert.match(htmlTag, /\blang="fr"(?:\s|>)/i, 'French funeral route must declare lang="fr" regardless of release-owned HTML attributes');
 assert.match(html, /data-funeral-budget-fr/);
 assert.match(html, /assets\/js\/engines\/funeral-budget-engine\.js/);
 assert.match(html, /assets\/js\/pages\/fr-funeral-budget-parity\.js/);
