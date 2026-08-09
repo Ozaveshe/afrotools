@@ -30,9 +30,14 @@
   function csvCell(value) {
     return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
   }
-  function toCsv(tasks) {
-    return ["project,title,owner,status,due_date,note"].concat((tasks || []).map(function (task) {
-      return [task.project, task.title, task.owner, task.status, task.dueDate, task.note].map(csvCell).join(",");
+  function toCsv(tasks, options) {
+    var config = options || {};
+    var headers = Array.isArray(config.headers) && config.headers.length === 6
+      ? config.headers
+      : ["project", "title", "owner", "status", "due_date", "note"];
+    var statusLabels = config.statusLabels || {};
+    return [headers.join(",")].concat((tasks || []).map(function (task) {
+      return [task.project, task.title, task.owner, statusLabels[task.status] || task.status, task.dueDate, task.note].map(csvCell).join(",");
     })).join("\r\n");
   }
   window.AfroTools = window.AfroTools || {};
