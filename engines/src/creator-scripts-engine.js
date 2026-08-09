@@ -57,17 +57,18 @@
       if (!topic) throw new Error("A topic is required.");
       if (!points.length) throw new Error("Add at least one key point.");
       var fr = language === "fr";
+      var sw = language === "sw";
       var sections = [
-        {type: "hook", label: fr ? "ACCROCHE" : "HOOK", timestamp: "0:00–0:15", text: fr ? "Voici ce qu’il faut comprendre sur " + topic + "." : "Here is what you need to understand about " + topic + "."},
-        {type: "context", label: fr ? "CONTEXTE" : "CONTEXT", timestamp: "0:15–0:40", text: fr ? "Commençons par le contexte, les hypothèses et les limites." : "Start with the context, assumptions, and limits."},
-        {type: "main", label: fr ? "POINTS CLÉS" : "KEY POINTS", timestamp: "0:40–2:30", text: points.map(function(point, index) { return (index + 1) + ". " + point; }).join("\n")},
-        {type: "cta", label: fr ? "CONCLUSION" : "CLOSE", timestamp: "2:30–2:45", text: fr ? "Vérifiez les faits, ajoutez vos sources et adaptez ce brouillon à votre public." : "Verify the facts, add your sources, and adapt this draft for your audience."}
+        {type: "hook", label: fr ? "ACCROCHE" : sw ? "KIVUTIO" : "HOOK", timestamp: "0:00–0:15", text: fr ? "Voici ce qu’il faut comprendre sur " + topic + "." : sw ? "Hili ndilo jambo la kuelewa kuhusu " + topic + "." : "Here is what you need to understand about " + topic + "."},
+        {type: "context", label: fr ? "CONTEXTE" : sw ? "MUKTADHA" : "CONTEXT", timestamp: "0:15–0:40", text: fr ? "Commençons par le contexte, les hypothèses et les limites." : sw ? "Anza na muktadha, makisio na mipaka ya mada." : "Start with the context, assumptions, and limits."},
+        {type: "main", label: fr ? "POINTS CLÉS" : sw ? "HOJA KUU" : "KEY POINTS", timestamp: "0:40–2:30", text: points.map(function(point, index) { return (index + 1) + ". " + point; }).join("\n")},
+        {type: "cta", label: fr ? "CONCLUSION" : sw ? "HITIMISHO" : "CLOSE", timestamp: "2:30–2:45", text: fr ? "Vérifiez les faits, ajoutez vos sources et adaptez ce brouillon à votre public." : sw ? "Hakiki ukweli, ongeza vyanzo na urekebishe rasimu hii kwa hadhira yako." : "Verify the facts, add your sources, and adapt this draft for your audience."}
       ];
       var full = sections.map(function(section) { return section.text; }).join("\n\n");
       return {
         title: topic,
         format: source.format || "youtube",
-        language: fr ? "fr" : "en",
+        language: fr ? "fr" : sw ? "sw" : "en",
         sections: sections,
         fullScript: full,
         wordCount: this.countWords(full),
@@ -164,14 +165,15 @@
         month: "short"
       });
     },
-    exportPlainText: function(t) {
+    exportPlainText: function(t, language) {
       var e = [];
-      return e.push(t.title || "Untitled Script"), e.push("Format: " + (t.format || "youtube") + " | Duration: " + (t.estimatedDuration || "N/A")),
+      var sw = language === "sw" || t.language === "sw";
+      return e.push(t.title || (sw ? "Script isiyo na jina" : "Untitled Script")), e.push((sw ? "Muundo: " : "Format: ") + (t.format || "youtube") + (sw ? " | Muda: " : " | Duration: ") + (t.estimatedDuration || "N/A")),
       e.push(""), e.push("---"), e.push(""), t.sections && t.sections.forEach(function(t) {
         e.push("[" + t.label + "] (" + t.timestamp + ")"), e.push(""), e.push(t.text), e.push(""),
-        t.visualCues && t.visualCues.length && (e.push("Visual cues: " + t.visualCues.join(" | ")),
+        t.visualCues && t.visualCues.length && (e.push((sw ? "Vidokezo vya picha: " : "Visual cues: ") + t.visualCues.join(" | ")),
         e.push(""));
-      }), t.keywordSuggestions && t.keywordSuggestions.length && (e.push("---"), e.push("Keywords: " + t.keywordSuggestions.join(", "))),
+      }), t.keywordSuggestions && t.keywordSuggestions.length && (e.push("---"), e.push((sw ? "Maneno muhimu: " : "Keywords: ") + t.keywordSuggestions.join(", "))),
       e.join("\n");
     }
   };
