@@ -8,6 +8,7 @@ const INVENTORY_FILE = path.join(ROOT, "reports", "swahili-free-app-parity-inven
 const SOURCE_OWNER = "scripts/build-sw-creative-parity.js";
 const DEDICATED_SOURCE_OWNERS = Object.freeze({
   "creator-record": "scripts/build-sw-creator-record-final.js",
+  "creator-voice": "scripts/build-sw-creator-voice-final.js",
 });
 const CREATIVE_HUB_FILE = path.join(ROOT, "sw", "ubunifu-na-watayarishi", "index.html");
 const IMAGE_HUB_FILE = path.join(ROOT, "sw", "picha-na-design", "index.html");
@@ -434,7 +435,7 @@ function run() {
       swahiliRoute: `${row.primarySwahiliRoute}/`,
       swahiliFile: row.primarySwahiliFile,
       sourceOwner: DEDICATED_SOURCE_OWNERS[row.englishId] || SOURCE_OWNER,
-      engineOwner: CONFIGS[row.englishId] ? `/engines/${CONFIGS[row.englishId].engine}.js` : row.englishId === "creator-record" ? "/assets/js/pages/creative/creator-record-app-controller.js" : row.sourceOwner,
+      engineOwner: CONFIGS[row.englishId] ? `/engines/${CONFIGS[row.englishId].engine}.js` : row.englishId === "creator-record" ? "/assets/js/pages/creative/creator-record-app-controller.js" : row.englishId === "creator-voice" ? "/assets/js/pages/creative/creator-voice-app-controller.js" : row.sourceOwner,
       artwork: `/assets/img/tools/${row.englishId}.webp`,
       status: accepted ? "accepted-candidate" : "blocked",
       blocker: accepted ? "" : blocker,
