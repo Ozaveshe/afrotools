@@ -250,6 +250,40 @@
   });
 
   document.addEventListener('click', function localAdviceAndRouteShare(event) {
+    var pdfButton = event.target.closest('#carImportPdf');
+    if (pdfButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (!resultIsFresh || !window.AfroTools || !window.AfroTools.pdf) {
+        if (status) status.textContent = 'Kokotoa makadirio mapya kabla ya kupakua PDF.';
+        return;
+      }
+      var rows = Array.prototype.slice.call(document.querySelectorAll('#carImportMetrics .car-import-metric, #carImportBasisTable tr, #carImportOfficialTable tr'))
+        .map(function rowText(row) {
+          var cells = Array.prototype.slice.call(row.querySelectorAll('th,td')).map(function text(cell) { return cell.textContent.trim(); });
+          if (cells.length >= 2) return [cells[0], cells.slice(1).join(' | ')];
+          var label = row.querySelector('span,small');
+          var value = row.querySelector('strong,b');
+          return label && value ? [label.textContent.trim(), value.textContent.trim()] : null;
+        }).filter(Boolean);
+      window.AfroTools.pdf.generate({
+        noGate: true,
+        skipGate: true,
+        toolId: 'car-import-cost',
+        title: 'Makadirio ya gharama za kuagiza gari',
+        subtitle: document.getElementById('carImportSummaryLine').textContent.trim(),
+        heroStats: [{ label: 'Gharama barabarani', value: document.getElementById('carImportTotal').textContent.trim() }],
+        sections: [{ title: 'Muhtasari wa makadirio', rows: rows }],
+        source: 'Vyanzo na tarehe za ukaguzi zimeonyeshwa ndani ya ukurasa wa zana.',
+        disclaimer: 'Makadirio ya kupanga pekee; thibitisha sheria, ada, sarafu na tathmini ya forodha kabla ya kulipa.',
+        filename: 'afrotools-gharama-kuagiza-gari.pdf'
+      }).then(function done() {
+        if (status) status.textContent = 'PDF imepakuliwa kwenye kifaa hiki.';
+      }).catch(function failed() {
+        if (status) status.textContent = 'PDF haikuweza kutengenezwa kwenye kivinjari hiki.';
+      });
+      return;
+    }
     var aiButton = event.target.closest('#carImportAskAi');
     if (aiButton) {
       event.preventDefault();
