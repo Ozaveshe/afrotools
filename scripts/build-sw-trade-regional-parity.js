@@ -5,7 +5,6 @@ const path = require("path");
 const { normalizeBuildManagedHtml } = require("./lib/shared-asset-references");
 
 const ROOT = path.resolve(__dirname, "..");
-const CHECK = process.argv.includes("--check");
 
 function field(label, name, options = {}) {
   const help = options.help ? `<small>${options.help}</small>` : "";
@@ -146,23 +145,28 @@ function html(page) {
 ${scripts}<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="/assets/js/pages/sw-trade-regional-parity.js"></script><script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script><script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script></body></html>\n`;
 }
 
-const changed = [];
-for (const page of pages) {
-  const target = path.join(ROOT, "sw", "zana", page.slug, "index.html");
-  const output = html(page);
-  const current = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
-  if (normalizeBuildManagedHtml(current) === normalizeBuildManagedHtml(output)) continue;
-  changed.push(path.relative(ROOT, target));
-  if (!CHECK) {
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, output, "utf8");
+function main() {
+  const check = process.argv.includes("--check");
+  const changed = [];
+  for (const page of pages) {
+    const target = path.join(ROOT, "sw", "zana", page.slug, "index.html");
+    const output = html(page);
+    const current = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
+    if (normalizeBuildManagedHtml(current) === normalizeBuildManagedHtml(output)) continue;
+    changed.push(path.relative(ROOT, target));
+    if (!check) {
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.writeFileSync(target, output, "utf8");
+    }
+  }
+  if (check && changed.length) {
+    console.error(`Swahili Trade regional output is stale (${changed.length}):\n${changed.join("\n")}`);
+    process.exitCode = 1;
+  } else {
+    console.log(`${check ? "Checked" : "Built"} ${pages.length} source-owned Swahili Trade regional page(s); ${changed.length} ${check ? "stale" : "updated"}.`);
   }
 }
-if (CHECK && changed.length) {
-  console.error(`Swahili Trade regional output is stale (${changed.length}):\n${changed.join("\n")}`);
-  process.exitCode = 1;
-} else {
-  console.log(`${CHECK ? "Checked" : "Built"} ${pages.length} source-owned Swahili Trade regional page(s); ${changed.length} ${CHECK ? "stale" : "updated"}.`);
-}
+
+if (require.main === module) main();
 
 module.exports = { pages, html };

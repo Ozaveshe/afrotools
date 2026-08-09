@@ -9,6 +9,8 @@ const ROOT = path.resolve(__dirname, "..");
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-trade-import-parity.json"), "utf8"));
 const generated = require("../scripts/build-sw-trade-regional-parity.js").pages;
 const core = require("../scripts/build-sw-trade-core-parity.js").apps;
+const regionalOwner = fs.readFileSync(path.join(ROOT, "scripts/build-sw-trade-regional-parity.js"), "utf8");
+const coreOwner = fs.readFileSync(path.join(ROOT, "scripts/build-sw-trade-core-parity.js"), "utf8");
 const registry = fs.readFileSync(path.join(ROOT, "assets/js/components/tool-registry.js"), "utf8");
 const hub = fs.readFileSync(path.join(ROOT, "sw/biashara-ya-nje/index.html"), "utf8");
 const runtime = fs.readFileSync(path.join(ROOT, "assets/js/pages/sw-trade-regional-parity.js"), "utf8");
@@ -18,6 +20,8 @@ assert.strictEqual(manifest.routes.length, 16, "exact assigned unaccepted Trade 
 assert.strictEqual(new Set(manifest.routes.map((row) => row.id)).size, 16, "unique assigned Trade ids");
 assert.strictEqual(generated.length, 5, "five regional shared-engine candidates");
 assert.strictEqual(core.length, 11, "eleven core shared-engine candidates");
+assert.match(regionalOwner, /if \(require\.main === module\) main\(\);/, "regional owner import must be read-only");
+assert.match(coreOwner, /if \(require\.main === module\) main\(\);/, "core owner import must be read-only");
 
 for (const row of manifest.routes) {
   const relative = `${row.swahili.replace(/^\//, "")}index.html`;
@@ -46,7 +50,7 @@ for (const page of core) {
 for (const page of generated) {
   const relative = `sw/zana/${page.slug}/index.html`;
   const html = fs.readFileSync(path.join(ROOT, relative), "utf8");
-  assert.match(html, /<html lang="sw">/, `${page.id}: native locale`);
+  assert.match(html, /<html\b[^>]*\blang="sw"[^>]*>/, `${page.id}: native locale`);
   assert.match(html, /afrotools-source-owner" content="scripts\/build-sw-trade-regional-parity\.js"/, `${page.id}: durable owner`);
   assert.match(html, new RegExp(`rel="canonical" href="https://afrotools\\.com/sw/zana/${page.slug}/"`), `${page.id}: canonical`);
   assert.match(html, new RegExp(`hreflang="en" href="https://afrotools\\.com${page.en.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`), `${page.id}: English alternate`);
