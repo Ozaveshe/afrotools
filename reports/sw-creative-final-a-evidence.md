@@ -3,7 +3,7 @@
 - Frozen base: `2f5fb8988ddd40e28eb17123fe653b18ff0801c3`
 - Branch: `codex/sw-final-creative-a-20260809`
 - Scope: 13 exact English owners and 13 native Swahili counterparts
-- Adversarial acceptance: 9/13 currently accepted; 4 remain blocked for English-workspace feature restoration
+- Adversarial acceptance: 13/13 accepted after three bounded repair commits
 - Deletions: 0
 
 ## Adversarial status
@@ -18,11 +18,11 @@
 | `creator-hooks` | `/sw/zana/hook-za-video/` | **Accepted:** deterministic Swahili hooks, timing, JSON/TXT |
 | `creator-invoice` | `/sw/zana/ankara-ya-mtayarishi/` | **Accepted after repair:** three lines, parties/dates/tax/discount/notes, save/restore/copy and reopened JSON/TXT/PDF |
 | `creator-kit` | `/sw/zana/media-kit-ya-mtayarishi/` | **Accepted:** complete local rate card, JSON/TXT and explicit AI consent boundary |
-| `creator-mail` | `/sw/zana/barua-ya-mtayarishi/` | **Blocked:** missing rendered newsletter preview and full preheader export parity |
+| `creator-mail` | `/sw/zana/barua-ya-mtayarishi/` | **Accepted after repair:** sandboxed rendered preview and preheader-preserving HTML plus JSON/TXT |
 | `creator-mind` | `/sw/zana/mawazo-ya-mtayarishi/` | **Accepted:** deterministic local idea plan, JSON/TXT |
-| `creator-money` | `/sw/zana/mapato-ya-mtayarishi/` | **Blocked:** missing margin, effective-hourly and copy-plan surfaces |
-| `creator-page` | `/sw/zana/ukurasa-wa-mtayarishi/` | **Blocked:** missing TXT export and accent styling in exported HTML |
-| `creator-polish` | `/sw/zana/boresha-maudhui-ya-mtayarishi/` | **Blocked:** incomplete visible metrics and repeated-word guidance bug |
+| `creator-money` | `/sw/zana/mapato-ya-mtayarishi/` | **Accepted after repair:** margin, effective hourly rate, complete TXT and resilient copy action |
+| `creator-page` | `/sw/zana/ukurasa-wa-mtayarishi/` | **Accepted after repair:** JSON/TXT and reopened HTML with the chosen accent applied |
+| `creator-polish` | `/sw/zana/boresha-maudhui-ya-mtayarishi/` | **Accepted after repair:** visible average metric and independent repeated-word guidance |
 
 ## Browser contract
 
@@ -44,6 +44,9 @@ The smaller HTML diffs replace prior generated gap shells or one-off inline page
 - `node tests/sw-creative-final-a.test.js`
 - First repair regression: Playwright 6/6 passed on isolated port `43196`, including real Clip media and Carousel ZIP/PNG proof
 - Second repair matrix: Playwright 3/3 passed on isolated port `43199`, covering Desk, Hashtags and Invoice feature/export parity
+- Final-four matrix: Playwright 1/1 passed on isolated port `43202`, covering Mail, Money, Page and Polish rich-workspace parity
+- Independent split regression after the final repair: generic eight-owner workflow 1/1 on `43205`; seven dedicated non-Clip workflows 7/7 on `43207`
+- The final standalone Clip codec rerun on `43208` stopped reporting and was terminated with its owned port released. Clip product proof remains the earlier green real-WebM run on `43196`; branch-wide release readiness remains pending a fresh Clip codec rerun.
 - A later combined rerun on port `43200` was terminated after the runner stopped reporting; no product assertion failed and the port/process was released
 - `node scripts/build-localization-platform.js --check`: 11,383 pages consistent
 - `node scripts/build-i18n.js --validate`: French, Swahili, Yoruba and Hausa catalogs valid

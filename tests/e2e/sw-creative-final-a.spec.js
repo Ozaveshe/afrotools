@@ -8,7 +8,7 @@ const generic = [
   ["creator-mail", "/sw/zana/barua-ya-mtayarishi/", ["html", "json", "txt"]],
   ["creator-mind", "/sw/zana/mawazo-ya-mtayarishi/", ["json", "txt"]],
   ["creator-money", "/sw/zana/mapato-ya-mtayarishi/", ["json", "txt"]],
-  ["creator-page", "/sw/zana/ukurasa-wa-mtayarishi/", ["html", "json"]],
+  ["creator-page", "/sw/zana/ukurasa-wa-mtayarishi/", ["html", "json", "txt"]],
   ["creator-polish", "/sw/zana/boresha-maudhui-ya-mtayarishi/", ["json", "txt"]],
 ];
 async function grab(page, kind) {
@@ -214,6 +214,31 @@ test("creator kit AI sends nothing before explicit consent and retains local fal
   await expect(page.locator("[data-results]")).toContainText(
     "Pendekezo salama",
   );
+});
+test("mail money page and polish preserve the rich English feature matrix", async ({ page }) => {
+  await page.goto("/sw/zana/barua-ya-mtayarishi/");
+  await page.getByRole("button", {name:"Tengeneza matokeo"}).click();
+  await expect(page.locator("[data-results] iframe")).toBeVisible();
+  expect(await page.locator("[data-results] iframe").getAttribute("srcdoc")).toContain("Mradi mpya na hatua inayofuata");
+  const mailHtml = (await grab(page,"html")).buffer.toString("utf8");
+  expect(mailHtml).toContain("display:none"); expect(mailHtml).toContain("Mradi mpya na hatua inayofuata");
+  await page.goto("/sw/zana/mapato-ya-mtayarishi/");
+  await page.getByRole("button", {name:"Tengeneza matokeo"}).click();
+  await expect(page.locator("[data-results]")).toContainText("Margin");
+  await expect(page.locator("[data-results]")).toContainText("Mapato kwa saa");
+  expect((await grab(page,"txt")).buffer.toString("utf8")).toContain("Mapato kwa saa");
+  await page.locator('[data-export="copy"]').click();
+  await expect(page.locator("[data-status]")).toContainText("umenakiliwa");
+  await page.goto("/sw/zana/ukurasa-wa-mtayarishi/");
+  await page.getByRole("button", {name:"Tengeneza matokeo"}).click();
+  const pageHtml = (await grab(page,"html")).buffer.toString("utf8");
+  expect(pageHtml).toContain("color:#0b67d1");
+  expect((await grab(page,"txt")).buffer.toString("utf8")).toContain("Amina Studio");
+  await page.goto("/sw/zana/boresha-maudhui-ya-mtayarishi/");
+  await page.getByRole("button", {name:"Tengeneza matokeo"}).click();
+  await expect(page.locator("[data-results]")).toContainText("Wastani wa maneno kwa sentensi");
+  await expect(page.locator("[data-results]")).toContainText("Maneno yanayorudiwa");
+  for (const width of [320,375]) await noOverflow(page,width);
 });
 test("AfroStream proves live freshness, local filters, fallback and parseable exports", async ({
   page,

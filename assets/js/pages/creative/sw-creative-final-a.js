@@ -234,8 +234,15 @@
       );
     } else if (config.owner === "creator-mail") {
       add("Mada", result.subject);
+      add("Preheader", result.preheader || "—");
       add(result.headline, result.body);
       if (result.cta) add("Mwito wa hatua", result.cta + " — " + result.url);
+      var preview = document.createElement("iframe");
+      preview.title = "Hakiki ya newsletter";
+      preview.setAttribute("sandbox", "allow-same-origin allow-scripts");
+      preview.style.cssText = "width:100%;min-height:420px;border:1px solid var(--border,#d1d5db);border-radius:12px";
+      preview.srcdoc = window.AfroTools.CreatorMailEngine.renderHtml(result, "sw");
+      results.appendChild(preview);
     } else if (config.owner === "creator-mind") {
       result.ideas.forEach(function (idea) {
         add("Wazo " + idea.id, idea.title);
@@ -249,6 +256,8 @@
       add("Malipo ya mmiliki", money(result.ownerPay, result.currency));
       add("Uwekezaji upya", money(result.reinvestment, result.currency));
       add("Akiba ya fedha", money(result.cashBuffer, result.currency));
+      add("Margin", Number(result.margin || 0).toFixed(1) + "%");
+      add("Mapato kwa saa", money(result.effectiveHourly || 0, result.currency));
     } else if (config.owner === "creator-page") {
       add(result.displayName, result.bio);
       result.links.forEach(function (link) {
@@ -258,6 +267,7 @@
       add("Maneno", result.metrics.words);
       add("Sentensi", result.metrics.sentences);
       add("Sentensi ndefu", result.metrics.longSentences);
+      add("Wastani wa maneno kwa sentensi", result.metrics.averageWordsPerSentence);
       add(
         "Maneno yanayorudiwa",
         result.repeatedWords.join(", ") || "Hakuna ishara kubwa",
@@ -519,7 +529,11 @@
         "Malipo ya mmiliki: " + money(last.ownerPay, last.currency),
         "Uwekezaji upya: " + money(last.reinvestment, last.currency),
         "Akiba: " + money(last.cashBuffer, last.currency),
+        "Margin: " + Number(last.margin || 0).toFixed(1) + "%",
+        "Mapato kwa saa: " + money(last.effectiveHourly || 0, last.currency),
       ].join("\n");
+    if (config.owner === "creator-page")
+      return [last.displayName, last.bio].concat(last.links.map(function(link){ return link.title + ": " + link.url; })).join("\n\n");
     return JSON.stringify(
       config.owner === "creator-desk" ? { projects: collection } : last,
       null,
@@ -539,7 +553,7 @@
       return (
         '<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>' +
         esc(item.subject) +
-        "</title></head><body><main><h1>" +
+        "</title></head><body><div style=\"display:none;max-height:0;overflow:hidden\">" + esc(item.preheader || "") + "</div><main><h1>" +
         esc(item.headline) +
         "</h1>" +
         paragraphs +
@@ -555,7 +569,7 @@
       return (
         '<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>' +
         esc(last.displayName) +
-        '</title></head><body style="font-family:system-ui;max-width:640px;margin:40px auto;padding:20px"><main><h1>' +
+        '</title></head><body style="font-family:system-ui;max-width:640px;margin:40px auto;padding:20px"><main><h1 style="color:' + esc(last.accent) + '">' +
         esc(last.displayName) +
         "</h1><p>" +
         esc(last.bio) +
@@ -713,6 +727,12 @@
       );
     if (kind === "pdf") invoicePdf();
     if (kind === "zip") carouselZip();
+    if (kind === "copy") {
+      var copyValue = textExport();
+      function copyFallback(){ var area=document.createElement("textarea"); area.value=copyValue; document.body.appendChild(area); area.select(); document.execCommand("copy"); area.remove(); setStatus("Mpango umenakiliwa."); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(copyValue).then(function(){ setStatus("Mpango umenakiliwa."); }).catch(copyFallback);
+      else copyFallback();
+    }
   });
   function fieldHtml(field) {
     var attrs =

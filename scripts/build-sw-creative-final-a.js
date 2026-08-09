@@ -312,6 +312,7 @@ const apps = {
     exports: [
       ["json", "Pakua JSON"],
       ["txt", "Pakua TXT"],
+      ["copy", "Nakili mpango"],
     ],
     boundary:
       "Haya ni makadirio ya kupanga, si ushauri wa kodi au uwekezaji. Thibitisha viwango na mtaalamu wa eneo lako.",
@@ -342,6 +343,7 @@ const apps = {
     exports: [
       ["html", "Pakua HTML"],
       ["json", "Pakua JSON"],
+      ["txt", "Pakua TXT"],
     ],
     boundary:
       "Ni faili ya ndani inayohamishika; AfroTools haihosti ukurasa huu. Kagua viungo na faragha kabla ya kuchapisha.",

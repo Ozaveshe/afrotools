@@ -131,6 +131,10 @@ for (const [owner, slug, ids] of [
   }
 }
 assert.equal((read("sw/zana/ankara-ya-mtayarishi/index.html").match(/data-invoice-line/g) || []).length, 3);
+const finalController = read("assets/js/pages/creative/sw-creative-final-a.js");
+for (const contract of ["Hakiki ya newsletter", "result.preheader", "result.margin", "result.effectiveHourly", "Wastani wa maneno kwa sentensi", "esc(last.accent)", 'kind === "copy"']) assert.ok(finalController.includes(contract), `final parity contract missing ${contract}`);
+assert.match(read("sw/zana/ukurasa-wa-mtayarishi/index.html"), /data-export="txt"/);
+assert.match(read("sw/zana/mapato-ya-mtayarishi/index.html"), /data-export="copy"/);
 assert.match(swClip, /creator-clip-app-controller\.js/);
 assert.doesNotMatch(swClip, /sw-creator-clip-final-a\.js/);
 const swCarousel = read("sw/zana/carousel-ya-mitandao/index.html");
