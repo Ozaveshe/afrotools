@@ -9,6 +9,7 @@ const SOURCE_OWNER = "scripts/build-sw-creative-parity.js";
 const DEDICATED_SOURCE_OWNERS = Object.freeze({
   "creator-record": "scripts/build-sw-creator-record-final.js",
   "creator-voice": "scripts/build-sw-creator-voice-final.js",
+  "flyer-maker": "scripts/build-sw-flyer-maker-final.js",
   "linkedin-optimizer": "scripts/build-sw-linkedin-optimizer-final.js",
 });
 const CREATIVE_HUB_FILE = path.join(ROOT, "sw", "ubunifu-na-watayarishi", "index.html");
