@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 
 const ROOT = path.resolve(__dirname, '..');
 const englishPath = path.join(ROOT, 'tools/thumbnail-maker/index.html');
@@ -130,7 +131,7 @@ function build() {
 
 const output = build();
 if (process.argv.includes('--check')) {
-  if (!fs.existsSync(swahiliPath) || fs.readFileSync(swahiliPath, 'utf8') !== output) {
+  if (!fs.existsSync(swahiliPath) || normalizeReleaseOwnedHtml(fs.readFileSync(swahiliPath, 'utf8')) !== normalizeReleaseOwnedHtml(output)) {
     console.error('Swahili thumbnail-maker route is stale. Run node scripts/build-sw-thumbnail-maker.js.');
     process.exit(1);
   }

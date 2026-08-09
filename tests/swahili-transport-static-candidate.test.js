@@ -39,7 +39,7 @@ assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: expectedRou
 
 const html = fs.readFileSync(path.join(root, 'sw/zana/gharama-kuagiza-gari/index.html'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'assets/js/pages/swahili-car-import-cost.js'), 'utf8');
-assert.match(html, /<html lang="sw"/, 'candidate declares Swahili');
+assert.match(html, /<html\b[^>]*\blang=["']sw["'][^>]*>/i, 'candidate declares Swahili');
 assert.match(html, /data-sw-transport-parity="car-import-cost"/, 'candidate declares exact English owner');
 assert.match(html, /id="carImportApp"/, 'candidate mounts the production car-import application');
 assert.match(html, /\/assets\/js\/lib\/car-import-cost-engine\.js/, 'candidate reuses the shared DOM-free engine');

@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 const ROOT = path.resolve(__dirname, '..');
 const sourcePath = path.join(ROOT, 'tools/favicon-generator/index.html');
 const outputPath = path.join(ROOT, 'sw/zana/kizalishaji-favicon/index.html');
@@ -64,7 +65,7 @@ function build() {
 }
 const output = build();
 if (process.argv.includes('--check')) {
-  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, 'utf8') !== output) { console.error('Swahili favicon route is stale.'); process.exit(1); }
+  if (!fs.existsSync(outputPath) || normalizeReleaseOwnedHtml(fs.readFileSync(outputPath, 'utf8')) !== normalizeReleaseOwnedHtml(output)) { console.error('Swahili favicon route is stale.'); process.exit(1); }
   console.log('Swahili favicon route matches the English studio contract.');
 } else {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });

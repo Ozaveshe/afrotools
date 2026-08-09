@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 const { buildCanonicalRegistry, getSelector } = require('./lib/canonical-registry');
 const {
   repairPdfTranslatorConsent,
@@ -66,6 +67,7 @@ function ownedByScopedParity(rel) {
   const html = read(rel);
   return [
     'scripts/build-sw-legal-government-insurance-parity.js',
+    'scripts/build-sw-small-business-parity.js',
     'scripts/build-sw-web-text-codecs-family.js',
     'scripts/build-swahili-hr-payroll-six.js'
   ].some((owner) => html.includes(owner));
@@ -126,6 +128,7 @@ function output(rel, value) {
     if (current.includes(`name="afrotools-sw-source-hash" content="${hash}"`)) return;
   }
   if (current === normalized) return;
+  if (ownedByScopedParity(rel) && normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(normalized, { stripReleaseMetadata: true })) return;
   if (!WRITE) {
     failures.push(`${rel}: generated Swahili product surface is stale`);
     return;

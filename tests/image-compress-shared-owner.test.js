@@ -14,8 +14,8 @@ const registry = read('assets/js/components/tool-registry.js');
 
 const ownerHash = crypto.createHash('sha256').update(engine.trimEnd()).digest('hex');
 assert.strictEqual(ownerHash, '47a6a29e4f9e61559c16525c3d73e09589400324caf1b6f65129a897e0ab6cfa', 'shared engine must remain the byte-exact extracted English owner');
-assert.match(english, /src="\/assets\/js\/lib\/image-compress-studio\.js"/);
-assert.match(swahili, /src="\/assets\/js\/lib\/image-compress-studio\.js"/);
+assert.match(english, /src="\/assets\/js\/lib\/image-compress-studio\.js(?:\?v=[a-f0-9]+)?"/i);
+assert.match(swahili, /src="\/assets\/js\/lib\/image-compress-studio\.js(?:\?v=[a-f0-9]+)?"/i);
 assert.doesNotMatch(english, /<script>\s*\(function \(\) \{/);
 assert.doesNotMatch(swahili, /const q=id=>document\.getElementById\(id\)/, 'retired single-image controller must not remain as a second owner');
 assert.match(swahili, /Source owner: scripts\/build-sw-image-compress\.js; engine: assets\/js\/lib\/image-compress-studio\.js/);

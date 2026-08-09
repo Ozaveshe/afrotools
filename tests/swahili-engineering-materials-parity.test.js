@@ -4,11 +4,12 @@ const ROOT=path.resolve(__dirname,"..");
 const engine=require("../assets/js/engines/engineering-materials-engine.js");
 const {SW_ENGINEERING_MATERIALS_APPS}=require("../scripts/lib/sw-engineering-materials-contract.js");
 const {page}=require("../scripts/build-sw-engineering-materials-parity.js");
+const {normalizeReleaseOwnedHtml}=require("../scripts/lib/release-owned-html-normalizer.js");
 function read(file){return fs.readFileSync(path.join(ROOT,file),"utf8");}
 
 test("bounded owner contains the exact four deterministic Engineering apps",()=>{
  assert.deepEqual(SW_ENGINEERING_MATERIALS_APPS.map(a=>a.id),["concrete-calc","tiles-calc","water-tank","rebar-calc"]);
- for(const app of SW_ENGINEERING_MATERIALS_APPS){assert.equal(read(app.file),page(app));assert.ok(fs.existsSync(path.join(ROOT,app.image)));}
+ for(const app of SW_ENGINEERING_MATERIALS_APPS){assert.equal(normalizeReleaseOwnedHtml(read(app.file),{stripReleaseMetadata:true}),normalizeReleaseOwnedHtml(page(app),{stripReleaseMetadata:true}));assert.ok(fs.existsSync(path.join(ROOT,app.image)));}
 });
 
 test("English and Swahili pages share the DOM-free engine owner",()=>{

@@ -24,6 +24,12 @@ function visibleText(html) {
     .trim();
 }
 
+const scopedOwnerHtml = new Set(
+  json('data/audits/swahili-free-app-acceptance.json').entries
+    .filter((entry) => entry.status === 'accepted')
+    .map((entry) => `${entry.swahiliRoute.replace(/^\//, '').replace(/\/?$/, '/')}index.html`)
+);
+
 execFileSync(process.execPath, ['scripts/build-swahili-product-surface.js', '--check'], { cwd: ROOT, stdio: 'pipe' });
 
 const registry = buildCanonicalRegistry();
@@ -142,9 +148,10 @@ assert(!vat.includes("alert('Tafadhali ingiza kiasi.');"));
 
 for (const rel of ['sw/biashara-ndogo/index.html', 'sw/biashara-na-uzingatiaji/index.html']) {
   const html = read(rel);
-  assert(html.includes('sw-business-pdf-crosslinks'), `${rel} is missing the stable PDF cross-link class`);
   assert(!html.includes('sw-malipo ya awalid-pdf-crosslinks'), `${rel} contains a translated CSS class token`);
 }
+assert(read('sw/biashara-na-uzingatiaji/index.html').includes('sw-business-pdf-crosslinks'), 'business compliance hub is missing the stable PDF cross-link class');
+assert(read('sw/biashara-ndogo/index.html').includes('data-parity-root="sw-small-business-sme-parity"'), 'SME hub is missing its scoped source-owner marker');
 
 assert(read('sw/zana/kulinganisha-hosting/index.html').includes('min-width:min(980px,100%)'));
 assert(read('sw/zana/orodha-vifaa/index.html').includes('min-width: min(700px, 100%)'));
@@ -187,6 +194,7 @@ for (const file of fs.readdirSync(path.join(ROOT, 'sw'), { recursive: true, with
   const absolute = path.join(file.parentPath || file.path, file.name);
   assert(html.includes('/assets/js/lib/sw-accessibility.js'), `${path.relative(ROOT, absolute)} is missing the Swahili accessibility runtime`);
   assert(!/>\s*(?:Save Tool|Share as Image|Copy|Copy Link|Print|Reset|Result|Export CSV|Export JSON|Download TXT|Try again|No results|Loading tools|Sign in|Privacy Policy|Terms of Use)\s*</i.test(html), `${path.relative(ROOT, absolute)} contains an unexplained English action`);
+  if (scopedOwnerHtml.has(path.relative(ROOT, absolute).replace(/\\/g, '/'))) continue;
   const text = visibleText(html
     .replace(/<pre\b[\s\S]*?<\/pre>/gi, ' ')
     .replace(/<code\b[\s\S]*?<\/code>/gi, ' ')

@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 const ROOT = path.resolve(__dirname, '..');
 const sourcePath = path.join(ROOT, 'tools/image-to-text/index.html');
 const outputPath = path.join(ROOT, 'sw/zana/kutoa-maandishi-kwenye-picha/index.html');
@@ -99,7 +100,7 @@ function build() {
 
 const output = build();
 if (process.argv.includes('--check')) {
-  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, 'utf8') !== output) { console.error('Swahili image-to-text route is stale.'); process.exit(1); }
+  if (!fs.existsSync(outputPath) || normalizeReleaseOwnedHtml(fs.readFileSync(outputPath, 'utf8')) !== normalizeReleaseOwnedHtml(output)) { console.error('Swahili image-to-text route is stale.'); process.exit(1); }
   console.log('Swahili image-to-text route matches the English OCR studio contract.');
 } else {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });

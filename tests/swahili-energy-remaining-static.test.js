@@ -70,6 +70,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
       'data-export="txt"', 'data-export="pdf"', 'id="importJson"', "Hakuna taarifa inayotumwa kwa seva au AI",
       'data-theme-toggle', 'type="reset"',
     ]) assert.ok(html.includes(token), `${app.id}: ${token}`);
+    assert.match(html, /<html\b[^>]*\blang=["']sw["'][^>]*>/i, `${app.id}: native locale`);
     for (const forbidden of ["<iframe", "afrotools-language-fallback", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) {
       assert.ok(!html.includes(forbidden), `${app.id}: ${forbidden}`);
     }

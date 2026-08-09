@@ -38,7 +38,7 @@ test('19 religious routes are native local workflows with shared date-aware pray
     const route = swBuilder.ROUTES[id];
     const file = path.join(ROOT, route.replace(/^\/+|\/+$/g, ''), 'index.html');
     const html = fs.readFileSync(file, 'utf8');
-    assert.match(html, /<html lang="sw"/);
+    assert.match(html, /<html\b[^>]*\blang=["']sw["'][^>]*>/i);
     assert.match(html, /sw-religious-cultural-parity\.js/);
     assert.match(html, /religious-cultural-parity\.js/);
     assert.doesNotMatch(html, /<iframe\b|Fungua zana kamili ya Kiingereza/i);

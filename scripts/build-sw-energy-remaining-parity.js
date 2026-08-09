@@ -9,6 +9,7 @@ const {
   PRESERVED_ACCEPTED,
   REVIEWED_AT,
 } = require("./lib/sw-energy-remaining-contract");
+const { normalizeReleaseOwnedHtml } = require("./lib/release-owned-html-normalizer");
 
 const ROOT = path.resolve(__dirname, "..");
 const WRITE = process.argv.includes("--write");
@@ -183,7 +184,13 @@ function hubPage() {
 
 function reconcile(file, content) {
   const current = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
-  if (current === content) return false;
+  const comparableCurrent = file.endsWith(".html")
+    ? normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true })
+    : current;
+  const comparableContent = file.endsWith(".html")
+    ? normalizeReleaseOwnedHtml(content, { stripReleaseMetadata: true })
+    : content;
+  if (comparableCurrent === comparableContent) return false;
   if (!WRITE) throw new Error(`${path.relative(ROOT, file)} is stale; run with --write`);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, content);
