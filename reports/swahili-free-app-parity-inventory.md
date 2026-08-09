@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1522 |
-| Swahili coverage records | 1519 |
+| Swahili physical HTML pages | 1528 |
+| Swahili coverage records | 1525 |
 | Native candidates | 590 |
-| Localized shell candidates | 642 |
+| Localized shell candidates | 648 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 23 |
-| **Accepted** | **1156** |
+| Missing | 17 |
+| **Accepted** | **1165** |
 
 ## Category reconciliation
 
@@ -37,13 +37,13 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
-| Finance, Tax & Market Data | 132 | 6 | 102 | 2 | 0 | 0 | 0 | 0 | 22 | 93 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
+| Finance, Tax & Market Data | 132 | 6 | 108 | 2 | 0 | 0 | 0 | 0 | 16 | 98 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
+| Image & Design | 19 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 0 | 17 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -214,7 +214,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Image Compressor Studio | Image & Design | `/tools/image-compress` | Localized shell candidate | `/sw/zana/kubana-picha` | Yes |
 | Image Resizer Studio | Image & Design | `/tools/image-resize` | Localized shell candidate | `/sw/zana/kubadilisha-ukubwa-wa-picha` | Yes |
 | QR Code Generator | Image & Design | `/tools/qr-generator` | Localized shell candidate | `/sw/zana/kitengeneza-qr` | Yes |
-| Background Remover Studio | Image & Design | `/tools/background-remover` | Localized shell candidate | `/sw/zana/kiondoa-mandharinyuma` | No |
+| Background Remover Studio | Image & Design | `/tools/background-remover` | Localized shell candidate | `/sw/zana/kiondoa-mandharinyuma` | Yes |
 | Passport Photo Studio | Image & Design | `/tools/passport-photo` | Localized shell candidate | `/sw/zana/picha-ya-pasipoti` | Yes |
 | Image Crop Studio | Image & Design | `/tools/image-crop` | Localized shell candidate | `/sw/zana/kukata-picha` | Yes |
 | Color Picker & Converter | Image & Design | `/tools/color-picker` | Localized shell candidate | `/sw/zana/kichagua-rangi` | Yes |
@@ -702,8 +702,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Paint Coverage Calculator | Engineering & Construction | `/tools/paint-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-rangi` | Yes |
 | Tiles & Flooring Calculator | Engineering & Construction | `/tools/tiles-calc` | Localized shell candidate | `/sw/zana/kikokotoo-vigae-na-sakafu` | Yes |
 | Water Tank Sizing Calculator | Engineering & Construction | `/tools/water-tank` | Localized shell candidate | `/sw/zana/ukubwa-wa-tangi-la-maji` | Yes |
-| Roofing Material Calculator | Engineering & Construction | `/tools/roof-calculator` | Localized shell candidate | `/sw/zana/vifaa-vya-paa` | No |
-| Borehole Cost Estimator | Engineering & Construction | `/tools/borehole-cost` | Localized shell candidate | `/sw/zana/gharama-za-kisima` | No |
+| Roofing Material Calculator | Engineering & Construction | `/tools/roof-calculator` | Localized shell candidate | `/sw/zana/vifaa-vya-paa` | Yes |
+| Borehole Cost Estimator | Engineering & Construction | `/tools/borehole-cost` | Localized shell candidate | `/sw/zana/gharama-za-kisima` | Yes |
 | Rebar Calculator | Engineering & Construction | `/tools/rebar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-nondo` | Yes |
 | POPIA/NDPR Compliance Checker | Mortgage & Property | `/tools/data-compliance` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ulinzi-wa-data` | Yes |
 | Contract Generator | Mortgage & Property | `/tools/contract-generator` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba` | Yes |
@@ -765,7 +765,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Car Loan Cost Planner | Finance, Tax & Market Data | `/tools/car-loan` | Localized shell candidate | `/sw/zana/mkopo-wa-gari` | Yes |
 | Student Loan Repayment Planner | Finance, Tax & Market Data | `/tools/student-loan` | Localized shell candidate | `/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi` | Yes |
 | Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | Yes |
-| Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Missing | None | No |
+| Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Localized shell candidate | `/sw/zana/kikokotoo-pensheni-nigeria` | Yes |
 | Kenya NSSF Contribution Calculator | Finance, Tax & Market Data | `/tools/ke-nssf` | Missing | None | No |
 | Kenya HELB Repayment Worksheet | Education | `/tools/ke-helb` | Localized shell candidate | `/sw/zana/kikokotoo-helb-kenya` | Yes |
 | South Africa GEPF Calculator | Finance, Tax & Market Data | `/tools/za-gepf` | Localized shell candidate | `/sw/zana/kikokotoo-gepf-afrika-kusini` | Yes |
@@ -813,24 +813,24 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Bulk Watermark Tool | Image & Design | `/tools/watermark-bulk` | Localized shell candidate | `/sw/zana/watermark-nyingi` | Yes |
 | Image Format Converter Studio | Image & Design | `/tools/image-format-convert` | Localized shell candidate | `/sw/zana/kubadilisha-format-ya-picha` | Yes |
 | African Colour Palette Generator | Image & Design | `/tools/colour-palette` | Localized shell candidate | `/sw/zana/paleti-ya-rangi` | Yes |
-| Generator Size Calculator | Engineering & Construction | `/tools/generator-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-generator` | No |
+| Generator Size Calculator | Engineering & Construction | `/tools/generator-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-generator` | Yes |
 | Tenancy Agreement Generator | Mortgage & Property | `/tools/tenancy-agreement` | Localized shell candidate | `/sw/zana/mkataba-wa-upangaji` | Yes |
 | Employment Contract Builder | Mortgage & Property | `/tools/employment-contract` | Localized shell candidate | `/sw/zana/mkataba-wa-ajira` | Yes |
 | CAC / Business Name Checker | Mortgage & Property | `/tools/cac-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-jina-cac-nigeria` | Yes |
 | African IP Rights Guide | Mortgage & Property | `/tools/ip-rights-africa` | Localized shell candidate | `/sw/zana/haki-miliki-afrika` | Yes |
-| P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Missing | None | No |
+| P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Localized shell candidate | `/sw/zana/kilinganisha-bei-p2p` | No |
 | Crypto Market Snapshot | Finance, Tax & Market Data | `/crypto/prices` | Native candidate | `/sw/mshahara-na-kodi/crypto` | No |
 | Stablecoin Reference Snapshot | Finance, Tax & Market Data | `/crypto/stablecoins` | Missing | None | No |
 | Remittance Quote Comparator | Finance, Tax & Market Data | `/crypto/remittance` | Missing | None | No |
-| Crypto Arbitrage Feasibility Worksheet | Finance, Tax & Market Data | `/crypto/arbitrage` | Missing | None | No |
+| Crypto Arbitrage Feasibility Worksheet | Finance, Tax & Market Data | `/crypto/arbitrage` | Localized shell candidate | `/sw/zana/karatasi-ya-arbitrage-ya-crypto` | Yes |
 | Local Crypto Portfolio Snapshot | Finance, Tax & Market Data | `/crypto/portfolio` | Missing | None | No |
-| Historical Crypto DCA Replay | Finance, Tax & Market Data | `/crypto/dca-calculator` | Missing | None | No |
+| Historical Crypto DCA Replay | Finance, Tax & Market Data | `/crypto/dca-calculator` | Localized shell candidate | `/sw/zana/urejeshaji-wa-dca-ya-crypto` | Yes |
 | Crypto Profit or Loss Worksheet | Finance, Tax & Market Data | `/crypto/profit-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-faida-crypto` | Yes |
 | Crypto Mining Operating Margin Worksheet | Finance, Tax & Market Data | `/crypto/mining-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-margin-uchimbaji-crypto` | Yes |
 | Crypto Scam Red-Flag Checklist & Evidence Pack | Finance, Tax & Market Data | `/crypto/scam-checker` | Missing | None | No |
 | Wallet Address Format Validator | Finance, Tax & Market Data | `/crypto/address-validator` | Native candidate | `/sw/crypto/address-validator` | Yes |
-| Exchange Due-Diligence Workbook | Finance, Tax & Market Data | `/crypto/exchange-ratings` | Missing | None | No |
-| Contract Address Evidence Check | Finance, Tax & Market Data | `/crypto/contract-scanner` | Missing | None | No |
+| Exchange Due-Diligence Workbook | Finance, Tax & Market Data | `/crypto/exchange-ratings` | Localized shell candidate | `/sw/zana/daftari-ushahidi-watoa-crypto` | Yes |
+| Contract Address Evidence Check | Finance, Tax & Market Data | `/crypto/contract-scanner` | Localized shell candidate | `/sw/zana/ukaguzi-ushahidi-anwani-mkataba` | Yes |
 | Crypto Concepts & Wallet Safety Quiz | Finance, Tax & Market Data | `/crypto/quiz` | Missing | None | No |
 | Eritrea Historical Sales Tax Reference | Finance, Tax & Market Data | `/eritrea/er-vat` | Localized shell candidate | `/sw/eritrea/kikokotoo-vat` | Yes |
 | Ajo / Chama / Tontine Calculator | Uniquely African | `/tools/ajo-chama` | Localized shell candidate | `/sw/zana/kikokotoo-ajo-chama-tontine` | Yes |
