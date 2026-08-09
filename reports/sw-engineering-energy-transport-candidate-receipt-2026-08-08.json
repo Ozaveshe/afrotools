@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 35,
-    "blocked": 20,
+    "acceptedCandidates": 37,
+    "blocked": 18,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 15,
-        "blocked": 5
+        "acceptedCandidates": 17,
+        "blocked": 3
       },
       "energy": {
         "denominator": 17,
@@ -48,6 +48,8 @@
       "tests/swahili-generator-sizing-parity.test.js",
       "tests/swahili-boq-gen-parity.test.js",
       "tests/sw-property-construction-planning-parity.test.js",
+      "tests/swahili-fence-cost-parity.test.js",
+      "tests/swahili-swimming-pool-cost-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -63,9 +65,11 @@
       "tests/e2e/sw-generator-sizing-parity.spec.js",
       "tests/e2e/sw-boq-gen-parity.spec.js",
       "tests/e2e/sw-home-renovation-parity.spec.js",
+      "tests/e2e/sw-fence-cost-parity.spec.js",
+      "tests/e2e/sw-swimming-pool-cost-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 15 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 17 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -379,37 +383,37 @@
       "englishId": "fence-cost",
       "categoryKey": "engineering",
       "englishRoute": "/tools/fence-cost",
-      "swahiliRoute": "/sw/zana/gharama-ya-uzio",
+      "swahiliRoute": "/sw/zana/gharama-ya-uzio/",
       "swahiliFile": "sw/zana/gharama-ya-uzio/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-fence-cost-parity.js -> assets/js/engines/fence-cost-engine.js -> assets/js/pages/sw-fence-cost-parity.js",
+      "formulaDecision": "The exact English length, height factor, material, labour, gate, topping, per-metre and duration arithmetic is shared through one DOM-free engine consumed by English and Swahili.",
+      "sourceDecision": "Exact Engineering ownership is proved by inventory, locale coverage and registry sourceId. Ten-country embedded rates have no date or maintained source ledger and are visibly stale/low-confidence; current written quotes and qualified boundary, structural, electrical and permit review control decisions.",
+      "browserProof": "Chromium: exact Nigeria and Kenya oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      "exportProof": "JSON downloaded and parsed; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/fence-cost.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "swimming-pool-cost",
       "categoryKey": "engineering",
       "englishRoute": "/tools/swimming-pool-cost",
-      "swahiliRoute": "/sw/zana/gharama-ya-dimbwi-la-kuogelea",
+      "swahiliRoute": "/sw/zana/gharama-ya-dimbwi-la-kuogelea/",
       "swahiliFile": "sw/zana/gharama-ya-dimbwi-la-kuogelea/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-swimming-pool-cost-parity.js -> assets/js/engines/swimming-pool-cost-engine.js -> assets/js/pages/sw-swimming-pool-cost-parity.js",
+      "formulaDecision": "The exact English area, volume, wall/finish area, construction, finish, equipment, usage, extras, maintenance and cost-per-area arithmetic is shared through one DOM-free engine.",
+      "sourceDecision": "Exact Engineering ownership is proved by inventory, locale coverage and registry sourceId. Six-country embedded rates have no date or maintained source ledger and are visibly stale/low-confidence; current quotes and qualified excavation, structural, waterproofing, filtration, electrical, barrier and permit review control decisions.",
+      "browserProof": "Chromium: exact residential and commercial oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English regression passed.",
+      "exportProof": "JSON downloaded and parsed; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/swimming-pool-cost.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "architectural-fee",

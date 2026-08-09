@@ -4,7 +4,8 @@
   var app = document.querySelector("[data-bioforge-app]");
   if (!engine || !app) return;
 
-  var locale = app.getAttribute("data-locale") === "fr" ? "fr" : "en";
+  var requestedLocale = app.getAttribute("data-locale");
+  var locale = requestedLocale === "fr" ? "fr" : (requestedLocale === "sw" ? "sw" : "en");
   var text = {
     en: {
       required: "Add your name or creator identity and what you create.",
@@ -25,6 +26,16 @@
       copy: "Copier",
       count: "caractères",
       exportError: "Générez des bios valides avant l’export."
+    },
+    sw: {
+      required: "Weka jina au utambulisho wako wa mtayarishi na unachotengeneza.",
+      ready: "Rasimu saba za majukwaa zimetengenezwa kwenye kifaa hiki.",
+      copied: "Bio zote zimenakiliwa.",
+      saved: "Faili ya JSON imeandaliwa.",
+      cleared: "Workspace imefutwa.",
+      copy: "Nakili",
+      count: "herufi",
+      exportError: "Tengeneza bio halali kabla ya kupakua."
     }
   }[locale];
   var latest = null;
@@ -92,6 +103,17 @@
     setStatus(format === "json" ? text.saved : text.ready, false);
   }
 
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(value);
+    var area = document.createElement("textarea");
+    area.value = value;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    area.remove();
+    return Promise.resolve();
+  }
+
   app.querySelector("form").addEventListener("submit", function (event) {
     event.preventDefault();
     var result = engine.generate(values(), locale);
@@ -115,11 +137,11 @@
     var button = event.target.closest("[data-copy]");
     if (!button) return;
     var textarea = results.querySelector('[data-bio="' + button.getAttribute("data-copy") + '"]');
-    navigator.clipboard.writeText(textarea.value).then(function () { setStatus(text.copied, false); });
+    copyText(textarea.value).then(function () { setStatus(text.copied, false); });
   });
   app.querySelector("[data-copy-all]").addEventListener("click", function () {
     if (!latest) return setStatus(text.exportError, true);
-    navigator.clipboard.writeText(engine.serialize(latest, "txt")).then(function () { setStatus(text.copied, false); });
+    copyText(engine.serialize(latest, "txt")).then(function () { setStatus(text.copied, false); });
   });
   app.querySelector("[data-export-json]").addEventListener("click", function () { download("json"); });
   app.querySelector("[data-export-txt]").addEventListener("click", function () { download("txt"); });

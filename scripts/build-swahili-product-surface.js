@@ -128,7 +128,12 @@ function output(rel, value) {
     if (current.includes(`name="afrotools-sw-source-hash" content="${hash}"`)) return;
   }
   if (current === normalized) return;
-  if (ownedByScopedParity(rel) && normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(normalized, { stripReleaseMetadata: true })) return;
+  const hasAccessibilityRuntime = (html) => /\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?/i.test(html);
+  if (
+    ownedByScopedParity(rel) &&
+    hasAccessibilityRuntime(current) === hasAccessibilityRuntime(normalized) &&
+    normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(normalized, { stripReleaseMetadata: true })
+  ) return;
   if (!WRITE) {
     failures.push(`${rel}: generated Swahili product surface is stale`);
     return;
@@ -521,7 +526,9 @@ const languageParityArtwork = new Map([
   ['sw/zana/nambari-za-kiarabu/index.html', 'arabic-calc.webp'],
   ['sw/zana/transliteration-ya-maandishi/index.html', 'transliterate.webp'],
   ['sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html', 'pidgin-translator.webp'],
-  ['sw/zana/mtafsiri-wa-kifaransa-afrika/index.html', 'french-african.webp']
+  ['sw/zana/mtafsiri-wa-kifaransa-afrika/index.html', 'french-african.webp'],
+  ['sw/zana/kalenda-ya-mtayarishi/index.html', 'creator-calendar.webp'],
+  ['sw/zana/caption-za-maudhui/index.html', 'creator-captions.webp']
 ]);
 
 function repairLanguageArtwork(rel, fileName) {

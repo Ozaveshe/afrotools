@@ -5,7 +5,8 @@
   if (!root) return;
 
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorCanvas;
-  var locale = root.getAttribute('data-locale') === 'fr' ? 'fr' : 'en';
+  var requestedLocale = root.getAttribute('data-locale');
+  var locale = requestedLocale === 'fr' || requestedLocale === 'sw' ? requestedLocale : 'en';
   var currentDesign = null;
   var canvas = root.querySelector('canvas');
   var context = canvas.getContext('2d');
@@ -116,9 +117,14 @@
       status(locale === 'fr' ? 'Le moteur local est indisponible.' : 'The local engine is unavailable.');
       return null;
     }
+    if (!field('title').value.trim()) {
+      currentDesign = null;
+      status(locale === 'sw' ? 'Andika kichwa kabla ya kutengeneza picha.' : locale === 'fr' ? 'Ajoutez un titre avant de créer le visuel.' : 'Add a headline before creating the graphic.');
+      return null;
+    }
     var design = engine.buildDesign(collect());
     render(design);
-    if (showStatus) status(locale === 'fr' ? 'Visuel généré localement.' : 'Graphic generated locally.');
+    if (showStatus) status(locale === 'sw' ? 'Picha imetengenezwa kwenye kifaa.' : locale === 'fr' ? 'Visuel généré localement.' : 'Graphic generated locally.');
     return design;
   }
 
@@ -162,7 +168,7 @@
     if (!design) return;
     canvas.toBlob(function (blob) {
       if (!blob) {
-        status(locale === 'fr' ? 'Le PNG ne peut pas être créé.' : 'The PNG could not be created.');
+        status(locale === 'sw' ? 'PNG haikuweza kutengenezwa.' : locale === 'fr' ? 'Le PNG ne peut pas être créé.' : 'The PNG could not be created.');
         return;
       }
       var url = URL.createObjectURL(blob);
@@ -173,7 +179,7 @@
       link.click();
       link.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 500);
-      status(locale === 'fr' ? 'PNG téléchargé aux dimensions indiquées.' : 'PNG downloaded at the stated dimensions.');
+      status(locale === 'sw' ? 'PNG imepakuliwa kwa vipimo vilivyoonyeshwa.' : locale === 'fr' ? 'PNG téléchargé aux dimensions indiquées.' : 'PNG downloaded at the stated dimensions.');
     }, 'image/png');
   });
 
@@ -181,21 +187,21 @@
     var design = generate(false);
     if (!design) return;
     download(JSON.stringify(design, null, 2), 'application/json', baseName() + '-design.json');
-    status(locale === 'fr' ? 'Projet JSON téléchargé.' : 'JSON project downloaded.');
+    status(locale === 'sw' ? 'Mradi wa JSON umepakuliwa.' : locale === 'fr' ? 'Projet JSON téléchargé.' : 'JSON project downloaded.');
   });
 
   root.querySelector('[data-txt]').addEventListener('click', function () {
     var design = generate(false);
     if (!design) return;
     download(engine.toText(design, locale), 'text/plain;charset=utf-8', baseName() + '-brief.txt');
-    status(locale === 'fr' ? 'Brief TXT téléchargé.' : 'TXT brief downloaded.');
+    status(locale === 'sw' ? 'Muhtasari wa TXT umepakuliwa.' : locale === 'fr' ? 'Brief TXT téléchargé.' : 'TXT brief downloaded.');
   });
 
   root.querySelector('[data-copy]').addEventListener('click', function () {
     var design = generate(false);
     if (!design) return;
     copyText(engine.toText(design, locale)).then(function () {
-      status(locale === 'fr' ? 'Brief copié.' : 'Brief copied.');
+      status(locale === 'sw' ? 'Muhtasari umenakiliwa.' : locale === 'fr' ? 'Brief copié.' : 'Brief copied.');
     });
   });
 

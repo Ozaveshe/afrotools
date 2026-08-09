@@ -49,6 +49,51 @@
         "imageKey": "crypto-prices"
       },
       {
+        "id": "crypto-remittance-sw-parity",
+        "name": "Kilinganisha Nukuu za Kutuma Fedha",
+        "icon": "🌐",
+        "desc": "Linganisha nukuu mbili au tatu ulizopata mwenyew...",
+        "href": "/sw/zana/ulinganisho-nukuu-za-kutuma-fedha/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 92,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-remittance",
+        "imageId": "crypto-remittance",
+        "imageKey": "crypto-remittance"
+      },
+      {
+        "id": "crypto-stablecoins-sw-parity",
+        "name": "Muhtasari wa Marejeo ya Stablecoin",
+        "icon": "💵",
+        "desc": "Kagua marejeo mapya ya CoinGecko kwa USDT, USDC ...",
+        "href": "/sw/zana/marejeo-ya-stablecoin/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 91,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-stablecoins",
+        "imageId": "crypto-stablecoins",
+        "imageKey": "crypto-stablecoins"
+      },
+      {
+        "id": "crypto-scam-sw-parity",
+        "name": "Orodha ya Ishara na Kifurushi cha Ushahidi wa Ulaghai wa Crypto",
+        "icon": "🛡️",
+        "desc": "Panga ishara za jumla, ushahidi, mfululizo wa ma...",
+        "href": "/sw/zana/kifurushi-ushahidi-ulaghai-crypto/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 91,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-scam",
+        "imageId": "crypto-scam",
+        "imageKey": "crypto-scam"
+      },
+      {
         "id": "backup-power-costs-sw-coverage-backup-power-costs",
         "name": "Kikokotoo cha nishati ya dharura",
         "icon": "🔋",
@@ -151,6 +196,21 @@
         "sourceId": "cnps-guide"
       },
       {
+        "id": "crypto-quiz-sw-parity",
+        "name": "Jaribio la Maarifa na Usalama wa Crypto",
+        "icon": "🧠",
+        "desc": "Maswali 12 ya elimu kuhusu misingi ya crypto na ...",
+        "href": "/sw/zana/jaribio-la-crypto/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 80,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-quiz",
+        "imageId": "crypto-quiz",
+        "imageKey": "crypto-quiz"
+      },
+      {
         "id": "ng-wht-sw-parity",
         "name": "Kikokotoo cha WHT Nigeria",
         "icon": "WHT",
@@ -208,66 +268,6 @@
         "sourceId": "crypto-profit",
         "imageId": "crypto-profit",
         "imageKey": "crypto-profit"
-      },
-      {
-        "id": "za-cgt-sw-parity",
-        "name": "Kikokotoo cha CGT Afrika Kusini",
-        "icon": "CGT",
-        "desc": "Kadiria faida ya mtaji, misamaha, hasara na onge...",
-        "href": "/sw/zana/kikokotoo-cgt-afrika-kusini/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 77,
-        "estTraffic": 3000,
-        "imageExt": "webp",
-        "sourceId": "za-cgt",
-        "imageId": "za-cgt",
-        "imageKey": "za-cgt"
-      },
-      {
-        "id": "salary-intelligence-sw-parity",
-        "name": "Daftari la ushahidi wa mishahara",
-        "icon": "📊",
-        "desc": "Kokotoa mediani na quartile kutoka safu tano au ...",
-        "href": "/sw/zana/daftari-la-ushahidi-wa-mishahara/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 77,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "salary-intelligence",
-        "imageId": "salary-intelligence",
-        "imageKey": "salary-intelligence"
-      },
-      {
-        "id": "crypto-mining-sw",
-        "name": "Kikokotoo cha Margin ya Uchimbaji wa Crypto",
-        "icon": "SW",
-        "desc": "Karatasi binafsi ya kiasi cha coin, bei, saa, ni...",
-        "href": "/sw/zana/kikokotoo-margin-uchimbaji-crypto/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 77,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "crypto-mining",
-        "imageId": "crypto-mining",
-        "imageKey": "crypto-mining"
-      },
-      {
-        "id": "za-dividend-tax-sw-parity",
-        "name": "Kikokotoo cha Kodi ya Gawio Afrika Kusini",
-        "icon": "DWT",
-        "desc": "Kadiria kodi ya gawio ya SARS kwa 20%; kiwango c...",
-        "href": "/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 76,
-        "estTraffic": 2500,
-        "imageExt": "webp",
-        "sourceId": "za-dividend-tax",
-        "imageId": "za-dividend-tax",
-        "imageKey": "za-dividend-tax"
       }
     ],
     "sw::trade": [
@@ -16119,7 +16119,7 @@
         "id": "zana-gharama-ya-dimbwi-la-kuogelea-sw",
         "name": "Gharama ya Dimbwi la Kuogelea",
         "icon": "SW",
-        "desc": "Kadiria gharama ya pool kwa urefu, upana, kina, ...",
+        "desc": "Kadiria ujenzi, finish, vifaa na matengenezo kwa...",
         "href": "/sw/zana/gharama-ya-dimbwi-la-kuogelea/",
         "category": "engineering",
         "lang": "sw",
@@ -16127,13 +16127,14 @@
         "estTraffic": 0,
         "imageExt": "webp",
         "sourceId": "swimming-pool-cost",
+        "imageId": "swimming-pool-cost",
         "imageKey": "swimming-pool-cost"
       },
       {
         "id": "zana-gharama-ya-uzio-sw",
         "name": "Gharama ya Uzio",
         "icon": "SW",
-        "desc": "Kadiria gharama ya uzio kwa perimeter, kiwango c...",
+        "desc": "Kadiria uzio kwa urefu, kimo, aina, malango na w...",
         "href": "/sw/zana/gharama-ya-uzio/",
         "category": "engineering",
         "lang": "sw",
@@ -16141,6 +16142,7 @@
         "estTraffic": 0,
         "imageExt": "webp",
         "sourceId": "fence-cost",
+        "imageId": "fence-cost",
         "imageKey": "fence-cost"
       },
       {
@@ -16864,7 +16866,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "creator-calendar",
+        "imageKey": "creator-calendar"
       }
     ],
     "sw::insurance": [
@@ -21393,6 +21397,21 @@
         "imageKey": "crypto-prices"
       },
       {
+        "id": "crypto-remittance-sw-parity",
+        "name": "Kilinganisha Nukuu za Kutuma Fedha",
+        "icon": "🌐",
+        "desc": "Linganisha nukuu mbili au tatu ulizopata mwenyew...",
+        "href": "/sw/zana/ulinganisho-nukuu-za-kutuma-fedha/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 92,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-remittance",
+        "imageId": "crypto-remittance",
+        "imageKey": "crypto-remittance"
+      },
+      {
         "id": "africa-conflict-sw-coverage-africa-conflict",
         "name": "Ufuatiliaji wa migogoro ya Afrika",
         "icon": "⚔️",
@@ -21436,6 +21455,36 @@
         "sourceId": "background-remover",
         "imageId": "background-remover",
         "imageKey": "background-remover"
+      },
+      {
+        "id": "crypto-stablecoins-sw-parity",
+        "name": "Muhtasari wa Marejeo ya Stablecoin",
+        "icon": "💵",
+        "desc": "Kagua marejeo mapya ya CoinGecko kwa USDT, USDC ...",
+        "href": "/sw/zana/marejeo-ya-stablecoin/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 91,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-stablecoins",
+        "imageId": "crypto-stablecoins",
+        "imageKey": "crypto-stablecoins"
+      },
+      {
+        "id": "crypto-scam-sw-parity",
+        "name": "Orodha ya Ishara na Kifurushi cha Ushahidi wa Ulaghai wa Crypto",
+        "icon": "🛡️",
+        "desc": "Panga ishara za jumla, ushahidi, mfululizo wa ma...",
+        "href": "/sw/zana/kifurushi-ushahidi-ulaghai-crypto/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 91,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "crypto-scam",
+        "imageId": "crypto-scam",
+        "imageKey": "crypto-scam"
       },
       {
         "id": "blood-group-sw-coverage-blood-group",
@@ -21586,51 +21635,6 @@
         "sourceId": "image-to-text",
         "imageId": "image-to-text",
         "imageKey": "image-to-text"
-      },
-      {
-        "id": "dental-cost-sw-coverage-dental-cost",
-        "name": "Kikokotoo cha gharama ya meno",
-        "icon": "🦷",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kikokotoo c...",
-        "href": "/sw/zana/gharama-ya-meno/",
-        "category": "health",
-        "lang": "sw",
-        "priority": 85,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "dental-cost",
-        "imageId": "dental-cost",
-        "imageKey": "dental-cost"
-      },
-      {
-        "id": "crypto-address-sw",
-        "name": "Kihakiki cha Muundo wa Anwani ya Pochi",
-        "icon": "🔍",
-        "desc": "Kagua ndani ya kivinjari muundo na checksum za a...",
-        "href": "/sw/crypto/address-validator/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 84,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "crypto-address",
-        "imageId": "crypto-address",
-        "imageKey": "crypto-address"
-      },
-      {
-        "id": "clinic-costs-sw-coverage-clinic-costs",
-        "name": "Kikokotoo cha gharama za kliniki",
-        "icon": "🩺",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kikokotoo c...",
-        "href": "/sw/zana/gharama-za-kliniki/",
-        "category": "health",
-        "lang": "sw",
-        "priority": 84,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "clinic-costs",
-        "imageId": "clinic-costs",
-        "imageKey": "clinic-costs"
       }
     ],
     "en": [

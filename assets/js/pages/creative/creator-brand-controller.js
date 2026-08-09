@@ -5,9 +5,11 @@
   if (!root) return;
 
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorBrand;
-  var locale = root.getAttribute('data-locale') === 'fr' ? 'fr' : 'en';
+  var requestedLocale = root.getAttribute('data-locale');
+  var locale = requestedLocale === 'fr' ? 'fr' : (requestedLocale === 'sw' ? 'sw' : 'en');
   var storageKey = 'afrotools_creator_brand_v2';
   var currentKit = null;
+  function localized(en, fr, sw) { return locale === 'fr' ? fr : (locale === 'sw' ? sw : en); }
 
   function byName(name) {
     return root.querySelector('[name="' + name + '"]');
@@ -71,10 +73,9 @@
       swatches.appendChild(item);
     });
 
-    root.querySelector('[data-contrast]').textContent = (locale === 'fr' ? 'Contraste texte/primaire : ' : 'Text/primary contrast: ') +
+    root.querySelector('[data-contrast]').textContent = localized('Text/primary contrast: ', 'Contraste texte/primaire : ', 'Contrast ya maandishi/rangi kuu: ') +
       kit.colors.primaryTextContrast + ':1 — ' +
-      (kit.colors.primaryTextWcagAA ? (locale === 'fr' ? 'conforme WCAG AA' : 'passes WCAG AA') :
-        (locale === 'fr' ? 'à améliorer pour le texte normal' : 'improve for normal text'));
+      (kit.colors.primaryTextWcagAA ? localized('passes WCAG AA', 'conforme WCAG AA', 'imefikia WCAG AA') : localized('improve for normal text', 'à améliorer pour le texte normal', 'iboreshe kwa maandishi ya kawaida'));
 
     var posts = root.querySelector('[data-posts]');
     posts.innerHTML = '';
@@ -87,12 +88,12 @@
 
   function generate(showStatus) {
     if (!engine) {
-      status(locale === 'fr' ? 'Le moteur local est indisponible.' : 'The local engine is unavailable.');
+      status(localized('The local engine is unavailable.', 'Le moteur local est indisponible.', 'Injini ya kifaa haipatikani.'));
       return null;
     }
-    var kit = engine.buildKit(collect());
+    var kit = engine.buildKit(collect(), locale);
     render(kit);
-    if (showStatus) status(locale === 'fr' ? 'Aperçu généré localement.' : 'Preview generated locally.');
+    if (showStatus) status(localized('Preview generated locally.', 'Aperçu généré localement.', 'Muonekano umetengenezwa kwenye kifaa.'));
     return kit;
   }
 
@@ -136,14 +137,14 @@
     var kit = generate(false);
     if (!kit) return;
     localStorage.setItem(storageKey, JSON.stringify(kit));
-    status(locale === 'fr' ? 'Kit enregistré dans ce navigateur.' : 'Kit saved in this browser.');
+    status(localized('Kit saved in this browser.', 'Kit enregistré dans ce navigateur.', 'Kit imehifadhiwa kwenye kivinjari hiki.'));
   });
 
   root.querySelector('[data-copy]').addEventListener('click', function () {
     var kit = generate(false);
     if (!kit) return;
     copyText(engine.toText(kit, locale)).then(function () {
-      status(locale === 'fr' ? 'Résumé copié.' : 'Summary copied.');
+      status(localized('Summary copied.', 'Résumé copié.', 'Muhtasari umenakiliwa.'));
     });
   });
 
@@ -151,27 +152,27 @@
     var kit = generate(false);
     if (!kit) return;
     download(JSON.stringify(kit, null, 2), 'application/json', filename('json'));
-    status(locale === 'fr' ? 'JSON téléchargé.' : 'JSON downloaded.');
+    status(localized('JSON downloaded.', 'JSON téléchargé.', 'JSON imepakuliwa.'));
   });
 
   root.querySelector('[data-txt]').addEventListener('click', function () {
     var kit = generate(false);
     if (!kit) return;
     download(engine.toText(kit, locale), 'text/plain;charset=utf-8', filename('txt'));
-    status(locale === 'fr' ? 'Résumé TXT téléchargé.' : 'TXT summary downloaded.');
+    status(localized('TXT summary downloaded.', 'Résumé TXT téléchargé.', 'Muhtasari wa TXT umepakuliwa.'));
   });
 
   root.querySelector('[data-html]').addEventListener('click', function () {
     var kit = generate(false);
     if (!kit) return;
     download(engine.toGuideHtml(kit, locale), 'text/html;charset=utf-8', filename('html'));
-    status(locale === 'fr' ? 'Guide HTML téléchargé.' : 'HTML guide downloaded.');
+    status(localized('HTML guide downloaded.', 'Guide HTML téléchargé.', 'Mwongozo wa HTML umepakuliwa.'));
   });
 
   root.querySelector('[data-import]').addEventListener('change', function (event) {
     var file = event.target.files && event.target.files[0];
     if (!file || file.size > 1024 * 1024 || !/\.json$/i.test(file.name)) {
-      status(locale === 'fr' ? 'Choisissez un fichier JSON inférieur à 1 Mo.' : 'Choose a JSON file smaller than 1 MB.');
+      status(localized('Choose a JSON file smaller than 1 MB.', 'Choisissez un fichier JSON inférieur à 1 Mo.', 'Chagua faili ya JSON iliyo chini ya MB 1.'));
       event.target.value = '';
       return;
     }
@@ -192,12 +193,12 @@
           bodyFont: imported.typography && imported.typography.body,
           tone: imported.voice && imported.voice.tone,
           keywords: imported.voice && imported.voice.keywords && imported.voice.keywords.join(', '),
-        });
+        }, locale);
         fill(rebuilt);
         render(rebuilt);
-        status(locale === 'fr' ? 'Kit JSON importé localement.' : 'JSON kit imported locally.');
+        status(localized('JSON kit imported locally.', 'Kit JSON importé localement.', 'Kit ya JSON imefunguliwa kwenye kifaa.'));
       } catch (_) {
-        status(locale === 'fr' ? 'Ce fichier JSON ne peut pas être lu.' : 'That JSON file could not be read.');
+        status(localized('That JSON file could not be read.', 'Ce fichier JSON ne peut pas être lu.', 'Faili hiyo ya JSON haiwezi kusomwa.'));
       }
       event.target.value = '';
     };

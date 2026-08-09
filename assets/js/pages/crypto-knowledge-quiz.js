@@ -2,8 +2,10 @@
   'use strict';
   var bank = window.AfroToolsCryptoQuizBank;
   var engine = window.AfroToolsCryptoQuizEngine;
-  var locale = document.documentElement.lang === 'fr' ? 'fr' : 'en';
-  var text = locale === 'fr' ? {
+  var locale = document.documentElement.lang === 'fr' ? 'fr' : (document.documentElement.lang === 'sw' ? 'sw' : 'en');
+  var text = locale === 'sw' ? {
+    question:'Swali',of:'kati ya',next:'Swali linalofuata',finish:'Tazama jibu',correct:'Sahihi.',wrong:'Bado si sahihi.',source:'Chanzo',reviewed:'imekaguliwa',result:'Jibu lako',exact:'Alama kamili',topics:'Mgawanyo wa mada',review:'Mapitio ya majibu',yours:'Jibu lako',answer:'Jibu sahihi',downloadText:'Pakua mapitio ya TXT',downloadPdf:'Pakua mapitio ya PDF',sharePreview:'Muonekano wa kushiriki',copy:'Nakili alama',share:'Shiriki',copied:'Alama imenakiliwa.',shared:'Kidirisha cha kushiriki kimefunguliwa.',unavailable:'Kushiriki hakupatikani kwenye kivinjari hiki.',failed:'Hatua hiyo haikukamilika. Unaweza kupakua mapitio badala yake.',restart:'Chagua seti nyingine',questions:'Maswali 6',noTimer:'Bila kipima muda',unavailableQuiz:'Jaribio halipatikani kwa sababu data yake haikupita uhakiki.',topicNames:{}
+  } : locale === 'fr' ? {
     question: 'Question', of: 'sur', next: 'Question suivante', finish: 'Voir le résultat',
     correct: 'Bonne réponse.', wrong: 'Pas tout à fait.', source: 'Source', reviewed: 'révisé le',
     result: 'Votre résultat', exact: 'Score exact', topics: 'Détail par thème',

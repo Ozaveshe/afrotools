@@ -2,7 +2,9 @@
   "use strict";
   var root = document.querySelector("[data-creator-calendar-native]");
   if (!root || !window.CreatorCalendarEngine) return;
-  var fr = root.getAttribute("data-lang") === "fr";
+  var locale = root.getAttribute("data-lang");
+  var fr = locale === "fr";
+  var sw = locale === "sw";
   var form = root.querySelector("form");
   var output = root.querySelector("[data-output]");
   var status = root.querySelector("[data-status]");
@@ -14,6 +16,12 @@
     day: "Jour", date: "Date", platform: "Plateforme", time: "Heure", angle: "Angle",
     educate: "Expliquer", engage: "Faire participer", showcase: "Présenter",
     downloaded: "Fichier téléchargé."
+  } : sw ? {
+    invalid: "Hakiki mada, tarehe, muda na uchague angalau jukwaa moja.",
+    ready: "Kalenda imetengenezwa kwenye kifaa. Saa ni makisio ya zamani yenye uhakika mdogo; zihakiki kwa takwimu za hadhira yako.",
+    day: "Siku", date: "Tarehe", platform: "Jukwaa", time: "Saa ya kukadiria", angle: "Lengo",
+    educate: "Elimisha", engage: "Shirikisha", showcase: "Onyesha kazi",
+    downloaded: "Faili imepakuliwa."
   } : {
     invalid: "Check the topic, date, duration, and choose at least one platform.",
     ready: "Calendar created locally. Review the suggested times for your audience.",

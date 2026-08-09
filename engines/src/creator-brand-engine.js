@@ -66,8 +66,9 @@
     }).slice(0, 8);
   }
 
-  function buildKit(input) {
+  function buildKit(input, locale) {
     input = input || {};
+    var sw = locale === 'sw';
     var headingFont = ALLOWED_FONTS.indexOf(input.headingFont) >= 0 ? input.headingFont : 'Sora';
     var bodyFont = ALLOWED_FONTS.indexOf(input.bodyFont) >= 0 ? input.bodyFont : 'DM Sans';
     var colors = [
@@ -84,7 +85,7 @@
     if (!words.length) words = ['clear', 'useful', 'human'];
 
     var ratio = contrastRatio(colors[2], colors[0]);
-    var sampleLead = tone === 'bold' ? 'Here is the move:' :
+    var sampleLead = sw ? 'Dokezo muhimu kwako:' : tone === 'bold' ? 'Here is the move:' :
       tone === 'formal' ? 'An important update:' :
       tone === 'playful' ? 'A small idea with big energy:' :
       'A useful note for you:';
@@ -115,11 +116,15 @@
         keywords: words,
         samplePosts: [
           sampleLead + ' ' + tagline,
-          mission + ' Built for ' + audience + '.',
-          name + ' stands for ' + words.join(', ') + '.',
+          mission + (sw ? ' Imeundwa kwa ' : ' Built for ') + audience + '.',
+          name + (sw ? ' inasimamia ' : ' stands for ') + words.join(', ') + '.',
         ],
       },
-      assumptions: [
+      assumptions: sw ? [
+        'Rangi zinakaguliwa kwa WCAG AA ya maandishi ya kawaida kwa uwiano wa 4.5:1.',
+        'Majina ya fonti ni chaguo za mwonekano; mwongozo haupakii faili za fonti.',
+        'Mifano ya machapisho inatengenezwa kwenye kifaa kutoka maneno uliyoingiza.',
+      ] : [
         'Colors are checked against WCAG AA for normal text at a 4.5:1 ratio.',
         'Font names are presentation choices; the exported guide does not bundle font files.',
         'Sample posts are generated locally from the words entered in this form.',
@@ -142,21 +147,22 @@
 
   function toText(kit, locale) {
     var fr = locale === 'fr';
+    var sw = locale === 'sw';
     return [
-      fr ? 'KIT DE MARQUE' : 'BRAND KIT',
+      fr ? 'KIT DE MARQUE' : (sw ? 'MWONGOZO WA BRAND' : 'BRAND KIT'),
       kit.profile.name + ' — ' + kit.profile.tagline,
       '',
       (fr ? 'Mission : ' : 'Mission: ') + kit.profile.mission,
-      (fr ? 'Public : ' : 'Audience: ') + kit.profile.audience,
+      (fr ? 'Public : ' : (sw ? 'Hadhira: ' : 'Audience: ')) + kit.profile.audience,
       (fr ? 'Secteur : ' : 'Industry: ') + kit.profile.industry,
       '',
-      (fr ? 'Couleurs : ' : 'Colors: ') + [kit.colors.primary, kit.colors.secondary, kit.colors.text].join(', '),
+      (fr ? 'Couleurs : ' : (sw ? 'Rangi: ' : 'Colors: ')) + [kit.colors.primary, kit.colors.secondary, kit.colors.text].join(', '),
       (fr ? 'Contraste texte/primaire : ' : 'Text/primary contrast: ') + kit.colors.primaryTextContrast + ':1',
       (fr ? 'Typographie : ' : 'Typography: ') + kit.typography.heading + ' / ' + kit.typography.body,
       (fr ? 'Ton : ' : 'Tone: ') + kit.voice.tone,
-      (fr ? 'Mots-clés : ' : 'Keywords: ') + kit.voice.keywords.join(', '),
+      (fr ? 'Mots-clés : ' : (sw ? 'Maneno muhimu: ' : 'Keywords: ')) + kit.voice.keywords.join(', '),
       '',
-      fr ? 'EXEMPLES DE PUBLICATIONS' : 'SAMPLE POSTS',
+      fr ? 'EXEMPLES DE PUBLICATIONS' : (sw ? 'MIFANO YA MACHAPISHO' : 'SAMPLE POSTS'),
     ].concat(kit.voice.samplePosts.map(function (post, index) {
       return (index + 1) + '. ' + post;
     })).join('\n');
@@ -170,20 +176,21 @@
 
   function toGuideHtml(kit, locale) {
     var fr = locale === 'fr';
-    var title = fr ? 'Guide de marque' : 'Brand guide';
-    return '<!doctype html><html lang="' + (fr ? 'fr' : 'en') + '"><head><meta charset="utf-8">' +
+    var sw = locale === 'sw';
+    var title = fr ? 'Guide de marque' : (sw ? 'Mwongozo wa brand' : 'Brand guide');
+    return '<!doctype html><html lang="' + (fr ? 'fr' : (sw ? 'sw' : 'en')) + '"><head><meta charset="utf-8">' +
       '<meta name="viewport" content="width=device-width,initial-scale=1"><title>' +
       escapeHtml(kit.profile.name + ' — ' + title) + '</title><style>' +
       'body{font-family:Arial,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;color:' + kit.colors.text + '}' +
       'h1,h2{font-family:Arial,sans-serif}.swatches{display:flex;gap:12px;flex-wrap:wrap}.swatch{width:150px;padding:52px 12px 12px;border-radius:12px;color:#fff;font-weight:700}' +
       '</style></head><body><h1>' + escapeHtml(kit.profile.name) + '</h1><p>' + escapeHtml(kit.profile.tagline) +
       '</p><h2>' + (fr ? 'Mission' : 'Mission') + '</h2><p>' + escapeHtml(kit.profile.mission) +
-      '</p><h2>' + (fr ? 'Couleurs' : 'Colors') + '</h2><div class="swatches">' +
+      '</p><h2>' + (fr ? 'Couleurs' : (sw ? 'Rangi' : 'Colors')) + '</h2><div class="swatches">' +
       [kit.colors.primary, kit.colors.secondary, kit.colors.text].map(function (color) {
         return '<div class="swatch" style="background:' + color + '">' + color + '</div>';
       }).join('') + '</div><h2>' + (fr ? 'Typographie' : 'Typography') + '</h2><p>' +
       escapeHtml(kit.typography.heading + ' / ' + kit.typography.body) + '</p><h2>' +
-      (fr ? 'Voix' : 'Voice') + '</h2><p>' + escapeHtml(kit.voice.tone + ' — ' + kit.voice.keywords.join(', ')) +
+      (fr ? 'Voix' : (sw ? 'Sauti' : 'Voice')) + '</h2><p>' + escapeHtml(kit.voice.tone + ' — ' + kit.voice.keywords.join(', ')) +
       '</p><ol>' + kit.voice.samplePosts.map(function (post) {
         return '<li>' + escapeHtml(post) + '</li>';
       }).join('') + '</ol></body></html>';

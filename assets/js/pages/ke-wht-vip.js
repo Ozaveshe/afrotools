@@ -5,7 +5,7 @@
   if (!app || !engine) return;
 
   const form = app.querySelector("[data-form]");
-  const language = app.dataset.locale === "fr" ? "fr" : "en";
+  const language = app.dataset.locale === "fr" ? "fr" : app.dataset.locale === "sw" ? "sw" : "en";
   const copy = {
     en: {
       errors: {
@@ -43,13 +43,43 @@
       labels: { gross: "Paiement brut", rate: "Taux appliqué", deduction: "Retenue WHT", net: "Paiement net", treatment: "Traitement" },
       filename: "estimation-retenue-source-kenya.txt",
     },
+    sw: {
+      errors: {},
+      result: "Makadirio yako tayari.",
+      copied: "Matokeo yamenakiliwa.",
+      downloaded: "Faili ya TXT imepakuliwa.",
+      exportTitle: "Makadirio ya WHT ya Kenya",
+      labels: { gross: "Malipo ghafi", rate: "Kiwango kilichotumika", deduction: "Makato ya WHT", net: "Malipo halisi", treatment: "Namna ya kodi" },
+      filename: "makadirio-wht-kenya.txt",
+    },
   }[language];
 
-  const money = new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-KE", { style: "currency", currency: "KES", maximumFractionDigits: 2 });
+  const money = new Intl.NumberFormat(language === "fr" ? "fr-FR" : language === "sw" ? "sw-KE" : "en-KE", { style: "currency", currency: "KES", maximumFractionDigits: 2 });
   let lastResult = null;
 
   function translateError(message) {
     if (language === "en") return copy.errors[message] || message;
+    if (language === "sw") {
+      const translations = {
+        "Confirm that this is a Kenyan withholding-tax payment before calculating.": "Thibitisha kuwa haya ni malipo yanayotozwa WHT ya Kenya.",
+        "Enter a gross payment greater than zero.": "Weka malipo ghafi yaliyo zaidi ya sifuri.",
+        "Choose a supported payment category.": "Chagua aina ya malipo inayotumika.",
+        "Choose the recipient residency.": "Chagua makazi ya mpokeaji.",
+        "This resident/non-resident combination has no general rate in the reviewed KRA table.": "Mchanganyiko huu hauna kiwango cha jumla katika jedwali la KRA lililopitiwa.",
+        "The reviewed resident fee threshold is KSh 24,000 in aggregate for the month; this payment is below it.": "Kizingiti cha ada kwa mkazi ni jumla ya KSh 24,000 kwa mwezi; malipo haya yako chini yake.",
+        "Confirm EAC citizenship evidence before applying an EAC rate.": "Thibitisha ushahidi wa uraia wa EAC kabla ya kutumia kiwango hiki.",
+        "The supported EAC reductions apply to a non-resident recipient.": "Punguzo la EAC linalotumika ni kwa mpokeaji asiye mkazi.",
+        "The reviewed KRA table does not provide an EAC reduction for this payment category.": "Jedwali la KRA lililopitiwa halina punguzo la EAC kwa aina hii ya malipo.",
+        "Treaty-rate entry is restricted to non-resident recipients.": "Kiwango cha mkataba kinatumika kwa wapokeaji wasio wakazi pekee.",
+        "Confirm treaty eligibility and documentation before using a reduced rate.": "Thibitisha kustahiki na nyaraka za mkataba kabla ya kutumia kiwango kilichopunguzwa.",
+        "Enter an evidenced treaty rate below the standard non-resident rate.": "Weka kiwango cha mkataba chenye ushahidi kilicho chini ya kiwango cha kawaida.",
+        "Confirm eligibility for the residential Monthly Rental Income flow before applying 7.5%.": "Thibitisha kustahiki utaratibu wa mapato ya pango la makazi kabla ya kutumia 7.5%.",
+        "The supported controlling-company dividend exemption requires a resident dividend.": "Msamaha huu wa gawio unahitaji gawio la kampuni mkazi.",
+        "Confirm resident-company voting-power evidence before applying the dividend exemption.": "Thibitisha ushahidi wa nguvu ya kura ya kampuni mkazi kabla ya kutumia msamaha.",
+        "Confirm that the payer is a public entity before applying the public-goods rate.": "Thibitisha kuwa mlipaji ni taasisi ya umma kabla ya kutumia kiwango hiki."
+      };
+      return translations[message] || message;
+    }
     const translations = {
       "Confirm that this is a Kenyan withholding-tax payment before calculating.": "Confirmez qu'il s'agit d'un paiement soumis à la retenue kenyane.",
       "Enter a gross payment greater than zero.": "Saisissez un paiement brut supérieur à zéro.",

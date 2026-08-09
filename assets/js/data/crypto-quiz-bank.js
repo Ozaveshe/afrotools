@@ -56,7 +56,7 @@
     };
   }
 
-  return {
+  var bank = {
     schemaVersion: 1,
     reviewedAt: reviewedAt,
     boundary: {
@@ -371,4 +371,24 @@
       },
     ],
   };
+  var swTopics={Networks:"Mitandao",Wallets:"Pochi",Privacy:"Faragha",Accounts:"Akaunti",Fees:"Ada",Stablecoins:"Stablecoin",Secrets:"Siri",Recovery:"Urejeshaji",Transfers:"Uhamisho",Devices:"Vifaa",Keys:"Funguo"};
+  Object.keys(topics).forEach(function(key){topics[key].sw=swTopics[key];});
+  bank.boundary.sw="Jaribio la elimu tu. Si ushauri wa fedha, cheti, tathmini ya hatari wala kipimo cha kufaa.";
+  var swSets={fundamentals:{name:"Misingi",description:"Maswali sita ya kudumu kuhusu mitandao, pochi, akaunti, ada na stablecoin."},"wallet-safety":{name:"Usalama wa pochi",description:"Maswali sita ya vitendo kuhusu vifungu vya urejeshaji, funguo binafsi na uhamisho salama."}};
+  var sw={
+    "fund-peer-cash":["Karatasi nyeupe ya Bitcoin inaelezaje Bitcoin?",["Mfumo wa pesa za kielektroniki wa moja kwa moja kati ya watumiaji","Kadi ya malipo inayoendeshwa na benki","Mfuko wa uwekezaji wenye faida iliyohakikishwa","Mtandao binafsi wa ujumbe"],"Karatasi nyeupe inaeleza Bitcoin kama mfumo wa pesa za kielektroniki wa moja kwa moja kati ya watumiaji."],
+    "fund-wallet-keys":["Programu ya pochi husimamia nini hasa?",["Funguo binafsi na za umma zinazotumika kudhibiti fedha","Sarafu zilizohifadhiwa ndani ya kivinjari","Bei za ubadilishaji zilizohakikishwa","Rekodi ya utambulisho wa serikali"],"Programu ya pochi husimamia funguo. Mtandao hurekodi salio na miamala; sarafu si faili ndani ya pochi."],
+    "fund-public-ledger":["Kauli ipi inaeleza vizuri miamala ya Bitcoin iliyothibitishwa?",["Ni ya umma, huku anwani zikiwa majina bandia yasiyounganishwa moja kwa moja na jina halisi","Inaonekana kwa benki pekee","Imefichwa kwa vivinjari vya blockchain vya umma","Hutoweka baada ya mwaka mmoja"],"Historia ya miamala ya Bitcoin ni ya umma. Anwani ni majina bandia, lakini shughuli bado zinaweza kufichua uhusiano na mifumo."],
+    "fund-ethereum-accounts":["Ni nini hudhibiti akaunti ya Ethereum inayomilikiwa moja kwa moja?",["Ufunguo binafsi","Msimbo wa mkataba mahiri pekee","Kivinjari cha blockchain cha umma","Mtoaji wa stablecoin"],"Akaunti zinazomilikiwa moja kwa moja hudhibitiwa na funguo binafsi; akaunti za mkataba hudhibitiwa na msimbo uliowekwa."],
+    "fund-gas":["Gas ya Ethereum hupima nini?",["Kazi ya ukokotoaji inayohitajika na muamala au operesheni","Bei ya soko ya ether","Umri wa pochi","Ada maalumu ya kila mwezi"],"Gas huhesabu rasilimali za ukokotoaji. Ada inaweza kutofautiana kulingana na kazi na mahitaji ya mtandao."],
+    "fund-stablecoins":["Lengo la stablecoin ni nini?",["Kulenga thamani tulivu kwa kutumia utaratibu uliotajwa","Kuhakikisha faida","Kuondoa hatari zote za mtoaji na akiba","Kufanya kila muamala kuwa wa siri"],"Stablecoin zimeundwa kupunguza mabadiliko ya bei, lakini taratibu na hatari hutofautiana na uthabiti hauhakikishwi."],
+    "safe-never-share":["Nani anapaswa kupewa kifungu chako cha siri cha urejeshaji au ufunguo binafsi?",["Hakuna mtu, hata wafanyakazi wa usaidizi","Mhudumu wa usaidizi anayekutumia ujumbe kwanza","Akaunti yoyote ya mitandao ya kijamii iliyothibitishwa","Mnunuzi kabla ya malipo"],"Mtu mwenye kifungu au ufunguo binafsi anaweza kudhibiti akaunti husika. Usaidizi halali haupaswi kuviomba."],
+    "safe-restore":["Kifungu cha siri cha urejeshaji wa pochi kwa kawaida kinaweza kurejesha nini?",["Akaunti za pochi zilizotokana na kifungu hicho","Muamala wa mwisho pekee","Nenosiri la jukwaa la ubadilishaji","Marejesho ya fedha yaliyohakikishwa"],"Kifungu cha urejeshaji kinaweza kurejesha akaunti zilizotokana nacho, ndiyo maana lazima kibaki siri."],
+    "safe-full-address":["Kabla ya kutuma crypto, ni sehemu gani ya anwani ya mpokeaji unapaswa kuhakiki?",["Anwani nzima","Herufi nne za kwanza pekee","Herufi nne za mwisho pekee","Nembo ya pochi pekee"],"Programu hasidi inaweza kubadilisha anwani kwa inayofanana. Hakiki anwani nzima kupitia njia unayoamini."],
+    "safe-irreversible":["Kwa nini ukague maelezo kabla ya kutangaza malipo ya Bitcoin?",["Malipo yaliyothibitishwa kwa kawaida hayawezi kubatilishwa na msimamizi mkuu","Anwani itaisha mara moja","Kila malipo hurejeshwa kiotomatiki","Benki lazima iidhinishe kiasi"],"Malipo ya Bitcoin hayabatilishwi na msimamizi mkuu, kwa hiyo kagua mpokeaji, anwani, mtandao na kiasi kwa makini."],
+    "safe-device-seed":["Ni ishara gani ya tahadhari unapoweka pochi mpya ya kifaa?",["Kifungu cha urejeshaji kinakuja kimechapishwa pamoja na kifaa","Kifaa kinakuomba uhakiki skrini yake","Unalinganisha kifungashio cha mtengenezaji","Unasakinisha sasisho rasmi"],"Kifungu kilichotengenezwa au kuchapishwa mapema huenda tayari kinajulikana na mshambuliaji. Kitengeneze katika mchakato wa kuaminika wa kuweka kifaa."],
+    "safe-public-private":["Ni taarifa gani hutumika kuidhinisha matumizi kutoka kwenye pochi?",["Ufunguo binafsi","Anwani ya umma ya kupokea pekee","URL ya kivinjari cha muamala","Kifupi cha tokeni"],"Ufunguo binafsi huidhinisha matumizi. Anwani ya umma inaweza kushirikiwa kupokea fedha lakini haiwezi kuidhinisha matumizi yenyewe."]
+  };
+  bank.sets.forEach(function(set){set.name.sw=swSets[set.id].name;set.description.sw=swSets[set.id].description;set.questions.forEach(function(question){var row=sw[question.id];var rotation=question.id.split("").reduce(function(total,ch){return total+ch.charCodeAt(0);},0)%row[1].length;question.prompt.sw=row[0];question.options.sw=row[1].slice(rotation).concat(row[1].slice(0,rotation));question.explanation.sw=row[2];});});
+  return bank;
 });

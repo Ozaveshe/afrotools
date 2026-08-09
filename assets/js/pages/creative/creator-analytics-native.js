@@ -5,8 +5,10 @@
   if (!root) return;
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorAnalytics;
   if (!engine) return;
-  var fr = document.documentElement.lang.toLowerCase().indexOf('fr') === 0;
-  var locale = fr ? 'fr-FR' : 'en';
+  var language = document.documentElement.lang.toLowerCase();
+  var fr = language.indexOf('fr') === 0;
+  var sw = language.indexOf('sw') === 0;
+  var locale = fr ? 'fr-FR' : (sw ? 'sw' : 'en');
   var storageKey = 'afrotools.creatorAnalytics.local.v2';
   var posts = [];
   var summary = engine.summarize(posts);
@@ -19,6 +21,15 @@
     downloaded: 'Export téléchargé.',
     empty: 'Ajoutez une publication pour commencer.',
     remove: 'Supprimer'
+  } : sw ? {
+    invalid: 'Weka tarehe na reach iliyo zaidi ya sifuri. Hakiki pia vipimo vingine.',
+    added: 'Chapisho limeongezwa kwenye kifaa hiki.',
+    deleted: 'Chapisho limeondolewa.',
+    cleared: 'Data ya kifaa hiki imefutwa.',
+    copied: 'Muhtasari umenakiliwa.',
+    downloaded: 'Faili imepakuliwa.',
+    empty: 'Ongeza chapisho ili kuanza.',
+    remove: 'Ondoa'
   } : {
     invalid: 'Add a date and reach above zero. Also check the metrics.',
     added: 'Post added locally.',

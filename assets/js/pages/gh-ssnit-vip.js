@@ -37,6 +37,22 @@
       early: 'Scénario d’âge admissible uniquement. SSNIT applique un facteur de réduction; ce calculateur ne l’invente pas.',
       short: 'Moins de 180 mois cotisés : aucune pension mensuelle de vieillesse n’est estimée. Demandez à SSNIT le traitement forfaitaire applicable.',
       missing: 'Saisissez la moyenne mensuelle des 36 meilleurs mois pour estimer la pension à 60 ans.'
+    },
+    sw: {
+      salary: 'Weka mshahara wa msingi wa mwezi ulio zaidi ya sifuri.',
+      count: 'Idadi ya wafanyakazi iwe namba kamili kutoka 1 hadi 10,000.',
+      average: 'Wastani wa miezi 36 bora uwe sifuri au zaidi.',
+      months: 'Miezi ya michango iwe namba kamili kutoka 0 hadi 720.',
+      age: 'Umri wa kustaafu uwe kutoka 55 hadi 60.',
+      date: 'Kikokotoo hiki kilichothibitishwa kinatumia tarehe kutoka 1 Januari hadi 23 Julai 2026.',
+      ready: 'Makadirio yako tayari. Hakuna ingizo lililoondoka kwenye kivinjari hiki.',
+      changed: 'Ingizo limebadilika. Kokotoa tena.',
+      copied: 'Makadirio yamenakiliwa kwenye kifaa.',
+      exported: 'Faili imetengenezwa kwenye kifaa.',
+      full: 'Makadirio ya kupanga kwa umri wa 60. SSNIT lazima ithibitishe rekodi ya mapato na miezi.',
+      early: 'Hali ya umri unaostahiki pekee. SSNIT hutumia kipengele cha punguzo ambacho zana hii haikisi.',
+      short: 'Chini ya miezi 180: hakuna makadirio ya pensheni ya kila mwezi. Uliza SSNIT kuhusu malipo ya mkupuo.',
+      missing: 'Weka wastani wa mshahara wa miezi 36 bora ili kukadiria pensheni ya umri wa 60.'
     }
   }[locale];
 
@@ -59,14 +75,14 @@
     };
   }
   function money(value) {
-    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-GH', {
+    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : locale === 'sw' ? 'sw-GH' : 'en-GH', {
       style: 'currency',
       currency: 'GHS',
       maximumFractionDigits: 2
     }).format(value);
   }
   function percent(value) {
-    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-GH', {
+    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : locale === 'sw' ? 'sw-GH' : 'en-GH', {
       style: 'percent',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2

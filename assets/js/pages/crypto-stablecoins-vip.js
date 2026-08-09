@@ -3,7 +3,7 @@
 
   var root = document.querySelector('[data-stablecoin-snapshot]');
   if (!root) return;
-  var lang = document.documentElement.lang === 'fr' ? 'fr' : 'en';
+  var lang = document.documentElement.lang === 'fr' ? 'fr' : (document.documentElement.lang === 'sw' ? 'sw' : 'en');
   var copy = {
     en: {
       loading: 'Checking CoinGecko for a fresh stablecoin reference snapshot…',
@@ -17,6 +17,9 @@
       exported: 'Snapshot downloaded with source, scope and time receipts.',
       noExport: 'Load a fresh snapshot before exporting.',
       labels: ['Asset', 'USD reference', 'Local reference', 'USD 24h change', 'USD peg distance', 'Provider updated']
+    },
+    sw: {
+      loading:'Inakagua CoinGecko kwa muhtasari mpya wa marejeo ya stablecoin…',ready:function(count,currency){return 'Safu '+count+' mpya za mtoa data zinaonekana kwa USD na '+currency+'. Hizi ni bei za marejeo, si nukuu za ubadilishaji.';},unavailable:'Data mpya ya mtoa huduma haipatikani. Hakuna bei zilizohifadhiwa, zilizokadiriwa wala za jukwaa zinazooneshwa.',rateLimited:'CoinGecko imepunguza maombi kwa muda. Subiri kidogo, kisha pakia upya.',fresh:'Mpya',unavailableState:'Haipatikani',cacheHit:'Akiba ya sekunde 60 ya function',cacheMiss:'Jibu jipya la mtoa data',exported:'Muhtasari umepakuliwa pamoja na chanzo, upeo na muda.',noExport:'Pakia muhtasari mpya kabla ya kupakua.',labels:['Mali','Rejeo la USD','Rejeo la ndani','Mabadiliko ya USD saa 24','Umbali kutoka USD 1','Mtoa data alisasisha']
     },
     fr: {
       loading: 'Vérification d’un instantané de référence récent auprès de CoinGecko…',
@@ -47,7 +50,7 @@
     fetchedTime: root.querySelector('[data-fetched-time]'),
     cache: root.querySelector('[data-cache]')
   };
-  var numberLocale = lang === 'fr' ? 'fr-FR' : 'en-GB';
+  var numberLocale = lang === 'fr' ? 'fr-FR' : (lang === 'sw' ? 'sw-KE' : 'en-GB');
 
   function formatMoney(value, currency) {
     var number = Number(value);
