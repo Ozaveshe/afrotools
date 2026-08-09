@@ -4,8 +4,10 @@
   var form = document.getElementById("scamEvidenceForm");
   if (!engine || !form) return;
 
-  var lang = document.documentElement.lang === "fr" ? "fr" : "en";
-  var copy = lang === "fr" ? {
+  var lang = document.documentElement.lang === "fr" ? "fr" : (document.documentElement.lang === "sw" ? "sw" : "en");
+  var copy = lang === "sw" ? {
+    ready:"Kifurushi kimepangwa ndani ya kifaa. Hakuna data iliyoondoka kwenye kifaa hiki.",invalid:"Kagua sehemu. ",stale:"Kifurushi kinachoonekana kimepitwa na mabadiliko. Kipange tena kabla ya kupakua.",created:"Upakuaji umetengenezwa ndani ya kifaa.",pdfMissing:"Injini ya PDF ya ndani haipatikani. Tumia Chapisha / Hifadhi PDF.",remove:"Ondoa",lossLabel:"Aina ya hasara",amount:"Kiasi",started:"Rekodi imeanzishwa",developing:"Rekodi inaendelezwa",organized:"Rekodi imepangwa vizuri",sections:"sehemu zilizojazwa",redFlags:"ishara zilizochaguliwa",evidence:"vipengee vya ushahidi",timeline:"vipengee vya mfululizo wa matukio",losses:"hasara zilizoingizwa",total:"Jumla iliyoingizwa",noLoss:"Hakuna hasara ya kiasi iliyoingizwa",boundary:"Hali hii hupima ukamilifu wa rekodi pekee. Haitangazi mtu, anwani, jukwaa wala muamala kuwa salama, wa ulaghai au uliothibitishwa.",privateTitle:"Kifurushi binafsi cha ushahidi wa tukio la crypto",generated:"Imetengenezwa ndani ya kifaa",labels:{incident:"Jina la tukio",date:"Tarehe",platform:"Jukwaa au huduma",contact:"Rejea ya mawasiliano",currency:"Sarafu ya kuonyesha",flags:"Ishara zilizochaguliwa",evidence:"Vipengee vya ushahidi",timeline:"Mfululizo wa matukio",losses:"Hasara zilizoingizwa"}
+  } : lang === "fr" ? {
     ready:"Dossier organisé localement. Aucune donnée n’a quitté cet appareil.",
     invalid:"Vérifiez les champs. ",
     stale:"Le dossier affiché est périmé. Organisez-le de nouveau avant l’export.",
@@ -87,7 +89,7 @@
   function signature() { return JSON.stringify(input()); }
   function formatMoney(number) {
     try {
-      return new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en", {style:"currency",currency:result.record.currency,maximumFractionDigits:2}).format(number);
+      return new Intl.NumberFormat(lang === "fr" ? "fr-FR" : (lang === "sw" ? "sw-KE" : "en"), {style:"currency",currency:result.record.currency,maximumFractionDigits:2}).format(number);
     } catch (_) { return result.record.currency + " " + Number(number).toFixed(2); }
   }
   function list(title, values) {
