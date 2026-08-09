@@ -70,7 +70,7 @@
     generateLocalTitles: function(topic, platform, language) {
       var clean = String(topic || "").trim();
       if (!clean) throw new Error("A topic is required.");
-      var lang = language === "fr" ? "fr" : "en";
+      var lang = language === "fr" ? "fr" : language === "sw" ? "sw" : "en";
       var templates = lang === "fr" ? [
         ["seo", clean + " : guide pratique pour commencer"],
         ["howto", "Comment réussir " + clean + " étape par étape"],
@@ -80,6 +80,15 @@
         ["bold_claim", clean + " ne devrait pas être aussi compliqué"],
         ["clickbait", "L’erreur sur " + clean + " que beaucoup ignorent"],
         ["viral", "Avant de parler de " + clean + ", regardez ceci"]
+      ] : lang === "sw" ? [
+        ["seo", clean + ": mwongozo wa vitendo wa kuanza"],
+        ["howto", "Jinsi ya kuboresha " + clean + " hatua kwa hatua"],
+        ["listicle", "Mawazo 7 ya vitendo kuhusu " + clean],
+        ["question", clean + ": njia ipi hufanya kazi kweli?"],
+        ["storyteller", "Nilichojifunza kutokana na " + clean],
+        ["bold_claim", clean + " haipaswi kuwa ngumu hivi"],
+        ["clickbait", "Kosa la " + clean + " ambalo wengi hulikosa"],
+        ["viral", "Kabla ya kuzungumzia " + clean + ", ona hili"]
       ] : [
         ["seo", clean + ": a practical guide to getting started"],
         ["howto", "How to improve " + clean + " step by step"],
