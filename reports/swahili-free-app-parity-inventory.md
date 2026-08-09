@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 17 |
-| **Accepted** | **1165** |
+| **Accepted** | **1167** |
 
 ## Category reconciliation
 
@@ -37,8 +37,8 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
-| Finance, Tax & Market Data | 132 | 6 | 108 | 2 | 0 | 0 | 0 | 0 | 16 | 98 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
+| Finance, Tax & Market Data | 132 | 6 | 108 | 2 | 0 | 0 | 0 | 0 | 16 | 99 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -818,7 +818,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Employment Contract Builder | Mortgage & Property | `/tools/employment-contract` | Localized shell candidate | `/sw/zana/mkataba-wa-ajira` | Yes |
 | CAC / Business Name Checker | Mortgage & Property | `/tools/cac-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-jina-cac-nigeria` | Yes |
 | African IP Rights Guide | Mortgage & Property | `/tools/ip-rights-africa` | Localized shell candidate | `/sw/zana/haki-miliki-afrika` | Yes |
-| P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Localized shell candidate | `/sw/zana/kilinganisha-bei-p2p` | No |
+| P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Localized shell candidate | `/sw/zana/kilinganisha-bei-p2p` | Yes |
 | Crypto Market Snapshot | Finance, Tax & Market Data | `/crypto/prices` | Native candidate | `/sw/mshahara-na-kodi/crypto` | No |
 | Stablecoin Reference Snapshot | Finance, Tax & Market Data | `/crypto/stablecoins` | Missing | None | No |
 | Remittance Quote Comparator | Finance, Tax & Market Data | `/crypto/remittance` | Missing | None | No |
@@ -835,7 +835,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Eritrea Historical Sales Tax Reference | Finance, Tax & Market Data | `/eritrea/er-vat` | Localized shell candidate | `/sw/eritrea/kikokotoo-vat` | Yes |
 | Ajo / Chama / Tontine Calculator | Uniquely African | `/tools/ajo-chama` | Localized shell candidate | `/sw/zana/kikokotoo-ajo-chama-tontine` | Yes |
 | Adult BMI Calculator — Metric & Imperial | Health & Wellness | `/tools/bmi-calculator` | Native candidate | `/sw/zana/kikokotoo-bmi-ya-mwili` | Yes |
-| Bill of Quantities Generator | Engineering & Construction | `/tools/boq-generator` | Localized shell candidate | `/sw/zana/kizalishaji-orodha-ya-kiasi` | No |
+| Bill of Quantities Generator | Engineering & Construction | `/tools/boq-generator` | Localized shell candidate | `/sw/zana/kizalishaji-orodha-ya-kiasi` | Yes |
 | SME Business Plan Draft Workshop | VAT & Business Tax | `/tools/business-plan-builder` | Native candidate | `/sw/zana/mjenzi-mpango-wa-biashara` | Yes |
 | Single-Food Calorie Estimator | Health & Wellness | `/tools/calorie-counter` | Native candidate | `/sw/zana/kihesabu-kalori` | Yes |
 | Compound Interest & Regular Savings Calculator | Finance, Tax & Market Data | `/tools/compound-interest` | Native candidate | `/sw/zana/riba-ya-mchanganyiko` | Yes |
