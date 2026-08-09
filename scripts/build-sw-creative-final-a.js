@@ -3,6 +3,7 @@ const fs = require("node:fs"),
   path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
 const clipPage = require("./lib/build-sw-creator-clip-page.js");
+const workspacePage = require("./lib/build-sw-creative-workspace-page.js");
 const apps = {
   afrostream: {
     slug: "afrostream",
@@ -70,6 +71,7 @@ const apps = {
     description:
       "Ongeza miradi na wateja kwenye kikao cha ndani, kisha pakua rekodi zinazoweza kuhamishwa za JSON au CSV.",
     engine: "creator-desk-engine.js",
+    special: "workspace",
     fields: [
       t("project", "Jina la mradi", "Picha za bidhaa", 1),
       t("client", "Mteja", "Biashara A", 1),
@@ -107,6 +109,7 @@ const apps = {
     description:
       "Tengeneza makundi ya hashtag kwa mada na jukwaa kwa kanuni za ndani, bila kudai trend au reach ya moja kwa moja.",
     engine: "creator-hashtags-engine.js",
+    special: "workspace",
     fields: [
       t("topic", "Mada ya chapisho", "Picha za harusi mjini Dar es Salaam", 1),
       s("platform", "Jukwaa", "instagram", [
@@ -153,6 +156,7 @@ const apps = {
     description:
       "Kokotoa ankara ya kazi ya ubunifu kwa senti sahihi na pakua JSON, TXT au PDF ya ndani.",
     engine: "creator-invoice-engine.js",
+    special: "workspace",
     pdf: true,
     fields: [
       t("issuer", "Jina la mtoa huduma", "Studio Kora", 1),
@@ -485,7 +489,7 @@ for (const [owner, cfg] of Object.entries(apps)) {
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(
     target,
-    cfg.special === "clip" ? clipPage.build(ROOT) : page(owner, cfg),
+    cfg.special === "clip" ? clipPage.build(ROOT) : cfg.special === "workspace" ? workspacePage.build(ROOT, owner, cfg) : page(owner, cfg),
   );
 }
 console.log(`Built ${Object.keys(apps).length} native Swahili Creative apps.`);

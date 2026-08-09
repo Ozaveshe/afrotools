@@ -3,10 +3,7 @@ const { test, expect } = require("@playwright/test"),
   pdf = require("pdf-parse");
 const generic = [
   ["creator-carousel", "/sw/zana/carousel-ya-mitandao/", ["json", "txt"]],
-  ["creator-desk", "/sw/zana/dawati-la-mtayarishi/", ["json", "csv"]],
-  ["creator-hashtags", "/sw/zana/hashtag-za-maudhui/", ["json", "txt"]],
   ["creator-hooks", "/sw/zana/hook-za-video/", ["json", "txt"]],
-  ["creator-invoice", "/sw/zana/ankara-ya-mtayarishi/", ["json", "txt"]],
   ["creator-kit", "/sw/zana/media-kit-ya-mtayarishi/", ["json", "txt"]],
   ["creator-mail", "/sw/zana/barua-ya-mtayarishi/", ["html", "json", "txt"]],
   ["creator-mind", "/sw/zana/mawazo-ya-mtayarishi/", ["json", "txt"]],
@@ -126,14 +123,74 @@ test("eleven deterministic creator owners run, reject invalid state and reopen e
   }
   expect(errors).toEqual([]);
 });
-test("invoice PDF reopens with Swahili document text", async ({ page }) => {
+async function downloadById(page, id) {
+  const waiting = page.waitForEvent("download");
+  await page.locator(id).click();
+  const item = await waiting;
+  return fs.readFileSync(await item.path());
+}
+test("desk preserves full project state and parsed JSON/CSV", async ({ page }) => {
+  await page.goto("/sw/zana/dawati-la-mtayarishi/");
+  await page.locator('[name="status"]').selectOption("quoted");
+  await page.locator('[name="currency"]').selectOption("EUR");
+  await page.locator("main form button[type=submit]").click();
+  await expect(page.locator("[data-output]")).toContainText("quoted");
+  const json = JSON.parse((await downloadById(page, "[data-json]")).toString("utf8"));
+  expect(json.projects[0]).toMatchObject({ status: "quoted", currency: "EUR" });
+  const csv = (await downloadById(page, "[data-csv]")).toString("utf8");
+  expect(csv).toContain('"quoted"');
+  expect(csv).toContain('"EUR"');
+  await noOverflow(page, 320);
+});
+test("hashtags preserves local mix/history/exports and gates optional AI", async ({ page }) => {
+  let aiRequests = 0;
+  await page.route("**/.netlify/functions/creator-hashtags/generate", route => { aiRequests += 1; route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({output:{sets:[]}})}); });
+  await page.goto("/sw/zana/hashtag-za-maudhui/");
+  await page.locator("#topicInput").fill("Picha za harusi mjini Dar es Salaam");
+  await page.locator("#generateBtn").click();
+  await expect(page.locator("#mixCard")).toBeVisible();
+  await page.locator(".cht-tag").first().click();
+  await expect(page.locator("#mixCount")).toContainText("1 /");
+  expect(JSON.parse((await downloadById(page, "#downloadJson")).toString("utf8"))).toBeTruthy();
+  expect((await downloadById(page, "#downloadTxt")).toString("utf8").length).toBeGreaterThan(20);
+  await page.locator("#historyBtn").click();
+  await expect(page.locator("#historyPanel")).toBeVisible();
+  await page.locator("#historyClose").click();
+  await page.locator("#generationMode").selectOption("ai");
+  await page.locator("#generateBtn").click();
+  expect(aiRequests).toBe(0);
+  await page.locator("#aiConsent").check();
+  await page.locator("#generateBtn").click();
+  await expect.poll(() => aiRequests).toBe(1);
+  await noOverflow(page, 320);
+});
+test("invoice preserves all fields, local draft/copy and parsed exports", async ({ page }) => {
   await page.goto("/sw/zana/ankara-ya-mtayarishi/");
-  await page.locator("main form").getByRole("button", { name: "Tengeneza matokeo" }).click();
-  const file = await grab(page, "pdf");
-  expect(file.buffer.subarray(0, 4).toString()).toBe("%PDF");
-  const parsed = await pdf(file.buffer);
-  expect(parsed.text).toContain("ANKARA INV-042");
+  await page.locator("#ciIssuedDate").fill("2026-08-09");
+  await page.locator("#ciDueDate").fill("2026-08-30");
+  await page.locator("#ciIssuerEmail").fill("studio@example.test");
+  await page.locator("#ciClientEmail").fill("client@example.test");
+  await page.locator("#ciTaxLabel").fill("VAT");
+  await page.locator("#ciTaxRate").fill("16");
+  await page.locator("#ciDiscountValue").fill("5");
+  await page.locator("#ciNotes").fill("Lipa ndani ya siku 21");
+  await page.locator("#ciSave").click();
+  await page.locator("#ciNotes").fill("");
+  await page.locator("#ciLoad").click();
+  await expect(page.locator("#ciNotes")).toHaveValue("Lipa ndani ya siku 21");
+  await page.locator("main form button[type=submit]").click();
+  await expect(page.locator("#ciPreview")).toBeVisible();
+  await page.locator("#ciCopy").click();
+  const json = JSON.parse((await downloadById(page, "#ciJson")).toString("utf8"));
+  expect(json.issuer.email).toBe("studio@example.test");
+  expect(json.items.length).toBeGreaterThan(0);
+  expect((await downloadById(page, "#ciText")).toString("utf8")).toContain("INV-001");
+  const pdfBuffer = await downloadById(page, "#ciPdf");
+  expect(pdfBuffer.subarray(0, 4).toString()).toBe("%PDF");
+  const parsed = await pdf(pdfBuffer);
+  expect(parsed.text).toContain("INV-001");
   expect(parsed.text).toContain("Jumla");
+  await noOverflow(page, 320);
 });
 test("creator kit AI sends nothing before explicit consent and retains local fallback", async ({
   page,

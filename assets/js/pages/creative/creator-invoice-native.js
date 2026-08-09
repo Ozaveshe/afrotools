@@ -6,10 +6,18 @@
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorInvoice;
   if (!engine) return;
   var fr = document.documentElement.lang.toLowerCase().indexOf('fr') === 0;
-  var locale = fr ? 'fr-FR' : 'en';
+  var sw = document.documentElement.lang.toLowerCase().indexOf('sw') === 0;
+  var locale = fr ? 'fr-FR' : sw ? 'sw-KE' : 'en';
   var storageKey = 'afrotools.creatorInvoice.local.v2';
   var lastResult = null;
-  var text = fr ? {
+  var text = sw ? {
+    missing: 'Jaza mtoa huduma, mteja, namba ya ankara na angalau huduma moja halali.',
+    ready: 'Ankara imekokotolewa. Thibitisha masharti ya eneo lako kabla ya kuituma.',
+    saved: 'Rasimu imehifadhiwa kwenye kivinjari hiki.', loaded: 'Rasimu ya ndani imerejeshwa.',
+    noDraft: 'Hakuna rasimu ya ndani iliyohifadhiwa.', copied: 'Muhtasari umenakiliwa.',
+    downloaded: 'Faili imepakuliwa.', pdfError: 'PDF haikuweza kutengenezwa.', items: 'Huduma',
+    subtotal: 'Jumla ndogo', discount: 'Punguzo', tax: 'Kodi', total: 'Jumla'
+  } : fr ? {
     missing: 'Complétez le nom de l’émetteur, le client, le numéro et au moins une ligne valide.',
     ready: 'Facture calculée. Vérifiez les mentions obligatoires avant de l’envoyer.',
     saved: 'Brouillon enregistré dans ce navigateur.',
@@ -201,10 +209,29 @@
     download(new Blob([engine.serializeText(lastResult, locale)], { type: 'text/plain;charset=utf-8' }), safeFilename('txt'));
     setStatus(text.downloaded, false);
   });
+  async function generateSwPDF(invoice) {
+    if (!window.jspdf || !window.jspdf.jsPDF) throw new Error('PDF_LIBRARY_UNAVAILABLE');
+    var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+    var y = 20;
+    function line(label, value) { doc.text(label + ': ' + value, 20, y); y += 7; }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.text('ANKARA ' + invoice.invoiceNumber, 20, y); y += 12;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    line('Mtoa huduma', invoice.issuer.name + (invoice.issuer.email ? ' <' + invoice.issuer.email + '>' : ''));
+    line('Mteja', invoice.client.name + (invoice.client.email ? ' <' + invoice.client.email + '>' : ''));
+    line('Imetolewa', invoice.issuedDate); line('Mwisho', invoice.dueDate); y += 3;
+    invoice.items.forEach(function (item) { line(item.description, item.quantity + ' x ' + money(item.unitPrice, invoice.currency) + ' = ' + money(item.total, invoice.currency)); });
+    y += 3; line('Jumla ndogo', money(invoice.subtotal, invoice.currency));
+    if (invoice.discount) line('Punguzo', '-' + money(invoice.discount, invoice.currency));
+    if (invoice.tax) line(invoice.taxLabel + ' (' + invoice.taxRate + '%)', money(invoice.tax, invoice.currency));
+    doc.setFont('helvetica', 'bold'); line('Jumla', money(invoice.total, invoice.currency)); doc.setFont('helvetica', 'normal');
+    if (invoice.notes) { y += 3; line('Maelezo', invoice.notes); }
+    doc.setFontSize(7); doc.text('Rasimu imetengenezwa ndani kwa AfroTools.', 105, 286, { align: 'center' });
+    return doc.output('blob');
+  }
   byId('ciPdf').addEventListener('click', async function () {
     if (!lastResult) return;
     try {
-      var blob = await engine.generatePDF(lastResult);
+      var blob = sw ? await generateSwPDF(lastResult) : await engine.generatePDF(lastResult);
       download(blob, safeFilename('pdf'));
       setStatus(text.downloaded, false);
     } catch (_) {

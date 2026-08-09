@@ -63,7 +63,7 @@ for (const [id, slug, fr] of rows) {
     sw = read(routeFile(swRoute)),
     en = read(routeFile(enRoute)),
     frHtml = read(routeFile(fr));
-  assert.match(sw, /<html lang="sw">/);
+  assert.match(sw, /<html[^>]*lang="sw"/);
   assert.match(
     sw,
     new RegExp(
@@ -118,6 +118,19 @@ for (const id of [
   assert.match(enClip, new RegExp(`id=["']${id}["']`));
   assert.match(swClip, new RegExp(`id=["']${id}["']`), `Sw clip missing ${id}`);
 }
+for (const [owner, slug, ids] of [
+  ["creator-desk", "dawati-la-mtayarishi", ["quoted", "EUR", "XAF", "data-json", "data-csv"]],
+  ["creator-hashtags", "hashtag-za-maudhui", ["generationMode", "aiConsent", "mixCard", "historyPanel", "downloadTxt", "downloadJson"]],
+  ["creator-invoice", "ankara-ya-mtayarishi", ["ciIssuerEmail", "ciClientEmail", "ciIssuedDate", "ciDueDate", "ciTaxLabel", "ciDiscountType", "ciNotes", "ciSave", "ciLoad", "ciCopy", "ciJson", "ciText", "ciPdf"]],
+]) {
+  const en = read(`tools/${owner}/app.html`);
+  const sw = read(`sw/zana/${slug}/index.html`);
+  for (const id of ids) {
+    assert.ok(en.includes(id), `${owner} English baseline missing ${id}`);
+    assert.ok(sw.includes(id), `${owner} Sw parity missing ${id}`);
+  }
+}
+assert.equal((read("sw/zana/ankara-ya-mtayarishi/index.html").match(/data-invoice-line/g) || []).length, 3);
 assert.match(swClip, /creator-clip-app-controller\.js/);
 assert.doesNotMatch(swClip, /sw-creator-clip-final-a\.js/);
 const swCarousel = read("sw/zana/carousel-ya-mitandao/index.html");

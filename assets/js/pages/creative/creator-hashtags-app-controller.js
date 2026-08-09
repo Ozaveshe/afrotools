@@ -4,8 +4,9 @@
   var E = window.AfroTools && window.AfroTools.TagWaveEngine;
   if (!E) return;
 
-  var locale = document.documentElement.lang === "fr" ? "fr" : "en";
+  var locale = document.documentElement.lang === "fr" ? "fr" : document.documentElement.lang === "sw" ? "sw" : "en";
   var fr = locale === "fr";
+  var sw = locale === "sw";
   var text = {
     empty: fr ? "Décrivez le sujet de la publication." : "Describe what the post is about.",
     localReady: fr ? "Trois jeux locaux sont prêts." : "Three local sets are ready.",
@@ -21,6 +22,7 @@
     max: fr ? "maximum" : "max",
     download: fr ? "Téléchargement prêt." : "Download ready."
   };
+  if (sw) text = {empty:"Eleza mada ya chapisho.",localReady:"Makundi matatu ya ndani yako tayari.",aiError:"Huduma ya AI haipatikani.",parseError:"Jibu la AI halikuthibitishwa.",consent:"Weka idhini kabla ya kutuma mada kwa AI.",copied:"Kundi limenakiliwa.",addFirst:"Ongeza hashtag kwanza.",historyEmpty:"Bado hakuna historia ya ndani.",history:"Historia ya ndani",estimate:"Makadirio",tags:"hashtag",max:"kiwango cha juu",download:"Faili iko tayari."};
   var API = "/.netlify/functions/creator-hashtags";
   var activePlatform = E.DEFAULT_PLATFORM;
   var currentResult = null;
