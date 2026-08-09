@@ -89,11 +89,88 @@
       "<strong>" + esc(label) + "</strong><span>" + esc(value) + "</span>";
     results.appendChild(card);
   }
+  function drawWrapped(context, value, x, y, maxWidth, lineHeight, maxLines) {
+    var words = String(value).split(/\s+/),
+      lines = [],
+      line = "";
+    words.forEach(function (word) {
+      var next = line ? line + " " + word : word;
+      if (line && context.measureText(next).width > maxWidth) {
+        lines.push(line);
+        line = word;
+      } else line = next;
+    });
+    if (line) lines.push(line);
+    lines.slice(0, maxLines).forEach(function (item, index) {
+      context.fillText(item, x, y + index * lineHeight);
+    });
+  }
+  function carouselCanvas(result, slide, index) {
+    var canvas = document.createElement("canvas"),
+      context;
+    canvas.width = result.dimensions.width;
+    canvas.height = result.dimensions.height;
+    canvas.className = "swfa-carousel-canvas";
+    canvas.dataset.slide = String(index + 1);
+    context = canvas.getContext("2d");
+    context.fillStyle = result.colours.background;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = result.colours.accent;
+    context.fillRect(0, 0, 26, canvas.height);
+    context.fillStyle = "#ffffff";
+    context.textBaseline = "top";
+    context.font = "900 86px sans-serif";
+    drawWrapped(context, slide.heading, 100, 150, canvas.width - 200, 102, 5);
+    context.fillStyle = "#dbeafe";
+    context.font = "500 46px sans-serif";
+    drawWrapped(context, slide.body, 100, 760, canvas.width - 200, 62, 6);
+    context.fillStyle = result.colours.accent;
+    context.font = "700 30px sans-serif";
+    context.fillText(String(index + 1).padStart(2, "0"), 100, 1230);
+    return canvas;
+  }
+  function canvasBlob(canvas) {
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (blob) {
+        if (blob) resolve(blob);
+        else reject(new Error("png"));
+      }, "image/png");
+    });
+  }
+  function carouselZip() {
+    if (!last || !window.JSZip) {
+      setStatus("ZIP haipatikani katika kivinjari hiki.", true);
+      return;
+    }
+    var zip = new window.JSZip();
+    Promise.all(
+      last.slides.map(function (slide, index) {
+        return canvasBlob(carouselCanvas(last, slide, index)).then(function (blob) {
+          zip.file("slaidi-" + String(index + 1).padStart(2, "0") + ".png", blob);
+        });
+      }),
+    )
+      .then(function () {
+        return zip.generateAsync({ type: "blob" });
+      })
+      .then(function (blob) {
+        download("carousel-slaidi-sw.zip", "application/zip", blob);
+        setStatus("PNG zote zimepakiwa ndani ya ZIP.");
+      })
+      .catch(function () {
+        setStatus("PNG za carousel hazikuweza kupakiwa.", true);
+      });
+  }
   function renderGeneric(result) {
     results.replaceChildren();
     if (config.owner === "creator-carousel") {
       result.slides.forEach(function (slide, index) {
-        add("Slaidi " + (index + 1), slide.heading + " — " + slide.body);
+        var wrap = document.createElement("article"),
+          heading = document.createElement("strong");
+        wrap.className = "swfa-result swfa-carousel-result";
+        heading.textContent = "Slaidi " + (index + 1);
+        wrap.append(heading, carouselCanvas(result, slide, index));
+        results.appendChild(wrap);
       });
     } else if (config.owner === "creator-desk") {
       var wrap = document.createElement("div");
@@ -377,6 +454,12 @@
     throw new Error("owner");
   }
   function textExport() {
+    if (config.owner === "creator-carousel")
+      return last.slides
+        .map(function (slide, index) {
+          return "SLAIDI " + (index + 1) + "\n" + slide.heading + "\n" + slide.body;
+        })
+        .join("\n\n");
     if (config.owner === "creator-mail")
       return [
         last.subject,
@@ -629,6 +712,7 @@
         pageHtml(),
       );
     if (kind === "pdf") invoicePdf();
+    if (kind === "zip") carouselZip();
   });
   function fieldHtml(field) {
     var attrs =

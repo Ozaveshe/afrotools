@@ -27,6 +27,22 @@
       _raw: item,
     };
   }
+  function normalizeCreator(item) {
+    var countryName = item.country;
+    if (typeof countryName === "number") {
+      countryName = Object.keys(engine.COUNTRY_MAP || {})[countryName] || "Afrika";
+    }
+    return {
+      name: text(item.name),
+      country: text(countryName) || "Afrika",
+      type: text(item.type || item.categories) || "Mtayarishi",
+      followers: Number(item.followers || item.subscribers) || 0,
+      score: Number(item.score || item.afro_score) || 0,
+      slug: text(item.slug),
+      avatar: text(item.avatar || item.avatar_url),
+      _raw: item._raw || item,
+    };
+  }
   function csv(rows) {
     return (
       "\ufeff" +
@@ -72,22 +88,29 @@
     });
     grid.replaceChildren();
     visible.forEach(function (item) {
-      var card = document.createElement("article");
+      var card = document.createElement("article"),
+        avatar = document.createElement("img"),
+        copy = document.createElement("div"),
+        name = document.createElement("strong"),
+        detail = document.createElement("span");
       card.className = "swfa-result";
-      card.innerHTML =
-        '<img src="' +
-        safeImage(item.avatar) +
-        '" alt="" width="64" height="64" loading="lazy"><div><strong>' +
-        text(item.name).replace(/[<>&]/g, "") +
-        "</strong><span>" +
-        text(item.country) +
+      avatar.src = safeImage(item.avatar);
+      avatar.alt = "";
+      avatar.width = 64;
+      avatar.height = 64;
+      avatar.loading = "lazy";
+      name.textContent = item.name;
+      detail.textContent =
+        item.country +
         " · " +
-        text(item.type) +
+        item.type +
         " · " +
         new Intl.NumberFormat("sw-KE", { notation: "compact" }).format(
           item.followers,
         ) +
-        " wafuasi</span></div>";
+        " wafuasi";
+      copy.append(name, detail);
+      card.append(avatar, copy);
       grid.appendChild(card);
     });
     if (!visible.length) {
@@ -118,7 +141,7 @@
       });
   }
   function ready(list, state, fresh) {
-    creators = list;
+    creators = list.map(normalizeCreator);
     sourceState = state;
     countries();
     render();

@@ -100,6 +100,36 @@ for (const [id, slug, fr] of rows) {
   assert.doesNotMatch(sw, /<script\b[^>]*src="https?:\/\//i);
   assert.doesNotMatch(sw, /[ÃÂ]|â(?:€”|€™|€œ|€˜)/);
 }
+const swClip = read("sw/zana/kukata-video-za-mtayarishi/index.html");
+const enClip = read("tools/creator-clip/app.html");
+for (const id of [
+  "saveProjectBtn",
+  "loadProjectBtn",
+  "genCaptionsBtn",
+  "addCaptionBtn",
+  "customFont",
+  "addOverlayBtn",
+  "exportBtn",
+  "brightnessSlider",
+  "contrastSlider",
+  "saturationSlider",
+  "audioVolume",
+]) {
+  assert.match(enClip, new RegExp(`id=["']${id}["']`));
+  assert.match(swClip, new RegExp(`id=["']${id}["']`), `Sw clip missing ${id}`);
+}
+assert.match(swClip, /creator-clip-app-controller\.js/);
+assert.doesNotMatch(swClip, /sw-creator-clip-final-a\.js/);
+const swCarousel = read("sw/zana/carousel-ya-mitandao/index.html");
+for (const name of ["background", "accent"]) {
+  assert.match(swCarousel, new RegExp(`"name":"${name}"`));
+}
+assert.match(swCarousel, /data-export="zip"/);
+assert.match(swCarousel, /jszip\.min\.js/);
+const swStreamController = read("assets/js/pages/creative/sw-afrostream-final-a.js");
+assert.match(swStreamController, /name\.textContent = item\.name/);
+assert.match(swStreamController, /Object\.keys\(engine\.COUNTRY_MAP/);
+assert.doesNotMatch(swStreamController, /card\.innerHTML/);
 const clip = require("../engines/src/creator-clip-engine.js");
 assert.deepEqual(
   clip.createPlan({ title: "Klipu ya mfano", start: "00:01", end: "00:03.5" }),

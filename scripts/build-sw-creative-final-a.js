@@ -2,6 +2,7 @@
 const fs = require("node:fs"),
   path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
+const clipPage = require("./lib/build-sw-creator-clip-page.js");
 const apps = {
   afrostream: {
     slug: "afrostream",
@@ -36,10 +37,13 @@ const apps = {
       ),
       t("callToAction", "Mwito wa hatua", "Hifadhi carousel hii"),
       t("handle", "Jina la akaunti", "@afrotools"),
+      t("background", "Rangi ya mandharinyuma", "#111827", 0, "color"),
+      t("accent", "Rangi ya msisitizo", "#f59e0b", 0, "color"),
     ],
     exports: [
       ["json", "Pakua JSON"],
-      ["html", "Pakua HTML"],
+      ["txt", "Pakua TXT"],
+      ["zip", "Pakua PNG zote (ZIP)"],
     ],
     boundary:
       "Huu ni mpangilio wa ndani wa slaidi. Hakiki maandishi, ukubwa wa jukwaa na haki za picha kabla ya kuchapisha.",
@@ -450,7 +454,7 @@ function page(owner, cfg) {
       : cfg.special === "clip"
         ? "sw-creator-clip-final-a.js"
         : "sw-creative-final-a.js";
-  return `<!doctype html>\n<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${cfg.title} | AfroTools</title><meta name="description" content="${cfg.description}"><meta name="robots" content="index, follow"><meta name="geo.region" content="002"><meta property="og:title" content="${cfg.title}"><meta property="og:description" content="${cfg.description}"><meta property="og:image" content="https://afrotools.com${image}"><meta property="og:url" content="https://afrotools.com${canonical}"><meta property="og:locale" content="sw_KE"><link rel="canonical" href="https://afrotools.com${canonical}"><link rel="alternate" hreflang="en" href="https://afrotools.com${en}"><link rel="alternate" hreflang="fr" href="https://afrotools.com${cfg.fr}"><link rel="alternate" hreflang="sw" href="https://afrotools.com${canonical}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com${en}"><link rel="stylesheet" href="/assets/css/design-system.min.css"><link rel="stylesheet" href="/assets/css/sw-creative-final-a.css"><script type="application/ld+json">${j(schema)}</script><script>(function(){try{var t=localStorage.getItem('aft_theme');var d=matchMedia('(prefers-color-scheme:dark)').matches;var a=t==='dark'||t==='light'?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.style.colorScheme=a;}catch(_){}})();</script></head><body class="swfa-page"><afro-navbar></afro-navbar><main class="swfa-shell" ${dataAttr} data-owner="${owner}"><header class="swfa-hero"><div><p class="swfa-eyebrow">Kiswahili · Zana ya mtayarishi · Local-first</p><h1>${cfg.title}</h1><p>${cfg.description}</p></div><img src="${image}" alt="${cfg.title}" width="600" height="400"></header>${body}<aside class="swfa-note"><strong>Mpaka wa matumizi.</strong> ${cfg.boundary}</aside><nav class="swfa-links" aria-label="Zana zinazohusiana"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a><a href="/sw/picha-na-design/">Picha na design</a><a href="/sw/zana-zote/">Zana zote</a></nav></main><afro-footer></afro-footer>${cfg.special ? "" : `<script id="swfaConfig" type="application/json">${j({ owner, fields: cfg.fields })}</script>`}<script src="/engines/${cfg.engine}"></script>${cfg.pdf ? '<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script>' : ""}<script src="/assets/js/pages/creative/${script}"></script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/lib/dark-mode.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script></body></html>\n`;
+  return `<!doctype html>\n<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${cfg.title} | AfroTools</title><meta name="description" content="${cfg.description}"><meta name="robots" content="index, follow"><meta name="geo.region" content="002"><meta property="og:title" content="${cfg.title}"><meta property="og:description" content="${cfg.description}"><meta property="og:image" content="https://afrotools.com${image}"><meta property="og:url" content="https://afrotools.com${canonical}"><meta property="og:locale" content="sw_KE"><link rel="canonical" href="https://afrotools.com${canonical}"><link rel="alternate" hreflang="en" href="https://afrotools.com${en}"><link rel="alternate" hreflang="fr" href="https://afrotools.com${cfg.fr}"><link rel="alternate" hreflang="sw" href="https://afrotools.com${canonical}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com${en}"><link rel="stylesheet" href="/assets/css/design-system.min.css"><link rel="stylesheet" href="/assets/css/sw-creative-final-a.css"><script type="application/ld+json">${j(schema)}</script><script>(function(){try{var t=localStorage.getItem('aft_theme');var d=matchMedia('(prefers-color-scheme:dark)').matches;var a=t==='dark'||t==='light'?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.style.colorScheme=a;}catch(_){}})();</script></head><body class="swfa-page"><afro-navbar></afro-navbar><main class="swfa-shell" ${dataAttr} data-owner="${owner}"><header class="swfa-hero"><div><p class="swfa-eyebrow">Kiswahili · Zana ya mtayarishi · Local-first</p><h1>${cfg.title}</h1><p>${cfg.description}</p></div><img src="${image}" alt="${cfg.title}" width="600" height="400"></header>${body}<aside class="swfa-note"><strong>Mpaka wa matumizi.</strong> ${cfg.boundary}</aside><nav class="swfa-links" aria-label="Zana zinazohusiana"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a><a href="/sw/picha-na-design/">Picha na design</a><a href="/sw/zana-zote/">Zana zote</a></nav></main><afro-footer></afro-footer>${cfg.special ? "" : `<script id="swfaConfig" type="application/json">${j({ owner, fields: cfg.fields })}</script>`}<script src="/engines/${cfg.engine}"></script>${owner === "creator-carousel" ? '<script src="/assets/vendor/jszip/jszip.min.js"></script>' : ""}${cfg.pdf ? '<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script>' : ""}<script src="/assets/js/pages/creative/${script}"></script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/lib/dark-mode.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script></body></html>\n`;
 }
 function buttons(items) {
   return items
@@ -479,6 +483,9 @@ for (const [owner, cfg] of Object.entries(apps)) {
   }
   const target = routeFile(swRoute);
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, page(owner, cfg));
+  fs.writeFileSync(
+    target,
+    cfg.special === "clip" ? clipPage.build(ROOT) : page(owner, cfg),
+  );
 }
 console.log(`Built ${Object.keys(apps).length} native Swahili Creative apps.`);

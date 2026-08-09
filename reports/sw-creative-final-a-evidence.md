@@ -3,32 +3,32 @@
 - Frozen base: `2f5fb8988ddd40e28eb17123fe653b18ff0801c3`
 - Branch: `codex/sw-final-creative-a-20260809`
 - Scope: 13 exact English owners and 13 native Swahili counterparts
-- Acceptance: 13/13 locally accepted
+- Adversarial acceptance: 6/13 currently accepted; 7 remain blocked for English-workspace feature restoration
 - Deletions: 0
 
-## Accepted owners
+## Adversarial status
 
-| English owner | Native Swahili route | Product and export proof |
+| English owner | Native Swahili route | Status and proof |
 |---|---|---|
-| `afrostream` | `/sw/zana/afrostream/` | Live API state, source/freshness label, fail-closed local snapshot, filters, reopened JSON and CSV |
-| `creator-carousel` | `/sw/zana/carousel-ya-mitandao/` | Deterministic slide plan, invalid/reset/stale state, reopened JSON and HTML |
-| `creator-clip` | `/sw/zana/kukata-video-za-mtayarishi/` | Browser MediaRecorder workflow, deterministic synthetic MediaStream fixture, reopened WebM EBML header and JSON |
-| `creator-desk` | `/sw/zana/dawati-la-mtayarishi/` | Portable local project record, invalid/reset/stale state, reopened JSON and CSV |
-| `creator-hashtags` | `/sw/zana/hashtag-za-maudhui/` | Deterministic local sets with no live-trend claim, reopened JSON and TXT |
-| `creator-hooks` | `/sw/zana/hook-za-video/` | Deterministic Swahili hooks and timing, reopened JSON and TXT |
-| `creator-invoice` | `/sw/zana/ankara-ya-mtayarishi/` | Cent-safe invoice engine, reopened JSON, TXT and parser-readable PDF |
-| `creator-kit` | `/sw/zana/media-kit-ya-mtayarishi/` | Complete local rate card, reopened JSON/TXT, zero AI requests before explicit consent, visible payload preview and local fallback |
-| `creator-mail` | `/sw/zana/barua-ya-mtayarishi/` | Local newsletter builder, reopened HTML, JSON and TXT |
-| `creator-mind` | `/sw/zana/mawazo-ya-mtayarishi/` | Deterministic local idea plan, reopened JSON and TXT |
-| `creator-money` | `/sw/zana/mapato-ya-mtayarishi/` | Existing shared planning engine, reopened JSON and TXT |
-| `creator-page` | `/sw/zana/ukurasa-wa-mtayarishi/` | Portable single-page document, reopened HTML and JSON |
-| `creator-polish` | `/sw/zana/boresha-maudhui-ya-mtayarishi/` | Existing deterministic text metrics with Swahili guidance, reopened JSON and TXT |
+| `afrostream` | `/sw/zana/afrostream/` | **Accepted after repair:** safe API DOM, correct country/category mapping, freshness/fallback, reopened JSON/CSV |
+| `creator-carousel` | `/sw/zana/carousel-ya-mitandao/` | **Accepted after repair:** complete colour controls, canvas preview, JSON/TXT, reopened ZIP with five 1080x1350 PNGs |
+| `creator-clip` | `/sw/zana/kukata-video-za-mtayarishi/` | **Accepted after repair:** full English feature matrix, uploaded WebM edited/exported/reopened, project save, 320px reflow |
+| `creator-desk` | `/sw/zana/dawati-la-mtayarishi/` | **Blocked:** missing Quoted status and English currency options |
+| `creator-hashtags` | `/sw/zana/hashtag-za-maudhui/` | **Blocked:** missing optional consented AI, custom mix, copy/clear and local history |
+| `creator-hooks` | `/sw/zana/hook-za-video/` | **Accepted:** deterministic Swahili hooks, timing, JSON/TXT |
+| `creator-invoice` | `/sw/zana/ankara-ya-mtayarishi/` | **Blocked:** missing multi-line invoice, dates, discounts, notes, save/restore and copy workflow |
+| `creator-kit` | `/sw/zana/media-kit-ya-mtayarishi/` | **Accepted:** complete local rate card, JSON/TXT and explicit AI consent boundary |
+| `creator-mail` | `/sw/zana/barua-ya-mtayarishi/` | **Blocked:** missing rendered newsletter preview and full preheader export parity |
+| `creator-mind` | `/sw/zana/mawazo-ya-mtayarishi/` | **Accepted:** deterministic local idea plan, JSON/TXT |
+| `creator-money` | `/sw/zana/mapato-ya-mtayarishi/` | **Blocked:** missing margin, effective-hourly and copy-plan surfaces |
+| `creator-page` | `/sw/zana/ukurasa-wa-mtayarishi/` | **Blocked:** missing TXT export and accent styling in exported HTML |
+| `creator-polish` | `/sw/zana/boresha-maudhui-ya-mtayarishi/` | **Blocked:** incomplete visible metrics and repeated-word guidance bug |
 
 ## Browser contract
 
 The isolated Chromium suite uses a unique server port and one worker. It covers all 13 routes, every advertised export, invalid/reset/stale behavior, 320px and 375px layouts, effective 200% reflow, manual light/dark themes, labels/focusable controls, page and console errors, local resources, native canonicals, and local-first behavior.
 
-The Creator Clip synthetic canvas stream is deterministic proof of the in-browser MediaRecorder and WebM container workflow when physical hardware is unavailable. It is explicitly labelled in the UI and is **not** claimed as real-device capture proof.
+CreatorClip proof now uses a real uploaded browser-generated WebM fixture through the complete editor, including captions, overlays, resizing, filters and local project save. The exported WebM is reopened and its EBML signature and media duration are verified.
 
 AfroStream never fabricates a successful live state. Failed public APIs fall back to the committed local snapshot with a visible snapshot label, review date, and unverified-metrics boundary. If neither source is available, the UI withholds profiles.
 
