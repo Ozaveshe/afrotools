@@ -521,7 +521,9 @@ const languageParityArtwork = new Map([
   ['sw/zana/nambari-za-kiarabu/index.html', 'arabic-calc.webp'],
   ['sw/zana/transliteration-ya-maandishi/index.html', 'transliterate.webp'],
   ['sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html', 'pidgin-translator.webp'],
-  ['sw/zana/mtafsiri-wa-kifaransa-afrika/index.html', 'french-african.webp']
+  ['sw/zana/mtafsiri-wa-kifaransa-afrika/index.html', 'french-african.webp'],
+  ['sw/zana/kalenda-ya-mtayarishi/index.html', 'creator-calendar.webp'],
+  ['sw/zana/caption-za-maudhui/index.html', 'creator-captions.webp']
 ]);
 
 function repairLanguageArtwork(rel, fileName) {
