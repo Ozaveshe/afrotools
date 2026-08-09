@@ -4,7 +4,7 @@
   var engine = window.AfroTools && window.AfroTools.CryptoPortfolioLots;
   if (!root || !engine) return;
 
-  var lang = root.dataset.locale === 'fr' ? 'fr' : 'en';
+  var lang = ['fr', 'sw'].indexOf(root.dataset.locale) >= 0 ? root.dataset.locale : 'en';
   var words = {
     en: {
       loading: 'Requesting a fresh market snapshot…',
@@ -28,7 +28,7 @@
       updated: 'Latest source update',
       ceiling: 'Freshness ceiling',
       minutes: 'minutes',
-      planning: 'Planning snapshot only — not financial, tax or investment advice.'
+      planning: 'Planning snapshot only — not financial, tax or investment advice.', remove:'Remove', fields:'Check the lot fields.', pdfTitle:'Crypto portfolio snapshot', currency:'Currency', coverageLabel:'Cost coverage', costLabel:'Cost', valueLabel:'Value', unknown:'unknown', unavailableValue:'unavailable'
     },
     fr: {
       loading: 'Demande d’un instantané de marché récent…',
@@ -52,7 +52,10 @@
       updated: 'Dernière mise à jour source',
       ceiling: 'Plafond de fraîcheur',
       minutes: 'minutes',
-      planning: 'Instantané de planification uniquement — aucun conseil financier, fiscal ou d’investissement.'
+      planning: 'Instantané de planification uniquement — aucun conseil financier, fiscal ou d’investissement.', remove:'Supprimer', fields:'Vérifiez les champs du lot.', pdfTitle:'Instantané du portefeuille crypto', currency:'Devise', coverageLabel:'Couverture des coûts', costLabel:'Coût', valueLabel:'Valeur', unknown:'inconnu', unavailableValue:'indisponible'
+    },
+    sw: {
+      loading:'Inaomba muhtasari mpya wa soko…', ready:'Muhtasari mpya wa soko umepakiwa. Thamani sasa zinaweza kuhesabiwa.', unavailable:'Data mpya ya mtoa huduma haipatikani. Thamani zote zinazotegemea soko zimezuiwa.', missing:'Mali moja au zaidi haipo katika muhtasari huu mpya. Jumla zote zimezuiwa.', saved:'Fungu limehifadhiwa kwenye kifaa hiki.', removed:'Fungu limeondolewa.', reset:'Portfolio imefutwa kwenye kifaa hiki.', importOk:'Nakala imeingizwa na kuthibitishwa.', importBad:'Nakala hii si halali, ni kubwa mno au ina thamani zisizotumika.', choose:'Chagua mali', none:'Hakuna mafungu bado. Ongeza kila ununuzi kama fungu tofauti.', partial:'Faida/hasara ya sehemu (mafungu yenye gharama)', complete:'Faida/hasara (mafungu yote yana gharama)', confirmReset:'Pakua nakala kwanza ikihitajika. Ufute kabisa mafungu yote ya ndani?', locked:'Sarafu imefungwa wakati mafungu yapo. Pakua na ufute portfolio kabla ya kubadili.', pdfMissing:'Maktaba ya PDF haikupakiwa. Jaribu tena.', source:'Chanzo', fetched:'Ilichukuliwa', updated:'Sasisho la mwisho la chanzo', ceiling:'Kikomo cha upya', minutes:'dakika', planning:'Muhtasari wa mipango pekee — si ushauri wa kifedha, kodi au uwekezaji.', remove:'Ondoa', fields:'Kagua sehemu za fungu.', pdfTitle:'Muhtasari wa portfolio ya crypto', currency:'Sarafu', coverageLabel:'Ufunikaji wa gharama', costLabel:'Gharama', valueLabel:'Thamani', unknown:'haijulikani', unavailableValue:'haipatikani'
     }
   }[lang];
   var key = 'afro-crypto-portfolio-v2';
@@ -78,15 +81,15 @@
     els.status.dataset.kind = kind || '';
   }
   function money(value) {
-    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en', {
+    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-KE' : 'en', {
       style: 'currency', currency: portfolio.currency, maximumFractionDigits: 2
     }).format(value);
   }
   function number(value) {
-    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en', { maximumFractionDigits: 8 }).format(value);
+    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-KE' : 'en', { maximumFractionDigits: 8 }).format(value);
   }
   function time(value) {
-    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
+    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-KE' : 'en', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
   }
   function setText(el, value) { el.textContent = value; }
   function download(name, type, text) {
@@ -154,7 +157,7 @@
       ].forEach(function (value) { var cell = document.createElement('td'); cell.textContent = value; row.appendChild(cell); });
       var action = document.createElement('td'); var remove = document.createElement('button');
       remove.type = 'button'; remove.className = 'cp-btn'; remove.dataset.remove = lot.id;
-      remove.textContent = lang === 'fr' ? 'Supprimer' : 'Remove'; action.appendChild(remove); row.appendChild(action);
+      remove.textContent = words.remove || 'Remove'; action.appendChild(remove); row.appendChild(action);
       els.body.appendChild(row);
     });
   }
@@ -177,35 +180,35 @@
   }
   function csv() {
     var receipt = market && market.ok ? market.receipt : {};
-    var rows = [['Asset', 'Symbol', 'Quantity', 'All-in cost ' + portfolio.currency, 'Current price ' + portfolio.currency, 'Current value ' + portfolio.currency, 'Known-cost P/L ' + portfolio.currency, 'Acquired on', 'Label']];
+    var rows = [[lang==='sw'?'Mali':'Asset', lang==='sw'?'Alama':'Symbol', lang==='sw'?'Kiasi':'Quantity', (lang==='sw'?'Gharama kamili ':'All-in cost ') + portfolio.currency, (lang==='sw'?'Bei ya sasa ':'Current price ') + portfolio.currency, (lang==='sw'?'Thamani ya sasa ':'Current value ') + portfolio.currency, (lang==='sw'?'Faida/hasara yenye gharama ':'Known-cost P/L ') + portfolio.currency, lang==='sw'?'Tarehe ya ununuzi':'Acquired on', lang==='sw'?'Lebo':'Label']];
     portfolio.lots.forEach(function (lot) {
       var row = market && market.ok ? market.rows[lot.assetId] : null;
       var value = row ? row.price * lot.quantity : '';
       rows.push([lot.name, lot.symbol, lot.quantity, lot.cost == null ? '' : lot.cost, row ? row.price : '', value, row && lot.cost != null ? value - lot.cost : '', lot.acquiredOn || '', lot.label]);
     });
     rows.push([]);
-    rows.push(['Source', receipt.source || 'unavailable']);
-    rows.push(['Fetched at', receipt.fetchedAt || '']);
-    rows.push(['Source updated at', receipt.sourceUpdatedAt || '']);
-    rows.push(['Cost coverage', calculation && calculation.ok ? (calculation.costCoverage * 100).toFixed(1) + '%' : 'unavailable']);
-    rows.push(['Disclaimer', words.planning]);
+    rows.push([words.source, receipt.source || words.unavailableValue]);
+    rows.push([words.fetched, receipt.fetchedAt || '']);
+    rows.push([words.updated, receipt.sourceUpdatedAt || '']);
+    rows.push([words.coverageLabel, calculation && calculation.ok ? (calculation.costCoverage * 100).toFixed(1) + '%' : words.unavailableValue]);
+    rows.push([lang==='sw'?'Tahadhari':'Disclaimer', words.planning]);
     return rows.map(function (row) { return row.map(engine.csvCell).join(','); }).join('\r\n');
   }
   function pdf() {
     if (!window.jspdf || !window.jspdf.jsPDF) { status(words.pdfMissing, 'error'); return; }
     var doc = new window.jspdf.jsPDF();
     var y = 18; function line(text, gap) { doc.text(String(text), 14, y); y += gap || 7; }
-    doc.setFontSize(17); line(lang === 'fr' ? 'Instantané du portefeuille crypto' : 'Crypto portfolio snapshot', 10);
+    doc.setFontSize(17); line(words.pdfTitle || 'Crypto portfolio snapshot', 10);
     doc.setFontSize(10); line(words.planning, 9);
-    line((lang === 'fr' ? 'Devise : ' : 'Currency: ') + portfolio.currency);
-    line(words.source + ': ' + (market && market.ok ? market.receipt.source : 'unavailable'));
+    line(words.currency + ': ' + portfolio.currency);
+    line(words.source + ': ' + (market && market.ok ? market.receipt.source : words.unavailableValue));
     if (market && market.ok) { line(words.fetched + ': ' + market.receipt.fetchedAt); line(words.updated + ': ' + market.receipt.sourceUpdatedAt); }
-    line((lang === 'fr' ? 'Couverture des coûts : ' : 'Cost coverage: ') + (calculation && calculation.ok ? (calculation.costCoverage * 100).toFixed(1) + '%' : 'unavailable'), 9);
+    line(words.coverageLabel + ': ' + (calculation && calculation.ok ? (calculation.costCoverage * 100).toFixed(1) + '%' : words.unavailableValue), 9);
     portfolio.lots.forEach(function (lot) {
       if (y > 275) { doc.addPage(); y = 18; }
       var row = market && market.ok ? market.rows[lot.assetId] : null;
       line(lot.name + ' (' + lot.symbol + ') — ' + number(lot.quantity));
-      line((lang === 'fr' ? 'Coût : ' : 'Cost: ') + (lot.cost == null ? 'unknown' : money(lot.cost)) + ' | ' + (lang === 'fr' ? 'Valeur : ' : 'Value: ') + (row ? money(row.price * lot.quantity) : 'unavailable'), 9);
+      line(words.costLabel + ': ' + (lot.cost == null ? words.unknown : money(lot.cost)) + ' | ' + words.valueLabel + ': ' + (row ? money(row.price * lot.quantity) : words.unavailableValue), 9);
     });
     doc.save('crypto-portfolio-' + portfolio.currency.toLowerCase() + '.pdf');
   }
@@ -227,7 +230,7 @@
       quantity: els.quantity.value, cost: els.cost.value, acquiredOn: els.date.value, label: els.label.value
     });
     if (!lot || portfolio.lots.length >= engine.MAX_LOTS) {
-      status(lang === 'fr' ? 'Vérifiez les champs du lot.' : 'Check the lot fields.', 'error'); return;
+      status(words.fields || 'Check the lot fields.', 'error'); return;
     }
     portfolio.lots.push(lot); persist(); els.form.reset(); render(); status(words.saved, 'success');
   });
