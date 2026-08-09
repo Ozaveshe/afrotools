@@ -17,6 +17,7 @@ const SW_ROOF = require("./lib/sw-roof-contract.js");
 const SW_BOREHOLE = require("./lib/sw-borehole-contract.js");
 const SW_GENERATOR_SIZING = require("./lib/sw-generator-sizing-contract.js");
 const SW_BOQ_GEN = require("./lib/sw-boq-gen-contract.js");
+const SW_FENCE = require("./lib/sw-fence-cost-contract.js");
 const SW_HOME_RENOVATION = require("../data/registry/sw-property-construction-planning.json").rows.find((app) => app.englishId === "home-renovation-cost");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -237,6 +238,19 @@ const apps = rows.map((row) => {
     };
   }
 
+  if (row.englishId === SW_FENCE.id) {
+    if (!exists(SW_FENCE.file)) throw new Error("Fence cost owner missing.");
+    return {
+      englishId: row.englishId, categoryKey: row.categoryKey, englishRoute: row.englishRoute,
+      swahiliRoute: SW_FENCE.swRoute, swahiliFile: SW_FENCE.file, status: "accepted-candidate",
+      sourceOwner: "scripts/build-sw-fence-cost-parity.js -> assets/js/engines/fence-cost-engine.js -> assets/js/pages/sw-fence-cost-parity.js",
+      formulaDecision: "The exact English length, height factor, material, labour, gate, topping, per-metre and duration arithmetic is shared through one DOM-free engine consumed by English and Swahili.",
+      sourceDecision: "Exact Engineering ownership is proved by inventory, locale coverage and registry sourceId. Ten-country embedded rates have no date or maintained source ledger and are visibly stale/low-confidence; current written quotes and qualified boundary, structural, electrical and permit review control decisions.",
+      browserProof: "Chromium: exact Nigeria and Kenya oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      exportProof: "JSON downloaded and parsed; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.", artwork, blocker: null,
+    };
+  }
+
   if (row.categoryKey === "engineering" && engineeringIds.has(row.englishId)) {
     const contract = SW_ENGINEERING_MATERIALS_APPS.find((app) => app.id === row.englishId);
     if (!routePresent) throw new Error(`Engineering owner missing for ${row.englishId}.`);
@@ -306,22 +320,22 @@ const receipt = {
     acceptedCandidates: accepted.length,
     blocked: blocked.length,
     byCategory: {
-      engineering: { denominator: 20, acceptedCandidates: 15, blocked: 5 },
+      engineering: { denominator: 20, acceptedCandidates: 16, blocked: 4 },
       energy: { denominator: 17, acceptedCandidates: 17, blocked: 0 },
       transport: { denominator: 18, acceptedCandidates: 3, blocked: 15 },
     },
     acceptanceBoundary: "Candidate receipt only; coordinator-owned central acceptance remains unchanged.",
   },
   proof: {
-    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-boq-builder-parity.test.js", "tests/swahili-structural-screening-parity.test.js", "tests/swahili-electrical-load-parity.test.js", "tests/swahili-paint-parity.test.js", "tests/swahili-roof-parity.test.js", "tests/swahili-borehole-parity.test.js", "tests/swahili-generator-sizing-parity.test.js", "tests/swahili-boq-gen-parity.test.js", "tests/sw-property-construction-planning-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
-    browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-boq-builder-parity.spec.js", "tests/e2e/sw-structural-screening-parity.spec.js", "tests/e2e/sw-electrical-load-parity.spec.js", "tests/e2e/sw-paint-parity.spec.js", "tests/e2e/sw-roof-parity.spec.js", "tests/e2e/sw-borehole-parity.spec.js", "tests/e2e/sw-generator-sizing-parity.spec.js", "tests/e2e/sw-boq-gen-parity.spec.js", "tests/e2e/sw-home-renovation-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
-    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 15 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-boq-builder-parity.test.js", "tests/swahili-structural-screening-parity.test.js", "tests/swahili-electrical-load-parity.test.js", "tests/swahili-paint-parity.test.js", "tests/swahili-roof-parity.test.js", "tests/swahili-borehole-parity.test.js", "tests/swahili-generator-sizing-parity.test.js", "tests/swahili-boq-gen-parity.test.js", "tests/sw-property-construction-planning-parity.test.js", "tests/swahili-fence-cost-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
+    browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-boq-builder-parity.spec.js", "tests/e2e/sw-structural-screening-parity.spec.js", "tests/e2e/sw-electrical-load-parity.spec.js", "tests/e2e/sw-paint-parity.spec.js", "tests/e2e/sw-roof-parity.spec.js", "tests/e2e/sw-borehole-parity.spec.js", "tests/e2e/sw-generator-sizing-parity.spec.js", "tests/e2e/sw-boq-gen-parity.spec.js", "tests/e2e/sw-home-renovation-parity.spec.js", "tests/e2e/sw-fence-cost-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
+    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 16 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     privacy: "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists.",
   },
   apps,
 };
 
-if (accepted.length !== 35 || blocked.length !== 20) throw new Error(`Expected 35 accepted candidates and 20 blocked; received ${accepted.length}/${blocked.length}.`);
+if (accepted.length !== 36 || blocked.length !== 19) throw new Error(`Expected 36 accepted candidates and 19 blocked; received ${accepted.length}/${blocked.length}.`);
 
 const artworkReceipt = {
   schemaVersion: 1,
@@ -335,16 +349,16 @@ const artworkReceipt = {
 const byCategory = (key, status) => apps.filter((app) => app.categoryKey === key && app.status === status).map((app) => `\`${app.englishId}\``).join(", ");
 const md = `# Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **35 accepted candidates / 20 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **36 accepted candidates / 19 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
 | Category | Denominator | Accepted candidate | Blocked |
 |---|---:|---:|---:|
-| Engineering & Construction | 20 | 15 | 5 |
+| Engineering & Construction | 20 | 16 | 4 |
 | Energy & Utilities | 17 | 17 | 0 |
 | Transport & Logistics | 18 | 3 | 15 |
-| **Total** | **55** | **35** | **20** |
+| **Total** | **55** | **36** | **19** |
 
 Accepted Energy IDs: ${byCategory("energy", "accepted-candidate")}.
 
@@ -372,6 +386,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - \`generator-sizing\` owns exactly \`/sw/zana/ukubwa-wa-generator/\` under Engineering; the old Energy registry label was corrected without duplicate category credit. Its undated example watt/surge presets are low-confidence until nameplates are entered. Final motor starts, phase, derating, wiring, transfer switch and CO-safe outdoor installation require a qualified technician.
 - \`boq-gen\` owns exactly \`/sw/zana/kizalishaji-orodha-ya-kiasi/\` and English \`/tools/boq-generator/\`; it is distinct from user-authored \`boq-generator\` BOQ Builder. One shared engine repairs the legacy multi-floor wall multiplier and duplicate tile/screed allowances. Its Q1 2025 fifteen-country rates are stale, unverified and low-confidence until a quantity surveyor checks quantities and current quotations.
 - \`home-renovation-cost\` owns exactly \`/sw/zana/gharama-ukarabati-wa-nyumba/\`. It now reuses the English quantity, unit-cost, fixed-cost and contingency engine; the unrelated legacy Swahili room/preset calculator was retired. Stats SA supplies South Africa index context only and no price, while all project values are user-entered and require current quotations and professional scope review.
+- \`fence-cost\` owns exactly \`/sw/zana/gharama-ya-uzio/\`. English and Swahili share one extracted DOM-free engine. Its ten-country embedded rates are undated, unverified and low-confidence; the UI requires current quotations plus boundary, structural, electrical and permit review and never presents a legal load, boundary or construction approval.
 - Fleet fuel, vehicle operating cost and truck load now use the exact English DOM-free Transport cost engine. Truck load uses only user-entered capacity, load, distance, currency label and trip cost; it supplies no fare, tariff, market benchmark or legal load approval. The remaining 15 Transport IDs stay fail-closed, and car-import customs/port sources remain \`changed\` in \`data/transport/source-status.json\`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
@@ -390,6 +405,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Generator sizing: exact default and custom-motor oracles, invalid/reset and explicit undated-source/stale state; JSON parsed/reopened, CSV/TXT parsed and PDF reopened through PDF.js; English shared-engine regression and exact Engineering ownership passed.
 - Auto BOQ: exact Nigeria, multi-floor and basic-floor oracles, invalid/reset and explicit Q1 2025 stale state; JSON parsed/reopened, CSV/TXT parsed and PDF reopened through PDF.js; English shared-engine regression, formula repair and exact disambiguated ownership passed.
 - Home renovation: exact 1,155 shared-engine oracle, invalid/reset, user-entered source boundary, 320px, 375px and 200% reflow, themes and focus; copy reopened, TXT/JSON parsed, PDF reopened through pdf-parse and print verified. The missing English engine include was repaired and regression-tested.
+- Fence cost: exact Nigeria and Kenya formula oracles, invalid/reset and explicit undated-source/stale state; JSON parsed, CSV/TXT parsed and PDF reopened through PDF.js; English shared-engine regression and exact Engineering ownership passed.
 - Truck load: exact oracle plus overload boundary; invalid/reset; light/dark; keyboard/focus; reciprocal metadata; JSON parsed and reopened, CSV/TXT parsed, and PDF reopened with PDF.js. The English route passed through the same engine after removal of its unused fuel-consumption field.
 - Network instrumentation recorded no fetch/XHR/beacon carrying raw inputs on the accepted deep flows. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
 - The remaining absent physical route is \`car-price-intelligence\`; its absence is asserted and blocked, not hidden by denominator arithmetic.
@@ -413,6 +429,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Generator-sizing owner/engine/routes: \`scripts/build-sw-generator-sizing-parity.js\`, \`scripts/lib/sw-generator-sizing-contract.js\`, \`assets/js/engines/generator-sizing-engine.js\`, \`assets/js/pages/sw-generator-sizing-parity.js\`, \`tools/generator-sizing/index.html\`, and \`sw/zana/ukubwa-wa-generator/index.html\`.
 - Auto-BOQ owner/engine/routes: \`scripts/build-sw-boq-gen-parity.js\`, \`scripts/lib/sw-boq-gen-contract.js\`, \`assets/js/engines/boq-gen-engine.js\`, \`assets/js/pages/engineering-parity/boq-gen-1.js\`, \`assets/js/pages/sw-boq-gen-parity.js\`, \`tools/boq-generator/index.html\`, and \`sw/zana/kizalishaji-orodha-ya-kiasi/index.html\`.
 - Home-renovation owner/engine/routes: \`scripts/build-sw-property-construction-planning-parity.js\`, \`data/registry/sw-property-construction-planning.json\`, \`assets/js/engines/property-assumption.js\`, \`assets/js/pages/sw-property-construction-planning.js\`, \`tools/home-renovation-cost/index.html\`, and \`sw/zana/gharama-ukarabati-wa-nyumba/index.html\`.
+- Fence-cost owner/engine/routes: \`scripts/build-sw-fence-cost-parity.js\`, \`scripts/lib/sw-fence-cost-contract.js\`, \`assets/js/engines/fence-cost-engine.js\`, \`assets/js/pages/sw-fence-cost-parity.js\`, \`tools/fence-cost/index.html\`, and \`sw/zana/gharama-ya-uzio/index.html\`.
 - Transport cost engine/manifest/runtimes: \`assets/js/engines/transport-cost-engine.js\`, \`scripts/lib/sw-transport-cost-contract.js\`, \`assets/js/pages/sw-transport-cost-parity.js\`, \`assets/js/pages/sw-vehicle-operating-cost-parity.js\`, and \`assets/js/pages/sw-truck-load-parity.js\`.
 - Truck-load generator/style/routes: \`scripts/build-sw-truck-load-parity.js\`, \`assets/css/sw-truck-load-parity.css\`, \`sw/zana/kupakia-lori/index.html\`, and the English source route \`tools/truck-load/index.html\`.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
@@ -446,6 +463,8 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - \`npx playwright test -c playwright.sw-boq-gen.config.js --workers=1\`
 - \`node --test tests/sw-property-construction-planning-parity.test.js\`
 - \`npx playwright test -c playwright.sw-home-renovation.config.js --workers=1\`
+- \`node --test tests/swahili-fence-cost-parity.test.js\`
+- \`npx playwright test -c playwright.sw-fence-cost.config.js --workers=1\`
 - \`node scripts/build-sw-vehicle-operating-cost-parity.js\`
 - \`node scripts/build-sw-truck-load-parity.js\`
 - \`node --test tests/swahili-transport-cost-parity.test.js\`
@@ -466,7 +485,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 
 ## Carried baseline debt
 
-- \`npm run sw:surface:check\` reports 35 source-owned serial parity routes as stale against the older broad product-surface generator, including the new home-renovation owner. \`npm run sw:parity:check\` also requests coordinator-owned inventory regeneration after the registry ownership correction. This one-app lane did not overwrite the dedicated route owners or mutate the central inventory.
+- \`npm run sw:surface:check\` reports 36 source-owned serial parity routes as stale against the older broad product-surface generator, including the dedicated fence-cost owner. \`npm run sw:parity:check\` also requests coordinator-owned inventory regeneration after the registry ownership correction. This one-app lane did not overwrite the dedicated route owners or mutate the central inventory.
 - \`npm run build:i18n:validate\` exits 1 because coordinator-owned generated localization artifacts are already stale: \`data/registry/locale-page-coverage.json\`, \`reports/localization-coverage.json\`, and \`reports/localization-coverage.md\`. This lane did not regenerate or edit them. The underlying localization checks pass, and standalone \`npm run validate:hreflang\` passes 33,418 relationships across 5,351 groups.
 - \`npm run audit\` exits 0 and reports two carried missing registry pages outside this lane: \`job-offer-evaluator\` and \`zana-tathmini-ya-ofa-ya-kazi-sw-wave8\`.
 - \`npm ci\` reports 14 dependency advisories (6 moderate, 8 high); no dependency manifest or lockfile was changed.
