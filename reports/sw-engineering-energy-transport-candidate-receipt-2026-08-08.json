@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 33,
-    "blocked": 22,
+    "acceptedCandidates": 34,
+    "blocked": 21,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 13,
-        "blocked": 7
+        "acceptedCandidates": 14,
+        "blocked": 6
       },
       "energy": {
         "denominator": 17,
@@ -46,6 +46,7 @@
       "tests/swahili-roof-parity.test.js",
       "tests/swahili-borehole-parity.test.js",
       "tests/swahili-generator-sizing-parity.test.js",
+      "tests/swahili-boq-gen-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -59,9 +60,10 @@
       "tests/e2e/sw-roof-parity.spec.js",
       "tests/e2e/sw-borehole-parity.spec.js",
       "tests/e2e/sw-generator-sizing-parity.spec.js",
+      "tests/e2e/sw-boq-gen-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 13 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 14 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -339,19 +341,19 @@
       "englishId": "boq-gen",
       "categoryKey": "engineering",
       "englishRoute": "/tools/boq-generator",
-      "swahiliRoute": "/sw/zana/kizalishaji-orodha-ya-kiasi",
+      "swahiliRoute": "/sw/zana/kizalishaji-orodha-ya-kiasi/",
       "swahiliFile": "sw/zana/kizalishaji-orodha-ya-kiasi/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-boq-gen-contract.js -> assets/js/engines/boq-gen-engine.js -> assets/js/pages/sw-boq-gen-parity.js",
+      "formulaDecision": "The exact English seven-section automatic material, labour, contingency and total estimate is shared through one DOM-free engine. The migration repairs legacy multi-floor wall multiplication and duplicated floor-tile/screed allowances in both languages.",
+      "sourceDecision": "Exact Engineering ownership is proved by inventory, locale coverage and registry sourceId, and is distinct from user-authored BOQ Builder. Fifteen-country Q1 2025 embedded rates are stale, unverified and low-confidence; a quantity surveyor and current supplier quotations control real decisions.",
+      "browserProof": "Chromium: deterministic Nigeria and repaired multi-floor/basic-floor oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/boq-gen.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "home-renovation-cost",
