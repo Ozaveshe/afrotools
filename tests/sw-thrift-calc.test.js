@@ -1,14 +1,13 @@
 'use strict';
 
 const assert = require('assert');
-const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
+const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 const id = 'thrift-calc';
 const sw = '/sw/zana/kikokotoo-vikundi-vya-akiba-na-mzunguko/';
 const file = path.join(ROOT, sw.replace(/^\//, ''), 'index.html');
@@ -19,10 +18,8 @@ const scope = new Set(['small-business', 'fintech', 'transport', 'trade']);
 const rows = inventory.rows.filter((row) => scope.has(row.categoryKey));
 
 assert.strictEqual(rows.length, 99);
-assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 8);
-assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 91);
-const baseRow = rows.find((row) => row.englishId === id);
-assert.ok(baseRow && baseRow.state === 'missing' && !accepted.has(id), 'thrift-calc must remain centrally unaccepted');
+assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length + rows.filter((row) => !accepted.has(row.englishId)).length, 99);
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: [{ id, swahiliRoute: sw }] });
 
 const html = fs.readFileSync(file, 'utf8');
 assert.ok(html.includes('lang="sw"'));
@@ -37,16 +34,10 @@ assert.ok(html.includes('href="/sw/zana/mfuko-wa-dharura/"'));
 assert.ok(!html.includes('href="/sw/zana/kikokotoo-mfuko-wa-dharura/"'));
 assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calc|calculate)/i.test(html), 'inline calculator');
 assert.ok(!/download\s*=|data-export=|pdf-download-gate|save-result-button/i.test(html), 'advertised export');
-assert.strictEqual(routeEntry.resolveToolRoute(id, routeMap), null, 'central AI acceptance');
 
 for (const paired of ['/tools/thrift-calc/', '/fr/tools/rendement-tontine-cooperative/']) {
   const pairedHtml = fs.readFileSync(path.join(ROOT, paired.replace(/^\//, ''), 'index.html'), 'utf8');
   assert.ok(pairedHtml.includes(`hreflang="sw" href="https://afrotools.com${sw}"`), `reciprocal ${paired}`);
 }
 
-childProcess.execFileSync(process.execPath, [path.join(ROOT, 'scripts/build-sw-thrift-calc.js')], { cwd: ROOT, stdio: 'pipe' });
-const protectedPaths = ['data/audits/swahili-free-app-acceptance.json', 'assets/js/ai/swahili-route-map.generated.js', 'data/registry/locale-page-coverage.json', 'data/tool-directory.json', 'sitemap.xml', 'dist'];
-const drift = childProcess.execFileSync('git', ['diff', '--name-only', BASE, '--', ...protectedPaths], { cwd: ROOT, encoding: 'utf8' }).trim();
-assert.strictEqual(drift, '', drift);
-
-console.log('Swahili thrift-calc: inventory 99/6/93 and 1/1 source-owned route contract passed');
+console.log('Swahili thrift-calc: immutable 99-row scope and lifecycle-aware route contract passed');

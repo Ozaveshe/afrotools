@@ -1,36 +1,41 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
+const routeMap = require('../assets/js/ai/swahili-route-map.generated');
+const acceptance = require('../data/audits/swahili-free-app-acceptance.json');
+const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
 const root = path.join(__dirname, '..');
 const inventory = require('../reports/swahili-free-app-parity-inventory.json');
 const sourceStatus = require('../data/transport/source-status.json');
 const rows = (inventory.rows || inventory.apps || inventory.inventory || [])
   .filter((row) => row.categoryKey === 'transport');
-const expectedIds = [
-  'car-import-cost',
-  'car-price-intelligence',
-  'ride-fare',
-  'boda-income',
-  'matatu-fare',
-  'delivery-cost',
-  'car-loan-vs-cash',
-  'vehicle-registration',
-  'roadworthiness',
-  'vehicle-depreciation',
-  'fleet-fuel',
-  'last-mile-delivery',
-  'parking-fee',
-  'route-cost',
-  'toll-calc',
-  'truck-load',
-  'vehicle-operating-cost',
-  'vehicle-tracker-roi'
+const expectedRoutes = [
+  ['car-import-cost', '/sw/zana/gharama-kuagiza-gari/'],
+  ['car-price-intelligence', null],
+  ['ride-fare', '/sw/zana/nauli-za-ride-hailing/'],
+  ['boda-income', '/sw/zana/mapato-ya-boda-boda/'],
+  ['matatu-fare', '/sw/zana/nauli-za-matatu-danfo-trotro/'],
+  ['delivery-cost', '/sw/zana/gharama-ya-delivery/'],
+  ['car-loan-vs-cash', '/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/'],
+  ['vehicle-registration', '/sw/zana/usajili-na-nyaraka-za-gari/'],
+  ['roadworthiness', '/sw/zana/ukaguzi-wa-roadworthiness/'],
+  ['vehicle-depreciation', '/sw/zana/kushuka-thamani-ya-gari/'],
+  ['fleet-fuel', '/sw/zana/gharama-mafuta-ya-fleet/'],
+  ['last-mile-delivery', '/sw/zana/gharama-last-mile-delivery/'],
+  ['parking-fee', '/sw/zana/ada-za-maegesho/'],
+  ['route-cost', '/sw/zana/gharama-njia-za-logistics/'],
+  ['toll-calc', '/sw/zana/ada-za-toll/'],
+  ['truck-load', '/sw/zana/kupakia-lori/'],
+  ['vehicle-operating-cost', '/sw/zana/gharama-uendeshaji-gari/'],
+  ['vehicle-tracker-roi', '/sw/zana/faida-ya-tracker-ya-gari/']
 ];
+const expectedIds = expectedRoutes.map(([id]) => id);
 
 assert.strictEqual(rows.length, 18, 'Transport inventory remains exactly 18 English free apps');
 assert.deepStrictEqual(rows.map((row) => row.englishId), expectedIds, 'Transport inventory order and ownership stay exact');
-assert.ok(rows.every((row) => row.accepted === false), 'central acceptance is unchanged by this isolated candidate lane');
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: expectedRoutes.map(([id, swahiliRoute]) => ({ id, swahiliRoute })) });
 
 const html = fs.readFileSync(path.join(root, 'sw/zana/gharama-kuagiza-gari/index.html'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'assets/js/pages/swahili-car-import-cost.js'), 'utf8');

@@ -6,8 +6,10 @@ const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
 const vm = require("node:vm");
-const { execFileSync } = require("node:child_process");
 const { SW_ENERGY_REMAINING_APPS, PRESERVED_ACCEPTED } = require("../scripts/lib/sw-energy-remaining-contract");
+const routeEntry = require("../assets/js/pages/sw-ai-route-entry");
+const routeMap = require("../assets/js/ai/swahili-route-map.generated");
+const { assertLifecycle } = require("./support/swahili-acceptance-lifecycle");
 
 const ROOT = path.resolve(__dirname, "..");
 const EXPECTED_REMAINING = [
@@ -24,21 +26,30 @@ const PRESERVED_HASHES = {
 function read(relative) { return fs.readFileSync(path.join(ROOT, relative), "utf8"); }
 function sha(relative) { return crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT, relative))).digest("hex"); }
 
-test("exact Energy denominator is 20 = 3 preserved + 17 candidates", () => {
+test("exact Energy denominator remains 20 across preserved and promoted lifecycle states", () => {
   const inventory = JSON.parse(read("reports/swahili-free-app-parity-inventory.json"));
+  const acceptance = JSON.parse(read("data/audits/swahili-free-app-acceptance.json"));
   const energy = inventory.rows.filter((row) => row.categoryKey === "energy");
   assert.equal(energy.length, 20);
-  assert.deepEqual(energy.filter((row) => row.accepted).map((row) => row.englishId).sort(), PRESERVED_ACCEPTED.map((row) => row.id).sort());
   assert.deepEqual(SW_ENERGY_REMAINING_APPS.map((row) => row.id), EXPECTED_REMAINING);
   assert.equal(new Set(SW_ENERGY_REMAINING_APPS.map((row) => row.swRoute)).size, 17);
+  assertLifecycle({
+    inventory,
+    acceptance,
+    routeEntry,
+    routeMap,
+    apps: [
+      ...PRESERVED_ACCEPTED.map((app) => ({ id: app.id, swahiliRoute: app.route })),
+      ...SW_ENERGY_REMAINING_APPS.map((app) => ({ id: app.id, swahiliRoute: app.swRoute })),
+    ],
+  });
 });
 
 test("three previously accepted pages are byte-for-byte preserved", () => {
   for (const app of PRESERVED_ACCEPTED) assert.equal(sha(app.file), PRESERVED_HASHES[app.id], app.id);
 });
 
-test("generator owns exactly 17 native apps plus hub and is current", () => {
-  execFileSync(process.execPath, ["scripts/build-sw-energy-remaining-parity.js"], { cwd: ROOT, stdio: "pipe" });
+test("source-owned hub links exactly 17 promoted apps plus 3 preserved apps", () => {
   const hub = read("sw/nishati-na-huduma/index.html");
   for (const app of [...PRESERVED_ACCEPTED, ...SW_ENERGY_REMAINING_APPS]) assert.ok(hub.includes(app.route || app.swRoute), app.id);
   assert.equal((hub.match(/class="sw-energy-hub-card"/g) || []).length, 20);
@@ -49,8 +60,9 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
   const fallbacks = read("data/localization/explicit-language-fallbacks.json");
   for (const app of SW_ENERGY_REMAINING_APPS) {
     const html = read(app.file);
+    assert.match(html, /<html\b[^>]*\blang="sw"/i, `${app.id}: native Swahili document`);
     for (const token of [
-      '<html lang="sw">', `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
+      `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
       `hreflang="en" href="https://afrotools.com${app.enRoute}"`, `hreflang="fr" href="https://afrotools.com${app.frRoute}"`,
       `hreflang="sw" href="https://afrotools.com${app.swRoute}"`, app.image,
       "/data/energy/sw-energy-planning-snapshot.js", `/engines/${app.engine}.js`, "/assets/js/pages/sw-energy-remaining-parity.js",

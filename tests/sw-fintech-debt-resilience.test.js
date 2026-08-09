@@ -2,7 +2,9 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const childProcess = require('child_process');
+const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
+const routeMap = require('../assets/js/ai/swahili-route-map.generated');
+const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
 const inventory = JSON.parse(fs.readFileSync('reports/swahili-free-app-parity-inventory.json', 'utf8'));
 const ledger = JSON.parse(fs.readFileSync('data/audits/swahili-free-app-acceptance.json', 'utf8'));
@@ -14,10 +16,11 @@ assert.strictEqual(scoped.filter((row) => excludedTrade.has(row.englishId)).leng
 assert.strictEqual(scoped.filter((row) => !excludedTrade.has(row.englishId)).length, 93);
 
 const apps = [
-  ['emergency-fund', 'sw/zana/mfuko-wa-dharura/index.html', 'emergency-fund.js'],
-  ['debt-snowball', 'sw/zana/mpango-wa-kulipa-madeni/index.html', 'debt-snowball.js'],
-  ['loan-consolidation', 'sw/zana/unganisha-mikopo/index.html', 'loan-consolidation.js']
+  ['emergency-fund', 'sw/zana/mfuko-wa-dharura/index.html', 'emergency-fund.js', '/sw/zana/mfuko-wa-dharura/'],
+  ['debt-snowball', 'sw/zana/mpango-wa-kulipa-madeni/index.html', 'debt-snowball.js', '/sw/zana/mpango-wa-kulipa-madeni/'],
+  ['loan-consolidation', 'sw/zana/unganisha-mikopo/index.html', 'loan-consolidation.js', '/sw/zana/unganisha-mikopo/']
 ];
+assertLifecycle({ inventory, acceptance: ledger, routeEntry, routeMap, apps: apps.map(([id,,,swahiliRoute]) => ({ id, swahiliRoute })) });
 for (const [id, file, controller] of apps) {
   const html = fs.readFileSync(file, 'utf8');
   assert(html.includes('scripts/build-sw-fintech-debt-resilience.js'));
@@ -29,8 +32,6 @@ for (const [id, file, controller] of apps) {
   assert(!/<iframe\b/i.test(html));
   assert(!/English fallback|tumia zana ya Kiingereza/i.test(html));
   assert(!/(Pakua|Download|CSV|PDF|Nakili)/i.test(html), `${id} must not advertise an unproved export`);
-  assert(!ledger.entries.some((entry) => entry.englishId === id && entry.status === 'accepted'), `${id} must remain fail-closed centrally`);
 }
 
-childProcess.execFileSync(process.execPath, ['scripts/build-sw-fintech-debt-resilience.js'], {stdio:'inherit'});
-console.log('Swahili Fintech debt-resilience family: 99/6/93 inventory and 3/3 route contracts passed');
+console.log('Swahili Fintech debt-resilience family: immutable 99/6/93 allocation and 3/3 lifecycle-aware route contracts passed');

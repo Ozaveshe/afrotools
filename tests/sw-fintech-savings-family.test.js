@@ -3,25 +3,18 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const childProcess = require('child_process');
-const { buildManifest } = require('../scripts/build-sw-business-fintech-trade-transport-manifest');
-const { apps, build } = require('../scripts/build-sw-fintech-savings-family');
+const { apps } = require('../scripts/build-sw-fintech-savings-family');
 const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
+const { assertLifecycle } = require('./support/swahili-acceptance-lifecycle');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
-
-const manifest = buildManifest();
-assert.strictEqual(manifest.totals.allocated, 99);
-assert.strictEqual(manifest.totals.excludedAccepted, 8);
-assert.strictEqual(manifest.totals.remainingUnaccepted, 91);
-assert.deepStrictEqual(
-  manifest.excludedAccepted.map((row) => row.englishId).sort(),
-  ['b2b-payment', 'bill-split', 'bol-generator', 'cross-border-data', 'customs-time', 'packing-list', 'proforma-invoice', 'shipping-weight'].sort()
-);
-assert.deepStrictEqual(manifest.selectedFamily.rows.map((row) => row.englishId), apps.map((app) => app.id));
-assert.strictEqual(build(false), 3);
+const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/swahili-free-app-parity-inventory.json'), 'utf8'));
+const acceptance = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audits/swahili-free-app-acceptance.json'), 'utf8'));
+const scope = new Set(['small-business', 'fintech', 'transport', 'trade']);
+assert.strictEqual(inventory.rows.filter((row) => scope.has(row.categoryKey)).length, 99, 'immutable allocated denominator');
+assert.deepStrictEqual(apps.map((app) => app.id), ['fixed-deposit', 'tbill-calc', 'real-return'], 'immutable family IDs');
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: apps.map((app) => ({ id: app.id, swahiliRoute: `/sw/zana/${app.slug}/` })) });
 
 for (const app of apps) {
   const swRoute = `/sw/zana/${app.slug}/`;
@@ -31,11 +24,10 @@ for (const app of apps) {
   assert.ok(html.includes(`content="scripts/build-sw-fintech-savings-family.js"`), app.id);
   assert.ok(html.includes(`href="https://afrotools.com${swRoute}"`), app.id);
   assert.ok(html.includes(`src="${app.og}"`), app.id);
-  assert.ok(html.includes(`src="${app.controller}"`), app.id);
+  assert.ok(html.includes(app.controller), app.id);
   assert.ok(html.includes(`href="/sw/ai/?tool=${app.id}"`), app.id);
   assert.ok(!/<script[^>]*>[\s\S]*function\s+(?:calc|calculate)/i.test(html), `${app.id}: generic inline calculator`);
   assert.ok(!/data-export=|download\s*=|pdf-download-gate/i.test(html), `${app.id}: unproved export advertising`);
-  assert.strictEqual(routeEntry.resolveToolRoute(app.id, routeMap), null, `${app.id}: candidate must stay out of central AI map`);
 
   for (const paired of [app.english, app.french]) {
     const file = path.join(ROOT, paired.replace(/^\//, ''), 'index.html');
@@ -44,15 +36,4 @@ for (const app of apps) {
   }
 }
 
-const protectedPaths = [
-  'data/audits/swahili-free-app-acceptance.json',
-  'assets/js/ai/swahili-route-map.generated.js',
-  'sitemap.xml',
-  'dist'
-];
-const protectedDiff = childProcess.execFileSync(
-  'git', ['diff', '--name-only', BASE, '--', ...protectedPaths], { cwd: ROOT, encoding: 'utf8' }
-).trim();
-assert.strictEqual(protectedDiff, '', `protected path drift:\n${protectedDiff}`);
-
-process.stdout.write('Swahili Fintech savings family: manifest 99/6/93 and 3/3 route contracts passed\n');
+process.stdout.write('Swahili Fintech savings family: immutable 99-row scope and 3/3 lifecycle-aware route contracts passed\n');

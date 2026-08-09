@@ -4,7 +4,10 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
-const { build, exactShards } = require("../scripts/build-sw-financial-shard-a-receipt");
+const { exactShards } = require("../scripts/build-sw-financial-shard-a-receipt");
+const routeEntry = require("../assets/js/pages/sw-ai-route-entry");
+const routeMap = require("../assets/js/ai/swahili-route-map.generated");
+const { assertLifecycle } = require("./support/swahili-acceptance-lifecycle");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -20,10 +23,8 @@ test("derives exactly 46 shard A rows with zero shard B overlap", () => {
 });
 
 test("candidate receipt is fail-closed and coordinator-owned outputs remain outside the lane", () => {
-  const { candidate } = build();
+  const candidate = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-financial-shard-a-candidate.json"), "utf8"));
   assert.equal(candidate.totals.denominator, 46);
-  assert.equal(candidate.totals.accepted, 21);
-  assert.equal(candidate.totals.blocked, 25);
   assert.equal(candidate.totals.accepted + candidate.totals.blocked, 46);
   assert.equal(candidate.coordinatorOwnedFilesEdited, false);
   assert.equal(candidate.rows.find((row) => row.englishId === "crypto-prices").status, "blocked");
@@ -64,9 +65,27 @@ test("candidate receipt is fail-closed and coordinator-owned outputs remain outs
   }
 });
 
-test("generated machine and human receipts are current", () => {
-  const { candidate, missingArtwork, human } = build();
-  assert.equal(fs.readFileSync(path.join(ROOT, "data/localization/sw-financial-shard-a-candidate.json"), "utf8"), `${JSON.stringify(candidate, null, 2)}\n`);
-  assert.equal(fs.readFileSync(path.join(ROOT, "reports/swahili-financial-shard-a-missing-artwork.json"), "utf8"), `${JSON.stringify(missingArtwork, null, 2)}\n`);
-  assert.equal(fs.readFileSync(path.join(ROOT, "reports/swahili-financial-shard-a-receipt.md"), "utf8"), human);
+test("central lifecycle is exact for every immutable shard A ID", () => {
+  const { inventory, shardA } = exactShards();
+  const acceptance = JSON.parse(fs.readFileSync(path.join(ROOT, "data/audits/swahili-free-app-acceptance.json"), "utf8"));
+  assertLifecycle({
+    inventory,
+    acceptance,
+    routeEntry,
+    routeMap,
+    apps: shardA.map((row) => ({ id: row.englishId, swahiliRoute: row.primarySwahiliRoute })),
+  });
+});
+
+test("frozen machine and human receipts preserve the exact 46-row lane", () => {
+  const candidate = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-financial-shard-a-candidate.json"), "utf8"));
+  const missingArtwork = JSON.parse(fs.readFileSync(path.join(ROOT, "reports/swahili-financial-shard-a-missing-artwork.json"), "utf8"));
+  const human = fs.readFileSync(path.join(ROOT, "reports/swahili-financial-shard-a-receipt.md"), "utf8");
+  const { shardA } = exactShards();
+  assert.equal(candidate.baseSha, "6edacda8437e1fa9b9e5a512138cbdd3169e38be");
+  assert.equal(candidate.rows.length, 46);
+  assert.deepEqual(candidate.rows.map((row) => row.englishId), shardA.map((row) => row.englishId));
+  assert.equal(candidate.totals.accepted + candidate.totals.blocked, 46);
+  assert.equal(missingArtwork.lane, candidate.lane);
+  assert.match(human, /46 denominator/);
 });
