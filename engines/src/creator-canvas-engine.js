@@ -430,16 +430,17 @@
     },
     toText: function(design, locale) {
       var fr = locale === "fr";
+      var sw = locale === "sw";
       return [
-        fr ? "BRIEF VISUEL" : "VISUAL BRIEF",
+        fr ? "BRIEF VISUEL" : sw ? "MUHTASARI WA PICHA" : "VISUAL BRIEF",
         design.title,
         design.subtitle,
         design.cta,
         "",
-        (fr ? "Format : " : "Format: ") + design.formatLabel + " — " + design.width + "×" + design.height,
-        (fr ? "Plateforme : " : "Platform: ") + design.platform,
-        (fr ? "Zone sûre : " : "Safe zone: ") + design.safeZone,
-        (fr ? "Couleurs : " : "Colors: ") + design.colors.join(", ")
+        (fr ? "Format : " : sw ? "Muundo: " : "Format: ") + design.formatLabel + " — " + design.width + "×" + design.height,
+        (fr ? "Plateforme : " : sw ? "Jukwaa: " : "Platform: ") + design.platform,
+        (fr ? "Zone sûre : " : sw ? "Eneo salama: " : "Safe zone: ") + design.safeZone,
+        (fr ? "Couleurs : " : sw ? "Rangi: " : "Colors: ") + design.colors.join(", ")
       ].filter(Boolean).join("\n");
     }
   };
