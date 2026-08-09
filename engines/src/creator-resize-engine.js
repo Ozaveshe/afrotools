@@ -4,6 +4,7 @@
     id: "ig-square",
     name: "IG Square",
     nameFr: "Carré Instagram",
+    nameSw: "Mraba wa Instagram",
     w: 1080,
     h: 1080,
     group: "instagram",
@@ -12,6 +13,7 @@
     id: "ig-portrait",
     name: "IG Portrait",
     nameFr: "Portrait Instagram",
+    nameSw: "Picha wima ya Instagram",
     w: 1080,
     h: 1350,
     group: "instagram",
@@ -20,6 +22,7 @@
     id: "ig-story",
     name: "IG Story",
     nameFr: "Story Instagram",
+    nameSw: "Story ya Instagram",
     w: 1080,
     h: 1920,
     group: "instagram",
@@ -28,6 +31,7 @@
     id: "x-post",
     name: "X Post",
     nameFr: "Publication X",
+    nameSw: "Chapisho la X",
     w: 1200,
     h: 675,
     group: "x",
@@ -36,6 +40,7 @@
     id: "x-header",
     name: "X Header",
     nameFr: "Bannière X",
+    nameSw: "Bango la X",
     w: 1500,
     h: 500,
     group: "x",
@@ -44,6 +49,7 @@
     id: "yt-thumb",
     name: "YT Thumbnail",
     nameFr: "Miniature YouTube",
+    nameSw: "Picha ya YouTube",
     w: 1280,
     h: 720,
     group: "youtube",
@@ -52,6 +58,7 @@
     id: "yt-banner",
     name: "YT Banner",
     nameFr: "Bannière YouTube",
+    nameSw: "Bango la YouTube",
     w: 2560,
     h: 1440,
     group: "youtube",
@@ -60,6 +67,7 @@
     id: "li-post",
     name: "LinkedIn Post",
     nameFr: "Publication LinkedIn",
+    nameSw: "Chapisho la LinkedIn",
     w: 1200,
     h: 627,
     group: "linkedin",
@@ -68,6 +76,7 @@
     id: "fb-cover",
     name: "FB Cover",
     nameFr: "Couverture Facebook",
+    nameSw: "Jalada la Facebook",
     w: 820,
     h: 312,
     group: "facebook",
@@ -76,6 +85,7 @@
     id: "fb-post",
     name: "FB Post",
     nameFr: "Publication Facebook",
+    nameSw: "Chapisho la Facebook",
     w: 1200,
     h: 630,
     group: "facebook",
@@ -84,6 +94,7 @@
     id: "pin",
     name: "Pinterest Pin",
     nameFr: "Épingle Pinterest",
+    nameSw: "Pin ya Pinterest",
     w: 1e3,
     h: 1500,
     group: "pinterest",
@@ -92,6 +103,7 @@
     id: "wa-status",
     name: "WA Status",
     nameFr: "Statut WhatsApp",
+    nameSw: "Status ya WhatsApp",
     w: 1080,
     h: 1920,
     group: "whatsapp",
@@ -140,6 +152,24 @@
       resized: "redimensionne",
       chooseSize: "Inclure {name}",
       removeSize: "Retirer {name}"
+    },
+    sw: {
+      imageTooLarge: "Picha ni kubwa sana. Kiwango cha juu ni MB 10.",
+      unsupportedImage: "Chagua picha ya PNG, JPEG au WebP.",
+      unreadableImage: "Picha hii haikuweza kufunguliwa.",
+      focalPoint: "Sehemu kuu: {x}%, {y}%",
+      download: "Pakua {name}",
+      downloaded: "{name} imepakuliwa",
+      sizeCount: "ukubwa {count}",
+      sizesCount: "ukubwa {count}",
+      ready: "{count} tayari",
+      generatingZip: "Inatengeneza ZIP...",
+      downloadedZip: "Ukubwa {count} umepakuliwa kwenye ZIP",
+      noSizes: "Chagua angalau ukubwa mmoja wa kupakua.",
+      zipLoading: "Maktaba ya ZIP haipatikani. Pakia ukurasa upya ujaribu tena.",
+      resized: "picha-zilizobadilishwa-ukubwa",
+      chooseSize: "Jumuisha {name}",
+      removeSize: "Ondoa {name}"
     }
   }, n = {
     sourceImage: null,
@@ -155,7 +185,7 @@
     blobs: {},
     sizes: e,
     presets: t,
-    locale: /^fr\b/i.test(document.documentElement.lang || "") ? "fr" : "en",
+    locale: /^fr\b/i.test(document.documentElement.lang || "") ? "fr" : /^sw\b/i.test(document.documentElement.lang || "") ? "sw" : "en",
     text: function(e, t) {
       var n = (a[this.locale] && a[this.locale][e]) || a.en[e] || e;
       return Object.keys(t || {}).reduce(function(e, a) {
@@ -163,7 +193,7 @@
       }, n);
     },
     sizeName: function(e) {
-      return "fr" === this.locale ? e.nameFr : e.name;
+      return "fr" === this.locale ? e.nameFr : "sw" === this.locale ? e.nameSw : e.name;
     },
     init: function() {
       var e = this, n = localStorage.getItem("crz-fill-mode");
