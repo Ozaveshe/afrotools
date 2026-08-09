@@ -2,13 +2,13 @@
   "use strict";
 
   var PLATFORMS = Object.freeze({
-    instagram: { label: "Instagram", labelFr: "Instagram", limit: 150 },
-    tiktok: { label: "TikTok", labelFr: "TikTok", limit: 80 },
-    x: { label: "X / Twitter", labelFr: "X / Twitter", limit: 160 },
-    linkedin_headline: { label: "LinkedIn headline", labelFr: "Titre LinkedIn", limit: 220 },
-    linkedin_about: { label: "LinkedIn about", labelFr: "À propos LinkedIn", limit: 2600 },
-    youtube: { label: "YouTube", labelFr: "YouTube", limit: 1000 },
-    threads: { label: "Threads", labelFr: "Threads", limit: 150 }
+    instagram: { label: "Instagram", labelFr: "Instagram", labelSw: "Instagram", limit: 150 },
+    tiktok: { label: "TikTok", labelFr: "TikTok", labelSw: "TikTok", limit: 80 },
+    x: { label: "X / Twitter", labelFr: "X / Twitter", labelSw: "X / Twitter", limit: 160 },
+    linkedin_headline: { label: "LinkedIn headline", labelFr: "Titre LinkedIn", labelSw: "Kichwa cha LinkedIn", limit: 220 },
+    linkedin_about: { label: "LinkedIn about", labelFr: "À propos LinkedIn", labelSw: "Kuhusu kwenye LinkedIn", limit: 2600 },
+    youtube: { label: "YouTube", labelFr: "YouTube", labelSw: "YouTube", limit: 1000 },
+    threads: { label: "Threads", labelFr: "Threads", labelSw: "Threads", limit: 150 }
   });
   var PLATFORM_ORDER = Object.freeze(Object.keys(PLATFORMS));
 
@@ -26,6 +26,13 @@
       achievement: "Reconnu·e pour",
       invitation: "Suivez le compte pour des idées utiles, une démarche transparente et des créations pensées pour les publics africains.",
       tip: "Gardez la même promesse claire partout, puis adaptez la première phrase à chaque plateforme."
+    },
+    sw: {
+      connector: "hutengeneza",
+      based: "anaishi",
+      achievement: "Anajulikana kwa",
+      invitation: "Fuata kwa mawazo ya vitendo, mchakato wa wazi na kazi iliyoundwa kwa hadhira za Afrika.",
+      tip: "Tumia ahadi moja iliyo wazi kila mahali, kisha rekebisha sentensi ya kwanza kwa kila jukwaa."
     }
   };
 
@@ -53,7 +60,7 @@
 
   function generate(input, locale) {
     input = input || {};
-    locale = locale === "fr" ? "fr" : "en";
+    locale = locale === "fr" ? "fr" : (locale === "sw" ? "sw" : "en");
     var validation = validateInput(input);
     if (!validation.valid) {
       return { ok: false, errors: validation.errors, bios: [], personalBrandTip: "" };
@@ -62,7 +69,7 @@
     var c = COPY[locale];
     var who = clean(input.who);
     var what = clean(input.what);
-    var tone = clean(input.tone) || (locale === "fr" ? "professionnel" : "professional");
+    var tone = clean(input.tone) || (locale === "fr" ? "professionnel" : (locale === "sw" ? "kitaalamu" : "professional"));
     var location = clean(input.location);
     var achievement = clean(input.achievement);
     var locationLine = location ? " · " + c.based + " " + location : "";
@@ -95,7 +102,7 @@
         var text = truncate(lines[platform], limit);
         return {
           platform: platform,
-          label: locale === "fr" ? PLATFORMS[platform].labelFr : PLATFORMS[platform].label,
+          label: locale === "fr" ? PLATFORMS[platform].labelFr : (locale === "sw" ? PLATFORMS[platform].labelSw : PLATFORMS[platform].label),
           text: text,
           charCount: text.length,
           charLimit: limit,
