@@ -5,7 +5,8 @@
   var page = document.querySelector('[data-dca-replay]');
   if (!engine || !page) return;
 
-  var lang = document.documentElement.lang === 'fr' ? 'fr' : 'en';
+  var requestedLang = String(document.documentElement.lang || 'en').toLowerCase().split('-')[0];
+  var lang = requestedLang === 'fr' || requestedLang === 'sw' ? requestedLang : 'en';
   var copy = {
     en: {
       loading: 'Requesting audited daily reference prices…',
@@ -40,6 +41,9 @@
       pdfUnavailable: 'The local PDF library did not load. Use Print instead.',
       downloaded: 'Export created locally. No result data was uploaded.',
       fields: ['Event', 'Scheduled UTC date', 'Status', 'Reference UTC time', 'Reference price', 'Gross contribution', 'Percentage cost', 'Fixed cost', 'Acquisition cash', 'Units', 'Reason']
+    },
+    sw: {
+      loading:'Inaomba bei za marejeo za kila siku zilizokaguliwa…',ready:'Urejeshaji umekamilika. Kagua risiti ya chanzo na safu zilizokosa kabla ya kutumia matokeo.',error:'Urejeshaji haukuweza kukamilika.',sourceUnavailable:'Bei za kihistoria hazipatikani sasa. Hakuna bei ya zamani au makisio ya dharura yaliyotumika.',results:'Matokeo ya urejeshaji',outlay:'Jumla ghafi ya fedha',costs:'Gharama za mfano',acquired:'Mali iliyonunuliwa',value:'Thamani kwa bei ya mwisho ya chanzo',change:'Mabadiliko ya mfano dhidi ya fedha ghafi',coverage:'Ufunikaji wa ratiba',receipt:'Risiti ya chanzo',provider:'Mtoa data',requested:'Kipindi cha UTC kilichoombwa',actual:'Kipindi halisi cha chanzo',fetched:'Ilipatikana',granularity:'Ukubwa wa muda',cache:'Cache ya jibu',schedule:'Risiti ya ratiba',used:'zilizotumika',missed:'zilizokosa',historyOpen:'Ficha ratiba ya ununuzi',historyClosed:'Ona ratiba ya ununuzi',statusUsed:'Imetumika',statusMissed:'Imekosa',noPrice:'Hakuna bei inayofaa',pdfTitle:'AfroTools — Urejeshaji wa kihistoria wa DCA ya crypto',chartTitle:'Thamani ya mfano ya mali katika kila tukio lililotumika',chartDescription:'Mstari wa thamani ya mfano kwa bei ya marejeo ya kila tukio. Si utabiri.',pdfUnavailable:'Maktaba ya ndani ya PDF haikupakiwa. Tumia Chapisha.',downloaded:'Faili imeundwa ndani ya kifaa. Hakuna data ya matokeo iliyopakiwa.',fields:['Tukio','Tarehe ya UTC iliyopangwa','Hali','Muda wa UTC wa marejeo','Bei ya marejeo','Mchango ghafi','Gharama ya asilimia','Gharama thabiti','Fedha za ununuzi','Vipimo','Sababu'],product:'Urejeshaji wa ratiba ya kihistoria ya DCA ya crypto',methodology:'Kila tarehe ya UTC iliyopangwa hutumia bei ya mwisho ya mtoa data ambayo haijatumika, ya wakati huo au kabla ya mwisho wa tarehe hiyo, kwa pengo lisilozidi saa 36.',limitations:['Bei za kihistoria za kila siku si bei za kutekeleza muamala.','Urejeshaji hautabiri faida za baadaye wala kupendekeza mali.','Kodi, custody, upatikanaji wa jukwaa na gharama ambazo hujaingiza hazijajumuishwa.'],csvLimitation:'Urejeshaji wa marejeo ya kihistoria; si bei ya kutekeleza, utabiri wala pendekezo.'
     },
     fr: {
       loading: 'Demande des prix de référence quotidiens contrôlés…',
@@ -122,13 +126,13 @@
   }
 
   function formatNumber(value, maximumFractionDigits) {
-    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en', {
+    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-TZ' : 'en', {
       maximumFractionDigits: maximumFractionDigits == null ? 2 : maximumFractionDigits
     }).format(value);
   }
 
   function money(value, currency) {
-    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en', {
+    return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-TZ' : 'en', {
       style: 'currency',
       currency: currency.toUpperCase(),
       maximumFractionDigits: 2
@@ -136,7 +140,7 @@
   }
 
   function dateTime(value) {
-    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : lang === 'sw' ? 'sw-TZ' : 'en-GB', {
       dateStyle: 'medium',
       timeStyle: 'short',
       timeZone: 'UTC'
@@ -335,7 +339,7 @@
 
   function exportObject() {
     return {
-      product: 'Historical crypto DCA schedule replay',
+      product: copy.product || 'Historical crypto DCA schedule replay',
       locale: lang,
       generatedAt: new Date().toISOString(),
       inputs: latest.input,
@@ -348,8 +352,8 @@
         cache: latest.payload.cache
       },
       result: latest.model,
-      methodology: 'Each scheduled UTC date uses the latest unused provider reference point at or before the end of that date, with a maximum 36-hour gap.',
-      limitations: [
+      methodology: copy.methodology || 'Each scheduled UTC date uses the latest unused provider reference point at or before the end of that date, with a maximum 36-hour gap.',
+      limitations: copy.limitations || [
         'Historical daily reference prices are not execution quotes.',
         'The replay does not predict future returns or recommend an asset.',
         'Taxes, custody, platform availability and costs not entered by the user are excluded.'
@@ -377,7 +381,7 @@
       actualFrom: latest.payload.actualRange.from,
       actualTo: latest.payload.actualRange.to,
       granularity: latest.payload.granularity,
-      limitation: 'Historical reference replay; not an execution quote, forecast or recommendation.'
+      limitation: copy.csvLimitation || 'Historical reference replay; not an execution quote, forecast or recommendation.'
     };
     var headers = copy.fields.concat(Object.keys(receiptFields));
     var rows = latest.model.rows.map(function (row) {
@@ -416,23 +420,23 @@
       });
     }
     line(copy.pdfTitle, 18, 'bold');
-    line('Generated: ' + new Date().toISOString(), 9);
-    line('Provider: ' + latest.payload.source.name + ' — ' + latest.payload.source.url, 10, 'bold');
-    line('Requested UTC: ' + latest.payload.request.from + ' to ' + latest.payload.request.to);
-    line('Actual source range: ' + latest.payload.actualRange.from + ' to ' + latest.payload.actualRange.to);
-    line('Fetched at: ' + latest.payload.fetchedAt + ' | ' + latest.payload.granularity + ' | cache ' + latest.payload.cache);
-    line('Gross outlay: ' + money(latest.model.totalOutlay, latest.input.currency) + ' | costs: ' + money(latest.model.totalCosts, latest.input.currency));
-    line('Value at last source price: ' + money(latest.model.valueAtLastSourcePrice, latest.input.currency) + ' | modeled change: ' + money(latest.model.modeledChange, latest.input.currency));
-    line('Schedule: ' + latest.model.expectedCount + ' expected, ' + latest.model.usedCount + ' used, ' + latest.model.missedCount + ' missed.', 10, 'bold');
+    line((lang==='sw'?'Imeundwa':'Generated') + ': ' + new Date().toISOString(), 9);
+    line(copy.provider + ': ' + latest.payload.source.name + ' — ' + latest.payload.source.url, 10, 'bold');
+    line(copy.requested + ': ' + latest.payload.request.from + (lang==='sw'?' hadi ':' to ') + latest.payload.request.to);
+    line(copy.actual + ': ' + latest.payload.actualRange.from + (lang==='sw'?' hadi ':' to ') + latest.payload.actualRange.to);
+    line(copy.fetched + ': ' + latest.payload.fetchedAt + ' | ' + latest.payload.granularity + ' | cache ' + latest.payload.cache);
+    line(copy.outlay + ': ' + money(latest.model.totalOutlay, latest.input.currency) + ' | ' + copy.costs + ': ' + money(latest.model.totalCosts, latest.input.currency));
+    line(copy.value + ': ' + money(latest.model.valueAtLastSourcePrice, latest.input.currency) + ' | ' + copy.change + ': ' + money(latest.model.modeledChange, latest.input.currency));
+    line(copy.schedule + ': ' + latest.model.expectedCount + ' ' + (lang==='sw'?'zilizotarajiwa':lang==='fr'?'prévues':'expected') + ', ' + latest.model.usedCount + ' ' + copy.used + ', ' + latest.model.missedCount + ' ' + copy.missed + '.', 10, 'bold');
     y += 5;
     latest.model.rows.forEach(function (row) {
-      line(row.sequence + '. ' + row.scheduledDate + ' | ' + row.status + (row.status === 'used'
-        ? ' | ' + row.referenceAt + ' | price ' + row.referencePrice + ' | gross ' + row.grossContribution + ' | costs ' + (row.percentageCost + row.fixedCost) + ' | units ' + row.units
-        : ' | ' + row.reason), 8);
+      line(row.sequence + '. ' + row.scheduledDate + ' | ' + (row.status==='used'?copy.statusUsed:copy.statusMissed) + (row.status === 'used'
+        ? ' | ' + row.referenceAt + ' | ' + (lang==='sw'?'bei ':'price ') + row.referencePrice + ' | ' + (lang==='sw'?'mchango ':'gross ') + row.grossContribution + ' | ' + copy.costs.toLowerCase() + ' ' + (row.percentageCost + row.fixedCost) + ' | ' + (lang==='sw'?'vipimo ':'units ') + row.units
+        : ' | ' + copy.noPrice), 8);
     });
     y += 6;
-    line('Method: latest unused provider reference point at or before each scheduled UTC date; maximum gap 36 hours.', 9, 'bold');
-    line('Limitations: historical daily reference prices are not execution quotes. This replay is not a forecast or recommendation. Taxes, custody, platform availability and unentered costs are excluded.', 9);
+    line((lang==='sw'?'Mbinu':'Method') + ': ' + (copy.methodology||'latest unused provider reference point at or before each scheduled UTC date; maximum gap 36 hours.'), 9, 'bold');
+    line((lang==='sw'?'Mipaka':'Limitations') + ': ' + (copy.limitations||['Historical daily reference prices are not execution quotes.']).join(' '), 9);
     doc.save('afrotools-crypto-dca-replay.pdf');
     setStatus(copy.downloaded, 'success');
   }
