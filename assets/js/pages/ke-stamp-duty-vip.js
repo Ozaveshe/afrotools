@@ -5,6 +5,7 @@
   if (!root) return;
   var engine = window.KE_STAMP_DUTY;
   var locale = root.dataset.locale || 'en';
+  var localeKey = locale.indexOf('sw') === 0 ? 'sw' : locale.indexOf('fr') === 0 ? 'fr' : 'en';
   var text = {
     en: {
       unavailable: 'The local calculation engine did not load. Refresh this page; no data was sent.',
@@ -20,7 +21,9 @@
       copied: 'Calculation copied locally.',
       exported: 'Local export created.',
       transferMode: 'Ordinary transfer schedule calculation.',
-      leaseMode: 'Lease rent schedule plus any premium duty.'
+      leaseMode: 'Lease rent schedule plus any premium duty.',
+      fileBase: 'kenya-stamp-duty-plan',
+      jsonPrivacy: 'Local Kenya stamp-duty planning calculation. Contains user-entered financial values.'
     },
     fr: {
       unavailable: 'Le moteur de calcul local ne s’est pas chargé. Actualisez la page; aucune donnée n’a été envoyée.',
@@ -36,9 +39,29 @@
       copied: 'Calcul copié localement.',
       exported: 'Export local créé.',
       transferMode: 'Calcul selon le barème des transferts ordinaires.',
-      leaseMode: 'Barème du loyer du bail, plus le droit sur la prime éventuelle.'
+      leaseMode: 'Barème du loyer du bail, plus le droit sur la prime éventuelle.',
+      fileBase: 'kenya-stamp-duty-plan',
+      jsonPrivacy: 'Calcul local indicatif des droits de timbre au Kenya. Contient les valeurs financières saisies.'
+    },
+    sw: {
+      unavailable: 'Injini ya hesabu ya ndani haijapakiwa. Onyesha upya ukurasa; hakuna data iliyotumwa.',
+      date: 'Tumia tarehe ya hati kuanzia 1 Julai 2025 hadi 23 Julai 2026.',
+      location: 'Chagua ndani au nje ya manispaa kwa kutumia hati miliki, tathmini au makadirio ya KRA.',
+      transaction: 'Chagua mauzo au zawadi.',
+      transfer: 'Weka thamani chanya ya soko na bei ya mauzo iliyo sifuri au zaidi.',
+      termType: 'Chagua muda maalumu au usio na kikomo wa mkataba wa kukodisha.',
+      term: 'Weka muda maalumu wa kukodisha ulio zaidi ya miaka sifuri.',
+      lease: 'Weka kodi ya mwaka iliyo chanya na malipo ya awali yaliyo sifuri au zaidi.',
+      ready: 'Makadirio yako tayari. Hakuna ulichoweka kilichoondoka kwenye kivinjari hiki.',
+      changed: 'Umebadilisha taarifa. Kokotoa tena.',
+      copied: 'Makadirio yamenakiliwa kwenye kifaa hiki.',
+      exported: 'Faili la ndani limetengenezwa.',
+      transferMode: 'Hesabu ya jedwali la uhamisho wa kawaida.',
+      leaseMode: 'Jedwali la kodi ya kukodisha pamoja na ushuru wa malipo ya awali.',
+      fileBase: 'makadirio-ushuru-stampu-kenya',
+      jsonPrivacy: 'Makadirio ya ushuru wa stampu wa Kenya yaliyofanywa kwenye kifaa hiki. Yana kiasi cha fedha ulichoweka.'
     }
-  }[locale];
+  }[localeKey];
 
   var form = document.getElementById('ks-form');
   var transferFields = document.getElementById('ks-transfer-fields');
@@ -67,7 +90,7 @@
     };
   }
   function money(number) {
-    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-KE', {
+    return new Intl.NumberFormat(localeKey === 'fr' ? 'fr-FR' : localeKey === 'sw' ? 'sw-KE' : 'en-KE', {
       style: 'currency',
       currency: 'KES',
       maximumFractionDigits: 2
@@ -95,17 +118,53 @@
       code === 'invalid_term_type' ? text.termType :
       code === 'invalid_term' ? text.term : text.lease;
   }
+  function localMode(result) {
+    if (localeKey !== 'sw') return result.mode;
+    return result.mode === 'transfer' ? 'uhamisho' : 'mkataba wa kukodisha';
+  }
+  function localLocation(result) {
+    if (localeKey !== 'sw') return result.location;
+    return result.location === 'municipality' ? 'ndani ya manispaa' : 'nje ya manispaa';
+  }
+  function localRateLabel(result) {
+    if (localeKey !== 'sw') return result.rateLabel;
+    if (result.mode === 'transfer') {
+      return result.location === 'municipality' ?
+        'Kipengele 12A cha Jedwali: KSh 40 kwa kila KSh 1,000 baada ya viwango vya mwanzo' :
+        'Kipengele 11 cha Jedwali: KSh 20 kwa kila KSh 1,000 baada ya viwango vya mwanzo';
+    }
+    if (result.termType === 'indefinite' || result.termYears > 3) {
+      return 'Jedwali la kukodisha: muda mwingine maalumu au muda usio na kikomo';
+    }
+    return result.termYears > 1 ?
+      'Jedwali la kukodisha: zaidi ya mwaka mmoja na si zaidi ya miaka mitatu' :
+      'Jedwali la kukodisha: muda usiozidi mwaka mmoja';
+  }
+  function localBoundary(result) {
+    if (localeKey !== 'sw') return result.boundary;
+    return result.mode === 'transfer' ?
+      'Makadirio ya kupanga uhamisho wa kawaida wa mali isiyohamishika. Tathmini ya KRA, aina ya hati, mipaka iliyotangazwa kwenye Gazeti la Serikali na msamaha wowote wenye ushahidi vina mamlaka kuliko jibu hili.' :
+      'Makadirio ya kupanga kwa kodi na malipo ya awali yaliyoandikwa kwenye mkataba wa kukodisha. Tathmini ya KRA, masharti ya hati, uthamini, misamaha na adhabu vina mamlaka kuliko jibu hili.';
+  }
+  function exportCalculation(result) {
+    var output = Object.assign({}, result);
+    output.mode = localMode(result);
+    output.location = localLocation(result);
+    output.rateLabel = localRateLabel(result);
+    output.boundary = localBoundary(result);
+    return output;
+  }
   function summary() {
     return [
       root.dataset.pdfTitle,
-      root.dataset.modeLabel + ': ' + current.mode,
+      root.dataset.modeLabel + ': ' + localMode(current),
       root.dataset.basisLabel + ': ' + money(current.dutiableValue),
       root.dataset.transferLabel + ': ' + money(current.transferDuty),
       root.dataset.rentLabel + ': ' + money(current.rentDuty),
       root.dataset.premiumLabel + ': ' + money(current.premiumDuty),
       root.dataset.payableLabel + ': ' + money(current.payable),
-      current.rateLabel,
-      current.boundary
+      localRateLabel(current),
+      localBoundary(current)
     ].join('\n');
   }
   function cell(value) {
@@ -154,9 +213,9 @@
     set('ks-transfer-result', money(result.transferDuty));
     set('ks-rent-result', money(result.rentDuty));
     set('ks-premium-result', money(result.premiumDuty));
-    set('ks-band-result', result.rateLabel);
+    set('ks-band-result', localRateLabel(result));
     set('ks-mode-note', result.mode === 'transfer' ? text.transferMode : text.leaseMode);
-    set('ks-boundary', result.boundary);
+    set('ks-boundary', localBoundary(result));
     results.hidden = false;
     enable(true);
     status.textContent = text.ready;
@@ -184,7 +243,17 @@
     }
   });
   document.getElementById('ks-csv').addEventListener('click', function () {
-    var rows = [
+    var rows = localeKey === 'sw' ? [
+      ['kipengele', 'thamani'],
+      ['tarehe_ya_hati', current.instrumentDate],
+      ['aina_ya_hati', localMode(current)],
+      ['eneo', localLocation(current)],
+      ['thamani_inayotozwa', current.dutiableValue],
+      ['ushuru_wa_uhamisho', current.transferDuty],
+      ['ushuru_wa_kodi_ya_kukodisha', current.rentDuty],
+      ['ushuru_wa_malipo_ya_awali', current.premiumDuty],
+      ['jumla_ya_makadirio', current.payable]
+    ] : [
       ['item', 'value'],
       ['instrument_date', current.instrumentDate],
       ['mode', current.mode],
@@ -195,16 +264,17 @@
       ['lease_premium_duty', current.premiumDuty],
       ['planning_payable', current.payable]
     ];
-    download('kenya-stamp-duty-plan.csv', 'text/csv;charset=utf-8', rows.map(function (row) {
+    download(text.fileBase + '.csv', 'text/csv;charset=utf-8', rows.map(function (row) {
       return row.map(cell).join(',');
     }).join('\n'));
   });
   document.getElementById('ks-json').addEventListener('click', function () {
-    download('kenya-stamp-duty-plan.json', 'application/json', JSON.stringify({
+    download(text.fileBase + '.json', 'application/json', JSON.stringify({
       schemaVersion: 1,
       exportedAt: new Date().toISOString(),
-      privacy: 'Local Kenya stamp-duty planning calculation. Contains user-entered financial values.',
-      calculation: current
+      language: localeKey,
+      privacy: text.jsonPrivacy,
+      calculation: exportCalculation(current)
     }, null, 2));
   });
   document.getElementById('ks-pdf').addEventListener('click', async function () {
@@ -213,13 +283,14 @@
         toolId: 'ke-stamp-duty',
         category: 'finance',
         title: root.dataset.pdfTitle,
-        subtitle: engine.RULES.scheme + ' · ' + current.instrumentDate,
+        subtitle: (localeKey === 'sw' ? 'Sheria ya Ushuru wa Stampu ya Kenya (Sura ya 480)' : engine.RULES.scheme) + ' · ' + current.instrumentDate,
+        filename: text.fileBase + '.pdf',
         noGate: true,
         skipGate: true,
         heroStats: [
           [root.dataset.payableLabel, money(current.payable)],
           [root.dataset.basisLabel, money(current.dutiableValue)],
-          [root.dataset.modeLabel, current.mode]
+          [root.dataset.modeLabel, localMode(current)]
         ],
         sections: [{
           title: root.dataset.breakdownTitle,
@@ -227,10 +298,12 @@
             [root.dataset.transferLabel, money(current.transferDuty)],
             [root.dataset.rentLabel, money(current.rentDuty)],
             [root.dataset.premiumLabel, money(current.premiumDuty)],
-            [root.dataset.bandLabel, current.rateLabel]
+            [root.dataset.bandLabel, localRateLabel(current)]
           ]
         }],
-        source: engine.RULES.source + ' · reviewed ' + engine.RULES.verifiedThrough,
+        source: localeKey === 'sw' ?
+          'Kenya Law: Stamp Duty Act (Cap. 480), Jedwali vipengele 11, 12A na Lease; vifungu 6, 10A na 52, 55-58 · imepitiwa ' + engine.RULES.verifiedThrough :
+          engine.RULES.source + ' · reviewed ' + engine.RULES.verifiedThrough,
         disclaimer: root.dataset.pdfDisclaimer
       });
       status.textContent = text.exported;
