@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 32,
-    "blocked": 23,
+    "acceptedCandidates": 33,
+    "blocked": 22,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 12,
-        "blocked": 8
+        "acceptedCandidates": 13,
+        "blocked": 7
       },
       "energy": {
         "denominator": 17,
@@ -45,6 +45,7 @@
       "tests/swahili-paint-parity.test.js",
       "tests/swahili-roof-parity.test.js",
       "tests/swahili-borehole-parity.test.js",
+      "tests/swahili-generator-sizing-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -57,9 +58,10 @@
       "tests/e2e/sw-paint-parity.spec.js",
       "tests/e2e/sw-roof-parity.spec.js",
       "tests/e2e/sw-borehole-parity.spec.js",
+      "tests/e2e/sw-generator-sizing-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 12 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 13 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -319,19 +321,19 @@
       "englishId": "generator-sizing",
       "categoryKey": "engineering",
       "englishRoute": "/tools/generator-sizing",
-      "swahiliRoute": "/sw/zana/ukubwa-wa-generator",
+      "swahiliRoute": "/sw/zana/ukubwa-wa-generator/",
       "swahiliFile": "sw/zana/ukubwa-wa-generator/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-generator-sizing-contract.js -> assets/js/engines/generator-sizing-engine.js -> assets/js/pages/sw-generator-sizing-parity.js",
+      "formulaDecision": "The exact English running-load sum, largest-single-additional-surge rule, 0.8 power factor, 25% sizing headroom and standard-kVA rounding are shared through one DOM-free engine consumed by English and Swahili.",
+      "sourceDecision": "Exact inventory ownership is Engineering, not Energy. The appliance watt/surge presets are undated static examples without manufacturer source binding and are visibly stale/low-confidence; nameplates and a qualified technician control final sizing and installation.",
+      "browserProof": "Chromium: exact default and custom-motor oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/generator-sizing.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "boq-gen",
