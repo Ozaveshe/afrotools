@@ -113,11 +113,19 @@
 
   function brief(summary, locale) {
     var fr = String(locale || '').toLowerCase().indexOf('fr') === 0;
+    var sw = String(locale || '').toLowerCase().indexOf('sw') === 0;
     if (!summary || !summary.totalPosts) {
-      return fr ? 'Ajoutez au moins une publication pour obtenir une synthèse.' : 'Add at least one post to generate a summary.';
+      if (fr) return 'Ajoutez au moins une publication pour obtenir une synthèse.';
+      if (sw) return 'Ongeza angalau chapisho moja ili kupata muhtasari.';
+      return 'Add at least one post to generate a summary.';
     }
     var platform = summary.bestPlatform ? summary.bestPlatform.name : '—';
     var format = summary.bestFormat ? summary.bestFormat.name : '—';
+    if (sw) {
+      return summary.totalPosts + ' chapisho, reach jumla ' + summary.totalReach.toLocaleString('sw') +
+        ' na engagement ' + summary.engagementRate.toFixed(2) + '%. Jukwaa bora: ' + platform +
+        '. Muundo bora: ' + format + '. Linganisha vipindi vinavyofanana na ujaribu kigezo kimoja kwa wakati.';
+    }
     return fr
       ? summary.totalPosts + ' publication(s), ' + summary.totalReach.toLocaleString('fr-FR') + ' de portée et ' + summary.engagementRate.toFixed(2) + ' % d’engagement. Plateforme la plus performante : ' + platform + '. Format le plus performant : ' + format + '. Comparez des périodes et testez une variable à la fois.'
       : summary.totalPosts + ' post(s), ' + summary.totalReach.toLocaleString('en') + ' total reach and ' + summary.engagementRate.toFixed(2) + '% engagement. Best platform: ' + platform + '. Best format: ' + format + '. Compare like-for-like periods and test one variable at a time.';
