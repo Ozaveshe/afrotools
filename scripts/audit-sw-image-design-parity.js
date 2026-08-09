@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 16, `expected 16 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 3, `expected 3 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 17, `expected 17 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 2, `expected 2 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -123,7 +123,7 @@ const receipt = {
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
   privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Meme Generator keeps uploaded pixels and caption data inside the local FileReader/canvas owner. Logo Maker keeps brand text and SVG/PNG rendering inside the local SVG/canvas owner. Other candidates use committed local runtimes and maintained shared studios.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420, 4425, 4426, 4436, 4441], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js', 'tests/e2e/swahili-image-to-text-parity.spec.js', 'tests/e2e/swahili-meme-generator-parity.spec.js', 'tests/e2e/swahili-logo-maker-parity.spec.js'], result: '45 passed' },
+  browser: { status: 'pass-with-carried-ocr-blocker', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420, 4425, 4426, 4436, 4441, 4455, 4456, 4457, 4458, 4460], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js', 'tests/e2e/swahili-image-to-text-parity.spec.js', 'tests/e2e/swahili-meme-generator-parity.spec.js', 'tests/e2e/swahili-logo-maker-parity.spec.js', 'tests/e2e/swahili-background-remover-parity.spec.js'], result: '45/45 non-OCR matrix passed including Background Remover; current combined Image-to-Text run retained 2 passes and 1 fail because bundled OCR assets did not initialize locally' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',

@@ -2,8 +2,8 @@
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Accepted candidates: **16**
-- Fail-closed rows: **3**
+- Accepted candidates: **17**
+- Fail-closed rows: **2**
 - Central ledger edits: **0**
 - Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
@@ -13,6 +13,7 @@
 - `image-compress` — `/sw/zana/kubana-picha/`: tests/e2e/swahili-image-compress-parity.spec.js: the byte-exact extracted English engine is shared by both routes and produced byte-identical 160x90 PNG output; Swahili PNG, JPG, WebP and auto-selected output reopened at exact dimensions; a 20 KB target JPEG reopened at 600x400 within target; two Download all WebP files reopened at exact 120x68 and 90x90; presets, invalid/clear behavior, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `image-resize` — `/sw/zana/kubadilisha-ukubwa-wa-picha/`: tests/e2e/swahili-image-resize-parity.spec.js: English and Swahili share the exact local batch resizer and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP reopened at exact dimensions; fit, fill, pad and stretch outputs reopened; two synthetic files across two targets produced four reopened downloads at exact 60x40 or 512x512, including Download all; clear/reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `qr-generator` — `/sw/zana/kitengeneza-qr/`: tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed.
+- `background-remover` — `/sw/zana/kiondoa-mandharinyuma/`: tests/e2e/swahili-background-remover-parity.spec.js: Swahili is generated from the exact English studio DOM and executes the maintained local background-remover runtime; controlled English and Swahili edge-mode output is byte-identical; PNG, WebP and JPG outputs are parsed and reopened; queue, color-key, reset, localized clipboard brief, 320/375px, 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress checks pass.
 - `passport-photo` — `/sw/zana/picha-ya-pasipoti/`: tests/e2e/swahili-passport-photo-parity.spec.js: Swahili is generated from the exact English studio DOM and loads passport-photo-studio.js; controlled English and Swahili 413x531 PNG output was byte-identical; all nine advertised single, 4x6-sheet and A4 exports reopened as PNG, JPG and WebP at exact 413x531, 1800x1200 and 2480x3508 dimensions; preset source facts and the localized clipboard brief were verified; invalid input, crop reset, checklist, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `image-crop` — `/sw/zana/kukata-picha/`: tests/e2e/swahili-image-crop-parity.spec.js: English and Swahili share the exact interactive crop engine and produced byte-identical PNG output; Swahili selection, rotate/flip/reset, local history and localized recipe passed; PNG, JPG and WebP reopened at exact 64x48 dimensions; 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
@@ -29,7 +30,6 @@
 
 ## Fail-closed rows
 
-- `background-remover` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.
 - `certificate-maker` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.
 - `flyer-maker` — blocked-feature-parity: The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior.
 

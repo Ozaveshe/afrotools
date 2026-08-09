@@ -5,9 +5,9 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 16,
-    "blocked": 3,
-    "centrallyAccepted": 15
+    "staticCandidates": 17,
+    "blocked": 2,
+    "centrallyAccepted": 16
   },
   "acceptedCandidates": [
     {
@@ -27,6 +27,12 @@
       "route": "/sw/zana/kitengeneza-qr/",
       "sourceOwner": "assets/js/engines/qr-payload-engine.js",
       "browserProof": "tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
+    },
+    {
+      "id": "background-remover",
+      "route": "/sw/zana/kiondoa-mandharinyuma/",
+      "sourceOwner": "scripts/build-sw-background-remover.js + assets/js/lib/background-remover-studio.js + assets/js/lib/background-remover-studio-sw.js",
+      "browserProof": "tests/e2e/swahili-background-remover-parity.spec.js: Swahili is generated from the exact English studio DOM and executes the maintained local background-remover runtime; controlled English and Swahili edge-mode output is byte-identical; PNG, WebP and JPG outputs are parsed and reopened; queue, color-key, reset, localized clipboard brief, 320/375px, 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress checks pass."
     },
     {
       "id": "passport-photo",
@@ -109,12 +115,6 @@
   ],
   "blocked": [
     {
-      "id": "background-remover",
-      "route": "/sw/zana/kiondoa-mandharinyuma/",
-      "status": "blocked-english-fallback",
-      "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
-    },
-    {
       "id": "certificate-maker",
       "route": "/sw/zana/kitengeneza-cheti/",
       "status": "blocked-english-fallback",
@@ -134,7 +134,7 @@
     "missing": 0
   },
   "browser": {
-    "status": "pass",
+    "status": "pass-with-carried-ocr-blocker",
     "oneWorker": true,
     "ports": [
       4398,
@@ -153,7 +153,12 @@
       4425,
       4426,
       4436,
-      4441
+      4441,
+      4455,
+      4456,
+      4457,
+      4458,
+      4460
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -170,15 +175,16 @@
       "tests/e2e/swahili-favicon-generator-parity.spec.js",
       "tests/e2e/swahili-image-to-text-parity.spec.js",
       "tests/e2e/swahili-meme-generator-parity.spec.js",
-      "tests/e2e/swahili-logo-maker-parity.spec.js"
+      "tests/e2e/swahili-logo-maker-parity.spec.js",
+      "tests/e2e/swahili-background-remover-parity.spec.js"
     ],
-    "result": "45 passed"
+    "result": "45/45 non-OCR matrix passed including Background Remover; current combined Image-to-Text run retained 2 passes and 1 fail because bundled OCR assets did not initialize locally"
   },
   "validation": {
     "focusedStatic": "pass",
     "colorFamilyOwner": "pass",
     "colorFamilyAudit": "pass",
-    "freeAppInventory": "pass: 1,257 rows; Image & Design has 15 coordinator-accepted rows and 16 proved lane candidates",
+    "freeAppInventory": "pass: 1,257 rows; Image & Design has 16 coordinator-accepted rows and 17 proved lane candidates",
     "localization": "pass: coordinator-generated current coverage",
     "hreflang": "pass: coordinator validation current at integration",
     "internalLinks": "pass: worker and coordinator link validation",
