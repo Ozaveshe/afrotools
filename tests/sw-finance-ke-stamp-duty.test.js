@@ -55,7 +55,7 @@ assert.deepStrictEqual(engine.calculate({
   marketValue: 15000000
 }), { ok: false, error: 'unsupported_date' });
 
-assert.match(sw, /<html lang="sw">/);
+assert.match(sw, /<html\b[^>]*\blang="sw"/);
 assert.match(sw, /data-ke-stamp-duty data-locale="sw"/);
 assert.match(sw, /\/engines\/ke-stamp-duty-engine\.js/);
 assert.match(sw, /\/assets\/js\/pages\/ke-stamp-duty-vip\.js/);
