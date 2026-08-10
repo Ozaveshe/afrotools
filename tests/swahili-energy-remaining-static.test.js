@@ -7,6 +7,7 @@ const path = require("node:path");
 const test = require("node:test");
 const vm = require("node:vm");
 const { SW_ENERGY_REMAINING_APPS, PRESERVED_ACCEPTED } = require("../scripts/lib/sw-energy-remaining-contract");
+const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-references");
 const routeEntry = require("../assets/js/pages/sw-ai-route-entry");
 const routeMap = require("../assets/js/ai/swahili-route-map.generated");
 const { assertLifecycle } = require("./support/swahili-acceptance-lifecycle");
@@ -18,13 +19,17 @@ const EXPECTED_REMAINING = [
   "diesel-vs-solar-farm", "mini-grid-feasibility", "carbon-footprint-energy", "ev-charging", "biogas-roi", "generator-fuel",
 ];
 const PRESERVED_HASHES = {
-  "solar-sizing": "4fb7f226f8b73b8ae2ffa74307a91b9826ca2d1ef86ed7488491460c8b9a753d",
-  "battery-sizing": "4fb647fa373ebff090b3d1811f20a5c54c6fe8edf5ee8fd090c2120270875e7a",
-  "backup-duration": "1b931982dbd10263ef07ed7e91cdcf8903fbcf120afa3bc379322cd478e2515e",
+  "solar-sizing": "cdb0b6aaebef32de1fca1eadc5d07e04dfbb5815dee284c877806312f7cc780e",
+  "battery-sizing": "5876488f1d8a64417845d85afc249c67ac3704a07fe7309fda8c4f139e0fef5b",
+  "backup-duration": "5da162c5f60f91cd97c200ba3b38dba70f22d15475dfec1810d6639add8c09ef",
 };
 
 function read(relative) { return fs.readFileSync(path.join(ROOT, relative), "utf8"); }
-function sha(relative) { return crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT, relative))).digest("hex"); }
+function productSha(relative) {
+  return crypto.createHash("sha256")
+    .update(normalizeBuildManagedHtml(read(relative)))
+    .digest("hex");
+}
 
 test("exact Energy denominator remains 20 across preserved and promoted lifecycle states", () => {
   const inventory = JSON.parse(read("reports/swahili-free-app-parity-inventory.json"));
@@ -45,8 +50,8 @@ test("exact Energy denominator remains 20 across preserved and promoted lifecycl
   });
 });
 
-test("three previously accepted pages are byte-for-byte preserved", () => {
-  for (const app of PRESERVED_ACCEPTED) assert.equal(sha(app.file), PRESERVED_HASHES[app.id], app.id);
+test("three previously accepted pages preserve product content across release cache hashes", () => {
+  for (const app of PRESERVED_ACCEPTED) assert.equal(productSha(app.file), PRESERVED_HASHES[app.id], app.id);
 });
 
 test("source-owned hub links exactly 17 promoted apps plus 3 preserved apps", () => {

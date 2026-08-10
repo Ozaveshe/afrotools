@@ -1373,7 +1373,7 @@
       const markup = `
         <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
-        <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=1">
+        <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=2">
         <style>
           @media (max-width:940px) {
             .search-btn, .theme-toggle { display: none; }
