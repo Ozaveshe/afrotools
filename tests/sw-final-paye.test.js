@@ -1,11 +1,12 @@
 const assert = require('assert');
-const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const engine = require('../engines/src/sw-final-paye-engine.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const BASE = '2f5fb8988ddd40e28eb17123fe653b18ff0801c3';
+const baselineReceipt = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/sw-final-paye-static-receipt.json'), 'utf8'));
+const baselineById = new Map(baselineReceipt.metrics.map((row) => [row.id, row.before]));
 const rows = [
   ['ng-paye','sw/nigeria/kikokotoo-kodi-mshahara/index.html','/nigeria/ng-salary-tax',['regime','pension','nhf','nhis','annualRent','lifeAssurance','mortgageInterest']],
   ['za-paye','sw/south-africa/kikokotoo-kodi-mshahara/index.html','/south-africa/za-paye',['ageGroup','retirement','medMembers','uif']],
@@ -37,8 +38,7 @@ function metrics(html) {
 const metricReceipt=[];
 for (const [id,file,englishRoute,profileControls] of rows) {
   const html=fs.readFileSync(path.join(ROOT,file),'utf8');
-  const baseline=childProcess.execFileSync('git',['show',`${BASE}:${file}`],{cwd:ROOT,encoding:'utf8'});
-  const before=metrics(baseline),after=metrics(html);metricReceipt.push({id,before,after});
+  const before=baselineById.get(id),after=metrics(html);assert.ok(before,`${id}: committed frozen-base metrics`);metricReceipt.push({id,before,after});
   assert.match(html,/<html\b[^>]*\blang="sw"/i,`${id}: Swahili owner`);
   assert.ok(html.includes(`data-tool-id="${id}"`)&&html.includes('data-sw-paye-app="paye"'),`${id}: exact source-owned PAYE identity`);
   for(const name of ['inputPeriod','gross','desiredNet','aiConsent',...profileControls])assert.ok(html.includes(`name="${name}"`),`${id}: control ${name}`);
@@ -64,6 +64,8 @@ assert.match(controller,/maelezo ya ndani bila mtandao/i, 'local explanation fal
 
 const fixtures=JSON.parse(fs.readFileSync(path.join(ROOT,'tests/fixtures/sw-final-paye-english-parity.json'),'utf8'));
 assert.strictEqual(fixtures.frozenEnglishBase,BASE);
+assert.strictEqual(baselineReceipt.accepted,13,'static receipt covers all PAYE owners');
+assert.strictEqual(baselineById.size,13,'static receipt has one baseline per PAYE owner');
 for(const fixture of fixtures.cases){const actual=engine.calculatePaye(fixture.id,fixture.input);for(const [field,expected] of Object.entries(fixture.expected))assert.ok(Math.abs(Number(actual[field]||0)-expected)<0.001,`${fixture.id} ${field}: expected ${expected}, got ${actual[field]}`);}
 assert.strictEqual(new Set(fixtures.cases.map(row=>row.id)).size,13,'all 13 PAYE profiles covered');
 for(const [id,profile] of Object.entries(engine.PAYE_PROFILES)){assert.match(profile.source,/^https:\/\//,`${id}: authority URL`);assert.match(profile.reviewed,/^\d{4}-\d{2}-\d{2}$/,`${id}: review date`);assert.throws(()=>engine.calculatePaye(id,{gross:0}),RangeError,`${id}: invalid fails closed`);}
