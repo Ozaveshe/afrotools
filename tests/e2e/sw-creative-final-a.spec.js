@@ -11,6 +11,19 @@ const generic = [
   ["creator-page", "/sw/zana/ukurasa-wa-mtayarishi/", ["html", "json", "txt"]],
   ["creator-polish", "/sw/zana/boresha-maudhui-ya-mtayarishi/", ["json", "txt"]],
 ];
+const depthRoutes = [
+  "/sw/zana/carousel-ya-mitandao/",
+  "/sw/zana/kukata-video-za-mtayarishi/",
+  "/sw/zana/dawati-la-mtayarishi/",
+  "/sw/zana/hashtag-za-maudhui/",
+  "/sw/zana/hook-za-video/",
+  "/sw/zana/media-kit-ya-mtayarishi/",
+  "/sw/zana/barua-ya-mtayarishi/",
+  "/sw/zana/mawazo-ya-mtayarishi/",
+  "/sw/zana/mapato-ya-mtayarishi/",
+  "/sw/zana/ukurasa-wa-mtayarishi/",
+  "/sw/zana/boresha-maudhui-ya-mtayarishi/",
+];
 async function grab(page, kind) {
   const waiting = page.waitForEvent("download");
   await page.locator(`[data-export="${kind}"]`).click();
@@ -40,6 +53,36 @@ async function noOverflow(page, width) {
     layout.viewportWidth + 1,
   );
 }
+test("eleven creator routes expose useful Swahili method, source, privacy and FAQ depth", async ({ page }) => {
+  test.setTimeout(120000);
+  for (const route of depthRoutes) {
+    await page.goto(route);
+    const depth = page.locator("[data-swfa-depth]");
+    await expect(depth).toBeVisible();
+    await expect(depth.getByRole("heading", { name: "Mbinu ya kufanya kazi" })).toBeVisible();
+    await expect(depth.getByRole("heading", { name: "Chanzo na mpaka wa matokeo" })).toBeVisible();
+    await expect(depth.getByRole("heading", { name: "Faragha na hifadhi" })).toBeVisible();
+    expect(await depth.locator("details").count()).toBeGreaterThanOrEqual(4);
+    const firstFaq = depth.locator("details").first();
+    await firstFaq.locator("summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(firstFaq).toHaveAttribute("open", "");
+    expect(await depth.locator('a[href^="/sw/"]').count()).toBeGreaterThanOrEqual(14);
+    await noOverflow(page, 320);
+    await noOverflow(page, 375);
+    await page.setViewportSize({ width: 640, height: 900 });
+    await page.evaluate(() => { document.documentElement.style.zoom = "2"; });
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+    await page.evaluate(() => {
+      document.documentElement.style.zoom = "";
+      document.documentElement.setAttribute("data-theme", "dark");
+    });
+    const dark = await depth.evaluate((node) => getComputedStyle(node).color);
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
+    const light = await depth.evaluate((node) => getComputedStyle(node).color);
+    expect(dark).not.toBe(light);
+  }
+});
 test("eleven deterministic creator owners run, reject invalid state and reopen exports", async ({
   page,
 }) => {
@@ -396,17 +439,31 @@ test("creator clip preserves the full editor and reopens its real WebM export", 
   expect(Array.from(video.buffer.subarray(0, 4))).toEqual([
     0x1a, 0x45, 0xdf, 0xa3,
   ]);
-  const duration = await page.evaluate(async (base64) => {
+  const reopened = await page.evaluate(async (base64) => {
     const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
     const element = document.createElement("video");
     element.preload = "metadata";
-    element.src = URL.createObjectURL(new Blob([bytes], { type: "video/webm" }));
+    const mime = "video/webm";
+    const url = URL.createObjectURL(new Blob([bytes], { type: mime }));
+    element.src = url;
     await new Promise((resolve, reject) => {
       element.onloadedmetadata = resolve;
       element.onerror = reject;
     });
-    return element.duration;
+    const result = {
+      duration: element.duration,
+      width: element.videoWidth,
+      height: element.videoHeight,
+      canPlay: element.canPlayType(mime),
+      readyState: element.readyState,
+    };
+    URL.revokeObjectURL(url);
+    return result;
   }, video.buffer.toString("base64"));
-  expect(duration).toBeGreaterThan(0.5);
+  expect(reopened.duration).toBeGreaterThan(0.5);
+  expect(reopened.width).toBeGreaterThan(0);
+  expect(reopened.height).toBeGreaterThan(0);
+  expect(reopened.canPlay).not.toBe("");
+  expect(reopened.readyState).toBeGreaterThanOrEqual(1);
   await noOverflow(page, 320);
 });

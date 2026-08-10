@@ -70,6 +70,9 @@ function build(root, owner, cfg) {
     .replace(/<link rel="preconnect" href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>\s*/gi, "")
     .replace(/<link href="https:\/\/fonts\.googleapis\.com[^>]*>\s*/gi, "")
     .replace(/data-lang="en"/g, 'data-lang="sw"');
+  if (owner !== "creator-invoice" && !html.includes('/assets/css/sw-creative-final-a.css')) {
+    html = html.replace(/<\/head>/i, '<link rel="stylesheet" href="/assets/css/sw-creative-final-a.css"></head>');
+  }
   html = html
     .replace(/<meta name="description" content="[^"]+">/i, `<meta name="description" content="${cfg.description}">`)
     .replace(/<meta property="og:title" content="[^"]+">/i, `<meta property="og:title" content="${cfg.title}">`)

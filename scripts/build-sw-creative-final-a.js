@@ -4,6 +4,7 @@ const fs = require("node:fs"),
 const ROOT = path.resolve(__dirname, "..");
 const clipPage = require("./lib/build-sw-creator-clip-page.js");
 const workspacePage = require("./lib/build-sw-creative-workspace-page.js");
+const contentDepth = require("./lib/sw-creative-final-a-depth.js");
 const apps = {
   afrostream: {
     slug: "afrostream",
@@ -491,7 +492,11 @@ for (const [owner, cfg] of Object.entries(apps)) {
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(
     target,
-    cfg.special === "clip" ? clipPage.build(ROOT) : cfg.special === "workspace" ? workspacePage.build(ROOT, owner, cfg) : page(owner, cfg),
+    contentDepth.inject(
+      cfg.special === "clip" ? clipPage.build(ROOT) : cfg.special === "workspace" ? workspacePage.build(ROOT, owner, cfg) : page(owner, cfg),
+      owner,
+      swRoute,
+    ),
   );
 }
 console.log(`Built ${Object.keys(apps).length} native Swahili Creative apps.`);
