@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
 
 const ROOT = path.resolve(__dirname, "..");
 const SOURCE = path.join(ROOT, "tools", "linkedin-optimizer", "index.html");
@@ -101,6 +102,11 @@ reset.addEventListener('click',resetCore);
 </script></body>`);
 
   fs.mkdirSync(path.dirname(TARGET), { recursive: true });
+  const current = fs.existsSync(TARGET) ? fs.readFileSync(TARGET, "utf8") : "";
+  if (localizedGeneratorEquivalent(current, html)) {
+    console.log(`Kept release-normalized ${path.relative(ROOT, TARGET)}; maintained owner output is current.`);
+    return;
+  }
   fs.writeFileSync(TARGET, html);
   console.log(`Built ${path.relative(ROOT, TARGET)} from maintained LinkedIn Optimizer owner.`);
 }

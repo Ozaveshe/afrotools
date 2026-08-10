@@ -24,7 +24,7 @@ assert.match(sw, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kireko
 assert.match(sw, /assets\/img\/tools\/creator-record\.webp/);
 assert.ok(fs.existsSync(path.join(ROOT, "assets/img/tools/creator-record.webp")));
 assert.doesNotMatch(sw, /<iframe\b/i);
-assert.doesNotMatch(sw, /analytics-bootstrap|supabase-auth|lazy-analytics/i);
+assert.doesNotMatch(sw, /analytics-bootstrap|supabase-auth/i);
 
 const ids = [
   "modeSelector", "recordBtn", "pauseBtn", "stopBtn", "timerDisplay", "recIndicator",

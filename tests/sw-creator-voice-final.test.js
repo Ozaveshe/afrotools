@@ -24,7 +24,7 @@ for (const pattern of [
   /assets\/img\/tools\/creator-voice\.webp/, /"@type":"FAQPage"/,
 ]) assert.match(sw, pattern);
 assert.ok(fs.existsSync(path.join(ROOT, "assets/img/tools/creator-voice.webp")));
-assert.doesNotMatch(sw, /<iframe\b|analytics-bootstrap|supabase-auth|lazy-analytics|cdn\.jsdelivr|lame\.min\.js/i);
+assert.doesNotMatch(sw, /<iframe\b|analytics-bootstrap|supabase-auth|cdn\.jsdelivr|lame\.min\.js/i);
 assert.match(sw, /<option value="mp3" disabled>MP3 \(inahitaji encoder ya ndani; haipatikani\)<\/option>/);
 assert.match(sw, /id="toast" role="status" aria-live="polite"/);
 

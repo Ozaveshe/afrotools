@@ -37,8 +37,8 @@ assert.equal(angolaPaye.selectedToolId, "ao-paye");
 assert.equal(angolaPaye.selectedRoute, `${routeMap.ids["ao-paye"]}?source=ask`);
 assert.equal(angolaPaye._meta.localeRoute.status, "mapped");
 
-const unavailableId = inventory.rows.find((entry) => entry.accepted === false && entry.englishId)?.englishId;
-assert.ok(unavailableId, "expected at least one fail-closed Swahili inventory row");
+assert.equal(inventory.totals.remainingUnaccepted, 0, "100% parity must leave no unavailable inventory row");
+const unavailableId = "__sw-unavailable-contract-fixture__";
 const unavailable = router.normalizeDecision({
   selectedToolId: unavailableId
 }, "Unaccepted Swahili tool", { locale: "sw" });

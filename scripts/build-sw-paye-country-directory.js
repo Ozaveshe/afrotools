@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 const root = path.resolve(__dirname, '..');
 const directory = require(path.join(root, 'assets/js/pages/paye-country-directory.js'));
 
@@ -180,7 +181,8 @@ ${list}
 }
 
 function patchDirectoryPeer(file, locale) {
-  let html = fs.readFileSync(file, 'utf8');
+  const current = fs.readFileSync(file, 'utf8');
+  let html = current;
   html = html.replaceAll('53 source-backed', '54 source-backed').replaceAll('all 53 source-backed', 'all 54 source-backed');
   html = html.replaceAll('Annuaire de 53 calculateurs', 'Annuaire de 54 calculateurs').replaceAll('53 destinations avec sources', '54 destinations avec sources');
   html = html.replaceAll('"numberOfItems": 53', '"numberOfItems": 54');
@@ -195,16 +197,19 @@ function patchDirectoryPeer(file, locale) {
   if (!html.includes('hreflang="sw"')) {
     html = html.replace('<link rel="alternate" hreflang="x-default"', '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/mshahara-na-kodi/paye/">\n<link rel="alternate" hreflang="x-default"');
   }
-  fs.writeFileSync(file, html, 'utf8');
+  if (!localizedGeneratorEquivalent(current, html)) fs.writeFileSync(file, html, 'utf8');
 }
 
 function removeFalseHubAlternate(file) {
-  let html = fs.readFileSync(file, 'utf8');
+  const current = fs.readFileSync(file, 'utf8');
+  let html = current;
   html = html.replace(/<link rel="alternate" hreflang="sw" href="https:\/\/afrotools\.com\/sw\/mshahara-na-kodi\/paye\/">\r?\n/, '');
-  fs.writeFileSync(file, html, 'utf8');
+  if (!localizedGeneratorEquivalent(current, html)) fs.writeFileSync(file, html, 'utf8');
 }
 
-fs.writeFileSync(routes.sw, page(), 'utf8');
+const expectedSw = page();
+const currentSw = fs.existsSync(routes.sw) ? fs.readFileSync(routes.sw, 'utf8') : '';
+if (!localizedGeneratorEquivalent(currentSw, expectedSw)) fs.writeFileSync(routes.sw, expectedSw, 'utf8');
 patchDirectoryPeer(routes.en, 'en');
 patchDirectoryPeer(routes.fr, 'fr');
 removeFalseHubAlternate(routes.enHub);

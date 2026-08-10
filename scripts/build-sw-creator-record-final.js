@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
 
 const ROOT = path.resolve(__dirname, "..");
 const SOURCE = path.join(ROOT, "tools", "creator-record", "app.html");
@@ -13,6 +14,12 @@ function replaceOnce(html, from, to) {
   if (first < 0) throw new Error(`CreatorRecord source drift: missing ${JSON.stringify(from)}`);
   if (html.indexOf(from, first + from.length) >= 0) throw new Error(`CreatorRecord source drift: duplicate ${JSON.stringify(from)}`);
   return html.slice(0, first) + to + html.slice(first + from.length);
+}
+
+function replaceOncePattern(html, pattern, to, label) {
+  const matches = html.match(new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`)) || [];
+  if (matches.length !== 1) throw new Error(`CreatorRecord source drift: expected one ${label}, found ${matches.length}`);
+  return html.replace(pattern, to);
 }
 
 function build() {
@@ -117,7 +124,7 @@ function build() {
     .replace(/^\s*<script src="\/assets\/js\/pages\/day9-creative-expanded-safety[^\n]+\n/m, "")
     .replace(/^\s*<script src="\/assets\/js\/lazy-analytics[^\n]+\n/m, "");
 
-  html = replaceOnce(html, '  <script src="/assets/js/pages/creative/creator-record-app-controller.js?v=9ada6e4f"></script>', `  <section class="crd-sw-privacy" aria-labelledby="crdPrivacyTitle">
+  html = replaceOncePattern(html, /  <script src="\/assets\/js\/pages\/creative\/creator-record-app-controller\.js(?:\?v=[^"]+)?"><\/script>/, `  <section class="crd-sw-privacy" aria-labelledby="crdPrivacyTitle">
     <h2 id="crdPrivacyTitle">Faragha na ruhusa</h2>
     <p>Rekodi na historia yake hubaki kwenye kivinjari chako. Hakikisha una ruhusa kabla ya kurekodi watu, mikutano, darasa au skrini yenye taarifa nyeti. Upakuaji ni WebM; uwezo wa kamera, maikrofoni na sauti ya kifaa hutegemea kivinjari na kifaa.</p>
   </section>
@@ -131,7 +138,7 @@ function build() {
   <script>window.AfroToolsCreatorRecordLocale=${JSON.stringify({ filenamePrefix: "Rekodi", dateLocale: "sw", strings: {
     noCameras: "Hakuna kamera iliyopatikana", camera: "Kamera", mediaUnsupported: "Kivinjari hiki hakiwezi kurekodi media", screenUnsupported: "Kivinjari hiki hakiwezi kunasa skrini", recorderUnsupported: "MediaRecorder haipatikani; tumia Chrome au Edge", enterText: "Andika maandishi:", getReady: "Jiandae...", noTracks: "Hakuna chanzo cha media kinachopatikana", permissionDenied: "Ruhusa imekataliwa; ruhusu kamera, maikrofoni au skrini", errorPrefix: "Hitilafu:", cancelled: "Rekodi imeghairiwa", failed: "Rekodi imeshindwa; hakuna data iliyonaswa", complete: "Rekodi imekamilika", downloading: "Inapakua...", noRecordings: "Bado hakuna rekodi", preview: "Hakiki", download: "Pakua", delete: "Futa", deleted: "Rekodi imefutwa"
   }})};</script>
-  <script src="/assets/js/pages/creative/creator-record-app-controller.js?v=sw-final"></script>`);
+  <script src="/assets/js/pages/creative/creator-record-app-controller.js"></script>`, "CreatorRecord controller script");
 
   html = replaceOnce(html, "</head>", `<style>
     .crd-sw-privacy{max-width:1180px;margin:0 auto 40px;padding:18px 22px;border:1px solid rgba(148,163,184,.35);border-radius:12px;background:rgba(15,23,42,.55);color:#e2e8f0}
@@ -142,6 +149,11 @@ function build() {
 </head>`);
 
   fs.mkdirSync(path.dirname(TARGET), { recursive: true });
+  const current = fs.existsSync(TARGET) ? fs.readFileSync(TARGET, "utf8") : "";
+  if (localizedGeneratorEquivalent(current, html)) {
+    console.log(`Kept release-normalized ${path.relative(ROOT, TARGET)}; maintained owner output is current.`);
+    return;
+  }
   fs.writeFileSync(TARGET, html);
   console.log(`Built ${path.relative(ROOT, TARGET)} from maintained CreatorRecord workspace.`);
 }

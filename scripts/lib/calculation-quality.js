@@ -155,8 +155,54 @@ function normalizeHtmlFormulaPresentation(source) {
     );
 }
 
+function normalizeHtmlFormulaRouteShell(source) {
+  let normalized = String(source)
+    // These are injected or rewritten after source generation. External
+    // engine/controller paths remain covered below; only release decoration
+    // is removed from HTML routes with no inline formula implementation.
+    .replace(/\s+data-chat-bundle=["'][^"']+["']/gi, "")
+    .replace(
+      /<script\s+[^>]*src=["'][^"']*\/assets\/js\/lazy-analytics\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi,
+      "",
+    )
+    .replace(
+      /<script\s+[^>]*src=["'][^"']*\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi,
+      "",
+    )
+    .replace(
+      /((?:src|href)=["']\/(?:assets|engines)\/[^"'?]+)\?v=[a-f0-9]{8}(["'])/gi,
+      "$1$2",
+    );
+
+  // Canonical/hreflang writers may move the same route declarations to the
+  // end of <head> and format them across lines. Put them back in one stable
+  // location while retaining every value, so a changed canonical or locale
+  // target still changes the digest.
+  const routeLinks = [];
+  normalized = normalized.replace(
+    /<link\s+rel=["'](?:canonical|alternate)["'][^>]*>[ \t]*(?:\r?\n)?/gi,
+    function collectRouteLink(tag) {
+      routeLinks.push(tag.trim());
+      return "";
+    },
+  );
+  if (routeLinks.length) {
+    normalized = normalized.replace(
+      /(<meta\s+name=["']robots["'][^>]*>)/i,
+      "$1" + routeLinks.join(""),
+    );
+  }
+  return normalized;
+}
+
 function digestHtmlFormulaSource(source) {
-  const normalizedSource = normalizeHtmlFormulaPresentation(source);
+  const releaseOwnedRouteShell =
+    /data-afrotools-source-owner=["']scripts\/build-sw-itax-guide\.js["']/i.test(
+      source,
+    );
+  const normalizedSource = normalizeHtmlFormulaPresentation(
+    releaseOwnedRouteShell ? normalizeHtmlFormulaRouteShell(source) : source,
+  );
   const executableScripts = [];
   for (const match of normalizedSource.matchAll(
     /<script\b([^>]*)>([\s\S]*?)<\/script>/gi,

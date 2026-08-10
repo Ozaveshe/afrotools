@@ -38,7 +38,7 @@ assert.strictEqual(receipt.localBandUsd.length, 3, 'historical local band preser
 const html = read('sw/zana/bei-na-akili-ya-gari/index.html');
 const controller = read('assets/js/pages/sw-car-price-intelligence.js');
 const registry = read('assets/js/components/tool-registry.js');
-assert.match(html, /<html lang="sw" class="sw-car-price-page"/i, 'native Swahili document');
+assert.match(html, /<html\b(?=[^>]*\blang="sw")(?=[^>]*\bclass="[^"]*\bsw-car-price-page\b[^"]*")[^>]*>/i, 'native Swahili document');
 assert.match(html, /data-sw-transport-owner="car-price-intelligence"/, 'exact English owner');
 assert.match(html, /hreflang="en" href="https:\/\/afrotools\.com\/cars\/"/, 'English peer');
 assert.match(html, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/cars\/"/, 'French peer');

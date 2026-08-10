@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
 
 const ROOT = path.resolve(__dirname, "..");
 const SOURCE = path.join(ROOT, "tools", "creator-voice", "app.html");
@@ -13,6 +14,12 @@ function replaceOnce(html, from, to) {
   if (first < 0) throw new Error(`CreatorVoice source drift: missing ${JSON.stringify(from)}`);
   if (html.indexOf(from, first + from.length) >= 0) throw new Error(`CreatorVoice source drift: duplicate ${JSON.stringify(from)}`);
   return html.slice(0, first) + to + html.slice(first + from.length);
+}
+
+function replaceOncePattern(html, pattern, to, label) {
+  const matches = html.match(new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`)) || [];
+  if (matches.length !== 1) throw new Error(`CreatorVoice source drift: expected one ${label}, found ${matches.length}`);
+  return html.replace(pattern, to);
 }
 
 function build() {
@@ -103,12 +110,12 @@ function build() {
     .replaceAll('data-action="solo" title="Sikiliza njia hii pekee"', 'data-action="solo" title="Sikiliza njia hii pekee" aria-pressed="false"')
     .replace('<div class="cvo-toast" id="toast"></div>', '<div class="cvo-toast" id="toast" role="status" aria-live="polite"></div>');
 
-  html = replaceOnce(html, '<script src="/assets/js/pages/creative/creator-voice-app-controller.js?v=b8abc0cd"></script>', `<section class="cvo-sw-info" aria-labelledby="cvoPrivacyTitle"><h2 id="cvoPrivacyTitle">Faragha, ruhusa na mipaka</h2><p>Sauti, uhariri na miradi hubaki kwenye kivinjari hiki. Hakikisha una ruhusa ya kurekodi sauti za watu wengine. Uwezo wa codec hutegemea kivinjari; WAV ndiyo chaguo la uhakika, na OGG au WebM hutolewa tu kivinjari kinapoyaunga mkono.</p></section>
+  html = replaceOncePattern(html, /<script src="\/assets\/js\/pages\/creative\/creator-voice-app-controller\.js(?:\?v=[^"]+)?"><\/script>/, `<section class="cvo-sw-info" aria-labelledby="cvoPrivacyTitle"><h2 id="cvoPrivacyTitle">Faragha, ruhusa na mipaka</h2><p>Sauti, uhariri na miradi hubaki kwenye kivinjari hiki. Hakikisha una ruhusa ya kurekodi sauti za watu wengine. Uwezo wa codec hutegemea kivinjari; WAV ndiyo chaguo la uhakika, na OGG au WebM hutolewa tu kivinjari kinapoyaunga mkono.</p></section>
 <section class="cvo-sw-info" aria-labelledby="cvoHelpTitle"><h2 id="cvoHelpTitle">Maswali kuhusu studio</h2><details><summary>Je, sauti inapakiwa kwenye seva?</summary><p>Hapana. Hakuna rekodi ghafi, faili lililopakiwa au mradi unaotumwa kwenye mtandao.</p></details><details><summary>Naweza kufungua mradi tena?</summary><p>Ndiyo. Hifadhi mradi kisha ufungue paneli ya Miradi kwenye kivinjari hiki.</p></details><details><summary>Kwa nini OGG inaweza kupakuliwa kama WAV?</summary><p>Ikiwa kivinjari hakina codec ya OGG, programu inaeleza hali hiyo na hutumia WAV badala yake.</p></details></section>
 <script>window.AfroToolsCreatorVoiceLocale=${JSON.stringify({ filenamePrefix: "sauti", dateLocale: "sw", strings: {
     micUnsupported:"Ufikiaji wa maikrofoni hautumiki",noMicrophones:"Hakuna maikrofoni iliyopatikana",microphone:"Maikrofoni",recordingReady:"Rekodi iko tayari kuhaririwa",decodeError:"Sauti ya rekodi haikuweza kufunguliwa",micDenied:"Ruhusa ya maikrofoni imekataliwa:",pause:"Sitisha",resume:"Endelea",audioLoaded:"Sauti imepakiwa:",decodeFileError:"Faili la sauti halikuweza kufunguliwa",track:"Njia",loaded:"imepakiwa",decodeGenericError:"Faili halikuweza kufunguliwa",selection:"Uteuzi:",trimmed:"Uteuzi umebaki",cutSelection:"Uteuzi umekatwa",splitPoint:"Sehemu ya kugawa imewekwa saa",fadeInApplied:"Ongezeko la taratibu limetumika",fadeOutApplied:"Upunguzaji wa taratibu umetumika",alreadyNormalized:"Sauti tayari imesawazishwa",normalizedGain:"Sauti imesawazishwa; ongezeko:",noiseApplied:"Upunguzaji wa kelele umetumika",reversed:"Sauti imegeuzwa",silenceInserted:"Sekunde 1 ya ukimya imeingizwa saa",reverbApplied:"Mwangwi umetumika",eqApplied:"EQ ya sauti imetumika",compressorApplied:"Banaji limetumika",pitchApplied:"Toni imepandishwa hatua mbili",nothingUndo:"Hakuna cha kutendua",undo:"Imetenduliwa",nothingRedo:"Hakuna cha kurudia",redo:"Imerudiwa",placeholderPreview:"(sauti ya mfano)",noAudioExport:"Hakuna sauti ya kupakua",preparingExport:"Inatayarisha faili...",wavExported:"WAV imepakuliwa",mp3Loading:"Encoder ya MP3 haipatikani kwenye ukurasa huu",mp3Exported:"MP3 imepakuliwa",formatFallback:"Format hii haitumiki kwenye kivinjari hiki; inapakua WAV badala yake",compressedExported:"Sauti iliyobanwa imepakuliwa",dbError:"Hifadhi ya miradi haikufunguka",nothingSave:"Hakuna sauti ya kuhifadhi",untitled:"Mradi usio na jina",projectSaved:"Mradi umehifadhiwa:",noProjects:"Hakuna miradi iliyohifadhiwa",recordThenSave:"Rekodi au pakia sauti, kisha bofya Hifadhi.",projectNotFound:"Mradi haujapatikana",loadedLabel:"Umefunguliwa:",projectDeleted:"Mradi umefutwa",click:"Bofya",whoosh:"Whoosh",pop:"Pop",ding:"Ding",applause:"Makofi",cameraShutter:"Mlizo wa kamera",notification:"Arifa",success:"Imefaulu",error:"Hitilafu",transition:"Mpito",swoosh:"Swoosh",clickSoft:"Bofyo laini",bell:"Kengele",coin:"Sarafu",magic:"Uchawi",drumRoll:"Ngoma",crowdCheer:"Shangwe",nature:"Mazingira",rain:"Mvua",fire:"Moto",typing:"Kuandika"
   }})};</script>
-<script src="/assets/js/pages/creative/creator-voice-app-controller.js?v=sw-final"></script>`);
+<script src="/assets/js/pages/creative/creator-voice-app-controller.js"></script>`, "CreatorVoice controller script");
 
   html = replaceOnce(html, "</head>", `<style>
   .cvo-sw-info{max-width:1100px;margin:24px auto;padding:18px 22px;border:1px solid rgba(148,163,184,.35);border-radius:12px;background:#111827;color:#e5e7eb}.cvo-sw-info h2{font-size:1rem;margin:0 0 8px}.cvo-sw-info p{line-height:1.6}.cvo-sw-info details{padding:10px 0;border-top:1px solid rgba(148,163,184,.25)}.cvo-sw-info summary{cursor:pointer;font-weight:700}.cvo-app :focus-visible,.cvo-sw-info :focus-visible{outline:3px solid #f8fafc;outline-offset:3px}@media(max-width:640px){.cvo-sw-info{margin:18px 12px;padding:16px}.cvo-app-header{gap:8px}.cvo-project-input{max-width:38vw}}
@@ -116,6 +123,11 @@ function build() {
 </head>`);
 
   fs.mkdirSync(path.dirname(TARGET), { recursive: true });
+  const current = fs.existsSync(TARGET) ? fs.readFileSync(TARGET, "utf8") : "";
+  if (localizedGeneratorEquivalent(current, html)) {
+    console.log(`Kept release-normalized ${path.relative(ROOT, TARGET)}; maintained owner output is current.`);
+    return;
+  }
   fs.writeFileSync(TARGET, html);
   console.log(`Built ${path.relative(ROOT, TARGET)} from maintained CreatorVoice workspace.`);
 }

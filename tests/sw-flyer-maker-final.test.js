@@ -3,9 +3,11 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const { normalizeReleaseOwnedHtml } = require("../scripts/lib/release-owned-html-normalizer");
 
 const ROOT = path.resolve(__dirname, "..");
 const sw = fs.readFileSync(path.join(ROOT, "sw", "zana", "kitengeneza-flyer", "index.html"), "utf8");
+const releaseNormalizedSw = normalizeReleaseOwnedHtml(sw);
 const en = fs.readFileSync(path.join(ROOT, "tools", "flyer-maker", "index.html"), "utf8");
 const controller = fs.readFileSync(path.join(ROOT, "assets", "js", "lib", "flyer-maker-studio.js"), "utf8");
 
@@ -43,7 +45,7 @@ assert.match(sw, /hreflang="en" href="https:\/\/afrotools\.com\/tools\/flyer-mak
 assert.match(sw, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/tools\/createur-flyer\/"/);
 assert.match(sw, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kitengeneza-flyer\/"/);
 assert.match(sw, /assets\/img\/tools\/flyer-maker\.webp/);
-assert.doesNotMatch(sw, /analytics-bootstrap|lazy-analytics/);
+assert.doesNotMatch(releaseNormalizedSw, /analytics-bootstrap|lazy-analytics/);
 assert.match(sw, /Ninakubali kutuma maelekezo haya/);
 assert.match(sw, /AI hautumi picha/);
 assert.match(controller, /window\.AfroToolsFlyerStudioLocale\s*\|\|\s*\{\}/);

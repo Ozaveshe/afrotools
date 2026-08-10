@@ -52,10 +52,12 @@ test('English and Swahili owners expose the same private local workflow',()=>{
     for(const name of ['agency','task','actor','workerBand','asOfDate','privacyConfirmed','officialSubmissionConfirmed','receiptPlanConfirmed','riskRateConfirmed','currentSourceConfirmed'])assert.match(html,new RegExp(`name="${name}"`));
     for(const action of ['reset','save','load','import','copy','json','txt','pdf'])assert.match(html,new RegExp(`data-action="${action}"`));
     assert.match(html,/engines\/cnps-guide-engine\.js/);
-    assert.match(html,/assets\/img\/og-default\.png/);
     assert.doesNotMatch(html,/<iframe|name="(?:cnpsNumber|password|salary|payroll|identity|payment)"/i);
   }
+  assert.match(en,/assets\/img\/og-default\.png/);
+  assert.match(sw,/assets\/img\/tools\/cnps-guide\.svg/);
   assert.ok(fs.statSync(path.join(root,'assets/img/og-default.png')).size>1000);
+  assert.ok(fs.statSync(path.join(root,'assets/img/tools/cnps-guide.svg')).size>1000);
 });
 
 test('official source registry is current and exact for the three locale owners',()=>{
@@ -82,7 +84,7 @@ test('canonical, schema, artwork and reciprocal hreflang ownership remain exact'
   assert.match(owners.en,/"dateModified":"2026-08-09"/);
   assert.match(owners.sw,/"dateModified":"2026-08-09"/);
   assert.match(owners.en,/assets\/img\/og-default\.png/);
-  assert.match(owners.sw,/assets\/img\/og-default\.png/);
+  assert.match(owners.sw,/assets\/img\/tools\/cnps-guide\.svg/);
 });
 
 test('source owner is deterministic',()=>{

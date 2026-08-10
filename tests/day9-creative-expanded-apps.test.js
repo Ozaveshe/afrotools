@@ -112,7 +112,7 @@ test('audio and recording tools expose real browser media output paths', () => {
   assert.match(record, /getDisplayMedia/);
   assert.match(record, /getUserMedia/);
   assert.match(record, /new MediaRecorder/);
-  assert.match(record, /return 'CreatorRecord-' \+ d\.getFullYear\(\)/);
+  assert.match(record, /return \(locale\.filenamePrefix \|\| 'CreatorRecord'\) \+ '-' \+ d\.getFullYear\(\)/);
 });
 
 test('unsupported and synthetic output is not presented as completed functionality', () => {

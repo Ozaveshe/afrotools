@@ -1,6 +1,7 @@
 'use strict';
 const fs=require('fs');
 const path=require('path');
+const {localizedGeneratorEquivalent}=require('./lib/localized-generator-equivalence');
 const root=path.resolve(__dirname,'..');
 const files={en:path.join(root,'tools/cnps-guide/index.html'),sw:path.join(root,'sw/zana/mwongozo-wa-cnps/index.html')};
 
@@ -15,15 +16,17 @@ function workspace(locale){
   return `<section class="cg-card" data-cnps-workspace data-locale="${locale}" aria-labelledby="cnps-workspace-title"><div class="cg-head"><h2 id="cnps-workspace-title">${t.title}</h2><p>${t.intro}</p></div><div class="cg-body"><form novalidate><div class="cg-workspace-grid"><div class="cg-workspace-field"><label for="cnps-agency">${t.agency}</label><select id="cnps-agency" name="agency" required><option value="ci-cnps">${t.ci}</option><option value="other-agency">${t.other}</option></select></div><div class="cg-workspace-field"><label for="cnps-task">${t.task}</label><select id="cnps-task" name="task" required>${options(t.tasks)}</select></div><div class="cg-workspace-field"><label for="cnps-actor">${t.actor}</label><select id="cnps-actor" name="actor" required>${options(t.actors)}</select></div><div class="cg-workspace-field"><label for="cnps-worker-band">${t.band}</label><select id="cnps-worker-band" name="workerBand" required>${options(t.bands)}</select></div><div class="cg-workspace-field"><label for="cnps-date">${t.date}</label><input id="cnps-date" name="asOfDate" type="date" required></div><fieldset class="cg-workspace-confirm"><legend>${t.safety}</legend><label class="cg-workspace-check"><input name="privacyConfirmed" type="checkbox" required><span>${t.privacy}</span></label><label class="cg-workspace-check"><input name="officialSubmissionConfirmed" type="checkbox" required><span>${t.official}</span></label><label class="cg-workspace-check"><input name="receiptPlanConfirmed" type="checkbox" required><span>${t.receipt}</span></label><label class="cg-workspace-check"><input name="riskRateConfirmed" type="checkbox"><span>${t.risk}</span></label><label class="cg-workspace-check"><input name="currentSourceConfirmed" type="checkbox"><span>${t.current}</span></label></fieldset></div><div class="cg-workspace-actions"><button type="submit">${t.build}</button><button type="button" data-action="reset">${t.reset}</button><button type="button" data-action="save">${t.save}</button><button type="button" data-action="load">${t.load}</button><button type="button" data-action="import">${t.import}</button><input name="importFile" type="file" accept="application/json,.json" aria-label="${t.import}" hidden></div><p data-status role="status" aria-live="polite"></p></form><section data-result hidden><h3 tabindex="-1" data-result-title>${t.plan}</h3><ul data-stop-reasons hidden></ul><div class="cg-workspace-meta"><span>${t.progress}: <strong data-progress>0 / 0</strong></span><span>${t.source}: <strong data-source-state>—</strong></span><span>${t.schedule}: <strong data-schedule>—</strong></span></div><div data-checklist></div><div class="cg-workspace-actions"><a data-official-link target="_blank" rel="noopener noreferrer" hidden></a></div></section><div class="cg-workspace-actions" data-result-actions hidden><button type="button" data-action="copy">${t.copy}</button><button type="button" data-action="json">${t.json}</button><button type="button" data-action="txt">${t.txt}</button><button type="button" data-action="pdf">${t.pdf}</button></div></div></section>`;
 }
 function upsert(file,locale){
-  let html=fs.readFileSync(file,'utf8');
+  const current=fs.readFileSync(file,'utf8');
+  let html=current;
   html=html.replace(/<html(?![^>]*data-afrotools-source-owner)/,`<html data-afrotools-source-owner="scripts/build-sw-cnps-guide.js"`);
   html=html.replace(/2026-07-22/g,'2026-08-09').replace(/22 July 2026/g,'9 August 2026').replace(/22 Julai 2026/g,'9 Agosti 2026');
+  if(locale==='sw') html=html.replaceAll('https://afrotools.com/assets/img/og-default.png','https://afrotools.com/assets/img/tools/cnps-guide.svg');
   const block=`<!-- CNPS_WORKSPACE_START -->${workspace(locale)}<!-- CNPS_WORKSPACE_END -->`;
   if(/<!-- CNPS_WORKSPACE_START -->[\s\S]*?<!-- CNPS_WORKSPACE_END -->/.test(html)) html=html.replace(/<!-- CNPS_WORKSPACE_START -->[\s\S]*?<!-- CNPS_WORKSPACE_END -->/,block);
   else html=html.replace('<div class="cg-stack">',`<div class="cg-stack">${block}`);
   if(!html.includes('/assets/css/cnps-guide-workspace.css')) html=html.replace('</head>','<link rel="stylesheet" href="/assets/css/cnps-guide-workspace.css"></head>');
   if(!html.includes('/assets/js/pages/cnps-guide-workspace.js')) html=html.replace('</body>','<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script src="/engines/cnps-guide-engine.js"></script><script src="/assets/js/pages/cnps-guide-workspace.js"></script></body>');
-  fs.writeFileSync(file,html,'utf8');
+  if(!localizedGeneratorEquivalent(current,html)) fs.writeFileSync(file,html,'utf8');
 }
 upsert(files.en,'en');upsert(files.sw,'sw');
 console.log('Built exact English and Swahili CNPS Côte d’Ivoire guide owners.');

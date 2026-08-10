@@ -5,6 +5,8 @@ const path = require("node:path");
 
 const COPY = {
   "creator-desk": [
+    ["Add creative projects for this browser session, review values and due dates, then export a portable record.", "Ongeza miradi ya ubunifu katika kikao hiki cha kivinjari, kagua thamani na tarehe za mwisho, kisha pakua rekodi inayohamishika."],
+    ["client labels, values, due dates, and notes are not sent to a server or AI. Export before closing if you need to keep the ledger.", "lebo za wateja, thamani, tarehe za mwisho na maelezo havitumwi kwenye seva au AI. Pakua rekodi kabla ya kufunga ikiwa unahitaji kuhifadhi daftari."],
     ["Build a private project ledger", "Jenga daftari binafsi la miradi"], ["Project name", "Jina la mradi"],
     ["Client label", "Jina la mteja"], ["Status", "Hali"], ["Quoted", "Imetolewa bei"], ["Lead", "Matarajio"],
     ["Active", "Inaendelea"], ["Review", "Mapitio"], ["Completed", "Imekamilika"], ["Value", "Thamani"],
@@ -25,6 +27,9 @@ const COPY = {
     ["Close history", "Funga historia"], ["History", "Historia"]
   ],
   "creator-invoice": [
+    ["Calculate every line, discount and tax in a private workspace. Export a draft and verify the rules that apply where you invoice.", "Kokotoa kila kipengele, punguzo na kodi katika nafasi binafsi. Pakua rasimu na uthibitishe masharti yanayotumika mahali unapotoa ankara."],
+    ["names, emails, amounts and notes stay in this browser. No account, server, AI or payment service is used. Exports happen only after your action.", "majina, barua pepe, kiasi na maelezo hubaki kwenye kivinjari hiki. Hakuna akaunti, seva, AI au huduma ya malipo inayotumika. Faili hutolewa tu baada ya kitendo chako."],
+    ["this is a commercial draft, not a certified tax invoice. Check numbering, required details, VAT, withholding and recordkeeping rules.", "hii ni rasimu ya biashara, si ankara ya kodi iliyothibitishwa. Kagua namba, taarifa zinazohitajika, VAT, zuio la kodi na masharti ya kutunza kumbukumbu."],
     ["Prepare a clear invoice", "Andaa ankara iliyo wazi"], ["Local invoicing", "Ankara ya ndani"], ["Issuer and client", "Mtoa huduma na mteja"],
     ["Issuer name", "Jina la mtoa huduma"], ["Issuer email (optional)", "Barua pepe ya mtoa huduma (hiari)"],
     ["Client name", "Jina la mteja"], ["Client email (optional)", "Barua pepe ya mteja (hiari)"], ["Invoice details", "Maelezo ya ankara"],

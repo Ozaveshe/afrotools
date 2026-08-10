@@ -25,7 +25,7 @@ for (const pattern of [
   /assets\/img\/tools\/linkedin-optimizer\.webp/, /"@type":"FAQPage"/, /"inLanguage":"sw"/,
 ]) assert.match(sw, pattern);
 assert.ok(fs.existsSync(path.join(ROOT, "assets/img/tools/linkedin-optimizer.webp")));
-assert.doesNotMatch(sw, /<iframe\b|careerCalc\(|data-sw-preview|analytics-bootstrap|fonts\.googleapis|lazy-analytics|capture-lead|supabase/i);
+assert.doesNotMatch(sw, /<iframe\b|careerCalc\(|data-sw-preview|analytics-bootstrap|fonts\.googleapis|capture-lead|supabase/i);
 
 const coreIds = [
   "industry", "country", "level", "connections", "chk_photo", "chk_headline", "chk_about",

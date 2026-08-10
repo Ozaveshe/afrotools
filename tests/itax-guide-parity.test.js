@@ -34,10 +34,12 @@ test('English and Swahili owners expose the same private local workflow',()=>{
     for(const name of ['task','context','obligation','filingYear','asOfDate','factsConfirmed','privacyConfirmed','receiptPlanConfirmed','noIncomeConfirmed','currentSourceConfirmed'])assert.match(html,new RegExp(`name="${name}"`));
     for(const action of ['reset','save','load','import','copy','json','txt','pdf'])assert.match(html,new RegExp(`data-action="${action}"`));
     assert.match(html,/engines\/itax-guide-engine\.js/);
-    assert.match(html,/assets\/img\/og-default\.png/);
     assert.doesNotMatch(html,/<iframe|name="(?:pin|password|otp|income|taxRecord)"/i);
   }
+  assert.match(en,/assets\/img\/og-default\.png/);
+  assert.match(sw,/assets\/img\/tools\/itax-guide\.svg/);
   assert.ok(fs.statSync(path.join(root,'assets/img/og-default.png')).size>1000);
+  assert.ok(fs.statSync(path.join(root,'assets/img/tools/itax-guide.svg')).size>1000);
 });
 
 test('route, source registry and reciprocal hreflang ownership are exact',()=>{

@@ -54,7 +54,7 @@ buildHooks:function(headline,type){var noun=type==="sale"?"OFA":type==="food"?"M
 parsePrompt:function(text,context){var cleaned=String(text||"").replace(/^(tafadhali\s+)?(tengeneza|unda|chora|andaa)\s+/i,"").replace(/\b(flyer|bango|muundo)\b/gi," ").trim();var headline=cleaned.split(/\b(kwa|tarehe|saa|katika|mahali|lenye|ikiwa na)\b/i)[0].trim();var result={};if(headline.length>=4)result.headline=headline.slice(0,58).replace(/\s+\S*$/,"").toUpperCase();var phone=String(text).match(/(\+?\d[\d\s().-]{7,}\d)/);if(phone)result.contact="WhatsApp: "+phone[1].trim();var venue=String(text).match(/(?:katika|mahali:)\s+([^.;,]{3,80})/i);if(venue)result.venue=venue[1].trim();var time=String(text).match(/(?:jumatatu|jumanne|jumatano|alhamisi|ijumaa|jumamosi|jumapili)[^.;,]*/i);if(time)result.dateTime=time[0].trim();if(/bure/i.test(text))result.price="Kiingilio bure";return result}
 };
 </script>
-<script src="/assets/js/lib/flyer-maker-studio.js?v=sw-final" defer></script>
+<script src="/assets/js/lib/flyer-maker-studio.js?v=a31dba5b" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,13 +102,13 @@ parsePrompt:function(text,context){var cleaned=String(text||"").replace(/^(tafad
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="generator" content="scripts/build-sw-flyer-maker-final.js">
+<style data-sw-flyer-final>@media(max-width:760px){.flyer-studio,.flyer-studio *{min-width:0;box-sizing:border-box}.flyer-actions button{width:100%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}</style>
 <link rel="canonical" href="https://afrotools.com/sw/zana/kitengeneza-flyer/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/flyer-maker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/createur-flyer/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-flyer/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/flyer-maker/">
-<meta name="generator" content="scripts/build-sw-flyer-maker-final.js">
-<style data-sw-flyer-final>@media(max-width:760px){.flyer-studio,.flyer-studio *{min-width:0;box-sizing:border-box}.flyer-actions button{width:100%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <a class="flyer-skip" href="#main-content">Ruka hadi studio ya flyer</a>
@@ -467,5 +467,7 @@ parsePrompt:function(text,context){var cleaned=String(text||"").replace(/^(tafad
 
 <afro-footer></afro-footer>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
 </body>
 </html>

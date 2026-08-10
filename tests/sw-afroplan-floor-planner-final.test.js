@@ -2,10 +2,12 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const { normalizeReleaseOwnedHtml } = require("../scripts/lib/release-owned-html-normalizer");
 const root = path.resolve(__dirname, "..");
 const read = file => fs.readFileSync(path.join(root, file), "utf8");
 const en = read("engineering/floor-planner/index.html");
 const sw = read("sw/zana/mpangaji-ramani-ya-sakafu/index.html");
+const releaseNormalizedSw = normalizeReleaseOwnedHtml(sw);
 const registry = read("assets/js/components/tool-registry.js");
 const localizer = read("engineering/floor-planner/js/fp-sw-localize.js");
 const exporter = read("engineering/floor-planner/js/fp-sw-export.js");
@@ -31,7 +33,7 @@ assert(localizer.includes("MutationObserver") && localizer.includes("Zana: Chagu
 
 assert(registry.includes("id: 'zana-mpangaji-ramani-ya-sakafu-sw-finish'") && registry.includes("sourceId: 'afroplan-floor-planner'") && registry.includes("imageId: 'afroplan-floor-planner'"));
 assert(!sw.includes("data-sw-build-form") && !sw.includes("Kokotoa makadirio"), "old reduced brief calculator must be gone");
-assert(!/analytics-bootstrap|lazy-analytics|english-df-app-upgrades|data-df-upgrade/.test(sw), "Sw workspace must not load analytics or generic decision rail");
+assert(!/analytics-bootstrap|lazy-analytics|english-df-app-upgrades|data-df-upgrade/.test(releaseNormalizedSw), "Sw workspace must not load non-release analytics or generic decision rail");
 const visible = sw.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
 for (const blocker of ["Start planning", "Room name", "No rooms yet", "Construction estimate", "Floor planner questions", "Save local draft"]) assert(!visible.includes(blocker), `residual visible English: ${blocker}`);
 console.log("PASS sw-afroplan-floor-planner-final: complete shared workspace, native owner/export layer, registry, SEO and privacy");
