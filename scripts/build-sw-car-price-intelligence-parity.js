@@ -1,0 +1,99 @@
+const fs = require('fs');
+const path = require('path');
+
+const root = path.join(__dirname, '..');
+const output = path.join(root, 'sw/zana/bei-na-akili-ya-gari/index.html');
+const route = 'https://afrotools.com/sw/zana/bei-na-akili-ya-gari/';
+const title = 'Ushahidi wa Bei za Magari Afrika | AfroTools';
+const description = 'Chuja magari na masoko 20, kagua safu za bei zenye tarehe na vyanzo, linganisha ushahidi, na pakua risiti bila kudai bei ya sasa.';
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: title,
+  url: route,
+  inLanguage: 'sw',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  description,
+  image: 'https://afrotools.com/assets/img/tools/car-price-intelligence.webp',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' }
+}).replace(/</g, '\\u003c');
+
+const html = `<!doctype html>
+<html lang="sw" class="sw-car-price-page" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${title}</title>
+  <meta name="description" content="${description}">
+  <meta name="tool-id" content="car-price-intelligence-sw-parity">
+  <link rel="canonical" href="${route}">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/cars/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/cars/">
+  <link rel="alternate" hreflang="sw" href="${route}">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/cars/">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="${title}"><meta property="og:description" content="${description}">
+  <meta property="og:url" content="${route}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/car-price-intelligence.webp">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/car-price-intelligence.webp">
+  <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-car-price-intelligence.css">
+  <script type="application/ld+json">${schema}</script>
+</head>
+<body data-sw-transport-owner="car-price-intelligence" data-source-review="2026-08-09">
+  <afro-navbar active="transport"></afro-navbar>
+  <main class="sw-car-shell" id="swCarPriceApp">
+    <section class="sw-car-hero">
+      <span class="sw-car-kicker">Ushahidi wa mnunuzi · ndani ya kivinjari</span>
+      <h1>Ushahidi wa bei za magari Afrika</h1>
+      <p>Chuja katalogi ileile ya Kiingereza ya magari 25 na masoko 20. Kwa sasa data ya bei imepitwa na muda, kwa hiyo AfroTools inaonyesha rekodi zenye tarehe bila kutoa bei ya sasa, uamuzi wa kuagiza, au ahadi ya mkopo.</p>
+    </section>
+    <section class="sw-car-status" role="status" aria-live="polite" id="swCarFreshness"><strong>Inakagua muda wa data…</strong></section>
+    <div class="sw-car-grid">
+      <form class="sw-car-panel" id="swCarFilters" novalidate>
+        <h2>Chuja ushahidi</h2><p>Chagua soko na gari. Vichujio vya bajeti na alama vimehifadhiwa kwa usawa wa programu, lakini havitoi mapendekezo wakati data imepitwa na muda.</p>
+        <div class="sw-car-fields">
+          <label class="sw-car-field">Tafuta gari<input name="q" id="swCarSearch" placeholder="Toyota Axio au Hilux"></label>
+          <label class="sw-car-field">Nchi<select name="country" id="swCarCountry"></select></label>
+          <label class="sw-car-field">Mtengenezaji<select name="make" id="swCarMake"></select></label>
+          <label class="sw-car-field">Aina ya mwili<select name="body" id="swCarBody"></select></label>
+          <label class="sw-car-field">Mafuta<select name="fuel" id="swCarFuel"></select></label>
+          <label class="sw-car-field">Soko la chanzo<select name="sourceMarket" id="swCarSource"></select></label>
+          <label class="sw-car-field">Bajeti ya juu ya gharama iliyofika<input name="maxBudgetLocal" id="swCarBudget" type="number" min="0" inputmode="decimal"></label>
+          <label class="sw-car-field">Malipo ya juu kwa mwezi<input name="maxMonthlyLocal" id="swCarMonthly" type="number" min="0" inputmode="decimal"></label>
+          <label class="sw-car-field">Alama ya juu ya hatari<input name="maxRisk" id="swCarRisk" type="number" min="0" max="100" inputmode="numeric"></label>
+          <label class="sw-car-field">Alama ya chini ya uuzaji tena<input name="minLiquidity" id="swCarLiquidity" type="number" min="0" max="100" inputmode="numeric"></label>
+          <label class="sw-car-field">Pendekezo<select name="recommendation" id="swCarRecommendation" disabled><option value="">Limezuiwa kwa data ya zamani</option></select></label>
+          <label class="sw-car-field">Ustahiki<select name="eligibility" id="swCarEligibility"><option value="">Yote</option><option value="eligible">Hakuna kizuizi kilichopatikana</option><option value="risky">Lazima kuthibitishwa</option><option value="ineligible">Haikubaliki kwa masharti ya sasa</option></select></label>
+        </div>
+        <p class="sw-car-error" id="swCarError" aria-live="assertive"></p>
+        <div class="sw-car-actions"><button class="sw-car-button" type="submit">Onyesha rekodi</button><button class="sw-car-button secondary" id="swCarReset" type="reset">Weka upya</button></div>
+      </form>
+      <section class="sw-car-panel sw-car-result" aria-live="polite" aria-labelledby="swCarResultTitle">
+        <h2 id="swCarResultTitle">Rekodi iliyochaguliwa</h2>
+        <img id="swCarArtwork" src="/assets/img/tools/car-price-intelligence.webp" alt="Mchoro wa kulinganisha bei za gari" width="640" height="360">
+        <div class="sw-car-metrics">
+          <div class="sw-car-metric"><span>Gari</span><strong id="swCarVehicle">—</strong></div>
+          <div class="sw-car-metric"><span>Soko</span><strong id="swCarMarket">—</strong></div>
+          <div class="sw-car-metric"><span>Safu ya chanzo (USD)</span><strong id="swCarSourceBand">—</strong></div>
+          <div class="sw-car-metric"><span>Safu ya ndani (USD)</span><strong id="swCarLocalBand">—</strong></div>
+          <div class="sw-car-metric"><span>Tarehe ya chanzo</span><strong id="swCarSourceDate">—</strong></div>
+          <div class="sw-car-metric"><span>Tarehe ya ndani</span><strong id="swCarLocalDate">—</strong></div>
+        </div>
+        <p class="sw-car-proof" id="swCarDecision">Pendekezo limezuiwa mpaka data mpya ya bei ikaguliwe.</p>
+        <div class="sw-car-actions"><button class="sw-car-button secondary" id="swCarWatch" type="button">Ongeza kwenye orodha ya kifaa</button><button class="sw-car-button secondary" id="swCarCopy" type="button">Nakili risiti</button></div>
+      </section>
+    </div>
+    <section class="sw-car-panel" aria-labelledby="swCarMatchesTitle"><h2 id="swCarMatchesTitle">Rekodi zinazolingana</h2><ul class="sw-car-list" id="swCarMatches"></ul></section>
+    <section class="sw-car-panel sw-car-compare" aria-labelledby="swCarCompareTitle"><h2 id="swCarCompareTitle">Linganisha vyanzo vya rekodi</h2><table><thead><tr><th>Chanzo</th><th>Safu ya kihistoria</th><th>Tarehe</th><th>Uaminifu</th></tr></thead><tbody id="swCarCompare"></tbody></table></section>
+    <section class="sw-car-panel"><h2>Pakua risiti ya ushahidi</h2><p>Vipakuliwa vina data yenye tarehe na hali ya <strong>imezuiwa</strong>. Havijumuishi pendekezo, bei ya sasa, au uamuzi wa fedha.</p><div class="sw-car-actions"><button class="sw-car-button" id="swCarJson" type="button">Pakua JSON</button><button class="sw-car-button" id="swCarCsv" type="button">Pakua CSV</button><button class="sw-car-button" id="swCarTxt" type="button">Pakua TXT</button></div><p class="sw-car-export-status" id="swCarExportStatus" aria-live="polite"></p></section>
+    <section class="sw-car-panel"><h2>Vyanzo na mipaka</h2><ul class="sw-car-source-list" id="swCarSources"></ul><p>Kurasa za mamlaka zinaeleza taratibu au vikokotoo rasmi; hazithibitishi bei ya soko. Nukuu ya muuzaji, ukaguzi wa gari, thamani ya forodha na masharti ya mkopo lazima zithibitishwe upya.</p><div class="sw-car-privacy"><strong>Faragha:</strong> Katalogi na hesabu husomwa kutoka faili za AfroTools. Chaguo lako na orodha ya kufuatilia hubaki kwenye kivinjari; hakuna data ya fomu inayotumwa kwa AI, analytics, barua pepe au seva.</div></section>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+  <script src="/assets/js/lib/car-import-cost-engine.js" defer></script><script src="/assets/js/lib/car-price-intelligence.js" defer></script><script src="/assets/js/engines/car-price-freshness-gate.js" defer></script><script src="/assets/js/pages/sw-car-price-intelligence.js" defer></script>
+</body></html>\n`;
+
+fs.mkdirSync(path.dirname(output), { recursive: true });
+fs.writeFileSync(output, html, 'utf8');
+console.log('built sw/zana/bei-na-akili-ya-gari/index.html');

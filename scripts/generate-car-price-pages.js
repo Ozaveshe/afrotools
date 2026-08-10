@@ -206,6 +206,7 @@ function html(routePath, meta) {
   <title>${escapeHtml(meta.title)}</title>
   <meta name="description" content="${escapeHtml(meta.description)}">
   <link rel="canonical" href="${canonicalUrl}">
+  ${routePath === "cars" ? '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-na-akili-ya-gari/">' : ''}
   <meta name="robots" content="${meta.noindex ? "noindex, follow" : "index, follow"}">
   <meta name="tool-id" content="car-price-intelligence">
   <meta property="og:title" content="${escapeHtml(meta.title)}">

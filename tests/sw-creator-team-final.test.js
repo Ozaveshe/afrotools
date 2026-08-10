@@ -1,0 +1,27 @@
+"use strict";
+
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+const root = path.resolve(__dirname, "..");
+const context = { window: {} };
+vm.createContext(context);
+vm.runInContext(fs.readFileSync(path.join(root, "engines/src/creator-team-engine.js"), "utf8"), context);
+const engine = context.window.AfroTools.CreatorTeamEngine;
+const task = engine.createTask({ project: "Campaign", title: "Edit launch video", owner: "Amina", status: "review", dueDate: "2026-08-20", note: "Check captions" });
+assert.deepEqual(JSON.parse(JSON.stringify(task)), { project: "Campaign", title: "Edit launch video", owner: "Amina", status: "review", dueDate: "2026-08-20", note: "Check captions" });
+assert.deepEqual(JSON.parse(JSON.stringify(engine.summarize([task]))), { total: 1, counts: { backlog: 0, doing: 0, review: 1, done: 0 } });
+assert.equal(engine.toCsv([task]).split("\r\n")[0], "project,title,owner,status,due_date,note");
+assert.match(engine.toCsv([task]), /"review"/);
+const swCsv = engine.toCsv([task], { headers: ["mradi", "jukumu", "mhusika", "hali", "tarehe_ya_mwisho", "maelezo"], statusLabels: { review: "Linakaguliwa" } });
+assert.equal(swCsv.split("\r\n")[0], "mradi,jukumu,mhusika,hali,tarehe_ya_mwisho,maelezo");
+assert.match(swCsv, /"Linakaguliwa"/);
+assert.throws(() => engine.createTask({ project: "", title: "Task" }), /Project is required/);
+assert.throws(() => engine.createTask({ project: "Project", title: "" }), /Task is required/);
+assert.throws(() => engine.createTask({ project: "Project", title: "Task", status: "blocked" }), /Status is invalid/);
+const controller = fs.readFileSync(path.join(root, "assets/js/pages/creative/creator-team-native.js"), "utf8");
+assert.match(controller, /Jukumu limeongezwa/); assert.match(controller, /var csvOptions = sw/); assert.match(controller, /data-reset/);
+const html = fs.readFileSync(path.join(root, "sw/zana/timu-ya-watayarishi/index.html"), "utf8");
+assert.match(html, /data-creator-team-native data-lang="sw"/); assert.match(html, /creator-team\.webp/); assert.doesNotMatch(html, /Fungua zana kamili ya Kiingereza/);
+console.log("Swahili creator-team final: 14 assertions passed");

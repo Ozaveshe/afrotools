@@ -57,7 +57,8 @@ const payeEnglish = read('tools/paye-calculator/index.html');
 const payeSwahili = read('sw/mshahara-na-kodi/paye/index.html');
 assert.match(payeEnglish, /paye-country-directory\.js/);
 assert.match(payeEnglish, /<select id="paye-country"/);
-assert.doesNotMatch(payeSwahili, /paye-country-directory\.js|<select id="paye-country"/);
-assert.match(payeSwahili, /hreflang="en" href="https:\/\/afrotools\.com\/salary-tax\/paye\/"/);
+assert.match(payeSwahili, /paye-country-directory\.js/);
+assert.match(payeSwahili, /<select id="paye-country"/);
+assert.match(payeSwahili, /hreflang="en" href="https:\/\/afrotools\.com\/tools\/paye-calculator\/"/);
 
-console.log('sw-finance-native-four-review: 1 accepted candidate, 3 route-identity blockers');
+console.log('sw-finance-native-four-review: PAYE route identity repaired; remaining candidates retain their own evidence state');

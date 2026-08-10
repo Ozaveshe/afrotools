@@ -52,6 +52,6 @@ assert.match(importRuntime, /noGate:\s*true/, 'Swahili PDF stays ungated and loc
 assert.match(importRuntime, /afrotools-gharama-kuagiza-gari\.pdf/, 'Swahili PDF has a stable local filename');
 
 assert.ok(fs.existsSync(path.join(root, 'assets/js/lib/car-price-intelligence.js')), 'English price intelligence engine exists');
-assert.ok(!fs.existsSync(path.join(root, 'sw/zana/bei-na-akili-ya-gari/index.html')), 'no unsupported Swahili price-intelligence owner is fabricated');
+assert.ok(fs.existsSync(path.join(root, 'sw/zana/bei-na-akili-ya-gari/index.html')), 'review-gated Swahili price-intelligence owner exists');
 
 console.log('sw-transport-remaining-parity.test.js passed');

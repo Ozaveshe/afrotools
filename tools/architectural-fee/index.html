@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
+<html data-afrotools-source-owner="scripts/build-sw-architectural-fee.js" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Architectural Drawing Fee Calculator | AfroTools</title>
-<meta name="description" content="Calculate architect fees and drawing costs for African construction projects. Based on local professional fee scales and building size.">
+<meta name="description" content="Prepare an editable architectural-fee range from your own project value, rates, scope, stage weights, tax and exclusions. No regulator scale or live market rate is loaded.">
 <meta property="og:title" content="Architectural Fee Calculator | AfroTools">
-<meta property="og:description" content="Calculate architect fees and drawing costs for African construction projects. Based on local professional fee scales and building size.">
+<meta property="og:description" content="Prepare an editable architectural-fee range from your own project value, rates, scope, stage weights, tax and exclusions. No regulator scale or live market rate is loaded.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/architectural-fee/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Architectural Drawing Fee Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate architect fees and drawing costs for African construction projects. Based on local professional fee scales and building size.">
+<meta name="twitter:description" content="Prepare an editable architectural-fee range from your own project value, rates, scope, stage weights, tax and exclusions. No regulator scale or live market rate is loaded.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="/assets/css/engineering-vip-reflow.css?v=1c1c293c">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Architectural Drawing Fee Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your measurements and quantities in the fields above. The Architectural Drawing Fee Calculator then gives you a costed material and labour estimate you can use straight away."}},{"@type":"Question","name":"How accurate is the Architectural Drawing Fee Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current local material prices and site specifics before you rely on it."}},{"@type":"Question","name":"Is the Architectural Drawing Fee Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does the country select a fee rate?","acceptedAnswer":{"@type":"Answer","text":"No. Country supplies only a label and currency hint. Every rate comes from your inputs."}},{"@type":"Question","name":"Is this an official quote or approval?","acceptedAnswer":{"@type":"Answer","text":"No. It is a planning estimate. The professional and local authority confirm registration, scope, fees, tax, and approvals."}},{"@type":"Question","name":"Does my project data go to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Calculation, draft storage, and exports stay in this browser."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -47,7 +47,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Architectural Drawing Fee Calculator",
-  "description": "Calculate architect fees and drawing costs for African construction projects. Based on local professional fee scales and building size.",
+  "description": "Prepare an editable architectural-fee range from your own project value, rates, scope, stage weights, tax and exclusions. No regulator scale or live market rate is loaded.",
   "url": "https://afrotools.com/tools/architectural-fee/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -65,7 +65,7 @@
   "image": "https://afrotools.com/assets/img/tools/architectural-fee.webp"
 }
 </script>
-<link rel="canonical" href="https://afrotools.com/tools/architectural-fee/">
+<link rel="stylesheet" href="/assets/css/architectural-fee-workspace.css?v=87ebba7f"><link rel="canonical" href="https://afrotools.com/tools/architectural-fee/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/architectural-fee/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/honoraires-architecte/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-za-ramani-za-usanifu/">
@@ -83,122 +83,10 @@
   <div class="en-container">
     <div class="en-hero-badge">Construction</div>
     <h1>Architectural Fee Calculator</h1>
-    <p>Understand what architects charge across Africa. Based on NIA, AIA Kenya, SACAP, and other official fee scales — by project type and value.</p>
+    <p>Build a transparent planning range from rates and scope assumptions you enter yourself. Confirm professional registration, deliverables, exclusions, tax and local requirements before appointment.</p>
   </div>
 </section>
-<main class="en-main">
-  <div class="en-container">
-    <div class="en-card">
-      <h2 class="en-section-title">Project Details</h2>
-      <div class="en-form-grid">
-        <div class="en-field">
-          <label class="en-label" for="af-country">Country</label>
-          <select class="en-select" id="af-country">
-            <option value="NG">Nigeria (₦) — NIA Scale</option>
-            <option value="KE">Kenya (KES) — AIA Kenya Scale</option>
-            <option value="ZA">South Africa (ZAR) — SACAP Scale</option>
-            <option value="GH">Ghana (GHS) — GAA Scale</option>
-            <option value="EG">Egypt (EGP)</option>
-            <option value="ET">Ethiopia (ETB)</option>
-            <option value="TZ">Tanzania (TZS)</option>
-            <option value="UG">Uganda (UGX)</option>
-            <option value="RW">Rwanda (RWF)</option>
-            <option value="MA">Morocco (MAD)</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Building Type</label>
-          <select class="en-select" id="af-btype" aria-label="Af Btype">
-            <option value="residential_simple">Simple Residential (1–2 beds)</option>
-            <option value="residential_medium">Medium Residential (3–4 beds)</option>
-            <option value="residential_large">Large Residential / Mansion</option>
-            <option value="commercial_small">Commercial — Small Office / Shop</option>
-            <option value="commercial_medium">Commercial — Office Block</option>
-            <option value="commercial_large">Commercial — Mall / Warehouse</option>
-            <option value="industrial">Industrial / Factory</option>
-            <option value="institutional">Institutional (school/hospital)</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Gross Floor Area (m²)</label>
-          <input aria-label="Af area" type="number" class="en-input" id="af-area" value="200" min="20" max="50000">
-        </div>
-        <div class="en-field">
-          <label class="en-label">Estimated Construction Value</label>
-          <input aria-label="Af value" type="number" class="en-input" id="af-value" value="0" min="0">
-          <span class="en-hint">Leave 0 to auto-estimate from floor area</span>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Services Scope</label>
-          <select class="en-select" id="af-scope" aria-label="Af Scope">
-            <option value="full">Full Architectural Services (all stages)</option>
-            <option value="sketch">Sketch / Concept Only</option>
-            <option value="working_drawings">Working Drawings Only</option>
-            <option value="approval">Approval Drawings Only</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Architect Category</label>
-          <select class="en-select" id="af-arch-cat" aria-label="Af Arch Cat">
-            <option value="sole">Sole Practitioner</option>
-            <option value="small_firm">Small Firm (2–5 architects)</option>
-            <option value="large_firm">Large / Established Firm</option>
-          </select>
-        </div>
-      </div>
-      <button type="button" class="en-btn" onclick="calcArchFee()">Calculate Architect Fees</button>
-    </div>
-
-    <div class="en-results" id="af-results">
-      <div class="en-results-hero">
-        <div class="en-results-title" id="af-headline">Architectural Fee Estimate</div>
-      </div>
-      <div class="en-results-grid">
-        <div class="en-stat-card"><div class="en-stat-label">Construction Value (est.)</div><div class="en-stat-value" id="af-constr-val">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Architect Fee Rate</div><div class="en-stat-value" id="af-rate">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Total Architect Fee</div><div class="en-stat-value" id="af-total-fee">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Fee per m²</div><div class="en-stat-value" id="af-per-m2">—</div></div>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Fee by Stage</h3>
-        <div id="af-stages"></div>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Regulatory Body &amp; Scale Reference</h3>
-        <p id="af-reg-info" style="font-size:.9rem;color:#374151;margin:0"></p>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Tips for Hiring an Architect</h3>
-        <ul id="af-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
-      </div>
-    </div>
-  </div>
-
-<section class="df-upgrade" data-df-upgrade="architectural-fee">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Architectural Drawing Fee Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Architectural Drawing Fee Calculator? Enter your measurements and quantities and it returns a costed material and labour estimate — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a costed material and labour estimate, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Architectural Drawing Fee Calculator takes your measurements and quantities and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current local material prices and site specifics before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current local material prices and site specifics before acting.</p>
-    </div>
-    <form class="df-form" data-df-form="architectural-fee">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="architectural-fee" data-df-base="Architectural Drawing Fee Calculator — enter your details above to see your result." aria-live="polite">Architectural Drawing Fee Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="architectural-fee">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="architectural-fee-faq-title">
-  <h2 id="architectural-fee-faq-title">Architectural Drawing Fee Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Architectural Drawing Fee Calculator?</summary><p>Enter your measurements and quantities in the fields above. The Architectural Drawing Fee Calculator then gives you a costed material and labour estimate you can use straight away.</p></details><details><summary>How accurate is the Architectural Drawing Fee Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current local material prices and site specifics before you rely on it.</p></details><details><summary>Is the Architectural Drawing Fee Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-</main>
+<main class="afp-main"><div class="afp-wrap" data-architectural-fee-workspace data-locale="en"><section class="afp-card"><h2>Estimate fees from assumptions you enter and can verify</h2><p>No construction price, market rate, or regulator fee scale is loaded. Enter a quote or planning assumption, then verify registration, scope, and local requirements before appointment.</p><div class="afp-note"><strong>Source boundary: user-entered, low-confidence planning estimate</strong><br>Country supplies only a label and currency hint. Fee rates, scope share, stage weights, tax, and disbursements are editable inputs—not a current authority, regulator, or professional-body scale.</div><form class="afp-form" novalidate><div class="afp-grid"><fieldset class="afp-fieldset"><legend>Project and value</legend><div class="afp-grid"><div class="afp-field"><label for="afp-country">Project country</label><select id="afp-country" name="country" required><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="MA">Morocco</option><option value="OTHER">Other / user-defined</option></select></div><div class="afp-field"><label for="afp-currency">Currency or money unit</label><input id="afp-currency" name="currency" value="NGN" maxlength="12" required></div><div class="afp-field"><label for="afp-project">Project type</label><select id="afp-project" name="projectType" required><option value="residential_simple">Simple residential (1–2 bedrooms)</option><option value="residential_medium">Medium residential (3–4 bedrooms)</option><option value="residential_large">Large residential / mansion</option><option value="commercial_small">Small office / shop</option><option value="commercial_medium">Office block</option><option value="commercial_large">Mall / warehouse</option><option value="industrial">Industrial / factory</option><option value="institutional">Institutional / school / hospital</option></select></div><div class="afp-field"><label for="afp-area">Gross floor area (m², optional)</label><input id="afp-area" name="area" type="number" min="0" step="0.01" value="200"></div><div class="afp-field"><label for="afp-value">Verified construction value</label><input id="afp-value" name="constructionValue" type="number" min="0.01" step="0.01" required></div></div></fieldset><fieldset class="afp-fieldset"><legend>Your full-service fee range (%)</legend><div class="afp-grid"><div class="afp-field"><label for="afp-min">Minimum rate (%)</label><input id="afp-min" name="minRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-typical">Typical rate (%)</label><input id="afp-typical" name="typicalRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-max">Maximum rate (%)</label><input id="afp-max" name="maxRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-scope">Service scope</label><select id="afp-scope" name="scope" required><option value="full">Full architectural services</option><option value="concept">Sketch / concept only</option><option value="working_drawings">Working drawings only</option><option value="approval">Approval drawings only</option></select></div><div class="afp-field"><label for="afp-share">Share of full-service fee for this scope (%)</label><input id="afp-share" name="scopeShare" type="number" min="0.01" max="100" step="0.01" value="100" required></div><div class="afp-field"><label for="afp-practice">Practice category</label><select id="afp-practice" name="practice" required><option value="sole">Sole practitioner</option><option value="small_firm">Small firm</option><option value="large_firm">Large / established firm</option><option value="other">Other</option></select></div><div class="afp-field"><label for="afp-adjust">Practice adjustment (%)</label><input id="afp-adjust" name="practiceAdjustment" type="number" min="-100" max="500" step="0.01" value="0"></div><div class="afp-field"><label for="afp-disbursements">Disbursements / additional costs</label><input id="afp-disbursements" name="disbursements" type="number" min="0" step="0.01" value="0"></div><div class="afp-field"><label for="afp-tax">Tax/VAT assumption (%)</label><input id="afp-tax" name="taxPct" type="number" min="0" max="100" step="0.01" value="0"></div></div></fieldset><fieldset class="afp-fieldset"><legend>Editable stage allocation</legend><p>These are example planning weights only. Edit them to match the appointment; they must total 100%.</p><div class="afp-phase-grid"><label class="afp-phase">Inception / briefing (%)<input name="phase-inception" type="number" min="0" max="100" step="0.1" value="5" required></label><label class="afp-phase">Concept design (%)<input name="phase-concept" type="number" min="0" max="100" step="0.1" value="15" required></label><label class="afp-phase">Design development (%)<input name="phase-development" type="number" min="0" max="100" step="0.1" value="20" required></label><label class="afp-phase">Technical / working drawings (%)<input name="phase-technical" type="number" min="0" max="100" step="0.1" value="25" required></label><label class="afp-phase">Statutory approval drawings (%)<input name="phase-approval" type="number" min="0" max="100" step="0.1" value="10" required></label><label class="afp-phase">Construction documentation (%)<input name="phase-documentation" type="number" min="0" max="100" step="0.1" value="10" required></label><label class="afp-phase">Contract administration / site inspection (%)<input name="phase-administration" type="number" min="0" max="100" step="0.1" value="15" required></label></div></fieldset><div class="afp-field"><label for="afp-scope-notes">Agreed deliverables and scope</label><textarea id="afp-scope-notes" name="scopeNotes" maxlength="2000"></textarea></div><div class="afp-field"><label for="afp-exclusions">Exclusions / separately billed work</label><textarea id="afp-exclusions" name="exclusions" maxlength="2000"></textarea></div><fieldset class="afp-fieldset afp-confirm"><legend>Basis confirmations</legend><label class="afp-check"><input name="assumptionsConfirmed" type="checkbox" required><span>I confirm the fee rates, scope share, stage weights, tax, and disbursements are assumptions I entered or came from the appointment or quote.</span></label><label class="afp-check"><input name="localVerificationConfirmed" type="checkbox" required><span>I will verify professional registration, scope, deliverables, exclusions, reimbursables, tax, and local requirements before accepting a fee.</span></label></fieldset></div><div class="afp-actions"><button type="submit">Calculate fee range</button><button type="button" data-action="reset" data-kind="secondary">Reset</button><button type="button" data-action="save" data-kind="secondary">Save local draft</button><button type="button" data-action="load" data-kind="secondary">Load local draft</button><button type="button" data-action="import" data-kind="secondary">Reopen JSON</button><input class="afp-hidden-file" name="importFile" type="file" accept="application/json,.json" aria-label="Reopen JSON"></div><p class="afp-status" data-status role="status" aria-live="polite"></p></form></section><section class="afp-card afp-results" data-results hidden><h2 tabindex="-1">Planning estimate range</h2><div class="afp-summary"><div class="afp-stat"><span>Low</span><strong data-low>—</strong></div><div class="afp-stat"><span>Typical</span><strong data-typical>—</strong></div><div class="afp-stat"><span>High</span><strong data-high>—</strong></div></div><div class="afp-meta"><span>Effective fee rates: <strong data-effective-rates>—</strong></span><span>Typical fee per m²: <strong data-fee-area>—</strong></span><span>Basis: <strong data-basis>—</strong></span></div><div class="afp-table-wrap"><table class="afp-table"><thead><tr><th>Stage</th><th>Weight</th><th>Amount</th></tr></thead><tbody data-stage-body></tbody></table></div><div class="afp-output-notes"><div><strong>Recorded scope</strong><br><span data-scope-output>—</span></div><div><strong>Exclusions</strong><br><span data-exclusions-output>—</span></div></div><div class="afp-actions" data-result-actions hidden><button type="button" data-action="copy">Copy summary</button><button type="button" data-action="json">Download JSON</button><button type="button" data-action="csv">Download CSV</button><button type="button" data-action="txt">Download TXT</button><button type="button" data-action="pdf">Download PDF</button></div></section><section class="afp-card afp-copy-grid"><div><h2>How to use this estimate</h2><ul><li>Compare the range with a written appointment or quote; do not treat it as a mandatory scale.</li><li>Confirm every deliverable, revision allowance, approval, site visit, structural/QS/M&E service, tax, and disbursement.</li><li>Verify the professional is registered in the project country and for the relevant work category.</li><li>Keep JSON as the reopenable backup; PDF, CSV, and TXT are planning copies.</li></ul></div><div><h2>Common questions</h2><details><summary>Does the country select a fee rate?</summary><p>No. Country supplies only a label and currency hint. Every rate comes from your inputs.</p></details><details><summary>Is this an official quote or approval?</summary><p>No. It is a planning estimate. The professional and local authority confirm registration, scope, fees, tax, and approvals.</p></details><details><summary>Does my project data go to a server?</summary><p>No. Calculation, draft storage, and exports stay in this browser.</p></details></div></section></div></main>
 <afro-related-tools data-ssr="1" category="engineering" current="architectural-fee">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -208,9 +96,8 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/engineering-parity/architectural-fee-1.js?v=7ef4ce15"></script>
+
   <script src="/assets/js/engineering-toolkit.js?v=1a8b385b" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
-</body>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/engines/architectural-fee-engine.js?v=ec79af40"></script><script src="/assets/js/pages/architectural-fee-workspace.js?v=d8324136"></script></body>
 </html>

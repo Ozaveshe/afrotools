@@ -13,7 +13,7 @@ const rows = (inventory.rows || inventory.apps || inventory.inventory || [])
   .filter((row) => row.categoryKey === 'transport');
 const expectedRoutes = [
   ['car-import-cost', '/sw/zana/gharama-kuagiza-gari/'],
-  ['car-price-intelligence', null],
+  ['car-price-intelligence', '/sw/zana/bei-na-akili-ya-gari/'],
   ['ride-fare', '/sw/zana/nauli-za-ride-hailing/'],
   ['boda-income', '/sw/zana/mapato-ya-boda-boda/'],
   ['matatu-fare', '/sw/zana/nauli-za-matatu-danfo-trotro/'],

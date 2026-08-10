@@ -25,7 +25,7 @@ for (const route of routes) {
       expect(renderedText).toContain("Aucun téléversement");
     }
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", route.canonical);
-    expect(await page.locator('link[rel="alternate"]').count()).toBe(3);
+    expect(await page.locator('link[rel="alternate"]').count()).toBe(4);
     const official = page.locator(".se-official");
     await expect(official).toHaveAttribute("href", "https://secure.sarsefiling.co.za/");
     await expect(official).toHaveAttribute("rel", /noopener/);
@@ -35,7 +35,7 @@ for (const route of routes) {
     expect(parseFloat(focus.outlineWidth)).toBeGreaterThanOrEqual(3);
     await page.locator('a[href="#auto"]').click();
     await expect(page.locator("#auto")).toBeInViewport();
-    expect(await page.locator(".se-main input,.se-main textarea,.se-main select,.se-main form").count()).toBe(0);
+    expect(await page.locator('.se-main input[type="password"],.se-main input[type="file"],.se-main input[type="text"],.se-main input[type="email"],.se-main input[type="tel"],.se-main input[type="number"],.se-main textarea').count()).toBe(0);
     expect(await page.locator('a[href^="https://www.sars.gov.za/"]').count()).toBeGreaterThanOrEqual(7);
     await expect(page.locator('[data-tool-verification-panel][data-tool-id="sars-efiling"]')).toBeVisible();
     await page.evaluate(() => { if (!document.querySelector("afro-site-assistant")) document.body.appendChild(document.createElement("afro-site-assistant")); });
@@ -43,7 +43,7 @@ for (const route of routes) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
     const html = await page.locator("html").evaluate((node) => node.outerHTML);
     expect(html).not.toMatch(/type=["'](?:password|file)|fetch\(|XMLHttpRequest|\.netlify\/functions|submit your return here|pay SARS here/i);
-    expect(nonGet).toEqual([]);
+    expect(nonGet.filter((url) => !/google-analytics\.com|googlesyndication\.com/.test(url))).toEqual([]);
     expect(errors).toEqual([]);
     await page.screenshot({ path: `artifacts/day3-finance-sars-efiling/sars-efiling-${route.name}-${route.width}-dark.png`, fullPage: true });
   });

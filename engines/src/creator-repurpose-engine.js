@@ -61,7 +61,7 @@
       }) : [];
       if (clean.length < 20) throw new Error("Source content must contain at least 20 characters.");
       if (!selected.length) throw new Error("Choose at least one platform.");
-      var lang = language === "fr" ? "fr" : "en";
+      var lang = language === "fr" ? "fr" : language === "sw" ? "sw" : "en";
       var firstSentence = (clean.match(/^[\s\S]{1,220}?[.!?](?:\s|$)/) || [ clean.slice(0, 180) ])[0].trim();
       var outputs = selected.map(function(platform) {
         var text;
@@ -70,6 +70,11 @@
             : platform === "twitter" ? "1/2 " + firstSentence + "\n\n2/2 Quel point ajouteriez-vous ?"
             : platform === "blog" ? "Résumé : " + firstSentence + "\n\nPoint clé : vérifiez les faits et ajoutez les sources avant publication."
             : firstSentence + "\n\nQuel est votre avis ?";
+        } else if (lang === "sw") {
+          text = platform === "newsletter" ? "Kichwa: " + firstSentence + "\n\nWazo kuu: " + firstSentence + "\n\nHatua inayofuata: boresha rasimu hii kwa hadhira yako."
+            : platform === "twitter" ? "1/2 " + firstSentence + "\n\n2/2 Wewe ungeongeza jambo gani?"
+            : platform === "blog" ? "Muhtasari: " + firstSentence + "\n\nJambo kuu: hakiki ukweli na uongeze vyanzo kabla ya kuchapisha."
+            : firstSentence + "\n\nUna maoni gani?";
         } else {
           text = platform === "newsletter" ? "Subject: " + firstSentence + "\n\nMain idea: " + firstSentence + "\n\nTakeaway: adapt this draft for your audience."
             : platform === "twitter" ? "1/2 " + firstSentence + "\n\n2/2 What would you add?"
@@ -78,8 +83,8 @@
         }
         return {
           platform: platform,
-          platformLabel: t[platform].label,
-          format: t[platform].format,
+          platformLabel: lang === "sw" ? ({twitter:"X / Twitter",newsletter:"Jarida la barua pepe",blog:"Muhtasari wa blogu"}[platform] || t[platform].label) : t[platform].label,
+          format: lang === "sw" ? ({instagram:"Maelezo ya chapisho",twitter:"Mfululizo",linkedin:"Chapisho",newsletter:"Dondoo",blog:"Muhtasari"}[platform] || t[platform].format) : t[platform].format,
           text: text,
           charCount: text.length
         };

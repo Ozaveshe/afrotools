@@ -1,6 +1,12 @@
 !function() {
   "use strict";
 
+  var locale = window.AfroToolsCreatorVoiceLocale || {};
+  var strings = locale.strings || {};
+  function t(key, fallback) {
+    return Object.prototype.hasOwnProperty.call(strings, key) ? strings[key] : fallback;
+  }
+
   // ========================================
   // UTILITY
   // ========================================
@@ -41,6 +47,9 @@
   var analyserNode = null;
   var sourceNode = null;
   var animFrameId = null;
+  var captureNode = null;
+  var captureSilentGain = null;
+  var capturedPcm = [];
 
   // Editor state
   var mainBuffer = null; // AudioBuffer for Track 1
@@ -93,18 +102,18 @@
   // ========================================
   function loadMics() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      document.getElementById('micSelect').innerHTML = '<option>Mic access not supported</option>';
+      document.getElementById('micSelect').innerHTML = '<option>' + t('micUnsupported', 'Mic access not supported') + '</option>';
       return;
     }
     navigator.mediaDevices.enumerateDevices().then(function(devices) {
       var sel = document.getElementById('micSelect');
       sel.innerHTML = '';
       var mics = devices.filter(function(d) { return d.kind === 'audioinput'; });
-      if (!mics.length) { sel.innerHTML = '<option>No microphones found</option>'; return; }
+      if (!mics.length) { sel.innerHTML = '<option>' + t('noMicrophones', 'No microphones found') + '</option>'; return; }
       mics.forEach(function(mic, i) {
         var opt = document.createElement('option');
         opt.value = mic.deviceId;
-        opt.textContent = mic.label || 'Microphone ' + (i + 1);
+        opt.textContent = mic.label || t('microphone', 'Microphone') + ' ' + (i + 1);
         sel.appendChild(opt);
       });
     });
@@ -203,6 +212,16 @@
       analyserNode = audioCtx.createAnalyser();
       analyserNode.fftSize = 2048;
       sourceNode.connect(analyserNode);
+      capturedPcm = [];
+      captureNode = audioCtx.createScriptProcessor(4096, 1, 1);
+      captureSilentGain = audioCtx.createGain();
+      captureSilentGain.gain.value = 0;
+      captureNode.onaudioprocess = function(event) {
+        if (!isPaused) capturedPcm.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+      };
+      sourceNode.connect(captureNode);
+      captureNode.connect(captureSilentGain);
+      captureSilentGain.connect(audioCtx.destination);
 
       // MediaRecorder
       var options = {};
@@ -220,6 +239,9 @@
       mediaRecorder.onstop = function() {
         var blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
         recordedChunks = [];
+        window.dispatchEvent(new CustomEvent('creatorvoice:recording-ready', {
+          detail: { blob: blob, mimeType: blob.type }
+        }));
 
         // Decode to AudioBuffer
         var reader = new FileReader();
@@ -229,8 +251,20 @@
             tracks[0].buffer = buffer;
             undoStack = [];
             switchToEditor();
-            toast('Recording ready for editing');
-          }).catch(function() { toast('Error decoding audio'); });
+            toast(t('recordingReady', 'Recording ready for editing'));
+          }).catch(function() {
+            var sampleCount = capturedPcm.reduce(function(total, chunk) { return total + chunk.length; }, 0);
+            if (!sampleCount) { toast(t('decodeError', 'Error decoding audio')); return; }
+            var fallback = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
+            var channel = fallback.getChannelData(0);
+            var offset = 0;
+            capturedPcm.forEach(function(chunk) { channel.set(chunk, offset); offset += chunk.length; });
+            mainBuffer = fallback;
+            tracks[0].buffer = fallback;
+            undoStack = [];
+            switchToEditor();
+            toast(t('recordingReady', 'Recording ready for editing'));
+          });
         };
         reader.readAsArrayBuffer(blob);
       };
@@ -253,7 +287,7 @@
       drawLiveWaveform();
 
     }).catch(function(err) {
-      toast('Mic access denied: ' + err.message);
+      toast(t('micDenied', 'Mic access denied:') + ' ' + err.message);
     });
   }
 
@@ -276,7 +310,7 @@
       pausedDuration += Date.now() - pauseStartTime;
       recordBtn.classList.remove('paused');
       recordBtn.classList.add('recording');
-      pauseBtn.innerHTML = '&#9646;&#9646; Pause';
+      pauseBtn.innerHTML = '&#9646;&#9646; ' + t('pause', 'Pause');
       drawLiveWaveform();
     } else {
       mediaRecorder.pause();
@@ -284,7 +318,7 @@
       pauseStartTime = Date.now();
       recordBtn.classList.remove('recording');
       recordBtn.classList.add('paused');
-      pauseBtn.innerHTML = '&#9654; Resume';
+      pauseBtn.innerHTML = '&#9654; ' + t('resume', 'Resume');
       stopLiveWaveform();
     }
   };
@@ -299,7 +333,7 @@
     recordBtn.classList.remove('recording', 'paused');
     pauseBtn.disabled = true;
     stopBtn.disabled = true;
-    pauseBtn.innerHTML = '&#9646;&#9646; Pause';
+    pauseBtn.innerHTML = '&#9646;&#9646; ' + t('pause', 'Pause');
 
     // Clean up stream
     if (mediaStream) {
@@ -307,6 +341,8 @@
       mediaStream = null;
     }
     if (sourceNode) { sourceNode.disconnect(); sourceNode = null; }
+    if (captureNode) { captureNode.disconnect(); captureNode = null; }
+    if (captureSilentGain) { captureSilentGain.disconnect(); captureSilentGain = null; }
     analyserNode = null;
     stopLiveWaveform();
   };
@@ -336,6 +372,12 @@
   var fileInput = document.getElementById('fileInput');
 
   uploadArea.onclick = function() { fileInput.click(); };
+  uploadArea.onkeydown = function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fileInput.click();
+    }
+  };
   uploadArea.ondragover = function(e) { e.preventDefault(); uploadArea.classList.add('dragover'); };
   uploadArea.ondragleave = function() { uploadArea.classList.remove('dragover'); };
   uploadArea.ondrop = function(e) {
@@ -359,8 +401,8 @@
         selectionStart = -1;
         selectionEnd = -1;
         switchToEditor();
-        toast('Audio loaded: ' + file.name);
-      }).catch(function() { toast('Could not decode audio file'); });
+        toast(t('audioLoaded', 'Audio loaded:') + ' ' + file.name);
+      }).catch(function() { toast(t('decodeFileError', 'Could not decode audio file')); });
     };
     reader.readAsArrayBuffer(file);
   }
@@ -380,8 +422,8 @@
           audioCtx.decodeAudioData(fr.result).then(function(buf) {
             tracks[trackIdx].buffer = buf;
             updateTrackWaveforms();
-            toast('Track ' + (trackIdx + 1) + ' loaded');
-          }).catch(function() { toast('Could not decode file'); });
+            toast(t('track', 'Track') + ' ' + (trackIdx + 1) + ' ' + t('loaded', 'loaded'));
+          }).catch(function() { toast(t('decodeGenericError', 'Could not decode file')); });
         };
         fr.readAsArrayBuffer(inp.files[0]);
       };
@@ -494,7 +536,7 @@
     var el = document.getElementById('selectionInfo');
     if (selectionStart >= 0 && selectionEnd >= 0) {
       var dur = Math.abs(selectionEnd - selectionStart);
-      el.textContent = 'Selection: ' + formatTimeMs(dur);
+      el.textContent = t('selection', 'Selection:') + ' ' + formatTimeMs(dur);
     } else {
       el.textContent = '';
     }
@@ -692,7 +734,7 @@
     }
     replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
     cursorPos = 0;
-    toast('Trimmed to selection');
+    toast(t('trimmed', 'Trimmed to selection'));
   };
 
   // CUT
@@ -716,13 +758,13 @@
     }
     replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
     cursorPos = s / sr;
-    toast('Cut selection');
+    toast(t('cutSelection', 'Cut selection'));
   };
 
   // SPLIT (place a marker — simplified: just set cursor)
   document.getElementById('splitBtn').onclick = function() {
     if (!mainBuffer) return;
-    toast('Split point set at ' + formatTime(cursorPos));
+    toast(t('splitPoint', 'Split point set at') + ' ' + formatTime(cursorPos));
   };
 
   // FADE IN
@@ -741,7 +783,7 @@
       applyFade(0, fadeLen, true);
     }
     drawEditorWaveform();
-    toast('Fade in applied');
+    toast(t('fadeInApplied', 'Fade in applied'));
   };
 
   // FADE OUT
@@ -761,7 +803,7 @@
     }
     applyFade(startSample, fadeLen, false);
     drawEditorWaveform();
-    toast('Fade out applied');
+    toast(t('fadeOutApplied', 'Fade out applied'));
   };
 
   function applyFade(startSample, fadeLen, isFadeIn) {
@@ -787,7 +829,7 @@
         if (abs > peak) peak = abs;
       }
     }
-    if (peak === 0 || peak >= 0.99) { toast('Already normalized'); return; }
+    if (peak === 0 || peak >= 0.99) { toast(t('alreadyNormalized', 'Already normalized')); return; }
     var gain = 0.99 / peak;
     for (var c2 = 0; c2 < mainBuffer.numberOfChannels; c2++) {
       var d = mainBuffer.getChannelData(c2);
@@ -795,7 +837,7 @@
     }
     tracks[0].buffer = mainBuffer;
     drawEditorWaveform();
-    toast('Normalized (gain: ' + gain.toFixed(2) + 'x)');
+    toast(t('normalizedGain', 'Normalized (gain:') + ' ' + gain.toFixed(2) + 'x)');
   };
 
   // NOISE REDUCTION (noise gate)
@@ -830,7 +872,7 @@
     }
     tracks[0].buffer = mainBuffer;
     drawEditorWaveform();
-    toast('Noise reduction applied');
+    toast(t('noiseApplied', 'Noise reduction applied'));
   };
 
   // REVERSE
@@ -843,7 +885,7 @@
     }
     tracks[0].buffer = mainBuffer;
     drawEditorWaveform();
-    toast('Audio reversed');
+    toast(t('reversed', 'Audio reversed'));
   };
 
   // INSERT SILENCE
@@ -865,7 +907,7 @@
       channels.push(arr);
     }
     replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
-    toast('1s silence inserted at ' + formatTime(cursorPos));
+    toast(t('silenceInserted', '1s silence inserted at') + ' ' + formatTime(cursorPos));
   };
 
   // REVERB
@@ -901,7 +943,7 @@
       newBuf.getChannelData(c).set(out);
     }
     replaceMainBuffer(newBuf);
-    toast('Reverb applied');
+    toast(t('reverbApplied', 'Reverb applied'));
   };
 
   // EQ (3-band: boost mids, cut lows slightly)
@@ -927,7 +969,7 @@
     src.start(0);
     offCtx.startRendering().then(function(rendered) {
       replaceMainBuffer(rendered);
-      toast('EQ applied (voice boost preset)');
+      toast(t('eqApplied', 'EQ applied (voice boost preset)'));
     });
   };
 
@@ -954,7 +996,7 @@
     src.start(0);
     offCtx.startRendering().then(function(rendered) {
       replaceMainBuffer(rendered);
-      toast('Compressor applied');
+      toast(t('compressorApplied', 'Compressor applied'));
     });
   };
 
@@ -979,13 +1021,13 @@
       channels.push(arr);
     }
     replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
-    toast('Pitch shifted +2 semitones');
+    toast(t('pitchApplied', 'Pitch shifted +2 semitones'));
   };
 
   // UNDO
   var redoStack = [];
   document.getElementById('undoBtn').onclick = function() {
-    if (!undoStack.length) { toast('Nothing to undo'); return; }
+    if (!undoStack.length) { toast(t('nothingUndo', 'Nothing to undo')); return; }
     // Save current state for redo
     var curChannels = [];
     for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
@@ -995,17 +1037,17 @@
     var state = undoStack.pop();
     var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
     replaceMainBuffer(buf);
-    toast('Undo');
+    toast(t('undo', 'Undo'));
   };
 
   // REDO
   document.getElementById('redoBtn').onclick = function() {
-    if (!redoStack.length) { toast('Nothing to redo'); return; }
+    if (!redoStack.length) { toast(t('nothingRedo', 'Nothing to redo')); return; }
     pushUndo();
     var state = redoStack.pop();
     var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
     replaceMainBuffer(buf);
-    toast('Redo');
+    toast(t('redo', 'Redo'));
   };
 
   // ========================================
@@ -1017,11 +1059,13 @@
     lane.querySelector('[data-action="mute"]').onclick = function() {
       tracks[idx].muted = !tracks[idx].muted;
       this.classList.toggle('muted', tracks[idx].muted);
+      this.setAttribute('aria-pressed', String(tracks[idx].muted));
     };
 
     lane.querySelector('[data-action="solo"]').onclick = function() {
       tracks[idx].solo = !tracks[idx].solo;
       this.classList.toggle('active', tracks[idx].solo);
+      this.setAttribute('aria-pressed', String(tracks[idx].solo));
     };
 
     lane.querySelector('.cvo-track-volume').oninput = function() {
@@ -1037,26 +1081,26 @@
   // SOUND LIBRARY
   // ========================================
   var SFX_LIST = [
-    { name: 'Transition Whoosh', icon: '&#128168;', dur: '0.8s' },
-    { name: 'Ding', icon: '&#128276;', dur: '0.5s' },
-    { name: 'Applause', icon: '&#128079;', dur: '3.0s' },
-    { name: 'Crickets', icon: '&#129431;', dur: '4.0s' },
-    { name: 'Rain', icon: '&#127783;', dur: '5.0s' },
-    { name: 'Thunder', icon: '&#9889;', dur: '2.5s' },
-    { name: 'Keyboard Typing', icon: '&#9000;', dur: '2.0s' },
-    { name: 'Door Knock', icon: '&#128682;', dur: '1.5s' },
-    { name: 'Phone Ring', icon: '&#128222;', dur: '3.0s' },
-    { name: 'Camera Shutter', icon: '&#128247;', dur: '0.3s' },
-    { name: 'Crowd Cheer', icon: '&#127881;', dur: '4.0s' },
-    { name: 'Wind', icon: '&#127788;', dur: '5.0s' },
-    { name: 'Birds', icon: '&#128038;', dur: '4.0s' },
-    { name: 'Ocean Waves', icon: '&#127754;', dur: '5.0s' },
-    { name: 'Clock Tick', icon: '&#128344;', dur: '2.0s' },
-    { name: 'Beep', icon: '&#128264;', dur: '0.3s' },
-    { name: 'Pop', icon: '&#128165;', dur: '0.2s' },
-    { name: 'Swoosh', icon: '&#127744;', dur: '0.6s' },
-    { name: 'Chime', icon: '&#127932;', dur: '1.5s' },
-    { name: 'Snap', icon: '&#129295;', dur: '0.2s' }
+    { name: t('sfxWhoosh', 'Transition Whoosh'), icon: '&#128168;', dur: '0.8s' },
+    { name: t('sfxDing', 'Ding'), icon: '&#128276;', dur: '0.5s' },
+    { name: t('sfxApplause', 'Applause'), icon: '&#128079;', dur: '3.0s' },
+    { name: t('sfxCrickets', 'Crickets'), icon: '&#129431;', dur: '4.0s' },
+    { name: t('sfxRain', 'Rain'), icon: '&#127783;', dur: '5.0s' },
+    { name: t('sfxThunder', 'Thunder'), icon: '&#9889;', dur: '2.5s' },
+    { name: t('sfxTyping', 'Keyboard Typing'), icon: '&#9000;', dur: '2.0s' },
+    { name: t('sfxKnock', 'Door Knock'), icon: '&#128682;', dur: '1.5s' },
+    { name: t('sfxPhone', 'Phone Ring'), icon: '&#128222;', dur: '3.0s' },
+    { name: t('sfxShutter', 'Camera Shutter'), icon: '&#128247;', dur: '0.3s' },
+    { name: t('sfxCrowd', 'Crowd Cheer'), icon: '&#127881;', dur: '4.0s' },
+    { name: t('sfxWind', 'Wind'), icon: '&#127788;', dur: '5.0s' },
+    { name: t('sfxBirds', 'Birds'), icon: '&#128038;', dur: '4.0s' },
+    { name: t('sfxOcean', 'Ocean Waves'), icon: '&#127754;', dur: '5.0s' },
+    { name: t('sfxClock', 'Clock Tick'), icon: '&#128344;', dur: '2.0s' },
+    { name: t('sfxBeep', 'Beep'), icon: '&#128264;', dur: '0.3s' },
+    { name: t('sfxPop', 'Pop'), icon: '&#128165;', dur: '0.2s' },
+    { name: t('sfxSwoosh', 'Swoosh'), icon: '&#127744;', dur: '0.6s' },
+    { name: t('sfxChime', 'Chime'), icon: '&#127932;', dur: '1.5s' },
+    { name: t('sfxSnap', 'Snap'), icon: '&#129295;', dur: '0.2s' }
   ];
 
   function renderSfxGrid() {
@@ -1109,7 +1153,7 @@
     cardEl.classList.add('playing');
     src.onended = function() { cardEl.classList.remove('playing'); };
 
-    toast(sfx.name + ' (placeholder preview)');
+    toast(sfx.name + ' ' + t('placeholderPreview', '(placeholder preview)'));
   }
 
   renderSfxGrid();
@@ -1118,13 +1162,13 @@
   // EXPORT
   // ========================================
   document.getElementById('exportBtn').onclick = function() {
-    if (!mainBuffer) { toast('No audio to export'); return; }
+    if (!mainBuffer) { toast(t('noAudioExport', 'No audio to export')); return; }
 
     var format = document.getElementById('exportFormat').value;
     var quality = document.getElementById('exportQuality').value;
     var title = document.getElementById('exportTitle').value || document.getElementById('projectName').value;
 
-    toast('Preparing export...');
+    toast(t('preparingExport', 'Preparing export...'));
 
     // Mix all tracks
     var mixedBuffer = mixTracks();
@@ -1207,7 +1251,7 @@
     }
 
     downloadBlob(new Blob([arrayBuffer], { type: 'audio/wav' }), title + '.wav');
-    toast('WAV exported');
+    toast(t('wavExported', 'WAV exported'));
   }
 
   function writeString(view, offset, str) {
@@ -1216,7 +1260,7 @@
 
   function exportMp3(buffer, title, quality) {
     if (typeof lamejs === 'undefined') {
-      toast('MP3 encoder loading, please wait...');
+      toast(t('mp3Loading', 'MP3 encoder loading, please wait...'));
       setTimeout(function() { exportMp3(buffer, title, quality); }, 1000);
       return;
     }
@@ -1243,7 +1287,7 @@
     if (flush.length > 0) mp3Data.push(flush);
 
     downloadBlob(new Blob(mp3Data, { type: 'audio/mp3' }), title + '.mp3');
-    toast('MP3 exported (' + kbps + 'kbps)');
+    toast(t('mp3Exported', 'MP3 exported') + ' (' + kbps + 'kbps)');
   }
 
   function convertTo16bit(floatData) {
@@ -1257,14 +1301,28 @@
 
   function exportViaMediaRecorder(buffer, title, format) {
     ensureAudioCtx();
-    var offlineCtx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    var src = offlineCtx.createBufferSource();
+    var src = audioCtx.createBufferSource();
     src.buffer = buffer;
-    var dest = offlineCtx.createMediaStreamDestination ? null : null;
-
-    // Fallback: export as WAV if MediaRecorder not suitable
-    toast('Format not fully supported in this browser, exporting as WAV');
-    exportWav(buffer, title);
+    var dest = audioCtx.createMediaStreamDestination();
+    src.connect(dest);
+    var requested = format === 'ogg' ? ['audio/ogg;codecs=opus', 'audio/ogg'] : ['audio/webm;codecs=opus', 'audio/webm'];
+    var mimeType = requested.find(function(type) { return MediaRecorder.isTypeSupported(type); });
+    if (!mimeType) {
+      toast(t('formatFallback', 'Format not fully supported in this browser, exporting as WAV'));
+      exportWav(buffer, title);
+      return;
+    }
+    var chunks = [];
+    var recorder = new MediaRecorder(dest.stream, { mimeType: mimeType });
+    recorder.ondataavailable = function(e) { if (e.data && e.data.size) chunks.push(e.data); };
+    recorder.onstop = function() {
+      var extension = format === 'ogg' ? '.ogg' : '.webm';
+      downloadBlob(new Blob(chunks, { type: mimeType }), title + extension);
+      toast(t('compressedExported', 'Compressed audio exported') + ' (' + mimeType + ')');
+    };
+    src.onended = function() { if (recorder.state !== 'inactive') recorder.stop(); };
+    recorder.start(100);
+    src.start(0);
   }
 
   function downloadBlob(blob, filename) {
@@ -1293,12 +1351,12 @@
       }
     };
     req.onsuccess = function(e) { callback(e.target.result); };
-    req.onerror = function() { toast('DB error'); };
+    req.onerror = function() { toast(t('dbError', 'DB error')); };
   }
 
   function saveProject() {
-    if (!mainBuffer) { toast('Nothing to save'); return; }
-    var name = document.getElementById('projectName').value || 'Untitled';
+    if (!mainBuffer) { toast(t('nothingSave', 'Nothing to save')); return; }
+    var name = document.getElementById('projectName').value || t('untitled', 'Untitled');
     var id = 'proj_' + Date.now();
 
     // Serialize buffer
@@ -1320,7 +1378,7 @@
     openDB(function(db) {
       var tx = db.transaction(STORE_NAME, 'readwrite');
       tx.objectStore(STORE_NAME).put(projData);
-      tx.oncomplete = function() { toast('Project saved: ' + name); loadProjectList(); };
+      tx.oncomplete = function() { toast(t('projectSaved', 'Project saved:') + ' ' + name); loadProjectList(); };
     });
   }
 
@@ -1332,17 +1390,17 @@
         var projects = req.result || [];
         var list = document.getElementById('projectList');
         if (!projects.length) {
-          list.innerHTML = '<div class="cvo-empty-state"><div class="cvo-empty-icon">&#128193;</div><div class="cvo-empty-title">No saved projects</div><div class="cvo-empty-desc">Record or import audio, then hit Save.</div></div>';
+          list.innerHTML = '<div class="cvo-empty-state"><div class="cvo-empty-icon">&#128193;</div><div class="cvo-empty-title">' + t('noProjects', 'No saved projects') + '</div><div class="cvo-empty-desc">' + t('recordThenSave', 'Record or import audio, then hit Save.') + '</div></div>';
           return;
         }
         var html = '';
         projects.sort(function(a, b) { return b.createdAt > a.createdAt ? 1 : -1; });
         projects.forEach(function(p) {
           var dur = p.channels && p.channels[0] ? formatTime(p.channels[0].length / p.sampleRate) : '--:--';
-          html += '<div class="cvo-project-item" data-id="' + p.id + '">';
+          html += '<div class="cvo-project-item" role="button" tabindex="0" data-id="' + p.id + '">';
           html += '<div class="cvo-project-item-icon">&#127897;</div>';
           html += '<div class="cvo-project-item-info"><div class="cvo-project-item-name">' + p.name + '</div>';
-          html += '<div class="cvo-project-item-meta">' + dur + ' &bull; ' + new Date(p.createdAt).toLocaleDateString() + '</div></div>';
+          html += '<div class="cvo-project-item-meta">' + dur + ' &bull; ' + new Date(p.createdAt).toLocaleDateString(locale.dateLocale || undefined) + '</div></div>';
           html += '<button type="button" class="cvo-project-item-del" data-del="' + p.id + '">&times;</button>';
           html += '</div>';
         });
@@ -1353,6 +1411,12 @@
           item.onclick = function(e) {
             if (e.target.classList.contains('cvo-project-item-del')) return;
             loadProject(item.getAttribute('data-id'));
+          };
+          item.onkeydown = function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              loadProject(item.getAttribute('data-id'));
+            }
           };
         });
         list.querySelectorAll('.cvo-project-item-del').forEach(function(btn) {
@@ -1371,7 +1435,7 @@
       var req = tx.objectStore(STORE_NAME).get(id);
       req.onsuccess = function() {
         var p = req.result;
-        if (!p) { toast('Project not found'); return; }
+        if (!p) { toast(t('projectNotFound', 'Project not found')); return; }
         ensureAudioCtx();
         var channels = p.channels.map(function(ch) { return new Float32Array(ch); });
         mainBuffer = bufferFromChannels(channels, p.sampleRate, p.numberOfChannels);
@@ -1383,7 +1447,7 @@
         document.getElementById('projectName').value = p.name;
         document.getElementById('projectsPanel').style.display = 'none';
         switchToEditor();
-        toast('Loaded: ' + p.name);
+        toast(t('loadedLabel', 'Loaded:') + ' ' + p.name);
       };
     });
   }
@@ -1392,7 +1456,7 @@
     openDB(function(db) {
       var tx = db.transaction(STORE_NAME, 'readwrite');
       tx.objectStore(STORE_NAME).delete(id);
-      tx.oncomplete = function() { toast('Project deleted'); loadProjectList(); };
+      tx.oncomplete = function() { toast(t('projectDeleted', 'Project deleted')); loadProjectList(); };
     });
   }
 

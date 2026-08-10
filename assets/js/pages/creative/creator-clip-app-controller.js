@@ -1,6 +1,34 @@
 !function() {
   "use strict";
 
+  var sw = document.documentElement.lang === 'sw';
+  var swCopy = {
+    'File too large. Max 500MB.': 'Faili ni kubwa sana. Kiwango ni MB 500.',
+    'Unsupported format. Use MP4, WebM, or MOV.': 'Muundo haukubaliki. Tumia MP4, WebM au MOV.',
+    'Upload a video first': 'Pakia video kwanza',
+    'Speech Recognition not supported. Use Chrome.': 'Utambuzi wa sauti haupatikani. Tumia Chrome.',
+    'Starting speech recognition...': 'Inaanza kutambua sauti...',
+    'No speech detected. Try adding captions manually.': 'Hakuna sauti iliyotambuliwa. Ongeza manukuu mwenyewe.',
+    'Could not start speech recognition': 'Utambuzi wa sauti haukuweza kuanza',
+    'Video exported!': 'Video imepakuliwa!',
+    'Database error': 'Hitilafu ya hifadhi ya ndani',
+    'Nothing to save': 'Hakuna mradi wa kuhifadhi',
+    'Project saved!': 'Mradi umehifadhiwa!',
+    'Save failed': 'Uhifadhi umeshindwa',
+    'No saved project found': 'Hakuna mradi uliohifadhiwa',
+    'Project restored!': 'Mradi umerejeshwa!',
+  };
+  function tr(message) {
+    if (!sw) return message;
+    if (swCopy[message]) return swCopy[message];
+    return String(message)
+      .replace(/^Video loaded: /, 'Video imepakiwa: ')
+      .replace(/^In point: /, 'Mwanzo: ')
+      .replace(/^Out point: /, 'Mwisho: ')
+      .replace(/ captions generated$/, ' manukuu yametengenezwa')
+      .replace(/^Speed: /, 'Kasi: ');
+  }
+
   /* ================================================
      STATE
   ================================================ */
@@ -27,7 +55,7 @@
   ================================================ */
   function toast(msg) {
     var el = document.getElementById('toast');
-    el.textContent = msg; el.classList.add('show');
+    el.textContent = tr(msg); el.classList.add('show');
     setTimeout(function() { el.classList.remove('show'); }, 2500);
   }
 
@@ -75,10 +103,10 @@
     videoEl.src = url;
     videoEl.load();
 
-    videoEl.onloadedmetadata = function() {
-      state.duration = videoEl.duration;
+    function activateEditor(duration) {
+      state.duration = Number.isFinite(duration) && duration > 0 ? duration : 0;
       state.trimStart = 0;
-      state.trimEnd = videoEl.duration;
+      state.trimEnd = state.duration;
       state.captions = [];
       state.overlays = [];
 
@@ -90,12 +118,25 @@
       renderCaptions();
       renderOverlays();
       toast('Video loaded: ' + file.name);
+    }
+    videoEl.onloadedmetadata = function() {
+      if (Number.isFinite(videoEl.duration)) {
+        activateEditor(videoEl.duration);
+        return;
+      }
+      videoEl.ontimeupdate = function() {
+        if (!Number.isFinite(videoEl.duration)) return;
+        videoEl.ontimeupdate = null;
+        videoEl.currentTime = 0;
+        activateEditor(videoEl.duration);
+      };
+      videoEl.currentTime = 1e101;
     };
   }
 
   // New Video button
   document.getElementById('newVideoBtn').addEventListener('click', function() {
-    if (state.file && !confirm('Start over? Unsaved work will be lost.')) return;
+    if (state.file && !confirm(sw ? 'Uanze upya? Kazi ambayo haijahifadhiwa itapotea.' : 'Start over? Unsaved work will be lost.')) return;
     videoEl.pause(); videoEl.src = '';
     state.file = null; state.duration = 0;
     state.captions = []; state.overlays = [];
@@ -175,7 +216,7 @@
     document.getElementById('trimStartTime').textContent = fmtTime(state.trimStart);
     document.getElementById('trimEndTime').textContent = fmtTime(state.trimEnd);
     var trimDur = state.trimEnd - state.trimStart;
-    document.getElementById('trimLabel').textContent = fmtTime(trimDur) + ' selected';
+    document.getElementById('trimLabel').textContent = fmtTime(trimDur) + (sw ? ' imechaguliwa' : ' selected');
   }
 
   // Click timeline to seek
@@ -399,7 +440,7 @@
       input.className = 'ccl-caption-text-input';
       input.type = 'text';
       input.value = cap.text;
-      input.placeholder = 'Caption text...';
+      input.placeholder = sw ? 'Maandishi ya nukuu...' : 'Caption text...';
       input.addEventListener('input', function() { cap.text = input.value; });
 
       var delBtn = document.createElement('button');
@@ -429,7 +470,7 @@
 
   // Clear captions
   document.getElementById('clearCaptionsBtn').addEventListener('click', function() {
-    if (state.captions.length && !confirm('Clear all captions?')) return;
+    if (state.captions.length && !confirm(sw ? 'Ufute manukuu yote?' : 'Clear all captions?')) return;
     state.captions = [];
     renderCaptions();
   });
@@ -566,7 +607,7 @@
       timeInput.className = 'ccl-overlay-time-input';
       timeInput.type = 'text';
       timeInput.value = fmtTime(ov.time);
-      timeInput.title = 'Time (click to set to current)';
+      timeInput.title = sw ? 'Muda (bofya kuweka muda wa sasa)' : 'Time (click to set to current)';
       timeInput.addEventListener('click', function() {
         ov.time = videoEl.currentTime;
         timeInput.value = fmtTime(ov.time);
@@ -576,14 +617,15 @@
       textInput.className = 'ccl-overlay-text-input';
       textInput.type = 'text';
       textInput.value = ov.text;
-      textInput.placeholder = 'Overlay text...';
+      textInput.placeholder = sw ? 'Maandishi ya juu...' : 'Overlay text...';
       textInput.addEventListener('input', function() { ov.text = textInput.value; });
 
       var animSelect = document.createElement('select');
       animSelect.className = 'ccl-overlay-anim-select';
       ['fade', 'pop', 'slide'].forEach(function(a) {
         var opt = document.createElement('option');
-        opt.value = a; opt.textContent = a.charAt(0).toUpperCase() + a.slice(1);
+        opt.value = a;
+        opt.textContent = sw ? ({fade:'Fifia',pop:'Jitokeze',slide:'Teleza'}[a] || a) : a.charAt(0).toUpperCase() + a.slice(1);
         if (ov.animation === a) opt.selected = true;
         animSelect.appendChild(opt);
       });
@@ -620,14 +662,14 @@
 
     var btn = document.getElementById('exportBtn');
     btn.disabled = true;
-    btn.textContent = 'Exporting...';
+    btn.textContent = sw ? 'Inapakua...' : 'Exporting...';
 
     var progressWrap = document.getElementById('exportProgress');
     var progressFill = document.getElementById('progressFill');
     var progressText = document.getElementById('progressText');
     progressWrap.classList.add('active');
     progressFill.style.width = '0%';
-    progressText.textContent = 'Preparing...';
+    progressText.textContent = sw ? 'Inaandaa...' : 'Preparing...';
 
     // Determine output size
     var ratioMap = { '16-9': [16,9], '9-16': [9,16], '1-1': [1,1], '4-5': [4,5] };
@@ -704,8 +746,8 @@
         URL.revokeObjectURL(url);
 
         btn.disabled = false;
-        btn.textContent = 'Export Video';
-        progressText.textContent = 'Done!';
+        btn.textContent = sw ? 'Pakua video' : 'Export Video';
+        progressText.textContent = sw ? 'Imekamilika!' : 'Done!';
         progressFill.style.width = '100%';
         toast('Video exported!');
 
@@ -1051,7 +1093,9 @@
     muteBtn.addEventListener('click', function() {
       videoEl.muted = !videoEl.muted;
       muteBtn.classList.toggle('active', videoEl.muted);
-      muteBtn.innerHTML = videoEl.muted ? '&#128264; Unmute' : '&#128263; Mute';
+      muteBtn.innerHTML = videoEl.muted
+        ? '&#128264; ' + (sw ? 'Washa sauti' : 'Unmute')
+        : '&#128263; ' + (sw ? 'Nyamazisha' : 'Mute');
       toast(videoEl.muted ? 'Audio muted' : 'Audio unmuted');
     });
   }

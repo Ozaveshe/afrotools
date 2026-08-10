@@ -118,6 +118,52 @@ test('HTML formula digests ignore reviewed presentation-asset cache versions onl
   );
 });
 
+test('HTML formula digests ignore release decorations but retain route workflow changes', function () {
+  const sourceOwned = '<!doctype html><html lang="sw" data-afrotools-source-owner="scripts/build-sw-itax-guide.js"><head>' +
+    '<meta name="robots" content="index,follow">' +
+    '<link rel="canonical" href="https://afrotools.com/sw/zana/mwongozo-wa-itax/">' +
+    '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/itax-guide/">' +
+    '<link rel="stylesheet" href="/assets/css/itax-guide-workspace.css">' +
+    '</head><body><form data-itax-workspace><label>Kazi<select name="task">' +
+    '<option value="return">Maandalizi ya return</option></select></label></form>' +
+    '<script src="/engines/itax-guide-engine.js"></script>' +
+    '<script src="/assets/js/pages/itax-guide-workspace.js"></script></body></html>';
+  const releaseBuilt = sourceOwned
+    .replace('<html ', '<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" ')
+    .replace(
+      '<link rel="canonical" href="https://afrotools.com/sw/zana/mwongozo-wa-itax/"><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/itax-guide/">',
+      '',
+    )
+    .replace(
+      '</head>',
+      '<link rel="canonical" href="https://afrotools.com/sw/zana/mwongozo-wa-itax/">\n' +
+      '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/itax-guide/">\n</head>',
+    )
+    .replace(/(\/(?:assets|engines)\/[^"']+)(["'])/g, '$1?v=1234abcd$2')
+    .replace(
+      '</body>',
+      '<script src="/assets/js/lib/sw-accessibility.js?v=2468ace0" defer></script>\n' +
+      '<script src="/assets/js/lazy-analytics.js?v=8765dcba" defer></script>\n</body>',
+    );
+
+  assert.strictEqual(
+    quality.digestHtmlFormulaSource(sourceOwned),
+    quality.digestHtmlFormulaSource(releaseBuilt),
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(sourceOwned),
+    quality.digestHtmlFormulaSource(releaseBuilt.replace('Maandalizi ya return', 'Maandalizi ya NIL return')),
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(sourceOwned),
+    quality.digestHtmlFormulaSource(releaseBuilt.replace('itax-guide-engine.js', 'itax-guide-v2-engine.js')),
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(sourceOwned),
+    quality.digestHtmlFormulaSource(releaseBuilt.replace('/sw/zana/mwongozo-wa-itax/', '/sw/zana/njia-nyingine/')),
+  );
+});
+
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {
   const verification = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-verification.json'), 'utf8'));
   const result = quality.checkHighRiskRouteTraceability(verification, artifacts.formulas);

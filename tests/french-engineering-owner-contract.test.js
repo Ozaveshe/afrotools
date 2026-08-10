@@ -34,6 +34,9 @@ const engineOwners = new Set([
   'road-construction-cost'
 ]);
 const modularOwners = new Set(['afroplan-floor-planner', 'home-renovation-cost']);
+const sharedControllers = new Map([
+  ['architectural-fee', '/assets/js/pages/architectural-fee-workspace.js']
+]);
 
 function fileFor(route) {
   return path.join(ROOT, route.replace(/^\/|\/$/g, ''), 'index.html');
@@ -139,6 +142,10 @@ for (const row of manifest.routes) {
     assert.ok(fs.existsSync(path.join(ROOT, `engines/src/${engineName}.js`)));
     assert.ok(fs.existsSync(path.join(ROOT, `engines/${engineName}.js`)));
     assert.match(englishHtml, new RegExp(`/engines/${engineName}\\.js`));
+  } else if (sharedControllers.has(row.id)) {
+    const controller = sharedControllers.get(row.id);
+    assert.match(englishHtml, new RegExp(controller.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.ok(fs.existsSync(path.join(ROOT, controller.replace(/^\//, ''))));
   } else if (!modularOwners.has(row.id) && row.id !== 'afrodraft') {
     assert.equal(inlineControllers(englishHtml).length, 0, `${row.english} still owns an inline controller`);
     const controllerRefs = [...englishHtml.matchAll(/\/assets\/js\/pages\/engineering-parity\/([^"'?]+\.js)/g)];

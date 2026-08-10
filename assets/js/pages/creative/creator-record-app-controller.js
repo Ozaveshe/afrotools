@@ -1,6 +1,12 @@
   (function() {
     'use strict';
 
+    var locale = window.AfroToolsCreatorRecordLocale || {};
+    var strings = locale.strings || {};
+    function t(key, fallback) {
+      return Object.prototype.hasOwnProperty.call(strings, key) ? strings[key] : fallback;
+    }
+
     /* ============================================
        STATE
     ============================================ */
@@ -100,7 +106,7 @@
 
     function autoFilename() {
       var d = new Date();
-      return 'CreatorRecord-' + d.getFullYear() + (d.getMonth()+1 < 10 ? '0' : '') + (d.getMonth()+1) +
+      return (locale.filenamePrefix || 'CreatorRecord') + '-' + d.getFullYear() + (d.getMonth()+1 < 10 ? '0' : '') + (d.getMonth()+1) +
         (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' +
         (d.getHours() < 10 ? '0' : '') + d.getHours() +
         (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
@@ -110,9 +116,11 @@
        TOGGLE HELPERS
     ============================================ */
     function setupToggle(btn, key) {
+      btn.setAttribute('aria-pressed', state[key] ? 'true' : 'false');
       btn.addEventListener('click', function() {
         state[key] = !state[key];
         btn.classList.toggle('on', state[key]);
+        btn.setAttribute('aria-pressed', state[key] ? 'true' : 'false');
       });
     }
     setupToggle(sysAudioToggle, 'sysAudio');
@@ -134,6 +142,18 @@
       webcamPanel.style.display = showCam ? 'block' : 'none';
       if (showCam) enumerateCameras();
     });
+
+    function activateOnKeyboard(container, selector) {
+      container.addEventListener('keydown', function(e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        var target = e.target.closest(selector);
+        if (!target) return;
+        e.preventDefault();
+        target.click();
+      });
+    }
+    activateOnKeyboard(modeSelector, '.crd-mode-card');
+    activateOnKeyboard($('pipGrid'), '.crd-pip-pos');
 
     /* ============================================
        WEBCAM SHAPE + PIP POSITION
@@ -163,13 +183,13 @@
         var cams = devices.filter(function(d) { return d.kind === 'videoinput'; });
         cameraSelect.innerHTML = '';
         if (cams.length === 0) {
-          cameraSelect.innerHTML = '<option>No cameras found</option>';
+          cameraSelect.innerHTML = '<option>' + t('noCameras', 'No cameras found') + '</option>';
           return;
         }
         cams.forEach(function(c, i) {
           var opt = document.createElement('option');
           opt.value = c.deviceId;
-          opt.textContent = c.label || 'Camera ' + (i + 1);
+          opt.textContent = c.label || t('camera', 'Camera') + ' ' + (i + 1);
           cameraSelect.appendChild(opt);
         });
       });
@@ -211,15 +231,15 @@
     ============================================ */
     function checkSupport() {
       if (!navigator.mediaDevices) {
-        showToast('Your browser does not support media recording');
+        showToast(t('mediaUnsupported', 'Your browser does not support media recording'));
         return false;
       }
       if (state.mode !== 'webcam' && state.mode !== 'audio' && !navigator.mediaDevices.getDisplayMedia) {
-        showToast('Screen capture not supported in this browser');
+        showToast(t('screenUnsupported', 'Screen capture not supported in this browser'));
         return false;
       }
       if (typeof MediaRecorder === 'undefined') {
-        showToast('MediaRecorder not supported — try Chrome or Edge');
+        showToast(t('recorderUnsupported', 'MediaRecorder not supported — try Chrome or Edge'));
         return false;
       }
       return true;
@@ -395,7 +415,7 @@
 
         if (tool === 'text') {
           var pos = getXY(e);
-          var txt = prompt('Enter text:');
+          var txt = prompt(t('enterText', 'Enter text:'));
           if (txt) {
             ctx.globalCompositeOperation = 'source-over';
             ctx.font = '16px DM Sans, sans-serif';
@@ -485,7 +505,7 @@
         document.body.appendChild(overlay);
         var count = 3;
         function tick() {
-          overlay.innerHTML = '<div class="crd-countdown-num">' + count + '</div><div class="crd-countdown-label">Get ready...</div>';
+          overlay.innerHTML = '<div class="crd-countdown-num">' + count + '</div><div class="crd-countdown-label">' + t('getReady', 'Get ready...') + '</div>';
           if (count === 0) {
             document.body.removeChild(overlay);
             resolve();
@@ -596,7 +616,7 @@
         }
 
         if (tracks.length === 0) {
-          showToast('No media tracks available');
+          showToast(t('noTracks', 'No media tracks available'));
           stopAllStreams();
           return;
         }
@@ -622,9 +642,9 @@
 
       } catch(err) {
         if (err.name === 'NotAllowedError') {
-          showToast('Permission denied — please allow access');
+          showToast(t('permissionDenied', 'Permission denied — please allow access'));
         } else {
-          showToast('Error: ' + err.message);
+          showToast(t('errorPrefix', 'Error:') + ' ' + err.message);
         }
         stopAllStreams();
         return;
@@ -647,7 +667,11 @@
       }
 
       state.chunks = [];
-      state.mediaRecorder = new MediaRecorder(state.combinedStream, { mimeType: mimeType });
+      var recorderOptions = { mimeType: mimeType };
+      if (state.mode !== 'audio') {
+        recorderOptions.videoBitsPerSecond = { '1080': 8000000, '720': 4000000, '480': 2000000 }[qualitySelect.value] || 4000000;
+      }
+      state.mediaRecorder = new MediaRecorder(state.combinedStream, recorderOptions);
 
       state.mediaRecorder.ondataavailable = function(e) {
         if (e.data && e.data.size > 0) state.chunks.push(e.data);
@@ -755,7 +779,7 @@
       liveVideo.srcObject = null;
       previewEmpty.style.display = '';
 
-      showToast('Recording cancelled');
+      showToast(t('cancelled', 'Recording cancelled'));
     }
 
     /* ============================================
@@ -763,7 +787,7 @@
     ============================================ */
     function onRecordingComplete() {
       if (!state.recordedBlob || state.recordedBlob.size === 0) {
-        showToast('Recording failed — no data captured');
+        showToast(t('failed', 'Recording failed — no data captured'));
         previewEmpty.style.display = '';
         return;
       }
@@ -791,7 +815,7 @@
       // Save to history
       saveToHistory(state.recordedBlob);
 
-      showToast('Recording complete!');
+      showToast(t('complete', 'Recording complete!'));
     }
 
     /* ============================================
@@ -833,7 +857,7 @@
       a.download = autoFilename() + ext;
       a.click();
       URL.revokeObjectURL(a.href);
-      showToast('Downloading...');
+      showToast(t('downloading', 'Downloading...'));
     });
 
     /* ============================================
@@ -929,7 +953,7 @@
         req.onsuccess = function() {
           var items = req.result.reverse();
           if (items.length === 0) {
-            historyList.innerHTML = '<div class="crd-history-empty">No recordings yet</div>';
+            historyList.innerHTML = '<div class="crd-history-empty">' + t('noRecordings', 'No recordings yet') + '</div>';
             return;
           }
           historyList.innerHTML = '';
@@ -939,7 +963,7 @@
             var thumbHTML = item.thumbnail
               ? '<img src="' + item.thumbnail + '" alt="thumb">'
               : '<span>&#127908;</span>';
-            var dateStr = new Date(item.date).toLocaleDateString();
+            var dateStr = new Date(item.date).toLocaleDateString(locale.dateLocale || undefined);
             el.innerHTML =
               '<div class="crd-history-thumb">' + thumbHTML + '</div>' +
               '<div class="crd-history-meta">' +
@@ -947,9 +971,9 @@
                 '<div class="crd-history-date">' + dateStr + ' \u00b7 ' + fmtSize(item.size) + '</div>' +
               '</div>' +
               '<div class="crd-history-actions">' +
-                '<button type="button" class="crd-history-action-btn preview-btn" data-id="' + item.id + '">Preview</button>' +
-                '<button type="button" class="crd-history-action-btn" data-id="' + item.id + '" data-action="download">Download</button>' +
-                '<button type="button" class="crd-history-action-btn del" data-id="' + item.id + '" data-action="delete">Delete</button>' +
+                '<button type="button" class="crd-history-action-btn preview-btn" data-id="' + item.id + '">' + t('preview', 'Preview') + '</button>' +
+                '<button type="button" class="crd-history-action-btn" data-id="' + item.id + '" data-action="download">' + t('download', 'Download') + '</button>' +
+                '<button type="button" class="crd-history-action-btn del" data-id="' + item.id + '" data-action="delete">' + t('delete', 'Delete') + '</button>' +
               '</div>';
             historyList.appendChild(el);
           });
@@ -1003,7 +1027,7 @@
             a.download = item.name + '.webm';
             a.click();
             URL.revokeObjectURL(a.href);
-            showToast('Downloading...');
+            showToast(t('downloading', 'Downloading...'));
           }
         };
       });
@@ -1016,7 +1040,7 @@
         store.delete(id);
         tx.oncomplete = function() {
           renderHistory();
-          showToast('Recording deleted');
+          showToast(t('deleted', 'Recording deleted'));
         };
       });
     }

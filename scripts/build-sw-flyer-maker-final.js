@@ -1,0 +1,121 @@
+"use strict";
+
+const fs = require("node:fs");
+const path = require("node:path");
+
+const ROOT = path.resolve(__dirname, "..");
+const SOURCE = path.join(ROOT, "tools", "flyer-maker", "index.html");
+const TARGET = path.join(ROOT, "sw", "zana", "kitengeneza-flyer", "index.html");
+const OWNER = "scripts/build-sw-flyer-maker-final.js";
+
+const replacements = new Map([
+  ['<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">', '<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="sw">'],
+  ["Flyer Maker: Event Posters &amp; Social Graphics | AfroTools", "Kitengeneza Flyer: Matukio, Mitandao na Chapa | AfroTools"],
+  ["Create event flyers and posters locally from prompts or templates. Make WhatsApp, Instagram, story, and print graphics in PNG, JPEG, or WebP.", "Tengeneza flyer na bango la tukio kwenye kivinjari kwa maelekezo au kiolezo. Hamisha PNG, JPEG au WebP kwa WhatsApp, Instagram, story au chapa."],
+  ["AI flyer maker, poster maker, event flyer creator, church flyer, WhatsApp flyer, African event poster, prompt to flyer", "kitengeneza flyer, kitengeneza bango, flyer ya tukio, flyer ya kanisa, flyer ya WhatsApp, bango la Afrika, maelekezo hadi flyer"],
+  ["AI Flyer & Poster Studio", "Studio ya Flyer na Bango"],
+  ["Create event flyers and posters from a prompt or template. Build WhatsApp, Instagram, story, and print flyers locally with brand kits, uploads, AI assist, readiness checks, and PNG, JPEG, or WebP export.", "Tengeneza flyer na bango kwa maelekezo au kiolezo. Tumia seti ya chapa, picha, usaidizi wa AI wenye idhini na ukaguzi wa utayari; kisha hamisha PNG, JPEG au WebP kwenye kivinjari."],
+  ["Prompt, edit, check, and export social or print flyers with local canvas rendering and optional AI assist.", "Eleza, hariri, kagua na uhamishe flyer za mitandao au chapa kwenye turubai ya kivinjari, ukiwa na usaidizi wa AI wa hiari."],
+  ["Prompt your way to social and print flyers with templates, local canvas rendering, brand kits, uploads, and export-ready files.", "Tumia maelekezo, violezo, picha na nembo kutengeneza flyer ya mitandao au chapa moja kwa moja kwenye kivinjari."],
+  ["Make event flyers from a prompt, template, or uploaded artwork. Export for WhatsApp, Instagram, stories, and print.", "Tengeneza flyer kwa maelekezo, kiolezo au picha yako; hamisha kwa WhatsApp, Instagram, story na chapa."],
+  ["Skip to flyer studio", "Ruka hadi studio ya flyer"],
+  ["Image &amp; Design / Prompt to poster", "Picha na usanifu / Maelekezo hadi bango"],
+  ["Make the flyer before the event energy disappears.", "Tengeneza flyer kabla hamasa ya tukio haijapoa."],
+  ["Type the event, pick a template, upload your image or logo, check the essentials, and export a polished flyer for WhatsApp, Instagram, stories, or print.", "Eleza tukio, chagua kiolezo, ongeza picha au nembo, kagua mambo muhimu, kisha hamisha flyer iliyokamilika kwa WhatsApp, Instagram, story au chapa."],
+  ["Studio highlights", "Vipengele vya studio"],
+  ["Prompt workflow", "Mtitiriko wa maelekezo"], ["Brand kit", "Seti ya chapa"], ["Print and social", "Chapa na mitandao"], ["No upload by default", "Hakuna upakiaji kwa chaguo-msingi"],
+  ["Flyer editor", "Kihariri cha flyer"], ["1. Prompt", "1. Maelekezo"], ["Describe the flyer", "Eleza flyer"], ["Loading studio...", "Studio inapakiwa..."], [">Prompt<", ">Maelekezo<"],
+  ['aria-label="FlyerAiConsent"', 'aria-label="Idhini ya AI ya flyer"'], ['aria-label="FlyerOrganizer"', 'aria-label="Mratibu wa flyer"'], ['aria-label="FlyerSubline"', 'aria-label="Mstari mdogo wa flyer"'], ['aria-label="FlyerDateTime"', 'aria-label="Tarehe na saa ya flyer"'], ['aria-label="FlyerVenue"', 'aria-label="Mahali pa flyer"'], ['aria-label="FlyerCta"', 'aria-label="Mwito wa hatua wa flyer"'], ['aria-label="FlyerContact"', 'aria-label="Mawasiliano ya flyer"'], ['aria-label="FlyerPrice"', 'aria-label="Bei au kiingilio cha flyer"'], ['aria-label="FlyerNote"', 'aria-label="Dokezo la flyer"'],
+  ['aria-label="FlyerPrimary"', 'aria-label="Rangi kuu"'], ['aria-label="FlyerSecondary"', 'aria-label="Rangi ya pili"'], ['aria-label="FlyerAccent"', 'aria-label="Rangi ya msisitizo"'], ['aria-label="FlyerTextColor"', 'aria-label="Rangi ya maandishi"'], ['aria-label="FlyerBackgroundInput"', 'aria-label="Picha ya mandharinyuma"'], ['aria-label="FlyerLogoInput"', 'aria-label="Faili la nembo"'], ['aria-label="FlyerQrInput"', 'aria-label="Faili la QR"'], ['aria-label="FlyerTextScale"', 'aria-label="Ukubwa wa maandishi"'], ['aria-label="FlyerBgZoom"', 'aria-label="Ukuzaji wa picha"'], ['aria-label="FlyerBgShift"', 'aria-label="Uhamisho wa picha"'], ['aria-label="FlyerGuides"', 'aria-label="Mipaka salama"'], ['aria-label="FlyerSuffix"', 'aria-label="Jina la faili"'], ['aria-label="FlyerQuality"', 'aria-label="Ubora wa JPEG au WebP"'],
+  ["Example: Create a church worship night flyer for Friday 9PM at City Chapel, Ibadan. Free entry, WhatsApp +234 801 234 5678. Make it warm, premium, and easy to read.", "Mfano: Tengeneza flyer ya ibada ya Ijumaa saa 3 usiku katika Kanisa la Jiji, Arusha. Kiingilio bure, WhatsApp +255 712 345 678. Iwe ya kuvutia na rahisi kusoma."],
+  ["Generate locally", "Tengeneza kwenye kifaa"], ["Use AI assist", "Tumia usaidizi wa AI"], ["I agree to send this prompt to AfroTools AI assist.", "Ninakubali kutuma maelekezo haya kwa usaidizi wa AfroTools AI."], ["Generated flyer copy ideas", "Mapendekezo ya maandishi ya flyer"],
+  ["2. Templates", "2. Violezo"], ["Start from a real use case", "Anza na matumizi halisi"], ["Flyer templates", "Violezo vya flyer"],
+  ["3. Content", "3. Maudhui"], ["Event details", "Maelezo ya tukio"], ["Flyer type", "Aina ya flyer"], [">Event<", ">Tukio<"], [">Sale or promo<", ">Ofa au promosheni<"], [">Church<", ">Kanisa<"], [">Music or party<", ">Muziki au sherehe<"], [">Restaurant or food<", ">Mgahawa au chakula<"], [">School or campus<", ">Shule au chuo<"], [">Wedding<", ">Harusi<"], [">Business<", ">Biashara<"],
+  [">Organizer<", ">Mratibu<"], [">Headline<", ">Kichwa kikuu<"], [">Subline<", ">Mstari mdogo<"], [">Date and time<", ">Tarehe na saa<"], [">Venue<", ">Mahali<"], [">Details<", ">Maelezo<"], [">Call to action<", ">Mwito wa kuchukua hatua<"], [">Contact or link<", ">Mawasiliano au kiungo<"], [">Price or access<", ">Bei au kiingilio<"], [">Small note<", ">Dokezo fupi<"],
+  ["4. Design", "4. Usanifu"], ["Layout, brand, and assets", "Mpangilio, chapa na picha"], ["Load brand", "Pakia seti ya chapa"], ["Export size", "Ukubwa wa kuhamisha"], ["Instagram portrait -", "Instagram wima -"], ["Square -", "Mraba -"], ["Story or status -", "Story au status -"], ["A4 print -", "Chapa ya A4 -"], ["Letter print -", "Chapa ya Letter -"],
+  [">Layout<", ">Mpangilio<"], [">Bold center<", ">Katikati yenye uzito<"], [">Photo top<", ">Picha juu<"], [">Split billboard<", ">Bango lililogawanywa<"], [">Ticket strip<", ">Ukanda wa tiketi<"], [">Schedule card<", ">Kadi ya ratiba<"], [">Minimal print<", ">Chapa rahisi<"], [">Typeface<", ">Aina ya herufi<"], [">Editorial serif<", ">Serif ya uhariri<"],
+  ["Color palettes", "Paleti za rangi"], [">Primary<", ">Rangi kuu<"], [">Secondary<", ">Rangi ya pili<"], [">Accent<", ">Rangi ya msisitizo<"], [">Text<", ">Maandishi<"], [">Background<", ">Mandharinyuma<"], [">Logo<", ">Nembo<"], [">QR or ticket<", ">QR au tiketi<"], ["Choose image", "Chagua picha"], ["Choose logo", "Chagua nembo"], ["Choose QR", "Chagua QR"], ["Text scale", "Ukubwa wa maandishi"], ["Image zoom", "Ukuzaji wa picha"], ["Image shift", "Uhamisho wa picha"], ["Show safe guides", "Onyesha mipaka salama"],
+  ["Flyer preview and export", "Muonekano na uhamishaji wa flyer"], ["Live preview", "Muonekano wa moja kwa moja"], ["Instagram portrait", "Instagram wima"], [">Reset<", ">Weka upya<"], ["Rendered flyer preview", "Muonekano wa flyer iliyochorwa"], ["Flyer metrics", "Vipimo vya flyer"], [">Canvas<", ">Turubai<"], [">Readability<", ">Usomekaji<"], [">Ready<", ">Utayari<"], [">Checking<", ">Inakaguliwa<"],
+  ["5. Export", "5. Hamisha"], ["Save and hand off", "Hifadhi na kabidhi"], [">Format<", ">Muundo<"], [">File name<", ">Jina la faili<"], ["JPEG/WebP quality", "Ubora wa JPEG/WebP"], ["Download flyer", "Pakua flyer"], ["Export variants", "Hamisha saizi tatu"], ["Copy WhatsApp caption", "Nakili maelezo ya WhatsApp"], ["Copy print brief", "Nakili muhtasari wa chapa"], ["Copy design link", "Nakili kiungo cha usanifu"], ["Save brand kit", "Hifadhi seti ya chapa"],
+  [">Checklist<", ">Orodha ya ukaguzi<"], ["Before posting", "Kabla ya kuchapisha"], [">History<", ">Historia<"], ["Recent exports", "Uhamishaji wa hivi karibuni"],
+  ["Workflow", "Mtitiriko wa kazi"], ["A faster path from idea to posted flyer", "Njia ya haraka kutoka wazo hadi flyer iliyochapishwa"],
+  ["Start with the audience and action: who should come, when, where, what they get, and how they respond. The studio turns that into a layout, then the checklist keeps the flyer readable when it is compressed into WhatsApp and Instagram previews.", "Anza na hadhira na hatua: nani aje, lini, wapi, atapata nini na ajibu vipi. Studio huweka hayo kwenye mpangilio; orodha ya ukaguzi hulinda usomekaji kwenye WhatsApp na Instagram."],
+  ["For events", "Kwa matukio"], ["Use the prompt builder for the first draft, then keep the headline short, date clear, venue visible, and contact line close to the call to action.", "Tumia maelekezo kwa rasimu ya kwanza, kisha fupisha kichwa, onyesha tarehe na mahali wazi, na uweke mawasiliano karibu na mwito wa hatua."],
+  ["For recurring brands", "Kwa chapa zinazotumika mara kwa mara"], ["Save your brand kit once. The palette, logo, organizer, and contact fields come back for the next service, sale, class, or concert.", "Hifadhi seti ya chapa mara moja. Paleti, nembo, mratibu na mawasiliano hurudi kwa ibada, ofa, darasa au tamasha linalofuata."],
+  ["For print and social", "Kwa chapa na mitandao"], ["Export an Instagram portrait first for sharing, then switch to A4 or Letter for print. Use PNG for crisp graphics, JPEG or WebP when file size matters.", "Hamisha Instagram wima kwa kushiriki, kisha tumia A4 au Letter kwa chapa. Tumia PNG kwa picha kali; JPEG au WebP unapohitaji faili ndogo."],
+  ["Export an Instagram wima first for sharing, then switch to A4 or Letter for print. Use PNG for crisp graphics, JPEG or WebP when file size matters.", "Hamisha Instagram wima kwa kushiriki, kisha tumia A4 au Letter kwa chapa. Tumia PNG kwa picha kali; JPEG au WebP unapohitaji faili ndogo."],
+  ["Flyer Studio FAQ", "Maswali kuhusu Studio ya Flyer"], ["Is this a real AI flyer maker?", "Je, hii ni kitengeneza flyer cha AI?"],
+  ["The tool has a local prompt engine that works without sending your content anywhere. If you choose AI assist and accept the notice, it can ask the AfroTools AI advisor for a structured flyer draft, then still renders and exports locally in your browser.", "Zana ina injini ya maelekezo inayofanya kazi bila kutuma maudhui yako. Ukichagua AI na kutoa idhini, maelekezo yako pekee hutumwa kwa AfroTools AI; uchoraji na uhamishaji hubaki kwenye kivinjari."],
+  ["Can I upload photos, logos, or QR codes?", "Je, ninaweza kuongeza picha, nembo au QR?"], ["Yes. Backgrounds, logos, and QR images are decoded in your browser and can be included in the export. The saved brand kit keeps only small logo files locally.", "Ndiyo. Mandharinyuma, nembo na QR husomwa kwenye kivinjari na kuingizwa kwenye faili. Seti ya chapa huhifadhi nembo ndogo kwenye kifaa pekee."],
+  ["Which size should I choose?", "Nichague ukubwa gani?"], ["Use 1080 x 1350 for Instagram feed and WhatsApp flyers, 1080 x 1920 for stories and status, 1080 x 1080 for square posts, and A4 or Letter for print handouts.", "Tumia 1080 x 1350 kwa Instagram na WhatsApp, 1080 x 1920 kwa story/status, 1080 x 1080 kwa mraba, na A4 au Letter kwa chapa."],
+  ["Will the download be high resolution?", "Faili litakuwa na ubora mkubwa?"], ["Yes. The canvas renders at the selected export dimensions. A4 and Letter exports are large enough for practical print drafts, while social sizes are ready for posting.", "Ndiyo. Turubai huchorwa kwa vipimo vilivyochaguliwa. A4 na Letter zinafaa kwa rasimu ya chapa; saizi za mitandao ziko tayari kushirikiwa."],
+]);
+
+const localeScript = `<script data-sw-flyer-maker-locale>
+window.AfroToolsFlyerStudioLocale={
+sizes:{instagram:"Instagram wima",square:"Chapisho la mraba",story:"Story au status",a4:"Chapa ya A4",letter:"Chapa ya Letter"},
+palettes:{midnight:"Usiku",lagoon:"Laguni",crimson:"Nyekundu",paper:"Karatasi safi",forest:"Msitu",violet:"Urujuani"},
+templates:{
+church:["Ibada ya kanisa","Ibada, mkesha, shukrani","church","Kanisa la Jiji","USIKU WA IBADA","Maombi, ibada na shukrani","Ijumaa, saa 3 usiku","Kanisa la Jiji, Arusha","Wahudumu wageni, kwaya na vipindi vya maombi usiku kucha.","Mwalike rafiki","WhatsApp: +255 712 345 678","Kiingilio bure","Fika mapema kupata nafasi","bold-center","midnight"],
+music:["Usiku wa Afrobeats","Tamasha, DJ, sherehe","music","Ukumbi wa Juu","USIKU WA AFROBEATS","DJ, wasanii, chakula na vinywaji","Ijumaa, saa 2 usiku","Ukumbi wa Juu, Nairobi","DJ mubashara, wasanii wageni, wauzaji wa chakula na meza za VIP.","Weka nafasi","Tiketi kupitia WhatsApp","Meza za VIP zinapatikana","Vaa rangi angavu","photo-top","violet"],
+market:["Ofa ya sokoni","Ofa, duka, uzinduzi","sale","Soko la Biashara","OFA YA SIKU YA SOKO","Bidhaa mpya, bei mpya","Jumamosi hii, saa 1 asubuhi","Soko Kuu","Ofa za jumla, bidhaa mpya, nguo, viatu na vifaa vya nyumbani.","Nunua mapema","Piga simu kuhifadhi","Punguzo hadi 35%","Wanaowahi wanachagua kwanza","ticket-strip","forest"],
+business:["Kliniki ya biashara","Warsha, uzinduzi, wavuti","business","AfroTools Lab","KLINIKI YA BIASHARA NDOGO","Bei, kodi na ukuaji","Alhamisi, saa 4 asubuhi","Mtandaoni na ana kwa ana","Vipindi vya vitendo kuhusu ankara, mishahara, masoko na vitabu.","Hifadhi nafasi","afrotools.com","Usajili bure","Nafasi ni chache","split-billboard","lagoon"],
+food:["Jikoni la muda","Mgahawa, menyu, jikoni","food","Jikoni la Mama","WIKENDI YA JOLLOF","Wali wa moshi, nyama na vitafunio","Jumamosi na Jumapili","Uwanja wa Chakula","Pakiti za familia, chakula cha kubeba, nyama na vinywaji baridi.","Agiza mapema","DM au WhatsApp kuagiza","Kuanzia TZS 12,000","Nafasi ni chache","split-billboard","crimson"],
+school:["Wiki ya chuo","Shule, darasa, klabu","school","Serikali ya Wanafunzi","WIKI YA CHUO","Michezo, muziki na tuzo","Jumatatu hadi Ijumaa, saa 10","Uwanja Mkuu","Mijadala, michezo, vipaji, teknolojia na usiku wa jamii.","Jiunge na wiki","Muulize mwakilishi wa darasa","Kwa wanafunzi","Leta kitambulisho","schedule-card","lagoon"],
+wedding:["Mwaliko wa harusi","Sherehe ya familia","wedding","Familia Zetu","SHEREHE YA HARUSI","Pamoja na familia zao","Jumamosi, saa 5 asubuhi","Ukumbi wa Jiji, Accra","Ndoa, mapokezi, picha, chakula na dansi.","Thibitisha kuhudhuria","Thibitisha kwa WhatsApp","Kwa mwaliko pekee","Rangi za jadi zinakaribishwa","minimal-print","paper"],
+fundraiser:["Harambee","Jamii, hisani, lengo","event","Kamati ya Jamii","HARAMBEE YA JAMII","Saidia mradi wa paa la shule","Jumapili, saa 8 mchana","Ukumbi wa Mji","Chakula, muziki, ahadi, shukrani kwa wafadhili na taarifa za mradi.","Changia au hudhuria","Piga simu kwa kamati","Mchango wa hiari","Kila mchango una maana","schedule-card","forest"]},
+strings:{promptRequired:"Ongeza maelekezo au chagua kiolezo",localDraft:"Rasimu imetengenezwa kwenye kifaa",askingAi:"Inaomba usaidizi wa AI",aiApplied:"Rasimu ya AI imetumika",aiFallback:"AI haikupatikana; rasimu ya kifaa imetumika",aiConsentRequired:"Weka tiki ya idhini kabla ya kutumia AI",promptFirst:"Ongeza maelekezo kwanza",safeArea:"eneo salama",historyEmpty:"Flyer utakazopakua kwenye kivinjari hiki zitaonekana hapa.",readabilityStrong:"Nzuri",readabilityReview:"Kagua",headlineGood:"Kichwa ni kifupi vya kutosha kwa simu.",headlineShorten:"Fupisha kichwa hadi maneno 7 au chini.",contrastGood:"Utofautishaji wa maandishi ni mzuri.",contrastReview:"Kagua utofautishaji baada ya kubadili picha au rangi.",dateGood:"Tarehe na saa zinaonekana.",dateMissing:"Ongeza tarehe na saa wazi.",venueGood:"Mahali panaonekana.",venueMissing:"Ongeza mahali pa tukio.",ctaGood:"Mwito wa hatua au mawasiliano upo.",ctaMissing:"Ongeza hatua au mawasiliano.",canvasSize:"Turubai ya sasa ni {width} x {height} px.",guidesGood:"Mipaka salama inaonekana wakati wa kuhariri.",guidesMissing:"Washa mipaka salama kabla ya kuhamisha.",chooseImage:"Chagua picha",chooseLogo:"Chagua nembo",chooseQr:"Chagua QR",savedLocally:"Imehifadhiwa kwenye kifaa",previewUpdated:"Muonekano umesasishwa",exportFailed:"Uhamishaji umeshindikana",flyerDownloaded:"Flyer imepakuliwa",variantsExported:"Saizi tatu zimehamishwa",copyFailed:"Kunakili kumeshindikana",brandSaved:"Seti ya chapa imehifadhiwa",brandTooLarge:"Seti ya chapa ni kubwa mno",brandLoaded:"Seti ya chapa imepakiwa",brandMissing:"Hakuna seti ya chapa iliyohifadhiwa",resetComplete:"Imewekwa upya",imageRequired:"Chagua faili la picha",imageLoadFailed:"Picha haikuweza kufunguka",backgroundLoaded:"Mandharinyuma yamepakiwa",logoLoaded:"Nembo imepakiwa",qrLoaded:"QR imepakiwa",backgroundImage:"Picha ya mandharinyuma",logoName:"Nembo",qrImage:"Picha ya QR",savedLogo:"Nembo iliyohifadhiwa",defaultCta:"Thibitisha",premiumStyle:"Mtindo wa hadhi",whatsappOptimized:"Imeboreshwa kwa kushirikiwa WhatsApp",printReady:"Tayari kwa chapa na mitandao",worshipDetails:"Saa, mahali na mwaliko wa ibada viko wazi",whatsappNote:"Imeandaliwa kwa kushirikiwa WhatsApp",templateLoaded:"Kiolezo cha {label} kimepakiwa",paletteApplied:"Paleti ya {label} imetumika",captionCopied:"Maelezo yamenakiliwa",briefCopied:"Muhtasari wa chapa umenakiliwa",linkCopied:"Kiungo cha usanifu kimenakiliwa",briefTitle:"Muhtasari wa kukabidhi flyer",briefHeadline:"Kichwa: {value}",briefOrganizer:"Mratibu: {value}",briefDate:"Tarehe/saa: {value}",briefVenue:"Mahali: {value}",briefCta:"Hatua: {value}",briefContact:"Mawasiliano: {value}",briefCanvas:"Turubai: {label} ({width} x {height})",briefLayout:"Mpangilio: {value}",briefColors:"Rangi: {value}",briefExport:"Hamisha: {format} kwa ubora wa {quality}%",ready:"Tayari"},
+aiContext:"Rasimu ya flyer ya Kiswahili kutoka maelekezo",
+aiInstructions:["Andika maudhui yote yanayoonekana kwa Kiswahili sanifu. Usibadilishe funguo za JSON, vitambulisho vya template, layout au palette."],
+detectTemplate:function(text){if(/kanisa|ibada|maombi|mkesha|shukrani/.test(text))return"church";if(/harusi|ndoa|bibi|bwana|uchumba/.test(text))return"wedding";if(/chakula|mgahawa|jikoni|menyu|nyama/.test(text))return"food";if(/ofa|punguzo|soko|duka|promosheni/.test(text))return"market";if(/shule|chuo|darasa|mwanafunzi|mafunzo/.test(text))return"school";if(/muziki|sherehe|tamasha|onesho|afrobeats/.test(text))return"music";if(/harambee|mchango|hisani|jamii/.test(text))return"fundraiser";return""},
+buildHooks:function(headline,type){var noun=type==="sale"?"OFA":type==="food"?"MENYU":type==="church"?"IBADA":"TUKIO";return[headline,headline+" WIKI HII","USIKOSE "+headline,headline+" - THIBITISHA SASA",noun+" LAKO LINAANZA HAPA"]},
+parsePrompt:function(text,context){var cleaned=String(text||"").replace(/^(tafadhali\\s+)?(tengeneza|unda|chora|andaa)\\s+/i,"").replace(/\\b(flyer|bango|muundo)\\b/gi," ").trim();var headline=cleaned.split(/\\b(kwa|tarehe|saa|katika|mahali|lenye|ikiwa na)\\b/i)[0].trim();var result={};if(headline.length>=4)result.headline=headline.slice(0,58).replace(/\\s+\\S*$/,"").toUpperCase();var phone=String(text).match(/(\\+?\\d[\\d\\s().-]{7,}\\d)/);if(phone)result.contact="WhatsApp: "+phone[1].trim();var venue=String(text).match(/(?:katika|mahali:)\\s+([^.;,]{3,80})/i);if(venue)result.venue=venue[1].trim();var time=String(text).match(/(?:jumatatu|jumanne|jumatano|alhamisi|ijumaa|jumamosi|jumapili)[^.;,]*/i);if(time)result.dateTime=time[0].trim();if(/bure/i.test(text))result.price="Kiingilio bure";return result}
+};
+</script>`;
+
+function stripEnglishOnlySections(html) {
+  return html
+    .replace(/<afro-related-tools[\s\S]*?<\/afro-related-tools>\s*/i, "")
+    .replace(/<section class="tool-verification-sec"[\s\S]*?<\/section>\s*/i, "")
+    .replace(/<afro-business-cta[\s\S]*?<\/afro-business-cta>\s*/i, "")
+    .replace(/\s*<div class="flyer-share-row">[\s\S]*?<\/div>\s*/i, "\n");
+}
+
+function build() {
+  let html = fs.readFileSync(SOURCE, "utf8");
+  html = stripEnglishOnlySections(html)
+    .replace(/<script src="\/assets\/js\/analytics-bootstrap[^>]*><\/script>\s*/i, "")
+    .replace(/<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">\s*/i, "")
+    .replace(/<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com" crossorigin>\s*/i, "")
+    .replace(/<link rel="preload" as="style" href="https:\/\/fonts\.googleapis\.com[\s\S]*?<\/noscript>\s*/i, "")
+    .replace(/<script src="\/assets\/js\/components\/business-cta[^>]*><\/script>\s*/i, "")
+    .replace(/<script src="\/assets\/js\/components\/share-card-generator[^>]*><\/script>\s*/i, "")
+    .replace(/<script src="\/assets\/js\/components\/share-button[^>]*><\/script>\s*/i, "")
+    .replace(/<script src="\/assets\/js\/components\/related-tools[^>]*><\/script>\s*/ig, "")
+    .replace(/<script src="\/assets\/js\/lazy-analytics[^>]*><\/script>\s*/i, "")
+    .replace(/<script src="\/assets\/js\/lib\/flyer-maker-studio\.js[^>]*><\/script>/i, `${localeScript}\n<script src="/assets/js/lib/flyer-maker-studio.js?v=sw-final" defer></script>`)
+    .replace("</head>", `<meta name="generator" content="${OWNER}">\n<style data-sw-flyer-final>@media(max-width:760px){.flyer-studio,.flyer-studio *{min-width:0;box-sizing:border-box}.flyer-actions button{width:100%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}</style>\n</head>`)
+    .replace(/https:\/\/afrotools\.com\/tools\/flyer-maker\//g, "https://afrotools.com/sw/zana/kitengeneza-flyer/")
+    .replace('<link rel="alternate" hreflang="en" href="https://afrotools.com/sw/zana/kitengeneza-flyer/">', '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/flyer-maker/">')
+    .replace('<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/zana/kitengeneza-flyer/">', '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/flyer-maker/">')
+    .replace(/"inLanguage": "en"/g, '"inLanguage": "sw"')
+    .replace(/"inLanguage":"en"/g, '"inLanguage":"sw"')
+    .replace(/"name":"Tools","item":"https:\/\/afrotools\.com\/tools\/"/, '"name":"Zana","item":"https://afrotools.com/sw/zana-zote/"')
+    .replace(/<meta property="og:locale" content="en_US">/, '<meta property="og:locale" content="sw_TZ">');
+
+  for (const [from, to] of replacements) html = html.split(from).join(to);
+
+  html = html.replace("</main>", `<section class="flyer-guide-section" aria-labelledby="flyerPrivacyTitle"><div><p class="flyer-eyebrow">Faragha</p><h2 id="flyerPrivacyTitle">Picha zako hubaki kwenye kivinjari</h2><p>Mandharinyuma, nembo, QR, seti ya chapa na faili za kuhamisha huchakatwa kwenye kifaa hiki. Usaidizi wa AI hautumi picha; hutuma maelekezo yaliyoandikwa tu baada ya kuweka tiki ya idhini na kubonyeza kitufe cha AI.</p></div><div class="flyer-guide-grid"><article><h3>Hifadhi na fungua tena</h3><p>Studio huhifadhi rasimu na seti ndogo ya chapa katika hifadhi ya kivinjari. Kiungo cha usanifu hubeba maandishi na mipangilio pekee—hakibebi picha, nembo wala QR.</p></article><article><h3>Haki za matumizi</h3><p>Thibitisha ruhusa ya picha, nembo, fonti na wadhamini kabla ya kuchapisha nyenzo ya biashara.</p></article><article><h3>Ukaguzi wa mwisho</h3><p>Kagua tarehe, saa, mahali, mawasiliano, bei, QR na usomekaji kwenye simu kabla ya kushiriki.</p></article></div></section>\n</main>`);
+
+  if (process.argv.includes("--check")) {
+    const current = fs.existsSync(TARGET) ? fs.readFileSync(TARGET, "utf8") : "";
+    if (current !== html) throw new Error("Swahili Flyer Maker output is stale");
+  } else {
+    fs.mkdirSync(path.dirname(TARGET), { recursive: true });
+    fs.writeFileSync(TARGET, html);
+  }
+  return html;
+}
+
+build();
+console.log(`Built ${path.relative(ROOT, TARGET)} from ${path.relative(ROOT, SOURCE)}`);

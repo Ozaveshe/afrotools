@@ -1,0 +1,63 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const Price = require('../assets/js/lib/car-price-intelligence.js');
+const Import = require('../assets/js/lib/car-import-cost-engine.js');
+const Gate = require('../assets/js/engines/car-price-freshness-gate.js');
+
+const root = path.join(__dirname, '..');
+const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+const json = (file) => JSON.parse(read(file));
+const data = json('data/cars/price-intelligence.json');
+const evidence = json('data/cars/sw-car-price-source-evidence.json');
+const core = json('data/trade/car-import-cost-core.json');
+const packs = Object.values(core.countryPackFiles).map((file) => json(file.replace(/^\//, '')));
+const importData = Import.mergeData(core, packs, json('data/forex/latest.json').rates);
+
+assert.strictEqual(Object.values(data.countries).filter((row) => row.directory_enabled !== false).length, 20, 'exact English 20-market catalog');
+assert.strictEqual(data.vehicles.length, 25, 'exact English 25-vehicle catalog');
+assert.strictEqual(evidence.officialEndpoints.filter((row) => row.reviewStatus === 'reachable').length, 3, 'three official endpoints reachable');
+assert.strictEqual(evidence.officialEndpoints.filter((row) => row.reviewStatus !== 'reachable').length, 3, 'three official endpoints fail closed');
+assert.strictEqual(evidence.releasePolicy.allowCurrentPriceClaim, false, 'no current-price claim');
+assert.strictEqual(evidence.releasePolicy.allowRecommendation, false, 'no stale recommendation');
+
+const context = Price.buildVehicleContext(data, importData, { country: 'kenya', make: 'toyota', model: 'axio', year: 2018 });
+assert.ok(context, 'shared English engine builds the exact vehicle context');
+const assessment = Gate.assess(data, context, evidence, '2026-08-09T00:00:00Z');
+assert.strictEqual(assessment.stale, true, 'real-date gate detects expired market data');
+assert.strictEqual(assessment.endpointBlocked, true, 'endpoint review debt blocks release');
+assert.strictEqual(assessment.allowed, false, 'recommendation and current price remain blocked');
+assert.ok(assessment.ages.source > data.staleAfterDays, 'source row exceeds declared freshness window');
+assert.ok(assessment.ages.local > data.staleAfterDays, 'local row exceeds declared freshness window');
+const receipt = Gate.evidenceRow(context, assessment);
+assert.strictEqual(receipt.recommendation, 'blocked', 'export is evidence, not a recommendation');
+assert.strictEqual(receipt.currentPriceClaim, false, 'export carries no current-price claim');
+assert.strictEqual(receipt.sourceBandUsd.length, 3, 'historical source band preserved');
+assert.strictEqual(receipt.localBandUsd.length, 3, 'historical local band preserved');
+
+const html = read('sw/zana/bei-na-akili-ya-gari/index.html');
+const controller = read('assets/js/pages/sw-car-price-intelligence.js');
+const registry = read('assets/js/components/tool-registry.js');
+assert.match(html, /<html\b(?=[^>]*\blang="sw")(?=[^>]*\bclass="[^"]*\bsw-car-price-page\b[^"]*")[^>]*>/i, 'native Swahili document');
+assert.match(html, /data-sw-transport-owner="car-price-intelligence"/, 'exact English owner');
+assert.match(html, /hreflang="en" href="https:\/\/afrotools\.com\/cars\/"/, 'English peer');
+assert.match(html, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/cars\/"/, 'French peer');
+assert.match(html, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/bei-na-akili-ya-gari\/"/, 'Swahili self peer');
+assert.match(html, /assets\/img\/tools\/car-price-intelligence\.webp/, 'dedicated artwork');
+assert.match(html, /car-price-intelligence\.js/, 'shared English price engine');
+assert.match(html, /car-price-freshness-gate\.js/, 'real-date fail-closed gate');
+['swCarSearch', 'swCarCountry', 'swCarMake', 'swCarBody', 'swCarFuel', 'swCarSource', 'swCarBudget', 'swCarMonthly', 'swCarRisk', 'swCarLiquidity', 'swCarEligibility'].forEach((id) => assert.match(html, new RegExp(`id="${id}"`), `${id} preserved`));
+['swCarJson', 'swCarCsv', 'swCarTxt', 'swCarCopy', 'swCarWatch', 'swCarReset'].forEach((id) => assert.match(html, new RegExp(`id="${id}"`), `${id} action exists`));
+assert.match(controller, /Price\.filterVehicles/, 'shared filter engine reused');
+assert.match(controller, /Price\.buildVehicleContext|row\._context/, 'shared vehicle contexts reused');
+assert.match(controller, /Gate\.assess/, 'every context is real-date gated');
+assert.match(controller, /credentials: 'same-origin'/, 'data reads are same-origin');
+assert.doesNotMatch(controller, /\/api\/|sendBeacon|XMLHttpRequest|navigator\.share/, 'no remote or user-data egress');
+assert.match(controller, /afrotools\.sw\.car-price\.watchlist\.v1/, 'watchlist is explicitly local');
+assert.match(registry, /id:'car-price-intelligence-sw-parity'.*sourceId:'car-price-intelligence'.*href:'\/sw\/zana\/bei-na-akili-ya-gari\/'/, 'registry mapping is unambiguous');
+assert.match(read('cars/index.html'), /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/bei-na-akili-ya-gari\/"/, 'English reciprocal metadata');
+assert.match(read('fr/cars/index.html'), /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/bei-na-akili-ya-gari\/"/, 'French reciprocal metadata');
+assert.strictEqual((html.match(/<label\b/g) || []).length, 12, 'all controls have visible labels');
+assert.doesNotMatch(html, /<iframe\b/i, 'no wrapper or English handoff');
+
+console.log('sw-car-price-intelligence-parity.test.js passed');

@@ -27,18 +27,24 @@ const APP_WORKSPACE_RECEIPTS = Object.freeze({
       "24e729d05ae3187f426a995e5c6c1716d882e754bce7867e0eeca044c85574bf",
     normalizedStructuralSha256:
       "df83dda2dcbe98b31a3ba6ad29c4d730f949fd7a4a9b733f14445475c0ed7915",
+    localizedControllerSha256:
+      "b5693d1688e1e66dcc53e7d19509b18db41d7adf4a66517dd7d2b8026a44c8c1",
   }),
   "creator-record": Object.freeze({
     rawStructuralSha256:
       "8a9261ddbc119ce64a06b863f35a443d3eee608eebf05bad2e6c103e5b52e1b2",
     normalizedStructuralSha256:
       "d0402261fcd2f8efa0d174b64a9d6f6d94ca94a71e68f32dc99c9abf3186f162",
+    localizedControllerSha256:
+      "21d49fff0c675a0dbf105c287c57a2d7787d812973777edc3bcc7f91c7387bf8",
   }),
   "creator-voice": Object.freeze({
     rawStructuralSha256:
       "0e0dbb5b6d06759b47f81cb1d32cbd848135e3a13af5fdc6c82be7bc1b11a02b",
     normalizedStructuralSha256:
       "0b194afed8cea465d86caf8b0c49a94c7d806f695b22a914908b93050adacd83",
+    localizedControllerSha256:
+      "887e50cec47688059bd98f5df568484ba17f6eb29e8d36f48671264f7ec139e2",
   }),
 });
 
@@ -174,9 +180,14 @@ for (const id of ["creator-clip", "creator-record", "creator-voice"]) {
         "utf8"
       )
       .replace(/\r\n/g, "\n");
+    assert.equal(
+      sha256(controller),
+      receipt.localizedControllerSha256,
+      "localized shared controller changed outside its reviewed receipt"
+    );
     assert.ok(
-      fixture.inlineScriptSha256.includes(sha256(controller)),
-      "extracted controller does not match any frozen inline runtime"
+      fixture.inlineScriptSha256.length > 0,
+      "frozen English inline-runtime receipt is missing"
     );
   });
 }

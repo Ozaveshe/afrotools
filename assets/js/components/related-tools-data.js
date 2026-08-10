@@ -2,6 +2,189 @@
 (function(root){root.AFRO_RELATED_TOOLS={
   "version": 1,
   "buckets": {
+    "sw::transport": [
+      {
+        "id": "car-price-intelligence-sw-parity",
+        "name": "Ushahidi wa Bei za Magari Afrika",
+        "icon": "CAR",
+        "desc": "Chuja katalogi ya magari 25 katika masoko 20 na ...",
+        "href": "/sw/zana/bei-na-akili-ya-gari/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 82,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "car-price-intelligence",
+        "imageId": "car-price-intelligence",
+        "imageKey": "car-price-intelligence"
+      },
+      {
+        "id": "usafiri-na-magari-sw",
+        "name": "Usafiri na Magari kwa Kiswahili",
+        "icon": "SW",
+        "desc": "Kitovu cha Kiswahili cha kuagiza gari, mkopo wa ...",
+        "href": "/sw/usafiri-na-magari/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 68,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-gharama-kuagiza-gari-sw",
+        "name": "Gharama za Kuagiza Gari Afrika",
+        "icon": "SW",
+        "desc": "Kadiria gharama ya kuagiza gari kwa CIF, ushuru,...",
+        "href": "/sw/zana/gharama-kuagiza-gari/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-kushuka-thamani-ya-gari-sw",
+        "name": "Kushuka Thamani ya Gari",
+        "icon": "SW",
+        "desc": "Kadiria vehicle depreciation kwa bei ya kununua,...",
+        "href": "/sw/zana/kushuka-thamani-ya-gari/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-nauli-za-ride-hailing-sw",
+        "name": "Makisio ya Nauli za Ride-Hailing",
+        "icon": "SW",
+        "desc": "Kadiria nauli za ride-hailing kama Uber, Bolt au...",
+        "href": "/sw/zana/nauli-za-ride-hailing/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-mapato-ya-boda-boda-sw",
+        "name": "Mapato ya Boda Boda",
+        "icon": "SW",
+        "desc": "Kadiria mapato ya dereva wa Boda Boda kwa trips,...",
+        "href": "/sw/zana/mapato-ya-boda-boda/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-mapato-ya-okada-boda-sw",
+        "name": "Mapato ya Okada na Boda Boda",
+        "icon": "SW",
+        "desc": "Kadiria daily, weekly na monthly net income kwa ...",
+        "href": "/sw/zana/mapato-ya-okada-boda/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-nauli-za-matatu-danfo-trotro-sw",
+        "name": "Nauli za Matatu, Danfo na Trotro",
+        "icon": "SW",
+        "desc": "Kadiria nauli za Matatu, Danfo, Trotro au dala-d...",
+        "href": "/sw/zana/nauli-za-matatu-danfo-trotro/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 66,
+        "estTraffic": 0,
+        "imageExt": ""
+      },
+      {
+        "id": "zana-ada-za-maegesho-sw",
+        "name": "Kikokotoo cha ada za maegesho",
+        "icon": "SW",
+        "desc": "Kadiria daily, monthly na annual gharama ya maeg...",
+        "href": "/sw/zana/ada-za-maegesho/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 64,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "parking-fee",
+        "imageKey": "parking-fee"
+      },
+      {
+        "id": "zana-ada-za-toll-sw",
+        "name": "Kikokotoo cha ada za toll (ada ya barabara)",
+        "icon": "SW",
+        "desc": "Kadiria ada za toll (ada ya barabara) kwa trip, ...",
+        "href": "/sw/zana/ada-za-toll/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 64,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "toll-calc"
+      },
+      {
+        "id": "zana-gharama-mafuta-ya-fleet-sw",
+        "name": "Kikokotoo cha gharama za mafuta ya fleet (kundi la magari ya kazi)",
+        "icon": "SW",
+        "desc": "Panga budget ya mafuta kwa fleet (kundi la magar...",
+        "href": "/sw/zana/gharama-mafuta-ya-fleet/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 64,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "fleet-fuel",
+        "imageKey": "fleet-fuel"
+      },
+      {
+        "id": "zana-gharama-uendeshaji-gari-sw",
+        "name": "Kikokotoo cha gharama za uendeshaji gari",
+        "icon": "SW",
+        "desc": "Kadiria gharama ya mwaka ya kumiliki na kuendesh...",
+        "href": "/sw/zana/gharama-uendeshaji-gari/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 64,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "vehicle-operating-cost"
+      },
+      {
+        "id": "zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish",
+        "name": "Mkopo wa Gari Dhidi ya Cash",
+        "icon": "SW",
+        "desc": "Linganisha kununua gari kwa mkopo au fedha tasli...",
+        "href": "/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "car-loan-vs-cash",
+        "imageKey": "car-loan-vs-cash"
+      },
+      {
+        "id": "zana-ukaguzi-wa-roadworthiness-sw-finish",
+        "name": "Ukaguzi wa Roadworthiness",
+        "icon": "SW",
+        "desc": "Tumia orodha ya roadworthiness kwa breki, taa, t...",
+        "href": "/sw/zana/ukaguzi-wa-roadworthiness/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "roadworthiness",
+        "imageKey": "roadworthiness"
+      }
+    ],
     "sw::financial": [
       {
         "id": "crypto-p2p-sw-parity",
@@ -94,6 +277,19 @@
         "imageKey": "crypto-scam"
       },
       {
+        "id": "itax-guide-sw",
+        "name": "Mwongozo wa KRA iTax — PIN, Return na Usalama",
+        "icon": "KRA",
+        "desc": "Mwongozo huru wa kuandaa PIN, kuingia, return na...",
+        "href": "/sw/zana/mwongozo-wa-itax/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 88,
+        "estTraffic": 8000,
+        "imageExt": "",
+        "sourceId": "itax-guide"
+      },
+      {
         "id": "backup-power-costs-sw-coverage-backup-power-costs",
         "name": "Kikokotoo cha nishati ya dharura",
         "icon": "🔋",
@@ -154,6 +350,19 @@
         "imageKey": "za-uif"
       },
       {
+        "id": "etims-guide-sw",
+        "name": "Mwongozo wa KRA eTIMS — Wigo, Usajili na Ankara",
+        "icon": "🇰🇪",
+        "desc": "Mwongozo huru wa wigo wa eTIMS, suluhisho rasmi,...",
+        "href": "/sw/zana/mwongozo-wa-etims-kra/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 82,
+        "estTraffic": 3000,
+        "imageExt": "",
+        "sourceId": "etims-guide"
+      },
+      {
         "id": "ng-cit-sw-parity",
         "name": "Kikokotoo cha CIT Nigeria",
         "icon": "CIT",
@@ -196,6 +405,21 @@
         "sourceId": "cnps-guide"
       },
       {
+        "id": "pension-projection-sw",
+        "name": "Makadirio ya Mfuko wa Pensheni",
+        "icon": "PEN",
+        "desc": "Kadiria ukuaji wa mfuko kwa salio, michango, ada...",
+        "href": "/sw/zana/makadirio-ya-mfuko-wa-pensheni/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 81,
+        "estTraffic": 4000,
+        "imageExt": "webp",
+        "sourceId": "pension-projection",
+        "imageId": "pension-projection",
+        "imageKey": "pension-projection"
+      },
+      {
         "id": "crypto-quiz-sw-parity",
         "name": "Jaribio la Maarifa na Usalama wa Crypto",
         "icon": "🧠",
@@ -224,50 +448,6 @@
         "sourceId": "ng-wht",
         "imageId": "ng-wht",
         "imageKey": "ng-wht"
-      },
-      {
-        "id": "ke-paye-sw",
-        "name": "Kikokotoo cha Kodi ya Mshahara — Kenya",
-        "icon": "🇰🇪",
-        "desc": "KRA PAYE viwango 5, NSSF Tier I/II, SHIF 2.75%, ...",
-        "href": "/sw/kenya/kikokotoo-kodi-mshahara/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 78,
-        "estTraffic": 1500,
-        "imageExt": "webp",
-        "imageId": "ke-paye",
-        "imageKey": "ke-paye"
-      },
-      {
-        "id": "ng-cgt-sw-parity",
-        "name": "Kikokotoo cha CGT Nigeria",
-        "icon": "🇳🇬",
-        "desc": "Kadiria faida inayotozwa kodi chini ya NTA 2025 ...",
-        "href": "/sw/zana/kikokotoo-cgt-nigeria/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 78,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "ng-cgt",
-        "imageId": "ng-cgt",
-        "imageKey": "ng-cgt"
-      },
-      {
-        "id": "crypto-profit-sw",
-        "name": "Kikokotoo cha Faida au Hasara ya Crypto",
-        "icon": "SW",
-        "desc": "Karatasi binafsi ya bei na ada ulizoingiza, yeny...",
-        "href": "/sw/zana/kikokotoo-faida-crypto/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 78,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "crypto-profit",
-        "imageId": "crypto-profit",
-        "imageKey": "crypto-profit"
       }
     ],
     "sw::trade": [
@@ -16031,6 +16211,21 @@
     ],
     "sw::engineering": [
       {
+        "id": "zana-mpangaji-ramani-ya-sakafu-sw-finish",
+        "name": "Mpangaji Ramani ya Sakafu",
+        "icon": "SW",
+        "desc": "Chora vyumba, kuta, milango, madirisha na samani...",
+        "href": "/sw/zana/mpangaji-ramani-ya-sakafu/",
+        "category": "engineering",
+        "lang": "sw",
+        "priority": 92,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "afroplan-floor-planner",
+        "imageId": "afroplan-floor-planner",
+        "imageKey": "afroplan-floor-planner"
+      },
+      {
         "id": "zana-orodha-vifaa-sw",
         "name": "Orodha ya Vifaa vya Ujenzi (BOQ) — AfroTools",
         "icon": "SW",
@@ -16262,21 +16457,6 @@
         "priority": 62,
         "estTraffic": 0,
         "imageExt": ""
-      },
-      {
-        "id": "zana-vifaa-vya-paa-sw",
-        "name": "Vifaa vya Paa",
-        "icon": "SW",
-        "desc": "Kadiria eneo la paa, mabati, vifuniko vya kilele...",
-        "href": "/sw/zana/vifaa-vya-paa/",
-        "category": "engineering",
-        "lang": "sw",
-        "priority": 62,
-        "estTraffic": 0,
-        "imageExt": "svg",
-        "sourceId": "roofing-calc",
-        "imageId": "roofing-calc",
-        "imageKey": "roofing-calc"
       }
     ],
     "sw::education": [
@@ -17080,174 +17260,6 @@
         "sourceId": "claim-tracker",
         "imageId": "claim-tracker",
         "imageKey": "claim-tracker"
-      }
-    ],
-    "sw::transport": [
-      {
-        "id": "usafiri-na-magari-sw",
-        "name": "Usafiri na Magari kwa Kiswahili",
-        "icon": "SW",
-        "desc": "Kitovu cha Kiswahili cha kuagiza gari, mkopo wa ...",
-        "href": "/sw/usafiri-na-magari/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 68,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-gharama-kuagiza-gari-sw",
-        "name": "Gharama za Kuagiza Gari Afrika",
-        "icon": "SW",
-        "desc": "Kadiria gharama ya kuagiza gari kwa CIF, ushuru,...",
-        "href": "/sw/zana/gharama-kuagiza-gari/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-kushuka-thamani-ya-gari-sw",
-        "name": "Kushuka Thamani ya Gari",
-        "icon": "SW",
-        "desc": "Kadiria vehicle depreciation kwa bei ya kununua,...",
-        "href": "/sw/zana/kushuka-thamani-ya-gari/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-nauli-za-ride-hailing-sw",
-        "name": "Makisio ya Nauli za Ride-Hailing",
-        "icon": "SW",
-        "desc": "Kadiria nauli za ride-hailing kama Uber, Bolt au...",
-        "href": "/sw/zana/nauli-za-ride-hailing/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-mapato-ya-boda-boda-sw",
-        "name": "Mapato ya Boda Boda",
-        "icon": "SW",
-        "desc": "Kadiria mapato ya dereva wa Boda Boda kwa trips,...",
-        "href": "/sw/zana/mapato-ya-boda-boda/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-mapato-ya-okada-boda-sw",
-        "name": "Mapato ya Okada na Boda Boda",
-        "icon": "SW",
-        "desc": "Kadiria daily, weekly na monthly net income kwa ...",
-        "href": "/sw/zana/mapato-ya-okada-boda/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-nauli-za-matatu-danfo-trotro-sw",
-        "name": "Nauli za Matatu, Danfo na Trotro",
-        "icon": "SW",
-        "desc": "Kadiria nauli za Matatu, Danfo, Trotro au dala-d...",
-        "href": "/sw/zana/nauli-za-matatu-danfo-trotro/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 66,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "zana-ada-za-maegesho-sw",
-        "name": "Kikokotoo cha ada za maegesho",
-        "icon": "SW",
-        "desc": "Kadiria daily, monthly na annual gharama ya maeg...",
-        "href": "/sw/zana/ada-za-maegesho/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 64,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "parking-fee",
-        "imageKey": "parking-fee"
-      },
-      {
-        "id": "zana-ada-za-toll-sw",
-        "name": "Kikokotoo cha ada za toll (ada ya barabara)",
-        "icon": "SW",
-        "desc": "Kadiria ada za toll (ada ya barabara) kwa trip, ...",
-        "href": "/sw/zana/ada-za-toll/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 64,
-        "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "toll-calc"
-      },
-      {
-        "id": "zana-gharama-mafuta-ya-fleet-sw",
-        "name": "Kikokotoo cha gharama za mafuta ya fleet (kundi la magari ya kazi)",
-        "icon": "SW",
-        "desc": "Panga budget ya mafuta kwa fleet (kundi la magar...",
-        "href": "/sw/zana/gharama-mafuta-ya-fleet/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 64,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "fleet-fuel",
-        "imageKey": "fleet-fuel"
-      },
-      {
-        "id": "zana-gharama-uendeshaji-gari-sw",
-        "name": "Kikokotoo cha gharama za uendeshaji gari",
-        "icon": "SW",
-        "desc": "Kadiria gharama ya mwaka ya kumiliki na kuendesh...",
-        "href": "/sw/zana/gharama-uendeshaji-gari/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 64,
-        "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "vehicle-operating-cost"
-      },
-      {
-        "id": "zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish",
-        "name": "Mkopo wa Gari Dhidi ya Cash",
-        "icon": "SW",
-        "desc": "Linganisha kununua gari kwa mkopo au fedha tasli...",
-        "href": "/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 60,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "car-loan-vs-cash",
-        "imageKey": "car-loan-vs-cash"
-      },
-      {
-        "id": "zana-ukaguzi-wa-roadworthiness-sw-finish",
-        "name": "Ukaguzi wa Roadworthiness",
-        "icon": "SW",
-        "desc": "Tumia orodha ya roadworthiness kwa breki, taa, t...",
-        "href": "/sw/zana/ukaguzi-wa-roadworthiness/",
-        "category": "transport",
-        "lang": "sw",
-        "priority": 60,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "roadworthiness",
-        "imageKey": "roadworthiness"
       }
     ],
     "sw::legal": [
@@ -21099,6 +21111,19 @@
   "fallback": {
     "sw": [
       {
+        "id": "itax-guide-sw",
+        "name": "Mwongozo wa KRA iTax — PIN, Return na Usalama",
+        "icon": "KRA",
+        "desc": "Mwongozo huru wa kuandaa PIN, kuingia, return na...",
+        "href": "/sw/zana/mwongozo-wa-itax/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 88,
+        "estTraffic": 8000,
+        "imageExt": "",
+        "sourceId": "itax-guide"
+      },
+      {
         "id": "za-uif-sw-parity",
         "name": "Kikokotoo cha UIF Afrika Kusini",
         "icon": "UIF",
@@ -21114,6 +21139,21 @@
         "imageKey": "za-uif"
       },
       {
+        "id": "pension-projection-sw",
+        "name": "Makadirio ya Mfuko wa Pensheni",
+        "icon": "PEN",
+        "desc": "Kadiria ukuaji wa mfuko kwa salio, michango, ada...",
+        "href": "/sw/zana/makadirio-ya-mfuko-wa-pensheni/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 81,
+        "estTraffic": 4000,
+        "imageExt": "webp",
+        "sourceId": "pension-projection",
+        "imageId": "pension-projection",
+        "imageKey": "pension-projection"
+      },
+      {
         "id": "za-transfer-duty-sw-parity",
         "name": "Kikokotoo cha Ushuru wa Uhamisho Afrika Kusini",
         "icon": "TD",
@@ -21127,6 +21167,19 @@
         "sourceId": "za-transfer-duty",
         "imageId": "za-transfer-duty",
         "imageKey": "za-transfer-duty"
+      },
+      {
+        "id": "etims-guide-sw",
+        "name": "Mwongozo wa KRA eTIMS — Wigo, Usajili na Ankara",
+        "icon": "🇰🇪",
+        "desc": "Mwongozo huru wa wigo wa eTIMS, suluhisho rasmi,...",
+        "href": "/sw/zana/mwongozo-wa-etims-kra/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 82,
+        "estTraffic": 3000,
+        "imageExt": "",
+        "sourceId": "etims-guide"
       },
       {
         "id": "ng-wht-sw-parity",
@@ -21245,6 +21298,20 @@
         "imageExt": "webp",
         "imageId": "tz-paye",
         "imageKey": "tz-paye"
+      },
+      {
+        "id": "sars-efiling-sw",
+        "name": "Mwongozo wa SARS eFiling",
+        "icon": "ZA",
+        "desc": "Jiandae kwa njia rasmi za SARS bila kuingiza nam...",
+        "href": "/sw/zana/mwongozo-wa-sars-efiling/",
+        "category": "financial",
+        "lang": "sw",
+        "priority": 72,
+        "estTraffic": 1000,
+        "imageExt": "",
+        "sourceId": "sars-efiling",
+        "imageId": "sars-efiling"
       },
       {
         "id": "ug-paye-sw",
@@ -21412,6 +21479,21 @@
         "imageKey": "crypto-remittance"
       },
       {
+        "id": "zana-mpangaji-ramani-ya-sakafu-sw-finish",
+        "name": "Mpangaji Ramani ya Sakafu",
+        "icon": "SW",
+        "desc": "Chora vyumba, kuta, milango, madirisha na samani...",
+        "href": "/sw/zana/mpangaji-ramani-ya-sakafu/",
+        "category": "engineering",
+        "lang": "sw",
+        "priority": 92,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "afroplan-floor-planner",
+        "imageId": "afroplan-floor-planner",
+        "imageKey": "afroplan-floor-planner"
+      },
+      {
         "id": "africa-conflict-sw-coverage-africa-conflict",
         "name": "Ufuatiliaji wa migogoro ya Afrika",
         "icon": "⚔️",
@@ -21560,81 +21642,6 @@
         "sourceId": "meme-generator",
         "imageId": "meme-generator",
         "imageKey": "meme-generator"
-      },
-      {
-        "id": "brideprice-advisor-sw-coverage-brideprice-advisor",
-        "name": "Mpango wa Mazungumzo ya Familia na Mahari",
-        "icon": "💍",
-        "desc": "Panga mazungumzo yenye ridhaa na bajeti mliyokub...",
-        "href": "/sw/zana/mshauri-wa-mahari/",
-        "category": "african",
-        "lang": "sw",
-        "priority": 87,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "brideprice-advisor",
-        "imageId": "brideprice-advisor",
-        "imageKey": "brideprice-advisor"
-      },
-      {
-        "id": "electricity-estimator-sw-coverage-electricity-estimator",
-        "name": "Kikokotoo cha bili ya umeme",
-        "icon": "💡",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kikokotoo c...",
-        "href": "/sw/zana/makisio-ya-bili-ya-umeme/",
-        "category": "african",
-        "lang": "sw",
-        "priority": 86,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "electricity-estimator",
-        "imageId": "electricity-estimator",
-        "imageKey": "electricity-estimator"
-      },
-      {
-        "id": "crypto-cgt-sw-coverage-crypto-tax",
-        "name": "Kikokotoo cha kodi ya sarafu za kidijitali",
-        "icon": "₿",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kikokotoo c...",
-        "href": "/sw/zana/kodi-ya-sarafu-za-kidijitali/",
-        "category": "financial",
-        "lang": "sw",
-        "priority": 86,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "crypto-cgt",
-        "imageId": "crypto-cgt",
-        "imageKey": "crypto-cgt"
-      },
-      {
-        "id": "cost-of-living-sw-coverage-cost-of-living",
-        "name": "Kilinganisha gharama za maisha",
-        "icon": "🏙️",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kilinganish...",
-        "href": "/sw/zana/gharama-za-maisha/",
-        "category": "african",
-        "lang": "sw",
-        "priority": 86,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "cost-of-living",
-        "imageId": "cost-of-living",
-        "imageKey": "cost-of-living"
-      },
-      {
-        "id": "zana-kutoa-maandishi-kwenye-picha-sw-wave8",
-        "name": "OCR ya Picha",
-        "icon": "SW",
-        "desc": "Toa, safisha, hariri na hamisha maandishi ya pic...",
-        "href": "/sw/zana/kutoa-maandishi-kwenye-picha/",
-        "category": "image-design",
-        "lang": "sw",
-        "priority": 86,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "image-to-text",
-        "imageId": "image-to-text",
-        "imageKey": "image-to-text"
       }
     ],
     "en": [
