@@ -52,6 +52,15 @@ test('route, source registry and reciprocal hreflang ownership are exact',()=>{
   const source=registry.sources.find(row=>row.id==='kra-itax-guide-source');
   assert.equal(source.lastCheckedAt,'2026-08-09');
   assert.ok(source.routes.includes('/sw/zana/mwongozo-wa-itax'));
+
+  const toolRegistry=fs.readFileSync(path.join(root,'assets/js/components/tool-registry.js'),'utf8');
+  const ownerRows=toolRegistry.split(/\r?\n/).filter(line=>line.includes("id: 'itax-guide-sw'"));
+  assert.equal(ownerRows.length,1,'Swahili iTax has exactly one registry owner');
+  assert.ok(ownerRows[0].includes("href: '/sw/zana/mwongozo-wa-itax/'"));
+  assert.ok(ownerRows[0].includes("sourceId: 'itax-guide'"));
+  assert.ok(ownerRows[0].includes('image: false'));
+  const hub=fs.readFileSync(path.join(root,'sw/biashara-na-uzingatiaji/index.html'),'utf8');
+  assert.equal((hub.match(/href="\/sw\/zana\/mwongozo-wa-itax\/"/g)||[]).length,1,'business and compliance hub discovers the route exactly once');
 });
 
 test('official-source pack contains the current filing and PIN Without Obligation pages',()=>{

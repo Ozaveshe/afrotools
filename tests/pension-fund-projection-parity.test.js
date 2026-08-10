@@ -61,6 +61,15 @@ test('exact route ownership and reciprocal hreflang are explicit', () => {
   const source = registry.sources.find(row => row.id === 'pension-projection-method-source');
   assert.ok(source.routes.includes('/sw/zana/makadirio-ya-mfuko-wa-pensheni'));
   assert.equal(source.sourceUrl, 'https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator');
+
+  const toolRegistry = fs.readFileSync(path.join(root, 'assets/js/components/tool-registry.js'), 'utf8');
+  const ownerRows = toolRegistry.split(/\r?\n/).filter(line => line.includes("id: 'pension-projection-sw'"));
+  assert.equal(ownerRows.length, 1, 'Swahili Pension Projection has exactly one registry owner');
+  assert.ok(ownerRows[0].includes("href: '/sw/zana/makadirio-ya-mfuko-wa-pensheni/'"));
+  assert.ok(ownerRows[0].includes("sourceId: 'pension-projection'"));
+  assert.ok(ownerRows[0].includes("imageId: 'pension-projection'"));
+  const hub = fs.readFileSync(path.join(root, 'sw/mshahara-na-kodi/index.html'), 'utf8');
+  assert.equal((hub.match(/href="\/sw\/zana\/makadirio-ya-mfuko-wa-pensheni\/"/g) || []).length, 1, 'salary and tax hub discovers the route exactly once');
 });
 
 test('source owner is current and does not mutate central release files', () => {

@@ -59,6 +59,7 @@ for (const [id,file,englishRoute,profileControls] of rows) {
 
 const controller=fs.readFileSync(path.join(ROOT,'assets/js/pages/sw-final-paye.js'),'utf8');
 assert.match(controller,/aiConsent[\s\S]*consent\.checked[\s\S]*fetch\('\/.netlify\/functions\/ai-advisor'/, 'AI transport is behind explicit consent');
+assert.match(controller,/'X-AfroTools-AI-Consent':'accepted'[\s\S]*aiConsent:'accepted'/, 'AI transport uses the server consent contract');
 assert.match(controller,/maelezo ya ndani bila mtandao/i, 'local explanation fallback is present');
 
 const fixtures=JSON.parse(fs.readFileSync(path.join(ROOT,'tests/fixtures/sw-final-paye-english-parity.json'),'utf8'));
