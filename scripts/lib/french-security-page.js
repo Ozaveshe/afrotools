@@ -190,7 +190,7 @@ function render(page) {
       image: imageUrl,
       isBasedOn: enUrl,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-      provider: { "@type": "Organization", name: "AfroTools", url: SITE },
+      provider: { "@type": "Organization", name: "AfroTools", url: `${SITE}/` },
       featureList: [
         "Traitement local dans le navigateur",
         "Calcul déterministe",
@@ -203,7 +203,7 @@ function render(page) {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/fr/` },
-        { "@type": "ListItem", position: 2, name: "Sécurité", item: `${SITE}/fr/all-tools/?category=security` },
+        { "@type": "ListItem", position: 2, name: "Sécurité", item: `${SITE}/fr/all-tools/` },
         { "@type": "ListItem", position: 3, name: content.shortTitle, item: frUrl },
       ],
     },
