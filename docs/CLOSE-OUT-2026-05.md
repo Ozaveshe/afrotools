@@ -4,6 +4,12 @@
 
 The free side is close-out ready for maintenance mode after this pass, with Pro now the main active workstream. Release proof is green across links, SEO fatal errors, Pro architecture, domain verifiers, source ledgers, and deploy-surface security.
 
+The current operating boundary is documented in
+[`FREE-APP-FREEZE-2026-08.md`](FREE-APP-FREEZE-2026-08.md): English, French,
+and Swahili free-app expansion is frozen for two to three months while Hausa,
+Yoruba, and Pro are the active product priorities. Security, source freshness,
+SEO, accessibility, and production maintenance remain allowed.
+
 ## Fixed
 
 - Paystack webhook now activates Pro against canonical `profiles` fields instead of stale `user_profiles` assumptions.
