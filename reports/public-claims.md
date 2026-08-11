@@ -4,8 +4,8 @@ Generated: 2026-08-11
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 12587
-- Approved claim hits: 46615
+- Public HTML/shared script files scanned: 12588
+- Approved claim hits: 46619
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
@@ -29,5 +29,5 @@ Generated: 2026-08-11
 | payment.provider-processing | AfroTools initializes checkout and reads subscription state; payment details and final transaction/cancellation confirmation are handled by the payment provider. | Billing and payment owner | 2026-08-11 | 2026-09-10 | 1 |
 | analytics.consent-metadata | Consented analytics can send bounded product/session metadata to configured analytics processors; raw sensitive workflow content is prohibited. | Analytics and privacy owner | 2026-08-11 | 2026-09-10 | 245 |
 | documents.local-processing | Named local PDF/image operations use browser processing; network features such as AI, TTS, email, sync, or vault upload are separate explicit actions. | Document and PDF workflow owner | 2026-08-11 | 2026-09-10 | 4 |
-| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; uploads and metadata can be deleted through the vault control. | Vault and storage owner | 2026-08-11 | 2026-09-10 | 1 |
+| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; local downloads remain separate. | Vault and storage owner | 2026-08-11 | 2026-09-10 | 1 |
 | forms.email-handling | Email/contact data is used for the disclosed submission or account purpose and processed by the configured form/email/account service; provider delivery and deletion timing are not guaranteed. | Forms, email, and privacy owner | 2026-08-11 | 2026-09-10 | 2 |
