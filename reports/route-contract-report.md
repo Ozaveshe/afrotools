@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11390 |
-| Indexable pages | 10401 |
+| Public pages | 11393 |
+| Indexable pages | 10404 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5351 |
-| Documented fallbacks | 14618 |
-| Routes eligible for primary sitemaps | 10401 |
+| Genuine equivalence groups | 5354 |
+| Documented fallbacks | 14621 |
+| Routes eligible for primary sitemaps | 10404 |
 
 ## Locale Coverage
 
-- en: 5925 page records
+- en: 5928 page records
 - fr: 3765 page records
 - ha: 105 page records
 - sw: 1550 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 443
+- article: 446
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3028,6 +3028,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:01e208c9867a: en=`/tools/visa-checker/zimbabwe`; x-default=`/tools/visa-checker/zimbabwe`
 - equivalence:01e8b4c37b26: en=`/cars/zambia/toyota/vitz-yaris/2015/`, fr=`/fr/cars/zambie/toyota/vitz-yaris/2015/`; x-default=`/cars/zambia/toyota/vitz-yaris/2015/`
 - equivalence:01fbf9ca391a: en=`/agriculture/input-prices/tanzania`, fr=`/fr/agriculture/input-prices/tanzania`, sw=`/sw/kilimo/bei-za-pembejeo/tanzania/`; x-default=`/agriculture/input-prices/tanzania`
+- equivalence:02019a407ac5: en=`/blog/nin-registration-requirements-nigeria-2026/`; x-default=`/blog/nin-registration-requirements-nigeria-2026/`
 - equivalence:0206191c741d: en=`/tools/electricity-bill-verify/nigeria/`; x-default=`/tools/electricity-bill-verify/nigeria/`
 - equivalence:020679784ec0: en=`/tools/afrokitchen/recipes/octopus-curry-sc/`; x-default=`/tools/afrokitchen/recipes/octopus-curry-sc/`
 - equivalence:02091ec52239: en=`/agriculture/crop-yield/niger`, fr=`/fr/agriculture/crop-yield/niger`, sw=`/sw/kilimo/mavuno/niger/`; x-default=`/agriculture/crop-yield/niger`
@@ -4732,6 +4733,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:52e4486cc217: en=`/cars/mozambique/nissan/x-trail/2015/`, fr=`/fr/cars/mozambique/nissan/x-trail/2015/`; x-default=`/cars/mozambique/nissan/x-trail/2015/`
 - equivalence:52ec07d3ab77: en=`/agriculture/farm-profit/namibia`, fr=`/fr/agriculture/farm-profit/namibia`, sw=`/sw/kilimo/faida-ya-shamba/namibia/`; x-default=`/agriculture/farm-profit/namibia`
 - equivalence:52ef4e266f25: en=`/cars/angola/toyota/vitz-yaris/2015/`, fr=`/fr/cars/angola/toyota/vitz-yaris/2015/`; x-default=`/cars/angola/toyota/vitz-yaris/2015/`
+- equivalence:52f31c07acc2: en=`/blog/zambia-vat-registration-2026/`; x-default=`/blog/zambia-vat-registration-2026/`
 - equivalence:52f879840977: en=`/cars/ethiopia/lexus/es/`, fr=`/fr/cars/ethiopie/lexus/es/`; x-default=`/cars/ethiopia/lexus/es/`
 - equivalence:530ca66d82e4: en=`/tools/afrokitchen/recipes/matapa-mz/`; x-default=`/tools/afrokitchen/recipes/matapa-mz/`
 - equivalence:5312366a14d3: en=`/cars/tunisia/lexus/`, fr=`/fr/cars/tunisie/lexus/`; x-default=`/cars/tunisia/lexus/`
@@ -5302,6 +5304,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6e1df63370c6: en=`/tools/car-insurance/niger`, fr=`/fr/tools/assurance-auto/niger`; x-default=`/tools/car-insurance/niger`
 - equivalence:6e2c47a49415: en=`/tools/afrokitchen/recipes/ginger-beer-sl/`; x-default=`/tools/afrokitchen/recipes/ginger-beer-sl/`
 - equivalence:6e2f55804e3b: en=`/tools/tenancy-agreement/south-africa`, fr=`/fr/tools/contrat-bail/south-africa`; x-default=`/tools/tenancy-agreement/south-africa`
+- equivalence:6e36a03a918e: en=`/blog/botswana-paye-tax-2026/`; x-default=`/blog/botswana-paye-tax-2026/`
 - equivalence:6e421b1723cf: fr=`/blog/tva-maroc-taux-calcul/`; x-default=`/blog/tva-maroc-taux-calcul/`
 - equivalence:6e64dfc4c7e3: en=`/agriculture/farm-profit/burkina-faso`, fr=`/fr/agriculture/farm-profit/burkina-faso`, sw=`/sw/kilimo/faida-ya-shamba/burkina-faso/`; x-default=`/agriculture/farm-profit/burkina-faso`
 - equivalence:6e660c4cfb99: fr=`/fr/comparer/senegal-vs-cote-divoire-impots/`; x-default=`/fr/comparer/senegal-vs-cote-divoire-impots/`
