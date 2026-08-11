@@ -13,7 +13,15 @@ const PAGES = [
     frenchRoute: "/fr/tools/facture-proforma/",
     title: "Kizalishaji Ankara Proforma",
     description: "Andaa ankara proforma ya biashara ya kimataifa yenye muuzaji, mnunuzi, HS code, Incoterm, FOB, CFR, CIF na nyaraka za kupakua.",
-    intro: "Andaa rasimu kamili ya bei ya biashara kwa ukaguzi wa mnunuzi, benki, wakala wa forodha au msafirishaji."
+    intro: "Andaa rasimu kamili ya bei ya biashara kwa ukaguzi wa mnunuzi, benki, wakala wa forodha au msafirishaji.",
+    exportLabel: "Vipakuliwa vya ndani",
+    guide: `    <section class="swtu-privacy" aria-labelledby="mwongozo-ankara-proforma">
+      <h2 id="mwongozo-ankara-proforma">Kagua rasimu kabla ya kuituma</h2>
+      <p>Ankara proforma ni rasimu ya bei na masharti, si ombi la mwisho la malipo. Linganisha majina ya muuzaji na mnunuzi, maelezo ya bidhaa, idadi, sarafu, muda wa uhalali na masharti ya malipo na nyaraka zako za biashara.</p>
+      <p>Thibitisha HS code, Incoterm, vibali, ushuru, bima na maneno yanayohitajika na mamlaka ya forodha, benki au wakala mwenye sifa. Jumla za FOB, CFR na CIF ni makadirio yanayotokana na thamani unazoingiza; zana haitoi kiwango rasmi cha ushuru, usafirishaji au ubadilishaji fedha.</p>
+      <p>Kwa ukaguzi unaofuata, tumia <a href="/sw/zana/kikokotoo-gharama-iliyofika/">kikokotoo cha gharama iliyofika</a>, <a href="/sw/zana/muda-wa-kupitisha-forodha/">mpangilio wa muda wa forodha</a> au rudi kwenye <a href="/sw/biashara-ya-nje/">zana za biashara ya nje</a>.</p>
+      <p><strong>Chanzo na hali ya sasa:</strong> maelezo haya yamehakikiwa dhidi ya mkataba wa zana ya Kiingereza na injini ya biashara ya AfroTools tarehe 11 Agosti 2026. Hakuna kiwango cha moja kwa moja au uamuzi rasmi wa forodha unaodaiwa.</p>
+    </section>`
   },
   {
     id: "packing-list",
@@ -112,14 +120,14 @@ function html(page) {
         <p class="swtu-kicker">Zana ya biashara · Inafanya kazi ndani ya kivinjari</p>
         <h1>${page.title}</h1>
         <p>${page.intro}</p>
-        <div class="swtu-badges"><span>Hakuna usajili</span><span>Hakuna data inayotumwa</span><span>Exports za ndani</span></div>
+        <div class="swtu-badges"><span>Hakuna usajili</span><span>Hakuna data inayotumwa</span><span>${page.exportLabel || "Exports za ndani"}</span></div>
       </div>
       <img src="/assets/img/tools/${page.id}.webp" alt="" width="320" height="200">
     </header>
     <section class="swtu-privacy" aria-label="Faragha">
       <strong>Faragha ya ndani:</strong> maelezo unayoandika hubaki kwenye kifaa hiki. Hifadhi, pakua au shiriki tu kwa kitendo chako mwenyewe. Hakuna simu ya AI au mtandao inayotuma maudhui ya fomu.
     </section>
-    <div data-sw-trade-app="${page.id}"></div>
+    <div data-sw-trade-app="${page.id}"></div>${page.guide ? `\n${page.guide}` : ""}
     <section class="swtu-ai">
       <div><h2>Unahitaji kuchagua hatua inayofuata?</h2><p>Tumia mlango wa pamoja wa AfroTools AI kwa Kiswahili. Hautatuma maelezo ya fomu hii bila ruhusa yako.</p></div>
       <a href="/sw/ai/" data-shared-ai-handoff>Fungua AfroTools AI</a>
