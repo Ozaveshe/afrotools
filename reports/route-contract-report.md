@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11389 |
-| Indexable pages | 10400 |
+| Public pages | 11390 |
+| Indexable pages | 10401 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5350 |
-| Documented fallbacks | 14617 |
-| Routes eligible for primary sitemaps | 10400 |
+| Genuine equivalence groups | 5351 |
+| Documented fallbacks | 14618 |
+| Routes eligible for primary sitemaps | 10401 |
 
 ## Locale Coverage
 
-- en: 5924 page records
+- en: 5925 page records
 - fr: 3765 page records
 - ha: 105 page records
 - sw: 1550 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 442
+- article: 443
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3588,6 +3588,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1b8aa596711f: en=`/cars/algeria/honda/cr-v/`, fr=`/fr/cars/algerie/honda/cr-v/`; x-default=`/cars/algeria/honda/cr-v/`
 - equivalence:1b8fa6cbafaa: en=`/tools/prepaid-meter/sudan/`, fr=`/fr/tools/compteur-prepaye/sudan/`; x-default=`/tools/prepaid-meter/sudan/`
 - equivalence:1b90a724497e: fr=`/fr/widgets/recompenses-staking/`; x-default=`/fr/widgets/recompenses-staking/`
+- equivalence:1ba48974612e: en=`/blog/grain-storage-loss-planning-africa/`; x-default=`/blog/grain-storage-loss-planning-africa/`
 - equivalence:1baa28cd7da6: en=`/tools/afrokitchen/recipes/binyebwa-ug/`; x-default=`/tools/afrokitchen/recipes/binyebwa-ug/`
 - equivalence:1bc2fa951393: en=`/tools/afrokitchen/recipes/tuwo-shinkafa-ng/`; x-default=`/tools/afrokitchen/recipes/tuwo-shinkafa-ng/`
 - equivalence:1bd67ad64518: en=`/agriculture/cassava-processing/dr-congo`, fr=`/fr/agriculture/cassava-processing/dr-congo`, sw=`/sw/kilimo/usindikaji-mihogo/dr-congo/`; x-default=`/agriculture/cassava-processing/dr-congo`
