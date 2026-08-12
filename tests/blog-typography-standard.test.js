@@ -43,4 +43,26 @@ assert(css.includes('font-style: normal !important'), 'Typography must neutraliz
 assert(css.includes('font-weight: 700 !important'), 'Typography must use the approved weight');
 assert(css.includes('text-wrap: balance'), 'Typography must balance multiline titles');
 
+const requiredHubTitleSelectors = [
+  '.featured-card-body h2',
+  '.featured-card-body h3',
+  '.article-card-body h2',
+  '.article-card-body h3',
+  '.featured-title',
+  '.post-title'
+];
+
+for (const selector of requiredHubTitleSelectors) {
+  assert(css.includes(selector), `Typography must standardize ${selector}`);
+}
+assert(css.includes('.article-card-body h2 a'), 'French hub card links must inherit the standardized title treatment');
+
+for (const relative of expectedHubTitles.keys()) {
+  const html = fs.readFileSync(path.join(root, relative), 'utf8');
+  assert(
+    /class=["'][^"']*(?:article-card-body|post-title|featured-title)[^"']*["']/.test(html),
+    `${relative} must expose a standardized hub card-title selector`
+  );
+}
+
 console.log(`Blog typography standard verified across ${files.length} pages.`);
