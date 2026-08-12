@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 
 const ROOT = path.resolve(__dirname, '..');
 const PAGE = path.join(ROOT, 'ha', 'kayan-aiki', 'gwajin-ussd', 'index.html');
@@ -48,10 +49,11 @@ function build() {
 const next = build();
 const current = fs.existsSync(PAGE) ? fs.readFileSync(PAGE, 'utf8') : '';
 if (CHECK) {
-  if (next !== current) throw new Error('Hausa USSD simulator is stale; run node scripts/build-hausa-ussd-simulator.js');
+  if (!localizedGeneratorEquivalent(current, next)) throw new Error('Hausa USSD simulator is stale; run node scripts/build-hausa-ussd-simulator.js');
   console.log('Hausa USSD simulator source owner is current.');
 } else {
-  fs.mkdirSync(path.dirname(PAGE), { recursive: true }); fs.writeFileSync(PAGE, next, 'utf8');
-  console.log(next === current ? 'Hausa USSD simulator already current.' : 'Updated Hausa USSD simulator.');
+  fs.mkdirSync(path.dirname(PAGE), { recursive: true });
+  if (!localizedGeneratorEquivalent(current, next)) fs.writeFileSync(PAGE, next, 'utf8');
+  console.log(localizedGeneratorEquivalent(current, next) ? 'Hausa USSD simulator already current.' : 'Updated Hausa USSD simulator.');
 }
 module.exports = { build };

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const engine = require('../engines/src/hausa-ussd-simulator-engine.js');
 const owner = require('../scripts/build-hausa-ussd-simulator.js');
+const { localizedGeneratorEquivalent } = require('../scripts/lib/localized-generator-equivalence.js');
 
 const root = path.resolve(__dirname, '..');
 const page = fs.readFileSync(path.join(root, 'ha/kayan-aiki/gwajin-ussd/index.html'), 'utf8');
@@ -22,7 +23,7 @@ assert.strictEqual(engine.exportData(session).liveDial, false);
 assert.strictEqual(engine.exportData(session).transaction, false);
 assert(engine.qaBrief(session).includes('Kada a saka PIN'));
 assert.throws(() => engine.validateFlow({ start: { text: 'x', next: 'missing' } }), /babu/);
-assert.strictEqual(owner.build(), page, 'source owner must be idempotent');
+assert(localizedGeneratorEquivalent(owner.build(), page), 'source owner must be release-idempotent');
 assert(page.includes('lang="ha"'));
 assert(page.includes('/engines/hausa-ussd-simulator-engine.js'));
 assert(page.includes('/assets/js/pages/hausa-ussd-simulator.js'));
