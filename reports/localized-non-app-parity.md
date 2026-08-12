@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 89 | 171 | 144 |
-| sw | 82 | 24 | 298 |
+| fr | 95 | 165 | 144 |
+| sw | 88 | 23 | 293 |
 
 ## By surface class
 
@@ -19,14 +19,12 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | editorial | 277 | 24 | 126 | 127 | 10 | 0 | 267 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
-| institutional | 13 | 7 | 6 | 0 | 7 | 1 | 5 |
+| institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
 
 ## Gap Ledger
 
 | English | Class | Locale | Localized route | Status | Reasons |
 | --- | --- | --- | --- | --- | --- |
-| /advertise/ | institutional | fr | /fr/advertise/ | under-standard | visible content 16% of English; section structure 30% of English; link/discovery depth 29% of English; forms 0/1; form controls 0/21; interactive actions missing; structured data missing |
-| /advertise/ | institutional | sw | — | missing | no localized route or owner file |
 | /african/ | discovery-support | fr | /fr/african/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 0% of English |
 | /african/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /afrowork/ | discovery-support | fr | — | missing | no localized route or owner file |
@@ -570,13 +568,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /cameroon/ | country-hub | sw | /sw/cameroon/ | under-standard | structured data missing |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
 | /cars/ | discovery-support | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 0% of English; FAQ schema missing |
-| /categories/ | institutional | fr | /fr/categories/ | under-standard | form controls 0/1 |
-| /categories/ | institutional | sw | — | missing | no localized route or owner file |
 | /central-african-republic/ | country-hub | fr | /fr/centrafrique/ | under-standard | visible content 59% of English; forms 0/1; form controls 0/2; interactive actions missing; FAQ schema missing |
 | /central-african-republic/ | country-hub | sw | /sw/central-african-republic/ | under-standard | FAQ schema missing |
-| /changelog/ | institutional | fr | /fr/changelog/ | under-standard | visible content 1% of English; link/discovery depth 4% of English; interactive actions missing; structured data missing |
-| /changelog/ | institutional | sw | — | missing | no localized route or owner file |
-| /countries/ | institutional | sw | /sw/nchi/ | under-standard | form controls 0/1 |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /custom-calculators/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /custom-calculators/ | discovery-support | sw | — | missing | no localized route or owner file |
@@ -628,14 +621,10 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /namibia/ | country-hub | sw | /sw/namibia/ | under-standard | structured data missing |
 | /nigeria/ | country-hub | fr | /fr/nigeria/ | under-standard | visible content 2% of English; section structure 17% of English; link/discovery depth 40% of English |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
-| /pricing/ | institutional | fr | /fr/pricing/ | under-standard | visible content 18% of English; section structure 0% of English; link/discovery depth 14% of English; interactive actions missing; structured data missing |
-| /pricing/ | institutional | sw | — | missing | no localized route or owner file |
 | /pro/ | discovery-support | fr | /fr/pro/ | under-standard | visible content 19% of English; section structure 25% of English; form controls 0/1; interactive actions missing; structured data missing; FAQ schema missing |
 | /pro/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
 | /sao-tome/ | country-hub | fr | /fr/sao-tome/ | under-standard | visible content 21% of English; section structure 40% of English; structured data missing |
-| /search/ | institutional | fr | /fr/search/ | under-standard | visible content 11% of English; link/discovery depth 0% of English; form controls 1/2; interactive actions missing; structured data missing |
-| /search/ | institutional | sw | — | missing | no localized route or owner file |
 | /security/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /security/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /seychelles/ | country-hub | fr | /fr/seychelles/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
@@ -648,7 +637,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /start/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /start/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /sudan/ | country-hub | fr | /fr/sudan/ | under-standard | visible content 13% of English; section structure 20% of English; structured data missing |
-| /suggest-tool/ | institutional | fr | /fr/suggest-tool/ | under-standard | visible content 11% of English; section structure 0% of English; forms 0/1; form controls 0/10; interactive actions missing |
 | /tanzania/ | country-hub | fr | /fr/tanzania/ | under-standard | visible content 8% of English; section structure 20% of English; structured data missing |
 | /tanzania/ | country-hub | sw | /sw/tanzania/ | under-standard | structured data missing |
 | /tools/ | discovery-support | fr | /fr/all-tools/ | under-standard | visible content 14% of English; section structure 3% of English |

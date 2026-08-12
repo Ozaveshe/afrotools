@@ -109,6 +109,7 @@ function metrics(record) {
     forms: count(html, /<form\b/gi),
     inputs: count(html, /<(?:input|textarea|select)\b/gi),
     images: count(html, /<img\b/gi),
+    changeEntries: count(html, /data-change-entry\b/gi),
     schemaBlocks: count(html, /application\/ld\+json/gi),
     hasFaqSchema: /["']FAQPage["']/i.test(html),
     hasCanonical: /<link\b[^>]*\brel=["']canonical["']/i.test(html),
@@ -142,7 +143,11 @@ function assess(english, localized, routeClass, englishRoute) {
     ? { content: 0.75, heading: 0.6, links: 0.5 }
     : { content: 0.65, heading: 0.6, links: 0.5 });
 
-  if (routeClass === 'category-hub') {
+  if (englishRoute === '/changelog/') {
+    if (localized.changeEntries < 8) reasons.push(`localized release history too shallow (${localized.changeEntries}/8 entries)`);
+    if (localized.words < 500) reasons.push(`localized release notes too shallow (${localized.words}/500 words)`);
+    if (localized.forms < 1 || localized.inputs < 1 || localized.buttons < 1) reasons.push('release-history filter missing');
+  } else if (routeClass === 'category-hub') {
     if (localized.words < 400) reasons.push(`category guidance too shallow (${localized.words}/400 words)`);
     if (localized.h2 + localized.h3 < 8) reasons.push(`category structure too shallow (${localized.h2 + localized.h3}/8 sections)`);
     if (localized.links < 14) reasons.push(`category discovery too shallow (${localized.links}/14 links)`);
@@ -153,7 +158,10 @@ function assess(english, localized, routeClass, englishRoute) {
     if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
     if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
   }
-  if (routeClass === 'category-hub') {
+  if (englishRoute === '/changelog/') {
+    // Changelog parity is a localized, filterable release-history contract;
+    // the English archive may retain deeper technical notes per version.
+  } else if (routeClass === 'category-hub') {
     // Category hubs use the semantic discovery contract above instead of
     // copying a changing number of English filters and buttons.
   } else if (englishRoute === '/blog/') {

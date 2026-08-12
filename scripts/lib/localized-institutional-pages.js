@@ -98,7 +98,7 @@ const COPY = {
       ['Ushirikiano', 'Ushirikiano na matangazo lazima yawekwe alama wazi. Hayaamui fomula, viwango, vyanzo, matokeo au ustahiki unaoonyeshwa na zana.'],
       ['Muda na njia nyingine', 'Kwa swali la faragha andika privacy@afrotools.com. Kwa mengine hello@afrotools.com inapatikana. Fomu si njia ya dharura.']
     ],
-    faqIntro: 'Majibu haya yanaeleza mfumo kwa ujumla. Ukurasa wa kila zana ndio rejea ya ingizo, vyanzo, faili na mipaka yake.',
+    faqIntro: 'Majibu haya yanaeleza mfumo kwa ujumla. Ukurasa wa kila zana ndio rejea ya ingizo, vyanzo, faili na mipaka yake. Kagua nchi, mamlaka, tarehe, hali ya chanzo na hatua ya uthibitishaji kabla ya kuamua.',
     faqs: [
       ['Je, AfroTools ni bure?', 'Zana muhimu za umma zinapatikana bila usajili wa kulipia. Baadhi ya akaunti, usawazishaji, API au programu za Pro zinaweza kulipiwa na lazima zionyeshe hilo kabla ya ununuzi.'],
       ['Je, matokeo ni rasmi?', 'Hapana. Ni hesabu, ulinganisho au mwongozo wa maandalizi. Thibitisha uamuzi muhimu kwa mamlaka, mtaalamu au mtoa huduma husika.'],
@@ -117,7 +117,7 @@ const COPY = {
       ['Naombaje data ifutwe?', 'Futa kwanza rasimu za ndani kwenye zana au kivinjari. Kwa data ya akaunti au fomu inayostahili, wasiliana na privacy@afrotools.com.'],
       ['Ninapendekezaje chanzo kipya?', 'Tuma kiungo rasmi, nchi, kanuni, tarehe ya kuanza na sehemu ya zana inayobadilika. Kiungo pekee hakithibitishi kuwa thamani ya umma ni ya sasa.']
     ],
-    cookiesIntro: 'AfroTools hutofautisha vidakuzi, hifadhi ya kivinjari na maombi ya kiufundi. Kukataa hifadhi ya uchanganuzi hakuzuii seva kupokea metadata ndogo inayohitajika kuwasilisha ukurasa.',
+    cookiesIntro: 'AfroTools hutofautisha vidakuzi, hifadhi ya kivinjari na maombi ya kiufundi. Kukataa hifadhi ya uchanganuzi hakuzuii seva kupokea metadata ndogo inayohitajika kuwasilisha ukurasa. Chaguo lako linaweza kubadilishwa baadaye.',
     cookieSections: [
       ['Vidakuzi muhimu', 'Vinaweza kutumika kwa usalama, session, idhini au kazi uliyoomba. Kuvizima kwenye kivinjari kunaweza kuzuia kuingia au mapendeleo kufanya kazi.'],
       ['Hifadhi ya ndani na IndexedDB', 'Zana zinaweza kuhifadhi nchi, lugha, mandhari, vipendwa, rasimu au faili kwenye kifaa. Data hii haisawazishwi moja kwa moja. Ifute kwa vidhibiti vya bidhaa au mipangilio ya kivinjari.'],
