@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
@@ -485,12 +487,12 @@ function writeTarget(relativePath, content) {
   const target = path.join(ROOT, relativePath);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
   if (CHECK) {
-    if (normalizeGeneratedHtml(current) !== normalizeGeneratedHtml(content)) {
+    if (!localizedGeneratorEquivalent(normalizeGeneratedHtml(current), normalizeGeneratedHtml(content))) {
       throw new Error(`French Mining output is stale: ${relativePath}`);
     }
     return false;
   }
-  if (current === content) return false;
+  if (localizedGeneratorEquivalent(normalizeGeneratedHtml(current), normalizeGeneratedHtml(content))) return false;
   fs.mkdirSync(path.dirname(target), { recursive: true });
   writeFileSyncWithRetry(target, content, 'utf8');
   return true;
@@ -498,7 +500,7 @@ function writeTarget(relativePath, content) {
 
 function main() {
   let changed = 0;
-  changed += Number(writeTarget('fr/mining/index.html', renderHub()));
+  changed += Number(writeTarget('fr/mining/index.html', enhanceCategory(renderHub(), 'fr')));
   apps.forEach((app) => {
     changed += Number(writeTarget(`fr/tools/${app.slug}/index.html`, renderApp(app)));
   });

@@ -59,5 +59,14 @@ assert.match(read('cars/index.html'), /hreflang="sw" href="https:\/\/afrotools\.
 assert.match(read('fr/cars/index.html'), /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/bei-na-akili-ya-gari\/"/, 'French reciprocal metadata');
 assert.strictEqual((html.match(/<label\b/g) || []).length, 12, 'all controls have visible labels');
 assert.doesNotMatch(html, /<iframe\b/i, 'no wrapper or English handoff');
+assert.doesNotMatch(html, /["']FAQPage["']/, 'no FAQ schema without a matching visible FAQ');
+[
+  '/sw/usafiri-na-magari/',
+  '/sw/zana/gharama-kuagiza-gari/',
+  '/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/',
+  '/sw/zana/nauli-za-ride-hailing/',
+  '/sw/zana/nauli-za-matatu-danfo-trotro/',
+  '/sw/zana/gharama-ya-delivery/'
+].forEach((href) => assert.match(html, new RegExp(`href="${href}"`), `${href} localized discovery handoff`));
 
 console.log('sw-car-price-intelligence-parity.test.js passed');

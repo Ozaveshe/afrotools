@@ -88,6 +88,18 @@ const html = `<!doctype html>
     <section class="sw-car-panel sw-car-compare" aria-labelledby="swCarCompareTitle"><h2 id="swCarCompareTitle">Linganisha vyanzo vya rekodi</h2><table><thead><tr><th>Chanzo</th><th>Safu ya kihistoria</th><th>Tarehe</th><th>Uaminifu</th></tr></thead><tbody id="swCarCompare"></tbody></table></section>
     <section class="sw-car-panel"><h2>Pakua risiti ya ushahidi</h2><p>Vipakuliwa vina data yenye tarehe na hali ya <strong>imezuiwa</strong>. Havijumuishi pendekezo, bei ya sasa, au uamuzi wa fedha.</p><div class="sw-car-actions"><button class="sw-car-button" id="swCarJson" type="button">Pakua JSON</button><button class="sw-car-button" id="swCarCsv" type="button">Pakua CSV</button><button class="sw-car-button" id="swCarTxt" type="button">Pakua TXT</button></div><p class="sw-car-export-status" id="swCarExportStatus" aria-live="polite"></p></section>
     <section class="sw-car-panel"><h2>Vyanzo na mipaka</h2><ul class="sw-car-source-list" id="swCarSources"></ul><p>Kurasa za mamlaka zinaeleza taratibu au vikokotoo rasmi; hazithibitishi bei ya soko. Nukuu ya muuzaji, ukaguzi wa gari, thamani ya forodha na masharti ya mkopo lazima zithibitishwe upya.</p><div class="sw-car-privacy"><strong>Faragha:</strong> Katalogi na hesabu husomwa kutoka faili za AfroTools. Chaguo lako na orodha ya kufuatilia hubaki kwenye kivinjari; hakuna data ya fomu inayotumwa kwa AI, analytics, barua pepe au seva.</div></section>
+    <section class="sw-car-panel" aria-labelledby="swCarNextTitle">
+      <h2 id="swCarNextTitle">Endelea na uamuzi wa gari</h2>
+      <p>Tumia zana hizi za Kiswahili kukagua gharama, usafiri na uwezo wa kulipa kabla ya kuomba nukuu au kusaini mkataba.</p>
+      <nav aria-label="Zana zinazohusiana za magari na usafiri"><ul class="sw-car-source-list">
+        <li><a href="/sw/usafiri-na-magari/">Zana zote za usafiri na magari</a></li>
+        <li><a href="/sw/zana/gharama-kuagiza-gari/">Kadiria gharama za kuagiza gari</a></li>
+        <li><a href="/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/">Linganisha mkopo wa gari na fedha taslimu</a></li>
+        <li><a href="/sw/zana/nauli-za-ride-hailing/">Kadiria nauli za ride-hailing</a></li>
+        <li><a href="/sw/zana/nauli-za-matatu-danfo-trotro/">Kadiria nauli za matatu, danfo na trotro</a></li>
+        <li><a href="/sw/zana/gharama-ya-delivery/">Kadiria gharama ya delivery</a></li>
+      </ul></nav>
+    </section>
   </main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>

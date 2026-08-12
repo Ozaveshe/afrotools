@@ -10,12 +10,26 @@ const {
   repairPdfTranslatorConsent,
   repairPidginTranslatorConsent
 } = require('./lib/swahili-translation-consent-repairs');
+const {
+  renderAbout,
+  renderContact,
+  renderFaq,
+  renderCookies,
+  enhanceLegalSurface
+} = require('./lib/localized-institutional-pages');
+const { renderAll: renderSecondaryPages } = require('./lib/localized-secondary-pages');
+const { SWAHILI_CATEGORIES } = require('./lib/swahili-category-directory');
+const { enhanceCategory, ROUTES: LOCALIZED_CATEGORY_ROUTES } = require('./lib/localized-category-standard');
+const { countryRows: localizedCountryRows, enhanceCountry } = require('./lib/localized-country-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+const ONLY = onlyArg ? new Set(onlyArg.slice('--only='.length).split(',').map((value) => value.trim()).filter(Boolean)) : null;
 const changed = [];
 const failures = [];
 const GENERATED_HTML = new Set([
+  'sw/index.html',
   'sw/faragha/index.html',
   'sw/masharti/index.html',
   'sw/msaada/index.html',
@@ -23,6 +37,15 @@ const GENERATED_HTML = new Set([
   'sw/auth/index.html',
   'sw/dashboard/index.html',
   'sw/vault/index.html'
+  ,'sw/kuhusu/index.html'
+  ,'sw/wasiliana/index.html'
+  ,'sw/maswali-ya-mara-kwa-mara/index.html'
+  ,'sw/vidakuzi/index.html'
+  ,'sw/tangaza/index.html'
+  ,'sw/tafuta/index.html'
+  ,'sw/pendekeza-zana/index.html'
+  ,'sw/makundi/index.html'
+  ,'sw/mabadiliko/index.html'
 ]);
 const GENERATED_ALTERNATES = {
   'sw/faragha/index.html': [
@@ -37,7 +60,7 @@ const GENERATED_ALTERNATES = {
   ],
   'sw/bei/index.html': [
     '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/bei/">',
-    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/bei/">'
+    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/pricing/">'
   ]
 };
 
@@ -66,11 +89,12 @@ function ownedByScopedParity(rel) {
   if (!rel.startsWith('sw/') || !fs.existsSync(filePath(rel))) return false;
   const html = read(rel);
   return [
-    'scripts/build-blog-multilingual-wave2-2026-08.js',
     'scripts/build-sw-legal-government-insurance-parity.js',
     'scripts/build-sw-small-business-parity.js',
     'scripts/build-sw-web-text-codecs-family.js',
-    'scripts/build-swahili-hr-payroll-six.js'
+    'scripts/build-swahili-hr-payroll-six.js',
+    'scripts/build-localized-discovery-pages.js',
+    'scripts/build-localized-ai-api-pages.js'
   ].some((owner) => html.includes(owner));
 }
 function withAnalyticsLoader(html) {
@@ -98,6 +122,7 @@ function escapeHtml(value) {
 function sourceHash(value) { return crypto.createHash('sha256').update(value).digest('hex').slice(0, 16); }
 
 function output(rel, value) {
+  if (ONLY && !ONLY.has(rel)) return;
   let normalized = normalize(value);
   for (const alternate of GENERATED_ALTERNATES[rel] || []) {
     if (!normalized.includes(alternate)) normalized = normalized.replace('</head>', `${alternate}</head>`);
@@ -145,6 +170,7 @@ function output(rel, value) {
 }
 
 function repair(rel, transforms) {
+  if (new Set(['sw/wasiliana/index.html', 'sw/kuhusu/index.html']).has(rel)) return;
   let html = read(rel);
   for (const [from, to] of transforms) {
     html = from instanceof RegExp ? html.replace(from, to) : html.split(from).join(to);
@@ -340,6 +366,36 @@ function shellHead({ title, description, canonical, robots = 'index,follow' }) {
   return `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="${robots}"><link rel="canonical" href="https://afrotools.com${canonical}"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script><style>.sw-contract-main{max-width:900px;margin:auto;padding:56px 20px 80px}.sw-contract-main h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05}.sw-contract-main h2{margin-top:2rem}.sw-contract-main p,.sw-contract-main li{line-height:1.75}.sw-contract-note{padding:1rem 1.2rem;border-left:4px solid #0062cc;background:#eef6ff;border-radius:8px}.sw-contract-warning{padding:1rem 1.2rem;border:1px solid #f0c36d;background:#fff8e7;border-radius:12px}.sw-contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:1.25rem 0}.sw-contract-card{padding:18px;border:1px solid #dce5ef;border-radius:14px;background:#fff}.sw-contract-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.25rem}.sw-contract-actions a{display:inline-flex;min-height:44px;align-items:center;padding:10px 16px;border-radius:10px;background:#0062cc;color:#fff;font-weight:800;text-decoration:none}.sw-contract-actions a.alt{background:#fff;color:#075fb8;border:1px solid #9dc4ec}.sw-contract-table{width:100%;border-collapse:collapse;margin:1rem 0}.sw-contract-table th,.sw-contract-table td{padding:10px;border:1px solid #dce5ef;text-align:left;vertical-align:top}@media(max-width:680px){.sw-contract-grid{grid-template-columns:1fr}.sw-contract-table,.sw-contract-table tbody,.sw-contract-table tr,.sw-contract-table th,.sw-contract-table td{display:block}.sw-contract-table th{background:#f4f8fc}}</style>`;
 }
 
+function homePage() {
+  const categoryCards = SWAHILI_CATEGORIES.map((category) => `<a class="fr-home-category" href="${category.href}" data-category="${category.key}"><span class="fr-home-category-mark" aria-hidden="true">${category.icon}</span><span><strong>${category.title}</strong><small>${category.description}</small></span></a>`).join('');
+  const popular = [
+    ['/sw/mshahara-na-kodi/paye/','Orodha ya PAYE kwa nchi'], ['/sw/zana/kikokotoo-vat/','Kikokotoo cha VAT'], ['/sw/zana/unganisha-na-gawanya-pdf/','Unganisha na gawa PDF'], ['/sw/zana/kubana-pdf/','Punguza PDF'], ['/sw/zana/kubadilisha-format-pdf/','Badilisha PDF'], ['/sw/zana/kikokotoo-cgt-kenya/','CGT ya Kenya'], ['/sw/zana/kikokotoo-wht-kenya/','WHT ya Kenya'], ['/sw/zana/kikokotoo-nssf-kenya/','NSSF ya Kenya'], ['/sw/zana/kikokotoo-ssnit-ghana/','SSNIT ya Ghana'], ['/sw/zana/kikokotoo-ushuru-wa-stampu-kenya/','Stamp Duty Kenya'], ['/sw/zana/ulinganisho-nukuu-za-kutuma-fedha/','Linganisha nukuu za remittance'], ['/sw/zana/bei-na-akili-ya-gari/','Ushahidi wa bei za magari'], ['/sw/zana/mpangaji-ramani-ya-sakafu/','Mpangaji wa sakafu'], ['/sw/zana/afrodraft-cad/','AfroDraft CAD'], ['/sw/zana/ada-za-ramani-za-usanifu/','Ada za usanifu'], ['/sw/zana/gharama-ya-uzio/','Gharama ya uzio'], ['/sw/zana/gharama-ya-dimbwi-la-kuogelea/','Gharama ya swimming pool'], ['/sw/zana/mpangaji-wa-biashara-ai/','Mpangaji wa biashara'], ['/sw/zana/mwongozo-wa-itax/','Mwongozo wa iTax'], ['/sw/zana/mwongozo-wa-etims-kra/','Mwongozo wa eTIMS'], ['/sw/zana/mwongozo-wa-sars-efiling/','Mwongozo wa SARS eFiling'], ['/sw/zana/mwongozo-wa-cnps/','Mwongozo wa CNPS'], ['/sw/zana/kirekodi-skrini/','Kirekodi skrini'], ['/sw/zana/rekodi-na-hariri-sauti/','Rekodi na hariri sauti'], ['/sw/zana/kitengeneza-flyer/','Tengeneza flyer'], ['/sw/zana/bei-za-mtayarishi/','Bei za mtayarishi'], ['/sw/zana/ratiba-ya-mtayarishi/','Ratiba ya maudhui'], ['/sw/zana/timu-ya-watayarishi/','Timu ya mtayarishi'], ['/sw/zana/boresha-linkedin/','Boresha LinkedIn'], ['/sw/zana/ukaguzi-wa-personal-brand/','Ukaguzi wa brand binafsi']
+  ].map(([href,label])=>`<a href="${href}">${label}</a>`).join('');
+  const faqs = [
+    ['Je, zana za msingi ni bure?','Ndiyo. Msingi wa umma unapatikana bila usajili wa kulipia. Akaunti au Pro huonyeshwa kando pale inapohitajika.'],
+    ['Je, matokeo ni rasmi?','Hapana. Matokeo ni ya kupanga. Thibitisha chanzo, tarehe, mamlaka na mtaalamu kabla ya uamuzi muhimu.'],
+    ['Lugha na nchi vinatofautianaje?','Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka, sarafu, chanzo au kanuni inayotumika.'],
+    ['Data yangu inatumwa?','Mtiririko ulioelezwa kuwa wa ndani hubaki kwenye kivinjari. Fomu, akaunti, malipo na AI ni mitiririko tofauti yenye maelezo.'],
+    ['Nifanye nini data ikionekana ya zamani?','Usitumie kama thamani ya sasa. Soma tarehe na chanzo, kisha thibitisha kwa mamlaka au mtoa huduma.'],
+    ['Naweza kupakua matokeo?','Zana nyingi hutoa faili, kunakili au kuchapisha. Kila zana hutaja miundo inayotengeneza na mipaka yake.'],
+    ['AfroTools AI ni lazima?','Hapana. Orodha, utafutaji na zana hufanya kazi bila AI. AI ni msaada wa hiari wa kupata au kueleza mtiririko wa kazi.'],
+    ['Ninaripotije hitilafu?','Tumia ukurasa wa mawasiliano, taja njia, nchi, ingizo la mfano na chanzo rasmi bila kutuma data halisi ya mtu.']
+  ];
+  const faqSchema = {'@type':'FAQPage',mainEntity:faqs.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))};
+  const schema = {'@context':'https://schema.org','@graph':[{'@type':'WebSite','@id':'https://afrotools.com/sw/#website',url:'https://afrotools.com/sw/',name:'AfroTools kwa Kiswahili',inLanguage:'sw',potentialAction:{'@type':'SearchAction',target:{'@type':'EntryPoint',urlTemplate:'https://afrotools.com/sw/zana-zote/?q={search_term_string}'},'query-input':'required name=search_term_string'}},{'@type':'Organization','@id':'https://afrotools.com/#organization',name:'AfroTools',url:'https://afrotools.com/',logo:{'@type':'ImageObject',url:'https://afrotools.com/assets/img/logo-mark.svg'}},{'@type':'CollectionPage','@id':'https://afrotools.com/sw/#page',url:'https://afrotools.com/sw/',name:'Zana za Afrika kwa Kiswahili',isPartOf:{'@id':'https://afrotools.com/sw/#website'},inLanguage:'sw'},faqSchema]};
+  return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="sw"><title>Zana na vikokotoo vya Afrika kwa Kiswahili | AfroTools</title><meta name="description" content="Vikokotoo, hati, data na miongozo kwa nchi 54 za Afrika kwa Kiswahili, zikiwa na vyanzo, tarehe, mipaka na faili zinazoweza kuhakikiwa."><meta property="og:type" content="website"><meta property="og:locale" content="sw_KE"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="AfroTools kwa Kiswahili — zana za vitendo kwa Afrika"><meta property="og:description" content="Pata zana inayolingana na nchi na kazi yako, elewa dhana na pakua matokeo yanayoweza kutumiwa tena."><meta property="og:url" content="https://afrotools.com/sw/"><meta property="og:image" content="https://afrotools.com/assets/img/og/og-home-v2.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://afrotools.com/assets/img/og/og-home-v2.webp"><link rel="canonical" href="https://afrotools.com/sw/"><link rel="alternate" hreflang="en" href="https://afrotools.com/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/"><link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/"><link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-homepage.css"><script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script><script src="/assets/js/data/registry-counts.js" defer></script><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script></head><body class="fr-home-page"><a class="skip-link" href="#maudhui">Ruka hadi maudhui</a><afro-navbar></afro-navbar><main id="maudhui" class="fr-home">
+<header class="fr-home-hero"><div class="fr-home-wrap fr-home-hero-grid"><div><p class="fr-home-eyebrow">AfroTools kwa Kiswahili</p><h1>Zana sahihi, kwa nchi sahihi na uamuzi sahihi.</h1><p class="fr-home-lead">Kokotoa, linganisha, andaa hati au thibitisha dhana kwa muktadha wa Afrika. Chanzo, tarehe, mamlaka, uhakika na mipaka huonyeshwa pale vinapoathiri matokeo.</p><form class="fr-home-search" action="/sw/zana-zote/" method="get"><label for="swHomeSearch">Tafuta zana kwa Kiswahili</label><input id="swHomeSearch" name="q" type="search" placeholder="Mfano: mshahara Kenya, VAT, unganisha PDF"><button class="btn btn-primary" type="submit">Tafuta</button></form><div class="fr-home-actions"><a class="btn btn-secondary" href="/sw/zana-zote/">Zana zote</a><a class="btn btn-ghost" href="/sw/nchi/">Chagua nchi</a><a class="btn btn-ghost" href="/sw/ai/">Eleza kazi kwa AfroTools AI</a></div></div><dl class="fr-home-proof"><div><dt>Zana za Kiswahili</dt><dd data-registry-count="tools.locale.sw.published">${swTools}</dd></div><div><dt>Uzoefu wa zana</dt><dd data-registry-count="tools.live_experiences" data-count-format="plus">${liveTools}+</dd></div><div><dt>Nchi</dt><dd data-registry-count="countries.published">${countries}</dd></div><div><dt>Makundi</dt><dd data-registry-count="categories.published">${categories}</dd></div><div><dt>Lugha za tovuti</dt><dd data-registry-count="languages.site_published">${languages}</dd></div></dl></div></header>
+<section class="fr-home-section"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Anza na kazi</p><h2>Fika moja kwa moja kwenye matokeo yanayofaa.</h2></div><p>Chagua kazi, nchi na kiwango cha ushahidi. Zana hubaki huru kufunguliwa bila AI, na haziwezi kugeuza dhana kuwa dai rasmi.</p></div><div class="fr-home-task-grid"><a class="fr-home-task" href="/sw/mshahara-na-kodi/"><strong>Kokotoa mshahara na kodi</strong><p>Chagua nchi, kipindi, makato na michango inayotumika.</p><span>Fungua mshahara na kodi →</span></a><a class="fr-home-task" href="/sw/biashara-na-uzingatiaji/"><strong>Panga VAT au biashara</strong><p>Tumia mamlaka, kiwango, tarehe na source boundary inayoonekana.</p><span>Fungua biashara →</span></a><a class="fr-home-task" href="/sw/hati-na-pdf/"><strong>Andaa PDF au hati</strong><p>Unganisha, punguza, badilisha, saini au tengeneza faili ndani ya kivinjari.</p><span>Fungua hati →</span></a><a class="fr-home-task" href="/sw/kilimo/"><strong>Panga shamba</strong><p>Kadiria mavuno, pembejeo, umwagiliaji, mifugo na faida.</p><span>Fungua kilimo →</span></a><a class="fr-home-task" href="/sw/nyumba-na-ardhi/"><strong>Chunguza nyumba au ardhi</strong><p>Linganisha bajeti, mkopo, ununuzi, kodi, uhamisho na ujenzi.</p><span>Fungua nyumba na ardhi →</span></a><a class="fr-home-task" href="/sw/nishati-na-huduma/"><strong>Linganisha nishati na mafuta</strong><p>Tumia dhana za ndani zenye tarehe, uhakika na mipaka.</p><span>Fungua nishati →</span></a><a class="fr-home-task" href="/sw/biashara-ya-nje/"><strong>Andaa import au export</strong><p>Panga gharama, forodha, usafiri, asili na ukaguzi rasmi.</p><span>Fungua biashara ya nje →</span></a><a class="fr-home-task" href="/sw/zana-za-developer/"><strong>Badilisha data au code</strong><p>Fanya kazi na JSON, API, maandishi na miundo ya web.</p><span>Fungua zana za developer →</span></a></div></div></section>
+<section class="fr-home-section fr-home-section--muted"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Orodha iliyopangwa</p><h2>Makundi 32 yanayofuata kazi yako.</h2></div><p>Makundi yenye hub ya Kiswahili hufungua ukurasa wake. Mengine huweka kichujio sahihi kwenye orodha bila kubadili lugha kimya kimya.</p></div><div class="fr-home-category-grid">${categoryCards}</div><div class="fr-home-actions"><a class="btn btn-primary" href="/sw/zana-zote/">Orodha ya makundi</a><a class="btn btn-secondary" href="/sw/zana-zote/">Programu zote za Kiswahili</a></div></div></section>
+<section class="fr-home-section"><div class="fr-home-wrap fr-home-country-layout"><div><p class="fr-home-eyebrow">Muktadha kabla ya hesabu</p><h2>Chagua nchi inayoweka kanuni, sarafu au chanzo.</h2><p class="fr-home-lead">Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka, sarafu au source boundary. Kuzitenganisha huzuia kutumia kanuni ya soko moja katika soko jingine.</p><div class="fr-home-country-list"><a href="/sw/kenya/">Kenya</a><a href="/sw/tanzania/">Tanzania</a><a href="/sw/uganda/">Uganda</a><a href="/sw/rwanda/">Rwanda</a><a href="/sw/burundi/">Burundi</a><a href="/sw/congo/">Congo</a><a href="/sw/south-africa/">Afrika Kusini</a><a href="/sw/nigeria/">Nigeria</a><a href="/sw/ghana/">Ghana</a><a href="/sw/zambia/">Zambia</a><a href="/sw/mozambique/">Msumbiji</a><a href="/sw/nchi/">Nchi zote 54</a></div></div><form class="fr-home-country-card" action="/sw/zana-zote/" method="get"><h3>Chuja kwa nchi na ushahidi</h3><label for="swCountry">Nchi</label><select id="swCountry" name="country"><option value="">Nchi zote</option><option value="kenya">Kenya</option><option value="tanzania">Tanzania</option><option value="uganda">Uganda</option><option value="nigeria">Nigeria</option><option value="south-africa">Afrika Kusini</option></select><label for="swCategory">Aina ya kazi</label><select id="swCategory" name="category"><option value="">Makundi yote</option><option value="financial">Fedha na kodi</option><option value="document-pdf">Hati na PDF</option><option value="agriculture">Kilimo</option><option value="engineering">Uhandisi</option></select><label for="swEvidence">Ushahidi unaohitajika</label><select id="swEvidence" name="evidence"><option value="">Aina zote</option><option value="local">Data ya mtumiaji</option><option value="dated">Chanzo chenye tarehe</option><option value="official">Chanzo rasmi</option></select><button class="btn btn-primary" type="submit">Onyesha zana</button></form></div></section>
+<section class="fr-home-section fr-home-section--muted"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Zana zinazotumiwa mara kwa mara</p><h2>Njia fupi za kufikia workflow kamili.</h2></div><p>Kila kiungo hufungua owner ya Kiswahili yenye route yake. Uwepo wa kiungo si dai kwamba data inayobadilika ni ya sasa; soma source panel ya zana.</p></div><div class="fr-home-link-cloud">${popular}</div></div></section>
+<section class="fr-home-section"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Chagua kwa ushahidi</p><h2>Hatua tano kabla ya kuamini matokeo.</h2></div><p>Ubora wa ukurasa haupimwi kwa idadi ya zana pekee. Mtumiaji anahitaji kujua zana inajibu swali gani, data inatoka wapi, na ni hatua gani bado inahitaji uthibitisho.</p></div><div class="fr-home-trust-grid"><article><h3>1. Taja uamuzi</h3><p>Anza na kile unachotaka kuamua: bajeti, filing, ununuzi, usafirishaji, hati au ulinganisho. Zana mbili zinaweza kuwa na majina yanayofanana lakini zikajibu maswali tofauti. Soma maelezo ya ingizo na tokeo kabla ya kujaza fomu.</p></article><article><h3>2. Chagua mamlaka</h3><p>Nchi, jimbo, aina ya biashara au kipindi kinaweza kubadilisha kanuni. Usitumie sarafu kama uthibitisho wa mamlaka; zana inaweza kuonyesha KES huku chanzo au mkataba unaohitajika ukitoka mahali tofauti.</p></article><article><h3>3. Kagua chanzo na tarehe</h3><p>Kwa kodi, ada, ratiba na bei, fungua chanzo kilichoonyeshwa na soma tarehe ya ukaguzi. Endpoint inayofunguka leo haithibitishi kuwa thamani iliyorekodiwa miezi iliyopita bado ni ya sasa. Data iliyopitwa na wakati lazima iwe wazi au izuiwe.</p></article><article><h3>4. Badilisha dhana zako</h3><p>Makadirio ya gharama, ukuaji, contingency, fee au kiwango cha soko ni bora zaidi yanapotoka kwa mtumiaji au nukuu ya sasa. Jaribu hali ya chini, ya kawaida na ya juu; usichukulie preset ya zamani kuwa bei ya leo.</p></article><article><h3>5. Hifadhi ushahidi</h3><p>Pakua faili iliyotangazwa, nakili muhtasari au chapisha matokeo pamoja na tarehe, ingizo na chanzo. Kisha thibitisha kwa mamlaka, mtaalamu au mtoa huduma kabla ya kuwasilisha, kulipa au kusaini. AfroTools husaidia kupanga; haiwezi kufanya uamuzi huo kwa niaba yako.</p></article></div></div></section>
+<section class="fr-home-section"><div class="fr-home-wrap fr-home-ai-layout"><div><p class="fr-home-eyebrow">AfroTools AI ya hiari</p><h2>Eleza kazi; usikabidhi ukweli kwa modeli.</h2><p>AI inaweza kusaidia kuchagua zana, kuuliza swali la ufafanuzi au kueleza matokeo. Fomula, viwango, mamlaka na source labels hubaki kwenye injini na registry zinazoweza kupimwa.</p><ul><li>Utafutaji na orodha hufanya kazi bila AI.</li><li>Maudhui nyeti hayatumiwi bila idhini ya wazi.</li><li>Jibu la AI halibadilishi ushahidi rasmi.</li></ul></div><form class="fr-home-ai-card" action="/sw/ai/" method="get"><label for="swAiTask">Unataka kukamilisha kazi gani?</label><textarea id="swAiTask" name="q" rows="5" placeholder="Mfano: nataka kulinganisha gharama za kuingiza gari Kenya"></textarea><input type="hidden" name="source" value="sw-home"><button class="btn btn-primary" type="submit">Fungua msaidizi</button><p>Usiweke nenosiri, namba ya kitambulisho au hati nyeti.</p></form></div></section>
+<section class="fr-home-section fr-home-section--muted"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Mbinu ya kuaminika</p><h2>Kila matokeo yana muktadha na mpaka.</h2></div><p>AfroTools hutenganisha hesabu, presentation, source evidence na export. Hii hurahisisha kugundua data iliyopitwa na wakati na kulinda mtumiaji dhidi ya dai kubwa kuliko ushahidi.</p></div><div class="fr-home-trust-grid"><article><h3>Injini inayopimwa</h3><p>Hesabu muhimu huwekwa kwenye function safi inapowezekana, kisha interface huonyesha ingizo na tokeo bila kuficha fomula.</p></article><article><h3>Chanzo na tarehe</h3><p>Data ya kodi, ada, ratiba au sheria huonyesha source boundary na tarehe ya ukaguzi. Ubadilishaji wa ukurasa wa chanzo ni ishara ya review, si ruhusa ya kubadili namba moja kwa moja.</p></article><article><h3>Faili inayofunguka tena</h3><p>PDF, JSON, CSV, picha au hati iliyotangazwa inapaswa kutengenezwa kweli na iweze kufunguliwa tena. Kitufe pekee si uthibitisho.</p></article><article><h3>Faragha ya kazi</h3><p>Rasimu na faili hubaki ndani pale inaposemwa hivyo. Akaunti, usawazishaji, fomu, malipo na AI ni njia tofauti zenye hatua ya wazi.</p></article><article><h3>Simu na kibodi</h3><p>Kurasa hupimwa kwenye upana mdogo, zoom ya maandishi, mandhari na focus ili controls zisikatike au kufichwa na navigation.</p></article><article><h3>Makadirio si uamuzi rasmi</h3><p>Zana husaidia kupanga. Mamlaka, mtaalamu au mtoa huduma ndiye anayethibitisha filing, bei, matibabu, ushauri wa sheria au huduma halisi.</p></article></div></div></section>
+<section class="fr-home-section"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Maswali ya kawaida</p><h2>Jua zana inachofanya kabla ya kuingiza data.</h2></div><p>Kwa maelezo zaidi, soma <a href="/sw/maswali-ya-mara-kwa-mara/">maswali yote</a>, <a href="/sw/faragha/">sera ya faragha</a> na <a href="/sw/masharti/">masharti</a>.</p></div><div class="fr-home-faq">${faqs.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div><div class="fr-home-actions"><a class="btn btn-primary" href="/sw/zana-zote/">Chagua zana</a><a class="btn btn-secondary" href="/sw/wasiliana/">Wasiliana nasi</a><a class="btn btn-secondary" href="/sw/blogu/">Soma blogu</a></div></div></section>
+</main><afro-footer></afro-footer><script defer src="/assets/js/lazy-analytics.js"></script></body></html>\n`;
+}
+
 function privacyPage() {
   return `<!doctype html><html lang="sw"><head>${shellHead({ title: 'Sera ya Faragha — AfroTools', description: 'Sera ya faragha ya AfroTools kuhusu hesabu za ndani, AI, akaunti, usawazishaji, malipo, uchanganuzi, fomu na hifadhi.', canonical: '/sw/faragha/' })}<link rel="alternate" hreflang="en" href="https://afrotools.com/privacy/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/faragha/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/privacy/"></head><body class="top-level-page-ui-refresh"><afro-navbar></afro-navbar><main class="sw-contract-main"><p>Faragha · Ilisasishwa: Julai 2026</p><h1>Sera ya Faragha</h1><p class="sw-contract-note" data-claim-key="privacy.browser-local" data-claim-variant="summary">${claim('privacy.browser-local')}</p><h2>1. Aina za mtiririko wa data</h2><table class="sw-contract-table"><thead><tr><th>Kipengele</th><th>Kinachochakatwa</th><th>Mahali na udhibiti</th></tr></thead><tbody><tr><td>Kikokotoo cha ndani</td><td>Thamani ulizoingiza na matokeo ya hesabu hiyo.</td><td>Huchakatwa kwenye kivinjari. Rasimu inaweza kubaki kwenye kifaa hadi uifute.</td></tr><tr><td>AI ya hiari</td><td>Ombi na muktadha ulioonyeshwa kabla ya kutuma.</td><td>Inaweza kutumwa kwa seva za AfroTools na mtoa huduma baada ya idhini.</td></tr><tr><td>Akaunti na usawazishaji</td><td>Barua pepe, wasifu, lugha, hali ya mpango na vitu unavyochagua kuhifadhi.</td><td>Huchakatwa na huduma ya akaunti. Kutoka kwenye akaunti hakufuti data iliyosawazishwa.</td></tr><tr><td>Vault</td><td>Faili unayochagua kupakia na metadata yake.</td><td>Upakiaji ni hatua ya wazi ya mtumiaji na hutegemea huduma ya vault kupatikana.</td></tr><tr><td>Malipo</td><td>Maelezo ya malipo kwa mtoa huduma na metadata ya muamala inayohitajika kwa hali ya Pro.</td><td>Mtoa huduma wa malipo hutumia sera zake za uchakataji na uhifadhi.</td></tr><tr><td>Uchanganuzi</td><td>Metadata ndogo ya matumizi baada ya idhini.</td><td>Thamani za hesabu na maudhui ya hati hayapaswi kutumwa kama analytics.</td></tr><tr><td>Fomu na barua pepe</td><td>Jina, barua pepe na ujumbe unaochagua kutuma.</td><td>Huchakatwa na huduma ya fomu ili kujibu ombi hilo.</td></tr></tbody></table><h2>2. Vidakuzi na hifadhi ya kivinjari</h2><p>AfroTools inaweza kuhifadhi nchi, lugha, mandhari, chaguo la idhini, vipendwa, rasimu na zana za hivi karibuni kwenye kivinjari. Zifute kwa vidhibiti vya zana au mipangilio ya kivinjari.</p><h2>3. Watoa huduma</h2><p>Huduma zinazoweza kutumika ni Netlify kwa uwasilishaji na functions, Supabase kwa akaunti na data iliyosawazishwa, Paystack kwa malipo, Anthropic kwa AI ya hiari, na Google Analytics au Microsoft Clarity baada ya idhini ya uchanganuzi. Kipengele kinapaswa kueleza mtiririko wake kabla ya kutuma maudhui ya mtumiaji.</p><h2>4. Uhifadhi, kufuta na haki</h2><p>Muda wa uhifadhi hutegemea madhumuni ya mtiririko, sheria inayotumika na mtoa huduma. Kulingana na mamlaka yako, unaweza kuomba ufikiaji, marekebisho, usafirishaji au kufutwa kwa data inayostahili kupitia <a href="mailto:privacy@afrotools.com">privacy@afrotools.com</a>.</p><h2>5. Usalama na watoto</h2><p>Miunganisho ya mtandao hutumia HTTPS, lakini hakuna huduma inayoweza kuahidi usalama kamili. Tumia data ndogo inayohitajika. AfroTools haijaundwa kukusanya kwa makusudi data binafsi ya mtoto chini ya miaka 13.</p><h2>6. Wasiliana</h2><p>Kwa swali la faragha au ombi la data, andika kwa <a href="mailto:privacy@afrotools.com">privacy@afrotools.com</a>.</p></main><afro-footer></afro-footer></body></html>\n`;
 }
@@ -388,8 +444,12 @@ const homeTransforms = [
   ,[`<div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools" data-registry-count="tools.live_experiences">${liveTools}</div><div class="hero-stat-lbl">Matukio ya zana hai</div></div>`, `<div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools" data-registry-count="tools.locale.sw.published">${swTools}</div><div class="hero-stat-lbl">Rekodi za Kiswahili</div></div>`]
 ];
 
-repair('sw/index.html', homeTransforms);
-repairHomeLandmarks();
+output('sw/index.html', withAnalyticsLoader(homePage()
+  .replace('class="skip-link" href="#maudhui"', 'class="sw-skip-link" href="#main-content"')
+  .replace('main id="maudhui"', 'main id="main-content"')
+  .replaceAll('workflow', 'mtiririko wa kazi')
+  .replaceAll('Fungua zana za developer', 'Fungua zana za wasanidi programu')
+  .replaceAll('Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka', 'Nchi na lugha ni vitu tofauti. Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka')));
 repair('sw/zana-zote/index.html', [
   [/data-registry-count="tools\.locale\.sw\.published">\d+</g, `data-registry-count="tools.locale.sw.published">${swTools}<`],
   [/Vikokotoo 2,606\+ bure vya/g, `${swTools} rekodi zilizochapishwa za`],
@@ -399,7 +459,13 @@ repair('sw/zana-zote/index.html', [
   ['Tengeneza ankara za kitaalamu kwa sekunde. Pakua PDF mara moja bila usajili wowote.', 'Tengeneza ankara na ufuate hatua ya PDF iliyoelezwa kwenye zana.'],
   ['Mapishi ya vyakula 2,606+ vya Afrika kutoka nchi zote 54.', 'Mapishi ya Afrika yaliyoorodheshwa kwenye AfroKitchen.']
 ]);
+const countrySearchTransforms = read('sw/nchi/index.html').includes('id="swCountrySearch"') ? [] : [
+  [/(<link rel="stylesheet" href="\/assets\/css\/top-level-page-ui-refresh\.css(?:\?v=[a-f0-9]+)?">)/, '$1\n<link rel="stylesheet" href="/assets/css/localized-institutional.css">'],
+  ['</section>\n\n<section class="sec sec--white">', `</section>\n<section class="sec sec--white"><div class="wrap"><form class="li-form" role="search" onsubmit="return false"><label for="swCountrySearch">Tafuta nchi</label><input id="swCountrySearch" type="search" autocomplete="off" placeholder="Mfano: Kenya"><button type="button" class="btn btn-secondary" id="swCountryReset">Futa</button><p id="swCountryStatus" role="status" aria-live="polite"></p></form></div></section>\n<section class="sec sec--white">`],
+  ['</body>', `<script>(function(){var q=document.getElementById('swCountrySearch'),cards=[].slice.call(document.querySelectorAll('.country-card')),status=document.getElementById('swCountryStatus');if(!q)return;function draw(){var value=q.value.trim().toLocaleLowerCase('sw'),shown=0;cards.forEach(function(card){var visible=!value||card.textContent.toLocaleLowerCase('sw').indexOf(value)>=0;card.hidden=!visible;if(visible)shown++;});status.textContent=shown+' nchi zimeonyeshwa';}q.addEventListener('input',draw);document.getElementById('swCountryReset').addEventListener('click',function(){q.value='';draw();q.focus();});draw();})();</script></body>`]
+];
 repair('sw/nchi/index.html', [
+  ...countrySearchTransforms,
   ['PAYE, kima cha chini cha mshahara, overtime, likizo, hifadhi ya jamii, sarafu na zana za fedha kwa kila nchi ya Afrika. Chagua nchi yako kupata kitovu chake.', 'Chagua nchi ili kuona zana zinazohusu mamlaka hiyo. Lugha ya Kiswahili, upatikanaji wa zana, sarafu na uthibitishaji wa chanzo ni vipimo tofauti.'],
   [`<div class="stat-num">2606</div><div class="stat-label">Matukio ya Zana Hai</div>`, `<div class="stat-num" data-registry-count="tools.locale.sw.published">${swTools}</div><div class="stat-label">Rekodi za Kiswahili</div>`],
   ['Nchi zenye alama ya ✓ zina kurasa za Kiswahili zenye vikokotoo vya mshahara. Tunaendelea kuboresha tafsiri na viungo vya ndani.', 'Alama ya ✓ inaonyesha njia ya Kiswahili iliyoainishwa. Thibitisha kwenye zana ikiwa hesabu, sarafu, kipindi na chanzo vinatumika kwa nchi hiyo.']
@@ -621,7 +687,7 @@ const languageAccessibilityRepairs = [
 ];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || LOCALIZED_CATEGORY_ROUTES.sw.includes(rel) || (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js'))) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
   repairScriptBoundaries(rel);
 }
@@ -659,10 +725,41 @@ output(
   repairPdfTranslatorConsent(read('sw/zana/kutafsiri-pdf/index.html'))
 );
 
-output('sw/faragha/index.html', withAnalyticsLoader(withAnalyticsDisclosure(privacyPage())));
-output('sw/masharti/index.html', withAnalyticsLoader(termsPage()));
+output('sw/faragha/index.html', withAnalyticsLoader(withAnalyticsDisclosure(enhanceLegalSurface(privacyPage(), 'sw'))));
+output('sw/masharti/index.html', withAnalyticsLoader(enhanceLegalSurface(termsPage(), 'sw')));
 output('sw/msaada/index.html', helpPage());
-output('sw/bei/index.html', pricingPage());
+const secondaryPages = renderSecondaryPages('sw');
+output('sw/bei/index.html', withAnalyticsLoader(secondaryPages.pricing));
+output('sw/tangaza/index.html', withAnalyticsLoader(secondaryPages.advertise));
+output('sw/tafuta/index.html', withAnalyticsLoader(secondaryPages.search));
+output('sw/pendekeza-zana/index.html', withAnalyticsLoader(secondaryPages.suggest));
+output('sw/makundi/index.html', withAnalyticsLoader(secondaryPages.categories));
+output('sw/mabadiliko/index.html', withAnalyticsLoader(secondaryPages.changelog));
+for (const row of localizedCountryRows()) {
+  output(row.sw.ownerFile, enhanceCountry(read(row.sw.ownerFile), 'sw', row.englishRoute));
+}
+for (const [rel, frRoute, swRoute] of [
+  ['advertise/index.html', '/fr/advertise/', '/sw/tangaza/'],
+  ['pricing/index.html', '/fr/pricing/', '/sw/bei/'],
+  ['search/index.html', '/fr/search/', '/sw/tafuta/'],
+  ['categories/index.html', '/fr/categories/', '/sw/makundi/']
+  ,['changelog/index.html', '/fr/changelog/', '/sw/mabadiliko/']
+]) {
+  const swAlternate = `<link rel="alternate" hreflang="sw" href="https://afrotools.com${swRoute}">`;
+  const current = read(rel);
+  if (!current.includes(swAlternate)) {
+    repair(rel, [[
+      `<link rel="alternate" hreflang="fr" href="https://afrotools.com${frRoute}">`,
+      `<link rel="alternate" hreflang="fr" href="https://afrotools.com${frRoute}">\n${swAlternate}`
+    ]]);
+  } else if ((current.match(new RegExp(swAlternate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length > 1) {
+    repair(rel, [[new RegExp(`(?:${swAlternate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*)+`, 'g'), `${swAlternate}\n`]]);
+  }
+}
+output('sw/kuhusu/index.html', withAnalyticsLoader(renderAbout('sw')));
+output('sw/wasiliana/index.html', withAnalyticsLoader(renderContact('sw')));
+output('sw/maswali-ya-mara-kwa-mara/index.html', withAnalyticsLoader(renderFaq('sw')));
+output('sw/vidakuzi/index.html', withAnalyticsLoader(renderCookies('sw')));
 output('sw/auth/index.html', bridgePage('auth'));
 output('sw/dashboard/index.html', bridgePage('dashboard'));
 output('sw/vault/index.html', bridgePage('vault'));
@@ -670,7 +767,7 @@ output('sw/vault/index.html', bridgePage('vault'));
 // Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || LOCALIZED_CATEGORY_ROUTES.sw.includes(rel) || (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js'))) continue;
   repairVisibleLanguage(rel, visibleLanguageTransforms);
   repairScriptLanguage(rel, scriptLanguageRepairs);
 }
@@ -726,7 +823,14 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (rel.startsWith('sw/blogu/')) continue;
+  if (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js')) continue;
+  if (LOCALIZED_CATEGORY_ROUTES.sw.includes(rel)) {
+    const categorySource = read(rel)
+      .replace(/<meta name="afrotools-sw-source-hash" content="[^"]*">/g, '')
+      .replace(/<meta name="afrotools-content-id" content="sw-surface:[^"]*">/g, '')
+      .replace(/<meta name="afrotools-source-owner" content="scripts\/build-swahili-product-surface\.js">/g, '');
+    output(rel, enhanceCategory(categorySource, 'sw'));
+  }
   ensureAccessibilityRuntime(rel);
 }
 

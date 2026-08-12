@@ -4,6 +4,8 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeBuildManagedHtml } = require("./lib/shared-asset-references");
+const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
+const { enhanceCategory } = require("./lib/localized-category-standard");
 
 const ROOT = path.resolve(__dirname, "..");
 const MANIFEST_PATH = path.join(ROOT, "data/localization/fr-hr-payroll-parity.json");
@@ -277,7 +279,7 @@ ${tool.swahiliRoute ? `  <link rel="alternate" hreflang="sw" href="https://afrot
 `;
 }
 
-function hubHtml() {
+function rawHubHtml() {
   const cards = manifest.tools.map((tool) => `<a class="fr-hr-tool-card" href="${tool.route}" data-source-id="${tool.id}">
       <img src="${tool.image}" width="640" height="360" alt="" loading="lazy">
       <div><h2>${escapeHtml(tool.shortTitle)}</h2><p>${escapeHtml(tool.description)}</p></div>
@@ -344,6 +346,10 @@ function hubHtml() {
 `;
 }
 
+function hubHtml() {
+  return enhanceCategory(rawHubHtml(), "fr");
+}
+
 const outputs = [
   [fileForRoute(manifest.hubRoute), hubHtml()],
   ...manifest.tools.map((tool) => [fileForRoute(tool.route), pageHtml(tool)])
@@ -355,8 +361,10 @@ for (const [file, content] of selectedOutputs) {
   if (check) {
     if (
       !fs.existsSync(file)
-      || normalizeGeneratedHtml(fs.readFileSync(file, "utf8"))
-        !== normalizeGeneratedHtml(content)
+      || !localizedGeneratorEquivalent(
+        normalizeGeneratedHtml(fs.readFileSync(file, "utf8")),
+        normalizeGeneratedHtml(content)
+      )
     ) {
       console.error("OUT OF DATE " + path.relative(ROOT, file));
       failed = true;

@@ -5,6 +5,7 @@ const path = require("path");
 const vm = require("vm");
 const { execFileSync } = require("child_process");
 const { localizeVisibleLanguage } = require("./lib/french-visible-language");
+const { enhanceCategory } = require("./lib/localized-category-standard");
 const FRENCH_VISIBLE_COPY = require("./lib/french-energy-visible-copy");
 const {
   FRENCH_ENERGY_APPS,
@@ -255,7 +256,7 @@ function buildHub() {
     },
   ]).replace(/</g, "\\u003c");
 
-  const html = `<!doctype html>
+  const html = enhanceCategory(`<!doctype html>
 <html lang="fr" data-theme-choice="auto">
 <head>
   <meta charset="utf-8">
@@ -315,7 +316,7 @@ function buildHub() {
     (function(){var input=document.getElementById("energy-search"),cards=Array.from(document.querySelectorAll(".energy-card")),count=document.querySelector("[data-energy-count]"),empty=document.querySelector("[data-energy-empty]");function run(){var q=input.value.trim().toLocaleLowerCase("fr");var visible=0;cards.forEach(function(card){var show=!q||card.textContent.toLocaleLowerCase("fr").includes(q);card.hidden=!show;if(show)visible+=1});count.textContent=String(visible);empty.hidden=visible!==0}input.addEventListener("input",run);run()})();
   </script>
 </body>
-</html>`;
+</html>`, "fr");
   fs.mkdirSync(path.dirname(fileForRoute("/fr/energy/")), { recursive: true });
   fs.writeFileSync(fileForRoute("/fr/energy/"), html);
 }

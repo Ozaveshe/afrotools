@@ -16,6 +16,16 @@ const {
   FRENCH_ENERGY_APPS
 } = require('./lib/french-energy-parity-contract');
 const { FRENCH_CATEGORIES } = require('./lib/french-category-directory');
+const { enhanceCategory, ROUTES: LOCALIZED_CATEGORY_ROUTES } = require('./lib/localized-category-standard');
+const { countryRows: localizedCountryRows, enhanceCountry } = require('./lib/localized-country-standard');
+const {
+  renderAbout,
+  renderContact,
+  renderFaq,
+  renderCookies,
+  enhanceLegalSurface
+} = require('./lib/localized-institutional-pages');
+const { renderAll: renderSecondaryPages } = require('./lib/localized-secondary-pages');
 const {
   normalizeBuildManagedHtml,
   normalizeBuildManagedFingerprint
@@ -40,6 +50,16 @@ const POST_PROCESSED_HTML = new Set([
   'fr/terms-of-use/index.html',
   'fr/terms/index.html',
   'fr/blog/index.html'
+  ,'fr/about/index.html'
+  ,'fr/contact/index.html'
+  ,'fr/faq/index.html'
+  ,'fr/cookies/index.html'
+  ,'fr/advertise/index.html'
+  ,'fr/pricing/index.html'
+  ,'fr/search/index.html'
+  ,'fr/suggest-tool/index.html'
+  ,'fr/categories/index.html'
+  ,'fr/changelog/index.html'
 ]);
 const DEDICATED_PRODUCT_OWNERS = new Set([
   'fr/tools/contractant-vs-salarie/index.html',
@@ -57,7 +77,10 @@ const PRODUCT_ALTERNATES = {
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
 function isSpecializedFrenchOwner(rel) {
   return DEDICATED_PRODUCT_OWNERS.has(rel)
-    || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js');
+    || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js"')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"');
 }
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
@@ -386,7 +409,6 @@ function homePage() {
   <span class="fr-home-category-mark" aria-hidden="true">${category.icon}</span>
   <span><strong>${category.title}</strong><small>${category.description}</small></span>
 </a>`).join('');
-
   return `<!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="fr">
@@ -439,6 +461,10 @@ function homePage() {
 <a href="/fr/senegal/">Sénégal</a><a href="/fr/cote-divoire/">Côte d’Ivoire</a><a href="/fr/cameroun/">Cameroun</a><a href="/fr/rdc/">RDC</a><a href="/fr/maroc/">Maroc</a><a href="/fr/algerie/">Algérie</a><a href="/fr/tunisie/">Tunisie</a><a href="/fr/benin/">Bénin</a><a href="/fr/burkina-faso/">Burkina Faso</a><a href="/fr/mali/">Mali</a><a href="/fr/guinee/">Guinée</a><a href="/fr/madagascar/">Madagascar</a>
 </div><div class="fr-home-actions"><a class="btn btn-secondary" href="/fr/countries/">Voir les 54 pays</a></div>
 </div><aside class="fr-home-boundary"><h3>Une estimation n’est pas une décision officielle</h3><p>Pour la fiscalité, la douane, la santé, le droit, l’immigration, l’assurance ou une donnée de marché, vérifiez la source, la date et l’autorité indiquées avant d’agir.</p></aside></div></section>
+
+<section class="fr-home-section fr-home-section--muted" aria-labelledby="frEvidenceTitle"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Choisir avec une preuve</p><h2 id="frEvidenceTitle">Cinq contrôles avant de faire confiance au résultat.</h2></div><p>La qualité ne se mesure pas au nombre de pages. Il faut comprendre la question traitée, la provenance de la donnée et la vérification qui reste à faire.</p></div><div class="fr-home-trust-grid"><article><h3>1. Nommer la décision</h3><p>Commencez par le résultat attendu : budget, déclaration, achat, expédition, document ou comparaison. Deux outils proches peuvent répondre à des questions différentes. Lisez les entrées et la sortie avant de remplir le formulaire.</p></article><article><h3>2. Choisir la juridiction</h3><p>Le pays, la région, le type d’entreprise ou la période peut modifier la règle. Une devise ne suffit pas à prouver la juridiction. Contrôlez l’autorité et la période indiquées.</p></article><article><h3>3. Contrôler la source et la date</h3><p>Pour une taxe, un tarif, un calendrier ou un prix, ouvrez la source et lisez la date de revue. Une page officielle accessible aujourd’hui ne prouve pas qu’une valeur enregistrée plusieurs mois plus tôt est encore actuelle.</p></article><article><h3>4. Remplacer les hypothèses</h3><p>Les coûts, marges, rendements, frais ou taux de marché sont plus utiles lorsqu’ils proviennent de vos données ou d’un devis actuel. Testez un scénario bas, central et haut avant de choisir.</p></article><article><h3>5. Conserver la preuve</h3><p>Téléchargez le format annoncé ou imprimez le résumé avec les entrées, la date et la source. Confirmez ensuite auprès de l’autorité, du professionnel ou du fournisseur avant de déclarer, payer ou signer.</p></article></div><div class="fr-home-country-layout"><form class="fr-home-country-card" action="/fr/all-tools/" method="get"><h3>Filtrer le catalogue</h3><label for="frCountry">Pays</label><select id="frCountry" name="country"><option value="">Tous les pays</option><option value="senegal">Sénégal</option><option value="cote-divoire">Côte d’Ivoire</option><option value="cameroon">Cameroun</option><option value="morocco">Maroc</option><option value="kenya">Kenya</option></select><label for="frCategory">Type de tâche</label><select id="frCategory" name="category"><option value="">Toutes les catégories</option><option value="financial">Finance et fiscalité</option><option value="document-pdf">Documents et PDF</option><option value="agriculture">Agriculture</option><option value="engineering">Ingénierie</option></select><label for="frEvidence">Niveau de preuve</label><select id="frEvidence" name="evidence"><option value="">Tous</option><option value="local">Saisie utilisateur</option><option value="dated">Source datée</option><option value="official">Source officielle</option></select><button class="btn btn-primary" type="submit">Afficher les outils</button></form><form class="fr-home-ai-card" action="/fr/ai/" method="get"><h3>Décrire la tâche</h3><label for="frAiTask">Quelle tâche voulez-vous terminer ?</label><textarea id="frAiTask" name="q" rows="5" placeholder="Ex. comparer le coût d’une importation au Sénégal"></textarea><input type="hidden" name="source" value="fr-home"><button class="btn btn-primary" type="submit">Ouvrir l’assistant</button><p>N’ajoutez ni mot de passe, ni identifiant, ni document sensible.</p></form></div><div class="fr-home-link-cloud"><a href="/fr/salary-tax/">Salaire et fiscalité</a><a href="/fr/vat-business-tax/">TVA et entreprise</a><a href="/fr/document-pdf/">Documents et PDF</a><a href="/fr/agriculture/">Agriculture</a><a href="/fr/energy/">Énergie</a><a href="/fr/trade/">Commerce</a><a href="/fr/transport/">Transport</a><a href="/fr/education/">Éducation</a><a href="/fr/health/">Santé</a><a href="/fr/developer-tools/">Développeurs</a><a href="/fr/image-design/">Image et design</a><a href="/fr/religion-culture/">Religion et culture</a><a href="/fr/mortgage-property/">Immobilier</a><a href="/fr/business-roi/">Business et ROI</a><a href="/fr/insurance/">Assurance</a><a href="/fr/telecom/">Télécom</a><a href="/fr/travel/">Voyage</a><a href="/fr/language/">Langues</a><a href="/fr/climat-environnement/">Climat</a><a href="/fr/countries/">54 pays</a><a href="/fr/categories/">32 catégories</a><a href="/fr/blog/">Guides</a><a href="/fr/about/">À propos</a><a href="/fr/contact/">Contact</a></div></div></section>
+
+<section class="fr-home-section" aria-labelledby="frReplayTitle"><div class="fr-home-wrap fr-home-heading"><div><p class="fr-home-eyebrow">Une preuve portable</p><h2 id="frReplayTitle">Rouvrez le résultat avant de le partager.</h2></div><p>Avant de transmettre une estimation, rechargez la page ou rouvrez le fichier exporté et vérifiez que les entrées, les unités, la devise et la période sont encore visibles. Une capture d’écran sans hypothèses est difficile à auditer. Pour un PDF, un CSV, un JSON ou une image, contrôlez que le fichier est lisible dans un logiciel indépendant et qu’il ne contient pas de données que vous ne vouliez pas transmettre. Si le résultat dépend d’une source externe, conservez aussi son lien et sa date de consultation. Cette étape transforme un chiffre isolé en dossier de décision que vous, un collègue ou un professionnel pouvez reprendre sans deviner le contexte. AfroTools indique le format disponible ; il appartient ensuite à l’utilisateur de protéger le fichier, de limiter les destinataires et de confirmer la règle auprès de l’autorité ou du professionnel compétent.</p></div></section>
 
 <section class="fr-home-section fr-home-section--muted" aria-labelledby="frAiTitle"><div class="fr-home-wrap fr-home-ai-layout"><div>
 <p class="fr-home-eyebrow">AfroTools AI, sans détour</p><h2 id="frAiTitle">Décrivez la tâche. Gardez le calcul dans l’outil.</h2>
@@ -525,31 +551,46 @@ function blogPage(manifest) {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${manifest.title} | AfroTools</title><meta name="description" content="${manifest.description}"><link rel="canonical" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="en" href="https://afrotools.com/blog/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/blogu/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/blog/"><link rel="alternate" type="application/rss+xml" title="Guides AfroTools en français" href="/fr/blog/feed.xml"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/blog/assets/css/blog.css"><link rel="stylesheet" href="/blog/assets/css/blog-platform.css"><link rel="stylesheet" href="/blog/assets/css/blog-typography.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script></head><body><a class="skip-link" href="#articles">Aller aux articles</a><afro-navbar></afro-navbar><header class="blog-hero"><div class="blog-hero-inner"><nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › Blog</nav><span class="eyebrow">Le journal AfroTools</span><h1>Guides pratiques pour l’argent, le travail et les décisions du quotidien</h1><p class="blog-hero-sub">${manifest.description} Cette sélection n’inclut que les articles dont la version française a été relue.</p><label for="blogSearchInput">Rechercher dans les guides</label><input id="blogSearchInput" class="blog-search-input" type="search" placeholder="Ex. salaire, TVA, Sénégal"></div></header><main class="blog-section" id="articles"><p id="blogStatus" aria-live="polite">${manifest.articles.length} guides en français</p><div class="blog-grid" id="blogGrid">${cards}</div></main><afro-footer></afro-footer><script>(function(){var input=document.getElementById('blogSearchInput'),cards=[].slice.call(document.querySelectorAll('.article-card')),status=document.getElementById('blogStatus');input.addEventListener('input',function(){var q=input.value.toLocaleLowerCase('fr');var shown=0;cards.forEach(function(card){var visible=!q||card.textContent.toLocaleLowerCase('fr').indexOf(q)>=0;card.hidden=!visible;if(visible)shown++;});status.textContent=shown?shown+' guide'+(shown>1?'s':'')+' en français':'Aucun guide ne correspond à cette recherche.';});})();</script></body></html>\n`;
 }
 
-function withBlogOgUrl(html) {
-  return html.replace(
-    '<link rel="canonical" href="https://afrotools.com/fr/blog/">',
-    '<link rel="canonical" href="https://afrotools.com/fr/blog/"><meta property="og:url" content="https://afrotools.com/fr/blog/">'
-  );
-}
-
 function blogFeed(manifest) {
   const items = manifest.articles.map((a) => `<item><title><![CDATA[${articleTitle(a.slug)}]]></title><link>https://afrotools.com/fr/blog/${a.slug}/</link><guid>https://afrotools.com/fr/blog/${a.slug}/</guid><description><![CDATA[${a.description}]]></description><language>fr</language></item>`).join('');
   return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${manifest.title}</title><link>https://afrotools.com/fr/blog/</link><description>${manifest.description}</description><language>fr</language>${items}</channel></rss>\n`;
 }
 
 output('fr/index.html', withAnalyticsLoader(homePage()));
-output('fr/privacy/index.html', withAnalyticsLoader(privacyPage()));
-output('fr/terms-of-use/index.html', withAnalyticsLoader(termsPage()));
+output('fr/privacy/index.html', withAnalyticsLoader(enhanceLegalSurface(privacyPage(), 'fr')));
+output('fr/terms-of-use/index.html', withAnalyticsLoader(enhanceLegalSurface(termsPage(), 'fr')));
 output('fr/terms/index.html', withAnalyticsLoader(aliasPage()));
 const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
-output('fr/blog/index.html', withAnalyticsLoader(withBlogOgUrl(blogPage(blog))));
+if (!read('fr/blog/index.html').includes('scripts/build-localized-blog-hubs.js')) {
+  output('fr/blog/index.html', withAnalyticsLoader(blogPage(blog)));
+}
 output('fr/blog/feed.xml', blogFeed(blog));
+output('fr/about/index.html', withAnalyticsLoader(renderAbout('fr')));
+output('fr/contact/index.html', withAnalyticsLoader(renderContact('fr')));
+output('fr/faq/index.html', withAnalyticsLoader(renderFaq('fr')));
+output('fr/cookies/index.html', withAnalyticsLoader(renderCookies('fr')));
+const secondaryPages = renderSecondaryPages('fr');
+output('fr/advertise/index.html', withAnalyticsLoader(secondaryPages.advertise));
+output('fr/pricing/index.html', withAnalyticsLoader(secondaryPages.pricing));
+output('fr/search/index.html', withAnalyticsLoader(secondaryPages.search));
+output('fr/suggest-tool/index.html', withAnalyticsLoader(secondaryPages.suggest));
+output('fr/categories/index.html', withAnalyticsLoader(secondaryPages.categories));
+output('fr/changelog/index.html', withAnalyticsLoader(secondaryPages.changelog));
+for (const row of localizedCountryRows()) {
+  output(row.fr.ownerFile, enhanceCountry(read(row.fr.ownerFile), 'fr', row.englishRoute));
+}
+
+for (const rel of LOCALIZED_CATEGORY_ROUTES.fr) {
+  if (fs.existsSync(path.join(ROOT, rel)) && !isSpecializedFrenchOwner(rel)) output(rel, enhanceCategory(read(rel), 'fr'));
+}
 
 for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   if (POST_PROCESSED_HTML.has(rel)) continue;
   if (isSpecializedFrenchOwner(rel)) continue;
-  repairVisibleLanguage(rel, VISIBLE_LANGUAGE_TRANSFORMS);
+  if (LOCALIZED_CATEGORY_ROUTES.fr.includes(rel)) continue;
+  const source = localizeVisibleLanguage(read(rel), VISIBLE_LANGUAGE_TRANSFORMS);
+  output(rel, source);
 }
 
 const prohibited = [

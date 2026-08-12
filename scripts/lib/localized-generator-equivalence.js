@@ -13,6 +13,7 @@ const { normalizeBuildManagedHtml } = require("./shared-asset-references");
 function normalizeLocalizedGeneratorHtml(html) {
   return normalizeBuildManagedHtml(html)
     .replace(/((?:src|href)=["']\/[^"'?]+\.(?:js|css))\?v=[a-f0-9]+(["'])/gi, "$1$2")
+    .replace(/\s*<meta\b(?=[^>]*\bname=["']afrotools-content-id["'])(?=[^>]*\bcontent=["']content:[^"']+["'])[^>]*>\s*/gi, "\n")
     .replace(/\s*<script\b[^>]*src=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]+)?["'][^>]*><\/script>\s*/gi, "\n")
     .replace(/\s*<link\b[^>]*rel=["'](?:canonical|alternate)["'][^>]*>\s*/gi, "\n")
     .replace(/\r\n?/g, "\n")

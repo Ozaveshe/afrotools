@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const write = process.argv.includes('--write');
@@ -442,7 +443,7 @@ function hubPage() {
       url: `https://afrotools.com/fr/telecom/${app.slug}/`
     }))
   });
-  return `<!doctype html>
+  return enhanceCategory(`<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
@@ -508,7 +509,7 @@ function hubPage() {
   <script src="/assets/js/components/footer.js" defer></script>
 </body>
 </html>
-`;
+`, 'fr');
 }
 
 const drift = [];

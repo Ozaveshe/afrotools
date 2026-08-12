@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONTRACT_PATH = path.join(ROOT, 'data', 'insurance', 'assumption-contract.json');
@@ -23,6 +24,8 @@ const SW_ALTERNATES = {
   'claim-tracker': '/sw/zana/ufuatiliaji-wa-dai/',
   'crop-insurance-calc': '/sw/zana/kikokotoo-bima-ya-mazao/',
   'fire-insurance': '/sw/zana/kikokotoo-bima-ya-moto/',
+  'insurance-fraud-checker': '/sw/zana/ukaguzi-wa-ishara-za-udanganyifu-wa-bima/',
+  'marine-insurance': '/sw/zana/kikokotoo-bima-ya-bahari/',
   microinsurance: '/sw/zana/bima-ndogo/',
   'professional-indemnity': '/sw/zana/bima-ya-dhima-ya-kitaalamu/'
 };
@@ -318,7 +321,7 @@ function hubSchema() {
   });
 }
 
-function hubHtml() {
+function rawHubHtml() {
   const cards = APPS.map((app) => `<a class="insurance-link" href="${app.frenchRoute}" data-insurance-app="${app.id}">
     <img src="/assets/img/tools/${app.id}.webp" alt="" width="320" height="180" loading="lazy">
     <strong>${escapeHtml(app.title)}</strong>
@@ -443,6 +446,10 @@ function hubHtml() {
 </body>
 </html>
 `;
+}
+
+function hubHtml() {
+  return enhanceCategory(rawHubHtml(), 'fr');
 }
 
 function buildFrenchDiscovery() {
