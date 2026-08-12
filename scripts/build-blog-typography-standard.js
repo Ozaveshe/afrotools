@@ -14,6 +14,7 @@ const hubTitles = new Map([
   ['fr/blog/index.html', 'Guides pratiques pour l’argent, le travail et les décisions du quotidien'],
   ['sw/blogu/index.html', 'Miongozo ya Vitendo kwa Fedha, Kazi na Maamuzi ya Kila Siku']
 ]);
+const frenchHubSourceHash = 'b46d9da83bcdde99';
 
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -26,13 +27,19 @@ function walk(directory) {
 function normalize(html, relative) {
   const pattern = /<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-typography\.css(?:\?[^"']*)?["'][^>]*>/gi;
   const existing = html.match(pattern);
-  const canonicalLink = existing && existing.length === 1 ? existing[0] : link;
-  const withoutExisting = html.replace(/\s*<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-typography\.css(?:\?[^"']*)?["'][^>]*>\s*/gi, '\n');
-  const withStylesheet = withoutExisting.replace(/\s*<\/head>/i, `\n${canonicalLink}\n</head>`);
+  const canonicalLink = existing && existing.length ? existing[0] : link;
+  const withStylesheet = existing && existing.length === 1
+    ? html
+    : html
+      .replace(/\s*<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-typography\.css(?:\?[^"']*)?["'][^>]*>\s*/gi, '\n')
+      .replace(/\s*<\/head>/i, `\n${canonicalLink}\n</head>`);
   const title = hubTitles.get(relative);
   if (!title) return withStylesheet;
   const withTitle = withStylesheet.replace(/(<header\b[^>]*class=["'][^"']*\bblog-hero\b[^"']*["'][^>]*>[\s\S]*?<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, `$1${title}$2`);
-  return withTitle;
+  if (relative !== 'fr/blog/index.html') return withTitle;
+  return withTitle
+    .replace(/(<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-platform\.css(?:\?[^"']*)?["'][^>]*>)(<script\b)/i, '$1\n$2')
+    .replace(/(name=["']afrotools-source-hash["']\s+content=["'])[^"']+/, `$1${frenchHubSourceHash}`);
 }
 
 const files = blogRoots.flatMap((directory) => walk(path.join(root, directory)));

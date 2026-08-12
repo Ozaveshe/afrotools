@@ -104,7 +104,7 @@ for (const [route, fallbackRoute] of [['/sw/auth/', '/auth/'], ['/sw/dashboard/'
 
 const pricing = read('sw/bei/index.html');
 assert(pricing.includes('hreflang="sw" href="https://afrotools.com/sw/bei/"'));
-assert(pricing.includes('hreflang="x-default" href="https://afrotools.com/sw/bei/"'));
+assert(pricing.includes('hreflang="x-default" href="https://afrotools.com/pricing/"'));
 assert(pricing.includes(registry.productPlans.find((plan) => plan.id === 'product:monthly_kes').title));
 assert(pricing.includes(registry.productPlans.find((plan) => plan.id === 'product:annual_kes').title));
 assert(/hatua ya sasa ya malipo.*Kiingereza/i.test(visibleText(pricing)));

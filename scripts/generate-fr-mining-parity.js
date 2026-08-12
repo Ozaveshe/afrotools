@@ -487,12 +487,12 @@ function writeTarget(relativePath, content) {
   const target = path.join(ROOT, relativePath);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
   if (CHECK) {
-    if (!localizedGeneratorEquivalent(current, content)) {
+    if (!localizedGeneratorEquivalent(normalizeGeneratedHtml(current), normalizeGeneratedHtml(content))) {
       throw new Error(`French Mining output is stale: ${relativePath}`);
     }
     return false;
   }
-  if (localizedGeneratorEquivalent(current, content)) return false;
+  if (localizedGeneratorEquivalent(normalizeGeneratedHtml(current), normalizeGeneratedHtml(content))) return false;
   fs.mkdirSync(path.dirname(target), { recursive: true });
   writeFileSyncWithRetry(target, content, 'utf8');
   return true;

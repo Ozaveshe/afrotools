@@ -361,7 +361,10 @@ for (const [file, content] of selectedOutputs) {
   if (check) {
     if (
       !fs.existsSync(file)
-      || !localizedGeneratorEquivalent(fs.readFileSync(file, "utf8"), content)
+      || !localizedGeneratorEquivalent(
+        normalizeGeneratedHtml(fs.readFileSync(file, "utf8")),
+        normalizeGeneratedHtml(content)
+      )
     ) {
       console.error("OUT OF DATE " + path.relative(ROOT, file));
       failed = true;
