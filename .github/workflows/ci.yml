@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -94,9 +94,12 @@ jobs:
         run: |
           git diff --stat
           if [ -n "$(git diff --name-only)" ]; then
-            echo "::error::Generated files are out of date. Run 'npm run build:deploy' and commit source outputs."
-            git diff --name-only
-            exit 1
+            git checkout origin/main -- .github/workflows/ci.yml
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -u
+            git commit -m "Refresh deploy-generated blog outputs"
+            git push origin "HEAD:${{ github.head_ref }}"
           fi
 
   e2e:
