@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 151 | 0 | 253 |
-| sw | 127 | 0 | 277 |
+| fr | 161 | 0 | 254 |
+| sw | 137 | 0 | 278 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 277 | 29 | 0 | 248 | 10 | 0 | 267 |
+| editorial | 288 | 39 | 0 | 249 | 20 | 0 | 268 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -515,6 +515,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/vat-registration-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/vat-registration-uganda-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/vat-registration-uganda-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/vehicle-roadworthiness-inspection-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/vehicle-roadworthiness-inspection-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/vehicle-running-cost-per-km-kenya/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/vehicle-running-cost-per-km-kenya/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/volumetric-weight-calculator-africa/ | editorial | fr | — | missing | no localized route or owner file |

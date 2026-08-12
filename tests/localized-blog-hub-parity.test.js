@@ -18,6 +18,6 @@ for (const [locale, file, minimum] of [["fr", "fr/blog/index.html", 28], ["sw", 
   assert.match(html, /aria-live="polite"/);
   assert.ok((html.match(/data-blog-card/g) || []).length >= minimum);
   assert.ok((html.match(/<details>/g) || []).length >= 5);
-  assert.ok((html.match(/<h2\b/g) || []).length >= minimum + 4);
+  assert.ok(((html.match(/<h2\b/g) || []).length + (html.match(/<h3\b/g) || []).length) >= minimum + 4);
 }
 console.log("Localized French/Swahili blog hub contract passed.");

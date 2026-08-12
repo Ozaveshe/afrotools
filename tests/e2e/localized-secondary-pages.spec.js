@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 
 const cases = [
-  ["/fr/categories/", "input[data-category-search]", "agriculture", "[data-category-card]"],
+  ["/fr/categories/", "input[data-category-search]", "agriculture", "[data-directory-record]"],
   ["/sw/makundi/", "input[data-category-search]", "kilimo", "[data-category-card]"],
   ["/fr/changelog/", "input[data-change-search]", "sécurité", "[data-change-entry]"],
   ["/sw/mabadiliko/", "input[data-change-search]", "usalama", "[data-change-entry]"],

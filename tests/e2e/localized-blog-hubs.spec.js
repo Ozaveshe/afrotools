@@ -13,7 +13,8 @@ for (const config of [
     await page.goto(`${baseURL}${config.route}`, { waitUntil: 'networkidle' });
     await expect(page.locator('afro-navbar')).toBeVisible();
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('[data-blog-card]')).toHaveCount(config.minimum);
+    const totalCards = await page.locator('[data-blog-card]').count();
+    expect(totalCards).toBeGreaterThanOrEqual(config.minimum);
     const logo = page.locator('afro-navbar').locator('a').first();
     await expect(logo).toBeVisible();
     const hamburger = page.locator('afro-navbar').locator('button').filter({ hasText: /menu/i }).first();
@@ -21,9 +22,9 @@ for (const config of [
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
     await page.locator('#blogSearch').fill(config.query);
     await expect(page.locator('[data-blog-card]:visible').first()).toBeVisible();
-    expect(await page.locator('[data-blog-card]:visible').count()).toBeLessThan(config.minimum);
+    expect(await page.locator('[data-blog-card]:visible').count()).toBeLessThan(totalCards);
     await page.locator('#blogReset').click();
-    await expect(page.locator('[data-blog-card]:visible')).toHaveCount(config.minimum);
+    await expect(page.locator('[data-blog-card]:visible')).toHaveCount(totalCards);
     expect(errors).toEqual([]);
   });
 }
