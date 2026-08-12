@@ -10,6 +10,7 @@ const SCOPE = require("../data/localization/sw-sports-travel-parity-manifest.jso
 const SPORTS_SOURCES = require("../data/sports/source-assumption-manifest.json");
 const SPORTS_SOURCE_COPY = require("../data/sports/sw-source-assumption-copy.json");
 const { renderOwnerWorkflow } = require("./lib/swahili-travel-pages.js");
+const { enhanceCategory } = require("./lib/localized-category-standard");
 
 const META = {
   "betting-odds": ["Kikokotoo cha uwezekano wa kamari", "Badili odds na ukokotoe uwezekano, thamani inayotarajiwa na malipo kwa fedha yako.", "Makadirio ya kupanga tu; si ushauri wa kamari wala hakikisho la ushindi.", "Juu kwa hesabu; chini kwa matokeo ya mchezo."],
@@ -247,7 +248,7 @@ function render(row) {
   return pageHtml.replace(/[ \t]+$/gm, "");
 }
 
-function renderSportsHub() {
+function rawRenderSportsHub() {
   const rows = SCOPE.rows.filter((row) => row.category === "sports");
   const cards = rows.map((row) => {
     const meta = META[row.toolId];
@@ -300,7 +301,7 @@ function renderSportsHub() {
 </body></html>`;
 }
 
-function renderTravelHub() {
+function rawRenderTravelHub() {
   const rows = SCOPE.rows.filter((row) => row.category === "travel-tourism");
   if (rows.length !== 9) throw new Error(`Travel hub requires 9 rows, got ${rows.length}`);
   const cards = rows.map((row) => {
@@ -400,6 +401,14 @@ function build() {
     );
   }
   console.log(`Built ${SCOPE.rows.length} native Swahili Sports/Travel pages.`);
+}
+
+function renderSportsHub() {
+  return enhanceCategory(rawRenderSportsHub(), "sw");
+}
+
+function renderTravelHub() {
+  return enhanceCategory(rawRenderTravelHub(), "sw");
 }
 
 if (require.main === module) build();
