@@ -3,11 +3,11 @@
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
 - Public Hausa routes: 105
-- Native: 14
+- Native: 16
 - Localized shells: 59
-- Explicit English fallbacks: 32
-- Indexable: 73
-- Sitemap members: 73
+- Explicit English fallbacks: 30
+- Indexable: 75
+- Sitemap members: 75
 
 | Route | State | Indexable | Sitemap | Equivalent or fallback | Owner |
 |---|---|---:|---:|---|---|
@@ -15,7 +15,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/albashi-da-haraji/ | native | yes | yes |  | ha/albashi-da-haraji/index.html |
 | /ha/allon-aiki/ | english-fallback | no | no | /dashboard/ | data/localization/ha-bridge-manifest.json: explicit dashboard bridge |
 | /ha/farashi/ | english-fallback | no | no | /pricing/ | data/localization/ha-bridge-manifest.json: explicit pricing bridge |
-| /ha/game-da-mu/ | english-fallback | no | no | /about/ | data/localization/ha-bridge-manifest.json: explicit about bridge |
+| /ha/game-da-mu/ | native | yes | yes |  | scripts/build-hausa-institutional-pages.js |
 | /ha/harshe-da-fassara/ | native | yes | yes |  | ha/harshe-da-fassara/index.html |
 | /ha/ilimi/ | native | yes | yes |  | ha/ilimi/index.html |
 | /ha/inshora/ | english-fallback | no | no | /insurance/ | data/localization/ha-bridge-manifest.json: explicit insurance bridge |
@@ -115,4 +115,4 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/shiga/ | english-fallback | no | no | /auth/ | data/localization/ha-bridge-manifest.json: explicit account bridge |
 | /ha/sirri/ | english-fallback | no | no | /privacy/ | data/localization/ha-bridge-manifest.json: explicit privacy bridge |
 | /ha/takardu-da-pdf/ | native | yes | yes |  | ha/takardu-da-pdf/index.html |
-| /ha/tuntube-mu/ | english-fallback | no | no | /contact/ | data/localization/ha-bridge-manifest.json: explicit contact bridge |
+| /ha/tuntube-mu/ | native | yes | yes |  | scripts/build-hausa-institutional-pages.js |

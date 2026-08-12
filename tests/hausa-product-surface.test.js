@@ -14,7 +14,8 @@ const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/registry/locale-
 
 assert.strictEqual(manifest.locale, 'ha');
 assert.strictEqual(manifest.fallbackLocale, 'en');
-assert.ok(manifest.bridges.length >= 13);
+assert.ok(manifest.bridges.length >= 11);
+assert.ok(!manifest.bridges.some((bridge) => ['about', 'contact'].includes(bridge.id)), 'native Hausa institutional routes must not remain English bridges');
 assert.strictEqual(new Set(manifest.bridges.map((bridge) => bridge.id)).size, manifest.bridges.length);
 assert.strictEqual(new Set(manifest.bridges.map((bridge) => bridge.route)).size, manifest.bridges.length);
 
@@ -94,7 +95,7 @@ const changedLedger = audit.preserveGeneratedAt(
 assert.strictEqual(changedLedger.generatedAt, '2026-07-26T00:00:00.000Z', 'changed Hausa ledgers must receive a fresh timestamp');
 const coverage = coverageApi.buildReport();
 assert.strictEqual(coverage.summary.total, 105);
-assert.strictEqual(coverage.summary['english-fallback'], 32);
+assert.strictEqual(coverage.summary['english-fallback'], 30);
 manifest.bridges.forEach((bridge) => {
   const record = coverage.records.find((entry) => entry.route === bridge.route);
   assert.ok(record, `coverage report missing ${bridge.route}`);
