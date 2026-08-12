@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/schemas/automation-handoff-v1.json",
+  "title": "AfroTools automation handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "handoff_id",
+    "automation_id",
+    "run_id",
+    "created_at",
+    "updated_at",
+    "status",
+    "change_kind",
+    "summary",
+    "merge_candidate",
+    "changed_files",
+    "source_files",
+    "generated_files",
+    "conflict_keys",
+    "dependencies",
+    "validations",
+    "risk",
+    "live_mutations",
+    "publisher"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "handoff_id": { "type": "string", "minLength": 3 },
+    "automation_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "status": {
+      "enum": ["ready", "no_change", "live_only", "blocked", "quarantined", "consumed"]
+    },
+    "change_kind": { "enum": ["repository", "live_data", "report_only", "none"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "merge_candidate": { "type": "boolean" },
+    "base_sha": { "type": ["string", "null"] },
+    "branch": { "type": ["string", "null"] },
+    "commit": { "type": ["string", "null"] },
+    "changed_files": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "source_files": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "generated_files": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "conflict_keys": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "dependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "validations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "status", "summary"],
+        "properties": {
+          "command": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pass", "fail", "not_run"] },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "reasons", "touches_routes", "touches_auth", "touches_database", "touches_generated_output"],
+      "properties": {
+        "level": { "enum": ["low", "medium", "high", "critical"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "touches_routes": { "type": "boolean" },
+        "touches_auth": { "type": "boolean" },
+        "touches_database": { "type": "boolean" },
+        "touches_generated_output": { "type": "boolean" }
+      }
+    },
+    "live_mutations": { "type": "array", "items": { "type": "string" } },
+    "rollback": { "type": ["string", "null"] },
+    "blocker": { "type": ["string", "null"] },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumed_at", "release_commit", "deploy_id", "live_proof"],
+      "properties": {
+        "consumed_at": { "type": ["string", "null"] },
+        "release_commit": { "type": ["string", "null"] },
+        "deploy_id": { "type": ["string", "null"] },
+        "live_proof": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
