@@ -121,6 +121,7 @@ function metrics(record) {
     hasDescription: /<meta\b[^>]*\bname=["']description["']/i.test(html),
     hasOpenGraph: /<meta\b[^>]*\bproperty=["']og:title["']/i.test(html),
     hasViewport: /<meta\b[^>]*\bname=["']viewport["']/i.test(html),
+    isEnglishBlogFrame: /<iframe\b[^>]*\bsrc=["']\/blog\//i.test(html),
     langMatches: new RegExp(`<html\\b[^>]*\\blang=["']${record.locale}["']`, 'i').test(html)
   };
 }
@@ -130,8 +131,11 @@ function ratio(value, baseline) {
   return Number((value / baseline).toFixed(3));
 }
 
-function assess(english, localized, routeClass, englishRoute) {
+function assess(english, localized, routeClass, englishRoute, localeState) {
   if (!localized) return { status: 'missing', reasons: ['no localized route or owner file'] };
+  if (routeClass === 'editorial' && (localeState === 'localized-shell' || localized.isEnglishBlogFrame)) {
+    return { status: 'missing', reasons: ['English fallback shell; no reviewed native article'] };
+  }
   const reasons = [];
   const contentRatio = ratio(localized.words, english.words);
   const headingRatio = ratio(localized.h2 + localized.h3, english.h2 + english.h3);
@@ -148,7 +152,11 @@ function assess(english, localized, routeClass, englishRoute) {
     ? { content: 0.75, heading: 0.6, links: 0.5 }
     : { content: 0.65, heading: 0.6, links: 0.5 });
 
-  if (routeClass === 'discovery-support') {
+  if (routeClass === 'editorial') {
+    if (localized.words < 600) reasons.push(`native article too shallow (${localized.words}/600 words)`);
+    if (localized.h2 + localized.h3 < 5) reasons.push(`native article structure too shallow (${localized.h2 + localized.h3}/5 sections)`);
+    if (localized.links < 4) reasons.push(`native article links too shallow (${localized.links}/4 links)`);
+  } else if (routeClass === 'discovery-support') {
     // The shared five-step semantic, structure, link and form contract is the
     // primary parity boundary; 280 words prevents terse shells without
     // penalizing the more compact Swahili rendering.
@@ -178,7 +186,10 @@ function assess(english, localized, routeClass, englishRoute) {
     if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
     if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
   }
-  if (routeClass === 'discovery-support') {
+  if (routeClass === 'editorial') {
+    // Native localized articles follow a semantic editorial contract. Silent
+    // English iframe shells were already rejected above and never earn credit.
+  } else if (routeClass === 'discovery-support') {
     // Informational discovery surfaces use the shared decision, evidence,
     // privacy and handoff contract rather than copying app-specific controls.
   } else if (routeClass === 'country-hub') {
@@ -249,7 +260,7 @@ function build() {
         route: record ? record.route : null,
         state: record ? record.state : 'missing',
         metrics: localizedMetrics,
-        assessment: assess(englishMetrics, localizedMetrics, classify(englishRecord.route), englishRecord.route)
+        assessment: assess(englishMetrics, localizedMetrics, classify(englishRecord.route), englishRecord.route, record ? record.state : 'missing')
       };
     }
     rows.push({
