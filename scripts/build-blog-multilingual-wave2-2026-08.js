@@ -13,6 +13,14 @@ const reportRelative = 'reports/blog-multilingual-wave2-2026-08.md';
 const write = process.argv.includes('--write');
 const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 
+function assetVersion(relativePath) {
+  const content = fs.readFileSync(path.join(root, relativePath), 'utf8').replace(/\r\n?/g, '\n');
+  return crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
+}
+
+const blogReadingVersion = assetVersion('blog/assets/js/blog-reading.js');
+const analyticsVersion = assetVersion('assets/js/lazy-analytics.js');
+
 const LINK_FIXES = new Map([
   ['/sw/blogu/kumbukumbu-za-mkutano-maamuzi-hatua/', '/sw/blogu/mfano-kumbukumbu-za-mkutano-afrika/'],
   ['/fr/tools/meta-tags/', '/fr/tools/generateur-meta-tags/'],
@@ -106,9 +114,9 @@ function normalizeBuildOwnedArticleHtml(html) {
     .replace(/\s+data-chat-bundle="[^"]*"/, '')
     .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
     .replace(/^[ \t]*<link rel="stylesheet" href="\/blog\/assets\/css\/blog-typography\.css">[ \t]*\n?/gm, '')
-    .replace(/^[ \t]*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>[ \t]*\n?/gm, '')
+    .replace(/\s*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>\s*/g, '\n')
     .replace(/^[ \t]*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>[ \t]*\n?/gm, '')
-    .replace(/^[ \t]*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>[ \t]*\n?/gm, '')
+    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\s*/g, '\n')
     .replace(/\n{3,}/g, '\n\n');
 }
 
@@ -256,7 +264,7 @@ ${alternates}
 <section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="${c.home}">${locale === 'en' ? 'Home' : locale === 'fr' ? 'Accueil' : 'Mwanzo'}</a> <span class="sep">&#8250;</span> <a href="${c.hub}">${locale === 'sw' ? 'Blogu' : 'Blog'}</a></nav><span class="category-badge">${esc(item.category)}</span><h1>${esc(item.title)}</h1><div class="article-meta-hero"><span>${c.team}</span><span class="dot"></span><time datetime="${data.published}">${c.reviewed} ${data.reviewedLabel[locale]}</time><span class="dot"></span><span>${readMinutes} ${c.minutes}</span></div></div></section>
 <div class="article-featured-img"><div class="article-featured-img-inner"><img width="600" height="400" src="/assets/img/tools/${topic.image}.webp" alt="${esc(item.imageAlt)}" loading="eager"></div></div>
 <main class="article-layout"><nav class="article-toc" aria-label="${c.guide}"><div class="article-toc-title">${c.guide}</div><ol><li><a href="#quick-answer">${c.quick}</a></li><li><a href="#inputs">${c.inputs}</a></li><li><a href="#workflow">${c.workflow}</a></li><li><a href="#pitfalls">${c.pitfalls}</a></li><li><a href="#sources">${c.sources}</a></li><li><a href="#faq">${c.faq}</a></li></ol></nav><article class="article-body">${body}</article></main>
-<afro-footer></afro-footer><script src="/blog/assets/js/blog-reading.js" defer></script><script src="/assets/js/lazy-analytics.js" defer></script>
+<afro-footer></afro-footer><script src="/blog/assets/js/blog-reading.js?v=${blogReadingVersion}" defer></script><script src="/assets/js/lazy-analytics.js?v=${analyticsVersion}" defer></script>
 </body></html>
 `;
 }
