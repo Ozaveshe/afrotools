@@ -1,16 +1,16 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-08-10
+Generated: 2026-08-12
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
 ## Headline Metrics
 
 - Hausa routes scanned: 105
-- Clean routes: 48
+- Clean routes: 49
 - Routes with blockers: 0
 - BLOCKER_VISIBLE_ENGLISH findings: 0
-- POSSIBLE_FALSE_POSITIVE findings: 153
+- POSSIBLE_FALSE_POSITIVE findings: 149
 - ACCEPTED_TECH_TERM findings: 597
 
 ## Top 20 Blocker Routes
@@ -35,8 +35,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/allon-aiki/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/farashi/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/game-da-mu/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/game-da-mu/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/game-da-mu/` | 7 | English route label marked as fallback | Tsallake zuwa babban abun ciki Gida › Game da AfroTools Manufarmu Game da AfroTools Muna gina kayan aikin da ke taimaka wa mutane su yanke shawara cikin yanayin Afirka, tare da tushe, sirri da iyakokin da ake iya gani... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 31 | English route label marked as fallback | Harshen shafi da ƙasar da bayanai suka shafa abubuwa ne daban. Ci gaba ba zai sauya ƙasar da ka zaɓa ba. Za mu aika da hanyar komawa idan shafin Turanci yana goyon bayansu. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/inshora/` | 35 | English route label marked as fallback | Ci gaba zuwa shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/jamb/adabi/` | 101 | English route label marked as fallback | Jagorar Hausa don JAMB Adabi: wakoki, labari, wasan kwaikwayo, salo, jigo da fahimtar rubutu. Tambayoyin shekarun da suka gabata suna nan a shafin Turanci; wannan shafin yana taimaka maka fahimtar abin da za ka karant... | Batch 2 - Education and JAMB visible-copy cleanup |
@@ -76,9 +75,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 24 | brand or platform name | Tsallake zuwa babban abun ciki Hausa / Sadarwa / Intanet Kiyasin amfani da intanet Kiyasta GB da kake bukata a wata daga lilo, bidiyo, sautin kira, karatu, aiki da WhatsApp. Sakamako kiyasi ne; tsare-tsaren kamfanin s... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/amfanin-bayanan-intanet/` | 25 | English route label marked as fallback | Amfani na yau da kullum Lilo a rana, sa'o'i Bidiyo a rana, sa'o'i Kiran bidiyo a mako, sa'o'i Karatu ko aiki a rana, sa'o'i Lissafa GB Kwafi sakamako Sauke TXT Yadda aka yi kiyasi Kayan aikin yana amfani da matsakaici... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/farashin-kayayyakin-gona/` | 25 | English route label marked as fallback | Kiyasin kudin shiga Adadi Farashi a kan daya Kudin sufuri da ajiya Ragin lalacewa, kashi Kiyasta kudin shiga Abin lura ga manomi da dan kasuwa Ka duba farashi fiye da kasuwa daya idan zai yiwu. Kudin sufuri, ajiya, na... | Batch 2 - Agriculture visible-copy cleanup |
-| `/ha/kayan-aiki/gwajin-ussd/` | 101 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/gwajin-ussd/` | 119 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/gwajin-ussd/` | 135 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/gwajin-ussd/` | 31 | brand or platform name | Samfurin sabis Waɗannan misalan menu ne kawai, ba tabbacin lambar yanzu ba. Tabbatar da mai bayarwa kafin kaddamarwa. M-Pesa (Kenya) GTBank (Nigeria) MTN MoMo (Ghana) FNB (South Africa) Lambar gwaji | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 86 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 104 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/gyara-pdf/` | 120 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
@@ -142,6 +139,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/whatsapp-link/` | 181 | brand or platform name | Shirin link Hanyar WhatsApp wa.me tana bukatar cikakkiyar lambar kasa ba tare da alamar +, baka ko tazara ba. | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 206 | brand or platform name | WhatsApp link dinka | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 213 | brand or platform name | Bude a WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 217 | brand or platform name | Lambar QR ta mahadar WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 222 | brand or platform name | Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin ... | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 228 | brand or platform name | Ta yaya zan kirkiro WhatsApp link ga kasuwanci? | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 229 | brand or platform name | Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi. | Batch 2 - Telecom and USSD visible-copy cleanup |
@@ -149,6 +147,8 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/whatsapp-link/` | 241 | brand or platform name | Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp. | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/whatsapp-link/` | 252 | brand or platform name | Duba lambar WhatsApp kafin rabawa | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/wurin-aikin-pdf/` | 161 | brand or platform name | Akwai da Hausa Matsa PDF Rage girman fayil kafin aikawa ta email ko WhatsApp. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
+| `/ha/kayan-aiki/wurin-aikin-pdf/` | 178 | English route label marked as fallback | Me yasa wasu hanyoyi suke kaiwa shafin Turanci? | Batch 2 - Document, PDF, invoice, and Naira cleanup |
+| `/ha/kayan-aiki/wurin-aikin-pdf/` | 185 | English route label marked as fallback | Tushe da sabuntawa: Shawarwarin hanya suna bin taswirar aikin PDF ta AfroTools. Wasu manyan kayan PDF na iya bude shafin Turanci har sai cikakkiyar fuskar Hausa ta shirya. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 
 ## ACCEPTED_TECH_TERM
 
@@ -206,6 +206,7 @@ The JSON ledger contains line-level accepted-term examples. These are tracked so
 - `/ha/noma/`
 - `/ha/noma/taki-najeriya/`
 - `/ha/noma/yawan-iri-najeriya/`
+- `/ha/tuntube-mu/`
 
 ## Recommended Cleanup Order
 
