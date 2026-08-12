@@ -43,7 +43,10 @@ for (const file of pages) {
     const hasNativeToolSurface =
       /\/assets\/css\/[^"'?]+(?:vip|planner)[^"'?]*\.css/i.test(html) &&
       /\/assets\/js\/pages\/[^"'?]+\.js/i.test(html);
-    assert.ok(hasSharedHausaSurface || hasNativeToolSurface, `${relative} must load either the shared Hausa surface or a native localized tool surface`);
+    const hasNativeInstitutionalSurface =
+      html.includes('name="afrotools-source-owner" content="scripts/build-hausa-institutional-pages.js"') &&
+      /\/assets\/css\/localized-institutional\.css(?:\?v=[a-f0-9]+)?/i.test(html);
+    assert.ok(hasSharedHausaSurface || hasNativeToolSurface || hasNativeInstitutionalSurface, `${relative} must load the shared Hausa surface, an exact native tool surface, or the source-owned institutional surface`);
   }
   const main = html.match(/<main\b[^>]*\bid=["']([^"']+)["']/i);
   assert.ok(main, `${relative} must expose an addressable main region`);
