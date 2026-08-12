@@ -20,6 +20,7 @@ for (const locale of ['fr', 'sw']) {
   assert(api.includes('data-api-sandbox'), `${locale} API sandbox controls`);
   assert(api.includes('FAQPage'), `${locale} API FAQ schema`);
   assert(!api.includes('<iframe'), `${locale} API is native, not an English iframe`);
+  if (locale === 'fr') assert(!api.includes('Hesabu brut-net'), 'French API has no Swahili PAYE description');
 }
 
 const report = parity.build();

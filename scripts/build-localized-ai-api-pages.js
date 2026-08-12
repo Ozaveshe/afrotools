@@ -10,6 +10,7 @@ const OWNER = 'scripts/build-localized-ai-api-pages.js';
 
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
 function emit(rel, html) {
+  if (rel === 'fr/api/index.html') html = html.replace('Hesabu brut-net na net-brut kwa masoko yanayokubaliwa.', 'Calculez le brut-net et le net-brut pour les marchés pris en charge.');
   const match = rel.match(/^(fr|sw)\/(ai|api)\/index\.html$/);
   if (match && !html.includes('name="afrotools-source-owner"')) {
     html = html.replace('<head>', `<head>\n<meta name="afrotools-source-owner" content="${OWNER}">\n<meta name="afrotools-content-id" content="localized-${match[2]}:${match[1]}:entry">`);
