@@ -38,6 +38,7 @@ for (const [relative, title] of expectedHubTitles) {
 }
 
 const css = fs.readFileSync(path.join(root, 'blog', 'assets', 'css', 'blog-typography.css'), 'utf8');
+const localizedHubCss = fs.readFileSync(path.join(root, 'assets', 'css', 'localized-blog-hub.css'), 'utf8');
 assert(css.includes("--blog-title-font: 'DM Sans'"), 'Typography must use the local multilingual DM Sans family');
 assert(css.includes('font-style: normal !important'), 'Typography must neutralize italic legacy titles');
 assert(css.includes('font-weight: 700 !important'), 'Typography must use the approved weight');
@@ -56,6 +57,10 @@ for (const selector of requiredHubTitleSelectors) {
   assert(css.includes(selector), `Typography must standardize ${selector}`);
 }
 assert(css.includes('.article-card-body h2 a'), 'French hub card links must inherit the standardized title treatment');
+assert(
+  /\.localized-blog-hero h1\s*\{[^}]*color:\s*#f8fafc/i.test(localizedHubCss),
+  'Localized blog hero titles must explicitly override the global dark heading color'
+);
 
 for (const relative of expectedHubTitles.keys()) {
   const html = fs.readFileSync(path.join(root, relative), 'utf8');
