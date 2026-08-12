@@ -1,0 +1,102 @@
+const assert = require('assert');
+const { validateHandoff, buildQueue } = require('../scripts/automation-handoff');
+
+function fixture(overrides = {}) {
+  return {
+    schema_version: 1,
+    handoff_id: 'lane-2026-08-12-run-1',
+    automation_id: 'lane',
+    run_id: 'run-1',
+    created_at: '2026-08-12T08:00:00.000Z',
+    updated_at: '2026-08-12T08:05:00.000Z',
+    status: 'ready',
+    change_kind: 'repository',
+    summary: 'Scoped source update',
+    merge_candidate: true,
+    base_sha: 'a037f2256140691a034b2eeca465b98e7d7f8846',
+    branch: 'automation/lane-2026-08-12',
+    commit: '1234567890abcdef1234567890abcdef12345678',
+    changed_files: ['data/example.json'],
+    source_files: ['data/example.json'],
+    generated_files: [],
+    conflict_keys: ['data:example'],
+    dependencies: [],
+    validations: [{ command: 'node tests/example.test.js', status: 'pass', summary: 'passed' }],
+    risk: {
+      level: 'low',
+      reasons: [],
+      touches_routes: false,
+      touches_auth: false,
+      touches_database: false,
+      touches_generated_output: false,
+    },
+    live_mutations: [],
+    rollback: 'Revert the daily release commit.',
+    blocker: null,
+    publisher: { consumed_at: null, release_commit: null, deploy_id: null, live_proof: [] },
+    ...overrides,
+  };
+}
+
+assert.deepStrictEqual(validateHandoff(fixture()), []);
+assert.ok(validateHandoff(fixture({ commit: null })).some((error) => error.includes('require commit')));
+assert.ok(validateHandoff(fixture({ status: 'blocked', merge_candidate: false, blocker: null })).some((error) => error.includes('require blocker')));
+
+const first = fixture();
+const second = fixture({ handoff_id: 'lane-2-run-1', automation_id: 'lane-2', commit: 'abcdef1234567890abcdef1234567890abcdef12' });
+const queue = buildQueue([
+  { filePath: 'one', item: first, errors: validateHandoff(first) },
+  { filePath: 'two', item: second, errors: validateHandoff(second) },
+]);
+assert.strictEqual(queue.ready.length, 2);
+assert.deepStrictEqual(queue.conflicts, [
+  { type: 'source_file', key: 'data/example.json', handoffs: ['lane-2026-08-12-run-1', 'lane-2-run-1'] },
+  { type: 'conflict_key', key: 'data:example', handoffs: ['lane-2026-08-12-run-1', 'lane-2-run-1'] },
+]);
+
+const dependent = fixture({
+  handoff_id: 'dependent-run-1',
+  automation_id: 'dependent',
+  commit: 'fedcba0987654321fedcba0987654321fedcba09',
+  changed_files: ['data/dependent.json'],
+  source_files: ['data/dependent.json'],
+  conflict_keys: ['data:dependent'],
+  dependencies: ['lane-2026-08-12-run-1'],
+});
+const dependencyQueue = buildQueue([
+  { filePath: 'dependent', item: dependent, errors: validateHandoff(dependent) },
+  { filePath: 'one', item: first, errors: validateHandoff(first) },
+]);
+assert.deepStrictEqual(dependencyQueue.ready.map((item) => item.handoff_id), [
+  'lane-2026-08-12-run-1',
+  'dependent-run-1',
+]);
+assert.deepStrictEqual(dependencyQueue.dependency_issues, []);
+
+const missingDependency = fixture({
+  handoff_id: 'missing-dependency-run',
+  automation_id: 'missing-dependency',
+  dependencies: ['not-present'],
+});
+assert.strictEqual(buildQueue([
+  { filePath: 'missing', item: missingDependency, errors: validateHandoff(missingDependency) },
+]).dependency_issues.length, 1);
+
+const live = fixture({
+  handoff_id: 'live-run-1',
+  automation_id: 'live-lane',
+  status: 'live_only',
+  change_kind: 'live_data',
+  merge_candidate: false,
+  base_sha: null,
+  branch: null,
+  commit: null,
+  changed_files: [],
+  source_files: [],
+  conflict_keys: [],
+  live_mutations: ['public.scholarships: updated row'],
+});
+assert.deepStrictEqual(validateHandoff(live), []);
+assert.strictEqual(buildQueue([{ filePath: 'live', item: live, errors: [] }]).informational.length, 1);
+
+console.log('automation handoff tests passed');

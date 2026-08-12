@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11453 |
-| Indexable pages | 10464 |
+| Public pages | 11454 |
+| Indexable pages | 10465 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5374 |
-| Documented fallbacks | 14681 |
-| Routes eligible for primary sitemaps | 10464 |
+| Genuine equivalence groups | 5375 |
+| Documented fallbacks | 14682 |
+| Routes eligible for primary sitemaps | 10465 |
 
 ## Locale Coverage
 
-- en: 5948 page records
+- en: 5949 page records
 - fr: 3785 page records
 - ha: 105 page records
 - sw: 1570 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 486
+- article: 487
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6432,6 +6432,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a39b43362f51: en=`/tools/ebola-checklist/`, fr=`/fr/tools/checklist-ebola/`, sw=`/sw/zana/orodha-ya-ukaguzi-wa-ebola/`; x-default=`/tools/ebola-checklist/`
 - equivalence:a3afa2f87057: en=`/tools/africa-conflict/conflicts/somalia-al-shabaab/`; x-default=`/tools/africa-conflict/conflicts/somalia-al-shabaab/`
 - equivalence:a3d28e9c0c66: en=`/togo/tg-vat`, fr=`/fr/togo/calculateur-tva`, sw=`/sw/togo/kikokotoo-vat/`; x-default=`/togo/tg-vat`
+- equivalence:a3d9394dd0bd: en=`/blog/vehicle-roadworthiness-inspection-checklist-africa/`; x-default=`/blog/vehicle-roadworthiness-inspection-checklist-africa/`
 - equivalence:a3dab8fc85f8: fr=`/fr/widgets/convertisseur-devises/`; x-default=`/fr/widgets/convertisseur-devises/`
 - equivalence:a3e71f501394: en=`/blog/mortgage-calculator-nigeria-homebuyer/`, fr=`/fr/blog/mortgage-calculator-nigeria-homebuyer/`; x-default=`/blog/mortgage-calculator-nigeria-homebuyer/`
 - equivalence:a3ed8fa2050e: fr=`/fr/widgets/verification-prix-intrants/`; x-default=`/fr/widgets/verification-prix-intrants/`

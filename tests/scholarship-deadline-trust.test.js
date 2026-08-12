@@ -116,4 +116,19 @@ const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'tools/scholarship-
 assert(indexHtml.includes('scholarship-deadline-trust.css'), 'Scholarship Finder should load deadline-trust CSS');
 assert(indexHtml.includes('scholarship-deadline-trust.js'), 'Scholarship Finder should load deadline-trust script');
 
+const deadlineOverrides = require(path.join(__dirname, '..', 'data', 'scholarships', 'deadline-overrides.json'));
+const chevening = deadlineOverrides.overrides['chevening-scholarship-uk-government-fcdo'];
+assert.strictEqual(chevening.deadline_date, '2026-10-06', 'Chevening should retain the verified 2027-28 application deadline');
+assert.strictEqual(chevening.status, 'open', 'Chevening should remain open during the verified 2027-28 application window');
+assert.strictEqual(chevening.deadline_confidence, 'verified', 'Chevening deadline should remain tied to official timeline evidence');
+assert.strictEqual(chevening.deadline_source_url, 'https://www.chevening.org/scholarships/application-timeline/', 'Chevening should use the current official timeline URL');
+
+const twas = deadlineOverrides.overrides['twas-fellowships'];
+assert.strictEqual(twas.deadline_date, null, 'TWAS umbrella record must not inherit a programme-specific deadline');
+assert.strictEqual(twas.deadline_confidence, 'no_single_public_deadline', 'TWAS umbrella should preserve verified variable-deadline semantics');
+
+const tongarewa = deadlineOverrides.overrides['victoria-wellington-tongarewa-scholarship'];
+assert.strictEqual(tongarewa.deadline_date, null, 'Tongarewa umbrella record must not inherit one trimester deadline');
+assert.strictEqual(tongarewa.deadline_confidence, 'no_single_public_deadline', 'Tongarewa should preserve trimester-specific deadline semantics');
+
 console.log('Scholarship deadline trust model verified.');
