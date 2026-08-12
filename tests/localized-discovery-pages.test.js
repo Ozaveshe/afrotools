@@ -38,4 +38,13 @@ const report = require("../reports/localized-non-app-parity.json");
 for (const locale of ["fr", "sw"]) {
   assert.deepStrictEqual(report.byClass["discovery-support"][locale], { pass: 18, underStandard: 0, missing: 0 }, `${locale}: discovery contract`);
 }
+
+for (const row of require('../scripts/build-localized-discovery-pages.js').ROUTES) {
+  const slug = row[0].replace(/^\//, '').replace(/\/$/, '') || 'home';
+  for (const [locale, route] of [['fr', row[1]], ['sw', row[2]]]) {
+    const file = path.join(ROOT, route.replace(/^\//, ''), 'index.html');
+    const html = fs.readFileSync(file, 'utf8');
+    assert(html.includes(`name="afrotools-content-id" content="localized-discovery:${locale}:${slug}"`), `${route}: stable localized discovery content id`);
+  }
+}
 console.log("Localized discovery standard passed for 36 pages.");

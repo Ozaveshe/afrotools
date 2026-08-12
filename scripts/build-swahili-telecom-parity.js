@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const write = process.argv.includes('--write');
@@ -365,7 +366,7 @@ function hubPage() {
     url: 'https://afrotools.com/sw/mawasiliano-na-mtandao/', inLanguage: 'sw',
     mainEntity: APPS.map((app) => ({ '@type': 'SoftwareApplication', name: app.title, url: `https://afrotools.com/sw/zana/${app.slug}/` }))
   });
-  return `<!doctype html>
+  return enhanceCategory(`<!doctype html>
 <html lang="sw">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -399,7 +400,7 @@ function hubPage() {
   <afro-footer></afro-footer><script>window.AFROTOOLS_TELECOM_DISABLE_LIVE_DATA = true;</script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.js" defer></script>
 </body>
 </html>
-`;
+`, 'sw');
 }
 
 const drift = [];

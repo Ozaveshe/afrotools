@@ -3,6 +3,11 @@
 const {
   localizedGeneratorEquivalent,
 } = require("./localized-generator-equivalence");
+const { buildCanonicalRegistry } = require("./canonical-registry");
+
+const pricingRegistry = buildCanonicalRegistry();
+const monthlyKes = pricingRegistry.productPlans.find((plan) => plan.id === "product:monthly_kes").title;
+const annualKes = pricingRegistry.productPlans.find((plan) => plan.id === "product:annual_kes").title;
 
 const C = {
   fr: {
@@ -246,7 +251,7 @@ function pricing(locale) {
     : "Bei za AfroTools: Bure na Pro";
   const desc = fr
     ? "Comparez le catalogue public gratuit avec les fonctions Pro réellement disponibles, avant toute souscription."
-    : "Linganisha zana za umma za bure na vipengele vya Pro vinavyopatikana kabla ya kulipia.";
+    : `Linganisha zana za umma za bure na vipengele vya Pro vinavyopatikana kabla ya kulipia. Bei za Kenya zilizoonyeshwa: ${monthlyKes} kwa mwezi au ${annualKes} kwa mwaka. Hatua ya sasa ya malipo ni ya Kiingereza.`;
   const body = `<section class="li-section"><div class="li-wrap li-prose"><p class="li-callout">${fr ? "Les calculateurs publics essentiels restent accessibles sans abonnement payant. Pro ne transforme pas un aperçu, une source périmée ou une fonction annoncée comme indisponible en produit actif." : "Vikokotoo muhimu vya umma vinapatikana bila usajili wa kulipia. Pro haibadilishi preview, chanzo kilichopitwa na wakati au kipengele kisichopatikana kuwa bidhaa hai."}</p><div class="li-grid"><article><p class="li-eyebrow">${fr ? "Gratuit" : "Bure"}</p><h2>$0</h2><p>${fr ? "Accès aux workflows publics, calculs locaux, guides et exports annoncés sur chaque page. Aucun compte ne doit bloquer l’export principal d’un outil local sensible." : "Ufikiaji wa workflows za umma, hesabu za kifaani, miongozo na faili zilizoelezwa kwenye kila ukurasa. Akaunti haipaswi kuzuia export kuu ya zana nyeti ya kifaani."}</p><form action="${c.tools}"><button class="btn btn-primary" type="submit">${c.browse}</button></form></article><article><p class="li-eyebrow">Pro</p><h2>${fr ? "À partir de 5 $/mois" : "Kuanzia $5/mwezi"}</h2><p>${fr ? "La disponibilité dépend du registre Pro actif. Les espaces en aperçu restent signalés comme aperçus; les limites de compte, d’API et de synchronisation sont affichées avant l’achat." : "Upatikanaji hutegemea registry hai ya Pro. Workspaces za preview hubaki na lebo ya preview; mipaka ya akaunti, API na usawazishaji huonyeshwa kabla ya kununua."}</p><a class="btn btn-secondary" href="/pro/">${fr ? "Vérifier les fonctions Pro" : "Kagua vipengele vya Pro"}</a></article></div><h2>${fr ? "Comparer avant de payer" : "Linganisha kabla ya kulipa"}</h2><div class="li-grid"><article><h3>${fr ? "Outils publics" : "Zana za umma"}</h3><p>${fr ? "Chaque page décrit ses entrées, son moteur, ses sources, sa confidentialité et ses formats. Ces fonctions ne deviennent pas plus officielles avec un abonnement." : "Kila ukurasa hueleza ingizo, engine, vyanzo, faragha na aina za faili. Vipengele hivi havifanyiki rasmi zaidi kwa kulipia."}</p></article><article><h3>${fr ? "Compte et synchronisation" : "Akaunti na usawazishaji"}</h3><p>${fr ? "Une fonction de compte peut enregistrer ou synchroniser un espace uniquement lorsqu’elle est réellement activée. Un brouillon local reste sur l’appareil sauf action et consentement explicites." : "Kipengele cha akaunti kinaweza kuhifadhi au kusawazisha workspace tu kikiwa hai. Rasimu ya kifaani hubaki kwenye kifaa isipokuwa mtumiaji achague na akubali kutuma."}</p></article><article><h3>API</h3><p>${fr ? "Les quotas API et accès partenaires sont des contrats séparés. Vérifiez le plan, la limite, l’authentification et la politique de données applicables." : "Viwango vya API na ufikiaji wa washirika ni mikataba tofauti. Kagua mpango, kikomo, uthibitishaji na sera ya data inayotumika."}</p></article></div><h2>${fr ? "Questions avant l’abonnement" : "Maswali kabla ya kulipia"}</h2><details><summary>${fr ? "Puis-je utiliser les outils gratuits sans carte ?" : "Naweza kutumia zana za bure bila kadi?"}</summary><p>${fr ? "Oui pour le cœur du catalogue public. Une fonction qui nécessite un compte ou un paiement doit l’annoncer avant l’action." : "Ndiyo kwa kiini cha katalogi ya umma. Kipengele kinachohitaji akaunti au malipo lazima kieleze kabla ya hatua."}</p></details><details><summary>${fr ? "Un abonnement garantit-il des données actuelles ?" : "Usajili unahakikisha data ni ya sasa?"}</summary><p>${fr ? "Non. La source, la date et l’état de confiance restent propres à chaque workflow." : "Hapana. Chanzo, tarehe na hali ya uhakika hutegemea kila workflow."}</p></details>${actions(c)}</div></section>`;
   return shell(
     c,
@@ -257,7 +262,9 @@ function pricing(locale) {
     fr ? "Choisir avec clarté" : "Chagua kwa uwazi",
     desc,
     body,
-  );
+  ).replaceAll("workflows", locale === "sw" ? "mipangilio ya kazi" : "workflows")
+    .replaceAll("workflow", locale === "sw" ? "mtiririko wa kazi" : "workflow")
+    .replaceAll("preview", locale === "sw" ? "jaribio" : "preview");
 }
 
 function search(locale) {
@@ -341,7 +348,7 @@ function changelog(locale) {
 }
 
 function renderAll(locale) {
-  return {
+  const pages = {
     advertise: advertise(locale),
     suggest: suggest(locale),
     pricing: pricing(locale),
@@ -349,6 +356,15 @@ function renderAll(locale) {
     categories: categories(locale),
     changelog: changelog(locale),
   };
+  if (locale === "sw") {
+    for (const key of Object.keys(pages)) pages[key] = pages[key]
+      .replaceAll("Workflow", "Mtiririko wa kazi")
+      .replaceAll("workflows", "mipangilio ya kazi")
+      .replaceAll("workflow", "mtiririko wa kazi")
+      .replaceAll("developer", "wasanidi programu")
+      .replaceAll("preview", "jaribio");
+  }
+  return pages;
 }
 
 module.exports = { C, renderAll, localizedGeneratorEquivalent };

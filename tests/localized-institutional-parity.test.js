@@ -32,8 +32,10 @@ for (const file of ['fr/index.html','sw/index.html']) {
   assert.ok((html.match(/<form\b/gi) || []).length >= 3, `${file}: three useful discovery forms`);
   assert.ok((html.match(/<(?:input|select|textarea)\b/gi) || []).length >= 6, `${file}: discovery controls`);
   assert.ok((html.match(/<a\b/gi) || []).length >= 90, `${file}: discovery links`);
-  assert.match(html, /["']FAQPage["']/i, `${file}: FAQ schema`);
+  assert.ok((html.match(/<details\b/gi) || []).length >= 4, `${file}: visible FAQ answers`);
 }
+assert.doesNotMatch(read('fr/index.html'), /["']FAQPage["']/i, 'fr/index.html: no unsupported FAQ rich-result markup');
+assert.match(read('sw/index.html'), /["']FAQPage["']/i, 'sw/index.html: visible FAQ schema');
 
 for (const file of ['fr/contact/index.html','sw/wasiliana/index.html']) {
   const html = read(file);

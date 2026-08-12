@@ -42,7 +42,13 @@ function block(locale, title) {
 function enhanceCategory(html, locale) {
   let output = strip(html);
   if (!/localized-category-standard\.css/.test(output)) output = output.replace(/<\/head>/i, '<link rel="stylesheet" href="/assets/css/localized-category-standard.css"></head>');
-  const content = block(locale, titleFrom(output, locale));
+  const rawContent = block(locale, titleFrom(output, locale));
+  const content = locale === "sw"
+    ? rawContent
+      .replaceAll("workflow", "mtiririko wa kazi")
+      .replaceAll("freshness", "upya wa data")
+      .replaceAll("filing", "uwasilishaji rasmi")
+    : rawContent;
   const mainAt = output.toLowerCase().lastIndexOf("</main>");
   if (mainAt >= 0) {
     const before = output.slice(0, mainAt).replace(/\s+$/, '');

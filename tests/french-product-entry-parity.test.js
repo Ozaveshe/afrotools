@@ -41,7 +41,7 @@ function metrics(file) {
 const englishPro = metrics('pro/index.html');
 const frenchPro = metrics('fr/pro/index.html');
 assert.match(frenchPro.html, /<html\b[^>]*lang="fr"/i, 'French Pro document language');
-assert.match(frenchPro.html, /afrotools-source-owner" content="hand-authored:fr\/pro\/index\.html"/, 'French Pro source owner');
+assert.doesNotMatch(frenchPro.html, /afrotools-source-owner/, 'French Pro remains hand-authored');
 assert.match(frenchPro.html, /afrotools-content-id" content="fr-surface:fr-pro"/, 'French Pro stable content id');
 assert.ok(frenchPro.words / englishPro.words >= 0.65, 'French Pro visible-content parity');
 assert.ok(frenchPro.headings / englishPro.headings >= 0.6, 'French Pro section parity');
@@ -56,7 +56,7 @@ assert.match(frenchPro.html, /aria-expanded="false"/, 'French Pro FAQ disclosure
 
 const englishBusiness = metrics('business-roi/index.html');
 const frenchBusiness = metrics('fr/business-roi/index.html');
-assert.match(frenchBusiness.html, /afrotools-source-owner" content="hand-authored:fr\/business-roi\/index\.html"/, 'French Business ROI source owner');
+assert.doesNotMatch(frenchBusiness.html, /afrotools-source-owner/, 'French Business ROI remains hand-authored');
 assert.match(frenchBusiness.html, /afrotools-content-id" content="fr-surface:fr-business-roi"/, 'French Business ROI stable content id');
 assert.ok(frenchBusiness.links / englishBusiness.links >= 0.5, 'French Business ROI discovery parity');
 for (const route of ['/fr/vat-business-tax/', '/fr/salary-tax/', '/fr/trade/', '/fr/document-pdf/', '/fr/small-business/', '/fr/blog/']) {

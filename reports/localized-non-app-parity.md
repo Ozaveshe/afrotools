@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 147 | 4 | 253 |
-| sw | 124 | 3 | 277 |
+| fr | 151 | 0 | 253 |
+| sw | 127 | 0 | 277 |
 
 ## By surface class
 
@@ -20,7 +20,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 8 | 1 | 4 | 3 | 0 | 3 | 5 |
+| product-entry | 8 | 5 | 0 | 3 | 3 | 0 | 5 |
 
 ## Gap Ledger
 
@@ -28,10 +28,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | --- | --- | --- | --- | --- | --- |
 | /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
-| /ai/ | product-entry | fr | /fr/ai/ | under-standard | visible content 28% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
-| /ai/ | product-entry | sw | /sw/ai/ | under-standard | visible content 26% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
-| /api/ | product-entry | fr | /fr/api/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 8% of English; form controls 0/2; interactive actions missing; structured data missing; FAQ schema missing |
-| /api/ | product-entry | sw | /sw/api/ | under-standard | form controls 0/2; FAQ schema missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | /fr/blog/afcfta-import-duties-africa-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/african-recipes/ | editorial | fr | /fr/blog/african-recipes/ | missing | English fallback shell; no reviewed native article |
@@ -547,10 +543,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/zambia-vat-registration-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
-| /business-roi/ | product-entry | fr | /fr/business-roi/ | under-standard | link/discovery depth 20% of English |
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
-| /cars/ | product-entry | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 0% of English; FAQ schema missing |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
@@ -560,6 +554,5 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /matchday-os/ | product-entry | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
-| /pro/ | product-entry | fr | /fr/pro/ | under-standard | visible content 19% of English; section structure 25% of English; form controls 0/1; interactive actions missing; structured data missing; FAQ schema missing |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
