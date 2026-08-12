@@ -31,7 +31,7 @@
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -214,7 +214,7 @@ textarea{resize:vertical;min-height:80px}
           <button type="button" class="btn btn-outline btn-sm" onclick="downloadQR()">Sauke QR</button>
         </div>
       </div>
-      <div class="qr-box"><canvas id="qrCanvas"></canvas></div>
+      <div class="qr-box"><div id="qrCanvas" aria-label="Lambar QR ta mahadar WhatsApp"></div></div>
     </div>
   </div>
   <section style="max-width:900px;margin:32px auto 0;">
@@ -257,6 +257,7 @@ textarea{resize:vertical;min-height:80px}
 </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/engines/whatsapp-link-engine.js"></script>
 <script>
 let currentLink = '';
 let currentNormalizedNumber = '';
@@ -269,16 +270,17 @@ function switchTab(tab) {
   if (tab === 'single') document.getElementById('resultArea').classList.remove('show');
 }
 function cleanNumber(num) {
-  return num.replace(/[\s\-\(\)\+]/g, '').replace(/^0+/, '');
+  return String(num || '').replace(/\D/g, '').replace(/^0+/, '');
 }
 function buildLink(code, phone, msg) {
-  const clean = cleanNumber(phone);
-  if (!clean) return null;
-  const normalized = clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean;
-  currentNormalizedNumber = normalized;
-  let url = 'https://wa.me/' + normalized;
-  if (msg && msg.trim()) url += '?text=' + encodeURIComponent(msg.trim());
-  return url;
+  try {
+    const result = window.AfroTools.engines.whatsappLink.build(code, phone, msg);
+    currentNormalizedNumber = result.normalized;
+    return result.url;
+  } catch (error) {
+    currentNormalizedNumber = '';
+    return null;
+  }
 }
 function templateMessage(kind, business, item) {
   const name = business || 'kasuwancinku';
@@ -332,12 +334,17 @@ function generateLink() {
   const link = buildLink(code, phone, msg);
   if (!link) { showToast('Lambar waya ba ta dace ba'); return; }
   currentLink = link;
-  document.getElementById('linkDisplay').innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a>';
+  const display = document.getElementById('linkDisplay');
+  display.replaceChildren();
+  const anchor = document.createElement('a');
+  anchor.href = link; anchor.target = '_blank'; anchor.rel = 'noopener'; anchor.textContent = link;
+  display.appendChild(anchor);
   document.getElementById('openLink').href = link;
   document.getElementById('resultCoach').innerHTML = '<strong>Abin dubawa kafin rabawa</strong> Lamba: ' + currentNormalizedNumber + '. An shirya sakon a cikin link yadda ya dace. Gwada sau daya kafin ka saka a talla, takardar talla, rasit ko bayanin shafi.';
   document.getElementById('resultArea').classList.add('show');
   if (typeof QRCode !== 'undefined') {
-    QRCode.toCanvas(document.getElementById('qrCanvas'), link, { width: 180, margin: 1, color: { dark: '#0f1419', light: '#ffffff' } });
+    const qr = document.getElementById('qrCanvas'); qr.replaceChildren();
+    new QRCode(qr, { text: link, width: 180, height: 180, colorDark: '#0f1419', colorLight: '#ffffff' });
   }
 }
 function generateBulk() {
@@ -353,10 +360,11 @@ function generateBulk() {
     const link = buildLink(code, num, msg);
     if (!link) return;
     generated += 1;
-    const div = document.createElement('div');
-    div.className = 'bulk-item';
-    div.innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a><button type="button" class="btn btn-outline btn-sm" onclick="copySingle(this,\'' + link.replace(/'/g, "\\'") + '\')">Kwafe</button>';
-    container.appendChild(div);
+    const div = document.createElement('div'); div.className = 'bulk-item';
+    const anchor = document.createElement('a'); anchor.href = link; anchor.target = '_blank'; anchor.rel = 'noopener'; anchor.textContent = link;
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'btn btn-outline btn-sm'; button.textContent = 'Kwafe';
+    button.addEventListener('click', function(){ copySingle(button, link); });
+    div.append(anchor, button); container.appendChild(div);
   });
   if (!generated) showToast('Babu lambar da ta dace da aka samu');
 }
@@ -373,7 +381,8 @@ function copyLink() {
   navigator.clipboard.writeText(currentLink).then(() => showToast('An kwafe link'));
 }
 function downloadQR() {
-  const canvas = document.getElementById('qrCanvas');
+  const canvas = document.querySelector('#qrCanvas canvas');
+  if (!canvas) { showToast('Fara gina link'); return; }
   const a = document.createElement('a');
   a.download = 'whatsapp-qr.png';
   a.href = canvas.toDataURL('image/png');
