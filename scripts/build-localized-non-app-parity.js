@@ -81,8 +81,13 @@ function count(html, pattern) {
 }
 
 function metrics(record) {
-  if (!record || !record.ownerFile) return null;
-  const file = path.join(ROOT, record.ownerFile);
+  if (!record) return null;
+  const routeFile = record.route === '/'
+    ? 'index.html'
+    : `${record.route.replace(/^\//, '').replace(/\/?$/, '/')}index.html`;
+  const metricFile = fs.existsSync(path.join(ROOT, routeFile)) ? routeFile : record.ownerFile;
+  if (!metricFile) return null;
+  const file = path.join(ROOT, metricFile);
   if (!fs.existsSync(file)) return null;
   const html = fs.readFileSync(file, 'utf8');
   const bodyMatch = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i);
@@ -94,7 +99,7 @@ function metrics(record) {
     .replace(/\s+/g, ' ')
     .trim();
   return {
-    file: record.ownerFile,
+    file: metricFile,
     words: visible ? visible.split(/\s+/).length : 0,
     h1: count(html, /<h1\b/gi),
     h2: count(html, /<h2\b/gi),
@@ -137,10 +142,21 @@ function assess(english, localized, routeClass, englishRoute) {
     ? { content: 0.75, heading: 0.6, links: 0.5 }
     : { content: 0.65, heading: 0.6, links: 0.5 });
 
-  if (contentRatio !== null && contentRatio < thresholds.content) reasons.push(`visible content ${Math.round(contentRatio * 100)}% of English`);
-  if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
-  if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
-  if (englishRoute === '/blog/') {
+  if (routeClass === 'category-hub') {
+    if (localized.words < 400) reasons.push(`category guidance too shallow (${localized.words}/400 words)`);
+    if (localized.h2 + localized.h3 < 8) reasons.push(`category structure too shallow (${localized.h2 + localized.h3}/8 sections)`);
+    if (localized.links < 14) reasons.push(`category discovery too shallow (${localized.links}/14 links)`);
+    if (localized.forms < 1 || localized.inputs < 1 || localized.buttons < 1) reasons.push('category search handoff missing');
+    if (!localized.hasFaqSchema) reasons.push('category FAQ schema missing');
+  } else {
+    if (contentRatio !== null && contentRatio < thresholds.content) reasons.push(`visible content ${Math.round(contentRatio * 100)}% of English`);
+    if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
+    if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
+  }
+  if (routeClass === 'category-hub') {
+    // Category hubs use the semantic discovery contract above instead of
+    // copying a changing number of English filters and buttons.
+  } else if (englishRoute === '/blog/') {
     if (localized.forms < 1) reasons.push('blog discovery form missing');
     if (localized.inputs < 2) reasons.push('blog search and category controls missing');
     if (localized.buttons < 1) reasons.push('blog reset action missing');

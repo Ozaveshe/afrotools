@@ -17,10 +17,15 @@ const {
   renderCookies,
   enhanceLegalSurface
 } = require('./lib/localized-institutional-pages');
+const { renderAll: renderSecondaryPages } = require('./lib/localized-secondary-pages');
 const { SWAHILI_CATEGORIES } = require('./lib/swahili-category-directory');
+const { enhanceCategory, ROUTES: LOCALIZED_CATEGORY_ROUTES } = require('./lib/localized-category-standard');
+const { countryRows: localizedCountryRows, enhanceCountry } = require('./lib/localized-country-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+const ONLY = onlyArg ? new Set(onlyArg.slice('--only='.length).split(',').map((value) => value.trim()).filter(Boolean)) : null;
 const changed = [];
 const failures = [];
 const GENERATED_HTML = new Set([
@@ -36,6 +41,11 @@ const GENERATED_HTML = new Set([
   ,'sw/wasiliana/index.html'
   ,'sw/maswali-ya-mara-kwa-mara/index.html'
   ,'sw/vidakuzi/index.html'
+  ,'sw/tangaza/index.html'
+  ,'sw/tafuta/index.html'
+  ,'sw/pendekeza-zana/index.html'
+  ,'sw/makundi/index.html'
+  ,'sw/mabadiliko/index.html'
 ]);
 const GENERATED_ALTERNATES = {
   'sw/faragha/index.html': [
@@ -50,7 +60,7 @@ const GENERATED_ALTERNATES = {
   ],
   'sw/bei/index.html': [
     '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/bei/">',
-    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/bei/">'
+    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/pricing/">'
   ]
 };
 
@@ -79,11 +89,12 @@ function ownedByScopedParity(rel) {
   if (!rel.startsWith('sw/') || !fs.existsSync(filePath(rel))) return false;
   const html = read(rel);
   return [
-    'scripts/build-blog-multilingual-wave2-2026-08.js',
     'scripts/build-sw-legal-government-insurance-parity.js',
     'scripts/build-sw-small-business-parity.js',
     'scripts/build-sw-web-text-codecs-family.js',
-    'scripts/build-swahili-hr-payroll-six.js'
+    'scripts/build-swahili-hr-payroll-six.js',
+    'scripts/build-localized-discovery-pages.js',
+    'scripts/build-localized-ai-api-pages.js'
   ].some((owner) => html.includes(owner));
 }
 function withAnalyticsLoader(html) {
@@ -111,6 +122,7 @@ function escapeHtml(value) {
 function sourceHash(value) { return crypto.createHash('sha256').update(value).digest('hex').slice(0, 16); }
 
 function output(rel, value) {
+  if (ONLY && !ONLY.has(rel)) return;
   let normalized = normalize(value);
   for (const alternate of GENERATED_ALTERNATES[rel] || []) {
     if (!normalized.includes(alternate)) normalized = normalized.replace('</head>', `${alternate}</head>`);
@@ -432,7 +444,12 @@ const homeTransforms = [
   ,[`<div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools" data-registry-count="tools.live_experiences">${liveTools}</div><div class="hero-stat-lbl">Matukio ya zana hai</div></div>`, `<div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools" data-registry-count="tools.locale.sw.published">${swTools}</div><div class="hero-stat-lbl">Rekodi za Kiswahili</div></div>`]
 ];
 
-output('sw/index.html', withAnalyticsLoader(homePage()));
+output('sw/index.html', withAnalyticsLoader(homePage()
+  .replace('class="skip-link" href="#maudhui"', 'class="sw-skip-link" href="#main-content"')
+  .replace('main id="maudhui"', 'main id="main-content"')
+  .replaceAll('workflow', 'mtiririko wa kazi')
+  .replaceAll('Fungua zana za developer', 'Fungua zana za wasanidi programu')
+  .replaceAll('Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka', 'Nchi na lugha ni vitu tofauti. Lugha hubadilisha kiolesura. Nchi hubadilisha mamlaka')));
 repair('sw/zana-zote/index.html', [
   [/data-registry-count="tools\.locale\.sw\.published">\d+</g, `data-registry-count="tools.locale.sw.published">${swTools}<`],
   [/Vikokotoo 2,606\+ bure vya/g, `${swTools} rekodi zilizochapishwa za`],
@@ -442,7 +459,13 @@ repair('sw/zana-zote/index.html', [
   ['Tengeneza ankara za kitaalamu kwa sekunde. Pakua PDF mara moja bila usajili wowote.', 'Tengeneza ankara na ufuate hatua ya PDF iliyoelezwa kwenye zana.'],
   ['Mapishi ya vyakula 2,606+ vya Afrika kutoka nchi zote 54.', 'Mapishi ya Afrika yaliyoorodheshwa kwenye AfroKitchen.']
 ]);
+const countrySearchTransforms = read('sw/nchi/index.html').includes('id="swCountrySearch"') ? [] : [
+  [/(<link rel="stylesheet" href="\/assets\/css\/top-level-page-ui-refresh\.css(?:\?v=[a-f0-9]+)?">)/, '$1\n<link rel="stylesheet" href="/assets/css/localized-institutional.css">'],
+  ['</section>\n\n<section class="sec sec--white">', `</section>\n<section class="sec sec--white"><div class="wrap"><form class="li-form" role="search" onsubmit="return false"><label for="swCountrySearch">Tafuta nchi</label><input id="swCountrySearch" type="search" autocomplete="off" placeholder="Mfano: Kenya"><button type="button" class="btn btn-secondary" id="swCountryReset">Futa</button><p id="swCountryStatus" role="status" aria-live="polite"></p></form></div></section>\n<section class="sec sec--white">`],
+  ['</body>', `<script>(function(){var q=document.getElementById('swCountrySearch'),cards=[].slice.call(document.querySelectorAll('.country-card')),status=document.getElementById('swCountryStatus');if(!q)return;function draw(){var value=q.value.trim().toLocaleLowerCase('sw'),shown=0;cards.forEach(function(card){var visible=!value||card.textContent.toLocaleLowerCase('sw').indexOf(value)>=0;card.hidden=!visible;if(visible)shown++;});status.textContent=shown+' nchi zimeonyeshwa';}q.addEventListener('input',draw);document.getElementById('swCountryReset').addEventListener('click',function(){q.value='';draw();q.focus();});draw();})();</script></body>`]
+];
 repair('sw/nchi/index.html', [
+  ...countrySearchTransforms,
   ['PAYE, kima cha chini cha mshahara, overtime, likizo, hifadhi ya jamii, sarafu na zana za fedha kwa kila nchi ya Afrika. Chagua nchi yako kupata kitovu chake.', 'Chagua nchi ili kuona zana zinazohusu mamlaka hiyo. Lugha ya Kiswahili, upatikanaji wa zana, sarafu na uthibitishaji wa chanzo ni vipimo tofauti.'],
   [`<div class="stat-num">2606</div><div class="stat-label">Matukio ya Zana Hai</div>`, `<div class="stat-num" data-registry-count="tools.locale.sw.published">${swTools}</div><div class="stat-label">Rekodi za Kiswahili</div>`],
   ['Nchi zenye alama ya ✓ zina kurasa za Kiswahili zenye vikokotoo vya mshahara. Tunaendelea kuboresha tafsiri na viungo vya ndani.', 'Alama ya ✓ inaonyesha njia ya Kiswahili iliyoainishwa. Thibitisha kwenye zana ikiwa hesabu, sarafu, kipindi na chanzo vinatumika kwa nchi hiyo.']
@@ -664,7 +687,7 @@ const languageAccessibilityRepairs = [
 ];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || LOCALIZED_CATEGORY_ROUTES.sw.includes(rel) || (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js'))) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
   repairScriptBoundaries(rel);
 }
@@ -705,7 +728,34 @@ output(
 output('sw/faragha/index.html', withAnalyticsLoader(withAnalyticsDisclosure(enhanceLegalSurface(privacyPage(), 'sw'))));
 output('sw/masharti/index.html', withAnalyticsLoader(enhanceLegalSurface(termsPage(), 'sw')));
 output('sw/msaada/index.html', helpPage());
-output('sw/bei/index.html', pricingPage());
+const secondaryPages = renderSecondaryPages('sw');
+output('sw/bei/index.html', withAnalyticsLoader(secondaryPages.pricing));
+output('sw/tangaza/index.html', withAnalyticsLoader(secondaryPages.advertise));
+output('sw/tafuta/index.html', withAnalyticsLoader(secondaryPages.search));
+output('sw/pendekeza-zana/index.html', withAnalyticsLoader(secondaryPages.suggest));
+output('sw/makundi/index.html', withAnalyticsLoader(secondaryPages.categories));
+output('sw/mabadiliko/index.html', withAnalyticsLoader(secondaryPages.changelog));
+for (const row of localizedCountryRows()) {
+  output(row.sw.ownerFile, enhanceCountry(read(row.sw.ownerFile), 'sw', row.englishRoute));
+}
+for (const [rel, frRoute, swRoute] of [
+  ['advertise/index.html', '/fr/advertise/', '/sw/tangaza/'],
+  ['pricing/index.html', '/fr/pricing/', '/sw/bei/'],
+  ['search/index.html', '/fr/search/', '/sw/tafuta/'],
+  ['categories/index.html', '/fr/categories/', '/sw/makundi/']
+  ,['changelog/index.html', '/fr/changelog/', '/sw/mabadiliko/']
+]) {
+  const swAlternate = `<link rel="alternate" hreflang="sw" href="https://afrotools.com${swRoute}">`;
+  const current = read(rel);
+  if (!current.includes(swAlternate)) {
+    repair(rel, [[
+      `<link rel="alternate" hreflang="fr" href="https://afrotools.com${frRoute}">`,
+      `<link rel="alternate" hreflang="fr" href="https://afrotools.com${frRoute}">\n${swAlternate}`
+    ]]);
+  } else if ((current.match(new RegExp(swAlternate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length > 1) {
+    repair(rel, [[new RegExp(`(?:${swAlternate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*)+`, 'g'), `${swAlternate}\n`]]);
+  }
+}
 output('sw/kuhusu/index.html', withAnalyticsLoader(renderAbout('sw')));
 output('sw/wasiliana/index.html', withAnalyticsLoader(renderContact('sw')));
 output('sw/maswali-ya-mara-kwa-mara/index.html', withAnalyticsLoader(renderFaq('sw')));
@@ -717,7 +767,7 @@ output('sw/vault/index.html', bridgePage('vault'));
 // Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || LOCALIZED_CATEGORY_ROUTES.sw.includes(rel) || (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js'))) continue;
   repairVisibleLanguage(rel, visibleLanguageTransforms);
   repairScriptLanguage(rel, scriptLanguageRepairs);
 }
@@ -773,7 +823,14 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (rel.startsWith('sw/blogu/')) continue;
+  if (rel === 'sw/blogu/index.html' && read(rel).includes('scripts/build-localized-blog-hubs.js')) continue;
+  if (LOCALIZED_CATEGORY_ROUTES.sw.includes(rel)) {
+    const categorySource = read(rel)
+      .replace(/<meta name="afrotools-sw-source-hash" content="[^"]*">/g, '')
+      .replace(/<meta name="afrotools-content-id" content="sw-surface:[^"]*">/g, '')
+      .replace(/<meta name="afrotools-source-owner" content="scripts\/build-swahili-product-surface\.js">/g, '');
+    output(rel, enhanceCategory(categorySource, 'sw'));
+  }
   ensureAccessibilityRuntime(rel);
 }
 

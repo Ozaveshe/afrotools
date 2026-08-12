@@ -16,6 +16,8 @@ const {
   FRENCH_ENERGY_APPS
 } = require('./lib/french-energy-parity-contract');
 const { FRENCH_CATEGORIES } = require('./lib/french-category-directory');
+const { enhanceCategory, ROUTES: LOCALIZED_CATEGORY_ROUTES } = require('./lib/localized-category-standard');
+const { countryRows: localizedCountryRows, enhanceCountry } = require('./lib/localized-country-standard');
 const {
   renderAbout,
   renderContact,
@@ -23,6 +25,7 @@ const {
   renderCookies,
   enhanceLegalSurface
 } = require('./lib/localized-institutional-pages');
+const { renderAll: renderSecondaryPages } = require('./lib/localized-secondary-pages');
 const {
   normalizeBuildManagedHtml,
   normalizeBuildManagedFingerprint
@@ -51,6 +54,12 @@ const POST_PROCESSED_HTML = new Set([
   ,'fr/contact/index.html'
   ,'fr/faq/index.html'
   ,'fr/cookies/index.html'
+  ,'fr/advertise/index.html'
+  ,'fr/pricing/index.html'
+  ,'fr/search/index.html'
+  ,'fr/suggest-tool/index.html'
+  ,'fr/categories/index.html'
+  ,'fr/changelog/index.html'
 ]);
 const DEDICATED_PRODUCT_OWNERS = new Set([
   'fr/tools/contractant-vs-salarie/index.html',
@@ -68,7 +77,10 @@ const PRODUCT_ALTERNATES = {
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
 function isSpecializedFrenchOwner(rel) {
   return DEDICATED_PRODUCT_OWNERS.has(rel)
-    || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js');
+    || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js"')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"');
 }
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
@@ -397,17 +409,6 @@ function homePage() {
   <span class="fr-home-category-mark" aria-hidden="true">${category.icon}</span>
   <span><strong>${category.title}</strong><small>${category.description}</small></span>
 </a>`).join('');
-  const homeFaqSchema = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      ['Les outils AfroTools sont-ils gratuits ?', 'Les parcours essentiels du catalogue public restent accessibles sans abonnement payant.'],
-      ['Les calculs fonctionnent-ils pour tous les pays africains ?', 'La couverture dépend de l’application, du pays, de la juridiction et de la source affichée.'],
-      ['AfroTools AI remplace-t-il le calculateur ?', 'Non. Il aide à trouver et expliquer un outil dont le moteur déterministe reste la source du calcul.'],
-      ['Mes données sont-elles envoyées à un serveur ?', 'Les workflows locaux restent dans le navigateur ; les comptes, formulaires, paiements, synchronisations et fonctions IA sont annoncés séparément.']
-    ].map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } }))
-  });
-
   return `<!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="fr">
@@ -423,7 +424,7 @@ function homePage() {
 <link rel="alternate" hreflang="en" href="https://afrotools.com/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/"><link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/"><link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-homepage.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://afrotools.com/fr/#website","url":"https://afrotools.com/fr/","name":"AfroTools en français","inLanguage":"fr","description":"Outils pratiques, calculateurs, documents et données pour les marchés africains.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://afrotools.com/fr/all-tools/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Organization","@id":"https://afrotools.com/#organization","name":"AfroTools","url":"https://afrotools.com/","logo":{"@type":"ImageObject","url":"https://afrotools.com/assets/img/logo-mark.svg","width":512,"height":512},"areaServed":{"@type":"Continent","name":"Afrique"},"availableLanguage":["fr","en","sw","yo","ha"]},{"@type":"CollectionPage","@id":"https://afrotools.com/fr/#page","url":"https://afrotools.com/fr/","name":"Outils et calculateurs pour l’Afrique en français","isPartOf":{"@id":"https://afrotools.com/fr/#website"},"about":[{"@type":"Thing","name":"Calculateurs africains"},{"@type":"Thing","name":"Outils d’entreprise"},{"@type":"Thing","name":"Documents et PDF"}],"inLanguage":"fr"}]}</script>
-<script type="application/ld+json">${homeFaqSchema}</script><script src="/assets/js/data/registry-counts.js" defer></script><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/data/registry-counts.js" defer></script><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script>
 </head>
 <body class="fr-home-page"><a class="skip-link" href="#contenu">Aller au contenu</a><afro-navbar></afro-navbar><main id="contenu" class="fr-home">
 <header class="fr-home-hero"><div class="fr-home-wrap fr-home-hero-grid"><div>
@@ -550,13 +551,6 @@ function blogPage(manifest) {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${manifest.title} | AfroTools</title><meta name="description" content="${manifest.description}"><link rel="canonical" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="en" href="https://afrotools.com/blog/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/blogu/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/blog/"><link rel="alternate" type="application/rss+xml" title="Guides AfroTools en français" href="/fr/blog/feed.xml"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/blog/assets/css/blog.css"><link rel="stylesheet" href="/blog/assets/css/blog-platform.css"><link rel="stylesheet" href="/blog/assets/css/blog-typography.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script></head><body><a class="skip-link" href="#articles">Aller aux articles</a><afro-navbar></afro-navbar><header class="blog-hero"><div class="blog-hero-inner"><nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › Blog</nav><span class="eyebrow">Le journal AfroTools</span><h1>Guides pratiques pour l’argent, le travail et les décisions du quotidien</h1><p class="blog-hero-sub">${manifest.description} Cette sélection n’inclut que les articles dont la version française a été relue.</p><label for="blogSearchInput">Rechercher dans les guides</label><input id="blogSearchInput" class="blog-search-input" type="search" placeholder="Ex. salaire, TVA, Sénégal"></div></header><main class="blog-section" id="articles"><p id="blogStatus" aria-live="polite">${manifest.articles.length} guides en français</p><div class="blog-grid" id="blogGrid">${cards}</div></main><afro-footer></afro-footer><script>(function(){var input=document.getElementById('blogSearchInput'),cards=[].slice.call(document.querySelectorAll('.article-card')),status=document.getElementById('blogStatus');input.addEventListener('input',function(){var q=input.value.toLocaleLowerCase('fr');var shown=0;cards.forEach(function(card){var visible=!q||card.textContent.toLocaleLowerCase('fr').indexOf(q)>=0;card.hidden=!visible;if(visible)shown++;});status.textContent=shown?shown+' guide'+(shown>1?'s':'')+' en français':'Aucun guide ne correspond à cette recherche.';});})();</script></body></html>\n`;
 }
 
-function withBlogOgUrl(html) {
-  return html.replace(
-    '<link rel="canonical" href="https://afrotools.com/fr/blog/">',
-    '<link rel="canonical" href="https://afrotools.com/fr/blog/"><meta property="og:url" content="https://afrotools.com/fr/blog/">'
-  );
-}
-
 function blogFeed(manifest) {
   const items = manifest.articles.map((a) => `<item><title><![CDATA[${articleTitle(a.slug)}]]></title><link>https://afrotools.com/fr/blog/${a.slug}/</link><guid>https://afrotools.com/fr/blog/${a.slug}/</guid><description><![CDATA[${a.description}]]></description><language>fr</language></item>`).join('');
   return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${manifest.title}</title><link>https://afrotools.com/fr/blog/</link><description>${manifest.description}</description><language>fr</language>${items}</channel></rss>\n`;
@@ -567,18 +561,36 @@ output('fr/privacy/index.html', withAnalyticsLoader(enhanceLegalSurface(privacyP
 output('fr/terms-of-use/index.html', withAnalyticsLoader(enhanceLegalSurface(termsPage(), 'fr')));
 output('fr/terms/index.html', withAnalyticsLoader(aliasPage()));
 const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
-output('fr/blog/index.html', withAnalyticsLoader(withBlogOgUrl(blogPage(blog))));
+if (!read('fr/blog/index.html').includes('scripts/build-localized-blog-hubs.js')) {
+  output('fr/blog/index.html', withAnalyticsLoader(blogPage(blog)));
+}
 output('fr/blog/feed.xml', blogFeed(blog));
 output('fr/about/index.html', withAnalyticsLoader(renderAbout('fr')));
 output('fr/contact/index.html', withAnalyticsLoader(renderContact('fr')));
 output('fr/faq/index.html', withAnalyticsLoader(renderFaq('fr')));
 output('fr/cookies/index.html', withAnalyticsLoader(renderCookies('fr')));
+const secondaryPages = renderSecondaryPages('fr');
+output('fr/advertise/index.html', withAnalyticsLoader(secondaryPages.advertise));
+output('fr/pricing/index.html', withAnalyticsLoader(secondaryPages.pricing));
+output('fr/search/index.html', withAnalyticsLoader(secondaryPages.search));
+output('fr/suggest-tool/index.html', withAnalyticsLoader(secondaryPages.suggest));
+output('fr/categories/index.html', withAnalyticsLoader(secondaryPages.categories));
+output('fr/changelog/index.html', withAnalyticsLoader(secondaryPages.changelog));
+for (const row of localizedCountryRows()) {
+  output(row.fr.ownerFile, enhanceCountry(read(row.fr.ownerFile), 'fr', row.englishRoute));
+}
+
+for (const rel of LOCALIZED_CATEGORY_ROUTES.fr) {
+  if (fs.existsSync(path.join(ROOT, rel)) && !isSpecializedFrenchOwner(rel)) output(rel, enhanceCategory(read(rel), 'fr'));
+}
 
 for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   if (POST_PROCESSED_HTML.has(rel)) continue;
   if (isSpecializedFrenchOwner(rel)) continue;
-  repairVisibleLanguage(rel, VISIBLE_LANGUAGE_TRANSFORMS);
+  if (LOCALIZED_CATEGORY_ROUTES.fr.includes(rel)) continue;
+  const source = localizeVisibleLanguage(read(rel), VISIBLE_LANGUAGE_TRANSFORMS);
+  output(rel, source);
 }
 
 const prohibited = [
