@@ -66,6 +66,7 @@ function ownedByScopedParity(rel) {
   if (!rel.startsWith('sw/') || !fs.existsSync(filePath(rel))) return false;
   const html = read(rel);
   return [
+    'scripts/build-blog-multilingual-wave2-2026-08.js',
     'scripts/build-sw-legal-government-insurance-parity.js',
     'scripts/build-sw-small-business-parity.js',
     'scripts/build-sw-web-text-codecs-family.js',
@@ -620,7 +621,7 @@ const languageAccessibilityRepairs = [
 ];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
   repairScriptBoundaries(rel);
 }
@@ -669,7 +670,7 @@ output('sw/vault/index.html', bridgePage('vault'));
 // Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel) || rel.startsWith('sw/blogu/')) continue;
   repairVisibleLanguage(rel, visibleLanguageTransforms);
   repairScriptLanguage(rel, scriptLanguageRepairs);
 }
@@ -725,6 +726,7 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  if (rel.startsWith('sw/blogu/')) continue;
   ensureAccessibilityRuntime(rel);
 }
 

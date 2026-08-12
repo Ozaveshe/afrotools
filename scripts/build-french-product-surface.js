@@ -525,6 +525,13 @@ function blogPage(manifest) {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${manifest.title} | AfroTools</title><meta name="description" content="${manifest.description}"><link rel="canonical" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/blog/"><link rel="alternate" hreflang="en" href="https://afrotools.com/blog/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/blogu/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/blog/"><link rel="alternate" type="application/rss+xml" title="Guides AfroTools en français" href="/fr/blog/feed.xml"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/blog/assets/css/blog.css"><link rel="stylesheet" href="/blog/assets/css/blog-platform.css"><link rel="stylesheet" href="/blog/assets/css/blog-typography.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script></head><body><a class="skip-link" href="#articles">Aller aux articles</a><afro-navbar></afro-navbar><header class="blog-hero"><div class="blog-hero-inner"><nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › Blog</nav><span class="eyebrow">Le journal AfroTools</span><h1>Guides pratiques pour l’argent, le travail et les décisions du quotidien</h1><p class="blog-hero-sub">${manifest.description} Cette sélection n’inclut que les articles dont la version française a été relue.</p><label for="blogSearchInput">Rechercher dans les guides</label><input id="blogSearchInput" class="blog-search-input" type="search" placeholder="Ex. salaire, TVA, Sénégal"></div></header><main class="blog-section" id="articles"><p id="blogStatus" aria-live="polite">${manifest.articles.length} guides en français</p><div class="blog-grid" id="blogGrid">${cards}</div></main><afro-footer></afro-footer><script>(function(){var input=document.getElementById('blogSearchInput'),cards=[].slice.call(document.querySelectorAll('.article-card')),status=document.getElementById('blogStatus');input.addEventListener('input',function(){var q=input.value.toLocaleLowerCase('fr');var shown=0;cards.forEach(function(card){var visible=!q||card.textContent.toLocaleLowerCase('fr').indexOf(q)>=0;card.hidden=!visible;if(visible)shown++;});status.textContent=shown?shown+' guide'+(shown>1?'s':'')+' en français':'Aucun guide ne correspond à cette recherche.';});})();</script></body></html>\n`;
 }
 
+function withBlogOgUrl(html) {
+  return html.replace(
+    '<link rel="canonical" href="https://afrotools.com/fr/blog/">',
+    '<link rel="canonical" href="https://afrotools.com/fr/blog/"><meta property="og:url" content="https://afrotools.com/fr/blog/">'
+  );
+}
+
 function blogFeed(manifest) {
   const items = manifest.articles.map((a) => `<item><title><![CDATA[${articleTitle(a.slug)}]]></title><link>https://afrotools.com/fr/blog/${a.slug}/</link><guid>https://afrotools.com/fr/blog/${a.slug}/</guid><description><![CDATA[${a.description}]]></description><language>fr</language></item>`).join('');
   return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${manifest.title}</title><link>https://afrotools.com/fr/blog/</link><description>${manifest.description}</description><language>fr</language>${items}</channel></rss>\n`;
@@ -535,7 +542,7 @@ output('fr/privacy/index.html', withAnalyticsLoader(privacyPage()));
 output('fr/terms-of-use/index.html', withAnalyticsLoader(termsPage()));
 output('fr/terms/index.html', withAnalyticsLoader(aliasPage()));
 const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
-output('fr/blog/index.html', withAnalyticsLoader(blogPage(blog)));
+output('fr/blog/index.html', withAnalyticsLoader(withBlogOgUrl(blogPage(blog))));
 output('fr/blog/feed.xml', blogFeed(blog));
 
 for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
