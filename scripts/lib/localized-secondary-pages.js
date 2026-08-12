@@ -3,7 +3,9 @@
 const {
   localizedGeneratorEquivalent,
 } = require("./localized-generator-equivalence");
-const { buildCanonicalRegistry } = require("./canonical-registry");
+const { buildCanonicalRegistry, getSelector } = require("./canonical-registry");
+const { FRENCH_CATEGORIES } = require("./french-category-directory");
+const { categoryFallback } = require("../build-progressive-directories");
 
 const pricingRegistry = buildCanonicalRegistry();
 const monthlyKes = pricingRegistry.productPlans.find((plan) => plan.id === "product:monthly_kes").title;
@@ -292,7 +294,7 @@ function categories(locale) {
   const c = C[locale],
     fr = locale === "fr";
   const title = fr
-    ? "Toutes les catégories AfroTools"
+    ? "Les 32 catégories d'outils en français"
     : "Makundi yote ya AfroTools";
   const desc = fr
     ? "Explorez les 32 catégories AfroTools avec une recherche locale et des liens vers les catalogues français."
@@ -301,7 +303,14 @@ function categories(locale) {
     ([slug, frName, swName]) =>
       `<article class="li-card" data-category-card data-search="${esc(`${slug} ${fr ? frName : swName}`.toLowerCase())}"><h2>${esc(fr ? frName : swName)}</h2><p>${fr ? "Ouvrir les outils, guides et preuves disponibles dans cette catégorie." : "Fungua zana, miongozo na ushahidi unaopatikana kwenye kundi hili."}</p><a href="${c.tools}?category=${slug}">${fr ? "Voir les outils" : "Ona zana"}</a></article>`,
   ).join("");
-  const body = `<section class="li-section"><div class="li-wrap"><form class="li-form" role="search" onsubmit="return false"><label>${fr ? "Filtrer les catégories" : "Chuja makundi"}<input type="search" data-category-search autocomplete="off"></label><button type="button" class="btn btn-secondary" data-category-reset>${c.reset}</button><p data-category-status role="status" aria-live="polite"></p></form><div class="li-grid">${cards}</div>${actions(c)}</div></section><script>(function(){var q=document.querySelector('[data-category-search]'),cards=[].slice.call(document.querySelectorAll('[data-category-card]')),s=document.querySelector('[data-category-status]');function draw(){var v=q.value.trim().toLowerCase(),n=0;cards.forEach(function(card){var show=!v||card.dataset.search.indexOf(v)>=0;card.hidden=!show;if(show)n++;});s.textContent=n+' ${fr ? "catégorie(s) affichée(s)" : "kundi limeonyeshwa"}';}q.addEventListener('input',draw);document.querySelector('[data-category-reset]').addEventListener('click',function(){q.value='';draw();q.focus();});draw();})();</script>`;
+  const directoryCards = fr ? categoryFallback(pricingRegistry, "fr") : cards;
+  const frenchCount = fr ? getSelector(pricingRegistry, "tools.locale.fr.published").value : 0;
+  const status = fr ? `<p data-directory-status role="status" aria-live="polite"><span data-registry-count="tools.locale.fr.published">${frenchCount}</span> fiches françaises publiées.</p>` : "";
+  const metadata = fr ? `<script>/* FRENCH_CATEGORY_META_START */\nvar CATS_META = ${JSON.stringify(FRENCH_CATEGORIES, null, 2)};\n/* FRENCH_CATEGORY_META_END */</script>` : "";
+  const directory = fr
+    ? `<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->\n${directoryCards}\n<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->`
+    : directoryCards;
+  const body = `<section class="li-section"${fr ? " data-progressive-directory" : ""}><div class="li-wrap">${fr ? '<div class="hero-ey">32 catégories</div>' : ""}${status}${metadata}<form class="li-form" role="search" onsubmit="return false"><label>${fr ? "Filtrer les catégories" : "Chuja makundi"}<input type="search" data-category-search autocomplete="off"></label><button type="button" class="btn btn-secondary" data-category-reset>${c.reset}</button><p data-category-status role="status" aria-live="polite"></p></form><div class="li-grid">${directory}</div>${actions(c)}</div></section><script>(function(){var q=document.querySelector('[data-category-search]'),cards=[].slice.call(document.querySelectorAll('[data-category-card],[data-directory-record]')),s=document.querySelector('[data-category-status]');function draw(){var v=q.value.trim().toLowerCase(),n=0;cards.forEach(function(card){var show=!v||card.textContent.toLowerCase().indexOf(v)>=0;card.hidden=!show;if(show)n++;});s.textContent=n+' ${fr ? "catégorie(s) affichée(s)" : "kundi limeonyeshwa"}';}q.addEventListener('input',draw);document.querySelector('[data-category-reset]').addEventListener('click',function(){q.value='';draw();q.focus();});draw();})();</script>`;
   return shell(
     c,
     title,

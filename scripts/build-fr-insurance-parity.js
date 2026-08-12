@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONTRACT_PATH = path.join(ROOT, 'data', 'insurance', 'assumption-contract.json');
@@ -318,7 +319,7 @@ function hubSchema() {
   });
 }
 
-function hubHtml() {
+function rawHubHtml() {
   const cards = APPS.map((app) => `<a class="insurance-link" href="${app.frenchRoute}" data-insurance-app="${app.id}">
     <img src="/assets/img/tools/${app.id}.webp" alt="" width="320" height="180" loading="lazy">
     <strong>${escapeHtml(app.title)}</strong>
@@ -443,6 +444,10 @@ function hubHtml() {
 </body>
 </html>
 `;
+}
+
+function hubHtml() {
+  return enhanceCategory(rawHubHtml(), 'fr');
 }
 
 function buildFrenchDiscovery() {
