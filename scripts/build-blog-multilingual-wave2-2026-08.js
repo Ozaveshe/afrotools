@@ -157,6 +157,25 @@ function visibleWordCount(html) {
   return html.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
 }
 
+function localizeSwahiliVisibleText(html) {
+  const replacements = [
+    [/\bprivacy policy\b/gi, 'sera ya faragha'], [/\bcookie consent\b/gi, 'idhini ya vidakuzi'],
+    [/\bbreach notification\b/gi, 'taarifa ya uvujaji'], [/\bclient-side\b/gi, 'ndani ya kifaa'],
+    [/\bdeveloper tools?\b/gi, 'zana za usanidi'], [/\bdevelopers?\b/gi, 'wasanidi'],
+    [/\bworkflows?\b/gi, 'michakato'], [/\bcategories\b/gi, 'makundi'],
+    [/\bbrowsers?\b/gi, 'vivinjari'], [/\buploads?\b/gi, 'upakiaji'],
+    [/\bcreators?\b/gi, 'waundaji'], [/\bapps?\b/gi, 'programu'],
+    [/\baccounts?\b/gi, 'akaunti'], [/\bresults?\b/gi, 'matokeo'],
+    [/\bpreview\b/gi, 'hakikisho la awali'], [/\boutputs?\b/gi, 'matokeo'],
+    [/\binputs?\b/gi, 'taarifa'], [/\bsignup\b/gi, 'usajili'],
+    [/\bonline\b/gi, 'mtandaoni'], [/\bservers?\b/gi, 'seva']
+  ];
+  return html.split(/(<[^>]+>)/).map((part) => {
+    if (part.startsWith('<')) return part;
+    return replacements.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), part);
+  }).join('');
+}
+
 function renderBody(topic, locale) {
   const c = localeConfig[locale];
   const item = localized(topic, locale);
@@ -167,7 +186,7 @@ function renderBody(topic, locale) {
   const sources = topic.sources.map(([href, label]) => `<li><a href="${href}" target="_blank" rel="noopener">${esc(label)}</a></li>`).join('');
   const related = item.related.map(([href, label]) => `<li><a href="${resolvedLink(href)}">${esc(label)}</a></li>`).join('');
   const faqs = item.faq.map(([question, answer]) => `<div class="faq-item"><button class="faq-question" type="button" onclick="this.parentElement.classList.toggle('open')">${esc(question)} <span class="faq-chevron">&#9660;</span></button><div class="faq-answer"><div class="faq-answer-inner"><p>${esc(answer)}</p></div></div></div>`).join('');
-  return `<p>${esc(item.lead)}</p>
+  const html = `<p>${esc(item.lead)}</p>
 <p>${esc(item.plan)}</p>
 <p><a href="${item.tool[0]}">${esc(item.tool[1])}</a> ${locale === 'en' ? 'opens the practical workflow in your browser.' : locale === 'fr' ? 'ouvre le workflow pratique dans votre navigateur.' : 'hufungua workflow ya vitendo ndani ya browser.'}</p>
 
@@ -209,6 +228,7 @@ ${specifics}
 <ul>${related}</ul>
 
 <section class="faq-section" id="faq"><h2 class="faq-section-title">${c.faq}</h2>${faqs}</section>`;
+  return locale === 'sw' ? localizeSwahiliVisibleText(html) : html;
 }
 
 function renderArticle(topic, locale) {
