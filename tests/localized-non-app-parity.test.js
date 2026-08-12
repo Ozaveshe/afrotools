@@ -45,6 +45,18 @@ const contracted = api.assess(home.english, {
 assert.strictEqual(contracted.status, 'under-standard');
 assert(contracted.reasons.some((reason) => reason.includes('visible content')));
 
+const frenchHomeWithoutFaqSchema = api.assess(home.english, {
+  ...home.english,
+  hasFaqSchema: false,
+  langMatches: true
+}, 'home', '/');
+assert.strictEqual(frenchHomeWithoutFaqSchema.status, 'pass', 'homepage parity must not require FAQ rich-result markup');
+
+const cars = report.rows.find((row) => row.englishRoute === '/cars/');
+assert(cars, 'Cars product entry must appear in the audit ledger');
+assert.strictEqual(cars.locales.sw.assessment.status, 'pass', 'Swahili car entry must satisfy discovery parity without unsafe FAQ markup');
+assert.strictEqual(cars.locales.sw.metrics.hasFaqSchema, false, 'Swahili car entry must not copy invisible English FAQ schema');
+
 assert(fs.existsSync(path.join(ROOT, 'reports/localized-non-app-parity.json')), 'JSON report must be committed');
 assert(fs.existsSync(path.join(ROOT, 'reports/localized-non-app-parity.md')), 'Markdown report must be committed');
 

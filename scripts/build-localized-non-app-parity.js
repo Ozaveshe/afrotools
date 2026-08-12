@@ -55,6 +55,12 @@ const PRODUCT_ENTRY_ROUTES = new Set([
   '/afrowork/', '/ai/', '/api/', '/business-roi/', '/cars/', '/jamb/',
   '/matchday-os/', '/pro/'
 ]);
+// FAQ rich-result markup is not a parity requirement on these routes. The
+// French homepage intentionally keeps its FAQ visible without publishing
+// FAQPage schema, while /cars/ is a client-rendered product entry whose
+// English FAQ schema is not backed by visible FAQ content in the static HTML.
+// Requiring localized pages to copy either block would reward unsafe markup.
+const FAQ_SCHEMA_PARITY_EXEMPT_ROUTES = new Set(['/', '/cars/']);
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -216,7 +222,9 @@ function assess(english, localized, routeClass, englishRoute, localeState) {
   if (!localized.hasViewport) reasons.push('viewport metadata missing');
   if (!localized.langMatches) reasons.push('document language mismatch');
   if (english.schemaBlocks > 0 && localized.schemaBlocks === 0) reasons.push('structured data missing');
-  if (english.hasFaqSchema && !localized.hasFaqSchema) reasons.push('FAQ schema missing');
+  if (english.hasFaqSchema && !localized.hasFaqSchema && !FAQ_SCHEMA_PARITY_EXEMPT_ROUTES.has(englishRoute)) {
+    reasons.push('FAQ schema missing');
+  }
 
   return {
     status: reasons.length ? 'under-standard' : 'pass',
