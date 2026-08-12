@@ -276,7 +276,8 @@ function card(topic, locale) {
 
 function swCard(topic) {
   const item = localized(topic, 'sw');
-  return `<a class="post-card" href="${routeFor('sw', item.slug)}"><div class="post-thumb">SW</div><div class="post-body"><div class="post-meta"><span class="post-tag">${esc(item.category)}</span><span class="post-date">Ago 2026</span></div><h3 class="post-title">${esc(item.title)}</h3><p class="post-desc">${esc(item.description)}</p><span class="post-link">Soma mwongozo &#8594;</span></div></a>`;
+  const description = item.description.replace(/\bbrowser\b/gi, 'kivinjari');
+  return `<a class="post-card" href="${routeFor('sw', item.slug)}"><div class="post-thumb">SW</div><div class="post-body"><div class="post-meta"><span class="post-tag">${esc(item.category)}</span><span class="post-date">Ago 2026</span></div><h3 class="post-title">${esc(item.title)}</h3><p class="post-desc">${esc(description)}</p><span class="post-link">Soma mwongozo &#8594;</span></div></a>`;
 }
 
 function expectedFrenchManifest(current) {
