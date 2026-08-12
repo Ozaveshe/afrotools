@@ -4,6 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const source = JSON.parse(fs.readFileSync(path.join(root, 'data/content/blog-multilingual-wave2-2026-08.json'), 'utf8'));
@@ -81,4 +82,13 @@ test('hub and manifest discovery include the complete wave once', () => {
     assert.equal(manifest.articles.filter((row) => row.file === `fr/blog/${fr.slug}/index.html`).length, 1);
     assert.equal(frenchManifest.articles.filter((row) => row.slug === fr.slug).length, 1);
   }
+});
+
+test('generator check accepts the fully post-processed release output', () => {
+  const result = spawnSync(process.execPath, ['scripts/build-blog-multilingual-wave2-2026-08.js'], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`.trim());
+  assert.match(result.stdout, /0 file\(s\) out of date/);
 });

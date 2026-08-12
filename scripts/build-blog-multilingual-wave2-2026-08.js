@@ -109,15 +109,24 @@ function esc(value) {
 }
 
 function normalizeBuildOwnedArticleHtml(html) {
-  return String(html)
+  let normalized = String(html)
     .replace(/\r\n/g, '\n')
     .replace(/\s+data-chat-bundle="[^"]*"/, '')
     .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
     .replace(/^[ \t]*<link rel="stylesheet" href="\/blog\/assets\/css\/blog-typography\.css">[ \t]*\n?/gm, '')
     .replace(/\s*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>\s*/g, '\n')
     .replace(/^[ \t]*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>[ \t]*\n?/gm, '')
-    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\s*/g, '\n')
-    .replace(/\n{3,}/g, '\n\n');
+    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\s*/g, '\n');
+
+  const routeLinks = [];
+  normalized = normalized.replace(/^[ \t]*<link rel="(?:canonical|alternate)"[^>]*>[ \t]*\n?/gm, (link) => {
+    routeLinks.push(link.trim());
+    return '';
+  });
+  if (routeLinks.length) {
+    normalized = normalized.replace(/(<meta name="author"[^>]*>\n)/, `$1${routeLinks.join('\n')}\n`);
+  }
+  return normalized.replace(/\n{3,}/g, '\n\n');
 }
 
 function contentId(locale, file) {
@@ -183,7 +192,10 @@ function renderBody(topic, locale) {
   const steps = item.steps.map((step) => `<li>${esc(step)}</li>`).join('');
   const specifics = item.specifics.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('\n');
   const pitfalls = item.pitfalls.map((pitfall) => `<li>${esc(pitfall)}</li>`).join('');
-  const sources = topic.sources.map(([href, label]) => `<li><a href="${href}" target="_blank" rel="noopener">${esc(label)}</a></li>`).join('');
+  const sources = topic.sources.map(([href, label]) => {
+    const localizedLabel = locale === 'fr' ? label.replace(/\bcalculator\b/gi, 'calculateur') : label;
+    return `<li><a href="${href}" target="_blank" rel="noopener">${esc(localizedLabel)}</a></li>`;
+  }).join('');
   const related = item.related.map(([href, label]) => `<li><a href="${resolvedLink(href)}">${esc(label)}</a></li>`).join('');
   const faqs = item.faq.map(([question, answer]) => `<div class="faq-item"><button class="faq-question" type="button" onclick="this.parentElement.classList.toggle('open')">${esc(question)} <span class="faq-chevron">&#9660;</span></button><div class="faq-answer"><div class="faq-answer-inner"><p>${esc(answer)}</p></div></div></div>`).join('');
   const html = `<p>${esc(item.lead)}</p>
