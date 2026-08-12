@@ -34,7 +34,9 @@ function normalize(html, relative) {
   if (!title) return withStylesheet;
   const withTitle = withStylesheet.replace(/(<header\b[^>]*class=["'][^"']*\bblog-hero\b[^"']*["'][^>]*>[\s\S]*?<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, `$1${title}$2`);
   if (relative !== 'fr/blog/index.html') return withTitle;
-  return withTitle.replace(/(name=["']afrotools-source-hash["']\s+content=["'])[^"']+/, `$1${frenchHubSourceHash}`);
+  return withTitle
+    .replace(/(<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-platform\.css(?:\?[^"']*)?["'][^>]*>)(<script\b)/i, '$1\n$2')
+    .replace(/(name=["']afrotools-source-hash["']\s+content=["'])[^"']+/, `$1${frenchHubSourceHash}`);
 }
 
 const files = blogRoots.flatMap((directory) => walk(path.join(root, directory)));
