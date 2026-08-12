@@ -11,8 +11,8 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1553 |
-| Swahili coverage records | 1550 |
+| Swahili physical HTML pages | 1563 |
+| Swahili coverage records | 1560 |
 | Native candidates | 589 |
 | Localized shell candidates | 668 |
 | English fallbacks | 0 |
