@@ -271,7 +271,9 @@ function expectedFrenchManifest(current) {
     return { slug: item.slug, category: item.category, description: item.description, image: topic.image, published: data.published };
   });
   const slugs = new Set(rows.map((row) => row.slug));
-  return { ...current, articles: [...rows, ...current.articles.filter((row) => !slugs.has(row.slug))] };
+  const articles = [...rows, ...current.articles.filter((row) => !slugs.has(row.slug))]
+    .sort((a, b) => String(b.published || '').localeCompare(String(a.published || '')) || a.slug.localeCompare(b.slug));
+  return { ...current, articles };
 }
 
 function expectedContentManifest(current) {
