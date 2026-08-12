@@ -143,7 +143,13 @@ function assess(english, localized, routeClass, englishRoute) {
     ? { content: 0.75, heading: 0.6, links: 0.5 }
     : { content: 0.65, heading: 0.6, links: 0.5 });
 
-  if (englishRoute === '/changelog/') {
+  if (routeClass === 'country-hub') {
+    if (localized.words < 300) reasons.push(`country guidance too shallow (${localized.words}/300 words)`);
+    if (localized.h2 + localized.h3 < 8) reasons.push(`country structure too shallow (${localized.h2 + localized.h3}/8 sections)`);
+    if (localized.links < 14) reasons.push(`country discovery too shallow (${localized.links}/14 links)`);
+    if (localized.forms < 1 || localized.inputs < 1 || localized.buttons < 1) reasons.push('country search handoff missing');
+    if (!localized.hasFaqSchema) reasons.push('country FAQ schema missing');
+  } else if (englishRoute === '/changelog/') {
     if (localized.changeEntries < 8) reasons.push(`localized release history too shallow (${localized.changeEntries}/8 entries)`);
     if (localized.words < 500) reasons.push(`localized release notes too shallow (${localized.words}/500 words)`);
     if (localized.forms < 1 || localized.inputs < 1 || localized.buttons < 1) reasons.push('release-history filter missing');
@@ -158,7 +164,10 @@ function assess(english, localized, routeClass, englishRoute) {
     if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
     if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
   }
-  if (englishRoute === '/changelog/') {
+  if (routeClass === 'country-hub') {
+    // Country hubs use the shared evidence and discovery contract instead of
+    // copying the changing length of each English country page.
+  } else if (englishRoute === '/changelog/') {
     // Changelog parity is a localized, filterable release-history contract;
     // the English archive may retain deeper technical notes per version.
   } else if (routeClass === 'category-hub') {

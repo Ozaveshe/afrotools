@@ -6,15 +6,15 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 95 | 165 | 144 |
-| sw | 88 | 23 | 293 |
+| fr | 126 | 134 | 144 |
+| sw | 106 | 5 | 293 |
 
 ## By surface class
 
 | Class | English routes | FR pass | FR under standard | FR missing | SW pass | SW under standard | SW missing |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
-| country-hub | 54 | 23 | 31 | 0 | 36 | 18 | 0 |
+| country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 26 | 3 | 8 | 15 | 0 | 5 | 21 |
 | editorial | 277 | 24 | 126 | 127 | 10 | 0 | 267 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
@@ -31,9 +31,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /afrowork/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /ai/ | discovery-support | fr | /fr/ai/ | under-standard | visible content 28% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
 | /ai/ | discovery-support | sw | /sw/ai/ | under-standard | visible content 26% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
-| /algeria/ | country-hub | sw | /sw/algeria/ | under-standard | structured data missing |
-| /angola/ | country-hub | fr | /fr/angola/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /angola/ | country-hub | sw | /sw/angola/ | under-standard | structured data missing |
 | /api/ | discovery-support | fr | /fr/api/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 8% of English; form controls 0/2; interactive actions missing; structured data missing; FAQ schema missing |
 | /api/ | discovery-support | sw | /sw/api/ | under-standard | form controls 0/2; FAQ schema missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | /fr/blog/afcfta-import-duties-africa-2026/ | under-standard | visible content 1% of English; section structure 0% of English; link/discovery depth 6% of English; interactive actions missing; structured data missing; FAQ schema missing |
@@ -556,34 +553,21 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/zambia-vat-registration-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
-| /botswana/ | country-hub | fr | /fr/botswana/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /botswana/ | country-hub | sw | /sw/botswana/ | under-standard | structured data missing |
-| /burundi/ | country-hub | sw | /sw/burundi/ | under-standard | structured data missing |
 | /business-enquiry/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /business-enquiry/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /business-roi/ | discovery-support | fr | /fr/business-roi/ | under-standard | link/discovery depth 20% of English |
 | /business-roi/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /business/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /business/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /cameroon/ | country-hub | sw | /sw/cameroon/ | under-standard | structured data missing |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
 | /cars/ | discovery-support | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 0% of English; FAQ schema missing |
-| /central-african-republic/ | country-hub | fr | /fr/centrafrique/ | under-standard | visible content 59% of English; forms 0/1; form controls 0/2; interactive actions missing; FAQ schema missing |
-| /central-african-republic/ | country-hub | sw | /sw/central-african-republic/ | under-standard | FAQ schema missing |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /custom-calculators/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /custom-calculators/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /developers/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /diaspora/ | discovery-support | fr | /fr/diaspora/ | under-standard | visible content 50% of English; section structure 50% of English; form controls 0/1 |
 | /diaspora/ | discovery-support | sw | /sw/diaspora/ | under-standard | visible content 44% of English; section structure 38% of English; form controls 0/1 |
-| /dr-congo/ | country-hub | fr | /fr/rdc/ | under-standard | forms 0/1; form controls 0/2; interactive actions missing; FAQ schema missing |
-| /dr-congo/ | country-hub | sw | /sw/dr-congo/ | under-standard | forms 0/1; FAQ schema missing |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |
-| /egypt/ | country-hub | fr | /fr/egypt/ | under-standard | visible content 9% of English; section structure 20% of English; structured data missing |
-| /eritrea/ | country-hub | fr | /fr/eritrea/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /eswatini/ | country-hub | fr | /fr/eswatini/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /eswatini/ | country-hub | sw | /sw/eswatini/ | under-standard | structured data missing |
-| /ethiopia/ | country-hub | fr | /fr/ethiopia/ | under-standard | visible content 4% of English; section structure 20% of English; link/discovery depth 40% of English |
 | /for-accountants/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /for-accountants/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /for-fintechs/ | discovery-support | fr | — | missing | no localized route or owner file |
@@ -592,61 +576,28 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /for-hr-payroll/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /for-schools/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /for-schools/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /gambia/ | country-hub | fr | /fr/gambia/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /ghana/ | country-hub | fr | /fr/ghana/ | under-standard | visible content 2% of English; section structure 17% of English; link/discovery depth 40% of English |
-| /guinea-bissau/ | country-hub | fr | /fr/guinea-bissau/ | under-standard | visible content 21% of English; section structure 40% of English; structured data missing |
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
 | /jamb/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /jamb/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /kenya/ | country-hub | fr | /fr/kenya/ | under-standard | visible content 2% of English; section structure 17% of English; link/discovery depth 40% of English; interactive actions missing |
-| /kenya/ | country-hub | sw | /sw/kenya/ | under-standard | interactive actions missing; structured data missing |
-| /lesotho/ | country-hub | fr | /fr/lesotho/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /lesotho/ | country-hub | sw | /sw/lesotho/ | under-standard | structured data missing |
-| /liberia/ | country-hub | fr | /fr/liberia/ | under-standard | visible content 4% of English; section structure 20% of English; link/discovery depth 40% of English |
-| /libya/ | country-hub | fr | /fr/libya/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /libya/ | country-hub | sw | /sw/libya/ | under-standard | structured data missing |
-| /malawi/ | country-hub | fr | /fr/malawi/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /mali/ | country-hub | sw | /sw/mali/ | under-standard | structured data missing |
 | /manufacturing/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /manufacturing/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /matchday-os/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /matchday-os/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /mauritius/ | country-hub | fr | /fr/mauritius/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
 | /media-kit/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /media-kit/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
-| /mozambique/ | country-hub | fr | /fr/mozambique/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /mozambique/ | country-hub | sw | /sw/mozambique/ | under-standard | structured data missing |
-| /namibia/ | country-hub | fr | /fr/namibia/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /namibia/ | country-hub | sw | /sw/namibia/ | under-standard | structured data missing |
-| /nigeria/ | country-hub | fr | /fr/nigeria/ | under-standard | visible content 2% of English; section structure 17% of English; link/discovery depth 40% of English |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | discovery-support | fr | /fr/pro/ | under-standard | visible content 19% of English; section structure 25% of English; form controls 0/1; interactive actions missing; structured data missing; FAQ schema missing |
 | /pro/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
-| /sao-tome/ | country-hub | fr | /fr/sao-tome/ | under-standard | visible content 21% of English; section structure 40% of English; structured data missing |
 | /security/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /security/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /seychelles/ | country-hub | fr | /fr/seychelles/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
-| /sierra-leone/ | country-hub | fr | /fr/sierra-leone/ | under-standard | visible content 4% of English; section structure 20% of English; link/discovery depth 40% of English |
-| /somalia/ | country-hub | fr | /fr/somalia/ | under-standard | visible content 13% of English; section structure 20% of English; structured data missing |
-| /south-africa/ | country-hub | fr | /fr/south-africa/ | under-standard | visible content 9% of English; section structure 17% of English; structured data missing |
-| /south-sudan/ | country-hub | fr | /fr/south-sudan/ | under-standard | visible content 14% of English; section structure 20% of English; structured data missing |
 | /sponsored-tools/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /sponsored-tools/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /start/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /start/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /sudan/ | country-hub | fr | /fr/sudan/ | under-standard | visible content 13% of English; section structure 20% of English; structured data missing |
-| /tanzania/ | country-hub | fr | /fr/tanzania/ | under-standard | visible content 8% of English; section structure 20% of English; structured data missing |
-| /tanzania/ | country-hub | sw | /sw/tanzania/ | under-standard | structured data missing |
 | /tools/ | discovery-support | fr | /fr/all-tools/ | under-standard | visible content 14% of English; section structure 3% of English |
 | /tools/ | discovery-support | sw | /sw/zana-zote/ | under-standard | visible content 11% of English; section structure 3% of English; link/discovery depth 33% of English; form controls 1/5 |
-| /tunisia/ | country-hub | sw | /sw/tunisia/ | under-standard | structured data missing |
-| /uganda/ | country-hub | fr | /fr/uganda/ | under-standard | visible content 4% of English; section structure 20% of English; link/discovery depth 40% of English |
-| /uganda/ | country-hub | sw | /sw/uganda/ | under-standard | structured data missing |
 | /uniquely-african/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /widgets/ | discovery-support | fr | /fr/widgets/ | under-standard | form controls 0/1; FAQ schema missing |
 | /widgets/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /zambia/ | country-hub | fr | /fr/zambia/ | under-standard | visible content 13% of English; section structure 20% of English; structured data missing |
-| /zimbabwe/ | country-hub | fr | /fr/zimbabwe/ | under-standard | visible content 12% of English; section structure 20% of English; structured data missing |
-| /zimbabwe/ | country-hub | sw | /sw/zimbabwe/ | under-standard | structured data missing |
