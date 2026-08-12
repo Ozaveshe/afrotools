@@ -14,7 +14,6 @@ const hubTitles = new Map([
   ['fr/blog/index.html', 'Guides pratiques pour l’argent, le travail et les décisions du quotidien'],
   ['sw/blogu/index.html', 'Miongozo ya Vitendo kwa Fedha, Kazi na Maamuzi ya Kila Siku']
 ]);
-const frenchHubSourceHash = 'b46d9da83bcdde99';
 
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -33,10 +32,7 @@ function normalize(html, relative) {
   const title = hubTitles.get(relative);
   if (!title) return withStylesheet;
   const withTitle = withStylesheet.replace(/(<header\b[^>]*class=["'][^"']*\bblog-hero\b[^"']*["'][^>]*>[\s\S]*?<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, `$1${title}$2`);
-  if (relative !== 'fr/blog/index.html') return withTitle;
-  return withTitle
-    .replace(/(<link\b[^>]*href=["'][^"']*\/blog\/assets\/css\/blog-platform\.css(?:\?[^"']*)?["'][^>]*>)(<script\b)/i, '$1\n$2')
-    .replace(/(name=["']afrotools-source-hash["']\s+content=["'])[^"']+/, `$1${frenchHubSourceHash}`);
+  return withTitle;
 }
 
 const files = blogRoots.flatMap((directory) => walk(path.join(root, directory)));
