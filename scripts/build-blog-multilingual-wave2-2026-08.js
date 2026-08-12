@@ -47,7 +47,8 @@ const localeConfig = {
       'Before closing the task, compare the result with the real-world constraint it is supposed to satisfy. Ask whether a different country, institution, device, unit, document version or audience would change the answer. When two reasonable interpretations exist, record both and explain which one you selected. A good handoff includes enough context for a colleague, client, lecturer or family member to challenge the assumptions without repeating the whole exercise. If an external rule matters, reopen the official source on the day of action. If the source is unavailable or unclear, pause the irreversible step and seek confirmation rather than presenting the draft as final.',
       'Finally, distinguish the calculation or file from the decision made with it. The output is evidence for a conversation, approval or next action. It is not the approval itself.'
     ],
-    disclaimer: 'This guide and tool support planning and checking. They do not guarantee acceptance, compliance, profit, security, accessibility, academic marks or a particular operational outcome.'
+    disclaimer: 'This guide and tool support planning and checking. They do not guarantee acceptance, compliance, profit, security, accessibility, academic marks or a particular operational outcome.',
+    toolNote: 'Open the tool with the verified inputs already beside you. Complete one baseline run, name or download the result clearly, and compare it with the acceptance rule you recorded at the start. If the tool exposes optional settings, change them deliberately and document why. Keep the original source material available so a reviewer can reproduce the result without guessing which values or version you used.'
   },
   fr: {
     dir: 'fr/blog', hub: '/fr/blog/', home: '/fr/', language: 'fr', ogLocale: 'fr_FR',
@@ -68,7 +69,8 @@ const localeConfig = {
       'Avant de terminer, confrontez le résultat à la contrainte réelle qu’il doit satisfaire. Demandez-vous si un autre pays, établissement, appareil, unité, document ou public modifierait la réponse. Lorsque deux interprétations sont raisonnables, conservez les deux et expliquez le choix retenu. Une bonne transmission donne assez de contexte à un collègue, client, enseignant ou proche pour contester les hypothèses sans recommencer tout le travail. Si une règle externe compte, rouvrez la source officielle le jour de l’action. Si elle reste indisponible ou ambiguë, suspendez l’étape irréversible et demandez confirmation plutôt que de présenter le brouillon comme définitif.',
       'Enfin, distinguez le calcul ou le fichier de la décision qui s’appuie dessus. La sortie nourrit une discussion, une validation ou une prochaine étape; elle ne constitue pas elle-même cette validation.'
     ],
-    disclaimer: 'Ce guide et cet outil aident à planifier et contrôler. Ils ne garantissent ni acceptation, ni conformité, ni bénéfice, ni sécurité, ni accessibilité, ni résultat universitaire ou opérationnel.'
+    disclaimer: 'Ce guide et cet outil aident à planifier et contrôler. Ils ne garantissent ni acceptation, ni conformité, ni bénéfice, ni sécurité, ni accessibilité, ni résultat universitaire ou opérationnel.',
+    toolNote: 'Ouvrez l’outil avec les données vérifiées à portée de main. Produisez un premier résultat de référence, nommez ou téléchargez le fichier clairement, puis comparez-le avec la règle d’acceptation notée au départ. Si des options sont disponibles, modifiez-les volontairement et consignez la raison. Gardez les sources afin qu’une autre personne puisse reproduire le résultat sans deviner les valeurs ou la version utilisée.'
   },
   sw: {
     dir: 'sw/blogu', hub: '/sw/blogu/', home: '/sw/', language: 'sw', ogLocale: 'sw_KE',
@@ -89,7 +91,8 @@ const localeConfig = {
       'Kabla ya kumaliza, linganisha matokeo na sharti halisi linalotakiwa kutimizwa. Jiulize kama nchi, taasisi, kifaa, unit, toleo la hati au kundi la watumiaji lingebadilisha jibu. Ikiwa kuna tafsiri mbili zinazowezekana, hifadhi zote na eleza uliyochagua na sababu. Handoff nzuri ina maelezo ya kutosha ili mwenzako, mteja, mwalimu au mtu wa familia akague makisio bila kurudia kazi yote. Sheria ya nje ikiwa muhimu, fungua tena source rasmi siku ya kuchukua hatua. Source ikiwa haipatikani au haiko wazi, simamisha hatua isiyoweza kurudishwa na omba uthibitisho. Usibadilishe draft kuwa jibu la mwisho kwa sababu tu zana imetoa namba au faili. Tenganisha wazi data uliyoona, makisio uliyochagua na uamuzi wa mtu mwenye mamlaka.',
       'Mwisho, tenga namba au faili na uamuzi unaofanywa kwa kuitumia. Output ni ushahidi wa mazungumzo, approval au hatua inayofuata; si approval yenyewe. Mtu anayekabidhi kazi aeleze nani anapaswa kukagua, kitu gani bado hakijathibitishwa na tarehe gani source itakaguliwa tena. Hifadhi jina la file au version iliyotumika ili matokeo ya baadaye yasichanganywe na draft ya zamani. Ikiwa mteja, taasisi au mamlaka inatoa maelekezo mapya, anza version mpya kutoka source hiyo badala ya kubadilisha hitimisho pekee.'
     ],
-    disclaimer: 'Mwongozo na zana hii husaidia kupanga na kukagua. Haitoi dhamana ya kukubaliwa, compliance, faida, usalama, accessibility, alama za masomo au matokeo fulani ya kazi.'
+    disclaimer: 'Mwongozo na zana hii husaidia kupanga na kukagua. Haitoi dhamana ya kukubaliwa, compliance, faida, usalama, accessibility, alama za masomo au matokeo fulani ya kazi.',
+    toolNote: 'Fungua zana ukiwa na taarifa ulizothibitisha karibu nawe. Fanya hesabu au mchakato wa kwanza kama baseline, ipe result jina linaloeleweka, kisha ilinganishe na sharti la kukubalika uliloandika mwanzoni. Zana ikiwa na settings za ziada, zibadilishe kwa makusudi na uandike sababu. Hifadhi source ya kila input ili mkaguzi aweze kurudia kazi bila kubahatisha value, unit, tarehe au version uliyotumia. Ukipata tofauti, usifute result ya kwanza; hifadhi zote mbili na eleza input iliyobadilika.'
   }
 };
 
@@ -162,7 +165,6 @@ function renderBody(topic, locale) {
 
 <h2 id="quick-answer">${c.quick}</h2>
 <p>${esc(c.shared[0])}</p>
-<p>${esc(item.plan)}</p>
 
 <h2 id="inputs">${c.inputs}</h2>
 <div class="table-wrapper"><table><thead><tr><th>${c.input}</th><th>${c.evidence}</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -190,7 +192,7 @@ ${specifics}
 
 <h2 id="tool">${c.toolCta}</h2>
 <p><a class="btn" href="${item.tool[0]}">${esc(item.tool[1])} &#8594;</a></p>
-<p>${esc(c.disclaimer)}</p>
+<p>${esc(c.toolNote)}</p>
 
 <h2 id="sources">${c.sources}</h2>
 <ul>${sources}</ul>
