@@ -24,6 +24,8 @@ const SW_ALTERNATES = {
   'claim-tracker': '/sw/zana/ufuatiliaji-wa-dai/',
   'crop-insurance-calc': '/sw/zana/kikokotoo-bima-ya-mazao/',
   'fire-insurance': '/sw/zana/kikokotoo-bima-ya-moto/',
+  'insurance-fraud-checker': '/sw/zana/ukaguzi-wa-ishara-za-udanganyifu-wa-bima/',
+  'marine-insurance': '/sw/zana/kikokotoo-bima-ya-bahari/',
   microinsurance: '/sw/zana/bima-ndogo/',
   'professional-indemnity': '/sw/zana/bima-ya-dhima-ya-kitaalamu/'
 };
