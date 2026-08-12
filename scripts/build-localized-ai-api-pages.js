@@ -10,6 +10,10 @@ const OWNER = 'scripts/build-localized-ai-api-pages.js';
 
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
 function emit(rel, html) {
+  const match = rel.match(/^(fr|sw)\/(ai|api)\/index\.html$/);
+  if (match && !html.includes('name="afrotools-source-owner"')) {
+    html = html.replace('<head>', `<head>\n<meta name="afrotools-source-owner" content="${OWNER}">\n<meta name="afrotools-content-id" content="localized-${match[2]}:${match[1]}:entry">`);
+  }
   const file = path.join(ROOT, rel);
   const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
   if (current === html) return;

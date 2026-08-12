@@ -11,10 +11,12 @@ const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 for (const locale of ['fr', 'sw']) {
   const ai = read(`${locale}/ai/index.html`);
   const api = read(`${locale}/api/index.html`);
+  assert(ai.includes(`name="afrotools-content-id" content="localized-ai:${locale}:entry"`), `${locale} AI stable content id`);
   assert(ai.includes('data-source-owner="scripts/build-localized-ai-api-pages.js"'), `${locale} AI source owner`);
   assert((ai.match(/<form\b/g) || []).length >= 3, `${locale} AI keeps three useful handoff forms`);
   assert((ai.match(/<a\b/g) || []).length >= 17, `${locale} AI keeps English-level discovery depth`);
-  assert(api.includes('name="source-owner" content="scripts/build-localized-ai-api-pages.js"'), `${locale} API source owner`);
+  assert(api.includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"'), `${locale} API source owner`);
+  assert(api.includes(`name="afrotools-content-id" content="localized-api:${locale}:entry"`), `${locale} API stable content id`);
   assert(api.includes('data-api-sandbox'), `${locale} API sandbox controls`);
   assert(api.includes('FAQPage'), `${locale} API FAQ schema`);
   assert(!api.includes('<iframe'), `${locale} API is native, not an English iframe`);
