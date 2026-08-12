@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 61 | 197 | 146 |
-| sw | 61 | 41 | 302 |
+| fr | 62 | 196 | 146 |
+| sw | 62 | 40 | 302 |
 
 ## By surface class
 
@@ -17,7 +17,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | country-hub | 54 | 23 | 31 | 0 | 36 | 18 | 0 |
 | discovery-support | 26 | 3 | 7 | 16 | 0 | 3 | 23 |
 | editorial | 277 | 24 | 126 | 127 | 10 | 0 | 267 |
-| editorial-hub | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
+| editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 7 | 6 | 0 | 7 | 1 | 5 |
 
@@ -39,8 +39,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /angola/ | country-hub | sw | /sw/angola/ | under-standard | structured data missing |
 | /api/ | discovery-support | fr | /fr/api/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 8% of English; form controls 0/2; interactive actions missing; structured data missing; FAQ schema missing |
 | /api/ | discovery-support | sw | /sw/api/ | under-standard | form controls 0/2; FAQ schema missing |
-| /blog/ | editorial-hub | fr | /fr/blog/ | under-standard | visible content 9% of English; section structure 10% of English; link/discovery depth 10% of English; forms 0/1; form controls 1/4; interactive actions missing; Open Graph metadata missing; structured data missing |
-| /blog/ | editorial-hub | sw | /sw/blogu/ | under-standard | visible content 9% of English; section structure 8% of English; link/discovery depth 16% of English; forms 0/1; form controls 0/4; interactive actions missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | /fr/blog/afcfta-import-duties-africa-2026/ | under-standard | visible content 1% of English; section structure 0% of English; link/discovery depth 6% of English; interactive actions missing; structured data missing; FAQ schema missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/african-recipes/ | editorial | fr | /fr/blog/african-recipes/ | under-standard | visible content 1% of English; section structure 0% of English; link/discovery depth 14% of English; structured data missing; FAQ schema missing |

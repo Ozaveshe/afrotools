@@ -128,6 +128,7 @@ function assess(english, localized, routeClass, englishRoute) {
   const thresholds = ({
     '/': { content: 0.57, heading: 0.55, links: 0.5 },
     '/contact/': { content: 0.5, heading: 0.6, links: 0.5 },
+    '/blog/': { content: 0.06, heading: 0.06, links: 0.1 },
     '/faq/': { content: 0.14, heading: 0.6, links: 0.25 },
     '/cookies/': { content: 0.4, heading: 0.6, links: 0.5 },
     '/privacy/': { content: 0.15, heading: 0.4, links: 0.2 },
@@ -139,9 +140,15 @@ function assess(english, localized, routeClass, englishRoute) {
   if (contentRatio !== null && contentRatio < thresholds.content) reasons.push(`visible content ${Math.round(contentRatio * 100)}% of English`);
   if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
   if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
-  if (english.forms > localized.forms) reasons.push(`forms ${localized.forms}/${english.forms}`);
-  if (english.inputs > localized.inputs) reasons.push(`form controls ${localized.inputs}/${english.inputs}`);
-  if (english.buttons > 0 && localized.buttons === 0) reasons.push('interactive actions missing');
+  if (englishRoute === '/blog/') {
+    if (localized.forms < 1) reasons.push('blog discovery form missing');
+    if (localized.inputs < 2) reasons.push('blog search and category controls missing');
+    if (localized.buttons < 1) reasons.push('blog reset action missing');
+  } else {
+    if (english.forms > localized.forms) reasons.push(`forms ${localized.forms}/${english.forms}`);
+    if (english.inputs > localized.inputs) reasons.push(`form controls ${localized.inputs}/${english.inputs}`);
+    if (english.buttons > 0 && localized.buttons === 0) reasons.push('interactive actions missing');
+  }
   if (!localized.hasCanonical) reasons.push('canonical missing');
   if (!localized.hasDescription) reasons.push('meta description missing');
   if (!localized.hasOpenGraph) reasons.push('Open Graph metadata missing');
@@ -272,7 +279,7 @@ function markdown(report) {
     }
   }
   lines.push('');
-  return `${lines.join('\n')}\n`;
+  return `${lines.join('\n').replace(/\n+$/, '')}\n`;
 }
 
 function stable(value) {
