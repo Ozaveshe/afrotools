@@ -1,4 +1,13 @@
-<!doctype html>
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.resolve(__dirname, '..');
+const PAGE = path.join(ROOT, 'ha', 'kayan-aiki', 'gwajin-ussd', 'index.html');
+const CHECK = process.argv.includes('--check');
+
+function build() {
+  return `<!doctype html>
 <html lang="ha">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -33,4 +42,16 @@
  </aside></div>
  <section class="content"><h2>Yadda kwaikwayon yake aiki</h2><p>Injin yana karanta kowane state na JSON, yana nuna rubutun allo, yana tantance zaɓin da aka shigar, yana kama synthetic variables, kuma yana matsawa zuwa state na gaba. Idan zaɓi bai dace ba, zaman ba ya ɓacewa kuma yana nuna hanyoyin da ake yarda da su.</p><h2>Abubuwan da za a duba kafin a kai production</h2><ul><li>mallakar dedicated ko shared short code;</li><li>session timeout da iyakar haruffa a kowace allo;</li><li>callback payload, retry da hanyar dawowa baya;</li><li>billing, credentials, compliance da support escalation;</li><li>gwaji a feature phone da wayar hannu ta gaske.</li></ul><h2>Tambayoyin da ake yi</h2><details><summary>Shin wannan yana kiran lambar USSD ta gaske?</summary><p>A'a. Kwaikwayo ne a cikin burauza; ba ya kiran lamba, haɗa wallet ko aiwatar da ciniki.</p></details><details><summary>Zan iya amfani da JSON nawa?</summary><p>Eh. Kowane flow ya buƙaci state mai suna <code>start</code>, rubutu a kowane state, da hanyoyin <code>next</code> ko <code>options</code> masu nuni zuwa state da ke akwai.</p></details><details><summary>Shin lambobin samfurin suna nufin suna aiki yanzu?</summary><p>A'a. Misalan tarihi ne don kwaikwayo. Tabbatar da lambar, menu, kuɗi da izini kai tsaye daga operator ko gateway.</p></details><p><a href="/ha/kayan-aiki/lambobin-ussd/">Duba jagorar lambobin USSD</a> · <a href="/ha/sadarwa/">Cibiyar sadarwa ta Hausa</a> · <a href="/tools/ussd-simulator/">English source workflow</a></p></section>
 </div></main><afro-footer></afro-footer>
-</body></html>
+</body></html>`;
+}
+
+const next = build();
+const current = fs.existsSync(PAGE) ? fs.readFileSync(PAGE, 'utf8') : '';
+if (CHECK) {
+  if (next !== current) throw new Error('Hausa USSD simulator is stale; run node scripts/build-hausa-ussd-simulator.js');
+  console.log('Hausa USSD simulator source owner is current.');
+} else {
+  fs.mkdirSync(path.dirname(PAGE), { recursive: true }); fs.writeFileSync(PAGE, next, 'utf8');
+  console.log(next === current ? 'Hausa USSD simulator already current.' : 'Updated Hausa USSD simulator.');
+}
+module.exports = { build };

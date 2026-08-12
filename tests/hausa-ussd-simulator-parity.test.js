@@ -1,0 +1,36 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const engine = require('../engines/src/hausa-ussd-simulator-engine.js');
+const owner = require('../scripts/build-hausa-ussd-simulator.js');
+
+const root = path.resolve(__dirname, '..');
+const page = fs.readFileSync(path.join(root, 'ha/kayan-aiki/gwajin-ussd/index.html'), 'utf8');
+
+assert.deepStrictEqual(Object.keys(engine.presets), ['mpesa', 'gtbank', 'momo', 'fnb']);
+const mpesa = engine.presets.mpesa;
+const checked = engine.validateFlow(mpesa.flow);
+assert(checked.states >= 8 && checked.terminals >= 3);
+const session = engine.createSession(mpesa.flow, { name: mpesa.name, code: mpesa.code });
+assert(engine.screen(session).text.includes('Tura kuɗi'));
+assert.strictEqual(engine.respond(session, '9').ok, false);
+assert.strictEqual(session.state, 'start');
+assert.strictEqual(engine.respond(session, '1').state, 'send_phone');
+assert.strictEqual(engine.respond(session, '07000000000').state, 'send_amount');
+assert.strictEqual(engine.respond(session, '2500').state, 'send_confirm');
+assert.strictEqual(engine.exportData(session).liveDial, false);
+assert.strictEqual(engine.exportData(session).transaction, false);
+assert(engine.qaBrief(session).includes('Kada a saka PIN'));
+assert.throws(() => engine.validateFlow({ start: { text: 'x', next: 'missing' } }), /babu/);
+assert.strictEqual(owner.build(), page, 'source owner must be idempotent');
+assert(page.includes('lang="ha"'));
+assert(page.includes('/engines/hausa-ussd-simulator-engine.js'));
+assert(page.includes('/assets/js/pages/hausa-ussd-simulator.js'));
+assert(page.includes('data-preset="mpesa"') && page.includes('data-preset="fnb"'));
+assert(page.includes('id="ussd-flow"') && page.includes('id="ussd-copy"') && page.includes('id="ussd-export"'));
+assert(page.includes('Babu API, dialing ko transaction'));
+assert(page.includes('https://afrotools.com/tools/ussd-simulator/'));
+assert(page.includes('https://afrotools.com/fr/tools/simulateur-ussd/'));
+assert(page.includes('https://afrotools.com/sw/zana/kiigaji-ussd/'));
+assert(page.length > 10000, 'localized product and editorial surface must not be a thin handoff');
+console.log('Hausa USSD simulator parity: 22/22 checks passed.');
