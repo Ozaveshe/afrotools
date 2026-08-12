@@ -240,6 +240,7 @@
       <button type="button" class="btn btn-primary" onclick="copyResult()">Kwafi</button>
       <button type="button" class="btn btn-outline" onclick="copyDocumentLine()">Kwafi layin takarda</button>
       <button type="button" class="btn btn-outline" onclick="downloadDocumentLine()">Sauke TXT</button>
+      <button type="button" class="btn btn-outline" onclick="downloadJsonResult()">Sauke JSON</button>
       <button type="button" class="btn btn-outline" onclick="clearAll()">Goge</button>
     </div>
     <div class="doc-preview" id="docPreview"></div>
@@ -318,6 +319,7 @@
 </main>
 <afro-footer></afro-footer>
 
+<script src="/engines/hausa-number-words-engine.js" defer></script>
 <script>
 var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
@@ -353,20 +355,10 @@ function chunkToWords(n) {
   return rem ? h + ' and ' + chunkToWords(rem) : h;
 }
 
-function amountToWords(amount, currOpt) {
-  var mainUnit = currOpt.dataset.main;
-  var subUnit = currOpt.dataset.sub;
-  var parts = amount.toFixed(2).split('.');
-  var main = parseInt(parts[0], 10);
-  var sub = parseInt(parts[1], 10);
-  var result = '';
-  if (main === 0 && sub === 0) return 'Zero ' + mainUnit + ' Only';
-  if (main > 0) result = numToWords(main) + ' ' + mainUnit;
-  if (sub > 0) {
-    if (main > 0) result += ' and ';
-    result += numToWords(sub) + ' ' + subUnit;
-  }
-  return result + ' Only';
+function amountToWords(amount) {
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.hausaNumberWords;
+  if (!engine) throw new Error('Injin rubutun Hausa bai samu ba. Sake loda shafin.');
+  return engine.amount(amount, document.getElementById('currency').value);
 }
 
 function applyCaseMode(text) {
@@ -466,6 +458,20 @@ function downloadDocumentLine() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast('An sauke TXT.');
+}
+
+function downloadJsonResult() {
+  convert();
+  if (!lastWords || !lastDocumentLine) { showToast('Saka adadi tukuna.'); return; }
+  var payload = {
+    tool: 'naira-to-words', language: 'ha', currency: document.getElementById('currency').value,
+    amount: Number(cleanAmountInput(document.getElementById('amount').value)), words: lastWords,
+    documentLine: lastDocumentLine, generatedAt: new Date().toISOString(), localOnly: true
+  };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  var url = URL.createObjectURL(blob); var a = document.createElement('a');
+  a.href = url; a.download = 'adadi-cikin-kalmomin-hausa.json'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 0); showToast('An sauke JSON.');
 }
 
 function clearAll() {
