@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 126 | 134 | 144 |
-| sw | 106 | 5 | 293 |
+| fr | 142 | 130 | 132 |
+| sw | 124 | 3 | 277 |
 
 ## By surface class
 
@@ -15,24 +15,23 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
-| discovery-support | 26 | 3 | 8 | 15 | 0 | 5 | 21 |
+| discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
 | editorial | 277 | 24 | 126 | 127 | 10 | 0 | 267 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
+| product-entry | 8 | 1 | 4 | 3 | 0 | 3 | 5 |
 
 ## Gap Ledger
 
 | English | Class | Locale | Localized route | Status | Reasons |
 | --- | --- | --- | --- | --- | --- |
-| /african/ | discovery-support | fr | /fr/african/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 0% of English |
-| /african/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /afrowork/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /afrowork/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /ai/ | discovery-support | fr | /fr/ai/ | under-standard | visible content 28% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
-| /ai/ | discovery-support | sw | /sw/ai/ | under-standard | visible content 26% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
-| /api/ | discovery-support | fr | /fr/api/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 8% of English; form controls 0/2; interactive actions missing; structured data missing; FAQ schema missing |
-| /api/ | discovery-support | sw | /sw/api/ | under-standard | form controls 0/2; FAQ schema missing |
+| /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
+| /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
+| /ai/ | product-entry | fr | /fr/ai/ | under-standard | visible content 28% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
+| /ai/ | product-entry | sw | /sw/ai/ | under-standard | visible content 26% of English; section structure 22% of English; link/discovery depth 18% of English; forms 1/3; form controls 2/8 |
+| /api/ | product-entry | fr | /fr/api/ | under-standard | visible content 2% of English; section structure 0% of English; link/discovery depth 8% of English; form controls 0/2; interactive actions missing; structured data missing; FAQ schema missing |
+| /api/ | product-entry | sw | /sw/api/ | under-standard | form controls 0/2; FAQ schema missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | /fr/blog/afcfta-import-duties-africa-2026/ | under-standard | visible content 1% of English; section structure 0% of English; link/discovery depth 6% of English; interactive actions missing; structured data missing; FAQ schema missing |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/african-recipes/ | editorial | fr | /fr/blog/african-recipes/ | under-standard | visible content 1% of English; section structure 0% of English; link/discovery depth 14% of English; structured data missing; FAQ schema missing |
@@ -553,51 +552,19 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/zambia-vat-registration-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
-| /business-enquiry/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /business-enquiry/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /business-roi/ | discovery-support | fr | /fr/business-roi/ | under-standard | link/discovery depth 20% of English |
-| /business-roi/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /business/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /business/ | discovery-support | sw | — | missing | no localized route or owner file |
+| /business-roi/ | product-entry | fr | /fr/business-roi/ | under-standard | link/discovery depth 20% of English |
+| /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
-| /cars/ | discovery-support | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 0% of English; FAQ schema missing |
+| /cars/ | product-entry | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 0% of English; FAQ schema missing |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
-| /custom-calculators/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /custom-calculators/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /developers/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /diaspora/ | discovery-support | fr | /fr/diaspora/ | under-standard | visible content 50% of English; section structure 50% of English; form controls 0/1 |
-| /diaspora/ | discovery-support | sw | /sw/diaspora/ | under-standard | visible content 44% of English; section structure 38% of English; form controls 0/1 |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |
-| /for-accountants/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /for-accountants/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /for-fintechs/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /for-fintechs/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /for-hr-payroll/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /for-hr-payroll/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /for-schools/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /for-schools/ | discovery-support | sw | — | missing | no localized route or owner file |
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
-| /jamb/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /jamb/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /manufacturing/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /manufacturing/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /matchday-os/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /matchday-os/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /media-kit/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /media-kit/ | discovery-support | sw | — | missing | no localized route or owner file |
+| /jamb/ | product-entry | fr | — | missing | no localized route or owner file |
+| /jamb/ | product-entry | sw | — | missing | no localized route or owner file |
+| /matchday-os/ | product-entry | fr | — | missing | no localized route or owner file |
+| /matchday-os/ | product-entry | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
-| /pro/ | discovery-support | fr | /fr/pro/ | under-standard | visible content 19% of English; section structure 25% of English; form controls 0/1; interactive actions missing; structured data missing; FAQ schema missing |
-| /pro/ | discovery-support | sw | — | missing | no localized route or owner file |
+| /pro/ | product-entry | fr | /fr/pro/ | under-standard | visible content 19% of English; section structure 25% of English; form controls 0/1; interactive actions missing; structured data missing; FAQ schema missing |
+| /pro/ | product-entry | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
-| /security/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /security/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /sponsored-tools/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /sponsored-tools/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /start/ | discovery-support | fr | — | missing | no localized route or owner file |
-| /start/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /tools/ | discovery-support | fr | /fr/all-tools/ | under-standard | visible content 14% of English; section structure 3% of English |
-| /tools/ | discovery-support | sw | /sw/zana-zote/ | under-standard | visible content 11% of English; section structure 3% of English; link/discovery depth 33% of English; form controls 1/5 |
-| /uniquely-african/ | discovery-support | sw | — | missing | no localized route or owner file |
-| /widgets/ | discovery-support | fr | /fr/widgets/ | under-standard | form controls 0/1; FAQ schema missing |
-| /widgets/ | discovery-support | sw | — | missing | no localized route or owner file |

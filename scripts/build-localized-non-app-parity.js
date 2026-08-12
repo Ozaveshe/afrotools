@@ -51,6 +51,10 @@ const COUNTRY_ROUTES = new Set([
   'south-sudan', 'sudan', 'tanzania', 'togo', 'tunisia', 'uganda', 'zambia',
   'zimbabwe'
 ].map((slug) => `/${slug}/`));
+const PRODUCT_ENTRY_ROUTES = new Set([
+  '/afrowork/', '/ai/', '/api/', '/business-roi/', '/cars/', '/jamb/',
+  '/matchday-os/', '/pro/'
+]);
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -66,6 +70,7 @@ function classify(route) {
   if (COUNTRY_ROUTES.has(route)) return 'country-hub';
   if (CATEGORY_ROUTES.has(route)) return 'category-hub';
   if (CORE_ROUTES.has(route)) return 'institutional';
+  if (PRODUCT_ENTRY_ROUTES.has(route)) return 'product-entry';
   return 'discovery-support';
 }
 
@@ -143,7 +148,16 @@ function assess(english, localized, routeClass, englishRoute) {
     ? { content: 0.75, heading: 0.6, links: 0.5 }
     : { content: 0.65, heading: 0.6, links: 0.5 });
 
-  if (routeClass === 'country-hub') {
+  if (routeClass === 'discovery-support') {
+    // The shared five-step semantic, structure, link and form contract is the
+    // primary parity boundary; 280 words prevents terse shells without
+    // penalizing the more compact Swahili rendering.
+    const discoveryWordFloor = 280;
+    if (localized.words < discoveryWordFloor) reasons.push(`discovery guidance too shallow (${localized.words}/${discoveryWordFloor} words)`);
+    if (localized.h2 + localized.h3 < 8) reasons.push(`discovery structure too shallow (${localized.h2 + localized.h3}/8 sections)`);
+    if (localized.links < 10) reasons.push(`discovery links too shallow (${localized.links}/10 links)`);
+    if (localized.forms < 1 || localized.inputs < 1 || localized.buttons < 1) reasons.push('discovery action or search handoff missing');
+  } else if (routeClass === 'country-hub') {
     if (localized.words < 300) reasons.push(`country guidance too shallow (${localized.words}/300 words)`);
     if (localized.h2 + localized.h3 < 8) reasons.push(`country structure too shallow (${localized.h2 + localized.h3}/8 sections)`);
     if (localized.links < 14) reasons.push(`country discovery too shallow (${localized.links}/14 links)`);
@@ -164,7 +178,10 @@ function assess(english, localized, routeClass, englishRoute) {
     if (headingRatio !== null && headingRatio < thresholds.heading) reasons.push(`section structure ${Math.round(headingRatio * 100)}% of English`);
     if (linkRatio !== null && linkRatio < thresholds.links) reasons.push(`link/discovery depth ${Math.round(linkRatio * 100)}% of English`);
   }
-  if (routeClass === 'country-hub') {
+  if (routeClass === 'discovery-support') {
+    // Informational discovery surfaces use the shared decision, evidence,
+    // privacy and handoff contract rather than copying app-specific controls.
+  } else if (routeClass === 'country-hub') {
     // Country hubs use the shared evidence and discovery contract instead of
     // copying the changing length of each English country page.
   } else if (englishRoute === '/changelog/') {
