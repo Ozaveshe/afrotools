@@ -95,6 +95,7 @@ function normalizeBuildOwnedArticleHtml(html) {
     .replace(/\r\n/g, '\n')
     .replace(/\s+data-chat-bundle="[^"]*"/, '')
     .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
+    .replace(/^[ \t]*<link rel="stylesheet" href="\/blog\/assets\/css\/blog-typography\.css">[ \t]*\n?/gm, '')
     .replace(/^[ \t]*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>[ \t]*\n?/gm, '')
     .replace(/^[ \t]*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>[ \t]*\n?/gm, '')
     .replace(/^[ \t]*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>[ \t]*\n?/gm, '');
