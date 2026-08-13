@@ -42,9 +42,13 @@
     if (sourceLabel.length < 5) throw new Error('Name the statement, scheme rule or provider source checked.');
     var checked = date(input.sourceCheckedDate, 'Source checked date');
     var asOf = date(input.asOfDate, 'Calculation date');
+    var nextReview = date(input.nextReviewDate, 'Next contribution review date');
     var sourceAgeDays = Math.floor((asOf.getTime() - checked.getTime()) / 86400000);
     if (sourceAgeDays < 0) throw new Error('Source checked date cannot be after the calculation date.');
     if (sourceAgeDays > MAX_SOURCE_AGE_DAYS) throw new Error('Recheck the source before calculating; it is more than 366 days old.');
+    var nextReviewDays = Math.floor((nextReview.getTime() - asOf.getTime()) / 86400000);
+    var latestReview = new Date(checked.getTime() + MAX_SOURCE_AGE_DAYS * 86400000);
+    if (nextReview.getTime() > latestReview.getTime()) throw new Error('Next contribution review date must be no later than 366 days after the source was checked.');
     var values = {
       countryCode: String(input.countryCode || '').trim().toUpperCase(),
       currency: currency,
@@ -60,8 +64,11 @@
       drawdownPercent: finite(input.drawdownPercent, 'Illustrative annual drawdown', 0, 100),
       sourceLabel: sourceLabel,
       sourceCheckedDate: String(input.sourceCheckedDate),
+      nextReviewDate: String(input.nextReviewDate),
       asOfDate: String(input.asOfDate),
-      sourceAgeDays: sourceAgeDays
+      sourceAgeDays: sourceAgeDays,
+      nextReviewDays: nextReviewDays,
+      reviewDue: nextReviewDays <= 0
     };
     if (values.annualReturnPercent - values.annualFeePercent <= -100) throw new Error('Gross return minus fee drag must be greater than -100%.');
     return values;

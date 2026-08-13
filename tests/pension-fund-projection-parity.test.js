@@ -7,7 +7,7 @@ const engine = require('../engines/src/pension-fund-projection-engine.js');
 const root = path.resolve(__dirname, '..');
 
 function valid(overrides) {
-  return Object.assign({ countryCode:'TZ', currency:'TZS', currentAge:44, retirementAge:45, monthlySalary:1000, salaryGrowthPercent:0, contributionRatePercent:10, currentBalance:0, annualReturnPercent:0, annualFeePercent:0, inflationPercent:0, drawdownPercent:4, sourceLabel:'Synthetic current statement', sourceCheckedDate:'2026-08-09', asOfDate:'2026-08-09', schemeInputsConfirmed:true, assumptionsConfirmed:true }, overrides || {});
+  return Object.assign({ countryCode:'TZ', currency:'TZS', currentAge:44, retirementAge:45, monthlySalary:1000, salaryGrowthPercent:0, contributionRatePercent:10, currentBalance:0, annualReturnPercent:0, annualFeePercent:0, inflationPercent:0, drawdownPercent:4, sourceLabel:'Synthetic current statement', sourceCheckedDate:'2026-08-09', nextReviewDate:'2027-02-09', asOfDate:'2026-08-09', schemeInputsConfirmed:true, assumptionsConfirmed:true }, overrides || {});
 }
 
 test('exact zero-return fixture preserves contributions and user drawdown', () => {
@@ -18,6 +18,8 @@ test('exact zero-return fixture preserves contributions and user drawdown', () =
   assert.ok(Math.abs(result.base.investmentGrowth) < 1e-8);
   assert.ok(Math.abs(result.base.illustrativeMonthlyDrawdown - 4) < 1e-8);
   assert.ok(Math.abs(result.base.replacementRatioPercent - 0.4) < 1e-8);
+  assert.equal(result.inputs.nextReviewDate, '2027-02-09');
+  assert.equal(result.inputs.reviewDue, false);
   assert.equal(result.base.yearly.length, 2);
 });
 
@@ -31,6 +33,8 @@ test('fees, inflation and deterministic sensitivity are explicit', () => {
 
 test('stale sources and missing confirmations fail closed', () => {
   assert.throws(() => engine.calculate(valid({ sourceCheckedDate:'2025-01-01' })), /366 days/);
+  assert.throws(() => engine.calculate(valid({ nextReviewDate:'2027-08-11' })), /no later than 366 days/);
+  assert.equal(engine.calculate(valid({ nextReviewDate:'2026-08-09' })).inputs.reviewDue, true);
   assert.throws(() => engine.calculate(valid({ schemeInputsConfirmed:false })), /Confirm/);
   assert.throws(() => engine.calculate(valid({ retirementAge:44 })), /between|greater/);
 });
@@ -39,7 +43,9 @@ test('English and Swahili owners expose the same complete local workflow', () =>
   const en = fs.readFileSync(path.join(root, 'tools/pension-projection/index.html'), 'utf8');
   const sw = fs.readFileSync(path.join(root, 'sw/zana/makadirio-ya-mfuko-wa-pensheni/index.html'), 'utf8');
   for (const html of [en, sw]) {
-    for (const name of ['countryCode','currency','currentAge','retirementAge','monthlySalary','salaryGrowthPercent','contributionRatePercent','currentBalance','annualReturnPercent','annualFeePercent','inflationPercent','drawdownPercent','sourceLabel','sourceCheckedDate','asOfDate','schemeInputsConfirmed','assumptionsConfirmed']) assert.match(html, new RegExp(`name="${name}"`));
+    for (const name of ['countryCode','currency','currentAge','retirementAge','monthlySalary','salaryGrowthPercent','contributionRatePercent','currentBalance','annualReturnPercent','annualFeePercent','inflationPercent','drawdownPercent','sourceLabel','sourceCheckedDate','nextReviewDate','asOfDate','schemeInputsConfirmed','assumptionsConfirmed']) assert.match(html, new RegExp(`name="${name}"`));
+    assert.match(html, /oecd\.org\/content\/dam\/iops/);
+    assert.doesNotMatch(html, /www\.iopsweb\.org\/IOPS-Good-practices/);
     for (const action of ['reset','save','load','import','copy','json','csv','txt','pdf']) assert.match(html, new RegExp(`data-action="${action}"`));
     assert.match(html, /pension-fund-projection-engine\.js/);
     assert.match(html, /assets\/img\/tools\/pension-projection\.webp/);

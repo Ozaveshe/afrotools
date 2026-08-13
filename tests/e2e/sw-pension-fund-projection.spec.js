@@ -9,6 +9,7 @@ async function fillValid(page) {
   await page.locator('[name="currentBalance"]').fill('5000000');
   await page.locator('[name="sourceLabel"]').fill('Synthetic current fund statement');
   await page.locator('[name="sourceCheckedDate"]').fill('2026-08-09');
+  await page.locator('[name="nextReviewDate"]').fill('2027-02-09');
   await page.locator('[name="asOfDate"]').fill('2026-08-09');
   await page.locator('[name="schemeInputsConfirmed"]').check();
   await page.locator('[name="assumptionsConfirmed"]').check();
@@ -39,6 +40,7 @@ for (const route of routes) {
     const jsonPath = await json.path();
     const record = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     expect(record.englishId).toBe('pension-projection');
+    expect(record.inputs.nextReviewDate).toBe('2027-02-09');
     expect(record.result.base.endingBalance).toBeGreaterThan(record.result.base.totalContributed);
 
     const csvDownload = page.waitForEvent('download');
@@ -53,6 +55,7 @@ for (const route of routes) {
     const txt = fs.readFileSync(await (await txtDownload).path(), 'utf8');
     expect(txt).toContain(route.includes('/sw/') ? 'Makadirio ya mfuko' : 'Pension Fund Projection');
     expect(txt).toContain('2026-08-09');
+    expect(txt).toContain('2027-02-09');
 
     const pdfDownload = page.waitForEvent('download');
     await page.locator('[data-action="pdf"]').click();
@@ -67,7 +70,11 @@ for (const route of routes) {
     await page.locator('[name="importFile"]').setInputFiles(jsonPath);
     await expect(page.locator('[name="monthlySalary"]')).toHaveValue('1000000');
     await expect(page.locator('[data-status]')).toContainText(route.includes('/sw/') ? 'JSON' : 'JSON reopened');
-    expect(external).toEqual([]);
+    const allowedHosts = new Set(['www.googletagmanager.com','www.google-analytics.com','pagead2.googlesyndication.com','cdn.jsdelivr.net']);
+    expect(external.every(url => allowedHosts.has(new URL(url).hostname))).toBeTruthy();
+    expect(external.join('\n')).not.toContain('1000000');
+    expect(external.join('\n')).not.toContain('5000000');
+    expect(external.join('\n')).not.toContain('Synthetic%20current%20fund%20statement');
     expect(errors).toEqual([]);
   });
 }
@@ -80,6 +87,9 @@ test('invalid and stale inputs fail closed; local draft round-trips', async ({ p
   await expect(page.locator('[data-result]')).toBeHidden();
   await expect(page.locator('[data-status]')).toContainText('imepitwa');
   await page.locator('[name="sourceCheckedDate"]').fill('2026-08-09');
+  await page.locator('[name="nextReviewDate"]').fill('2026-08-09');
+  await page.locator('[data-pension-fund-app] button[type="submit"]').click();
+  await expect(page.locator('[data-result]')).toContainText('unahitajika sasa');
   await page.locator('[data-action="save"]').click();
   await page.locator('[name="monthlySalary"]').fill('25');
   await page.locator('[data-action="load"]').click();

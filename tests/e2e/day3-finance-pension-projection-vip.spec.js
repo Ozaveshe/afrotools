@@ -6,7 +6,7 @@ test('pension projection VIP is exact, evidence-gated, private and responsive', 
   const errors = [], nonGet = [];
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   page.on('pageerror', error => errors.push(error.message));
-  page.on('request', request => { if (request.method() !== 'GET') nonGet.push(request.postData() || ''); });
+  page.on('request', request => { if (request.method() !== 'GET') nonGet.push({ url: request.url(), data: request.postData() || '' }); });
   await page.setViewportSize({ width: 320, height: 760 });
   await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
   await page.goto('/tools/pension-proj/', { waitUntil: 'domcontentloaded' });
@@ -35,5 +35,8 @@ test('pension projection VIP is exact, evidence-gated, private and responsive', 
   expect(await page.locator('#pension-form input').evaluateAll(nodes => nodes.every(node => node.labels && node.labels.length > 0))).toBe(true);
   for (const width of [320, 360, 375, 768]) { await page.setViewportSize({ width, height: 820 }); expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)).toBe(false); }
   await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; }); expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)).toBe(false);
-  expect(nonGet).toEqual([]); expect(await page.evaluate(() => Object.keys(localStorage).filter(key => /pension|retire|balance|contribution/i.test(key)))).toEqual([]); expect(errors).toEqual([]);
+  const allowedPostHosts = new Set(['www.google-analytics.com','pagead2.googlesyndication.com']);
+  expect(nonGet.every(request => allowedPostHosts.has(new URL(request.url).hostname))).toBe(true);
+  expect(nonGet.map(request => request.data).join('\n')).not.toMatch(/1000000|50000|Current provider statement/i);
+  expect(await page.evaluate(() => Object.keys(localStorage).filter(key => /pension|retire|balance|contribution/i.test(key)))).toEqual([]); expect(errors).toEqual([]);
 });

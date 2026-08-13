@@ -28,6 +28,7 @@
   function field(name) { return form.elements.namedItem(name); }
   function say(message, bad) { status.textContent = message; status.classList.toggle('is-error', !!bad); }
   function today() { return new Date().toISOString().slice(0, 10); }
+  function addMonths(value, months) { var d = new Date(value + 'T00:00:00Z'); d.setUTCMonth(d.getUTCMonth() + months); return d.toISOString().slice(0, 10); }
   function money(value, currency) { return currency + ' ' + Number(value).toLocaleString(locale === 'sw' ? 'sw-KE' : 'en-US', { maximumFractionDigits: 0 }); }
   function percent(value) { return Number(value).toLocaleString(locale === 'sw' ? 'sw-KE' : 'en-US', { maximumFractionDigits: 1 }) + '%'; }
   function values() {
@@ -46,6 +47,7 @@
       drawdownPercent: field('drawdownPercent').value,
       sourceLabel: field('sourceLabel').value,
       sourceCheckedDate: field('sourceCheckedDate').value,
+      nextReviewDate: field('nextReviewDate').value,
       asOfDate: field('asOfDate').value,
       schemeInputsConfirmed: field('schemeInputsConfirmed').checked,
       assumptionsConfirmed: field('assumptionsConfirmed').checked
@@ -79,6 +81,7 @@
       'Uwiano wa mshahara: ' + percent(b.replacementRatioPercent),
       'Masafa ya salio (-/+ pointi 2): ' + money(last.lower.endingBalance, i.currency) + ' - ' + money(last.higher.endingBalance, i.currency),
       'Chanzo ulichokagua: ' + i.sourceLabel + ' (' + i.sourceCheckedDate + ')',
+      'Ukaguzi unaofuata wa mchango: ' + i.nextReviewDate + (i.reviewDue ? ' (unahitajika sasa)' : ''),
       'Mpaka: makadirio ya kupanga tu; si taarifa rasmi ya mfuko, ushauri wa uwekezaji au ahadi ya malipo.'
     ] : [
       'Pension Fund Projection',
@@ -91,6 +94,7 @@
       'Salary replacement ratio: ' + percent(b.replacementRatioPercent),
       'Balance range (-/+ 2 points): ' + money(last.lower.endingBalance, i.currency) + ' - ' + money(last.higher.endingBalance, i.currency),
       'Source checked: ' + i.sourceLabel + ' (' + i.sourceCheckedDate + ')',
+      'Next contribution review: ' + i.nextReviewDate + (i.reviewDue ? ' (due now)' : ''),
       'Boundary: planning estimate only; not a fund statement, investment advice, or guaranteed benefit.'
     ];
   }
@@ -123,7 +127,10 @@
     var cards = labels.map(function (label, idx) { return '<div><dt>' + label + '</dt><dd>' + vals[idx] + '</dd></div>'; }).join('');
     var tableHead = locale === 'sw' ? '<tr><th>Umri</th><th>Salio</th><th>Jumla iliyochangwa</th></tr>' : '<tr><th>Age</th><th>Balance</th><th>Total contributed</th></tr>';
     var tableRows = b.yearly.map(function (row) { return '<tr><td>' + row.age + '</td><td>' + money(row.balance,i.currency) + '</td><td>' + money(row.totalContributed,i.currency) + '</td></tr>'; }).join('');
-    result.innerHTML = '<h2 tabindex="-1">' + heading + '</h2><dl class="pp-result-grid">' + cards + '</dl><p><strong>' + (locale === 'sw' ? 'Masafa ya hali tofauti:' : 'Scenario range:') + '</strong> ' + money(last.lower.endingBalance,i.currency) + ' - ' + money(last.higher.endingBalance,i.currency) + '.</p><div class="pp-table-wrap"><table><caption>' + (locale === 'sw' ? 'Ukuaji wa mwaka kwa mwaka' : 'Year-by-year growth') + '</caption><thead>' + tableHead + '</thead><tbody>' + tableRows + '</tbody></table></div><p class="pp-boundary">' + lines()[10] + '</p>';
+    var review = locale === 'sw' ? 'Ukaguzi unaofuata wa mchango: ' : 'Next contribution review: ';
+    var reviewState = i.reviewDue ? (locale === 'sw' ? ' - unahitajika sasa.' : ' - due now.') : '.';
+    var boundary = lines().slice(-1)[0];
+    result.innerHTML = '<h2 tabindex="-1">' + heading + '</h2><dl class="pp-result-grid">' + cards + '</dl><p><strong>' + (locale === 'sw' ? 'Masafa ya hali tofauti:' : 'Scenario range:') + '</strong> ' + money(last.lower.endingBalance,i.currency) + ' - ' + money(last.higher.endingBalance,i.currency) + '.</p><p class="pp-boundary"><strong>' + review + '</strong>' + i.nextReviewDate + reviewState + ' ' + (locale === 'sw' ? 'Rasimu ya ndani haiwezi kutuma arifa.' : 'The local draft cannot send a notification.') + '</p><div class="pp-table-wrap"><table><caption>' + (locale === 'sw' ? 'Ukuaji wa mwaka kwa mwaka' : 'Year-by-year growth') + '</caption><thead>' + tableHead + '</thead><tbody>' + tableRows + '</tbody></table></div><p class="pp-boundary">' + boundary + '</p>';
     result.hidden = false; exportsBox.hidden = false; result.querySelector('h2').focus(); say(copy.done);
   }
   function calculate() {
@@ -141,7 +148,7 @@
   root.addEventListener('click', function (event) {
     var button = event.target.closest('[data-action]'), action = button && button.dataset.action;
     if (!action) return;
-    if (action === 'reset') { form.reset(); field('asOfDate').value = today(); field('sourceCheckedDate').value = today(); clear(copy.reset); field('countryCode').focus(); return; }
+    if (action === 'reset') { form.reset(); field('asOfDate').value = today(); field('sourceCheckedDate').value = today(); field('nextReviewDate').value = addMonths(today(), 6); clear(copy.reset); field('countryCode').focus(); return; }
     if (action === 'save') { localStorage.setItem(storageKey, JSON.stringify(values())); return say(copy.saved); }
     if (action === 'load') { var saved = localStorage.getItem(storageKey); if (!saved) return say(copy.none, true); apply(JSON.parse(saved)); clear(copy.loaded); return; }
     if (action === 'import') { field('importFile').click(); return; }
@@ -161,6 +168,6 @@
   countries.forEach(function (row) { var option = document.createElement('option'); option.value = row[0]; option.textContent = locale === 'sw' ? row[2] : row[1]; option.dataset.currency = row[3]; field('countryCode').appendChild(option); });
   field('countryCode').value = locale === 'sw' ? 'TZ' : 'NG';
   field('currency').value = locale === 'sw' ? 'TZS' : 'NGN';
-  field('asOfDate').value = today(); field('sourceCheckedDate').value = today();
+  field('asOfDate').value = today(); field('sourceCheckedDate').value = today(); field('nextReviewDate').value = addMonths(today(), 6);
   root.dataset.workflowReady = 'true'; say(copy.ready);
 })();
