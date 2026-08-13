@@ -3,8 +3,8 @@
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
 - Public Hausa routes: 105
-- Native: 16
-- Localized shells: 59
+- Native: 19
+- Localized shells: 56
 - Explicit English fallbacks: 30
 - Indexable: 75
 - Sitemap members: 75
@@ -53,7 +53,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/fansho-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/farashin-kayayyakin-gona/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/gina-cv/ | english-fallback | no | no | /tools/cv-builder/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
-| /ha/kayan-aiki/gwajin-ussd/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
+| /ha/kayan-aiki/gwajin-ussd/ | native | yes | yes | /tools/ussd-simulator/ | scripts/build-hausa-ussd-simulator.js + engines/src/hausa-ussd-simulator-engine.js + browser-backed state/JSON/privacy evidence |
 | /ha/kayan-aiki/gyara-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/hada-da-raba-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/jagorar-tin-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
@@ -79,7 +79,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/lambobin-ussd/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/mai-fassara-hausa/ | english-fallback | no | no | /tools/hausa-translator/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/matsa-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/naira-zuwa-kalmomi/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
+| /ha/kayan-aiki/naira-zuwa-kalmomi/ | native | yes | yes | /tools/naira-to-words/ | scripts/build-hausa-naira-words.js + engines/src/hausa-number-words-engine.js + browser-backed JSON/TXT evidence |
 | /ha/kayan-aiki/neman-tallafin-karatu/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/nhf-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/rajistar-kasuwanci/ | english-fallback | no | no | /tools/business-registration/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
@@ -93,7 +93,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/takardar-albashi/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/tazarar-riba/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/waya-ko-banki/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/whatsapp-link/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
+| /ha/kayan-aiki/whatsapp-link/ | native | yes | yes | /tools/whatsapp-link/ | scripts/build-hausa-whatsapp-link.js + engines/src/whatsapp-link-engine.js + browser-backed QR/link/privacy evidence |
 | /ha/kayan-aiki/wht-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/wurin-aikin-pdf/ | english-fallback | no | no | /tools/pdf-workspace/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-kasuwanci/ | english-fallback | no | no | /media-kit/ | data/localization/ha-bridge-manifest.json: explicit business bridge |

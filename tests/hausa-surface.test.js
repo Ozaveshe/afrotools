@@ -43,10 +43,14 @@ for (const file of pages) {
     const hasNativeToolSurface =
       /\/assets\/css\/[^"'?]+(?:vip|planner)[^"'?]*\.css/i.test(html) &&
       /\/assets\/js\/pages\/[^"'?]+\.js/i.test(html);
+    const hasSourceOwnedNativeToolSurface =
+      /<meta\b(?=[^>]*\bname=["']afrotools:source-owner["'])(?=[^>]*\bcontent=["']scripts\/build-hausa-[^"']+\.js["'])[^>]*>/i.test(html) &&
+      /<script\b[^>]*\bsrc=["']\/engines\/[^"'?]+-engine\.js(?:\?v=[a-f0-9]+)?["'][^>]*>/i.test(html) &&
+      /<script\b[^>]*\bsrc=["']\/assets\/js\/pages\/[^"'?]+\.js(?:\?v=[a-f0-9]+)?["'][^>]*>/i.test(html);
     const hasNativeInstitutionalSurface =
       html.includes('name="afrotools-source-owner" content="scripts/build-hausa-institutional-pages.js"') &&
       /\/assets\/css\/localized-institutional\.css(?:\?v=[a-f0-9]+)?/i.test(html);
-    assert.ok(hasSharedHausaSurface || hasNativeToolSurface || hasNativeInstitutionalSurface, `${relative} must load the shared Hausa surface, an exact native tool surface, or the source-owned institutional surface`);
+    assert.ok(hasSharedHausaSurface || hasNativeToolSurface || hasSourceOwnedNativeToolSurface || hasNativeInstitutionalSurface, `${relative} must load the shared Hausa surface, an exact source-owned native tool surface, or the source-owned institutional surface`);
   }
   const main = html.match(/<main\b[^>]*\bid=["']([^"']+)["']/i);
   assert.ok(main, `${relative} must expose an addressable main region`);
