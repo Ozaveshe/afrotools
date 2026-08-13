@@ -168,7 +168,7 @@
   <div class="container">
     <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">Landed Cost Calculator</span></nav>
     <h1>Landed Cost Calculator —<br><em>FOB to Warehouse 2026</em></h1>
-    <p class="t-hero-sub">A planning import cost calculator from FOB price through duty entered by you, VAT presets, levy estimates, port fee estimates, and clearing cost estimates to landed cost in local currency.</p>
+    <p class="t-hero-sub">A planning import cost calculator from FOB price through duty entered by you, VAT and levy presets, and port and clearing charges entered from current quotes to landed cost in local currency.</p>
     <div class="hero-badges">
       <span class="badge badge-green">10 African Countries</span>
       <span class="badge badge-blue">Full Cost Waterfall</span>
@@ -212,23 +212,23 @@
                 </div>
                 <div>
                   <label class="f-label" for="dutyRate">Duty Rate (%)</label>
-                  <input type="number" class="f-input" id="dutyRate" placeholder="e.g. 20" value="20" min="0" max="200" step="0.5">
+                  <input type="number" class="f-input" id="dutyRate" placeholder="Enter current HS-specific rate" value="" min="0" max="200" step="0.5" required>
                 </div>
               </div>
               <div class="f-grid">
                 <div>
                   <label class="f-label" for="freightUSD">Sea Freight (USD)</label>
-                  <input type="number" class="f-input" id="freightUSD" placeholder="e.g. 2000" value="2000" min="0">
+                  <input type="number" class="f-input" id="freightUSD" placeholder="Enter current freight quote" value="" min="0" required>
                 </div>
                 <div>
                   <label class="f-label" for="insuranceUSD">Insurance (USD)</label>
-                  <input type="number" class="f-input" id="insuranceUSD" placeholder="auto 0.5%" value="">
+                  <input type="number" class="f-input" id="insuranceUSD" placeholder="Enter quoted insurance (0 if none)" value="" min="0" required>
                 </div>
               </div>
               <div class="f-grid">
                 <div>
                   <label class="f-label" for="fxRate">Exchange Rate (1 USD =)</label>
-                  <input type="number" class="f-input" id="fxRate" placeholder="e.g. 1660" value="">
+                  <input type="number" class="f-input" id="fxRate" placeholder="Enter current customs/bank rate" value="" min="0.000001" step="any" required>
                   <div style="font-size:.68rem;color:#94A3B8;margin-top:4px" id="fxHint"></div>
                 </div>
                 <div>
@@ -238,12 +238,12 @@
               </div>
               <div class="f-grid" style="margin-top:10px">
                 <div>
-                  <label class="f-label" for="brokerFee">Customs Broker Fee (local)</label>
-                  <input type="number" class="f-input" id="brokerFee" placeholder="auto-filled" value="">
+                  <label class="f-label" for="brokerFee">Customs Broker Quote (local)</label>
+                  <input type="number" class="f-input" id="brokerFee" placeholder="Enter written broker quote (0 if none)" value="" min="0">
                 </div>
                 <div>
-                  <label class="f-label" for="handlingFee">Port Handling (local)</label>
-                  <input type="number" class="f-input" id="handlingFee" placeholder="e.g. 75000" value="">
+                  <label class="f-label" for="handlingFee">Port / Terminal Quote (local)</label>
+                  <input type="number" class="f-input" id="handlingFee" placeholder="Enter current terminal quote (0 if none)" value="" min="0">
                 </div>
               </div>
               <button type="button" class="btn-primary" onclick="doCalculate()">📦 Calculate Landed Cost</button>
@@ -299,9 +299,9 @@
               <label class="f-label" for="cmpAPort">Port</label>
               <select class="f-select" id="cmpAPort"></select>
               <label class="f-label" for="cmpADuty">Duty Rate (%)</label>
-              <input type="number" class="f-input" id="cmpADuty" value="20">
+              <input type="number" class="f-input" id="cmpADuty" placeholder="Current HS-specific rate" value="" min="0" step="0.5">
               <label class="f-label" for="cmpAFX">FX Rate</label>
-              <input type="number" class="f-input" id="cmpAFX" placeholder="1 USD =">
+              <input type="number" class="f-input" id="cmpAFX" placeholder="Current customs/bank rate" min="0.000001" step="any">
             </div>
             <div>
               <div style="font-size:.78rem;font-weight:800;color:#a78bfa;text-transform:uppercase;margin-bottom:12px">Scenario B</div>
@@ -310,9 +310,9 @@
               <label class="f-label" for="cmpBPort">Port</label>
               <select class="f-select" id="cmpBPort"></select>
               <label class="f-label" for="cmpBDuty">Duty Rate (%)</label>
-              <input type="number" class="f-input" id="cmpBDuty" value="25">
+              <input type="number" class="f-input" id="cmpBDuty" placeholder="Current HS-specific rate" value="" min="0" step="0.5">
               <label class="f-label" for="cmpBFX">FX Rate</label>
-              <input type="number" class="f-input" id="cmpBFX" placeholder="1 USD =">
+              <input type="number" class="f-input" id="cmpBFX" placeholder="Current customs/bank rate" min="0.000001" step="any">
             </div>
           </div>
           <div style="margin-top:14px">
@@ -447,7 +447,7 @@
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">Source-dated planning model</span>
-          <p class="tool-verification-note">Reviewed 2026. Customs, levies, freight, and exchange rates change.</p>
+          <p class="tool-verification-note">Sources checked 13 August 2026. Customs, levies, freight, and exchange rates change.</p>
         </div>
       </div>
       <div class="tool-verification-grid">
@@ -455,7 +455,7 @@
           <h3>Methodology</h3>
           <ul class="tool-verification-list">
             <li>CIF is derived from FOB, freight, and insurance assumptions before duty and VAT-style charges are applied.</li>
-            <li>Destination fees, broker fees, and handling costs are planning presets that should be replaced with written quotes.</li>
+            <li>Freight, insurance, duty, exchange rate, broker fee, and terminal handling are current user inputs; the calculator does not invent a broker or port quote.</li>
             <li>Scenario and P&amp;L tabs reuse the same estimate so you can compare ports, countries, and resale margin.</li>
           </ul>
         </div>
@@ -470,6 +470,8 @@
       </div>
       <div class="tool-verification-actions">
         <p class="tool-verification-disclaimer">Disclaimer: estimate only. AfroTools does not file customs declarations, guarantee clearance, or provide legal, tax, or freight advice.</p>
+        <p><strong>Nigeria corridor sources:</strong> <a href="https://trade.gov.ng/en/tools/tariff-search" target="_blank" rel="noopener">Nigeria Trade Portal tariff search</a> · <a href="https://customs.gov.ng/wp-content/uploads/2025/06/Import-and-Export-Procedure-Corrected_Final.pdf" target="_blank" rel="noopener">Nigeria Customs import procedure</a> · <a href="https://nigerianports.gov.ng/port-tariffs/1000/" target="_blank" rel="noopener">Nigerian Ports Authority tariffs</a> · <a href="https://www.wcotradetools.org/" target="_blank" rel="noopener">WCO Trade Tools</a>.</p>
+        <p><strong>Calculator handoff:</strong> find the product classification with the <a href="/tools/hs-code-lookup/">HS Code Lookup</a>, then carry the confirmed rate into the <a href="/tools/import-duty/">Import Duty Calculator</a> and this landed-cost brief.</p>
       </div>
     </div>
   </div>
@@ -492,6 +494,21 @@
 <script>
 var lastResult = null;
 var latestLandedCost = null;
+var OFFICIAL_LANDED_COST_SOURCES = {
+  NG: {tariff:'https://trade.gov.ng/en/tools/tariff-search', port:'https://nigerianports.gov.ng/port-tariffs/1000/'},
+  KE: {tariff:'https://www.kra.go.ke/helping-tax-payers/faqs/customs-and-border-control', port:'https://www.kpa.co.ke/'},
+  ZA: {tariff:'https://www.sars.gov.za/customs-and-excise/', port:'https://www.transnetnationalportsauthority.net/'},
+  GH: {tariff:'https://gra.gov.gh/customs/', port:'https://ghanaports.gov.gh/'},
+  TZ: {tariff:'https://www.tra.go.tz/'},
+  EG: {tariff:'https://www.customs.gov.eg/'},
+  RW: {tariff:'https://www.rra.gov.rw/'},
+  MA: {tariff:'https://www.douane.gov.ma/'},
+  CI: {tariff:'https://www.douanes.ci/'},
+  CM: {tariff:'https://www.douanes.cm/douanes-cameroun/tarif-des-douanes/'}
+};
+function officialLandedCostSource(countryCode){
+  return OFFICIAL_LANDED_COST_SOURCES[countryCode] || {};
+}
 
 // Init
 (function init(){
@@ -516,16 +533,16 @@ function onCountryChange(){
   var ports = LandedCostEngine.getCountryPorts(cc);
   var pSel = document.getElementById('portSelect');
   pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+' ('+p.type+')</option>'; }).join('');
-  // Auto-fill FX rate
+  // Keep historical FX as a dated reference only; require a current user value.
   if(FX_HISTORY[cc]){
     var months = Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
     var rate = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
-    document.getElementById('fxRate').value = rate;
-    document.getElementById('fxHint').textContent = '1 USD ≈ '+rate+' '+FX_HISTORY[cc].currency+' (March 2026)';
+    document.getElementById('fxRate').value = '';
+    document.getElementById('fxHint').textContent = 'Bundled March 2026 reference: 1 USD ≈ '+rate+' '+FX_HISTORY[cc].currency+'. Enter the current customs or bank rate.';
   }
-  // Auto-fill broker fee
-  var fee = LandedCostEngine.getDefaultBrokerFee(cc);
-  if(fee) document.getElementById('brokerFee').value = fee;
+  // Broker and terminal charges vary by shipment and provider; never auto-fill them.
+  document.getElementById('brokerFee').value = '';
+  document.getElementById('handlingFee').value = '';
 }
 
 function onCmpCountryChange(ab){
@@ -533,10 +550,7 @@ function onCmpCountryChange(ab){
   var ports = LandedCostEngine.getCountryPorts(cc);
   var pSel = document.getElementById('cmp'+ab+'Port');
   pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+'</option>'; }).join('');
-  if(FX_HISTORY[cc]){
-    var months=Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
-    document.getElementById('cmp'+ab+'FX').value = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
-  }
+  document.getElementById('cmp'+ab+'FX').value = '';
 }
 
 function fmtUSD(v){ return '$'+parseFloat(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -547,6 +561,12 @@ function trustMeta(field){ return trust() && field ? trust().renderMeta(field) :
 function trustDisclaimer(){ return trust() ? trust().DISCLAIMER : 'Import costs can change. AfroTools provides planning estimates only. Always confirm final customs duty, taxes, levies, port charges, exchange rates, and clearing costs with official authorities or licensed professionals before making financial decisions.'; }
 
 function doCalculate(){
+  var requiredInputs = ['fobValue','freightUSD','insuranceUSD','dutyRate','fxRate'];
+  var missing = requiredInputs.some(function(id){ return document.getElementById(id).value === ''; });
+  if(missing){
+    document.getElementById('landedCostStatus').textContent = 'Enter current FOB, freight, insurance, HS-specific duty, and FX values before calculating.';
+    return;
+  }
   var params = {
     fobUSD: document.getElementById('fobValue').value,
     freightUSD: document.getElementById('freightUSD').value,
@@ -622,7 +642,8 @@ function landedCostSummary(){
   if(!data) return '';
   var r = data.result;
   var sym = r.symbol||r.currency;
-  return [
+  var sources = officialLandedCostSource(data.params.destCountry);
+  var lines = [
     'AfroTools landed-cost brief',
     'Destination: '+data.country+' via '+data.port,
     'FOB value: '+fmtUSD(r.fobUSD),
@@ -634,8 +655,13 @@ function landedCostSummary(){
     'VAT: '+fmtUSD(r.vatUSD)+' at '+r.vatRate+'%',
     'Estimated landed cost: '+fmtUSD(r.totalLandedUSD)+' / '+fmtLocal(r.totalLandedLocal, sym),
     'Estimated per unit: '+fmtLocal(r.perUnitLocal, sym),
+    'Sources checked: 2026-08-13',
+    'Tariff source: '+(sources.tariff || 'Confirm with the destination customs authority'),
+    'HS reference: https://www.wcotradetools.org/',
     'Planning note: verify HS code, duty rate, levies, VAT, exchange rate, port charges, broker fees, and customs authority guidance before pricing.'
-  ].join('\n');
+  ];
+  if(sources.port) lines.splice(lines.length-2, 0, 'Port authority source: '+sources.port);
+  return lines.join('\n');
 }
 
 function copyLandedCostBrief(){
@@ -654,6 +680,7 @@ function downloadLandedCostCsv(){
   var status = document.getElementById('landedCostStatus');
   if(!data) return;
   var r = data.result;
+  var sources = officialLandedCostSource(data.params.destCountry);
   var rows = [
     ['field','value'],
     ['destination', data.country],
@@ -671,6 +698,10 @@ function downloadLandedCostCsv(){
     ['total_landed_local', r.totalLandedLocal],
     ['per_unit_local', r.perUnitLocal],
     ['effective_tax_rate_percent', r.effectiveTaxRate],
+    ['source_reviewed_at', '2026-08-13'],
+    ['tariff_source_url', sources.tariff || ''],
+    ['port_authority_source_url', sources.port || ''],
+    ['hs_reference_url', 'https://www.wcotradetools.org/'],
     ['planning_note', 'Verify HS code, rates, levies, VAT, FX, port charges, and customs guidance before acting.']
   ];
   if(r.levyBreakdown && r.levyBreakdown.length){
@@ -697,11 +728,19 @@ document.getElementById('landedCopyBtn').addEventListener('click', copyLandedCos
 document.getElementById('landedCsvBtn').addEventListener('click', downloadLandedCostCsv);
 
 function doCompare(){
+  var comparisonInputs = ['cmpADuty','cmpAFX','cmpBDuty','cmpBFX','freightUSD','insuranceUSD'];
+  if(comparisonInputs.some(function(id){ return document.getElementById(id).value === ''; })){
+    alert('Enter current duty and FX values for both scenarios, plus the main freight and insurance quote.');
+    return;
+  }
   var fob = parseFloat(document.getElementById('cmpFOB').value)||10000;
   var make = function(ab){
     var cc = document.getElementById('cmp'+ab+'Country').value;
     return LandedCostEngine.calculate({
-      fobUSD: fob, freightUSD: 2000, destCountry: cc,
+      fobUSD: fob,
+      freightUSD: document.getElementById('freightUSD').value,
+      insuranceUSD: document.getElementById('insuranceUSD').value,
+      destCountry: cc,
       dutyRate: document.getElementById('cmp'+ab+'Duty').value,
       quantity:1,
       fxRate: document.getElementById('cmp'+ab+'FX').value,

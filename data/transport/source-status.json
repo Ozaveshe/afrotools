@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedAt": "2026-07-29T13:56:08.691Z",
+    "generatedAt": "2026-08-13T04:53:24.101Z",
     "manifestVersion": 1,
     "category": "transport",
-    "toolCount": 23,
-    "highRiskTools": 11,
+    "toolCount": 24,
+    "highRiskTools": 12,
     "sourceCount": 41,
-    "okSources": 24,
-    "changedSources": 5,
-    "blockedSources": 11,
+    "okSources": 25,
+    "changedSources": 6,
+    "blockedSources": 9,
     "brokenSources": 0,
     "manualSources": 1
   },
@@ -60,7 +60,7 @@
       "route": "/tools/import-duty/",
       "lane": "vehicle-money",
       "priority": "high",
-      "status": "changed",
+      "status": "ok",
       "sourceIds": [
         "ng-customs",
         "ke-kra-importing",
@@ -69,11 +69,30 @@
       ]
     },
     {
+      "id": "landed-cost",
+      "route": "/tools/landed-cost/",
+      "lane": "logistics-freight",
+      "priority": "high",
+      "status": "blocked",
+      "sourceIds": [
+        "ng-customs",
+        "ke-kra-importing",
+        "gh-gra-customs",
+        "za-sars-customs",
+        "ng-npa",
+        "ke-kpa",
+        "gh-gpha",
+        "za-tnpa",
+        "ke-trade-portal",
+        "rw-trade-portal"
+      ]
+    },
+    {
       "id": "car-price-intelligence",
       "route": "/cars/",
       "lane": "vehicle-money",
       "priority": "high",
-      "status": "changed",
+      "status": "blocked",
       "sourceIds": [
         "ng-customs",
         "ke-kra-importing",
@@ -88,7 +107,7 @@
       "route": "/tools/car-import-cost/",
       "lane": "vehicle-money",
       "priority": "high",
-      "status": "changed",
+      "status": "blocked",
       "sourceIds": [
         "ng-customs",
         "ke-kra-importing",
@@ -104,7 +123,7 @@
       "route": "/tools/car-loan-vs-cash/",
       "lane": "vehicle-money",
       "priority": "medium",
-      "status": "changed",
+      "status": "ok",
       "sourceIds": [
         "ng-customs",
         "ke-kra-importing",
@@ -145,7 +164,7 @@
       "route": "/tools/truck-load/",
       "lane": "fleet-road",
       "priority": "medium",
-      "status": "blocked",
+      "status": "changed",
       "sourceIds": [
         "ke-kenha",
         "za-sanral",
@@ -173,7 +192,7 @@
       "route": "/tools/route-cost/",
       "lane": "logistics-freight",
       "priority": "high",
-      "status": "blocked",
+      "status": "changed",
       "sourceIds": [
         "ke-kenha",
         "za-sanral",
@@ -217,7 +236,7 @@
       "route": "/tools/customs-time/",
       "lane": "logistics-freight",
       "priority": "high",
-      "status": "changed",
+      "status": "blocked",
       "sourceIds": [
         "ng-customs",
         "ke-kra-importing",
@@ -288,7 +307,7 @@
       "route": "/tools/parking-fee/",
       "lane": "fleet-road",
       "priority": "medium",
-      "status": "blocked",
+      "status": "changed",
       "sourceIds": [
         "ng-laspa",
         "ke-nairobi-city",
@@ -301,7 +320,7 @@
       "route": "/tools/toll-calc/",
       "lane": "fleet-road",
       "priority": "high",
-      "status": "ok",
+      "status": "changed",
       "sourceIds": [
         "za-sanral",
         "ke-kenha",
@@ -355,11 +374,11 @@
       "status": "changed",
       "httpStatus": 200,
       "contentType": "text/html",
-      "etag": "\"1dd1cff62c016ac\"",
-      "lastModified": "Sun, 26 Jul 2026 13:05:09 GMT",
-      "contentHash": "5464647078e30ac1f5bf390112012e903349c11b7443ec488277114281b04897",
-      "changeHash": "18e96eb84f58a51c2fa43527cc169883100ad010791e004965cb357ac6ec9abe",
-      "checkedAt": "2026-07-29T13:55:35.719Z",
+      "etag": "\"1dd297e559dd3ac\"",
+      "lastModified": "Tue, 11 Aug 2026 10:44:07 GMT",
+      "contentHash": "d6a8b906e1b1b2ae6efb72044461c7d5bba470e14d385c1605007b33b169af4a",
+      "changeHash": "e37bdc1ce1cbdd7b2a02635099b7ad7c6808d1929ada965717185a507c92be04",
+      "checkedAt": "2026-08-13T04:51:25.176Z",
       "changedSinceLastRun": true
     },
     {
@@ -375,7 +394,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:35.928Z",
+      "checkedAt": "2026-08-13T04:51:25.228Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -383,18 +402,21 @@
       "id": "gh-npa-indicative-prices",
       "country": "GH",
       "authority": "National Petroleum Authority",
-      "title": "NPA indicative prices",
+      "title": "INDICATIVE PRICES - National Petroleum Authority(NPA)",
       "url": "https://npa.gov.gh/indicative-prices/",
       "sourceType": "fuel-regulator",
       "watch": "download-list",
       "required": true,
-      "status": "blocked",
-      "httpStatus": null,
-      "contentHash": null,
-      "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:35.932Z",
-      "changedSinceLastRun": false,
-      "error": "Timed out after 12000ms"
+      "finalUrl": "https://npa.gov.gh/indicative-prices/",
+      "status": "ok",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "etag": "",
+      "lastModified": "",
+      "contentHash": "2417848f503aaa7f6e157573ee17ab7f4e516c5efc141f09dcc6832529350eb7",
+      "changeHash": "84b129c6ee08f295bc02550a077d6b0e07e76515aca12a5b4300d25081e8cb6a",
+      "checkedAt": "2026-08-13T04:51:25.230Z",
+      "changedSinceLastRun": false
     },
     {
       "id": "za-dmre-fuel",
@@ -411,9 +433,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "20076aee36d628dc04ec54c1ba51589b928fe9ef6a0e19217bffd06d310dc241",
-      "changeHash": "4095a9b1d17f5397eb737951d1ba0d445e7b30e6b2ec0b7ccdd20daa35448432",
-      "checkedAt": "2026-07-29T13:55:35.934Z",
+      "contentHash": "1ce4d5db2f568caf58a965f74c91f7b2593ba261c2a0eaded98c52dc46b61663",
+      "changeHash": "3ee22ff41270dfca1a4212e75ddb28ae3eb4ed5b1f1941381f8cbc83bedc07cc",
+      "checkedAt": "2026-08-13T04:51:25.231Z",
       "changedSinceLastRun": true
     },
     {
@@ -426,15 +448,15 @@
       "watch": "tariff-and-service-updates",
       "required": true,
       "finalUrl": "https://customs.gov.ng/",
-      "status": "changed",
+      "status": "ok",
       "httpStatus": 200,
       "contentType": "text/html",
       "etag": "",
-      "lastModified": "Wed, 29 Jul 2026 13:55:38 GMT",
-      "contentHash": "1e8abb8e1d916b8813a3615539944c1227e09e0fc180d2c2e64927fecccb34ab",
+      "lastModified": "Mon, 03 Aug 2026 14:06:06 GMT",
+      "contentHash": "d3afc963698af2eee29785ce2b9c25910210fdbc65996aa6c4067c8c1a35804d",
       "changeHash": "389e183e51e8c8b4152b8f82f168548371722893aabf5a97b5e7c6132b72940f",
-      "checkedAt": "2026-07-29T13:55:35.937Z",
-      "changedSinceLastRun": true
+      "checkedAt": "2026-08-13T04:51:25.232Z",
+      "changedSinceLastRun": false
     },
     {
       "id": "ke-kra-importing",
@@ -450,10 +472,10 @@
       "httpStatus": 200,
       "contentType": "text/html; charset=utf-8",
       "etag": "",
-      "lastModified": "Wed, 29 Jul 2026 13:55:40 GMT",
-      "contentHash": "baf080d5001db4c63684e0a68322bb1c5a840bc89e4cdb4c8942fe6fb9831f50",
+      "lastModified": "Thu, 13 Aug 2026 04:51:30 GMT",
+      "contentHash": "5e7454b7da6ceff648c8e0da7852b9ce27ed9728d53e3ba0b9a188f0cd3f0867",
       "changeHash": "065eb116016865f2a68fcfc04df15c8f239ddaacf40e12ce663f2d542dcf6107",
-      "checkedAt": "2026-07-29T13:55:35.940Z",
+      "checkedAt": "2026-08-13T04:51:25.233Z",
       "changedSinceLastRun": false
     },
     {
@@ -471,9 +493,9 @@
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "5a6303154f2e74bc8c912874fadb5c8f891f91e2c1a6551686a6078c9d482f87",
+      "contentHash": "6287452ad58ee2efdde75783c98817b917e577f3a5e4c0da0e3f2f3a6182f13b",
       "changeHash": "da066be87c71ddc4ec28280fd5d9adf286717420c41ac5dd476b8a306fd00fb0",
-      "checkedAt": "2026-07-29T13:55:37.195Z",
+      "checkedAt": "2026-08-13T04:51:26.189Z",
       "changedSinceLastRun": false
     },
     {
@@ -490,10 +512,10 @@
       "httpStatus": 200,
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
-      "lastModified": "Sat, 25 Jul 2026 06:35:33 GMT",
-      "contentHash": "c9bd244f4e8fa0090cde852f8f2e6d0f79f79e98a0c574e086eb06f6197bedb9",
+      "lastModified": "Sat, 08 Aug 2026 09:29:33 GMT",
+      "contentHash": "e777202b65f8584afd47e2dba5e6fbe1817ba6c1fce50cc4e6150c7ca7bfec31",
       "changeHash": "da3f45f981ed45df248f47779934bd421847f06a9ff11dfdceec71ec86f7f4f5",
-      "checkedAt": "2026-07-29T13:55:38.308Z",
+      "checkedAt": "2026-08-13T04:51:26.552Z",
       "changedSinceLastRun": false
     },
     {
@@ -513,7 +535,7 @@
       "lastModified": "Fri, 24 Jul 2026 20:33:37 GMT",
       "contentHash": "1f7ae52b162c3bb358ccf663c3464302324c982ee191c5df56936a4c9ddfe192",
       "changeHash": "a3c075c25d3dd304ce218c3b2eac1b42e446a7ec631826bac14c133a7b62bc40",
-      "checkedAt": "2026-07-29T13:55:38.810Z",
+      "checkedAt": "2026-08-13T04:51:26.827Z",
       "changedSinceLastRun": false
     },
     {
@@ -529,7 +551,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:38.872Z",
+      "checkedAt": "2026-08-13T04:51:27.124Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -546,7 +568,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:39.089Z",
+      "checkedAt": "2026-08-13T04:51:27.585Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -564,10 +586,10 @@
       "httpStatus": 200,
       "contentType": "text/html; charset=utf-8",
       "etag": "",
-      "lastModified": "Wed, 29 Jul 2026 13:41:21 GMT",
-      "contentHash": "d6e23d0d3bf2150ab82f7f25de67ddf406c2339ed65cd8cf9a36dfe8643d06f7",
+      "lastModified": "Thu, 13 Aug 2026 04:36:46 GMT",
+      "contentHash": "c895b644c4ba970eacf87a4da4f9fd4fa6b578b598b2e1715999a8469c717880",
       "changeHash": "fe93919d50d8817c0999ff0733f258e66716fb1508aac101e17c8462f47e8bfc",
-      "checkedAt": "2026-07-29T13:55:40.174Z",
+      "checkedAt": "2026-08-13T04:51:28.363Z",
       "changedSinceLastRun": false
     },
     {
@@ -583,11 +605,11 @@
       "status": "changed",
       "httpStatus": 200,
       "contentType": "text/html; charset=utf-8",
-      "etag": "\"17wef8jc35g1bir\"",
+      "etag": "\"eiap7ptbsc1bir\"",
       "lastModified": "",
-      "contentHash": "21b42d2abc70ae503c96414719e20532feb362a4fa4b2e4bf47a9f1f3da82762",
-      "changeHash": "b434044cc30fe9c809b06ded3284f3740cf9dee4af639c5b86b76f6e514de7ac",
-      "checkedAt": "2026-07-29T13:55:41.269Z",
+      "contentHash": "546307481836b34241e7c8c072fabd7e9dd9bd5b37359af0603e0b67095a3ce1",
+      "changeHash": "169aff73404249a12d730b2c0999aa134fc543f0d0397578f8ff896d6dfd5047",
+      "checkedAt": "2026-08-13T04:51:28.426Z",
       "changedSinceLastRun": true
     },
     {
@@ -607,7 +629,7 @@
       "lastModified": "",
       "contentHash": "2abd49c7e287da48889cd45b633d32e13406e144a07fe281df60cda0fca032ab",
       "changeHash": "10a8216c0a38a1224525113887a9902bd6a364583df73aa39501b6c6d1a4df97",
-      "checkedAt": "2026-07-29T13:55:41.963Z",
+      "checkedAt": "2026-08-13T04:51:30.120Z",
       "changedSinceLastRun": false
     },
     {
@@ -624,10 +646,10 @@
       "httpStatus": 200,
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
-      "lastModified": "Wednesday, 29-Jul-2026 13:55:43 GMT",
-      "contentHash": "896a89eb125cdc4c57310bb5b80ff11cc37b20cac2a3a906092a9118d9a268e7",
+      "lastModified": "Thursday, 13-Aug-2026 04:51:31 GMT",
+      "contentHash": "7db11797d0ff00f5531119d658a7a544f405f18a167f352c2957f20ffd3240e2",
       "changeHash": "c5f4b3b062268e446880791272889daf27154b188c15d289a7b5ea4291f677ff",
-      "checkedAt": "2026-07-29T13:55:42.348Z",
+      "checkedAt": "2026-08-13T04:51:30.618Z",
       "changedSinceLastRun": false
     },
     {
@@ -643,7 +665,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:43.809Z",
+      "checkedAt": "2026-08-13T04:51:30.643Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -664,7 +686,7 @@
       "lastModified": "",
       "contentHash": "0e1b98038bc7165e0601b9503121e7b1a5e73eb26d80128e8381f4e40ddd7d51",
       "changeHash": "936016c6b73ed78e9681ff06a247f2e38f6182cf2766bb4b8daf422922edac55",
-      "checkedAt": "2026-07-29T13:55:44.188Z",
+      "checkedAt": "2026-08-13T04:51:30.895Z",
       "changedSinceLastRun": false
     },
     {
@@ -680,7 +702,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:46.267Z",
+      "checkedAt": "2026-08-13T04:51:31.469Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -699,9 +721,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "b8e532abd23142397280630a603038e59b8bd0e7b3e38d8d18fb0c2c12795fe4",
+      "contentHash": "31a0fcde723f071d8f986e0b024d2072dea3881961645c120fc11ac55d34162c",
       "changeHash": "015ed60beec48bc7ab17be8ed1e6c35f0c6ef685b9b06b9463dedaf9fc224212",
-      "checkedAt": "2026-07-29T13:55:46.422Z",
+      "checkedAt": "2026-08-13T04:51:31.874Z",
       "changedSinceLastRun": false
     },
     {
@@ -719,9 +741,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "e2b10650992b60afc12c6fb9792feb0b6d02eb32768fd5919f9deff3ff28edd2",
+      "contentHash": "36d1f5c342020399695986a36d8af7c641abc0c0803b2a06696a93a14d05e67b",
       "changeHash": "287ac3c648058b9df2240c4af8a6f8704ff3816fa09278682e19eaf46bbc8a00",
-      "checkedAt": "2026-07-29T13:55:46.566Z",
+      "checkedAt": "2026-08-13T04:51:32.041Z",
       "changedSinceLastRun": false
     },
     {
@@ -739,30 +761,30 @@
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "6ec048c8d4d95e8d57752247065752b67eb28c9284d254009350f70f8cbbed92",
+      "contentHash": "c62172d84ed4e82bb9c8cf59611d9065202d8656a5025a91d47173018dc43f87",
       "changeHash": "96a41fa497d77d965a648a0ac378071a1675627c8657b754cf309f35d258a63f",
-      "checkedAt": "2026-07-29T13:55:46.775Z",
+      "checkedAt": "2026-08-13T04:51:33.676Z",
       "changedSinceLastRun": false
     },
     {
       "id": "ke-kenha",
       "country": "KE",
       "authority": "Kenya National Highways Authority",
-      "title": "Home - Kenya National Highways Authority",
+      "title": "KeNHA",
       "url": "https://kenha.co.ke/",
       "sourceType": "road-agency",
       "watch": "road-and-toll-updates",
       "required": true,
       "finalUrl": "https://kenha.co.ke/",
-      "status": "ok",
+      "status": "changed",
       "httpStatus": 200,
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "1e2197cd818226bd4b63d33e4ef664826e855f2ec0c793c5c4d914135d763ee0",
-      "changeHash": "5a32710a8e5295a8370490defa88b109d2c858567edf40fe8430008b43d909c9",
-      "checkedAt": "2026-07-29T13:55:47.809Z",
-      "changedSinceLastRun": false
+      "contentHash": "fb26758f6fdf99a0113345f753ec31bb60acfb741a51d8b6428eb65dad1dcfda",
+      "changeHash": "1fd0549775877cee9791ebd167ae3f3eedcdfc3967717c8fa1203f185a2e4cc5",
+      "checkedAt": "2026-08-13T04:51:35.155Z",
+      "changedSinceLastRun": true
     },
     {
       "id": "ng-lcc",
@@ -781,7 +803,7 @@
       "lastModified": "",
       "contentHash": "902f3bd5cbe3dd752943e9fe693b9311be271fb3b12320b3c7048b89b2284a5e",
       "changeHash": "16560fce5bcb6d142a40216ea6778748880bd9a02c4d3aa81adf4e861bdf73bf",
-      "checkedAt": "2026-07-29T13:55:47.935Z",
+      "checkedAt": "2026-08-13T04:51:35.825Z",
       "changedSinceLastRun": false
     },
     {
@@ -797,7 +819,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:49.219Z",
+      "checkedAt": "2026-08-13T04:51:35.858Z",
       "changedSinceLastRun": false,
       "error": "Timed out after 12000ms"
     },
@@ -816,9 +838,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "1dc993dc436a249b36e487ce40217839b52d9a1c621e408eb7c69d4854c5bf8a",
+      "contentHash": "91396089421f2249b1c8a62b7903a17f6e9d4ede0b6c916b3d0829cc1ad56ba5",
       "changeHash": "8f821add8af4dddd3fcc182e20aa6ffedc152f878168c57d6f0cf7462ffaa660",
-      "checkedAt": "2026-07-29T13:55:49.600Z",
+      "checkedAt": "2026-08-13T04:51:36.248Z",
       "changedSinceLastRun": false
     },
     {
@@ -836,9 +858,9 @@
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "c4437cf18790dfe588c6e5e6b1f1481c162810182aba16fb4053335d2eb24881",
+      "contentHash": "94013df7872b540b2f7510e013816ec63cec2be464f3d8a1e667c2cc8bfa7e00",
       "changeHash": "f87e4b959e2dbdd4f7898510eed7b9a48acc1665efa23423d6a8c0ac45277de9",
-      "checkedAt": "2026-07-29T13:55:49.703Z",
+      "checkedAt": "2026-08-13T04:51:37.036Z",
       "changedSinceLastRun": false
     },
     {
@@ -854,7 +876,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:50.038Z",
+      "checkedAt": "2026-08-13T04:51:37.892Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -871,7 +893,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:50.388Z",
+      "checkedAt": "2026-08-13T04:51:37.958Z",
       "changedSinceLastRun": false,
       "error": "fetch failed"
     },
@@ -885,15 +907,15 @@
       "watch": "city-service-updates",
       "required": true,
       "finalUrl": "https://www.capetown.gov.za/",
-      "status": "ok",
+      "status": "changed",
       "httpStatus": 200,
       "contentType": "text/html; charset=utf-8",
-      "etag": "",
-      "lastModified": "Wed, 29 Jul 2026 13:55:53 GMT",
-      "contentHash": "4c01379cd65a47f0dfa624fe3bdfa35b51ef5cc6567bd0071848cb0a67187481",
-      "changeHash": "6f6425f5a590a78661ffe7dd13fbc4f9250c8c207ec3a2a650895e9abb9a7e2a",
-      "checkedAt": "2026-07-29T13:55:51.030Z",
-      "changedSinceLastRun": false
+      "etag": "\"0x8DEF87AB5E90461\"",
+      "lastModified": "Wed, 12 Aug 2026 14:05:05 GMT",
+      "contentHash": "cbfe0f1ad803814ac1a103a0c2c7044b4d93156c93757dd5c2d4d2f27cb89ed2",
+      "changeHash": "07bed466631c2a3adc60138fd7c4cdd256581f1b3b3390428fd26216404d146a",
+      "checkedAt": "2026-08-13T04:51:38.264Z",
+      "changedSinceLastRun": true
     },
     {
       "id": "gh-ama",
@@ -904,13 +926,16 @@
       "sourceType": "city-authority",
       "watch": "city-service-updates",
       "required": true,
-      "status": "blocked",
-      "httpStatus": null,
-      "contentHash": null,
-      "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:51.855Z",
-      "changedSinceLastRun": false,
-      "error": "fetch failed"
+      "finalUrl": "https://ama.gov.gh/",
+      "status": "ok",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "etag": "",
+      "lastModified": "",
+      "contentHash": "82012b84f3057e459d98875eda5c49e0bee5983beac46a866995a3af58f19e2b",
+      "changeHash": "db392b74e0824e7a1b55311ecc80578904303028994d70186fb8f86c30d67793",
+      "checkedAt": "2026-08-13T04:51:38.738Z",
+      "changedSinceLastRun": false
     },
     {
       "id": "ng-ncaa",
@@ -927,9 +952,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "76d815c33ae26fccbdbac21c7a319671abec283cf1d5965fe65d7dd196c21cf9",
+      "contentHash": "7233925903fb42e27b7a66f43416f1078654ddff7b73c825784b93c500efcc7f",
       "changeHash": "934d34e7d3556707190fde7cb41deed6bb634a08aa19133c2248e12673f2787a",
-      "checkedAt": "2026-07-29T13:55:52.435Z",
+      "checkedAt": "2026-08-13T04:51:39.281Z",
       "changedSinceLastRun": false
     },
     {
@@ -945,11 +970,11 @@
       "status": "changed",
       "httpStatus": 200,
       "contentType": "text/html; charset=utf-8",
-      "etag": "\"1785288298-gzip\"",
-      "lastModified": "Wed, 29 Jul 2026 01:24:58 GMT",
-      "contentHash": "2b7b960c4271448ff0dacfeb24c5cb2662f2dbade7ab1112e82e2d3807d9f844",
-      "changeHash": "ba911e84936b4bf18b71fb1fc05021f09bd1a0f5d57b7ec559aeff5257aa5fed",
-      "checkedAt": "2026-07-29T13:55:53.863Z",
+      "etag": "\"1786592998-gzip\"",
+      "lastModified": "Thu, 13 Aug 2026 03:49:58 GMT",
+      "contentHash": "9bc35e989b80e12a3d6fd6ce45bc270d3f398f74f6625ee5cd73d8ea2417f63d",
+      "changeHash": "16ca57e9c4a2be32f496400f9db0012efa589101fc8651dec521f739fa78c8a4",
+      "checkedAt": "2026-08-13T04:51:39.493Z",
       "changedSinceLastRun": true
     },
     {
@@ -967,9 +992,9 @@
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "54c5d7ab33a61111c90d0b2b289d7c19e691cbd1ef21e3a26c290e5226b6572c",
+      "contentHash": "8c83713beecaf0810072e40def2f835a8bec0be957e86b916bd822d5afcd69f2",
       "changeHash": "684731ed92fda70cd79d41f33ccf16480eb901596dd87ac144f3b7c656d99849",
-      "checkedAt": "2026-07-29T13:55:54.892Z",
+      "checkedAt": "2026-08-13T04:51:41.847Z",
       "changedSinceLastRun": false
     },
     {
@@ -987,9 +1012,9 @@
       "contentType": "text/html; charset=UTF-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "366acf1e22bd030b9fb5023d407867c19f7119f4bff28c8b0e01231157761e82",
+      "contentHash": "38fe49e9b633bd89c9abdb5eebf846f86c350f21c65f3ace9c21165c8322be7c",
       "changeHash": "ba60b2fab37b694543b3165d08407063acd662d7d9a3d76b087277c8750d63ca",
-      "checkedAt": "2026-07-29T13:55:55.004Z",
+      "checkedAt": "2026-08-13T04:51:41.953Z",
       "changedSinceLastRun": false
     },
     {
@@ -1003,7 +1028,7 @@
       "required": false,
       "status": "manual",
       "httpStatus": null,
-      "checkedAt": "2026-07-29T13:55:55.973Z",
+      "checkedAt": "2026-08-13T04:51:42.144Z",
       "changedSinceLastRun": false,
       "contentHash": null,
       "changeHash": null,
@@ -1024,9 +1049,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "3cf70a2b709336d5c92fc80fa16528a35e3a009fda16135ab803c81c7832f2c7",
+      "contentHash": "fe4a0cd4e52d7301db4c121522f694d500c319e28975093ef9ee150247ece652",
       "changeHash": "463eef97b15c8c68a5e002c3f9bdeabe6b787cc911b3638fe27a231feee8dae6",
-      "checkedAt": "2026-07-29T13:55:55.973Z",
+      "checkedAt": "2026-08-13T04:51:42.144Z",
       "changedSinceLastRun": false
     },
     {
@@ -1042,7 +1067,7 @@
       "httpStatus": null,
       "contentHash": null,
       "changeHash": null,
-      "checkedAt": "2026-07-29T13:55:56.683Z",
+      "checkedAt": "2026-08-13T04:51:42.607Z",
       "changedSinceLastRun": false,
       "error": "Timed out after 12000ms"
     },
@@ -1061,9 +1086,9 @@
       "contentType": "text/html",
       "etag": "\"ab7bdafca29bb9ab209e450b176fae8d:1442501983\"",
       "lastModified": "",
-      "contentHash": "c0093ae4c529059b4791cc821343fbbbfe4d1e5f0587e22281a6371036d264fe",
+      "contentHash": "57f968552598791dad1169b2af7dd2fbe6910e41700f33e745217522c95eabba",
       "changeHash": "62860aa4c8658c885415b712a9f7c9c0c7921900f43cc76386e2cff73f73d608",
-      "checkedAt": "2026-07-29T13:55:57.155Z",
+      "checkedAt": "2026-08-13T04:51:44.021Z",
       "changedSinceLastRun": false
     },
     {
@@ -1081,9 +1106,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "926d8115119bee1b7ea17d1dc72ef66aa219927cdd294a84ecc83a955c54fedb",
+      "contentHash": "27f435fd047459ab98241c5ac7765e8f4b33e3ca031c103577cb3457a2a8320f",
       "changeHash": "022da94d2b2dbad849a58d1a19f6d49bf5ff668a2a595f6f5055de62b110f0d0",
-      "checkedAt": "2026-07-29T13:55:57.266Z",
+      "checkedAt": "2026-08-13T04:51:45.249Z",
       "changedSinceLastRun": false
     },
     {
@@ -1101,9 +1126,9 @@
       "contentType": "text/html; charset=utf-8",
       "etag": "",
       "lastModified": "",
-      "contentHash": "74e34589711e43b0eae7e2deecd55cefb5c727ff996c31cdcd954ab9defb239d",
+      "contentHash": "70860986beb43a85523aa20ceb6b0df4c6664a4aba5675e48361f1161d315d35",
       "changeHash": "8149b2704b1506d988ab52ee7d57daa5549c54fbaa672d7db569e5f21cd5ac6c",
-      "checkedAt": "2026-07-29T13:55:57.814Z",
+      "checkedAt": "2026-08-13T04:51:46.057Z",
       "changedSinceLastRun": false
     },
     {
@@ -1123,7 +1148,7 @@
       "lastModified": "Mon, 29 Jun 2026 13:10:48 GMT",
       "contentHash": "a0518492103f05548b14002e54eba9a6fdd2c08b9672b96c6db20b6932d72862",
       "changeHash": "798cd22772b93525f695b0c7bee435dbd9dc620e39176492ca6400f91a068b14",
-      "checkedAt": "2026-07-29T13:55:58.009Z",
+      "checkedAt": "2026-08-13T04:51:46.597Z",
       "changedSinceLastRun": false
     }
   ],
