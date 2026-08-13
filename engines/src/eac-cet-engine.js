@@ -44,6 +44,13 @@ var EacCetEngine = function() {
     authority: "DGDA",
     flag: "🇨🇩",
     note: "Transitional — full CET adoption by 2027"
+  }, {
+    code: "SO",
+    name: "Somalia",
+    joined: 2024,
+    authority: "Somalia Customs",
+    flag: "🇸🇴",
+    note: "EAC member; national import levies are not modeled here"
   } ], a = [ {
     band: 0,
     rate: 0,
@@ -136,8 +143,8 @@ var EacCetEngine = function() {
     notes: "Iron ore (HS 2601) Band 0 (0%). Steel billets/ingots 10%. Finished steel bars/rods 25%.",
     examples: [ "Iron ore", "Steel billets", "Steel bars/rods", "Steel sheets", "Wire rod", "Structural steel", "Pipes" ]
   } ], n = {
-    description: "The EAC Duty Remission Scheme allows manufacturers to import raw materials and intermediate goods at 0% customs duty, provided the finished product will be exported from the EAC region or qualifies for domestic production incentives.",
-    legalBasis: "EAC Customs Management Act, Section 140 and EAC Duty Remission Regulations",
+    description: "EAC duty remission is granted through specific Gazette notices. Approval is tied to named manufacturers, HS codes, quantities, duty rates, conditions and validity periods; these examples are not blanket 0% entitlements.",
+    legalBasis: "Section 140 of the EAC Customs Management Act, 2004 and Regulations 3 and 6 of the EAC Customs Management (Duty Remission) Regulations, 2008",
     categories: [ {
       name: "Pharmaceutical Manufacturing",
       rate: 0,
@@ -185,15 +192,15 @@ var EacCetEngine = function() {
     }, {
       step: 3,
       title: "Approval & Bond Execution",
-      detail: "Authority reviews application (typically 2–4 weeks). If approved, a customs bond equal to the duty foregone may be required."
+      detail: "The authority reviews the application. Use only the rate, quantities, conditions and validity period stated in the approval or current EAC Gazette notice."
     }, {
       step: 4,
       title: "Import Under Remission",
       detail: "Each import consignment is declared under Duty Remission permit. Customs verifies against approved list of goods."
     }, {
       step: 5,
-      title: "Annual Reconciliation",
-      detail: "Submit production records annually showing inputs used vs. finished goods produced. Unutilised imports may attract duty payment."
+      title: "Follow Approval Conditions",
+      detail: "Keep import and production records and follow the reporting or reconciliation terms stated by the approving authority. Unapproved or unused quantities may attract duty."
     } ],
     cooRequirements: {
       title: "EAC Certificate of Origin (COO)",
@@ -206,11 +213,11 @@ var EacCetEngine = function() {
   }, r = {
     KE: [ {
       name: "Import Declaration Fee (IDF)",
-      rate: 3.5,
+      rate: 2.5,
       base: "cif"
     }, {
       name: "Railway Development Levy (RDL)",
-      rate: 2.5,
+      rate: 2,
       base: "cif"
     }, {
       name: "VAT",
@@ -224,7 +231,7 @@ var EacCetEngine = function() {
       base: "cif"
     }, {
       name: "Railway Development Levy",
-      rate: 1.5,
+      rate: 2,
       base: "cif"
     }, {
       name: "VAT",
@@ -275,7 +282,19 @@ var EacCetEngine = function() {
       base: "cif_duty_levies",
       isVat: !0
     } ]
-  }, s = [ {
+  }, o = [ {
+    countryCode: "KE",
+    hsRange: "8517.13 / 8517.14",
+    rate: 25,
+    validThrough: "2027-06-30",
+    source: "EAC Gazette, 30 June 2026"
+  }, {
+    countryCode: "UG",
+    hsRange: "8517.13 / 8517.14",
+    rate: 10,
+    validThrough: "2027-06-30",
+    source: "EAC Gazette, 30 June 2026"
+  } ], s = [ {
     name: "Agricultural Tractors",
     hsChapter: 87,
     hsRange: "8701",
@@ -495,9 +514,9 @@ var EacCetEngine = function() {
   }, {
     name: "Mobile Phones / Smartphones",
     hsChapter: 85,
-    hsRange: "8517",
-    cetRate: 25,
-    band: 25,
+    hsRange: "8517.13 / 8517.14",
+    cetRate: 0,
+    band: 0,
     category: "Electronics & Appliances"
   }, {
     name: "New Clothing (Woven)",
@@ -654,17 +673,23 @@ var EacCetEngine = function() {
     band: 35,
     category: "Agriculture & Food"
   } ];
+  function u(e, a, t) {
+    var n = o.find(function(e) {
+      return e.countryCode === a && e.hsRange === t;
+    });
+    return n ? n.rate : parseFloat(e) || 0;
+  }
   function i(e) {
-    var a = parseFloat(e.cifValue) || 0, t = parseFloat(e.cetRate) || 0, n = e.countryCode || "KE", s = r[n] || r.KE, i = a * t / 100, o = [];
+    var a = parseFloat(e.cifValue) || 0, t = e.countryCode || "KE", n = u(e.cetRate, t, e.hsRange), s = r[t] || r.KE, i = a * n / 100, o = [];
     o.push({
       name: "CIF Value",
       amount: a,
       rate: null,
       note: "Cost, Insurance & Freight"
     }), o.push({
-      name: "EAC Common External Tariff (" + t + "%)",
+      name: "EAC Common External Tariff (" + n + "%)",
       amount: i,
-      rate: t,
+      rate: n,
       note: "Applied to CIF value"
     });
     var c = 0, l = null;
@@ -721,7 +746,7 @@ var EacCetEngine = function() {
       });
     },
     calculate: i,
-    compareCountries: function(e, a) {
+    compareCountries: function(e, a, u) {
       var t = {
         KE: "Kenya",
         TZ: "Tanzania",
@@ -739,6 +764,7 @@ var EacCetEngine = function() {
         var o = i({
           cifValue: e,
           cetRate: a,
+          hsRange: u,
           countryCode: s
         }), c = (r[s] || []).filter(function(e) {
           return !e.isVat;
@@ -755,6 +781,7 @@ var EacCetEngine = function() {
           code: s,
           name: t[s],
           flag: n[s],
+          cetRate: o.breakdown[1].rate,
           cetDuty: o.cetDuty,
           levies: c,
           leviesSubtotal: l,
@@ -770,6 +797,10 @@ var EacCetEngine = function() {
     getDutyRemission: function() {
       return n;
     },
+    getTariffStays: function() {
+      return o;
+    },
+    resolveCetRate: u,
     getMemberStates: function() {
       return e;
     },
