@@ -49,3 +49,52 @@ test('shared property engine fails closed on empty, invalid and out-of-range inp
   assert.equal(engine.calculate('plot-converter', { value: 1, from: 'plot', to: 'sqm' }).ok, false);
   assert.equal(engine.calculate('rental-agreement', { landlord: '', tenant: 'B', address: 'x', start: '2026-01-01', duration: 12, rent: 1, deposit: 1 }).ok, false);
 });
+
+test('property management fee detail separates management, letting, renewal and tax costs', () => {
+  const result = engine.calculate('property-mgmt-fees', {
+    rent: 1000,
+    rate: 10,
+    lettingMonths: 1,
+    newLets: 1,
+    renewalMonths: 0.5,
+    renewals: 2,
+    fixed: 100,
+    taxRate: 20
+  });
+
+  assert.deepEqual(result, {
+    ok: true,
+    kind: 'management',
+    monthlyRent: 1000,
+    annualRent: 12000,
+    rate: 10,
+    annualManagement: 1200,
+    lettingMonths: 1,
+    newLets: 1,
+    lettingTotal: 1000,
+    renewalMonths: 0.5,
+    renewals: 2,
+    renewalTotal: 1000,
+    fixed: 100,
+    taxRate: 20,
+    tax: 660,
+    subtotal: 3300,
+    total: 3960,
+    continuingTotal: 2760,
+    netAnnual: 8040,
+    costSharePercent: 33
+  });
+});
+
+test('property management fee detail requires integer event counts', () => {
+  assert.deepEqual(engine.calculate('property-mgmt-fees', {
+    rent: 1000,
+    rate: 10,
+    lettingMonths: 1,
+    newLets: 0.5,
+    renewalMonths: 0,
+    renewals: 0,
+    fixed: 0,
+    taxRate: 0
+  }), { ok: false, code: 'management-range' });
+});

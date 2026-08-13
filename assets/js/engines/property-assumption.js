@@ -114,12 +114,64 @@
     }
 
     if (tool === 'property-mgmt-fees') {
-      values = numbers(input, ['rent', 'rate', 'fixed']);
-      if (!valid(values) || values[1] > 100) return fail('management-range');
+      var detailedManagement = ['lettingMonths', 'newLets', 'renewalMonths', 'renewals', 'taxRate'].some(function (name) {
+        return Object.prototype.hasOwnProperty.call(input, name);
+      });
+
+      if (!detailedManagement) {
+        values = numbers(input, ['rent', 'rate', 'fixed']);
+        if (!valid(values) || values[1] > 100) return fail('management-range');
+        return {
+          ok: true,
+          kind: 'management',
+          total: values[0] * values[1] / 100 + values[2]
+        };
+      }
+
+      input = Object.assign({
+        lettingMonths: 0,
+        newLets: 0,
+        renewalMonths: 0,
+        renewals: 0,
+        fixed: 0,
+        taxRate: 0
+      }, input);
+      values = numbers(input, [
+        'rent', 'rate', 'lettingMonths', 'newLets', 'renewalMonths',
+        'renewals', 'fixed', 'taxRate'
+      ]);
+      if (!valid(values) || values[0] === 0 || values[1] > 100 || values[7] > 100 ||
+          !Number.isInteger(values[3]) || !Number.isInteger(values[5])) {
+        return fail('management-range');
+      }
+      var annualRent = values[0] * 12;
+      var annualManagement = annualRent * values[1] / 100;
+      var lettingTotal = values[0] * values[2] * values[3];
+      var renewalTotal = values[0] * values[4] * values[5];
+      var subtotal = annualManagement + lettingTotal + renewalTotal + values[6];
+      var tax = subtotal * values[7] / 100;
+      var ongoingSubtotal = annualManagement + renewalTotal + values[6];
       return {
         ok: true,
         kind: 'management',
-        total: values[0] * values[1] / 100 + values[2]
+        monthlyRent: annualRent / 12,
+        annualRent: annualRent,
+        rate: Number(input.rate),
+        annualManagement: annualManagement,
+        lettingMonths: Number(input.lettingMonths),
+        newLets: Number(input.newLets),
+        lettingTotal: lettingTotal,
+        renewalMonths: Number(input.renewalMonths),
+        renewals: Number(input.renewals),
+        renewalTotal: renewalTotal,
+        fixed: Number(input.fixed),
+        taxRate: Number(input.taxRate),
+        tax: tax,
+        subtotal: subtotal,
+        total: subtotal + tax,
+        continuingTotal: ongoingSubtotal * (1 + values[7] / 100),
+        netAnnual: annualRent - subtotal - tax,
+        costSharePercent: annualRent ? (subtotal + tax) / annualRent * 100 : 0
       };
     }
 

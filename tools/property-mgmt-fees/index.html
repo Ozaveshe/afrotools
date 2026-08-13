@@ -5,22 +5,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Property Management Fee Worksheet | AfroTools</title>
-  <meta name="description" content="Apply a fee rate and fixed charge you enter without claiming a market rate. Local-first planning with explicit legal, official and valuation boundaries.">
+  <meta name="description" content="Compare management, letting, renewal, fixed-fee and VAT assumptions, then export an annual property fee handoff. Local-first planning; no preset market rate.">
   <meta property="og:title" content="Property Management Fee Worksheet | AfroTools">
-  <meta property="og:description" content="Apply a fee rate and fixed charge you enter without claiming a market rate.">
+  <meta property="og:description" content="Compare management, letting, renewal, fixed-fee and VAT assumptions, then export an annual property fee handoff.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/property-mgmt-fees.webp">
   <meta property="og:url" content="https://afrotools.com/tools/property-mgmt-fees/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Property Management Fee Worksheet | AfroTools">
-<meta name="twitter:description" content="Apply a fee rate and fixed charge you enter without claiming a market rate. Local-first planning with explicit legal, official and valuation boundaries.">
+<meta name="twitter:description" content="Compare management, letting, renewal, fixed-fee and VAT assumptions, then export an annual property fee handoff.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/property-mgmt-fees.webp">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Property Management Fee Worksheet",
-  "description": "Apply a fee rate and fixed charge you enter without claiming a market rate.",
+  "description": "Compare management, letting, renewal, fixed-fee and VAT assumptions, then export an annual property fee handoff.",
   "url": "https://afrotools.com/tools/property-mgmt-fees/",
   "applicationCategory": "FinanceApplication",
   "isAccessibleForFree": true,
@@ -35,11 +35,11 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
-  <link rel="stylesheet" href="/assets/css/property-assumption-workflow.css?v=ae6ad96c">
+  <link rel="stylesheet" href="/assets/css/property-assumption-workflow.css?v=b5c3be3f">
   <script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script>
   <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-  <script src="/assets/js/engines/property-assumption.js?v=9710b80b" defer></script>
-  <script src="/assets/js/pages/property-assumption-workflow.js?v=24767eed" defer></script>
+  <script src="/assets/js/engines/property-assumption.js?v=e92abce7" defer></script>
+  <script src="/assets/js/pages/property-assumption-workflow.js?v=bec60764" defer></script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Property Management Fee Worksheet","item":"https://afrotools.com/tools/property-mgmt-fees/"}]}
@@ -57,27 +57,54 @@
       <nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/mortgage-property/">Mortgage &amp; Property</a> / Property Management Fee Worksheet</nav>
       <p class="property-assumption__eyebrow">Local-first worksheet</p>
       <h1>Property Management Fee Worksheet</h1>
-      <p>Apply a fee rate and fixed charge you enter without claiming a market rate.</p>
-      <p class="property-assumption__notice"><strong>Boundary:</strong> no live rate, price, valuation, legal rule, title status, eligibility, approval or official integration is supplied. Empty inputs stay empty.</p>
+      <p>Build one annual view of management, letting, renewal, fixed fees and VAT or levies from the quote in front of you.</p>
+      <p class="property-assumption__notice"><strong>Boundary:</strong> the calculator does not insert market rates or schedule reminders. Every fee assumption comes from you; the source notes below are verification context, not automatic inputs.</p>
     </header>
     <section class="property-assumption__panel" aria-labelledby="workflow-heading">
       <h2 id="workflow-heading">Enter your own assumptions</h2>
       <form novalidate>
-        <div class="property-assumption__grid"><label>Currency label<input name="currency" value="your currency" required></label><label>Rent per fee period<input name="rent" type="number" min="0" step="any" required></label><label>Your management rate (%)<input name="rate" type="number" min="0" max="100" step="any" required></label><label>Your fixed fees<input name="fixed" type="number" min="0" step="any" required></label></div>
+        <div class="property-assumption__grid">
+          <label>Market being reviewed<select name="market" required><option value="">Select a market</option><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="OTHER">Another market</option></select></label>
+          <label>Currency label<input name="currency" value="your currency" required></label>
+          <label>Monthly rent<input name="rent" type="number" min="0.01" step="any" required></label>
+          <label>Management fee (% of annual rent)<input name="rate" type="number" min="0" max="100" step="any" required></label>
+          <label>Letting fee (months of rent)<input name="lettingMonths" type="number" min="0" max="12" step="0.25" value="0" required></label>
+          <label>New lets this year<input name="newLets" type="number" min="0" max="12" step="1" value="0" required></label>
+          <label>Renewal fee (months of rent)<input name="renewalMonths" type="number" min="0" max="12" step="0.25" value="0" required></label>
+          <label>Renewals this year<input name="renewals" type="number" min="0" max="12" step="1" value="0" required></label>
+          <label>Other annual agent fees<input name="fixed" type="number" min="0" step="any" value="0" required></label>
+          <label>VAT or levy on entered fees (%)<input name="taxRate" type="number" min="0" max="100" step="any" value="0" required></label>
+          <label>Next renewal review date (optional)<input name="reviewDate" type="date"></label>
+        </div>
         <div class="property-assumption__actions">
-          <button type="submit">Calculate from my inputs</button>
+          <button type="submit">Build annual cost summary</button>
           <button type="button" data-action="reset">Reset</button>
-
+          <button type="button" data-action="copy" hidden>Copy handoff</button>
+          <button type="button" data-action="download" hidden>Download handoff (.txt)</button>
         </div>
         <output class="property-assumption__result" data-result tabindex="-1" aria-live="polite" aria-atomic="true"></output>
       </form>
-      <p class="property-assumption__small">This workflow sends no form values over the network and writes nothing to browser storage.</p>
+      <p class="property-assumption__small">This workflow sends no form values over the network and writes nothing to browser storage. A renewal date appears only in the on-screen/downloaded handoff; it does not create a reminder.</p>
     </section>
     <section class="property-assumption__source" aria-labelledby="source-heading">
       <h2 id="source-heading">Source, freshness and confidence</h2>
-      <p><strong>Rate data:</strong> none is bundled. All monetary, percentage, price and duration assumptions come from you.</p>
-      <p><strong>Freshness:</strong> confirm current requirements with the responsible land registry, revenue or planning authority, lender, licensed valuer, surveyor, quantity surveyor or legal professional.</p>
-      <p><strong>Confidence:</strong> high for the displayed arithmetic or checklist count; low for any legal, official, valuation, market, eligibility or approval conclusion because the tool does not make one.</p>
+      <p><strong>Rate data:</strong> none is bundled or prefilled. All monetary, percentage, tax and duration assumptions come from you.</p>
+      <p><strong>Checked 13 August 2026:</strong> these links help you challenge a quote; they do not prove that a benchmark applies to your property, agent, service scope or tax status.</p>
+      <div class="property-assumption__sources">
+        <article><h3>Nigeria</h3>
+          <p>NIESV's published scale proposes 10% of gross rent for property management and 10% for letting; FIRS guidance states 7.5% VAT for taxable supplies. Confirm the exact engagement, invoice and current tax treatment.</p>
+          <p><a href="https://niesv.org.ng/newsdocs/REVIEW_OF_SCALE_OF_PROFESSIONAL_CHARGES.pdf">NIESV professional charges</a> · <a href="https://old.firs.gov.ng/wp-content/uploads/2021/06/CLARIFICATION-ON-THE-IMPLEMENTATION-OF-THE-VALUE-ADDED-TAX-VAT-ACT.pdf">FIRS VAT clarification</a></p></article>
+        <article><h3>Kenya</h3>
+          <p>Current local agency guides commonly publish 8–12% for long-let management, while KRA publishes a 16% general VAT rate. EARB says only currently registered and licensed agents may practise. Renewal and letting fees remain quote-specific.</p>
+          <p><a href="https://goldstay.co.ke/insights/cost-of-property-management-kenya-2026">Goldstay fee guide</a> · <a href="https://www.kra.go.ke/individual/filing-paying/types-of-taxes/value-added-tax">KRA VAT</a> · <a href="https://estateagentsboard.or.ke/">EARB register guidance</a></p></article>
+        <article><h3>South Africa</h3>
+          <p>One current agency schedule publishes 12% for managed leases, 6% for unmanaged leases and 3% on a year-two renewal, all exclusive of VAT. SARS publishes a 15% standard VAT rate; PPRA provides practitioner certificate verification.</p>
+          <p><a href="https://www.fineandcountry.co.za/false-bay-estate-agents/lettings-fees">Fine &amp; Country fee schedule</a> · <a href="https://www.sars.gov.za/types-of-tax/value-added-tax/">SARS VAT</a> · <a href="https://ffcportal.theppra.org.za/">PPRA certificate verification</a></p></article>
+        <article><h3>Ghana</h3>
+          <p>Section 25 of the Rent Act caps an agent or broker's consideration for procuring a grant, renewal, continuance or assignment of a tenancy at 5% of one year's recoverable rent. GRA says taxable supplies carry an effective 20% stack from 1 January 2026 (15% VAT plus 2.5% NHIL and 2.5% GETFund). Confirm scope before applying either figure.</p>
+          <p><a href="https://repository.parliament.gh/handle/123456789/2063">Ghana Rent Act, 1963</a> · <a href="https://gra.gov.gh/e-services/e-vat/">GRA E-VAT</a></p></article>
+      </div>
+      <p><strong>Confidence:</strong> high for the displayed arithmetic; medium for the dated source summary; low for any conclusion about what your agent may charge or whether tax applies.</p>
     </section>
   </main>
 <afro-related-tools data-ssr="1" category="legal" current="property-mgmt-fees">

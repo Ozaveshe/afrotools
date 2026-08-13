@@ -5,6 +5,7 @@
   var form = root.querySelector('form');
   var output = root.querySelector('[data-result]');
   var download = root.querySelector('[data-action=download]');
+  var copy = root.querySelector('[data-action=copy]');
   var tool = root.dataset.tool;
   var engine = window.AfroTools && window.AfroTools.PropertyAssumptionEngine;
   var currency = 'your currency';
@@ -19,7 +20,8 @@
     lastText = text;
     output.textContent = text;
     output.focus();
-    if (download) download.hidden = tool !== 'rental-agreement' || !text;
+    if (download) download.hidden = !['rental-agreement', 'property-mgmt-fees'].includes(tool) || !text;
+    if (copy) copy.hidden = tool !== 'property-mgmt-fees' || !text;
   }
 
   function inputValues() {
@@ -76,7 +78,39 @@
       say('Entered monthly rent is ' + money(result.rent) + '; your entered budget boundary is ' + money(result.boundary) +
         '. Upfront rent assumption: ' + money(result.upfront) + '. This is not landlord eligibility or financial advice.');
     } else if (result.kind === 'management') {
-      say('Management-fee scenario: ' + money(result.total) + ' per entered period. Confirm scope, tax and exclusions in the manager quote.');
+      if (typeof result.annualRent !== 'number') {
+        say('Management-fee scenario: ' + money(result.total) + ' per entered period. Confirm scope, tax and exclusions in the manager quote.');
+        return;
+      }
+      var market = form.elements.market ? form.elements.market.options[form.elements.market.selectedIndex].text : 'Not specified';
+      var marketCode = form.elements.market ? form.elements.market.value : '';
+      var marketSources = {
+        NG: 'https://niesv.org.ng/newsdocs/REVIEW_OF_SCALE_OF_PROFESSIONAL_CHARGES.pdf | https://old.firs.gov.ng/wp-content/uploads/2021/06/CLARIFICATION-ON-THE-IMPLEMENTATION-OF-THE-VALUE-ADDED-TAX-VAT-ACT.pdf',
+        KE: 'https://goldstay.co.ke/insights/cost-of-property-management-kenya-2026 | https://www.kra.go.ke/individual/filing-paying/types-of-taxes/value-added-tax | https://estateagentsboard.or.ke/',
+        ZA: 'https://www.fineandcountry.co.za/false-bay-estate-agents/lettings-fees | https://www.sars.gov.za/types-of-tax/value-added-tax/ | https://ffcportal.theppra.org.za/',
+        GH: 'https://repository.parliament.gh/handle/123456789/2063 | https://gra.gov.gh/e-services/e-vat/'
+      };
+      var reviewDate = form.elements.reviewDate && form.elements.reviewDate.value
+        ? form.elements.reviewDate.value
+        : 'Not entered';
+      say('PROPERTY MANAGEMENT FEE HANDOFF - PLANNING ESTIMATE\n\n' +
+        'Market: ' + market + '\n' +
+        'Source context checked: 2026-08-13\n' +
+        'Source links: ' + (marketSources[marketCode] || 'Add the current local agency, regulator and revenue-authority links used for this quote.') + '\n' +
+        'Monthly rent entered: ' + money(result.monthlyRent) + '\n' +
+        'Annual gross rent: ' + money(result.annualRent) + '\n' +
+        'Annual management fee (' + formatter.format(result.rate) + '%): ' + money(result.annualManagement) + '\n' +
+        'Letting fees (' + formatter.format(result.lettingMonths) + ' month(s) x ' + result.newLets + ' new let(s)): ' + money(result.lettingTotal) + '\n' +
+        'Renewal fees (' + formatter.format(result.renewalMonths) + ' month(s) x ' + result.renewals + ' renewal(s)): ' + money(result.renewalTotal) + '\n' +
+        'Other annual fees: ' + money(result.fixed) + '\n' +
+        'VAT/levy assumption (' + formatter.format(result.taxRate) + '%): ' + money(result.tax) + '\n' +
+        'Annual scenario total: ' + money(result.total) + '\n' +
+        'Share of annual rent: ' + formatter.format(result.costSharePercent) + '%\n' +
+        'Annual rent after entered agent costs: ' + money(result.netAnnual) + '\n' +
+        'Continuing-year estimate (no new-let fee): ' + money(result.continuingTotal) + '\n\n' +
+        'Renewal review date: ' + reviewDate + '\n' +
+        'Reminder status: not scheduled. Copying or downloading this handoff does not create an alert.\n\n' +
+        'Confirm the signed mandate, taxable scope, invoice basis, renewal trigger, repair authority and exclusions with the agent and a qualified local adviser.');
     } else if (result.kind === 'development') {
       say('Entered revenue less entered costs: ' + money(result.margin) + '. Cost total: ' + money(result.totalCost) + '. This is not a sales forecast, feasibility opinion, approval or valuation.');
     } else if (result.kind === 'tax') {
@@ -119,6 +153,7 @@
     output.textContent = '';
     lastText = '';
     if (download) download.hidden = true;
+    if (copy) copy.hidden = true;
     form.querySelector('input,select,textarea').focus();
   });
 
@@ -129,9 +164,24 @@
       var url = URL.createObjectURL(blob);
       var anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'afrotools-rental-agreement-review-draft.txt';
+      anchor.download = tool === 'property-mgmt-fees'
+        ? 'afrotools-property-management-fee-handoff.txt'
+        : 'afrotools-rental-agreement-review-draft.txt';
       anchor.click();
       window.setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+    });
+  }
+
+  if (copy) {
+    copy.addEventListener('click', function () {
+      if (!lastText || !navigator.clipboard || !navigator.clipboard.writeText) return;
+      navigator.clipboard.writeText(lastText).then(function () {
+        copy.textContent = 'Copied';
+        window.setTimeout(function () { copy.textContent = 'Copy handoff'; }, 1200);
+      }).catch(function () {
+        copy.textContent = 'Copy unavailable';
+        window.setTimeout(function () { copy.textContent = 'Copy handoff'; }, 1600);
+      });
     });
   }
 }());
