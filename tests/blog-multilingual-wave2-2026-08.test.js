@@ -22,6 +22,17 @@ function visibleWords(html) {
   return body.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
 }
 
+test('multilingual generators defer Swahili hub rendering to its current owner', () => {
+  const packageScripts = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts;
+  for (const script of ['build-blog-multilingual-wave-2026-08.js', 'build-blog-multilingual-wave2-2026-08.js']) {
+    const sourceText = fs.readFileSync(path.join(root, 'scripts', script), 'utf8');
+    assert.match(sourceText, /scripts\/build-localized-blog-hubs\.js/);
+    assert.match(sourceText, /missingRoutes/);
+  }
+  assert.match(packageScripts['blog:multilingual:build'], /build-blog-content-manifest\.js --write && node scripts\/build-localized-blog-hubs\.js --write/);
+  assert.match(packageScripts['blog:multilingual:check'], /build-blog-content-manifest\.js --check && node scripts\/build-localized-blog-hubs\.js/);
+});
+
 test('wave two owns exactly ten differentiated multilingual clusters', () => {
   assert.equal(source.topics.length, 10);
   const slugs = new Set();

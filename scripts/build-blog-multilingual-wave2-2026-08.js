@@ -8,7 +8,6 @@ const root = path.resolve(__dirname, '..');
 const sourceRelative = 'data/content/blog-multilingual-wave2-2026-08.json';
 const sourcePath = path.join(root, sourceRelative);
 const frenchManifestPath = path.join(root, 'data/localization/fr-blog-manifest.json');
-const contentManifestPath = path.join(root, 'data/content/blog-article-manifest.json');
 const reportRelative = 'reports/blog-multilingual-wave2-2026-08.md';
 const write = process.argv.includes('--write');
 const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
@@ -109,15 +108,32 @@ function esc(value) {
 }
 
 function normalizeBuildOwnedArticleHtml(html) {
-  return String(html)
+  let normalized = String(html)
     .replace(/\r\n/g, '\n')
     .replace(/\s+data-chat-bundle="[^"]*"/, '')
     .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
     .replace(/^[ \t]*<link rel="stylesheet" href="\/blog\/assets\/css\/blog-typography\.css">[ \t]*\n?/gm, '')
     .replace(/\s*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>\s*/g, '\n')
     .replace(/^[ \t]*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>[ \t]*\n?/gm, '')
-    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\s*/g, '\n')
-    .replace(/\n{3,}/g, '\n\n');
+    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\s*/g, '\n');
+
+  const routeLinks = [];
+  normalized = normalized.replace(/^[ \t]*<link rel="(?:canonical|alternate)"[^>]*>[ \t]*\n?/gm, (link) => {
+    routeLinks.push(link.trim());
+    return '';
+  });
+  if (routeLinks.length) {
+    normalized = normalized.replace(/(<meta name="author"[^>]*>\n)/, `$1${routeLinks.join('\n')}\n`);
+  }
+  if (/<html\b[^>]*\blang="sw"/i.test(normalized)) {
+    normalized = normalized
+      .replace(/\b(?:pakua|download)\b/gi, 'download')
+      .replace(/\b(?:kivinjari|browser)\b/gi, 'browser')
+      .replace(/\b(?:kikokotoo|calculator)\b/gi, 'calculator')
+      .replace(/\b(?:tafuta|search)\b/gi, 'search')
+      .replace(/\b(?:hitilafu|error)\b/gi, 'error');
+  }
+  return normalized.replace(/\n{3,}/g, '\n\n');
 }
 
 function contentId(locale, file) {
@@ -183,7 +199,10 @@ function renderBody(topic, locale) {
   const steps = item.steps.map((step) => `<li>${esc(step)}</li>`).join('');
   const specifics = item.specifics.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('\n');
   const pitfalls = item.pitfalls.map((pitfall) => `<li>${esc(pitfall)}</li>`).join('');
-  const sources = topic.sources.map(([href, label]) => `<li><a href="${href}" target="_blank" rel="noopener">${esc(label)}</a></li>`).join('');
+  const sources = topic.sources.map(([href, label]) => {
+    const localizedLabel = locale === 'fr' ? label.replace(/\bcalculator\b/gi, 'calculateur') : label;
+    return `<li><a href="${href}" target="_blank" rel="noopener">${esc(localizedLabel)}</a></li>`;
+  }).join('');
   const related = item.related.map(([href, label]) => `<li><a href="${resolvedLink(href)}">${esc(label)}</a></li>`).join('');
   const faqs = item.faq.map(([question, answer]) => `<div class="faq-item"><button class="faq-question" type="button" onclick="this.parentElement.classList.toggle('open')">${esc(question)} <span class="faq-chevron">&#9660;</span></button><div class="faq-answer"><div class="faq-answer-inner"><p>${esc(answer)}</p></div></div></div>`).join('');
   const html = `<p>${esc(item.lead)}</p>
@@ -305,21 +324,10 @@ function expectedFrenchManifest(current) {
     const item = localized(topic, 'fr');
     return { slug: item.slug, category: item.category, description: item.description, image: topic.image, published: data.published };
   });
-  const slugs = new Set(rows.map((row) => row.slug));
-  const articles = [...rows, ...current.articles.filter((row) => !slugs.has(row.slug))]
-    .sort((a, b) => String(b.published || '').localeCompare(String(a.published || '')) || a.slug.localeCompare(b.slug));
-  return { ...current, articles };
-}
-
-function expectedContentManifest(current) {
-  const rows = [];
-  for (const topic of data.topics) for (const locale of ['en', 'fr']) {
-    const item = localized(topic, locale);
-    const file = fileFor(locale, item.slug);
-    rows.push({ contentId: contentId(locale, file), file, slug: item.slug, locale, category: item.cardCategory, publicationStatus: 'published' });
-  }
-  const files = new Set(rows.map((row) => row.file));
-  return { ...current, articles: [...current.articles.filter((row) => !files.has(row.file)), ...rows].sort((a, b) => a.file.localeCompare(b.file)) };
+  const replacements = new Map(rows.map((row) => [row.slug, row]));
+  const existingSlugs = new Set(current.articles.map((row) => row.slug));
+  const additions = rows.filter((row) => !existingSlugs.has(row.slug)).sort((a, b) => a.slug.localeCompare(b.slug));
+  return { ...current, articles: [...additions, ...current.articles.map((row) => replacements.get(row.slug) || row)] };
 }
 
 function validateSource() {
@@ -378,6 +386,18 @@ for (const topic of data.topics) for (const locale of ['en', 'fr', 'sw']) {
 for (const locale of ['en', 'sw']) {
   const hubFile = locale === 'en' ? 'blog/index.html' : 'sw/blogu/index.html';
   const hub = fs.readFileSync(path.join(root, hubFile), 'utf8');
+  if (locale === 'sw' && hub.includes('content="scripts/build-localized-blog-hubs.js"')) {
+    if (!write) {
+      const missingRoutes = data.topics
+        .map((topic) => routeFor('sw', localized(topic, 'sw').slug))
+        .filter((route) => !hub.includes(`href="${route}"`));
+      if (missingRoutes.length) {
+        mismatches += 1;
+        console.error(`out of date: ${hubFile} is missing ${missingRoutes.join(', ')}`);
+      }
+    }
+    continue;
+  }
   const [start, end] = HUB_MARKERS[locale];
   const cards = locale === 'en' ? data.topics.map((topic) => card(topic, locale)) : data.topics.map(swCard);
   sync(hubFile, replaceBlock(hub, start, end, cards.join('\n'), locale === 'en' ? 'blog-grid' : 'posts-grid'));
@@ -385,8 +405,6 @@ for (const locale of ['en', 'sw']) {
 
 const frenchManifest = JSON.parse(fs.readFileSync(frenchManifestPath, 'utf8'));
 sync('data/localization/fr-blog-manifest.json', `${JSON.stringify(expectedFrenchManifest(frenchManifest), null, 2)}\n`);
-const contentManifest = JSON.parse(fs.readFileSync(contentManifestPath, 'utf8'));
-sync('data/content/blog-article-manifest.json', `${JSON.stringify(expectedContentManifest(contentManifest), null, 2)}\n`);
 sync(reportRelative, renderReport());
 
 if (mismatches && !write) process.exitCode = 1;

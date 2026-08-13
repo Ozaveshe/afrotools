@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const root = path.resolve(__dirname, '..');
 const sourcePath = path.join(root, 'data', 'content', 'blog-multilingual-wave-2026-08.json');
 const frenchManifestPath = path.join(root, 'data', 'localization', 'fr-blog-manifest.json');
-const contentManifestPath = path.join(root, 'data', 'content', 'blog-article-manifest.json');
 const reportPath = path.join(root, 'reports', 'blog-multilingual-wave-2026-08.md');
 const write = process.argv.includes('--write');
 const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
@@ -270,21 +269,10 @@ function expectedFrenchManifest(current) {
     const item = localized(topic, 'fr');
     return { slug: item.slug, category: item.category, description: item.description, image: topic.image, published: data.published };
   });
-  const slugs = new Set(rows.map((row) => row.slug));
-  const articles = [...rows, ...current.articles.filter((row) => !slugs.has(row.slug))]
-    .sort((a, b) => String(b.published || '').localeCompare(String(a.published || '')) || a.slug.localeCompare(b.slug));
-  return { ...current, articles };
-}
-
-function expectedContentManifest(current) {
-  const rows = [];
-  for (const topic of data.topics) for (const locale of ['en', 'fr']) {
-    const item = localized(topic, locale);
-    const file = fileFor(locale, item.slug);
-    rows.push({ contentId: contentId(locale, file), file, slug: item.slug, locale, category: item.cardCategory, publicationStatus: 'published' });
-  }
-  const files = new Set(rows.map((row) => row.file));
-  return { ...current, articles: [...current.articles.filter((row) => !files.has(row.file)), ...rows].sort((a, b) => a.file.localeCompare(b.file)) };
+  const replacements = new Map(rows.map((row) => [row.slug, row]));
+  const existingSlugs = new Set(current.articles.map((row) => row.slug));
+  const additions = rows.filter((row) => !existingSlugs.has(row.slug)).sort((a, b) => a.slug.localeCompare(b.slug));
+  return { ...current, articles: [...additions, ...current.articles.map((row) => replacements.get(row.slug) || row)] };
 }
 
 function renderReport() {
@@ -313,6 +301,18 @@ for (const topic of data.topics) for (const locale of ['en', 'fr', 'sw']) {
 for (const locale of ['en', 'sw']) {
   const hubFile = locale === 'en' ? 'blog/index.html' : 'sw/blogu/index.html';
   const hub = fs.readFileSync(path.join(root, hubFile), 'utf8');
+  if (locale === 'sw' && hub.includes('content="scripts/build-localized-blog-hubs.js"')) {
+    if (!write) {
+      const missingRoutes = data.topics
+        .map((topic) => routeFor('sw', localized(topic, 'sw').slug))
+        .filter((route) => !hub.includes(`href="${route}"`));
+      if (missingRoutes.length) {
+        mismatches += 1;
+        console.error(`out of date: ${hubFile} is missing ${missingRoutes.join(', ')}`);
+      }
+    }
+    continue;
+  }
   const [start, end] = HUB_MARKERS[locale];
   const cards = locale === 'en'
     ? [...data.topics.map((topic) => card(topic, locale)), ...data.existingEnglishHubCards.map(existingEnglishCard)]
@@ -322,8 +322,6 @@ for (const locale of ['en', 'sw']) {
 
 const frenchManifest = JSON.parse(fs.readFileSync(frenchManifestPath, 'utf8'));
 sync('data/localization/fr-blog-manifest.json', `${JSON.stringify(expectedFrenchManifest(frenchManifest), null, 2)}\n`);
-const contentManifest = JSON.parse(fs.readFileSync(contentManifestPath, 'utf8'));
-sync('data/content/blog-article-manifest.json', `${JSON.stringify(expectedContentManifest(contentManifest), null, 2)}\n`);
 sync('reports/blog-multilingual-wave-2026-08.md', renderReport());
 
 if (mismatches && !write) process.exitCode = 1;
