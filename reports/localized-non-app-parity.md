@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 255 |
-| sw | 137 | 0 | 279 |
+| fr | 161 | 0 | 259 |
+| sw | 137 | 0 | 283 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 289 | 39 | 0 | 250 | 20 | 0 | 269 |
+| editorial | 293 | 39 | 0 | 254 | 20 | 0 | 273 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -42,6 +42,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/average-salary-south-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/battery-backup-hours-calculator-ghana/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/battery-backup-hours-calculator-ghana/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-budgeting-methods-africa-2026/ | editorial | fr | /fr/blog/best-budgeting-methods-africa-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/best-budgeting-methods-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-countries-business-africa-2026/ | editorial | fr | /fr/blog/best-countries-business-africa-2026/ | missing | English fallback shell; no reviewed native article |
@@ -88,6 +90,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/car-import-cost-zambia-guide/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/car-loan-rates-africa-2026/ | editorial | fr | /fr/blog/car-loan-rates-africa-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/car-loan-rates-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/cash-flow-forecast-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/cash-flow-forecast-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/cash-flow-forecast-template-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/cash-flow-forecast-template-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/catfish-feed-budget-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
@@ -252,6 +256,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/import-duty-south-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/inflation-rates-africa-2026-guide/ | editorial | fr | /fr/blog/inflation-rates-africa-2026-guide/ | missing | English fallback shell; no reviewed native article |
 | /blog/inflation-rates-africa-2026-guide/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/inventory-reorder-point-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/inventory-reorder-point-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/japa-cost-nigeria/ | editorial | fr | /fr/blog/japa-cost-nigeria/ | missing | English fallback shell; no reviewed native article |
 | /blog/japa-cost-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/japa-guide-nigeria-canada-2026/ | editorial | fr | /fr/blog/japa-guide-nigeria-canada-2026/ | missing | English fallback shell; no reviewed native article |
@@ -527,6 +533,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/waec-grading-system-aggregate/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/waec-result-guide-2026/ | editorial | fr | /fr/blog/waec-result-guide-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/waec-result-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/water-tank-sizing-african-home/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/water-tank-sizing-african-home/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/wedding-cost-nigeria-2026/ | editorial | fr | /fr/blog/wedding-cost-nigeria-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/wedding-cost-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/whatsapp-business-api-africa-2026/ | editorial | fr | /fr/blog/whatsapp-business-api-africa-2026/ | missing | English fallback shell; no reviewed native article |
