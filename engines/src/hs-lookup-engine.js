@@ -127,12 +127,12 @@ var HsLookupEngine = function() {
         var o = s[0];
         a && o.country !== COUNTRY_DUTY_RATES[a]?.name && i.push({
           type: "tip",
-          text: "Lowest duty on this product: " + o.dutyTypical + "% in " + o.flag + " " + o.country + ". Consider routing via trade bloc arrangements."
+          text: "Lowest bundled chapter-level estimate: " + o.dutyTypical + "% in " + o.flag + " " + o.country + ". Verify the exact national tariff line, origin treatment, and current schedule before routing or pricing a shipment."
         });
       }
       i.push({
         type: "info",
-        text: "AfCFTA preferential rates are being phased in across 54 countries. Check your country's tariff offer schedule for possible reduced rates."
+        text: "AfCFTA preference is not applied automatically here. Check the exact corridor, national tariff offer, product line, origin rule, and proof of origin with the destination authority."
       });
       var u = {
         27: "Petroleum products may attract additional fuel levies not reflected in customs duty rates.",
