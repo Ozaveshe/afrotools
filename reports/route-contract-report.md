@@ -13,7 +13,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5374 |
+| Genuine equivalence groups | 5375 |
 | Documented fallbacks | 14717 |
 | Routes eligible for primary sitemaps | 10502 |
 
@@ -4255,6 +4255,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3b0f7e1762ba: en=`/tools/prepaid-meter/dr-congo/`, fr=`/fr/tools/compteur-prepaye/dr-congo/`; x-default=`/tools/prepaid-meter/dr-congo/`
 - equivalence:3b1169ea39ba: en=`/tools/cnps-guide/`, fr=`/fr/tools/guide-de-la-cnps-en-cote-d-ivoire/`, sw=`/sw/zana/mwongozo-wa-cnps/`; x-default=`/tools/cnps-guide/`
 - equivalence:3b24b52ac21d: en=`/tools/property-vs-stocks/`, fr=`/fr/tools/immobilier-vs-actions/`, sw=`/sw/zana/mali-dhidi-ya-hisa/`; x-default=`/tools/property-vs-stocks/`
+- equivalence:3b26ec2f42c1: fr=`/fr/entreprises/`, sw=`/sw/biashara/`; x-default=`/fr/entreprises/`
 - equivalence:3b323130dd8c: en=`/tools/freelancer-rate/rwanda/`, fr=`/fr/tools/calculateur-de-tarif-independant-rwanda/`; x-default=`/tools/freelancer-rate/rwanda/`
 - equivalence:3b405e0233f7: en=`/cars/uganda/mercedes-benz/e-class/`, fr=`/fr/cars/ouganda/mercedes-benz/e-class/`; x-default=`/cars/uganda/mercedes-benz/e-class/`
 - equivalence:3b60ad534aef: en=`/tools/idea-board/`, fr=`/fr/tools/tableau-idees/`, sw=`/sw/zana/kichunguzi-ushahidi-wa-mawazo/`; x-default=`/tools/idea-board/`
@@ -5703,7 +5704,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:80faba4f5fb2: en=`/dr-congo/`, fr=`/fr/rdc/`, sw=`/sw/dr-congo/`; x-default=`/dr-congo/`
 - equivalence:80feaa4c4877: en=`/tools/visa-checker/kenya`; x-default=`/tools/visa-checker/kenya`
 - equivalence:8100c5911bb9: en=`/cars/south-africa/honda/cr-v/2020/`, fr=`/fr/cars/afrique-du-sud/honda/cr-v/2020/`; x-default=`/cars/south-africa/honda/cr-v/2020/`
-- equivalence:812416a3d2e0: en=`/business/`, fr=`/fr/entreprises/`, sw=`/sw/biashara/`; x-default=`/business/`
 - equivalence:812be010a17d: en=`/cars/zambia/nissan/x-trail/2015/`, fr=`/fr/cars/zambie/nissan/x-trail/2015/`; x-default=`/cars/zambia/nissan/x-trail/2015/`
 - equivalence:813a1a456bb0: en=`/blog/ghana-withholding-tax-2026/`; x-default=`/blog/ghana-withholding-tax-2026/`
 - equivalence:813a6636a19f: en=`/tools/employment-contract/mauritania`, fr=`/fr/tools/contrat-travail/mauritania`; x-default=`/tools/employment-contract/mauritania`
@@ -7108,6 +7108,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c34a8cf80daa: en=`/jamb/biology/1985/`; x-default=`/jamb/biology/1985/`
 - equivalence:c36acb62fae0: en=`/cars/morocco/nissan/`, fr=`/fr/cars/maroc/nissan/`; x-default=`/cars/morocco/nissan/`
 - equivalence:c3875edc9c92: en=`/tools/freelancer-rate/south-africa/`, fr=`/fr/tools/calculateur-de-tarif-independant-afrique-du-sud/`; x-default=`/tools/freelancer-rate/south-africa/`
+- equivalence:c39f5d940053: en=`/business/`; x-default=`/business/`
 - equivalence:c3aade5a9f38: en=`/tools/afrokitchen/recipes/amala-ewedu-gbegiri-ng/`; x-default=`/tools/afrokitchen/recipes/amala-ewedu-gbegiri-ng/`
 - equivalence:c3abc15fefc5: en=`/tools/car-insurance/zimbabwe`, fr=`/fr/tools/assurance-auto/zimbabwe`; x-default=`/tools/car-insurance/zimbabwe`
 - equivalence:c3bd3fb6ee00: en=`/agriculture/fish-farming/cote-d-ivoire`, fr=`/fr/agriculture/fish-farming/cote-d-ivoire`, sw=`/sw/kilimo/ufugaji-samaki/cote-divoire/`; x-default=`/agriculture/fish-farming/cote-d-ivoire`
