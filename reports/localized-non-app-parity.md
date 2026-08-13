@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 254 |
-| sw | 137 | 0 | 278 |
+| fr | 161 | 0 | 255 |
+| sw | 137 | 0 | 279 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 288 | 39 | 0 | 249 | 20 | 0 | 268 |
+| editorial | 289 | 39 | 0 | 250 | 20 | 0 | 269 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -447,6 +447,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/sickle-cell-genotype-testing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/side-hustle-tax-guide-africa/ | editorial | fr | /fr/blog/side-hustle-tax-guide-africa/ | missing | English fallback shell; no reviewed native article |
 | /blog/side-hustle-tax-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | fr | /fr/blog/solar-panel-costs-nigeria-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-electricity-tariffs-2026-27/ | editorial | fr | — | missing | no localized route or owner file |

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11489 |
-| Indexable pages | 10502 |
+| Public pages | 11490 |
+| Indexable pages | 10503 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5374 |
-| Documented fallbacks | 14717 |
-| Routes eligible for primary sitemaps | 10502 |
+| Genuine equivalence groups | 5375 |
+| Documented fallbacks | 14718 |
+| Routes eligible for primary sitemaps | 10503 |
 
 ## Locale Coverage
 
-- en: 5949 page records
+- en: 5950 page records
 - fr: 3798 page records
 - ha: 105 page records
 - sw: 1592 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 487
+- article: 488
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4440,6 +4440,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:43cbdb3fe0f6: en=`/agriculture/fertilizer/nigeria`, fr=`/fr/agriculture/fertilizer/nigeria`, ha=`/ha/noma/taki-najeriya/`, sw=`/sw/kilimo/mbolea/nigeria/`; x-default=`/agriculture/fertilizer/nigeria`
 - equivalence:43cf2d8a5e1b: en=`/cars/zambia/toyota/prado/`, fr=`/fr/cars/zambie/toyota/prado/`; x-default=`/cars/zambia/toyota/prado/`
 - equivalence:43d0c46fe8ed: en=`/agriculture/farm-profit/malawi`, fr=`/fr/agriculture/farm-profit/malawi`, sw=`/sw/kilimo/faida-ya-shamba/malawi/`; x-default=`/agriculture/farm-profit/malawi`
+- equivalence:43e4c7d3c31a: en=`/blog/sierra-leone-employer-payroll-compliance-2026/`; x-default=`/blog/sierra-leone-employer-payroll-compliance-2026/`
 - equivalence:43f85d3b42fc: en=`/tools/qr-payment/`, fr=`/fr/tools/cout-paiement-qr/`, sw=`/sw/zana/gharama-za-malipo-ya-qr/`; x-default=`/tools/qr-payment/`
 - equivalence:43fd08cdfc86: en=`/tools/doc-generator/generate`; x-default=`/tools/doc-generator/generate`
 - equivalence:4403c8b3fd20: en=`/tools/gratuity-calculator/mauritania/`; x-default=`/tools/gratuity-calculator/mauritania/`
