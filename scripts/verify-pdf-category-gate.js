@@ -10,7 +10,7 @@ const workflowPath = path.join(root, 'docs/PDF-CATEGORY-WORKFLOW.md');
 
 const failures = [];
 const warnings = [];
-const localFirstSensitiveGateExemptions = new Set([
+const localFirstSensitiveTools = new Set([
   'cv-builder',
   'cover-letter-generator',
   'meeting-minutes',
@@ -83,6 +83,30 @@ function verifyTesseractVendor() {
   });
 }
 
+function verifySharedPdfRuntime() {
+  const templatePath = path.join(root, 'assets/js/lib/pdf-template.js');
+  const localRuntime = '/assets/vendor/jspdf/jspdf.umd.min.js';
+  const template = read(templatePath);
+  if (!template.includes(localRuntime)) {
+    failures.push(`${rel(templatePath)} must load the local jsPDF runtime.`);
+  }
+  if (/https:\/\/(cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|unpkg\.com)\/[^"']*jspdf/i.test(template)) {
+    failures.push(`${rel(templatePath)} must not fall back to a remote jsPDF runtime.`);
+  }
+
+  const bundleDir = path.join(root, 'assets/js/bundles');
+  const bundleFiles = fs.readdirSync(bundleDir)
+    .filter((name) => /^tool-page\.[a-f0-9]+\.min\.js$/i.test(name));
+  if (!bundleFiles.length) failures.push('No generated tool-page bundle was found.');
+  bundleFiles.forEach((name) => {
+    const file = path.join(bundleDir, name);
+    const text = read(file);
+    if (!text.includes(localRuntime)) failures.push(`${rel(file)} is missing the local jsPDF runtime path.`);
+    if (/https:\/\/(cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|unpkg\.com)\/[^"']*jspdf/i.test(text)) {
+      failures.push(`${rel(file)} still contains a remote jsPDF runtime fallback.`);
+    }
+  });
+}
 function verifyToolPages(tools) {
   const checked = [];
   tools.forEach((tool) => {
@@ -95,12 +119,15 @@ function verifyToolPages(tools) {
       const modalCount = (html.match(/<email-gate-modal/g) || []).length;
       const oldGateCount = (html.match(/auto-email-gate\.js/g) || []).length;
       const declaresLocalFirstDownloads = /<body[^>]*\bdata-local-first-downloads(?:\s|=|>)/i.test(html);
-      const gateExempt = localFirstSensitiveGateExemptions.has(tool.slug) || declaresLocalFirstDownloads;
-      if (!gateExempt && gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
-      if (!gateExempt && modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
-      if (gateExempt && (gateCount > 0 || modalCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate.`);
-      if (declaresLocalFirstDownloads && /account gate|after the gate|free account required|create an account.{0,40}download|sign in.{0,40}download/i.test(html)) {
-        failures.push(`${rel(file)} declares local-first downloads but still contains account-gate download wording.`);
+      const sensitiveLocalFirst = localFirstSensitiveTools.has(tool.slug);
+      if (!sensitiveLocalFirst && !declaresLocalFirstDownloads) {
+        failures.push(`${rel(file)} must declare data-local-first-downloads for its signed-out primary exports.`);
+      }
+      if (gateCount > 0 || modalCount > 0) {
+        failures.push(`${rel(file)} is a canonical free app and should not load the PDF/email gate.`);
+      }
+      if (/account gate|after the gate|free account required|create an account.{0,40}download|sign in.{0,40}download/i.test(html)) {
+        failures.push(`${rel(file)} still contains account-gate wording for a primary export.`);
       }
       if (oldGateCount > 0) failures.push(`${rel(file)} still loads auto-email-gate.js.`);
       [...html.matchAll(/["'](\/assets\/vendor\/[^"']+)["']/g)].forEach((match) => {
@@ -162,6 +189,7 @@ function main() {
   if (uniqueSlugs.size !== tools.length) failures.push(`Document-pdf registry has duplicate /tools/ slugs: ${tools.length - uniqueSlugs.size}.`);
   verifyWorkflowDoc();
   verifyTesseractVendor();
+  verifySharedPdfRuntime();
   const checked = verifyToolPages(tools);
   verifyHubJsonLd(tools);
 
@@ -176,7 +204,7 @@ function main() {
     process.exit(1);
   }
 
-  console.log(`PDF category verification passed: ${tools.length} registry tools, ${checked.length} HTML/app surfaces, gate coverage OK.`);
+  console.log(`PDF category verification passed: ${tools.length} registry tools, ${checked.length} HTML/app surfaces, guest-local export and runtime coverage OK.`);
 }
 
 main();

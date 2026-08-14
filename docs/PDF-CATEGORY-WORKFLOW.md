@@ -5,17 +5,20 @@ This workflow is the operating contract for AfroTools PDF and document builders.
 ## Product Flow
 
 1. Keep processing local first. User files should remain in the browser unless a tool clearly says it uses a server API.
-2. Let guests upload, configure, preview, and run the tool.
-3. Require a free registered AfroTools account before any generated PDF-category output is downloaded.
-4. Bypass the gate automatically for registered users detected through `AfroAuth`.
-5. Keep the output private. The gate must not upload the generated file.
-6. Provide a clear post-result action: download, save recipe or draft, export audit report, or open the next PDF workflow step.
+2. Let guests upload, configure, preview, run, and download the primary output from canonical free apps.
+3. Keep the 31 canonical English `/tools/` apps guest-local: pages with primary exports declare `data-local-first-downloads` and must not load the shared PDF/email account gate.
+4. Reserve the shared account gate for explicitly owned metadata-only workflow exports, such as reusable recipes, handoff briefs, or audit packets, and for other categories whose own workflow contract requires it.
+5. Bypass an explicit account gate automatically for registered users detected through `AfroAuth`.
+6. Keep every output private. A gate may capture account intent and metadata, but it must not upload the generated file or its contents.
+7. Provide a clear post-result action: download, save recipe or draft, export audit report, or open the next PDF workflow step.
 
-Sensitive local-first tools are exempt from the download gate when the primary export contains CV, resume, cover-letter, job-description, meeting, receipt, business-plan, invoice, phone, email, LinkedIn, portfolio, salary, identity, legal, health, or financial content. Current category exemptions include `cv-builder`, `cover-letter-generator`, `meeting-minutes`, `receipt-generator`, `business-plan`, and `freelance-invoice`. Their primary export, copy, print, backup, and local save/restore paths must remain available without the shared PDF/email gate.
+The signed-out primary-export policy was accepted in the 2026-07-26 Day 4 Document & PDF receipt. `data-local-first-downloads` is an audited marker for that canonical free-app contract, not a generic opt-out that unrelated routes may add without updating this document and the verifier.
 
-## Download Gate Contract
+Sensitive local-first tools need the strongest version of this rule when the primary export contains CV, resume, cover-letter, job-description, meeting, receipt, business-plan, invoice, phone, email, LinkedIn, portfolio, salary, identity, legal, health, or financial content. Current sensitive tools include `cv-builder`, `cover-letter-generator`, `meeting-minutes`, `receipt-generator`, `business-plan`, and `freelance-invoice`. Their primary export, copy, print, backup, and local save/restore paths must remain available without the shared PDF/email gate.
 
-All PDF-category tools must load:
+## Download and Account-Gate Contract
+
+Only an explicitly account-gated workflow export should load:
 
 ```html
 <email-gate-modal></email-gate-modal>
@@ -25,7 +28,7 @@ All PDF-category tools must load:
 The legacy `auto-email-gate.js` email lead gate should not be used for PDF downloads. Email capture is not the same as registration.
 For older tool bundles, `auto-email-gate.js` now acts only as a compatibility bridge into the shared account gate.
 
-Direct download callbacks should use either API:
+Callbacks for an explicitly gated export should use either API:
 
 ```js
 window.AfroPdfDownloadGate.guard(function () {
@@ -53,9 +56,9 @@ if (gate) gate.show(downloadPdf);
 else downloadPdf();
 ```
 
-The shared gate also intercepts generated `<a download>` clicks on PDF-category pages, including blob URLs created inside existing tools. That interception is a fallback, not a replacement for wrapping the main download action.
+On pages that intentionally load it, the shared gate also intercepts generated `<a download>` clicks, including blob URLs created inside existing tools. That interception is a fallback, not a replacement for wrapping the explicitly gated download action.
 
-`assets/js/lib/pdf-template.js` is the shared jsPDF generator for lightweight reports. It must gate before saving, then dispatch `afro-pdf-generated` with metadata so category-specific workflow layers can save a local report record or signed-in workspace item. The gate captures account intent and report context only; it must not upload the generated file.
+`assets/js/lib/pdf-template.js` is the shared jsPDF generator for lightweight reports. It must load jsPDF from the local vendor asset only, honor an owning workflow's explicit `noGate` or `skipGate` decision, and otherwise gate before saving. It then dispatches `afro-pdf-generated` with metadata so category-specific workflow layers can save a local report record or signed-in workspace item. The gate captures account intent and report context only; it must not upload the generated file.
 
 Non-PDF workflow exports that are derived from a generated report, such as Salary & PAYE handoff JSON briefs or audit packets, may call `guardPromise(...)` directly before creating the browser download. These exports should stay metadata-only unless a page-specific backend contract says otherwise.
 
@@ -130,17 +133,17 @@ Reviewed on 2026-05-02 against the current public workflows for Adobe Acrobat, i
 
 AfroTools should use the same product principle without copying their cloud-heavy model:
 
-- Let guests use core PDF tools and the category planner locally.
-- Require the shared free account gate before generated PDF, ZIP, DOCX, JSON handoff, or audit packet downloads.
+- Let guests use core PDF tools, the category planner, and canonical primary downloads locally.
+- Reserve the shared free account gate for explicitly classified metadata-only recipe, handoff, or audit-packet exports rather than primary PDF, ZIP, DOCX, CSV, or bundled app output.
 - Treat a registered free account as the baseline workspace: saved report trails, local planner, one reusable recipe, limited category handoffs, and limited audit packets.
 - Treat Pro as the workflow layer: unlimited recipes, unlimited handoffs, unlimited audit packets, longer metadata history, batch lanes, OCR-heavy review, AI-heavy review, reusable workflows, and team-ready packet history.
 - Keep source files local unless a page explicitly documents a server-backed flow.
 
 Current category-level limits:
 
-- Guests: run tools and plan locally. Downloads open the free account gate.
+- Guests: run tools, plan locally, and download canonical primary outputs without an account or email modal. Explicit metadata-only packet exports may open the free account gate.
 - Sensitive local-first tools: guests can export primary career, meeting, receipt, business-plan, and invoice files locally without the account gate.
-- Free account: downloads unlocked, 10 report trails visible in the category meter, 1 reusable recipe, 3 active category handoffs, 3 audit packet exports per month.
+- Free account: explicit metadata exports are unlocked, 10 report trails are visible in the category meter, with 1 reusable recipe, 3 active category handoffs, and 3 audit packet exports per month.
 - Pro account: unlimited report trails, recipes, category handoffs, and audit packet exports. Pro also owns batch, AI-heavy, OCR-heavy, compare, redact, team, and reusable workflow lanes when those are elevated.
 - Team or Business account: Pro rules plus team metadata, billing, access, and admin controls when the backend product layer exists.
 
@@ -163,19 +166,20 @@ Create a premium horizontal website banner for AfroTools Document & PDF Workspac
 
 ## QA Checklist
 
-- Guest click on a PDF or ZIP result shows the account gate and does not download.
-- Registered user click downloads without seeing the gate.
+- A signed-out user can download the primary PDF, ZIP, DOCX, CSV, or bundled output from a canonical free app without an account or email modal.
+- A guest attempting an explicitly gated metadata-only recipe, handoff, or audit packet sees the account gate and does not download.
+- A registered user bypasses that explicit metadata-export gate.
 - Free account over the handoff or audit limit sees the Pro gate and can still continue with the free planner.
 - Free account over the reusable recipe limit sees the Pro gate, while updating the existing recipe remains allowed.
 - Pro or Team account sees unlimited workflow counters and does not hit category-level packet gates.
 - The same tool still works when the download is generated by `pdf-lib`, `jsPDF`, a ZIP blob, or `PdfUtils.downloadBlob`.
-- Merge and split tools are always tested because they cover both PDF and ZIP outputs.
+- Merge and split tools are always tested as signed-out direct downloads because they cover both PDF and ZIP outputs.
 - Run `node --check assets/js/lib/pdf-download-gate.js`.
 - Run `node --check assets/js/lib/pdf-template.js`.
 - Run `node --check assets/js/lib/document-pdf-report-sync.js`.
 - Run `node --check assets/js/lib/document-pdf-workflow.js`.
-- Run `npm run pdf:verify` to check category gate coverage, hub ItemList count, and workflow documentation.
-- Run a browser smoke for one guest and one registered-user path.
+- Run `npm run pdf:verify` to check guest-local app coverage, shared runtime locality, generated bundles, hub ItemList count, and workflow documentation.
+- When download wiring changes, browser-smoke one signed-out primary export plus guest-blocked and registered-bypass paths on an explicitly gated metadata export.
 - Run `npm run audit` after category wiring.
 
 ## Runtime Dependency Policy

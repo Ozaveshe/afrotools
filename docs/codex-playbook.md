@@ -58,9 +58,11 @@
 
 - Read `docs/PDF-CATEGORY-WORKFLOW.md`
 - Keep generated files local to the browser unless the page explicitly documents an API-backed flow
-- Load `assets/js/lib/pdf-download-gate.js` on PDF-category tools that generate downloads
-- Use `window.AfroPdfDownloadGate.guard(callback)` or the `email-gate-modal.show(callback)` compatibility API before download callbacks
-- Verify both guest-blocked and registered-user download paths on `pdf-merge-split` before calling the category gate complete
+- Keep canonical English free-app primary exports available to signed-out users; export-capable pages declare `data-local-first-downloads`
+- Do not load `assets/js/lib/pdf-download-gate.js` or `<email-gate-modal>` on those canonical primary-export surfaces
+- Load the shared gate only for an explicitly classified metadata-only packet or another workflow whose owning contract requires an account gate
+- Use `window.AfroPdfDownloadGate.guard(callback)` or the `email-gate-modal.show(callback)` compatibility API before an explicitly gated download callback
+- Verify signed-out direct download on `pdf-merge-split`; when gate wiring changes, separately verify guest-blocked and registered-bypass paths on an explicitly gated metadata export
 
 ### Add or repair a country surface
 

@@ -65,6 +65,7 @@ const LEGACY_BUNDLE_ALIASES = {
   // bundle rewrite has safely moved every route to the current hash.
   'tool-page': [
     'tool-page.3b1f7518.min.js',
+    'tool-page.315f0428.min.js',
     'tool-page.4701dd1d.min.js',
     'tool-page.c4ee75a0.min.js',
     'tool-page.b3e6b709.min.js',
