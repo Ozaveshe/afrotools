@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11500 |
-| Indexable pages | 10513 |
+| Public pages | 11502 |
+| Indexable pages | 10515 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5385 |
-| Documented fallbacks | 14728 |
-| Routes eligible for primary sitemaps | 10513 |
+| Genuine equivalence groups | 5386 |
+| Documented fallbacks | 14730 |
+| Routes eligible for primary sitemaps | 10515 |
 
 ## Locale Coverage
 
-- en: 5954 page records
-- fr: 3801 page records
+- en: 5955 page records
+- fr: 3802 page records
 - ha: 105 page records
 - sw: 1595 page records
 - yo: 45 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5404
-- tool: 4003
+- tool: 4005
 - widget: 379
 
 ## Canonical Migrations
@@ -3385,6 +3385,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1257bc04d33e: en=`/tools/afrokitchen/recipes/maheu-zm/`; x-default=`/tools/afrokitchen/recipes/maheu-zm/`
 - equivalence:125937f8baba: fr=`/fr/widgets/pertes-stockage/`; x-default=`/fr/widgets/pertes-stockage/`
 - equivalence:125a51a01202: en=`/cars/senegal/hyundai/elantra/`, fr=`/fr/cars/senegal/hyundai/elantra/`; x-default=`/cars/senegal/hyundai/elantra/`
+- equivalence:1265fd91130e: en=`/tools/paye-authority-finder/`, fr=`/fr/tools/trouver-administration-paye/`; x-default=`/tools/paye-authority-finder/`
 - equivalence:12663d8381e4: en=`/tools/water-bill/morocco/`; x-default=`/tools/water-bill/morocco/`
 - equivalence:126f3b8352a7: en=`/tools/afrokitchen/countries/tunisia/`; x-default=`/tools/afrokitchen/countries/tunisia/`
 - equivalence:127d089c7fb4: en=`/jamb/literature/2010/`; x-default=`/jamb/literature/2010/`

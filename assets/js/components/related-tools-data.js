@@ -1135,9 +1135,9 @@
       },
       {
         "id": "fuel-tracker",
-        "name": "AfroFuel — African Fuel Price Reference",
+        "name": "AfroFuel — Local Fuel Price Finder",
         "icon": "⛽",
-        "desc": "Inspect dated, row-sourced African petrol, diese...",
+        "desc": "Use browser-local nearest-market matching or man...",
         "href": "/tools/fuel-tracker/",
         "category": "financial",
         "lang": "en",
@@ -21673,9 +21673,9 @@
       },
       {
         "id": "fuel-tracker",
-        "name": "AfroFuel — African Fuel Price Reference",
+        "name": "AfroFuel — Local Fuel Price Finder",
         "icon": "⛽",
-        "desc": "Inspect dated, row-sourced African petrol, diese...",
+        "desc": "Use browser-local nearest-market matching or man...",
         "href": "/tools/fuel-tracker/",
         "category": "financial",
         "lang": "en",

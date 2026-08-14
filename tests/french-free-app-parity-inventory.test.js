@@ -20,7 +20,7 @@ const acceptedEvidenceCount = acceptanceRegistry.entries.filter((entry) => entry
 assert.strictEqual(
   report.totals.englishFreeApps,
   EXPECTED_FREE_APP_COUNT,
-  'the free English denominator must remain exactly 1,257'
+  'the free English denominator must remain exactly 1,258'
 );
 assert.strictEqual(report.rows.length, EXPECTED_FREE_APP_COUNT, 'every free English app needs one ledger row');
 assert.strictEqual(new Set(report.rows.map((row) => row.englishId)).size, EXPECTED_FREE_APP_COUNT, 'English IDs must be unique');
@@ -39,7 +39,7 @@ assert.strictEqual(stateTotal, EXPECTED_FREE_APP_COUNT, 'classification states m
 assert.strictEqual(
   report.categories.reduce((total, category) => total + category.englishFreeApps, 0),
   EXPECTED_FREE_APP_COUNT,
-  'category totals must reconcile to exactly 1,257'
+  'category totals must reconcile to exactly 1,258'
 );
 assert(report.categories.every((category) => {
   const subtotal = Object.keys(STATE_LABELS)

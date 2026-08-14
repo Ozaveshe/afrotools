@@ -8,11 +8,11 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1258 |
+| Canonical published English rows | 1259 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1563 |
-| Swahili coverage records | 1560 |
+| **Free canonical English apps** | **1258** |
+| Swahili physical HTML pages | 1598 |
+| Swahili coverage records | 1595 |
 | Native candidates | 589 |
 | Localized shell candidates | 668 |
 | English fallbacks | 0 |
@@ -20,7 +20,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 0 |
+| Missing | 1 |
 | **Accepted** | **1257** |
 
 ## Category reconciliation
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 132 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 0 | 132 |
+| Finance, Tax & Market Data | 133 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 1 | 132 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -68,7 +68,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
-## Full 1,257-row ledger
+## Full 1,258-row ledger
 
 | English app | Category | English route | State | Primary Swahili route | Accepted |
 |---|---|---|---|---|---:|
@@ -717,7 +717,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Unit Converter (African) | Business & ROI | `/tools/unit-converter` | Native candidate | `/sw/zana/kubadilisha-vipimo` | Yes |
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Native candidate | `/sw/zana/mpango-bajeti` | Yes |
 | African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-sarafu` | Yes |
-| AfroFuel — African Fuel Price Reference | Finance, Tax & Market Data | `/tools/fuel-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-mafuta` | Yes |
+| AfroFuel — Local Fuel Price Finder | Finance, Tax & Market Data | `/tools/fuel-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-mafuta` | Yes |
+| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Missing | None | No |
 | Route Fare Budget Planner | Finance, Tax & Market Data | `/tools/route-fares` | Localized shell candidate | `/sw/zana/nauli-za-ruti` | Yes |
 | Backup Power Cost Calculator | Finance, Tax & Market Data | `/tools/backup-power-costs` | Localized shell candidate | `/sw/zana/gharama-ya-nishati-ya-dharura` | Yes |
 | AfroRates — Reviewed Policy Rates | Finance, Tax & Market Data | `/tools/afrorates` | Localized shell candidate | `/sw/zana/viwango-benki` | Yes |

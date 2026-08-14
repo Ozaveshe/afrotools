@@ -4,8 +4,11 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const fuelPath = path.join(root, 'data/fuel/latest.json');
 const workflowPath = path.join(root, 'data/fuel/official-source-workflow.json');
+const marketsPath = path.join(root, 'data/fuel/markets.json');
 const data = JSON.parse(fs.readFileSync(fuelPath, 'utf8'));
 const workflow = JSON.parse(fs.readFileSync(workflowPath, 'utf8'));
+const marketData = JSON.parse(fs.readFileSync(marketsPath, 'utf8'));
+const marketEngine = require('../assets/js/engines/fuel-tracker-engine.js');
 
 const errors = [];
 const today = new Date().toISOString().slice(0, 10);
@@ -39,9 +42,24 @@ if (!workflow.price_update_policy || workflow.price_update_policy.length < 3) {
   errors.push('Official-source workflow is missing price update policy rules.');
 }
 
+const marketValidation = marketEngine.validateDataset(marketData);
+if (!marketValidation.valid) errors.push(...marketValidation.errors.map((error) => `markets.json: ${error}`));
+const marketIds = new Set();
+(marketData.markets || []).forEach((market) => {
+  if (marketIds.has(market.market_id)) errors.push(`Duplicate market_id: ${market.market_id}.`);
+  marketIds.add(market.market_id);
+  (market.fuels || []).forEach((record) => {
+    if (record.last_verified_at > today) errors.push(`${market.market_id}/${record.fuel_type} has a future last_verified_at.`);
+    if (market.granularity === 'national' && !/national/i.test(`${market.coverage_note} ${record.notes}`)) {
+      errors.push(`${market.market_id}/${record.fuel_type} does not visibly describe its national coverage.`);
+    }
+  });
+});
+
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
 
-console.log(`Fuel source freshness OK: ${rows.length} rows, ${data.official_verified_count || 0} official-verified rows.`);
+const availableMarkets = (marketData.markets || []).filter((market) => (market.fuels || []).some((record) => marketEngine.recordStatus(record, today, marketData.stale_after_days).available));
+console.log(`Fuel source freshness OK: ${rows.length} legacy rows, ${marketData.markets.length} maintained markets, ${availableMarkets.length} with at least one current reference.`);

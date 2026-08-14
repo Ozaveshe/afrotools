@@ -14,7 +14,7 @@ const FINAL_RECEIPT_PATH = path.join(ROOT, FINAL_RECEIPT_RELATIVE);
 const LEDGER_PATH = path.join(ROOT, 'docs', 'FRENCH-FREE-APP-PARITY-LEDGER.md');
 const LEDGER_START = '<!-- BEGIN GENERATED FINAL FRENCH ACCEPTANCE -->';
 const LEDGER_END = '<!-- END GENERATED FINAL FRENCH ACCEPTANCE -->';
-const EXPECTED_APPS = 1257;
+const EXPECTED_APPS = 1258;
 const EXPECTED_CATEGORIES = 32;
 
 function readJson(file) {
@@ -34,7 +34,7 @@ function validateCatalog(report, catalog) {
     throw new Error(`Expected ${EXPECTED_APPS} free apps; found ${report.totals.englishFreeApps}.`);
   }
   if (report.totals['native-candidate'] !== EXPECTED_APPS || report.totals.definiteBuildGaps !== 0) {
-    throw new Error('Acceptance is blocked until all 1,257 primary French owners are native candidates.');
+    throw new Error('Acceptance is blocked until all 1,258 primary French owners are native candidates.');
   }
   if (!Array.isArray(catalog.categories) || catalog.categories.length !== EXPECTED_CATEGORIES) {
     throw new Error(`Category evidence must contain exactly ${EXPECTED_CATEGORIES} records.`);
@@ -87,7 +87,7 @@ function buildAcceptance(report, catalog) {
   return {
     schemaVersion: 2,
     updatedAt: catalog.updatedAt,
-    policy: 'Generated from the exact native 1,257-row inventory and the reviewed 32-category evidence catalog. Route shape alone cannot create an entry.',
+    policy: 'Generated from the exact native 1,258-row inventory and the reviewed 32-category evidence catalog. Route shape alone cannot create an entry.',
     source: 'data/audits/french-free-app-category-acceptance.json',
     totals: {
       acceptedApps: EXPECTED_APPS,
@@ -163,7 +163,7 @@ function renderLedgerSection() {
     `Evidence date: 2026-07-30`,
     '',
     `- **32/32 categories accepted.**`,
-    `- **1,257/1,257 canonical English free apps have accepted native French owners.**`,
+    `- **1,258/1,258 canonical English free apps have accepted native French owners.**`,
     '- Structural gaps: **0** iframe/transplants, bridges, alias-only owners or missing counterparts.',
     '- Expanded experiences, French registry rows and physical localized pages remain separate counts.',
     '',
@@ -172,7 +172,7 @@ function renderLedgerSection() {
     'inventory and `data/audits/french-free-app-category-acceptance.json`.',
     'Per-category evidence is listed in',
     '`reports/french-free-app-parity-final-acceptance-2026-07-30.md`; the full',
-    '1,257-row owner result remains in `reports/french-free-app-parity-inventory.*`.',
+    '1,258-row owner result remains in `reports/french-free-app-parity-inventory.*`.',
     '',
     'This is repository acceptance, not production deployment or live-route proof.',
     LEDGER_END

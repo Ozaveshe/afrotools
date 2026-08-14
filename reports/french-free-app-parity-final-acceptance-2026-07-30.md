@@ -5,8 +5,8 @@ Evidence date: 2026-07-30
 ## Verdict
 
 - Accepted categories: **32/32**.
-- Accepted canonical free apps: **1257/1257**.
-- Native primary French owners: **1257/1257**.
+- Accepted canonical free apps: **1258/1258**.
+- Native primary French owners: **1258/1258**.
 - English iframe/transplant, bridge, alias-only and missing primary owners: **0**.
 
 Acceptance is generated from the exact inventory owner for every English ID.
@@ -28,7 +28,7 @@ browser contracts where the final receipt is the durable aggregation point.
 | Education | 42 | `reports/fr-education-parity-receipt.md` | `node scripts/audit-fr-education-parity.js`<br>`playwright test tests/e2e/fr-education-category-parity.spec.js --project=chromium --workers=1` |
 | Energy & Utilities | 20 | `docs/audits/FRENCH-ENERGY-UTILITIES-PARITY-RECEIPT.md` | `node tests/french-energy-parity.test.js`<br>`playwright test tests/e2e/french-energy-parity.spec.js --project=chromium --workers=1` |
 | Engineering & Construction | 26 | `reports/fr-engineering-construction-parity-manifest.json` | `node scripts/build-french-engineering-parity.js --check`<br>`playwright test tests/e2e/french-engineering-functional-parity.spec.js --project=chromium --workers=1` |
-| Finance, Tax & Market Data | 132 | `reports/french-finance-tax-market-data-evidence.json` | `node tests/french-finance-parity.test.js`<br>`playwright test tests/e2e/french-finance-native-parity.spec.js --project=chromium --workers=1` |
+| Finance, Tax & Market Data | 133 | `reports/french-finance-tax-market-data-133-acceptance.md` | `node tests/french-finance-parity.test.js`<br>`node tests/gsc-demand-capture-products.test.js`<br>`playwright test tests/e2e/french-finance-native-parity.spec.js --project=chromium --workers=1`<br>`playwright test tests/e2e/gsc-demand-capture-products.spec.js --project=chromium --workers=1` |
 | Fintech & Banking | 31 | `reports/french-fintech-banking-parity-evidence.json` | `node scripts/capture-french-fintech-english-baseline.js --check` |
 | Government & Civic | 15 | `reports/french-government-mining-parity-evidence-2026-07-30.md` | `node tests/fr-government-parity.test.js`<br>`playwright test tests/e2e/fr-government-parity.spec.js --project=chromium --workers=1` |
 | Health & Wellness | 42 | `docs/audits/FRENCH-HEALTH-WAVE3-PARITY-RECEIPT.md` | `node tests/french-health-parity.test.js`<br>`playwright test tests/e2e/french-health-parity.spec.js --project=chromium --workers=1` |
