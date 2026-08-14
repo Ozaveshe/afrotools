@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
 const ROOT = path.resolve(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -80,8 +81,7 @@ function summarize(text) {
     .trim();
 }
 
-function parseRollout(filePath) {
-  const lines = readText(filePath).split(/\r?\n/).filter(Boolean);
+async function parseRollout(filePath) {
   const result = {
     filePath,
     sessionId: null,
@@ -96,7 +96,12 @@ function parseRollout(filePath) {
   const allText = [];
   const runtimeText = [];
 
-  for (const line of lines) {
+  const lines = readline.createInterface({
+    input: fs.createReadStream(filePath, { encoding: 'utf8' }),
+    crlfDelay: Infinity,
+  });
+
+  for await (const line of lines) {
     let event;
     try {
       event = JSON.parse(line);
@@ -123,8 +128,13 @@ function parseRollout(filePath) {
         result.summary = event.payload.message || result.summary;
       }
       if (event.payload.type === 'task_complete') {
-        result.status = 'completed';
-        if (event.payload.last_agent_message) result.summary = event.payload.last_agent_message;
+        if (event.payload.error) {
+          result.status = 'failed';
+          result.summary = event.payload.error.message || 'task_complete captured with an error';
+        } else {
+          result.status = 'completed';
+          if (event.payload.last_agent_message) result.summary = event.payload.last_agent_message;
+        }
       }
       continue;
     }
@@ -148,8 +158,8 @@ function parseRollout(filePath) {
 
   const combined = allText.join('\n');
   const runtimeCombined = runtimeText.join('\n');
-  if (result.status !== 'completed' && /interrupted/i.test(combined)) result.status = 'interrupted';
-  if (result.status !== 'completed' && /in progress/i.test(combined)) result.status = 'in progress';
+  if (result.status === 'incomplete' && /interrupted/i.test(combined)) result.status = 'interrupted';
+  if (result.status === 'incomplete' && /in progress/i.test(combined)) result.status = 'in progress';
   result.flags = classifyFlags(runtimeCombined || result.summary);
   result.summary = summarize(result.summary || (result.status === 'completed' ? 'task_complete captured; no agent summary in archive' : runtimeCombined));
   return result.automation ? result : null;
@@ -158,6 +168,11 @@ function parseRollout(filePath) {
 function inRange(dateString, start, end) {
   const date = new Date(dateString);
   return Number.isFinite(date.getTime()) && date >= start && date < end;
+}
+
+function archiveTimestamp(fileName) {
+  const match = fileName.match(/^rollout-(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2})-/);
+  return match ? match[1].replace(/T(\d{2})-(\d{2})-(\d{2})$/, 'T$1:$2:$3Z') : null;
 }
 
 function countBy(items, keyFn) {
@@ -175,7 +190,7 @@ function formatCounts(counts) {
     .join(', ') || 'none';
 }
 
-function writeReport() {
+async function writeReport() {
   const since = getArg('since', '2026-05-20');
   const until = getArg('until', new Date().toISOString().slice(0, 10));
   const generatedAt = new Date().toISOString();
@@ -186,11 +201,13 @@ function writeReport() {
   const automations = parseAutomations();
   const activeIds = new Set(automations.filter((item) => item.status === 'ACTIVE').map((item) => item.id));
   const archivedFiles = fs.existsSync(ARCHIVE_DIR)
-    ? fs.readdirSync(ARCHIVE_DIR).filter((fileName) => /^rollout-\d{4}-\d{2}-\d{2}T.*\.jsonl$/.test(fileName))
+    ? fs.readdirSync(ARCHIVE_DIR)
+      .filter((fileName) => /^rollout-\d{4}-\d{2}-\d{2}T.*\.jsonl$/.test(fileName))
+      .filter((fileName) => inRange(archiveTimestamp(fileName), start, end))
     : [];
 
-  const runs = archivedFiles
-    .map((fileName) => parseRollout(path.join(ARCHIVE_DIR, fileName)))
+  const runs = (await Promise.all(archivedFiles
+    .map((fileName) => parseRollout(path.join(ARCHIVE_DIR, fileName)))))
     .filter(Boolean)
     .filter((run) => inRange(run.timestamp, start, end))
     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
@@ -339,4 +356,7 @@ function writeReport() {
   console.log(`Runs found: ${runs.length}; active without run evidence: ${activeNoRun.length}; missing memory: ${missingMemory.length}`);
 }
 
-writeReport();
+writeReport().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
