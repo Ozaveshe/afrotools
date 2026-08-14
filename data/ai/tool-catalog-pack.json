@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-09T05:48:12.020Z",
+  "generatedAt": "2026-08-14T05:13:35.521Z",
   "task": "afrotools_full_tool_catalog_pack",
   "scope": "model_context_for_existing_tool_calls",
-  "manifestHash": "2baa878fbdc143786dfef4cf60fa32e600e890c0f4d8f257db75174b7e106df5",
-  "toolCount": 1258,
+  "manifestHash": "ddc5d849438aa1e151699ba32c97d47c8905379479f19959f513eb51496b6c11",
+  "toolCount": 1259,
   "categoryCount": 32,
-  "chunkCount": 65,
+  "chunkCount": 66,
   "maxChunkChars": 28000,
   "gate": {
     "passed": true,
@@ -49,7 +49,7 @@
     },
     {
       "category": "financial",
-      "count": 133
+      "count": 134
     },
     {
       "category": "legal",
@@ -40539,12 +40539,18 @@
         },
         {
           "id": "fuel-tracker",
-          "title": "AfroFuel — African Fuel Price Reference",
+          "title": "AfroFuel — Local Fuel Price Finder",
           "route": "/tools/fuel-tracker/",
           "category": "financial",
           "subcategory": "fuel-prices",
           "countriesSupported": [
-            "ALL"
+            "NIGERIA",
+            "UGANDA",
+            "SENEGAL",
+            "BOTSWANA",
+            "ETHIOPIA",
+            "ANGOLA",
+            "KENYA"
           ],
           "languagesSupported": [
             "en"
@@ -41077,7 +41083,7 @@
           }
         }
       ],
-      "charCount": 27310
+      "charCount": 27367
     },
     {
       "id": "tool-catalog:financial:03",
@@ -42672,6 +42678,7 @@
         "ng-pension",
         "ng-wht",
         "overtime-calc",
+        "paye-authority-finder",
         "paye-calculator",
         "payslip-generator",
         "pension-proj",
@@ -42685,8 +42692,7 @@
         "salary-compare",
         "salary-intelligence",
         "sars-efiling",
-        "savings-goal",
-        "sc-paye"
+        "savings-goal"
       ],
       "tools": [
         {
@@ -43387,6 +43393,74 @@
             "canPrefill": true,
             "privacyMode": "browser_local",
             "sourcePolicy": "official",
+            "safetyDomain": "tax"
+          }
+        },
+        {
+          "id": "paye-authority-finder",
+          "title": "PAYE Authority Finder",
+          "route": "/tools/paye-authority-finder/",
+          "category": "financial",
+          "subcategory": "financial",
+          "countriesSupported": [
+            "UGANDA",
+            "ZAMBIA",
+            "MALAWI",
+            "MAURITIUS",
+            "ESWATINI",
+            "LESOTHO",
+            "LIBERIA"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "paye authority finder",
+            "open paye authority finder",
+            "financial tool",
+            "find paye authority",
+            "paye authority",
+            "Open PAYE Authority Finder",
+            "Help me use PAYE Authority Finder"
+          ],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            },
+            {
+              "name": "grossPay",
+              "label": "Gross pay",
+              "type": "number"
+            },
+            {
+              "name": "payPeriod",
+              "label": "Pay period",
+              "type": "select"
+            }
+          ],
+          "optionalInputs": [],
+          "privacyMode": "browser_local",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
+          "outputTypes": [
+            "number",
+            "table",
+            "shortlist",
+            "json"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "paye-authority-finder",
+            "route": "/tools/paye-authority-finder/",
+            "category": "financial",
+            "subcategory": "financial",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "browser_local",
+            "sourcePolicy": "mixed",
             "safetyDomain": "tax"
           }
         },
@@ -44135,7 +44209,44 @@
             "sourcePolicy": "official",
             "safetyDomain": "tax"
           }
-        },
+        }
+      ],
+      "charCount": 27108
+    },
+    {
+      "id": "tool-catalog:financial:05",
+      "category": "financial",
+      "part": 5,
+      "toolCount": 26,
+      "toolIds": [
+        "sc-paye",
+        "sd-paye",
+        "side-hustle-tax",
+        "sl-paye",
+        "sn-paye",
+        "so-paye",
+        "social-security",
+        "ss-paye",
+        "st-paye",
+        "staff-cost",
+        "startup-valuation",
+        "student-loan",
+        "sz-paye",
+        "td-paye",
+        "tg-paye",
+        "tn-paye",
+        "transfer-pricing",
+        "tz-paye",
+        "ug-paye",
+        "za-cgt",
+        "za-dividend-tax",
+        "za-gepf",
+        "za-paye",
+        "za-transfer-duty",
+        "za-uif",
+        "zm-paye"
+      ],
+      "tools": [
         {
           "id": "sc-paye",
           "title": "Seychelles PAYE Calculator",
@@ -44200,44 +44311,7 @@
             "sourcePolicy": "user_input",
             "safetyDomain": "tax"
           }
-        }
-      ],
-      "charCount": 27089
-    },
-    {
-      "id": "tool-catalog:financial:05",
-      "category": "financial",
-      "part": 5,
-      "toolCount": 26,
-      "toolIds": [
-        "sd-paye",
-        "side-hustle-tax",
-        "sl-paye",
-        "sn-paye",
-        "so-paye",
-        "social-security",
-        "ss-paye",
-        "st-paye",
-        "staff-cost",
-        "startup-valuation",
-        "student-loan",
-        "sz-paye",
-        "td-paye",
-        "tg-paye",
-        "tn-paye",
-        "transfer-pricing",
-        "tz-paye",
-        "ug-paye",
-        "za-cgt",
-        "za-dividend-tax",
-        "za-gepf",
-        "za-paye",
-        "za-transfer-duty",
-        "za-uif",
-        "zm-paye",
-        "zw-paye"
-      ],
-      "tools": [
+        },
         {
           "id": "sd-paye",
           "title": "Sudan PAYE Calculator",
@@ -45709,7 +45783,19 @@
             "sourcePolicy": "user_input",
             "safetyDomain": "tax"
           }
-        },
+        }
+      ],
+      "charCount": 27247
+    },
+    {
+      "id": "tool-catalog:financial:06",
+      "category": "financial",
+      "part": 6,
+      "toolCount": 1,
+      "toolIds": [
+        "zw-paye"
+      ],
+      "tools": [
         {
           "id": "zw-paye",
           "title": "Zimbabwe PAYE Calculator",
@@ -45776,7 +45862,7 @@
           }
         }
       ],
-      "charCount": 27223
+      "charCount": 1196
     },
     {
       "id": "tool-catalog:fintech:01",

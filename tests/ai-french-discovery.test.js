@@ -30,9 +30,9 @@ test('French route map reports bounded canonical coverage', () => {
     'French route map must retain the locale coverage registry as a source'
   );
   assert.equal(routeMap.report.manifestRecords, manifest.length);
-  assert(routeMap.report.mappedManifestRecords > 100, 'French AI route coverage unexpectedly small');
-  assert(routeMap.report.mappedManifestRecords < routeMap.report.manifestRecords, 'must not claim full French AI route parity');
-  assert.equal(routeMap.report.ambiguousRoutes, 5, 'ambiguous source mappings must remain visible and omitted');
+  assert.equal(routeMap.report.mappedManifestRecords, routeMap.report.manifestRecords, 'every manifest route must resolve to a verified French surface');
+  assert.equal(routeMap.report.unmappedRoutes, 0, 'French AI route coverage must remain complete after the reviewed PAYE owner');
+  assert.equal(routeMap.report.ambiguousRoutes, 0, 'reviewed source mappings must remain unambiguous');
   assert.equal(routeMap.routes['/search/'], '/fr/search/');
 
   for (const [englishRoute, frenchRoute] of Object.entries(routeMap.routes)) {

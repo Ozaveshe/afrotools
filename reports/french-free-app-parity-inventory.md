@@ -8,16 +8,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1258 |
+| Canonical published English rows | 1259 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1257** |
-| Native candidates (including accepted) | 1257 |
+| **Free canonical English apps** | **1258** |
+| Native candidates (including accepted) | 1258 |
 | English iframe/transplant | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Missing | 0 |
 | Definite product-build gaps | 0 |
-| **Accepted** | **1257** |
+| **Accepted** | **1258** |
 
 ## Category reconciliation
 
@@ -34,7 +34,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Education | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 20 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 26 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 132 | 132 | 0 | 0 | 0 | 0 | 132 |
+| Finance, Tax & Market Data | 133 | 133 | 0 | 0 | 0 | 0 | 133 |
 | Fintech & Banking | 31 | 31 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 15 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
@@ -55,12 +55,12 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Travel & Tourism | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 34 | 34 | 0 | 0 | 0 | 0 | 34 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 63 |
-| **Total** | **1257** | **1257** | **0** | **0** | **0** | **0** | **1257** |
+| **Total** | **1258** | **1258** | **0** | **0** | **0** | **0** | **1258** |
 
 ## Ambiguous ownership
 
 - French routes with conflicting owner evidence: 108
-- English apps with multiple live French owner candidates: 25
+- English apps with multiple live French owner candidates: 23
 - French registry source IDs not found in the free English denominator: 5
 
 Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.
@@ -198,8 +198,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | `/tools/prepaid-meter` | `/fr/tools/compteur-prepaye` | `/fr/tools/compteur-prepaye/algeria`<br>`/fr/tools/compteur-prepaye/angola`<br>`/fr/tools/compteur-prepaye/benin`<br>`/fr/tools/compteur-prepaye/botswana`<br>`/fr/tools/compteur-prepaye/burkina-faso`<br>`/fr/tools/compteur-prepaye/burundi`<br>`/fr/tools/compteur-prepaye/cameroon`<br>`/fr/tools/compteur-prepaye/cape-verde`<br>`/fr/tools/compteur-prepaye/central-african-republic`<br>`/fr/tools/compteur-prepaye/chad`<br>`/fr/tools/compteur-prepaye/comoros`<br>`/fr/tools/compteur-prepaye/cote-divoire`<br>`/fr/tools/compteur-prepaye/djibouti`<br>`/fr/tools/compteur-prepaye/dr-congo`<br>`/fr/tools/compteur-prepaye/egypt`<br>`/fr/tools/compteur-prepaye/equatorial-guinea`<br>`/fr/tools/compteur-prepaye/eritrea`<br>`/fr/tools/compteur-prepaye/eswatini`<br>`/fr/tools/compteur-prepaye/ethiopia`<br>`/fr/tools/compteur-prepaye/gabon`<br>`/fr/tools/compteur-prepaye/gambia`<br>`/fr/tools/compteur-prepaye/ghana`<br>`/fr/tools/compteur-prepaye/guinea`<br>`/fr/tools/compteur-prepaye/guinea-bissau`<br>`/fr/tools/compteur-prepaye/kenya`<br>`/fr/tools/compteur-prepaye/lesotho`<br>`/fr/tools/compteur-prepaye/liberia`<br>`/fr/tools/compteur-prepaye/libya`<br>`/fr/tools/compteur-prepaye/madagascar`<br>`/fr/tools/compteur-prepaye/malawi`<br>`/fr/tools/compteur-prepaye/mali`<br>`/fr/tools/compteur-prepaye/mauritania`<br>`/fr/tools/compteur-prepaye/mauritius`<br>`/fr/tools/compteur-prepaye/morocco`<br>`/fr/tools/compteur-prepaye/mozambique`<br>`/fr/tools/compteur-prepaye/namibia`<br>`/fr/tools/compteur-prepaye/niger`<br>`/fr/tools/compteur-prepaye/nigeria`<br>`/fr/tools/compteur-prepaye/republic-of-congo`<br>`/fr/tools/compteur-prepaye/rwanda`<br>`/fr/tools/compteur-prepaye/sao-tome`<br>`/fr/tools/compteur-prepaye/senegal`<br>`/fr/tools/compteur-prepaye/seychelles`<br>`/fr/tools/compteur-prepaye/sierra-leone`<br>`/fr/tools/compteur-prepaye/somalia`<br>`/fr/tools/compteur-prepaye/south-africa`<br>`/fr/tools/compteur-prepaye/south-sudan`<br>`/fr/tools/compteur-prepaye/sudan`<br>`/fr/tools/compteur-prepaye/tanzania`<br>`/fr/tools/compteur-prepaye/togo`<br>`/fr/tools/compteur-prepaye/tunisia`<br>`/fr/tools/compteur-prepaye/uganda`<br>`/fr/tools/compteur-prepaye/zambia`<br>`/fr/tools/compteur-prepaye/zimbabwe` |
 | `/tools/gas-lpg-cost` | `/fr/tools/cout-gaz-lpg` | `/fr/tools/calculateur-du-cout-du-gaz-gpl-afrique-du-sud`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-angola`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cameroun`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cote-d-ivoire`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-egypte`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ethiopie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ghana`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-kenya`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-maroc`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-nigeria`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ouganda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-rwanda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-senegal`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tanzanie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tunisie` |
 | `/tools/outage-cost` | `/fr/tools/cout-coupure-entreprise` | `/fr/tools/estimateur-du-cout-des-coupures-de-courant-afrique-du-sud`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-angola`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cameroun`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cote-d-ivoire`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-egypte`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ethiopie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ghana`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-kenya`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-maroc`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-nigeria`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ouganda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-rwanda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-senegal`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tanzanie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tunisie` |
-| `/tools/carbon-credit` | `/fr/tools/revenus-credits-carbone` | `/fr/tools/calculateur-de-revenus-des-credits-carbone-nigeria` |
-| `/tools/flood-risk` | `/fr/tools/risque-inondation` | `/fr/tools/evaluation-du-risque-d-inondation-nigeria` |
 | `/tools/afrostream` | `/fr/tools/afrostream-afrique-s-createur-streaming-hub` | `/fr/tools/installation-de-streaming-a-petit-budget`<br>`/fr/tools/monetisation-pour-createurs-africains`<br>`/fr/tools/tarifer-un-partenariat-de-marque` |
 | `/document-pdf` | `/fr/document-pdf` | `/fr/docs/pdf-tools-hub` |
 | `/tools/work-permit-cost` | `/fr/tools/cout-permis-travail` | `/fr/tools/estimateur-du-cout-d-un-permis-de-travail-afrique-du-sud`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-algerie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-angola`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-benin`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-botswana`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-burkina-faso`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-burundi`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cameroun`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cap-vert`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-comores`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-congo-brazzaville`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cote-d-ivoire`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-djibouti`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-egypte`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-erythree`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-eswatini`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ethiopie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-gabon`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-gambie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ghana`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee-bissau`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee-equatoriale`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-kenya`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-lesotho`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-liberia`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-libye`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-madagascar`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-malawi`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mali`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maroc`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maurice`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mauritanie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mozambique`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-namibie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-niger`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-nigeria`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ouganda`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-rdc`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-republique-centrafricaine`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-rwanda`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-sao-tome-et-principe`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-senegal`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-seychelles`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-sierra-leone`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-somalie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-soudan`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-soudan-du-sud`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tanzanie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tchad`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-togo`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tunisie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zambie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zimbabwe` |
@@ -216,7 +214,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 - `generator-fuel-african`
 - `regulatory-alerts`
 
-## Full 1,257-row ledger
+## Full 1,258-row ledger
 
 | English app | Category | English route | State | Primary French route | Accepted |
 |---|---|---|---|---|---:|
@@ -228,7 +226,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Nigeria PAYE Calculator | Finance, Tax & Market Data | `/nigeria/ng-salary-tax` | Native candidate | `/fr/nigeria/ng-salary-tax` | Yes |
 | Kenya PAYE Calculator | Finance, Tax & Market Data | `/kenya/ke-paye` | Native candidate | `/fr/kenya/ke-paye` | Yes |
 | PDF Workspace | Document & PDF | `/tools/pdf-workspace` | Native candidate | `/fr/tools/espace-pdf` | Yes |
-| Japa Cost Calculator | Uniquely African | `/tools/japa-calculator` | Native candidate | `/fr/tools/calculateur-japa` | Yes |
+| Japa Relocation Budget Planner | Uniquely African | `/tools/japa-calculator` | Native candidate | `/fr/tools/calculateur-japa` | Yes |
 | Medical Report Interpreter | Health & Wellness | `/tools/medical-report` | Native candidate | `/fr/tools/rapport-medical` | Yes |
 | AI Business Planner | Finance, Tax & Market Data | `/tools/business-planner` | Native candidate | `/fr/tools/planificateur-entreprise` | Yes |
 | Ghana PAYE + SSNIT | Finance, Tax & Market Data | `/ghana/gh-paye` | Native candidate | `/fr/ghana/gh-paye` | Yes |
@@ -411,7 +409,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/fr/tools/chiffres-romains` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Native candidate | `/fr/tools/calculateur-pourcentage` | Yes |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Native candidate | `/fr/tools/calculatrice-scientifique` | Yes |
-| Mobile Money Fee Checker | Uniquely African | `/tools/mobile-money-fees` | Native candidate | `/fr/tools/frais-mobile-money` | Yes |
+| Mobile Money Quote Fee Comparator | Uniquely African | `/tools/mobile-money-fees` | Native candidate | `/fr/tools/frais-mobile-money` | Yes |
 | Fintech Fee Watch | Uniquely African | `/tools/fintech-fee-watch` | Native candidate | `/fr/tools/suivi-frais-fintech` | Yes |
 | Ajo/Chama Savings Tracker | Uniquely African | `/tools/ajo-tracker` | Native candidate | `/fr/tools/suivi-tontine` | Yes |
 | Electricity Bill Estimator | Uniquely African | `/tools/electricity-estimator` | Native candidate | `/fr/tools/estimateur-electricite` | Yes |
@@ -421,7 +419,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Lobola Negotiation Checklist | Religious & Cultural | `/tools/lobola-negotiation-checklist` | Native candidate | `/fr/tools/checklist-negociation-dot` | Yes |
 | Lobola Gift List | Religious & Cultural | `/tools/lobola-gift-list` | Native candidate | `/fr/tools/liste-cadeaux-dot` | Yes |
 | Informal Remittance Cost Tracker | Uniquely African | `/tools/hawala-tracker` | Native candidate | `/fr/tools/suivi-hawala` | Yes |
-| Funeral Cost Estimator | Uniquely African | `/tools/burial-cost` | Native candidate | `/fr/tools/cout-funerailles` | Yes |
+| Family Funeral Budget Planner | Uniquely African | `/tools/burial-cost` | Native candidate | `/fr/tools/cout-funerailles` | Yes |
 | School Fees Comparator | Education | `/tools/school-fees` | Native candidate | `/fr/tools/frais-scolarite` | Yes |
 | Staple Basket Tracker | Uniquely African | `/tools/staple-basket` | Native candidate | `/fr/tools/panier-produits-base` | Yes |
 | Wholesale Retail Spread | Uniquely African | `/tools/wholesale-retail-spread` | Native candidate | `/fr/tools/marge-gros-detail` | Yes |
@@ -865,7 +863,8 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Unit Converter (African) | Business & ROI | `/tools/unit-converter` | Native candidate | `/fr/tools/convertisseur-unites` | Yes |
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Native candidate | `/fr/tools/planificateur-budget` | Yes |
 | African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Native candidate | `/fr/tools/convertisseur-devises` | Yes |
-| AfroFuel — African Fuel Price Reference | Finance, Tax & Market Data | `/tools/fuel-tracker` | Native candidate | `/fr/tools/suivi-carburant` | Yes |
+| AfroFuel — Local Fuel Price Finder | Finance, Tax & Market Data | `/tools/fuel-tracker` | Native candidate | `/fr/tools/suivi-carburant` | Yes |
+| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Native candidate | `/fr/tools/trouver-administration-paye` | Yes |
 | Route Fare Budget Planner | Finance, Tax & Market Data | `/tools/route-fares` | Native candidate | `/fr/tools/tarifs-itineraire` | Yes |
 | Backup Power Cost Calculator | Finance, Tax & Market Data | `/tools/backup-power-costs` | Native candidate | `/fr/tools/couts-secours-energie` | Yes |
 | AfroRates — Reviewed Policy Rates | Finance, Tax & Market Data | `/tools/afrorates` | Native candidate | `/fr/tools/afrotaux` | Yes |
@@ -950,7 +949,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | AfroPoints — Earn Money Contributing Data | Uniquely African | `/tools/afropoints` | Native candidate | `/fr/tools/afropoints` | Yes |
 | AfroKitchen — African Recipes | Uniquely African | `/tools/afrokitchen` | Native candidate | `/fr/tools/afrocuisine` | Yes |
 | AfroConflict — Conflict Intelligence | Uniquely African | `/tools/africa-conflict` | Native candidate | `/fr/tools/carte-conflits-afrique` | Yes |
-| Bride Price Advisor | Uniquely African | `/tools/brideprice-advisor` | Native candidate | `/fr/tools/conseiller-dot` | Yes |
+| Consent-First Marriage Family Planner | Uniquely African | `/tools/brideprice-advisor` | Native candidate | `/fr/tools/conseiller-dot` | Yes |
 | Ajo / Esusu Interest Calculator | Uniquely African | `/tools/ajo-interest` | Native candidate | `/fr/tools/interet-tontine` | Yes |
 | African Diaspora Tax Guide | Uniquely African | `/tools/diaspora-guide` | Native candidate | `/fr/tools/guide-diaspora` | Yes |
 | Film/TV Budget Estimator Africa | Uniquely African | `/tools/nollywood-pitch` | Native candidate | `/fr/tools/pitch-nollywood` | Yes |

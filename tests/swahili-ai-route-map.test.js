@@ -37,7 +37,9 @@ assert.equal(angolaPaye.selectedToolId, "ao-paye");
 assert.equal(angolaPaye.selectedRoute, `${routeMap.ids["ao-paye"]}?source=ask`);
 assert.equal(angolaPaye._meta.localeRoute.status, "mapped");
 
-assert.equal(inventory.totals.remainingUnaccepted, 0, "100% parity must leave no unavailable inventory row");
+assert.equal(inventory.totals.remainingUnaccepted, 1, "the new PAYE authority finder remains unavailable until a native Swahili owner is accepted");
+assert.equal(inventory.rows.find((row) => row.englishId === "paye-authority-finder").state, "missing");
+assert.equal(routeEntry.resolveToolRoute("paye-authority-finder", routeMap), null);
 const unavailableId = "__sw-unavailable-contract-fixture__";
 const unavailable = router.normalizeDecision({
   selectedToolId: unavailableId

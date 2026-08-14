@@ -45113,16 +45113,30 @@
       "id": "fuel-tracker",
       "route": "/tools/fuel-tracker/",
       "canonicalRoute": "/tools/fuel-tracker/",
-      "title": "AfroFuel — African Fuel Price Reference",
-      "description": "Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local price and measured consumption.",
+      "title": "AfroFuel — Local Fuel Price Finder",
+      "description": "Use browser-local nearest-market matching or manual selection to inspect a dated petrol, gasoline or diesel reference, coverage level and fill cost.",
       "categoryId": "financial",
       "applicability": {
-        "scope": "pan-african",
-        "countryIds": [],
+        "scope": "countries",
+        "countryIds": [
+          "NG",
+          "UG",
+          "SN",
+          "BW",
+          "ET",
+          "AO",
+          "KE"
+        ],
         "regionIds": []
       },
       "currencies": [
-        "MULTI"
+        "AOA",
+        "BWP",
+        "ETB",
+        "KES",
+        "NGN",
+        "UGX",
+        "XOF"
       ],
       "units": [],
       "publicationStatus": "published",
@@ -45149,14 +45163,92 @@
         "status": "live",
         "phase": "LIVE",
         "countries": [
-          "ALL"
+          "NG",
+          "UG",
+          "SN",
+          "BW",
+          "ET",
+          "AO",
+          "KE"
         ],
         "toolCount": 1,
         "sourceId": null,
-        "tier": "T2",
+        "tier": "T1",
         "revenue": "Discovery",
         "priority": 95,
         "icon": "⛽",
+        "tags": [],
+        "aliases": []
+      }
+    },
+    {
+      "id": "paye-authority-finder",
+      "route": "/tools/paye-authority-finder/",
+      "canonicalRoute": "/tools/paye-authority-finder/",
+      "title": "PAYE Authority Finder",
+      "description": "Resolve MRA, ERS, ZRA, URA, LRA or RSL to the correct country, currency, tax-year label and canonical PAYE calculator.",
+      "categoryId": "financial",
+      "applicability": {
+        "scope": "countries",
+        "countryIds": [
+          "UG",
+          "ZM",
+          "MW",
+          "MU",
+          "SZ",
+          "LS",
+          "LR"
+        ],
+        "regionIds": []
+      },
+      "currencies": [
+        "LRD",
+        "LSL",
+        "MUR",
+        "MWK",
+        "SZL",
+        "UGX",
+        "ZMW"
+      ],
+      "units": [],
+      "publicationStatus": "published",
+      "localeCoverage": [
+        "en"
+      ],
+      "calculatorVersion": null,
+      "sourceVersion": null,
+      "dataFreshness": {
+        "status": "unknown",
+        "asOf": null
+      },
+      "widgetEligibility": {
+        "eligible": false,
+        "widgetIds": []
+      },
+      "availability": "free",
+      "deprecated": false,
+      "redirectTarget": null,
+      "routeAliases": [],
+      "indexable": true,
+      "source": {
+        "owner": "assets/js/components/tool-registry.js",
+        "status": "live",
+        "phase": "LIVE",
+        "countries": [
+          "UG",
+          "ZM",
+          "MW",
+          "MU",
+          "SZ",
+          "LS",
+          "LR"
+        ],
+        "toolCount": 1,
+        "sourceId": null,
+        "tier": "T1",
+        "revenue": "Discovery",
+        "priority": 86,
+        "icon": "TAX",
         "tags": [],
         "aliases": []
       }
@@ -212176,7 +212268,7 @@
       "id": "tools.canonical_published",
       "label": "Canonical published tool records",
       "definition": "Published non-deprecated tool records after explicit route aliases are excluded.",
-      "value": 3801,
+      "value": 3802,
       "recordIds": [
         "50-30-20-budget",
         "50-30-20-budget-sw-coverage-50-30-20-budget",
@@ -214510,6 +214602,7 @@
         "password-gen",
         "password-strength",
         "password-strength-sw-parity",
+        "paye-authority-finder",
         "paye-calculator",
         "paygo-solar",
         "payment-comparator",
@@ -217883,7 +217976,7 @@
       "id": "tools.category.financial.published",
       "label": "Finance, Tax & Market Data published tool records",
       "definition": "Canonical published non-redirect tool records in category financial.",
-      "value": 512,
+      "value": 513,
       "recordIds": [
         "afropayroll-os-fr-coverage-afropayroll-os",
         "afropayroll-os-sw-coverage-afropayroll-os",
@@ -218181,6 +218274,7 @@
         "nigeria-kikokotoo-kodi-mshahara-sw",
         "objectif-epargne-fr",
         "overtime-calc",
+        "paye-authority-finder",
         "paye-calculator",
         "payslip-generator",
         "payslip-generator-ha",
@@ -220042,7 +220136,7 @@
       "id": "tools.english_canonical_published",
       "label": "Canonical published English tool records",
       "definition": "Canonical published non-redirect tool records whose locale coverage includes English.",
-      "value": 1258,
+      "value": 1259,
       "recordIds": [
         "50-30-20-budget",
         "afcfta-tracker",
@@ -220964,6 +221058,7 @@
         "passport-photo",
         "password-gen",
         "password-strength",
+        "paye-authority-finder",
         "paye-calculator",
         "paygo-solar",
         "payment-comparator",
@@ -221308,7 +221403,7 @@
       "id": "tools.indexable_destinations",
       "label": "Indexable tool destinations",
       "definition": "Canonical published non-redirect tool records marked indexable.",
-      "value": 3801,
+      "value": 3802,
       "recordIds": [
         "50-30-20-budget",
         "50-30-20-budget-sw-coverage-50-30-20-budget",
@@ -223642,6 +223737,7 @@
         "password-gen",
         "password-strength",
         "password-strength-sw-parity",
+        "paye-authority-finder",
         "paye-calculator",
         "paygo-solar",
         "payment-comparator",
@@ -225117,14 +225213,14 @@
       "id": "tools.live_experiences",
       "label": "Live tool experiences",
       "definition": "Unique English published destinations plus declared hidden country variants from toolCount families.",
-      "value": 2612,
+      "value": 2613,
       "recordIds": []
     },
     {
       "id": "tools.locale.en.published",
       "label": "en published tool records",
       "definition": "Canonical published non-redirect tool records whose locale coverage includes en.",
-      "value": 1258,
+      "value": 1259,
       "recordIds": [
         "50-30-20-budget",
         "afcfta-tracker",
@@ -226046,6 +226142,7 @@
         "passport-photo",
         "password-gen",
         "password-strength",
+        "paye-authority-finder",
         "paye-calculator",
         "paygo-solar",
         "payment-comparator",
@@ -231516,7 +231613,7 @@
       "id": "tools.raw_rows",
       "label": "Raw tool registry rows",
       "definition": "Every row in the legacy browser tool registry, including localized rows and explicit redirect aliases.",
-      "value": 3806,
+      "value": 3807,
       "recordIds": [
         "50-30-20-budget",
         "50-30-20-budget-sw-coverage-50-30-20-budget",
@@ -233853,6 +233950,7 @@
         "password-gen",
         "password-strength",
         "password-strength-sw-parity",
+        "paye-authority-finder",
         "paye-calculator",
         "paygo-solar",
         "payment-comparator",

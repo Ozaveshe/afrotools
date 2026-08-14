@@ -17,7 +17,7 @@ const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/swahili-fr
 const acceptance = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audits/swahili-free-app-acceptance.json'), 'utf8'));
 const accepted = new Set(acceptance.entries.filter((row) => row.status === 'accepted').map((row) => row.englishId));
 const normalizeRoute = (route) => `/${String(route || '').replace(/^\/+|\/+$/g, '')}/`;
-assert.strictEqual(inventory.rows.length, 1257);
+assert.strictEqual(inventory.rows.length, 1258);
 assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: apps.map(([id,,swahiliRoute]) => ({ id, swahiliRoute })) });
 
 for (const [id, file, sw, en, fr] of apps) {
@@ -46,4 +46,4 @@ for (const [id, file, sw, en, fr] of apps) {
 
 childProcess.execFileSync(process.execPath, [path.join(ROOT, 'scripts/build-sw-fintech-payment-allocation.js')], { cwd: ROOT, stdio: 'pipe' });
 
-console.log('Swahili Fintech payment allocation: authoritative 1,257-row inventory and 2/2 accepted route contracts passed');
+console.log('Swahili Fintech payment allocation: authoritative 1,258-row inventory and 2/2 accepted route contracts passed');

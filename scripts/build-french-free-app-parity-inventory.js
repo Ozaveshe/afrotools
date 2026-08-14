@@ -13,7 +13,7 @@ const ACCEPTANCE_CATEGORY_PATH = path.join(ROOT, 'data', 'audits', 'french-free-
 const FINAL_ACCEPTANCE_RECEIPT = 'reports/french-free-app-parity-final-acceptance-2026-07-30.md';
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.md');
-const EXPECTED_FREE_APP_COUNT = 1257;
+const EXPECTED_FREE_APP_COUNT = 1258;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = {
@@ -581,7 +581,7 @@ function renderMarkdown(report) {
     );
   }
   lines.push(
-    '## Full 1,257-row ledger',
+    '## Full 1,258-row ledger',
     '',
     '| English app | Category | English route | State | Primary French route | Accepted |',
     '|---|---|---|---|---|---:|'

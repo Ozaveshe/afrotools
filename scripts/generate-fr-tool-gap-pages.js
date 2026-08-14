@@ -8,6 +8,34 @@ const SITE = "https://afrotools.com";
 
 const CURATED_PAGES = [
   {
+    enSlug: "paye-authority-finder",
+    frSlug: "trouver-administration-paye",
+    title: "Trouver l’administration PAYE par sigle | AfroTools",
+    name: "Trouver l’administration PAYE",
+    description:
+      "Identifiez le pays, l’administration fiscale et le calculateur PAYE correspondant aux sigles MRA, ERS, ZRA, URA, LRA ou RSL.",
+    eyebrow: "Salaire et fiscalite",
+    lead:
+      "Choisissez un sigle fiscal ambigu pour retrouver le pays, la devise, la periode fiscale et le calculateur PAYE canonique.",
+    useCase:
+      "Utile lorsqu’une fiche de paie, un formulaire ou une recherche mentionne seulement MRA, ERS, ZRA, URA, LRA ou RSL.",
+    safety:
+      "Le resultat oriente vers une administration et un calculateur; confirmez toujours l’obligation et la periode sur le site officiel.",
+    related:
+      "Ouvrez ensuite le calculateur PAYE du pays ou le guide officiel lie pour verifier les regles applicables.",
+    sourceNote:
+      "Les correspondances et liens officiels sont conserves dans le registre source du finder PAYE anglais et dates lors de leur verification.",
+    terms: [
+      ["PAYE Authority Finder", "Trouver l’administration PAYE"],
+      ["Authority acronym", "Sigle de l’administration"],
+      ["Find authority", "Trouver l’administration"],
+      ["Country", "Pays"],
+      ["Currency", "Devise"],
+      ["Tax year", "Periode fiscale"],
+      ["Official source", "Source officielle"],
+    ],
+  },
+  {
     enSlug: "50-30-20-budget",
     frSlug: "budget-50-30-20",
     title: "Calculateur budget 50/30/20 pour l'Afrique | AfroTools",
@@ -7639,6 +7667,79 @@ function lobolaNativeMarkup(page) {
   return "";
 }
 
+function payeAuthorityNativeMarkup(page) {
+  if (page.enSlug !== "paye-authority-finder") return "";
+  return `<section id="tool-mount" class="lobola-native" data-paye-authority-fr>
+      <div class="lobola-native-heading"><div><span>Orientation PAYE</span><h2>Trouver l'administration fiscale et le calculateur du pays</h2></div></div>
+      <form class="lobola-native-form" data-authority-form>
+        <div class="lobola-native-grid">
+          <label for="fr-authority-query">Sigle ou nom de l'administration<input id="fr-authority-query" name="query" autocomplete="off" placeholder="Ex. URA, MRA ou Zambia Revenue Authority" required></label>
+          <label for="fr-authority-country">Pays (utile si le sigle est ambigu)<select id="fr-authority-country" name="country"><option value="">Choisir seulement si necessaire</option></select></label>
+        </div>
+        <div class="lobola-native-actions"><button type="submit">Trouver l'administration</button><span data-authority-status aria-live="polite">Chargement des administrations prises en charge...</span></div>
+      </form>
+      <div data-authority-results aria-live="polite"></div>
+      <p class="privacy-note"><strong>Confidentialite:</strong> la recherche reste dans votre navigateur. Cet outil oriente vers le calculateur canonique; il ne calcule ni ne depose la PAYE.</p>
+    </section>`;
+}
+
+function payeAuthorityNativeScript() {
+  return `<script src="/assets/js/engines/paye-authority-router-engine.js"></script>
+<script>
+(function () {
+  'use strict';
+  var mount = document.querySelector('[data-paye-authority-fr]');
+  if (!mount) return;
+  var engine = window.AfroTools && window.AfroTools.PayeAuthorityRouterEngine;
+  var form = mount.querySelector('[data-authority-form]');
+  var query = form.elements.query;
+  var country = form.elements.country;
+  var status = mount.querySelector('[data-authority-status]');
+  var results = mount.querySelector('[data-authority-results]');
+  var authorities = [];
+  function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]; }); }
+  function setStatus(message) { status.textContent = message; }
+  function card(item) {
+    return '<article class="lobola-native-output"><strong>' + esc(item.acronym) + ' - ' + esc(item.authority_name) + '</strong><br>'
+      + 'Pays : ' + esc(item.country_name) + '<br>Devise : ' + esc(item.currency) + '<br>Annee fiscale / statut : ' + esc(item.tax_year)
+      + '<div class="lobola-native-actions" style="margin-top:12px"><a class="primary-action" href="' + esc(item.calculator_url) + '">Ouvrir ' + esc(item.calculator_name) + '</a>'
+      + '<a href="' + esc(item.official_source_url) + '" target="_blank" rel="noopener noreferrer">Consulter la source officielle</a></div></article>';
+  }
+  function renderResolved(item) {
+    setStatus('Correspondance trouvee pour ' + item.country_name + '. Verifiez le statut fiscal avant de calculer.');
+    results.innerHTML = card(item);
+  }
+  function find(event) {
+    if (event) event.preventDefault();
+    if (!engine || !authorities.length) return setStatus('Les donnees d orientation ne sont pas disponibles.');
+    var outcome = engine.resolve(authorities, { query: query.value, countryCode: country.value });
+    if (outcome.status === 'resolved') return renderResolved(outcome.match);
+    if (outcome.status === 'ambiguous') {
+      setStatus('Ce sigle existe dans plusieurs pays. Choisissez la bonne administration.');
+      results.innerHTML = '<div class="lobola-native-actions">' + outcome.matches.map(function (item) { return '<button type="button" data-authority-id="' + esc(item.id) + '">' + esc(item.country_name) + ' - ' + esc(item.authority_name) + '</button>'; }).join('') + '</div>';
+      return;
+    }
+    setStatus('Aucune administration PAYE prise en charge ne correspond. Essayez un sigle liste ou choisissez un pays.');
+    results.innerHTML = '';
+  }
+  form.addEventListener('submit', find);
+  country.addEventListener('change', function () { if (country.value) find(); });
+  results.addEventListener('click', function (event) { var button = event.target.closest('[data-authority-id]'); if (!button) return; var item = authorities.find(function (entry) { return entry.id === button.getAttribute('data-authority-id'); }); if (item) renderResolved(item); });
+  if (!engine) return setStatus('Le moteur d orientation ne s est pas charge.');
+  fetch('/data/salary-tax/authority-router.json', { cache: 'no-store', credentials: 'same-origin' })
+    .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    .then(function (payload) {
+      var validation = engine.validateDataset(payload);
+      if (!validation.valid) throw new Error(validation.errors[0]);
+      authorities = payload.authorities;
+      country.innerHTML = '<option value="">Choisir seulement si necessaire</option>' + authorities.slice().sort(function (a, b) { return a.country_name.localeCompare(b.country_name, 'fr'); }).map(function (item) { return '<option value="' + esc(item.country_code) + '">' + esc(item.country_name) + '</option>'; }).join('');
+      setStatus('Pret. Saisissez un sigle comme URA, ZRA ou MRA.');
+    })
+    .catch(function () { setStatus('Les donnees d orientation sont indisponibles. Utilisez les liens officiels de la page.'); });
+}());
+</script>`;
+}
+
 function lobolaNativeScript() {
   return `<script>
 (function () {
@@ -7719,7 +7820,7 @@ function htmlFor(page) {
     null,
     2
   );
-  const nativeTool = lobolaNativeMarkup(page);
+  const nativeTool = payeAuthorityNativeMarkup(page) || lobolaNativeMarkup(page);
   const prepPanel = nativeTool || page.handoffOnly ? "" : `    <section class="prep-panel" aria-label="Preparation rapide">
       <h2>Preparez votre saisie</h2>
       <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoye: ce brouillon reste dans votre navigateur.</p>
@@ -7744,13 +7845,16 @@ function htmlFor(page) {
     : page.iframeEmbed
       ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
       : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`);
-  const sourceImportScript = nativeTool ? lobolaNativeScript() : "";
+  const sourceImportScript = page.enSlug === "paye-authority-finder"
+    ? payeAuthorityNativeScript()
+    : nativeTool ? lobolaNativeScript() : "";
 
   return `<!DOCTYPE html>
 <!-- Generated by scripts/generate-fr-tool-gap-pages.js. Edit source data there. -->
 <html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
   <meta charset="UTF-8">
+  <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="afrotools-content-id" content="fr-tool-gap:${escapeHtml(page.frSlug)}">
   <meta name="afrotools-source-owner" content="scripts/generate-fr-tool-gap-pages.js">
@@ -7867,7 +7971,7 @@ ${page.businessCtaNote ? `    <afro-business-cta tool-name="${escapeHtml(page.na
 (function () {
   var pageName = ${JSON.stringify(page.name)};
   var useCase = ${JSON.stringify(page.useCase)};
-  var form = document.querySelector('[data-fr-prep]');
+  var form = document.querySelector('${nativeTool ? "[data-no-native-prep]" : "[data-fr-prep]"}');
   if (!form) return;
   var output = form.querySelector('[data-prep-output]');
   var status = form.querySelector('[data-copy-status]');
@@ -7927,6 +8031,7 @@ ${page.businessCtaNote ? `    <afro-business-cta tool-name="${escapeHtml(page.na
 })();
 </script>
 ${sourceImportScript}
+  <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
 </body>
 </html>
 `;
