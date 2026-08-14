@@ -220,6 +220,7 @@ Do not use the AfroTools Supabase project for LATMtools work, and do not use the
 - For concurrent or delegated work, fetch first and record the verified `origin/main` SHA, then give each session its own branch and worktree. Do not let parallel sessions edit the canonical checkout.
 - Use one coordinator to integrate session commits. Review `git diff --diff-filter=D --summary` before integration so a stale or partially populated worktree cannot silently delete current files.
 - Remove a worktree only after its tree is clean, its intended commits are merged or otherwise preserved, and no live process is using its path. Preserve dirty, unmerged, rescue, and investigation worktrees until they are explicitly reconciled.
+- For recurring Codex automation runs, follow `docs/AUTOMATION-REGISTRY.md`: producers use scoped `automation/<automation-id>-<date>-<run-id>` branches, never push `main` or deploy, write exactly one schema-v1 `handoff.json` with source and generated files separated, and validate it with `node scripts/automation-handoff.js validate <handoff.json>`; the publisher alone integrates and deploys ready work.
 - Prefer source files over generated output.
 - Prefer scripts for bulk edits across many pages.
 - If changing a tool, review `docs/ADDING-A-TOOL.md`.
