@@ -4,13 +4,13 @@
   "name": "Fintech & Digital Banking official sources",
   "reviewCadenceDays": 90,
   "highRiskCadenceDays": 30,
-  "lastReviewed": "2026-07-17",
+  "lastReviewed": "2026-08-14",
   "notes": [
     "Fintech holds some of the site's most price-perishable public numbers: mid-market FX rates, remittance provider fees and margins, payment-gateway and POS fees, digital-lending APRs, mobile-money charges, deposit and T-bill benchmark rates. FX and provider pricing move faster than any review cadence.",
-    "Unlike energy/telecom, fintech has no single country dataset file. Each tool embeds its own data (per-country option attributes or a provider table), and mid-market FX is now pulled live. This ledger therefore binds sources by CLASS OF CLAIM, not by a single dataset row.",
+    "Most fintech tools still bind sources by class of claim. The Mobile Money Fee Finder is the bounded exception: data/fintech/mobile-money-tariffs.json is its single tariff catalog for verified provider, market, action and amount bands.",
     "Mid-market FX is sourced: remittance-compare (and b2b-payment for spread reference) now read live USD-based rates from the shared forex feed (/api/forex?base=USD, backed by data/forex/latest.json). A corridor rate is rates[dest]/rates[send]; when a currency is missing the tool falls back to a March 2026 benchmark snapshot rather than defaulting to zero.",
     "Deposit, T-bill, bond and money-market BENCHMARK rates are anchored to central-bank policy rates and treasury auctions. The central bank is authoritative for the policy rate and the T-bill/bond auction yield; specific commercial-bank deposit offers shown in the tools are indicative and editable by the user.",
-    "Provider PRICING is commercial by design and recorded as unsourced: remittance fees/margins, payment-gateway and POS fees, digital-lending and microfinance APRs, BNPL fees, mobile-money charges, and SACCO dividend rates are offers, not regulated rates. They are recorded in gaps.unsourcedClaims exactly as energy records solar-kit prices.",
+    "Provider pricing is commercial and perishable. It remains in gaps.unsourcedClaims unless an operator tariff is bound here; the Mobile Money Fee Finder exposes only its verified catalog subset and returns an explicit unavailable state elsewhere.",
     "Never update a benchmark rate, fee, APR or FX figure because a URL's content hash changed. Read the gazetted rate notice, auction result or published tariff first, exactly as .claude/rules/government.md and .claude/rules/energy.md require.",
     "The bug class to watch, per .claude/rules/telecom.md and .claude/rules/energy.md: `country.data.field || 0` turns missing data into free, which then wins a cost comparison. A July 2026 audit found NO instance of this in the 32 fintech tools — every per-country/per-provider lookup either reads a complete data-* attribute into an editable input or is guarded by an explicit `if (!x) { alert; return }`. remittance-compare guards a missing corridor at index.html and must keep doing so. Preserve that; never let a future market or provider default a fee/rate/FX to zero."
   ],
@@ -42,6 +42,7 @@
     "remittance-compare",
     "payment-gateway",
     "pos-fees",
+    "mobile-money-fees",
     "mobile-vs-bank",
     "qr-payment",
     "bill-split",
@@ -246,6 +247,30 @@
       "fields": ["policyRate", "tbillYield"],
       "tools": ["fixed-deposit", "tbill-calc"],
       "notes": "Authoritative for the XAF zone (Cameroon and the other CEMAC members) policy rate and regional treasury auctions."
+    },
+    {
+      "id": "mtn-uganda-mobile-money-tariffs",
+      "country": "UG",
+      "authority": "MTN Uganda",
+      "title": "MTN Uganda Mobile Money tariffs",
+      "url": "https://www.mtn.co.ug/tariffs/mobile-money-tariffs/",
+      "sourceType": "operator-tariff",
+      "watch": "availability-and-content",
+      "fields": ["mobileMoney.sendFee", "mobileMoney.withdrawFee", "mobileMoney.depositFee"],
+      "tools": ["mobile-money-fees"],
+      "notes": "Official current tariff page. The catalog records the published fee bands verified on 2026-08-14. Withdrawal tax is variable and excluded from the fee result."
+    },
+    {
+      "id": "airtel-tanzania-mobile-money-tariff-2024-04",
+      "country": "TZ",
+      "authority": "Airtel Tanzania",
+      "title": "Airtel Money Tanzania tariff - April 2024",
+      "url": "https://www.airtel.co.tz/assets/pdf/pdf2/AM-TARIFF-ENGLISH-V2.pdf",
+      "sourceType": "operator-tariff",
+      "watch": "availability-and-content",
+      "fields": ["mobileMoney.sendFee", "mobileMoney.withdrawFee", "mobileMoney.governmentLevy"],
+      "tools": ["mobile-money-fees"],
+      "notes": "Official published tariff reference. Only the verified 100-9,999 TZS subset is catalogued; all other amounts and actions return unavailable."
     }
   ],
   "gaps": {
@@ -297,8 +322,8 @@
         "tools": ["digital-lending", "microfinance-loan", "loan-shark-compare", "bnpl-calc"]
       },
       {
-        "field": "mobileMoney.fee",
-        "why": "Mobile-money send/withdraw tariffs (M-Pesa, MTN MoMo, Airtel Money) are operator tariffs that change by band and market; the tools take them as user input rather than asserting a rate.",
+        "field": "mobileMoney.fee.unverified",
+        "why": "Mobile-money tariffs outside data/fintech/mobile-money-tariffs.json remain unverified and must stay user-entered. The Mobile Money Fee Finder exposes only its bounded official-source catalog and never converts a missing band to zero.",
         "tools": ["mobile-vs-bank", "qr-payment"]
       },
       {

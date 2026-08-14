@@ -26,5 +26,40 @@
     quotes=quotes.map(function(row){var group=groups.find(function(item){return item.comparisonKey===row.comparisonKey;}),comparable=!!group&&row.eligible;return Object.assign({},row,{comparable:comparable,lowestAmongEligibleComparable:comparable&&Math.abs(row.totalFee-group.lowestTotalFee)<=1e-9,differenceFromLowest:comparable?row.totalFee-group.lowestTotalFee:null});});
     return {asOf:new Date(asOf).toISOString(),methodology:"user-entered-mobile-money-quotes",groups:groups,quotes:quotes,hasEligibleComparison:groups.length>0,excludedCount:quotes.filter(function(row){return !row.comparable;}).length};
   }
-  return {calculate:calculate,MAX_AMOUNT:MAX_AMOUNT,FUTURE_TOLERANCE_MS:FUTURE_TOLERANCE_MS};
+  function validateCatalog(catalog){
+    if(!catalog||catalog.schemaVersion!==1||!Array.isArray(catalog.providers)||!catalog.providers.length)throw new Error("INVALID_TARIFF_CATALOG");
+    var ids={};
+    catalog.providers.forEach(function(provider){
+      if(!provider||typeof provider!=="object"||!provider.id||ids[provider.id]||!provider.country||!provider.provider||!provider.currency||!provider.lastVerified||!provider.source||!/^https:\/\//.test(provider.source.url||"")||!provider.actions||typeof provider.actions!=="object")throw new Error("INVALID_TARIFF_PROVIDER");
+      ids[provider.id]=true;
+      Object.keys(provider.actions).forEach(function(action){
+        var bands=provider.actions[action];if(!Array.isArray(bands)||!bands.length)throw new Error("INVALID_TARIFF_ACTION");
+        var previousMax=null;
+        bands.forEach(function(band){
+          if(!band||!Number.isFinite(band.min)||!Number.isFinite(band.max)||!Number.isFinite(band.fee)||band.min<0||band.max<band.min||band.fee<0||(previousMax!==null&&band.min<=previousMax))throw new Error("INVALID_TARIFF_BAND");
+          if(band.feeComponents){
+            var componentTotal=Object.keys(band.feeComponents).reduce(function(sum,key){var value=band.feeComponents[key];if(!Number.isFinite(value)||value<0)throw new Error("INVALID_TARIFF_COMPONENT");return sum+value;},0);
+            if(Math.abs(componentTotal-band.fee)>1e-9)throw new Error("INVALID_TARIFF_COMPONENT_TOTAL");
+          }
+          previousMax=band.max;
+        });
+      });
+    });
+    return true;
+  }
+  function unavailable(provider,action,amount,reason){
+    return {available:false,reason:reason,providerId:provider?provider.id:null,country:provider?provider.country:null,countryCode:provider?provider.countryCode:null,provider:provider?provider.provider:null,action:action||null,amount:amount,currency:provider?provider.currency:null,effectiveDate:provider?provider.effectiveDate:null,lastVerified:provider?provider.lastVerified:null,source:provider?provider.source:null,confidence:provider?provider.confidence:null,caveats:provider&&Array.isArray(provider.caveats)?provider.caveats.slice():[]};
+  }
+  function quoteTariff(catalog,input){
+    validateCatalog(catalog);
+    if(!input||typeof input!=="object")throw new Error("INPUT_REQUIRED");
+    var amount=number(input.amount,"AMOUNT_REQUIRED",false),providerId=String(input.providerId||"").trim(),action=String(input.action||"").trim().toLowerCase();
+    var provider=catalog.providers.find(function(item){return item.id===providerId;});
+    if(!provider)return unavailable(null,action,amount,"PROVIDER_NOT_VERIFIED");
+    if(!Object.prototype.hasOwnProperty.call(provider.actions,action))return unavailable(provider,action,amount,"ACTION_NOT_VERIFIED");
+    var band=provider.actions[action].find(function(item){return amount>=item.min&&amount<=item.max;});
+    if(!band)return unavailable(provider,action,amount,"AMOUNT_OUTSIDE_VERIFIED_BANDS");
+    return {available:true,reason:null,providerId:provider.id,country:provider.country,countryCode:provider.countryCode,provider:provider.provider,action:action,amount:amount,currency:provider.currency,fee:band.fee,recipientReceives:amount,totalDebited:amount+band.fee,band:{min:band.min,max:band.max,label:band.min+"-"+band.max+" "+provider.currency},rule:band.rule||("Published "+action+" fee for this amount band"),feeComponents:band.feeComponents?Object.assign({},band.feeComponents):null,effectiveDate:provider.effectiveDate,lastVerified:provider.lastVerified,source:Object.assign({},provider.source),confidence:provider.confidence,caveats:Array.isArray(provider.caveats)?provider.caveats.slice():[],methodology:catalog.methodology};
+  }
+  return {calculate:calculate,quoteTariff:quoteTariff,validateCatalog:validateCatalog,MAX_AMOUNT:MAX_AMOUNT,FUTURE_TOLERANCE_MS:FUTURE_TOLERANCE_MS};
 });

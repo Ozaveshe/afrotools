@@ -265,10 +265,10 @@ test('English remittance owners share the receipt engine without static provider
   }
 });
 
-test('English mobile-money owner uses entered quotes without embedded provider tariffs', async ({ page }) => {
+test('English mobile-money owner exposes verified tariffs and preserves manual quotes', async ({ page }) => {
   await page.goto('/tools/mobile-money-fees/');
-  await expect(page.locator('main[data-mobile-money-parity]')).toBeVisible();
-  await expect(page.locator('body')).not.toContainText(/M-Pesa|MTN MoMo|Airtel Money|Orange Money|Wave|OPay/);
+  await expect(page.locator('main[data-mobile-money-tariffs][data-mobile-money-parity]')).toBeVisible();
+  await expect(page.locator('body')).toContainText(/MTN MoMo|Airtel Money/);
   const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
   for (const letter of ['a','b']) {
     await page.locator(`#mm-${letter}-label`).fill(`Route ${letter.toUpperCase()}`);

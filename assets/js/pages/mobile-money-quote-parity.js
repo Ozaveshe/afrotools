@@ -13,3 +13,30 @@
   document.getElementById('mm-copy').addEventListener('click',()=>{const result=ensure();if(result&&navigator.clipboard)navigator.clipboard.writeText(summary(result)).then(()=>{status.textContent=t.copied;});});document.getElementById('mm-json').addEventListener('click',()=>{const result=ensure();if(!result)return;const blob=new Blob([JSON.stringify({schemaVersion:1,methodology:result.methodology,result},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),anchor=document.createElement('a');anchor.href=url;anchor.download='mobile-money-quote-comparison.json';document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);status.textContent=t.downloaded;});
   document.getElementById('mm-third').addEventListener('change',function(){const section=document.getElementById('mm-quote-c');section.hidden=!this.checked;section.querySelectorAll('input,select').forEach(control=>{control.disabled=!this.checked;});clear();});form.addEventListener('submit',calculate);form.addEventListener('input',clear);form.addEventListener('reset',()=>setTimeout(clear,0));
 }());
+(function(){
+  'use strict';
+  const root=document.querySelector('[data-mobile-money-tariffs]');
+  if(!root||!window.MobileMoneyQuoteEngine)return;
+  const form=document.getElementById('mm-tariff-form'),providerSelect=document.getElementById('mm-provider'),actionSelect=document.getElementById('mm-action'),amountInput=document.getElementById('mm-amount'),currency=document.getElementById('mm-currency'),resultNode=document.getElementById('mm-tariff-result'),status=document.getElementById('mm-tariff-status'),copy=window.MobileMoneyTariffCopy||{};
+  let catalog=null;
+  function provider(){return catalog&&catalog.providers.find(function(item){return item.id===providerSelect.value;});}
+  function format(value,code){return Number(value).toLocaleString(root.dataset.locale||'en',{maximumFractionDigits:2})+' '+code;}
+  function metric(label,value){const box=document.createElement('div'),name=document.createElement('span'),strong=document.createElement('strong');box.className='rm-metric';name.textContent=label;strong.textContent=value;box.append(name,strong);return box;}
+  function updateActions(){const selected=provider();actionSelect.replaceChildren();if(!selected)return;Object.keys(selected.actions).forEach(function(action){const option=document.createElement('option');option.value=action;option.textContent=copy[action]||action;actionSelect.appendChild(option);});currency.textContent=selected.currency;amountInput.min=String(Math.min.apply(null,Object.keys(selected.actions).map(function(action){return selected.actions[action][0].min;})));}
+  function renderUnavailable(quote){const box=document.createElement('div'),heading=document.createElement('strong'),detail=document.createElement('p');box.className='mm-unavailable';heading.textContent=copy.unavailable||'Unavailable';detail.textContent=quote.reason;box.append(heading,detail);if(quote.source){const link=document.createElement('a');link.href=quote.source.url;link.rel='noopener';link.textContent=quote.source.title;box.append(link);}resultNode.replaceChildren(box);}
+  function render(quote){
+    if(!quote.available){renderUnavailable(quote);return;}
+    const article=document.createElement('article'),heading=document.createElement('h3'),metrics=document.createElement('div'),source=document.createElement('a');
+    heading.textContent=quote.country+' - '+quote.provider+' - '+(copy[quote.action]||quote.action);metrics.className='rm-metrics';
+    metrics.append(metric(copy.amount||'Amount',format(quote.amount,quote.currency)),metric(copy.fee||'Fee',format(quote.fee,quote.currency)),metric(copy.receive||'Recipient receives',format(quote.recipientReceives,quote.currency)),metric(copy.debit||'Total debited',format(quote.totalDebited,quote.currency)),metric(copy.band||'Band',quote.band.label),metric(copy.effective||'Effective date',quote.effectiveDate||copy.unknown),metric(copy.verified||'Last verified',quote.lastVerified));
+    article.append(heading,metrics);
+    const rule=document.createElement('p');rule.textContent=quote.rule;article.append(rule);
+    if(quote.feeComponents){const components=document.createElement('p');components.textContent=Object.keys(quote.feeComponents).map(function(key){return key+': '+format(quote.feeComponents[key],quote.currency);}).join(' ? ');article.append(components);}
+    source.href=quote.source.url;source.rel='noopener';source.className='mm-source';source.textContent=(copy.source||'Official source')+': '+quote.source.title;article.append(source);
+    if(quote.caveats.length){const list=document.createElement('ul');quote.caveats.forEach(function(value){const item=document.createElement('li');item.textContent=value;list.appendChild(item);});article.append(list);}
+    resultNode.replaceChildren(article);
+  }
+  form.addEventListener('submit',function(event){event.preventDefault();if(!catalog||!form.checkValidity()){form.reportValidity();return;}try{const quote=window.MobileMoneyQuoteEngine.quoteTariff(catalog,{providerId:providerSelect.value,action:actionSelect.value,amount:amountInput.value});render(quote);status.textContent=quote.available?'Calculated locally from the published tariff catalog.':copy.unavailable;}catch(error){status.textContent=copy.unavailable||'Unavailable';}});
+  providerSelect.addEventListener('change',updateActions);
+  fetch('/data/fintech/mobile-money-tariffs.json').then(function(response){if(!response.ok)throw new Error('CATALOG_UNAVAILABLE');return response.json();}).then(function(data){window.MobileMoneyQuoteEngine.validateCatalog(data);catalog=data;updateActions();status.textContent='';}).catch(function(){status.textContent=copy.unavailable||'Tariff catalog unavailable.';form.querySelectorAll('input,select,button').forEach(function(control){control.disabled=true;});});
+}());
