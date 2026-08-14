@@ -60,6 +60,14 @@ function hasNoindex(meta) {
   return /\bnoindex\b/i.test(meta.get('robots') || '');
 }
 
+function extractLocale(html, meta) {
+  const explicit = String(meta.get('content-language') || '').trim();
+  if (explicit) return explicit.toLowerCase().split('-')[0];
+  const htmlTag = html.match(/<html\b[^>]*>/i);
+  const attrs = htmlTag ? parseAttributes(htmlTag[0]) : {};
+  return String(attrs.lang || '').trim().toLowerCase().split('-')[0];
+}
+
 function isRedirectLike(html) {
   return /<meta[^>]+http-equiv=["']refresh["']/i.test(html) ||
     /location\.(?:href|replace)\s*[=(]/i.test(html);
@@ -111,6 +119,7 @@ function getArticles() {
       ...article,
       html,
       meta,
+      locale: extractLocale(html, meta),
       canonical: extractCanonical(html),
       pubDate,
       publishable,
@@ -156,6 +165,15 @@ function validateHub(articles, failures) {
   const duplicates = [...new Set(cards.filter((href, index) => cards.indexOf(href) !== index))];
   const articleSlugs = new Set(articles.map((article) => article.slug));
   const publishableSlugs = new Set(articles.filter((article) => article.publishable).map((article) => article.slug));
+  const cardSlugs = new Set(
+    cards
+      .filter((href) => href.startsWith('/blog/'))
+      .map((href) => href.replace(/^\/blog\//, '').replace(/\/$/, ''))
+      .filter(Boolean)
+  );
+  const missingPublishableEnglish = articles
+    .filter((article) => article.publishable && article.locale === 'en' && !cardSlugs.has(article.slug))
+    .map((article) => article.slug);
   const missingTargets = cards
     .filter((href) => href.startsWith('/blog/'))
     .map((href) => href.replace(/^\/blog\//, '').replace(/\/$/, ''))
@@ -176,6 +194,9 @@ function validateHub(articles, failures) {
   }
   if (nonPublishableTargets.length) {
     failures.push(`blog/index.html links article cards to non-publishable routes: ${[...new Set(nonPublishableTargets)].slice(0, 10).join(', ')}`);
+  }
+  if (missingPublishableEnglish.length) {
+    failures.push(`blog/index.html is missing publishable English article cards: ${missingPublishableEnglish.slice(0, 10).join(', ')}`);
   }
 
   return { cards: cards.length, stat };
