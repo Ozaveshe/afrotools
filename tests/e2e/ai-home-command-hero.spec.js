@@ -35,6 +35,8 @@ test("homepage renders one semantic product hero and the quick-start transition"
   await expect(page.locator("#ai-frontdoor-form")).toHaveAttribute("action", "/ai/");
   await expect(page.locator("label[for='hero-search-input']")).toHaveText("Describe what you would like to do");
   await expect(page.locator("#hero-search-input")).toHaveAttribute("placeholder", "What would you like to do?");
+  await expect(page.locator("#hero-search-input")).toHaveAttribute("role", "combobox");
+  await expect(page.locator("#hero-search-input")).toHaveAttribute("aria-haspopup", "listbox");
   await expect(page.locator("#hero-search-btn")).toHaveText("Find my tool");
   await expect(page.locator(".home-product-hero__eyebrow")).toContainText("AfroTools AI");
   await expect(page.locator(".home-product-hero__copy")).toHaveText("Describe what you need and AfroTools will take you to the right calculator, document builder or country guide for salaries, tax, jobs, imports, study, solar and more.");
