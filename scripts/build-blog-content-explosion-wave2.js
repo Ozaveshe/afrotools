@@ -86,6 +86,8 @@ function normalizeBuildOwnedArticleHtml(html) {
     .replace(/\r\n/g, '\n')
     .replace(/\s+data-chat-bundle="[^"]*"/, '')
     .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
+    .replace(/^[ \t]*<link rel="stylesheet" href="\/blog\/assets\/css\/blog-typography\.css(?:\?[^\"]*)?">[ \t]*\n?/gm, '')
+    .replace(/^[ \t]*<script src="\/assets\/js\/analytics-bootstrap\.js"[^>]*><\/script>[ \t]*\n?/gm, '')
     .replace(/^[ \t]*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>[ \t]*\n?/gm, '');
 
   const routeLinks = [];
@@ -130,6 +132,26 @@ function renderSections(record) {
 
 function faqItems(record) {
   return record.faq.map(([name, answer]) => ({ name, answer }));
+}
+
+function renderAlternateLinks(record, canonical) {
+  const entries = [['en', canonical], ...(record.alternates || []), ['x-default', canonical]];
+  const seen = new Set();
+  return entries.map(entry => {
+    if (!Array.isArray(entry) || entry.length !== 2) {
+      throw new Error(`${record.slug}: each alternate must be [locale, absoluteUrl]`);
+    }
+    const [locale, href] = entry.map(value => String(value).trim());
+    if (!/^(?:[a-z]{2}(?:-[A-Z]{2})?|x-default)$/.test(locale)) {
+      throw new Error(`${record.slug}: invalid alternate locale ${locale}`);
+    }
+    if (!href.startsWith('https://afrotools.com/')) {
+      throw new Error(`${record.slug}: alternate must use an absolute AfroTools URL`);
+    }
+    if (seen.has(locale)) throw new Error(`${record.slug}: duplicate alternate locale ${locale}`);
+    seen.add(locale);
+    return `<link rel="alternate" hreflang="${esc(locale)}" href="${esc(href)}">`;
+  }).join('\n');
 }
 
 function renderFaq(record) {
@@ -196,6 +218,7 @@ function renderArticle(record) {
   const cluster = clusterCopy[record.cluster];
   const canonical = `https://afrotools.com/blog/${record.slug}/`;
   const image = `https://afrotools.com/assets/img/tools/${record.image}.webp`;
+  const alternateLinks = renderAlternateLinks(record, canonical);
   const faqs = faqItems(record).map(({ name, answer }) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } }));
   const body = articleBody(record);
   const wordCount = body.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
@@ -236,8 +259,7 @@ function renderArticle(record) {
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="en" href="${canonical}">
-<link rel="alternate" hreflang="x-default" href="${canonical}">
+${alternateLinks}
 <meta property="og:type" content="article"><meta property="og:url" content="${canonical}"><meta property="og:title" content="${esc(record.title)}"><meta property="og:description" content="${esc(record.description)}"><meta property="og:image" content="${image}"><meta property="og:site_name" content="AfroTools"><meta property="article:published_time" content="${data.published}"><meta property="article:modified_time" content="${data.published}"><meta property="article:section" content="${cluster.category.replace('&amp;', '&')}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(record.title)}"><meta name="twitter:description" content="${esc(record.description)}"><meta name="twitter:image" content="${image}">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
