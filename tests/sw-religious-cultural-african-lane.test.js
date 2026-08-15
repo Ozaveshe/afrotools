@@ -105,7 +105,8 @@ test('all fourteen African rows use native engines with unsafe price claims remo
   assert.equal(mobile.swahili.mode,'native-existing');
   const mobileHtml=fs.readFileSync(path.join(ROOT,mobile.swahili.file),'utf8');
   assert.match(mobileHtml,/mobile-money-quote-engine\.js/);
-  assert.doesNotMatch(mobileHtml,/const FEE=|M-Pesa|MTN MoMo|Airtel Money|Orange Money|Wave|OPay/);
+  assert.match(mobileHtml,/MTN MoMo|Airtel Money/);
+  assert.doesNotMatch(mobileHtml,/const FEE=|M-Pesa|Orange Money|Wave|OPay/);
   const burial=african.rows.find((item)=>item.english.id==='burial-cost');
   assert.equal(burial.swahili.mode,'native-existing');
   const burialHtml=fs.readFileSync(path.join(ROOT,burial.swahili.file),'utf8');

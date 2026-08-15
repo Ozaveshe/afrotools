@@ -30,16 +30,32 @@ function escapeHtml(value) {
 function ensureHeadTag(html, tag) {
   if (tag === STYLE_TAG) {
     const seoStylePattern = /<link\b[^>]*href=["']\/assets\/css\/seo-clusters\.css(?:\?v=[a-f0-9]{8})?["'][^>]*>\s*/gi;
+    const typographyPattern = /<link\b[^>]*href=["']\/blog\/assets\/css\/blog-typography\.css(?:\?[^"']*)?["'][^>]*>/i;
     let seen = false;
+    let retainedTag = STYLE_TAG;
+    let retainedMatch = "";
     html = html.replace(seoStylePattern, function (match) {
       if (seen) {
         return "";
       }
       seen = true;
-      return match.endsWith("\n") ? match : match + "\n";
+      retainedTag = match.trim();
+      retainedMatch = match;
+      return match;
     });
     if (seen) {
+      const typography = html.match(typographyPattern);
+      const seoIndex = html.indexOf(retainedTag);
+      if (typography && seoIndex > typography.index) {
+        html = html.replace(retainedMatch, "");
+        return html.replace(typography[0], retainedTag + "\n" + typography[0]);
+      }
       return html;
+    }
+
+    const typography = html.match(typographyPattern);
+    if (typography) {
+      return html.replace(typography[0], tag + "\n" + typography[0]);
     }
   }
 
@@ -63,6 +79,14 @@ function upsertTitle(html, title) {
   }
 
   return html.replace("</head>", "<title>" + title + "</title>\n</head>");
+}
+
+function upsertH1(html, heading) {
+  if (!heading) {
+    return html;
+  }
+
+  return html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, "$1" + escapeHtml(heading) + "$2");
 }
 
 function upsertMetaTag(html, attributeName, attributeValue, content) {
@@ -154,6 +178,90 @@ function renderFaq(items) {
   );
 }
 
+function renderReferenceTable(table) {
+  if (!table || !Array.isArray(table.columns) || !table.columns.length || !Array.isArray(table.rows) || !table.rows.length) {
+    return "";
+  }
+
+  const head = table.columns
+    .map(function (column) {
+      return '          <th scope="col" style="padding:.75rem;text-align:left;border-bottom:1px solid rgba(15,23,42,.14);">' + escapeHtml(column) + "</th>";
+    })
+    .join("\n");
+  const body = table.rows
+    .map(function (row) {
+      return (
+        "        <tr>\n" +
+        row
+          .map(function (cell, index) {
+            const tag = index === 0 ? "th" : "td";
+            const scope = index === 0 ? ' scope="row"' : "";
+            return '          <' + tag + scope + ' style="padding:.75rem;text-align:left;vertical-align:top;border-bottom:1px solid rgba(15,23,42,.08);">' + escapeHtml(cell) + "</" + tag + ">";
+          })
+          .join("\n") +
+        "\n        </tr>"
+      );
+    })
+    .join("\n");
+
+  return [
+    '  <div class="seo-cluster__reference">',
+    table.title ? '    <h2 class="seo-cluster__reference-title">' + escapeHtml(table.title) + "</h2>" : "",
+    table.intro ? "    <p>" + escapeHtml(table.intro) + "</p>" : "",
+    '    <div class="seo-cluster__table-wrap" style="overflow-x:auto;margin-top:1rem;">',
+    '      <table class="seo-cluster__table" style="width:100%;min-width:36rem;border-collapse:collapse;font-size:.9rem;line-height:1.5;">',
+    table.caption ? '        <caption style="text-align:left;padding:0 0 .75rem;font-weight:700;">' + escapeHtml(table.caption) + "</caption>" : "",
+    "        <thead>",
+    "        <tr>",
+    head,
+    "        </tr>",
+    "        </thead>",
+    "        <tbody>",
+    body,
+    "        </tbody>",
+    "      </table>",
+    "    </div>",
+    "  </div>"
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function buildQuickAnswerBlock(pagePath, pageConfig, data) {
+  const cluster = (data.clusters || {})[pageConfig.cluster];
+  if (!cluster) {
+    return "";
+  }
+
+  const quickAnswer = mergeCards(cluster.quickAnswer, pageConfig.quickAnswer);
+  const referenceTable = pageConfig.referenceTable || cluster.referenceTable;
+  if (!quickAnswer && !referenceTable) {
+    return "";
+  }
+
+  return [
+    "<!-- seo-quick-answer-block:start -->",
+    '<section class="seo-cluster-shell seo-cluster-shell--answer" aria-label="Quick answer" data-seo-answer="' + escapeHtml(pagePath) + '">',
+    '  <div class="seo-cluster seo-cluster--answer">',
+    '    <div class="seo-cluster__inner">',
+    quickAnswer
+      ? [
+          '  <div class="seo-cluster__answer">',
+          '    <span class="seo-cluster__answer-label">' + escapeHtml(quickAnswer.title || "Quick answer") + "</span>",
+          "    <p>" + escapeHtml(quickAnswer.body) + "</p>",
+          "  </div>"
+        ].join("\n")
+      : "",
+    renderReferenceTable(referenceTable),
+    "    </div>",
+    "  </div>",
+    "</section>",
+    "<!-- seo-quick-answer-block:end -->"
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 function buildClusterBlock(pagePath, pageConfig, data) {
   const cluster = (data.clusters || {})[pageConfig.cluster];
   const role = pageConfig.role || "article";
@@ -176,7 +284,7 @@ function buildClusterBlock(pagePath, pageConfig, data) {
     cluster.eyebrow ||
     (role === "tool" ? "Useful next steps" : "Related actions");
 
-  const introHtml = quickAnswer
+  const introHtml = quickAnswer && !pageConfig.quickAnswerAnchors
     ? [
         '  <div class="seo-cluster__answer">',
         '    <span class="seo-cluster__answer-label">' + escapeHtml(quickAnswer.title || "Quick answer") + "</span>",
@@ -241,8 +349,12 @@ function buildClusterBlock(pagePath, pageConfig, data) {
     .join("\n");
 }
 
-function replaceOrInsertBlock(html, block, anchors) {
-  const markerPattern = /<!-- seo-cluster-block:start -->[\s\S]*?<!-- seo-cluster-block:end -->/i;
+function replaceOrInsertBlock(html, block, anchors, markerName) {
+  const marker = markerName || "seo-cluster-block";
+  const markerPattern = new RegExp(
+    "<!-- " + marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ":start -->[\\s\\S]*?<!-- " + marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ":end -->",
+    "i"
+  );
 
   if (markerPattern.test(html)) {
     return html.replace(markerPattern, block);
@@ -302,6 +414,13 @@ function mutateSchemaObject(schema, pagePath, pageConfig) {
     }
   }
 
+  if (pageConfig.modifiedDate && types.some(function (type) { return /Article|WebPage|WebApplication|SoftwareApplication/i.test(String(type || "")); })) {
+    if (schema.dateModified !== pageConfig.modifiedDate) {
+      schema.dateModified = pageConfig.modifiedDate;
+      changed = true;
+    }
+  }
+
   if (types.some(function (type) { return /WebApplication|SoftwareApplication/i.test(String(type || "")); })) {
     if (schema.name !== names.toolName) {
       schema.name = names.toolName;
@@ -330,6 +449,37 @@ function mutateSchemaObject(schema, pagePath, pageConfig) {
 
   if (types.some(function (type) { return /BreadcrumbList/i.test(String(type || "")); })) {
     changed = updateBreadcrumbNames(schema, pageConfig) || changed;
+  }
+
+  if (types.some(function (type) { return /FAQPage/i.test(String(type || "")); }) && pageConfig.faqOverrides && Array.isArray(schema.mainEntity)) {
+    schema.mainEntity.forEach(function (question) {
+      const override = question && pageConfig.faqOverrides[question.name];
+      if (!override) {
+        return;
+      }
+      if (override.question && question.name !== override.question) {
+        question.name = override.question;
+        changed = true;
+      }
+      if (override.answer && question.acceptedAnswer && question.acceptedAnswer.text !== override.answer) {
+        question.acceptedAnswer.text = override.answer;
+        changed = true;
+      }
+    });
+  }
+
+  if (types.some(function (type) { return /FAQPage/i.test(String(type || "")); }) && Array.isArray(pageConfig.faqItems)) {
+    const nextEntities = pageConfig.faqItems.map(function (item) {
+      return {
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {"@type": "Answer", text: item.answer}
+      };
+    });
+    if (JSON.stringify(schema.mainEntity) !== JSON.stringify(nextEntities)) {
+      schema.mainEntity = nextEntities;
+      changed = true;
+    }
   }
 
   return changed;
@@ -394,15 +544,23 @@ function applyPageConfig(data) {
     html = removeHeadTag(html, '<script src="/assets/js/components/seo-cluster-blocks.js" defer></script>');
 
     html = upsertTitle(html, pageConfig.title);
+    html = upsertH1(html, pageConfig.h1);
     html = upsertMetaTag(html, "name", "description", pageConfig.description);
     html = upsertMetaTag(html, "property", "og:title", pageConfig.title);
     html = upsertMetaTag(html, "property", "og:description", pageConfig.description);
     html = upsertMetaTag(html, "name", "twitter:title", pageConfig.title);
     html = upsertMetaTag(html, "name", "twitter:description", pageConfig.description);
+    if (pageConfig.modifiedDate) {
+      html = upsertMetaTag(html, "property", "article:modified_time", pageConfig.modifiedDate);
+    }
     html = syncStructuredData(html, pagePath, pageConfig);
 
+    if (Array.isArray(pageConfig.quickAnswerAnchors) && pageConfig.quickAnswerAnchors.length) {
+      const quickBlock = buildQuickAnswerBlock(pagePath, pageConfig, data);
+      html = replaceOrInsertBlock(html, quickBlock, pageConfig.quickAnswerAnchors, "seo-quick-answer-block");
+    }
     const block = buildClusterBlock(pagePath, pageConfig, data);
-    html = replaceOrInsertBlock(html, block, getAnchors(pageConfig.role));
+    html = replaceOrInsertBlock(html, block, getAnchors(pageConfig.role), "seo-cluster-block");
 
     writeFile(filePath, html);
     patchedPages += 1;
