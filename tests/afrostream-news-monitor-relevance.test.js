@@ -76,4 +76,32 @@ assert.strictEqual(
   'an existing row must not be rewritten because editorial moderation may have changed it'
 );
 
+const repeatedGuid = 'https://musicinafrica.net/magazine/';
+const preparedItems = monitor.prepareFeedItems([
+  { title: 'First story', link: 'https://musicinafrica.net/magazine/first-story/', guid: repeatedGuid, published_at: now },
+  { title: 'Second story', link: 'https://musicinafrica.net/magazine/second-story/', guid: repeatedGuid, published_at: now }
+]);
+assert.deepStrictEqual(
+  preparedItems.map((entry) => entry.identity),
+  preparedItems.map((entry) => entry.link),
+  'a feed that reuses one GUID must derive article identity from each source link'
+);
+assert.strictEqual(
+  monitor.prepareFeedItems([
+    { title: 'Unique story', link: 'https://example.com/story/', guid: 'unique-guid', published_at: now }
+  ])[0].identity,
+  'unique-guid',
+  'a unique provider GUID should remain stable'
+);
+
+const insertBudget = { remaining: 1 };
+assert.strictEqual(monitor.reserveInsertSlot(insertBudget), true, 'the first new row should reserve the last slot');
+assert.strictEqual(monitor.reserveInsertSlot(insertBudget), false, 'a concurrent candidate must not overshoot an exhausted cap');
+assert.strictEqual(insertBudget.remaining, 0, 'slot reservation must never drive the shared budget negative');
+assert.strictEqual(
+  monitor.insertLimitForEvent({ queryStringParameters: { max_insert_news: '30' } }),
+  5,
+  'manual live runs must clamp requested backfill volume to five new articles'
+);
+
 console.log('afrostream news monitor relevance tests passed');
