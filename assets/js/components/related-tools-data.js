@@ -14891,7 +14891,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "prepaid-meter",
+        "imageKey": "prepaid-meter"
       },
       {
         "id": "zana-muda-wa-backup-ya-betri-sw",

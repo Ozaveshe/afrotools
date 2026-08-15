@@ -63,6 +63,13 @@ function fieldMarkup(field) {
 }
 
 function page(app) {
+  const alternates = app.id === "prepaid-meter"
+    ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${app.swRoute}">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com${app.swRoute}">`
+    : `<link rel="alternate" hreflang="en" href="https://afrotools.com${app.enRoute}">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com${app.frRoute}">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com${app.swRoute}">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com${app.enRoute}">`;
   const config = {
     id: app.id,
     title: app.title,
@@ -94,10 +101,7 @@ function page(app) {
 <title>${esc(app.title)} | AfroTools</title>
 <meta name="description" content="${esc(app.description)}">
 <link rel="canonical" href="https://afrotools.com${app.swRoute}">
-<link rel="alternate" hreflang="en" href="https://afrotools.com${app.enRoute}">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com${app.frRoute}">
-<link rel="alternate" hreflang="sw" href="https://afrotools.com${app.swRoute}">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com${app.enRoute}">
+${alternates}
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta property="og:title" content="${esc(app.title)} | AfroTools"><meta property="og:description" content="${esc(app.description)}">
 <meta property="og:url" content="https://afrotools.com${app.swRoute}"><meta property="og:image" content="https://afrotools.com${app.image}">

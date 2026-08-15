@@ -16,6 +16,9 @@ const ROOT = path.resolve(__dirname, "..");
 const CHECK = process.argv.includes("--check");
 const SITE = "https://afrotools.com";
 const FRENCH_COPY_REPLACEMENTS = new Map([
+  ["Nigeria, Ghana, Kenya, South Africa, Zambia, Côte d'Ivoire and Senegal are not auto-calculated until exact current provider/class schedules are parsed and reviewed. A regulator homepage or national benchmark is not enough.", "Le Nigeria, le Ghana, le Kenya, l’Afrique du Sud, la Zambie, la Côte d’Ivoire et le Sénégal ne sont pas calculés automatiquement tant que les grilles exactes et actuelles par fournisseur et catégorie ne sont pas analysées et vérifiées. La page d’accueil d’un régulateur ou une moyenne nationale ne suffit pas."],
+  ["Actual bills and token receipts may include taxes, levies, fixed charges, minimum charges, arrears, debt recovery, meter corrections or time-of-use pricing. Enter receipt deductions where known and verify the result before paying or disputing a charge.", "Les factures et reçus de recharge réels peuvent inclure taxes, prélèvements, frais fixes, minimums, arriérés, recouvrement de dette, corrections de compteur ou tarification horaire. Saisissez les déductions connues et vérifiez le résultat avant de payer ou de contester un montant."],
+  ["Automatic estimates need an exact official provider-and-class schedule plus a passing validity and freshness check. Use a current local rate when that evidence is missing.", "Les estimations automatiques exigent une grille officielle exacte par fournisseur et catégorie, ainsi qu’un contrôle réussi de validité et de fraîcheur. Utilisez un tarif local à jour lorsque ces preuves manquent."],
   ["Estimate the cost of running a generator before opening a country page. It uses the same Africa energy data as the country calculators and adds a rough grid and solar comparison.", "Estimez le coût d’utilisation d’un groupe électrogène avant d’ouvrir une page pays. L’outil reprend les mêmes données énergétiques africaines que les calculateurs pays et ajoute une comparaison indicative avec le réseau et le solaire."],
   ["Estimate fuel spend above, then replace the bundled planning price with today's pump price or a recent receipt before using the result for a weekly cash plan, maintenance discussion, or solar comparison.", "Estimez la dépense de carburant ci-dessus, puis remplacez le prix indicatif intégré par le prix à la pompe du jour ou celui d’un reçu récent avant d’utiliser le résultat pour un budget hebdomadaire, un entretien ou une comparaison solaire."],
   ["Use a real price: enter the pump price from a recent receipt and keep its date with the exported estimate.", "Utilisez un prix réel : saisissez le prix à la pompe d’un reçu récent et conservez sa date avec l’estimation exportée."],
@@ -141,7 +144,7 @@ function alternateTag(html, language) {
 function postProcess(app) {
   const output = fileForRoute(app.frRoute);
   let html = fs.readFileSync(output, "utf8");
-  const englishHtml = fs.readFileSync(fileForRoute(app.enRoute), "utf8");
+  const englishHtml = fs.readFileSync(fileForRoute(app.sourceRoute), "utf8");
   const canonical = `${SITE}${app.frRoute}`;
   const image = `${SITE}${app.image}`;
 
@@ -169,22 +172,31 @@ function postProcess(app) {
   );
 
   html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${canonical}">`);
-  if (!new RegExp(`hreflang=["']en["'][^>]+${app.enRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(html)) {
-    html = html.replace("</head>", `<link rel="alternate" hreflang="en" href="${SITE}${app.enRoute}">\n</head>`);
-  }
-  if (!new RegExp(`hreflang=["']fr["'][^>]+${app.frRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(html)) {
-    html = html.replace("</head>", `<link rel="alternate" hreflang="fr" href="${canonical}">\n</head>`);
-  }
-  const swahiliAlternate = alternateTag(englishHtml, "sw");
-  html = html.replace(
-    /<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["']sw["'])[^>]*>\s*/gi,
-    ""
-  );
-  if (swahiliAlternate) {
-    html = html.replace("</head>", `${swahiliAlternate}\n</head>`);
+  if (app.standaloneLocalizedAlias) {
+    html = html.replace(/<link\b(?=[^>]*\brel=["']alternate["'])[^>]*>\s*/gi, "");
+    html = html.replace(
+      "</head>",
+      `<link rel="alternate" hreflang="fr" href="${canonical}">\n<link rel="alternate" hreflang="x-default" href="${canonical}">\n</head>`
+    );
+  } else {
+    if (!new RegExp(`hreflang=["']en["'][^>]+${app.enRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(html)) {
+      html = html.replace("</head>", `<link rel="alternate" hreflang="en" href="${SITE}${app.enRoute}">\n</head>`);
+    }
+    if (!new RegExp(`hreflang=["']fr["'][^>]+${app.frRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(html)) {
+      html = html.replace("</head>", `<link rel="alternate" hreflang="fr" href="${canonical}">\n</head>`);
+    }
+    const swahiliAlternate = alternateTag(englishHtml, "sw");
+    html = html.replace(
+      /<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["']sw["'])[^>]*>\s*/gi,
+      ""
+    );
+    if (swahiliAlternate) {
+      html = html.replace("</head>", `${swahiliAlternate}\n</head>`);
+    }
   }
 
   html = html.replace(/<meta\s+name=["']afrotools-source-owner["'][^>]*>\s*/gi, "");
+  html = html.replace(/<meta\s+name=["']afrotools-content-id["'][^>]*>\s*/gi, "");
   html = html.replace(
     /(<meta\s+charset=[^>]+>)/i,
     `$1\n<meta name="afrotools-source-owner" content="scripts/build-french-energy-parity.js">\n<meta name="afrotools-content-id" content="fr-energy-parity:${app.id}">`
@@ -192,6 +204,7 @@ function postProcess(app) {
 
   html = html.replace(/<link\s+rel=["']stylesheet["']\s+href=["']\/assets\/css\/french-energy-parity\.css[^>]*>\s*/gi, "");
   html = html.replace(/<script\s+type=["']application\/ld\+json["']\s+data-fr-energy-schema>[\s\S]*?<\/script>\s*/gi, "");
+  html = html.replace(/<script\s+type=["']application\/json["']\s+data-fr-energy-config>[\s\S]*?<\/script>\s*/gi, "");
   const appSchema = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -331,11 +344,9 @@ function validateOutput(app) {
     `/assets/css/french-energy-parity.css`,
     `/assets/js/pages/french-energy-parity.js`,
     `href="${SITE}${app.frRoute}"`,
-    `hreflang="en"`,
-    `hreflang="fr"`,
-    `hreflang="sw"`,
     `"inLanguage":"fr"`,
   ];
+  if (!app.standaloneLocalizedAlias) required.push(`hreflang="en"`, `hreflang="fr"`, `hreflang="sw"`);
   required.forEach((token) => {
     if (!html.includes(token)) throw new Error(`${app.frRoute} missing ${token}`);
   });
@@ -344,12 +355,16 @@ function validateOutput(app) {
 function main() {
   if (!CHECK) {
     for (const app of FRENCH_ENERGY_APPS) {
-      execFileSync(process.execPath, [
-        path.join(ROOT, "scripts/build-i18n.js"),
-        "--lang", "fr",
-        "--page", `tools/${app.id}`,
-        "--overwrite-existing",
-      ], { cwd: ROOT, stdio: "pipe" });
+      if (app.buildSourceId) {
+        fs.copyFileSync(fileForRoute("/fr/tools/tarifs-electricite/"), fileForRoute(app.frRoute));
+      } else {
+        execFileSync(process.execPath, [
+          path.join(ROOT, "scripts/build-i18n.js"),
+          "--lang", "fr",
+          "--page", `tools/${app.id}`,
+          "--overwrite-existing",
+        ], { cwd: ROOT, stdio: "pipe" });
+      }
       postProcess(app);
       console.log(`Built ${app.frRoute}`);
     }

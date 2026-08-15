@@ -1,5 +1,209 @@
-<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr"><head><script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calculateur compteur prépayé déplacé | AfroTools</title><meta name="description" content="Le calcul des unités prépayées fait maintenant partie du calculateur canonique des coûts d’électricité."><meta name="robots" content="noindex,follow"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69"><link rel="stylesheet" href="/assets/css/energy.css?v=04d32bb2"><script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><link rel="canonical" href="https://afrotools.com/fr/tools/compteur-prepaye/">
-</head><body><afro-navbar theme="dark" active="energy"></afro-navbar><main class="en-main"><section class="en-hub"><div class="container"><h1>Calculateur compteur prépayé</h1><p>Le calcul montant → unités et kWh → facture appartient désormais à une seule page canonique avec source et fraîcheur visibles.</p><p><a class="en-btn" href="/fr/tools/tarifs-electricite/">Ouvrir le calculateur d’électricité</a></p></div></section></main><afro-footer></afro-footer>
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
+  <meta charset="utf-8">
+<meta name="afrotools-source-owner" content="scripts/build-french-energy-parity.js">
+<meta name="afrotools-content-id" content="fr-energy-parity:prepaid-meter">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calculateur de compteur prépayé | AfroTools</title>
+  <meta name="description" content="Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.">
+  <meta property="og:title" content="Calculateur de compteur prépayé | AfroTools">
+  <meta property="og:description" content="Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/compteur-prepaye/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/prepaid-meter.webp">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur de compteur prépayé | AfroTools">
+<meta name="twitter:description" content="Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/prepaid-meter.webp">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "inLanguage": "fr",
+  "name": "Electricity Cost & Prepaid Units",
+  "description": "Estimate prepaid electricity units from money or an electricity bill from kWh using maintained provider and customer-class tariffs.",
+  "url": "https://afrotools.com/tools/electricity-tariff/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/prepaid-meter.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Electricity Cost & Prepaid Units","item":"https://afrotools.com/tools/electricity-tariff/"}]}</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many prepaid electricity units will I get?","acceptedAnswer":{"@type":"Answer","text":"Choose the country, provider and customer class, then enter the purchase amount. Actual units can differ when a receipt includes deductions not entered here."}},{"@type":"Question","name":"Why is my country not calculated automatically?","acceptedAnswer":{"@type":"Answer","text":"Automatic estimates need an exact official provider-and-class schedule plus a passing validity and freshness check. Use a current local rate when that evidence is missing."}},{"@type":"Question","name":"Is this an official bill or token receipt?","acceptedAnswer":{"@type":"Answer","text":"No. It is a planning estimate. Confirm the result with the regulator or utility schedule and your actual receipt."}}]}
+</script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+  <link rel="stylesheet" href="/assets/css/energy.css?v=04d32bb2">
+  <link rel="stylesheet" href="/assets/css/electricity-cost-prepaid-units.css?v=c96ddbdb">
+  <script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
+<link rel="stylesheet" href="/assets/css/french-energy-parity.css?v=f40b4d7b">
+<script type="application/ld+json" data-fr-energy-schema>{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Calculateur de compteur prépayé","description":"Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/compteur-prepaye/","isBasedOn":"https://afrotools.com/tools/prepaid-meter/","image":"https://afrotools.com/assets/img/tools/prepaid-meter.webp","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/json" data-fr-energy-config>{"id":"prepaid-meter","title":"Calculateur de compteur prépayé","description":"Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.","enRoute":"/tools/prepaid-meter/","frRoute":"/fr/tools/compteur-prepaye/","reviewedAt":"2026-03-01","sourceLabel":"Registre de formules et références énergie AfroTools","confidence":"Indication de planification — vérification locale requise","routeMap":{"/tools/electricity-tariff/":"/fr/tools/tarifs-electricite/","/tools/solar-roi/":"/fr/tools/roi-solaire/","/tools/prepaid-meter/":"/fr/tools/compteur-prepaye/","/tools/solar-vs-generator/":"/fr/tools/solaire-vs-generateur/","/tools/electricity-bill-verify/":"/fr/tools/verifier-facture-electricite/","/tools/water-bill/":"/fr/tools/calculateur-facture-eau/","/tools/gas-lpg-cost/":"/fr/tools/cout-gaz-lpg/","/tools/paygo-solar/":"/fr/tools/solaire-paygo/","/tools/outage-cost/":"/fr/tools/cout-coupure-entreprise/","/tools/solar-sizing/":"/fr/tools/dimensionnement-solaire/","/tools/battery-sizing/":"/fr/tools/dimensionnement-batterie-onduleur/","/tools/energy-audit/":"/fr/tools/audit-energie-maison/","/tools/appliance-power/":"/fr/tools/consommation-appareils/","/tools/backup-duration/":"/fr/tools/autonomie-secours/","/tools/diesel-vs-solar-farm/":"/fr/tools/diesel-vs-solaire-ferme/","/tools/mini-grid-feasibility/":"/fr/tools/faisabilite-mini-reseau/","/tools/carbon-footprint-energy/":"/fr/tools/empreinte-carbone-energie/","/tools/ev-charging/":"/fr/tools/cout-recharge-ev/","/tools/biogas-roi/":"/fr/tools/roi-biogaz/","/tools/generator-fuel/":"/fr/tools/carburant-generateur/"}}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/compteur-prepaye/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-prepaye/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/compteur-prepaye/">
+</head>
+<script>
+window.addEventListener('load', function() {
+  // Override share library copy toast text for French pages
+  if (window.AfroTools) {
+    var _origToast = window.AfroTools.toast;
+    if (_origToast && _origToast.success) {
+      var _origSuccess = _origToast.success.bind(_origToast);
+      _origToast.success = function(msg) {
+        if (msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origSuccess(msg);
+      };
+    }
+    if (typeof _origToast === 'function') {
+      window.AfroTools.toast = function(msg, type) {
+        if (msg === 'Link copied!' || msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origToast(msg, type);
+      };
+    }
+  }
+  // Patch window.open to replace WhatsApp share CTA text for French pages
+  var _origOpen = window.open;
+  window.open = function(url, target) {
+    if (url && typeof url === 'string' && url.startsWith('https://wa.me/?text=')) {
+      url = url.replace(encodeURIComponent('Calculate yours FREE 👇'),
+                        encodeURIComponent('Calculez le vôtre GRATUITEMENT 👇'));
+      url = url.replace(encodeURIComponent('My Result'), encodeURIComponent('Mon résultat'));
+    }
+    return _origOpen.apply(this, arguments);
+  };
+});
+</script>
+<body class="fr-energy-parity">
+  <afro-navbar theme="dark" active="energy"></afro-navbar>
+  <header class="en-tool-hero"><div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/fr/">Accueil</a> <span>›</span> <a href="/fr/energy/">Energy &amp; Utilities</a> <span>›</span> Coût de l’électricité</nav>
+    <h1>Calculateur de compteur prépayé</h1>
+<section class="fr-energy-native-summary" aria-label="Résumé de l’outil" style="width:min(1120px,calc(100% - 32px));margin:18px auto;padding:16px;border:1px solid #dbe4ef;border-radius:14px;background:#fff;color:#0f172a"><p style="margin:0;line-height:1.65">Estimez une facture d’électricité avec les tarifs, frais fixes, taxes et paliers du pays sélectionné. Les calculs restent locaux sur cet appareil.</p></section>
+    <p class="en-tool-hero-sub">Convertissez un montant en unités prépayées estimées ou des kWh en facture estimée. Un résultat automatique n’est affiché que lorsqu’un tarif exact par fournisseur et catégorie satisfait au contrôle de fraîcheur.</p>
+  </div></header>
+
+  <main>
+    <section class="electricity-app" aria-labelledby="electricityCalculatorTitle">
+      <div class="electricity-grid">
+        <article class="electricity-panel">
+          <h2 id="electricityCalculatorTitle">Calculer avec un tarif à jour</h2>
+          <p class="electricity-intro">Les montants restent dans ce navigateur. Ne saisissez ni jeton, ni numéro de compteur, ni adresse, ni téléphone, ni référence de paiement.</p>
+          <form id="electricityForm" novalidate>
+            <fieldset class="electricity-mode"><legend class="sr-only">Sens du calcul</legend>
+              <label><input type="radio" name="electricityMode" value="money_to_units" checked> Montant → unités prépayées</label>
+              <label><input type="radio" name="electricityMode" value="units_to_bill"> Unités → facture</label>
+            </fieldset>
+            <div class="electricity-fields">
+              <label class="electricity-field" for="electricityCountry">Pays
+                <select id="electricityCountry" name="country" aria-describedby="electricityCountryHelp">
+                  <option value="UG">Ouganda</option><option value="TZ">Tanzania</option><option value="NG">Nigeria</option><option value="GH">Ghana</option><option value="KE">Kenya</option><option value="ZA">Afrique du Sud</option><option value="ZM">Zambia</option><option value="CI">Côte d'Ivoire</option><option value="SN">Senegal</option>
+                </select><span class="electricity-help" id="electricityCountryHelp">Les marchés prioritaires sont listés ; les marchés non pris en charge passent au mode de tarif local personnalisé.</span>
+              </label>
+              <label class="electricity-field" for="electricityProvider">Fournisseur (si disponible)
+                <select id="electricityProvider" name="provider" aria-describedby="electricityProviderHelp"><option>Chargement des fournisseurs…</option></select>
+                <span class="electricity-help" id="electricityProviderHelp">Le fournisseur est sélectionné automatiquement lorsqu’une seule grille vérifiée est tenue à jour.</span>
+              </label>
+              <label class="electricity-field electricity-field--wide" for="electricityTariff">Catégorie de client
+                <select id="electricityTariff" name="tariff" aria-describedby="electricityTariffHelp"><option>Chargement des catégories de clients…</option></select>
+                <span class="electricity-help" id="electricityTariffHelp">Utilisez la catégorie indiquée sur le compte, la facture, le reçu de recharge ou l’avis du fournisseur. Le calculateur ne déduit pas l’admissibilité.</span>
+              </label>
+              <label class="electricity-field electricity-field--wide" for="electricityAmount"><span id="electricityAmountLabel">Montant de l’achat</span>
+                <input id="electricityAmount" name="amount" type="number" min="0" step="any" inputmode="decimal" value="10000" aria-describedby="electricityAmountHelp electricityStatus">
+                <span class="electricity-help" id="electricityAmountHelp">Saisissez le montant payé pour la recharge ; ne saisissez ni jeton ni numéro de compteur.</span>
+              </label>
+            </div>
+            <div id="electricityPrepaidFields" class="electricity-fields">
+              <label class="electricity-field" for="electricityPercentDeduction">Déductions du reçu (%)
+                <input id="electricityPercentDeduction" type="number" min="0" max="100" step="0.01" value="0" inputmode="decimal"><span class="electricity-help">TVA, prélèvement ou déduction en pourcentage facultatif indiqué sur le reçu.</span>
+              </label>
+              <label class="electricity-field" for="electricityFixedDeduction">Déductions fixes du reçu (<span data-electricity-currency>UGX</span>)
+                <input id="electricityFixedDeduction" type="number" min="0" step="any" value="0" inputmode="decimal"><span class="electricity-help">Arriérés, recouvrement de dette ou déduction fixe de vente facultatifs.</span>
+              </label>
+            </div>
+            <div id="electricityCustom" class="electricity-custom" hidden>
+              <h3>Utiliser un tarif local à jour</h3><p class="electricity-note">Copiez le prix par kWh et les éventuels frais fixes depuis une facture récente ou un avis officiel. AfroTools ne conserve ni ne valide ces valeurs.</p>
+              <div class="electricity-fields">
+                <label class="electricity-field" for="electricityCustomRate">Tarif par kWh (<span data-electricity-currency>UGX</span>)<input id="electricityCustomRate" type="number" min="0" step="any" inputmode="decimal"></label>
+                <label class="electricity-field" for="electricityCustomFixed">Frais fixes de facture (<span data-electricity-currency>UGX</span>)<input id="electricityCustomFixed" type="number" min="0" step="any" value="0" inputmode="decimal"></label>
+              </div>
+            </div>
+            <p id="electricityStatus" class="electricity-status" role="alert" aria-live="assertive"></p>
+            <button class="electricity-button" type="submit">Calculer l’estimation d’électricité</button>
+          </form>
+        </article>
+        <aside class="electricity-panel electricity-result" id="electricityResult" aria-labelledby="electricityResultTitle" aria-live="polite" hidden>
+          <div><span id="electricityPrimaryLabel">Unités prépayées estimées</span><h2 class="electricity-number" id="electricityPrimary">—</h2></div>
+          <div class="electricity-result-grid">
+            <div class="electricity-metric"><span id="electricityMetricOneLabel">Montant consacré à l’énergie</span><strong id="electricityMetricOne">—</strong></div>
+            <div class="electricity-metric"><span id="electricityMetricTwoLabel">Déductions</span><strong id="electricityMetricTwo">—</strong></div>
+          </div>
+          <div><h3 id="electricityResultTitle">Détail du tarif</h3><ul class="electricity-breakdown" id="electricityBreakdown"></ul></div>
+          <p class="electricity-note" id="electricityAssumptions"></p>
+        </aside>
+      </div>
+      <aside class="electricity-source-card" id="electricitySourceCard" data-state="official" aria-label="Source et fraîcheur du tarif">
+        <strong id="electricitySourceTitle">Chargement de la source tarifaire…</strong><p id="electricityFreshness">Vérification du tarif tenu à jour.</p>
+        <a class="electricity-source" id="electricitySource" href="#" target="_blank" rel="noopener">Ouvrir official source</a>
+      </aside>
+    </section>
+
+    <section class="electricity-section" aria-labelledby="electricityExamplesTitle">
+      <h2 id="electricityExamplesTitle">Exemples tarifaires immédiats</h2><p class="electricity-note">Ces exemples indexables utilisent les mêmes données tenues à jour que le calculateur et précisent les hypothèses de catégorie.</p>
+      <div class="electricity-answer-list">
+        <article class="electricity-answer"><h3>Ouganda standard: UGX 10,000</h3><p>Au tarif domestique standard UEDCL du troisième trimestre 2026 de 779,4 UGX/kWh, 10 000 UGX achètent environ <strong>12.83 kWh</strong> avant les déductions propres au reçu.</p></article>
+        <article class="electricity-answer"><h3>Ouganda lifeline: 30 kWh</h3><p>Pour un compte UEDCL admissible au tarif social, les 15 premiers kWh à 250 UGX et les 15 suivants à 779,4 UGX totalisent environ <strong>UGX 15,441</strong>.</p></article>
+        <article class="electricity-answer"><h3>Tanzanie D1 : 100 kWh</h3><p>Pour un compte TANESCO D1, 75 kWh à 100 TZS plus 25 kWh à 350 TZS totalisent <strong>TZS 16,250</strong>.</p></article>
+      </div>
+    </section>
+
+    <section class="electricity-section" aria-labelledby="electricityCoverageTitle">
+      <h2 id="electricityCoverageTitle">Couverture et limites</h2>
+      <div class="electricity-availability">
+        <article><h3>Calcul automatique au lancement</h3><p><strong>Ouganda:</strong> catégories UEDCL du troisième trimestre 2026 : domestique standard, tarif social domestique admissible et moyenne commerciale. <strong>Tanzanie :</strong> catégories TANESCO D1 domestique à faible consommation et T1 usage général selon la grille publiée par l’EWURA.</p></article>
+        <article><h3>Tarif personnalisé uniquement</h3><p>Le Nigeria, le Ghana, le Kenya, l’Afrique du Sud, la Zambie, la Côte d’Ivoire et le Sénégal ne sont pas calculés automatiquement tant que les grilles exactes et actuelles par fournisseur et catégorie ne sont pas analysées et vérifiées. La page d’accueil d’un régulateur ou une moyenne nationale ne suffit pas.</p></article>
+      </div>
+      <p class="electricity-note">Les factures et reçus de recharge réels peuvent inclure taxes, prélèvements, frais fixes, minimums, arriérés, recouvrement de dette, corrections de compteur ou tarification horaire. Saisissez les déductions connues et vérifiez le résultat avant de payer ou de contester un montant.</p>
+      <p><a href="/fr/tools/electricity-bill-verify/">Besoin de comparer un relevé de compteur à une facture ?</a> <a href="/fr/tools/electricity-estimator/">Besoin d’estimer d’abord la consommation des appareils ?</a></p>
+    </section>
+
+    <section class="electricity-section" aria-labelledby="electricityFaqTitle"><h2 id="electricityFaqTitle">Questions sur les tarifs d’électricité</h2>
+      <details><summary>Combien d’unités d’électricité prépayées vais-je recevoir ?</summary><p>Choisissez le pays, le fournisseur et la catégorie de client, puis saisissez le montant de l’achat. Les unités réelles peuvent différer si le reçu comporte des déductions non saisies ici.</p></details>
+      <details><summary>Pourquoi mon pays n’est-il pas calculé automatiquement ?</summary><p>Les estimations automatiques exigent une grille officielle exacte par fournisseur et catégorie, ainsi qu’un contrôle réussi de validité et de fraîcheur. Utilisez un tarif local à jour lorsque ces preuves manquent.</p></details>
+      <details><summary>S’agit-il d’une facture officielle ou d’un reçu de recharge ?</summary><p>Non. Il s’agit d’une estimation de planification. Confirmez le résultat avec la grille du régulateur ou du fournisseur et votre reçu réel.</p></details>
+    </section>
+  </main>
+  <afro-related-tools data-ssr="1" category="energy" current="electricity-tariff">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/fr/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/fr/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/fr/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li><li><a href="/fr/tools/solar-sizing/" data-related-tool data-id="solar-sizing" data-name="Solar Sizing Calculator" data-category="energy" data-icon="SS" data-desc="Size a solar system for your African home or business. Panel wattage, battery capacity, inverter size — load-based recom">Solar Sizing Calculator</a></li><li><a href="/fr/tools/battery-sizing/" data-related-tool data-id="battery-sizing" data-name="Battery &amp; Inverter Sizing" data-category="energy" data-icon="BI" data-desc="Calculate battery bank and inverter requirements for off-grid and backup power in Africa. Lithium vs lead-acid compariso">Battery &amp; Inverter Sizing</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/engines/electricity-cost-engine.js?v=5d4fa9c4"></script>
+  <script src="/assets/js/pages/electricity-cost-prepaid-units.js?v=36a21886"></script>
+  <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-</body></html>
+<script src="/assets/js/pages/french-energy-parity.js?v=a946a8e4"></script>
+</body>
+</html>

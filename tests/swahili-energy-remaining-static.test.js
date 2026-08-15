@@ -66,15 +66,24 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
   for (const app of SW_ENERGY_REMAINING_APPS) {
     const html = read(app.file);
     assert.match(html, /<html\b[^>]*\blang="sw"/i, `${app.id}: native Swahili document`);
+    const localeTokens = app.id === "prepaid-meter" ? [] : [
+      `hreflang="en" href="https://afrotools.com${app.enRoute}"`,
+      `hreflang="fr" href="https://afrotools.com${app.frRoute}"`,
+      `hreflang="sw" href="https://afrotools.com${app.swRoute}"`,
+    ];
     for (const token of [
       `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
-      `hreflang="en" href="https://afrotools.com${app.enRoute}"`, `hreflang="fr" href="https://afrotools.com${app.frRoute}"`,
-      `hreflang="sw" href="https://afrotools.com${app.swRoute}"`, app.image,
+      ...localeTokens, app.image,
       "/data/energy/sw-energy-planning-snapshot.js", `/engines/${app.engine}.js`, "/assets/js/pages/sw-energy-remaining-parity.js",
       "Machi 2026", "Uhakika", "si data ya sasa wala bei hai", 'data-export="json"', 'data-export="csv"',
       'data-export="txt"', 'data-export="pdf"', 'id="importJson"', "Hakuna taarifa inayotumwa kwa seva au AI",
       'data-theme-toggle', 'type="reset"',
     ]) assert.ok(html.includes(token), `${app.id}: ${token}`);
+    if (app.id === "prepaid-meter") {
+      assert.ok(!/hreflang=["'](?:en|fr)["']/i.test(html), `${app.id}: no false equivalence to moved English/French routes`);
+      assert.ok(html.includes(`hreflang="sw" href="https://afrotools.com${app.swRoute}"`), `${app.id}: self locale alternate`);
+      assert.ok(html.includes(`hreflang="x-default" href="https://afrotools.com${app.swRoute}"`), `${app.id}: self x-default alternate`);
+    }
     assert.match(html, /<html\b[^>]*\blang=["']sw["'][^>]*>/i, `${app.id}: native locale`);
     for (const forbidden of ["<iframe", "afrotools-language-fallback", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) {
       assert.ok(!html.includes(forbidden), `${app.id}: ${forbidden}`);

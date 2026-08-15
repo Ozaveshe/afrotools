@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11502 |
-| Indexable pages | 10296 |
+| Indexable pages | 10298 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5277 |
+| Genuine equivalence groups | 5279 |
 | Documented fallbacks | 14730 |
-| Routes eligible for primary sitemaps | 10296 |
+| Routes eligible for primary sitemaps | 10298 |
 
 ## Locale Coverage
 
@@ -4891,6 +4891,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5a4c7a8e2e2a: en=`/tools/fuel-tracker/ghana/`, fr=`/fr/tools/suivi-carburant/ghana/`; x-default=`/tools/fuel-tracker/ghana/`
 - equivalence:5a5869c84b77: en=`/blog/nysc-allowance-financial-guide-2026/`, fr=`/fr/blog/nysc-allowance-financial-guide-2026/`; x-default=`/blog/nysc-allowance-financial-guide-2026/`
 - equivalence:5a5903e6c3a5: en=`/tools/tin-guide/gabon`, sw=`/sw/zana/mwongozo-tin/gabon/`; x-default=`/tools/tin-guide/gabon`
+- equivalence:5a70c68a355e: fr=`/fr/tools/compteur-prepaye/`; x-default=`/fr/tools/compteur-prepaye/`
 - equivalence:5a75bf010082: en=`/tools/net-worth/`, fr=`/fr/tools/suivi-valeur-nette/`, sw=`/sw/zana/thamani-halisi/`; x-default=`/tools/net-worth/`
 - equivalence:5a78fd64b076: en=`/agriculture/harvest-date/ghana`, fr=`/fr/agriculture/harvest-date/ghana`; x-default=`/agriculture/harvest-date/ghana`
 - equivalence:5a8fbd865a84: en=`/tools/car-insurance/uganda`, fr=`/fr/tools/assurance-auto/uganda`; x-default=`/tools/car-insurance/uganda`
@@ -5392,6 +5393,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:73cef6858048: en=`/tools/gratuity-calculator/cape-verde/`; x-default=`/tools/gratuity-calculator/cape-verde/`
 - equivalence:73def2c37ad8: en=`/cars/algeria/ford/ranger/2018/`, fr=`/fr/cars/algerie/ford/ranger/2018/`; x-default=`/cars/algeria/ford/ranger/2018/`
 - equivalence:73e644eaef92: en=`/cars/senegal/toyota/prado/`, fr=`/fr/cars/senegal/toyota/prado/`; x-default=`/cars/senegal/toyota/prado/`
+- equivalence:73e73f4b0b03: sw=`/sw/zana/kikokotoo-luku-ya-umeme/`; x-default=`/sw/zana/kikokotoo-luku-ya-umeme/`
 - equivalence:73e9abca3899: en=`/jamb/economics/1998/`; x-default=`/jamb/economics/1998/`
 - equivalence:73eedca822a5: en=`/agriculture/crop-yield/cameroon`, fr=`/fr/agriculture/crop-yield/cameroon`, sw=`/sw/kilimo/mavuno/cameroon/`; x-default=`/agriculture/crop-yield/cameroon`
 - equivalence:7402276bab99: en=`/cars/namibia/honda/accord/`, fr=`/fr/cars/namibie/honda/accord/`; x-default=`/cars/namibia/honda/accord/`

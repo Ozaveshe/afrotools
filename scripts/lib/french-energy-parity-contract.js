@@ -19,6 +19,8 @@ const FRENCH_ENERGY_APPS = Object.freeze([
   },
   {
     id: "prepaid-meter",
+    buildSourceId: "electricity-tariff",
+    standaloneLocalizedAlias: true,
     frSlug: "compteur-prepaye",
     title: "Calculateur de compteur prépayé",
     description: "Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.",
@@ -146,6 +148,7 @@ const FRENCH_ENERGY_APPS = Object.freeze([
 ].map((app) => Object.freeze({
   ...app,
   enRoute: `/tools/${app.id}/`,
+  sourceRoute: `/tools/${app.buildSourceId || app.id}/`,
   frRoute: `/fr/tools/${app.frSlug}/`,
   image: `/assets/img/tools/${app.id}.webp`,
   reviewedAt: REVIEWED_AT,

@@ -81,18 +81,27 @@ assert.deepStrictEqual(
 
 for (const app of FRENCH_ENERGY_APPS) {
   const englishFile = fileForRoute(app.enRoute);
+  const sourceFile = fileForRoute(app.sourceRoute);
   const frenchFile = fileForRoute(app.frRoute);
   assert.ok(fs.existsSync(englishFile), `${app.id}: English owner missing`);
+  assert.ok(fs.existsSync(sourceFile), `${app.id}: calculation source missing`);
   assert.ok(fs.existsSync(frenchFile), `${app.id}: French route missing`);
   assert.ok(fs.existsSync(path.join(ROOT, app.image.replace(/^\//, ""))), `${app.id}: dedicated artwork missing`);
 
   const english = fs.readFileSync(englishFile, "utf8");
+  const source = fs.readFileSync(sourceFile, "utf8");
   const french = fs.readFileSync(frenchFile, "utf8");
   assert.match(french, /<html\b[^>]*lang=["']fr["']/i, `${app.id}: html language`);
   assert.ok(french.includes(`<link rel="canonical" href="https://afrotools.com${app.frRoute}">`), `${app.id}: canonical`);
-  assert.ok(french.includes(`hreflang="en" href="https://afrotools.com${app.enRoute}"`), `${app.id}: English alternate`);
-  assert.ok(french.includes(`hreflang="fr" href="https://afrotools.com${app.frRoute}"`), `${app.id}: French alternate`);
-  assert.ok(english.includes(`hreflang="fr" href="https://afrotools.com${app.frRoute}`), `${app.id}: reciprocal French alternate`);
+  if (!app.standaloneLocalizedAlias) {
+    assert.ok(french.includes(`hreflang="en" href="https://afrotools.com${app.enRoute}"`), `${app.id}: English alternate`);
+    assert.ok(french.includes(`hreflang="fr" href="https://afrotools.com${app.frRoute}"`), `${app.id}: French alternate`);
+    assert.ok(english.includes(`hreflang="fr" href="https://afrotools.com${app.frRoute}`), `${app.id}: reciprocal French alternate`);
+  } else {
+    assert.ok(!/hreflang=["']en["']/i.test(french), `${app.id}: moved English owner must not be an alternate`);
+    assert.ok(french.includes(`hreflang="fr" href="https://afrotools.com${app.frRoute}"`), `${app.id}: self locale alternate`);
+    assert.ok(french.includes(`hreflang="x-default" href="https://afrotools.com${app.frRoute}"`), `${app.id}: self x-default alternate`);
+  }
   assert.ok(french.includes(`fr-energy-parity:${app.id}`), `${app.id}: source owner marker`);
   assert.ok(french.includes(`data-fr-energy-config`), `${app.id}: runtime config`);
   assert.ok(french.includes(`"inLanguage":"fr"`), `${app.id}: French structured data`);
@@ -103,11 +112,11 @@ for (const app of FRENCH_ENERGY_APPS) {
   assert.ok(!french.includes("class=\"source-launch\""), `${app.id}: thin handoff wrapper must be gone`);
   assert.ok(!french.includes(`fetch('${app.enRoute}`), `${app.id}: fetched English calculator must be gone`);
 
-  const englishSources = scriptSources(english).filter((src) => /(?:\/engines\/|\/data\/energy\/)/.test(src));
+  const englishSources = scriptSources(source).filter((src) => /(?:\/engines\/|\/data\/energy\/)/.test(src));
   const frenchSources = scriptSources(french).filter((src) => /(?:\/engines\/|\/data\/energy\/)/.test(src));
   assert.deepStrictEqual(frenchSources, englishSources, `${app.id}: DOM-free engines and energy datasets must match English`);
 
-  for (const formulaScript of formulaScripts(english)) {
+  for (const formulaScript of formulaScripts(source)) {
     assert.ok(french.includes(formulaScript), `${app.id}: inline formula/controller script changed`);
   }
 
