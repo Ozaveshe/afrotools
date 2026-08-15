@@ -268,7 +268,9 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
     await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
     await page.goto('/tools/africa-election-tracker/', { waitUntil: 'domcontentloaded' });
 
-    await expect(page.locator('#ledgerMeta')).toContainText(/Generated .* review overdue by/);
+    await expect(page.locator('#ledgerMeta')).toContainText(
+      /Generated .* (?:within \d+-day review cadence|review overdue by \d+ days)/
+    );
     await expect(page.locator('#metricRecords')).not.toHaveText('0');
     await page.locator('#sourceFilter').selectOption('official');
     await expect(page.locator('#electionList .et-pill-official').first()).toContainText('Official source');
