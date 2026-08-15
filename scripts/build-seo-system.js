@@ -30,16 +30,32 @@ function escapeHtml(value) {
 function ensureHeadTag(html, tag) {
   if (tag === STYLE_TAG) {
     const seoStylePattern = /<link\b[^>]*href=["']\/assets\/css\/seo-clusters\.css(?:\?v=[a-f0-9]{8})?["'][^>]*>\s*/gi;
+    const typographyPattern = /<link\b[^>]*href=["']\/blog\/assets\/css\/blog-typography\.css(?:\?[^"']*)?["'][^>]*>/i;
     let seen = false;
+    let retainedTag = STYLE_TAG;
+    let retainedMatch = "";
     html = html.replace(seoStylePattern, function (match) {
       if (seen) {
         return "";
       }
       seen = true;
-      return match.endsWith("\n") ? match : match + "\n";
+      retainedTag = match.trim();
+      retainedMatch = match;
+      return match;
     });
     if (seen) {
+      const typography = html.match(typographyPattern);
+      const seoIndex = html.indexOf(retainedTag);
+      if (typography && seoIndex > typography.index) {
+        html = html.replace(retainedMatch, "");
+        return html.replace(typography[0], retainedTag + "\n" + typography[0]);
+      }
       return html;
+    }
+
+    const typography = html.match(typographyPattern);
+    if (typography) {
+      return html.replace(typography[0], tag + "\n" + typography[0]);
     }
   }
 
