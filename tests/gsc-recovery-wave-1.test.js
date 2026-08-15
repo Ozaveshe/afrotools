@@ -34,6 +34,7 @@ const routes = {
       en: "https://afrotools.com/tools/naira-to-words/",
       fr: "https://afrotools.com/fr/tools/naira-en-lettres/",
       ha: "https://afrotools.com/ha/kayan-aiki/naira-zuwa-kalmomi/",
+      sw: "https://afrotools.com/sw/zana/naira-kwa-maneno/",
       "x-default": "https://afrotools.com/tools/naira-to-words/"
     }
   },
@@ -42,6 +43,7 @@ const routes = {
     hreflang: {
       en: "https://afrotools.com/tools/market-days/",
       fr: "https://afrotools.com/fr/tools/jours-marche/",
+      sw: "https://afrotools.com/sw/zana/kalenda-ya-siku-za-soko/",
       "x-default": "https://afrotools.com/tools/market-days/"
     }
   },
@@ -284,8 +286,8 @@ test("Wave 1 adds no amount-specific routes and records a deployment anchor", fu
 
   const wave = releaseRegistry.waves.find(function (entry) { return entry.id === "gsc-recovery-wave-1"; });
   assert.ok(wave);
-  assert.equal(wave.status, "ready-for-deployment");
-  assert.equal(wave.deployedAt, null);
+  assert.equal(wave.status, "production");
+  assert.equal(wave.deployedAt, "2026-08-15");
   assert.deepEqual(wave.routes, Object.keys(routes));
   assert.equal(wave.baseline.totals.impressions, 54311);
   assert.equal(wave.baseline.totals.clicks, 446);
