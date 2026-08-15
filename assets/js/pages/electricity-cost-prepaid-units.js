@@ -17,8 +17,10 @@
   var tariff = document.getElementById('electricityTariff');
   var amount = document.getElementById('electricityAmount');
   var custom = document.getElementById('electricityCustom');
+  var customCurrency = document.getElementById('electricityCustomCurrency');
   var customRate = document.getElementById('electricityCustomRate');
   var customFixed = document.getElementById('electricityCustomFixed');
+  var customTax = document.getElementById('electricityCustomTax');
   var percentDeduction = document.getElementById('electricityPercentDeduction');
   var fixedDeduction = document.getElementById('electricityFixedDeduction');
   var status = document.getElementById('electricityStatus');
@@ -81,7 +83,8 @@
       track('electricity_unsupported_market', { country_code: country.value, market_state: 'unsupported' });
     }
     var meta = COUNTRY_META[country.value];
-    document.querySelectorAll('[data-electricity-currency]').forEach(function (node) { node.textContent = meta.currency; });
+    customCurrency.value = meta.currency;
+    updateCustomCurrency();
     track('electricity_country_selected', { country_code: country.value, automatic_coverage: Boolean(state.current.length) });
     renderSource();
   }
@@ -99,9 +102,13 @@
     if (official) return official;
     var meta = COUNTRY_META[country.value];
     return engine.customRateRecord({
-      country_code: country.value, country_name: meta.name, currency: meta.currency,
-      rate: customRate.value, fixed_charge: customFixed.value
+      country_code: country.value, country_name: meta.name, currency: customCurrency.value,
+      rate: customRate.value, fixed_charge: customFixed.value, tax_percent: customTax.value
     });
+  }
+
+  function updateCustomCurrency() {
+    document.querySelectorAll('[data-electricity-currency]').forEach(function (node) { node.textContent = customCurrency.value; });
   }
 
   function renderSource() {
@@ -134,7 +141,7 @@
 
   function clearError() {
     status.textContent = '';
-    [amount, customRate, customFixed, percentDeduction, fixedDeduction].forEach(function (input) { input.removeAttribute('aria-invalid'); });
+    [amount, customRate, customFixed, customTax, percentDeduction, fixedDeduction].forEach(function (input) { input.removeAttribute('aria-invalid'); });
   }
 
   function fail(input, message) {
@@ -153,9 +160,14 @@
     document.getElementById('electricityMetricOne').textContent = engine.formatMoney(isUnits ? calculation.amount_for_energy : calculation.energy_charge, record.currency);
     document.getElementById('electricityMetricTwoLabel').textContent = isUnits ? 'Deductions' : 'Effective cost per kWh';
     document.getElementById('electricityMetricTwo').textContent = isUnits ? engine.formatMoney(calculation.deduction_total, record.currency) : engine.formatMoney(calculation.effective_rate, record.currency) + '/kWh';
-    document.getElementById('electricityBreakdown').innerHTML = calculation.tier_breakdown.map(function (tier) {
+    var breakdown = calculation.tier_breakdown.map(function (tier) {
       return '<li>' + tier.label + ': ' + tier.units.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' kWh × ' + engine.formatMoney(tier.rate, record.currency) + ' = ' + engine.formatMoney(tier.cost, record.currency) + '</li>';
-    }).join('');
+    });
+    if (calculation.fixed_charge > 0) breakdown.push('<li>Fixed charge: ' + engine.formatMoney(calculation.fixed_charge, record.currency) + '</li>');
+    (calculation.levies || []).forEach(function (item) { breakdown.push('<li>' + item.label + ': ' + engine.formatMoney(item.amount, record.currency) + '</li>'); });
+    (calculation.taxes || []).forEach(function (item) { breakdown.push('<li>' + item.label + ': ' + engine.formatMoney(item.amount, record.currency) + '</li>'); });
+    if (calculation.minimum_charge_applied) breakdown.push('<li>Minimum charge applied.</li>');
+    document.getElementById('electricityBreakdown').innerHTML = breakdown.join('');
     document.getElementById('electricityAssumptions').textContent = record.notes + (record.status === 'custom' ? ' Custom rates are not verified by AfroTools.' : ' This is a planning estimate, not an official bill or token receipt.');
     result.hidden = false;
     renderSource();
@@ -189,6 +201,7 @@
 
   country.addEventListener('change', updateProviders);
   provider.addEventListener('change', function () { updateTariffs(); track('electricity_provider_selected', { country_code: country.value, provider_id: provider.value }); });
+  customCurrency.addEventListener('change', updateCustomCurrency);
   tariff.addEventListener('change', function () { renderSource(); var record = selectedRecord(); track('electricity_tariff_selected', { country_code: country.value, provider_id: provider.value, tariff_id: tariff.value, customer_class: record ? record.customer_class : 'custom' }); });
   form.addEventListener('submit', calculate);
   form.querySelectorAll('input[name="electricityMode"]').forEach(function (input) {

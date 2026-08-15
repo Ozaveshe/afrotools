@@ -18,12 +18,12 @@ The supplied GSC headline is 14,680 impressions over the most recent 28 days for
 ## Route and cannibalization inventory
 
 - `/tools/electricity-tariff/` is the single transactional canonical for money → units and units → bill.
-- `/tools/prepaid-meter/` remains reachable for bookmarks, but is `noindex,follow` and canonicalizes to `/tools/electricity-tariff/`.
-- The 54 electricity-tariff and 54 prepaid-meter country URLs remain reachable, but are now `noindex,follow` compatibility pages canonicalized to the root. Their prior calculators were thin because they reused stale national defaults.
+- `/tools/prepaid-meter/` remains reachable for bookmarks as a self-canonical `noindex,follow` handoff to `/tools/electricity-tariff/`; it cannot compete in search.
+- The 54 electricity-tariff and 54 prepaid-meter country URLs remain reachable as self-canonical `noindex,follow` compatibility pages. Their prior calculators were thin because they reused stale national defaults, and none remains eligible for indexing.
 - `/tools/electricity-estimator/` retains the distinct appliance/usage job: estimate kWh before applying a tariff.
 - `/tools/electricity-bill-verify/` retains the distinct bill/meter reconciliation job.
 - `/blog/nigeria-electricity-tariff/`, `/blog/prepaid-meter-units-budget-africa/` and `/blog/south-africa-electricity-tariffs-2026-27/` remain explanatory guides, not alternate calculators.
-- French and Swahili electricity routes remain separate locale surfaces. This wave does not duplicate rates into them; locale parity must reuse `data/energy/electricity-tariffs.json` and the same engine.
+- `/fr/tools/tarifs-electricite/` and `/sw/zana/kikokotoo-tariff-ya-umeme/` are equivalent localized surfaces backed by the same `data/energy/electricity-tariffs.json` dataset and `electricity-cost-engine.js` engine. The standalone French prepaid alias reuses that product; the older standalone Swahili LUKU route remains self-only and does not claim hreflang equivalence.
 
 No provider, amount, city, band, acronym or query-parameter page was created.
 
@@ -54,7 +54,7 @@ The legacy `country-energy-index.js` remains available to other planning tools, 
 
 ## Engine and calculations
 
-`engines/src/electricity-cost-engine.js` is DOM-free and CommonJS/browser compatible. It supports flat and tiered/lifeline energy charges, fixed charges, percentage or fixed levies/taxes, minimum charges, and prepaid deductions. Money → units uses a deterministic binary inversion of the same tier-cost function used by units → bill, preventing two formula implementations from drifting.
+`engines/src/electricity-cost-engine.js` is DOM-free and CommonJS/browser compatible. It supports flat and tiered/lifeline energy charges, fixed charges, percentage or fixed levies/taxes, minimum charges, and prepaid deductions. Money → units uses a deterministic binary inversion of the complete bill calculation—including represented fixed charges, levies, taxes and minimum charges—after prepaid deductions, preventing the two directions from drifting.
 
 Examples from the maintained records:
 
@@ -72,7 +72,7 @@ The runtime emits `electricity_country_selected`, `electricity_provider_selected
 
 ## GSC measurement
 
-The cohort is `gsc-demand-capture-2026-08-electricity-cost-prepaid-units` in `data/seo/gsc-demand-capture-cohorts.json`. Deployment and 7/28/90-day review dates are `null`. After a verified production receipt, set the deployment date and derive reviews by adding exactly 7, 28 and 90 calendar days. Monitor the prepaid root, appliance estimator, bill verifier, electricity guides and localized routes for cannibalization.
+The cohort is `gsc-demand-capture-2026-08-electricity-cost-prepaid-units` in `data/seo/gsc-demand-capture-cohorts.json`. The verified production deployment date is `2026-08-15`; the derived 7/28/90-day reviews are `2026-08-22`, `2026-09-12` and `2026-11-13`. Monitor the prepaid root, appliance estimator, bill verifier, electricity guides and localized routes for cannibalization.
 
 ## Next coverage additions
 
@@ -87,6 +87,7 @@ The cohort is `gsc-demand-capture-2026-08-electricity-cost-prepaid-units` in `da
 - Dataset: `data/energy/electricity-tariffs.json`
 - Engine: `engines/src/electricity-cost-engine.js` and generated `engines/electricity-cost-engine.js`
 - UI: `tools/electricity-tariff/index.html`, `assets/js/pages/electricity-cost-prepaid-units.js`, `assets/css/electricity-cost-prepaid-units.css`
+- Localized parity: `fr/tools/tarifs-electricite/index.html`, `sw/zana/kikokotoo-tariff-ya-umeme/index.html`, `assets/js/pages/french-energy-parity.js`, `assets/js/pages/swahili-electricity-parity.js`
 - Compatibility ownership: `tools/prepaid-meter/index.html`, `scripts/generate-energy-x54.js`, generated country pages
 - Discovery/cohort: `assets/js/components/tool-registry.js`, `data/seo/gsc-demand-capture-cohorts.json`
 - Tests: `tests/electricity-cost-engine.test.js`, `tests/electricity-demand-capture.test.js`, `tests/e2e/electricity-cost-prepaid-units.spec.js`

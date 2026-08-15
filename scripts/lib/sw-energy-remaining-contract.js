@@ -17,8 +17,8 @@ function select(name, label, options) { return { name, label, type: "select", op
 const SW_ENERGY_REMAINING_APPS = [
   {
     id: "electricity-tariff", slug: "kikokotoo-tariff-ya-umeme", frSlug: "tarifs-electricite",
-    title: "Kikokotoo cha Tarifa ya Umeme", description: "Kadiria bili ya umeme kwa matumizi ya kWh na daraja la mteja, ukitumia nakala ya viwango ya Machi 2026.",
-    engine: "electricity-tariff-engine", global: "ElectricityTariffEngine",
+    title: "Gharama ya Umeme na Unit za Kulipia Kabla", description: "Badilisha pesa kuwa unit za kulipia kabla au kWh kuwa bili kwa tarifa ya sasa ya mtoa huduma na daraja la mteja.",
+    engine: "electricity-cost-engine", global: "electricityCost", exactTariff: true,
     fields: [number("units", "Matumizi ya mwezi (kWh)", 250, 0.1), select("customerType", "Daraja la mteja", optionSets.customerType)],
     metrics: [["monthlyBill","Bili ya mwezi"],["dailyBill","Wastani kwa siku"],["annualBill","Makadirio ya mwaka"],["avgRate","Wastani kwa kWh"]],
   },

@@ -71,14 +71,24 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
       `hreflang="fr" href="https://afrotools.com${app.frRoute}"`,
       `hreflang="sw" href="https://afrotools.com${app.swRoute}"`,
     ];
-    for (const token of [
+    const sharedTokens = [
       `data-sw-energy-app="${app.id}"`, `https://afrotools.com${app.swRoute}`,
-      ...localeTokens, app.image,
-      "/data/energy/sw-energy-planning-snapshot.js", `/engines/${app.engine}.js`, "/assets/js/pages/sw-energy-remaining-parity.js",
+      ...localeTokens, app.image, `/engines/${app.engine}.js`,
+    ];
+    const productTokens = app.exactTariff ? [
+      "/assets/js/pages/electricity-cost-prepaid-units.js", "/assets/js/pages/swahili-electricity-parity.js",
+      "Gharama ya Umeme na Unit za Kulipia Kabla", 'id="electricityCustomCurrency"', 'id="electricityCustomTax"',
+    ] : [
+      "/data/energy/sw-energy-planning-snapshot.js", "/assets/js/pages/sw-energy-remaining-parity.js",
       "Machi 2026", "Uhakika", "si data ya sasa wala bei hai", 'data-export="json"', 'data-export="csv"',
       'data-export="txt"', 'data-export="pdf"', 'id="importJson"', "Hakuna taarifa inayotumwa kwa seva au AI",
       'data-theme-toggle', 'type="reset"',
-    ]) assert.ok(html.includes(token), `${app.id}: ${token}`);
+    ];
+    for (const token of [...sharedTokens, ...productTokens]) assert.ok(html.includes(token), `${app.id}: ${token}`);
+    if (app.exactTariff) {
+      assert.ok(!html.includes("/data/energy/sw-energy-planning-snapshot.js"), `${app.id}: stale snapshot removed`);
+      assert.ok(!html.includes("country-energy-index.js"), `${app.id}: no independent tariff dataset`);
+    }
     if (app.id === "prepaid-meter") {
       assert.ok(!/hreflang=["'](?:en|fr)["']/i.test(html), `${app.id}: no false equivalence to moved English/French routes`);
       assert.ok(html.includes(`hreflang="sw" href="https://afrotools.com${app.swRoute}"`), `${app.id}: self locale alternate`);
@@ -99,7 +109,7 @@ function loadRuntime(app) {
   context.window = context;
   context.globalThis = context;
   vm.createContext(context);
-  vm.runInContext(read("data/energy/sw-energy-planning-snapshot.js"), context, { filename: "sw-energy-planning-snapshot.js" });
+  if (!app.exactTariff) vm.runInContext(read("data/energy/sw-energy-planning-snapshot.js"), context, { filename: "sw-energy-planning-snapshot.js" });
   vm.runInContext(read(`engines/src/${app.engine}.js`), context, { filename: `${app.engine}.js` });
   return context;
 }
@@ -127,6 +137,15 @@ const CASES = {
 test("all 17 shared engines pass a valid oracle and reject an invalid oracle", () => {
   for (const app of SW_ENERGY_REMAINING_APPS) {
     const context = loadRuntime(app);
+    if (app.exactTariff) {
+      const engine = context.AfroTools.engines.electricityCost;
+      const data = JSON.parse(read("data/energy/electricity-tariffs.json"));
+      const record = data.records.find((row) => row.tariff_id === "ug-uedcl-domestic-standard-q3-2026");
+      assert.equal(engine.calculateBill(record, 10).total, 7794);
+      assert.equal(engine.calculateUnits(record, 10000).units, 12.8304);
+      assert.equal(engine.calculateBill(record, 0).ok, false);
+      continue;
+    }
     const engine = context.AfroTools[app.global];
     const [valid, invalid] = CASES[app.id];
     let validResult;

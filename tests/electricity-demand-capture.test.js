@@ -9,6 +9,7 @@ const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 const html = read('tools/electricity-tariff/index.html');
 const runtime = read('assets/js/pages/electricity-cost-prepaid-units.js');
 const prepaid = read('tools/prepaid-meter/index.html');
+const cohorts = JSON.parse(read('data/seo/gsc-demand-capture-cohorts.json'));
 
 assert.equal((html.match(/<title>/g) || []).length, 1);
 assert.equal((html.match(/<meta name="description"/g) || []).length, 1);
@@ -24,7 +25,7 @@ const jsonLd = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?
 assert(jsonLd.some((value) => value['@type'] === 'WebApplication'));
 assert(jsonLd.some((value) => value['@type'] === 'FAQPage'));
 
-for (const id of ['electricityCountry', 'electricityProvider', 'electricityTariff', 'electricityAmount', 'electricityResult', 'electricitySourceCard']) {
+for (const id of ['electricityCountry', 'electricityProvider', 'electricityTariff', 'electricityAmount', 'electricityCustomCurrency', 'electricityCustomTax', 'electricityResult', 'electricitySourceCard']) {
   assert(html.includes(`id="${id}"`), `Missing labelled/live workflow element ${id}`);
 }
 assert(html.includes('aria-live="polite"'));
@@ -58,5 +59,14 @@ for (const family of ['electricity-tariff', 'prepaid-meter']) {
 
 const sitemapFiles = fs.readdirSync(root).filter((name) => /^sitemap.*\.xml$/.test(name));
 assert(sitemapFiles.some((name) => read(name).includes('https://afrotools.com/tools/electricity-tariff/')), 'Canonical route must exist in a sitemap');
+
+const cohort = cohorts.cohorts.find((item) => item.cohort_id === 'gsc-demand-capture-2026-08-electricity-cost-prepaid-units');
+assert(cohort, 'Electricity GSC cohort must exist');
+assert.equal(cohort.deployment_date, '2026-08-15');
+for (const [field, days] of [['review_7_day', 7], ['review_28_day', 28], ['review_90_day', 90]]) {
+  const expected = new Date(`${cohort.deployment_date}T00:00:00Z`);
+  expected.setUTCDate(expected.getUTCDate() + days);
+  assert.equal(cohort[field], expected.toISOString().slice(0, 10), `${field} must derive from deployment_date`);
+}
 
 console.log('Electricity demand-capture route, SEO, analytics, privacy and compatibility contracts passed.');

@@ -32,10 +32,14 @@ test('unsupported country fails closed and custom rate stays local', async ({ pa
   await page.locator('#electricityCountry').selectOption('GH');
   await expect(page.locator('#electricityStatus')).toContainText('No current provider-and-class tariff');
   await expect(page.locator('#electricityCustom')).toBeVisible();
+  await page.locator('#electricityCustomCurrency').selectOption('GHS');
   await page.locator('#electricityCustomRate').fill('2.5');
-  await page.locator('#electricityAmount').fill('100');
+  await page.locator('#electricityCustomFixed').fill('10');
+  await page.locator('#electricityCustomTax').fill('10');
+  await page.locator('#electricityAmount').fill('66');
   await page.getByRole('button', { name: 'Calculate electricity estimate' }).click();
-  await expect(page.locator('#electricityPrimary')).toContainText('40 kWh');
+  await expect(page.locator('#electricityPrimary')).toContainText('20 kWh');
+  await expect(page.locator('#electricityBreakdown')).toContainText('User-entered tax or levy');
   await expect(page.locator('#electricitySourceTitle')).toHaveText('Custom-rate mode');
   const storage = await page.evaluate(() => ({ local: Object.keys(localStorage), session: Object.keys(sessionStorage) }));
   expect(storage.local.filter((key) => /electric|tariff|rate/i.test(key))).toEqual([]);
@@ -69,3 +73,23 @@ test('360px layout, labels, live result and keyboard flow remain usable', async 
     await expect(page.locator(`label[for="${id}"]`)).toBeVisible();
   }
 });
+
+for (const locale of [
+  { name: 'French', route: '/fr/tools/tarifs-electricite/', heading: 'Calculateur de tarifs d’électricité' },
+  { name: 'Swahili', route: '/sw/zana/kikokotoo-tariff-ya-umeme/', heading: 'Gharama ya Umeme na Unit za Kulipia Kabla' }
+]) {
+  test(`${locale.name} equivalent uses the maintained tariff dataset and engine`, async ({ page }) => {
+    const errors = [];
+    page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto(locale.route);
+    await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY === true);
+    await expect(page.getByRole('heading', { name: locale.heading, level: 1 })).toBeVisible();
+    await expect(page.locator('#electricityCountry')).toHaveValue('UG');
+    await page.locator('.electricity-button').click();
+    await expect(page.locator('#electricityPrimary')).toContainText('12.83 kWh');
+    await expect(page.locator('#electricityFreshness')).toContainText('2026-08-15');
+    await expect(page.locator('#electricitySource')).toHaveAttribute('href', /era\.go\.ug/);
+    expect(errors).toEqual([]);
+  });
+}

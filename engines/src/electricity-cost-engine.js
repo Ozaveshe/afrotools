@@ -115,6 +115,7 @@
       levies: levies,
       taxes: taxes,
       minimum_charge_applied: total > rawTotal,
+      total_unrounded: total,
       total: round(total, 2),
       effective_rate: round(total / units, 4),
       tier_breakdown: energy.tier_breakdown,
@@ -136,26 +137,36 @@
     if (!record || money <= 0) return { ok: false, error: 'Enter a purchase amount greater than zero.' };
     var net = prepaidNetAmount(record, money, options.extra_deductions);
     if (net.net <= 0) return { ok: false, error: 'Deductions use the full purchase amount; no money remains for energy.' };
+    var smallestBill = calculateBill(record, 0.000001);
+    if (!smallestBill.ok || smallestBill.total_unrounded > net.net) {
+      return { ok: false, error: 'Tariff charges use the available purchase amount; no money remains for electricity units.' };
+    }
     var low = 0;
     var high = Math.max(1, net.net / Math.min.apply(null, record.tiers.map(function (tier) { return number(tier.rate); })) + 1);
     for (var i = 0; i < 80; i += 1) {
       var mid = (low + high) / 2;
-      var cost = energyCost(record, mid);
-      if (!cost.ok || cost.energy_charge > net.net) high = mid;
+      var bill = calculateBill(record, mid);
+      if (!bill.ok || bill.total_unrounded > net.net) high = mid;
       else low = mid;
     }
-    var finalCost = energyCost(record, low);
+    var finalBill = calculateBill(record, low);
     return {
       ok: true,
       mode: 'money_to_units',
       purchase_amount: round(money, 2),
       deduction_total: net.deduction_total,
       deductions: net.deductions,
-      amount_for_energy: round(net.net, 2),
+      amount_after_prepaid_deductions: round(net.net, 2),
+      amount_for_energy: finalBill.energy_charge,
       units: round(low, 4),
-      energy_charge: round(finalCost.energy_charge, 2),
+      energy_charge: finalBill.energy_charge,
+      fixed_charge: finalBill.fixed_charge,
+      levies: finalBill.levies,
+      taxes: finalBill.taxes,
+      minimum_charge_applied: finalBill.minimum_charge_applied,
+      total_charged: finalBill.total,
       effective_rate: round(money / low, 4),
-      tier_breakdown: finalCost.tier_breakdown,
+      tier_breakdown: finalBill.tier_breakdown,
       currency: record.currency,
       tariff_id: record.tariff_id,
       assumptions: options.assumptions || []
@@ -178,12 +189,15 @@
     input = input || {};
     var rate = number(input.rate);
     if (rate <= 0) return null;
+    var taxPercent = Math.max(0, number(input.tax_percent));
     return {
       market_id: 'custom-local', country_code: input.country_code || 'CUSTOM', country_name: input.country_name || 'Custom country',
       provider_id: 'custom-local', provider_name: input.provider_name || 'User-entered provider', tariff_id: 'custom-local-rate',
       tariff_name: 'Custom local rate', customer_class: input.customer_class || 'custom', meter_type: 'user_selected', currency: input.currency || 'USD',
       billing_unit: 'kWh', pricing_model: 'flat', tiers: [{ from: 0, up_to: null, rate: rate, label: 'User-entered energy rate' }],
-      fixed_charge: Math.max(0, number(input.fixed_charge)), levies: [], taxes: [], minimum_charge: 0, prepaid_deductions: [],
+      fixed_charge: Math.max(0, number(input.fixed_charge)), levies: [],
+      taxes: taxPercent > 0 ? [{ id: 'custom-tax-levy', label: 'User-entered tax or levy', type: 'percent', value: taxPercent }] : [],
+      minimum_charge: 0, prepaid_deductions: [],
       effective_date: '', valid_to: null, last_verified_at: '', source_name: 'User-entered rate', source_url: '', granularity: 'custom_local',
       confidence: 'user_supplied', status: 'custom', notes: 'Stored and processed only in this browser session.'
     };

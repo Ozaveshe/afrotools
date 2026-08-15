@@ -5,9 +5,9 @@ const {
 } = require("../../scripts/lib/french-energy-parity-contract");
 
 const WORKFLOW_SELECTORS = {
-  "electricity-tariff": ["#etResultPanel", ".et-primary"],
+  "electricity-tariff": ["#electricityResult", ".electricity-button"],
   "solar-roi": ["#solarAssumptionPreview", "#solarRootCountrySelect"],
-  "prepaid-meter": ["#pmResultPanel", ".pm-primary"],
+  "prepaid-meter": ["#electricityResult", ".electricity-button"],
   "solar-vs-generator": ["#results", ".svg-button.primary"],
   "electricity-bill-verify": ["#results", ".ebv-button.primary"],
   "water-bill": ["#results", ".wb-button.primary"],
@@ -68,7 +68,7 @@ async function openApp(page, app) {
   expect(response && response.ok(), `${app.frRoute}: route response`).toBeTruthy();
   await expect(page.locator("h1").first()).toContainText(app.title);
   await expect(page.locator(".fr-energy-trust")).toBeVisible();
-  await expect(page.locator(".fr-energy-trust")).toHaveAttribute("data-state", "stale");
+  await expect(page.locator(".fr-energy-trust")).toHaveAttribute("data-state", ["electricity-tariff", "prepaid-meter"].includes(app.id) ? "current" : "stale");
   await expect(page.locator(".fr-energy-export")).toBeVisible();
   await expect(page.locator(".fr-energy-ai")).toBeVisible();
   return errors;

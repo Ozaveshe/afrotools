@@ -9,6 +9,9 @@ const FRENCH_ENERGY_APPS = Object.freeze([
     title: "Calculateur de tarifs d’électricité",
     description: "Estimez une facture d’électricité avec les tarifs, frais fixes, taxes et paliers du pays sélectionné.",
     intent: "facture",
+    reviewedAt: "2026-08-15",
+    sourceLabel: "Tarifs officiels actuels par fournisseur et catégorie",
+    confidence: "Confiance élevée pour les tarifs automatiques qui passent le contrôle de fraîcheur",
   },
   {
     id: "solar-roi",
@@ -25,6 +28,9 @@ const FRENCH_ENERGY_APPS = Object.freeze([
     title: "Calculateur de compteur prépayé",
     description: "Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.",
     intent: "facture",
+    reviewedAt: "2026-08-15",
+    sourceLabel: "Tarifs officiels actuels par fournisseur et catégorie",
+    confidence: "Confiance élevée pour les tarifs automatiques qui passent le contrôle de fraîcheur",
   },
   {
     id: "solar-vs-generator",
@@ -151,9 +157,9 @@ const FRENCH_ENERGY_APPS = Object.freeze([
   sourceRoute: `/tools/${app.buildSourceId || app.id}/`,
   frRoute: `/fr/tools/${app.frSlug}/`,
   image: `/assets/img/tools/${app.id}.webp`,
-  reviewedAt: REVIEWED_AT,
-  sourceLabel: "Registre de formules et références énergie AfroTools",
-  confidence: "Indication de planification — vérification locale requise",
+  reviewedAt: app.reviewedAt || REVIEWED_AT,
+  sourceLabel: app.sourceLabel || "Registre de formules et références énergie AfroTools",
+  confidence: app.confidence || "Indication de planification — vérification locale requise",
 })));
 
 function findFrenchEnergyApp(id) {

@@ -56,7 +56,7 @@
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
 <link rel="stylesheet" href="/assets/css/french-energy-parity.css?v=f40b4d7b">
 <script type="application/ld+json" data-fr-energy-schema>{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Calculateur de compteur prépayé","description":"Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/compteur-prepaye/","isBasedOn":"https://afrotools.com/tools/prepaid-meter/","image":"https://afrotools.com/assets/img/tools/prepaid-meter.webp","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-<script type="application/json" data-fr-energy-config>{"id":"prepaid-meter","title":"Calculateur de compteur prépayé","description":"Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.","enRoute":"/tools/prepaid-meter/","frRoute":"/fr/tools/compteur-prepaye/","reviewedAt":"2026-03-01","sourceLabel":"Registre de formules et références énergie AfroTools","confidence":"Indication de planification — vérification locale requise","routeMap":{"/tools/electricity-tariff/":"/fr/tools/tarifs-electricite/","/tools/solar-roi/":"/fr/tools/roi-solaire/","/tools/prepaid-meter/":"/fr/tools/compteur-prepaye/","/tools/solar-vs-generator/":"/fr/tools/solaire-vs-generateur/","/tools/electricity-bill-verify/":"/fr/tools/verifier-facture-electricite/","/tools/water-bill/":"/fr/tools/calculateur-facture-eau/","/tools/gas-lpg-cost/":"/fr/tools/cout-gaz-lpg/","/tools/paygo-solar/":"/fr/tools/solaire-paygo/","/tools/outage-cost/":"/fr/tools/cout-coupure-entreprise/","/tools/solar-sizing/":"/fr/tools/dimensionnement-solaire/","/tools/battery-sizing/":"/fr/tools/dimensionnement-batterie-onduleur/","/tools/energy-audit/":"/fr/tools/audit-energie-maison/","/tools/appliance-power/":"/fr/tools/consommation-appareils/","/tools/backup-duration/":"/fr/tools/autonomie-secours/","/tools/diesel-vs-solar-farm/":"/fr/tools/diesel-vs-solaire-ferme/","/tools/mini-grid-feasibility/":"/fr/tools/faisabilite-mini-reseau/","/tools/carbon-footprint-energy/":"/fr/tools/empreinte-carbone-energie/","/tools/ev-charging/":"/fr/tools/cout-recharge-ev/","/tools/biogas-roi/":"/fr/tools/roi-biogaz/","/tools/generator-fuel/":"/fr/tools/carburant-generateur/"}}</script>
+<script type="application/json" data-fr-energy-config>{"id":"prepaid-meter","title":"Calculateur de compteur prépayé","description":"Estimez les kWh, frais, taxes et jours d’autonomie obtenus avec une recharge prépayée.","enRoute":"/tools/prepaid-meter/","frRoute":"/fr/tools/compteur-prepaye/","reviewedAt":"2026-08-15","sourceLabel":"Tarifs officiels actuels par fournisseur et catégorie","confidence":"Confiance élevée pour les tarifs automatiques qui passent le contrôle de fraîcheur","routeMap":{"/tools/electricity-tariff/":"/fr/tools/tarifs-electricite/","/tools/solar-roi/":"/fr/tools/roi-solaire/","/tools/prepaid-meter/":"/fr/tools/compteur-prepaye/","/tools/solar-vs-generator/":"/fr/tools/solaire-vs-generateur/","/tools/electricity-bill-verify/":"/fr/tools/verifier-facture-electricite/","/tools/water-bill/":"/fr/tools/calculateur-facture-eau/","/tools/gas-lpg-cost/":"/fr/tools/cout-gaz-lpg/","/tools/paygo-solar/":"/fr/tools/solaire-paygo/","/tools/outage-cost/":"/fr/tools/cout-coupure-entreprise/","/tools/solar-sizing/":"/fr/tools/dimensionnement-solaire/","/tools/battery-sizing/":"/fr/tools/dimensionnement-batterie-onduleur/","/tools/energy-audit/":"/fr/tools/audit-energie-maison/","/tools/appliance-power/":"/fr/tools/consommation-appareils/","/tools/backup-duration/":"/fr/tools/autonomie-secours/","/tools/diesel-vs-solar-farm/":"/fr/tools/diesel-vs-solaire-ferme/","/tools/mini-grid-feasibility/":"/fr/tools/faisabilite-mini-reseau/","/tools/carbon-footprint-energy/":"/fr/tools/empreinte-carbone-energie/","/tools/ev-charging/":"/fr/tools/cout-recharge-ev/","/tools/biogas-roi/":"/fr/tools/roi-biogaz/","/tools/generator-fuel/":"/fr/tools/carburant-generateur/"}}</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/compteur-prepaye/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-prepaye/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/compteur-prepaye/">
@@ -140,10 +140,14 @@ window.addEventListener('load', function() {
               </label>
             </div>
             <div id="electricityCustom" class="electricity-custom" hidden>
-              <h3>Utiliser un tarif local à jour</h3><p class="electricity-note">Copiez le prix par kWh et les éventuels frais fixes depuis une facture récente ou un avis officiel. AfroTools ne conserve ni ne valide ces valeurs.</p>
+              <h3>Utiliser un tarif local à jour</h3><p class="electricity-note">Copiez la devise, le prix par kWh et les éventuels frais fixes ou taxes/prélèvements depuis une facture récente ou un avis officiel. AfroTools ne conserve ni ne valide ces valeurs.</p>
               <div class="electricity-fields">
+                <label class="electricity-field" for="electricityCustomCurrency">Devise
+                  <select id="electricityCustomCurrency"><option>UGX</option><option>TZS</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>ZMW</option><option>XOF</option><option>USD</option></select>
+                </label>
                 <label class="electricity-field" for="electricityCustomRate">Tarif par kWh (<span data-electricity-currency>UGX</span>)<input id="electricityCustomRate" type="number" min="0" step="any" inputmode="decimal"></label>
                 <label class="electricity-field" for="electricityCustomFixed">Frais fixes de facture (<span data-electricity-currency>UGX</span>)<input id="electricityCustomFixed" type="number" min="0" step="any" value="0" inputmode="decimal"></label>
+                <label class="electricity-field" for="electricityCustomTax">Taxe ou prélèvement (%)<input id="electricityCustomTax" type="number" min="0" max="100" step="0.01" value="0" inputmode="decimal"></label>
               </div>
             </div>
             <p id="electricityStatus" class="electricity-status" role="alert" aria-live="assertive"></p>
@@ -200,10 +204,10 @@ window.addEventListener('load', function() {
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
   <afro-footer></afro-footer>
-  <script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/engines/electricity-cost-engine.js?v=5d4fa9c4"></script>
-  <script src="/assets/js/pages/electricity-cost-prepaid-units.js?v=36a21886"></script>
+  <script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/engines/electricity-cost-engine.js?v=34a66793"></script>
+  <script src="/assets/js/pages/electricity-cost-prepaid-units.js?v=55c63461"></script>
   <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<script src="/assets/js/pages/french-energy-parity.js?v=a946a8e4"></script>
+<script src="/assets/js/pages/french-energy-parity.js?v=4ef0a4a6"></script>
 </body>
 </html>

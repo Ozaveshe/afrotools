@@ -52,8 +52,11 @@ assert.equal(units.ok, true);
 assert.equal(units.units, 12.8304);
 assert(Math.abs(engine.calculateBill(ugStandard, units.units).energy_charge - 10000) < 0.1);
 const deductedUnits = engine.calculateUnits(synthetic, 1020, { extra_deductions: [{ id: 'extra', label: 'Extra', type: 'percent', value: 10 }] });
-assert.equal(deductedUnits.amount_for_energy, 898);
-assert.equal(deductedUnits.units, 89.8);
+assert.equal(deductedUnits.amount_after_prepaid_deductions, 898);
+assert.equal(deductedUnits.amount_for_energy, 727.49);
+assert.equal(deductedUnits.fixed_charge, 50);
+assert(Math.abs(deductedUnits.units - 72.749) < 0.001);
+assert.equal(deductedUnits.total_charged, 898);
 
 assert.equal(engine.calculateBill(null, 100).ok, false);
 assert.equal(engine.calculateBill(ugStandard, 0).ok, false);
@@ -65,6 +68,9 @@ assert.equal(engine.round(1.005, 2), 1.01);
 const custom = engine.customRateRecord({ country_code: 'GH', country_name: 'Ghana', currency: 'GHS', rate: 2.5, fixed_charge: 10 });
 assert.equal(custom.status, 'custom');
 assert.equal(engine.calculateBill(custom, 20).total, 60);
+const customWithTax = engine.customRateRecord({ currency: 'GHS', rate: 2.5, fixed_charge: 10, tax_percent: 10 });
+assert.equal(engine.calculateBill(customWithTax, 20).total, 66);
+assert.equal(engine.calculateUnits(customWithTax, 66).units, 20);
 assert.equal(engine.customRateRecord({ rate: 0 }), null);
 assert.match(engine.formatMoney(1000, 'UGX'), /1,000/);
 

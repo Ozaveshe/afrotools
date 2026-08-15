@@ -6,6 +6,7 @@ const vm = require("vm");
 const { execFileSync } = require("child_process");
 const { localizeVisibleLanguage } = require("./lib/french-visible-language");
 const { enhanceCategory } = require("./lib/localized-category-standard");
+const { analyticsVersion, bootstrapVersion, canonicalLoaderTag, earlyBootstrapTag } = require("./inject-analytics-loader");
 const FRENCH_VISIBLE_COPY = require("./lib/french-energy-visible-copy");
 const {
   FRENCH_ENERGY_APPS,
@@ -230,12 +231,19 @@ function postProcess(app) {
     html = html.replace(/(<\/h1>)/i, `$1\n${summary}`);
   }
 
+  html = html
+    .replace(/href=(["'])\/fr\/tools\/\1/gi, "href=$1/fr/all-tools/$1")
+    .replace(/href=(["'])\/fr\/terms\/\1/gi, "href=$1/fr/terms-of-use/$1")
+    .replace(/href=(["'])\/fr\/tools\/fuel-tracker\/\1/gi, "href=$1/fr/tools/suivi-carburant/$1");
+
   html = html.replace(/<script\s+src=["']\/assets\/js\/pages\/french-energy-parity\.js["'][^>]*><\/script>\s*/gi, "");
   html = html.replace("</body>", `<script src="/assets/js/pages/french-energy-parity.js"></script>\n</body>`);
   fs.writeFileSync(output, html);
 }
 
 function buildHub() {
+  const analyticsBootstrap = earlyBootstrapTag(bootstrapVersion(), analyticsVersion());
+  const analyticsLoader = canonicalLoaderTag(analyticsVersion());
   const cards = FRENCH_ENERGY_APPS.map((app) => `
       <article class="energy-card" data-intent="${app.intent}">
         <a href="${app.frRoute}">
@@ -272,6 +280,7 @@ function buildHub() {
   const html = enhanceCategory(`<!doctype html>
 <html lang="fr" data-theme-choice="auto">
 <head>
+  ${analyticsBootstrap}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="afrotools-source-owner" content="scripts/build-french-energy-parity.js">
@@ -328,6 +337,7 @@ function buildHub() {
   <script>
     (function(){var input=document.getElementById("energy-search"),cards=Array.from(document.querySelectorAll(".energy-card")),count=document.querySelector("[data-energy-count]"),empty=document.querySelector("[data-energy-empty]");function run(){var q=input.value.trim().toLocaleLowerCase("fr");var visible=0;cards.forEach(function(card){var show=!q||card.textContent.toLocaleLowerCase("fr").includes(q);card.hidden=!show;if(show)visible+=1});count.textContent=String(visible);empty.hidden=visible!==0}input.addEventListener("input",run);run()})();
   </script>
+  ${analyticsLoader}
 </body>
 </html>`, "fr");
   fs.mkdirSync(path.dirname(fileForRoute("/fr/energy/")), { recursive: true });

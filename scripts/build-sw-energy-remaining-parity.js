@@ -10,6 +10,9 @@ const {
   REVIEWED_AT,
 } = require("./lib/sw-energy-remaining-contract");
 const { normalizeReleaseOwnedHtml } = require("./lib/release-owned-html-normalizer");
+const { localizeVisibleLanguage } = require("./lib/french-visible-language");
+const { enhanceCategory } = require("./lib/localized-category-standard");
+const { analyticsVersion, canonicalLoaderTag } = require("./inject-analytics-loader");
 
 const ROOT = path.resolve(__dirname, "..");
 const WRITE = process.argv.includes("--write");
@@ -62,7 +65,73 @@ function fieldMarkup(field) {
   return `<label class="sw-energy-field"><span>${esc(field.label)}</span><input ${attrs}></label>`;
 }
 
+function swahiliElectricityCatalog() {
+  const runtime = fs.readFileSync(path.join(ROOT, "assets", "js", "pages", "swahili-electricity-parity.js"), "utf8");
+  const match = runtime.match(/var exact = (\[[\s\S]*?\]);\s*\n\s*function translateText/);
+  if (!match) throw new Error("Swahili electricity translation catalog is unreadable");
+  return vm.runInNewContext(match[1]);
+}
+
+function swahiliElectricityTransforms() {
+  return swahiliElectricityCatalog().map(([english, swahili]) => [
+    new RegExp(String(english).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
+    swahili,
+  ]);
+}
+
+function replaceMeta(html, attribute, attributeValue, value) {
+  const escaped = String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  const marker = attributeValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`(<meta\\s+[^>]*${attribute}=["']${marker}["'][^>]*content=["'])[^"']*(["'][^>]*>)`, "i");
+  const reverse = new RegExp(`(<meta\\s+[^>]*content=["'])[^"']*(["'][^>]*${attribute}=["']${marker}["'][^>]*>)`, "i");
+  if (pattern.test(html)) return html.replace(pattern, `$1${escaped}$2`);
+  if (reverse.test(html)) return html.replace(reverse, `$1${escaped}$2`);
+  return html;
+}
+
+function electricityDemandPage(app) {
+  const source = path.join(ROOT, "tools", "electricity-tariff", "index.html");
+  let html = fs.readFileSync(source, "utf8");
+  const canonical = `https://afrotools.com${app.swRoute}`;
+  html = localizeVisibleLanguage(html, swahiliElectricityTransforms());
+  for (const [english, swahili] of swahiliElectricityCatalog()) {
+    if (english.length > 25) html = html.split(english).join(swahili);
+  }
+  html = html
+    .replace(/<script\s+[^>]*src=["']\/assets\/js\/analytics-bootstrap\.js[^>]*><\/script>\s*/gi, "")
+    .replace(/<html\b([^>]*)\blang=["'][^"']*["']([^>]*)>/i, '<html$1lang="sw"$2>')
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(app.title)} | AfroTools</title>`)
+    .replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, `$1${esc(app.title)}$2`)
+    .replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${canonical}">`)
+    .replace(/(<meta\s+[^>]*property=["']og:url["'][^>]*content=["'])[^"']*(["'][^>]*>)/i, `$1${canonical}$2`)
+    .replace(/<body\b([^>]*)>/i, '<body$1 data-sw-energy-app="electricity-tariff">')
+    .replace(/"name": "Electricity Cost & Prepaid Units"/g, `"name": "${app.title}"`)
+    .replace(/"url": "https:\/\/afrotools\.com\/tools\/electricity-tariff\/"/g, `"url": "${canonical}"`)
+    .replace(/"operatingSystem": "Any"/g, '"operatingSystem": "Any",\n  "inLanguage": "sw"')
+    .replace(/Energy &amp; Utilities/g, "Nishati na Huduma")
+    .replace(/"description": "Estimate prepaid electricity units from money or an electricity bill from kWh using maintained provider and customer-class tariffs\."/g, `"description": "${app.description}"`)
+    .replace(/"name":"Home"/g, '"name":"Mwanzo"')
+    .replace(/"name":"Energy & Utilities"/g, '"name":"Nishati na Huduma"')
+    .replace(/"name":"Electricity Cost & Prepaid Units"/g, `"name":"${app.title}"`)
+    .replace(/"item":"https:\/\/afrotools\.com\/tools\/electricity-tariff\/"/g, `"item":"${canonical}"`)
+    .replace(/href="\/tools\/electricity-bill-verify\/"/g, 'href="/sw/zana/ukaguzi-wa-bili-ya-umeme/"')
+    .replace(/href="\/tools\/electricity-estimator\/"/g, 'href="/sw/zana/matumizi-ya-umeme-ya-vifaa/"')
+    .replace(/<afro-related-tools\b[\s\S]*?<\/afro-related-tools>\s*/i, "")
+    .replace(/<script\s+src=["']\/assets\/js\/components\/related-tools[^>]*><\/script>\s*/gi, "")
+    .replace(/<script\s+src=["']\/assets\/js\/pages\/swahili-electricity-parity\.js[^>]*><\/script>\s*/gi, "")
+    .replace("</body>", '<script src="/assets/js/pages/swahili-electricity-parity.js"></script>\n<script src="/assets/js/lib/sw-accessibility.js" defer></script>\n</body>');
+  html = replaceMeta(html, "name", "description", app.description);
+  html = replaceMeta(html, "property", "og:title", `${app.title} | AfroTools`);
+  html = replaceMeta(html, "property", "og:description", app.description);
+  html = replaceMeta(html, "name", "twitter:title", `${app.title} | AfroTools`);
+  html = replaceMeta(html, "name", "twitter:description", app.description);
+  html = html.replace(/<meta\s+name=["']afrotools-source-owner["'][^>]*>\s*/gi, "");
+  html = html.replace(/(<meta\s+charset=[^>]+>)/i, '$1\n<meta name="afrotools-source-owner" content="scripts/build-sw-energy-remaining-parity.js">');
+  return html;
+}
+
 function page(app) {
+  if (app.exactTariff) return electricityDemandPage(app);
   const alternates = app.id === "prepaid-meter"
     ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${app.swRoute}">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com${app.swRoute}">`
@@ -183,18 +252,26 @@ function hubPage() {
     ...SW_ENERGY_REMAINING_APPS,
   ];
   const cards = all.map((app) => `<a class="sw-energy-hub-card" href="${esc(app.swRoute || app.route)}"><img src="${esc(app.image)}" width="800" height="450" loading="lazy" alt=""><span><strong>${esc(app.title)}</strong><small>${esc(app.description)}</small>${app.accepted ? '<em>Imethibitishwa</em>' : '<em>Inahitaji uthibitisho wa kivinjari</em>'}</span></a>`).join("\n");
-  return `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana za Nishati na Huduma | AfroTools</title><meta name="description" content="Zana 20 za Kiswahili za umeme, solar, maji, LPG, generator, biogas, EV na ukaguzi wa nishati."><link rel="canonical" href="https://afrotools.com/sw/nishati-na-huduma/"><link rel="alternate" hreflang="en" href="https://afrotools.com/energy/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/energy/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/nishati-na-huduma/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/energy/"><meta property="og:title" content="Zana za Nishati na Huduma | AfroTools"><meta property="og:description" content="Zana 20 za Kiswahili za kupanga nishati na huduma."><meta property="og:image" content="https://afrotools.com/assets/img/category/energy.webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-energy-remaining-parity.css"><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body><afro-navbar active="energy"></afro-navbar><main class="sw-energy-page"><header class="sw-energy-hero"><p class="sw-energy-kicker">Nishati na Huduma · Kiswahili</p><h1>Zana 20 za maamuzi ya nishati</h1><p>Kadiria matumizi, gharama, ukubwa na athari kwa njia ya faragha. Kila zana inaonyesha mipaka ya chanzo na upya wa data.</p></header><section class="sw-energy-hub-grid" aria-label="Zana za nishati">${cards}</section><section class="sw-energy-card sw-energy-method"><h2>Mpaka wa data</h2><p>Viwango vilivyofungwa ni nakala ya Machi 2026 na havidai kuwa vya sasa. Thibitisha tarifa, bei ya mafuta, bei ya LPG, bei ya maji, nukuu na masharti na mdhibiti au mtoa huduma wa eneo lako.</p></section></main><afro-footer></afro-footer></body></html>\n`;
+  const analyticsLoader = canonicalLoaderTag(analyticsVersion());
+  const html = `<!doctype html><html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana za Nishati na Huduma | AfroTools</title><meta name="description" content="Zana 20 za Kiswahili za umeme, solar, maji, LPG, generator, biogas, EV na ukaguzi wa nishati."><link rel="canonical" href="https://afrotools.com/sw/nishati-na-huduma/"><link rel="alternate" hreflang="en" href="https://afrotools.com/energy/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/energy/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/nishati-na-huduma/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/energy/"><meta property="og:title" content="Zana za Nishati na Huduma | AfroTools"><meta property="og:description" content="Zana 20 za Kiswahili za kupanga nishati na huduma."><meta property="og:url" content="https://afrotools.com/sw/nishati-na-huduma/"><meta property="og:image" content="https://afrotools.com/assets/img/category/energy.webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-energy-remaining-parity.css"><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body><afro-navbar active="energy"></afro-navbar><main class="sw-energy-page"><header class="sw-energy-hero"><p class="sw-energy-kicker">Nishati na Huduma · Kiswahili</p><h1>Zana 20 za maamuzi ya nishati</h1><p>Kadiria matumizi, gharama, ukubwa na athari kwa njia ya faragha. Kila zana inaonyesha mipaka ya chanzo na upya wa data.</p></header><section class="sw-energy-hub-grid" aria-label="Zana za nishati">${cards}</section><section class="sw-energy-card sw-energy-method"><h2>Mpaka wa data</h2><p>Viwango vilivyofungwa ni nakala ya Machi 2026 na havidai kuwa vya sasa. Thibitisha tarifa, bei ya mafuta, bei ya LPG, bei ya maji, nukuu na masharti na mdhibiti au mtoa huduma wa eneo lako.</p></section></main><afro-footer></afro-footer>${analyticsLoader}<script src="/assets/js/lib/sw-accessibility.js" defer></script></body></html>\n`;
+  return enhanceCategory(html, "sw");
 }
 
 function reconcile(file, content) {
   const current = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+  const requiredRuntimeMissing = [
+    "/assets/js/lib/sw-accessibility.js",
+    ...(file === HUB ? [canonicalLoaderTag(analyticsVersion()), "LOCALIZED-CATEGORY-STANDARD:START"] : []),
+  ].some((token) => content.includes(token) && !current.includes(token));
+  const forbiddenRuntimePresent = current.includes("/assets/js/analytics-bootstrap.js")
+    && !content.includes("/assets/js/analytics-bootstrap.js");
   const comparableCurrent = file.endsWith(".html")
     ? normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true })
     : current;
   const comparableContent = file.endsWith(".html")
     ? normalizeReleaseOwnedHtml(content, { stripReleaseMetadata: true })
     : content;
-  if (comparableCurrent === comparableContent) return false;
+  if (comparableCurrent === comparableContent && !requiredRuntimeMissing && !forbiddenRuntimePresent) return false;
   if (!WRITE) throw new Error(`${path.relative(ROOT, file)} is stale; run with --write`);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, content);
