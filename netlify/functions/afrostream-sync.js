@@ -352,6 +352,7 @@ async function syncKick() {
         var kickViewers = Number((channelData.livestream && channelData.livestream.viewer_count) || channelData.viewer_count || channelData.viewers || 0) || 0;
         var kickThumb = normalizeThumbnailUrl((channelData.livestream && channelData.livestream.thumbnail) || channelData.banner_image);
         var streamData = {
+          creator_id: creator.id,
           creator_name: creator.name,
           title: streamTitle,
           platform: 'Kick',
@@ -663,6 +664,7 @@ async function syncTwitch() {
 
     var twitchThumb = normalizeThumbnailUrl(liveStream.thumbnail_url);
     var streamData = {
+      creator_id: liveCreator.id,
       creator_name: liveCreator.name,
       title: liveStream.title || 'Live on Twitch',
       platform: 'Twitch',

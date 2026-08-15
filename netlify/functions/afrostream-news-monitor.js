@@ -11,7 +11,8 @@ var FEED_TIMEOUT_MS = 9000;
 var DEFAULT_SCHEDULED_LOOKBACK_DAYS = 3;
 var DEFAULT_MANUAL_LOOKBACK_DAYS = 10;
 var DEFAULT_SCHEDULED_INSERT_LIMIT = 5;
-var DEFAULT_MANUAL_INSERT_LIMIT = 30;
+var DEFAULT_MANUAL_INSERT_LIMIT = 5;
+var MAX_RUN_INSERT_LIMIT = 5;
 
 function headers() {
   return { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
@@ -56,6 +57,16 @@ function numberParam(event, keys, fallback, min, max) {
     }
   }
   return fallback;
+}
+
+function insertLimitForEvent(event) {
+  return numberParam(
+    event,
+    ['max_insert_news', 'limit'],
+    isScheduled(event) ? DEFAULT_SCHEDULED_INSERT_LIMIT : DEFAULT_MANUAL_INSERT_LIMIT,
+    1,
+    MAX_RUN_INSERT_LIMIT
+  );
 }
 
 async function sb(method, path, body, upsert) {
@@ -167,6 +178,22 @@ function hash(value) {
   return Math.abs(h).toString(36);
 }
 
+function shouldInsertNewsCandidate(existingNews) {
+  // Existing rows may have been unpublished or corrected during editorial review.
+  // A recurring feed observation must never overwrite that moderation state.
+  return !existingNews;
+}
+
+function reserveInsertSlot(insertBudget) {
+  if (!insertBudget || insertBudget.remaining <= 0) return false;
+  insertBudget.remaining--;
+  return true;
+}
+
+function releaseInsertSlot(insertBudget) {
+  if (insertBudget) insertBudget.remaining++;
+}
+
 function parseFeedsFromEnv() {
   if (!ENV_FEEDS.trim()) return [];
   try {
@@ -203,6 +230,24 @@ function parseFeed(xml) {
     });
   });
   return items;
+}
+
+function prepareFeedItems(items) {
+  var guidCounts = {};
+  (items || []).forEach(function(item) {
+    var guid = String(item && item.guid || '').trim();
+    if (guid) guidCounts[guid] = (guidCounts[guid] || 0) + 1;
+  });
+
+  return (items || []).map(function(item) {
+    var guid = String(item && item.guid || '').trim();
+    var link = String(item && item.link || '').trim();
+    var identity = guid;
+    if (!guid || guidCounts[guid] > 1) {
+      identity = link || [item.title, item.published_at].join('|');
+    }
+    return Object.assign({}, item, { identity: identity });
+  });
 }
 
 function normalizeForMatch(value) {
@@ -339,10 +384,25 @@ async function mapWithConcurrency(items, limit, iterator) {
 }
 
 async function processNewsCandidate(source, item, matches, summary, dryRun, insertBudget) {
-  var externalId = hash(source.feed_url + '|' + item.guid);
-  var existingRows = await sb('GET', 'as_news?external_id=eq.' + encodeURIComponent(externalId) + '&select=id,slug,external_id');
+  var externalId = hash(source.feed_url + '|' + (item.identity || item.guid || item.link));
+  var existingRows = await sb('GET', 'as_news?external_id=eq.' + encodeURIComponent(externalId) + '&select=id,slug,external_id,source_url,is_published,category');
   var existingNews = Array.isArray(existingRows) && existingRows.length ? existingRows[0] : null;
   summary.matched_items++;
+
+  var candidateSourceUrl = item.link || source.feed_url;
+  if (existingNews && existingNews.source_url && candidateSourceUrl && existingNews.source_url !== candidateSourceUrl) {
+    summary.identity_collisions++;
+    summary.skipped_matches++;
+    if (summary.skipped.length < 25) {
+      summary.skipped.push({
+        source: source.name || 'RSS source',
+        title: item.title,
+        source_url: candidateSourceUrl,
+        reason: 'Feed identity collision: existing row points to a different source URL.'
+      });
+    }
+    return;
+  }
 
   if (dryRun) {
     if (existingNews) summary.existing_news++;
@@ -363,7 +423,8 @@ async function processNewsCandidate(source, item, matches, summary, dryRun, inse
     return;
   }
 
-  if (!existingNews && insertBudget.remaining <= 0) {
+  var insertingNews = shouldInsertNewsCandidate(existingNews);
+  if (insertingNews && !reserveInsertSlot(insertBudget)) {
     summary.skipped_matches++;
     if (summary.skipped.length < 25) {
       summary.skipped.push({
@@ -376,26 +437,36 @@ async function processNewsCandidate(source, item, matches, summary, dryRun, inse
     return;
   }
 
-  var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
-    title: item.title,
-    slug: slugify(item.title) + '-' + externalId.slice(0, 6),
-    category: source.category || 'creator-news',
-    author: source.name || 'RSS source',
-    excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
-    body: item.description || item.title,
-    source_url: item.link || source.feed_url,
-    source_name: source.name || 'RSS source',
-    external_id: externalId,
-    is_featured: false,
-    is_published: true,
-    published_at: item.published_at
-  }, true);
-  var news = Array.isArray(newsRows) ? newsRows[0] : null;
-  if (!news || !news.id) return;
-  if (existingNews) summary.existing_news++;
-  else {
+  var news = existingNews;
+  if (insertingNews) {
+    var newsRows;
+    try {
+      newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
+        title: item.title,
+        slug: slugify(item.title) + '-' + externalId.slice(0, 6),
+        category: source.category || 'creator-news',
+        author: source.name || 'RSS source',
+        excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
+        body: item.description || item.title,
+        source_url: candidateSourceUrl,
+        source_name: source.name || 'RSS source',
+        external_id: externalId,
+        is_featured: false,
+        is_published: true,
+        published_at: item.published_at
+      }, true);
+    } catch (error) {
+      releaseInsertSlot(insertBudget);
+      throw error;
+    }
+    news = Array.isArray(newsRows) ? newsRows[0] : null;
+    if (!news || !news.id) {
+      releaseInsertSlot(insertBudget);
+      return;
+    }
     summary.inserted_news++;
-    insertBudget.remaining--;
+  } else {
+    summary.existing_news++;
   }
 
   for (var m = 0; m < matches.length; m++) {
@@ -427,7 +498,7 @@ async function processSource(source, creators, summary, options) {
       return;
     }
     var xml = await res.text();
-    var items = parseFeed(xml).slice(0, 30);
+    var items = prepareFeedItems(parseFeed(xml)).slice(0, 30);
     fetchedItemCount = items.length;
     summary.items_seen += items.length;
 
@@ -480,7 +551,7 @@ exports.handler = async function(event) {
   var runSource = newsMonitorSource(event);
   var dryRun = isDryRun(event);
   var lookbackDays = numberParam(event, ['backfill_days', 'lookback_days'], isScheduled(event) ? DEFAULT_SCHEDULED_LOOKBACK_DAYS : DEFAULT_MANUAL_LOOKBACK_DAYS, 1, 21);
-  var insertLimit = numberParam(event, ['max_insert_news', 'limit'], isScheduled(event) ? DEFAULT_SCHEDULED_INSERT_LIMIT : DEFAULT_MANUAL_INSERT_LIMIT, 1, 60);
+  var insertLimit = insertLimitForEvent(event);
   var cutoffMs = Date.now() - (lookbackDays * 24 * 60 * 60 * 1000);
   var insertBudget = { remaining: insertLimit };
   var summary = {
@@ -495,6 +566,7 @@ exports.handler = async function(event) {
     would_insert_news: 0,
     existing_news: 0,
     would_create_mentions: 0,
+    identity_collisions: 0,
     skipped_matches: 0,
     mentions: 0,
     inserted_news: 0,
@@ -565,5 +637,9 @@ exports.__test = {
   decodeXml: decodeXml,
   isEditoriallyRelevant: isEditoriallyRelevant,
   hasAfricaSignal: hasAfricaSignal,
-  shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch
+  shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch,
+  shouldInsertNewsCandidate: shouldInsertNewsCandidate,
+  prepareFeedItems: prepareFeedItems,
+  reserveInsertSlot: reserveInsertSlot,
+  insertLimitForEvent: insertLimitForEvent
 };

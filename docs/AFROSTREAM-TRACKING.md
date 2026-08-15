@@ -45,15 +45,15 @@ Ops workflow:
 - Creator pages should read linked mention rows from `public.as_news_creator_mentions`, not a loose text search over `public.as_news`.
 - Manual article creates or updates through `netlify/functions/afrostream-admin.js` now also upsert matching `public.as_news_creator_mentions` rows, so direct AfroStream news publishes do not stay thin by default.
 
-Manual review runs can use dry-run mode before allowing writes:
+Local review runs can use dry-run mode before allowing writes. Netlify scheduled functions are not directly URL-invokable in production, so run the handler from a trusted environment with `ADMIN_SECRET` and the AfroTools service-role key configured:
 
 ```text
-/.netlify/functions/afrostream-news-monitor?dry_run=1
+node -e "const {handler}=require('./netlify/functions/afrostream-news-monitor.js'); handler({httpMethod:'GET',headers:{authorization:'Bearer '+process.env.ADMIN_SECRET},queryStringParameters:{dry_run:'1',lookback_days:'1',max_insert_news:'3'}}).then(r=>{console.log(r.body);if(r.statusCode>=400)process.exitCode=1})"
 ```
 
 Dry-run mode still fetches active sources and checks published creator names, but it reports matched items, existing news rows, would-insert counts, and skipped weak matches without writing news or mention rows. The monitor uses normalized whole-word or whole-phrase creator matching, ignores very short single-token names, and applies a lightweight editorial relevance gate so generic celebrity or birthday items do not become automated AfroStream news.
 
-Scheduled runs cap new article inserts at five per invocation. Existing rows can still receive creator-mention links without consuming that insert budget. This cap limits burst risk; it does not replace source review, duplicate control, or the 48-hour editorial audit.
+Scheduled and manual live runs cap new article inserts at five per invocation, with a slot reserved before each concurrent insert. Existing rows can still receive source-matching creator-mention links without consuming that insert budget, but recurring feed observations must not rewrite an existing row's title, slug, category, or publication state. Feeds that reuse one GUID across multiple items use each article link for identity so one row cannot rotate through unrelated stories and creator mentions. Dry-run mode can report more than five candidates because it performs no inserts. These controls preserve reversible editorial unpublishes and manual corrections; they do not replace source review, duplicate control, or the 48-hour editorial audit.
 
 RSS sources can also be supplied through:
 

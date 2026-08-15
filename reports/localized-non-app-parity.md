@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 259 |
-| sw | 137 | 0 | 283 |
+| fr | 162 | 0 | 258 |
+| sw | 138 | 0 | 282 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 293 | 39 | 0 | 254 | 20 | 0 | 273 |
+| editorial | 293 | 40 | 0 | 253 | 21 | 0 | 272 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -393,7 +393,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/public-tender-document-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/public-tender-document-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/quotation-vs-invoice-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
-| /blog/quotation-vs-invoice-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/register-business-ghana-2026/ | editorial | fr | /fr/blog/register-business-ghana-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/register-business-ghana-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/register-business-kenya-2026/ | editorial | fr | /fr/blog/register-business-kenya-2026/ | missing | English fallback shell; no reviewed native article |
@@ -427,7 +426,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/salary-after-tax-egypt-2026/ | editorial | fr | /fr/blog/salary-after-tax-egypt-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/salary-after-tax-egypt-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/salary-after-tax-ghana-2026/ | editorial | sw | — | missing | no localized route or owner file |
-| /blog/salary-after-tax-morocco-2026/ | editorial | fr | /fr/blog/salary-after-tax-morocco-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/salary-after-tax-morocco-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/salary-after-tax-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/salary-after-tax-rwanda-2026/ | editorial | fr | /fr/blog/salary-after-tax-rwanda-2026/ | missing | English fallback shell; no reviewed native article |

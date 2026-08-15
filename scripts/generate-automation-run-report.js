@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { StringDecoder } = require('string_decoder');
 
 const ROOT = path.resolve(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -17,6 +18,41 @@ function getArg(name, fallback) {
 
 function readText(filePath) {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+}
+
+function* readJsonlLines(filePath, chunkSize = 1024 * 1024) {
+  if (!fs.existsSync(filePath)) return;
+
+  const size = Math.max(1, Number(chunkSize) || 1024 * 1024);
+  const buffer = Buffer.allocUnsafe(size);
+  const decoder = new StringDecoder('utf8');
+  const descriptor = fs.openSync(filePath, 'r');
+  let carry = '';
+
+  try {
+    let bytesRead = 0;
+    while ((bytesRead = fs.readSync(descriptor, buffer, 0, buffer.length, null)) > 0) {
+      const text = carry + decoder.write(buffer.subarray(0, bytesRead));
+      let lineStart = 0;
+      let lineEnd = text.indexOf('\n', lineStart);
+
+      while (lineEnd !== -1) {
+        let line = text.slice(lineStart, lineEnd);
+        if (line.endsWith('\r')) line = line.slice(0, -1);
+        if (line) yield line;
+        lineStart = lineEnd + 1;
+        lineEnd = text.indexOf('\n', lineStart);
+      }
+
+      carry = text.slice(lineStart);
+    }
+
+    carry += decoder.end();
+    if (carry.endsWith('\r')) carry = carry.slice(0, -1);
+    if (carry) yield carry;
+  } finally {
+    fs.closeSync(descriptor);
+  }
 }
 
 function parseTomlString(text, key) {
@@ -81,7 +117,6 @@ function summarize(text) {
 }
 
 function parseRollout(filePath) {
-  const lines = readText(filePath).split(/\r?\n/).filter(Boolean);
   const result = {
     filePath,
     sessionId: null,
@@ -96,7 +131,7 @@ function parseRollout(filePath) {
   const allText = [];
   const runtimeText = [];
 
-  for (const line of lines) {
+  for (const line of readJsonlLines(filePath)) {
     let event;
     try {
       event = JSON.parse(line);
@@ -339,4 +374,6 @@ function writeReport() {
   console.log(`Runs found: ${runs.length}; active without run evidence: ${activeNoRun.length}; missing memory: ${missingMemory.length}`);
 }
 
-writeReport();
+if (require.main === module) writeReport();
+
+module.exports = { readJsonlLines, parseRollout, writeReport };

@@ -6,23 +6,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11502 |
-| Indexable pages | 10298 |
+| Public pages | 11503 |
+| Indexable pages | 10299 |
 | Permanent and temporary redirects | 2938 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
 | Genuine equivalence groups | 5279 |
-| Documented fallbacks | 14730 |
-| Routes eligible for primary sitemaps | 10298 |
+| Documented fallbacks | 14731 |
+| Routes eligible for primary sitemaps | 10299 |
 
 ## Locale Coverage
 
 - en: 5955 page records
 - fr: 3802 page records
 - ha: 105 page records
-- sw: 1595 page records
+- sw: 1596 page records
 - yo: 45 page records
 
 ## Page Types
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5404
+- page: 5405
 - tool: 4005
 - widget: 379
 
@@ -5083,7 +5083,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:648602716db5: en=`/tools/afrokitchen/recipes/chicken-tagine-preserved-lemons-ma/`; x-default=`/tools/afrokitchen/recipes/chicken-tagine-preserved-lemons-ma/`
 - equivalence:64953b0205fe: en=`/tools/youtube-revenue/`, fr=`/fr/tools/revenus-youtube/`, sw=`/sw/zana/mapato-ya-youtube/`; x-default=`/tools/youtube-revenue/`
 - equivalence:64a7d3c9a0c1: en=`/blog/kenya-paye-calculator-guide-2025/`, fr=`/fr/blog/kenya-paye-calculator-guide-2025/`; x-default=`/blog/kenya-paye-calculator-guide-2025/`
-- equivalence:64e2af23a45d: en=`/blog/quotation-vs-invoice-small-business-africa/`; x-default=`/blog/quotation-vs-invoice-small-business-africa/`
 - equivalence:64ea7052f22b: en=`/jamb/government/2003/`; x-default=`/jamb/government/2003/`
 - equivalence:64eaaf9e0735: en=`/agriculture/fertilizer/south-sudan`, fr=`/fr/agriculture/fertilizer/south-sudan`, sw=`/sw/kilimo/mbolea/south-sudan/`; x-default=`/agriculture/fertilizer/south-sudan`
 - equivalence:64ebbd2bad90: en=`/jamb/english/2014/`; x-default=`/jamb/english/2014/`
@@ -6676,6 +6675,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b19bbfc76015: en=`/eritrea/er-vat`, fr=`/fr/eritrea/er-vat`, sw=`/sw/eritrea/kikokotoo-vat/`; x-default=`/eritrea/er-vat`
 - equivalence:b1a6a16e32f0: en=`/cars/morocco/toyota/hilux/`, fr=`/fr/cars/maroc/toyota/hilux/`; x-default=`/cars/morocco/toyota/hilux/`
 - equivalence:b1ab3624cf98: en=`/tools/ng-land-use/`, fr=`/fr/tools/ng-taxe-fonciere/`, sw=`/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/`; x-default=`/tools/ng-land-use/`
+- equivalence:b1d2634f1ebc: en=`/blog/quotation-vs-invoice-small-business-africa/`, sw=`/sw/blogu/quotation-au-ankara-biashara-ndogo-afrika/`; x-default=`/blog/quotation-vs-invoice-small-business-africa/`
 - equivalence:b1fb5c4726a2: en=`/matchday-os/rooms/`; x-default=`/matchday-os/rooms/`
 - equivalence:b1ff5af01282: en=`/tools/pomodoro/`, fr=`/fr/tools/minuteur-pomodoro/`, sw=`/sw/zana/pomodoro/`; x-default=`/tools/pomodoro/`
 - equivalence:b204fa9a43e8: en=`/gambia/`, fr=`/fr/gambia/`, sw=`/sw/gambia/`; x-default=`/gambia/`

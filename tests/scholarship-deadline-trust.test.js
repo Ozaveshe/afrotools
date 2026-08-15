@@ -131,4 +131,23 @@ const tongarewa = deadlineOverrides.overrides['victoria-wellington-tongarewa-sch
 assert.strictEqual(tongarewa.deadline_date, null, 'Tongarewa umbrella record must not inherit one trimester deadline');
 assert.strictEqual(tongarewa.deadline_confidence, 'no_single_public_deadline', 'Tongarewa should preserve trimester-specific deadline semantics');
 
+const worldBankAfrica = deadlineOverrides.overrides['world-bank-group-africa-fellowship-2027'];
+assert.strictEqual(worldBankAfrica.deadline_date, '2026-08-25', 'World Bank Africa Fellowship should use the verified 2027 call deadline');
+assert.strictEqual(worldBankAfrica.status, 'open', 'World Bank Africa Fellowship should be open during the official application window');
+
+const sydneyVcis = deadlineOverrides.overrides['sydney-vice-chancellors-international-scholarship-2027'];
+assert.strictEqual(sydneyVcis.deadline_date, null, 'Sydney VCIS must not turn one selection round into a universal deadline');
+assert.strictEqual(sydneyVcis.deadline_confidence, 'no_single_public_deadline', 'Sydney VCIS should preserve round-specific variable semantics');
+
+const hassJanuary = deadlineOverrides.overrides['strathclyde-hass-international-masters-scholarship-january-2027'];
+assert.strictEqual(hassJanuary.deadline_date, null, 'Strathclyde HASS should remain date-null while the provider says the deadline is unconfirmed');
+assert.strictEqual(hassJanuary.deadline_confidence, 'no_single_public_deadline', 'Strathclyde HASS must not inherit another faculty deadline');
+
+const icgebArturo = deadlineOverrides.overrides['icgeb-arturo-falaschi-postdoctoral-fellowships-september-2026'];
+assert.strictEqual(icgebArturo.deadline_date, '2026-08-14', 'ICGEB Arturo should retain the public expression-of-interest cutoff');
+assert.strictEqual(icgebArturo.status, 'closed', 'ICGEB Arturo must close after the public expression-of-interest stage');
+
+const icgebAicad = deadlineOverrides.overrides['icgeb-aicad-short-term-postdoctoral-fellowships-september-2026'];
+assert.strictEqual(icgebAicad.status, 'closed', 'ICGEB-AICAD must close after the public expression-of-interest stage');
+
 console.log('Scholarship deadline trust model verified.');

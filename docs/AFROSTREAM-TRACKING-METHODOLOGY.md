@@ -13,7 +13,7 @@ AfroStream should be transparent about the categories and weights behind AfroSco
 - Profile stat arrows compare the current creator value with the previous daily snapshot when one exists.
 - When only one snapshot exists, the UI should show an honest flat tracking state such as `Needs next snapshot` or `Tracking daily`.
 - `afrostream-livecheck` runs every 30 minutes for stream status.
-- `afrostream-news-monitor` runs daily for RSS-style creator mentions.
+- `afrostream-news-monitor` runs every six hours at minute 46 UTC for RSS-style creator mentions.
 
 ## Snapshot Fields
 
