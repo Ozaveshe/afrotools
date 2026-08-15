@@ -43,6 +43,20 @@ const SOURCE_KEYS = {
   backup: 'afrotools-curated-backup'
 };
 const SOURCE_TYPES = new Set(['official_page', 'rss', 'api', 'curated_import', 'permitted_scrape']);
+const AUTHORITATIVE_AWARD_CONFIDENCE = new Set(['official', 'provider', 'verified']);
+const AWARD_VALUE_FIELDS = [
+  'award_value_min',
+  'award_value_max',
+  'award_value_amount',
+  'award_value_currency',
+  'award_value_period',
+  'award_value_text',
+  'award_components',
+  'award_value_confidence',
+  'award_value_source_url',
+  'award_value_last_checked_at',
+  'award_value_usd'
+];
 const MANUAL_REVIEW_PARSER_KEYS = new Set([
   'manual_official_page',
   'manual_official_directory',
@@ -51,7 +65,8 @@ const MANUAL_REVIEW_PARSER_KEYS = new Set([
   'manual_review_official_page',
   'manual_review_official_directory',
   'manual_review_official_portal',
-  'manual_review_official_catalog'
+  'manual_review_official_catalog',
+  'manual_review_official_pdf'
 ]);
 
 let sourceRegistryCache = null;
@@ -311,6 +326,74 @@ function normalizeAwardValue(raw, fallbackSourceUrl) {
     sourceUrl: sourceUrl || null,
     checkedAt: checkedAt || null
   };
+}
+
+function hasAwardValueCoverage(record) {
+  if (!record || typeof record !== 'object') return false;
+  return record.award_value_min != null ||
+    record.award_value_max != null ||
+    record.award_value_amount != null ||
+    String(record.award_value_text || '').trim() !== '' ||
+    normalizeJsonArray(record.award_components).length > 0;
+}
+
+function hasAuthoritativeAwardValueCoverage(record) {
+  if (!hasAwardValueCoverage(record)) return false;
+  const confidence = String(record.award_value_confidence || '').trim().toLowerCase();
+  const sourceUrl = String(record.award_value_source_url || '').trim();
+  return AUTHORITATIVE_AWARD_CONFIDENCE.has(confidence) && /^https?:\/\//i.test(sourceUrl);
+}
+
+function preserveAuthoritativeAwardValueCoverage(incoming, existing) {
+  if (!incoming || !hasAuthoritativeAwardValueCoverage(existing) || hasAuthoritativeAwardValueCoverage(incoming)) {
+    return incoming;
+  }
+
+  const preserved = Object.assign({}, incoming);
+  AWARD_VALUE_FIELDS.forEach(function (field) {
+    if (Object.prototype.hasOwnProperty.call(existing, field)) {
+      preserved[field] = existing[field];
+    }
+  });
+  preserved.raw_snapshot = Object.assign({}, normalizeJsonObject(incoming.raw_snapshot, {}), {
+    award_value_preservation: {
+      reason: 'preserved_existing_authoritative_award_coverage',
+      confidence: String(existing.award_value_confidence || '').trim().toLowerCase(),
+      source_url: String(existing.award_value_source_url || '').trim(),
+      fields: AWARD_VALUE_FIELDS.slice()
+    }
+  });
+
+  if (preserved.details && preserved.details.audit && preserved.details.audit.detail_quality === 'structured_from_verified_fields') {
+    preserved.details = buildScholarshipDetailsPayload(preserved);
+  }
+
+  return preserved;
+}
+
+function buildScholarshipSourceSnapshot(raw, source) {
+  const record = normalizeJsonObject(raw, {});
+  const snapshotLayers = [];
+  let cursor = normalizeJsonObject(record.raw_snapshot, null);
+  let depth = 0;
+  while (cursor && depth < 20) {
+    const layer = Object.assign({}, cursor);
+    delete layer.raw_snapshot;
+    snapshotLayers.unshift(layer);
+    cursor = normalizeJsonObject(cursor.raw_snapshot, null);
+    depth += 1;
+  }
+
+  const snapshot = Object.assign.apply(Object, [{}].concat(snapshotLayers, [record, {
+    source_key: source.source_key || '',
+    source_type: source.source_type || '',
+    source_name: source.name || '',
+    parser_key: source.parser_key || '',
+    trust_level: source.trust_level || '',
+    last_source_id: source.id || null
+  }]));
+  delete snapshot.raw_snapshot;
+  return snapshot;
 }
 
 function toPositiveInteger(value, fallback) {
@@ -883,6 +966,7 @@ async function fetchMirrorRows(client) {
     .from('scholarships')
     .select('*')
     .eq('is_active', true)
+    .eq('is_archived', false)
     .order('is_featured', { ascending: false })
     .order('deadline_date', { ascending: true, nullsFirst: false })
     .order('title', { ascending: true })
@@ -955,14 +1039,7 @@ function normalizeScholarshipRecord(raw, source) {
   const studyLevels = uniqueStrings(raw.study_levels || raw.levels);
   const deadlineStatus = deadlineDate ? 'dated' : (status === 'variable' ? 'varies' : (status === 'rolling' ? 'rolling' : null));
   const checkedAt = new Date().toISOString();
-  const sourceSnapshot = Object.assign({}, raw, {
-    source_key: source.source_key || '',
-    source_type: source.source_type || '',
-    source_name: source.name || '',
-    parser_key: source.parser_key || '',
-    trust_level: source.trust_level || '',
-    last_source_id: source.id || null
-  });
+  const sourceSnapshot = buildScholarshipSourceSnapshot(raw, source);
   if (deadlineOverride) {
     const deadlineConfidence = overrideConfidence;
     sourceSnapshot.deadline_override = Object.assign({}, deadlineOverride, {
@@ -1064,11 +1141,16 @@ async function importSourceItems(client, source, rawItems) {
   const slugs = parsedItems.map(function (item) { return item.slug; });
   const { data: existingRows, error: existingError } = await client
     .from('scholarships')
-    .select('slug')
+    .select(['slug'].concat(AWARD_VALUE_FIELDS).join(', '))
     .in('slug', slugs);
   if (existingError) throw existingError;
 
-  const existingSet = new Set((existingRows || []).map(function (row) { return row.slug; }));
+  const existingMap = new Map((existingRows || []).map(function (row) { return [row.slug, row]; }));
+  const existingSet = new Set(existingMap.keys());
+
+  parsedItems.forEach(function (item, index) {
+    parsedItems[index] = preserveAuthoritativeAwardValueCoverage(item, existingMap.get(item.slug));
+  });
 
   const { error: rawError } = await client
     .from('scholarship_raw_items')
@@ -2094,20 +2176,24 @@ module.exports = {
   SOURCE_KEYS,
   buildFeedMeta,
   buildLegacyScholarship,
+  buildScholarshipSourceSnapshot,
   buildReminderSchedule,
   filterScholarships,
   discoverScholarshipCandidateLeads,
   discoverScholarshipSources,
   ensureScholarshipSources,
+  fetchMirrorRows,
   getAuthClient,
   getFallbackScholarships,
   getScholarshipById,
   hasDatedFutureDeadline,
+  importSourceItems,
   listSavedScholarships,
   loadScholarshipSourceCandidates,
   loadScholarshipFeed,
   loadScholarshipSourceRegistry,
   parseSitemapLocs,
+  preserveAuthoritativeAwardValueCoverage,
   normalizeOffsets,
   reconcileAllScholarshipDeadlines,
   reconcileReminderJobsForScholarshipIds,
