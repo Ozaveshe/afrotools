@@ -28,6 +28,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'data', 'energy', 'official-sources.json');
 const DATASET = path.join(ROOT, 'data', 'energy', 'country-energy-index.js');
+const TARIFF_DATASET = path.join(ROOT, 'data', 'energy', 'electricity-tariffs.json');
 const check = process.argv.includes('--check');
 
 const errors = [];
@@ -62,10 +63,38 @@ function daysSince(iso) {
 
 const ledger = readLedger();
 const data = readDataset();
-if (!ledger || !data) {
+let tariffData = null;
+try {
+  tariffData = JSON.parse(fs.readFileSync(TARIFF_DATASET, 'utf8'));
+} catch (e) {
+  errors.push(`Cannot read ${path.relative(ROOT, TARIFF_DATASET)}: ${e.message}`);
+}
+if (!ledger || !data || !tariffData) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
+
+const tariffIds = new Set();
+let currentTariffCount = 0;
+let staleTariffCount = 0;
+for (const [index, record] of (tariffData.records || []).entries()) {
+  for (const field of ['market_id', 'country_code', 'provider_id', 'provider_name', 'tariff_id', 'customer_class', 'currency', 'pricing_model', 'effective_date', 'last_verified_at', 'source_name', 'source_url', 'granularity', 'confidence', 'status']) {
+    if (!record[field]) errors.push(`electricity-tariffs record ${index}: missing ${field}`);
+  }
+  if (tariffIds.has(record.tariff_id)) errors.push(`electricity-tariffs duplicate tariff_id: ${record.tariff_id}`);
+  tariffIds.add(record.tariff_id);
+  if (!Array.isArray(record.tiers) || !record.tiers.length || record.tiers.some((tier) => !(Number(tier.rate) > 0))) {
+    errors.push(`electricity-tariffs ${record.tariff_id || index}: invalid tiers`);
+  }
+  if (!/^https:\/\//.test(record.source_url || '')) errors.push(`electricity-tariffs ${record.tariff_id || index}: source_url must be HTTPS`);
+  const verifiedAge = daysSince(record.last_verified_at);
+  const validTo = record.valid_to ? Date.parse(`${record.valid_to}T23:59:59Z`) : Infinity;
+  const isStale = verifiedAge === null || verifiedAge > Number(record.max_age_days || tariffData.default_freshness_days || 45) || Date.now() > validTo;
+  if (isStale) staleTariffCount += 1;
+  else currentTariffCount += 1;
+}
+if (!(tariffData.records || []).length) errors.push('electricity-tariffs.json has no maintained records.');
+if (staleTariffCount) warnings.push(`${staleTariffCount} maintained provider/class tariff record(s) currently fail the automatic freshness window and must fail closed.`);
 
 const sources = ledger.sources || [];
 const ids = new Set();
@@ -146,6 +175,7 @@ console.log(`  markets in dataset : ${marketCount}`);
 console.log(`  markets sourced    : ${regulatorCountries.size}`);
 console.log(`  dataset stamp      : ${data.lastUpdated}${age === null ? '' : ` (${age} days old)`}`);
 console.log(`  recorded gaps      : ${((ledger.gaps || {}).regulatorsWithoutUrl || []).length} regulator, ${((ledger.gaps || {}).unsourcedClaims || []).length} unsourced claim class(es)`);
+console.log(`  exact tariff rows  : ${currentTariffCount} current, ${staleTariffCount} stale/expired`);
 
 for (const w of warnings) console.log(`  WARN  ${w}`);
 for (const e of errors) console.error(`  ERROR ${e}`);

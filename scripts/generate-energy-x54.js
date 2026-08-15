@@ -1824,8 +1824,42 @@ function resultDisclaimerHTML(tool) {
   return `<p>Use the result as a quote-checking brief, not as a promise that a system will perform exactly this way. If the numbers are close, ask installers to quote the same system size, battery capacity, inverter rating, warranty, and maintenance terms.</p>`;
 }
 
+function makeRetiredElectricityCountryPage(tool, country) {
+  const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}/`;
+  const isPrepaid = tool.slug === "prepaid-meter";
+  const title = `${country.name} ${isPrepaid ? "Prepaid Units" : "Electricity Tariff"} Guide Moved | AfroTools`;
+  const description = `Use the canonical Electricity Cost & Prepaid Units calculator for ${country.name}. Automatic estimates are shown only for current provider-and-class tariffs.`;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeHtml(description)}">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="${canonical}">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/design-system.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<main class="en-main"><section class="en-hub"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> ${escapeHtml(country.name)}</nav>
+<h1>${country.flag} ${escapeHtml(country.name)} electricity estimate</h1>
+<p>This former country calculator used a broad national planning default. It has been retired so a stale or provider-mismatched rate cannot look current.</p>
+<p>The canonical calculator supports money to prepaid units and kWh to bill. If no current ${escapeHtml(country.name)} provider-and-class schedule is maintained, it fails closed and offers a local-only custom-rate calculation.</p>
+<p><a class="en-btn" href="/tools/electricity-tariff/">Open Electricity Cost &amp; Prepaid Units</a></p>
+<p>This URL remains available for old bookmarks, but it is noindex and links to the single transactional calculator.</p>
+</div></section></main>
+<afro-footer></afro-footer>
+</body>
+</html>`;
+}
+
 // ─── HTML TEMPLATE ─────────────────────────────────────────────────────────────
 function makePage(tool, country) {
+  if (tool.slug === "electricity-tariff" || tool.slug === "prepaid-meter") {
+    return makeRetiredElectricityCountryPage(tool, country);
+  }
   if (tool.slug === "solar-roi") return makeSolarRoiCountryPage(tool, country);
   const energyRow = energyCountryRow(country);
   let title = tool.longTitle.replace(/\{\{COUNTRY_NAME\}\}/g, country.name) + " | AfroTools";
@@ -2189,10 +2223,11 @@ let totalFiles = 0;
 
 for (const tool of selectedTools) {
   const toolDir = path.join(ROOT, "tools", tool.slug);
+  const preservesHandAuthoredHub = tool.slug === "electricity-tariff" || tool.slug === "prepaid-meter";
 
   // Create hub
   fs.mkdirSync(toolDir, { recursive: true });
-  if (!countriesOnly) {
+  if (!countriesOnly && !preservesHandAuthoredHub) {
     fs.writeFileSync(path.join(toolDir, "index.html"), makeHub(tool));
     totalFiles++;
   }
@@ -2205,7 +2240,7 @@ for (const tool of selectedTools) {
     totalFiles++;
   }
 
-  console.log(`${tool.slug}: ${countriesOnly ? "0 hubs + " : "1 hub + "}${COUNTRIES.length} country pages`);
+  console.log(`${tool.slug}: ${countriesOnly || preservesHandAuthoredHub ? "0 hubs + " : "1 hub + "}${COUNTRIES.length} country pages`);
 }
 
 console.log(`\nTotal files generated: ${totalFiles}`);

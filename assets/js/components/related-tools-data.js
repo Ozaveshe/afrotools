@@ -3524,9 +3524,9 @@
       },
       {
         "id": "electricity-estimator",
-        "name": "Electricity Bill Estimator",
+        "name": "Appliance Electricity Usage Estimator",
         "icon": "💡",
-        "desc": "Prepaid meter units calculator per country. Tari...",
+        "desc": "Estimate kWh from appliance wattage and usage be...",
         "href": "/tools/electricity-estimator/",
         "category": "african",
         "lang": "en",
@@ -19174,9 +19174,9 @@
       },
       {
         "id": "electricity-tariff",
-        "name": "Electricity Tariff Calculator",
+        "name": "Electricity Cost & Prepaid Units",
         "icon": "⚡",
-        "desc": "Estimate electricity bills for supported African...",
+        "desc": "Convert money to prepaid units or kWh to an esti...",
         "href": "/tools/electricity-tariff/",
         "category": "energy",
         "lang": "en",
@@ -19197,19 +19197,6 @@
         "estTraffic": 11000,
         "imageExt": "webp",
         "imageKey": "solar-vs-generator"
-      },
-      {
-        "id": "prepaid-meter",
-        "name": "Prepaid Meter Calculator",
-        "icon": "🔢",
-        "desc": "Estimate prepaid electricity units in any Africa...",
-        "href": "/tools/prepaid-meter/",
-        "category": "energy",
-        "lang": "en",
-        "priority": 89,
-        "estTraffic": 10000,
-        "imageExt": "webp",
-        "imageKey": "prepaid-meter"
       },
       {
         "id": "solar-sizing",
@@ -19379,6 +19366,19 @@
         "estTraffic": 5000,
         "imageExt": "webp",
         "imageKey": "ev-charging"
+      },
+      {
+        "id": "mini-grid-feasibility",
+        "name": "Mini-Grid Feasibility Calculator",
+        "icon": "🏘️",
+        "desc": "Assess mini-grid viability for rural African com...",
+        "href": "/tools/mini-grid-feasibility/",
+        "category": "energy",
+        "lang": "en",
+        "priority": 78,
+        "estTraffic": 4000,
+        "imageExt": "webp",
+        "imageKey": "mini-grid-feasibility"
       }
     ],
     "en::transport": [
