@@ -353,6 +353,7 @@ async function checkTwitch(allCreators) {
 
           var thumb = normalizeThumbnailUrl(stream.thumbnail_url);
           await upsertStream(creator.name, {
+            creator_id: creator.id,
             creator_name: creator.name,
             title: stream.title || 'Live on Twitch',
             platform: 'Twitch',
@@ -516,6 +517,7 @@ async function checkKick(allCreators) {
         var kickThumb = normalizeThumbnailUrl((ch.livestream && ch.livestream.thumbnail) || ch.banner_image);
 
         await upsertStream(creator.name, {
+          creator_id: creator.id,
           creator_name: creator.name,
           title: title,
           platform: 'Kick',
@@ -705,6 +707,7 @@ async function checkYouTube(allCreators) {
       }
 
       await upsertStream(creator.name, {
+        creator_id: creator.id,
         creator_name: creator.name,
         title: liveProbe.title || 'Live on YouTube',
         platform: 'YouTube',

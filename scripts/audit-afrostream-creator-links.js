@@ -21,6 +21,15 @@ const PLATFORM_FIELDS = [
   ['twitter_url', 'X'],
 ];
 
+const PLATFORM_HOSTS = Object.freeze({
+  youtube_url: ['youtube.com', 'youtu.be'],
+  twitch_url: ['twitch.tv'],
+  tiktok_url: ['tiktok.com'],
+  kick_url: ['kick.com'],
+  instagram_url: ['instagram.com'],
+  twitter_url: ['x.com', 'twitter.com'],
+});
+
 const ALLOWLIST = new Set([
   'akothee:youtube_url:estherakoth',
   'akothee:instagram_url:akotheke',
@@ -88,6 +97,20 @@ function handleFromUrl(url) {
   }
 }
 
+function hostnameFromUrl(url) {
+  try {
+    return new URL(url).hostname.toLowerCase().replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+function matchesExpectedHost(hostname, expectedHosts) {
+  return expectedHosts.some((expected) => (
+    hostname === expected || hostname.endsWith(`.${expected}`)
+  ));
+}
+
 function profileTokens(creator) {
   const tokens = new Set([
     ...tokenize(creator.name),
@@ -116,6 +139,24 @@ function repeatedHandles(creator) {
 
 function scoreLink(creator, field, label) {
   const url = creator[field];
+  if (!String(url || '').trim()) return null;
+  const hostname = hostnameFromUrl(url);
+  const expectedHosts = PLATFORM_HOSTS[field] || [];
+  if (!hostname || !matchesExpectedHost(hostname, expectedHosts)) {
+    return {
+      id: creator.id,
+      slug: creator.slug,
+      name: creator.name,
+      field,
+      platform: label,
+      url,
+      handle: '',
+      score: -6,
+      reasons: [hostname
+        ? `URL host ${hostname} does not match ${label}`
+        : 'invalid profile URL'],
+    };
+  }
   const rawHandle = handleFromUrl(url);
   const handle = normalize(rawHandle);
   if (!handle) return null;
@@ -188,34 +229,40 @@ function writeOutput(payload) {
   fs.writeFileSync(target, JSON.stringify(payload, null, 2) + '\n');
 }
 
-loadCreators()
-  .then((payload) => {
-    const creators = Array.isArray(payload) ? payload : payload.creators || payload.data || [];
-    const issues = creators.flatMap((creator) => (
-      PLATFORM_FIELDS.map(([field, label]) => scoreLink(creator, field, label)).filter(Boolean)
-    )).sort((a, b) => a.score - b.score || a.slug.localeCompare(b.slug));
+async function main() {
+  const payload = await loadCreators();
+  const creators = Array.isArray(payload) ? payload : payload.creators || payload.data || [];
+  const issues = creators.flatMap((creator) => (
+    PLATFORM_FIELDS.map(([field, label]) => scoreLink(creator, field, label)).filter(Boolean)
+  )).sort((a, b) => a.score - b.score || a.slug.localeCompare(b.slug));
 
-    const summary = {
-      checked_at: new Date().toISOString(),
-      total_creators: creators.length,
-      total_profile_urls: creators.reduce((count, creator) => (
-        count + PLATFORM_FIELDS.filter(([field]) => creator[field]).length
-      ), 0),
-      suspect_count: issues.length,
-      high_risk_count: issues.filter((issue) => issue.score <= -3).length,
-      issues,
-    };
+  const summary = {
+    checked_at: new Date().toISOString(),
+    total_creators: creators.length,
+    total_profile_urls: creators.reduce((count, creator) => (
+      count + PLATFORM_FIELDS.filter(([field]) => creator[field]).length
+    ), 0),
+    suspect_count: issues.length,
+    high_risk_count: issues.filter((issue) => issue.score <= -3).length,
+    issues,
+  };
 
-    console.log(`Checked creators: ${summary.total_creators}`);
-    console.log(`Profile URLs: ${summary.total_profile_urls}`);
-    console.log(`Suspect links: ${summary.suspect_count}`);
-    console.log(`High risk: ${summary.high_risk_count}`);
-    for (const issue of issues.slice(0, 30)) {
-      console.log(`${issue.score}\t${issue.slug}\t${issue.field}\t${issue.url}\t${issue.reasons.join('; ')}`);
-    }
-    writeOutput(summary);
-  })
-  .catch((error) => {
+  console.log(`Checked creators: ${summary.total_creators}`);
+  console.log(`Profile URLs: ${summary.total_profile_urls}`);
+  console.log(`Suspect links: ${summary.suspect_count}`);
+  console.log(`High risk: ${summary.high_risk_count}`);
+  for (const issue of issues.slice(0, 30)) {
+    console.log(`${issue.score}\t${issue.slug}\t${issue.field}\t${issue.url}\t${issue.reasons.join('; ')}`);
+  }
+  writeOutput(summary);
+  return summary;
+}
+
+if (require.main === module) {
+  main().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
   });
+}
+
+module.exports = { PLATFORM_FIELDS, PLATFORM_HOSTS, hostnameFromUrl, matchesExpectedHost, scoreLink, main };
