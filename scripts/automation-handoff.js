@@ -40,6 +40,15 @@ function validateHandoff(item) {
   }
   if (!isIsoDate(item.created_at)) errors.push('created_at must be an ISO date-time');
   if (!isIsoDate(item.updated_at)) errors.push('updated_at must be an ISO date-time');
+  if (isIsoDate(item.created_at) && isIsoDate(item.updated_at) && Date.parse(item.updated_at) < Date.parse(item.created_at)) {
+    errors.push('updated_at must not be earlier than created_at');
+  }
+  if (typeof item.handoff_id === 'string' && !HANDOFF_ID_PATTERN.test(item.handoff_id)) {
+    errors.push('handoff_id must use lowercase letters, numbers, and hyphens only');
+  }
+  if (typeof item.automation_id === 'string' && !HANDOFF_ID_PATTERN.test(item.automation_id)) {
+    errors.push('automation_id must use lowercase letters, numbers, and hyphens only');
+  }
   if (!STATUSES.has(item.status)) errors.push(`status must be one of ${Array.from(STATUSES).join(', ')}`);
   if (!CHANGE_KINDS.has(item.change_kind)) errors.push(`change_kind must be one of ${Array.from(CHANGE_KINDS).join(', ')}`);
   if (typeof item.merge_candidate !== 'boolean') errors.push('merge_candidate must be boolean');
@@ -82,12 +91,51 @@ function validateHandoff(item) {
     if (!isSha(item.commit)) errors.push('repository merge candidates require commit');
     if (!item.source_files || item.source_files.length === 0) errors.push('repository merge candidates require source_files');
     if (item.validations && item.validations.some((check) => check.status === 'fail')) errors.push('merge candidates cannot contain failed validations');
+    if (!item.validations || !item.validations.some((check) => check.status === 'pass')) {
+      errors.push('merge candidates require at least one passing validation');
+    }
+    if (typeof item.branch === 'string' && typeof item.automation_id === 'string' && !item.branch.startsWith(`automation/${item.automation_id}-`)) {
+      errors.push(`repository merge candidate branch must start with automation/${item.automation_id}-`);
+    }
+    if (item.producer && typeof item.producer === 'object') {
+      if (typeof item.producer.worktree_path !== 'string' || !item.producer.worktree_path.trim()) {
+        errors.push('producer.worktree_path is required');
+      }
+      if (!isIsoDate(item.producer.base_fetched_at)) errors.push('producer.base_fetched_at must be an ISO date-time');
+      if (typeof item.producer.remote_ref !== 'string' || item.producer.remote_ref !== `refs/heads/${item.branch}`) {
+        errors.push('producer.remote_ref must exactly match refs/heads/<branch>');
+      }
+      if (!isIsoDate(item.producer.cleanup_after)) errors.push('producer.cleanup_after must be an ISO date-time');
+    }
+    if (Array.isArray(item.source_files) && Array.isArray(item.generated_files)) {
+      const source = new Set(item.source_files);
+      const generated = new Set(item.generated_files);
+      const overlap = Array.from(source).filter((file) => generated.has(file));
+      if (overlap.length) errors.push('source_files and generated_files must not overlap');
+      if (Array.isArray(item.changed_files)) {
+        const declared = new Set([...source, ...generated]);
+        const changed = new Set(item.changed_files);
+        if (declared.size !== changed.size || Array.from(declared).some((file) => !changed.has(file))) {
+          errors.push('changed_files must exactly equal source_files plus generated_files');
+        }
+      }
+    }
   } else if (item.merge_candidate === false && item.status === 'ready') {
     errors.push('ready handoffs must be repository merge candidates');
   }
 
   if (item.status === 'blocked' && (typeof item.blocker !== 'string' || !item.blocker.trim())) {
     errors.push('blocked handoffs require blocker');
+  }
+  if (item.status === 'consumed') {
+    if (!item.publisher || !isIsoDate(item.publisher.consumed_at)) errors.push('consumed handoffs require publisher.consumed_at');
+    if (!item.publisher || !isSha(item.publisher.release_commit)) errors.push('consumed handoffs require publisher.release_commit');
+    if (!item.publisher || typeof item.publisher.deploy_id !== 'string' || !item.publisher.deploy_id.trim()) {
+      errors.push('consumed handoffs require publisher.deploy_id');
+    }
+    if (!item.publisher || !Array.isArray(item.publisher.live_proof) || item.publisher.live_proof.length === 0) {
+      errors.push('consumed handoffs require publisher.live_proof');
+    }
   }
   return errors;
 }
@@ -227,7 +275,14 @@ function main(argv) {
   if (command === 'scan') {
     const root = target && target !== '--json' ? path.resolve(target) : path.resolve(process.env.CODEX_AUTOMATIONS_DIR || DEFAULT_ROOT);
     const records = listHandoffFiles(root).map((filePath) => {
-      try { return readHandoff(filePath); }
+      try {
+        const record = readHandoff(filePath);
+        const folderId = path.basename(path.dirname(filePath));
+        if (record.item.automation_id !== folderId) {
+          record.errors.push(`automation_id must match the automation folder ${folderId}`);
+        }
+        return record;
+      }
       catch (error) { return { filePath, item: null, errors: [`invalid JSON: ${error.message}`] }; }
     });
     const queue = buildQueue(records);

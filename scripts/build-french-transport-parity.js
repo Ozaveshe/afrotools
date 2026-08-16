@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'data', 'transport', 'french-parity.json');
@@ -896,6 +897,9 @@ const appTranslations = {
   'vehicle-operating-cost': {
     'Vehicle Details & Annual Usage': 'Véhicule et utilisation annuelle',
     'Vehicle Details &amp; Annual Usage': 'Véhicule et utilisation annuelle',
+    'Planning assumptions:': 'Hypothèses de planification :',
+    'maintenance is 6% of vehicle value (4% for motorcycles), registration is 1.5%, and annual depreciation is 20% for SUVs or 22% for other listed types. These are fixed model inputs, not official rates or live market data.': 'l’entretien représente 6 % de la valeur du véhicule (4 % pour les motos), l’immatriculation 1,5 %, et la dépréciation annuelle 20 % pour les SUV ou 22 % pour les autres types listés. Ces valeurs sont des paramètres fixes du modèle, pas des taux officiels ni des données de marché en direct.',
+    'Planning assumptions: maintenance is 6% of vehicle value (4% for motorcycles), registration is 1.5%, and annual depreciation is 20% for SUVs or 22% for other listed types. These are fixed model inputs, not official rates or live market data.': 'Hypothèses de planification : l’entretien représente 6 % de la valeur du véhicule (4 % pour les motos), l’immatriculation 1,5 %, et la dépréciation annuelle 20 % pour les SUV ou 22 % pour les autres types listés. Ces valeurs sont des paramètres fixes du modèle, pas des taux officiels ni des données de marché en direct.',
     'Sedan / Saloon': 'Berline',
     'Van / Minibus': 'Fourgonnette / minibus',
     'Vehicle Value (USD)': 'Valeur du véhicule (USD)',
@@ -1306,7 +1310,7 @@ function renderHub(manifest) {
     name: app.name,
     url: `https://afrotools.com${app.frenchRoute}`
   }));
-  return `<!doctype html>
+  return enhanceCategory(`<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
@@ -1372,7 +1376,7 @@ html[data-theme="dark"] body{background:#0b1220;color:#e5edf7}html[data-theme="d
 <afro-footer></afro-footer>
 </body>
 </html>
-`;
+`, 'fr');
 }
 
 function renderAiRouteOverlay(manifest) {

@@ -186,7 +186,16 @@ for (const app of parity.apps) {
     app.existingNative, `${app.englishId} French Twitter title`);
   assert.ok(html.includes(`<link rel="alternate" hreflang="en" href="${absoluteEnglish}">`), `${app.englishId} English hreflang`);
   assert.ok(html.includes(`<link rel="alternate" hreflang="fr" href="${absoluteFrench}">`), `${app.englishId} French hreflang`);
-  assert.match(html, /data-fr-transport-schema[^>]*>[^<]*"inLanguage":"fr"/, `${app.englishId} French schema`);
+  if (app.existingNative) {
+    const schemas = Array.from(html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi))
+      .flatMap((match) => {
+        const parsed = JSON.parse(match[1]);
+        return Array.isArray(parsed) ? parsed : [parsed];
+      });
+    assert.ok(schemas.some((schema) => schema.inLanguage === 'fr'), `${app.englishId} native French schema`);
+  } else {
+    assert.match(html, /data-fr-transport-schema[^>]*>[^<]*"inLanguage":"fr"/, `${app.englishId} French schema`);
+  }
   assert.match(html, /data-fr-transport-download-text/, `${app.englishId} local TXT export`);
   assert.match(html, /data-fr-transport-download-pdf/, `${app.englishId} local PDF export`);
   assert.match(

@@ -9,6 +9,21 @@ const COVERAGE_FILE = path.join(ROOT, 'data/registry/locale-page-coverage.json')
 const JSON_FILE = path.join(ROOT, 'reports/localized-non-app-parity.json');
 const MD_FILE = path.join(ROOT, 'reports/localized-non-app-parity.md');
 const LOCALES = ['fr', 'sw'];
+const COUNTRY_CONTRACTS = new Map(
+  readJson(path.join(ROOT, 'data', 'registry', 'countries.json')).map((country) => [
+    country.route,
+    {
+      fr: country.localeCoverage && country.localeCoverage.fr && country.localeCoverage.fr.route,
+      sw: country.localeCoverage && country.localeCoverage.sw && country.localeCoverage.sw.route
+    }
+  ])
+);
+const DISCOVERY_CONTRACTS = new Map(
+  require('./build-localized-discovery-pages').ROUTES.map(([english, french, swahili]) => [
+    english,
+    { fr: french, sw: swahili }
+  ])
+);
 const PEER_ROUTE_OVERRIDES = {
   '/faq/': { fr: '/fr/faq/', sw: '/sw/maswali-ya-mara-kwa-mara/' },
   '/cookies/': { fr: '/fr/cookies/', sw: '/sw/vidakuzi/' }
@@ -68,6 +83,11 @@ function readJson(file) {
 
 function routeDepth(route) {
   return route.split('/').filter(Boolean).length;
+}
+
+function contractPeerRoute(englishRoute, locale) {
+  const contract = COUNTRY_CONTRACTS.get(englishRoute) || DISCOVERY_CONTRACTS.get(englishRoute);
+  return contract && contract[locale] || null;
 }
 
 function classify(route) {
@@ -258,7 +278,8 @@ function build() {
     if (!englishMetrics) continue;
     const localeResults = {};
     for (const locale of LOCALES) {
-      const overrideRoute = PEER_ROUTE_OVERRIDES[englishRecord.route] && PEER_ROUTE_OVERRIDES[englishRecord.route][locale];
+      const overrideRoute = (PEER_ROUTE_OVERRIDES[englishRecord.route] && PEER_ROUTE_OVERRIDES[englishRecord.route][locale])
+        || contractPeerRoute(englishRecord.route, locale);
       const overrideFile = overrideRoute ? `${overrideRoute.replace(/^\//, '').replace(/\/?$/, '/')}index.html` : null;
       const record = peers[locale] || (overrideFile && fs.existsSync(path.join(ROOT, overrideFile))
         ? { route: overrideRoute, ownerFile: overrideFile, locale, state: 'native' }

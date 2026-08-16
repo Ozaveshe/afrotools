@@ -5,6 +5,7 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "../..");
 const COVERAGE = path.join(ROOT, "data/registry/locale-page-coverage.json");
+const COUNTRIES = path.join(ROOT, "data/registry/countries.json");
 const MARKER = "data-localized-country-standard";
 
 function esc(value) {
@@ -17,15 +18,20 @@ function titleFromRoute(route) {
 
 function countryRows() {
   const records = JSON.parse(fs.readFileSync(COVERAGE, "utf8")).records;
-  const byEquivalent = new Map();
-  for (const record of records) {
-    if (!byEquivalent.has(record.equivalentRoute)) byEquivalent.set(record.equivalentRoute, {});
-    byEquivalent.get(record.equivalentRoute)[record.locale] = record;
-  }
-  const countrySet = new Set([
-    "algeria","angola","benin","botswana","burkina-faso","burundi","cameroon","cape-verde","central-african-republic","chad","comoros","congo","cote-divoire","djibouti","dr-congo","egypt","equatorial-guinea","eritrea","eswatini","ethiopia","gabon","gambia","ghana","guinea","guinea-bissau","kenya","lesotho","liberia","libya","madagascar","malawi","mali","mauritania","mauritius","morocco","mozambique","namibia","niger","nigeria","rwanda","sao-tome","senegal","seychelles","sierra-leone","somalia","south-africa","south-sudan","sudan","tanzania","togo","tunisia","uganda","zambia","zimbabwe"
-  ].map((slug) => `/${slug}/`));
-  return [...byEquivalent.entries()].filter(([route]) => countrySet.has(route)).map(([englishRoute, group]) => ({ englishRoute, fr: group.fr, sw: group.sw })).filter((row) => row.fr && row.sw);
+  const countries = JSON.parse(fs.readFileSync(COUNTRIES, "utf8"));
+  const normalizeRoute = (value) => {
+    const route = String(value || "").replace(/\/+$/, "");
+    return route ? `${route}/` : "";
+  };
+  const byRoute = new Map(records.map((record) => [normalizeRoute(record.route), record]));
+  return countries
+    .filter((country) => country.publicationStatus === "published")
+    .map((country) => ({
+      englishRoute: normalizeRoute(country.route),
+      fr: byRoute.get(normalizeRoute(country.localeCoverage?.fr?.route)),
+      sw: byRoute.get(normalizeRoute(country.localeCoverage?.sw?.route))
+    }))
+    .filter((row) => row.englishRoute && row.fr && row.sw);
 }
 
 function addSchema(html, locale, route, country) {

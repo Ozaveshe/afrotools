@@ -17,23 +17,19 @@ for (const row of ROUTES) {
     assert.ok(fs.existsSync(file), `${route}: physical owner`);
     const html = fs.readFileSync(file, "utf8");
     assert.match(html, new RegExp(`<html\\b[^>]*\\blang=["']${locale}["']`, "i"), `${route}: language`);
-    const isFallback = html.includes('name="afrotools-localization-state" content="english-fallback-noindex"');
-    const canonicalRoute = isFallback ? row[0] : route;
-    assert.match(html, new RegExp(`<link\\b[^>]*rel=["']canonical["'][^>]*href=["']https://afrotools\\.com${canonicalRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`, "i"), `${route}: canonical`);
-    if (isFallback) {
-      assert.match(html, /<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i, `${route}: fallback noindex`);
-      assert.doesNotMatch(html, /hreflang=["']/i, `${route}: fallback must not join hreflang`);
+    const retiredFallback = /name=["']afrotools-localization-state["'][^>]*content=["']english-fallback-noindex["']/i.test(html);
+    if (retiredFallback) {
+      assert.match(html, /name=["']robots["'][^>]*content=["']noindex, follow["']/i, `${route}: retired fallback robots`);
+      assert.match(html, new RegExp(`<link\\b[^>]*rel=["']canonical["'][^>]*href=["']https://afrotools\\.com${row[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`, "i"), `${route}: English owner canonical`);
+      assert.doesNotMatch(html, /rel=["']alternate["'][^>]*hreflang=/i, `${route}: retired fallback must not claim translated alternates`);
     } else {
-      const siblingLocale = locale === "fr" ? "sw" : "fr";
-      const siblingRoute = locale === "fr" ? row[2] : row[1];
-      const siblingHtml = fs.readFileSync(path.join(ROOT, siblingRoute.replace(/^\//, ""), "index.html"), "utf8");
-      const siblingIsFallback = siblingHtml.includes('name="afrotools-localization-state" content="english-fallback-noindex"');
-      for (const lang of ["en", locale]) assert.match(html, new RegExp(`hreflang=["']${lang}["']`, "i"), `${route}: ${lang} hreflang`);
-      if (siblingIsFallback) {
-        assert.doesNotMatch(html, new RegExp(`hreflang=["']${siblingLocale}["']`, "i"), `${route}: fallback sibling must not join hreflang`);
-      } else {
-        assert.match(html, new RegExp(`hreflang=["']${siblingLocale}["']`, "i"), `${route}: ${siblingLocale} hreflang`);
-      }
+      assert.match(html, new RegExp(`<link\\b[^>]*rel=["']canonical["'][^>]*href=["']https://afrotools\\.com${route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`, "i"), `${route}: canonical`);
+      const otherLocale = locale === "fr" ? "sw" : "fr";
+      const otherRoute = locale === "fr" ? row[2] : row[1];
+      const otherHtml = fs.readFileSync(path.join(ROOT, otherRoute.replace(/^\//, ""), "index.html"), "utf8");
+      const otherIsRetired = /name=["']afrotools-localization-state["'][^>]*content=["']english-fallback-noindex["']/i.test(otherHtml);
+      for (const lang of ["en", locale, "x-default"]) assert.match(html, new RegExp(`hreflang=["']${lang}["']`, "i"), `${route}: ${lang} hreflang`);
+      if (!otherIsRetired) assert.match(html, new RegExp(`hreflang=["']${otherLocale}["']`, "i"), `${route}: ${otherLocale} hreflang`);
     }
     assert.match(html, /data-localized-discovery-standard=/, `${route}: shared standard`);
     assert.match(html, /"@type"\s*:\s*"FAQPage"/, `${route}: FAQ schema`);
@@ -51,8 +47,9 @@ for (const row of ROUTES.filter(row => new Set(["/business-enquiry/", "/custom-c
 }
 
 const report = require("../reports/localized-non-app-parity.json");
-assert.deepStrictEqual(report.byClass["discovery-support"].fr, { pass: 17, underStandard: 0, missing: 1 }, "fr: discovery contract");
-assert.deepStrictEqual(report.byClass["discovery-support"].sw, { pass: 18, underStandard: 0, missing: 0 }, "sw: discovery contract");
+for (const locale of ["fr", "sw"]) {
+  assert.deepStrictEqual(report.byClass["discovery-support"][locale], { pass: 18, underStandard: 0, missing: 0 }, `${locale}: discovery contract`);
+}
 
 for (const row of require('../scripts/build-localized-discovery-pages.js').ROUTES) {
   const slug = row[0].replace(/^\//, '').replace(/\/$/, '') || 'home';

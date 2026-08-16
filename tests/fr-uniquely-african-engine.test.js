@@ -137,14 +137,14 @@ assert.ok(
   "every French programme oracle must have a calculator"
 );
 
+const sourceFingerprintDrifts = [];
 for (const fixture of fixtures.routes) {
   const row = manifest.rows.find((item) => item.english.id === fixture.id);
   assert(row, `${fixture.id}: manifest row`);
-  assert.strictEqual(
-    normalizedSourceHash(fixture.sourceOwner),
-    fixture.sourceSha256,
-    `${fixture.id}: English owner logic fingerprint drifted; recapture before changing parity`
-  );
+  const sourceSha256 = normalizedSourceHash(fixture.sourceOwner);
+  if (sourceSha256 !== fixture.sourceSha256) {
+    sourceFingerprintDrifts.push({ id: fixture.id, expected: fixture.sourceSha256, actual: sourceSha256 });
+  }
 
   const presentation = getPresentation(fixture.id);
   assert(presentation, `${fixture.id}: French presentation contract`);
@@ -188,6 +188,11 @@ for (const fixture of fixtures.routes) {
   assert(!/<(?:div|span|table|tr|td|button|input|select)\b/i.test(serialized),
     `${fixture.id}: DOM-free engine must not return presentation HTML`);
 }
+assert.deepStrictEqual(
+  sourceFingerprintDrifts,
+  [],
+  "English owner logic fingerprints drifted; review and recapture the complete drift set before changing parity"
+);
 
 const nativeIds = nativeFixtures.routes.map((fixture) => fixture.id);
 assert.strictEqual(new Set(nativeIds).size, 14, "native oracle fixture ids must be unique");
@@ -207,6 +212,7 @@ assert(nativeBrowserOracleSource.includes("exact same-fixture English/French sem
   "native browser proof must assert exact same-fixture semantic equality");
 assert(!nativeBrowserOracleSource.includes("normalizeNumbers") && !nativeBrowserOracleSource.includes("numeric oracle overlap"),
   "permissive numeric-token overlap oracle must stay removed");
+const nativeSourceFingerprintDrifts = [];
 for (const fixture of nativeFixtures.routes) {
   const row = manifest.rows.find((item) => item.english.id === fixture.id);
   assert(row, `${fixture.id}: native manifest row`);
@@ -216,11 +222,10 @@ for (const fixture of nativeFixtures.routes) {
   assert(resolvedOwner.valid,
     `${fixture.id}: fail-closed owner must resolve to an existing file and symbol (${resolvedOwner.reason})`);
   const source = normalizeBuildManagedHtml(fs.readFileSync(path.join(root, row.english.file), "utf8"));
-  assert.strictEqual(
-    crypto.createHash("sha256").update(source).digest("hex"),
-    fixture.sourceSha256,
-    `${fixture.id}: hand-authored English owner fingerprint drifted; recapture its oracle before changing parity`
-  );
+  const sourceSha256 = crypto.createHash("sha256").update(source).digest("hex");
+  if (sourceSha256 !== fixture.sourceSha256) {
+    nativeSourceFingerprintDrifts.push({ id: fixture.id, expected: fixture.sourceSha256, actual: sourceSha256 });
+  }
   const frenchSource = fs.readFileSync(path.join(root, row.french.file), "utf8");
   const ownsNativeMobileMoneyContract = fixture.id === "mobile-money-fees"
     && frenchSource.includes("/assets/js/engines/mobile-money-quote-engine.js")
@@ -251,5 +256,10 @@ for (const fixture of nativeFixtures.routes) {
   assert(ownsPageNativeContract || frenchSource.includes("/assets/js/pages/fr-uniquely-african-native-guards.js"),
     `${fixture.id}: French route loads its explicit validation owner`);
 }
+assert.deepStrictEqual(
+  nativeSourceFingerprintDrifts,
+  [],
+  "Hand-authored English owner fingerprints drifted; review and recapture the complete drift set before changing parity"
+);
 
 console.log("French Uniquely African oracles: 20/20 extracted contracts and 14/14 native owner fixtures passed.");

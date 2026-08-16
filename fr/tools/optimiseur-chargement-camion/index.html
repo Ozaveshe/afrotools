@@ -127,26 +127,22 @@ details[open] summary::after{content:'\2212'}
         </select>
       </div>
       <div class="field">
-        <label>Capacité du camion (tonnes)</label>
-        <input aria-label="TruckCapacity" type="number" id="truckCapacity" value="10" min="0.5" step="0.5">
+        <label for="truckCapacity">Entered Capacité du camion (tonnes)</label>
+        <input type="number" id="truckCapacity" value="10" min="0.5" step="0.5">
+        <span class="hint">Verify the vehicle plate, registration and route/axle restrictions. This input is not a legal approval.</span>
       </div>
       <div class="field">
-        <label>Charge réelle (tonnes)</label>
-        <input aria-label="E.g. 7.5" type="number" id="truckLoad" placeholder="e.g. 7.5" min="0" step="0.5">
+        <label for="truckLoad">Charge réelle (tonnes)</label>
+        <input type="number" id="truckLoad" placeholder="e.g. 7.5" min="0" step="0.5">
       </div>
       <div class="field">
-        <label>Distance du trajet (km)</label>
-        <input aria-label="E.g. 500" type="number" id="truckDistance" placeholder="e.g. 500" min="1">
+        <label for="truckDistance">Distance du trajet (km)</label>
+        <input type="number" id="truckDistance" placeholder="e.g. 500" min="1">
       </div>
       <div class="field">
-        <label>Coût total du trajet</label>
-        <input aria-label="E.g. 50000" type="number" id="truckTripCost" placeholder="e.g. 50000" min="0">
+        <label for="truckTripCost">Total Trip Cost</label>
+        <input type="number" id="truckTripCost" placeholder="e.g. 50000" min="0">
         <span class="hint">Dans la devise locale pour ce trajet</span>
-      </div>
-      <div class="field">
-        <label>Consommation (L/100 km)</label>
-        <input aria-label="TruckFuelL" type="number" id="truckFuelL" value="30" min="1" step="0.5">
-        <span class="hint">Camion chargé — renseignez votre propre hypothèse pour un trajet à vide</span>
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcTruckLoad()">Optimiser le chargement</button>
@@ -207,60 +203,9 @@ function prefillTruck() {
   document.getElementById('truckCapacity').value = TRUCK_PRESETS[type] || 10;
 }
 
-function calcTruckLoad() {
-  var capacity = parseFloat(document.getElementById('truckCapacity').value) || 0;
-  var load = parseFloat(document.getElementById('truckLoad').value) || 0;
-  var dist = parseFloat(document.getElementById('truckDistance').value) || 0;
-  var cost = parseFloat(document.getElementById('truckTripCost').value) || 0;
-  var fuelL = parseFloat(document.getElementById('truckFuelL').value) || 30;
-
-  if (capacity === 0 || load === 0 || dist === 0) { alert('Please fill in truck capacity, load, and distance.'); return; }
-
-  var efficiency = (load / capacity * 100);
-  var tonneKm = load * dist;
-  var costPerTonneKm = cost > 0 ? cost / tonneKm : 0;
-  var costPerTonne = cost > 0 ? cost / load : 0;
-  var emptyCapacity = capacity - load;
-  var potentialSaving = cost > 0 ? (emptyCapacity / capacity) * cost : 0;
-
-  var effClass = efficiency >= 80 ? 'good' : (efficiency >= 60 ? 'mid' : 'low');
-  var effBar = document.getElementById('effBar');
-  effBar.style.width = efficiency.toFixed(0) + '%';
-  effBar.className = 'efficiency-bar ' + effClass;
-  document.getElementById('effPct').textContent = efficiency.toFixed(0) + '% utilization';
-
-  var fmt = function(n){ return n.toLocaleString('en', {maximumFractionDigits:0}); };
-
-  document.getElementById('truckMetrics').innerHTML = [
-    [efficiency.toFixed(0) + '%', 'Load Utilization'],
-    [fmt(Math.round(tonneKm)), 'Tonne-km'],
-    [cost > 0 ? fmt(Math.round(costPerTonneKm)) : 'N/A', 'Cost/Tonne-km'],
-    [cost > 0 ? fmt(Math.round(costPerTonne)) : 'N/A', 'Cost/Tonne'],
-    [fmt(emptyCapacity.toFixed(1)) + 't', 'Empty Capacity'],
-    [cost > 0 ? fmt(Math.round(potentialSaving)) : 'N/A', 'Wasted Capacity Cost']
-  ].map(function(m){
-    return '<div class="metric"><div class="metric-val">' + m[0] + '</div><div class="metric-label">' + m[1] + '</div></div>';
-  }).join('');
-
-  var rec, recClass;
-  if (efficiency >= 85) {
-    rec = '&#x2705; Excellent load efficiency (' + efficiency.toFixed(0) + '%). Your truck is well-utilized on this route. Estimated wasted capacity cost: ' + (cost > 0 ? fmt(Math.round(potentialSaving)) : 'N/A');
-    recClass = 'good';
-  } else if (efficiency >= 65) {
-    rec = '&#x26a0;&#xfe0f; Moderate efficiency (' + efficiency.toFixed(0) + '%). You have ' + emptyCapacity.toFixed(1) + ' tonnes of unused capacity. Consider consolidating with other shipments to reduce the cost per tonne-km by up to ' + ((1 - efficiency/100) * 50).toFixed(0) + '%.';
-    recClass = 'warn';
-  } else {
-    rec = '&#x274c; Low efficiency (' + efficiency.toFixed(0) + '%). Running at less than 65% capacity significantly increases your cost per tonne-km. Consolidate loads, postpone the trip until you have more cargo, or use a smaller truck for this load.';
-    recClass = 'bad';
-  }
-  var recEl = document.getElementById('truckRec');
-  recEl.textContent = '';
-  recEl.innerHTML = rec;
-  recEl.className = 'rec-box ' + recClass;
-
-  document.getElementById('truckResults').classList.add('on');
-}
 </script>
+<script src="/assets/js/engines/transport-cost-engine.js?v=00ba7a97"></script>
+<script src="/assets/js/pages/transport-cost-english-bridge.js?v=de9593dd"></script>
 
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { addHelperScript, addSourceHook } = require("./apply-source-confidence-hooks");
 
 const root = path.join(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelligence.json"), "utf8"));
@@ -27,7 +28,16 @@ function ensureDir(dir) {
 function writePage(routePath, meta) {
   const file = path.join(root, routePath, "index.html");
   ensureDir(path.dirname(file));
-  fs.writeFileSync(file, html(routePath, meta), "utf8");
+  let output = html(routePath, meta);
+  if (routePath === "cars") {
+    const relativePath = "cars/index.html";
+    const hook = addSourceHook(output, "ledger-tool-car-price-intelligence", relativePath);
+    if (hook.action === "conflict") throw new Error(hook.message);
+    const helper = addHelperScript(hook.html, relativePath);
+    if (helper.action === "conflict") throw new Error(helper.message);
+    output = helper.html;
+  }
+  fs.writeFileSync(file, output, "utf8");
   generatedRoutes.push({ routePath, sitemap: meta.noindex !== true });
 }
 

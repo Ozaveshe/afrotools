@@ -51,6 +51,7 @@ function scriptSources(html) {
 
 function formulaScripts(html) {
   return scripts(html, false)
+    .filter((match) => !/\bdata-locale-shell-controller\b/i.test(match[1]))
     .filter((match) => !/application\/(ld\+json|json)/i.test(match[1]))
     .map((match) => match[2].trim())
     .filter((body) => body.length > 300 && /(calculate|Math\.|function\s*\(|=>)/.test(body));

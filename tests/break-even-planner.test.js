@@ -68,13 +68,17 @@ test('all launched locales are native apps on one formula engine', () => {
   }
 });
 
-test('both iframe widgets bind the shared engine and canonical full tool', () => {
-  for (const file of ['widgets/iframe/financial-break-even.html', 'widgets/iframe/business-break-even-lite.html']) {
-    const html = fs.readFileSync(path.resolve(file), 'utf8');
-    assert.match(html, /assets\/js\/engines\/break-even-planner\.js/);
-    assert.match(html, /widgets\/financial\/break-even\.js/);
-    assert.match(html, /https:\/\/afrotools\.com\/tools\/break-even\//);
-  }
+test('both iframe widgets bind maintained runtimes and the canonical full tool', () => {
+  const financial = fs.readFileSync(path.resolve('widgets/iframe/financial-break-even.html'), 'utf8');
+  assert.match(financial, /assets\/js\/engines\/break-even-planner\.js/);
+  assert.match(financial, /widgets\/financial\/break-even\.js/);
+  assert.match(financial, /https:\/\/afrotools\.com\/tools\/break-even\//);
+
+  const lite = fs.readFileSync(path.resolve('widgets/iframe/business-break-even-lite.html'), 'utf8');
+  assert.match(lite, /assets\/js\/engines\/break-even-planner\.js/);
+  assert.match(lite, /widgets\/financial\/break-even\.js/);
+  assert.match(lite, /AfroWidgets\.break_even_lite/);
+  assert.match(lite, /https:\/\/afrotools\.com\/tools\/break-even\//);
   const widget = fs.readFileSync(path.resolve('widgets/financial/break-even.js'), 'utf8');
   assert.match(widget, /BreakEvenPlanner/);
   assert.match(widget, /data-error/);

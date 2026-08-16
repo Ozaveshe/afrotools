@@ -9,6 +9,8 @@ const { writeFileSyncWithRetry } = require("./lib/safe-write");
 const ROOT = path.resolve(__dirname, "..");
 const REDIRECTS_FILE = path.join(ROOT, "_redirects");
 const REPORT_FILE = path.join(ROOT, "reports", "french-english-iframe-retirement.json");
+const ROUTE_POLICY = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "registry", "route-policy.json"), "utf8"));
+const POLICY_CANONICALS = new Map((ROUTE_POLICY.canonicalDecisions || []).map((decision) => [decision.source, decision.destination]));
 const SITE_ORIGIN = "https://afrotools.com";
 const START = "# BEGIN FRENCH ENGLISH-IFRAME RETIREMENT";
 const END = "# END FRENCH ENGLISH-IFRAME RETIREMENT";
@@ -80,6 +82,7 @@ function pathVariants(route) {
 
 function canonicalFor(filePath, source) {
   const route = fileRoute(filePath);
+  if (POLICY_CANONICALS.has(route)) return POLICY_CANONICALS.get(route);
   const agriculture = route.match(/^\/fr\/agriculture\/([^/]+)\//);
   if (agriculture && AGRICULTURE_FAMILIES.some((family) => family.slug === agriculture[1])) {
     return `/fr/agriculture/${agriculture[1]}/`;

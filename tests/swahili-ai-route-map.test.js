@@ -14,7 +14,12 @@ const router = require("../assets/js/ai/intent-router.js");
 
 const directoryById = new Map(directory.map((row) => [row.id, row]));
 const accepted = acceptance.entries.filter((entry) => entry.status === "accepted" && directoryById.has(entry.englishId));
-const archivedAccepted = acceptance.entries.filter((entry) => entry.status === "accepted" && !directoryById.has(entry.englishId));
+const archivedAccepted = [
+  ...(acceptance.archivedEntries || []).filter((entry) => entry.status === "accepted"),
+  ...acceptance.entries.filter((entry) => entry.status === "accepted" && !directoryById.has(entry.englishId))
+].filter((entry, index, entries) => (
+  entries.findIndex((candidate) => candidate.englishId === entry.englishId) === index
+));
 const blocked = acceptance.entries.filter((entry) => entry.status !== "accepted" && directoryById.has(entry.englishId));
 
 assert.equal(routeMap.acceptedRoutes, accepted.length);

@@ -33,6 +33,11 @@ assert.ok(
   'scheduled health monitoring must update its issue without generating a failed-run email every six hours'
 );
 
+assert.ok(
+  healthWorkflow.includes("steps.publishing.outcome == 'failure' && github.event_name == 'workflow_dispatch'"),
+  'manual publishing-SLO dispatches must stay strict without making scheduled monitoring noisy'
+);
+
 assert.match(
   auditScript,
   /FAIL_ON_STALE\s*&&\s*problems\.length[\s\S]*process\.exitCode\s*=\s*1/,

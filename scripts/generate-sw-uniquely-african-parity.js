@@ -36,7 +36,6 @@ const ROUTES = Object.freeze({
   "whatsapp-link": ["/sw/zana/kiungo-cha-whatsapp/", "shared-engine"],
   "remittance-compare": ["/sw/zana/ulinganisho-uhamishaji-pesa/", "native-existing"],
   "informal-fx-watch": ["/sw/zana/ufuatiliaji-soko-la-fedha/", "shared-engine"],
-  "remittance-v2": ["/sw/zana/ulinganisho-uhamishaji-pesa-kina/", "native-existing"],
   "cost-of-living": ["/sw/zana/gharama-za-maisha/", "shared-engine"],
   "afroatlas": ["/sw/zana/afroatlas/", "shared-engine"],
   "afropoints": ["/sw/zana/afropoints/", "shared-engine"],
@@ -64,7 +63,6 @@ const NATIVE_COPY = Object.freeze({
   "susu-tracker": ["Kifuatiliaji cha Susu, Esusu na Chama", "Fuatilia michango, zamu na malipo huku kanuni za kikundi zikibaki wazi."],
   "whatsapp-link": ["Kizalishaji cha kiungo cha WhatsApp", "Tengeneza kiungo cha WhatsApp kwa namba yenye msimbo wa nchi bila kutuma namba kwa AfroTools."],
   "remittance-compare": ["Kilinganishi cha kutuma fedha Afrika", "Linganisha ada, kiwango cha ubadilishaji na kiasi atakachopokea mlengwa."],
-  "remittance-v2": ["Kilinganishi cha kina cha kutuma fedha", "Linganisha watoa huduma kwa kiasi kinachopokelewa, ada, kiwango na muda."],
   "brideprice-advisor": ["Mshauri wa maandalizi ya mahari", "Andaa majadiliano ya mahari kwa heshima, ridhaa na mipaka ya kifedha."],
   "ajo-interest": ["Kikokotoo cha thamani ya zamu ya Ajo", "Linganisha thamani ya muda wa zamu bila kugeuza msaada wa kikundi kuwa ahadi ya mkopo."],
   "market-days": ["Kalenda ya siku za soko Igbo", "Kokotoa mzunguko wa Eke, Orie, Afo na Nkwo kwa muktadha wa kalenda ya Igbo."],
@@ -122,7 +120,7 @@ function contentId(id) { return `sw-uniquely-african:${id}`; }
 
 function buildManifest() {
   const fr = JSON.parse(fs.readFileSync(FRENCH_MANIFEST, "utf8"));
-  const rows = fr.rows.map((row) => {
+  const rows = fr.rows.filter((row) => row.english.id !== "remittance-v2").map((row) => {
     const target = ROUTES[row.english.id];
     if (!target) throw new Error(`Missing Swahili route for ${row.english.id}`);
     const swFile = routeFile(target[0]);
@@ -145,7 +143,7 @@ function buildManifest() {
     foundation: "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
     coordinatorSnapshot: { head: "6edacda8437e1fa9b9e5a512138cbdd3169e38be", acceptedGlobal: 873, categoryAccepted: 20 },
     category: { key: "african", englishName: "Uniquely African", englishHub: "/uniquely-african/", swahiliHub: "/sw/zana-za-kipekee-afrika/" },
-    denominator: 34,
+    denominator: 33,
     sourceOwner: "scripts/generate-sw-uniquely-african-parity.js",
     rows
   };
@@ -246,7 +244,7 @@ function hubHtmlBase(manifest) {
     const ready = row.swahili.mode === "shared-engine" || row.swahili.mode === "native-existing";
     return `<article class="ua-hub-card" data-state="${ready ? "candidate" : "blocked"}"><img src="/${row.artwork.path}" width="240" height="135" alt="" loading="lazy"><div><p>${esc(description)}</p><h2>${ready ? `<a href="${row.swahili.route}">${esc(title)}</a>` : esc(title)}</h2><span>${ready ? "Programu ya Kiswahili" : "Inasubiri injini ya pamoja"}</span></div></article>`;
   }).join("\n");
-  return `<!doctype html><html lang="sw" data-theme="system"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana 34 za kipekee Afrika kwa Kiswahili | AfroTools</title><meta name="description" content="Zana 34 za AfroTools zinazohusu maisha, masoko, vikundi, diaspora, mapishi na utamaduni wa Afrika kwa Kiswahili."><meta name="robots" content="index,follow"><link rel="canonical" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Zana 34 za kipekee Afrika kwa Kiswahili"><meta property="og:description" content="Zana za kupanga maisha na biashara za Afrika kwa Kiswahili, zikiwa na vyanzo na mipaka inayoonekana."><meta property="og:url" content="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-uniquely-african.css"><script type="application/ld+json">${json({"@context":"https://schema.org","@type":"CollectionPage",name:"Zana 34 za kipekee Afrika kwa Kiswahili",url:"https://afrotools.com/sw/zana-za-kipekee-afrika/",inLanguage:"sw",numberOfItems:34})}</script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body data-sw-ua-hub><a class="ua-skip" href="#ua-hub">Nenda kwenye zana</a><afro-navbar></afro-navbar><main id="ua-hub" class="ua-page ua-hub"><nav class="ua-breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a><span aria-hidden="true">›</span><span>Zana za kipekee Afrika</span></nav><header class="ua-hub-hero"><p class="ua-eyebrow">Imeundwa kwa muktadha wa Afrika</p><h1>Zana 34 za kipekee Afrika</h1><p>Majina ya eneo, nchi, sarafu, vipimo, vyanzo na mipaka hubaki wazi. Programu 6 bado zimezuiwa kwa sababu data, fomula au uthibitisho wa chanzo haujatosha; hazihesabiwi kama zimekubaliwa.</p></header><div class="ua-hub-count"><strong>28 / 34</strong><span>programu za Kiswahili zilizo tayari kwa uthibitisho wa kivinjari</span></div><section class="ua-hub-grid" aria-label="Orodha ya programu 34">${cards}</section></main><afro-footer></afro-footer></body></html>\n`;
+  return `<!doctype html><html lang="sw" data-theme="system"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zana 33 za kipekee Afrika kwa Kiswahili | AfroTools</title><meta name="description" content="Zana 33 za AfroTools zinazohusu maisha, masoko, vikundi, diaspora, mapishi na utamaduni wa Afrika kwa Kiswahili."><meta name="robots" content="index,follow"><link rel="canonical" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Zana 33 za kipekee Afrika kwa Kiswahili"><meta property="og:description" content="Zana za kupanga maisha na biashara za Afrika kwa Kiswahili, zikiwa na vyanzo na mipaka inayoonekana."><meta property="og:url" content="https://afrotools.com/sw/zana-za-kipekee-afrika/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/sw-uniquely-african.css"><script type="application/ld+json">${json({"@context":"https://schema.org","@type":"CollectionPage",name:"Zana 33 za kipekee Afrika kwa Kiswahili",url:"https://afrotools.com/sw/zana-za-kipekee-afrika/",inLanguage:"sw",numberOfItems:33})}</script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></head><body data-sw-ua-hub><a class="ua-skip" href="#ua-hub">Nenda kwenye zana</a><afro-navbar></afro-navbar><main id="ua-hub" class="ua-page ua-hub"><nav class="ua-breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">Mwanzo</a><span aria-hidden="true">›</span><span>Zana za kipekee Afrika</span></nav><header class="ua-hub-hero"><p class="ua-eyebrow">Imeundwa kwa muktadha wa Afrika</p><h1>Zana 33 za kipekee Afrika</h1><p>Majina ya eneo, nchi, sarafu, vipimo, vyanzo na mipaka hubaki wazi. Programu 6 bado zimezuiwa kwa sababu data, fomula au uthibitisho wa chanzo haujatosha; hazihesabiwi kama zimekubaliwa.</p></header><div class="ua-hub-count"><strong>28 / 33</strong><span>programu za Kiswahili zilizo tayari kwa uthibitisho wa kivinjari</span></div><section class="ua-hub-grid" aria-label="Orodha ya programu 33">${cards}</section></main><afro-footer></afro-footer></body></html>\n`;
 }
 
 function hubHtml(manifest) {
@@ -290,7 +288,7 @@ function reciprocalOwnerFiles(row) {
 
 function main() {
   const manifest = buildManifest();
-  if (manifest.rows.length !== 34 || new Set(manifest.rows.map((row) => row.english.id)).size !== 34) throw new Error("African denominator must be exactly 34 unique apps");
+  if (manifest.rows.length !== 33 || new Set(manifest.rows.map((row) => row.english.id)).size !== 33) throw new Error("African denominator must be exactly 33 unique apps");
   if (Object.keys(COPY).length !== 28) throw new Error("Expected exactly 28 shared-engine presentations");
   const changed = [];
   writeOrCheck(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, changed);
@@ -312,7 +310,7 @@ function main() {
   const blockedCount = manifest.rows.length - readyCount;
   const hub = hubHtml(manifest)
     .replace('Programu 6 bado zimezuiwa', `Programu ${blockedCount} bado zimezuiwa`)
-    .replace('<strong>28 / 34</strong>', `<strong>${readyCount} / 34</strong>`)
+    .replace('<strong>28 / 33</strong>', `<strong>${readyCount} / 33</strong>`)
     .replace(
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">',
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">'

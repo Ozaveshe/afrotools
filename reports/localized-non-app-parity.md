@@ -6,17 +6,17 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 153 | 0 | 272 |
-| sw | 138 | 0 | 287 |
+| fr | 161 | 0 | 265 |
+| sw | 138 | 0 | 288 |
 
 ## By surface class
 
 | Class | English routes | FR pass | FR under standard | FR missing | SW pass | SW under standard | SW missing |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
-| country-hub | 54 | 47 | 0 | 7 | 54 | 0 | 0 |
-| discovery-support | 18 | 17 | 0 | 1 | 18 | 0 | 0 |
-| editorial | 298 | 40 | 0 | 258 | 21 | 0 | 277 |
+| country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
+| discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
+| editorial | 299 | 40 | 0 | 259 | 21 | 0 | 278 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -26,7 +26,6 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | English | Class | Locale | Localized route | Status | Reasons |
 | --- | --- | --- | --- | --- | --- |
-| /african/ | discovery-support | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -402,6 +401,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/public-tender-document-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/public-tender-document-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/quotation-vs-invoice-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/record-blood-pressure-clinic-visit-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/record-blood-pressure-clinic-visit-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/redact-pdf-safely-before-sharing-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/redact-pdf-safely-before-sharing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/register-business-ghana-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -569,19 +570,12 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |
-| /ethiopia/ | country-hub | fr | — | missing | no localized route or owner file |
-| /ghana/ | country-hub | fr | — | missing | no localized route or owner file |
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | fr | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | sw | — | missing | no localized route or owner file |
-| /kenya/ | country-hub | fr | — | missing | no localized route or owner file |
-| /liberia/ | country-hub | fr | — | missing | no localized route or owner file |
 | /matchday-os/ | product-entry | fr | — | missing | no localized route or owner file |
 | /matchday-os/ | product-entry | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
-| /nigeria/ | country-hub | fr | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
-| /sierra-leone/ | country-hub | fr | — | missing | no localized route or owner file |
-| /uganda/ | country-hub | fr | — | missing | no localized route or owner file |

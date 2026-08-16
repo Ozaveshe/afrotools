@@ -11,7 +11,8 @@ const COVERAGE_PATH = path.join(ROOT, 'data', 'registry', 'locale-page-coverage.
 const ACCEPTANCE_PATH = path.join(ROOT, 'data', 'audits', 'swahili-free-app-acceptance.json');
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.md');
-// One duplicate canonical entry was retired when landed-cost consolidated into import-duty.
+// Duplicate canonical entries were retired when landed-cost consolidated into
+// import-duty and remittance-v2 consolidated into remittance-compare.
 const EXPECTED_FREE_APP_COUNT = 1256;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
@@ -246,6 +247,7 @@ function buildReport() {
   const registry = loadRegistry();
   const acceptanceDocument = readJson(ACCEPTANCE_PATH);
   const acceptanceEntries = acceptanceDocument.entries || [];
+  const preservedArchivedAcceptanceEntries = acceptanceDocument.archivedEntries || [];
   let acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
   if (acceptanceById.size !== acceptanceEntries.length) {
     throw new Error('Swahili acceptance evidence contains duplicate englishId values.');
@@ -264,8 +266,12 @@ function buildReport() {
 
   const englishByRoute = new Map(englishRows.map((row) => [normalizeRoute(row.url), row]));
   const englishById = new Map(englishRows.map((row) => [row.id, row]));
-  const archivedAcceptanceEntries = acceptanceEntries
-    .filter((entry) => !englishById.has(entry.englishId));
+  const archivedAcceptanceEntries = [
+    ...preservedArchivedAcceptanceEntries,
+    ...acceptanceEntries.filter((entry) => !englishById.has(entry.englishId))
+  ].filter((entry, index, entries) => (
+    entries.findIndex((candidate) => candidate.englishId === entry.englishId) === index
+  ));
   acceptanceById = new Map(
     acceptanceEntries
       .filter((entry) => englishById.has(entry.englishId))

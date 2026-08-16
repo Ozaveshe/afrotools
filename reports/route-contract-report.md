@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11498 |
-| Indexable pages | 9915 |
+| Public pages | 11499 |
+| Indexable pages | 9916 |
 | Permanent and temporary redirects | 2947 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5224 |
-| Documented fallbacks | 14750 |
-| Routes eligible for primary sitemaps | 9915 |
+| Genuine equivalence groups | 5225 |
+| Documented fallbacks | 14751 |
+| Routes eligible for primary sitemaps | 9916 |
 
 ## Locale Coverage
 
-- en: 5955 page records
+- en: 5956 page records
 - fr: 3799 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 500
+- article: 501
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3783,6 +3783,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:265672cd40b3: en=`/mauritania/mr-vat`, fr=`/fr/mauritanie/calculateur-tva`, sw=`/sw/mauritania/kikokotoo-vat/`; x-default=`/mauritania/mr-vat`
 - equivalence:267d7b317db7: en=`/cars/ghana/mercedes-benz/e-class/2017/`, fr=`/fr/cars/ghana/mercedes-benz/e-class/2017/`; x-default=`/cars/ghana/mercedes-benz/e-class/2017/`
 - equivalence:267e0f4256c8: en=`/cars/nigeria/lexus/rx/`, fr=`/fr/cars/nigeria/lexus/rx/`; x-default=`/cars/nigeria/lexus/rx/`
+- equivalence:26805c2d4a29: en=`/blog/record-blood-pressure-clinic-visit-africa/`; x-default=`/blog/record-blood-pressure-clinic-visit-africa/`
 - equivalence:268da7b684d2: en=`/tools/work-permit-cost/equatorial-guinea/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee-equatoriale/`; x-default=`/tools/work-permit-cost/equatorial-guinea/`
 - equivalence:2694977b2710: en=`/tools/deforestation/`, fr=`/fr/tools/impact-deforestation/`, sw=`/sw/zana/athari-ya-ukataji-misitu/`; x-default=`/tools/deforestation/`
 - equivalence:269a965c37b7: en=`/cars/ghana/toyota/`, fr=`/fr/cars/ghana/toyota/`; x-default=`/cars/ghana/toyota/`
@@ -8223,13 +8224,10 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/privacy-policy/` -> `/fr/privacy/` (html-canonical:12)
 - `/fr/property/` -> `/fr/mortgage-property/` (html-canonical:13)
 - `/fr/tools/outils-image/` -> `/fr/image-design/` (html-canonical:17)
-- `/fr/tools/transfert-v2/` -> `/fr/tools/transfert-argent/` (html-canonical:18)
-- `/privacy-policy` -> `/privacy/` (html-canonical:32)
-- `/sw/afya-na-bima/` -> `/sw/bima/` (html-canonical:37)
-- `/sw/tools/` -> `/sw/zana-zote/` (html-canonical:39)
-- `/sw/zana/ulinganisho-uhamishaji-pesa-kina/` -> `/sw/zana/ulinganisho-uhamishaji-pesa/` (html-canonical:40)
-- `/terms-of-use` -> `/terms/` (html-canonical:42)
-- `/tools/remittance-v2/` -> `/tools/remittance-compare/` (html-canonical:45)
+- `/privacy-policy` -> `/privacy/` (html-canonical:31)
+- `/sw/afya-na-bima/` -> `/sw/bima/` (html-canonical:36)
+- `/sw/tools/` -> `/sw/zana-zote/` (html-canonical:38)
+- `/terms-of-use` -> `/terms/` (html-canonical:40)
 - `/all-tools/` -> `/tools/` (_redirects:4)
 - `/business/break-even/` -> `/tools/break-even/` (_redirects:5)
 - `/business/invoice/` -> `/tools/invoice-generator/` (_redirects:6)

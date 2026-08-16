@@ -24,9 +24,12 @@ function buildPayload() {
   const directoryById = new Map(directory.map((row) => [row.id, row]));
   const acceptedEntries = acceptance.entries
     .filter((entry) => entry.status === "accepted");
-  const archivedAcceptedIds = acceptedEntries
-    .filter((entry) => !directoryById.has(entry.englishId))
+  const archivedAcceptedIds = [
+    ...acceptedEntries.filter((entry) => !directoryById.has(entry.englishId)),
+    ...(acceptance.archivedEntries || []).filter((entry) => entry.status === "accepted")
+  ]
     .map((entry) => entry.englishId)
+    .filter((id, index, ids) => ids.indexOf(id) === index)
     .sort();
   const accepted = acceptedEntries
     .filter((entry) => directoryById.has(entry.englishId))

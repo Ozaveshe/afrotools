@@ -2,7 +2,7 @@ const assert = require('assert');
 const { validateHandoff, buildQueue } = require('../scripts/automation-handoff');
 
 function fixture(overrides = {}) {
-  return {
+  const item = {
     schema_version: 1,
     handoff_id: 'lane-2026-08-12-run-1',
     automation_id: 'lane',
@@ -21,6 +21,12 @@ function fixture(overrides = {}) {
     generated_files: [],
     conflict_keys: ['data:example'],
     dependencies: [],
+    producer: {
+      worktree_path: 'C:/Users/Oza/.codex/worktrees/lane-run-1',
+      base_fetched_at: '2026-08-12T07:58:00.000Z',
+      remote_ref: 'refs/heads/automation/lane-2026-08-12',
+      cleanup_after: '2026-08-13T08:05:00.000Z',
+    },
     validations: [{ command: 'node tests/example.test.js', status: 'pass', summary: 'passed' }],
     risk: {
       level: 'low',
@@ -36,10 +42,35 @@ function fixture(overrides = {}) {
     publisher: { consumed_at: null, release_commit: null, deploy_id: null, live_proof: [] },
     ...overrides,
   };
+  if (Object.prototype.hasOwnProperty.call(overrides, 'automation_id') && !Object.prototype.hasOwnProperty.call(overrides, 'branch')) {
+    item.branch = `automation/${item.automation_id}-2026-08-12`;
+  }
+  if (!Object.prototype.hasOwnProperty.call(overrides, 'producer')) {
+    item.producer = {
+      ...item.producer,
+      remote_ref: `refs/heads/${item.branch}`,
+    };
+  }
+  return item;
 }
 
 assert.deepStrictEqual(validateHandoff(fixture()), []);
 assert.ok(validateHandoff(fixture({ commit: null })).some((error) => error.includes('require commit')));
+assert.ok(
+  validateHandoff(fixture({ changed_files: ['data/other.json'] }))
+    .some((error) => error.includes('changed_files must exactly equal')),
+  'ready receipts must describe the exact source/generated diff partition'
+);
+assert.ok(
+  validateHandoff(fixture({ branch: 'codex/wrong-owner' }))
+    .some((error) => error.includes('branch must start')),
+  'ready receipts must use the owning automation branch prefix'
+);
+assert.ok(
+  validateHandoff(fixture({ updated_at: '2026-08-12T07:00:00.000Z' }))
+    .some((error) => error.includes('must not be earlier')),
+  'receipt timestamps must be monotonic'
+);
 assert.ok(validateHandoff(fixture({ status: 'blocked', merge_candidate: false, blocker: null })).some((error) => error.includes('require blocker')));
 assert.ok(
   validateHandoff(fixture({ dependencies: ['Do not overwrite newer statutory source updates.'] }))

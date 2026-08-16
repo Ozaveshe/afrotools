@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Tashkent",
+  "active_automation_budget": 6,
+  "active_automations": [
+    {
+      "id": "am-content-batch-2",
+      "role": "producer",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=9;BYMINUTE=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 150
+    },
+    {
+      "id": "pm-content-batch-2",
+      "role": "producer",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=17;BYMINUTE=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 90
+    },
+    {
+      "id": "daily-5pm-publish-deploy-gate",
+      "role": "publisher",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=18;BYMINUTE=30;BYSECOND=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "max_runtime_minutes": 180
+    },
+    {
+      "id": "daily-bug-scan",
+      "role": "evaluator",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,WE,FR;BYHOUR=20;BYMINUTE=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 60
+    },
+    {
+      "id": "dependency-sweep",
+      "role": "evaluator",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,TH,SA;BYHOUR=11;BYMINUTE=30",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 45
+    },
+    {
+      "id": "skill-progression-map",
+      "role": "monitor",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=7;BYMINUTE=30",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 45
+    }
+  ],
+  "handoffs": {
+    "policy_effective_at": "2026-08-16T17:45:00.000Z",
+    "max_ready_age_hours": 24,
+    "require_remote_verification": true,
+    "require_worktree_ownership": true
+  },
+  "publishing": {
+    "daily_expected_articles": 2,
+    "deployment_cutoff_local": "20:00",
+    "max_latest_article_age_hours": 36,
+    "hub_url": "https://afrotools.com/blog/",
+    "feed_url": "https://afrotools.com/blog/feed.xml"
+  },
+  "worktrees": {
+    "warn_total": 25,
+    "max_active_automation_worktrees": 8,
+    "clean_cleanup_age_hours": 24,
+    "dirty_stranded_age_hours": 72
+  },
+  "publisher_lease": {
+    "ttl_minutes": 30,
+    "path": "C:/Users/Oza/.codex/automations/daily-5pm-publish-deploy-gate/publisher-lock.json"
+  }
+}

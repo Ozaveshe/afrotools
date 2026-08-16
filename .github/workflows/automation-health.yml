@@ -44,6 +44,11 @@ jobs:
           fi
           npm run automation:live-health:strict
 
+      - name: Check publishing freshness SLO
+        id: publishing
+        continue-on-error: true
+        run: npm run automation:publishing-slo -- --live --write
+
       - name: Upload automation health evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,9 +58,11 @@ jobs:
           path: |
             reports/live-automation-health-latest.json
             reports/live-automation-health-latest.md
+            reports/publishing-slo-latest.json
+            reports/publishing-slo-latest.md
 
       - name: Prepare failure alert
-        if: steps.health.outcome == 'failure'
+        if: steps.health.outcome == 'failure' || steps.publishing.outcome == 'failure'
         id: alert
         shell: bash
         run: |
@@ -66,9 +73,16 @@ jobs:
             ? JSON.parse(fs.readFileSync(reportPath, 'utf8'))
             : null;
           const counts = report && report.counts ? report.counts : {};
+          const publishingPath = 'reports/publishing-slo-latest.json';
+          const publishing = fs.existsSync(publishingPath)
+            ? JSON.parse(fs.readFileSync(publishingPath, 'utf8'))
+            : null;
+          const publishingErrors = publishing && publishing.counts
+            ? Number(publishing.counts.errors || 0)
+            : (process.env.PUBLISHING_OUTCOME === 'failure' ? 1 : 0);
           const stale = Number(counts.stale || 0);
           const missing = Number(counts.missing || 0);
-          const title = `Automation health: ${stale} stale, ${missing} missing`;
+          const title = `Automation health: ${stale} stale, ${missing} missing, ${publishingErrors} publishing`;
           const failedChecks = report && Array.isArray(report.checks)
             ? report.checks.filter((check) => check.status !== 'ok')
             : [];
@@ -81,6 +95,9 @@ jobs:
             `- Pending first run: ${Number(counts.pending || 0)}`,
             `- Degraded: ${Number(counts.degraded || 0)}`,
             `- Unavailable: ${Number(counts.unavailable || 0)}`,
+            `- Publishing SLO errors: ${publishingErrors}`,
+            `- Latest source article: ${publishing && publishing.source && publishing.source.latest ? publishing.source.latest.slug : 'unavailable'}`,
+            `- Source articles dated today: ${publishing && publishing.source ? publishing.source.today_count : 'unavailable'}`,
             `- Workflow run: ${process.env.RUN_URL}`,
           ];
           if (failedChecks.length) {
@@ -94,14 +111,21 @@ jobs:
           } else if (!report) {
             lines.push('', 'No fresh report was produced. Verify the Actions secret and workflow logs.');
           }
+          if (publishing && Array.isArray(publishing.issues) && publishing.issues.length) {
+            lines.push('', '### Publishing SLO issues', '');
+            for (const issue of publishing.issues) {
+              lines.push(`- **${issue.code}**: ${issue.detail}`);
+            }
+          }
           fs.writeFileSync('automation-health-issue.md', `${lines.join('\n')}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `title=${title}\n`);
           NODE
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLISHING_OUTCOME: ${{ steps.publishing.outcome }}
 
       - name: Open or update automation health issue
-        if: steps.health.outcome == 'failure'
+        if: steps.health.outcome == 'failure' || steps.publishing.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           ALERT_TITLE: ${{ steps.alert.outputs.title }}
@@ -115,7 +139,7 @@ jobs:
           fi
 
       - name: Close recovered automation health issue
-        if: steps.health.outcome == 'success'
+        if: steps.health.outcome == 'success' && steps.publishing.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -127,4 +151,8 @@ jobs:
 
       - name: Keep manually requested health gates strict
         if: steps.health.outcome == 'failure' && github.event_name == 'workflow_dispatch'
+        run: exit 1
+
+      - name: Keep manually requested publishing gates strict
+        if: steps.publishing.outcome == 'failure' && github.event_name == 'workflow_dispatch'
         run: exit 1

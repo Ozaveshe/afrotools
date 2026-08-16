@@ -26,7 +26,7 @@ const assigned = inventory.rows.filter((row) => assignedIds.has(row.englishId));
 const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 
-test('assigned denominator is exactly 32 current canonical apps with the requested category split', () => {
+test('assigned denominator is exactly 32 with the requested category split', () => {
   assert.equal(assigned.length, 32);
   assert.equal(assigned.filter((row) => row.categoryKey === 'religious-cultural').length, 19);
   assert.equal(assigned.filter((row) => row.categoryKey === 'african').length, 13);
@@ -83,9 +83,9 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
 });
 
-test('all current canonical African rows use native engines with unsafe price claims removed', () => {
+test('all thirteen African rows use native engines with unsafe price claims removed', () => {
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'shared-engine').length, 28);
-  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 6);
+  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 5);
   assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 0);
   for (const id of sharedAfricanLane) {
     const row = african.rows.find((item) => item.english.id === id);

@@ -46,4 +46,4 @@ for (const [id, file, sw, en, fr] of apps) {
 
 childProcess.execFileSync(process.execPath, [path.join(ROOT, 'scripts/build-sw-fintech-payment-allocation.js')], { cwd: ROOT, stdio: 'pipe' });
 
-console.log('Swahili Fintech payment allocation: authoritative 1,256-row inventory and 2/2 accepted route contracts passed');
+console.log('Swahili Fintech payment allocation: authoritative 1,256-row free-app inventory and 2/2 accepted route contracts passed');

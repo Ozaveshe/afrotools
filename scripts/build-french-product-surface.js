@@ -81,7 +81,9 @@ function isSpecializedFrenchOwner(rel) {
     || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js')
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js"')
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"')
-    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"');
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"')
+    || read(rel).includes('data-fr-transport-parity=')
+    || read(rel).includes('/assets/css/french-transport-parity.css');
 }
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;

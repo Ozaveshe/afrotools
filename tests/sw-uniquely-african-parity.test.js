@@ -44,10 +44,10 @@ const invalidators = {
   "fabric-cost": (value) => { value.yards = 0; },
 };
 
-assert.strictEqual(manifest.denominator, 34, "authoritative category denominator");
-assert.strictEqual(manifest.rows.length, 34, "manifest row count");
+assert.strictEqual(manifest.denominator, 33, "authoritative category denominator");
+assert.strictEqual(manifest.rows.length, 33, "manifest row count");
 assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length, 28, "implemented shared-engine routes");
-assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "native-existing").length, 6, "preserved native-owner routes");
+assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "native-existing").length, 5, "preserved native-owner routes");
 assert.strictEqual(fixtures.routes.length, 20, "English oracle count");
 assert.strictEqual(Object.keys(COPY).length, 28, "Swahili presentation count");
 const inventory = JSON.parse(fs.readFileSync(path.join(root, "reports/swahili-free-app-parity-inventory.json"), "utf8"));
@@ -103,4 +103,4 @@ for (const fixture of fixtures.routes) {
   assert.deepStrictEqual(invalid.values, {}, `${fixture.id}: no stale invalid values`);
 }
 
-console.log("Swahili Uniquely African parity: immutable 34-row denominator, 28 shared-engine routes, 6 native-owner routes, and central lifecycle contracts passed.");
+console.log("Swahili Uniquely African parity: immutable 33-row denominator, 28 shared-engine routes, 5 native-owner routes, and central lifecycle contracts passed.");

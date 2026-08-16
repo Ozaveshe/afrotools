@@ -13,7 +13,8 @@ const ACCEPTANCE_CATEGORY_PATH = path.join(ROOT, 'data', 'audits', 'french-free-
 const FINAL_ACCEPTANCE_RECEIPT = 'reports/french-free-app-parity-final-acceptance-2026-07-30.md';
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.md');
-// One duplicate canonical entry was retired when landed-cost consolidated into import-duty.
+// Duplicate canonical entries were retired when landed-cost consolidated into
+// import-duty and remittance-v2 consolidated into remittance-compare.
 const EXPECTED_FREE_APP_COUNT = 1256;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 

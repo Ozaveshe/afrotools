@@ -46,6 +46,17 @@
     "generated_files": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "conflict_keys": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "dependencies": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" }, "uniqueItems": true },
+    "producer": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["worktree_path", "base_fetched_at", "remote_ref", "cleanup_after"],
+      "properties": {
+        "worktree_path": { "type": "string", "minLength": 1 },
+        "base_fetched_at": { "type": "string", "format": "date-time" },
+        "remote_ref": { "type": "string", "minLength": 1 },
+        "cleanup_after": { "type": "string", "format": "date-time" }
+      }
+    },
     "validations": {
       "type": "array",
       "items": {
