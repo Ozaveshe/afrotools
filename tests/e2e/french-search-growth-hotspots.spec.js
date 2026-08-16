@@ -72,4 +72,53 @@ test.describe('French search growth hotspots', () => {
     expect(missingResources).toEqual([]);
     expect(consoleErrors).toEqual([]);
   });
+
+  test('Wave and Orange guide exposes corrected tariffs and sources without mobile overflow', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/blog/wave-vs-orange-money-senegal-2026/');
+    await expect(page.locator('h1')).toHaveText('Wave vs Orange Money au Sénégal : quels frais en 2026 ?');
+    await expect(page.locator('.article-body table')).toHaveCount(2);
+    await expect(page.locator('.faq-section details')).toHaveCount(4);
+    await expect(page.locator('a[href="https://www.wave.com/fr/"]').first()).toBeVisible();
+    await expect(page.locator('a[href="https://www.orange.sn/assistance/tutoriels/lancement-du-nouveau-modele-orange-money-0"]').first()).toBeVisible();
+    await expect(page.locator('body')).toContainText(/Wave affiche les dépôts et retraits sans frais/i);
+    await expect(page.locator('body')).not.toContainText(/transferts entre comptes Wave sont entièrement gratuits/i);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
+
+  test('Senegal IRPP guide exposes seven bands and calculator limits on mobile', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/blog/guide-irpp-senegal-2026/');
+    await expect(page.locator('h1')).toHaveText('IRPP au Sénégal en 2026 : barème, parts et salaire net');
+    await expect(page.locator('.article-body table tbody tr')).toHaveCount(7);
+    await expect(page.locator('.faq-section details')).toHaveCount(4);
+    await expect(page.locator('a[href="https://www.dgid.sn/simulateur-part/"]').first()).toBeVisible();
+    await expect(page.locator('body')).toContainText(/ne calcule pas la réduction pour charges de famille/i);
+    await expect(page.locator('body')).not.toContainText(/Marié\(e\) sans enfant[\s\S]*2 parts/i);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });

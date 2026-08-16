@@ -10,6 +10,8 @@ const PAGE_REL = 'fr/blog/mobile-money-fees-africa-compared/index.html';
 const PAGE = path.join(ROOT, PAGE_REL);
 const BODY = path.join(ROOT, 'lang/pages/blog/mobile-money-fees-africa-compared/fr.body.html');
 const FALLBACKS = path.join(ROOT, 'data/localization/explicit-language-fallbacks.json');
+const MANIFEST = path.join(ROOT, 'data/localization/fr-blog-manifest.json');
+const HUB = path.join(ROOT, 'fr/blog/index.html');
 
 const result = spawnSync(process.execPath, ['scripts/build-french-mobile-money-editorial.js'], {
   cwd: ROOT,
@@ -20,6 +22,8 @@ assert.strictEqual(result.status, 0, result.stderr || result.stdout);
 const html = fs.readFileSync(PAGE, 'utf8');
 const body = fs.readFileSync(BODY, 'utf8').trim();
 const fallbacks = fs.readFileSync(FALLBACKS, 'utf8');
+const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
+const hub = fs.readFileSync(HUB, 'utf8');
 
 assert.match(html, /<html\b[^>]*\blang="fr"/i);
 assert.match(html, /<meta name="content-language" content="fr">/i);
@@ -61,5 +65,7 @@ assert.doesNotMatch(html, /By Equipe|Published Mar|13 min read|Is M-Pesa|Which m
 assert.doesNotMatch(html, /200 millions de comptes|50 millions d'utilisateurs|60 millions d'utilisateurs|30 milliards de dollars par mois/i);
 assert.doesNotMatch(fallbacks, /fr\/blog\/mobile-money-fees-africa-compared\/index\.html/);
 assert.doesNotMatch(fallbacks, /fr\/tools\/suivi-carburant\/\*\*\/\*\.html/);
+assert.ok(manifest.articles.some((article) => article.slug === 'mobile-money-fees-africa-compared'));
+assert.match(hub, /href="\/fr\/blog\/mobile-money-fees-africa-compared\/"/);
 
 console.log('French mobile-money editorial source, schema, snippets, sources and fallback retirement passed');

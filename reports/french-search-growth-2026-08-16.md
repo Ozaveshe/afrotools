@@ -4,7 +4,7 @@
 
 French search is not invisible, and hreflang is not the present blocker. In the last 28 days, `/fr/` earned **450 clicks from 46,066 impressions**, a **1.0% CTR**, and an average position of **8.9**. Clicks grew 65% and impressions roughly doubled versus the preceding 28 days, while CTR fell from 1.2% to 1.0%.
 
-The urgent problem was search-product quality inside the impression growth: high-impression French routes still exposed English body copy or schema, generic snippets, unsupported tariff claims, and English country names in discovery surfaces. This pass repaired the three largest confirmed low-CTR clusters and added deterministic owners so broad rebuilds cannot silently reverse the fixes.
+The urgent problem was search-product quality inside the impression growth: high-impression French routes still exposed English body copy or schema, generic snippets, unsupported tariff claims, and English country names in discovery surfaces. This pass repaired the four largest confirmed low-CTR clusters and added tests or deterministic owners so broad rebuilds cannot silently reverse the fixes.
 
 ## Evidence boundary
 
@@ -25,6 +25,18 @@ The urgent problem was search-product quality inside the impression growth: high
 | Year-end target | 10,000 clicks per day | About 111× the current whole-site daily rate |
 
 At the current French impression volume, even a 5% CTR would produce only about **82 French clicks per day**. Reaching 10,000 clicks per day requires both CTR recovery and a much larger qualified-demand portfolio: about **200,000 daily impressions at 5% CTR**, or **333,000 daily impressions at 3% CTR**. Technical SEO alone cannot supply that denominator.
+
+The exported GSC page table shows where the current French opportunity is concentrated. Because Google caps this table, these figures are a directional subset rather than a full denominator.
+
+| Route family | Rows in export | Current clicks | Current impressions | Previous clicks | Previous impressions |
+|---|---:|---:|---:|---:|---:|
+| French blog | 59 | 76 | 16,851 | 54 | 8,631 |
+| Fuel tracker family | 55 | 29 | 13,225 | 16 | 3,544 |
+| Salary calculators | 22 | 153 | 5,633 | 86 | 3,439 |
+| VAT calculators | 20 | 24 | 2,908 | 24 | 1,992 |
+| Other French routes | 1,184 | 168 | 7,332 | 91 | 4,656 |
+
+The blog and fuel families account for 30,076 of the 45,990 impressions represented in the exported page table, about 65%. That concentration is why this pass prioritized those routes before broad metadata churn.
 
 ## What was wrong
 
@@ -52,18 +64,35 @@ The article now answers that intent in the title and opening, separates Cameroon
 
 A dedicated French editorial owner now rebuilds the page after i18n generation. It uses official Orange Cameroon, Orange Senegal, MTN Uganda, Airtel Uganda, and Safaricom sources; keeps cross-currency comparisons honest; removes the fallback exemption; restores French content IDs and asset paths; and has a 390 px browser regression test.
 
-### 5. French discovery used English country labels
+### 5. A ranking Wave/Orange comparison had its core tariffs reversed
+
+`/fr/blog/wave-vs-orange-money-senegal-2026/` earned 10 clicks from 791 impressions at position 7.68. The old article asserted that Wave transfers were free and withdrawals cost 1%, claimed the reverse for Orange Money, declared the services non-interoperable, and cited no external source. Current first-party pages show Wave advertising free deposits/withdrawals and 1% transfers, while Orange Senegal advertises wallet operations without operator fees and withdrawals at 1% capped at 5,000 F CFA. Orange also documents a separate 0.5% Senegal transaction tax, capped at 2,000 F CFA, for affected operations since December 2025.
+
+The article now separates provider fees from tax, removes the unsupported network-size and universal-interoperability claims, links first-party Wave, Orange Senegal, and BCEAO sources, records the verification date, and tells users to compare the final pre-confirmation total. A focused regression test locks the corrected direction of the tariffs, schema, source set, and snippet length.
+
+### 6. The Senegal IRPP article contradicted the official family-parts table
+
+`/fr/blog/guide-irpp-senegal-2026/` earned 5 clicks from 368 impressions at position 7.52. It published no external source, omitted the 43% top band, assigned 2 parts to a married taxpayer without children without stating the one-income condition, and used that assumption in invented worked examples. The published CGI table starts that situation at 1.5 parts and describes a separate half-part rule when only one spouse has taxable income.
+
+The rebuilt guide now carries all seven published bands, links the Ministry of Finance, DGID parts simulator, DGID procedures, and DGTSS IPRES report, removes the unsafe examples, and states the actual calculator boundary: it estimates IRPP before the family-charge reduction. A source/schema/content test and the 390 px browser suite lock this contract.
+
+### 7. French discovery used English country labels
 
 The registry generator used English country names for generated French energy, insurance, contract, solar, and fuel rows. It now reads `displayNames.fr` from the country registry. The generated registry and `/fr/all-tools/` directory now expose native labels such as Cameroun, Maroc, Tunisie, Algérie, Guinée, Gambie, and Mauritanie. The repair covers 406 generated rows across ten families and fixes a parent-row deletion/reinsertion defect in the generator.
+
+### 8. The curated French blog hub omitted a proven native route
+
+GSC listed 46 French blog URLs receiving at least one table row that were absent from the curated French blog manifest. Most are deliberate noindex English fallbacks or older native-looking pages without sufficient source proof, so bulk promotion would be unsafe. The repaired `/fr/blog/mobile-money-fees-africa-compared/` route is the exception: it is now source-owned, native, tested, and already earned 870 impressions. It has been added to the French blog manifest and regenerated hub, increasing the curated native catalog from 41 to 42 guides without legitimizing the fallback inventory.
 
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
 - 3,240 indexable French pages: 1,794 native and 1,446 localized shells. A localized shell is a French route/UI around a shared deterministic engine, not automatically an English fallback.
+- 42 source-reviewed guides are now linked from the French blog hub; the newly admitted route has a manifest and hub-link regression check.
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
 - 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
-- 11,727 pages and 141,479 internal links pass with 0 broken links.
-- Three French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors.
+- 11,727 pages and 141,477 internal links pass with 0 broken links.
+- Five French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
 ## Path toward 10,000 daily clicks
@@ -79,7 +108,7 @@ The target should be managed as a portfolio scoreboard, not as a forecast.
 
 ### Next three growth bets
 
-1. **Finish the high-impression French queue, not the longest title queue.** Use GSC impressions × CTR gap × source confidence to select pages. Start with Wave/Orange Senegal, teacher salary, IRPP Senegal, and the highest-impression VAT country routes.
+1. **Finish the high-impression French queue, not the longest title queue.** Use GSC impressions × CTR gap × source confidence to select pages. Wave/Orange Senegal and IRPP Senegal are now repaired; continue with salary RDC and the highest-impression VAT country routes.
 2. **Scale the patterns that already win.** Madagascar, Guinea, Benin, and Mali salary pages are producing 3–6% CTR. Expand adjacent payroll questions only where a current national source and deterministic engine exist.
 3. **Build authority around useful country decisions.** Create source-backed French clusters for payroll, VAT, mobile money, fuel, and business documents; connect each article to a working tool and an official-source freshness contract. Avoid mass pages whose only distinction is a translated country name.
 
