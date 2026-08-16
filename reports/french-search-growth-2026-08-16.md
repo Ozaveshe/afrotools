@@ -84,6 +84,36 @@ The registry generator used English country names for generated French energy, i
 
 GSC listed 46 French blog URLs receiving at least one table row that were absent from the curated French blog manifest. Most are deliberate noindex English fallbacks or older native-looking pages without sufficient source proof, so bulk promotion would be unsafe. The repaired `/fr/blog/mobile-money-fees-africa-compared/` route is the exception: it is now source-owned, native, tested, and already earned 870 impressions. It has been added to the French blog manifest and regenerated hub, increasing the curated native catalog from 41 to 42 guides without legitimizing the fallback inventory.
 
+### 9. The Senegal calculator carried a second, contradictory tax engine
+
+The live calculator correctly delegates to the shared Senegal PAYE engine, whose seven IRPP bands include the 43% band above 25 million F CFA. The same HTML file also retained an unused inline `calcAnnualPAYE` implementation that stopped at 40% above 13.5 million F CFA. It did not drive current results, but it was a dangerous second owner that could be reconnected during a future UI edit and silently disagree with the guide and server engine.
+
+The obsolete function has been removed. The PAYE regression suite now verifies the browser engine, server engine, public calculator page, 43% band, IPRES ceiling, and excluded family-reduction boundary as one contract.
+
+### 10. Teacher-salary impressions were landing on the wrong product promise
+
+`/fr/tools/salaire-enseignant/` earned 6 clicks from 495 impressions at position 7.62. The visible query sample is dominated by national salary-grid searches, including Togo and Niger, while the page is intentionally a deterministic calculator for a user-entered offer, allowances, deductions and workload. Its old “Feuille de rémunération enseignante” snippet did not make that boundary clear enough.
+
+The generator, page metadata, schema, heading and registry now call the product a `Calculateur de salaire enseignant` and name the real outputs: monthly gross, entered net deductions, annual total and hourly rate. The copy explicitly refuses to invent a national scale. A focused test prevents either search copy or discovery metadata from drifting back into an unsupported salary-grid claim.
+
+### 11. The Algeria salary page ranked with an incomplete tax model and unsafe data paths
+
+`/fr/algerie/calculateur-salaire-net` earned 1 click from 359 impressions at position 10.87, versus 3 clicks from 153 impressions in the preceding period. Impressions more than doubled while CTR fell from 1.96% to 0.28%. Repository inspection found that the page displayed the current six IRG bands but calculated the raw progressive amount without the DGI salary abatements: the monthly exemption through 30,000 DA, the 40% abatement bounded between 1,000 and 1,500 DA per month, and the special 30,001 to 35,000 DA formula. It also showed a 26% employer CNAS contribution, while the CNAS general case is 25% employer, 9% employee and 0.5% for social works. Exact salaries were silently posted to an AI endpoint, and the primary PDF path required email and posted the gross salary.
+
+A dedicated Algeria engine now owns the browser and Netlify calculations. It applies the six DGI bands, monthly employee rules and both abatement paths, exposes the before/after IRG amounts, uses the CNAS general-case split, and states the exclusions for non-monthly pay, disability/pension regimes and employer reductions. The page links the official [DGI salary IRG guidance](https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires) and [CNAS employer rates](https://cnas.dz/fr/employeur/), both checked on 17 August 2026. Calculation and PDF export are now local with no AI salary transmission or email gate. Seven focused tests lock official boundary cases, source links, server/browser parity, privacy and the removal of the stale inline engine.
+
+### 12. The Burkina Faso VAT page denied an official reduced rate
+
+`/fr/burkina-faso/calculateur-tva` earned 2 clicks from 206 impressions at position 8.26. The visible query table includes `tva au burkina` and `taux de tva au burkina faso`, both with zero clicks in the current period. Its title and calculator exposed only 18 %, while its FAQ stated that Burkina Faso had no true reduced VAT rate. The DGI's published CGI says in Article 317 that the standard rate is 18 % and that a 10 % rate applies to accommodation and restaurant services supplied by approved hotels, restaurants and similar establishments. The DGI VAT declaration form also exposes separate 18 % and 10 % rows.
+
+The page now answers both rate intents in its snippet and schema, keeps 18 % as the default, and exposes 10 % only after the user confirms the qualifying service and approved establishment. It links the [DGI CGI](https://dgi.bf/verification/CGI) and [official VAT declaration form](https://dgi.bf/wp-content/uploads/2023/10/DECLARATION-DE-LA-TAXE-SUR-LA-VALEUR-AJOUTEE.pdf), records the 17 August 2026 review, and removes unsupported broad exemption claims. Static and mobile tests lock the Article 317 wording, evidence gate, arithmetic, source owner and local-only behavior.
+
+### 13. “Fully translated” and “native product” are not the same denominator
+
+The French surface audit currently classifies 3,240 indexable pages as 1,794 native pages and 1,446 localized shells. A shell can be legitimate when French controls wrap a shared deterministic engine, so this label is not itself an error. A narrower inventory found 264 indexable pages owned by `scripts/generate-fr-tool-gap-pages.js`; 262 are preparation pages that hand off to a fuller English route rather than completing the workflow in French.
+
+This class is real product debt, but it is not the present impressions blocker. Only 23 of the 264 explicit gap pages appear in the exported GSC page table, together earning 4 clicks from 148 impressions. One route contributes 114 impressions, `/fr/tools/calculateur-de-tarif-independant-senegal/`, but 104 visible query impressions are navigational searches for `artdecosenegal.com`, not demand for a freelancer-rate calculator. A blanket noindex or emergency translation wave would therefore sacrifice scope without addressing the current qualified-demand clusters. Keep these routes out of the “native tool” success denominator, then promote or consolidate them only when GSC shows relevant intent and the workflow can finish in French.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -92,7 +122,8 @@ GSC listed 46 French blog URLs receiving at least one table row that were absent
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
 - 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
 - 11,727 pages and 141,477 internal links pass with 0 broken links.
-- Five French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests.
+- Eight French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, and seven Algeria PAYE correctness/privacy checks pass.
+- The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
 ## Path toward 10,000 daily clicks
@@ -108,7 +139,7 @@ The target should be managed as a portfolio scoreboard, not as a forecast.
 
 ### Next three growth bets
 
-1. **Finish the high-impression French queue, not the longest title queue.** Use GSC impressions × CTR gap × source confidence to select pages. Wave/Orange Senegal and IRPP Senegal are now repaired; continue with salary RDC and the highest-impression VAT country routes.
+1. **Finish the high-impression French queue, not the longest title queue.** Use GSC impressions × CTR gap × source confidence to select pages. Wave/Orange Senegal, IRPP Senegal and VAT Burkina Faso are now repaired; continue with salary RDC and the remaining highest-impression VAT country routes.
 2. **Scale the patterns that already win.** Madagascar, Guinea, Benin, and Mali salary pages are producing 3–6% CTR. Expand adjacent payroll questions only where a current national source and deterministic engine exist.
 3. **Build authority around useful country decisions.** Create source-backed French clusters for payroll, VAT, mobile money, fuel, and business documents; connect each article to a working tool and an official-source freshness contract. Avoid mass pages whose only distinction is a translated country name.
 

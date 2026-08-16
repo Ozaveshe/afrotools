@@ -121,4 +121,97 @@ test.describe('French search growth hotspots', () => {
     expect(missingResources).toEqual([]);
     expect(consoleErrors).toEqual([]);
   });
+
+  test('teacher salary snippet promise resolves to a working mobile calculator', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/tools/salaire-enseignant/');
+    await expect(page.locator('h1')).toHaveText('Calculateur de salaire enseignant');
+    await expect(page.locator('body')).toContainText(/sans inventer de barème national/i);
+    await page.getByRole('button', { name: 'Calculer et vérifier' }).click();
+    await expect(page.locator('[data-education-result]')).toHaveClass(/show/);
+    await expect(page.locator('[data-education-metrics] .metric')).toHaveCount(4);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
+
+  test('Burkina VAT blocks the reduced rate until Article 317 evidence is confirmed', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/burkina-faso/calculateur-tva');
+    await expect(page.locator('h1')).toContainText('Calculateur de TVA');
+    await page.locator('#amount').fill('100000');
+    await page.locator('#rate').selectOption('0.10');
+    await expect(page.locator('#rateError')).toContainText(/Confirmez l'hébergement ou la restauration/i);
+    await expect(page.locator('#resultsCard')).not.toHaveClass(/on/);
+
+    await page.locator('#rateConfirmed').check();
+    await expect(page.locator('#resultsCard')).toHaveClass(/on/);
+    await expect(page.locator('#resAmount')).toContainText(/110.?000/);
+    await expect(page.locator('#resContent')).toContainText('TVA (10%)');
+    await expect(page.locator('a[href="https://dgi.bf/verification/CGI"]').first()).toBeVisible();
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
+
+  test('Algeria salary page calculates reviewed IRG locally without salary transmission', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    const sensitiveRequests = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+    page.on('request', (request) => {
+      const payload = request.postData() || '';
+      if (/ai-advisor|pdf-leads/i.test(request.url()) || /gross_salary|2000000/.test(payload)) {
+        sensitiveRequests.push(request.url());
+      }
+    });
+
+    await page.goto('/fr/algerie/calculateur-salaire-net');
+    await expect(page.locator('h1')).toContainText('Calculateur de salaire net');
+    await page.locator('#grossSalary').fill('2000000');
+    await page.getByRole('button', { name: /Calculer mon salaire net/ }).click();
+    await expect(page.locator('#resultsCard')).toHaveClass(/on/);
+    await expect(page.locator('.res-hero-label')).toHaveText('Salaire net annuel');
+    await expect(page.locator('#resAmount')).toContainText(/1.?395.?200/);
+    await expect(page.locator('#resContent')).toContainText('Abattements salariaux DGI');
+    await expect(page.locator(`a[href="https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires"]`)).toBeVisible();
+    await expect(page.locator(`a[href="https://cnas.dz/fr/employeur/"]`)).toBeVisible();
+
+    await page.getByRole('button', { name: 'Net → Brut' }).click();
+    await page.locator('#grossSalary').fill('1000000');
+    await page.getByRole('button', { name: /Calculer mon salaire net/ }).click();
+    await expect(page.locator('.res-hero-label')).toHaveText('Brut annuel requis');
+    await expect(page.locator('#resGross')).toContainText('/an');
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(sensitiveRequests).toEqual([]);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });

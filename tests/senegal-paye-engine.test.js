@@ -1,7 +1,10 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const test = require('node:test');
 const engine = require('../assets/js/engines/sn-paye.js');
 const serverEngine = require('../netlify/functions/_engines/sn-paye.js');
+const ROOT = path.join(__dirname, '..');
 
 test('uses all seven current IRPP bands, including 43% above 25m XOF', () => {
   const result = engine.calculateIrpp(30_000_000);
@@ -43,4 +46,11 @@ test('keeps the server engine aligned with the reviewed browser formula', () => 
   assert.equal(serverResult.tax.netTax, Math.round(browserResult.annualPAYE));
   assert.equal(serverResult.result.marginalRate, '43%');
   assert.equal(serverEngine.formulaParameters.socialSecurity[0].baseCap, 432_000);
+});
+
+test('French calculator page has one IRPP owner and no stale inline PAYE engine', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'fr/senegal/calculateur-salaire-net.html'), 'utf8');
+  assert.match(html, /window\.SenegalPayeEngine\.calculate\(/);
+  assert.doesNotMatch(html, /function\s+calcAnnualPAYE\s*\(/);
+  assert.doesNotMatch(html, /40%\s+au-del[aà] de\s+13\s*500\s*000/i);
 });
