@@ -1,6 +1,6 @@
 # Public claims report
 
-Generated: 2026-08-15
+Generated: 2026-08-16
 
 - Canonical claims: 21
 - Feature data flows: 10
