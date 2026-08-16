@@ -3,9 +3,18 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  analyticsVersion,
+  bootstrapVersion,
+  canonicalLoaderTag,
+  earlyBootstrapTag,
+} = require('./inject-analytics-loader');
 
 const ROOT = path.resolve(__dirname, '..');
+const REGISTRY_PATH = path.join(ROOT, 'assets', 'js', 'components', 'tool-registry.js');
 const COUNTRIES = require('../data/registry/countries.json');
+const ANALYTICS_LOADER = canonicalLoaderTag(analyticsVersion());
+const ANALYTICS_BOOTSTRAP = earlyBootstrapTag(bootstrapVersion(), analyticsVersion());
 const FRENCH_COUNTRY_NAMES = new Map(
   COUNTRIES.map((country) => [country.routeSlug, country.displayNames?.fr || country.title])
 );
@@ -15,15 +24,17 @@ const FAMILIES = [
 ];
 
 function bridge(family, countrySlug) {
-  const canonical = `https://afrotools.com/fr/tools/${family.slug}/${countrySlug}/`;
+  const canonical = `https://afrotools.com/fr/tools/${family.slug}/`;
   const countryName = FRENCH_COUNTRY_NAMES.get(countrySlug) || countrySlug.replace(/-/g, ' ');
   return `<!doctype html>
 <html lang="fr">
 <head>
+${ANALYTICS_BOOTSTRAP}
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Calcul ${family.label} — page pays déplacée | AfroTools</title>
 <meta name="description" content="Utilisez le calculateur canonique AfroTools pour convertir un montant en unités prépayées ou des kWh en facture avec une source et une date visibles.">
 <meta name="robots" content="noindex,follow">
+<meta name="afrotools-locale-coverage" content="deprecated">
 <link rel="canonical" href="${canonical}">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/design-system.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
 <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
@@ -38,6 +49,7 @@ function bridge(family, countrySlug) {
 <p><a class="en-btn" href="/fr/tools/${family.slug}/">Ouvrir le calculateur principal</a></p>
 </div></section></main>
 <afro-footer></afro-footer>
+${ANALYTICS_LOADER}
 </body>
 </html>`;
 }
@@ -55,4 +67,11 @@ for (const family of FAMILIES) {
   }
 }
 
+const registryBefore = fs.readFileSync(REGISTRY_PATH, 'utf8');
+const retiredRegistryRow = /^\s*\{ id: '(?:tarifs-electricite|compteur-prepaye)-[^']+-fr',[^\r\n]*\}\s*,?\r?\n/gm;
+const registryAfter = registryBefore.replace(retiredRegistryRow, '');
+const removedRegistryRows = (registryBefore.match(retiredRegistryRow) || []).length;
+if (registryAfter !== registryBefore) fs.writeFileSync(REGISTRY_PATH, registryAfter, 'utf8');
+
 console.log(`Retired ${written} localized electricity compatibility routes as noindex pages.`);
+console.log(`Removed ${removedRegistryRows} retired country bridges from the live tool registry.`);

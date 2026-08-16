@@ -14,6 +14,7 @@ const { spawn } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
+const CATALOG_POLICY_PATH = path.join(ROOT, 'data/registry/catalog-policy.json');
 const VERIFICATION_PATH = path.join(ROOT, 'data/tool-verification.json');
 const REPORT_DIR = path.join(ROOT, 'reports');
 const REPORT_JSON = path.join(REPORT_DIR, 'tool-quality-ranking.json');
@@ -377,6 +378,8 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const metaDescription = firstMatch(html, /<meta\s+[^>]*name=["']description["'][^>]*content=["']([^"']*)/i)
     || firstMatch(html, /<meta\s+[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i);
   const canonical = firstMatch(html, /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)/i);
+  const robots = firstMatch(html, /<meta\s+[^>]*name=["']robots["'][^>]*content=["']([^"']*)/i)
+    || firstMatch(html, /<meta\s+[^>]*content=["']([^"']*)["'][^>]*name=["']robots["']/i);
   const jsonLd = parseJsonLd(html);
   const links = getExternalLinks(html);
   const imgs = String(html || '').match(/<img\b[^>]*>/gi) || [];
@@ -392,8 +395,8 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const labels = matchCount(interactionHtml, /<label\b|aria-label=|aria-labelledby=/gi);
   const hasFileInput = /<input\b[^>]*type=["']file["']/i.test(interactionHtml);
   const hasCanvas = /<canvas\b/i.test(interactionHtml);
-  const hasResult = /\b(result|output|preview|summary|breakdown|estimate|calculation|score|total|report|answer|download-ready)\b/i.test(interactionText)
-    || /\b(result|output|preview|summary|breakdown|estimate|score|total|report)\b/i.test(interactionHtml);
+  const hasResult = /<(?:output|canvas|table)\b/i.test(interactionHtml)
+    || /(?:id|class|data-[\w-]+)=["'][^"']*\b(?:result|output|preview|summary|breakdown|estimate|score|total|report)[\w-]*\b/i.test(interactionHtml);
   const hasPrimaryAction = buttons > 0 && /\b(calculate|generate|convert|compress|merge|split|upload|run|check|create|download|copy|compare|estimate|analy[sz]e|submit|start)\b/i.test(interactionText);
   const hasDownload = /\bdownload\b|download=|\.pdf\b|\.csv\b|\.docx\b|export/i.test(interactionHtml);
   const hasCopyShare = /\b(copy|share|clipboard|copyLink|shareBtn|navigator\.clipboard)\b/i.test(interactionHtml);
@@ -445,6 +448,9 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const hasToolScript = /<script\b[^>]*src=["'][^"']*(?:app|tool|calculator|workspace|engine|sync|lib|pdf|image|invoice|validator)[^"']*\.js/i.test(html);
   const emptyButtons = matchCount(html, /<button\b[^>]*>\s*<\/button>/gi);
   const encodedReplacement = matchCount(html, /\uFFFD|�|Ã|â€™|â€œ|â€/g);
+  const genericDecisionWorkspace = /data-df-upgrade=/i.test(html)
+    && /It is as accurate as the values you enter|completely free, works on any phone|Not sure how to get the most from the .*?Enter .*? and it returns|takes .*? and shows the working, not just a single number/i.test(html);
+  const liveNoindex = (tool.status === 'live' || tool.status === 'new') && /\bnoindex\b/i.test(robots);
 
   return {
     title,
@@ -504,6 +510,8 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
       encodedReplacement,
       jsonLdInvalid: jsonLd.invalid,
       missingAlt,
+      genericDecisionWorkspace,
+      liveNoindex,
     },
   };
 }
@@ -654,7 +662,18 @@ function scoreTool(tool, pageInfo, features, browserResult) {
     qualityDeductions.push(`browser errors: ${(browserResult.consoleErrors || 0) + (browserResult.pageErrors || 0)}`);
   }
 
-  const rawScore = Math.max(0, Math.min(100, score.points - deduction));
+  if (features.qualityWarnings.genericDecisionWorkspace) {
+    deduction += 20;
+    qualityDeductions.push('generic score-oriented decision workspace');
+  }
+  if (features.qualityWarnings.liveNoindex) {
+    deduction += 40;
+    qualityDeductions.push('live/new registry row resolves to a noindex page');
+  }
+
+  let rawScore = Math.max(0, Math.min(100, score.points - deduction));
+  if (features.qualityWarnings.genericDecisionWorkspace) rawScore = Math.min(rawScore, 64);
+  if (features.qualityWarnings.liveNoindex) rawScore = Math.min(rawScore, 44);
   const requiredMissing = profile.requiredFeatures.filter((key) => !f[key]);
   const strongMissing = profile.strongSignals.filter((key) => !f[key]);
   const rank = rankFor(rawScore);
@@ -1113,8 +1132,14 @@ function tableFor(records) {
 async function main() {
   const registry = loadRegistry();
   const verification = loadVerification();
+  const catalogPolicy = JSON.parse(fs.readFileSync(CATALOG_POLICY_PATH, 'utf8'));
+  const explicitAliasIds = new Set([
+    ...Object.keys(catalogPolicy.toolRouteAliases || {}),
+    ...Object.keys(catalogPolicy.compatibilityRouteAliases || {}),
+  ]);
   const liveTools = registry.tools
     .filter((tool) => tool.status === 'live' || tool.status === 'new')
+    .filter((tool) => !explicitAliasIds.has(tool.id))
     .filter((tool) => {
       const route = normalizeRoute(tool.href || `/tools/${tool.id}/`);
       const idMatch = !TARGET_IDS.length || TARGET_IDS.includes(tool.id);
@@ -1179,12 +1204,13 @@ async function main() {
     };
   }).sort((a, b) => a.score - b.score || b.priority - a.priority || a.id.localeCompare(b.id));
 
-  const liveInstances = typeof registry.getTotalToolCount === 'function'
-    ? registry.getTotalToolCount((tool) => tool.status === 'live' || tool.status === 'new')
-    : liveTools.reduce((sum, tool) => sum + Number(tool.toolCount || 1), 0);
+  const liveInstances = registry.tools
+    .filter((tool) => (tool.status === 'live' || tool.status === 'new') && !explicitAliasIds.has(tool.id))
+    .reduce((sum, tool) => sum + Number(tool.toolCount || 1), 0);
   const registryStats = {
     total_registry_rows: registry.tools.length,
     live_new_rows: registry.tools.filter((tool) => tool.status === 'live' || tool.status === 'new').length,
+    explicit_alias_rows: registry.tools.filter((tool) => explicitAliasIds.has(tool.id)).length,
     scored_rows: records.length,
     live_instances: liveInstances,
     unique_routes: uniqueRoutes.length,
@@ -1237,7 +1263,11 @@ async function main() {
   console.log(`Wrote ${path.relative(ROOT, REPORT_MD)}, ${path.relative(ROOT, REPORT_JSON)}, ${path.relative(ROOT, REPORT_CSV)}.`);
 }
 
-main().catch((error) => {
-  console.error(error.stack || error.message || error);
-  process.exit(1);
-});
+module.exports = { detectFeatures, scoreTool, rankFor, statusFor };
+
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.stack || error.message || error);
+    process.exit(1);
+  });
+}

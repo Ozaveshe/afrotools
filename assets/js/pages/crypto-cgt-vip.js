@@ -7,6 +7,7 @@
   var status = document.getElementById('cc-status');
   var currency = 'NGN';
   var isFr = document.documentElement.lang.toLowerCase().indexOf('fr') === 0;
+  var isSw = document.documentElement.lang.toLowerCase().indexOf('sw') === 0;
   var text = isFr ? {
     noEstimate: 'Aucune estimation',
     resolveScope: 'Résolvez le message de périmètre avant de vous fier à un montant.',
@@ -39,6 +40,38 @@
       'This estimator supports individuals only. Companies and trusts need a separate review.': 'Cette estimation concerne uniquement les particuliers. Les sociétés et trusts nécessitent une analyse distincte.',
       'Confirm the scope statement before calculating.': 'Confirmez la déclaration de périmètre avant de calculer.'
     }
+  } : isSw ? {
+    noEstimate: 'Hakuna makadirio',
+    resolveScope: 'Tatua ujumbe wa upeo kabla ya kutegemea kiasi.',
+    proceeds: 'Mapato / thamani ya soko',
+    baseCost: 'Gharama ya msingi na ada za muamala',
+    gain: 'Faida ya mtaji ya muamala',
+    loss: 'Hasara ya mtaji ya muamala',
+    taxable: 'Msingi wa kodi wa modeli hii',
+    aggregate: 'Faida / hasara kabla ya msamaha wa mwaka',
+    afterExclusion: 'Baada ya msamaha wa mwaka wa R50,000',
+    carriedLoss: 'Hasara ya mtaji inayobebwa mbele',
+    estimatedTax: 'Kodi inayokadiriwa',
+    transactionResult: 'Matokeo ya muamala',
+    afterTax: 'Mapato baada ya kodi',
+    year: 'Mwaka wa kodi unaotumika',
+    classification: 'Uainishaji',
+    confirmedCapital: 'Mtaji umethibitishwa',
+    summaryTitle: 'Makadirio ya kodi ya faida ya mtaji wa crypto',
+    scope: 'Upeo: mtu binafsi ambaye matibabu ya mtaji yamethibitishwa tayari.',
+    disclaimer: 'Makadirio ya kupanga tu; si jalada la kodi, maoni ya kodi wala uamuzi wa uainishaji.',
+    copyUnavailable: 'Kunakili hakupatikani kwenye kivinjari hiki.',
+    copied: 'Muhtasari umenakiliwa.',
+    copyFailed: 'Kunakili kumeshindikana.',
+    csvDone: 'CSV imepakuliwa ndani ya kifaa.',
+    pdfDone: 'PDF imetengenezwa ndani ya kifaa.',
+    pdfUnavailable: 'Maktaba ya PDF haipatikani.',
+    sourceBoundary: 'Upeo wa chanzo cha sasa:',
+    errors: {
+      'Choose Nigeria, Kenya, South Africa or Ghana.': 'Chagua Nigeria, Kenya, Afrika Kusini au Ghana.',
+      'This estimator supports individuals only. Companies and trusts need a separate review.': 'Makadirio haya ni ya watu binafsi tu. Kampuni na trust zinahitaji ukaguzi tofauti.',
+      'Confirm the scope statement before calculating.': 'Thibitisha taarifa ya upeo kabla ya kukokotoa.'
+    }
   } : {
     noEstimate: 'No estimate', resolveScope: 'Resolve the scope message before relying on a number.',
     proceeds: 'Proceeds / market value', baseCost: 'Base cost and transaction costs', gain: 'Transaction capital gain', loss: 'Transaction capital loss',
@@ -51,14 +84,14 @@
     pdfUnavailable: 'PDF library is unavailable.', sourceBoundary: 'Current source boundary:', errors: {}
   };
   var sources = {
-    NG: { title: 'Nigeria Tax Act 2025', url: 'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf', note: isFr ? 'La loi intègre les actifs numériques et virtuels dans l’assiette fiscale. Cette estimation utilise les tranches individuelles 2026 et calcule uniquement l’impôt supplémentaire lié à une plus-value confirmée.' : 'The Act brings digital and virtual assets into the tax base. This estimator uses the 2026 individual bands and calculates only the incremental tax attributable to a confirmed capital gain.' },
-    KE: { title: 'Kenya Income Tax Act (consolidation actuelle)', url: 'https://new.kenyalaw.org/akn/ke/act/1973/16/eng@2026-01-01', note: isFr ? 'L’ancienne Digital Asset Tax a été abrogée au 1er juillet 2025. L’outil n’assume pas que chaque événement crypto est une plus-value : confirmez d’abord le traitement au titre de l’Eighth Schedule.' : 'The old Digital Asset Tax was repealed from 1 July 2025. This tool does not assume every crypto event is automatically a capital gain: you must first confirm Eighth Schedule treatment.' },
-    ZA: { title: 'SARS : Crypto Assets & Tax', url: 'https://www.sars.gov.za/individuals/crypto-assets-tax/', note: isFr ? 'Selon SARS, la crypto peut relever du revenu ou du capital selon les faits. Le calcul ne démarre qu’après confirmation du capital et utilise l’exclusion de R50 000 et l’inclusion individuelle de 40 % pour l’année d’imposition 2027.' : 'SARS says crypto may be revenue or capital depending on the facts. The estimate runs only after capital treatment is confirmed and uses the 2027 assessment-year R50,000 exclusion and 40% individual inclusion.' },
-    GH: { title: 'GRA : Capital Gains Tax', url: 'https://gra.gov.gh/domestic-tax/tax-types/capital-gains-tax/', note: isFr ? 'GRA décrit un impôt de 15 % pour une opération individuelle isolée en capital. Aucune consigne GRA propre à la qualification crypto n’a été identifiée ; la qualification doit donc être confirmée avant tout calcul.' : 'GRA describes 15% tax for an individual isolated capital transaction. No crypto-specific GRA classification guidance was identified, so classification must be confirmed before this tool will calculate.' }
+    NG: { title: 'Nigeria Tax Act 2025', url: 'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf', note: isFr ? 'La loi intègre les actifs numériques et virtuels dans l’assiette fiscale. Cette estimation utilise les tranches individuelles 2026 et calcule uniquement l’impôt supplémentaire lié à une plus-value confirmée.' : isSw ? 'Sheria inajumuisha mali za kidijitali na pepe kwenye msingi wa kodi. Makadirio hutumia viwango vya mtu binafsi vya 2026 na hukokotoa kodi ya ziada ya faida ya mtaji iliyothibitishwa pekee.' : 'The Act brings digital and virtual assets into the tax base. This estimator uses the 2026 individual bands and calculates only the incremental tax attributable to a confirmed capital gain.' },
+    KE: { title: 'Kenya Income Tax Act (consolidation actuelle)', url: 'https://new.kenyalaw.org/akn/ke/act/1973/16/eng@2026-01-01', note: isFr ? 'L’ancienne Digital Asset Tax a été abrogée au 1er juillet 2025. L’outil n’assume pas que chaque événement crypto est une plus-value : confirmez d’abord le traitement au titre de l’Eighth Schedule.' : isSw ? 'Digital Asset Tax ya zamani ilifutwa kuanzia 1 Julai 2025. Zana haidhani kila tukio la crypto ni faida ya mtaji; thibitisha kwanza matibabu ya Eighth Schedule.' : 'The old Digital Asset Tax was repealed from 1 July 2025. This tool does not assume every crypto event is automatically a capital gain: you must first confirm Eighth Schedule treatment.' },
+    ZA: { title: 'SARS : Crypto Assets & Tax', url: 'https://www.sars.gov.za/individuals/crypto-assets-tax/', note: isFr ? 'Selon SARS, la crypto peut relever du revenu ou du capital selon les faits. Le calcul ne démarre qu’après confirmation du capital et utilise l’exclusion de R50 000 et l’inclusion individuelle de 40 % pour l’année d’imposition 2027.' : isSw ? 'SARS inaeleza kuwa crypto inaweza kuwa mapato au mtaji kulingana na hali. Hesabu huanza baada ya mtaji kuthibitishwa na hutumia msamaha wa R50,000 na ujumuishaji wa 40% kwa mwaka wa tathmini 2027.' : 'SARS says crypto may be revenue or capital depending on the facts. The estimate runs only after capital treatment is confirmed and uses the 2027 assessment-year R50,000 exclusion and 40% individual inclusion.' },
+    GH: { title: 'GRA : Capital Gains Tax', url: 'https://gra.gov.gh/domestic-tax/tax-types/capital-gains-tax/', note: isFr ? 'GRA décrit un impôt de 15 % pour une opération individuelle isolée en capital. Aucune consigne GRA propre à la qualification crypto n’a été identifiée ; la qualification doit donc être confirmée avant tout calcul.' : isSw ? 'GRA inaeleza kiwango cha 15% kwa muamala mmoja wa mtaji wa mtu binafsi. Mwongozo maalum wa kuainisha crypto haujapatikana, kwa hiyo uainishaji lazima uthibitishwe kabla ya hesabu.' : 'GRA describes 15% tax for an individual isolated capital transaction. No crypto-specific GRA classification guidance was identified, so classification must be confirmed before this tool will calculate.' }
   };
 
   function number(id) { return Number(document.getElementById(id).value || 0); }
-  function format(amount) { return new Intl.NumberFormat(isFr ? 'fr-FR' : 'en', { style: 'currency', currency: currency, maximumFractionDigits: 2 }).format(amount); }
+  function format(amount) { return new Intl.NumberFormat(isFr ? 'fr-FR' : (isSw ? 'sw-TZ' : 'en'), { style: 'currency', currency: currency, maximumFractionDigits: 2 }).format(amount); }
   function input() {
     return {
       country: country.value, disposalDate: document.getElementById('cc-date').value,
@@ -70,14 +103,22 @@
   }
   function metric(label, value, className) { return '<div class="cc-metric"><span>' + label + '</span><strong class="' + (className || '') + '">' + value + '</strong></div>'; }
   function countryName() {
+    if (isSw) return { NG: 'Nigeria', KE: 'Kenya', ZA: 'Afrika Kusini', GH: 'Ghana' }[result.country];
     if (!isFr) return result.countryName;
     return { NG: 'Nigeria', KE: 'Kenya', ZA: 'Afrique du Sud', GH: 'Ghana' }[result.country];
   }
   function taxYear() {
+    if (isSw) return result.country === 'ZA' ? 'mwaka wa tathmini 2027' : 'mwaka wa kalenda 2026';
     if (!isFr) return result.taxYear;
     return result.country === 'ZA' ? 'année d’imposition 2027' : 'année civile 2026';
   }
   function method() {
+    if (isSw) return {
+      NG: 'Kodi ya ziada ya mtu binafsi kwa viwango vya Nigeria Tax Act 2025',
+      KE: 'Kodi ya mwisho ya 15% baada ya kuthibitisha matibabu ya Eighth Schedule',
+      ZA: 'Ujumuishaji wa 40% baada ya msamaha wa R50,000 na hasara zinazopatikana',
+      GH: 'Kiwango cha 15% kwa muamala mmoja wa mtaji wa mtu binafsi'
+    }[result.country];
     if (!isFr) return result.details.method;
     return {
       NG: 'Impôt individuel supplémentaire selon les tranches du Nigeria Tax Act 2025',
@@ -120,6 +161,12 @@
     calculate();
   }
   function localizeError(message) {
+    if (isSw) {
+      if (text.errors[message]) return text.errors[message];
+      if (message.indexOf('No estimate produced:') === 0) return 'Hakuna makadirio: thibitisha na mamlaka ya kodi au mtaalamu mwenye sifa kwamba tukio hili linatibiwa kama mtaji. Biashara, mining, staking, zawadi na hali zisizo na uhakika hazijumuishwi.';
+      if (message.indexOf('The disposal date must fall within') === 0) return 'Tarehe ya kuuza lazima iwe ndani ya kipindi cha kodi kinachotumika kwa nchi uliyochagua.';
+      return message.replace('must be zero or more.', 'lazima iwe sifuri au zaidi.');
+    }
     if (!isFr) return message;
     if (text.errors[message]) return text.errors[message];
     if (message.indexOf('No estimate produced:') === 0) return 'Aucune estimation : confirmez auprès de l’administration ou d’un professionnel qualifié que cet événement relève du capital. Les activités professionnelles, le minage, le staking, les récompenses et les cas incertains sont exclus.';
@@ -134,7 +181,7 @@
   }
   function csv() {
     if (!result) calculate(); if (!result) return;
-    var data = [[text.summaryTitle], [isFr ? 'Pays' : 'Country', countryName()], [text.year, taxYear()], [text.classification, text.confirmedCapital]].concat(rows());
+    var data = [[text.summaryTitle], [isFr ? 'Pays' : (isSw ? 'Nchi' : 'Country'), countryName()], [text.year, taxYear()], [text.classification, text.confirmedCapital]].concat(rows());
     var content = '\uFEFF' + data.map(function (row) { return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n');
     var url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' })); var a = document.createElement('a'); a.href = url; a.download = 'crypto-capital-gains-estimate-' + result.country.toLowerCase() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 0); status.textContent = text.csvDone;
   }
@@ -142,7 +189,7 @@
     if (!result) calculate(); if (!result) return;
     try {
       if (!window.AfroTools || !window.AfroTools.pdf) throw new Error(text.pdfUnavailable);
-      await window.AfroTools.pdf.generate({ noGate: true, skipGate: true, title: isFr ? 'Estimation de plus-value crypto' : 'Crypto Capital-Gains Estimate', subtitle: countryName() + ' - ' + taxYear(), toolId: 'crypto-cgt', country: countryName(), heroStats: rows().slice(-4).map(function (row, index) { return { label: row[0], value: row[1], highlight: index === 3 }; }), sections: [{ title: isFr ? 'Données et périmètre de la transaction' : 'Transaction inputs and scope', rows: [{ label: text.proceeds, value: format(result.proceeds) }, { label: text.baseCost, value: format(result.baseCost) }, { label: isFr ? 'Traitement confirmé' : 'Confirmed treatment', value: isFr ? 'Particulier - compte de capital' : 'Individual - capital account' }, { label: isFr ? 'Méthode' : 'Method', value: method() }] }], source: sources[result.country].title + (isFr ? ' et les consignes officielles propres à la juridiction liées sur la page.' : ' and the jurisdiction-specific official tax guidance linked on the calculator page.'), disclaimer: isFr ? 'Estimation préparatoire uniquement. Ce document ne qualifie pas l’événement crypto, ne dépose aucune déclaration et ne fournit aucun avis fiscal. Les activités professionnelles, le minage, le staking, les récompenses et les cas incertains sont exclus.' : 'Planning estimate only. This document does not classify the crypto event, file a return, or provide tax advice. Revenue-account, business, mining, staking, reward and uncertain cases are excluded.' });
+      await window.AfroTools.pdf.generate({ noGate: true, skipGate: true, title: isFr ? 'Estimation de plus-value crypto' : (isSw ? 'Makadirio ya faida ya mtaji wa crypto' : 'Crypto Capital-Gains Estimate'), subtitle: countryName() + ' - ' + taxYear(), toolId: 'crypto-cgt', country: countryName(), heroStats: rows().slice(-4).map(function (row, index) { return { label: row[0], value: row[1], highlight: index === 3 }; }), sections: [{ title: isFr ? 'Données et périmètre de la transaction' : (isSw ? 'Taarifa na mipaka ya muamala' : 'Transaction inputs and scope'), rows: [{ label: text.proceeds, value: format(result.proceeds) }, { label: text.baseCost, value: format(result.baseCost) }, { label: isFr ? 'Traitement confirmé' : (isSw ? 'Matibabu yaliyothibitishwa' : 'Confirmed treatment'), value: isFr ? 'Particulier - compte de capital' : (isSw ? 'Mtu binafsi - akaunti ya mtaji' : 'Individual - capital account') }, { label: isFr ? 'Méthode' : (isSw ? 'Mbinu' : 'Method'), value: method() }] }], source: sources[result.country].title + (isFr ? ' et les consignes officielles propres à la juridiction liées sur la page.' : (isSw ? ' pamoja na mwongozo rasmi wa kodi wa nchi husika uliounganishwa kwenye ukurasa.' : ' and the jurisdiction-specific official tax guidance linked on the calculator page.')), disclaimer: isFr ? 'Estimation préparatoire uniquement. Ce document ne qualifie pas l’événement crypto, ne dépose aucune déclaration et ne fournit aucun avis fiscal. Les activités professionnelles, le minage, le staking, les récompenses et les cas incertains sont exclus.' : (isSw ? 'Makadirio ya kupanga pekee. Hati hii haiainishi tukio la crypto, haiwasilishi tamko la kodi wala kutoa ushauri wa kodi. Biashara, mining, staking, zawadi na hali zisizo na uhakika hazijumuishwi.' : 'Planning estimate only. This document does not classify the crypto event, file a return, or provide tax advice. Revenue-account, business, mining, staking, reward and uncertain cases are excluded.') });
       status.textContent = text.pdfDone;
     } catch (error) { status.textContent = error.message; }
   }

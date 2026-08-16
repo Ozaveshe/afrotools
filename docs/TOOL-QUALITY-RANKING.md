@@ -14,6 +14,9 @@ npm run tools:quality:browser
 Use the browser run for a serious product audit. It starts the local static test
 server if needed, visits each unique live/new tool route with Playwright, and
 folds status, rendered interactivity, and console/page errors into the score.
+This is still a smoke test: a loaded route and a visible button are not proof
+that a calculation changed, an export reopened, or the result is accurate.
+Category acceptance must keep fixture-level action and calculation oracles.
 If repo-local `node_modules` is not installed, the script will try the Codex
 bundled Node package directory. You can also set `AFROTOOLS_NODE_MODULE_DIR` to
 a directory containing `playwright`.
@@ -53,6 +56,18 @@ Each tool is compared with the profile for its category. Examples:
 The score is deliberately strict. A page can pass route/link checks and still
 rank low if it is thin, stale, unsourced, not visibly interactive, or missing
 the continuation paths users expect from a standard web tool.
+
+Two integrity caps prevent keyword padding from manufacturing a high rank:
+
+- A live/new registry row that resolves to a `noindex` page is capped at 44
+  (`F`) until the page or registry ownership is corrected.
+- A score-oriented generic `df-upgrade` workspace is capped at 64 (`D`). A
+  workflow-specific panel is not penalized merely for sharing the component
+  class; the generic copy and field signatures must also match.
+- Explicit ID aliases and compatibility-route aliases in
+  `data/registry/catalog-policy.json` remain visible to catalog audits but are
+  excluded from app-quality scoring. Their canonical owner must meet the app
+  quality standard.
 
 ## Improvement Order
 
