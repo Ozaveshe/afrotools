@@ -214,4 +214,34 @@ test.describe('French search growth hotspots', () => {
     expect(missingResources).toEqual([]);
     expect(consoleErrors).toEqual([]);
   });
+
+  test('RDC salary guide compares an offer to the official SMIG without invented ranges', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/blog/salaire-moyen-rdc-2026/');
+    await expect(page.locator('h1')).toContainText('Salaire moyen en RDC 2026');
+    await page.locator('#salary').fill('1000000');
+    await page.locator('#days').fill('26');
+    await page.locator('#coefficient').fill('100');
+    await expect(page.locator('#range-output')).toContainText(/559.?000/);
+    await expect(page.locator('#position-output')).toContainText(/441.?000/);
+
+    await page.locator('#coefficient').fill('200');
+    await expect(page.locator('#range-output')).toContainText(/1.?118.?000/);
+    await expect(page.locator('#position-output')).toContainText(/-118.?000/);
+    await expect(page.locator('#decision-output')).toContainText('Sous la référence saisie');
+    await expect(page.locator('a[href*="decret-n-25-22-du-30-mai-2025"]').first()).toBeVisible();
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });

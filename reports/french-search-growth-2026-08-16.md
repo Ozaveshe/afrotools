@@ -114,6 +114,12 @@ The French surface audit currently classifies 3,240 indexable pages as 1,794 nat
 
 This class is real product debt, but it is not the present impressions blocker. Only 23 of the 264 explicit gap pages appear in the exported GSC page table, together earning 4 clicks from 148 impressions. One route contributes 114 impressions, `/fr/tools/calculateur-de-tarif-independant-senegal/`, but 104 visible query impressions are navigational searches for `artdecosenegal.com`, not demand for a freelancer-rate calculator. A blanket noindex or emergency translation wave would therefore sacrifice scope without addressing the current qualified-demand clusters. Keep these routes out of the “native tool” success denominator, then promote or consolidate them only when GSC shows relevant intent and the workflow can finish in French.
 
+### 14. The RDC salary guide ranked by inventing the answer it could not source
+
+`/fr/blog/salaire-moyen-rdc-2026/` earned no clicks from 99 impressions at position 7.46, compared with no clicks from 246 impressions at position 8.16 in the preceding period. It promised a 2026 salary average, then generated sector ranges as high as 14 million CDF and automatic city multipliers without a cited wage survey or an official source for those figures.
+
+The guide now gives the current answer that can be substantiated: Decree No. 25/22 sets the ordinary-worker SMIG at 21,500 CDF per day from January 2026 and uses category coefficients to create the salary tension. A local checker compares a user-entered offer with that daily rate, paid days and an explicit coefficient. It does not infer a job category, sector average or city premium. The page links the official [RDC work directory publication](https://annuairetravail-rdc.cd/detail?slug=decret-n-25-22-du-30-mai-2025-portant-fixation-du-salaire-minimum-interprofessionnel-garanti-des-allocations-familiales-minima-et-de-la-contre--valeur-du-logement) and the [DGI IPR guidance](https://www.dgi.gouv.cd/impot-professionnel-sur-les-remunerations-ipr/), states that the result is gross rather than net, and keeps calculation, copy and download local. Static and mobile tests lock the official rate, formula, source, no-invented-range boundary and 390 px behavior.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -122,7 +128,7 @@ This class is real product debt, but it is not the present impressions blocker. 
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
 - 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
 - 11,727 pages and 141,477 internal links pass with 0 broken links.
-- Eight French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, and seven Algeria PAYE correctness/privacy checks pass.
+- Nine French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three RDC salary-source/calculation checks pass, and seven Algeria PAYE correctness/privacy checks pass.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
