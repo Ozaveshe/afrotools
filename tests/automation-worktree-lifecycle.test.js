@@ -13,8 +13,15 @@ assert.deepStrictEqual(parseRegisteredPaths([
   'worktree C:/two',
   'HEAD 456',
 ].join('\n')), [
-  process.platform === 'win32' ? 'c:/one' : 'C:/one',
-  process.platform === 'win32' ? 'c:/two' : 'C:/two',
+  'c:/one',
+  'c:/two',
+]);
+
+assert.deepStrictEqual(parseRegisteredPaths([
+  'worktree /srv/afrotools/one',
+  'HEAD 789',
+].join('\n')), [
+  process.platform === 'win32' ? 'c:/srv/afrotools/one' : '/srv/afrotools/one',
 ]);
 
 const item = {

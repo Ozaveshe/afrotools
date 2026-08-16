@@ -43,8 +43,12 @@ function runGit(args, cwd = ROOT) {
 }
 
 function normalized(value) {
-  const resolved = path.resolve(value).replace(/\\/g, '/').replace(/\/$/, '');
-  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+  const input = String(value || '');
+  const isWindowsAbsolute = path.win32.isAbsolute(input);
+  const resolved = (isWindowsAbsolute ? path.win32.resolve(input) : path.resolve(input))
+    .replace(/\\/g, '/')
+    .replace(/\/$/, '');
+  return isWindowsAbsolute || process.platform === 'win32' ? resolved.toLowerCase() : resolved;
 }
 
 function parseRegisteredPaths(raw) {
