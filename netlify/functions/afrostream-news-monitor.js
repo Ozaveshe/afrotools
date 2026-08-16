@@ -351,17 +351,27 @@ function findCreatorMatches(item, creators) {
   });
 }
 
+function shouldDisableFeedCompression(source) {
+  try {
+    var hostname = new URL(source && source.feed_url || '').hostname.toLowerCase().replace(/^www\./, '');
+    return hostname === 'benjamindada.com';
+  } catch (_error) {
+    return false;
+  }
+}
+
 async function fetchFeed(source) {
   var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
   var timeout = controller ? setTimeout(function() { controller.abort(); }, FEED_TIMEOUT_MS) : null;
+  var feedHeaders = {
+    'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
+    'User-Agent': 'Mozilla/5.0 (compatible; AfroStreamNewsMonitor/1.1; +https://afrotools.com/tools/afrostream/)'
+  };
+  if (shouldDisableFeedCompression(source)) feedHeaders['Accept-Encoding'] = 'identity';
   try {
     return await fetch(source.feed_url, {
       signal: controller ? controller.signal : undefined,
-      headers: {
-        'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
-        'Accept-Encoding': 'identity',
-        'User-Agent': 'Mozilla/5.0 (compatible; AfroStreamNewsMonitor/1.1; +https://afrotools.com/tools/afrostream/)'
-      }
+      headers: feedHeaders
     });
   } finally {
     if (timeout) clearTimeout(timeout);
