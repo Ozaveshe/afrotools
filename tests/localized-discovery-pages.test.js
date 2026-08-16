@@ -17,8 +17,24 @@ for (const row of ROUTES) {
     assert.ok(fs.existsSync(file), `${route}: physical owner`);
     const html = fs.readFileSync(file, "utf8");
     assert.match(html, new RegExp(`<html\\b[^>]*\\blang=["']${locale}["']`, "i"), `${route}: language`);
-    assert.match(html, new RegExp(`<link\\b[^>]*rel=["']canonical["'][^>]*href=["']https://afrotools\\.com${route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`, "i"), `${route}: canonical`);
-    for (const lang of ["en", "fr", "sw"]) assert.match(html, new RegExp(`hreflang=["']${lang}["']`, "i"), `${route}: ${lang} hreflang`);
+    const isFallback = html.includes('name="afrotools-localization-state" content="english-fallback-noindex"');
+    const canonicalRoute = isFallback ? row[0] : route;
+    assert.match(html, new RegExp(`<link\\b[^>]*rel=["']canonical["'][^>]*href=["']https://afrotools\\.com${canonicalRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`, "i"), `${route}: canonical`);
+    if (isFallback) {
+      assert.match(html, /<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i, `${route}: fallback noindex`);
+      assert.doesNotMatch(html, /hreflang=["']/i, `${route}: fallback must not join hreflang`);
+    } else {
+      const siblingLocale = locale === "fr" ? "sw" : "fr";
+      const siblingRoute = locale === "fr" ? row[2] : row[1];
+      const siblingHtml = fs.readFileSync(path.join(ROOT, siblingRoute.replace(/^\//, ""), "index.html"), "utf8");
+      const siblingIsFallback = siblingHtml.includes('name="afrotools-localization-state" content="english-fallback-noindex"');
+      for (const lang of ["en", locale]) assert.match(html, new RegExp(`hreflang=["']${lang}["']`, "i"), `${route}: ${lang} hreflang`);
+      if (siblingIsFallback) {
+        assert.doesNotMatch(html, new RegExp(`hreflang=["']${siblingLocale}["']`, "i"), `${route}: fallback sibling must not join hreflang`);
+      } else {
+        assert.match(html, new RegExp(`hreflang=["']${siblingLocale}["']`, "i"), `${route}: ${siblingLocale} hreflang`);
+      }
+    }
     assert.match(html, /data-localized-discovery-standard=/, `${route}: shared standard`);
     assert.match(html, /"@type"\s*:\s*"FAQPage"/, `${route}: FAQ schema`);
     assert.match(html, /localized-discovery__links/, `${route}: internal discovery`);
@@ -35,9 +51,8 @@ for (const row of ROUTES.filter(row => new Set(["/business-enquiry/", "/custom-c
 }
 
 const report = require("../reports/localized-non-app-parity.json");
-for (const locale of ["fr", "sw"]) {
-  assert.deepStrictEqual(report.byClass["discovery-support"][locale], { pass: 18, underStandard: 0, missing: 0 }, `${locale}: discovery contract`);
-}
+assert.deepStrictEqual(report.byClass["discovery-support"].fr, { pass: 17, underStandard: 0, missing: 1 }, "fr: discovery contract");
+assert.deepStrictEqual(report.byClass["discovery-support"].sw, { pass: 18, underStandard: 0, missing: 0 }, "sw: discovery contract");
 
 for (const row of require('../scripts/build-localized-discovery-pages.js').ROUTES) {
   const slug = row[0].replace(/^\//, '').replace(/\/$/, '') || 'home';

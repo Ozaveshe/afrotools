@@ -23,13 +23,13 @@ const swBuilder = require('../scripts/build-sw-religious-cultural-parity.js');
 const receiptBuilder = require('../scripts/build-sw-religious-cultural-african-receipt.js');
 const assignedIds = new Set(receiptBuilder.ASSIGNED_IDS);
 const assigned = inventory.rows.filter((row) => assignedIds.has(row.englishId));
-const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
+const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 
-test('assigned denominator is exactly 33 with the requested category split', () => {
-  assert.equal(assigned.length, 33);
+test('assigned denominator is exactly 32 current canonical apps with the requested category split', () => {
+  assert.equal(assigned.length, 32);
   assert.equal(assigned.filter((row) => row.categoryKey === 'religious-cultural').length, 19);
-  assert.equal(assigned.filter((row) => row.categoryKey === 'african').length, 14);
+  assert.equal(assigned.filter((row) => row.categoryKey === 'african').length, 13);
 });
 
 test('19 religious routes are native local workflows with shared date-aware prayer calculations', () => {
@@ -83,7 +83,7 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
 });
 
-test('all fourteen African rows use native engines with unsafe price claims removed', () => {
+test('all current canonical African rows use native engines with unsafe price claims removed', () => {
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'shared-engine').length, 28);
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 6);
   assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 0);
@@ -94,7 +94,7 @@ test('all fourteen African rows use native engines with unsafe price claims remo
     assert.match(html,new RegExp(`data-sw-ua-app="${id}"`));
     assert.doesNotMatch(html,/<iframe\b|Fungua zana kamili ya Kiingereza/i);
   }
-  for (const id of ['remittance-compare','remittance-v2']) {
+  for (const id of ['remittance-compare']) {
     const row=african.rows.find((item)=>item.english.id===id);
     assert.equal(row.swahili.mode,'native-existing');
     const html=fs.readFileSync(path.join(ROOT,row.swahili.file),'utf8');
@@ -161,7 +161,7 @@ test('African source-oracle calculations and invalid clearing contracts', () => 
 
 test('all assigned accepted routes have dedicated artwork and reciprocal metadata', () => {
   const ids = new Set([...swBuilder.ACCEPTED, ...africanLane]);
-  assert.equal(ids.size,33);
+  assert.equal(ids.size,32);
   for (const id of ids) {
     const route = swBuilder.ROUTES[id] || african.rows.find((item) => item.english.id === id).swahili.route;
     const file = path.join(ROOT,route.replace(/^\/+|\/+$/g,''),'index.html');

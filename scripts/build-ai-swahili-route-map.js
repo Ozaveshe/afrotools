@@ -22,15 +22,21 @@ function buildPayload() {
   const directory = JSON.parse(fs.readFileSync(DIRECTORY, "utf8"));
   const acceptance = JSON.parse(fs.readFileSync(ACCEPTANCE, "utf8"));
   const directoryById = new Map(directory.map((row) => [row.id, row]));
-  const accepted = acceptance.entries
-    .filter((entry) => entry.status === "accepted")
+  const acceptedEntries = acceptance.entries
+    .filter((entry) => entry.status === "accepted");
+  const archivedAcceptedIds = acceptedEntries
+    .filter((entry) => !directoryById.has(entry.englishId))
+    .map((entry) => entry.englishId)
+    .sort();
+  const accepted = acceptedEntries
+    .filter((entry) => directoryById.has(entry.englishId))
     .sort((left, right) => left.englishId.localeCompare(right.englishId));
   const routes = {};
   const ids = {};
 
   for (const entry of accepted) {
     const english = directoryById.get(entry.englishId);
-    if (!english) throw new Error(`Accepted Swahili route has no English directory row: ${entry.englishId}`);
+    if (!english) throw new Error(`Current accepted Swahili route has no English directory row: ${entry.englishId}`);
     const swahiliRoute = normalizeRoute(entry.swahiliRoute);
     if (!fs.existsSync(routeFile(swahiliRoute))) {
       throw new Error(`Accepted Swahili route has no physical page: ${entry.englishId} -> ${swahiliRoute}`);
@@ -53,6 +59,7 @@ function buildPayload() {
     source: "data/audits/swahili-free-app-acceptance.json + data/tool-directory.json",
     acceptanceRule: "Only app-level accepted Swahili owners are routable.",
     acceptedRoutes: accepted.length,
+    archivedAcceptedIds,
     fallbackRoute: "/sw/zana-zote/",
     routes,
     ids

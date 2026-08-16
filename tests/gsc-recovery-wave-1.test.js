@@ -24,7 +24,6 @@ const routes = {
     file: "blog/ghana-cedi-words/index.html",
     hreflang: {
       en: "https://afrotools.com/blog/ghana-cedi-words/",
-      fr: "https://afrotools.com/fr/blog/ghana-cedi-words/",
       "x-default": "https://afrotools.com/blog/ghana-cedi-words/"
     }
   },
@@ -51,7 +50,6 @@ const routes = {
     file: "blog/igbo-market-days/index.html",
     hreflang: {
       en: "https://afrotools.com/blog/igbo-market-days/",
-      fr: "https://afrotools.com/fr/blog/igbo-market-days/",
       "x-default": "https://afrotools.com/blog/igbo-market-days/"
     }
   },
@@ -69,7 +67,6 @@ const routes = {
     file: "blog/waec-result-guide-2026/index.html",
     hreflang: {
       en: "https://afrotools.com/blog/waec-result-guide-2026/",
-      fr: "https://afrotools.com/fr/blog/waec-result-guide-2026/",
       "x-default": "https://afrotools.com/blog/waec-result-guide-2026/"
     }
   }

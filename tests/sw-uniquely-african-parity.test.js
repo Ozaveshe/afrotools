@@ -52,13 +52,18 @@ assert.strictEqual(fixtures.routes.length, 20, "English oracle count");
 assert.strictEqual(Object.keys(COPY).length, 28, "Swahili presentation count");
 const inventory = JSON.parse(fs.readFileSync(path.join(root, "reports/swahili-free-app-parity-inventory.json"), "utf8"));
 const acceptance = JSON.parse(fs.readFileSync(path.join(root, "data/audits/swahili-free-app-acceptance.json"), "utf8"));
+const currentInventoryIds = new Set(inventory.rows.map((row) => row.englishId));
 assertLifecycle({
   inventory,
   acceptance,
   routeEntry,
   routeMap,
-  apps: manifest.rows.map((row) => ({ id: row.english.id, swahiliRoute: row.swahili.route })),
+  apps: manifest.rows
+    .filter((row) => currentInventoryIds.has(row.english.id))
+    .map((row) => ({ id: row.english.id, swahiliRoute: row.swahili.route })),
 });
+assert.strictEqual(routeEntry.resolveToolRoute("remittance-v2", routeMap), null, "retired duplicate is not AI-routable");
+assert.ok(routeMap.archivedAcceptedIds.includes("remittance-v2"), "retired duplicate remains preserved as archived acceptance evidence");
 const hub = fs.readFileSync(path.join(root, "sw", "zana-za-kipekee-afrika", "index.html"), "utf8");
 assert(hub.includes('name="afrotools-source-owner" content="scripts/generate-sw-uniquely-african-parity.js"'), "hub source owner");
 assert(hub.includes('name="afrotools-content-id" content="sw-uniquely-african:hub"'), "hub stable content id");

@@ -14,7 +14,7 @@ const FINAL_RECEIPT_PATH = path.join(ROOT, FINAL_RECEIPT_RELATIVE);
 const LEDGER_PATH = path.join(ROOT, 'docs', 'FRENCH-FREE-APP-PARITY-LEDGER.md');
 const LEDGER_START = '<!-- BEGIN GENERATED FINAL FRENCH ACCEPTANCE -->';
 const LEDGER_END = '<!-- END GENERATED FINAL FRENCH ACCEPTANCE -->';
-const EXPECTED_APPS = 1257;
+const EXPECTED_APPS = 1256;
 const EXPECTED_CATEGORIES = 32;
 
 function readJson(file) {
@@ -83,7 +83,15 @@ function validateCatalog(report, catalog) {
   }
 }
 
-function buildAcceptance(report, catalog) {
+function buildAcceptance(report, catalog, previousAcceptance = null) {
+  const currentIds = new Set(report.rows.map((row) => row.englishId));
+  const archivedEntries = [
+    ...((previousAcceptance && previousAcceptance.archivedEntries) || []),
+    ...((previousAcceptance && previousAcceptance.entries) || [])
+      .filter((entry) => !currentIds.has(entry.englishId))
+  ].filter((entry, index, entries) => (
+    entries.findIndex((candidate) => candidate.englishId === entry.englishId) === index
+  ));
   return {
     schemaVersion: 2,
     updatedAt: catalog.updatedAt,
@@ -91,7 +99,8 @@ function buildAcceptance(report, catalog) {
     source: 'data/audits/french-free-app-category-acceptance.json',
     totals: {
       acceptedApps: EXPECTED_APPS,
-      acceptedCategories: EXPECTED_CATEGORIES
+      acceptedCategories: EXPECTED_CATEGORIES,
+      archivedApps: archivedEntries.length
     },
     entries: report.rows.map((row) => {
       return {
@@ -101,7 +110,8 @@ function buildAcceptance(report, catalog) {
         status: 'accepted',
         evidenceKey: row.categoryKey
       };
-    })
+    }),
+    archivedEntries
   };
 }
 
@@ -215,7 +225,8 @@ function main() {
   const report = buildReport();
   const catalog = readJson(CATEGORY_EVIDENCE_PATH);
   validateCatalog(report, catalog);
-  const acceptance = stableJson(buildAcceptance(report, catalog));
+  const previousAcceptance = fs.existsSync(ACCEPTANCE_PATH) ? readJson(ACCEPTANCE_PATH) : null;
+  const acceptance = stableJson(buildAcceptance(report, catalog, previousAcceptance));
   const receipt = renderReceipt(report, catalog);
   const currentLedger = fs.readFileSync(LEDGER_PATH, 'utf8');
   const ledger = ledgerWithCurrentSection(currentLedger);

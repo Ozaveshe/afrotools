@@ -12,12 +12,14 @@ const routeMap = require("../assets/js/ai/swahili-route-map.generated.js");
 const routeEntry = require("../assets/js/pages/sw-ai-route-entry.js");
 const router = require("../assets/js/ai/intent-router.js");
 
-const accepted = acceptance.entries.filter((entry) => entry.status === "accepted");
-const blocked = acceptance.entries.filter((entry) => entry.status !== "accepted");
 const directoryById = new Map(directory.map((row) => [row.id, row]));
+const accepted = acceptance.entries.filter((entry) => entry.status === "accepted" && directoryById.has(entry.englishId));
+const archivedAccepted = acceptance.entries.filter((entry) => entry.status === "accepted" && !directoryById.has(entry.englishId));
+const blocked = acceptance.entries.filter((entry) => entry.status !== "accepted" && directoryById.has(entry.englishId));
 
 assert.equal(routeMap.acceptedRoutes, accepted.length);
 assert.equal(Object.keys(routeMap.ids).length, accepted.length);
+assert.deepEqual(routeMap.archivedAcceptedIds, archivedAccepted.map((entry) => entry.englishId).sort());
 
 for (const entry of accepted) {
   const english = directoryById.get(entry.englishId);
@@ -29,6 +31,9 @@ for (const entry of accepted) {
 }
 
 for (const entry of blocked) {
+  assert.equal(routeEntry.resolveToolRoute(entry.englishId, routeMap), null);
+}
+for (const entry of archivedAccepted) {
   assert.equal(routeEntry.resolveToolRoute(entry.englishId, routeMap), null);
 }
 
@@ -48,4 +53,4 @@ assert.equal(unavailable.selectedToolId, "tool-search");
 assert.match(unavailable.selectedRoute, /^\/sw\/zana-zote\/\?source=ask$/);
 assert.equal(unavailable._meta.localeRoute.status, "unavailable");
 
-console.log(`Swahili AI route map verified for ${accepted.length} accepted apps; ${blocked.length} blocked rows stay fail closed.`);
+console.log(`Swahili AI route map verified for ${accepted.length} current accepted apps; ${archivedAccepted.length} retired and ${blocked.length} blocked rows stay fail closed.`);

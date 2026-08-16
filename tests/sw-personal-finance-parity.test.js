@@ -43,7 +43,8 @@ function visibleText(html) {
 
 test('historical manifest reconciles all five rows to coordinator acceptance', () => {
   assert.equal(manifest.coordinatorBase, '8354e321ff34caf60a33a3393cd0dcddfb00c023');
-  const accepted = ledger.entries.filter((entry) => entry.status === 'accepted');
+  const currentInventoryIds = new Set(inventory.rows.map((row) => row.englishId));
+  const accepted = ledger.entries.filter((entry) => entry.status === 'accepted' && currentInventoryIds.has(entry.englishId));
   assert.equal(accepted.length, inventory.totals.accepted);
   assert.equal(ledger.entries.filter((entry) => entry.status !== 'accepted').length, 0);
   assert.deepEqual(manifest.noOverlap, { acceptedEnglishIds: [], count: 0 });

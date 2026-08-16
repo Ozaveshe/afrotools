@@ -9,7 +9,7 @@ const {
 } = require('./support/day10-category-inventory');
 
 const EXPECTED_COUNTS = {
-  african: 35,
+  african: 34,
   'religious-cultural': 22,
   'data-productivity': 12,
 };
@@ -45,7 +45,7 @@ const aiCatalogRoutes = new Set(
   aiCatalog.chunks.flatMap((chunk) => chunk.tools || []).map((tool) => normalizeRoute(tool.route)),
 );
 
-assert.strictEqual(apps.length, 69, 'Day 10 must inventory 69 unique English canonical live/new app routes');
+assert.strictEqual(apps.length, 68, 'Day 10 must inventory 68 unique English canonical live/new app routes');
 
 for (const [category, expected] of Object.entries(EXPECTED_COUNTS)) {
   const rows = apps.filter((app) => app.category === category);

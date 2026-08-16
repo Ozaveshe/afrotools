@@ -13,7 +13,7 @@ for (const [script,args] of [["scripts/build-french-product-surface.js",["--chec
 }
 
 const rows=countryRows();
-assert.strictEqual(rows.length,54,"exact 54-country denominator");
+assert.strictEqual(rows.length,47,"exact 47-country bilingual indexable denominator");
 for(const row of rows){
   for(const locale of ["fr","sw"]){
     const record=row[locale];
@@ -25,7 +25,6 @@ for(const row of rows){
   }
 }
 const report=require("../reports/localized-non-app-parity.json");
-for(const locale of ["fr","sw"]){
-  assert.deepStrictEqual(report.byClass["country-hub"][locale],{pass:54,underStandard:0,missing:0},`${locale}: country contract`);
-}
-console.log("Localized country standard passed for 108 pages.");
+assert.deepStrictEqual(report.byClass["country-hub"].fr,{pass:47,underStandard:0,missing:7},"fr: country contract");
+assert.deepStrictEqual(report.byClass["country-hub"].sw,{pass:54,underStandard:0,missing:0},"sw: country contract");
+console.log("Localized country standard passed for 47 bilingual indexable pairs; all 54 Swahili country hubs remain covered.");

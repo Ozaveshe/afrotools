@@ -14,7 +14,7 @@ const FINAL_ACCEPTANCE_RECEIPT = 'reports/french-free-app-parity-final-acceptanc
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.md');
 // One duplicate canonical entry was retired when landed-cost consolidated into import-duty.
-const EXPECTED_FREE_APP_COUNT = 1257;
+const EXPECTED_FREE_APP_COUNT = 1256;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = {
@@ -280,16 +280,18 @@ function roundPercent(value, total) {
 function buildReport() {
   const directory = readJson(DIRECTORY_PATH);
   const registry = loadRegistry();
-  const acceptanceEntries = fs.existsSync(ACCEPTANCE_EVIDENCE_PATH)
-    ? (readJson(ACCEPTANCE_EVIDENCE_PATH).entries || [])
-    : [];
+  const acceptanceDocument = fs.existsSync(ACCEPTANCE_EVIDENCE_PATH)
+    ? readJson(ACCEPTANCE_EVIDENCE_PATH)
+    : {};
+  const acceptanceEntries = acceptanceDocument.entries || [];
+  const preservedArchivedAcceptanceEntries = acceptanceDocument.archivedEntries || [];
   const acceptanceCategories = fs.existsSync(ACCEPTANCE_CATEGORY_PATH)
     ? (readJson(ACCEPTANCE_CATEGORY_PATH).categories || [])
     : [];
   const acceptanceCategoryByKey = new Map(
     acceptanceCategories.map((entry) => [entry.categoryKey, entry])
   );
-  const acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
+  let acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
   if (acceptanceById.size !== acceptanceEntries.length) {
     throw new Error('French acceptance evidence contains duplicate englishId values.');
   }
@@ -304,11 +306,17 @@ function buildReport() {
 
   const englishByRoute = new Map(englishRows.map((row) => [normalizeRoute(row.url), row]));
   const englishById = new Map(englishRows.map((row) => [row.id, row]));
-  for (const entry of acceptanceEntries) {
-    if (!englishById.has(entry.englishId)) {
-      throw new Error(`French acceptance evidence references unknown English app: ${entry.englishId}.`);
-    }
-  }
+  const archivedAcceptanceEntries = [
+    ...preservedArchivedAcceptanceEntries,
+    ...acceptanceEntries.filter((entry) => !englishById.has(entry.englishId))
+  ].filter((entry, index, entries) => (
+    entries.findIndex((candidate) => candidate.englishId === entry.englishId) === index
+  ));
+  acceptanceById = new Map(
+    acceptanceEntries
+      .filter((entry) => englishById.has(entry.englishId))
+      .map((entry) => [entry.englishId, entry])
+  );
   const englishRouteSet = new Set(englishByRoute.keys());
   const pages = listHtmlFiles(path.join(ROOT, 'fr')).map((file) => {
     const html = fs.readFileSync(file, 'utf8');
@@ -486,7 +494,8 @@ function buildReport() {
     ambiguities: {
       routeMappingConflicts: routeConflicts.sort((a, b) => a.frenchRoute.localeCompare(b.frenchRoute)),
       multipleLiveOwnerCandidates: ambiguousRows,
-      unresolvedFrenchRegistrySourceIds
+      unresolvedFrenchRegistrySourceIds,
+      archivedAcceptanceEnglishIds: archivedAcceptanceEntries.map((entry) => entry.englishId).sort()
     },
     rows
   };
@@ -537,6 +546,7 @@ function renderMarkdown(report) {
     `- French routes with conflicting owner evidence: ${report.ambiguities.routeMappingConflicts.length}`,
     `- English apps with multiple live French owner candidates: ${report.ambiguities.multipleLiveOwnerCandidates.length}`,
     `- French registry source IDs not found in the free English denominator: ${report.ambiguities.unresolvedFrenchRegistrySourceIds.length}`,
+    `- Archived acceptance entries outside the current denominator: ${report.ambiguities.archivedAcceptanceEnglishIds.length}`,
     '',
     'Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.',
     ''

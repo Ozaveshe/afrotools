@@ -12,7 +12,7 @@ const ACCEPTANCE_PATH = path.join(ROOT, 'data', 'audits', 'swahili-free-app-acce
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.md');
 // One duplicate canonical entry was retired when landed-cost consolidated into import-duty.
-const EXPECTED_FREE_APP_COUNT = 1257;
+const EXPECTED_FREE_APP_COUNT = 1256;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = Object.freeze({
@@ -246,7 +246,7 @@ function buildReport() {
   const registry = loadRegistry();
   const acceptanceDocument = readJson(ACCEPTANCE_PATH);
   const acceptanceEntries = acceptanceDocument.entries || [];
-  const acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
+  let acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
   if (acceptanceById.size !== acceptanceEntries.length) {
     throw new Error('Swahili acceptance evidence contains duplicate englishId values.');
   }
@@ -264,11 +264,13 @@ function buildReport() {
 
   const englishByRoute = new Map(englishRows.map((row) => [normalizeRoute(row.url), row]));
   const englishById = new Map(englishRows.map((row) => [row.id, row]));
-  for (const entry of acceptanceEntries) {
-    if (!englishById.has(entry.englishId)) {
-      throw new Error(`Swahili acceptance evidence references unknown English app: ${entry.englishId}.`);
-    }
-  }
+  const archivedAcceptanceEntries = acceptanceEntries
+    .filter((entry) => !englishById.has(entry.englishId));
+  acceptanceById = new Map(
+    acceptanceEntries
+      .filter((entry) => englishById.has(entry.englishId))
+      .map((entry) => [entry.englishId, entry])
+  );
   const englishRouteSet = new Set(englishByRoute.keys());
   const pages = listHtmlFiles(path.join(ROOT, 'sw')).map((file) => {
     const html = fs.readFileSync(file, 'utf8');
@@ -453,7 +455,8 @@ function buildReport() {
     ambiguities: {
       routeMappingConflicts: routeConflicts.sort((a, b) => a.swahiliRoute.localeCompare(b.swahiliRoute)),
       multipleLiveOwnerCandidates: ambiguousRows,
-      unresolvedSwahiliRegistrySourceIds
+      unresolvedSwahiliRegistrySourceIds,
+      archivedAcceptanceEnglishIds: archivedAcceptanceEntries.map((entry) => entry.englishId).sort()
     },
     rows
   };
@@ -506,6 +509,7 @@ function renderMarkdown(report) {
     `- Swahili routes with conflicting owner evidence: ${report.ambiguities.routeMappingConflicts.length}`,
     `- English apps with multiple live Swahili owner candidates: ${report.ambiguities.multipleLiveOwnerCandidates.length}`,
     `- Swahili registry source IDs outside the free denominator: ${report.ambiguities.unresolvedSwahiliRegistrySourceIds.length}`,
+    `- Archived acceptance entries outside the current denominator: ${report.ambiguities.archivedAcceptanceEnglishIds.length}`,
     '',
     'Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.',
     '',

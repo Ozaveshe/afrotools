@@ -16,6 +16,7 @@ const swahiliTelecom = require('../assets/js/lib/sw-telecom-localization');
 const localePolicy = require('../data/registry/locale-coverage-policy.json');
 const swahiliAcceptance = require('../data/audits/swahili-free-app-acceptance.json');
 const swahiliAiMap = require('../assets/js/ai/swahili-route-map.generated');
+const swahiliInventory = require('../reports/swahili-free-app-parity-inventory.json');
 
 const expectedIds = [
   'telecom-data-plan',
@@ -168,7 +169,8 @@ assert.ok(navbarMinified.includes('afrotools-network-policy') && navbarMinified.
 assert.strictEqual(APPS.filter((app) => localePolicy.overrides.some((row) => row.route === `/sw/zana/${app.slug}/`)).length, 14, '14 native coverage overrides');
 assert.strictEqual(
   Object.keys(swahiliAiMap.routes).length,
-  swahiliAcceptance.entries.filter((row) => row.status === 'accepted').length,
+  swahiliAcceptance.entries.filter((row) => row.status === 'accepted'
+    && swahiliInventory.rows.some((inventoryRow) => inventoryRow.englishId === row.englishId)).length,
   'generated Swahili AI map stays aligned with the accepted ledger'
 );
 const fixture = {

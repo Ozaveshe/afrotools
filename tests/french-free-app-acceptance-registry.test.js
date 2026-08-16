@@ -18,10 +18,11 @@ const report = buildReport();
 validateCatalog(report, catalog);
 const acceptance = buildAcceptance(report, catalog);
 
-assert.strictEqual(acceptance.totals.acceptedApps, 1257);
+assert.strictEqual(acceptance.totals.acceptedApps, 1256);
 assert.strictEqual(acceptance.totals.acceptedCategories, 32);
-assert.strictEqual(acceptance.entries.length, 1257);
-assert.strictEqual(new Set(acceptance.entries.map((entry) => entry.englishId)).size, 1257);
+assert.strictEqual(acceptance.totals.archivedApps, 0);
+assert.strictEqual(acceptance.entries.length, 1256);
+assert.strictEqual(new Set(acceptance.entries.map((entry) => entry.englishId)).size, 1256);
 assert.strictEqual(new Set(acceptance.entries.map((entry) => entry.categoryKey)).size, 32);
 assert(acceptance.entries.every((entry) => entry.status === 'accepted'));
 assert(acceptance.entries.every((entry) => entry.frenchRoute.startsWith('/fr')));
@@ -46,4 +47,4 @@ for (const category of report.categories) {
   );
 }
 
-console.log('French free-app acceptance registry verified: 32 categories, 1,257 native owners.');
+console.log('French free-app acceptance registry verified: 32 categories, 1,256 native owners.');

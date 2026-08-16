@@ -86,6 +86,7 @@ function canonicalFor(filePath, source) {
   }
   if (route.startsWith("/fr/tools/carte-conflits-afrique/")) return "/fr/tools/carte-conflits-afrique/";
   if (route.startsWith("/fr/tools/afroatlas/")) return "/fr/tools/afroatlas/";
+  if (route === "/fr/tools/prelevements-cedeao/") return "/fr/tools/ecowas-levy/";
   if (route === "/fr/widgets/demo/") return "/fr/widgets/";
   const sourcePath = String(source || "").split(/[?#]/)[0];
   const relative = sourcePath.replace(/^\/+/, "");

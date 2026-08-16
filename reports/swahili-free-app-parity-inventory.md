@@ -8,20 +8,20 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1258 |
+| Canonical published English rows | 1257 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1257** |
+| **Free canonical English apps** | **1256** |
 | Swahili physical HTML pages | 1599 |
-| Swahili coverage records | 1595 |
+| Swahili coverage records | 1594 |
 | Native candidates | 589 |
-| Localized shell candidates | 667 |
+| Localized shell candidates | 666 |
 | English fallbacks | 0 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 1 |
-| **Accepted** | **1256** |
+| **Accepted** | **1255** |
 
 ## Category reconciliation
 
@@ -57,7 +57,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Trade & Import | 22 | 0 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
 | Transport & Logistics | 18 | 0 | 18 | 0 | 0 | 0 | 0 | 0 | 0 | 18 |
 | Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
-| Uniquely African | 34 | 0 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 34 |
+| Uniquely African | 33 | 0 | 33 | 0 | 0 | 0 | 0 | 0 | 0 | 33 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 63 |
 
 ## Ambiguous ownership
@@ -65,10 +65,11 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 - Swahili routes with conflicting owner evidence: 5
 - English apps with multiple live Swahili owner candidates: 64
 - Swahili registry source IDs outside the free denominator: 21
+- Archived acceptance entries outside the current denominator: 1
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
-## Full 1,257-row ledger
+## Full 1,256-row ledger
 
 | English app | Category | English route | State | Primary Swahili route | Accepted |
 |---|---|---|---|---|---:|
@@ -732,7 +733,6 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Password Generator | Developer Tools | `/tools/password-generator` | Localized shell candidate | `/sw/zana/kizalishaji-nenosiri` | Yes |
 | Meeting Cost Calculator | Business & ROI | `/tools/meeting-cost` | Native candidate | `/sw/zana/gharama-ya-mkutano` | Yes |
 | Tip & Bill Splitter | Business & ROI | `/tools/tip-calculator` | Native candidate | `/sw/zana/kigawanya-bili-na-tip` | Yes |
-| Remittance Comparator Pro | Uniquely African | `/tools/remittance-v2` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa-kina` | Yes |
 | Salary Offer Comparator | Finance, Tax & Market Data | `/tools/salary-compare` | Localized shell candidate | `/sw/zana/kilinganisha-mishahara` | Yes |
 | Salary Evidence Notebook | Finance, Tax & Market Data | `/tools/salary-intelligence` | Localized shell candidate | `/sw/zana/daftari-la-ushahidi-wa-mishahara` | Yes |
 | African Cost of Living Comparator | Uniquely African | `/tools/cost-of-living` | Localized shell candidate | `/sw/zana/gharama-za-maisha` | Yes |

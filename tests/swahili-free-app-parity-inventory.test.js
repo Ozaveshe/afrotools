@@ -13,7 +13,10 @@ const acceptance = JSON.parse(fs.readFileSync(
   path.join(ROOT, 'data', 'audits', 'swahili-free-app-acceptance.json'),
   'utf8'
 ));
-const acceptedEvidenceCount = acceptance.entries.filter((entry) => entry.status === 'accepted').length;
+const currentEnglishIds = new Set(report.rows.map((row) => row.englishId));
+const acceptedEvidenceCount = acceptance.entries.filter(
+  (entry) => entry.status === 'accepted' && currentEnglishIds.has(entry.englishId)
+).length;
 
 function normalizeRoute(value) {
   const route = String(value || '')
@@ -33,13 +36,13 @@ function routeFile(route) {
   ].find((candidate) => fs.existsSync(candidate)) || null;
 }
 
-assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1258);
+assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1257);
 assert.strictEqual(report.totals.excludedPaidRows, 1);
-assert.strictEqual(report.totals.englishFreeApps, 1257);
-assert.strictEqual(report.rows.length, 1257);
+assert.strictEqual(report.totals.englishFreeApps, 1256);
+assert.strictEqual(report.rows.length, 1256);
 assert.strictEqual(report.categories.length, 32);
 assert.strictEqual(report.totals.accepted, acceptedEvidenceCount);
-assert.strictEqual(report.totals.remainingUnaccepted, 1257 - acceptedEvidenceCount);
+assert.strictEqual(report.totals.remainingUnaccepted, 1256 - acceptedEvidenceCount);
 assert.strictEqual(report.rows.filter((row) => row.accepted).length, acceptedEvidenceCount);
 assert.ok(report.rows.filter((row) => row.accepted).every((row) => row.acceptanceEvidence));
 assert.ok(report.rows.filter((row) => !row.accepted).every((row) => row.acceptanceEvidence === null));
@@ -97,5 +100,5 @@ assert.strictEqual(
 assert.strictEqual(kenyaPaye.accepted, true);
 
 console.log(
-  `Swahili free-app parity inventory contract passed: 1,257 rows, ${acceptedEvidenceCount} accepted.`
+  `Swahili free-app parity inventory contract passed: 1,256 rows, ${acceptedEvidenceCount} accepted.`
 );

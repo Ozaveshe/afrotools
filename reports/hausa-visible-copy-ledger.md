@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-08-15
+Generated: 2026-08-16
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 

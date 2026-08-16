@@ -5,8 +5,8 @@ Evidence date: 2026-07-30
 ## Verdict
 
 - Accepted categories: **32/32**.
-- Accepted canonical free apps: **1257/1257**.
-- Native primary French owners: **1257/1257**.
+- Accepted canonical free apps: **1256/1256**.
+- Native primary French owners: **1256/1256**.
 - English iframe/transplant, bridge, alias-only and missing primary owners: **0**.
 
 Acceptance is generated from the exact inventory owner for every English ID.
@@ -47,7 +47,7 @@ browser contracts where the final receipt is the durable aggregation point.
 | Trade & Import | 22 | `reports/french-trade-import-parity-evidence.md` | `node scripts/audit-fr-trade-parity.js`<br>`playwright test tests/e2e/fr-trade-import-parity.spec.js --project=chromium --workers=1` |
 | Transport & Logistics | 18 | This final receipt | `node tests/french-transport-parity.test.js`<br>`playwright test tests/e2e/french-transport-parity.spec.js --project=chromium --workers=1` |
 | Travel & Tourism | 9 | `docs/audits/FRENCH-TRAVEL-PARITY-9-APP-RECEIPT.md` | `node tests/french-travel-parity.test.js`<br>`playwright test tests/e2e/french-travel-parity.spec.js --project=chromium --workers=1` |
-| Uniquely African | 34 | `reports/fr-uniquely-african-parity/acceptance-receipt.json` | `node scripts/validate-fr-uniquely-african.js`<br>`playwright test tests/e2e/fr-uniquely-african-parity.spec.js --project=chromium --workers=1` |
+| Uniquely African | 33 | `reports/fr-uniquely-african-parity/acceptance-receipt.json` | `node scripts/validate-fr-uniquely-african.js`<br>`playwright test tests/e2e/fr-uniquely-african-parity.spec.js --project=chromium --workers=1` |
 | VAT & Business Tax | 63 | `docs/audits/FRENCH-WAVE2-VAT-BUSINESS-TAX-PARITY-RECEIPT.md` | `node scripts/verify-french-vat-business-tax-wave2.js` |
 
 ## Generated ownership

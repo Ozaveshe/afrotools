@@ -37,7 +37,9 @@ const aliasExpectations = {
   'minimum-wage-legal': 'minimum-wage',
   'vat-calculator': 'vat-calc-pan-african',
   'generator-fuel-african': 'generator-fuel',
-  'salary-tax-sw': 'mshahara-na-kodi-sw'
+  'salary-tax-sw': 'mshahara-na-kodi-sw',
+  'remittance-v2': 'remittance-compare',
+  'transfert-v2-fr': 'transfert-argent-fr'
 };
 Object.entries(aliasExpectations).forEach(([aliasId, targetId]) => {
   const alias = canonical.tools.find((tool) => tool.id === aliasId);
@@ -147,7 +149,7 @@ const report = registryApi.buildRegistryReport(canonical);
 });
 assert.strictEqual(
   report.aliases.map((alias) => alias.id).join(','),
-  'crypto-tax,generator-fuel-african,minimum-wage-legal,salary-tax-sw,vat-calculator',
+  'crypto-tax,generator-fuel-african,minimum-wage-legal,remittance-v2,salary-tax-sw,transfert-v2-fr,vat-calculator',
   'canonical redirect aliases must stay explicit and stable'
 );
 

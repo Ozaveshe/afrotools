@@ -8,16 +8,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1258 |
+| Canonical published English rows | 1257 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1257** |
-| Native candidates (including accepted) | 1257 |
+| **Free canonical English apps** | **1256** |
+| Native candidates (including accepted) | 1256 |
 | English iframe/transplant | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Missing | 0 |
 | Definite product-build gaps | 0 |
-| **Accepted** | **1257** |
+| **Accepted** | **1256** |
 
 ## Category reconciliation
 
@@ -53,15 +53,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Trade & Import | 22 | 22 | 0 | 0 | 0 | 0 | 22 |
 | Transport & Logistics | 18 | 18 | 0 | 0 | 0 | 0 | 18 |
 | Travel & Tourism | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
-| Uniquely African | 34 | 34 | 0 | 0 | 0 | 0 | 34 |
+| Uniquely African | 33 | 33 | 0 | 0 | 0 | 0 | 33 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 63 |
-| **Total** | **1257** | **1257** | **0** | **0** | **0** | **0** | **1257** |
+| **Total** | **1256** | **1256** | **0** | **0** | **0** | **0** | **1256** |
 
 ## Ambiguous ownership
 
 - French routes with conflicting owner evidence: 108
-- English apps with multiple live French owner candidates: 21
-- French registry source IDs not found in the free English denominator: 5
+- English apps with multiple live French owner candidates: 20
+- French registry source IDs not found in the free English denominator: 6
+- Archived acceptance entries outside the current denominator: 1
 
 Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.
 
@@ -197,7 +198,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | `/tools/gas-lpg-cost` | `/fr/tools/cout-gaz-lpg` | `/fr/tools/calculateur-du-cout-du-gaz-gpl-afrique-du-sud`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-angola`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cameroun`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cote-d-ivoire`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-egypte`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ethiopie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ghana`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-kenya`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-maroc`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-nigeria`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ouganda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-rwanda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-senegal`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tanzanie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tunisie` |
 | `/tools/outage-cost` | `/fr/tools/cout-coupure-entreprise` | `/fr/tools/estimateur-du-cout-des-coupures-de-courant-afrique-du-sud`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-angola`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cameroun`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cote-d-ivoire`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-egypte`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ethiopie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ghana`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-kenya`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-maroc`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-nigeria`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ouganda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-rwanda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-senegal`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tanzanie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tunisie` |
 | `/tools/afrostream` | `/fr/tools/afrostream-afrique-s-createur-streaming-hub` | `/fr/tools/installation-de-streaming-a-petit-budget`<br>`/fr/tools/monetisation-pour-createurs-africains`<br>`/fr/tools/tarifer-un-partenariat-de-marque` |
-| `/document-pdf` | `/fr/document-pdf` | `/fr/docs/pdf-tools-hub` |
 | `/tools/work-permit-cost` | `/fr/tools/cout-permis-travail` | `/fr/tools/estimateur-du-cout-d-un-permis-de-travail-afrique-du-sud`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-algerie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-angola`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-benin`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-botswana`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-burkina-faso`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-burundi`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cameroun`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cap-vert`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-comores`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-congo-brazzaville`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cote-d-ivoire`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-djibouti`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-egypte`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-erythree`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-eswatini`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ethiopie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-gabon`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-gambie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ghana`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee-bissau`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee-equatoriale`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-kenya`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-lesotho`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-liberia`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-libye`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-madagascar`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-malawi`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mali`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maroc`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maurice`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mauritanie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mozambique`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-namibie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-niger`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-nigeria`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-ouganda`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-rdc`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-republique-centrafricaine`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-rwanda`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-sao-tome-et-principe`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-senegal`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-seychelles`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-sierra-leone`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-somalie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-soudan`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-soudan-du-sud`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tanzanie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tchad`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-togo`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tunisie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zambie`<br>`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zimbabwe` |
 | `/tools/contractor-vs-employee` | `/fr/tools/contractant-vs-salarie` | `/fr/tools/comparateur-prestataire-ou-salarie-afrique-du-sud`<br>`/fr/tools/comparateur-prestataire-ou-salarie-algerie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-angola`<br>`/fr/tools/comparateur-prestataire-ou-salarie-benin`<br>`/fr/tools/comparateur-prestataire-ou-salarie-botswana`<br>`/fr/tools/comparateur-prestataire-ou-salarie-burkina-faso`<br>`/fr/tools/comparateur-prestataire-ou-salarie-burundi`<br>`/fr/tools/comparateur-prestataire-ou-salarie-cameroun`<br>`/fr/tools/comparateur-prestataire-ou-salarie-cap-vert`<br>`/fr/tools/comparateur-prestataire-ou-salarie-comores`<br>`/fr/tools/comparateur-prestataire-ou-salarie-congo-brazzaville`<br>`/fr/tools/comparateur-prestataire-ou-salarie-cote-d-ivoire`<br>`/fr/tools/comparateur-prestataire-ou-salarie-djibouti`<br>`/fr/tools/comparateur-prestataire-ou-salarie-egypte`<br>`/fr/tools/comparateur-prestataire-ou-salarie-erythree`<br>`/fr/tools/comparateur-prestataire-ou-salarie-eswatini`<br>`/fr/tools/comparateur-prestataire-ou-salarie-ethiopie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-gabon`<br>`/fr/tools/comparateur-prestataire-ou-salarie-gambie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-ghana`<br>`/fr/tools/comparateur-prestataire-ou-salarie-guinee`<br>`/fr/tools/comparateur-prestataire-ou-salarie-guinee-bissau`<br>`/fr/tools/comparateur-prestataire-ou-salarie-guinee-equatoriale`<br>`/fr/tools/comparateur-prestataire-ou-salarie-kenya`<br>`/fr/tools/comparateur-prestataire-ou-salarie-lesotho`<br>`/fr/tools/comparateur-prestataire-ou-salarie-liberia`<br>`/fr/tools/comparateur-prestataire-ou-salarie-libye`<br>`/fr/tools/comparateur-prestataire-ou-salarie-madagascar`<br>`/fr/tools/comparateur-prestataire-ou-salarie-malawi`<br>`/fr/tools/comparateur-prestataire-ou-salarie-mali`<br>`/fr/tools/comparateur-prestataire-ou-salarie-maroc`<br>`/fr/tools/comparateur-prestataire-ou-salarie-maurice`<br>`/fr/tools/comparateur-prestataire-ou-salarie-mauritanie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-mozambique`<br>`/fr/tools/comparateur-prestataire-ou-salarie-namibie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-niger`<br>`/fr/tools/comparateur-prestataire-ou-salarie-nigeria`<br>`/fr/tools/comparateur-prestataire-ou-salarie-ouganda`<br>`/fr/tools/comparateur-prestataire-ou-salarie-rdc`<br>`/fr/tools/comparateur-prestataire-ou-salarie-republique-centrafricaine`<br>`/fr/tools/comparateur-prestataire-ou-salarie-rwanda`<br>`/fr/tools/comparateur-prestataire-ou-salarie-sao-tome-et-principe`<br>`/fr/tools/comparateur-prestataire-ou-salarie-senegal`<br>`/fr/tools/comparateur-prestataire-ou-salarie-seychelles`<br>`/fr/tools/comparateur-prestataire-ou-salarie-sierra-leone`<br>`/fr/tools/comparateur-prestataire-ou-salarie-somalie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-soudan`<br>`/fr/tools/comparateur-prestataire-ou-salarie-soudan-du-sud`<br>`/fr/tools/comparateur-prestataire-ou-salarie-tanzanie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-tchad`<br>`/fr/tools/comparateur-prestataire-ou-salarie-togo`<br>`/fr/tools/comparateur-prestataire-ou-salarie-tunisie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-zambie`<br>`/fr/tools/comparateur-prestataire-ou-salarie-zimbabwe` |
 | `/tools/domestic-worker` | `/fr/tools/salaire-employe-maison` | `/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-afrique-du-sud`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-angola`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cameroun`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cote-d-ivoire`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-egypte`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-ethiopie`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-ghana`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-kenya`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-maroc`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-nigeria`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-ouganda`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-rwanda`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-senegal`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-tanzanie`<br>`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-tunisie` |
@@ -211,8 +211,9 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 - `fintech`
 - `generator-fuel-african`
 - `regulatory-alerts`
+- `remittance-v2`
 
-## Full 1,257-row ledger
+## Full 1,256-row ledger
 
 | English app | Category | English route | State | Primary French route | Accepted |
 |---|---|---|---|---|---:|
@@ -876,7 +877,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Password Generator | Developer Tools | `/tools/password-generator` | Native candidate | `/fr/tools/generateur-mot-de-passe` | Yes |
 | Meeting Cost Calculator | Business & ROI | `/tools/meeting-cost` | Native candidate | `/fr/tools/cout-reunion` | Yes |
 | Tip & Bill Splitter | Business & ROI | `/tools/tip-calculator` | Native candidate | `/fr/tools/calculateur-pourboire` | Yes |
-| Remittance Comparator Pro | Uniquely African | `/tools/remittance-v2` | Native candidate | `/fr/tools/transfert-v2` | Yes |
 | Salary Offer Comparator | Finance, Tax & Market Data | `/tools/salary-compare` | Native candidate | `/fr/tools/comparateur-salaires` | Yes |
 | Salary Evidence Notebook | Finance, Tax & Market Data | `/tools/salary-intelligence` | Native candidate | `/fr/salary-tax` | Yes |
 | African Cost of Living Comparator | Uniquely African | `/tools/cost-of-living` | Native candidate | `/fr/tools/cout-de-la-vie` | Yes |
