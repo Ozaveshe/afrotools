@@ -408,6 +408,52 @@ function nextScheduledAt(expression, fromDate) {
   return null;
 }
 
+function previousScheduledAt(expression, fromDate) {
+  const schedule = parseCronSchedule(expression);
+  if (!schedule) return null;
+
+  const start = fromDate instanceof Date ? fromDate : new Date(fromDate || Date.now());
+  if (!Number.isFinite(start.getTime())) return null;
+
+  const candidate = new Date(start.getTime());
+  candidate.setUTCSeconds(0, 0);
+
+  const maxMinutes = 366 * 24 * 60;
+  for (let i = 0; i < maxMinutes; i += 1) {
+    if (cronMatches(schedule, candidate)) return candidate.toISOString();
+    candidate.setUTCMinutes(candidate.getUTCMinutes() - 1);
+  }
+  return null;
+}
+
+function applyScheduleExpectation(result, expression, record, nowDate) {
+  const now = nowDate instanceof Date ? nowDate : new Date(nowDate || Date.now());
+  const previous = previousScheduledAt(expression, now);
+  result.last_scheduled_at = previous;
+
+  const monitorAfter = toIso(record && record.monitor_after);
+  if (result.status === 'missing' && monitorAfter) {
+    const firstExpected = nextScheduledAt(expression, new Date(monitorAfter));
+    result.first_expected_at = firstExpected;
+    if (firstExpected && now.getTime() < new Date(firstExpected).getTime()) {
+      result.status = 'pending';
+      result.note = [result.note, 'Monitoring is active; the first scheduled invocation is not due yet.']
+        .filter(Boolean)
+        .join(' ');
+      return result;
+    }
+  }
+
+  const latest = toIso(result.latest_at);
+  if (result.status === 'stale' && latest && previous && new Date(latest).getTime() >= new Date(previous).getTime()) {
+    result.status = 'ok';
+    result.note = [result.note, 'Latest evidence covers the most recent scheduled invocation.']
+      .filter(Boolean)
+      .join(' ');
+  }
+  return result;
+}
+
 function minutesUntil(timestamp, nowMs) {
   const iso = toIso(timestamp);
   if (!iso) return null;
@@ -720,7 +766,7 @@ async function runCheck(record, functionName, health, nowMs) {
 }
 
 function countsByStatus(items) {
-  const counts = { ok: 0, stale: 0, degraded: 0, missing: 0, unavailable: 0, skipped: 0 };
+  const counts = { ok: 0, pending: 0, stale: 0, degraded: 0, missing: 0, unavailable: 0, skipped: 0 };
   for (const item of items) {
     const key = counts[item.status] === undefined ? 'skipped' : item.status;
     counts[key] += 1;
@@ -793,7 +839,7 @@ function writeReports(report) {
   lines.push('- Netlify scheduled functions parsed: ' + report.netlify_scheduled_functions + '.');
   lines.push('- Monitored live evidence checks: ' + report.checks.length + '.');
   lines.push('- Skipped scheduled functions without durable live proof mapping: ' + report.skipped.length + '.');
-  lines.push('- Status counts: ok=' + report.counts.ok + ', stale=' + report.counts.stale + ', degraded=' + report.counts.degraded + ', missing=' + report.counts.missing + ', unavailable=' + report.counts.unavailable + '.');
+  lines.push('- Status counts: ok=' + report.counts.ok + ', pending=' + report.counts.pending + ', stale=' + report.counts.stale + ', degraded=' + report.counts.degraded + ', missing=' + report.counts.missing + ', unavailable=' + report.counts.unavailable + '.');
   lines.push('');
   lines.push('## Problems');
   lines.push('');
@@ -870,6 +916,7 @@ async function main() {
     result.netlify_schedule = netlifySchedule;
     result.next_scheduled_at = nextScheduledAt(netlifySchedule, now);
     result.minutes_until_next_scheduled = minutesUntil(result.next_scheduled_at, nowMs);
+    applyScheduleExpectation(result, netlifySchedule, record, now);
     checks.push(result);
   }
 
@@ -891,7 +938,7 @@ async function main() {
   console.log('AfroTools live automation health');
   console.log('- Netlify scheduled functions parsed: ' + report.netlify_scheduled_functions);
   console.log('- Monitored checks: ' + report.checks.length);
-  console.log('- Status: ok=' + report.counts.ok + ', stale=' + report.counts.stale + ', degraded=' + report.counts.degraded + ', missing=' + report.counts.missing + ', unavailable=' + report.counts.unavailable + ', skipped=' + report.skipped.length);
+  console.log('- Status: ok=' + report.counts.ok + ', pending=' + report.counts.pending + ', stale=' + report.counts.stale + ', degraded=' + report.counts.degraded + ', missing=' + report.counts.missing + ', unavailable=' + report.counts.unavailable + ', skipped=' + report.skipped.length);
   console.log('- Report: ' + report.report_paths.markdown);
   if (problems.length) {
     console.log('- Top issues:');
@@ -921,7 +968,9 @@ module.exports = {
   inferHealth,
   latestRowStatus,
   liveDataRowStatus,
+  applyScheduleExpectation,
   nextScheduledAt,
+  previousScheduledAt,
   parseCronField,
   scraperRunNote,
   scheduledProofKey,

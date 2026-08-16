@@ -41,6 +41,11 @@ function fixture(overrides = {}) {
 assert.deepStrictEqual(validateHandoff(fixture()), []);
 assert.ok(validateHandoff(fixture({ commit: null })).some((error) => error.includes('require commit')));
 assert.ok(validateHandoff(fixture({ status: 'blocked', merge_candidate: false, blocker: null })).some((error) => error.includes('require blocker')));
+assert.ok(
+  validateHandoff(fixture({ dependencies: ['Do not overwrite newer statutory source updates.'] }))
+    .some((error) => error.includes('must be a handoff id')),
+  'dependencies must contain receipt ids rather than prose or source notes'
+);
 
 const first = fixture();
 const second = fixture({ handoff_id: 'lane-2-run-1', automation_id: 'lane-2', commit: 'abcdef1234567890abcdef1234567890abcdef12' });
@@ -72,6 +77,28 @@ assert.deepStrictEqual(dependencyQueue.ready.map((item) => item.handoff_id), [
   'dependent-run-1',
 ]);
 assert.deepStrictEqual(dependencyQueue.dependency_issues, []);
+
+const contentMorning = fixture({
+  handoff_id: 'am-content-batch-2-2026-08-16-run-1',
+  automation_id: 'am-content-batch-2',
+  source_files: ['blog/morning/index.html', 'blog/index.html', 'data/content/blog-article-manifest.json'],
+  generated_files: ['blog/feed.xml'],
+  conflict_keys: ['blog:slug:morning', 'blog:hub', 'blog:manifest', 'blog:feed'],
+});
+const contentEvening = fixture({
+  handoff_id: 'pm-content-batch-2-2026-08-16-run-1',
+  automation_id: 'pm-content-batch-2',
+  commit: 'abcdef1234567890abcdef1234567890abcdef12',
+  source_files: ['blog/evening/index.html', 'blog/index.html', 'data/content/blog-article-manifest.json'],
+  generated_files: ['blog/feed.xml'],
+  conflict_keys: ['blog:slug:evening', 'blog:hub', 'blog:manifest', 'blog:feed'],
+  dependencies: ['am-content-batch-2-2026-08-16-run-1'],
+});
+const contentQueue = buildQueue([
+  { filePath: 'morning', item: contentMorning, errors: validateHandoff(contentMorning) },
+  { filePath: 'evening', item: contentEvening, errors: validateHandoff(contentEvening) },
+]);
+assert.deepStrictEqual(contentQueue.conflicts, [], 'ordered content batches may share only the declared regenerable blog surfaces');
 
 const missingDependency = fixture({
   handoff_id: 'missing-dependency-run',

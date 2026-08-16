@@ -8,6 +8,16 @@ const STATUSES = new Set(['ready', 'no_change', 'live_only', 'blocked', 'quarant
 const CHANGE_KINDS = new Set(['repository', 'live_data', 'report_only', 'none']);
 const RISK_LEVELS = new Set(['low', 'medium', 'high', 'critical']);
 const VALIDATION_STATUSES = new Set(['pass', 'fail', 'not_run']);
+const HANDOFF_ID_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
+const DEPENDENCY_SHARED_SOURCE_FILES = new Set([
+  'blog/index.html',
+  'data/content/blog-article-manifest.json',
+]);
+const DEPENDENCY_SHARED_CONFLICT_KEYS = new Set([
+  'blog:hub',
+  'blog:manifest',
+  'blog:feed',
+]);
 
 function isIsoDate(value) {
   return typeof value === 'string' && !Number.isNaN(Date.parse(value));
@@ -37,6 +47,13 @@ function validateHandoff(item) {
   for (const field of ['changed_files', 'source_files', 'generated_files', 'conflict_keys', 'dependencies', 'live_mutations']) {
     if (!isStringArray(item[field])) errors.push(`${field} must be an array of non-empty strings`);
     else if (new Set(item[field]).size !== item[field].length) errors.push(`${field} must not contain duplicates`);
+  }
+  if (Array.isArray(item.dependencies)) {
+    item.dependencies.forEach((dependency, index) => {
+      if (typeof dependency === 'string' && dependency.trim() && !HANDOFF_ID_PATTERN.test(dependency)) {
+        errors.push(`dependencies[${index}] must be a handoff id, not prose, a URL, a package, or a file path`);
+      }
+    });
   }
 
   if (!Array.isArray(item.validations)) errors.push('validations must be an array');
@@ -137,17 +154,38 @@ function buildQueue(records) {
   const ownersByFile = new Map();
   const ownersByConflictKey = new Map();
   const conflicts = [];
+  function dependsOn(record, possibleDependencyId, seen = new Set()) {
+    if (seen.has(record.item.handoff_id)) return false;
+    seen.add(record.item.handoff_id);
+    for (const dependencyId of record.item.dependencies) {
+      if (dependencyId === possibleDependencyId) return true;
+      const dependency = readyById.get(dependencyId);
+      if (dependency && dependsOn(dependency, possibleDependencyId, seen)) return true;
+    }
+    return false;
+  }
+  function isExpectedSharedSurface(ownerId, record, key, allowedKeys) {
+    if (!allowedKeys.has(key)) return false;
+    const owner = readyById.get(ownerId);
+    return !!owner && (dependsOn(record, ownerId) || dependsOn(owner, record.item.handoff_id));
+  }
   for (const record of ready) {
     for (const file of record.item.source_files) {
       if (ownersByFile.has(file)) {
-        conflicts.push({ type: 'source_file', key: file, handoffs: [ownersByFile.get(file), record.item.handoff_id] });
+        const ownerId = ownersByFile.get(file);
+        if (!isExpectedSharedSurface(ownerId, record, file, DEPENDENCY_SHARED_SOURCE_FILES)) {
+          conflicts.push({ type: 'source_file', key: file, handoffs: [ownerId, record.item.handoff_id] });
+        }
       } else {
         ownersByFile.set(file, record.item.handoff_id);
       }
     }
     for (const key of record.item.conflict_keys) {
       if (ownersByConflictKey.has(key)) {
-        conflicts.push({ type: 'conflict_key', key, handoffs: [ownersByConflictKey.get(key), record.item.handoff_id] });
+        const ownerId = ownersByConflictKey.get(key);
+        if (!isExpectedSharedSurface(ownerId, record, key, DEPENDENCY_SHARED_CONFLICT_KEYS)) {
+          conflicts.push({ type: 'conflict_key', key, handoffs: [ownerId, record.item.handoff_id] });
+        }
       } else {
         ownersByConflictKey.set(key, record.item.handoff_id);
       }

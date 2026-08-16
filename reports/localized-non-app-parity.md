@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 162 | 0 | 258 |
-| sw | 138 | 0 | 282 |
+| fr | 162 | 0 | 263 |
+| sw | 138 | 0 | 287 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 293 | 40 | 0 | 253 | 21 | 0 | 272 |
+| editorial | 298 | 40 | 0 | 258 | 21 | 0 | 277 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -44,6 +44,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/battery-backup-hours-calculator-ghana/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/benin-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/benin-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-budgeting-methods-africa-2026/ | editorial | fr | /fr/blog/best-budgeting-methods-africa-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/best-budgeting-methods-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-countries-business-africa-2026/ | editorial | fr | /fr/blog/best-countries-business-africa-2026/ | missing | English fallback shell; no reviewed native article |
@@ -124,6 +126,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/cost-of-living-johannesburg-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/cost-of-living-lagos-vs-nairobi/ | editorial | fr | /fr/blog/cost-of-living-lagos-vs-nairobi/ | missing | English fallback shell; no reviewed native article |
 | /blog/cost-of-living-lagos-vs-nairobi/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crop-yield-calculator-african-farming/ | editorial | fr | /fr/blog/crop-yield-calculator-african-farming/ | missing | English fallback shell; no reviewed native article |
 | /blog/crop-yield-calculator-african-farming/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crypto-scam-red-flags-africa/ | editorial | fr | /fr/blog/crypto-scam-red-flags-africa/ | missing | English fallback shell; no reviewed native article |
@@ -258,6 +262,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/inflation-rates-africa-2026-guide/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/inventory-reorder-point-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/inventory-reorder-point-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/jamb-aggregate-score-calculator-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/jamb-aggregate-score-calculator-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/japa-cost-nigeria/ | editorial | fr | /fr/blog/japa-cost-nigeria/ | missing | English fallback shell; no reviewed native article |
 | /blog/japa-cost-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/japa-guide-nigeria-canada-2026/ | editorial | fr | /fr/blog/japa-guide-nigeria-canada-2026/ | missing | English fallback shell; no reviewed native article |
@@ -309,6 +315,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/learn-african-languages-free/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/lesotho-paye-tax-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/lesotho-paye-tax-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/liberia-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/liberia-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/lobola-price-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/malawi-vat-digital-services-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/malawi-vat-digital-services-2026/ | editorial | sw | — | missing | no localized route or owner file |
@@ -393,6 +401,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/public-tender-document-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/public-tender-document-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/quotation-vs-invoice-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/redact-pdf-safely-before-sharing-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/redact-pdf-safely-before-sharing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/register-business-ghana-2026/ | editorial | fr | /fr/blog/register-business-ghana-2026/ | missing | English fallback shell; no reviewed native article |
 | /blog/register-business-ghana-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/register-business-kenya-2026/ | editorial | fr | /fr/blog/register-business-kenya-2026/ | missing | English fallback shell; no reviewed native article |

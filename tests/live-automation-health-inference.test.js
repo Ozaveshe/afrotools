@@ -7,7 +7,9 @@ const {
   inferHealth,
   latestRowStatus,
   liveDataRowStatus,
+  applyScheduleExpectation,
   nextScheduledAt,
+  previousScheduledAt,
   parseCronField,
   scraperRunNote,
   scheduledProofKey,
@@ -115,6 +117,29 @@ assert.strictEqual(
   '2026-07-01T08:09:00.000Z',
   'monthly schedules should return the next matching day of month in UTC'
 );
+
+assert.strictEqual(
+  previousScheduledAt('11 * * * 1-5', new Date('2026-08-16T07:02:46Z')),
+  '2026-08-14T23:11:00.000Z',
+  'weekday-only schedules should use the last due fire instead of raw wall-clock age on weekends'
+);
+
+const weekendStock = applyScheduleExpectation(
+  { status: 'stale', latest_at: '2026-08-14T23:11:07.525Z', note: '' },
+  '11 * * * 1-5',
+  {},
+  new Date('2026-08-16T07:02:46Z')
+);
+assert.strictEqual(weekendStock.status, 'ok', 'evidence from the last weekday fire must stay healthy over the weekend');
+
+const firstRunPending = applyScheduleExpectation(
+  { status: 'missing', latest_at: null, note: '' },
+  '23 11 * * *',
+  { monitor_after: '2026-08-16T04:06:26.135Z' },
+  new Date('2026-08-16T07:02:46Z')
+);
+assert.strictEqual(firstRunPending.status, 'pending', 'new monitoring must not fail before its first scheduled invocation');
+assert.strictEqual(firstRunPending.first_expected_at, '2026-08-16T11:23:00.000Z');
 
 assert.strictEqual(
   scraperRunNote(

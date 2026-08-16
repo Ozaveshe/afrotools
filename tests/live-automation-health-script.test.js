@@ -6,6 +6,7 @@ const ROOT = path.resolve(__dirname, '..');
 const pkg = require('../package.json');
 const auditScript = fs.readFileSync(path.join(ROOT, 'scripts', 'audit-live-automation-health.js'), 'utf8');
 const testRunner = fs.readFileSync(path.join(ROOT, 'scripts', 'run-tests.js'), 'utf8');
+const healthWorkflow = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'automation-health.yml'), 'utf8');
 
 assert.strictEqual(
   pkg.scripts['automation:live-health'],
@@ -25,6 +26,11 @@ assert.ok(testRunner.includes("entry.name.endsWith('.test.js')"), 'the test runn
 assert.ok(
   auditScript.includes("process.argv.includes('--fail-on-stale')"),
   'audit-live-automation-health.js must continue to expose the strict flag'
+);
+
+assert.ok(
+  healthWorkflow.includes("steps.health.outcome == 'failure' && github.event_name == 'workflow_dispatch'"),
+  'scheduled health monitoring must update its issue without generating a failed-run email every six hours'
 );
 
 assert.match(

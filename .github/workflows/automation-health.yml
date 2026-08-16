@@ -73,11 +73,12 @@ jobs:
             ? report.checks.filter((check) => check.status !== 'ok')
             : [];
           const lines = [
-            'The scheduled automation health gate failed.',
+            'The scheduled automation health monitor found non-healthy live proof.',
             '',
             `- Generated: ${report ? report.generated_at : 'no fresh report; check workflow configuration'}`,
             `- Stale: ${stale}`,
             `- Missing: ${missing}`,
+            `- Pending first run: ${Number(counts.pending || 0)}`,
             `- Degraded: ${Number(counts.degraded || 0)}`,
             `- Unavailable: ${Number(counts.unavailable || 0)}`,
             `- Workflow run: ${process.env.RUN_URL}`,
@@ -124,6 +125,6 @@ jobs:
             gh issue close "$issue_number" --comment "Automation health recovered in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."
           fi
 
-      - name: Fail workflow when health is not green
-        if: steps.health.outcome == 'failure'
+      - name: Keep manually requested health gates strict
+        if: steps.health.outcome == 'failure' && github.event_name == 'workflow_dispatch'
         run: exit 1
