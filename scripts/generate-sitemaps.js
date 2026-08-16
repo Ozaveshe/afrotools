@@ -351,7 +351,11 @@ function stableSitemapLastmod(loc, fallbackDate) {
   if (!REFRESH_LASTMOD) {
     const existing = EXISTING_URL_LASTMODS.get(loc) || '';
     const selectiveOverride = lastmodOverrideFor(loc);
-    if (existing || selectiveOverride) return maxDate([existing, selectiveOverride]);
+    // The reviewed registry is authoritative for its narrow selector. This
+    // permits a bad local-time stamp to be corrected instead of preserved
+    // forever by the stable historical-lastmod behavior.
+    if (selectiveOverride) return selectiveOverride;
+    if (existing) return existing;
   }
 
   return normalizeSitemapLastmod(fallbackDate);

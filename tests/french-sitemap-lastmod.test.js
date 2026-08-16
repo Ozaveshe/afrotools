@@ -31,14 +31,14 @@ test('reviewed French search repairs receive selective sitemap freshness', () =>
     if (override.route) {
       const url = `${BASE_URL}${override.route}`;
       assert.ok(lastmods.has(url), `${url} must remain in the French sitemap`);
-      assert.ok(lastmods.get(url) >= override.lastmod, `${url} must expose the reviewed lastmod`);
+      assert.equal(lastmods.get(url), override.lastmod, `${url} must expose the authoritative reviewed lastmod`);
       continue;
     }
 
     const matched = [...lastmods].filter(([url]) => url.startsWith(`${BASE_URL}${override.routePrefix}`));
     assert.equal(matched.length, 55, `${override.routePrefix} must cover its hub and 54 country pages`);
     for (const [url, lastmod] of matched) {
-      assert.ok(lastmod >= override.lastmod, `${url} must expose the family rebuild date`);
+      assert.equal(lastmod, override.lastmod, `${url} must expose the authoritative family rebuild date`);
     }
   }
 });
