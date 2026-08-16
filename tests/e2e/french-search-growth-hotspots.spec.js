@@ -244,4 +244,29 @@ test.describe('French search growth hotspots', () => {
     expect(missingResources).toEqual([]);
     expect(consoleErrors).toEqual([]);
   });
+
+  test('Nigeria salary guide replaces market fiction with official and NBS evidence', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/blog/average-salary-nigeria-2026/');
+    await expect(page.locator('h1')).toContainText('Salaire moyen au Nigeria en 2026');
+    await expect(page.locator('body')).toContainText('salaire minimum de 70 000 NGN par mois');
+    await expect(page.locator('body')).toContainText(/sans source\. Elles ont été supprimées/i);
+    await expect(page.locator('a[href*="statehouse.gov.ng/president-tinubus-broadcast"]').first()).toBeVisible();
+    await expect(page.locator('a[href*="microdata.nigerianstat.gov.ng/index.php/catalog/152/study-description"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/fr/tools/comparateur-salaires/"]').first()).toBeVisible();
+    await expect(page.locator('body')).not.toContainText(/5 000 000|10 000 000|deux à cinq fois/i);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });
