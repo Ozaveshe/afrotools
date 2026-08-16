@@ -23,6 +23,7 @@ const CURATED_FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
   "recherche-de-contenu-pour-createur": "creator-research",
   "redimensionnement-pour-createur": "creator-resize",
   "preparation-retraite": "retirement-readiness",
+  "trouver-administration-paye": "paye-authority-finder",
   "preparer-consultation-sante-voyage": "travel-vaccination-cost",
   "stats-createur": "creator-analytics",
   "calendrier-medias-sociaux": "social-media-calendar",

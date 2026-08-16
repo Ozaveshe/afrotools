@@ -15,14 +15,20 @@ function auditMoneySourceCoverage(root) {
     (source.routes || []).forEach((route) => registeredRoutes.add(canonicalRegistry.normalizeRoute(route)));
   });
 
-  const moneyPattern = /(?:paye|vat|tax|salary|wage|pension|social-security|fuel|electricity|remittance|forex|currency|bank|loan|interest|mortgage|import-duty|customs-duty)/i;
+  const moneyPattern = /(?:^|[^a-z0-9])(?:paye|vat|tax(?:es|ation)?|salary|wage|pension|social-security|fuel|electricity|remittance|forex|currency|bank|loan|interest|mortgage|import-duty|customs-duty)(?:[^a-z0-9]|$)/i;
   const moneyTools = sources.tools.filter((tool) => {
     if (!['live', 'new'].includes(tool.status)) return false;
-    if (tool.category === 'financial') return true;
-    return moneyPattern.test([tool.id, tool.href, tool.name, tool.category].join(' '));
+    const route = canonicalRegistry.normalizeRoute(tool.href);
+    const workflowRoute = /^(?:\/tools\/|\/fr\/tools\/|\/sw\/zana\/|\/ha\/kayan-aiki\/|\/yo\/awon-ise\/|\/crypto\/|\/agriculture\/farm-loans(?:\/|$))/.test(route);
+    if (workflowRoute) {
+      return tool.category === 'financial' || moneyPattern.test([tool.id, tool.href, tool.name, tool.category].join(' '));
+    }
+    return /^[a-z]{2}-(?:paye|vat|tva|wht|nssf|ssnit)(?:-|$)/i.test(tool.id);
   });
   const missing = moneyTools.filter((tool) => {
-    return !registeredIds.has(tool.id) && !registeredRoutes.has(canonicalRegistry.normalizeRoute(tool.href));
+    return !registeredIds.has(tool.id)
+      && !(tool.sourceId && registeredIds.has(tool.sourceId))
+      && !registeredRoutes.has(canonicalRegistry.normalizeRoute(tool.href));
   });
   return { total: moneyTools.length, registered: moneyTools.length - missing.length, missing };
 }

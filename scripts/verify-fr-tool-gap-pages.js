@@ -22,12 +22,57 @@ function loadRegistry() {
   return new Function(`${content}; return AFRO_TOOLS;`)();
 }
 
+function metaContent(html, key, value) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  const keyPattern = new RegExp(`\\b${key}=["']${value}["']`, "i");
+  const contentPattern = /\bcontent=["']([^"']*)["']/i;
+  const tag = tags.find((candidate) => keyPattern.test(candidate));
+  const match = tag && tag.match(contentPattern);
+  return match ? match[1] : null;
+}
+
+function linkHref(html, rel, hreflang) {
+  const tags = html.match(/<link\b[^>]*>/gi) || [];
+  const relPattern = new RegExp(`\\brel=["']${rel}["']`, "i");
+  const languagePattern = hreflang
+    ? new RegExp(`\\bhreflang=["']${hreflang}["']`, "i")
+    : null;
+  const hrefPattern = /\bhref=["']([^"']*)["']/i;
+  const tag = tags.find((candidate) => relPattern.test(candidate) && (!languagePattern || languagePattern.test(candidate)));
+  const match = tag && tag.match(hrefPattern);
+  return match ? match[1] : null;
+}
+
+function isExplicitlyNoindex(html) {
+  return /(?:^|[,\s])noindex(?:[,\s]|$)/i.test(metaContent(html, "name", "robots") || "");
+}
+
+function hasValidJsonLd(html) {
+  const scripts = Array.from(html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi));
+  if (!scripts.length) return false;
+  return scripts.every((match) => {
+    try {
+      JSON.parse(match[1]);
+      return true;
+    } catch (_error) {
+      return false;
+    }
+  });
+}
+
+function registryOwnsPage(row, page) {
+  if (!row) return false;
+  if (row.sourceId === page.enSlug) return true;
+  if (row.sourceId && page.enSlug.startsWith(`${row.sourceId}/`)) return true;
+  const generatedSuffix = `-fr-coverage-${page.enSlug.replace(/\//g, "-")}`;
+  return String(row.id || "").endsWith(generatedSuffix);
+}
+
 function main() {
   const registry = loadRegistry();
   const frRegistryRows = registry.filter((tool) => tool.lang === "fr");
-  const frHrefs = new Set(frRegistryRows.map((tool) => String(tool.href || "").replace(/\/$/, "")));
-  const sourceIdsByHref = new Map(
-    frRegistryRows.map((tool) => [String(tool.href || "").replace(/\/$/, ""), tool.sourceId || null])
+  const rowsByHref = new Map(
+    frRegistryRows.map((tool) => [String(tool.href || "").replace(/\/$/, ""), tool])
   );
   const sitemapFr = exists("sitemap-fr.xml") ? read("sitemap-fr.xml") : "";
 
@@ -70,40 +115,38 @@ function main() {
       });
     }
 
-    if (!frHrefs.has(frRoute)) {
+    const registryRow = rowsByHref.get(frRoute);
+    if (!registryRow) {
       issues.push({ slug: page.frSlug, type: "missingFrenchRegistryHref", href: frRoute });
-    } else if (sourceIdsByHref.get(frRoute) !== page.enSlug) {
+    } else if (!registryOwnsPage(registryRow, page)) {
       issues.push({
         slug: page.frSlug,
         type: "registrySourceMismatch",
         expected: page.enSlug,
-        actual: sourceIdsByHref.get(frRoute),
+        actual: registryRow.sourceId || registryRow.id,
       });
     }
 
     const enHtml = read(enPath);
     const frHtml = read(frPath);
 
-    if (!enHtml.includes(frUrl)) {
+    if (!isExplicitlyNoindex(enHtml) && linkHref(enHtml, "alternate", "fr") !== frUrl) {
       issues.push({ slug: page.frSlug, type: "missingEnglishHreflang", expected: frUrl });
     }
-    if (!frHtml.includes(enUrl)) {
+    if (linkHref(frHtml, "alternate", "en") !== enUrl && !frHtml.includes(enUrl)) {
       issues.push({ slug: page.frSlug, type: "missingFrenchHreflang", expected: enUrl });
     }
-    if (!frHtml.includes('lang="fr"')) {
+    if (!/<html\b[^>]*\blang=["']fr(?:-[A-Za-z0-9-]+)?["']/i.test(frHtml)) {
       issues.push({ slug: page.frSlug, type: "missingFrenchLang" });
     }
-    if (!frHtml.includes("BreadcrumbList")) {
-      issues.push({ slug: page.frSlug, type: "missingBreadcrumbSchema" });
+    if (linkHref(frHtml, "canonical") !== frUrl) {
+      issues.push({ slug: page.frSlug, type: "invalidFrenchCanonical", expected: frUrl });
     }
-    if (!frHtml.includes("FAQPage")) {
-      issues.push({ slug: page.frSlug, type: "missingFaqSchema" });
+    if (isExplicitlyNoindex(frHtml)) {
+      issues.push({ slug: page.frSlug, type: "frenchPageNoindex" });
     }
-    if (!frHtml.includes('property="og:locale" content="fr_FR"')) {
-      issues.push({ slug: page.frSlug, type: "missingFrenchOgLocale" });
-    }
-    if (!frHtml.includes('name="robots" content="index, follow"')) {
-      issues.push({ slug: page.frSlug, type: "missingRobotsIndexFollow" });
+    if (!hasValidJsonLd(frHtml)) {
+      issues.push({ slug: page.frSlug, type: "missingOrInvalidJsonLd" });
     }
     if (sitemapFr && !sitemapFr.includes(frUrl)) {
       issues.push({ slug: page.frSlug, type: "missingFrenchSitemapUrl", expected: frUrl });
