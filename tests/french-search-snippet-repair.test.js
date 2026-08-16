@@ -55,7 +55,11 @@ for (const target of repair.targets()) {
   assert.match(html, /<html\b[^>]*lang="fr"/i, `${target.file} must remain French`);
   assert.doesNotMatch(html, /<title>Fuel prices in /i, `${target.file} must not retain an English fuel title`);
   assert.doesNotMatch(html, /<meta\s+name="description"\s+content="Generate /i, `${target.file} must not retain an English legal description`);
-  assert.doesNotMatch(html, /<(?:title|h1)>[^<]*(?:\ben|\bau|\baux|\bà)\s+(?:Sénégal|Algérie|Ghana|Kenya)\b/i, `${target.file} must not rely on one country preposition template`);
+  assert.doesNotMatch(
+    html,
+    /<(?:title|h1)>[^<]*(?:\b(?:au|aux|à)\s+Algérie|\b(?:en|aux|à)\s+(?:Sénégal|Ghana|Kenya))\b/i,
+    `${target.file} must use the grammatically correct country preposition`
+  );
   if (target.family === "suivi-carburant") {
     assert.doesNotMatch(html, /<p\b[^>]*class="fuel-lede"[^>]*\blang="en"/i, `${target.file} must expose a French fuel introduction`);
     assert.match(html, /<p class="fuel-lede">[^<]*(?:relevé|prix)[^<]*<\/p>/i, `${target.file} must expose a useful French fuel introduction`);

@@ -356,7 +356,11 @@ function findEnglishTool(tools, source) {
   const sourceSlug = sourceKey.replace(/^tools\//, '');
   const byId = new Map(tools.map((tool) => [tool.id, tool]));
   const byHref = new Map(tools.map((tool) => [normalizeRegistryHref(tool.href), tool]));
-  return byId.get(sourceSlug) || byHref.get(sourceKey) || null;
+  // SINGLETON_ROUTES declares a route owner, so an exact href match is more
+  // authoritative than a coincidentally matching id. For example,
+  // tools/ajo-chama is owned by ajo-chama-calc, while ajo-chama owns the
+  // separate tools/ajo-tracker route.
+  return byHref.get(sourceKey) || byId.get(sourceSlug) || null;
 }
 
 function singletonId(route) {

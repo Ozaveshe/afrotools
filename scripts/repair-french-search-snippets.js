@@ -150,7 +150,7 @@ function fuelMetadata(html, country) {
     (html.match(/<meta\b[^>]*name=["']description["'][^>]*>/i) || [""])[0],
     "content"
   );
-  const values = currentDescription.match(/\b((?:petrol|essence)\s+[\s\S]*?)\.\s*(?:Compare generator fuel costs and African countries|Comparez les coûts du groupe électrogène et les pays africains)\.?$/i)?.[1] || "";
+  const values = currentDescription.match(/\b((?:petrol|essence)\s+[\s\S]*?)\.\s*(?:Compare generator fuel costs and African countries|Comparez les coûts du groupe électrogène et les pays africains|Comparez les pays et estimez un budget)\.?$/i)?.[1] || "";
   const localizedValues = values
     .replace(/^petrol\b/i, "essence")
     .replace(/\bLPG\b/g, "GPL");
