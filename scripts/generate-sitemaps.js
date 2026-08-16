@@ -265,7 +265,12 @@ function findHtmlFiles(dir, files = []) {
     if (entry.isDirectory()) {
       const relDir = path.relative(ROOT, fullPath).replace(/\\/g, '/');
       if (EXCLUDE_ROOT_DIRS.has(relDir)) continue;
-      if (EXCLUDE_DIRS.has(entry.name)) continue;
+      // The root /widgets/ tree contains embed utilities and is allowlisted
+      // selectively through EXPLICIT_SITEMAP_HTML. Nested locale directories
+      // such as /fr/widgets/ contain public, self-canonical parent pages and
+      // must still flow through inspectHtmlFile(), which excludes their
+      // noindex iframe utilities individually.
+      if (EXCLUDE_DIRS.has(entry.name) && relDir === entry.name) continue;
       findHtmlFiles(fullPath, files);
     } else if (entry.isFile() && entry.name.endsWith('.html')) {
       files.push(fullPath);
