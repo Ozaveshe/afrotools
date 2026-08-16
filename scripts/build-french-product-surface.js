@@ -83,6 +83,7 @@ function isSpecializedFrenchOwner(rel) {
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"')
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"')
     || read(rel).includes('data-fr-transport-parity=')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-french-mobile-money-editorial.js"')
     || read(rel).includes('/assets/css/french-transport-parity.css');
 }
 function withAnalyticsLoader(html) {

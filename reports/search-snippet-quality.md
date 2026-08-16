@@ -19,8 +19,8 @@
 
 | Signal | Pages |
 |---|---:|
-| TITLE_LONG | 560 |
-| DESCRIPTION_LONG | 168 |
+| TITLE_LONG | 559 |
+| DESCRIPTION_LONG | 157 |
 | TITLE_SHORT | 18 |
 
 ## Ranked interpretation

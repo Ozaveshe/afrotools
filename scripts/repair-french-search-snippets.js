@@ -265,6 +265,12 @@ function targets() {
 
 function expectedForTarget(target) {
   const html = fs.readFileSync(target.file, "utf8");
+  if (
+    target.family === "suivi-carburant" &&
+    /<meta\s+name=["']afrotools-source-owner["']\s+content=["']scripts\/build-french-fuel-country-pages\.js["']\s*\/?>/i.test(html)
+  ) {
+    return html;
+  }
   const country = countryForSlug(target.slug);
   const metadata = target.family === "suivi-carburant"
     ? fuelMetadata(html, country)

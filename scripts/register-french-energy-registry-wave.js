@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const repoRoot = path.resolve(__dirname, '..');
 const registryPath = path.join(repoRoot, 'assets/js/components/tool-registry.js');
+const COUNTRY_REGISTRY = require('../data/registry/countries.json');
+const COUNTRY_REGISTRY_BY_CODE = new Map(COUNTRY_REGISTRY.map((country) => [country.id, country]));
 
 const SINGLETON_ROUTES = [
   { route: '/fr/tools/afroatlas', source: 'tools/afroatlas' },
@@ -13,7 +16,6 @@ const SINGLETON_ROUTES = [
   { route: '/fr/tools/calculateur-dime', source: 'tools/tithe-calculator' },
   { route: '/fr/tools/calculateur-engrais', source: 'tools/fertilizer-calc' },
   { route: '/fr/tools/calculateur-lobola', source: 'tools/lobola-calculator' },
-  { route: '/fr/tools/calculateur-offrande', source: 'tools/tithe-offering-calculator' },
   { route: '/fr/tools/calendrier-semis', source: 'tools/planting-calendar' },
   { route: '/fr/tools/carte-conflits-afrique', source: 'tools/africa-conflict' },
   { route: '/fr/tools/chiffres-arabes', source: 'tools/arabic-numerals' },
@@ -62,6 +64,7 @@ const SINGLETON_ROUTES = [
   { route: '/fr/tools/traducteur-zoulou', source: 'tools/zulu-translator' },
   { route: '/fr/tools/translitteration', source: 'tools/transliterate' },
 ];
+const RETIRED_SINGLETON_IDS = new Set(['calculateur-offrande-fr']);
 
 const COUNTRIES = [
   { code: 'NG', name: 'Nigeria', slug: 'nigeria' },
@@ -124,7 +127,7 @@ const FAMILIES = [
   {
     slug: 'tarifs-electricite',
     parentId: 'tarifs-electricite-fr',
-    name: 'Tarifs electricite',
+    name: 'Tarifs électricité',
     desc: 'Estimez facture, kWh, tarif et frais fixes',
     category: 'energy',
     tier: 'T3',
@@ -135,8 +138,8 @@ const FAMILIES = [
   {
     slug: 'compteur-prepaye',
     parentId: 'compteur-prepaye-fr',
-    name: 'Compteur prepaye',
-    desc: 'Estimez unites kWh, recharge et cout prepaye',
+    name: 'Compteur prépayé',
+    desc: 'Estimez unités kWh, recharge et coût prépayé',
     category: 'energy',
     tier: 'T3',
     sourceId: 'prepaid-meter',
@@ -147,7 +150,7 @@ const FAMILIES = [
     slug: 'roi-solaire',
     parentId: 'roi-solaire-fr',
     name: 'ROI solaire',
-    desc: 'Estimez investissement, economies et amortissement solaire',
+    desc: 'Estimez investissement, économies et amortissement solaire',
     category: 'energy',
     tier: 'T3',
     sourceId: 'solar-roi',
@@ -174,8 +177,8 @@ const FAMILIES = [
   {
     slug: 'comparateur-assurance-sante',
     parentId: 'comparateur-assurance-sante-fr',
-    name: 'Comparateur assurance sante',
-    desc: 'Comparez primes, reseaux, plafonds et exclusions',
+    name: 'Comparateur assurance santé',
+    desc: 'Comparez primes, réseaux, plafonds et exclusions',
     category: 'insurance',
     tier: 'T2',
     sourceId: 'health-insurance-compare',
@@ -189,7 +192,7 @@ const FAMILIES = [
     slug: 'assurance-vie',
     parentId: 'assurance-vie-fr',
     name: 'Assurance vie',
-    desc: 'Estimez couverture, famille, dettes et revenus a proteger',
+    desc: 'Estimez couverture, famille, dettes et revenus à protéger',
     category: 'insurance',
     tier: 'T2',
     sourceId: 'life-insurance-calc',
@@ -202,8 +205,8 @@ const FAMILIES = [
   {
     slug: 'assurance-obseques',
     parentId: 'assurance-obseques-fr',
-    name: 'Assurance obseques',
-    desc: 'Estimez frais funeraires et couverture de preparation',
+    name: 'Assurance obsèques',
+    desc: 'Estimez frais funéraires et couverture de préparation',
     category: 'insurance',
     tier: 'T2',
     sourceId: 'funeral-insurance',
@@ -217,7 +220,7 @@ const FAMILIES = [
     slug: 'contrat-bail',
     parentId: 'contrat-bail-fr',
     name: 'Contrat de bail',
-    desc: 'Preparez un projet de bail a relire localement',
+    desc: 'Préparez un projet de bail à relire localement',
     category: 'legal',
     tier: 'T1',
     sourceId: 'tenancy-agreement',
@@ -251,7 +254,7 @@ const FAMILIES = [
     slug: 'suivi-carburant',
     parentId: 'suivi-carburant-fr',
     name: 'Suivi carburant',
-    desc: 'Suivez prix, litres, depenses et cout au kilometre',
+    desc: 'Suivez prix, litres, dépenses et coût au kilomètre',
     category: 'financial',
     tier: 'T2',
     sourceId: 'fuel-tracker',
@@ -376,7 +379,7 @@ function routeSlugFor(family, country) {
 }
 
 function routeFor(family, country) {
-  return `/fr/tools/${family.slug}/${routeSlugFor(family, country)}`;
+  return `/fr/tools/${family.slug}/${routeSlugFor(family, country)}/`;
 }
 
 function routeExists(family, country) {
@@ -388,7 +391,12 @@ function routeExists(family, country) {
 }
 
 function rowFor(family, country) {
-  const countryName = escapeSingleQuoted(country.name);
+  const localizedCountry = COUNTRY_REGISTRY_BY_CODE.get(country.code);
+  const countryName = escapeSingleQuoted(
+    localizedCountry && localizedCountry.displayNames && localizedCountry.displayNames.fr
+      ? localizedCountry.displayNames.fr
+      : country.name
+  );
   return `  { id: '${family.slug}-${routeSlugFor(family, country)}-fr', name: '${escapeSingleQuoted(family.name)} - ${countryName}', icon: '${country.code}', desc: '${escapeSingleQuoted(family.desc)} pour ${countryName}.', href: '${routeFor(family, country)}', category: '${family.category}', tier: '${family.tier}', status: 'live', phase: 'LIVE', countries: ['${country.code}'], lang: 'fr', sourceId: '${family.sourceId}', priority: ${family.priority}, imageId: '${family.imageId}' },`;
 }
 
@@ -417,6 +425,7 @@ function removeManagedRows(source, family) {
       line.includes(`French generated country pages: ${family.slug}`) ||
       (family.slug === 'tarifs-electricite' && line.includes('French generated energy country pages: electricity tariff'));
     const isManagedRow =
+      !line.includes(`id: '${family.parentId}'`) &&
       line.includes(`id: '${family.slug}-`) &&
       line.includes(`href: '/fr/tools/${family.slug}/`) &&
       line.includes(`sourceId: '${family.sourceId}'`);
@@ -426,7 +435,10 @@ function removeManagedRows(source, family) {
 }
 
 function removeManagedSingletonRows(source) {
-  const singletonIds = new Set(SINGLETON_ROUTES.map((entry) => singletonId(entry.route)));
+  const singletonIds = new Set([
+    ...SINGLETON_ROUTES.map((entry) => singletonId(entry.route)),
+    ...RETIRED_SINGLETON_IDS,
+  ]);
   const lines = source.split(/\r?\n/);
   const filtered = lines.filter((line) => {
     if (line.includes('French singleton registry wave')) return false;
@@ -467,7 +479,8 @@ function insertSingletonRows(source, tools) {
 }
 
 function main() {
-  let source = fs.readFileSync(registryPath, 'utf8');
+  const before = fs.readFileSync(registryPath, 'utf8');
+  let source = before;
   const tools = loadRegistryTools(source);
   const inserted = [];
 
@@ -490,12 +503,18 @@ function main() {
     inserted.push(`singletons: ${singletonResult.count}`);
   }
 
-  if (!inserted.length) {
+  if (source === before) {
     console.log('French generated country registry rows already present.');
     return;
   }
 
-  fs.writeFileSync(registryPath, source);
+  if (process.argv.includes('--check')) {
+    console.error('French generated country registry rows are stale. Run node scripts/register-french-energy-registry-wave.js.');
+    process.exitCode = 1;
+    return;
+  }
+
+  writeFileSyncWithRetry(registryPath, source, 'utf8');
 
   console.log(`Inserted French country registry rows: ${inserted.join(', ')}.`);
 }
