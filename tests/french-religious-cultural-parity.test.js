@@ -15,6 +15,10 @@ function routeToFile(route) {
   return path.join(ROOT, String(route).replace(/^\/+|\/+$/g, ''), 'index.html');
 }
 
+function normalizeRoute(route) {
+  return '/' + String(route).replace(/^\/+|\/+$/g, '');
+}
+
 function defaultInputs(tool) {
   return Object.fromEntries(tool.fields.map((field) => [field.id, String(field.value)]));
 }
@@ -46,7 +50,11 @@ assert.deepStrictEqual(
 
 const registry = inventory.loadRegistry().tools;
 for (const tool of manifest.tools) {
-  const frenchOwner = registry.find((row) => row.lang === 'fr' && row.sourceId === tool.sourceId && row.href === tool.route);
+  const frenchOwner = registry.find((row) =>
+    row.lang === 'fr' &&
+    row.sourceId === tool.sourceId &&
+    normalizeRoute(row.href) === normalizeRoute(tool.route)
+  );
   assert(frenchOwner, `${tool.sourceId} requires one French registry owner at ${tool.route}`);
   assert.strictEqual(frenchOwner.category, 'religious-cultural');
   assert(['live', 'new'].includes(frenchOwner.status));

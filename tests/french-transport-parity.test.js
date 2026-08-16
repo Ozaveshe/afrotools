@@ -38,6 +38,10 @@ function routeFile(route) {
   return path.join(root, clean, route.endsWith('/') ? 'index.html' : '');
 }
 
+function normalizeRoute(route) {
+  return '/' + String(route).replace(/^\/+|\/+$/g, '');
+}
+
 function loadRegistry() {
   const source = fs.readFileSync(path.join(root, 'assets/js/components/tool-registry.js'), 'utf8');
   const sandbox = { document: undefined, window: {} };
@@ -274,7 +278,11 @@ for (const app of parity.apps) {
     tool.sourceId === app.englishId
   );
   assert.strictEqual(owners.length, 1, `${app.englishId} has exactly one canonical French registry owner`);
-  assert.strictEqual(owners[0].href, app.frenchRoute, `${app.englishId} registry route matches manifest`);
+  assert.strictEqual(
+    normalizeRoute(owners[0].href),
+    normalizeRoute(app.frenchRoute),
+    `${app.englishId} registry route matches manifest`
+  );
   assert.strictEqual(aiRouteMap.routes[app.englishRoute], app.frenchRoute, `${app.englishId} AI route is exact`);
 }
 

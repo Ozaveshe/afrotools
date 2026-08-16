@@ -16,11 +16,16 @@ const metadata = {
 function toServerResult(grossAnnual, includeCnas) {
   const result = browserEngine.calculate(grossAnnual, { includeCnas });
   if (result.error) return result;
-  const bands = result.bandBreakdown.map((band) => ({
-    rate: band.rate,
-    taxInBand: Math.round(band.tax),
-    taxableInBand: Math.round(band.income)
-  }));
+  const bands = result.bandBreakdown.map((band, index) => {
+    const sourceBand = browserEngine.constants.irgBands[index];
+    return {
+      from: sourceBand.min,
+      to: Number.isFinite(sourceBand.max) ? sourceBand.max : null,
+      rate: band.rate,
+      taxInBand: Math.round(band.tax),
+      taxableInBand: Math.round(band.income)
+    };
+  });
   return {
     input: { country: metadata.country, grossAnnual, regime: 'STANDARD' },
     deductions: {
