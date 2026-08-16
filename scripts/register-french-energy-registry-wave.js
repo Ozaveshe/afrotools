@@ -65,6 +65,10 @@ const SINGLETON_ROUTES = [
   { route: '/fr/tools/translitteration', source: 'tools/transliterate' },
 ];
 const RETIRED_SINGLETON_IDS = new Set(['calculateur-offrande-fr']);
+// These country routes are deprecated noindex bridges owned by
+// retire-french-electricity-country-routes.js. They must not be re-admitted to
+// the live registry when this broader country-family owner runs later.
+const RETIRED_COUNTRY_FAMILY_SLUGS = new Set(['tarifs-electricite', 'compteur-prepaye']);
 
 const COUNTRIES = [
   { code: 'NG', name: 'Nigeria', slug: 'nigeria' },
@@ -485,6 +489,7 @@ function main() {
   const inserted = [];
 
   for (const family of FAMILIES) {
+    if (RETIRED_COUNTRY_FAMILY_SLUGS.has(family.slug)) continue;
     source = removeManagedRows(source, family);
     const missingCountries = COUNTRIES.filter((country) => routeExists(family, country));
 
