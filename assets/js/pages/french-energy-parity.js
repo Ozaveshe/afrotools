@@ -517,7 +517,11 @@
     if (!value || !/[A-Za-z]/.test(value)) return value;
     var next = value;
     exact.forEach(function (pair) {
-      next = next.replace(new RegExp(escapeRegExp(pair[0]), "gi"), pair[1]);
+      var source = escapeRegExp(pair[0]);
+      var pattern = (/^[A-Za-z0-9]/.test(pair[0]) ? "\\b" : "")
+        + source
+        + (/[A-Za-z0-9]$/.test(pair[0]) ? "\\b" : "");
+      next = next.replace(new RegExp(pattern, "gi"), pair[1]);
     });
     words.forEach(function (pair) {
       next = next.replace(new RegExp("\\b" + escapeRegExp(pair[0]) + "\\b", "gi"), pair[1]);
