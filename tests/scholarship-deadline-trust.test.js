@@ -150,4 +150,35 @@ assert.strictEqual(icgebArturo.status, 'closed', 'ICGEB Arturo must close after 
 const icgebAicad = deadlineOverrides.overrides['icgeb-aicad-short-term-postdoctoral-fellowships-september-2026'];
 assert.strictEqual(icgebAicad.status, 'closed', 'ICGEB-AICAD must close after the public expression-of-interest stage');
 
+const manchesterEquityMerit = deadlineOverrides.overrides['manchester-equity-merit-scholarships'];
+assert.strictEqual(manchesterEquityMerit.deadline_date, '2026-08-31', 'Manchester Equity and Merit should use the current 2027/28 scholarship cutoff');
+assert.strictEqual(manchesterEquityMerit.status, 'open', 'Manchester Equity and Merit should remain open during the verified August 2026 window');
+
+const unisqStudentSupport = deadlineOverrides.overrides['unisq-international-student-support-scholarship-2027'];
+assert.strictEqual(unisqStudentSupport.deadline_date, null, 'UniSQ Student Support must remain date-null across provider study periods');
+assert.strictEqual(unisqStudentSupport.deadline_confidence, 'no_single_public_deadline', 'UniSQ Student Support should preserve verified study-period deadline semantics');
+
+const unisqDphd = deadlineOverrides.overrides['unisq-international-stipend-fees-research-scholarship-dphd'];
+assert.strictEqual(unisqDphd.deadline_date, '2026-09-27', 'UniSQ DPHD should retain the official 2027 scholarship cutoff');
+
+const sarbMasters = deadlineOverrides.overrides['sarb-data-science-machine-learning-scholarship-2027'];
+assert.strictEqual(sarbMasters.deadline_date, '2026-10-31', "SARB Data Science master's scholarship should use the official call deadline");
+
+const sarbExternal = deadlineOverrides.overrides['sarb-external-bursary-scheme-2027'];
+assert.strictEqual(sarbExternal.deadline_date, '2026-09-30', 'SARB External Bursary should use the official 2027 call deadline');
+
+const ruthFirst = deadlineOverrides.overrides['rhodes-university-ruth-first-scholarship-2027'];
+assert.strictEqual(ruthFirst.deadline_date, '2026-08-25', 'Ruth First 2027 should use the official Rhodes deadline');
+
+const cydDoctoral = deadlineOverrides.overrides['epfl-cyd-doctoral-fellowships-14th-call'];
+assert.strictEqual(cydDoctoral.deadline_date, '2026-08-19', 'CYD Doctoral should use the public Stage 1 cutoff');
+assert(cydDoctoral.deadline_text.includes('Stage 2'), 'CYD Doctoral should retain the shortlisted Stage 2 date in context');
+
+const cydPostdoc = deadlineOverrides.overrides['epfl-cyd-distinguished-postdoctoral-fellowships-14th-call'];
+assert.strictEqual(cydPostdoc.deadline_date, '2026-08-19', 'CYD Postdoctoral should use the public Stage 1 cutoff');
+
+const friasEarlyCareer = deadlineOverrides.overrides['frias-early-career-fellowship-2027-2028'];
+assert.strictEqual(friasEarlyCareer.deadline_date, '2026-09-18', "FRIAS Early Career should retain the provider's exact 2027/28 cutoff");
+assert(friasEarlyCareer.deadline_text.includes('CET'), 'FRIAS should preserve the timezone text published by the provider');
+
 console.log('Scholarship deadline trust model verified.');
