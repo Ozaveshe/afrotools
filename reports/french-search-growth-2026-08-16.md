@@ -48,7 +48,7 @@ The capped country and device tables add two product signals. Mobile contributes
 
 ### 1. Hreflang had historical defects, but the current graph is valid
 
-The overlapping locale-impressions session retired 394 French English-iframe wrappers and 723 false reciprocal relationships. The current validator represents 11,499 public pages, 9,915 pages with declared hreflang, 32,376 relationships, and 5,224 equivalence groups with no invalid native equivalent, canonical, locale, or reciprocity error.
+The overlapping locale-impressions session retired 394 French English-iframe wrappers and 723 false reciprocal relationships. After integrating that release, the current validator represents 11,497 public pages, 9,913 pages with declared hreflang, 32,366 relationships, and 5,224 equivalence groups with no invalid native equivalent, canonical, locale, or reciprocity error.
 
 Conclusion: do not spend the next growth cycle repeatedly rewriting valid hreflang. Keep the validator as a release gate and move effort to qualified demand, snippets, sources, and native behavior.
 
@@ -178,14 +178,14 @@ A source-owned override registry now records only routes whose search-facing con
 
 ## Current validation
 
-- 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
+- 9,816 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
 - 3,238 indexable French pages: 1,792 native and 1,446 localized shells after two duplicate root-level French salary articles were consolidated. A localized shell is a French route/UI around a shared deterministic engine, not automatically an English fallback.
 - 42 source-reviewed guides are now linked from the French blog hub; the newly admitted route has a manifest and hub-link regression check.
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
-- 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
-- 11,727 pages and 141,477 internal links pass with 0 broken links.
+- 11,722 HTML pages pass content integrity with 0 blockers and 0 warnings.
+- 141,241 internal links pass with 0 broken links.
 - Twelve French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three checks each cover the RDC, Nigeria and South Africa salary guides, three visible-mojibake checks pass, and seven Algeria PAYE correctness/privacy checks pass.
-- The repository-wide visible-mojibake audit passes all 3,247 indexable French pages and the French registry contains no remaining letter-question-letter corruption.
+- The repository-wide visible-mojibake audit passes all 3,246 indexable French pages out of 3,885 French HTML files and the French registry contains no remaining letter-question-letter corruption.
 - The Mobile Money finder passes its static owner contract and four Chromium flows, including native French calculated and unavailable states at mobile width.
 - `sitemap-fr.xml` contains all 3,238 remaining indexable French routes; 142 previously omitted public widget parent pages are now included, two stale duplicate salary articles are excluded, and technical French iframe utilities remain excluded. Both focused sitemap and canonical-consolidation suites pass.
 - Sixty-six materially rebuilt French routes now expose a reviewed 17 August 2026 sitemap modification date without restamping unchanged routes. The selective freshness contract passes its focused suite.
