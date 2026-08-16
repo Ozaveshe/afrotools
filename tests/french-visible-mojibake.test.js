@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const { findingsFor, visibleText } = require('../scripts/audit-french-visible-mojibake');
 
 const ROOT = path.join(__dirname, '..');
 const TARGETS = [
@@ -24,4 +25,12 @@ test('known visible question-mark replacement patterns cannot return', () => {
     const html = fs.readFileSync(path.join(ROOT, relative), 'utf8');
     assert.doesNotMatch(html, /d\?rive|Re\?us|observ\?|autorit\?|employ\?|Source \? vérifier|Point \? confirmer/);
   }
+});
+
+test('the scanner ignores scripts and finds malformed visible French words', () => {
+  const text = visibleText('<p>Re?us et autorit?</p><script>var asset="app.js?v=1";</script>');
+  assert.deepEqual(findingsFor(text).map((finding) => finding.id), [
+    'letter-question-letter'
+  ]);
+  assert.doesNotMatch(text, /app\.js/);
 });
