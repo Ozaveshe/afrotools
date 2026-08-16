@@ -359,6 +359,7 @@ async function fetchFeed(source) {
       signal: controller ? controller.signal : undefined,
       headers: {
         'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
+        'Accept-Encoding': 'identity',
         'User-Agent': 'Mozilla/5.0 (compatible; AfroStreamNewsMonitor/1.1; +https://afrotools.com/tools/afrostream/)'
       }
     });

@@ -35,6 +35,7 @@ function createFetchHarness() {
   const state = {
     newsPosts: 0,
     mentionPosts: 0,
+    feedRequestHeaders: [],
     writes: [],
   };
 
@@ -56,7 +57,10 @@ function createFetchHarness() {
     }
 
     const feedMatch = requestUrl.match(/^https:\/\/feeds\.example\/(\d+)\.xml$/);
-    if (feedMatch) return feedResponse(feedMatch[1]);
+    if (feedMatch) {
+      state.feedRequestHeaders.push(options.headers || {});
+      return feedResponse(feedMatch[1]);
+    }
 
     if (requestUrl.includes('/rest/v1/as_news_sources?')) {
       return jsonResponse(sources);
@@ -132,6 +136,12 @@ test('news monitor enforces its live insert cap under concurrency and dry-run ne
       assert.strictEqual(live.state.newsPosts, 5);
       assert.strictEqual(live.state.mentionPosts, 5);
       assert.strictEqual(live.summary.skipped_matches, 1);
+      assert.ok(
+        live.state.feedRequestHeaders.every(function(headers) {
+          return headers['Accept-Encoding'] === 'identity';
+        }),
+        'feed requests must disable compression to tolerate malformed upstream encodings'
+      );
       assert.ok(
         live.summary.insert_limit - live.summary.inserted_news >= 0,
         'insert budget must never fall below zero'
