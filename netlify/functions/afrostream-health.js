@@ -68,6 +68,49 @@ function latestRun(rows, scraperId) {
   })[0] || null;
 }
 
+function newsMonitorScheduledSlot(value) {
+  var date = new Date(value);
+  if (isNaN(date.getTime())) return null;
+  var scheduledHour = Math.floor(date.getUTCHours() / 6) * 6;
+  var slot = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    scheduledHour,
+    46
+  );
+  if (date.getTime() < slot) slot -= 6 * 36e5;
+  return new Date(slot).toISOString();
+}
+
+function newsMonitorDeliveryHealth(rows, totalCount, windowStartedAt) {
+  var slotCounts = {};
+  var deliveryCount = 0;
+  (rows || []).forEach(function(row) {
+    var slot = newsMonitorScheduledSlot(row && row.fetched_at);
+    if (!slot) return;
+    deliveryCount++;
+    slotCounts[slot] = (slotCounts[slot] || 0) + 1;
+  });
+  var slots = Object.keys(slotCounts).sort();
+  var duplicateSlots = slots.filter(function(slot) { return slotCounts[slot] > 1; });
+  var exactDeliveryCount = Number.isFinite(totalCount) ? totalCount : deliveryCount;
+  return {
+    window_hours: 48,
+    window_started_at: windowStartedAt || null,
+    scheduled_delivery_count: exactDeliveryCount,
+    unique_scheduled_slot_count: slots.length,
+    duplicate_scheduled_slot_count: duplicateSlots.length,
+    duplicate_scheduled_delivery_count: duplicateSlots.reduce(function(total, slot) {
+      return total + slotCounts[slot] - 1;
+    }, 0),
+    metrics_complete: exactDeliveryCount === deliveryCount,
+    duplicate_scheduled_slots: duplicateSlots.map(function(slot) {
+      return { slot_at: slot, delivery_count: slotCounts[slot] };
+    })
+  };
+}
+
 exports.handler = async function(event) {
   var h = cors(event || {});
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
@@ -76,6 +119,7 @@ exports.handler = async function(event) {
 
   try {
     var now = new Date();
+    var newsMonitorWindowStart = new Date(now.getTime() - 48 * 36e5).toISOString();
     var results = await Promise.all([
       sb('as_creators?is_published=eq.true&select=id&limit=1', true),
       sb('as_creator_snapshots?select=snapshot_date,created_at&order=snapshot_date.desc,created_at.desc&limit=1', true),
@@ -90,7 +134,8 @@ exports.handler = async function(event) {
       sb('as_creator_supporters?is_published=eq.true&select=id,is_verified,event_date,updated_at&limit=200', true),
       sb('scraper_runs?scraper_id=eq.afrostream-sync&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
       sb('scraper_runs?scraper_id=eq.afrostream-livecheck&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
-      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false)
+      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
+      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&source=eq.' + encodeURIComponent('Netlify Scheduled Function') + '&fetched_at=gte.' + encodeURIComponent(newsMonitorWindowStart) + '&fetched_at=lt.' + encodeURIComponent(now.toISOString()) + '&select=status,fetched_at&order=fetched_at.asc&limit=200', true)
     ]);
 
     var creatorCount = results[0].count;
@@ -170,7 +215,12 @@ exports.handler = async function(event) {
         automation: {
           livecheck: latestLiveRun,
           sync: latestSyncRun,
-          news_monitor: latestNewsRun
+          news_monitor: latestNewsRun,
+          news_monitor_scheduled_48h: newsMonitorDeliveryHealth(
+            results[14].data,
+            results[14].count,
+            newsMonitorWindowStart
+          )
         }
       }
     };
@@ -179,4 +229,9 @@ exports.handler = async function(event) {
   } catch (e) {
     return { statusCode: 502, headers: h, body: JSON.stringify({ success: false, error: e.message }) };
   }
+};
+
+exports.__test = {
+  newsMonitorScheduledSlot: newsMonitorScheduledSlot,
+  newsMonitorDeliveryHealth: newsMonitorDeliveryHealth
 };

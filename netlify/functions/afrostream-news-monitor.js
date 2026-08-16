@@ -1,11 +1,13 @@
 // netlify/functions/afrostream-news-monitor.js
 // Scheduled AfroStream RSS mention monitor.
 // Reads configured RSS/Atom feeds, matches published AfroStream creators, and writes as_news rows.
+var crypto = require('crypto');
 var { isScheduledEvent } = require('./_shared/scheduled-event');
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
 var ENV_FEEDS = process.env.AFROSTREAM_NEWS_RSS_FEEDS || '';
+var NEWS_MONITOR_SCRAPER_ID = 'afrostream-news-monitor';
 var MAX_CONCURRENT_FEEDS = 6;
 var FEED_TIMEOUT_MS = 9000;
 var DEFAULT_SCHEDULED_LOOKBACK_DAYS = 3;
@@ -76,7 +78,11 @@ async function sb(method, path, body, upsert) {
       apikey: SUPABASE_SERVICE_KEY,
       Authorization: 'Bearer ' + SUPABASE_SERVICE_KEY,
       'Content-Type': 'application/json',
-      'Prefer': upsert ? 'return=representation,resolution=merge-duplicates' : 'return=representation'
+      'Prefer': upsert === 'ignore'
+        ? 'return=representation,resolution=ignore-duplicates'
+        : upsert
+          ? 'return=representation,resolution=merge-duplicates'
+          : 'return=representation'
     }
   };
   if (body) opts.body = JSON.stringify(body);
@@ -95,18 +101,79 @@ function newsMonitorSource(event) {
   return isScheduled(event) ? 'Netlify Scheduled Function' : 'Manual news monitor endpoint';
 }
 
-async function recordNewsMonitorRun(status, source, recordsCount, errorMessage, durationMs, dryRun) {
+function normalizedScheduledNextRun(event) {
+  try {
+    var payload = JSON.parse(event && event.body ? event.body : '{}');
+    if (!payload || typeof payload.next_run !== 'string') return null;
+    var nextRunMs = Date.parse(payload.next_run);
+    return Number.isFinite(nextRunMs) ? new Date(nextRunMs).toISOString() : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function scheduledReservationId(nextRun) {
+  var hex = crypto.createHash('sha256')
+    .update(NEWS_MONITOR_SCRAPER_ID + '|' + nextRun)
+    .digest('hex')
+    .slice(0, 32)
+    .split('');
+  hex[12] = '5';
+  hex[16] = ((parseInt(hex[16], 16) & 3) | 8).toString(16);
+  return [
+    hex.slice(0, 8).join(''),
+    hex.slice(8, 12).join(''),
+    hex.slice(12, 16).join(''),
+    hex.slice(16, 20).join(''),
+    hex.slice(20, 32).join('')
+  ].join('-');
+}
+
+async function reserveScheduledDelivery(event, source, dryRun) {
+  if (dryRun || !isScheduled(event)) return null;
+  var nextRun = normalizedScheduledNextRun(event);
+  // Preserve the legacy header-only scheduled-event path. Current Netlify
+  // deliveries include next_run, which is the stable retry key.
+  if (!nextRun) return null;
+
+  var id = scheduledReservationId(nextRun);
+  var rows = await sb('POST', 'scraper_runs?on_conflict=id', {
+    id: id,
+    scraper_id: NEWS_MONITOR_SCRAPER_ID,
+    // `scraper_runs_status_check` allows ok, stale, error, and anomaly.
+    // Keep an interrupted reservation visible as an anomaly until the owner
+    // patches this same row to its final ok/error state.
+    status: 'anomaly',
+    source: source,
+    records_count: 0,
+    error_message: 'Scheduled delivery reserved; final status pending',
+    duration_ms: 0,
+    fetched_at: new Date().toISOString()
+  }, 'ignore');
+  return {
+    id: id,
+    next_run: nextRun,
+    acquired: Array.isArray(rows) && rows.length > 0
+  };
+}
+
+async function recordNewsMonitorRun(status, source, recordsCount, errorMessage, durationMs, dryRun, reservedRunId) {
   if (dryRun) return;
   try {
-    await sb('POST', 'scraper_runs', {
-      scraper_id: 'afrostream-news-monitor',
+    var fields = {
       status: status,
       source: source,
       records_count: recordsCount || 0,
       error_message: errorMessage || null,
-      duration_ms: durationMs || 0,
-      fetched_at: new Date().toISOString()
-    });
+      duration_ms: durationMs || 0
+    };
+    if (reservedRunId) {
+      await sb('PATCH', 'scraper_runs?id=eq.' + encodeURIComponent(reservedRunId), fields);
+    } else {
+      fields.scraper_id = NEWS_MONITOR_SCRAPER_ID;
+      fields.fetched_at = new Date().toISOString();
+      await sb('POST', 'scraper_runs', fields);
+    }
   } catch (e) {
     console.error('AfroStream news monitor run logging failed:', e.message);
   }
@@ -554,6 +621,7 @@ exports.handler = async function(event) {
   var insertLimit = insertLimitForEvent(event);
   var cutoffMs = Date.now() - (lookbackDays * 24 * 60 * 60 * 1000);
   var insertBudget = { remaining: insertLimit };
+  var reservedRun = null;
   var summary = {
     dry_run: dryRun,
     lookback_days: lookbackDays,
@@ -576,6 +644,24 @@ exports.handler = async function(event) {
   };
 
   try {
+    reservedRun = await reserveScheduledDelivery(event, runSource, dryRun);
+  } catch (e) {
+    return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: e.message, data: summary }) };
+  }
+  if (reservedRun && !reservedRun.acquired) {
+    return {
+      statusCode: 200,
+      headers: headers(),
+      body: JSON.stringify({
+        success: true,
+        duplicate_delivery_skipped: true,
+        scheduled_next_run: reservedRun.next_run,
+        data: summary
+      })
+    };
+  }
+
+  try {
     var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=id,name,feed_url,category');
     var envSources = parseFeedsFromEnv();
     var sources = []
@@ -592,7 +678,8 @@ exports.handler = async function(event) {
         0,
         'No active RSS sources configured',
         Date.now() - runStart,
-        dryRun
+        dryRun,
+        reservedRun && reservedRun.id
       );
       return { statusCode: 200, headers: headers(), body: JSON.stringify({ success: true, message: 'No RSS sources configured', data: summary }) };
     }
@@ -617,7 +704,8 @@ exports.handler = async function(event) {
       summary.inserted_news + summary.mentions,
       summary.errors.length ? summary.errors.slice(0, 12).join(' | ').slice(0, 1000) : null,
       Date.now() - runStart,
-      dryRun
+      dryRun,
+      reservedRun && reservedRun.id
     );
     return { statusCode: 200, headers: headers(), body: JSON.stringify({ success: true, data: summary }) };
   } catch (e) {
@@ -627,7 +715,8 @@ exports.handler = async function(event) {
       summary.inserted_news + summary.mentions,
       (e.message || 'News monitor failed').slice(0, 1000),
       Date.now() - runStart,
-      dryRun
+      dryRun,
+      reservedRun && reservedRun.id
     );
     return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: e.message, data: summary }) };
   }
@@ -641,5 +730,7 @@ exports.__test = {
   shouldInsertNewsCandidate: shouldInsertNewsCandidate,
   prepareFeedItems: prepareFeedItems,
   reserveInsertSlot: reserveInsertSlot,
-  insertLimitForEvent: insertLimitForEvent
+  insertLimitForEvent: insertLimitForEvent,
+  normalizedScheduledNextRun: normalizedScheduledNextRun,
+  scheduledReservationId: scheduledReservationId
 };
