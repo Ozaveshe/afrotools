@@ -126,6 +126,12 @@ The guide now gives the current answer that can be substantiated: Decree No. 25/
 
 The rebuilt guide answers with what official evidence supports: the 70,000 NGN national minimum signed in 2024, the scope boundary that must be checked in the applicable text, the NBS labour-force survey and the NSIWC public-sector circular catalog. It explains why raw NBS response categories cannot be presented as a weighted national average, removes every unsupported sector, city and remote-work number, and gives a reproducible method for building a dated comparable-offer sample. Handoffs now point to the real private [salary offer comparator](/fr/tools/comparateur-salaires/) and canonical [Nigeria PAYE calculator](/fr/nigeria/ng-salary-tax). Static and mobile tests lock the sources, removed figures, honest tool boundary and 390 px behavior.
 
+### 16. The South Africa salary guide missed both current official numbers
+
+`/fr/blog/average-salary-south-africa-2026/` earned no clicks from 57 impressions at position 14.26, compared with one click from 50 impressions at position 14.80. It had no external source, published invented sector and city salary tables, stated a 2026 minimum of R27.58 per hour, and told users that agricultural and domestic workers generally had lower rates. The February 2026 Gazette instead sets R30.23 per ordinary hour from 1 March for the national rate, agricultural workers and domestic workers alike. It gives R16.62 as the separate EPWP rate.
+
+The rebuilt guide now gives the two current official answers without merging their denominators. Stats SA reports average monthly earnings of R29,997 in February 2026 for employees in the formal non-agricultural QES population; the Gazette sets the hourly legal floor. The page explains that the QES figure is an arithmetic mean, not a national median or net salary, and uses the ministry's own 40-hour and 45-hour monthly illustrations. It links Stats SA, the Gazette and the official flyer, then hands users to the canonical South Africa PAYE calculator and private two-offer comparator. Static and mobile tests lock the figures, populations, links, removed stale rate and 390 px behavior.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -134,7 +140,7 @@ The rebuilt guide answers with what official evidence supports: the 70,000 NGN n
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
 - 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
 - 11,727 pages and 141,477 internal links pass with 0 broken links.
-- Ten French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three RDC and three Nigeria salary-source checks pass, and seven Algeria PAYE correctness/privacy checks pass.
+- Eleven French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three checks each cover the RDC, Nigeria and South Africa salary guides, and seven Algeria PAYE correctness/privacy checks pass.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 

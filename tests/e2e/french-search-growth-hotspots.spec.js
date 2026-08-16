@@ -269,4 +269,29 @@ test.describe('French search growth hotspots', () => {
     expect(missingResources).toEqual([]);
     expect(consoleErrors).toEqual([]);
   });
+
+  test('South Africa salary guide distinguishes the official average and minimum', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/blog/average-salary-south-africa-2026/');
+    await expect(page.locator('h1')).toContainText('Salaire moyen en Afrique du Sud en 2026');
+    await expect(page.locator('body')).toContainText('rémunération mensuelle moyenne de 29 997 rands');
+    await expect(page.locator('body')).toContainText('R30,23 par heure ordinaire depuis le 1er mars 2026');
+    await expect(page.locator('a[href="https://www.statssa.gov.za/?p=19676"]').first()).toBeVisible();
+    await expect(page.locator('a[href*="54075rg11941gon7083.pdf"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/fr/south-africa/za-paye"]').first()).toBeVisible();
+    await expect(page.locator('body')).not.toContainText(/27,58 rands par heure/i);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });
