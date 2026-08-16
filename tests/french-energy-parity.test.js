@@ -146,5 +146,10 @@ assert.ok(
   fs.readFileSync(path.join(ROOT, "assets/js/pages/french-energy-parity.js"), "utf8").includes('if (age > 30) return { id: "stale"'),
   "freshness UI must fail closed when the source snapshot is older than 30 days"
 );
+assert.match(
+  fs.readFileSync(path.join(ROOT, "assets/js/pages/french-energy-parity.js"), "utf8"),
+  /\^\[A-Za-z0-9\]\/\.test\(pair\[0\]\)/,
+  "exact translations must use a leading word boundary so Ouganda phrases are not repeatedly expanded"
+);
 
 console.log("French Energy static parity passed: 20/20 owners, 287 English experiences frozen, hub/registry/filesystem/AI exact.");
