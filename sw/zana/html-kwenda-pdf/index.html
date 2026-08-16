@@ -683,12 +683,13 @@
 
   /* Hidden render container */
   #renderContainer {
-    position: absolute;
-    left: -9999px;
+    position: fixed;
+    left: 0;
     top: 0;
     background: #fff;
     padding: 20px;
     z-index: -1;
+    pointer-events: none;
   }
 
   @media (max-width: 600px) {
@@ -1454,7 +1455,7 @@
     if(!requireReview()) return;
     var data=htmlSettings();
     if(!data.content.trim()){ status('Add HTML or rich text before downloading source.','error'); return; }
-    var html=data.mode==='rte'?'<!doctype html><html><head><meta charset="utf-8"><title>'+escHtml(data.documentTitle)+'</title></head><body>'+data.content+'<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body></html>':data.content;
+    var html=data.mode==='rte'?'<!doctype html><html><head><meta charset="utf-8"><title>'+escHtml(data.documentTitle)+'</title></head><body>'+data.content+'</body></html>':data.content;
     downloadBlob(safeName(data.fileName,'.html'),'text/html;charset=utf-8',html);
     status('HTML source downloaded locally.','success');
   }
@@ -1482,5 +1483,5 @@
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

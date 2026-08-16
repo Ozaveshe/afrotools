@@ -35,7 +35,9 @@ function contentId(id) {
 
 function ensureSwAccessibilityRuntime(html) {
   if (html.includes('/assets/js/lib/sw-accessibility.js')) return html;
-  return html.replace(/<\/body>/i, '<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>');
+  const closingBody = html.toLowerCase().lastIndexOf('</body>');
+  if (closingBody === -1) throw new Error('No closing body tag for Swahili accessibility runtime');
+  return `${html.slice(0, closingBody)}<script src="/assets/js/lib/sw-accessibility.js" defer></script>${html.slice(closingBody)}`;
 }
 
 const apps = [
@@ -615,6 +617,7 @@ function ensureSwahiliApplicationSchema(html, app, metadata, canonical) {
 function buildFullParityPage(app) {
   const ownerFile = fullParitySources[app.id];
   let html = fs.readFileSync(path.join(ROOT, ownerFile), 'utf8');
+  html = html.replace(/\s*<script\b[^>]*\ssrc=["']\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*>\s*<\/script>/gi, '');
   const canonical = `https://afrotools.com${app.swahiliRoute}`;
   const english = `https://afrotools.com${app.englishRoute}`;
   const metadata = fullParityMetadata[app.id] || {

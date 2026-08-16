@@ -306,9 +306,9 @@
       },
       {
         "id": "crypto-cgt-sw-coverage-crypto-tax",
-        "name": "Kikokotoo cha kodi ya sarafu za kidijitali",
+        "name": "Kikokotoo cha kodi ya faida ya crypto",
         "icon": "₿",
-        "desc": "Tumia ukurasa huu kuandaa taarifa za kikokotoo c...",
+        "desc": "Kadiria kodi ya faida ya mtaji iliyothibitishwa ...",
         "href": "/sw/zana/kodi-ya-sarafu-za-kidijitali/",
         "category": "financial",
         "lang": "sw",
