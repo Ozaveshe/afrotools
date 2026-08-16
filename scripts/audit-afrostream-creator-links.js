@@ -69,6 +69,12 @@ function argValue(name) {
   return idx === -1 ? '' : process.argv[idx + 1] || '';
 }
 
+function cacheBypassUrl(value, checkedAt = Date.now()) {
+  const url = new URL(value);
+  url.searchParams.set('_audit', String(checkedAt));
+  return url.toString();
+}
+
 function normalize(value) {
   return String(value || '')
     .toLowerCase()
@@ -207,15 +213,16 @@ function scoreLink(creator, field, label) {
   };
 }
 
-async function loadCreators() {
+async function loadCreators(fetchImpl = fetch, checkedAt = Date.now()) {
   const input = argValue('--input');
   if (input) {
     return JSON.parse(fs.readFileSync(path.resolve(ROOT, input), 'utf8'));
   }
 
   const sourceUrl = process.env.AFROSTREAM_CREATORS_URL || DEFAULT_URL;
-  const res = await fetch(sourceUrl, {
+  const res = await fetchImpl(cacheBypassUrl(sourceUrl, checkedAt), {
     headers: { 'user-agent': 'AfroTools link audit/1.0' },
+    cache: 'no-store',
   });
   if (!res.ok) throw new Error(`Failed to fetch creators: ${res.status} ${res.statusText}`);
   return res.json();
@@ -265,4 +272,13 @@ if (require.main === module) {
   });
 }
 
-module.exports = { PLATFORM_FIELDS, PLATFORM_HOSTS, hostnameFromUrl, matchesExpectedHost, scoreLink, main };
+module.exports = {
+  PLATFORM_FIELDS,
+  PLATFORM_HOSTS,
+  cacheBypassUrl,
+  hostnameFromUrl,
+  loadCreators,
+  matchesExpectedHost,
+  scoreLink,
+  main,
+};
