@@ -6,7 +6,7 @@ const engine = require('../engines/src/import-landed-cost-engine.js');
 const root = path.resolve(__dirname, '..');
 const rules = JSON.parse(fs.readFileSync(path.join(root, 'data/trade/import-rules.json'), 'utf8'));
 const fx = JSON.parse(fs.readFileSync(path.join(root, 'data/forex/latest.json'), 'utf8'));
-const options = { fxSnapshot: fx, asOfDate: '2026-08-09' };
+const options = { fxSnapshot: fx, asOfDate: fx.timestamp.slice(0, 10) };
 
 function close(actual, expected, label) {
   assert(Math.abs(actual - expected) < 0.02, `${label}: expected ${expected}, got ${actual}`);
@@ -98,7 +98,7 @@ close(zeroLogistics.cifLocal, 1000, 'zero freight and insurance');
 
 const fromJpy = engine.calculate(base('NG', {
   sourceCurrency: 'JPY',
-  purchaseValue: 157823.44872,
+  purchaseValue: fx.rates.JPY * 1000,
   freight: 0,
   insurance: 0,
   dutyRate: 0
@@ -142,7 +142,8 @@ assert.strictEqual(staleFx.fxFreshness, 'stale');
 assert.strictEqual(staleFx.fxStale, true);
 assert(staleFx.warnings.includes('stale-fx'));
 
-const platformStaleFx = engine.calculate(base('NG'), rules, { fxSnapshot: fx, asOfDate: '2026-08-15' });
+const platformStaleFxSnapshot = Object.assign({}, fx, { timestamp: '2026-08-09T00:00:00.000Z' });
+const platformStaleFx = engine.calculate(base('NG'), rules, { fxSnapshot: platformStaleFxSnapshot, asOfDate: '2026-08-15' });
 assert.strictEqual(platformStaleFx.fxFreshness, 'stale');
 assert(platformStaleFx.warnings.includes('stale-fx'));
 

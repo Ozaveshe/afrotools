@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
 const pdfParse = require('pdf-parse');
+const fxSnapshot = require('../../data/forex/latest.json');
 
 test.beforeEach(async ({ page }) => {
   const errors = [];
@@ -30,9 +31,9 @@ test('calculates an auditable estimate, advanced costs, scenario and PDF', async
   await expect(page.locator('#importResult')).toContainText('Railway development levy');
   await expect(page.locator('#importResult')).toContainText('verified 15 Aug 2026');
   await expect(page.locator('#importResult')).toContainText('Kenya Revenue Authority');
-  await expect(page.locator('#importResult')).toContainText('fawazahmed snapshot');
-  await expect(page.locator('#importResult')).toContainText('stale');
-  await expect(page.locator('#importResult')).toContainText('FX snapshot is outside its maintenance window');
+  await expect(page.locator('#importResult')).toContainText(`${fxSnapshot.source} snapshot`);
+  await expect(page.locator('#importResult')).toContainText('fresh');
+  await expect(page.locator('#importResult')).not.toContainText('FX snapshot is outside its maintenance window');
   await expect(page.locator('#importResult')).toContainText('Clearing agent');
   await expect(page.getByRole('region', { name: 'Import landed-cost result' })).toBeVisible();
 
@@ -48,7 +49,7 @@ test('calculates an auditable estimate, advanced costs, scenario and PDF', async
   const pdf = await pdfParse(fs.readFileSync(await file.path()));
   expect(pdf.text).toContain('Import & Landed Cost Estimate');
   expect(pdf.text).toContain('Customs authority: Kenya Revenue Authority');
-  expect(pdf.text).toContain('FX reference: fawazahmed');
+  expect(pdf.text).toContain(`FX reference: ${fxSnapshot.source}`);
   expect(pdf.text).toContain('Official source: Miscellaneous Fees and Levies Act');
   expect(pdf.text).toContain('Planning estimate only');
   expect(page.__runtimeErrors).toEqual([]);
