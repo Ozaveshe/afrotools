@@ -5,6 +5,9 @@ const test = require('node:test');
 
 const ROOT = path.join(__dirname, '..');
 const PAGE = fs.readFileSync(path.join(ROOT, 'fr/blog/salaire-moyen-rdc-2026/index.html'), 'utf8');
+const HUB = fs.readFileSync(path.join(ROOT, 'fr/blog/index.html'), 'utf8');
+const REGISTRY = fs.readFileSync(path.join(ROOT, 'assets/js/components/tool-registry.js'), 'utf8');
+const BLOG_MANIFEST = fs.readFileSync(path.join(ROOT, 'data/localization/fr-blog-manifest.json'), 'utf8');
 
 test('RDC salary search copy answers with the current official SMIG boundary', () => {
   assert.match(PAGE, /<title>Salaire moyen RDC 2026 : SMIG 21 500 CDF et brut-net<\/title>/);
@@ -27,4 +30,12 @@ test('the local checker uses days and an explicit category coefficient', () => {
   assert.match(PAGE, /id="coefficient"[^>]*min="100"[^>]*max="1000"/);
   assert.match(PAGE, /URL\.createObjectURL\(blob\)/);
   assert.doesNotMatch(PAGE, /fetch\(|XMLHttpRequest|ai-advisor|pdf-leads/i);
+});
+
+test('French discovery surfaces describe the sourced SMIG checker, not invented market data', () => {
+  assert.match(REGISTRY, /fr-blog-salaire-moyen-rdc[\s\S]*SMIG officiel de 21 500 CDF par jour/i);
+  assert.doesNotMatch(REGISTRY, /fr-blog-salaire-moyen-rdc[\s\S]{0,240}salaires moyens, secteurs et villes/i);
+  assert.match(BLOG_MANIFEST, /salaire-moyen-rdc-2026[\s\S]{0,300}SMIG officiel de 21 500 CDF par jour/i);
+  assert.match(HUB, /href="\/fr\/blog\/salaire-moyen-rdc-2026\/"[\s\S]{0,700}SMIG officiel de 21 500 CDF par jour/i);
+  assert.doesNotMatch(HUB, /salaire-moyen-rdc-2026[\s\S]{0,700}secteurs, villes, brut et net/i);
 });
