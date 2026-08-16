@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 const flows = [
   ['/fr/ingenierie/afrodraft/', null, /Lancer AfroDraft|Ouvrir AfroDraft/i],
   ['/fr/ingenierie/planificateur-etage/', null, /Commencer le plan|Ouvrir le planificateur/i],
-  ['/fr/tools/calculateur-solaire/', /Calculer/i, /5 panels|5 panneaux/i],
+  ['/fr/tools/calculateur-solaire/', /Dimensionner|Calculer/i, /5 panels|5 panneaux/i],
   ['/fr/tools/plan-etage/', null, /91\s*m/i],
   ['/fr/tools/devis-quantitatif/', null, /Ouvrir.*devis|Lancer.*devis|Commencer/i],
   ['/fr/tools/calcul-structure/', /Calculer/i, /225\s*[×x]\s*475|497\s*mm/i],

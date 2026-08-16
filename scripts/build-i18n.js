@@ -77,7 +77,7 @@ const PAGES_TO_BUILD = [];
 
 // Directories/files to skip when scanning for pages
 const SKIP_DIRS = new Set([
-  'node_modules', '.git', '.claude', 'scripts', 'netlify', 'lang', 'assets',
+  'node_modules', '.git', '.claude', '.codex', '.codex-worktrees', '.worktrees', 'scripts', 'netlify', 'lang', 'assets',
   'dist', 'fr', 'sw', 'yo', 'ha', 'docs', 'tests', '.github', '.vscode',
   'admin', 'dashboard', 'pro'
 ]);

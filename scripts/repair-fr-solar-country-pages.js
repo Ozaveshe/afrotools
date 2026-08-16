@@ -108,6 +108,15 @@ const confFr = (c) => CONFIDENCE[c.trim()] || c;
 // (accent-repair already converted words like décision/récent/médical inside
 // the English sentences). Applied before the bare country-name map.
 const REGEX_RULES = [
+  // — compact task-first search metadata (old French output and current English source)
+  [new RegExp(`Calculateur ROI solaire (${CN}) — retour, batterie et économies générateur`, "g"),
+    (m, c) => `ROI solaire — ${frName(c)} | AfroTools`],
+  [new RegExp(`Solar ROI Calculator — (${CN}) \\| AfroTools`, "g"),
+    (m, c) => `ROI solaire — ${frName(c)} | AfroTools`],
+  [new RegExp(`Utilisez le calculateur ROI solaire (${CN}) en ([A-Z]{2,4}) pour estimer le retour sur investissement à partir de la facture mensuelle, des économies de carburant générateur, de la batterie de secours, du coût du système et des hypothèses de financement\\.`, "g"),
+    (m, c, cur) => `${frName(c)} : estimez le retour solaire selon votre facture, le générateur, la batterie, le coût du système et le financement, en ${cur}.`],
+  [new RegExp(`Estimate solar payback in (${CN}) from your bill, generator use, battery, system cost and financing assumptions in ([A-Z]{2,4})\\.`, "g"),
+    (m, c, cur) => `${frName(c)} : estimez le retour solaire selon votre facture, le générateur, la batterie, le coût du système et le financement, en ${cur}.`],
   // — title / JSON-LD name
   [new RegExp(`(${CN}) Calculateur ROI solaire — retour, batterie et économies générateur`, "g"),
     (m, c) => `Calculateur ROI solaire ${frName(c)} — retour, batterie et économies générateur`],

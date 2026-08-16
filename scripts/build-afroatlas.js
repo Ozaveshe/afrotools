@@ -75,21 +75,18 @@ function generateMetaDescription(country) {
   var topExports = '';
   if (country.exports && country.exports.length > 0) {
     var names = [];
-    var limit = Math.min(country.exports.length, 3);
+    var limit = Math.min(country.exports.length, 2);
     for (var i = 0; i < limit; i++) {
       names.push(country.exports[i].p);
     }
     topExports = names.join(', ');
   }
 
-  var desc = "Explore " + country.name + "'s natural resources, GDP ($" + gdpStr + "), top exports";
+  var desc = "Explore " + country.name + ": GDP ($" + gdpStr + "), natural resources and exports";
   if (topExports) {
-    desc += " including " + topExports;
+    desc += " such as " + topExports;
   }
-  desc += ", trade data, and economic indicators.";
-  if (country.tagline) {
-    desc += ' ' + country.tagline + '.';
-  }
+  desc += ", plus trade data and economic indicators in AfroAtlas.";
   return desc;
 }
 
@@ -212,6 +209,7 @@ countries.forEach(function(country) {
     var code = findCode(country);
     var slug = country.slug;
     var dir = path.join(outputDir, slug);
+    var routeUrl = 'https://afrotools.com/tools/afroatlas/country/' + slug + '/';
 
     // Create directory
     if (!fs.existsSync(dir)) {
@@ -224,6 +222,14 @@ countries.forEach(function(country) {
       .replace(/\{\{SLUG\}\}/g, slug)
       .replace(/\{\{COUNTRY_CODE\}\}/g, code)
       .replace(/\{\{META_DESCRIPTION\}\}/g, generateMetaDescription(country))
+      .replace('<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">')
+      .replace('<meta property="og:url" content="https://afrotools.com/tools/afroatlas/_country-template">', '<meta property="og:url" content="' + routeUrl + '">')
+      .replace(
+        '<link rel="canonical" href="https://afrotools.com/tools/afroatlas/_country-template">',
+        '<link rel="canonical" href="' + routeUrl + '">\n' +
+          '<link rel="alternate" hreflang="en" href="' + routeUrl + '">\n' +
+          '<link rel="alternate" hreflang="x-default" href="' + routeUrl + '">'
+      )
       .replace(breadcrumbTemplatePattern, '<script type="application/ld+json">' + generateBreadcrumbSchema(country) + '</script>')
       .replace(faqTemplatePattern, '<script type="application/ld+json">' + generateFAQSchema(country) + '</script>')
       .replace(/\{\{BREADCRUMB_SCHEMA\}\}/g, generateBreadcrumbSchema(country))

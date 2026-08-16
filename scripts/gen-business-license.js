@@ -8,8 +8,8 @@ let count=0;
 for(const cc in B){
   const c=C[cc];
   if(!c)continue;
-  const title=c.name+' Business Licenses & Permits \u2014 Complete Directory | AfroTools';
-  const desc='Find all business licenses and permits required in '+c.name+'. 12 industries covered: retail, food, construction, healthcare, financial, education, manufacturing, transport, technology, mining, agriculture, hospitality.';
+  const title='Business Licenses \u2014 '+c.name+' | AfroTools';
+  const desc='Browse business license and permit categories for '+c.name+' by industry; confirm current requirements, fees and issuing authorities before operating.';
   const url='https://afrotools.com/tools/business-license/'+c.slug;
 
   const schema1=JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:title,description:desc,url:url,applicationCategory:'BusinessApplication',provider:{'@type':'Organization',name:'AfroTools',url:'https://afrotools.com'},offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}});

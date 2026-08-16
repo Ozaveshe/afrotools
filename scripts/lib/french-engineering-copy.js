@@ -161,6 +161,134 @@ const OWNER_COPY = {
   }
 };
 
+// Reviewed, owner-specific vocabulary must run before the broad engineering
+// dictionary. This avoids word-by-word hybrids on product surfaces whose copy
+// has a specialised meaning (for example, "load" in a solar-sizing workflow).
+const OWNER_PAIRS = {
+  'solar-calculator': [
+    ['Country-specific irradiance data. Size your panels, batteries, inverter, and cable - and see your ROI vs running a generator.', 'Données d’irradiation par pays. Dimensionnez les panneaux, les batteries, l’onduleur et les câbles, puis comparez le coût avec celui d’un groupe électrogène.'],
+    ['This planner now exposes PVWatts-style assumptions for losses, panel direction, dust and roof area. Use it for early sizing, then confirm roof shade, structure, wiring, protection and utility rules with a certified installer.', 'Ce planificateur affiche les hypothèses de type PVWatts concernant les pertes, l’orientation, la poussière et la surface de toiture. Utilisez-le pour un premier dimensionnement, puis faites confirmer l’ombrage, la structure, le câblage, les protections et les règles du réseau par un installateur qualifié.'],
+    ['Planning estimate. Solar prices, FX rates, utility rules, roof shading, and installer specs change. Use this for shortlist planning, then confirm final design, protection, and warranties with a certified installer.', 'Estimation de planification. Les prix, les taux de change, les règles du réseau, l’ombrage et les spécifications évoluent. Faites confirmer la conception finale, les protections et les garanties par un installateur qualifié.'],
+    ['I consent to send this question and recent chat messages to the optional AI advisor. I will not include private customer, address, account, or installer-contract details.', 'J’accepte d’envoyer cette question et les messages récents à l’assistant d’IA facultatif. Je n’inclurai aucune donnée privée concernant un client, une adresse, un compte ou un contrat d’installation.'],
+    ['Optional AI help can explain solar terms after you consent to sending your question. The calculator itself stays local.', 'L’assistant d’IA facultatif peut expliquer les termes solaires après votre consentement. Le calculateur lui-même reste local.'],
+    ['Validate the system plan before requesting quotes', 'Validez le plan du système avant de demander des devis'],
+    ['Turn appliance load, country yield, battery target, inverter headroom, and generator comparison into a solar plan you can copy or download.', 'Transformez la consommation des appareils, le rendement local, l’autonomie visée et la comparaison avec un groupe électrogène en un plan solaire copiable ou téléchargeable.'],
+    ['Local-first estimate. No live quote or official approval is performed.', 'Estimation locale dans le navigateur. Aucun devis en direct ni aucune approbation officielle ne sont fournis.'],
+    ['Methodology: calculate daily Wh, peak load, panel capacity, battery capacity, inverter size, estimated cost, and generator comparison from visible assumptions.', 'Méthode : calcul des Wh quotidiens, de la pointe, des panneaux, de la batterie, de l’onduleur, du coût estimatif et de la comparaison avec un groupe électrogène à partir des hypothèses affichées.'],
+    ['Verify roof space, shading, panel wattage, battery chemistry, inverter surge rating, installer credentials, warranty, wiring, earthing, and local tariff or fuel prices.', 'Vérifiez la surface et l’ombrage de la toiture, la puissance des panneaux, la batterie, la pointe de l’onduleur, les qualifications de l’installateur, la garantie, le câblage, la mise à la terre et les tarifs locaux.'],
+    ['Use the copy/CSV actions to send the same assumptions to installers and compare quotes fairly.', 'Utilisez la copie ou le CSV pour transmettre les mêmes hypothèses aux installateurs et comparer les devis équitablement.'],
+    ['Disclaimer: planning estimate only, not an installer quote, financing offer, utility approval, electrical certificate, warranty, or guaranteed payback.', 'Avertissement : estimation de planification uniquement, sans devis d’installateur, offre de financement, accord du réseau, certificat électrique, garantie ni délai de retour garanti.'],
+    ['Solar yield, battery health, exchange rates, equipment prices, fuel prices, and tariffs change by location and time.', 'Le rendement solaire, l’état des batteries, les taux de change, les prix des équipements et du carburant ainsi que les tarifs varient selon le lieu et la date.'],
+    ['Source/reference note: verify against current PVWatts/NREL-style yield guidance, manufacturer datasheets, local utility tariffs, fuel prices, and installer advice.', 'Sources : confrontez le résultat aux recommandations PVWatts/NREL actuelles, aux fiches des fabricants, aux tarifs locaux, aux prix du carburant et à l’avis d’un installateur.'],
+    ['Privacy note: the calculator runs in your browser. Do not paste account numbers, installer contracts, or private customer data into notes you plan to share.', 'Confidentialité : le calculateur fonctionne dans votre navigateur. N’ajoutez pas de numéro de compte, de contrat d’installation ni de donnée client privée aux notes que vous partagez.'],
+    ['Solar System Sizer', 'Dimensionnement du système solaire'],
+    ['Solar Calculator', 'Calculateur solaire'],
+    ['for Africa', 'pour l’Afrique'],
+    ['33 African Countries', '33 pays africains'],
+    ['Generator ROI Comparison', 'Comparaison avec un groupe électrogène'],
+    ['10-Year Savings Projection', 'Projection des économies sur 10 ans'],
+    ['Select Your Country', 'Choisissez votre pays'],
+    ['System Setup', 'Configuration du système'],
+    ['System Type', 'Type de système'],
+    ['Hybrid (Solar + Grid Backup)', 'Hybride (solaire avec secours du réseau)'],
+    ['On-Grid (Grid-Tied)', 'Raccordé au réseau'],
+    ['Panel Watts', 'Puissance du panneau'],
+    ['Batt Type', 'Type de batterie'],
+    ['Lead-Acid (FLA)', 'Plomb-acide (FLA)'],
+    ['1 Day', '1 jour'],
+    ['2 Days', '2 jours'],
+    ['3 Days', '3 jours'],
+    ['5 Days', '5 jours'],
+    ['%/year', '%/an'],
+    ['Degradation', 'Dégradation'],
+    ['roof layout', 'configuration de la toiture'],
+    ['Orientation Factor', 'Facteur d’orientation'],
+    ['Best facing roof', 'Toiture orientée de façon optimale'],
+    ['Flat roof or mixed tilt', 'Toiture plate ou inclinaisons mixtes'],
+    ['East-west split roof', 'Toiture répartie est-ouest'],
+    ['Poor direction', 'Orientation défavorable'],
+    ['trees, walls, tanks', 'arbres, murs, réservoirs'],
+    ['No shade', 'Sans ombrage'],
+    ['Light shade, 5%', 'Ombrage léger, 5 %'],
+    ['Some shade, 10%', 'Ombrage modéré, 10 %'],
+    ['Heavy shade, 20%', 'Ombrage important, 20 %'],
+    ['Very heavy shade, 35%', 'Ombrage très important, 35 %'],
+    ['Dust / Soiling', 'Poussière et salissures'],
+    ['monthly cleaning', 'nettoyage mensuel'],
+    ['Soiling Loss', 'Perte due aux salissures'],
+    ['Clean coastal or rainy area, 3%', 'Zone côtière ou pluvieuse propre, 3 %'],
+    ['Typical city dust, 7%', 'Poussière urbaine habituelle, 7 %'],
+    ['Dusty dry season, 12%', 'Saison sèche poussiéreuse, 12 %'],
+    ['Construction or Harmattan dust, 18%', 'Poussière de chantier ou d’harmattan, 18 %'],
+    ['Usable Roof Area', 'Surface de toiture utilisable'],
+    ['optional m2', 'm² facultatifs'],
+    ['E.g. 50000', 'Ex. 50 000'],
+    ['E.g. 45', 'Ex. 45'],
+    ['e.g. 50000', 'ex. 50 000'],
+    ['e.g. 45', 'ex. 45'],
+    ['Generator (Comparison)', 'Comparaison avec un groupe électrogène'],
+    ['monthly fuel cost', 'coût mensuel du carburant'],
+    ['Your Appliances', 'Vos appareils'],
+    ['Quick Load Presets', 'Profils de consommation rapides'],
+    ['Qty', 'Qté'],
+    ['+ Add Appliance', '+ Ajouter un appareil'],
+    ['Total Daily Load', 'Consommation quotidienne totale'],
+    ['Peak Power Demand', 'Puissance de pointe'],
+    ['System with 25% Buffer', 'Système avec marge de 25 %'],
+    ['Calculate My Solar System', 'Dimensionner mon système solaire'],
+    ['Your Solar System', 'Votre système solaire'],
+    ['Inverter Size', 'Puissance de l’onduleur'],
+    ['Monthly Savings vs Gen', 'Économie mensuelle face au groupe électrogène'],
+    ['Roof Area Needed', 'Surface de toiture nécessaire'],
+    ['Panels', 'Panneaux'],
+    ['Inverter', 'Onduleur'],
+    ['Loads', 'Charges'],
+    ['ROI vs Generator', 'Rentabilité face au groupe électrogène'],
+    ['Specifications', 'Caractéristiques'],
+    ['Tips', 'Conseils'],
+    ['Site QA', 'Contrôle du site'],
+    ['Year', 'Année'],
+    ['Solar Cumulative Cost', 'Coût solaire cumulé'],
+    ['Generator Cumulative Cost', 'Coût cumulé du groupe électrogène'],
+    ['Savings / (Loss)', 'Économie / (perte)'],
+    ['Component', 'Composant'],
+    ['Specification', 'Caractéristique'],
+    ['Recommendation', 'Recommandation'],
+    ['Method notes', 'Notes sur la méthode'],
+    ['PVWatts V8 inputs', 'Paramètres PVWatts V8'],
+    ['PVWatts calculator', 'Calculateur PVWatts'],
+    ['DOE solar planning', 'Planification solaire du DOE'],
+    ['Solar result actions', 'Actions sur le résultat solaire'],
+    ['Copy solar plan', 'Copier le plan solaire'],
+    ['Planning estimate.', 'Estimation de planification.'],
+    ['AI Solar Calculator Advisor', 'Assistant d’IA du calculateur solaire'],
+    ['Optional AI · provider required', 'IA facultative · fournisseur requis'],
+    ['Ask a question', 'Poser une question'],
+    ['Solar quote check', 'Contrôle du devis solaire'],
+    ['What to check', 'Points à vérifier'],
+    ['Limitations', 'Limites'],
+    ['Appliance name', 'Nom de l’appareil'],
+    ['Appliance watts', 'Puissance de l’appareil'],
+    ['Appliance quantity', 'Quantité d’appareils'],
+    ['Appliance hours per day', 'Heures d’utilisation par jour'],
+    ['Remove appliance', 'Supprimer l’appareil'],
+    ['New Appliance', 'Nouvel appareil'],
+    ['Please add some appliances first.', 'Ajoutez d’abord au moins un appareil.'],
+    ['Please check the appliance load and site assumptions.', 'Vérifiez la consommation des appareils et les hypothèses du site.'],
+    ['Grid-tie only', 'Raccordement au réseau uniquement'],
+    ['Solar sizing ready. Copy or download the plan before requesting quotes.', 'Le dimensionnement est prêt. Copiez ou téléchargez le plan avant de demander des devis.'],
+    ['10-Year Cumulative Cost Comparison', 'Comparaison des coûts cumulés sur 10 ans'],
+    ['Saved ', 'Économie '],
+    ['Loss ', 'Perte '],
+    ['Run the solar calculator first.', 'Lancez d’abord le calculateur solaire.'],
+    ['Solar plan copied.', 'Plan solaire copié.'],
+    ['CSV downloaded.', 'CSV téléchargé.'],
+    ['Thinking…', 'Réflexion…'],
+    ['Sorry, I could not get a response.', 'Désolé, aucune réponse n’a pu être obtenue.'],
+    ['Sorry, the AI advisor is temporarily unavailable.', 'Désolé, l’assistant d’IA est temporairement indisponible.']
+  ]
+};
+
 const COMMON_PAIRS = [
   ['Fill in your project details on the left and click "Generate Bill of Quantities" to get a full material list with local prices.', 'Renseignez les paramètres du projet à gauche, puis cliquez sur « Générer le bordereau quantitatif » pour obtenir la liste chiffrée des matériaux.'],
   ['The Bill of Quantities Generator takes your measurements and quantities and shows the working, not just a single number.', 'Le générateur applique vos mesures et quantités et présente le détail du calcul, pas seulement un total.'],
@@ -187,6 +315,9 @@ const COMMON_PAIRS = [
   ['Bill of Quantities Generator', 'Générateur de bordereau quantitatif'],
   ['Bill of Quantities', 'Bordereau quantitatif'],
   ['for African Construction', 'pour les projets de construction en Afrique'],
+  ['Q1 2025 stale rate snapshot', 'Tarifs du T1 2025 — données obsolètes'],
+  ['Export CSV / Print', 'Exporter en CSV / imprimer'],
+  ['Formula repair:', 'Correction de formule :'],
   ['Project Details', 'Paramètres du projet'],
   ['Project Country', 'Pays du projet'],
   ['Floor Area (m²)', 'Surface au sol (m²)'],
@@ -1147,15 +1278,32 @@ function combinedPairs(extraPairs = []) {
 }
 
 function translateText(value, extraPairs = []) {
-  let text = String(value || '');
-  for (const [from, to] of combinedPairs(extraPairs)) {
-    const wordLike = /^[A-Za-z][A-Za-z ]+$/.test(from);
-    const pattern = wordLike
-      ? new RegExp(`\\b${escapePattern(from)}\\b`, 'gi')
-      : new RegExp(escapePattern(from), 'gi');
-    text = text.replace(pattern, to);
+  if (!extraPairs.length) {
+    let text = String(value || '');
+    for (const [from, to] of combinedPairs()) {
+      const wordLike = /^[A-Za-z][A-Za-z ]+$/.test(from);
+      const pattern = wordLike
+        ? new RegExp(`\\b${escapePattern(from)}\\b`, 'gi')
+        : new RegExp(escapePattern(from), 'gi');
+      text = text.replace(pattern, to);
+    }
+    return text;
   }
-  return text;
+  const replacements = new Map();
+  const alternatives = [];
+  for (const [from, to] of combinedPairs(extraPairs)) {
+    const key = from.toLocaleLowerCase('en');
+    if (replacements.has(key)) continue;
+    replacements.set(key, to);
+    const escaped = escapePattern(from);
+    alternatives.push(/^[A-Za-z][A-Za-z ]+$/.test(from) ? `\\b${escaped}\\b` : escaped);
+  }
+  if (!alternatives.length) return String(value || '');
+  const pattern = new RegExp(alternatives.join('|'), 'gi');
+  return String(value || '').replace(
+    pattern,
+    (matched) => replacements.get(matched.toLocaleLowerCase('en')) || matched
+  );
 }
 
 function translateVisibleHtml(source, extraPairs = []) {
@@ -1348,13 +1496,15 @@ function nativeGuide(row, frenchRoute) {
 
 function structuredData(row, frenchRoute) {
   const copy = OWNER_COPY[row.id];
+  const metadataName = row.metadataName || copy.name;
+  const metadataPurpose = row.metadataPurpose || copy.purpose;
   const url = `https://afrotools.com${frenchRoute}`;
   return JSON.stringify([
     {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      name: copy.name,
-      description: copy.purpose,
+      name: metadataName,
+      description: metadataPurpose,
       url,
       inLanguage: 'fr',
       applicationCategory: 'UtilitiesApplication',
@@ -1369,7 +1519,7 @@ function structuredData(row, frenchRoute) {
       mainEntity: [
         {
           '@type': 'Question',
-          name: `Comment utiliser ${copy.name} ?`,
+          name: `Comment utiliser ${metadataName} ?`,
           acceptedAnswer: { '@type': 'Answer', text: copy.method }
         },
         {
@@ -1389,6 +1539,7 @@ function structuredData(row, frenchRoute) {
 
 module.exports = {
   OWNER_COPY,
+  OWNER_PAIRS,
   COMMON_PAIRS,
   combinedPairs,
   nativeGuide,

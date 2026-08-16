@@ -23,8 +23,8 @@ const ENERGY_INDEX = (() => {
 })();
 const SOLAR_ROI_ENGINE = require(path.join(ROOT, "assets", "js", "engines", "solar-roi-engine.js"));
 const FOREX_LATEST = require(path.join(ROOT, "data", "forex", "latest.json"));
-const SOLAR_ROI_ROOT_TITLE = "Solar Panel ROI Calculator for Africa — Payback, Battery & Generator Savings";
-const SOLAR_ROI_ROOT_DESC = "Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
+const SOLAR_ROI_ROOT_TITLE = "Solar ROI Calculator for Africa | AfroTools";
+const SOLAR_ROI_ROOT_DESC = "Choose a country solar ROI page, compare generator savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
 const SOLAR_ROI_DEFAULT_OG = "/assets/img/tools/solar-roi.webp";
 const SOLAR_ROI_ROOT_FAQS = [
   {
@@ -734,8 +734,8 @@ function makeSolarRoiCountryPage(tool, country) {
   const performance = getAssumption(row, "performanceRatio");
   const co2 = getAssumption(row, "co2Factor");
   const canonical = `https://afrotools.com/tools/solar-roi/${country.slug}/`;
-  const title = `${name} Solar Panel ROI Calculator — Payback, Battery & Generator Savings`;
-  const desc = `Use the ${name} Solar Panel ROI Calculator in ${row.currency} to estimate payback from monthly bill, generator fuel savings, battery backup, system cost, and cash or financing assumptions.`;
+  const title = `Solar ROI Calculator — ${name} | AfroTools`;
+  const desc = `Estimate solar payback in ${name} from your bill, generator use, battery, system cost and financing assumptions in ${row.currency}.`;
   const ogImage = solarRoiOgImage(country);
   const ogImageAlt = `${name} solar ROI calculator with bill, generator, battery, and savings planning`;
   const reviewed = formatDate(SOLAR_ROI_DATASET.lastReviewed || tariff.freshness);
@@ -2080,7 +2080,7 @@ ${solarRoiCountryPickerMarkup("solarRootCountry", "NG", {
   help: "Choose from popular countries or all 54 African countries. The country page opens with local currency and Solar ROI assumptions.",
   ctaText: "Open country page"
 })}
-<p id="solarCountrySearchStatus" aria-live="polite">Showing all ${COUNTRIES.length} countries.</p>
+<p id="solarCountrySearchStatus" aria-live="polite">Showing available country pages.</p>
 </div>` : "";
   const countrySearchScript = tool.slug === "solar-roi" ? `
 <script>

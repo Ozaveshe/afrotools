@@ -176,7 +176,10 @@ for (const [englishSlug, frenchSlug, title] of configs) {
     ...commonTerms
   ]);
   const exportTerms = [...lookup.entries()];
-  const description = metaContent(wrapper, 'description') || `${title} gratuit, local et privé dans votre navigateur.`;
+  const sourceDescription = metaContent(wrapper, 'description') || `${title} gratuit, local et privé dans votre navigateur.`;
+  const description = sourceDescription.length >= 70
+    ? sourceDescription
+    : `${sourceDescription.replace(/[.\s]+$/, '')}. Vérifiez la sortie, ses limites et sa configuration avant de l’utiliser.`;
   const frenchUrl = `https://afrotools.com/fr/tools/${frenchSlug}/`;
   const englishUrl = `https://afrotools.com/tools/${englishSlug}/`;
   const hash = crypto.createHash('sha256').update(english).digest('hex').slice(0, 16);

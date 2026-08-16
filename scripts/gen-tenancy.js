@@ -11,12 +11,11 @@ let count=0;
 for(const cc in C){
   const c=C[cc],t=T[cc];
   if(!t)continue;
-  const lawShort=(t.law||'').split('&')[0].split(';')[0].trim();
-  const title=c.name+' Tenancy Agreement Generator \u2014 '+lawShort+' | AfroTools';
-  const desc='Generate a professional tenancy agreement compliant with '+c.name+' rental law. Landlord/tenant details, deposit, rent, utilities, and legal clauses.';
+  const title='Tenancy Agreement \u2014 '+c.name+' | AfroTools';
+  const desc='Draft a tenancy agreement for '+c.name+' with rent, deposit, utilities and key clauses; review it under local law before signing.';
   const url='https://afrotools.com/tools/tenancy-agreement/'+c.slug;
 
-  const schema1=JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.name+' Tenancy Agreement Generator | AfroTools',description:desc,url:url,applicationCategory:'BusinessApplication',provider:{'@type':'Organization',name:'AfroTools',url:'https://afrotools.com'},offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}});
+  const schema1=JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'Tenancy Agreement \u2014 '+c.name,description:desc,url:url,applicationCategory:'BusinessApplication',provider:{'@type':'Organization',name:'AfroTools',url:'https://afrotools.com'},offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}});
   const schema2=JSON.stringify({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:'https://afrotools.com/'},{'@type':'ListItem',position:2,name:'Legal & Compliance',item:'https://afrotools.com/legal/'},{'@type':'ListItem',position:3,name:'Tenancy Agreement Generator',item:'https://afrotools.com/tools/tenancy-agreement/'},{'@type':'ListItem',position:4,name:c.name,item:url}]});
 
   const seo1='Tenancy agreements in '+c.name+' are governed by '+t.law+'. The maximum security deposit is '+t.maxDeposit+'. '+'Landlord notice period: '+t.noticeLandlord+'. Tenant notice period: '+t.noticeTenant+'. Disputes are resolved through the '+t.disputeBody+'.';
@@ -31,7 +30,7 @@ for(const cc in C){
 <title>${title.replace(/"/g,'&quot;')}</title>
 <meta name="description" content="${desc.replace(/"/g,'&quot;')}">
 <link rel="canonical" href="${url}">
-<meta property="og:title" content="${(c.name+' Tenancy Agreement Generator | AfroTools').replace(/"/g,'&quot;')}">
+<meta property="og:title" content="${title.replace(/"/g,'&quot;')}">
 <meta property="og:description" content="${desc.replace(/"/g,'&quot;')}">
 <meta property="og:url" content="${url}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">

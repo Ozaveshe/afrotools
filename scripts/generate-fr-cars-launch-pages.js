@@ -654,7 +654,7 @@ function faqSchema() {
 
 function renderHub() {
   const route = "fr/cars";
-  const title = "Voitures en Afrique francophone | Prix, import et achat local | AfroTools";
+  const title = "Prix des voitures en Afrique | AfroTools";
   const description = "Point de départ français pour comparer les prix de voitures, les coûts d'importation, les fourchettes locales et les pages utiles avant d'acheter ou d'importer.";
   rememberReciprocal("cars", route);
   const countryCards = COUNTRIES.map((country) => {
@@ -811,7 +811,7 @@ function renderCountryPage(country) {
   const sourceCountry = priceData.countries[country.code];
   const profile = priceData.countryMarketProfiles[country.code] || {};
   const place = countryPlace(country);
-  const title = `Prix des voitures ${place} | Import ou achat local | AfroTools`;
+  const title = `Prix voitures — ${country.frName} | AfroTools`;
   const description = `Comparez les fourchettes de prix voiture ${place}, les estimations d'import, les prix locaux en ${sourceCountry.currency_code} et les modèles prioritaires.`;
   const rows = TOP_MODELS.map((spec) => {
     const ctx = contextFor(country.code, spec);
@@ -893,7 +893,7 @@ function renderMakePage(page) {
   const place = countryPlace(country);
   const makeLabel = page.make.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
   const entries = MODEL_PAGES.filter((item) => item.countryCode === page.countryCode && item.make === page.make);
-  const title = `${makeLabel} ${place} | Prix rendus et modèles | AfroTools`;
+  const title = `Prix ${makeLabel} — ${country.frName} | AfroTools`;
   const description = `Repères français pour comparer les modèles ${makeLabel} ${place}: prix rendu, prix local indicatif, risque import et pages modèle disponibles.`;
   const rows = entries.map((item) => {
     const ctx = contextFor(item.countryCode, item);
@@ -961,7 +961,7 @@ function renderModelIndexPage(page) {
   const place = countryPlace(country);
   const vehicleLabel = `${ctx.vehicle.make} ${ctx.vehicle.model}`;
   const entries = MODEL_PAGES.filter((item) => item.countryCode === page.countryCode && item.make === page.make && item.model === page.model);
-  const title = `${vehicleLabel} ${place} | Années, prix et import | AfroTools`;
+  const title = `Prix ${vehicleLabel} — ${country.frName} | AfroTools`;
   const description = `Vue française pour ${vehicleLabel} ${place}: années disponibles, coût rendu estimé, prix local indicatif et liens vers les pages détaillées.`;
   const rows = entries.map((item) => {
     const yearCtx = contextFor(item.countryCode, item);
@@ -1029,7 +1029,7 @@ function renderModelPage(page) {
   rememberReciprocal(enRoute, route);
   const place = countryPlace(country);
   const vehicleName = `${ctx.vehicle.year} ${ctx.vehicle.make} ${ctx.vehicle.model}`;
-  const title = `${vehicleName} ${place} | Prix rendu et local | AfroTools`;
+  const title = `Prix ${vehicleName} — ${country.frName} | AfroTools`;
   const description = `Estimation française pour ${vehicleName} ${place}: prix source, coût rendu, prix local indicatif, risque d'import et lecture achat local.`;
   const priceRows = [
     ["Prix source", ctx.sourcePrice.median, "Avant fret, assurance et frais du pays de destination."],

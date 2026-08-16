@@ -36,7 +36,7 @@ const ROUTE_BY_FILE = new Map(
 // Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
-  '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
+  '.git', '.github', '.claude', '.codex', '.codex-worktrees', '.worktrees', 'supabase', 'netlify', 'assets', 'engines',
   'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
   'afrotools-sentinel', 'prompts', 'docs', 'audit-results', 'artifacts'
 ]);

@@ -33,22 +33,9 @@ function calculate() {
   ) {
     return;
   }
-  const baseUsage = USAGE_BY_TYPE[type] || 150;
-
-  let extraDaily = 0;
-  if (document.getElementById('garden').checked) extraDaily += 50;
-  if (document.getElementById('carwash').checked) extraDaily += 30;
-  if (document.getElementById('laundry').checked) extraDaily += 40;
-  if (document.getElementById('cooking').checked) extraDaily += 20;
-
-  const dailyTotal = (people * baseUsage) + extraDaily;
-  const totalNeeded = dailyTotal * backupDays;
-
-  // Find recommended standard size
-  let recTank = STANDARD_TANKS[STANDARD_TANKS.length - 1];
-  for (const s of STANDARD_TANKS) {
-    if (s >= totalNeeded) { recTank = s; break; }
-  }
+  const result = EngineeringMaterialsEngine.waterTank({people:people,propertyType:type,backupDays:backupDays,garden:document.getElementById('garden').checked,carwash:document.getElementById('carwash').checked,laundry:document.getElementById('laundry').checked,cooking:document.getElementById('cooking').checked,rainwater:document.getElementById('rainwater').value==='yes',roofArea:parseFloat(document.getElementById('roofArea').value)||0});
+  if (result.error) return;
+  const baseUsage=result.baseUsage,dailyTotal=result.dailyTotal,totalNeeded=result.totalNeeded,recTank=result.recommendedTank;
 
   document.getElementById('recSize').textContent = recTank.toLocaleString() + ' Litres';
   document.getElementById('recDesc').textContent = `Calcul fondé sur ${people} personnes × ${baseUsage} L/jour × ${backupDays} jours = ${totalNeeded.toLocaleString()}L nécessaires`;
@@ -61,14 +48,13 @@ function calculate() {
   document.getElementById('resultGrid').innerHTML = html;
 
   // Tank visualization
-  const fillPct = Math.min((totalNeeded / recTank) * 100, 100);
+  const fillPct = result.fillPct;
   document.getElementById('tankViz').style.setProperty('--fill', fillPct + '%');
   document.getElementById('tankLabel').textContent = `${recTank.toLocaleString()}L Réservoir (${Math.round(fillPct)}% used for ${backupDays}-jour d’autonomie)`;
 
   // Standard tank options
   let opts = '';
-  const nearTanks = STANDARD_TANKS.filter(s => s >= totalNeeded * 0.6 && s <= totalNeeded * 2.5).slice(0, 4);
-  if (nearTanks.length === 0) nearTanks.push(recTank);
+  const nearTanks = result.nearTanks;
   nearTanks.forEach(s => {
     const days = (s / dailyTotal).toFixed(1);
     const active = s === recTank ? ' active' : '';
@@ -107,7 +93,7 @@ function calculate() {
 
   // ── Multiple tank suggestion ──
   if (recTank > 10000 || totalNeeded > 10000) {
-    var numTanks = Math.ceil(totalNeeded / 5000);
+    var numTanks = result.multipleTanks;
     document.getElementById('multiTankNote').innerHTML = '<strong>Multiple tanks Recommandé:</strong> Your storage need of ' + totalNeeded.toLocaleString() + 'L exceeds standard monophasée-Réservoir sizes. Consider ' + numTanks + ' × 5,000L tanks instead. This also provides redundancy — one Réservoir can be cleaned while others remain in service.';
     document.getElementById('multiTankNote').style.display = '';
   } else {
@@ -117,10 +103,9 @@ function calculate() {
   // ── Rainwater Harvesting ──
   if (document.getElementById('rainwater').value === 'yes') {
     var roofArea = parseFloat(document.getElementById('roofArea').value) || 100;
-    var rainfall = 1000; // default mm/year
-    var catchmentLitres = Math.round(roofArea * (rainfall / 1000) * 0.8 * 1000); // 80% efficiency
-    var monthlyRain = Math.round(catchmentLitres / 12);
-    var pctCovered = Math.min(100, Math.round((monthlyRain / (dailyTotal * 30)) * 100));
+    var catchmentLitres = result.annualRainCatchment;
+    var monthlyRain = result.monthlyRainCatchment;
+    var pctCovered = result.rainCoveragePct;
     document.getElementById('rainText').innerHTML = '<strong>Annual catchment:</strong> ' + catchmentLitres.toLocaleString() + ' litres/year (~' + monthlyRain.toLocaleString() + ' L/mois)<br>' +
       '<strong>Toiture Surface:</strong> ' + roofArea + ' m² × ~1,000mm average rainfall × 80% efficiency<br>' +
       '<strong>Coverage:</strong> Rainwater could supply ~' + pctCovered + '% of your monthly Eau need.<br>' +

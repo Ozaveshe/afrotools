@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { SPORTS } = require("./lib/fr-sports-contracts.js");
 const { enhanceCategory } = require("./lib/localized-category-standard.js");
+const { normalizeReleaseOwnedHtml } = require("./lib/release-owned-html-normalizer.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE = "https://afrotools.com";
@@ -255,11 +256,12 @@ function renderHub() {
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="afrotools-content-id" content="fr-sports-hub">
   <meta name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js">
-  <title>Sports et divertissement : 15 applications en français | AfroTools</title>
+  <title>Sports et divertissement en français | AfroTools</title>
   <meta name="description" content="Accédez à 15 applications françaises pour scénarios sportifs, billetterie, événements, carrières, créations et budgets, sans données en direct inventées.">
   <link rel="canonical" href="${SITE}/fr/sports/">
   <link rel="alternate" hreflang="fr" href="${SITE}/fr/sports/">
   <link rel="alternate" hreflang="en" href="${SITE}/sports/">
+  <link rel="alternate" hreflang="sw" href="${SITE}/sw/michezo/">
   <link rel="alternate" hreflang="x-default" href="${SITE}/sports/">
   <meta property="og:title" content="Sports et divertissement en français | AfroTools">
   <meta property="og:description" content="15 applications locales de planification, avec limites claires et exports utiles.">
@@ -323,7 +325,9 @@ function run() {
   const drift = [];
   for (const [file, expected] of expectedFiles()) {
     const actual = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
-    if (actual === expected) continue;
+    const comparableActual = normalizeReleaseOwnedHtml(actual, { stripReleaseMetadata: true });
+    const comparableExpected = normalizeReleaseOwnedHtml(expected, { stripReleaseMetadata: true });
+    if (comparableActual === comparableExpected) continue;
     drift.push(path.relative(ROOT, file).replace(/\\/g, "/"));
     if (write) {
       fs.mkdirSync(path.dirname(file), { recursive: true });

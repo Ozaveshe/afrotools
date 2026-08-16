@@ -166,22 +166,33 @@ function calculate() {
   var c = COSTS[loc];
   if (!c) { alert('Location data not found.'); return; }
   var scope = getScope();
+  var sharedCost = window.BuildingCostEngine.calculate({
+    totalArea: totalArea, location: loc, quality: quality, buildType: bType,
+    site: scope.siteKey, stage: scope.stageKey,
+    preliminariesPct: scope.preliminariesPct * 100,
+    externalWorksPct: scope.externalWorksPct * 100,
+    professionalFeesPct: scope.professionalFeesPct * 100,
+    contingencyPct: scope.contingencyPct * 100,
+    escalationPct: scope.escalationPct * 100,
+    shellAllowancePct: scope.shellAllowancePct * 100
+  });
+  if (sharedCost.error) { alert('Please check the project Surface and allowances.'); return; }
 
   var baseCostPerM2 = c[quality];
   var typeMult = TYPE_MULT[bType] || 1;
-  var directCostPerM2 = Math.round(baseCostPerM2 * typeMult * scope.site.mult);
-  var grossArea = totalArea * (1 + scope.shellAllowancePct);
-  var buildingWorksCost = Math.round(grossArea * directCostPerM2);
+  var directCostPerM2 = sharedCost.directCostPerM2;
+  var grossArea = sharedCost.grossArea;
+  var buildingWorksCost = sharedCost.buildingWorksCost;
 
-  var preliminaries = buildingWorksCost * scope.preliminariesPct;
+  var preliminaries = sharedCost.preliminaries;
   var subtotalWithPrelims = buildingWorksCost + preliminaries;
-  var externalWorks = subtotalWithPrelims * scope.externalWorksPct;
-  var professionalFees = subtotalWithPrelims * scope.professionalFeesPct;
+  var externalWorks = sharedCost.externalWorks;
+  var professionalFees = sharedCost.professionalFees;
   var contingencyBase = subtotalWithPrelims + externalWorks + professionalFees;
-  var contingency = contingencyBase * scope.contingencyPct;
-  var escalation = (contingencyBase + contingency) * scope.escalationPct;
-  var totalCost = Math.round(contingencyBase + contingency + escalation);
-  var blendedCostPerM2 = Math.round(totalCost / grossArea);
+  var contingency = sharedCost.contingency;
+  var escalation = sharedCost.escalation;
+  var totalCost = sharedCost.totalCost;
+  var blendedCostPerM2 = sharedCost.blendedCostPerM2;
 
   // Grand total
   document.getElementById('grandTotal').textContent = money(c, totalCost);
@@ -213,7 +224,7 @@ function calculate() {
   var monthsBase = {bungalow:6, duplex:10, storey:12, apartment:14, commercial:8};
   var qualityMult = {economy:0.8, standard:1, premium:1.2, luxury:1.5};
   var siteTimeMult = {easy:1, tight:1.1, difficult:1.18, remote:1.25};
-  var months = Math.round((monthsBase[bType] || 8) * (qualityMult[quality] || 1) * (siteTimeMult[scope.siteKey] || 1));
+  var months = sharedCost.months;
   document.getElementById('timelineCards').innerHTML =
     '<div class="tl-item"><div class="tl-label">Fondation</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.15)) + ' months</div></div>' +
     '<div class="tl-item"><div class="tl-label">Structure</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.30)) + ' months</div></div>' +

@@ -8,7 +8,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git', 'dist', 'test-results', 'playwright-report'];
+const IGNORE = new Set([
+  '.agents', '.claude', '.codex', '.codex-worktrees', '.git', '.worktrees',
+  'node_modules', 'afrotools-deploy', 'dist', 'test-results', 'playwright-report'
+]);
 const LINK_RESOLUTION_CACHE = new Map();
 
 function escapeRegex(value) {
@@ -98,7 +101,7 @@ function loadRedirectRules() {
 function findFiles(dir) {
   const results = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (IGNORE.includes(entry.name)) continue;
+    if (IGNORE.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...findFiles(full));

@@ -28,6 +28,8 @@ const FORBIDDEN_PATHS = [
   '.env.example',
   '.mcp.json',
   '.codex',
+  '.codex-worktrees',
+  '.worktrees',
   '.agents',
   '.github',
   '.claude',

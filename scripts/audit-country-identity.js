@@ -9,7 +9,10 @@ const ROOT = path.resolve(__dirname, '..');
 const COUNTRIES_PATH = path.join(ROOT, 'data/registry/countries.json');
 const REPORT_JSON_PATH = path.join(ROOT, 'reports/country-identity-report.json');
 const REPORT_MD_PATH = path.join(ROOT, 'reports/country-identity-report.md');
-const EXCLUDED_DIRS = new Set(['.git', '.claude', '.codex', 'node_modules', 'dist', 'audit-results', 'reports', 'artifacts', 'test-results']);
+const EXCLUDED_DIRS = new Set([
+  '.git', '.claude', '.codex', '.codex-worktrees', '.worktrees', 'node_modules',
+  'dist', 'audit-results', 'reports', 'artifacts', 'test-results'
+]);
 
 function slugify(value) {
   return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');

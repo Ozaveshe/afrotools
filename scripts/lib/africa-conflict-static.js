@@ -70,6 +70,10 @@ function conflictUrl(slug) {
   return `${SITE_ORIGIN}${conflictRoutePath(slug)}`;
 }
 
+function dossierSearchTitle(conflict) {
+  return `${normalizeText(conflict && conflict.name)} | AfroTools`;
+}
+
 function fallbackConflictPath(slug) {
   return `/tools/africa-conflict/detail.html?id=${encodeURIComponent(slug || "")}`;
 }
@@ -520,6 +524,7 @@ module.exports = {
   humanList,
   conflictRoutePath,
   conflictUrl,
+  dossierSearchTitle,
   fallbackConflictPath,
   fallbackConflictUrl,
   buildManifest,

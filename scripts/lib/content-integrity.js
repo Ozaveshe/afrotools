@@ -11,7 +11,8 @@ const ROUTE_GRAPH_PATH = path.join(ROOT, 'data/registry/route-graph.json');
 const CATALOG_DIR = path.join(ROOT, 'lang');
 
 const SKIP_DIRS = new Set([
-  '.agents', '.claude', '.git', '.jamb-tools', '.playwright', '.cache',
+  '.agents', '.claude', '.codex', '.codex-worktrees', '.worktrees', '.git',
+  '.jamb-tools', '.playwright', '.cache',
   'afrotools-deploy', 'artifacts', 'audit-results', 'dist', 'node_modules', 'output',
   'playwright-report', 'reports', 'test-results', 'tests'
 ]);

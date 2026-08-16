@@ -258,15 +258,15 @@ select.field-input{cursor:pointer;}
 <div class="solar-wrap">
   <!-- HERO -->
   <div class="solar-hero">
-    <div class="solar-hero-badge">☀️ Solaire Calculateur</div>
-    <h1>Solaire System Sizer<br>Informations et hypothèses du calcul</h1>
-    <p>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</p>
+    <div class="solar-hero-badge">☀️ Calculateur solaire</div>
+    <h1>Dimensionnement du système solaire<br>pour l’Afrique</h1>
+    <p>Données d’irradiation par pays. Dimensionnez les panneaux, les batteries, l’onduleur et les câbles, puis comparez le coût avec celui d’un groupe électrogène.</p>
     <div class="solar-hero-tags">
-      <span>Informations et hypothèses du calcul</span>
+      <span>🌍 33 pays africains</span>
       <span>🔋 Dimensionnement du parc de batteries</span>
-      <span>💰 Générateur ROI Comparison</span>
+      <span>💰 Comparaison avec un groupe électrogène</span>
       <span>⚡ Hors réseau et hybride</span>
-      <span>📊 10-Year Savings Projection</span>
+      <span>📊 Projection des économies sur 10 ans</span>
     </div>
   </div>
 
@@ -276,7 +276,7 @@ select.field-input{cursor:pointer;}
     <div>
       <!-- Country -->
       <div class="solar-panel">
-        <h2><span>🌍</span>Sélectionnez une option.</h2>
+        <h2><span>🌍</span> Choisissez votre pays</h2>
         <div class="country-grid" id="countryGrid"></div>
         <div id="irrBadge" class="irr-badge" style="margin-top:14px;display:none;">
           ☀️ <span id="irrVal"></span>
@@ -285,19 +285,19 @@ select.field-input{cursor:pointer;}
 
       <!-- System Setup -->
       <div class="solar-panel" style="margin-top:16px;">
-        <h2><span>⚙️</span>Informations et hypothèses du calcul</h2>
+        <h2><span>⚙️</span> Configuration du système</h2>
         <div class="field-group">
-          <div class="field-label">System Type</div>
-          <select class="field-input" id="systemType" aria-label="System Type">
+          <div class="field-label">Type de système</div>
+          <select class="field-input" id="systemType" aria-label="Type de système">
             <option value="offgrid">Hors réseau (sans raccordement au réseau public)</option>
-            <option value="hybrid" selected>Hybrid (Solaire + Grid Backup)</option>
-            <option value="ongrid">On-Grid (Grid-Tied)</option>
+            <option value="hybrid" selected>Hybride (solaire avec secours du réseau)</option>
+            <option value="ongrid">Raccordé au réseau</option>
           </select>
         </div>
         <div class="field-row">
           <div class="field-group">
             <div class="field-label">Puissance du panneau <span class="hint">par panneau</span></div>
-            <select class="field-input" id="panelWatts" aria-label="Panel Puissance (W)">
+            <select class="field-input" id="panelWatts" aria-label="Puissance du panneau">
               <option value="250">250W (Poly)</option>
               <option value="300">300W (Mono)</option>
               <option value="400" selected>400W (Mono PERC)</option>
@@ -307,8 +307,8 @@ select.field-input{cursor:pointer;}
           </div>
           <div class="field-group">
             <div class="field-label">Type de batterie</div>
-            <select class="field-input" id="battType" aria-label="Batt Type">
-              <option value="lead">Lead-Acid (FLA)</option>
+            <select class="field-input" id="battType" aria-label="Type de batterie">
+              <option value="lead">Plomb-acide (FLA)</option>
               <option value="gel">Gel VRLA</option>
               <option value="lifepo4" selected>LiFePO4 (Lithium)</option>
             </select>
@@ -318,57 +318,57 @@ select.field-input{cursor:pointer;}
           <div class="field-group">
             <div class="field-label">Jours d’autonomie <span class="hint">jours nuageux</span></div>
             <select class="field-input" id="backupDays" aria-label="Jours d’autonomie">
-              <option value="1">1 Day</option>
+              <option value="1">1 jour</option>
               <option value="2" selected>2 jours</option>
               <option value="3">3 jours</option>
               <option value="5">5 jours</option>
             </select>
           </div>
           <div class="field-group">
-            <div class="field-label">Perte de rendement des panneaux <span class="hint">%/year</span></div>
-            <input aria-label="Degradation" type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
+            <div class="field-label">Perte de rendement des panneaux <span class="hint">%/an</span></div>
+            <input aria-label="Dégradation" type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
           </div>
         </div>
         <div class="field-row">
           <div class="field-group">
-            <div class="field-label">Orientation des panneaux <span class="hint">Toiture Mise en page</span></div>
-            <select class="field-input" id="orientationFactor" aria-label="Orientation Factor">
-              <option value="1" selected>Best facing Toiture</option>
-              <option value="0.93">Flat Toiture or mixed tilt</option>
-              <option value="0.9">East-west split Toiture</option>
-              <option value="0.78">Poor direction</option>
+            <div class="field-label">Orientation des panneaux <span class="hint">configuration de la toiture</span></div>
+            <select class="field-input" id="orientationFactor" aria-label="Facteur d’orientation">
+              <option value="1" selected>Toiture orientée de façon optimale</option>
+              <option value="0.93">Toiture plate ou inclinaisons mixtes</option>
+              <option value="0.9">Toiture répartie est-ouest</option>
+              <option value="0.78">Orientation défavorable</option>
             </select>
           </div>
           <div class="field-group">
-            <div class="field-label">Perte due à l’ombrage <span class="hint">trees, Murs, tanks</span></div>
+            <div class="field-label">Perte due à l’ombrage <span class="hint">arbres, murs, réservoirs</span></div>
             <select class="field-input" id="shadeLoss" aria-label="Perte due à l’ombrage">
-              <option value="0" selected>Non shade</option>
-              <option value="5">Light shade, 5%</option>
-              <option value="10">Some shade, 10%</option>
-              <option value="20">Heavy shade, 20%</option>
-              <option value="35">Very heavy shade, 35%</option>
+              <option value="0" selected>Sans ombrage</option>
+              <option value="5">Ombrage léger, 5 %</option>
+              <option value="10">Ombrage modéré, 10 %</option>
+              <option value="20">Ombrage important, 20 %</option>
+              <option value="35">Ombrage très important, 35 %</option>
             </select>
           </div>
         </div>
         <div class="field-row">
           <div class="field-group">
-            <div class="field-label">Dust / Soiling <span class="hint">mensuel cleaning</span></div>
-            <select class="field-input" id="soilingLoss" aria-label="Soiling Loss">
-              <option value="3">Clean coastal or rainy Surface, 3%</option>
-              <option value="7" selected>Informations et hypothèses du calcul</option>
-              <option value="12">Dusty dry season, 12%</option>
-              <option value="18">Construction or Harmattan dust, 18%</option>
+            <div class="field-label">Poussière et salissures <span class="hint">nettoyage mensuel</span></div>
+            <select class="field-input" id="soilingLoss" aria-label="Perte due aux salissures">
+              <option value="3">Zone côtière ou pluvieuse propre, 3 %</option>
+              <option value="7" selected>Poussière urbaine habituelle, 7 %</option>
+              <option value="12">Saison sèche poussiéreuse, 12 %</option>
+              <option value="18">Poussière de chantier ou d’harmattan, 18 %</option>
             </select>
           </div>
           <div class="field-group">
-            <div class="field-label">Usable Toiture Surface <span class="hint">Informations et hypothèses du calcul</span></div>
-            <input aria-label="E.g. 45" type="number" class="field-input" id="roofArea" placeholder="e.g. 45" min="0" step="1">
+            <div class="field-label">Surface de toiture utilisable <span class="hint">m² facultatifs</span></div>
+            <input aria-label="Ex. 45" type="number" class="field-input" id="roofArea" placeholder="Ex. 45" min="0" step="1">
           </div>
         </div>
         <div class="field-group">
-          <div class="field-label">Générateur (Comparison) <span class="hint">mensuel fuel Coût</span></div>
+          <div class="field-label">Comparaison avec un groupe électrogène <span class="hint">coût mensuel du carburant</span></div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <input aria-label="E.g. 50000" type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
+            <input aria-label="Ex. 50 000" type="number" class="field-input" id="genCost" placeholder="Ex. 50 000" style="flex:1;">
             <select class="field-input" id="currency" style="width:90px;" aria-label="Devise">
               <option value="NGN">NGN ₦</option>
               <option value="KES">KES KSh</option>
@@ -385,9 +385,9 @@ select.field-input{cursor:pointer;}
 
     <!-- RIGHT: APPLIANCES -->
     <div class="solar-panel">
-      <h2><span>🔌</span>Informations et hypothèses du calcul</h2>
+      <h2><span>🔌</span> Vos appareils</h2>
       <div style="margin-bottom:12px;">
-        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Charger</div>
+        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Profils de consommation rapides</div>
         <div id="presetBtns" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
       </div>
       <table class="appliance-table">
@@ -402,30 +402,30 @@ select.field-input{cursor:pointer;}
         </thead>
         <tbody id="applianceBody"></tbody>
       </table>
-      <button type="button" class="add-appliance-btn" onclick="addAppliance()">Ajouter</button>
+      <button type="button" class="add-appliance-btn" onclick="addAppliance()">+ Ajouter un appareil</button>
 
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Charger</span>
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Consommation quotidienne totale</span>
           <span style="font-size:1rem;font-weight:900;color:#111;" id="totalWh">0 Wh</span>
         </div>
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Peak Power Demand</span>
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Puissance de pointe</span>
           <span style="font-size:1rem;font-weight:900;color:#111;" id="peakW">0 W</span>
         </div>
         <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Informations et hypothèses du calcul</span>
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Système avec marge de 25 %</span>
           <span style="font-size:1rem;font-weight:800;color:#f59e0b;" id="totalWhBuffer">0 Wh</span>
         </div>
       </div>
 
-      <button type="button" class="calc-btn" onclick="calculate()">☀️ Calculer My Solaire System</button>
+      <button type="button" class="calc-btn" onclick="calculate()">☀️ Dimensionner mon système solaire</button>
     </div>
   </div>
 
   <!-- RESULTS -->
   <div class="result-section" id="resultsSection" style="display:none;">
-    <h2><span>📊</span>Informations et hypothèses du calcul</h2>
+    <h2><span>📊</span> Votre système solaire</h2>
 
     <!-- Result Cards -->
     <div class="result-grid">
@@ -439,7 +439,7 @@ select.field-input{cursor:pointer;}
       </div>
       <div class="result-card highlight">
         <div class="val" id="rInverter">-</div>
-        <div class="lbl">Inverter Diamètre</div>
+        <div class="lbl">Puissance de l’onduleur</div>
       </div>
       <div class="result-card blue">
         <div class="val" id="rPanelKW">- <span>kWp</span></div>
@@ -451,7 +451,7 @@ select.field-input{cursor:pointer;}
       </div>
       <div class="result-card green" id="rSavingsCard">
         <div class="val" id="rMonthlySave">-</div>
-        <div class="lbl">mensuel Savings vs Gen</div>
+        <div class="lbl">Économie mensuelle face au groupe électrogène</div>
       </div>
       <div class="result-card blue">
         <div class="val" id="rEffSun">-- <span>h</span></div>
@@ -459,7 +459,7 @@ select.field-input{cursor:pointer;}
       </div>
       <div class="result-card blue">
         <div class="val" id="rRoofArea">-- <span>m2</span></div>
-        <div class="lbl">Toiture Surface nécessaires</div>
+        <div class="lbl">Surface de toiture nécessaire</div>
       </div>
     </div>
 
@@ -467,7 +467,7 @@ select.field-input{cursor:pointer;}
     <div class="system-diagram" id="sysDiagram">
       <div class="sys-block">
         <div class="sys-icon">☀️</div>
-        <div class="sys-label">Panels</div>
+        <div class="sys-label">Panneaux</div>
         <div class="sys-spec" id="diagPanels">- × -W</div>
       </div>
       <div class="sys-arrow">→</div>
@@ -485,13 +485,13 @@ select.field-input{cursor:pointer;}
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">⚡</div>
-        <div class="sys-label">Inverter</div>
+        <div class="sys-label">Onduleur</div>
         <div class="sys-spec" id="diagInv">- kVA</div>
       </div>
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">🏠</div>
-        <div class="sys-label">Loads</div>
+        <div class="sys-label">Charges</div>
         <div class="sys-spec" id="diagLoad">- kWh/d</div>
       </div>
     </div>
@@ -499,10 +499,10 @@ select.field-input{cursor:pointer;}
     <!-- Tabs -->
     <div style="margin-top:24px;">
       <div class="result-tabs">
-        <button type="button" class="result-tab active" onclick="showTab('roi')">💰 ROI vs Générateur</button>
-        <button type="button" class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
-        <button type="button" class="result-tab" onclick="showTab('tips')">💡 Tips</button>
-        <button type="button" class="result-tab" onclick="showTab('site')">Chantier QA</button>
+        <button type="button" class="result-tab active" onclick="showTab('roi')">💰 Rentabilité face au groupe électrogène</button>
+        <button type="button" class="result-tab" onclick="showTab('specs')">🔧 Caractéristiques</button>
+        <button type="button" class="result-tab" onclick="showTab('tips')">💡 Conseils</button>
+        <button type="button" class="result-tab" onclick="showTab('site')">Contrôle du site</button>
       </div>
 
       <!-- ROI Tab -->
@@ -511,10 +511,10 @@ select.field-input{cursor:pointer;}
         <table class="roi-table" id="roiTable">
           <thead>
             <tr>
-              <th>Year</th>
-              <th>Solaire Cumulative Coût</th>
-              <th>Générateur Cumulative Coût</th>
-              <th>Savings / (Loss)</th>
+              <th>Année</th>
+              <th>Coût solaire cumulé</th>
+              <th>Coût cumulé du groupe électrogène</th>
+              <th>Économie / (perte)</th>
             </tr>
           </thead>
           <tbody id="roiTableBody"></tbody>
@@ -526,9 +526,9 @@ select.field-input{cursor:pointer;}
         <table class="roi-table" id="specsTable">
           <thead>
             <tr>
-              <th>Component</th>
-              <th>Specification</th>
-              <th>Recommendation</th>
+              <th>Composant</th>
+              <th>Caractéristique</th>
+              <th>Recommandation</th>
             </tr>
           </thead>
           <tbody id="specsBody"></tbody>
@@ -547,19 +547,19 @@ select.field-input{cursor:pointer;}
     </div>
 
     <div class="solar-source-card">
-      <strong>Method notes</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.<div class="solar-source-links">
-        <a href="https://developer.nrel.gov/docs/solar/pvwatts/v8/" target="_blank" rel="noopener">PVWatts V8 Entrées</a>
-        <a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener">PVWatts Calculateur</a>
-        <a href="https://www.energy.gov/energysaver/planning-home-solar-electric-system" target="_blank" rel="noopener">DOE Solaire planning</a>
+      <strong>Notes sur la méthode</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.<div class="solar-source-links">
+        <a href="https://developer.nrel.gov/docs/solar/pvwatts/v8/" target="_blank" rel="noopener">Paramètres PVWatts V8</a>
+        <a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener">Calculateur PVWatts</a>
+        <a href="https://www.energy.gov/energysaver/planning-home-solar-electric-system" target="_blank" rel="noopener">Planification solaire du DOE</a>
       </div>
     </div>
-    <div class="solar-export-actions" aria-label="Solaire Résultat actions">
-      <button type="button" onclick="copySolarPlan()">Copier Solaire plan</button>
+    <div class="solar-export-actions" aria-label="Actions sur le résultat solaire">
+      <button type="button" onclick="copySolarPlan()">Copier le plan solaire</button>
       <button type="button" onclick="downloadSolarCsv()">Télécharger le CSV</button>
       <button type="button" onclick="window.print()">Imprimer</button>
     </div>
     <p class="solar-export-status" id="solarExportStatus" aria-live="polite"></p>
-    <p class="solar-export-note"><strong>Estimation indicative.</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</p>
+    <p class="solar-export-note"><strong>Estimation de planification.</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</p>
   </div>
 </div>
 
@@ -567,16 +567,16 @@ select.field-input{cursor:pointer;}
   <div class="ai-advisor-card" id="aiCard">
     <div class="ai-advisor-head">
       <span class="ai-dot"></span>
-      <span class="ai-title">AI Solaire Calculateur Advisor</span>
-      <span class="ai-by">Informations et hypothèses du calcul</span>
+      <span class="ai-title">Assistant d’IA du calculateur solaire</span>
+      <span class="ai-by">IA facultative · fournisseur requis</span>
     </div>
     <div class="ai-advisor-body">
-      <div class="ai-status" id="aiStatus">Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</div>
+      <div class="ai-status" id="aiStatus">L’assistant d’IA facultatif peut expliquer les termes solaires après votre consentement. Le calculateur lui-même reste local.</div>
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
-        <label class="ai-consent"><input type="checkbox" id="aiConsent">Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</label>
+        <label class="ai-consent"><input type="checkbox" id="aiConsent"> J’accepte d’envoyer cette question et les messages récents à l’assistant d’IA facultatif. Je n’inclurai aucune donnée privée concernant un client, une adresse, un compte ou un contrat d’installation.</label>
         <div class="ai-input-row">
-          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <input aria-label="Poser une question" type="text" class="ai-input" id="aiInput" placeholder="Poser une question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
           <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
@@ -589,36 +589,36 @@ select.field-input{cursor:pointer;}
     <div class="tool-verification-card">
       <div class="tool-verification-head">
         <div>
-          <span class="tool-verification-kicker">Informations et hypothèses du calcul</span>
-          <h2 class="tool-verification-title">Informations et hypothèses du calcul</h2>
-          <p class="tool-verification-lead">Charger</p>
+          <span class="tool-verification-kicker">Contrôle du devis solaire</span>
+          <h2 class="tool-verification-title">Validez le plan du système avant de demander des devis</h2>
+          <p class="tool-verification-lead">Transformez la consommation des appareils, le rendement local, l’autonomie visée et la comparaison avec un groupe électrogène en un plan solaire copiable ou téléchargeable.</p>
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">Révisé en 2026</span>
-          <p class="tool-verification-note">Estimer</p>
+          <p class="tool-verification-note">Estimation locale dans le navigateur. Aucun devis en direct ni aucune approbation officielle ne sont fournis.</p>
         </div>
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block">
-          <h3>Informations et hypothèses du calcul</h3>
+          <h3>Points à vérifier</h3>
           <ul class="tool-verification-list">
-            <li>Calculer</li>
-            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
-            <li>Copier le résumé</li>
+            <li>Méthode : calcul des Wh quotidiens, de la pointe, des panneaux, de la batterie, de l’onduleur, du coût estimatif et de la comparaison avec un groupe électrogène à partir des hypothèses affichées.</li>
+            <li>Vérifiez la surface et l’ombrage de la toiture, la puissance des panneaux, la batterie, la pointe de l’onduleur, les qualifications de l’installateur, la garantie, le câblage, la mise à la terre et les tarifs locaux.</li>
+            <li>Utilisez la copie ou le CSV pour transmettre les mêmes hypothèses aux installateurs et comparer les devis équitablement.</li>
           </ul>
         </div>
         <div class="tool-verification-block">
           <h3>Limites</h3>
           <ul class="tool-verification-list">
-            <li>Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.</li>
-            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
-            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
+            <li>Avertissement : estimation de planification uniquement, sans devis d’installateur, offre de financement, accord du réseau, certificat électrique, garantie ni délai de retour garanti.</li>
+            <li>Le rendement solaire, l’état des batteries, les taux de change, les prix des équipements et du carburant ainsi que les tarifs varient selon le lieu et la date.</li>
+            <li>Sources : confrontez le résultat aux recommandations PVWatts/NREL actuelles, aux fiches des fabricants, aux tarifs locaux, aux prix du carburant et à l’avis d’un installateur.</li>
           </ul>
         </div>
       </div>
       <div class="tool-verification-actions">
         <a class="tool-verification-report" href="#resultsSection">Examiner le panneau de résultats</a>
-
+        <p class="tool-verification-disclaimer">Confidentialité : le calculateur fonctionne dans votre navigateur. N’ajoutez pas de numéro de compte, de contrat d’installation ni de donnée client privée aux notes que vous partagez.</p>
       </div>
     </div>
   </div>
@@ -639,11 +639,11 @@ select.field-input{cursor:pointer;}
 <afro-footer></afro-footer>
 
 <script src="/assets/js/engines/solar-calculator-engine.js?v=7b0f4b6a"></script>
-<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-1.js?v=4ced2881"></script>
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-1.js?v=4d2e1ac4"></script>
 
-<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-2.js?v=d8f5edfc"></script>
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-2.js?v=f50d53e8"></script>
 
-<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-3.js?v=31502e04"></script>
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-3.js?v=fd66a085"></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
 <script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>

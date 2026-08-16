@@ -8,6 +8,7 @@ const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const {
   OWNER_COPY,
+  OWNER_PAIRS,
   nativeGuide,
   sanitizeResidualEnglishHtml,
   structuredData,
@@ -83,6 +84,16 @@ function structuralHtmlSignature(html) {
     .trim();
 }
 
+function visiblePresentationSignature(html) {
+  return normalizeGeneratedHtml(html)
+    .replace(/<(script|style|noscript|textarea|pre|code)\b[\s\S]*?<\/\1\s*>/gi, ' ')
+    .replace(/\b(?:placeholder|aria-label|title|alt)=(['"])(.*?)\1/gi, ' $2 ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function sourceEquivalent(relativePath, current, expected) {
   const isHtml = /\.html?$/i.test(relativePath);
   const metaContent = (html, property) => html.match(
@@ -92,7 +103,9 @@ function sourceEquivalent(relativePath, current, expected) {
     ? (
       normalizeGeneratedHtml(current) === normalizeGeneratedHtml(expected)
       || structuralHtmlSignature(current) === structuralHtmlSignature(expected)
-    ) && metaContent(current, 'og:url') === metaContent(expected, 'og:url')
+    )
+      && visiblePresentationSignature(current) === visiblePresentationSignature(expected)
+      && metaContent(current, 'og:url') === metaContent(expected, 'og:url')
     : current === expected;
   return equivalent;
 }
@@ -312,7 +325,7 @@ function safePairs(pairs) {
     typeof from === 'string' &&
     typeof to === 'string' &&
     from.length > 0 &&
-    from.length <= 180 &&
+    from.length <= 400 &&
     to.length > 0 &&
     to.length <= 240 &&
     !/[{};]/.test(from) &&
@@ -464,29 +477,31 @@ function englishHreflang(row, html, frenchRoute) {
 
 function applyFrenchMetadata(row, html, frenchRoute) {
   const copy = OWNER_COPY[row.id];
+  const metadataName = row.metadataName || copy.name;
+  const metadataPurpose = row.metadataPurpose || copy.purpose;
   const englishUrl = `https://afrotools.com${row.english}`;
   const frenchUrl = `https://afrotools.com${frenchRoute}`;
   const artwork = (row.artwork || [])[0];
   const artworkUrl = artwork
     ? `https://afrotools.com/assets/img/tools/${artwork}`
     : 'https://afrotools.com/assets/img/og/og-home-v2.webp';
-  const description = `${copy.purpose} Calcul local, hypothèses visibles et résultats exportables pour les projets africains.`;
+  const description = `${metadataPurpose} Calcul local, hypothèses visibles et résultats exportables pour les projets africains.`;
   const siblings = [...html.matchAll(/<link rel="alternate" hreflang="(?!en|fr|x-default)([^"]+)" href="([^"]+)">/gi)]
     .map((match) => `<link rel="alternate" hreflang="${match[1]}" href="${match[2]}">`);
 
   html = html.replace(/<html([^>]*)\blang="[^"]*"([^>]*)>/i, '<html$1lang="fr"$2>');
-  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${copy.name} | AfroTools</title>`);
+  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${metadataName} | AfroTools</title>`);
   html = html.replace(
     /<meta name="description" content="[^"]*">/i,
     `<meta name="description" content="${description}">`
   );
   html = html.replace(
     /<meta property="og:title" content="[^"]*">/i,
-    `<meta property="og:title" content="${copy.name} | AfroTools">`
+    `<meta property="og:title" content="${metadataName} | AfroTools">`
   );
   html = html.replace(
     /<meta property="og:description" content="[^"]*">/i,
-    `<meta property="og:description" content="${copy.purpose}">`
+    `<meta property="og:description" content="${metadataPurpose}">`
   );
   html = html.replace(
     /<meta\b(?=[^>]*\bproperty="og:url")[^>]*>/i,
@@ -506,11 +521,11 @@ function applyFrenchMetadata(row, html, frenchRoute) {
   );
   html = html.replace(
     /<meta name="twitter:title" content="[^"]*">/i,
-    `<meta name="twitter:title" content="${copy.name} | AfroTools">`
+    `<meta name="twitter:title" content="${metadataName} | AfroTools">`
   );
   html = html.replace(
     /<meta name="twitter:description" content="[^"]*">/i,
-    `<meta name="twitter:description" content="${copy.purpose}">`
+    `<meta name="twitter:description" content="${metadataPurpose}">`
   );
   html = html.replace(/\s*<link rel="canonical" href="[^"]*">/i, '');
   html = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
@@ -533,7 +548,7 @@ function applyFrenchMetadata(row, html, frenchRoute) {
 }
 
 function frenchHtml(row, html, frenchRoute, rawPairs) {
-  const pairs = safePairs(rawPairs);
+  const pairs = safePairs([...(OWNER_PAIRS[row.id] || []), ...rawPairs]);
   html = localizeControllerReferences(html, pairs, row);
   html = localizeInlineControllers(html, pairs, row);
   html = translateVisibleHtml(html, pairs);
@@ -585,7 +600,9 @@ function writeAfrodraftWorkspace() {
     id: 'afrodraft',
     english: englishRoute,
     contentId: 'fr-engineering:afrodraft-workspace',
-    artwork: ['afrodraft.webp']
+    artwork: ['afrodraft.webp'],
+    metadataName: 'AfroDraft — espace de dessin CAO 2D',
+    metadataPurpose: 'Dessinez, cotez, annotez et exportez un plan 2D dans le navigateur.'
   };
   const current = fs.readFileSync(englishFile, 'utf8');
   const nextEnglish = englishHreflang(row, current, frenchRoute);
@@ -614,6 +631,7 @@ function writeAfrodraftWorkspace() {
   let french = sanitizeResidualEnglishHtml(translateVisibleHtml(nextEnglish), row);
   french = replaceEnglishOnlyComponents(french, row);
   french = applyFrenchMetadata(row, french, frenchRoute)
+    .replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, '$1AfroDraft — espace de dessin CAO 2D$2')
     .replace(/href="assets\//g, 'href="/engineering/afrodraft/assets/')
     .replace(/src="app\.js[^"]*/g, 'src="/engineering/afrodraft/app.fr.js')
     .replace(
@@ -640,9 +658,13 @@ function writeAfrodraftWorkspace() {
     changed += 1;
     if (write) fs.writeFileSync(englishFile, nextEnglish);
   }
+  const currentFrench = fs.existsSync(frenchFile) ? fs.readFileSync(frenchFile, 'utf8') : '';
+  const currentFrenchTitle = currentFrench.match(/<title>([\s\S]*?)<\/title>/i)?.[1] || '';
+  const expectedFrenchTitle = french.match(/<title>([\s\S]*?)<\/title>/i)?.[1] || '';
   if (
-    !fs.existsSync(frenchFile)
-    || !sourceEquivalent('fr/ingenierie/afrodraft/app.html', fs.readFileSync(frenchFile, 'utf8'), french)
+    !currentFrench
+    || currentFrenchTitle !== expectedFrenchTitle
+    || !sourceEquivalent('fr/ingenierie/afrodraft/app.html', currentFrench, french)
   ) {
     changed += 1;
     if (write) {

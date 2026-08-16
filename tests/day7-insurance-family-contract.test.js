@@ -35,9 +35,13 @@ for (const [tool, expectedCount] of Object.entries(expected)) {
     const canonicalPath = slug ? route : `/tools/${tool}/`;
     const html = fs.readFileSync(path.join(directory, file), 'utf8');
     const canonical = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+    const title = (html.match(/<title>([^<]+)<\/title>/) || [])[1] || '';
+    const description = (html.match(/<meta name="description" content="([^"]+)">/) || [])[1] || '';
     assert.strictEqual(canonical, `https://afrotools.com${canonicalPath}`, `${route} canonical drifted`);
     assert.match(html, /<title>[^<]{20,}\| AfroTools<\/title>/, `${route} title is not useful`);
     assert.match(html, /<meta name="description" content="[^"]{80,}">/, `${route} description is not useful`);
+    assert.ok(title.length <= 65, `${route} title must keep the task and country ahead of search truncation`);
+    assert.ok(description.length <= 180, `${route} description must remain within the useful search-snippet range`);
     assert.match(html, /"@type"\s*:\s*"WebApplication"/, `${route} schema is missing`);
     assert.match(html, /data-insurance-workflow/, `${route} workflow is missing`);
     assert.match(html, /Empty inputs stay empty/, `${route} empty-state boundary is missing`);

@@ -4,9 +4,13 @@
 const fs = require("fs");
 const path = require("path");
 const inventory = require("../reports/swahili-free-app-parity-inventory.json");
+const assignedManifest = require("../data/localization/sw-education-parity.json");
 
 const root = path.resolve(__dirname, "..");
-const rows = inventory.rows.filter((row) => row.categoryKey === "education" && !row.accepted);
+const assignedIds = new Set(assignedManifest.routes.map((route) => route.id));
+const rows = inventory.rows.filter(
+  (row) => row.categoryKey === "education" && assignedIds.has(row.englishId)
+);
 const acceptanceState = "candidate-proof-pending";
 const refreshTranslations = process.argv.includes("--refresh-translations");
 const translationCachePath = path.join(root, "data", "i18n", "sw-education-parity-translations.json");

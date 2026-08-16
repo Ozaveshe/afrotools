@@ -38,7 +38,7 @@ const SW_ENERGY_REMAINING_APPS = [
   },
   {
     id: "solar-vs-generator", slug: "solar-dhidi-ya-generator", frSlug: "solaire-vs-generateur",
-    title: "Solar dhidi ya Generator", description: "Linganisha gharama za miaka mitano za generator na mfumo wa solar kwa mzigo na saa zako za akiba.",
+    title: "Nishati ya Jua dhidi ya Jenereta", description: "Linganisha gharama za miaka mitano za jenereta na mfumo wa nishati ya jua kwa mzigo na saa zako za akiba.",
     engine: "solar-vs-generator-engine", global: "SolarVsGeneratorEngine",
     fields: [number("dailyHours", "Saa za akiba kwa siku", 6, 0.5, 0.5, {max:24}), number("genKVA", "Ukubwa wa generator (kVA)", 5, 0, 0.1, {required:false}), number("dailyKWh", "Mahitaji ya nishati kwa siku (kWh)", 20, 0, 0.1, {required:false})],
     metrics: [["gen5yrTotal","Jumla ya generator miaka 5"],["solar5yrTotal","Jumla ya solar miaka 5"],["savings5yr","Tofauti ya gharama"],["paybackYrs","Muda wa kurejesha gharama"]],
@@ -87,7 +87,7 @@ const SW_ENERGY_REMAINING_APPS = [
   },
   {
     id: "appliance-power", slug: "matumizi-ya-umeme-ya-vifaa", frSlug: "consommation-appareils",
-    title: "Matumizi ya Umeme ya Vifaa", description: "Kokotoa watt, kWh na gharama ya kifaa kwa saa na idadi unayotumia.",
+    title: "Matumizi ya Umeme ya Vifaa", description: "Kokotoa watt, kWh na gharama ya kifaa kwa saa na idadi unayotumia, kwa tarifa na muda unaoweka mwenyewe.",
     engine: "appliance-power-engine", global: "AppliancePowerEngine", mode: "appliance", countryInInput: true,
     fields: [number("watts", "Nguvu ya kifaa (W)", 100, 0.1), number("hoursPerDay", "Saa kwa siku", 6, 0.1, 0.1, {max:24}), number("qty", "Idadi ya vifaa", 1, 1, 1), number("standbyWatts", "Nguvu ya kusubiri (W)", 0, 0, 0.1, {required:false})],
     metrics: [["totalWatts","Mzigo wote"],["dailyKWh","Matumizi kwa siku"],["monthlyKWh","Matumizi kwa mwezi"],["monthlyBill","Bili ya mwezi"]],
@@ -129,7 +129,7 @@ const SW_ENERGY_REMAINING_APPS = [
   },
   {
     id: "generator-fuel", slug: "gharama-za-mafuta-ya-generator", frSlug: "carburant-generateur",
-    title: "Gharama za Mafuta ya Generator", description: "Kadiria lita, gharama ya siku, mwezi na mwaka ya kuendesha generator kwa nakala ya bei ya mafuta.",
+    title: "Gharama za Mafuta ya Jenereta", description: "Kadiria lita na gharama ya siku, mwezi na mwaka ya kuendesha jenereta kwa nakala ya bei ya mafuta.",
     engine: "generator-fuel-engine", global: "GeneratorFuelEngine",
     fields: [number("genKVA", "Ukubwa wa generator (kVA)", 5, 0.1), number("dailyHours", "Saa za matumizi kwa siku", 6, 0.1, 0.1, {max:24}), select("fuelType", "Aina ya mafuta", [["diesel","Dizeli"],["petrol","Petroli"]])],
     metrics: [["litrePerHour","Lita kwa saa"],["dailyCost","Gharama kwa siku"],["monthlyCost","Gharama kwa mwezi"],["totalAnnualCost","Jumla kwa mwaka"]],

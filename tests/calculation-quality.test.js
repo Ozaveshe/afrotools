@@ -57,6 +57,22 @@ test('legacy HTML formula digests ignore presentation-only disclosure state', fu
   assert.strictEqual(quality.digestFile(ROOT, egyptRoute.artifactPath), egyptRoute.artifactDigest);
 });
 
+test('maternity leave SEO presentation does not create protected formula drift', function () {
+  const formula = artifacts.formulas.formulas.find((entry) => entry.id === 'route-maternity-leave');
+  assert.ok(formula, 'missing protected maternity leave route formula');
+  const source = fs.readFileSync(path.join(ROOT, formula.artifactPath), 'utf8');
+  const seoVariant = source
+    .replace(/<title>[\s\S]*?<\/title>/i, '<title>Alternate reviewed search title</title>')
+    .replace(/<meta\b(?=[^>]*\bname=["']description["'])[^>]*>/i, '<meta name="description" content="Alternate reviewed search description.">');
+  assert.strictEqual(quality.digestHtmlFormulaSource(source), formula.artifactDigest);
+  assert.strictEqual(quality.digestHtmlFormulaSource(seoVariant), formula.artifactDigest);
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(source.replace('verified-planner.js', 'verified-planner-v2.js')),
+    formula.artifactDigest,
+    'changing protected planner wiring must still change the route digest'
+  );
+});
+
 test('HTML formula digests ignore reviewed presentation-asset cache versions only', function () {
   const formulaPage = (cacheVersion, rate) => [
     '<html><body><script>',

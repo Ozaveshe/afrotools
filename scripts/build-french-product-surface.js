@@ -30,6 +30,7 @@ const {
   normalizeBuildManagedHtml,
   normalizeBuildManagedFingerprint
 } = require('./lib/shared-asset-references');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -131,7 +132,7 @@ function output(rel, value) {
   ) return;
   if (WRITE) {
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, normalized, 'utf8');
+    writeFileSyncWithRetry(file, normalized, 'utf8');
     changed.push(rel);
   } else failures.push(`${rel}: generated French product surface is stale`);
 }

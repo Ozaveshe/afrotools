@@ -74,8 +74,8 @@ var COUNTRIES = [
 ];
 
 function pageHtml(c) {
-  var title  = 'Agricultural Export Documentation Checklist for ' + c.name + ' | AfroTools';
-  var desc   = 'Complete checklist of all documents required to export agricultural products from ' + c.name + '. Includes phytosanitary certificates, export licences, AfCFTA certificates of origin, customs forms, and commodity-specific requirements.';
+  var title  = 'Export Documents — ' + c.name + ' | AfroTools';
+  var desc   = 'Plan an agricultural export from ' + c.name + ': check licences, phytosanitary and origin documents, customs forms, and commodity requirements before shipment.';
   var url    = 'https://afrotools.com/agriculture/export-docs/' + c.slug;
   var h1     = c.flag + ' ' + c.name + ' Agricultural Export Documentation Checklist';
   var heroSub = 'Select your product and destination to generate a complete, printable checklist of every document you need to export from ' + c.name + '. Covers ' + c.topExports + ' and more.';
@@ -89,7 +89,7 @@ function pageHtml(c) {
 '<meta name="description" content="' + desc + '">\n' +
 '<link rel="canonical" href="' + url + '">\n' +
 '\n' +
-'<meta property="og:title" content="' + c.name + ' Agricultural Export Documentation Checklist &mdash; AfroTools">\n' +
+'<meta property="og:title" content="' + title + '">\n' +
 '<meta property="og:description" content="' + desc + '">\n' +
 '<meta property="og:url" content="' + url + '">\n' +
 '<meta property="og:type" content="website">\n' +
@@ -97,7 +97,7 @@ function pageHtml(c) {
 '<meta name="twitter:card" content="summary_large_image">\n' +
 '<meta property="og:locale" content="en_US">\n' +
 '<meta property="og:site_name" content="AfroTools">\n' +
-'<meta name="twitter:title" content="' + c.name + ' Agricultural Export Documentation Checklist &mdash; AfroTools">\n' +
+'<meta name="twitter:title" content="' + title + '">\n' +
 '<meta name="twitter:description" content="' + desc + '">\n' +
 '<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">\n' +
 '\n' +

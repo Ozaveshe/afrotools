@@ -217,11 +217,11 @@ function renderAppliances(){
   appliances.forEach((app, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;" aria-label="Appareil name"></td>
-      <td><input aria-label="Appareil Puissance (W)" type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
-      <td><input aria-label="Appareil Quantité" type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
-      <td><input aria-label="Appareil hours per day" type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
-      <td><button type="button" class="appliance-del" onclick="removeAppliance(${i})" aria-label="Supprimer Appareil">✕</button></td>
+      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;" aria-label="Nom de l’appareil"></td>
+      <td><input aria-label="Puissance de l’appareil" type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
+      <td><input aria-label="Quantité d’appareils" type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
+      <td><input aria-label="Heures d’utilisation par jour" type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
+      <td><button type="button" class="appliance-del" onclick="removeAppliance(${i})" aria-label="Supprimer l’appareil">✕</button></td>
     `;
     tbody.appendChild(tr);
   });
@@ -229,7 +229,7 @@ function renderAppliances(){
 }
 
 function addAppliance(){
-  appliances.push({name:'New Appareil',watts:0,qty:1,hrs:0});
+  appliances.push({name:'Nouvel appareil',watts:0,qty:1,hrs:0});
   renderAppliances();
 }
 
@@ -258,7 +258,7 @@ function updateTotals(){
 // ── CALCULATE ──
 function calculate(){
   const {totalWh, peakW} = getTotals();
-  if(totalWh === 0){ alert('Please add some Appareils first.'); return; }
+  if(totalWh === 0){ alert('Ajoutez d’abord au moins un appareil.'); return; }
 
   const psh = selectedCountry.psh;
   const panelW = +document.getElementById('panelWatts').value;
@@ -273,13 +273,27 @@ function calculate(){
 
   // Build a PVWatts-style derating profile from site inputs.
   const firstPassSite = getSiteProfile(psh, panelW, 0);
+  const sharedSizing = window.SolarCalculatorEngine.calculate({
+    appliances: appliances.map(function(item){return {name:item.name,watts:item.watts,qty:item.qty,hoursPerDay:item.hrs};}),
+    sunHours: psh, panelWatts: panelW, batteryType: battType, backupDays: backupDays,
+    systemType: systemType, orientationFactor: numVal('orientationFactor',1),
+    shadeLossPct: numVal('shadeLoss',0), soilingLossPct: numVal('soilingLoss',7),
+    roofArea: numVal('roofArea',0), monthlyGeneratorCost: genCost, usdRate: 1
+  });
+  if(sharedSizing.error){ alert('Vérifiez la consommation des appareils et les hypothèses du site.'); return; }
 
   // ── PANELS ──
   // Panel kWp needed = daily Wh needed / derated peak sun hours.
-  const panelKW = totalWh / (firstPassSite.effectivePsh * 1000);
-  const numPanels = Math.ceil(panelKW * 1000 / panelW);
-  const actualKWp = (numPanels * panelW) / 1000;
-  const siteProfile = getSiteProfile(psh, panelW, numPanels);
+  const panelKW = sharedSizing.arrayKwp;
+  const numPanels = sharedSizing.panels;
+  const actualKWp = sharedSizing.arrayKwp;
+  const siteProfile = Object.assign(getSiteProfile(psh, panelW, numPanels), {
+    effectivePsh: sharedSizing.effectiveSunHours,
+    roofNeeded: sharedSizing.roofNeeded,
+    roofAvailable: sharedSizing.roofAvailable,
+    roofOk: sharedSizing.roofOk,
+    totalLossPct: sharedSizing.lossPercent
+  });
 
   // ── BATTERIES ──
   const dod = BATT_DOD[battType];
@@ -288,26 +302,26 @@ function calculate(){
   // Panel-side losses (soiling, shade, orientation) size the array, not the
   // battery, so use the real load and let round-trip efficiency (eff) and
   // depth of discharge (dod) carry the storage derate.
-  const battKWhNeeded = needsBattery ? (totalWh / 1000) * backupDays / (dod * eff) : 0;
-  const numBatteries = needsBattery ? Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH) : 0;
-  const actualBattKWh = (numBatteries * BATT_UNIT_WH) / 1000;
+  const battKWhNeeded = sharedSizing.batteryKwh;
+  const numBatteries = sharedSizing.batteries;
+  const actualBattKWh = sharedSizing.batteryKwh;
 
   // ── INVERTER ──
   // Size for peak load + 20% headroom
-  const invKVA = Math.ceil((peakW * 1.2) / 1000 * 2) / 2; // round up to nearest 0.5 kVA
+  const invKVA = sharedSizing.inverterKva;
 
   // ── MPPT ──
-  const mpptA = Math.ceil(actualKWp * 1000 / (panelW > 400 ? 24 : 12) * 1.25 / 10) * 10;
+  const mpptA = sharedSizing.mpptA;
 
   // ── APPROX SYSTEM COST ──
-  const panelCostUSD = numPanels * 220; // ~$220/400W panel
+  const panelCostUSD = numPanels * sharedSizing.assumptions.panelUsd;
   const battCostUSD = numBatteries * (battType === 'lifepo4' ? 280 : 90);
-  const invCostUSD = invKVA * 180;
-  const totalCostUSD = (panelCostUSD + battCostUSD + invCostUSD) * 1.3; // +30% installation
+  const invCostUSD = invKVA * sharedSizing.assumptions.inverterUsdPerKva;
+  const totalCostUSD = sharedSizing.systemCostUsd;
 
   // ── ROI ──
-  const monthlyGenCost = genCost;
-  const annualGenCost = monthlyGenCost * 12;
+  const monthlyGenCost = sharedSizing.monthlyGeneratorCost;
+  const annualGenCost = sharedSizing.annualGeneratorCost;
 
   // Currency conversion (rough)
   const USD_RATES = {
@@ -364,7 +378,7 @@ function calculate(){
   // Diagram
   document.getElementById('diagPanels').textContent = numPanels + ' × ' + panelW + 'W';
   document.getElementById('diagMPPT').textContent = mpptA + 'A MPPT';
-  document.getElementById('diagBatt').textContent = needsBattery ? actualBattKWh.toFixed(1) + ' kWh' : 'Grid-tie only';
+  document.getElementById('diagBatt').textContent = needsBattery ? actualBattKWh.toFixed(1) + ' kWh' : 'Raccordement au réseau uniquement';
   document.getElementById('diagInv').textContent = invKVA + ' kVA';
   document.getElementById('diagLoad').textContent = (totalWh/1000).toFixed(1) + ' kWh/d';
 
@@ -379,7 +393,7 @@ function calculate(){
   buildSiteQA(siteProfile, systemType, totalWh, peakW);
 
   document.getElementById('resultsSection').style.display = 'block';
-  setSolarExportStatus('Dimensionnement solaire prêt. Copiez ou téléchargez le plan avant de demander des devis.');
+  setSolarExportStatus('Le dimensionnement est prêt. Copiez ou téléchargez le plan avant de demander des devis.');
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -387,7 +401,7 @@ function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
   const tbody = document.getElementById('roiTableBody');
   tbody.innerHTML = '';
   const roiChart = document.getElementById('roiChart');
-  roiChart.innerHTML = '<div style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">10-Year Cumulative Coût Comparison</div>';
+  roiChart.innerHTML = '<div style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Comparaison des coûts cumulés sur 10 ans</div>';
 
   let solarCum = sysCost;
   let genCum = 0;
@@ -402,7 +416,7 @@ function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>Year ${y}</td>
+      <td>Année ${y}</td>
       <td>${sym}${formatNum(Math.round(solarCum))}</td>
       <td>${sym}${formatNum(Math.round(genCum))}</td>
       <td class="${saving>0?'positive':'neutral'}">${saving>0?'Saved ':'Loss '}${sym}${formatNum(Math.abs(Math.round(saving)))}</td>
@@ -416,7 +430,7 @@ function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
       const solarPct = Math.min(100, (solarCum/maxBar)*100);
       const genPct = Math.min(100, (genCum/maxBar)*100);
       barWrap.innerHTML = `
-        <div class="roi-bar-label">Year ${y}</div>
+        <div class="roi-bar-label">Année ${y}</div>
         <div style="flex:1;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
             <div style="width:60px;font-size:.68rem;color:#6b7280;">Solaire</div>
@@ -444,7 +458,7 @@ function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA, site, s
     ['Capacité totale des batteries', `${bKWh.toFixed(1)} kWh usable`, sysType==='ongrid' ? 'Les systèmes raccordés utilisent l’injection réseau ou l’autoconsommation' : 'Raccordez les batteries en série ou en parallèle pour un parc de 24 V ou 48 V'],
     ['Inverter/Charger', `${invKVA} kVA`, invRecs],
     ['Régulateur MPPT', `${mpptA}A`, 'Victron SmartSolar or EPever MPPT'],
-    ['Câble CC (Panels→MPPT)', `Panneaux en série → entrée MPPT`, '6mm² or 10mm² DC Solaire cable (TÜV certified)'],
+    ['Câble CC (Panneaux→MPPT)', `Panneaux en série → entrée MPPT`, '6mm² or 10mm² DC Solaire cable (TÜV certified)'],
     ['Câble CA (Inv→DB)', `Tableau de distribution CA`, '6mm² pour les longueurs inférieures à 10m, 10mm² pour les longueurs supérieures'],
     ['Support', `Pose sur toiture ou au sol`, (function(){ const tilt = Math.min(35, Math.abs(selectedCountry.lat||5)+10); const dir = (selectedCountry.lat||0)<0?'north':'south'; return `Tilt ${tilt}° ${dir}-facing for ${selectedCountry.name}. Support fixe sur toiture IBR ou béton.`; })()],
   ];
@@ -461,8 +475,8 @@ function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA, site, s
 function buildTips(country, sysType, battType, nPanels, invKVA, site){
   const tips = [
     `<strong>☀️ ${country.name} Conseils solaires :</strong> With ${country.psh} peak sun hours/day, ${country.name} dispose d’un excellent potentiel solaire. La saison sèche produit davantage d’énergie - dimensionnez le parc de batteries pour la saison des pluies.`,
-    `<strong>Pertes sur Chantier :</strong> This run uses ${site.totalLossPct}% de pertes cumulées et ${site.effectivePsh.toFixed(1)} heures solaires effectives par jour. Réduisez l’ombrage et la poussière avant d’acheter des panneaux supplémentaires.`,
-    `<strong>Contrôle de la toiture :</strong> Prévoyez environ ${Math.ceil(site.roofNeeded)} m2 de toiture utilisable pour ${nPanels} panels. ${site.roofOk ? 'Your Toiture Surface input does not show a space problem.' : 'Your entered Toiture Surface is too small for this array.'}`,
+    `<strong>Pertes sur site :</strong> This run uses ${site.totalLossPct}% de pertes cumulées et ${site.effectivePsh.toFixed(1)} heures solaires effectives par jour. Réduisez l’ombrage et la poussière avant d’acheter des panneaux supplémentaires.`,
+    `<strong>Contrôle de la toiture :</strong> Prévoyez environ ${Math.ceil(site.roofNeeded)} m2 de toiture utilisable pour ${nPanels} Panneaux. ${site.roofOk ? 'Your Toiture Surface input does not show a space problem.' : 'Your entered Toiture Surface is too small for this array.'}`,
     `<strong>🔋 Conseil batterie :</strong> ${battType==='lifepo4'?'La technologie LiFePO4 est adaptée - 3,500+ cycles correspondent à une durée de dix ans avec un entretien correct. Limitez la charge quotidienne à 90 %, pas à 100 %.':'Prévoyez des batteries lithium LiFePO4 lorsque le budget le permet. Elles durent cinq à sept fois plus longtemps que les batteries au plomb.'}`,
     `<strong>⚡ Dimensionnement de l’onduleur :</strong> Your ${invKVA}kVA l’onduleur couvre les charges normales. Évitez de faire fonctionner simultanément les appareils à fort courant de démarrage (AC Pièces, Eau pumps, welders) simultanément. Les charges motorisées présentent 3-6× un courant de démarrage.`,
     `<strong>🌡️ Gestion thermique :</strong> Les panneaux solaires perdent du rendement au-dessus de 25°C. Sous les climats tropicaux africains, appliquez un déclassement de 15-20%. Prévoyez 10-15cm de lame d’air sous les panneaux pour le refroidissement.`,
@@ -473,7 +487,7 @@ function buildTips(country, sysType, battType, nPanels, invKVA, site){
   const sysNotes = {
     offgrid: `<strong>🏠 Off-Grid Mode:</strong> You are fully independent from the utility grid. Diamètre your Parc de batteries generously - ${Math.round(+document.getElementById('backupDays').value)} jours of autonomy during cloudy periods.`,
     hybrid: `<strong>🔌 Hybrid Mode:</strong> Your Solaire charges batteries first, uses grid as backup. This is ideal for most African cities - you get Solaire savings while maintaining grid reliability.`,
-    ongrid: `<strong>🔄 On-Grid (Grid-Tied):</strong> Non battery nécessaires. Feed excess power back to the grid if your utility allows net metering. Check with your DISCO/utility about connection requirements.`,
+    ongrid: `<strong>🔄 Raccordé au réseau:</strong> Non battery nécessaires. Feed excess power back to the grid if your utility allows net metering. Check with your DISCO/utility about connection requirements.`,
   };
   tips.push(sysNotes[sysType]);
 
@@ -483,11 +497,11 @@ function buildTips(country, sysType, battType, nPanels, invKVA, site){
 // ── TABS ──
 function buildSiteQA(site, sysType, totalWh, peakW){
   const cards = [
-    ['PVWatts-style derate', `${site.totalLossPct}% total loss. Direction: ${site.orientationLabel || 'Best facing Toiture'}, shade: ${site.shadePct}%, dust: ${site.soilingPct}%.`],
-    ['Load discipline', `${(totalWh/1000).toFixed(1)} kWh/day and ${formatNum(peakW)} W peak. Move irons, kettles, welders and pumps to grid or Générateur unless the inverter is sized for surge.`],
-    ['Toiture fit', site.roofAvailable ? `${Math.ceil(site.roofAvailable)} m2 entered, ${Math.ceil(site.roofNeeded)} m2 nécessaires. ${site.roofOk ? 'Space looks workable.' : 'Reduce loads, use higher watt panels or split the array.'}` : `Enter usable Toiture Surface to catch space problems before quoting. Estimer now: ${Math.ceil(site.roofNeeded)} m2.`],
+    ['PVWatts-style derate', `${site.totalLossPct}% total loss. Direction: ${site.orientationLabel || 'Toiture orientée de façon optimale'}, shade: ${site.shadePct}%, dust: ${site.soilingPct}%.`],
+    ['Load discipline', `${(totalWh/1000).toFixed(1)} kWh/day and ${formatNum(peakW)} W peak. Move irons, kettles, welders and pumps to grid or Générateur unless the Onduleur is sized for surge.`],
+    ['Toiture fit', site.roofAvailable ? `${Math.ceil(site.roofAvailable)} m2 entered, ${Math.ceil(site.roofNeeded)} m2 nécessaires. ${site.roofOk ? 'Space looks workable.' : 'Reduce Charges, use higher watt Panneaux or split the array.'}` : `Enter Surface de toiture utilisable to catch space problems before quoting. Estimer now: ${Math.ceil(site.roofNeeded)} m2.`],
     ['System mode', sysType === 'ongrid' ? 'Grid-tied mode skips batteries. Confirm net metering, anti-islanding protection and utility approval.' : 'Backup mode includes batteries. Confirm ventilation, cable protection, fuses and safe battery location.'],
-    ['Installer handoff', 'Ask for string Mise en page, isolators, earthing, breaker schedule, battery datasheet, inverter surge rating and warranty terms.']
+    ['Installer handoff', 'Ask for string Mise en page, isolators, earthing, breaker schedule, battery datasheet, Onduleur surge rating and warranty terms.']
   ];
   const target = document.getElementById('siteQaContent');
   if(!target) return;
@@ -516,12 +530,12 @@ function solarPlanText(){
     'Daily load: ' + (d.totalWh/1000).toFixed(1) + ' kWh',
     'Peak load: ' + Math.round(d.peakW).toLocaleString('en') + ' W',
     'System mode: ' + d.systemType,
-    'Panels: ' + d.panels + ' x ' + d.panelWatts + 'W (' + d.arrayKwp.toFixed(1) + ' kWp)',
+    'Panneaux: ' + d.panels + ' x ' + d.panelWatts + 'W (' + d.arrayKwp.toFixed(1) + ' kWp)',
     'Parc de batteries: ' + d.batteries + ' batteries, approx ' + d.batteryKwh.toFixed(1) + ' kWh (' + d.batteryType + ')',
-    'Inverter: ' + d.inverterKva + ' kVA',
+    'Onduleur: ' + d.inverterKva + ' kVA',
     'MPPT: ' + d.mpptA + 'A',
     'Ensoleillement effectif: ' + d.effectiveSunHours.toFixed(1) + ' hours after ' + d.lossPercent + '% losses',
-    'Toiture Surface nécessaires: ' + Math.ceil(d.roofNeeded) + ' m2',
+    'Surface de toiture nécessaire: ' + Math.ceil(d.roofNeeded) + ' m2',
     'Estimatif system Coût: ' + d.currencySymbol + formatNum(Math.round(d.systemCostLocal)),
     'Monthly Générateur Coût entered: ' + d.currencySymbol + formatNum(Math.round(d.monthlyGeneratorCost)),
     '',
@@ -530,33 +544,33 @@ function solarPlanText(){
 }
 
 function copySolarPlan(){
-  if(!window.__solarLatest){setSolarExportStatus('Run the Solaire Calculateur first.');return}
+  if(!window.__solarLatest){setSolarExportStatus('Lancez d’abord le calculateur solaire.');return}
   const text = solarPlanText();
-  const done = () => setSolarExportStatus('Solaire plan copied.');
+  const done = () => setSolarExportStatus('Plan solaire copié.');
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(done).catch(()=>{window.prompt('Copier Solaire plan', text);done();});
+    navigator.clipboard.writeText(text).then(done).catch(()=>{window.prompt('Copier le plan solaire', text);done();});
   } else {
-    window.prompt('Copier Solaire plan', text);
+    window.prompt('Copier le plan solaire', text);
     done();
   }
 }
 
 function downloadSolarCsv(){
   const d = window.__solarLatest;
-  if(!d){setSolarExportStatus('Run the Solaire Calculateur first.');return}
+  if(!d){setSolarExportStatus('Lancez d’abord le calculateur solaire.');return}
   const rows = [
     ['Field','Value'],
     ['Pays', d.country],
     ['Daily load kWh', (d.totalWh/1000).toFixed(2)],
     ['Peak load W', Math.round(d.peakW)],
     ['System mode', d.systemType],
-    ['Panels', d.panels],
-    ['Panel Puissance (W)', d.panelWatts],
+    ['Panneaux', d.panels],
+    ['Puissance du panneau', d.panelWatts],
     ['Array kWp', d.arrayKwp.toFixed(2)],
     ['Batteries', d.batteries],
     ['Type de batterie', d.batteryType],
     ['Battery kWh', d.batteryKwh.toFixed(2)],
-    ['Inverter kVA', d.inverterKva],
+    ['Onduleur kVA', d.inverterKva],
     ['MPPT amps', d.mpptA],
     ['Ensoleillement effectif hours', d.effectiveSunHours.toFixed(2)],
     ['Toiture Surface m2', Math.ceil(d.roofNeeded)],
@@ -574,7 +588,7 @@ function downloadSolarCsv(){
   a.click();
   a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),1500);
-  setSolarExportStatus('CSV downloaded.');
+  setSolarExportStatus('CSV téléchargé.');
 }
 
 function setSolarExportStatus(message){

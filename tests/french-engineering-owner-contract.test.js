@@ -157,6 +157,32 @@ for (const row of manifest.routes) {
   }
 }
 
+const frenchSolar = fs.readFileSync(fileFor('/fr/tools/calculateur-solaire/'), 'utf8');
+for (const expected of [
+  'Dimensionnement du système solaire',
+  'Configuration du système',
+  'Puissance de pointe',
+  'Dimensionner mon système solaire',
+  'Notes sur la méthode',
+  'Poser une question'
+]) {
+  assert.match(frenchSolar, new RegExp(expected), `French solar surface is missing reviewed copy: ${expected}`);
+}
+for (const residualEnglish of [
+  'Solar System Sizer',
+  'System Setup',
+  'Peak Power Demand',
+  'Calculate My Solar System',
+  'Method notes',
+  'Ask a question'
+]) {
+  assert.doesNotMatch(
+    frenchSolar,
+    new RegExp(`(?:>|=["'])[^<"'\\n]*${residualEnglish}`, 'i'),
+    `French solar surface leaked English copy: ${residualEnglish}`
+  );
+}
+
 const frenchHub = fs.readFileSync(path.join(ROOT, 'fr/ingenierie/index.html'), 'utf8');
 const englishHub = fs.readFileSync(path.join(ROOT, 'engineering/index.html'), 'utf8');
 assert.match(frenchHub, /<html\b[^>]*\blang="fr"/);

@@ -7,14 +7,14 @@ let count=0;
 for(const cc in C){
   const c=C[cc], e=E[cc];
   if(!e)continue;
-  const title=c.name+' Employment Contract Builder — '+e.labourLaw.split('(')[0].trim()+' | AfroTools';
-  const desc='Generate professional employment contracts compliant with '+c.name+' labour law ('+e.labourLaw.split(';')[0].trim()+'). Minimum wage, pension, leave, notice periods, and more.';
+  const title='Employment Contract — '+c.name+' | AfroTools';
+  const desc='Draft an employment contract for '+c.name+' with pay, leave, notice and key clauses; review it under local law before signing.';
   const url='https://afrotools.com/tools/employment-contract/'+c.slug;
   const mwText=e.minimumWage.amount?c.currencySymbol+e.minimumWage.amount.toLocaleString()+'/'+e.minimumWage.period:'No statutory minimum wage';
 
   const schema1=JSON.stringify({
     '@context':'https://schema.org','@type':'WebApplication',
-    name:c.name+' Employment Contract Builder | AfroTools',description:desc,url:url,
+    name:'Employment Contract — '+c.name,description:desc,url:url,
     applicationCategory:'BusinessApplication',
     provider:{'@type':'Organization',name:'AfroTools',url:'https://afrotools.com'},
     offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}
@@ -44,7 +44,7 @@ for(const cc in C){
 <title>${title.replace(/"/g,'&quot;')}</title>
 <meta name="description" content="${desc.replace(/"/g,'&quot;')}">
 <link rel="canonical" href="${url}">
-<meta property="og:title" content="${(c.name+' Employment Contract Builder | AfroTools').replace(/"/g,'&quot;')}">
+<meta property="og:title" content="${title.replace(/"/g,'&quot;')}">
 <meta property="og:description" content="${desc.replace(/"/g,'&quot;')}">
 <meta property="og:url" content="${url}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">

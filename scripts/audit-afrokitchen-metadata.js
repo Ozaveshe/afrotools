@@ -136,7 +136,7 @@ function printBucket(label, rows) {
 
 function validateTemplate(page, buckets) {
   if (page.type === "recipe") {
-    if (!/.+ Recipe \| .+ \| AfroKitchen$/.test(page.title)) {
+    if (!/.+ Recipe \| .+(?: \| AfroKitchen)?$/.test(page.title)) {
       pushIssue(buckets.templateMismatches, page, `title="${page.title}"`);
     }
     if (/Recipe\s*\|\s*Recipe/i.test(page.title)) {
@@ -144,11 +144,11 @@ function validateTemplate(page, buckets) {
     }
   }
 
-  if (page.type === "country" && !/.+ Recipes \| Traditional Dishes & Food Guide \| AfroKitchen$/.test(page.title)) {
+  if (page.type === "country" && !/.+ Recipes \| AfroKitchen$/.test(page.title)) {
     pushIssue(buckets.templateMismatches, page, `title="${page.title}"`);
   }
 
-  if (page.type === "collection" && !/.+ \| African Recipe Collection \| AfroKitchen$/.test(page.title)) {
+  if (page.type === "collection" && !/.+ Recipes \| AfroKitchen$/.test(page.title)) {
     pushIssue(buckets.templateMismatches, page, `title="${page.title}"`);
   }
 }

@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-08-16",
+  "objective": "Separate search-result exposure from click-through performance and measure English, French and Swahili changes against stable route cohorts.",
+  "evidenceBoundary": {
+    "englishBaseline": "data/seo/gsc-recovery-waves.json contains a checked-in seven-route English baseline.",
+    "localizedBaseline": "No granular French or Swahili query/page export is checked in. Do not claim CTR recovery for either locale until the required export is captured.",
+    "staticAudit": "reports/search-snippet-quality.json covers every current indexable canonical English, French and Swahili HTML route."
+  },
+  "implementation": {
+    "date": "2026-08-16",
+    "indexablePagesAudited": 9818,
+    "auditResult": {
+      "errors": 0,
+      "reviewCandidates": 688,
+      "byLocale": {
+        "en": 438,
+        "fr": 163,
+        "sw": 87
+      },
+      "reviewCandidateMeaning": "Length and differentiation heuristics for manual review; these rows are not missing-metadata or indexability errors."
+    },
+    "falseFrenchIframeParity": {
+      "wrappersGoverned": 394,
+      "formerlyIndexableWrappersRetired": 379,
+      "agricultureChildRoutesConsolidated": 192,
+      "falseReciprocalAlternatesRemoved": 723,
+      "redirectRulesAdded": 15,
+      "reason": "These routes rendered an English tool in an iframe and therefore were not native French equivalents despite being discoverable as French pages."
+    },
+    "retiredDuplicateSearchRoutes": [
+      {
+        "locale": "en",
+        "source": "/business/invoice/",
+        "destination": "/tools/invoice-generator/"
+      },
+      {
+        "locale": "en",
+        "source": "/business/payroll/",
+        "destination": "/salary-tax/"
+      },
+      {
+        "locale": "en",
+        "source": "/business/setup/",
+        "destination": "/tools/business-registration/"
+      },
+      {
+        "locale": "en",
+        "source": "/tools/remittance-v2/",
+        "destination": "/tools/remittance-compare/"
+      },
+      {
+        "locale": "fr",
+        "source": "/fr/tools/transfert-v2/",
+        "destination": "/fr/tools/transfert-argent/"
+      },
+      {
+        "locale": "fr",
+        "source": "/fr/tools/school-fees/app",
+        "destination": "/fr/tools/frais-scolarite/"
+      },
+      {
+        "locale": "sw",
+        "source": "/sw/zana/ulinganisho-uhamishaji-pesa-kina/",
+        "destination": "/sw/zana/ulinganisho-uhamishaji-pesa/"
+      }
+    ],
+    "locales": {
+      "en": {
+        "pages": 4995,
+        "action": "Preserved the seven-route measured recovery cohort while repairing source-owned export-document, insurance, legal, workforce, agriculture, car-catalogue, directory, AfroKitchen and AfroAtlas search contracts; retired three redirect shells and one duplicate remittance workflow from the indexable denominator."
+      },
+      "fr": {
+        "pages": 3240,
+        "action": "Replaced English and generic country-page snippets with distinct French task and country wording, repaired car-catalogue, solar, tool-gap and Sports families, retired false iframe parity, and retired two duplicate search routes."
+      },
+      "sw": {
+        "pages": 1583,
+        "action": "Repaired employment-country snippets, removed generic English task wording, differentiated competing task titles, expanded thin descriptions, added static headings where client rendering previously hid them, and retired one duplicate remittance route."
+      }
+    },
+    "sourceOwnedSnippetWaves": {
+      "countingNote": "These are governed page touches, not a deduplicated changed-page total; families can overlap when a page needed more than one contract repair.",
+      "waves": [
+        {
+          "locale": "en",
+          "family": "export-document country pages",
+          "governedPageTouches": 54
+        },
+        {
+          "locale": "en",
+          "family": "insurance country pages",
+          "governedPageTouches": 216
+        },
+        {
+          "locale": "en",
+          "family": "legal country pages",
+          "governedPageTouches": 108
+        },
+        {
+          "locale": "en",
+          "family": "workforce and agriculture country pages",
+          "governedPageTouches": 164
+        },
+        {
+          "locale": "en",
+          "family": "country directory and evidence pages",
+          "governedPageTouches": 160
+        },
+        {
+          "locale": "en",
+          "family": "car catalogue generated pages",
+          "governedPageTouches": 1081
+        },
+        {
+          "locale": "en",
+          "family": "AfroKitchen and AfroAtlas static pages",
+          "governedPageTouches": 537
+        },
+        {
+          "locale": "fr",
+          "family": "country snippets",
+          "governedPageTouches": 261
+        },
+        {
+          "locale": "fr",
+          "family": "solar country pages",
+          "governedPageTouches": 54
+        },
+        {
+          "locale": "fr",
+          "family": "car catalogue generated pages",
+          "governedPageTouches": 1081
+        },
+        {
+          "locale": "fr",
+          "family": "tool-gap and Sports pages",
+          "governedPageTouches": 270
+        },
+        {
+          "locale": "sw",
+          "family": "employment country pages",
+          "governedPageTouches": 134
+        },
+        {
+          "locale": "sw",
+          "family": "thin descriptions and static headings",
+          "governedPageTouches": 29
+        }
+      ]
+    }
+  },
+  "measurement": {
+    "windows": [
+      {
+        "label": "indexing-check",
+        "date": "2026-08-23",
+        "purpose": "Confirm selected canonical URLs and rendered snippets without judging CTR recovery."
+      },
+      {
+        "label": "primary-review",
+        "date": "2026-09-13",
+        "purpose": "Compare matched 28-day page and query cohorts by locale."
+      },
+      {
+        "label": "durability-review",
+        "date": "2026-11-14",
+        "purpose": "Check whether gains persist and whether pages need consolidation or deeper native-content work."
+      }
+    ],
+    "requiredSearchConsoleDimensions": [
+      "date",
+      "page",
+      "query",
+      "country",
+      "device",
+      "searchAppearance"
+    ],
+    "requiredMetrics": [
+      "clicks",
+      "impressions",
+      "ctr",
+      "position"
+    ],
+    "comparisonRule": "Use equal pre/post windows, keep locale and device cohorts separate, and inspect query mix before attributing a CTR change to copy.",
+    "decisionRule": "Prioritize pages with meaningful impressions and stable positions. A position or query-mix change is not a clean snippet-copy result."
+  }
+}

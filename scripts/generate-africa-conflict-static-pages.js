@@ -15,6 +15,7 @@ const {
   excerpt,
   humanize,
   humanList,
+  dossierSearchTitle,
   buildManifest,
   writeManifest,
   writeStaticRoutes
@@ -165,7 +166,7 @@ function buildSchemas(conflict, description) {
     "@type": "WebPage",
     "@id": pageUrl,
     url: pageUrl,
-    name: `${conflict.name} | Timeline, Actors, Displacement & Outlook | AfroTools`,
+    name: dossierSearchTitle(conflict),
     description,
     isPartOf: {
       "@type": "WebSite",
@@ -268,7 +269,7 @@ function renderTimeline(conflict) {
 }
 
 function buildDossierPageHtml(conflict, manifest) {
-  const title = `${conflict.name} | Timeline, Actors, Displacement & Outlook | AfroTools`;
+  const title = dossierSearchTitle(conflict);
   const description = metaDescription(conflict);
   const { webPageSchema, breadcrumbSchema } = buildSchemas(conflict, description);
   const displacedTotal = Number(conflict.idps_count || 0) + Number(conflict.refugees_count || 0);

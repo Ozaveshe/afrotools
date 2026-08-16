@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const FRENCH_TRAVEL = require("./lib/french-travel-pages");
+const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const SITE = "https://afrotools.com";
 
@@ -7643,6 +7644,30 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+const COMPACT_SEARCH_TITLE_PREFIXES = Object.freeze([
+  ["Calculateur de carburant pour groupe électrogène", "Carburant groupe électrogène"],
+  ["Calculateur de salaire d’un employé de maison", "Salaire employé de maison"],
+  ["Calculateur du coût d’importation d’un véhicule", "Coût importation véhicule"],
+  ["Calculateur du coût d’un salarié", "Coût salarié"],
+  ["Comparateur prestataire ou salarié", "Prestataire ou salarié"],
+  ["Estimateur du coût d’un permis de travail", "Coût permis de travail"],
+  ["Estimateur du coût des coupures de courant", "Coût coupures de courant"],
+  ["Évaluation du risque cybersécurité", "Risque cybersécurité"],
+  ["AfroPoints — Gagnez de l'argent avec vos données locales", "AfroPoints — données locales"]
+]);
+
+function searchTitleFor(page) {
+  let title = String(page.title || "");
+  if (title.length <= 65) return title;
+  for (const [prefix, replacement] of COMPACT_SEARCH_TITLE_PREFIXES) {
+    if (title.startsWith(prefix)) {
+      title = replacement + title.slice(prefix.length);
+      break;
+    }
+  }
+  return title;
+}
+
 function lobolaNativeMarkup(page) {
   const countryOptions = ["Afrique du Sud", "Zimbabwe", "Botswana", "Zambie", "Eswatini", "Lesotho", "Namibie", "Autre / transfrontalier"]
     .map((country) => `<option value="${country}">${country}</option>`)
@@ -7858,7 +7883,7 @@ function htmlFor(page) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="afrotools-content-id" content="fr-tool-gap:${escapeHtml(page.frSlug)}">
   <meta name="afrotools-source-owner" content="scripts/generate-fr-tool-gap-pages.js">
-  <title>${escapeHtml(page.title)}</title>
+  <title>${escapeHtml(searchTitleFor(page))}</title>
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="${frUrl}">
   <meta property="og:title" content="${escapeHtml(page.name)} | AfroTools">
@@ -8062,7 +8087,7 @@ function ensureEnglishHreflang(page) {
   after = ensureAlternate(after, "fr", frUrl);
   after = ensureAlternate(after, "x-default", enUrl);
   if (after !== before) {
-    fs.writeFileSync(file, after, "utf8");
+    writeFileSyncWithRetry(file, after, "utf8");
     return true;
   }
   return false;
@@ -8127,7 +8152,7 @@ function main() {
     // Accent/elision repair at generation time: legacy PAGES copy is partly
     // ASCII-only French; this keeps regeneration from undoing the sitewide repair.
     const { processHtml: repairFrenchAccents } = require("./repair-fr-accents.js");
-    fs.writeFileSync(output, repairFrenchAccents(htmlFor(page)), "utf8");
+    writeFileSyncWithRetry(output, repairFrenchAccents(htmlFor(page)), "utf8");
     pagesWritten += 1;
     if (ensureEnglishHreflang(page)) englishUpdated += 1;
   }
@@ -8139,4 +8164,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { PAGES };
+module.exports = { PAGES, searchTitleFor };

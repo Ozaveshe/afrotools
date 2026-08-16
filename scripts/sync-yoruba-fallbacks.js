@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const ROOT = path.resolve(__dirname, "..");
 const MANIFEST_PATH = path.join(ROOT, "data", "registry", "yoruba-route-manifest.json");
@@ -74,7 +75,7 @@ function main() {
     const after = syncContent(before, record);
     if (before === after) continue;
     changed.push(record.sourceOwner);
-    if (write) fs.writeFileSync(file, after, "utf8");
+    if (write) writeFileSyncWithRetry(file, after, "utf8");
   }
   if (changed.length && !write) {
     console.error("Yoruba fallback surfaces are stale: " + changed.join(", "));

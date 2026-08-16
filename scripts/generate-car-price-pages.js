@@ -261,7 +261,7 @@ function writeSitemap() {
 }
 
 writePage("cars", {
-  title: "African Car Price Directory | Import vs Local Landed Cost | AfroTools",
+  title: "African Car Price Directory | AfroTools",
   description: "Compare imported cars across 20 African markets with local-currency price bands, landed-cost estimates, asking ranges, finance fit, and import-risk context.",
   includeFaq: true,
   listVehicles: data.vehicles
@@ -273,7 +273,7 @@ writePage("cars/compare", {
 
 Object.values(data.countries).filter((country) => country.directory_enabled !== false).forEach((country) => {
   writePage(`cars/${country.slug}`, {
-    title: `${country.name} Car Import Price Directory | AfroTools`,
+    title: `Car Prices — ${country.name} | AfroTools`,
     description: `Search car landed-cost and local asking-price ranges in ${country.currency_code || "local currency"} for ${country.name}, including source-market comparisons, financing outlook, and import-vs-local recommendations.`,
     country: country.name,
     countryObj: country,
@@ -288,7 +288,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
   });
   makes.forEach((makeName, makeSlug) => {
     writePage(`cars/${country.slug}/${makeSlug}`, {
-      title: `${makeName} Landed Car Prices in ${country.name} | AfroTools`,
+      title: `${makeName} Car Prices — ${country.name} | AfroTools`,
       description: `Browse ${makeName} model and year estimates in ${country.name}: source price range, landed-cost range, local asking range, financing outlook, and import-vs-local recommendation.`,
       country: country.name,
       countryObj: country,
@@ -306,7 +306,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
   });
   models.forEach((vehicle, key) => {
     writePage(`cars/${country.slug}/${key}`, {
-      title: `${vehicle.make} ${vehicle.model} Landed Prices in ${country.name} | AfroTools`,
+      title: `${vehicle.make} ${vehicle.model} Prices — ${country.name} | AfroTools`,
       description: `Compare ${vehicle.make} ${vehicle.model} year variants in ${country.name} with source-market price, landed-cost, local asking, financing, and risk ranges.`,
       country: country.name,
       countryObj: country,
@@ -321,8 +321,8 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
 
   data.vehicles.forEach((vehicle) => {
     writePage(`cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
-      title: `${vehicle.year} ${vehicle.make} ${vehicle.model} Price in ${country.name} | Import vs Local | AfroTools`,
-      description: `Estimate ${vehicle.year} ${vehicle.make} ${vehicle.model} source price, landed cost, local asking range, financing outlook, compliance risk, liquidity, and import-vs-local recommendation for ${country.name}.`,
+      title: `${vehicle.year} ${vehicle.make} ${vehicle.model} Price — ${country.name} | AfroTools`,
+      description: `Estimate source price, landed cost and local asking range for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}; compare financing and import risk before acting.`,
       country: country.name,
       countryObj: country,
       make: vehicle.make,

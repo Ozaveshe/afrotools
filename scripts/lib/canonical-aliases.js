@@ -8,9 +8,12 @@ const SITE_ORIGIN = "https://afrotools.com";
 const IGNORE_DIRS = new Set([
   ".agents",
   ".claude",
+  ".codex",
+  ".codex-worktrees",
   ".git",
   ".github",
   ".netlify",
+  ".worktrees",
   "admin",
   "audit-results",
   "afrotools-sentinel",

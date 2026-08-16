@@ -1211,7 +1211,10 @@ function syncRouteMetadata(graph, options = {}) {
       : record.indexability === "indexable"
         ? { [record.locale]: record.route, "x-default": record.locale === "en" ? record.route : (record.fallback && record.fallback.route) || record.route }
         : {};
-    const next = replaceHeadLinks(original, record.route, hreflangs, record.localeCoverage);
+    const canonicalRoute = record.indexability === "indexable"
+      ? record.route
+      : record.canonicalRoute || record.route;
+    const next = replaceHeadLinks(original, canonicalRoute, hreflangs, record.localeCoverage);
     if (next === original) continue;
     if (options.write) writeFileSyncWithRetry(filePath, next, "utf8");
     changedFiles.push(record.source.file);

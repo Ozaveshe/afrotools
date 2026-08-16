@@ -66,6 +66,11 @@ for (const page of indexablePages) {
   assert.ok(!/[?#]/.test(page.canonicalRoute), `AC-4: ${page.route} canonical must not contain query or fragment`);
 }
 
+const retiredFrenchIframe = routeApi.getRouteRecord(graph, '/fr/african/');
+assert.strictEqual(retiredFrenchIframe.indexability, 'noindex', 'AC-4: retired English iframe wrapper must remain noindex');
+assert.strictEqual(retiredFrenchIframe.canonicalRoute, '/african/', 'AC-4: route sync must preserve the retired wrapper canonical owner');
+assert.deepStrictEqual(retiredFrenchIframe.hreflangs, {}, 'AC-4: retired English iframe wrapper must not re-enter hreflang groups');
+
 const equivalenceValidation = routeApi.validateEquivalenceGroups(graph.equivalenceGroups, graph.routes);
 assert.strictEqual(equivalenceValidation.errors.length, 0, `AC-5: invalid equivalence groups:\n${equivalenceValidation.errors.slice(0, 25).map(routeApi.formatIssue).join('\n')}`);
 for (const group of graph.equivalenceGroups) {

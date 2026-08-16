@@ -118,6 +118,50 @@ function normalizeLegacyHtmlFormulaScript(source) {
   );
 }
 
+function normalizeMaternityLeaveSeoPresentation(source) {
+  if (!/\/tools\/maternity-leave\/verified-planner\.js(?:\?[^"']*)?/i.test(source)) return source;
+
+  const legacyWebApplication = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Parental Leave Pay Planning Calculator",
+  "description": "Estimate parental leave dates and pay from user-entered official-rule and employer-policy values.",
+  "url": "https://afrotools.com/tools/maternity-leave/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/maternity-leave.webp"
+}
+</script>`;
+
+  let normalized = String(source)
+    .replace(/<title>[\s\S]*?<\/title>/i, "<title>Parental Leave Pay Planning Calculator | AfroTools</title>")
+    .replace(/<meta\b(?=[^>]*\bname=["']description["'])[^>]*>/i, '<meta name="description" content="Estimate parental leave dates and pay from a current official rule, salary, leave days, replacement rate, and employer policy values you enter.">')
+    .replace(/<meta\b(?=[^>]*\bproperty=["']og:title["'])[^>]*>/i, '<meta property="og:title" content="Parental Leave Pay Planning Calculator | AfroTools">')
+    .replace(/<meta\b(?=[^>]*\bproperty=["']og:description["'])[^>]*>/i, '<meta property="og:description" content="Build a dated, reviewable parental leave pay plan from verified rule and employer-policy inputs.">')
+    .replace(/<meta\b(?=[^>]*\bname=["']twitter:title["'])[^>]*>/i, '<meta name="twitter:title" content="Parental Leave Pay Planning Calculator | AfroTools">')
+    .replace(/<meta\b(?=[^>]*\bname=["']twitter:description["'])[^>]*>/i, '<meta name="twitter:description" content="Build a dated, reviewable parental leave pay plan from verified rule and employer-policy inputs.">');
+
+  normalized = normalized.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, (block) => (
+    /"@type"\s*:\s*"WebApplication"/i.test(block)
+      && /"url"\s*:\s*"https:\/\/afrotools\.com\/tools\/maternity-leave\/"/i.test(block)
+      ? legacyWebApplication
+      : block
+  ));
+  return normalized;
+}
+
 function normalizeHtmlFormulaPresentation(source) {
   // These asset versions are deployment cache keys, not executable calculator
   // logic. They can appear in the page shell or inside a printable HTML
@@ -126,7 +170,7 @@ function normalizeHtmlFormulaPresentation(source) {
   // assets so paths, query shape and formula code remain covered by the gate.
   // The shared core bundle hash also changes when unrelated common UI/AI
   // helpers change; calculator engines remain separate protected artifacts.
-  return String(source)
+  const normalized = String(source)
     .replace(
       /<script\s+[^>]*src=["'][^"']*\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi,
       "",
@@ -153,6 +197,7 @@ function normalizeHtmlFormulaPresentation(source) {
         return prefix + "53e2e483" + suffix;
       },
     );
+  return normalizeMaternityLeaveSeoPresentation(normalized);
 }
 
 function normalizeHtmlFormulaRouteShell(source) {

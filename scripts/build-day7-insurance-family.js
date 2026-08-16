@@ -7,15 +7,15 @@ const vm = require('vm');
 const root = path.resolve(__dirname, '..');
 const tool = process.argv[2];
 const definitions = {
-  'car-insurance': ['Car Insurance Assumption Planner', 'quote', 'Plan an insurer conversation using only values and rates you enter.'],
+  'car-insurance': ['Car Insurance Assumption Planner', 'quote', 'Estimate a premium from cover, rates and fees you enter.'],
   'health-insurance-compare': ['Health Insurance Comparison Worksheet', 'compare', 'Compare two entered plan scenarios without inventing premiums, eligibility or provider rankings.'],
   'life-insurance-calc': ['Life Insurance Needs Planner', 'need', 'Estimate a household protection gap from needs and resources you enter.'],
   'funeral-insurance': ['Funeral Cover Assumption Planner', 'quote', 'Model a user-supplied cover amount and rate without presenting a live premium.'],
-  'motor-third-party': ['Motor Third-Party Assumption Planner', 'quote', 'Plan around a user-entered vehicle exposure and rate; confirm legal requirements officially.'],
+  'motor-third-party': ['Motor Third-Party Assumption Planner', 'quote', 'Estimate third-party motor costs from values and rates you enter.'],
   'business-insurance': ['Business Insurance Assumption Planner', 'quote', 'Model an entered business exposure and rate without deciding suitable coverage.'],
   'travel-insurance': ['Travel Insurance Assumption Planner', 'quote', 'Model an entered trip exposure and rate without presenting a live quote.'],
-  'workers-comp': ['Workers Compensation Contribution Worksheet', 'contribution', 'Apply employee and employer rates that you enter to a payroll basis you enter.'],
-  'health-contribution': ['Health Contribution Worksheet', 'contribution', 'Apply contribution rates that you enter to a salary or payroll basis you enter.'],
+  'workers-comp': ['Workers Compensation Contribution Worksheet', 'contribution', 'Estimate workers\' compensation from payroll and rates you enter.'],
+  'health-contribution': ['Health Contribution Worksheet', 'contribution', 'Estimate health contributions from salary and rates you enter.'],
   'claim-tracker': ['Insurance Claim Notification Planner', 'claim', 'Compare an incident and planned notification date against a policy window you enter.'],
   'crop-insurance-calc': ['Crop Insurance Assumption Planner', 'quote', 'Model an entered crop exposure and rate without predicting yield, eligibility or payout.'],
   'fire-insurance': ['Fire Insurance Assumption Planner', 'quote', 'Model an entered property exposure and rate without presenting a valuation or quote.'],
@@ -23,6 +23,18 @@ const definitions = {
   'marine-insurance': ['Marine Insurance Assumption Planner', 'quote', 'Model an entered shipment exposure and rate without presenting a quote or coverage decision.'],
   'microinsurance': ['Microinsurance Assumption Planner', 'quote', 'Model an entered exposure and rate without inventing eligibility, providers or premiums.'],
   'professional-indemnity': ['Professional Indemnity Assumption Planner', 'quote', 'Model an entered professional exposure and rate without deciding suitable limits or presenting a quote.']
+};
+const searchTitles = {
+  'car-insurance': 'Car Insurance Planner',
+  'business-insurance': 'Business Insurance Planner',
+  'crop-insurance-calc': 'Crop Insurance Planner',
+  'funeral-insurance': 'Funeral Cover Planner',
+  'health-contribution': 'Health Contribution',
+  'health-insurance-compare': 'Health Insurance Comparison',
+  'life-insurance-calc': 'Life Insurance Needs',
+  'microinsurance': 'Microinsurance Planner',
+  'motor-third-party': 'Third-Party Motor Planner',
+  'workers-comp': "Workers' Comp Worksheet"
 };
 if (!definitions[tool]) {
   console.error('Usage: node scripts/build-day7-insurance-family.js <insurance-tool>');
@@ -100,9 +112,9 @@ for (const file of htmlFiles) {
   const route = `/tools/${tool}/${slug}`;
   const canonicalPath = slug ? route : `/tools/${tool}/`;
   const canonical = `https://afrotools.com${canonicalPath}`;
-  const pageTitle = country ? `${country.name} ${baseTitle}` : baseTitle;
+  const pageTitle = country ? `${searchTitles[tool] || baseTitle} — ${country.name}` : baseTitle;
   const pageDescription = country
-    ? `${description} Local planning worksheet for ${country.name}; verify current rules and terms with an official authority or licensed insurer.`
+    ? `${description} For ${country.name}, use your inputs and verify current rules and insurer terms.`
     : `${description} Local-first planning worksheet with no live quote or eligibility claim.`;
   const alternates = [...old.matchAll(/<link rel="alternate"[^>]+>/g)].map(match => match[0]).join('\n');
   const countryLinks = !country && htmlFiles.length > 1

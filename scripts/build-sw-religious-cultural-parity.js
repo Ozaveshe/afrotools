@@ -48,7 +48,7 @@ const COPY = Object.freeze({
   'age-calculator-african':['Umri na pendekezo la jina la siku','Kokotoa umri na siku ya kuzaliwa, kisha onyesha pendekezo la Akan linalohitaji uthibitisho wa familia.'],
   'festival-calendar':['Kadi ya uthibitishaji wa tamasha','Andika tukio, tarehe ya muda, mratibu na kanuni ya heshima; zana haitangazi kalenda rasmi.'],
   'aso-ebi-cost':['Kikokotoo cha gharama za Aso-Ebi','Panga kitambaa, ushonaji, vifaa, usafirishaji na punguzo la kikundi bila kudai bei au idhini ya familia.'],
-  'traditional-attire':['Kikokotoo cha mavazi ya kimila','Panga kitambaa, ushonaji, vifaa na ada ya haraka kwa idadi ya mavazi.'],
+  'traditional-attire':['Kikokotoo cha mavazi ya kimila','Panga kitambaa, ushonaji, vifaa na ada ya haraka kwa idadi ya mavazi, kisha hakiki bei na makubaliano ya eneo lako.'],
   'halal-compliance':['Orodha ya utayari wa Halal','Panga ushahidi wa viambato, wasambazaji, uhifadhi, usafi na lebo; alama si uthibitisho wa Halal.'],
   'islamic-calendar':['Kibadilishaji cha Gregorian kwenda Hijri','Pata makisio ya kalenda ya hesabu na uthibitishe Ramadhani, Eid, Hajj na ibada nyingine kwa mamlaka ya eneo.']
 });

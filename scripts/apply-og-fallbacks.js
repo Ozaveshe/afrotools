@@ -122,13 +122,26 @@ function hrefToPathname(href) {
 }
 
 function getCanonicalPath(html) {
-  const canonicalMatch = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i);
-  if (!canonicalMatch) return null;
+  const canonicalUrl = getCanonicalUrl(html);
+  if (!canonicalUrl) return null;
 
   try {
-    return normalizePathname(new URL(canonicalMatch[1], SITE_ORIGIN).pathname);
+    return normalizePathname(new URL(canonicalUrl, SITE_ORIGIN).pathname);
   } catch (error) {
-    return normalizePathname(canonicalMatch[1]);
+    return normalizePathname(canonicalUrl);
+  }
+}
+
+function getCanonicalUrl(html) {
+  const canonicalTag = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i);
+  if (!canonicalTag) return null;
+  const href = canonicalTag[0].match(/\bhref=["']([^"']+)["']/i);
+  if (!href) return null;
+
+  try {
+    return new URL(href[1], SITE_ORIGIN).href;
+  } catch (error) {
+    return href[1];
   }
 }
 
@@ -421,16 +434,27 @@ function syncVisibleToolImage(html, relativePath) {
 
 function applyFallbacks(html, filePath) {
   if (!html.includes("</head>")) return { html, changed: false, usedToolImage: false };
+  const robots = getMetaContent(html, "name", "robots");
+  if (robots && /(?:^|[,\s])noindex(?:[,\s]|$)/i.test(robots)) {
+    return { html, changed: false, usedToolImage: false };
+  }
   if (isRedirectLike(html, filePath)) return { html, changed: false, usedToolImage: false };
 
   let next = html;
   let changed = false;
 
+  const canonicalUrl = getCanonicalUrl(next);
+  const existingOgUrl = getMetaContent(next, "property", "og:url");
+  if (canonicalUrl && existingOgUrl !== canonicalUrl) {
+    next = upsertMetaContent(next, "property", "og:url", canonicalUrl, "property", "og:description");
+    changed = true;
+  }
+
   const preferredToolImage = getPreferredToolImage(filePath, html);
   const hasOgTitle = /<meta\s+(property|name)=["']og:title["']/i.test(html);
 
   if (!hasOgTitle && !preferredToolImage) {
-    return { html, changed: false, usedToolImage: false };
+    return { html: next, changed, usedToolImage: false };
   }
 
   const targetImage = preferredToolImage ? preferredToolImage.absoluteUrl : DEFAULT_IMAGE;

@@ -10,7 +10,8 @@ const REPORT_MD_PATH = path.join('reports', 'public-claims.md');
 const FLOWS_REPORT_JSON_PATH = path.join('reports', 'feature-data-flows.json');
 const FLOWS_REPORT_MD_PATH = path.join('reports', 'feature-data-flows.md');
 const SKIP_DIRECTORIES = new Set([
-  '.git', '.claude', '.agents', '.codex', '.netlify', '.wrangler', 'node_modules',
+  '.git', '.claude', '.agents', '.codex', '.codex-worktrees', '.worktrees',
+  '.netlify', '.wrangler', 'node_modules',
   'dist', 'reports', 'audit-results', 'artifacts', 'test-results', 'coverage',
   '.playwright', '.cache'
 ]);

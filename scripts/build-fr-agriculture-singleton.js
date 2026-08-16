@@ -31,6 +31,31 @@ const CONTRACTS = Object.freeze({
   'crop-insurance': require('./lib/fr-agriculture-singleton-contracts/crop-insurance'),
 });
 
+const COUNTRY_PRESET_SINGLETONS = new Set([
+  'crop-insurance',
+  'export-docs',
+  'poultry-roi-calculator',
+  'vaccination-schedule',
+]);
+
+function addCountryPreset(content, id) {
+  if (!COUNTRY_PRESET_SINGLETONS.has(id)) return content;
+  let output = content;
+  if (!output.includes('/data/agriculture/country-index.js')) {
+    output = output.replace(
+      /<script\s+src="\/data\/agriculture\//,
+      '<script src="/data/agriculture/country-index.js"></script><script src="/data/agriculture/'
+    );
+  }
+  if (!output.includes('/assets/js/pages/fr-agriculture-country-preset.js')) {
+    output = output.replace(
+      '</body>',
+      '<script src="/assets/js/pages/fr-agriculture-country-preset.js"></script>\n</body>'
+    );
+  }
+  return output;
+}
+
 function parseArgs(argv) {
   const options = { id: null, check: false };
   for (let index = 0; index < argv.length; index += 1) {
@@ -59,7 +84,7 @@ function run(options) {
       : country.title,
     routeSlug: country.routeSlug,
   }));
-  const content = contract.render(row, { manifest, countries });
+  const content = addCountryPreset(contract.render(row, { manifest, countries }), options.id);
   if (/<iframe\b/i.test(content) || /\bfetch\s*\(\s*["'`]\/?(?:agriculture|tools)\//i.test(content)) {
     throw new Error(`Renderer attempted an English iframe/transplant for ${row.french.route}.`);
   }
@@ -75,4 +100,4 @@ if (require.main === module) {
   try { run(parseArgs(process.argv.slice(2))); } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
 
-module.exports = { CONTRACTS, parseArgs, run };
+module.exports = { CONTRACTS, COUNTRY_PRESET_SINGLETONS, addCountryPreset, parseArgs, run };

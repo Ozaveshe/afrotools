@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<html data-afrotools-source-owner="scripts/build-sw-architectural-fee.js" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
 <meta charset="UTF-8">
@@ -38,6 +38,8 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <!-- tool-structured-data:auto -->
+
+<link rel="stylesheet" href="/assets/css/architectural-fee-workspace.css?v=87ebba7f">
 <meta name="afrotools-content-id" content="fr-engineering:architectural-fee">
 <meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
 <meta name="afrotools-source-route" content="/tools/architectural-fee/">
@@ -113,122 +115,10 @@
   <div class="en-container">
     <div class="en-hero-badge">Construction</div>
     <h1>Architectural Fee Calculateur</h1>
-    <p>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</p>
+    <p>Renseignez les données demandées.</p>
   </div>
 </section>
-<main class="en-main">
-  <div class="en-container">
-    <div class="en-card">
-      <h2 class="en-section-title">Paramètres du projet</h2>
-      <div class="en-form-grid">
-        <div class="en-field">
-          <label class="en-label" for="af-country">Pays</label>
-          <select class="en-select" id="af-country">
-            <option value="NG">Nigeria (₦) — NIA Scale</option>
-            <option value="KE">Kenya (KES) — AIA Kenya Scale</option>
-            <option value="ZA">Afrique du Sud (ZAR) — SACAP Scale</option>
-            <option value="GH">Ghana (GHS) — GAA Scale</option>
-            <option value="EG">Égypte (EGP)</option>
-            <option value="ET">Éthiopie (ETB)</option>
-            <option value="TZ">Tanzanie (TZS)</option>
-            <option value="UG">Ouganda (UGX)</option>
-            <option value="RW">Rwanda (RWF)</option>
-            <option value="MA">Maroc (MAD)</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Type de bâtiment</label>
-          <select class="en-select" id="af-btype" aria-label="Af Btype">
-            <option value="residential_simple">Simple Residential (1–2 beds)</option>
-            <option value="residential_medium">Medium Residential (3–4 beds)</option>
-            <option value="residential_large">Large Residential / Mansion</option>
-            <option value="commercial_small">Boutique</option>
-            <option value="commercial_medium">Commercial — Bureau Block</option>
-            <option value="commercial_large">Commercial — Mall / Warehouse</option>
-            <option value="industrial">Industrial / Factory</option>
-            <option value="institutional">Institutional (school/hospital)</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Gross Surface au sol (m²)</label>
-          <input aria-label="Af Surface" type="number" class="en-input" id="af-area" value="200" min="20" max="50000">
-        </div>
-        <div class="en-field">
-          <label class="en-label">Estimatif Construction Value</label>
-          <input aria-label="Af value" type="number" class="en-input" id="af-value" value="0" min="0">
-          <span class="en-hint">Estimer</span>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Services Scope</label>
-          <select class="en-select" id="af-scope" aria-label="Af Scope">
-            <option value="full">Full Architectural Services (all stages)</option>
-            <option value="sketch">Informations et hypothèses du calcul</option>
-            <option value="working_drawings">Informations et hypothèses du calcul</option>
-            <option value="approval">Informations et hypothèses du calcul</option>
-          </select>
-        </div>
-        <div class="en-field">
-          <label class="en-label">Architect Category</label>
-          <select class="en-select" id="af-arch-cat" aria-label="Af Arch Cat">
-            <option value="sole">Sole Practitioner</option>
-            <option value="small_firm">Informations et hypothèses du calcul</option>
-            <option value="large_firm">Large / Established Firm</option>
-          </select>
-        </div>
-      </div>
-      <button type="button" class="en-btn" onclick="calcArchFee()">Calculer Architect Fees</button>
-    </div>
-
-    <div class="en-results" id="af-results">
-      <div class="en-results-hero">
-        <div class="en-results-title" id="af-headline">Architectural Fee Estimer</div>
-      </div>
-      <div class="en-results-grid">
-        <div class="en-stat-card"><div class="en-stat-label">Construction Value (est.)</div><div class="en-stat-value" id="af-constr-val">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Taux d’honoraires de l’architecte</div><div class="en-stat-value" id="af-rate">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Total Architect Fee</div><div class="en-stat-value" id="af-total-fee">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Fee per m²</div><div class="en-stat-value" id="af-per-m2">—</div></div>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Fee by Stage</h3>
-        <div id="af-stages"></div>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Regulatory Body &amp; Scale Reference</h3>
-        <p id="af-reg-info" style="font-size:.9rem;color:#374151;margin:0"></p>
-      </div>
-      <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Informations et hypothèses du calcul</h3>
-        <ul id="af-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
-      </div>
-    </div>
-  </div>
-
-<section class="df-upgrade" data-df-upgrade="architectural-fee">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Parcours pratique</span>
-      <h2>Informations et hypothèses du calcul</h2>
-      <p>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</p>
-      <ul class="df-upgrade__bullets"><li><strong>Résultat obtenu :</strong> une estimation chiffrée des matériaux et de la main-d’œuvre pour préparer une décision concrète.</li><li><strong>Fonctionnement:</strong>Estimez une fourchette d’honoraires selon le budget, la complexité et les services.</li><li><strong>Points à vérifier :</strong> confirmez les prix locaux actuels et les conditions propres au chantier avant de vous fier au résultat.</li></ul>
-      <p class="df-upgrade__note"><strong>Révisé en 2026.</strong>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</p>
-    </div>
-    <form class="df-form" data-df-form="architectural-fee">
-      <label>Pays<select name="country" aria-label="Pays"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">Afrique du Sud</option></select></label>
-      <label>Montant ou quantité<input name="amount" type="number" value="100" min="0" step="any" aria-label="Montant ou quantité"></label>
-      <label>Priorité<select name="priority" aria-label="Priorité"><option value="cost">Coût</option><option value="speed">rapidité</option><option value="quality">qualité</option><option value="risk">risque</option></select></label>
-      <label>Pourcentage de réserve<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Pourcentage de réserve"></label>
-      <button type="submit">Créer le résumé</button>
-      <output class="df-result" data-df-result="architectural-fee" data-df-base="Architectural Dessin Fee Calculateur — saisissez les données ci-dessus pour afficher votre résultat." aria-live="polite">Architectural Dessin Fee Calculateur — saisissez les données ci-dessus pour afficher votre résultat.</output>
-      <div class="df-actions"><button type="button" data-df-copy="architectural-fee">Copier le résumé</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="architectural-fee-faq-title">
-  <h2 id="architectural-fee-faq-title">Informations et hypothèses du calcul</h2>
-  <div class="df-faq__grid"><details><summary>Informations et hypothèses du calcul</summary><p>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</p></details><details><summary>Informations et hypothèses du calcul</summary><p>La précision dépend des valeurs saisies et des hypothèses affichées. Confirmez toujours les prix locaux et les conditions du chantier avant utilisation.</p></details><details><summary>Informations et hypothèses du calcul</summary><p>Oui. L’outil est gratuit, fonctionne sur téléphone ou ordinateur sans inscription et couvre les pays africains proposés dans le sélecteur.</p></details></div>
-</section>
-</main>
+<main class="afp-main"><div class="afp-wrap" data-architectural-fee-workspace data-locale="en"><section class="afp-card"><h2>Estimer</h2><p>Renseignez les données demandées.</p><div class="afp-note"><strong>Source boundary: user-entered, low-confidence Estimation indicative</strong><br>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</div><form class="afp-form" novalidate><div class="afp-grid"><fieldset class="afp-fieldset"><legend>Informations et hypothèses du calcul</legend><div class="afp-grid"><div class="afp-field"><label for="afp-country">Pays du projet</label><select id="afp-country" name="country" required><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">Afrique du Sud</option><option value="GH">Ghana</option><option value="EG">Égypte</option><option value="ET">Éthiopie</option><option value="TZ">Tanzanie</option><option value="UG">Ouganda</option><option value="RW">Rwanda</option><option value="MA">Maroc</option><option value="OTHER">Autres / user-defined</option></select></div><div class="afp-field"><label for="afp-currency">Devise or money Unité</label><input id="afp-currency" name="currency" value="NGN" maxlength="12" required></div><div class="afp-field"><label for="afp-project">Informations et hypothèses du calcul</label><select id="afp-project" name="projectType" required><option value="residential_simple">Simple residential (1–2 bedrooms)</option><option value="residential_medium">Medium residential (3–4 bedrooms)</option><option value="residential_large">Large residential / mansion</option><option value="commercial_small">Boutique</option><option value="commercial_medium">Bureau block</option><option value="commercial_large">Mall / warehouse</option><option value="industrial">Industrial / factory</option><option value="institutional">Institutional / school / hospital</option></select></div><div class="afp-field"><label for="afp-area">Informations et hypothèses du calcul</label><input id="afp-area" name="area" type="number" min="0" step="0.01" value="200"></div><div class="afp-field"><label for="afp-value">Verified construction value</label><input id="afp-value" name="constructionValue" type="number" min="0.01" step="0.01" required></div></div></fieldset><fieldset class="afp-fieldset"><legend>Informations et hypothèses du calcul</legend><div class="afp-grid"><div class="afp-field"><label for="afp-min">Minimum Prix unitaire (%)</label><input id="afp-min" name="minRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-typical">Typical Prix unitaire (%)</label><input id="afp-typical" name="typicalRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-max">Maximum Prix unitaire (%)</label><input id="afp-max" name="maxRate" type="number" min="0" max="100" step="0.01" required></div><div class="afp-field"><label for="afp-scope">Service scope</label><select id="afp-scope" name="scope" required><option value="full">Full architectural services</option><option value="concept">Informations et hypothèses du calcul</option><option value="working_drawings">Informations et hypothèses du calcul</option><option value="approval">Informations et hypothèses du calcul</option></select></div><div class="afp-field"><label for="afp-share">Informations et hypothèses du calcul</label><input id="afp-share" name="scopeShare" type="number" min="0.01" max="100" step="0.01" value="100" required></div><div class="afp-field"><label for="afp-practice">Practice category</label><select id="afp-practice" name="practice" required><option value="sole">Sole practitioner</option><option value="small_firm">Informations et hypothèses du calcul</option><option value="large_firm">Large / established firm</option><option value="other">Autres</option></select></div><div class="afp-field"><label for="afp-adjust">Practice adjustment (%)</label><input id="afp-adjust" name="practiceAdjustment" type="number" min="-100" max="500" step="0.01" value="0"></div><div class="afp-field"><label for="afp-disbursements">Disbursements / additional Coûts</label><input id="afp-disbursements" name="disbursements" type="number" min="0" step="0.01" value="0"></div><div class="afp-field"><label for="afp-tax">Tax/VAT assumption (%)</label><input id="afp-tax" name="taxPct" type="number" min="0" max="100" step="0.01" value="0"></div></div></fieldset><fieldset class="afp-fieldset"><legend>Informations et hypothèses du calcul</legend><p>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</p><div class="afp-phase-grid"><label class="afp-phase">Inception / briefing (%)<input name="phase-inception" type="number" min="0" max="100" step="0.1" value="5" required></label><label class="afp-phase">Concept design (%)<input name="phase-concept" type="number" min="0" max="100" step="0.1" value="15" required></label><label class="afp-phase">Design development (%)<input name="phase-development" type="number" min="0" max="100" step="0.1" value="20" required></label><label class="afp-phase">Informations et hypothèses du calcul<input name="phase-technical" type="number" min="0" max="100" step="0.1" value="25" required></label><label class="afp-phase">Informations et hypothèses du calcul<input name="phase-approval" type="number" min="0" max="100" step="0.1" value="10" required></label><label class="afp-phase">Construction documentation (%)<input name="phase-documentation" type="number" min="0" max="100" step="0.1" value="10" required></label><label class="afp-phase">Contract administration / Chantier inspection (%)<input name="phase-administration" type="number" min="0" max="100" step="0.1" value="15" required></label></div></fieldset><div class="afp-field"><label for="afp-scope-notes">Informations et hypothèses du calcul</label><textarea id="afp-scope-notes" name="scopeNotes" maxlength="2000"></textarea></div><div class="afp-field"><label for="afp-exclusions">Exclusions / separately billed work</label><textarea id="afp-exclusions" name="exclusions" maxlength="2000"></textarea></div><fieldset class="afp-fieldset afp-confirm"><legend>Basis confirmations</legend><label class="afp-check"><input name="assumptionsConfirmed" type="checkbox" required><span>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</span></label><label class="afp-check"><input name="localVerificationConfirmed" type="checkbox" required><span>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</span></label></fieldset></div><div class="afp-actions"><button type="submit">Calculer fee range</button><button type="button" data-action="reset" data-kind="secondary">Réinitialiser</button><button type="button" data-action="save" data-kind="secondary">Enregistrer le brouillon local</button><button type="button" data-action="load" data-kind="secondary">Charger</button><button type="button" data-action="import" data-kind="secondary">Reopen JSON</button><input class="afp-hidden-file" name="importFile" type="file" accept="application/json,.json" aria-label="Reopen JSON"></div><p class="afp-status" data-status role="status" aria-live="polite"></p></form></section><section class="afp-card afp-results" data-results hidden><h2 tabindex="-1">Estimation indicative range</h2><div class="afp-summary"><div class="afp-stat"><span>Low</span><strong data-low>—</strong></div><div class="afp-stat"><span>Typical</span><strong data-typical>—</strong></div><div class="afp-stat"><span>High</span><strong data-high>—</strong></div></div><div class="afp-meta"><span>Effective fee rates: <strong data-effective-rates>—</strong></span><span>Typical fee per m²: <strong data-fee-area>—</strong></span><span>Basis: <strong data-basis>—</strong></span></div><div class="afp-table-wrap"><table class="afp-table"><thead><tr><th>Stage</th><th>Weight</th><th>Montant</th></tr></thead><tbody data-stage-body></tbody></table></div><div class="afp-output-notes"><div><strong>Recorded scope</strong><br><span data-scope-output>—</span></div><div><strong>Exclusions</strong><br><span data-exclusions-output>—</span></div></div><div class="afp-actions" data-result-actions hidden><button type="button" data-action="copy">Copier le résumé</button><button type="button" data-action="json">Télécharger le JSON</button><button type="button" data-action="csv">Télécharger le CSV</button><button type="button" data-action="txt">Télécharger le TXT</button><button type="button" data-action="pdf">Télécharger le PDF</button></div></section><section class="afp-card afp-copy-grid"><div><h2>Fonctionnement</h2><ul><li>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</li><li>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</li><li>Les honoraires réels dépendent du contrat, du pays, du périmètre et des conditions de mission.</li><li>Informations et hypothèses du calcul</li></ul></div><div><h2>Common questions</h2><details><summary>Sélectionnez une option.</summary><p>Informations et hypothèses du calcul</p></details><details><summary>Informations et hypothèses du calcul</summary><p>Appliquez le barème indicatif au coût de construction, puis ajustez phases et options.</p></details><details><summary>Informations et hypothèses du calcul</summary><p>Informations et hypothèses du calcul</p></details></div></section></div></main>
 <nav class="fr-engineering-related-tools" aria-labelledby="architectural-fee-related-title">
   <h2 id="architectural-fee-related-title">Outils d’ingénierie associés</h2>
   <ul>
@@ -238,12 +128,11 @@
   </ul>
 </nav>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/engineering-parity/fr/architectural-fee-1.js?v=24770649"></script>
+
   <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
 <script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
-<script src="/assets/js/pages/fr-engineering-df-app-upgrades.js?v=a0a76258" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
-<section class="fr-engineering-native-guide" data-fr-engineering-owner="architectural-fee" aria-labelledby="architectural-fee-fr-guide-title">
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/engines/architectural-fee-engine.js?v=ec79af40"></script><script src="/assets/js/pages/architectural-fee-workspace.js?v=d8324136"></script><section class="fr-engineering-native-guide" data-fr-engineering-owner="architectural-fee" aria-labelledby="architectural-fee-fr-guide-title">
   <p class="fr-engineering-eyebrow">Parcours français natif</p>
   <h2 id="architectural-fee-fr-guide-title">Calculateur d’honoraires d’architecte : méthode, limites et confidentialité</h2>
   <figure class="fr-engineering-owner-artwork">

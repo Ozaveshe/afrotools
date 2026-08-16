@@ -1114,8 +1114,20 @@ function buildCountryMetaDescription(country) {
   );
 }
 
+function buildRecipeMetaDescription(recipe) {
+  const base = String(recipe.description || "").trim();
+  const expanded = base.length < 90
+    ? `${base}${/[.!?]$/.test(base) ? "" : "."} Get ingredients, steps, timing and serving notes for this ${recipe.country_name || "African"} recipe.`
+    : base;
+  return metaDescription(expanded, 158);
+}
+
 function buildCollectionMetaDescription(collection) {
-  return metaDescription(buildCollectionShareText(collection), 158);
+  const countries = humanList(collectionCountryNames(collection, 2), 2) || "across Africa";
+  return metaDescription(
+    `Explore ${collection.total_recipes} African recipes in ${collection.name}. Browse dishes from ${countries} with cooking notes and full recipe links.`,
+    158
+  );
 }
 
 function isoDate(value) {
@@ -1303,8 +1315,11 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const recipeInternalLinkGroups = pickRecipeInternalLinkGroups(recipe, manifest);
   const media = resolveRecipeMedia(recipe, recipeImages);
   const galleryImages = collectRecipeGalleryImages(recipe, media, recipeImages);
-  const title = `${recipeSeoName(recipe)} Recipe | ${recipe.country_name} | AfroKitchen`;
-  const description = excerpt(recipe.description, 158);
+  const brandedTitle = `${recipeSeoName(recipe)} Recipe | ${recipe.country_name} | AfroKitchen`;
+  const title = brandedTitle.length > 65
+    ? `${recipeSeoName(recipe)} Recipe | ${recipe.country_name}`
+    : brandedTitle;
+  const description = buildRecipeMetaDescription(recipe);
   const { recipeSchema, breadcrumbSchema, schemaBlockers } = buildRecipeSchemas(
     recipe,
     engine,
@@ -2351,7 +2366,7 @@ function renderCollectionArchive(collection, manifest, recipeImages) {
 
 function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImages) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema, faqPageSchema } = buildCountrySchemas(country);
-  const title = `${country.country_name} Recipes | Traditional Dishes & Food Guide | AfroKitchen`;
+  const title = `${country.country_name} Recipes | AfroKitchen`;
   const description = buildCountryMetaDescription(country);
   const introParagraph = buildCountryIntroParagraph(country);
   const featuredDishes = renderCountryFeaturedDishes(country, recipeImages);
@@ -2512,7 +2527,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
 function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, recipeImages) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema } =
     buildCollectionSchemas(collection);
-  const title = `${collection.name} | African Recipe Collection | AfroKitchen`;
+  const title = `${collection.name} Recipes | AfroKitchen`;
   const description = buildCollectionMetaDescription(collection);
   const introParagraph = buildCollectionIntroParagraph(collection);
   const bestForPanel = renderCollectionBestForPanel(collection);

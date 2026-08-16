@@ -87,6 +87,8 @@ const EXTENSIONS = new Set(['.html', '.js', '.json']);
 const SKIP_DIRS = new Set([
   '.agents',
   '.claude',
+  '.codex',
+  '.codex-worktrees',
   '.git',
   '.jamb-tools',
   '.playwright',
@@ -98,6 +100,7 @@ const SKIP_DIRS = new Set([
   'playwright-report',
   'reports',
   'test-results',
+  '.worktrees',
 ]);
 const SKIP_PATH_PARTS = [
   'assets/js/bundles/',

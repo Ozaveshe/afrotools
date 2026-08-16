@@ -22,7 +22,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const FIX = process.argv.includes('--fix');
 const SKIP_DIRS = new Set([
-  'node_modules', '.git', '.claude', 'assets', 'scripts',
+  'node_modules', '.git', '.claude', '.codex', '.codex-worktrees', '.worktrees', 'assets', 'scripts',
   'lang', 'data', 'supabase', 'netlify', '.netlify', 'docs'
 ]);
 

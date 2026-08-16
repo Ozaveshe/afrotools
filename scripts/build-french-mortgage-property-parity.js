@@ -98,6 +98,13 @@ function html(value) {
   })[character]);
 }
 
+function usefulFrenchDescription(value) {
+  const description = String(value || '').trim();
+  if (description.length >= 70) return description;
+  const stem = description.replace(/[.\s]+$/, '');
+  return `${stem}. Utilisez le résultat pour préparer votre dossier, puis vérifiez les règles et sources applicables.`;
+}
+
 function stripTags(value) {
   return String(value || '')
     .replace(/<[^>]+>/g, ' ')
@@ -664,9 +671,9 @@ function main() {
     const owner = registryFrenchOwner(registry, inventoryRow, frenchRoute);
     const name = owner ? owner.name : MISSING_FRENCH_NAMES[inventoryRow.englishId];
     if (!name) throw new Error(`${inventoryRow.englishId}: French name missing`);
-    const description = owner && owner.desc
+    const description = usefulFrenchDescription(owner && owner.desc
       ? owner.desc
-      : `${name} avec workflow local, résultat vérifiable et export sans compte.`;
+      : `${name} avec workflow local, résultat vérifiable et export sans compte.`);
     const contract = contractFor(inventoryRow.englishId);
     const propertyOwner = Boolean(PROPERTY_MODES[inventoryRow.englishId]);
     const englishOwnerCalculator = OWNER_CALCULATORS.has(inventoryRow.englishId);

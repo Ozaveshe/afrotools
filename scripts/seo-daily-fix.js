@@ -45,6 +45,7 @@ const SKIP_DIRS = new Set([
   '.git',
   '.claude',
   '.codex',
+  '.codex-worktrees',
   '.jamb',
   '.jamb-tools',
   '.worktrees',

@@ -144,7 +144,7 @@ function visibleWordCount(html) {
 const countries = Object.values(dataset.countries);
 assert.strictEqual(countries.length, 54, "Solar ROI dataset should contain 54 countries");
 
-const rootTitle = "Solar Panel ROI Calculator for Africa — Payback, Battery & Generator Savings";
+const rootTitle = "Solar ROI Calculator for Africa | AfroTools";
 const rootDesc = "Choose a country solar ROI page, compare generator savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
 const rootPage = readRootPage();
 assert.strictEqual(getTitle(rootPage.html), rootTitle, `Unexpected root title in ${rootPage.file}`);
@@ -201,8 +201,8 @@ const descriptions = new Map();
 for (const country of countries) {
   const { file, html } = readPage(country.slug);
   const name = country.countryName;
-  const expectedTitle = `${name} Solar Panel ROI Calculator — Payback, Battery & Generator Savings`;
-  const expectedDesc = `Use the ${name} Solar Panel ROI Calculator in ${country.currency} to estimate payback from monthly bill, generator fuel savings, battery backup, system cost, and cash or financing assumptions.`;
+  const expectedTitle = `Solar ROI Calculator — ${name} | AfroTools`;
+  const expectedDesc = `Estimate solar payback in ${name} from your bill, generator use, battery, system cost and financing assumptions in ${country.currency}.`;
   const canonical = `https://afrotools.com/tools/solar-roi/${country.slug}/`;
 
   assert.strictEqual(getTitle(html), expectedTitle, `Unexpected country title in ${file}`);

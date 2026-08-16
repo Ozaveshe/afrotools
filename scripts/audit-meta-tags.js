@@ -11,7 +11,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SKIP_DIRS = ['node_modules', '.git', '.claude', 'scripts', 'supabase'];
+const SKIP_DIRS = [
+  'node_modules', '.git', '.claude', '.codex', '.codex-worktrees', '.worktrees',
+  'scripts', 'supabase'
+];
 
 function findHtmlFiles(dir) {
   const results = [];

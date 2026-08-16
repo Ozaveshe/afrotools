@@ -7,8 +7,8 @@ let count=0;
 for(const cc in C){
   const c=C[cc], t=T[cc];
   if(!t)continue;
-  const title=c.name+' TIN Registration Guide — '+t.tinName.split('(')[0].trim()+' | AfroTools';
-  const desc='How to get your '+t.tinName+' from '+t.authority+' ('+t.authorityAbbr+'). Free guide: cost, documents, steps, timeline, and penalties for '+c.name+'.';
+  const title='TIN Registration — '+c.name+' | AfroTools';
+  const desc='Review the tax identifier, authority, documents, cost and steps listed for '+c.name+'; verify the current process with the official tax authority.';
   const url='https://afrotools.com/tools/tin-guide/'+c.slug;
   const shortTin=t.tinName.split('(')[0].trim();
 
