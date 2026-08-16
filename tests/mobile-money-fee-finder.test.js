@@ -21,4 +21,17 @@ for(const locale of Object.keys(routes)){
   assert.ok(generated.includes('604 TZS'));
 }
 assert.strictEqual(builder.CATALOG.providers.length,2);
+const french=builder.page('fr');
+assert.match(french, /Frais Mobile Money : MTN Uganda et Airtel Tanzania/);
+assert.match(french, /Vérifiez les frais publiés d’envoi, de retrait et de dépôt/);
+assert.match(french, />Ouganda - MTN MoMo \(UGX\)</);
+assert.match(french, />Tanzanie - Airtel Money \(TZS\)</);
+assert.match(french, /Références officielles publiées/);
+assert.match(french, /<legend>Devis A<\/legend>/);
+assert.match(french, /Ajouter un troisième devis/);
+assert.match(french, /Ne saisissez aucun nom, numéro de téléphone, compte, code PIN ou identifiant/);
+assert.match(french, /href="\/fr\/blog\/frais-orange-money-guide-2026\/"/);
+assert.match(french, /href="\/fr\/blog\/wave-vs-orange-money-senegal-2026\/"/);
+assert.match(french, /href="\/fr\/blog\/mobile-money-fees-africa-compared\/"/);
+assert.doesNotMatch(french, /Official published references|Add a third quote|>Quote [ABC]<|>Send<|>Withdraw<|Do not enter names/);
 console.log("mobile-money-fee-finder: ok");

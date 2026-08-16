@@ -51,6 +51,7 @@ test('keeps the server engine aligned with the reviewed browser formula', () => 
 test('French calculator page has one IRPP owner and no stale inline PAYE engine', () => {
   const html = fs.readFileSync(path.join(ROOT, 'fr/senegal/calculateur-salaire-net.html'), 'utf8');
   assert.match(html, /window\.SenegalPayeEngine\.calculate\(/);
+  assert.match(html, /href="\/fr\/blog\/guide-irpp-senegal-2026\/"/);
   assert.doesNotMatch(html, /function\s+calcAnnualPAYE\s*\(/);
   assert.doesNotMatch(html, /40%\s+au-del[aà] de\s+13\s*500\s*000/i);
 });

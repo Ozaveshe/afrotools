@@ -74,7 +74,7 @@ The article now separates provider fees from tax, removes the unsupported networ
 
 `/fr/blog/guide-irpp-senegal-2026/` earned 5 clicks from 368 impressions at position 7.52. It published no external source, omitted the 43% top band, assigned 2 parts to a married taxpayer without children without stating the one-income condition, and used that assumption in invented worked examples. The published CGI table starts that situation at 1.5 parts and describes a separate half-part rule when only one spouse has taxable income.
 
-The rebuilt guide now carries all seven published bands, links the Ministry of Finance, DGID parts simulator, DGID procedures, and DGTSS IPRES report, removes the unsafe examples, and states the actual calculator boundary: it estimates IRPP before the family-charge reduction. A source/schema/content test and the 390 px browser suite lock this contract.
+The rebuilt guide now carries all seven published bands, links the Ministry of Finance, DGID parts simulator, DGID procedures, and DGTSS IPRES report, removes the unsafe examples, and states the actual calculator boundary: it estimates IRPP before the family-charge reduction. The Senegal calculator and country hub now link back to the guide, turning a two-page orphan edge into a reciprocal source-and-tool path. A source/schema/content test and the 390 px browser suite lock this contract.
 
 ### 7. French discovery used English country labels
 
@@ -140,6 +140,12 @@ Both panels now contain the intended French words and accessible labels. A full 
 
 The new `audit:fr-visible-mojibake` gate strips non-visible script, style, SVG and template content, scans every indexable French HTML page, and rejects replacement characters, common UTF-8-as-Latin-1 damage, damaged proof labels and question marks embedded inside French words. It currently passes all 3,247 indexable pages out of 3,885 French HTML files. Its token rule deliberately distinguishes `fran?ais` from legitimate query strings such as `/api/rates?metric=price`.
 
+### 18. The French Mobile Money tool stopped being French at the first interaction
+
+`/fr/tools/frais-mobile-money/` earned 3 clicks from 188 impressions at position 11.67, up from one click and 126 impressions at position 14.84. Its metadata and every static label dropped French accents. The visible trust badges were English, the manual comparator used English legends, transaction choices and privacy instructions, and calculated results exposed English country names, caveats, rule text, status messages, internal fee-component keys and raw error codes. The page also presented a broad country-and-provider promise even though its verified built-in catalog currently contains only MTN Uganda and Airtel Tanzania.
+
+The generator now names that exact catalog boundary in the title and description, restores native French labels throughout the static form, renders Ouganda and Tanzanie, and links the calculator to the three source-reviewed French Mobile Money guides. Runtime result, unavailable and error states now translate the country, rule, caveat, fee-component and reason-code layers rather than switching back to English after submit. The local user-entered quote comparison and JSON export remain intact. Four focused Chromium tests cover tariff calculation, the native French result and unavailable states, 375 px overflow and local export.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -150,6 +156,7 @@ The new `audit:fr-visible-mojibake` gate strips non-visible script, style, SVG a
 - 11,727 pages and 141,477 internal links pass with 0 broken links.
 - Twelve French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three checks each cover the RDC, Nigeria and South Africa salary guides, three visible-mojibake checks pass, and seven Algeria PAYE correctness/privacy checks pass.
 - The repository-wide visible-mojibake audit passes all 3,247 indexable French pages and the French registry contains no remaining letter-question-letter corruption.
+- The Mobile Money finder passes its static owner contract and four Chromium flows, including native French calculated and unavailable states at mobile width.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
