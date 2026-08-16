@@ -29,6 +29,28 @@ test.describe('French search growth hotspots', () => {
     expect(consoleErrors).toEqual([]);
   });
 
+  test('fuel hub exposes clean French proof labels on mobile', async ({ page }) => {
+    const consoleErrors = [];
+    const missingResources = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('response', (response) => {
+      if (response.status() === 404) missingResources.push(response.url());
+    });
+
+    await page.goto('/fr/tools/suivi-carburant/');
+    await expect(page.locator('h1')).toContainText('Prix du carburant en Afrique');
+    await expect(page.locator('[data-tool-verification-panel]')).toContainText('Source à vérifier : Reçus de station');
+    await expect(page.locator('[data-tool-verification-panel]')).toContainText('Point à confirmer');
+    await expect(page.locator('body')).not.toContainText(/d\?rive|Re\?us|autorit\?|Source \? vérifier|Point \? confirmer/);
+
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+    expect(missingResources).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
+
   test('Orange Money guide renders official-source comparison without mobile overflow', async ({ page }) => {
     const consoleErrors = [];
     page.on('console', (message) => {

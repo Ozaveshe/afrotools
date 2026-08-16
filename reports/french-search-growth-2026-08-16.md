@@ -132,6 +132,12 @@ The rebuilt guide answers with what official evidence supports: the 70,000 NGN n
 
 The rebuilt guide now gives the two current official answers without merging their denominators. Stats SA reports average monthly earnings of R29,997 in February 2026 for employees in the formal non-agricultural QES population; the Gazette sets the hourly legal floor. The page explains that the QES figure is an arithmetic mean, not a national median or net salary, and uses the ministry's own 40-hour and 45-hour monthly illustrations. It links Stats SA, the Gazette and the official flyer, then hands users to the canonical South Africa PAYE calculator and private two-offer comparator. Static and mobile tests lock the figures, populations, links, removed stale rate and 390 px behavior.
 
+### 17. The live French fuel hub exposed visible encoding damage
+
+`/fr/tools/suivi-carburant/` earned 3 clicks from 683 impressions at position 7.68, up from no clicks and 77 impressions at position 9.94. A live fetch on 17 August confirmed that its proof panel visibly rendered `d?rive`, `Re?us`, `autorit?`, `Source ? vérifier` and `Point ? confirmer`. The same old panel corruption existed on `/fr/tools/cout-employe/`. Existing Unicode checks did not catch question-mark replacement because `?` is valid ASCII.
+
+Both panels now contain the intended French words and accessible labels. A focused source test rejects the exact replacement patterns, and the fuel-hub browser test checks the visible panel, mobile overflow, missing resources and console errors. This is a scoped repair of confirmed live corruption, not a claim that every question mark in generated HTML is mojibake; URLs and JavaScript conditionals legitimately contain that character.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -140,7 +146,7 @@ The rebuilt guide now gives the two current official answers without merging the
 - 152 French editorial length-review signals remain; these are review candidates, not canonical/hreflang errors.
 - 11,721 HTML pages pass content integrity with 0 blockers and 0 warnings.
 - 11,727 pages and 141,477 internal links pass with 0 broken links.
-- Eleven French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three checks each cover the RDC, Nigeria and South Africa salary guides, and seven Algeria PAYE correctness/privacy checks pass.
+- Twelve French hotspot browser tests pass at 390 px with no overflow, missing resources, or console errors. The refreshed Wave/Orange and Senegal IRPP articles also have four-part source/snippet/schema regression tests, seven Senegal PAYE engine/page checks pass, three teacher-salary search-contract checks pass, three Burkina VAT source/search/evidence checks pass, three checks each cover the RDC, Nigeria and South Africa salary guides, two visible-mojibake checks pass, and seven Algeria PAYE correctness/privacy checks pass.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
