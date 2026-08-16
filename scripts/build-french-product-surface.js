@@ -63,6 +63,7 @@ const POST_PROCESSED_HTML = new Set([
   ,'fr/changelog/index.html'
 ]);
 const DEDICATED_PRODUCT_OWNERS = new Set([
+  'fr/tools/frais-mobile-money/index.html',
   'fr/tools/contractant-vs-salarie/index.html',
   'fr/tools/salaire-employe-maison/index.html',
   'fr/tools/cout-total-employe/index.html',
