@@ -304,7 +304,9 @@ function classifyArtifact(relativePath) {
   const name = path.posix.basename(value);
   let riskDomain = "general_utility";
 
-  if (
+  if (/import-landed-cost/.test(value)) {
+    riskDomain = "legal_regulatory";
+  } else if (
     /paye|payroll|payslip|employee-cost|staff-cost|(^|-)tax|(^|-)cit|tva|(^|-)vat|(^|-)wht|withholding|creator-invoice/.test(
       value,
     )
@@ -1063,6 +1065,55 @@ function buildJsFormula(
     ];
     disclaimer =
       "Nigeria disposal-tax planning estimate only. Confirm classification, deductions, exemptions, filing and payment with NRS, the relevant state tax authority or a qualified tax professional.";
+  } else if (artifactPath === "engines/import-landed-cost-engine.js") {
+    engine = require(path.join(root, artifactPath));
+    const rules = readJson(path.join(root, "data/trade/import-rules.json"));
+    const source = (sourceRegistry.sources || []).find(
+      (entry) => entry.id === "import-duty-planning-rates",
+    );
+    const authoritySources = [];
+    const seenUrls = new Set();
+    Object.values(rules.markets || {}).forEach((market) => {
+      (market.sources || []).forEach((entry) => {
+        if (!entry.url || seenUrls.has(entry.url)) return;
+        seenUrls.add(entry.url);
+        authoritySources.push({
+          registryId: null,
+          title: entry.title,
+          url: entry.url,
+          kind: "authority-link",
+          authorityStatus: "source-reviewed",
+        });
+      });
+    });
+    jurisdictions = ["NG", "KE", "GH", "ZA"];
+    sourceJurisdictions = jurisdictions.slice();
+    sources = [
+      Object.assign(
+        {},
+        sourceTemplate("legal_regulatory", sourceRegistry, artifactPath),
+        { authorityStatus: "source-reviewed" },
+      ),
+      ...authoritySources,
+    ];
+    lastVerified =
+      (source && (source.lastReviewedAt || source.lastCheckedAt)) ||
+      rules.updatedAt ||
+      lastVerified;
+    effective = {
+      effectiveFrom: "2026-01-01",
+      effectiveTo: null,
+      effectiveDateStatus: "declared",
+    };
+    currency = "MULTI";
+    knownExclusions = [
+      "Exact HS classification, exemptions, preferential origin, trade remedies, prohibitions and declaration-specific reliefs are not inferred.",
+      "Specific, compound and formula duties are excluded unless the user converts an officially confirmed treatment to a supported rate or fixed assessed charge.",
+      "Vehicle age, engine, valuation, steering, depreciation and environmental rules remain in the separate car-import workflow.",
+      "Clearing, port, terminal, storage, inland haulage, inspection, documentation, bank and miscellaneous costs are user-entered assumptions, not statutory defaults.",
+    ];
+    disclaimer =
+      "Import landed-cost planning estimate only. Confirm classification, customs value, rates, exemptions, exchange rate and declaration charges with the destination authority or a licensed customs professional.";
   } else if (artifactPath === "assets/js/engines/mortgage-planner.js") {
     const source = (sourceRegistry.sources || []).find(
       (entry) => entry.id === "mortgage-planning-method",

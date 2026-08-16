@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-08-12
+Generated: 2026-08-15
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -11,7 +11,7 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 - Routes with blockers: 0
 - BLOCKER_VISIBLE_ENGLISH findings: 0
 - POSSIBLE_FALSE_POSITIVE findings: 149
-- ACCEPTED_TECH_TERM findings: 597
+- ACCEPTED_TECH_TERM findings: 596
 
 ## Top 20 Blocker Routes
 

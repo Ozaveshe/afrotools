@@ -153,7 +153,7 @@ const CURATED_FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
   "cout-geometre": "survey-cost",
   "cout-hospitalier": "hospital-cost",
   "cout-recharge-ev": "ev-charging",
-  "cout-rendu": "landed-cost",
+  "cout-rendu": "import-duty",
   "cout-renovation": "home-renovation-cost",
   "cout-reunion": "meeting-cost",
   "cout-securite-maison": "home-security-cost",

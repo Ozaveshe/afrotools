@@ -1,13 +1,13 @@
 {
-  "version": 1,
+  "version": 2,
   "category": "trade",
   "name": "Trade & Customs official sources",
-  "datasetReviewed": "2026-05",
+  "datasetReviewed": "2026-08-15",
   "reviewCadenceDays": 120,
   "highRiskCadenceDays": 45,
   "notes": [
     "Trade & Customs carries HIGH-stakes public numbers: import duty rates, CET bands, VAT and levies, AfCFTA/regional preference offers and rules-of-origin tests. A wrong duty rate or a falsely 'free' preference misprices a shipment and can trigger a customs penalty.",
-    "The duty datasets (data/trade/country-duty-rates.js, landed-cost-data.js) carry no per-figure date. datasetReviewed above is a floor, not a per-rate date. Treat any duty/levy/VAT figure older than highRiskCadenceDays as planning-grade and confirm with the named authority before pricing.",
+    "The canonical supported-market calculator reads data/trade/import-rules.json, where Nigeria, Kenya, Ghana and South Africa have per-rule effective and verification dates. Older country-duty-rates.js and landed-cost-data.js remain legacy planning data and must not be used to imply current statutory coverage.",
     "Never change a duty rate, CET band, VAT rate or levy because a URL's content hash changed. Open the tariff schedule or gazette and read it, exactly as .claude/rules/government.md requires. A national budget/finance act is the usual trigger for a real change.",
     "A national customs authority outranks any aggregator, freight forwarder or broker page for the duty/VAT/levy claim of its own country. A regional secretariat (AfCFTA, ECOWAS, EAC, SADC, COMESA) is authoritative for the bloc's CET bands, preference schedule and rules of origin; the national authority applies them.",
     "15 of the 24 duty-rate markets have a bound customs-authority URL today. The other 9 are recorded in gaps.authoritiesWithoutUrl as known liabilities, not to-dos. Do not delete one without either finding the source or showing the figure as planning-grade.",

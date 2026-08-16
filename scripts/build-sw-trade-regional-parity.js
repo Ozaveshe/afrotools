@@ -5,6 +5,10 @@ const path = require("path");
 const { normalizeBuildManagedHtml } = require("./lib/shared-asset-references");
 
 const ROOT = path.resolve(__dirname, "..");
+const slugArgument = process.argv.find((argument) => argument.startsWith("--slugs="));
+const requestedSlugs = slugArgument
+  ? new Set(slugArgument.slice("--slugs=".length).split(",").map((slug) => slug.trim()).filter(Boolean))
+  : null;
 
 function field(label, name, options = {}) {
   const help = options.help ? `<small>${options.help}</small>` : "";
@@ -26,7 +30,7 @@ function field(label, name, options = {}) {
 
 const pages = [
   {
-    id: "landed-cost", slug: "gharama-bidhaa", en: "/tools/landed-cost/", fr: "/fr/tools/cout-rendu/", image: "landed-cost.webp",
+    id: "landed-cost", slug: "gharama-bidhaa", en: "/tools/import-duty/", fr: "/fr/tools/cout-rendu/", image: "import-duty.webp",
     name: "Kikokotoo cha gharama iliyofika", title: "Kikokotoo cha gharama iliyofika ya bidhaa | AfroTools",
     description: "Kadiria gharama ya bidhaa ilipofika kwa FOB, usafirishaji, bima, ushuru, VAT na ada za ndani ulizothibitisha.",
     lead: "Tenganisha CIF, ushuru, VAT na gharama za ndani kwa kutumia viwango vya muamala wako, bila kudai tathmini rasmi ya forodha.",
@@ -147,8 +151,14 @@ ${scripts}<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script><script s
 
 function main() {
   const check = process.argv.includes("--check");
+  const selectedPages = requestedSlugs ? pages.filter((page) => requestedSlugs.has(page.slug)) : pages;
+  if (requestedSlugs) {
+    const known = new Set(selectedPages.map((page) => page.slug));
+    const missing = Array.from(requestedSlugs).filter((slug) => !known.has(slug));
+    if (missing.length) throw new Error(`Unknown Swahili Trade owner slug(s): ${missing.join(", ")}`);
+  }
   const changed = [];
-  for (const page of pages) {
+  for (const page of selectedPages) {
     const target = path.join(ROOT, "sw", "zana", page.slug, "index.html");
     const output = html(page);
     const current = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
@@ -163,7 +173,7 @@ function main() {
     console.error(`Swahili Trade regional output is stale (${changed.length}):\n${changed.join("\n")}`);
     process.exitCode = 1;
   } else {
-    console.log(`${check ? "Checked" : "Built"} ${pages.length} source-owned Swahili Trade regional page(s); ${changed.length} ${check ? "stale" : "updated"}.`);
+    console.log(`${check ? "Checked" : "Built"} ${selectedPages.length} source-owned Swahili Trade regional page(s); ${changed.length} ${check ? "stale" : "updated"}.`);
   }
 }
 

@@ -11,7 +11,8 @@ const COVERAGE_PATH = path.join(ROOT, 'data', 'registry', 'locale-page-coverage.
 const ACCEPTANCE_PATH = path.join(ROOT, 'data', 'audits', 'swahili-free-app-acceptance.json');
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.md');
-const EXPECTED_FREE_APP_COUNT = 1258;
+// One duplicate canonical entry was retired when landed-cost consolidated into import-duty.
+const EXPECTED_FREE_APP_COUNT = 1257;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = Object.freeze({
@@ -508,7 +509,7 @@ function renderMarkdown(report) {
     '',
     'Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.',
     '',
-    '## Full 1,258-row ledger',
+    `## Full ${EXPECTED_FREE_APP_COUNT.toLocaleString('en-US')}-row ledger`,
     '',
     '| English app | Category | English route | State | Primary Swahili route | Accepted |',
     '|---|---|---|---|---|---:|'

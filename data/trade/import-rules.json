@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "2026-08-15.1",
+  "datasetId": "afrotools-import-landed-cost-rules",
+  "updatedAt": "2026-08-15",
+  "staleAfterDays": 45,
+  "fx": {
+    "snapshotPath": "/data/forex/latest.json",
+    "baseCurrency": "USD",
+    "staleAfterHours": 24,
+    "overrideAllowed": true,
+    "notes": "The bundled FX snapshot is a planning reference. A customs declaration or bank rate may differ and can be entered by the user."
+  },
+  "goodsTypes": {
+    "general": {
+      "label": "General goods",
+      "status": "supported",
+      "notes": "The user must confirm the HS classification, duty treatment, exemptions and any product-specific excise."
+    },
+    "vehicle": {
+      "label": "Vehicle",
+      "status": "separate-workflow",
+      "route": "/tools/car-import-cost/",
+      "notes": "Vehicle age, engine, valuation, steering and environmental rules are handled by the dedicated car-import calculator."
+    }
+  },
+  "markets": {
+    "NG": {
+      "country": "Nigeria",
+      "currency": "NGN",
+      "symbol": "₦",
+      "authority": "Nigeria Customs Service",
+      "ruleVersion": "ng-cet-2026-nta-2025",
+      "effectiveDate": "2026-01-01",
+      "lastVerified": "2026-08-15",
+      "status": "current",
+      "confidence": "high",
+      "customsValuationBasis": "CIF or the assessed customs value entered by the user",
+      "duty": {
+        "type": "user-confirmed-ad-valorem",
+        "commonBands": [0, 5, 10, 20, 35],
+        "base": ["customsValue"],
+        "notes": "The correct CET or national tariff rate depends on the confirmed HS line."
+      },
+      "excise": {
+        "type": "optional-user-confirmed-rate-or-fixed",
+        "base": ["customsValue", "duty"],
+        "notes": "Product-specific excise is not assumed."
+      },
+      "levies": [
+        { "id": "ciss", "name": "CISS", "rate": 1, "base": ["purchaseValue"], "description": "Comprehensive Import Supervision Scheme charge on FOB value." },
+        { "id": "etls", "name": "ETLS levy", "rate": 0.5, "base": ["customsValue"], "description": "ECOWAS Trade Liberalisation Scheme levy on customs value." },
+        { "id": "surcharge", "name": "Import surcharge", "rate": 7, "base": ["duty"], "description": "Surcharge calculated on customs duty." }
+      ],
+      "vat": {
+        "rate": 7.5,
+        "base": ["customsValue", "duty", "excise", "levies", "otherStatutory"],
+        "notes": "Nigeria Tax Act 2025 sections 147 and 149 place import VAT on the imported value plus non-VAT taxes, duties and import charges."
+      },
+      "limitations": [
+        "Duty rate, exemptions, prohibitions and import-adjustment-tax treatment require the exact tariff line.",
+        "The suspended 4% FOB charge is not included; confirm the live declaration before relying on CISS or collection-charge treatment."
+      ],
+      "sources": [
+        { "title": "NCS Tariff & CET Lookup Portal", "url": "https://cet.customs.gov.ng/", "authority": "Nigeria Customs Service", "covers": ["classification", "duty", "tariff treatment"] },
+        { "title": "Nigeria Trade Portal duties and taxes simulation", "url": "https://trade.gov.ng/en/tools/taxation-simulation", "authority": "Nigeria Single Window Trade Portal", "covers": ["declaration simulation", "origin", "customs FX"] },
+        { "title": "Nigeria Tax Act 2025", "url": "https://nass.gov.ng/documents/download/11249", "authority": "National Assembly of Nigeria", "covers": ["VAT rate", "import VAT base"] },
+        { "title": "Nigeria Customs worked assessment example", "url": "https://customs.gov.ng/wp-content/uploads/2023/12/CUSTOMS-e-NEWSLETTER-NOVEMBER-2023_compressed.pdf", "authority": "Nigeria Customs Service", "covers": ["CISS", "ETLS", "surcharge", "VAT order"] }
+      ]
+    },
+    "KE": {
+      "country": "Kenya",
+      "currency": "KES",
+      "symbol": "KSh",
+      "authority": "Kenya Revenue Authority",
+      "ruleVersion": "ke-mfl-act-2026-vat-act",
+      "effectiveDate": "2026-01-01",
+      "lastVerified": "2026-08-15",
+      "status": "current",
+      "confidence": "high",
+      "customsValuationBasis": "CIF or the customs value entered by the user",
+      "duty": {
+        "type": "user-confirmed-ad-valorem",
+        "commonBands": [0, 10, 25, 35],
+        "base": ["customsValue"],
+        "notes": "EAC CET rates, sensitive-item rates, stays and remissions depend on the confirmed tariff line."
+      },
+      "excise": {
+        "type": "optional-user-confirmed-rate-or-fixed",
+        "base": ["customsValue", "duty"],
+        "notes": "Imported excisable goods use customs value plus customs duty as the excisable value."
+      },
+      "levies": [
+        { "id": "idf", "name": "Import declaration fee", "rate": 2.5, "base": ["customsValue"], "description": "General rate under the current Miscellaneous Fees and Levies Act; exemptions and special rates can apply." },
+        { "id": "rdl", "name": "Railway development levy", "rate": 2, "base": ["customsValue"], "description": "General rate in the consolidated Act effective 1 January 2026; exemptions can apply." }
+      ],
+      "vat": {
+        "rate": 16,
+        "base": ["customsValue", "duty", "excise"],
+        "notes": "Import VAT is calculated on customs value plus customs duty and applicable excise."
+      },
+      "limitations": [
+        "EAC sensitive-item rates, duty remission, exemptions and product excise are not inferred.",
+        "The current consolidated law controls where older KRA explainer pages show superseded levy rates."
+      ],
+      "sources": [
+        { "title": "Miscellaneous Fees and Levies Act — current consolidated text", "url": "https://new.kenyalaw.org/akn/ke/act/2016/29/eng@2026-01-01", "authority": "Kenya Law", "covers": ["IDF", "RDL", "exemptions"] },
+        { "title": "Value Added Tax Act", "url": "https://new.kenyalaw.org/akn/ke/act/2013/35/eng@2024-12-27", "authority": "Kenya Law", "covers": ["VAT rate", "import VAT base"] },
+        { "title": "KRA Customs and Border Control", "url": "https://www.kra.go.ke/individual/importing", "authority": "Kenya Revenue Authority", "covers": ["customs process", "classification"] }
+      ]
+    },
+    "GH": {
+      "country": "Ghana",
+      "currency": "GHS",
+      "symbol": "GH₵",
+      "authority": "Ghana Revenue Authority",
+      "ruleVersion": "gh-vat-act-2025-ecowas-cet",
+      "effectiveDate": "2026-01-01",
+      "lastVerified": "2026-08-15",
+      "status": "current",
+      "confidence": "high",
+      "customsValuationBasis": "Transaction value adjusted for transport, handling and insurance to Ghana",
+      "duty": {
+        "type": "user-confirmed-ad-valorem",
+        "commonBands": [0, 5, 10, 20, 35],
+        "base": ["customsValue"],
+        "notes": "Ghana applies ECOWAS CET bands; classification and origin must be confirmed in ICUMS or by GRA Customs."
+      },
+      "excise": {
+        "type": "optional-user-confirmed-rate-or-fixed",
+        "base": ["customsValue", "duty"],
+        "notes": "Product-specific excise is not assumed."
+      },
+      "levies": [
+        { "id": "nhil", "name": "NHIL", "rate": 2.5, "base": ["customsValue", "duty", "excise", "otherStatutory"], "description": "National Health Insurance Levy under the VAT reforms effective 1 January 2026." },
+        { "id": "getfund", "name": "GETFund levy", "rate": 2.5, "base": ["customsValue", "duty", "excise", "otherStatutory"], "description": "Ghana Education Trust Fund levy on the same 2026 tax base." }
+      ],
+      "vat": {
+        "rate": 15,
+        "base": ["customsValue", "duty", "excise", "otherStatutory"],
+        "notes": "From 1 January 2026 VAT, NHIL and GETFund are calculated separately on the same base rather than cascading."
+      },
+      "limitations": [
+        "AU, ECOWAS, examination, processing, special import and product levies vary by declaration and are entered as other assessed statutory charges.",
+        "Upfront VAT payment, reliefs and input-credit treatment are outside this planning estimate."
+      ],
+      "sources": [
+        { "title": "GRA VAT reforms and current rates", "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/", "authority": "Ghana Revenue Authority", "covers": ["VAT", "NHIL", "GETFund", "2026 calculation order"] },
+        { "title": "GRA Customs tariffs and levies", "url": "https://gra.gov.gh/customs/customs-tariffs-and-levies/", "authority": "Ghana Revenue Authority", "covers": ["ECOWAS CET", "statutory charge types"] },
+        { "title": "Ghana Customs Act 2015", "url": "https://gra.gov.gh/wp-content/uploads/2023/08/Customs-Act-2015.pdf", "authority": "Ghana Revenue Authority", "covers": ["classification", "customs valuation"] }
+      ]
+    },
+    "ZA": {
+      "country": "South Africa",
+      "currency": "ZAR",
+      "symbol": "R",
+      "authority": "South African Revenue Service",
+      "ruleVersion": "za-import-vat-rev5-2025",
+      "effectiveDate": "2025-12-11",
+      "lastVerified": "2026-08-15",
+      "status": "current",
+      "confidence": "high",
+      "customsValuationBasis": "Customs value under sections 65–67 of the Customs and Excise Act",
+      "duty": {
+        "type": "user-confirmed-ad-valorem",
+        "commonBands": [0, 5, 10, 15, 20, 25, 30, 40],
+        "base": ["customsValue"],
+        "notes": "The tariff can be ad valorem, specific or formula-based. Enter a percentage only when it matches the confirmed tariff treatment."
+      },
+      "excise": {
+        "type": "optional-user-confirmed-rate-or-fixed",
+        "base": ["customsValue", "duty"],
+        "notes": "Product-specific excise and environmental levies are not assumed."
+      },
+      "levies": [],
+      "vat": {
+        "rate": 15,
+        "base": ["customsValue", "customsUplift", "duty", "excise"],
+        "upliftRate": 10,
+        "upliftExemptOrigins": ["BW", "LS", "NA", "SZ"],
+        "notes": "The added tax value normally includes a 10% customs-value uplift plus non-rebated duties. The uplift does not apply to qualifying origin in Botswana, Eswatini, Lesotho or Namibia."
+      },
+      "limitations": [
+        "Preferential origin, rebates, anti-dumping, safeguard, formula and specific duties are not inferred.",
+        "The origin selector only controls the SARS VAT uplift exception; it never guesses a preferential customs duty."
+      ],
+      "sources": [
+        { "title": "SARS import VAT guide", "url": "https://www.sars.gov.za/legal-ce-g06-value-added-tax-levied-on-the-importation-of-goods-into-south-africa/", "authority": "South African Revenue Service", "covers": ["VAT rate", "added tax value", "10% uplift"] },
+        { "title": "SARS Valuation of Imports External Policy", "url": "https://www.sars.gov.za/sc-cr-a-03-valuation-of-imports-external-policy/", "authority": "South African Revenue Service", "covers": ["customs value", "VAT order", "BELN origin exception"] },
+        { "title": "SARS duties and taxes", "url": "https://www.sars.gov.za/customs-and-excise/duties-and-taxes/", "authority": "South African Revenue Service", "covers": ["tariff classification", "duty schedules"] }
+      ]
+    }
+  }
+}

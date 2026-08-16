@@ -8,16 +8,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1259 |
+| Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1258** |
-| Native candidates (including accepted) | 1258 |
+| **Free canonical English apps** | **1257** |
+| Native candidates (including accepted) | 1257 |
 | English iframe/transplant | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Missing | 0 |
 | Definite product-build gaps | 0 |
-| **Accepted** | **1258** |
+| **Accepted** | **1257** |
 
 ## Category reconciliation
 
@@ -34,7 +34,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Education | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 20 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 26 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 133 | 133 | 0 | 0 | 0 | 0 | 133 |
+| Finance, Tax & Market Data | 132 | 132 | 0 | 0 | 0 | 0 | 132 |
 | Fintech & Banking | 31 | 31 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 15 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
@@ -55,12 +55,12 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Travel & Tourism | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 34 | 34 | 0 | 0 | 0 | 0 | 34 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 63 |
-| **Total** | **1258** | **1258** | **0** | **0** | **0** | **0** | **1258** |
+| **Total** | **1257** | **1257** | **0** | **0** | **0** | **0** | **1257** |
 
 ## Ambiguous ownership
 
 - French routes with conflicting owner evidence: 108
-- English apps with multiple live French owner candidates: 23
+- English apps with multiple live French owner candidates: 21
 - French registry source IDs not found in the free English denominator: 5
 
 Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.
@@ -193,9 +193,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | `/tools/health-insurance-compare` | `/fr/tools/comparateur-assurance-sante` | `/fr/tools/comparateur-assurance-sante/angola`<br>`/fr/tools/comparateur-assurance-sante/cameroon`<br>`/fr/tools/comparateur-assurance-sante/cote-d-ivoire`<br>`/fr/tools/comparateur-assurance-sante/egypt`<br>`/fr/tools/comparateur-assurance-sante/ethiopia`<br>`/fr/tools/comparateur-assurance-sante/ghana`<br>`/fr/tools/comparateur-assurance-sante/kenya`<br>`/fr/tools/comparateur-assurance-sante/morocco`<br>`/fr/tools/comparateur-assurance-sante/nigeria`<br>`/fr/tools/comparateur-assurance-sante/rwanda`<br>`/fr/tools/comparateur-assurance-sante/senegal`<br>`/fr/tools/comparateur-assurance-sante/south-africa`<br>`/fr/tools/comparateur-assurance-sante/tanzania`<br>`/fr/tools/comparateur-assurance-sante/tunisia`<br>`/fr/tools/comparateur-assurance-sante/uganda` |
 | `/tools/life-insurance-calc` | `/fr/tools/assurance-vie` | `/fr/tools/assurance-vie/angola`<br>`/fr/tools/assurance-vie/cameroon`<br>`/fr/tools/assurance-vie/cote-d-ivoire`<br>`/fr/tools/assurance-vie/egypt`<br>`/fr/tools/assurance-vie/ethiopia`<br>`/fr/tools/assurance-vie/ghana`<br>`/fr/tools/assurance-vie/kenya`<br>`/fr/tools/assurance-vie/morocco`<br>`/fr/tools/assurance-vie/nigeria`<br>`/fr/tools/assurance-vie/rwanda`<br>`/fr/tools/assurance-vie/senegal`<br>`/fr/tools/assurance-vie/south-africa`<br>`/fr/tools/assurance-vie/tanzania`<br>`/fr/tools/assurance-vie/tunisia`<br>`/fr/tools/assurance-vie/uganda` |
 | `/tools/funeral-insurance` | `/fr/tools/assurance-obseques` | `/fr/tools/assurance-obseques/angola`<br>`/fr/tools/assurance-obseques/cameroon`<br>`/fr/tools/assurance-obseques/cote-d-ivoire`<br>`/fr/tools/assurance-obseques/egypt`<br>`/fr/tools/assurance-obseques/ethiopia`<br>`/fr/tools/assurance-obseques/ghana`<br>`/fr/tools/assurance-obseques/kenya`<br>`/fr/tools/assurance-obseques/morocco`<br>`/fr/tools/assurance-obseques/nigeria`<br>`/fr/tools/assurance-obseques/rwanda`<br>`/fr/tools/assurance-obseques/senegal`<br>`/fr/tools/assurance-obseques/south-africa`<br>`/fr/tools/assurance-obseques/tanzania`<br>`/fr/tools/assurance-obseques/tunisia`<br>`/fr/tools/assurance-obseques/uganda` |
-| `/tools/electricity-tariff` | `/fr/tools/tarifs-electricite` | `/fr/tools/tarifs-electricite/algeria`<br>`/fr/tools/tarifs-electricite/angola`<br>`/fr/tools/tarifs-electricite/benin`<br>`/fr/tools/tarifs-electricite/botswana`<br>`/fr/tools/tarifs-electricite/burkina-faso`<br>`/fr/tools/tarifs-electricite/burundi`<br>`/fr/tools/tarifs-electricite/cameroon`<br>`/fr/tools/tarifs-electricite/cape-verde`<br>`/fr/tools/tarifs-electricite/central-african-republic`<br>`/fr/tools/tarifs-electricite/chad`<br>`/fr/tools/tarifs-electricite/comoros`<br>`/fr/tools/tarifs-electricite/cote-divoire`<br>`/fr/tools/tarifs-electricite/djibouti`<br>`/fr/tools/tarifs-electricite/dr-congo`<br>`/fr/tools/tarifs-electricite/egypt`<br>`/fr/tools/tarifs-electricite/equatorial-guinea`<br>`/fr/tools/tarifs-electricite/eritrea`<br>`/fr/tools/tarifs-electricite/eswatini`<br>`/fr/tools/tarifs-electricite/ethiopia`<br>`/fr/tools/tarifs-electricite/gabon`<br>`/fr/tools/tarifs-electricite/gambia`<br>`/fr/tools/tarifs-electricite/ghana`<br>`/fr/tools/tarifs-electricite/guinea`<br>`/fr/tools/tarifs-electricite/guinea-bissau`<br>`/fr/tools/tarifs-electricite/kenya`<br>`/fr/tools/tarifs-electricite/lesotho`<br>`/fr/tools/tarifs-electricite/liberia`<br>`/fr/tools/tarifs-electricite/libya`<br>`/fr/tools/tarifs-electricite/madagascar`<br>`/fr/tools/tarifs-electricite/malawi`<br>`/fr/tools/tarifs-electricite/mali`<br>`/fr/tools/tarifs-electricite/mauritania`<br>`/fr/tools/tarifs-electricite/mauritius`<br>`/fr/tools/tarifs-electricite/morocco`<br>`/fr/tools/tarifs-electricite/mozambique`<br>`/fr/tools/tarifs-electricite/namibia`<br>`/fr/tools/tarifs-electricite/niger`<br>`/fr/tools/tarifs-electricite/nigeria`<br>`/fr/tools/tarifs-electricite/republic-of-congo`<br>`/fr/tools/tarifs-electricite/rwanda`<br>`/fr/tools/tarifs-electricite/sao-tome`<br>`/fr/tools/tarifs-electricite/senegal`<br>`/fr/tools/tarifs-electricite/seychelles`<br>`/fr/tools/tarifs-electricite/sierra-leone`<br>`/fr/tools/tarifs-electricite/somalia`<br>`/fr/tools/tarifs-electricite/south-africa`<br>`/fr/tools/tarifs-electricite/south-sudan`<br>`/fr/tools/tarifs-electricite/sudan`<br>`/fr/tools/tarifs-electricite/tanzania`<br>`/fr/tools/tarifs-electricite/togo`<br>`/fr/tools/tarifs-electricite/tunisia`<br>`/fr/tools/tarifs-electricite/uganda`<br>`/fr/tools/tarifs-electricite/zambia`<br>`/fr/tools/tarifs-electricite/zimbabwe` |
 | `/tools/solar-roi` | `/fr/tools/roi-solaire` | `/fr/tools/roi-solaire/algeria`<br>`/fr/tools/roi-solaire/angola`<br>`/fr/tools/roi-solaire/benin`<br>`/fr/tools/roi-solaire/botswana`<br>`/fr/tools/roi-solaire/burkina-faso`<br>`/fr/tools/roi-solaire/burundi`<br>`/fr/tools/roi-solaire/cameroon`<br>`/fr/tools/roi-solaire/cape-verde`<br>`/fr/tools/roi-solaire/central-african-republic`<br>`/fr/tools/roi-solaire/chad`<br>`/fr/tools/roi-solaire/comoros`<br>`/fr/tools/roi-solaire/cote-divoire`<br>`/fr/tools/roi-solaire/djibouti`<br>`/fr/tools/roi-solaire/dr-congo`<br>`/fr/tools/roi-solaire/egypt`<br>`/fr/tools/roi-solaire/equatorial-guinea`<br>`/fr/tools/roi-solaire/eritrea`<br>`/fr/tools/roi-solaire/eswatini`<br>`/fr/tools/roi-solaire/ethiopia`<br>`/fr/tools/roi-solaire/gabon`<br>`/fr/tools/roi-solaire/gambia`<br>`/fr/tools/roi-solaire/ghana`<br>`/fr/tools/roi-solaire/guinea`<br>`/fr/tools/roi-solaire/guinea-bissau`<br>`/fr/tools/roi-solaire/kenya`<br>`/fr/tools/roi-solaire/lesotho`<br>`/fr/tools/roi-solaire/liberia`<br>`/fr/tools/roi-solaire/libya`<br>`/fr/tools/roi-solaire/madagascar`<br>`/fr/tools/roi-solaire/malawi`<br>`/fr/tools/roi-solaire/mali`<br>`/fr/tools/roi-solaire/mauritania`<br>`/fr/tools/roi-solaire/mauritius`<br>`/fr/tools/roi-solaire/morocco`<br>`/fr/tools/roi-solaire/mozambique`<br>`/fr/tools/roi-solaire/namibia`<br>`/fr/tools/roi-solaire/niger`<br>`/fr/tools/roi-solaire/nigeria`<br>`/fr/tools/roi-solaire/republic-of-congo`<br>`/fr/tools/roi-solaire/rwanda`<br>`/fr/tools/roi-solaire/sao-tome`<br>`/fr/tools/roi-solaire/senegal`<br>`/fr/tools/roi-solaire/seychelles`<br>`/fr/tools/roi-solaire/sierra-leone`<br>`/fr/tools/roi-solaire/somalia`<br>`/fr/tools/roi-solaire/south-africa`<br>`/fr/tools/roi-solaire/south-sudan`<br>`/fr/tools/roi-solaire/sudan`<br>`/fr/tools/roi-solaire/tanzania`<br>`/fr/tools/roi-solaire/togo`<br>`/fr/tools/roi-solaire/tunisia`<br>`/fr/tools/roi-solaire/uganda`<br>`/fr/tools/roi-solaire/zambia`<br>`/fr/tools/roi-solaire/zimbabwe` |
-| `/tools/prepaid-meter` | `/fr/tools/compteur-prepaye` | `/fr/tools/compteur-prepaye/algeria`<br>`/fr/tools/compteur-prepaye/angola`<br>`/fr/tools/compteur-prepaye/benin`<br>`/fr/tools/compteur-prepaye/botswana`<br>`/fr/tools/compteur-prepaye/burkina-faso`<br>`/fr/tools/compteur-prepaye/burundi`<br>`/fr/tools/compteur-prepaye/cameroon`<br>`/fr/tools/compteur-prepaye/cape-verde`<br>`/fr/tools/compteur-prepaye/central-african-republic`<br>`/fr/tools/compteur-prepaye/chad`<br>`/fr/tools/compteur-prepaye/comoros`<br>`/fr/tools/compteur-prepaye/cote-divoire`<br>`/fr/tools/compteur-prepaye/djibouti`<br>`/fr/tools/compteur-prepaye/dr-congo`<br>`/fr/tools/compteur-prepaye/egypt`<br>`/fr/tools/compteur-prepaye/equatorial-guinea`<br>`/fr/tools/compteur-prepaye/eritrea`<br>`/fr/tools/compteur-prepaye/eswatini`<br>`/fr/tools/compteur-prepaye/ethiopia`<br>`/fr/tools/compteur-prepaye/gabon`<br>`/fr/tools/compteur-prepaye/gambia`<br>`/fr/tools/compteur-prepaye/ghana`<br>`/fr/tools/compteur-prepaye/guinea`<br>`/fr/tools/compteur-prepaye/guinea-bissau`<br>`/fr/tools/compteur-prepaye/kenya`<br>`/fr/tools/compteur-prepaye/lesotho`<br>`/fr/tools/compteur-prepaye/liberia`<br>`/fr/tools/compteur-prepaye/libya`<br>`/fr/tools/compteur-prepaye/madagascar`<br>`/fr/tools/compteur-prepaye/malawi`<br>`/fr/tools/compteur-prepaye/mali`<br>`/fr/tools/compteur-prepaye/mauritania`<br>`/fr/tools/compteur-prepaye/mauritius`<br>`/fr/tools/compteur-prepaye/morocco`<br>`/fr/tools/compteur-prepaye/mozambique`<br>`/fr/tools/compteur-prepaye/namibia`<br>`/fr/tools/compteur-prepaye/niger`<br>`/fr/tools/compteur-prepaye/nigeria`<br>`/fr/tools/compteur-prepaye/republic-of-congo`<br>`/fr/tools/compteur-prepaye/rwanda`<br>`/fr/tools/compteur-prepaye/sao-tome`<br>`/fr/tools/compteur-prepaye/senegal`<br>`/fr/tools/compteur-prepaye/seychelles`<br>`/fr/tools/compteur-prepaye/sierra-leone`<br>`/fr/tools/compteur-prepaye/somalia`<br>`/fr/tools/compteur-prepaye/south-africa`<br>`/fr/tools/compteur-prepaye/south-sudan`<br>`/fr/tools/compteur-prepaye/sudan`<br>`/fr/tools/compteur-prepaye/tanzania`<br>`/fr/tools/compteur-prepaye/togo`<br>`/fr/tools/compteur-prepaye/tunisia`<br>`/fr/tools/compteur-prepaye/uganda`<br>`/fr/tools/compteur-prepaye/zambia`<br>`/fr/tools/compteur-prepaye/zimbabwe` |
 | `/tools/gas-lpg-cost` | `/fr/tools/cout-gaz-lpg` | `/fr/tools/calculateur-du-cout-du-gaz-gpl-afrique-du-sud`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-angola`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cameroun`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-cote-d-ivoire`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-egypte`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ethiopie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ghana`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-kenya`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-maroc`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-nigeria`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-ouganda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-rwanda`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-senegal`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tanzanie`<br>`/fr/tools/calculateur-du-cout-du-gaz-gpl-tunisie` |
 | `/tools/outage-cost` | `/fr/tools/cout-coupure-entreprise` | `/fr/tools/estimateur-du-cout-des-coupures-de-courant-afrique-du-sud`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-angola`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cameroun`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-cote-d-ivoire`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-egypte`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ethiopie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ghana`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-kenya`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-maroc`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-nigeria`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ouganda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-rwanda`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-senegal`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tanzanie`<br>`/fr/tools/estimateur-du-cout-des-coupures-de-courant-tunisie` |
 | `/tools/afrostream` | `/fr/tools/afrostream-afrique-s-createur-streaming-hub` | `/fr/tools/installation-de-streaming-a-petit-budget`<br>`/fr/tools/monetisation-pour-createurs-africains`<br>`/fr/tools/tarifer-un-partenariat-de-marque` |
@@ -214,7 +212,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 - `generator-fuel-african`
 - `regulatory-alerts`
 
-## Full 1,258-row ledger
+## Full 1,257-row ledger
 
 | English app | Category | English route | State | Primary French route | Accepted |
 |---|---|---|---|---|---:|
@@ -409,10 +407,10 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/fr/tools/chiffres-romains` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Native candidate | `/fr/tools/calculateur-pourcentage` | Yes |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Native candidate | `/fr/tools/calculatrice-scientifique` | Yes |
-| Mobile Money Quote Fee Comparator | Uniquely African | `/tools/mobile-money-fees` | Native candidate | `/fr/tools/frais-mobile-money` | Yes |
+| Mobile Money Fee Finder | Uniquely African | `/tools/mobile-money-fees` | Native candidate | `/fr/tools/frais-mobile-money` | Yes |
 | Fintech Fee Watch | Uniquely African | `/tools/fintech-fee-watch` | Native candidate | `/fr/tools/suivi-frais-fintech` | Yes |
 | Ajo/Chama Savings Tracker | Uniquely African | `/tools/ajo-tracker` | Native candidate | `/fr/tools/suivi-tontine` | Yes |
-| Electricity Bill Estimator | Uniquely African | `/tools/electricity-estimator` | Native candidate | `/fr/tools/estimateur-electricite` | Yes |
+| Appliance Electricity Usage Estimator | Uniquely African | `/tools/electricity-estimator` | Native candidate | `/fr/tools/estimateur-electricite` | Yes |
 | Fuel Cost Calculator | Uniquely African | `/tools/fuel-cost` | Native candidate | `/fr/tools/cout-carburant` | Yes |
 | Private Tithe & Offering Giving Planner | Religious & Cultural | `/tools/tithe-calculator` | Native candidate | `/fr/tools/calculateur-dime` | Yes |
 | Lobola Calculator | Religious & Cultural | `/tools/lobola-calculator` | Native candidate | `/fr/tools/calculateur-lobola` | Yes |
@@ -435,7 +433,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Native candidate | `/fr/tools/compte-rendu-reunion` | Yes |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Native candidate | `/fr/tools/transfert-argent` | Yes |
 | Informal FX Watch | Uniquely African | `/tools/informal-fx-watch` | Native candidate | `/fr/tools/taux-change-parallele` | Yes |
-| Nigeria Import Duty & Landed Cost | Finance, Tax & Market Data | `/tools/import-duty` | Native candidate | `/fr/tools/droits-douane` | Yes |
+| Import & Landed Cost Calculator | Trade & Import | `/tools/import-duty` | Native candidate | `/fr/tools/cout-rendu` | Yes |
 | Mortgage Planning Calculator | Finance, Tax & Market Data | `/tools/mortgage-calculator` | Native candidate | `/fr/tools/calculateur-hypothecaire` | Yes |
 | Loan Comparison Tool | Finance, Tax & Market Data | `/tools/loan-compare` | Native candidate | `/fr/tools/comparateur-prets` | Yes |
 | Receipt Generator | Document & PDF | `/tools/receipt-generator` | Native candidate | `/fr/tools/generateur-recu` | Yes |
@@ -1099,7 +1097,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Tunisia Farm Loan Eligibility Calculator | Agriculture | `/agriculture/farm-loans/tunisia` | Native candidate | `/fr/agriculture/farm-loans/tunisia` | Yes |
 | Angola Farm Loan Eligibility Calculator | Agriculture | `/agriculture/farm-loans/angola` | Native candidate | `/fr/agriculture/farm-loans/angola` | Yes |
 | AfCFTA Tariff Tracker | Trade & Import | `/tools/afcfta-tracker` | Native candidate | `/fr/tools/suivi-zlecaf` | Yes |
-| Landed Cost Calculator | Trade & Import | `/tools/landed-cost` | Native candidate | `/fr/tools/cout-rendu` | Yes |
 | Shipping Cost Estimator | Trade & Import | `/tools/shipping-estimator` | Native candidate | `/fr/tools/estimateur-fret` | Yes |
 | FX Import Cost Impact | Trade & Import | `/tools/fx-import-impact` | Native candidate | `/fr/tools/impact-fx-import` | Yes |
 | LC Fee Calculator | Trade & Import | `/tools/lc-calculator` | Native candidate | `/fr/tools/calculateur-credit-documentaire` | Yes |
@@ -1210,9 +1207,9 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Business Internet Calculator | Telecom & Mobile | `/telecom/business-internet` | Native candidate | `/fr/telecom/internet-entreprise` | Yes |
 | Bulk SMS Pricing Calculator | Telecom & Mobile | `/telecom/bulk-sms-pricing` | Native candidate | `/fr/telecom/prix-sms-pro` | Yes |
 | WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Native candidate | `/fr/telecom/whatsapp-vs-sms` | Yes |
-| Electricity Tariff Calculator | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/fr/tools/tarifs-electricite` | Yes |
+| Electricity Cost & Prepaid Units | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/fr/tools/tarifs-electricite` | Yes |
 | Solar Panel ROI Calculator | Energy & Utilities | `/tools/solar-roi` | Native candidate | `/fr/tools/roi-solaire` | Yes |
-| Prepaid Meter Calculator | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/fr/tools/compteur-prepaye` | Yes |
+| Prepaid Meter Calculator (moved) | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/fr/tools/compteur-prepaye` | Yes |
 | Solar vs Generator | Energy & Utilities | `/tools/solar-vs-generator` | Native candidate | `/fr/tools/solaire-vs-generateur` | Yes |
 | Electricity Bill Verifier | Energy & Utilities | `/tools/electricity-bill-verify` | Native candidate | `/fr/tools/verifier-facture-electricite` | Yes |
 | Water Bill Calculator | Energy & Utilities | `/tools/water-bill` | Native candidate | `/fr/tools/calculateur-facture-eau` | Yes |

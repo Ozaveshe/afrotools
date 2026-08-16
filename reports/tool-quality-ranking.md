@@ -1,12 +1,12 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-08-15T05:36:33.526Z
+Generated: 2026-08-15T16:36:42.532Z
 
 ## Scope
 
-- Registry rows scored: 3807
-- Live/new expanded tool instances represented: 2613
-- Unique live/new routes: 3802
+- Registry rows scored: 3804
+- Live/new expanded tool instances represented: 2612
+- Unique live/new routes: 3799
 - Browser smoke: not run
 - Reports: `reports/tool-quality-ranking.json`, `reports/tool-quality-ranking.csv`
 
@@ -22,9 +22,9 @@ Generated: 2026-08-15T05:36:33.526Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 3597 | 5272 |
+| A | 3595 | 5270 |
 | B | 92 | 200 |
-| C | 115 | 115 |
+| C | 114 | 114 |
 | D | 2 | 2 |
 | F | 1 | 1 |
 
@@ -35,11 +35,11 @@ Repair-first rows below D: 1
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Energy & Utilities | 268 | 535 | 85.6 | 0 | 0 | 0 |
+| Energy & Utilities | 268 | 535 | 85.7 | 0 | 0 | 0 |
 | Education | 141 | 141 | 90.6 | 0 | 0 | 0 |
-| Finance, Tax & Market Data | 515 | 515 | 91 | 3 | 0 | 0 |
+| Finance, Tax & Market Data | 514 | 514 | 91 | 3 | 0 | 0 |
 | Personal Finance | 30 | 30 | 91.2 | 0 | 0 | 0 |
-| VAT & Business Tax | 249 | 249 | 91.7 | 0 | 0 | 0 |
+| VAT & Business Tax | 248 | 248 | 91.7 | 0 | 0 | 0 |
 | Career & Development | 18 | 18 | 91.7 | 0 | 0 | 0 |
 | Fintech & Banking | 85 | 85 | 92.5 | 0 | 0 | 0 |
 | Travel & Tourism | 32 | 32 | 92.6 | 0 | 0 | 0 |
@@ -47,7 +47,7 @@ Repair-first rows below D: 1
 | Business & ROI | 38 | 38 | 93.5 | 0 | 0 | 0 |
 | Mining & Extractives | 18 | 18 | 93.8 | 0 | 0 | 0 |
 | Sports & Entertainment | 45 | 45 | 94.1 | 0 | 0 | 0 |
-| Trade & Import | 69 | 69 | 94.2 | 0 | 0 | 0 |
+| Trade & Import | 68 | 68 | 94.2 | 0 | 0 | 0 |
 | Religious & Cultural | 61 | 61 | 94.2 | 0 | 0 | 0 |
 | Small Business & SME | 83 | 98 | 94.3 | 0 | 0 | 0 |
 | Insurance | 146 | 452 | 94.3 | 0 | 0 | 0 |
@@ -74,7 +74,6 @@ No rows in this queue.
 | 43 | F | P1-repair | gh-retenue-source-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
 | 61 | D | P1-high-value-upgrade | crypto-cgt-sw-coverage-crypto-tax | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
 | 61 | D | P2-upgrade | afropayroll-os-sw-coverage-afropayroll-os | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 67 | C | P3-monitor | nishati-na-huduma-sw | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
 | 71 | C | P3-monitor | tarifs-electricite-algeria-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
 | 71 | C | P3-monitor | tarifs-electricite-angola-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
 | 71 | C | P3-monitor | tarifs-electricite-benin-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
@@ -171,3 +170,4 @@ No rows in this queue.
 | 71 | C | P3-monitor | compteur-prepaye-rwanda-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
 | 71 | C | P3-monitor | compteur-prepaye-sao-tome-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
 | 71 | C | P3-monitor | compteur-prepaye-senegal-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |
+| 71 | C | P3-monitor | compteur-prepaye-seychelles-fr | Energy & Utilities | Energy and utility estimator | weak input surface; thin visible copy; no app/script evidence; no input path |

@@ -633,8 +633,8 @@
         "priority": 64,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "landed-cost",
-        "imageKey": "landed-cost"
+        "sourceId": "import-duty",
+        "imageKey": "import-duty"
       },
       {
         "id": "zana-ada-lc-sw",
@@ -1147,19 +1147,6 @@
         "imageKey": "fuel-tracker"
       },
       {
-        "id": "import-duty",
-        "name": "Nigeria Import Duty & Landed Cost",
-        "icon": "🚢",
-        "desc": "Classification-first Nigeria customs estimate us...",
-        "href": "/tools/import-duty/",
-        "category": "financial",
-        "lang": "en",
-        "priority": 95,
-        "estTraffic": 15000,
-        "imageExt": "webp",
-        "imageKey": "import-duty"
-      },
-      {
         "id": "crypto-p2p",
         "name": "P2P Quote Comparator",
         "icon": "₿",
@@ -1302,6 +1289,19 @@
         "estTraffic": 12000,
         "imageExt": "webp",
         "imageKey": "crypto-stablecoins"
+      },
+      {
+        "id": "salary-compare",
+        "name": "Salary Offer Comparator",
+        "icon": "💼",
+        "desc": "Privately annualise and compare two user-entered...",
+        "href": "/tools/salary-compare/",
+        "category": "financial",
+        "lang": "en",
+        "priority": 90,
+        "estTraffic": 15000,
+        "imageExt": "webp",
+        "imageKey": "salary-compare"
       }
     ],
     "ha::financial": [
@@ -5129,6 +5129,176 @@
         "estTraffic": 1000,
         "imageExt": "webp",
         "imageKey": "traditional-calendar"
+      }
+    ],
+    "en::trade": [
+      {
+        "id": "import-duty",
+        "name": "Import & Landed Cost Calculator",
+        "icon": "🚢",
+        "desc": "Auditable CIF, customs duty, VAT, statutory levi...",
+        "href": "/tools/import-duty/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 95,
+        "estTraffic": 15000,
+        "imageExt": "webp",
+        "imageKey": "import-duty"
+      },
+      {
+        "id": "afcfta-tracker",
+        "name": "AfCFTA Tariff Tracker",
+        "icon": "🌍",
+        "desc": "Live AfCFTA duty schedule. Check duty-free statu...",
+        "href": "/tools/afcfta-tracker/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 85,
+        "estTraffic": 6000,
+        "imageExt": "webp",
+        "imageKey": "afcfta-tracker"
+      },
+      {
+        "id": "incoterms-calculator",
+        "name": "Incoterms 2020 Calculator",
+        "icon": "⚖️",
+        "desc": "All 11 Incoterms 2020 explained with cost-split ...",
+        "href": "/tools/incoterms-calculator/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 81,
+        "estTraffic": 5000,
+        "imageExt": "webp",
+        "imageKey": "incoterms-calculator"
+      },
+      {
+        "id": "shipping-estimator",
+        "name": "Shipping Cost Estimator",
+        "icon": "🚢",
+        "desc": "Estimate sea freight, air freight and road haula...",
+        "href": "/tools/shipping-estimator/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 80,
+        "estTraffic": 4000,
+        "imageExt": "webp",
+        "imageKey": "shipping-estimator"
+      },
+      {
+        "id": "export-docs-trade",
+        "name": "Export Documentation Checklist",
+        "icon": "📋",
+        "desc": "Country-specific checklist for every document ne...",
+        "href": "/tools/export-docs/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 79,
+        "estTraffic": 4500,
+        "imageExt": "webp",
+        "imageKey": "export-docs-trade"
+      },
+      {
+        "id": "fx-import-impact",
+        "name": "FX Import Cost Impact",
+        "icon": "💱",
+        "desc": "Calculate how currency depreciation affects impo...",
+        "href": "/tools/fx-import-impact/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 78,
+        "estTraffic": 3500,
+        "imageExt": "webp",
+        "imageKey": "fx-import-impact"
+      },
+      {
+        "id": "coo-generator",
+        "name": "Certificate of Origin Generator",
+        "icon": "📜",
+        "desc": "Generate and check AfCFTA, ECOWAS, EAC, SADC and...",
+        "href": "/tools/coo-generator/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 77,
+        "estTraffic": 3500,
+        "imageExt": "webp",
+        "imageKey": "coo-generator"
+      },
+      {
+        "id": "lc-calculator",
+        "name": "LC Fee Calculator",
+        "icon": "🏦",
+        "desc": "Calculate Letter of Credit opening, confirmation...",
+        "href": "/tools/lc-calculator/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 76,
+        "estTraffic": 3000,
+        "imageExt": "webp",
+        "imageKey": "lc-calculator"
+      },
+      {
+        "id": "demurrage-calculator",
+        "name": "Port Demurrage Calculator",
+        "icon": "⚓",
+        "desc": "Calculate port demurrage and storage charges at ...",
+        "href": "/tools/demurrage-calculator/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 74,
+        "estTraffic": 2800,
+        "imageExt": "webp",
+        "imageKey": "demurrage-calculator"
+      },
+      {
+        "id": "hs-code-lookup",
+        "name": "HS Code Lookup",
+        "icon": "🔎",
+        "desc": "Search HS codes and customs duty rates for suppo...",
+        "href": "/tools/hs-code-lookup/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 63,
+        "estTraffic": 700,
+        "imageExt": "webp",
+        "imageKey": "hs-code-lookup"
+      },
+      {
+        "id": "cross-border-data",
+        "name": "Cross-Border Data Transfer Checklist — Africa 2024",
+        "icon": "🌍",
+        "desc": "Before transferring personal data outside an Afr...",
+        "href": "/tools/cross-border-data/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 50,
+        "estTraffic": 1000,
+        "imageExt": "webp",
+        "imageKey": "cross-border-data"
+      },
+      {
+        "id": "customs-time",
+        "name": "Customs Clearance Time Estimator Africa",
+        "icon": "✓",
+        "desc": "How long does customs clearance take in Africa? ...",
+        "href": "/tools/customs-time/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 50,
+        "estTraffic": 1000,
+        "imageExt": "webp",
+        "imageKey": "customs-time"
+      },
+      {
+        "id": "shipping-weight",
+        "name": "Shipping Weight / Volumetric Weight Calculator",
+        "icon": "🔧",
+        "desc": "Calculate volumetric weight vs actual weight for...",
+        "href": "/tools/shipping-weight/",
+        "category": "trade",
+        "lang": "en",
+        "priority": 50,
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::agriculture": [
@@ -9939,9 +10109,9 @@
         "priority": 72,
         "estTraffic": 0,
         "imageExt": "webp",
-        "sourceId": "landed-cost",
-        "imageId": "landed-cost",
-        "imageKey": "landed-cost"
+        "sourceId": "import-duty",
+        "imageId": "import-duty",
+        "imageKey": "import-duty"
       },
       {
         "id": "ecowas-levy-fr",
@@ -10017,21 +10187,6 @@
         "sourceId": "export-docs-trade",
         "imageId": "export-docs-trade",
         "imageKey": "export-docs-trade"
-      },
-      {
-        "id": "droits-douane-fr",
-        "name": "Droits de douane et coût rendu — Nigeria",
-        "icon": "🚢",
-        "desc": "Confirmez la bande CET, la valeur en douane, les...",
-        "href": "/fr/tools/droits-douane/",
-        "category": "trade",
-        "lang": "fr",
-        "priority": 68,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "import-duty",
-        "imageId": "import-duty",
-        "imageKey": "import-duty"
       },
       {
         "id": "comparateur-financement-commerce-fr",
@@ -10196,6 +10351,21 @@
         "sourceId": "eac-cet",
         "imageId": "eac-cet",
         "imageKey": "eac-cet"
+      },
+      {
+        "id": "recherche-code-sh-fr",
+        "name": "Recherche de code SH douanier",
+        "icon": "FR",
+        "desc": "Trouvez un code SH de départ et vérifiez la clas...",
+        "href": "/fr/tools/recherche-code-sh/",
+        "category": "trade",
+        "lang": "fr",
+        "priority": 53,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "hs-code-lookup",
+        "imageId": "hs-code-lookup",
+        "imageKey": "hs-code-lookup"
       }
     ],
     "fr::security": [
@@ -18176,176 +18346,6 @@
         "imageId": "immigration-points"
       }
     ],
-    "en::trade": [
-      {
-        "id": "afcfta-tracker",
-        "name": "AfCFTA Tariff Tracker",
-        "icon": "🌍",
-        "desc": "Live AfCFTA duty schedule. Check duty-free statu...",
-        "href": "/tools/afcfta-tracker/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 85,
-        "estTraffic": 6000,
-        "imageExt": "webp",
-        "imageKey": "afcfta-tracker"
-      },
-      {
-        "id": "landed-cost",
-        "name": "Landed Cost Calculator",
-        "icon": "📦",
-        "desc": "Estimate landed cost for selected African import...",
-        "href": "/tools/landed-cost/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 83,
-        "estTraffic": 5000,
-        "imageExt": "webp",
-        "imageKey": "landed-cost"
-      },
-      {
-        "id": "incoterms-calculator",
-        "name": "Incoterms 2020 Calculator",
-        "icon": "⚖️",
-        "desc": "All 11 Incoterms 2020 explained with cost-split ...",
-        "href": "/tools/incoterms-calculator/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 81,
-        "estTraffic": 5000,
-        "imageExt": "webp",
-        "imageKey": "incoterms-calculator"
-      },
-      {
-        "id": "shipping-estimator",
-        "name": "Shipping Cost Estimator",
-        "icon": "🚢",
-        "desc": "Estimate sea freight, air freight and road haula...",
-        "href": "/tools/shipping-estimator/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 80,
-        "estTraffic": 4000,
-        "imageExt": "webp",
-        "imageKey": "shipping-estimator"
-      },
-      {
-        "id": "export-docs-trade",
-        "name": "Export Documentation Checklist",
-        "icon": "📋",
-        "desc": "Country-specific checklist for every document ne...",
-        "href": "/tools/export-docs/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 79,
-        "estTraffic": 4500,
-        "imageExt": "webp",
-        "imageKey": "export-docs-trade"
-      },
-      {
-        "id": "fx-import-impact",
-        "name": "FX Import Cost Impact",
-        "icon": "💱",
-        "desc": "Calculate how currency depreciation affects impo...",
-        "href": "/tools/fx-import-impact/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 78,
-        "estTraffic": 3500,
-        "imageExt": "webp",
-        "imageKey": "fx-import-impact"
-      },
-      {
-        "id": "coo-generator",
-        "name": "Certificate of Origin Generator",
-        "icon": "📜",
-        "desc": "Generate and check AfCFTA, ECOWAS, EAC, SADC and...",
-        "href": "/tools/coo-generator/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 77,
-        "estTraffic": 3500,
-        "imageExt": "webp",
-        "imageKey": "coo-generator"
-      },
-      {
-        "id": "lc-calculator",
-        "name": "LC Fee Calculator",
-        "icon": "🏦",
-        "desc": "Calculate Letter of Credit opening, confirmation...",
-        "href": "/tools/lc-calculator/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 76,
-        "estTraffic": 3000,
-        "imageExt": "webp",
-        "imageKey": "lc-calculator"
-      },
-      {
-        "id": "demurrage-calculator",
-        "name": "Port Demurrage Calculator",
-        "icon": "⚓",
-        "desc": "Calculate port demurrage and storage charges at ...",
-        "href": "/tools/demurrage-calculator/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 74,
-        "estTraffic": 2800,
-        "imageExt": "webp",
-        "imageKey": "demurrage-calculator"
-      },
-      {
-        "id": "hs-code-lookup",
-        "name": "HS Code Lookup",
-        "icon": "🔎",
-        "desc": "Search HS codes and customs duty rates for suppo...",
-        "href": "/tools/hs-code-lookup/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 63,
-        "estTraffic": 700,
-        "imageExt": "webp",
-        "imageKey": "hs-code-lookup"
-      },
-      {
-        "id": "cross-border-data",
-        "name": "Cross-Border Data Transfer Checklist — Africa 2024",
-        "icon": "🌍",
-        "desc": "Before transferring personal data outside an Afr...",
-        "href": "/tools/cross-border-data/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 50,
-        "estTraffic": 1000,
-        "imageExt": "webp",
-        "imageKey": "cross-border-data"
-      },
-      {
-        "id": "customs-time",
-        "name": "Customs Clearance Time Estimator Africa",
-        "icon": "✓",
-        "desc": "How long does customs clearance take in Africa? ...",
-        "href": "/tools/customs-time/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 50,
-        "estTraffic": 1000,
-        "imageExt": "webp",
-        "imageKey": "customs-time"
-      },
-      {
-        "id": "shipping-weight",
-        "name": "Shipping Weight / Volumetric Weight Calculator",
-        "icon": "🔧",
-        "desc": "Calculate volumetric weight vs actual weight for...",
-        "href": "/tools/shipping-weight/",
-        "category": "trade",
-        "lang": "en",
-        "priority": 50,
-        "estTraffic": 1000,
-        "imageExt": ""
-      }
-    ],
     "en::mining": [
       {
         "id": "mining-royalty",
@@ -21974,11 +21974,11 @@
       },
       {
         "id": "import-duty",
-        "name": "Nigeria Import Duty & Landed Cost",
+        "name": "Import & Landed Cost Calculator",
         "icon": "🚢",
-        "desc": "Classification-first Nigeria customs estimate us...",
+        "desc": "Auditable CIF, customs duty, VAT, statutory levi...",
         "href": "/tools/import-duty/",
-        "category": "financial",
+        "category": "trade",
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,

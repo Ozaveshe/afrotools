@@ -115,15 +115,15 @@ function exactShards() {
   const inventory = JSON.parse(fs.readFileSync(INVENTORY_PATH, "utf8"));
   const ledger = JSON.parse(fs.readFileSync(ACCEPTANCE_PATH, "utf8"));
   const accepted = new Set(ledger.entries.filter((entry) => entry.status === "accepted").map((entry) => entry.englishId));
-  const financialById = new Map(inventory.rows
-    .filter((row) => row.categoryKey === "financial")
-    .map((row) => [row.englishId, row]));
-  const shardA = SHARD_A_IDS.map((id) => financialById.get(id));
+  // Preserve this historical pinned assignment even when a canonical app later
+  // moves to a more accurate primary category (import-duty is now Trade).
+  const inventoryById = new Map(inventory.rows.map((row) => [row.englishId, row]));
+  const shardA = SHARD_A_IDS.map((id) => inventoryById.get(id));
   const shardBManifest = JSON.parse(fs.readFileSync(
     path.join(ROOT, "data/localization/sw-financial-shard-b-manifest.json"),
     "utf8",
   ));
-  const shardB = shardBManifest.rows.map((row) => financialById.get(row.englishId));
+  const shardB = shardBManifest.rows.map((row) => inventoryById.get(row.englishId));
   const missing = [...shardA, ...shardB].filter((row) => !row);
   if (missing.length || shardA.length !== 46 || shardB.length !== 46) {
     throw new Error("Pinned financial shard assignment no longer resolves against the authoritative inventory");

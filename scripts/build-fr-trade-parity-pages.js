@@ -37,7 +37,7 @@ const currencyField = (value = "USD") => field("Devise de travail", "currency", 
 
 const pages = [
   {
-    slug: "cout-rendu", tool: "landed-cost", en: "/tools/landed-cost/", sw: "/sw/zana/gharama-bidhaa/", image: "landed-cost.webp",
+    slug: "cout-rendu", tool: "landed-cost", en: "/tools/import-duty/", sw: "/sw/zana/gharama-bidhaa/", image: "import-duty.webp",
     title: "Calculateur de coût rendu import | AfroTools", name: "Calculateur de coût rendu",
     description: "Estimez en français le coût rendu d’une importation avec FOB, fret, assurance, droits, TVA, frais locaux et coût unitaire.",
     eyebrow: "Importation · budget local", lead: "Construisez un coût rendu transparent à partir de vos propres taux, sans masquer les hypothèses douanières.",

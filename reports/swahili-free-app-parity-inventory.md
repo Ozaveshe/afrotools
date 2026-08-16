@@ -8,20 +8,20 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1259 |
+| Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1258** |
-| Swahili physical HTML pages | 1598 |
+| **Free canonical English apps** | **1257** |
+| Swahili physical HTML pages | 1599 |
 | Swahili coverage records | 1595 |
 | Native candidates | 589 |
-| Localized shell candidates | 668 |
+| Localized shell candidates | 667 |
 | English fallbacks | 0 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 1 |
-| **Accepted** | **1257** |
+| **Accepted** | **1256** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 133 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 1 | 132 |
+| Finance, Tax & Market Data | 132 | 5 | 126 | 0 | 0 | 0 | 0 | 0 | 1 | 131 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -68,7 +68,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
-## Full 1,258-row ledger
+## Full 1,257-row ledger
 
 | English app | Category | English route | State | Primary Swahili route | Accepted |
 |---|---|---|---|---|---:|
@@ -263,10 +263,10 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/sw/zana/namba-za-kirumi` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Localized shell candidate | `/sw/zana/kikokotoo-asilimia` | Yes |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Localized shell candidate | `/sw/zana/kikokotoo-kisayansi` | Yes |
-| Mobile Money Quote Fee Comparator | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | Yes |
+| Mobile Money Fee Finder | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | Yes |
 | Fintech Fee Watch | Uniquely African | `/tools/fintech-fee-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-ada-fintech` | Yes |
 | Ajo/Chama Savings Tracker | Uniquely African | `/tools/ajo-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-ajo-chama` | Yes |
-| Electricity Bill Estimator | Uniquely African | `/tools/electricity-estimator` | Localized shell candidate | `/sw/zana/makisio-ya-bili-ya-umeme` | Yes |
+| Appliance Electricity Usage Estimator | Uniquely African | `/tools/electricity-estimator` | Localized shell candidate | `/sw/zana/makisio-ya-bili-ya-umeme` | Yes |
 | Fuel Cost Calculator | Uniquely African | `/tools/fuel-cost` | Localized shell candidate | `/sw/zana/gharama-za-mafuta` | Yes |
 | Private Tithe & Offering Giving Planner | Religious & Cultural | `/tools/tithe-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-fungu-la-kumi-na-sadaka` | Yes |
 | Lobola Calculator | Religious & Cultural | `/tools/lobola-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-lobola-na-mahari` | Yes |
@@ -289,7 +289,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Localized shell candidate | `/sw/zana/kumbukumbu-za-mkutano` | Yes |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | Yes |
 | Informal FX Watch | Uniquely African | `/tools/informal-fx-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-soko-la-fedha` | Yes |
-| Nigeria Import Duty & Landed Cost | Finance, Tax & Market Data | `/tools/import-duty` | Localized shell candidate | `/sw/zana/ushuru-forodha` | Yes |
+| Import & Landed Cost Calculator | Trade & Import | `/tools/import-duty` | Localized shell candidate | `/sw/zana/gharama-bidhaa` | Yes |
 | Mortgage Planning Calculator | Finance, Tax & Market Data | `/tools/mortgage-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-mkopo-wa-nyumba` | Yes |
 | Loan Comparison Tool | Finance, Tax & Market Data | `/tools/loan-compare` | Localized shell candidate | `/sw/zana/kilinganisha-mikopo` | Yes |
 | Receipt Generator | Document & PDF | `/tools/receipt-generator` | Localized shell candidate | `/sw/zana/kizalishaji-risiti` | Yes |
@@ -953,7 +953,6 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Tunisia Farm Loan Eligibility Calculator | Agriculture | `/agriculture/farm-loans/tunisia` | Native candidate | `/sw/kilimo/mikopo-ya-shamba/tunisia` | Yes |
 | Angola Farm Loan Eligibility Calculator | Agriculture | `/agriculture/farm-loans/angola` | Native candidate | `/sw/kilimo/mikopo-ya-shamba/angola` | Yes |
 | AfCFTA Tariff Tracker | Trade & Import | `/tools/afcfta-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-ushuru-afcfta` | Yes |
-| Landed Cost Calculator | Trade & Import | `/tools/landed-cost` | Localized shell candidate | `/sw/zana/gharama-bidhaa` | Yes |
 | Shipping Cost Estimator | Trade & Import | `/tools/shipping-estimator` | Localized shell candidate | `/sw/zana/makisio-ya-usafirishaji-wa-biashara` | Yes |
 | FX Import Cost Impact | Trade & Import | `/tools/fx-import-impact` | Localized shell candidate | `/sw/zana/athari-forex-kuagiza` | Yes |
 | LC Fee Calculator | Trade & Import | `/tools/lc-calculator` | Localized shell candidate | `/sw/zana/ada-lc` | Yes |
@@ -1064,9 +1063,9 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Business Internet Calculator | Telecom & Mobile | `/telecom/business-internet` | Native candidate | `/sw/zana/kikokotoo-intaneti-ya-biashara` | Yes |
 | Bulk SMS Pricing Calculator | Telecom & Mobile | `/telecom/bulk-sms-pricing` | Native candidate | `/sw/zana/kikokotoo-bei-ya-sms-nyingi` | Yes |
 | WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Native candidate | `/sw/zana/whatsapp-business-dhidi-ya-sms` | Yes |
-| Electricity Tariff Calculator | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/sw/zana/kikokotoo-tariff-ya-umeme` | Yes |
+| Electricity Cost & Prepaid Units | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/sw/zana/kikokotoo-tariff-ya-umeme` | Yes |
 | Solar Panel ROI Calculator | Energy & Utilities | `/tools/solar-roi` | Native candidate | `/sw/zana/faida-ya-solar` | Yes |
-| Prepaid Meter Calculator | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/sw/zana/kikokotoo-luku-ya-umeme` | Yes |
+| Prepaid Meter Calculator (moved) | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/sw/zana/kikokotoo-luku-ya-umeme` | Yes |
 | Solar vs Generator | Energy & Utilities | `/tools/solar-vs-generator` | Native candidate | `/sw/zana/solar-dhidi-ya-generator` | Yes |
 | Electricity Bill Verifier | Energy & Utilities | `/tools/electricity-bill-verify` | Native candidate | `/sw/zana/ukaguzi-wa-bili-ya-umeme` | Yes |
 | Water Bill Calculator | Energy & Utilities | `/tools/water-bill` | Native candidate | `/sw/zana/kikokotoo-bili-ya-maji` | Yes |
