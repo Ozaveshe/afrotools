@@ -160,6 +160,12 @@ The route graph exposed two pairs where both a root-level French article and its
 
 Both legacy routes now resolve in one forced 301 hop to the maintained `/fr/blog/` owner through explicit equity-preserving route-policy decisions. Route synchronization removed both legacy URLs from the indexable and sitemap denominators and rewrote three internal links. The RDC registry row and French blog-hub card also now describe the sourced SMIG checker instead of promising sector and city market data. Focused tests lock redirect state, final destination, sitemap exclusion, canonical owner indexability and discovery copy.
 
+### 21. French pages sent hundreds of navigation links back to English hubs
+
+The old `fix-fr-internal-links.js` reported 909 English targets but could not distinguish a localization leak from an honest handoff to an English-only workflow. A route-aware review found an even larger mixed set and confirmed that broad prefix replacement would be unsafe. French car pages, for example, deliberately label the English directory or full app they open.
+
+A new deterministic owner therefore repairs only an explicit high-confidence navigation set: home, tools, blog, health, insurance, transport, engineering, developer, API, AI, privacy, terms, legal, contact, business enquiry, custom calculator and selected country/category hubs. It rewrote 493 breadcrumb, logo, category, privacy and support links across 318 French files while preserving the query string or fragment. Anchors explicitly labelled as English or `anglais` remain untouched. The repair runs after static internal-link injection in the SEO build, has a no-write drift check, and passes a regression test that proves both French navigation and honest English handoffs.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -172,6 +178,7 @@ Both legacy routes now resolve in one forced 301 hop to the maintained `/fr/blog
 - The repository-wide visible-mojibake audit passes all 3,247 indexable French pages and the French registry contains no remaining letter-question-letter corruption.
 - The Mobile Money finder passes its static owner contract and four Chromium flows, including native French calculated and unavailable states at mobile width.
 - `sitemap-fr.xml` contains all 3,238 remaining indexable French routes; 142 previously omitted public widget parent pages are now included, two stale duplicate salary articles are excluded, and technical French iframe utilities remain excluded. Both focused sitemap and canonical-consolidation suites pass.
+- 493 high-confidence French navigation links across 318 files now remain inside the French home, hub, legal and support graph. Explicitly labelled English workflow handoffs are preserved, and the navigation drift test passes.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
 
