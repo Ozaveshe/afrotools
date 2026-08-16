@@ -13,6 +13,10 @@ The urgent problem was search-product quality inside the impression growth: high
 - Repository evidence is not deployment evidence. This report records the validated branch state only.
 - No ranking, traffic, or 10,000-click outcome is guaranteed.
 
+### Live crawl baseline before this release
+
+A live fetch on 17 August 2026 found no delivery-level suppression: `robots.txt` returned 200 and explicitly allowed `/fr/`; `sitemap-index.xml` returned 200 as XML; sampled French pages returned 200 HTML without an `X-Robots-Tag`; and the sitemap index referenced the French and i18n sitemaps. The live defect was content and discovery state, not a server-wide crawl block. The deployed `sitemap-fr.xml` still contained 3,095 URLs, zero individual French widget parents, and both stale root-level salary duplicates. Sampled repaired pages also still served the pre-branch content. These observations are the production baseline, not proof that this branch is deployed.
+
 ## Baseline and target math
 
 | Measure | Current evidence | Meaning |
@@ -166,6 +170,12 @@ The old `fix-fr-internal-links.js` reported 909 English targets but could not di
 
 A new deterministic owner therefore repairs only an explicit high-confidence navigation set: home, tools, blog, health, insurance, transport, engineering, developer, API, AI, privacy, terms, legal, contact, business enquiry, custom calculator and selected country/category hubs. It rewrote 493 breadcrumb, logo, category, privacy and support links across 318 French files while preserving the query string or fragment. Anchors explicitly labelled as English or `anglais` remain untouched. The repair runs after static internal-link injection in the SEO build, has a no-write drift check, and passes a regression test that proves both French navigation and honest English handoffs.
 
+### 22. Materially rebuilt French pages still advertised June modification dates
+
+The sitemap generator intentionally preserves historical `<lastmod>` values, but it had no narrow way to record a reviewed content rebuild. As a result, the Orange Money, Mobile Money, Wave, Senegal IRPP, Algeria payroll, Burkina VAT and salary-guide repairs in this work still advertised dates from 18 to 23 June. The 54 rebuilt fuel country pages likewise retained 21 June. A global refresh would falsely restamp thousands of unchanged URLs and violate the repository's SEO maintenance contract.
+
+A source-owned override registry now records only routes whose search-facing content changed materially. The sitemap owner validates every selector and date, takes the later of the historical and reviewed date, and supports a prefix only for the one generator-owned fuel family that was rebuilt in full. The 11 exact repaired routes plus the fuel hub and all 54 country pages now expose 17 August 2026, while unrelated French and English routes retain their historical values. A regression test proves the covered routes, the 55-page family denominator, stated reasons and the absence of broad `/`, `/fr/`, `/fr/tools/` or `/fr/blog/` restamps.
+
 ## Current validation
 
 - 9,818 indexable EN/FR/SW pages in the snippet audit; 0 hard errors.
@@ -178,6 +188,7 @@ A new deterministic owner therefore repairs only an explicit high-confidence nav
 - The repository-wide visible-mojibake audit passes all 3,247 indexable French pages and the French registry contains no remaining letter-question-letter corruption.
 - The Mobile Money finder passes its static owner contract and four Chromium flows, including native French calculated and unavailable states at mobile width.
 - `sitemap-fr.xml` contains all 3,238 remaining indexable French routes; 142 previously omitted public widget parent pages are now included, two stale duplicate salary articles are excluded, and technical French iframe utilities remain excluded. Both focused sitemap and canonical-consolidation suites pass.
+- Sixty-six materially rebuilt French routes now expose a reviewed 17 August 2026 sitemap modification date without restamping unchanged routes. The selective freshness contract passes its focused suite.
 - 493 high-confidence French navigation links across 318 files now remain inside the French home, hub, legal and support graph. Explicitly labelled English workflow handoffs are preserved, and the navigation drift test passes.
 - The calculation-quality gate passes for 788 artifacts and 307/307 golden fixtures after accepting the reviewed Algeria browser/server/route changes, Senegal route digest and Burkina VAT route mapping. The Algeria and Burkina source-registry rows pass selected-entry checks without rewriting unrelated freshness records.
 - French surface, registry, progressive-directory, iframe-retirement, sports-parity, localization, and Unicode contracts pass.
