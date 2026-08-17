@@ -6,6 +6,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const data = JSON.parse(fs.readFileSync(path.join(root, 'data', 'content', 'blog-content-explosion-fr-wave1-2026-08.json'), 'utf8'));
+const payrollExpansion = JSON.parse(fs.readFileSync(path.join(root, 'data', 'content', 'french-payroll-expansion-2026-08.json'), 'utf8'));
 const registry = fs.readFileSync(path.join(root, 'assets', 'js', 'components', 'tool-registry.js'), 'utf8');
 const frenchManifest = JSON.parse(fs.readFileSync(path.join(root, 'data', 'localization', 'fr-blog-manifest.json'), 'utf8'));
 const contentManifest = JSON.parse(fs.readFileSync(path.join(root, 'data', 'content', 'blog-article-manifest.json'), 'utf8'));
@@ -18,7 +19,7 @@ function routeExists(href) {
   return fs.existsSync(path.join(root, rel, 'index.html')) || fs.existsSync(path.join(root, `${rel}.html`));
 }
 
-assert.strictEqual(data.articles.length, 10, 'la première vague française doit contenir exactement 10 articles');
+assert.strictEqual(data.articles.length + payrollExpansion.articles.length, 15, 'le portefeuille français doit contenir les 10 articles initiaux et 5 extensions paie');
 assert.match(data.method.scoreType, /qualitatif/i, 'le score doit rester explicitement qualitatif');
 assert.match(data.method.dataGap, /Search Console/i, 'la limite des données de mots-clés doit rester visible');
 assert.strictEqual(new Set(data.articles.map((article) => article.slug)).size, 10, 'les slugs doivent être uniques');
@@ -65,8 +66,33 @@ for (const article of data.articles) {
   assert.ok(report.includes(`| ${article.keyword} |`), `${article.slug}: ligne absente du rapport d’opportunités`);
 }
 
+for (const article of payrollExpansion.articles) {
+  const file = path.join(root, 'fr', 'blog', article.slug, 'index.html');
+  assert.ok(fs.existsSync(file), `${article.slug}: extension paie générée manquante`);
+  const html = fs.readFileSync(file, 'utf8');
+  const bodyMatch = html.match(/<article class="article-body">([\s\S]*?)<\/article>/);
+  assert.ok(bodyMatch, `${article.slug}: corps d’article manquant`);
+  const words = bodyMatch[1].replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
+  assert.ok(words >= 1400, `${article.slug}: ${words} mots, sous le seuil éditorial de 1 400 mots`);
+  assert.ok(article.title.length <= 68, `${article.slug}: titre de plus de 68 caractères`);
+  assert.ok(article.description.length >= 120 && article.description.length <= 165, `${article.slug}: description hors de la plage 120-165 caractères`);
+  assert.ok(routeExists(article.tool[0]), `${article.slug}: route de l’app introuvable`);
+  assert.ok(html.includes(`<link rel="canonical" href="https://afrotools.com/fr/blog/${article.slug}/">`), `${article.slug}: canonical incorrecte`);
+  assert.ok(html.includes(`<strong>Sources relues le ${payrollExpansion.reviewedLabel}.</strong>`), `${article.slug}: revue de sources manquante`);
+  assert.ok([article.taxSource, article.socialSource, article.processSource].every(([href]) => html.includes(href)), `${article.slug}: source officielle manquante`);
+  assert.ok(html.includes('"@type":"Article"') && html.includes('"@type":"FAQPage"'), `${article.slug}: schémas structurés incomplets`);
+  assert.ok(frenchManifest.articles.some((row) => row.slug === article.slug), `${article.slug}: manifeste français incomplet`);
+  assert.ok(contentManifest.articles.some((row) => row.file === `fr/blog/${article.slug}/index.html`), `${article.slug}: manifeste de contenu incomplet`);
+  assert.ok(hub.includes(`/fr/blog/${article.slug}/`), `${article.slug}: carte absente du hub français`);
+  assert.ok(feed.includes(`https://afrotools.com/fr/blog/${article.slug}/`), `${article.slug}: article absent du flux français`);
+}
+
 assert.ok(hub.includes('/blog/assets/css/blog.css'), 'le hub français doit utiliser la feuille de style blog partagée existante');
 assert.ok(hub.includes('/blog/assets/css/blog-platform.css'), 'le hub français doit utiliser les améliorations de plateforme partagées');
 assert.ok(!hub.includes('/fr/blog/assets/css/blog.css'), 'le hub français ne doit pas pointer vers un fichier CSS inexistant');
+for (const route of ['/fr/salary-tax/', '/fr/vat-business-tax/', '/fr/fintech/', '/fr/energy/', '/fr/document-pdf/']) {
+  assert.ok(hub.includes(`href="${route}"`), `${route}: dossier d’autorité absent du hub français`);
+  assert.ok(routeExists(route), `${route}: route du dossier d’autorité introuvable`);
+}
 
-console.log('French blog wave one: 10 articles passed editorial, SEO, source, app, image, manifest, hub and feed checks.');
+console.log('French blog portfolio: 15 articles and 5 authority clusters passed editorial, SEO, source, app, image, manifest, hub and feed checks.');

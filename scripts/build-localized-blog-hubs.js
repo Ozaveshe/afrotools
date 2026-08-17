@@ -69,6 +69,14 @@ const DISCOVERY = {
   }
 };
 
+const FRENCH_AUTHORITY_CLUSTERS = [
+  ["/fr/salary-tax/", "Paie et salaires", "Calculateurs nationaux, contrôles de bulletin et sources fiscales ou sociales datées."],
+  ["/fr/vat-business-tax/", "TVA et fiscalité d’entreprise", "Calcul HT-TTC, facturation, taux vérifiés et limites des traitements particuliers."],
+  ["/fr/fintech/", "Mobile Money", "Barèmes opérateurs, comparaison de frais et vérification du coût avant confirmation."],
+  ["/fr/energy/", "Carburant et énergie", "Instantanés datés, source locale et scénarios de coût sans masquer la fraîcheur."],
+  ["/fr/document-pdf/", "Documents d’entreprise", "Factures, contrats et PDF locaux avec contrôles de confidentialité et d’export."]
+];
+
 function render(locale, rows) {
   const c = COPY[locale];
   const categories = [...new Set(rows.map((row) => row.category))].sort((a, b) => a.localeCompare(b, locale));
@@ -86,6 +94,10 @@ function decorateHub(html, locale) {
   const discovery = DISCOVERY[locale];
   const discoveryNav = `<section class="localized-blog-section"><div class="localized-blog-wrap"><nav class="localized-blog-discovery" aria-label="${esc(discovery.title)}"><h2>${esc(discovery.title)}</h2><ul>${discovery.links.map(([route, label]) => `<li><a href="${route}">${esc(label)}</a></li>`).join("")}</ul></nav></div></section>`;
   output = output.replace('<section class="localized-blog-section localized-blog-section--muted"><div class="localized-blog-wrap"><h2>', `${discoveryNav}<section class="localized-blog-section localized-blog-section--muted"><div class="localized-blog-wrap"><h2>`);
+  if (locale === 'fr') {
+    const authorityNav = `<section class="localized-blog-section" aria-labelledby="fr-authority-clusters"><div class="localized-blog-wrap"><p class="localized-blog-eyebrow">Parcours d’autorité</p><h2 id="fr-authority-clusters">Cinq dossiers français reliés aux outils</h2><p class="localized-blog-lead">Chaque dossier relie des guides natifs, un workflow actif et un contrat de source ou de confidentialité adapté à la décision.</p><div class="localized-blog-grid">${FRENCH_AUTHORITY_CLUSTERS.map(([route, title, description]) => `<article class="localized-blog-card article-card"><a class="localized-blog-card__link" href="${route}"><span class="article-card-body"><span class="localized-blog-card__category">Dossier français</span><h3>${esc(title)}</h3><span>${esc(description)}</span><span class="localized-blog-card__read">Ouvrir le dossier →</span></span></a></article>`).join('')}</div></div></section>`;
+    output = output.replace('<section class="localized-blog-section localized-blog-section--muted" id="articles">', `${authorityNav}<section class="localized-blog-section localized-blog-section--muted" id="articles">`);
+  }
   if (locale === 'sw') output = output.replaceAll('workflow', 'mtiririko wa kazi');
   return output;
 }
