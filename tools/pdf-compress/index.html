@@ -270,6 +270,24 @@
     background: rgba(0, 113, 227, 0.1);
   }
 
+  .file-input-label[aria-disabled="true"] {
+    cursor: wait;
+    opacity: 0.68;
+  }
+
+  .file-advice {
+    display: none;
+    margin-top: 8px;
+    color: #475569;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .file-advice[data-size-state="large"] {
+    color: #92400e;
+    font-weight: 700;
+  }
+
   .preset-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
@@ -524,9 +542,9 @@
 
   .progress-bar {
     width: 100%;
-    height: 4px;
+    height: 10px;
     background: #e5e7eb;
-    border-radius: 2px;
+    border-radius: 999px;
     overflow: hidden;
     margin-top: 12px;
   }
@@ -536,6 +554,25 @@
     background: var(--color-primary);
     width: 0%;
     transition: width 0.3s;
+  }
+
+  .progress-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 9px;
+    color: #64748b;
+    font-size: 0.7rem;
+    line-height: 1.45;
+    text-align: left;
+  }
+
+  .progress-percent {
+    flex: 0 0 auto;
+    color: #1d4ed8;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
   }
 
   :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
@@ -666,6 +703,7 @@
           <div id="fileInfo" style="display:none; margin-top:12px;">
             <div class="f-label-text"><span id="fileName"></span></div>
             <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Total size: <span id="fileSize"></span></div>
+            <div class="file-advice" id="fileAdvice" role="status" aria-live="polite"></div>
           </div>
           <div id="batchFileList" class="file-list" style="display:none;"></div>
         </div>
@@ -751,10 +789,11 @@
             </div>
           </div>
           <div id="processingText" style="display:none;text-align:center;color:#334155;" aria-live="polite">
-            <div style="margin-bottom:12px;">Compressing...</div>
-            <div class="progress-bar">
+            <div id="processingLabel" style="margin-bottom:12px;font-weight:700;">Compressing...</div>
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-labelledby="processingLabel" aria-describedby="processingDetail" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-fill" id="progressFill"></div>
             </div>
+            <div class="progress-meta"><span id="processingDetail">Preparing local processing</span><span class="progress-percent" id="progressPercent">0%</span></div>
           </div>
         </div>
       </div>
@@ -864,7 +903,7 @@
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
-<script src="/tools/pdf-compress/app.js?v=244d30c5"></script>
+<script src="/tools/pdf-compress/app.js?v=e284a579"></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
