@@ -253,7 +253,7 @@ function buildRegistry(asOf) {
     toolsByRoute.get(route).push(tool.id);
   });
 
-  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|gepf|transfer-duty|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
+  const generatedId = /^(?:workflow-|telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|gepf|transfer-duty|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
   const entries = new Map(
     existing.sources
       .filter(function (source) {
@@ -263,6 +263,37 @@ function buildRegistry(asOf) {
         return [source.id, Object.assign({}, source)];
       }),
   );
+  // These long-lived records have exact public ownership contracts. Rebuilds
+  // must not retain locale/sourceId coverage that an older generator may have
+  // appended to the committed registry.
+  const exactExistingCoverage = {
+    'afrofuel-static-snapshot': {
+      toolIds: ['fuel-tracker'],
+      routes: ['/tools/fuel-tracker/'],
+    },
+    'crypto-dca-coingecko-history': {
+      toolIds: ['crypto-dca'],
+      routes: ['/crypto/dca-calculator', '/fr/crypto/dca-calculator'],
+    },
+    'forex-third-party-snapshot': {
+      toolIds: ['convertisseur-devises-fr', 'currency-converter', 'forex-profit', 'zana-kibadilishaji-sarafu-sw'],
+      routes: ['/fr/tools/convertisseur-devises/', '/sw/zana/kibadilishaji-sarafu/', '/tools/currency-converter/', '/tools/forex-profit/'],
+    },
+    'paye-tax-engine-country-packs': {
+      toolIds: ['paye-calculator'],
+      routes: ['/tools/paye-calculator'],
+    },
+    'vat-country-rate-packs': {
+      toolIds: ['vat-calc-pan-african'],
+      routes: ['/tools/vat-calculator'],
+    },
+  };
+  Object.entries(exactExistingCoverage).forEach(function ([sourceId, coverage]) {
+    const entry = entries.get(sourceId);
+    if (!entry) return;
+    entry.toolIds = coverage.toolIds.slice();
+    entry.routes = coverage.routes.slice();
+  });
   function add(entry) {
     if (entries.has(entry.id)) throw new Error('Duplicate generated source id: ' + entry.id);
     entry.appliesTo = normalizeAppliesToScopes(entry.appliesTo);
@@ -1312,6 +1343,26 @@ function buildRegistry(asOf) {
 
   add({ id: 'remittance-fx-planning', sourceName: 'Remittance Quote Comparator user-evidence methodology with World Bank RPW context', sourceType: 'multilateral', sourceUrl: 'https://remittanceprices.worldbank.org/', countryCodes: ['ALL'], appliesTo: ['fx', 'business', 'remittance'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 365, notes: 'Local comparison using only two or three user-entered provider quote receipts and their checked/expiry times. No provider price, fee, FX rate, ranking, recommendation, forecast, AI request or network request is supplied. World Bank Remittance Prices Worldwide is context only and is not copied into the calculator.', displayDisclaimer: 'User-entered quote comparison only. Recheck the provider quote, expiry, total debit, recipient amount, payout route, limits, identity requirements and safety before sending money.', toolIds: ['remittance-compare'], routes: ['/tools/remittance-compare/'] });
 
+  add({ id: 'workflow-employment-source-context', sourceName: 'ILO NATLEX and route-level employment evidence contract', sourceType: 'official', sourceUrl: 'https://natlex.ilo.org/', countryCodes: ['ALL'], appliesTo: ['salary', 'business'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 180, notes: 'Coverage binding for employment planning workflows. Country rules, wage floors, overtime, leave, payroll authorities, teacher scales and offer evidence remain route-specific; no shared pan-African statutory value is inferred from this entry.', displayDisclaimer: 'Planning or evidence workflow only. Confirm current country law, collective agreements, employer policy, authority guidance and the dated evidence shown on the route before acting.', toolIds: ['minimum-wage', 'overtime-calc', 'leave-calculator', 'paye-authority-finder', 'teacher-salary', 'salary-negotiation'], routes: ['/tools/minimum-wage/', '/tools/overtime-calc/', '/tools/leave-calculator/', '/tools/paye-authority-finder/', '/tools/teacher-salary/', '/tools/salary-negotiation/'] });
+
+  add({ id: 'workflow-country-tax-source-context', sourceName: 'Route-level official tax and contribution source set', sourceType: 'reviewed_dataset', countryCodes: ['ALL'], appliesTo: ['tax', 'salary', 'business'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 90, notes: 'Coverage binding for routes that carry their own country-specific official links and review dates. This registry row does not assert one common rate, rule or authority across countries.', displayDisclaimer: 'Planning reference only. Use the official links and review date on the selected route, then confirm current rates, scope, exemptions, filing and payment treatment with the responsible authority.', toolIds: ['gw-paye', 'gh-paye-2', 'cv-paye-fr', 'gq-paye-fr', 'property-tax', 'property-cgt', 'ng-land-use', 'ke-stamp-duty', 'diaspora-guide', 'inheritance-tax', 'tin-guide', 'betting-tax', 'compliance-calendar', 'regulatory-alerts'], routes: ['/guinea-bissau/gw-paye', '/tools/gh-wht/', '/fr/cape-verde/cv-paye/', '/fr/eq-guinea/gq-paye', '/tools/property-tax/', '/tools/property-cgt/', '/tools/ng-land-use/', '/tools/ke-stamp-duty/', '/tools/diaspora-guide/', '/tools/inheritance-tax/', '/tools/tin-guide/', '/tools/betting-tax/'] });
+
+  add({ id: 'workflow-social-contribution-sources', sourceName: 'NSSF Kenya, SSNIT Ghana and NHF Nigeria official contribution guidance', sourceType: 'official', sourceUrl: 'https://www.nssf.or.ke/downloads', countryCodes: ['KE', 'GH', 'NG'], appliesTo: ['salary', 'tax'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 90, notes: 'Coverage binding for separate Kenya NSSF, Ghana SSNIT and Nigeria NHF workflows. Each route identifies its own authority evidence; the NSSF URL is the primary registry link and is not a source for Ghana or Nigeria values.', displayDisclaimer: 'Contribution estimates are planning aids. Confirm current tiers, ceilings, eligibility, employer treatment and remittance rules with the named national scheme.', toolIds: ['ke-nssf', 'gh-ssnit', 'ng-nhf'], routes: ['/tools/ke-nssf/', '/tools/gh-ssnit/', '/tools/ng-nhf/'] });
+
+  add({ id: 'workflow-crypto-market-snapshot', sourceName: 'CoinGecko market-data API snapshots', sourceType: 'third_party_snapshot', sourceUrl: 'https://docs.coingecko.com/reference/introduction', countryCodes: ['ALL'], appliesTo: ['business'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'estimated', reviewCadenceDays: 30, notes: 'Crypto price, stablecoin and portfolio routes use timestamped third-party market snapshots with failure and staleness boundaries. They are not executable quotes or investment recommendations.', displayDisclaimer: 'Indicative snapshot only. Recheck timestamp, venue price, spread, liquidity, fees, taxes and execution terms before acting.', toolIds: ['crypto-prices', 'crypto-stablecoins', 'crypto-portfolio'], routes: ['/crypto/prices/', '/crypto/stablecoins/', '/crypto/portfolio/'] });
+
+  add({ id: 'workflow-crypto-user-evidence', sourceName: 'User-entered crypto quote and cost evidence methodology', sourceType: 'user_input', countryCodes: ['ALL'], appliesTo: ['business'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'user_entered', reviewCadenceDays: 365, notes: 'The covered P2P, remittance, arbitrage, profit and mining worksheets calculate only from user-entered receipts, quotes, costs or assumptions. No live venue ranking, opportunity claim or forecast is supplied.', displayDisclaimer: 'User-entered scenario only. Verify the venue, quote timestamp, fees, spread, network costs, taxes, liquidity, counterparty and execution risk independently.', toolIds: ['crypto-p2p', 'crypto-remittance', 'crypto-arbitrage', 'crypto-profit', 'crypto-mining'], routes: ['/crypto/p2p-rates/', '/crypto/remittance/', '/crypto/arbitrage/', '/crypto/profit-calculator/', '/crypto/mining-calculator/'] });
+
+  add({ id: 'workflow-crypto-safety-reference', sourceName: 'FATF virtual-asset red flags and protocol reference set', sourceType: 'reviewed_dataset', sourceUrl: 'https://www.fatf-gafi.org/en/publications/Methodsandtrends/Virtual-assets-red-flag-indicators.html', countryCodes: ['ALL'], appliesTo: ['other'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 180, notes: 'Coverage binding for education, format validation and evidence checklists. These routes do not perform blockchain risk screening, certify a contract or wallet, rank exchanges, recover funds or guarantee safety.', displayDisclaimer: 'Educational or format evidence only. Verify identities, regulator registers, contract records, transaction history and professional advice before transferring assets.', toolIds: ['crypto-scam', 'crypto-address', 'crypto-exchange', 'crypto-contract', 'crypto-quiz'], routes: ['/crypto/scam-checker/', '/crypto/address-validator/', '/crypto/exchange-ratings/', '/crypto/contract-scanner/', '/crypto/quiz/'] });
+
+  add({ id: 'workflow-finance-user-evidence', sourceName: 'User-entered financial evidence and scenario methodology', sourceType: 'user_input', countryCodes: ['ALL'], appliesTo: ['business', 'salary'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'user_entered', reviewCadenceDays: 365, notes: 'Coverage binding for local worksheets that calculate from user-entered offers, budgets, costs, rates or evidence. The tools do not supply lender approval, market prices, legal eligibility, guaranteed returns or professional recommendations.', displayDisclaimer: 'User-entered planning scenario only. Confirm current provider terms, effective rates, fees, taxes, legal rules and eligibility with the responsible provider or authority.', toolIds: ['business-planner', 'hawala-tracker', 'job-offer-evaluator', 'startup-valuation', 'microfinance-calc', 'ajo-interest', 'compound-interest', 'first-home-buyer', 'home-loan-eligibility', 'mortgage-affordability', 'property-roi', 'property-transfer-cost', 'rent-vs-buy', 'mobile-vs-bank', 'loan-shark-compare', 'microfinance-loan', 'student-loan-repay', 'loan-consolidation', 'child-support', 'offplan-vs-ready', 'rent-affordability', 'afropayroll-os', 'pension-alimentaire-enfant-fr', 'immobilier-diaspora-fr', 'evaluation-immobiliere-fr', 'frais-gestion-immobiliere-fr', 'zana-kikokotoo-mfuko-wa-nyumba-sw', 'zana-athari-forex-kuagiza-sw', 'zana-fedha-za-kiislamu-sw', 'zana-kifuatiliaji-ajo-chama-sw', 'zana-kifuatiliaji-susu-sw', 'zana-tam-sam-som-sw'], routes: ['/tools/business-planner/', '/tools/hawala-tracker/', '/tools/job-offer-evaluator/', '/tools/startup-valuation/', '/tools/microfinance-calc/', '/tools/ajo-interest/', '/tools/compound-interest/', '/tools/first-home-buyer/', '/tools/home-loan-eligibility/', '/tools/mortgage-affordability/', '/tools/property-roi/', '/tools/property-transfer-cost/', '/tools/rent-vs-buy/', '/tools/mobile-vs-bank/', '/tools/loan-shark-compare/', '/tools/microfinance-loan/', '/tools/student-loan-repay/', '/tools/loan-consolidation/', '/fr/tools/pension-alimentaire-enfant/', '/fr/tools/immobilier-diaspora/', '/fr/tools/evaluation-immobiliere/', '/fr/tools/frais-gestion-immobiliere/', '/sw/zana/kikokotoo-mfuko-wa-nyumba/', '/sw/zana/athari-forex-kuagiza/', '/sw/zana/fedha-za-kiislamu/', '/sw/zana/kifuatiliaji-ajo-chama/', '/sw/zana/kifuatiliaji-susu/', '/sw/zana/tam-sam-som/'] });
+
+  const farmLoanIds = tools.filter(function (tool) { return /^farm-loans(?:-|$)/.test(tool.id); }).map(function (tool) { return tool.id; });
+  const farmLoanRoutes = tools.filter(function (tool) { return /^farm-loans(?:-|$)/.test(tool.id); }).map(function (tool) { return tool.href; });
+  add({ id: 'workflow-farm-loan-context', sourceName: 'IFAD rural-finance context and user-entered eligibility evidence', sourceType: 'official', sourceUrl: 'https://www.ifad.org/en/rural-finance', countryCodes: ['ALL'], appliesTo: ['business'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'reviewed', reviewCadenceDays: 180, notes: 'Country pages are planning checklists using user-entered farm, identity and finance evidence. IFAD provides rural-finance context; it does not supply lender criteria or an approval decision.', displayDisclaimer: 'Readiness checklist only. Confirm current programme scope, lender criteria, collateral, rates, fees, deadlines and approval directly with the named provider.', toolIds: farmLoanIds, routes: farmLoanRoutes });
+
+  add({ id: 'workflow-energy-source-contract', sourceName: 'AfroTools reviewed utility and generator planning source contract', sourceType: 'reviewed_dataset', countryCodes: ['ALL'], appliesTo: ['energy', 'fuel'], lastCheckedAt: today, lastReviewedAt: today, freshnessStatus: 'fresh', confidence: 'estimated', reviewCadenceDays: 30, notes: 'Electricity and generator workflows use provider-class tariff metadata, meter evidence or user-entered fuel assumptions with explicit timestamps and stale-data boundaries. No tariff, bill or fuel quote is guaranteed.', displayDisclaimer: 'Planning estimate only. Confirm current provider tariff, taxes, meter treatment, fuel price, generator consumption and maintenance before budgeting or disputing a bill.', toolIds: ['electricity-tariff', 'electricity-bill-verify', 'generator-fuel', 'generator-fuel-african'], routes: ['/tools/electricity-tariff/', '/tools/electricity-bill-verify/', '/tools/generator-fuel/'] });
+
   const ledgerConfigs = [
     {
       lane: 'government',
@@ -1419,6 +1470,24 @@ function buildRegistry(asOf) {
           },
         ),
       );
+    });
+  });
+
+  function routeFile(route) {
+    const clean = normalizedRoute(route).replace(/^\//, '');
+    const candidates = [clean, clean + '.html', path.join(clean, 'index.html')];
+    return candidates
+      .map(function (candidate) { return path.join(ROOT, candidate); })
+      .find(function (candidate) { return fs.existsSync(candidate) && fs.statSync(candidate).isFile(); }) || null;
+  }
+
+  const primaryHookSource = /^(?:import-duty-planning-rates|afrofuel-static-snapshot|forex-third-party-snapshot|afrorates-policy-rate-pack|paye-tax-engine-country-packs|paye-[a-z]{2}-source|vat-[a-z]{2}-source|social-security-country-packs|electricity-tariff-rates|remittance-fx-planning|ledger-tool-)/;
+  entries.forEach(function (entry) {
+    if (!primaryHookSource.test(entry.id)) return;
+    entry.routes = (entry.routes || []).filter(function (route) {
+      const file = routeFile(route);
+      if (!file) return true;
+      return fs.readFileSync(file, 'utf8').includes('data-source-meta-id="' + entry.id + '"');
     });
   });
 
