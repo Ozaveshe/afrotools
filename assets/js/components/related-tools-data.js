@@ -8852,21 +8852,6 @@
         "imageKey": "roofing-calc"
       },
       {
-        "id": "generateur-boq-fr",
-        "name": "Générateur de bordereau quantitatif",
-        "icon": "FR",
-        "desc": "Générez un bordereau indicatif à partir du type,...",
-        "href": "/fr/tools/generateur-boq",
-        "category": "engineering",
-        "lang": "fr",
-        "priority": 62,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "boq-generator",
-        "imageId": "boq-generator",
-        "imageKey": "boq-generator"
-      },
-      {
         "id": "cout-cloture-fr",
         "name": "Coût cloture",
         "icon": "FR",
@@ -8983,6 +8968,21 @@
         "imageExt": "webp",
         "imageId": "floor-plan",
         "imageKey": "floor-plan"
+      },
+      {
+        "id": "generateur-boq-fr",
+        "name": "Générateur de bordereau quantitatif",
+        "icon": "FR",
+        "desc": "Générez un bordereau indicatif à partir du type,...",
+        "href": "/fr/tools/generateur-boq",
+        "category": "engineering",
+        "lang": "fr",
+        "priority": 45,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "boq-gen",
+        "imageId": "boq-gen",
+        "imageKey": "boq-gen"
       }
     ],
     "fr::developer": [
