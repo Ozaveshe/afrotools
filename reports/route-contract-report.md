@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11497 |
-| Indexable pages | 9913 |
+| Public pages | 11499 |
+| Indexable pages | 9915 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5224 |
-| Documented fallbacks | 14751 |
-| Routes eligible for primary sitemaps | 9913 |
+| Genuine equivalence groups | 5226 |
+| Documented fallbacks | 14753 |
+| Routes eligible for primary sitemaps | 9915 |
 
 ## Locale Coverage
 
-- en: 5956 page records
+- en: 5958 page records
 - fr: 3797 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 499
+- article: 501
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3502,6 +3502,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:17a52350ca8a: en=`/cars/algeria/toyota/axio/`, fr=`/fr/cars/algerie/toyota/axio/`; x-default=`/cars/algeria/toyota/axio/`
 - equivalence:17ce682ba81b: fr=`/fr/widgets/generateur-uuid/`; x-default=`/fr/widgets/generateur-uuid/`
 - equivalence:17e2dbe0c587: en=`/agriculture/vaccination-schedule/togo`; x-default=`/agriculture/vaccination-schedule/togo`
+- equivalence:17e8db5d6f8c: en=`/blog/ghana-warehouse-receipt-financing-guide-2026/`; x-default=`/blog/ghana-warehouse-receipt-financing-guide-2026/`
 - equivalence:17f33217317f: en=`/agriculture/fish-farming/tunisia`, fr=`/fr/agriculture/fish-farming/tunisia`, sw=`/sw/kilimo/ufugaji-samaki/tunisia/`; x-default=`/agriculture/fish-farming/tunisia`
 - equivalence:1809ff4fe68e: en=`/tools/solar-roi/somalia/`, fr=`/fr/tools/roi-solaire/somalia/`; x-default=`/tools/solar-roi/somalia/`
 - equivalence:1818d7beceef: en=`/agriculture/export-docs/eswatini`; x-default=`/agriculture/export-docs/eswatini`
@@ -4750,6 +4751,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:54241d35a47d: en=`/tools/contractor-vs-employee/ethiopia/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-ethiopie/`; x-default=`/tools/contractor-vs-employee/ethiopia/`
 - equivalence:54306085f1a6: en=`/tools/microfinance-calc/`, fr=`/fr/tools/calculateur-microfinance/`, sw=`/sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/`; x-default=`/tools/microfinance-calc/`
 - equivalence:5436105404d7: en=`/tools/paye-calculator/`, fr=`/fr/tools/calculateur-paye/`, sw=`/sw/mshahara-na-kodi/paye/`; x-default=`/tools/paye-calculator/`
+- equivalence:544a6146f436: en=`/blog/kenya-fringe-benefit-tax-employer-loans-2026/`; x-default=`/blog/kenya-fringe-benefit-tax-employer-loans-2026/`
 - equivalence:544dc504cd57: en=`/cars/senegal/mercedes-benz/g-wagon/`, fr=`/fr/cars/senegal/mercedes-benz/g-wagon/`; x-default=`/cars/senegal/mercedes-benz/g-wagon/`
 - equivalence:544f215c6af1: en=`/tools/afrokitchen/recipes/citronelle-tea-sc/`; x-default=`/tools/afrokitchen/recipes/citronelle-tea-sc/`
 - equivalence:544f5aa872d3: en=`/cars/south-africa/mercedes-benz/e-class/2017/`, fr=`/fr/cars/afrique-du-sud/mercedes-benz/e-class/2017/`; x-default=`/cars/south-africa/mercedes-benz/e-class/2017/`
