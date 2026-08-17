@@ -14,6 +14,58 @@ function auditMoneySourceCoverage(root) {
     (source.toolIds || []).forEach((id) => registeredIds.add(id));
     (source.routes || []).forEach((route) => registeredRoutes.add(canonicalRegistry.normalizeRoute(route)));
   });
+  const toolsById = new Map(sources.tools.map((tool) => [tool.id, tool]));
+  const toolsByRoute = new Map();
+  sources.tools.forEach((tool) => {
+    const route = canonicalRegistry.normalizeRoute(tool.href);
+    if (!toolsByRoute.has(route)) toolsByRoute.set(route, []);
+    toolsByRoute.get(route).push(tool);
+  });
+
+  function routeFile(route) {
+    const clean = canonicalRegistry.normalizeRoute(route).replace(/^\//, '');
+    const candidates = [clean, clean + '.html', path.join(clean, 'index.html')];
+    return candidates
+      .map((candidate) => path.join(root, candidate))
+      .find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) || null;
+  }
+
+  const englishAlternateCache = new Map();
+  function englishAlternateRoute(route) {
+    const normalized = canonicalRegistry.normalizeRoute(route);
+    if (englishAlternateCache.has(normalized)) return englishAlternateCache.get(normalized);
+    const file = routeFile(normalized);
+    if (!file) {
+      englishAlternateCache.set(normalized, null);
+      return null;
+    }
+    const html = fs.readFileSync(file, 'utf8');
+    const links = html.match(/<link\b[^>]*>/gi) || [];
+    const alternate = links.find((tag) => {
+      return /\brel=["']alternate["']/i.test(tag) && /\bhreflang=["']en["']/i.test(tag);
+    });
+    const match = alternate && alternate.match(/\bhref=["']([^"']+)["']/i);
+    const result = match ? canonicalRegistry.normalizeRoute(match[1]) : null;
+    englishAlternateCache.set(normalized, result);
+    return result;
+  }
+
+  function hasRegisteredSource(tool, visited = new Set()) {
+    if (!tool || visited.has(tool.id)) return false;
+    visited.add(tool.id);
+    const route = canonicalRegistry.normalizeRoute(tool.href);
+    if (registeredIds.has(tool.id) || registeredRoutes.has(route)) return true;
+    if (tool.sourceId) {
+      if (registeredIds.has(tool.sourceId)) return true;
+      if (hasRegisteredSource(toolsById.get(tool.sourceId), visited)) return true;
+    }
+    const sameRouteOwner = (toolsByRoute.get(route) || []).find((candidate) => registeredIds.has(candidate.id));
+    if (sameRouteOwner) return true;
+    const englishRoute = englishAlternateRoute(route);
+    if (!englishRoute) return false;
+    if (registeredRoutes.has(englishRoute)) return true;
+    return (toolsByRoute.get(englishRoute) || []).some((candidate) => hasRegisteredSource(candidate, visited));
+  }
 
   const moneyPattern = /(?:^|[^a-z0-9])(?:paye|vat|tax(?:es|ation)?|salary|wage|pension|social-security|fuel|electricity|remittance|forex|currency|bank|loan|interest|mortgage|import-duty|customs-duty)(?:[^a-z0-9]|$)/i;
   const moneyTools = sources.tools.filter((tool) => {
@@ -26,9 +78,7 @@ function auditMoneySourceCoverage(root) {
     return /^[a-z]{2}-(?:paye|vat|tva|wht|nssf|ssnit)(?:-|$)/i.test(tool.id);
   });
   const missing = moneyTools.filter((tool) => {
-    return !registeredIds.has(tool.id)
-      && !(tool.sourceId && registeredIds.has(tool.sourceId))
-      && !registeredRoutes.has(canonicalRegistry.normalizeRoute(tool.href));
+    return !hasRegisteredSource(tool);
   });
   return { total: moneyTools.length, registered: moneyTools.length - missing.length, missing };
 }

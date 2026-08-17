@@ -263,6 +263,37 @@ function buildRegistry(asOf) {
         return [source.id, Object.assign({}, source)];
       }),
   );
+  // These long-lived records have exact public ownership contracts. Rebuilds
+  // must not retain locale/sourceId coverage that an older generator may have
+  // appended to the committed registry.
+  const exactExistingCoverage = {
+    'afrofuel-static-snapshot': {
+      toolIds: ['fuel-tracker'],
+      routes: ['/tools/fuel-tracker/'],
+    },
+    'crypto-dca-coingecko-history': {
+      toolIds: ['crypto-dca'],
+      routes: ['/crypto/dca-calculator', '/fr/crypto/dca-calculator'],
+    },
+    'forex-third-party-snapshot': {
+      toolIds: ['convertisseur-devises-fr', 'currency-converter', 'forex-profit', 'zana-kibadilishaji-sarafu-sw'],
+      routes: ['/fr/tools/convertisseur-devises/', '/sw/zana/kibadilishaji-sarafu/', '/tools/currency-converter/', '/tools/forex-profit/'],
+    },
+    'paye-tax-engine-country-packs': {
+      toolIds: ['paye-calculator'],
+      routes: ['/tools/paye-calculator'],
+    },
+    'vat-country-rate-packs': {
+      toolIds: ['vat-calc-pan-african'],
+      routes: ['/tools/vat-calculator'],
+    },
+  };
+  Object.entries(exactExistingCoverage).forEach(function ([sourceId, coverage]) {
+    const entry = entries.get(sourceId);
+    if (!entry) return;
+    entry.toolIds = coverage.toolIds.slice();
+    entry.routes = coverage.routes.slice();
+  });
   function add(entry) {
     if (entries.has(entry.id)) throw new Error('Duplicate generated source id: ' + entry.id);
     entry.appliesTo = normalizeAppliesToScopes(entry.appliesTo);
@@ -1442,16 +1473,6 @@ function buildRegistry(asOf) {
     });
   });
 
-  // Localized routes and compatibility rows share the source contract of their
-  // explicit sourceId, identical route owner, or English hreflang owner. Keep
-  // those bindings in generated coverage instead of duplicating source claims.
-  const ownerByToolId = new Map();
-  const ownerByRoute = new Map();
-  entries.forEach(function (entry) {
-    (entry.toolIds || []).forEach(function (toolId) { ownerByToolId.set(toolId, entry); });
-    (entry.routes || []).forEach(function (route) { ownerByRoute.set(normalizedRoute(route), entry); });
-  });
-
   function routeFile(route) {
     const clean = normalizedRoute(route).replace(/^\//, '');
     const candidates = [clean, clean + '.html', path.join(clean, 'index.html')];
@@ -1469,43 +1490,6 @@ function buildRegistry(asOf) {
       return fs.readFileSync(file, 'utf8').includes('data-source-meta-id="' + entry.id + '"');
     });
   });
-
-  function englishAlternateOwner(tool) {
-    const file = routeFile(tool.href);
-    if (!file) return null;
-    const html = fs.readFileSync(file, 'utf8');
-    const links = html.match(/<link\b[^>]*>/gi) || [];
-    const alternate = links.find(function (tag) {
-      return /\brel=["']alternate["']/i.test(tag) && /\bhreflang=["']en["']/i.test(tag);
-    });
-    const match = alternate && alternate.match(/\bhref=["']([^"']+)["']/i);
-    if (!match) return null;
-    const englishIds = toolsByRoute.get(normalizedRoute(match[1])) || [];
-    for (const englishId of englishIds) {
-      const owner = ownerByToolId.get(englishId);
-      if (owner) return owner;
-    }
-    return ownerByRoute.get(normalizedRoute(match[1])) || null;
-  }
-
-  let coverageAdded = true;
-  while (coverageAdded) {
-    coverageAdded = false;
-    tools.forEach(function (tool) {
-      if (ownerByToolId.has(tool.id)) return;
-      const route = normalizedRoute(tool.href);
-      const owner = (tool.sourceId && ownerByToolId.get(tool.sourceId))
-        || ownerByRoute.get(route)
-        || englishAlternateOwner(tool);
-      if (!owner) return;
-      // Register the inherited tool id, but keep source.routes limited to
-      // pages that render that source as their primary on-page metadata.
-      mergeCoverage(owner, [tool.id], []);
-      ownerByToolId.set(tool.id, owner);
-      ownerByRoute.set(route, owner);
-      coverageAdded = true;
-    });
-  }
 
   const sources = Array.from(entries.values())
     .map(function (entry) {
