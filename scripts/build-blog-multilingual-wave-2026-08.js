@@ -142,6 +142,10 @@ function localized(topic, locale) {
 function renderBody(topic, locale) {
   const c = localeConfig[locale];
   const item = localized(topic, locale);
+  const shared = item.shared || c.shared;
+  const review = item.review || c.review;
+  const privacyText = item.privacyText || c.privacyText;
+  const noGuarantee = item.noGuarantee || c.noGuarantee;
   const rows = item.inputs.map(([input, evidence]) => `<tr><td>${esc(input)}</td><td>${esc(evidence)}</td></tr>`).join('');
   const steps = item.steps.map((step) => `<li>${esc(step)}</li>`).join('');
   const checks = item.checks.map((check) => `<li>${esc(check)}</li>`).join('');
@@ -154,7 +158,7 @@ function renderBody(topic, locale) {
 
 <h2 id="quick-answer">${c.quick}</h2>
 <p>${esc(item.quick)}</p>
-<p>${esc(c.shared[0])}</p>
+<p>${esc(shared[0])}</p>
 
 <h2 id="inputs">${c.inputs}</h2>
 <div class="table-wrapper"><table><thead><tr><th>${c.input}</th><th>${c.evidence}</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -162,26 +166,26 @@ function renderBody(topic, locale) {
 
 <h2 id="workflow">${c.steps}</h2>
 <ol>${steps}</ol>
-<p>${esc(c.shared[1])}</p>
+<p>${esc(shared[1])}</p>
 
 <h2 id="details">${esc(item.detailTitle)}</h2>
 ${item.details.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('\n')}
 
 <h2 id="checks">${c.checks}</h2>
 <ul>${checks}</ul>
-<p>${esc(c.shared[2])}</p>
+<p>${esc(shared[2])}</p>
 
 <h2 id="review">${c.reviewTitle}</h2>
-${c.review.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('\n')}
+${review.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('\n')}
 
 <h2 id="privacy">${c.privacy}</h2>
-<p>${esc(c.privacyText)}</p>
+<p>${esc(privacyText)}</p>
 <p>${esc(item.safety)}</p>
 
 <h2 id="tool">${c.open}</h2>
 <p><a class="btn" href="${item.tool[0]}">${esc(item.tool[1])} &#8594;</a></p>
 <p>${esc(item.toolUse)}</p>
-<p>${esc(c.noGuarantee)}</p>
+<p>${esc(noGuarantee)}</p>
 
 <h2 id="sources">${c.sources}</h2>
 <p>${esc(c.sourceIntro)}</p>
@@ -202,11 +206,13 @@ function renderArticle(topic, locale) {
   const body = renderBody(topic, locale);
   const wordCount = body.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
   const readMinutes = Math.max(6, Math.ceil(wordCount / 190));
+  const modified = item.modified || data.published;
+  const reviewedLabel = item.reviewedLabel || data.reviewedLabel;
   const articleSchema = {
     '@context': 'https://schema.org', '@type': 'Article', headline: item.title, description: item.description,
     author: { '@type': 'Organization', name: 'AfroTools Team', url: 'https://afrotools.com/' },
     publisher: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/', logo: { '@type': 'ImageObject', url: 'https://afrotools.com/assets/img/logo-mark.svg' } },
-    datePublished: data.published, dateModified: data.published, mainEntityOfPage: canonical,
+    datePublished: data.published, dateModified: modified, mainEntityOfPage: canonical,
     image: `https://afrotools.com/assets/img/tools/${topic.image}.webp`, inLanguage: locale, wordCount
   };
   const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -231,7 +237,7 @@ function renderArticle(topic, locale) {
 <link rel="canonical" href="${canonical}">
 ${alternates}
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com${routeFor('en', localized(topic, 'en').slug)}">
-<meta property="og:type" content="article"><meta property="og:url" content="${canonical}"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${topic.image}.webp"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="${c.ogLocale}"><meta property="article:published_time" content="${data.published}"><meta property="article:modified_time" content="${data.published}"><meta property="article:section" content="${esc(item.category)}">
+<meta property="og:type" content="article"><meta property="og:url" content="${canonical}"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${topic.image}.webp"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="${c.ogLocale}"><meta property="article:published_time" content="${data.published}"><meta property="article:modified_time" content="${modified}"><meta property="article:section" content="${esc(item.category)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(item.title)}"><meta name="twitter:description" content="${esc(item.description)}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/${topic.image}.webp">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/blog/assets/css/blog.css"><link rel="stylesheet" href="/blog/assets/css/blog-platform.css"><link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css">
@@ -242,7 +248,7 @@ ${alternates}
 </head>
 <body class="top-level-page-ui-refresh">
 <div class="reading-progress" id="readingProgress"></div><afro-navbar></afro-navbar>
-<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="${c.home}">${locale === 'en' ? 'Home' : locale === 'fr' ? 'Accueil' : 'Mwanzo'}</a> <span class="sep">&#8250;</span> <a href="${c.hub}">${locale === 'sw' ? 'Blogu' : 'Blog'}</a></nav><span class="category-badge">${esc(item.category)}</span><h1>${esc(item.title)}</h1><div class="article-meta-hero"><span>${c.team}</span><span class="dot"></span><time datetime="${data.published}">${c.reviewed} ${data.reviewedLabel}</time><span class="dot"></span><span>${readMinutes} ${c.minutes}</span></div></div></section>
+<section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="${c.home}">${locale === 'en' ? 'Home' : locale === 'fr' ? 'Accueil' : 'Mwanzo'}</a> <span class="sep">&#8250;</span> <a href="${c.hub}">${locale === 'sw' ? 'Blogu' : 'Blog'}</a></nav><span class="category-badge">${esc(item.category)}</span><h1>${esc(item.title)}</h1><div class="article-meta-hero"><span>${c.team}</span><span class="dot"></span><time datetime="${modified}">${c.reviewed} ${reviewedLabel}</time><span class="dot"></span><span>${readMinutes} ${c.minutes}</span></div></div></section>
 <div class="article-featured-img"><div class="article-featured-img-inner"><img width="600" height="400" src="/assets/img/tools/${topic.image}.webp" alt="${esc(item.imageAlt)}" loading="eager"></div></div>
 <main class="article-layout"><nav class="article-toc" aria-label="${c.guide}"><div class="article-toc-title">${c.guide}</div><ol><li><a href="#quick-answer">${c.quick}</a></li><li><a href="#inputs">${c.inputs}</a></li><li><a href="#workflow">${c.steps}</a></li><li><a href="#checks">${c.checks}</a></li><li><a href="#sources">${c.sources}</a></li><li><a href="#faq">${c.faq}</a></li></ol></nav><article class="article-body">${body}</article></main>
 <afro-footer></afro-footer><script src="/blog/assets/js/blog-reading.js" defer></script><script src="/assets/js/lazy-analytics.js" defer></script>
