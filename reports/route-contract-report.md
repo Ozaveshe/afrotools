@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11499 |
-| Indexable pages | 9915 |
+| Public pages | 11504 |
+| Indexable pages | 9920 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5226 |
-| Documented fallbacks | 14753 |
-| Routes eligible for primary sitemaps | 9915 |
+| Genuine equivalence groups | 5231 |
+| Documented fallbacks | 14758 |
+| Routes eligible for primary sitemaps | 9920 |
 
 ## Locale Coverage
 
 - en: 5958 page records
-- fr: 3797 page records
+- fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
 - yo: 45 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 501
+- article: 506
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3084,6 +3084,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:044eff120880: en=`/cars/egypt/mazda/`, fr=`/fr/cars/egypte/mazda/`; x-default=`/cars/egypt/mazda/`
 - equivalence:045338fd6ee6: en=`/salary-tax/crypto/`, sw=`/sw/mshahara-na-kodi/crypto/`; x-default=`/salary-tax/crypto/`
 - equivalence:045fbad9d81c: en=`/jamb/daily/`; x-default=`/jamb/daily/`
+- equivalence:046f88c54f28: fr=`/fr/blog/controle-iuts-bulletin-paie-burkina-faso/`; x-default=`/fr/blog/controle-iuts-bulletin-paie-burkina-faso/`
 - equivalence:0473c3333f86: en=`/tools/plumbing-material/`, fr=`/fr/tools/materiaux-plomberie/`, sw=`/sw/zana/vifaa-vya-mabomba/`; x-default=`/tools/plumbing-material/`
 - equivalence:047e30aa847c: en=`/cars/namibia/toyota/vitz-yaris/2015/`, fr=`/fr/cars/namibie/toyota/vitz-yaris/2015/`; x-default=`/cars/namibia/toyota/vitz-yaris/2015/`
 - equivalence:04869a9e028a: en=`/agriculture/vaccination-schedule/botswana`; x-default=`/agriculture/vaccination-schedule/botswana`
@@ -3816,6 +3817,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:27cfc6252b3c: en=`/blog/zimbabwe-vat-guide-2026/`; x-default=`/blog/zimbabwe-vat-guide-2026/`
 - equivalence:27ede1c74ee7: en=`/blog/wedding-cost-nigeria-2026/`; x-default=`/blog/wedding-cost-nigeria-2026/`
 - equivalence:27f68deb34fd: en=`/blog/catfish-feed-budget-nigeria/`; x-default=`/blog/catfish-feed-budget-nigeria/`
+- equivalence:281568443d14: fr=`/fr/blog/salaire-brut-net-benin-dossier-paie/`; x-default=`/fr/blog/salaire-brut-net-benin-dossier-paie/`
 - equivalence:28173097fc1e: en=`/south-africa/`, fr=`/fr/south-africa/`, sw=`/sw/south-africa/`; x-default=`/south-africa/`
 - equivalence:28333bbda5ee: en=`/agriculture/greenhouse/tanzania`, fr=`/fr/agriculture/greenhouse/tanzania`, sw=`/sw/kilimo/greenhouse/tanzania/`; x-default=`/agriculture/greenhouse/tanzania`
 - equivalence:2834240da1f8: en=`/tools/afrokitchen/countries/eswatini/`; x-default=`/tools/afrokitchen/countries/eswatini/`
@@ -4222,6 +4224,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3af5726dd44c: en=`/tools/afrokitchen/recipes/arroz-de-caju-gw/`; x-default=`/tools/afrokitchen/recipes/arroz-de-caju-gw/`
 - equivalence:3b1169ea39ba: en=`/tools/cnps-guide/`, fr=`/fr/tools/guide-de-la-cnps-en-cote-d-ivoire/`, sw=`/sw/zana/mwongozo-wa-cnps/`; x-default=`/tools/cnps-guide/`
 - equivalence:3b24b52ac21d: en=`/tools/property-vs-stocks/`, fr=`/fr/tools/immobilier-vs-actions/`, sw=`/sw/zana/mali-dhidi-ya-hisa/`; x-default=`/tools/property-vs-stocks/`
+- equivalence:3b2f24ddb919: fr=`/fr/blog/rts-cnss-guinee-controle-salaire-net/`; x-default=`/fr/blog/rts-cnss-guinee-controle-salaire-net/`
 - equivalence:3b323130dd8c: en=`/tools/freelancer-rate/rwanda/`, fr=`/fr/tools/calculateur-de-tarif-independant-rwanda/`; x-default=`/tools/freelancer-rate/rwanda/`
 - equivalence:3b405e0233f7: en=`/cars/uganda/mercedes-benz/e-class/`, fr=`/fr/cars/ouganda/mercedes-benz/e-class/`; x-default=`/cars/uganda/mercedes-benz/e-class/`
 - equivalence:3b60ad534aef: en=`/tools/idea-board/`, fr=`/fr/tools/tableau-idees/`, sw=`/sw/zana/kichunguzi-ushahidi-wa-mawazo/`; x-default=`/tools/idea-board/`
@@ -4848,6 +4851,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5874b578d6ab: en=`/agriculture/input-prices/nigeria`, fr=`/fr/agriculture/input-prices/nigeria`, sw=`/sw/kilimo/bei-za-pembejeo/nigeria/`; x-default=`/agriculture/input-prices/nigeria`
 - equivalence:588fb8a6b098: en=`/blog/cheapest-bank-accounts-africa/`; x-default=`/blog/cheapest-bank-accounts-africa/`
 - equivalence:5891e23a9618: en=`/tools/ielts-calculator/`, fr=`/fr/tools/calculateur-ielts/`, sw=`/sw/zana/kikokotoo-ielts/`; x-default=`/tools/ielts-calculator/`
+- equivalence:58946051e6c0: fr=`/fr/blog/lire-bulletin-paie-irsa-madagascar/`; x-default=`/fr/blog/lire-bulletin-paie-irsa-madagascar/`
 - equivalence:58b8a8539001: en=`/tools/solar-roi/seychelles/`, fr=`/fr/tools/roi-solaire/seychelles/`; x-default=`/tools/solar-roi/seychelles/`
 - equivalence:58ba5d733d2b: en=`/tools/afrokitchen/recipes/toh-ml/`; x-default=`/tools/afrokitchen/recipes/toh-ml/`
 - equivalence:58ba9fddc3aa: en=`/tools/health-contribution/chad`; x-default=`/tools/health-contribution/chad`
@@ -4922,6 +4926,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5ba8039ddc6c: en=`/tools/gratuity-calculator/central-african-republic/`; x-default=`/tools/gratuity-calculator/central-african-republic/`
 - equivalence:5bbbba870792: en=`/tools/contractor-vs-employee/ghana/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-ghana/`, sw=`/sw/ghana/kilinganisha-mkandarasi-na-mfanyakazi/`; x-default=`/tools/contractor-vs-employee/ghana/`
 - equivalence:5bbcc08b28fc: en=`/jamb/mathematics/1990/`; x-default=`/jamb/mathematics/1990/`
+- equivalence:5bc0e6a85fdf: fr=`/fr/blog/declaration-mensuelle-its-mali-controle-paie/`; x-default=`/fr/blog/declaration-mensuelle-its-mali-controle-paie/`
 - equivalence:5bcb30e0ed04: fr=`/fr/widgets/capacite-salle-classe/`; x-default=`/fr/widgets/capacite-salle-classe/`
 - equivalence:5be14dcd60b5: en=`/tools/afrokitchen/recipes/matoke/`; x-default=`/tools/afrokitchen/recipes/matoke/`
 - equivalence:5be42d3754ba: en=`/agriculture/crop-insurance/nigeria`; x-default=`/agriculture/crop-insurance/nigeria`
