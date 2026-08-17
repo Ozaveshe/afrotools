@@ -6,6 +6,7 @@ Supports:
 - Stale age detection
 - Dirty working tree detection
 - Merged branch detection
+- Missing-path registration reporting
 - Optional removal of merged, clean stale worktrees
 """
 
@@ -98,7 +99,12 @@ def is_merged(repo: Path, branch: str, base_branch: str) -> bool:
         return False
 
 
-def format_text(items: List[WorktreeInfo], removed: List[str]) -> str:
+def format_text(
+    items: List[WorktreeInfo],
+    removed: List[str],
+    missing: List[str],
+    invalid: List[Dict[str, str]],
+) -> str:
     lines = ["Worktree cleanup report"]
     for item in items:
         lines.append(
@@ -109,6 +115,14 @@ def format_text(items: List[WorktreeInfo], removed: List[str]) -> str:
         lines.append("Removed:")
         for path in removed:
             lines.append(f"- {path}")
+    if missing:
+        lines.append("Missing paths (prune worktree metadata separately):")
+        for path in missing:
+            lines.append(f"- {path}")
+    if invalid:
+        lines.append("Invalid worktree registrations (inspect or prune metadata separately):")
+        for item in invalid:
+            lines.append(f"- {item['path']}: {item['reason']}")
     return "\n".join(lines)
 
 
@@ -151,12 +165,23 @@ def main() -> int:
     main_path = Path(entries[0].get("worktree", "")).resolve()
     infos: List[WorktreeInfo] = []
     removed: List[str] = []
+    missing: List[str] = []
+    invalid: List[Dict[str, str]] = []
 
     for entry in entries:
         path = Path(entry.get("worktree", "")).resolve()
-        branch = get_branch(path)
-        age = get_last_commit_age_days(path)
-        dirty = is_dirty(path)
+        if not path.is_dir():
+            missing.append(str(path))
+            continue
+        try:
+            branch = get_branch(path)
+            age = get_last_commit_age_days(path)
+            dirty = is_dirty(path)
+        except (OSError, subprocess.CalledProcessError) as exc:
+            stderr = getattr(exc, "stderr", "") or ""
+            reason = str(stderr).strip() or str(exc)
+            invalid.append({"path": str(path), "reason": reason})
+            continue
         stale = age >= stale_days
         merged = is_merged(repo, branch, base_branch)
         info = WorktreeInfo(
@@ -181,9 +206,19 @@ def main() -> int:
                 raise CLIError(f"Failed removing worktree {path}: {exc.stderr}") from exc
 
     if args.format == "json":
-        print(json.dumps({"worktrees": [asdict(i) for i in infos], "removed": removed}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "worktrees": [asdict(i) for i in infos],
+                    "removed": removed,
+                    "missing": missing,
+                    "invalid": invalid,
+                },
+                indent=2,
+            )
+        )
     else:
-        print(format_text(infos, removed))
+        print(format_text(infos, removed, missing, invalid))
 
     return 0
 

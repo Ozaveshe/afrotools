@@ -75,6 +75,12 @@ Each worktree contains `.worktree-ports.json` with assigned ports.
 2. Inspect dirty trees and branch merge status.
 3. Remove only merged + clean worktrees, or force explicitly.
 
+The scanner reports missing paths and invalid registrations instead of aborting
+the inventory. Treat those as metadata-repair candidates: inspect them with
+`git worktree prune --dry-run --verbose --expire now`, then use Git's own
+`worktree unlock` / `worktree prune` commands when the path is confirmed
+missing and process-free. Do not delete worktree metadata directories by hand.
+
 ```bash
 python scripts/worktree_cleanup.py --repo . --stale-days 14 --format text
 python scripts/worktree_cleanup.py --repo . --remove-merged --format text
@@ -140,6 +146,8 @@ Before claiming setup complete:
 3. `.env` files copied successfully (if present in source repo).
 4. Dependency install command exits with code `0` (if enabled).
 5. Cleanup scan reports no unintended stale dirty trees.
+6. Missing or invalid registrations were reported and reconciled through Git,
+   not silently skipped or removed with filesystem commands.
 
 ## References
 
