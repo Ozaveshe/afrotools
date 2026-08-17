@@ -10049,6 +10049,71 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
+      "artifactDigest": "sha256:19582ec59f83a908344a14b433f9bf2ddf6783625ce68b520f3f6664e133106e",
+      "artifactPath": "assets/js/engines/dz-paye.js",
+      "currency": "DZD",
+      "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
+      "currencyOverride": null,
+      "disclaimer": "Planning estimate only. Confirm rates, payroll treatment, filing, and remittance with the relevant authority or a qualified professional.",
+      "effectiveDateStatus": "review-required",
+      "effectiveFrom": null,
+      "effectiveTo": null,
+      "formulaFamily": "paye-browser",
+      "formulaVersion": "legacy-current+sha256.19582ec59f83",
+      "id": "paye-browser-dz",
+      "jurisdictions": [
+        "DZ"
+      ],
+      "knownExclusions": [
+        "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
+      ],
+      "lastVerified": "2026-08-17",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:19582ec59f83a908344a14b433f9bf2ddf6783625ce68b520f3f6664e133106e",
+        "artifactPath": "assets/js/engines/dz-paye.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [
+        "netlify/functions/_engines/dz-paye.js"
+      ],
+      "riskDomain": "tax_payroll",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
+        "stages": [
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+        ]
+      },
+      "sourceJurisdictions": [
+        "DZ"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "DGI IRG traitements et salaires",
+          "url": "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "CNAS taux de cotisation du cas général",
+          "url": "https://cnas.dz/fr/employeur/"
+        }
+      ],
+      "supportStatus": "registered",
+      "units": [
+        "currency"
+      ],
+      "verificationBasis": "AfroTools source audit"
+    },
+    {
+      "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
       "artifactDigest": "sha256:66edbc78d960cd51e6e7ab53aaf791ffaa0546760f2c262507414615d616b082",
       "artifactPath": "assets/js/engines/eg-paye.js",
       "currency": "EGP",
@@ -12970,7 +13035,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:9b79b43bdcd2c07979da377cc78193459db4656dadf8b585638f1ba321c882bd",
+      "artifactDigest": "sha256:af9e22bc7d5149e7ff4d0ede00f16b27808d4bcc5d0d5d993dc0198fc8c398e8",
       "artifactPath": "netlify/functions/_engines/dz-paye.js",
       "currency": "DZD",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -12980,7 +13045,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-server",
-      "formulaVersion": "2026-03-01+sha256.9b79b43bdcd2",
+      "formulaVersion": "2026-08-17+sha256.af9e22bc7d51",
       "id": "paye-server-dz",
       "jurisdictions": [
         "DZ"
@@ -12988,42 +13053,59 @@
       "knownExclusions": [
         "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
       ],
-      "lastVerified": "2026-04-06",
+      "lastVerified": "2026-08-17",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "mode": "schema-exposed-runtime-parameters",
         "values": {
-          "bandType": "progressive",
+          "bandType": "progressive-with-monthly-salary-abatements",
           "bands": [
-            [
-              240000,
-              0
-            ],
-            [
-              240000,
-              0.2
-            ],
-            [
-              480000,
-              0.3
-            ],
-            [
-              "Infinity",
-              0.35
-            ]
+            {
+              "max": 240000,
+              "min": 0,
+              "rate": 0
+            },
+            {
+              "max": 480000,
+              "min": 240000,
+              "rate": 0.23
+            },
+            {
+              "max": 960000,
+              "min": 480000,
+              "rate": 0.27
+            },
+            {
+              "max": 1920000,
+              "min": 960000,
+              "rate": 0.3
+            },
+            {
+              "max": 3840000,
+              "min": 1920000,
+              "rate": 0.33
+            },
+            {
+              "max": "Infinity",
+              "min": 3840000,
+              "rate": 0.35
+            }
           ],
           "employerSS": [
             {
               "key": "cnas",
-              "label": "CNAS (26%)",
-              "rate": 0.26
+              "label": "CNAS employer (25%)",
+              "rate": 0.25
+            },
+            {
+              "key": "socialWorks",
+              "label": "Social works (0.5%)",
+              "rate": 0.005
             }
           ],
-          "isMonthly": false,
-          "personalRelief": 0,
-          "regimes": [
-            "STANDARD"
-          ],
+          "isMonthly": true,
+          "monthlyExemption": 30000,
+          "monthlyLowIncomeLimit": 35000,
           "socialSecurity": [
             {
               "key": "cnas",
@@ -13033,18 +13115,16 @@
           ]
         }
       },
-      "protectedDuplicates": [],
+      "protectedDuplicates": [
+        "assets/js/engines/dz-paye.js"
+      ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
       "rounding": {
-        "calculationNote": "Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.",
-        "method": "nearest-integer",
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
         "stages": [
-          "individual statutory deductions",
-          "tax per band in the result breakdown",
-          "annual net tax after relief",
-          "annual and monthly net result",
-          "employer contribution totals"
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
         ]
       },
       "sourceJurisdictions": [
@@ -13055,36 +13135,15 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "mfdgi.gov.dz",
-          "url": "https://www.mfdgi.gov.dz"
+          "title": "DGI IRG traitements et salaires",
+          "url": "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "mfdgi.gov.dz",
-          "url": "https://mfdgi.gov.dz"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "dgb.mf.gov.dz",
-          "url": "https://dgb.mf.gov.dz/wp-content/uploads/2022/01/LF_2022.pdf"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "cnas.dz",
-          "url": "https://cnas.dz/%D9%86%D8%B5%D9%88%D8%B5_%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9/"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "cnas.dz",
-          "url": "https://cnas.dz/wp-content/themes/cnas/assets/pdfs/5_25-%20Arr%C3%AAt%C3%A9%20%20du%2026%20juillet%202008.pdf"
+          "title": "CNAS taux de cotisation du cas général",
+          "url": "https://cnas.dz/fr/employeur/"
         }
       ],
       "supportStatus": "registered",
@@ -18009,7 +18068,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "vat-route",
-      "formulaVersion": "Last-verified:-2026-·-Source:-DGI-(dgi+sha256.253ad236c629",
+      "formulaVersion": "DGI-CGI-Article-317-and-current-DGI-VAT-declarat+sha256.253ad236c629",
       "id": "route-bf-vat",
       "jurisdictions": [
         "BF"
@@ -18017,10 +18076,12 @@
       "knownExclusions": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
         "Product classification, exemption, and zero-rating rules can require invoice-level review.",
+        "The 10% rate requires transaction-level evidence of the qualifying service and approved establishment; a broad business label is not sufficient.",
+        "The calculator does not model the 2026 VAT-withholding change or decide whether an entity must withhold.",
         "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "lastVerified": "2026-01-01",
+      "lastVerified": "2026-08-17",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "artifactDigest": "sha256:253ad236c629f6c630930f759a5492c525a3808e0edf43fd2d2852f0b47e3e11",
@@ -18029,7 +18090,9 @@
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
       "protectedDuplicates": [
-        "fr/burkina-faso/bf-vat.html"
+        "fr/burkina-faso/calculateur-tva.html",
+        "fr/burkina-faso/bf-vat.html",
+        "sw/burkina-faso/kikokotoo-vat/index.html"
       ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
@@ -18048,15 +18111,29 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "Direction generale des impots - Burkina Faso",
-          "url": "https://dgi.bf/"
+          "title": "DGI Burkina Faso: Code general des impots, Article 317",
+          "url": "https://dgi.bf/verification/CGI"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "DGI Burkina Faso: declaration TVA with 18% and 10% rows",
+          "url": "https://dgi.bf/wp-content/uploads/2023/10/DECLARATION-DE-LA-TAXE-SUR-LA-VALEUR-AJOUTEE.pdf"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "DGI Burkina Faso: 2026 finance-law measures",
+          "url": "https://dgi.bf/%F0%9D%90%8B%F0%9D%90%A8%F0%9D%90%A2-%F0%9D%90%9D%F0%9D%90%9E-%F0%9D%90%9F%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%9A%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9E%F0%9D%90%AC-%F0%9D%9F%90%F0%9D%9F%8E%F0%9D%9F%90-2/"
         }
       ],
       "supportStatus": "legacy-protected",
       "units": [
         "currency"
       ],
-      "verificationBasis": "AfroTools source audit"
+      "verificationBasis": "AfroTools primary-source review"
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
@@ -20544,17 +20621,18 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.88eb6b585232",
+      "formulaVersion": "DGI-Article-104-salary-guidance-and-CNAS-general+sha256.88eb6b585232",
       "id": "route-dz-paye",
       "jurisdictions": [
         "DZ"
       ],
       "knownExclusions": [
-        "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
-        "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
+        "Planning estimate only. It is not a payslip or professional tax, legal, payroll, or filing opinion.",
+        "Non-monthly bonuses, gratuities and back pay are excluded because the DGI describes separate withholding treatment.",
+        "Disability and pension regimes, benefits in kind, sector rules and employer contribution reductions are not modeled.",
+        "Confirm the employee category, current payslip treatment and remittance duties with DGI, CNAS or a qualified payroll professional."
       ],
-      "lastVerified": "2026-04-06",
+      "lastVerified": "2026-08-17",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "artifactDigest": "sha256:88eb6b585232ca1268d156fd8546b13a0d012c230dada54cd81b081cfaede138",
@@ -20563,7 +20641,7 @@
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
       "protectedDuplicates": [
-        "fr/algeria/dz-paye.html"
+        "fr/algerie/calculateur-salaire-net.html"
       ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
@@ -20582,36 +20660,15 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "mfdgi.gov.dz",
-          "url": "https://www.mfdgi.gov.dz"
+          "title": "DGI IRG traitements et salaires",
+          "url": "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "mfdgi.gov.dz",
-          "url": "https://mfdgi.gov.dz"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "dgb.mf.gov.dz",
-          "url": "https://dgb.mf.gov.dz/wp-content/uploads/2022/01/LF_2022.pdf"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "cnas.dz",
-          "url": "https://cnas.dz/%D9%86%D8%B5%D9%88%D8%B5_%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9/"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "cnas.dz",
-          "url": "https://cnas.dz/wp-content/themes/cnas/assets/pdfs/5_25-%20Arr%C3%AAt%C3%A9%20%20du%2026%20juillet%202008.pdf"
+          "title": "CNAS taux de cotisation du cas général",
+          "url": "https://cnas.dz/fr/employeur/"
         }
       ],
       "supportStatus": "legacy-protected",
@@ -27282,7 +27339,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:d0a1be30c67ecca4a5549078dee3d4452be10bfbbfd4927e13cac2d97ab4a6ec",
+      "artifactDigest": "sha256:d3c2eb9c49c158235c1658e4378cbeb85a76d1ca5fcc9201bb6731a5c596ba32",
       "artifactPath": "fr/senegal/calculateur-salaire-net.html",
       "currency": "XOF",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -27292,7 +27349,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "Seven-annual-IRPP-bands-reported-by-the-Ministry+sha256.d0a1be30c67e",
+      "formulaVersion": "Seven-annual-IRPP-bands-reported-by-the-Ministry+sha256.d3c2eb9c49c1",
       "id": "route-sn-paye-fr",
       "jurisdictions": [
         "SN"
@@ -27305,7 +27362,7 @@
       "lastVerified": "2026-07-28",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:d0a1be30c67ecca4a5549078dee3d4452be10bfbbfd4927e13cac2d97ab4a6ec",
+        "artifactDigest": "sha256:d3c2eb9c49c158235c1658e4378cbeb85a76d1ca5fcc9201bb6731a5c596ba32",
         "artifactPath": "fr/senegal/calculateur-salaire-net.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -30318,10 +30375,14 @@
       "formulaId": "route-bf-vat",
       "routes": [
         "/burkina-faso/bf-vat",
-        "/fr/burkina-faso/bf-vat"
+        "/fr/burkina-faso/bf-vat",
+        "/fr/burkina-faso/calculateur-tva",
+        "/sw/burkina-faso/kikokotoo-vat/"
       ],
       "sourceUrls": [
-        "https://dgi.bf/"
+        "https://dgi.bf/verification/CGI",
+        "https://dgi.bf/wp-content/uploads/2023/10/DECLARATION-DE-LA-TAXE-SUR-LA-VALEUR-AJOUTEE.pdf",
+        "https://dgi.bf/%F0%9D%90%8B%F0%9D%90%A8%F0%9D%90%A2-%F0%9D%90%9D%F0%9D%90%9E-%F0%9D%90%9F%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%9A%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9E%F0%9D%90%AC-%F0%9D%9F%90%F0%9D%9F%8E%F0%9D%9F%90-2/"
       ],
       "toolId": "bf-vat"
     },
@@ -30751,14 +30812,11 @@
       "formulaId": "route-dz-paye",
       "routes": [
         "/algeria/dz-paye",
-        "/fr/algeria/dz-paye"
+        "/fr/algerie/calculateur-salaire-net"
       ],
       "sourceUrls": [
-        "https://www.mfdgi.gov.dz",
-        "https://mfdgi.gov.dz",
-        "https://dgb.mf.gov.dz/wp-content/uploads/2022/01/LF_2022.pdf",
-        "https://cnas.dz/%D9%86%D8%B5%D9%88%D8%B5_%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9/",
-        "https://cnas.dz/wp-content/themes/cnas/assets/pdfs/5_25-%20Arr%C3%AAt%C3%A9%20%20du%2026%20juillet%202008.pdf"
+        "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires",
+        "https://cnas.dz/fr/employeur/"
       ],
       "toolId": "dz-paye"
     },

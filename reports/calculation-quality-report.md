@@ -17,7 +17,7 @@ As of: 2026-08-17
 
 ## Review backlog
 
-- High-risk effective dates requiring review: 201
+- High-risk effective dates requiring review: 202
 - Medium-risk effective dates requiring review: 0
 - High-risk sources requiring review: 0
 - Medium-risk sources requiring review: 41

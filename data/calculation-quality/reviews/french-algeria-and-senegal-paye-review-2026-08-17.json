@@ -1,0 +1,63 @@
+{
+  "reviewedBy": "Codex French organic-search growth review",
+  "reviewedAt": "2026-08-17",
+  "sourceUrl": "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires",
+  "reason": "Algeria PAYE now applies the six DGI IRG bands, the monthly salary exemption, the bounded 40% salary abatement and the 30,001 to 35,000 DA formula. The employer view now follows the CNAS general-case split published at https://cnas.dz/fr/employeur/. Browser and Netlify outputs share one reviewed engine, and the French route no longer transmits salary data or gates PDF export. The Senegal route change only removes an unused inline six-band implementation that contradicted the already-reviewed seven-band shared engine; executable Senegal results do not change. The Burkina Faso VAT route keeps the existing shared arithmetic, corrects a false single-rate claim from DGI Article 317, and requires transaction and approval confirmation before allowing the official 10% treatment.",
+  "formulaIds": [
+    "paye-browser-dz",
+    "paye-server-dz",
+    "route-dz-paye",
+    "route-sn-paye-fr",
+    "route-bf-vat"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-dz-defaults",
+      "before": {
+        "deductions.totalDeductions": 267000,
+        "result.netAnnual": 733000,
+        "result.netMonthly": 61083,
+        "tax.netTax": 177000
+      },
+      "after": {
+        "deductions.totalDeductions": 243300,
+        "result.netAnnual": 756700,
+        "result.netMonthly": 63058,
+        "tax.netTax": 153300
+      },
+      "explanation": "The reviewed DGI salary abatements reduce IRG for a regular monthly salary."
+    },
+    {
+      "fixtureId": "paye-dz-large-decimal",
+      "before": {
+        "deductions.totalDeductions": 408356000,
+        "result.netAnnual": 591644001,
+        "result.netMonthly": 49303667,
+        "tax.netTax": 318356000
+      },
+      "after": {
+        "deductions.totalDeductions": 408244400,
+        "result.netAnnual": 591755600,
+        "result.netMonthly": 49312967,
+        "tax.netTax": 318244400
+      },
+      "explanation": "The monthly maximum salary abatement is now applied before annualization."
+    },
+    {
+      "fixtureId": "paye-dz-zero",
+      "before": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "after": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "explanation": "The zero baseline remains unchanged."
+    }
+  ]
+}

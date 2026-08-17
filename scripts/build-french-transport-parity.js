@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const { enhanceCategory } = require('./lib/localized-category-standard');
+const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'data', 'transport', 'french-parity.json');
@@ -41,9 +42,19 @@ function normalizeGeneratedHtml(value) {
   return value.replace(/[ \t]+$/gm, '');
 }
 
+function removeDerivedSeoImages(value) {
+  if (!value || typeof value !== 'object') return;
+  if (Array.isArray(value)) {
+    value.forEach(removeDerivedSeoImages);
+    return;
+  }
+  delete value.image;
+  Object.values(value).forEach(removeDerivedSeoImages);
+}
+
 function normalizeTransportGeneratorHtml(html) {
   const seoLinks = [];
-  let normalized = normalizeBuildManagedHtml(html)
+  let normalized = normalizeBuildManagedHtml(repairFrenchNavigation(html).next)
     .replace(
       /\s*<link\b(?=[^>]*\brel=["'](?:canonical|alternate)["'])[^>]*>/gi,
       (tag) => {
@@ -58,7 +69,7 @@ function normalizeTransportGeneratorHtml(html) {
           const value = JSON.parse(json);
           // SEO postprocessing can derive an image from og:image. Artwork is
           // validated independently, so that derived field is not owner drift.
-          delete value.image;
+          removeDerivedSeoImages(value);
           return `<script${beforeType}type="application/ld+json"${afterType}>${JSON.stringify(value)}</script>`;
         } catch {
           return tag;

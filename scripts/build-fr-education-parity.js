@@ -102,7 +102,7 @@ const definitions = {
     metrics: [["overall", "Score global"], ["targetStatus", "Position par rapport à l’objectif"], ["average", "Moyenne brute"]]
   },
   "teacher-salary": {
-    title: "Feuille de rémunération enseignante", description: "Comparez salaire, allocations, retenues et heures à partir de votre offre ou fiche de paie; aucun barème national n’est inventé.",
+    title: "Calculateur de salaire enseignant", description: "Calculez brut mensuel, net après retenues, total annuel et taux horaire à partir d’une offre enseignante, sans inventer de barème national.",
     script: "/tools/teacher-salary/teacher-salary-engine.js", global: "AfroTools.teacherSalaryEngine", recipe: "teacher-salary",
     fields: [number("baseMonthly", "Salaire mensuel de base", 500000, 1), number("allowancesMonthly", "Allocations mensuelles", 50000, 0), number("deductionsMonthly", "Retenues mensuelles", 60000, 0), number("weeklyHours", "Heures/semaine", 40, 1, 100), number("workingWeeks", "Semaines travaillées/an", 44, 1, 52)],
     metrics: [["grossCashMonthly", "Brut récurrent mensuel"], ["estimatedTakeHomeMonthly", "Net mensuel saisi"], ["annualCash", "Brut annuel"], ["grossHourly", "Brut horaire"]]

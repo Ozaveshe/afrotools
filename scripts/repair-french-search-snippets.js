@@ -150,7 +150,7 @@ function fuelMetadata(html, country) {
     (html.match(/<meta\b[^>]*name=["']description["'][^>]*>/i) || [""])[0],
     "content"
   );
-  const values = currentDescription.match(/\b((?:petrol|essence)\s+[\s\S]*?)\.\s*(?:Compare generator fuel costs and African countries|Comparez les coûts du groupe électrogène et les pays africains)\.?$/i)?.[1] || "";
+  const values = currentDescription.match(/\b((?:petrol|essence)\s+[\s\S]*?)\.\s*(?:Compare generator fuel costs and African countries|Comparez les coûts du groupe électrogène et les pays africains|Comparez les pays et estimez un budget)\.?$/i)?.[1] || "";
   const localizedValues = values
     .replace(/^petrol\b/i, "essence")
     .replace(/\bLPG\b/g, "GPL");
@@ -265,6 +265,12 @@ function targets() {
 
 function expectedForTarget(target) {
   const html = fs.readFileSync(target.file, "utf8");
+  if (
+    target.family === "suivi-carburant" &&
+    /<meta\s+name=["']afrotools-source-owner["']\s+content=["']scripts\/build-french-fuel-country-pages\.js["']\s*\/?>/i.test(html)
+  ) {
+    return html;
+  }
   const country = countryForSlug(target.slug);
   const metadata = target.family === "suivi-carburant"
     ? fuelMetadata(html, country)

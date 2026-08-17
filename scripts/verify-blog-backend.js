@@ -8,6 +8,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const routeContract = require('./lib/route-contract');
 
 const ROOT = path.resolve(__dirname, '..');
 const BLOG_DIR = path.join(ROOT, 'blog');
@@ -15,6 +16,11 @@ const BLOG_INDEX = path.join(BLOG_DIR, 'index.html');
 const FEED_PATH = path.join(BLOG_DIR, 'feed.xml');
 const BASE_URL = 'https://afrotools.com';
 const LATEST_FEED_COVERAGE = 20;
+const ROUTE_BY_FILE = new Map(
+  routeContract.buildRouteGraph().routes
+    .filter((record) => record.source && record.source.file)
+    .map((record) => [record.source.file.replace(/\\/g, '/'), record])
+);
 
 function read(filePath) {
   return fs.readFileSync(filePath, 'utf8');
@@ -114,13 +120,15 @@ function getArticles() {
       meta.get('article:published_time') ||
       (html.match(/"datePublished"\s*:\s*"([^"]+)"/) || [])[1]
     );
-    const publishable = !hasNoindex(meta) && !isRedirectLike(html);
+    const routeRecord = ROUTE_BY_FILE.get(rel(article.filePath));
+    const publishable = !hasNoindex(meta) && !isRedirectLike(html) && routeRecord?.state !== 'redirect';
     return {
       ...article,
       html,
       meta,
       locale: extractLocale(html, meta),
       canonical: extractCanonical(html),
+      routeRecord,
       pubDate,
       publishable,
       order: order.has(article.slug) ? order.get(article.slug) : Number.MAX_SAFE_INTEGER,
@@ -148,6 +156,13 @@ function validateJsonLd(articles, failures) {
 
 function validateCanonicals(articles, failures) {
   for (const article of articles) {
+    if (article.routeRecord?.state === 'redirect') {
+      const expectedRedirectCanonical = `${BASE_URL}${article.routeRecord.redirectTarget}`;
+      if (article.canonical !== expectedRedirectCanonical) {
+        failures.push(`${rel(article.filePath)} redirect canonical is ${article.canonical}, expected ${expectedRedirectCanonical}`);
+      }
+      continue;
+    }
     if (!article.publishable || !article.canonical) continue;
     const expected = `${BASE_URL}/blog/${article.slug}/`;
     if (article.canonical !== expected) {

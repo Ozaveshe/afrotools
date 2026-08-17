@@ -17,8 +17,14 @@ const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
+const LOCAL_TODAY = [
+  new Date().getFullYear(),
+  String(new Date().getMonth() + 1).padStart(2, '0'),
+  String(new Date().getDate()).padStart(2, '0')
+].join('-');
 const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
 const AFROKITCHEN_MANIFEST_PATH = path.join(ROOT, 'tools', 'afrokitchen', 'seo-manifest.json');
+const LASTMOD_OVERRIDES_PATH = path.join(ROOT, 'data', 'registry', 'sitemap-lastmod-overrides.json');
 const EXPLICIT_SITEMAP_HTML = [
   'api/docs/index.html',
   'widgets/index.html',
@@ -107,6 +113,50 @@ function readExistingUrlLastmods() {
 
 const EXISTING_URL_LASTMODS = readExistingUrlLastmods();
 const EXISTING_INDEX_LASTMODS = readXmlLastmods(path.join(ROOT, 'sitemap-index.xml'), 'sitemap');
+
+function loadLastmodOverrides() {
+  if (!fs.existsSync(LASTMOD_OVERRIDES_PATH)) return { exact: new Map(), prefixes: [] };
+
+  const registry = JSON.parse(fs.readFileSync(LASTMOD_OVERRIDES_PATH, 'utf8'));
+  if (registry.schemaVersion !== 1 || !Array.isArray(registry.overrides)) {
+    throw new Error('sitemap-lastmod-overrides.json must use schemaVersion 1 and an overrides array');
+  }
+
+  const exact = new Map();
+  const prefixes = [];
+  for (const [index, override] of registry.overrides.entries()) {
+    const route = typeof override.route === 'string' ? override.route : '';
+    const routePrefix = typeof override.routePrefix === 'string' ? override.routePrefix : '';
+    const lastmod = typeof override.lastmod === 'string' ? override.lastmod : '';
+    const routeCount = Number(Boolean(route)) + Number(Boolean(routePrefix));
+
+    if (routeCount !== 1 || !/^\/[^?#]*$/.test(route || routePrefix)) {
+      throw new Error(`Invalid route selector at sitemap lastmod override ${index}`);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod) || asIsoDate(lastmod) !== lastmod || lastmod > LOCAL_TODAY) {
+      throw new Error(`Invalid lastmod at sitemap lastmod override ${index}`);
+    }
+    if (routePrefix && !routePrefix.endsWith('/')) {
+      throw new Error(`routePrefix must end with / at sitemap lastmod override ${index}`);
+    }
+
+    if (route) exact.set(`${BASE_URL}${route}`, lastmod);
+    else prefixes.push({ locPrefix: `${BASE_URL}${routePrefix}`, lastmod });
+  }
+
+  return { exact, prefixes };
+}
+
+const LASTMOD_OVERRIDES = loadLastmodOverrides();
+
+function lastmodOverrideFor(loc) {
+  const candidates = [];
+  if (LASTMOD_OVERRIDES.exact.has(loc)) candidates.push(LASTMOD_OVERRIDES.exact.get(loc));
+  for (const override of LASTMOD_OVERRIDES.prefixes) {
+    if (loc.startsWith(override.locPrefix)) candidates.push(override.lastmod);
+  }
+  return candidates.sort().slice(-1)[0] || '';
+}
 
 function normalizeRedirectSource(value) {
   const route = String(value || '').trim().split(/[?#]/)[0];
@@ -265,7 +315,12 @@ function findHtmlFiles(dir, files = []) {
     if (entry.isDirectory()) {
       const relDir = path.relative(ROOT, fullPath).replace(/\\/g, '/');
       if (EXCLUDE_ROOT_DIRS.has(relDir)) continue;
-      if (EXCLUDE_DIRS.has(entry.name)) continue;
+      // The root /widgets/ tree contains embed utilities and is allowlisted
+      // selectively through EXPLICIT_SITEMAP_HTML. Nested locale directories
+      // such as /fr/widgets/ contain public, self-canonical parent pages and
+      // must still flow through inspectHtmlFile(), which excludes their
+      // noindex iframe utilities individually.
+      if (EXCLUDE_DIRS.has(entry.name) && relDir === entry.name) continue;
       findHtmlFiles(fullPath, files);
     } else if (entry.isFile() && entry.name.endsWith('.html')) {
       files.push(fullPath);
@@ -293,8 +348,14 @@ function normalizeSitemapLastmod(date) {
 }
 
 function stableSitemapLastmod(loc, fallbackDate) {
-  if (!REFRESH_LASTMOD && EXISTING_URL_LASTMODS.has(loc)) {
-    return EXISTING_URL_LASTMODS.get(loc);
+  if (!REFRESH_LASTMOD) {
+    const existing = EXISTING_URL_LASTMODS.get(loc) || '';
+    const selectiveOverride = lastmodOverrideFor(loc);
+    // The reviewed registry is authoritative for its narrow selector. This
+    // permits a bad local-time stamp to be corrected instead of preserved
+    // forever by the stable historical-lastmod behavior.
+    if (selectiveOverride) return selectiveOverride;
+    if (existing) return existing;
   }
 
   return normalizeSitemapLastmod(fallbackDate);

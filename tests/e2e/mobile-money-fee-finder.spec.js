@@ -26,6 +26,28 @@ test.describe('mobile money fee finder',()=>{
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(1);
   });
+  test('keeps the French finder native through calculated and unavailable states',async({page})=>{
+    await page.goto('/fr/tools/frais-mobile-money/');
+    await expect(page.locator('#mm-provider option').first()).toContainText('Ouganda');
+    await expect(page.locator('.rm-badges')).toContainText('Références officielles publiées');
+    await expect(page.locator('#mm-a-type')).toContainText('Paiement marchand');
+    await page.locator('#mm-amount').fill('500');
+    await page.locator('#mm-tariff-form button[type="submit"]').click();
+    await expect(page.locator('#mm-tariff-result')).toContainText('Ouganda - MTN MoMo - Envoi');
+    await expect(page.locator('#mm-tariff-result')).toContainText('Frais publiés pour cette tranche et cette opération.');
+    await expect(page.locator('#mm-tariff-status')).toHaveText('Calculé localement à partir du catalogue de tarifs publiés.');
+    await page.locator('#mm-provider').selectOption('airtel-tanzania');
+    await page.locator('#mm-action').selectOption('withdraw');
+    await page.locator('#mm-amount').fill('3000');
+    await page.locator('#mm-tariff-form button[type="submit"]').click();
+    await expect(page.locator('#mm-tariff-result')).toContainText('Prélèvement public: 14 TZS');
+    await expect(page.locator('#mm-tariff-result')).not.toContainText('governmentLevy');
+    await page.locator('#mm-action').selectOption('send');
+    await page.locator('#mm-amount').fill('10000');
+    await page.locator('#mm-tariff-form button[type="submit"]').click();
+    await expect(page.locator('#mm-tariff-result')).toContainText('Montant hors des tranches vérifiées.');
+    await expect(page.locator('#mm-tariff-result')).not.toContainText('AMOUNT_OUTSIDE_VERIFIED_BANDS');
+  });
   test('preserves the local manual quote comparator and exports',async({page})=>{
     await page.goto('/sw/zana/ada-pesa-simu/');
     const checked=new Date(Date.now()-60000).toISOString().slice(0,16);

@@ -555,6 +555,14 @@ function buildRegistry(asOf) {
         entry.notes = 'Benin salary estimates use the CGI 2026 monthly ITS bands and ORTB levies. Employee CNSS is 3.6%; employer CNSS is 16.4%-19.4% depending on occupational risk. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'Benin ITS and CNSS results are planning estimates. Confirm benefits in kind, exceptional remuneration, exemptions, variable pay and filing treatment with DGI, CNSS or a qualified payroll professional.';
       }
+      if (country === 'DZ') {
+        entry.sourceName = 'DGI Algeria salary IRG and CNAS general contribution rates';
+        entry.sourceUrl = 'https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires';
+        entry.routes = ['/algeria/dz-paye', '/fr/algerie/calculateur-salaire-net'];
+        entry.toolIds = ['dz-paye', 'dz-paye-fr'];
+        entry.notes = 'Algeria regular-monthly-salary estimates apply the six DGI IRG bands, monthly exemption and salary abatements after 9% employee CNAS. Employer cost uses the CNAS general-case 25% employer share plus 0.5% social works. Non-monthly pay, disability and pension regimes, benefits and employer reductions remain excluded. CNAS source: https://cnas.dz/fr/employeur/. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
+        entry.displayDisclaimer = 'Algeria salary results are planning estimates. Confirm the employee category, non-monthly pay, benefits, contribution reductions, filing and remittance treatment with DGI, CNAS or a qualified payroll professional.';
+      }
       if (country === 'SO') {
         entry.sourceName = 'Somalia Income Tax Law, Regulations and Manual 2025';
         entry.sourceUrl = 'https://mof.gov.so/sites/default/files/Publications/Somalia%20Income%20Tax%20Manual_English%20Version.pdf';

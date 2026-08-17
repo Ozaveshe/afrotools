@@ -63,6 +63,7 @@ const POST_PROCESSED_HTML = new Set([
   ,'fr/changelog/index.html'
 ]);
 const DEDICATED_PRODUCT_OWNERS = new Set([
+  'fr/tools/frais-mobile-money/index.html',
   'fr/tools/contractant-vs-salarie/index.html',
   'fr/tools/salaire-employe-maison/index.html',
   'fr/tools/cout-total-employe/index.html',
@@ -83,6 +84,7 @@ function isSpecializedFrenchOwner(rel) {
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-localized-ai-api-pages.js"')
     || read(rel).includes('name="afrotools-source-owner" content="scripts/build-fr-sports-parity.js"')
     || read(rel).includes('data-fr-transport-parity=')
+    || read(rel).includes('name="afrotools-source-owner" content="scripts/build-french-mobile-money-editorial.js"')
     || read(rel).includes('/assets/css/french-transport-parity.css');
 }
 function withAnalyticsLoader(html) {

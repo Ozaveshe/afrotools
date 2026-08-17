@@ -8,37 +8,36 @@
       "jurisdiction": "Algeria",
       "routes": [
         "/algeria/dz-paye",
-        "/fr/algeria/dz-paye"
+        "/fr/algerie/calculateur-salaire-net"
       ],
       "source_urls": [
-        "https://www.mfdgi.gov.dz",
-        "https://mfdgi.gov.dz",
-        "https://dgb.mf.gov.dz/wp-content/uploads/2022/01/LF_2022.pdf",
-        "https://cnas.dz/%D9%86%D8%B5%D9%88%D8%B5_%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9/",
-        "https://cnas.dz/wp-content/themes/cnas/assets/pdfs/5_25-%20Arr%C3%AAt%C3%A9%20%20du%2026%20juillet%202008.pdf"
+        "https://www.mfdgi.gov.dz/fr/particuliers/irg-traitements-et-salaires",
+        "https://cnas.dz/fr/employeur/"
       ],
       "source_titles": [
-        "mfdgi.gov.dz",
-        "mfdgi.gov.dz",
-        "dgb.mf.gov.dz",
-        "cnas.dz",
-        "cnas.dz"
+        "DGI IRG traitements et salaires",
+        "CNAS taux de cotisation du cas général"
       ],
-      "last_verified": "2026-04-06",
+      "last_verified": "2026-08-17",
       "verified_by": "AfroTools source audit",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "PAYE income-tax bands and statutory deductions shown on the calculator page.",
-      "methodology_markdown": "The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.",
+      "law_or_version": "DGI Article 104 salary guidance and CNAS general-case contribution split, reviewed 17 August 2026.",
+      "methodology_markdown": "For a regular monthly salary, the calculator deducts 9% employee CNAS, applies the six annual IRG bands on the monthly taxable equivalent, then applies the DGI monthly exemption and salary abatements before annualizing the result. Employer cost adds 25% employer CNAS and 0.5% social works.",
       "known_limitations": [
-        "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
-        "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
+        "Planning estimate only. It is not a payslip or professional tax, legal, payroll, or filing opinion.",
+        "Non-monthly bonuses, gratuities and back pay are excluded because the DGI describes separate withholding treatment.",
+        "Disability and pension regimes, benefits in kind, sector rules and employer contribution reductions are not modeled.",
+        "Confirm the employee category, current payslip treatment and remittance duties with DGI, CNAS or a qualified payroll professional."
       ],
       "change_history": [
         {
           "date": "2026-05-02",
           "note": "Trust and verification panel added with source links, methodology, limitations, and report-error CTA."
+        },
+        {
+          "date": "2026-08-17",
+          "note": "Replaced the raw progressive estimate with the DGI monthly exemption and salary abatements, corrected the CNAS employer split, and aligned browser and Netlify engines."
         }
       ],
       "test_cases": [
@@ -499,29 +498,41 @@
     "bf-vat": {
       "tool_id": "bf-vat",
       "jurisdiction": "Burkina Faso",
-      "routes": [
-        "/burkina-faso/bf-vat",
-        "/fr/burkina-faso/bf-vat"
-      ],
-      "source_urls": [
-        "https://dgi.bf/"
-      ],
-      "source_titles": [
-        "Direction generale des impots - Burkina Faso"
-      ],
-      "last_verified": "2026-01-01",
-      "verified_by": "AfroTools source audit",
+    "routes": [
+      "/burkina-faso/bf-vat",
+      "/fr/burkina-faso/calculateur-tva",
+      "/fr/burkina-faso/bf-vat",
+      "/sw/burkina-faso/kikokotoo-vat/"
+    ],
+    "source_urls": [
+      "https://dgi.bf/verification/CGI",
+      "https://dgi.bf/wp-content/uploads/2023/10/DECLARATION-DE-LA-TAXE-SUR-LA-VALEUR-AJOUTEE.pdf",
+      "https://dgi.bf/%F0%9D%90%8B%F0%9D%90%A8%F0%9D%90%A2-%F0%9D%90%9D%F0%9D%90%9E-%F0%9D%90%9F%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%9A%F0%9D%90%A7%F0%9D%90%9C%F0%9D%90%9E%F0%9D%90%AC-%F0%9D%9F%90%F0%9D%9F%8E%F0%9D%9F%90-2/"
+    ],
+    "source_titles": [
+      "DGI Burkina Faso: Code general des impots, Article 317",
+      "DGI Burkina Faso: declaration TVA with 18% and 10% rows",
+      "DGI Burkina Faso: 2026 finance-law measures"
+    ],
+    "last_verified": "2026-08-17",
+    "verified_by": "AfroTools primary-source review",
       "risk_level": "high",
       "disclaimer_type": "tax",
-      "law_or_version": "Last verified: 2026 · Source: DGI (dgi",
-      "methodology_markdown": "The calculator splits the entered amount into net amount, VAT, and VAT-inclusive total using the displayed standard or custom VAT rate. Zero-rated and exempt categories are treated as decision guidance and must be confirmed against the linked authority material before filing.",
+    "law_or_version": "DGI CGI Article 317 and current DGI VAT declaration form, reviewed 2026-08-17.",
+    "methodology_markdown": "The French calculator adds or extracts the 18% standard VAT rate. It permits the 10% reduced rate only after the user confirms both an accommodation or restaurant service and an approved hotel, restaurant or similar establishment under Article 317. It does not classify exemptions, withholding, deduction or filing treatment.",
       "known_limitations": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Product classification, exemption, and zero-rating rules can require invoice-level review.",
+      "Product classification, exemption, and zero-rating rules can require invoice-level review.",
+      "The 10% rate requires transaction-level evidence of the qualifying service and approved establishment; a broad business label is not sufficient.",
+      "The calculator does not model the 2026 VAT-withholding change or decide whether an entity must withhold.",
         "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "change_history": [
+    "change_history": [
+      {
+        "date": "2026-08-17",
+        "note": "Corrected the false single-rate claim, added the Article 317 10% treatment behind an evidence confirmation, linked DGI primary sources, aligned search copy and added local browser coverage."
+      },
         {
           "date": "2026-05-02",
           "note": "Trust and verification panel added with source links, methodology, limitations, and report-error CTA."
@@ -533,11 +544,16 @@
           "expected_output": "VAT equals 1,000 multiplied by the displayed rate; total equals net amount plus VAT.",
           "why": "Confirms the core VAT-exclusive calculation path and makes the rate dependency auditable."
         },
-        {
-          "input": "VAT-inclusive amount with the displayed standard VAT rate.",
-          "expected_output": "Net amount equals total divided by 1 plus the rate; VAT equals total minus net amount.",
-          "why": "Confirms reverse VAT handling for invoices that already include tax."
-        }
+      {
+        "input": "VAT-inclusive amount with the displayed standard VAT rate.",
+        "expected_output": "Net amount equals total divided by 1 plus the rate; VAT equals total minus net amount.",
+        "why": "Confirms reverse VAT handling for invoices that already include tax."
+      },
+      {
+        "input": "Select 10% without confirming both a qualifying service and approved establishment.",
+        "expected_output": "The calculator does not produce a result and requests Article 317 evidence confirmation.",
+        "why": "Prevents a reduced rate from being applied based on a generic hotel or restaurant label."
+      }
       ]
     },
     "bi-paye": {
