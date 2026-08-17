@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11504 |
-| Indexable pages | 9920 |
+| Public pages | 11505 |
+| Indexable pages | 9921 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5231 |
-| Documented fallbacks | 14758 |
-| Routes eligible for primary sitemaps | 9920 |
+| Genuine equivalence groups | 5232 |
+| Documented fallbacks | 14759 |
+| Routes eligible for primary sitemaps | 9921 |
 
 ## Locale Coverage
 
-- en: 5958 page records
+- en: 5959 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 506
+- article: 507
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -7673,6 +7673,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e24735bfcace: en=`/cars/kenya/toyota/noah/`, fr=`/fr/cars/kenya/toyota/noah/`; x-default=`/cars/kenya/toyota/noah/`
 - equivalence:e25014f8039f: en=`/cameroon/`, fr=`/fr/cameroun/`, sw=`/sw/cameroon/`; x-default=`/cameroon/`
 - equivalence:e256aae75e15: en=`/tools/gratuity-calculator/kenya/`, sw=`/sw/kenya/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/kenya/`
+- equivalence:e258071a1497: en=`/blog/south-africa-vat201-filing-guide-2026/`; x-default=`/blog/south-africa-vat201-filing-guide-2026/`
 - equivalence:e25c7de130aa: en=`/cars/tunisia/toyota/camry/2012/`, fr=`/fr/cars/tunisie/toyota/camry/2012/`; x-default=`/cars/tunisia/toyota/camry/2012/`
 - equivalence:e2638fb62117: en=`/blog/flat-rate-vs-reducing-balance-loan-nigeria/`; x-default=`/blog/flat-rate-vs-reducing-balance-loan-nigeria/`
 - equivalence:e275db1a54df: en=`/tools/air-quality/`, fr=`/fr/tools/indice-qualite-air/`, sw=`/sw/zana/ubora-wa-hewa/`; x-default=`/tools/air-quality/`

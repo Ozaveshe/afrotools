@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 267 |
-| sw | 138 | 0 | 290 |
+| fr | 161 | 0 | 268 |
+| sw | 138 | 0 | 291 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 301 | 40 | 0 | 261 | 21 | 0 | 280 |
+| editorial | 302 | 40 | 0 | 262 | 21 | 0 | 281 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -498,6 +498,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/south-africa-vat-invoice-requirements-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-vat-registration-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-vat-registration-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-vat201-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-vat201-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/stokvel-guide-south-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/stokvel-guide-south-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/susu-savings-ghana/ | editorial | fr | — | missing | no localized route or owner file |
