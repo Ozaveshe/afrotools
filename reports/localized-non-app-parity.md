@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 265 |
-| sw | 138 | 0 | 288 |
+| fr | 161 | 0 | 267 |
+| sw | 138 | 0 | 290 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 299 | 40 | 0 | 259 | 21 | 0 | 278 |
+| editorial | 301 | 40 | 0 | 261 | 21 | 0 | 280 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -218,6 +218,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/ghana-tenancy-agreement-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/ghana-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/ghana-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/ghana-warehouse-receipt-financing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/ghana-warehouse-receipt-financing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/ghana-wedding-budget-checklist/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/ghana-wedding-budget-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/ghana-withholding-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -278,6 +280,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/kenya-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-etims-expense-validation-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-etims-expense-validation-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/kenya-fringe-benefit-tax-employer-loans-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/kenya-fringe-benefit-tax-employer-loans-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-funeral-budget-checklist/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-funeral-budget-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-income-tax-return-deadline-2026/ | editorial | fr | — | missing | no localized route or owner file |
