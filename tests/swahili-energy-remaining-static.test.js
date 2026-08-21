@@ -31,11 +31,11 @@ function productSha(relative) {
     .digest("hex");
 }
 
-test("exact Energy denominator remains 20 across preserved and promoted lifecycle states", () => {
+test("canonical Energy denominator is 19 while the standalone prepaid locale keeps 20 Swahili experiences", () => {
   const inventory = JSON.parse(read("reports/swahili-free-app-parity-inventory.json"));
   const acceptance = JSON.parse(read("data/audits/swahili-free-app-acceptance.json"));
   const energy = inventory.rows.filter((row) => row.categoryKey === "energy");
-  assert.equal(energy.length, 20);
+  assert.equal(energy.length, 19);
   assert.deepEqual(SW_ENERGY_REMAINING_APPS.map((row) => row.id), EXPECTED_REMAINING);
   assert.equal(new Set(SW_ENERGY_REMAINING_APPS.map((row) => row.swRoute)).size, 17);
   assertLifecycle({
@@ -45,7 +45,7 @@ test("exact Energy denominator remains 20 across preserved and promoted lifecycl
     routeMap,
     apps: [
       ...PRESERVED_ACCEPTED.map((app) => ({ id: app.id, swahiliRoute: app.route })),
-      ...SW_ENERGY_REMAINING_APPS.map((app) => ({ id: app.id, swahiliRoute: app.swRoute })),
+      ...SW_ENERGY_REMAINING_APPS.filter((app) => app.id !== "prepaid-meter").map((app) => ({ id: app.id, swahiliRoute: app.swRoute })),
     ],
   });
 });

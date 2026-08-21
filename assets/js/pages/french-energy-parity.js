@@ -566,7 +566,7 @@
     var age = Math.floor((Date.now() - reviewed.getTime()) / 86400000);
     if (age < 0) return { id: "unavailable", label: "Date de référence incohérente" };
     if (age > 30) return { id: "stale", label: "Références archivées — valeurs à confirmer" };
-    return { id: "fresh", label: "Références révisées récemment" };
+    return { id: "current", label: "Références révisées récemment" };
   }
 
   function captureInputs() {

@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 268 |
-| sw | 138 | 0 | 291 |
+| fr | 161 | 0 | 270 |
+| sw | 138 | 0 | 293 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 302 | 40 | 0 | 262 | 21 | 0 | 281 |
+| editorial | 304 | 40 | 0 | 264 | 21 | 0 | 283 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -37,6 +37,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/ajo-interest-calculation/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/ajo-savings-group/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/ajo-savings-group/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/angola-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/angola-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/average-salary-kenya-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/average-salary-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/average-salary-south-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
@@ -166,6 +168,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/euro-to-naira-rate-today/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/event-ticket-revenue-calculator-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/event-ticket-revenue-calculator-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/farm-record-keeping-smallholder-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/farm-record-keeping-smallholder-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/fertilizer-bags-per-acre-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/fertilizer-bags-per-acre-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/final-payment-reminder-letter-template/ | editorial | fr | — | missing | no localized route or owner file |

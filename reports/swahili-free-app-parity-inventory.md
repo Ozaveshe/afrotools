@@ -8,12 +8,12 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1257 |
+| Canonical published English rows | 1256 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1256** |
+| **Free canonical English apps** | **1255** |
 | Swahili physical HTML pages | 1599 |
 | Swahili coverage records | 1594 |
-| Native candidates | 589 |
+| Native candidates | 588 |
 | Localized shell candidates | 666 |
 | English fallbacks | 0 |
 | English iframe/transplants | 0 |
@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 1 |
-| **Accepted** | **1255** |
+| **Accepted** | **1254** |
 
 ## Category reconciliation
 
@@ -36,7 +36,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
-| Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
+| Energy & Utilities | 19 | 16 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
 | Finance, Tax & Market Data | 132 | 5 | 126 | 0 | 0 | 0 | 0 | 0 | 1 | 131 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
@@ -64,12 +64,12 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 - Swahili routes with conflicting owner evidence: 5
 - English apps with multiple live Swahili owner candidates: 64
-- Swahili registry source IDs outside the free denominator: 21
-- Archived acceptance entries outside the current denominator: 1
+- Swahili registry source IDs outside the free denominator: 22
+- Archived acceptance entries outside the current denominator: 2
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
-## Full 1,256-row ledger
+## Full 1,255-row ledger
 
 | English app | Category | English route | State | Primary Swahili route | Accepted |
 |---|---|---|---|---|---:|
@@ -1065,7 +1065,6 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Native candidate | `/sw/zana/whatsapp-business-dhidi-ya-sms` | Yes |
 | Electricity Cost & Prepaid Units | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/sw/zana/kikokotoo-tariff-ya-umeme` | Yes |
 | Solar Panel ROI Calculator | Energy & Utilities | `/tools/solar-roi` | Native candidate | `/sw/zana/faida-ya-solar` | Yes |
-| Prepaid Meter Calculator (moved) | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/sw/zana/kikokotoo-luku-ya-umeme` | Yes |
 | Solar vs Generator | Energy & Utilities | `/tools/solar-vs-generator` | Native candidate | `/sw/zana/solar-dhidi-ya-generator` | Yes |
 | Electricity Bill Verifier | Energy & Utilities | `/tools/electricity-bill-verify` | Native candidate | `/sw/zana/ukaguzi-wa-bili-ya-umeme` | Yes |
 | Water Bill Calculator | Energy & Utilities | `/tools/water-bill` | Native candidate | `/sw/zana/kikokotoo-bili-ya-maji` | Yes |

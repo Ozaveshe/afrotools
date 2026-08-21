@@ -859,14 +859,13 @@ test("Import Duty Calculator receives vehicle prefill and waits for user calcula
   await page.waitForURL(/\/tools\/import-duty\/.*prefill=1/);
 
   await expect(page.locator("#afrotools-ai-prefill-notice")).toContainText("Started from AfroTools AI", { timeout: 12000 });
-  await expect(page.locator("#itemType")).toHaveValue("vehicle");
-  await expect(page.locator("#itemName")).toHaveValue("2016 Toyota Axio");
-  await expect(page.locator("#fob")).toHaveValue("8500");
+  await expect(page.locator("#goodsType")).toHaveValue("vehicle");
+  await expect(page.locator("#purchaseValue")).toHaveValue("8500");
   await expect(page.locator("#freight")).toHaveValue("1200");
   await expect(page.locator("#insurance")).toHaveValue("250");
   await expect(page.locator("#fxRate")).toHaveValue("1600");
   await expect(page.locator("#afrotools-ai-prefill-notice")).toContainText("Engine: 1500 cc");
-  await expect(page.locator("#importDutyResult")).toBeHidden();
+  await expect(page.locator("#importResult")).toBeHidden();
 });
 
 test("import advisor opens car workspace with private session prefill", async ({ page }) => {

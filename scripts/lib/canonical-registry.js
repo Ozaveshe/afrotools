@@ -223,7 +223,9 @@ function buildWidgetLinks(widgets) {
 
 function normalizeTool(tool, context) {
   const locale = tool.lang || 'en';
-  const aliasTargetId = context.policy.toolRouteAliases[tool.id] || null;
+  const redirectTargetId = context.policy.toolRouteAliases[tool.id] || null;
+  const compatibilityTargetId = (context.policy.compatibilityRouteAliases || {})[tool.id] || null;
+  const aliasTargetId = redirectTargetId || compatibilityTargetId;
   const target = aliasTargetId ? context.sourceToolsById.get(aliasTargetId) : null;
   const route = publicRoute(tool.href);
   const canonicalRoute = publicRoute(target ? target.href : tool.href);
@@ -248,7 +250,7 @@ function normalizeTool(tool, context) {
     },
     currencies,
     units: Array.isArray(tool.units) ? tool.units.slice() : [],
-    publicationStatus: aliasTargetId ? 'redirect' : (['live', 'new'].includes(tool.status) ? 'published' : 'unpublished'),
+    publicationStatus: redirectTargetId ? 'redirect' : (compatibilityTargetId ? 'unpublished' : (['live', 'new'].includes(tool.status) ? 'published' : 'unpublished')),
     localeCoverage: [locale],
     calculatorVersion: tool.calculatorVersion || tool.version || null,
     sourceVersion: tool.sourceVersion || null,
@@ -274,7 +276,8 @@ function normalizeTool(tool, context) {
       priority: Number(tool.priority || 0),
       icon: tool.icon || null,
       tags: Array.isArray(tool.tags) ? tool.tags.slice() : [],
-      aliases: Array.isArray(tool.aliases) ? tool.aliases.slice() : []
+      aliases: Array.isArray(tool.aliases) ? tool.aliases.slice() : [],
+      compatibilityTargetId
     }
   };
 }

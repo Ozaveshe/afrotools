@@ -384,7 +384,9 @@ function finiteOrNull(value) {
 function normalizeBands(rows, mode) {
   let cursor = 0;
   return (rows || []).map(function (row) {
-    const boundary = finiteOrNull(Number(row[0]));
+    const boundary = row[0] === null || row[0] === undefined
+      ? null
+      : finiteOrNull(Number(row[0]));
     const rate = Number(row[1]);
     let from = cursor;
     let to = null;
@@ -503,6 +505,9 @@ function directPayeFacts(countryCode, filePath, engine) {
 function genericPayeFacts(filePath, engine) {
   const parameters = engine && engine.formulaParameters;
   if (parameters && Array.isArray(parameters.bands)) {
+    const thresholdBands = parameters.bands.some(function (band) {
+      return band && !Array.isArray(band) && ('min' in band || 'max' in band);
+    });
     const deductions = [];
     if (typeof parameters.employeeCnssRate === 'number') {
       deductions.push({ key: 'cnss-employee', label: 'CNSS employee rate', rate: parameters.employeeCnssRate });
@@ -513,14 +518,18 @@ function genericPayeFacts(filePath, engine) {
     if (parameters.professionalDeduction && typeof parameters.professionalDeduction.rate === 'number') {
       deductions.push({ key: 'professional-deduction', label: 'Professional deduction', rate: parameters.professionalDeduction.rate, cap: parameters.professionalDeduction.cap });
     }
+    (parameters.socialSecurity || []).forEach(function (item) {
+      deductions.push({ key: item.key || '', label: item.label || item.key || '', rate: typeof item.rate === 'number' ? item.rate : null, cap: typeof item.cap === 'number' ? item.cap : null });
+    });
     return {
-      period: 'annual',
+      period: parameters.isMonthly ? 'monthly' : 'annual',
       bands: normalizeBands(
         parameters.bands.map(function (band) {
           if (Array.isArray(band)) return [band[0], band[1]];
+          if (thresholdBands) return [Number.isFinite(band.max) ? band.max : null, band.rate];
           return [band.width, band.rate];
         }),
-        'width',
+        thresholdBands ? 'threshold' : 'width',
       ),
       deductions,
       reliefs: typeof parameters.dependentReliefAnnual === 'number' ? [{ key: 'dependent-relief', label: 'Annual relief per qualifying dependent', amount: parameters.dependentReliefAnnual, maximumDependents: parameters.maximumDependents }] : [],

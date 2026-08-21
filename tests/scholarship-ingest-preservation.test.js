@@ -1,4 +1,5 @@
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 
 const {
@@ -201,6 +202,11 @@ function createMirrorClient() {
   assert(mirrorClient.calls.some(function (call) {
     return call.op === 'eq' && call.column === 'is_archived' && call.value === false;
   }), 'mirror must exclude archived rows');
+  const archiveMigration = fs.readFileSync(
+    path.join(__dirname, '..', 'supabase', 'migrations', '058-scholarship-archive-parity.sql'),
+    'utf8'
+  );
+  assert(/add column if not exists is_archived boolean not null default false/i.test(archiveMigration), 'tracked migrations must reproduce the scholarship archive field');
 
   console.log('Scholarship ingest snapshot and award preservation verified.');
 })().catch(function (error) {

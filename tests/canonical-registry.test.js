@@ -48,6 +48,12 @@ Object.entries(aliasExpectations).forEach(([aliasId, targetId]) => {
   assert.strictEqual(alias.deprecated, true);
   assert.strictEqual(alias.redirectTarget.toolId, targetId);
 });
+const prepaidCompatibility = canonical.tools.find((tool) => tool.id === 'prepaid-meter');
+assert.ok(prepaidCompatibility, 'missing prepaid-meter compatibility record');
+assert.strictEqual(prepaidCompatibility.publicationStatus, 'unpublished');
+assert.strictEqual(prepaidCompatibility.deprecated, true);
+assert.strictEqual(prepaidCompatibility.indexable, false);
+assert.strictEqual(prepaidCompatibility.redirectTarget.toolId, 'electricity-tariff');
 
 const canonicalRoutes = canonical.tools
   .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated)
@@ -181,5 +187,7 @@ Object.keys(aliasExpectations).forEach((aliasId) => {
   assert.ok(!searchIndex.some((record) => record[0] === aliasId), `${aliasId} must not appear in the search index`);
   assert.ok(!salaryTaxIndex.some((record) => record[0] === aliasId), `${aliasId} must not appear in the salary-tax index`);
 });
+assert.ok(!directory.some((record) => record.id === 'prepaid-meter'), 'prepaid-meter compatibility route must not appear in the canonical directory');
+assert.ok(!searchIndex.some((record) => record[0] === 'prepaid-meter'), 'prepaid-meter compatibility route must not appear in the search index');
 
 console.log('Canonical registry contract tests passed');

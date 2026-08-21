@@ -21,7 +21,7 @@ test('manifest is the exact two-row civil site-works family with accepted Energy
   assert.deepEqual(manifest.apps.map((app) => app.id), ['site-clearance', 'road-construction-cost']);
   assert.deepEqual(manifest.excludedAcceptedEnergyIds, ['solar-sizing', 'battery-sizing', 'backup-duration']);
   const counts = Object.fromEntries(['Engineering & Construction', 'Climate & Environment', 'Energy & Utilities'].map((category) => [category, inventory.rows.filter((row) => row.category === category).length]));
-  assert.deepEqual(counts, { 'Engineering & Construction': 26, 'Climate & Environment': 13, 'Energy & Utilities': 20 });
+  assert.deepEqual(counts, { 'Engineering & Construction': 26, 'Climate & Environment': 13, 'Energy & Utilities': 19 });
   for (const app of manifest.apps) {
     const row = inventory.rows.find((candidate) => candidate.englishId === app.inventoryEnglishId);
     assert.ok(row, `missing inventory row ${app.id}`);

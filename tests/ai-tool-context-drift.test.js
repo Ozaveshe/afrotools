@@ -145,7 +145,7 @@ function run() {
 
   // PAYE facts are derived from the executable engine and reconciled with the
   // formula registry's version/source metadata.
-  ['ng-paye', 'ke-paye', 'sn-paye', 'sn-paye-fr'].forEach(function (key) {
+  ['ng-paye', 'ke-paye', 'dz-paye', 'dz-paye-fr', 'sn-paye', 'sn-paye-fr'].forEach(function (key) {
     const facts = freshlyBuilt.records[key].sourceRecord.facts;
     const formula = formulaById.get(facts.formulaId);
     assert.strictEqual(facts.formulaVersion, formula.formulaVersion);
@@ -159,6 +159,14 @@ function run() {
     });
     assert.ok(!generated[key].includes('NaN'), key + ' must not expose NaN facts');
   });
+  {
+    const facts = freshlyBuilt.records['dz-paye'].sourceRecord.facts;
+    assert.deepStrictEqual(facts.bands[0], { from: 0, to: 240000, rate: 0 });
+    assert.deepStrictEqual(facts.bands[facts.bands.length - 1], { from: 3840000, to: null, rate: 0.35 });
+    assert.ok(generated['dz-paye'].includes('above DZD 3,840,000'));
+    assert.ok(!generated['dz-paye'].includes('above DZD 0'));
+    assert.ok(!generated['dz-paye-fr'].includes('above DZD 0'));
+  }
 
   // VAT rate comes from the formula-owned executable artifact, while the
   // formula record supplies the version, source, and review date.

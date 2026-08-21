@@ -8,16 +8,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1257 |
+| Canonical published English rows | 1256 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1256** |
-| Native candidates (including accepted) | 1256 |
+| **Free canonical English apps** | **1255** |
+| Native candidates (including accepted) | 1255 |
 | English iframe/transplant | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Missing | 0 |
 | Definite product-build gaps | 0 |
-| **Accepted** | **1256** |
+| **Accepted** | **1255** |
 
 ## Category reconciliation
 
@@ -32,7 +32,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 2 |
 | Document & PDF | 32 | 32 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
-| Energy & Utilities | 20 | 20 | 0 | 0 | 0 | 0 | 20 |
+| Energy & Utilities | 19 | 19 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 26 | 0 | 0 | 0 | 0 | 26 |
 | Finance, Tax & Market Data | 132 | 132 | 0 | 0 | 0 | 0 | 132 |
 | Fintech & Banking | 31 | 31 | 0 | 0 | 0 | 0 | 31 |
@@ -55,14 +55,14 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Travel & Tourism | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 33 | 33 | 0 | 0 | 0 | 0 | 33 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 63 |
-| **Total** | **1256** | **1256** | **0** | **0** | **0** | **0** | **1256** |
+| **Total** | **1255** | **1255** | **0** | **0** | **0** | **0** | **1255** |
 
 ## Ambiguous ownership
 
 - French routes with conflicting owner evidence: 108
 - English apps with multiple live French owner candidates: 20
-- French registry source IDs not found in the free English denominator: 6
-- Archived acceptance entries outside the current denominator: 1
+- French registry source IDs not found in the free English denominator: 7
+- Archived acceptance entries outside the current denominator: 2
 
 Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.
 
@@ -210,10 +210,11 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 - `compliance-calendar`
 - `fintech`
 - `generator-fuel-african`
+- `prepaid-meter`
 - `regulatory-alerts`
 - `remittance-v2`
 
-## Full 1,256-row ledger
+## Full 1,255-row ledger
 
 | English app | Category | English route | State | Primary French route | Accepted |
 |---|---|---|---|---|---:|
@@ -1209,7 +1210,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Native candidate | `/fr/telecom/whatsapp-vs-sms` | Yes |
 | Electricity Cost & Prepaid Units | Energy & Utilities | `/tools/electricity-tariff` | Native candidate | `/fr/tools/tarifs-electricite` | Yes |
 | Solar Panel ROI Calculator | Energy & Utilities | `/tools/solar-roi` | Native candidate | `/fr/tools/roi-solaire` | Yes |
-| Prepaid Meter Calculator (moved) | Energy & Utilities | `/tools/prepaid-meter` | Native candidate | `/fr/tools/compteur-prepaye` | Yes |
 | Solar vs Generator | Energy & Utilities | `/tools/solar-vs-generator` | Native candidate | `/fr/tools/solaire-vs-generateur` | Yes |
 | Electricity Bill Verifier | Energy & Utilities | `/tools/electricity-bill-verify` | Native candidate | `/fr/tools/verifier-facture-electricite` | Yes |
 | Water Bill Calculator | Energy & Utilities | `/tools/water-bill` | Native candidate | `/fr/tools/calculateur-facture-eau` | Yes |

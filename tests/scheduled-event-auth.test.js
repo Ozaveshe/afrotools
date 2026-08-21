@@ -25,8 +25,8 @@ assert.strictEqual(
     headers: {},
     body: JSON.stringify({ next_run: '2026-07-01T00:00:00.000Z' }),
   }),
-  true,
-  'Netlify scheduled events using the current next_run payload should be accepted'
+  false,
+  'A client-shaped next_run body without the Netlify schedule header must be rejected'
 );
 
 assert.strictEqual(
@@ -34,8 +34,8 @@ assert.strictEqual(
     headers: { 'x-nf-event': 'manual' },
     body: JSON.stringify({ next_run: '2026-07-01T00:00:00.000Z' }),
   }),
-  true,
-  'A valid Netlify next_run payload should remain authoritative without the legacy header'
+  false,
+  'A non-schedule event header must not be overridden by a client-shaped next_run body'
 );
 
 assert.strictEqual(

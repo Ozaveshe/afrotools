@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11505 |
-| Indexable pages | 9921 |
+| Public pages | 11507 |
+| Indexable pages | 9923 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5232 |
-| Documented fallbacks | 14759 |
-| Routes eligible for primary sitemaps | 9921 |
+| Genuine equivalence groups | 5234 |
+| Documented fallbacks | 14761 |
+| Routes eligible for primary sitemaps | 9923 |
 
 ## Locale Coverage
 
-- en: 5959 page records
+- en: 5961 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 507
+- article: 509
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6613,6 +6613,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:af213dfa048d: en=`/cars/algeria/lexus/es/`, fr=`/fr/cars/algerie/lexus/es/`; x-default=`/cars/algeria/lexus/es/`
 - equivalence:af32bc4b2aa0: en=`/tools/maternity-leave/mali/`; x-default=`/tools/maternity-leave/mali/`
 - equivalence:af37409985cc: en=`/tools/retrenchment-calculator/`, fr=`/fr/tools/calculateur-d-indemnite-de-licenciement/`, sw=`/sw/zana/kikokotoo-malipo-ya-kuachishwa-kazi/`; x-default=`/tools/retrenchment-calculator/`
+- equivalence:af3933d6ba0c: en=`/blog/angola-vat-filing-guide-2026/`; x-default=`/blog/angola-vat-filing-guide-2026/`
 - equivalence:af3a06b6eb57: en=`/tools/work-permit-cost/eswatini/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-eswatini/`; x-default=`/tools/work-permit-cost/eswatini/`
 - equivalence:af5029e61811: en=`/cars/botswana/mercedes-benz/g-wagon/`, fr=`/fr/cars/botswana/mercedes-benz/g-wagon/`; x-default=`/cars/botswana/mercedes-benz/g-wagon/`
 - equivalence:af5af75105ed: en=`/tools/blood-group/`, fr=`/fr/tools/compatibilite-groupe-sanguin/`, sw=`/sw/zana/kundi-la-damu/`; x-default=`/tools/blood-group/`
@@ -7215,6 +7216,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ccc88bf5eedf: en=`/tools/life-insurance-calc/cameroon`, fr=`/fr/tools/assurance-vie/cameroon`; x-default=`/tools/life-insurance-calc/cameroon`
 - equivalence:cccb63a81e13: en=`/tools/contractor-vs-employee/namibia/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-namibie/`, sw=`/sw/namibia/kilinganisha-mkandarasi-na-mfanyakazi/`; x-default=`/tools/contractor-vs-employee/namibia/`
 - equivalence:ccd511364068: en=`/blog/bmi-calculator-africa-guide/`; x-default=`/blog/bmi-calculator-africa-guide/`
+- equivalence:ccd8ee2f6add: en=`/blog/farm-record-keeping-smallholder-africa/`; x-default=`/blog/farm-record-keeping-smallholder-africa/`
 - equivalence:ccda1d466dfe: en=`/blog/tanzania-vat-guide-2026/`; x-default=`/blog/tanzania-vat-guide-2026/`
 - equivalence:cd0a4390ac75: en=`/tools/motor-third-party/chad`; x-default=`/tools/motor-third-party/chad`
 - equivalence:cd127296c22f: en=`/cars/south-africa/mercedes-benz/c-class/`, fr=`/fr/cars/afrique-du-sud/mercedes-benz/c-class/`; x-default=`/cars/south-africa/mercedes-benz/c-class/`

@@ -16,22 +16,19 @@
       gpa: ["profileGPA"],
     }, null, { allowHiddenFields: true, setAllSelectors: true }),
     config("import-duty", ["/tools/import-duty/"], {
-      destinationCountry: ["goodsCountry", "carCountry"],
-      productCategory: ["goodsCategory"],
-      itemCategory: ["goodsItemName"],
-      currency: ["goodsCurrency", "carCurrency"],
+      destinationCountry: ["destination"],
+      currency: ["sourceCurrency"],
       year: ["carYear", "carImportYear"],
       make: ["carMake", "carImportMake"],
       model: ["carModel", "carImportModel"],
       vehicleType: ["carVehicleType"],
       engineCc: ["carEngineSize", "carImportEngineCc"],
-      shippingCost: ["freight", "goodsShipping", "carShipping", "carImportFreight"],
-      insuranceCost: ["insurance", "goodsInsurance", "carInsurance"],
-      originCountry: ["goodsOrigin", "carOrigin"],
-      port: ["goodsPort", "carPort"],
-      fxRate: ["fxRate", "goodsFxRate", "carFxRate"],
-      purchasePrice: ["fob", "goodsValue", "carPurchasePrice"],
-      itemValue: ["fob", "goodsValue", "carPurchasePrice"],
+      shippingCost: ["freight"],
+      insuranceCost: ["insurance"],
+      originCountry: ["origin"],
+      fxRate: ["fxRate"],
+      purchasePrice: ["purchaseValue"],
+      itemValue: ["purchaseValue"],
     }, activateImportMode, { quietFields: true, afterApply: resetImportResult }),
     config("car-import-cost", ["/tools/car-import-cost/"], {
       countryCode: ["carImportCountry"],
@@ -321,19 +318,19 @@
   function activateImportMode(payload) {
     var inputs = payload.normalizedInputs || {};
     var applied = [];
-    if (inputs.mode !== "car") {
+    var isVehicle = inputs.mode === "car" || inputs.mode === "vehicle" ||
+      !isEmpty(inputs.make) || !isEmpty(inputs.model) || !isEmpty(inputs.vehicleType) || !isEmpty(inputs.engineCc);
+    if (!isVehicle) {
       if (inputs.itemCategory && setField("itemName", inputs.itemCategory, { quiet: true })) {
         applied.push("itemCategory");
       }
       return applied;
     }
-    if (setField("itemType", "vehicle", { quiet: true })) applied.push("importType");
+    if (setField("goodsType", "vehicle", { quiet: true })) applied.push("importType");
     var vehicleDescription = [inputs.year, inputs.make, inputs.model].filter(function(value) {
       return !isEmpty(value);
     }).join(" ");
-    if (vehicleDescription && setField("itemName", vehicleDescription, { quiet: true })) {
-      applied.push("vehicleDescription");
-    }
+    if (vehicleDescription) applied.push("vehicleDescription");
     var tab = document.querySelector('[data-mode-tab="car"]');
     if (tab && typeof tab.click === "function") tab.click();
     return applied;
@@ -369,6 +366,11 @@
     if (vipResult) {
       vipResult.hidden = true;
       vipResult.innerHTML = "";
+    }
+    var landedCostResult = document.getElementById("importResult");
+    if (landedCostResult) {
+      landedCostResult.hidden = true;
+      landedCostResult.innerHTML = "";
     }
     return [];
   }

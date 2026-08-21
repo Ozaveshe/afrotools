@@ -13,7 +13,7 @@ const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inv
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.md');
 // Duplicate canonical entries were retired when landed-cost consolidated into
 // import-duty and remittance-v2 consolidated into remittance-compare.
-const EXPECTED_FREE_APP_COUNT = 1256;
+const EXPECTED_FREE_APP_COUNT = 1255;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = Object.freeze({

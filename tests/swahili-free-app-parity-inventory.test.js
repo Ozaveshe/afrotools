@@ -36,13 +36,13 @@ function routeFile(route) {
   ].find((candidate) => fs.existsSync(candidate)) || null;
 }
 
-assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1257);
+assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1256);
 assert.strictEqual(report.totals.excludedPaidRows, 1);
-assert.strictEqual(report.totals.englishFreeApps, 1256);
-assert.strictEqual(report.rows.length, 1256);
+assert.strictEqual(report.totals.englishFreeApps, 1255);
+assert.strictEqual(report.rows.length, 1255);
 assert.strictEqual(report.categories.length, 32);
 assert.strictEqual(report.totals.accepted, acceptedEvidenceCount);
-assert.strictEqual(report.totals.remainingUnaccepted, 1256 - acceptedEvidenceCount);
+assert.strictEqual(report.totals.remainingUnaccepted, 1255 - acceptedEvidenceCount);
 assert.strictEqual(report.rows.filter((row) => row.accepted).length, acceptedEvidenceCount);
 assert.ok(report.rows.filter((row) => row.accepted).every((row) => row.acceptanceEvidence));
 assert.ok(report.rows.filter((row) => !row.accepted).every((row) => row.acceptanceEvidence === null));
@@ -100,5 +100,5 @@ assert.strictEqual(
 assert.strictEqual(kenyaPaye.accepted, true);
 
 console.log(
-  `Swahili free-app parity inventory contract passed: 1,256 rows, ${acceptedEvidenceCount} accepted.`
+  `Swahili free-app parity inventory contract passed: 1,255 rows, ${acceptedEvidenceCount} accepted.`
 );

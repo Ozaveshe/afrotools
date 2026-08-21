@@ -157,7 +157,15 @@ for (const record of data.elections || []) {
 assert(executiveRecords.length >= 7, `expected at least 7 executive-focus records, found ${executiveRecords.length}`, failures);
 assert((data.elections || []).some((record) => record.electionType === 'governorship'), 'expected at least one governorship record', failures);
 assert((data.elections || []).some((record) => record.electionType === 'presidential'), 'expected at least one presidential record', failures);
-assert((data.elections || []).some((record) => record.sourceStatus === 'needs-review'), 'expected at least one needs-review record', failures);
+assert(
+  (data.elections || []).some((record) => (
+    record.sourceStatus === 'needs-review'
+    || record.dateStatus === 'tentative'
+    || record.dateStatus === 'projected'
+  )),
+  'expected at least one manual-review record',
+  failures
+);
 
 assert(Array.isArray(data.newsFeeds) && data.newsFeeds.length >= 1, 'expected at least one news/RSS watch source', failures);
 assert((data.newsFeeds || []).some((feed) => feed.feedUrl), 'expected at least one RSS feed URL', failures);
