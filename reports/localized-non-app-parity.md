@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 270 |
-| sw | 138 | 0 | 293 |
+| fr | 161 | 0 | 272 |
+| sw | 138 | 0 | 295 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 304 | 40 | 0 | 264 | 21 | 0 | 283 |
+| editorial | 306 | 40 | 0 | 266 | 21 | 0 | 285 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -467,6 +467,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/seed-rate-planting-density-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/send-money-nigeria-cheapest/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/send-money-nigeria-cheapest/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/senegal-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/senegal-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/sickle-cell-genotype-testing-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/sickle-cell-genotype-testing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/side-hustle-tax-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |
@@ -536,6 +538,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/usdt-vs-usdc-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/used-car-import-japan-to-africa-checklist/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/used-car-import-japan-to-africa-checklist/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/used-car-purchase-transfer-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/used-car-purchase-transfer-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/vat-rates-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/vat-registration-kenya-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/vat-registration-kenya-2026/ | editorial | sw | — | missing | no localized route or owner file |

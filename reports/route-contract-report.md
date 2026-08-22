@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11507 |
-| Indexable pages | 9923 |
+| Public pages | 11509 |
+| Indexable pages | 9925 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5234 |
-| Documented fallbacks | 14761 |
-| Routes eligible for primary sitemaps | 9923 |
+| Genuine equivalence groups | 5236 |
+| Documented fallbacks | 14763 |
+| Routes eligible for primary sitemaps | 9925 |
 
 ## Locale Coverage
 
-- en: 5961 page records
+- en: 5963 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 509
+- article: 511
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -5652,6 +5652,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:808d1be5ff3e: en=`/tunisia/`, fr=`/fr/tunisie/`, sw=`/sw/tunisia/`; x-default=`/tunisia/`
 - equivalence:809df49dc036: en=`/cars/ghana/toyota/hilux/2020/`, fr=`/fr/cars/ghana/toyota/hilux/2020/`; x-default=`/cars/ghana/toyota/hilux/2020/`
 - equivalence:80ac6b40eff0: en=`/cars/tanzania/toyota/camry/`, fr=`/fr/cars/tanzanie/toyota/camry/`; x-default=`/cars/tanzania/toyota/camry/`
+- equivalence:80d285cf50e7: en=`/blog/used-car-purchase-transfer-checklist-africa/`; x-default=`/blog/used-car-purchase-transfer-checklist-africa/`
 - equivalence:80d6e9792735: en=`/tools/fuel-tracker/chad/`, fr=`/fr/tools/suivi-carburant/chad/`; x-default=`/tools/fuel-tracker/chad/`
 - equivalence:80f708336a3a: en=`/cars/tanzania/hyundai/`, fr=`/fr/cars/tanzanie/hyundai/`; x-default=`/cars/tanzania/hyundai/`
 - equivalence:80faba4f5fb2: en=`/dr-congo/`, fr=`/fr/rdc/`, sw=`/sw/dr-congo/`; x-default=`/dr-congo/`
@@ -7370,6 +7371,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d45f4a4c672a: en=`/agriculture/irrigation/angola`, fr=`/fr/agriculture/irrigation/angola`, sw=`/sw/kilimo/umwagiliaji/angola/`; x-default=`/agriculture/irrigation/angola`
 - equivalence:d4612572feff: en=`/cars/rwanda/toyota/camry/2012/`, fr=`/fr/cars/rwanda/toyota/camry/2012/`; x-default=`/cars/rwanda/toyota/camry/2012/`
 - equivalence:d48208fe2aa5: en=`/cars/uganda/toyota/axio/2018/`, fr=`/fr/cars/ouganda/toyota/axio/2018/`; x-default=`/cars/uganda/toyota/axio/2018/`
+- equivalence:d48412ee70f9: en=`/blog/senegal-vat-filing-guide-2026/`; x-default=`/blog/senegal-vat-filing-guide-2026/`
 - equivalence:d486518da078: en=`/tools/afrokitchen/recipes/rwandan-brochettes/`; x-default=`/tools/afrokitchen/recipes/rwandan-brochettes/`
 - equivalence:d4884a2e3c0d: en=`/tools/legal-aid/`, fr=`/fr/tools/eligibilite-aide-juridique-afrique/`, sw=`/sw/zana/ustahiki-wa-msaada-wa-kisheria/`; x-default=`/tools/legal-aid/`
 - equivalence:d4887031c82e: en=`/jamb/crk/1999/`; x-default=`/jamb/crk/1999/`
