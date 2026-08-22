@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const audit = require('../scripts/audit-hausa-visible-copy');
 const coverageApi = require('../scripts/report-hausa-coverage');
+const launchApi = require('../scripts/report-hausa-launch-readiness');
 
 const ROOT = path.resolve(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/localization/ha-bridge-manifest.json'), 'utf8'));
@@ -42,7 +43,7 @@ assert.strictEqual(JSON.stringify(glossary).normalize('NFC'), JSON.stringify(glo
 
 const haLocale = localeManifest.locales.find((locale) => locale.id === 'ha');
 assert.ok(haLocale);
-assert.strictEqual(haLocale.launchStatus, 'partial');
+assert.ok(['partial', 'launched'].includes(haLocale.launchStatus));
 assert.strictEqual(haLocale.formatting.currency.defaultCurrency, null, 'Hausa language must not silently choose NGN');
 ['NG', 'NE', 'GH', 'CM', 'TD'].forEach((countryId) => {
   assert.ok(haLocale.countryRefs.includes(countryId));
@@ -95,7 +96,24 @@ const changedLedger = audit.preserveGeneratedAt(
 assert.strictEqual(changedLedger.generatedAt, '2026-07-26T00:00:00.000Z', 'changed Hausa ledgers must receive a fresh timestamp');
 const coverage = coverageApi.buildReport();
 assert.strictEqual(coverage.summary.total, 105);
-assert.strictEqual(coverage.summary['english-fallback'], 30);
+const launch = launchApi.buildReport();
+assert.strictEqual(launch.core25.length, 25);
+assert.strictEqual(launch.gates.languageCountryIndependent, true);
+assert.strictEqual(haLocale.launchStatus === 'launched', launch.launchReady, 'Hausa may be launched only while every repository launch gate passes');
+['/ha/kayan-aiki/canja-kudi/', '/ha/kayan-aiki/cajin-banki/'].forEach((route) => {
+  const record = coverage.records.find((entry) => entry.route === route);
+  assert.ok(record, `coverage report missing promoted Core 25 route ${route}`);
+  assert.strictEqual(record.state, 'localized-shell');
+  assert.strictEqual(record.indexable, true);
+  assert.strictEqual(record.sitemapIncluded, true);
+});
+['/ha/kayan-aiki/duba-cac/', '/ha/kayan-aiki/gina-cv/', '/ha/kayan-aiki/mai-fassara-hausa/'].forEach((route) => {
+  const record = coverage.records.find((entry) => entry.route === route);
+  assert.ok(record, `coverage report missing promoted native Core 25 route ${route}`);
+  assert.strictEqual(record.state, 'native');
+  assert.strictEqual(record.indexable, true);
+  assert.strictEqual(record.sitemapIncluded, true);
+});
 manifest.bridges.forEach((bridge) => {
   const record = coverage.records.find((entry) => entry.route === bridge.route);
   assert.ok(record, `coverage report missing ${bridge.route}`);

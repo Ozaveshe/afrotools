@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-08-16
+Generated: 2026-08-22
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -117,9 +117,9 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 104 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 113 | English route label marked as fallback | Cikakken aikin sanya lambobin shafi yana kan shafin Turanci yanzu, amma fayil yana aiki a burauza kamar sauran kayan PDF. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 120 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
-| `/ha/kayan-aiki/lambobin-ussd/` | 102 | brand or platform name | Duba lambar ragowar kudi, bayanan intanet, katin waya, tura kudi, bashi da taimakon kwastoma. Najeriya ta bude da MTN, Airtel, Glo da 9mobile, sannan za ka iya zabar wasu kasashe daga bayanan sadarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/lambobin-ussd/` | 102 | brand or platform name | Duba lambar ragowar kuɗi, bayanan intanet, katin waya, tura kuɗi, bashi da taimakon kwastoma. Zaɓi ƙasar da kake bukata; Najeriya tana da MTN, Airtel, Glo da 9mobile, yayin da sauran ƙasashe ke amfani da kamfanonin da... | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/lambobin-ussd/` | 112 | brand or platform name | misali ragowar kudi, tura kudi, MTN... | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/mai-fassara-hausa/` | 100 | English route label marked as fallback | Idan kana son cikakken kundin jimlolin Turanci zuwa Hausa, akwai shafin Turanci da ke da karin misalai. An nuna shi a fili domin kada a dauka dukkan tsohon shafin ya riga ya zama Hausa. | Batch 2 - Language and translation hub cleanup |
+| `/ha/kayan-aiki/mai-fassara-hausa/` | 103 | English route label marked as fallback | Idan kana son cikakken kundin jimlolin Turanci zuwa Hausa, akwai shafin Turanci da ke da karin misalai. An nuna shi a fili domin kada a dauka dukkan tsohon shafin ya riga ya zama Hausa. | Batch 2 - Language and translation hub cleanup |
 | `/ha/kayan-aiki/neman-tallafin-karatu/` | 56 | English route label marked as fallback | Tace bukata Matakin karatu Digiri na farko Digiri na biyu Horon sana'a Gajeren kwas Fanni Kimiyya da fasaha Lafiya Kasuwanci Noma Kowane fanni Inda kake nema Nigeria Afrika Waje Shirya jerin bukata Gaskiyar neman tall... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 97 | brand or platform name | MTN | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 98 | brand or platform name | Airtel | Batch 2 - General Hausa visible-copy cleanup |

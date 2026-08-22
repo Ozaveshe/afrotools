@@ -6,7 +6,7 @@
   <meta name="view-transition" content="same-origin">
   <title>Canjin kudi a Hausa | AfroTools</title>
   <meta name="description" content="Jagorar Hausa zuwa AfroFX don fahimtar canjin Naira, USD da kudaden Afirka, tare da gargadin farashin da aka samu kwanan nan ba lallai ne ya zama na hukuma ba.">
-  <meta name="robots" content="follow, noindex">
+  <meta name="robots" content="index, follow">
   <meta name="content-language" content="ha">
   <meta name="tool-id" content="currency-converter-ha">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -85,8 +85,11 @@
 </style>
   <link rel="stylesheet" href="/ha/assets/ha-improvements.css?v=00b79bbd">
 <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/canja-kudi/">
-<meta name="afrotools-locale-coverage" content="english-fallback">
-<meta name="afrotools-locale-fallback" content="/tools/currency-converter/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/currency-converter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-devises/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kibadilishaji-sarafu/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/canja-kudi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/currency-converter/">
 </head>
 <body class="top-level-page-ui-refresh">
 <a class="skip-link" href="#main">Tsallake zuwa babban abun ciki</a>
@@ -124,10 +127,10 @@
         <h2>Yi lissafin canji da rate din banki ko mai biyan kudi ya baka</h2>
         <p>Wannan karamin lissafi yana aiki a browser. Ka saka adadi da farashin da ka tabbatar daga banki, BDC, kamfanin biyan kudi ko tushen hukuma kafin ka dogara da sakamako.</p>
         <div class="fx-mini-form">
-          <label for="fxAmount">Adadi<input id="fxAmount" type="number" min="0" step="0.01" value="1000" inputmode="decimal"></label>
-          <label for="fxRate">Rate da ka tabbatar<input id="fxRate" type="number" min="0" step="0.0001" value="1500" inputmode="decimal"></label>
-          <label for="fxFrom">Daga<select id="fxFrom"><option>USD</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option></select></label>
-          <label for="fxTo">Zuwa<select id="fxTo"><option>NGN</option><option>USD</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option></select></label>
+          <label for="fxAmount">Adadi<input id="fxAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Saka adadi"></label>
+          <label for="fxRate">Farashin canjin da ka tabbatar<input id="fxRate" type="number" min="0" step="0.0001" inputmode="decimal" placeholder="Saka farashin canji"></label>
+          <label for="fxFrom">Daga<select id="fxFrom"><option value="" selected disabled>Zaɓi kuɗin ƙasa</option><option>USD</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option><option>XAF</option></select></label>
+          <label for="fxTo">Zuwa<select id="fxTo"><option value="" selected disabled>Zaɓi kuɗin ƙasa</option><option>USD</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option><option>XAF</option></select></label>
         </div>
         <div class="fx-mini-actions">
           <button type="button" id="fxEstimateBtn">Kiyasta canji</button>
@@ -198,6 +201,8 @@
     var rate=num('fxRate');
     var from=val('fxFrom');
     var to=val('fxTo');
+    if(!(amount>0)||!(rate>0)||!from||!to){return 'Cika adadi, farashin canji, kuɗin farawa da kuɗin karɓa kafin lissafi.';}
+    if(from===to){return 'Zaɓi kuɗaɗe biyu dabam domin yin canji.';}
     var total=amount*rate;
     return 'Kiyasin canji: '+amount.toLocaleString('en')+' '+from+' x '+rate.toLocaleString('en')+' = '+total.toLocaleString('en',{maximumFractionDigits:2})+' '+to+'. Tabbatar da rate daga banki, BDC, provider ko tushe na hukuma kafin amfani da sakamakon.';
   }

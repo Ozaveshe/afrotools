@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const launchContract = require('../../data/localization/ha-launch-readiness.json');
 
 test.describe('Hausa product surface and country identity', () => {
   test('Hausa navigation keeps language and country as separate dimensions', async ({ page }) => {
@@ -101,6 +102,57 @@ test.describe('Hausa product surface and country identity', () => {
     }));
     expect(mobileLayout.columns).toBe(1);
     expect(mobileLayout.overflow).toBeLessThanOrEqual(1);
+  });
+
+  test('Core 25 metadata and mobile layout stay launch-safe', async ({ page }) => {
+    test.setTimeout(180000);
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const entry of launchContract.core25) {
+      await page.goto(entry.route, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('html')).toHaveAttribute('lang', 'ha');
+      await expect(page.locator('h1').first()).toBeVisible();
+      const metadata = await page.evaluate(() => ({
+        robots: document.querySelector('meta[name="robots"]')?.content || '',
+        canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+        haAlternate: document.querySelector('link[rel="alternate"][hreflang="ha"]')?.href || '',
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+      }));
+      expect(metadata.robots, `${entry.route} must not be noindex`).not.toMatch(/noindex/i);
+      expect(metadata.canonical, `${entry.route} canonical`).toBe(`https://afrotools.com${entry.route}`);
+      expect(metadata.haAlternate, `${entry.route} Hausa alternate`).toBe(`https://afrotools.com${entry.route}`);
+      const overflow = metadata.overflow;
+      expect(overflow, `${entry.route} must not overflow a 390px viewport`).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test('promoted pan-African Hausa money shells do not silently select Nigeria', async ({ page }) => {
+    await page.goto('/ha/kayan-aiki/canja-kudi/');
+    await expect(page.locator('#fxFrom')).toHaveValue('');
+    await expect(page.locator('#fxTo')).toHaveValue('');
+    await page.locator('#fxEstimateBtn').click();
+    await expect(page.locator('#fxHaResult')).toContainText('Cika adadi');
+
+    await page.goto('/ha/kayan-aiki/cajin-banki/');
+    await expect(page.locator('#bco-currency')).toHaveValue('');
+
+    await page.goto('/ha/kayan-aiki/lambobin-ussd/');
+    await expect(page.locator('#countrySelect')).toHaveValue('');
+    await expect(page.locator('#codesArea')).toContainText('Zabi kasa');
+  });
+
+  test('promoted Hausa CAC, CV, and language shells expose localized feedback', async ({ page }) => {
+    await page.goto('/ha/kayan-aiki/duba-cac/');
+    await page.locator('#bizName').fill('Afro Arewacin Kasuwa');
+    await page.locator('#checkName').click();
+    await expect(page.locator('#resultBox')).not.toBeEmpty();
+
+    await page.goto('/ha/kayan-aiki/gina-cv/');
+    await page.getByRole('button', { name: 'Gina daftarin CV' }).click();
+    await expect(page.locator('#cvResult')).not.toBeEmpty();
+
+    await page.goto('/ha/kayan-aiki/mai-fassara-hausa/');
+    await page.locator('#query').fill('ina kwana');
+    await expect(page.locator('#phraseResult')).not.toBeEmpty();
   });
 
   test('CAR crop yield identity is correct before and after hydration', async ({ page }) => {

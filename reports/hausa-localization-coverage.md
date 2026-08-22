@@ -3,11 +3,11 @@
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
 - Public Hausa routes: 105
-- Native: 19
-- Localized shells: 56
-- Explicit English fallbacks: 30
-- Indexable: 75
-- Sitemap members: 75
+- Native: 22
+- Localized shells: 58
+- Explicit English fallbacks: 25
+- Indexable: 80
+- Sitemap members: 80
 
 | Route | State | Indexable | Sitemap | Equivalent or fallback | Owner |
 |---|---|---:|---:|---|---|
@@ -41,18 +41,18 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/abincin-dabbobi/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/alawus-na-nysc/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/amfanin-bayanan-intanet/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/cajin-banki/ | english-fallback | no | no | /tools/bank-charges/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
-| /ha/kayan-aiki/canja-kudi/ | english-fallback | no | no | /tools/currency-converter/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
+| /ha/kayan-aiki/cajin-banki/ | localized-shell | yes | yes | /tools/bank-charges/ | Hausa bank and wallet charge comparison runtime with user-supplied source dates |
+| /ha/kayan-aiki/canja-kudi/ | localized-shell | yes | yes | /tools/currency-converter/ | Hausa currency comparison shell with source freshness and fallback-state labels |
 | /ha/kayan-aiki/canza-pdf/ | english-fallback | no | no | /tools/pdf-convert/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/cgt-najeriya/ | native | yes | yes |  | ha/kayan-aiki/cgt-najeriya/index.html and assets/js/engines/ng-cgt.js |
 | /ha/kayan-aiki/cit-najeriya/ | native | yes | yes |  | ha/kayan-aiki/cit-najeriya/index.html and assets/js/engines/ng-cit.js |
 | /ha/kayan-aiki/darajar-katin-waya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/dawo-da-jari/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/duba-cac/ | english-fallback | no | no | /tools/cac-checker/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
+| /ha/kayan-aiki/duba-cac/ | native | yes | yes | /tools/cac-checker/ | Hausa CAC name-rule checker with official-portal verification boundary |
 | /ha/kayan-aiki/duba-genotype/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/fansho-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/farashin-kayayyakin-gona/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/gina-cv/ | english-fallback | no | no | /tools/cv-builder/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
+| /ha/kayan-aiki/gina-cv/ | native | yes | yes | /tools/cv-builder/ | Hausa local-first CV brief builder with TXT export and explicit English full-editor handoff |
 | /ha/kayan-aiki/gwajin-ussd/ | native | yes | yes | /tools/ussd-simulator/ | scripts/build-hausa-ussd-simulator.js + engines/src/hausa-ussd-simulator-engine.js + browser-backed state/JSON/privacy evidence |
 | /ha/kayan-aiki/gyara-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/hada-da-raba-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
@@ -77,7 +77,7 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/kwatanta-kunshin-intanet/ | english-fallback | no | no | /tools/data-plan-comparison/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/lambar-shafi-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/lambobin-ussd/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/mai-fassara-hausa/ | english-fallback | no | no | /tools/hausa-translator/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
+| /ha/kayan-aiki/mai-fassara-hausa/ | native | yes | yes | /tools/hausa-translator/ | Hausa phrase search and drafting runtime with professional-review boundary |
 | /ha/kayan-aiki/matsa-pdf/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/naira-zuwa-kalmomi/ | native | yes | yes | /tools/naira-to-words/ | scripts/build-hausa-naira-words.js + engines/src/hausa-number-words-engine.js + browser-backed JSON/TXT evidence |
 | /ha/kayan-aiki/neman-tallafin-karatu/ | localized-shell | yes | yes |  | Hausa route-first localized shell |

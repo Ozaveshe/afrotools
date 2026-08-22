@@ -52,7 +52,7 @@ Counts with different membership rules intentionally use different labels.
 | ar | unsupported | 0 |
 | en | default | 1256 |
 | fr | published | 1372 |
-| ha | partial | 87 |
+| ha | published | 87 |
 | ig | unsupported | 0 |
 | pt | unsupported | 0 |
 | sw | published | 926 |

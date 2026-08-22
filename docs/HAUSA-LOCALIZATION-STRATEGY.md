@@ -26,7 +26,7 @@ visible-copy quality, hreflang, registry discovery, and fallback honesty.
 
 ## Current Audit Snapshot
 
-Snapshot date: 2026-07-12.
+Snapshot date: 2026-08-22.
 
 Source artifacts:
 
@@ -39,17 +39,17 @@ Source artifacts:
 Current visible-copy readiness:
 
 - Hausa routes scanned: `105`.
-- Clean routes: `43`.
+- Clean routes: `49`.
 - Routes with blockers: `0`.
 - `BLOCKER_VISIBLE_ENGLISH` findings: `0`.
-- `POSSIBLE_FALSE_POSITIVE` findings: `186`.
-- `ACCEPTED_TECH_TERM` findings: `618`.
+- `POSSIBLE_FALSE_POSITIVE` findings: `149`.
+- `ACCEPTED_TECH_TERM` findings: `596`.
 - Hausa registry rows: `87`.
 - Missing Hausa registry targets: `0`.
 - `lang: 'ha'` rows pointing outside `/ha/`: `0`.
 
-The current route graph contains `12` native routes, `61` localized shells,
-and `32` explicit English fallbacks. English fallbacks are `noindex`, excluded
+The current route graph contains `22` native routes, `58` localized shells,
+and `25` explicit English fallbacks. English fallbacks are `noindex`, excluded
 from Hausa sitemaps, and carry no Hausa hreflang claim. Hausa still has `87`
 published registry rows; bridge routes are product navigation, not tools.
 
@@ -419,11 +419,16 @@ Unless a batch explicitly says otherwise:
 - Do not treat `lang/ha.json` as proof that route-level Hausa pages are
   generated or complete.
 
-## Internal Preview Status
+## Public Launch Status
 
-Current preview verdict: `INTERNAL_PREVIEW_READY`.
+Current launch verdict: `PUBLIC_LAUNCH_READY`.
 
-Go for internal preview when all of these stay true:
+The machine-readable Core 25 and launch gates live in
+`data/localization/ha-launch-readiness.json`; the current evidence is generated
+in `reports/hausa-launch-readiness.json` and
+`reports/hausa-launch-readiness.md`.
+
+Keep Hausa publicly launched only while all of these stay true:
 
 - `node scripts/audit-hausa-visible-copy.js` reports `0`
   `BLOCKER_VISIBLE_ENGLISH` findings.
@@ -435,6 +440,10 @@ Go for internal preview when all of these stay true:
 - Hausa hubs label fallback routes as `Shafi na Turanci` or equivalent.
 - PDF, salary/PAYE, VAT, telecom, agriculture, and health pages keep source
   truth, data, calculations, and safety language intact.
+- All Core 25 routes pass metadata, runtime-state, shared-navigation,
+  browser/mobile, hreflang, sitemap, and route-health checks.
+- Explicit English fallbacks remain labelled, `noindex`, and absent from Hausa
+  hreflang and sitemap claims.
 
 No-go for public launch if any of these appear:
 
