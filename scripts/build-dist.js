@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { minify } = require('terser');
+const productHealth = require('../assets/js/lib/product-health');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -204,6 +205,26 @@ function assertInsideWorkspace(target) {
   if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
     throw new Error(`Refusing to write outside workspace: ${target}`);
   }
+}
+
+function writeReleaseMetadata() {
+  const context = String(process.env.CONTEXT || 'local').trim();
+  const production = process.env.NETLIFY === 'true' && context === 'production';
+  const safe = productHealth.safeReleaseMetadata({
+    context,
+    production,
+    commit: process.env.COMMIT_REF || '',
+    built_at: new Date().toISOString()
+  });
+  const targetDir = path.join(DIST, 'status');
+  fs.mkdirSync(targetDir, { recursive: true });
+  fs.writeFileSync(path.join(targetDir, 'release.json'), JSON.stringify({
+    schema_version: 1,
+    context: safe.context,
+    production: safe.production,
+    commit: safe.commit,
+    built_at: safe.built_at
+  }, null, 2) + '\n');
 }
 
 function sleep(ms) {
@@ -450,6 +471,7 @@ async function main() {
 
   const counters = { copiedFiles: 0, skippedDirs: 0, skippedFiles: 0 };
   copyTree(ROOT, DIST, counters);
+  writeReleaseMetadata();
   const optimized = await optimizeDistAssets(DIST);
   verifyDist();
 

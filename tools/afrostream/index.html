@@ -812,6 +812,7 @@ var STREAM_HISTORY = [];
 var CREATORS = [];
 var NEWS = [];
 var UPCOMING = [];
+var AFROSTREAM_LOAD_STATE = { creators:'preview', streams:'preview', news:'preview', calendar:'preview' };
 
 var FEATURE_SVGS = {
   live: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>',
@@ -1058,8 +1059,8 @@ function summarizeSourceHealth(lanes){
   if(state === 'live') return { state:state, title:'Live data', detail:'Streams, rankings, and news all updated recently.' };
   if(state === 'preview') return { state:state, title:'Preview mode', detail:'Showing sample data on this preview.' };
   if(state === 'stale') return { state:state, title:'Some data may be delayed', detail:'Most feeds loaded; we are double-checking how fresh a few of them are.' };
-  if(state === 'blocked') return { state:state, title:'Some data unavailable', detail:'One or more feeds could not be reached right now.' };
-  return { state:state, title:'Data status unknown', detail:'We could not confirm how fresh some feeds are right now.' };
+  if(state === 'blocked') return { state:state, title:'Live data temporarily unavailable', detail:'One or more feeds could not be reached right now. Historical content remains available.' };
+  return { state:state, title:'Live data temporarily unavailable', detail:'We could not confirm how fresh some feeds are right now. Historical content remains available.' };
 }
 
 function renderSourceRail(mode, meta){
@@ -1293,6 +1294,14 @@ function renderLive(streams){
   var el = document.getElementById('liveGrid');
   document.getElementById('liveCount').textContent = '('+streams.length+')';
   if(!streams.length){
+    if(AFROSTREAM_LOAD_STATE.streams === 'unavailable'){
+      el.innerHTML = '<div class="as-empty-card" role="status">' +
+        '<strong>Live data temporarily unavailable</strong>' +
+        '<p>Current stream checks could not be loaded. Creator rankings and historical profiles remain available.</p>' +
+        '<div class="as-empty-actions"><a href="rankings.html">Browse historical rankings</a></div>' +
+      '</div>';
+      return;
+    }
     el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
       '<div style="font-size:2.5rem;margin-bottom:12px">&#128308;</div>' +
       '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No one is live right now</div>' +
@@ -1347,6 +1356,10 @@ function renderLive(streams){
 function renderTopThree(creators){
   var el = document.getElementById('topThree');
   if(!creators.length){
+    if(AFROSTREAM_LOAD_STATE.creators === 'unavailable'){
+      el.innerHTML = '<div class="as-empty-card" role="status"><strong>Live data temporarily unavailable</strong><p>Current creator rankings could not be checked. Historical AfroStream content is still available through the methodology and news archive.</p><div class="as-empty-actions"><a href="methodology/">View methodology</a></div></div>';
+      return;
+    }
     var countryText = activeCountry === 'All' ? 'all countries' : activeCountry;
     var categoryText = activeCat === 'All' ? 'all categories' : activeCat;
     el.innerHTML = '<div class="as-empty-card">' +
@@ -1483,6 +1496,14 @@ function renderStreamerBoard(searchQuery){
 function renderNews(){
   var el = document.getElementById('newsGrid');
   if(!NEWS.length){
+    if(AFROSTREAM_LOAD_STATE.news === 'unavailable'){
+      el.innerHTML = '<div class="as-empty-card" role="status">' +
+        '<strong>Live data temporarily unavailable</strong>' +
+        '<p>Current news could not be loaded. Existing creator profiles and historical ranking content remain available.</p>' +
+        '<div class="as-empty-actions"><a href="news.html">Open the news archive</a></div>' +
+      '</div>';
+      return;
+    }
     el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
       '<div style="font-size:2.5rem;margin-bottom:12px">&#128240;</div>' +
       '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No news yet</div>' +
@@ -1762,6 +1783,10 @@ async function init() {
     try {
       var data = await AfroStreamEngine.loadAll();
       loadedData = data;
+      AFROSTREAM_LOAD_STATE.creators = Array.isArray(data.creators) ? 'available' : 'unavailable';
+      AFROSTREAM_LOAD_STATE.streams = data.streams && Array.isArray(data.streams.live) ? 'available' : 'unavailable';
+      AFROSTREAM_LOAD_STATE.calendar = data.streams && Array.isArray(data.streams.upcoming) ? 'available' : 'unavailable';
+      AFROSTREAM_LOAD_STATE.news = Array.isArray(data.news) ? 'available' : 'unavailable';
 
       if (data.creators && data.creators.length) {
         CREATORS.length = 0;
@@ -1799,6 +1824,7 @@ async function init() {
       console.log('[AfroStream] Loaded from Supabase — ' + CREATORS.length + ' creators, ' + LIVE_STREAMS.length + ' live, ' + NEWS.length + ' news');
     } catch(e) {
       loadedData = {};
+      AFROSTREAM_LOAD_STATE = { creators:'unavailable', streams:'unavailable', news:'unavailable', calendar:'unavailable' };
     }
 
     try {

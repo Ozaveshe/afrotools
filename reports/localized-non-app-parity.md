@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 272 |
-| sw | 138 | 0 | 295 |
+| fr | 161 | 0 | 273 |
+| sw | 138 | 0 | 296 |
 
 ## By surface class
 
@@ -21,6 +21,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
 | product-entry | 8 | 5 | 0 | 3 | 3 | 0 | 5 |
+| public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
 
@@ -593,3 +594,5 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
 | /religious-cultural/ | category-hub | fr | — | missing | no localized route or owner file |
+| /status/ | public-status | fr | — | missing | no localized route or owner file |
+| /status/ | public-status | sw | — | missing | no localized route or owner file |

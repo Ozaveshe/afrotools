@@ -428,12 +428,15 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   /* -- FETCH LIVE NEWS ------------------------------------------ */
   var NEWS = [];
+  var NEWS_LIVE_STATE = 'unknown';
 
   async function fetchNews() {
     try {
       var res = await fetch('/api/afrostream/news?limit=50');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       var json = await res.json();
-      if (json.success && json.data && json.data.length) {
+      if (json.success && Array.isArray(json.data)) {
+        NEWS_LIVE_STATE = 'available';
         return json.data.map(function(row) {
           return {
             id:        row.id,
@@ -452,7 +455,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           };
         });
       }
-    } catch(e) { /* leave feed empty until the API returns */ }
+    } catch(e) { NEWS_LIVE_STATE = 'unavailable'; }
     return [];
   }
 
@@ -536,7 +539,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function renderHero(items) {
     var heroGrid = document.getElementById('heroGrid');
     if (!items.length) {
-      heroGrid.innerHTML = '<div class="as-empty-state"><p>No stories yet.</p></div>';
+      heroGrid.innerHTML = NEWS_LIVE_STATE === 'unavailable'
+        ? '<div class="as-empty-state" role="status"><h2>Live data temporarily unavailable</h2><p>Current creator news could not be loaded. Historical creator profiles and ranking methodology remain available.</p><p><a href="rankings.html">Browse creator rankings</a></p></div>'
+        : '<div class="as-empty-state"><p>No stories yet.</p></div>';
       return;
     }
 
@@ -706,7 +711,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         .catch(function(){
           document.getElementById('articlePage').innerHTML =
             '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
-            '<div class="as-empty-state"><p>Could not load article. Please try again.</p></div>';
+            '<div class="as-empty-state" role="status"><h2>Live data temporarily unavailable</h2><p>Could not load this article. Historical creator profiles and ranking methodology remain available.</p></div>';
         });
       return;
     }

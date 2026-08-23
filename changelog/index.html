@@ -8,7 +8,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Changelog — AfroTools Updates & Release Notes</title>
-<meta name="description" content="AfroTools changelog — see every update, new tool launch, bug fix, and improvement. Updated daily as we ship new features.">
+<meta name="description" content="AfroTools public release annotations, production build identity when available, and historical product notes.">
 <meta property="og:title" content="AfroTools Changelog — Every Update, Live">
 <meta property="og:description" content="Every new tool, feature, fix, and improvement to AfroTools — updated as we ship.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -298,10 +298,24 @@
   /* Hidden filter state */
   .entry.hidden { display: none; }
 
+  .production-activity{max-width:1120px;margin:24px auto 0;padding:0 24px}
+  .production-activity-inner{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px}
+  .production-activity-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
+  .production-activity h2{font-size:1rem;margin:0 0 4px;color:#1d1d1f}
+  .production-activity p{font-size:.8rem;line-height:1.55;color:#6e6e73;margin:0}
+  .production-activity a{color:#0062cc;font-weight:700}
+  .production-release-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .production-release{border:1px solid #eceff3;border-radius:10px;padding:12px;background:#fafbfc}
+  .production-release time{font-size:.7rem;color:#6e6e73}
+  .production-release strong{display:block;font-size:.86rem;margin:4px 0;color:#1d1d1f}
+  .production-release span{font-size:.75rem;line-height:1.45;color:#6e6e73}
+
   @media (max-width: 760px) {
     .content { grid-template-columns: 1fr; }
     .version-nav { position: static; }
     .filter-inner { gap: 6px; }
+    .production-release-list{grid-template-columns:1fr}
+    .production-activity-head{flex-direction:column}
   }
 </style>
 <meta property="og:locale" content="en_US">
@@ -327,14 +341,24 @@
   <div class="hero-inner">
     <div class="eyebrow">Product Updates</div>
     <h1>AfroTools Changelog</h1>
-    <p class="hero-sub">Every tool launch, feature update, bug fix, and improvement — tracked here as we ship. Updated daily.</p>
+    <p class="hero-sub">Public release annotations and historical product notes. Production identity appears only when a verified production build provides it.</p>
     <div class="hero-stats">
       <div class="hero-stat"><strong>2,595+</strong> tools shipped</div>
       <div class="hero-stat">·</div>
-      <div class="hero-stat"><strong>Daily</strong> updates</div>
+      <div class="hero-stat"><strong>Source-backed</strong> notes</div>
       <div class="hero-stat">·</div>
       <div class="hero-stat">Launched <strong>March 8, 2026</strong></div>
     </div>
+  </div>
+</section>
+
+<section class="production-activity" aria-labelledby="productionActivityHeading">
+  <div class="production-activity-inner">
+    <div class="production-activity-head">
+      <div><h2 id="productionActivityHeading">Current production activity</h2><p id="productionBuildStatus" role="status" aria-live="polite">Checking safe production build metadata. A preview or local build will not be presented as production.</p></div>
+      <a href="/status/">View AfroStatus</a>
+    </div>
+    <div class="production-release-list" id="publicReleaseNotes"><p>Loading approved public release annotations…</p></div>
   </div>
 </section>
 
@@ -1919,5 +1943,7 @@
   document.querySelectorAll('.entry').forEach(e => observer.observe(e));
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+<script src="/assets/js/lib/product-health.js?v=3620848d" defer></script>
+<script src="/assets/js/pages/changelog-production.js?v=fd5172ce" defer></script>
 </body>
 </html>

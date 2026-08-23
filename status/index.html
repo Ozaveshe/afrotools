@@ -1,0 +1,108 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
+<head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AfroStatus — AfroTools Product and Data Health</title>
+  <meta name="description" content="Public-safe AfroTools platform, data freshness, AfroStream and production release health summaries.">
+  <meta property="og:title" content="AfroStatus — AfroTools Product and Data Health">
+  <meta property="og:description" content="First-party platform, data freshness and release health summaries for AfroTools.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://afrotools.com/status/">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+  <script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script src="/assets/js/lib/product-health.js?v=3620848d" defer></script>
+  <script src="/assets/js/pages/product-health-status.js?v=0a539912" defer></script>
+  <style>
+    .status-page{background:var(--color-bg,#f7f8fa);color:var(--color-text,#172033);min-height:100vh}
+    .status-shell{max-width:1080px;margin:0 auto;padding:clamp(2rem,6vw,5rem) 1rem 5rem}
+    .status-header{max-width:780px;margin-bottom:2rem}
+    .status-kicker{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--color-primary,#0062cc);margin:0 0 .6rem}
+    .status-header h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.02;margin:0 0 .85rem}
+    .status-header p{font-size:1.05rem;line-height:1.65;color:var(--color-text-muted,#596579);margin:0}
+    .status-summary{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between;border:1px solid var(--color-border,#dce1e8);border-radius:var(--radius-lg,16px);background:var(--color-surface,#fff);padding:1rem 1.1rem;margin:1.5rem 0 2.5rem}
+    .status-summary strong{display:block;font-size:1rem;margin-bottom:.2rem}
+    .status-summary span{display:block;color:var(--color-text-muted,#596579);font-size:.9rem;line-height:1.5}
+    .status-pulse{width:.75rem;height:.75rem;border-radius:50%;background:#64748b;box-shadow:0 0 0 5px rgba(100,116,139,.12);flex:0 0 auto;margin-top:.3rem}
+    .status-summary[data-state="operational"] .status-pulse{background:#16823b;box-shadow:0 0 0 5px rgba(22,130,59,.13)}
+    .status-summary[data-state="degraded"] .status-pulse,.status-summary[data-state="partial_coverage"] .status-pulse{background:#b86b00;box-shadow:0 0 0 5px rgba(184,107,0,.13)}
+    .status-summary[data-state="stale"] .status-pulse,.status-summary[data-state="temporarily_unavailable"] .status-pulse{background:#b42318;box-shadow:0 0 0 5px rgba(180,35,24,.13)}
+    .status-section{margin-top:2.5rem}
+    .status-section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:.75rem}
+    .status-section h2{font-size:1.35rem;margin:0}
+    .status-section-head p{font-size:.82rem;color:var(--color-text-muted,#596579);margin:0;text-align:right}
+    .status-list{border:1px solid var(--color-border,#dce1e8);border-radius:var(--radius-lg,16px);overflow:hidden;background:var(--color-surface,#fff)}
+    .status-row{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(150px,.75fr) minmax(220px,1.7fr) minmax(140px,.8fr);gap:1rem;align-items:start;padding:1rem 1.1rem;border-top:1px solid var(--color-border,#e5e9ef)}
+    .status-row:first-child{border-top:0}
+    .status-name{font-weight:800}
+    .status-badge{display:inline-flex;align-items:center;width:max-content;border-radius:999px;padding:.26rem .62rem;font-size:.74rem;font-weight:800;background:#eef1f5;color:#475569}
+    .status-badge[data-status="operational"]{background:#e8f7ed;color:#166534}
+    .status-badge[data-status="partial_coverage"]{background:#fff4dc;color:#8a4b00}
+    .status-badge[data-status="degraded"],.status-badge[data-status="stale"]{background:#fff0ed;color:#9f2d20}
+    .status-badge[data-status="temporarily_unavailable"]{background:#feeceb;color:#8f1d16}
+    .status-copy,.status-date{font-size:.84rem;line-height:1.5;color:var(--color-text-muted,#596579)}
+    .status-copy strong{display:block;color:var(--color-text,#172033);font-size:.8rem;margin-top:.25rem}
+    .status-date time{display:block;color:var(--color-text,#172033);font-weight:700}
+    .status-meta{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--color-border,#dce1e8);display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    .status-meta h2{font-size:1rem;margin:0 0 .5rem}
+    .status-meta p{font-size:.86rem;line-height:1.6;color:var(--color-text-muted,#596579);margin:0}
+    .status-meta a{color:var(--color-primary,#0062cc);font-weight:700}
+    @media(max-width:760px){.status-row{grid-template-columns:1fr 1fr}.status-copy{grid-column:1/-1}.status-date{grid-column:1/-1}.status-meta{grid-template-columns:1fr}.status-section-head{align-items:start;flex-direction:column}.status-section-head p{text-align:left}}
+    @media(max-width:430px){.status-row{grid-template-columns:1fr}.status-copy,.status-date{grid-column:auto}.status-summary{align-items:flex-start}}
+  </style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="canonical" href="https://afrotools.com/status/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/status/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/status/">
+</head>
+<body class="status-page">
+  <afro-navbar></afro-navbar>
+  <main class="status-shell" id="main-content">
+    <header class="status-header">
+      <p class="status-kicker">AfroStatus</p>
+      <h1>Product and data health</h1>
+      <p>This page separates static availability, source coverage and live freshness. Unknown or unchecked systems are never presented as operational.</p>
+    </header>
+
+    <div class="status-summary" id="healthSummary" data-state="unknown" role="status" aria-live="polite">
+      <span class="status-pulse" aria-hidden="true"></span>
+      <div><strong>Loading verified source snapshot</strong><span>The page remains useful even if live health APIs are unavailable.</span></div>
+    </div>
+
+    <section class="status-section" aria-labelledby="platformHeading">
+      <div class="status-section-head"><h2 id="platformHeading">Platform</h2><p>Release-safe checks and optional live evidence</p></div>
+      <div class="status-list" id="platformStatus"></div>
+    </section>
+
+    <section class="status-section" aria-labelledby="productsHeading">
+      <div class="status-section-head"><h2 id="productsHeading">Data products</h2><p>Coverage does not imply every market is current</p></div>
+      <div class="status-list" id="productStatus"></div>
+    </section>
+
+    <section class="status-meta" aria-label="Release and methodology">
+      <div>
+        <h2>Production release</h2>
+        <p id="releaseStatus" aria-live="polite">Production deploy identity is checked only when safe deploy metadata is present.</p>
+      </div>
+      <div>
+        <h2>How to read this page</h2>
+        <p>Static source ledgers provide the fallback. Live APIs may make a status better or worse, but a missing live response remains unknown. See the <a href="/changelog/">public changelog</a> for user-facing release notes.</p>
+      </div>
+    </section>
+
+    <noscript><p>This page needs JavaScript to render the embedded source snapshot. It does not require a live API.</p></noscript>
+  </main>
+  <afro-footer></afro-footer>
+
+  <!-- PRODUCT_HEALTH_SNAPSHOT_START -->
+<script id="productHealthSnapshot" type="application/json">{"schema_version":1,"contract":"AfroStatus public health snapshot","generated_from":["data/_meta.json","data/source-registry.json","data/fuel/latest.json","data/fintech/mobile-money-tariffs.json","data/energy/electricity-tariffs.json","data/forex/latest.json","data/scholarships/official-sources.json","data/transport/source-status.json","data/afrostream/creators-fallback.json"],"platform":[{"id":"website","name":"Website","status":"partial_coverage","status_label":"Partial coverage","coverage":"Static site and offline fallback are release-checked; live reachability is checked separately.","last_verified":"2026-08-16T00:00:00.000Z","next_expected_check":"2026-09-15","reason":"No live request is required to render this status page.","source_kind":"release_build"},{"id":"search-directory","name":"Search and directory","status":"partial_coverage","status_label":"Partial coverage","coverage":"Canonical registry and static directory available; live search hydration is not assumed.","last_verified":"2026-08-16T00:00:00.000Z","next_expected_check":"2026-09-15","reason":null,"source_kind":"canonical_registry"},{"id":"apis-functions","name":"APIs and functions","status":"unknown","status_label":"Unknown","coverage":"The public status endpoint is reachable only when this function responds; dependencies are not inferred.","last_verified":null,"next_expected_check":null,"reason":"Live function health is checked progressively when available.","source_kind":"runtime_check"},{"id":"authentication","name":"Authentication","status":"unknown","status_label":"Unknown","coverage":"Authentication is not required for public tools or this status page.","last_verified":null,"next_expected_check":null,"reason":"No anonymous status response is treated as proof of sign-in health.","source_kind":"runtime_check"}],"products":[{"id":"fuel","name":"Fuel","status":"partial_coverage","status_label":"Partial coverage","coverage":"54 country planning rows; official row verification is tracked separately.","last_verified":"2026-08-16T00:13:12.490Z","next_expected_check":"2026-08-23","reason":"No row is marked as an official regulator fuel price in this snapshot.","source_kind":"committed_fallback"},{"id":"mobile-money","name":"Mobile Money","status":"partial_coverage","status_label":"Partial coverage","coverage":"2 provider tariff packs with official published tariff sources.","last_verified":"2026-08-14T00:00:00.000Z","next_expected_check":"2026-09-13","reason":"Coverage is intentionally limited to verified provider tariffs.","source_kind":"official_tariff_ledger"},{"id":"electricity","name":"Electricity","status":"partial_coverage","status_label":"Partial coverage","coverage":"5 tariff records across 2 markets.","last_verified":"2026-08-15T00:00:00.000Z","next_expected_check":"2026-09-29","reason":"Unsupported and unverified markets are not presented as current tariff coverage.","source_kind":"official_tariff_ledger"},{"id":"fx","name":"FX","status":"stale","status_label":"Stale","coverage":"50 quoted currencies in the committed fallback.","last_verified":"2026-08-16T00:00:01.000Z","next_expected_check":"2026-08-18","reason":null,"source_kind":"committed_fallback"},{"id":"paye-tax","name":"PAYE and tax","status":"partial_coverage","status_label":"Partial coverage","coverage":"53 country PAYE source packs in the source registry.","last_verified":"2026-08-17T00:00:00.000Z","next_expected_check":"2026-11-15","reason":"Country rules have different effective dates and review confidence.","source_kind":"source_registry"},{"id":"scholarships","name":"Scholarships","status":"stale","status_label":"Stale","coverage":"42 active source definitions; live opportunity counts are checked separately.","last_verified":"2026-08-15T00:00:00.000Z","next_expected_check":"2026-08-22","reason":null,"source_kind":"official_source_ledger"},{"id":"transport","name":"Transport","status":"stale","status_label":"Stale","coverage":"24 of 41 monitored sources responded cleanly.","last_verified":"2026-07-29T13:56:08.691Z","next_expected_check":"2026-08-05","reason":"0 broken and 11 blocked sources remain visible as debt.","source_kind":"source_status_ledger"},{"id":"afrostream","name":"AfroStream","status":"stale","status_label":"Stale","coverage":"12 historical creator profiles remain available if live APIs fail.","last_verified":"2026-07-27T00:00:00.000Z","next_expected_check":"2026-08-03","reason":"Live streams, creator snapshots and news are checked progressively; fallback metrics are not presented as current.","source_kind":"historical_fallback"}],"live_overlays":["/api/data-freshness","/api/afrostream/health","/status/release.json"],"disclosure":"Public-safe source summaries only. No credentials, internal hostnames, private logs or admin details."}</script>
+<!-- PRODUCT_HEALTH_SNAPSHOT_END -->
+  <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+</body>
+</html>

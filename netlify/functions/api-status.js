@@ -19,7 +19,9 @@ exports.handler = async function (event) {
   if (event.httpMethod !== 'GET') return json(405, { error: 'Method not allowed' });
 
   return json(200, {
-    status: 'operational',
+    status: 'available',
+    scope: 'status_endpoint',
+    dependency_status: 'not_checked',
     api: contract.api_name,
     current_version: contract.current_version,
     base_url: contract.canonical_base_url,
@@ -29,6 +31,8 @@ exports.handler = async function (event) {
     endpoints: contract.endpoints,
     deprecation_policy: contract.deprecation_policy,
     changelog_url: contract.changelog_url,
+    product_health_url: 'https://afrotools.com/status/',
+    data_freshness_url: 'https://afrotools.com/api/data-freshness',
     checked_at: new Date().toISOString()
   });
 };

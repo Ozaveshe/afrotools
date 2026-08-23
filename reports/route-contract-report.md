@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11509 |
-| Indexable pages | 9925 |
+| Public pages | 11510 |
+| Indexable pages | 9926 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5236 |
-| Documented fallbacks | 14763 |
-| Routes eligible for primary sitemaps | 9925 |
+| Genuine equivalence groups | 5237 |
+| Documented fallbacks | 14764 |
+| Routes eligible for primary sitemaps | 9926 |
 
 ## Locale Coverage
 
-- en: 5963 page records
+- en: 5964 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5400
+- page: 5401
 - tool: 4000
 - widget: 379
 
@@ -4893,6 +4893,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5a4440a0d791: fr=`/fr/widgets/budget-couverture-recolte/`; x-default=`/fr/widgets/budget-couverture-recolte/`
 - equivalence:5a4c7a8e2e2a: en=`/tools/fuel-tracker/ghana/`, fr=`/fr/tools/suivi-carburant/ghana/`; x-default=`/tools/fuel-tracker/ghana/`
 - equivalence:5a5903e6c3a5: en=`/tools/tin-guide/gabon`, sw=`/sw/zana/mwongozo-tin/gabon/`; x-default=`/tools/tin-guide/gabon`
+- equivalence:5a60cbdf7f5f: en=`/status/`; x-default=`/status/`
 - equivalence:5a70c68a355e: fr=`/fr/tools/compteur-prepaye/`; x-default=`/fr/tools/compteur-prepaye/`
 - equivalence:5a75bf010082: en=`/tools/net-worth/`, fr=`/fr/tools/suivi-valeur-nette/`, sw=`/sw/zana/thamani-halisi/`; x-default=`/tools/net-worth/`
 - equivalence:5a84451256ac: en=`/agriculture/vaccination-schedule/egypt`; x-default=`/agriculture/vaccination-schedule/egypt`

@@ -92,6 +92,7 @@ function contractPeerRoute(englishRoute, locale) {
 
 function classify(route) {
   if (route === '/') return 'home';
+  if (route === '/status/') return 'public-status';
   if (route.startsWith('/blog/')) return route === '/blog/' ? 'editorial-hub' : 'editorial';
   if (COUNTRY_ROUTES.has(route)) return 'country-hub';
   if (CATEGORY_ROUTES.has(route)) return 'category-hub';
