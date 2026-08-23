@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(ROOT, 'data', 'registry', 'country-intelligence-hubs.json');
@@ -13,7 +14,9 @@ const START = '<!-- country-intelligence-hub:start -->';
 const END = '<!-- country-intelligence-hub:end -->';
 const CSS_START = '<!-- country-intelligence-hub:styles:start -->';
 const CSS_END = '<!-- country-intelligence-hub:styles:end -->';
-const CSS_BLOCK = `${CSS_START}\n<link rel="stylesheet" href="/assets/css/country-intelligence-hub.css">\n${CSS_END}`;
+const CSS_PATH = path.join(ROOT, 'assets', 'css', 'country-intelligence-hub.css');
+const CSS_HASH = crypto.createHash('md5').update(fs.readFileSync(CSS_PATH)).digest('hex').slice(0, 8);
+const CSS_BLOCK = `${CSS_START}\n<link rel="stylesheet" href="/assets/css/country-intelligence-hub.css?v=${CSS_HASH}">\n${CSS_END}`;
 const CHECK = process.argv.includes('--check');
 const LEVEL_WEIGHTS = { strong: 100, useful: 70, shared: 40 };
 const LEVEL_LABELS = { strong: 'Country depth', useful: 'Useful coverage', shared: 'Shared tools' };
