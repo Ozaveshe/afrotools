@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11510 |
-| Indexable pages | 9931 |
+| Public pages | 11512 |
+| Indexable pages | 9933 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5237 |
-| Documented fallbacks | 14764 |
-| Routes eligible for primary sitemaps | 9931 |
+| Genuine equivalence groups | 5239 |
+| Documented fallbacks | 14766 |
+| Routes eligible for primary sitemaps | 9933 |
 
 ## Locale Coverage
 
-- en: 5964 page records
+- en: 5966 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 511
+- article: 513
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6635,6 +6635,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b0442d949c02: en=`/agriculture/fertilizer/equatorial-guinea`, fr=`/fr/agriculture/fertilizer/equatorial-guinea`, sw=`/sw/kilimo/mbolea/equatorial-guinea/`; x-default=`/agriculture/fertilizer/equatorial-guinea`
 - equivalence:b054b7a8f026: en=`/cars/tunisia/toyota/prado/`, fr=`/fr/cars/tunisie/toyota/prado/`; x-default=`/cars/tunisia/toyota/prado/`
 - equivalence:b054fbaf8dff: en=`/cars/cameroon/ford/`, fr=`/fr/cars/cameroun/ford/`; x-default=`/cars/cameroon/ford/`
+- equivalence:b05ec34e790e: en=`/blog/gambia-vat-filing-guide-2026/`; x-default=`/blog/gambia-vat-filing-guide-2026/`
 - equivalence:b06d6ef0ec54: en=`/seychelles/sc-vat`, fr=`/fr/seychelles/sc-vat`, sw=`/sw/seychelles/kikokotoo-vat/`; x-default=`/seychelles/sc-vat`
 - equivalence:b07459435174: sw=`/sw/zana/bei-mafuta/`; x-default=`/sw/zana/bei-mafuta/`
 - equivalence:b08347917733: en=`/cars/cote-divoire/ford/`, fr=`/fr/cars/cote-divoire/ford/`; x-default=`/cars/cote-divoire/ford/`
@@ -7798,6 +7799,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e87356fe70c0: en=`/blog/vat-registration-kenya-2026/`; x-default=`/blog/vat-registration-kenya-2026/`
 - equivalence:e886eb076f9f: en=`/jamb/mathematics/2004/`; x-default=`/jamb/mathematics/2004/`
 - equivalence:e89dc1f2f37d: en=`/tools/africa-conflict/forecasts`; x-default=`/tools/africa-conflict/forecasts`
+- equivalence:e8a1efbe9e91: en=`/blog/crop-insurance-quote-checklist-africa/`; x-default=`/blog/crop-insurance-quote-checklist-africa/`
 - equivalence:e8a6bd87ed79: en=`/tools/afroatlas/country/eritrea/`; x-default=`/tools/afroatlas/country/eritrea/`
 - equivalence:e8a8b3230730: en=`/blog/crypto-scam-red-flags-africa/`; x-default=`/blog/crypto-scam-red-flags-africa/`
 - equivalence:e8c9bbe07e21: en=`/agriculture/seed-rate/nigeria`, fr=`/fr/agriculture/seed-rate/nigeria`, ha=`/ha/noma/yawan-iri-najeriya/`, sw=`/sw/kilimo/kiwango-cha-mbegu/nigeria/`; x-default=`/agriculture/seed-rate/nigeria`

@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 273 |
-| sw | 138 | 0 | 296 |
+| fr | 161 | 0 | 275 |
+| sw | 138 | 0 | 298 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 306 | 40 | 0 | 266 | 21 | 0 | 285 |
+| editorial | 308 | 40 | 0 | 268 | 21 | 0 | 287 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -131,6 +131,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/cost-of-living-lagos-vs-nairobi/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/crop-insurance-quote-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/crop-insurance-quote-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crop-yield-calculator-african-farming/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/crop-yield-calculator-african-farming/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crypto-scam-red-flags-africa/ | editorial | fr | — | missing | no localized route or owner file |
@@ -199,6 +201,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/funeral-cost-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/gambia-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/gambia-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/gambia-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/gambia-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/generator-size-for-home-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/generator-size-for-home-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/generator-vs-solar/ | editorial | fr | — | missing | no localized route or owner file |
