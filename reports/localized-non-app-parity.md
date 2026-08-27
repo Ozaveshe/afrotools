@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 275 |
-| sw | 138 | 0 | 298 |
+| fr | 161 | 0 | 277 |
+| sw | 138 | 0 | 300 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 308 | 40 | 0 | 268 | 21 | 0 | 287 |
+| editorial | 310 | 40 | 0 | 270 | 21 | 0 | 289 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -348,6 +348,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/mortgage-calculator-nigeria-homebuyer/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mortgage-rates-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/mortgage-rates-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/mozambique-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/mozambique-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/naira-in-words/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/naira-in-words/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/namibia-paye-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -394,6 +396,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/paint-quantity-per-room-kenya/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/passport-photo-requirements-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/passport-photo-requirements-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/password-protect-pdf-before-sharing-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/password-protect-pdf-before-sharing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/payslip-explained-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/paystack-fees-explained/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/paystack-fees-explained/ | editorial | sw | — | missing | no localized route or owner file |

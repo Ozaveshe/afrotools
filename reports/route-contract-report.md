@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11512 |
-| Indexable pages | 9933 |
+| Public pages | 11514 |
+| Indexable pages | 9935 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5239 |
-| Documented fallbacks | 14766 |
-| Routes eligible for primary sitemaps | 9933 |
+| Genuine equivalence groups | 5241 |
+| Documented fallbacks | 14768 |
+| Routes eligible for primary sitemaps | 9935 |
 
 ## Locale Coverage
 
-- en: 5966 page records
+- en: 5968 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 513
+- article: 515
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3725,6 +3725,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2307f5437b08: en=`/agriculture/fish-farming/uganda`, fr=`/fr/agriculture/fish-farming/uganda`, sw=`/sw/kilimo/ufugaji-samaki/uganda/`; x-default=`/agriculture/fish-farming/uganda`
 - equivalence:2312ceba0733: en=`/agriculture/crop-insurance/kenya`; x-default=`/agriculture/crop-insurance/kenya`
 - equivalence:232a23801ead: en=`/tools/solar-roi/rwanda/`, fr=`/fr/tools/roi-solaire/rwanda/`; x-default=`/tools/solar-roi/rwanda/`
+- equivalence:2332155a7dce: en=`/blog/mozambique-vat-filing-guide-2026/`; x-default=`/blog/mozambique-vat-filing-guide-2026/`
 - equivalence:23381afb0958: en=`/tools/paygo-solar/senegal/`; x-default=`/tools/paygo-solar/senegal/`
 - equivalence:233d0d5f0d1d: en=`/cars/tunisia/mercedes-benz/`, fr=`/fr/cars/tunisie/mercedes-benz/`; x-default=`/cars/tunisia/mercedes-benz/`
 - equivalence:234346a7a934: en=`/tools/fleet-fuel/`, fr=`/fr/tools/budget-carburant-flotte/`, sw=`/sw/zana/gharama-mafuta-ya-fleet/`; x-default=`/tools/fleet-fuel/`
@@ -4141,6 +4142,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3694ea4dad6e: en=`/cars/algeria/honda/accord/2014/`, fr=`/fr/cars/algerie/honda/accord/2014/`; x-default=`/cars/algeria/honda/accord/2014/`
 - equivalence:36be8e40fe68: en=`/cars/tunisia/mazda/`, fr=`/fr/cars/tunisie/mazda/`; x-default=`/cars/tunisia/mazda/`
 - equivalence:36e71b0edd9e: en=`/tools/voter-registration/`, fr=`/fr/tools/guide-inscription-electorale/`, sw=`/sw/zana/usajili-wa-mpiga-kura/`; x-default=`/tools/voter-registration/`
+- equivalence:36f076d4b53c: en=`/blog/password-protect-pdf-before-sharing-africa/`; x-default=`/blog/password-protect-pdf-before-sharing-africa/`
 - equivalence:36f168bc96e1: en=`/tools/africa-conflict/conflicts/burkina-faso-insurgency/`; x-default=`/tools/africa-conflict/conflicts/burkina-faso-insurgency/`
 - equivalence:3710d0906039: en=`/agriculture/vaccination-schedule/ethiopia`; x-default=`/agriculture/vaccination-schedule/ethiopia`
 - equivalence:371b9cac0b4a: en=`/cars/zambia/toyota/camry/2005/`, fr=`/fr/cars/zambie/toyota/camry/2005/`; x-default=`/cars/zambia/toyota/camry/2005/`
