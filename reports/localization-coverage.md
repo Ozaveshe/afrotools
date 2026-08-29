@@ -6,20 +6,20 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 11514 |
-| native | 8944 |
+| rawPages | 11516 |
+| native | 8946 |
 | localizedShell | 2516 |
 | englishFallback | 33 |
 | unavailable | 20 |
 | deprecated | 1 |
-| indexableEligible | 9935 |
-| sitemapEligible | 9935 |
+| indexableEligible | 9937 |
+| sitemapEligible | 9937 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 5968 | 5968 | 0 | 0 | 0 | 0 | 5008 | 180 |
+| en | default | 5970 | 5970 | 0 | 0 | 0 | 0 | 5010 | 180 |
 | fr | launched | 3802 | 2183 | 1618 | 0 | 0 | 1 | 3243 | 180 |
 | sw | launched | 1594 | 762 | 827 | 5 | 0 | 0 | 1582 | 180 |
 | yo | partial | 45 | 9 | 13 | 3 | 20 | 0 | 22 | 180 |
@@ -33,7 +33,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | Page type | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | api | 3 | 3 | 0 | 0 | 0 | 0 | 3 |
-| article | 515 | 515 | 0 | 0 | 0 | 0 | 385 |
+| article | 517 | 517 | 0 | 0 | 0 | 0 | 387 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
 | category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
 | country-tool | 514 | 186 | 327 | 0 | 0 | 1 | 510 |

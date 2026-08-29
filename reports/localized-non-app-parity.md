@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 277 |
-| sw | 138 | 0 | 300 |
+| fr | 161 | 0 | 279 |
+| sw | 138 | 0 | 302 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 310 | 40 | 0 | 270 | 21 | 0 | 289 |
+| editorial | 312 | 40 | 0 | 272 | 21 | 0 | 291 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -333,6 +333,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/lobola-price-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/malawi-vat-digital-services-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/malawi-vat-digital-services-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/market-stall-daily-profit-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/market-stall-daily-profit-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mauritius-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/mauritius-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mauritius-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -499,6 +501,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/south-africa-small-business-tax-calendar-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-small-business-tax-calendar-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-tax-brackets-2025-26/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-tax-compliance-status-pin-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-tax-compliance-status-pin-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-tax-free-savings-account-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-tax-free-savings-account-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-transfer-duty-2026-27/ | editorial | fr | — | missing | no localized route or owner file |

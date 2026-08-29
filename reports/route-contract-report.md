@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11514 |
-| Indexable pages | 9935 |
+| Public pages | 11516 |
+| Indexable pages | 9937 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5241 |
-| Documented fallbacks | 14768 |
-| Routes eligible for primary sitemaps | 9935 |
+| Genuine equivalence groups | 5243 |
+| Documented fallbacks | 14770 |
+| Routes eligible for primary sitemaps | 9937 |
 
 ## Locale Coverage
 
-- en: 5968 page records
+- en: 5970 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 515
+- article: 517
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3173,6 +3173,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:081fddf5df5a: en=`/cars/south-africa/lexus/`, fr=`/fr/cars/afrique-du-sud/lexus/`; x-default=`/cars/south-africa/lexus/`
 - equivalence:0833f0f0970c: en=`/agriculture/farm-profit/angola`, fr=`/fr/agriculture/farm-profit/angola`, sw=`/sw/kilimo/faida-ya-shamba/angola/`; x-default=`/agriculture/farm-profit/angola`
 - equivalence:0841607eef0e: en=`/cars/botswana/ford/`, fr=`/fr/cars/botswana/ford/`; x-default=`/cars/botswana/ford/`
+- equivalence:084419529db0: en=`/blog/south-africa-tax-compliance-status-pin-2026/`; x-default=`/blog/south-africa-tax-compliance-status-pin-2026/`
 - equivalence:084b8fd68c49: en=`/cars/mozambique/toyota/hilux/2015/`, fr=`/fr/cars/mozambique/toyota/hilux/2015/`; x-default=`/cars/mozambique/toyota/hilux/2015/`
 - equivalence:0850f86b5059: en=`/tools/matric-points/`, fr=`/fr/tools/points-matric/`, sw=`/sw/zana/kikokotoo-aps-matric/`; x-default=`/tools/matric-points/`
 - equivalence:0852f28c08d0: en=`/cars/south-africa/mazda/`, fr=`/fr/cars/afrique-du-sud/mazda/`; x-default=`/cars/south-africa/mazda/`
@@ -6808,6 +6809,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b867cf9c8dc6: fr=`/fr/widgets/rendement-investissement/`; x-default=`/fr/widgets/rendement-investissement/`
 - equivalence:b8728f481422: en=`/tools/domestic-worker/cote-divoire/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cote-d-ivoire/`; x-default=`/tools/domestic-worker/cote-divoire/`
 - equivalence:b88f22e1f57a: en=`/tools/creator-money/`, fr=`/fr/tools/revenus-du-createur/`, sw=`/sw/zana/mapato-ya-mtayarishi/`; x-default=`/tools/creator-money/`
+- equivalence:b896a6311627: en=`/blog/market-stall-daily-profit-checklist-africa/`; x-default=`/blog/market-stall-daily-profit-checklist-africa/`
 - equivalence:b8b4f29a27cd: en=`/tools/workers-comp/south-sudan`; x-default=`/tools/workers-comp/south-sudan`
 - equivalence:b8bd612b187c: en=`/kenya/ke-vat`, fr=`/fr/kenya/ke-vat`, sw=`/sw/kenya/kikokotoo-vat/`; x-default=`/kenya/ke-vat`
 - equivalence:b8bf7ebb4b9b: en=`/tools/work-permit-cost/eritrea/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-erythree/`; x-default=`/tools/work-permit-cost/eritrea/`
