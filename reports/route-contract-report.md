@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11516 |
-| Indexable pages | 9937 |
+| Public pages | 11517 |
+| Indexable pages | 9938 |
 | Permanent and temporary redirects | 2949 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 177 |
-| Genuine equivalence groups | 5243 |
-| Documented fallbacks | 14770 |
-| Routes eligible for primary sitemaps | 9937 |
+| Genuine equivalence groups | 5244 |
+| Documented fallbacks | 14771 |
+| Routes eligible for primary sitemaps | 9938 |
 
 ## Locale Coverage
 
-- en: 5970 page records
+- en: 5971 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 517
+- article: 518
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4287,6 +4287,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3df8a0a6ba6c: en=`/agriculture/fertilizer/libya`, fr=`/fr/agriculture/fertilizer/libya`, sw=`/sw/kilimo/mbolea/libya/`; x-default=`/agriculture/fertilizer/libya`
 - equivalence:3e0450c30e90: en=`/tools/zakat-calculator/`, fr=`/fr/tools/calculateur-zakat/`, sw=`/sw/zana/kikokotoo-zakat/`; x-default=`/tools/zakat-calculator/`
 - equivalence:3e0c46a69a4f: en=`/agriculture/export-docs/lesotho`; x-default=`/agriculture/export-docs/lesotho`
+- equivalence:3e11f4b05ac3: en=`/blog/household-appliance-electricity-audit-africa/`; x-default=`/blog/household-appliance-electricity-audit-africa/`
 - equivalence:3e52627dd44e: en=`/tools/afrokitchen/recipes/sambusa-so/`; x-default=`/tools/afrokitchen/recipes/sambusa-so/`
 - equivalence:3e57f771924c: en=`/cars/nigeria/mazda/demio/2017/`, fr=`/fr/cars/nigeria/mazda/demio/2017/`; x-default=`/cars/nigeria/mazda/demio/2017/`
 - equivalence:3e597824c68e: en=`/tools/staff-cost/`, fr=`/fr/tools/cout-employe/`, ha=`/ha/kayan-aiki/kudin-maikaci/`, sw=`/sw/zana/bajeti-ya-gharama-za-wafanyakazi/`; x-default=`/tools/staff-cost/`

@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 279 |
-| sw | 138 | 0 | 302 |
+| fr | 161 | 0 | 280 |
+| sw | 138 | 0 | 303 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 312 | 40 | 0 | 272 | 21 | 0 | 291 |
+| editorial | 313 | 40 | 0 | 273 | 21 | 0 | 292 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -241,6 +241,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/hawala-remittance/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/health-insurance-africa-compared/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/health-insurance-africa-compared/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/household-appliance-electricity-audit-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/household-appliance-electricity-audit-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/housing-fund-programs-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/housing-fund-programs-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/how-much-house-can-i-afford-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
