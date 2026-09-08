@@ -588,7 +588,7 @@ ${alternateLinks}
   <meta property="og:title" content="66 outils crédit immobilier et propriété en français">
   <meta property="og:description" content="L’inventaire exact de 66 applications gratuites, sans iframe ni passerelle anglaise.">
   <meta property="og:url" content="${SITE}/fr/mortgage-property/">
-  <meta property="og:image" content="${SITE}/assets/img/tools/mortgage-property.webp">
+  <meta property="og:image" content="${SITE}/assets/img/og-default.png">
   <script type="application/ld+json">${schema}</script>
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">

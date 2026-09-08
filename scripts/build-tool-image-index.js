@@ -59,6 +59,8 @@ function buildIndex(source) {
   const current = JSON.parse(match[1]);
   const available = availableImages();
   const ownedIds = agricultureImageIds(source);
+  const reviewed = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/image-generation/reviewed-shared-artwork.json'), 'utf8'));
+  reviewed.tool_ids.forEach((id) => ownedIds.add(id));
   ownedIds.forEach((id) => {
     if (!Object.prototype.hasOwnProperty.call(current, id) && available.has(id)) {
       current[id] = available.get(id);
@@ -91,7 +93,7 @@ function run(options = {}) {
     mode: options.check ? 'check' : 'write',
     imageIds: Object.keys(index).length,
     ownedImageIds,
-    scope: 'fr-agriculture-manifest',
+    scope: 'fr-agriculture-manifest-and-reviewed-shared-artwork',
     registry: path.relative(ROOT, REGISTRY_PATH).replace(/\\/g, '/'),
   }, null, 2)}\n`);
   return index;

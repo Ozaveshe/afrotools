@@ -11,7 +11,8 @@ const {
   normalizeText,
   slugify,
   excerpt,
-  isUsableRecipeImage
+  isUsableRecipeImage,
+  findLocalRecipeImage
 } = require("./afrokitchen-static");
 
 const RULES_PATH = path.join(ROOT, "data", "afrokitchen", "cuisine-intelligence-rules.json");
@@ -207,6 +208,8 @@ function collectLocalImagePaths(slug) {
   const stems = [safeSlug, `${safeSlug}-1`, `${safeSlug}-2`, `${safeSlug}-3`, `${safeSlug}-4`, `${safeSlug}-5`];
   const extensions = [".webp", ".jpg", ".jpeg", ".png"];
   const matches = [];
+  const canonicalImage = findLocalRecipeImage(slug);
+  if (canonicalImage) matches.push(canonicalImage);
   stems.forEach((stem) => {
     extensions.forEach((extension) => {
       const relativePath = `/assets/img/kitchen/${stem}${extension}`;
