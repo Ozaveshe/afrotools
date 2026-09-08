@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { carImageName } = require('./lib/car-image-name');
 
 const root = path.join(__dirname, "..");
 const masterCatalogPath = path.join(root, "data/cars/master-vehicle-catalog.csv");
@@ -114,10 +115,6 @@ function yearBucket(year) {
   return "very_recent";
 }
 
-function imageName(vehicleId) {
-  return `${vehicleId}-hero.jpg`;
-}
-
 function imageDirectory(makeSlug, modelSlug, year) {
   return `C:/Users/Oza/Documents/afrotools/assets/img/cars/${makeSlug}/${modelSlug}/${year}/`;
 }
@@ -153,7 +150,7 @@ function buildCandidates() {
         candidatePriority: blueprint.candidatePriority || "medium",
         tags: blueprint.tags || [],
         blueprintFamily: blueprint.familyId,
-        imageName: imageName(vehicleId),
+        imageName: carImageName(vehicleId, blueprint.makeSlug, blueprint.modelSlug, year),
         saveDirectory: imageDirectory(blueprint.makeSlug, blueprint.modelSlug, year)
       });
     });

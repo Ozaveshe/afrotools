@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { carImageName } = require('./lib/car-image-name');
 
 const root = path.join(__dirname, "..");
 const masterCatalogPath = path.join(root, "data/cars/master-vehicle-catalog.csv");
@@ -197,7 +198,7 @@ function deriveImageDirectory(row) {
 }
 
 function deriveImageName(row) {
-  return `${row.vehicleId}-hero.jpg`;
+  return carImageName(row.vehicleId, row.makeSlug, row.modelSlug, row.year);
 }
 
 function buildImageManifest(rows) {
@@ -346,4 +347,5 @@ function run() {
   process.exit(1);
 }
 
-run();
+if (require.main === module) run();
+module.exports = { parseCsv, stringifyCsv, deriveImageName };
