@@ -100,6 +100,19 @@ test('forex write failure returns 503 and preserves success metadata', async () 
   assert.equal(meta.status, 'write-failed');
 });
 
+test('forex selects the newer valid provider mirror and survives one failed mirror', async () => {
+  const usd = Object.fromEntries(Object.keys(require('../data/forex/latest.json').rates).map(code => [code.toLowerCase(), 1]));
+  let failCdn = false;
+  const owner = load('scheduled-fetch-forex-rates.js', {}, async (url, options) => {
+    assert.ok(options.signal instanceof AbortSignal);
+    if (url.includes('jsdelivr') && failCdn) throw new Error('transient provider outage');
+    return { ok: true, json: async () => ({ date: url.includes('jsdelivr') ? '2026-01-01' : '2026-01-02', usd }) };
+  });
+  assert.equal((await owner.context.fetchFromFawazAhmed()).last_updated, '2026-01-02T00:00:00.000Z');
+  failCdn = true;
+  assert.equal((await owner.context.fetchFromFawazAhmed()).last_updated, '2026-01-02T00:00:00.000Z');
+});
+
 test('MCP fallback imports reject another project and duplicate rows', () => {
   const { readMcpSnapshot, PROJECT_REF, validateSnapshot, DATASETS } = require('../scripts/refresh-static-fallbacks');
   const tmp = path.join(require('node:os').tmpdir(), 'afrotools-snapshot-' + process.pid + '.json');

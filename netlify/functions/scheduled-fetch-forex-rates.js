@@ -128,11 +128,23 @@ async function fetchFromFrankfurter() {
  * Source 3: Fawaz Ahmed Currency API (GitHub-hosted, free)
  */
 async function fetchFromFawazAhmed() {
-  const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json';
-  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-  if (!res.ok) throw new Error(`FawazAhmed: HTTP ${res.status}`);
-
-  const json = await res.json();
+  // The provider documents both mirrors. CDN latest aliases can lag a daily release.
+  const urls = [
+    'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+    'https://latest.currency-api.pages.dev/v1/currencies/usd.json',
+  ];
+  const candidates = await Promise.all(urls.map(async url => {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return null;
+      const json = await res.json();
+      const stamp = Date.parse(json.date);
+      const coverage = ALL_CURRENCIES.filter(code => Number.isFinite(json.usd && json.usd[code.toLowerCase()]) && json.usd[code.toLowerCase()] > 0).length;
+      return Number.isFinite(stamp) && stamp <= Date.now() + 300000 && coverage >= MIN_SOURCE_COVERAGE ? json : null;
+    } catch (_error) { return null; }
+  }));
+  const json = candidates.filter(Boolean).sort((a, b) => Date.parse(b.date) - Date.parse(a.date))[0];
+  if (!json) throw new Error('FawazAhmed: no valid dated mirror snapshot');
   const rawRates = json.usd || {};
   const rates = {};
 
