@@ -11,6 +11,7 @@
 
 const { getStore } = require('@netlify/blobs');
 const { validateDataForKey } = require('./live-data-contracts');
+const { storageDiagnostic } = require('./storage-diagnostics');
 
 const STORE_NAME = 'live-data';
 
@@ -127,9 +128,11 @@ async function getData(key, siteUrl) {
           console.log('[data-store] Supabase hit for key: ' + key);
           return withProvenance(rows[0].data, 'live', rows[0].updated_at);
         }
+      } else {
+        console.warn('[data-store] ' + storageDiagnostic('supabase-read', key, null, res.status));
       }
     } catch (err) {
-      console.log('[data-store] Supabase read failed for ' + key + ': ' + err.message);
+      console.warn('[data-store] ' + storageDiagnostic('supabase-read', key, err));
     }
   }
 
@@ -142,7 +145,7 @@ async function getData(key, siteUrl) {
       return withProvenance(blob, 'blob');
     }
   } catch (err) {
-    console.log('[data-store] Blob miss for key: ' + key + ' — ' + err.message);
+    console.log('[data-store] ' + storageDiagnostic('blob-read', key, err));
   }
 
   // 3. Fallback: static JSON files
@@ -162,7 +165,7 @@ async function getData(key, siteUrl) {
     console.log('[data-store] Static fallback loaded for key: ' + key);
     return withProvenance(data, 'fallback');
   } catch (err) {
-    console.error('[data-store] Static fallback failed for key: ' + key + ' — ' + err.message);
+    console.error('[data-store] ' + storageDiagnostic('static-read', key, err));
     return null;
   }
 }
@@ -209,11 +212,10 @@ async function setData(key, data) {
       if (supabaseOk) {
         console.log('[data-store] Supabase written for key: ' + key);
       } else {
-        var errText = await res.text();
-        console.error('[data-store] Supabase write failed for ' + key + ': ' + res.status + ' ' + errText);
+        console.error('[data-store] ' + storageDiagnostic('supabase-write', key, null, res.status));
       }
     } catch (err) {
-      console.error('[data-store] Supabase write error for ' + key + ': ' + err.message);
+      console.error('[data-store] ' + storageDiagnostic('supabase-write', key, err));
     }
   }
 
@@ -242,7 +244,7 @@ async function updateMeta(category, metaUpdate) {
     meta[category] = Object.assign({}, meta[category] || {}, metaUpdate);
     await setData('meta', meta);
   } catch (err) {
-    console.error('[data-store] Meta update failed for ' + category + ' — ' + err.message);
+    console.error('[data-store] ' + storageDiagnostic('meta-update', 'meta', err));
   }
 }
 

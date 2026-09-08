@@ -19,6 +19,7 @@
  */
 
 const { setData, getData, updateMeta } = require('./data-store');
+const { storageDiagnostic } = require('./storage-diagnostics');
 
 // ── Supabase client for logging ─────────────────────────────────────
 const SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -41,12 +42,11 @@ async function supabaseInsert(table, row) {
       body: JSON.stringify(row),
     });
     if (!res.ok) {
-      const text = await res.text();
-      console.warn(`[scraper-base] Supabase insert failed: ${res.status} ${text}`);
+      console.warn('[scraper-base] ' + storageDiagnostic('supabase-insert', table, null, res.status));
     }
     return res.ok;
   } catch (err) {
-    console.warn(`[scraper-base] Supabase insert error: ${err.message}`);
+    console.warn('[scraper-base] ' + storageDiagnostic('supabase-insert', table, err));
     return null;
   }
 }
@@ -293,6 +293,30 @@ async function runScraper(config) {
 
   var written = await setData(blobKey, newData);
 
+  if (!written) {
+    console.error('[' + id + '] Persistence failed; last-known-good data retained.');
+    try {
+      await updateMeta(metaKey, {
+        status: 'write-failed',
+        error: 'Persistence failed',
+        last_attempt: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.warn('[scraper-base] ' + storageDiagnostic('failure-metadata', 'meta', err));
+    }
+    try {
+      await logRun(id, 'error', {
+        source: usedSource,
+        records_count: recordCount,
+        error_message: 'Persistence failed',
+        duration_ms: Date.now() - startTime,
+      });
+    } catch (err) {
+      console.warn('[scraper-base] ' + storageDiagnostic('failure-log', 'scraper_runs', err));
+    }
+    return { statusCode: 503, body: id + ': persistence failed; last-known-good data retained' };
+  }
+
   // Step 5: Write confidence scores (fire-and-forget)
   var sourceType = 'scraper';
   if (usedSource && usedSource.toLowerCase().includes('api')) sourceType = 'api';
@@ -307,8 +331,8 @@ async function runScraper(config) {
   await updateMeta(metaKey, {
     last_fetch: now,
     source: usedSource,
-    status: written ? 'ok' : 'write-failed',
-    error: written ? null : 'Write failed',
+    status: 'ok',
+    error: null,
     last_attempt: null,
     anomaly_details: null,
     records_count: recordCount,
@@ -317,10 +341,10 @@ async function runScraper(config) {
   });
 
   // Step 7: Log the run
-  await logRun(id, written ? 'ok' : 'error', {
+  await logRun(id, 'ok', {
     source: usedSource,
     records_count: recordCount,
-    error_message: written ? null : 'Blob write failed',
+    error_message: null,
     duration_ms: Date.now() - startTime,
   });
 
