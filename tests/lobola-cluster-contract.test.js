@@ -30,7 +30,8 @@ for (const [slug, code, currency] of countryPages) {
   assert(!html.includes('<iframe'), `${relative} must calculate without an iframe`);
   assert(!/embed=1|lc-tool-frame/.test(html), `${relative} must not retain the old embed path`);
   assert(html.includes('data-lobola-quick-planner'), `${relative} must expose the native quick planner`);
-  assert(html.includes(`data-country-code="${code}"`), `${relative} must use the correct country preset`);
+  assert(html.includes(`data-lobola-country-code="${code}"`), `${relative} must use the correct country preset`);
+  assert(!/\sdata-country-(?:code|name)=/.test(html), `${relative} must not expose planner metadata to country text replacement`);
   assert(html.includes(`data-currency="${currency}"`), `${relative} must use the correct currency preset`);
   assert(html.includes('/assets/js/pages/lobola-country-quick-planner.js'), `${relative} must load the shared native planner`);
   assert(html.includes('/tools/lobola-negotiation-checklist/'), `${relative} must connect to meeting preparation`);

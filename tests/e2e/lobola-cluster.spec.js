@@ -53,6 +53,16 @@ test.describe('Lobola planning cluster', () => {
       await page.goto(`/tools/lobola-calculator/${slug}/`);
       await expect(page.locator('iframe')).toHaveCount(0);
       await expect(page.locator('[data-lobola-quick-planner] .lc-quick-total')).toHaveText(expectedTotal);
+      // Reapply shared personalization after hydration: calculator metadata is not a display hook.
+      await page.waitForFunction(() => !!window.AfroCountry);
+      await page.evaluate(() => window.AfroCountry.select('NG'));
+      const planner = page.locator('[data-lobola-quick-planner]');
+      await expect(planner.locator('.lc-quick-total')).toHaveText(expectedTotal);
+      const country = await planner.getAttribute('data-lobola-country-code');
+      await expect(planner.locator('a').filter({ hasText: 'Open full family planner' })).toHaveAttribute('href', new RegExp('country=' + country));
+      await planner.locator('input[name="cattle"]').fill('0');
+      await planner.locator('input[name="cash"]').fill('100');
+      await expect(planner.locator('.lc-quick-total')).toHaveText(expectedTotal.charAt(0) + '100');
       await expect(page.getByRole('link', { name: 'Open full family planner' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Prepare the family meeting' })).toBeVisible();
       expect(consoleErrors).toEqual([]);
