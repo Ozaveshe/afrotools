@@ -1290,7 +1290,8 @@ test('French Car Import keeps every advertised action local, explicit and reopen
   const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
   expect(response && response.status(), 'Car Import route responds').toBe(200);
   await expect(page.locator('#carImportForm')).toBeVisible();
-  await expect(page.locator('#carImportResults')).toBeVisible();
+  await expect(page.locator('#carImportCountry')).toHaveValue('');
+  await expect(page.locator('#carImportResults')).toBeHidden();
   await expect(page.locator('#carImportCloudSave'), 'unsupported cloud-save action is not advertised').toHaveCount(0);
   await expectActionControlsState(
     page.locator('#carImportPdf,#carImportCsv,#carImportPrint,#carImportShare,#carImportSaveLocal'),
@@ -1520,7 +1521,7 @@ test('French Car Import keeps every advertised action local, explicit and reopen
   await expect(page.locator('#carImportModel')).toHaveValue('');
   await expect(page.locator('#carImportPurchasePrice')).toHaveValue('');
   await expect(page.locator('#carImportCustomsValue')).toHaveValue('');
-  await expect(page.locator('#carImportCountry')).toHaveValue('NG');
+  await expect(page.locator('#carImportCountry')).toHaveValue('');
   await expect(page.locator('#carImportSourceMarket')).toHaveValue('japan');
   await expectActionControlsState(nativeActions, false, 'reset keeps every stale native result action disabled');
   await expect(page.locator('[data-fr-transport-download-text]')).toBeDisabled();
