@@ -13,7 +13,14 @@
     'centralbank.go.ke',
     'resbank.co.za',
     'bceao.int',
-    'bkam.ma'
+    'bkam.ma',
+    'bog.gov.gh',
+    'cbe.org.eg',
+    'nbe.gov.et',
+    'bot.go.tz',
+    'bom.mu',
+    'bankofbotswana.bw',
+    'bou.or.ug'
   ]);
   var MAX_FUTURE_SKEW_MS = 5 * 60 * 1000;
 

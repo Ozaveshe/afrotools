@@ -175,13 +175,26 @@ function buildMetaEntry(existing, remote, payload, asOf, category) {
   return entry;
 }
 
-async function refreshStaticFallbacks() {
-  const config = getSupabaseConfig();
+function readMcpSnapshot(filename) {
+  const snapshot = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  if (snapshot.project_ref !== PROJECT_REF || !Array.isArray(snapshot.rows)) {
+    throw new Error('Expected an AfroTools MCP snapshot with project_ref and rows.');
+  }
+  return function (key) {
+    const matches = snapshot.rows.filter(row => row.key === key && row.data);
+    if (matches.length !== 1) throw new Error('Expected exactly one snapshot row for ' + key + '.');
+    return matches[0];
+  };
+}
+
+async function refreshStaticFallbacks(options = {}) {
+  const config = options.snapshotFile ? null : getSupabaseConfig();
+  const readRow = options.snapshotFile ? readMcpSnapshot(options.snapshotFile) : key => fetchLiveRow(config, key);
   const nowMs = Date.now();
   const rows = await Promise.all(DATASETS.map(function (dataset) {
-    return fetchLiveRow(config, dataset.storageKey);
+    return readRow(dataset.storageKey);
   }));
-  const metaRow = await fetchLiveRow(config, 'meta');
+  const metaRow = await readRow('meta');
 
   const snapshots = DATASETS.map(function (dataset, index) {
     const payload = dataset.category === 'fuel'
@@ -217,7 +230,8 @@ async function refreshStaticFallbacks() {
 }
 
 if (require.main === module) {
-  refreshStaticFallbacks().catch(function (error) {
+  const snapshotIndex = process.argv.indexOf('--snapshot-file');
+  refreshStaticFallbacks({ snapshotFile: snapshotIndex < 0 ? null : process.argv[snapshotIndex + 1] }).catch(function (error) {
     console.error('Static fallback refresh failed: ' + (error.stack || error.message));
     process.exit(1);
   });
@@ -227,6 +241,7 @@ module.exports = {
   DATASETS,
   META_PATH,
   PROJECT_REF,
+  readMcpSnapshot,
   atomicWriteJson,
   canonicalTimestamp,
   enrichFuelSourceMetadata,

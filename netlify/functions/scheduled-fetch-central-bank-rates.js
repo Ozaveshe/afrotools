@@ -11,7 +11,6 @@
 const fs = require('fs');
 const path = require('path');
 const { getData, setData, updateMeta } = require('./_shared/data-store');
-const { fetchWithRetry } = require('./_shared/scraper-base');
 const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
@@ -118,12 +117,12 @@ function directionFromRates(fromRate, toRate) {
   return 'unchanged';
 }
 
-async function fetchText(url) {
-  var res = await fetchWithRetry(url, {
-    retries: 3,
-    backoffMs: 1200,
+async function fetchText(url, options = {}) {
+  var res = await fetch(url, {
+    signal: options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(5000)]) : AbortSignal.timeout(5000),
     headers: { 'user-agent': USER_AGENT, accept: 'text/html,application/xhtml+xml' }
   });
+  if (!res.ok) throw new Error('Official policy source returned HTTP ' + res.status);
   return await res.text();
 }
 
@@ -136,7 +135,7 @@ async function fetchWorldBankInflation() {
 
   console.log('[rates-fetch] Fetching World Bank inflation data...');
 
-  var res = await fetch(url);
+  var res = await fetch(url, { signal: AbortSignal.timeout(3000) });
   if (!res.ok) throw new Error('World Bank API: HTTP ' + res.status);
 
   var json = await res.json();
@@ -186,9 +185,9 @@ function extractCbnPolicyRate(body) {
   return null;
 }
 
-async function fetchCbnUpdate() {
+async function fetchCbnUpdate(options = {}) {
   var url = 'https://www.cbn.gov.ng/MonetaryPolicy/decisions.html';
-  var text = cleanHtmlText(await fetchText(url));
+  var text = cleanHtmlText(await fetchText(url, options));
   var sectionPattern = /Key Decisions of the Central Bank of Nigeria Monetary Policy Committee ([A-Za-z]+)\s+(\d{1,2})-(\d{1,2}),\s+(\d{4})([\s\S]*?)(?=Key Decisions of the Central Bank of Nigeria Monetary Policy Committee|$)/gi;
   var sections = [];
   var match;
@@ -226,9 +225,9 @@ async function fetchCbnUpdate() {
   }];
 }
 
-async function fetchCbkUpdate() {
+async function fetchCbkUpdate(options = {}) {
   var url = 'https://www.centralbank.go.ke/central-bank-rate/';
-  var text = cleanHtmlText(await fetchText(url));
+  var text = cleanHtmlText(await fetchText(url, options));
   var anchor = text.indexOf('Central Bank Rate (CBR) % Date Rate');
   if (anchor >= 0) {
     text = text.slice(anchor);
@@ -316,8 +315,9 @@ function buildSarbCandidateUrls(homeHtml) {
   });
 }
 
-async function fetchOptionalHtml(url) {
+async function fetchOptionalHtml(url, options = {}) {
   var res = await fetch(url, {
+    signal: options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(5000)]) : AbortSignal.timeout(5000),
     headers: { 'user-agent': USER_AGENT, accept: 'text/html,application/xhtml+xml' }
   });
   if (res.status === 404) return null;
@@ -343,10 +343,14 @@ function extractSarbStatement(entry, text) {
   };
 }
 
-async function fetchSarbUpdates() {
+async function fetchSarbUpdates(options = {}) {
   var homeUrl = 'https://www.resbank.co.za/';
-  var homeHtml = await fetchText(homeUrl);
-  var ranked = buildSarbCandidateUrls(homeHtml);
+  var homeHtml = await fetchText(homeUrl, options);
+  var now = new Date();
+  var ranked = buildSarbCandidateUrls(homeHtml).filter(function(entry) {
+    return entry.year < now.getUTCFullYear() ||
+      (entry.year === now.getUTCFullYear() && entry.month <= now.getUTCMonth() + 1);
+  });
 
   if (ranked.length === 0) {
     throw new Error('SARB parser failed to locate MPC statement links');
@@ -354,9 +358,10 @@ async function fetchSarbUpdates() {
 
   var parsed = [];
   for (var i = 0; i < ranked.length; i++) {
+    if (options.signal && options.signal.aborted) break;
     var entry = ranked[i];
     try {
-      var html = await fetchOptionalHtml(entry.pathname);
+      var html = await fetchOptionalHtml(entry.pathname, options);
       if (!html) continue;
       var statement = extractSarbStatement(entry, cleanHtmlText(html));
       if (!statement) continue;
@@ -431,9 +436,9 @@ async function fetchSarbUpdates() {
   }];
 }
 
-async function fetchBceaoUpdates() {
+async function fetchBceaoUpdates(options = {}) {
   var url = 'https://www.bceao.int/fr';
-  var text = cleanHtmlText(await fetchText(url));
+  var text = cleanHtmlText(await fetchText(url, options));
   var rateMatch = text.match(/Taux minimum de soumission\s*:\s*(\d{1,2}(?:[\.,]\d{1,2})?)\s*%/i);
   var dateMatch = text.match(/Effectifs depuis le\s+(\d{1,2}\s+[a-z]+\s+\d{4})/i);
 
@@ -455,9 +460,9 @@ async function fetchBceaoUpdates() {
   });
 }
 
-async function fetchBeacUpdates() {
+async function fetchBeacUpdates(options = {}) {
   var url = 'https://www.beac.int/';
-  var text = cleanHtmlText(await fetchText(url));
+  var text = cleanHtmlText(await fetchText(url, options));
   var rateMatch = text.match(/Taux d'interet des appels d'offres\s*(\d{1,2}(?:[\.,]\d{1,2})?)\s*%/i);
   var dateMatch = text.match(/Decision N°[^.]*du\s+(\d{1,2}\s+[a-z]+\s+\d{4})\s+portant fixation des taux directeurs/i);
 
@@ -479,54 +484,34 @@ async function fetchBeacUpdates() {
   });
 }
 
-async function fetchBogUpdate() {
-  var marchUrl = 'https://www.bog.gov.gh/news/mpc-decision-statement-submissions-by-members-march-2026/';
-  var homepageUrl = 'https://www.bog.gov.gh/';
-  var html = await fetchText(marchUrl);
-
-  if (/Radware Captcha Page/i.test(html)) {
-    throw new Error('BoG official page blocked by captcha');
+async function fetchBogUpdate(options = {}) {
+  var url = 'https://www.bog.gov.gh/monetary-policy/policy-rate-trends/';
+  var html = await fetchText(url, options);
+  if (/Radware Captcha Page/i.test(html)) throw new Error('BoG official page blocked by captcha');
+  var rows = Array.from(html.matchAll(/<tr[\s\S]*?<\/tr>/gi)).map(function(match) {
+    var cells = Array.from(match[0].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)).map(function(cell) { return cleanHtmlText(cell[1]); });
+    if (cells.length !== 4 || !/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(cells[2])) return null;
+    var stamp = Date.parse(cells[2] + ' 00:00:00 GMT');
+    return Number.isFinite(stamp) ? { date: new Date(stamp).toISOString().slice(0, 10), rate: parsePercent(cells[3]) } : null;
+  }).filter(function(row) { return row && row.rate !== null && row.date <= new Date().toISOString().slice(0, 10); });
+  rows.sort(function(a, b) { return a.date.localeCompare(b.date); });
+  if (!rows.length) throw new Error('BoG parser failed to locate dated policy rate rows');
+  var latest = rows[rows.length - 1];
+  var changed = latest;
+  var previous = null;
+  for (var i = rows.length - 2; i >= 0; i--) {
+    if (rows[i].rate !== latest.rate) { previous = rows[i].rate; break; }
+    changed = rows[i];
   }
-
-  var text = cleanHtmlText(html);
-  var rateMatch = text.match(/Monetary Policy Rate\s*\(MPR\)\s*by\s*(\d{1,4})\s*basis points\s*to\s*(\d{1,2}(?:\.\d{1,2})?)\s*percent/i);
-  if (!rateMatch) {
-    rateMatch = text.match(/Monetary Policy Rate\s*\(MPR\)\s*(?:was\s+)?(?:reduced|maintained|raised)\s*(?:by\s*\d{1,4}\s*basis points\s*)?(?:to|at)\s*(\d{1,2}(?:\.\d{1,2})?)\s*percent/i);
-  }
-
-  if (!rateMatch) {
-    throw new Error('BoG parser failed to locate MPR decision text');
-  }
-
-  var currentRate;
-  var previousRate = null;
-  if (rateMatch.length >= 3) {
-    var basisPoints = parseInt(rateMatch[1], 10);
-    currentRate = parsePercent(rateMatch[2]);
-    if (Number.isFinite(basisPoints) && currentRate !== null) {
-      previousRate = Number((currentRate + (basisPoints / 100)).toFixed(2));
-    }
-  } else {
-    currentRate = parsePercent(rateMatch[1]);
-  }
-
-  return [{
-    code: 'GH',
-    policy_rate: currentRate,
-    previous_rate: previousRate,
-    last_change_date: '2026-03-18',
-    source_statement_date: '2026-03-18',
-    policy_rate_name: 'Monetary Policy Rate',
-    source_name: 'Bank of Ghana MPC statement',
-    source_url: marchUrl,
-    source_note: 'Best-effort official parser using the March 2026 MPC statement. Homepage fallback remains captcha-prone.',
-    source_homepage_url: homepageUrl
-  }];
+  return [{ code: 'GH', policy_rate: latest.rate, previous_rate: previous,
+    last_change_date: changed.date, source_statement_date: latest.date,
+    policy_rate_name: 'Monetary Policy Rate', source_name: 'Bank of Ghana policy rate history',
+    source_url: url, source_note: 'Latest dated row in the official policy rate history; later reviewed MPC statements take precedence.' }];
 }
 
-async function fetchBkamUpdate() {
+async function fetchBkamUpdate(options = {}) {
   var url = 'https://www.bkam.ma/Politique-monetaire/Cadre-strategique/Decision-de-la-politique-monetaire/Historique-des-decisions';
-  var text = cleanHtmlText(await fetchText(url));
+  var text = cleanHtmlText(await fetchText(url, options));
   var rows = Array.from(text.matchAll(/(\d{2}\/\d{2}\/\d{4})\s+(\d{1,2}(?:,\d{1,2})?|\d{1,2}(?:\.\d{1,2})?)%/g))
     .map(function(match) {
       return {
@@ -593,16 +578,15 @@ async function fetchOfficialPolicyRateUpdates() {
   var updates = [];
   var errors = [];
 
-  for (var i = 0; i < fetchers.length; i++) {
-    var fn = fetchers[i];
+  var batches = await Promise.all(fetchers.map(async function(fn) {
     try {
-      var batch = await fn();
-      if (Array.isArray(batch)) updates = updates.concat(batch);
+      return await fn({ signal: AbortSignal.timeout(12000) });
     } catch (err) {
-      errors.push(err.message);
-      console.error('[rates-fetch] Official source failed: ' + err.message);
+      errors.push(fn.name + ': ' + (err.name === 'TimeoutError' || err.name === 'AbortError' ? 'timeout' : 'source unavailable or unparseable'));
+      return [];
     }
-  }
+  }));
+  batches.forEach(function(batch) { if (Array.isArray(batch)) updates = updates.concat(batch); });
 
   return { updates: updates, errors: errors };
 }
@@ -645,6 +629,20 @@ function mergeInflationData(data, inflationMap) {
   });
 }
 
+function mergePolicyUpdates(automatic, manual, nowIso) {
+  var result = automatic.slice();
+  manual.forEach(function(update) {
+    var reviewed = Date.parse(update.reviewed_at || '');
+    var age = Date.parse(nowIso) - reviewed;
+    if (!Number.isFinite(age) || age < 0 || age > 7 * 86400000) return;
+    var found = result.find(function(item) { return item.code === update.code; });
+    if (found && String(found.source_statement_date || '') >= String(update.source_statement_date || '')) return;
+    result = result.filter(function(item) { return item.code !== update.code; });
+    result.push(Object.assign({}, update, { verification_kind: 'manual', verified_at: update.reviewed_at }));
+  });
+  return result;
+}
+
 function applyPolicyRateUpdates(data, updates, nowIso) {
   var nowDate = nowIso.slice(0, 10);
   var countryMap = {};
@@ -656,21 +654,25 @@ function applyPolicyRateUpdates(data, updates, nowIso) {
   updates.forEach(function(update) {
     var country = countryMap[update.code];
     if (!country || update.policy_rate === null || update.policy_rate === undefined) return;
+    var sourceDate = update.source_statement_date || update.last_change_date;
+    if (country.policy_rate_source_date && String(sourceDate || '') < country.policy_rate_source_date) return;
 
     var currentRate = parsePercent(update.policy_rate);
+    if (currentRate === null || currentRate < 0 || currentRate > 100) return;
     var oldRate = country.policy_rate;
     var previousRate = update.previous_rate !== null && update.previous_rate !== undefined
       ? parsePercent(update.previous_rate)
       : oldRate;
-    var effectiveDate = update.last_change_date || (country.last_rate_change && country.last_rate_change.date) || country.last_updated || nowDate;
-    var statementDate = update.source_statement_date || effectiveDate;
+    var effectiveDate = update.last_change_date || (Number(oldRate) === currentRate && country.last_rate_change && country.last_rate_change.date) || null;
+    var statementDate = sourceDate || null;
 
     country.policy_rate = currentRate;
     if (update.policy_rate_name) country.policy_rate_name = update.policy_rate_name;
-    country.last_updated = nowDate;
+    country.last_updated = (update.verified_at || nowIso).slice(0, 10);
     country.policy_rate_source = update.source_name;
     country.policy_rate_source_url = update.source_url;
-    country.policy_rate_verified_at = nowIso;
+    country.policy_rate_verified_at = update.verified_at || nowIso;
+    country.policy_rate_verification_kind = update.verification_kind || 'automatic';
     country.policy_rate_source_date = statementDate;
     if (update.source_note) {
       country.policy_rate_source_note = update.source_note;
@@ -692,6 +694,8 @@ function applyPolicyRateUpdates(data, updates, nowIso) {
 }
 
 exports._private = {
+  mergePolicyUpdates,
+  applyPolicyRateUpdates,
   fetchCbnUpdate,
   fetchCbkUpdate,
   fetchSarbUpdates,
@@ -725,15 +729,11 @@ exports.handler = async function () {
 
   var officialResult = await fetchOfficialPolicyRateUpdates();
   var manualOverrides = loadManualPolicyOverrides();
-  var mergedUpdates = officialResult.updates.slice();
-  manualOverrides.updates.forEach(function(update) {
-    mergedUpdates = mergedUpdates.filter(function(item) {
-      return item.code !== update.code;
-    });
-    mergedUpdates.push(update);
-  });
+  var mergedUpdates = mergePolicyUpdates(officialResult.updates, manualOverrides.updates, nowIso);
 
   var verifiedCodes = applyPolicyRateUpdates(data, mergedUpdates, nowIso);
+  var manualCodes = mergedUpdates.filter(function(update) { return update.verification_kind === 'manual' && verifiedCodes.includes(update.code); })
+    .map(function(update) { return update.code; }).sort();
 
   var worldBankSuccess = false;
   try {
@@ -750,21 +750,22 @@ exports.handler = async function () {
   var wasStale = dataAge > THIRTY_DAYS_MS;
 
   data.schemaVersion = 1;
-  data.timestamp = nowIso;
+  // A failed collection must not make the retained reference snapshot look fresh.
+  data.timestamp = verifiedCodes.length > 0 ? nowIso : data.timestamp;
   data.inflation_enriched_at = worldBankSuccess ? nowIso : data.inflation_enriched_at || null;
   data._enriched = worldBankSuccess ? 'worldbank' : 'none';
   data._verification = {
-    policy_rate_verified_at: nowIso,
+    policy_rate_verified_at: verifiedCodes.length > 0 ? nowIso : null,
     verified_count: verifiedCodes.length,
     verified_codes: verifiedCodes,
-    manual_official_count: manualOverrides.codes.length,
-    manual_official_codes: manualOverrides.codes,
+    manual_official_count: manualCodes.length,
+    manual_official_codes: manualCodes,
     manual_override_generated_at: manualOverrides.generated_at,
     official_source_failures: officialResult.errors,
     partial: verifiedCodes.length < data.countries.length
   };
-  data._note = (verifiedCodes.length > 0 || manualOverrides.codes.length > 0)
-    ? 'Policy rates were refreshed from official sources where machine-readable verification is available, with manual official overrides for captcha-protected sources. Remaining countries use the maintained reference snapshot.'
+  data._note = (verifiedCodes.length > 0)
+    ? 'Policy rates were refreshed from official pages and dated statements reviewed manually. Remaining countries retain reference values and are withheld from the verified policy-rate API.'
     : 'Policy rate data remains on the maintained reference snapshot. Manual refresh recommended.';
 
   var written = await setData('rates-latest', data);
@@ -784,19 +785,21 @@ exports.handler = async function () {
 
   var sourceParts = [];
   if (verifiedCodes.length > 0) sourceParts.push('official-policy-pages');
-  if (manualOverrides.codes.length > 0) sourceParts.push('manual-official-overrides');
+  if (manualCodes.length > 0) sourceParts.push('manual-official-overrides');
   if (worldBankSuccess) sourceParts.push('worldbank-inflation');
   if (sourceParts.length === 0) sourceParts.push('cache');
 
   var status = verifiedCodes.length > 0 ? 'ok' : (wasStale ? 'stale' : 'reference');
   await updateMeta('rates', {
-    last_fetch: nowIso,
+    last_fetch: data.timestamp,
+    last_attempt: nowIso,
+    error: null,
     source: sourceParts.join('+'),
     status: status,
     countries_count: data.countries.length,
     wb_enriched: worldBankSuccess,
     verified_count: verifiedCodes.length,
-    manual_official_count: manualOverrides.codes.length,
+    manual_official_count: manualCodes.length,
     verification_partial: verifiedCodes.length < data.countries.length,
     official_source_failures: officialResult.errors.slice(0, 5)
   });
