@@ -118,7 +118,8 @@ function safeHostname(url) {
 }
 
 function check(id, label, status, detail, fix) {
-  return { id: id, label: label, status: status, detail: detail || '', fix: status === 'pass' ? '' : (fix || '') };
+  var heuristic = /^(title-(?:long|short)|desc-(?:long|short)|thin-content|content-ok|h1-multiple|img-lazy|html-|ttfb-|scripts-|redirect-chain)/.test(id);
+  return { id: id, label: label, status: status, detail: detail || '', fix: status === 'pass' ? '' : (fix || ''), evidence: heuristic ? 'Heuristic: review in page context' : 'Observed in fetched HTML or response' };
 }
 
 function gradeFromChecks(checks) {
@@ -178,8 +179,9 @@ function analyzeIndexing(page, fetchMeta) {
   var checks = [];
   var robotsMeta = String(page.robotsMeta || '').toLowerCase();
   var xRobots = String(fetchMeta && fetchMeta.xRobotsTag || '').toLowerCase();
-  if (robotsMeta.indexOf('noindex') >= 0 || xRobots.indexOf('noindex') >= 0) {
-    checks.push(check('noindex', 'Indexability', 'fail', 'The page carries a noindex directive (' + (robotsMeta.indexOf('noindex') >= 0 ? 'meta robots' : 'X-Robots-Tag header') + ').', 'Remove noindex if this page should appear in search results.'));
+  var blocksIndex = /(?:^|[\s,;:])(?:noindex|none)(?:$|[\s,;])/;
+  if (blocksIndex.test(robotsMeta) || blocksIndex.test(xRobots)) {
+    checks.push(check('noindex', 'Indexability', 'fail', 'The page carries a noindex or none directive (' + (blocksIndex.test(robotsMeta) ? 'meta robots' : 'X-Robots-Tag header') + ').', 'Remove the blocking directive if this page should appear in search results.'));
   } else {
     checks.push(check('indexable', 'Indexability', 'pass', 'No noindex directive found.'));
   }
@@ -203,10 +205,7 @@ function analyzeIndexing(page, fetchMeta) {
     if (fetchMeta.sitemap.found) checks.push(check('sitemap-ok', 'XML sitemap', 'pass', 'Sitemap reachable at ' + (fetchMeta.sitemap.url || '/sitemap.xml') + '.'));
     else checks.push(check('sitemap-missing', 'XML sitemap', 'warn', 'No sitemap found at /sitemap.xml or in robots.txt.', 'Publish an XML sitemap and reference it from robots.txt.'));
   }
-  if (fetchMeta && fetchMeta.llmsTxt) {
-    if (fetchMeta.llmsTxt.found) checks.push(check('llms-ok', 'llms.txt', 'pass', 'llms.txt found — AI crawlers get guidance.'));
-    else checks.push(check('llms-missing', 'llms.txt', 'warn', 'No llms.txt file found.', 'Add /llms.txt describing your key pages — AI search tools (ChatGPT, Perplexity) use it to cite you.'));
-  }
+  // llms.txt is not a Google ranking or visibility requirement; do not score it.
 
   if (page.hreflangs.length) {
     var badHreflang = page.hreflangs.filter(function (item) { return !item.href || !item.hreflang; });
@@ -237,16 +236,16 @@ function analyzeContent(page) {
   else if (page.headings.length) checks.push(check('heading-ok', 'Heading structure', 'pass', page.headings.length + ' headings in a clean hierarchy.'));
 
   if (page.wordCount < THIN_CONTENT_WORDS) {
-    checks.push(check('thin-content', 'Content depth', 'warn', 'Only about ' + page.wordCount + ' words of visible text.', 'Pages under ~' + THIN_CONTENT_WORDS + ' words rarely rank for competitive queries. Add genuinely useful detail, not padding.'));
+    checks.push(check('thin-content', 'Content depth', 'warn', 'About ' + page.wordCount + ' words in fetched HTML (heuristic).', 'Review whether this page answers its intended task. There is no minimum ranking word count; a useful calculator or short answer may need little text. Do not add padding.'));
   } else {
     checks.push(check('content-ok', 'Content depth', 'pass', 'About ' + page.wordCount + ' words of visible text.'));
   }
 
   var images = page.images;
-  var missingAlt = images.filter(function (img) { return !String(img.alt || '').trim() && String(img.role || '') !== 'presentation'; });
+  var missingAlt = images.filter(function (img) { return !Object.prototype.hasOwnProperty.call(img, 'alt') && String(img.role || '') !== 'presentation'; });
   if (!images.length) checks.push(check('img-none', 'Image alt text', 'pass', 'No images on the page.'));
   else if (missingAlt.length) checks.push(check('img-alt-missing', 'Image alt text', missingAlt.length > images.length / 2 ? 'fail' : 'warn', missingAlt.length + ' of ' + images.length + ' images have no alt text.', 'Describe each meaningful image in its alt attribute; use alt="" only for decoration.'));
-  else checks.push(check('img-alt-ok', 'Image alt text', 'pass', 'All ' + images.length + ' images have alt text.'));
+  else checks.push(check('img-alt-ok', 'Image alt text', 'pass', 'All ' + images.length + ' images declare alt text or a presentation role. Review whether empty alt is intentional decoration.'));
 
   var lazyCandidates = images.length >= 4 ? images.filter(function (img) { return String(img.loading || '').toLowerCase() !== 'lazy'; }).length : 0;
   if (images.length >= 4 && lazyCandidates > images.length / 2) {
@@ -293,13 +292,13 @@ function analyzeSocial(page) {
 function analyzeStructuredData(page) {
   var checks = [];
   if (!page.jsonLd.length) {
-    checks.push(check('jsonld-missing', 'Structured data', 'warn', 'No JSON-LD blocks found.', 'Add Schema.org JSON-LD (Organization, LocalBusiness, FAQ, Product...) to qualify for rich results.'));
+    checks.push(check('jsonld-missing', 'Structured data', 'warn', 'No JSON-LD blocks found.', 'Consider supported structured data that accurately describes this page. Syntax alone does not establish schema validity or rich-result eligibility.'));
   } else {
     var broken = page.jsonLd.filter(function (block) { return !block.valid; });
     var types = [];
     page.jsonLd.forEach(function (block) { types = types.concat(block.types || []); });
     if (broken.length) checks.push(check('jsonld-broken', 'Structured data validity', 'fail', broken.length + ' JSON-LD block(s) fail to parse: ' + broken[0].error, 'Fix the JSON syntax — broken blocks are ignored entirely by search engines.'));
-    else checks.push(check('jsonld-valid', 'Structured data validity', 'pass', page.jsonLd.length + ' valid JSON-LD block(s).'));
+    else checks.push(check('jsonld-valid', 'Structured data validity', 'pass', page.jsonLd.length + ' JSON-LD block(s) parse as JSON. Schema semantics and rich-result eligibility are not validated.'));
     if (types.length) checks.push(check('jsonld-types', 'Schema types', 'pass', 'Types found: ' + types.slice(0, 6).join(', ') + '.'));
   }
   return buildCategory('structuredData', 'Structured data', checks);
@@ -337,6 +336,11 @@ function analyzePerformanceSignals(page, fetchMeta) {
 
 function extractPage(html, url, fetchMeta) {
   html = String(html || '');
+  var htmlBytes = Buffer.byteLength(html, 'utf8');
+  html = html.replace(/<!--[\s\S]*?(?:-->|$)/g, '');
+  var jsonLd = collectJsonLd(html);
+  html = html.replace(/(<script\b[^>]*>)[\s\S]*?<\/script\s*>/gi, '$1</script>')
+    .replace(/(<style\b[^>]*>)[\s\S]*?<\/style\s*>/gi, '$1</style>');
   var metas = collectTags(html, 'meta');
   var links = collectTags(html, 'link');
   var images = collectTags(html, 'img');
@@ -359,7 +363,8 @@ function extractPage(html, url, fetchMeta) {
   anchors.forEach(function (anchor) {
     var href = anchor.href;
     if (!href || href.indexOf('#') === 0 || /^(javascript|mailto|tel):/i.test(href)) return;
-    var linkHost = safeHostname(/^https?:/i.test(href) ? href : 'https://' + host + (href.charAt(0) === '/' ? href : '/' + href));
+    var linkHost;
+    try { linkHost = new URL(href, url).hostname; } catch (_) { return; }
     if (!linkHost || linkHost === host) internal += 1;
     else external += 1;
     if (!anchor.text && !anchor.ariaLabel) emptyAnchors += 1;
@@ -367,11 +372,13 @@ function extractPage(html, url, fetchMeta) {
 
   var mixedContent = [];
   if (isHttps) {
-    var srcRe = /(?:src|href)\s*=\s*["'](http:\/\/[^"']+)["']/gi;
-    var srcMatch;
-    while ((srcMatch = srcRe.exec(html)) !== null && mixedContent.length < 50) {
-      if (!/^http:\/\/www\.w3\.org/i.test(srcMatch[1])) mixedContent.push(srcMatch[1]);
-    }
+    ['script', 'img', 'iframe', 'audio', 'video', 'source', 'link'].forEach(function (tag) {
+      collectTags(html, tag).forEach(function (resource) {
+        if (tag === 'link' && !/^(stylesheet|preload|modulepreload)$/i.test(resource.rel || '')) return;
+        var target = tag === 'link' ? resource.href : resource.src;
+        if (/^http:\/\//i.test(target || '') && mixedContent.length < 50) mixedContent.push(target);
+      });
+    });
   }
 
   var charsetMeta = metas.filter(function (meta) { return meta.charset; })[0];
@@ -380,6 +387,8 @@ function extractPage(html, url, fetchMeta) {
   })[0];
   var langMatch = /<html\b[^>]*\blang\s*=\s*["']?([a-zA-Z-]+)/i.exec(html);
   var canonicalLinks = linksByRel(links, 'canonical');
+  var canonical = canonicalLinks.length ? canonicalLinks[0].href : '';
+  if (canonical) { try { canonical = new URL(canonical, url).href; } catch (_) { /* preserve malformed value for review */ } }
   var iconLinks = linksByRel(links, 'icon').concat(linksByRel(links, 'shortcut icon'));
   var hreflangs = linksByRel(links, 'alternate').filter(function (link) { return link.hreflang; });
 
@@ -388,14 +397,14 @@ function extractPage(html, url, fetchMeta) {
   return {
     url: url || '',
     isHttps: isHttps,
-    htmlBytes: Buffer.byteLength(html, 'utf8'),
+    htmlBytes: htmlBytes,
     title: getTitle(html),
     metaDescription: metaByName(metas, 'description'),
-    robotsMeta: metaByName(metas, 'robots'),
+    robotsMeta: metas.filter(function (meta) { return /^(robots|googlebot)$/i.test(meta.name || ''); }).map(function (meta) { return meta.content || ''; }).join(', '),
     viewport: metaByName(metas, 'viewport'),
     charset: charsetMeta ? charsetMeta.charset : (contentTypeMeta ? contentTypeMeta.content : ''),
     lang: langMatch ? langMatch[1] : '',
-    canonical: canonicalLinks.length ? canonicalLinks[0].href : '',
+    canonical: canonical,
     favicon: iconLinks.length ? iconLinks[0].href : '',
     hreflangs: hreflangs,
     headings: collectHeadings(html),
@@ -408,7 +417,7 @@ function extractPage(html, url, fetchMeta) {
       image: metaByProperty(metas, 'og:image')
     },
     twitterCard: metaByName(metas, 'twitter:card') || metaByProperty(metas, 'twitter:card'),
-    jsonLd: collectJsonLd(html),
+    jsonLd: jsonLd,
     wordCount: textContent ? textContent.split(/\s+/).length : 0,
     scriptCount: (html.match(/<script\b/gi) || []).length
   };
@@ -439,7 +448,7 @@ function analyzeHtml(input) {
   categories.forEach(function (category) {
     category.checks.forEach(function (item) {
       if (item.status !== 'pass') {
-        issues.push({ category: category.label, label: item.label, status: item.status, detail: item.detail, fix: item.fix });
+        issues.push({ id: item.id, category: category.label, label: item.label, status: item.status, detail: item.detail, fix: item.fix, evidence: item.evidence });
       }
     });
   });
@@ -449,6 +458,14 @@ function analyzeHtml(input) {
 
   return {
     url: url,
+    methodologyVersion: '2',
+    limitations: [
+      'AfroSEO checklist score, not a Google ranking score or a prediction of traffic.',
+      'Fetched HTML only: JavaScript-rendered content and Google index status are not verified.',
+      'Speed signals are one server fetch, not Core Web Vitals or a visitor performance test.',
+      'robots.txt and sitemap checks establish reachability only; crawler rules and sitemap contents are not validated.',
+      'Length thresholds are review heuristics; structured data checks validate JSON syntax only.'
+    ],
     score: score,
     grade: grade,
     categories: categories,

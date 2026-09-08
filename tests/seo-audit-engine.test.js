@@ -140,7 +140,7 @@ function testRedirectChainAndSlowResponse() {
   assert.equal(findCheck(report, "ttfb-slow").status, "fail");
   assert.equal(findCheck(report, "redirect-chain").status, "warn");
   assert.equal(findCheck(report, "robotstxt-missing").status, "warn");
-  assert.equal(findCheck(report, "llms-missing").status, "warn");
+  assert.equal(findCheck(report, "llms-missing"), null, 'llms.txt does not affect checklist scores');
   assert.equal(findCheck(report, "sitemap-missing").status, "warn");
 }
 

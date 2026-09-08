@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AfroSEO Studio Workspace | AfroTools Pro</title>
-  <meta name="description" content="Pro SEO workspace: unlimited page audits, audit history with score tracking, Google preview editor, and schema generators.">
+  <meta name="description" content="Manage website audits, compare Search Console exports, prioritize fixes and export progress reports in AfroSEO Studio.">
   <meta name="robots" content="noindex, follow">
   <meta name="tool-id" content="seo-studio-workspace">
   <meta name="tool-category" content="pro">
@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
   <link rel="stylesheet" href="/assets/css/seo-studio.css?v=b2a0730c">
+  <link rel="stylesheet" href="/assets/css/seo-studio-projects.css?v=c06841e1">
+  <script src="/assets/js/lib/seo-studio-projects.js?v=7e7820fc" defer></script>
+  <script src="/assets/js/pages/seo-studio-workspace.js?v=f5eae932" defer></script>
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
   <script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
   <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
@@ -66,7 +69,7 @@
     <header class="ses-head">
       <div>
         <h1 class="ses-title">AfroSEO Studio</h1>
-        <p class="ses-sub">Unlimited page audits with graded fixes, audit history with score tracking, a Google preview editor, and schema generators. Every result is computed from your real page — nothing is estimated.</p>
+        <p class="ses-sub">Find the next website fix worth making. Bring your page audits and Search Console exports into one workspace, track the work, and show what changed.</p>
       </div>
       <div class="ses-actions">
         <a class="ses-btn" href="/tools/seo-studio/">Public page</a>
@@ -74,17 +77,71 @@
       </div>
     </header>
 
-    <div class="ses-device-note">Audit history is saved on this device. Account sync for SEO Studio is planned and will be clearly labelled when it arrives.</div>
+    <div class="ses-device-note">Projects and imported search data stay in this browser. Export a backup to move devices or protect your work. Page audits send the URL to AfroTools to fetch its public HTML; search files are never uploaded.</div>
+
+    <div id="seoProjects" class="asp-workspace">
+      <div class="asp-toolbar">
+        <div class="asp-field"><label for="projectSelect">Website project</label><select id="projectSelect"><option value="">No projects yet</option></select></div>
+        <div class="asp-row"><button class="ses-btn" id="backupProjects" type="button">Download backup</button><button class="ses-btn" id="exportProjectReport" type="button" disabled>Export progress report</button></div>
+      </div>
+      <details class="asp-help"><summary>Create a project or restore a backup</summary>
+        <form id="createProjectForm" class="asp-row" style="margin-top:16px">
+          <div class="asp-field"><label for="newProjectName">Project name</label><input id="newProjectName" maxlength="80" required placeholder="Amina's shop"></div>
+          <div class="asp-field"><label for="newProjectUrl">Website URL</label><input id="newProjectUrl" type="url" required placeholder="https://example.com" autocomplete="url"></div>
+          <button class="ses-btn asp-primary" type="submit">Create project</button>
+        </form>
+        <p class="asp-note">Up to five device projects, each with 25 manually audited pages and five observations per page. Different subdomains or protocols are separate origins.</p>
+        <div class="asp-row"><div class="asp-field"><label for="restoreProjects">Restore AfroSEO JSON backup</label><input id="restoreProjects" type="file" accept=".json,application/json"></div><button class="ses-btn" id="deleteProject" type="button" disabled>Delete selected project</button></div>
+      </details>
+      <div id="projectStatus" class="asp-status" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div id="projectEmpty" class="asp-empty"><h2>Your next fix starts with a website.</h2><p>Create a project above, audit a page, then bring in Search Console data to see which pages deserve attention. You can still run a standalone audit below.</p></div>
+      <div id="projectDashboard" hidden>
+        <nav class="asp-nav" aria-label="SEO workspace sections"><a href="#projectOverview">Overview</a><a href="#projectFixes">Fix queue</a><a href="#projectSearch">Search performance</a><a href="#auditTitle">Page audit</a><a href="#serpTitle2">Snippet &amp; schema</a></nav>
+        <section id="projectOverview" class="asp-section" aria-labelledby="projectNameDisplay">
+          <h2 id="projectNameDisplay">Website project</h2><p id="projectOriginDisplay" class="asp-note"></p>
+          <dl class="asp-metrics"><div><dt>Pages audited</dt><dd id="metricPages">0</dd></div><div><dt>Open work</dt><dd id="metricOpen">0</dd></div><div><dt>Done, awaiting recheck</dt><dd id="metricDone">0</dd></div><div><dt>Verified resolved</dt><dd id="metricVerified">0</dd></div></dl>
+          <h3>Page observations</h3><p class="asp-note">Checklist scores describe fetched HTML, not Google rankings. A dash means there is no comparable prior observation. These are manually selected pages, not a site-wide crawl.</p>
+          <div class="asp-table-wrap" role="region" aria-label="Audited project pages" tabindex="0"><table class="asp-table"><thead><tr><th>Page</th><th>Checklist</th><th>Latest observation</th><th>Next action</th></tr></thead><tbody id="projectPagesRows"></tbody></table></div>
+        </section>
+        <section id="projectFixes" class="asp-section" aria-labelledby="projectFixesTitle">
+          <div class="asp-toolbar"><h2 id="projectFixesTitle">Fix queue</h2><div class="asp-field-small"><label for="fixFilter">Show fixes</label><select id="fixFilter"><option value="active">Needs recheck or work</option><option value="verified">Verified resolved</option><option value="all">All findings</option></select></div></div>
+          <p class="asp-note">Failures first, then imported page impressions when available. Review each recommendation in context. Marking work done does not change a score or verify a fix.</p>
+          <div class="asp-table-wrap" role="region" aria-label="Prioritized SEO fixes" tabindex="0"><table class="asp-table"><thead><tr><th>Finding</th><th>Evidence and next action</th><th>Progress</th></tr></thead><tbody id="fixRows"></tbody></table></div>
+          <div class="asp-pagination"><button id="fixPrev" class="ses-btn" type="button">Previous fixes</button><span id="fixPageLabel"></span><button id="fixNext" class="ses-btn" type="button">Next fixes</button></div>
+        </section>
+        <section id="projectSearch" class="asp-section" aria-labelledby="projectSearchTitle">
+          <h2 id="projectSearchTitle">Search performance</h2><p class="asp-note">Use your own evidence to decide what to review next. Import two single-period English Search Console Pages or Queries CSVs with the same filters and equal-length, non-overlapping date ranges.</p>
+          <details class="asp-help"><summary>How to prepare the exports</summary><ol><li>Open Search Console → Performance → Search results. Select Web, your country/device filters and the previous date range.</li><li>Export the Pages or Queries table as CSV. Repeat for the current date range with identical filters.</li><li>Enter the exact inclusive dates below. Pages must match this project's origin. Export coverage can omit anonymized queries and less frequent rows; it is not the full site total.</li></ol><p class="asp-note">Each file: at most 2 MB and 10,000 rows. Comparison exports, localized headings and ZIP files are not supported. Pages and Queries are separate aggregate views and are never joined into invented query-to-page matches.</p></details>
+          <form id="importSearchForm">
+            <div class="asp-periods">
+              <fieldset><legend>Previous period</legend><label for="previousFile">Previous Pages or Queries CSV</label><input id="previousFile" type="file" accept=".csv,text/csv" required><div class="asp-row"><div class="asp-field"><label for="previousStart">Previous start date</label><input id="previousStart" type="date" required></div><div class="asp-field"><label for="previousEnd">Previous end date</label><input id="previousEnd" type="date" required></div></div></fieldset>
+              <fieldset><legend>Current period</legend><label for="currentFile">Current Pages or Queries CSV</label><input id="currentFile" type="file" accept=".csv,text/csv" required><div class="asp-row"><div class="asp-field"><label for="currentStart">Current start date</label><input id="currentStart" type="date" required></div><div class="asp-field"><label for="currentEnd">Current end date</label><input id="currentEnd" type="date" required></div></div></fieldset>
+            </div>
+            <div class="asp-field" style="margin:16px 0"><label for="searchFilters">Matching filters used in both exports</label><input id="searchFilters" maxlength="300" required placeholder="Web; Nigeria; all devices; no query filter"></div>
+            <button id="importSearchBtn" class="ses-btn asp-primary" type="submit">Compare exports locally</button>
+          </form>
+          <div id="searchResults" hidden>
+            <h3 style="margin-top:24px">Export comparison</h3><p id="searchScope" class="asp-note"></p><p id="searchTotals"></p>
+            <p class="asp-note">Totals cover imported rows only. CTR is calculated from counts; position is weighted by impressions. Missing rows mean unknown, not zero. A change after a fix does not prove the fix caused it.</p>
+            <div class="asp-field" style="margin:16px 0"><label for="searchRowFilter">Find a page or query</label><input id="searchRowFilter" type="search" placeholder="Filter imported rows"></div>
+            <div class="asp-table-wrap" role="region" aria-label="Search performance comparison" tabindex="0"><table class="asp-table"><thead><tr><th>Page or query</th><th>Clicks</th><th>Impressions</th><th>CTR change</th></tr></thead><tbody id="searchRows"></tbody></table></div>
+            <div class="asp-pagination"><button id="searchPrev" class="ses-btn" type="button">Previous rows</button><span id="searchPageLabel"></span><button id="searchNext" class="ses-btn" type="button">Next rows</button></div>
+          </div>
+        </section>
+      </div>
+    </div>
 
     <section class="ses-panel" aria-labelledby="auditTitle">
       <h2 id="auditTitle">Audit a page</h2>
-      <p class="ses-note">Fetches the page live and grades 7 categories with concrete fixes. Re-audit the same URL after fixing to see your score delta.</p>
+      <p class="ses-note">Fetches public HTML and checks seven categories. With a project selected, same-origin pages are saved to its fix queue. Individual requests are rate limited; this is not an automated crawl.</p>
+      <label for="auditUrl">Public page URL to audit</label>
       <form class="ss-audit-bar" id="auditForm">
         <input type="url" id="auditUrl" placeholder="https://your-website.com/page" required inputmode="url" autocomplete="url">
         <button type="submit" id="auditBtn">Run audit</button>
       </form>
-      <div id="auditError" class="ss-error" hidden></div>
-      <div id="auditLoading" class="ss-loading" hidden>Fetching and analyzing the page…</div>
+      <div id="auditError" class="ss-error" role="alert" hidden></div>
+      <div id="auditLoading" class="ss-loading" role="status" hidden>Fetching and analyzing the page…</div>
+      <p class="ses-note">An AfroSEO checklist score is not a ranking score. JavaScript-rendered content, Google index status, Core Web Vitals, robots rules and rich-result eligibility are not verified by this audit. Length guidance is heuristic.</p>
       <div id="auditReport" aria-live="polite"></div>
     </section>
 
@@ -104,7 +161,7 @@
 
     <section class="ses-panel" aria-labelledby="serpTitle2">
       <h2 id="serpTitle2">Google preview editor</h2>
-      <p class="ses-note">Pixel-accurate title and description preview with cut-off warnings.</p>
+      <p class="ses-note">Approximate title and description preview. Google can rewrite snippets; appearance varies by query and device.</p>
       <div class="ss-formgrid">
         <div class="ss-field wide"><label for="serpTitle">Page title</label><input type="text" id="serpTitle" maxlength="120"></div>
         <div class="ss-field wide"><label for="serpDesc">Meta description</label><textarea id="serpDesc" maxlength="320"></textarea></div>
@@ -115,8 +172,8 @@
 
     <section class="ses-panel" aria-labelledby="schemaTitle">
       <h2 id="schemaTitle">Schema generators</h2>
-      <p class="ses-note">Fill the form, copy the JSON-LD, and paste it into your page's &lt;head&gt; inside a script tag with type="application/ld+json".</p>
-      <div class="ses-tabs" role="tablist">
+      <p class="ses-note">Create draft JSON-LD that accurately describes your page. Review it before placing it in a script tag with type="application/ld+json". These templates do not certify schema validity or guarantee rich results. FAQ markup does not produce Google FAQ rich results.</p>
+      <div class="ses-tabs" role="group" aria-label="Schema template">
         <button class="ses-tab active" type="button" data-schema-tab="localBusiness">Local business</button>
         <button class="ses-tab" type="button" data-schema-tab="faq">FAQ</button>
         <button class="ses-tab" type="button" data-schema-tab="product">Product</button>
@@ -213,14 +270,17 @@
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
+      if (button.disabled) return;
+      if (window.AfroSeoWorkspace) window.AfroSeoWorkspace.auditStarted();
       errorBox.hidden = true;
       button.disabled = true;
       loading.hidden = false;
       reportBox.innerHTML = "";
       try {
         var report = await ui.runAudit(urlInput.value.trim());
-        var delta = ui.saveToHistory(report);
-        ui.renderReport(reportBox, report, { delta: delta });
+        ui.saveToHistory(report);
+        ui.renderReport(reportBox, report);
+        if (window.AfroSeoWorkspace) window.AfroSeoWorkspace.observe(report);
         renderHistory();
       } catch (error) {
         errorBox.textContent = error && error.message ? error.message : "The audit failed. Check the URL and try again.";
@@ -228,6 +288,7 @@
       } finally {
         loading.hidden = true;
         button.disabled = false;
+        if (window.AfroSeoWorkspace) window.AfroSeoWorkspace.auditFinished();
       }
     });
 
