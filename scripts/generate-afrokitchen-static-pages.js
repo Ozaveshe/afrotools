@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { imageSizeFromUrl } = require('./lib/image-size');
 const {
   ROOT,
   TOOL_DIR,
@@ -3034,8 +3035,54 @@ async function main() {
   console.log(`Collection pages generated in this pass: ${manifest.wave.collection_page_count}`);
 }
 
-main().catch((error) => {
+if (require.main === module) main().catch((error) => {
   console.error("Failed to generate AfroKitchen static pages.");
   console.error(error && error.stack ? error.stack : error);
   process.exitCode = 1;
 });
+
+// Reuse the page owner for offline image-only refreshes of the saved manifest.
+function refreshRecipeImages(existing, generated) {
+  let next = existing;
+  for (const property of ['og:image', 'twitter:image']) {
+    const pattern = new RegExp('<meta (?:property|name)="' + property + '"[^>]*>');
+    const tag = generated.match(pattern);
+    if (tag) next = next.replace(pattern, tag[0]);
+  }
+  const hero = /<section class="ak-hero"[^>]*>/;
+  next = next.replace(hero, generated.match(hero)[0]);
+  const socialUrl = next.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+  const size = socialUrl ? imageSizeFromUrl(socialUrl, ROOT) : null;
+  if (size) {
+    for (const [key, value] of [['width', size.w], ['height', size.h]]) {
+      const pattern = new RegExp('<meta property="og:image:' + key + '"[^>]*>');
+      const tag = '<meta property="og:image:' + key + '" content="' + value + '">';
+      next = pattern.test(next) ? next.replace(pattern, tag) : next.replace('</head>', tag + '\n</head>');
+    }
+  }
+  const gallery = /<section class="ak-photo-gallery"[\s\S]*?<\/section>/;
+  const galleryMarkup = generated.match(gallery)?.[0] || '';
+  if (gallery.test(next)) next = next.replace(gallery, galleryMarkup);
+  else if (galleryMarkup) next = next.replace('<section class="ak-intel-panel ak-recipe-intel-panel">', galleryMarkup + '\n      <section class="ak-intel-panel ak-recipe-intel-panel">');
+  const generatedSchemas = [...generated.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => JSON.parse(m[1]));
+  const recipeSchema = generatedSchemas.find(s => s['@type'] === 'Recipe');
+  next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+    const value = JSON.parse(body);
+    if (value['@type'] !== 'Recipe' || !recipeSchema) return all;
+    value.image = recipeSchema.image;
+    return start + safeJson(value) + end;
+  });
+  // Only refresh the image/intelligence payload; preserve release-owned assets,
+  // analytics loader, hreflang, canonical and all unrelated page content.
+  const payload = /<script>window\.__AK_STATIC_RECIPE = [\s\S]*?<\/script>/;
+  const generatedPayload = generated.match(payload);
+  if (generatedPayload) next = next.replace(payload, generatedPayload[0]);
+  const cards = new Map([...generated.matchAll(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g)].map(m=>[m[1],m[0]]));
+  next = next.replace(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g, (all, href) => cards.get(href) || all);
+  next = next.replace(/<img\b[^>]*src="(\/assets\/img\/kitchen\/[^"]+)"[^>]*>/g, (tag, src) => {
+    const dimensions = imageSizeFromUrl(src, ROOT);
+    return dimensions ? tag.replace(/width="\d+"/, 'width="' + dimensions.w + '"').replace(/height="\d+"/, 'height="' + dimensions.h + '"') : tag;
+  });
+  return trimTrailingWhitespace(next);
+}
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages };
