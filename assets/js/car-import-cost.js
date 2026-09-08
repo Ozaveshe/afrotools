@@ -76,10 +76,83 @@
     function p(t) {
         return r(t) ? r(t).value : "";
     }
+    // Keep unsupported entry countries out of the engine's legacy NG fallback.
+    function supportsCountry(code) {
+        return Object.prototype.hasOwnProperty.call(a.data.countryRulePacks, code);
+    }
+    function requestedEntryCountry(fallback) {
+        var fragment = new URLSearchParams(location.hash.slice(1));
+        if (!fragment.has("requested-country")) return fallback;
+        var code = fragment.get("requested-country").trim().toUpperCase();
+        // Exact redirect destinations use these existing directory-only markets.
+        // Edited or unknown fragments must never authorize a calculation.
+        return [ "ZA", "EG", "MA", "CI", "SN", "CM", "ET", "RW", "AO", "DZ", "TN", "MZ", "BW", "NA" ].includes(code) ? code : "";
+    }
+    function prepareCountryEntry(requestedCountry) {
+        if (requestedCountry == null) return;
+        var select = r("#carImportCountry");
+        var code = String(requestedCountry).trim().toUpperCase();
+        if (supportsCountry(code)) {
+            if (select.value !== code) {
+                select.value = code;
+                u();
+            }
+            return;
+        }
+        var locale = document.documentElement.lang.split("-")[0];
+        var messages = {
+            en: { unknown: "The requested country", unavailable: " is not supported by this calculator. Your vehicle details are kept. ", choose: "Choose a supported import country to calculate a different destination.", placeholder: "Choose a supported country", selected: "Selected destination: " },
+            fr: { unknown: "Le pays demandé", unavailable: " n’est pas pris en charge par ce calculateur. Les informations sur votre véhicule sont conservées. ", choose: "Choisissez un pays pris en charge pour calculer les coûts d’une autre destination.", placeholder: "Choisir un pays pris en charge", selected: "Destination sélectionnée : " },
+            sw: { unknown: "Nchi iliyoombwa", unavailable: " haitumiki katika kikokotoo hiki. Maelezo ya gari yamehifadhiwa kwenye fomu. ", choose: "Chagua nchi inayotumika ili kukokotoa gharama kwa nchi nyingine.", placeholder: "Chagua nchi inayotumika", selected: "Nchi iliyochaguliwa: " }
+        };
+        var copy = messages[locale] || messages.en;
+        var name = /^[A-Z]{2}$/.test(code) ? code : copy.unknown;
+        try {
+            if (/^[A-Z]{2}$/.test(code)) name = new Intl.DisplayNames([ locale || "en" ], { type: "region" }).of(code);
+        } catch (_) {}
+        var notice = document.createElement("p");
+        notice.id = "carImportCountryAvailability";
+        notice.className = "car-import-help";
+        notice.setAttribute("role", "status");
+        var explanation = name + copy.unavailable;
+        notice.textContent = explanation + copy.choose;
+        select.closest("form").insertBefore(notice, select.closest("form").querySelector(".car-import-form-grid"));
+        select.insertBefore(l("", copy.placeholder, true), select.firstChild);
+        select.value = "";
+        select.required = true;
+        select.setAttribute("aria-describedby", notice.id);
+        select.setAttribute("aria-invalid", "true");
+        r("#carImportPort").innerHTML = "";
+        r("#carImportDestinationCity").innerHTML = "";
+        select.addEventListener("change", function() {
+            var supported = supportsCountry(select.value);
+            a.lastResult = null;
+            r("#carImportResults").hidden = true;
+            select.setAttribute("aria-invalid", supported ? "false" : "true");
+            notice.textContent = explanation + (supported
+                ? copy.selected + select.selectedOptions[0].textContent + "."
+                : copy.choose);
+            if (supported) {
+                var url = new URL(location.href);
+                url.searchParams.set("country", select.value);
+                var fragment = new URLSearchParams(url.hash.slice(1));
+                if (fragment.has("requested-country")) {
+                    fragment.delete("requested-country");
+                    url.hash = fragment.toString();
+                }
+                history.replaceState(null, "", url.pathname + url.search + url.hash);
+            }
+        });
+    }
     function m() {
         if (a.data) {
+            if (!supportsCountry(p("#carImportCountry"))) {
+                a.lastResult = null;
+                r("#carImportResults").hidden = true;
+                return;
+            }
             var e = {
-                countryCode: p("#carImportCountry") || c(),
+                countryCode: p("#carImportCountry"),
                 sourceMarket: p("#carImportSourceMarket") || "japan",
                 inputMode: p("#carImportInputMode") || "purchase",
                 outputMode: p("#carImportOutputMode") || "practical",
@@ -180,10 +253,10 @@
                 }
             }(e), function(t) {
                 if ("1" !== new URLSearchParams(location.search).get("prefill")) {
-                    var a = new URLSearchParams;
+                    var a = new URLSearchParams(location.search);
                     a.set("country", t.countryCode), a.set("source", t.sourceMarket), t.make && a.set("make", t.make), 
                     t.model && a.set("model", t.model), t.year && a.set("year", t.year), t.purchasePriceUsd && a.set("price", Math.round(t.purchasePriceUsd));
-                    var r = location.pathname + "?" + a.toString();
+                    var r = location.pathname + "?" + a.toString() + location.hash;
                     history.replaceState(null, "", r);
                 }
             }(e), function(t) {
@@ -559,6 +632,7 @@
                 t.has("condition") && (r.condition = t.get("condition")), t.has("engineCc") && (r.engineCc = t.get("engineCc")), 
                 t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")), 
                 Object.keys(r).length && f(r);
+                prepareCountryEntry(requestedEntryCountry(r.countryCode));
             }(), m(), r("#carImportForm").addEventListener("submit", function(t) {
                 t.preventDefault(), m();
             }), r("#carImportCountry").addEventListener("change", u), r("#carImportSourceMarket").addEventListener("change", function() {
