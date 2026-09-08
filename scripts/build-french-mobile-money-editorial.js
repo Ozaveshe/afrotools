@@ -247,8 +247,8 @@ function transform(source) {
           <div class="seo-cluster__card seo-cluster__card--cta">
             <span class="seo-cluster__kicker">Utiliser l’outil</span>
             <h3 class="seo-cluster__card-title">Comparer des frais mobile money</h3>
-            <p>Obtenez une estimation uniquement lorsqu’une combinaison est reliée à une grille officielle.</p>
-            <a class="seo-cluster__cta" href="/fr/tools/frais-mobile-money/">Ouvrir le calculateur</a>
+            <p>Tarifs intégrés : MTN en Ouganda et Airtel en Tanzanie. Pour Orange Money, comparez les devis que vous avez vérifiés vous-même.</p>
+            <a class="seo-cluster__cta" href="/fr/tools/frais-mobile-money/#mm-form">Comparer mes devis vérifiés</a>
           </div>
           <div class="seo-cluster__card">
             <h3>Guides utiles</h3>
