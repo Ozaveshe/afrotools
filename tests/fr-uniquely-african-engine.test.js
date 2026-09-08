@@ -226,6 +226,13 @@ for (const fixture of nativeFixtures.routes) {
   if (sourceSha256 !== fixture.sourceSha256) {
     nativeSourceFingerprintDrifts.push({ id: fixture.id, expected: fixture.sourceSha256, actual: sourceSha256 });
   }
+  for (const dependency of fixture.dependencyFingerprints || []) {
+    const dependencySource = fs.readFileSync(path.join(root, dependency.file), "utf8").replace(/\r\n?/g, "\n");
+    const actual = crypto.createHash("sha256").update(dependencySource).digest("hex");
+    if (actual !== dependency.sourceSha256) {
+      nativeSourceFingerprintDrifts.push({ id: fixture.id, dependency: dependency.file, expected: dependency.sourceSha256, actual });
+    }
+  }
   const frenchSource = fs.readFileSync(path.join(root, row.french.file), "utf8");
   const ownsNativeMobileMoneyContract = fixture.id === "mobile-money-fees"
     && frenchSource.includes("/assets/js/engines/mobile-money-quote-engine.js")
