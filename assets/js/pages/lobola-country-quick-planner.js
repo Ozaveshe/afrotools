@@ -26,8 +26,10 @@
   }
 
   Array.prototype.forEach.call(planners, function (root) {
-    var countryCode = root.getAttribute('data-country-code') || 'za';
-    var countryName = root.getAttribute('data-country-name') || 'South Africa';
+    // Generic data-country-* attributes are text-replacement hooks for the navbar.
+    // Planner metadata must not opt the calculator container into personalization.
+    var countryCode = root.getAttribute('data-lobola-country-code') || root.getAttribute('data-country-code') || 'za';
+    var countryName = root.getAttribute('data-lobola-country-name') || root.getAttribute('data-country-name') || 'South Africa';
     var currency = root.getAttribute('data-currency') || 'ZAR';
     var symbol = root.getAttribute('data-symbol') || currency + ' ';
     var defaultCattle = safeNumber(root.getAttribute('data-cattle'));
