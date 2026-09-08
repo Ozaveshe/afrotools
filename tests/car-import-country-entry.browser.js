@@ -96,14 +96,13 @@ const server = http.createServer((req, res) => {
         // query/hash state and requires a fresh, local form submission.
         assert.equal(new URL(page.url()).search, '');
         assert.equal(new URL(page.url()).hash, '');
-        assert.equal(await selector.inputValue(), item.locale === 'sw' ? 'KE' : 'NG');
+        assert.equal(await selector.inputValue(), item.locale === 'sw' ? 'KE' : '');
         if (item.locale === 'sw') {
           assert.equal(await page.locator('#carImportResults').isVisible(), false);
         } else {
-          // The existing French adapter gates exports, but still displays the
-          // default NG result. Record this residual; aliases target English.
-          assert.ok(await page.locator('#carImportResults').isVisible());
-          assert.ok(await page.locator('#carImportSummaryLine').innerText().then(text => text.includes('Nigeria')));
+          // The French adapter requires an explicit country before displaying
+          // an estimate, while retaining its local-only privacy boundary.
+          assert.equal(await page.locator('#carImportResults').isVisible(), false);
           assert.equal(await page.locator('#carImportPdf').isDisabled(), true);
         }
         assert.equal(await page.evaluate(() => localStorage.getItem('carImportCostLastInput')), null);
