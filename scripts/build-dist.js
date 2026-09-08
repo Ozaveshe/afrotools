@@ -170,6 +170,7 @@ const BLOCKED_RELATIVE_FILES = new Set([
 ]);
 
 const BLOCKED_RELATIVE_DIRS = new Set([
+  'data/image-generation',
   'fr/docs',
   'matchday-os',
   'assets/img/matchday',

@@ -20,6 +20,7 @@ const REQUIRED_PATHS = [
 ];
 
 const FORBIDDEN_PATHS = [
+  'data/image-generation',
   'package.json',
   'package-lock.json',
   'AGENTS.md',
