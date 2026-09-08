@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { validateDataForKey } = require('../netlify/functions/_shared/live-data-contracts');
+const { storageDiagnostic } = require('../netlify/functions/_shared/storage-diagnostics');
 const freshness = require('../netlify/functions/api-data-freshness')._test;
 
 const ROOT = path.resolve(__dirname, '..');
@@ -48,17 +49,27 @@ function getSupabaseConfig() {
 
 async function fetchLiveRow(config, key) {
   const endpoint = config.url + '/rest/v1/live_data_store?key=eq.' + encodeURIComponent(key) + '&select=key,data,updated_at';
-  const response = await fetch(endpoint, {
-    headers: {
-      apikey: config.key,
-      Authorization: 'Bearer ' + config.key,
-      Accept: 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Supabase read failed for ' + key + ': HTTP ' + response.status + ' ' + (await response.text()));
+  let response;
+  try {
+    response = await fetch(endpoint, {
+      headers: {
+        apikey: config.key,
+        Authorization: 'Bearer ' + config.key,
+        Accept: 'application/json',
+      },
+    });
+  } catch (error) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, error));
   }
-  const rows = await response.json();
+  if (!response.ok) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, null, response.status));
+  }
+  let rows;
+  try {
+    rows = await response.json();
+  } catch (error) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, error));
+  }
   if (!Array.isArray(rows) || rows.length !== 1 || !rows[0].data) {
     throw new Error('Expected one live_data_store row for ' + key + '.');
   }
