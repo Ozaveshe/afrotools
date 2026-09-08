@@ -1,16 +1,18 @@
 # Image library audit
 
-Generated 2026-09-08T06:33:21.198Z. Repository proof only; no deployment.
+Generated 2026-09-08T07:17:44.425Z. Repository proof only; no deployment.
 
 - images: 2531
-- placed: 1735
-- unassigned: 792
+- placed: 1855
+- unassigned: 0
 - duplicates: 8
 - held: 3
 - text_free_reviewed: 70
-- shared_across_locales: 1187
+- shared_across_locales: 1188
 - bytes: 128423561
 - missing_reference_candidates: 0
+- placement_review_resolved: 792
+- lifecycle_counts: [object Object]
 
 ## Review boundaries
 

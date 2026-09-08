@@ -13,3 +13,16 @@ The September 8 kitchen import has a hashed 63-file receipt. `node scripts/impor
 After updating the card index, generate its browser counterpart with `node scripts/minify.js --only=tool-registry`.
 
 Validation: `node tests/image-library.test.js`, `node scripts/build-tool-image-index.js --check`, `node scripts/repair-image-references.js --check`, plus browser image loading and mobile layout checks. The dashboard consumes the two JSON outputs and keeps operator status separate from generated file-existence evidence.
+# Placement review closeout, 8 September 2026
+
+The frozen cohort in `data/image-generation/placement-review-cohort.json` contains the original 792 unassigned paths and hashes. `placement-decisions.json` records a placement decision, owner and reason for each. These are lifecycle decisions, not a claim that all images are publicly displayed or approved for reuse.
+
+- 120 active bindings: 107 dated live creator/news references, the root favicon, and 12 dedicated article images (10 inline heroes and 2 social images).
+- 201 reserved car images map to exact unpublished catalogue CSV rows. Vehicle appearance, provenance and catalogue readiness still need validation before launch.
+- 338 retired alternatives retain their original files and paths for history and compatibility.
+- 89 rejected designs are unsuitable for automatic public placement, including mock interfaces, unverified details, embedded promotional copy, and a receipt illustration misnamed as an IP calculator.
+- 44 flags remain assigned to the archived Matchday product.
+
+Use `node scripts/apply-reviewed-blog-images.js` after article generation; the main build runs it before the feed. It changes images and dimensions only. The inventory reads dated, read-only Supabase media evidence from the correct AfroTools project. Refresh this evidence through the configured MCP before inferring current live usage; it is not a runtime database mirror.
+
+Retired, reserved and rejected files are preserved in place. Their stable URLs are not removed by this task. Do not treat a zero unassigned count as zero visual/provenance work: those gates remain explicit on reserved assets, and the three held recipe deliveries remain separate.

@@ -47,8 +47,14 @@ function build() {
     const item = byPath.get(file);
     if (item && !item.placements.some(p => p.path === owner && p.kind === kind)) item.placements.push({ path: owner, kind, locale: locale(owner) });
   }
+  for (const [name,field] of [['live-creator-image-references.json','local_avatar'],['live-news-image-references.json','image_url']]) {
+    const evidence=JSON.parse(read(OUT+'/'+name));
+    if(evidence.project_ref!=='zpclagtgczsygrgztlts')throw new Error('Incorrect media evidence project');
+    for(const row of evidence.rows){const ref=String(row[field]||'').replace(/^https:\/\/(?:www\.)?afrotools\.com/,'').replace(/^\//,'');if(byPath.has(ref))placement(ref,evidence.table+':'+row.slug,'live-database-reference');}
+  }
   for (const file of all.filter(f => /\.(?:html|css|js|json|webmanifest|svg)$/.test(f) && !f.startsWith(OUT + '/') && !/^scripts\//.test(f))) {
     const source = read(file).replace(/\\\//g, '/');
+    if(/(?:href|src)=["']\/favicon\.ico["']/.test(source))placement('favicon.ico',file,'page-reference');
     for (const match of source.matchAll(/(?:https?:\/\/(?:www\.)?afrotools\.com)?\/?(?:assets|images|img)\/[a-zA-Z0-9_./%+@-]+\.(?:png|jpe?g|webp|gif|svg|avif|ico)/gi)) {
       let ref = match[0].replace(/^https?:\/\/(?:www\.)?afrotools\.com/, '').replace(/^\//, '');
       try { ref = decodeURIComponent(ref); } catch { continue; }
@@ -79,6 +85,8 @@ function build() {
   }
   const hashes = new Map();
   const images = [...byPath.values()].sort((a, b) => b.placements.length - a.placements.length || a.path.localeCompare(b.path));
+  const decisionsPath=path.join(ROOT,OUT,'placement-decisions.json');
+  const decisions=new Map(fs.existsSync(decisionsPath)?JSON.parse(fs.readFileSync(decisionsPath,'utf8')).images.map(x=>[x.path,x]):[]);
   for (const item of images) {
     if (hashes.has(item.sha256)) item.duplicate_of = hashes.get(item.sha256);
     else hashes.set(item.sha256, item.path);
@@ -86,11 +94,15 @@ function build() {
     item.placements.sort((a,b) => a.path.localeCompare(b.path) || a.kind.localeCompare(b.kind));
     item.locales_in_use = [...new Set(item.placements.map(p => p.locale))].sort();
     item.assignment = item.placements.length ? item.placements[0].path : item.duplicate_of ? 'Review duplicate of ' + item.duplicate_of : 'Library review queue: ' + item.family;
+    const decision=decisions.get(item.path);
+    if(decision){if(decision.sha256!==item.sha256)throw new Error('Reviewed image hash changed: '+item.path);item.placement_decision=decision.decision;item.review_note=decision.reason;item.assignment=decision.owner;item.text_status=decision.text_status||item.text_status;if(item.status==='unassigned'&&decision.decision!=='active')item.status=decision.decision;}
   }
   images.sort((a,b) => a.path.localeCompare(b.path));
   const generated_at = new Date().toISOString();
   const summary = { images: images.length, placed: images.filter(i=>i.status==='placed').length, unassigned: images.filter(i=>i.status==='unassigned').length, duplicates: images.filter(i=>i.duplicate_of).length, held: images.filter(i=>i.status==='needs-review').length, text_free_reviewed: images.filter(i=>i.locale_reuse).length, shared_across_locales: images.filter(i=>i.locales_in_use.length>1).length, bytes: images.reduce((s,i)=>s+i.bytes,0), missing_reference_candidates: missing.size };
-  json(OUT + '/image-library.json', { schema_version: 1, generated_at, source_commit: cp.execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(), scope: 'Repository product images (including assets outside assets/img); excludes build, dependency, test and evidence directories. Local references plus known tool/recipe pipelines; no live URL availability or exhaustive runtime reachability proof.', summary, images });
+  summary.placement_review_resolved=decisions.size;
+  summary.lifecycle_counts=images.reduce((o,i)=>(o[i.status]=(o[i.status]||0)+1,o),{});
+  json(OUT + '/image-library.json', { schema_version: 1, generated_at, source_commit: cp.execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(), scope: 'Repository product images plus dated verified AfroTools Supabase creator/news media bindings. Excludes build, dependency, test and evidence directories. Lifecycle decisions distinguish active use from reserved, retired and rejected artwork. No claim of exhaustive runtime reachability or live URL availability.', summary, images });
   json(OUT + '/missing-image-references.json', { schema_version: 1, generated_at, note: 'Static reference candidates: may include dormant templates and dynamic fallbacks. Review before changing routes.', images: [...missing].map(([path, owners]) => ({ path: '/' + path, owners: [...new Set(owners)] })) });
   write(OUT + '/image-library.csv', csv(images.map(i=>({...i,locales:i.locales_in_use,placement_count:i.placements.length})), ['path','family','status','assignment','width','height','bytes','sha256','duplicate_of','placement_count','text_status','locale_reuse','locales','review_note']));
   return { images, manifest, generated_at, summary, byPath };
