@@ -19,6 +19,14 @@ function load(file, store = {}, fetch = async () => { throw new Error('Unexpecte
 const now = '2026-09-08T08:00:00Z';
 const update = { code: 'GH', policy_rate: 14, source_statement_date: '2026-07-22', reviewed_at: now };
 
+test('SARB statement dates use the dated calendar and keep effective dates separate', () => {
+  const { api } = load('scheduled-fetch-central-bank-rates.js');
+  const entry = { pathname: 'https://www.resbank.co.za/example', year: 2026, slug: 'may', statement_date: '2026-05-28' };
+  const row = api._private.extractSarbStatement(entry, 'The MPC raised the policy rate to 7%, effective from 29 May.');
+  assert.equal(row.date, '2026-05-28');
+  assert.equal(row.effective_date, '2026-05-29');
+});
+
 test('expired, future and undated manual reviews cannot renew verification', () => {
   const { api } = load('scheduled-fetch-central-bank-rates.js');
   for (const reviewed_at of [undefined, '2026-08-31T00:00:00Z', '2026-09-09T00:00:00Z']) {

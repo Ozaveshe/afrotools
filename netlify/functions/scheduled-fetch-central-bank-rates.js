@@ -329,15 +329,14 @@ function extractSarbStatement(entry, text) {
   var actionMatch = text.match(/MPC(?:\s+has)?\s+(lowered|raised|kept|reduced|increased)\s+the\s+(?:repurchase|policy)\s+rate\s+(?:unchanged,\s+)?(?:to|at)\s*(\d{1,2}(?:\.\d{1,2})?)%/i);
   if (!actionMatch) return null;
 
-  var effectiveDateMatch = text.match(/with effect from\s+(\d{1,2}\s+[A-Za-z]+(?:\s+\d{4})?)/i);
+  var effectiveDateMatch = text.match(/(?:with effect|effective) from\s+(\d{1,2}\s+[A-Za-z]+(?:\s+\d{4})?)/i);
   var action = actionMatch[1].toLowerCase();
   if (action === 'reduced') action = 'lowered';
   if (action === 'increased') action = 'raised';
   return {
     url: entry.pathname,
-    date: effectiveDateMatch
-      ? parseDayMonthWithFallbackYear(effectiveDateMatch[1], entry.year)
-      : parseMonthSlugDate(entry.year, entry.slug),
+    date: entry.statement_date,
+    effective_date: effectiveDateMatch ? parseDayMonthWithFallbackYear(effectiveDateMatch[1], entry.year) : null,
     action: action,
     rate: parsePercent(actionMatch[2])
   };
@@ -345,11 +344,20 @@ function extractSarbStatement(entry, text) {
 
 async function fetchSarbUpdates(options = {}) {
   var homeUrl = 'https://www.resbank.co.za/';
-  var homeHtml = await fetchText(homeUrl, options);
+  var pages = await Promise.all([
+    fetchText(homeUrl, options),
+    fetchText('https://www.resbank.co.za/en/home/what-we-do/monetary-policy/MPC-announcement-webcasts', options)
+  ]);
+  var homeHtml = pages[0];
+  var statementDates = Array.from(pages[1].matchAll(/\b(\d{4})\/(\d{2})\/(\d{2})\b/g)).map(function(match) {
+    return match[1] + '-' + match[2] + '-' + match[3];
+  });
   var now = new Date();
-  var ranked = buildSarbCandidateUrls(homeHtml).filter(function(entry) {
-    return entry.year < now.getUTCFullYear() ||
-      (entry.year === now.getUTCFullYear() && entry.month <= now.getUTCMonth() + 1);
+  var ranked = buildSarbCandidateUrls(homeHtml).map(function(entry) {
+    entry.statement_date = statementDates.find(function(date) { return date.startsWith(String(entry.year) + '-' + String(entry.month).padStart(2, '0') + '-'); });
+    return entry;
+  }).filter(function(entry) {
+    return entry.statement_date && entry.statement_date <= now.toISOString().slice(0, 10);
   });
 
   if (ranked.length === 0) {
@@ -398,7 +406,7 @@ async function fetchSarbUpdates(options = {}) {
       break;
     }
   }
-  var lastChangeDate = latest.date;
+  var lastChangeDate = latest.effective_date || latest.date;
   var previousRate = previousDistinct ? previousDistinct.rate : (previous ? previous.rate : null);
 
   if (latest.action === 'kept') {
@@ -411,7 +419,7 @@ async function fetchSarbUpdates(options = {}) {
     }
 
     if (lastChangeStatement) {
-      lastChangeDate = lastChangeStatement.date;
+      lastChangeDate = lastChangeStatement.effective_date || lastChangeStatement.date;
       for (var m = parsed.indexOf(lastChangeStatement) - 1; m >= 0; m--) {
         if (parsed[m].rate !== lastChangeStatement.rate) {
           previousRate = parsed[m].rate;
@@ -678,7 +686,8 @@ function applyPolicyRateUpdates(data, updates, nowIso) {
       country.policy_rate_source_note = update.source_note;
     }
 
-    if (oldRate === null || oldRate === undefined || Number(oldRate) !== Number(currentRate)) {
+    if (oldRate === null || oldRate === undefined || Number(oldRate) !== Number(currentRate) ||
+        (update.last_change_date && (!country.last_rate_change || country.last_rate_change.date !== update.last_change_date))) {
       country.last_rate_change = {
         date: effectiveDate,
         from: previousRate,
@@ -694,6 +703,7 @@ function applyPolicyRateUpdates(data, updates, nowIso) {
 }
 
 exports._private = {
+  extractSarbStatement,
   mergePolicyUpdates,
   applyPolicyRateUpdates,
   fetchCbnUpdate,
