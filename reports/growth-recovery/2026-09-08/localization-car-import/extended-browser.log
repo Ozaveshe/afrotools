@@ -1,0 +1,45 @@
+
+Running 7 tests using 1 worker
+
+(node:28568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:39:3 › entry blank requires explicit country and preserves privacy (1.5s)
+  ok 2 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:39:3 › entry ?country=XX requires explicit country and preserves privacy (1.6s)
+  ok 3 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:39:3 › entry ?country=KE&country=NG#country=GH requires explicit country and preserves privacy (1.7s)
+  ok 4 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:39:3 › entry ?country=KE&make=QueryFixture#country=KE requires explicit country and preserves privacy (2.0s)
+  ok 5 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:56:1 › vehicle inputs survive country validation, then KE calculation and parsed local exports recover (5.8s)
+  ok 6 [chromium] › tests\e2e\french-car-import-country-gate.spec.js:84:1 › custom reset, native form reset and reload require a new country choice (4.9s)
+(node:56980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  7 [chromium] › tests\e2e\french-transport-parity.spec.js:1205:1 › French Car Import keeps every advertised action local, explicit and reopenable (1.7s)
+
+
+  1) [chromium] › tests\e2e\french-transport-parity.spec.js:1205:1 › French Car Import keeps every advertised action local, explicit and reopenable
+
+    Error: /fr/tools/cout-importation-voiture/ privacy-initial-375 baseline root font size
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m16[39m
+    Received: [31m32[39m
+
+      387 |     () => Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+      388 |   );
+    > 389 |   expect(baseline, `${route} ${stage} baseline root font size`).toBe(16);
+          |                                                                 ^
+      390 |   await page.evaluate(() => {
+      391 |     document.documentElement.style.setProperty('font-size', '200%', 'important');
+      392 |   });
+        at applyGenuine200PercentTextScale (C:\Users\Oza\.codex\worktrees\3466\afrotools\tests\e2e\french-transport-parity.spec.js:389:65)
+        at expectStrictReflow (C:\Users\Oza\.codex\worktrees\3466\afrotools\tests\e2e\french-transport-parity.spec.js:403:3)
+        at C:\Users\Oza\.codex\worktrees\3466\afrotools\tests\e2e\french-transport-parity.spec.js:1311:3
+
+    Error Context: test-results\french-transport-parity-Fr-cafa6-cal-explicit-and-reopenable-chromium\error-context.md
+
+  1 failed
+    [chromium] › tests\e2e\french-transport-parity.spec.js:1205:1 › French Car Import keeps every advertised action local, explicit and reopenable
+  6 passed (22.4s)
