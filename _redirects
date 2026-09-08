@@ -998,10 +998,27 @@
 /tools/double-taxation/         /salary-tax/                   301
 /tools/double-taxation          /salary-tax/                   301
 # Car landed cost publishes a country page only where data/trade/car-import-cost-*.json
-# exists (GH, KE, NG, TZ, UG, ZM). Every other country deep-link goes to the
-# calculator itself rather than a fabricated country page. Non-forced, so the six
-# real country pages keep serving.
-/tools/car-import-cost/*   /tools/car-import-cost/  301
+# exists (GH, KE, NG, TZ, UG, ZM). Only the other directory-enabled markets in
+# data/cars/price-intelligence.json fall back to the calculator's country chooser.
+# Reuses the self-matching-splat diagnosis from 41ad9a45, with exact aliases rather
+# than a placeholder so unknown countries and deeper paths remain unmatched.
+# Non-forced; existing country pages win. Netlify passes query parameters through;
+# the fragment retains the alias market even without or against a country query.
+# The controller blocks unsupported entries until a supported market is chosen.
+/tools/car-import-cost/south-africa/  /tools/car-import-cost/#requested-country=ZA  301
+/tools/car-import-cost/egypt/  /tools/car-import-cost/#requested-country=EG  301
+/tools/car-import-cost/morocco/  /tools/car-import-cost/#requested-country=MA  301
+/tools/car-import-cost/cote-divoire/  /tools/car-import-cost/#requested-country=CI  301
+/tools/car-import-cost/senegal/  /tools/car-import-cost/#requested-country=SN  301
+/tools/car-import-cost/cameroon/  /tools/car-import-cost/#requested-country=CM  301
+/tools/car-import-cost/ethiopia/  /tools/car-import-cost/#requested-country=ET  301
+/tools/car-import-cost/rwanda/  /tools/car-import-cost/#requested-country=RW  301
+/tools/car-import-cost/angola/  /tools/car-import-cost/#requested-country=AO  301
+/tools/car-import-cost/algeria/  /tools/car-import-cost/#requested-country=DZ  301
+/tools/car-import-cost/tunisia/  /tools/car-import-cost/#requested-country=TN  301
+/tools/car-import-cost/mozambique/  /tools/car-import-cost/#requested-country=MZ  301
+/tools/car-import-cost/botswana/  /tools/car-import-cost/#requested-country=BW  301
+/tools/car-import-cost/namibia/  /tools/car-import-cost/#requested-country=NA  301
 # French country hub reached without /fr/ prefix
 /guinee-equatoriale/*      /fr/guinee-equatoriale/:splat  301
 /guinee-equatoriale        /fr/guinee-equatoriale/        301
