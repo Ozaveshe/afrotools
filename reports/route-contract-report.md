@@ -8,13 +8,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 |---|---:|
 | Public pages | 11517 |
 | Indexable pages | 9938 |
-| Permanent and temporary redirects | 2949 |
+| Permanent and temporary redirects | 2963 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
-| Dynamic route patterns | 177 |
+| Dynamic route patterns | 176 |
 | Genuine equivalence groups | 5244 |
-| Documented fallbacks | 14771 |
+| Documented fallbacks | 14784 |
 | Routes eligible for primary sitemaps | 9938 |
 
 ## Locale Coverage
@@ -2128,6 +2128,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/business-name-generator/` -> `/tools/business-name-gen/` (301, owner: _redirects)
 - `/tools/business-plan/app.html` -> `/tools/business-plan/app` (301, owner: _redirects)
 - `/tools/calculateur-pourcentage/` -> `/tools/percentage-calc/` (301, owner: _redirects)
+- `/tools/car-import-cost/algeria/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/angola/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/botswana/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/cameroon/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/cote-divoire/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/egypt/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/ethiopia/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/morocco/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/mozambique/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/namibia/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/rwanda/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/senegal/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/south-africa/` -> `/tools/car-import-cost/` (301, owner: _redirects)
+- `/tools/car-import-cost/tunisia/` -> `/tools/car-import-cost/` (301, owner: _redirects)
 - `/tools/car-insurance/algeria.html` -> `/tools/car-insurance/algeria` (301, owner: _redirects)
 - `/tools/car-insurance/angola.html` -> `/tools/car-insurance/angola` (301, owner: _redirects)
 - `/tools/car-insurance/benin.html` -> `/tools/car-insurance/benin` (301, owner: _redirects)
@@ -8556,7 +8570,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:995)
 - `/tools/return-migration` -> `/diaspora/` (_redirects:997)
 - `/tools/double-taxation` -> `/salary-tax/` (_redirects:999)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3671)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3688)
 - `/admin` -> `/404.html` (netlify.toml:172)
 - `/admin/` -> `/404.html` (netlify.toml:178)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:190)
