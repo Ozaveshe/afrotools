@@ -5009,8 +5009,8 @@
         "priority": 78,
         "estTraffic": 4500,
         "imageExt": "webp",
-        "imageId": "lobola-calculator",
-        "imageKey": "lobola-calculator"
+        "imageId": "lobola-negotiation-checklist",
+        "imageKey": "lobola-negotiation-checklist"
       },
       {
         "id": "wedding-budget",
@@ -5049,8 +5049,8 @@
         "priority": 76,
         "estTraffic": 3500,
         "imageExt": "webp",
-        "imageId": "lobola-calculator",
-        "imageKey": "lobola-calculator"
+        "imageId": "lobola-gift-list",
+        "imageKey": "lobola-gift-list"
       },
       {
         "id": "baby-name-generator",
@@ -11707,9 +11707,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "password-strength",
-        "imageId": "password-strength"
+        "imageId": "password-strength",
+        "imageKey": "password-strength"
       },
       {
         "id": "quiz-phishing-fr",
@@ -16941,9 +16942,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "password-strength",
-        "imageId": "password-strength"
+        "imageId": "password-strength",
+        "imageKey": "password-strength"
       },
       {
         "id": "cybersecurity-assessment-sw-coverage-cybersecurity-assessment",
@@ -18357,8 +18359,9 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 2200,
-        "imageExt": "",
-        "imageId": "mining-royalty"
+        "imageExt": "webp",
+        "imageId": "mining-royalty",
+        "imageKey": "mining-royalty"
       },
       {
         "id": "mining-license-fee",
@@ -18370,8 +18373,9 @@
         "lang": "en",
         "priority": 70,
         "estTraffic": 1400,
-        "imageExt": "",
-        "imageId": "mining-license-fee"
+        "imageExt": "webp",
+        "imageId": "mining-license-fee",
+        "imageKey": "mining-license-fee"
       },
       {
         "id": "artisanal-mining-income",
@@ -18383,8 +18387,9 @@
         "lang": "en",
         "priority": 69,
         "estTraffic": 1300,
-        "imageExt": "",
-        "imageId": "artisanal-mining-income"
+        "imageExt": "webp",
+        "imageId": "artisanal-mining-income",
+        "imageKey": "artisanal-mining-income"
       },
       {
         "id": "diamond-valuation",
@@ -18396,8 +18401,9 @@
         "lang": "en",
         "priority": 67,
         "estTraffic": 1200,
-        "imageExt": "",
-        "imageId": "diamond-valuation"
+        "imageExt": "webp",
+        "imageId": "diamond-valuation",
+        "imageKey": "diamond-valuation"
       },
       {
         "id": "oil-gas-revenue",
@@ -18409,8 +18415,9 @@
         "lang": "en",
         "priority": 66,
         "estTraffic": 1100,
-        "imageExt": "",
-        "imageId": "oil-gas-revenue"
+        "imageExt": "webp",
+        "imageId": "oil-gas-revenue",
+        "imageKey": "oil-gas-revenue"
       },
       {
         "id": "oil-well-production",
@@ -18422,8 +18429,9 @@
         "lang": "en",
         "priority": 65,
         "estTraffic": 900,
-        "imageExt": "",
-        "imageId": "oil-well-production"
+        "imageExt": "webp",
+        "imageId": "oil-well-production",
+        "imageKey": "oil-well-production"
       }
     ],
     "fr::mining": [
@@ -18437,9 +18445,10 @@
         "lang": "fr",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "mining-royalty",
-        "imageId": "mining-royalty"
+        "imageId": "mining-royalty",
+        "imageKey": "mining-royalty"
       },
       {
         "id": "cout-licence-miniere-fr",
@@ -18451,9 +18460,10 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "mining-license-fee",
-        "imageId": "mining-license-fee"
+        "imageId": "mining-license-fee",
+        "imageKey": "mining-license-fee"
       },
       {
         "id": "revenu-minier-artisanal-fr",
@@ -18465,9 +18475,10 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "artisanal-mining-income",
-        "imageId": "artisanal-mining-income"
+        "imageId": "artisanal-mining-income",
+        "imageKey": "artisanal-mining-income"
       },
       {
         "id": "evaluation-diamant-fr",
@@ -18479,9 +18490,10 @@
         "lang": "fr",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "diamond-valuation",
-        "imageId": "diamond-valuation"
+        "imageId": "diamond-valuation",
+        "imageKey": "diamond-valuation"
       },
       {
         "id": "partage-revenus-petrole-gaz-fr",
@@ -18493,9 +18505,10 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "oil-gas-revenue",
-        "imageId": "oil-gas-revenue"
+        "imageId": "oil-gas-revenue",
+        "imageKey": "oil-gas-revenue"
       },
       {
         "id": "production-puits-petrole-fr",
@@ -18507,9 +18520,10 @@
         "lang": "fr",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "oil-well-production",
-        "imageId": "oil-well-production"
+        "imageId": "oil-well-production",
+        "imageKey": "oil-well-production"
       }
     ],
     "sw::mining": [
@@ -18523,9 +18537,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "mining-royalty",
-        "imageId": "mining-royalty"
+        "imageId": "mining-royalty",
+        "imageKey": "mining-royalty"
       },
       {
         "id": "gharama-ya-leseni-ya-madini-sw",
@@ -18537,9 +18552,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "mining-license-fee",
-        "imageId": "mining-license-fee"
+        "imageId": "mining-license-fee",
+        "imageKey": "mining-license-fee"
       },
       {
         "id": "mapato-ya-uchimbaji-mdogo-sw",
@@ -18551,9 +18567,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "artisanal-mining-income",
-        "imageId": "artisanal-mining-income"
+        "imageId": "artisanal-mining-income",
+        "imageKey": "artisanal-mining-income"
       },
       {
         "id": "thamani-ya-almasi-sw",
@@ -18565,9 +18582,10 @@
         "lang": "sw",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "diamond-valuation",
-        "imageId": "diamond-valuation"
+        "imageId": "diamond-valuation",
+        "imageKey": "diamond-valuation"
       },
       {
         "id": "mgawanyo-wa-mapato-ya-mafuta-na-gesi-sw",
@@ -18579,9 +18597,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "oil-gas-revenue",
-        "imageId": "oil-gas-revenue"
+        "imageId": "oil-gas-revenue",
+        "imageKey": "oil-gas-revenue"
       },
       {
         "id": "uzalishaji-wa-kisima-cha-mafuta-sw",
@@ -18593,9 +18612,10 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "oil-well-production",
-        "imageId": "oil-well-production"
+        "imageId": "oil-well-production",
+        "imageKey": "oil-well-production"
       }
     ],
     "en::insurance": [
@@ -20336,7 +20356,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "password-strength"
       },
       {
         "id": "phishing-quiz",
