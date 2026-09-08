@@ -1,0 +1,133 @@
+{
+  "kind": "bounded-source-repair",
+  "date": "2026-09-08",
+  "status": "ready-for-independent-review-with-carried-baseline-failures",
+  "base_sha": "9b29eab0408eedd9442c98c2cabf567098da80ab",
+  "branch": "codex/fix-scraper-persistence-reporting-20260908",
+  "source_commits": [
+    "d7e41d5332d2590c9e4e802337f12b5bf02ac104",
+    "41a75abbc5dc85751339ee24c43ef06404b9e244"
+  ],
+  "source_files": [
+    "netlify/functions/_shared/data-store.js",
+    "netlify/functions/_shared/scraper-base.js",
+    "netlify/functions/_shared/storage-diagnostics.js",
+    "netlify/functions/scheduled-fetch-central-bank-rates.js",
+    "scripts/refresh-static-fallbacks.js",
+    "tests/storage-persistence-reporting.test.js"
+  ],
+  "generated_files": [],
+  "checks": [
+    {
+      "status": "pass",
+      "command": "node --test tests/storage-persistence-reporting.test.js",
+      "cases": 37,
+      "log": "targeted.log"
+    },
+    {
+      "command": "node tests/live-data-contracts.test.js",
+      "status": "pass"
+    },
+    {
+      "command": "node tests/scheduled-proof.test.js",
+      "status": "pass"
+    },
+    {
+      "status": "pass",
+      "command": "node tests/api-rates-evidence.test.js",
+      "cases": 3
+    },
+    {
+      "command": "node -c (changed JavaScript files)",
+      "status": "pass"
+    },
+    {
+      "status": "pass",
+      "command": "npm run lint",
+      "log": "lint.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run type-check",
+      "log": "typecheck.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run build:i18n:validate",
+      "log": "i18n.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run security:scan",
+      "log": "security-final.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run build:deploy",
+      "log": "build.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run audit:dist",
+      "log": "dist.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run validate:hreflang",
+      "log": "hreflang-final.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run seo:report",
+      "log": "seo.log"
+    },
+    {
+      "audits_pass": 7,
+      "files": 776,
+      "classification": "carried baseline FX context drift only",
+      "pass": 2046,
+      "fail": 1,
+      "command": "npm test",
+      "audits_total": 7,
+      "log": "npm-test-summary.log",
+      "status": "fail"
+    },
+    {
+      "status": "fail",
+      "command": "node tests/ai-tool-context-drift.test.js (unchanged baseline source)",
+      "log": "baseline-fx.log",
+      "baseline_evidence_head": "539623239e4775071737ddc79a8851e306d0b251"
+    },
+    {
+      "status": "fail",
+      "command": "npm run data:fallbacks:check",
+      "log": "fallbacks.log",
+      "classification": "independent existing four-snapshot freshness blocker"
+    },
+    {
+      "command": "git diff BASE..HEAD --check",
+      "status": "pass"
+    },
+    {
+      "deletions": 0,
+      "status": "pass",
+      "command": "git diff BASE..HEAD --diff-filter=D --summary"
+    }
+  ],
+  "shared_runner_consumers": 11,
+  "data_store_consumers": 24,
+  "report": "report.md",
+  "consumer_inventory": "consumer-review.json",
+  "live_function_invocations": 0,
+  "live_database_writes": 0,
+  "merged": false,
+  "deployed": false,
+  "limitations": [
+    "Underlying transport is not repaired.",
+    "No data was refreshed or freshness threshold changed.",
+    "503 is the handler contract, not a platform retry guarantee.",
+    "The coordinator must test and rebuild the final integrated revision.",
+    "Initial test and hreflang attempts during generation were superseded by settled checks."
+  ],
+  "next_action": "Coordinator review and combined integration validation; no merge or deployment by this lane."
+}
