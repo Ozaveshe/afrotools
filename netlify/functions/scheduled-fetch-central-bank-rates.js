@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { getData, setData, updateMeta } = require('./_shared/data-store');
 const { fetchWithRetry } = require('./_shared/scraper-base');
+const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 const USER_AGENT = 'Mozilla/5.0 AfroTools/1.0 (+https://afrotools.com)';
@@ -766,7 +767,20 @@ exports.handler = async function () {
     ? 'Policy rates were refreshed from official sources where machine-readable verification is available, with manual official overrides for captcha-protected sources. Remaining countries use the maintained reference snapshot.'
     : 'Policy rate data remains on the maintained reference snapshot. Manual refresh recommended.';
 
-  await setData('rates-latest', data);
+  var written = await setData('rates-latest', data);
+  if (!written) {
+    console.error('[rates-fetch] Persistence failed; last-known-good data retained.');
+    try {
+      await updateMeta('rates', {
+        status: 'write-failed',
+        error: 'Persistence failed',
+        last_attempt: nowIso,
+      });
+    } catch (err) {
+      console.warn('[rates-fetch] ' + storageDiagnostic('failure-metadata', 'meta', err));
+    }
+    return { statusCode: 503, body: 'Rates persistence failed; last-known-good data retained.' };
+  }
 
   var sourceParts = [];
   if (verifiedCodes.length > 0) sourceParts.push('official-policy-pages');
