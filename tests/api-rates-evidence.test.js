@@ -34,22 +34,22 @@ async function request(params) {
   return { statusCode: response.statusCode, body: JSON.parse(response.body) };
 }
 
-test('rates API defaults to the strict six-row policy subset', async () => {
+test('rates API defaults to the strict thirteen-row policy subset', async () => {
   const response = await request();
   assert.equal(response.statusCode, 200);
   assert.equal(response.body.data_policy, 'fail_closed_official_policy_rows');
   assert.deepEqual(response.body.coverage, {
     candidate_count: 15,
-    verified_policy_count: 6,
-    withheld_policy_count: 9,
+    verified_policy_count: 13,
+    withheld_policy_count: 2,
     partial: true,
   });
-  assert.deepEqual(response.body.countries.map((row) => row.code).sort(), ['CI', 'KE', 'MA', 'NG', 'SN', 'ZA']);
+  assert.deepEqual(response.body.countries.map((row) => row.code).sort(), ['BW', 'CI', 'EG', 'ET', 'GH', 'KE', 'MA', 'MU', 'NG', 'SN', 'TZ', 'UG', 'ZA']);
   assert.ok(response.body.countries.every((row) => row.policy_rate_source_url && row.policy_rate_source_date && row.policy_rate_verified_at));
 });
 
 test('rates API withholds an unverified candidate instead of presenting it as current', async () => {
-  const response = await request({ country: 'GH' });
+  const response = await request({ country: 'RW' });
   assert.equal(response.statusCode, 404);
   assert.match(response.body.error, /withheld/i);
 });

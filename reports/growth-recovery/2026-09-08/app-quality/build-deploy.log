@@ -1,0 +1,843 @@
+
+> afrotools@1.0.0 build:deploy
+> npm run build && node scripts/build-dist.js
+
+
+> afrotools@1.0.0 build
+> node scripts/run-build.js
+
+
+[build] START build:registry
+
+> afrotools@1.0.0 build:registry
+> npm run registry:build && node scripts/validate-solar-roi-country-data.js && node scripts/generate-ai-landing-pages.js && npm run ai:tool-context && node scripts/build-tool-directory.js && npm run ai:generated && npm run directories:build && node scripts/build-search-index.js && node scripts/build-salary-tax-index.js && node scripts/update-counts.js --write && npm run product-health:build
+
+
+> afrotools@1.0.0 registry:build
+> node scripts/build-canonical-registry.js --write
+
+Canonical registry valid: 3694 tool rows, 3686 canonical published tools, 223 widgets.
+Synchronized 106 named HTML count markers.
+Solar ROI country data report
+| Check                                         | Status | Details                                                                                                                              |
+| --------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| All 54 countries exist                        | PASS   | 54/54 records; dataset declares 54                                                                                                   |
+| Currency present                              | PASS   | 54/54 countries pass                                                                                                                 |
+| Tariff/fuel/install/battery/yield assumptions | PASS   | electricityTariff, fuelPrice, installCostPerKw, batteryCost, solarYield, performanceRatio checked                                    |
+| Freshness dates present                       | PASS   | YYYY-MM-DD freshness checked on electricityTariff, fuelPrice, installCostPerKw, batteryCost, solarYield, performanceRatio, co2Factor |
+| Source confidence present                     | PASS   | High / Medium / Low checked for countries and assumptions                                                                            |
+| No duplicate slugs                            | PASS   | 54 unique slugs                                                                                                                      |
+| No missing country pages                      | PASS   | 54/54 generated routes found                                                                                                         |
+| Metadata unique                               | PASS   | 54 titles, 54 descriptions, 54 canonicals                                                                                            |
+| Forbidden generic copy absent                 | PASS   | 8 forbidden phrase variants scanned                                                                                                  |
+| Solar resource adapter metadata               | PASS   | getSolarYield fallback metadata checked                                                                                              |
+
+Solar ROI country data report: PASS (54 countries)
+Generated 7 AfroTools AI landing pages.
+Run `npm run analytics:inject` next — regeneration strips the injected analytics loader, and a page without it ships dark (GA4 coverage loss, Jul 2026).
+
+> afrotools@1.0.0 ai:tool-context
+> node scripts/build-ai-tool-context.js --write
+
+Built AI tool context: 569 tools; 214 source-coupled; 355 unverified-static.
+Built 1256 crawlable canonical tool rows
+Live tool experiences: 2611
+
+> afrotools@1.0.0 ai:generated
+> npm run sw:ai-routes:build && npm run ai:training-corpus && npm run ai:model-splits && npm run ai:tool-catalog-pack && npm run eval:ai-tool-calls && npm run ai:ops-report && npm run ai:architecture-report
+
+
+> afrotools@1.0.0 sw:ai-routes:build
+> node scripts/build-ai-swahili-route-map.js
+
+Swahili AI route map generated: 1254 accepted routes.
+
+> afrotools@1.0.0 ai:training-corpus
+> node scripts/generate-ai-tool-call-corpus.js --write
+
+AI tool-call corpus ready: 159 synthetic records
+Output: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\tool-call-training-corpus.jsonl
+Report: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\tool-call-training-corpus.report.json
+
+> afrotools@1.0.0 ai:model-splits
+> node scripts/build-ai-model-training-splits.js --write
+
+AI model training splits ready: 159 synthetic records
+Train/validation/test: 100/29/30
+Output: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\model-training
+Report: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\model-training\router-tool-call-splits.report.json
+
+> afrotools@1.0.0 ai:tool-catalog-pack
+> node scripts/generate-ai-tool-catalog-pack.js --write
+
+AfroTools AI full tool catalog pack: passed
+Tools/chunks/categories: 1256/65/32
+Output: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\tool-catalog-pack.json
+
+> afrotools@1.0.0 eval:ai-tool-calls
+> node scripts/evaluate-ai-tool-call-corpus.js --write
+
+AI tool-call corpus eval: 159/159 records passed
+Exact tool pass rate: 1
+Executable pass rate: 1
+URL privacy pass rate: 1
+Gate: passed
+
+> afrotools@1.0.0 ai:ops-report
+> node scripts/generate-ai-system-readiness-report.js --write
+
+AfroTools AI system readiness: passed
+Checks: 11/11 passed
+Manifest/corpus/splits: 1256/159/100-29-30
+Output: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\ai-system-readiness-report.json
+
+> afrotools@1.0.0 ai:architecture-report
+> node scripts/generate-ai-product-architecture-report.js --write
+
+AfroTools AI product architecture: passed
+Layers/catalog/chunks: 6/1256/65
+Output: C:\Users\Oza\.codex\worktrees\befa\afrotools\data\ai\ai-product-architecture-report.json
+
+> afrotools@1.0.0 directories:build
+> node scripts/build-progressive-directories.js --write
+
+Built progressive directory fallbacks.
+Built 3686 slim search rows (272 KB)
+Built 32-entry slim category dictionary.
+Built 3686 full-text search rows (1627 KB)
+Built 510 canonical salary-tax rows (121 KB)
+Canonical registry valid: 3694 tool rows, 3686 canonical published tools, 223 widgets.
+Synchronized 106 named HTML count markers.
+
+> afrotools@1.0.0 product-health:build
+> node scripts/build-product-health.js
+
+Built public product health snapshot: status\product-health.json
+[build] PASS build:registry (42.1s)
+
+[build] START build:surfaces
+
+> afrotools@1.0.0 build:surfaces
+> npm run fr:surface:build && npm run sw:surface:build && npm run localized-blog-hubs:build && npm run fr:editorial-standard:build && npm run localized-discovery:build && npm run localization:coverage-wave:sync && npm run ha:surface:build && npm run country:build && npm run fr:iframe-fallbacks:build && npm run localized-non-app:build
+
+
+> afrotools@1.0.0 fr:surface:build
+> npm run localization:coverage-wave:prepare && node scripts/generate-fr-tool-gap-pages.js && node scripts/retire-french-electricity-country-routes.js && node scripts/build-french-religious-cultural-parity.js && node scripts/repair-fr-solar-country-pages.js --fix && npm run fr:registry:build && node scripts/build-french-product-surface.js --write && npm run fr:mobile-money-finder:build && npm run fr:mobile-money-editorial:build && node scripts/repair-french-search-snippets.js --write && npm run fr:fuel-country:build && node scripts/build-progressive-directories.js --write --fr-only && npm run fr:iframe-fallbacks:build && npm run fr:sports:build && npm run fr:energy:build && npm run fr:transport:build
+
+
+> afrotools@1.0.0 localization:coverage-wave:prepare
+> node scripts/prepare-localization-coverage-wave.js && node scripts/apply-localization-wave-registry.js --write
+
+Localization wave ready: 300 French wave routes, 1 native French additions, and 100 Swahili routes.
+Swahili range: 50-30-20-budget -> engagement-rate
+Applied 401 localization wave registry rows.
+Generated 256 French tool pages.
+Updated 1 English hreflang counterparts.
+Retired 108 localized electricity compatibility routes as noindex pages.
+Removed 0 retired country bridges from the live tool registry.
+{
+  "schemaVersion": 1,
+  "locale": "fr",
+  "category": "religious-cultural",
+  "canonicalApps": 22,
+  "hub": "/fr/religion-culture/",
+  "changedFiles": [
+    "fr\\tools\\calculateur-dime\\index.html",
+    "fr\\tools\\calculateur-lobola\\index.html",
+    "fr\\tools\\checklist-negociation-dot\\index.html",
+    "fr\\tools\\liste-cadeaux-dot\\index.html",
+    "fr\\tools\\generateur-proverbes-africains\\index.html",
+    "fr\\tools\\calculateur-zakat\\index.html",
+    "fr\\tools\\horaires-priere-qibla\\index.html",
+    "fr\\tools\\calendrier-ramadan\\index.html",
+    "fr\\tools\\heritage-islamique-faraid\\index.html",
+    "fr\\tools\\budget-hajj-umrah\\index.html",
+    "fr\\tools\\finance-islamique-profit\\index.html",
+    "fr\\tools\\budget-mariage-africain\\index.html",
+    "fr\\tools\\budget-ceremonie-nommage\\index.html",
+    "fr\\tools\\planification-funerailles\\index.html",
+    "fr\\tools\\generateur-prenom-africain\\index.html",
+    "fr\\tools\\calendrier-traditionnel\\index.html",
+    "fr\\tools\\calculateur-age-jour-nom\\index.html",
+    "fr\\tools\\calendrier-festivals-culturels\\index.html",
+    "fr\\tools\\cout-aso-ebi\\index.html",
+    "fr\\tools\\cout-tenue-traditionnelle\\index.html",
+    "fr\\tools\\conformite-halal\\index.html",
+    "fr\\tools\\convertisseur-calendrier-islamique\\index.html",
+    "fr\\religion-culture\\index.html"
+  ]
+}
+{
+  "mode": "fix",
+  "countryPages": 54,
+  "changed": 54
+}
+
+> afrotools@1.0.0 fr:registry:build
+> node scripts/register-french-energy-registry-wave.js
+
+French generated country registry rows already present.
+Updated French product surface (68 files).
+
+> afrotools@1.0.0 fr:mobile-money-finder:build
+> node scripts/build-mobile-money-fee-finder.js --write
+
+{
+  "mode": "write",
+  "routes": 3,
+  "catalogProviders": 2,
+  "changed": []
+}
+
+> afrotools@1.0.0 fr:mobile-money-editorial:build
+> node scripts/build-french-mobile-money-editorial.js --write
+
+French mobile-money editorial surface is current: fr/blog/mobile-money-fees-africa-compared/index.html
+French search snippets: 261 country pages checked; 0 updated.
+
+> afrotools@1.0.0 fr:fuel-country:build
+> node scripts/build-french-fuel-country-pages.js --write
+
+Pages carburant françaises: 54 vérifiées; 0 mises à jour.
+Built French progressive directory fallbacks.
+
+> afrotools@1.0.0 fr:iframe-fallbacks:build
+> node scripts/retire-french-english-iframe-routes.js --write
+
+French English-iframe retirement: 394 wrappers; 0 false reciprocal alternates remain; 0 stale files.
+
+> afrotools@1.0.0 fr:sports:build
+> node scripts/build-fr-sports-parity.js --write
+
+Built French Sports parity: 15/15 apps plus hub and reciprocal hreflang.
+
+> afrotools@1.0.0 fr:energy:build
+> node scripts/build-french-energy-parity.js
+
+Built /fr/tools/tarifs-electricite/
+Built /fr/tools/roi-solaire/
+Built /fr/tools/compteur-prepaye/
+Built /fr/tools/solaire-vs-generateur/
+Built /fr/tools/verifier-facture-electricite/
+Built /fr/tools/calculateur-facture-eau/
+Built /fr/tools/cout-gaz-lpg/
+Built /fr/tools/solaire-paygo/
+Built /fr/tools/cout-coupure-entreprise/
+Built /fr/tools/dimensionnement-solaire/
+Built /fr/tools/dimensionnement-batterie-onduleur/
+Built /fr/tools/audit-energie-maison/
+Built /fr/tools/consommation-appareils/
+Built /fr/tools/autonomie-secours/
+Built /fr/tools/diesel-vs-solaire-ferme/
+Built /fr/tools/faisabilite-mini-reseau/
+Built /fr/tools/empreinte-carbone-energie/
+Built /fr/tools/cout-recharge-ev/
+Built /fr/tools/roi-biogaz/
+Built /fr/tools/carburant-generateur/
+French Energy parity build passed: 20/20 apps.
+
+> afrotools@1.0.0 fr:transport:build
+> node scripts/build-french-transport-parity.js
+
+French Transport parity: 18/18 canonical apps; 0 file(s) updated.
+
+> afrotools@1.0.0 sw:surface:build
+> npm run localization:coverage-wave:prepare && node scripts/generate-sw-tool-gap-pages.js && node scripts/build-swahili-product-surface.js --write && npm run sw:snippets:build && node scripts/retire-french-electricity-country-routes.js
+
+
+> afrotools@1.0.0 localization:coverage-wave:prepare
+> node scripts/prepare-localization-coverage-wave.js && node scripts/apply-localization-wave-registry.js --write
+
+Localization wave ready: 300 French wave routes, 1 native French additions, and 100 Swahili routes.
+Swahili range: 50-30-20-budget -> engagement-rate
+Applied 401 localization wave registry rows.
+Swahili coverage wave: 2 generated, 0 existing routes mapped, 1 accepted native owners preserved, 97 coordinator-accepted routes protected, 0 English hreflang sources updated.
+Updated Swahili product surface.
+Swahili published records: 926; live experiences overall: 2611; countries: 54; categories: 32; site languages: 5.
+
+> afrotools@1.0.0 sw:snippets:build
+> node scripts/repair-swahili-search-snippets.js --write
+
+Swahili employment snippets: 134 pages checked; 0 updated.
+Retired 108 localized electricity compatibility routes as noindex pages.
+Removed 0 retired country bridges from the live tool registry.
+
+> afrotools@1.0.0 localized-blog-hubs:build
+> node scripts/build-localized-blog-hubs.js --write
+
+Built localized blog hubs; 0 file(s) updated.
+
+> afrotools@1.0.0 fr:editorial-standard:build
+> node scripts/build-french-editorial-standard.js --write
+
+Built French editorial standard; 0 file(s) updated.
+
+> afrotools@1.0.0 localized-discovery:build
+> node scripts/build-localized-discovery-pages.js --write
+
+Built localized discovery pages; 0 file(s) updated.
+
+> afrotools@1.0.0 localization:coverage-wave:sync
+> node scripts/sync-localization-wave-hreflang.js
+
+Synced hreflang clusters for 389 English sources; 254 localized pages updated.
+
+> afrotools@1.0.0 ha:surface:build
+> node scripts/build-hausa-institutional-pages.js --write && node scripts/build-hausa-product-surface.js --write
+
+Built Hausa institutional pages; 0 file(s) updated.
+Updated Hausa product surface: 11 explicit English bridge(s), 11 changed file(s).
+
+> afrotools@1.0.0 country:build
+> node scripts/generate-crop-yield-pages.js && node scripts/generate-fertilizer-pages.js && node scripts/apply-country-identity-metadata.js --write && node scripts/audit-country-identity.js --write
+
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\ghana.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\kenya.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\south-africa.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\ethiopia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\egypt.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\tanzania.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\uganda.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\cameroon.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\senegal.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\mali.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\mozambique.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\zambia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\morocco.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\madagascar.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\dr-congo.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\cote-d-ivoire.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\burkina-faso.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\niger.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\guinea.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\benin.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\togo.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\sierra-leone.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\liberia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\rwanda.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\burundi.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\somalia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\djibouti.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\eritrea.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\south-sudan.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\congo-brazzaville.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\gabon.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\equatorial-guinea.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\central-african-republic.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\chad.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\sao-tome-and-principe.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\zimbabwe.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\malawi.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\angola.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\namibia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\botswana.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\lesotho.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\eswatini.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\algeria.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\tunisia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\libya.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\sudan.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\mauritius.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\seychelles.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\comoros.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\mauritania.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\gambia.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\guinea-bissau.html
+Created: C:\Users\Oza\.codex\worktrees\befa\afrotools\agriculture\crop-yield\cabo-verde.html
+
+Done! Generated 53 country pages.
+Done! Generated 53 fertilizer pages.
+Updated country identity metadata across 1957 country-specific route(s); 0 changed.
+Country identity audit scanned 1957 route(s): 0 mismatch(es), 0 record-level error(s).
+
+> afrotools@1.0.0 fr:iframe-fallbacks:build
+> node scripts/retire-french-english-iframe-routes.js --write
+
+French English-iframe retirement: 394 wrappers; 0 false reciprocal alternates remain; 0 stale files.
+
+> afrotools@1.0.0 localized-non-app:build
+> node scripts/build-localized-non-app-parity.js --write
+
+Built localized discovery pages; 0 file(s) updated.
+Localized non-app parity: 441 English routes; French 161 pass, 0 under-standard, 280 missing; Swahili 138 pass, 0 under-standard, 303 missing.
+[build] PASS build:surfaces (151.1s)
+
+[build] START build:assets
+
+> afrotools@1.0.0 build:assets
+> node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node scripts/prune-unused-registry.js
+
+  NAVDATA 35 categories, 1174 hrefs, 185484 bytes
+  NAVCSS  26299 bytes, v=bc09ea15
+  JS    assets/js/components/navbar.js: 136.4KB -> 81.6KB (40.2% smaller)
+  JS    assets/js/components/footer.js: 34.6KB -> 28.7KB (17.1% smaller)
+  JS    assets/js/components/tool-registry.js: 1658.0KB -> 1487.5KB (10.3% smaller)
+  JS    assets/js/components/chat-panel.js: 36.8KB -> 26.6KB (27.6% smaller)
+  JS    assets/js/components/newsletter-cta.js: 6.8KB -> 4.9KB (28.0% smaller)
+  JS    assets/js/components/related-tools.js: 22.4KB -> 17.7KB (21.3% smaller)
+  JS    assets/js/components/site-assistant.js: 61.0KB -> 47.5KB (22.2% smaller)
+  JS    assets/js/favorites.js: 1.8KB -> 0.7KB (58.9% smaller)
+  JS    assets/js/pages/pdf-compress.js: 25.8KB -> 15.7KB (39.3% smaller)
+  JS    engines/src/africa-conflict-engine.js: 11.0KB -> 8.4KB (23.6% smaller)
+  JS    engines/src/african-palette-engine.js: 4.4KB -> 3.8KB (12.9% smaller)
+  JS    engines/src/afroatlas-engine.js: 143.9KB -> 84.2KB (41.5% smaller)
+  JS    engines/src/afroideas-engine.js: 14.1KB -> 9.8KB (30.8% smaller)
+  JS    engines/src/afrokitchen-engine.js: 64.3KB -> 47.4KB (26.3% smaller)
+  JS    engines/src/afropayroll-os-engine.js: 13.7KB -> 9.9KB (28.0% smaller)
+  JS    engines/src/afropoints-engine.js: 22.5KB -> 15.4KB (31.7% smaller)
+  JS    engines/src/afroprices-engine.js: 32.4KB -> 21.1KB (34.8% smaller)
+  JS    engines/src/afrorates-engine.js: 1.9KB -> 1.6KB (13.6% smaller)
+  JS    engines/src/afrostream-engine.js: 9.1KB -> 6.2KB (32.7% smaller)
+  JS    engines/src/agric-profit-engine.js: 3.4KB -> 2.0KB (40.4% smaller)
+  JS    engines/src/appliance-power-engine.js: 2.7KB -> 1.9KB (28.5% smaller)
+  JS    engines/src/aquaculture-roi-engine.js: 7.7KB -> 5.5KB (28.8% smaller)
+  JS    engines/src/architectural-fee-engine.js: 6.1KB -> 4.7KB (22.8% smaller)
+  JS    engines/src/art-commission-engine.js: 3.3KB -> 1.9KB (41.9% smaller)
+  JS    engines/src/backup-duration-engine.js: 2.0KB -> 1.5KB (23.6% smaller)
+  JS    engines/src/battery-sizing-engine.js: 2.3KB -> 1.7KB (24.7% smaller)
+  JS    engines/src/bill-verifier-engine.js: 3.0KB -> 2.1KB (29.9% smaller)
+  JS    engines/src/biogas-roi-engine.js: 2.5KB -> 1.8KB (25.5% smaller)
+  JS    engines/src/book-publishing-cost-engine.js: 3.0KB -> 1.3KB (57.0% smaller)
+  JS    engines/src/brideprice-culture-engine.js: 2.0KB -> 1.1KB (46.2% smaller)
+  JS    engines/src/business-insurance-engine.js: 2.4KB -> 1.7KB (26.9% smaller)
+  JS    engines/src/business-license-engine.js: 4.2KB -> 3.3KB (20.6% smaller)
+  JS    engines/src/business-planner-engine.js: 89.6KB -> 65.7KB (26.7% smaller)
+  JS    engines/src/business-roi-engine.js: 16.2KB -> 8.9KB (44.8% smaller)
+  JS    engines/src/car-insurance-engine.js: 2.9KB -> 1.4KB (51.2% smaller)
+  JS    engines/src/carbon-footprint-energy-engine.js: 2.5KB -> 1.8KB (28.9% smaller)
+  JS    engines/src/cassava-processing-engine.js: 4.9KB -> 3.4KB (31.1% smaller)
+  JS    engines/src/claim-tracker-engine.js: 3.9KB -> 3.4KB (11.4% smaller)
+  JS    engines/src/cnps-guide-engine.js: 7.3KB -> 5.9KB (19.4% smaller)
+  JS    engines/src/cocoa-engine.js: 9.7KB -> 6.9KB (28.4% smaller)
+  JS    engines/src/coffee-engine.js: 5.8KB -> 4.1KB (29.6% smaller)
+  JS    engines/src/commodity-engine.js: 3.9KB -> 3.1KB (19.4% smaller)
+  JS    engines/src/commodity-price-engine.js: 3.5KB -> 2.6KB (25.4% smaller)
+  JS    engines/src/compliance-calendar-engine.js: 20.7KB -> 16.5KB (20.6% smaller)
+  JS    engines/src/coo-engine.js: 4.2KB -> 3.0KB (26.9% smaller)
+  JS    engines/src/cooperative-engine.js: 5.5KB -> 2.3KB (57.5% smaller)
+  JS    engines/src/creator-analytics-engine.js: 6.4KB -> 4.0KB (37.0% smaller)
+  JS    engines/src/creator-bios-engine.js: 6.7KB -> 4.1KB (39.2% smaller)
+  JS    engines/src/creator-brand-engine.js: 8.7KB -> 5.4KB (37.2% smaller)
+  JS    engines/src/creator-calendar-engine.js: 13.3KB -> 8.5KB (36.0% smaller)
+  JS    engines/src/creator-canvas-engine.js: 14.0KB -> 8.8KB (37.3% smaller)
+  JS    engines/src/creator-captions-engine.js: 11.7KB -> 8.7KB (25.1% smaller)
+  JS    engines/src/creator-carousel-engine.js: 75.1KB -> 46.9KB (37.6% smaller)
+  JS    engines/src/creator-clip-engine.js: 1.8KB -> 1.1KB (38.6% smaller)
+  JS    engines/src/creator-desk-engine.js: 6.3KB -> 4.1KB (35.6% smaller)
+  JS    engines/src/creator-final-wave-engine.js: 8.0KB -> 4.5KB (43.0% smaller)
+  JS    engines/src/creator-hashtags-engine.js: 8.6KB -> 5.7KB (34.0% smaller)
+  JS    engines/src/creator-hooks-engine.js: 6.7KB -> 5.1KB (24.3% smaller)
+  JS    engines/src/creator-invoice-engine.js: 13.7KB -> 8.3KB (39.5% smaller)
+  JS    engines/src/creator-kit-engine.js: 8.7KB -> 5.7KB (35.3% smaller)
+  JS    engines/src/creator-mail-engine.js: 2.7KB -> 2.0KB (23.7% smaller)
+  JS    engines/src/creator-mind-engine.js: 10.3KB -> 7.8KB (24.4% smaller)
+  JS    engines/src/creator-money-engine.js: 17.0KB -> 10.3KB (39.2% smaller)
+  JS    engines/src/creator-page-engine.js: 11.4KB -> 7.3KB (35.5% smaller)
+  JS    engines/src/creator-polish-engine.js: 3.1KB -> 2.0KB (36.0% smaller)
+  JS    engines/src/creator-pricing-engine.js: 15.0KB -> 9.9KB (34.0% smaller)
+  JS    engines/src/creator-repurpose-engine.js: 8.8KB -> 6.5KB (26.1% smaller)
+  JS    engines/src/creator-resize-engine.js: 21.9KB -> 16.5KB (24.7% smaller)
+  JS    engines/src/creator-schedule-engine.js: 1.4KB -> 1.0KB (31.3% smaller)
+  JS    engines/src/creator-scripts-engine.js: 9.1KB -> 7.1KB (22.2% smaller)
+  JS    engines/src/creator-split-engine.js: 19.8KB -> 13.2KB (33.4% smaller)
+  JS    engines/src/creator-stock-engine.js: 1.1KB -> 0.9KB (22.4% smaller)
+  JS    engines/src/creator-team-engine.js: 1.9KB -> 1.1KB (38.7% smaller)
+  JS    engines/src/creator-thumb-engine.js: 38.3KB -> 25.5KB (33.5% smaller)
+  JS    engines/src/creator-titles-engine.js: 6.0KB -> 4.5KB (25.3% smaller)
+  JS    engines/src/crop-insurance-calc-engine.js: 1.4KB -> 1.0KB (27.5% smaller)
+  JS    engines/src/crop-insurance-engine.js: 3.7KB -> 2.4KB (34.7% smaller)
+  JS    engines/src/crop-insurance-hub-engine.js: 3.4KB -> 2.0KB (42.2% smaller)
+  JS    engines/src/crop-rotation-engine.js: 26.5KB -> 18.2KB (31.4% smaller)
+  JS    engines/src/crop-yield-engine.js: 5.1KB -> 3.5KB (31.5% smaller)
+  JS    engines/src/crop-yield-tool-engine.js: 1.7KB -> 1.1KB (37.1% smaller)
+  JS    engines/src/crypto-cgt-engine.js: 6.7KB -> 4.3KB (36.7% smaller)
+  JS    engines/src/demurrage-engine.js: 4.2KB -> 2.8KB (31.6% smaller)
+  JS    engines/src/diesel-vs-solar-engine.js: 2.3KB -> 1.8KB (25.0% smaller)
+  JS    engines/src/doc-generator-engine.js: 58.6KB -> 49.0KB (16.4% smaller)
+  JS    engines/src/eac-cet-engine.js: 21.8KB -> 16.4KB (24.5% smaller)
+  JS    engines/src/ecowas-levy-engine.js: 8.8KB -> 6.4KB (27.4% smaller)
+  JS    engines/src/education-route-engine.js: 2.9KB -> 2.2KB (22.2% smaller)
+  JS    engines/src/electricity-cost-engine.js: 9.9KB -> 5.8KB (41.6% smaller)
+  JS    engines/src/electricity-tariff-engine.js: 2.7KB -> 1.9KB (29.2% smaller)
+  JS    engines/src/employee-cost-engine.js: 8.0KB -> 5.5KB (30.8% smaller)
+  JS    engines/src/employment-contract-engine.js: 7.9KB -> 6.7KB (15.6% smaller)
+  JS    engines/src/energy-audit-engine.js: 2.8KB -> 2.1KB (25.1% smaller)
+  JS    engines/src/engagement-rate-engine.js: 3.8KB -> 2.9KB (23.7% smaller)
+  JS    engines/src/ev-charging-engine.js: 2.2KB -> 1.6KB (25.2% smaller)
+  JS    engines/src/export-docs-directory-engine.js: 3.5KB -> 2.0KB (42.7% smaller)
+  JS    engines/src/export-docs-engine.js: 4.1KB -> 3.1KB (24.0% smaller)
+  JS    engines/src/farm-budget-engine.js: 7.7KB -> 3.7KB (51.1% smaller)
+  JS    engines/src/farm-loan-engine.js: 7.1KB -> 4.1KB (42.8% smaller)
+  JS    engines/src/farm-payroll-engine.js: 4.0KB -> 2.6KB (34.7% smaller)
+  JS    engines/src/farm-profit-engine.js: 6.8KB -> 4.7KB (30.4% smaller)
+  JS    engines/src/farm-size-engine.js: 1.9KB -> 1.3KB (34.7% smaller)
+  JS    engines/src/fertilizer-calc-engine.js: 3.0KB -> 1.5KB (48.1% smaller)
+  JS    engines/src/fertilizer-engine.js: 7.5KB -> 4.7KB (37.7% smaller)
+  JS    engines/src/fire-insurance-engine.js: 2.0KB -> 1.5KB (25.3% smaller)
+  JS    engines/src/forex-profit-statement-engine.js: 2.3KB -> 1.4KB (37.2% smaller)
+  JS    engines/src/francophone-paye-engine.js: 19.9KB -> 11.1KB (44.1% smaller)
+  JS    engines/src/fuel-engine.js: 2.7KB -> 2.2KB (17.4% smaller)
+  JS    engines/src/funeral-insurance-engine.js: 2.2KB -> 1.1KB (49.0% smaller)
+  JS    engines/src/fx-impact-engine.js: 3.1KB -> 2.0KB (34.8% smaller)
+  JS    engines/src/gas-lpg-engine.js: 1.9KB -> 1.4KB (27.3% smaller)
+  JS    engines/src/generator-fuel-engine.js: 2.2KB -> 1.6KB (28.0% smaller)
+  JS    engines/src/gh-ssnit-engine.js: 7.1KB -> 3.7KB (48.8% smaller)
+  JS    engines/src/greenhouse-engine.js: 3.8KB -> 2.3KB (38.6% smaller)
+  JS    engines/src/harvest-date-engine.js: 1.5KB -> 1.0KB (31.8% smaller)
+  JS    engines/src/hausa-number-words-engine.js: 2.9KB -> 1.8KB (37.6% smaller)
+  JS    engines/src/hausa-ussd-simulator-engine.js: 9.3KB -> 6.7KB (28.2% smaller)
+  JS    engines/src/health-contribution-engine.js: 3.6KB -> 1.3KB (62.9% smaller)
+  JS    engines/src/health-insurance-compare-engine.js: 2.1KB -> 1.4KB (30.4% smaller)
+  JS    engines/src/hr-engine.js: 9.7KB -> 6.6KB (31.7% smaller)
+  JS    engines/src/hs-lookup-engine.js: 5.1KB -> 3.5KB (30.0% smaller)
+  JS    engines/src/import-landed-cost-engine.js: 14.6KB -> 7.3KB (49.7% smaller)
+  JS    engines/src/incoterms-engine.js: 3.5KB -> 2.6KB (27.4% smaller)
+  JS    engines/src/input-prices-engine.js: 7.9KB -> 3.3KB (58.8% smaller)
+  JS    engines/src/insurance-fraud-checker-engine.js: 4.9KB -> 3.8KB (22.8% smaller)
+  JS    engines/src/investment-return-engine.js: 6.2KB -> 3.4KB (44.8% smaller)
+  JS    engines/src/irrigation-engine.js: 7.6KB -> 4.7KB (37.8% smaller)
+  JS    engines/src/itax-guide-engine.js: 6.3KB -> 5.0KB (20.5% smaller)
+  JS    engines/src/jamb-cbt-engine.js: 9.5KB -> 6.4KB (32.4% smaller)
+  JS    engines/src/japa-engine.js: 71.2KB -> 60.8KB (14.6% smaller)
+  JS    engines/src/job-offer-engine.js: 3.0KB -> 1.8KB (39.8% smaller)
+  JS    engines/src/ke-nssf-engine.js: 3.1KB -> 1.7KB (45.9% smaller)
+  JS    engines/src/ke-stamp-duty-engine.js: 5.9KB -> 3.2KB (45.2% smaller)
+  JS    engines/src/labour-law-engine.js: 8.9KB -> 6.5KB (27.4% smaller)
+  JS    engines/src/landed-cost-engine.js: 2.7KB -> 1.7KB (35.6% smaller)
+  JS    engines/src/lc-fee-engine.js: 11.0KB -> 8.0KB (27.3% smaller)
+  JS    engines/src/legal-engine.js: 13.8KB -> 9.5KB (31.2% smaller)
+  JS    engines/src/life-insurance-calc-engine.js: 2.0KB -> 1.5KB (25.6% smaller)
+  JS    engines/src/linkedin-optimizer-engine.js: 13.7KB -> 11.7KB (14.4% smaller)
+  JS    engines/src/livestock-feed-engine.js: 6.9KB -> 4.5KB (34.2% smaller)
+  JS    engines/src/marine-insurance-engine.js: 1.9KB -> 1.4KB (26.6% smaller)
+  JS    engines/src/microfinance-offer-engine.js: 5.7KB -> 3.0KB (47.0% smaller)
+  JS    engines/src/microinsurance-engine.js: 1.4KB -> 1.1KB (24.9% smaller)
+  JS    engines/src/mini-grid-engine.js: 2.7KB -> 2.0KB (25.1% smaller)
+  JS    engines/src/minimum-wage-engine.js: 75.1KB -> 55.4KB (26.3% smaller)
+  JS    engines/src/motor-third-party-engine.js: 2.2KB -> 1.3KB (39.5% smaller)
+  JS    engines/src/music-royalty-splitter-engine.js: 2.4KB -> 1.3KB (43.6% smaller)
+  JS    engines/src/ng-land-use-engine.js: 4.5KB -> 2.3KB (48.8% smaller)
+  JS    engines/src/ng-pension-engine.js: 5.5KB -> 2.5KB (55.3% smaller)
+  JS    engines/src/outage-cost-engine.js: 2.5KB -> 1.8KB (27.2% smaller)
+  JS    engines/src/p2p-quote-comparator-engine.js: 3.5KB -> 2.3KB (35.0% smaller)
+  JS    engines/src/paygo-solar-engine.js: 2.5KB -> 1.8KB (27.2% smaller)
+  JS    engines/src/payment-comparator-engine.js: 2.6KB -> 2.0KB (24.3% smaller)
+  JS    engines/src/payslip-engine.js: 36.8KB -> 22.2KB (39.9% smaller)
+  JS    engines/src/pension-fund-projection-engine.js: 6.0KB -> 3.7KB (38.6% smaller)
+  JS    engines/src/pension-projection-planner.js: 5.7KB -> 3.5KB (39.0% smaller)
+  JS    engines/src/personal-brand-audit-engine.js: 3.7KB -> 2.8KB (26.4% smaller)
+  JS    engines/src/pesticide-dosage-engine.js: 3.8KB -> 1.8KB (51.8% smaller)
+  JS    engines/src/photography-pricing-engine.js: 2.5KB -> 1.4KB (43.9% smaller)
+  JS    engines/src/planting-calendar-engine.js: 1.7KB -> 0.9KB (45.7% smaller)
+  JS    engines/src/plumbing-material-engine.js: 3.9KB -> 2.7KB (31.4% smaller)
+  JS    engines/src/podcast-monetization-engine.js: 2.4KB -> 1.4KB (43.3% smaller)
+  JS    engines/src/poultry-roi-engine.js: 15.4KB -> 5.3KB (65.3% smaller)
+  JS    engines/src/prepaid-meter-engine.js: 1.7KB -> 1.3KB (26.1% smaller)
+  JS    engines/src/professional-indemnity-engine.js: 1.8KB -> 1.3KB (27.1% smaller)
+  JS    engines/src/regulatory-alerts-engine.js: 16.3KB -> 12.1KB (25.9% smaller)
+  JS    engines/src/remittance-quote-comparator-engine.js: 5.5KB -> 3.4KB (38.3% smaller)
+  JS    engines/src/road-construction-cost-engine.js: 3.7KB -> 2.8KB (25.2% smaller)
+  JS    engines/src/sadc-roo-engine.js: 10.9KB -> 8.5KB (21.9% smaller)
+  JS    engines/src/scaffolding-engine.js: 3.7KB -> 2.4KB (33.2% smaller)
+  JS    engines/src/scholarship-matcher.js: 6.1KB -> 3.7KB (39.2% smaller)
+  JS    engines/src/seed-rate-engine.js: 5.0KB -> 3.4KB (31.2% smaller)
+  JS    engines/src/self-publishing-royalty-engine.js: 2.8KB -> 1.7KB (40.7% smaller)
+  JS    engines/src/septic-tank-engine.js: 3.0KB -> 2.1KB (30.4% smaller)
+  JS    engines/src/shipping-engine.js: 3.2KB -> 2.2KB (32.6% smaller)
+  JS    engines/src/site-clearing-engine.js: 3.4KB -> 2.6KB (23.6% smaller)
+  JS    engines/src/social-media-calendar-engine.js: 4.9KB -> 3.9KB (20.3% smaller)
+  JS    engines/src/soil-ph-engine.js: 5.0KB -> 3.3KB (33.3% smaller)
+  JS    engines/src/solar-roi-engine.js: 21.3KB -> 16.5KB (22.2% smaller)
+  JS    engines/src/solar-sizing-engine.js: 2.9KB -> 2.1KB (27.5% smaller)
+  JS    engines/src/solar-vs-generator-engine.js: 2.4KB -> 1.7KB (26.3% smaller)
+  JS    engines/src/staff-cost-engine.js: 41.1KB -> 27.3KB (33.5% smaller)
+  JS    engines/src/staff-cost-planner.js: 5.3KB -> 3.3KB (38.1% smaller)
+  JS    engines/src/startup-valuation-engine.js: 4.3KB -> 2.6KB (40.1% smaller)
+  JS    engines/src/storage-loss-engine.js: 4.1KB -> 2.2KB (46.8% smaller)
+  JS    engines/src/sw-final-paye-engine.js: 10.3KB -> 6.6KB (35.9% smaller)
+  JS    engines/src/tenancy-agreement-engine.js: 7.5KB -> 6.6KB (11.4% smaller)
+  JS    engines/src/tin-guide-engine.js: 7.1KB -> 5.6KB (21.3% smaller)
+  JS    engines/src/tractor-calculator-engine.js: 7.2KB -> 3.5KB (51.3% smaller)
+  JS    engines/src/trade-finance-engine.js: 7.2KB -> 5.5KB (23.8% smaller)
+  JS    engines/src/trade-utility-engine.js: 7.0KB -> 3.6KB (48.3% smaller)
+  JS    engines/src/travel-insurance-engine.js: 1.7KB -> 1.3KB (25.1% smaller)
+  JS    engines/src/tva-engine.js: 3.0KB -> 1.7KB (42.5% smaller)
+  JS    engines/src/udhamini-matcher.js: 3.4KB -> 2.7KB (20.3% smaller)
+  JS    engines/src/uniquely-african-engine.js: 39.6KB -> 23.9KB (39.6% smaller)
+  JS    engines/src/vaccination-engine.js: 15.8KB -> 7.3KB (53.5% smaller)
+  JS    engines/src/visa-checker-engine.js: 10.4KB -> 7.5KB (27.6% smaller)
+  JS    engines/src/warehouse-receipt-engine.js: 3.6KB -> 1.5KB (58.8% smaller)
+  JS    engines/src/water-bill-engine.js: 1.9KB -> 1.4KB (26.3% smaller)
+  JS    engines/src/wedding-photo-package-engine.js: 3.7KB -> 2.7KB (27.1% smaller)
+  JS    engines/src/whatsapp-bot-engine.js: 13.2KB -> 9.1KB (31.2% smaller)
+  JS    engines/src/whatsapp-link-engine.js: 1.4KB -> 0.9KB (39.0% smaller)
+  JS    engines/src/window-door-sizing-engine.js: 6.0KB -> 4.3KB (28.4% smaller)
+  JS    engines/src/workers-comp-engine.js: 1.9KB -> 1.4KB (25.5% smaller)
+  JS    engines/src/za-gepf-engine.js: 5.4KB -> 2.8KB (47.1% smaller)
+  JS    engines/src/za-transfer-duty-engine.js: 3.3KB -> 2.3KB (31.3% smaller)
+  JS    engines/src/za-uif-engine.js: 5.9KB -> 2.4KB (60.2% smaller)
+  CSS   assets/css/tokens.css: 14.1KB -> 8.6KB (39.2% smaller)
+  CSS   assets/css/global.css: 50.6KB -> 37.2KB (26.5% smaller)
+  CSS   assets/css/calculator.css: 31.0KB -> 26.1KB (15.9% smaller)
+  CSS   assets/css/design-system.css: 97.3KB -> 72.6KB (25.3% smaller)
+  CSS   assets/css/theme-dark.css: 68.9KB -> 65.2KB (5.4% smaller)
+  CSS   assets/css/dashboard.css: 37.8KB -> 28.0KB (25.9% smaller)
+  CSS   assets/css/tool-landing.css: 25.2KB -> 20.1KB (20.0% smaller)
+  CSS   assets/css/animations.css: 8.9KB -> 5.3KB (40.1% smaller)
+
+  TOTAL 207 JS + 8 CSS paired outputs
+        4250.4KB -> 3280.5KB (22.8% smaller, saved 969.9KB)
+  BUNDLE  core: 13 files, 125.0KB → 125.1KB → core.2969eb2e.min.js (+8 aliases)
+  BUNDLE  tool-page: 8 files, 42.6KB → 42.6KB → tool-page.315f0428.min.js (+4 aliases)
+  BUNDLE  chat: 2 files, 97.8KB → 97.8KB → chat.6886c889.min.js (+2 aliases)
+
+  MANIFEST  C:\Users\Oza\.codex\worktrees\befa\afrotools\assets\js\bundles\manifest.json
+  TOTAL     3 bundles, 265.4KB input → 265.4KB output
+  HTML    559 files updated, 23 <script> tags replaced with bundles
+  RELATED 3622 live tools compressed into recommendation buckets
+          assets\js\components\related-tools-data.js 773396 bytes
+          assets\js\components\related-tools-data.min.js 547318 bytes
+  PRUNE   0 HTML files updated, 0 registry script tags removed
+[build] PASS build:assets (31.2s)
+
+[build] START build:seo
+
+> afrotools@1.0.0 build:seo
+> npm run seo:structured-data && node scripts/build-seo-system.js && node scripts/apply-og-fallbacks.js && node scripts/stamp-sw.js && node scripts/inject-internal-links.js && npm run fr:navigation-links:build && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js && node scripts/generate-blog-feed.js && npm run analytics:inject && node scripts/build-public-claims.js --write && node scripts/seo-daily-fix.js && npm run en:snippets:build && node scripts/build-route-contract.js --write && node scripts/build-localization-platform.js --write && node scripts/build-localized-non-app-parity.js --write && npm run ha:coverage && node scripts/build-locale-route-map.js && node scripts/generate-sitemaps.js && npm run llms:build && npm run blog:typography:build && node scripts/apply-og-fallbacks.js && node scripts/cachebust.js && npm run seo:snippets:build
+
+
+> afrotools@1.0.0 seo:structured-data
+> node scripts/add-webapplication-schema.js --fix
+
+{
+  "mode": "fix",
+  "targets": 1964,
+  "changes": {
+    "filesChanged": 0,
+    "webApplicationsAdded": 0,
+    "faqPagesAdded": 0,
+    "faqPagesRemoved": 0,
+    "faqPagesSynchronized": 0,
+    "faqQuestionsAdded": 0,
+    "breadcrumbsAdded": 0,
+    "duplicateBlocksRemoved": 0,
+    "orphanStepsRemoved": 0,
+    "invalidJsonLd": 0,
+    "webApplicationsSkippedMissingMetadata": []
+  },
+  "coverage": {
+    "pages": 1964,
+    "webApplication": 1884,
+    "faqPage": 642,
+    "breadcrumbList": 1964,
+    "genuineVisibleFaq": 629,
+    "staticVisibleFaq": 574,
+    "clientRenderedFaq": 55,
+    "visibleFaqMissingSchema": 0,
+    "faqSchemaWithoutVisibleFaq": 13,
+    "howTo": 29,
+    "recipe": 410,
+    "howToStepPages": 439,
+    "howToStepNodes": 1911,
+    "orphanHowToSteps": 0,
+    "duplicateJsonLdBlocks": 0,
+    "duplicateJsonLdPages": 0,
+    "invalidJsonLdBlocks": 0
+  }
+}
+Priority pages patched: 23
+OG pages patched: 305
+Pages switched to tool images: 295
+  agriculture/crop-yield/lesotho.html
+  agriculture/crop-yield/mali.html
+  agriculture/crop-yield/mauritania.html
+  agriculture/crop-yield/mauritius.html
+  agriculture/crop-yield/south-sudan.html
+  agriculture/fertilizer/algeria.html
+  agriculture/fertilizer/benin.html
+  agriculture/fertilizer/botswana.html
+  agriculture/fertilizer/burkina-faso.html
+  agriculture/fertilizer/burundi.html
+  agriculture/fertilizer/cabo-verde.html
+  agriculture/fertilizer/cameroon.html
+  agriculture/fertilizer/central-african-republic.html
+  agriculture/fertilizer/chad.html
+  agriculture/fertilizer/comoros.html
+  agriculture/fertilizer/congo-brazzaville.html
+  agriculture/fertilizer/djibouti.html
+  agriculture/fertilizer/dr-congo.html
+  agriculture/fertilizer/equatorial-guinea.html
+  agriculture/fertilizer/eritrea.html
+  ... and 285 more
+  SW    PRECACHE generated: 5 current asset URLs
+  SW    CACHE_VERSION stamped: 0ceba831
+Injecting static internal links...
+
+  Agriculture: 606 country links injected
+  Country hubs: 104 sub-page links injected
+  Tools: 538 country links injected
+  French: 949 links injected
+  Category hubs: 118 child links injected
+  Related tools: 7502 links across 1256 English directory pages
+                 53 pages updated
+                 0 full related-data scripts removed, 0 lightweight component scripts added
+
+  Total links injected: 9817
+  Done!
+
+> afrotools@1.0.0 fr:navigation-links:build
+> node scripts/repair-french-navigation-links.js --write
+
+Repaired French navigation links: 6 replacement(s) across 6 file(s).
+Canonical alias href replacements: 19
+Files patched: 10
+  business/index.html
+  crypto/index.html
+  fr/burkina-faso/index.html
+  fr/business/index.html
+  fr/cote-divoire/index.html
+  fr/crypto/index.html
+  fr/mali/index.html
+  fr/senegal/index.html
+  fr/togo/index.html
+  travel/index.html
+Generated HTML canonical redirect rules: 2647
+Updated _redirects
+Generated blog/feed.xml with 40 items. Latest: household-appliance-electricity-audit-africa
+
+> afrotools@1.0.0 analytics:inject
+> node scripts/inject-analytics-loader.js --write
+
+[analytics] Wrote loader v=d378a891: 54 injected, 4 normalized.
+[analytics] post-write: 11447/11447 eligible page(s) covered; 0 missing, 0 stale, 0 duplicate, 0 missing early bootstrap, 0 stale early bootstrap, 0 duplicate early bootstrap, 4 malformed.
+[analytics] malformed documents skipped (4):
+  - jamb/commerce/1997/index.html
+  - jamb/english/2000/index.html
+  - jamb/english/2009/index.html
+  - jamb/mathematics/1987/index.html
+Public claims build
+Scanned files: 12737
+Detected claim phrases: 45095
+Approved claim hits: 45095
+Projected HTML files: 0
+Public claims contract passed.
+
+[1mAfroTools SEO Daily Fix — 2026-09-08[0m
+
+Mode: fix
+
+[1m── Auto-fixes applied ──────────────────────────────────[0m
+  Canonical files fixed:     0
+  Canonical attrs fixed:     0
+  og:url files fixed:        0
+  og:url attrs fixed:        0
+  JSON-LD files fixed:       263
+  JSON-LD blocks fixed:      263
+  Hreflang files fixed:      0
+  Hreflang attrs fixed:      0
+  Sitemap <loc> fixed:       0
+  Sitemap hreflang fixed:    0
+  Sitemap <lastmod> updated: 0
+
+[1m── Remaining issues (manual review) ────────────────────[0m
+  [32mMissing canonical tags: 0[0m
+  [32mMissing <title> tags: 0[0m
+  [32mMissing meta descriptions: 0[0m
+  [32mRemaining hreflang violations: 0[0m
+  [32m/fr/ homepage broken links (no static file — verify _redirects): 0[0m
+  [32mNoindex pages skipped from metadata report: 1573[0m
+
+[1m── Summary ─────────────────────────────────────────────[0m
+  [32m✓ Auto-fixes applied to the worktree. Commit and deploy remain caller-controlled.[0m
+
+
+> afrotools@1.0.0 en:snippets:build
+> node scripts/repair-english-search-snippets.js --write && node scripts/repair-english-insurance-search-snippets.js --write && node scripts/repair-english-legal-search-snippets.js --write && node scripts/repair-english-workforce-search-snippets.js --write && node scripts/repair-english-country-directory-search-snippets.js --write
+
+English export-document snippets: 54 pages checked; 0 updated.
+English insurance snippets: 216 pages checked; 0 updated.
+English legal snippets: 108 pages checked; 0 updated.
+English workforce snippets: 164 pages checked; 0 updated.
+English country-directory snippets: 160 pages checked; 0 updated.
+Route contract valid: 11517 pages, 2949 redirects, 5244 locale groups, 9938 sitemap-eligible routes.
+Synchronized redirects=0, metadataFiles=526, linkFiles=0, linkReplacements=0.
+Localization platform generated: 11517 pages across 8 manifest locales.
+Coverage: 8947 native, 2516 localized shells, 33 English fallbacks, 20 unavailable, 1 deprecated.
+Built localized discovery pages; 0 file(s) updated.
+Localized non-app parity: 441 English routes; French 161 pass, 0 under-standard, 280 missing; Swahili 138 pass, 0 under-standard, 303 missing.
+
+> afrotools@1.0.0 ha:coverage
+> node scripts/report-hausa-coverage.js --write
+
+Hausa coverage report: 105 routes; 22 native, 58 localized shell, 25 explicit English fallback.
+build-locale-route-map: unchanged (9989 routes).
+  sitemap-agriculture.xml: 645 URLs
+  sitemap-countries.xml: 164 URLs
+  sitemap-tools.xml: 2411 URLs
+  sitemap-blog.xml: 314 URLs
+  sitemap-fr.xml: 3243 URLs
+  sitemap-sw.xml: 1582 URLs
+  sitemap-ha.xml: 80 URLs
+  sitemap-yo.xml: 22 URLs
+  sitemap-misc.xml: 126 URLs
+  sitemap-i18n.xml: 7879 hreflang entries (3185 page pairs)
+
+  sitemap-index.xml: 12 sub-sitemaps
+  sitemap.xml: replaced with sitemap index (was broken — had dupes & bad URLs)
+  Total unique URLs: 8587
+  Done!
+
+> afrotools@1.0.0 llms:build
+> node scripts/build-llms-txt.js
+
+Generated llms.txt with 32 selected tools and 32 category hubs.
+Generated llms-full.txt with 1256 tools across 32 categories.
+Generated llms-fr.txt with 765 verified French destinations from 1256 mapped deterministic records.
+Generated artifacts were already current.
+
+> afrotools@1.0.0 blog:typography:build
+> node scripts/build-blog-typography-standard.js --write
+
+Blog typography synchronized across 547 pages (0 updated).
+OG pages patched: 0
+Pages switched to tool images: 0
+  CACHE   723 HTML files updated, 7561 refs cache-busted, 2265 unique assets hashed
+
+> afrotools@1.0.0 seo:snippets:build
+> node scripts/audit-search-snippets.js --write
+
+Search snippet audit: 9836 indexable pages (en=5011, fr=3243, sw=1582); 0 error pages and 675 review candidates.
+[build] PASS build:seo (429.5s)
+
+[build] Stage timings
+  build:registry     42.1s
+  build:surfaces     151.1s
+  build:assets       31.2s
+  build:seo          429.5s
+[build] COMPLETE (654.0s)
+
+> afrotools@1.0.0 postbuild
+> node scripts/sync-yoruba-fallbacks.js --write && npm run content-integrity:build && npm run analytics:check
+
+Synchronized Yoruba fallback surfaces in 23 file(s).
+
+> afrotools@1.0.0 content-integrity:build
+> node scripts/build-blog-content-manifest.js --write && node scripts/apply-generated-content-provenance.js --write && node scripts/apply-explicit-language-fallbacks.js --write && node scripts/dedupe-content-blocks.js --write && node scripts/audit-content-integrity.js --write
+
+Applied blog locale manifest: 518 article(s), 0 stale.
+Applied generated content provenance: 0 page(s).
+Applied explicit language fallbacks: 0 page(s), 0 newly labelled block(s).
+Normalized generated content: 0 duplicate block(s) across 0 changed page(s); 0 whitespace-only page(s).
+Content integrity: 11742 HTML pages; 0 blocker(s), 0 warning(s), 3 reviewed exception(s).
+
+> afrotools@1.0.0 analytics:check
+> node scripts/inject-analytics-loader.js --check
+
+[analytics] check: 11447/11447 eligible page(s) covered; 0 missing, 0 stale, 0 duplicate, 0 missing early bootstrap, 0 stale early bootstrap, 0 duplicate early bootstrap, 4 malformed.
+[analytics] malformed documents skipped (4):
+  - jamb/commerce/1997/index.html
+  - jamb/english/2000/index.html
+  - jamb/english/2009/index.html
+  - jamb/mathematics/1987/index.html
+Built dist: 17908 files copied, 24 directories skipped, 107 files skipped.
+Optimized dist: 1767 JS and 614 CSS files, 42020905 -> 39385156 bytes; 52 JS skipped.

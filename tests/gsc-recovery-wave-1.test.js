@@ -242,21 +242,29 @@ test("configured internal links and target-page assets resolve locally", functio
 });
 
 test("amount conversion behavior is preserved", function () {
+  const amountInput = require("../assets/js/engines/amount-words-input");
+  // The page now normalizes decimal input before passing exact parts to wording.
+  // Keep the original wording expectations while exercising that real dependency.
+  function normalize(raw, maximumMajor) {
+    const parsed = amountInput.parse(raw, maximumMajor);
+    assert.equal(parsed.valid, true, "valid wording fixture: " + raw);
+    return parsed;
+  }
   const gh = read("tools/amount-words-gh/index.html");
   const ghPure = gh.slice(gh.indexOf("const ones ="), gh.indexOf("function escapeHtml"));
   const ghSandbox = {};
   vm.runInNewContext(ghPure + "; result = { numWords, amountToWords };", ghSandbox);
-  assert.equal(ghSandbox.result.amountToWords(10000), "Ghana Cedis Ten Thousand Only");
-  assert.equal(ghSandbox.result.amountToWords(12500.75), "Ghana Cedis Twelve Thousand Five Hundred and Pesewas Seventy-Five Only");
-  assert.equal(ghSandbox.result.amountToWords(0), "Zero Ghana Cedis Only");
+  assert.equal(ghSandbox.result.amountToWords(normalize("10000", "999999999999")), "Ghana Cedis Ten Thousand Only");
+  assert.equal(ghSandbox.result.amountToWords(normalize("12500.75", "999999999999")), "Ghana Cedis Twelve Thousand Five Hundred and Pesewas Seventy-Five Only");
+  assert.equal(ghSandbox.result.amountToWords(normalize("0", "999999999999")), "Zero Ghana Cedis Only");
 
   const ngn = read("tools/naira-to-words/index.html");
   const ngnPure = ngn.slice(ngn.indexOf("var ones ="), ngn.indexOf("function applyCaseMode"));
   const ngnSandbox = {};
   vm.runInNewContext(ngnPure + "; result = { numToWords, amountToWords };", ngnSandbox);
   const option = { dataset: { main: "Naira", sub: "Kobo" } };
-  assert.equal(ngnSandbox.result.amountToWords(10000, option), "Ten Thousand Naira Only");
-  assert.equal(ngnSandbox.result.amountToWords(50000.75, option), "Fifty Thousand Naira and Seventy-Five Kobo Only");
+  assert.equal(ngnSandbox.result.amountToWords(normalize("10000", "999999999999999"), option), "Ten Thousand Naira Only");
+  assert.equal(ngnSandbox.result.amountToWords(normalize("50000.75", "999999999999999"), option), "Fifty Thousand Naira and Seventy-Five Kobo Only");
 });
 
 test("Igbo market-day engine and timezone behavior are preserved", function () {

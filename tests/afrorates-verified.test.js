@@ -10,13 +10,13 @@ const root = path.resolve(__dirname, '..');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data', 'rates', 'latest.json'), 'utf8'));
 const now = snapshot.timestamp;
 
-test('AfroRates exposes only the six rows with complete official evidence', () => {
+test('AfroRates exposes only the thirteen rows with complete official evidence', () => {
   const rows = engine.selectVerified(snapshot, { maxAgeDays: 45, now });
-  assert.deepEqual(rows.map((row) => row.code).sort(), ['CI', 'KE', 'MA', 'NG', 'SN', 'ZA']);
+  assert.deepEqual(rows.map((row) => row.code).sort(), ['BW', 'CI', 'EG', 'ET', 'GH', 'KE', 'MA', 'MU', 'NG', 'SN', 'TZ', 'UG', 'ZA']);
   assert.deepEqual(engine.coverage(snapshot, { maxAgeDays: 45, now }), {
     candidate_count: 15,
-    verified_policy_count: 6,
-    withheld_policy_count: 9,
+    verified_policy_count: 13,
+    withheld_policy_count: 2,
     partial: true,
   });
   assert.ok(rows.every((row) => row.annual_inflation && /^\d{4}$/.test(row.annual_inflation.year)));

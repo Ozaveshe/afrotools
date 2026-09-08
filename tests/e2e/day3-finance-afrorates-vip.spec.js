@@ -14,9 +14,9 @@ for (const route of routes) {
     await page.setViewportSize({ width: 375, height: 760 });
     await page.goto(route.path);
     await expect(page.locator('#ar-status')).toHaveAttribute('data-state', 'fallback');
-    await expect(page.locator('#ar-verified')).toHaveText('6');
-    await expect(page.locator('#ar-withheld')).toHaveText('9');
-    await expect(page.locator('#ar-body tr')).toHaveCount(6);
+    await expect(page.locator('#ar-verified')).toHaveText('13');
+    await expect(page.locator('#ar-withheld')).toHaveText('2');
+    await expect(page.locator('#ar-body tr')).toHaveCount(13);
     await expect(page.locator('html')).toHaveAttribute('lang', route.language);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
     expect(errors).toEqual([]);
@@ -55,7 +55,7 @@ test('AfroRates rejects a mixed API response and uses the strict static fallback
   }));
   await page.goto('/tools/afrorates/');
   await expect(page.locator('#ar-status')).toHaveAttribute('data-state', 'fallback');
-  await expect(page.locator('#ar-body tr')).toHaveCount(6);
+  await expect(page.locator('#ar-body tr')).toHaveCount(13);
 });
 
 test('AfroRates CSV and PDF exports stay local and use only reviewed rows', async ({ page }) => {
@@ -71,7 +71,7 @@ test('AfroRates CSV and PDF exports stay local and use only reviewed rows', asyn
     window.AfroTools.pdf = { generate: async (payload) => { window.__pdfPayload = payload; } };
   });
   await page.locator('#ar-pdf').click();
-  await expect.poll(() => page.evaluate(() => window.__pdfPayload && window.__pdfPayload.sections[0].rows.length)).toBe(6);
+  await expect.poll(() => page.evaluate(() => window.__pdfPayload && window.__pdfPayload.sections[0].rows.length)).toBe(13);
   await expect(page.locator('#ar-action-status')).toContainText('generated locally');
 });
 

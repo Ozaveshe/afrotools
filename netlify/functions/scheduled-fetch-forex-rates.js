@@ -11,6 +11,7 @@
  */
 
 const { setData, getData, updateMeta } = require('./_shared/data-store');
+const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 
 // All African + global currencies we track
 const AFRICAN_CURRENCIES = [
@@ -77,7 +78,7 @@ async function fetchFromExchangeRateAPI() {
     ? 'https://open.er-api.com/v6/latest/USD'
     : `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
   if (!res.ok) throw new Error(`ExchangeRate-API: HTTP ${res.status}`);
 
   const json = await res.json();
@@ -104,7 +105,7 @@ async function fetchFromExchangeRateAPI() {
  */
 async function fetchFromFrankfurter() {
   const url = 'https://api.frankfurter.app/latest?from=USD';
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
   if (!res.ok) throw new Error(`Frankfurter: HTTP ${res.status}`);
 
   const json = await res.json();
@@ -127,11 +128,23 @@ async function fetchFromFrankfurter() {
  * Source 3: Fawaz Ahmed Currency API (GitHub-hosted, free)
  */
 async function fetchFromFawazAhmed() {
-  const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json';
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`FawazAhmed: HTTP ${res.status}`);
-
-  const json = await res.json();
+  // The provider documents both mirrors. CDN latest aliases can lag a daily release.
+  const urls = [
+    'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+    'https://latest.currency-api.pages.dev/v1/currencies/usd.json',
+  ];
+  const candidates = await Promise.all(urls.map(async url => {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return null;
+      const json = await res.json();
+      const stamp = Date.parse(json.date);
+      const coverage = ALL_CURRENCIES.filter(code => Number.isFinite(json.usd && json.usd[code.toLowerCase()]) && json.usd[code.toLowerCase()] > 0).length;
+      return Number.isFinite(stamp) && stamp <= Date.now() + 300000 && coverage >= MIN_SOURCE_COVERAGE ? json : null;
+    } catch (_error) { return null; }
+  }));
+  const json = candidates.filter(Boolean).sort((a, b) => Date.parse(b.date) - Date.parse(a.date))[0];
+  if (!json) throw new Error('FawazAhmed: no valid dated mirror snapshot');
   const rawRates = json.usd || {};
   const rates = {};
 
@@ -173,7 +186,7 @@ exports.handler = async function (event) {
       const result = await source.fn();
       const coverage = countTrackedRates(result.rates);
 
-      if (coverage >= MIN_SOURCE_COVERAGE) {
+      if (coverage >= MIN_SOURCE_COVERAGE && result.last_updated && Date.parse(result.last_updated) <= Date.now() + 300000) {
         fetchedRates = result.rates;
         usedSource = result.source;
         sourceLastUpdated = result.last_updated || null;
@@ -201,6 +214,9 @@ exports.handler = async function (event) {
 
   // Merge with existing data (preserve currencies not in new fetch)
   const existing = await getData('forex-latest');
+  if (existing && Date.parse(existing.timestamp) > Date.parse(sourceLastUpdated)) {
+    return { statusCode: 200, body: 'Newer cached forex snapshot retained.' };
+  }
   let comparisonRates = null;
   if (usedSource !== 'fawazahmed') {
     try {
@@ -238,10 +254,21 @@ exports.handler = async function (event) {
     },
     source: usedSource,
     next_update: nextUpdate,
+    retained_rate_codes: Object.keys(mergedRates).filter(code =>
+      !Object.hasOwn(fetchedRates, code) || stabilized.warnings.some(warning => warning.startsWith(code + ':'))),
+    source_warnings: stabilized.warnings,
   };
 
   // Write to Blobs
   const written = await setData('forex-latest', data);
+  if (!written) {
+    try {
+      await updateMeta('forex', { status: 'write-failed', error: 'Persistence failed', last_attempt: new Date().toISOString() });
+    } catch (error) {
+      console.warn('[forex-fetch] ' + storageDiagnostic('failure-metadata', 'meta', error));
+    }
+    return { statusCode: 503, body: 'Forex persistence failed; last-known-good data retained.' };
+  }
 
   // Update meta
   await updateMeta('forex', {

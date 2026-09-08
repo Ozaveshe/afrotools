@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "handoff_type": "coordinated-growth-recovery",
+  "lane": "indexing",
+  "status": "ready-for-coordinator-integration",
+  "created_at": "2026-09-08T03:19:30.6540797Z",
+  "branch": "codex/growth-indexing-2026-09-08",
+  "base_commit": "9b29eab0408eedd9442c98c2cabf567098da80ab",
+  "implementation_commits": [
+    "e5fa1cb60a87a2071ffcc643ba89a7e7d10865c9",
+    "a86262cb2d9b33bc6c95b52b807d51211f36627b",
+    "33ec519953a3ad1ff78db018339461fef1b08cf5"
+  ],
+  "source_files": [
+    "_redirects",
+    "assets/js/car-import-cost.js",
+    "tests/car-import-country-redirects.test.js",
+    "tests/car-import-country-entry.browser.js"
+  ],
+  "generated_files": [
+    "data/registry/route-graph.json",
+    "reports/route-contract-report.json",
+    "reports/route-contract-report.md",
+    "tools/car-import-cost/index.html",
+    "tools/car-import-cost/nigeria/index.html",
+    "tools/car-import-cost/kenya/index.html",
+    "tools/car-import-cost/ghana/index.html",
+    "tools/car-import-cost/uganda/index.html",
+    "tools/car-import-cost/zambia/index.html",
+    "tools/car-import-cost/tanzania/index.html",
+    "fr/tools/cout-importation-voiture/index.html",
+    "sw/zana/gharama-kuagiza-gari/index.html"
+  ],
+  "validation": [
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    },
+    {
+      "command": "node -c assets/js/car-import-cost.js",
+      "status": "pass"
+    },
+    {
+      "status": "pass",
+      "command": "node --test tests/car-import-country-redirects.test.js",
+      "log": "route-alias-tests.log",
+      "tests": 3
+    },
+    {
+      "status": "pass",
+      "command": "npm run test:car-import-cost",
+      "log": "car-tests.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run test:routes",
+      "log": "route-contract.log"
+    },
+    {
+      "links": 141732,
+      "status": "pass",
+      "command": "npm run check-links",
+      "html_files": 11748,
+      "log": "links.log"
+    },
+    {
+      "status": "pass",
+      "command": "npm run seo:report",
+      "remaining_issues": 0,
+      "log": "seo.log"
+    },
+    {
+      "browser_cases": 80,
+      "status": "pass",
+      "command": "NETLIFY_TEST_ORIGIN=<local fixture> node tests/car-import-country-entry.browser.js",
+      "http_countries": 20,
+      "proof": "netlify-browser.json"
+    },
+    {
+      "status": "pass",
+      "command": "npm run build:deploy",
+      "files": 17907,
+      "log": "build-deploy.log",
+      "note": "First earlier attempt failed on transient Windows UNKNOWN copying an untouched French-energy file. Bounded retry and final build both passed."
+    },
+    {
+      "status": "pass",
+      "command": "npm run audit:dist",
+      "log": "dist-audit.log"
+    },
+    {
+      "browser_cases": 3,
+      "status": "pass",
+      "command": "node tests/car-import-country-entry.browser.js --dist --reload-only",
+      "http_countries": 20,
+      "proof": "dist-browser.json"
+    },
+    {
+      "status": "pass",
+      "command": "npm run security:scan",
+      "log": "security.log"
+    },
+    {
+      "status": "pass",
+      "command": "git diff 9b29eab0..HEAD --check"
+    },
+    {
+      "command": "Normalized Terser syntax equivalence before/after EOL trim",
+      "note": "Final follow-up changes whitespace and regenerated nine controller tags only; build/dist browser evidence is for a86262cb. Coordinator rebuild owns final cumulative artifact.",
+      "status": "pass"
+    },
+    {
+      "proof": "route-semantic-delta.json",
+      "command": "Route graph semantic multiset comparison excluding only route.id and route.source.line",
+      "removed_self_matching_patterns": 1,
+      "added_aliases": 14,
+      "status": "pass",
+      "unchanged_rows": 14770
+    }
+  ],
+  "evidence": {
+    "viewport": "390x844",
+    "live_database_actions": false,
+    "provider": "Installed Netlify CLI 27.0.0, offline temporary fixture",
+    "gsc_report_updated": "2026-09-04",
+    "production_changed": false,
+    "public_unique_urls": 39,
+    "gsc_sample_urls": 32,
+    "extra_live_destinations": 7
+  },
+  "privacy": "English aliases retain existing vehicle URL prefills; no new network/storage channel. Localized adapters remain untouched and strip query/hash and suppress draft persistence. Synthetic browser fields only.",
+  "accessibility": "Required blank country option, aria-invalid/describedby, live status, native submit validation; 390px overflow and core controls checked.",
+  "seo": "14 exact non-forced aliases; six real pages and canonical preserved; unknown/deep URLs remain unmatched; no sitemap membership change.",
+  "analytics": "Existing event names preserved; unsupported entry does not calculate. No new event or raw field logging.",
+  "known_residuals": [
+    "French privacy adapter strips URL but displays default NG result with disabled exports; separate French owner follow-up assigned. Integration must update the explicit baseline assertion in the browser test.",
+    "Existing Chromium Transition was skipped warning during history navigation retained separately in browser evidence.",
+    "Build analytics check notes four pre-existing malformed JAMB documents; zero missing/stale/duplicate loaders.",
+    "15 non-car reported 404s require fresh owner/referrer evidence; no invented redirects.",
+    "Production aliases and indexing recovery remain unverified until coordinator deployment and recrawl."
+  ],
+  "skipped_checks": [
+    "Production deploy/edge verification: coordinator-owned; no deploy authorized in this lane.",
+    "Live Supabase and rate refresh: not required for source route/entry changes.",
+    "Broad npm test: focused route, car, SEO, link and required build/security/artifact stack cover this scope."
+  ],
+  "rollback": "Revert semantic commit a86262cb and regenerate route graph and controller cache tags; formatting commit may remain."
+}

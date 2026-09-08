@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "lane": "localization",
+  "date": "2026-09-08",
+  "status": "ready_for_review",
+  "baseline_sha": "9b29eab0408eedd9442c98c2cabf567098da80ab",
+  "implementation_commit": "a7ca2a31d3ccf3daee57eb8160330c14433525fa",
+  "branch": "codex/growth-fr-money-20260908",
+  "worktree": "C:\\Users\\Oza\\.codex\\worktrees\\3466\\afrotools",
+  "routes": [
+    "/fr/blog/frais-orange-money-guide-2026/",
+    "/fr/blog/mobile-money-fees-africa-compared/",
+    "/fr/tools/frais-mobile-money/"
+  ],
+  "source_files": [
+    "assets/js/pages/mobile-money-quote-parity.js",
+    "fr/blog/frais-orange-money-guide-2026/index.html",
+    "lang/pages/blog/mobile-money-fees-africa-compared/fr.body.html",
+    "scripts/build-french-mobile-money-editorial.js",
+    "scripts/build-mobile-money-fee-finder.js"
+  ],
+  "generated_files": [
+    "fr/blog/mobile-money-fees-africa-compared/index.html",
+    "fr/tools/frais-mobile-money/index.html"
+  ],
+  "test_files": [
+    "tests/e2e/french-money-recovery.spec.js",
+    "tests/french-money-recovery-roundtrip.test.js"
+  ],
+  "report": "reports/growth-recovery/2026-09-08/localization/report.md",
+  "coverage_inventory": "reports/growth-recovery/2026-09-08/localization/coverage.json",
+  "language_review": "pending-human-review",
+  "commands": [
+    {
+      "command": "npm ci",
+      "status": "pass",
+      "evidence": "104 packages; zero vulnerabilities"
+    },
+    {
+      "command": "npm run automation:preflight",
+      "status": "pass",
+      "evidence": "12 passed; two live-provider environment warnings outside scope"
+    },
+    {
+      "command": "node tests/french-money-recovery-roundtrip.test.js",
+      "status": "pass",
+      "evidence": "French-only Orange source skip preserves current article; editorial and fee-finder owners roundtrip"
+    },
+    {
+      "command": "npx playwright test tests/e2e/french-money-recovery.spec.js --project=chromium --workers=1 --trace=off",
+      "status": "pass",
+      "evidence": "9 passed; local port4186; country/expiry/errors/exports/reset/no-JS/375px/axe contrast and EN/SW regressions"
+    },
+    {
+      "command": "npx playwright test tests/e2e/mobile-money-fee-finder.spec.js --project=chromium --workers=1",
+      "status": "pass",
+      "evidence": "4 passed in combined run; unchanged existing provider fixtures"
+    },
+    {
+      "command": "node tests/mobile-money-fee-finder.test.js",
+      "status": "pass",
+      "evidence": "Generated locale contracts"
+    },
+    {
+      "command": "node --test tests/mobile-money-quote-engine.test.js tests/french-orange-money-guide.test.js",
+      "status": "pass",
+      "evidence": "Engine test plus four article checks"
+    },
+    {
+      "command": "node tests/french-mobile-money-editorial.test.js",
+      "status": "pass",
+      "evidence": "Source body, owner, schema, discovery and fallback checks"
+    },
+    {
+      "command": "node tests/french-free-app-parity-inventory.test.js",
+      "status": "pass",
+      "evidence": "1255 rows; recorded acceptance only"
+    },
+    {
+      "command": "node tests/swahili-free-app-parity-inventory.test.js",
+      "status": "pass",
+      "evidence": "1255 rows;1254 recorded acceptance"
+    },
+    {
+      "command": "npm run build:i18n:validate",
+      "status": "pass",
+      "evidence": "All four locale keys and generated localization policy consistent"
+    },
+    {
+      "command": "npm run validate:hreflang",
+      "status": "pass",
+      "evidence": "11517 pages;32446 relationships;5244 equivalence groups"
+    },
+    {
+      "command": "npm run check-links",
+      "status": "pass",
+      "evidence": "See links.log"
+    },
+    {
+      "command": "npm run audit",
+      "status": "pass",
+      "evidence": "See audit.log"
+    },
+    {
+      "command": "npm run seo:report",
+      "status": "pass",
+      "evidence": "No auto-fixes needed"
+    },
+    {
+      "command": "npm run content-integrity:check",
+      "status": "pass",
+      "evidence": "Final pass after owner provenance repair; see content-integrity.log"
+    },
+    {
+      "command": "npm run build:deploy",
+      "status": "pass",
+      "evidence": "Full build and first dist artifact; final scoped owner changes refreshed separately"
+    },
+    {
+      "command": "node scripts/build-dist.js",
+      "status": "pass",
+      "evidence": "Final exact-source artifact:17907 files; see final-dist.log"
+    },
+    {
+      "command": "npm run audit:dist",
+      "status": "pass",
+      "evidence": "Final deploy artifact audit passed"
+    },
+    {
+      "command": "npm run security:scan",
+      "status": "pass",
+      "evidence": "Security scan passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass",
+      "evidence": "No whitespace errors"
+    },
+    {
+      "command": "git diff --diff-filter=D --summary",
+      "status": "pass",
+      "evidence": "No deletions"
+    },
+    {
+      "command": "npm test",
+      "status": "not_run",
+      "evidence": "Broad suite not needed beyond focused workflow and mandatory release stack; no full-suite claim"
+    }
+  ],
+  "proof": {
+    "local_browser": "9 final French recovery tests plus4 existing fee-finder tests; source-served Chromium; synthetic local data",
+    "artifact": "Final dist HTML equals final source output; localized runtime, country mapping, contrast and provenance checked",
+    "artifact_html_sha256": "943cb04de0b00f7dd571c41578d66528686ffab442bafc8c0fccab88e82f0641",
+    "live_web": "Read official Orange Cameroon and Senegal pages on2026-09-08; other existing tariff dates not refreshed",
+    "production": "not_verified_not_deployed",
+    "database": "not_accessed",
+    "source_boundary": {
+      "description": "One-time compilation of baseline generator and exact EN/SW page equality succeeded; retained test avoids git-history dependency in shallow CI",
+      "en_sha256": "2fd62eec67a73e4647d653a5a122cb570cd64a416674915b5f86cacd940abf9d",
+      "sw_sha256": "ce162133ec03cf2db1abe519bc3de29e254824014513e3d0e7afbfe216abdec1"
+    }
+  },
+  "blockers": [],
+  "residual_risks": [
+    "Native-language editorial review pending; no blanket locale-complete claim",
+    "Existing EN/SW shared engine groups same currency/type/amount across markets; only French UI repaired",
+    "Historical Orange fr.json metadata stale but inactive because English source absent",
+    "No current analytics uplift or production proof"
+  ],
+  "next_waves": [
+    "Swahili missing PAYE Authority Finder mapping and money comparison expiry/export review",
+    "Hausa existing money/FX/remittance shells with native-speaker task evidence",
+    "Yoruba naira-words/VAT/data-usage explicit fallback replacements only after functional acceptance",
+    "Separate French Madagascar net-pay and CI CNPS source/task review"
+  ],
+  "merge_performed": false,
+  "deployment_performed": false
+}

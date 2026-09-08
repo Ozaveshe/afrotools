@@ -389,11 +389,12 @@
       <div class="field">
         <label for="customCattle">Livestock or cattle equivalent</label>
         <input type="number" id="customCattle" placeholder="Use starter estimate" min="0" max="100" inputmode="numeric">
+        <div class="field-help">Leave blank for the country example, or enter 0 for no livestock. Enter only the count discussed by the families.</div>
       </div>
     </div>
     <div class="form-row hidden" id="zwFields">
       <div class="field">
-        <label for="zwCustom">Additional cash component (USD)</label>
+        <label for="zwCustom">Additional cash component (planning currency)</label>
         <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal">
       </div>
     </div>
@@ -430,7 +431,8 @@
   </div>
 
   <!-- ── RESULTS ── -->
-  <div class="results" id="results" aria-live="polite">
+  <p id="planStatus" role="status" aria-live="polite"></p>
+  <div class="results" id="results" tabindex="-1" aria-label="Family planning results">
 
     <!-- Cattle Visual -->
     <div class="cattle-visual">
@@ -681,6 +683,26 @@ function getCattleCount(countryKey) {
 }
 
 function calculate() {
+  var numericInputs = document.querySelectorAll('#lobola-planner input[type="number"]');
+  for (var field of numericInputs) {
+    if (field.id === 'zwCustom' && document.getElementById('country').value !== 'zw') continue;
+    var raw = field.value.trim();
+    var number = Number(raw);
+    var maximum = field.max ? Number(field.max) : 1000000000;
+    var minimum = field.min ? Number(field.min) : 0;
+    var whole = field.id === 'customCattle' || field.id === 'timelineMonths';
+    var invalid = field.validity.badInput || (raw !== '' && (!Number.isFinite(number) || number < minimum || number > maximum || (whole && !Number.isInteger(number))));
+    field.setAttribute('aria-invalid', String(invalid));
+    if (invalid) {
+      invalidatePlan();
+      document.getElementById('planStatus').textContent = 'Enter ' + (whole ? 'a whole number' : 'an amount') + ' between ' + minimum + ' and ' + maximum + ' for ' + document.querySelector('label[for="' + field.id + '"]').textContent + '.';
+      var details = field.closest('details');
+      if (details) details.open = true;
+      field.focus();
+      return;
+    }
+  }
+  document.getElementById('planStatus').textContent = '';
   var countryKey = document.getElementById('country').value;
   var d = COUNTRIES[countryKey];
   var currencyCode = (document.getElementById('currency') && document.getElementById('currency').value) || d.currency;
@@ -696,23 +718,19 @@ function calculate() {
   var giftItems = document.getElementById('giftItems').value.trim();
   var familyNotes = document.getElementById('familyNotes').value.trim();
 
-  var cattleCount = customCattle || getCattleCount(countryKey);
+  var cattleCount = document.getElementById('customCattle').value.trim() === '' ? getCattleCount(countryKey) : customCattle;
   var cattlePrice, livestockValue, baseExpectation, totalValue, breakdown = [];
 
   if (countryKey === 'zw') {
     cattlePrice = readNumber('cattlePrice', 500, 0, 1000000000);
     var extra = readNumber('zwCustom', 0, 0, 1000000000);
-    var mom = 1, dad = 1, danga = Math.max(2, cattleCount - 2);
-    cattleCount = mom + dad + danga;
     livestockValue = cattleCount * cattlePrice + extra;
     baseExpectation = familyExpectation || livestockValue;
     totalValue = baseExpectation + giftValue + ceremonyCost;
     var contingency = totalValue * giftBuffer / 100;
     totalValue += contingency;
     breakdown = [
-      ['Possible mother-side symbolic line', mom+' head = '+money(symbol, mom*cattlePrice)],
-      ['Possible father-side symbolic line', dad+' head = '+money(symbol, dad*cattlePrice)],
-      ['General livestock planning line', danga+' head = '+money(symbol, danga*cattlePrice)],
+      ['Family-entered livestock reference', cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
       ['Additional cash component', money(symbol, extra)],
       ['Family expectation override', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
@@ -823,7 +841,16 @@ function calculate() {
   document.getElementById('dykBox').innerHTML = '<div class="dyk-title">Planning note</div><div class="dyk-text">Treat every number on this page as a discussion aid. Families may agree on cash, livestock, gifts, instalments, ceremony support, or a different arrangement entirely.</div>';
 
   document.getElementById('results').classList.add('show');
-  document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('results').focus({ preventScroll:true });
+  document.getElementById('results').scrollIntoView({ behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' });
+}
+
+function invalidatePlan() {
+  var hadPlan = !!lastLobolaPlan;
+  lastLobolaPlan = null;
+  lastLobolaBrief = '';
+  document.getElementById('results').classList.remove('show');
+  if (hadPlan) document.getElementById('planStatus').textContent = 'Inputs changed. Build the family plan again before copying or saving.';
 }
 
 function renderNegotiationPlan(data) {
@@ -967,6 +994,8 @@ function fallbackCopyLobolaBrief(done) {
 }
 
 function resetCalc() {
+  invalidatePlan();
+  queryCurrency = '';
   document.getElementById('country').value = 'za';
   document.getElementById('customCattle').value = '';
   document.getElementById('familyExpectation').value = '0';
@@ -978,6 +1007,8 @@ function resetCalc() {
   document.getElementById('timelineMonths').value = '6';
   document.getElementById('giftItems').value = '';
   document.getElementById('familyNotes').value = '';
+  document.getElementById('zwCustom').value = '0';
+  document.getElementById('planStatus').textContent = '';
   updateCountryFields();
   document.getElementById('results').classList.remove('show');
 }
@@ -985,6 +1016,8 @@ function resetCalc() {
 document.addEventListener('DOMContentLoaded', function() {
   applyQueryDefaults();
   updateCountryFields();
+  document.getElementById('lobola-planner').addEventListener('input', invalidatePlan);
+  document.getElementById('lobola-planner').addEventListener('change', invalidatePlan);
 });
 </script>
 

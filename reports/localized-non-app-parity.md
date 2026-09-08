@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 280 |
-| sw | 138 | 0 | 303 |
+| fr | 161 | 0 | 281 |
+| sw | 138 | 0 | 304 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 313 | 40 | 0 | 273 | 21 | 0 | 292 |
+| editorial | 314 | 40 | 0 | 274 | 21 | 0 | 293 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -535,6 +535,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/tax-updates-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/tithe-calculation-nigerian-salary/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/tithe-calculation-nigerian-salary/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/togo-paye-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/togo-paye-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/tomato-irrigation-water-requirement-uganda/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/tomato-irrigation-water-requirement-uganda/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/uganda-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |

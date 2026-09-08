@@ -314,6 +314,7 @@
 
   <div class="card">
     <h2>Enter Amount</h2>
+    <label for="amount">Amount to write in words</label>
     <div class="input-row">
       <select id="currency" style="max-width:200px;" onchange="convert()" aria-label="Currency">
         <option value="NGN" data-main="Naira" data-sub="Kobo">🇳🇬 NGN - Naira</option>
@@ -334,8 +335,10 @@
         <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
         <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
       </select>
-      <input aria-label="E.g. 250000.50" type="text" id="amount" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal">
+      <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal">
     </div>
+    <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to two places, with 5 rounded up.</p>
+    <p id="amountError" role="status" aria-live="polite"></p>
     <div class="format-display" id="formatted"></div>
     <div class="doc-grid">
       <div>
@@ -369,7 +372,7 @@
 
   <div class="card" id="resultCard" style="display:none;">
     <h2>Amount in Words</h2>
-    <div class="result-box" id="result"></div>
+    <div class="result-box" id="result" aria-live="polite" aria-atomic="true"></div>
     <div class="actions-row">
       <button type="button" class="btn btn-primary" onclick="copyResult()">Copy to Clipboard</button>
       <button type="button" class="btn btn-outline" onclick="copyDocumentLine()">Copy Document Line</button>
@@ -437,7 +440,7 @@
   </section>
 </div>
 
-<div class="copy-toast" id="toast">Copied to clipboard!</div>
+<div class="copy-toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- seo-cluster-block:start -->
 <section class="seo-cluster-shell" aria-label="Helpful next steps">
@@ -512,6 +515,7 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/amount-words-input.js?v=3c28855d"></script>
 <script>
 var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
@@ -550,9 +554,8 @@ function chunkToWords(n) {
 function amountToWords(amount, currOpt) {
   var mainUnit = currOpt.dataset.main;
   var subUnit = currOpt.dataset.sub;
-  var parts = amount.toFixed(2).split('.');
-  var main = parseInt(parts[0], 10);
-  var sub = parseInt(parts[1], 10);
+  var main = amount.major;
+  var sub = amount.minor;
   var result = '';
   if (main === 0 && sub === 0) return 'Zero ' + mainUnit + ' Only';
   if (main > 0) result = numToWords(main) + ' ' + mainUnit;
@@ -568,15 +571,6 @@ function applyCaseMode(text) {
   if (mode === 'upper') return text.toUpperCase();
   if (mode === 'sentence') return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   return text;
-}
-
-function cleanAmountInput(raw) {
-  raw = String(raw || '').replace(/,/g, '').replace(/[^\d.]/g, '').trim();
-  var firstDot = raw.indexOf('.');
-  if (firstDot !== -1) {
-    raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
-  }
-  return raw;
 }
 
 function buildDocumentLine(code, figure, words) {
@@ -596,8 +590,8 @@ function renderQuality(amount, raw) {
   if (!row) return;
   if (!raw) { row.style.display = 'none'; return; }
   row.style.display = 'grid';
-  var hasSub = Math.round((amount % 1) * 100) > 0;
-  var big = amount >= 1000000;
+  var hasSub = amount.minor > 0;
+  var big = amount.major >= 1000000;
   var payee = document.getElementById('payeeName').value.trim();
   row.innerHTML =
     '<div class="quality-pill"><strong>' + (hasSub ? 'Sub-unit included' : 'Whole amount') + '</strong>' + (hasSub ? 'Kobo, cents, or local sub-unit will be written.' : 'No decimal sub-unit will be added.') + '</div>' +
@@ -606,42 +600,52 @@ function renderQuality(amount, raw) {
 }
 
 function convert() {
-  var raw = cleanAmountInput(document.getElementById('amount').value);
+  var input = document.getElementById('amount');
+  var amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999999');
   var card = document.getElementById('resultCard');
   var formatted = document.getElementById('formatted');
-  if (!raw || isNaN(raw) || parseFloat(raw) < 0) {
+  lastWords = '';
+  lastDocumentLine = '';
+  input.setAttribute('aria-invalid', String(!amount.valid && !amount.empty));
+  document.getElementById('amountError').textContent = amount.error || (amount.rounded ? 'Rounded to ' + amount.figure + '. Words and figures use this amount.' : '');
+  if (!amount.valid) {
     card.style.display = 'none';
     formatted.textContent = '';
+    document.getElementById('result').textContent = '';
+    document.getElementById('docPreview').textContent = '';
     renderQuality(0, '');
-    return;
-  }
-  var amount = parseFloat(raw);
-  if (amount > 999999999999999.99) {
-    document.getElementById('result').innerHTML = '<span style="color:#ef4444;">Amount too large. Maximum is 999,999,999,999,999.99</span>';
-    card.style.display = '';
-    return;
+    return false;
   }
   var sel = document.getElementById('currency');
   var opt = sel.options[sel.selectedIndex];
   var code = sel.value;
-  var figure = amount.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var figure = amount.figure;
   formatted.textContent = code + ' ' + figure;
   var words = applyCaseMode(amountToWords(amount, opt));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(code, figure, words);
   document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Amount in Words</span>' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
-  renderQuality(amount, raw);
+  renderQuality(amount, input.value);
   card.style.display = '';
+  return true;
 }
 
 function copyResult() {
-  navigator.clipboard.writeText(lastWords).then(function(){ showToast('Copied!'); }).catch(function(){ window.prompt('Copy amount in words', lastWords); });
+  if (convert()) copyAmountText(lastWords);
 }
 
 function copyDocumentLine() {
-  convert();
-  navigator.clipboard.writeText(lastDocumentLine).then(function(){ showToast('Document line copied!'); }).catch(function(){ window.prompt('Copy document line', lastDocumentLine); });
+  if (convert()) copyAmountText(lastDocumentLine);
+}
+
+function copyAmountText(text) {
+  var fallback = function() {
+    showToast('Select and copy the result, or use the copy dialog.');
+    window.prompt('Copy amount text', text);
+  };
+  if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
+  navigator.clipboard.writeText(text).then(function(){ showToast('Copied!'); }).catch(fallback);
 }
 
 function clearAll() {
@@ -651,6 +655,8 @@ function clearAll() {
   document.getElementById('docReference').value = '';
   document.getElementById('qualityRow').style.display = 'none';
   document.getElementById('resultCard').style.display = 'none';
+  convert();
+  document.getElementById('amount').focus();
 }
 
 function showToast(msg) {

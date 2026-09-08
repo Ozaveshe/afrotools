@@ -2,6 +2,7 @@
 
 const dns = require('dns').promises;
 const engine = require('./_shared/seo-audit-engine.js');
+const safeTransport = require('./_shared/seo-safe-fetch.js');
 
 const FETCH_TIMEOUT_MS = 10000;
 const COMPANION_TIMEOUT_MS = 5000;
@@ -40,31 +41,15 @@ function rateLimited(ip) {
   }
   fresh.push(now);
   rateBuckets.set(ip, fresh);
-  if (rateBuckets.size > 5000) rateBuckets.clear();
+  if (rateBuckets.size > 5000) rateBuckets.delete(rateBuckets.keys().next().value);
   return false;
 }
 
-function isPrivateIpv4(ip) {
-  const parts = ip.split('.').map(Number);
-  if (parts.length !== 4 || parts.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) return true;
-  const [a, b] = parts;
-  if (a === 0 || a === 10 || a === 127) return true;
-  if (a === 169 && b === 254) return true;
-  if (a === 172 && b >= 16 && b <= 31) return true;
-  if (a === 192 && b === 168) return true;
-  if (a === 100 && b >= 64 && b <= 127) return true;
-  if (a >= 224) return true;
-  return false;
-}
-
-function isPrivateIpv6(ip) {
-  const lower = ip.toLowerCase();
-  return lower === '::1' || lower === '::' ||
-    lower.startsWith('fe80') || lower.startsWith('fc') || lower.startsWith('fd') ||
-    lower.startsWith('::ffff:127.') || lower.startsWith('::ffff:10.') || lower.startsWith('::ffff:192.168.');
-}
+function isPrivateIpv4(ip) { return !safeTransport.isPublicAddress(ip); }
+function isPrivateIpv6(ip) { return !safeTransport.isPublicAddress(ip); }
 
 async function validateTargetUrl(rawUrl) {
+  if (typeof rawUrl !== 'string' || rawUrl.length > 2048) return { ok: false, error: 'URL must be text no longer than 2048 characters.' };
   let url;
   try {
     url = new URL(String(rawUrl || '').trim());
@@ -106,47 +91,21 @@ async function validateTargetUrl(rawUrl) {
   return { ok: true, url };
 }
 
-async function fetchWithTimeout(url, options, timeoutMs) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, Object.assign({
-      redirect: 'manual',
-      signal: controller.signal,
-      headers: {
-        'User-Agent': USER_AGENT,
-        Accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.5',
-        'Accept-Language': 'en'
-      }
-    }, options));
-  } finally {
-    clearTimeout(timer);
-  }
+async function fetchWithTimeout(url, options, timeoutMs, maxBytes = MAX_HTML_BYTES) {
+  return safeTransport.safeFetch(url, {
+    timeoutMs, maxBytes,
+    headers: {
+      'User-Agent': USER_AGENT,
+      Accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.5',
+      'Accept-Language': 'en'
+    }
+  });
 }
 
 async function readBodyCapped(response, maxBytes) {
-  const declared = Number(response.headers.get('content-length') || 0);
-  if (declared && declared > maxBytes) {
-    throw new Error('Page is larger than ' + Math.round(maxBytes / 1024 / 1024) + 'MB and cannot be audited.');
-  }
-  const reader = response.body && response.body.getReader ? response.body.getReader() : null;
-  if (!reader) {
-    const text = await response.text();
-    return text.slice(0, maxBytes);
-  }
-  const chunks = [];
-  let received = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    received += value.byteLength;
-    chunks.push(value);
-    if (received >= maxBytes) {
-      try { await reader.cancel(); } catch (error) { /* stream already done */ }
-      break;
-    }
-  }
-  return Buffer.concat(chunks.map((chunk) => Buffer.from(chunk))).toString('utf8').slice(0, maxBytes);
+  const text = await response.text();
+  if (Buffer.byteLength(text, 'utf8') > maxBytes) throw new Error('Response is larger than the audit limit. No partial report was generated.');
+  return text;
 }
 
 async function fetchDocument(startUrl) {
@@ -171,10 +130,11 @@ async function fetchDocument(startUrl) {
     if (!response.ok) {
       throw new Error('The page returned HTTP ' + response.status + '.');
     }
-    if (contentType && contentType.indexOf('html') < 0 && contentType.indexOf('text/') < 0) {
+    if (contentType && !/^(?:text\/html|application\/xhtml\+xml)(?:;|$)/i.test(contentType)) {
       throw new Error('That URL returned ' + contentType.split(';')[0] + ', not an HTML page.');
     }
     const html = await readBodyCapped(response, MAX_HTML_BYTES);
+    if (!html.trim() || (!contentType && !/<(?:!doctype\s+html|html|head|body)\b/i.test(html))) throw new Error('The response does not contain an HTML document.');
     return {
       html,
       finalUrl: currentUrl.toString(),
@@ -191,7 +151,7 @@ async function fetchDocument(startUrl) {
 
 async function checkCompanion(origin, path) {
   try {
-    const response = await fetchWithTimeout(origin + path, {}, COMPANION_TIMEOUT_MS);
+    const response = await fetchWithTimeout(origin + path, {}, COMPANION_TIMEOUT_MS, 64 * 1024);
     if (response.status >= 300 && response.status < 400) return { found: false };
     if (!response.ok) return { found: false };
     const body = await readBodyCapped(response, 64 * 1024);
@@ -203,10 +163,7 @@ async function checkCompanion(origin, path) {
 
 async function collectCompanions(finalUrl) {
   const origin = new URL(finalUrl).origin;
-  const [robots, llms] = await Promise.all([
-    checkCompanion(origin, '/robots.txt'),
-    checkCompanion(origin, '/llms.txt')
-  ]);
+  const robots = await checkCompanion(origin, '/robots.txt');
 
   let sitemap = { found: false, url: '' };
   let sitemapUrl = origin + '/sitemap.xml';
@@ -217,7 +174,7 @@ async function collectCompanions(finalUrl) {
   try {
     const validated = await validateTargetUrl(sitemapUrl);
     if (validated.ok) {
-      const result = await checkCompanion(new URL(sitemapUrl).origin, new URL(sitemapUrl).pathname);
+      const result = await checkCompanion(new URL(sitemapUrl).origin, new URL(sitemapUrl).pathname + new URL(sitemapUrl).search);
       sitemap = { found: result.found, url: result.found ? sitemapUrl : '' };
     }
   } catch (error) {
@@ -226,7 +183,6 @@ async function collectCompanions(finalUrl) {
 
   return {
     robotsTxt: { found: robots.found },
-    llmsTxt: { found: llms.found },
     sitemap
   };
 }
@@ -269,11 +225,10 @@ exports.handler = async function handler(event) {
         xRobotsTag: document.xRobotsTag,
         redirects: document.redirects,
         robotsTxt: companions.robotsTxt,
-        llmsTxt: companions.llmsTxt,
         sitemap: companions.sitemap
       }
     });
-    report.requestedUrl = rawUrl;
+    report.requestedUrl = validated.url.toString();
     report.finalUrl = document.finalUrl;
     report.fetchedAt = new Date().toISOString();
     return json(200, report);

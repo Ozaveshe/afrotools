@@ -249,8 +249,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card">
 <div class="card-head"><span class="card-title">Enter Amount</span></div>
 <div class="card-body">
-<label>Amount in Ghana Cedis (GHS)</label>
-<input aria-label="E.g. 12,500.75" type="text" id="amount" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<label for="amount">Amount in Ghana Cedis (GHS)</label>
+<input type="text" id="amount" inputmode="decimal" aria-describedby="amountHelp amountError" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to the nearest pesewa, with 5 rounded up.</p>
+<p id="amountError" role="status" aria-live="polite"></p>
 <div class="quick-amounts">
 <button type="button" class="quick-btn" onclick="setAmt(100)">100</button>
 <button type="button" class="quick-btn" onclick="setAmt(500)">500</button>
@@ -261,10 +263,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <button type="button" class="quick-btn" onclick="setAmt(100000)">100,000</button>
 </div>
 <div class="doc-grid">
-<div><label>Payee or Vendor</label><input aria-label="Optional" type="text" id="payeeName" placeholder="Optional" oninput="convert()"></div>
-<div><label>Reference</label><input aria-label="Invoice, rent, contract, or memo" type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()"></div>
-<div><label>Output Format</label><select id="docMode" onchange="convert()" aria-label="Doc Mode"><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
-<div><label>Text Style</label><select id="caseMode" onchange="convert()" aria-label="Case Mode"><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
+<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()"></div>
+<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()"></div>
+<div><label for="docMode">Output Format</label><select id="docMode" onchange="convert()"><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
+<div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()"><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
 </div>
 <div class="review-grid" id="reviewGrid" style="display:none"></div>
 </div></div>
@@ -272,9 +274,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div id="resultCard" style="display:none">
 <div class="result-display">
 <div class="lbl">Amount in Words</div>
-<div class="words" id="wordsResult"></div>
+<div class="words" id="wordsResult" aria-live="polite" aria-atomic="true"></div>
 <div class="formatted" id="fmtResult"></div>
 <div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()">Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()">Copy Document Line</button></div>
+<p id="copyStatus" role="status" aria-live="polite"></p>
 <div class="doc-preview" id="docPreview"></div>
 <div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;text-align:left">
   <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px">Did You Know?</div>
@@ -419,6 +422,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/amount-words-input.js?v=3c28855d"></script>
 <script>
 const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
@@ -437,9 +441,8 @@ function numWords(n) {
 }
 
 function amountToWords(amount) {
-  const parts = amount.toFixed(2).split('.');
-  const cedis = parseInt(parts[0]);
-  const pesewas = parseInt(parts[1]);
+  const cedis = amount.major;
+  const pesewas = amount.minor;
 
   let words = '';
   if (cedis === 0 && pesewas === 0) return 'Zero Ghana Cedis Only';
@@ -469,18 +472,11 @@ function applyCaseMode(text) {
   return text;
 }
 
-function cleanAmount(raw) {
-  raw = String(raw || '').replace(/,/g, '').replace(/[^0-9.]/g, '');
-  const firstDot = raw.indexOf('.');
-  if (firstDot !== -1) raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
-  return raw;
-}
-
 function buildDocumentLine(amount, words) {
   const mode = document.getElementById('docMode').value;
   const payee = document.getElementById('payeeName').value.trim();
   const ref = document.getElementById('docRef').value.trim();
-  const figure = 'GHS ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const figure = 'GHS ' + amount.figure;
   const prefix = payee ? 'Pay ' + payee + ': ' : '';
   const suffix = ref ? ' | Ref: ' + ref : '';
   if (mode === 'invoice') return prefix + 'VAT invoice amount ' + figure + ' (' + words + ')' + suffix;
@@ -493,9 +489,9 @@ function renderReview(amount) {
   const grid = document.getElementById('reviewGrid');
   if (!grid) return;
   grid.style.display = 'grid';
-  const pesewas = Math.round((amount % 1) * 100);
+  const pesewas = amount.minor;
   const payee = document.getElementById('payeeName').value.trim();
-  const large = amount >= 50000;
+  const large = amount.major >= 50000;
   grid.innerHTML =
     '<div class="review-pill"><strong>' + (payee ? 'Payee ready' : 'Add payee') + '</strong>' + (payee ? 'Recipient appears in the copy line.' : 'Helpful for cheque, invoice, or transfer use.') + '</div>' +
     '<div class="review-pill"><strong>' + (pesewas ? 'Pesewas included' : 'Whole cedis') + '</strong>' + (pesewas ? 'The pesewa portion is written out.' : 'No pesewa line is needed.') + '</div>' +
@@ -503,24 +499,36 @@ function renderReview(amount) {
 }
 
 function convert() {
-  const raw = cleanAmount(document.getElementById('amount').value);
-  if (!raw || isNaN(parseFloat(raw))) { document.getElementById('resultCard').style.display='none'; document.getElementById('reviewGrid').style.display='none'; return; }
-
-  const amount = parseFloat(raw);
-  if (amount > 999999999999.99) { document.getElementById('resultCard').style.display='none'; return; }
+  const input = document.getElementById('amount');
+  const amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999');
+  lastWords = '';
+  lastDocumentLine = '';
+  document.getElementById('copyStatus').textContent = '';
+  input.setAttribute('aria-invalid', String(!amount.valid && !amount.empty));
+  document.getElementById('amountError').textContent = amount.error || (amount.rounded ? 'Rounded to GHS ' + amount.figure + '. Words and figures use this amount.' : '');
+  if (!amount.valid) {
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('reviewGrid').style.display = 'none';
+    document.getElementById('wordsResult').textContent = '';
+    document.getElementById('fmtResult').textContent = '';
+    document.getElementById('docPreview').textContent = '';
+    document.getElementById('chequeFormat').textContent = '';
+    return false;
+  }
 
   const words = applyCaseMode(amountToWords(amount));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(amount, words);
   document.getElementById('wordsResult').textContent = words;
-  document.getElementById('fmtResult').textContent = 'GHS ' + amount.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('fmtResult').textContent = 'GHS ' + amount.figure;
   document.getElementById('chequeFormat').innerHTML =
     '<strong>Pay:</strong> ' + escapeHtml(document.getElementById('payeeName').value.trim() || '____________________') + '<br>' +
-    '<strong>Amount (figures):</strong> GHS ' + amount.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) + '<br>' +
+    '<strong>Amount (figures):</strong> GHS ' + amount.figure + '<br>' +
     '<strong>Amount (words):</strong> ' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
   renderReview(amount);
   document.getElementById('resultCard').style.display='block';
+  return true;
 }
 
 function setAmt(n) {
@@ -529,20 +537,21 @@ function setAmt(n) {
 }
 
 function copyWords() {
-  navigator.clipboard.writeText(lastWords).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy Words', 1500);
-  }).catch(() => window.prompt('Copy words', lastWords));
+  if (convert()) copyAmountText(lastWords);
 }
 
 function copyDocumentLine() {
-  convert();
-  navigator.clipboard.writeText(lastDocumentLine).then(() => {
-    const buttons = document.querySelectorAll('.copy-btn');
-    buttons[1].textContent = 'Copied!';
-    setTimeout(() => buttons[1].textContent = 'Copy Document Line', 1500);
-  }).catch(() => window.prompt('Copy document line', lastDocumentLine));
+  if (convert()) copyAmountText(lastDocumentLine);
+}
+
+function copyAmountText(text) {
+  const status = document.getElementById('copyStatus');
+  const fallback = () => {
+    status.textContent = 'Automatic copy is unavailable. Select and copy the result, or use the copy dialog.';
+    window.prompt('Copy amount text', text);
+  };
+  if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
+  navigator.clipboard.writeText(text).then(() => { status.textContent = 'Copied.'; }).catch(fallback);
 }
 </script>
 

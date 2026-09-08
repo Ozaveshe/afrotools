@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { validateDataForKey } = require('../netlify/functions/_shared/live-data-contracts');
+const { storageDiagnostic } = require('../netlify/functions/_shared/storage-diagnostics');
 const freshness = require('../netlify/functions/api-data-freshness')._test;
 
 const ROOT = path.resolve(__dirname, '..');
@@ -48,17 +49,27 @@ function getSupabaseConfig() {
 
 async function fetchLiveRow(config, key) {
   const endpoint = config.url + '/rest/v1/live_data_store?key=eq.' + encodeURIComponent(key) + '&select=key,data,updated_at';
-  const response = await fetch(endpoint, {
-    headers: {
-      apikey: config.key,
-      Authorization: 'Bearer ' + config.key,
-      Accept: 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Supabase read failed for ' + key + ': HTTP ' + response.status + ' ' + (await response.text()));
+  let response;
+  try {
+    response = await fetch(endpoint, {
+      headers: {
+        apikey: config.key,
+        Authorization: 'Bearer ' + config.key,
+        Accept: 'application/json',
+      },
+    });
+  } catch (error) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, error));
   }
-  const rows = await response.json();
+  if (!response.ok) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, null, response.status));
+  }
+  let rows;
+  try {
+    rows = await response.json();
+  } catch (error) {
+    throw new Error(storageDiagnostic('fallback-refresh', key, error));
+  }
   if (!Array.isArray(rows) || rows.length !== 1 || !rows[0].data) {
     throw new Error('Expected one live_data_store row for ' + key + '.');
   }
@@ -164,13 +175,26 @@ function buildMetaEntry(existing, remote, payload, asOf, category) {
   return entry;
 }
 
-async function refreshStaticFallbacks() {
-  const config = getSupabaseConfig();
+function readMcpSnapshot(filename) {
+  const snapshot = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  if (snapshot.project_ref !== PROJECT_REF || !Array.isArray(snapshot.rows)) {
+    throw new Error('Expected an AfroTools MCP snapshot with project_ref and rows.');
+  }
+  return function (key) {
+    const matches = snapshot.rows.filter(row => row.key === key && row.data);
+    if (matches.length !== 1) throw new Error('Expected exactly one snapshot row for ' + key + '.');
+    return matches[0];
+  };
+}
+
+async function refreshStaticFallbacks(options = {}) {
+  const config = options.snapshotFile ? null : getSupabaseConfig();
+  const readRow = options.snapshotFile ? readMcpSnapshot(options.snapshotFile) : key => fetchLiveRow(config, key);
   const nowMs = Date.now();
   const rows = await Promise.all(DATASETS.map(function (dataset) {
-    return fetchLiveRow(config, dataset.storageKey);
+    return readRow(dataset.storageKey);
   }));
-  const metaRow = await fetchLiveRow(config, 'meta');
+  const metaRow = await readRow('meta');
 
   const snapshots = DATASETS.map(function (dataset, index) {
     const payload = dataset.category === 'fuel'
@@ -206,7 +230,8 @@ async function refreshStaticFallbacks() {
 }
 
 if (require.main === module) {
-  refreshStaticFallbacks().catch(function (error) {
+  const snapshotIndex = process.argv.indexOf('--snapshot-file');
+  refreshStaticFallbacks({ snapshotFile: snapshotIndex < 0 ? null : process.argv[snapshotIndex + 1] }).catch(function (error) {
     console.error('Static fallback refresh failed: ' + (error.stack || error.message));
     process.exit(1);
   });
@@ -216,6 +241,7 @@ module.exports = {
   DATASETS,
   META_PATH,
   PROJECT_REF,
+  readMcpSnapshot,
   atomicWriteJson,
   canonicalTimestamp,
   enrichFuelSourceMetadata,

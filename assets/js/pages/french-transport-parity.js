@@ -33,6 +33,85 @@
   ]);
   var requiresExplicitRecalculation = staleAfterResultApps.has(appId);
   var resultIsFresh = false;
+  var carImportSelectedCountry = '';
+  var carImportCountryOptions = null;
+
+  function hasExplicitCarImportCountry() {
+    if (appId !== 'car-import-cost') return true;
+    var country = document.getElementById('carImportCountry');
+    return Boolean(country && carImportSelectedCountry
+      && country.value === carImportSelectedCountry
+      && carImportCountryOptions && carImportCountryOptions.has(country.value));
+  }
+
+  function awaitCarImportCalculation() {
+    if (appId !== 'car-import-cost') return;
+    body.setAttribute('data-fr-car-import-result-ready', 'false');
+    clearVisibleResults();
+  }
+
+  function requireCarImportCountry(event) {
+    if (hasExplicitCarImportCountry()) return true;
+    if (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+    awaitCarImportCalculation();
+    var country = document.getElementById('carImportCountry');
+    if (country) {
+      country.setAttribute('aria-invalid', 'true');
+      country.focus();
+    }
+    if (error) error.textContent = 'Choisissez explicitement un pays d’importation proposé avant de calculer.';
+    if (status) status.textContent = 'Aucune estimation disponible sans pays sélectionné.';
+    return false;
+  }
+
+  function synchronizeCarImportCountryGate() {
+    if (appId !== 'car-import-cost') return;
+    var country = document.getElementById('carImportCountry');
+    // Wait for the controller to populate its supported choices: adding an
+    // option earlier would prevent the legacy controller from loading them.
+    if (!country || !Array.from(country.options).some(function supported(option) { return option.value; })) return;
+    if (!carImportCountryOptions) {
+      carImportCountryOptions = new Set(Array.from(country.options)
+        .filter(function supported(option) { return option.value && !option.disabled; })
+        .map(function code(option) { return option.value; }));
+      var blank = Array.from(country.options).find(function empty(option) { return !option.value; });
+      if (!blank) {
+        blank = document.createElement('option');
+        blank.value = '';
+        country.insertBefore(blank, country.firstChild);
+      }
+      blank.textContent = 'Choisissez le pays d’importation';
+      Array.from(country.options).forEach(function resetDefault(option) { option.defaultSelected = option === blank; });
+      country.required = true;
+      country.value = '';
+      country.addEventListener('change', function chooseCountry() {
+        carImportSelectedCountry = carImportCountryOptions.has(country.value) ? country.value : '';
+        country.removeAttribute('aria-invalid');
+        awaitCarImportCalculation();
+        if (error) error.textContent = '';
+        if (status) status.textContent = carImportSelectedCountry
+          ? 'Pays sélectionné. Lancez le calcul pour obtenir une estimation.'
+          : 'Choisissez un pays d’importation avant de calculer.';
+      });
+      if (status) status.textContent = 'Choisissez un pays d’importation avant de calculer.';
+    }
+    if (!carImportSelectedCountry) {
+      country.value = '';
+      awaitCarImportCalculation();
+    }
+  }
+
+  if (appId === 'car-import-cost') {
+    body.setAttribute('data-fr-car-import-result-ready', 'false');
+    // Hide the legacy controller's automatic default result before its first
+    // paint, including while asynchronous country packs are still loading.
+    var countryGateStyle = document.createElement('style');
+    countryGateStyle.textContent = 'body[data-fr-car-import-result-ready="false"] #carImportResults{display:none!important}';
+    document.head.appendChild(countryGateStyle);
+  }
 
   function installCarImportPrivacyBoundary() {
     if (appId !== 'car-import-cost') return;
@@ -220,11 +299,17 @@
 
   function applyCarImportNativeCopy() {
     if (appId !== 'car-import-cost') return;
+    synchronizeCarImportCountryGate();
     var cloudSave = document.getElementById('carImportCloudSave');
     if (cloudSave) cloudSave.remove();
     if (requiresExplicitRecalculation) setExportAvailability(resultIsFresh);
     var guide = document.getElementById('carImportGuideNote');
     if (!guide) return;
+    if (!hasExplicitCarImportCountry()) {
+      var pending = 'Choisissez un pays d’importation, vérifiez vos informations, puis lancez le calcul.';
+      if (guide.textContent !== pending) guide.textContent = pending;
+      return;
+    }
     var country = document.querySelector('#carImportCountry option:checked');
     var sourceMarket = document.querySelector('#carImportSourceMarket option:checked');
     var countryLabel = country ? country.textContent.trim() : 'le pays sélectionné';
@@ -280,6 +365,11 @@
   }
 
   function markFreshResult() {
+    if (appId === 'car-import-cost') {
+      var result = document.getElementById('carImportResults');
+      if (!hasExplicitCarImportCountry() || !result || result.hidden) return;
+      body.setAttribute('data-fr-car-import-result-ready', 'true');
+    }
     clearStaleMarkers();
     if (!visibleResultText()) return;
     resultIsFresh = true;
@@ -398,6 +488,9 @@
 
   document.addEventListener('car-import:reset', function resetFrenchCarImportState() {
     if (appId !== 'car-import-cost') return;
+    carImportSelectedCountry = '';
+    synchronizeCarImportCountryGate();
+    awaitCarImportCalculation();
     clearStaleMarkers();
     clearVisibleResults();
     try {
@@ -415,6 +508,7 @@
     var button = event.target.closest('button[type="submit"],button[onclick]');
     if (!button || button.closest('.fr-transport-proof')) return;
     var container = button.closest('form,.card,main,[role="main"]') || body;
+    if (container.id === 'carImportForm' && !requireCarImportCountry(event)) return;
     if (!hasInvalidInput(container)) {
       if (error) error.textContent = '';
       clearStaleMarkers();
@@ -426,6 +520,19 @@
     clearVisibleResults();
     if (error) error.textContent = 'Corrigez les champs invalides avant de relancer le calcul.';
     if (status) status.textContent = 'Résultat effacé après une saisie invalide.';
+  }, true);
+
+  document.addEventListener('submit', function validateCarImportSubmission(event) {
+    if (appId !== 'car-import-cost' || event.target.id !== 'carImportForm') return;
+    if (!requireCarImportCountry(event)) return;
+    if (!hasInvalidInput(event.target)) scheduleFreshResultCheck();
+  }, true);
+
+  document.addEventListener('reset', function resetCarImportCountryChoice(event) {
+    if (appId !== 'car-import-cost' || event.target.id !== 'carImportForm') return;
+    carImportSelectedCountry = '';
+    awaitCarImportCalculation();
+    setTimeout(synchronizeCarImportCountryGate, 0);
   }, true);
 
   function clearStaleResult(event) {
@@ -481,6 +588,7 @@
     scheduleBoundedTranslation();
     var translationQueued = false;
     var observer = new MutationObserver(function translateDynamicUi() {
+      synchronizeCarImportCountryGate();
       if (translationQueued) return;
       translationQueued = true;
       setTimeout(function translateMutationBatch() {
