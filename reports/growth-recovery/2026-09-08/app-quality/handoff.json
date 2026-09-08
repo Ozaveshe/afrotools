@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "lane": "app-quality",
+  "date": "2026-09-08",
+  "status": "ready_for_coordinator_review",
+  "baseline_sha": "9b29eab0408eedd9442c98c2cabf567098da80ab",
+  "source_commit": "bd64c6ca3d691ff164affd5f480eb5e899933206",
+  "branch": "codex/growth-app-quality-20260908",
+  "worktree": "C:\\Users\\Oza\\.codex\\worktrees\\befa\\afrotools",
+  "source_files": [
+    "assets/js/engines/amount-words-input.js",
+    "assets/js/pages/lobola-country-quick-planner.js",
+    "tests/amount-words-input.test.js",
+    "tests/e2e/growth-app-quality.spec.js",
+    "tests/e2e/lobola-cluster.spec.js",
+    "tests/lobola-cluster-contract.test.js",
+    "tools/amount-words-gh/index.html",
+    "tools/lobola-calculator/botswana/index.html",
+    "tools/lobola-calculator/eswatini/index.html",
+    "tools/lobola-calculator/index.html",
+    "tools/lobola-calculator/lesotho/index.html",
+    "tools/lobola-calculator/south-africa/index.html",
+    "tools/lobola-calculator/zambia/index.html",
+    "tools/lobola-calculator/zimbabwe/index.html",
+    "tools/naira-to-words/index.html"
+  ],
+  "generated_files": [],
+  "generated_references": "cachebust.js hashes in owned HTML",
+  "report": "reports/growth-recovery/2026-09-08/app-quality/report.md",
+  "tests": [
+    {
+      "command": "node --test tests/amount-words-input.test.js",
+      "status": "pass",
+      "groups": 4
+    },
+    {
+      "command": "node tests/market-days-engine.test.js",
+      "status": "pass",
+      "checks": 12
+    },
+    {
+      "command": "node tests/lobola-cluster-contract.test.js",
+      "status": "pass"
+    },
+    {
+      "command": "focused source Playwright runs",
+      "status": "pass",
+      "checks": 15,
+      "logs": [
+        "browser-final.log",
+        "additional-browser.log"
+      ]
+    },
+    {
+      "command": "npm run build:deploy",
+      "status": "pass",
+      "log": "build-deploy.log"
+    },
+    {
+      "command": "npm run audit:dist",
+      "status": "pass",
+      "log": "audit-dist.log"
+    },
+    {
+      "command": "npm run security:scan",
+      "status": "pass",
+      "log": "security-scan.log"
+    },
+    {
+      "command": "core Playwright checks against optimized dist",
+      "status": "pass",
+      "checks": 4,
+      "log": "dist-browser.log"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    }
+  ],
+  "proof": {
+    "live": "read-only main-route repro and typical workflows; no fixed-code production proof",
+    "local": "source and optimized dist browser proof",
+    "database": "not accessed",
+    "deployment": "not performed"
+  },
+  "no_change_routes": [
+    "/tools/market-days/"
+  ],
+  "affected_routes": [
+    "/tools/amount-words-gh/",
+    "/tools/lobola-calculator/botswana/",
+    "/tools/lobola-calculator/eswatini/",
+    "/tools/lobola-calculator/",
+    "/tools/lobola-calculator/lesotho/",
+    "/tools/lobola-calculator/south-africa/",
+    "/tools/lobola-calculator/zambia/",
+    "/tools/lobola-calculator/zimbabwe/",
+    "/tools/naira-to-words/"
+  ],
+  "blockers": [],
+  "residual_gaps": [
+    "Market no-JavaScript fallback shows April 17 2026; readable runtime owner recovery needed.",
+    "External market calendar sources were loading or verification gated; existing anchor preserved, not freshly certified.",
+    "French Lobola baseline heading assertion stale; legacy metadata collision remains outside this lane.",
+    "No cold-offline, print-parser, authenticated sync or post-release retention proof."
+  ],
+  "next_wave": "Recover readable market runtime for truthful loading/empty states; coordinate French Lobola repair; measure useful-result completion with consented metadata.",
+  "integration": "Coordinator must review, rebuild and decide release; no main merge or deploy authorized for this lane."
+}
