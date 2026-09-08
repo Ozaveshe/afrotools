@@ -188,9 +188,9 @@
             }, s = t.calculate(e, a.data);
             a.lastResult = s, function(t) {
                 var a = t.country.currency;
-                r("#carImportResults").hidden = !1, r("#carImportTotal").textContent = n(t.totals.onRoadUsd, "USD"), 
-                r("#carImportTotalLocal").textContent = n(t.totals.onRoadLocal, a), r("#carImportSummaryLine").textContent = t.country.name + " estimate using " + t.rulePack.status + " and " + t.valueBasis.valuationStatus + " customs value.", 
-                r("#carImportRulePackLine").textContent = "Rule pack effective " + t.rulePack.effectiveFrom + (t.rulePack.effectiveTo ? " to " + t.rulePack.effectiveTo : "") + ". FX: 1 USD = " + t.fx.usdToLocal + " " + a + ".", 
+                r("#carImportResults").hidden = !1, r("#carImportTotal").textContent = n(t.totals.onRoadUsd, "USD"),
+                r("#carImportTotalLocal").textContent = n(t.totals.onRoadLocal, a), r("#carImportSummaryLine").textContent = t.country.name + " estimate using " + t.rulePack.status + " and " + t.valueBasis.valuationStatus + " customs value.",
+                r("#carImportRulePackLine").textContent = "Rule pack effective " + t.rulePack.effectiveFrom + (t.rulePack.effectiveTo ? " to " + t.rulePack.effectiveTo : "") + ". FX: 1 USD = " + t.fx.usdToLocal + " " + a + ".",
                 r("#carImportBadgeStack").innerHTML = t.badges.map(function(t) {
                     return '<span class="car-import-badge">' + o(t.label) + "</span>";
                 }).join(""), function(t) {
@@ -211,8 +211,8 @@
                             official: !1,
                             amountLocal: a.amountUsd * t.fx.usdToLocal
                         }, a);
-                    }), a), r("#carImportOfficialTable").innerHTML = y(t.breakdowns.officialTaxes.concat(t.breakdowns.officialFees), a), 
-                    r("#carImportPracticalTable").innerHTML = y(t.breakdowns.practicalCosts.concat(t.breakdowns.inlandDelivery), a), 
+                    }), a), r("#carImportOfficialTable").innerHTML = y(t.breakdowns.officialTaxes.concat(t.breakdowns.officialFees), a),
+                    r("#carImportPracticalTable").innerHTML = y(t.breakdowns.practicalCosts.concat(t.breakdowns.inlandDelivery), a),
                     r("#carImportRegistrationTable").innerHTML = y(t.breakdowns.registration, a), r("#carImportSensitivityTable").innerHTML = t.sensitivity.exchangeRate.map(function(t) {
                         return "<tr><td>" + o(t.label) + "</td><td>" + t.fxRate + '</td><td colspan="2">' + n(t.totalLocal, a) + "</td></tr>";
                     }).join("") + t.sensitivity.delayDays.map(function(t) {
@@ -254,7 +254,7 @@
             }(e), function(t) {
                 if ("1" !== new URLSearchParams(location.search).get("prefill")) {
                     var a = new URLSearchParams(location.search);
-                    a.set("country", t.countryCode), a.set("source", t.sourceMarket), t.make && a.set("make", t.make), 
+                    a.set("country", t.countryCode), a.set("source", t.sourceMarket), t.make && a.set("make", t.make),
                     t.model && a.set("model", t.model), t.year && a.set("year", t.year), t.purchasePriceUsd && a.set("price", Math.round(t.purchasePriceUsd));
                     var r = location.pathname + "?" + a.toString() + location.hash;
                     history.replaceState(null, "", r);
@@ -317,7 +317,7 @@
         Object.keys(e).forEach(function(t) {
             var a = r(t);
             a && null != e[t] && "" !== e[t] && (a.value = e[t]);
-        }), a.data && t.countryCode && u(), r("#carImportDestinationCity") && t.destinationCity && (r("#carImportDestinationCity").value = t.destinationCity), 
+        }), a.data && t.countryCode && u(), r("#carImportDestinationCity") && t.destinationCity && (r("#carImportDestinationCity").value = t.destinationCity),
         r("#carImportPort") && t.portCode && (r("#carImportPort").value = t.portCode);
     }
     function y(t, r) {
@@ -357,7 +357,7 @@
             }).join("\n"), n = new Blob([ o ], {
                 type: "text/csv"
             }), c = document.createElement("a");
-            c.href = URL.createObjectURL(n), c.download = "afrotools-car-import-cost.csv", c.click(), 
+            c.href = URL.createObjectURL(n), c.download = "afrotools-car-import-cost.csv", c.click(),
             URL.revokeObjectURL(c.href);
         }
     }
@@ -408,7 +408,7 @@
             title: "AfroTools car import estimate",
             text: t,
             url: location.href
-        }).catch(function() {}) : navigator.clipboard && navigator.clipboard.writeText(location.href), 
+        }).catch(function() {}) : navigator.clipboard && navigator.clipboard.writeText(location.href),
         i("car_import_share_quote", {
             country: a.lastResult.country.code
         });
@@ -424,7 +424,7 @@
         t.unshift({
             id: "quote-" + Date.now(),
             result: a.lastResult
-        }), localStorage.setItem("carImportCostQuotes", JSON.stringify(t.slice(0, 20))), 
+        }), localStorage.setItem("carImportCostQuotes", JSON.stringify(t.slice(0, 20))),
         i("car_import_save_quote", {
             country: a.lastResult.country.code,
             save_type: "local"
@@ -481,7 +481,7 @@
         var o = r("#carImportAiLog");
         if (o) {
             var n = document.createElement("div");
-            n.className = "car-import-ai-message " + t, n.textContent = ("user" === t ? "You: " : "Advisor: ") + e, 
+            n.className = "car-import-ai-message " + t, n.textContent = ("user" === t ? "You: " : "Advisor: ") + e,
             o.appendChild(n);
         }
     }
@@ -515,7 +515,7 @@
     }
     document.addEventListener("DOMContentLoaded", function() {
         var o;
-        t && ((o = r("#carImportApp")) && !r("#carImportForm") && (o.innerHTML = '<div class="car-import-layout"><form class="car-import-panel" id="carImportForm"><h2>Build your landed-cost quote</h2><p class="car-import-help">Start with the car details you know. The engine can work from purchase price, FOB, CIF, or make/model/year valuation seeds.</p><div class="car-import-form-grid">' + S("Import country", "select", "carImportCountry", "full") + S("Source market", "select", "carImportSourceMarket", "") + w("Input mode", "carImportInputMode", [ [ "purchase", "I know the purchase price" ], [ "fob", "I know FOB" ], [ "cif", "I know CIF" ], [ "make-model-year", "I only know make/model/year" ], [ "compare", "I want to compare source markets" ] ]) + w("Output mode", "carImportOutputMode", [ [ "practical", "Official + practical port costs" ], [ "official", "Official mode" ], [ "stress", "Stress test" ] ]) + T("Make", "carImportMake", "Toyota") + T("Model", "carImportModel", "Corolla") + T("Trim optional", "carImportTrim", "GLi") + U("Year", "carImportYear", "2018") + w("First registration month", "carImportFirstRegistrationMonth", [ [ "1", "January" ], [ "2", "February" ], [ "3", "March" ], [ "4", "April" ], [ "5", "May" ], [ "6", "June" ], [ "7", "July" ], [ "8", "August" ], [ "9", "September" ], [ "10", "October" ], [ "11", "November" ], [ "12", "December" ] ]) + w("Fuel type", "carImportFuelType", [ [ "petrol", "Petrol" ], [ "diesel", "Diesel" ], [ "hybrid", "Hybrid" ], [ "phev", "PHEV" ], [ "ev", "EV" ] ]) + U("Engine cc", "carImportEngineCc", "1800") + w("Body type", "carImportBodyType", [ [ "sedan", "Sedan" ], [ "hatchback", "Hatchback" ], [ "suv", "SUV" ], [ "mpv", "MPV / Van" ], [ "pickup", "Pickup" ], [ "truck", "Truck" ], [ "motorcycle", "Motorcycle" ] ]) + w("Drive side", "carImportDriveSide", [ [ "right", "Right-hand drive" ], [ "left", "Left-hand drive" ] ]) + w("Transmission", "carImportTransmission", [ [ "automatic", "Automatic" ], [ "manual", "Manual" ] ]) + w("Condition", "carImportCondition", [ [ "used", "Used" ], [ "new", "New" ] ]) + U("Mileage", "carImportMileage", "65000") + M("Purchase price USD", "carImportPurchasePrice", "8200") + M("FOB USD", "carImportFob", "") + M("CIF USD", "carImportCif", "") + '<details class="car-import-advanced"><summary>Advanced costs and finance</summary><div class="car-import-form-grid">' + M("Freight USD", "carImportFreight", "") + M("Insurance USD", "carImportInsurance", "") + M("Official customs value USD", "carImportCustomsValue", "") + S("Port", "select", "carImportPort", "") + S("Destination city", "select", "carImportDestinationCity", "") + U("Delay days", "carImportDelayDays", "0") + U("Storage days", "carImportStorageDays", "0") + w("Clearing mode", "carImportClearingMode", [ [ "agent", "Agent estimate" ], [ "diy", "DIY estimate" ] ]) + U("Down payment %", "carImportDownPayment", "25") + U("APR %", "carImportApr", "24") + U("Finance months", "carImportFinanceMonths", "36") + M("Local dealer price USD", "carImportLocalDealerPrice", "") + M("Extra agency charges USD", "carImportExtraAgencyCharges", "") + '</div></details></div><div class="car-import-actions"><button class="car-import-button" type="submit">Calculate landed cost</button><button class="car-import-button secondary" type="button" id="carImportCompareMode">Compare source markets</button></div></form><section class="car-import-result-panel" id="carImportResults" hidden><div class="car-import-result-head"><div><div class="car-import-total-label">Estimated on-road cost</div><div class="car-import-total" id="carImportTotal">USD 0</div><div class="car-import-total-sub"><span id="carImportTotalLocal"></span><br><span id="carImportSummaryLine"></span><br><span id="carImportRulePackLine"></span></div></div><div class="car-import-badges" id="carImportBadgeStack"></div></div><div class="car-import-tablist"><div class="car-import-tabs" role="tablist">' + D("Summary", "carImportTabSummary", !0) + D("Official Charges", "carImportTabOfficial", !1) + D("Practical Costs", "carImportTabPractical", !1) + D("Registration", "carImportTabRegistration", !1) + D("Scenarios", "carImportTabScenarios", !1) + D("Compare", "carImportTabCompare", !1) + D("Documents", "carImportTabDocuments", !1) + D("FAQ", "carImportTabFaq", !1) + "</div></div>" + L("carImportTabSummary", !0, '<div id="carImportWarnings" class="car-import-warning-stack"></div><div class="car-import-metrics" id="carImportMetrics"></div><div class="car-import-waterfall" id="carImportWaterfall"></div><h2>Customs value basis</h2>' + P("carImportBasisTable")) + L("carImportTabOfficial", !1, "<h2>Official charges</h2>" + P("carImportOfficialTable")) + L("carImportTabPractical", !1, "<h2>Third-party, port, and delivery costs</h2>" + P("carImportPracticalTable")) + L("carImportTabRegistration", !1, "<h2>Registration and plates</h2>" + P("carImportRegistrationTable")) + L("carImportTabScenarios", !1, "<h2>Scenarios and sensitivity</h2>" + P("carImportScenarioTable") + "<h2>Exchange-rate and delay sensitivity</h2>" + P("carImportSensitivityTable") + '<p class="car-import-help" id="carImportFinanceBlock"></p>') + L("carImportTabCompare", !1, "<h2>Source market comparison</h2>" + P("carImportCompareTable", [ "Source", "Freight", "Landed", "On-road" ])) + L("carImportTabDocuments", !1, '<h2>Document checklist</h2><ul class="car-import-checklist" id="carImportDocuments"></ul><h2>Sources used</h2><ul id="carImportResultSources"></ul><h2>Trust notes</h2><ul id="carImportResultDisclaimer"></ul>') + L("carImportTabFaq", !1, '<div class="car-import-ai"><h2>Ask the AfroTools car import advisor</h2><div class="car-import-ai-log" id="carImportAiLog"></div><textarea id="carImportAiQuestion" placeholder="Ask why this country is expensive, what hidden costs to expect, or whether to import or buy locally."></textarea><button class="car-import-button" id="carImportAskAi" type="button">Ask AI with this quote</button></div><h2>Country FAQ</h2><div class="car-import-faq" id="carImportFaqList"></div>') + '<div class="car-import-tab-actions"><div class="car-import-actions"><button type="button" class="car-import-button" id="carImportPdf">Export PDF</button><button type="button" class="car-import-button secondary" id="carImportCsv">Export CSV</button><button type="button" class="car-import-button secondary" id="carImportPrint">Print</button><button type="button" class="car-import-button secondary" id="carImportShare">Share quote</button><button type="button" class="car-import-button tertiary" id="carImportSaveLocal">Save locally</button><save-result-button id="carImportCloudSave" tool-slug="car-import-cost" tool-name="African Car Landed Cost Calculator"></save-result-button></div></div></section></div>'), 
+        t && ((o = r("#carImportApp")) && !r("#carImportForm") && (o.innerHTML = '<div class="car-import-layout"><form class="car-import-panel" id="carImportForm"><h2>Build your landed-cost quote</h2><p class="car-import-help">Start with the car details you know. The engine can work from purchase price, FOB, CIF, or make/model/year valuation seeds.</p><div class="car-import-form-grid">' + S("Import country", "select", "carImportCountry", "full") + S("Source market", "select", "carImportSourceMarket", "") + w("Input mode", "carImportInputMode", [ [ "purchase", "I know the purchase price" ], [ "fob", "I know FOB" ], [ "cif", "I know CIF" ], [ "make-model-year", "I only know make/model/year" ], [ "compare", "I want to compare source markets" ] ]) + w("Output mode", "carImportOutputMode", [ [ "practical", "Official + practical port costs" ], [ "official", "Official mode" ], [ "stress", "Stress test" ] ]) + T("Make", "carImportMake", "Toyota") + T("Model", "carImportModel", "Corolla") + T("Trim optional", "carImportTrim", "GLi") + U("Year", "carImportYear", "2018") + w("First registration month", "carImportFirstRegistrationMonth", [ [ "1", "January" ], [ "2", "February" ], [ "3", "March" ], [ "4", "April" ], [ "5", "May" ], [ "6", "June" ], [ "7", "July" ], [ "8", "August" ], [ "9", "September" ], [ "10", "October" ], [ "11", "November" ], [ "12", "December" ] ]) + w("Fuel type", "carImportFuelType", [ [ "petrol", "Petrol" ], [ "diesel", "Diesel" ], [ "hybrid", "Hybrid" ], [ "phev", "PHEV" ], [ "ev", "EV" ] ]) + U("Engine cc", "carImportEngineCc", "1800") + w("Body type", "carImportBodyType", [ [ "sedan", "Sedan" ], [ "hatchback", "Hatchback" ], [ "suv", "SUV" ], [ "mpv", "MPV / Van" ], [ "pickup", "Pickup" ], [ "truck", "Truck" ], [ "motorcycle", "Motorcycle" ] ]) + w("Drive side", "carImportDriveSide", [ [ "right", "Right-hand drive" ], [ "left", "Left-hand drive" ] ]) + w("Transmission", "carImportTransmission", [ [ "automatic", "Automatic" ], [ "manual", "Manual" ] ]) + w("Condition", "carImportCondition", [ [ "used", "Used" ], [ "new", "New" ] ]) + U("Mileage", "carImportMileage", "65000") + M("Purchase price USD", "carImportPurchasePrice", "8200") + M("FOB USD", "carImportFob", "") + M("CIF USD", "carImportCif", "") + '<details class="car-import-advanced"><summary>Advanced costs and finance</summary><div class="car-import-form-grid">' + M("Freight USD", "carImportFreight", "") + M("Insurance USD", "carImportInsurance", "") + M("Official customs value USD", "carImportCustomsValue", "") + S("Port", "select", "carImportPort", "") + S("Destination city", "select", "carImportDestinationCity", "") + U("Delay days", "carImportDelayDays", "0") + U("Storage days", "carImportStorageDays", "0") + w("Clearing mode", "carImportClearingMode", [ [ "agent", "Agent estimate" ], [ "diy", "DIY estimate" ] ]) + U("Down payment %", "carImportDownPayment", "25") + U("APR %", "carImportApr", "24") + U("Finance months", "carImportFinanceMonths", "36") + M("Local dealer price USD", "carImportLocalDealerPrice", "") + M("Extra agency charges USD", "carImportExtraAgencyCharges", "") + '</div></details></div><div class="car-import-actions"><button class="car-import-button" type="submit">Calculate landed cost</button><button class="car-import-button secondary" type="button" id="carImportCompareMode">Compare source markets</button></div></form><section class="car-import-result-panel" id="carImportResults" hidden><div class="car-import-result-head"><div><div class="car-import-total-label">Estimated on-road cost</div><div class="car-import-total" id="carImportTotal">USD 0</div><div class="car-import-total-sub"><span id="carImportTotalLocal"></span><br><span id="carImportSummaryLine"></span><br><span id="carImportRulePackLine"></span></div></div><div class="car-import-badges" id="carImportBadgeStack"></div></div><div class="car-import-tablist"><div class="car-import-tabs" role="tablist">' + D("Summary", "carImportTabSummary", !0) + D("Official Charges", "carImportTabOfficial", !1) + D("Practical Costs", "carImportTabPractical", !1) + D("Registration", "carImportTabRegistration", !1) + D("Scenarios", "carImportTabScenarios", !1) + D("Compare", "carImportTabCompare", !1) + D("Documents", "carImportTabDocuments", !1) + D("FAQ", "carImportTabFaq", !1) + "</div></div>" + L("carImportTabSummary", !0, '<div id="carImportWarnings" class="car-import-warning-stack"></div><div class="car-import-metrics" id="carImportMetrics"></div><div class="car-import-waterfall" id="carImportWaterfall"></div><h2>Customs value basis</h2>' + P("carImportBasisTable")) + L("carImportTabOfficial", !1, "<h2>Official charges</h2>" + P("carImportOfficialTable")) + L("carImportTabPractical", !1, "<h2>Third-party, port, and delivery costs</h2>" + P("carImportPracticalTable")) + L("carImportTabRegistration", !1, "<h2>Registration and plates</h2>" + P("carImportRegistrationTable")) + L("carImportTabScenarios", !1, "<h2>Scenarios and sensitivity</h2>" + P("carImportScenarioTable") + "<h2>Exchange-rate and delay sensitivity</h2>" + P("carImportSensitivityTable") + '<p class="car-import-help" id="carImportFinanceBlock"></p>') + L("carImportTabCompare", !1, "<h2>Source market comparison</h2>" + P("carImportCompareTable", [ "Source", "Freight", "Landed", "On-road" ])) + L("carImportTabDocuments", !1, '<h2>Document checklist</h2><ul class="car-import-checklist" id="carImportDocuments"></ul><h2>Sources used</h2><ul id="carImportResultSources"></ul><h2>Trust notes</h2><ul id="carImportResultDisclaimer"></ul>') + L("carImportTabFaq", !1, '<div class="car-import-ai"><h2>Ask the AfroTools car import advisor</h2><div class="car-import-ai-log" id="carImportAiLog"></div><textarea id="carImportAiQuestion" placeholder="Ask why this country is expensive, what hidden costs to expect, or whether to import or buy locally."></textarea><button class="car-import-button" id="carImportAskAi" type="button">Ask AI with this quote</button></div><h2>Country FAQ</h2><div class="car-import-faq" id="carImportFaqList"></div>') + '<div class="car-import-tab-actions"><div class="car-import-actions"><button type="button" class="car-import-button" id="carImportPdf">Export PDF</button><button type="button" class="car-import-button secondary" id="carImportCsv">Export CSV</button><button type="button" class="car-import-button secondary" id="carImportPrint">Print</button><button type="button" class="car-import-button secondary" id="carImportShare">Share quote</button><button type="button" class="car-import-button tertiary" id="carImportSaveLocal">Save locally</button><save-result-button id="carImportCloudSave" tool-slug="car-import-cost" tool-name="African Car Landed Cost Calculator"></save-result-button></div></div></section></div>'),
         r("#carImportForm") && s("/data/trade/car-import-cost-core.json").then(function(a) {
             var r = Object.keys(a.countryPackFiles || {}).map(function(t) {
                 return s(a.countryPackFiles[t]);
@@ -625,12 +625,12 @@
                     a = null;
                 }
                 var r = a || {};
-                t.has("country") && (r.countryCode = t.get("country")), t.has("source") && (r.sourceMarket = t.get("source")), 
-                t.has("make") && (r.make = t.get("make")), t.has("model") && (r.model = t.get("model")), 
-                t.has("year") && (r.year = t.get("year")), t.has("price") && (r.purchasePriceUsd = t.get("price")), 
-                t.has("freight") && (r.freightUsd = t.get("freight")), t.has("insurance") && (r.insuranceUsd = t.get("insurance")), 
-                t.has("condition") && (r.condition = t.get("condition")), t.has("engineCc") && (r.engineCc = t.get("engineCc")), 
-                t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")), 
+                t.has("country") && (r.countryCode = t.get("country")), t.has("source") && (r.sourceMarket = t.get("source")),
+                t.has("make") && (r.make = t.get("make")), t.has("model") && (r.model = t.get("model")),
+                t.has("year") && (r.year = t.get("year")), t.has("price") && (r.purchasePriceUsd = t.get("price")),
+                t.has("freight") && (r.freightUsd = t.get("freight")), t.has("insurance") && (r.insuranceUsd = t.get("insurance")),
+                t.has("condition") && (r.condition = t.get("condition")), t.has("engineCc") && (r.engineCc = t.get("engineCc")),
+                t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")),
                 Object.keys(r).length && f(r);
                 prepareCountryEntry(requestedEntryCountry(r.countryCode));
             }(), m(), r("#carImportForm").addEventListener("submit", function(t) {
@@ -643,10 +643,10 @@
                 t.addEventListener("click", function() {
                     h(t);
                 });
-            }), r("#carImportPdf").addEventListener("click", g), r("#carImportCsv").addEventListener("click", I), 
+            }), r("#carImportPdf").addEventListener("click", g), r("#carImportCsv").addEventListener("click", I),
             r("#carImportPrint").addEventListener("click", function() {
                 window.print();
-            }), r("#carImportShare").addEventListener("click", v), r("#carImportSaveLocal").addEventListener("click", b), 
+            }), r("#carImportShare").addEventListener("click", v), r("#carImportSaveLocal").addEventListener("click", b),
             r("#carImportAskAi").addEventListener("click", C), r("#carImportCompareMode").addEventListener("click", function() {
                 h(r("[aria-controls='carImportTabCompare']")), i("car_import_compare_mode_used", {
                     country: r("#carImportCountry").value
@@ -660,7 +660,7 @@
             });
         }).catch(function(t) {
             var a = r("#carImportResults");
-            a && (a.hidden = !1, a.innerHTML = '<div class="car-import-empty">The car import calculator data could not load. Refresh the page or try again shortly.</div>'), 
+            a && (a.hidden = !1, a.innerHTML = '<div class="car-import-empty">The car import calculator data could not load. Refresh the page or try again shortly.</div>'),
             i("car_import_data_load_error", {
                 message: t.message
             });
