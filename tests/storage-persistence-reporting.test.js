@@ -89,6 +89,21 @@ test('shared failure stays non-success if failure metadata and log persistence t
   assert.ok(!runner.logs.join('\n').includes(SENSITIVE_FIXTURE));
 });
 
+test('a thrown run logger cannot turn failed persistence into success', async () => {
+  let attemptedPatch;
+  const runner = load('netlify/functions/_shared/scraper-base.js', { modules: { './data-store': {
+    getData: async () => null, setData: async () => false,
+    updateMeta: async (_key, patch) => { attemptedPatch = patch; throw new Error(SENSITIVE_FIXTURE); },
+  } } });
+  runner.context.logRun = async () => { throw new Error(SENSITIVE_FIXTURE); };
+  const response = await runner.api.runScraper({ id: 'fuel-prices', blobKey: 'fuel-latest',
+    sources: [{ name: 'fixture', fn: async () => ({ countries: [] }) }], validate: () => ({ valid: true }) });
+  assert.equal(response.statusCode, 503);
+  assert.deepEqual(Object.keys(attemptedPatch).sort(), ['error', 'last_attempt', 'status']);
+  assert.match(runner.logs.join('\n'), /operation=failure-log dataset=scraper_runs code=UNKNOWN/);
+  assert.ok(!runner.logs.join('\n').includes(SENSITIVE_FIXTURE));
+});
+
 for (const mode of ['failed', 'failed-metadata', 'success']) {
   test('rates producer ' + mode + ' preserves the persistence contract', async () => {
     const meta = { ...previousMeta };
