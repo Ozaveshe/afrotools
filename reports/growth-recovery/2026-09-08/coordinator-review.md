@@ -1,6 +1,6 @@
 # Coordinated growth recovery review
 
-September 8, 2026. Draft integration PR: https://github.com/Ozaveshe/afrotools/pull/110 . Baseline: `9b29eab0408eedd9442c98c2cabf567098da80ab`. Product/generated candidate: `52a82f14`.
+September 8, 2026. Draft integration PR: https://github.com/Ozaveshe/afrotools/pull/110 . Baseline: `9b29eab0408eedd9442c98c2cabf567098da80ab`. UI/generated candidate: `52a82f14`; subsequent persistence repair integrated through `a488aec1`.
 
 ## Result
 
@@ -12,11 +12,11 @@ Combined testing exposed three missed integration dependencies. The parser inven
 
 | Check | Result |
 | --- | --- |
-| Final npm test | PASS: 2,036 runner tests, 783 files, 7/7 audits, zero quarantine |
-| Final build:deploy | PASS: 17,912 files copied; 1,770 JS and 615 CSS artifacts optimized |
-| Final audit:dist | PASS |
-| Final security:scan | PASS |
-| Final optimized-artifact workflow tests | PASS: 31 Playwright tests |
+| Final combined npm test including persistence repair | PASS: 2,073 runner tests, 784 files, 7/7 audits, zero quarantine |
+| UI candidate build:deploy before persistence-only follow-up | PASS: 17,912 files copied; 1,770 JS and 615 CSS artifacts optimized |
+| UI candidate audit:dist | PASS |
+| Final combined security:scan | PASS |
+| UI optimized-artifact workflow tests | PASS: 31 Playwright tests |
 | Earlier combined source workflow tests | PASS: 27 plus four added French decimal tests |
 | Combined country-entry browser cases | PASS: 80 against focused local route server; lane separately verified installed Netlify CLI |
 | Source-owner, decimal, GSC, route and calculation contracts | PASS after integration repairs |
@@ -27,6 +27,8 @@ The four new French decimal artifact tests use reviewed English source HTML as a
 Full build ran from source commit `627f9f39` and produced the exact generated output subsequently committed as `52a82f14`. The ten final French HTML deltas were independently verified to differ only in cache references; the two other deltas are public-claim scan file counts. Existing lane evidence remains under its named subdirectory. Coordinator command logs are preserved in the root task's local visualization directory, including `growth-final-build.log`, `growth-final-tests.log`, `growth-final-artifact.log` and `growth-final-dist-browser.log`.
 
 ## Remaining release gate
+
+The separate persistence repair from draft PR111 is integrated. Failed rates/shared scraper saves return non-success and preserve last-known-good freshness; diagnostics expose only allowlisted operations, datasets and transport codes. All 11 shared wrappers have synthetic success/failure coverage. Its standalone build/dist/security/lint/type/i18n/hreflang/SEO checks passed; its only broad failure was reproduced on unchanged base FX context and is absent in the combined 2,073-test run. Final full release rebuild/identity remains required after resolving the data blocker. No connection retry, timeout, provider or live configuration change was added, and the underlying transport cause is not fixed by diagnostics alone.
 
 GitHub Verify on source `627f9f39` passed calculation-quality but failed `data:fallbacks:check`: committed FX, fuel, rates and commodity snapshots exceeded seven days. No threshold or timestamp was altered to bypass this gate. A separate bounded source-freshness investigation is active. Correct AfroTools Supabase read connectivity was reverified; fresh FX/commodity candidates exist, but the inspected fuel/rate payloads are still stale. Provider freshness and safe refresh work remain unapproved as a result claim.
 
