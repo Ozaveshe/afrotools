@@ -8,8 +8,8 @@
  *  3. Enrich inflation data separately without pretending it refreshed policy rates.
  */
 
-const fs = require('fs');
-const path = require('path');
+// Static import keeps reviewed source records in the deployed function bundle.
+const manualPolicyOverrides = require('../../data/rates/manual-policy-overrides.json');
 const { getData, setData, updateMeta } = require('./_shared/data-store');
 const { storageDiagnostic } = require('./_shared/storage-diagnostics');
 
@@ -43,7 +43,6 @@ const ENGLISH_MONTH_SLUGS = [
   'january', 'february', 'march', 'april', 'may', 'june',
   'july', 'august', 'september', 'october', 'november', 'december'
 ];
-const MANUAL_OVERRIDE_PATH = path.join(__dirname, '..', '..', 'data', 'rates', 'manual-policy-overrides.json');
 
 function stripAccents(value) {
   return String(value || '')
@@ -601,12 +600,7 @@ async function fetchOfficialPolicyRateUpdates() {
 
 function loadManualPolicyOverrides() {
   try {
-    if (!fs.existsSync(MANUAL_OVERRIDE_PATH)) {
-      return { updates: [], codes: [], generated_at: null };
-    }
-
-    var raw = fs.readFileSync(MANUAL_OVERRIDE_PATH, 'utf8');
-    var parsed = JSON.parse(raw);
+    var parsed = manualPolicyOverrides;
     var countries = Array.isArray(parsed.countries) ? parsed.countries : [];
     var updates = countries
       .filter(function(item) {
