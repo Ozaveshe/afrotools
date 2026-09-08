@@ -92,8 +92,8 @@
     },
     "naira-to-words": {
       action: '#ngn-form button[type="submit"]',
-      fields: [{ selector: "#amount", numericText: true, min: 0 }],
-      clear: ["#summary-output", "#english-output", "#numeric-output"],
+      fields: [{ selector: "#amount", amountWordsMaximum: "999999999999" }],
+      clear: ["#summary-output", "#english-output", "#french-output", "#numeric-output"],
       message: "Saisissez un montant numérique valide en nairas."
     },
     "amount-words-ke": {
@@ -104,7 +104,7 @@
     },
     "amount-words-gh": {
       action: '#wordsForm button[type="submit"]',
-      fields: [{ selector: "#amount", numericText: true, min: 0 }],
+      fields: [{ selector: "#amount", amountWordsMaximum: "999999999999" }],
       clear: ["#wordsOutput", "#chequeOutput", "#invoiceOutput"],
       message: "Saisissez un montant numérique valide en cedis."
     },
@@ -177,6 +177,10 @@
     var field = document.querySelector(rule.selector);
     if (!field) return null;
     var raw = String(field.value || "").trim();
+    if (rule.amountWordsMaximum) {
+      var amountWords = window.AfroTools && window.AfroTools.frAmountWordsInput;
+      return amountWords && amountWords.parse(raw, rule.amountWordsMaximum).valid ? null : field;
+    }
     if (rule.optional && raw === "") return null;
     if (rule.required && raw === "") return field;
     if (rule.nonEmptyLines && raw.split(/\n+/).map(function (line) { return line.trim(); }).filter(Boolean).length < rule.nonEmptyLines) return field;

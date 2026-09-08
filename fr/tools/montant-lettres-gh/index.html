@@ -399,7 +399,7 @@
       <form class="panel" id="wordsForm">
         <div class="panel-head">
           <h2>Saisir le montant</h2>
-          <p>Utilisez un point ou une virgule pour les pesewas. Le résultat arrondit toujours a deux decimales.</p>
+          <p>Utilisez 1250.75 ou 1 250,75. Le résultat est arrondi à deux décimales, dans la limite de 999 999 999 999,99 GHS après arrondi.</p>
         </div>
         <div class="panel-body">
           <div class="form-grid">
@@ -498,6 +498,8 @@
 
   <afro-footer></afro-footer>
 
+  <script src="/assets/js/engines/amount-words-input.js"></script>
+  <script src="/assets/js/pages/fr-amount-words-input.js"></script>
   <script>
     (function () {
       'use strict';
@@ -512,14 +514,7 @@
       }
 
       function parseAmount(value) {
-        var cleaned = String(value || '').replace(/,/g, '.').replace(/[^0-9.]/g, '');
-        var firstDot = cleaned.indexOf('.');
-        if (firstDot !== -1) {
-          cleaned = cleaned.slice(0, firstDot + 1) + cleaned.slice(firstDot + 1).replace(/\./g, '');
-        }
-        var amount = Number(cleaned);
-        if (!Number.isFinite(amount) || amount < 0) return null;
-        return Math.round(amount * 100);
+        return window.AfroTools.frAmountWordsInput.parse(value, '999999999999');
       }
 
       function underThousand(n) {
@@ -567,17 +562,19 @@
       }
 
       function convert() {
-        var cents = parseAmount(el('amount').value);
-        if (cents === null) {
-          el('wordsOutput').textContent = 'Entrez un montant valide.';
+        var parsed = parseAmount(el('amount').value);
+        if (!parsed.valid) {
+          el('amount').setAttribute('aria-invalid', 'true');
+          el('wordsOutput').textContent = '';
           el('chequeOutput').textContent = '';
           el('invoiceOutput').textContent = '';
-          el('status').textContent = 'Montant invalide.';
+          el('status').textContent = parsed.error;
           state.phrase = '';
           return '';
         }
-        var cedis = Math.floor(cents / 100);
-        var pesewas = cents % 100;
+        el('amount').removeAttribute('aria-invalid');
+        var cedis = parsed.major;
+        var pesewas = parsed.minor;
         var phrase = '';
         if (cedis === 0 && pesewas === 0) {
           phrase = 'zero Ghana cedis';
@@ -590,11 +587,13 @@
         if (el('ending').value === 'only') phrase += ' only';
         phrase = applyCase(phrase);
 
-        var amountDisplay = 'GHS ' + (cents / 100).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var amountDisplay = 'GHS ' + parsed.figure;
         el('wordsOutput').textContent = phrase;
         el('chequeOutput').textContent = 'Pay: ' + phrase;
         el('invoiceOutput').textContent = amountDisplay + ' (' + phrase + ')';
-        el('status').textContent = 'Montant converti. Vous pouvez copier ou exporter.';
+        el('status').textContent = parsed.rounded
+          ? 'Montant arrondi à ' + amountDisplay + '. Les lettres et les exports utilisent ce montant.'
+          : 'Montant converti. Vous pouvez copier ou exporter.';
         state.phrase = [
           'AfroTools - Montant en lettres Ghana cedi',
           'Montant numerique: ' + amountDisplay,
@@ -606,7 +605,8 @@
       }
 
       function copyResult() {
-        var text = state.phrase || convert();
+        var text = convert();
+        if (!text) return;
         if (!navigator.clipboard || !navigator.clipboard.writeText) {
           el('status').textContent = 'Copie bloquee par le navigateur. Utilisez le telechargement TXT.';
           return;
@@ -619,7 +619,8 @@
       }
 
       function downloadText() {
-        var text = state.phrase || convert();
+        var text = convert();
+        if (!text) return;
         var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
         var url = URL.createObjectURL(blob);
         var link = document.createElement('a');
@@ -633,12 +634,14 @@
       }
 
       function saveLocal() {
+        var result = convert();
+        if (!result) return;
         var payload = {
           savedAt: new Date().toISOString(),
           amount: el('amount').value,
           caseMode: el('caseMode').value,
           ending: el('ending').value,
-          result: state.phrase || convert()
+          result: result
         };
         localStorage.setItem('afrotools:montant-lettres-gh-fr:last', JSON.stringify(payload));
         el('status').textContent = 'Conversion sauvee dans ce navigateur.';

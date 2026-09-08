@@ -209,7 +209,8 @@
       <form class="ngn-form" id="ngn-form">
         <div class="ngn-field">
           <label for="amount">Montant en naira</label>
-          <input id="amount" name="amount" inputmode="decimal" autocomplete="off" placeholder="Ex. 1250000.75" value="1250000.75" required>
+          <input id="amount" name="amount" inputmode="decimal" autocomplete="off" placeholder="Ex. 1250000.75" value="1250000.75" aria-describedby="amount-help" required>
+          <small id="amount-help">Formats : 1250.75 ou 1 250,75. Maximum après arrondi : 999 999 999 999,99 NGN.</small>
         </div>
         <div class="ngn-grid-2">
           <div class="ngn-field">
@@ -329,6 +330,8 @@
   </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/amount-words-input.js"></script>
+<script src="/assets/js/pages/fr-amount-words-input.js"></script>
 <script>
 (function () {
   'use strict';
@@ -357,40 +360,13 @@
   const frenchTens = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante'];
 
   function parseAmount(value) {
-    let raw = String(value || '').trim();
-    let cleaned = raw.replace(/[₦]/g, '').replace(/\bNGN\b/gi, '').replace(/\s+/g, '').replace(/_/g, '');
-    const commaCount = (cleaned.match(/,/g) || []).length;
-    const dotCount = (cleaned.match(/\./g) || []).length;
-
-    if (commaCount && dotCount) {
-      cleaned = cleaned.replace(/,/g, '');
-    } else if (commaCount === 1 && dotCount === 0) {
-      cleaned = cleaned.replace(',', '.');
-    } else if (commaCount > 1 && dotCount === 0) {
-      cleaned = cleaned.replace(/,/g, '');
-    }
-
-    if (!/^\d+(\.\d+)?$/.test(cleaned)) {
-      return { error: 'Entrez un montant positif, par exemple 1250000.75 ou 1 250 000,75.' };
-    }
-
-    const decimalPart = cleaned.split('.')[1] || '';
-    const number = Number(cleaned);
-    if (!Number.isFinite(number) || number < 0) {
-      return { error: 'Le montant doit etre un nombre positif.' };
-    }
-    if (number > 999999999999.99) {
-      return { error: 'La limite pratique de cet outil est 999 999 999 999,99 NGN.' };
-    }
-
-    let totalKobo = Math.round(number * 100);
-    const naira = Math.floor(totalKobo / 100);
-    const kobo = totalKobo % 100;
+    const parsed = window.AfroTools.frAmountWordsInput.parse(value, '999999999999');
+    if (!parsed.valid) return parsed;
     return {
-      naira,
-      kobo,
-      amount: totalKobo / 100,
-      rounded: decimalPart.length > 2
+      naira: parsed.major,
+      kobo: parsed.minor,
+      figure: parsed.figure,
+      rounded: parsed.rounded
     };
   }
 
@@ -504,11 +480,14 @@
     warning.classList.remove('show');
     warning.textContent = '';
     if (parsed.error) {
+      [numericOutput, englishOutput, frenchOutput, summaryOutput].forEach(function (node) { node.textContent = ''; });
+      amountInput.setAttribute('aria-invalid', 'true');
       warning.textContent = parsed.error;
       warning.classList.add('show');
       status.textContent = 'Correction requise avant conversion.';
       return null;
     }
+    amountInput.removeAttribute('aria-invalid');
     if (parsed.rounded) {
       warning.textContent = 'Le montant a ete arrondi a deux decimales pour les kobo.';
       warning.classList.add('show');
@@ -519,16 +498,15 @@
     const nairaWordsFr = frenchNumber(parsed.naira);
     const koboWordsFr = frenchNumber(parsed.kobo);
     const en = applyCase(
-      nairaWordsEn + ' ' + currencyLabel(parsed.naira, 'naira', 'naira') +
-      (parsed.kobo ? ' and ' + koboWordsEn + ' ' + currencyLabel(parsed.kobo, 'kobo', 'kobo') : ' only') +
-      (parsed.kobo ? ' only' : '')
+      (parsed.naira || !parsed.kobo ? nairaWordsEn + ' naira' : '') +
+      (parsed.kobo ? (parsed.naira ? ' and ' : '') + koboWordsEn + ' kobo' : '') + ' only'
     ) + '.';
     const fr = sentenceCase(
-      nairaWordsFr + ' ' + currencyLabel(parsed.naira, 'naira', 'nairas') +
-      (parsed.kobo ? ' et ' + koboWordsFr + ' ' + currencyLabel(parsed.kobo, 'kobo', 'kobos') : ' seulement')
+      (parsed.naira || !parsed.kobo ? nairaWordsFr + ' ' + currencyLabel(parsed.naira, 'naira', 'nairas') : '') +
+      (parsed.kobo ? (parsed.naira ? ' et ' : '') + koboWordsFr + ' ' + currencyLabel(parsed.kobo, 'kobo', 'kobos') : ' seulement')
     ) + '.';
 
-    const numeric = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(parsed.amount);
+    const numeric = 'NGN ' + parsed.figure;
     const lines = [
       'Montant: ' + numeric,
       'Anglais: ' + en,
@@ -581,6 +559,11 @@
   document.getElementById('ngn-form').addEventListener('submit', function (event) {
     event.preventDefault();
     buildResult();
+  });
+  amountInput.addEventListener('input', function () {
+    [numericOutput, englishOutput, frenchOutput, summaryOutput].forEach(function (node) { node.textContent = ''; });
+    amountInput.removeAttribute('aria-invalid');
+    status.textContent = 'Montant modifié. Relancez la conversion.';
   });
 
   document.getElementById('copy-result').addEventListener('click', function () {
