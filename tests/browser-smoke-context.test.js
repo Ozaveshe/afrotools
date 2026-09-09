@@ -27,3 +27,20 @@ test('sandbox frames stay usable while service-worker registration remains block
     await context.close();
   } finally { await browser.close(); }
 });
+
+test('CLI gate does not misclassify deliberately blocked external requests', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { spawnSync } = require('child_process');
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'afro-reliability-'));
+  try {
+    const run = spawnSync(process.execPath, ['scripts/audit-tool-quality.js', '--browser', '--route=/tools/html-to-pdf/', '--port=4221', '--output-dir', output, '--gate'], { encoding: 'utf8', timeout: 45000 });
+    assert.equal(run.status, 0, run.stdout + run.stderr);
+    const report = JSON.parse(fs.readFileSync(path.join(output, 'tool-quality-ranking.json'), 'utf8'));
+    const row = report.tools[0];
+    assert.equal(row.runtime.gate, 'passed');
+    assert.ok(row.browser.blockedByHarness.length > 0, 'test must exercise the external-request blocker');
+    assert.deepEqual(row.browser.thirdPartyFailures, []);
+  } finally { fs.rmSync(output, { recursive: true, force: true }); }
+});

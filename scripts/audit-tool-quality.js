@@ -803,6 +803,7 @@ async function runBrowserSmoke(routes) {
       const failedResponses = [];
       const thirdPartyFailures = [];
       const blockedByHarness = [];
+      const harnessBlockedRequests = new WeakSet();
       let redirectProbe = null;
       const started = Date.now();
       let responseStatus = 0;
@@ -825,13 +826,14 @@ async function runBrowserSmoke(routes) {
         }
       });
       page.on('requestfailed', request => {
-        if (!request.url().startsWith(baseUrl) && request.failure()?.errorText !== 'net::ERR_BLOCKED_BY_CLIENT') thirdPartyFailures.push(new URL(request.url()).origin);
+        if (!request.url().startsWith(baseUrl) && !harnessBlockedRequests.has(request)) thirdPartyFailures.push(new URL(request.url()).origin);
       });
       await page.route('**/*', (routeControl) => {
         const requestUrl = routeControl.request().url();
         if (requestUrl.startsWith(baseUrl) || requestUrl.startsWith('data:') || requestUrl.startsWith('blob:')) {
           return routeControl.continue();
         }
+        harnessBlockedRequests.add(routeControl.request());
         blockedByHarness.push(new URL(requestUrl).origin);
         return routeControl.abort('blockedbyclient');
       });
