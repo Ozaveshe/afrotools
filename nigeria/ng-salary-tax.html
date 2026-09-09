@@ -359,6 +359,9 @@
   </style>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="article:modified_time" content="2026-03-28">
+<style>
+  .ng-guide-grid, .ng-guide-col, .ng-guide-card { min-width: 0; max-width: 100%; }
+</style>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
@@ -479,7 +482,7 @@
                 <span class="f-prefix">&#8358;</span>
                 <input type="text" inputmode="numeric" class="f-input" id="grossSalary" placeholder="3,600,000" autocomplete="off" aria-describedby="salaryHint">
               </div>
-              <p class="f-note" id="salaryHint"></p>
+              <p class="f-note" id="salaryHint" role="alert"></p>
             </div>
 
             <!-- SALARY PERIOD -->
@@ -1181,10 +1184,11 @@
 
 // -€-€ STATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 let RESULT = null;
-let PERIOD = 'monthly';
-let REGIME = 'pita';
-let CALC_MODE = 'gross'; // 'gross' | 'net'
-let SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
+// The existing saved-scenario adapter reads these fields from window.
+var PERIOD = 'monthly';
+var REGIME = 'pita';
+var CALC_MODE = 'gross'; // 'gross' | 'net'
+var SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
 let CHAT_HISTORY = [];
 let CHART = null;
 let CHART_TYPE = 'donut';
@@ -1509,14 +1513,23 @@ function renderEmployerCost(r) {
 // -€-€ MAIN CALCULATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function calculate() {
   let rawInput = parseNum(document.getElementById('grossSalary').value);
-  if (!rawInput || rawInput <= 0) {
+  if (!Number.isFinite(rawInput) || rawInput <= 0) {
     const el = document.getElementById('grossSalary');
+    RESULT = null;
+    window.RESULT = null;
+    document.getElementById('resultsCard').style.display = 'none';
+    document.getElementById('salaryHint').textContent = 'Enter a salary greater than zero.';
+    el.setAttribute('aria-invalid', 'true');
     el.focus(); el.style.borderColor = '#e53e3e';
     var origPlaceholder = el.getAttribute('placeholder') || '3,600,000';
     el.setAttribute('placeholder', 'Enter a valid salary');
     setTimeout(() => { el.style.borderColor = ''; el.setAttribute('placeholder', origPlaceholder); }, 3000);
     return;
   }
+
+  document.getElementById('grossSalary').removeAttribute('aria-invalid');
+  document.getElementById('salaryHint').textContent = '';
+  document.getElementById('resultsCard').style.display = '';
 
   // Convert monthly entry to annual
   let annualInput = SALARY_PERIOD === 'monthly' ? rawInput * 12 : rawInput;
