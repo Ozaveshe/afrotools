@@ -88,3 +88,13 @@ Source: `engines/src/water-bill-engine.js`; `scripts/generate-energy-x15.js`; `s
 Generated: `engines/water-bill-engine.js`; `tools/water-bill/ethiopia/index.html`; narrow link/notice fragment in `tools/electricity-tariff/ethiopia/index.html`.
 
 Tests: `tests/ethiopia-water-custom.test.js`; `tests/e2e/free-demand-cohort.spec.js`. Evidence: this report. No source date, registry, locale expansion, sitemap or shared auth/dashboard files changed. Internal electricity CTA now supplies `country=ET`; route and canonical are unchanged. Rollback: revert the corresponding scoped commit; no database rollback required. Coordinator must perform combined integration checks and any release/deployed verification. Material source gates above remain open even if integration passes.
+
+## Integration follow-up — protected formula registry
+
+Coordinator's broad test run exposed stale digests for the changed water engine and, once that was resolved, the Nigeria PAYE route. Both reproduced in this worktree. The catalogue registry remains unchanged; the **calculation-quality formula registry** now registers these two reviewed implementation changes, using separate review records under `data/calculation-quality/reviews/` and the existing owner command `node scripts/build-calculation-quality.js --write --accept-formula-change --review-file=<record> --only-formula-ids=<id> --as-of=2026-09-09`.
+
+Water review record: `ethiopia-water-custom-rate-2026-09-09.json`, formula `formula-engines-water-bill-engine`; digest `73b1b2f0569408442a980661cc6a6f9a3365112742e00a6fd47621cc93626226` → `db7fbcc2d3ed985225ef612ef4d29f700e7cdaadbd541137cef6da5bf06abf16`. Commit `b00ffeab`.
+
+Nigeria review record: `nigeria-paye-save-mode-recovery-2026-09-09.json`, formula `route-ng-paye`; digest `544255ae772bc7add961d75f1171ff1ea66d30e1720e4e3cdc809ae5a90711a3` → `cb6b308c506788afd8fd8c38a0e808519a03ed7aa1c7b80786c0060e6c7e4b18`. No tax-formula or historical-save migration acceptance implied.
+
+Only artifact digests, digest-derived version fields and parameter digest references changed in those two records. Full before/after comparison confirms all golden expectations, fixture-delta records, other formula records and source-verification dates unchanged. All current formula digests match. `scripts/lib/calculation-quality.js` and the enforcement tests remain unchanged. On September9, `node tests/calculation-quality.test.js` (all16 groups), `node tests/water-bill-night-flow.test.js`, `node tests/ethiopia-water-custom.test.js` (4/4 including unchanged-country cases), and `git diff --check` pass. No runtime change in this follow-up, so browser tests were not repeated. Broad integration/build/deployed checks remain coordinator-owned.
