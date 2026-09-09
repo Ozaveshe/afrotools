@@ -59,4 +59,8 @@ async function check(path,status,options={}){
   fs.mkdirSync('artifacts/operator-live',{recursive:true});
   fs.writeFileSync(`artifacts/operator-live/${base.hostname}.json`,JSON.stringify(proof,null,2)+'\n');
   console.log(JSON.stringify(proof));
-})().catch(error=>{console.error('Operator live verification failed: '+error.message);process.exitCode=1;});
+})().catch(error=>{
+  // Browser exceptions can embed fill arguments. Never print their message/stack.
+  console.error(`Operator live verification failed (${error.name}). Completed status checks: ${JSON.stringify(proof.checks)}`);
+  process.exitCode=1;
+});
