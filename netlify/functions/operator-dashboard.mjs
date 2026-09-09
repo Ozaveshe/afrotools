@@ -88,6 +88,6 @@ export default async function handler(request) {
   } catch (_) { return response('Operator resource unavailable.',503); }
 }
 export const config = {
-  path: '/api/operator-dashboard/*',
+  path: ['/api/operator-dashboard/*', '/mc-7a2f9x', '/mc-7a2f9x.html', '/.netlify/functions/operator-dashboard'],
   rateLimit: { windowLimit: 30, windowSize: 60, aggregateBy: ['ip','domain'] }
 };
