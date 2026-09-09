@@ -176,9 +176,9 @@ manual health gates remain strict.
 
 ## Coherent operating model (September 2026)
 
-The policy now budgets thirteen active lanes: twelve cron jobs and the existing
-image-delivery heartbeat. This is a deliberate activation budget, not a request
-to run all eighty specialist definitions. The remaining specialists stay
+The policy now budgets thirteen active cron lanes, including the existing image-delivery
+queue. This is a deliberate activation budget, not a request
+to run all specialist definitions. The remaining specialists stay
 paused until evidence justifies a bounded assignment and matching policy change.
 
 | Responsibility | Owner | Outcome |
@@ -189,7 +189,7 @@ paused until evidence justifies a bounded assignment and matching policy change.
 | Live-data remediation | Live Data Product Upgrade | One proven scheduler/source defect repaired, then natural-run proof |
 | Search and release safety | SEO, sitemap and bug reviews | New defects isolated; no broad reruns or cosmetic date churn on unchanged inputs |
 | Product priorities | Pro readiness and Hausa/Yoruba rotation | One tested existing workflow improved within the free-app freeze |
-| Image intake | Image heartbeat | Delivered assets reviewed once; pending batches reused |
+| Image intake | Daily image queue | Delivered assets reviewed once; pending batches reused |
 | Integration and deployment | Daily publisher | One validated cumulative release with exact-SHA proof |
 | Governance and recovery | System maintainer | Fresh seven-day report, missing ownership and stranded work repaired |
 
@@ -224,3 +224,7 @@ reports and this local directory. `CODEX_AUTOMATION_REPORT_DIR` overrides the
 local directory. Private run evidence is not committed to the public repository.
 Newly activated jobs remain awaiting their next scheduled proof; paused jobs
 are not classified as missed runs. Keep global memory registries untouched.
+
+The image queue runs at 09:30 independently of any task lifecycle. The former
+image heartbeat disappeared during configuration verification; the existing
+image queue was activated instead of recreating a duplicate schedule.

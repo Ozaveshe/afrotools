@@ -563,7 +563,7 @@
       "display_name": "Daily Blog Image Queue",
       "runner": "codex",
       "production_required": false,
-      "expected_schedule": "FREQ=DAILY;BYHOUR=19;BYMINUTE=15;BYSECOND=0",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=30;BYSECOND=0",
       "netlify_function": null,
       "github_workflow": null,
       "codex_automation_id": "daily-blog-image-queue",
@@ -576,13 +576,14 @@
         "AfroStream image_url coverage"
       ],
       "health_endpoint": null,
-      "owner_category": "Content publishing operations",
+      "owner_category": "Delivered image intake and duplicate-free batch tracking",
       "severity_if_stale": "p3",
       "validation_commands": [
         "npm run blog:feed:check",
         "npm run blog:verify",
         "npm run audit:automation-registry"
-      ]
+      ],
+      "codex_kind": "cron"
     },
     {
       "id": "codex:localized-content-rotation-batch",
@@ -2833,28 +2834,6 @@
       "severity_if_stale": "p2",
       "validation_commands": [
         "node --check netlify/functions/send-weekly-newsletter.js",
-        "npm run audit:automation-registry"
-      ]
-    },
-    {
-      "id": "codex:afrotools-daily-image-batch",
-      "display_name": "AfroTools daily image batch",
-      "runner": "codex",
-      "codex_kind": "heartbeat",
-      "production_required": false,
-      "expected_schedule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
-      "netlify_function": null,
-      "github_workflow": null,
-      "codex_automation_id": "afrotools-daily-image-batch",
-      "sla_hours": 48,
-      "product_surface": "content_images",
-      "public_claims_supported": [],
-      "live_data_tables_or_blobs": [],
-      "health_endpoint": null,
-      "owner_category": "Delivered image intake and duplicate-free batch tracking",
-      "severity_if_stale": "p2",
-      "validation_commands": [
-        "npm run automation:control-plane",
         "npm run audit:automation-registry"
       ]
     }
