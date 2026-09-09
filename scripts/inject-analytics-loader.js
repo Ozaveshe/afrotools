@@ -159,6 +159,10 @@ function loaderIsInHead(html, match) {
 function loaderIsCanonical(html, match, tag, placement) {
   if (loaderSource(match[0]) !== loaderSource(tag)) return false;
   if (placement !== "head") return true;
+  // The bootstrap URL may be unchanged when only its runtime changes.
+  // A stale data-loader-version can otherwise request cached pre-fix code.
+  const runtimeVersion = value => (value.match(/\bdata-loader-version\s*=\s*(["'])([^"']+)\1/i) || [])[2];
+  if (runtimeVersion(match[0]) !== runtimeVersion(tag)) return false;
   return loaderIsInHead(html, match)
     && /\sasync(?:\s|=|>)/i.test(match[0])
     && !/\sdefer(?:\s|=|>)/i.test(match[0]);

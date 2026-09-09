@@ -52,6 +52,22 @@ assert.strictEqual(movedEarly.injected, true);
 assert.ok(movedEarly.html.indexOf(earlyTag) < movedEarly.html.indexOf("<title>"));
 assert.strictEqual(normalizeBootstrapInHtml(movedEarly.html, earlyTag, true).html, movedEarly.html);
 
+// A stable bootstrap URL must not preserve an old runtime cache key.
+for (const staleTag of [
+  earlyTag.replace(/data-loader-version="[^"]+"/, 'data-loader-version="00000000"'),
+  earlyTag.replace(/ data-loader-version="[^"]+"/, ''),
+]) {
+  const staleHtml = `<html><head>${staleTag}<title>Fixture</title></head><body>${tag}</body></html>`;
+  const repaired = normalizeBootstrapInHtml(staleHtml, earlyTag, true);
+  assert.strictEqual(repaired.normalized, true);
+  assert.ok(repaired.html.includes(earlyTag));
+  assert.strictEqual((repaired.html.match(/analytics-bootstrap\.js/g) || []).length, 1);
+  assert.ok(repaired.html.indexOf(earlyTag) < repaired.html.indexOf('<title>'));
+  const second = normalizeBootstrapInHtml(repaired.html, earlyTag, true);
+  assert.strictEqual(second.html, repaired.html);
+  assert.strictEqual(second.normalized, false);
+}
+
 const normalized = normalizeLoaderInHtml(
   '<html><body><script defer src="/assets/js/lazy-analytics.js"></script></body></html>',
   tag
