@@ -176,10 +176,34 @@ manual health gates remain strict.
 
 ## Coherent operating model (September 2026)
 
-The policy now budgets thirteen active cron lanes, including the existing image-delivery
-queue. This is a deliberate activation budget, not a request
-to run all specialist definitions. The remaining specialists stay
-paused until evidence justifies a bounded assignment and matching policy change.
+The policy budgets 24 active cron lanes: 21 for AfroTools, two for OddsPadi,
+and one for SalaryPadi. On September 9 the user authorized reactivation,
+consolidation and deletion. Eleven useful lanes were reactivated and 55
+redundant or unsupported definitions were deleted after local backup.
+`data/automation/specialist-coverage.json` assigns every retained responsibility
+to an active owner. Creator wealth estimation is retired without replacement.
+Existing IDs were reused; no new scheduler definitions were necessary.
+
+Each source or quality owner scans its coverage metadata, completes a bounded
+batch and carries unchecked families forward with last-review dates and
+blockers. The maintainer reviews missing natural-run proof after seven days,
+repeated blockers after three runs and family coverage older than 28 days.
+These thresholds expose gaps; they do not imply that every country and family
+can be fully audited in one run.
+
+Pro readiness runs twice weekly and owns the former app-specific development
+backlog. These jobs maintain product features; they do not execute customer
+payroll, send reminders, contact users or move money. Each product retains its
+own release owner and identity checks. OddsPadi operations writes exact-commit
+candidate manifests for its publisher; SalaryPadi combines health review and
+narrow reliability maintenance with its existing release gate. Healthy unchanged
+releases should be short no-ops.
+
+Retiring a Codex definition does not retire its Netlify or GitHub runner.
+Production-required registry responsibilities retain their runner links and
+validation commands, reassigned to active Codex owners. Historical receipt IDs
+remain historical identities; never rewrite them to the successor's ID or
+replay consumed work. Backups and private run evidence remain outside Git.
 
 | Responsibility | Owner | Outcome |
 | --- | --- | --- |
@@ -192,6 +216,14 @@ paused until evidence justifies a bounded assignment and matching policy change.
 | Image intake | Daily image queue | Delivered assets reviewed once; pending batches reused |
 | Integration and deployment | Daily publisher | One validated cumulative release with exact-SHA proof |
 | Governance and recovery | System maintainer | Fresh seven-day report, missing ownership and stranded work repaired |
+| Statutory and financial sources | Government, Labour & Financial Source Review | Dated jurisdiction-specific source changes and explicit review gaps |
+| Customs and trade sources | Trade & Customs Source Review | Verified tariff, HS and import assumptions without duplicate source edits |
+| Transport and relocation | Transport, Cars & Relocation Source Review | Official fees and source-backed car evidence |
+| Education sources | Scholarships & Education Source Review | Official deadlines, awards and school-fee freshness |
+| Usability and exports | Mobile, Accessibility & Export Quality | One working synthetic user journey with separate export proof |
+| Commercial readiness | Commercial Funnel Integrity Sweep | Honest offers, working opt-in paths and evidence-backed conversion findings |
+| Existing content | Weekly Blog Refresh; Creator & Recipe Media Integrity | Source freshness and identity/media quality without duplicating new-article quotas |
+| Other products | OddsPadi operations and publisher; SalaryPadi health/release | Product-specific health, scoped repairs and exact-commit release proof |
 
 Routine cron work uses GPT-5.6 Sol with high reasoning. Complex review,
 governance and repair use GPT-6 Astra/high; production publishers use
