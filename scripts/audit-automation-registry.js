@@ -133,14 +133,15 @@ function parseCodexAutomationDefinitions() {
 }
 
 function findLatestAutomationReport() {
-  if (!fs.existsSync(REPORTS_DIR)) return null;
-  const reportNames = fs
-    .readdirSync(REPORTS_DIR)
-    .filter((fileName) => /^automation-run-report-\d{4}-\d{2}-\d{2}-to-\d{4}-\d{2}-\d{2}\.md$/.test(fileName))
-    .sort();
-
-  if (reportNames.length === 0) return null;
-  return path.join(REPORTS_DIR, reportNames[reportNames.length - 1]);
+  const localReports = process.env.CODEX_AUTOMATION_REPORT_DIR || path.join(CODEX_AUTOMATIONS_DIR, 'automation-system-maintainer', 'reports');
+  const files = [REPORTS_DIR, localReports].flatMap((directory) => !fs.existsSync(directory) ? [] : fs.readdirSync(directory)
+    .filter((name) => /^automation-run-report-\d{4}-\d{2}-\d{2}-to-\d{4}-\d{2}-\d{2}\.md$/.test(name))
+    .map((name) => path.join(directory, name)));
+  const generated = (file) => {
+    try { return Date.parse(readJson(file.replace(/\.md$/, '.json')).generated_at) || 0; }
+    catch { return Date.parse((path.basename(file).match(/-to-(\d{4}-\d{2}-\d{2})/) || [])[1]) || 0; }
+  };
+  return files.sort((a, b) => generated(b) - generated(a))[0] || null;
 }
 
 function parseAutomationRunReport() {
@@ -162,8 +163,10 @@ function parseAutomationRunReport() {
       for (const automation of report.automations || []) {
         if (!automation || !automation.id) continue;
         seen.add(automation.id);
-        if (Number(automation.run_count || 0) === 0) noRun.add(automation.id);
-        const latestRun = automation.latest_run || null;
+        if (Number(automation.run_count || 0) === 0 && !automation.latest_receipt) noRun.add(automation.id);
+        else noRun.delete(automation.id);
+        const candidates = [automation.latest_run, automation.latest_receipt].filter(Boolean);
+        const latestRun = candidates.sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))[0] || null;
         if (!latestRun) continue;
         const latestStatus = String(latestRun.status || '').trim().toLowerCase();
         const runAt = latestRun.timestamp ? new Date(latestRun.timestamp) : null;
@@ -517,9 +520,12 @@ function audit() {
   }
 }
 
-try {
-  audit();
-} catch (error) {
-  console.error(error.message);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    audit();
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+  }
 }
+module.exports = { findLatestAutomationReport, parseAutomationRunReport };

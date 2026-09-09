@@ -1,10 +1,27 @@
 {
   "schema_version": 1,
   "timezone": "Asia/Tashkent",
-  "active_automation_budget": 8,
+  "active_automation_budget": 13,
   "active_automations": [
     {
+      "id": "africa-election-tracker-freshness-watch",
+      "kind": "cron",
+      "role": "producer",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=7;BYMINUTE=20;BYSECOND=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 60
+    },
+    {
+      "id": "afrotools-daily-image-batch",
+      "kind": "heartbeat",
+      "role": "heartbeat",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+      "max_runtime_minutes": 30
+    },
+    {
       "id": "am-content-batch-2",
+      "kind": "cron",
       "role": "producer",
       "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=9;BYMINUTE=0",
       "model": "gpt-5.6-sol",
@@ -12,7 +29,71 @@
       "max_runtime_minutes": 150
     },
     {
+      "id": "automation-system-maintainer",
+      "kind": "cron",
+      "role": "maintainer",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=7;BYMINUTE=45;BYSECOND=0",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 90
+    },
+    {
+      "id": "daily-4pm-sitemap-refresh",
+      "kind": "cron",
+      "role": "producer",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=16;BYMINUTE=0;BYSECOND=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 60
+    },
+    {
+      "id": "daily-5pm-publish-deploy-gate",
+      "kind": "cron",
+      "role": "publisher",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=18;BYMINUTE=30;BYSECOND=0",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "max_runtime_minutes": 180
+    },
+    {
+      "id": "daily-bug-scan",
+      "kind": "cron",
+      "role": "evaluator",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,WE,FR;BYHOUR=20;BYMINUTE=0",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 60
+    },
+    {
+      "id": "dependency-sweep",
+      "kind": "cron",
+      "role": "evaluator",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,TH,SA;BYHOUR=11;BYMINUTE=30",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 45
+    },
+    {
+      "id": "live-data-product-upgrade-agent",
+      "kind": "cron",
+      "role": "repair",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TH;BYHOUR=10;BYMINUTE=15;BYSECOND=0",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 90
+    },
+    {
+      "id": "localized-content-rotation-batch",
+      "kind": "cron",
+      "role": "producer",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,FR;BYHOUR=13;BYMINUTE=0;BYSECOND=0",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "max_runtime_minutes": 90
+    },
+    {
       "id": "pm-content-batch-2",
+      "kind": "cron",
       "role": "producer",
       "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=17;BYMINUTE=0",
       "model": "gpt-5.6-sol",
@@ -20,52 +101,22 @@
       "max_runtime_minutes": 90
     },
     {
-      "id": "daily-5pm-publish-deploy-gate",
-      "role": "publisher",
-      "expected_schedule": "FREQ=DAILY;BYHOUR=18;BYMINUTE=30;BYSECOND=0",
-      "model": "gpt-5.6-sol",
-      "reasoning_effort": "max",
-      "max_runtime_minutes": 180
-    },
-    {
-      "id": "daily-bug-scan",
+      "id": "pro-architecture-readiness-gate",
+      "kind": "cron",
       "role": "evaluator",
-      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,WE,FR;BYHOUR=20;BYMINUTE=0",
-      "model": "gpt-5.6-sol",
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=14;BYMINUTE=20;BYSECOND=0",
+      "model": "gpt-6-astra",
       "reasoning_effort": "high",
-      "max_runtime_minutes": 60
-    },
-    {
-      "id": "dependency-sweep",
-      "role": "evaluator",
-      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,TH,SA;BYHOUR=11;BYMINUTE=30",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "high",
-      "max_runtime_minutes": 45
+      "max_runtime_minutes": 90
     },
     {
       "id": "skill-progression-map",
+      "kind": "cron",
       "role": "monitor",
       "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=7;BYMINUTE=30",
-      "model": "gpt-5.6-terra",
+      "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
       "max_runtime_minutes": 45
-    },
-    {
-      "id": "africa-election-tracker-freshness-watch",
-      "role": "producer",
-      "expected_schedule": "FREQ=DAILY;BYHOUR=7;BYMINUTE=20;BYSECOND=0",
-      "model": "gpt-5.6-sol",
-      "reasoning_effort": "max",
-      "max_runtime_minutes": 60
-    },
-    {
-      "id": "daily-4pm-sitemap-refresh",
-      "role": "producer",
-      "expected_schedule": "FREQ=DAILY;BYHOUR=16;BYMINUTE=0;BYSECOND=0",
-      "model": "gpt-5.6-sol",
-      "reasoning_effort": "max",
-      "max_runtime_minutes": 60
     }
   ],
   "handoffs": {
@@ -76,7 +127,7 @@
   },
   "publishing": {
     "daily_expected_articles": 2,
-    "deployment_cutoff_local": "20:00",
+    "deployment_cutoff_local": "22:00",
     "max_latest_article_age_hours": 36,
     "hub_url": "https://afrotools.com/blog/",
     "feed_url": "https://afrotools.com/blog/feed.xml"
@@ -90,5 +141,14 @@
   "publisher_lease": {
     "ttl_minutes": 30,
     "path": "C:/Users/Oza/.codex/automations/daily-5pm-publish-deploy-gate/publisher-lock.json"
+  },
+  "operating_model": {
+    "objective": "Maintain source-backed African utilities, grow useful content and Hausa/Yoruba/Pro quality, and ship validated changes through one publisher.",
+    "producer_boundary": "Repository work ends at a remotely reachable validated handoff; live mutations keep separate proof.",
+    "repair_owner": "live-data-product-upgrade-agent",
+    "governance_owner": "automation-system-maintainer",
+    "dormant_specialists": "Paused specialist definitions remain available for bounded work; activation requires a matching policy change.",
+    "scope_freeze": "docs/FREE-APP-FREEZE-2026-08.md",
+    "runtime_limits": "Planning budgets and checkpoint thresholds; the audit does not terminate processes."
   }
 }

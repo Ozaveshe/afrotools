@@ -141,16 +141,111 @@ function validateHandoff(item) {
 }
 
 function readHandoff(filePath) {
-  const item = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const item = JSON.parse(fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''));
   return { filePath, item, errors: validateHandoff(item) };
 }
 
 function listHandoffFiles(root) {
   if (!fs.existsSync(root)) return [];
-  return fs.readdirSync(root, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => path.join(root, entry.name, 'handoff.json'))
-    .filter((filePath) => fs.existsSync(filePath));
+  const files = [];
+  for (const lane of fs.readdirSync(root, { withFileTypes: true })) {
+    if (!lane.isDirectory() || lane.isSymbolicLink()) continue;
+    const directory = path.join(root, lane.name);
+    const latest = path.join(directory, 'handoff.json');
+    if (fs.existsSync(latest)) files.push(latest);
+    const runs = path.join(directory, 'runs');
+    if (!fs.existsSync(runs) || fs.lstatSync(runs).isSymbolicLink()) continue;
+    for (const run of fs.readdirSync(runs, { withFileTypes: true })) {
+      if (!run.isDirectory() || run.isSymbolicLink()) continue;
+      const archive = path.join(runs, run.name, 'handoff.json');
+      if (fs.existsSync(archive)) files.push(archive);
+    }
+  }
+  return files.sort();
+}
+
+function readHandoffRecords(root) {
+  return listHandoffFiles(root).map((filePath) => {
+    try {
+      const record = readHandoff(filePath);
+      const folderId = path.relative(root, filePath).split(path.sep)[0];
+      if (record.item.automation_id !== folderId) record.errors.push('automation_id must match the automation folder ' + folderId);
+      return record;
+    } catch (error) {
+      return { filePath, item: null, errors: ['invalid JSON: ' + error.message] };
+    }
+  });
+}
+
+// Copies of the same receipt are expected in latest and run history. Only
+// lifecycle updates may supersede a copy; conflicting source identity fails closed.
+function reconcileRecords(records) {
+  const selected = new Map();
+  const invalid = records.filter((record) => record.errors.length);
+  const identity = (item) => JSON.stringify(['automation_id', 'run_id', 'created_at', 'base_sha', 'branch', 'commit', 'changed_files', 'source_files', 'generated_files'].map((key) => item[key]));
+  for (const record of records.filter((item) => !item.errors.length)) {
+    const previous = selected.get(record.item.handoff_id);
+    if (!previous) { selected.set(record.item.handoff_id, record); continue; }
+    const sameTime = Date.parse(previous.item.updated_at) === Date.parse(record.item.updated_at);
+    if (identity(previous.item) !== identity(record.item) || (sameTime && JSON.stringify(previous.item) !== JSON.stringify(record.item))) {
+      invalid.push({ ...record, errors: ['conflicting copies of handoff_id ' + record.item.handoff_id] });
+      // Reject both copies rather than allowing either candidate into the queue.
+      invalid.push({ ...previous, errors: ['conflicting copies of handoff_id ' + record.item.handoff_id] });
+      selected.delete(record.item.handoff_id);
+      continue;
+    }
+    if (Date.parse(record.item.updated_at) > Date.parse(previous.item.updated_at)) selected.set(record.item.handoff_id, record);
+  }
+  const rejected = new Set(invalid.filter((r) => r.item).map((r) => r.item.handoff_id));
+  return [...selected.values()].filter((r) => !rejected.has(r.item.handoff_id)).concat(invalid);
+}
+
+function publishHandoff(sourcePath, root = DEFAULT_ROOT) {
+  const record = readHandoff(sourcePath);
+  if (record.errors.length) throw new Error(record.errors.join('; '));
+  const item = record.item;
+  if (!/^[a-z0-9][a-z0-9_-]*$/i.test(item.run_id)) throw new Error('run_id must be a safe directory name');
+  const directory = path.resolve(root, item.automation_id);
+  const latest = path.join(directory, 'handoff.json');
+  fs.mkdirSync(directory, { recursive: true });
+  const lock = path.join(directory, '.handoff-write.lock');
+  const descriptor = fs.openSync(lock, 'wx');
+  try {
+    const atomicWrite = (destination, value) => {
+      fs.mkdirSync(path.dirname(destination), { recursive: true });
+      const temporary = destination + '.' + process.pid + '.tmp';
+      fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', { flag: 'wx' });
+      const checked = readHandoff(temporary);
+      if (checked.errors.length) throw new Error(checked.errors.join('; '));
+      fs.renameSync(temporary, destination);
+    };
+    if (fs.existsSync(latest)) {
+      const old = readHandoff(latest);
+      if (old.errors.length) throw new Error('Preserve and repair invalid existing receipt before replacement');
+      if (old.item.automation_id !== item.automation_id) throw new Error('Existing receipt belongs to another automation');
+      if (old.item.run_id === item.run_id && old.item.handoff_id !== item.handoff_id) throw new Error('run_id already belongs to another handoff');
+      if (old.item.handoff_id === item.handoff_id) {
+        const reconciled = reconcileRecords([old, record]);
+        if (reconciled.some((r) => r.errors.length) || Date.parse(item.updated_at) < Date.parse(old.item.updated_at)) throw new Error('Receipt update conflicts with existing history');
+      }
+      const oldRun = /^[a-z0-9][a-z0-9_-]*$/i.test(old.item.run_id) ? old.item.run_id : old.item.handoff_id;
+      const oldArchive = path.join(directory, 'runs', oldRun, 'handoff.json');
+      const oldCopies = fs.existsSync(oldArchive) ? reconcileRecords([old, readHandoff(oldArchive)]) : [old];
+      if (oldCopies.length !== 1 || oldCopies[0].errors.length) throw new Error('Previous receipt archive has conflicting identity');
+      atomicWrite(oldArchive, oldCopies[0].item);
+    }
+    const archive = path.join(directory, 'runs', item.run_id, 'handoff.json');
+    if (fs.existsSync(archive)) {
+      const previous = readHandoff(archive);
+      if (previous.item.handoff_id !== item.handoff_id || reconcileRecords([previous, record]).some((r) => r.errors.length) || Date.parse(item.updated_at) < Date.parse(previous.item.updated_at)) throw new Error('Archive conflicts with receipt update');
+    }
+    atomicWrite(path.join(directory, 'runs', item.run_id, 'handoff.json'), item);
+    atomicWrite(latest, item);
+    return latest;
+  } finally {
+    fs.closeSync(descriptor);
+    fs.unlinkSync(lock);
+  }
 }
 
 function buildQueue(records) {
@@ -263,6 +358,11 @@ function printQueue(queue, json) {
 function main(argv) {
   const [command, target] = argv;
   const json = argv.includes('--json');
+  if (command === 'publish') {
+    if (!target) throw new Error('Usage: automation-handoff publish <validated-receipt.json> [automations-root]');
+    console.log('published ' + publishHandoff(path.resolve(target), argv[2] || process.env.CODEX_AUTOMATIONS_DIR || DEFAULT_ROOT));
+    return;
+  }
   if (command === 'validate') {
     if (!target) throw new Error('Usage: automation-handoff validate <handoff.json>');
     const record = readHandoff(path.resolve(target));
@@ -274,18 +374,7 @@ function main(argv) {
   }
   if (command === 'scan') {
     const root = target && target !== '--json' ? path.resolve(target) : path.resolve(process.env.CODEX_AUTOMATIONS_DIR || DEFAULT_ROOT);
-    const records = listHandoffFiles(root).map((filePath) => {
-      try {
-        const record = readHandoff(filePath);
-        const folderId = path.basename(path.dirname(filePath));
-        if (record.item.automation_id !== folderId) {
-          record.errors.push(`automation_id must match the automation folder ${folderId}`);
-        }
-        return record;
-      }
-      catch (error) { return { filePath, item: null, errors: [`invalid JSON: ${error.message}`] }; }
-    });
-    const queue = buildQueue(records);
+    const queue = buildQueue(reconcileRecords(readHandoffRecords(root)));
     printQueue(queue, json);
     if (queue.invalid.length || queue.conflicts.length || queue.duplicate_ids.length || queue.dependency_issues.length) process.exitCode = 1;
     return;
@@ -298,4 +387,4 @@ if (require.main === module) {
   catch (error) { console.error(error.message); process.exitCode = 1; }
 }
 
-module.exports = { validateHandoff, readHandoff, listHandoffFiles, buildQueue };
+module.exports = { validateHandoff, readHandoff, listHandoffFiles, readHandoffRecords, reconcileRecords, publishHandoff, buildQueue };

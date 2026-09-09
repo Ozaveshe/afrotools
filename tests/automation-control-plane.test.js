@@ -136,3 +136,10 @@ assert.ok(evaluatePolicy(
 ).some((item) => item.code === 'ready_handoff_missing_worktree_ownership'));
 
 console.log('automation control-plane tests passed');
+
+const heartbeatPolicy = {...policy,active_automations:[{id:'image-intake',kind:'heartbeat',expected_schedule:'FREQ=DAILY'}]};
+const heartbeatDefinitions={available:true,definitions:[{id:'image-intake',kind:'heartbeat',target_thread_id:'synthetic-task',status:'ACTIVE',rrule:'FREQ=DAILY'}]};
+assert.deepStrictEqual(evaluatePolicy(heartbeatPolicy,heartbeatDefinitions,queue,worktrees),[],'heartbeat inherits model rather than failing cron model checks');
+heartbeatDefinitions.definitions[0].target_thread_id=null;
+assert.ok(evaluatePolicy(heartbeatPolicy,heartbeatDefinitions,queue,worktrees).some(i=>i.code==='automation_kind_mismatch'));
+assert.ok(drift.every(i=>i.severity==='error'),'strict policy must fail for schedule/model drift');
