@@ -95,6 +95,22 @@ function loadRedirectRules() {
     flush();
   }
 
+  // Modern functions declare their URLs in source instead of _redirects.
+  // Read literal declarations only; never execute server code during an audit.
+  const functionsDir = path.join(ROOT, 'netlify', 'functions');
+  if (fs.existsSync(functionsDir)) {
+    for (const entry of fs.readdirSync(functionsDir, { withFileTypes: true })) {
+      if (!entry.isFile() || !/\.(?:mjs|js)$/.test(entry.name)) continue;
+      const source = fs.readFileSync(path.join(functionsDir, entry.name), 'utf8');
+      const declaration = source.match(/export\s+const\s+config\s*=\s*\{([\s\S]*?)\};/);
+      const paths = declaration?.[1].match(/\bpath\s*:\s*(\[[^\]]*\]|'[^']*'|"[^"]*")/);
+      if (!paths) continue;
+      for (const literal of paths[1].matchAll(/['"]([^'"\r\n]+)['"]/g)) {
+        addRedirectRule(rules, literal[1], `/.netlify/functions/${entry.name.replace(/\.(?:mjs|js)$/, '')}`, 200);
+      }
+    }
+  }
+
   return rules;
 }
 
