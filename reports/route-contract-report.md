@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11518 |
-| Indexable pages | 9939 |
+| Public pages | 11520 |
+| Indexable pages | 9941 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5245 |
-| Documented fallbacks | 14785 |
-| Routes eligible for primary sitemaps | 9939 |
+| Genuine equivalence groups | 5247 |
+| Documented fallbacks | 14787 |
+| Routes eligible for primary sitemaps | 9941 |
 
 ## Locale Coverage
 
-- en: 5972 page records
+- en: 5974 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 519
+- article: 521
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6921,6 +6921,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:bd17465fd5e7: fr=`/fr/widgets/compteur-mots/`; x-default=`/fr/widgets/compteur-mots/`
 - equivalence:bd308c7f9495: en=`/tools/afrokitchen/recipes/lamb-tagine-prunes-almonds-ma/`; x-default=`/tools/afrokitchen/recipes/lamb-tagine-prunes-almonds-ma/`
 - equivalence:bd3b37ac95f2: en=`/cars/tunisia/toyota/camry/`, fr=`/fr/cars/tunisie/toyota/camry/`; x-default=`/cars/tunisia/toyota/camry/`
+- equivalence:bd80bd418c7c: en=`/blog/harvest-date-planning-checklist-africa/`; x-default=`/blog/harvest-date-planning-checklist-africa/`
 - equivalence:bd91782dfb16: en=`/blog/nigerian-tenancy-agreement-template/`; x-default=`/blog/nigerian-tenancy-agreement-template/`
 - equivalence:bd9288828713: en=`/jamb/biology/2002/`; x-default=`/jamb/biology/2002/`
 - equivalence:bda10cfd6a01: en=`/agriculture/harvest-date/seychelles`; x-default=`/agriculture/harvest-date/seychelles`
@@ -7510,6 +7511,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d97d63123c25: en=`/jamb/crk/2004/`; x-default=`/jamb/crk/2004/`
 - equivalence:d98408bd9f02: en=`/tools/employee-cost/mauritius/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-maurice/`; x-default=`/tools/employee-cost/mauritius/`
 - equivalence:d99028b81df6: en=`/tools/tin-guide/sierra-leone`, sw=`/sw/zana/mwongozo-tin/sierra-leone/`; x-default=`/tools/tin-guide/sierra-leone`
+- equivalence:d9bc69b533c2: en=`/blog/ethiopia-vat-guide-2026/`; x-default=`/blog/ethiopia-vat-guide-2026/`
 - equivalence:d9e275f55b63: en=`/agriculture/farm-profit/tanzania`, fr=`/fr/agriculture/farm-profit/tanzania`, sw=`/sw/kilimo/faida-ya-shamba/tanzania/`; x-default=`/agriculture/farm-profit/tanzania`
 - equivalence:d9e98897501d: en=`/tools/car-insurance/gambia`, fr=`/fr/tools/assurance-auto/gambia`; x-default=`/tools/car-insurance/gambia`
 - equivalence:d9ecbcb0abe5: en=`/tools/afrostream/university/benchmark/methodology/`; x-default=`/tools/afrostream/university/benchmark/methodology/`

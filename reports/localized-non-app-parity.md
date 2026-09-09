@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 281 |
-| sw | 138 | 0 | 304 |
+| fr | 161 | 0 | 283 |
+| sw | 138 | 0 | 306 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 314 | 40 | 0 | 274 | 21 | 0 | 293 |
+| editorial | 316 | 40 | 0 | 276 | 21 | 0 | 295 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -167,6 +167,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/emergency-fund-calculator-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/eswatini-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/eswatini-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/ethiopia-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/ethiopia-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/euro-to-naira-rate-today/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/euro-to-naira-rate-today/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/event-ticket-revenue-calculator-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
@@ -237,6 +239,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/grain-storage-loss-planning-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/gratuity-severance-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/gratuity-severance-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/harvest-date-planning-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/harvest-date-planning-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/hawala-remittance/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/hawala-remittance/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/health-insurance-africa-compared/ | editorial | fr | — | missing | no localized route or owner file |
