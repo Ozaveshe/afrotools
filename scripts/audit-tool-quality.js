@@ -12,6 +12,7 @@ const http = require('http');
 const os = require('os');
 const { spawn, execFileSync } = require('child_process');
 const { classifyRuntime, applyRuntimeGate } = require('./lib/browser-reliability');
+const { createSmokeContext } = require('./lib/browser-smoke-context');
 
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
@@ -33,6 +34,8 @@ const PORT = numberArg('--port', 4173);
 const TARGET_IDS = listArg('--id');
 const TARGET_ROUTES = listArg('--route').map(normalizeRoute);
 const GENERATED_AT = new Date().toISOString();
+const SOURCE_COMMIT = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+const SOURCE_DIRTY = Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' }).trim());
 const GENERATED_DATE = GENERATED_AT.slice(0, 10);
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -783,9 +786,8 @@ async function runBrowserSmoke(routes) {
   let browser;
   try { browser = await chromium.launch({ headless: true }); }
   catch (error) { if (server.process) server.process.kill(); throw error; }
-  const context = await browser.newContext({
+  const context = await createSmokeContext(browser, {
     viewport: { width: 1366, height: 900 },
-    serviceWorkers: 'block',
   });
   const results = {};
   const queue = routes.slice(0, BROWSER_LIMIT || routes.length);
@@ -904,10 +906,6 @@ async function runBrowserSmoke(routes) {
       await safeClosePage(page);
 
       done += 1;
-      if (done % 25 === 0 || done === queue.length) {
-        console.log(`Browser-smoked ${done}/${queue.length} routes`);
-      }
-
       results[route] = {
         environment: 'local',
         redirectProbe,
@@ -941,6 +939,11 @@ async function runBrowserSmoke(routes) {
         businessCta: !!rendered.businessCta,
         loadEventMs: rendered.loadEventMs || 0,
       };
+      if (done % 25 === 0 || done === queue.length) {
+        fs.mkdirSync(REPORT_DIR, { recursive: true });
+        fs.writeFileSync(path.join(REPORT_DIR, 'browser-progress.json'), JSON.stringify({ started_at: GENERATED_AT, source_commit: SOURCE_COMMIT, source_dirty: SOURCE_DIRTY, completed: done, total: queue.length, results }, null, 2));
+        console.log(`Browser-smoked ${done}/${queue.length} routes`);
+      }
     }
   }
 
@@ -1266,7 +1269,8 @@ async function main() {
   const browserSummary = {
     enabled: RUN_BROWSER,
     environment: 'local',
-    source_commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(),
+    source_commit: SOURCE_COMMIT,
+    source_dirty: SOURCE_DIRTY,
     limitations: ['Load smoke only; no action or answer oracle', 'Third-party requests blocked by harness', 'Service workers blocked', 'Local APIs and routing do not prove production state'],
     classifications: Object.values(browserResults).reduce((counts, result) => { for (const name of classifyRuntime(result).categories) counts[name] = (counts[name] || 0) + 1; return counts; }, {}),
     routes_tested: RUN_BROWSER ? Object.keys(browserResults).length : 0,
@@ -1278,7 +1282,7 @@ async function main() {
   };
   const summary = summarize(records, registryStats, browserSummary);
   writeReports(records, summary);
-  if (argv.includes('--gate') && (!RUN_BROWSER || Object.keys(browserResults).length < uniqueRoutes.length || Object.values(browserResults).some(result => classifyRuntime(result).gate !== 'passed'))) process.exitCode = 1;
+  if (argv.includes('--gate') && (!RUN_BROWSER || uniqueRoutes.length === 0 || Object.keys(browserResults).length < uniqueRoutes.length || Object.values(browserResults).some(result => classifyRuntime(result).gate !== 'passed'))) process.exitCode = 1;
 
   console.log(`Scored ${records.length} live/new tool rows (${liveInstances} expanded instances).`);
   console.log(`A/B/C/D/F rows: ${summary.score_distribution_rows.A}/${summary.score_distribution_rows.B}/${summary.score_distribution_rows.C}/${summary.score_distribution_rows.D}/${summary.score_distribution_rows.F}`);

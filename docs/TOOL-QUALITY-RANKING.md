@@ -131,3 +131,9 @@ excludes their GA measurement, even with previously accepted consent, and keeps
 the existing CSP and local-only processing boundary. Unmarked pages retain the
 existing consent-mode behavior, including denied-storage initialization. Both
 loader entry points resolve through this same guarded runtime.
+Service-worker registration is blocked by `scripts/lib/browser-smoke-context.js`
+inside fresh contexts. Its getter guard handles only the sandbox-origin
+`SecurityError`; it does not filter page errors. This avoids the exception injected
+by Playwright's unguarded `serviceWorkers: block` script in opaque-origin frames.
+`browser-progress.json` checkpoints each 25 routes, with the startup commit and
+dirty-state flag. Interrupted progress is not a completed gate result.
