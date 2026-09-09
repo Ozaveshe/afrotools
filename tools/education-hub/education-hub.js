@@ -1914,6 +1914,40 @@
     [gpaInput, scaleInput, ieltsInput, jambInput].forEach(function (input) {
       input && input.setCustomValidity("");
     });
+    // Shared profile merging does not provide a deletion contract. Reject a
+    // removal before any update so unrelated edits are not partially saved.
+    var persistedProfile = E() || {};
+    var clearedFields = [
+      ["edLevel", "education_level", "Education level"],
+      ["edInstitution", "institution", "Institution"],
+      ["edGradDate", "graduation_date", "Graduation date"],
+      ["edStudyLevel", "target_study_level", "Target study level"],
+      ["edGpaValue", "gpa_value", "GPA"],
+      ["edGpaScale", "gpa_scale", "GPA scale"],
+      ["edIeltsOverall", "ielts_overall", "IELTS overall"],
+      ["edJambScore", "jamb_score", "JAMB score"],
+      ["edCountries", "target_countries", "Target countries"],
+      ["edFields", "target_fields", "Target fields"],
+    ].filter(function (field) {
+      var inputValue = u(field[0]).value;
+      var empty = field[1] === "target_countries" || field[1] === "target_fields"
+        ? b(inputValue.split(",")).length === 0 : !inputValue.trim();
+      return empty &&
+        [persistedProfile, d.profile].some(function (profile) {
+          var value = profile[field[1]];
+          return Array.isArray(value) ? value.length > 0 :
+            value !== void 0 && value !== null && String(value).trim() !== "";
+        });
+    });
+    if (clearedFields.length) {
+      profileDirty = true;
+      profileSaveMessage = "Saved fields were not removed: " + clearedFields.map(function (field) {
+        return field[2];
+      }).join(", ") + ". This editor cannot remove saved fields. No changes were saved. Restore or replace these fields, then save again.";
+      h("profileSaveHint", profileSaveMessage);
+      u(clearedFields[0][0]).focus();
+      return;
+    }
     if (void 0 !== n && void 0 === o) {
       scaleInput.setCustomValidity("Choose the scale used for this GPA.");
     } else if (void 0 === n && void 0 !== o) {

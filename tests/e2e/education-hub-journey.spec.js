@@ -51,6 +51,46 @@ test('storage failure preserves edits and never reports a successful save', asyn
   await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
 });
 
+test('clearing saved fields is explicit, atomic and recoverable', async ({ page }) => {
+  await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+  await page.getByLabel('Institution').fill('Synthetic study institution');
+  await page.locator('#edGpaValue').fill('3.5');
+  await page.locator('#edGpaScale').selectOption('4.0');
+  await page.locator('#edCountries').fill('Canada');
+  await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
+  const original = await page.evaluate(() => localStorage.getItem('afroedu-profile-cache'));
+  await page.getByLabel('Institution').fill('');
+  await page.locator('#edGpaValue').fill('');
+  await page.locator('#edGpaScale').selectOption('');
+  await page.locator('#edCountries').fill(', ,');
+  await page.getByLabel('Education level').selectOption('undergraduate');
+  await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
+  await expect(page.locator('#profileSaveHint')).toContainText('Saved fields were not removed: Institution, GPA, GPA scale, Target countries.');
+  await expect(page.locator('#profileSaveHint')).toContainText('No changes were saved');
+  expect(await page.evaluate(() => localStorage.getItem('afroedu-profile-cache'))).toBe(original);
+  await page.evaluate(() => window.dispatchEvent(new Event('afroedu:profile-updated')));
+  await expect(page.getByLabel('Institution')).toHaveValue('');
+  await expect(page.locator('#edGpaValue')).toHaveValue('');
+  await expect(page.locator('#edCountries')).toHaveValue(', ,');
+  await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.getByLabel('Institution')).toHaveValue('Synthetic study institution');
+  await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
+  await expect(page.locator('#edCountries')).toHaveValue('Canada');
+  await expect(page.getByLabel('Education level')).toHaveValue('');
+  // Try again, restore the fields, then save the independent change.
+  await page.getByLabel('Institution').fill('');
+  await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
+  await expect(page.locator('#profileSaveHint')).toContainText('Institution');
+  await page.getByLabel('Institution').fill('Synthetic study institution');
+  await page.getByLabel('Education level').selectOption('undergraduate');
+  await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
+  await expect(page.locator('#profileSaveHint')).toContainText('Saved on this device');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
+  await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
+});
+
 test('first visit reaches a useful saved timetable without a profile', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
