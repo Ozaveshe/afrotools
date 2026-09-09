@@ -3,12 +3,14 @@
 const fs = require('fs');
 const path = require('path');
 const { StringDecoder } = require('string_decoder');
+const { readHandoffRecords, reconcileRecords } = require('./automation-handoff');
 
 const ROOT = path.resolve(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT, 'reports');
 const CODEX_HOME = process.env.CODEX_HOME || 'C:/Users/Oza/.codex';
 const AUTOMATIONS_DIR = path.join(CODEX_HOME, 'automations');
 const ARCHIVE_DIR = path.join(CODEX_HOME, 'archived_sessions');
+const SESSIONS_DIR = path.join(CODEX_HOME, 'sessions');
 
 function getArg(name, fallback) {
   const prefix = `--${name}=`;
@@ -73,6 +75,7 @@ function parseAutomations() {
         id: parseTomlString(text, 'id') || entry.name,
         name: parseTomlString(text, 'name') || entry.name,
         status: parseTomlString(text, 'status') || 'UNKNOWN',
+        kind: parseTomlString(text, 'kind') || 'cron',
         rrule: parseTomlString(text, 'rrule') || '',
         executionEnvironment: parseTomlString(text, 'execution_environment') || '',
         hasMemory: fs.existsSync(path.join(AUTOMATIONS_DIR, entry.name, 'memory.md')),
@@ -128,8 +131,7 @@ function parseRollout(filePath) {
     flags: [],
   };
 
-  const allText = [];
-  const runtimeText = [];
+  const flags = new Set();
 
   for (const line of readJsonlLines(filePath)) {
     let event;
@@ -150,17 +152,17 @@ function parseRollout(filePath) {
       if (event.payload.type === 'user_message') {
         const automation = extractAutomation(event.payload.message || '');
         if (automation) result.automation = automation;
-        allText.push(event.payload.message || '');
       }
       if (event.payload.type === 'agent_message') {
-        allText.push(event.payload.message || '');
-        runtimeText.push(event.payload.message || '');
+        classifyFlags(event.payload.message || '').forEach((flag) => flags.add(flag));
         result.summary = event.payload.message || result.summary;
       }
       if (event.payload.type === 'task_complete') {
-        result.status = 'completed';
+        result.status = event.payload.error ? 'failed' : 'completed';
         if (event.payload.last_agent_message) result.summary = event.payload.last_agent_message;
       }
+      if (event.payload.type === 'turn_aborted') result.status = 'interrupted';
+      if (event.payload.type === 'task_started') result.status = 'in progress';
       continue;
     }
 
@@ -168,25 +170,20 @@ function parseRollout(filePath) {
       const payload = event.payload;
       if (payload.type === 'message') {
         const text = textFromContent(payload.content);
-        allText.push(text);
         if (payload.role === 'user') {
           const automation = extractAutomation(text);
           if (automation) result.automation = automation;
         }
         if (payload.role === 'assistant') {
-          runtimeText.push(text);
+          classifyFlags(text).forEach((flag) => flags.add(flag));
           result.summary = text || result.summary;
         }
       }
     }
   }
 
-  const combined = allText.join('\n');
-  const runtimeCombined = runtimeText.join('\n');
-  if (result.status !== 'completed' && /interrupted/i.test(combined)) result.status = 'interrupted';
-  if (result.status !== 'completed' && /in progress/i.test(combined)) result.status = 'in progress';
-  result.flags = classifyFlags(runtimeCombined || result.summary);
-  result.summary = summarize(result.summary || (result.status === 'completed' ? 'task_complete captured; no agent summary in archive' : runtimeCombined));
+  result.flags = Array.from(flags);
+  result.summary = summarize(result.summary || (result.status === 'completed' ? 'task_complete captured; outcome needs receipt verification' : 'No terminal outcome captured'));
   return result.automation ? result : null;
 }
 
@@ -210,8 +207,35 @@ function formatCounts(counts) {
     .join(', ') || 'none';
 }
 
+function findRollouts(root, start, end) {
+  if (!fs.existsSync(root)) return [];
+  const files = [];
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    if (entry.isSymbolicLink()) continue;
+    const filePath = path.join(root, entry.name);
+    if (entry.isDirectory()) files.push(...findRollouts(filePath, start, end));
+    else {
+      const date = (entry.name.match(/^rollout-(\d{4}-\d{2}-\d{2})T.*\.jsonl$/) || [])[1];
+      if (date && inRange(date, start, end)) files.push(filePath);
+    }
+  }
+  return files;
+}
+
+function collectRuns(roots, start, end) {
+  const runs = new Map();
+  for (const filePath of roots.flatMap((root) => findRollouts(root, start, end))) {
+    const run = parseRollout(filePath);
+    if (!run || !inRange(run.timestamp, start, end)) continue;
+    const key = run.sessionId || filePath;
+    const previous = runs.get(key);
+    if (!previous || fs.statSync(filePath).mtimeMs > fs.statSync(previous.filePath).mtimeMs) runs.set(key, run);
+  }
+  return Array.from(runs.values()).sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
+}
+
 function writeReport() {
-  const since = getArg('since', '2026-05-20');
+  const since = getArg('since', new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10));
   const until = getArg('until', new Date().toISOString().slice(0, 10));
   const generatedAt = new Date().toISOString();
   const start = new Date(`${since}T00:00:00.000Z`);
@@ -220,15 +244,15 @@ function writeReport() {
 
   const automations = parseAutomations();
   const activeIds = new Set(automations.filter((item) => item.status === 'ACTIVE').map((item) => item.id));
-  const archivedFiles = fs.existsSync(ARCHIVE_DIR)
-    ? fs.readdirSync(ARCHIVE_DIR).filter((fileName) => /^rollout-\d{4}-\d{2}-\d{2}T.*\.jsonl$/.test(fileName))
-    : [];
-
-  const runs = archivedFiles
-    .map((fileName) => parseRollout(path.join(ARCHIVE_DIR, fileName)))
-    .filter(Boolean)
-    .filter((run) => inRange(run.timestamp, start, end))
-    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime()) || start >= end) throw new Error('Invalid report date range');
+  const runs = collectRuns([ARCHIVE_DIR, SESSIONS_DIR], start, end);
+  const receiptRecords = reconcileRecords(readHandoffRecords(AUTOMATIONS_DIR));
+  const receipts = receiptRecords.filter((r) => !r.errors.length && inRange(r.item.updated_at, start, end)).map((r) => r.item);
+  const latestReceipts = new Map();
+  for (const receipt of receipts) {
+    const previous = latestReceipts.get(receipt.automation_id);
+    if (!previous || Date.parse(receipt.updated_at) > Date.parse(previous.updated_at)) latestReceipts.set(receipt.automation_id, receipt);
+  }
 
   const runsById = new Map();
   for (const run of runs) {
@@ -237,7 +261,7 @@ function writeReport() {
     runsById.get(id).push(run);
   }
 
-  const activeNoRun = Array.from(activeIds).filter((id) => !runsById.has(id)).sort();
+  const activeNoRun = Array.from(activeIds).filter((id) => !runsById.has(id) && !latestReceipts.has(id)).sort();
   const statusCounts = countBy(runs, (run) => run.status);
   const missingMemory = automations.filter((item) => item.status === 'ACTIVE' && !item.hasMemory).map((item) => item.id);
   const automationSummaries = automations.map((automation) => {
@@ -247,6 +271,12 @@ function writeReport() {
       id: automation.id,
       name: automation.name,
       status: automation.status,
+      kind: automation.kind,
+      latest_receipt: latestReceipts.has(automation.id) ? {
+        handoff_id: latestReceipts.get(automation.id).handoff_id,
+        timestamp: latestReceipts.get(automation.id).updated_at,
+        status: latestReceipts.get(automation.id).status,
+      } : null,
       rrule: automation.rrule,
       execution_environment: automation.executionEnvironment,
       has_memory: automation.hasMemory,
@@ -271,6 +301,8 @@ function writeReport() {
   lines.push('');
   lines.push(`Generated: ${generatedAt}`);
   lines.push(`Source archives: \`${ARCHIVE_DIR}\``);
+  lines.push(`Active sessions: \`${SESSIONS_DIR}\``);
+  lines.push('Receipt observations are separate from task completion and do not prove production. Missing retained evidence does not prove a missed scheduler fire.');
   lines.push(`Definitions: \`${AUTOMATIONS_DIR}\``);
   lines.push('');
   lines.push('## Summary');
@@ -290,7 +322,8 @@ function writeReport() {
   for (const automation of automations) {
     const entries = runsById.get(automation.id) || [];
     if (entries.length === 0) {
-      lines.push(`${index}. \`${automation.id}\` - ${automation.name} - 0 run(s).`);
+      const receipt = latestReceipts.get(automation.id);
+      lines.push(`${index}. \`${automation.id}\` - ${automation.name} - 0 retained session run(s).${receipt ? ` Receipt: ${receipt.status} at ${receipt.updated_at}.` : ' No receipt in range.'}`);
     } else {
       const latest = entries[entries.length - 1];
       const counts = countBy(entries, (run) => run.status);
@@ -331,9 +364,10 @@ function writeReport() {
   }
   lines.push('');
 
-  if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR, { recursive: true });
-  const outputPath = path.join(REPORTS_DIR, `automation-run-report-${since}-to-${until}.md`);
-  const jsonPath = path.join(REPORTS_DIR, `automation-run-report-${since}-to-${until}.json`);
+  const outputDir = path.resolve(getArg('output-dir', REPORTS_DIR));
+  fs.mkdirSync(outputDir, { recursive: true });
+  const outputPath = path.join(outputDir, `automation-run-report-${since}-to-${until}.md`);
+  const jsonPath = path.join(outputDir, `automation-run-report-${since}-to-${until}.json`);
   const reportJson = {
     schema_version: 1,
     since,
@@ -341,6 +375,7 @@ function writeReport() {
     generated_at: generatedAt,
     sources: {
       archive_dir: ARCHIVE_DIR,
+      sessions_dir: SESSIONS_DIR,
       definitions_dir: AUTOMATIONS_DIR,
     },
     summary: {
@@ -348,6 +383,8 @@ function writeReport() {
       active_definitions: automations.filter((item) => item.status === 'ACTIVE').length,
       paused_definitions: automations.filter((item) => item.status === 'PAUSED').length,
       runs_found: runs.length,
+      receipt_observations: receipts.length,
+      invalid_receipt_copies: receiptRecords.filter((r) => r.errors.length).length,
       active_run_status: statusCounts,
       active_without_run_evidence: activeNoRun.length,
       active_missing_memory: missingMemory.length,
@@ -376,4 +413,4 @@ function writeReport() {
 
 if (require.main === module) writeReport();
 
-module.exports = { readJsonlLines, parseRollout, writeReport };
+module.exports = { readJsonlLines, parseRollout, findRollouts, collectRuns, writeReport };

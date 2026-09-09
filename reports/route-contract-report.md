@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11520 |
-| Indexable pages | 9941 |
+| Public pages | 11521 |
+| Indexable pages | 9942 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5247 |
-| Documented fallbacks | 14787 |
-| Routes eligible for primary sitemaps | 9941 |
+| Genuine equivalence groups | 5248 |
+| Documented fallbacks | 14788 |
+| Routes eligible for primary sitemaps | 9942 |
 
 ## Locale Coverage
 
-- en: 5974 page records
+- en: 5975 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 521
+- article: 522
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -7096,6 +7096,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c5cb22e39631: en=`/agriculture/harvest-date/djibouti`; x-default=`/agriculture/harvest-date/djibouti`
 - equivalence:c5e455579147: en=`/tools/car-insurance/mali`, fr=`/fr/tools/assurance-auto/mali`; x-default=`/tools/car-insurance/mali`
 - equivalence:c5e54a9b36a0: fr=`/fr/widgets/tension-arterielle/`; x-default=`/fr/widgets/tension-arterielle/`
+- equivalence:c5e62c6ce47a: en=`/blog/export-packing-list-checklist-africa/`; x-default=`/blog/export-packing-list-checklist-africa/`
 - equivalence:c5f05e843238: en=`/tools/health-insurance-compare/south-africa`, fr=`/fr/tools/comparateur-assurance-sante/south-africa`; x-default=`/tools/health-insurance-compare/south-africa`
 - equivalence:c61d835a24a3: sw=`/sw/zana-za-kipekee-afrika/`; x-default=`/sw/zana-za-kipekee-afrika/`
 - equivalence:c61ed7cf5431: en=`/tools/national-pension/`, fr=`/fr/tools/national-pension/`, sw=`/sw/zana/makisio-ya-pensheni-ya-taifa/`; x-default=`/tools/national-pension/`

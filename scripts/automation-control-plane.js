@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { buildQueue, listHandoffFiles, readHandoff } = require('./automation-handoff');
+const { buildQueue, readHandoffRecords, reconcileRecords } = require('./automation-handoff');
 
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_AUTOMATIONS_ROOT = 'C:/Users/Oza/.codex/automations';
@@ -66,6 +66,8 @@ function readAutomationDefinitions(automationsRoot) {
       id: parseTomlString(raw, 'id') || entry.name,
       name: parseTomlString(raw, 'name'),
       status: parseTomlString(raw, 'status'),
+      kind: parseTomlString(raw, 'kind') || 'cron',
+      target_thread_id: parseTomlString(raw, 'target_thread_id'),
       rrule: parseTomlString(raw, 'rrule'),
       model: parseTomlString(raw, 'model'),
       reasoning_effort: parseTomlString(raw, 'reasoning_effort'),
@@ -262,19 +264,7 @@ function loadQueue(automationsRoot) {
       dependency_issues: [],
     };
   }
-  const records = listHandoffFiles(automationsRoot).map((filePath) => {
-    try {
-      const record = readHandoff(filePath);
-      const folderId = path.basename(path.dirname(filePath));
-      if (record.item.automation_id !== folderId) {
-        record.errors.push('automation_id must match the automation folder ' + folderId);
-      }
-      return record;
-    } catch (error) {
-      return { filePath, item: null, errors: ['invalid JSON: ' + error.message] };
-    }
-  });
-  return { available: true, ...buildQueue(records) };
+  return { available: true, ...buildQueue(reconcileRecords(readHandoffRecords(automationsRoot))) };
 }
 
 function sameStringSet(left, right) {
@@ -393,10 +383,15 @@ function evaluatePolicy(policy, definitionsResult, queue, worktrees, now = new D
         issues.push({ severity: 'error', code: 'expected_automation_inactive', automation_id: lane.id, detail: 'Required lane is missing or paused.' });
         continue;
       }
-      for (const [actualKey, expectedKey] of [['rrule', 'expected_schedule'], ['model', 'model'], ['reasoning_effort', 'reasoning_effort']]) {
+      const kind = lane.kind || 'cron';
+      if ((definition.kind || 'cron') !== kind || (kind === 'heartbeat' && !definition.target_thread_id)) {
+        issues.push({ severity: 'error', code: 'automation_kind_mismatch', automation_id: lane.id, detail: 'Runner kind or heartbeat target does not match policy.' });
+      }
+      const fields = kind === 'heartbeat' ? [['rrule', 'expected_schedule']] : [['rrule', 'expected_schedule'], ['model', 'model'], ['reasoning_effort', 'reasoning_effort']];
+      for (const [actualKey, expectedKey] of fields) {
         if (definition[actualKey] !== lane[expectedKey]) {
           issues.push({
-            severity: 'warning',
+            severity: 'error',
             code: 'automation_definition_drift',
             automation_id: lane.id,
             detail: actualKey + ' is ' + JSON.stringify(definition[actualKey]) + ', expected ' + JSON.stringify(lane[expectedKey]) + '.',

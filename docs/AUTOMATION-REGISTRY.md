@@ -73,6 +73,24 @@ npm run automation:handoffs
 npm run test:automation-handoffs
 ```
 
+### Durable receipt history
+
+Use `node scripts/automation-handoff.js publish <receipt.json>` after preparing
+a schema-valid receipt. This command holds an exclusive lane write lock,
+preserves the previous receipt under `runs/<run-id>/handoff.json`, writes the
+new run archive, then atomically installs the latest receipt. It rejects run-id
+collisions, source-identity changes and backwards lifecycle timestamps. A
+stranded `.handoff-write.lock` requires checking the owning process before
+manual recovery; never remove it blindly.
+
+Queue scans read both latest receipts and these run archives. Copies with the
+same handoff ID are reconciled by `updated_at` only when immutable source
+identity agrees. Conflicting copies fail closed. A newer consumed or
+quarantined copy supersedes an old ready copy, preventing replay. Different
+handoff IDs remain independent work even after a producer starts another run.
+The publisher must update the exact receipt it consumed, including archived
+work, with its release/deploy proof. Live mutations are never replayed.
+
 ## Control-plane policy
 
 `data/automation/control-plane-policy.json` is the machine-readable budget and
@@ -155,3 +173,58 @@ manual health gates remain strict.
   daily bundle, not once per producer.
 - Increasing model effort, frequency, or the active-lane count requires an
   explicit policy change reviewed with the expected measurable outcome.
+
+## Coherent operating model (September 2026)
+
+The policy now budgets thirteen active cron lanes, including the existing image-delivery
+queue. This is a deliberate activation budget, not a request
+to run all specialist definitions. The remaining specialists stay
+paused until evidence justifies a bounded assignment and matching policy change.
+
+| Responsibility | Owner | Outcome |
+| --- | --- | --- |
+| Daily useful content | AM and PM producers | Two distinct source-backed articles with remote handoffs; live AfroStream proof remains separate |
+| Civic source maintenance | Election freshness | Verified dated changes, no predictions or unsupported outcomes |
+| Live health detection | Health watch | Fresh observations with issue keys, severity and active owner |
+| Live-data remediation | Live Data Product Upgrade | One proven scheduler/source defect repaired, then natural-run proof |
+| Search and release safety | SEO, sitemap and bug reviews | New defects isolated; no broad reruns or cosmetic date churn on unchanged inputs |
+| Product priorities | Pro readiness and Hausa/Yoruba rotation | One tested existing workflow improved within the free-app freeze |
+| Image intake | Daily image queue | Delivered assets reviewed once; pending batches reused |
+| Integration and deployment | Daily publisher | One validated cumulative release with exact-SHA proof |
+| Governance and recovery | System maintainer | Fresh seven-day report, missing ownership and stranded work repaired |
+
+Routine cron work uses GPT-5.6 Sol with high reasoning. Complex review,
+governance and repair use GPT-6 Astra/high; production publishers use
+Astra/xhigh. Heartbeats inherit their task model and require a task target,
+not cron model fields. Local environment setup scripts are disabled in the
+saved cron definitions; jobs perform explicit dependency setup when required.
+
+The publisher starts at 18:30 local time. The public publishing-SLO cutoff is
+22:00, allowing the stated intake grace and release budget. Runtime-minute
+fields are planning/checkpoint limits; they do not terminate processes.
+Mandatory quality and freshness gates remain strict even for carried debt.
+
+### Current reporting rather than stale summaries
+
+`automation:report` defaults to a rolling seven-day window, streams retained
+sessions and archived sessions, and deduplicates copies by session ID. It
+prefilters dated filenames before parsing, classifies failed terminal events
+as failed, and reports validated receipt observations separately. Missing
+retained evidence is not proof that the scheduler failed to fire. Neither a
+terminal event nor a receipt alone proves a production deployment.
+
+The maintainer writes local evidence with:
+
+```bash
+npm run automation:report -- --output-dir=C:/Users/Oza/.codex/automations/automation-system-maintainer/reports
+```
+
+The registry audit selects the newest report by generation date from repository
+reports and this local directory. `CODEX_AUTOMATION_REPORT_DIR` overrides the
+local directory. Private run evidence is not committed to the public repository.
+Newly activated jobs remain awaiting their next scheduled proof; paused jobs
+are not classified as missed runs. Keep global memory registries untouched.
+
+The image queue runs at 09:30 independently of any task lifecycle. The former
+image heartbeat disappeared during configuration verification; the existing
+image queue was activated instead of recreating a duplicate schedule.
