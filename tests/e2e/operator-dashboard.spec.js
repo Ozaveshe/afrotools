@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+ test.beforeEach(async ({page}) => { await page.request.post('/api/operator-dashboard/login',{headers:{Origin:'http://127.0.0.1:4189'},form:{credential:'synthetic-operator-test-only'}}); });
 
 for (const width of [1440, 390]) {
   test(`operator queues, export and evidence at ${width}px`, async ({ page }) => {
@@ -23,7 +24,7 @@ for (const width of [1440, 390]) {
 }
 
 test('image filters, batch prompts and CSV use audit data; untrusted text is inert', async ({page})=>{
-  await page.route('**/admin/data/operator-dashboard.json',async route=>{
+  await page.route('**/api/operator-dashboard/snapshot.json',async route=>{
     const response=await route.fetch(); const data=await response.json();
     data.images={available:true,generated_at:'2026-09-08',rows:[
       {id:'review-me',path:'assets/img/logo-mark.svg',family:'brand',status:'unassigned',placements:[],text_status:'unknown',locale_reuse:'review'},
@@ -63,7 +64,7 @@ test('image filters, batch prompts and CSV use audit data; untrusted text is ine
 
 test('missing snapshot exposes recovery without throwing on controls', async ({page})=>{
   const errors=[]; page.on('pageerror',e=>errors.push(e.message));
-  await page.route('**/admin/data/operator-dashboard.json',route=>route.fulfill({status:404,body:'missing'}));
+  await page.route('**/api/operator-dashboard/snapshot.json',route=>route.fulfill({status:404,body:'missing'}));
   await page.goto('/mc-7a2f9x.html');
   await expect(page.locator('#snapshot')).toContainText('Snapshot unavailable');
   await page.locator('#image-search').fill('anything');

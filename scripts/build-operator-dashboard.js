@@ -60,7 +60,7 @@ function build(root = ROOT, now = new Date(), imageRoot = root) {
     localization: locale ? { summary: locale.summary, byLocale: locale.byLocale } : null,
     calculation: calculation ? { asOf: calculation.asOf, fixtures: calculation.fixtures, reviewBacklog: calculation.reviewBacklog } : null,
     sources: sourceRows, pro,
-    images: library ? { available: true, generated_at: library.generated_at, source_commit: library.source_commit, summary: library.summary, rows: library.images.map(row => ({ ...row, local_file: fs.existsSync(path.join(root, row.path.replace(/^\//, ''))) })) } : { available: false, rows: [] },
+    images: library ? { available: true, generated_at: library.generated_at, source_commit: library.source_commit, summary: library.summary, rows: library.images.map(row => ({ ...row, local_file: !row.path.startsWith('/assets/img/new/') && fs.existsSync(path.join(root, row.path.replace(/^\//, ''))) })) } : { available: false, rows: [] },
     batch: batch ? { available: true, generated_at: batch.generated_at, id: batch.batch_id, rows: batch.images.map(row=>({ ...row, local_reference: row.reference_image ? fs.existsSync(path.join(root,row.reference_image.replace(/^\//,''))) : null })) } : { available: false, rows: [] },
     live: { status: 'unavailable', note: 'Revenue, users, subscriptions, provider health and deployment status have not been queried. No live account records are included.' },
     build: { status: 'unverified', note: 'Building this snapshot does not run tests, build dist, or verify a deployment.' }

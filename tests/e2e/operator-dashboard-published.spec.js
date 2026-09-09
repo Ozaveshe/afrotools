@@ -1,0 +1,22 @@
+const {test,expect}=require('@playwright/test');
+for(const width of [1440,390])test(`real server login and logout at ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});
+  await page.goto('/mc-7a2f9x.html');
+  await expect(page.locator('h1')).toHaveText('Operator dashboard');
+  await expect(page.locator('#image-table')).toHaveCount(0);
+  for(const resource of ['dashboard.js','dashboard.css','snapshot.json'])expect((await page.request.get('/api/operator-dashboard/'+resource)).status()).toBe(401);
+  await page.getByLabel('Admin credential').fill('synthetic-operator-test-only');
+  await page.getByRole('button',{name:'Sign in',exact:true}).click();
+  await expect(page.locator('#snapshot')).toContainText('Snapshot generated');
+  const cookie=(await page.context().cookies()).find(c=>c.name==='__Host-afro_ops');
+  expect(cookie.httpOnly&&cookie.secure).toBe(true);
+  expect(await page.evaluate(()=>document.cookie.includes('__Host-afro_ops'))).toBe(false);
+  expect(await page.evaluate(()=>JSON.stringify(localStorage).includes('synthetic-operator-test-only'))).toBe(false);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:`test-results/operator-auth-${width}.png`});
+  await page.getByRole('button',{name:'Sign out',exact:true}).click();
+  await expect(page.getByLabel('Admin credential')).toBeVisible();
+  expect((await page.request.get('/api/operator-dashboard/snapshot.json')).status()).toBe(401);
+  expect((await page.request.get('/admin/data/operator-dashboard.json')).status()).toBe(404);
+  expect((await page.request.get('/admin/legacy-operations.html')).status()).toBe(404);
+});

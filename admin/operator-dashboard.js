@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  window.addEventListener('pageshow', event => { if (event.persisted) location.reload(); });
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   function safePath(value) {
@@ -8,7 +9,7 @@
     if (!clean || clean.startsWith('/') || clean.split('/').some(p => p === '..' || p === '.') || /[:%]/.test(clean)) return null;
     return '/' + clean;
   }
-  function link(path, label) { const url = safePath(path); return url ? `<a href="${esc(url)}">${esc(label || path)}</a>` : esc(label || path); }
+  function link(path, label) { const url = safePath(path); if (url && (/^\/(admin|docs|reports|scripts|netlify)\//.test(url) || url.startsWith('/data/image-generation/') || url.endsWith('.md'))) return esc(label || path); return url ? `<a href="${esc(url)}">${esc(label || path)}</a>` : esc(label || path); }
   function stats(id, values) { $(id).innerHTML = values.map(([label,value]) => `<div class="stat"><strong>${esc(value ?? 'Unavailable')}</strong>${esc(label)}</div>`).join(''); }
   function table(id, heads, rows) { $(id).innerHTML = `<table><thead><tr>${heads.map(h=>`<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map((cell,i)=>`<td data-label="${esc(heads[i])}">${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`; }
   let data, filtered = [], page = 0;
@@ -40,11 +41,11 @@
     $('export-images').disabled = !filtered.length;
     table('image-table', ['Image / task','Placement / destination','Review / reuse','State / priority'], filtered.slice(start,start+pageSize).map(row => {
       const url = safePath(row.path);
-      const preview = !batch && url && row.local_file !== false ? `<a href="${esc(url)}"><img src="${esc(url)}" alt="Preview: ${esc(row.path)}" loading="lazy"></a>` : !batch ? '<small>Asset absent from this checkout</small>' : '';
+      const preview = !batch && url && row.local_file !== false ? `<a href="${esc(url)}"><img src="${esc(url)}" alt="Preview: ${esc(row.path)}" loading="lazy"></a>` : !batch ? '<small>Asset not available on this release</small>' : '';
       const placements = batch ? link(row.route, row.route) : (row.placements || []).slice(0,12).map(p => `${link(p.path,p.path)} <small>${esc(p.kind)} · ${esc(p.locale)}</small>`).join('') || 'No detected references';
       return [`${preview}<strong>${esc(row.name || row.id)}</strong><small>${esc(row.path)}</small><small>${esc(row.family || '')} ${esc(row.width ? row.width+' × '+row.height : JSON.stringify(row.dimensions || ''))}</small>`,
         placements + (!batch && row.placements?.length > 12 ? `<small>${row.placements.length-12} more in export</small>` : ''),
-        `${esc(row.review_note || row.reason || row.text_status || 'Review not recorded')}<small>Locale reuse: ${esc(typeof row.locale_reuse === 'object' ? JSON.stringify(row.locale_reuse) : row.locale_reuse === true ? (batch ? 'planned; review generated output' : 'approved in audit') : row.locale_reuse === false ? 'not approved' : row.locale_reuse || 'unknown')}</small>${row.duplicate_of ? `<small>Duplicate of ${esc(row.duplicate_of)}</small>` : ''}${row.reference_image ? `<small>Reference: ${row.local_reference === false ? esc(row.reference_image)+' (absent from checkout)' : link(row.reference_image)}</small>` : ''}${row.prompt ? `<details><summary>Generation prompt and alt text</summary><p>${esc(row.prompt)}</p><p>Alt: ${esc(row.alt)}</p></details>` : ''}`,
+        `${esc(row.review_note || row.reason || row.text_status || 'Review not recorded')}<small>Locale reuse: ${esc(typeof row.locale_reuse === 'object' ? JSON.stringify(row.locale_reuse) : row.locale_reuse === true ? (batch ? 'planned; review generated output' : 'approved in audit') : row.locale_reuse === false ? 'not approved' : row.locale_reuse || 'unknown')}</small>${row.duplicate_of ? `<small>Duplicate of ${esc(row.duplicate_of)}</small>` : ''}${row.reference_image ? `<small>Reference: ${row.local_reference === false ? esc(row.reference_image)+' (not available on this release)' : link(row.reference_image)}</small>` : ''}${row.prompt ? `<details><summary>Generation prompt and alt text</summary><p>${esc(row.prompt)}</p><p>Alt: ${esc(row.alt)}</p></details>` : ''}`,
         `${esc(row.status || 'unknown')}<small>${batch ? 'Priority: '+esc(row.priority ?? 'unknown') : isUnassigned(row) ? 'No detected references' : row.placements.length+' references'}</small>${batch ? `<label>Device task progress<select class="form-select" data-task="${esc(row.id)}" aria-label="Task progress: ${esc(row.name || row.id)}">${progressStates.map(state=>`<option${taskState(row.id)===state?' selected':''}>${state}</option>`).join('')}</select></label>` : ''}`];
     }));
   }
@@ -103,5 +104,5 @@
     $('action-status').textContent = `Exported ${filtered.length} filtered rows.`;
   });
   document.addEventListener('click',async event=>{ const button=event.target.closest('[data-copy]'); if(!button)return; try {await navigator.clipboard.writeText(button.dataset.copy);$('action-status').textContent='Command copied. Run it in the repository; this dashboard does not execute commands.';} catch (_) {$('action-status').textContent='Clipboard unavailable. Select and copy the visible command.';} });
-  fetch('/admin/data/operator-dashboard.json').then(response=>{if(!response.ok)throw Error('Snapshot unavailable');return response.json();}).then(payload=>{data=payload;render();}).catch(()=>{$('snapshot').textContent='Snapshot unavailable. Run node scripts/build-operator-dashboard.js and reload.';});
+  fetch('/api/operator-dashboard/snapshot.json', {cache:'no-store', credentials:'same-origin'}).then(response=>{if(!response.ok)throw Error('Snapshot unavailable');return response.json();}).then(payload=>{data=payload;render();}).catch(()=>{$('snapshot').textContent='Snapshot unavailable or session expired. Sign in again, or ask the operator to rebuild the snapshot.';});
 }());

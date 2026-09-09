@@ -7,17 +7,17 @@
 <title>AfroTools — Operator dashboard</title>
 <link rel="icon" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
-<link rel="stylesheet" href="/admin/operator-dashboard.css?v=8a05ff2c">
-<script src="/admin/operator-dashboard.js?v=54de0d3c" defer></script>
+<link rel="stylesheet" href="/api/operator-dashboard/dashboard.css">
+<script src="/api/operator-dashboard/dashboard.js" defer></script>
 <script src="/assets/js/bundles/core.2969eb2e.min.js" defer></script></head>
 <body>
 <main class="ops page-shell" id="main">
 <a class="skip" href="#images">Skip to image tracker</a>
-<header><div><p class="muted">AfroTools / Internal operations</p><h1>Operator dashboard</h1></div><a class="btn btn-secondary" href="/afrotools-mission-control.html">Codex workflow launcher</a></header>
+<header><div><p class="muted">AfroTools / Internal operations</p><h1>Operator dashboard</h1></div><form method="post" action="/api/operator-dashboard/logout"><button class="btn btn-secondary" type="submit">Sign out</button></form></header>
 <p id="snapshot" role="status">Loading repository snapshot…</p>
-<p class="notice">Local operator surface, excluded from production dist. Hidden URLs and noindex are not authentication. This view contains repository evidence only.</p>
+<p class="notice">Authenticated operator workspace. Data reflects dated repository evidence. Revenue and live account metrics remain unavailable.</p>
 <nav aria-label="Operator sections"><a href="#images">Images</a><a href="#health">Repository health</a><a href="#pro">Pro operations</a><a href="#source-review">Source reviews</a><a href="#provenance">Evidence and refresh</a></nav>
-<p><a href="/admin/legacy-operations.html">Existing 50K, Matchday and page-review workflows</a> <small>Preserved legacy console; use the evidence below for dated metrics. Existing device records remain on this origin.</small></p>
+
 <div id="action-status" role="status" aria-live="polite"></div>
 <section id="images" aria-labelledby="images-title"><h2 id="images-title">Image tracker</h2><div class="stats" id="image-stats"></div>
 <p class="muted">References show detected placements, not proof of visual suitability. Locale reuse and text review remain separate checks.</p>
@@ -32,10 +32,10 @@
 <p id="image-count" role="status"></p><div class="actions"><button class="btn btn-secondary" id="previous" disabled>Previous 30</button><button class="btn btn-secondary" id="next" disabled>Next 30</button><button class="btn btn-primary" id="export-images" disabled>Export filtered CSV</button></div><div class="table-wrap" id="image-table"></div>
 </section>
 <section id="health" aria-labelledby="health-title"><h2 id="health-title">Repository health</h2><div id="repo-stats" class="stats"></div><p id="quality"></p><p id="calculation"></p><h3>Localization coverage</h3><p>Recorded page states; native-speaker review is separate.</p><div class="table-wrap" id="localization"></div><h3>Build evidence</h3><p id="build"></p><h3>Live operations: unavailable</h3><p id="live"></p></section>
-<section id="pro" aria-labelledby="pro-title"><h2 id="pro-title">Pro operations</h2><p>Inspect readiness, open each app, and work through its recorded next action. Opening an app uses its existing account and Pro gates.</p><div class="actions"><a href="/pro/workspace/">Workspace</a><a href="/pro/settings/billing/">Billing support surface</a><a href="/docs/PRO-APP-READINESS.md">Readiness contract</a><a href="/admin/data/pro-gate-coverage.json">Gate audit</a><button class="btn btn-secondary" data-copy="npm run pro:verify">Copy Pro verification command</button></div><div class="filters"><label>Search Pro apps<input id="pro-search" class="form-input" type="search"></label><label>Readiness state<select id="pro-state" class="form-select"><option value="">All apps</option><option value="active">Registry active</option><option value="preview">Preview / shell</option></select></label></div><p id="pro-count" role="status"></p><div id="pro-list" class="pro-list"></div></section>
+<section id="pro" aria-labelledby="pro-title"><h2 id="pro-title">Pro operations</h2><p>Inspect readiness, open each app, and work through its recorded next action. Opening an app uses its existing account and Pro gates.</p><div class="actions"><a href="/pro/workspace/">Workspace</a><a href="/pro/settings/billing/">Billing support surface</a><a href="/api/operator-dashboard/pro-readiness.md">Readiness contract</a><a href="/api/operator-dashboard/pro-gates.json">Gate audit</a><button class="btn btn-secondary" data-copy="npm run pro:verify">Copy Pro verification command</button></div><div class="filters"><label>Search Pro apps<input id="pro-search" class="form-input" type="search"></label><label>Readiness state<select id="pro-state" class="form-select"><option value="">All apps</option><option value="active">Registry active</option><option value="preview">Preview / shell</option></select></label></div><p id="pro-count" role="status"></p><div id="pro-list" class="pro-list"></div></section>
 <section id="source-review" aria-labelledby="source-title"><h2 id="source-title">Source review queue</h2><p>Review cadence is evaluated at snapshot time using lastReviewedAt. This does not prove external feeds are fresh or available.</p><div class="filters"><label>Search sources<input id="source-search" class="form-input" type="search"></label><label>Review state<select id="source-state" class="form-select"><option value="review overdue">Review overdue</option><option value="unknown">Unknown review date</option><option value="within review cadence">Within review cadence</option><option value="">All sources</option></select></label></div><p id="source-count" role="status"></p><div class="table-wrap" id="sources"></div></section>
-<section id="provenance" aria-labelledby="evidence-title"><h2 id="evidence-title">Evidence and refresh</h2><p>Run the relevant owner command, inspect its result, then rebuild this snapshot. A recorded passing audit is evidence for its date only.</p><div class="actions"><code>node scripts/build-operator-dashboard.js</code><button class="btn btn-secondary" data-copy="node scripts/build-operator-dashboard.js">Copy snapshot command</button><a href="/admin/data/operator-dashboard.json" download>Export snapshot JSON</a></div><div class="table-wrap" id="evidence"></div></section>
-<noscript><p>JavaScript is required to filter queues. <a href="/admin/data/operator-dashboard.json">Download the evidence snapshot</a>.</p></noscript>
+<section id="provenance" aria-labelledby="evidence-title"><h2 id="evidence-title">Evidence and refresh</h2><p>Run the relevant owner command, inspect its result, then rebuild this snapshot. A recorded passing audit is evidence for its date only.</p><div class="actions"><code>node scripts/build-operator-dashboard.js</code><button class="btn btn-secondary" data-copy="node scripts/build-operator-dashboard.js">Copy snapshot command</button><a href="/api/operator-dashboard/snapshot.json" download>Export snapshot JSON</a></div><div class="table-wrap" id="evidence"></div></section>
+<noscript><p>JavaScript is required to filter queues. <a href="/api/operator-dashboard/snapshot.json">Download the evidence snapshot</a>.</p></noscript>
 </main>
 </body>
 </html>

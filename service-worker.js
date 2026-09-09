@@ -50,7 +50,7 @@ self.addEventListener('fetch', e => {
 
   if (request.method !== 'GET') return;
 
-  if (url.pathname.startsWith('/.netlify/') || url.pathname.startsWith('/api/') || url.pathname.startsWith('/supabase-proxy/')) {
+  if (url.pathname.startsWith('/.netlify/') || url.pathname.startsWith('/api/') || url.pathname.startsWith('/supabase-proxy/') || /^\/mc-7a2f9x(?:\.html)?\/?$/.test(url.pathname)) {
     return;
   }
 
@@ -60,7 +60,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       caches.match(request).then(cached => {
         const fetchPromise = fetch(request).then(response => {
-          if (response.ok) {
+          if (response.ok && !/\bno-store\b/i.test(response.headers.get('cache-control') || '')) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
           }
@@ -77,7 +77,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(request)
         .then(response => {
-          if (response.ok) {
+          if (response.ok && !/\bno-store\b/i.test(response.headers.get('cache-control') || '')) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
           }

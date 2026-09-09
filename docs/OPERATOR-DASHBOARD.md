@@ -1,88 +1,86 @@
 # Operator dashboard
 
-The local operator entry point is `/mc-7a2f9x.html`. The Codex launcher links to it.
-The previous console is preserved at `/admin/legacy-operations.html` for existing
-50K, Matchday and page-review workflows. Its device storage keys are unchanged;
-use the new dashboard for provenance-aware metrics.
+Production entry: `/mc-7a2f9x.html` (the extensionless route is an alias).
+Netlify rewrites both to `operator-dashboard.mjs`. No dashboard HTML, controller,
+CSS, snapshot, legacy console or image-generation ledger is copied into `dist/`.
 
-Both HTML surfaces and all `admin/` assets are excluded by the existing
-`scripts/build-dist.js` policy. Noindex and a hidden route provide no access
-control. Do not add secrets, private account records or provider credentials to
-these files. The new dashboard makes no live Supabase, billing or analytics calls.
+## Authentication and serving
 
-## Refresh
+Use the existing AfroTools `ADMIN_KEY` credential; `ADMIN_SECRET` is the fallback
+when `ADMIN_KEY` is absent, matching `api-admin-session.js`. No new credential or
+public environment variable is required. Missing configuration returns 503.
 
-Run the relevant source-owner commands displayed in the evidence table, review
-their results, then run:
+The function serves a minimal login form to anonymous dashboard requests and
+returns 401 for private resources. Successful POST login sets a signed, random,
+30-minute `__Host-afro_ops` cookie with Secure, HttpOnly, SameSite=Strict and Path=/.
+The credential is sent only in the POST body and is not logged, placed in URLs,
+or saved in local/session storage. Signature checks use constant-time comparison;
+credential rotation invalidates existing sessions. Logout clears the cookie.
+A copied session remains valid until expiry or credential rotation: sessions are
+stateless, with no server-side per-session revocation store.
+
+Login/logout require a matching Origin. All responses are private/no-store at
+browser and CDN layers, deny framing and indexing, and restrict resources using
+CSP. Referrer-Policy is same-origin so same-origin form POSTs retain Origin while
+cross-origin navigation does not receive a referrer. Netlify function configuration
+limits requests to 30 per minute per IP/domain; local harness tests do not prove
+platform rate enforcement. The dashboard reloads when restored from bfcache.
+
+`/api/operator-dashboard/` exposes only these authenticated resources:
+
+- `dashboard.js`, `dashboard.css`, `snapshot.json`
+- `pro-readiness.md`, `pro-gates.json`
+- `session`, and POST-only `login` / `logout`
+
+The function loads a fixed file allowlist, never a request-supplied filesystem
+path. `netlify.toml` includes exactly six private files in its server bundle.
+Legacy `/admin/*` routes remain blocked; existing operator workflows are retained
+in source at `admin/legacy-operations.html` but are not published. General source
+and report references render as filenames with copyable refresh commands rather
+than dead links to private paths. The Pro readiness and gate documents have
+explicit authenticated download routes.
+
+## Data refresh
+
+Run relevant evidence-owner commands, inspect their outcomes, then:
 
 ```powershell
 node scripts/build-operator-dashboard.js
 ```
 
-For a separate image-audit checkout awaiting integration:
+The optional `--image-root C:/path/to/image-audit/afrotools` consumes the parent's
+image manifests read-only when integration is still pending. Rebuild without that
+option after integration. The snapshot preserves dates and hashes for source
+reports; snapshot generation does not refresh them or prove live health.
+
+Registry definitions, quality grades, locale page states, source review cadence
+and Pro readiness are repository evidence. Revenue, users, subscriptions and
+provider health remain unavailable unless separately verified. Image placements
+are reference evidence, not visual/browser approval. Planned locale reuse still
+requires review of the generated image. Task progress stays device-local under
+`afrotools-operator-image-progress-v1`; CSV includes those notes separately from
+canonical audit status and neutralizes spreadsheet formulas.
+
+## Validation and release
 
 ```powershell
-node scripts/build-operator-dashboard.js --image-root C:/path/to/image-audit/afrotools
+node --test tests/operator-dashboard.test.js tests/operator-dashboard-auth.test.mjs
+npx playwright test --config=playwright.operator.config.js
+npm run security:scan
+npm run build:deploy
+npm run audit:dist
 ```
 
-The optional image root only supplies `data/image-generation/image-library.json`
-and `data/image-generation/next-200.json`. The builder does not edit those owners.
-The generated snapshot retains their hashes, source dates and available audit
-commit. Asset and reference-image presence is checked against the dashboard
-checkout. Missing assets are labeled absent rather than rendered as broken images.
-After the image changes are integrated, rebuild without the option.
+The dedicated local harness runs the real function with a synthetic credential;
+it does not read production credentials or private accounts. Tests cover missing
+configuration, incorrect keys, cross-origin login, session tampering/expiry/key
+rotation, logout, anonymous direct resources, fixed path boundaries, mobile and
+keyboard controls, exports, device progress and recovery states. Deployment proof
+must additionally verify the Netlify function bundle, live anonymous denial,
+authenticated resource access where the existing credential is available, and
+continued static exclusions. Do not infer live proof from this harness.
 
-Serve the checkout with `node tests/support/static-server.js` and open
-`http://127.0.0.1:4173/mc-7a2f9x.html`. Use the same origin to retain device state.
-
-## Evidence contract
-
-- Registry metrics keep canonical records, expanded English experiences, widgets
-  and published locales distinct. They reflect the committed registry report.
-- Quality grades and calculation fixtures retain their original audit dates.
-  These snapshots do not establish browser health or current calculation truth.
-- Locale rows distinguish native pages, shells, fallbacks and unavailable pages.
-- Source review status uses `lastReviewedAt` and `reviewCadenceDays` at snapshot
-  time. Recorded freshness labels do not override an overdue review date.
-- Pro readiness values are authored product definitions. Recorded gate results
-  retain their audit date. Neither proves current account backing or billing.
-- Image placements are static reference evidence, including pipeline references.
-  They do not establish visual quality or prove a browser displayed an image.
-- Generation tasks follow the owner's `order`, then descending priority.
-  Planned locale reuse requires review of the generated image before approval.
-- Revenue, users, subscriptions, provider health and deployment state are
-  unavailable. Snapshot generation is not a build/test/deploy pass.
-
-Device task progress uses `afrotools-operator-image-progress-v1`. It is an
-operator note, separate from canonical generation/audit status. Export filtered
-CSV to retain those notes; CSV includes `device_task_progress`. It does not write
-to the image ledger, Supabase or a generation service. Spreadsheet formula
-prefixes are neutralized. Storage failures are visible and export still works.
-
-## Validation
-
-```powershell
-node --test tests/operator-dashboard.test.js
-npx playwright test tests/e2e/operator-dashboard.spec.js --project=chromium --workers=1
-git diff --check
-```
-
-The browser tests cover desktop/390px overflow, keyboard flow, filtering,
-download contents, local task progress, unsafe data and missing snapshots.
-Existing legacy workflows are preserved, not re-certified by these tests.
-
-## September 8 implementation evidence
-
-Base: `9b29eab0408eedd9442c98c2cabf567098da80ab`, branch
-`codex/operator-dashboard-20260908`. The parent image checkout is separately
-based on preserved `ba111af2`; those histories diverge. No broad merge was made.
-The parent image manifests were consumed read-only into the excluded admin
-snapshot. Their image changes remain coordinator-owned integration work.
-
-Passed: two Node contracts, four Playwright tests, focused repository lint and
-type checks, and a desktop axe WCAG A/AA scan with zero reported violations.
-Desktop/390px screenshots were inspected; console errors were absent in the
-populated dashboard check. No live provider, database, revenue or deployment
-verification was attempted. Full build/deploy/security gates were not run:
-these changes are confined to existing excluded operator surfaces, with no
-publish policy, public route, function or release change.
+The release coordinator owns integration and production deployment. This task
+must not start a competing deploy. Rollback is the previous verified Netlify deploy;
+removing the two dashboard rewrites also returns the entry points to 404 while
+preserving static exclusions.
