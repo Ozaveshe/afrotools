@@ -1827,6 +1827,7 @@ function resultDisclaimerHTML(tool) {
 function makeRetiredElectricityCountryPage(tool, country) {
   const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}/`;
   const isPrepaid = tool.slug === "prepaid-meter";
+  const etCustomJourney = country.code === 'ET' && !isPrepaid;
   const title = `${country.name} ${isPrepaid ? "Prepaid Units" : "Electricity Tariff"} Guide Moved | AfroTools`;
   const description = `Use the canonical Electricity Cost & Prepaid Units calculator for ${country.name}. Automatic estimates are shown only for current provider-and-class tariffs.`;
   return `<!doctype html>
@@ -1847,7 +1848,7 @@ function makeRetiredElectricityCountryPage(tool, country) {
 <h1>${country.flag} ${escapeHtml(country.name)} electricity estimate</h1>
 <p>This former country calculator used a broad national planning default. It has been retired so a stale or provider-mismatched rate cannot look current.</p>
 <p>The canonical calculator supports money to prepaid units and kWh to bill. If no current ${escapeHtml(country.name)} provider-and-class schedule is maintained, it fails closed and offers a local-only custom-rate calculation.</p>
-<p><a class="en-btn" href="/tools/electricity-tariff/">Open Electricity Cost &amp; Prepaid Units</a></p>
+<p><a class="en-btn"${etCustomJourney ? ' style="white-space:normal;max-width:100%;text-align:center"' : ''} href="/tools/electricity-tariff/${etCustomJourney ? '?country=ET' : ''}">Open Electricity Cost &amp; Prepaid Units</a></p>
 <p>This URL remains available for old bookmarks, but it is noindex and links to the single transactional calculator.</p>
 </div></section></main>
 <afro-footer></afro-footer>
@@ -2262,6 +2263,21 @@ if (requestedTool && !selectedTools.length) {
 }
 
 let totalFiles = 0;
+// Refresh this source-owned fragment without undoing the post-processed SEO,
+// cache references and structured data on the served retired landing page.
+if (process.argv.includes('--ethiopia-electricity-link-only')) {
+  const tool = TOOLS.find(tool => tool.slug === 'electricity-tariff');
+  const country = COUNTRIES.find(country => country.code === 'ET');
+  const generated = makeRetiredElectricityCountryPage(tool, country);
+  const file = path.join(ROOT, 'tools/electricity-tariff/ethiopia/index.html');
+  const original = fs.readFileSync(file, 'utf8');
+  const cta = /<p><a class="en-btn"[^>]*>Open Electricity Cost &amp; Prepaid Units<\/a><\/p>/;
+  const notice = /<p>This URL remains available for old bookmarks[^<]*<\/p>/;
+  if (!cta.test(original) || !notice.test(original)) throw new Error('Ethiopia retired landing fragments missing');
+  fs.writeFileSync(file, original.replace(cta, generated.match(cta)[0]).replace(notice, generated.match(notice)[0]));
+  console.log('Updated Ethiopia retired electricity link only.');
+  process.exit(0);
+}
 
 for (const tool of selectedTools) {
   const toolDir = path.join(ROOT, "tools", tool.slug);
