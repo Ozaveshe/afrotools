@@ -73,6 +73,7 @@ test.describe("Education Hub app VIP", () => {
 
   test("renders device-local profile before remote scholarship work completes", async ({ page }) => {
     await page.addInitScript(() => {
+      if (window.top !== window) return;
       localStorage.setItem(
         "afroedu-profile-cache",
         JSON.stringify({
@@ -106,6 +107,7 @@ test.describe("Education Hub app VIP", () => {
 
   test("quarantines impossible scores created by an older dashboard version", async ({ page }) => {
     await page.addInitScript(() => {
+      if (window.top !== window) return;
       localStorage.setItem(
         "afroedu-profile-cache",
         JSON.stringify({

@@ -153,17 +153,31 @@
     document.head.appendChild(script);
   }
 
-  var status = readConsent();
-  configureAnalytics(status);
-  loadConsentManager();
+  function initialize() {
+    // These workspaces explicitly promise local-only creative processing.
+    // The marker can appear after the async head bootstrap, so inspect only
+    // after parsing French pages. Ordinary pages keep their consent behavior.
+    if (document.querySelector('script[src^="/assets/js/pages/creative/fr-creative-privacy-bootstrap.js"]')) return;
+    if (window.__afroAnalyticsConfigured) return;
+    var status = readConsent();
+    configureAnalytics(status);
+    loadConsentManager();
 
-  window.addEventListener('afrotools:cookie-consent', function (event) {
-    applyConsent(event && event.detail && event.detail.status);
-  });
-  window.addEventListener('storage', function (event) {
-    if (event && event.key === CONSENT_KEY) applyConsent(event.newValue);
-  });
-  window.addEventListener('load', function () {
-    window.setTimeout(function () { syncClarity(readConsent()); }, 1600);
-  }, { once: true });
+    window.addEventListener('afrotools:cookie-consent', function (event) {
+      applyConsent(event && event.detail && event.detail.status);
+    });
+    window.addEventListener('storage', function (event) {
+      if (event && event.key === CONSENT_KEY) applyConsent(event.newValue);
+    });
+    window.addEventListener('load', function () {
+      window.setTimeout(function () { syncClarity(readConsent()); }, 1600);
+    }, { once: true });
+  }
+
+  if (document.readyState === 'loading' && /^\/fr\//.test(window.location.pathname)) {
+    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+  } else {
+    initialize();
+  }
+
 }(window, document));

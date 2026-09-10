@@ -100,6 +100,12 @@ function alignOgUrlWithCanonical(html) {
     (tag) => tag.replace(/\bcontent=["'][^"']*["']/i, `content="${canonical[1]}"`)
   );
 }
+function normalizeProductComparison(value) {
+  // Release-owned analytics removal can consume the line break before this
+  // block. Ignore only that non-rendered boundary, keeping its content exact.
+  return normalizeBuildManagedHtml(value)
+    .replace(/(<\/script>)[\t \r\n]*(<!-- LOCALIZED-CATEGORY-STANDARD:START -->)/g, '$1$2');
+}
 function output(rel, value) {
   if (ONLY && !ONLY.has(rel)) return;
   const file = path.join(ROOT, rel);
@@ -131,8 +137,8 @@ function output(rel, value) {
     if (!WRITE && current.includes(`name="afrotools-source-hash" content="${sourceHash}"`)) return;
   }
   if (
-    normalizeBuildManagedHtml(current)
-    === normalizeBuildManagedHtml(normalized)
+    normalizeProductComparison(current)
+    === normalizeProductComparison(normalized)
   ) return;
   if (WRITE) {
     fs.mkdirSync(path.dirname(file), { recursive: true });

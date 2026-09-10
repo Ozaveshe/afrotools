@@ -5,9 +5,17 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const test = require('node:test');
-const { optimizeDistAssets } = require('../scripts/build-dist');
+const { minifyCss, optimizeDistAssets } = require('../scripts/build-dist');
 
 const ROOT = path.resolve(__dirname, '..');
+
+test('deploy CSS preserves descendant pseudo-class selectors', () => {
+  const source = '.hub :is(.card, .step) > * { overflow-wrap: anywhere; }\n.hub :not(.hidden) { display: grid; }';
+  const deployed = minifyCss(source);
+  assert.match(deployed, /\.hub :is\(/);
+  assert.match(deployed, /\.hub :not\(/);
+  assert.doesNotMatch(deployed, /\.hub:(?:is|not)\(/);
+});
 
 test('build assets leave readable sources intact and optimize only deploy copies', async function () {
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'afrotools-source-safe-build-'));

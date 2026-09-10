@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -250,23 +250,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Enter Amount</span></div>
 <div class="card-body">
 <label for="amount">Amount in Ghana Cedis (GHS)</label>
-<input type="text" id="amount" inputmode="decimal" aria-describedby="amountHelp amountError" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<input type="text" id="amount" inputmode="decimal" aria-describedby="amountHelp amountError" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()" disabled data-amount-control>
 <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to the nearest pesewa, with 5 rounded up.</p>
-<p id="amountError" role="status" aria-live="polite"></p>
+<p id="amountError" role="status" aria-live="polite">Loading converter…</p>
 <div class="quick-amounts">
-<button type="button" class="quick-btn" onclick="setAmt(100)">100</button>
-<button type="button" class="quick-btn" onclick="setAmt(500)">500</button>
-<button type="button" class="quick-btn" onclick="setAmt(1000)">1,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(5000)">5,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(10000)">10,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(50000)">50,000</button>
-<button type="button" class="quick-btn" onclick="setAmt(100000)">100,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(100)" disabled data-amount-control>100</button>
+<button type="button" class="quick-btn" onclick="setAmt(500)" disabled data-amount-control>500</button>
+<button type="button" class="quick-btn" onclick="setAmt(1000)" disabled data-amount-control>1,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(5000)" disabled data-amount-control>5,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(10000)" disabled data-amount-control>10,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(50000)" disabled data-amount-control>50,000</button>
+<button type="button" class="quick-btn" onclick="setAmt(100000)" disabled data-amount-control>100,000</button>
 </div>
 <div class="doc-grid">
-<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()"></div>
-<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()"></div>
-<div><label for="docMode">Output Format</label><select id="docMode" onchange="convert()"><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
-<div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()"><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
+<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
+<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()" disabled data-amount-control></div>
+<div><label for="docMode">Output Format</label><select id="docMode" onchange="convert()" disabled data-amount-control><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
+<div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()" disabled data-amount-control><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
 </div>
 <div class="review-grid" id="reviewGrid" style="display:none"></div>
 </div></div>
@@ -276,7 +276,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="lbl">Amount in Words</div>
 <div class="words" id="wordsResult" aria-live="polite" aria-atomic="true"></div>
 <div class="formatted" id="fmtResult"></div>
-<div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()">Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()">Copy Document Line</button></div>
+<div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()" disabled data-amount-control>Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()" disabled data-amount-control>Copy Document Line</button></div>
 <p id="copyStatus" role="status" aria-live="polite"></p>
 <div class="doc-preview" id="docPreview"></div>
 <div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;text-align:left">
@@ -555,6 +555,14 @@ function copyAmountText(text) {
 }
 </script>
 
-<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+<script>
+if (window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.amountWordsInput) {
+  document.querySelectorAll('[data-amount-control]').forEach(function (control) { control.disabled = false; });
+  convert();
+} else {
+  document.getElementById('amountError').textContent = 'Unable to load the converter. Reload to try again.';
+}
+</script>
+<script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
 </body>
 </html>

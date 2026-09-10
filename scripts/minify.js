@@ -22,6 +22,7 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['assets/js/engines/src/ng-paye.js', 'assets/js/engines/ng-paye.js'],
   ['assets/js/components/navbar.js',         'assets/js/components/navbar.min.js'],
   ['assets/js/components/footer.js',         'assets/js/components/footer.min.js'],
   ['assets/js/components/tool-registry.js',  'assets/js/components/tool-registry.min.js'],

@@ -283,6 +283,11 @@ document.getElementById("rNetBenefit").textContent=r.netMonthlyBenefit;`,
 
 // ─── HTML TEMPLATE ─────────────────────────────────────────────────────────────
 function makePage(tool, country) {
+  // Ethiopia has no maintained provider/class water schedule. Its source-owned
+  // custom-rate page must not inherit the legacy national-rate template.
+  if (tool.slug === 'water-bill' && country.code === 'ET') {
+    return fs.readFileSync(path.join(__dirname, 'templates', 'ethiopia-water-bill.html'), 'utf8');
+  }
   const title = `${country.name} ${tool.hubTitle} | AfroTools`;
   const desc = tool.metaDesc.replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
   const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}`;
@@ -413,6 +418,13 @@ ${countryCards}
 }
 
 let total = 0;
+if (process.argv.includes('--ethiopia-water-only')) {
+  const tool = TOOLS.find(tool => tool.slug === 'water-bill');
+  const country = COUNTRIES.find(country => country.code === 'ET');
+  fs.writeFileSync(path.join(ROOT, 'tools/water-bill/ethiopia/index.html'), makePage(tool, country));
+  console.log('Generated Ethiopia custom-rate water page only.');
+  process.exit(0);
+}
 for (const tool of TOOLS) {
   const toolDir = path.join(ROOT, "tools", tool.slug);
   fs.mkdirSync(toolDir, { recursive: true });

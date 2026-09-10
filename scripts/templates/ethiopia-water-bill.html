@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
+<head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ethiopia Water Bill Calculator | AfroTools</title>
+<meta name="description" content="Estimate a flat-rate water cost in Ethiopia using your own rate and charges. No current provider tariff is supplied.">
+<meta property="og:title" content="Ethiopia Water Bill Calculator | AfroTools">
+<meta property="og:description" content="Estimate a flat-rate water cost in Ethiopia using your own rate and charges. No current provider tariff is supplied.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/water-bill/ethiopia/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Ethiopia Water Bill Calculator | AfroTools","description":"Estimate a flat-rate water cost in Ethiopia using your own rate and charges. No current provider tariff is supplied.","url":"https://afrotools.com/tools/water-bill/ethiopia/","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Water Bill Calculator","item":"https://afrotools.com/tools/water-bill/"},{"@type":"ListItem","position":4,"name":"Ethiopia","item":"https://afrotools.com/tools/water-bill/ethiopia/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69"><link rel="stylesheet" href="/assets/css/energy.css?v=04d32bb2">
+<script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="canonical" href="https://afrotools.com/tools/water-bill/ethiopia/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/water-bill/ethiopia/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/water-bill/ethiopia/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> <a href="/tools/water-bill/">Water Bill Calculator</a> <span>›</span> Ethiopia</nav>
+<h1>🇪🇹 Ethiopia <em>Water Bill Calculator</em></h1>
+<p class="en-tool-hero-sub">Enter a rate and other charges from your own bill or quotation. This local planning estimate does not supply an official Ethiopia water tariff.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head"><span>💧</span><h2>Calculate Your Water Bill</h2></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="monthlyUsage">Monthly Usage (m³)</label><input class="en-input" type="number" id="monthlyUsage" placeholder="e.g. 15" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="householdSize">Household Size</label><input class="en-input" type="number" id="householdSize" placeholder="e.g. 4" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="customRate">Your flat rate (ETB/m³)</label><input class="en-input" type="number" id="customRate" min="0" step="any" inputmode="decimal" aria-describedby="waterSource"></div>
+<div class="en-field"><label class="en-label" for="customFee">Other bill charges (ETB; enter 0 if none)</label><input class="en-input" type="number" id="customFee" min="0" step="any" inputmode="decimal"></div>
+</div>
+<p id="waterSource">No maintained provider-and-class tariff is available. Confirm the applicable rate with your water provider. Use this flat-rate worksheet only when that model fits your bill; it does not calculate tiered charges.</p><p id="waterError" role="alert"></p><button class="en-btn" id="calcBtn" type="button">Calculate</button></div></div>
+<div class="en-results" id="results" aria-live="polite">
+<div class="en-res-hero"><div class="en-res-label">Planning estimate</div><div class="en-res-amount" id="rBill">—</div></div>
+<table class="en-results-table"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Water Charge</td><td id="rCharge">—</td></tr>
+<tr><td>Fixed Charge</td><td id="rFixed">—</td></tr>
+<tr><td>Rate per m³</td><td id="rRate">—</td></tr>
+<tr><td>Daily Usage</td><td id="rDaily">—</td></tr>
+<tr><td>Per Person / Day</td><td id="rPerson">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div><button class="en-btn" type="button" id="downloadWater">Download TXT estimate</button>
+</div>
+<section class="en-seo">
+<h2>Ethiopia Water Bill Calculator — What You Need to Know</h2>
+<p>Water tariffs depend on the provider, customer class and effective period. The former national default and automatic 8% charge have been withdrawn because they were not supported by an applicable verified schedule.</p>
+<p>The calculation is usage × your flat rate + your other charges. Daily figures assume 30 days. Keep your dated bill or quotation with the result. There is no automatic tax, sewerage, arrears or tier calculation.</p>
+<p><strong>Disclaimer:</strong> This estimate uses only the rate and other charges you enter. Confirm that they apply to your bill with your water provider.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/engines/water-bill-engine.js"></script>
+<script>
+(function(){
+  'use strict';
+  var latest = '';
+  var fields = ['monthlyUsage','householdSize','customRate','customFee'];
+  var results = document.getElementById('results');
+  function invalidate(){ latest=''; results.classList.remove('on'); document.getElementById('waterError').textContent=''; }
+  fields.forEach(function(id){document.getElementById(id).addEventListener('input',invalidate);});
+  document.getElementById('calcBtn').addEventListener('click',function(){
+    invalidate();
+    var input={}; fields.forEach(function(id){input[id]=document.getElementById(id).value;});
+    var r=window.AfroTools.WaterBillEngine.calculate(input,'ET');
+    if(r.error){document.getElementById('waterError').textContent=r.error;return;}
+    var bindings={rBill:'monthlyBill',rCharge:'energyCharge',rFixed:'fixedCharge',rRate:'ratePerM3',rDaily:'dailyUsageLitres',rPerson:'perPersonPerDay'};
+    Object.keys(bindings).forEach(function(id){document.getElementById(id).textContent=r[bindings[id]];});
+    document.getElementById('rObs').textContent=r.observations.join(' ');
+    latest=['Ethiopia water planning estimate',r.monthlyBill].concat(r.observations,[r.dailyUsageLitres+' per day',r.perPersonPerDay+' per day']).join('\n');
+    results.classList.add('on');
+  });
+  document.getElementById('downloadWater').addEventListener('click',function(){
+    if(!latest)return;
+    var url=URL.createObjectURL(new Blob([latest],{type:'text/plain;charset=utf-8'}));
+    var link=document.createElement('a');link.href=url;link.download='ethiopia-water-estimate.txt';link.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  });
+})();
+</script>
+<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+</body>
+</html>

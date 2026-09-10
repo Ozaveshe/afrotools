@@ -14,7 +14,7 @@ import('../../netlify/functions/operator-dashboard.mjs').then(({default:handler}
       if(['/mc-7a2f9x.html','/mc-7a2f9x','/.netlify/functions/operator-dashboard'].includes(url.pathname)||url.pathname.startsWith('/api/operator-dashboard/')){
         const chunks=[];for await(const chunk of req)chunks.push(chunk);
         const request=new Request(url,{method:req.method,headers:req.headers,body:['GET','HEAD'].includes(req.method)?undefined:Buffer.concat(chunks)});
-        const result=await handler(request);
+        const result=await handler(request,{readOperations:async()=>require('../fixtures/operator-engine.cjs')()});
         res.writeHead(result.status,Object.fromEntries(result.headers));res.end(Buffer.from(await result.arrayBuffer()));return;
       }
       if(!url.pathname.startsWith('/assets/')) {res.writeHead(404);res.end('Not found');return;}

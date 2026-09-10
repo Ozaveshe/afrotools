@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -316,7 +316,7 @@
     <h2>Enter Amount</h2>
     <label for="amount">Amount to write in words</label>
     <div class="input-row">
-      <select id="currency" style="max-width:200px;" onchange="convert()" aria-label="Currency">
+      <select id="currency" style="max-width:200px;" onchange="convert()" aria-label="Currency" disabled data-amount-control>
         <option value="NGN" data-main="Naira" data-sub="Kobo">🇳🇬 NGN - Naira</option>
         <option value="KES" data-main="Shillings" data-sub="Cents">🇰🇪 KES - Shilling</option>
         <option value="GHS" data-main="Cedis" data-sub="Pesewas">🇬🇭 GHS - Cedi</option>
@@ -335,15 +335,15 @@
         <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
         <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
       </select>
-      <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal">
+      <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal" disabled data-amount-control>
     </div>
     <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to two places, with 5 rounded up.</p>
-    <p id="amountError" role="status" aria-live="polite"></p>
+    <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
     <div class="format-display" id="formatted"></div>
     <div class="doc-grid">
       <div>
         <label for="docMode">Document Format</label>
-        <select id="docMode" onchange="convert()">
+        <select id="docMode" onchange="convert()" disabled data-amount-control>
           <option value="cheque">Cheque line</option>
           <option value="invoice">Invoice wording</option>
           <option value="receipt">Receipt wording</option>
@@ -352,7 +352,7 @@
       </div>
       <div>
         <label for="caseMode">Text Style</label>
-        <select id="caseMode" onchange="convert()">
+        <select id="caseMode" onchange="convert()" disabled data-amount-control>
           <option value="title">Title Case</option>
           <option value="upper">UPPERCASE</option>
           <option value="sentence">Sentence case</option>
@@ -360,11 +360,11 @@
       </div>
       <div>
         <label for="payeeName">Payee or Vendor</label>
-        <input type="text" id="payeeName" placeholder="Optional" oninput="convert()">
+        <input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control>
       </div>
       <div>
         <label for="docReference">Invoice, Memo, or Ref</label>
-        <input type="text" id="docReference" placeholder="Optional" oninput="convert()">
+        <input type="text" id="docReference" placeholder="Optional" oninput="convert()" disabled data-amount-control>
       </div>
     </div>
     <div class="quality-row" id="qualityRow" style="display:none;"></div>
@@ -374,9 +374,9 @@
     <h2>Amount in Words</h2>
     <div class="result-box" id="result" aria-live="polite" aria-atomic="true"></div>
     <div class="actions-row">
-      <button type="button" class="btn btn-primary" onclick="copyResult()">Copy to Clipboard</button>
-      <button type="button" class="btn btn-outline" onclick="copyDocumentLine()">Copy Document Line</button>
-      <button type="button" class="btn btn-outline" onclick="clearAll()">Clear</button>
+      <button type="button" class="btn btn-primary" onclick="copyResult()" disabled data-amount-control>Copy to Clipboard</button>
+      <button type="button" class="btn btn-outline" onclick="copyDocumentLine()" disabled data-amount-control>Copy Document Line</button>
+      <button type="button" class="btn btn-outline" onclick="clearAll()" disabled data-amount-control>Clear</button>
     </div>
     <div class="doc-preview" id="docPreview"></div>
     <div class="doc-note">Check that the written amount matches the figures before signing, printing, or sharing. The "Only" suffix is kept to reduce room for extra words after the amount.</div>
@@ -666,6 +666,14 @@ function showToast(msg) {
   setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
 </script>
-<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+<script>
+if (window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.amountWordsInput) {
+  document.querySelectorAll('[data-amount-control]').forEach(function (control) { control.disabled = false; });
+  convert();
+} else {
+  document.getElementById('amountError').textContent = 'Unable to load the converter. Reload to try again.';
+}
+</script>
+<script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
 </body>
 </html>

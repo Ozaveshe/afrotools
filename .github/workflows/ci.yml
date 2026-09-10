@@ -54,6 +54,9 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
+      - name: Verify private command-centre contracts
+        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
+
       - name: Verify Pro architecture
         run: npm run pro:verify
 
@@ -90,6 +93,16 @@ jobs:
       - name: Security scan publish surfaces
         run: npm run security:scan
 
+      - name: Install Chromium for optimized artifact checks
+        run: npx playwright install chromium --with-deps
+
+      - name: Verify education layout in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4175'
+        run: npx playwright test tests/e2e/education-hub-card-reflow.spec.js --project=chromium --workers=1
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
@@ -121,4 +134,4 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run smoke specs
-        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js --project=chromium --workers=1
+        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js --project=chromium --workers=1

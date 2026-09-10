@@ -1,3 +1,33 @@
+/* Keep study navigation immediate when students save, reload or return to the hub.
+   Cross-document snapshot transitions can be interrupted by those actions. */
+@view-transition {
+  navigation: none;
+}
+
+/* Shared touch-target styles use inline-flex for links. These linked summaries
+   need their original vertical layout so enlarged text stays inside the card. */
+body.top-level-page-ui-refresh.hub-body :is(
+  .hub-readiness-card, .hub-surface-card, .hub-action-item, .hub-route-step
+) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  justify-items: start;
+}
+
+body.top-level-page-ui-refresh.hub-body .hub-source-banner {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.top-level-page-ui-refresh.hub-body :is(
+  .hub-source-banner, .hub-readiness-card, .hub-surface-card,
+  .hub-action-item, .hub-route-step
+) > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .hub-data-boundary {
   display: grid;
   grid-template-columns: minmax(220px, .72fr) minmax(0, 1.28fr);
