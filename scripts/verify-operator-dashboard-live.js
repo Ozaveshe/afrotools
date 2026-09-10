@@ -60,9 +60,13 @@ async function check(path,status,options={}){
         fs.mkdirSync('artifacts/operator-live',{recursive:true});
         await page.screenshot({path:`artifacts/operator-live/${base.hostname}-390.png`});
         if(await page.locator('#menu-toggle').isVisible())await page.locator('#menu-toggle').click();
+        const browserLogout=page.waitForResponse(r=>r.url()===new URL('/api/operator-dashboard/logout',base).href&&r.request().method()==='POST');
         await page.getByRole('button',{name:'Sign out',exact:true}).click();
+        assert.equal((await browserLogout).status(),303);
         await page.getByLabel('Admin credential').waitFor();
-        proof.browser={width:390,login:true,logout:true,overflow:false,page_errors:0};
+        const sessionStatus=(await page.request.get(new URL('/api/operator-dashboard/session',base).href)).status();
+        assert.equal(sessionStatus,401);
+        proof.browser={width:390,height:844,login:true,logout:true,logout_status:303,session_status:sessionStatus,overflow:false,page_errors:0};
       }finally{await browser.close();}
     }
   }else proof.limit='Authenticated checks skipped: credential unavailable in verifier environment.';

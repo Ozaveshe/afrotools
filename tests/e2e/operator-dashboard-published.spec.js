@@ -1,6 +1,6 @@
 const {test,expect}=require('@playwright/test');
 for(const width of [1440,390])test(`real server login and logout at ${width}px`,async({page})=>{
-  await page.setViewportSize({width,height:900});
+  await page.setViewportSize({width,height:width===390?640:900});
   await page.goto('/mc-7a2f9x.html');
   await expect(page.locator('h1')).toHaveText('Operator dashboard');
   await expect(page.locator('#image-table')).toHaveCount(0);
@@ -15,8 +15,16 @@ for(const width of [1440,390])test(`real server login and logout at ${width}px`,
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.screenshot({path:`test-results/operator-auth-${width}.png`});
   if(await page.locator('#menu-toggle').isVisible())await page.locator('#menu-toggle').click();
-  await page.getByRole('button',{name:'Sign out',exact:true}).click();
+  await page.locator('.sidebar .brand').focus();
+  const signOut=page.getByRole('button',{name:'Sign out',exact:true});
+  for(let i=0;i<20 && !(await signOut.evaluate(el=>document.activeElement===el));i++)await page.keyboard.press('Tab');
+  await expect(signOut).toBeFocused();
+  expect(await signOut.evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight;})).toBe(true);
+  const loggedOut=page.waitForResponse(r=>r.url().endsWith('/api/operator-dashboard/logout')&&r.request().method()==='POST');
+  await page.keyboard.press('Enter');
+  expect((await loggedOut).status()).toBe(303);
   await expect(page.getByLabel('Admin credential')).toBeVisible();
+  expect((await page.request.get('/api/operator-dashboard/session')).status()).toBe(401);
   expect((await page.request.get('/api/operator-dashboard/snapshot.json')).status()).toBe(401);
   expect((await page.request.get('/admin/data/operator-dashboard.json')).status()).toBe(404);
   expect((await page.request.get('/admin/legacy-operations.html')).status()).toBe(404);
