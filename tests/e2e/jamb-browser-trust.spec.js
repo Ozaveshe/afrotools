@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { bank, questions, revision } = require('../support/jamb-reviewed-fixtures');
+const { bank, questions, revision, reviewed } = require('../support/jamb-reviewed-fixtures');
 test.use({ viewport: { width: 390, height: 900 } });
 
 async function serveBank(page, fixture) {
@@ -119,3 +119,36 @@ test('saved CBT with a removed first question is discarded without remapping ans
   await expect(page.locator('#setup-warning')).toContainText('saved questions changed');
   expect(await page.evaluate(() => localStorage.getItem('afrojamb-cbt-state'))).toBe(null);
 });
+
+for (const tool of ['cbt', 'past-questions', 'score-predictor']) {
+  test(`${tool} excludes an image-bearing ordinary question and preserves reviewed passage context`, async ({ page }) => {
+    const { review: ignored, ...base } = questions()[0];
+    const visual = reviewed({ ...base, id: 'synthetic-visual', question: 'Which answer is correct for this exercise?',
+      image: '/assets/img/synthetic-question.svg', image_alt: 'A synthetic supporting exercise', has_diagram: false });
+    const passage = 'A pupil arranged six rows of seven counters.';
+    const textQuestion = reviewed({ ...base, id: 'synthetic-passage', passage,
+      question: 'According to the passage, how many counters were arranged?' });
+    const posts = await serveBank(page, bank([visual, textQuestion]));
+    await page.goto(`/jamb/${tool}/`, { waitUntil: 'load' });
+    if (tool === 'cbt') {
+      await page.locator('#start-btn').click();
+      await expect(page.locator('#cbt-passage')).toHaveText(passage);
+      expect(await page.evaluate(() => AfroJAMB.CBT.getState().questions.map(q => q.id))).toEqual(['synthetic-passage']);
+      await page.getByRole('radio', { name: 'Option B: 42', exact: true }).click();
+      await page.locator('#cbt-submit-top').click();
+      await page.locator('#confirm-submit-btn').click();
+      await expect.poll(() => posts.length).toBe(1);
+      expect(posts[0].question_ids).toEqual(['synthetic-passage']);
+    } else if (tool === 'past-questions') {
+      await expect(page.locator('.qcard')).toHaveCount(1);
+      await expect(page.locator('.qcard')).toContainText(passage);
+      await expect(page.locator('.qcard')).not.toContainText(visual.question);
+    } else {
+      await page.locator('#begin-btn').click();
+      await expect(page.locator('#quiz-card')).toContainText(passage);
+      await expect(page.locator('#quiz-progress')).toHaveText('1 / 1');
+      await page.locator('.qopt[data-letter="B"]').click();
+      await expect(page.locator('#proj-score')).toHaveText('1 / 1');
+    }
+  });
+}
