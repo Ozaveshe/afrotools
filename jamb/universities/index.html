@@ -4,10 +4,10 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nigerian Universities Cutoff Marks 2026 — Match Your JAMB Score | AfroJAMB</title>
-<meta name="description" content="See cutoff marks for 25+ Nigerian universities. Find courses you qualify for with your JAMB score. UNILAG, UI, OAU, UNN, ABU and more.">
+<title>Nigerian University Planning References | AfroJAMB</title>
+<meta name="description" content="Explore Nigerian universities and compare your score with unverified reference figures. Confirm current requirements directly with each institution.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Nigerian Universities Cutoff Marks — Find Your Match">
+<meta property="og:title" content="Nigerian University Planning References">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
@@ -67,9 +67,9 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <main id="main">
 <section class="jb-hero" style="padding:42px 0 50px;">
   <div class="jb-wrap jb-hero-z">
-    <span class="jb-hero-tag"><span aria-hidden="true">🏛️</span> 25+ Universities</span>
+    <span class="jb-hero-tag"><span aria-hidden="true">🏛️</span> University explorer</span>
     <h1>Find your <b>perfect-fit university</b></h1>
-    <p class="sub">Cutoff marks, top courses, and admission chances for federal, state, and private Nigerian universities.</p>
+    <p class="sub">Explore universities and courses using an older reference dataset. These figures have no recorded source-review date and cannot determine admission chances.</p>
   </div>
 </section>
 
@@ -105,7 +105,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     <div id="university-list" style="display:flex;flex-direction:column;gap:14px;" aria-live="polite"></div>
 
     <p style="font-size:.78rem;color:#64748b;margin-top:24px;text-align:center;">
-      Cutoff marks change yearly and depend on Post-UTME, O'Level grades, and quota. These are guidance figures based on recent years. Always verify with the university.
+      These recorded figures are unverified planning references, not current admission cutoffs. Requirements can also depend on Post-UTME, O'Level results, course and institutional policy. Confirm the current cycle directly with the university.
     </p>
   </div>
 </section>
@@ -241,11 +241,7 @@ function render() {
 
   var qualifies = filtered.filter(function(u){ return score >= u.cutoff; });
   var summary = document.getElementById("score-summary");
-  if (score >= 280) summary.textContent = "🔥 With " + score + ", you're in elite tier. " + qualifies.length + " universities accept you including the most competitive courses.";
-  else if (score >= 240) summary.textContent = "💪 " + score + " gets you into " + qualifies.length + " universities, including most competitive courses at top federal schools.";
-  else if (score >= 200) summary.textContent = "👍 With " + score + ", you qualify for " + qualifies.length + " universities. Aim higher for top federal courses.";
-  else if (score >= 160) summary.textContent = "📈 " + score + " is the federal university entry threshold. " + qualifies.length + " options available.";
-  else summary.textContent = "⚠️ With " + score + ", consider state universities or polytechnics. Push your score with our CBT mocks.";
+  summary.textContent = 'Your entered score of ' + score + ' meets or exceeds ' + qualifies.length + ' recorded reference figures in this filter. This does not mean you qualify, have been accepted, or meet current admission requirements.';
 
   var box = document.getElementById("university-list");
   box.innerHTML = "";
@@ -256,13 +252,13 @@ function render() {
     card.innerHTML = '<div class="uni-head">'
       + '<div><div class="uni-name">' + u.name + '</div>'
       + '<div class="uni-meta"><span class="meta-chip">' + u.short + '</span><span class="meta-chip">' + u.type + '</span><span class="meta-chip">' + u.state + '</span></div>'
-      + '<div class="uni-status ' + (youQualify ? 'qualifies' : 'below') + '">' + (youQualify ? '✓ You qualify' : '✗ Below cutoff') + '</div></div>'
-      + '<div class="uni-cutoff">Cutoff <strong>' + u.cutoff + '</strong></div></div>'
+      + '<div class="uni-status ' + (youQualify ? 'qualifies' : 'below') + '">' + (youQualify ? 'At/above reference' : 'Below reference') + '</div></div>'
+      + '<div class="uni-cutoff">Unverified reference <strong>' + u.cutoff + '</strong></div></div>'
       + '<div class="course-list">'
       + u.top_courses.map(function(c){
           var q = score >= c.cutoff;
           return '<div class="course-row ' + (q ? 'qualifies' : 'below') + '">'
-            + '<div class="course-row-name"><span class="ckmark">' + (q ? '✓' : '·') + '</span>' + c.name + '</div>'
+            + '<div class="course-row-name"><span class="ckmark">' + (q ? '≥' : '&lt;') + '</span>' + c.name + '</div>'
             + '<span class="course-cutoff">' + c.cutoff + '</span></div>';
         }).join("")
       + '</div>';
@@ -301,7 +297,7 @@ document.getElementById("state-filter").addEventListener("change", render);
       if (!summaryEl) return;
       var srcLabel = merged.jamb_score_source === "post-utme" ? "your real JAMB score"
                    : merged.jamb_score_source === "cbt-mock"  ? "your best CBT mock"
-                   : merged.jamb_score_source === "predictor" ? "your score predictor result"
+                   : merged.jamb_score_source === "predictor" ? "a previously saved practice estimate"
                    : "your saved score";
       var pill = document.createElement("span");
       pill.style.cssText = "font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#E8F2FF;color:#0063D1;padding:3px 8px;border-radius:4px;margin-right:8px;";
