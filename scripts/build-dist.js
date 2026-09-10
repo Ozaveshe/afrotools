@@ -338,7 +338,9 @@ function minifyCss(source) {
   return source
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/\s+/g, ' ')
-    .replace(/\s*([{}:;,>~+])\s*/g, '$1')
+    // A space before a pseudo-class is a descendant combinator, not formatting.
+    // Keep colons out of this token pass: `.hub :is(...)` must not become `.hub:is(...)`.
+    .replace(/\s*([{};,>~+])\s*/g, '$1')
     .replace(/;}/g, '}')
     .trim();
 }

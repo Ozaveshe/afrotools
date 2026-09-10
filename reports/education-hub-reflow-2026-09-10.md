@@ -12,4 +12,8 @@ Preview test setup was separately corrected: local-storage fixtures now apply on
 
 The four previously affected provider/navigation cases passed against immutable hosted preview `45f159c5` using the corrected setup and Netlify's documented initial-navigation `ntl-drawer-state=hidden` option. All original product error assertions remain active. This isolates the provider-specific setup from the two real product defects; it does not claim that the new card CSS or Mobile Money readiness change is deployed.
 
-This is local source/browser proof for the card fix. Cache keys, deploy artifact, hosted CI and production evidence remain pending the combined release. No claim of authenticated education cloud synchronization or real student retention is made.
+The subsequent exact `972041ea` hosted run passed 52/57 cases but failed five card-reflow cases. Inspection showed that `scripts/build-dist.js` stripped the descendant space before `:is(...)`: the deployed selector matched the body itself instead of its cards. The editable source and its hashed CSS reference were correct; the optimized CSS was not.
+
+The deployment optimizer now preserves whitespace around colons, retaining descendant pseudo-class selectors. A regression unit test covers `:is` and `:not`. The test server can explicitly serve static files from `dist`, while retaining its existing repository-local function fixtures. CI now runs the six card-reflow cases against the actual optimized artifact after the build. This is layout proof, not hosted API or cloud-sync proof.
+
+The corrected full rebuild, deploy artifact audit and security scan passed locally. All six optimized-artifact reflow cases passed at 320/390/1280px and 100/200% text. Hosted CI, the new immutable preview and production verification remain pending the combined release. No claim of authenticated education cloud synchronization or real student retention is made.

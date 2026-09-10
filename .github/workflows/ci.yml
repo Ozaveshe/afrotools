@@ -93,6 +93,16 @@ jobs:
       - name: Security scan publish surfaces
         run: npm run security:scan
 
+      - name: Install Chromium for optimized artifact checks
+        run: npx playwright install chromium --with-deps
+
+      - name: Verify education layout in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4175'
+        run: npx playwright test tests/e2e/education-hub-card-reflow.spec.js --project=chromium --workers=1
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat

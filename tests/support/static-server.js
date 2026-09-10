@@ -4,6 +4,9 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const root = path.resolve(__dirname, '..', '..');
+// Artifact mode changes served files; existing local function fixtures stay in the repository.
+const staticRoot = process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT === '1' ? path.join(root, 'dist') : root;
+if (!fs.existsSync(path.join(staticRoot, 'index.html'))) throw new Error('Static test root has no index.html: ' + staticRoot);
 const port = Number(process.env.PORT || 4173);
 const vatProofMode = process.env.AFROTOOLS_SW_VAT_PROOF_MODE === '1';
 let vatProofIdentity = null;
@@ -89,8 +92,8 @@ function routeCandidates(url) {
 }
 
 function resolveCandidate(candidate) {
-  const resolved = path.resolve(root, candidate);
-  if (!resolved.toLowerCase().startsWith(root.toLowerCase())) return null;
+  const resolved = path.resolve(staticRoot, candidate);
+  if (!resolved.toLowerCase().startsWith((staticRoot + path.sep).toLowerCase())) return null;
   return fs.existsSync(resolved) && fs.statSync(resolved).isFile() ? resolved : null;
 }
 
