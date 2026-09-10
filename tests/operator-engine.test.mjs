@@ -17,7 +17,7 @@ test('summary projection excludes prompts, errors, credentials and local paths',
 });
 test('morning priorities distinguish incomplete work, old evidence and completed runs',()=>{
   const input=fixture(),items=advice(input,null);
-  assert.ok(items.some(r=>r.title.includes('awaiting review')));assert.ok(items.some(r=>r.title.includes('need a decision')));
+  assert.ok(items.some(r=>r.title.includes('awaiting review')));assert.ok(items.some(r=>/needs? a decision/.test(r.title)));
   assert.ok(items.some(r=>r.title.includes('pending work')));assert.ok(!items.some(r=>r.title.includes('GitHub checks need review')));
   input.collected_at='2000-01-01T00:00:00Z';assert.equal(advice(input,null)[0].title,'Refresh operational evidence');
   input.git={status:'unavailable',rows:[]};assert.ok(advice(input,null).some(r=>r.title==='Git evidence needs attention'));

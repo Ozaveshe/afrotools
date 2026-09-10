@@ -2,6 +2,7 @@
   'use strict';
   const age=(date,now)=>date && Number.isFinite(Date.parse(date))?(now-Date.parse(date))/3600000:Infinity;
   function latestChecks(rows){const seen=new Set();return rows.slice().sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).filter(r=>{const key=r.name+'|'+r.branch;if(seen.has(key))return false;seen.add(key);return true;});}
+  const qty=(n,word)=>n+' '+word+(n===1?'':'s');
   function advice(engine,snapshot,now=Date.now()) {
     const items=[];
     const add=(rank,title,evidence,next,view)=>items.push({rank,title,evidence,next,view});
@@ -14,13 +15,13 @@
       if(failed.length)add(1,failed.length+' feed jobs recorded failures','Failures in the 24-hour window at the feed-check timestamp.','Inspect the affected feed job before accepting freshness.','automations');
       const lanes=engine.automations?.rows||[],blocked=lanes.filter(r=>['blocked','quarantined','invalid receipt'].includes(r.disposition));
       if(engine.automations?.invalid_receipts>0)add(1,'Repair invalid automation receipts','Receipt validation rejected one or more current or historical records.','Inspect the receipt validator before accepting this queue as complete.','automations');
-      if(blocked.length)add(2,blocked.length+' automation lanes need a decision','Latest recorded receipt per lane; older results are marked stale.','Review the receipt and decide whether to repair or retire the lane.','automations');
+      if(blocked.length)add(2,qty(blocked.length,'automation lane')+(blocked.length===1?' needs':' need')+' a decision','Latest recorded receipt per lane; older results are marked stale.','Review the receipt and decide whether to repair or retire the lane.','automations');
       const ready=lanes.filter(r=>r.disposition==='ready'&&r.integrated!==true);
-      if(ready.length)add(3,ready.length+' producer results awaiting review','A ready receipt is a candidate, not proof of merge or deployment.','Check dependencies and send eligible work through the publisher.','automations');
+      if(ready.length)add(3,qty(ready.length,'producer result')+' awaiting review','A ready receipt is a candidate, not proof of merge or deployment.','Check dependencies and send eligible work through the publisher.','automations');
       const work=engine.git?.rows||[],pending=work.filter(r=>r.ahead>0||r.dirty>0||r.untracked>0);
-      if(pending.length)add(4,pending.length+' workspaces have pending work','Commits outside the observed main branch, or local file changes.','Choose the work to finish and review its diff.','work');
+      if(pending.length)add(4,qty(pending.length,'workspace')+(pending.length===1?' has':' have')+' pending work','Commits outside the observed main branch, or local file changes.','Choose the work to finish and review its diff.','work');
       const old=work.filter(r=>r.stale&&r.behind>0);
-      if(old.length)add(5,old.length+' older workspaces are behind main','Last commit older than seven days. This does not prove inactivity.','Inspect and preserve any work before updating or retiring the workspace.','work');
+      if(old.length)add(5,qty(old.length,'older workspace')+(old.length===1?' is':' are')+' behind main','Last commit older than seven days. This does not prove inactivity.','Inspect and preserve any work before updating or retiring the workspace.','work');
     }
     if(snapshot){
       const previews=snapshot.pro.filter(r=>r.status!=='active');
@@ -53,9 +54,9 @@
   function renderWork(){
     const git=engine?.git, query=$('work-search').value.toLowerCase(),filter=$('work-filter').value;
     $('git-evidence').textContent=git?'Git: '+git.status+' · main '+(git.base_sha?.slice(0,12)||'unavailable')+' · fetched '+stamp(git.fetched_at)+'. Counts are per workspace; overlapping commits are not added together.':'Git evidence unavailable.';
-    const rows=(git?.rows||[]).filter(r=>(!query||r.branch.toLowerCase().includes(query))&&(filter==='all'||filter==='pending'&&(r.ahead>0||r.dirty>0||r.untracked>0)||filter==='older'&&r.stale||filter==='unknown'&&r.status!=='ok')).sort((a,b)=>(b.ahead||0)-(a.ahead||0));
+    const rows=(git?.rows||[]).filter(r=>(!query||((r.workspace||'')+' '+r.branch).toLowerCase().includes(query))&&(filter==='all'||filter==='pending'&&(r.ahead>0||r.dirty>0||r.untracked>0)||filter==='older'&&r.stale||filter==='unknown'&&r.status!=='ok')).sort((a,b)=>(b.ahead||0)-(a.ahead||0));
     $('work-count').textContent=rows.length+' matching workspaces · '+(git?.rows?.length||0)+' observed';
-    table('work-table',['Workspace branch','Commits vs main','Local changes','Last commit'],rows.map(r=>[esc(r.branch)+'<small>'+commit(r.head)+'</small>',r.status==='ok'?count(r.ahead)+' outside main<small>'+count(r.behind)+' behind</small>'+((r.pending_commits||[]).length?'<details><summary>Inspect pending commits</summary>'+(r.pending_commits||[]).filter(hash=>/^[a-f0-9]{40}$/.test(hash)).map(hash=>'<a href="https://github.com/Ozaveshe/afrotools/commit/'+hash+'" target="_blank" rel="noopener">'+hash.slice(0,12)+' ↗</a>').join('')+'<small>Latest 8 shown. Unpushed commits are only available in the local workspace.</small></details>':''):pill('Unavailable'),r.status==='ok'?count(r.dirty)+' tracked<small>'+count(r.untracked)+' untracked entries</small>':'—',stamp(r.last_commit)+(r.stale?'<small>Older than 7 days</small>':'')]));
+    table('work-table',['Workspace branch','Commits vs main','Local changes','Last commit'],rows.map(r=>[esc(r.branch)+'<small>'+esc(r.workspace||'Workspace')+'</small><small>'+commit(r.head)+'</small>',r.status==='ok'?count(r.ahead)+' outside main<small>'+count(r.behind)+' behind</small>'+((r.pending_commits||[]).length?'<details><summary>Inspect pending commits</summary>'+(r.pending_commits||[]).filter(hash=>/^[a-f0-9]{40}$/.test(hash)).map(hash=>'<a href="https://github.com/Ozaveshe/afrotools/commit/'+hash+'" target="_blank" rel="noopener">'+hash.slice(0,12)+' ↗</a>').join('')+'<small>Latest 8 shown. Unpushed commits are only available in the local workspace.</small></details>':''):pill('Unavailable'),r.status==='ok'?count(r.dirty)+' tracked<small>'+count(r.untracked)+' untracked entries</small>':'—',stamp(r.last_commit)+(r.stale?'<small>Older than 7 days</small>':'')]));
     $('pull-evidence').textContent='GitHub pull requests: '+(engine?.pulls?.status||'unavailable')+' · up to 50 open requests.';
     table('pull-table',['Pull request','Branch','Updated'],(engine?.pulls?.rows||[]).map(r=>['<a href="https://github.com/Ozaveshe/afrotools/pull/'+Number(r.number)+'" target="_blank" rel="noopener">#'+Number(r.number)+' ↗</a>'+pill(r.draft?'Draft':'Open'),esc(r.branch),stamp(r.updated_at)]));
   }

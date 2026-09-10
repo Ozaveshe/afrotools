@@ -27,7 +27,7 @@ export async function collectGit(repo,now=Date.now()) {
   const base_sha=await run('git',['rev-parse','origin/main'],repo);
   const entries=parseWorktreePorcelain(await run('git',['worktree','list','--porcelain'],repo));
   const rows=await bounded(entries,async entry=>{
-    const base={branch:(entry.branch||'detached').replace(/^refs\/heads\//,''),head:entry.head,status:'unavailable'};
+    const base={workspace:path.resolve(entry.path)===path.resolve(repo)?'Primary checkout':path.basename(path.dirname(entry.path)),branch:(entry.branch||'detached').replace(/^refs\/heads\//,''),head:entry.head,status:'unavailable'};
     try {
       const [counts,changes,last_commit,pending]=await Promise.all([
         run('git',['rev-list','--left-right','--count',base_sha+'...'+entry.head],repo),
