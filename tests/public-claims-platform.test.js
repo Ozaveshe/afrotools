@@ -143,4 +143,19 @@ for (const relative of highRiskFiles) {
 const dataFlowKeys = new Set(flows.flows.map((flow) => flow.key));
 for (const claim of claims.claims) for (const ref of claim.dataFlowRefs) assert.ok(dataFlowKeys.has(ref), `${claim.key} references unknown flow ${ref}`);
 
+// Report evidence must describe the final source, including after release HTML
+// normalization. A valid claim with an obsolete line reference is not evidence.
+const publishedReport = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/public-claims.json'), 'utf8'));
+assert.ok(publishedReport.examples.length > 0, 'Public claim evidence must not be empty');
+const evidenceSources = new Map();
+for (const example of publishedReport.examples) {
+  if (!evidenceSources.has(example.file)) {
+    evidenceSources.set(example.file, fs.readFileSync(path.join(ROOT, example.file), 'utf8').replace(/\r\n/g, '\n').split('\n'));
+  }
+  const lines = evidenceSources.get(example.file);
+  assert.ok(Number.isInteger(example.line) && example.line > 0 && example.line <= lines.length, `${example.file}: invalid evidence line`);
+  const matchOffset = lines.slice(example.line - 1).join('\n').indexOf(example.text.replace(/\r\n/g, '\n'));
+  assert.ok(matchOffset >= 0 && matchOffset <= lines[example.line - 1].length, `${example.file}:${example.line}: claim evidence does not match final source`);
+}
+
 console.log('Public claims and feature data-flow contract tests passed');

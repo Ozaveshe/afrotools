@@ -1,0 +1,177 @@
+{
+  "baselineCommit": "bfee7e433282eb5ba786a8f3af241d109750166f",
+  "sourcePath": "engines/src/water-bill-engine.js",
+  "country": "NG",
+  "note": "Observed legacy regression outputs using synthetic residential=200 and commercial=400 tariff inputs; not a current Nigeria tariff claim.",
+  "cases": [
+    {
+      "input": {
+        "monthlyUsage": 0,
+        "customerType": "residential",
+        "householdSize": 4
+      },
+      "expected": {
+        "error": "Please enter valid monthly water usage (m³)."
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 0,
+        "customerType": "commercial",
+        "householdSize": 4
+      },
+      "expected": {
+        "error": "Please enter valid monthly water usage (m³)."
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 1,
+        "customerType": "residential",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦216",
+        "energyCharge": "₦200",
+        "fixedCharge": "₦16",
+        "ratePerM3": "₦200.00",
+        "dailyUsageLitres": "33 L",
+        "perPersonPerDay": "8 L/person",
+        "efficiencyRating": "Efficient",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦200.00 per m³ (residential).",
+          "Daily usage: 33L total — 8L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: Efficient.",
+          "Rainwater harvesting can offset 30–50% of residential water use in Nigeria."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 1,
+        "customerType": "commercial",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦432",
+        "energyCharge": "₦400",
+        "fixedCharge": "₦32",
+        "ratePerM3": "₦400.00",
+        "dailyUsageLitres": "33 L",
+        "perPersonPerDay": "8 L/person",
+        "efficiencyRating": "Efficient",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦400.00 per m³ (commercial).",
+          "Daily usage: 33L total — 8L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: Efficient."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 15,
+        "customerType": "residential",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦3,240",
+        "energyCharge": "₦3,000",
+        "fixedCharge": "₦240",
+        "ratePerM3": "₦200.00",
+        "dailyUsageLitres": "500 L",
+        "perPersonPerDay": "125 L/person",
+        "efficiencyRating": "High Usage",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦200.00 per m³ (residential).",
+          "Daily usage: 500L total — 125L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: High Usage.",
+          "Rainwater harvesting can offset 30–50% of residential water use in Nigeria."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 15,
+        "customerType": "commercial",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦6,480",
+        "energyCharge": "₦6,000",
+        "fixedCharge": "₦480",
+        "ratePerM3": "₦400.00",
+        "dailyUsageLitres": "500 L",
+        "perPersonPerDay": "125 L/person",
+        "efficiencyRating": "High Usage",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦400.00 per m³ (commercial).",
+          "Daily usage: 500L total — 125L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: High Usage."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 150,
+        "customerType": "residential",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦32,400",
+        "energyCharge": "₦30,000",
+        "fixedCharge": "₦2,400",
+        "ratePerM3": "₦200.00",
+        "dailyUsageLitres": "5000 L",
+        "perPersonPerDay": "1250 L/person",
+        "efficiencyRating": "High Usage",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦200.00 per m³ (residential).",
+          "Daily usage: 5000L total — 1250L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: High Usage.",
+          "Fix leaking taps — a dripping tap wastes ~20L/day. Install low-flow showerheads.",
+          "Rainwater harvesting can offset 30–50% of residential water use in Nigeria."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    },
+    {
+      "input": {
+        "monthlyUsage": 150,
+        "customerType": "commercial",
+        "householdSize": 4
+      },
+      "expected": {
+        "monthlyBill": "₦64,800",
+        "energyCharge": "₦60,000",
+        "fixedCharge": "₦4,800",
+        "ratePerM3": "₦400.00",
+        "dailyUsageLitres": "5000 L",
+        "perPersonPerDay": "1250 L/person",
+        "efficiencyRating": "High Usage",
+        "whoBenchmarkM3": "12.0 m³",
+        "observations": [
+          "Water tariff in Nigeria: ₦400.00 per m³ (commercial).",
+          "Daily usage: 5000L total — 1250L per person (WHO adequate benchmark: 100L/person/day).",
+          "Efficiency rating: High Usage.",
+          "Fix leaking taps — a dripping tap wastes ~20L/day. Install low-flow showerheads."
+        ],
+        "countryName": "Nigeria",
+        "currencySymbol": "₦"
+      }
+    }
+  ]
+}
