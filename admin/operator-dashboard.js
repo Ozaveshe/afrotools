@@ -45,7 +45,7 @@
   }
   function showView(id, focus=false) {
     if(!Object.hasOwn(views,id))id='overview';
-    document.querySelectorAll('.workspace-view').forEach(section=>{section.hidden=section.id!==id;});
+    document.querySelectorAll('.workspace-view').forEach(section=>{section.hidden=section.id!==id;const heading=section.querySelector('h1');if(heading){heading.hidden=section.hidden;heading.inert=section.hidden;heading.setAttribute('aria-hidden',String(section.hidden));}});
     document.querySelectorAll('.sidebar [data-view]').forEach(a=>{if(a.dataset.view===id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     $('current-view').textContent=views[id]; document.title=views[id]+' · AfroTools Command centre';
     closeMenu();
