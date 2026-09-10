@@ -1,0 +1,33 @@
+{
+  "reviewedAt": "2026-09-10",
+  "sourceCommit": "366123ec",
+  "reviewer": "Codex release coordinator",
+  "scope": "Re-review three expired product-policy boundaries against current source and existing scoped browser evidence; no broader availability or performance certification.",
+  "claims": [
+    {
+      "key": "free.public-core",
+      "evidence": ["docs/PRO-FENCE.md", "assets/js/lib/pro-plan.js", "reports/free-demand-cohort-2026-09-09.md", "tests/e2e/free-demand-cohort.spec.js"],
+      "finding": "The fence keeps public calculator inputs and results available to guests. Paid plan definitions remain separate. The ten-route cohort verifies concrete guest calculations and usable outputs; this is not exhaustive functional certification or a forever-free promise."
+    },
+    {
+      "key": "free.account-creation",
+      "evidence": ["assets/js/components/auth-modal.js", "assets/js/afro-auth.js", "docs/PRO-FENCE.md"],
+      "finding": "The signup modal calls AfroAuth.signup with email, name, password and country. Signup calls Supabase auth.signUp with tier free and no paid checkout or payment fields. This verifies the product boundary only: no live account was created and provider/email delivery availability was not certified."
+    },
+      {
+      "key": "performance.measured-support",
+      "evidence": ["playwright.config.js", "tests/support/static-server.js", "docs/MOBILE-AUDIT-WORKFLOW.md", "tests/e2e/education-hub-journey.spec.js", "reports/free-demand-cohort-2026-09-09.md"],
+      "finding": "The approved wording limits compatibility and low-bandwidth statements to named measurements. Mobile workflow distinguishes heuristic scans and local throttled smoke from carrier measurements. Cohort tests name 320px/390px checks; education tests distinguish offline local saves from reload and cloud limits. No all-device, 2G-speed, universal offline or live cloud claim is approved by this review. The known navigation error remains an open release gate."
+    }
+  ],
+  "coordinatedPerformanceEvidence": {
+    "sourceCommit": "8eaadbd4",
+    "sourceRecord": "data/audits/evidence/public-claims-review-2026-09-10.json",
+    "reviewMethod": "Read the preserved source record directly with git show; these measurements were produced by the separate live-data task, not rerun by this coordinator.",
+    "environment": "Local Chromium simulation at 390px, 900/350 Kbps, 220ms RTT and 4x CPU throttle; not production or carrier field evidence.",
+    "warning": "English profit-margin reported LCP 12496ms and CLS 1.937; Hausa profit-margin reported LCP 11840ms and CLS 3.756. Both had zero horizontal overflow and no controls below 16px. No speed or universal-device claim is approved.",
+    "performanceReviewAfter": "2026-09-17"
+  },
+  "nextReview": "2026-09-17",
+  "unchanged": ["approved meanings", "detection rules", "prohibited absolutes", "translations", "source freshness for tax and tariffs"]
+}

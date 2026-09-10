@@ -2,6 +2,7 @@
   'use strict';
 
   var COUNTRY_META = {
+    ET: { name: 'Ethiopia', currency: 'ETB' },
     CI: { name: "Côte d'Ivoire", currency: 'XOF' }, GH: { name: 'Ghana', currency: 'GHS' }, KE: { name: 'Kenya', currency: 'KES' },
     NG: { name: 'Nigeria', currency: 'NGN' }, SN: { name: 'Senegal', currency: 'XOF' }, TZ: { name: 'Tanzania', currency: 'TZS' },
     UG: { name: 'Uganda', currency: 'UGX' }, ZA: { name: 'South Africa', currency: 'ZAR' }, ZM: { name: 'Zambia', currency: 'ZMW' }

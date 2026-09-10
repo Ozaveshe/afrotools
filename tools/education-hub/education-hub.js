@@ -1,5 +1,7 @@
 !(function () {
   "use strict";
+  var profileDirty = false;
+  var profileSaveMessage = "Choose optional fields, then save on this device to prefill compatible tools.";
   var e = "afro-scholarship-shortlist",
     t = "afro-ielts-pathway-state",
     a = "afroedu-profile-cache",
@@ -1263,9 +1265,14 @@
               p(
                 "syncHint",
                 e.remoteProfile
-                  ? "Account sync is active. This cockpit can travel with your login."
-                  : 'Working in local cockpit mode on this device. <a href="#" data-action="open-auth">Sign in</a> to sync across devices.',
-              ),
+                  ? "An account profile was loaded. Saving here confirms device storage only; account sync is not confirmed."
+                  : 'Working on this device. <a href="#" data-action="open-auth">Sign in</a> for account features; local saves do not confirm cloud sync.',
+              ));
+            h("profileSaveHint", profileSaveMessage);
+            // Feed, focus and storage events may refresh summaries while the
+            // user is editing. Only repopulate the form after an explicit save.
+            if (profileDirty) return;
+            (
               (u("edLevel").value = t.education_level || ""),
               (u("edInstitution").value = t.institution || ""),
               (u("edGradDate").value = t.graduation_date || ""),
@@ -1297,10 +1304,6 @@
             var c = u("edJambScore");
             c &&
               (c.value = t.jamb_score ? Number(t.jamb_score).toString() : "");
-            var g = u("profileSaveHint");
-            g &&
-              (g.textContent =
-                "Saved fields can prefill compatible tools; verify each tool result and official requirement.");
           })(e),
           (function (e) {
             var t = e.checklist.filter(function (e) {
@@ -1911,6 +1914,40 @@
     [gpaInput, scaleInput, ieltsInput, jambInput].forEach(function (input) {
       input && input.setCustomValidity("");
     });
+    // Shared profile merging does not provide a deletion contract. Reject a
+    // removal before any update so unrelated edits are not partially saved.
+    var persistedProfile = E() || {};
+    var clearedFields = [
+      ["edLevel", "education_level", "Education level"],
+      ["edInstitution", "institution", "Institution"],
+      ["edGradDate", "graduation_date", "Graduation date"],
+      ["edStudyLevel", "target_study_level", "Target study level"],
+      ["edGpaValue", "gpa_value", "GPA"],
+      ["edGpaScale", "gpa_scale", "GPA scale"],
+      ["edIeltsOverall", "ielts_overall", "IELTS overall"],
+      ["edJambScore", "jamb_score", "JAMB score"],
+      ["edCountries", "target_countries", "Target countries"],
+      ["edFields", "target_fields", "Target fields"],
+    ].filter(function (field) {
+      var inputValue = u(field[0]).value;
+      var empty = field[1] === "target_countries" || field[1] === "target_fields"
+        ? b(inputValue.split(",")).length === 0 : !inputValue.trim();
+      return empty &&
+        [persistedProfile, d.profile].some(function (profile) {
+          var value = profile[field[1]];
+          return Array.isArray(value) ? value.length > 0 :
+            value !== void 0 && value !== null && String(value).trim() !== "";
+        });
+    });
+    if (clearedFields.length) {
+      profileDirty = true;
+      profileSaveMessage = "Saved fields were not removed: " + clearedFields.map(function (field) {
+        return field[2];
+      }).join(", ") + ". This editor cannot remove saved fields. No changes were saved. Restore or replace these fields, then save again.";
+      h("profileSaveHint", profileSaveMessage);
+      u(clearedFields[0][0]).focus();
+      return;
+    }
     if (void 0 !== n && void 0 === o) {
       scaleInput.setCustomValidity("Choose the scale used for this GPA.");
     } else if (void 0 === n && void 0 !== o) {
@@ -1924,11 +1961,14 @@
       },
     );
     if (invalidInput) {
+      profileSaveMessage = "Check the highlighted score field. Your changes have not been saved.";
+      h("profileSaveHint", profileSaveMessage);
+      invalidInput.focus();
       invalidInput.reportValidity();
       g("Check the highlighted score field", "warning");
       return;
     }
-    (Y({
+    var payload = {
       education_level: u("edLevel").value || void 0,
       institution: u("edInstitution").value.trim() || void 0,
       graduation_date: u("edGradDate").value || void 0,
@@ -1939,10 +1979,25 @@
       gpa_scale: o,
       ielts_overall: s,
       jamb_score: r,
-    }),
-      J("Updated profile", "Profile fields refreshed"),
-      g("Profile saved", "success"),
-      O());
+    };
+    try {
+      Y(payload);
+      var saved = E();
+      if (!saved || Object.keys(payload).some(function (key) {
+        return payload[key] !== void 0 &&
+          JSON.stringify(saved[key]) !== JSON.stringify(payload[key]);
+      })) throw new Error("Local save not confirmed");
+    } catch (error) {
+      profileSaveMessage = "Could not save on this device. Keep this page open, allow browser storage or free space, then try again.";
+      h("profileSaveHint", profileSaveMessage);
+      g("Profile was not saved on this device", "warning");
+      return;
+    }
+    profileDirty = false;
+    profileSaveMessage = "Saved on this device. Saved fields can prefill compatible tools; verify each result and official requirement. Cloud sync is not confirmed.";
+    J("Updated profile", "Profile fields refreshed");
+    g("Profile saved on this device", "success");
+    O();
   }
   function H() {
     var e = u("manualUniversityName").value.trim(),
@@ -2117,6 +2172,25 @@
     }
   }
   function Z() {
+    function updateConnectionStatus() {
+      h("hubConnectionStatus", navigator.onLine
+        ? "Connection available. Local saves stay in this browser; clearing site data removes them. Reopen linked tools to check current sources. Cloud sync is not confirmed."
+        : "Offline. You can edit and save details in this open page if browser storage is available. Keep it open: reloading or opening another tool may need a connection. Live sources and cloud sync are unavailable.");
+    }
+    window.addEventListener("online", updateConnectionStatus);
+    window.addEventListener("offline", updateConnectionStatus);
+    updateConnectionStatus();
+    function markProfileDirty(event) {
+      if (!event.target.matches("input, select")) return;
+      profileDirty = true;
+      profileSaveMessage = "Unsaved changes. Save on this device when you are ready.";
+      h("profileSaveHint", profileSaveMessage);
+      ["edGpaValue", "edGpaScale", "edIeltsOverall", "edJambScore"].forEach(function (id) {
+        u(id).setCustomValidity("");
+      });
+    }
+    u("profile-editor").addEventListener("input", markProfileDirty);
+    u("profile-editor").addEventListener("change", markProfileDirty);
     (p(
       "destinationSelect",
       '<option value="">Choose saved destination</option>' +

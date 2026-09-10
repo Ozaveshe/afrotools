@@ -10,13 +10,16 @@ const path = require('path');
 const vm = require('vm');
 const http = require('http');
 const os = require('os');
-const { spawn } = require('child_process');
+const { spawn, execFileSync } = require('child_process');
+const { classifyRuntime, applyRuntimeGate } = require('./lib/browser-reliability');
+const { createSmokeContext } = require('./lib/browser-smoke-context');
 
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
 const CATALOG_POLICY_PATH = path.join(ROOT, 'data/registry/catalog-policy.json');
 const VERIFICATION_PATH = path.join(ROOT, 'data/tool-verification.json');
-const REPORT_DIR = path.join(ROOT, 'reports');
+const outputIndex = process.argv.indexOf('--output-dir');
+const REPORT_DIR = outputIndex < 0 ? path.join(ROOT, 'reports') : path.resolve(process.argv[outputIndex + 1]);
 const REPORT_JSON = path.join(REPORT_DIR, 'tool-quality-ranking.json');
 const REPORT_MD = path.join(REPORT_DIR, 'tool-quality-ranking.md');
 const REPORT_CSV = path.join(REPORT_DIR, 'tool-quality-ranking.csv');
@@ -31,6 +34,8 @@ const PORT = numberArg('--port', 4173);
 const TARGET_IDS = listArg('--id');
 const TARGET_ROUTES = listArg('--route').map(normalizeRoute);
 const GENERATED_AT = new Date().toISOString();
+const SOURCE_COMMIT = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+const SOURCE_DIRTY = Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' }).trim());
 const GENERATED_DATE = GENERATED_AT.slice(0, 10);
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -187,8 +192,9 @@ const CATEGORY_PROFILES = {
 function numberArg(name, fallback) {
   const prefix = `${name}=`;
   const direct = argv.find((arg) => arg.startsWith(prefix));
-  if (!direct) return fallback;
-  const value = Number(direct.slice(prefix.length));
+  const index = argv.indexOf(name);
+  if (!direct && index < 0) return fallback;
+  const value = Number(direct ? direct.slice(prefix.length) : argv[index + 1]);
   return Number.isFinite(value) ? value : fallback;
 }
 
@@ -676,10 +682,14 @@ function scoreTool(tool, pageInfo, features, browserResult) {
   if (features.qualityWarnings.liveNoindex) rawScore = Math.min(rawScore, 44);
   const requiredMissing = profile.requiredFeatures.filter((key) => !f[key]);
   const strongMissing = profile.strongSignals.filter((key) => !f[key]);
+  const gated = applyRuntimeGate(rawScore, browserResult);
+  rawScore = gated.score;
+  if (gated.runtime.scoreCap !== null) qualityDeductions.push('runtime gate: ' + gated.runtime.categories.join(', '));
   const rank = rankFor(rawScore);
 
   return {
     score: rawScore,
+    runtime: gated.runtime,
     rank,
     standard_status: statusFor(rawScore),
     dimension_scores: dimensionScores,
@@ -721,7 +731,9 @@ function statusFor(score) {
 
 function priorityFor(tool, score, browserResult) {
   const highPriority = Number(tool.priority || 0) >= 75 || Number(tool.estTraffic || 0) >= 5000 || Number(tool.estRevenue || 0) >= 100;
-  if (browserResult && !browserResult.ok) return 'P0-browser-failure';
+  const runtime = classifyRuntime(browserResult);
+  if (runtime.gate === 'failed') return 'P0-browser-failure';
+  if (runtime.gate === 'review') return 'P1-browser-review';
   if (score < 45) return highPriority ? 'P0-high-value-repair' : 'P1-repair';
   if (highPriority && score < 70) return 'P1-high-value-upgrade';
   if (score < 65) return 'P2-upgrade';
@@ -747,7 +759,7 @@ function requestLocal(port, route) {
 }
 
 async function ensureServer(port) {
-  if (await requestLocal(port, '/')) return { started: false, process: null };
+  if (await requestLocal(port, '/')) throw new Error(`Port ${port} is occupied; choose a dedicated --port to avoid testing another checkout.`);
   const child = spawn(process.execPath, [path.join(ROOT, 'tests/support/static-server.js')], {
     cwd: ROOT,
     env: Object.assign({}, process.env, {
@@ -771,10 +783,11 @@ async function runBrowserSmoke(routes) {
 
   const server = await ensureServer(PORT);
   const baseUrl = `http://127.0.0.1:${PORT}`;
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
+  let browser;
+  try { browser = await chromium.launch({ headless: true }); }
+  catch (error) { if (server.process) server.process.kill(); throw error; }
+  const context = await createSmokeContext(browser, {
     viewport: { width: 1366, height: 900 },
-    serviceWorkers: 'block',
   });
   const results = {};
   const queue = routes.slice(0, BROWSER_LIMIT || routes.length);
@@ -788,6 +801,10 @@ async function runBrowserSmoke(routes) {
       const consoleErrors = [];
       const pageErrors = [];
       const failedResponses = [];
+      const thirdPartyFailures = [];
+      const blockedByHarness = [];
+      const harnessBlockedRequests = new WeakSet();
+      let redirectProbe = null;
       const started = Date.now();
       let responseStatus = 0;
       let ok = false;
@@ -808,11 +825,16 @@ async function runBrowserSmoke(routes) {
           failedResponses.push(`${response.status()} ${url.replace(baseUrl, '')}`.slice(0, 220));
         }
       });
+      page.on('requestfailed', request => {
+        if (!request.url().startsWith(baseUrl) && !harnessBlockedRequests.has(request)) thirdPartyFailures.push(new URL(request.url()).origin);
+      });
       await page.route('**/*', (routeControl) => {
         const requestUrl = routeControl.request().url();
         if (requestUrl.startsWith(baseUrl) || requestUrl.startsWith('data:') || requestUrl.startsWith('blob:')) {
           return routeControl.continue();
         }
+        harnessBlockedRequests.add(routeControl.request());
+        blockedByHarness.push(new URL(requestUrl).origin);
         return routeControl.abort('blockedbyclient');
       });
 
@@ -873,14 +895,24 @@ async function runBrowserSmoke(routes) {
       } catch (err) {
         pageErrors.push(String(err.message || err).slice(0, 300));
       }
+      if (responseStatus === 404 && route.endsWith('/')) {
+        const alternative = route.slice(0, -1) + '.html';
+        try {
+          const probe = await context.request.get(baseUrl + alternative, { timeout: BROWSER_TIMEOUT });
+          const html = await probe.text();
+          const canonical = (html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)/i) || [])[1] || '';
+          const canonicalPath = canonical ? new URL(canonical, baseUrl).pathname.replace(/\/$/, '') : '';
+          redirectProbe = { route: alternative, status: probe.status(), canonicalMatches: canonicalPath === route.replace(/\/$/, '') };
+        } catch (_) { redirectProbe = { route: alternative, status: 0, canonicalMatches: false }; }
+      }
       await safeClosePage(page);
 
       done += 1;
-      if (done % 25 === 0 || done === queue.length) {
-        console.log(`Browser-smoked ${done}/${queue.length} routes`);
-      }
-
       results[route] = {
+        environment: 'local',
+        redirectProbe,
+        thirdPartyFailures: [...new Set(thirdPartyFailures)],
+        blockedByHarness: [...new Set(blockedByHarness)],
         ok,
         status: responseStatus,
         duration_ms: Date.now() - started,
@@ -909,6 +941,11 @@ async function runBrowserSmoke(routes) {
         businessCta: !!rendered.businessCta,
         loadEventMs: rendered.loadEventMs || 0,
       };
+      if (done % 25 === 0 || done === queue.length) {
+        fs.mkdirSync(REPORT_DIR, { recursive: true });
+        fs.writeFileSync(path.join(REPORT_DIR, 'browser-progress.json'), JSON.stringify({ started_at: GENERATED_AT, source_commit: SOURCE_COMMIT, source_dirty: SOURCE_DIRTY, completed: done, total: queue.length, results }, null, 2));
+        console.log(`Browser-smoked ${done}/${queue.length} routes`);
+      }
     }
   }
 
@@ -1171,6 +1208,7 @@ async function main() {
       estTraffic: Number(tool.estTraffic || 0),
       estRevenue: Number(tool.estRevenue || 0),
       instance_count: Number(tool.toolCount || 1),
+      runtime: score.runtime,
       score: score.score,
       rank: score.rank,
       standard_status: score.standard_status,
@@ -1232,6 +1270,11 @@ async function main() {
     : [];
   const browserSummary = {
     enabled: RUN_BROWSER,
+    environment: 'local',
+    source_commit: SOURCE_COMMIT,
+    source_dirty: SOURCE_DIRTY,
+    limitations: ['Load smoke only; no action or answer oracle', 'Third-party requests blocked by harness', 'Service workers blocked', 'Local APIs and routing do not prove production state'],
+    classifications: Object.values(browserResults).reduce((counts, result) => { for (const name of classifyRuntime(result).categories) counts[name] = (counts[name] || 0) + 1; return counts; }, {}),
     routes_tested: RUN_BROWSER ? Object.keys(browserResults).length : 0,
     failures: RUN_BROWSER ? Object.values(browserResults).filter((result) => !result.ok).length : 0,
     routes_with_console_or_page_errors: RUN_BROWSER ? Object.values(browserResults).filter((result) => (result.consoleErrors || 0) + (result.pageErrors || 0) > 0).length : 0,
@@ -1241,6 +1284,7 @@ async function main() {
   };
   const summary = summarize(records, registryStats, browserSummary);
   writeReports(records, summary);
+  if (argv.includes('--gate') && (!RUN_BROWSER || uniqueRoutes.length === 0 || Object.keys(browserResults).length < uniqueRoutes.length || Object.values(browserResults).some(result => classifyRuntime(result).gate !== 'passed'))) process.exitCode = 1;
 
   console.log(`Scored ${records.length} live/new tool rows (${liveInstances} expanded instances).`);
   console.log(`A/B/C/D/F rows: ${summary.score_distribution_rows.A}/${summary.score_distribution_rows.B}/${summary.score_distribution_rows.C}/${summary.score_distribution_rows.D}/${summary.score_distribution_rows.F}`);

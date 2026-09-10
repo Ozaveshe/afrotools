@@ -3,7 +3,6 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Private Education Planning Dashboard | AfroTools</title>
 <meta name="description" content="Organise education goals, saved schools, scholarships, budgets and deadlines in a private planning dashboard. Verify every requirement with its official source.">
@@ -27,7 +26,7 @@
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
 <script src="/assets/js/education-scholarship-feed.js?v=dc5d929b" defer></script>
 <script src="/engines/scholarship-matcher.js?v=59b05ad5" defer></script>
-<script src="education-hub.js?v=a991ae9a" defer></script>
+<script src="education-hub.js?v=34062beb" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -111,7 +110,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<link rel="stylesheet" href="education-hub-vip.css?v=d45581cf">
+<link rel="stylesheet" href="education-hub-vip.css?v=f9bd0adb">
 <style id="education-hub-plan-readability">
   body.top-level-page-ui-refresh.hub-body .hub-system-card{grid-template-columns:minmax(0,1fr);align-items:flex-start;overflow:hidden}
   body.top-level-page-ui-refresh.hub-body .hub-system-card p{max-width:100%;overflow-wrap:break-word}
@@ -186,10 +185,11 @@
 <section class="hub-system-strip">
   <div class="hub-wrap hub-system-card">
     <div>
-      <div class="hub-strip-label">AfroTools Education System</div>
-      <p>Education Hub is a private planning dashboard. Use the category hub for the full tool map, AfroJAMB for Nigeria, AfroStudy for Kenya, and the exam radar for source-linked exam planning.</p>
+      <div class="hub-strip-label">Start your education plan</div>
+      <p>Start a study plan with your subjects and available time, then save it on this device. No profile or account is needed. You can add optional planning details below when useful.</p>
     </div>
     <div class="hub-strip-links">
+        <a id="startStudyPlan" href="/tools/study-planner/">Start a study plan</a>
         <a href="/education/">Education category</a>
         <a href="/jamb/">AfroJAMB</a>
         <a href="/education/afrostudy/">AfroStudy</a>
@@ -288,12 +288,13 @@
       </div>
       <p>This page reads education details already saved by AfroTools on this device. If you are signed in, saved education profile data may also sync with your AfroTools account. Site analytics may measure page use under your consent settings, but profile-field values are not analytics data. Scholarship overlap counts compare selected filters with published fields; always confirm eligibility, deadlines, fees and requirements with the official provider.</p>
     </aside>
+    <p class="hub-sync-note" id="hubConnectionStatus" role="status" aria-live="polite">Local saves stay in this browser. Clearing site data removes them. New pages and current source checks may need a connection.</p>
     <section class="hub-layout-top">
       <article class="hub-card hub-profile-card" id="profile-editor">
         <div class="hub-card-head">
           <div>
             <span class="hub-card-label">My Profile</span>
-            <h2>Keep the cockpit fed with real student signals</h2>
+            <h2>Save optional planning details</h2>
           </div>
           <span class="hub-badge hub-badge-soft" id="profileModeBadge">Start cockpit</span>
         </div>
@@ -383,7 +384,7 @@
 
           <div class="hub-save-row">
             <button class="hub-btn hub-btn-primary" id="saveProfileBtn" type="button">Save my profile</button>
-            <span class="hub-save-hint" id="profileSaveHint">Saved on this device and used to prefill compatible education tools.</span>
+            <span class="hub-save-hint" id="profileSaveHint" role="status" aria-live="polite">Choose optional fields, then save on this device to prefill compatible tools.</span>
           </div>
         </div>
       </article>
