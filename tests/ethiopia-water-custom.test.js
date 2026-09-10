@@ -2,7 +2,6 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const cp = require('node:child_process');
 const { normalizeReleaseOwnedHtml } = require('../scripts/lib/release-owned-html-normalizer');
 function load(code) {
   const context = { window: {}, ENERGY_DATA: { countries: { NG: { name: 'Nigeria', currencySymbol: '₦', water: { residential: 200, commercial: 400 } } } } };
@@ -25,10 +24,12 @@ test('Ethiopia refuses missing, negative, fractional household and non-finite in
   assert.ok(engine.calculate({ ...valid, householdSize: 1.5 }, 'ET').error);
 });
 test('other-market behavior matches the verified base for residential/commercial fixtures', () => {
-  const old = load(cp.execFileSync('git', ['show', 'bfee7e433282eb5ba786a8f3af241d109750166f:engines/src/water-bill-engine.js'], { encoding: 'utf8' }));
-  for (const monthlyUsage of [0, 1, 15, 150]) for (const customerType of ['residential', 'commercial']) {
-    const input = { monthlyUsage, customerType, householdSize: 4 };
-    assert.equal(JSON.stringify(engine.calculate(input, 'NG')), JSON.stringify(old.calculate(input, 'NG')));
+  // Capture provenance and expected outputs in the fixture so this regression
+  // remains reproducible in CI's shallow checkout without repository history.
+  const baseline = JSON.parse(fs.readFileSync('tests/fixtures/water-bill-legacy-ng.json', 'utf8'));
+  assert.equal(baseline.cases.length, 8);
+  for (const fixture of baseline.cases) {
+    assert.deepEqual(JSON.parse(JSON.stringify(engine.calculate(fixture.input, baseline.country))), fixture.expected);
   }
 });
 test('generated Ethiopia page equals its route-specific source and cannot claim an official bill', () => {
