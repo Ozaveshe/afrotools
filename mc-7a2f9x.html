@@ -1,41 +1,88 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>AfroTools — Operator dashboard</title>
+<title>Command centre · AfroTools</title>
 <link rel="icon" href="/assets/img/logo-mark.svg">
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
+<link rel="stylesheet" href="/assets/css/design-system.css">
 <link rel="stylesheet" href="/api/operator-dashboard/dashboard.css">
+<script src="/assets/js/lib/dark-mode.js" defer></script>
+<script src="/api/operator-dashboard/engine.js" defer></script>
 <script src="/api/operator-dashboard/dashboard.js" defer></script>
-<script src="/assets/js/bundles/core.2969eb2e.min.js" defer></script></head>
-<body>
-<main class="ops page-shell" id="main">
-<a class="skip" href="#images">Skip to image tracker</a>
-<header><div><p class="muted">AfroTools / Internal operations</p><h1>Operator dashboard</h1></div><form method="post" action="/api/operator-dashboard/logout"><button class="btn btn-secondary" type="submit">Sign out</button></form></header>
-<p id="snapshot" role="status">Loading repository snapshot…</p>
-<p class="notice">Authenticated operator workspace. Data reflects dated repository evidence. Revenue and live account metrics remain unavailable.</p>
-<nav aria-label="Operator sections"><a href="#images">Images</a><a href="#health">Repository health</a><a href="#pro">Pro operations</a><a href="#source-review">Source reviews</a><a href="#provenance">Evidence and refresh</a></nav>
-
+</head>
+<body class="command-app">
+<a class="skip" href="#main">Skip to workspace</a>
+<aside class="sidebar" id="sidebar" aria-label="Command centre navigation"><button id="nav-close" class="nav-close" aria-label="Close navigation">×</button>
+<a href="#overview" class="brand" data-view="overview"><span class="brand-mark">a<span>•</span></span><span>AfroTools<small>COMMAND CENTRE</small></span></a>
+<div class="workspace-label"><span class="workspace-avatar">A</span><span>Internal workspace<small>Operator access</small></span><span data-icon="chevron"></span></div>
+<p class="nav-label">WORKSPACE</p>
+<nav aria-label="Operator sections">
+<a href="#overview" data-view="overview" aria-current="page"><span data-icon="overview"></span>Overview</a>
+<a href="#work" data-view="work"><span data-icon="evidence"></span>Work &amp; releases</a>
+<a href="#automations" data-view="automations"><span data-icon="pulse"></span>Automation results</a>
+<a href="#images" data-view="images"><span data-icon="images"></span>Image library<span class="nav-count" id="nav-images">—</span></a>
+<a href="#pro" data-view="pro"><span data-icon="apps"></span>Pro operations</a>
+<a href="#health" data-view="health"><span data-icon="pulse"></span>Repository health</a>
+<a href="#source-review" data-view="source-review"><span data-icon="sources"></span>Source reviews<span class="nav-count" id="nav-sources">—</span></a>
+</nav>
+<p class="nav-label">REFERENCE</p>
+<nav aria-label="Reference"><a href="#provenance" data-view="provenance"><span data-icon="evidence"></span>Evidence &amp; refresh</a><a href="https://afrotools.com/" target="_blank" rel="noopener"><span data-icon="external"></span>Open AfroTools<span class="nav-external">↗</span></a></nav>
+<div class="sidebar-bottom"><div class="private-note"><span data-icon="lock"></span><span>Private workspace<small>Session expires after 30 minutes</small></span></div><form method="post" action="/api/operator-dashboard/logout"><button class="sign-out" type="submit"><span data-icon="logout"></span>Sign out</button></form></div>
+</aside>
+<button class="sidebar-scrim" id="sidebar-scrim" aria-label="Close navigation" hidden></button>
+<div class="app-body">
+<header class="topbar"><div class="breadcrumb"><button id="menu-toggle" class="icon-button menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button><span class="breadcrumb-root">Workspace</span><span class="breadcrumb-divider">/</span><strong id="current-view">Overview</strong></div><div class="topbar-actions"><button id="command-open" class="command-trigger"><span data-icon="search"></span><span>Search workspace</span><kbd>Ctrl K</kbd></button><button id="afro-theme-fallback-toggle" class="theme-button" aria-label="Switch theme">Theme</button><span class="operator-avatar" title="Internal operator">O</span></div></header>
+<main class="ops" id="main" tabindex="-1">
 <div id="action-status" role="status" aria-live="polite"></div>
-<section id="images" aria-labelledby="images-title"><h2 id="images-title">Image tracker</h2><div class="stats" id="image-stats"></div>
-<p class="muted">References show detected placements, not proof of visual suitability. Locale reuse and text review remain separate checks.</p>
-<div class="filters">
-<label>Queue<select class="form-select" id="image-view"><option value="inventory">Image inventory</option><option value="batch">Next 200 generation tasks</option></select></label>
-<label>Search images<input class="form-input" id="image-search" type="search" placeholder="Path, topic, route or prompt"></label>
-<label>State<select class="form-select" id="image-status"><option value="">All states</option><option value="unassigned">Unassigned</option><option value="review">Review signals</option><option value="planned">Planned</option><option value="generated">Generated</option><option value="approved">Approved</option></select></label>
-<label>Family<select class="form-select" id="image-family"><option value="">All families</option></select></label>
-<label>Placement locale<select class="form-select" id="image-locale"><option value="">All locales</option></select></label>
-<label>Locale reuse flag<select class="form-select" id="image-reuse"><option value="">All reuse states</option><option value="approved">True in ledger</option><option value="unapproved">False / unknown</option></select></label>
+<section id="overview" class="workspace-view" aria-labelledby="overview-title">
+<div class="page-heading"><div><p class="eyebrow" id="today-label">YOUR WORKSPACE</p><h1 id="overview-title">Today's overview</h1><p>A clear view of what needs your attention.</p></div><button class="btn btn-primary" data-open-view="work"><span data-icon="evidence"></span>Review pending work</button></div>
+<div class="engine-sync"><p id="engine-status" role="status">Loading operational evidence…</p><button class="text-button" id="engine-refresh">Refresh summary</button></div>
+<div class="overview-metrics" id="engine-metrics"></div>
+<article class="panel intelligence-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR DAILY BRIEF</p><h2>Where to focus next</h2><p>Ranked from recorded blockers, pending work, and product readiness.</p></div><span class="subtle-badge" id="inbox-count">Loading</span></div><div id="morning-list"></div><button class="inbox-expand text-button" id="inbox-expand" aria-controls="morning-list" aria-expanded="false" hidden>Show all priorities</button></article>
+<details class="platform-details"><summary>Platform inventory &amp; review queues</summary><div class="overview-metrics" id="overview-metrics"><div class="loading-state">Loading your workspace…</div></div>
+<div class="overview-grid">
+<article class="panel attention-panel"><div class="panel-heading"><div><h2>Needs attention</h2><p>Your next review queues, in one place.</p></div><span class="subtle-badge">From snapshot</span></div><div id="attention-list" class="attention-list"></div><div class="panel-footer"><span data-icon="info"></span><span>Review signals guide checks. They are not confirmed defects.</span></div></article>
+<article class="panel library-panel"><div class="panel-heading"><div><h2>Image library</h2><p>Recorded asset disposition</p></div><button class="text-button" data-open-view="images" aria-label="Open image library">View all ↗</button></div><div id="library-breakdown"></div></article>
+</div></details><div class="overview-grid"><article class="panel focus-panel"><div class="panel-heading"><div><h2>My focus</h2><p>A short list for the work ahead.</p></div><span class="subtle-badge">This device</span></div><form id="focus-form" class="focus-form"><label class="sr-only" for="focus-input">Add a focus task</label><input class="form-input" id="focus-input" maxlength="120" placeholder="What do you want to get done?" required><button class="icon-button" aria-label="Add focus task" type="submit"><span data-icon="plus"></span></button></form><div id="focus-list"></div></article>
+<article class="panel launch-panel"><div class="panel-heading"><div><h2>Quick launch</h2><p>Your active Pro workspaces</p></div><button class="text-button" data-open-view="pro">All apps ↗</button></div><div id="quick-launch" class="quick-launch"></div></article>
 </div>
-<p id="image-count" role="status"></p><div class="actions"><button class="btn btn-secondary" id="previous" disabled>Previous 30</button><button class="btn btn-secondary" id="next" disabled>Next 30</button><button class="btn btn-primary" id="export-images" disabled>Export filtered CSV</button></div><div class="table-wrap" id="image-table"></div>
+<div class="overview-footnote"><span data-icon="clock"></span><span id="overview-date">Snapshot loading</span><a href="#provenance" data-view="provenance">View evidence</a></div>
 </section>
-<section id="health" aria-labelledby="health-title"><h2 id="health-title">Repository health</h2><div id="repo-stats" class="stats"></div><p id="quality"></p><p id="calculation"></p><h3>Localization coverage</h3><p>Recorded page states; native-speaker review is separate.</p><div class="table-wrap" id="localization"></div><h3>Build evidence</h3><p id="build"></p><h3>Live operations: unavailable</h3><p id="live"></p></section>
-<section id="pro" aria-labelledby="pro-title"><h2 id="pro-title">Pro operations</h2><p>Inspect readiness, open each app, and work through its recorded next action. Opening an app uses its existing account and Pro gates.</p><div class="actions"><a href="/pro/workspace/">Workspace</a><a href="/pro/settings/billing/">Billing support surface</a><a href="/api/operator-dashboard/pro-readiness.md">Readiness contract</a><a href="/api/operator-dashboard/pro-gates.json">Gate audit</a><button class="btn btn-secondary" data-copy="npm run pro:verify">Copy Pro verification command</button></div><div class="filters"><label>Search Pro apps<input id="pro-search" class="form-input" type="search"></label><label>Readiness state<select id="pro-state" class="form-select"><option value="">All apps</option><option value="active">Registry active</option><option value="preview">Preview / shell</option></select></label></div><p id="pro-count" role="status"></p><div id="pro-list" class="pro-list"></div></section>
-<section id="source-review" aria-labelledby="source-title"><h2 id="source-title">Source review queue</h2><p>Review cadence is evaluated at snapshot time using lastReviewedAt. This does not prove external feeds are fresh or available.</p><div class="filters"><label>Search sources<input id="source-search" class="form-input" type="search"></label><label>Review state<select id="source-state" class="form-select"><option value="review overdue">Review overdue</option><option value="unknown">Unknown review date</option><option value="within review cadence">Within review cadence</option><option value="">All sources</option></select></label></div><p id="source-count" role="status"></p><div class="table-wrap" id="sources"></div></section>
-<section id="provenance" aria-labelledby="evidence-title"><h2 id="evidence-title">Evidence and refresh</h2><p>Run the relevant owner command, inspect its result, then rebuild this snapshot. A recorded passing audit is evidence for its date only.</p><div class="actions"><code>node scripts/build-operator-dashboard.js</code><button class="btn btn-secondary" data-copy="node scripts/build-operator-dashboard.js">Copy snapshot command</button><a href="/api/operator-dashboard/snapshot.json" download>Export snapshot JSON</a></div><div class="table-wrap" id="evidence"></div></section>
-<noscript><p>JavaScript is required to filter queues. <a href="/api/operator-dashboard/snapshot.json">Download the evidence snapshot</a>.</p></noscript>
+<section id="work" class="workspace-view" aria-labelledby="work-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">DELIVERY</p><h1 id="work-title">Work &amp; releases</h1><p>Find unfinished work and decide what should move forward.</p></div><a class="btn btn-primary" href="https://github.com/Ozaveshe/afrotools/pulls" target="_blank" rel="noopener">Open pull requests ↗</a></div>
+<p class="evidence-note" id="git-evidence"></p><div class="panel"><div class="filters"><label class="search-field">Search branches<input class="form-input" id="work-search" type="search" placeholder="Find a workspace branch"></label><label>Show<select class="form-select" id="work-filter"><option value="pending">Pending work</option><option value="all">All workspaces</option><option value="older">Older than seven days</option><option value="unknown">Unavailable</option></select></label></div><p class="panel-copy" id="work-count" role="status"></p><div class="table-wrap" id="work-table"></div></div>
+<div class="section-heading"><h2>Open pull requests</h2><p id="pull-evidence" class="evidence-note"></p></div><div class="panel table-wrap" id="pull-table"></div>
+</section>
+<section id="automations" class="workspace-view" aria-labelledby="automations-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">EXECUTION</p><h1 id="automations-title">Automation results</h1><p>See what finished, what failed, and what is waiting for review.</p></div></div>
+<p class="evidence-note" id="automation-evidence"></p><div class="panel"><div class="filters"><label class="search-field">Search automations<input class="form-input" id="automation-search" type="search" placeholder="Find a lane"></label><label>Outcome<select class="form-select" id="automation-filter"><option value="">All results</option><option value="attention">Needs attention</option><option value="ready">Ready for review</option><option value="completed">Completed results</option></select></label></div><div class="table-wrap" id="automation-table"></div></div>
+<div class="section-heading"><h2>GitHub checks</h2><p id="ci-evidence" class="evidence-note"></p></div><div class="panel table-wrap" id="ci-table"></div>
+<div class="section-heading"><h2>Feed jobs</h2><p id="runtime-evidence" class="evidence-note"></p></div><div class="panel table-wrap" id="runtime-table"></div>
+</section>
+<section id="images" class="workspace-view" aria-labelledby="images-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">ASSET OPERATIONS</p><h1 id="images-title">Image library</h1><p>Find assets, review placements, and work through your generation queue.</p></div><button class="btn btn-primary" id="export-images" disabled><span data-icon="download"></span>Export filtered CSV</button></div>
+<div class="stats" id="image-stats"></div>
+<div class="panel queue-panel"><div class="queue-toolbar"><label class="queue-select">Queue<select class="form-select" id="image-view"><option value="inventory">Image inventory</option><option value="batch">Next 200 generation tasks</option></select></label><p class="queue-hint">Placements are detected references. Suitability and locale reuse need review.</p></div>
+<div class="filters"><label class="search-field">Search images<input class="form-input" id="image-search" type="search" placeholder="Path, topic, route or prompt"></label><label>State<select class="form-select" id="image-status"><option value="">All states</option></select></label><label>Family<select class="form-select" id="image-family"><option value="">All families</option></select></label><label>Placement locale<select class="form-select" id="image-locale"><option value="">All locales</option></select></label><label>Locale reuse<select class="form-select" id="image-reuse"><option value="">All reuse states</option><option value="approved">Approved in ledger</option><option value="unapproved">False / unknown</option></select></label></div>
+<div class="table-wrap" id="image-table"></div><div class="pagination"><p id="image-count" role="status"></p><div class="actions"><button class="btn btn-secondary" id="previous" disabled>Previous 30</button><button class="btn btn-secondary" id="next" disabled>Next 30</button></div></div></div>
+</section>
+<section id="health" class="workspace-view" aria-labelledby="health-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">PLATFORM</p><h1 id="health-title">Repository health</h1><p>Understand coverage and quality from the latest available reports.</p></div><button class="btn btn-secondary" data-open-view="provenance">View source evidence</button></div><div id="repo-stats" class="stats"></div><div class="health-grid"><article class="panel"><div class="panel-heading"><div><h2>Quality distribution</h2><p id="quality"></p></div></div><div id="quality-chart" class="quality-chart"></div></article><article class="panel"><div class="panel-heading"><div><h2>Calculation coverage</h2><p>Recorded fixture results</p></div></div><p id="calculation" class="panel-copy"></p></article></div><article class="panel"><div class="panel-heading"><div><h2>Localization coverage</h2><p>Page states by locale. Native-speaker review is separate.</p></div></div><div class="table-wrap" id="localization"></div></article><div class="health-grid"><article class="panel"><div class="panel-heading"><h2>Build evidence</h2><span class="subtle-badge">Repository record</span></div><p id="build" class="panel-copy"></p></article><article class="panel"><div class="panel-heading"><h2>Live operations</h2><span class="subtle-badge">Not connected</span></div><p id="live" class="panel-copy"></p></article></div>
+</section>
+<section id="pro" class="workspace-view" aria-labelledby="pro-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">PRODUCT OPERATIONS</p><h1 id="pro-title">Pro workspaces</h1><p>Open an app, inspect its readiness, and act on the next recorded step.</p></div><a class="btn btn-primary" href="/pro/workspace/">Open Pro workspace ↗</a></div><div class="pro-summary" id="pro-summary"></div><div class="filters pro-filters"><label class="search-field">Search Pro apps<input id="pro-search" class="form-input" type="search" placeholder="Find an app or workflow"></label><label>Readiness state<select id="pro-state" class="form-select"><option value="">All apps</option><option value="active">Registry active</option><option value="preview">Preview / shell</option></select></label></div><p id="pro-count" class="result-count" role="status"></p><div id="pro-list" class="pro-list"></div><div class="resource-links"><a href="/pro/settings/billing/">Billing support ↗</a><a href="/api/operator-dashboard/pro-readiness.md">Readiness contract ↗</a><a href="/api/operator-dashboard/pro-gates.json">Gate audit ↗</a><button class="text-button" data-copy="npm run pro:verify">Copy verification command</button></div>
+</section>
+<section id="source-review" class="workspace-view" aria-labelledby="source-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">TRUST &amp; FRESHNESS</p><h1 id="source-title">Source reviews</h1><p>Keep source reviews moving. Cadence is evaluated at snapshot time.</p></div><button class="btn btn-secondary" data-open-view="provenance">View evidence</button></div><div class="stats" id="source-stats"></div><div class="panel"><div class="filters"><label class="search-field">Search sources<input id="source-search" class="form-input" type="search" placeholder="Find a source or affected route"></label><label>Review state<select id="source-state" class="form-select"><option value="review overdue">Review overdue</option><option value="unknown">Unknown review date</option><option value="within review cadence">Within review cadence</option><option value="">All sources</option></select></label></div><div class="table-wrap" id="sources"></div><p id="source-count" class="panel-copy result-count" role="status"></p></div>
+</section>
+<section id="provenance" class="workspace-view" aria-labelledby="evidence-title" hidden>
+<div class="page-heading"><div><p class="eyebrow">WORKSPACE REFERENCE</p><h1 id="evidence-title">Evidence &amp; refresh</h1><p>Trace the data, inspect source dates, and refresh through the owner commands.</p></div><a class="btn btn-primary" href="/api/operator-dashboard/snapshot.json" download><span data-icon="download"></span>Export snapshot</a></div><div class="snapshot-panel"><span data-icon="evidence"></span><div><h2>Repository snapshot</h2><p id="snapshot" role="status">Loading repository snapshot…</p><p>Revenue and live account metrics are unavailable. A rebuilt snapshot does not refresh its source evidence.</p></div><button class="btn btn-secondary" data-copy="node scripts/build-operator-dashboard.js">Copy refresh command</button></div><div class="panel"><div class="table-wrap" id="evidence"></div></div>
+</section>
+<noscript><p>JavaScript is required for this workspace. <a href="/api/operator-dashboard/snapshot.json">Download the evidence snapshot</a>.</p></noscript>
 </main>
+</div>
+<dialog id="command-dialog" aria-labelledby="command-title"><div class="command-dialog-head"><h2 id="command-title">Go to…</h2><button id="command-close" class="icon-button" aria-label="Close search">×</button></div><label class="sr-only" for="command-search">Search workspace destinations</label><input class="form-input" id="command-search" type="search" placeholder="Search sections or Pro apps…"><div id="command-results"></div><p class="command-help">Choose a destination · Esc to close</p></dialog>
 </body>
 </html>

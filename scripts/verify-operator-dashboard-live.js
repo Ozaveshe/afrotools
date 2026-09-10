@@ -15,7 +15,7 @@ async function check(path,status,options={}){
   const page=await check('/mc-7a2f9x.html',401);
   assert.match(page.headers.get('cache-control'),/no-store/);
   assert.match(await page.text(),/Admin credential/);
-  for(const resource of ['dashboard.js','dashboard.css','snapshot.json'])await check('/api/operator-dashboard/'+resource,401);
+  for(const resource of ['dashboard.js','engine.js','dashboard.css','snapshot.json','operations.json'])await check('/api/operator-dashboard/'+resource,401);
   for(const path of ['/admin/data/operator-dashboard.json','/admin/legacy-operations.html','/data/image-generation/image-library.json'])await check(path,404);
   await check('/.netlify/functions/operator-dashboard',401);
   if(secret){
@@ -25,12 +25,16 @@ async function check(path,status,options={}){
     const cookie=rawCookie.split(';')[0];
     const headers={Cookie:cookie};
     await check('/mc-7a2f9x.html',200,{headers});
-    for(const resource of ['dashboard.js','dashboard.css','snapshot.json','pro-readiness.md','pro-gates.json']){
+    for(const resource of ['dashboard.js','engine.js','dashboard.css','snapshot.json','operations.json','pro-readiness.md','pro-gates.json']){
       const result=await check('/api/operator-dashboard/'+resource,200,{headers});
       assert.match(result.headers.get('cache-control'),/no-store/);
       if(resource==='snapshot.json'){
         const data=await result.json();proof.image_count=data.images.rows.length;proof.batch_count=data.batch.rows.length;
         proof.snapshot_revision=data.revision;
+      }
+      if(resource==='operations.json'){
+        const data=await result.json();assert.equal(data.project_ref,'zpclagtgczsygrgztlts');assert.equal(data.schema_version,1);
+        proof.operations={collected_at:data.collected_at,workspaces:data.git.rows.length,automations:data.automations.rows.length,runtime_checked_at:data.runtime.checked_at};
       }
     }
     const logout=await check('/api/operator-dashboard/logout',303,{method:'POST',headers:{...headers,Origin:base.origin}});
@@ -46,10 +50,16 @@ async function check(path,status,options={}){
         await page.getByLabel('Admin credential').fill(secret);
         await page.getByRole('button',{name:'Sign in',exact:true}).click();
         await page.waitForFunction(()=>document.getElementById('snapshot')?.textContent.includes('Snapshot generated'));
+        await page.waitForFunction(()=>document.getElementById('engine-status')?.textContent.includes('Operational summary'));
+        await page.locator('#menu-toggle').click();await page.locator('.sidebar nav [data-view="automations"]').click();
+        await page.locator('#automations-title').waitFor();
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+        await page.locator('#menu-toggle').click();await page.locator('.sidebar nav [data-view="overview"]').click();
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
         assert.deepEqual(errors,[]);
         fs.mkdirSync('artifacts/operator-live',{recursive:true});
         await page.screenshot({path:`artifacts/operator-live/${base.hostname}-390.png`});
+        if(await page.locator('#menu-toggle').isVisible())await page.locator('#menu-toggle').click();
         await page.getByRole('button',{name:'Sign out',exact:true}).click();
         await page.getByLabel('Admin credential').waitFor();
         proof.browser={width:390,login:true,logout:true,overflow:false,page_errors:0};

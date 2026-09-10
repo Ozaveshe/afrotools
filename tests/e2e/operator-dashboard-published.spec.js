@@ -14,6 +14,7 @@ for(const width of [1440,390])test(`real server login and logout at ${width}px`,
   expect(await page.evaluate(()=>JSON.stringify(localStorage).includes('synthetic-operator-test-only'))).toBe(false);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.screenshot({path:`test-results/operator-auth-${width}.png`});
+  if(await page.locator('#menu-toggle').isVisible())await page.locator('#menu-toggle').click();
   await page.getByRole('button',{name:'Sign out',exact:true}).click();
   await expect(page.getByLabel('Admin credential')).toBeVisible();
   expect((await page.request.get('/api/operator-dashboard/snapshot.json')).status()).toBe(401);

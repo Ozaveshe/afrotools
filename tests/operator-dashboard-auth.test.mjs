@@ -26,7 +26,7 @@ test('server boundary, credentials, expiry and private resources', async () => {
     const unauth = await handler(request('/mc-7a2f9x.html'));
     assert.equal(unauth.status,401);
     assert.ok((await unauth.text()).includes('Admin credential'));
-    for (const path of ['/api/operator-dashboard/dashboard.js','/api/operator-dashboard/dashboard.css','/api/operator-dashboard/snapshot.json','/api/operator-dashboard/pro-readiness.md','/api/operator-dashboard/pro-gates.json']) {
+    for (const path of ['/api/operator-dashboard/operations.json','/api/operator-dashboard/engine.js','/api/operator-dashboard/dashboard.js','/api/operator-dashboard/dashboard.css','/api/operator-dashboard/snapshot.json','/api/operator-dashboard/pro-readiness.md','/api/operator-dashboard/pro-gates.json']) {
       const result=await handler(request(path)); assert.equal(result.status,401); assert.match(result.headers.get('cache-control'),/no-store/);
     }
     assert.equal((await handler(request('/.netlify/functions/operator-dashboard'))).status,401);
@@ -41,7 +41,14 @@ test('server boundary, credentials, expiry and private resources', async () => {
     assert.ok(!cookie.includes(fixture));
     const headers={Cookie:cookie.split(';')[0]};
     const page=await handler(request('/mc-7a2f9x.html',{headers}));
-    assert.equal(page.status,200); assert.ok((await page.text()).includes('Image tracker'));
+    assert.equal(page.status,200); assert.ok((await page.text()).includes('Where to focus next'));
+    let reads=0;
+    const context={readOperations:async()=>{reads++;return {schema_version:1,project_ref:'zpclagtgczsygrgztlts',collected_at:new Date().toISOString(),secret:'must never be returned'};}};
+    assert.equal((await handler(request('/api/operator-dashboard/operations.json'),context)).status,401);assert.equal(reads,0);
+    const ops=await handler(request('/api/operator-dashboard/operations.json',{headers}),context);
+    assert.equal(ops.status,200);assert.ok(!(await ops.text()).includes('must never'));
+    assert.equal((await handler(request('/api/operator-dashboard/operations.json',{headers}),{readOperations:async()=>({project_ref:'wrong'})})).status,503);
+    assert.equal((await handler(request('/api/operator-dashboard/operations.json',{headers,method:'POST'}),context)).status,405);
     const snapshot=await handler(request('/api/operator-dashboard/snapshot.json',{headers}));
     assert.equal(snapshot.status,200); assert.ok((await snapshot.text()).length < 5_500_000);
     assert.equal((await handler(request('/api/operator-dashboard/legacy-operations.html',{headers}))).status,404);
