@@ -3,12 +3,13 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
+<script src="/assets/js/lib/jamb-question-trust.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB CBT Mock Exam — AfroJAMB</title>
-<meta name="description" content="Take a free, full JAMB CBT mock exam. 4 subjects, 180 questions, 2 hours. Pixel-perfect simulation of the real JAMB CBT interface. No sign-up needed.">
+<meta name="description" content="Practise with reviewed JAMB questions, a timer, saved progress and an answer review. Available questions determine session length. No sign-up needed.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="JAMB CBT Mock Exam — AfroJAMB">
-<meta property="og:description" content="Practice JAMB like the real thing. Free CBT simulator with 16,000+ past questions.">
+<meta property="og:description" content="Free timed practice using reviewed JAMB questions, with honest coverage and answer feedback.">
 <meta property="og:url" content="https://afrotools.com/jamb/cbt/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -83,7 +84,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     <div class="jb-wrap jb-hero-z">
       <span class="jb-hero-tag"><span class="pulse" aria-hidden="true"></span>Free Mock Exam</span>
       <h1>Set Up Your <b>JAMB CBT Mock</b></h1>
-      <p class="sub">Choose your subjects. We'll build a real exam-like session with past questions, a working timer, and an interface that mirrors the actual JAMB CBT.</p>
+      <p class="sub">Choose your subjects for timed practice with reviewed questions. Session length depends on the reviewed questions available; results describe this practice session.</p>
     </div>
   </section>
 
@@ -99,19 +100,19 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
             <input aria-label="Mode" type="radio" name="mode" value="quick" class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">⚡</div>
             <div class="mc-name">Quick Mock</div>
-            <div class="mc-meta">10 Qs × 4 subjects · 30 min</div>
+            <div class="mc-meta">Up to 10 Qs per subject · 30 min</div>
           </label>
           <label class="mode-card selected" data-mode="full">
             <input aria-label="Mode" type="radio" name="mode" value="full" checked class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">🎯</div>
             <div class="mc-name">Full Mock</div>
-            <div class="mc-meta">40 Qs × 4 subjects · 2 hrs</div>
+            <div class="mc-meta">Up to 40 Qs per subject · 2 hrs</div>
           </label>
           <label class="mode-card" data-mode="subject">
             <input aria-label="Mode" type="radio" name="mode" value="subject" class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">📚</div>
             <div class="mc-name">Single Subject</div>
-            <div class="mc-meta">40 Qs · 40 min</div>
+            <div class="mc-meta">Up to 40 Qs · 40 min</div>
           </label>
         </div>
       </fieldset>
@@ -125,7 +126,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         </div>
       </fieldset>
 
-      <div id="setup-warning" hidden style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:14px;padding:16px 18px;margin-bottom:14px;font-size:.8rem;line-height:1.55;color:#9a3412;"></div>
+      <p><a href="/tools/education-hub/">Plan your study in the Education Hub</a></p>
+      <div id="setup-warning" role="status" aria-live="polite" hidden style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:14px;padding:16px 18px;margin-bottom:14px;font-size:.8rem;line-height:1.55;color:#9a3412;"></div>
 
       <div id="resume-card" hidden style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:14px;padding:18px 20px;margin-bottom:14px;">
         <div style="font-size:.84rem;font-weight:800;color:#0f172a;margin-bottom:4px;">Resume your saved mock</div>
@@ -182,6 +184,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
           <span class="cbt-q-num" id="cbt-q-num">Q1</span>
           <span id="cbt-q-info">— · — / —</span>
         </div>
+        <p id="cbt-passage" style="white-space:pre-wrap;"></p>
         <h2 class="cbt-q-text" id="cbt-q-text">Loading…</h2>
         <div class="cbt-options" id="cbt-options"></div>
         <div class="cbt-actions">
@@ -242,15 +245,15 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   <section class="jb-hero" style="padding:40px 0 48px;">
     <div class="jb-wrap jb-hero-z">
       <span class="jb-hero-tag">✓ Mock Complete</span>
-      <h2>Your <b>JAMB Score</b></h2>
-      <p class="sub">Aggregate (out of 400) and per-subject breakdown. The real exam will feel familiar after this.</p>
+      <h2>Your <b>Practice Result</b></h2>
+      <p class="sub">Your practice answers by subject, with a scaled aggregate. This is not an official UTME score or an admission prediction.</p>
     </div>
   </section>
 
   <section class="jb-sec">
     <div class="jb-wrap" style="max-width:780px;">
       <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center;">
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px;">Aggregate Score</div>
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px;">Scaled Practice Aggregate</div>
         <div id="result-aggregate" style="font-size:4rem;font-weight:800;color:#0062CC;line-height:1;letter-spacing:-.02em;">—</div>
         <div style="font-size:.86rem;color:#64748b;margin-top:8px;">out of 400 · <span id="result-pct">—</span>% correct</div>
       </div>
@@ -281,6 +284,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 </div>
 
 <style>
+#setup-screen[hidden], #cbt-shell[hidden], #results-screen[hidden] { display: none !important; }
 .mode-card {
   display:block;
   padding:16px;
@@ -580,6 +584,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   margin-bottom: 8px;
 }
 @media (max-width: 820px) {
+  #cbt-shell .cbt-nav { position: static; top: auto; }
   #cbt-submit-top {
     min-height: 44px;
     padding: 12px 18px !important;
@@ -606,6 +611,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 // SETUP SCREEN LOGIC
 // =====================================================================
 var POOL = null;
+var POOL_REVISION = null;
 var POOL_STATS = null;
 var RESUME_SNAPSHOT = null;
 var CBT_EVENTS_BOUND = false;
@@ -671,21 +677,13 @@ function updateSetupState() {
   }
 
   var coverage = getCoverageSummary();
-  if (coverage.total > 0 && coverage.gradable === coverage.total) {
-    warning.hidden = true;
-    startBtn.textContent = "Start CBT Mock →";
-    return;
+  warning.hidden = coverage.gradable >= coverage.total;
+  startBtn.textContent = "Start Reviewed Practice →";
+  if (!coverage.gradable) {
+    warning.textContent = "No reviewed questions are available for this selection yet. No score will be generated. Use the Education Hub to plan your study while the bank is reviewed.";
+  } else if (coverage.gradable < coverage.total) {
+    warning.textContent = "Up to " + coverage.gradable + " reviewed questions are available for this selection. This is a limited practice session, not a complete exam paper.";
   }
-
-  warning.hidden = false;
-  if (coverage.gradable === 0) {
-    warning.textContent = "This subject selection has no confirmed answer keys yet. You can still practise the CBT interface, but this run will be practice-only and will not produce a reliable score.";
-    startBtn.textContent = "Start Practice Session →";
-    return;
-  }
-
-  warning.textContent = "Only " + coverage.gradable + " of " + coverage.total + " selected questions currently have confirmed answer keys. AfroJAMB will still let you practise the full paper, but your score will be calculated only from the graded questions.";
-  startBtn.textContent = "Start Partly Graded Mock →";
 }
 
 // Mode picker
@@ -707,7 +705,7 @@ function renderSubjectPicker() {
     var meta = SUBJ_META[key];
     var answered = getAnsweredCount(key);
     var coverageText = POOL_STATS
-      ? (answered > 0 ? answered + " graded questions" : "practice only for now")
+      ? (answered > 0 ? answered + " reviewed questions" : "awaiting reviewed questions")
       : "checking coverage";
     var btn = document.createElement("button");
     btn.type = "button";
@@ -755,8 +753,7 @@ renderSubjectPicker();
 
 async function loadPoolStats() {
   try {
-    var res = await fetch("/data/jamb/pools/index.json");
-    var data = await res.json();
+    var data = await AfroJAMB.QuestionTrust.fetchIndex();
     POOL_STATS = (data && data.stats && data.stats.by_subject) || null;
   } catch (e) {
     POOL_STATS = null;
@@ -765,10 +762,12 @@ async function loadPoolStats() {
 }
 
 async function ensurePoolLoaded() {
-  if (POOL) return POOL;
-  var res = await fetch("/data/jamb/pools/practice-pool.json");
-  var data = await res.json();
-  POOL = (data.questions || []).filter(isLaunchSafeQuestion);
+  POOL = null;
+  POOL_REVISION = null;
+  var data = await AfroJAMB.QuestionTrust.loadPool("/data/jamb/pools/practice-pool.json");
+  POOL = data.questions.filter(isLaunchSafeQuestion);
+  POOL_REVISION = data.review_revision;
+  if (!POOL.length) throw new Error("No reviewed questions are available yet. Use the Education Hub study planner while this bank is reviewed.");
   return POOL;
 }
 
@@ -825,9 +824,10 @@ document.getElementById("resume-btn").addEventListener("click", async function (
     await ensurePoolLoaded();
     startCBT(RESUME_SNAPSHOT);
   } catch (e) {
-    alert("Could not resume this saved mock. Start a fresh one instead.");
+    showPracticeUnavailable("This saved session cannot resume: " + e.message);
     this.disabled = false;
-    setTimeout(updateSetupState, 0);
+    RESUME_SNAPSHOT = null;
+    document.getElementById("resume-card").hidden = true;
   }
 });
 
@@ -850,7 +850,7 @@ document.getElementById("start-btn").addEventListener("click", async function(){
     await ensurePoolLoaded();
     startCBT();
   } catch(e) {
-    alert("Failed to load questions. Please try again.");
+    showPracticeUnavailable(e.message);
     this.disabled = false;
     this.textContent = "Start CBT Mock →";
   }
@@ -864,12 +864,20 @@ window.addEventListener("load", function () {
 // =====================================================================
 // CBT SESSION
 // =====================================================================
+function showPracticeUnavailable(message) {
+  document.getElementById("setup-screen").hidden = false;
+  document.getElementById("cbt-shell").hidden = true;
+  var warning = document.getElementById("setup-warning");
+  warning.hidden = false;
+  warning.setAttribute("role", "status");
+  warning.textContent = message;
+}
+
 function startCBT(resumeSnapshot) {
-  document.getElementById("setup-screen").hidden = true;
-  document.getElementById("cbt-shell").hidden = false;
 
   var cfg = {
     pool: POOL,
+    poolRevision: POOL_REVISION,
     subjects: SELECTED_SUBJECTS,
     mode: SELECTED_MODE === "quick" ? "quick" : (SELECTED_MODE === "subject" ? "subject" : "full"),
     questionsPerSubject: SELECTED_MODE === "quick" ? 10 : 40,
@@ -894,9 +902,10 @@ function startCBT(resumeSnapshot) {
       }
     }
   } catch(e) {
-    alert("Could not start: " + e.message);
-    return;
+    throw e;
   }
+  document.getElementById("setup-screen").hidden = true;
+  document.getElementById("cbt-shell").hidden = false;
 
   lastMilestoneSpoken = null;
   closeSubmitDialog(false);
@@ -1070,7 +1079,7 @@ function renderSubjectsBar() {
   bar.innerHTML = "";
   bar.setAttribute("role", "tablist");
   bar.setAttribute("aria-label", "Subjects");
-  state.subjects.forEach(function(s){
+  state.subjects.filter(function(s){ return !!state.subjectIndex[s]; }).forEach(function(s){
     var meta = SUBJ_META[s] || {emoji:"📚", label:s};
     var isActive = s === state.currentSubject;
     var btn = document.createElement("button");
@@ -1099,6 +1108,7 @@ function renderQuestion() {
   var subjLbl = (SUBJ_META[data.currentSubject] && SUBJ_META[data.currentSubject].label) || data.currentSubject;
   document.getElementById("cbt-q-num").textContent = "Q" + data.indexInSubject;
   document.getElementById("cbt-q-info").textContent = subjLbl + " · " + data.indexInSubject + " / " + data.subjectTotal;
+  document.getElementById("cbt-passage").textContent = q.passage || "";
   document.getElementById("cbt-q-text").textContent = q.question;
 
   var optsBox = document.getElementById("cbt-options");
@@ -1180,7 +1190,10 @@ function renderNavGrid() {
 
 function submitTest(timedOut) {
   closeSubmitDialog(false);
-  var score = AfroJAMB.CBT.submit();
+  var score;
+  try { score = AfroJAMB.CBT.submit(); }
+  catch (error) { showPracticeUnavailable(error.message); return; }
+  if (!score || !score.outOf) { showPracticeUnavailable("No reviewed questions were scored. Start a new reviewed practice session."); return; }
   document.getElementById("cbt-shell").hidden = true;
   document.getElementById("results-screen").hidden = false;
   if (score.outOf === 0) {
@@ -1347,8 +1360,10 @@ function renderReviewCard(r) {
     + '</div>';
 
   card.innerHTML = meta
+    + (r.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(r.passage) + '</p>' : '')
     + '<div class="rev-q">' + escapeHtml(r.question) + '</div>'
     + '<div class="rev-opts">' + optsHtml + '</div>'
+    + '<p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>'
     + actionsHtml;
 
   card.querySelector(".explain-btn").addEventListener("click", async function(){
@@ -1356,17 +1371,17 @@ function renderReviewCard(r) {
     btn.disabled = true;
     btn.textContent = "Asking AI…";
     try {
-      var prompt = "Explain this JAMB " + r.subject + " question step by step. "
-        + (r.pickedAnswer ? "I picked option " + r.pickedAnswer + ". " : "I skipped this. ")
-        + (r.correctAnswer ? "The correct answer is " + r.correctAnswer + ". " : "")
-        + "Why is the correct answer right? "
-        + "Question: " + r.question + "\nOptions:\n"
-        + Object.entries(r.options).map(function(p){return p[0]+". "+p[1];}).join("\n");
+      if (!window.confirm("AI Assist will send this reviewed question ID and the public question content to our AI provider for an explanation. Continue? You can cancel and use the reviewed answer locally.")) {
+        btn.disabled = false; btn.textContent = "Explain with AI"; return;
+      }
+      await AfroJAMB.QuestionTrust.fetchIndex();
+      AfroJAMB.QuestionTrust.assertEligible(POOL, POOL_REVISION);
       var res = await fetch("/.netlify/functions/ai-advisor", {
         method: "POST",
         headers: await buildAiHeaders(),
-        body: JSON.stringify({tool: "jamb-tutor-" + r.subject, message: prompt})
+        body: JSON.stringify({tool: "jamb-tutor-" + r.subject, question_id: r.id, pool_revision: POOL_REVISION, message: "Explain this reviewed question step by step.", aiConsent: "accepted"})
       });
+      if (!res.ok) throw new Error("AI explanation unavailable");
       var data = await res.json();
       var reply = data.reply || data.message || data.response || "Could not generate explanation.";
       var box = document.createElement("div");

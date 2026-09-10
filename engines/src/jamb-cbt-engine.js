@@ -1,6 +1,10 @@
 !function(e) {
   "use strict";
   var n = "afrojamb-cbt-state", t = null, r = null, u = null;
+  function requireReviewed(pool, revision) {
+    if (!e.AfroJAMB || !e.AfroJAMB.QuestionTrust) throw new Error("Reviewed question verification is unavailable.");
+    e.AfroJAMB.QuestionTrust.assertEligible(pool, revision);
+  }
   function s() {
     return ([ 1e7 ] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function(e) {
       return (e ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> e / 4).toString(16);
@@ -90,6 +94,7 @@
       if (e = e || {}, !Array.isArray(e.pool)) {
         throw new Error("CBT.init requires config.pool (question array)");
       }
+      requireReviewed(e.pool, e.poolRevision);
       var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ], r = e.questionsPerSubject || ("quick" === e.mode ? 10 : 40), u = e.durationMinutes || ("quick" === e.mode ? 30 : 120), a = !0 === e.answeredOnly, f = [];
       if (n.forEach(function(n) {
         var t = e.pool.filter(function(t) {
@@ -117,7 +122,7 @@
         answers: {},
         marked: {},
         currentIndex: 0,
-        currentSubject: n[0],
+        currentSubject: f[0].subject,
         startedAt: Date.now(),
         durationMs: 60 * u * 1e3,
         submitted: !1,
@@ -160,6 +165,8 @@
       if (!t) {
         return null;
       }
+      requireReviewed(t.questions, t.poolRevision);
+      if (!t.questions.length) throw new Error("No reviewed questions to score.");
       t.submitted = !0, r && clearInterval(r), u && clearInterval(u);
       var e = 0, n = 0, s = {}, o = {}, c = {}, i = {};
       t.subjects.forEach(function(e) {
@@ -188,10 +195,13 @@
         var r = t.answers[n] || null, u = !!e.answer, s = u && r === e.answer;
         return {
           index: n,
+          id: e.id,
           subject: e.subject,
           year: e.year,
           num: e.num,
           question: e.question,
+          passage: e.passage || "",
+          explanation: e.explanation || e.ai_explanation || "",
           options: e.options,
           correctAnswer: e.answer,
           pickedAnswer: r,
@@ -229,6 +239,7 @@
           },
           body: JSON.stringify({
             session_id: t.sessionId,
+            pool_revision: t.poolRevision,
             mode: t.mode,
             subjects: t.subjects,
             score: t.score.aggregate,
@@ -267,7 +278,9 @@
       if (!Array.isArray(e.pool)) {
         throw new Error("CBT.restore requires config.pool (question array)");
       }
-      var r = {};
+      try { requireReviewed(e.pool, e.poolRevision); }
+      catch (error) { t = null; a(); throw error; }
+      var r = Object.create(null);
       e.pool.forEach(function(e) {
         e && e.id && (r[e.id] = e);
       });
@@ -278,7 +291,7 @@
         t = null, a();
         throw new Error("CBT.restore: saved questions changed; start a new practice session");
       }
-      if (e.poolRevision && e.poolRevision !== n.poolRevision) {
+      if (!e.poolRevision || e.poolRevision !== n.poolRevision) {
         t = null, a();
         throw new Error("CBT.restore: question reviews changed; start a new practice session");
       }
@@ -292,7 +305,10 @@
         subjects: o,
         subjectIndex: c(o, u),
         questions: u,
-        answers: n.answers || {},
+        answers: Object.keys(n.answers || {}).reduce(function (answers, key) {
+          if (/^(0|[1-9][0-9]*)$/.test(key) && u[Number(key)] && Object.prototype.hasOwnProperty.call(u[Number(key)].options, n.answers[key])) answers[key] = n.answers[key];
+          return answers;
+        }, {}),
         marked: n.marked || {},
         currentIndex: Math.max(0, Math.min(n.currentIndex || 0, u.length - 1)),
         currentSubject: n.currentSubject || o[0],
