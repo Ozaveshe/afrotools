@@ -8,13 +8,13 @@ const ROOT = path.resolve(__dirname, '..');
 
 function buildAudit(root = ROOT) {
   const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-  const pool = read('data/jamb/pools/practice-pool.json');
+  const pool = read('ops/jamb/source-pool.json');
   const ledger = read('data/jamb/review-ledger.json');
   if (ledger.schema_version !== 1) throw new Error('Unsupported JAMB review ledger schema');
   const audit = auditQuestions(pool.questions, ledger);
   const sourceFiles = {}; const rawById = new Map();
   for (const subject of Object.keys(audit.subjects)) {
-    const file = 'data/jamb/' + subject + '.json';
+    const file = 'ops/jamb/raw/' + subject + '.json';
     if (!fs.existsSync(path.join(root, file))) continue;
     for (const q of read(file).questions || []) {
       if (!rawById.has(q.id)) rawById.set(q.id, []);

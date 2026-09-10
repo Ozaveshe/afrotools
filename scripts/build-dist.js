@@ -162,6 +162,7 @@ const ALLOWED_RELATIVE_FILES = new Set([
 ]);
 
 const BLOCKED_RELATIVE_FILES = new Set([
+  'data/jamb/review-ledger.json',
   'assets/js/ai/prompt-registry.js',
   'fr/widgets/iframe/template.html',
   'tools/afrostream/admin.html',
@@ -180,6 +181,7 @@ const BLOCKED_RELATIVE_DIRS = new Set([
 ]);
 
 const BLOCKED_RELATIVE_FILE_PATTERNS = [
+  /^data\/jamb\/(?!universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
   /^assets\/css\/matchday-os(?:\.min)?\.css$/i,
   /^assets\/js\/matchday-os(?:\.min)?\.js$/i
 ];

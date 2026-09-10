@@ -563,7 +563,7 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body || '{}'); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
-  const { message, messages, tool, context, matchedTool, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
+  let { message, messages, tool, context, matchedTool, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
   const promptInspection = guardrails.inspectPrompt(
     { message, messages, context, system: clientSystem, tool },
     { maxChars: guardrails.ADVISOR_PROMPT_LIMIT }
@@ -578,6 +578,17 @@ exports.handler = async function(event) {
 
   const contentConsentRejection = rejectSensitivePayloadWithoutConsent(event, body, headers);
   if (contentConsentRejection) return contentConsentRejection;
+
+  // Bank explanations are resolved on the server. Never accept a client-supplied
+  // "correct answer" as reviewed material or send quarantined bank text to AI.
+  if (/^jamb-tutor(?:-|$)/.test(String(tool || '')) || body.question_id !== undefined) {
+    try {
+      body = require('./_shared/jamb-reviewed-data').reviewedTutorRequest(body);
+      ({ message, messages, context, matchedTool, system: clientSystem, userContext: clientUserCtx } = body);
+    } catch {
+      return { statusCode: 409, headers, body: JSON.stringify({ error: 'question_unavailable', reply: 'This question is not available in the current reviewed bank. Refresh the practice page.' }) };
+    }
+  }
 
   const providerInfo = aiProvider.getProviderInfo({ purpose: 'generation', method: 'explainResult' });
   if (!providerInfo.enabled) {

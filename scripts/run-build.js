@@ -6,6 +6,7 @@ const { performance } = require('perf_hooks');
 const path = require('path');
 
 const STAGES = [
+  'build:jamb',
   'build:registry',
   'build:surfaces',
   'build:assets',

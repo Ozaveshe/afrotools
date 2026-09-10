@@ -15,6 +15,7 @@ const routeContract = require('./lib/route-contract');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
+require('./build-jamb-sitemap').build(ROOT);
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
 const LOCAL_TODAY = [

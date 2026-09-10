@@ -288,6 +288,7 @@ async function sendMessage() {
   var input = document.getElementById("msg-input");
   var text = input.value.trim();
   if (!text) return;
+  if (!window.confirm('Send this question and your recent tutor messages to the AI service? AI guidance can contain mistakes and is not a reviewed answer key. Avoid personal information. Cancel to keep your text here and use the study planner instead.')) return;
 
   if (!hasTrackedTutorContact && typeof window.fbq === "function") {
     window.fbq("track", "Contact", {
@@ -310,9 +311,10 @@ async function sendMessage() {
       method: "POST",
       headers: await buildAiHeaders(),
       body: JSON.stringify({
-        tool: "jamb-tutor-" + currentSubject,
+        tool: "jamb-study-tutor-" + currentSubject,
+        aiConsent: "accepted",
         message: text,
-        history: conversationHistory.slice(-10),
+        messages: conversationHistory.slice(-10),
       }),
     });
     var data = await res.json();

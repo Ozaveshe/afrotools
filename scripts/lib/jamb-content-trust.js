@@ -24,9 +24,14 @@ function questionFingerprint(question) {
 }
 
 function nonempty(value) { return typeof value === 'string' && value.trim().length > 0; }
+function validReviewDate(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(value + 'T00:00:00Z');
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
 function completeReview(review) {
   return !!review && review.status === 'accepted' && nonempty(review.reviewer)
-    && /^\d{4}-\d{2}-\d{2}$/.test(review.reviewed_at || '') && nonempty(review.evidence);
+    && validReviewDate(review.reviewed_at) && nonempty(review.evidence);
 }
 
 function assessQuestion(question, ledger = { questions: {}, sources: {} }, context = {}) {
@@ -70,7 +75,7 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   const permission = source && source.permission;
   if (!permission || permission.status !== 'permitted' || !SOURCED_PERMISSION_BASES.has(permission.basis)
       || !nonempty(permission.evidence) || !nonempty(permission.reviewed_by)
-      || !/^\d{4}-\d{2}-\d{2}$/.test(permission.reviewed_at || '')) reasons.push('permission_unverified');
+      || !validReviewDate(permission.reviewed_at)) reasons.push('permission_unverified');
   return { id: q.id || null, subject: q.subject || null, content_sha256: fingerprint,
     state: reasons.length ? 'quarantined' : 'eligible', reasons };
 }

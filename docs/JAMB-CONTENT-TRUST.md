@@ -1,8 +1,9 @@
 # AfroJAMB content review and publication
 
 This workflow is being implemented in Step 4 of the September 2026 release plan.
-The audit and four-page repair are implemented. Full public-pool, static-page,
-email, tutor, flashcard and deployment enforcement remains pending. Do not treat
+The source audit, preserved inputs, reviewed data generation and server gates
+are implemented locally. Browser and full static-page changes are being
+integrated. Full release validation and deployment remain pending. Do not treat
 an audit result or this document as proof that production is quarantined.
 
 ## Existing source limitations
@@ -43,14 +44,54 @@ Source records include a `permission` object with `status: permitted`, a basis
 (`written-permission`, `open-license` or `original-work`), evidence reference,
 `reviewed_by`, and `reviewed_at`. A PDF filename or a publicly accessible URL
 alone is insufficient. Keep private agreements and reviewer contact information
-out of public artifacts. The forthcoming public dataset should expose only
-appropriate attribution and review status.
+out of public artifacts. The review ledger is excluded from the static deploy.
+Any licence-specific public attribution must be checked before approving content.
 
 The mechanical gate checks evidence completeness and content integrity. It
 does not independently establish whether a reviewer is qualified or a source
 permission claim is valid. Those records require actual editorial verification.
 
 ## Reproducible checks and repairs
+
+Original practice, index, patterns, flashcards and raw subject data are preserved
+under `ops/jamb/`, which is excluded from the website artifact. This is a deploy
+boundary, not an assertion that repository access is private. Store confidential
+agreements outside the repository; use evidence references in the ledger.
+
+`npm run jamb:data:build` generates all 15 public datasets. `jamb:data:check`
+compares them with source and review evidence. A single deterministic revision
+pins the source question pool, source flashcards, ledger and publication policy.
+Every dataset has a `publication.policy: reviewed-only` envelope and content
+digest. Questions and approved cards/decks carry individual review digests.
+Digests detect stale or changed content; they are not cryptographic signatures
+or independent evidence of editorial review. Empty datasets are valid and do
+not imply any questions have passed review.
+
+Flashcard reviews use `ledger.flashcards[stable_card_id]` with the normalized
+card fingerprint, `source_id`, `front_review` and `back_review`. Generate the
+stable ID with `normalizeCard` in `scripts/lib/jamb-publication.js`. MCQ approval
+does not approve a flashcard. Topic datasets describe reviewed historical
+coverage; they contain no future-topic predictions.
+
+The server reads the reviewed pool and rechecks question fingerprints and
+review evidence. Attempts must carry the current `pool_revision`; scores are
+recomputed from canonical answer keys. The retained 0–400 storage scale is
+practice performance, not a validated forecast. Anonymous records are not
+proof of real student completion or retention.
+
+Daily signup requires the current revision and available reviewed subjects.
+Sending pauses before reading subscribers if no reviewed email-safe questions
+are available. Visual questions are omitted from email until its renderer can
+preserve their supporting assets. Unsubscribe remains independent of content
+availability. Bank tutor calls require reviewed `question_id`/`pool_revision`
+and explicit AI consent; the server ignores client-supplied answer context.
+Freeform study guidance is separate and does not become a reviewed answer key.
+
+`npm run build:jamb` owns data, subject/year pages and their sitemap before other
+build stages. `npm run jamb:publication:audit` compares the built public data
+with current reviewed source and rejects extra JAMB files. `audit:dist` includes
+this gate. `npm run jamb:sitemap` discovers canonical, indexable JAMB routes;
+zero-approved subject/year notices must stay out of the sitemap.
 
 `npm run jamb:content:audit` writes a per-record audit to the excluded reports
 directory. `--output` can instead select an external evidence path. `--check`

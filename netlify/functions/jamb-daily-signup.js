@@ -9,6 +9,7 @@
  *   { channel: 'whatsapp'|'email', contact: '...', subjects: [...], send_hour: 8 }
  */
 const { createClient } = require("@supabase/supabase-js");
+const { dailyAvailability } = require('./_shared/jamb-reviewed-data');
 
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_SERVICE_KEY =
@@ -33,6 +34,7 @@ function json(statusCode, body) {
     statusCode: statusCode,
     headers: Object.assign({}, corsHeaders(), {
       "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
     }),
     body: JSON.stringify(body),
   };
@@ -50,7 +52,7 @@ function html(statusCode, body) {
 
 function getChannelCapabilities() {
   return {
-    email: !!(SUPABASE_SERVICE_KEY && RESEND_API_KEY),
+    email: !!(SUPABASE_SERVICE_KEY && RESEND_API_KEY && dailyAvailability().available_subjects.length),
     whatsapp: false,
   };
 }
@@ -139,9 +141,10 @@ exports.handler = async (event) => {
     return json(200, {
       ok: true,
       capabilities: getChannelCapabilities(),
+      review: dailyAvailability(),
       timezone: "Africa/Lagos",
       notes: {
-        email: RESEND_API_KEY ? "Email delivery is live." : "Email delivery is not configured yet.",
+        email: !dailyAvailability().available_subjects.length ? "Daily questions are awaiting content review." : getChannelCapabilities().email ? "Email delivery is available." : "Email delivery is not configured yet.",
         whatsapp: "WhatsApp daily delivery stays hidden until an approved Meta template flow is connected.",
       },
     });
@@ -180,6 +183,11 @@ exports.handler = async (event) => {
   }
 
   var capabilities = getChannelCapabilities();
+  var review = dailyAvailability();
+  if (body.pool_revision !== review.review_revision || cleanSubjects.length !== subjects.length
+      || cleanSubjects.some(function (subject) { return !review.available_subjects.includes(subject); })) {
+    return json(409, { error: 'Selected subjects are not available in the current reviewed bank.', review: review });
+  }
   if (!capabilities[channel]) {
     return json(409, {
       error: channel === "email" ? "Email delivery is not configured yet." : "WhatsApp delivery is not live yet.",

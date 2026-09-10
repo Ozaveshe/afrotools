@@ -20,6 +20,7 @@ const REQUIRED_PATHS = [
 ];
 
 const FORBIDDEN_PATHS = [
+  'data/jamb/review-ledger.json',
   'data/image-generation',
   'assets/img/new',
   'package.json',
@@ -63,6 +64,7 @@ const FORBIDDEN_PATHS = [
 ];
 
 const FORBIDDEN_FILE_PATTERNS = [
+  /^data\/jamb\/(?!pools$|universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
   /(^|\/)package(?:-lock)?\.json$/i,
   /^.*\.(?:pid|exit)$/i,
   /^.*\.md$/i,
@@ -150,6 +152,8 @@ function main() {
     }
 
     auditLocalScriptRefs(failures);
+    try { require('./audit-jamb-publication').audit(DIST); }
+    catch (error) { failures.push('JAMB review publication: ' + error.message); }
   }
 
   if (failures.length) {
