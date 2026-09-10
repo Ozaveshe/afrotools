@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-08-22
+Generated: 2026-09-10
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -85,17 +85,17 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/` | 589 | brand or platform name | Akwai da Hausa Kiyasin amfani da intanet Kiyasta yawan bayanan intanet da lilo, bidiyo, WhatsApp da aiki ke bukata. Bude kayan aiki | Batch 2 - Hausa hub visible-copy cleanup |
 | `/ha/kayan-aiki/` | 610 | brand or platform name | Akwai da Hausa Kalkuletan Paystack Kiyasta caji da abin da zai shigo bayan cire kudin Paystack, sannan tabbatar da jadawalin kamfani. Bude jagora | Batch 2 - Hausa hub visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-gpa-cgpa/` | 25 | English route label marked as fallback | Bayanan maki Jimillar maki na zango Jimillar raka'o'i na zango Jimillar maki na baya Raka'o'in baya Lissafa Abin lura Wasu jami'o'i suna amfani da 5.0, wasu 4.0. Wannan kayan aiki yana raba jimillar maki da jimillar r... | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 63 | brand or platform name | Gida / Kayan aiki / Kuɗin Paystack Hanyar shafi | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 65 | brand or platform name | Shirya kuɗin Paystack ba tare da ɓoye zato ba. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 75 | brand or platform name | Ranar fara aiki Paystack ba ta wallafa ba | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 80 | brand or platform name | Zaɓi ƙasar ɗan kasuwa da hanyar da Paystack ta lissafo. An kulle kuɗi da ƙasar. Shirin wata da net da ake so ƙayyadadden lissafi ne, ba hasashe ko quote ba. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 108 | brand or platform name | Kenya Katin gida / M-PESA / na waje 2.9% / 1.5% / 3.8% Ba a yi hasashe ba | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 112 | brand or platform name | Ana nuna adadi zuwa decimal biyu. Don net da ake so, engine yana duba kowane reshen waiver ko cap sannan ya dawo da cent mafi ƙanƙanta da ya kai net; cent ɗin da ya gabata dole ya gaza. Ka’idar mark-up ta Paystack tan... | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 113 | brand or platform name | Dashboard da yarjejeniyar ɗan kasuwa ta Paystack su ne bayanan ƙarshe, musamman idan akwai farashi na musamman. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 116 | brand or platform name | Tambayoyi kan kuɗin Paystack | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 117 | brand or platform name | Biyan da bai kai NGN 2,500 ba kyauta ne? A'a. A cinikin gida na Najeriya da bai kai NGN 2,500 ba, Paystack tana cire tsayayyen NGN 100 ne kawai. Har yanzu kuɗin kaso 1.5% yana aiki. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 118 | brand or platform name | Mai tsara kuɗin yana ƙara haraji kan kuɗin Paystack? Yana ƙara VAT 15% ga kuɗin Afirka ta Kudu kawai domin Paystack ta wallafa farashin a matsayin wanda bai haɗa VAT ba. Ba ya hasashen haraji ga Najeriya, Ghana ko Kenya. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/kalkuletan-paystack/` | 120 | brand or platform name | Yaushe aka duba waɗannan farashin Paystack? An sabunta tushen farashin Paystack a 20 Mayu 2026, AfroTools kuma ta duba shi a 23 Yuli 2026. Paystack ba ta wallafa ranar fara aiki guda ba. Za a toshe lissafin bayan 21 O... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 64 | brand or platform name | Gida / Kayan aiki / Kuɗin Paystack Hanyar shafi | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 66 | brand or platform name | Shirya kuɗin Paystack ba tare da ɓoye zato ba. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 76 | brand or platform name | Ranar fara aiki Paystack ba ta wallafa ba | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 81 | brand or platform name | Zaɓi ƙasar ɗan kasuwa da hanyar da Paystack ta lissafo. An kulle kuɗi da ƙasar. Shirin wata da net da ake so ƙayyadadden lissafi ne, ba hasashe ko quote ba. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 109 | brand or platform name | Kenya Katin gida / M-PESA / na waje 2.9% / 1.5% / 3.8% Ba a yi hasashe ba | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 113 | brand or platform name | Ana nuna adadi zuwa decimal biyu. Don net da ake so, engine yana duba kowane reshen waiver ko cap sannan ya dawo da cent mafi ƙanƙanta da ya kai net; cent ɗin da ya gabata dole ya gaza. Ka’idar mark-up ta Paystack tan... | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 114 | brand or platform name | Dashboard da yarjejeniyar ɗan kasuwa ta Paystack su ne bayanan ƙarshe, musamman idan akwai farashi na musamman. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 117 | brand or platform name | Tambayoyi kan kuɗin Paystack | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 118 | brand or platform name | Biyan da bai kai NGN 2,500 ba kyauta ne? A'a. A cinikin gida na Najeriya da bai kai NGN 2,500 ba, Paystack tana cire tsayayyen NGN 100 ne kawai. Har yanzu kuɗin kaso 1.5% yana aiki. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 119 | brand or platform name | Mai tsara kuɗin yana ƙara haraji kan kuɗin Paystack? Yana ƙara VAT 15% ga kuɗin Afirka ta Kudu kawai domin Paystack ta wallafa farashin a matsayin wanda bai haɗa VAT ba. Ba ya hasashen haraji ga Najeriya, Ghana ko Kenya. | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/kalkuletan-paystack/` | 121 | brand or platform name | Yaushe aka duba waɗannan farashin Paystack? An sabunta tushen farashin Paystack a 20 Mayu 2026, AfroTools kuma ta duba shi a 23 Yuli 2026. Paystack ba ta wallafa ranar fara aiki guda ba. Za a toshe lissafin bayan 21 O... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kalkuletan-waec-neco/` | 168 | brand or platform name |  WhatsApp | Batch 2 - Education and JAMB visible-copy cleanup |
 | `/ha/kayan-aiki/kasafin-dalibi/` | 41 | English route label marked as fallback | Bayanan kudi Kudin da zai shigo Kudin makaranta Haya ko masauki Abinci Sufuri Littattafai da yan bukatu Lissafa kasafi Kwafa brief din kasafi Yadda za a karanta sakamako Idan ragowar kudi ya yi kasa, fara rage abin da... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/kirkiro-invoice/` | 621 | brand or platform name | Kudin wayar hannu / WhatsApp | Batch 2 - Document, PDF, invoice, and Naira cleanup |
