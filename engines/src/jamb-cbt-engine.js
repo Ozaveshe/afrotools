@@ -26,6 +26,7 @@
     try {
       var e = {
         sessionId: t.sessionId,
+        poolRevision: t.poolRevision,
         mode: t.mode,
         subjects: t.subjects,
         subjectIndex: t.subjectIndex,
@@ -108,6 +109,7 @@
       }
       return t = {
         sessionId: s(),
+        poolRevision: e.poolRevision || null,
         mode: e.mode || "cbt-full",
         subjects: n,
         subjectIndex: c(n, f),
@@ -272,14 +274,20 @@
       var u = n.questionIds.map(function(e) {
         return r[e] || null;
       }).filter(Boolean);
-      if (0 === u.length) {
-        throw new Error("CBT.restore: saved questions are no longer available");
+      if (u.length !== n.questionIds.length || new Set(n.questionIds).size !== n.questionIds.length) {
+        t = null, a();
+        throw new Error("CBT.restore: saved questions changed; start a new practice session");
+      }
+      if (e.poolRevision && e.poolRevision !== n.poolRevision) {
+        t = null, a();
+        throw new Error("CBT.restore: question reviews changed; start a new practice session");
       }
       var o = Array.isArray(n.subjects) && n.subjects.length ? n.subjects.slice() : u.reduce(function(e, n) {
         return -1 === e.indexOf(n.subject) && e.push(n.subject), e;
       }, []);
       return t = {
         sessionId: n.sessionId || s(),
+        poolRevision: e.poolRevision || null,
         mode: n.mode || e.mode || "cbt-full",
         subjects: o,
         subjectIndex: c(o, u),
