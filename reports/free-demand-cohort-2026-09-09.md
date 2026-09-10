@@ -108,3 +108,20 @@ Only artifact digests, digest-derived version fields and parameter digest refere
 - Independent 0 / 400k / 500k / 600k / 2.2m interest fixtures compare route, readable/built shared browser, and server taxable income/tax. At 3m gross and 600k eligible interest, taxable income is 2.4m and annual tax 240k. Route/shared disposable-net presentation remains 2.16m after interest and tax; server payroll-net remains 2.76m because interest is a relief rather than a payroll withholding there. No broader presentation change is claimed.
 - PASS: node --test tests/nigeria-nta-interest.test.js (8 tests); node tests/calculation-quality.test.js (16 groups); focused Chromium run of Nigeria cohort plus tests/e2e/nigeria-nta-interest.spec.js (4/4). Browser checks include 390px overflow, saved 600k/reload/recalculation, reopened PDF values and qualification text, malformed/negative rejection and valid recovery, both legacy and NTA non-default saved modes.
 - Scoped owner refresh records only paye-browser-ng and route-ng-paye in data/calculation-quality/reviews/nigeria-nta-interest-2026-09-10.json. Only their digest/version/parameter-digest fields changed. All golden-fixture expectations, fixture-delta registry, inventory, other formula records, and tax-source dates are byte/value unchanged. These are local candidate checks; combined build, security, dist, CI and production checks belong to the coordinator.
+
+## Converter initialization and French owner review — 2026-09-10
+
+Hosted preflight of `2582b24f128c9b9a785007975e2f45a7ddf73e81` reproduced an early-interaction failure after following the Ghana guide link: the amount field could receive input while its parser script was still loading, before `convert()` existed. Commit `45f159c5b55b7422001b0cd8e4d0e1f63ff2a5a8` keeps the Ghana and Naira calculation controls disabled until initialization, calculates any restored value when ready, and shows an explicit reload message if the dependency fails. Four delayed/failed-script browser regressions and all 13 existing free-demand browser cases passed. The readiness cases also passed in hosted CI.
+
+The French parity safeguard then correctly identified exactly two changed English HTML owner fingerprints. All 14 native owner rows and dependency fingerprints were inspected. Existing inline calculation, wording and export function scripts are byte-equivalent after line-ending normalization to `fde702b6`; the shared exact-decimal engine is unchanged. Only initialization controls and messages changed.
+
+Paired French/English verification passed on the reviewed `45f159c5` tree: `tests/e2e/fr-amount-words-decimals.spec.js` passed all four browser cases, covering exact figures and complete wording, parsed JSON/TXT, real clipboard, invalid/recovery cycles, decimal grammar and the documented maximum-range difference. `tests/fr-amount-words-input.test.js` passed 14 valid and 13 invalid grammar fixtures. French product files and their existing range/grammar limits remain unchanged.
+
+Only these reviewed rows in `tests/fixtures/fr-uniquely-african-native-oracles.json` were recaptured:
+
+| English owner | Reviewed normalized HTML SHA-256 |
+| --- | --- |
+| `tools/naira-to-words/index.html` | `7662e215707c6733e8ddc201955e7b09c851b684ddd6ac9e08ed943edf3a6d4e` |
+| `tools/amount-words-gh/index.html` | `5f120a60ae93d9fff736ef15a65825c42f1ff8e398387589c2cc07b5196af108` |
+
+The two source hashes and their review commit/evidence references are the only fixture-field changes. All other owner hashes, dependency hashes, inputs, mutation/invalid scenarios, selectors and expectations remain unchanged. After recapture, `tests/fr-uniquely-african-engine.test.js` passes all 20 extracted and 14 native owner contracts. The source-normalization helper and fingerprint assertions are unchanged. Final CI and deployed proof remain coordinator-owned.
