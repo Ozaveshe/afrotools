@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-10T08:50:31.856Z",
+  "base_sha": "edb36be7b28f7524d7ae9fdddaa8fda1440d4887",
+  "scope": "Renewal of three existing conditional claims; no broader public promises or runtime changes.",
+  "reviews": [
+    {
+      "claim_key": "free.public-core",
+      "decision": "retain existing qualified wording",
+      "source_files": [
+        "docs/PRO-FENCE.md",
+        "assets/js/lib/pro-plan.js",
+        "tests/e2e/profit-margin-vip.spec.js"
+      ],
+      "evidence": "Guest browser calculations produced expected profit, margin and markup on English, French, Swahili and Hausa profit-margin routes without sign-in or paid entitlement.",
+      "limitations": [
+        "Representative routes and the existing Pro boundary were checked; this is not a claim that every feature or future feature is free."
+      ],
+      "next_review": "2026-10-10"
+    },
+    {
+      "claim_key": "free.account-creation",
+      "decision": "retain existing qualified wording",
+      "source_files": [
+        "auth/index.html",
+        "assets/js/afro-auth.js",
+        "assets/js/components/auth-modal.js",
+        "tests/e2e/auth-funnel.spec.js",
+        "tests/e2e/pro-ux.spec.js"
+      ],
+      "evidence": "Canonical signup collects name/email/password/country, calls AfroAuth.signup, and the client invokes Supabase signUp with tier free. No payment call or card field is in that path. Browser checks verified signup navigation, the signed-out Pro state, and a synthetic free account offered separate plan selection.",
+      "limitations": [
+        "No real account was created, email sent, provider checkout performed or live signup availability claimed.",
+        "Synthetic profile tests establish UI behavior, not production account provisioning."
+      ],
+      "next_review": "2026-10-10"
+    },
+    {
+      "claim_key": "performance.measured-support",
+      "decision": "retain only existing route-and-test-scoped wording; approve no speed or universal-device claim",
+      "source_files": [
+        "playwright.config.js",
+        "tests/support/static-server.js",
+        "docs/MOBILE-AUDIT-WORKFLOW.md",
+        "tests/e2e/profit-margin-vip.spec.js",
+        "scripts/mobile-network-smoke.js"
+      ],
+      "evidence": "Chromium profit-margin checks passed at 320/375/768px, including 200% zoom, dark mode, reduced motion and keyboard navigation. Two-route constrained-network smoke returned WARN, with no overflow or sub-16px controls but slow rendering and high layout shift.",
+      "limitations": [
+        "Local browser simulation, not carrier-field or production performance proof.",
+        "Warnings exclude instant, fast-on-2G, universal-browser, fully-offline or all-route support claims."
+      ],
+      "next_review": "2026-09-17"
+    }
+  ],
+  "browser_tests": {
+    "command": "npx playwright test tests/e2e/auth-funnel.spec.js tests/e2e/pro-ux.spec.js tests/e2e/profit-margin-vip.spec.js --project=chromium --workers=1 --grep 'calculates margins|mobile, 200%|homepage Sign Up Free|signed-out state explains|free account state'",
+    "environment": {
+      "AFROTOOLS_TEST_DISABLE_ANALYTICS": "1",
+      "PORT": "4189"
+    },
+    "passed": 8,
+    "failed": 0,
+    "live_mutations": 0
+  },
+  "network_smoke": {
+    "command": "node scripts/mobile-network-smoke.js --profile=africa-mobile --routes=/tools/profit-margin/,/ha/kayan-aiki/tazarar-riba/",
+    "verdict": "WARN",
+    "profile": {
+      "viewport_width": 390,
+      "download_kbps": 900,
+      "upload_kbps": 350,
+      "rtt_ms": 220,
+      "cpu_throttle": 4
+    },
+    "routes": [
+      {
+        "route": "/tools/profit-margin/",
+        "http_status": 200,
+        "dcl_ms": 12417,
+        "load_ms": 12431,
+        "lcp_ms": 12496,
+        "cls": 1.937,
+        "overflow_px": 0,
+        "controls_below_16px": 0
+      },
+      {
+        "route": "/ha/kayan-aiki/tazarar-riba/",
+        "http_status": 200,
+        "dcl_ms": 11764,
+        "load_ms": 14048,
+        "lcp_ms": 11840,
+        "cls": 3.756,
+        "overflow_px": 0,
+        "controls_below_16px": 0
+      }
+    ]
+  }
+}
