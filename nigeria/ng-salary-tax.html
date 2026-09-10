@@ -521,7 +521,7 @@
                 </div>
                 <div class="tog" data-tog="homeloan" onclick="togItem(this)" role="checkbox" aria-checked="false" tabindex="0">
                   <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div><div class="tog-label">Home Loan Interest</div><div class="tog-rate">max &#8358;500k</div></div>
+                  <div><div class="tog-label">Qualifying Home Loan Interest</div><div class="tog-rate" id="homeLoanRateLabel">Legacy PITA: max ₦500k</div></div>
                 </div>
               </div>
             </div>
@@ -554,13 +554,14 @@
             <div class="field cond-field" id="homeloanField">
               <div class="f-label">
                 <label class="f-label-text" for="homeloanAmt">Annual Home Loan Interest</label>
-                <span class="f-hint">Max &#8358;500,000/yr</span>
+                <span class="f-hint" id="homeLoanLimitHint">Legacy PITA treatment</span>
               </div>
               <div class="f-wrap">
                 <span class="f-prefix">&#8358;</span>
-                <input type="text" inputmode="numeric" class="f-input" id="homeloanAmt" placeholder="0" autocomplete="off">
+                <input type="text" inputmode="numeric" class="f-input" id="homeloanAmt" placeholder="0" autocomplete="off" aria-describedby="homeLoanHelp homeLoanError">
               </div>
-              <p class="f-note">Owner-occupied residential property only. Max &#8358;500,000 deductible under NTA.</p>
+              <p class="f-note" id="homeLoanHelp">NTA: enter only interest paid during the assessment year on a loan for developing a home you occupy. Exclude principal repayments and interest for rental or other non-qualifying property. Section 30(2)(a)(iv) has no fixed monetary cap; the &#8358;500,000 cap applies to rent relief. Claim the deduction in writing and retain supporting evidence (sections 31–32). <a href="https://nass.gov.ng/documents/download/11249" target="_blank" rel="noopener">Nigeria Tax Act 2025</a>. PITA mode retains the legacy calculator treatment, which has not been reverified here.</p>
+              <p class="f-note" id="homeLoanError" role="alert"></p>
             </div>
 
             <!-- NTA ONLY FIELDS -->
@@ -1200,17 +1201,27 @@ const fmt = n => '₦' + Math.round(n).toLocaleString('en-NG');
 const pct = n => { const v = parseFloat(n.toFixed(4)); return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 const parseNum = s => parseFloat(String(s).replace(/[^0-9.-]/g, '')) || 0;
 
+// NTA section 30(2)(a)(iv): eligible interest, not principal; no rent-relief cap.
+function readHomeLoanInterest(value) {
+  const raw = String(value).trim();
+  if (!raw) return 0;
+  if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(raw)) return NaN;
+  const amount = Number(raw.replace(/,/g, ''));
+  return Number.isFinite(amount) && amount >= 0 ? amount : NaN;
+}
 // -€-€ FORMAT INPUT ON BLUR (commas), RAW ON FOCUS -€-€
 function setupInput(id) {
   const el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('focus', function() {
-    const raw = parseNum(this.value);
+    const raw = id === 'homeloanAmt' ? readHomeLoanInterest(this.value) : parseNum(this.value);
+    if (id === 'homeloanAmt' && !Number.isFinite(raw)) return;
     this.value = raw > 0 ? raw : '';
   });
   el.addEventListener('blur', function() {
-    const raw = parseNum(this.value);
-    if (raw > 0) this.value = Math.round(raw).toLocaleString('en-NG');
+    const raw = id === 'homeloanAmt' ? readHomeLoanInterest(this.value) : parseNum(this.value);
+    if (id === 'homeloanAmt' && !Number.isFinite(raw)) return;
+    if (raw > 0) this.value = (id === 'homeloanAmt' ? raw : Math.round(raw)).toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   el.addEventListener('input', function() {
     clearTimeout(_debounceTimer);
@@ -1277,6 +1288,8 @@ function setRegime(regime, btn) {
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
   const isNTA = regime === 'nta';
+  document.getElementById('homeLoanRateLabel').textContent = isNTA ? 'NTA: eligible amount' : 'Legacy PITA: max ₦500k';
+  document.getElementById('homeLoanLimitHint').textContent = isNTA ? 'NTA: no fixed cap' : 'Legacy PITA treatment';
   document.getElementById('regNotice').classList.toggle('on', isNTA);
   document.getElementById('ntaPensionField').classList.toggle('on', isNTA);
   document.getElementById('ntaRentField').classList.toggle('on', isNTA);
@@ -1374,7 +1387,7 @@ function calcNTA(gross) {
   const nhf = isOn('nhf') ? gross * 0.025 : 0;
   const nhis = nhisRate > 0 ? gross * nhisRate : 0;
   const life = isOn('life') ? parseNum(document.getElementById('lifeAmt').value) : 0;
-  const homeloan = isOn('homeloan') ? Math.min(parseNum(document.getElementById('homeloanAmt').value), 500000) : 0;
+  const homeloan = isOn('homeloan') ? readHomeLoanInterest(document.getElementById('homeloanAmt').value) : 0;
   const statutory = pension + nhf + nhis + life + homeloan;
 
   const rent = parseNum(document.getElementById('annualRent').value);
@@ -1512,6 +1525,18 @@ function renderEmployerCost(r) {
 
 // -€-€ MAIN CALCULATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 function calculate() {
+  const homeLoanInput = document.getElementById('homeloanAmt');
+  const homeLoanError = document.getElementById('homeLoanError');
+  if (REGIME === 'nta' && isOn('homeloan') && !Number.isFinite(readHomeLoanInterest(homeLoanInput.value))) {
+    RESULT = null; window.RESULT = null;
+    document.getElementById('resultsCard').style.display = 'none';
+    homeLoanError.textContent = 'Enter qualifying annual interest as a non-negative number, or turn off this deduction.';
+    homeLoanInput.setAttribute('aria-invalid', 'true');
+    homeLoanInput.focus();
+    return;
+  }
+  homeLoanInput.removeAttribute('aria-invalid');
+  homeLoanError.textContent = '';
   let rawInput = parseNum(document.getElementById('grossSalary').value);
   if (!Number.isFinite(rawInput) || rawInput <= 0) {
     const el = document.getElementById('grossSalary');
@@ -1866,7 +1891,7 @@ async function downloadPdf() {
       sections,
       source: RESULT.regime === 'pita'
         ? 'Personal Income Tax Act (PITA), Cap P8 LFN 2004 as amended. CRA per Finance Acts 2019-2023. PAYE bands: 7%-24%. FIRS authority.'
-        : 'Nigeria Tax Act 2025, signed 26 June 2025, effective 1 January 2026. NTA bands: 0%-25%. Rent Relief replaces CRA. FIRS authority.',
+        : 'Nigeria Tax Act 2025, signed 26 June 2025, effective 1 January 2026. NTA bands: 0%-25%. Rent Relief replaces CRA. Section 30(2)(a)(iv): entered interest assumes an eligible owner-occupied development loan, excluding principal and rental property; no fixed interest cap. Sections 31-32 require a written claim and supporting evidence. Rent relief remains capped at NGN 500,000. https://nass.gov.ng/documents/download/11249',
     });
   } catch (err) {
     console.error('[AfroTools] PDF generation failed, falling back to print:', err);
