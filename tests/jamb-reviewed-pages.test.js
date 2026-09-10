@@ -4,7 +4,7 @@ const test = require('node:test');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { renderYear, validatePage, atomicWrite, jsonScript } = require('../scripts/build-jamb-reviewed-pages');
+const { existingRoutes, renderYear, validatePage, atomicWrite, jsonScript } = require('../scripts/build-jamb-reviewed-pages');
 const { questionFingerprint } = require('../scripts/lib/jamb-content-trust');
 
 test('unreviewed question text and answer schemas never enter a review page', () => {
@@ -52,6 +52,50 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
   assert.equal(page.html.includes('unreviewed-copy'), false);
+  const subjectPage = renderYear('mathematics', null, [q], ledger, ['1987']);
+  assert.deepEqual(subjectPage.approvedIds, [q.id]);
+  assert.ok(subjectPage.html.includes('href="/jamb/mathematics/1987/"'));
   const stale = renderYear('mathematics', 1987, [{ ...q, answer: 'B' }], ledger);
   assert.equal(stale.approvedIds.length, 0);
+});
+
+
+test('all existing subject and year routes are preserved even with an empty approved pool', () => {
+  const root = path.resolve(__dirname, '..');
+  const routes = existingRoutes(root);
+  const privatePath = path.join(root, 'ops/jamb/source-pool.json');
+  const pool = JSON.parse(fs.readFileSync(fs.existsSync(privatePath) ? privatePath : path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
+  const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
+  assert.equal(routes.length, 242);
+  for (const route of routes) {
+    const [subject, year] = route.split('/');
+    const years = routes.filter(item => item.startsWith(subject + '/')).map(item => item.split('/')[1]);
+    const page = renderYear(subject, year || null, [], {questions:{},sources:{}}, years);
+    const current = fs.readFileSync(path.join(root, 'jamb', route, 'index.html'), 'utf8');
+    const actual = renderYear(subject, year || null, pool.questions, ledger, years);
+    validatePage(current, actual.approvedIds, page.canonical);
+    assert.ok(current.includes('Plan your study week'));
+    if (!year) assert.ok(current.includes('Browse by year'));
+  }
+});
+
+test('all 255 JAMB documents have complete structure after regeneration', () => {
+  const root = path.resolve(__dirname, '../jamb');
+  let total = 0;
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, {withFileTypes:true})) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else if (entry.name.endsWith('.html')) {
+        total++;
+        const html = fs.readFileSync(file, 'utf8');
+        for (const tag of ['html','head','body']) {
+          assert.equal((html.match(new RegExp('<'+tag+'(?:\\s|>)','gi'))||[]).length,1,file+' opening '+tag);
+          assert.equal((html.match(new RegExp('</'+tag+'\\s*>','gi'))||[]).length,1,file+' closing '+tag);
+        }
+        assert.equal((html.match(/<article\b/g)||[]).length,(html.match(/<\/article>/g)||[]).length,file+' cards');
+      }
+    }
+  }
+  walk(root); assert.equal(total,255);
 });

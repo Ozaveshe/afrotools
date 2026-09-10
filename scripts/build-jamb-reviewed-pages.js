@@ -9,7 +9,18 @@ const ROOT = path.resolve(__dirname, '..');
 const SUBJECTS = { english: 'Use of English', mathematics: 'Mathematics', physics: 'Physics', chemistry: 'Chemistry',
   biology: 'Biology', government: 'Government', economics: 'Economics', literature: 'Literature in English',
   crk: 'Christian Religious Knowledge', commerce: 'Commerce', accounts: 'Principles of Accounts' };
-const REPAIR_ROUTES = ['commerce/1997', 'english/2000', 'english/2009', 'mathematics/1987'];
+function existingRoutes(root = ROOT) {
+  const routes = [];
+  for (const subject of Object.keys(SUBJECTS)) {
+    const dir = path.join(root, 'jamb', subject);
+    if (!fs.existsSync(dir)) continue;
+    if (fs.existsSync(path.join(dir, 'index.html'))) routes.push(subject);
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory() && /^\d{4}$/.test(entry.name) && fs.existsSync(path.join(dir, entry.name, 'index.html'))) routes.push(subject + '/' + entry.name);
+    }
+  }
+  return routes.sort();
+}
 const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 
@@ -24,18 +35,19 @@ ${q.image ? `<img src="${esc(q.image)}" alt="${esc(q.image_alt)}" loading="lazy"
 </article>`;
 }
 
-function renderYear(subject, year, candidates, ledger) {
-  if (!SUBJECTS[subject] || !/^\d{4}$/.test(String(year))) throw new Error('Unknown JAMB subject/year route');
+function renderYear(subject, year, candidates, ledger, years = []) {
+  if (!SUBJECTS[subject] || (year !== null && !/^\d{4}$/.test(String(year)))) throw new Error('Unknown JAMB subject/year route');
   const ids = new Set();
-  const approved = candidates.filter(q => q.subject === subject && String(q.year) === String(year)
+  const approved = candidates.filter(q => q.subject === subject && (year === null || String(q.year) === String(year))
     && assessQuestion(q, ledger).state === 'eligible');
   for (const q of approved) { if (ids.has(q.id)) throw new Error('Duplicate approved question ID'); ids.add(q.id); }
   approved.sort((a, b) => a.num - b.num || a.id.localeCompare(b.id));
   const name = SUBJECTS[subject];
-  const canonical = `https://afrotools.com/jamb/${subject}/${year}/`;
-  const title = `JAMB ${name} ${year} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
-  const description = approved.length ? `${approved.length} reviewed ${name} questions for the ${year} paper, with answers and explanations.`
-    : `The ${year} ${name} question collection is under review. Use the study planner while sources, questions and answer keys are checked.`;
+  const paper = year === null ? name : name + ' ' + year;
+  const canonical = `https://afrotools.com/jamb/${subject}/${year === null ? '' : year + '/'}`;
+  const title = `JAMB ${paper} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
+  const description = approved.length ? `${approved.length} reviewed ${paper} questions, with answers and explanations.`
+    : `The ${paper} question collection is under review. Use the study planner while sources, questions and answer keys are checked.`;
   const schemas = [{ '@context': 'https://schema.org', '@type': 'WebPage', name: title, url: canonical, description },
     ...approved.slice(0, 50).map(q => ({ '@context': 'https://schema.org', '@type': 'Question', name: q.question,
       text: q.question, url: canonical + '#q-' + encodeURIComponent(q.id),
@@ -56,7 +68,7 @@ function renderYear(subject, year, candidates, ledger) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-hub.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/design-system.css">
@@ -69,10 +81,11 @@ ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)
 <body class="jamb-page">
 <afro-navbar active="education"></afro-navbar>
 <main class="jb-wrap jamb-reviewed-paper">
-<nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> / ${year}</nav>
-<h1>JAMB ${esc(name)} ${year}</h1>
+<nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}</nav>
+<h1>JAMB ${esc(paper)}</h1>
+${year === null ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${years.map(value => `<a href="/jamb/${subject}/${value}/">${value}</a>`).join(' · ')}</p></nav>` : ''}
 ${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><div class="qcard-list">${approved.map(renderCard).join('\n')}</div>`
-    : `<section aria-labelledby="review-heading"><h2 id="review-heading">This paper is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
+    : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
 <p class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/tools/study-planner/">Plan your study week</a><a href="/jamb/${subject}/">All ${esc(name)} years</a></p>
 </main>
 <afro-footer></afro-footer>
@@ -115,13 +128,15 @@ function atomicWrite(file, html, validate) {
 }
 
 function main(args = process.argv.slice(2)) {
-  const pool = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/jamb/pools/practice-pool.json'), 'utf8'));
+  const privatePool = path.join(ROOT, 'ops/jamb/source-pool.json');
+  const pool = JSON.parse(fs.readFileSync(fs.existsSync(privatePool) ? privatePool : path.join(ROOT, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   const ledger = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/jamb/review-ledger.json'), 'utf8'));
-  const routes = args.includes('--all') ? [...new Set(pool.questions.filter(q => SUBJECTS[q.subject] && q.year).map(q => `${q.subject}/${q.year}`))].sort() : REPAIR_ROUTES;
+  const routes = existingRoutes();
   let written = 0;
   for (const route of routes) {
     const [subject, year] = route.split('/');
-    const page = renderYear(subject, year, pool.questions, ledger);
+    const years = routes.filter(value => value.startsWith(subject + '/')).map(value => value.split('/')[1]);
+    const page = renderYear(subject, year || null, pool.questions, ledger, years);
     const file = path.join(ROOT, 'jamb', route, 'index.html');
     if (args.includes('--write')) written += Number(atomicWrite(file, page.html, html => validatePage(html, page.approvedIds, page.canonical)));
     else validatePage(fs.readFileSync(file, 'utf8'), page.approvedIds, page.canonical);
@@ -130,4 +145,4 @@ function main(args = process.argv.slice(2)) {
 }
 
 if (require.main === module) main();
-module.exports = { esc, jsonScript, renderYear, validatePage, atomicWrite, main };
+module.exports = { existingRoutes, SUBJECTS, esc, jsonScript, renderYear, validatePage, atomicWrite, main };

@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily JAMB Question - One Question Every Day | AfroJAMB</title>
-<meta name="description" content="Get one JAMB past question delivered every morning. Free. Pick your subjects and build a daily habit with AfroJAMB.">
+<meta name="description" content="Check availability of reviewed daily JAMB questions. Subscriptions require reviewed subject content and a configured delivery channel.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Daily JAMB Question - Build the Habit">
-<meta property="og:description" content="One JAMB question every morning. Free. Delivered through the channel that is currently live.">
+<meta property="og:description" content="Daily JAMB practice opens when reviewed questions and delivery are available.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -55,6 +55,7 @@ if (typeof window.fbq === "function") {
 <link rel="canonical" href="https://afrotools.com/jamb/daily/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/daily/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/daily/">
+<script src="/assets/js/lib/jamb-question-trust.js"></script>
 </head>
 <body class="jamb-page top-level-page-ui-refresh">
 <noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
@@ -77,29 +78,15 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <section class="jb-hero" style="padding:42px 0 50px;">
   <div class="jb-wrap jb-hero-z">
     <span class="jb-hero-tag">Free Daily</span>
-    <h1>One JAMB question. <b>Every morning.</b></h1>
-    <p class="sub">A daily JAMB past question delivered to your chosen channel. Email is live now, and WhatsApp appears here as soon as delivery is connected. Pick your subjects. Build the habit. 30 seconds a day.</p>
+    <h1>Build a <b>daily study habit.</b></h1>
+    <p class="sub">Build a daily study habit. Subscriptions open when reviewed questions are available for your subjects and delivery is configured. Check availability below.</p>
   </div>
 </section>
 
 <section class="jb-sec">
   <div class="jb-wrap" style="max-width:560px;">
 
-    <div aria-label="Sample message preview" style="background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);color:#fff;border-radius:16px;padding:24px;margin-bottom:18px;">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px;">Sample - 8:00 AM</div>
-      <div style="font-size:.8rem;color:rgba(255,255,255,.88);margin-bottom:14px;">Good morning. Here is your JAMB question for today.</div>
-      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:16px;font-size:.88rem;line-height:1.55;">
-        <div style="font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#93c5fd;margin-bottom:8px;">JAMB Biology - 2018</div>
-        <div style="margin-bottom:14px;font-weight:500;">Which of the following is responsible for the swelling of seeds during germination?</div>
-        <div style="font-size:.84rem;color:rgba(255,255,255,.92);line-height:1.7;">
-          A. Imbibition<br>
-          B. Osmosis<br>
-          C. Diffusion<br>
-          D. Active transport
-        </div>
-      </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.72);margin-top:10px;">Try it first, then reveal the answer in your message and jump into AfroJAMB for the full drill.</div>
-    </div>
+    <p><a href="/tools/study-planner/">Plan your study week while daily questions are under review</a></p>
 
     <form id="form-screen" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;box-shadow:0 1px 2px rgba(15,23,42,.04);" novalidate aria-labelledby="signup-title">
       <h2 id="signup-title" style="margin:0 0 16px;font-size:1.1rem;font-weight:700;color:#0f172a;letter-spacing:-0.015em;">Sign me up</h2>
@@ -242,7 +229,9 @@ var SUBJECTS = [
   ["economics","Econ"],["literature","Lit"],["crk","CRK"],
   ["commerce","Commerce"],["accounts","Accounts"],
 ];
-var SELECTED = ["english","biology"];
+var SELECTED = [];
+var REVIEWED_SUBJECTS = [];
+var REVIEW_REVISION = null;
 var CHANNEL = "email";
 var CAPABILITIES = { email: false, whatsapp: false };
 
@@ -252,6 +241,7 @@ function renderSubjects() {
   SUBJECTS.forEach(function(s){
     var btn = document.createElement("button");
     btn.type = "button";
+    btn.disabled = REVIEWED_SUBJECTS.indexOf(s[0]) === -1;
     var selected = SELECTED.indexOf(s[0]) !== -1;
     btn.className = "subj-pick" + (selected ? " selected" : "");
     btn.setAttribute("role", "checkbox");
@@ -334,26 +324,36 @@ function applyChannelAvailability() {
 async function loadCapabilities() {
   var note = document.getElementById("channel-note");
   try {
-    var res = await fetch("/.netlify/functions/jamb-daily-signup");
+    var index = await window.AfroJAMB.QuestionTrust.fetchIndex();
+    REVIEWED_SUBJECTS = Object.keys(index.stats.by_subject).filter(function(key) { return index.stats.by_subject[key].total > 0; });
+    var res = await fetch("/.netlify/functions/jamb-daily-signup", { cache: "no-store" });
+    if (!res.ok) throw new Error("Availability request failed");
     var data = await res.json();
-    CAPABILITIES.email = !!(data && data.capabilities && data.capabilities.email);
-    CAPABILITIES.whatsapp = !!(data && data.capabilities && data.capabilities.whatsapp);
+    if (!data.review || data.review.review_revision !== index.review_revision || !Array.isArray(data.review.available_subjects)) throw new Error('Question review changed');
+    REVIEW_REVISION = index.review_revision;
+    REVIEWED_SUBJECTS = data.review.status === 'ready' ? REVIEWED_SUBJECTS.filter(function(key) { return data.review.available_subjects.indexOf(key) !== -1; }) : [];
+    CAPABILITIES.email = REVIEWED_SUBJECTS.length > 0 && !!(data && data.capabilities && data.capabilities.email);
+    CAPABILITIES.whatsapp = REVIEWED_SUBJECTS.length > 0 && !!(data && data.capabilities && data.capabilities.whatsapp);
   } catch (err) {
+    REVIEWED_SUBJECTS = [];
+    REVIEW_REVISION = null;
     CAPABILITIES.email = false;
     CAPABILITIES.whatsapp = false;
   }
 
+  SELECTED = SELECTED.filter(function(key) { return REVIEWED_SUBJECTS.indexOf(key) !== -1; });
+  renderSubjects();
   applyChannelAvailability();
 
   if (CAPABILITIES.email && CAPABILITIES.whatsapp) {
-    note.textContent = "Email and WhatsApp are both live. Pick the channel you want and we will send at your chosen Nigeria-time slot.";
+    note.textContent = "Email and WhatsApp subscriptions are available for reviewed subjects. Choose a Nigeria-time slot.";
   } else if (CAPABILITIES.email) {
-    note.textContent = "Email delivery is live now. WhatsApp will appear here automatically once Meta daily-message delivery is connected.";
+    note.textContent = "Email subscriptions are available for the reviewed subjects shown below.";
   } else if (CAPABILITIES.whatsapp) {
-    note.textContent = "WhatsApp delivery is live now.";
+    note.textContent = "WhatsApp subscriptions are available for reviewed subjects.";
   } else {
-    note.textContent = "Daily Question is almost ready, but delivery is not configured yet on this deploy.";
-    setAlert("This page cannot accept new Daily Question signups right now because delivery is not configured yet.", "error");
+    note.textContent = "Daily practice is unavailable until reviewed questions and a delivery channel are ready.";
+    setAlert("Signups are paused while question review or delivery setup is incomplete. You can still use the study planner.", "error");
   }
 }
 
@@ -380,7 +380,7 @@ document.getElementById("form-screen").addEventListener("submit", async function
     document.getElementById("contact").focus();
     return;
   }
-  if (SELECTED.length === 0) {
+  if (SELECTED.length === 0 || SELECTED.some(function(key) { return REVIEWED_SUBJECTS.indexOf(key) === -1; })) {
     setAlert("Pick at least 1 subject.", "error");
     return;
   }
@@ -409,6 +409,7 @@ document.getElementById("form-screen").addEventListener("submit", async function
         channel: CHANNEL,
         contact: contact,
         subjects: SELECTED,
+        pool_revision: REVIEW_REVISION,
         send_hour: parseInt(time, 10),
       })
     });

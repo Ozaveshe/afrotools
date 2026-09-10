@@ -4,11 +4,11 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAMB Question Patterns — Which Topics Appear Most | AfroJAMB</title>
-<meta name="description" content="See which topics appear most often in JAMB across years. Data-driven study prioritization. Free pattern analyzer with charts for all 11 subjects.">
+<title>JAMB Reviewed Topic Coverage | AfroJAMB</title>
+<meta name="description" content="Explore historical topic coverage from reviewed JAMB practice questions. Coverage does not predict future exam topics.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="JAMB Question Patterns — Stop Wasting Study Time">
-<meta property="og:description" content="Which topics actually appear in JAMB year after year? See the data, prioritize your study.">
+<meta property="og:title" content="JAMB Reviewed Topic Coverage">
+<meta property="og:description" content="Explore historical counts in reviewed practice material. Coverage is not a forecast of exam topics.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -48,6 +48,7 @@ fbq('track', 'PageView');
 <link rel="canonical" href="https://afrotools.com/jamb/patterns/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/patterns/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/patterns/">
+<script src="/assets/js/lib/jamb-question-trust.js"></script>
 </head>
 <body class="jamb-page top-level-page-ui-refresh">
 <noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
@@ -71,8 +72,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <section class="jb-hero" style="padding:42px 0 50px;">
   <div class="jb-wrap jb-hero-z">
     <span class="jb-hero-tag">📊 Data-Driven</span>
-    <h1>Stop wasting time on <b>topics that don't show up</b>.</h1>
-    <p class="sub">We analyzed 16,000+ JAMB past questions across 42 years. Here are the topics that appear most. Study smart.</p>
+    <h1>Understand your <b>reviewed practice coverage</b>.</h1>
+    <p class="sub">Topic counts appear only after questions and their topic labels have been reviewed. Keep studying the full syllabus.</p>
   </div>
 </section>
 
@@ -90,17 +91,17 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
       <div class="pred-header">
         <span class="pred-tag">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg>
-          Prediction
+          Coverage
         </span>
-        <h3>Likely topics for JAMB 2026</h3>
+        <h3>Historical coverage, not predictions</h3>
         <p id="pred-context"></p>
       </div>
       <div id="pred-list"></div>
-      <p class="pred-footnote">Based on which topics appeared in the most recent 5 JAMB years. Past patterns don't guarantee future ones — always cover the syllabus.</p>
+      <p class="pred-footnote">These charts describe the reviewed collection only. Missing topics may reflect gaps in that collection, not their importance in an exam.</p>
     </div>
 
     <!-- Top topics summary -->
-    <div id="top-topics-grid"></div>
+    <p id="pattern-status" role="status">Checking reviewed topic coverage…</p><p><a href="/tools/study-planner/">Plan your study week</a> · <a href="/jamb/past-questions/">Check reviewed questions</a></p><div id="top-topics-grid"></div>
 
     <!-- Bar chart -->
     <div class="chart-card">
@@ -124,7 +125,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
       <div class="chart-card-head">
         <div>
           <h3>Top topics by year</h3>
-          <p>How the top 5 topics trend year over year. Stable lines = predictable. Spiky = volatile.</p>
+          <p>How the top 5 topics trend year over year. Changes describe this collection, not future exam probabilities.</p>
         </div>
         <button type="button" class="share-chart-btn" data-chart="year">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
@@ -137,8 +138,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     </div>
 
     <div class="jb-footer-cta">
-      <h3>Now go practice the right things.</h3>
-      <p>Use what you learned here. Take a CBT mock that focuses on what JAMB actually tests.</p>
+      <h3>Explore reviewed practice.</h3>
+      <p>Use reviewed practice when available and continue covering the full syllabus.</p>
       <a href="/jamb/cbt/" class="jb-btn jb-btn-primary">Start a CBT Mock →</a>
     </div>
 
@@ -394,55 +395,47 @@ var topicChart = null;
 var yearChart = null;
 
 (async function load(){
+  if (document.readyState === 'loading') await new Promise(function(resolve) { document.addEventListener('DOMContentLoaded', resolve, { once: true }); });
   try {
-    var res = await fetch("/data/jamb/pools/patterns.json");
-    PATTERNS = await res.json();
+    var trust = window.AfroJAMB.QuestionTrust;
+    var index = await trust.fetchIndex();
+    var res = await fetch('/data/jamb/pools/patterns.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Patterns request failed');
+    PATTERNS = await trust.validatePublication(await res.json(), index);
+    if (!PATTERNS.subjects || typeof PATTERNS.subjects !== 'object' || Array.isArray(PATTERNS.subjects)) throw new Error('Invalid topic collection');
   } catch(e) {
-    document.getElementById("top-topics-grid").innerHTML = "Could not load pattern data.";
+    showPatternEmpty('Reviewed topic coverage could not be verified. Retry when connected or continue with your study plan.');
     return;
   }
 
   var sel = document.getElementById("subject-select");
-  SUBJECTS.forEach(function(s){
+  var available = SUBJECTS.filter(function(s) { return PATTERNS.subjects[s[0]] && PATTERNS.subjects[s[0]].total_questions > 0; });
+  if (!available.length) { showPatternEmpty('No reviewed topic coverage is available yet. Cover the full syllabus while the collection is checked.'); return; }
+  document.getElementById('pattern-status').textContent = 'Historical coverage of reviewed questions only; not an exam forecast.';
+  available.forEach(function(s){
     var opt = document.createElement("option");
     opt.value = s[0]; opt.textContent = s[1];
     sel.appendChild(opt);
   });
-  sel.value = "mathematics";
+  sel.value = available[0][0];
 
   sel.addEventListener("change", function(){ render(sel.value); });
-  render("mathematics");
+  render(sel.value);
 })();
 
+function showPatternEmpty(message) {
+  document.getElementById('pattern-status').textContent = message;
+  document.getElementById('subject-select').disabled = true;
+  document.getElementById('predictions-card').hidden = true;
+  document.querySelectorAll('.chart-card').forEach(function(el) { el.hidden = true; });
+}
+function escapeTopic(value) { var node = document.createElement('span'); node.textContent = String(value || ''); return node.innerHTML; }
 function render(subjectKey) {
   var d = PATTERNS.subjects[subjectKey];
   if (!d) return;
 
-  // Predictions for 2026
-  var preds = d.predictions_2026 || [];
-  var predList = document.getElementById("pred-list");
-  predList.innerHTML = "";
-  if (preds.length === 0) {
-    predList.innerHTML = '<div class="pred-empty">Not enough recent data for this subject.</div>';
-  } else {
-    preds.forEach(function(p, idx){
-      var rank = idx + 1;
-      var card = document.createElement("div");
-      card.className = "pred-item";
-      card.innerHTML = '<div class="pred-item-head">'
-        + '<div class="pred-rank">#' + rank + '</div>'
-        + '<div class="pred-topic">' + p.topic + '</div>'
-        + '<div class="pred-conf">' + p.confidence + '</div></div>'
-        + '<div class="pred-detail">' + p.appearances + ' / ' + p.of_years + ' recent years · avg ' + p.avg_questions + ' Qs/year</div>';
-      predList.appendChild(card);
-    });
-  }
-  var recent = d.recent_years_used || [];
-  if (recent.length > 0) {
-    document.getElementById("pred-context").textContent = "Looking at the last " + recent.length + " JAMB years (" + Math.min.apply(null, recent) + "–" + Math.max.apply(null, recent) + "), here's what tends to repeat. Use this to focus your last-week prep.";
-  } else {
-    document.getElementById("pred-context").textContent = "";
-  }
+  document.getElementById('pred-list').textContent = 'Future topics are not predicted. Use this collection to understand reviewed coverage, and revise the full syllabus.';
+  document.getElementById('pred-context').textContent = d.total_questions + ' reviewed questions in this subject.';
 
   // Top topics grid (exclude "Other")
   var topics = d.topics.filter(function(t){ return t.topic !== "Other"; });
@@ -455,7 +448,7 @@ function render(subjectKey) {
     var card = document.createElement("div");
     card.className = "tt-card";
     card.innerHTML = '<div class="tt-rank">#' + (idx+1) + '</div>'
-      + '<div class="tt-name">' + t.topic + '</div>'
+      + '<div class="tt-name">' + escapeTopic(t.topic) + '</div>'
       + '<div class="tt-num">' + t.total.toLocaleString() + '</div>'
       + '<div class="tt-pct">' + pct + '% of all questions</div>'
       + '<div class="tt-bar"><span style="width:' + barPct + '%"></span></div>';
@@ -614,11 +607,11 @@ document.querySelectorAll(".share-chart-btn").forEach(function(btn){
     if (which === "topic") {
       chartId = "topic-chart";
       headline = "JAMB " + CURRENT_SUBJECT_NAME + " — Topic Frequency";
-      subhead = "Which topics actually appear in JAMB. Free past questions at afrotools.com/jamb";
+      subhead = "Historical reviewed topic coverage. Study planning at afrotools.com/jamb";
     } else {
       chartId = "year-chart";
       headline = "JAMB " + CURRENT_SUBJECT_NAME + " — Topics by Year";
-      subhead = "What's been hot vs cold over the years. Free past questions at afrotools.com/jamb";
+      subhead = "Topic counts in the reviewed collection. Study planning at afrotools.com/jamb";
     }
     try {
       var out = buildShareCanvas(chartId, headline, subhead);
