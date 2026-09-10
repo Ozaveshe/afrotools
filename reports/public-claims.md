@@ -1,11 +1,11 @@
 # Public claims report
 
-Generated: 2026-09-09
+Generated: 2026-09-10
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 12745
-- Approved claim hits: 45158
+- Public HTML/shared script files scanned: 12747
+- Approved claim hits: 45160
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
@@ -16,14 +16,14 @@ Generated: 2026-09-09
 | count.countries | Country totals count the 54 canonical African jurisdictions; regional sentinels are not countries. | Country registry owner | 2026-07-11 | 2026-10-09 | 200 |
 | count.languages | Public language totals include launched/default/partial route locales only, not planned or component-only locales. | Localization platform owner | 2026-07-11 | 2026-10-09 | 1 |
 | count.scholarships | Scholarship totals count the records in the current public scholarship feed and must retain the feed's limited, stale, or degraded state. | Scholarship feed owner | 2026-08-11 | 2026-09-10 | 0 |
-| free.public-core | Guests can use the core inputs and results of public calculators without a paid subscription; this is not a promise that every current or future feature is permanently free. | Product and Pro boundary owner | 2026-07-11 | 2026-09-09 | 4 |
-| free.account-creation | Creating a basic account can be free, but account creation is distinct from guest use and paid Pro entitlements. | Authentication product owner | 2026-07-11 | 2026-09-09 | 0 |
+| free.public-core | Guests can use the core inputs and results of public calculators without a paid subscription; this is not a promise that every current or future feature is permanently free. | Product and Pro boundary owner | 2026-09-10 | 2026-10-10 | 4 |
+| free.account-creation | Creating a basic account can be free, but account creation is distinct from guest use and paid Pro entitlements. | Authentication product owner | 2026-09-10 | 2026-10-10 | 0 |
 | pro.current-capabilities | Pro provides the capabilities verified by the active readiness matrix; shell and pending features remain labelled previews or pending. | Pro readiness owner | 2026-08-11 | 2026-09-10 | 1 |
 | privacy.browser-local | A named local flow processes its working payload in browser memory or browser storage and does not upload that payload unless the user invokes a separately disclosed network feature. | Privacy and local-processing owner | 2026-08-11 | 2026-09-10 | 4 |
 | ai.optional-provider | Deterministic routing works without model consent; optional model requests go through AfroTools functions to the configured supported provider after consent and can be unavailable. | AI platform and privacy owner | 2026-08-11 | 2026-09-10 | 5 |
 | freshness.live-data | Live/current wording is shown only for a successful observation with a named source, timestamp, and feature-specific live-age threshold; other states downgrade visibly. | Live-data freshness owner | 2026-08-11 | 2026-09-10 | 8 |
 | authority.evidence-scope | Official/verified/accurate/compliant wording applies only to the named source, record, jurisdiction, period, or validated workflow—not the whole platform or an outcome. | Source-confidence owner | 2026-08-11 | 2026-09-10 | 37 |
-| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-07-11 | 2026-09-09 | 6 |
+| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-09-10 | 2026-09-17 | 6 |
 | statutory.jurisdiction-period | Tax/statutory claims identify the applicable jurisdiction, tax year/effective period, source, and review state and remain planning guidance unless filing is implemented. | Tax and statutory source owner | 2026-08-11 | 2026-09-10 | 6 |
 | account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-08-11 | 2026-09-10 | 1 |
 | payment.provider-processing | AfroTools initializes checkout and reads subscription state; payment details and final transaction/cancellation confirmation are handled by the payment provider. | Billing and payment owner | 2026-08-11 | 2026-09-10 | 20 |
