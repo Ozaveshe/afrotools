@@ -282,6 +282,9 @@ async function buildAiHeaders() {
 
 document.getElementById("exam-date").value = defaultExamDateValue();
 
+function localPlanDate(date) {
+  return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
+}
 function planInputs() {
   var examDate = document.getElementById('exam-date').value;
   var hoursPerDay = Number(document.getElementById('hours-per-day').value);
@@ -291,7 +294,7 @@ function planInputs() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(examDate) || !Number.isFinite(date.getTime()) || date.getTime() < new Date().setHours(0,0,0,0)) throw new Error('Choose today or a future target date.');
   if (!Number.isInteger(hoursPerDay) || hoursPerDay < 1 || hoursPerDay > 6 || weakTopics.length > 2000) throw new Error('Check your daily hours and keep weak topics under 2,000 characters.');
   if (SELECTED.length < 2 || SELECTED.length > 4) throw new Error('Pick two to four subjects for this study plan.');
-  return {examDate:examDate,hoursPerDay:hoursPerDay,weakTopics:weakTopics,level:level,subjects:SELECTED.slice(),daysUntil:Math.max(1,Math.ceil((date.getTime()-Date.now())/86400000))};
+  return {examDate:examDate,startDate:localPlanDate(new Date()),hoursPerDay:hoursPerDay,weakTopics:weakTopics,level:level,subjects:SELECTED.slice(),daysUntil:Math.max(1,Math.ceil((date.getTime()-Date.now())/86400000))};
 }
 function planError(error) { document.getElementById('plan-status').textContent = error.message; }
 function renderLocal(inputs, notice) {
@@ -302,13 +305,14 @@ document.getElementById('generate-btn').addEventListener('click', function(){
   try { renderLocal(planInputs()); } catch(error) { planError(error); }
 });
 function validPlan(value, inputs) {
-  function text(value, max) { return typeof value === 'string' && value.trim().length > 0 && value.length <= max && !/<\/?[a-z][^>]*>/i.test(value); }
+  function text(value, max) { return typeof value === 'string' && value.trim().length > 0 && value.length <= max && !/[<>]/.test(value); }
   if (!value || typeof value !== 'object' || !text(value.summary,400) || !Array.isArray(value.days) || value.days.length !== Math.min(inputs.daysUntil,7)) return false;
   return value.days.every(function(day, index){
-    if (!day || day.day !== index+1 || !text(day.focus,120) || !/^\d{4}-\d{2}-\d{2}$/.test(day.date || '') || !Number.isFinite(new Date(day.date).getTime()) || !Array.isArray(day.tasks) || day.tasks.length < 1 || day.tasks.length > 6) return false;
+    var expectedDate = new Date(Date.parse(inputs.startDate+'T00:00:00.000Z') + index*86400000).toISOString().slice(0,10);
+    if (!day || day.day !== index+1 || !text(day.focus,120) || day.date !== expectedDate || !Array.isArray(day.tasks) || day.tasks.length < 1 || day.tasks.length > 6) return false;
     var minutes=0;
     return day.tasks.every(function(task){
-      if (!task || !/^\d{1,3} min$/.test(task.time || '') || !text(task.task,600)) return false;
+      if (!task || !/^[1-9]\d{0,2} min$/.test(task.time || '') || !text(task.task,600)) return false;
       var duration=Number(task.time.split(' ')[0]); minutes+=duration;
       return duration > 0 && minutes <= inputs.hoursPerDay*60;
     });
@@ -317,11 +321,11 @@ function validPlan(value, inputs) {
 document.getElementById('ai-plan-btn').addEventListener('click', async function(){
   var inputs;
   try { inputs=planInputs(); } catch(error) { planError(error); return; }
-  var disclosure = 'Send these fields to the AfroTools AI service to suggest a study plan? AI output can be wrong. The standard plan works locally without sending them.\n\nTarget date: '+inputs.examDate+'\nSubjects: '+inputs.subjects.join(', ')+'\nHours per day: '+inputs.hoursPerDay+'\nPreparation level: '+inputs.level+'\nWeak topics: '+(inputs.weakTopics || 'none')+'\n\nDo not include personal identifiers or private records.';
+  var disclosure = 'Send these fields to the AfroTools AI service to suggest a study plan? AI output can be wrong. The standard plan works locally without sending them.\n\nTarget date: '+inputs.examDate+'\nStart date: '+inputs.startDate+'\nSubjects: '+inputs.subjects.join(', ')+'\nHours per day: '+inputs.hoursPerDay+'\nPreparation level: '+inputs.level+'\nWeak topics: '+(inputs.weakTopics || 'none')+'\n\nDo not include personal identifiers or private records.';
   if (!window.confirm(disclosure)) { document.getElementById('plan-status').textContent='Nothing was sent. Generate the standard plan to work locally.'; return; }
   var button=this; button.disabled=true; button.textContent='Requesting optional AI plan…';
   try {
-    var response=await fetch('/.netlify/functions/ai-advisor', {method:'POST',headers:await buildAiHeaders(),body:JSON.stringify({tool:'jamb-study-plan',aiConsent:'accepted',message:'Suggest a JAMB study schedule. Target date: '+inputs.examDate+'. Subjects: '+inputs.subjects.join(', ')+'. Hours per day: '+inputs.hoursPerDay+'. Level: '+inputs.level+'. Weak topics: '+(inputs.weakTopics || 'none')+'. Return JSON only: {"summary":"short summary","days":[{"day":1,"date":"YYYY-MM-DD","focus":"subject","tasks":[{"time":"30 min","task":"revision activity"}]}]}. Return exactly '+Math.min(inputs.daysUntil,7)+' days starting today. Use 1-6 tasks per day, whole minutes formatted as "30 min", total no more than '+(inputs.hoursPerDay*60)+' minutes daily. No HTML. Never predict exam questions or score gains. Our practice questions and decks may be unavailable pending review; always offer textbook or teacher-reviewed notes as an alternative. Suggested tool links may only be /jamb/cbt/, /jamb/past-questions/, /jamb/flashcards/, /jamb/tutor/ or /tools/study-planner/.'})});
+    var response=await fetch('/.netlify/functions/ai-advisor', {method:'POST',headers:await buildAiHeaders(),body:JSON.stringify({tool:'jamb-study-plan',aiConsent:'accepted',study_plan:{days:Math.min(inputs.daysUntil,7),hours_per_day:inputs.hoursPerDay,start_date:inputs.startDate},message:'Suggest a JAMB study schedule. Target date: '+inputs.examDate+'. Subjects: '+inputs.subjects.join(', ')+'. Hours per day: '+inputs.hoursPerDay+'. Level: '+inputs.level+'. Weak topics: '+(inputs.weakTopics || 'none')+'. Return JSON only: {"summary":"short summary","days":[{"day":1,"date":"YYYY-MM-DD","focus":"subject","tasks":[{"time":"30 min","task":"revision activity"}]}]}. Return exactly '+Math.min(inputs.daysUntil,7)+' days starting on '+inputs.startDate+'. Use 1-6 tasks per day, whole minutes formatted as "30 min", total no more than '+(inputs.hoursPerDay*60)+' minutes daily. No HTML. Never predict exam questions or score gains. Our practice questions and decks may be unavailable pending review; always offer textbook or teacher-reviewed notes as an alternative. Suggested tool links may only be /jamb/cbt/, /jamb/past-questions/, /jamb/flashcards/, /jamb/tutor/ or /tools/study-planner/.'})});
     if (!response.ok) throw new Error('AI request failed');
     var data=await response.json(); var raw=data.reply || data.message;
     if (typeof raw !== 'string' || raw.length>35000) throw new Error('Invalid AI plan');
@@ -347,7 +351,7 @@ function buildLocalPlan(days, hours, weak, level) {
   ];
   for (var i = 0; i < Math.min(days, 7); i++) {
     var date = new Date(Date.now() + i * 86400000);
-    var dateStr = date.toISOString().split("T")[0];
+    var dateStr = localPlanDate(date);
     var tasks = [];
     var primary = subjects[i % subjects.length];
     tasks.push({time: "20 min", task: "Review your textbook or teacher-reviewed notes for " + primary});
@@ -378,7 +382,7 @@ function showPlan(plan, daysUntil, hours) {
   (plan.days || []).forEach(function(day, idx){
     var d = document.createElement("div");
     d.className = "day-card";
-    var date = day.date ? new Date(day.date) : new Date(Date.now() + idx * 86400000);
+    var date = day.date ? new Date(day.date+'T00:00:00') : new Date(Date.now() + idx * 86400000);
     var dateLabel = date.toLocaleDateString("en-US", {weekday:"short", month:"short", day:"numeric"});
     var tasksHtml = (day.tasks || []).map(function(t){
       return '<div class="task"><div class="task-time">' + escapePlan(t.time || "—") + '</div><div class="task-name">' + linkify(t.task || "") + '</div></div>';

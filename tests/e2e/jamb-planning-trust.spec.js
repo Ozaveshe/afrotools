@@ -37,6 +37,7 @@ test('declining optional AI sends nothing and keeps local planning available', a
   const today = await planner(page);
   page.once('dialog', async dialog => {
     expect(dialog.message()).toContain(today);
+    expect(dialog.message()).toContain('Start date: '+today);
     expect(dialog.message()).toContain('Synthetic algebra topic');
     expect(dialog.message()).toContain('Hours per day: 1');
     expect(dialog.message()).toContain('Preparation level: intermediate');
@@ -66,6 +67,8 @@ for (const mode of ['valid','markup','over-budget','invalid-schema']) test('opti
   await expect(page.locator('#plan-origin')).toContainText(mode === 'valid' ? 'Optional AI suggestion' : 'A local plan is shown instead');
   expect(request.tool).toBe('jamb-study-plan');
   expect(request.aiConsent).toBe('accepted');
+  expect(request.study_plan).toEqual({days:1,hours_per_day:1,start_date:today});
+  expect(request.message).toContain('days starting on '+today);
   expect(request.message).toContain('Synthetic algebra topic');
   expect(await page.evaluate(() => window.injected)).toBeUndefined();
   await expect(page.locator('#plan-days img')).toHaveCount(0);
