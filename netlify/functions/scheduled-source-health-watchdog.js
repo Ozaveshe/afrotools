@@ -19,7 +19,7 @@ const LIVE_DATA_WATCHES = [
   { id: 'salaries', blobKey: 'salary-benchmarks-latest', metaKey: 'salaries', staleAfterMinutes: 10080, severity: 'p3' },
   { id: 'stocks', blobKey: 'stock-indices-latest', metaKey: 'stocks', staleAfterMinutes: 1440, severity: 'p2' },
   { id: 'shipping', blobKey: 'shipping-rates-latest', metaKey: 'shipping', staleAfterMinutes: 10080, severity: 'p3' },
-  { id: 'agri_inputs', blobKey: 'agri-inputs-latest', metaKey: 'agri_inputs', staleAfterMinutes: 10080, severity: 'p3' },
+  { id: 'agri_inputs', blobKey: 'agri-inputs-latest', metaKey: 'agriculture', staleAfterMinutes: 10080, severity: 'p3' },
   { id: 'crypto', blobKey: 'crypto-latest', metaKey: 'crypto', staleAfterMinutes: 360, severity: 'p1' }
 ];
 

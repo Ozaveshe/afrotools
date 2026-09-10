@@ -72,7 +72,7 @@ const CATEGORY_CONFIGS = {
   },
   agri_inputs: {
     blobKey: 'agri-inputs-latest',
-    metaKey: 'agri_inputs',
+    metaKey: 'agriculture',
     thresholds: { live: 10080, ok: 20160, stale: 43200 },
   },
   crypto: {
