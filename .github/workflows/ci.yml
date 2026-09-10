@@ -54,6 +54,9 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
+      - name: Verify private command-centre contracts
+        run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
+
       - name: Verify Pro architecture
         run: npm run pro:verify
 
