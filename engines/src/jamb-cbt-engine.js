@@ -240,8 +240,8 @@
           body: JSON.stringify({
             session_id: t.sessionId,
             pool_revision: t.poolRevision,
-            mode: t.mode,
-            subjects: t.subjects,
+            mode: t.mode === "full" ? "cbt-full" : t.mode,
+            subjects: d,
             score: t.score.aggregate,
             subject_scores: s,
             duration_seconds: t.score.durationSeconds,
