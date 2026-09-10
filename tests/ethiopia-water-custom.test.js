@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const cp = require('node:child_process');
+const { normalizeReleaseOwnedHtml } = require('../scripts/lib/release-owned-html-normalizer');
 function load(code) {
   const context = { window: {}, ENERGY_DATA: { countries: { NG: { name: 'Nigeria', currencySymbol: '₦', water: { residential: 200, commercial: 400 } } } } };
   vm.runInNewContext(code, context);
@@ -32,6 +33,8 @@ test('other-market behavior matches the verified base for residential/commercial
 });
 test('generated Ethiopia page equals its route-specific source and cannot claim an official bill', () => {
   const page = fs.readFileSync('tools/water-bill/ethiopia/index.html', 'utf8');
-  assert.equal(page, fs.readFileSync('scripts/templates/ethiopia-water-bill.html', 'utf8'));
+  // Release generation adds content-hash URLs and sitewide runtime hooks.
+  // Keep all product copy, controls, source scripts and configuration exact.
+  assert.equal(normalizeReleaseOwnedHtml(page), normalizeReleaseOwnedHtml(fs.readFileSync('scripts/templates/ethiopia-water-bill.html', 'utf8')));
   assert.doesNotMatch(page, /exact water bill|using official tariff rates|WHO Benchmark/);
 });
