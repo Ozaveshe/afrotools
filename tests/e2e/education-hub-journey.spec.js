@@ -91,7 +91,15 @@ test('clearing saved fields is explicit, atomic and recoverable', async ({ page 
   await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
 });
 
-test('first visit reaches a useful saved timetable without a profile', async ({ page }) => {
+for (const navigationMode of [
+  { name: 'desktop normal motion', width: 1280, motion: 'no-preference' },
+  { name: 'desktop reduced motion', width: 1280, motion: 'reduce' },
+  { name: 'mobile normal motion', width: 390, motion: 'no-preference' },
+  { name: 'mobile reduced motion', width: 390, motion: 'reduce' }
+]) {
+test(`first visit reaches a useful saved timetable without a profile (${navigationMode.name})`, async ({ page }) => {
+  await page.setViewportSize({ width: navigationMode.width, height: 900 });
+  await page.emulateMedia({ reducedMotion: navigationMode.motion });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
@@ -114,6 +122,7 @@ test('first visit reaches a useful saved timetable without a profile', async ({ 
   expect(await page.evaluate(() => localStorage.getItem('afroedu-profile-cache'))).toBeNull();
   expect(errors).toEqual([]);
 });
+}
 
 test('offline edits save locally, reconnect and reload restore without sending profile fields', async ({ page, context }) => {
   const profileWrites = [];
