@@ -6,7 +6,9 @@ const routes = [
   '/blog/ghana-cedi-words/', '/fr/blog/frais-orange-money-guide-2026/', '/nigeria/ng-salary-tax'
 ];
 test.beforeEach(async ({ context, page }) => {
-  await context.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  await context.addInitScript(() => {
+    if (window.top === window) localStorage.setItem('afrotools_cookie_consent', 'declined');
+  });
   await page.setViewportSize({width:390,height:844});
 });
 for (const width of [320, 390]) test(`ten demand entries render without horizontal overflow at ${width}px`, async ({ page }) => {

@@ -107,7 +107,7 @@ test(`first visit reaches a useful saved timetable without a profile (${navigati
   await page.locator('#startStudyPlan').focus();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/tools\/study-planner\/$/);
-  await expect.poll(() => page.evaluate(() => window.AFROTOOLS_STUDY_PLANNER_VIP)).toBe(true);
+  await page.waitForFunction(() => window.AFROTOOLS_STUDY_PLANNER_VIP === true);
   await page.locator('#hoursPerDay').fill('1');
   await page.locator('#daysPerWeek').selectOption('5');
   await page.locator('#sessionLength').selectOption('1');

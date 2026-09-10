@@ -7,7 +7,9 @@ for (const [slug, result, expected] of [
   test(`${slug}: controls wait for a delayed calculation script`, async ({ page, context }) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    await context.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+    await context.addInitScript(() => {
+      if (window.top === window) localStorage.setItem('afrotools_cookie_consent', 'declined');
+    });
     let release;
     const gate = new Promise(resolve => { release = resolve; });
     await page.route('**/assets/js/engines/amount-words-input.js*', async route => {

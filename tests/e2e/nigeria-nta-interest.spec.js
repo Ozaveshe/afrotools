@@ -1,6 +1,6 @@
 const {test,expect}=require('@playwright/test'); const fs=require('node:fs');
 test('NTA eligible interest above rent cap: save reload PDF and invalid recovery',async({page,context})=>{
- await context.addInitScript(()=>localStorage.setItem('afrotools_cookie_consent','declined'));
+ await context.addInitScript(()=>{if(window.top===window)localStorage.setItem('afrotools_cookie_consent','declined');});
  await page.setViewportSize({width:390,height:844});await page.goto('/nigeria/ng-salary-tax');await page.locator('#tabNta').click();
  for(const id of ['pension','nhf','nhis'])await page.locator(`[data-tog="${id}"]`).click();
  await page.locator('#grossSalary').focus();await page.locator('#grossSalary').fill('3000000');
