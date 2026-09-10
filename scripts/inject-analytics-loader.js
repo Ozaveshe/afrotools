@@ -158,14 +158,51 @@ function loaderIsInHead(html, match) {
 
 function loaderIsCanonical(html, match, tag, placement) {
   if (loaderSource(match[0]) !== loaderSource(tag)) return false;
+  if (!loaderPlacementMatches(html, match, placement)) return false;
+  if (!loaderTimingMatches(match[0], placement)) return false;
   if (placement !== "head") return true;
   // The bootstrap URL may be unchanged when only its runtime changes.
   // A stale data-loader-version can otherwise request cached pre-fix code.
   const runtimeVersion = value => (value.match(/\bdata-loader-version\s*=\s*(["'])([^"']+)\1/i) || [])[2];
   if (runtimeVersion(match[0]) !== runtimeVersion(tag)) return false;
-  return loaderIsInHead(html, match)
-    && /\sasync(?:\s|=|>)/i.test(match[0])
-    && !/\sdefer(?:\s|=|>)/i.test(match[0]);
+  return true;
+}
+
+function loaderPlacementMatches(html, match, placement) {
+  if (placement === "head") return loaderIsInHead(html, match);
+  const openingBody = /<body\b[^>]*>/i.exec(html);
+  const closingBody = Array.from(html.matchAll(/<\/body\s*>/gi)).pop();
+  return Boolean(openingBody && closingBody
+    && match.index >= openingBody.index + openingBody[0].length
+    && match.index < closingBody.index);
+}
+
+function loaderTimingMatches(tag, placement) {
+  const async = /\sasync(?:\s|=|>)/i.test(tag);
+  const defer = /\sdefer(?:\s|=|>)/i.test(tag);
+  return placement === "head" ? async && !defer : defer && !async;
+}
+
+function replaceLoaderInPlace(html, match, tag, placement) {
+  // Updating a release cache key must not move scripts across page code or
+  // change the whitespace used by source-owner and formula fingerprints.
+  // Invalid execution attributes still get the complete canonical tag.
+  let replacement = tag;
+  if (loaderTimingMatches(match[0], placement)) {
+    replacement = match[0].replace(/(\bsrc\s*=\s*)(["'])([^"']*)\2/i,
+      (whole, prefix, quote) => prefix + quote + loaderSource(tag) + quote);
+    if (placement === "head") {
+      const version = (tag.match(/\bdata-loader-version\s*=\s*(["'])([^"']+)\1/i) || [])[2];
+      if (/\bdata-loader-version\s*=/i.test(replacement)) {
+        replacement = replacement.replace(/(\bdata-loader-version\s*=\s*)(?:(["'])([^"']*)\2|([^\s>]+))/i,
+          (whole, prefix, quote) => prefix + (quote || '"') + version + (quote || '"'));
+      } else {
+        replacement = replacement.replace(/(?=\s+async(?:\s|=|>))/i,
+          ` data-loader-version="${version}"`);
+      }
+    }
+  }
+  return html.slice(0, match.index) + replacement + html.slice(match.index + match[0].length);
 }
 
 function insertAfterOpeningHead(html, tag) {
@@ -224,6 +261,10 @@ function normalizeLoaderInHtml(html, tag, options = {}) {
     if (loaderIsCanonical(html, match, tag, placement)) {
       return { html, duplicate: false, injected: false, normalized: false };
     }
+    if (loaderPlacementMatches(html, match, placement)) {
+      return { html: replaceLoaderInPlace(html, match, tag, placement),
+        duplicate: false, injected: false, normalized: true };
+    }
     const withoutLoader = removeLoaderMatch(html, match);
     const movedHtml = placement === "head"
       ? insertAfterOpeningHead(withoutLoader, tag)
@@ -258,6 +299,10 @@ function normalizeBootstrapInHtml(html, tag, required) {
   if (matches.length > 1) return { html, duplicate: true, injected: false, normalized: false };
   if (matches.length === 1 && loaderIsCanonical(html, matches[0], tag, "head")) {
     return { html, duplicate: false, injected: false, normalized: false };
+  }
+  if (matches.length === 1 && loaderPlacementMatches(html, matches[0], "head")) {
+    return { html: replaceLoaderInPlace(html, matches[0], tag, "head"),
+      duplicate: false, injected: false, normalized: true };
   }
   const withoutBootstrap = matches.length ? removeLoaderMatch(html, matches[0]) : html;
   const output = insertAfterOpeningHead(withoutBootstrap, tag);

@@ -73,13 +73,85 @@ const normalized = normalizeLoaderInHtml(
   tag
 );
 assert.strictEqual(normalized.normalized, true);
-assert.strictEqual(normalized.html.includes(tag), true);
+assert.strictEqual(normalized.html,
+  `<html><body><script defer src="/assets/js/lazy-analytics.js?v=${analyticsVersion()}"></script></body></html>`);
+
+// Hash-only updates preserve source-owner whitespace and execution order,
+// including historical escaped closers next to otherwise valid loader tags.
+let inPlaceFixtures = 0;
+for (const newline of ['\n', '\r\n']) {
+  for (const quote of ['"', "'"]) {
+    const staleLoader = `<script${newline}      defer src=${quote}/assets/js/lazy-analytics.js?v=old${quote}${newline}      data-owner="fixture"></script>`;
+    const before = `<html><head></head><body>${newline}  <script>window.before = true;</script>${newline}    `;
+    const after = `${newline}  <\\/script>${newline}  <script>window.after = true;</script>${newline}</body></html>`;
+    const source = before + staleLoader + after;
+    const result = normalizeLoaderInHtml(source, tag);
+    assert.strictEqual(result.html, before + staleLoader.replace('?v=old', `?v=${analyticsVersion()}`) + after);
+    assert.strictEqual(result.normalized, true);
+    assert.deepStrictEqual(normalizeLoaderInHtml(result.html, tag), {
+      html: result.html, duplicate: false, injected: false, normalized: false,
+    });
+    inPlaceFixtures += 1;
+
+    const staleBootstrap = `<script${newline}      src=${quote}/assets/js/analytics-bootstrap.js?v=old${quote}${newline}      data-loader-version=${quote}old-runtime${quote} async></script>`;
+    const headBefore = `<html><head>${newline}  <script>window.headBefore = true;</script>${newline}    `;
+    const headAfter = `${newline}  <script>window.headAfter = true;</script>${newline}</head><body></body></html>`;
+    const bootstrapResult = normalizeBootstrapInHtml(headBefore + staleBootstrap + headAfter, earlyTag, true);
+    const expected = staleBootstrap.replace('?v=old', `?v=${bootstrapVersion()}`).replace('old-runtime', analyticsVersion());
+    assert.strictEqual(bootstrapResult.html, headBefore + expected + headAfter);
+    assert.strictEqual(bootstrapResult.normalized, true);
+    assert.strictEqual(normalizeBootstrapInHtml(bootstrapResult.html, earlyTag, true).normalized, false);
+    inPlaceFixtures += 1;
+  }
+}
+
+for (const timing of ['', 'async', 'defer async']) {
+  const prefix = '<html><head></head><body><script>window.before = true;</script>\n  ';
+  const suffix = '\n<script>window.after = true;</script></body></html>';
+  const result = normalizeLoaderInHtml(`${prefix}<script src="/assets/js/lazy-analytics.js?v=old" ${timing}></script>${suffix}`, tag);
+  assert.strictEqual(result.html, prefix + tag + suffix);
+  assert.strictEqual(normalizeLoaderInHtml(result.html, tag).normalized, false);
+  inPlaceFixtures += 1;
+}
+for (const timing of ['', 'defer', 'async defer']) {
+  const prefix = '<html><head><title>Keep position</title>\n  ';
+  const suffix = '\n<script>window.after = true;</script></head><body></body></html>';
+  const result = normalizeBootstrapInHtml(`${prefix}<script src="/assets/js/analytics-bootstrap.js?v=old" ${timing}></script>${suffix}`, earlyTag, true);
+  assert.strictEqual(result.html, prefix + earlyTag + suffix);
+  assert.strictEqual(normalizeBootstrapInHtml(result.html, earlyTag, true).normalized, false);
+  inPlaceFixtures += 1;
+}
+
+const misplacedLoader = normalizeLoaderInHtml(`<html><head>${tag}</head><body><main>Body</main></body></html>`, tag);
+assert.ok(misplacedLoader.html.indexOf(tag) > misplacedLoader.html.indexOf('<main>'));
+assert.strictEqual((misplacedLoader.html.match(/lazy-analytics\.js/g) || []).length, 1);
+assert.strictEqual(normalizeLoaderInHtml(misplacedLoader.html, tag).normalized, false);
+const misplacedBootstrap = normalizeBootstrapInHtml(`<html><head><title>Head</title></head><body>${earlyTag}</body></html>`, earlyTag, true);
+assert.ok(misplacedBootstrap.html.indexOf(earlyTag) < misplacedBootstrap.html.indexOf('<title>'));
+assert.strictEqual((misplacedBootstrap.html.match(/analytics-bootstrap\.js/g) || []).length, 1);
+assert.strictEqual(normalizeBootstrapInHtml(misplacedBootstrap.html, earlyTag, true).normalized, false);
+inPlaceFixtures += 2;
+
+for (const runtimeAttribute of ['', 'data-loader-version=old-runtime ']) {
+  const source = `<html><head>\n  <script src="/assets/js/analytics-bootstrap.js?v=${bootstrapVersion()}" ${runtimeAttribute}async></script>\n<title>Keep position</title></head><body></body></html>`;
+  const result = normalizeBootstrapInHtml(source, earlyTag, true);
+  assert.ok(result.html.includes(`data-loader-version="${analyticsVersion()}"`));
+  assert.strictEqual(result.html.slice(0, result.html.indexOf('<script')), '<html><head>\n  ');
+  assert.strictEqual(result.html.slice(result.html.indexOf('</script>')), source.slice(source.indexOf('</script>')));
+  assert.strictEqual(normalizeBootstrapInHtml(result.html, earlyTag, true).normalized, false);
+  inPlaceFixtures += 1;
+}
 
 const duplicate = normalizeLoaderInHtml(
   `<html><body>${tag}${tag}</body></html>`,
   tag
 );
 assert.strictEqual(duplicate.duplicate, true);
+assert.strictEqual(duplicate.html, `<html><body>${tag}${tag}</body></html>`);
+const duplicateBootstrapHtml = `<html><head>${earlyTag}${earlyTag}</head><body></body></html>`;
+assert.deepStrictEqual(normalizeBootstrapInHtml(duplicateBootstrapHtml, earlyTag, true), {
+  html: duplicateBootstrapHtml, duplicate: true, injected: false, normalized: false,
+});
 
 const report = scanCoverage();
 assert.ok(report.eligible > 10000, `expected more than 10,000 public HTML documents, found ${report.eligible}`);
@@ -96,5 +168,5 @@ assert.deepStrictEqual(
 );
 
 console.log(
-  `analytics-loader-coverage.test.js passed (${report.covered}/${report.eligible} eligible pages covered)`
+  `analytics-loader-coverage.test.js passed (${inPlaceFixtures} in-place/repair fixtures; ${report.covered}/${report.eligible} eligible pages covered)`
 );
