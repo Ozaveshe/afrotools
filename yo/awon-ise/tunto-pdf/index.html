@@ -57,6 +57,8 @@
 
 <style>
   :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
+  .skip-link { position: absolute; left: 16px; top: -80px; z-index: 1100; padding: 10px 14px; border-radius: 8px; background: #fff; color: #0f172a; font-weight: 800; box-shadow: 0 10px 28px rgba(15,23,42,.18); }
+  .skip-link:focus { top: 16px; }
 
   /* ── Hero ── */
   .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
@@ -91,7 +93,7 @@
   .toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .toolbar-group { display: flex; gap: 4px; align-items: center; }
   .toolbar-sep { width: 1px; height: 24px; background: #e5e7eb; margin: 0 4px; }
-  .tb-btn { padding: 6px 12px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #374151; transition: all 0.15s; font-family: 'DM Sans', sans-serif; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .tb-btn { min-height: 28px; padding: 6px 12px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #374151; transition: all 0.15s; font-family: 'DM Sans', sans-serif; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
   .tb-btn:hover { border-color: var(--afro-green); background: #dbeafe; }
   .tb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .tb-btn.danger { color: #dc2626; }
@@ -107,6 +109,7 @@
   .page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 4px; }
   .page-card { position: relative; border-radius: 8px; border: 2px solid #e5e7eb; background: #fff; cursor: grab; transition: all 0.15s; user-select: none; overflow: hidden; }
   .page-card:hover { border-color: #bfdbfe; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .page-card:focus-visible { outline: 3px solid #005fcc; outline-offset: 3px; border-color: var(--color-primary); }
   .page-card.selected { border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(0,98,204,0.25); }
   .page-card.dragging { opacity: 0.4; transform: scale(0.95); }
   .page-card.drag-over { border-color: var(--color-primary); border-style: dashed; }
@@ -125,7 +128,9 @@
   .page-card:hover .page-actions { opacity: 1; }
   .pa-btn { width: 26px; height: 26px; border-radius: 5px; background: rgba(255,255,255,0.92); border: 1px solid #d1d5db; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; }
   .pa-btn:hover { background: #fff; border-color: var(--color-primary); }
+  .pa-btn:disabled { opacity: 0.38; cursor: not-allowed; }
   .pa-btn.pa-del:hover { border-color: #dc2626; background: #fef2f2; }
+  .pa-btn:focus-visible, .tb-btn:focus-visible, .modal-btn:focus-visible { outline: 3px solid #005fcc; outline-offset: 2px; }
 
   /* ── Progress ── */
   .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 12px; display: none; }
@@ -174,8 +179,15 @@
     .page-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
     .toolbar-sep { display: none; }
     .page-card .page-actions { opacity: 1; }
-    .pa-btn { width: 22px; height: 22px; font-size: 10px; }
+    .pa-btn { width: 28px; height: 28px; font-size: 11px; }
     .tool-main { padding: 16px 12px 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-card, .page-thumb img, .page-check, .page-card .page-actions, .tb-btn, .pa-btn, .modal-btn { transition: none; }
+    .loading-spinner { animation: none; }
+  }
+  @media (forced-colors: active) {
+    .page-card:focus-visible, .pa-btn:focus-visible, .tb-btn:focus-visible, .modal-btn:focus-visible { outline-color: ButtonText; }
   }
 </style>
 <script src="/assets/js/bundles/core.2969eb2e.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -214,7 +226,9 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/yo/awon-ise/tunto-pdf/">
 </head>
 <body class="top-level-page-ui-refresh">
+<a class="skip-link skip-content" href="#main-content">Fò sí akoonu pàtàkì</a>
 <afro-navbar active="tools"></afro-navbar>
+<main id="main-content" tabindex="-1">
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -265,6 +279,11 @@
         </div>
         <div class="toolbar-sep"></div>
         <div class="toolbar-group">
+          <button type="button" class="tb-btn" id="btnMoveLeft" title="Gbe ojú-iwe tí a yan sí òsì" disabled>← Gbe sí òsì</button>
+          <button type="button" class="tb-btn" id="btnMoveRight" title="Gbe ojú-iwe tí a yan sí ọ̀tún" disabled>Gbe sí ọ̀tún →</button>
+        </div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-group">
           <button type="button" class="tb-btn" id="btnRotateCCW" title="Yí sí apa òsì" disabled>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
             Òsì
@@ -297,11 +316,11 @@
       </div>
     </div>
     <div class="card-body" style="position:relative;">
-      <div class="page-grid" id="pageGrid"></div>
+      <div class="page-grid" id="pageGrid" role="list" aria-label="Àwọn ojú-iwe PDF; lo Enter tàbí Space láti yan, lo Alt àti ọfà òsì tàbí ọ̀tún láti yí ìtò padà" tabindex="-1"></div>
       <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="result-bar" id="resultBar">
-      <span class="result-msg" id="resultMsg">Gbe PDF wá láti bẹ̀rẹ̀ sí tún ojú-iwe tò.</span>
+      <span class="result-msg" id="resultMsg" role="status" aria-live="polite" aria-atomic="true">Gbe PDF wá láti bẹ̀rẹ̀ sí tún ojú-iwe tò.</span>
       <div class="toolbar-group">
         <button type="button" class="tb-btn primary" id="btnDownload">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -317,8 +336,8 @@
     <div class="tips-title">Bí a ṣe ń lò ó</div>
     <div class="tips-grid">
       <div class="tip-item"><span>1.</span> Gbe PDF wá nipa fífa-sílẹ̀ tàbí yíyan fáìlì</div>
-      <div class="tip-item"><span>2.</span> Fa ojú-iwe láti tún ìtò wọn ṣe ninu grid</div>
-      <div class="tip-item"><span>3.</span> Tẹ ojú-iwe, lo Shift+tẹ, tàbí apoti àárín láti yan ojú-iwe</div>
+      <div class="tip-item"><span>2.</span> Fa ojú-iwe, lo bọ́tìnnì ọfà lórí ojú-iwe, tàbí lo Alt àti ọfà òsì/ọ̀tún lórí keyboard láti tún ìtò ṣe</div>
+      <div class="tip-item"><span>3.</span> Tẹ ojú-iwe, lo Shift+tẹ, Enter, Space, tàbí apoti àárín láti yan ojú-iwe</div>
       <div class="tip-item"><span>4.</span> Yí, ṣe ẹ̀dà, yí ìtò padà, yọ jade, fi kun, tàbí pa ojú-iwe tí a yan rẹ́</div>
       <div class="tip-item"><span>5.</span> Tẹ "Gba PDF silẹ̀" láti gba ìwé tuntun</div>
       <div class="tip-item"><span>6.</span> Lo "Dá padà" fun iṣẹ́ tó kẹhin tàbí "Tún bẹ̀rẹ̀" láti pada sí PDF tí o gbe wá</div>
@@ -327,9 +346,9 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal-overlay" id="deleteModal">
-  <div class="modal-box">
-    <div class="modal-title">Pa ojú-iwe rẹ́</div>
+<div class="modal-overlay" id="deleteModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDesc" tabindex="-1">
+    <div class="modal-title" id="deleteModalTitle">Pa ojú-iwe rẹ́</div>
     <div class="modal-desc" id="deleteModalDesc">Ṣé o dá ọ lójú pé o fẹ́ pa ojú-iwe tí a yan rẹ́? Èyí kò ṣeé dá padà, ṣùgbọ́n o lè lo Tún bẹ̀rẹ̀.</div>
     <div class="modal-actions">
       <button type="button" class="modal-btn" id="btnCancelDelete">Fagilé</button>
@@ -341,15 +360,16 @@
 <section data-tool-verification-panel style="max-width:1000px;margin:18px auto 0;padding:0 24px;">
   <div style="background:#f8fafc;border:1px solid #dbeafe;border-radius:10px;padding:18px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:18px;align-items:start;">
     <div>
-      <p style="margin:0 0 6px;font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#1d4ed8;">Ọna iṣẹ ati asiri</p>
-      <h2 style="margin:0 0 8px;font-size:1rem;color:#0f172a;">PDF rẹ duro ninu aṣàwákiri rẹ.</h2>
-      <p style="margin:0;color:#475569;font-size:0.86rem;line-height:1.65;">Irinṣẹ yii n ka oju-iwe PDF, n ṣe awọn aworan kekere, o si n kọ faili tuntun lori ẹrọ rẹ. A ko gbe iwe rẹ si server AfroTools. Ti PDF ba tobi ju tabi ba ni aabo ọrọigbaniwọle, aṣàwákiri le nilo akoko diẹ sii tabi o le nilo lati pin iṣẹ naa si awọn faili kekere.</p>
+      <p style="margin:0 0 6px;font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#1d4ed8;">Ọ̀nà iṣẹ́, orísun àti àṣírí</p>
+      <h2 style="margin:0 0 8px;font-size:1rem;color:#0f172a;">PDF rẹ dúró nínú aṣàwákiri rẹ.</h2>
+      <p style="margin:0;color:#475569;font-size:0.86rem;line-height:1.65;">Irinṣẹ́ yìí ń ka ojú-iwe PDF, ń ṣe àwọn àwòrán kékeré, ó sì ń kọ fáìlì tuntun sórí ẹrọ rẹ. A kò gbe ìwé rẹ sí server AfroTools. Tí PDF bá tóbi ju tàbí bá ní ààbò ọ̀rọ̀ ìgbaniwọlé, aṣàwákiri lè nílò àkókò díẹ̀ sí i, tàbí o lè pín iṣẹ́ náà sí àwọn fáìlì kékeré.</p>
+      <p style="margin:10px 0 0;color:#475569;font-size:0.8rem;line-height:1.6;"><strong>Ìmúdójúìwọ̀n:</strong> A ṣàyẹ̀wò ọ̀nà iṣẹ́ yìí pẹ̀lú ojú-iwe Gẹẹsi tó bá a mu ní 11 September 2026. Kò lo owó-oṣù, owó iṣẹ́ tàbí data alààyè.</p>
     </div>
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
-      <p style="margin:0 0 8px;font-size:0.75rem;font-weight:800;color:#334155;">Awọn irinṣẹ ti a lo</p>
+      <p style="margin:0 0 8px;font-size:0.75rem;font-weight:800;color:#334155;">Àwọn irinṣẹ́ tí a lò</p>
       <ul style="margin:0;padding-left:18px;color:#475569;font-size:0.8rem;line-height:1.7;">
-        <li><a href="https://pdf-lib.js.org/" rel="noopener" style="color:#1d4ed8;font-weight:700;">pdf-lib</a> fun kikọ PDF tuntun.</li>
-        <li><a href="https://mozilla.github.io/pdf.js/" rel="noopener" style="color:#1d4ed8;font-weight:700;">Mozilla PDF.js</a> fun kika ati wiwo oju-iwe.</li>
+        <li><a href="https://pdf-lib.js.org/" rel="noopener" style="color:#1d4ed8;font-weight:700;">pdf-lib</a> fún kíkọ PDF tuntun.</li>
+        <li><a href="https://mozilla.github.io/pdf.js/" rel="noopener" style="color:#1d4ed8;font-weight:700;">Mozilla PDF.js</a> fún kíka àti wíwo ojú-iwe.</li>
       </ul>
     </div>
   </div>
@@ -399,6 +419,7 @@
   </div>
 </section>
 
+</main>
 <afro-footer></afro-footer>
 
 <script src="/assets/js/components/related-tools.js?v=cfbf2c1b" defer></script>
@@ -429,6 +450,8 @@
 
   const btnSelectAll  = document.getElementById('btnSelectAll');
   const btnDeselectAll= document.getElementById('btnDeselectAll');
+  const btnMoveLeft   = document.getElementById('btnMoveLeft');
+  const btnMoveRight  = document.getElementById('btnMoveRight');
   const btnRotateCW   = document.getElementById('btnRotateCW');
   const btnRotateCCW  = document.getElementById('btnRotateCCW');
   const btnDelete     = document.getElementById('btnDelete');
@@ -448,6 +471,7 @@
   const deleteDesc    = document.getElementById('deleteModalDesc');
   const btnCancelDel  = document.getElementById('btnCancelDelete');
   const btnConfirmDel = document.getElementById('btnConfirmDelete');
+  const deleteDialog  = deleteModal.querySelector('[role="dialog"]');
 
   /* ── State ── */
   let currentFile     = null;   // original File
@@ -461,6 +485,7 @@
   let dragSrcIdx      = null;
   let lastClickIdx    = null;
   let historyStack    = [];
+  let modalReturnFocus = null;
 
   function isPdfFile(file) {
     return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
@@ -485,7 +510,7 @@
 
   function pushHistory(label) {
     historyStack.push({
-      label: label || 'Edit',
+      label: label || 'Àtúnṣe',
       pages: clonePageList(pages),
       selected: selectedIndices()
     });
@@ -498,7 +523,7 @@
     selectedSet = new Set(snapshot.selected.filter(idx => idx >= 0 && idx < pages.length));
     resultBar.classList.remove('error');
     resultBar.classList.add('on');
-    resultMsg.textContent = 'Restored: ' + snapshot.label;
+    resultMsg.textContent = 'A dá padà sí: ' + snapshot.label;
     renderGrid();
     updateToolbar();
   }
@@ -525,7 +550,7 @@
   function sourceLabel(page) {
     const doc = documents.find(d => d.id === page.docId);
     if (!doc) return 'Ojú-iwe orísun ' + (page.origIndex + 1);
-    return doc.name + ' oju-iwe ' + (page.origIndex + 1);
+    return doc.name + ', ojú-iwe ' + (page.origIndex + 1);
   }
 
   async function loadPdfFileAsPages(file, docId) {
@@ -631,19 +656,23 @@
       card.draggable = true;
       card.dataset.idx = idx;
       card.title = sourceLabel(pg);
+      card.tabIndex = 0;
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('aria-label', 'Ojú-iwe ' + (idx + 1) + ' nínú ' + pages.length + '. ' + sourceLabel(pg) + '. ' + (selectedSet.has(idx) ? 'A ti yàn án. ' : 'A kò tíì yàn án. ') + 'Tẹ Enter tàbí Space láti yàn; lo Alt àti ọfà òsì tàbí ọ̀tún láti yí ìtò padà.');
 
       // Check indicator
       const check = document.createElement('div');
       check.className = 'page-check';
+      check.setAttribute('aria-hidden', 'true');
       card.appendChild(check);
 
       // Per-page action buttons
       const actions = document.createElement('div');
       actions.className = 'page-actions';
       actions.innerHTML =
-        '<button type="button" class="pa-btn" data-action="rotateCCW" title="Yí sí apa òsì"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>' +
-        '<button type="button" class="pa-btn" data-action="rotateCW" title="Yí sí apa ọtún"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>' +
-        '<button type="button" class="pa-btn pa-del" data-action="deletePage" title="Pa ojú-iwe rẹ́"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+        '<button type="button" class="pa-btn" data-action="rotateCCW" title="Yí sí apa òsì" aria-label="Yí ojú-iwe ' + (idx + 1) + ' sí apa òsì"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>' +
+        '<button type="button" class="pa-btn" data-action="rotateCW" title="Yí sí apa ọ̀tún" aria-label="Yí ojú-iwe ' + (idx + 1) + ' sí apa ọ̀tún"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>' +
+        '<button type="button" class="pa-btn pa-del" data-action="deletePage" title="Pa ojú-iwe rẹ́" aria-label="Pa ojú-iwe ' + (idx + 1) + ' rẹ́"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
       card.appendChild(actions);
 
       // Thumbnail
@@ -683,6 +712,19 @@
       card.addEventListener('click', e => {
         if (e.target.closest('.page-actions')) return;
         handleSelect(idx, e);
+      });
+      card.addEventListener('keydown', e => {
+        if (e.target.closest('.page-actions')) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleSelect(idx, e);
+          return;
+        }
+        if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+          e.preventDefault();
+          const targetIdx = e.key === 'ArrowLeft' ? idx - 1 : idx + 1;
+          movePage(idx, targetIdx, true);
+        }
       });
 
       // Per-page actions
@@ -724,21 +766,35 @@
         e.preventDefault();
         card.classList.remove('drag-over');
         if (dragSrcIdx === null || dragSrcIdx === idx) return;
-        pushHistory('Reorder pages');
-        const moved = pages.splice(dragSrcIdx, 1)[0];
-        pages.splice(idx, 0, moved);
-        // Remap selected set
-        selectedSet.clear();
-        renderGrid();
-        updateToolbar();
+        movePage(dragSrcIdx, idx, false);
       });
 
       pageGrid.appendChild(card);
     });
   }
 
+  function movePage(fromIdx, toIdx, keepFocus) {
+    if (fromIdx < 0 || toIdx < 0 || fromIdx >= pages.length || toIdx >= pages.length || fromIdx === toIdx) return;
+    pushHistory('Tún ìtò ojú-iwe ṣe');
+    const moved = pages.splice(fromIdx, 1)[0];
+    pages.splice(toIdx, 0, moved);
+    selectedSet = keepFocus ? new Set([toIdx]) : new Set();
+    renderGrid();
+    updateToolbar();
+    resultBar.classList.remove('error');
+    resultBar.classList.add('on');
+    resultMsg.textContent = 'A gbe ojú-iwe sí ipò ' + (toIdx + 1) + ' nínú ' + pages.length + '.';
+    if (keepFocus) {
+      requestAnimationFrame(() => {
+        const card = pageGrid.querySelector('[data-idx="' + toIdx + '"]');
+        if (card) card.focus();
+      });
+    }
+  }
+
   /* ── Selection ── */
   function handleSelect(idx, e) {
+    const restoreKeyboardFocus = e && e.type === 'keydown';
     if (e.shiftKey && lastClickIdx !== null) {
       // Range select
       const start = Math.min(lastClickIdx, idx);
@@ -760,21 +816,30 @@
     lastClickIdx = idx;
     renderGrid();
     updateToolbar();
+    if (restoreKeyboardFocus) {
+      requestAnimationFrame(() => {
+        const card = pageGrid.querySelector('[data-idx="' + idx + '"]');
+        if (card) card.focus();
+      });
+    }
   }
 
   function updateToolbar() {
     const sel = selectedSet.size;
     const total = pages.length;
-    pageInfoEl.textContent = 'ojú-iwe ' + total + (documents.length > 1 ? ' lati PDF ' + documents.length : '');
+    pageInfoEl.textContent = 'ojú-iwe ' + total + (documents.length > 1 ? ' láti PDF ' + documents.length : '');
 
     if (sel > 0) {
       selInfoEl.style.display = '';
-      selInfoEl.textContent = sel + ' ni a yan';
+      selInfoEl.textContent = sel + ' ni a yàn';
     } else {
       selInfoEl.style.display = 'none';
     }
 
     btnDeselectAll.disabled = sel === 0;
+    const onlySelected = sel === 1 ? selectedIndices()[0] : -1;
+    btnMoveLeft.disabled = onlySelected <= 0;
+    btnMoveRight.disabled = onlySelected < 0 || onlySelected >= total - 1;
     btnRotateCW.disabled = sel === 0;
     btnRotateCCW.disabled = sel === 0;
     btnDelete.disabled = sel === 0 || total <= 1 || sel >= total;
@@ -811,22 +876,31 @@
     if (e.key === 'Enter') btnSelectRange.click();
   });
 
+  btnMoveLeft.addEventListener('click', () => {
+    const idx = selectedIndices()[0];
+    movePage(idx, idx - 1, true);
+  });
+  btnMoveRight.addEventListener('click', () => {
+    const idx = selectedIndices()[0];
+    movePage(idx, idx + 1, true);
+  });
+
   /* ── Rotate ── */
   function rotatePage(idx, deg) {
-    pushHistory('Rotate page');
+    pushHistory('Yí ojú-iwe');
     pages[idx].rotation = ((pages[idx].rotation || 0) + deg + 360) % 360;
     renderGrid();
     updateToolbar();
   }
 
   btnRotateCW.addEventListener('click', () => {
-    pushHistory('Rotate selected pages');
+    pushHistory('Yí àwọn ojú-iwe tí a yàn');
     selectedSet.forEach(idx => { pages[idx].rotation = ((pages[idx].rotation || 0) + 90) % 360; });
     renderGrid();
     updateToolbar();
   });
   btnRotateCCW.addEventListener('click', () => {
-    pushHistory('Rotate selected pages');
+    pushHistory('Yí àwọn ojú-iwe tí a yàn');
     selectedSet.forEach(idx => { pages[idx].rotation = ((pages[idx].rotation || 0) + 270) % 360; });
     renderGrid();
     updateToolbar();
@@ -842,7 +916,7 @@
   btnDuplicate.addEventListener('click', () => {
     const indices = selectedIndices();
     if (!indices.length) return;
-    pushHistory('Duplicate pages');
+    pushHistory('Ṣe ẹ̀dà àwọn ojú-iwe');
     let offset = 0;
     indices.forEach(idx => {
       const sourceIdx = idx + offset;
@@ -858,7 +932,7 @@
 
   btnReverse.addEventListener('click', () => {
     if (pages.length < 2) return;
-    pushHistory(selectedSet.size >= 2 ? 'Reverse selected pages' : 'Reverse all pages');
+    pushHistory(selectedSet.size >= 2 ? 'Yi ìtò àwọn ojú-iwe tí a yàn padà' : 'Yi ìtò gbogbo ojú-iwe padà');
     if (selectedSet.size >= 2) {
       const indices = selectedIndices();
       const reversed = indices.map(idx => clonePage(pages[idx])).reverse();
@@ -902,7 +976,7 @@
   insertFileInput.addEventListener('change', async () => {
     const files = Array.from(insertFileInput.files || []).filter(isPdfFile);
     if (!files.length) return;
-    pushHistory('Add pages');
+    pushHistory('Fi àwọn ojú-iwe kun');
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
     resultBar.classList.remove('error');
@@ -939,14 +1013,26 @@
       return;
     }
     deleteDesc.textContent = 'Ṣé o dá ọ lójú pé o fẹ́ pa oju-iwe ' + count + ' rẹ́? Lo Tún bẹ̀rẹ̀ lati mu gbogbo oju-iwe pada.';
+    modalReturnFocus = document.activeElement;
     deleteModal.classList.add('on');
+    deleteModal.setAttribute('aria-hidden', 'false');
+    btnCancelDel.focus();
+  }
+
+  function closeDeleteModal(restoreFocus) {
+    const focusTarget = restoreFocus !== false && modalReturnFocus && document.contains(modalReturnFocus) ? modalReturnFocus : null;
+    if (focusTarget) focusTarget.focus();
+    else if (deleteModal.contains(document.activeElement)) document.activeElement.blur();
+    deleteModal.classList.remove('on');
+    deleteModal.setAttribute('aria-hidden', 'true');
+    modalReturnFocus = null;
   }
 
   btnDelete.addEventListener('click', showDeleteModal);
-  btnCancelDel.addEventListener('click', () => { deleteModal.classList.remove('on'); });
+  btnCancelDel.addEventListener('click', () => { closeDeleteModal(true); });
   btnConfirmDel.addEventListener('click', () => {
-    deleteModal.classList.remove('on');
-    pushHistory('Delete pages');
+    closeDeleteModal(false);
+    pushHistory('Pa àwọn ojú-iwe rẹ́');
     // Delete selected pages (in reverse order to keep indices stable)
     const toDelete = Array.from(selectedSet).sort((a, b) => b - a);
     toDelete.forEach(idx => pages.splice(idx, 1));
@@ -954,14 +1040,39 @@
     renderGrid();
     updateToolbar();
     PdfUtils.showToast('A pa oju-iwe ' + toDelete.length + ' rẹ́');
+    const nextCard = pageGrid.querySelector('.page-card');
+    if (nextCard) nextCard.focus();
   });
 
   // Close modal on overlay click
-  deleteModal.addEventListener('click', e => { if (e.target === deleteModal) deleteModal.classList.remove('on'); });
+  deleteModal.addEventListener('click', e => { if (e.target === deleteModal) closeDeleteModal(true); });
+  deleteModal.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeDeleteModal(true);
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(deleteDialog.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+    if (!focusable.length) {
+      e.preventDefault();
+      deleteDialog.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 
   /* ── Reset ── */
   btnReset.addEventListener('click', () => {
-    pushHistory('Reset workspace');
+    pushHistory('Tún ibùdó iṣẹ́ bẹ̀rẹ̀');
     pages = clonePageList(originalPages);
     selectedSet.clear();
     resultBar.classList.remove('error');
@@ -1092,12 +1203,7 @@
 
   pageGrid.addEventListener('touchend', () => {
     if (touchSrcIdx !== null && touchTarget !== null && touchSrcIdx !== touchTarget) {
-      pushHistory('Reorder pages');
-      const moved = pages.splice(touchSrcIdx, 1)[0];
-      pages.splice(touchTarget, 0, moved);
-      selectedSet.clear();
-      renderGrid();
-      updateToolbar();
+      movePage(touchSrcIdx, touchTarget, false);
     }
 
     document.querySelectorAll('.page-card.dragging').forEach(c => c.classList.remove('dragging'));
