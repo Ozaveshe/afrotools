@@ -6,10 +6,12 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const evidenceDir = path.join(root, 'ops/jamb/verification');
+const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
 const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3}\.json$/.test(name));
 
 test('AI calculation approvals are backed by current batch evidence and reproducible checks', () => {
   const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
+  const pool = JSON.parse(fs.readFileSync(path.join(root, 'ops/jamb/source-pool.json'), 'utf8')).questions;
   const covered = new Map();
   for (const filename of batches) {
     const batch = JSON.parse(fs.readFileSync(path.join(evidenceDir, filename), 'utf8'));
@@ -25,6 +27,10 @@ test('AI calculation approvals are backed by current batch evidence and reproduc
       const review = ledger.questions[record.id];
       assert.ok(review, 'Batch record has no review: ' + record.id);
       assert.equal(record.content_sha256, review.content_sha256, record.id);
+      if (record.publication_candidate === true) {
+        const result = assessQuestion(pool.find(q => q.id === record.id), ledger);
+        assert.equal(result.state, 'eligible', record.id + ': approved evidence cannot silently remain quarantined: ' + result.reasons.join(', '));
+      }
       assert.ok(review.answer_review.evidence.includes(filename + '#' + record.id));
       assert.ok(review.answer_review.evidence.includes(script));
       covered.set(record.id, record.content_sha256);
