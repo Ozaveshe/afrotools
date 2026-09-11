@@ -3,12 +3,13 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
+<script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAMB Past Questions Bank — 16,000+ Free Questions | AfroJAMB</title>
-<meta name="description" content="Browse 16,000+ JAMB past questions across 11 subjects from 1978 to 2020. Filter by year, subject, topic. Free, no sign-up. With AI explanations.">
+<title>Reviewed JAMB Past Questions Bank | AfroJAMB</title>
+<meta name="description" content="Browse reviewed JAMB practice questions by subject and year. Reveal answers locally, with optional AI assistance. Availability depends on completed content and source reviews.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="JAMB Past Questions Bank — 16,000+ Free Questions">
-<meta property="og:description" content="The biggest free JAMB past questions library on the African web. 11 subjects, 1978-2020, AI explanations included.">
+<meta property="og:title" content="Reviewed JAMB Past Questions Bank">
+<meta property="og:description" content="Browse reviewed questions, reveal answers locally and choose optional AI assistance.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -77,7 +78,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <main id="main">
 <section class="jb-hero" style="padding:42px 0 50px;">
   <div class="jb-wrap jb-hero-z">
-    <span class="jb-hero-tag">📚 16,000+ Questions</span>
+    <span class="jb-hero-tag">📚 Reviewed Questions</span>
     <h1>JAMB <b>Past Questions</b> Bank</h1>
     <p class="sub">Filter by year, subject, or search by keyword. Tap "Why?" on any question for an AI explanation.</p>
   </div>
@@ -106,11 +107,12 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <label style="font-size:.78rem;color:#64748b;display:flex;align-items:center;gap:6px;cursor:pointer;">
-          <input aria-label="F answered" id="f-answered" type="checkbox" checked> only answered
+          <input aria-label="Reviewed answers only" id="f-answered" type="checkbox" checked disabled> reviewed answers only
         </label>
       </div>
     </div>
 
+    <p><a href="/tools/education-hub/">Plan your study in the Education Hub</a></p>
     <div id="result-meta" style="font-size:.78rem;color:#64748b;margin-bottom:14px;">Loading…</div>
 
     <div id="q-list" style="display:flex;flex-direction:column;gap:14px;"></div>
@@ -211,6 +213,8 @@ var SUBJECTS = [
 var SUBJ_LABEL = {};
 SUBJECTS.forEach(function(s){ SUBJ_LABEL[s[0]] = s[1]; });
 
+var POOL_REVISION = null;
+var REFRESH_ID = 0;
 var ALL_QUESTIONS = []; // current loaded subject pool
 var FILTERED = [];
 var PAGE_SIZE = 20;
@@ -237,20 +241,10 @@ function populateYearFilter(){
 }
 
 async function loadSubject(subject) {
-  // Loads either single subject or full pool
-  var url = subject ? "/data/jamb/pools/" + subject + ".json" : "/data/jamb/pools/practice-pool.json";
-  var res = await fetch(url);
-  var data = await res.json();
-  return (data.questions || []).filter(isLaunchSafeQuestion);
-}
-
-async function loadAllSubjectsFull() {
-  var chunks = await Promise.all(SUBJECTS.map(function (s) {
-    return loadSubject(s[0]).catch(function () { return []; });
-  }));
-  return chunks.reduce(function (all, questions) {
-    return all.concat(questions);
-  }, []);
+  var data = await AfroJAMB.QuestionTrust.loadPool("/data/jamb/pools/practice-pool.json");
+  return { revision: data.review_revision, questions: data.questions.filter(function(q) {
+    return (!subject || q.subject === subject) && isLaunchSafeQuestion(q);
+  }) };
 }
 
 async function buildAiHeaders() {
@@ -272,19 +266,20 @@ async function refresh() {
   var search = document.getElementById("f-search").value.trim().toLowerCase();
   var answeredOnly = document.getElementById("f-answered").checked;
 
-  document.getElementById("result-meta").textContent = "Loading…";
-
+  var requestId = ++REFRESH_ID;
+  ALL_QUESTIONS = []; FILTERED = []; SHOWN = 0; POOL_REVISION = null;
+  document.getElementById("q-list").textContent = "";
+  document.getElementById("load-more-wrap").hidden = true;
+  document.getElementById("result-meta").setAttribute("role", "status");
+  document.getElementById("result-meta").textContent = "Checking reviewed questions…";
   try {
-    if (subject) {
-      ALL_QUESTIONS = await loadSubject(subject);
-    } else if (!answeredOnly) {
-      ALL_QUESTIONS = await loadAllSubjectsFull();
-    } else {
-      // For "all subjects", use the practice pool (only answered) for speed
-      ALL_QUESTIONS = await loadSubject(null);
-    }
+    var loaded = await loadSubject(subject);
+    if (requestId !== REFRESH_ID) return;
+    ALL_QUESTIONS = loaded.questions;
+    POOL_REVISION = loaded.revision;
   } catch(e) {
-    document.getElementById("result-meta").textContent = "Failed to load questions.";
+    if (requestId !== REFRESH_ID) return;
+    document.getElementById("result-meta").textContent = "Reviewed questions are unavailable. Please retry later, or use the Education Hub to plan your study.";
     return;
   }
 
@@ -305,7 +300,7 @@ async function refresh() {
 
 function isLaunchSafeQuestion(q) {
   var text = ((q && q.question) || "") + " " + Object.values((q && q.options) || {}).join(" ");
-  return !!q && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
+  return !!q && !q.image && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
 }
 
 function showMore() {
@@ -316,7 +311,7 @@ function showMore() {
   }
   SHOWN = end;
   document.getElementById("result-meta").textContent =
-    FILTERED.length.toLocaleString() + " questions · showing " + SHOWN;
+    FILTERED.length ? FILTERED.length.toLocaleString() + " reviewed questions · showing " + SHOWN : "No reviewed questions match this selection yet. Try another filter or use the Education Hub study planner while the bank is reviewed.";
   document.getElementById("load-more-wrap").hidden = SHOWN >= FILTERED.length;
 }
 
@@ -336,8 +331,10 @@ function renderQCard(q) {
       + '<div>' + escapeHtml(q.options[letter]) + '</div></div>';
   });
   card.innerHTML = meta
+    + (q.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(q.passage) + '</p>' : '')
     + '<div class="qcard-text">' + escapeHtml(q.question) + '</div>'
     + '<div class="qcard-opts">' + optsHtml + '</div>'
+    + '<p class="reviewed-explanation" hidden>' + escapeHtml(q.explanation || q.ai_explanation || '') + '</p>'
     + '<div class="qcard-actions">'
     + (q.answer ? '<button type="button" class="reveal-btn primary">Reveal answer</button>' : '<button type="button" class="reveal-btn" disabled style="opacity:.5;cursor:not-allowed;">No answer key</button>')
     + '<button type="button" class="explain-btn">🤖 Explain with AI</button>'
@@ -352,6 +349,7 @@ function renderQCard(q) {
       });
       revealBtn.textContent = "✓ Answer: " + q.answer;
       revealBtn.disabled = true;
+      card.querySelector(".reviewed-explanation").hidden = false;
     });
   }
   // Click an option to reveal
@@ -363,6 +361,7 @@ function renderQCard(q) {
         });
         revealBtn.textContent = "✓ Answer: " + q.answer;
         revealBtn.disabled = true;
+      card.querySelector(".reviewed-explanation").hidden = false;
       }
     });
   });
@@ -372,12 +371,17 @@ function renderQCard(q) {
     btn.disabled = true;
     btn.textContent = "Asking AI…";
     try {
-      var prompt = "Explain this JAMB " + q.subject + " question step by step. Question: " + q.question + "\nOptions:\n" + Object.entries(q.options).map(function(p){return p[0]+". "+p[1];}).join("\n") + (q.answer ? "\nCorrect answer: " + q.answer : "");
+      if (!window.confirm("AI Assist will send this reviewed question ID and the public question content to our AI provider for an explanation. Continue? You can cancel and reveal the reviewed answer locally.")) {
+        btn.disabled = false; btn.textContent = "Explain with AI"; return;
+      }
+      await AfroJAMB.QuestionTrust.fetchIndex();
+      AfroJAMB.QuestionTrust.assertEligible([q], POOL_REVISION);
       var res = await fetch("/.netlify/functions/ai-advisor", {
         method: "POST",
         headers: await buildAiHeaders(),
-        body: JSON.stringify({tool: "jamb-tutor-" + q.subject, message: prompt})
+        body: JSON.stringify({tool: "jamb-tutor-" + q.subject, question_id: q.id, pool_revision: POOL_REVISION, message: "Explain this reviewed question step by step.", aiConsent: "accepted"})
       });
+      if (!res.ok) throw new Error("AI explanation unavailable");
       var data = await res.json();
       var reply = data.reply || data.message || "Could not generate explanation.";
       var box = document.createElement("div");

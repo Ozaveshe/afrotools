@@ -510,6 +510,7 @@ function formatFinding(row) {
 }
 
 module.exports = {
+  readMeta,
   ROOT,
   auditHtml,
   auditMarkdown,

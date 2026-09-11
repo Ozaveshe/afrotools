@@ -19,12 +19,15 @@
  */
 
 const { createClient } = require("@supabase/supabase-js");
+const { getReviewedBank } = require('./_shared/jamb-reviewed-data');
 
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || "https://zpclagtgczsygrgztlts.supabase.co";
-const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY || "";
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || "";
 
 exports.handler = async (event) => {
   const cors = {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
@@ -44,6 +47,7 @@ exports.handler = async (event) => {
   } catch (e) {
     return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid request object' }) };
 
   // ───────── Validation ─────────
   if (!body.session_id || typeof body.session_id !== "string" || body.session_id.length > 64) {
@@ -66,59 +70,51 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "No valid subjects" }) };
   }
 
-  // Clamp score to 0-400 (JAMB UTME aggregate range) — also rejects NaN/strings
-  const rawScore = Number(body.score);
-  const score = Number.isFinite(rawScore) ? Math.max(0, Math.min(400, Math.round(rawScore))) : 0;
+  // Validate eligibility and score canonical answers before any persistence.
+  // Anonymous attempts are practice telemetry, not verified human retention.
+  let reviewedAttempt;
+  try { reviewedAttempt = getReviewedBank().attempt(body); }
+  catch {
+    return { statusCode: 409, headers: cors, body: JSON.stringify({ error: 'Attempt does not match the current reviewed question bank. Refresh and start a new session.' }) };
+  }
 
   // Clamp duration 0..7200s (2 hours max, the full CBT)
   const rawDur = Number(body.duration_seconds);
   const durationSec = Number.isFinite(rawDur) ? Math.max(0, Math.min(7200, Math.round(rawDur))) : 0;
 
-  // Sanity-check subject_scores: object with only allowed subject keys → numeric 0-100
-  const cleanSubjectScores = {};
-  if (body.subject_scores && typeof body.subject_scores === "object") {
-    Object.keys(body.subject_scores).forEach((k) => {
-      if (ALLOWED_SUBJECTS.indexOf(k) === -1) return;
-      const v = Number(body.subject_scores[k]);
-      if (Number.isFinite(v)) cleanSubjectScores[k] = Math.max(0, Math.min(100, Math.round(v)));
-    });
-  }
-
-  // Bound question_ids and answers to reasonable sizes
-  const cleanQuestionIds = Array.isArray(body.question_ids) ? body.question_ids.slice(0, 200).filter((x) => typeof x === "string") : [];
-  const cleanAnswers = (body.answers && typeof body.answers === "object") ? body.answers : {};
-
   // If we have no Supabase creds, just return ok (logging is best-effort)
-  if (!SUPABASE_URL || !SUPABASE_ANON) {
+  if (SUPABASE_URL.replace(/\/$/, '') !== 'https://zpclagtgczsygrgztlts.supabase.co' || !SUPABASE_SERVICE_KEY) {
     return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: false }) };
   }
 
   try {
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
     const row = {
       anon_session: body.session_id,
       mode: body.mode,
-      subjects: cleanSubjects,
-      question_ids: cleanQuestionIds,
-      answers: cleanAnswers,
-      score: score,
-      subject_scores: cleanSubjectScores,
+      subjects: reviewedAttempt.subjects,
+      question_ids: reviewedAttempt.question_ids,
+      answers: reviewedAttempt.answers,
+      score: reviewedAttempt.score,
+      subject_scores: reviewedAttempt.subject_scores,
       duration_seconds: durationSec,
       finished_at: new Date().toISOString(),
+      metadata: { review_validation: { policy: 'reviewed-only', validator_version: 1,
+        review_revision: reviewedAttempt.review_revision } },
     };
 
     const { error } = await supabase.from("jamb_attempts").insert(row);
     if (error) {
-      console.warn("[jamb-attempt] insert error:", error.message);
-      return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: false, warn: error.message }) };
+      console.warn("[jamb-attempt] persistence unavailable");
+      return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: false }) };
     }
 
     return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: true }) };
   } catch (e) {
-    console.warn("[jamb-attempt] exception:", e.message);
+    console.warn("[jamb-attempt] persistence unavailable");
     return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: false }) };
   }
 };

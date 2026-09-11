@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB Flashcards — Spaced Repetition Decks | AfroJAMB</title>
-<meta name="description" content="Free JAMB flashcards with spaced repetition. English vocab, Math formulas, Physics constants, Chemistry reactions, Biology terms. Build your streak.">
+<meta name="description" content="Use reviewed JAMB flashcard decks when available and save spaced-repetition progress locally. Plan your revision while decks are reviewed.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="JAMB Flashcards — SRS Study Decks">
 
@@ -43,6 +43,7 @@ fbq('track', 'PageView');
 <meta property="og:url" content="https://afrotools.com/jamb/flashcards/">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
 <link rel="canonical" href="https://afrotools.com/jamb/flashcards/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/flashcards/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/flashcards/">
@@ -69,8 +70,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <section class="jb-hero" style="padding:42px 0 50px;">
   <div class="jb-wrap jb-hero-z">
     <span class="jb-hero-tag">🃏 Spaced Repetition</span>
-    <h1>Pre-built JAMB <b>flashcard decks</b></h1>
-    <p class="sub">Memorize the things JAMB tests over and over. Vocabulary, formulas, constants, definitions. Spaced repetition keeps cards in your memory.</p>
+    <h1>Reviewed JAMB <b>flashcard decks</b></h1>
+    <p class="sub">Review approved material with spaced repetition. Deck availability depends on completed content and source-permission checks.</p>
     <div id="streak-row" style="display:flex;gap:14px;margin-top:18px;flex-wrap:wrap;"></div>
   </div>
 </section>
@@ -79,8 +80,9 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <section class="jb-sec" id="deck-list-section">
   <div class="jb-wrap">
     <h2 style="margin:0 0 6px;">Pick a deck</h2>
-    <p style="font-size:.86rem;color:#64748b;margin:0 0 20px;">Each deck is curated for high-frequency JAMB content.</p>
-    <div id="deck-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+    <p style="font-size:.86rem;color:#64748b;margin:0 0 20px;">Only reviewed decks appear here. A deck covers its listed material, not the full JAMB syllabus.</p>
+    <p id="deck-status" role="status">Checking reviewed deck availability…</p><p><a href="/tools/study-planner/">Plan your study week</a> · <a href="/jamb/past-questions/">Check reviewed practice</a></p>
+    <div id="deck-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;"></div>
   </div>
 </section>
 
@@ -273,18 +275,37 @@ function nextReview(card, quality) {
 // =====================================================================
 // Deck management
 // =====================================================================
-var DECKS = null;
+var DECKS = [];
 var currentDeck = null;
 var currentCardIdx = 0;
 var dueCards = [];
 
 (async function load(){
   try {
-    var res = await fetch("/data/jamb/flashcard-decks.json");
-    var data = await res.json();
+    var trust = window.AfroJAMB.QuestionTrust;
+    var index = await trust.fetchIndex();
+    var res = await fetch('/data/jamb/flashcard-decks.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Deck request failed');
+    var data = await trust.validatePublication(await res.json(), index);
+    if (!Array.isArray(data.decks)) throw new Error('Invalid deck list');
+    var deckIds = new Set();
+    for (var deck of data.decks) {
+      await trust.validateReviewedObject(deck);
+      if (!deck.id || deckIds.has(deck.id) || !Array.isArray(deck.cards) || !deck.cards.length) throw new Error('Invalid reviewed deck');
+      deckIds.add(deck.id);
+      var cardIds = new Set();
+      for (var card of deck.cards) {
+        await trust.validateReviewedObject(card);
+        if (!card.id || cardIds.has(card.id) || card.deck_id !== deck.id || card.subject !== deck.subject || typeof card.front !== 'string' || !card.front.trim() || typeof card.back !== 'string' || !card.back.trim()) throw new Error('Invalid reviewed card');
+        cardIds.add(card.id);
+      }
+    }
+    STORAGE_KEY = 'afrojamb-flashcards-reviewed-' + data.review_revision;
+    STATS_KEY = 'afrojamb-flash-stats-reviewed-' + data.review_revision;
     DECKS = data.decks;
+    document.getElementById('deck-status').textContent = DECKS.length ? 'Reviewed decks available. Progress stays on this device.' : 'No reviewed flashcard decks are available yet. Use the study planner while content is checked.';
   } catch(e) {
-    document.getElementById("deck-list").innerHTML = "Could not load decks.";
+    document.getElementById('deck-status').textContent = 'Reviewed decks could not be verified. Please retry when connected; the study planner remains available.';
     return;
   }
   renderStreak();
@@ -300,6 +321,7 @@ function renderStreak() {
     + '<div class="streak-card"><div class="streak-num">' + stats.bestStreak + '</div><div class="streak-lbl">Best streak</div></div>';
 }
 
+function escDeck(value) { var node = document.createElement('span'); node.textContent = String(value || ''); return node.innerHTML; }
 function renderDeckList() {
   var state = loadState();
   var box = document.getElementById("deck-list");
@@ -312,16 +334,17 @@ function renderDeckList() {
 
     var today = new Date().toISOString().split("T")[0];
     var dueToday = deck.cards.filter(function(c, i){
-      var cs = deckState[i];
+      var cs = deckState[c.id];
       if (!cs) return true; // never seen = due
       return cs.due <= today;
     }).length;
 
-    var d = document.createElement("div");
+    var d = document.createElement("button");
+    d.type = "button"; d.style.textAlign = "left";
     d.className = "deck-card";
-    d.innerHTML = '<div class="deck-emoji">' + deck.emoji + '</div>'
-      + '<div class="deck-name">' + deck.name + '</div>'
-      + '<div class="deck-desc">' + deck.description + '</div>'
+    d.innerHTML = '<div class="deck-emoji">' + escDeck(deck.emoji) + '</div>'
+      + '<div class="deck-name">' + escDeck(deck.name) + '</div>'
+      + '<div class="deck-desc">' + escDeck(deck.description) + '</div>'
       + '<div class="deck-progress"><span style="width:' + pct + '%"></span></div>'
       + '<div class="deck-stats"><span>' + totalCards + ' cards</span><span>' + dueToday + ' due today</span><span>' + pct + '% started</span></div>';
     d.addEventListener("click", function(){ openDeck(deck); });
@@ -391,9 +414,10 @@ document.querySelectorAll(".rate-btn").forEach(function(btn){
     var idx = dueCards[currentCardIdx];
     var state = loadState();
     if (!state[currentDeck.id]) state[currentDeck.id] = {};
-    var cs = state[currentDeck.id][idx] || {ease: 2.5, interval: 0, reps: 0, due: ""};
+    var cardId = currentDeck.cards[idx].id;
+    var cs = state[currentDeck.id][cardId] || {ease: 2.5, interval: 0, reps: 0, due: ""};
     cs = nextReview(cs, q);
-    state[currentDeck.id][idx] = cs;
+    state[currentDeck.id][cardId] = cs;
     saveState(state);
     updateStreak();
     renderStreak();

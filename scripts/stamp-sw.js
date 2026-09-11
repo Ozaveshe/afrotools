@@ -24,6 +24,7 @@ const keyFiles = [
   'assets/css/design-system.min.css',
   'assets/js/components/navbar.min.js',
   'assets/js/components/footer.min.js',
+  'data/jamb/pools/index.json',
 ].map(file => path.join(ROOT, file));
 
 function readNormalizedText(filePath) {

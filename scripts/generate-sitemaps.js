@@ -15,6 +15,7 @@ const routeContract = require('./lib/route-contract');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
+require('./build-jamb-sitemap').build(ROOT);
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
 const LOCAL_TODAY = [
@@ -341,20 +342,20 @@ function formatDate(date) {
 }
 
 function normalizeSitemapLastmod(date) {
-  const formatted = formatDate(date);
-  const ageMs = Date.now() - new Date(formatted).getTime();
-  const ageDays = ageMs / 86400000;
-  return ageDays > 7 ? TODAY : formatted;
+  // Age is not evidence of a content update. Preserve the supplied source
+  // date even when an explicit refresh rebuilds the sitemap much later.
+  return formatDate(date);
 }
 
-function stableSitemapLastmod(loc, fallbackDate) {
+function stableSitemapLastmod(loc, fallbackDate, sourceDate = '') {
+  // Reviewed overrides remain authoritative, including during a refresh.
+  const selectiveOverride = lastmodOverrideFor(loc);
+  if (selectiveOverride) return selectiveOverride;
+  // A manifest records content dates independently of checkout/build mtime.
+  // Use it even when an older sitemap contains a manufactured newer stamp.
+  if (sourceDate) return normalizeSitemapLastmod(sourceDate);
   if (!REFRESH_LASTMOD) {
     const existing = EXISTING_URL_LASTMODS.get(loc) || '';
-    const selectiveOverride = lastmodOverrideFor(loc);
-    // The reviewed registry is authoritative for its narrow selector. This
-    // permits a bad local-time stamp to be corrected instead of preserved
-    // forever by the stable historical-lastmod behavior.
-    if (selectiveOverride) return selectiveOverride;
     if (existing) return existing;
   }
 
@@ -489,9 +490,8 @@ function inspectHtmlFile(filePath) {
   return {
     url,
     normalizedKey: currentPath,
-    lastmod: manifestMetadata && manifestMetadata.lastmod
-      ? manifestMetadata.lastmod
-      : stableSitemapLastmod(url, fs.statSync(filePath).mtime),
+    lastmod: stableSitemapLastmod(url, fs.statSync(filePath).mtime,
+      manifestMetadata && manifestMetadata.lastmod),
     images,
     sitemapId: routeRecord && routeRecord.sitemap ? routeRecord.sitemap.sitemapId : null,
     routeRecord,

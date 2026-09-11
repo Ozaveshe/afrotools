@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = '92429a57';
+const CACHE_VERSION = '9d531559';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -55,6 +55,13 @@ self.addEventListener('fetch', e => {
   }
 
   if (url.origin !== self.location.origin) return;
+
+  // Review revocation must not silently fall back to a cached question bank.
+  // Local study plans still work offline; reviewed practice needs a fresh bank.
+  if (url.pathname.startsWith('/data/jamb/')) {
+    e.respondWith(fetch(request, { cache: 'no-store' }));
+    return;
+  }
 
   if (/^\/(assets)\//i.test(url.pathname) || /\.(css|js|woff2?|svg|png|jpg|webp|ico)$/i.test(url.pathname)) {
     e.respondWith(

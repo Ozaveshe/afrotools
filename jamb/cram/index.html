@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB 48-Hour Cram Mode — Emergency Prep | AfroJAMB</title>
-<meta name="description" content="The last 48 hours before JAMB. Don't panic. Follow this hour-by-hour emergency cram plan: priority topics, quick mocks, AI explanations, sleep schedule. Free.">
+<meta name="description" content="Adapt this revision checklist to the final 48 hours before your confirmed JAMB appointment. Use checked notes and reviewed practice when available.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="JAMB 48-Hour Cram Mode — Emergency Prep">
 <meta property="og:description" content="Don't panic. Follow this hour-by-hour cram plan for the final 48 hours before JAMB.">
@@ -78,8 +78,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 <section class="jb-hero" style="padding:42px 0 50px;background:linear-gradient(135deg,#7f1d1d 0%,#0A1628 50%,#0063D1 100%);">
   <div class="jb-wrap jb-hero-z">
     <span class="jb-hero-tag" style="background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4);"><span class="pulse" style="background:#ef4444;"></span>Emergency Mode</span>
-    <h1 id="cram-headline">JAMB in <b id="cram-time">48 hrs</b>. Don't panic.</h1>
-    <p class="sub">This is a time-locked cram plan. No fluff, no syllabus deep-dives — just the highest-impact things you can do in the time you have left.</p>
+    <h1 id="cram-headline">Plan your final <b id="cram-time">48 hours</b> of revision.</h1>
+    <p class="sub">An adaptable checklist for the final two days before your own exam appointment. Check the date and time on your slip; this page does not announce an official exam countdown.</p>
     <div id="cram-bigcountdown" style="display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;"></div>
   </div>
 </section>
@@ -92,7 +92,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
     <!-- Hour-by-hour blocks -->
     <h2 style="font-size:1.2rem;font-weight:800;margin:24px 0 4px;color:#0f172a;">Your hour-by-hour plan</h2>
-    <p style="font-size:.82rem;color:#64748b;margin:0 0 18px;">Stop reading old notes. Do these in order. Each block is 30–60 minutes. Skip nothing.</p>
+    <p style="font-size:.82rem;color:#64748b;margin:0 0 18px;">Adapt these blocks to your available time and subjects. Use your textbook or teacher-reviewed notes whenever reviewed practice is unavailable.</p>
 
     <div id="cram-blocks" style="display:flex;flex-direction:column;gap:12px;"></div>
 
@@ -205,68 +205,37 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 </style>
 
 <script>
-// JAMB target: April 16, 2026 09:00 WAT
-var TARGET = new Date('2026-04-16T09:00:00+01:00').getTime();
 var STORAGE = "afrojamb-cram-progress";
 
 function loadProgress(){ try { return JSON.parse(localStorage.getItem(STORAGE) || "{}"); } catch(e) { return {}; } }
 function saveProgress(p){ try { localStorage.setItem(STORAGE, JSON.stringify(p)); } catch(e) {} }
 
 function tickCountdown() {
-  var diff = Math.max(0, TARGET - Date.now());
-  var h = Math.floor(diff / 3600000);
-  var m = Math.floor((diff % 3600000) / 60000);
-  var s = Math.floor((diff % 60000) / 1000);
-
-  // Big headline
-  var head = document.getElementById("cram-time");
-  if (h >= 24) head.textContent = Math.floor(h/24) + " days";
-  else if (h >= 1) head.textContent = h + " hrs";
-  else head.textContent = m + " min";
-
-  // Big countdown row
-  var box = document.getElementById("cram-bigcountdown");
-  var totalH = Math.floor(diff / 3600000);
-  box.innerHTML =
-    '<div class="cd-big"><div class="n">' + totalH + '</div><div class="l">Hours left</div></div>'
-    + '<div class="cd-big"><div class="n">' + m + '</div><div class="l">Minutes</div></div>'
-    + '<div class="cd-big"><div class="n">' + s + '</div><div class="l">Seconds</div></div>';
-
-  // Status banner
-  var banner = document.getElementById("status-banner");
-  if (diff <= 0) {
-    banner.innerHTML = '<div style="font-size:1.2rem;font-weight:800;color:#10b981;">🎓 JAMB has started. Good luck!</div><p style="font-size:.86rem;color:#64748b;margin-top:6px;">You\'ve got this. Trust your prep.</p>';
-  } else if (totalH > 48) {
-    banner.innerHTML = '<div style="font-size:1.05rem;font-weight:700;color:#0f172a;">' + Math.floor(totalH / 24) + ' days to go.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">You have time for more than just cram. Try our <a href="/jamb/study-plan/" style="color:#0062CC;font-weight:700;">full study plan</a> instead — but bookmark this page for the final 48 hours.</p>';
-  } else if (totalH > 24) {
-    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#f59e0b;">🔥 You\'re in the 48-hour window. Lock in.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">Follow the plan below in order. No improvising.</p>';
-  } else if (totalH > 12) {
-    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#ef4444;">⏰ Less than 24 hours. Skip to "Final Day" blocks below.</div>';
-  } else {
-    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#ef4444;">😤 Last 12 hours. SLEEP. Don\'t cram more.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">Read our <a href="/jamb/exam-day-kit/" style="color:#0062CC;font-weight:700;">exam day kit</a> and go to bed early.</p>';
-  }
+  document.getElementById('cram-time').textContent = '48 hours';
+  document.getElementById('cram-bigcountdown').hidden = true;
+  document.getElementById('status-banner').innerHTML = '<p>This is a relative revision schedule, not an official exam countdown. Follow the appointment on your exam slip. If your exam is farther away, use the <a href="/jamb/study-plan/">weekly study plan</a>.</p>';
 }
 
 // Cram blocks — hour-by-hour (T-48 to T-0)
 var BLOCKS = [
   // ---- TODAY (T-48 to T-24) ----
-  {phase: "Today (T-48 to T-24)", time: "Block 1 · 45 min", title: "Take a 30-min CBT mock right now",
-   desc: "Don't think. Open the CBT and take a 30-min Quick Mock across all 4 subjects. We need a baseline of where you are.",
+  {phase: "Today (T-48 to T-24)", time: "Block 1 · 45 min", title: "Check reviewed practice availability",
+   desc: "If reviewed questions are available for your subjects, try a short practice session. Otherwise review a textbook exercise and note the topics you need to revisit.",
    link: {label: "Start Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
   {phase: "Today (T-48 to T-24)", time: "Block 2 · 30 min", title: "Review the wrong answers from Block 1",
    desc: "Go to your results, click 'Wrong' filter, walk through every wrong answer. Tap 'Why is this the answer?' on the ones you don't understand. This is where you actually learn.",
    link: null},
   {phase: "Today (T-48 to T-24)", time: "Block 3 · 30 min", title: "Open Pattern Analyzer for your 4 subjects",
-   desc: "See which topics appear most. The 'Likely topics for JAMB 2026' card tells you exactly what to focus on. Note your top 3 weak topics from your wrong answers.",
+   desc: "Explore the historical reviewed collection when available. Topic counts do not predict future papers; use your syllabus and recent mistakes to choose revision priorities.",
    link: {label: "Open Patterns →", href: "/jamb/patterns/"}},
-  {phase: "Today (T-48 to T-24)", time: "Block 4 · 60 min", title: "AI tutor: drill your top 3 weak topics",
-   desc: "Open the AI tutor. For each weak topic, ask: 'Quiz me on [topic] — give me 5 JAMB-style questions one at a time'. The tutor will quiz you and explain wrong answers in plain English.",
+  {phase: "Today (T-48 to T-24)", time: "Block 4 · 60 min", title: "Optional AI help with difficult concepts",
+   desc: "You can ask optional AI assistance to explain a concept, then check it against your textbook or teacher guidance. AI output is not a reviewed exam question or answer key.",
    link: {label: "Open AI Tutor →", href: "/jamb/tutor/"}},
-  {phase: "Today (T-48 to T-24)", time: "Block 5 · 30 min", title: "Flashcards: power through 30 cards",
-   desc: "Pick the deck for your weakest subject. Power through 30 cards. Don't worry about retention — exposure is the goal.",
+  {phase: "Today (T-48 to T-24)", time: "Block 5 · 30 min", title: "Review available flashcards or your own notes",
+   desc: "Use an approved deck if one is available for your subject. Otherwise make a short recap from your teacher-reviewed notes.",
    link: {label: "Open Flashcards →", href: "/jamb/flashcards/"}},
-  {phase: "Today (T-48 to T-24)", time: "Block 6 · 60 min", title: "Take a full 1-subject CBT",
-   desc: "Pick your strongest subject (for confidence) or your weakest (for stretch). Take a 40-min single-subject CBT. Review wrong answers right after.",
+  {phase: "Today (T-48 to T-24)", time: "Block 6 · 60 min", title: "Practise one subject when reviewed content is available",
+   desc: "Choose reviewed practice for a subject, or work through textbook exercises. Check mistakes against reviewed explanations.",
    link: {label: "Single Subject CBT →", href: "/jamb/cbt/"}},
   {phase: "Today (T-48 to T-24)", time: "Block 7 · 15 min", title: "Read the exam day survival kit",
    desc: "Print out the checklist. Pack your bag tonight. Confirm your centre on the JAMB portal.",
@@ -277,19 +246,19 @@ var BLOCKS = [
 
   // ---- TOMORROW (T-24 to T-12) ----
   {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 8 · 30 min", title: "Wake up, eat, then 30-min Quick Mock again",
-   desc: "Same Quick Mock format as Block 1. Compare your aggregate score — are you up? You should be by 10–30 points.",
+   desc: "If a comparable reviewed practice session is available, compare the topics you understood. This checklist does not promise a particular score gain.",
    link: {label: "Start Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
   {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 9 · 30 min", title: "Review wrong answers + ask AI on the hard ones",
    desc: "Same review loop. By now you should be seeing patterns in what trips you up.",
    link: null},
   {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 10 · 60 min", title: "Past questions: 1 hour focused on your weakest subject",
-   desc: "Go to past questions, filter to your weakest subject, do 20 questions in a row. Reveal answers as you go.",
+   desc: "Check reviewed questions for your weakest subject. If none are available, revise a relevant textbook exercise with a checked solution.",
    link: {label: "Past Questions →", href: "/jamb/past-questions/"}},
   {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 11 · 30 min", title: "Cheat-sheet pass on math + science formulas",
-   desc: "Open the Math Formulas and Physics Constants flashcard decks. Don't review individual cards — flip through fast and let your eyes catalog them.",
+   desc: "Check which reviewed decks are available. Review formulas carefully using your textbook if there is no suitable deck.",
    link: {label: "Flashcards →", href: "/jamb/flashcards/"}},
   {phase: "Tomorrow afternoon (T-12 to T-6)", time: "Block 12 · 30 min", title: "Final Quick Mock — measure progress",
-   desc: "One more 30-min Quick Mock. This is your last full mock before bed. Don't cram after this.",
+   desc: "Use a short reviewed practice session if available and suitable for your energy level, or recap key notes before resting.",
    link: {label: "Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
   {phase: "Tomorrow afternoon (T-12 to T-6)", time: "Block 13 · 15 min", title: "Pack your bag, print your slip, plan transport",
    desc: "Use the checklist. Two copies of slip. Money for transport + reserve. Confirm centre directions.",
@@ -359,7 +328,7 @@ document.getElementById("share-btn").addEventListener("click", function(){
 });
 
 tickCountdown();
-setInterval(tickCountdown, 1000);
+
 renderBlocks();
 </script>
 

@@ -4,8 +4,10 @@ const { createClient } = require('@supabase/supabase-js');
 const { getStore } = require('@netlify/blobs');
 const { withScheduledProof } = require('./_shared/scheduled-proof');
 
-const VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
-const PRACTICE_POOL = ((require('../../data/jamb/pools/practice-pool.json') || {}).questions || []).filter(isLaunchSafeQuestion);
+const { getReviewedBank } = require('./_shared/jamb-reviewed-data');
+// Email currently cannot render the supporting visual. Reviewed visual questions
+// remain available in the website bank but must not lose context in delivery.
+const PRACTICE_POOL = getReviewedBank().questions.filter(q => !q.image && !q.has_diagram);
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_SERVICE_KEY =
   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
@@ -33,6 +35,7 @@ const SUBJECT_LABELS = {
 const SUBJECT_POOLS = buildSubjectPools(PRACTICE_POOL);
 
 exports.handler = withScheduledProof('scheduled-send-jamb-daily', async function () {
+  if (!PRACTICE_POOL.length) return { statusCode: 200, body: 'Skipped: no reviewed questions available for email' };
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[jamb-daily-send] SUPABASE service key not set - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -91,7 +94,7 @@ exports.handler = withScheduledProof('scheduled-send-jamb-daily', async function
       }
     } catch (err) {
       errors++;
-      console.error('[jamb-daily-send] failed for ' + subscriber.contact + ':', err.message);
+      console.error('[jamb-daily-send] delivery failed');
     }
   }
 
@@ -109,11 +112,6 @@ exports.handler = withScheduledProof('scheduled-send-jamb-daily', async function
     }),
   };
 });
-
-function isLaunchSafeQuestion(question) {
-  var text = ((question && question.question) || '') + ' ' + Object.values((question && question.options) || {}).join(' ');
-  return !!question && !!question.answer && !question.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
-}
 
 function buildSubjectPools(questions) {
   return (questions || []).reduce(function (acc, question) {
@@ -146,7 +144,6 @@ function buildDailyPacket(subscriber, dayKey) {
     .filter(function (subject) {
       return SUBJECT_POOLS[subject] && SUBJECT_POOLS[subject].length;
     });
-  if (!subjects.length) subjects = Object.keys(SUBJECT_POOLS);
   if (!subjects.length) return null;
 
   var subject = subjects[simpleHash(subscriber.contact + '|subject|' + dayKey) % subjects.length];
@@ -184,7 +181,7 @@ async function sendDailyEmail(to, packet, timeWindow) {
   });
 
   if (!res.ok) {
-    console.error('[jamb-daily-send] Resend error for ' + to + ':', await res.text());
+    console.error('[jamb-daily-send] provider rejected delivery, status=' + res.status);
     return false;
   }
   return true;
@@ -219,6 +216,7 @@ function buildDailyHtml(packet, timeWindow, unsubscribeUrl) {
             '</td></tr>' +
             '<tr><td style="padding:24px 28px 10px;">' +
               '<div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2563eb;margin-bottom:8px;">JAMB ' + esc(packet.subjectLabel) + (packet.question.year ? ' - ' + packet.question.year : '') + '</div>' +
+              (packet.question.passage ? '<p style="white-space:pre-wrap;">' + esc(packet.question.passage) + '</p>' : '') +
               '<div style="font-size:18px;line-height:1.65;color:#0f172a;font-weight:600;margin-bottom:18px;">' + esc(packet.question.question) + '</div>' +
               optionsHtml +
             '</td></tr>' +
@@ -226,10 +224,11 @@ function buildDailyHtml(packet, timeWindow, unsubscribeUrl) {
               '<div style="padding:16px 18px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe;">' +
                 '<div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8;margin-bottom:6px;">Reveal answer</div>' +
                 '<div style="font-size:16px;line-height:1.6;color:#0f172a;"><strong>' + answerText + '</strong></div>' +
+                '<p>' + esc(packet.question.explanation || packet.question.ai_explanation || '') + '</p>' +
               '</div>' +
             '</td></tr>' +
             '<tr><td style="padding:20px 28px 28px;">' +
-              '<div style="font-size:14px;line-height:1.7;color:#475569;margin-bottom:16px;">Want the full explanation and more practice in the same subject? Open AfroJAMB and keep the momentum going.</div>' +
+              '<div style="font-size:14px;line-height:1.7;color:#475569;margin-bottom:16px;">Continue with reviewed practice, or ask for optional AI study guidance. AI guidance can contain mistakes.</div>' +
               '<a href="' + SITE_URL + '/jamb/tutor/" style="display:inline-block;background:#0062CC;color:#ffffff;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;margin-right:8px;">Open AI Tutor</a>' +
               '<a href="' + SITE_URL + '/jamb/cbt/" style="display:inline-block;background:#ffffff;color:#0063D1;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;border:1.5px solid #bfdbfe;">Start CBT Mock</a>' +
               '<div style="margin-top:16px;font-size:12px;line-height:1.7;color:#64748b;">No spam. <a href="' + unsubscribeUrl + '" style="color:#2563eb;">Stop these daily emails</a>.</div>' +
@@ -246,6 +245,7 @@ function buildDailyText(packet, timeWindow, unsubscribeUrl) {
     '',
     packet.subjectLabel + (packet.question.year ? ' - JAMB ' + packet.question.year : ''),
     '',
+    packet.question.passage || '',
     packet.question.question,
     '',
   ];
@@ -256,6 +256,7 @@ function buildDailyText(packet, timeWindow, unsubscribeUrl) {
   });
   lines.push('');
   lines.push('Correct answer: ' + packet.question.answer + '. ' + (packet.answerText || ''));
+  lines.push(packet.question.explanation || packet.question.ai_explanation || '');
   lines.push('');
   lines.push('Continue with the full toolset: ' + SITE_URL + '/jamb/');
   lines.push('AI Tutor: ' + SITE_URL + '/jamb/tutor/');
