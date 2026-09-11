@@ -55,6 +55,20 @@ test('OCR debris and uncertain AI explanations stay quarantined even with an ans
   assert.ok(result.reasons.includes('explanation_requires_correction'));
 });
 
+test('visual approvals bind the image path to the reviewed asset checksum', () => {
+  const { question, ledger } = fixture();
+  const hash = 'a'.repeat(64);
+  Object.assign(question, { has_diagram: true, image: '/assets/img/jamb/' + hash + '.svg', image_alt: 'Six rows of seven counters.' });
+  const review = ledger.questions[question.id];
+  review.content_sha256 = questionFingerprint(question);
+  review.asset_review = { ...review.question_review, content_sha256: hash };
+  assert.equal(assessQuestion(question, ledger).state, 'eligible');
+  review.asset_review.content_sha256 = 'b'.repeat(64);
+  assert.ok(assessQuestion(question, ledger).reasons.includes('asset_content_changed'));
+  question.image = '/assets/img/jamb/mutable.svg';
+  assert.ok(assessQuestion(question, ledger).reasons.includes('unsupported_visual_asset'));
+});
+
 test('a self-contained author-identification question is not treated as missing a passage', () => {
   const { question } = fixture();
   assert.equal(assessQuestion({ ...question, question: 'Who is the author of Things Fall Apart?' }).reasons.includes('missing_passage_or_context'), false);
