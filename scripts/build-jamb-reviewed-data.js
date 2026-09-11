@@ -4,12 +4,15 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { buildPublications, validatePublication } = require('./lib/jamb-publication');
+const { assertVisualAssetFiles } = require('./lib/jamb-visual-assets');
 const { writeFileSyncWithRetry, renameSyncWithRetry, unlinkSyncWithRetry } = require('./lib/safe-write');
 const ROOT = path.resolve(__dirname, '..');
 
 function build(root = ROOT, check = false) {
   const read = name => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));
-  const result = buildPublications(read('ops/jamb/source-pool.json'), read('ops/jamb/source-flashcards.json'), read('data/jamb/review-ledger.json'));
+  const ledger = read('data/jamb/review-ledger.json');
+  const result = buildPublications(read('ops/jamb/source-pool.json'), read('ops/jamb/source-flashcards.json'), ledger);
+  assertVisualAssetFiles(root, result.files['pools/practice-pool.json'].questions, ledger);
   // Validate the complete set before replacing any output. CI --check detects a
   // partially interrupted generation; clients reject mixed publication revisions.
   for (const payload of Object.values(result.files)) validatePublication(payload, result.revision);

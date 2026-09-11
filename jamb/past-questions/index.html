@@ -4,6 +4,7 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
+<script src="/assets/js/lib/jamb-reviewed-figure.js?v=407d43cb"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reviewed JAMB Past Questions Bank | AfroJAMB</title>
 <meta name="description" content="Browse reviewed JAMB practice questions by subject and year. Reveal answers locally, with optional AI assistance. Availability depends on completed content and source reviews.">
@@ -226,6 +227,7 @@ var ALL_QUESTIONS = []; // current loaded subject pool
 var FILTERED = [];
 var PAGE_SIZE = 20;
 var SHOWN = 0;
+var FIGURE_CLEANUPS = [];
 var VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
 
 function populateSubjectFilter(){
@@ -268,6 +270,7 @@ async function buildAiHeaders() {
 }
 
 async function refresh() {
+  FIGURE_CLEANUPS.splice(0).forEach(function(cleanup) { cleanup(); });
   var subject = document.getElementById("f-subject").value;
   var year = document.getElementById("f-year").value;
   var search = document.getElementById("f-search").value.trim().toLowerCase();
@@ -307,6 +310,7 @@ async function refresh() {
 
 function isLaunchSafeQuestion(q) {
   var text = ((q && q.question) || "") + " " + Object.values((q && q.options) || {}).join(" ");
+  if (q && q.image) return AfroJAMB.ReviewedFigure.supports(q);
   return !!q && !q.image && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
 }
 
@@ -324,6 +328,8 @@ function showMore() {
 
 function renderQCard(q) {
   var card = document.createElement("div");
+  var figureReady = !q.image;
+  var cardRevision = POOL_REVISION;
   card.className = "qcard";
   var subjLbl = SUBJ_LABEL[q.subject] || q.subject;
   var yr = q.year ? "JAMB " + q.year : "JAMB";
@@ -349,8 +355,41 @@ function renderQCard(q) {
 
   // Reveal interaction
   var revealBtn = card.querySelector(".reveal-btn");
+  if (q.image) {
+    var figureHost = document.createElement("div");
+    figureHost.className = "reviewed-figure";
+    figureHost.setAttribute("role", "status");
+    figureHost.textContent = "Loading the question diagram…";
+    card.querySelector(".qcard-text").after(figureHost);
+    revealBtn.disabled = true;
+    // The optional remote tutor does not currently accept diagram questions.
+    card.querySelector(".explain-btn").hidden = true;
+    card.querySelector(".explain-btn").style.display = "none";
+    var controller = new AbortController();
+    var loadedFigure = null;
+    FIGURE_CLEANUPS.push(function() {
+      controller.abort();
+      if (loadedFigure) loadedFigure.revoke();
+    });
+    AfroJAMB.ReviewedFigure.load(q, cardRevision, controller.signal).then(function(figure) {
+      loadedFigure = figure;
+      if (controller.signal.aborted) { figure.revoke(); return; }
+      var img = document.createElement("img");
+      img.src = figure.url;
+      img.alt = figure.alt;
+      img.style.cssText = "display:block;max-width:100%;height:auto;margin:12px auto;";
+      figureHost.replaceChildren(img);
+      figureReady = true;
+      revealBtn.disabled = !q.answer;
+    }).catch(function() {
+      if (controller.signal.aborted) return;
+      figureHost.textContent = "This diagram is unavailable. Reload to retry; the answer stays hidden until the diagram is verified.";
+    });
+  }
   if (q.answer) {
     revealBtn.addEventListener("click", function(){
+      if (!figureReady) return;
+      try { AfroJAMB.QuestionTrust.assertEligible([q], cardRevision); } catch(e) { return; }
       card.querySelectorAll(".qcard-opt").forEach(function(o){
         if (o.dataset.letter === q.answer) o.classList.add("correct");
       });
@@ -362,7 +401,8 @@ function renderQCard(q) {
   // Click an option to reveal
   card.querySelectorAll(".qcard-opt").forEach(function(o){
     o.addEventListener("click", function(){
-      if (q.answer) {
+      if (q.answer && figureReady) {
+        try { AfroJAMB.QuestionTrust.assertEligible([q], cardRevision); } catch(e) { return; }
         card.querySelectorAll(".qcard-opt").forEach(function(x){
           if (x.dataset.letter === q.answer) x.classList.add("correct");
         });
@@ -432,6 +472,10 @@ document.getElementById("f-search").addEventListener("input", function(){
 document.getElementById("load-more").addEventListener("click", showMore);
 
 refresh();
+window.addEventListener("pagehide", function() {
+  FIGURE_CLEANUPS.splice(0).forEach(function(cleanup) { cleanup(); });
+});
+window.addEventListener("pageshow", function(event) { if (event.persisted) refresh(); });
 </script>
 
 <script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>

@@ -1,6 +1,83 @@
 const { test, expect } = require('@playwright/test');
 const { bank, questions, revision, reviewed } = require('../support/jamb-reviewed-fixtures');
+const { createHash } = require('node:crypto');
 test.use({ viewport: { width: 390, height: 900 } });
+
+function figureFixtures() {
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect width="80" height="80" fill="#ffffff"/><text x="10" y="40">42</text></svg>';
+  const variants = { valid: svg, script: svg.replace('</svg>', '<script>window.unexpectedFigureScript=true;</script></svg>'),
+    external: svg.replace('</svg>', '<image href="https://example.com/a.svg"/></svg>'),
+    instruction: '<?xml-stylesheet href="https://example.com/a.css"?>' + svg };
+  const files = new Map();
+  const { review: ignored, ...base } = questions()[0];
+  const rows = Object.entries(variants).map(([key, text]) => {
+    const image = '/assets/img/jamb/' + createHash('sha256').update(text).digest('hex') + '.svg';
+    files.set(image, text);
+    return reviewed({ ...base, id: 'visual-' + key, has_diagram: true, image, image_alt: 'Synthetic answer display' });
+  });
+  const tampered = '/assets/img/jamb/' + '0'.repeat(64) + '.svg'; files.set(tampered, svg);
+  rows.push(reviewed({ ...base, id: 'visual-tampered', has_diagram: true, image: tampered, image_alt: 'Synthetic altered file' }));
+  rows.push(reviewed({ ...base, id: 'visual-missing', has_diagram: true, image: '/assets/img/jamb/' + 'f'.repeat(64) + '.svg', image_alt: 'Synthetic missing file' }));
+  return { fixture: bank(rows), files };
+}
+
+test('reviewed figure loader verifies bytes and rejects unsafe or missing supporting assets', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  await serveBank(page, fixture);
+  await page.route('**/assets/img/jamb/**', route => {
+    const body = files.get(new URL(route.request().url()).pathname);
+    return route.fulfill({ status: body ? 200 : 404, contentType: 'image/svg+xml', body: body || '' });
+  });
+  await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+  await page.addScriptTag({ url: '/assets/js/lib/jamb-reviewed-figure.js' });
+  const result = await page.evaluate(async () => {
+    const pool = await AfroJAMB.QuestionTrust.loadPool();
+    const outcomes = {};
+    for (const q of pool.questions) {
+      try {
+        const figure = await AfroJAMB.ReviewedFigure.load(q, pool.review_revision);
+        const img = new Image(); img.src = figure.url; await img.decode();
+        outcomes[q.id] = { loaded: img.naturalWidth > 0, verifiedBlob: figure.url.startsWith('blob:') };
+        figure.revoke(); figure.revoke();
+      } catch (error) { outcomes[q.id] = { error: error.message }; }
+    }
+    return { outcomes, unexpectedScript: !!window.unexpectedFigureScript };
+  });
+  expect(result.outcomes['visual-valid']).toEqual({ loaded: true, verifiedBlob: true });
+  expect(result.outcomes['visual-tampered'].error).toMatch(/figure changed/);
+  expect(result.outcomes['visual-missing'].error).toMatch(/could not be loaded/);
+  expect(result.outcomes['visual-script'].error).toMatch(/unsupported elements/);
+  expect(result.outcomes['visual-external'].error).toMatch(/unsupported elements/);
+  expect(result.outcomes['visual-instruction'].error).toMatch(/unsupported document declarations/);
+  expect(result.unexpectedScript).toBe(false);
+});
+
+test('figure loading rechecks the real bank revision after the image request', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  await serveBank(page, fixture);
+  let releaseImage;
+  let requested = false;
+  const gate = new Promise(resolve => { releaseImage = resolve; });
+  await page.route('**/assets/img/jamb/**', async route => {
+    requested = true;
+    await gate;
+    await route.fulfill({ contentType: 'image/svg+xml', body: files.get(new URL(route.request().url()).pathname) });
+  });
+  try {
+    await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+    await page.addScriptTag({ url: '/assets/js/lib/jamb-reviewed-figure.js' });
+    await page.evaluate(async () => {
+      const pool = await AfroJAMB.QuestionTrust.loadPool();
+      window.figurePending = AfroJAMB.ReviewedFigure.load(pool.questions[0], pool.review_revision)
+        .then(figure => { figure.revoke(); return 'unexpected success'; }, error => error.message);
+    });
+    await expect.poll(() => requested).toBe(true);
+    fixture.index = bank(fixture.pool.questions, 'b'.repeat(64)).index;
+    await page.evaluate(() => AfroJAMB.QuestionTrust.fetchIndex());
+    releaseImage();
+    expect(await page.evaluate(() => window.figurePending)).toMatch(/reviews changed/);
+  } finally { releaseImage(); }
+});
 
 async function declineAnalytics(page) {
   const button = page.getByRole('button', { name: 'Reject analytics', exact: true });
@@ -11,6 +88,111 @@ async function declineAnalytics(page) {
   await button.click();
   await expect.poll(() => page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
 }
+
+test('generated paper verifies diagrams before opening answers and rejects an altered image', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  const rows = [fixture.pool.questions[0], fixture.pool.questions.find(q => q.id === 'visual-tampered')];
+  const raw = rows.map(({review, ...q}) => q);
+  const { renderYear } = require('../../scripts/build-jamb-reviewed-pages');
+  const { questionFingerprint } = require('../../scripts/lib/jamb-content-trust');
+  const evidence = {status:'accepted', reviewer:'synthetic test', reviewed_at:'2026-09-11', evidence:'synthetic fixture only'};
+  const ledger = {sources:{fixture:{permission:{status:'permitted', basis:'original-work', evidence:'synthetic', reviewed_by:'test', reviewed_at:'2026-09-11'}}}, questions:{}};
+  for (const q of raw) ledger.questions[q.id] = {content_sha256:questionFingerprint(q), source_id:'fixture', question_review:evidence, answer_review:evidence, explanation_review:evidence, asset_review:{...evidence, content_sha256:q.image.split('/').pop().replace('.svg','')}};
+  const rendered = renderYear(raw[0].subject, raw[0].year, raw, ledger);
+  expect(rendered.approvedIds).toHaveLength(2);
+  await serveBank(page, bank(rows));
+  await page.route('**/figure-paper-test/', route => route.fulfill({contentType:'text/html', body:rendered.html}));
+  await page.route('**/assets/img/jamb/**', route => route.fulfill({contentType:'image/svg+xml',body:files.get(new URL(route.request().url()).pathname)}));
+  await page.goto('/figure-paper-test/', {waitUntil:'load'});
+  await declineAnalytics(page);
+  const valid = page.locator('[data-reviewed-question="visual-valid"]');
+  await expect(valid.locator('img')).toBeVisible();
+  await expect(valid.locator('details')).toBeVisible();
+  await expect(valid.locator('details')).not.toHaveAttribute('open');
+  await valid.locator('summary').focus(); await page.keyboard.press('Enter');
+  await expect(valid.locator('details')).toHaveAttribute('open','');
+  const altered = page.locator('[data-reviewed-question="visual-tampered"]');
+  await expect(altered.locator('[role="status"]')).toContainText('could not be verified');
+  await expect(altered.locator('details')).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test('CBT waits for verified figures before starting and retains them in review and retry', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  const posts = await serveBank(page, bank([fixture.pool.questions[0]]));
+  let releaseImage;
+  let requested = false;
+  const gate = new Promise(resolve => { releaseImage = resolve; });
+  await page.route('**/assets/img/jamb/**', async route => {
+    requested = true; await gate;
+    await route.fulfill({ contentType: 'image/svg+xml', body: files.get(new URL(route.request().url()).pathname) });
+  });
+  try {
+    await page.goto('/jamb/cbt/', { waitUntil:'load' });
+    await declineAnalytics(page);
+    await page.locator('#start-btn').click();
+    await expect.poll(() => requested).toBe(true);
+    await expect(page.locator('#cbt-shell')).toBeHidden();
+    expect(await page.evaluate(() => AfroJAMB.CBT.getState())).toBeNull();
+    releaseImage();
+    await expect(page.locator('#cbt-shell .reviewed-question-figure')).toBeVisible();
+    await page.locator('#cbt-submit-top').click();
+    await page.locator('#confirm-submit-btn').click();
+    await page.locator('[data-filter="skipped"]').click();
+    await expect(page.locator('#review-list .reviewed-question-figure')).toBeVisible();
+    await page.locator('#retry-start').click();
+    await expect(page.locator('#retry-question .reviewed-question-figure')).toBeVisible();
+    await expect.poll(() => posts.length).toBe(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  } finally { releaseImage(); }
+});
+
+test('CBT missing reviewed figure prevents a timed or graded session', async ({ page }) => {
+  const { fixture } = figureFixtures();
+  const posts = await serveBank(page, bank([fixture.pool.questions.find(q => q.id === 'visual-missing')]));
+  await page.route('**/assets/img/jamb/**', route => route.fulfill({ status:404, body:'' }));
+  await page.goto('/jamb/cbt/', { waitUntil:'load' });
+  await declineAnalytics(page);
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#setup-warning')).toContainText('figure could not be loaded');
+  await expect(page.locator('#cbt-shell')).toBeHidden();
+  expect(await page.evaluate(() => AfroJAMB.CBT.getState())).toBeNull();
+  expect(posts).toHaveLength(0);
+});
+
+test('past questions reveal answers only after their reviewed diagram loads', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  await serveBank(page, bank(fixture.pool.questions.filter(q => ['visual-valid', 'visual-missing', 'visual-tampered'].includes(q.id))));
+  let releaseImage;
+  const gate = new Promise(resolve => { releaseImage = resolve; });
+  await page.route('**/assets/img/jamb/**', async route => {
+    await gate;
+    const body = files.get(new URL(route.request().url()).pathname);
+    await route.fulfill({ status: body ? 200 : 404, contentType: 'image/svg+xml', body: body || '' });
+  });
+  try {
+    await page.goto('/jamb/past-questions/', { waitUntil: 'domcontentloaded' });
+    await declineAnalytics(page);
+    const cards = page.locator('.qcard');
+    await expect(cards).toHaveCount(3);
+    await expect(cards.first().locator('.reveal-btn')).toBeDisabled();
+    await cards.first().locator('.qcard-opt').first().click();
+    await expect(cards.first().locator('.answer-explanation')).toBeHidden();
+    releaseImage();
+    await expect(cards.first().locator('.reviewed-figure img')).toBeVisible();
+    await expect(cards.first().locator('.reviewed-figure img')).toHaveAttribute('alt', 'Synthetic answer display');
+    await expect(cards.first().locator('.explain-btn')).toBeHidden();
+    await cards.first().locator('.reveal-btn').click();
+    await checkExplanationDisclosure(page);
+    for (const index of [1, 2]) {
+      const card = cards.nth(index);
+      await expect(card.locator('.reviewed-figure')).toContainText('diagram is unavailable');
+      await expect(card.locator('.reveal-btn')).toBeDisabled();
+      await card.locator('.qcard-opt').first().click();
+      await expect(card.locator('.answer-explanation')).toBeHidden();
+    }
+  } finally { releaseImage(); }
+});
 
 async function checkExplanationDisclosure(page) {
   const box = page.locator('.answer-explanation').first();
@@ -170,6 +352,28 @@ test('reviewed CBT answers produce an attempt tied to the same review revision',
   expect(posts[0].pool_revision).toBe(revision);
   expect([...posts[0].question_ids].sort()).toEqual(['first', 'last', 'middle']);
 });
+
+for (const missing of [false, true]) {
+  test(`short practice ${missing ? 'rejects a missing figure' : 'renders a verified figure before answering'}`, async ({ page }) => {
+    const { fixture, files } = figureFixtures();
+    const q = fixture.pool.questions.find(q => q.id === (missing ? 'visual-missing' : 'visual-valid'));
+    const posts = await serveBank(page, bank([q]));
+    await page.route('**/assets/img/jamb/**', route => route.fulfill({status:missing ? 404 : 200, contentType:'image/svg+xml', body:files.get(q.image) || ''}));
+    await page.goto('/jamb/score-predictor/', {waitUntil:'load'});
+    await declineAnalytics(page);
+    await page.locator('#begin-btn').click();
+    if (missing) {
+      await expect(page.locator('#practice-status')).toContainText('figure could not be loaded');
+      await expect(page.locator('#stage-quiz')).toBeHidden();
+    } else {
+      await expect(page.locator('#quiz-card .reviewed-question-figure')).toBeVisible();
+      await page.locator('.qopt[data-letter="' + q.answer + '"]').click();
+      await expect(page.locator('#proj-score')).toHaveText('1 / 1');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    }
+    expect(posts).toEqual([]);
+  });
+}
 
 test('short practice displays real correct count without a UTME projection or admission claims', async ({ page }) => {
   const posts = await serveBank(page, bank());

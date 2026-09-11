@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('node:crypto');
+const { visualAssetHash } = require('./jamb-visual-assets');
 
 const CONTEXT_REFERENCE = /\b(?:the|this|above|following)\s+(?:passage|extract|poem|stanza)\b|\b(?:author|writer)\s+(?:observes|believes|argues|suggests|implies|apparently|means)\b|\baccording to (?:the\s+)?(?:author|writer)\b|\blines?\s+\d+/i;
 const VISUAL_REFERENCE = /\b(?:diagram|figure|graph|illustration|circuit|chart|histogram|table|map)\s+(?:above|below|shown|provided)|\b(?:use|using|from|in)\s+the\s+(?:diagram|figure|graph|illustration|circuit|chart|histogram|table|map)\b/i;
@@ -79,6 +80,11 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   if (CONTEXT_REFERENCE.test(prompt) && !nonempty(q.passage)) reasons.push('missing_passage_or_context');
   if ((q.has_diagram || VISUAL_REFERENCE.test(content)) && !(nonempty(q.image) && nonempty(q.image_alt))) reasons.push('missing_visual_or_description');
   if (nonempty(q.image) && !completeReview(review && review.asset_review)) reasons.push('asset_review_missing');
+  if (nonempty(q.image)) {
+    const assetHash = visualAssetHash(q.image);
+    if (!assetHash) reasons.push('unsupported_visual_asset');
+    else if (review?.asset_review?.content_sha256 !== assetHash) reasons.push('asset_content_changed');
+  }
   if (!nonempty(explanation)) reasons.push('missing_explanation');
   else if (EXPLANATION_UNCERTAINTY.test(explanation)) reasons.push('explanation_requires_correction');
   if (q.verification !== undefined && (!q.verification || typeof q.verification !== 'object'

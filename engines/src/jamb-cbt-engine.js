@@ -89,12 +89,10 @@
       };
     }) : [];
   }
-  e.AfroJAMB = e.AfroJAMB || {}, e.AfroJAMB.CBT = {
-    init: function(e) {
-      if (e = e || {}, !Array.isArray(e.pool)) {
-        throw new Error("CBT.init requires config.pool (question array)");
-      }
-      requireReviewed(e.pool, e.poolRevision);
+  function selectQuestions(e) {
+    e = e || {};
+    if (!Array.isArray(e.pool)) throw new Error("Question selection requires a reviewed pool.");
+    requireReviewed(e.pool, e.poolRevision);
       var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ], r = e.questionsPerSubject || ("quick" === e.mode ? 10 : 40), u = e.durationMinutes || ("quick" === e.mode ? 30 : 120), a = !0 === e.answeredOnly, f = [];
       if (n.forEach(function(n) {
         var t = e.pool.filter(function(t) {
@@ -112,6 +110,18 @@
       }), 0 === f.length) {
         throw new Error("CBT.init: no questions found for given config");
       }
+    return f;
+  }
+  e.AfroJAMB = e.AfroJAMB || {}, e.AfroJAMB.CBT = {
+    selectQuestions: selectQuestions,
+    init: function(e) {
+      if (e = e || {}, !Array.isArray(e.pool)) {
+        throw new Error("CBT.init requires config.pool (question array)");
+      }
+      requireReviewed(e.pool, e.poolRevision);
+      var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ];
+      var u = e.durationMinutes || ("quick" === e.mode ? 30 : 120);
+      var f = selectQuestions(e);
       return t = {
         sessionId: s(),
         poolRevision: e.poolRevision || null,
