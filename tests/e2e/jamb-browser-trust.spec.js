@@ -325,6 +325,28 @@ test('reviewed CBT answers produce an attempt tied to the same review revision',
   expect([...posts[0].question_ids].sort()).toEqual(['first', 'last', 'middle']);
 });
 
+for (const missing of [false, true]) {
+  test(`short practice ${missing ? 'rejects a missing figure' : 'renders a verified figure before answering'}`, async ({ page }) => {
+    const { fixture, files } = figureFixtures();
+    const q = fixture.pool.questions.find(q => q.id === (missing ? 'visual-missing' : 'visual-valid'));
+    const posts = await serveBank(page, bank([q]));
+    await page.route('**/assets/img/jamb/**', route => route.fulfill({status:missing ? 404 : 200, contentType:'image/svg+xml', body:files.get(q.image) || ''}));
+    await page.goto('/jamb/score-predictor/', {waitUntil:'load'});
+    await declineAnalytics(page);
+    await page.locator('#begin-btn').click();
+    if (missing) {
+      await expect(page.locator('#practice-status')).toContainText('figure could not be loaded');
+      await expect(page.locator('#stage-quiz')).toBeHidden();
+    } else {
+      await expect(page.locator('#quiz-card .reviewed-question-figure')).toBeVisible();
+      await page.locator('.qopt[data-letter="' + q.answer + '"]').click();
+      await expect(page.locator('#proj-score')).toHaveText('1 / 1');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    }
+    expect(posts).toEqual([]);
+  });
+}
+
 test('short practice displays real correct count without a UTME projection or admission claims', async ({ page }) => {
   const posts = await serveBank(page, bank());
   await page.goto('/jamb/score-predictor/', { waitUntil: 'load' });

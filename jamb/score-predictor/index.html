@@ -4,6 +4,7 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
+<script src="/assets/js/lib/jamb-reviewed-figure.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB Practice Check — Review Your Answers | AfroJAMB</title>
 <meta name="description" content="Practise with reviewed JAMB questions and see your correct answers by subject. This short practice check does not predict your UTME score or admission eligibility.">
@@ -230,18 +231,24 @@ function renderSubjects() {
 }
 renderSubjects();
 
+var QUIZ_FIGURES = new Map();
+function clearQuizFigures() {
+  QUIZ_FIGURES.forEach(function(figure) { figure.revoke(); });
+  QUIZ_FIGURES.clear();
+}
 document.getElementById("begin-btn").addEventListener("click", async function(){
   if (SELECTED.length < 4) { alert("Pick English and 3 other subjects for this practice check"); return; }
   this.disabled = true;
   this.textContent = "Loading questions...";
   document.getElementById("practice-status").textContent = "Checking the reviewed bank…";
   try {
+    clearQuizFigures();
     var data = await AfroJAMB.QuestionTrust.loadPool("/data/jamb/pools/practice-pool.json");
     POOL_REVISION = data.review_revision;
     // 5 questions per subject
     QUESTIONS = [];
     SELECTED.forEach(function(subj){
-      var pool = data.questions.filter(function(q){ return q.subject === subj && q.answer && !q.has_diagram && !q.image; });
+      var pool = data.questions.filter(function(q){ return q.subject === subj && q.answer && (q.image ? AfroJAMB.ReviewedFigure.supports(q) : !q.has_diagram); });
       // Shuffle
       for (var i = pool.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -250,8 +257,12 @@ document.getElementById("begin-btn").addEventListener("click", async function(){
       QUESTIONS = QUESTIONS.concat(pool.slice(0, 5));
     });
     if (!QUESTIONS.length) throw new Error("No reviewed questions are available for these subjects yet. Use the Education Hub study planner while the bank is reviewed.");
+    for (var question of QUESTIONS) {
+      if (question.image) QUIZ_FIGURES.set(question.id, await AfroJAMB.ReviewedFigure.load(question, POOL_REVISION));
+    }
     startQuiz();
   } catch(e) {
+    clearQuizFigures();
     document.getElementById("practice-status").textContent = e.message || "Reviewed questions could not be loaded. Please try again.";
     this.disabled = false;
     this.textContent = "Begin Practice →";
@@ -281,6 +292,14 @@ function showQuestion() {
   }).join("");
   card.innerHTML = (q.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(q.passage) + '</p>' : '') + '<h2 style="font-size:1rem;font-weight:600;line-height:1.6;color:#0f172a;margin:0 0 18px;">' + escapeHtml(q.question) + '</h2>'
     + '<div role="group" aria-label="Answer options">' + optsHtml + '</div>';
+  if (q.image) {
+    var figure = QUIZ_FIGURES.get(q.id);
+    var img = document.createElement("img");
+    img.src = figure.url; img.alt = figure.alt;
+    img.className = "reviewed-question-figure";
+    img.style.cssText = "display:block;max-width:100%;height:auto;margin:12px auto;";
+    card.querySelector("h2").after(img);
+  }
 
   card.querySelectorAll(".qopt").forEach(function(o){
     o.addEventListener("click", function(){
