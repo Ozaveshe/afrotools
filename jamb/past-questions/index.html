@@ -341,7 +341,7 @@ function renderQCard(q) {
     + (q.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(q.passage) + '</p>' : '')
     + '<div class="qcard-text">' + escapeHtml(q.question) + '</div>'
     + '<div class="qcard-opts">' + optsHtml + '</div>'
-    + '<details class="answer-explanation" hidden><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(q.explanation || q.ai_explanation || '') + '</p></details>'
+    + '<details class="answer-explanation" hidden><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(q.explanation || q.ai_explanation || '') + '</p>' + (q.verification && q.verification.method === 'ai-calculation-checked' ? '<small class="verification-method">AI-reviewed · calculation checked</small>' : '') + '</details>'
     + '<div class="qcard-actions">'
     + (q.answer ? '<button type="button" class="reveal-btn primary">Reveal answer</button>' : '<button type="button" class="reveal-btn" disabled style="opacity:.5;cursor:not-allowed;">No answer key</button>')
     + '<button type="button" class="explain-btn">🤖 Explain with AI</button>'

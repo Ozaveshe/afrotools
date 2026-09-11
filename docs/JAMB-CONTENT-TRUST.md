@@ -1,11 +1,11 @@
 # AfroJAMB content review and publication
 
 This workflow is being implemented in Step 4 of the September 2026 release plan.
-The source audit, preserved inputs, reviewed data generation, server gates,
-browser consumers and static pages are integrated locally. The deployment build,
-artifact audit and 45 focused browser cases passed on 10 September 2026.
-Final combined validation and deployment remain pending. Do not treat
-an audit result or this document as proof that production is quarantined.
+The empty-bank trust release reached production at commit
+`21dfde071492ca50c87a7508dd8b4f7e9c31265c` on 11 September 2026.
+The subsequent individual answer-verification batch and learning-interface
+changes require their own release proof. A local content audit does not prove
+that those questions are available in production.
 
 ## Existing source limitations
 
@@ -24,10 +24,11 @@ because the field is populated. Do not rerun those pipelines for publication.
 
 ## Review ledger
 
-`data/jamb/review-ledger.json` records review evidence. Its empty initial maps
-mean no qualifying approval evidence has been recorded. Never populate them
-with invented reviewers, inferred source permission, or an AI response presented
-as expert approval.
+`data/jamb/review-ledger.json` records review evidence. Never populate it with
+invented reviewers, inferred exam-board permission, or AI work presented as
+teacher approval. The owner explicitly requested independent AI solving and
+verification on 11 September 2026; a newly commissioned teacher is not a
+mandatory gate for every standard question.
 
 Each question review is keyed by its exact ID and records:
 
@@ -47,6 +48,24 @@ Source records include a `permission` object with `status: permitted`, a basis
 alone is insufficient. Keep private agreements and reviewer contact information
 out of public artifacts. The review ledger is excluded from the static deploy.
 Any licence-specific public attribution must be checked before approving content.
+
+For the owner's explicitly supplied materials, a separate `reuse_authorization`
+may record `authorized-by-owner`, basis `user-provided-material`, scope
+`AfroTools past-question practice`, exact `material_sha256`, instruction reference,
+authorizer and authorization date. This must match the source file hash.
+It records the owner's instruction; it is not a third-party licence or a claim
+that all examination papers are exempt from copyright.
+
+For individually calculation-checked AI reviews, record `reviewer_type: ai`,
+the actual AI reviewer, a worked explanation and reproducible calculation
+evidence under `ops/jamb/verification/`. Public question metadata must disclose
+`verification.method: ai-calculation-checked` and the matching review date.
+Display this as "AI-reviewed · calculation checked". Do not use that method
+for facts that have only been looked up or answers that have only been copied.
+Match original wording, options, year, passages and figures before accepting an
+answer. A missing symbol can change the problem; ambiguous reconstructions stay
+quarantined. Existing answer fields and third-party keys are comparison inputs,
+not automatic truth. A review script verifies only the listed records.
 
 The mechanical gate checks evidence completeness and content integrity. It
 does not independently establish whether a reviewer is qualified or a source
@@ -152,6 +171,17 @@ sessions must be rejected when any saved question is removed or duplicated.
 The engine also supports `poolRevision`; callers must supply the reviewed-pool
 revision to invalidate saved sessions after answer/permission review changes.
 
+## Learning interface
+
+Reviewed explanations use a native disclosure box, closed until requested.
+They are available locally without an AI-provider call. Optional live AI help
+retains its separate explicit consent boundary.
+
+CBT retry practice includes wrong and skipped answers. It checks the current
+bank revision before starting and grading, gives immediate feedback and an
+optional explanation, and does not submit another mock attempt or modify mock
+history. Retry performance is practice feedback, not evidence of mastery.
+
 ## Remaining release gate
 
 Before claiming Step 4 complete or promoting AfroJAMB:
@@ -161,9 +191,12 @@ Before claiming Step 4 complete or promoting AfroJAMB:
 2. Check production review notices, question-bank revision, attempt rejection,
    daily availability and non-public source paths. Do not send test emails to
    subscribers or confuse synthetic tests with a live student pilot.
-3. Record actual source permission and qualified academic review for a usable
-   initial curriculum. The current ledger approves zero questions or flashcards.
-   Flashcards require their own evidence; MCQ approval does not approve a deck.
+3. Finish individual question and answer verification for a usable initial
+   curriculum, recording the real verification method and source-use basis.
+   Report reviewed, eligible, unresolved and untouched counts separately.
+   The first calculation-checked batch contains ten Mathematics questions;
+   that is not a complete paper or curriculum. Flashcards require their own
+   evidence; MCQ approval does not approve a deck.
 4. Regenerate and revalidate publication whenever approved content or its
    supporting evidence changes. Keep unknown permissions quarantined.
 

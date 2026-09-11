@@ -33,6 +33,42 @@ async function serveBank(page, fixture) {
   return posts;
 }
 
+test('current calculation-checked bank renders its labels and grades the actual answers', async ({ page }) => {
+  const pool = require('../../data/jamb/pools/practice-pool.json');
+  const index = require('../../data/jamb/pools/index.json');
+  const rows = pool.questions.filter(q => q.verification?.method === 'ai-calculation-checked');
+  expect(rows.length).toBeGreaterThan(0);
+  const posts = await serveBank(page, {pool, index});
+  await page.goto('/jamb/cbt/', {waitUntil:'load'});
+  await page.getByRole('button', {name:'Reject analytics', exact:true}).click();
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-shell')).toBeVisible();
+  const count = await page.evaluate(() => AfroJAMB.CBT.getState().questions.length);
+  for (let i=0; i<count; i++) {
+    const q = await page.evaluate(() => AfroJAMB.CBT.getCurrentQuestion().question);
+    await page.getByRole('radio', {name:'Option '+q.answer+': '+q.options[q.answer], exact:true}).click();
+    if(i<count-1) await page.locator('#cbt-next').click();
+  }
+  await page.locator('#cbt-submit-top').click();
+  await page.locator('#confirm-submit-btn').click();
+  await expect(page.locator('#result-pct')).toHaveText('100');
+  await page.locator('[data-filter="all"]').click();
+  await checkExplanationDisclosure(page);
+  await expect(page.locator('#review-list .verification-method')).toHaveCount(count);
+  await expect.poll(()=>posts.length).toBe(1);
+  expect(posts[0].pool_revision).toBe(pool.review_revision);
+  await expect(page.locator('#retry-practice')).toBeHidden();
+  await page.goto('/jamb/mathematics/1983/', {waitUntil:'load'});
+  const paper = rows.filter(q=>q.subject==='mathematics' && q.year===1983);
+  await expect(page.locator('[data-reviewed-question]')).toHaveCount(paper.length);
+  const first = page.locator('[data-reviewed-question] details').first();
+  await expect(first.locator('small')).toBeHidden();
+  await first.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(first.locator('small')).toHaveText('AI-reviewed · calculation checked');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
 for (const state of ['empty', 'unreviewed', 'stale']) {
   for (const tool of ['cbt', 'past-questions', 'score-predictor']) {
     test(`${tool} fails closed for ${state} bank without a grade`, async ({ page }) => {
@@ -125,6 +161,49 @@ test('short practice displays real correct count without a UTME projection or ad
   expect(posts).toEqual([]);
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('jambPredictedScore');
 });
+
+for (const stale of [false, true]) {
+  test(`missed-question retry ${stale ? 'rejects changed answers' : 'teaches without inflating mock history'}`, async ({ page }) => {
+    const posts = await serveBank(page, bank());
+    await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+    await page.getByRole('button', { name: 'Reject analytics', exact: true }).click();
+    await page.locator('#start-btn').click();
+    await page.getByRole('radio', { name: 'Option A: 36', exact: true }).click();
+    await page.locator('#cbt-submit-top').click();
+    await page.locator('#confirm-submit-btn').click();
+    await expect(page.locator('#results-screen')).toBeVisible();
+    await expect.poll(() => posts.length).toBe(1);
+    const history = await page.evaluate(() => localStorage.getItem('afrojamb-history'));
+    await page.locator('#retry-start').click();
+    await expect(page.locator('#retry-status')).toHaveText('Retry question 1 of 3');
+    await page.getByRole('button', { name: 'Check retry answer', exact: true }).click();
+    await expect(page.locator('#retry-question')).toContainText('Choose an answer first.');
+    if (stale) {
+      await page.route('**/data/jamb/pools/index.json', route => route.fulfill({ json: bank([], 'b'.repeat(64)).index }));
+    }
+    for (let i = 0; i < (stale ? 1 : 3); i++) {
+      await page.locator('#retry-question').getByRole('radio', { name: 'B. 42', exact: true }).check();
+      await page.getByRole('button', { name: 'Check retry answer', exact: true }).click();
+      if (stale) {
+        await expect(page.locator('#retry-question')).toContainText('current answers could not be verified');
+        await expect(page.locator('#retry-question details')).toHaveCount(0);
+      } else {
+        await expect(page.locator('#retry-question [role="status"]')).toHaveText('Correct.');
+        const details = page.locator('#retry-question details');
+        await expect(details.locator('p')).toBeHidden();
+        await details.locator('summary').focus();
+        await page.keyboard.press('Enter');
+        await expect(details.locator('p')).toContainText('Six groups of seven');
+        await page.getByRole('button', { name: i === 2 ? 'Finish retry' : 'Next retry question', exact: true }).click();
+      }
+    }
+    if (!stale) await expect(page.locator('#retry-status')).toContainText('Retry complete: 3 of 3 correct');
+    expect(posts).toHaveLength(1);
+    expect(await page.evaluate(() => localStorage.getItem('afrojamb-history'))).toBe(history);
+    await expect(page.locator('#result-pct')).toHaveText('0');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  });
+}
 
 test('saved CBT with a removed first question is discarded without remapping answers', async ({ page }) => {
   await serveBank(page, bank(questions().slice(1)));

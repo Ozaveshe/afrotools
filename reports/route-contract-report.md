@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11521 |
-| Indexable pages | 9700 |
+| Indexable pages | 9702 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5011 |
+| Genuine equivalence groups | 5013 |
 | Documented fallbacks | 14788 |
-| Routes eligible for primary sitemaps | 9700 |
+| Routes eligible for primary sitemaps | 9702 |
 
 ## Locale Coverage
 
@@ -7490,6 +7490,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e209d3efba56: en=`/cars/senegal/toyota/corolla/`, fr=`/fr/cars/senegal/toyota/corolla/`; x-default=`/cars/senegal/toyota/corolla/`
 - equivalence:e20e2275a2e2: fr=`/fr/widgets/taux-freelance/`; x-default=`/fr/widgets/taux-freelance/`
 - equivalence:e230eba8ecee: en=`/tools/business-license/angola`; x-default=`/tools/business-license/angola`
+- equivalence:e2332e44b80a: en=`/jamb/mathematics/1983/`; x-default=`/jamb/mathematics/1983/`
 - equivalence:e23b5bf337a4: en=`/tools/business-license/cote-d-ivoire`; x-default=`/tools/business-license/cote-d-ivoire`
 - equivalence:e23dfbfef5f4: en=`/tools/tin-guide/liberia`, sw=`/sw/zana/mwongozo-tin/liberia/`; x-default=`/tools/tin-guide/liberia`
 - equivalence:e24735bfcace: en=`/cars/kenya/toyota/noah/`, fr=`/fr/cars/kenya/toyota/noah/`; x-default=`/cars/kenya/toyota/noah/`
@@ -7630,6 +7631,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e9bc3a2e5790: en=`/agriculture/fertilizer/niger`, fr=`/fr/agriculture/fertilizer/niger`, sw=`/sw/kilimo/mbolea/niger/`; x-default=`/agriculture/fertilizer/niger`
 - equivalence:e9c43e851d2f: en=`/cars/namibia/ford/ranger/2018/`, fr=`/fr/cars/namibie/ford/ranger/2018/`; x-default=`/cars/namibia/ford/ranger/2018/`
 - equivalence:e9c46afad87c: en=`/tools/afrokitchen/recipes/waakye-gh/`; x-default=`/tools/afrokitchen/recipes/waakye-gh/`
+- equivalence:e9e73d0e4166: en=`/jamb/mathematics/`; x-default=`/jamb/mathematics/`
 - equivalence:e9fab26521ca: fr=`/fr/widgets/cout-changement-vol/`; x-default=`/fr/widgets/cout-changement-vol/`
 - equivalence:ea05083aa67c: en=`/cars/ethiopia/toyota/noah/`, fr=`/fr/cars/ethiopie/toyota/noah/`; x-default=`/cars/ethiopia/toyota/noah/`
 - equivalence:ea0c90ec40b5: en=`/agriculture/crop-yield/cote-d-ivoire`, fr=`/fr/agriculture/crop-yield/cote-d-ivoire`, sw=`/sw/kilimo/mavuno/cote-divoire/`; x-default=`/agriculture/crop-yield/cote-d-ivoire`

@@ -34,6 +34,23 @@ function completeReview(review) {
     && validReviewDate(review.reviewed_at) && nonempty(review.evidence);
 }
 
+// An owner's instruction to reuse supplied material is recorded as an owner
+// authorization, never relabelled as an exam-board licence or permission letter.
+function sourceUseAccepted(source) {
+  const permission = source && source.permission;
+  if (permission && permission.status === 'permitted' && SOURCED_PERMISSION_BASES.has(permission.basis)
+      && completeReview({ status: 'accepted', reviewer: permission.reviewed_by,
+        reviewed_at: permission.reviewed_at, evidence: permission.evidence })) return true;
+  const authorization = source && source.reuse_authorization;
+  return !!authorization && authorization.status === 'authorized-by-owner'
+    && authorization.basis === 'user-provided-material'
+    && authorization.scope === 'AfroTools past-question practice'
+    && nonempty(source.source_file) && /^[a-f0-9]{64}$/.test(source.content_sha256 || '')
+    && authorization.material_sha256 === source.content_sha256
+    && nonempty(authorization.instruction_ref) && nonempty(authorization.authorized_by)
+    && validReviewDate(authorization.authorized_at);
+}
+
 function assessQuestion(question, ledger = { questions: {}, sources: {} }, context = {}) {
   const reasons = [];
   const q = question && typeof question === 'object' && !Array.isArray(question) ? question : {};
@@ -64,18 +81,25 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   if (nonempty(q.image) && !completeReview(review && review.asset_review)) reasons.push('asset_review_missing');
   if (!nonempty(explanation)) reasons.push('missing_explanation');
   else if (EXPLANATION_UNCERTAINTY.test(explanation)) reasons.push('explanation_requires_correction');
+  if (q.verification !== undefined && (!q.verification || typeof q.verification !== 'object'
+      || Array.isArray(q.verification)
+      || Object.keys(q.verification).sort().join(',') !== 'method,reviewed_at'
+      || q.verification.method !== 'ai-calculation-checked'
+      || !validReviewDate(q.verification.reviewed_at))) reasons.push('invalid_verification_label');
   if (!review) reasons.push('review_record_missing');
   else {
     if (review.content_sha256 !== fingerprint) reasons.push('review_content_changed');
     if (!completeReview(review.question_review)) reasons.push('question_review_missing');
     if (!completeReview(review.answer_review)) reasons.push('answer_review_missing');
     if (!completeReview(review.explanation_review)) reasons.push('explanation_review_missing');
+    if (review.answer_review?.reviewer_type === 'ai'
+        && (q.verification?.method !== 'ai-calculation-checked'
+          || q.verification.reviewed_at !== review.answer_review.reviewed_at)) {
+      reasons.push('verification_label_missing');
+    }
     if (!nonempty(review.source_id) || !source) reasons.push('source_record_missing');
   }
-  const permission = source && source.permission;
-  if (!permission || permission.status !== 'permitted' || !SOURCED_PERMISSION_BASES.has(permission.basis)
-      || !nonempty(permission.evidence) || !nonempty(permission.reviewed_by)
-      || !validReviewDate(permission.reviewed_at)) reasons.push('permission_unverified');
+  if (!sourceUseAccepted(source)) reasons.push('permission_unverified');
   return { id: q.id || null, subject: q.subject || null, content_sha256: fingerprint,
     state: reasons.length ? 'quarantined' : 'eligible', reasons };
 }
@@ -95,4 +119,4 @@ function auditQuestions(questions, ledger) {
     quarantined: records.filter(r => r.state === 'quarantined').length, reasons, subjects, records };
 }
 
-module.exports = { canonicalJson, questionFingerprint, completeReview, assessQuestion, auditQuestions };
+module.exports = { canonicalJson, questionFingerprint, completeReview, sourceUseAccepted, assessQuestion, auditQuestions };

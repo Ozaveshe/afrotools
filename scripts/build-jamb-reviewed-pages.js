@@ -33,7 +33,7 @@ ${q.passage ? `<blockquote>${esc(q.passage)}</blockquote>` : ''}
 ${q.image ? `<img src="${esc(q.image)}" alt="${esc(q.image_alt)}" loading="lazy">` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
 <ol type="A">${Object.keys(q.options).sort().map(key => `<li>${esc(q.options[key])}</li>`).join('')}</ol>
-<details><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p></details>
+<details><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p>${q.verification?.method === 'ai-calculation-checked' ? '<small>AI-reviewed · calculation checked</small>' : ''}</details>
 </article>`;
 }
 
