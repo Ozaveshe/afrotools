@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11521 |
-| Indexable pages | 9705 |
+| Indexable pages | 9706 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5016 |
+| Genuine equivalence groups | 5017 |
 | Documented fallbacks | 14788 |
-| Routes eligible for primary sitemaps | 9705 |
+| Routes eligible for primary sitemaps | 9706 |
 
 ## Locale Coverage
 
@@ -5794,6 +5794,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8c9afabece61: en=`/cars/tunisia/toyota/axio/2018/`, fr=`/fr/cars/tunisie/toyota/axio/2018/`; x-default=`/cars/tunisia/toyota/axio/2018/`
 - equivalence:8c9b81572b1e: en=`/tools/maternity-leave/chad/`; x-default=`/tools/maternity-leave/chad/`
 - equivalence:8ca2b4e976aa: en=`/cars/egypt/mercedes-benz/e-class/2017/`, fr=`/fr/cars/egypte/mercedes-benz/e-class/2017/`; x-default=`/cars/egypt/mercedes-benz/e-class/2017/`
+- equivalence:8cae1a2228c3: en=`/jamb/mathematics/1987/`; x-default=`/jamb/mathematics/1987/`
 - equivalence:8cafde4f6e1d: en=`/tools/visa-checker/sao-tome-and-principe`; x-default=`/tools/visa-checker/sao-tome-and-principe`
 - equivalence:8cc4deb94ff9: en=`/cars/zambia/toyota/hilux/2020/`, fr=`/fr/cars/zambie/toyota/hilux/2020/`; x-default=`/cars/zambia/toyota/hilux/2020/`
 - equivalence:8cd571643cc5: fr=`/fr/widgets/selecteur-aleatoire/`; x-default=`/fr/widgets/selecteur-aleatoire/`
