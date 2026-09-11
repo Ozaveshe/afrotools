@@ -604,6 +604,13 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     justify-content: center;
   }
 }
+
+.answer-explanation { margin:12px 0; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; color:#0f172a; }
+.answer-explanation summary { cursor:pointer; min-height:44px; align-content:center; font-weight:600; }
+.answer-explanation summary:focus-visible { outline:3px solid #0062cc; outline-offset:3px; }
+.answer-explanation .hide-explanation, .answer-explanation[open] .show-explanation { display:none; }
+.answer-explanation[open] .hide-explanation { display:inline; }
+.answer-explanation .reviewed-explanation { margin:8px 0 0; white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.6; }
 </style>
 
 <script>
@@ -1363,7 +1370,7 @@ function renderReviewCard(r) {
     + (r.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(r.passage) + '</p>' : '')
     + '<div class="rev-q">' + escapeHtml(r.question) + '</div>'
     + '<div class="rev-opts">' + optsHtml + '</div>'
-    + '<p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>'
+    + '<details class="answer-explanation"><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p></details>'
     + actionsHtml;
 
   card.querySelector(".explain-btn").addEventListener("click", async function(){

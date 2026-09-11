@@ -2,6 +2,22 @@ const { test, expect } = require('@playwright/test');
 const { bank, questions, revision, reviewed } = require('../support/jamb-reviewed-fixtures');
 test.use({ viewport: { width: 390, height: 900 } });
 
+
+async function checkExplanationDisclosure(page) {
+  const box = page.locator('.answer-explanation').first();
+  const explanation = box.locator('.reviewed-explanation');
+  const summary = box.locator('summary');
+  await expect(explanation).toBeHidden();
+  await expect(summary).toHaveText(/Show explanation/);
+  await summary.focus();
+  await page.keyboard.press('Enter');
+  await expect(explanation).toBeVisible();
+  await expect(box.locator('.hide-explanation')).toBeVisible();
+  await page.keyboard.press('Space');
+  await expect(explanation).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+}
+
 async function serveBank(page, fixture) {
   const posts = [];
   await page.route('**/*', route => {
@@ -64,6 +80,7 @@ test('reviewed past questions reveal locally and tutor sends identity only after
   await page.locator('.reveal-btn').first().click();
   await expect(page.locator('.reveal-btn').first()).toContainText('Answer: B');
   await expect(page.locator('.reviewed-explanation').first()).toContainText('Six groups of seven');
+  await checkExplanationDisclosure(page);
   page.once('dialog', dialog => dialog.dismiss());
   await page.locator('.explain-btn').first().click();
   expect(tutorPosts).toEqual([]);
@@ -77,6 +94,7 @@ test('reviewed past questions reveal locally and tutor sends identity only after
 test('reviewed CBT answers produce an attempt tied to the same review revision', async ({ page }) => {
   const posts = await serveBank(page, bank());
   await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+  await page.getByRole('button', { name: 'Reject analytics', exact: true }).click();
   await page.locator('#start-btn').click();
   await expect(page.locator('#cbt-shell')).toBeVisible();
   for (let i = 0; i < 3; i++) {
@@ -89,6 +107,7 @@ test('reviewed CBT answers produce an attempt tied to the same review revision',
   await expect(page.locator('#result-pct')).toHaveText('100');
   await page.locator('[data-filter="all"]').click();
   await expect(page.locator('.reviewed-explanation').first()).toContainText('Six groups of seven');
+  await checkExplanationDisclosure(page);
   await expect.poll(() => posts.length).toBe(1);
   expect(posts[0].pool_revision).toBe(revision);
   expect([...posts[0].question_ids].sort()).toEqual(['first', 'last', 'middle']);
