@@ -2,6 +2,15 @@ const { test, expect } = require('@playwright/test');
 const { bank, questions, revision, reviewed } = require('../support/jamb-reviewed-fixtures');
 test.use({ viewport: { width: 390, height: 900 } });
 
+async function declineAnalytics(page) {
+  const button = page.getByRole('button', { name: 'Reject analytics', exact: true });
+  if (await page.evaluate(() => localStorage.getItem('afrotools_cookie_consent')) === 'declined') {
+    await expect(button).toHaveCount(0);
+    return;
+  }
+  await button.click();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
+}
 
 async function checkExplanationDisclosure(page) {
   const box = page.locator('.answer-explanation').first();
@@ -40,7 +49,7 @@ test('current calculation-checked bank renders its labels and grades the actual 
   expect(rows.length).toBeGreaterThan(0);
   const posts = await serveBank(page, {pool, index});
   await page.goto('/jamb/cbt/', {waitUntil:'load'});
-  await page.getByRole('button', {name:'Reject analytics', exact:true}).click();
+  await declineAnalytics(page);
   await page.locator('#start-btn').click();
   await expect(page.locator('#cbt-shell')).toBeVisible();
   const count = await page.evaluate(() => AfroJAMB.CBT.getState().questions.length);
@@ -130,7 +139,7 @@ test('reviewed past questions reveal locally and tutor sends identity only after
 test('reviewed CBT answers produce an attempt tied to the same review revision', async ({ page }) => {
   const posts = await serveBank(page, bank());
   await page.goto('/jamb/cbt/', { waitUntil: 'load' });
-  await page.getByRole('button', { name: 'Reject analytics', exact: true }).click();
+  await declineAnalytics(page);
   await page.locator('#start-btn').click();
   await expect(page.locator('#cbt-shell')).toBeVisible();
   for (let i = 0; i < 3; i++) {
@@ -166,7 +175,7 @@ for (const stale of [false, true]) {
   test(`missed-question retry ${stale ? 'rejects changed answers' : 'teaches without inflating mock history'}`, async ({ page }) => {
     const posts = await serveBank(page, bank());
     await page.goto('/jamb/cbt/', { waitUntil: 'load' });
-    await page.getByRole('button', { name: 'Reject analytics', exact: true }).click();
+    await declineAnalytics(page);
     await page.locator('#start-btn').click();
     await page.getByRole('radio', { name: 'Option A: 36', exact: true }).click();
     await page.locator('#cbt-submit-top').click();
