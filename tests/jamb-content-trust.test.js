@@ -75,3 +75,45 @@ test('duplicate IDs block every affected record rather than silently choosing on
   assert.equal(result.eligible, 0);
   assert.equal(result.reasons.duplicate_id, 2);
 });
+
+test('owner authorization is material-specific and does not replace answer review', () => {
+  const { question, ledger } = fixture();
+  const hash = 'a'.repeat(64);
+  ledger.sources.fixture = {
+    source_file: 'user-supplied-fixture.pdf', content_sha256: hash,
+    reuse_authorization: { status: 'authorized-by-owner', basis: 'user-provided-material',
+      scope: 'AfroTools past-question practice', material_sha256: hash,
+      authorized_by: 'Synthetic owner', authorized_at: '2026-09-11', instruction_ref: 'Synthetic explicit instruction' }
+  };
+  assert.equal(assessQuestion(question, ledger).state, 'eligible');
+  ledger.sources.fixture.reuse_authorization.material_sha256 = 'b'.repeat(64);
+  assert.ok(assessQuestion(question, ledger).reasons.includes('permission_unverified'));
+  ledger.sources.fixture.reuse_authorization.material_sha256 = hash;
+  delete ledger.questions[question.id].answer_review;
+  assert.ok(assessQuestion(question, ledger).reasons.includes('answer_review_missing'));
+});
+
+test('AI answer reviews require a matching public verification label', () => {
+  const { question, ledger } = fixture();
+  ledger.questions[question.id].answer_review = {
+    ...ledger.questions[question.id].answer_review, reviewer_type: 'ai'
+  };
+  assert.ok(assessQuestion(question, ledger).reasons.includes('verification_label_missing'));
+  question.verification = { method: 'ai-calculation-checked', reviewed_at: '2026-09-10' };
+  ledger.questions[question.id].content_sha256 = questionFingerprint(question);
+  assert.equal(assessQuestion(question, ledger).state, 'eligible');
+  question.verification.reviewed_at = '2026-09-11';
+  ledger.questions[question.id].content_sha256 = questionFingerprint(question);
+  assert.ok(assessQuestion(question, ledger).reasons.includes('verification_label_missing'));
+});
+
+test('verification metadata cannot publish private fields or unsupported approval claims', () => {
+  const { question, ledger } = fixture();
+  for (const verification of [null, [], 'approved',
+    { method: 'teacher-approved', reviewed_at: '2026-09-10' },
+    { method: 'ai-calculation-checked', reviewed_at: '2026-09-10', private_note: 'internal' }]) {
+    const candidate = { ...question, verification };
+    ledger.questions[question.id].content_sha256 = questionFingerprint(candidate);
+    assert.ok(assessQuestion(candidate, ledger).reasons.includes('invalid_verification_label'));
+  }
+});

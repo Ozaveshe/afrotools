@@ -1,13 +1,13 @@
 'use strict';
 
-const { questionFingerprint: digest, auditQuestions, completeReview } = require('./jamb-content-trust');
+const { questionFingerprint: digest, auditQuestions, completeReview, sourceUseAccepted } = require('./jamb-content-trust');
 
 const SUBJECTS = Object.freeze({ english: 'Use of English', mathematics: 'Mathematics', physics: 'Physics',
   chemistry: 'Chemistry', biology: 'Biology', government: 'Government', economics: 'Economics',
   literature: 'Literature in English', crk: 'Christian Religious Knowledge', commerce: 'Commerce', accounts: 'Principles of Accounts' });
 const HASH = /^[a-f0-9]{64}$/;
 const QUESTION_FIELDS = new Set(['id', 'subject', 'year', 'num', 'question', 'options', 'answer', 'format',
-  'has_diagram', 'ai_explanation', 'explanation', 'passage', 'image', 'image_alt', 'topic']);
+  'has_diagram', 'ai_explanation', 'explanation', 'passage', 'image', 'image_alt', 'topic', 'verification']);
 
 function without(object, key) { const copy = { ...object }; delete copy[key]; return copy; }
 function reviewed(object) { return { ...object, review: { status: 'reviewed', content_sha256: digest(object) } }; }
@@ -28,11 +28,6 @@ function validateReviewedObject(object) {
   if (!object || object.review?.status !== 'reviewed'
       || object.review.content_sha256 !== digest(without(object, 'review'))) throw new Error('JAMB object has no matching review digest');
   return object;
-}
-function permissionAccepted(source) {
-  const p = source?.permission;
-  return !!p && p.status === 'permitted' && ['written-permission', 'open-license', 'original-work'].includes(p.basis)
-    && completeReview({ status: 'accepted', reviewer: p.reviewed_by, reviewed_at: p.reviewed_at, evidence: p.evidence });
 }
 function normalizeCard(deck, card) {
   const content = { deck_id: deck.id, subject: deck.subject, front: card.front, back: card.back };
@@ -94,7 +89,7 @@ function buildPublications(pool, flashcards, ledger) {
       return frequencies.get(card.id) === 1 && typeof card.front === 'string' && card.front.trim()
         && typeof card.back === 'string' && card.back.trim() && !/<\/?(?:script|iframe|html)\b/i.test(card.front + card.back)
         && review?.content_sha256 === digest(card) && completeReview(review.front_review) && completeReview(review.back_review)
-        && permissionAccepted(ledger.sources?.[review.source_id]);
+        && sourceUseAccepted(ledger.sources?.[review.source_id]);
     }).map(reviewed);
     if (cards.length) decks.push(reviewed({ id: deck.id, subject: deck.subject, name: deck.name, emoji: deck.emoji,
       description: cards.length + ' reviewed study cards', cards }));

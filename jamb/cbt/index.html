@@ -260,6 +260,14 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
       <div id="result-subjects" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;"></div>
 
+      <section id="retry-practice" hidden aria-labelledby="retry-heading" style="margin-bottom:24px;">
+        <h3 id="retry-heading" tabindex="-1">Retry missed questions</h3>
+        <p>Practise your wrong and skipped answers again. Retry results stay in this session and do not change your mock score.</p>
+        <button id="retry-start" type="button" class="jb-btn jb-btn-primary">Start retry practice</button>
+        <p id="retry-status" role="status" aria-live="polite"></p>
+        <div id="retry-question"></div>
+      </section>
+
       <!-- Review controls -->
       <div id="review-controls" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:18px;">
         <h3 style="margin:0 0 6px;font-size:1rem;font-weight:800;color:#0f172a;">Review your answers</h3>
@@ -604,6 +612,13 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     justify-content: center;
   }
 }
+
+.answer-explanation { margin:12px 0; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; color:#0f172a; }
+.answer-explanation summary { cursor:pointer; min-height:44px; align-content:center; font-weight:600; }
+.answer-explanation summary:focus-visible { outline:3px solid #0062cc; outline-offset:3px; }
+.answer-explanation .hide-explanation, .answer-explanation[open] .show-explanation { display:none; }
+.answer-explanation[open] .hide-explanation { display:inline; }
+.answer-explanation .reviewed-explanation { margin:8px 0 0; white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.6; }
 </style>
 
 <script>
@@ -1243,6 +1258,7 @@ function submitTest(timedOut) {
   // ===== Review screen =====
   REVIEW_ITEMS = score.reviewItems || [];
   CURRENT_FILTER = "wrong";
+  prepareRetryPractice();
 
   // Persist last attempt to history (localStorage) BEFORE telling AfroEdu,
   // because the bridge derives bestMockAggregate from afrojamb-history.
@@ -1298,6 +1314,93 @@ function submitTest(timedOut) {
 
 var REVIEW_ITEMS = [];
 var CURRENT_FILTER = "wrong";
+var RETRY_ITEMS = [];
+var RETRY_POSITION = 0;
+var RETRY_CORRECT = 0;
+
+function prepareRetryPractice() {
+  RETRY_ITEMS = REVIEW_ITEMS.filter(function(r) { return r.wrong || r.skipped; });
+  document.getElementById("retry-practice").hidden = RETRY_ITEMS.length === 0;
+  document.getElementById("retry-start").onclick = async function() {
+    this.disabled = true;
+    document.getElementById("retry-question").replaceChildren();
+    document.getElementById("retry-status").textContent = "Checking the current question bank…";
+    try {
+      await AfroJAMB.QuestionTrust.fetchIndex();
+      AfroJAMB.QuestionTrust.assertEligible(POOL, POOL_REVISION);
+      RETRY_POSITION = 0;
+      RETRY_CORRECT = 0;
+      this.hidden = true;
+      renderRetryQuestion();
+    } catch (error) {
+      document.getElementById("retry-status").textContent = "The question bank changed or is unavailable. Start a new practice session to use the current answers.";
+    } finally { this.disabled = false; }
+  };
+}
+
+function renderRetryQuestion() {
+  var host = document.getElementById("retry-question");
+  host.replaceChildren();
+  if (RETRY_POSITION >= RETRY_ITEMS.length) {
+    document.getElementById("retry-status").textContent = "Retry complete: " + RETRY_CORRECT + " of " + RETRY_ITEMS.length + " correct. Revisit these topics in a later study session.";
+    document.getElementById("retry-start").hidden = false;
+    document.getElementById("retry-start").focus();
+    return;
+  }
+  var item = RETRY_ITEMS[RETRY_POSITION];
+  var q = POOL.find(function(row) { return row.id === item.id; });
+  if (!q) return;
+  document.getElementById("retry-status").textContent = "Retry question " + (RETRY_POSITION + 1) + " of " + RETRY_ITEMS.length;
+  var fieldset = document.createElement("fieldset");
+  var legend = document.createElement("legend");
+  legend.textContent = q.question;
+  fieldset.appendChild(legend);
+  if (q.passage) {
+    var passage = document.createElement("p");
+    passage.textContent = q.passage;
+    passage.style.whiteSpace = "pre-wrap";
+    fieldset.appendChild(passage);
+  }
+  Object.keys(q.options).sort().forEach(function(letter) {
+    var label = document.createElement("label");
+    label.style.cssText = "display:flex;gap:10px;align-items:center;min-height:44px;overflow-wrap:anywhere;";
+    var input = document.createElement("input");
+    input.type = "radio"; input.name = "retry-answer"; input.value = letter;
+    label.append(input, document.createTextNode(letter + ". " + q.options[letter]));
+    fieldset.appendChild(label);
+  });
+  var check = document.createElement("button");
+  check.type = "button"; check.className = "jb-btn jb-btn-primary"; check.textContent = "Check retry answer";
+  var feedback = document.createElement("p"); feedback.setAttribute("role", "status");
+  host.append(fieldset, check, feedback);
+  check.onclick = async function() {
+    var picked = fieldset.querySelector("input:checked");
+    if (!picked) { feedback.textContent = "Choose an answer first."; return; }
+    check.disabled = true;
+    try {
+      await AfroJAMB.QuestionTrust.fetchIndex();
+      AfroJAMB.QuestionTrust.assertEligible(POOL, POOL_REVISION);
+    } catch (error) {
+      feedback.textContent = "The current answers could not be verified. Start a new practice session.";
+      fieldset.disabled = true;
+      return;
+    }
+    var correct = picked.value === q.answer;
+    if (correct) RETRY_CORRECT++;
+    feedback.textContent = correct ? "Correct." : "Not quite. The correct answer is " + q.answer + ".";
+    fieldset.disabled = true;
+    var details = document.createElement("details"); details.className = "answer-explanation";
+    var summary = document.createElement("summary"); summary.textContent = "Explanation";
+    var explanation = document.createElement("p"); explanation.textContent = q.explanation;
+    details.append(summary, explanation);
+    var next = document.createElement("button");
+    next.type = "button"; next.className = "jb-btn jb-btn-ghost";
+    next.textContent = RETRY_POSITION + 1 === RETRY_ITEMS.length ? "Finish retry" : "Next retry question";
+    next.onclick = function() { RETRY_POSITION++; renderRetryQuestion(); };
+    host.append(details, next);
+  };
+  legend.tabIndex = -1; legend.focus();
+}
 
 function renderReviewList() {
   var box = document.getElementById("review-list");
@@ -1316,6 +1419,7 @@ function renderReviewList() {
 }
 
 function renderReviewCard(r) {
+  var verification = (POOL.find(function(q) { return q.id === r.id; }) || {}).verification;
   var card = document.createElement("div");
   var status = r.wrong ? "wrong" : (r.correct ? "correct" : (r.skipped ? "skipped" : "ungraded"));
   card.className = "rev-card " + status;
@@ -1363,7 +1467,7 @@ function renderReviewCard(r) {
     + (r.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(r.passage) + '</p>' : '')
     + '<div class="rev-q">' + escapeHtml(r.question) + '</div>'
     + '<div class="rev-opts">' + optsHtml + '</div>'
-    + '<p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>'
+    + '<details class="answer-explanation"><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>' + (verification && verification.method === 'ai-calculation-checked' ? '<small class="verification-method">AI-reviewed · calculation checked</small>' : '') + '</details>'
     + actionsHtml;
 
   card.querySelector(".explain-btn").addEventListener("click", async function(){
