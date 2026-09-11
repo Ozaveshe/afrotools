@@ -47,7 +47,7 @@ function createReviewedBank(pool, index, ledger) {
     // Keep the existing storage scale for compatibility. This is practice
     // performance only and has no validated relationship to a future UTME score.
     const score = Math.round(subjects.reduce((sum, s) => sum + subjectScores[s], 0) / (100 * subjects.length) * 400);
-    return { question_ids: ids, subjects, answers, subject_scores: subjectScores, score };
+    return { question_ids: ids, subjects, answers, subject_scores: subjectScores, score, review_revision: index.review_revision };
   }
   return { questions: pool.questions, revision: index.review_revision, question, attempt,
     availability: { status: pool.count ? 'ready' : 'awaiting-review', review_revision: index.review_revision,
@@ -68,7 +68,10 @@ function dailyAvailability(bank = getReviewedBank()) {
 }
 function reviewedTutorRequest(body, bank = getReviewedBank()) {
   const q = bank.question(body.question_id, body.pool_revision);
-  return { ...body, messages: undefined, history: undefined, context: undefined, system: undefined,
+  if (q.image || q.has_diagram) {
+    const error = new Error('This question requires its visual context.'); error.code = 'question_requires_visual'; throw error;
+  }
+  return { ...body, tool: 'jamb-tutor-' + q.subject, messages: undefined, history: undefined, context: undefined, system: undefined,
     matchedTool: undefined, userContext: undefined,
     message: 'Explain the following reviewed practice question using its reviewed answer and explanation. Do not change the answer key. '
       + 'Label additional AI guidance as AI-generated and acknowledge uncertainty.\n'

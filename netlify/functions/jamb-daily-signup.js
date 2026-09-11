@@ -160,6 +160,7 @@ exports.handler = async (event) => {
   } catch (e) {
     return json(400, { error: "Invalid JSON" });
   }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return json(400, { error: 'Invalid request object' });
 
   var channel = body.channel;
   var contact = body.contact;

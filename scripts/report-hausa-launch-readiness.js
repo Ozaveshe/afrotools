@@ -17,6 +17,9 @@ function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 function stable(value) { return `${JSON.stringify(value, null, 2)}\n`; }
 function routeToFile(route) {
   const clean = new URL(route, 'https://afrotools.com').pathname.replace(/^\/+|\/+$/g, '');
+  const direct = path.join(ROOT, clean);
+  if (fs.existsSync(direct) && fs.statSync(direct).isFile()) return direct;
+  if (fs.existsSync(direct + '.html')) return direct + '.html';
   return path.join(ROOT, clean, 'index.html');
 }
 function htmlMatch(html, regex) { const match = html.match(regex); return match ? match[1].trim() : ''; }
@@ -39,7 +42,10 @@ function routeMetadata(route, html, equivalentRoute) {
   if (/noindex/i.test(robots)) gaps.push('noindex');
   if (coverage === 'english-fallback') gaps.push('fallback-marker');
   if (alternates.ha !== `https://afrotools.com${route}`) gaps.push('ha-hreflang');
-  if (!alternates.en) gaps.push('en-hreflang');
+  // The route graph excludes noindex English pages from equivalence groups.
+  // A Hausa-only group must not advertise a quarantined English counterpart.
+  if (equivalentRoute && alternates.en !== `https://afrotools.com${equivalentRoute}`) gaps.push('en-hreflang');
+  if (!equivalentRoute && alternates.en) gaps.push('unexpected-en-hreflang');
   if (!/"inLanguage"\s*:\s*"ha"/i.test(html)) gaps.push('schema-language');
   const interactive = /<(?:form|input|select|textarea|button)\b/i.test(html);
   const feedback = /\baria-live\s*=|<(?:output)\b|\b(?:result|error|status)[-_A-Za-z0-9]*\b/i.test(html);
@@ -72,6 +78,9 @@ function sharedShellChecks() {
 function buildReport() {
   const contract = readJson(CONTRACT_PATH);
   const coverage = coverageApi.buildReport();
+  const graph = readJson(path.join(ROOT, 'data/registry/route-graph.json'));
+  const englishEquivalents = new Map(graph.routes.filter((entry) => entry.locale === 'ha')
+    .map((entry) => [entry.route, entry.equivalents && entry.equivalents.en || null]));
   const visible = visibleAudit.buildReport();
   const locale = readJson(LOCALE_PATH).locales.find((entry) => entry.id === 'ha');
   const routeMap = new Map(coverage.records.map((record) => [record.route, record]));
@@ -80,7 +89,7 @@ function buildReport() {
     const record = routeMap.get(entry.route) || null;
     const file = routeToFile(entry.route);
     const exists = fs.existsSync(file) && registryApi.routeExists(entry.route);
-    const metadata = exists ? routeMetadata(entry.route, fs.readFileSync(file, 'utf8'), record && record.equivalentRoute) : { gaps: ['broken-route'] };
+    const metadata = exists ? routeMetadata(entry.route, fs.readFileSync(file, 'utf8'), englishEquivalents.get(entry.route)) : { gaps: ['broken-route'] };
     const visibleRecord = visibleMap.get(entry.route);
     const blockers = visibleRecord ? visibleRecord.blockerCount : null;
     const issues = [...metadata.gaps];
@@ -98,11 +107,11 @@ function buildReport() {
   const fallbackViolations = coverage.records.filter((record) => record.state === 'english-fallback' && (record.indexable || record.sitemapIncluded || record.advertisedHreflangs.length));
   const brokenCore = core25.filter((entry) => !entry.exists);
   const brokenRoutes = coverage.records.filter((record) => !fs.existsSync(routeToFile(record.route)) || !registryApi.routeExists(record.route));
-  const metadataGapNames = new Set(['html-lang', 'content-language', 'title', 'description', 'h1', 'self-canonical', 'noindex', 'fallback-marker', 'ha-hreflang', 'en-hreflang', 'schema-language', 'reciprocal-en-hreflang']);
+  const metadataGapNames = new Set(['html-lang', 'content-language', 'title', 'description', 'h1', 'self-canonical', 'noindex', 'fallback-marker', 'ha-hreflang', 'en-hreflang', 'unexpected-en-hreflang', 'schema-language', 'reciprocal-en-hreflang']);
   const localizedMetadataGaps = coverage.records.filter((record) => record.indexable).map((record) => {
     const file = routeToFile(record.route);
     const gaps = fs.existsSync(file)
-      ? routeMetadata(record.route, fs.readFileSync(file, 'utf8'), record.equivalentRoute).gaps.filter((gap) => metadataGapNames.has(gap))
+      ? routeMetadata(record.route, fs.readFileSync(file, 'utf8'), englishEquivalents.get(record.route)).gaps.filter((gap) => metadataGapNames.has(gap))
       : ['broken-route'];
     return { route: record.route, gaps };
   }).filter((entry) => entry.gaps.length);
@@ -181,4 +190,4 @@ if (require.main === module) {
   try { run({ write: process.argv.includes('--write') }); } catch (error) { console.error(error.message); process.exit(1); }
 }
 
-module.exports = { buildReport, markdown, run };
+module.exports = { buildReport, markdown, run, routeMetadata };

@@ -108,6 +108,8 @@ test('tutor uses canonical reviewed context and rejects legacy/stale requests', 
   assert.match(request.message, /"answer":"B"/); assert.doesNotMatch(request.message, /Wrong key/);
   assert.equal(request.messages, undefined); assert.equal(request.context, undefined); assert.equal(request.aiConsent, 'accepted');
   assert.throws(() => reviewedTutorRequest({ message: 'Legacy question' }, b));
+  assert.throws(() => reviewedTutorRequest({ question_id: 'synthetic-math-1', pool_revision: b.revision },
+    { question: () => ({ ...b.questions[0], image: '/synthetic-figure.svg', has_diagram: false }) }), { code: 'question_requires_visual' });
 });
 
 test('even resealed unreviewed additions are rejected by server ledger checks', () => {

@@ -21,7 +21,7 @@ function fixture() {
   return { pool: built.files['pools/practice-pool.json'], index: built.files['pools/index.json'], ledger };
 }
 
-async function submitFromBrowser(mode, enginePath) {
+async function submitFromBrowser(mode, enginePath, persist = false) {
   const fixtureData = fixture();
   const bank = createReviewedBank(fixtureData.pool, fixtureData.index, fixtureData.ledger);
   let body;
@@ -39,15 +39,29 @@ async function submitFromBrowser(mode, enginePath) {
   browser.AfroJAMB.CBT.selectAnswer('B');
   browser.AfroJAMB.CBT.submit();
   let providerCalls = 0;
-  const server = { exports: {}, process: { env: {} }, console: { warn() {} }, require(id) {
+  let storedRow;
+  if (persist) body.metadata = { review_validation: { review_revision: 'client-forgery', validator_version: 99 } };
+  const server = { exports: {}, process: { env: persist ? { SUPABASE_SERVICE_KEY: 'synthetic-server-key' } : {} }, console: { warn() {} }, require(id) {
     if (id === './_shared/jamb-reviewed-data') return { getReviewedBank: () => bank };
-    if (id === '@supabase/supabase-js') return { createClient() { providerCalls++; throw new Error('No live database allowed'); } };
+    if (id === '@supabase/supabase-js') return { createClient(url, key) { providerCalls++;
+      if (!persist) throw new Error('No live database allowed');
+      assert.equal(url, 'https://zpclagtgczsygrgztlts.supabase.co'); assert.equal(key, 'synthetic-server-key');
+      return { from(table) { assert.equal(table, 'jamb_attempts'); return { async insert(row) { storedRow = JSON.parse(JSON.stringify(row)); return { error: null }; } }; } };
+    } };
     throw new Error('Unexpected dependency ' + id);
   } };
   vm.runInNewContext(fs.readFileSync('netlify/functions/jamb-attempt.js', 'utf8'), server);
   const response = await server.exports.handler({ httpMethod: 'POST', body: JSON.stringify(body) });
-  return { response, body, recomputed: () => bank.attempt(body), providerCalls };
+  return { response, body, recomputed: () => bank.attempt(body), providerCalls, storedRow };
 }
+
+test('trusted persistence stamps the validated revision and ignores a client-supplied trust marker', async () => {
+  const result = await submitFromBrowser('full', 'engines/src/jamb-cbt-engine.js', true);
+  assert.equal(JSON.parse(result.response.body).persisted, true);
+  assert.equal(result.storedRow.score, 400);
+  assert.deepEqual(result.storedRow.metadata.review_validation, { policy: 'reviewed-only', validator_version: 1, review_revision: result.body.pool_revision });
+  assert.equal(result.providerCalls, 1);
+});
 
 for (const enginePath of ['engines/src/jamb-cbt-engine.js', 'engines/jamb-cbt-engine.js']) {
   for (const mode of ['full', 'cbt-full', 'quick', 'subject', 'topic-drill', 'past-paper']) {

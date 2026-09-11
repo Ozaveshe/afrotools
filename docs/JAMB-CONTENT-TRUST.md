@@ -1,9 +1,10 @@
 # AfroJAMB content review and publication
 
 This workflow is being implemented in Step 4 of the September 2026 release plan.
-The source audit, preserved inputs, reviewed data generation and server gates
-are implemented locally. Browser and full static-page changes are being
-integrated. Full release validation and deployment remain pending. Do not treat
+The source audit, preserved inputs, reviewed data generation, server gates,
+browser consumers and static pages are integrated locally. The deployment build,
+artifact audit and 45 focused browser cases passed on 10 September 2026.
+Final combined validation and deployment remain pending. Do not treat
 an audit result or this document as proof that production is quarantined.
 
 ## Existing source limitations
@@ -79,6 +80,15 @@ recomputed from canonical answer keys. The retained 0–400 storage scale is
 practice performance, not a validated forecast. Anonymous records are not
 proof of real student completion or retention.
 
+The backend writes `metadata.review_validation` only after canonical validation,
+using the AfroTools service credential. Migration
+`20260910151500_jamb_attempt_review_provenance.sql` reserves that marker with an
+additive restrictive INSERT policy for anonymous and authenticated clients.
+It was applied to the verified AfroTools project on 10 September 2026; a rolled
+back anonymous insert probe rejected a forged marker and left existing rows
+unchanged. Direct client submissions without the marker remain unverified
+telemetry. The marker is not evidence of a human student or an exam result.
+
 Daily signup requires the current revision and available reviewed subjects.
 Sending pauses before reading subscribers if no reviewed email-safe questions
 are available. Visual questions are omitted from email until its renderer can
@@ -86,6 +96,17 @@ preserve their supporting assets. Unsubscribe remains independent of content
 availability. Bank tutor calls require reviewed `question_id`/`pool_revision`
 and explicit AI consent; the server ignores client-supplied answer context.
 Freeform study guidance is separate and does not become a reviewed answer key.
+
+The study planner works locally without an AI request. Optional AI assistance
+requires consent to the disclosed study inputs. The server validates bounded
+dates, day counts and time budgets, then validates the returned schedule before
+the browser accepts it. Invalid provider output falls back to the local planner.
+The standalone tutor requires consent before sending the conversation.
+
+Question-bank JSON is network-only and `no-store`; it is not served from the
+service worker's offline cache. Its revision participates in the cache stamp,
+so a changed review bank invalidates the previous cached page generation.
+Local planning remains available independently of question-bank availability.
 
 `npm run build:jamb` owns data, subject/year pages and their sitemap before other
 build stages. `npm run jamb:publication:audit` compares the built public data
@@ -104,7 +125,8 @@ correction. These are conservative review signals, not a claim that every
 unflagged answer is correct. All approvals are invalidated when their pinned
 content changes.
 
-`npm run jamb:repair-pages:build` owns these four formerly truncated pages:
+`npm run jamb:repair-pages:build` now owns all 242 existing subject/year routes,
+including these four formerly truncated pages:
 
 - `/jamb/commerce/1997/`
 - `/jamb/english/2000/`
@@ -134,18 +156,16 @@ revision to invalidate saved sessions after answer/permission review changes.
 
 Before claiming Step 4 complete or promoting AfroJAMB:
 
-1. Preserve raw/question-source inputs outside the public artifact, then generate
-   every public pool from the review ledger. Keep unknown permissions quarantined.
-2. Apply the same approved set to CBT, saved sessions, browsing, prediction,
-   tutor question lookup and daily email. Do not send test emails to subscribers.
-3. Regenerate all subject/year question cards, schemas, counts and derived topic
-   data. Client-side filtering does not remove already rendered question HTML.
-4. Review flashcard sources and answers separately; they are not covered by the
-   multiple-choice question ledger merely because they are educational content.
-5. Reconcile empty states and public claims, update source-owned sitemap output,
-   and verify unreviewed records cannot be fetched from the built artifact.
-6. Run security, build/artifact, relevant SEO and browser checks; publish through
-   coordinated release ownership and verify the deployed revision and journeys.
+1. Complete final combined regression/security checks, commit the integrated
+   source and generated output, and verify hosted CI and the exact deployment.
+2. Check production review notices, question-bank revision, attempt rejection,
+   daily availability and non-public source paths. Do not send test emails to
+   subscribers or confuse synthetic tests with a live student pilot.
+3. Record actual source permission and qualified academic review for a usable
+   initial curriculum. The current ledger approves zero questions or flashcards.
+   Flashcards require their own evidence; MCQ approval does not approve a deck.
+4. Regenerate and revalidate publication whenever approved content or its
+   supporting evidence changes. Keep unknown permissions quarantined.
 
 Step 5 still requires real Nigeria student completion and returning-user
 evidence. Automated fixtures do not count as a student pilot.

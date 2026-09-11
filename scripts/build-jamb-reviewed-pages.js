@@ -4,6 +4,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { assessQuestion } = require('./lib/jamb-content-trust');
+const { stableId } = require('./lib/content-integrity');
+const { analyticsVersion, bootstrapVersion, canonicalLoaderTag, earlyBootstrapTag } = require('./inject-analytics-loader');
 const { writeFileSyncWithRetry, renameSyncWithRetry, unlinkSyncWithRetry } = require('./lib/safe-write');
 const ROOT = path.resolve(__dirname, '..');
 const SUBJECTS = { english: 'Use of English', mathematics: 'Mathematics', physics: 'Physics', chemistry: 'Chemistry',
@@ -38,8 +40,11 @@ ${q.image ? `<img src="${esc(q.image)}" alt="${esc(q.image_alt)}" loading="lazy"
 function renderYear(subject, year, candidates, ledger, years = []) {
   if (!SUBJECTS[subject] || (year !== null && !/^\d{4}$/.test(String(year)))) throw new Error('Unknown JAMB subject/year route');
   const ids = new Set();
+  const counts = new Map();
+  for (const q of candidates) counts.set(q.id, (counts.get(q.id) || 0) + 1);
+  const duplicateIds = new Set([...counts].filter(([, count]) => count > 1).map(([id]) => id));
   const approved = candidates.filter(q => q.subject === subject && (year === null || String(q.year) === String(year))
-    && assessQuestion(q, ledger).state === 'eligible');
+    && assessQuestion(q, ledger, { duplicateIds }).state === 'eligible');
   for (const q of approved) { if (ids.has(q.id)) throw new Error('Duplicate approved question ID'); ids.add(q.id); }
   approved.sort((a, b) => a.num - b.num || a.id.localeCompare(b.id));
   const name = SUBJECTS[subject];
@@ -55,9 +60,11 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
+${earlyBootstrapTag(bootstrapVersion(), analyticsVersion())}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="afrotools-source-owner" content="scripts/build-jamb-reviewed-pages.js">
+<meta name="afrotools-content-id" content="${stableId(new URL(canonical).pathname)}">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="robots" content="${approved.length ? 'index' : 'noindex'}, follow">
@@ -89,6 +96,7 @@ ${approved.length ? `<p>${approved.length} reviewed questions with answers and e
 <p class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/tools/study-planner/">Plan your study week</a><a href="/jamb/${subject}/">All ${esc(name)} years</a></p>
 </main>
 <afro-footer></afro-footer>
+${canonicalLoaderTag(analyticsVersion())}
 </body>
 </html>
 `;

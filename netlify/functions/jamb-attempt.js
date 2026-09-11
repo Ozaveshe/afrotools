@@ -22,7 +22,7 @@ const { createClient } = require("@supabase/supabase-js");
 const { getReviewedBank } = require('./_shared/jamb-reviewed-data');
 
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || "https://zpclagtgczsygrgztlts.supabase.co";
-const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY || "";
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || "";
 
 exports.handler = async (event) => {
   const cors = {
@@ -47,6 +47,7 @@ exports.handler = async (event) => {
   } catch (e) {
     return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid request object' }) };
 
   // ───────── Validation ─────────
   if (!body.session_id || typeof body.session_id !== "string" || body.session_id.length > 64) {
@@ -82,12 +83,12 @@ exports.handler = async (event) => {
   const durationSec = Number.isFinite(rawDur) ? Math.max(0, Math.min(7200, Math.round(rawDur))) : 0;
 
   // If we have no Supabase creds, just return ok (logging is best-effort)
-  if (!SUPABASE_URL || !SUPABASE_ANON) {
+  if (SUPABASE_URL.replace(/\/$/, '') !== 'https://zpclagtgczsygrgztlts.supabase.co' || !SUPABASE_SERVICE_KEY) {
     return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true, persisted: false }) };
   }
 
   try {
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
@@ -101,6 +102,8 @@ exports.handler = async (event) => {
       subject_scores: reviewedAttempt.subject_scores,
       duration_seconds: durationSec,
       finished_at: new Date().toISOString(),
+      metadata: { review_validation: { policy: 'reviewed-only', validator_version: 1,
+        review_revision: reviewedAttempt.review_revision } },
     };
 
     const { error } = await supabase.from("jamb_attempts").insert(row);

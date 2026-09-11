@@ -57,6 +57,8 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.ok(subjectPage.html.includes('href="/jamb/mathematics/1987/"'));
   const stale = renderYear('mathematics', 1987, [{ ...q, answer: 'B' }], ledger);
   assert.equal(stale.approvedIds.length, 0);
+  const duplicatedElsewhere = renderYear('mathematics', 1987, [q, { ...q, year: 1988 }], ledger);
+  assert.equal(duplicatedElsewhere.approvedIds.length, 0, 'duplicate IDs across years must agree with public-pool quarantine');
 });
 
 

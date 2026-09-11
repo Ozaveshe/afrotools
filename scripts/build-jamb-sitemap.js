@@ -3,7 +3,8 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const cheerio = require('cheerio');
+const { extractCanonicalTags } = require('./lib/route-contract');
+const { readMeta } = require('./lib/content-integrity');
 const { writeFileSyncWithRetry, renameSyncWithRetry, unlinkSyncWithRetry } = require('./lib/safe-write');
 const ROOT = path.resolve(__dirname, '..');
 
@@ -14,12 +15,12 @@ function sitemap(root = ROOT) {
       const file = path.join(dir, entry.name);
       if (entry.isDirectory()) visit(file);
       else if (entry.name === 'index.html') {
-        const $ = cheerio.load(fs.readFileSync(file, 'utf8'));
-        const robots = $('meta[name="robots"]').map((_i, el) => $(el).attr('content') || '').get().join(' ');
+        const html = fs.readFileSync(file, 'utf8');
+        const robots = readMeta(html, 'robots');
         if (/\bnoindex\b/i.test(robots)) continue;
         const route = 'https://afrotools.com/' + path.relative(root, dir).replace(/\\/g, '/') + '/';
-        const canonical = $('link[rel="canonical"]').attr('href');
-        if (canonical !== route) throw new Error('JAMB sitemap canonical mismatch: ' + route);
+        const canonicals = extractCanonicalTags(html);
+        if (canonicals.length !== 1 || canonicals[0] !== route) throw new Error('JAMB sitemap canonical mismatch: ' + route);
         routes.push(route);
       }
     }

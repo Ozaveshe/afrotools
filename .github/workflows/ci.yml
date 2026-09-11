@@ -135,3 +135,8 @@ jobs:
 
       - name: Run smoke specs
         run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js tests/e2e/amount-words-readiness.spec.js tests/e2e/mobile-money-readiness.spec.js tests/e2e/education-hub-card-reflow.spec.js --project=chromium --workers=1
+
+      - name: Verify AfroJAMB reviewed-content journeys
+        env:
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+        run: npx playwright test tests/e2e/jamb-browser-trust.spec.js tests/e2e/jamb-planning-trust.spec.js tests/e2e/jamb-tutor-consent.spec.js tests/e2e/jamb-reviewed-pages.spec.js tests/e2e/jamb-public-review.spec.js --project=chromium --workers=2

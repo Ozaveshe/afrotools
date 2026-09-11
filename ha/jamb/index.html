@@ -12,11 +12,11 @@
 <meta property="og:description" content="Hanyar Hausa ga daliban Najeriya masu fara shirin JAMB 2027 da wuri: gwajin CBT, mai taimakon AI, tsoffin tambayoyi da jagorar darussa.">
 <meta property="og:url" content="https://afrotools.com/ha/jamb/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-hub.webp">
-<meta property="og:image:width" content="600">
-<meta property="og:image:height" content="400">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-hub.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AfroJAMB 2027 a Hausa","description":"Hanyar Hausa zuwa AfroJAMB don shirin JAMB UTME 2027, gwajin CBT, tsoffin tambayoyi, mai taimakon AI da tsarin karatu.","url":"https://afrotools.com/ha/jamb/","inLanguage":"ha","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Hausa","item":"https://afrotools.com/ha/"},{"@type":"ListItem","position":2,"name":"Ilimi","item":"https://afrotools.com/ha/ilimi/"},{"@type":"ListItem","position":3,"name":"AfroJAMB a Hausa","item":"https://afrotools.com/ha/jamb/"}]}</script>
 
@@ -425,14 +425,14 @@
           <a class="ha-jamb-secondary" href="/ha/jamb/past-questions/">Hanyar tsoffin tambayoyi</a>
         </div>
         <div class="ha-jamb-stats" aria-label="Abubuwan AfroJAMB">
-          <div class="ha-jamb-stat"><strong>16,000+</strong><span>Tsoffin tambayoyi a ajiya</span></div>
+          <div class="ha-jamb-stat"><strong>Ana dubawa</strong><span>Tambayoyin atisaye</span></div>
           <div class="ha-jamb-stat"><strong>11</strong><span>Darussa da ake amfani da su</span></div>
           <div class="ha-jamb-stat"><strong>2027</strong><span>Shirin zagaye na gaba</span></div>
           <div class="ha-jamb-stat"><strong>AI</strong><span>Bayanin kuskure da jagora</span></div>
         </div>
       </div>
       <div class="ha-jamb-image">
-        <img height="400" width="600" src="/assets/img/og/afrojamb-hub.webp" alt="Hoton AfroJAMB da ke nuna CBT, mai taimakon AI da tsoffin tambayoyi." loading="eager" fetchpriority="high">
+        <img height="400" width="600" src="/assets/img/og-default.png" alt="Hoton AfroJAMB da ke nuna CBT, mai taimakon AI da tsoffin tambayoyi." loading="eager" fetchpriority="high">
       </div>
     </div>
   </section>
@@ -570,6 +570,7 @@
 
 <afro-footer></afro-footer>
 
+<script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
 <script>
 (async function(){
   const grid = document.getElementById('ha-subj-grid');
@@ -589,8 +590,7 @@
     accounts: { label: 'Lissafin kudi', note: 'Ga lissafin kudi da harkar kudi' }
   };
   try {
-    const res = await fetch('/data/jamb/pools/index.json');
-    const data = await res.json();
+    const data = await window.AfroJAMB.QuestionTrust.fetchIndex();
     const entries = Object.entries(data && data.stats && data.stats.by_subject ? data.stats.by_subject : {});
     if (!entries.length) throw new Error('No subject stats');
     grid.innerHTML = '';
@@ -602,7 +602,7 @@
       link.className = 'ha-jamb-subject';
       link.href = meta.haPath || ('/jamb/past-questions/?subject=' + encodeURIComponent(key));
       const total = Number(stats.total || 0);
-      link.innerHTML = '<strong>' + (total ? total.toLocaleString() : 'JAMB') + '</strong><span>' + meta.label + (meta.haPath ? ' - akwai da Hausa' : ' - shafi na Turanci') + '</span><em>' + meta.note + (meta.haPath ? ' - jagora a Hausa.' : ' - ajiyar tambayoyi tana Turanci tukuna.') + '</em>';
+      link.innerHTML = '<strong>' + (total ? total.toLocaleString() : 'Ana dubawa') + '</strong><span>' + meta.label + (meta.haPath ? ' - akwai da Hausa' : ' - shafi na Turanci') + '</span><em>' + meta.note + (meta.haPath ? ' - jagora a Hausa.' : ' - ajiyar tambayoyi tana Turanci tukuna.') + '</em>';
       grid.appendChild(link);
     });
   } catch (err) {
