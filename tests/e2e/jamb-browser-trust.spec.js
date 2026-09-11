@@ -89,6 +89,49 @@ async function declineAnalytics(page) {
   await expect.poll(() => page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
 }
 
+test('CBT waits for verified figures before starting and retains them in review and retry', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  const posts = await serveBank(page, bank([fixture.pool.questions[0]]));
+  let releaseImage;
+  let requested = false;
+  const gate = new Promise(resolve => { releaseImage = resolve; });
+  await page.route('**/assets/img/jamb/**', async route => {
+    requested = true; await gate;
+    await route.fulfill({ contentType: 'image/svg+xml', body: files.get(new URL(route.request().url()).pathname) });
+  });
+  try {
+    await page.goto('/jamb/cbt/', { waitUntil:'load' });
+    await declineAnalytics(page);
+    await page.locator('#start-btn').click();
+    await expect.poll(() => requested).toBe(true);
+    await expect(page.locator('#cbt-shell')).toBeHidden();
+    expect(await page.evaluate(() => AfroJAMB.CBT.getState())).toBeNull();
+    releaseImage();
+    await expect(page.locator('#cbt-shell .reviewed-question-figure')).toBeVisible();
+    await page.locator('#cbt-submit-top').click();
+    await page.locator('#confirm-submit-btn').click();
+    await page.locator('[data-filter="skipped"]').click();
+    await expect(page.locator('#review-list .reviewed-question-figure')).toBeVisible();
+    await page.locator('#retry-start').click();
+    await expect(page.locator('#retry-question .reviewed-question-figure')).toBeVisible();
+    await expect.poll(() => posts.length).toBe(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  } finally { releaseImage(); }
+});
+
+test('CBT missing reviewed figure prevents a timed or graded session', async ({ page }) => {
+  const { fixture } = figureFixtures();
+  const posts = await serveBank(page, bank([fixture.pool.questions.find(q => q.id === 'visual-missing')]));
+  await page.route('**/assets/img/jamb/**', route => route.fulfill({ status:404, body:'' }));
+  await page.goto('/jamb/cbt/', { waitUntil:'load' });
+  await declineAnalytics(page);
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#setup-warning')).toContainText('figure could not be loaded');
+  await expect(page.locator('#cbt-shell')).toBeHidden();
+  expect(await page.evaluate(() => AfroJAMB.CBT.getState())).toBeNull();
+  expect(posts).toHaveLength(0);
+});
+
 test('past questions reveal answers only after their reviewed diagram loads', async ({ page }) => {
   const { fixture, files } = figureFixtures();
   await serveBank(page, bank(fixture.pool.questions.filter(q => ['visual-valid', 'visual-missing', 'visual-tampered'].includes(q.id))));

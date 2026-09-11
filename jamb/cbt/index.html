@@ -4,6 +4,7 @@
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
 <script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
+<script src="/assets/js/lib/jamb-reviewed-figure.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB CBT Mock Exam — AfroJAMB</title>
 <meta name="description" content="Practise with reviewed JAMB questions, a timer, saved progress and an answer review. Available questions determine session length. No sign-up needed.">
@@ -627,6 +628,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 // =====================================================================
 var POOL = null;
 var POOL_REVISION = null;
+var SESSION_FIGURES = new Map();
 var POOL_STATS = null;
 var RESUME_SNAPSHOT = null;
 var CBT_EVENTS_BOUND = false;
@@ -671,6 +673,7 @@ function getCoverageSummary() {
 
 function isLaunchSafeQuestion(q) {
   var text = ((q && q.question) || "") + " " + Object.values((q && q.options) || {}).join(" ");
+  if (q && q.image) return AfroJAMB.ReviewedFigure.supports(q);
   return !!q && !q.image && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
 }
 
@@ -837,7 +840,7 @@ document.getElementById("resume-btn").addEventListener("click", async function (
     syncModeCards();
     renderSubjectPicker();
     await ensurePoolLoaded();
-    startCBT(RESUME_SNAPSHOT);
+    await startCBT(RESUME_SNAPSHOT);
   } catch (e) {
     showPracticeUnavailable("This saved session cannot resume: " + e.message);
     this.disabled = false;
@@ -863,7 +866,7 @@ document.getElementById("start-btn").addEventListener("click", async function(){
   this.textContent = "Loading questions...";
   try {
     await ensurePoolLoaded();
-    startCBT();
+    await startCBT();
   } catch(e) {
     showPracticeUnavailable(e.message);
     this.disabled = false;
@@ -888,7 +891,23 @@ function showPracticeUnavailable(message) {
   warning.textContent = message;
 }
 
-function startCBT(resumeSnapshot) {
+function clearSessionFigures() {
+  SESSION_FIGURES.forEach(function(figure) { figure.revoke(); });
+  SESSION_FIGURES.clear();
+}
+
+function sessionFigure(q) {
+  if (!q || !q.image) return null;
+  var figure = SESSION_FIGURES.get(q.id);
+  if (!figure) throw new Error("The required question diagram is unavailable. Start a new session.");
+  var img = document.createElement("img");
+  img.src = figure.url; img.alt = figure.alt;
+  img.className = "reviewed-question-figure";
+  img.style.cssText = "display:block;max-width:100%;height:auto;margin:12px auto;";
+  return img;
+}
+
+async function startCBT(resumeSnapshot) {
 
   var cfg = {
     pool: POOL,
@@ -900,6 +919,24 @@ function startCBT(resumeSnapshot) {
     onTick: renderTimer,
     onTimeout: function(){ submitTest(true); },
   };
+
+  clearSessionFigures();
+  // Select before loading so a large bank downloads only this session's figures.
+  var selected = resumeSnapshot ? resumeSnapshot.questionIds.map(function(id) {
+    var question = POOL.find(function(q) { return q.id === id; });
+    if (!question) {
+      AfroJAMB.CBT.clearSession();
+      throw new Error("The saved questions changed. Start a new practice session.");
+    }
+    return question;
+  }) : AfroJAMB.CBT.selectQuestions(cfg);
+  try {
+    for (var question of selected) {
+      if (question.image) SESSION_FIGURES.set(question.id, await AfroJAMB.ReviewedFigure.load(question, POOL_REVISION));
+    }
+    AfroJAMB.QuestionTrust.assertEligible(selected, POOL_REVISION);
+  } catch (error) { clearSessionFigures(); throw error; }
+  if (!resumeSnapshot) cfg.pool = selected;
 
   try {
     if (resumeSnapshot && typeof AfroJAMB.CBT.restore === "function") {
@@ -1125,6 +1162,9 @@ function renderQuestion() {
   document.getElementById("cbt-q-info").textContent = subjLbl + " · " + data.indexInSubject + " / " + data.subjectTotal;
   document.getElementById("cbt-passage").textContent = q.passage || "";
   document.getElementById("cbt-q-text").textContent = q.question;
+  document.querySelectorAll("#cbt-shell .reviewed-question-figure").forEach(function(img) { img.remove(); });
+  var figure = sessionFigure(q);
+  if (figure) document.getElementById("cbt-q-text").after(figure);
 
   var optsBox = document.getElementById("cbt-options");
   optsBox.innerHTML = "";
@@ -1355,6 +1395,8 @@ function renderRetryQuestion() {
   var legend = document.createElement("legend");
   legend.textContent = q.question;
   fieldset.appendChild(legend);
+  var figure = sessionFigure(q);
+  if (figure) fieldset.appendChild(figure);
   if (q.passage) {
     var passage = document.createElement("p");
     passage.textContent = q.passage;
@@ -1419,7 +1461,8 @@ function renderReviewList() {
 }
 
 function renderReviewCard(r) {
-  var verification = (POOL.find(function(q) { return q.id === r.id; }) || {}).verification;
+  var reviewedQuestion = POOL.find(function(q) { return q.id === r.id; });
+  var verification = (reviewedQuestion || {}).verification;
   var card = document.createElement("div");
   var status = r.wrong ? "wrong" : (r.correct ? "correct" : (r.skipped ? "skipped" : "ungraded"));
   card.className = "rev-card " + status;
@@ -1470,6 +1513,11 @@ function renderReviewCard(r) {
     + '<details class="answer-explanation"><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>' + (verification && verification.method === 'ai-calculation-checked' ? '<small class="verification-method">AI-reviewed · calculation checked</small>' : '') + '</details>'
     + actionsHtml;
 
+  var figure = sessionFigure(reviewedQuestion);
+  if (figure) {
+    card.querySelector(".rev-q").after(figure);
+    card.querySelector(".explain-btn").style.display = "none";
+  }
   card.querySelector(".explain-btn").addEventListener("click", async function(){
     var btn = this;
     btn.disabled = true;
