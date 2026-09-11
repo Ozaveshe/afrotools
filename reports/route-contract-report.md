@@ -8434,8 +8434,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/tools/vat-calculator/vat-calc` -> `/fr/tools/calculateur-tva/` (netlify.toml:968)
 - `/fr/tools/mobile-money-fees/` -> `/fr/tools/frais-mobile-money/` (netlify.toml:978)
 - `/fr/tools/remittance-compare/` -> `/fr/tools/transfert-argent/` (netlify.toml:983)
-- `/crypto/tax-calculator/` -> `/tools/crypto-tax/` (netlify.toml:1121)
-- `/fr/crypto/tax-calculator/` -> `/fr/tools/impot-crypto/` (netlify.toml:1133)
+- `/crypto/tax-calculator/` -> `/tools/crypto-tax/` (netlify.toml:1126)
+- `/fr/crypto/tax-calculator/` -> `/fr/tools/impot-crypto/` (netlify.toml:1138)
 
 ## Conflicting Later Rules
 
