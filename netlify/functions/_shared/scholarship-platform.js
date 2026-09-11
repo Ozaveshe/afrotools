@@ -639,10 +639,17 @@ function getScholarshipDeadlineOverride(slug) {
   return entry && typeof entry === 'object' ? entry : null;
 }
 
+function isPastDeadlineDate(deadlineDate) {
+  const dateKey = String(deadlineDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  return !!dateKey && dateKey < todayKey;
+}
+
 function normalizeDeadlineStatus(status, deadlineDate) {
   const explicit = String(status || '').toLowerCase();
+  if (isPastDeadlineDate(deadlineDate)) return 'closed';
   if (['open', 'upcoming', 'unclear', 'closed', 'variable'].indexOf(explicit) !== -1) return explicit;
-  if (deadlineDate && new Date(deadlineDate).getTime() < Date.now()) return 'closed';
   return deadlineDate ? 'open' : 'unclear';
 }
 
@@ -1036,6 +1043,9 @@ function normalizeScholarshipRecord(raw, source) {
     ? 'variable'
     : normalizeDeadlineStatus((deadlineOverride && deadlineOverride.status) || raw.status, deadlineDate);
   const databaseStatus = status === 'variable' ? 'unclear' : status;
+  const deadlinePassed = isPastDeadlineDate(deadlineDate);
+  const hasExplicitArchiveState = Object.prototype.hasOwnProperty.call(raw, 'is_archived');
+  const shouldArchive = databaseStatus === 'closed' || raw.is_archived === true;
   const studyLevels = uniqueStrings(raw.study_levels || raw.levels);
   const deadlineStatus = deadlineDate ? 'dated' : (status === 'variable' ? 'varies' : (status === 'rolling' ? 'rolling' : null));
   const checkedAt = new Date().toISOString();
@@ -1100,10 +1110,16 @@ function normalizeScholarshipRecord(raw, source) {
     last_seen_at: checkedAt,
     last_verified_at: checkedAt,
     is_featured: !!raw.is_featured,
-    is_active: raw.is_active === false ? false : true,
+    is_active: raw.is_active === false || shouldArchive ? false : true,
     raw_snapshot: sourceSnapshot,
     last_source_id: source.id
   };
+
+  if (shouldArchive || hasExplicitArchiveState) {
+    record.is_archived = shouldArchive;
+    record.archived_at = shouldArchive ? (raw.archived_at || checkedAt) : null;
+    record.archive_reason = shouldArchive ? (raw.archive_reason || (deadlinePassed ? 'deadline_passed' : 'source_closed')) : null;
+  }
 
   const details = normalizeJsonObject(raw.details, null);
   if (details && Object.keys(details).length) {
