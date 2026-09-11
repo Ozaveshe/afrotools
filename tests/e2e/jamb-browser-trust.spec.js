@@ -68,15 +68,19 @@ test('current calculation-checked bank renders its labels and grades the actual 
   await expect.poll(()=>posts.length).toBe(1);
   expect(posts[0].pool_revision).toBe(pool.review_revision);
   await expect(page.locator('#retry-practice')).toBeHidden();
-  await page.goto('/jamb/mathematics/1983/', {waitUntil:'load'});
-  const paper = rows.filter(q=>q.subject==='mathematics' && q.year===1983);
-  await expect(page.locator('[data-reviewed-question]')).toHaveCount(paper.length);
-  const first = page.locator('[data-reviewed-question] details').first();
-  await expect(first.locator('small')).toBeHidden();
-  await first.locator('summary').focus();
-  await page.keyboard.press('Enter');
-  await expect(first.locator('small')).toHaveText('AI-reviewed · calculation checked');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  const years = [...new Set(rows.filter(q=>q.subject==='mathematics').map(q=>q.year))];
+  for (const year of years) {
+    await page.goto(`/jamb/mathematics/${year}/`, {waitUntil:'load'});
+    const paper = rows.filter(q=>q.subject==='mathematics' && q.year===year);
+    await expect(page.locator('[data-reviewed-question]')).toHaveCount(paper.length);
+    for (const q of paper) await expect(page.locator(`[data-reviewed-question="${q.id}"] .qcard-text`)).toHaveText(q.question);
+    const first = page.locator('[data-reviewed-question] details').first();
+    await expect(first.locator('small')).toBeHidden();
+    await first.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(first.locator('small')).toHaveText('AI-reviewed · calculation checked');
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  }
   const contextQuestion = rows.find(q=>q.passage && q.subject==='mathematics');
   if (contextQuestion) {
     await page.goto(`/jamb/${contextQuestion.subject}/${contextQuestion.year}/`, {waitUntil:'load'});
