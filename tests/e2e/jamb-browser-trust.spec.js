@@ -89,6 +89,34 @@ async function declineAnalytics(page) {
   await expect.poll(() => page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
 }
 
+test('generated paper verifies diagrams before opening answers and rejects an altered image', async ({ page }) => {
+  const { fixture, files } = figureFixtures();
+  const rows = [fixture.pool.questions[0], fixture.pool.questions.find(q => q.id === 'visual-tampered')];
+  const raw = rows.map(({review, ...q}) => q);
+  const { renderYear } = require('../../scripts/build-jamb-reviewed-pages');
+  const { questionFingerprint } = require('../../scripts/lib/jamb-content-trust');
+  const evidence = {status:'accepted', reviewer:'synthetic test', reviewed_at:'2026-09-11', evidence:'synthetic fixture only'};
+  const ledger = {sources:{fixture:{permission:{status:'permitted', basis:'original-work', evidence:'synthetic', reviewed_by:'test', reviewed_at:'2026-09-11'}}}, questions:{}};
+  for (const q of raw) ledger.questions[q.id] = {content_sha256:questionFingerprint(q), source_id:'fixture', question_review:evidence, answer_review:evidence, explanation_review:evidence, asset_review:{...evidence, content_sha256:q.image.split('/').pop().replace('.svg','')}};
+  const rendered = renderYear(raw[0].subject, raw[0].year, raw, ledger);
+  expect(rendered.approvedIds).toHaveLength(2);
+  await serveBank(page, bank(rows));
+  await page.route('**/figure-paper-test/', route => route.fulfill({contentType:'text/html', body:rendered.html}));
+  await page.route('**/assets/img/jamb/**', route => route.fulfill({contentType:'image/svg+xml',body:files.get(new URL(route.request().url()).pathname)}));
+  await page.goto('/figure-paper-test/', {waitUntil:'load'});
+  await declineAnalytics(page);
+  const valid = page.locator('[data-reviewed-question="visual-valid"]');
+  await expect(valid.locator('img')).toBeVisible();
+  await expect(valid.locator('details')).toBeVisible();
+  await expect(valid.locator('details')).not.toHaveAttribute('open');
+  await valid.locator('summary').focus(); await page.keyboard.press('Enter');
+  await expect(valid.locator('details')).toHaveAttribute('open','');
+  const altered = page.locator('[data-reviewed-question="visual-tampered"]');
+  await expect(altered.locator('[role="status"]')).toContainText('could not be verified');
+  await expect(altered.locator('details')).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
 test('CBT waits for verified figures before starting and retains them in review and retry', async ({ page }) => {
   const { fixture, files } = figureFixtures();
   const posts = await serveBank(page, bank([fixture.pool.questions[0]]));

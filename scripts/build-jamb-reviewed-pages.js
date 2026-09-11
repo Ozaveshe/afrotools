@@ -3,7 +3,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { assessQuestion } = require('./lib/jamb-content-trust');
+const { assessQuestion, questionFingerprint } = require('./lib/jamb-content-trust');
 const { stableId } = require('./lib/content-integrity');
 const { analyticsVersion, bootstrapVersion, canonicalLoaderTag, earlyBootstrapTag } = require('./inject-analytics-loader');
 const { writeFileSyncWithRetry, renameSyncWithRetry, unlinkSyncWithRetry } = require('./lib/safe-write');
@@ -30,10 +30,10 @@ function renderCard(q) {
   return `<article class="qcard" id="q-${esc(q.id)}" data-reviewed-question="${esc(q.id)}">
 <h2>Question ${esc(q.num)}</h2>
 ${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage)}</blockquote>` : ''}
-${q.image ? `<img src="${esc(q.image)}" alt="${esc(q.image_alt)}" loading="lazy">` : ''}
+${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status">Enable JavaScript to verify this question's diagram before viewing its answer.</div>` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
 <ol type="A">${Object.keys(q.options).sort().map(key => `<li>${esc(q.options[key])}</li>`).join('')}</ol>
-<details><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p>${q.verification?.method === 'ai-calculation-checked' ? '<small>AI-reviewed · calculation checked</small>' : ''}</details>
+<details${q.image ? ' hidden style="display:none"' : ''}><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p>${q.verification?.method === 'ai-calculation-checked' ? '<small>AI-reviewed · calculation checked</small>' : ''}</details>
 </article>`;
 }
 
@@ -82,7 +82,7 @@ ${earlyBootstrapTag(bootstrapVersion(), analyticsVersion())}
 <link rel="stylesheet" href="/assets/css/jamb.css">
 <link rel="stylesheet" href="/assets/css/jamb-reviewed-pages.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>${approved.some(q => q.image) ? '\n<script src="/assets/js/lib/jamb-question-trust.js" defer></script>\n<script src="/assets/js/lib/jamb-reviewed-figure.js" defer></script>\n<script src="/assets/js/pages/jamb-reviewed-page-figures.js" defer></script>' : ''}
 ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)}</script>`).join('\n')}
 </head>
 <body class="jamb-page">
