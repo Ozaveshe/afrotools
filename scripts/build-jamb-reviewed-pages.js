@@ -29,7 +29,7 @@ const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').repla
 function renderCard(q) {
   return `<article class="qcard" id="q-${esc(q.id)}" data-reviewed-question="${esc(q.id)}">
 <h2>Question ${esc(q.num)}</h2>
-${q.passage ? `<blockquote>${esc(q.passage)}</blockquote>` : ''}
+${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage)}</blockquote>` : ''}
 ${q.image ? `<img src="${esc(q.image)}" alt="${esc(q.image_alt)}" loading="lazy">` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
 <ol type="A">${Object.keys(q.options).sort().map(key => `<li>${esc(q.options[key])}</li>`).join('')}</ol>
@@ -51,11 +51,11 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   const paper = year === null ? name : name + ' ' + year;
   const canonical = `https://afrotools.com/jamb/${subject}/${year === null ? '' : year + '/'}`;
   const title = `JAMB ${paper} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
-  const description = approved.length ? `${approved.length} reviewed ${paper} questions, with answers and explanations.`
+  const description = approved.length ? `Practise ${approved.length} reviewed JAMB ${paper} questions. Check answers, open worked explanations and plan your next revision session with AfroJAMB.`
     : `The ${paper} question collection is under review. Use the study planner while sources, questions and answer keys are checked.`;
   const schemas = [{ '@context': 'https://schema.org', '@type': 'WebPage', name: title, url: canonical, description },
     ...approved.slice(0, 50).map(q => ({ '@context': 'https://schema.org', '@type': 'Question', name: q.question,
-      text: q.question, url: canonical + '#q-' + encodeURIComponent(q.id),
+      text: [q.passage, q.question].filter(Boolean).join('\n\n'), url: canonical + '#q-' + encodeURIComponent(q.id),
       acceptedAnswer: { '@type': 'Answer', text: q.options[q.answer] }, answerExplanation: q.explanation || q.ai_explanation }))];
   const html = `<!DOCTYPE html>
 <html lang="en">

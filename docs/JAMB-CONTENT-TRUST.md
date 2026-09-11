@@ -71,6 +71,15 @@ The mechanical gate checks evidence completeness and content integrity. It
 does not independently establish whether a reviewer is qualified or a source
 permission claim is valid. Those records require actual editorial verification.
 
+Transcription repairs may use documented comparison sources. Preserve the
+original record, identify the exact changed values or symbols, and record the
+comparison URLs without treating a third-party key as official. Verify the
+repaired problem independently. Where conflicting versions remain unresolved,
+keep the item excluded. A complete numerical table can be transcribed into the
+existing plain-text `passage` field when every heading, interval and frequency
+is preserved; do not infer missing values. Visible and structured question text
+must include that context.
+
 ## Reproducible checks and repairs
 
 Original practice, index, patterns, flashcards and raw subject data are preserved
@@ -137,6 +146,12 @@ zero-approved subject/year notices must stay out of the sitemap.
 directory. `--output` can instead select an external evidence path. `--check`
 compares the report with current inputs. `--require-reviewed` returns a failing
 exit code if any input record remains quarantined.
+
+`tests/jamb-answer-verification-evidence.test.js`, included in the focused trust
+suite, runs every calculation batch and checks coverage against every AI answer
+review in the ledger. A batch entry needs an exact current fingerprint, its
+worked explanation and a matching executable check. Preserve historical
+unresolved reviews separately; they do not count as publication approvals.
 
 Screening rejects missing/invalid answer keys, incomplete/duplicate options,
 OCR artifacts, missing context or visual support, and explanations requiring

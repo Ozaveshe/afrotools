@@ -11,7 +11,7 @@
 
 | Locale | Indexable pages | Native | Localized shell | Pages with errors | Pages with review signals |
 |---|---:|---:|---:|---:|---:|
-| en | 4775 | 4775 | 0 | 0 | 396 |
+| en | 4776 | 4776 | 0 | 0 | 395 |
 | fr | 3243 | 1797 | 1446 | 0 | 150 |
 | sw | 1582 | 761 | 821 | 0 | 87 |
 
@@ -22,7 +22,6 @@
 | TITLE_LONG | 514 |
 | DESCRIPTION_LONG | 154 |
 | TITLE_SHORT | 18 |
-| DESCRIPTION_SHORT | 1 |
 
 ## Ranked interpretation
 

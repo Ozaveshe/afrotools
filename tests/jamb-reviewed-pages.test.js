@@ -42,7 +42,7 @@ test('JSON-LD string content cannot terminate its script element', () => {
 test('only the reviewed content version appears in both cards and answer schemas', () => {
   const q = { id: 'synthetic-reviewed', subject: 'mathematics', year: 1987, num: 1, question: 'Which comparison is correct?',
     options: { A: '5 < 6', B: '5 > 6', C: '5 = 6', D: '5 = 7' }, answer: 'A', format: 4, has_diagram: false,
-    explanation: 'Five is smaller than six.' };
+    explanation: 'Five is smaller than six.', passage: 'Quantity — Frequency\n5 — 3\n6 — 4' };
   const evidence = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-10', evidence: 'synthetic fixture only' };
   const ledger = { sources: { fixture: { permission: { status: 'permitted', basis: 'original-work', evidence: 'synthetic fixture', reviewed_by: 'test', reviewed_at: '2026-09-10' } } },
     questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: evidence, answer_review: evidence, explanation_review: evidence } } };
@@ -51,6 +51,9 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.ok(page.html.includes('5 &lt; 6'));
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
+  const schemas = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+  assert.equal(schemas.find(schema => schema['@type'] === 'Question').text, q.passage + '\n\n' + q.question);
+  assert.ok(page.html.includes('<blockquote style="white-space:pre-wrap;">'));
   assert.equal(page.html.includes('unreviewed-copy'), false);
   const subjectPage = renderYear('mathematics', null, [q], ledger, ['1987']);
   assert.deepEqual(subjectPage.approvedIds, [q.id]);

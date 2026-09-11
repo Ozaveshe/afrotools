@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11521 |
-| Indexable pages | 9702 |
+| Indexable pages | 9703 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5013 |
+| Genuine equivalence groups | 5014 |
 | Documented fallbacks | 14788 |
-| Routes eligible for primary sitemaps | 9702 |
+| Routes eligible for primary sitemaps | 9703 |
 
 ## Locale Coverage
 
@@ -4005,6 +4005,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3193a4ba9563: en=`/tools/solar-roi/equatorial-guinea/`, fr=`/fr/tools/roi-solaire/equatorial-guinea/`; x-default=`/tools/solar-roi/equatorial-guinea/`
 - equivalence:319fc4b9606e: en=`/cars/ethiopia/mercedes-benz/e-class/`, fr=`/fr/cars/ethiopie/mercedes-benz/e-class/`; x-default=`/cars/ethiopia/mercedes-benz/e-class/`
 - equivalence:31c0e31b3fd1: en=`/tools/afrokitchen/recipes/kuli-kuli-bj/`; x-default=`/tools/afrokitchen/recipes/kuli-kuli-bj/`
+- equivalence:31cf029d628d: en=`/jamb/mathematics/1984/`; x-default=`/jamb/mathematics/1984/`
 - equivalence:31dfddd30a44: en=`/tools/health-contribution/uganda`; x-default=`/tools/health-contribution/uganda`
 - equivalence:31ea34dab547: en=`/agriculture/vaccination-schedule/libya`; x-default=`/agriculture/vaccination-schedule/libya`
 - equivalence:31eb0d92dc3b: en=`/tools/birth-death-cert/`, fr=`/fr/tools/guide-naissance-deces/`, sw=`/sw/zana/vyeti-vya-kuzaliwa-na-kifo/`; x-default=`/tools/birth-death-cert/`

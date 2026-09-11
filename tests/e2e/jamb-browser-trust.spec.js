@@ -55,6 +55,7 @@ test('current calculation-checked bank renders its labels and grades the actual 
   const count = await page.evaluate(() => AfroJAMB.CBT.getState().questions.length);
   for (let i=0; i<count; i++) {
     const q = await page.evaluate(() => AfroJAMB.CBT.getCurrentQuestion().question);
+    if (q.passage) await expect(page.locator('#cbt-passage')).toHaveText(q.passage);
     await page.getByRole('radio', {name:'Option '+q.answer+': '+q.options[q.answer], exact:true}).click();
     if(i<count-1) await page.locator('#cbt-next').click();
   }
@@ -76,6 +77,14 @@ test('current calculation-checked bank renders its labels and grades the actual 
   await page.keyboard.press('Enter');
   await expect(first.locator('small')).toHaveText('AI-reviewed · calculation checked');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  const contextQuestion = rows.find(q=>q.passage && q.subject==='mathematics');
+  if (contextQuestion) {
+    await page.goto(`/jamb/${contextQuestion.subject}/${contextQuestion.year}/`, {waitUntil:'load'});
+    const context = page.locator(`[data-reviewed-question="${contextQuestion.id}"] blockquote`);
+    await expect(context).toHaveText(contextQuestion.passage);
+    await expect(context).toHaveCSS('white-space','pre-wrap');
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  }
 });
 
 for (const state of ['empty', 'unreviewed', 'stale']) {
