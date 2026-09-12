@@ -1,0 +1,4 @@
+Economics002: 40 source-matched records, 24 candidates and 16 held.
+Actual1984 Q1–48 with gaps; stable original IDs retained. Private source pages6–9, SHA48d0a82b005ca877cc6f7ff734d06a4971ca6d6e52ae6a858f1843f38b48760c.
+Cost fractions visually checked on page6; independent cost identities and comparative advantage calculations pass. Teaching explanations contain no correction history. Holds preserve incomplete definitions, ambiguous claims/options, historical assertions and unavailable diagram context.
+Validation: node check-reviewed-batch.cjs002 and test-reviewed-batch-modes.cjs002 pass, including simulated integrated pool with PDFpresent/absent and negative source/held/current/prior mutation checks. No shared source pool or public changes. Build/deploy/browser tests not applicable to private candidates.
