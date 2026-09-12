@@ -44,7 +44,7 @@ const ROUTE_BY_FILE = new Map(
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', '.codex', '.codex-worktrees', '.worktrees', 'supabase', 'netlify', 'assets', 'engines',
-  'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
+  'dist', 'lang', 'data', 'tests', 'widgets',
   'afrotools-sentinel', 'prompts', 'docs', 'audit-results', 'artifacts'
 ]);
 
@@ -229,6 +229,29 @@ function asIsoDate(value) {
 
 function maxDate(values) {
   return values.map(asIsoDate).filter(Boolean).sort().slice(-1)[0] || '';
+}
+
+function loadJambSitemapLastmod() {
+  const poolDir = path.join(ROOT, 'data', 'jamb', 'pools');
+  if (!fs.existsSync(poolDir)) return '';
+
+  const reviewedDates = [];
+  for (const name of fs.readdirSync(poolDir)) {
+    if (name === 'index.json' || !name.endsWith('.json')) continue;
+    try {
+      const pool = JSON.parse(fs.readFileSync(path.join(poolDir, name), 'utf8'));
+      for (const question of pool.questions || []) {
+        reviewedDates.push(
+          question.verification && question.verification.reviewed_at,
+          question.review && question.review.reviewed_at
+        );
+      }
+    } catch (error) {
+      console.warn(`Unable to load JAMB sitemap freshness from ${name}: ${error.message}`);
+    }
+  }
+
+  return maxDate(reviewedDates);
 }
 
 function toAbsoluteSiteUrl(value) {
@@ -732,11 +755,12 @@ for (const extraFile of EXTRA_SITEMAPS) {
 
   const file = extraFile.replace(/\\/g, '/');
   const loc = `${BASE_URL}/${file}`;
+  const sourceLastmod = file === 'jamb/sitemap.xml' ? loadJambSitemapLastmod() : '';
   sitemapFileNames.push({
     file,
-    lastmod: !REFRESH_LASTMOD && EXISTING_INDEX_LASTMODS.has(loc)
+    lastmod: sourceLastmod || (!REFRESH_LASTMOD && EXISTING_INDEX_LASTMODS.has(loc)
       ? EXISTING_INDEX_LASTMODS.get(loc)
-      : normalizeSitemapLastmod(fs.statSync(fullPath).mtime),
+      : normalizeSitemapLastmod(fs.statSync(fullPath).mtime)),
   });
 }
 
