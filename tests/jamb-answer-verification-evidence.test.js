@@ -9,6 +9,7 @@ const evidenceDir = path.join(root, 'ops/jamb/verification');
 const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
 const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3}\.json$/.test(name));
 
+<<<<<<< HEAD
 test('student explanations contain learning content instead of internal repair history', () => {
   const bank = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   for (const question of bank.questions) {
@@ -16,14 +17,14 @@ test('student explanations contain learning content instead of internal repair h
   }
 });
 
-test('AI calculation approvals are backed by current batch evidence and reproducible checks', () => {
+test('AI reviews are backed by current batch evidence and reproducible integrity checks', () => {
   const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
   const pool = JSON.parse(fs.readFileSync(path.join(root, 'ops/jamb/source-pool.json'), 'utf8')).questions;
   const covered = new Map();
   for (const filename of batches) {
     const batch = JSON.parse(fs.readFileSync(path.join(evidenceDir, filename), 'utf8'));
     const script = 'check-' + filename.replace('-publishable-', '-').replace('.json', '.cjs');
-    assert.ok(fs.existsSync(path.join(evidenceDir, script)), 'Missing calculation check for ' + filename);
+    assert.ok(fs.existsSync(path.join(evidenceDir, script)), 'Missing review evidence check for ' + filename);
     const result = JSON.parse(execFileSync(process.execPath, [path.join(evidenceDir, script)], {
       cwd: root, encoding: 'utf8', timeout: 30000, maxBuffer: 1024 * 1024
     }));

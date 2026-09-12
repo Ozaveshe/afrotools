@@ -33,7 +33,7 @@ ${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage)}</bloc
 ${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status">Enable JavaScript to verify this question's diagram before viewing its answer.</div>` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
 <ol type="A">${Object.keys(q.options).sort().map(key => `<li>${esc(q.options[key])}</li>`).join('')}</ol>
-<details${q.image ? ' hidden style="display:none"' : ''}><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p>${q.verification?.method === 'ai-calculation-checked' ? '<small>AI-reviewed · calculation checked</small>' : ''}</details>
+<details${q.image ? ' hidden style="display:none"' : ''}><summary>Answer and explanation</summary><p><strong>${esc(q.answer)}: ${esc(q.options[q.answer])}</strong></p><p>${esc(q.explanation || q.ai_explanation)}</p>${q.verification?.method === 'ai-calculation-checked' ? '<small>AI-reviewed · calculation checked</small>' : q.verification?.method === 'ai-source-checked' ? '<small>AI-reviewed · source checked</small>' : ''}</details>
 </article>`;
 }
 
