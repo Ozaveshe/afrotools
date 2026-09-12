@@ -3,7 +3,7 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="733ddc50" async></script>
 <meta charset="UTF-8">
-<script src="/assets/js/lib/jamb-question-trust.js?v=51ea0e90"></script>
+<script src="/assets/js/lib/jamb-question-trust.js?v=4a87dbb1"></script>
 <script src="/assets/js/lib/jamb-reviewed-figure.js?v=407d43cb"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB CBT Mock Exam — AfroJAMB</title>
@@ -1066,7 +1066,7 @@ function handleOfficialShortcut(e) {
     return;
   }
 
-  if (["A","B","C","D","E"].indexOf(key) !== -1) {
+  if (["A","B","C","D","E","F"].indexOf(key) !== -1) {
     if (selectAnswerByShortcut(key)) e.preventDefault();
     return;
   }
@@ -1172,7 +1172,7 @@ function renderQuestion() {
   optsBox.setAttribute("role", "radiogroup");
   optsBox.setAttribute("aria-label", "Answer options for question " + data.indexInSubject);
 
-  var letters = ["A","B","C","D","E"].filter(function(l){ return q.options[l]; });
+  var letters = Object.keys(q.options).sort();
   letters.forEach(function(letter, i){
     var isSelected = data.selectedAnswer === letter;
     var div = document.createElement("div");
@@ -1479,7 +1479,7 @@ function renderReviewCard(r) {
         + statusPill + '</div>';
 
   var optsHtml = '';
-  ["A","B","C","D","E"].forEach(function(letter){
+  Object.keys(r.options).sort().forEach(function(letter){
     if (!r.options[letter]) return;
     var classes = ["rev-opt"];
     var tag = "";

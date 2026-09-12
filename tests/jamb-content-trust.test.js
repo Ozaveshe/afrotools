@@ -35,6 +35,18 @@ test('fingerprints are stable across object key order but pin wording and added 
   assert.notEqual(questionFingerprint(question), questionFingerprint({ ...question, passage: 'Added context' }));
 });
 
+test('complete six-option questions retain F and reject malformed option sets', () => {
+  const { question, ledger } = fixture();
+  question.options = { A: '36', B: '40', C: '48', D: '49', E: '41', F: '42' };
+  question.answer = 'F'; question.format = 6;
+  ledger.questions[question.id].content_sha256 = questionFingerprint(question);
+  assert.equal(assessQuestion(question, ledger).state, 'eligible');
+  delete question.options.E;
+  assert.ok(assessQuestion(question, ledger).reasons.includes('incomplete_options'));
+  question.options.E = '41'; question.options.G = '43'; question.format = 7;
+  assert.ok(assessQuestion(question, ledger).reasons.includes('incomplete_options'));
+});
+
 test('incomplete option sets, unknown answer keys and duplicated choices are blocked', () => {
   const { question } = fixture();
   const result = assessQuestion({ ...question, options: { A: 'same', C: 'same', D: '' }, answer: 'B' });

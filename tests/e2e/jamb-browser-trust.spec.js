@@ -224,6 +224,42 @@ async function serveBank(page, fixture) {
   return posts;
 }
 
+test('six-option questions render and grade F across all practice tools', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  const { review: ignored, ...base } = questions()[0];
+  const row = reviewed({ ...base, options: { A: '36', B: '40', C: '48', D: '49', E: '41', F: '42' }, answer: 'F', format: 6 });
+  await serveBank(page, bank([row]));
+  await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+  await declineAnalytics(page);
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-options [role="radio"]')).toHaveCount(6);
+  await page.getByRole('radio', { name: 'Option F: 42', exact: true }).focus();
+  await page.keyboard.press('f');
+  await expect(page.getByRole('radio', { name: 'Option F: 42', exact: true })).toHaveAttribute('aria-checked', 'true');
+  await page.locator('#cbt-submit-top').click();
+  await page.locator('#confirm-submit-btn').click();
+  await expect(page.locator('#result-pct')).toHaveText('100');
+  await page.locator('[data-filter="all"]').click();
+  await expect(page.locator('#review-list')).toContainText('42');
+  await expect(page.locator('#review-list .rev-opt')).toHaveCount(6);
+  await expect(page.locator('#review-list .rev-opt.correct.your-pick .rev-opt-letter')).toHaveText('F');
+  await checkExplanationDisclosure(page);
+
+  await page.goto('/jamb/past-questions/', { waitUntil: 'load' });
+  await expect(page.locator('.qcard-opt')).toHaveCount(6);
+  await page.locator('.qcard-opt').last().click();
+  await expect(page.locator('.reveal-btn')).toHaveText('✓ Answer: F');
+  await checkExplanationDisclosure(page);
+  await expect(page.locator('.qcard-opt').last()).toHaveClass(/correct/);
+
+  await page.goto('/jamb/score-predictor/', { waitUntil: 'load' });
+  await page.locator('#begin-btn').click();
+  await expect(page.locator('#quiz-card .qopt')).toHaveCount(6);
+  await page.getByRole('button', { name: 'Option F: 42', exact: true }).click();
+  await expect(page.locator('#proj-score')).toHaveText('1 / 1');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
 test('current calculation-checked bank renders its labels and grades the actual answers', async ({ page }) => {
   const pool = require('../../data/jamb/pools/practice-pool.json');
   const index = require('../../data/jamb/pools/index.json');

@@ -78,7 +78,7 @@
       if (typeof question.id !== 'string' || !question.id.trim() || ids.has(question.id) ||
           typeof question.subject !== 'string' || !question.subject.trim() ||
           typeof question.question !== 'string' || question.question.trim().length < 12 ||
-          !/^(ABCD|ABCDE)$/.test(keys.join('')) || question.format !== keys.length ||
+          !/^(ABCD|ABCDE|ABCDEF)$/.test(keys.join('')) || question.format !== keys.length ||
           !keys.includes(question.answer) || keys.some(function (key) { return typeof options[key] !== 'string' || !options[key].trim(); }) ||
           new Set(keys.map(function (key) { return options[key].trim().toLowerCase(); })).size !== keys.length) {
         throw new Error('A reviewed question has invalid or duplicate content.');
