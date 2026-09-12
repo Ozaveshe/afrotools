@@ -354,6 +354,18 @@ function dataFlowsMarkdown(flows) {
   return lines.join('\n');
 }
 
+function stableReportDate(report, claims, previousJson, previousMarkdown) {
+  let previous;
+  try { previous = JSON.parse(previousJson); } catch (_) { return report; }
+  if (!previous || !isDate(previous.generatedAt) || previous.generatedAt > report.generatedAt) return report;
+  const candidate = { ...report, generatedAt: previous.generatedAt };
+  // Keep the date of the existing artifact only when both report formats are
+  // unchanged. Registry validation above still uses the actual current date.
+  if (JSON.stringify(candidate) === JSON.stringify(previous) &&
+      publicClaimsMarkdown(candidate, claims) === previousMarkdown) return candidate;
+  return report;
+}
+
 function writeText(root, relativePath, content) {
   const destination = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
@@ -389,8 +401,14 @@ function buildRepository({ root = DEFAULT_ROOT, write = false, today = new Date(
     return file;
   });
   const scan = scanContent({ claims, flows, today, files: projectedFiles });
-  const report = claimReport(claims, flows, scan, files.length, today);
+  let report = claimReport(claims, flows, scan, files.length, today);
   if (write) {
+    const previousJsonPath = path.join(root, REPORT_JSON_PATH);
+    const previousMarkdownPath = path.join(root, REPORT_MD_PATH);
+    if (fs.existsSync(previousJsonPath) && fs.existsSync(previousMarkdownPath)) {
+      report = stableReportDate(report, claims,
+        fs.readFileSync(previousJsonPath, 'utf8'), fs.readFileSync(previousMarkdownPath, 'utf8'));
+    }
     writeText(root, REPORT_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`);
     writeText(root, REPORT_MD_PATH, publicClaimsMarkdown(report, claims));
     writeText(root, FLOWS_REPORT_JSON_PATH, `${JSON.stringify(flows, null, 2)}\n`);
@@ -419,5 +437,6 @@ module.exports = {
   loadDataFlows,
   projectClaimSelectorsInHtml,
   scanContent,
+  stableReportDate,
   validateRegistries
 };
