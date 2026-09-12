@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11528 |
-| Indexable pages | 9772 |
+| Indexable pages | 9779 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5083 |
+| Genuine equivalence groups | 5090 |
 | Documented fallbacks | 14795 |
-| Routes eligible for primary sitemaps | 9772 |
+| Routes eligible for primary sitemaps | 9779 |
 
 ## Locale Coverage
 
@@ -3254,6 +3254,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0b1e262d7802: en=`/cars/morocco/`, fr=`/fr/cars/maroc/`; x-default=`/cars/morocco/`
 - equivalence:0b47a0d623e9: en=`/tools/business-insurance/ghana`; x-default=`/tools/business-insurance/ghana`
 - equivalence:0b5912df2de4: en=`/agriculture/fertilizer/cote-d-ivoire`, fr=`/fr/agriculture/fertilizer/cote-d-ivoire`, sw=`/sw/kilimo/mbolea/cote-divoire/`; x-default=`/agriculture/fertilizer/cote-d-ivoire`
+- equivalence:0b6048eed770: en=`/jamb/english/2002/`; x-default=`/jamb/english/2002/`
 - equivalence:0b641662754f: en=`/cars/tunisia/mazda/demio/`, fr=`/fr/cars/tunisie/mazda/demio/`; x-default=`/cars/tunisia/mazda/demio/`
 - equivalence:0b7a6175db32: en=`/cars/uganda/toyota/axio/`, fr=`/fr/cars/ouganda/toyota/axio/`; x-default=`/cars/uganda/toyota/axio/`
 - equivalence:0b85d3e052f9: en=`/cars/mozambique/toyota/corolla/2018/`, fr=`/fr/cars/mozambique/toyota/corolla/2018/`; x-default=`/cars/mozambique/toyota/corolla/2018/`
@@ -3490,6 +3491,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:16aeb2684abf: en=`/tools/hajj-budget/`, fr=`/fr/tools/budget-hajj-umrah/`, sw=`/sw/zana/bajeti-ya-hajj-na-umrah/`; x-default=`/tools/hajj-budget/`
 - equivalence:16d551727f17: en=`/tools/outage-cost/nigeria/`, fr=`/fr/tools/estimateur-du-cout-des-coupures-de-courant-nigeria/`; x-default=`/tools/outage-cost/nigeria/`
 - equivalence:16e6a0f3bc2a: en=`/tools/gratuity-calculator/somalia/`; x-default=`/tools/gratuity-calculator/somalia/`
+- equivalence:16efb9d94bc4: en=`/jamb/chemistry/2003/`; x-default=`/jamb/chemistry/2003/`
 - equivalence:16fb7db89bca: fr=`/fr/widgets/calculateur-japa/`; x-default=`/fr/widgets/calculateur-japa/`
 - equivalence:16ff1595b6e7: en=`/blog/ghana-tenancy-agreement-checklist/`; x-default=`/blog/ghana-tenancy-agreement-checklist/`
 - equivalence:170bca82d2eb: en=`/tools/tenancy-agreement/equatorial-guinea`, fr=`/fr/tools/contrat-bail/equatorial-guinea`; x-default=`/tools/tenancy-agreement/equatorial-guinea`
@@ -4537,6 +4539,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4acf5a7f2577: en=`/tools/solar-roi/libya/`, fr=`/fr/tools/roi-solaire/libya/`; x-default=`/tools/solar-roi/libya/`
 - equivalence:4ae28ebe7d86: en=`/cars/botswana/toyota/axio/2019/`, fr=`/fr/cars/botswana/toyota/axio/2019/`; x-default=`/cars/botswana/toyota/axio/2019/`
 - equivalence:4ae55195f2a0: en=`/blog/compress-image-online-application-africa/`, fr=`/fr/blog/compresser-image-demande-en-ligne-afrique/`, sw=`/sw/blogu/kubana-picha-maombi-mtandaoni-afrika/`; x-default=`/blog/compress-image-online-application-africa/`
+- equivalence:4ae60a671b5a: en=`/jamb/english/2003/`; x-default=`/jamb/english/2003/`
 - equivalence:4af1610acd26: en=`/tools/ng-wht/`, fr=`/fr/tools/ng-retenue-source/`, ha=`/ha/kayan-aiki/wht-najeriya/`, sw=`/sw/zana/kikokotoo-wht-nigeria/`, yo=`/yo/awon-ise/wht-naijiria/`; x-default=`/tools/ng-wht/`
 - equivalence:4afc1c384fc2: en=`/tools/html-to-pdf/`, fr=`/fr/tools/html-en-pdf/`, sw=`/sw/zana/html-kwenda-pdf/`; x-default=`/tools/html-to-pdf/`
 - equivalence:4b055a99c649: en=`/cars/namibia/nissan/`, fr=`/fr/cars/namibie/nissan/`; x-default=`/cars/namibia/nissan/`
@@ -4971,6 +4974,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:612727cd7341: en=`/tools/employment-contract/burkina-faso`, fr=`/fr/tools/contrat-travail/burkina-faso`; x-default=`/tools/employment-contract/burkina-faso`
 - equivalence:61282ece636f: en=`/tools/car-insurance/lesotho`, fr=`/fr/tools/assurance-auto/lesotho`; x-default=`/tools/car-insurance/lesotho`
 - equivalence:612ae9e445ac: en=`/tools/life-insurance-calc/`, fr=`/fr/tools/assurance-vie/`, sw=`/sw/zana/kikokotoo-bima-ya-maisha/`; x-default=`/tools/life-insurance-calc/`
+- equivalence:613b61b53d07: en=`/jamb/mathematics/1992/`; x-default=`/jamb/mathematics/1992/`
 - equivalence:613b77943967: en=`/tools/tenancy-agreement/tanzania`, fr=`/fr/tools/contrat-bail/tanzania`; x-default=`/tools/tenancy-agreement/tanzania`
 - equivalence:614b458fdc89: en=`/agriculture/fertilizer/tanzania`, fr=`/fr/agriculture/fertilizer/tanzania`, sw=`/sw/kilimo/mbolea/tanzania/`; x-default=`/agriculture/fertilizer/tanzania`
 - equivalence:615345dbc85a: fr=`/fr/widgets/calculateur-imc/`; x-default=`/fr/widgets/calculateur-imc/`
@@ -5506,6 +5510,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:7c9a6998cfc3: en=`/cars/ghana/mazda/demio/2017/`, fr=`/fr/cars/ghana/mazda/demio/2017/`; x-default=`/cars/ghana/mazda/demio/2017/`
 - equivalence:7cb38bd33250: en=`/agriculture/farm-payroll/lesotho`, fr=`/fr/agriculture/farm-payroll/lesotho`, sw=`/sw/kilimo/mishahara-ya-shamba/lesotho/`; x-default=`/agriculture/farm-payroll/lesotho`
 - equivalence:7cc0741a4ed6: en=`/tools/cookie-consent/`, fr=`/fr/tools/banniere-consentement-cookies/`, sw=`/sw/zana/kibali-cha-vidakuzi/`; x-default=`/tools/cookie-consent/`
+- equivalence:7cea2eea2f5c: en=`/jamb/chemistry/2004/`; x-default=`/jamb/chemistry/2004/`
 - equivalence:7d07741b706a: en=`/agriculture/irrigation/uganda`, fr=`/fr/agriculture/irrigation/uganda`, sw=`/sw/kilimo/umwagiliaji/uganda/`; x-default=`/agriculture/irrigation/uganda`
 - equivalence:7d1f4c11699c: en=`/tools/employee-cost/eswatini/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-eswatini/`; x-default=`/tools/employee-cost/eswatini/`
 - equivalence:7d2fae423ed2: en=`/cars/zambia/mazda/`, fr=`/fr/cars/zambie/mazda/`; x-default=`/cars/zambia/mazda/`
@@ -6754,6 +6759,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ba650ff7c3d1: en=`/tools/afrokitchen/recipes/rougaille/`; x-default=`/tools/afrokitchen/recipes/rougaille/`
 - equivalence:ba6ba4d02e01: en=`/agriculture/farm-payroll/chad`, fr=`/fr/agriculture/farm-payroll/chad`, sw=`/sw/kilimo/mishahara-ya-shamba/chad/`; x-default=`/agriculture/farm-payroll/chad`
 - equivalence:ba85b4d0aa38: en=`/tools/visa-checker/malawi`; x-default=`/tools/visa-checker/malawi`
+- equivalence:baa021247e6c: en=`/jamb/chemistry/2001/`; x-default=`/jamb/chemistry/2001/`
 - equivalence:baa0261ec0ca: en=`/tools/employee-cost/`, fr=`/fr/tools/cout-total-employe/`, sw=`/sw/zana/gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/`
 - equivalence:baac703cb8ea: en=`/tools/afrokitchen/collections/one-pot-family-meals/`; x-default=`/tools/afrokitchen/collections/one-pot-family-meals/`
 - equivalence:baade391eae3: en=`/tools/gov-scholarship/`, fr=`/fr/tools/bourses-gouvernementales/`, sw=`/sw/zana/ufadhili-wa-serikali/`; x-default=`/tools/gov-scholarship/`
@@ -7052,6 +7058,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c9c5407afc59: en=`/tools/solar-roi/guinea/`, fr=`/fr/tools/roi-solaire/guinea/`; x-default=`/tools/solar-roi/guinea/`
 - equivalence:c9d930c3b4ec: en=`/central-african-republic/`, fr=`/fr/centrafrique/`, sw=`/sw/central-african-republic/`; x-default=`/central-african-republic/`
 - equivalence:c9de3e2a3689: en=`/tools/afrokitchen/countries/republic-of-congo/`; x-default=`/tools/afrokitchen/countries/republic-of-congo/`
+- equivalence:c9e31f7f349f: en=`/jamb/chemistry/2002/`; x-default=`/jamb/chemistry/2002/`
 - equivalence:c9f7605ed445: en=`/tools/afrokitchen/recipes/poisson-moyo-bj/`; x-default=`/tools/afrokitchen/recipes/poisson-moyo-bj/`
 - equivalence:c9fe0631c6c9: en=`/tools/tenancy-agreement/niger`, fr=`/fr/tools/contrat-bail/niger`; x-default=`/tools/tenancy-agreement/niger`
 - equivalence:ca175353bff8: en=`/tools/microfinance-loan/`, fr=`/fr/tools/pret-microfinance/`, sw=`/sw/zana/kikokotoo-mkopo-wa-microfinance/`; x-default=`/tools/microfinance-loan/`
