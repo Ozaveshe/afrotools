@@ -10,6 +10,10 @@ const TESTS_DIR = path.join(ROOT, 'tests');
 const QUARANTINE_DIR = path.join(TESTS_DIR, 'quarantine');
 const CONCURRENCY = 4;
 const FILE_TIMEOUT_MS = 120000;
+// This aggregate executes every individual JAMB evidence checker in a child
+// process. Keep all checks enrolled with a bounded allowance for the full bank.
+const EVIDENCE_TEST = path.join('tests', 'jamb-answer-verification-evidence.test.js');
+const EVIDENCE_TIMEOUT_MS = 600000;
 
 const AUDITS = Object.freeze([
   { name: 'check-links', file: 'scripts/check-links.js' },
@@ -78,13 +82,14 @@ function testBatches(files, limit = 24000) {
 
 async function runTestBatches(files, runner = run) {
   let exitCode = 0;
-  const batches = testBatches(files);
+  const batches = testBatches(files.filter(file => file !== EVIDENCE_TEST));
+  if (files.includes(EVIDENCE_TEST)) batches.push([EVIDENCE_TEST]);
   for (let index = 0; index < batches.length; index += 1) {
     console.log('\n=== Test batch ' + (index + 1) + '/' + batches.length + ' ===');
     const result = await runner(process.execPath, [
       '--test',
       '--test-concurrency=' + CONCURRENCY,
-      '--test-timeout=' + FILE_TIMEOUT_MS,
+      '--test-timeout=' + (batches[index][0] === EVIDENCE_TEST ? EVIDENCE_TIMEOUT_MS : FILE_TIMEOUT_MS),
     ].concat(batches[index]));
     if (result !== 0) exitCode = 1;
   }

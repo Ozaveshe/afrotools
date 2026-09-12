@@ -12,7 +12,7 @@ function fixture(count) {
     const details = {hidden:true,style:{removeProperty(){}}};
     return {dataset:{reviewedFigure:'hash'+i},details,textContent:'waiting',closest:()=>({dataset:{reviewedQuestion:q.id},querySelector:()=>details}),replaceChildren(img){this.img=img;}};
   });
-  vm.runInNewContext(source, {AbortController,document:{querySelectorAll:()=>hosts,createElement:()=>({style:{}})},window:{addEventListener:(name,fn)=>events[name]=fn},AfroJAMB:{QuestionTrust:{loadPool:async()=>({questions,review_revision:'revision'})},ReviewedFigure:{load:(q,revision,signal)=>new Promise((resolve,reject)=>pending.push({id:q.id,resolve:()=>resolve({url:'blob:'+q.id,alt:'Diagram',revoke:()=>revoked.push(q.id)}),reject,signal}))}}});
+  vm.runInNewContext(source, {AbortController,document:{querySelectorAll:()=>hosts,createElement:()=>({style:{}})},window:{location:{pathname:'/jamb/mathematics/1984/'},addEventListener:(name,fn)=>events[name]=fn},AfroJAMB:{QuestionTrust:{loadPool:async(url)=>{assert.equal(url,'/data/jamb/pools/mathematics.json');return {questions,review_revision:'revision'};}},ReviewedFigure:{load:(q,revision,signal)=>new Promise((resolve,reject)=>pending.push({id:q.id,resolve:()=>resolve({url:'blob:'+q.id,alt:'Diagram',revoke:()=>revoked.push(q.id)}),reject,signal}))}}});
   return {pending,events,revoked,hosts};
 }
 test('slow and failed diagrams do not block other questions; answers stay gated', async()=>{

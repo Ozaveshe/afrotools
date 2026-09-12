@@ -4,8 +4,9 @@ const batch=require('../ops/jamb/review-candidates/mathematics/math-recovery-001
 const {verify}=require('../ops/jamb/review-candidates/mathematics/check-math-recovery-001.cjs');
 const {questionFingerprint:fp}=require('../scripts/lib/jamb-content-trust');
 test('exact polynomial remainders rule out every proposed common factor',()=>{
- assert.equal(verify(batch,[batch.records[0].original_record]).passed,true);
- assert.equal(verify(batch,[batch.records[0].candidate],true).passed,true);
+ // CI verifies the integrated record and pinned provenance; intake separately
+ // requires the private source PDF, which must not be uploaded to the checkout.
+ assert.equal(verify(batch,require('../ops/jamb/source-pool.json').questions,true).passed,true);
 });
 test('rehashed wrong answers and changed cubic cannot be accepted',()=>{
  for(const answer of ['A','B','C','D']){const b=structuredClone(batch);b.records[0].candidate.answer=answer;b.records[0].content_sha256=fp(b.records[0].candidate);assert.throws(()=>verify(b,[batch.records[0].original_record]),/divisibility answer/);}
