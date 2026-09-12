@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11521 |
-| Indexable pages | 9706 |
+| Indexable pages | 9708 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5017 |
+| Genuine equivalence groups | 5019 |
 | Documented fallbacks | 14788 |
-| Routes eligible for primary sitemaps | 9706 |
+| Routes eligible for primary sitemaps | 9708 |
 
 ## Locale Coverage
 
@@ -4970,6 +4970,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:61f886f8e78e: en=`/tools/business-insurance/egypt`; x-default=`/tools/business-insurance/egypt`
 - equivalence:6201c4e35f1b: en=`/tools/gas-lpg-cost/cameroon/`, fr=`/fr/tools/calculateur-du-cout-du-gaz-gpl-cameroun/`; x-default=`/tools/gas-lpg-cost/cameroon/`
 - equivalence:6212db1e4dc5: en=`/blog/salary-after-tax-south-africa-2026/`, fr=`/fr/blog/salary-after-tax-south-africa-2026/`; x-default=`/blog/salary-after-tax-south-africa-2026/`
+- equivalence:6215d5dcea6f: en=`/jamb/mathematics/1988/`; x-default=`/jamb/mathematics/1988/`
 - equivalence:622a0ee0e283: en=`/tools/generator-fuel/senegal/`, fr=`/fr/tools/calculateur-de-carburant-pour-groupe-electrogene-senegal/`; x-default=`/tools/generator-fuel/senegal/`
 - equivalence:6236660e2d1e: en=`/tools/visa-checker/cabo-verde`; x-default=`/tools/visa-checker/cabo-verde`
 - equivalence:623a3b915ab3: en=`/tools/motor-third-party/nigeria`; x-default=`/tools/motor-third-party/nigeria`
@@ -5394,6 +5395,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:77feda39fdfc: en=`/tools/credit-score/`, fr=`/fr/tools/score-credit/`, sw=`/sw/zana/alama-ya-mkopo/`; x-default=`/tools/credit-score/`
 - equivalence:7806354264b7: en=`/tools/afrokitchen/countries/togo/`; x-default=`/tools/afrokitchen/countries/togo/`
 - equivalence:780bfdb05b4e: en=`/tools/microinsurance/tanzania`; x-default=`/tools/microinsurance/tanzania`
+- equivalence:7810ee921bfe: en=`/jamb/mathematics/1989/`; x-default=`/jamb/mathematics/1989/`
 - equivalence:78228e7ae7b5: en=`/algeria/`, fr=`/fr/algerie/`, sw=`/sw/algeria/`; x-default=`/algeria/`
 - equivalence:7827e46e9d33: en=`/tools/outage-cost/egypt/`, fr=`/fr/tools/estimateur-du-cout-des-coupures-de-courant-egypte/`; x-default=`/tools/outage-cost/egypt/`
 - equivalence:782b04b13286: en=`/agriculture/livestock-feed/tanzania`, fr=`/fr/agriculture/livestock-feed/tanzania`, sw=`/sw/kilimo/chakula-cha-mifugo/tanzania/`; x-default=`/agriculture/livestock-feed/tanzania`
