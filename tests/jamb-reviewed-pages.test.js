@@ -49,6 +49,9 @@ test('only the reviewed content version appears in both cards and answer schemas
     questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: evidence, answer_review: evidence, explanation_review: evidence } } };
   const page = renderYear('mathematics', 1987, [q, { ...q, id: 'unreviewed-copy' }], ledger);
   assert.deepEqual(page.approvedIds, [q.id]);
+  assert.doesNotThrow(() => validatePage(page.html, page.approvedIds, page.canonical));
+  assert.throws(() => validatePage(page.html.replace(/<p class="qcard-text">[\s\S]*?<\/p>/, ''), page.approvedIds, page.canonical), /Missing question text/);
+  assert.throws(() => validatePage(page.html.replace(/<details\b[\s\S]*?<\/details>/, ''), page.approvedIds, page.canonical), /Missing answer explanation/);
   assert.ok(page.html.includes('5 &lt; 6'));
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
