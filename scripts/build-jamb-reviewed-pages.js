@@ -29,7 +29,7 @@ const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').repla
 function renderCard(q) {
   return `<article class="qcard" id="q-${esc(q.id)}" data-reviewed-question="${esc(q.id)}">
 <h2>Question ${esc(q.num)}</h2>
-${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage)}</blockquote>` : ''}
+${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage).replace(/[ \t](?=\r?$)/gm, char => char === ' ' ? '&#32;' : '&#9;')}</blockquote>` : ''}
 ${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status">Enable JavaScript to verify this question's diagram before viewing its answer.</div>` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
 <ol type="A">${Object.keys(q.options).sort().map(key => `<li>${esc(q.options[key])}</li>`).join('')}</ol>
