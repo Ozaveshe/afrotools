@@ -286,8 +286,12 @@ test('current calculation-checked bank renders its labels and grades the actual 
   await expect.poll(()=>posts.length).toBe(1);
   expect(posts[0].pool_revision).toBe(pool.review_revision);
   await expect(page.locator('#retry-practice')).toBeHidden();
-  const years = [...new Set(rows.filter(q=>q.subject==='mathematics').map(q=>q.year))];
-  for (const year of years) {
+});
+
+const calculationMathRows = require('../../data/jamb/pools/practice-pool.json').questions.filter(q => q.subject === 'mathematics' && q.verification?.method === 'ai-calculation-checked');
+for (const year of [...new Set(calculationMathRows.map(q => q.year))]) {
+  test(`current calculation-checked mathematics/${year} preserves text and disclosure`, async ({ page }) => {
+    const rows = calculationMathRows;
     await page.goto(`/jamb/mathematics/${year}/`, {waitUntil:'load'});
     const paper = rows.filter(q=>q.subject==='mathematics' && q.year===year);
     await expect(page.locator('[data-reviewed-question]')).toHaveCount(paper.length);
@@ -298,7 +302,11 @@ test('current calculation-checked bank renders its labels and grades the actual 
     await page.keyboard.press('Enter');
     await expect(first.locator('small')).toHaveText('AI-reviewed · calculation checked');
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-  }
+  });
+}
+
+test('current calculation-checked mathematical context preserves whitespace', async ({ page }) => {
+  const rows = calculationMathRows;
   const contextQuestion = rows.find(q=>q.passage && q.subject==='mathematics');
   if (contextQuestion) {
     await page.goto(`/jamb/${contextQuestion.subject}/${contextQuestion.year}/`, {waitUntil:'load'});
