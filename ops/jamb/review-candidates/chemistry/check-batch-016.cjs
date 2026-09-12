@@ -57,5 +57,5 @@ near(2*10/40,.5);assert.equal(get(29).answer,'B');
 for(const n of [2,3,4,6,7,8])assert.equal(get(n,2000).year,2000);
 assert.equal(batch.records.filter(r=>!r.publication_candidate).length,9);
 const pdf='C:/Users/Oza/Documents/afrotools/.jamb/CHEMISTRY-JAMB-Past-Questions.pdf';
-assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(pdf)).digest('hex'),batch.source_pdf_sha256);
-console.log('Chemistry batch016:40 examined,31 candidates,9 held; strict '+(integrated?'integrated':'pre-intake')+' fingerprints, source hash/context gates and independent checks passed.');
+const materialStatus=require('./check-source-material.cjs')(batch,integrated,pdf);
+console.log('Chemistry batch016:40 examined,31 candidates,9 held; strict '+(integrated?'integrated':'pre-intake')+' fingerprints, context gates and independent checks passed. '+materialStatus+'.');
