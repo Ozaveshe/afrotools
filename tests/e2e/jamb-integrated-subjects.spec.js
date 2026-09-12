@@ -1,6 +1,6 @@
 const {test,expect}=require('@playwright/test');
 const bank=require('../../data/jamb/pools/practice-pool.json');
-const subjects=new Set(['english','physics','chemistry']);
+const subjects=new Set(bank.questions.map(q=>q.subject));
 const routes=[...new Set(bank.questions.filter(q=>subjects.has(q.subject)).map(q=>q.subject+'/'+q.year))];
 
 for(const width of [320,390,1440]) test(`actual reviewed subject papers work at ${width}px`,async({page})=>{
@@ -14,7 +14,13 @@ for(const width of [320,390,1440]) test(`actual reviewed subject papers work at 
     const response=await page.goto('/jamb/'+route+'/');expect(response.status()).toBe(200);
     await expect(page.locator('[data-reviewed-question]')).toHaveCount(expected.length);
     await expect(page.locator('[data-reviewed-question] details[open]')).toHaveCount(0);
-    const q=expected.find(q=>!q.image);expect(q).toBeTruthy();
+    for(const illustrated of expected.filter(q=>q.image)){
+      const figure=page.locator('[data-reviewed-question="'+illustrated.id+'"] img');
+      await expect(figure).toBeVisible();
+      await expect(figure).toHaveJSProperty('complete',true);
+      expect(await figure.evaluate(img=>img.naturalWidth)).toBeGreaterThan(0);
+    }
+    const q=expected.find(q=>!q.image)||expected[0];expect(q).toBeTruthy();
     const card=page.locator('[data-reviewed-question="'+q.id+'"]');
     await card.locator('summary').focus();await card.locator('summary').press('Enter');
     await expect(card.getByText(q.explanation||q.ai_explanation,{exact:true})).toBeVisible();
