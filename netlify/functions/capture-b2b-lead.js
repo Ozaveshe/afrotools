@@ -2,83 +2,15 @@ const crypto = require('crypto');
 const { getAllowedOrigin } = require('./utils/cors');
 const { checkRateLimit } = require('./_shared/rate-limit');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
+const {
+  OFFER_LABELS,
+  PROSPECT_LABELS,
+  normalizeOffer,
+  normalizeProspect
+} = require('../../assets/js/lib/b2b-choice-contract');
 
 const SUPABASE = getMarketingSupabaseConfig();
 const B2B_TABLE = 'data_buyer_leads';
-
-const OFFER_LABELS = {
-  widget_demo: 'Widget demo request',
-  widget_pro: 'Widget Pro enquiry',
-  sponsored_tool: 'Sponsored tool enquiry',
-  custom_calculator: 'Custom calculator request',
-  api_pilot: 'API pilot request',
-  media_kit: 'Media kit request',
-  white_label: 'White-label request',
-  business_subscription: 'Business subscription enquiry',
-  other: 'Other B2B enquiry'
-};
-
-const OFFER_ALIASES = {
-  'widget-demo': 'widget_demo',
-  'demo-widget': 'widget_demo',
-  'widget-request': 'widget_demo',
-  widget: 'widget_demo',
-  widgets: 'widget_demo',
-  'widget-pro': 'widget_pro',
-  'sponsored-tool': 'sponsored_tool',
-  'sponsored-tools': 'sponsored_tool',
-  sponsorship: 'sponsored_tool',
-  'custom-calculator': 'custom_calculator',
-  'custom-calculators': 'custom_calculator',
-  calculator: 'custom_calculator',
-  'api-growth-pilot': 'api_pilot',
-  'api-pro-pilot': 'api_pilot',
-  'api-pilot': 'api_pilot',
-  api: 'api_pilot',
-  'media-kit': 'media_kit',
-  media: 'media_kit',
-  'white-label': 'white_label',
-  whitelabel: 'white_label',
-  'business-subscription': 'business_subscription'
-};
-
-const PROSPECT_LABELS = {
-  accounting_firm: 'Accounting firm',
-  hr_payroll: 'HR or payroll company',
-  fintech: 'Fintech',
-  school_edtech: 'School or edtech',
-  business_media: 'Business media or publisher',
-  immigration: 'Immigration or relocation advisor',
-  association_blog: 'Association, community, or blog',
-  developer_api: 'Developer or API buyer',
-  other: 'Other business buyer'
-};
-
-const PROSPECT_ALIASES = {
-  accounting: 'accounting_firm',
-  accountant: 'accounting_firm',
-  'accounting-firm': 'accounting_firm',
-  'hr-payroll': 'hr_payroll',
-  payroll: 'hr_payroll',
-  hr: 'hr_payroll',
-  fintech: 'fintech',
-  school: 'school_edtech',
-  schools: 'school_edtech',
-  edtech: 'school_edtech',
-  'school-edtech': 'school_edtech',
-  media: 'business_media',
-  publisher: 'business_media',
-  'business-media': 'business_media',
-  immigration: 'immigration',
-  relocation: 'immigration',
-  blog: 'association_blog',
-  blogger: 'association_blog',
-  association: 'association_blog',
-  community: 'association_blog',
-  'developer-api': 'developer_api',
-  developer: 'developer_api',
-  api: 'developer_api'
-};
 
 function headers(event) {
   return {
@@ -143,14 +75,6 @@ function cleanPath(value) {
   return raw.replace(/[^\w\-./?=&%:]/g, '').slice(0, 500);
 }
 
-function normalizeChoice(value, aliases, labels, fallback) {
-  const raw = cleanField(value, 80);
-  if (!raw) return fallback;
-  const key = raw.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const mapped = aliases[key] || raw.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
-  return labels[mapped] ? mapped : fallback;
-}
-
 function clientIp(event) {
   const eventHeaders = event.headers || {};
   return String(
@@ -196,8 +120,8 @@ function normalizeLead(body, event) {
   const name = cleanField(body.name, 150);
   const country = cleanField(body.country, 120);
   const website = cleanUrl(body.website);
-  const prospectType = normalizeChoice(body.prospect_type || body.prospectType, PROSPECT_ALIASES, PROSPECT_LABELS, 'other');
-  const requestedOffer = normalizeChoice(body.requested_offer || body.requestedOffer || body.offer, OFFER_ALIASES, OFFER_LABELS, 'other');
+  const prospectType = normalizeProspect(body.prospect_type || body.prospectType, 'other');
+  const requestedOffer = normalizeOffer(body.requested_offer || body.requestedOffer || body.offer, 'other');
   const relevantTool = cleanField(body.relevant_tool || body.relevantTool || body.use_case || body.useCase, 220);
   const message = cleanLongText(body.message, 2500);
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
