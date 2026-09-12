@@ -8,6 +8,7 @@ const VISUAL_REFERENCE = /\b(?:diagram|figure|graph|illustration|circuit|chart|h
 const OCR_ARTIFACT = /\[PAGE\s+\d+\]|\uFFFD|\b(?:TODO|FIXME|REPLACE_ME)\b/i;
 const EXPLANATION_UNCERTAINTY = /\b(?:rechecking|guess(?:ing|ed)?|cannot determine|not enough information|none of the (?:given |provided )?options|no (?:given |provided )?option matches)\b|\.{3}\s*\(/i;
 const SOURCED_PERMISSION_BASES = new Set(['written-permission', 'open-license', 'original-work']);
+const AI_VERIFICATION_METHODS = new Set(['ai-calculation-checked', 'ai-source-checked']);
 
 function canonicalJson(value) {
   if (Array.isArray(value)) return '[' + value.map(canonicalJson).join(',') + ']';
@@ -90,7 +91,7 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   if (q.verification !== undefined && (!q.verification || typeof q.verification !== 'object'
       || Array.isArray(q.verification)
       || Object.keys(q.verification).sort().join(',') !== 'method,reviewed_at'
-      || q.verification.method !== 'ai-calculation-checked'
+      || !AI_VERIFICATION_METHODS.has(q.verification.method)
       || !validReviewDate(q.verification.reviewed_at))) reasons.push('invalid_verification_label');
   if (!review) reasons.push('review_record_missing');
   else {
@@ -99,7 +100,7 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
     if (!completeReview(review.answer_review)) reasons.push('answer_review_missing');
     if (!completeReview(review.explanation_review)) reasons.push('explanation_review_missing');
     if (review.answer_review?.reviewer_type === 'ai'
-        && (q.verification?.method !== 'ai-calculation-checked'
+        && (!AI_VERIFICATION_METHODS.has(q.verification?.method)
           || q.verification.reviewed_at !== review.answer_review.reviewed_at)) {
       reasons.push('verification_label_missing');
     }

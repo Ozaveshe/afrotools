@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('node:child_process');
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./safe-write');
 
 const DEFAULT_ROOT = path.resolve(__dirname, '..', '..');
@@ -354,6 +355,33 @@ function dataFlowsMarkdown(flows) {
   return lines.join('\n');
 }
 
+function stableReportDate(report, claims, previousJson, previousMarkdown) {
+  let previous;
+  try { previous = JSON.parse(previousJson); } catch (_) { return report; }
+  if (!previous || !isDate(previous.generatedAt) || previous.generatedAt > report.generatedAt) return report;
+  const candidate = { ...report, generatedAt: previous.generatedAt };
+  // Keep the date of the existing artifact only when both report formats are
+  // unchanged. Registry validation above still uses the actual current date.
+  if (JSON.stringify(candidate) === JSON.stringify(previous) &&
+      publicClaimsMarkdown(candidate, claims) === previousMarkdown) return candidate;
+  return report;
+}
+
+function committedReportDate(report, claims, root) {
+  // Earlier build stages can temporarily change scan totals and overwrite the
+  // working report. Compare the final result with the committed pair as well.
+  // Equality of both formats remains required; current-date validation is separate.
+  try {
+    const read = file => execFileSync('git', ['show', 'HEAD:' + file], {
+      cwd: root, encoding: 'utf8', maxBuffer: 4 * 1024 * 1024, stdio: ['ignore','pipe','pipe']
+    });
+    return stableReportDate(report, claims, read('reports/public-claims.json'), read('reports/public-claims.md'));
+  } catch (_) {
+    // Source archives without Git still use the existing working report.
+    return report;
+  }
+}
+
 function writeText(root, relativePath, content) {
   const destination = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
@@ -389,8 +417,15 @@ function buildRepository({ root = DEFAULT_ROOT, write = false, today = new Date(
     return file;
   });
   const scan = scanContent({ claims, flows, today, files: projectedFiles });
-  const report = claimReport(claims, flows, scan, files.length, today);
+  let report = claimReport(claims, flows, scan, files.length, today);
   if (write) {
+    const previousJsonPath = path.join(root, REPORT_JSON_PATH);
+    const previousMarkdownPath = path.join(root, REPORT_MD_PATH);
+    if (fs.existsSync(previousJsonPath) && fs.existsSync(previousMarkdownPath)) {
+      report = stableReportDate(report, claims,
+        fs.readFileSync(previousJsonPath, 'utf8'), fs.readFileSync(previousMarkdownPath, 'utf8'));
+    }
+    report = committedReportDate(report, claims, root);
     writeText(root, REPORT_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`);
     writeText(root, REPORT_MD_PATH, publicClaimsMarkdown(report, claims));
     writeText(root, FLOWS_REPORT_JSON_PATH, `${JSON.stringify(flows, null, 2)}\n`);
@@ -419,5 +454,7 @@ module.exports = {
   loadDataFlows,
   projectClaimSelectorsInHtml,
   scanContent,
+  stableReportDate,
+  committedReportDate,
   validateRegistries
 };

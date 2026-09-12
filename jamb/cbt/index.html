@@ -1510,7 +1510,7 @@ function renderReviewCard(r) {
     + (r.passage ? '<p style="white-space:pre-wrap;">' + escapeHtml(r.passage) + '</p>' : '')
     + '<div class="rev-q">' + escapeHtml(r.question) + '</div>'
     + '<div class="rev-opts">' + optsHtml + '</div>'
-    + '<details class="answer-explanation"><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>' + (verification && verification.method === 'ai-calculation-checked' ? '<small class="verification-method">AI-reviewed · calculation checked</small>' : '') + '</details>'
+    + '<details class="answer-explanation"><summary><span class="show-explanation">Show explanation</span><span class="hide-explanation">Hide explanation</span></summary><p class="reviewed-explanation">' + escapeHtml(r.explanation || '') + '</p>' + (verification && verification.method === 'ai-calculation-checked' ? '<small class="verification-method">AI-reviewed · calculation checked</small>' : verification && verification.method === 'ai-source-checked' ? '<small class="verification-method">AI-reviewed · source checked</small>' : '') + '</details>'
     + actionsHtml;
 
   var figure = sessionFigure(reviewedQuestion);

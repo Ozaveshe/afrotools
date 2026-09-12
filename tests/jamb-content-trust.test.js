@@ -131,3 +131,28 @@ test('verification metadata cannot publish private fields or unsupported approva
     assert.ok(assessQuestion(candidate, ledger).reasons.includes('invalid_verification_label'));
   }
 });
+
+test('source-checked AI review retains date, content, source and structural gates', () => {
+  const { question, ledger } = fixture();
+  question.subject = 'english';
+  question.verification = { method: 'ai-source-checked', reviewed_at: '2026-09-10' };
+  ledger.questions[question.id].answer_review.reviewer_type = 'ai';
+  ledger.questions[question.id].content_sha256 = questionFingerprint(question);
+  assert.equal(assessQuestion(question, ledger).state, 'eligible');
+  for (const verification of [
+    { method: 'officially-approved', reviewed_at: '2026-09-10' },
+    { method: 'ai-source-checked', reviewed_at: '2026-02-30' },
+    { method: 'ai-source-checked', reviewed_at: '2026-09-10', private_note: 'repair history' }
+  ]) {
+    const candidate = { ...question, verification };
+    ledger.questions[question.id].content_sha256 = questionFingerprint(candidate);
+    assert.ok(assessQuestion(candidate, ledger).reasons.includes('invalid_verification_label'));
+  }
+  ledger.questions[question.id].content_sha256 = questionFingerprint(question);
+  assert.ok(assessQuestion({ ...question, question: 'Changed content' }, ledger).reasons.includes('review_content_changed'));
+  question.verification.reviewed_at = '2026-09-11';
+  assert.ok(assessQuestion(question, ledger).reasons.includes('verification_label_missing'));
+  ledger.sources.fixture.permission.status = 'unknown';
+  assert.ok(assessQuestion(question, ledger).reasons.includes('permission_unverified'));
+  assert.ok(assessQuestion({ ...question, question: 'According to the passage, what does this mean?' }, ledger).reasons.includes('missing_passage_or_context'));
+});

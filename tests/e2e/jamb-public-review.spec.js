@@ -16,6 +16,9 @@ test.beforeEach(async({context,page})=>{await context.addInitScript(()=>localSto
 for (const width of [320,390]) test('empty reviewed publications preserve useful study paths at '+width+'px',async({page})=>{
  await page.setViewportSize({width,height:844});
  await mock(page);
+ // An explicit synthetic empty paper keeps this state covered as real papers gain reviewed content.
+ const emptyPaper = require('../../scripts/build-jamb-reviewed-pages').renderYear('mathematics', 1987, [], { sources: {}, questions: {} });
+ await page.route('**/jamb/mathematics/1987/', route => route.fulfill({ contentType: 'text/html', body: emptyPaper.html }));
  await page.route('**/.netlify/functions/jamb-daily-signup',route=>route.fulfill({json:{capabilities:{email:true,whatsapp:false}}}));
  for(const [url,status] of [['/jamb/','#question-readiness'],['/jamb/flashcards/','#deck-status'],['/jamb/patterns/','#pattern-status'],['/jamb/daily/','#channel-note']]){
   await page.goto(url);await expect(page.locator(status)).toContainText(/review|unavailable/i);await expect(page.locator('a[href="/tools/study-planner/"]').first()).toBeVisible();
