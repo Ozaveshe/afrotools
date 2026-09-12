@@ -7,7 +7,7 @@ const batch=require('./batch-005.json');
 const integrated=process.argv.includes('--integrated');
 const pool=JSON.parse(fs.readFileSync(path.join(__dirname,'../../source-pool.json'))).questions;
 assert.equal(batch.records.length,40);assert.equal(new Set(batch.records.map(r=>r.id)).size,40);
-assert.equal(batch.records.filter(r=>r.publication_candidate).length,33);
+assert.equal(batch.records.filter(r=>r.publication_candidate).length,32);
 for(const r of batch.records){
  const live=pool.find(q=>q.id===r.id);assert.ok(live);
  assert.equal(questionFingerprint(r.original_record),r.original_content_sha256);
@@ -46,7 +46,7 @@ near(2*6e23,1.2e24);assert.equal(get(24).candidate.answer,'C');
 near(1.6/(5/(2*14+4+3*16)),25.6);assert.equal(get(26).candidate.answer,'B');
 near(-811-(-395-286),-130);assert.equal(get(27).candidate.answer,'B');
 const times=[72,36,18];near((1/times[1])/(1/times[0]),2);near((1/times[2])/(1/times[1]),2);
-assert.equal(get(28).candidate.answer,'A');
+assert.ok(batch.records.find(r=>r.actual_source_number===28&&r.actual_source_year===1987&&!r.publication_candidate));
 // Explicit atom/charge conservation for the taught equations.
 for(const [l,r] of [
  [{C:6,H:12,O:6},{C:2*2+2,H:2*6,O:2+2*2}],
@@ -65,4 +65,4 @@ assert.match(get(32).candidate.explanation,/Do not try to neutralise/);
 assert.equal(get(35).candidate.answer,'C');assert.equal(get(39).candidate.answer,'D');
 // Held electrolysis: one faraday supplies one mole electrons, not one mole Cu.
 near(1/2,.5);
-console.log(`PASS ${integrated?'integrated':'pre-intake'}: 40 examined, 33 candidates, 7 held; independent arithmetic, equations, content/provenance and safety-key checks. Assertions do not certify all conceptual chemistry.`);
+console.log(`PASS ${integrated?'integrated':'pre-intake'}: 40 examined, 32 candidates, 8 held; independent arithmetic, equations, content/provenance and safety-key checks. Assertions do not certify all conceptual chemistry.`);
