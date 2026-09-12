@@ -154,6 +154,12 @@ function removeNonVisible(html) {
 
 function extractBlocks(html) {
   const visible = removeNonVisible(html);
+  const questionRanges = [...visible.matchAll(/<article\b([^>]*)>[\s\S]*?<\/article>/gi)].flatMap((match) => {
+    const attrs = parseAttributes(`<article ${match[1]}>`);
+    const id = attrs['data-reviewed-question'];
+    if (!id || attrs.id !== `q-${id}` || !/\bqcard\b/.test(attrs.class || '')) return [];
+    return [{ start: match.index, end: match.index + match[0].length, id }];
+  });
   const blocks = [];
   const re = /<(h1|h2|h3|p|li|label|button|figcaption|blockquote|td|th)\b([^>]*)>([\s\S]*?)<\/\1>/gi;
   let match;
@@ -163,7 +169,8 @@ function extractBlocks(html) {
     if (/\b(?:source-list|references|citation|code-output)\b/i.test(attrs.class || '')) continue;
     const text = stripTags(match[3]);
     if (!text) continue;
-    blocks.push({ tag: match[1].toLowerCase(), attrs, text, index: match.index, end: match.index + match[0].length });
+    const question = questionRanges.find((range) => match.index >= range.start && match.index + match[0].length <= range.end);
+    blocks.push({ tag: match[1].toLowerCase(), attrs, text, index: match.index, end: match.index + match[0].length, repeatScope: question?.id || '' });
   }
   return blocks;
 }
@@ -211,7 +218,7 @@ function labelForeignLanguageBlocks(html, locale, foreignLocale = 'en', catalogV
 function dedupeRepeatedParagraphs(html) {
   const groups = new Map();
   for (const block of extractBlocks(html).filter((entry) => entry.tag === 'p' && entry.text.length >= 100)) {
-    const key = block.text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+    const key = JSON.stringify([block.repeatScope, block.text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()]);
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(block);
   }
@@ -280,7 +287,7 @@ function auditHtml(html, context = {}) {
 
   const paragraphMap = new Map();
   blocks.filter((block) => block.tag === 'p' && block.text.length >= 100).forEach((block) => {
-    const key = block.text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+    const key = JSON.stringify([block.repeatScope, block.text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()]);
     if (!paragraphMap.has(key)) paragraphMap.set(key, []);
     paragraphMap.get(key).push(block);
   });
