@@ -1,0 +1,8 @@
+Economics004–006 private handoff
+
+004:40 examined,26 candidates,14 held. Source1983 tail,1985 tail and1986 cohort; PDF5,13–16. Farm output table visually inspected atPDF13; X46/Y9 independently checked. Monetary-creation explanation corroborated with Bank of England primary article.
+005:40 examined,33 candidates,7 held. Remaining1986 and1987 cohort plus actual1988Q1–2; PDF16–19. Full consumer schedule restored; market demand30 and original-base elasticity1.25 independently checked. Source1988Q2 final option recovered as field work, preserving original stable ID.
+006:40 examined,24 candidates,16 held. Actual1988Q4–49 with gaps; PDF19–22, continuation pages explicit. APC400/500=0.80. EquationQ14 visually inspectedPDF20: both minus signs present, resultingP48/Q−4, so held without invented equation changes. Duplicate correct options, historical jurisdiction-dependent assertions and missing graph assets remain held with exact reasons.
+
+Cumulative six Economics batches:240 unique records,147 candidates,93 held. Every accepted candidate has nested verification method/date and expandable-teaching explanation content; corrections remain private. No source-pool, ledger, public route, generated bank or deployment changes.
+Validation: generic checker and mode suite pass for004–006 with privatePDF present and simulated integrated absence, including rejection of wrong PDF, missing pre-intake source, current/held/prior fingerprint mutations. Exact prior batch byte hashes and allowlists remain chained; all selection/review JSON uses LF. Syntax and git diff whitespace checks pass. Product/browser/build/deployment checks not run because scope is private candidate artifacts.
