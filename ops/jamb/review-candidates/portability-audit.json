@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "status": "local-evidence-only",
+  "base_commit": "f2ff8329dc1b012d5169f560d7730c8d074c0210",
+  "fetched_origin_main": "e2090d44eb868348d9c4a53045e0c7b2f1f55bf1",
+  "scope": "Executable review-evidence portability; no candidate, source-pool, accepted-ledger or public artifact changes.",
+  "changed_checks": [
+    "accounts/check-publication.cjs",
+    "commerce/check-publication.cjs",
+    "literature/check-publication.cjs",
+    "literature/check-held-state.cjs",
+    "literature/test-recovery-replay.cjs",
+    "mathematics/check-publication-eligibility.cjs",
+    "chemistry/check-first-pass.cjs"
+  ],
+  "findings": [
+    "Six executable checks loaded a hardcoded coordinator checkout. They now resolve their own repository ledger and trust code.",
+    "Chemistry historical first-pass verification unconditionally loaded a private PDF. It now reuses the existing pinned source-material gate: missing PDF allowed only for integrated replay; present wrong PDF and pre-intake missing PDF remain failures. Explicit --pool and --pdf paths support immutable historical fixtures and source verification.",
+    "No git-show or unpushed-commit execution dependency was found in the inspected review checkers and JAMB tests/scripts.",
+    "Other inspected source-PDF checks already permit absence during integrated replay and retain the PDF requirement before intake. Their optional local source paths were not changed.",
+    "Draft browser screenshot utilities and inventory/preparation scripts remain outside this release-evidence audit."
+  ],
+  "validation": {
+    "focused_node_tests_passed": 5,
+    "literature_publication_candidates": 160,
+    "literature_fingerprint_negatives": 160,
+    "accounts_publication_candidates": 312,
+    "accounts_fingerprint_negatives": 312,
+    "commerce_publication_candidates": 227,
+    "commerce_fingerprint_negatives": 227,
+    "mathematics_publication_candidates": 194,
+    "mathematics_missing_figure_negative": true,
+    "literature_integrated_replay_batches": 12,
+    "literature_replay_negatives": 4,
+    "temporary_checkout_without_git_or_private_pdf": "Literature replay passes from a minimal temporary checkout. Deleting or corrupting its accepted ledger entry, changing review status, or rejecting in its local trust module fails without falling back to the coordinator.",
+    "chemistry_historical_fixture": "All 850 original IDs are reconstructed explicitly into the historical first-pass state. Integrated replay passes without PDF; pre-intake missing PDF, present wrong PDF and pool mutation fail.",
+    "diff_check": "passed"
+  },
+  "known_limitation": "Chemistry check-first-pass.cjs remains a strict historical first-pass checker, not a cumulative recovery checker. On the current recovered bank it correctly stops at chemistry-1983-13-226552c20011 because that historical held row has since been replaced. This pre-existing failure was reproduced before changes; no held-state guard was weakened. Use the cumulative recovery evidence for current-bank recovery validation or the explicit historical fixture for first-pass replay.",
+  "not_run": [
+    "Full build, browser UI and deploy/security stack: executable private checker-only change; no public route or artifact changed."
+  ],
+  "shared_writes": 0,
+  "push_or_deploy": false
+}

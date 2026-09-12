@@ -1,0 +1,3 @@
+Literature005: 40 originals reviewed,18 candidates,22 held. Cumulative200 reviewed,87 candidates,113 held,161 unchecked. PDF26–34 source text and PDF28 multi-column image inspected. Recovered six scrambled complete items by following their actual printed columns. Each candidate independently solved; needed passages retained.
+
+This and subsequent batches use ai-source-checked, an existing accepted coordinator contract, accurately describing literary textual review. Earlier candidate JSON and fingerprints remain unchanged. All54 wrong-answer negatives, candidate-applied/held guards and actual coordinator eligibility passed. All18 mobile fixtures passed at390px; screenshot inspected. No shared-bank, ledger, push or deployment changes.

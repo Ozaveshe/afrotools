@@ -1,0 +1,9 @@
+# Mathematics uncovered review 003
+
+Twenty further baseline IDs examined: nine candidates and eleven documented holds. The immutable original77 baseline remains unchanged; progress is separately recorded in uncovered-progress-003.json. There are now507 documented original reviews and28 unexamined IDs. This is evidence coverage, not a claim of publication.
+
+Candidates cover a restored stationary-point graph, similar triangles, right-triangle perimeter, pair probability, mixed fractions, decimal calculation/rounding, simple interest and concentration. Four imported1990 questions actually occur on printed1991 page28; candidate year and source evidence reflect that source. The incomplete duplicateC option label in printed1991Q6 is repaired by its fourth-option position while retaining its amount; no answer text is invented.
+
+Owner PDF pages21–25 and28 were visually inspected. Graph source1989Q28 was reconstructed as a neutral SVG retaining a–m labels and alternating peaks/troughs. The actual ReviewedFigure.load checker passed strict SVG, hash and decode checks, with390px image visually inspected. Other candidate geometry is completely specified as standalone text. Held records have individual source contradictions or incomplete alternatives, not administrative waiting labels.
+
+Passed: exact sourcePDF hash; pinned candidate batch and original IDs/fingerprints; nine actual temporary publication checks;27 wrong-answer negatives;18 missing-review/fingerprint negatives; synthetic exact accepted-ledger replay for all nine with three mismatched-ledger/held-state negatives; nine mobile fixtures including the graph and collapsible explanations; git diff --check. Private-PDF-free integrated replay uses committed pinned provenance. No shared source-pool/ledger edits, push or deployment occurred. Browser fixtures do not prove production behavior.

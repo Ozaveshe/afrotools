@@ -1,0 +1,13 @@
+# Literature recovery 002
+
+Forty further held leads were revisited, excluding every recovery001 ID. Eight candidates recovered; 32 remain held. Across the original 361 imports, effective totals are 149 candidates and 212 held. Eighty distinct held leads have now been revisited. No new imported records, source-bank edits, ledger edits, push or deployment.
+
+Exact old original/new candidate fingerprints, source page/year/number and continued hold reasons are in recovery-002-coverage.json and literature-recovery-002.json. First-pass files remain unchanged and checksum-pinned through the preserved full361 receipt. Provenance checks need no unpushed Git history. Coordinator amendment portability commit c520bd04 is preserved locally as equivalent71e846b6.
+
+Recovered topics: painful movement in Naked Soles; apprehension in Night; symbolism in The Casualties; dramatic action in An African Thunderstorm; ancestral apostrophe in A Heritage of Liberation; Pokuwaa’s child quest; Father Benedict’s Latin requirement; Eugene’s religious rigidity. Supplementary URLs and exact inspected locations are private fixture evidence. Authorised Anchor excerpt, university poem reproduction, FCT education poem reproduction and publisher synopsis are distinguished from original academic criticism. SOAS evidence was inspected through indexed repository text; direct PDF access failed and no PDF hash is asserted. No claim of an official JAMB answer key or teacher certification.
+
+Representative continued holds: WAEC commentary confirms a decision to kill Kusa, not the completed killing asserted by the prompt; overlapping theme answers remain ambiguous; missing choice text and narrative attribution were not invented. Corrections and hold reasons remain private. Public explanations teach the answer only.
+
+Passed: exact source/solution checker, 24 wrong-answer mutations, candidate-applied pool and held-state guards, actual coordinator publication gate for149 candidates with149 fingerprint negatives, provenance and three tampering negatives, eight390px mobile fixtures with explanation disclosure and overflow checks. Screenshot visually inspected. Mixed-state replay of all11 batches passed, with missing ledger, wrong fingerprint, unaccepted answer review and changed candidate negatives. No broad build or live-route verification: this is candidate-only evidence.
+
+Commands: check-batch.cjs literature-recovery-002; test-batch-guards.cjs literature-recovery-002; check-publication.cjs; check-recovery-002.cjs; check-mobile.cjs literature-recovery-002; test-recovery-replay.cjs, all under ops/jamb/review-candidates/literature.
