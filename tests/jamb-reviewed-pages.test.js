@@ -6,6 +6,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { existingRoutes, renderYear, validatePage, atomicWrite, jsonScript } = require('../scripts/build-jamb-reviewed-pages');
 const { questionFingerprint } = require('../scripts/lib/jamb-content-trust');
+const routeBaseline = require('./fixtures/jamb-route-baseline.json');
 
 test('unreviewed question text and answer schemas never enter a review page', () => {
   const page = renderYear('commerce', 1997, [{ id: 'unapproved', subject: 'commerce', year: 1997, question: 'DO_NOT_PUBLISH_THIS', answer: 'B' }], { questions: {}, sources: {} });
@@ -71,7 +72,14 @@ test('all existing subject and year routes are preserved even with an empty appr
   const privatePath = path.join(root, 'ops/jamb/source-pool.json');
   const pool = JSON.parse(fs.readFileSync(fs.existsSync(privatePath) ? privatePath : path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
-  assert.equal(routes.length, 242);
+  // Pin the original files instead of forbidding legitimate new paper years.
+  // An equal total could hide a deleted route replaced by an unrelated route.
+  for (const file of routeBaseline.files) assert.ok(fs.existsSync(path.join(root,file)), 'Original route disappeared: '+file);
+  const publicBank = JSON.parse(fs.readFileSync(path.join(root,'data/jamb/pools/practice-pool.json'),'utf8'));
+  for (const q of publicBank.questions) {
+    assert.ok(routes.includes(q.subject), 'Missing reviewed subject route: '+q.subject);
+    assert.ok(routes.includes(q.subject+'/'+q.year), 'Missing reviewed paper route: '+q.subject+'/'+q.year);
+  }
   for (const route of routes) {
     const [subject, year] = route.split('/');
     const years = routes.filter(item => item.startsWith(subject + '/')).map(item => item.split('/')[1]);
@@ -84,7 +92,7 @@ test('all existing subject and year routes are preserved even with an empty appr
   }
 });
 
-test('all 255 JAMB documents have complete structure after regeneration', () => {
+test('all JAMB documents retain complete structure and original routes after regeneration', () => {
   const root = path.resolve(__dirname, '../jamb');
   let total = 0;
   function walk(dir) {
@@ -102,5 +110,7 @@ test('all 255 JAMB documents have complete structure after regeneration', () => 
       }
     }
   }
-  walk(root); assert.equal(total,255);
+  walk(root);
+  assert.ok(total >= routeBaseline.files.length);
+  for (const file of routeBaseline.files) assert.ok(fs.existsSync(path.resolve(root,'..',file)), 'Original route disappeared: '+file);
 });
