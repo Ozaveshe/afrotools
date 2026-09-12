@@ -52,5 +52,5 @@ for(const n of [3,8,14,17,18,21,25,27,29])assert.ok(held.some(r=>r.original_reco
 assert.deepEqual([2,2+1,2+1,2*2],[2,3,3,4]);
 for(const n of [1,2,3])assert.equal(get(n,2002).year,2002);
 const pdf='C:/Users/Oza/Documents/afrotools/.jamb/CHEMISTRY-JAMB-Past-Questions.pdf';
-assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(pdf)).digest('hex'),batch.source_pdf_sha256);
+console.log(require('./check-source-material.cjs')(batch,integrated,pdf));
 console.log('Chemistry batch018:40 examined,27 candidates,13 held; strict '+(integrated?'integrated':'pre-intake')+' fingerprints, source hash/context gates and independent checks passed.');

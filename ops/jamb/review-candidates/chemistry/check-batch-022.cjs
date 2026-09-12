@@ -40,5 +40,5 @@ assert.deepEqual(Object.keys(masses).filter(k=>masses[k]>air),['O2','Cl2']);
 const held=batch.records.filter(r=>!r.publication_candidate);assert.equal(held.length,3);
 for(const n of [46,47,50])assert.ok(held.some(r=>r.original_record.year===2004&&r.original_record.num===n));
 const pdf='C:/Users/Oza/Documents/afrotools/.jamb/CHEMISTRY-JAMB-Past-Questions.pdf';
-assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(pdf)).digest('hex'),batch.source_pdf_sha256);
+console.log(require('./check-source-material.cjs')(batch,integrated,pdf));
 console.log('Chemistry batch022:10 examined,7 candidates,3 held; '+(integrated?'integrated':'pre-intake')+' fingerprints, PDF/context gates and independent checks passed.');

@@ -50,5 +50,5 @@ const chargeMol=.65/65*2;near(chargeMol/2*201,2.01);near(chargeMol*201,4.02);
 const held=batch.records.filter(r=>!r.publication_candidate);assert.equal(held.length,5);
 for(const n of [13,14,19,23,39])assert.ok(held.some(r=>r.original_record.num===n&&r.original_record.year===2002));
 const pdf='C:/Users/Oza/Documents/afrotools/.jamb/CHEMISTRY-JAMB-Past-Questions.pdf';
-assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(pdf)).digest('hex'),batch.source_pdf_sha256);
+console.log(require('./check-source-material.cjs')(batch,integrated,pdf));
 console.log('Chemistry batch019:40 examined,35 candidates,5 held; strict '+(integrated?'integrated':'pre-intake')+' fingerprints, source hash/context gates and independent checks passed.');
