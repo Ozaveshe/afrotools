@@ -61,6 +61,15 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.equal(page.html.includes('unreviewed-copy'), false);
   const subjectPage = renderYear('mathematics', null, [q], ledger, ['1987']);
   assert.deepEqual(subjectPage.approvedIds, [q.id]);
+  const later = { ...q, id: 'later-paper', year: 1988, num: 9 };
+  const mixedLedger = { ...ledger, questions: { ...ledger.questions, [later.id]: { ...ledger.questions[q.id], content_sha256: questionFingerprint(later) } } };
+  const mixed = renderYear('mathematics', null, [q, later], mixedLedger, ['1986', '1987', '1988']);
+  assert.deepEqual(mixed.approvedIds, [later.id, q.id]);
+  assert.ok(mixed.html.includes('<h2>1988 · Question 9</h2>'));
+  assert.ok(mixed.html.includes('<h2>1987 · Question 1</h2>'));
+  assert.ok(mixed.html.includes('1988 (1)</a>'));
+  assert.ok(!mixed.html.includes('href="/jamb/mathematics/1986/"'));
+  assert.ok(mixed.html.includes('full-paper coverage has not been confirmed'));
   assert.ok(subjectPage.html.includes('href="/jamb/mathematics/1987/"'));
   const stale = renderYear('mathematics', 1987, [{ ...q, answer: 'B' }], ledger);
   assert.equal(stale.approvedIds.length, 0);
@@ -91,7 +100,7 @@ test('all existing subject and year routes are preserved even with an empty appr
     const actual = renderYear(subject, year || null, pool.questions, ledger, years);
     validatePage(current, actual.approvedIds, page.canonical);
     assert.ok(current.includes('Plan your study week'));
-    if (!year) assert.ok(current.includes('Browse by year'));
+    if (!year) assert.equal(current.includes('Browse by year'), actual.approvedIds.length > 0);
   }
 });
 

@@ -1,0 +1,11 @@
+# Accounts batch 004 and first 160 coverage
+
+Original records 121–160: 40 examined, 29 candidates, 11 held. Batches 003–004 together: 80 examined, 58 candidates, 22 held. Cumulative first 160: 121 candidates, 39 held, 265 unchecked. Exact next ID: `accounts-1998-45-1ca804d28bf2`.
+
+Printed source pages 12–15 visually checked. Calculations independently cover loss appropriations, share premium, petty cash, asset cost and disposal, receivables/payables, materials and drawings interest. Missing table context restored as labelled text; no essential figure required. The inconsistent trial balance, absent cash/credit split, missing capital-interest rate, ambiguous shortage reimbursement and historically dependent legal alternatives remain private holds.
+
+Supplementary primary evidence: [IFAC ICAN member profile](https://www.ifac.org/about-ifac/membership/members/institute-chartered-accountants-nigeria) confirms the statutory establishment date; [Scottish Law Commission partnership discussion paper, paragraph 8.72](https://www.scotlawcom.gov.uk/files/4112/7892/7070/dp111_partnership_law.pdf) supports the Garner v Murray rule. [CAMA 2020 from CAC](https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf) is a contemporary comparison, not proof of the 1997/1998 statutory alternatives, which remain held. These sources are not an official JAMB answer key.
+
+Passed: exact source and independent-solution checker; 87 wrong-answer negatives; candidate-applied and altered-held guards; actual publication gate for all 121 cumulative candidates with 121 fingerprint mutations rejected; all 29 batch candidates at 390px in the private content fixture, including explanation controls and overflow checks. Representative screenshot visually inspected. Coverage checker proves exact first-160 order, unique IDs, source SHA and batch pins. The original first-80 receipt remains valid and unchanged.
+
+Only private candidate artifacts changed. No shared bank, ledger, public UI or deployment mutation. The mobile fixture is not production UI proof; broad release checks are inapplicable. Repairs remain private, and student explanations contain subject teaching only. Whitespace check passed before commit.
