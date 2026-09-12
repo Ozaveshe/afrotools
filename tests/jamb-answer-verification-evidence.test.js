@@ -9,7 +9,6 @@ const evidenceDir = path.join(root, 'ops/jamb/verification');
 const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
 const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3}\.json$/.test(name));
 
-<<<<<<< HEAD
 test('student explanations contain learning content instead of internal repair history', () => {
   const bank = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   for (const question of bank.questions) {
