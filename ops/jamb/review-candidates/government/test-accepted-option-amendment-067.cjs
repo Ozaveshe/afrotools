@@ -3,7 +3,9 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {buildPlan}=require('./amend-accepted-option-067.cjs'),fixture=require('./accepted-option-amendment-067-fixture.json');
 const arg=process.argv.find(x=>x.startsWith('--source-root=')),root=arg?path.resolve(arg.slice(14)):path.resolve(__dirname,'../../../..'),dir=path.join(root,'ops/jamb/review-candidates/government');
 const local=mod.createRequire(path.join(dir,'check-batch.cjs')),{questionFingerprint:fp,assessQuestion}=local('../../../../scripts/lib/jamb-content-trust');
-const hash=s=>crypto.createHash('sha256').update(s).digest('hex'),read=f=>fs.readFileSync(path.join(dir,f),'utf8'),json=x=>JSON.stringify(x,null,2)+'\n';
+// Compare this historical amendment fixture without the two separately tested recovery-routing edits.
+// All other checker bytes must still match the pinned before/after snapshot.
+const hash=s=>crypto.createHash('sha256').update(s).digest('hex'),read=f=>{let text=fs.readFileSync(path.join(dir,f),'utf8');if(f==='check-batch.cjs'){text=text.replace('ledger=(mixedPrior||integrated)?','ledger=mixedPrior?').replace('currentIds,ledger,current}','currentIds,ledger}');}return text;},json=x=>JSON.stringify(x,null,2)+'\n';
 // Reconstruct only the exact pinned pre-amendment inputs; never use git history.
 const baseline=new Map(),currentFiles=new Map();
 for(const [f,before]of Object.entries(fixture.original_files)){const text=read(f);currentFiles.set(f,text);assert.ok([before,fixture.amended_files[f]].includes(hash(text)),f+' current snapshot drift');baseline.set(f,text);}

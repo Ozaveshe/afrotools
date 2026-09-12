@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../../../..'),b=require('./math-uncovered-004.json'),pool=JSON.parse(fs.readFileSync(path.join(root,'ops/jamb/source-pool.json'))),ledger=JSON.parse(fs.readFileSync(path.join(root,'data/jamb/review-ledger.json'))),dir=fs.mkdtempSync(path.join(os.tmpdir(),'math-uncovered002-'));
+const review={status:'accepted',reviewer:'Codex (AI)',reviewer_type:'ai',reviewed_at:b.reviewed_at,evidence:'Synthetic integrated test'};
+for(const r of b.records.filter(r=>r.candidate)){pool.questions[pool.questions.findIndex(q=>q.id===r.id)]=r.candidate;ledger.questions[r.id]={source_id:b.source_id,content_sha256:r.content_sha256,question_review:review,answer_review:review,explanation_review:review,...r.diagram_evidence?{asset_review:{...review,content_sha256:r.diagram_evidence.asset_sha256}}:{}};}
+function run(p,l){fs.writeFileSync(path.join(dir,'pool.json'),JSON.stringify(p));fs.writeFileSync(path.join(dir,'ledger.json'),JSON.stringify(l));return cp.spawnSync(process.execPath,[path.join(__dirname,'check-uncovered-004.cjs'),'--integrated','--pdf='+path.join(dir,'absent.pdf'),'--pool='+path.join(dir,'pool.json'),'--ledger='+path.join(dir,'ledger.json')],{encoding:'utf8'});}
+let result=run(pool,ledger);assert.equal(result.status,0,result.stderr);const id=b.records.find(r=>r.candidate).id,held=b.records.find(r=>!r.candidate).id;
+const missing=structuredClone(ledger);delete missing.questions[id];assert.notEqual(run(pool,missing).status,0);
+const mismatched=structuredClone(ledger);mismatched.questions[id].content_sha256='0'.repeat(64);assert.notEqual(run(pool,mismatched).status,0);
+const changed=structuredClone(pool);changed.questions.find(q=>q.id===held).question+=' unauthorized';assert.notEqual(run(changed,ledger).status,0);
+console.log(JSON.stringify({pass:true,synthetic_integrated_candidates:5,missing_private_pdf_replay:true,negative_cases:3,shared_writes:false}));
