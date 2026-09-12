@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {questionFingerprint}=require('../../../../scripts/lib/jamb-content-trust');
-const id=process.argv[2];if(!/^(00[2-9]|01[0-9]|02[0-6])$/.test(id))throw Error('Expected batch002 through026');
+const id=process.argv[2];if(!/^(00[2-9]|01[0-9]|02[0-9]|03[0-2])$/.test(id))throw Error('Expected batch002 through032');
 const read=f=>JSON.parse(fs.readFileSync(path.join(__dirname,f))),hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const selected=read(`batch-${id}-selection.json`),review=read(`batch-${id}-review.json`),first=read(Number(id)>=23?'later-source.json':'batch-001.json');
 const records=selected.map(s=>{const original=s.original_record,y=s.actual_source_year,n=s.actual_source_number,d=review[y+'-'+n];if(!d)throw Error('Missing decision '+y+'-'+n);const page=s.source_pdf_pages?.[0]??(y===1984?(n<=13?6:n<=27?7:n<=42?8:9):(n<=3?9:n<=15?10:n<=29?11:n<=45?12:13));

@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {questionFingerprint,assessQuestion}=require('../../../../scripts/lib/jamb-content-trust');
 const id=process.argv[2],integrated=process.argv.includes('--integrated'),read=f=>JSON.parse(fs.readFileSync(path.join(__dirname,f))),hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const b=read(`batch-${id}.json`),selected=read(`batch-${id}-selection.json`),decisions=read(`batch-${id}-review.json`),pool=read('../../source-pool.json').questions;
-assert.ok(['025','026','022','023','024','002','003','004','005','006','007','008','009','010','011','012'].concat([String(13).padStart(3,0),String(14).padStart(3,0),String(15).padStart(3,0),String(16).padStart(3,0),String(17).padStart(3,0),String(18).padStart(3,0),String(19).padStart(3,0),String(20).padStart(3,0),String(21).padStart(3,0)]).includes(id));const expectedLength=id==='022'?13:40;assert.equal(b.records.length,expectedLength);assert.equal(new Set(b.records.map(r=>r.id)).size,expectedLength);assert.deepEqual(b.records.map(r=>r.id),selected.map(r=>r.original_record.id));
+assert.ok(['027','028','029','030','031','032','025','026','022','023','024','002','003','004','005','006','007','008','009','010','011','012'].concat([String(13).padStart(3,0),String(14).padStart(3,0),String(15).padStart(3,0),String(16).padStart(3,0),String(17).padStart(3,0),String(18).padStart(3,0),String(19).padStart(3,0),String(20).padStart(3,0),String(21).padStart(3,0)]).includes(id));const expectedLength=id==='022'?13:id==='032'?4:40;assert.equal(b.records.length,expectedLength);assert.equal(new Set(b.records.map(r=>r.id)).size,expectedLength);assert.deepEqual(b.records.map(r=>r.id),selected.map(r=>r.original_record.id));
 assert.equal(hash(fs.readFileSync(path.join(__dirname,`batch-${id}-selection.json`))),b.selection_sha256);assert.equal(hash(fs.readFileSync(path.join(__dirname,`batch-${id}-review.json`))),b.review_sha256);
 const priorLedger=process.argv.includes('--mixed-prior')?read('../../../../data/jamb/review-ledger.json'):null;
 const seen=new Set();assert.equal(b.prior_batches.length,Number(id)-1);
@@ -58,6 +58,10 @@ if(id==='025'){
 if(id==='026'){
  assert.equal(b.counts.candidates,25);assert.equal(b.counts.held,15);assert.equal(50+10-25-5,30);assert.equal((360-72-126-108)/360*100,15);assert.equal((200/300)/(40/120),2);assert.equal(4*14-10,46);assert.equal((46+10)/4,14);
  const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);assert.equal(at(2012,46).candidate.answer,'C');assert.equal(at(2014,5).candidate.answer,'A');assert.ok(at(2014,5).candidate.question.includes('126'));assert.ok(at(2014,5).candidate.question.includes('108'));assert.equal(at(2013,9).candidate.answer,'D');assert.equal(at(2013,10).candidate.answer,'C');assert.ok(at(2013,10).candidate.question.includes('vertical line'));assert.equal(at(2013,15).candidate.answer,'C');assert.ok(at(2013,15).candidate.question.includes('(Qs + 10)/4'));
+}
+if(id==='027'){
+ assert.equal(b.counts.candidates,17);assert.equal(b.counts.held,23);assert.equal(4*10-10,30);assert.equal((4/20)/(2/8),0.8);assert.equal(3*9,27);assert.equal(28-27,1);assert.equal((500+1500)/50,40);assert.equal((40-24)/(6+2),2);assert.equal(108/360*360,108);assert.ok(Math.abs((1-100/175)*100-42.85714285714286)<1e-10);
+ const at=n=>b.records.find(r=>r.actual_source_year===2014&&r.actual_source_number===n);assert.equal(at(17).candidate.answer,'A');assert.ok(at(17).candidate.question.includes('3 | E | 9 | 7'));assert.equal(at(20).candidate.answer,'B');assert.equal(at(8).publication_candidate,false);assert.equal(at(31).publication_candidate,false);
 }
 if(id==='020'){
  assert.equal(b.counts.candidates,26);assert.equal(b.counts.held,14);
