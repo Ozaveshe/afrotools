@@ -72,7 +72,6 @@
     }
     var ids = new Set();
     for (var question of pool.questions) {
-      await validateReviewedObject(question);
       var options = question.options;
       var keys = options && !Array.isArray(options) ? Object.keys(options).sort() : [];
       if (typeof question.id !== 'string' || !question.id.trim() || ids.has(question.id) ||
@@ -85,6 +84,11 @@
       }
       ids.add(question.id);
     }
+    // Bound concurrent digests so large banks do not queue one browser round-trip per item.
+    for (var offset = 0; offset < pool.questions.length; offset += 32) {
+      await Promise.all(pool.questions.slice(offset, offset + 32).map(validateReviewedObject));
+    }
+    if (currentRevision !== index.review_revision) throw new Error('Question reviews changed; refresh the current index.');
     // Register only after the entire publication passes, never a partial bank.
     pool.questions.forEach(function (question) { registered.set(question, pool.review_revision); });
     return pool;
