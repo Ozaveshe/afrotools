@@ -71,6 +71,10 @@ if(id==='029'){
  assert.equal(b.counts.candidates,23);assert.equal(b.counts.held,17);assert.equal((10+12)/2,11);assert.equal(40-4*4,24);assert.equal(7*7-(2+3+5+8+10+12),9);assert.equal((15-5)/(2+3),2);assert.equal(353/5,70.6);assert.equal([2,4,6,8,4,6].reduce((s,v)=>s+Math.abs(v-5),0),10);
  const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);assert.equal(at(2017,1).candidate.answer,'B');assert.equal(at(2017,3).candidate.answer,'C');assert.equal(at(2016,8).candidate.answer,'B');assert.equal(at(2016,26).candidate.answer,'C');assert.ok(at(2016,26).candidate.question.includes('5 | 353'));assert.equal(at(2015,46).publication_candidate,false);
 }
+if(id==='030'){
+ assert.equal(b.counts.candidates,22);assert.equal(b.counts.held,18);assert.equal(45/12,3.75);assert.equal(563-483,80);assert.equal(71-15,56);assert.equal(4*18-30,42);assert.equal((30+18)/(9+3),4);assert.equal(30-3*4,18);
+ const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);assert.equal(at(2016,34).candidate.answer,'B');assert.equal(at(2016,34).candidate.options.C,'N2.80');assert.equal(at(2016,40).candidate.answer,'A');assert.ok(at(2016,40).candidate.question.includes('6 | 483'));assert.ok(at(2016,40).candidate.question.includes('7 | 563'));assert.equal(at(2017,22).candidate.answer,'A');assert.equal(at(2017,20).publication_candidate,false);
+}
 if(id==='020'){
  assert.equal(b.counts.candidates,26);assert.equal(b.counts.held,14);
  assert.equal(1/(1-0.6),2.5);assert.ok(Math.abs(1/(1-0.8)-5)<1e-12);
