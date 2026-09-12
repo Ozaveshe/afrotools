@@ -81,7 +81,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   <div class="jb-wrap jb-hero-z">
     <span class="jb-hero-tag">📚 Reviewed Questions</span>
     <h1>JAMB <b>Past Questions</b> Bank</h1>
-    <p class="sub">Filter by year, subject, or search by keyword. Tap "Why?" on any question for an AI explanation.</p>
+    <p class="sub">Choose a subject and year to practise available past questions. Open an answer explanation whenever you need it.</p>
   </div>
 </section>
 
@@ -97,8 +97,8 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         </select>
       </div>
       <div style="flex:1;min-width:120px;">
-        <label style="display:block;font-size:.7rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Year</label>
-        <select id="f-year" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:.85rem;background:#fff;" aria-label="F Year">
+        <label for="f-year" style="display:block;font-size:.7rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Year</label>
+        <select id="f-year" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:.85rem;background:#fff;" aria-describedby="year-coverage" disabled>
           <option value="">All years</option>
         </select>
       </div>
@@ -114,6 +114,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     </div>
 
     <p><a href="/tools/education-hub/">Plan your study in the Education Hub</a></p>
+    <p id="year-coverage" role="status" style="font-size:.78rem;color:#64748b;">Checking available years…</p>
     <div id="result-meta" style="font-size:.78rem;color:#64748b;margin-bottom:14px;">Loading…</div>
 
     <div id="q-list" style="display:flex;flex-direction:column;gap:14px;"></div>
@@ -222,6 +223,7 @@ var SUBJ_LABEL = {};
 SUBJECTS.forEach(function(s){ SUBJ_LABEL[s[0]] = s[1]; });
 
 var POOL_REVISION = null;
+var PENDING_URL_YEAR = null;
 var REFRESH_ID = 0;
 var ALL_QUESTIONS = []; // current loaded subject pool
 var FILTERED = [];
@@ -239,14 +241,31 @@ function populateSubjectFilter(){
   });
 }
 
-function populateYearFilter(){
+function populateYearFilter(questions, requestedYear){
   var sel = document.getElementById("f-year");
-  // Common JAMB years range
-  for (var y = 2020; y >= 1978; y--) {
+  var counts = {};
+  questions.forEach(function(q) {
+    if (Number.isInteger(q.year)) counts[q.year] = (counts[q.year] || 0) + 1;
+  });
+  sel.textContent = "";
+  var all = document.createElement("option");
+  all.value = ""; all.textContent = "All available years";
+  sel.appendChild(all);
+  Object.keys(counts).sort(function(a,b) { return Number(b) - Number(a); }).forEach(function(y) {
     var opt = document.createElement("option");
-    opt.value = y; opt.textContent = y;
+    opt.value = y; opt.textContent = y + " (" + counts[y] + (counts[y] === 1 ? " question)" : " questions)");
     sel.appendChild(opt);
-  }
+  });
+  sel.disabled = Object.keys(counts).length === 0;
+  sel.value = Object.prototype.hasOwnProperty.call(counts, requestedYear) ? requestedYear : "";
+  var unavailable = requestedYear && sel.value !== requestedYear;
+  var count = sel.value ? counts[sel.value] : questions.length;
+  document.getElementById("year-coverage").textContent = count
+    ? (unavailable ? requestedYear + " is unavailable for this subject. Showing available years. " : "")
+      + "Practice selection: " + count + (count === 1 ? " question" : " questions") + (sel.value ? " from " + sel.value : " across available years")
+      + ". Full-paper coverage has not been confirmed."
+    : "No reviewed questions are available for this subject yet.";
+  return sel.value;
 }
 
 async function loadSubject(subject) {
@@ -272,7 +291,8 @@ async function buildAiHeaders() {
 async function refresh() {
   FIGURE_CLEANUPS.splice(0).forEach(function(cleanup) { cleanup(); });
   var subject = document.getElementById("f-subject").value;
-  var year = document.getElementById("f-year").value;
+  var year = PENDING_URL_YEAR !== null ? PENDING_URL_YEAR : document.getElementById("f-year").value;
+  PENDING_URL_YEAR = null;
   var search = document.getElementById("f-search").value.trim().toLowerCase();
   var answeredOnly = document.getElementById("f-answered").checked;
 
@@ -282,13 +302,18 @@ async function refresh() {
   document.getElementById("load-more-wrap").hidden = true;
   document.getElementById("result-meta").setAttribute("role", "status");
   document.getElementById("result-meta").textContent = "Checking reviewed questions…";
+  document.getElementById("f-year").disabled = true;
+  document.getElementById("year-coverage").textContent = "Checking available years…";
   try {
     var loaded = await loadSubject(subject);
     if (requestId !== REFRESH_ID) return;
     ALL_QUESTIONS = loaded.questions;
     POOL_REVISION = loaded.revision;
+    year = populateYearFilter(ALL_QUESTIONS, year);
   } catch(e) {
     if (requestId !== REFRESH_ID) return;
+    populateYearFilter([], "");
+    document.getElementById("year-coverage").textContent = "Year availability could not be loaded. Please try again.";
     document.getElementById("result-meta").textContent = "Reviewed questions are unavailable. Please retry later, or use the Education Hub to plan your study.";
     return;
   }
@@ -301,6 +326,8 @@ async function refresh() {
     }
     if (answeredOnly && !q.answer) return false;
     return true;
+  }).sort(function(a,b) {
+    return b.year - a.year || a.subject.localeCompare(b.subject) || a.num - b.num || a.id.localeCompare(b.id);
   });
 
   SHOWN = 0;
@@ -331,6 +358,7 @@ function renderQCard(q) {
   var figureReady = !q.image;
   var cardRevision = POOL_REVISION;
   card.className = "qcard";
+  card.setAttribute("data-reviewed-question", q.id);
   var subjLbl = SUBJ_LABEL[q.subject] || q.subject;
   var yr = q.year ? "JAMB " + q.year : "JAMB";
   var meta = '<div class="qcard-meta"><span class="meta-chip subj">' + subjLbl + '</span><span class="meta-chip">' + yr + '</span><span class="meta-chip">Q' + q.num + '</span>' + (q.has_diagram ? '<span class="meta-chip">📊 has diagram</span>' : '') + '</div>';
@@ -452,13 +480,12 @@ function escapeHtml(s) {
 
 // Initial setup
 populateSubjectFilter();
-populateYearFilter();
 
 // URL params
 (function(){
   var p = new URLSearchParams(location.search);
   if (p.get("subject")) document.getElementById("f-subject").value = p.get("subject");
-  if (p.get("year")) document.getElementById("f-year").value = p.get("year");
+  if (/^\d{4}$/.test(p.get("year") || "")) PENDING_URL_YEAR = p.get("year");
   if (p.get("q")) document.getElementById("f-search").value = p.get("q");
 })();
 

@@ -175,17 +175,18 @@ test('past questions reveal answers only after their reviewed diagram loads', as
     await declineAnalytics(page);
     const cards = page.locator('.qcard');
     await expect(cards).toHaveCount(3);
-    await expect(cards.first().locator('.reveal-btn')).toBeDisabled();
-    await cards.first().locator('.qcard-opt').first().click();
-    await expect(cards.first().locator('.answer-explanation')).toBeHidden();
+    const valid = page.locator('[data-reviewed-question="visual-valid"]');
+    await expect(valid.locator('.reveal-btn')).toBeDisabled();
+    await valid.locator('.qcard-opt').first().click();
+    await expect(valid.locator('.answer-explanation')).toBeHidden();
     releaseImage();
-    await expect(cards.first().locator('.reviewed-figure img')).toBeVisible();
-    await expect(cards.first().locator('.reviewed-figure img')).toHaveAttribute('alt', 'Synthetic answer display');
-    await expect(cards.first().locator('.explain-btn')).toBeHidden();
-    await cards.first().locator('.reveal-btn').click();
-    await checkExplanationDisclosure(page);
-    for (const index of [1, 2]) {
-      const card = cards.nth(index);
+    await expect(valid.locator('.reviewed-figure img')).toBeVisible();
+    await expect(valid.locator('.reviewed-figure img')).toHaveAttribute('alt', 'Synthetic answer display');
+    await expect(valid.locator('.explain-btn')).toBeHidden();
+    await valid.locator('.reveal-btn').click();
+    await checkExplanationDisclosure(page, valid);
+    for (const id of ['visual-missing', 'visual-tampered']) {
+      const card = page.locator(`[data-reviewed-question="${id}"]`);
       await expect(card.locator('.reviewed-figure')).toContainText('diagram is unavailable');
       await expect(card.locator('.reveal-btn')).toBeDisabled();
       await card.locator('.qcard-opt').first().click();
@@ -194,8 +195,8 @@ test('past questions reveal answers only after their reviewed diagram loads', as
   } finally { releaseImage(); }
 });
 
-async function checkExplanationDisclosure(page) {
-  const box = page.locator('.answer-explanation').first();
+async function checkExplanationDisclosure(page, root = page) {
+  const box = root.locator('.answer-explanation').first();
   const explanation = box.locator('.reviewed-explanation');
   const summary = box.locator('summary');
   await expect(explanation).toBeHidden();
