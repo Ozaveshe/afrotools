@@ -1,0 +1,24 @@
+const {test,expect}=require('@playwright/test');
+const {renderYear}=require('../../scripts/build-jamb-reviewed-pages');
+const batch=require('../../ops/jamb/review-candidates/english/english-2018-003.json');
+for(const width of [320,390])test(`Restored 2015 English passage and answer disclosure at ${width}px`,async({page})=>{
+ const r=batch.records.find(r=>r.candidate.year===2015);
+ const review={status:'accepted',reviewer:'Codex (AI)',reviewer_type:'ai',reviewed_at:'2026-09-12',evidence:'Unpublished candidate rendering fixture only'};
+ const ledger={sources:{[batch.source_id]:batch.source},questions:{[r.id]:{source_id:batch.source_id,content_sha256:r.content_sha256,question_review:review,answer_review:review,explanation_review:review}}};
+ const html=renderYear('english','2015',[r.candidate],ledger,['2015']).html;
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.context().addInitScript(()=>localStorage.setItem('afrotools_cookie_consent','declined'));
+ await page.setViewportSize({width,height:900});
+ await page.route('**/jamb/english/2015/',route=>route.fulfill({contentType:'text/html',body:html}));
+ await page.goto('/jamb/english/2015/');
+ const card=page.locator('[data-reviewed-question="'+r.id+'"]');
+ await expect(card.locator('blockquote')).toHaveText(r.candidate.passage);
+ await expect(card.locator('blockquote')).toBeVisible();
+ await expect(card.locator('details[open]')).toHaveCount(0);
+ await card.locator('summary').focus();await card.locator('summary').press('Enter');
+ await expect(card.getByText(r.candidate.explanation,{exact:true})).toBeVisible();
+ await card.locator('summary').press('Enter');
+ await expect(card.locator('details[open]')).toHaveCount(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ expect(errors).toEqual([]);
+});
