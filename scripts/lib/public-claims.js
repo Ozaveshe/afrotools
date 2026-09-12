@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('node:child_process');
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./safe-write');
 
 const DEFAULT_ROOT = path.resolve(__dirname, '..', '..');
@@ -366,6 +367,21 @@ function stableReportDate(report, claims, previousJson, previousMarkdown) {
   return report;
 }
 
+function committedReportDate(report, claims, root) {
+  // Earlier build stages can temporarily change scan totals and overwrite the
+  // working report. Compare the final result with the committed pair as well.
+  // Equality of both formats remains required; current-date validation is separate.
+  try {
+    const read = file => execFileSync('git', ['show', 'HEAD:' + file], {
+      cwd: root, encoding: 'utf8', maxBuffer: 4 * 1024 * 1024, stdio: ['ignore','pipe','pipe']
+    });
+    return stableReportDate(report, claims, read('reports/public-claims.json'), read('reports/public-claims.md'));
+  } catch (_) {
+    // Source archives without Git still use the existing working report.
+    return report;
+  }
+}
+
 function writeText(root, relativePath, content) {
   const destination = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
@@ -409,6 +425,7 @@ function buildRepository({ root = DEFAULT_ROOT, write = false, today = new Date(
       report = stableReportDate(report, claims,
         fs.readFileSync(previousJsonPath, 'utf8'), fs.readFileSync(previousMarkdownPath, 'utf8'));
     }
+    report = committedReportDate(report, claims, root);
     writeText(root, REPORT_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`);
     writeText(root, REPORT_MD_PATH, publicClaimsMarkdown(report, claims));
     writeText(root, FLOWS_REPORT_JSON_PATH, `${JSON.stringify(flows, null, 2)}\n`);
@@ -438,5 +455,6 @@ module.exports = {
   projectClaimSelectorsInHtml,
   scanContent,
   stableReportDate,
+  committedReportDate,
   validateRegistries
 };
