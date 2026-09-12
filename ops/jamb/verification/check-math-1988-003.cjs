@@ -11,6 +11,7 @@ for(const r of batch.records){
  // Integer ten-thousandths preserve exactly the logarithms specified in the question.
  const result=2*4771-3010;assert.equal(result,6532);
  assert.deepEqual(Object.entries(q.options).filter(([,v])=>Math.round(Number(v)*10000)===result).map(([key])=>key),[q.answer]);
- assert.match(q.explanation,/compilation prints 0\.6352/);
+ assert.doesNotMatch(q.explanation,/compilation prints|Source note:/);
+ if(!draft) assert.ok(r.presentation_history.some(entry=>/compilation prints 0\.6352/.test(entry.previous_explanation)));
 }
 console.log(JSON.stringify({passed:true,count:1,question_ids:batch.records.map(r=>r.id)}));

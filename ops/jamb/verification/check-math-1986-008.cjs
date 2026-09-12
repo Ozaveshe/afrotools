@@ -29,7 +29,8 @@ if(!draft){
  assert.equal(q.year,1986);assert.equal(r.before.year,1987);assert.equal(r.population,900000);
  assert.deepEqual(r.sector_angles,angles);assert.match(q.question,/population of 0\.9 million/);
  assert.equal(q.explanation,r.explanation);assert.equal(q.ai_explanation,r.explanation);
- assert.match(q.explanation,/supplied compilation prints 109 million/);
+ assert.doesNotMatch(q.explanation,/supplied compilation|Source note:/);
+ assert.ok(r.presentation_history.some(entry=>/supplied compilation prints 109 million/.test(entry.previous_explanation)));
  const parse=v=>{const m=v.match(/^(\d+) × 10⁴$/);assert.ok(m);return Number(m[1])*10000;};
  assert.deepEqual(Object.entries(q.options).filter(([,v])=>parse(v)===answer).map(([k])=>k),[q.answer]);
  assert.equal(assertVisualAssetFiles(root,[q],require(path.join(root,'data/jamb/review-ledger.json'))),1);

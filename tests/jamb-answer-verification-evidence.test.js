@@ -9,6 +9,13 @@ const evidenceDir = path.join(root, 'ops/jamb/verification');
 const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
 const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3}\.json$/.test(name));
 
+test('student explanations contain learning content instead of internal repair history', () => {
+  const bank = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
+  for (const question of bank.questions) {
+    assert.doesNotMatch(question.explanation || question.ai_explanation || '', /source note:|supplied (?:compilation|paper|PDF)|(?:repaired|corrupted|damaged) (?:source |cubic |text |)?transcription|imported (?:text|option)|source (?:copy printing|transcription was repaired)|(?:has|have|were|was) been restored/i, question.id);
+  }
+});
+
 test('AI calculation approvals are backed by current batch evidence and reproducible checks', () => {
   const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
   const pool = JSON.parse(fs.readFileSync(path.join(root, 'ops/jamb/source-pool.json'), 'utf8')).questions;
