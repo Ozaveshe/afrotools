@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const draft=process.argv.includes('--draft'),root=draft?'C:/Users/Oza/.codex/worktrees/three-area-integration-20260909/afrotools':path.resolve(__dirname,'../../..');
+const records=draft?require('./math-1991-002-candidates.json'):require('./math-1991-publishable-002.json').records;
+const pool=draft?records.map(r=>r.candidate):JSON.parse(fs.readFileSync(path.join(root,'ops/jamb/source-pool.json'))).questions;
+const {questionFingerprint}=require(path.join(root,'scripts/lib/jamb-content-trust'));
+const near=(a,b)=>Math.abs(a-b)<1e-8;const letters='ABCD';
+assert.equal(records.length,6);assert.deepEqual(records.map(r=>r.candidate.num),[24,28,31,32,33,35]);
+for(const r of records){const q=pool.find(q=>q.id===r.id);assert.equal(questionFingerprint(q),r.content_sha256);assert.equal(q.year,1991);assert.equal(r.source_pdf_page,29);assert.equal(r.source_pdf_sha256,'dfc7168d207757e9db0b59b378aa16aa0f1449c501d6af3bf040abb37af95264');assert.equal(q.explanation,q.ai_explanation);assert.doesNotMatch(q.explanation,/source note|repair|original key|rechecking/i);
+ if(q.num===24){assert.equal(r.source_url,'https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=1991&page=5');assert.deepEqual(q.options,{A:'1 − 2x − 2√(x(1 + x))',B:'1 + 2x + 2√(x(1 + x))',C:'√(x(1 + x))',D:'1 + 2x − 2√(x(1 + x))'});const choices=[x=>1-2*x-2*Math.sqrt(x*(1+x)),x=>1+2*x+2*Math.sqrt(x*(1+x)),x=>Math.sqrt(x*(1+x)),x=>1+2*x-2*Math.sqrt(x*(1+x))];assert.deepEqual(choices.flatMap((fn,i)=>[0,.25,1,2,10].every(x=>near(fn(x),(Math.sqrt(1+x)+Math.sqrt(x))/(Math.sqrt(1+x)-Math.sqrt(x))))?[letters[i]]:[]),[q.answer]);}
+ else if(q.num===28){assert.deepEqual(q.options,{A:'27(1/3)^(n − 1)',B:'3^(n + 2)',C:'27 + 18(n − 1)',D:'27 + 6(n − 1)'});const choices=[n=>27*(1/3)**(n-1),n=>3**(n+2),n=>27+18*(n-1),n=>27+6*(n-1)];assert.deepEqual(choices.flatMap((fn,i)=>[27,9,3,1].every((v,j)=>near(fn(j+1),v))?[letters[i]]:[]),[q.answer]);}
+ else if(q.num===31){assert.deepEqual(q.options,{A:'(5x − 30)°',B:'(4x + 60)°',C:'(60 − x)°',D:'(3x + 61)°'});const x=(360-(-30+60+60+61))/(5+4-1+3),angles=[5*x-30,4*x+60,60-x,3*x+61];assert.equal(angles.reduce((a,b)=>a+b),360);assert.deepEqual(angles,[65,136,41,118]);assert.equal(letters[angles.indexOf(Math.min(...angles))],q.answer);}
+ else if(q.num===32){assert.deepEqual(q.options,{A:'11√3 cm',B:'12 cm',C:'12√2 cm',D:'13 cm'});assert.deepEqual([11*Math.sqrt(3),12,12*Math.sqrt(2),13].flatMap((d,i)=>near(d*d,2*144)?[letters[i]]:[]),[q.answer]);}
+ else if(q.num===33){assert.deepEqual(q.options,{A:'8√3 cm',B:'16/√3 cm',C:'5√3 cm',D:'10/√3 cm'});const shorter=8,side=shorter/(2*Math.sin(Math.PI/6)),longer=2*side*Math.cos(Math.PI/6);assert.deepEqual([8*Math.sqrt(3),16/Math.sqrt(3),5*Math.sqrt(3),10/Math.sqrt(3)].flatMap((v,i)=>near(v,longer)?[letters[i]]:[]),[q.answer]);assert.ok(longer>shorter);}
+ else if(q.num===35){for(const text of ['P outside a circle','PT is a tangent','P–M–N','P–Q–R','PM = 5 cm','PN = 12 cm','PQ = 4.8 cm','PR and PT respectively','nearest 0.1 cm'])assert.ok(q.question.includes(text),text);assert.deepEqual(q.options,{A:'7.3 cm and 5.9 cm',B:'7.7 cm and 12.5 cm',C:'12.5 cm and 7.7 cm',D:'5.9 cm and 7.3 cm'});const power=5*12,pr=power/4.8,pt=Math.sqrt(power),round=x=>Math.round(x*10)/10;assert.deepEqual([[7.3,5.9],[7.7,12.5],[12.5,7.7],[5.9,7.3]].flatMap(([a,b],i)=>a===round(pr)&&b===round(pt)?[letters[i]]:[]),[q.answer]);assert.ok(pr>4.8);}
+ else throw Error('Unchecked question');
+}
+console.log(JSON.stringify({passed:true,count:records.length,question_ids:records.map(r=>r.id)}));
