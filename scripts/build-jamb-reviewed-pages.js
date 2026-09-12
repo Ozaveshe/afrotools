@@ -113,6 +113,12 @@ function validatePage(html, expectedIds, canonical) {
   const actualIds = [...html.matchAll(/data-reviewed-question="([^"]+)"/g)].map(match => match[1]);
   if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds.map(esc))) throw new Error('Question set differs from approval ledger');
   if ((html.match(/<article\b/g) || []).length !== (html.match(/<\/article>/g) || []).length) throw new Error('Incomplete question card');
+  for (const card of html.matchAll(/<article\b[^>]*data-reviewed-question="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)) {
+    const stem = card[2].match(/<p\b[^>]*class="[^"]*\bqcard-text\b[^"]*"[^>]*>([\s\S]*?)<\/p>/);
+    if (!stem || !stem[1].replace(/<[^>]*>/g, '').trim()) throw new Error('Missing question text: ' + card[1]);
+    const answer = card[2].match(/<details\b[^>]*>([\s\S]*?)<\/details>/);
+    if (!answer || !/<summary\b/.test(answer[1]) || (answer[1].match(/<p\b/g) || []).length < 2) throw new Error('Missing answer explanation: ' + card[1]);
+  }
   if (!html.includes(`<link rel="canonical" href="${canonical}">`)) throw new Error('Canonical mismatch');
   let questionSchemas = 0;
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
