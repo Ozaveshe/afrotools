@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 284 |
-| sw | 138 | 0 | 307 |
+| fr | 161 | 0 | 286 |
+| sw | 138 | 0 | 309 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 317 | 40 | 0 | 277 | 21 | 0 | 296 |
+| editorial | 319 | 40 | 0 | 279 | 21 | 0 | 298 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -65,6 +65,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/best-way-send-money-ghana-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-way-send-money-kenya-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/best-way-send-money-kenya-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/bill-of-lading-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/bill-of-lading-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/bmi-calculator-africa-guide/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/bmi-calculator-africa-guide/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/boq-construction-nigeria-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -488,6 +490,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/send-money-nigeria-cheapest/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/senegal-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/senegal-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/seychelles-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/seychelles-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/sickle-cell-genotype-testing-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/sickle-cell-genotype-testing-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/side-hustle-tax-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |

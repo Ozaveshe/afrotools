@@ -20,6 +20,7 @@ const REQUIRED_PATHS = [
 ];
 
 const FORBIDDEN_PATHS = [
+  'data/automation',
   'data/jamb/review-ledger.json',
   'data/image-generation',
   'assets/img/new',

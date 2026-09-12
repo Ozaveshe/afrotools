@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11521 |
-| Indexable pages | 9705 |
+| Public pages | 11523 |
+| Indexable pages | 9707 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5016 |
-| Documented fallbacks | 14788 |
-| Routes eligible for primary sitemaps | 9705 |
+| Genuine equivalence groups | 5018 |
+| Documented fallbacks | 14790 |
+| Routes eligible for primary sitemaps | 9707 |
 
 ## Locale Coverage
 
-- en: 5975 page records
+- en: 5977 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 522
+- article: 524
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4987,6 +4987,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:62d336c32a31: en=`/blog/import-duty-ghana-2026/`; x-default=`/blog/import-duty-ghana-2026/`
 - equivalence:62e72c3fb9b5: en=`/cars/kenya/toyota/camry/2005/`, fr=`/fr/cars/kenya/toyota/camry/2005/`; x-default=`/cars/kenya/toyota/camry/2005/`
 - equivalence:62ef4612f338: en=`/tools/motor-third-party/somalia`; x-default=`/tools/motor-third-party/somalia`
+- equivalence:62f9cbdf2785: en=`/blog/seychelles-vat-filing-guide-2026/`; x-default=`/blog/seychelles-vat-filing-guide-2026/`
 - equivalence:62fc8bd89699: en=`/tools/afrokitchen/recipes/jollof-rice-gh/`; x-default=`/tools/afrokitchen/recipes/jollof-rice-gh/`
 - equivalence:630a37cd4ce6: en=`/tools/employee-cost/benin/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-benin/`; x-default=`/tools/employee-cost/benin/`
 - equivalence:630b8e7d5870: en=`/advertise/`, fr=`/fr/advertise/`, sw=`/sw/tangaza/`; x-default=`/advertise/`
@@ -6716,6 +6717,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:babd2d77f943: en=`/tools/tin-guide/cameroon`, sw=`/sw/zana/mwongozo-tin/cameroon/`; x-default=`/tools/tin-guide/cameroon`
 - equivalence:bac0896d3430: en=`/cars/nigeria/toyota/vitz-yaris/2015/`, fr=`/fr/cars/nigeria/toyota/vitz-yaris/2015/`; x-default=`/cars/nigeria/toyota/vitz-yaris/2015/`
 - equivalence:bac38e3c0aaa: en=`/tools/gratuity-calculator/madagascar/`; x-default=`/tools/gratuity-calculator/madagascar/`
+- equivalence:bac4e6806b3f: en=`/blog/bill-of-lading-checklist-africa/`; x-default=`/blog/bill-of-lading-checklist-africa/`
 - equivalence:bacd0c95ce72: en=`/tools/afrokitchen/recipes/makroudh-tn/`; x-default=`/tools/afrokitchen/recipes/makroudh-tn/`
 - equivalence:bad306f0036b: en=`/travel/`, fr=`/fr/travel/`, sw=`/sw/usafiri-utalii/`; x-default=`/travel/`
 - equivalence:bae09e8ac6b7: en=`/blog/cost-of-living-lagos-vs-nairobi/`; x-default=`/blog/cost-of-living-lagos-vs-nairobi/`
