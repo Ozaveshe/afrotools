@@ -60,6 +60,16 @@ test('passage and visual dependencies need their actual supporting content', () 
   assert.ok(assessQuestion({ ...question, has_diagram: true }).reasons.includes('missing_visual_or_description'));
 });
 
+test('line equations are self-contained while numbered passage lines still need context', () => {
+  const { question } = fixture();
+  for (const prompt of ['Find a line parallel to the line 7x + 5y = 12.', 'Find the slope of the line 12x + y = 3.']) {
+    assert.equal(assessQuestion({ ...question, question: prompt }).reasons.includes('missing_passage_or_context'), false);
+  }
+  for (const prompt of ['What does line 7 mean?', 'Interpret lines 12–14.', 'What is implied in line 12?']) {
+    assert.equal(assessQuestion({ ...question, question: prompt }).reasons.includes('missing_passage_or_context'), true);
+  }
+});
+
 test('OCR debris and uncertain AI explanations stay quarantined even with an answer', () => {
   const { question } = fixture();
   const result = assessQuestion({ ...question, question: question.question + ' [PAGE 8]', explanation: 'The value is 41... (rechecking: 42 matches).' });

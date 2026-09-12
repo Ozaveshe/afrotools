@@ -62,6 +62,28 @@ test('duplicate IDs reject the entire bank', async () => {
   const rows = questions(); rows.push(rows[0]);
   await assert.rejects(browser(bank(rows)).trust.loadPool(), /duplicate/);
 });
+
+test('large banks verify every record with bounded concurrency and no partial registration', async () => {
+  const { review: ignored, ...base } = questions()[0];
+  const rows = Array.from({ length: 97 }, (_, i) => reviewed({ ...base, id: 'large-' + i }));
+  const fixture = bank(rows);
+  const { trust, context } = browser(fixture);
+  let active = 0, peak = 0, digests = 0;
+  context.crypto = { subtle: { digest: async (...args) => {
+    active++; peak = Math.max(peak, active); digests++;
+    await new Promise(resolve => setTimeout(resolve, 1));
+    try { return await webcrypto.subtle.digest(...args); } finally { active--; }
+  } } };
+  const pool = await trust.loadPool();
+  assert.equal(trust.assertEligible(pool.questions, revision), true);
+  assert.equal(digests, rows.length + 3); // Fresh index, index validation, pool and every question.
+  assert.ok(peak > 1 && peak <= 32);
+  const tampered = structuredClone(rows); tampered[96].question += ' changed';
+  const invalid = bank(tampered), rejector = browser(invalid).trust;
+  const index = await rejector.fetchIndex();
+  await assert.rejects(rejector.validatePool(invalid.pool, index), /review/);
+  assert.throws(() => rejector.assertEligible([invalid.pool.questions[0]], revision), /Unreviewed/);
+});
 test('stale pool and tampered index/publication are rejected', async () => {
   const stale = bank(); stale.index = bank([], 'b'.repeat(64)).index;
   await assert.rejects(browser(stale).trust.loadPool(), /changed/);

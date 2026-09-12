@@ -3,7 +3,7 @@
 const crypto = require('node:crypto');
 const { visualAssetHash } = require('./jamb-visual-assets');
 
-const CONTEXT_REFERENCE = /\b(?:the|this|above|following)\s+(?:passage|extract|poem|stanza)\b|\b(?:author|writer)\s+(?:observes|believes|argues|suggests|implies|apparently|means)\b|\baccording to (?:the\s+)?(?:author|writer)\b|\blines?\s+\d+/i;
+const CONTEXT_REFERENCE = /\b(?:the|this|above|following)\s+(?:passage|extract|poem|stanza)\b|\b(?:author|writer)\s+(?:observes|believes|argues|suggests|implies|apparently|means)\b|\baccording to (?:the\s+)?(?:author|writer)\b|\blines?\s+\d+\b/i;
 const VISUAL_REFERENCE = /\b(?:diagram|figure|graph|illustration|circuit|chart|histogram|table|map)\s+(?:above|below|shown|provided)|\b(?:use|using|from|in)\s+the\s+(?:diagram|figure|graph|illustration|circuit|chart|histogram|table|map)\b/i;
 const OCR_ARTIFACT = /\[PAGE\s+\d+\]|\uFFFD|\b(?:TODO|FIXME|REPLACE_ME)\b/i;
 const EXPLANATION_UNCERTAINTY = /\b(?:rechecking|guess(?:ing|ed)?|cannot determine|not enough information|none of the (?:given |provided )?options|no (?:given |provided )?option matches)\b|\.{3}\s*\(/i;
