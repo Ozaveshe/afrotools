@@ -44,7 +44,7 @@ assert.equal(get(10).answer,'A');assert.match(get(10).question,/T = 16/);assert.
 assert.ok(-(-1)*(1/400-1/300)<0);assert.equal(get(28).answer,'A');
 // Source graph: shared endpoints, upper pathI and lower pathII. Relative barriers, not fabricated k measurements.
 assert.match(get(33).question,/Path I has the higher peak and path II the lower peak/);
-assert.match(get(33).question,/x is the vertical rise from the reactant energy to the higher peak/);
+assert.match(get(33).question,/x is the vertical rise from reactant energy to the higher peak/);
 assert.equal(get(33).answer,'B');assert.equal(get(33).has_diagram,false);
 assert.equal(get(34).answer,'A');assert.equal(get(37).answer,'C');assert.equal(get(38).answer,'D');assert.equal(get(39).answer,'C');
 assert.equal(get(49,1993).id,'chemistry-1994-49-c9caa91295b5');assert.ok(batch.records.find(r=>r.id==='chemistry-1994-50-9354f0896c2a'&&!r.publication_candidate));
@@ -52,3 +52,5 @@ assert.equal(get(45,1994).options.B,'CH₃COOCH₃');assert.equal(get(45,1994).o
 assert.equal(get(23).answer,'D');assert.equal(get(16).options.C,'Hygroscopic');
 for(const n of [6,15,18,19,26,29,31,35,41])assert.ok(batch.records.find(r=>r.original_record.year===1995&&r.original_record.num===n&&!r.publication_candidate));
 console.log('Chemistry batch013: 40 examined, 26 candidates, 14 held; strict '+(integrated?'integrated':'pre-intake')+' fingerprints and independent checks passed.');
+
+assert.ok(!require('../../../../scripts/lib/jamb-content-trust').assessQuestion(get(33)).reasons.includes('missing_visual_or_description'));
