@@ -1,4 +1,5 @@
 'use strict';
+const assertSourceRecord=require('./assert-source-record.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { questionFingerprint } = require('../../../../scripts/lib/jamb-content-trust');
@@ -9,7 +10,7 @@ const byNum=n=>b.records.find(r=>r.candidate?.year===1983&&r.candidate.num===n);
 assert.equal(b.records.length,40); assert.equal(new Set(b.records.map(r=>r.id)).size,40);
 assert.equal(b.records.filter(r=>r.publication_candidate).length,25);
 for(const r of b.records){
- assert.deepEqual(pool.find(q=>q.id===r.id),process.argv.includes('--integrated') && r.candidate ? r.candidate : r.original_record);
+ assertSourceRecord(pool.find(q=>q.id===r.id),r,questionFingerprint(process.argv.includes('--integrated') && r.candidate ? r.candidate : r.original_record));
  assert.equal(questionFingerprint(r.original_record),r.original_content_sha256);
  assert.ok(r.source_pdf_page>=2&&r.source_pdf_page<=5);
  if(!r.publication_candidate){assert.ok(r.hold_reason.length>50);continue;}

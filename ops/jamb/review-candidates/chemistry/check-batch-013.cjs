@@ -1,4 +1,5 @@
 'use strict';
+const assertSourceRecord=require('./assert-source-record.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
@@ -12,7 +13,7 @@ for(const r of batch.records){
  const live=pool.find(q=>q.id===r.id);assert.ok(live);
  assert.equal(questionFingerprint(r.original_record),r.original_content_sha256);
  const expected=integrated&&r.publication_candidate?r.content_sha256:r.original_content_sha256;
- assert.equal(questionFingerprint(live),expected,`${r.id}: ${integrated?'integrated':'pre-intake'} content drift`);
+ assertSourceRecord(live,r,expected);
  assert.ok([40,43,44,45,46].includes(r.source_pdf_page));
  if(!r.publication_candidate){assert.ok(r.hold_reason.length>50);continue;}
  const q=r.candidate;assert.equal(q.id,r.id);assert.equal(q.subject,'chemistry');assert.equal(q.has_diagram,false);

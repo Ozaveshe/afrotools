@@ -1,4 +1,5 @@
 'use strict';
+const assertSourceRecord=require('./assert-source-record.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {questionFingerprint}=require('../../../../scripts/lib/jamb-content-trust');
@@ -11,7 +12,7 @@ assert.equal(b.records.filter(r=>r.publication_candidate).length,22);
 for(const r of b.records){
  assert.equal(questionFingerprint(r.original_record),r.original_content_sha256);
  const actual=pool.find(q=>q.id===r.id);
- assert.ok([r.original_content_sha256,r.content_sha256].includes(questionFingerprint(actual)),'source content drift '+r.id);
+ assertSourceRecord(actual,r,[r.original_content_sha256,r.content_sha256]);
  assert.ok(r.source_pdf_page>=5&&r.source_pdf_page<=9);
  if(!r.publication_candidate){assert.ok(r.hold_reason.length>50);continue;}
  const q=r.candidate;assert.equal(q.id,r.id);assert.equal(q.subject,'chemistry');assert.equal(q.has_diagram,false);
