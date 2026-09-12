@@ -55,6 +55,42 @@ function run(command, args) {
   });
 }
 
+// Leave room for the executable and flags below Windows' 32,767-character limit.
+// Doubling each path also bounds Windows quoting/backslash expansion.
+function testBatches(files, limit = 24000) {
+  const batches = [];
+  let batch = [];
+  let length = 0;
+  for (const file of files) {
+    const cost = file.length * 2 + 3;
+    if (cost > limit) throw new Error('Test path exceeds command budget: ' + file);
+    if (length + cost > limit) {
+      batches.push(batch);
+      batch = [];
+      length = 0;
+    }
+    batch.push(file);
+    length += cost;
+  }
+  if (batch.length) batches.push(batch);
+  return batches;
+}
+
+async function runTestBatches(files, runner = run) {
+  let exitCode = 0;
+  const batches = testBatches(files);
+  for (let index = 0; index < batches.length; index += 1) {
+    console.log('\n=== Test batch ' + (index + 1) + '/' + batches.length + ' ===');
+    const result = await runner(process.execPath, [
+      '--test',
+      '--test-concurrency=' + CONCURRENCY,
+      '--test-timeout=' + FILE_TIMEOUT_MS,
+    ].concat(batches[index]));
+    if (result !== 0) exitCode = 1;
+  }
+  return exitCode;
+}
+
 async function main() {
   const tests = topLevelTests();
   const quarantined = quarantinedTests();
@@ -77,11 +113,7 @@ async function main() {
   console.log('Per-file timeout: ' + FILE_TIMEOUT_MS + 'ms');
   console.log('Quarantined: ' + quarantined.length);
 
-  const testExit = await run(process.execPath, [
-    '--test',
-    '--test-concurrency=' + CONCURRENCY,
-    '--test-timeout=' + FILE_TIMEOUT_MS,
-  ].concat(tests));
+  const testExit = await runTestBatches(tests);
 
   const auditResults = [];
   for (const audit of AUDITS) {
@@ -104,7 +136,11 @@ async function main() {
   process.exitCode = testExit === 0 && failedAudits.length === 0 ? 0 : 1;
 }
 
-main().catch(function (error) {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch(function (error) {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { testBatches, runTestBatches };
