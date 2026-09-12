@@ -75,6 +75,13 @@ if(id==='030'){
  assert.equal(b.counts.candidates,22);assert.equal(b.counts.held,18);assert.equal(45/12,3.75);assert.equal(563-483,80);assert.equal(71-15,56);assert.equal(4*18-30,42);assert.equal((30+18)/(9+3),4);assert.equal(30-3*4,18);
  const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);assert.equal(at(2016,34).candidate.answer,'B');assert.equal(at(2016,34).candidate.options.C,'N2.80');assert.equal(at(2016,40).candidate.answer,'A');assert.ok(at(2016,40).candidate.question.includes('6 | 483'));assert.ok(at(2016,40).candidate.question.includes('7 | 563'));assert.equal(at(2017,22).candidate.answer,'A');assert.equal(at(2017,20).publication_candidate,false);
 }
+if(id==='031'){
+ assert.equal(b.counts.candidates,29);assert.equal(b.counts.held,11);assert.equal(29+3,32);assert.equal(100000000/50,2000000);assert.equal((2*2+3*5+4*2+5)/10,3.2);assert.equal((3+3)/2,3);assert.equal(7200*120/360,2400);assert.equal(60/80,3/4);assert.equal(100+40+20,160);assert.ok(7/8<9/2);assert.ok(2/9<8/7);
+ const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);assert.equal(at(2017,35).candidate.answer,'A');assert.ok(at(2017,35).candidate.question.includes('4 | X | 3'));assert.equal(at(2017,31).publication_candidate,false);assert.equal(at(2018,21).publication_candidate,false);assert.equal(at(2018,22).candidate.answer,'C');assert.equal(at(2018,23).candidate.answer,'C');assert.equal(at(2018,36).candidate.answer,'C');assert.ok(at(2018,36).candidate.question.includes('40-49 | 100'));assert.equal(at(2018,32).candidate.answer,'D');
+}
+if(id==='032'){
+ assert.equal(b.counts.candidates,4);assert.equal(b.counts.held,0);assert.equal(40+80+100+40+20,280);assert.equal(b.records[0].candidate.answer,'A');assert.ok(b.records[0].candidate.question.includes('20-39 | 80'));assert.equal(b.records[2].candidate.answer,'C');
+}
 if(id==='020'){
  assert.equal(b.counts.candidates,26);assert.equal(b.counts.held,14);
  assert.equal(1/(1-0.6),2.5);assert.ok(Math.abs(1/(1-0.8)-5)<1e-12);
