@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 286 |
-| sw | 138 | 0 | 309 |
+| fr | 161 | 0 | 287 |
+| sw | 138 | 0 | 310 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 319 | 40 | 0 | 279 | 21 | 0 | 298 |
+| editorial | 320 | 40 | 0 | 280 | 21 | 0 | 299 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -81,6 +81,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/broiler-feed-cost-calculator-ghana/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/calculate-tithe/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/calculate-tithe/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/cameroon-paye-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/cameroon-paye-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/car-import-cost-africa-comparison-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/car-import-cost-africa-comparison-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/car-import-cost-ghana-guide/ | editorial | fr | — | missing | no localized route or owner file |
