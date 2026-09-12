@@ -12,7 +12,7 @@ for(const r of b.records){
  assert.equal(questionFingerprint(pool.find(q=>q.id===r.id)),integrated&&eligible?r.content_sha256:r.original_content_sha256,r.id+' pool drift');
  assert.equal(r.actual_source_year,1983);assert.ok(r.source_pdf_page>=2&&r.source_pdf_page<=5);
  if(!eligible){assert.ok(!r.candidate);assert.ok(r.hold_reason.length>50);continue;}
- const q=r.candidate;assert.equal(q.verification?.method,'ai-source-checked');assert.equal(q.verification?.reviewed_at,'2026-09-12');assert.equal(q.id,r.id);assert.equal(questionFingerprint(q),r.content_sha256);assert.equal(q.answer,keys[q.num]);assert.equal(q.options[q.answer]!==undefined,true);assert.equal(q.format,5);assert.equal(Object.keys(q.options).length,5);assert.equal(q.explanation,q.ai_explanation);assert.ok(q.explanation.length>80);
+ const q=r.candidate;require('./check-public-fields.cjs')(q);assert.equal(q.verification?.method,'ai-source-checked');assert.equal(q.verification?.reviewed_at,'2026-09-12');assert.equal(q.id,r.id);assert.equal(questionFingerprint(q),r.content_sha256);assert.equal(q.answer,keys[q.num]);assert.equal(q.options[q.answer]!==undefined,true);assert.equal(q.format,5);assert.equal(Object.keys(q.options).length,5);assert.equal(q.explanation,q.ai_explanation);assert.ok(q.explanation.length>80);
  assert.ok(!/repair|typo|previous key|imported|nearest.choice|\[PAGE|Economics 1983/i.test(q.question+' '+JSON.stringify(q.options)+' '+q.explanation));
  const reasons=assessQuestion(q,{questions:{},sources:{}}).reasons;
  for(const reason of ['missing_visual_or_description','incomplete_options','empty_option','duplicate_option_text','ocr_or_placeholder_artifact','explanation_requires_correction'])assert.ok(!reasons.includes(reason),q.id+': '+reason);
