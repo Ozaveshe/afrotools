@@ -6,7 +6,8 @@
   var controller = new AbortController();
   async function start() {
     try {
-      var pool = await AfroJAMB.QuestionTrust.loadPool();
+      var subjectRoute = window.location.pathname.match(/^\/jamb\/(english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)(?:\/\d{4})?(?:\/(?:index\.html)?)?$/);
+      var pool = await AfroJAMB.QuestionTrust.loadPool(subjectRoute ? '/data/jamb/pools/' + subjectRoute[1] + '.json' : undefined);
       var byId = new Map(pool.questions.map(function(q) { return [q.id, q]; }));
       var nextHost = 0;
       async function worker() {

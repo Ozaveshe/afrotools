@@ -1,0 +1,11 @@
+# Mathematics uncovered review 004 — final coverage
+
+Final28 baseline originals individually examined: five candidates and23 holds. Candidates are actual1991 logarithms(D),1990 composite area(A), actual1993 Venn membership(C), actual1993 subject transformation(B), and1992 partial fractions(A). Exact import IDs, old/new fingerprints, printed years/numbers/pages and source hash are retained per record. No shared pool, ledger, push or deploy writes.
+
+The Venn illustration was reconstructed with neutral shading preserving X∩Z outsideY; the central triple intersection remains unshaded. Actual ReviewedFigure.load strictSVG/hash/decode passed and390px image was inspected. Composite-area geometry was completely restored in standalone text, including rectangle, semicircle, excluded right triangle and dimensions. The two long-standing1993 holds now have explicit findings: Q16 has a circle figure instead of the needed quadratic graph; Q40 shows5metres while asking for centimetres and offering unconverted answers.
+
+Tests passed: sourcePDF hash and candidate/baseline pins; five actual publication-gate checks;15 wrong-answer negatives;10 fingerprint/missing-review negatives; synthetic integrated accepted-ledger replay with missing-ledger/wrong-hash/changed-held negatives; five390px mobile fixtures with collapsible explanations; strict Venn asset decoding; complete-coverage checker; git diff --check. Private-PDF-free integrated replay is supported with committed pinned provenance. These browser fixtures are not production route verification.
+
+`complete-coverage.json` and `check-complete-coverage.cjs` account for every one of the535 original source-pool Mathematics IDs. Baseline458 documented reviews plus77 new examinations equals535; zero duplicate or unexamined IDs. The77 new examinations produced19 candidates and58 holds. Once all19 are accepted, the arithmetic becomes402 accepted and133 documented held. Until coordinator intake, these are candidate counts, not a publication claim.
+
+The original77 audit is unchanged. Its evidence projection is pinned independently of global pool hashes so unrelated-subject intake does not invalidate Mathematics provenance. The262 raw-only imports outside the535 pool are explicitly excluded; no full raw-file review is claimed. No further work is started beyond this handoff.
