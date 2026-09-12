@@ -26,9 +26,9 @@ function existingRoutes(root = ROOT) {
 const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 
-function renderCard(q) {
+function renderCard(q, showYear = false) {
   return `<article class="qcard" id="q-${esc(q.id)}" data-reviewed-question="${esc(q.id)}">
-<h2>Question ${esc(q.num)}</h2>
+<h2>${showYear ? esc(q.year) + ' · ' : ''}Question ${esc(q.num)}</h2>
 ${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage).replace(/[ \t](?=\r?$)/gm, char => char === ' ' ? '&#32;' : '&#9;')}</blockquote>` : ''}
 ${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status">Enable JavaScript to verify this question's diagram before viewing its answer.</div>` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
@@ -46,7 +46,9 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   const approved = candidates.filter(q => q.subject === subject && (year === null || String(q.year) === String(year))
     && assessQuestion(q, ledger, { duplicateIds }).state === 'eligible');
   for (const q of approved) { if (ids.has(q.id)) throw new Error('Duplicate approved question ID'); ids.add(q.id); }
-  approved.sort((a, b) => a.num - b.num || a.id.localeCompare(b.id));
+  approved.sort((a, b) => (year === null ? b.year - a.year : 0) || a.num - b.num || a.id.localeCompare(b.id));
+  const yearCounts = new Map();
+  for (const q of approved) yearCounts.set(q.year, (yearCounts.get(q.year) || 0) + 1);
   const name = SUBJECTS[subject];
   const paper = year === null ? name : name + ' ' + year;
   const canonical = `https://afrotools.com/jamb/${subject}/${year === null ? '' : year + '/'}`;
@@ -90,8 +92,8 @@ ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)
 <main class="jb-wrap jamb-reviewed-paper">
 <nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}</nav>
 <h1>JAMB ${esc(paper)}</h1>
-${year === null ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${years.map(value => `<a href="/jamb/${subject}/${value}/">${value}</a>`).join(' · ')}</p></nav>` : ''}
-${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><div class="qcard-list">${approved.map(renderCard).join('\n')}</div>`
+${year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
+${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>Practice selection: full-paper coverage has not been confirmed.</p><div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
     : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
 <p class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/tools/study-planner/">Plan your study week</a><a href="/jamb/${subject}/">All ${esc(name)} years</a></p>
 </main>
