@@ -284,7 +284,7 @@ function showQuestion() {
   document.getElementById("quiz-progress").textContent = (currentIdx + 1) + " / " + QUESTIONS.length;
   document.getElementById("quiz-subject").textContent = SUBJ_LABEL[q.subject] || q.subject;
   var card = document.getElementById("quiz-card");
-  var letters = ["A","B","C","D","E"].filter(function(l){ return q.options[l]; });
+  var letters = Object.keys(q.options).sort();
   var optsHtml = letters.map(function(letter, i){
     return '<button type="button" class="qopt" data-letter="' + letter + '" aria-label="Option ' + letter + ': ' + escapeHtml(q.options[letter]).replace(/"/g, '&quot;') + '">'
       + '<span class="qopt-letter" aria-hidden="true">' + letter + '</span>'

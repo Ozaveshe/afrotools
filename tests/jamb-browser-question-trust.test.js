@@ -35,6 +35,19 @@ test('an empty reviewed bank is valid but contains no gradable objects', async (
   const { trust } = browser(bank([]));
   assert.equal((await trust.loadPool()).questions.length, 0);
 });
+
+test('browser accepts reviewed A-F questions and rejects gaps or a seventh option', async () => {
+  const { review: ignored, ...base } = questions()[0];
+  const six = { ...base, options: { A: '36', B: '40', C: '48', D: '49', E: '41', F: '42' }, answer: 'F', format: 6 };
+  const { trust } = browser(bank([reviewed(six)]));
+  const pool = await trust.loadPool();
+  assert.equal(pool.questions[0].options.F, '42');
+  assert.equal(trust.assertEligible(pool.questions, revision), true);
+  const gap = structuredClone(six); delete gap.options.E; gap.format = 5;
+  await assert.rejects(browser(bank([reviewed(gap)])).trust.loadPool(), /invalid/);
+  const seven = structuredClone(six); seven.options.G = '43'; seven.format = 7;
+  await assert.rejects(browser(bank([reviewed(seven)])).trust.loadPool(), /invalid/);
+});
 for (const [label, change] of [
   ['missing review', q => { delete q.review; }],
   ['changed wording', q => { q.question += ' changed'; }],

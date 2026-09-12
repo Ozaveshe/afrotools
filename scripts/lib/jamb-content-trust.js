@@ -70,7 +70,7 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   if (context.duplicateIds && context.duplicateIds.has(q.id)) reasons.push('duplicate_id');
   if (!nonempty(q.subject)) reasons.push('missing_subject');
   if (prompt.length < 12) reasons.push('incomplete_prompt');
-  if (![4, 5].includes(keys.length) || keys.join('') !== 'ABCDE'.slice(0, keys.length)) reasons.push('incomplete_options');
+  if (![4, 5, 6].includes(keys.length) || keys.join('') !== 'ABCDEF'.slice(0, keys.length)) reasons.push('incomplete_options');
   if (optionTexts.some(value => !value)) reasons.push('empty_option');
   if (new Set(optionTexts.map(value => value.toLowerCase().replace(/\s+/g, ' '))).size !== optionTexts.length) reasons.push('duplicate_option_text');
   if (q.format !== keys.length) reasons.push('option_format_mismatch');

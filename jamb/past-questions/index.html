@@ -335,7 +335,7 @@ function renderQCard(q) {
   var yr = q.year ? "JAMB " + q.year : "JAMB";
   var meta = '<div class="qcard-meta"><span class="meta-chip subj">' + subjLbl + '</span><span class="meta-chip">' + yr + '</span><span class="meta-chip">Q' + q.num + '</span>' + (q.has_diagram ? '<span class="meta-chip">📊 has diagram</span>' : '') + '</div>';
   var optsHtml = '';
-  ["A","B","C","D","E"].forEach(function(letter){
+  Object.keys(q.options).sort().forEach(function(letter){
     if (!q.options[letter]) return;
     var isAnswer = q.answer === letter;
     var revealed = false;
