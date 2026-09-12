@@ -4,7 +4,7 @@
 const assert=require('node:assert/strict');
 const {questionFingerprint,assessQuestion}=require('../../../../scripts/lib/jamb-content-trust');
 module.exports=function check(batch,expectedKeys,heldCount,passageCount=0){
- const ids=new Set(), hosts=new Set(['www.collinsdictionary.com','dictionary.cambridge.org','owl.purdue.edu','learnenglish.britishcouncil.org','learnenglishteens.britishcouncil.org','our-languages.canada.ca','www.oxfordlearnersdictionaries.com','en.wiktionary.org']);
+ const ids=new Set(), hosts=new Set(['www.collinsdictionary.com','dictionary.cambridge.org','owl.purdue.edu','learnenglish.britishcouncil.org','learnenglishteens.britishcouncil.org','our-languages.canada.ca','www.oxfordlearnersdictionaries.com','en.wiktionary.org','knowbaseconsult.com']);
  let passages=0;
  for(const r of batch.records){
   assert.ok(!ids.has(r.id));ids.add(r.id);
