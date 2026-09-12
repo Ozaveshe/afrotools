@@ -32,4 +32,23 @@ if(id==='016'){assert.equal(b.counts.candidates,27);assert.equal(b.counts.held,1
 if(id==='017'){assert.equal(b.counts.candidates,23);assert.equal(b.counts.held,17);assert.equal(((20-50)/50)/((50-25)/25),-0.6);assert.equal(48-24,24);assert.equal(93/6,15.5);assert.equal(48+25,73);assert.equal(73/5,14.6);assert.equal(93-73,20);assert.equal((5000+15000)/500,40);assert.deepEqual([233-228,238-233],[5,5]);assert.notEqual(228/43,233/44);assert.equal(new Set(b.records.map(r=>r.actual_source_year+'-'+r.actual_source_number)).size,40);assert.equal(b.records.find(r=>r.actual_source_year===2000&&r.actual_source_number===22).publication_candidate,false);}
 if(id==='018'){assert.equal(b.counts.candidates,26);assert.equal(b.counts.held,14);const rows=[[100,410,570],[90,450,530],[80,490,490],[70,530,450],[60,570,410]];assert.deepEqual(rows.filter(([,d,s])=>d===s),[[80,490,490]]);assert.ok(rows.filter(([p])=>p>80).every(([,d,s])=>s>d));assert.ok(rows.filter(([p])=>p<80).every(([,d,s])=>d>s));assert.equal(new Set(b.records.map(r=>r.actual_source_year+'-'+r.actual_source_number)).size,40);assert.equal(b.records.find(r=>r.actual_source_year===2001&&r.actual_source_number===24).candidate.answer,'D');}
 if(id==='019'){assert.equal(b.counts.candidates,25);assert.equal(b.counts.held,15);assert.equal(60/500,0.12);assert.equal(80000/2000000*100,4);assert.equal(0.4*360,144);assert.equal(0.35*360+0.25*360+0.4*360,360);assert.equal(new Set(b.records.map(r=>r.actual_source_year+'-'+r.actual_source_number)).size,40);assert.equal(b.records.find(r=>r.actual_source_year===2001&&r.actual_source_number===46).publication_candidate,false);}
+if(id==='020'){
+ assert.equal(b.counts.candidates,26);assert.equal(b.counts.held,14);
+ assert.equal(1/(1-0.6),2.5);assert.ok(Math.abs(1/(1-0.8)-5)<1e-12);
+ const elasticity=Math.abs(((190-200)/200)/((8-5)/5));assert.ok(elasticity>0&&elasticity<1);assert.ok(Math.abs(elasticity-1/12)<1e-12);
+ const inflation=(144.05-140.03)/140.03*100;assert.ok(Math.abs(inflation-2.870813397129193)<1e-10);assert.ok(![4.02,2.10,2.06,1.03].some(v=>Math.abs(v-inflation)<0.005));
+ const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);
+ assert.equal(at(2002,43).candidate.answer,'D');assert.equal(at(2004,2).candidate.answer,'A');assert.equal(at(2003,1).candidate.answer,'A');assert.equal(at(2003,27).publication_candidate,false);
+ assert.equal(at(2004,7).id,'economics-2003-7-7ebfb8306c16');assert.equal(at(2004,7).publication_candidate,false);
+ assert.equal(new Set(b.records.map(r=>r.actual_source_year+'-'+r.actual_source_number)).size,40);
+}
+if(id==='021'){
+ assert.equal(b.counts.candidates,25);assert.equal(b.counts.held,15);
+ const at=(y,n)=>b.records.find(r=>r.actual_source_year===y&&r.actual_source_number===n);
+ assert.equal(at(2002,47).id,'economics-2003-47-2c8d224c10e7');assert.equal(at(2002,47).publication_candidate,false);
+ assert.equal(at(2002,46).id,'economics-2003-46-ac9f5acf8d23');assert.equal(at(2002,46).candidate.answer,'C');
+ assert.equal(at(2003,49).candidate.answer,'C');assert.equal(at(2004,21).candidate.answer,'C');assert.equal(at(2004,25).candidate.answer,'B');
+ assert.equal(new Set(b.records.map(r=>r.actual_source_year+'-'+r.actual_source_number)).size,40);
+ const slots=new Set();for(const record of [...b.prior_batches.flatMap(p=>read(p.file).records),...b.records]){const key=record.actual_source_year+'-'+record.actual_source_number;assert.ok(!slots.has(key),'Source slot duplicated '+key);slots.add(key);}
+}
 console.log('Economics'+id+' '+JSON.stringify(b.counts)+' source, fingerprints, prior chain, context and calculations passed '+(integrated?'integrated':'pre-intake'));
