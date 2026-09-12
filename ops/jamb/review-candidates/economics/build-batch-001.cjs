@@ -19,7 +19,7 @@ const records=selected.map(original=>{
  if(n===29)q.options.A='At a price below that received in the home market';
  if(n===33)q.options.B='Produce only raw materials';
  if(n===39){q.question='The system of exchange that requires a double coincidence of wants is known as';q.options={A:'The gold standard',B:'Barter',C:'The commodity system',D:'The gold exchange standard',E:'The cheque system'};r.repair_history.push('Restored separately printed C/D from PDF5 and corrected monetary-system label to system of exchange.');}
- q.format=Object.keys(q.options).length;r.candidate=q;r.content_sha256=questionFingerprint(q);
+ q.verification={method:'ai-source-checked',reviewed_at:'2026-09-12'};q.format=Object.keys(q.options).length;r.candidate=q;r.content_sha256=questionFingerprint(q);
  r.repair_history.push('Compared full source stem/options and independently established answer; routine grammar and standard-model clarifications retained privately.');
  r.semantic_review={status:'accepted',reviewer:'Codex (AI), independent Economics review',method:'ai-source-checked',reviewed_at:'2026-09-12',evidence:'Owner PDF page'+page+' plus independently reasoned economic mechanism; linked primary sources where recorded.',independent_reasoning:a[1]};return r;
 });
