@@ -7,14 +7,19 @@
   async function start() {
     try {
       var pool = await AfroJAMB.QuestionTrust.loadPool();
-      for (var host of hosts) {
+      var byId = new Map(pool.questions.map(function(q) { return [q.id, q]; }));
+      var nextHost = 0;
+      async function worker() {
+        while (nextHost < hosts.length) {
+        var host = hosts[nextHost++];
         if (controller.signal.aborted) return;
         try {
           var card = host.closest('[data-reviewed-question]');
-          var q = pool.questions.find(function(row) { return row.id === card.dataset.reviewedQuestion; });
+          var q = byId.get(card.dataset.reviewedQuestion);
           if (!q || q.review.content_sha256 !== host.dataset.reviewedFigure) throw new Error('Question changed');
           host.textContent = 'Verifying the question diagram…';
           var figure = await AfroJAMB.ReviewedFigure.load(q, pool.review_revision, controller.signal);
+          if (controller.signal.aborted) { figure.revoke(); return; }
           figures.push(figure);
           var img = document.createElement('img');
           img.src = figure.url; img.alt = figure.alt;
@@ -25,7 +30,9 @@
         } catch (error) {
           host.textContent = 'This diagram or question version could not be verified. Reload to retry; its answer remains hidden.';
         }
+        }
       }
+      await Promise.all(Array.from({length: Math.min(4, hosts.length)}, worker));
     } catch (error) {
       hosts.forEach(function(host) { host.textContent = 'The reviewed bank is unavailable. Reload to verify this diagram and view its answer.'; });
     }
