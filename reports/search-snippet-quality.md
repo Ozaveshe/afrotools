@@ -11,7 +11,7 @@
 
 | Locale | Indexable pages | Native | Localized shell | Pages with errors | Pages with review signals |
 |---|---:|---:|---:|---:|---:|
-| en | 4884 | 4884 | 0 | 0 | 395 |
+| en | 5002 | 5002 | 0 | 0 | 395 |
 | fr | 3243 | 1797 | 1446 | 0 | 150 |
 | sw | 1582 | 761 | 821 | 0 | 87 |
 
