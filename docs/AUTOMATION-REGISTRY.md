@@ -57,11 +57,11 @@ change to `automation/<automation-id>-<date>-<run-id>`, pushes that branch, and
 writes the handoff atomically after validation. Generated files are identified
 separately so the publisher can regenerate them once from current `main`.
 
-At 18:30 local time the publisher scans every handoff, validates reachable
+At 08:30, 18:30 and 21:30 local time the same publisher scans every handoff, validates reachable
 commits and source-file allowlists, topologically orders dependencies, and
 processes ready work oldest first. It checks each patch against the cumulative
 integration tree before applying it without preserving the producer commit,
-which allows one daily release commit. Invalid or overlapping patches are
+which allows one cumulative commit per nonempty release run. Invalid or overlapping patches are
 quarantined independently. The publisher regenerates shared output once, runs
 the combined release gates, pushes `main`, waits for CI and exact-SHA Netlify
 proof, verifies touched live routes, then marks only proven handoffs consumed.
@@ -111,12 +111,44 @@ an excessive number of active-lane worktrees, or dirty stranded automation
 work. Historical worktree volume and safe cleanup candidates are reported
 without deleting anything.
 
+Fleet health and release authorization are separate results. The strict audit
+above remains the maintainer's fleet-health gate. For a concrete release, pass
+every accepted exact handoff ID, including unconsumed dependencies:
+
+```bash
+npm run automation:release:check -- --handoff-id <exact-id> --handoff-id <dependency-id> --json
+```
+
+Release mode reports all fleet findings but exits using `release.ready` and
+`release.blockers`. A missing observer, schedule/cost drift or retained worktree
+backlog must remain visible without vetoing independently validated source.
+The worktree count is retained active-lane storage, not a count of executing
+tasks; never delete protected work to make a release pass. Missing/inactive
+publisher, selected receipt/source/remote/ownership errors, unsafe conflicts,
+missing dependencies and unknown integrity errors still fail closed. Build,
+security, source freshness, deployment identity and exact-SHA live gates remain
+mandatory. An unsafe unrelated candidate is quarantined independently.
+
+Delayed receipts are not automatically freshened. After the 24-hour SLA, the
+publisher must recheck changing primary sources, the original source patch and
+targeted tests against fetched current `origin/main`. Preserve original
+`created_at`, commit and base SHA; record `publisher.revalidation` with
+`handoff_id`, `commit`, `base_sha`, `current_main_sha`, `source_patch_sha256`,
+`reviewed_at`, and passing `checks` named `primary_sources`, `source_patch` and
+`targeted_validation`, each with evidence. The gate recomputes the patch hash
+and rejects identity mismatch or proof older than 24 hours. A newer main SHA
+requires new review. This is revalidation, not a freshness waiver.
+
 Every new `ready` receipt must also include `producer` ownership metadata:
 
 - exact worktree path;
 - time `origin/main` was fetched;
 - exact remote branch ref;
 - earliest safe cleanup time.
+
+The receipt writer rejects a new ready repository receipt without this metadata
+before publishing it. Historical copies remain available for reconciliation;
+legacy receipt readability does not authorize a release without ownership proof.
 
 The publisher marks a receipt consumed only after exact-SHA deploy and live
 proof. It may then remove that producer worktree only when the path matches the
@@ -235,7 +267,11 @@ Astra/xhigh. Heartbeats inherit their task model and require a task target,
 not cron model fields. Local environment setup scripts are disabled in the
 saved cron definitions; jobs perform explicit dependency setup when required.
 
-The publisher starts at 18:30 local time. The public publishing-SLO cutoff is
+The primary publisher starts at 18:30 local time, with 21:30 retry and 08:30
+backlog recovery through the same saved automation and exclusive lease. Recovery
+resumes checkpoints and scans before building; an empty queue or already-proven
+exact SHA does not trigger another full build or commit. Expected receipts are
+limited to producer runs due before that invocation. The public publishing-SLO cutoff is
 22:00, allowing the stated intake grace and release budget. Runtime-minute
 fields are planning/checkpoint limits; they do not terminate processes.
 Mandatory quality and freshness gates remain strict even for carried debt.

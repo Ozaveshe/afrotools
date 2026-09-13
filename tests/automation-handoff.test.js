@@ -55,6 +55,38 @@ function fixture(overrides = {}) {
 }
 
 assert.deepStrictEqual(validateHandoff(fixture()), []);
+for (const producer of [undefined, null, false, 'legacy', []]) {
+  assert.ok(
+    validateHandoff(fixture({ producer })).some((error) => error.includes('require producer ownership metadata')),
+    'ready candidates cannot omit or substitute producer ownership metadata'
+  );
+}
+for (const [field, invalid] of Object.entries({
+  worktree_path: ' ',
+  base_fetched_at: 'not a date',
+  remote_ref: 'refs/heads/automation/another-lane',
+  cleanup_after: 'not a date',
+})) {
+  for (const value of [undefined, invalid]) {
+    const producer = { ...fixture().producer, [field]: value };
+    assert.ok(validateHandoff(fixture({ producer })).some((error) => error.includes('producer.' + field)),
+      'ready candidates must validate producer.' + field);
+  }
+}
+assert.deepStrictEqual(validateHandoff(fixture({ producer: undefined }), { allowLegacyProducer: true }), [],
+  'historical ingestion can retain legacy candidates for explicit control-plane review');
+assert.ok(validateHandoff(fixture({ producer: {} }), { allowLegacyProducer: true }).length,
+  'historical compatibility does not excuse malformed provided ownership metadata');
+for (const status of ['no_change', 'blocked', 'quarantined', 'consumed']) {
+  const item = fixture({ status, merge_candidate: false, producer: undefined,
+    blocker: status === 'blocked' ? 'Recorded historical blocker' : null,
+    publisher: status === 'consumed'
+      ? { consumed_at: '2026-08-12T09:00:00Z', release_commit: 'a'.repeat(40), deploy_id: 'legacy-deploy', live_proof: ['legacy-proof'] }
+      : fixture().publisher });
+  assert.deepStrictEqual(validateHandoff(item), [], status + ' historical receipts do not require new producer metadata');
+}
+assert.deepStrictEqual(validateHandoff(fixture({ status: 'no_change', change_kind: 'report_only', merge_candidate: false, producer: null })), [],
+  'completed report-only receipts remain compatible');
 assert.ok(validateHandoff(fixture({ commit: null })).some((error) => error.includes('require commit')));
 assert.ok(
   validateHandoff(fixture({ changed_files: ['data/other.json'] }))

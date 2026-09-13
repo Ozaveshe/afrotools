@@ -25,6 +25,23 @@
     "live_mutations",
     "publisher"
   ],
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          { "properties": { "merge_candidate": { "const": true } }, "required": ["merge_candidate"] },
+          {
+            "properties": { "status": { "const": "ready" }, "change_kind": { "const": "repository" } },
+            "required": ["status", "change_kind"]
+          }
+        ]
+      },
+      "then": {
+        "required": ["producer"],
+        "properties": { "producer": { "type": "object" } }
+      }
+    }
+  ],
   "properties": {
     "schema_version": { "const": 1 },
     "handoff_id": { "type": "string", "minLength": 3 },

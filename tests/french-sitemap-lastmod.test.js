@@ -24,7 +24,7 @@ test('reviewed French search repairs receive selective sitemap freshness', () =>
   assert.equal(registry.schemaVersion, 1);
   assert.ok(registry.overrides.length >= 12);
 
-  for (const override of registry.overrides) {
+  for (const override of registry.overrides.filter((entry) => (entry.route || entry.routePrefix).startsWith('/fr/'))) {
     assert.match(override.lastmod, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(override.reason && override.reason.length > 20);
 

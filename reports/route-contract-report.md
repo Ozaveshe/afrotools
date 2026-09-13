@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11549 |
-| Indexable pages | 9970 |
+| Public pages | 11551 |
+| Indexable pages | 9972 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5281 |
-| Documented fallbacks | 14816 |
-| Routes eligible for primary sitemaps | 9970 |
+| Genuine equivalence groups | 5283 |
+| Documented fallbacks | 14818 |
+| Routes eligible for primary sitemaps | 9972 |
 
 ## Locale Coverage
 
-- en: 6003 page records
+- en: 6005 page records
 - fr: 3802 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 524
+- article: 526
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3307,6 +3307,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0d0dc0b44993: en=`/cars/nigeria/toyota/corolla/`, fr=`/fr/cars/nigeria/toyota/corolla/`; x-default=`/cars/nigeria/toyota/corolla/`
 - equivalence:0d11ad26787a: en=`/tools/visa-checker/zambia`; x-default=`/tools/visa-checker/zambia`
 - equivalence:0d2e460c9b54: en=`/tools/afroatlas/country/cape-verde/`; x-default=`/tools/afroatlas/country/cape-verde/`
+- equivalence:0d40b89e6abe: en=`/blog/business-insurance-quote-checklist-africa/`; x-default=`/blog/business-insurance-quote-checklist-africa/`
 - equivalence:0d47cdbb6173: en=`/cars/angola/toyota/prado/2016/`, fr=`/fr/cars/angola/toyota/prado/2016/`; x-default=`/cars/angola/toyota/prado/2016/`
 - equivalence:0d7093609afb: en=`/tools/afrokitchen/recipes/garba-ci/`; x-default=`/tools/afrokitchen/recipes/garba-ci/`
 - equivalence:0d7c9dd132d8: en=`/jamb/chemistry/1993/`; x-default=`/jamb/chemistry/1993/`
@@ -6634,6 +6635,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ae29dd9d0d16: en=`/tools/fuel-tracker/`, fr=`/fr/tools/suivi-carburant/`, sw=`/sw/zana/ufuatiliaji-bei-za-mafuta/`; x-default=`/tools/fuel-tracker/`
 - equivalence:ae2ceb89a197: en=`/tools/afrokitchen/recipes/msemen-ma/`; x-default=`/tools/afrokitchen/recipes/msemen-ma/`
 - equivalence:ae2d9461bc1c: en=`/agriculture/poultry-roi/ethiopia`; x-default=`/agriculture/poultry-roi/ethiopia`
+- equivalence:ae308d14fe4d: en=`/blog/cameroon-paye-tax-2026/`; x-default=`/blog/cameroon-paye-tax-2026/`
 - equivalence:ae3e489de073: en=`/tools/demurrage-calculator/`, fr=`/fr/tools/calculateur-surestaries/`, sw=`/sw/zana/gharama-za-demurrage/`; x-default=`/tools/demurrage-calculator/`
 - equivalence:ae41c847e665: en=`/tools/life-insurance-calc/rwanda`, fr=`/fr/tools/assurance-vie/rwanda`; x-default=`/tools/life-insurance-calc/rwanda`
 - equivalence:ae4bb015e8fe: en=`/cars/mozambique/mazda/`, fr=`/fr/cars/mozambique/mazda/`; x-default=`/cars/mozambique/mazda/`

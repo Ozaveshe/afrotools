@@ -2,9 +2,10 @@
 'use strict';
 
 const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { buildQueue, readHandoffRecords, reconcileRecords } = require('./automation-handoff');
+const { buildQueue, readHandoffRecords, reconcileRecords, validateHandoff } = require('./automation-handoff');
 
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_AUTOMATIONS_ROOT = 'C:/Users/Oza/.codex/automations';
@@ -15,6 +16,9 @@ function parseArgs(argv) {
     automationsRoot: process.env.CODEX_AUTOMATIONS_DIR || DEFAULT_AUTOMATIONS_ROOT,
     policyPath: DEFAULT_POLICY_PATH,
     strict: false,
+    release: false,
+    handoffIds: [],
+    publisherId: 'daily-5pm-publish-deploy-gate',
     json: false,
     write: false,
     deepWorktrees: false,
@@ -25,6 +29,9 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
     if (value === '--strict') options.strict = true;
+    else if (value === '--release') options.release = true;
+    else if (value === '--handoff-id') options.handoffIds.push(argv[++index]);
+    else if (value === '--publisher-id') options.publisherId = argv[++index];
     else if (value === '--json') options.json = true;
     else if (value === '--write') options.write = true;
     else if (value === '--deep-worktrees') options.deepWorktrees = true;
@@ -36,6 +43,12 @@ function parseArgs(argv) {
     else throw new Error('Unknown argument: ' + value);
   }
   if (Number.isNaN(options.now.getTime())) throw new Error('--now must be an ISO date-time');
+  if (options.handoffIds.some((id) => typeof id !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(id))) throw new Error('--handoff-id requires an exact schema-v1 handoff ID');
+  if (new Set(options.handoffIds).size !== options.handoffIds.length) throw new Error('--handoff-id must not contain duplicates');
+  if (options.release && !options.handoffIds.length) throw new Error('--release requires at least one --handoff-id');
+  if (!options.release && options.handoffIds.length) throw new Error('--handoff-id requires --release');
+  if (options.release && options.skipRemote) throw new Error('--release cannot skip remote verification');
+  if (typeof options.publisherId !== 'string' || !options.publisherId.trim()) throw new Error('--publisher-id is required');
   return options;
 }
 
@@ -45,6 +58,7 @@ function runGit(args, cwd = ROOT) {
     encoding: 'utf8',
     shell: false,
     timeout: 30000,
+    maxBuffer: 64 * 1024 * 1024,
   });
 }
 
@@ -262,9 +276,18 @@ function loadQueue(automationsRoot) {
       conflicts: [],
       duplicate_ids: [],
       dependency_issues: [],
+      records: [],
     };
   }
-  return { available: true, ...buildQueue(reconcileRecords(readHandoffRecords(automationsRoot))) };
+  const records = reconcileRecords(readHandoffRecords(automationsRoot));
+  return { available: true, records, ...buildQueue(records) };
+}
+
+// Keep source identity stable across publisher revalidation and machine settings.
+function sourcePatchArgs(item) {
+  return ['-c', 'core.quotePath=true', 'diff', '--binary', '--no-ext-diff', '--no-textconv', '--no-renames',
+    '--no-color', '--full-index', '--unified=3', '--diff-algorithm=myers', '--no-indent-heuristic',
+    '--src-prefix=a/', '--dst-prefix=b/', item.base_sha, item.commit, '--', ...item.source_files.slice().sort()];
 }
 
 function sameStringSet(left, right) {
@@ -327,6 +350,11 @@ function verifyReadyHandoffs(queue, options) {
       ? String(diff.stdout || '').split(/\r?\n/).map((value) => value.trim()).filter(Boolean).sort()
       : [];
     check.diff_exact = diff.status === 0 && sameStringSet(check.actual_changed_files, item.changed_files);
+    if (options.release && options.handoffIds.includes(item.handoff_id) && item.publisher && item.publisher.revalidation) {
+      const sourcePatch = runGit(sourcePatchArgs(item));
+      check.source_patch_sha256 = sourcePatch.status === 0 && sourcePatch.stdout
+        ? crypto.createHash('sha256').update(sourcePatch.stdout, 'utf8').digest('hex') : null;
+    }
     if (!check.base_ancestor) {
       issues.push({
         severity: 'error',
@@ -441,6 +469,123 @@ function evaluatePolicy(policy, definitionsResult, queue, worktrees, now = new D
   return issues;
 }
 
+// Release intake is an explicit subset. Rebuild conflicts and dependency order
+// for that subset; do not merely hide aggregate failures from the full queue.
+function selectReleaseQueue(records, handoffIds) {
+  const selected = new Set(handoffIds);
+  const scoped = records.filter((record) => record.item && (
+    selected.has(record.item.handoff_id) || (!record.errors.length && record.item.status === 'consumed')
+  )).map((record) => {
+    if (!selected.has(record.item.handoff_id) || record.item.status !== 'ready') return record;
+    // Historical ingestion permits legacy receipts for diagnosis. Selection for
+    // a new release always requires today's schema and ownership contract.
+    const errors = [...record.errors, ...validateHandoff(record.item)];
+    if (!record.item.producer || typeof record.item.producer !== 'object' || Array.isArray(record.item.producer)) {
+      errors.push('selected release candidates require producer ownership metadata regardless of receipt age');
+    }
+    return { ...record, errors: [...new Set(errors)] };
+  }).sort((left, right) => Date.parse(left.item.created_at) - Date.parse(right.item.created_at)
+    || left.item.handoff_id.localeCompare(right.item.handoff_id));
+  return buildQueue(scoped);
+}
+
+function validateRevalidation(item, verification, currentMainSha, now, maxAgeHours) {
+  const evidence = item.publisher && item.publisher.revalidation;
+  if (!evidence) return ['publisher.revalidation is absent'];
+  const issues = [];
+  for (const field of ['handoff_id', 'commit', 'base_sha']) {
+    if (evidence[field] !== item[field]) issues.push(field + ' does not match the original receipt');
+  }
+  if (!/^[a-f0-9]{40}$/i.test(currentMainSha || '') || evidence.current_main_sha !== currentMainSha) {
+    issues.push('current_main_sha does not match the verified origin/main');
+  }
+  if (!verification || !/^[a-f0-9]{64}$/i.test(verification.source_patch_sha256 || '')
+      || evidence.source_patch_sha256 !== verification.source_patch_sha256) {
+    issues.push('source_patch_sha256 does not match the original source diff');
+  }
+  const reviewedAt = Date.parse(evidence.reviewed_at);
+  if (!Number.isFinite(reviewedAt) || reviewedAt > now.getTime()
+      || reviewedAt < Date.parse(item.created_at) || (now.getTime() - reviewedAt) / 3600000 > maxAgeHours) {
+    issues.push('reviewed_at must be fresh, no earlier than receipt creation, and not in the future');
+  }
+  const checks = Array.isArray(evidence.checks) ? evidence.checks : [];
+  if (checks.some((check) => !check || check.status !== 'pass')) issues.push('every revalidation check must pass');
+  for (const name of ['primary_sources', 'source_patch', 'targeted_validation']) {
+    const matches = checks.filter((check) => check && check.name === name);
+    if (matches.length !== 1 || matches[0].status !== 'pass'
+        || typeof matches[0].evidence !== 'string' || !matches[0].evidence.trim()) {
+      issues.push('one passing ' + name + ' check with an evidence reference is required');
+    }
+  }
+  return issues;
+}
+
+function releaseIssueBlocks(issue, publisherId) {
+  if (issue.severity !== 'error') return false;
+  // These remain errors in the full health audit. They are capacity/maintenance
+  // findings, and deleting protected work to clear them is never a release step.
+  if (new Set(['policy_budget_exceeded', 'active_automation_budget_exceeded',
+    'active_automation_worktree_budget_exceeded', 'stranded_dirty_automation_worktree']).has(issue.code)) return false;
+  if (['expected_automation_inactive', 'automation_kind_mismatch', 'automation_definition_drift'].includes(issue.code)) {
+    return issue.automation_id === publisherId;
+  }
+  // New or unclassified integrity failures must never become silent exemptions.
+  return true;
+}
+
+function evaluateRelease(policy, definitionsResult, queue, worktrees, options) {
+  const selectedIds = new Set(options.handoffIds);
+  const scopedQueue = selectReleaseQueue(queue.records || [], options.handoffIds);
+  scopedQueue.verification = {
+    available: !!(queue.verification && queue.verification.available),
+    checks: (queue.verification ? queue.verification.checks : []).filter((check) => selectedIds.has(check.handoff_id)),
+    issues: (queue.verification ? queue.verification.issues : []).filter((issue) => !issue.handoff_id || selectedIds.has(issue.handoff_id)),
+  };
+  const issues = evaluatePolicy(policy, definitionsResult, scopedQueue, worktrees, options.now);
+  const add = (code, detail, handoffId) => issues.push({ severity: 'error', code, detail, ...(handoffId ? { handoff_id: handoffId } : {}) });
+  const publisher = policy.active_automations.find((lane) => lane.id === options.publisherId && lane.role === 'publisher');
+  if (!publisher || !definitionsResult.available) add('release_publisher_unverified', 'The release publisher must be policy-owned and its saved definition must be available.');
+  if (!options.handoffIds.length || selectedIds.size !== options.handoffIds.length) add('release_selection_invalid', 'Select one or more unique exact handoff IDs.');
+  if (!/^[a-f0-9]{40}$/i.test(options.currentMainSha || '')) add('release_main_unavailable', 'A full current origin/main SHA is required.');
+  if (!queue.available) add('release_queue_unavailable', 'The authoritative receipt queue is unavailable.');
+  if (!scopedQueue.verification.available) add('release_remote_verification_unavailable', 'Release mode requires current remote verification.');
+  const revalidated = [];
+  for (const id of options.handoffIds) {
+    const item = scopedQueue.ready.find((candidate) => candidate.handoff_id === id);
+    if (!item) {
+      add('release_candidate_unavailable', 'Selected receipt is missing, invalid, or not ready: ' + id, id);
+      continue;
+    }
+    if (!Number.isFinite(Date.parse(item.created_at)) || Date.parse(item.created_at) > options.now.getTime()) {
+      add('release_candidate_timestamp_invalid', 'Selected receipt creation time is invalid or in the future.', id);
+    }
+    const checks = scopedQueue.verification.checks.filter((check) => check.handoff_id === id);
+    const verification = checks[0];
+    if (checks.length !== 1 || !verification.remote_exact || !verification.base_ancestor || !verification.diff_exact) {
+      add('release_candidate_verification_failed', 'Selected receipt lacks exactly one passing remote, ancestry, and file-allowlist check.', id);
+    }
+    if (item.publisher && item.publisher.revalidation) {
+      const failures = validateRevalidation(item, verification, options.currentMainSha, options.now, policy.handoffs.max_ready_age_hours);
+      if (failures.length) add('release_revalidation_invalid', failures.join('; '), id);
+      else revalidated.push(id);
+    }
+  }
+  const effectiveIssues = issues.filter((issue) => !(issue.code === 'stale_ready_handoff' && revalidated.includes(issue.handoff_id)));
+  const blockers = effectiveIssues.filter((issue) => releaseIssueBlocks(issue, options.publisherId));
+  return {
+    publisher_id: options.publisherId,
+    selected_handoff_ids: options.handoffIds.slice(),
+    ordered_handoff_ids: scopedQueue.ready.map((item) => item.handoff_id),
+    isolated_ready_handoff_ids: queue.ready.filter((item) => !selectedIds.has(item.handoff_id)).map((item) => item.handoff_id),
+    revalidated_handoff_ids: revalidated,
+    current_main_sha: options.currentMainSha || null,
+    ready: blockers.length === 0,
+    blockers,
+    maintenance_issues: effectiveIssues.filter((issue) => !releaseIssueBlocks(issue, options.publisherId)),
+    queue: { invalid: scopedQueue.invalid, conflicts: scopedQueue.conflicts, duplicate_ids: scopedQueue.duplicate_ids, dependency_issues: scopedQueue.dependency_issues },
+  };
+}
+
 function toMarkdown(report) {
   const lines = [
     '# Automation Control Plane',
@@ -459,6 +604,11 @@ function toMarkdown(report) {
   ];
   if (!report.issues.length) lines.push('- None.');
   else report.issues.forEach((item) => lines.push('- [' + item.severity.toUpperCase() + '] ' + item.code + ': ' + item.detail));
+  if (report.release) {
+    lines.push('', '## Selected Release', '', '- Ready: ' + report.release.ready,
+      '- Order: ' + report.release.ordered_handoff_ids.join(', '), '- Blockers: ' + report.release.blockers.length);
+    report.release.blockers.forEach((item) => lines.push('- ' + item.code + ': ' + item.detail));
+  }
   lines.push('', '## Cleanup Candidates', '');
   if (!report.worktrees.cleanup_candidates.length) lines.push('- None.');
   else report.worktrees.cleanup_candidates.forEach((item) => lines.push('- ' + item.path + ': ' + item.reason + '.'));
@@ -473,6 +623,13 @@ function buildReport(options) {
   queue.verification = verifyReadyHandoffs(queue, options);
   const worktrees = inspectWorktrees(options, policy, queue, definitionsResult.definitions);
   const issues = evaluatePolicy(policy, definitionsResult, queue, worktrees, options.now);
+  let release = null;
+  if (options.release) {
+    const main = runGit(['rev-parse', 'origin/main']);
+    release = evaluateRelease(policy, definitionsResult, queue, worktrees, {
+      ...options, currentMainSha: main.status === 0 ? String(main.stdout).trim() : null,
+    });
+  }
   const activeDefinitions = definitionsResult.definitions.filter((item) => item.status === 'ACTIVE');
   return {
     schema_version: 1,
@@ -509,6 +666,7 @@ function buildReport(options) {
     },
     worktrees,
     issues,
+    ...(release ? { release } : {}),
     counts: {
       errors: issues.filter((item) => item.severity === 'error').length,
       warnings: issues.filter((item) => item.severity === 'warning').length,
@@ -533,8 +691,12 @@ function main() {
     console.log('- Worktrees: total=' + (report.worktrees.counts.total ?? 'unavailable') + ' active_automation=' + (report.worktrees.counts.active_automation ?? 'unavailable') + ' cleanup_candidates=' + (report.worktrees.counts.cleanup_candidates ?? 'unavailable'));
     console.log('- Issues: errors=' + report.counts.errors + ' warnings=' + report.counts.warnings);
     report.issues.slice(0, 12).forEach((item) => console.log('  - [' + item.severity.toUpperCase() + '] ' + item.code + ': ' + item.detail));
+    if (report.release) {
+      console.log('- Selected release: ' + (report.release.ready ? 'ready' : 'blocked') + '; blockers=' + report.release.blockers.length);
+      report.release.blockers.forEach((item) => console.log('  - [RELEASE BLOCKER] ' + item.code + ': ' + item.detail));
+    }
   }
-  if (options.strict && report.counts.errors) process.exitCode = 1;
+  if (options.release ? !report.release.ready : options.strict && report.counts.errors) process.exitCode = 1;
 }
 
 if (require.main === module) {
@@ -555,5 +717,10 @@ module.exports = {
   sameStringSet,
   verifyReadyHandoffs,
   evaluatePolicy,
+  sourcePatchArgs,
+  selectReleaseQueue,
+  validateRevalidation,
+  releaseIssueBlocks,
+  evaluateRelease,
   buildReport,
 };

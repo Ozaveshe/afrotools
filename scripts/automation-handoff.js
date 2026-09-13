@@ -31,7 +31,7 @@ function isStringArray(value) {
   return Array.isArray(value) && value.every((item) => typeof item === 'string' && item.trim());
 }
 
-function validateHandoff(item) {
+function validateHandoff(item, { allowLegacyProducer = false } = {}) {
   const errors = [];
   const requiredStrings = ['handoff_id', 'automation_id', 'run_id', 'summary'];
   if (item.schema_version !== 1) errors.push('schema_version must be 1');
@@ -97,7 +97,13 @@ function validateHandoff(item) {
     if (typeof item.branch === 'string' && typeof item.automation_id === 'string' && !item.branch.startsWith(`automation/${item.automation_id}-`)) {
       errors.push(`repository merge candidate branch must start with automation/${item.automation_id}-`);
     }
-    if (item.producer && typeof item.producer === 'object') {
+    // Historical receipts may predate ownership metadata. They remain readable
+    // for reconciliation, but validate/publish must never emit another one.
+    if (item.producer == null && allowLegacyProducer) {
+      // The control-plane review still identifies legacy ready candidates.
+    } else if (!item.producer || typeof item.producer !== 'object' || Array.isArray(item.producer)) {
+      errors.push('repository merge candidates require producer ownership metadata');
+    } else {
       if (typeof item.producer.worktree_path !== 'string' || !item.producer.worktree_path.trim()) {
         errors.push('producer.worktree_path is required');
       }
@@ -140,9 +146,9 @@ function validateHandoff(item) {
   return errors;
 }
 
-function readHandoff(filePath) {
+function readHandoff(filePath, options) {
   const item = JSON.parse(fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''));
-  return { filePath, item, errors: validateHandoff(item) };
+  return { filePath, item, errors: validateHandoff(item, options) };
 }
 
 function listHandoffFiles(root) {
@@ -167,7 +173,7 @@ function listHandoffFiles(root) {
 function readHandoffRecords(root) {
   return listHandoffFiles(root).map((filePath) => {
     try {
-      const record = readHandoff(filePath);
+      const record = readHandoff(filePath, { allowLegacyProducer: true });
       const folderId = path.relative(root, filePath).split(path.sep)[0];
       if (record.item.automation_id !== folderId) record.errors.push('automation_id must match the automation folder ' + folderId);
       return record;
@@ -211,16 +217,17 @@ function publishHandoff(sourcePath, root = DEFAULT_ROOT) {
   const lock = path.join(directory, '.handoff-write.lock');
   const descriptor = fs.openSync(lock, 'wx');
   try {
-    const atomicWrite = (destination, value) => {
+    let preserveLatest = false;
+    const atomicWrite = (destination, value, options) => {
       fs.mkdirSync(path.dirname(destination), { recursive: true });
       const temporary = destination + '.' + process.pid + '.tmp';
       fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', { flag: 'wx' });
-      const checked = readHandoff(temporary);
+      const checked = readHandoff(temporary, options);
       if (checked.errors.length) throw new Error(checked.errors.join('; '));
       fs.renameSync(temporary, destination);
     };
     if (fs.existsSync(latest)) {
-      const old = readHandoff(latest);
+      const old = readHandoff(latest, { allowLegacyProducer: true });
       if (old.errors.length) throw new Error('Preserve and repair invalid existing receipt before replacement');
       if (old.item.automation_id !== item.automation_id) throw new Error('Existing receipt belongs to another automation');
       if (old.item.run_id === item.run_id && old.item.handoff_id !== item.handoff_id) throw new Error('run_id already belongs to another handoff');
@@ -228,20 +235,25 @@ function publishHandoff(sourcePath, root = DEFAULT_ROOT) {
         const reconciled = reconcileRecords([old, record]);
         if (reconciled.some((r) => r.errors.length) || Date.parse(item.updated_at) < Date.parse(old.item.updated_at)) throw new Error('Receipt update conflicts with existing history');
       }
+      // Consuming or revalidating backlog changes updated_at, not which run is
+      // newest. Preserve the newer producer's latest pointer while updating
+      // the older run archive through the same locked validation path.
+      preserveLatest = old.item.handoff_id !== item.handoff_id
+        && Date.parse(old.item.created_at) > Date.parse(item.created_at);
       const oldRun = /^[a-z0-9][a-z0-9_-]*$/i.test(old.item.run_id) ? old.item.run_id : old.item.handoff_id;
       const oldArchive = path.join(directory, 'runs', oldRun, 'handoff.json');
-      const oldCopies = fs.existsSync(oldArchive) ? reconcileRecords([old, readHandoff(oldArchive)]) : [old];
+      const oldCopies = fs.existsSync(oldArchive) ? reconcileRecords([old, readHandoff(oldArchive, { allowLegacyProducer: true })]) : [old];
       if (oldCopies.length !== 1 || oldCopies[0].errors.length) throw new Error('Previous receipt archive has conflicting identity');
-      atomicWrite(oldArchive, oldCopies[0].item);
+      atomicWrite(oldArchive, oldCopies[0].item, { allowLegacyProducer: true });
     }
     const archive = path.join(directory, 'runs', item.run_id, 'handoff.json');
     if (fs.existsSync(archive)) {
-      const previous = readHandoff(archive);
+      const previous = readHandoff(archive, { allowLegacyProducer: true });
       if (previous.item.handoff_id !== item.handoff_id || reconcileRecords([previous, record]).some((r) => r.errors.length) || Date.parse(item.updated_at) < Date.parse(previous.item.updated_at)) throw new Error('Archive conflicts with receipt update');
     }
     atomicWrite(path.join(directory, 'runs', item.run_id, 'handoff.json'), item);
-    atomicWrite(latest, item);
-    return latest;
+    if (!preserveLatest) atomicWrite(latest, item);
+    return preserveLatest ? archive : latest;
   } finally {
     fs.closeSync(descriptor);
     fs.unlinkSync(lock);
