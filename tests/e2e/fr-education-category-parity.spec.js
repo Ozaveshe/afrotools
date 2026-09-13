@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const manifest = require("../../data/localization/fr-education-parity.json");
 
-test("French Education category hub exposes the exact 42-route programme", async ({ page }) => {
+test("French Education category hub exposes the exact 43-route programme", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   const response = await page.goto("/fr/education/", { waitUntil: "networkidle" });
   expect(response && response.ok()).toBeTruthy();

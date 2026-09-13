@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11551 |
-| Indexable pages | 9972 |
+| Public pages | 11553 |
+| Indexable pages | 9974 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5283 |
-| Documented fallbacks | 14818 |
-| Routes eligible for primary sitemaps | 9972 |
+| Genuine equivalence groups | 5284 |
+| Documented fallbacks | 14820 |
+| Routes eligible for primary sitemaps | 9974 |
 
 ## Locale Coverage
 
-- en: 6005 page records
-- fr: 3802 page records
+- en: 6006 page records
+- fr: 3803 page records
 - ha: 105 page records
 - sw: 1594 page records
 - yo: 45 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5427
-- tool: 4000
+- tool: 4002
 - widget: 379
 
 ## Canonical Migrations
@@ -7590,6 +7590,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:db5a9c719821: en=`/agriculture/harvest-date/`, fr=`/fr/agriculture/harvest-date/`, sw=`/sw/zana/makisio-tarehe-ya-mavuno/`; x-default=`/agriculture/harvest-date/`
 - equivalence:db6a63551918: en=`/cars/namibia/honda/`, fr=`/fr/cars/namibie/honda/`; x-default=`/cars/namibia/honda/`
 - equivalence:db6e9100fffa: en=`/tools/employment-contract/cabo-verde`, fr=`/fr/tools/contrat-travail/cabo-verde`; x-default=`/tools/employment-contract/cabo-verde`
+- equivalence:db8a0eff8088: en=`/tools/ssce-practice/`, fr=`/fr/tools/pratique-waec-neco/`; x-default=`/tools/ssce-practice/`
 - equivalence:db8ea774f60a: en=`/blog/jamb-aggregate-score-calculator-2026/`; x-default=`/blog/jamb-aggregate-score-calculator-2026/`
 - equivalence:db938ccac1ad: en=`/blog/kenya-funeral-budget-checklist/`; x-default=`/blog/kenya-funeral-budget-checklist/`
 - equivalence:db9e08e7c867: en=`/cars/namibia/ford/ranger/`, fr=`/fr/cars/namibie/ford/ranger/`; x-default=`/cars/namibia/ford/ranger/`

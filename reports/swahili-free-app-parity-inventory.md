@@ -8,9 +8,9 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1256 |
+| Canonical published English rows | 1257 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1255** |
+| **Free canonical English apps** | **1256** |
 | Swahili physical HTML pages | 1599 |
 | Swahili coverage records | 1594 |
 | Native candidates | 588 |
@@ -20,7 +20,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 1 |
+| Missing | 2 |
 | **Accepted** | **1254** |
 
 ## Category reconciliation
@@ -35,7 +35,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Developer Tools | 32 | 0 | 32 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
-| Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
+| Education | 43 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 1 | 42 |
 | Energy & Utilities | 19 | 16 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
 | Finance, Tax & Market Data | 132 | 5 | 126 | 0 | 0 | 0 | 0 | 0 | 1 | 131 |
@@ -69,7 +69,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
-## Full 1,255-row ledger
+## Full 1,256-row ledger
 
 | English app | Category | English route | State | Primary Swahili route | Accepted |
 |---|---|---|---|---|---:|
@@ -248,6 +248,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | .htaccess Generator | Developer Tools | `/tools/htaccess-gen` | Localized shell candidate | `/sw/zana/kizalishaji-htaccess` | Yes |
 | Robots.txt Generator | Developer Tools | `/tools/robots-txt` | Localized shell candidate | `/sw/zana/kizalishaji-robots-txt` | Yes |
 | Sitemap Generator | Developer Tools | `/tools/sitemap-gen` | Localized shell candidate | `/sw/zana/kizalishaji-sitemap` | Yes |
+| WAEC/NECO Practice Pilot | Education | `/tools/ssce-practice` | Missing | None | No |
 | WAEC/NECO Result Planner | Education | `/tools/waec-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-waec-neco` | Yes |
 | JAMB Screening Calculation Worksheet | Education | `/tools/jamb-aggregate` | Localized shell candidate | `/sw/zana/kikokotoo-jamb` | Yes |
 | NSC Study Admission & Matric Points Planner | Education | `/tools/matric-points` | Localized shell candidate | `/sw/zana/kikokotoo-aps-matric` | Yes |

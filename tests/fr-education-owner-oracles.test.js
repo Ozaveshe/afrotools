@@ -9,9 +9,13 @@ const root = path.resolve(__dirname, "..");
 const manifest = require("../data/localization/fr-education-parity.json");
 const routeEngine = require("../engines/src/education-route-engine.js");
 
-assert.strictEqual(manifest.routes.length, 42, "Education parity denominator must remain exact");
+assert.strictEqual(manifest.routes.length, 43, "Education parity denominator must remain exact");
 assert.strictEqual(manifest.routes.filter((route) => route.owner !== "existing-native-owner").length, 41);
-assert.strictEqual(manifest.routes.filter((route) => route.owner === "existing-native-owner").length, 1);
+assert.deepStrictEqual(manifest.routes.filter((route) => route.owner === "existing-native-owner").map((route) => route.id).sort(), ["education-hub", "ssce-practice"]);
+const practice = fs.readFileSync(path.join(root, "fr/tools/pratique-waec-neco/index.html"), "utf8");
+for (const source of ["/assets/js/lib/ssce-practice-bank.js", "/assets/js/lib/ssce-practice-bank-fr.js", "/assets/js/lib/ssce-practice.js", "/assets/js/pages/ssce-practice.js"]) {
+  assert(practice.includes(source), `French practice must use its shared reviewed source: ${source}`);
+}
 
 const controller = fs.readFileSync(path.join(root, "assets/js/pages/fr-education-parity.js"), "utf8");
 for (const route of manifest.routes.filter((item) => item.owner !== "existing-native-owner")) {
@@ -58,4 +62,4 @@ assert.strictEqual(matches[0].percent, 97);
 assert.strictEqual(matches[0].category, "Strong Match");
 assert.strictEqual(matches[0].scholarship.info_url, "https://example.org/official");
 
-console.log("French Education owner oracles: 42/42 declarations and focused exact fixtures passed.");
+console.log("French Education owner oracles: 43/43 declarations and focused exact fixtures passed.");

@@ -138,6 +138,8 @@ Edit `/assets/js/components/tool-registry.js`:
 
 ## Step 4: Test
 
+For a new free English tool, reconcile the French and Swahili parity inventory denominators with the new canonical row. Preserve existing acceptance records and classify new coverage from the actual page and browser evidence. French discovery requires a native French owner, reciprocal hreflang and a regenerated `npm run ai:french-routes:build` map. For an education addition with its own page/controller, `node scripts/build-fr-education-parity.js --catalog-only` updates the category catalogue and manifest without rewriting existing native pages; mark acceptance only after the affected tests pass.
+
 ```bash
 # Run calculation engine tests
 node tests/run.js

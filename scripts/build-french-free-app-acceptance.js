@@ -9,12 +9,12 @@ const ROOT = path.resolve(__dirname, '..');
 const CATEGORY_EVIDENCE_PATH = path.join(ROOT, 'data', 'audits', 'french-free-app-category-acceptance.json');
 const ACCEPTANCE_PATH = path.join(ROOT, 'data', 'audits', 'french-free-app-acceptance.json');
 const INVENTORY_SCRIPT = path.join(ROOT, 'scripts', 'build-french-free-app-parity-inventory.js');
-const FINAL_RECEIPT_RELATIVE = 'reports/french-free-app-parity-final-acceptance-2026-07-30.md';
+const FINAL_RECEIPT_RELATIVE = 'reports/french-free-app-parity-final-acceptance-2026-09-13.md';
 const FINAL_RECEIPT_PATH = path.join(ROOT, FINAL_RECEIPT_RELATIVE);
 const LEDGER_PATH = path.join(ROOT, 'docs', 'FRENCH-FREE-APP-PARITY-LEDGER.md');
 const LEDGER_START = '<!-- BEGIN GENERATED FINAL FRENCH ACCEPTANCE -->';
 const LEDGER_END = '<!-- END GENERATED FINAL FRENCH ACCEPTANCE -->';
-const EXPECTED_APPS = 1255;
+const EXPECTED_APPS = 1256;
 const EXPECTED_CATEGORIES = 32;
 
 function readJson(file) {
@@ -170,7 +170,7 @@ function renderLedgerSection() {
     LEDGER_START,
     '## Final release acceptance',
     '',
-    `Evidence date: 2026-07-30`,
+    `Evidence date: 2026-09-13`,
     '',
     `- **32/32 categories accepted.**`,
     `- **${EXPECTED_APPS.toLocaleString('en-US')}/${EXPECTED_APPS.toLocaleString('en-US')} canonical English free apps have accepted native French owners.**`,
@@ -181,7 +181,7 @@ function renderLedgerSection() {
     '`scripts/build-french-free-app-acceptance.js` from the exact structural',
     'inventory and `data/audits/french-free-app-category-acceptance.json`.',
     'Per-category evidence is listed in',
-    '`reports/french-free-app-parity-final-acceptance-2026-07-30.md`; the full',
+    '`reports/french-free-app-parity-final-acceptance-2026-09-13.md`; the full',
     `${EXPECTED_APPS.toLocaleString('en-US')}-row owner result remains in \`reports/french-free-app-parity-inventory.*\`.`,
     '',
     'This is repository acceptance, not production deployment or live-route proof.',

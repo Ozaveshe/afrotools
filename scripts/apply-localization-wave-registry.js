@@ -38,8 +38,8 @@ function js(value) {
 }
 
 function stripBlock(source) {
-  const pattern = new RegExp(`\\n${START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?${END.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\n`, "g");
-  return source.replace(pattern, "\n");
+  const pattern = new RegExp(`\\r?\\n${START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?${END.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=\\r?\\n|$)`, "g");
+  return source.replace(pattern, "");
 }
 
 function sourceRecordFor(tools, enSlug) {
@@ -144,13 +144,17 @@ function build() {
   };
 }
 
-const outcome = build();
-if (WRITE) {
-  atomicWrite(REGISTRY, outcome.next);
-  console.log(`Applied ${WAVE.french.length + (WAVE.nativeFrench || []).length + WAVE.swahili.length} localization wave registry rows.`);
-} else if (outcome.original !== outcome.next) {
-  console.error("Localization wave registry is out of date. Run: node scripts/apply-localization-wave-registry.js --write");
-  process.exitCode = 1;
-} else {
-  console.log("Localization wave registry is current.");
+if (require.main === module) {
+  const outcome = build();
+  if (WRITE) {
+    atomicWrite(REGISTRY, outcome.next);
+    console.log(`Applied ${WAVE.french.length + (WAVE.nativeFrench || []).length + WAVE.swahili.length} localization wave registry rows.`);
+  } else if (outcome.original !== outcome.next) {
+    console.error("Localization wave registry is out of date. Run: node scripts/apply-localization-wave-registry.js --write");
+    process.exitCode = 1;
+  } else {
+    console.log("Localization wave registry is current.");
+  }
 }
+
+module.exports = { stripBlock };

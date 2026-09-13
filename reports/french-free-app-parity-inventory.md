@@ -8,16 +8,16 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 
 | Measure | Count |
 |---|---:|
-| Canonical published English rows | 1256 |
+| Canonical published English rows | 1257 |
 | Excluded paid rows | 1 |
-| **Free canonical English apps** | **1255** |
-| Native candidates (including accepted) | 1255 |
+| **Free canonical English apps** | **1256** |
+| Native candidates (including accepted) | 1256 |
 | English iframe/transplant | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Missing | 0 |
 | Definite product-build gaps | 0 |
-| **Accepted** | **1255** |
+| **Accepted** | **1256** |
 
 ## Category reconciliation
 
@@ -31,7 +31,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Developer Tools | 32 | 32 | 0 | 0 | 0 | 0 | 32 |
 | Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 2 |
 | Document & PDF | 32 | 32 | 0 | 0 | 0 | 0 | 32 |
-| Education | 42 | 42 | 0 | 0 | 0 | 0 | 42 |
+| Education | 43 | 43 | 0 | 0 | 0 | 0 | 43 |
 | Energy & Utilities | 19 | 19 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 26 | 0 | 0 | 0 | 0 | 26 |
 | Finance, Tax & Market Data | 132 | 132 | 0 | 0 | 0 | 0 | 132 |
@@ -55,7 +55,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Travel & Tourism | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 33 | 33 | 0 | 0 | 0 | 0 | 33 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 63 |
-| **Total** | **1255** | **1255** | **0** | **0** | **0** | **0** | **1255** |
+| **Total** | **1256** | **1256** | **0** | **0** | **0** | **0** | **1256** |
 
 ## Ambiguous ownership
 
@@ -214,7 +214,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 - `regulatory-alerts`
 - `remittance-v2`
 
-## Full 1,255-row ledger
+## Full 1,256-row ledger
 
 | English app | Category | English route | State | Primary French route | Accepted |
 |---|---|---|---|---|---:|
@@ -393,6 +393,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | .htaccess Generator | Developer Tools | `/tools/htaccess-gen` | Native candidate | `/fr/tools/generateur-htaccess` | Yes |
 | Robots.txt Generator | Developer Tools | `/tools/robots-txt` | Native candidate | `/fr/tools/generateur-robots-txt` | Yes |
 | Sitemap Generator | Developer Tools | `/tools/sitemap-gen` | Native candidate | `/fr/tools/generateur-sitemap` | Yes |
+| WAEC/NECO Practice Pilot | Education | `/tools/ssce-practice` | Native candidate | `/fr/tools/pratique-waec-neco` | Yes |
 | WAEC/NECO Result Planner | Education | `/tools/waec-calculator` | Native candidate | `/fr/tools/calculateur-waec` | Yes |
 | JAMB Screening Calculation Worksheet | Education | `/tools/jamb-aggregate` | Native candidate | `/fr/tools/calculateur-jamb` | Yes |
 | NSC Study Admission & Matric Points Planner | Education | `/tools/matric-points` | Native candidate | `/fr/tools/points-matric` | Yes |

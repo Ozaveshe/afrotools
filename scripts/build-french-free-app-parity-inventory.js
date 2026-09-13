@@ -10,12 +10,12 @@ const REGISTRY_PATH = path.join(ROOT, 'assets', 'js', 'components', 'tool-regist
 const LEGACY_LEDGER_PATH = path.join(ROOT, 'reports', 'french-localization-ledger.json');
 const ACCEPTANCE_EVIDENCE_PATH = path.join(ROOT, 'data', 'audits', 'french-free-app-acceptance.json');
 const ACCEPTANCE_CATEGORY_PATH = path.join(ROOT, 'data', 'audits', 'french-free-app-category-acceptance.json');
-const FINAL_ACCEPTANCE_RECEIPT = 'reports/french-free-app-parity-final-acceptance-2026-07-30.md';
+const FINAL_ACCEPTANCE_RECEIPT = 'reports/french-free-app-parity-final-acceptance-2026-09-13.md';
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.md');
 // Duplicate canonical entries were retired when landed-cost consolidated into
 // import-duty and remittance-v2 consolidated into remittance-compare.
-const EXPECTED_FREE_APP_COUNT = 1255;
+const EXPECTED_FREE_APP_COUNT = 1256;
 const EXCLUDED_PAID_ROUTES = new Set(['/pro']);
 
 const STATE_LABELS = {

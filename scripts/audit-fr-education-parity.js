@@ -15,7 +15,7 @@ function fail(id, check, detail) {
   failures.push({ id, check, detail });
 }
 
-if (manifest.denominator !== 42 || manifest.routes.length !== 42) {
+if (manifest.denominator !== 43 || manifest.routes.length !== 43) {
   fail("manifest", "exact-denominator", `${manifest.routes.length}/${manifest.denominator}`);
 }
 
@@ -58,7 +58,7 @@ const report = {
   checkedAt: new Date().toISOString(),
   baseline: manifest.baseline,
   category: "Education",
-  denominator: 42,
+  denominator: 43,
   routesPresent: manifest.routes.length,
   nativeFrenchOwners: manifest.routes.filter((route) => route.owner !== "existing-native-owner").length,
   retainedNativeOwners: manifest.routes.filter((route) => route.owner === "existing-native-owner").length,

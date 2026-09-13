@@ -338,7 +338,8 @@ ${prelude}${extraScripts}<script src="${definition.script}"></script><script src
 
 function categoryHub(manifest) {
   const labels = {
-    "education-hub": "Tableau de planification des études"
+    "education-hub": "Tableau de planification des études",
+    "ssce-practice": "Entraînement WAEC / NECO"
   };
   const items = manifest.routes.map((route, index) => {
     const title = definitions[route.id] ? definitions[route.id].title : labels[route.id] || route.id;
@@ -352,8 +353,8 @@ function categoryHub(manifest) {
   }));
   return `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>42 applications d'éducation en français pour l'Afrique | AfroTools</title>
-<meta name="description" content="Accédez aux 42 applications AfroTools d'éducation en français: examens, GPA, admission, budgets, bourses, planification, calculs et exports locaux.">
+<title>43 applications d'éducation en français pour l'Afrique | AfroTools</title>
+<meta name="description" content="Accédez aux 43 applications AfroTools d'éducation en français: examens, GPA, admission, budgets, bourses, planification, calculs et exports locaux.">
 <link rel="canonical" href="https://afrotools.com/fr/education/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/education/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/education/">
@@ -361,7 +362,7 @@ function categoryHub(manifest) {
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/ilimi/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/education/">
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="42 applications d'éducation en français | AfroTools">
+<meta property="og:title" content="43 applications d'éducation en français | AfroTools">
 <meta property="og:description" content="Le répertoire complet des applications d'éducation AfroTools disponibles en français.">
 <meta property="og:url" content="https://afrotools.com/fr/education/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/education-hub.webp">
 <link rel="stylesheet" href="/assets/css/design-system.css">
@@ -372,17 +373,17 @@ function categoryHub(manifest) {
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.hero{background:#071d35;color:#fff;padding:clamp(44px,8vw,86px) 0}.eyebrow{color:#90c8ff;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.hero h1{max-width:900px;font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.02;margin:.35rem 0 1rem}.hero p{max-width:800px;color:#d6e8ff;font-size:1.08rem}.summary{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}.summary span{border:1px solid #446a91;border-radius:999px;padding:8px 13px;font-weight:750}.directory{padding:42px 0 70px}.directory h2{font-size:1.8rem}.directory>p{color:var(--muted);max-width:780px}.tools{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.tools a{height:100%;display:grid;grid-template-columns:auto 1fr;gap:5px 12px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:17px;color:var(--text);text-decoration:none}.tools span{grid-row:1/3;color:var(--link);font-weight:900}.tools strong{overflow-wrap:anywhere}.tools small{color:var(--muted)}.tools a:hover{border-color:var(--link);transform:translateY(-1px)}:focus-visible{outline:3px solid #ffb000;outline-offset:3px}
 @media(max-width:850px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:540px){.tools{grid-template-columns:1fr}.wrap{width:min(100% - 18px,1180px)}}
 </style>
-<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:"42 applications d'éducation en français pour l'Afrique",url:"https://afrotools.com/fr/education/",inLanguage:"fr",mainEntity:{"@type":"ItemList",numberOfItems:42,itemListElement:itemList}})}</script>
-</head><body><afro-navbar active="education"></afro-navbar><main><header class="hero"><div class="wrap"><p class="eyebrow">Éducation · français</p><h1>Chaque application d'éducation, réunie au même endroit.</h1><p>Les 42 applications anglaises gratuites de cette catégorie ont une route française dédiée. Les calculs restent locaux; les notes, seuils, frais, dates, admissions et bourses doivent être confirmés auprès de leur source officielle.</p><div class="summary"><span>42 applications</span><span>42 illustrations</span><span>Calculs et exports locaux</span></div></div></header><section class="directory wrap"><h2>Répertoire complet</h2><p>Choisissez une tâche. Chaque carte ouvre directement l'application française correspondante, sans détour par une page anglaise.</p><ol class="tools">${items}</ol></section></main><afro-footer></afro-footer><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></body></html>`;
+<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:"43 applications d'éducation en français pour l'Afrique",url:"https://afrotools.com/fr/education/",inLanguage:"fr",mainEntity:{"@type":"ItemList",numberOfItems:43,itemListElement:itemList}})}</script>
+</head><body><afro-navbar active="education"></afro-navbar><main><header class="hero"><div class="wrap"><p class="eyebrow">Éducation · français</p><h1>Chaque application d'éducation, réunie au même endroit.</h1><p>Les 43 applications anglaises gratuites de cette catégorie ont une route française dédiée. Les calculs restent locaux; les notes, seuils, frais, dates, admissions et bourses doivent être confirmés auprès de leur source officielle.</p><div class="summary"><span>43 applications</span><span>43 illustrations</span><span>Calculs et exports locaux</span></div></div></header><section class="directory wrap"><h2>Répertoire complet</h2><p>Choisissez une tâche. Chaque carte ouvre directement l'application française correspondante, sans détour par une page anglaise.</p><ol class="tools">${items}</ol></section></main><afro-footer></afro-footer><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script></body></html>`;
 }
 
-if (rows.length !== 42) throw new Error(`Education denominator drift: ${rows.length}/42`);
-const manifest = { schemaVersion: 1, baseline: "8ce5cac175e42201968b1f7540752d6acf92d4ca", category: "Education", categoryKey: "education", denominator: 42, routes: [] };
+if (rows.length !== 43) throw new Error(`Education denominator drift: ${rows.length}/43`);
+const manifest = { schemaVersion: 1, baseline: "8ce5cac175e42201968b1f7540752d6acf92d4ca", category: "Education", categoryKey: "education", denominator: 43, routes: [] };
 for (const row of rows) {
   const definition = definitions[row.englishId];
   const frenchRoute = normalize((definition && definition.frenchRoute) || row.primaryFrenchRoute);
-  manifest.routes.push({ id: row.englishId, english: normalize(row.englishRoute), french: frenchRoute, baselineState: row.state, owner: definition ? definition.global : "existing-native-owner", artwork: `assets/img/tools/${row.englishId}.webp`, state: acceptanceState });
-  if (!definition) continue;
+  manifest.routes.push({ id: row.englishId, english: normalize(row.englishRoute), french: frenchRoute, baselineState: row.state, owner: definition ? definition.global : "existing-native-owner", artwork: row.englishId === "ssce-practice" ? "assets/img/tools/waec-calculator.webp" : `assets/img/tools/${row.englishId}.webp`, state: acceptanceState });
+  if (!definition || process.argv.includes("--catalog-only")) continue;
   const file = path.join(root, frenchRoute.replace(/^\/|\/$/g, ""), "index.html");
   const existing = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -391,5 +392,5 @@ for (const row of rows) {
 fs.writeFileSync(path.join(root, "fr/education/index.html"), categoryHub(manifest), "utf8");
 fs.writeFileSync(path.join(root, "data/localization/fr-education-parity.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 const missing = manifest.routes.filter((route) => !fs.existsSync(path.join(root, route.artwork))).map((route) => ({ id: route.id, artwork: route.artwork }));
-fs.writeFileSync(path.join(root, "reports/fr-education-missing-artwork.json"), `${JSON.stringify({ denominator: 42, missingCount: missing.length, missing }, null, 2)}\n`, "utf8");
-console.log(`Generated ${Object.keys(definitions).length} deficit routes; manifest ${manifest.routes.length}/42; artwork missing ${missing.length}.`);
+fs.writeFileSync(path.join(root, "reports/fr-education-missing-artwork.json"), `${JSON.stringify({ denominator: 43, missingCount: missing.length, missing }, null, 2)}\n`, "utf8");
+console.log(`${process.argv.includes("--catalog-only") ? "Synchronized catalogue without rewriting native pages" : `Generated ${Object.keys(definitions).length} deficit routes`}; manifest ${manifest.routes.length}/43; artwork missing ${missing.length}.`);
