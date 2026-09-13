@@ -15,6 +15,19 @@ assert.equal(intake.images.length, 63);
 assert.equal(intake.images.filter(i=>i.status==='placed').length, 60);
 assert.equal(intake.images.filter(i=>i.status==='needs-review').length, 3);
 assert.equal(new Set(library.images.map(i=>i.path)).size, library.images.length);
+const imageExt = /\.(?:png|jpe?g|webp|gif|svg|avif|ico)$/i;
+const excludedImage = /^(?:node_modules|dist|\.git|\.codex|\.agents|\.claude|reports|artifacts|audit-results|test-results|playwright-report|ops|tests)\//;
+const expectedImagePaths = cp.execFileSync('git',['ls-files','-c','-o','--exclude-standard'],{cwd:ROOT,encoding:'utf8',maxBuffer:32*1024*1024}).split(/\r?\n/).filter(f=>f&&imageExt.test(f)&&!excludedImage.test(f)&&fs.existsSync(path.join(ROOT,f))).sort();
+assert.deepEqual(library.images.map(i=>i.path.replace(/^\//,'')).sort(),expectedImagePaths,'Image library must inventory every repository product image');
+for(const entry of library.images) {
+  const file = path.join(ROOT,entry.path.replace(/^\//,''));
+  const bytes = fs.readFileSync(file);
+  const dimensions = imageSize(file);
+  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),entry.sha256,'Image library hash drift '+entry.path);
+  assert.equal(bytes.length,entry.bytes,'Image library byte-size drift '+entry.path);
+  assert.equal(dimensions?.w || null,entry.width,'Image library width drift '+entry.path);
+  assert.equal(dimensions?.h || null,entry.height,'Image library height drift '+entry.path);
+}
 for(const entry of intake.images) {
   const file = path.join(ROOT,entry.path);
   const bytes = fs.readFileSync(file);
@@ -43,6 +56,15 @@ for(const row of batch.images) {
   if(row.reference_image) assert.ok(fs.existsSync(path.join(ROOT,row.reference_image)));
 }
 assert.equal(require('../data/image-generation/missing-image-references.json').images.length,0);
+assert.ok(library.images.every(i=>i.placements.every(p=>p.path!=='admin/data/operator-dashboard.json')),'Operator snapshot must not feed image placement evidence back into the library');
+const placementDecisions = require('../data/image-generation/placement-decisions.json').images;
+const libraryByPath = new Map(library.images.map(i=>[i.path,i]));
+for(const decision of placementDecisions) {
+  const entry = libraryByPath.get(decision.path);
+  assert.ok(entry,'Missing reviewed lifecycle asset '+decision.path);
+  assert.equal(entry.placement_decision,decision.decision,'Missing lifecycle decision '+decision.path);
+  if(decision.decision!=='active') assert.equal(entry.status,decision.decision,'Lifecycle decision must survive reference discovery '+decision.path);
+}
 const aliases = require('../data/image-generation/recipe-image-aliases.json').aliases;
 const sandbox = { window:{} };
 vm.createContext(sandbox);

@@ -52,7 +52,7 @@ function build() {
     if(evidence.project_ref!=='zpclagtgczsygrgztlts')throw new Error('Incorrect media evidence project');
     for(const row of evidence.rows){const ref=String(row[field]||'').replace(/^https:\/\/(?:www\.)?afrotools\.com/,'').replace(/^\//,'');if(byPath.has(ref))placement(ref,evidence.table+':'+row.slug,'live-database-reference');}
   }
-  for (const file of all.filter(f => /\.(?:html|css|js|json|webmanifest|svg)$/.test(f) && !f.startsWith(OUT + '/') && !/^scripts\//.test(f))) {
+  for (const file of all.filter(f => /\.(?:html|css|js|json|webmanifest|svg)$/.test(f) && !f.startsWith(OUT + '/') && !/^scripts\//.test(f) && f !== 'admin/data/operator-dashboard.json')) {
     const source = read(file).replace(/\\\//g, '/');
     if(/(?:href|src)=["']\/favicon\.ico["']/.test(source))placement('favicon.ico',file,'page-reference');
     for (const match of source.matchAll(/(?:https?:\/\/(?:www\.)?afrotools\.com)?\/?(?:assets|images|img)\/[a-zA-Z0-9_./%+@-]+\.(?:png|jpe?g|webp|gif|svg|avif|ico)/gi)) {
@@ -95,7 +95,7 @@ function build() {
     item.locales_in_use = [...new Set(item.placements.map(p => p.locale))].sort();
     item.assignment = item.placements.length ? item.placements[0].path : item.duplicate_of ? 'Review duplicate of ' + item.duplicate_of : 'Library review queue: ' + item.family;
     const decision=decisions.get(item.path);
-    if(decision){if(decision.sha256!==item.sha256)throw new Error('Reviewed image hash changed: '+item.path);item.placement_decision=decision.decision;item.review_note=decision.reason;item.assignment=decision.owner;item.text_status=decision.text_status||item.text_status;if(item.status==='unassigned'&&decision.decision!=='active')item.status=decision.decision;}
+    if(decision){if(decision.sha256!==item.sha256)throw new Error('Reviewed image hash changed: '+item.path);item.placement_decision=decision.decision;item.review_note=decision.reason;item.assignment=decision.owner;item.text_status=decision.text_status||item.text_status;if(decision.decision!=='active')item.status=decision.decision;}
   }
   images.sort((a,b) => a.path.localeCompare(b.path));
   const generated_at = new Date().toISOString();
