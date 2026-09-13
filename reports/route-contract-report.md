@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11553 |
-| Indexable pages | 9974 |
+| Public pages | 11555 |
+| Indexable pages | 9976 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5284 |
-| Documented fallbacks | 14820 |
-| Routes eligible for primary sitemaps | 9974 |
+| Genuine equivalence groups | 5286 |
+| Documented fallbacks | 14822 |
+| Routes eligible for primary sitemaps | 9976 |
 
 ## Locale Coverage
 
-- en: 6006 page records
+- en: 6008 page records
 - fr: 3803 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 526
+- article: 528
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -5470,6 +5470,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:75d58e4082ef: en=`/tools/motor-third-party/niger`; x-default=`/tools/motor-third-party/niger`
 - equivalence:75ddf2f1d42b: en=`/tools/child-support/`, fr=`/fr/tools/pension-alimentaire-enfant/`, sw=`/sw/zana/matunzo-ya-mtoto/`; x-default=`/tools/child-support/`
 - equivalence:75e4d75fdd1a: en=`/blog/domiciliary-account-nigeria/`; x-default=`/blog/domiciliary-account-nigeria/`
+- equivalence:75e528bc4db8: en=`/blog/small-business-waste-audit-checklist-africa/`; x-default=`/blog/small-business-waste-audit-checklist-africa/`
 - equivalence:75e88a6bad0f: en=`/tools/university-ranking/`, fr=`/fr/tools/classement-universites/`, sw=`/sw/zana/orodha-vyuo-vikuu/`; x-default=`/tools/university-ranking/`
 - equivalence:75fafd1cc8d8: en=`/tools/afrokitchen/recipes/fakoye-ml/`; x-default=`/tools/afrokitchen/recipes/fakoye-ml/`
 - equivalence:76194f7ab315: en=`/cars/kenya/mercedes-benz/`, fr=`/fr/cars/kenya/mercedes-benz/`; x-default=`/cars/kenya/mercedes-benz/`
@@ -6438,6 +6439,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a49e668dbc62: en=`/cars/ghana/mercedes-benz/c-class/`, fr=`/fr/cars/ghana/mercedes-benz/c-class/`; x-default=`/cars/ghana/mercedes-benz/c-class/`
 - equivalence:a4b1ff687e5a: en=`/tools/car-insurance/rwanda`, fr=`/fr/tools/assurance-auto/rwanda`; x-default=`/tools/car-insurance/rwanda`
 - equivalence:a4c2df44ba33: en=`/tools/workers-comp/mauritius`; x-default=`/tools/workers-comp/mauritius`
+- equivalence:a4cc4170d7a4: en=`/blog/benin-employer-payroll-compliance-2026/`; x-default=`/blog/benin-employer-payroll-compliance-2026/`
 - equivalence:a4cd8bd48a44: en=`/cars/zambia/kia/`, fr=`/fr/cars/zambie/kia/`; x-default=`/cars/zambia/kia/`
 - equivalence:a4dcc0984d18: en=`/tools/afrokitchen/countries/malawi/`; x-default=`/tools/afrokitchen/countries/malawi/`
 - equivalence:a4dcf6733bfd: en=`/cars/uganda/kia/sportage/2017/`, fr=`/fr/cars/ouganda/kia/sportage/2017/`; x-default=`/cars/uganda/kia/sportage/2017/`

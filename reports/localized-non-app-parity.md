@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 288 |
-| sw | 138 | 0 | 311 |
+| fr | 161 | 0 | 290 |
+| sw | 138 | 0 | 313 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 321 | 40 | 0 | 281 | 21 | 0 | 300 |
+| editorial | 323 | 40 | 0 | 283 | 21 | 0 | 302 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -47,6 +47,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/battery-backup-hours-calculator-ghana/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/battery-backup-runtime-inverter-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/benin-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/benin-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/benin-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/benin-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/best-budgeting-methods-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -502,6 +504,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/side-hustle-tax-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/small-business-waste-audit-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/small-business-waste-audit-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-electricity-tariffs-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
