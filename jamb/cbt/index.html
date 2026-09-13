@@ -99,19 +99,19 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
           <label class="mode-card" data-mode="quick">
             <input aria-label="Mode" type="radio" name="mode" value="quick" class="jb-sr-only">
-            <div class="mc-emoji" aria-hidden="true">⚡</div>
+            <div class="mc-emoji" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7z"/></svg></div>
             <div class="mc-name">Quick Mock</div>
             <div class="mc-meta">Up to 10 Qs per subject · 30 min</div>
           </label>
           <label class="mode-card selected" data-mode="full">
             <input aria-label="Mode" type="radio" name="mode" value="full" checked class="jb-sr-only">
-            <div class="mc-emoji" aria-hidden="true">🎯</div>
+            <div class="mc-emoji" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9M12 7a5 5 0 1 0 5 5M12 12l9-9m-5 0h5v5"/></svg></div>
             <div class="mc-name">Full Mock</div>
             <div class="mc-meta">Up to 40 Qs per subject · 2 hrs</div>
           </label>
           <label class="mode-card" data-mode="subject">
             <input aria-label="Mode" type="radio" name="mode" value="subject" class="jb-sr-only">
-            <div class="mc-emoji" aria-hidden="true">📚</div>
+            <div class="mc-emoji" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15M3 3h5a4 4 0 0 1 4 3 4 4 0 0 1 4-3h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3z"/></svg></div>
             <div class="mc-name">Single Subject</div>
             <div class="mc-meta">Up to 40 Qs · 40 min</div>
           </label>
@@ -737,7 +737,7 @@ function renderSubjectPicker() {
     if (isLocked) btn.setAttribute("aria-disabled", "true");
     btn.setAttribute("aria-label", meta.label + (isEnglish ? " (compulsory)" : ""));
     btn.innerHTML = '<span class="check" aria-hidden="true">' + (isSelected ? "✓" : "") + '</span>' +
-                    '<span><span aria-hidden="true">' + meta.emoji + '</span> ' + meta.label + '</span>';
+                    '<span>' + meta.label + '</span>';
     var labelBox = btn.querySelector("span:last-child");
     if (labelBox) {
       labelBox.className = "subj-copy";
@@ -1141,8 +1141,7 @@ function renderSubjectsBar() {
     btn.setAttribute("aria-selected", isActive ? "true" : "false");
     btn.setAttribute("aria-controls", "cbt-question-panel");
     btn.tabIndex = isActive ? 0 : -1;
-    // Use span with aria-hidden for the emoji so screen readers don't verbalize it
-    btn.innerHTML = '<span aria-hidden="true">' + meta.emoji + '</span> ' + meta.label;
+    btn.textContent = meta.label;
     btn.addEventListener("click", function(){
       AfroJAMB.CBT.switchSubject(s);
       renderQuestion();

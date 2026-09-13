@@ -21,7 +21,7 @@ for (const width of [320, 390, 1440]) test(`year availability, counts and paper 
   await expect(year).toHaveValue('2027');
   await expect(year.locator('option')).toHaveText(['All available years', '2027 (2 questions)', '1993 (1 question)']);
   await expect(page.locator('.qcard')).toHaveCount(2);
-  await expect(page.locator('.qcard .qcard-meta .meta-chip:last-child')).toHaveText(['Q2', 'Q7']);
+  await expect(page.locator('.qcard .qcard-meta .meta-chip:nth-child(3)')).toHaveText(['Q2', 'Q7']);
   await expect(page.locator('#year-coverage')).toContainText('2 questions from 2027');
   await expect(page.locator('#year-coverage')).toContainText('Full-paper coverage has not been confirmed');
 
@@ -62,5 +62,5 @@ test('actual reviewed Mathematics years and counts match the current bank', asyn
     .toEqual([...counts.keys()].sort((a,b) => b-a));
   await expect(page.locator('#year-coverage')).toContainText('Practice selection: ' + counts.get(latest) + ' questions from ' + latest);
   const numbers = rows.filter(q => q.year === latest).map(q => q.num).sort((a,b) => a-b).slice(0,20);
-  await expect(page.locator('.qcard .qcard-meta .meta-chip:last-child')).toHaveText(numbers.map(n => 'Q' + n));
+  await expect(page.locator('.qcard .qcard-meta .meta-chip:nth-child(3)')).toHaveText(numbers.map(n => 'Q' + n));
 });
