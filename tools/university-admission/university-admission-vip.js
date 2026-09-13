@@ -68,6 +68,22 @@ var ROUTES={
  }
 };
 var active='nigeria';
+var CHECKS_KEY='afrotools.admissionChecks.v1';
+var drafts={},dirty={},storageIssue='';
+function readChecks(){
+ var raw=localStorage.getItem(CHECKS_KEY);
+ if(!raw)return {version:1,routes:{}};
+ var value=JSON.parse(raw);
+ if(!value||value.version!==1||!value.routes||typeof value.routes!=='object'||Array.isArray(value.routes))throw Error('Saved checklist format is not supported.');
+ var safe={version:1,routes:{}};
+ Object.keys(ROUTES).forEach(function(key){
+  var entry=value.routes[key];if(!entry)return;
+  if(!Array.isArray(entry.checked)||entry.checked.some(function(text){return typeof text!=='string';}))throw Error('Saved checklist is damaged.');
+  safe.routes[key]={checked:entry.checked.filter(function(text){return ROUTES[key].checks.indexOf(text)>=0;})};
+ });
+ return safe;
+}
+try{drafts=readChecks().routes;}catch(e){storageIssue='Saved progress could not be loaded. Your saved data has not been changed. Download your checklist to keep a copy.';}
 var $=function(id){return document.getElementById(id);};
 function node(tag,text,className){var el=document.createElement(tag);if(text!=null)el.textContent=text;if(className)el.className=className;return el;}
 function render(country,focus){
@@ -86,8 +102,8 @@ function render(country,focus){
   support.appendChild(document.createTextNode('. Use it for arithmetic only, then return to the official requirements.'));
  }else support.appendChild(document.createTextNode('No generic score calculator is recommended for this route. Use the institution’s published requirements.'));
  var checks=$('checklistItems');checks.replaceChildren();
- route.checks.forEach(function(text,index){var label=node('label',null,'ua-check');var input=document.createElement('input');input.type='checkbox';input.dataset.check=String(index);label.append(input,node('span',text));checks.appendChild(label);});
- $('actionStatus').textContent='';
+ route.checks.forEach(function(text,index){var label=node('label',null,'ua-check');var input=document.createElement('input');input.type='checkbox';input.dataset.check=String(index);input.checked=!!(drafts[country]&&drafts[country].checked.indexOf(text)>=0);input.addEventListener('change',captureChecks);label.append(input,node('span',text));checks.appendChild(label);});
+ $('actionStatus').textContent=storageIssue||(dirty[country]?'Unsaved changes for this country.':drafts[country]?'Saved progress restored for this country.':'');
  if(focus)$('route-title').focus();
 }
 function pack(){
@@ -101,11 +117,24 @@ function pack(){
  return lines.join('\n');
 }
 function status(message){$('actionStatus').textContent=message;}
+function captureChecks(){
+ drafts[active]={checked:Array.from(document.querySelectorAll('[data-check]')).filter(function(input){return input.checked;}).map(function(input){return ROUTES[active].checks[Number(input.dataset.check)];})};
+ dirty[active]=true;status('Unsaved changes for this country.');
+}
+function saveChecks(){
+ try{
+  captureChecks();
+  var saved=readChecks();saved.routes[active]=drafts[active];
+  localStorage.setItem(CHECKS_KEY,JSON.stringify(saved));
+  dirty[active]=false;storageIssue='';status('Progress saved on this device for '+ROUTES[active].title+'.');
+ }catch(e){status('Could not save progress. Your existing saved data is unchanged. Download the TXT checklist instead.');}
+}
 function copy(){navigator.clipboard.writeText(pack()).then(function(){status('Checklist copied.');}).catch(function(){status('Copy is unavailable. Download the TXT checklist instead.');});}
 function download(){var url=URL.createObjectURL(new Blob([pack()],{type:'text/plain;charset=utf-8'}));var a=document.createElement('a');a.href=url;a.download=active+'-university-admission-verification.txt';a.click();URL.revokeObjectURL(url);status('TXT checklist downloaded.');}
 $('countrySelect').addEventListener('change',function(event){render(event.target.value,true);});
 document.querySelectorAll('[data-country]').forEach(function(button){button.addEventListener('click',function(){render(button.dataset.country,true);});});
 $('copyPlan').addEventListener('click',copy);$('downloadPlan').addEventListener('click',download);$('printPlan').addEventListener('click',function(){window.print();});
-$('clearChecks').addEventListener('click',function(){document.querySelectorAll('[data-check]').forEach(function(input){input.checked=false;});status('Checklist cleared.');});
+$('saveChecks').addEventListener('click',saveChecks);
+$('clearChecks').addEventListener('click',function(){document.querySelectorAll('[data-check]').forEach(function(input){input.checked=false;});captureChecks();status('Checks cleared in this tab. Save progress to replace this country’s saved checks.');});
 render(active,false);
 }());

@@ -52,6 +52,40 @@ test('exports a source-linked checklist without an eligibility result', async ({
   expect(content).toContain('not an eligibility result or admission prediction');
 });
 
+test('keeps unsaved country drafts separate and restores only explicitly saved progress', async ({ page }) => {
+  await page.locator('[data-check]').first().check();
+  await page.locator('#countrySelect').selectOption('ghana');
+  await expect(page.locator('[data-check]').first()).not.toBeChecked();
+  await page.locator('[data-check]').nth(1).check();
+  await page.getByRole('button', { name: 'Save progress on this device' }).click();
+  await expect(page.locator('#actionStatus')).toContainText('Progress saved');
+  await page.locator('#countrySelect').selectOption('nigeria');
+  await expect(page.locator('[data-check]').first()).toBeChecked();
+  await page.reload();
+  await expect(page.locator('[data-check]').first()).not.toBeChecked();
+  await page.locator('#countrySelect').selectOption('ghana');
+  await expect(page.locator('[data-check]').nth(1)).toBeChecked();
+  await page.getByRole('button', { name: 'Clear checks', exact: true }).click();
+  await page.reload();await page.locator('#countrySelect').selectOption('ghana');
+  await expect(page.locator('[data-check]').nth(1)).toBeChecked();
+  await page.getByRole('button', { name: 'Clear checks', exact: true }).click();
+  await page.getByRole('button', { name: 'Save progress on this device' }).click();
+  await page.reload();await page.locator('#countrySelect').selectOption('ghana');
+  await expect(page.locator('[data-check]').nth(1)).not.toBeChecked();
+});
+
+test('failed saves preserve both the current draft and the previous saved progress', async ({ page }) => {
+  await page.locator('[data-check]').first().check();
+  await page.getByRole('button', { name: 'Save progress on this device' }).click();
+  const saved=await page.evaluate(()=>localStorage.getItem('afrotools.admissionChecks.v1'));
+  await page.locator('[data-check]').nth(1).check();
+  await page.evaluate(()=>{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='afrotools.admissionChecks.v1')throw Error('Storage full');return original.call(this,key,value);};});
+  await page.getByRole('button', { name: 'Save progress on this device' }).click();
+  await expect(page.locator('#actionStatus')).toContainText('Could not save');
+  await expect(page.locator('[data-check]').nth(1)).toBeChecked();
+  expect(await page.evaluate(()=>localStorage.getItem('afrotools.admissionChecks.v1'))).toBe(saved);
+});
+
 test('is accessible at 320px and print/PDF works', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
