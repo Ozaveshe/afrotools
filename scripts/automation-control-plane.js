@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { buildQueue, readHandoffRecords, reconcileRecords, validateHandoff } = require('./automation-handoff');
+const { normalized: normalizedWorktreePath } = require('./automation-worktree-lifecycle');
 
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_AUTOMATIONS_ROOT = 'C:/Users/Oza/.codex/automations';
@@ -141,6 +142,30 @@ function automationIdForBranch(branch, automationIds) {
     .find((id) => short === id || short.startsWith(id + '-')) || null;
 }
 
+function retainedWorktreeInventory(entries, policy) {
+  // Branch ownership describes retained storage, not a currently executing run.
+  const count = entries.filter((item) => item.active_automation && item.exists && !item.prunable).length;
+  const threshold = policy.worktrees.warn_retained_automation_worktrees
+    ?? policy.worktrees.max_active_automation_worktrees;
+  return {
+    counts: { retained_automation: count, active_automation: count }, // Legacy output alias.
+    issues: count > threshold ? [{
+      severity: 'warning',
+      code: 'retained_automation_worktree_budget_exceeded',
+      detail: count + ' retained automation worktrees exceeds the storage review threshold of ' + threshold
+        + '; this is not an executing-run count or cleanup authorization.',
+    }] : [],
+  };
+}
+
+function matchingWorktreeReceipt(entry, receipts) {
+  const matches = receipts.filter((item) => item.producer
+    && typeof item.producer.worktree_path === 'string' && item.producer.worktree_path.trim()
+    && item.commit === entry.head
+    && normalizedWorktreePath(item.producer.worktree_path) === normalizedWorktreePath(entry.path));
+  return matches.length === 1 ? matches[0] : null;
+}
+
 function inspectWorktrees(options, policy, queue, definitions) {
   if (options.skipWorktrees) return { available: false, entries: [], counts: {}, issues: [], cleanup_candidates: [] };
   const list = runGit(['worktree', 'list', '--porcelain']);
@@ -157,10 +182,7 @@ function inspectWorktrees(options, policy, queue, definitions) {
   const automationIds = definitions.map((item) => item.id);
   const activeIds = new Set(policy.active_automations.map((item) => item.id));
   const readyCommits = new Set(queue.ready.map((item) => item.commit));
-  const handoffByAutomation = new Map();
-  for (const item of [...queue.ready, ...queue.informational, ...queue.blocked, ...queue.quarantined]) {
-    handoffByAutomation.set(item.automation_id, item);
-  }
+  const receipts = [...queue.ready, ...queue.informational, ...queue.blocked, ...queue.quarantined];
   const issues = [];
   const cleanupCandidates = [];
   const entries = parseWorktreePorcelain(list.stdout).map((entry) => {
@@ -213,23 +235,25 @@ function inspectWorktrees(options, policy, queue, definitions) {
       });
     }
     if (isAutomation && ageHours !== null && dirty === false && ageHours >= policy.worktrees.clean_cleanup_age_hours) {
-      const receipt = automationId ? handoffByAutomation.get(automationId) : null;
+      const receipt = matchingWorktreeReceipt(entry, receipts);
       cleanupCandidates.push({
+        advisory: true,
         path: entry.path,
         branch: entry.branch,
         head: entry.head,
         automation_id: automationId,
+        handoff_id: receipt ? receipt.handoff_id : null,
         reason: mergedIntoMain
           ? 'clean and already contained in origin/main'
           : (receipt && ['consumed', 'no_change', 'quarantined'].includes(receipt.status)
-            ? 'clean and current receipt is terminal'
-            : 'clean automation worktree older than lifecycle threshold; review remote branch before removal'),
+            ? 'clean and exact owning receipt is terminal; guarded lifecycle review still required'
+            : 'clean automation worktree older than lifecycle threshold; review exact ownership and remote branch before removal'),
       });
     }
     return result;
   });
 
-  const activeAutomationWorktrees = entries.filter((item) => item.active_automation && item.exists && !item.prunable);
+  const retainedInventory = retainedWorktreeInventory(entries, policy);
   if (entries.length > policy.worktrees.warn_total) {
     issues.push({
       severity: 'warning',
@@ -237,13 +261,7 @@ function inspectWorktrees(options, policy, queue, definitions) {
       detail: entries.length + ' registered worktrees exceeds the warning budget of ' + policy.worktrees.warn_total + '.',
     });
   }
-  if (activeAutomationWorktrees.length > policy.worktrees.max_active_automation_worktrees) {
-    issues.push({
-      severity: 'error',
-      code: 'active_automation_worktree_budget_exceeded',
-      detail: activeAutomationWorktrees.length + ' active-lane worktrees exceeds the hard budget of ' + policy.worktrees.max_active_automation_worktrees + '.',
-    });
-  }
+  issues.push(...retainedInventory.issues);
 
   return {
     available: true,
@@ -257,7 +275,7 @@ function inspectWorktrees(options, policy, queue, definitions) {
       locked: entries.filter((item) => item.locked).length,
       detached: entries.filter((item) => item.detached).length,
       automation: entries.filter((item) => item.branch && item.branch.startsWith('refs/heads/automation/')).length,
-      active_automation: activeAutomationWorktrees.length,
+      ...retainedInventory.counts,
       dirty_inspected: entries.filter((item) => item.dirty === true).length,
       cleanup_candidates: cleanupCandidates.length,
     },
@@ -522,8 +540,8 @@ function validateRevalidation(item, verification, currentMainSha, now, maxAgeHou
 
 function releaseIssueBlocks(issue, publisherId) {
   if (issue.severity !== 'error') return false;
-  // These remain errors in the full health audit. They are capacity/maintenance
-  // findings, and deleting protected work to clear them is never a release step.
+  // Capacity/maintenance findings do not authorize deleting protected work.
+  // Keep the historical storage error code compatible with selected releases.
   if (new Set(['policy_budget_exceeded', 'active_automation_budget_exceeded',
     'active_automation_worktree_budget_exceeded', 'stranded_dirty_automation_worktree']).has(issue.code)) return false;
   if (['expected_automation_inactive', 'automation_kind_mismatch', 'automation_definition_drift'].includes(issue.code)) {
@@ -596,7 +614,7 @@ function toMarkdown(report) {
     '',
     '- Active definitions: ' + (report.automations.available ? report.automations.active_count : 'unavailable') + ' / budget ' + report.policy.active_automation_budget,
     '- Queue: ready=' + report.queue.counts.ready + ', invalid=' + report.queue.counts.invalid + ', conflicts=' + report.queue.counts.conflicts + ', dependency issues=' + report.queue.counts.dependency_issues,
-    '- Worktrees: total=' + (report.worktrees.counts.total ?? 'unavailable') + ', active automation=' + (report.worktrees.counts.active_automation ?? 'unavailable') + ', cleanup candidates=' + (report.worktrees.counts.cleanup_candidates ?? 'unavailable'),
+    '- Worktrees: total=' + (report.worktrees.counts.total ?? 'unavailable') + ', retained automation=' + (report.worktrees.counts.retained_automation ?? 'unavailable') + ', advisory cleanup candidates=' + (report.worktrees.counts.cleanup_candidates ?? 'unavailable'),
     '- Issues: errors=' + report.counts.errors + ', warnings=' + report.counts.warnings,
     '',
     '## Issues',
@@ -688,7 +706,7 @@ function main() {
     console.log('AfroTools automation control plane');
     console.log('- Active definitions: ' + (report.automations.available ? report.automations.active_count : 'unavailable') + ' / ' + report.policy.active_automation_budget);
     console.log('- Queue: ready=' + report.queue.counts.ready + ' invalid=' + report.queue.counts.invalid + ' conflicts=' + report.queue.counts.conflicts + ' dependency_issues=' + report.queue.counts.dependency_issues);
-    console.log('- Worktrees: total=' + (report.worktrees.counts.total ?? 'unavailable') + ' active_automation=' + (report.worktrees.counts.active_automation ?? 'unavailable') + ' cleanup_candidates=' + (report.worktrees.counts.cleanup_candidates ?? 'unavailable'));
+    console.log('- Worktrees: total=' + (report.worktrees.counts.total ?? 'unavailable') + ' retained_automation=' + (report.worktrees.counts.retained_automation ?? 'unavailable') + ' advisory_cleanup_candidates=' + (report.worktrees.counts.cleanup_candidates ?? 'unavailable'));
     console.log('- Issues: errors=' + report.counts.errors + ' warnings=' + report.counts.warnings);
     report.issues.slice(0, 12).forEach((item) => console.log('  - [' + item.severity.toUpperCase() + '] ' + item.code + ': ' + item.detail));
     if (report.release) {
@@ -714,6 +732,8 @@ module.exports = {
   parseWorktreePorcelain,
   hoursBetween,
   automationIdForBranch,
+  retainedWorktreeInventory,
+  matchingWorktreeReceipt,
   sameStringSet,
   verifyReadyHandoffs,
   evaluatePolicy,

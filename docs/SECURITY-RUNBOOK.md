@@ -61,6 +61,14 @@ Internal surfaces must not ship as static source paths:
 
 ## Live Verification
 
+### Scheduled worker authentication boundary
+
+`netlify/functions/_shared/scheduled-event.js` accepts the legacy `x-nf-event: schedule` marker. Headerless `{"next_run":"<ISO UTC timestamp>"}` support is restricted to literal, code-owned function names in `SCHEDULED_ONLY_FUNCTIONS`; tests require every opted-in handler and proof wrapper to have a matching schedule in `netlify.toml`. Generic callers and ordinary HTTP APIs must never opt in using a request-supplied name. Conflicting markers, extra/malformed payload fields, manual origin/authentication headers, non-POST methods, encoded bodies, and query parameters cannot activate the body fallback. Existing manual admin authorization remains in each handler.
+
+The security boundary is [Netlify's production scheduled-only entrypoint restriction](https://docs.netlify.com/build/functions/scheduled-functions/), **not** secrecy or authenticity of `next_run` or user-agent. Lambda-compatible scheduler events can contain HTTP-shaped fields; the Netlify CLI constructs a POST event with a `next_run` body. Local/dev invocation is not production authentication proof. Removing a schedule or routing ordinary HTTP traffic to these workers requires removing this fallback contract or adding separately authenticated HTTP entrypoints first.
+
+On 2026-09-13, unauthenticated, bodyless GETs to the production market-refresh and watchdog function URLs, plus `/api/market-data-refresh`, returned empty platform HTTP 403 responses rather than their application 401/cached-200 branches. Recheck this platform boundary after deployment without invoking a worker. Verify subsequent **natural** scheduled runs using new durable receipts and source timestamps; HTTP success, old cached watchdog output, or synthetic tests alone do not prove recovery.
+
 After deploy, these must not return `200`:
 
 ```bash

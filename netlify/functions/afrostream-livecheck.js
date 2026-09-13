@@ -40,7 +40,7 @@ function getHeader(event, headerName) {
 }
 
 function livecheckSource(event) {
-  return isScheduledEvent(event) ? 'Netlify Scheduled Function' : 'Manual livecheck endpoint';
+  return isScheduledEvent(event, 'afrostream-livecheck') ? 'Netlify Scheduled Function' : 'Manual livecheck endpoint';
 }
 
 function summarizeLivecheckErrors(summary) {

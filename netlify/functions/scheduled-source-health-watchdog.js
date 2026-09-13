@@ -55,7 +55,7 @@ function getHeader(event, headerName) {
 }
 
 function isScheduledInvocation(event) {
-  return isScheduledEvent(event);
+  return isScheduledEvent(event, 'scheduled-source-health-watchdog');
 }
 
 function isAdminRequest(event) {

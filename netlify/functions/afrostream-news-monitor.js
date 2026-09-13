@@ -29,7 +29,7 @@ function getHeader(event, headerName) {
 }
 
 function isScheduled(event) {
-  return isScheduledEvent(event);
+  return isScheduledEvent(event, 'afrostream-news-monitor');
 }
 
 function isAuthorized(event) {

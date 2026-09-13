@@ -17,7 +17,7 @@ function getAdminSecret() {
 }
 
 function isScheduledInvocation(event) {
-  return isScheduledEvent(event);
+  return isScheduledEvent(event, 'scheduled-refresh-market-data');
 }
 
 function corsHeaders(event) {

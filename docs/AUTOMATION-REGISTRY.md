@@ -107,9 +107,20 @@ npm run automation:control-plane:strict
 
 The strict audit fails for an unexpected active lane, schedule/model drift, an
 invalid or conflicting handoff, a ready receipt older than its publisher SLA,
-an excessive number of active-lane worktrees, or dirty stranded automation
-work. Historical worktree volume and safe cleanup candidates are reported
-without deleting anything.
+or dirty stranded automation work. Retained worktree volume is a storage
+warning, not a strict failure or an executing-run count. The full fleet audit
+remains strict for required-lane and integrity failures.
+
+`worktrees.warn_retained_automation_worktrees` is an advisory review threshold
+(currently eight), not a concurrency limit. Reports expose `retained_automation`
+and retain `active_automation` as a compatibility alias for the same storage
+count; older policies using `max_active_automation_worktrees` remain readable
+as an advisory threshold. No executing count is inferred from a branch name.
+Per-receipt `cleanup_after` is the earliest safe removal time, not evidence
+expiry. Protected retention can legitimately exceed the review threshold.
+Cleanup candidates are advisory only; receipt annotations require an exact
+owning worktree path and HEAD match. They never authorize removal or bypass
+the guarded lifecycle command, active-use review, or retention dates.
 
 Fleet health and release authorization are separate results. The strict audit
 above remains the maintainer's fleet-health gate. For a concrete release, pass

@@ -1144,7 +1144,7 @@ exports.handler = async function(event) {
   }
 
   // Scheduled invocations (Netlify Scheduled Functions)
-  var isScheduled = isScheduledEvent(event);
+  var isScheduled = isScheduledEvent(event, 'afrostream-sync');
 
   // Manual trigger requires auth
   if (!isScheduled && !isAuthorized(event)) {

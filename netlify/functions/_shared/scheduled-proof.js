@@ -39,8 +39,8 @@ function statusFromResponse(response) {
   return 'ok';
 }
 
-function shouldRecordScheduledProof(event) {
-  return isScheduledEvent(event);
+function shouldRecordScheduledProof(event, functionName) {
+  return isScheduledEvent(event, functionName);
 }
 
 function withScheduledProof(functionName, handler) {
@@ -49,7 +49,7 @@ function withScheduledProof(functionName, handler) {
     try {
       const response = await handler(event, context);
       const statusCode = Number(response && response.statusCode) || 200;
-      if (shouldRecordScheduledProof(event)) {
+      if (shouldRecordScheduledProof(event, functionName)) {
         await recordScheduledProof(functionName, {
           ok: statusCode < 500,
           status: statusFromResponse(response),
@@ -60,7 +60,7 @@ function withScheduledProof(functionName, handler) {
       }
       return response;
     } catch (error) {
-      if (shouldRecordScheduledProof(event)) {
+      if (shouldRecordScheduledProof(event, functionName)) {
         await recordScheduledProof(functionName, {
           ok: false,
           status: 'failed',

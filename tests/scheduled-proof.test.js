@@ -108,6 +108,28 @@ async function run() {
   assert.ok(!writes[3].data.error.includes('secret-token'));
   assert.ok(!writes[3].data.error.includes('abc123'));
 
+  const naturalEvent = { httpMethod: 'POST', headers: {}, body: '{"next_run":"2026-09-13T08:19:00Z"}' };
+  assert.strictEqual(scheduledProof.shouldRecordScheduledProof(naturalEvent), false, 'generic body callers cannot create scheduled proof');
+  assert.strictEqual(scheduledProof.shouldRecordScheduledProof(naturalEvent, 'unknown-job'), false);
+  assert.strictEqual(scheduledProof.shouldRecordScheduledProof(naturalEvent, 'send-weekly-newsletter'), true);
+  const naturalHandler = scheduledProof.withScheduledProof('send-weekly-newsletter', async () => ({ statusCode: 200 }));
+  await naturalHandler(naturalEvent, {});
+  assert.strictEqual(writes[4].key, 'scheduled-proof-send-weekly-newsletter');
+  assert.strictEqual(writes[4].data.trigger, 'netlify-schedule');
+  assert.strictEqual(writes[4].data.status, 'ok');
+  assert.ok(!Object.prototype.hasOwnProperty.call(writes[4].data, 'body'));
+  await manualHandler(naturalEvent, {});
+  await naturalHandler({ ...naturalEvent, headers: { origin: 'https://example.invalid' } }, {});
+  await naturalHandler({ ...naturalEvent, body: '{"next_run":"invalid"}' }, {});
+  assert.strictEqual(writes.length, 5, 'unknown, ordinary HTTP and malformed events cannot be misclassified as scheduled receipts');
+  const naturalThrowingHandler = scheduledProof.withScheduledProof('scheduled-cleanup-scraper-runs', async () => {
+    throw new Error('synthetic scheduled failure');
+  });
+  await assert.rejects(() => naturalThrowingHandler(naturalEvent, {}), /synthetic scheduled failure/);
+  assert.strictEqual(writes[5].key, 'scheduled-proof-scheduled-cleanup-scraper-runs');
+  assert.strictEqual(writes[5].data.status, 'failed');
+  assert.strictEqual(writes[5].data.trigger, 'netlify-schedule');
+
   const writeFailureScheduledProof = loadScheduledProof(async () => {
     throw new Error('write failed with Bearer store-secret');
   });

@@ -1,5 +1,6 @@
 const assert = require('assert');
 const { validateHandoff, buildQueue } = require('../scripts/automation-handoff');
+const handoffSchema = require('../data/automation/handoff-schema.json');
 
 function fixture(overrides = {}) {
   const item = {
@@ -55,6 +56,51 @@ function fixture(overrides = {}) {
 }
 
 assert.deepStrictEqual(validateHandoff(fixture()), []);
+// The published JSON schema must accept the optional evidence understood by
+// the release gate; existing receipts do not need to acquire new fields.
+const publisherSchema = handoffSchema.properties.publisher;
+const revalidationSchema = publisherSchema.properties.revalidation;
+assert.strictEqual(publisherSchema.additionalProperties, false);
+assert.ok(!publisherSchema.required.includes('revalidation'), 'existing publisher receipts remain valid without revalidation');
+assert.strictEqual(revalidationSchema.type, 'object');
+assert.strictEqual(revalidationSchema.additionalProperties, false);
+assert.deepStrictEqual(revalidationSchema.required.slice().sort(), [
+  'handoff_id', 'commit', 'base_sha', 'current_main_sha', 'source_patch_sha256', 'reviewed_at', 'checks',
+].sort());
+for (const field of ['commit', 'base_sha', 'current_main_sha', 'source_patch_sha256']) {
+  const scalar = revalidationSchema.properties[field];
+  const length = field === 'source_patch_sha256' ? 64 : 40;
+  assert.strictEqual(scalar.type, 'string');
+  assert.ok(new RegExp(scalar.pattern).test('a'.repeat(length)), field + ' accepts full lowercase hex');
+  assert.ok(new RegExp(scalar.pattern).test('A'.repeat(length)), field + ' accepts full uppercase hex');
+  for (const value of ['a'.repeat(length - 1), 'a'.repeat(length + 1), 'g'.repeat(length), 'abcdef0']) {
+    assert.ok(!new RegExp(scalar.pattern).test(value), field + ' rejects incomplete or non-hex identity');
+  }
+}
+assert.deepStrictEqual(revalidationSchema.properties.reviewed_at, { type: 'string', format: 'date-time' });
+assert.strictEqual(revalidationSchema.properties.handoff_id.type, 'string');
+assert.ok(new RegExp(revalidationSchema.properties.handoff_id.pattern).test('lane-2026-08-12-run-1'));
+assert.ok(!new RegExp(revalidationSchema.properties.handoff_id.pattern).test('a branch or prose'));
+const checkSchema = revalidationSchema.properties.checks;
+assert.strictEqual(checkSchema.type, 'array');
+assert.strictEqual(checkSchema.minItems, 3);
+assert.strictEqual(checkSchema.uniqueItems, true);
+assert.strictEqual(checkSchema.items.type, 'object');
+assert.strictEqual(checkSchema.items.additionalProperties, false);
+assert.deepStrictEqual(checkSchema.items.required.slice().sort(), ['evidence', 'name', 'status']);
+assert.deepStrictEqual(checkSchema.items.properties.status, { const: 'pass' }, 'failed or omitted check statuses cannot claim fresh review');
+for (const field of ['name', 'evidence']) {
+  assert.strictEqual(checkSchema.items.properties[field].type, 'string');
+  assert.ok(new RegExp(checkSchema.items.properties[field].pattern).test('runs/recovery/proof.json'));
+  assert.ok(!new RegExp(checkSchema.items.properties[field].pattern).test('  \t\n'), field + ' cannot be blank');
+}
+assert.deepStrictEqual(checkSchema.allOf.map((entry) => entry.contains.properties.name.const).sort(),
+  ['primary_sources', 'source_patch', 'targeted_validation']);
+for (const entry of checkSchema.allOf) {
+  assert.deepStrictEqual(entry.contains.required, ['name']);
+  assert.strictEqual(entry.minContains, 1);
+  assert.strictEqual(entry.maxContains, 1, 'each required named check occurs exactly once');
+}
 for (const producer of [undefined, null, false, 'legacy', []]) {
   assert.ok(
     validateHandoff(fixture({ producer })).some((error) => error.includes('require producer ownership metadata')),

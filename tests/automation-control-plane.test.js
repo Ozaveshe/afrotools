@@ -6,6 +6,8 @@ const {
   parseWorktreePorcelain,
   hoursBetween,
   automationIdForBranch,
+  retainedWorktreeInventory,
+  matchingWorktreeReceipt,
   sameStringSet,
   evaluatePolicy,
   parseArgs,
@@ -150,8 +152,8 @@ heartbeatDefinitions.definitions[0].target_thread_id=null;
 assert.ok(evaluatePolicy(heartbeatPolicy,heartbeatDefinitions,queue,worktrees).some(i=>i.code==='automation_kind_mismatch'));
 assert.ok(drift.every(i=>i.severity==='error'),'strict policy must fail for schedule/model drift');
 
-// September 12 deadlock: a missing observer and preserved completed/ready
-// worktrees must stay visible as health errors without vetoing selected sources.
+// Historical September 12 reports treated protected storage as an error.
+// Release mode must also remain compatible with that older finding code.
 const releasePolicy = {
   ...policy,
   active_automation_budget: 2,
@@ -291,3 +293,63 @@ assert.throws(() => parseArgs(['--handoff-id', 'good-run']), /requires --release
 assert.throws(() => parseArgs(['--release', '--handoff-id', 'good-run', '--handoff-id', 'good-run']), /duplicates/);
 assert.strictEqual(parseArgs(['--release', '--handoff-id', 'good-run']).release, true);
 console.log('selected release and publisher revalidation tests passed');
+
+// Retained storage is not execution concurrency. Protected consumed worktrees
+// remain counted honestly without forcing the maintainer to delete them early.
+const retainedEntries = Array.from({ length: 13 }, (_, index) => ({
+  path: 'C:/retained/' + index, head: 'c'.repeat(40), active_automation: true,
+  exists: true, prunable: false, dirty: false,
+}));
+const storagePolicy = { ...releasePolicy, worktrees: { warn_retained_automation_worktrees: 8 } };
+const retainedInventory = retainedWorktreeInventory(retainedEntries, storagePolicy);
+assert.deepStrictEqual(retainedInventory.counts, { retained_automation: 13, active_automation: 13 });
+assert.deepStrictEqual(retainedInventory.issues.map((issue) => [issue.code, issue.severity]), [
+  ['retained_automation_worktree_budget_exceeded', 'warning'],
+]);
+assert.deepStrictEqual(retainedWorktreeInventory(retainedEntries.slice(0, 8), storagePolicy).issues, []);
+assert.deepStrictEqual(retainedWorktreeInventory(retainedEntries, {
+  ...storagePolicy, worktrees: { max_active_automation_worktrees: 8 },
+}), retainedInventory, 'legacy policy threshold remains compatible, now advisory');
+assert.deepStrictEqual(retainedWorktreeInventory(retainedEntries, {
+  ...storagePolicy, worktrees: { warn_retained_automation_worktrees: 13, max_active_automation_worktrees: 8 },
+}).issues, [], 'explicit retained threshold takes precedence');
+assert.strictEqual(retainedWorktreeInventory([
+  ...retainedEntries,
+  { ...retainedEntries[0], active_automation: false },
+  { ...retainedEntries[0], exists: false },
+  { ...retainedEntries[0], prunable: true },
+], storagePolicy).counts.retained_automation, 13);
+const healthyDefinitions = { available: true, definitions: [
+  ...releaseDefinitions.definitions,
+  { id: 'observer', kind: 'heartbeat', status: 'ACTIVE', target_thread_id: 'fixture-thread', rrule: 'FREQ=HOURLY;INTERVAL=1' },
+] };
+const storageHealth = evaluatePolicy(storagePolicy, healthyDefinitions, originalQueue, retainedInventory, releaseOptions.now);
+assert.deepStrictEqual(storageHealth.filter((issue) => issue.severity === 'error'), [],
+  'strict fleet health must not fail solely because retained storage exceeds eight');
+assert.ok(evaluatePolicy(storagePolicy, releaseDefinitions, originalQueue, retainedInventory, releaseOptions.now)
+  .some((issue) => issue.code === 'expected_automation_inactive' && issue.severity === 'error'),
+'a missing required observer still fails the full fleet audit');
+assert.ok(evaluatePolicy(storagePolicy, { available: true, definitions: [] }, originalQueue, retainedInventory, releaseOptions.now)
+  .some((issue) => issue.automation_id === 'publisher' && issue.severity === 'error'),
+'a missing publisher still fails the full fleet audit');
+assert.ok(evaluatePolicy(storagePolicy, healthyDefinitions, { ...originalQueue, invalid: [{ file: 'invalid.json', errors: ['invalid identity'] }] }, retainedInventory, releaseOptions.now)
+  .some((issue) => issue.code === 'invalid_handoff' && issue.severity === 'error'),
+'invalid handoffs remain strict failures');
+
+// Multiple archived runs of one lane must not borrow each other's lifecycle
+// disposition. Even a matched terminal receipt is only an advisory annotation.
+const oldOwned = receipt('old-owned', { status: 'consumed', producer: { ...good.producer, worktree_path: 'C:/retained/old' } });
+const newOwned = receipt('new-owned', { producer: { ...good.producer, worktree_path: 'C:/retained/new' }, commit: 'e'.repeat(40) });
+const oldEntry = { path: 'C:\\retained\\old', head: oldOwned.commit };
+assert.strictEqual(matchingWorktreeReceipt(oldEntry, [newOwned, oldOwned]), oldOwned);
+assert.strictEqual(matchingWorktreeReceipt(oldEntry, [newOwned]), null, 'same lane is not ownership');
+assert.strictEqual(matchingWorktreeReceipt({ ...oldEntry, head: newOwned.commit }, [oldOwned]), null, 'path alone is not ownership');
+assert.strictEqual(matchingWorktreeReceipt({ ...oldEntry, path: 'C:/elsewhere' }, [oldOwned]), null, 'HEAD alone is not ownership');
+assert.strictEqual(matchingWorktreeReceipt(oldEntry, [{ ...oldOwned, producer: null }]), null, 'legacy absent ownership is not assumed');
+for (const worktreePath of [undefined, '', '   ']) {
+  assert.strictEqual(matchingWorktreeReceipt({ path: process.cwd(), head: oldOwned.commit }, [
+    { ...oldOwned, producer: { worktree_path: worktreePath } },
+  ]), null, 'missing owning path must not normalize into the current directory');
+}
+assert.strictEqual(matchingWorktreeReceipt(oldEntry, [oldOwned, { ...oldOwned, handoff_id: 'ambiguous-run' }]), null, 'ambiguous ownership is not guessed');
+console.log('retained storage and exact advisory ownership tests passed');
