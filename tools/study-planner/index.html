@@ -287,6 +287,9 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="stylesheet" href="/tools/study-planner/study-planner-vip.css?v=360a1c25">
+<link rel="stylesheet" href="/assets/css/student-day.css?v=c99f174c">
+<script src="/assets/js/lib/student-day.js?v=c1efbbd1"></script>
+<script src="/assets/js/pages/student-day.js?v=e52d63ac" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/study-planner/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/study-planner/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planificateur-etudes/">
@@ -295,6 +298,7 @@
 </head>
 <body class="top-level-page-ui-refresh" data-education-study-focus="true">
 <afro-navbar></afro-navbar>
+
 
 <!-- Hero -->
 <section class="sp-hero">
@@ -311,6 +315,8 @@
   </div>
 </div>
 </section>
+
+<section class="student-day" id="daily-study" data-student-day aria-label="My study day"><h2>My study day</h2><p>Use JavaScript to save sessions on this device, or <a href="/tools/study-planner/">open the study planner</a>.</p></section>
 
 <!-- App -->
 <div class="sp-app">
@@ -428,10 +434,11 @@
   <div class="sp-results" id="resultsArea">
     <div class="sp-plan-summary" id="planSummary"></div>
     <div class="sp-stats" id="statsBar"></div>
-    <div class="sp-session-progress" id="sessionProgress" aria-live="polite"></div>
+    <div class="sp-session-progress" id="sessionProgress" aria-live="polite"></div><p class="sp-progress-note">These checkmarks belong to this timetable. Save dated sessions below to track each week in My study day.</p>
     <div class="sp-breakdown" id="breakdown"></div>
     <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
-    <div class="sp-actions">
+    <div class="sd-plan-save"><h3>Bring this timetable into your study day</h3><p>Save the next seven days. Existing sessions and completion records are kept.</p><label for="studentPlanStart">Start date <input type="date" id="studentPlanStart"></label><button class="sp-action-btn primary" type="button" onclick="saveDailyStudyPlan()">Save sessions to my study day</button><a href="/tools/education-hub/#daily-study">Open my study day</a><p id="studentPlanSaveStatus" role="status"></p></div>
+<div class="sp-actions">
       <button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button>
       <button type="button" class="sp-action-btn" onclick="downloadStudyPlan()">Download TXT</button>
       <button type="button" class="sp-action-btn" onclick="switchTab('setup')">Edit subjects</button>
@@ -942,7 +949,7 @@ function updateStudyProgress() {
   var next = currentSessionPlan.find(function(session) { return !completedSessions[session.id]; });
   box.innerHTML =
     '<div class="sp-progress-card"><strong>' + done + '/' + total + '</strong><span>sessions done</span></div>' +
-    '<div class="sp-progress-card"><strong>' + pct + '%</strong><span>weekly progress</span></div>' +
+    '<div class="sp-progress-card"><strong>' + pct + '%</strong><span>timetable checkmarks</span></div>' +
     '<div class="sp-progress-card"><strong>' + esc(next ? next.day.slice(0, 3) : 'Done') + '</strong><span>' + esc(next ? next.subject : 'all sessions complete') + '</span></div>';
 }
 
@@ -1027,6 +1034,20 @@ function printTable() {
 }
 
 // LocalStorage
+function saveDailyStudyPlan() {
+ var status=document.getElementById('studentPlanSaveStatus');
+ try {
+  generated=false;
+  generate();
+  if(!generated)throw new Error('Check your timetable settings first.');
+  var api=window.AfroTools.studentDay;
+  var next=api.plan(api.read(localStorage),currentSessionPlan,document.getElementById('studentPlanStart').value,Math.round(Number(document.getElementById('sessionLength').value)*60));
+  api.write(localStorage,next);
+  window.dispatchEvent(new CustomEvent('student-day-plan-saved'));
+  status.textContent='Sessions saved on this device. Open your study day to start or move a session.';
+ }catch(e){status.textContent='Sessions not saved: '+e.message;}
+}
+
 function saveToLocal() {
   try {
     var subjects = getSubjects();
@@ -1040,12 +1061,12 @@ function saveToLocal() {
     };
     localStorage.setItem('sp_subjects', JSON.stringify(subjects));
     localStorage.setItem('sp_prefs', JSON.stringify(prefs));
-  } catch (e) {}
+    return true;
+  } catch (e) { return false; }
 }
 
 function savePlanOnDevice() {
-  saveToLocal();
-  setSaveStatus('Plan saved on this device.');
+  setSaveStatus(saveToLocal() ? 'Plan saved on this device.' : 'Could not save this plan. Check browser storage or export your timetable.');
 }
 
 function clearSavedPlan() {
@@ -1245,6 +1266,7 @@ function initPresetFromQuery() {
 }
 
 // Init
+document.getElementById('studentPlanStart').value=window.AfroTools.studentDay.today();
 loadStudyProgress();
 if (!initPresetFromQuery() && !loadFromLocal()) {
   loadPreset('waec', document.querySelector('.sp-preset[data-key="waec"]'));

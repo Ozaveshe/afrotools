@@ -16,7 +16,7 @@ test.describe("Education Hub app VIP", () => {
 
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
 
-    await expect(page.getByRole("heading", { name: /private education planning dashboard/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /your next step.*your study day/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /planner, not an eligibility decision/i })).toBeVisible();
     await expect(page.locator("body")).not.toContainText(/strong match|good scholarship matches|next best action|judge study-abroad readiness|right tools in the right order|secondary actions after the top priority/i);
     await expect(page.locator("body")).toContainText(/filter overlaps/i);
@@ -47,7 +47,7 @@ test.describe("Education Hub app VIP", () => {
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("heading", { name: /private education planning dashboard/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /your next step.*your study day/i })).toBeVisible();
 
     await expect(page.locator("body")).not.toContainText(/strong match|good matches|next best action|degree readiness|destination-readiness/i);
     await expect(page.locator("#edGpaValue")).toHaveAccessibleName(/^GPA$/);

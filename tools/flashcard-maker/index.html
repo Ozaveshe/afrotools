@@ -79,6 +79,7 @@
     .fc-review-row em{width:max-content}
   }
 </style>
+<script src="/assets/js/lib/student-day.js?v=c1efbbd1"></script>
 <link rel="canonical" href="https://afrotools.com/tools/flashcard-maker/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/flashcard-maker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/createur-fiches/">
@@ -1579,6 +1580,8 @@ function renderReviewPack() {
     '<div class="fc-review-pack-actions">' +
     '<button type="button" class="fc-btn sm" onclick="copyReviewPack()">Copy TXT</button>' +
     '<button type="button" class="fc-btn primary sm" onclick="downloadReviewPack()">Download TXT</button>' +
+    '<button type="button" class="fc-btn sm" onclick="scheduleDeckReview()">Schedule tomorrow’s review</button>' +
+    '<a class="fc-btn sm" href="/tools/education-hub/#daily-study">My study day</a>' +
     '</div></div>' +
     '<div class="fc-review-focus">' +
     '<div class="fc-review-focus-card"><strong>' + mastered + '/' + deck.cards.length + ' marked Got It</strong><span>A self-check, not proof of long-term mastery.</span></div>' +
@@ -1589,7 +1592,61 @@ function renderReviewPack() {
       var label = item.reviewCount > 0 ? item.reviewCount + 'x review' : 'new';
       return '<div class="fc-review-row"><div><strong>' + escHtml(item.front) + '</strong><span>' + escHtml(item.back) + '</span></div><em>' + label + '</em></div>';
     }).join('') + '</div>' : '') +
-    '<div class="fc-review-pack-status" id="reviewPackStatus" role="status"></div>';
+    '<div id="dailyReviewContext"></div><div class="fc-review-pack-status" id="reviewPackStatus" role="status"></div>';
+  renderDailyReviewContext();
+}
+
+function scheduleDeckReview() {
+  var deck = getDeck(), api = window.AfroTools.studentDay;
+  if (!deck || !deck.cards.length) return;
+  if (!state.remember) {
+    setReviewPackStatus('Enable Remember on this device in Decks first, so you can reopen this deck tomorrow.');
+    return;
+  }
+  try {
+    if (!deck.id) deck.id = crypto.randomUUID();
+    persist();
+    var plan = api.read(localStorage), date = api.addDays(api.today(), 1);
+    var id = 'review-' + deck.id + '-' + date;
+    if (!plan.tasks.some(function(task) { return task.id === id; })) {
+      plan.tasks.push({id:id,subject:('Review: ' + deck.name).slice(0,120),date:date,minutes:15,doneAt:null,deckId:deck.id});
+      api.write(localStorage, plan);
+    }
+    setReviewPackStatus('Review saved for ' + date + '. Find it in My study day; change the date there if needed.');
+  } catch(e) { setReviewPackStatus('Review could not be scheduled. Check browser storage and try again.'); }
+}
+
+function renderDailyReviewContext() {
+  var target = document.getElementById('dailyReviewContext'), deck = getDeck();
+  if (!target || !deck || !deck.id) return;
+  try {
+    var api = window.AfroTools.studentDay, plan = api.read(localStorage);
+    var task = plan.tasks.find(function(t) { return t.id === plan.activeId && t.deckId === deck.id && !t.doneAt; });
+    if (!task) return;
+    var text = document.createElement('p');
+    text.textContent = 'This deck is your active study session. Mark it complete after reviewing.';
+    var done = document.createElement('button');
+    done.type = 'button'; done.className = 'fc-btn primary sm'; done.textContent = 'Complete my study session';
+    done.addEventListener('click', function() {
+      try {
+        api.write(localStorage, api.change(api.read(localStorage), task.id, 'done'));
+        target.replaceChildren(); setReviewPackStatus('Study session completed. Your progress is saved in Education Hub.');
+      } catch(e) { setReviewPackStatus('Could not save completion. Your study session is unchanged.'); }
+    });
+    target.append(text, done);
+  } catch(e) { /* The deck remains usable when study-day storage is unavailable. */ }
+}
+
+function openScheduledDeck() {
+  if (!location.hash.startsWith('#review=')) return;
+  var id;
+  try { id = decodeURIComponent(location.hash.slice(8)); } catch(e) { return; }
+  var index = state.decks.findIndex(function(deck) { return deck.id === id; });
+  if (index < 0) {
+    setAppStatus('This scheduled deck is no longer saved in this browser. Restore its CSV backup or choose another deck.');
+    return;
+  }
+  selectDeck(index); switchTab('study');
 }
 
 var updateStatsBase = updateStats;
@@ -1600,6 +1657,8 @@ updateStats = function() {
 
 load();
 initPresetFromQuery();
+openScheduledDeck();
+window.addEventListener('hashchange', openScheduledDeck);
 </script>
 
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
