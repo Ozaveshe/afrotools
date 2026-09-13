@@ -32,14 +32,14 @@ test('saved flashcard review returns to its deck and completes the daily session
  await page.getByRole('button',{name:'Complete my study session'}).click();
  await expect(page.locator('#reviewPackStatus')).toContainText('Study session completed');
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
- await page.goto('/tools/education-hub/#daily-study');await expect(page.locator('.sd-summary')).toContainText('1 completed');
+ await page.goto('/tools/education-hub/#daily-study');await expect(page.locator('[data-student-day] .sd-summary')).toContainText('1 completed');
 });
 
 test('corrupt study storage is preserved and reported',async({page})=>{
  await page.addInitScript(()=>localStorage.setItem('afrotools.studentDay.v1','broken backup'));
  await page.goto('/tools/education-hub/#daily-study');
- await expect(page.locator('.sd-status')).toContainText('could not be loaded');
- await expect(page.locator('.sd-summary')).toContainText('Storage unavailable');
+ await expect(page.locator('[data-student-day] .sd-status')).toContainText('could not be loaded');
+ await expect(page.locator('[data-student-day] .sd-summary')).toContainText('Storage unavailable');
  await expect(page.getByRole('button',{name:'Add session',exact:true})).toBeDisabled();
  expect(await page.evaluate(()=>localStorage.getItem('afrotools.studentDay.v1'))).toBe('broken backup');
 });

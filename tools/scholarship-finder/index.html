@@ -232,6 +232,9 @@ window.addEventListener('unhandledrejection', function (event) {
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/student-day.css?v=89369187">
+<script src="/assets/js/lib/education-applications.js?v=b0f3a488"></script>
+<script src="/assets/js/pages/education-applications.js?v=f8eaa630" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scholarship-finder/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/recherche-bourses/">
@@ -466,6 +469,7 @@ window.addEventListener('unhandledrejection', function (event) {
   <div class="summary-actions">
     <button type="button" class="btn btn-primary btn-sm" onclick="jumpToFullProfile()">Continue Building Profile</button>
     <button type="button" class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Saved Scholarships</button>
+    <a class="btn btn-outline btn-sm" href="#my-applications">My applications</a>
     <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Back to Education Hub</a>
     <span class="shortlist-note" id="shortlistNote" role="status" aria-live="polite">No saved scholarships yet</span>
   </div>
@@ -499,6 +503,7 @@ window.addEventListener('unhandledrejection', function (event) {
   </div>
 </div>
 
+<section class="student-day" id="my-applications" data-education-applications aria-label="My applications"><h2>My applications</h2><p>Enable JavaScript to track applications on this device.</p></section>
 <section class="sch-pack-card" id="scholarshipApplicationPack" aria-labelledby="scholarshipPackTitle">
   <div class="sch-pack-head">
     <div>
@@ -1605,6 +1610,8 @@ function formatScholarshipCount(count) {
   var LEGACY_SAVE_KEY = 'afro-scholarship-shortlist';
   var PACK_KEY = 'afrotools_scholarship_application_pack';
   var lastPackText = '';
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.scholarshipShortlist = { items: savedItems };
 
   function byId(id){return document.getElementById(id);}
   function clean(value){
