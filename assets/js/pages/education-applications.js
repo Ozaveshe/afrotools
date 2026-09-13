@@ -43,7 +43,7 @@
   function render(){
    host.replaceChildren();host.append(node('span','MY APPLICATIONS','sd-kicker'),node('h2','Turn your shortlist into next steps.'));
    var active=state.items.filter(function(item){return !item.archived;});
-   host.append(node('p',active.length+' active applications · '+(loadError?'Storage unavailable':'Saved on this device'),'sd-summary'));
+   host.append(node('p',active.length+(active.length===1?' active application':' active applications')+' · '+(loadError?'Storage unavailable':'Saved on this device'),'sd-summary'));
    host.append(node('p','Keep each application’s status, confirmed deadline, next action and document checklist together. These records stay in this browser.'));
    var actions=node('div','','sd-actions');
    if(window.AfroTools.scholarshipShortlist){actions.append(button('Track my saved scholarships',function(){try{var latest=api.read(localStorage),next=api.importShortlist(latest,window.AfroTools.scholarshipShortlist.items());var count=next.items.length-latest.items.length;save(next,count?count+' applications added. Confirm each deadline at its official source.':'No new scholarships to add. Existing progress is kept.');}catch(e){status.textContent='Could not import shortlist: '+e.message;}}));}

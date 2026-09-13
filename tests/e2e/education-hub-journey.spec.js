@@ -9,6 +9,7 @@ test.beforeEach(async ({ page }) => {
 
 test('background refresh preserves unsaved values and invalid-to-valid recovery', async ({ page }) => {
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await page.getByLabel('Education level').selectOption('undergraduate');
   await page.locator('#edGpaValue').fill('999');
   await page.locator('#edGpaScale').selectOption('4.0');
@@ -22,6 +23,7 @@ test('background refresh preserves unsaved values and invalid-to-valid recovery'
   await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
   await expect(page.locator('#profileSaveHint')).toContainText('Saved on this device');
   await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
   await expect(page.locator('#edGpaScale')).toHaveValue('4.0');
   await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
@@ -29,6 +31,7 @@ test('background refresh preserves unsaved values and invalid-to-valid recovery'
 
 test('storage failure preserves edits and never reports a successful save', async ({ page }) => {
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await page.evaluate(() => {
     const original = Storage.prototype.setItem;
     window.restoreSyntheticStorage = () => { Storage.prototype.setItem = original; };
@@ -48,11 +51,13 @@ test('storage failure preserves edits and never reports a successful save', asyn
   await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
   await expect(page.locator('#profileSaveHint')).toContainText('Saved on this device');
   await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
 });
 
 test('clearing saved fields is explicit, atomic and recoverable', async ({ page }) => {
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await page.getByLabel('Institution').fill('Synthetic study institution');
   await page.locator('#edGpaValue').fill('3.5');
   await page.locator('#edGpaScale').selectOption('4.0');
@@ -74,6 +79,7 @@ test('clearing saved fields is explicit, atomic and recoverable', async ({ page 
   await expect(page.locator('#edCountries')).toHaveValue(', ,');
   await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
   await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.getByLabel('Institution')).toHaveValue('Synthetic study institution');
   await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
   await expect(page.locator('#edCountries')).toHaveValue('Canada');
@@ -87,6 +93,7 @@ test('clearing saved fields is explicit, atomic and recoverable', async ({ page 
   await page.getByRole('button', { name: 'Save my profile', exact: true }).click();
   await expect(page.locator('#profileSaveHint')).toContainText('Saved on this device');
   await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.getByLabel('Education level')).toHaveValue('undergraduate');
   await expect(page.locator('#edGpaValue')).toHaveValue('3.5');
 });
@@ -103,6 +110,7 @@ test(`first visit reaches a useful saved timetable without a profile (${navigati
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.locator('#startStudyPlan')).toHaveAccessibleName('Start a study plan');
   await page.locator('#startStudyPlan').focus();
   await page.keyboard.press('Enter');
@@ -118,6 +126,7 @@ test(`first visit reaches a useful saved timetable without a profile (${navigati
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('#hoursPerDay')).toHaveValue('1');
   await page.goBack({ waitUntil: 'domcontentloaded' });
+  if (!(await page.locator("#planning-details").evaluate(el => el.open))) await page.locator("#planning-details > summary").click();
   await expect(page.locator('#startStudyPlan')).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('afroedu-profile-cache'))).toBeNull();
   expect(errors).toEqual([]);
@@ -130,6 +139,7 @@ test('offline edits save locally, reconnect and reload restore without sending p
     if (request.method() !== 'GET' && /\/api\/profile/.test(request.url())) profileWrites.push(request.url());
   });
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await context.setOffline(true);
   await expect(page.locator('#hubConnectionStatus')).toContainText('Offline.');
   await page.getByLabel('Education level').selectOption('undergraduate');
@@ -140,6 +150,7 @@ test('offline edits save locally, reconnect and reload restore without sending p
   await context.setOffline(false);
   await expect(page.locator('#hubConnectionStatus')).toContainText('Connection available');
   await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   await expect(page.locator('#edIeltsOverall')).toHaveValue('7');
   await expect(page.locator('#heroScholarshipMode')).not.toHaveText(/Live feed/i);
   expect(profileWrites).toEqual([]);
@@ -149,6 +160,7 @@ for (const width of [320, 390]) {
   test(`profile keyboard flow, labels and 200 percent reflow at ${width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
     await page.screenshot({ path: testInfo.outputPath(`hub-${width}.png`) });
     const fields = ['edLevel', 'edInstitution', 'edGradDate', 'edStudyLevel', 'edGpaValue', 'edGpaScale', 'edIeltsOverall', 'edJambScore', 'edCountries', 'edFields'];
     await page.locator('#edLevel').focus();
@@ -182,6 +194,7 @@ for (const width of [320, 390]) {
 
 test('existing guided tool links resolve locally', async ({ page, request }) => {
   await page.goto('/tools/education-hub/', { waitUntil: 'domcontentloaded' });
+    await page.locator("#planning-details > summary").click();
   const links = await page.locator('#startStudyPlan, #nextActionList a, #checklistList a').evaluateAll(nodes =>
     [...new Set(nodes.map(node => node.getAttribute('href')).filter(href => href.startsWith('/')))]);
   expect(links).toContain('/tools/study-planner/');

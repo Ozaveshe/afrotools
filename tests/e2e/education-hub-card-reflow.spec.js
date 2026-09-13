@@ -6,6 +6,7 @@ for (const width of [320, 390, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto('/tools/education-hub/', { waitUntil: 'load' });
+    await page.locator("#planning-details > summary").click();
       await expect(page.locator('#readinessList .hub-readiness-card')).toHaveCount(4);
       await page.addStyleTag({ content: `html{font-size:${textSize}%!important}` });
       await page.evaluate(() => document.fonts.ready);

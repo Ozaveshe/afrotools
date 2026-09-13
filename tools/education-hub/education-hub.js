@@ -807,7 +807,7 @@
               {
                 key: "ielts",
                 title: "Add IELTS target or score",
-                complete: !a || !!e.ielts_overall,
+                complete: !!e.ielts_overall,
                 hint: e.ielts_overall
                   ? "IELTS on file: " + Number(e.ielts_overall).toFixed(1)
                   : "Add only a score or target you have chosen to track.",
@@ -816,7 +816,7 @@
               {
                 key: "degree-verification",
                 title: "Record a degree recognition check",
-                complete: !a || n,
+                complete: !!n,
                 hint: n
                   ? "A degree verification route is already on file."
                   : "Use the recognition guide to find the relevant official authority.",
@@ -1097,7 +1097,7 @@
               meta: u
                 ? S(
                     u.routeSummary ||
-                      h.join(" | ") ||
+                      [u.country, u.feesLabel].filter(Boolean).join(" | ") ||
                       (c
                         ? "Next date: " + c.title + " (" + _(c.date) + ")"
                         : "No confirmed deadline saved."),
@@ -1999,14 +1999,41 @@
     g("Profile saved on this device", "success");
     O();
   }
+  function confirmedCockpitSave(method, collection, record) {
+    var raw = localStorage.getItem("afroedu-cockpit-state");
+    if (raw) {
+      var existing = JSON.parse(raw);
+      if (!existing || typeof existing !== "object" || Array.isArray(existing) ||
+          ["universities", "destinations", "deadlines", "budgetSignals"].some(function (key) {
+            return existing[key] !== undefined && !Array.isArray(existing[key]);
+          })) throw new Error("Saved planning data needs recovery");
+    }
+    if (!window.AfroEdu || typeof window.AfroEdu[method] !== "function") throw new Error("Save service unavailable");
+    var expected = window.AfroEdu[method](record);
+    var saved = JSON.parse(localStorage.getItem("afroedu-cockpit-state") || "{}");
+    var actual = (saved[collection] || []).find(function (item) { return item.id === record.id; });
+    if (!expected || !actual || Object.keys(expected).some(function (key) {
+      return JSON.stringify(expected[key]) !== JSON.stringify(actual[key]);
+    })) throw new Error("Local save not confirmed");
+  }
+  function planningAction(action) {
+    return function () {
+      var status = u("planningSaveStatus");
+      try { action(); if (status) status.textContent = ""; }
+      catch (_) {
+        if (status) {
+          status.textContent = "Could not finish saving on this device. Your entered values are still here. Check browser storage and try again.";
+          status.focus({ preventScroll: true });
+        }
+      }
+    };
+  }
   function H() {
     var e = u("manualUniversityName").value.trim(),
       t = u("manualUniversityCountry").value.trim(),
       a = u("manualUniversityNote").value.trim();
     e
-      ? (window.AfroEdu &&
-          "function" == typeof window.AfroEdu.saveUniversity &&
-          window.AfroEdu.saveUniversity({
+      ? (confirmedCockpitSave("saveUniversity", "universities", {
             id: w(e + "-" + t),
             name: e,
             country: t,
@@ -2039,9 +2066,7 @@
       a = u("destinationReason").value.trim(),
       i = u("destinationLevel").value;
     t
-      ? (window.AfroEdu &&
-          "function" == typeof window.AfroEdu.saveDestination &&
-          window.AfroEdu.saveDestination({
+      ? (confirmedCockpitSave("saveDestination", "destinations", {
             id: w(t),
             name: t,
             reason: a,
@@ -2068,9 +2093,7 @@
       t = u("deadlineDate").value,
       a = u("deadlineRoute").value;
     e && t
-      ? (window.AfroEdu &&
-          "function" == typeof window.AfroEdu.saveDeadline &&
-          window.AfroEdu.saveDeadline({
+      ? (confirmedCockpitSave("saveDeadline", "deadlines", {
             id: w(e + "-" + t),
             title: e,
             date: t,
@@ -2202,9 +2225,9 @@
     ),
       document.addEventListener("click", X),
       u("saveProfileBtn").addEventListener("click", V),
-      u("saveUniversityBtn").addEventListener("click", H),
-      u("saveDestinationBtn").addEventListener("click", z),
-      u("saveDeadlineBtn").addEventListener("click", $),
+      u("saveUniversityBtn").addEventListener("click", planningAction(H)),
+      u("saveDestinationBtn").addEventListener("click", planningAction(z)),
+      u("saveDeadlineBtn").addEventListener("click", planningAction($)),
       window.addEventListener("afroedu:profile-updated", function () {
         O();
       }),

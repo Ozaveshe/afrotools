@@ -26,7 +26,7 @@
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
 <script src="/assets/js/education-scholarship-feed.js?v=dc5d929b" defer></script>
 <script src="/engines/scholarship-matcher.js?v=59b05ad5" defer></script>
-<script src="education-hub.js?v=34062beb" defer></script>
+<script src="education-hub.js?v=cb45cc1c" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -175,17 +175,20 @@
 </style>
 <link rel="stylesheet" href="/assets/css/student-day.css?v=89369187">
 <script src="/assets/js/lib/student-day.js?v=c1efbbd1"></script>
-<script src="/assets/js/pages/student-day.js?v=bee17b76" defer></script>
+<script src="/assets/js/pages/student-day.js?v=025985fe" defer></script>
 <script src="/assets/js/lib/education-applications.js?v=b0f3a488"></script>
-<script src="/assets/js/pages/education-applications.js?v=f8eaa630" defer></script>
+<script src="/assets/js/pages/education-applications.js?v=78b51500" defer></script>
+<link rel="stylesheet" href="/assets/css/education-workspace.css?v=6770fbdb">
+<script src="/assets/js/pages/education-workspace.js?v=ccd80f04" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/education-hub/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/education-hub/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/hub-education/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kituo-elimu/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/">
 </head>
-<body class="hub-body top-level-page-ui-refresh">
+<body class="hub-body top-level-page-ui-refresh education-workspace">
 <afro-navbar></afro-navbar>
+<nav class="education-nav" aria-label="Education workspace"><div><a href="/tools/education-hub/" aria-current="page">My day</a><a href="/tools/study-planner/">Planner</a><a href="/tools/flashcard-maker/">Flashcards</a><a href="/tools/ssce-practice/">Practice</a><a href="/tools/scholarship-finder/">Scholarships</a><a href="/tools/university-admission/">Admissions</a></div></nav>
 
 
 
@@ -201,15 +204,7 @@
       </div>
       <h1>Your next step.<br><span>Your study day.</span></h1>
       <p>Plan today’s study, pick up unfinished sessions, and keep your applications and deadlines in one place.</p>
-      <div class="hub-hero-pills"><a href="#daily-study">My study day</a>
-        <a href="#my-applications">My applications</a>
-        <a href="#profile-editor">My Profile</a>
-        <a href="#checklistList">My Checklist</a>
-        <a href="#scholarshipList">My Scholarships</a>
-        <a href="#universityList">My Universities</a>
-        <a href="#destinationList">My Destinations</a>
-        <a href="#budgetSignalList">My Budget Signals</a>
-      </div>
+      <nav class="hub-hero-pills" aria-label="On this page"><a href="#daily-study">Study today</a><a href="#my-applications">Applications</a><a href="#profile-editor">Planning details</a><a href="#africa-exam-radar">Exam routes</a></nav>
     </div>
 
   </div>
@@ -218,7 +213,9 @@
 <main class="hub-main">
 <section class="student-day" id="daily-study" data-student-day aria-label="My study day"><h2>My study day</h2><p>Use JavaScript to save sessions on this device, or <a href="/tools/study-planner/">open the study planner</a>.</p></section>
 <section class="student-day" id="my-applications" data-education-applications aria-label="My applications"><h2>My applications</h2><p>Enable JavaScript to track applications on this device.</p></section>
+  <details class="education-options" id="planning-details"><summary>Optional admission planning<small>Profile, school shortlists, destinations, budgets and exam routes</small></summary>
   <div class="hub-wrap">
+    <p id="planningSaveStatus" role="status" aria-live="polite" tabindex="-1"></p>
     <details class="hub-admission-overview"><summary>My applications and admission overview</summary><div class="hub-hero-grid">    <div class="hub-next-card">
       <div class="hub-next-top">
         <span class="hub-badge" id="heroModeBadge">Start cockpit</span>
@@ -467,9 +464,9 @@
           </div>
           <div class="hub-exam-grid">
             <article class="hub-exam-card hub-exam-card-hot">
-              <span class="hub-fit hub-fit-warn">Now</span>
+              <span class="hub-fit">July 2026 reference</span>
               <h3>Zambia ECZ GCE</h3>
-              <p>Runs 3 July to 22 July 2026. Use the countdown, revision blocks, and exam-day checklist for last-mile prep.</p>
+              <p>Recorded window: 3–22 July 2026. This window has passed. Check ECZ for the next sitting before setting a new study deadline.</p>
               <div class="hub-exam-links">
                 <a href="/tools/exam-countdown/?exam=zambia-gce">Countdown</a>
                 <a href="/tools/study-planner/?exam=zambia-gce">Study plan</a>
@@ -480,9 +477,9 @@
               </div>
             </article>
             <article class="hub-exam-card hub-exam-card-hot">
-              <span class="hub-fit hub-fit-warn">July</span>
+              <span class="hub-fit">July 2026 reference</span>
               <h3>Uganda UNEB PLE, UCE, UACE</h3>
-              <p>Late registration is open from 1 July to 31 July 2026. Build registration checklists, CA/project trackers, and parent reminders.</p>
+              <p>Recorded late-registration window: 1–31 July 2026. This window has passed. Check UNEB for current registration notices.</p>
               <div class="hub-exam-links">
                 <a href="#deadline-form">Track deadline</a>
                 <a href="/tools/exam-countdown/?exam=uganda-uneb-registration">Countdown</a>
@@ -801,6 +798,7 @@
     </section>
   </div>
 
+  </details>
 </main>
 
 <script id="education-hub-exam-launcher-script">
@@ -812,7 +810,7 @@
       name: "Zambia ECZ GCE",
       country: "Zambia",
       window: "3 July to 22 July 2026",
-      status: "In progress",
+      status: "Past window — confirm next sitting",
       sourceLabel: "ECZ GCE",
       sourceUrl: "https://www.exams-council.org.zm/gce/",
       note: "Planning route for daily paper checks, short revision blocks, and exam-day preparation.",
@@ -827,7 +825,7 @@
       name: "Uganda UNEB PLE, UCE, UACE registration",
       country: "Uganda",
       window: "Late registration: 1 July to 31 July 2026",
-      status: "Registration window",
+      status: "Past registration window",
       sourceLabel: "UNEB registration notice",
       sourceUrl: "https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/",
       note: "Registration route for deadline tracking, required school actions, and parent reminders.",

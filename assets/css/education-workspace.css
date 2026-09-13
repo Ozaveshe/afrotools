@@ -1,0 +1,70 @@
+/* Shared education composition. Product colours and typography stay token-owned. */
+body.education-workspace {
+  --education-width: 1100px;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+body.education-workspace :is(h1,h2,h3,button,input,select,textarea) { font-family: var(--font-body, 'DM Sans', sans-serif); }
+body.education-workspace h1 { font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;letter-spacing:-.035em; }
+body.education-workspace h1 span { font:inherit;color:inherit; }
+body.education-workspace :is(.sp-hero,.fc-hero,.hub-hero) h1 span {font:inherit;color:var(--color-text);}
+body.education-workspace :is(.sp-tag,.fc-tag) {background:var(--color-primary-pale);color:var(--color-link);border-color:var(--color-border);}
+body.education-workspace :is(.hub-wrap,.sp-hero-inner,.sp-app,.fc-hero-inner,.fc-app,.fc-study-bar,.tool-hero-inner,.tool-main-inner,.ua-shell,.practice-shell,.study-workflow-rail__inner) {
+  width:calc(100% - 2 * var(--space-4,16px));max-width:var(--education-width);margin-inline:auto;padding-inline:0;min-width:0;
+}
+body.education-workspace :is(.hub-hero,.sp-hero,.fc-hero,.tool-hero,.ua-hero) {
+  background:var(--color-bg-card);color:var(--color-text);padding-block:var(--space-6,24px);border-bottom:1px solid var(--color-border);box-shadow:none;
+}
+body.education-workspace :is(.hub-hero-copy,.practice-shell .page-header) {background:transparent;border:0;box-shadow:none;border-radius:0;padding:0;}
+body.education-workspace :is(.hub-hero,.sp-hero,.fc-hero,.tool-hero,.ua-hero) :is(h1,p) {color:var(--color-text);}
+body.education-workspace :is(.hub-hero-copy,.sp-hero-inner,.fc-hero-inner,.tool-hero-inner,.ua-hero) h1 {max-width:30ch;margin-block:var(--space-3,12px);}
+body.education-workspace :is(.hub-eyebrow,.ua-eyebrow,.breadcrumb,.sp-breadcrumb,.fc-breadcrumb,.ua-breadcrumb) {color:var(--color-text-muted);}
+body.education-workspace :is(.breadcrumb,.sp-breadcrumb,.fc-breadcrumb,.ua-breadcrumb) a {color:var(--color-link);}
+body.education-workspace :is(.sp-hero p,.fc-hero p,.hub-hero-copy p,.ua-lede,.page-description) {font-size:1rem;line-height:1.6;max-width:70ch;}
+body.education-workspace .hub-hero-copy::before,body.education-workspace .hub-hero-copy::after {display:none;}
+body.education-workspace .hub-hero-pills {margin-top:var(--space-3,12px);}
+body.education-workspace .hub-hero-pills a {background:var(--color-bg);color:var(--color-link);border:1px solid var(--color-border);border-radius:var(--radius-md,8px);}
+body.education-workspace .student-day {width:calc(100% - 2 * var(--space-4,16px));max-width:var(--education-width);margin:var(--space-5,20px) auto;padding:var(--space-5,20px);border-radius:var(--radius-lg,12px);}
+body.education-workspace :is(button,.btn,.hub-btn,.fc-btn,.sp-action-btn,.ua-primary,.ua-secondary,.ua-links a) {min-height:44px;border-radius:var(--radius-md,8px);}
+body.education-workspace :is(input:not([type=checkbox]):not([type=radio]),select,textarea) {font-size:1rem;max-width:100%;min-width:0;}
+body.education-workspace :is(button,a,input,select,textarea,summary):focus-visible {outline:3px solid var(--color-primary);outline-offset:3px;}
+.education-nav {border-bottom:1px solid var(--color-border);background:var(--color-bg-card);}
+.education-nav>div {display:flex;flex-wrap:wrap;gap:var(--space-1,4px);max-width:var(--education-width);margin:auto;padding:var(--space-2,8px) var(--space-4,16px);}
+.education-nav a {display:inline-flex;align-items:center;min-height:44px;padding:var(--space-2,8px) var(--space-3,12px);font-size:.875rem;font-weight:650;color:var(--color-text);border-radius:var(--radius-md,8px);text-decoration:none;}
+.education-nav a[aria-current=page],.education-nav a:hover {background:var(--color-primary-pale);color:var(--color-link);}
+.education-options {max-width:var(--education-width);width:calc(100% - 2 * var(--space-4,16px));margin:var(--space-6,24px) auto;border-block:1px solid var(--color-border);}
+.education-options>summary {padding-block:var(--space-5,20px);min-height:44px;cursor:pointer;font-size:1.125rem;font-weight:700;color:var(--color-text);}
+.education-options>summary small {display:block;font-size:1rem;font-weight:400;color:var(--color-text-muted);margin-top:var(--space-2,8px);}
+body.education-workspace .education-options>.hub-wrap {width:100%;}
+body.education-workspace .hub-main {padding-top:0;}
+body.education-workspace.hub-body.top-level-page-ui-refresh .hub-hero {background:var(--color-bg-card);padding-block:var(--space-5,20px);}
+body.education-workspace.hub-body.top-level-page-ui-refresh .hub-hero :is(h1,h1 span,p) {color:var(--color-text);}
+body.education-workspace.hub-body.top-level-page-ui-refresh .hub-hero h1 {font-size:clamp(1.8rem,4vw,2.6rem);max-width:30ch;}
+body.education-workspace.hub-body.top-level-page-ui-refresh .hub-hero .hub-eyebrow {color:var(--color-link);}
+/* The legacy mobile reset forces .hub-wrap to 100% with !important. */
+body.education-workspace.hub-body.top-level-page-ui-refresh .hub-hero>.hub-wrap {width:calc(100% - 2 * var(--space-4,16px))!important;max-width:var(--education-width);margin-inline:auto;}
+body.education-workspace .fc-study-bar {margin-block:var(--space-4,16px);}
+body.education-workspace .fc-study-link {margin:0;background:var(--color-bg-card);border:1px solid var(--color-border);color:var(--color-text);box-shadow:none;}
+body.education-workspace .fc-study-link :is(.fc-study-link-title,.fc-study-link-desc) {color:var(--color-text);}
+body.education-workspace .ua-boundary {background:var(--color-bg);border-color:var(--color-border);color:var(--color-text);margin-top:var(--space-3,12px);}
+body.education-workspace .practice-shell {padding-top:var(--space-5,20px);}
+body.education-workspace .practice-shell .page-header {margin-block:var(--space-5,20px);}
+body.education-workspace .practice-setup .form-field,body.education-workspace .practice-actions .form-field {margin-bottom:0;}
+body.education-workspace .practice-setup>.btn {margin:0;align-self:end;}
+body.education-workspace input[type=file]::file-selector-button {font:inherit;padding:var(--space-2,8px);border:1px solid var(--color-border-strong);border-radius:var(--radius-md,8px);background:var(--color-bg-card);color:var(--color-text);min-height:44px;}
+body.education-workspace .afro-source-meta {margin-block:var(--space-4,16px);}
+/* Keep the optional assistant at the footer instead of covering study controls. */
+body.education-workspace afro-site-assistant {position:relative!important;inset:auto!important;margin:var(--space-6,24px) var(--space-4,16px) var(--space-6,24px) auto;}
+@media(max-width:600px) {
+  .education-nav>div {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-1,4px);}
+  .education-nav a {justify-content:center;padding:var(--space-2,8px) var(--space-1,4px);text-align:center;}
+  body.education-workspace :is(.sp-tags,.fc-tags) {display:none;}
+  body.education-workspace .hub-hero-pills {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  body.education-workspace .hub-hero-pills a {justify-content:center;}
+  body.education-workspace .student-day {padding:var(--space-4,16px);}
+  body.education-workspace .practice-setup>.btn {width:100%;}
+  body.education-workspace .ua-hero {padding-block:var(--space-4,16px);}
+}
+@media(prefers-reduced-motion:reduce) {body.education-workspace *,body.education-workspace *::before,body.education-workspace *::after {scroll-behavior:auto;animation:none;transition:none;}}
+@media print {.education-nav,.education-options>summary {display:none;}}

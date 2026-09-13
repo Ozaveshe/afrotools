@@ -26,7 +26,7 @@
   }
   function render(){
    host.replaceChildren();host.append(node('span','YOUR STUDY DAY','sd-kicker'));host.append(node('h2','A little progress, every day.'));
-   var v=api.view(state,api.today());host.append(node('p',v.due.length+' sessions ready · '+v.completed.length+' completed · '+(storageOK?'Saved on this device':'Storage unavailable'),'sd-summary'));
+   var v=api.view(state,api.today());host.append(node('p',v.due.length+(v.due.length===1?' session ready':' sessions ready')+' · '+v.completed.length+' completed · '+(storageOK?'Saved on this device':'Storage unavailable'),'sd-summary'));
    if(!state.tasks.length){host.append(node('p','Start with one subject for today, or bring in your weekly timetable.'));}
    var active=state.tasks.find(function(t){return t.id===state.activeId;});
    if(active){var focus=node('section','','sd-focus');focus.tabIndex=-1;focus.append(node('h3','Continue: '+active.subject));focus.append(node('p','Spend '+active.minutes+' minutes studying. Practise a question, check your reasoning, then mark this session complete.'));var paths=node('div','','sd-actions');paths.append(link(active.deckId?'Review this deck':'Open my flashcards','/tools/flashcard-maker/'+(active.deckId?'#review='+encodeURIComponent(active.deckId):'')),link('JAMB past questions','/jamb/past-questions/'));if(active.sourceId==='ssce-practice')paths.prepend(link('Open WAEC/NECO practice','/tools/ssce-practice/'));paths.append(button('Finish this session',function(){save(api.change(state,active.id,'done'),'Session complete. Your next task is ready.');}));focus.append(paths);host.append(focus);}

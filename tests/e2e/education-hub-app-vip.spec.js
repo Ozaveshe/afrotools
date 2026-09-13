@@ -15,6 +15,7 @@ test.describe("Education Hub app VIP", () => {
     });
 
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
 
     await expect(page.getByRole("heading", { name: /your next step.*your study day/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /planner, not an eligibility decision/i })).toBeVisible();
@@ -29,6 +30,7 @@ test.describe("Education Hub app VIP", () => {
     await page.setViewportSize({ width: 320, height: 900 });
     await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
     await page.addStyleTag({ content: "html{font-size:200%!important}" });
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -45,8 +47,10 @@ test.describe("Education Hub app VIP", () => {
 
   test("saving is explicit and labels remain truthful after dynamic rendering", async ({ page }) => {
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
     await expect(page.getByRole("heading", { name: /your next step.*your study day/i })).toBeVisible();
 
     await expect(page.locator("body")).not.toContainText(/strong match|good matches|next best action|degree readiness|destination-readiness/i);
@@ -100,6 +104,7 @@ test.describe("Education Hub app VIP", () => {
     });
 
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
     await expect(page.getByLabel("Education level")).toHaveValue("undergraduate", { timeout: 1500 });
     await expect(page.getByLabel("Institution")).toHaveValue("Local test institution", { timeout: 1500 });
     await expect(page.locator("#profileCompletionValue")).not.toHaveText("0%", { timeout: 1500 });
@@ -122,6 +127,7 @@ test.describe("Education Hub app VIP", () => {
     });
 
     await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
+    await page.locator("#planning-details > summary").click();
     await expect(page.locator("#edGpaValue")).toHaveValue("");
     await expect(page.locator("#edGpaScale")).toHaveValue("");
     await expect(page.locator("#edIeltsOverall")).toHaveValue("");

@@ -4,7 +4,7 @@ Generated: 2026-09-13
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 12792
+- Public HTML/shared script files scanned: 12793
 - Approved claim hits: 45428
 - Validation errors: 0
 
