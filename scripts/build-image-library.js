@@ -85,8 +85,10 @@ function build() {
   }
   const hashes = new Map();
   const images = [...byPath.values()].sort((a, b) => b.placements.length - a.placements.length || a.path.localeCompare(b.path));
-  const decisionsPath=path.join(ROOT,OUT,'placement-decisions.json');
-  const decisions=new Map(fs.existsSync(decisionsPath)?JSON.parse(fs.readFileSync(decisionsPath,'utf8')).images.map(x=>[x.path,x]):[]);
+  const decisionFiles=['placement-decisions.json','placement-lifecycle-additions.json'];
+  const decisionRows=decisionFiles.flatMap(file=>JSON.parse(read(OUT+'/'+file)).images);
+  const decisions=new Map();
+  for(const decision of decisionRows){if(decisions.has(decision.path))throw new Error('Duplicate lifecycle decision: '+decision.path);decisions.set(decision.path,decision);}
   for (const item of images) {
     if (hashes.has(item.sha256)) item.duplicate_of = hashes.get(item.sha256);
     else hashes.set(item.sha256, item.path);

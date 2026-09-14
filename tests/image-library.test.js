@@ -57,7 +57,11 @@ for(const row of batch.images) {
 }
 assert.equal(require('../data/image-generation/missing-image-references.json').images.length,0);
 assert.ok(library.images.every(i=>i.placements.every(p=>p.path!=='admin/data/operator-dashboard.json')),'Operator snapshot must not feed image placement evidence back into the library');
-const placementDecisions = require('../data/image-generation/placement-decisions.json').images;
+const placementDecisions = [
+  ...require('../data/image-generation/placement-decisions.json').images,
+  ...require('../data/image-generation/placement-lifecycle-additions.json').images
+];
+assert.equal(new Set(placementDecisions.map(i=>i.path)).size,placementDecisions.length,'Lifecycle decision paths must be unique');
 const libraryByPath = new Map(library.images.map(i=>[i.path,i]));
 for(const decision of placementDecisions) {
   const entry = libraryByPath.get(decision.path);
