@@ -1,0 +1,122 @@
+(function(root,factory){
+  'use strict';var bank=factory();
+  if(typeof module==='object'&&module.exports)module.exports=bank;
+  if(root){root.AfroTools=root.AfroTools||{};root.AfroTools.ssceWrittenBank=bank;}
+})(typeof window==='undefined'?null:window,function(){
+  'use strict';
+  var mathSource='https://www.waeconline.org.ng/e-learning/Mathematics/maths240ms.html';
+  var items=[];
+  function math(id,title,prompt,answer,steps,checks){items.push({id:'written-m'+id,subject:'Mathematics',collection:'Mathematics written practice',origin:'AfroTools original exercise',exam:null,year:null,paper:null,number:null,title:title,prompt:prompt,answer:answer,steps:steps,checks:checks,source:mathSource,sourceLabel:'WAEC examiner guidance',sourceUse:'Guidance only; this exercise is original.'});}
+  math(1,'Number bases and standard form','(a) Convert 231 base 4 to base 10. (b) Express 0.000056 × 300000 in standard form. Show each step.','(a) 45. (b) 1.68 × 10¹.',[
+    'Expand the place values: 2 × 4² + 3 × 4 + 1 = 32 + 12 + 1 = 45.',
+    'Write the factors as 5.6 × 10⁻⁵ and 3 × 10⁵. Their product is 16.8 × 10⁰.',
+    'Standard form requires a leading number from 1 up to, but not including, 10: 16.8 = 1.68 × 10¹.'
+  ],['I used powers of 4 for the place values.','My standard-form coefficient is at least 1 and less than 10.']);
+  math(2,'Two-stage percentage changes','A laptop costs ₦240,000. Its price rises by 15%, then the new price is reduced by 10%. Find the final price and the overall percentage change.','₦248,400; an overall increase of 3.5%.',[
+    'After the increase: 240000 × 1.15 = 276000 naira.',
+    'Apply the discount to the new price: 276000 × 0.90 = 248400 naira.',
+    'The change is 8400 naira. Divide by the original 240000 and multiply by 100: 3.5%. The two percentages cannot simply be subtracted.'
+  ],['The second percentage uses the updated price.','The overall percentage uses the original price.']);
+  math(3,'Form and solve simultaneous equations','A school sells 180 event tickets. Student tickets cost ₦500 and adult tickets cost ₦800. Total receipts are ₦114,000. Find how many tickets of each type were sold.','100 student tickets and 80 adult tickets.',[
+    'Let s be student tickets and a be adult tickets. Then s + a = 180 and 500s + 800a = 114000.',
+    'Multiply the first equation by 500: 500s + 500a = 90000. Subtract it from the revenue equation: 300a = 24000.',
+    'Thus a = 80 and s = 100. Check: 100 × 500 + 80 × 800 = 114000.'
+  ],['I defined my variables and wrote both equations.','Both the number of tickets and total revenue check out.']);
+  math(4,'Quadratic equations in a measurement problem','A rectangular garden has area 96 m². Its length is 4 m more than its width. Find its dimensions and perimeter.','Width 8 m, length 12 m; perimeter 40 m.',[
+    'Let the width be w metres. The length is w + 4, so w(w + 4) = 96.',
+    'Rearrange to w² + 4w − 96 = 0 = (w + 12)(w − 8). The roots are −12 and 8.',
+    'Reject the negative width. Width = 8 m, length = 12 m. Perimeter = 2(8 + 12) = 40 m.'
+  ],['I rejected the negative measurement with a reason.','I distinguished area units from length units.']);
+  math(5,'Variation and substitution','The quantity y varies directly as x² and inversely as z. When x = 3 and z = 2, y = 18. Find the constant of variation, then y when x = 5 and z = 4.','Constant k = 4; y = 25.',[
+    'Translate the relationship into y = kx²/z.',
+    'Substitute the known values: 18 = 9k/2. Hence k = 4.',
+    'For the new values, y = 4 × 25 / 4 = 25. Squaring x is essential.'
+  ],['I wrote the relationship before substituting.','I squared x and divided by z.']);
+  math(6,'Arithmetic progression','A student saves ₦1,200 in week 1 and increases the amount saved by ₦300 each week. Find the amount saved in week 10 and the total saved over the first 10 weeks.','Week 10: ₦3,900. Total: ₦25,500.',[
+    'Here a = 1200, d = 300 and n = 10. The tenth term is a + 9d = 3900 naira.',
+    'The sum is n(a + last term)/2 = 10(1200 + 3900)/2 = 25500 naira.',
+    'The tenth-week amount is one term, not the cumulative amount. There are nine increments before week 10.'
+  ],['I used nine increments to reach the tenth term.','I calculated the total separately from the final term.']);
+  math(7,'Bearings and right triangles','Starting at P, a walker travels 6 km east to Q, then 8 km north to R. Find PR and the three-figure bearing of R from P, to the nearest degree. Sketch your own labelled diagram.','PR = 10 km; bearing 037°.',[
+    'The east and north movements are perpendicular. PR = √(6² + 8²) = 10 km.',
+    'Bearings are measured clockwise from north. If θ is the angle east of north, tan θ = 6/8.',
+    'θ = arctan(0.75) ≈ 36.87°. Rounded and written with three figures, the bearing is 037°, not 053°.'
+  ],['My sketch labels north and east.','My bearing starts at north and has three figures.']);
+  math(8,'Circle theorems','A, B, C and D lie on a circle in that order. Angle ABC = 112°. Find angle ADC. A tangent at A makes an angle of 38° with chord AB; C lies in the alternate segment. Find angle ACB. State the theorem for each answer.','Angle ADC = 68°; angle ACB = 38°.',[
+    'ABCD is a cyclic quadrilateral. Opposite angles sum to 180°, so ADC = 180° − 112° = 68°.',
+    'The alternate-segment theorem equates the angle between a tangent and a chord with the angle subtended by that chord in the alternate segment.',
+    'Therefore ACB = 38°. The two results use different circle theorems; label each reason.'
+  ],['I stated that the quadrilateral is cyclic.','I named the alternate-segment theorem.']);
+  math(9,'Mensuration with a conversion','An open cylindrical tank has internal radius 3.5 m and height 4 m. Using π = 22/7, find its capacity in litres and the area of material for its curved wall and base. Ignore material thickness.','Capacity 154,000 litres; material area 126.5 m².',[
+    'Volume = πr²h = (22/7) × 3.5² × 4 = 154 m³. Since 1 m³ = 1000 litres, capacity = 154000 litres.',
+    'Curved wall area = 2πrh = 2 × (22/7) × 3.5 × 4 = 88 m².',
+    'One base has area πr² = 38.5 m². There is no top, so the total is 88 + 38.5 = 126.5 m².'
+  ],['I included one base and no lid.','I converted cubic metres to litres after calculating volume.']);
+  math(10,'Grouped statistics','The scores 1, 2, 3 and 4 occur with frequencies 2, 3, 4 and 1 respectively. Find the mean, median and mode.','Mean 2.4; median 2.5; mode 3.',[
+    'Total frequency = 10. Weighted total = 1×2 + 2×3 + 3×4 + 4×1 = 24; mean = 24/10 = 2.4.',
+    'In ascending order the scores are 1,1,2,2,2,3,3,3,3,4. The middle positions are 5 and 6: median = (2 + 3)/2 = 2.5.',
+    'The score 3 appears four times, more than any other score. The mode is the score 3, not its frequency 4.'
+  ],['I weighted each score by its frequency.','I used the two middle observations for the median.']);
+  math(11,'Probability without replacement','A bag contains 4 red balls and 3 blue balls. Two balls are drawn without replacement. Find the probability that (a) both are red, (b) exactly one is red.','(a) 2/7. (b) 4/7.',[
+    'For two red balls, multiply 4/7 by 3/6 to obtain 12/42 = 2/7.',
+    'Exactly one red can occur as red then blue, or blue then red. Add the disjoint cases: (4/7)(3/6) + (3/7)(4/6) = 24/42 = 4/7.',
+    'The remaining case, two blue balls, has probability (3/7)(2/6) = 1/7. The three probabilities sum to 1.'
+  ],['The second draw uses six remaining balls.','I counted both orders for exactly one red.']);
+  math(12,'Graphs and inequalities','For y = x² − 4x + 3, calculate y at x = 0, 1, 2, 3 and 4. State the roots, the turning point, and the interval where y < 0.','y values: 3, 0, −1, 0, 3. Roots 1 and 3; turning point (2, −1); 1 < x < 3.',[
+    'Substitution gives the points (0,3), (1,0), (2,−1), (3,0), (4,3). Plot a smooth upward-opening curve.',
+    'Factor y = (x − 1)(x − 3) to find the x-intercepts 1 and 3. Complete the square: y = (x − 2)² − 1.',
+    'The vertex is (2,−1). The graph lies below the x-axis between its roots. Strict inequality excludes both endpoints.'
+  ],['My graph uses labelled axes and a consistent scale.','I excluded the roots from the strict-inequality interval.']);
+  items.push({id:'waec-2023-mathematics-p2-q1',subject:'Mathematics',collection:'WAEC 2023 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2023,paper:'2',number:1,title:'Journey time and algebraic ratios',prompt:'(a) Find total travel time for 112 km at 70 km/h followed by 60 km at 50 km/h. (b) Given x/y = 2 and y/z = 3, evaluate (x + y)/(y + z).',answer:'(a) 2.8 hours, or 2 hours 48 minutes. (b) 9/4.',steps:['The two times are 112/70 = 1.6 hours and 60/50 = 1.2 hours. Add them: 2.8 hours. Convert the remaining 0.8 hour to 48 minutes.','From x/y = 2, x = 2y. From y/z = 3, y = 3z, so x = 6z.','Substitution gives (x + y)/(y + z) = (6z + 3z)/(3z + z) = 9/4. The stated ratios require nonzero denominators.'],checks:['I divided each distance by its own speed.','I converted the fractional hour correctly.','I expressed both x and y using the same variable.'],source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths240mq1.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Question brief adapted from WAEC. Open the source for the original wording. Worked solution by AfroTools.'});
+  items.push({id:'waec-2023-mathematics-p2-q2',subject:'Mathematics',collection:'WAEC 2023 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2023,paper:'2',number:2,title:'Ticket sales and simultaneous equations',prompt:'Child and adult tickets cost D3 and D5. Total attendance is 400 and receipts are D1,700. (a) Find the adult-ticket count. (b) A seller sells 250 tickets, including 175 adult tickets. Find that seller’s receipts.',answer:'(a) 250 adult tickets. (b) D1,100.00.',steps:['Let c and a be child and adult tickets. Then c + a = 400 and 3c + 5a = 1700. Subtract three times the first equation from the second: 2a = 500, so a = 250.','For the named seller, 250 total tickets minus 175 adult tickets leaves 75 child tickets.','Receipts are 75 × 3 + 175 × 5 = 225 + 875 = D1100.00. Preserve the currency and express the money to two decimal places.'],checks:['I distinguished the overall attendance from the individual seller’s tickets.','My equations agree with the ticket prices.','I included the currency and two decimal places.'],source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths240mq2.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Question brief adapted from WAEC. Open the source for the original wording. Worked solution by AfroTools.'});
+  function waecMath(number,title,prompt,answer,steps,checks){items.push({id:'waec-2023-mathematics-p2-q'+number,subject:'Mathematics',collection:'WAEC 2023 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2023,paper:'2',number:number,title:title,prompt:prompt,answer:answer,steps:steps,checks:checks,source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths240mq'+number+'.html',sourceLabel:'Read the exact WAEC question and any diagram',sourceUse:'Question brief adapted from WAEC; any diagrams shown are redrawn and not to scale. Open the source for the original. Worked solution by AfroTools.'});}
+  waecMath(3,'Triangle minus sector','PQR is equilateral with side 18 cm. M bisects QR. A circle centred at P touches QR at M and meets PQ and PR at A and B. Find the shaded area outside sector PAB but inside the triangle, to two decimal places. Use π = 22/7.','13.01 cm².',[
+    'The equilateral triangle has side 18 cm. Its altitude PM is √(18² − 9²) = 9√3 cm; this is also the sector radius.',
+    'Triangle area = 18 × 9√3 / 2 = 81√3 cm². The sector angle is 60°, so its area is (60/360) × (22/7) × 243 = 891/7 cm².',
+    'Subtract the sector from the triangle: 81√3 − 891/7 = 13.0104… cm². Round only the final result to two decimal places.'
+  ],['I used the altitude, not the side, as the circle radius.','I subtracted the sector area from the triangle area.','I retained precision until the final rounding.']);
+  waecMath(5,'Two angles of elevation','A vertical building has top P and foot T. From M, 50 m from T on level ground, the elevation of P is 66°. Moving directly backwards to C reduces it to 53°. Sketch the arrangement; find PT and MC to one decimal place.','Building height 112.3 m; distance MC = 34.6 m.',[
+    'Place C, M and T on one horizontal line in that order, with P vertically above T. Mark MT = 50 m, the angle at M as 66° and the angle at C as 53°.',
+    'In triangle MTP, tan 66° = PT/50. Thus PT = 50 tan 66° = 112.3018… m.',
+    'In triangle CTP, CT = PT/tan 53° = 84.6255… m. The distance walked is MC = CT − MT = 34.6255… m. Round each requested length to one decimal place.'
+  ],['My sketch shows the second position farther from the building.','I used degree mode.','I subtracted the original distance to obtain the distance walked.']);
+  waecMath(8,'Quadratic graph and turning point','For y = 2x² − x − 4, tabulate integer x from −3 to 3 and draw the graph. Use 2 cm per x-unit and 2 cm per 2 y-units. Read the roots, the increasing interval and the minimum point.','Table y-values: 17, 6, −1, −4, −3, 2, 11. Roots ≈ −1.19 and 1.69. Minimum point (0.25, −4.125); increasing for x > 0.25.',[
+    'Substitute x = −3, −2, −1, 0, 1, 2, 3 into 2x² − x − 4. Plot the resulting points using the source’s different horizontal and vertical scales.',
+    'For an algebraic check of the graph readings, the roots are (1 ± √33)/4. The curve crosses the horizontal axis near −1.2 and 1.7.',
+    'Complete the square: y = 2(x − 1/4)² − 33/8. The minimum point is (1/4, −33/8). To its right, y increases as x increases; on the plotted domain this is 0.25 < x ≤ 3. Graph readings will be approximate.'
+  ],['I used the prescribed scales and labelled both axes.','I drew a smooth curve through the plotted points.','I distinguished the minimum y-value from the coordinates of the minimum point.']);
+  waecMath(9,'Frequency table and standard deviation','Tree heights (m): 3, 4, 5, 6, 7, 8. Corresponding frequencies: 4, 6, 4, 5, 6, 2. Find the median height; calculate the mean and standard deviation to one decimal place.','Median 5 m; mean 5.3 m; standard deviation 1.6 m.',[
+    'The frequencies total 27 trees. The median is the 14th observation; cumulative frequencies are 4, 10, 14, 19, 25, 27, placing it at 5 m.',
+    'The weighted sum of heights is 144 m, so the mean is 144/27 = 16/3 m. Keep this exact value for the variance calculation.',
+    'The weighted sum of squared heights is 834 m². Population variance = 834/27 − (16/3)² = 22/9 m². Standard deviation = √22/3 = 1.563… m. Round the mean and standard deviation to one decimal place.'
+  ],['I used cumulative frequency to locate the median.','I weighted heights by their frequencies.','I did not round the mean before calculating the standard deviation.']);
+  waecMath(13,'Sector, triangle and line intercepts','(a) In the diagram, ON = OM = 7 cm, angle MON = 60°, and NT is perpendicular to OM. Find the shaded area to one decimal place, using π = 22/7. (b) A line has x-intercept −3/4 and y-intercept 2/7. Find its equation.','(a) 15.1 cm². (b) −8x + 21y = 6.',[
+    'The shaded part is the 60° sector OMN minus right triangle OTN. Sector area = (60/360)(22/7)7² = 77/3 cm².',
+    'OT = 7 cos 60° = 3.5 cm and NT = 7 sin 60° = 7√3/2 cm. Triangle area = 49√3/8 cm². Their difference is 15.0578… cm², or 15.1 cm².',
+    'Use intercept form with x-intercept −3/4 and y-intercept 2/7: x/(−3/4) + y/(2/7) = 1. Multiply by 6 to obtain −8x + 21y = 6. Check both intercepts by setting the other coordinate to zero.'
+  ],['I subtracted the right triangle from the 60° sector.','I used the negative x-intercept.','I verified both intercepts in my final equation.']);
+  items.find(function(q){return q.id==='waec-2023-mathematics-p2-q3';}).figure='equilateral-sector';
+  items.find(function(q){return q.id==='waec-2023-mathematics-p2-q13';}).figure='sector-triangle';
+  var writing=[
+    ['Sports festival report','Report your school’s participation in a sports festival involving several schools, writing in your role as sports prefect.',
+      ['Identify the occasion, place, dates and participating schools in a concise opening.','Arrange the events in a clear sequence; explain your school’s participation and results.','Conclude with an assessment and practical recommendations. Use a report heading and identify the writer.'],
+      ['I wrote a report rather than a letter.','My event involves several schools, not only houses within one school.','I included concrete events and outcomes.']],
+    ['Letter to a newspaper editor','Write to a newspaper editor about neglected public facilities, explaining your position and proposing improvements.',
+      ['Plan a formal letter with the sender’s address, date, editor’s designation and address, salutation, heading and suitable closing.','Develop two or three specific maintenance problems, their effects and causes.','Make practical recommendations and finish with a clear request for public attention.'],
+      ['My formal-letter layout is complete.','I explained my opinion rather than only listing facilities.','Each recommendation addresses a problem I described.']],
+    ['Advice to a friend abroad','A friend living abroad is considering your school. Write a personal letter giving useful information and advice.',
+      ['Use an informal letter structure and a warm, consistent voice appropriate to a friend.','Organise useful information about studies, accommodation, activities and daily routines.','Give advice about preparation and settling in, with reasons. Answer both the information and advice parts.'],
+      ['My tone fits a friend.','I gave both information and advice.','I organised the details instead of listing disconnected facts.']],
+    ['School magazine article','Prepare a school-magazine article explaining why school clubs and societies should become active again.',
+      ['Use a relevant headline and a byline. Open with a specific reason students should care.','Develop benefits such as practical skills, teamwork and opportunities to participate, using examples.','Suggest how clubs could restart and close with a clear call to action. Avoid a letter salutation.'],
+      ['I used article features rather than letter features.','I explained the benefits of revival.','My examples support the argument.']],
+    ['Narrative with a clear lesson','Write a story showing why accepting a smaller useful opportunity can be better than receiving nothing.',
+      ['Plan a human character, a concrete goal and a choice between a modest gain and an uncertain larger gain.','Build events towards a turning point in which the choice has consequences.','End by showing the value of the modest gain through the outcome. Keep the narrative tense consistent.'],
+      ['My story has a conflict, turning point and resolution.','The outcome illustrates the lesson.','I kept my narrative tense consistent.']]
+  ];
+  writing.forEach(function(w,i){items.push({id:'waec-2023-english-p2-q'+(i+1),subject:'English',collection:'WAEC 2023 writing companion',origin:'WAEC source-linked writing task',exam:'WAEC',year:2023,paper:'2',number:i+1,title:w[0],prompt:w[1],answer:'There is no single model answer. Compare your response with the planning guide and checklist, then review the examiner comments.',steps:w[2],checks:w[3],source:'https://www.waeconline.org.ng/e-learning/English/Engl240mq'+(i+1)+'.html',sourceLabel:'Read the exact WAEC question and examiner comments',sourceUse:'Task brief paraphrased from WAEC. Open the source for the exact wording. Coaching is by AfroTools; self-review is not an official mark.'});});
+  var passage='The science club at Riverbank School wanted to reduce the plastic bottles left around the compound. At first, members proposed buying more bins. Before spending their small budget, they counted discarded bottles at the end of each school day for two weeks. Most appeared near the sports field, where the only drinking-water tap had stopped working. The club asked the caretaker to repair the tap and arranged a refill station beside the field. Members also invited classmates to bring reusable bottles. After a month, the number of discarded bottles near the field had fallen, although litter remained around the bus stop. The club did not declare the problem solved. Instead, it recorded the new pattern and planned a second trial there. The head teacher praised the group for testing a practical change before buying equipment. She asked them to repeat the counts during the next sports tournament, when more visitors would be on the grounds.';
+  items.push({id:'written-e-comprehension',subject:'English',collection:'English written practice',origin:'AfroTools original exercise',exam:null,year:null,paper:null,number:null,title:'Comprehension: evidence and inference',passage:passage,prompt:'(a) What did the club initially propose? (b) Give the immediate reason many bottles were discarded near the sports field. (c) Explain why a second trial was planned. (d) What does the request to count bottles during the tournament suggest about the head teacher’s approach? (e) Replace “discarded” with one word that fits the passage.',answer:'(a) Buying additional bins. (b) The nearby water tap was broken. (c) Litter was still present around the bus stop. (d) She wanted to test whether the improvement would hold when more people used the grounds. (e) “Abandoned” or “dumped”.',steps:['Locate explicit facts for (a), (b) and (c); do not replace the stated cause with a guess about students’ behaviour.','For (d), connect the increased number of visitors to the request for another measurement. Explain the inference in your own words.','For vocabulary, put the replacement back into the complete sentence. Both meaning and grammar must fit.'],checks:['I supported each answer with the passage.','My inference uses evidence rather than outside assumptions.','My replacement word fits the original sentence.'],source:'https://www.waeconline.org.ng/e-learning/English/Engl240mq6.html',sourceLabel:'WAEC comprehension guidance',sourceUse:'Guidance only. The passage and questions above are original AfroTools material.'});
+  items.push({id:'written-e-summary',subject:'English',collection:'English written practice',origin:'AfroTools original exercise',exam:null,year:null,paper:null,number:null,title:'Summary: select and compress',passage:passage,prompt:'In three sentences, one point per sentence, summarise three actions the club took to reduce bottle litter near the sports field.',answer:'The club arranged for the damaged tap to be repaired. It provided a refill station near the field. It encouraged students to use reusable bottles.',steps:['Choose actions aimed directly at reducing litter near the field: the repair, the refill station and reusable bottles.','Use a separate complete sentence for each point. Counting bottles helped diagnose the problem but is not one of these three direct interventions.','Leave out the school name, praise, tournament and bus-stop trial. They do not answer this particular summary task.'],checks:['I wrote exactly three complete sentences.','Each sentence contains one distinct action.','I removed background details and repetition.'],source:'https://www.waeconline.org.ng/e-learning/English/Engl240mq7.html',sourceLabel:'WAEC summary guidance',sourceUse:'Guidance only. The passage and task above are original AfroTools material.'});
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-14',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 7 WAEC Mathematics companions and 5 WAEC writing companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+});
