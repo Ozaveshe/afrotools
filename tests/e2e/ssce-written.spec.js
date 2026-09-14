@@ -38,7 +38,7 @@ test('import validates before replacing anything and restores a fresh task',asyn
 });
 test('every companion renders complete briefs and accessible geometry at mobile width',async({page},info)=>{
  await page.setViewportSize({width:390,height:844});await page.goto('/tools/ssce-practice/#written-practice');await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2023 Mathematics companion');
- for(const number of [1,2,3,5,8,9,13]){
+ for(const number of [1,2,3,5,7,8,9,11,13]){
   await page.getByLabel('Written task',{exact:true}).selectOption('waec-2023-mathematics-p2-q'+number);
   await expect(page.locator('.written-prompt')).not.toContainText('Use WAEC Question');await expect(page.locator('#written-editor')).toContainText('Question '+number);
   if([3,13].includes(number)){const figure=page.locator('.written-diagram');await expect(figure).toHaveAttribute('role','img');expect((await figure.getAttribute('aria-label')).length).toBeGreaterThan(100);const rect=await figure.boundingBox();expect(rect.width).toBeLessThanOrEqual(390);await figure.scrollIntoViewIfNeeded();await page.screenshot({path:info.outputPath('geometry-'+number+'.png')});}

@@ -21,11 +21,11 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks and 5 WAEC 2023 writing companions, plus 7 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks and 5 WAEC 2023 writing companions, plus 9 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 ## Acquisition queue
 
-- **waec-2023-mathematics-p2** (mathematics-companion): Seven source-linked worked guides cover questions 1, 2, 3, 5, 8, 9 and 13. Resolve source defects for questions 4, 6, 7, 10, 11 and 12 against an original scan. Establish full paper instructions and source-use basis before importing. Companions do not constitute an ingested complete paper. Source: https://waeconline.org.ng/e-learning/Mathematics/maths240mq1.html
+- **waec-2023-mathematics-p2** (mathematics-companion): Nine source-linked worked guides cover questions 1, 2, 3, 5, 7, 8, 9, 11 and 13. Resolve remaining questions 4, 6, 10 and 12 and establish full paper instructions and source-use basis before importing. Companions do not constitute an ingested complete paper. Source: https://waeconline.org.ng/e-learning/Mathematics/maths240mq1.html
 - **waec-2023-english-p2** (writing-companion): Acquire the actual comprehension and summary passages, all subquestions and paper instructions. Examiner commentary on questions 6 and 7 does not contain the complete passages. Five paraphrased source-linked writing briefs are available, separately from imported past questions. Source: https://waeconline.org.ng/e-learning/English/Engl240mq1.html
 - **neco-2024-mathematics-research-appendix** (candidate-unverified): Inspect the appendix and original examination identifiers; verify the reported 60-item collection and every option against a source scan. A repository search hit alone does not authenticate the paper or confer reuse permission. The browser retrieval timed out and direct retrieval returned HTTP 403 on 2026-09-14; no appendix items were inspected or imported. Source: https://repository.uniben.edu/sites/default/files/2026-03/RE_final%20copy%20Emamuyovwi%20%20ESUME%20%283%29.pdf
 - **neco-english-acquisition** (source-needed): Acquire complete recent paper scans including reading passages, writing instructions, oral-English components and source provenance. The board homepage is not a past-paper source. Source: https://neco.gov.ng/
