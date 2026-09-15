@@ -30,10 +30,12 @@ const VISIBLE_LANGUAGE_TRANSFORMS = Object.freeze([
 ]);
 
 function applyTransforms(value, transforms = VISIBLE_LANGUAGE_TRANSFORMS) {
-  return transforms.reduce(
-    (current, [pattern, replacement]) => current.replace(pattern, replacement),
-    value
-  );
+  // Visible URLs are identifiers, not prose: translating path/query tokens breaks them.
+  return value.split(/(https?:\/\/[^\s<>"']+)/gi).map((part) =>
+    /^https?:\/\//i.test(part) ? part : transforms.reduce(
+      (current, [pattern, replacement]) => current.replace(pattern, replacement), part
+    )
+  ).join('');
 }
 
 function translateVisibleFragment(fragment, transforms = VISIBLE_LANGUAGE_TRANSFORMS) {

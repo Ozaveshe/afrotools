@@ -19,3 +19,9 @@ test('input button values remain translatable visible labels', () => {
   assert.equal(localizeVisibleLanguage('<input value="Save" type="button"><input type="submit" value="Calculate"><input type="reset" value="Reset">'),
     '<input value="enregistrer" type="button"><input type="submit" value="calculer"><input type="reset" value="réinitialiser">');
 });
+
+test('visible URL identifiers survive translation while surrounding prose is localized', () => {
+  const url = 'https://afrotools.com/tools/solar-calculator/?period=monthly';
+  assert.equal(localizeVisibleLanguage('<p>Calculator '+url+' Results</p>'), '<p>calculateur '+url+' résultats</p>');
+  assert.equal(localizeVisibleLanguage('<a href="'+url+'" title="Calculator '+url+'">'+url+'</a>'), '<a href="'+url+'" title="calculateur '+url+'">'+url+'</a>');
+});
