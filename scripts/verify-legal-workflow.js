@@ -29,7 +29,7 @@ const lite = read('assets/js/lib/category-workflow-lite.js');
 const copilot = read('assets/js/legal-workflow-copilot.js');
 const dashboard = read('dashboard/index.html');
 
-assert(hub.includes('Legal & Compliance Apps for Africa - 69 Apps'), 'Legal hub title is not the 69-app standard');
+assert(hub.includes('Legal & Compliance Tools for Africa - 69 Tools'), 'Legal hub title is not the 69-tool standard');
 assert(hub.includes('"numberOfItems":69'), 'Legal hub JSON-LD numberOfItems is not 69');
 assert(!hub.includes('data-category-workflow-lite="legal"'), 'Legal hub must not auto-mount category workflow packs on the public hub');
 assert(!hub.includes('/assets/css/category-workflow-lite.css'), 'Legal hub must not load category workflow CSS on the public hub');
@@ -44,11 +44,29 @@ assert(uniqueLinks.length === 69, `Expected 69 unique legal tool routes, found $
 const missingRoutes = uniqueLinks.filter((href) => !routeExists(href));
 assert(!missingRoutes.length, `Legal hub links missing route files: ${missingRoutes.join(', ')}`);
 
+// These source-owned workflows intentionally replaced the generic legal copilot.
+// Run their input, privacy and route contracts before accepting their exact routes.
+const nativePropertyRoutes = new Set(['rental-agreement','land-title-check','building-permit','survey-cost','property-valuation','plot-converter','diaspora-property','stamp-duty','property-cgt','rental-yield','rent-affordability','tenant-screening','property-mgmt-fees','building-materials','construction-budget','dev-feasibility','service-charge','short-let-calc','agent-commission','offplan-vs-ready']);
+for (const testFile of ['day7-property-tool-contract.test.js','property-assumption-engine.test.js','day7-kenya-dpa.test.js']) {
+  require('node:child_process').execFileSync(process.execPath, [path.join(root, 'tests', testFile)], { cwd: root, stdio: 'inherit' });
+}
 const missingCopilot = [];
 const thinWorkflowData = [];
 for (const href of uniqueLinks) {
   const file = routeFile(href);
   const html = fs.readFileSync(file, 'utf8');
+  const slug = href.replace(/^\/tools\//, '').replace(/\/$/, '');
+  if (nativePropertyRoutes.has(slug)) {
+    assert(html.includes('data-property-workflow') && html.includes('data-tool="' + slug + '"'), 'Native property route owner missing: ' + href);
+    assert(html.includes('/assets/js/engines/property-assumption.js') && html.includes('/assets/js/pages/property-assumption-workflow.js'), 'Native property runtime missing: ' + href);
+    assert(html.includes('data-result') && html.includes('aria-live="polite"'), 'Native property result missing: ' + href);
+    continue;
+  }
+  if (slug === 'kenya-dpa') {
+    assert(html.includes('id="gv-config"') && html.includes('id="gv-form"') && html.includes('id="gv-result"'), 'Kenya evidence planner contract missing');
+    assert(html.includes('/assets/js/pages/government-verification-planner.js'), 'Kenya evidence planner runtime missing');
+    continue;
+  }
   if (!html.includes('leg-workflow-copilot') || !html.includes('legal-workflow-copilot.js')) {
     missingCopilot.push(href);
     continue;
@@ -133,4 +151,4 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   assert(dashboard.includes(needle), `Dashboard missing legal workflow continuation marker ${needle}`);
 });
 
-console.log('Legal workflow verified (69 tool routes, copilot coverage, public hub boundary, gates, and dashboard continuation).');
+console.log('Legal workflow verified (69 tool routes, 48 copilot routes and 21 source-owned replacements, public hub boundary, gates, and dashboard continuation).');
