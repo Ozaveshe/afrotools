@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 1 |
-| **Accepted** | **1254** |
+| **Accepted** | **1255** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 43 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 1 | 42 |
 | Energy & Utilities | 19 | 16 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 132 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 0 | 131 |
+| Finance, Tax & Market Data | 132 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 0 | 132 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -720,7 +720,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Native candidate | `/sw/zana/mpango-bajeti` | Yes |
 | African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-sarafu` | Yes |
 | AfroFuel — Local Fuel Price Finder | Finance, Tax & Market Data | `/tools/fuel-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-mafuta` | Yes |
-| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Localized shell candidate | `/sw/zana/tafuta-mamlaka-ya-paye` | No |
+| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Localized shell candidate | `/sw/zana/tafuta-mamlaka-ya-paye` | Yes |
 | Route Fare Budget Planner | Finance, Tax & Market Data | `/tools/route-fares` | Localized shell candidate | `/sw/zana/nauli-za-ruti` | Yes |
 | Backup Power Cost Calculator | Finance, Tax & Market Data | `/tools/backup-power-costs` | Localized shell candidate | `/sw/zana/gharama-ya-nishati-ya-dharura` | Yes |
 | AfroRates — Reviewed Policy Rates | Finance, Tax & Market Data | `/tools/afrorates` | Localized shell candidate | `/sw/zana/viwango-benki` | Yes |

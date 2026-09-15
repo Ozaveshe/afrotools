@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "afbd4bf9e9f8bd15a415636cfd60f543d8581f7e",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1256,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Accept only the PAYE authority finder independently checked on the integrated coordinator source. Historical app acceptances and live deployment remain separate.",
+  "candidates": [{
+    "id": "paye-authority-finder-sw-20260915",
+    "commit": "5d4f1e19ed30502c3a06b717678a926b25ead279",
+    "expectedRoutes": 1,
+    "approval": {
+      "status": "accepted",
+      "independentlyReviewed": true,
+      "acceptedRouteCount": 1,
+      "evidence": {
+        "reviewedAt": "2026-09-15",
+        "browserSpec": "tests/e2e/sw-paye-authority-finder.spec.js",
+        "engineTest": "tests/sw-paye-authority-finder.test.js",
+        "workflow": "Coordinator independently ran seven matching, ambiguity, keyboard, 320/375px doubled-font light/dark, dataset-failure and English-regression cases, then three contrast/accessibility and successful-submit privacy cases after the contrast fix. Source review and rendered visual review completed; seven calculator/official-source handoffs retain identity. Locale, reciprocal hreflang and registry checks passed.",
+        "export": "The English and Swahili finder advertise no file export. Local matching and calculator links are the complete finder workflow; no export capability was invented. This acceptance does not renew destination-calculator evidence or source verification dates."
+      }
+    },
+    "artifacts": [{
+      "path": "reports/sw-paye-authority-finder-candidate-2026-09-15.md",
+      "requiredText": "10/10"
+    }],
+    "rowSources": [{"rows": [{"englishId": "paye-authority-finder", "swahiliRoute": "/sw/zana/tafuta-mamlaka-ya-paye/"}]}]
+  }]
+}
