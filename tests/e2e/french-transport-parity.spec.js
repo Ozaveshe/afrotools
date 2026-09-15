@@ -484,7 +484,6 @@ async function measureCarImportContrast(page) {
     const directTextFailures = Array.from(document.querySelectorAll(
       '#carImportApp .car-import-layout *, #carImportApp .car-import-content-grid *'
     )).filter((element) => {
-      const style = getComputedStyle(element);
       const directText = Array.from(element.childNodes).find(
         (node) => node.nodeType === Node.TEXT_NODE && /\S/.test(node.data)
       );
@@ -493,6 +492,7 @@ async function measureCarImportContrast(page) {
       const hasVisibleTextRect = directText
         && Array.from(range.getClientRects()).some((rect) => rect.width > 0 && rect.height > 0);
       range.detach();
+      const style = getComputedStyle(element);
       return style.display !== 'none'
         && style.visibility !== 'hidden'
         && hasVisibleTextRect;
@@ -1170,6 +1170,8 @@ test('French Car Import manual dark switch advertises readiness only after the q
     await expect(body).toHaveAttribute('data-fr-transport-active-theme', 'light');
     await expect(page.locator('afro-navbar #mobThemeToggle')).toBeAttached();
 
+    await page.locator('details.car-import-advanced').evaluate(details => { details.open = true; });
+    await expect(page.locator('.car-import-advanced .car-import-field > span').first()).toBeVisible();
     const readyAtThemeChange = await page.evaluate(async () => {
       const observed = new Promise((resolve) => {
         document.addEventListener('afrotools:theme-change', (event) => {
@@ -1623,4 +1625,48 @@ test('French Car Import keeps every advertised action local, explicit and reopen
 
   await reopenContext.close();
   await context.close();
+});
+
+test('French car-import readiness waits for label paint through rapid theme changes', async ({ browser }, testInfo) => {
+  for (const width of [320, 390]) {
+    for (const initial of ['light', 'dark']) {
+      const context = await browser.newContext({baseURL: testInfo.project.use.baseURL, viewport: {width, height: 900}, colorScheme: initial, reducedMotion: 'reduce'});
+      const page = await context.newPage();
+      await page.goto('/fr/tools/cout-importation-voiture/');
+      await page.locator('details.car-import-advanced').evaluate(details => { details.open = true; });
+      await expect(page.locator('.car-import-advanced .car-import-field > span').first()).toBeVisible();
+      await expect(page.locator('body')).toHaveAttribute('data-fr-transport-theme-ready', 'true');
+      expect((await measureCarImportContrast(page)).directTextFailures).toEqual([]);
+      await page.evaluate(() => {
+        // Simulate label styles lagging behind the quick-card stylesheet.
+        const style = document.createElement('style');
+        style.id = 'delayed-label-paint';
+        style.textContent = 'html[data-theme="dark"] body.car-import-page .car-import-advanced .car-import-field > span {color:rgb(65,80,106)!important}';
+        document.head.appendChild(style);
+        for (const activeTheme of ['light', 'dark', 'light', 'dark']) {
+          document.documentElement.setAttribute('data-theme', activeTheme);
+          document.dispatchEvent(new CustomEvent('afrotools:theme-change', {detail: {theme: activeTheme, activeTheme}}));
+        }
+      });
+      await page.evaluate(() => new Promise(resolve => {let frames = 0;function next(){if(++frames === 8)resolve();else requestAnimationFrame(next);}requestAnimationFrame(next);}));
+      await expect(page.locator('body')).not.toHaveAttribute('data-fr-transport-theme-ready', 'true');
+      await page.evaluate(() => document.getElementById('delayed-label-paint').remove());
+      await expect(page.locator('body')).toHaveAttribute('data-fr-transport-theme-ready', 'true');
+      await expect(page.locator('body')).toHaveAttribute('data-fr-transport-active-theme', 'dark');
+      expect((await measureCarImportContrast(page)).directTextFailures).toEqual([]);
+      await page.evaluate(() => {
+        document.querySelector('details.car-import-advanced').open = false;
+        for (const activeTheme of ['light', 'dark']) {
+          document.documentElement.setAttribute('data-theme', activeTheme);
+          document.dispatchEvent(new CustomEvent('afrotools:theme-change', {detail: {theme: activeTheme, activeTheme}}));
+        }
+      });
+      await expect(page.locator('body')).toHaveAttribute('data-fr-transport-theme-ready', 'true');
+      await page.locator('details.car-import-advanced').evaluate(details => { details.open = true; });
+      await expect(page.locator('.car-import-advanced .car-import-field > span').first()).toBeVisible();
+      await expect(page.locator('body')).toHaveAttribute('data-fr-transport-theme-ready', 'true');
+      expect((await measureCarImportContrast(page)).directTextFailures).toEqual([]);
+      await context.close();
+    }
+  }
 });

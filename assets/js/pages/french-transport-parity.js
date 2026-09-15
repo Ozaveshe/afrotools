@@ -156,6 +156,14 @@
       var quickCard = document.querySelector('.car-import-quick-card');
       if (!quickCard || root.getAttribute('data-theme') !== activeTheme) return false;
       var cardStyle = getComputedStyle(quickCard);
+      var labels = Array.from(document.querySelectorAll('.car-import-advanced .car-import-field > span'));
+      var expectedLabelColor = activeTheme === 'dark' ? 'rgb(229, 237, 247)' : 'rgb(65, 80, 106)';
+      if (labels.some(function unpaintedLabel(label) {
+        var details = label.closest('details');
+        // Closed details have no painted label surface; Chromium can cache
+        // their old computed color until the contents are opened.
+        return (!details || details.open) && getComputedStyle(label).color !== expectedLabelColor;
+      })) return false;
       if (activeTheme === 'dark') {
         return cardStyle.backgroundColor === 'rgb(23, 38, 61)'
           && cardStyle.color === 'rgb(238, 245, 255)';
@@ -166,14 +174,19 @@
 
     function advertiseSettledTheme(choice, activeTheme) {
       var version = ++settleVersion;
+      var deadline = Date.now() + 3000;
       body.removeAttribute('data-fr-transport-theme-ready');
       body.setAttribute('data-fr-transport-theme-state', 'settling');
       requestAnimationFrame(function waitForThemeStylesheet() {
         requestAnimationFrame(function waitForThemePaint() {
           if (version !== settleVersion) return;
           if (!themeSurfaceHasPainted(activeTheme)) {
+            if (Date.now() >= deadline) {
+              body.setAttribute('data-fr-transport-theme-state', 'unsettled');
+              return;
+            }
             setTimeout(function retryThemePaint() {
-              if (version === settleVersion) advertiseSettledTheme(choice, activeTheme);
+              if (version === settleVersion) requestAnimationFrame(waitForThemePaint);
             }, 25);
             return;
           }
@@ -190,6 +203,12 @@
         });
       });
     }
+
+    var advanced = document.querySelector('details.car-import-advanced');
+    if (advanced) advanced.addEventListener('toggle', function onAdvancedToggle() {
+      var root = document.documentElement;
+      advertiseSettledTheme(root.getAttribute('data-theme-choice') || 'auto', root.getAttribute('data-theme') || 'light');
+    });
 
     document.addEventListener('afrotools:theme-change', function onThemeChange(event) {
       var detail = event && event.detail || {};
