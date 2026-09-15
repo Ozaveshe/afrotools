@@ -133,11 +133,29 @@ assert.strictEqual(tongarewa.deadline_confidence, 'no_single_public_deadline', '
 
 const worldBankAfrica = deadlineOverrides.overrides['world-bank-group-africa-fellowship-2027'];
 assert.strictEqual(worldBankAfrica.deadline_date, '2026-08-25', 'World Bank Africa Fellowship should use the verified 2027 call deadline');
-assert.strictEqual(worldBankAfrica.status, 'open', 'World Bank Africa Fellowship should be open during the official application window');
+assert.strictEqual(worldBankAfrica.status, 'closed', 'World Bank Africa Fellowship should close after the official application window');
 
 const sydneyVcis = deadlineOverrides.overrides['sydney-vice-chancellors-international-scholarship-2027'];
 assert.strictEqual(sydneyVcis.deadline_date, null, 'Sydney VCIS must not turn one selection round into a universal deadline');
 assert.strictEqual(sydneyVcis.deadline_confidence, 'no_single_public_deadline', 'Sydney VCIS should preserve round-specific variable semantics');
+
+const sydneyRtp = deadlineOverrides.overrides['sydney-international-scholarship'];
+assert.strictEqual(sydneyRtp.deadline_date, '2026-12-18', 'Sydney RTP should advance to the next published international research-period deadline');
+assert.strictEqual(sydneyRtp.status, 'open', 'Sydney RTP should remain open for the next published 2027 research period');
+
+const mmegSouthAfrica = deadlineOverrides.overrides['margaret-mcnamara-education-grants'];
+assert.strictEqual(mmegSouthAfrica.status, 'closed', 'MMEG South Africa must close after its exact 14 September deadline');
+
+const midasAfricanFaculty = deadlineOverrides.overrides['umich-midas-african-faculty-fellowship-2027'];
+assert.strictEqual(midasAfricanFaculty.deadline_date, '2026-10-05', 'MIDAS African Faculty Fellowship should use the public Phase 1 deadline');
+assert.strictEqual(midasAfricanFaculty.status, 'open', 'MIDAS African Faculty Fellowship should remain open during Phase 1');
+
+const deadlineOverrideApplier = require(path.join(__dirname, '..', 'scripts', 'apply-scholarship-deadline-overrides.js'));
+assert.strictEqual(
+  deadlineOverrideApplier.normalizeStatus({ deadline_date: '2026-09-09', status: 'open' }),
+  'closed',
+  'deadline override application must close stale open records with past exact dates'
+);
 
 const hassJanuary = deadlineOverrides.overrides['strathclyde-hass-international-masters-scholarship-january-2027'];
 assert.strictEqual(hassJanuary.deadline_date, null, 'Strathclyde HASS should remain date-null while the provider says the deadline is unconfirmed');

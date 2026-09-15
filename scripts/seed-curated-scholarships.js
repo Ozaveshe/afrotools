@@ -49,6 +49,7 @@ const seedEntries = [
   ['peo-international-peace-scholarship', 'P.E.O. International Peace Scholarship', 'P.E.O. International', 'https://www.peointernational.org/international-peace-scholarship-fund/', 'us|canada', 'masters|phd', 'partial'],
   ['zonta-amelia-earhart-fellowship', 'Amelia Earhart Fellowship', 'Zonta International', 'https://www.zonta.org/Web/Programs/Education/Amelia_Earhart_Fellowship', 'global', 'phd', 'partial'],
   ['schlumberger-faculty-for-future', 'Faculty for the Future Fellowships', 'SLB Foundation', 'https://www.slb.com/who-we-are/schlumberger-foundation/faculty-for-the-future', 'global', 'phd|postdoc', 'partial'],
+  ['umich-midas-african-faculty-fellowship-2027', 'University of Michigan MIDAS African Faculty Fellowship 2027', 'University of Michigan MIDAS', 'https://midas.umich.edu/training/postdoctoral-programs/african-faculty-fellowship/apply/', 'us', 'postdoc', 'full'],
   ['margaret-mcnamara-education-grants', 'Margaret McNamara Education Grants', 'MMEG', 'https://www.mmeg.org/', 'global', 'undergrad|masters|phd', 'partial'],
   ['owsd-phd-fellowship', 'OWSD PhD Fellowship', 'Organization for Women in Science for the Developing World', 'https://owsd.net/career-development/phd-fellowship', 'global', 'phd', 'full'],
   ['twas-fellowships', 'TWAS Fellowships', 'The World Academy of Sciences', 'https://twas.org/opportunities/fellowships', 'global', 'phd|postdoc', 'full'],

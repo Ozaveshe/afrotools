@@ -8,8 +8,15 @@ const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
 
+function isPastDeadlineDate(deadlineDate) {
+  const dateKey = String(deadlineDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
+  return dateKey < new Date().toISOString().slice(0, 10);
+}
+
 function normalizeStatus(override) {
   if (deadlineConfidence(override) === 'no_single_public_deadline') return 'variable';
+  if (isPastDeadlineDate(override.deadline_date)) return 'closed';
   const status = String(override.status || '').toLowerCase();
   if (['open', 'upcoming', 'unclear', 'closed', 'variable'].includes(status)) return status;
   const deadline = override.deadline_date ? new Date(override.deadline_date) : null;
@@ -146,7 +153,17 @@ async function main() {
   }, null, 2));
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  isPastDeadlineDate,
+  normalizeStatus,
+  normalizeDatabaseStatus,
+  buildPatch,
+  buildSnapshot
+};
