@@ -123,7 +123,7 @@ function build() {
   html = html.replaceAll('tool-name="YouTube Thumbnail Studio"', 'tool-name="Studio ya Thumbnail za YouTube"');
   html = html.replace('save-note="Design locally, check mobile readability and asset rights, then download PNG, JPEG, WebP, or A/B variant exports."', 'save-note="Buni ndani ya kivinjari, kagua usomaji wa simu na haki za picha, kisha pakua PNG, JPEG, WebP au matoleo ya A/B."');
   html = html.replace('<script src="/assets/js/lib/thumbnail-maker-studio.js?v=6f0b6a39" defer></script>', '<script src="/assets/js/lib/thumbnail-maker-studio.js?v=6f0b6a39" defer></script>\n<script src="/assets/js/lib/thumbnail-maker-studio-sw.js" defer></script>');
-  html = html.replace('<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">', '<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">\n<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">');
+  html = html.replace(/<link rel="stylesheet" href="\/assets\/css\/top-level-page-ui-refresh\.css(?:\?v=[a-f0-9]{8})?">/, '$&\n<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">');
   html = html.replace('</head>', `${schemas.map(value => `<script type="application/ld+json">${JSON.stringify(value)}</script>`).join('\n')}\n</head>`);
   html = html.replace('</body>', '<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>\n</body>');
   return html;
