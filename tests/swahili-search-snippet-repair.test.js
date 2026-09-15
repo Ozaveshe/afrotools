@@ -19,7 +19,8 @@ for (const target of repair.targets()) {
   const metadata = audit.extractMetadata(html);
   assert.match(html, /<html\b[^>]*lang="sw"/i, target.file + " must remain Swahili");
   assert.ok(metadata.title.length <= 65, target.file + " title must retain the task and country before truncation");
-  assert.match(metadata.title, /— .+ \| AfroTools$/, target.file + " title must separate task and country");
+  assert.strictEqual(metadata.title, repair.metadataFor(target.countrySlug, target.family).title, target.file + " title must match its authoritative task/country copy");
+  assert.ok(metadata.title.includes(repair.countryName(target.countrySlug)), target.file + " title must identify its country");
 }
 
 const SEARCH_DESCRIPTION_FILES = [
