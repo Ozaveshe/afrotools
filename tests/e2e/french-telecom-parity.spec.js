@@ -84,16 +84,44 @@ function normalizeText(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
+const AUTH_SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+function reviewedStaticRequest(request) {
+  if (request.method() !== 'GET' || request.postData()) return false;
+  const url = new URL(request.url());
+  if (request.url() === AUTH_SDK_URL) return request.resourceType() === 'script';
+  return url.origin === 'https://cdn.jsdelivr.net'
+    && /^\/gh\/twitter\/twemoji@14\.0\.2\/assets\/svg\/[a-f0-9-]+\.svg$/i.test(url.pathname)
+    && !url.search;
+}
 function guardLocalNetwork(page, allowedOrigin, sink) {
+  if (!sink.localityRequests) Object.defineProperty(sink, 'localityRequests', {value: []});
   page.on('request', (request) => {
+    sink.localityRequests.push(request);
     const url = new URL(request.url());
-    const isReviewedStaticAsset = url.origin === 'https://cdn.jsdelivr.net'
-      && /^\/gh\/twitter\/twemoji@14\.0\.2\/assets\/svg\/[a-f0-9-]+\.svg$/i.test(url.pathname);
-    if ((!isReviewedStaticAsset && url.origin !== allowedOrigin) || /\/(?:api|\.netlify\/functions)\//.test(url.pathname)) {
+    if (request.method() !== 'GET' || request.postData()
+      || (!reviewedStaticRequest(request) && url.origin !== allowedOrigin)
+      || /\/(?:api|\.netlify\/functions)\//.test(url.pathname)) {
       sink.push(request.url());
     }
   });
 }
+function expectInputsStayLocal(requests, inputs) {
+  const serialized = JSON.stringify(inputs);
+  for (const request of requests.localityRequests || []) {
+    const url = new URL(request.url());
+    expect(request.postData(), 'local tools send no request body').toBeFalsy();
+    expect(Object.keys(inputs).some(key => url.searchParams.has(key)), 'tool input fields must not enter URL queries').toBe(false);
+    expect(decodeURIComponent(url.search).includes(serialized), 'serialized tool state must not enter URL queries').toBe(false);
+  }
+}
+
+test('telecom static auth exception rejects writes, payloads, query strings and data fetches', () => {
+  const request = (overrides = {}) => Object.assign({method:()=> 'GET',postData:()=>null,url:()=>AUTH_SDK_URL,resourceType:()=> 'script'},overrides);
+  expect(reviewedStaticRequest(request())).toBe(true);
+  for (const overrides of [{method:()=> 'POST'},{postData:()=> 'tool-state'},{url:()=>AUTH_SDK_URL+'?salary=12345'},{resourceType:()=> 'fetch'},{url:()=> 'https://example.com/supabase.min.js'}]) {
+    expect(reviewedStaticRequest(request(overrides))).toBe(false);
+  }
+});
 
 async function setFixedReflowViewport(page, width, rootFontSize) {
   await page.setViewportSize({ width, height: 720 });
@@ -544,6 +572,7 @@ for (const [title, route, toolId] of apps) {
       document.documentElement.style.fontSize = '16px';
     });
     await selectScenario(page, toolId);
+    const submittedInputs = await formValueSnapshot(page);
     const submit = page.getByRole('button', { name: 'Calculer avec le snapshot' });
     await submit.focus();
     await page.keyboard.press('Enter');
@@ -718,6 +747,7 @@ for (const [title, route, toolId] of apps) {
 
     expect(pageErrors).toEqual([]);
     expect(consoleErrors).toEqual([]);
+    expectInputsStayLocal(unexpectedNetwork, submittedInputs);
     expect(unexpectedNetwork).toEqual([]);
   });
 }
