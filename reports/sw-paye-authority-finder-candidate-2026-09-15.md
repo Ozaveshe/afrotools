@@ -33,6 +33,12 @@ Status: implemented and locally verified; independent coordinator acceptance pen
 
 ## Acceptance and remaining work
 
+### Extended verification before coordinator acceptance
+
+The coordinator requested actual axe contrast checks and successful-submit privacy proof. Axe exposed a light-mode status contrast failure and dark-mode undefined legacy background/text tokens, warning text, and CTA contrast failures. The Swahili generator now maps the legacy finder tokens to the current design-system tokens and explicitly preserves accessible status and CTA colors despite shared dark-mode overrides. No shared design-system stylesheet was changed.
+
+The expanded Chromium suite passes 10/10 checks, including axe WCAG A/AA checks for serious/critical violations within the complete main workflow in both ambiguous and resolved states in light/dark. A successful synthetic query exercises ambiguity and resolution; captured analytics contain only approved metadata, and captured network requests, storage and URL contain no raw query. Source data was not renewed. The source contract, generator check and whitespace checks also pass after the fix.
+
 The current denominator is 1,256 free English apps. The inventory retains 1,254 historical accepts, the PAYE finder as an unaccepted mapped candidate, and SSCE practice as missing. The AI route map remains unchanged and excludes this candidate until independent acceptance.
 
 No acceptance ledger entry was added. The coordinator must independently review the committed candidate and record acceptance through the existing receipt workflow. Sitemaps, minification/cache versions, deployment build/security/dist validation and production verification belong to integration/release and were not run here. No push or deployment occurred.
