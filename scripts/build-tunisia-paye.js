@@ -2,16 +2,18 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
 const copy=require('./lib/tunisia-paye-content');
-const {normalizeBuildManagedHtml}=require('./lib/shared-asset-references');
+const {normalizeReleaseOwnedHtml}=require('./lib/release-owned-html-normalizer');
+const {stableId}=require('./lib/content-integrity');
+function normalizePage(html){return normalizeReleaseOwnedHtml(String(html).replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/gi,(_,a,json,b)=>a+JSON.stringify(JSON.parse(json))+b));}
 const root=path.resolve(__dirname,'..');
 const routes={en:'/tunisia/tn-paye',fr:'/fr/tunisie/calculateur-salaire-net',sw:'/sw/tunisia/kikokotoo-kodi-mshahara/'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function page(locale,route){const c=copy[locale];return `<!doctype html>
 <html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="${locale}"><meta name="afrotools-source-owner" content="scripts/build-tunisia-paye.js">
-<title>${esc(c.title)}</title><meta name="description" content="${esc(c.description)}"><link rel="canonical" href="https://afrotools.com${route}">
+<meta name="afrotools-content-id" content="${stableId(route)}"><title>${esc(c.title)}</title><meta name="description" content="${esc(c.description)}"><link rel="canonical" href="https://afrotools.com${route}">
 ${Object.entries(routes).map(([lang,url])=>`<link rel="alternate" hreflang="${lang}" href="https://afrotools.com${url}">`).join('\n')}<link rel="alternate" hreflang="x-default" href="https://afrotools.com${routes.en}">
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(c.title)}"><meta property="og:description" content="${esc(c.description)}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/tn-paye.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(c.title)}"><meta name="twitter:description" content="${esc(c.description)}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tn-paye.webp">
-<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.heading,url:'https://afrotools.com'+route,inLanguage:locale,applicationCategory:'FinanceApplication',operatingSystem:'Web'})}</script>
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.heading,url:'https://afrotools.com'+route,inLanguage:locale,applicationCategory:'FinanceApplication',operatingSystem:'Web',image:'https://afrotools.com/assets/img/tools/tn-paye.webp'})}</script>
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/tunisia-paye.css">
 <script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/engines/tunisia-paye.js" defer></script><script src="/assets/vendor/pdf-lib/pdf-lib.min.js" defer></script><script src="/assets/js/pages/tunisia-paye.js" defer></script>
 <script id="tn-paye-copy" type="application/json">${JSON.stringify(c).replace(/</g,'\\u003c')}</script></head>
@@ -22,6 +24,6 @@ ${Object.entries(routes).map(([lang,url])=>`<link rel="alternate" hreflang="${la
 <section aria-labelledby="tn-sources-heading"><h2 id="tn-sources-heading">${c.sources}</h2><p>${c.scope}</p><p>${c.method}</p><p>${c.confidence}</p><ul><li><a href="https://jibaya.tn/wp-content/uploads/2026/03/11.pdf" target="_blank" rel="noopener">IRPP/IS 2026 — art.26, 44 · PDF 21, 48</a></li><li><a href="https://www.finances.gov.tn/sites/default/files/2024-12/LF2025.pdf" target="_blank" rel="noopener">LF2025 — art.17, 84 · PDF 5, 37</a></li><li><a href="https://jibaya.tn/wp-content/uploads/2026/01/مذكرة-عامة-عدد-1.pdf" target="_blank" rel="noopener">CSS 2026 — note 1/2026 · PDF 1, 5–6</a></li><li><a href="https://www.cnss.tn/fr/web/employeur/emp_asset_services/-/asset_publisher/sYQ8/content/emp_secteur-non_agr6_assiette" target="_blank" rel="noopener">CNSS</a></li></ul></section>
 <section aria-labelledby="tn-ai-heading"><h2 id="tn-ai-heading">${c.ai}</h2><p>${c.payload}</p><label class="tn-consent"><input id="tn-consent" type="checkbox">${c.consent}</label><button type="button" data-ai disabled>${c.ask}</button><p id="tn-ai-result" aria-live="polite"></p></section></main><afro-footer></afro-footer></body></html>\n`;}
 function outputs(){return new Map([[routes.en+'.html',page('en',routes.en)],[routes.fr+'.html',page('fr',routes.fr)],[routes.sw+'index.html',page('sw',routes.sw)],['/fr/tunisia/tn-paye.html',page('fr','/fr/tunisia/tn-paye')]].map(([file,text])=>[file.slice(1),text]));}
-function run(write){let count=0;for(const [file,text]of outputs()){const absolute=path.join(root,file),old=fs.existsSync(absolute)?fs.readFileSync(absolute,'utf8'):'';if(normalizeBuildManagedHtml(old)===normalizeBuildManagedHtml(text))continue;count++;if(write){fs.mkdirSync(path.dirname(absolute),{recursive:true});fs.writeFileSync(absolute,text);}}if(count&&!write)throw Error('Tunisia PAYE outputs stale: '+count);console.log('Tunisia PAYE: '+count+' changed files');}
+function run(write){let count=0;for(const [file,text]of outputs()){const absolute=path.join(root,file),old=fs.existsSync(absolute)?fs.readFileSync(absolute,'utf8'):'';if(normalizePage(old)===normalizePage(text))continue;count++;if(write){fs.mkdirSync(path.dirname(absolute),{recursive:true});fs.writeFileSync(absolute,text);}}if(count&&!write)throw Error('Tunisia PAYE outputs stale: '+count);console.log('Tunisia PAYE: '+count+' changed files');}
 if(require.main===module)run(process.argv.includes('--write'));
-module.exports={outputs,run,routes};
+module.exports={outputs,run,routes,normalizePage};
