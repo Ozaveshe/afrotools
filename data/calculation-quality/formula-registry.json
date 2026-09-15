@@ -6546,7 +6546,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:3d31e53517c6deee167533689853d8151c41d5fdffd3b88116219e41d53f80bd",
+      "artifactDigest": "sha256:e0d850fa6007e1a33127c11e0da311fad25606d5d5e7b0940367e597c7d571d5",
       "artifactPath": "engines/francophone-paye-engine.js",
       "currency": "MULTI",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -6556,7 +6556,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "engines-francophone-paye-engine",
-      "formulaVersion": "legacy-current+sha256.3d31e53517c6",
+      "formulaVersion": "legacy-current+sha256.e0d850fa6007",
       "id": "formula-engines-francophone-paye-engine",
       "jurisdictions": [
         "ALL"
@@ -6567,7 +6567,7 @@
       "lastVerified": "2026-03-01",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:3d31e53517c6deee167533689853d8151c41d5fdffd3b88116219e41d53f80bd",
+        "artifactDigest": "sha256:e0d850fa6007e1a33127c11e0da311fad25606d5d5e7b0940367e597c7d571d5",
         "artifactPath": "engines/francophone-paye-engine.js",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -8222,6 +8222,111 @@
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
     },
     {
+      "applicablePopulation": "Ordinary private-sector salary planning within docs/MOROCCO-PAYE-2026.md exclusions.",
+      "artifactDigest": "sha256:dc2c5df03a2efb0ee9a1979d47de0225f82b165cd3ee1286122e7738cd989939",
+      "artifactPath": "engines/morocco-paye.js",
+      "currency": "MAD",
+      "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
+      "currencyOverride": null,
+      "disclaimer": "CNSS 4.48%/8.98%, employer family 6.4% and training 1.6% remain retained planning assumptions; exact 2026 contribution schedule and amendments are unresolved. Equal pay over twelve months and unchanged eligible dependents only. Planning estimate only; confirm with payroll.",
+      "effectiveDateStatus": "declared",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "formulaFamily": "ordinary-private-paye-2026",
+      "formulaVersion": "legacy-current+sha256.dc2c5df03a2e",
+      "id": "formula-engines-morocco-paye",
+      "jurisdictions": [
+        "MA"
+      ],
+      "knownExclusions": [
+        "CNSS 4.48%/8.98%, employer family 6.4% and training 1.6% remain retained planning assumptions; exact 2026 contribution schedule and amendments are unresolved. Equal pay over twelve months and unchanged eligible dependents only.",
+        "Not an official payslip, filing, remittance or complete employer-cost calculation."
+      ],
+      "lastVerified": "2026-09-15",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "bands": [
+          {
+            "limit": 40000,
+            "rate": 0
+          },
+          {
+            "limit": 60000,
+            "rate": 0.1
+          },
+          {
+            "limit": 80000,
+            "rate": 0.2
+          },
+          {
+            "limit": 100000,
+            "rate": 0.3
+          },
+          {
+            "limit": 180000,
+            "rate": 0.34
+          },
+          {
+            "limit": null,
+            "rate": 0.37
+          }
+        ],
+        "evidence": "docs/MOROCCO-PAYE-2026.md",
+        "mode": "reviewed-planning-engine",
+        "notice": "CNSS 4.48%/8.98%, employer family 6.4% and training 1.6% remain retained planning assumptions; exact 2026 contribution schedule and amendments are unresolved. Equal pay over twelve months and unchanged eligible dependents only."
+      },
+      "protectedDuplicates": [
+        "engines/src/morocco-paye.js"
+      ],
+      "riskDomain": "tax_payroll",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
+        "stages": [
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+        ]
+      },
+      "sourceJurisdictions": [
+        "MA"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "code",
+          "url": "https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "codeCopy",
+          "url": "https://apsf.ma/wp-content/uploads/2026/01/DGI_CODE-GENERAL-DES-IMPOTS-CGI-2026.pdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "cnss",
+          "url": "https://www.acaps.ma/fr/files/fichesynthetiquecnsspdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "amo",
+          "url": "https://www.acaps.ma/fr/grand-public/sante/couverture-medicale-de-base-amo"
+        }
+      ],
+      "supportStatus": "review-required",
+      "units": [
+        "currency"
+      ],
+      "verificationBasis": "Documented statutory interpretation and independent synthetic calculation checks; contribution uncertainties remain: CNSS 4.48%/8.98%, employer family 6.4% and training 1.6% remain retained planning assumptions; exact 2026 contribution schedule and amendments are unresolved. Equal pay over twelve months and unchanged eligible dependents only."
+    },
+    {
       "applicablePopulation": "Workers, employers, contributors, and benefit claimants covered by the declared scheme assumptions.",
       "artifactDigest": "sha256:8d22bff15c118c61fd2004791c168a36c117a90669fe16863aecfa3bb6cce7fb",
       "artifactPath": "engines/ng-pension-engine.js",
@@ -9119,7 +9224,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:536023a4af6dc764b5f44b8dd0455713065b811db69cec5bef0a7050797efec0",
+      "artifactDigest": "sha256:72d8e8647a04b06a777e0a31104d2d48db962de7aab1c25b924dee216d64c792",
       "artifactPath": "engines/sw-final-paye-engine.js",
       "currency": "MULTI",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -9129,7 +9234,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "engines-sw-final-paye-engine",
-      "formulaVersion": "legacy-current+sha256.536023a4af6d",
+      "formulaVersion": "legacy-current+sha256.72d8e8647a04",
       "id": "formula-engines-sw-final-paye-engine",
       "jurisdictions": [
         "ALL"
@@ -9140,7 +9245,7 @@
       "lastVerified": "2026-03-01",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:536023a4af6dc764b5f44b8dd0455713065b811db69cec5bef0a7050797efec0",
+        "artifactDigest": "sha256:72d8e8647a04b06a777e0a31104d2d48db962de7aab1c25b924dee216d64c792",
         "artifactPath": "engines/sw-final-paye-engine.js",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -9396,6 +9501,119 @@
         "domain-specific"
       ],
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
+    },
+    {
+      "applicablePopulation": "Ordinary private-sector salary planning within docs/TUNISIA-PAYE-2026.md exclusions.",
+      "artifactDigest": "sha256:3132b204e6687f985ecc682facee27212ffbc011b9db0ae72250141796970db5",
+      "artifactPath": "engines/tunisia-paye.js",
+      "currency": "TND",
+      "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
+      "currencyOverride": null,
+      "disclaimer": "Job-loss levy deductibility is an unconfirmed tax-administration interpretation with both treatments supported. Statutory commencement is not proof of actual CNSS collection. Ordinary private non-agricultural salary only; no personal relief. Planning estimate only; confirm with payroll.",
+      "effectiveDateStatus": "declared",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": "2026-12-31",
+      "formulaFamily": "ordinary-private-paye-2026",
+      "formulaVersion": "legacy-current+sha256.3132b204e668",
+      "id": "formula-engines-tunisia-paye",
+      "jurisdictions": [
+        "TN"
+      ],
+      "knownExclusions": [
+        "Job-loss levy deductibility is an unconfirmed tax-administration interpretation with both treatments supported. Statutory commencement is not proof of actual CNSS collection. Ordinary private non-agricultural salary only; no personal relief.",
+        "Not an official payslip, filing, remittance or complete employer-cost calculation."
+      ],
+      "lastVerified": "2026-09-15",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "bands": [
+          {
+            "limit": 5000,
+            "rate": 0
+          },
+          {
+            "limit": 10000,
+            "rate": 0.15
+          },
+          {
+            "limit": 20000,
+            "rate": 0.25
+          },
+          {
+            "limit": 30000,
+            "rate": 0.3
+          },
+          {
+            "limit": 40000,
+            "rate": 0.33
+          },
+          {
+            "limit": 50000,
+            "rate": 0.36
+          },
+          {
+            "limit": 70000,
+            "rate": 0.38
+          },
+          {
+            "limit": null,
+            "rate": 0.4
+          }
+        ],
+        "evidence": "docs/TUNISIA-PAYE-2026.md",
+        "mode": "reviewed-planning-engine",
+        "notice": "Job-loss levy deductibility is an unconfirmed tax-administration interpretation with both treatments supported. Statutory commencement is not proof of actual CNSS collection. Ordinary private non-agricultural salary only; no personal relief."
+      },
+      "protectedDuplicates": [
+        "engines/src/tunisia-paye.js"
+      ],
+      "riskDomain": "tax_payroll",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
+        "stages": [
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+        ]
+      },
+      "sourceJurisdictions": [
+        "TN"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "code",
+          "url": "https://jibaya.tn/wp-content/uploads/2026/03/11.pdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "finance2025",
+          "url": "https://www.finances.gov.tn/sites/default/files/2024-12/LF2025.pdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "solidarity",
+          "url": "https://jibaya.tn/wp-content/uploads/2026/01/مذكرة-عامة-عدد-1.pdf"
+        },
+        {
+          "authorityStatus": "review-required",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "cnss",
+          "url": "https://www.cnss.tn/fr/web/employeur/emp_asset_services/-/asset_publisher/sYQ8/content/emp_secteur-non_agr6_assiette"
+        }
+      ],
+      "supportStatus": "review-required",
+      "units": [
+        "currency"
+      ],
+      "verificationBasis": "Documented statutory interpretation and independent synthetic calculation checks; contribution uncertainties remain: Job-loss levy deductibility is an unconfirmed tax-administration interpretation with both treatments supported. Statutory commencement is not proof of actual CNSS collection. Ordinary private non-agricultural salary only; no personal relief."
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
@@ -23965,7 +24183,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:dcb3c29cfba62d5a4e0478473402ba46236547170a076ca5c273ee72236af07e",
+      "artifactDigest": "sha256:d5e61a10b566ef916885cfcc8b53b4b4e4af8afa93d1ce7bcae18dfa79d31e81",
       "artifactPath": "morocco/ma-paye.html",
       "currency": "MAD",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -23975,7 +24193,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "Last-verified:-January-2025-·-Source:-DGI-(dgi+sha256.dcb3c29cfba6",
+      "formulaVersion": "Last-verified:-January-2025-·-Source:-DGI-(dgi+sha256.d5e61a10b566",
       "id": "route-ma-paye",
       "jurisdictions": [
         "MA"
@@ -23988,7 +24206,7 @@
       "lastVerified": "2025-01-01",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:dcb3c29cfba62d5a4e0478473402ba46236547170a076ca5c273ee72236af07e",
+        "artifactDigest": "sha256:d5e61a10b566ef916885cfcc8b53b4b4e4af8afa93d1ce7bcae18dfa79d31e81",
         "artifactPath": "morocco/ma-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -24046,7 +24264,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:d211ffb460762c0c5e3ba3c31802956acb60c8bdd8755ce61c3c52950df923e2",
+      "artifactDigest": "sha256:a1de13dfa780f08cc264738464e8ce1d3c49e1c9e80a5197144330a5d4adeb14",
       "artifactPath": "fr/morocco/ma-paye.html",
       "currency": "MAD",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -24056,7 +24274,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "Last-verified:-January-2025-·-Source:-DGI-(dgi+sha256.d211ffb46076",
+      "formulaVersion": "Last-verified:-January-2025-·-Source:-DGI-(dgi+sha256.a1de13dfa780",
       "id": "route-ma-paye-fr",
       "jurisdictions": [
         "MA"
@@ -24069,7 +24287,7 @@
       "lastVerified": "2025-01-01",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:d211ffb460762c0c5e3ba3c31802956acb60c8bdd8755ce61c3c52950df923e2",
+        "artifactDigest": "sha256:a1de13dfa780f08cc264738464e8ce1d3c49e1c9e80a5197144330a5d4adeb14",
         "artifactPath": "fr/morocco/ma-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -28621,7 +28839,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:a061bf3fcb2a8149ff2f3aad245a41132b0d717e96aeb739ef993db8cf9a15fc",
+      "artifactDigest": "sha256:f4a57d4c349b6eda952a53b9f0ce20029e7b8724432e339f9e635178f0f4d635",
       "artifactPath": "tunisia/tn-paye.html",
       "currency": "TND",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -28631,7 +28849,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.a061bf3fcb2a",
+      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.f4a57d4c349b",
       "id": "route-tn-paye",
       "jurisdictions": [
         "TN"
@@ -28644,7 +28862,7 @@
       "lastVerified": "2026-03-28",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:a061bf3fcb2a8149ff2f3aad245a41132b0d717e96aeb739ef993db8cf9a15fc",
+        "artifactDigest": "sha256:f4a57d4c349b6eda952a53b9f0ce20029e7b8724432e339f9e635178f0f4d635",
         "artifactPath": "tunisia/tn-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -28688,7 +28906,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:16fa0ff3c93b6215a84708e12ecf7d46456c0ee0e5997dfecd0d4ba11e9fe2cb",
+      "artifactDigest": "sha256:b8e1ce434857b0f0db327dc5edc55ca7822a43f09c446d9bc2de96da7f362a33",
       "artifactPath": "fr/tunisia/tn-paye.html",
       "currency": "TND",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
@@ -28698,7 +28916,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.16fa0ff3c93b",
+      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.b8e1ce434857",
       "id": "route-tn-paye-fr",
       "jurisdictions": [
         "TN"
@@ -28711,7 +28929,7 @@
       "lastVerified": "2026-03-28",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:16fa0ff3c93b6215a84708e12ecf7d46456c0ee0e5997dfecd0d4ba11e9fe2cb",
+        "artifactDigest": "sha256:b8e1ce434857b0f0db327dc5edc55ca7822a43f09c446d9bc2de96da7f362a33",
         "artifactPath": "fr/tunisia/tn-paye.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."

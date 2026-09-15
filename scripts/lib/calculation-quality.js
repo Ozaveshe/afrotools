@@ -1395,6 +1395,7 @@ function buildJsFormula(
     riskLevel: classification.riskLevel,
     riskDomain: classification.riskDomain,
     supportStatus: currencyOverride ? "review-required" : "registered",
+    ...require("./calculation-quality-private-paye").metadata(root, artifactPath),
   };
 }
 
@@ -1494,7 +1495,7 @@ function generateGoldenFixtures(formulas, root) {
       .filter((formula) => formula.formulaFamily === "paye-server")
       .map((formula) => [formula.jurisdictions[0], formula]),
   );
-  const fixtures = [];
+  const fixtures = require("./calculation-quality-private-paye").fixtures(formulas);
   const selectors = [
     "tax.netTax",
     "result.netAnnual",
@@ -4653,7 +4654,10 @@ function runGoldenFixtures(artifacts, root) {
     }
     let actual;
     try {
-      if (fixture.operation === "paye-calculate") {
+      if (fixture.operation === "private-paye-calculate" || fixture.operation === "private-paye-tax") {
+        const engine = require(path.join(root, formula.artifactPath));
+        actual = fixture.operation === "private-paye-tax" ? engine.tax(fixture.input.income) : engine.calculate(fixture.input.gross, fixture.input.period, fixture.input.options);
+      } else if (fixture.operation === "paye-calculate") {
         const engine = engineRegistry.get(fixture.input.country);
         if (!engine)
           throw new Error(
