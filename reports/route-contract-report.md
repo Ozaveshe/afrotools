@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11556 |
-| Indexable pages | 9977 |
+| Public pages | 11557 |
+| Indexable pages | 9978 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 5287 |
-| Documented fallbacks | 14823 |
-| Routes eligible for primary sitemaps | 9977 |
+| Documented fallbacks | 14824 |
+| Routes eligible for primary sitemaps | 9978 |
 
 ## Locale Coverage
 
 - en: 6009 page records
-- fr: 3803 page records
+- fr: 3804 page records
 - ha: 105 page records
 - sw: 1594 page records
 - yo: 45 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5427
-- tool: 4002
+- tool: 4003
 - widget: 379
 
 ## Canonical Migrations
@@ -3628,7 +3628,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1c9fbd4fc84f: en=`/tools/informal-fx-watch/`, fr=`/fr/tools/taux-change-parallele/`, sw=`/sw/zana/ufuatiliaji-soko-la-fedha/`; x-default=`/tools/informal-fx-watch/`
 - equivalence:1cb9e7c1abcb: fr=`/fr/widgets/plan-heures-etude/`; x-default=`/fr/widgets/plan-heures-etude/`
 - equivalence:1cc430553fe0: en=`/blog/central-bank-interest-rates-africa/`; x-default=`/blog/central-bank-interest-rates-africa/`
-- equivalence:1cc6608d2bee: en=`/tools/tin-guide/dr-congo`, sw=`/sw/zana/mwongozo-tin/dr-congo/`; x-default=`/tools/tin-guide/dr-congo`
 - equivalence:1cedc59b0b29: en=`/agriculture/crop-yield/cabo-verde`, fr=`/fr/agriculture/crop-yield/cabo-verde`, sw=`/sw/kilimo/mavuno/cape-verde/`; x-default=`/agriculture/crop-yield/cabo-verde`
 - equivalence:1cf2b7380c3e: en=`/cars/ghana/mazda/demio/`, fr=`/fr/cars/ghana/mazda/demio/`; x-default=`/cars/ghana/mazda/demio/`
 - equivalence:1cf66dd4e818: en=`/tools/health-contribution/namibia`; x-default=`/tools/health-contribution/namibia`
@@ -8292,6 +8291,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ffe48b69eda3: en=`/tools/tin-guide/djibouti`, sw=`/sw/zana/mwongozo-tin/djibouti/`; x-default=`/tools/tin-guide/djibouti`
 - equivalence:ffed8a242413: en=`/blog/kenya-capital-gains-tax-2026/`; x-default=`/blog/kenya-capital-gains-tax-2026/`
 - legal:privacy: en=`/privacy/`, fr=`/fr/privacy/`, sw=`/sw/faragha/`; x-default=`/privacy/`
+- tool:tin-guide:dr-congo: en=`/tools/tin-guide/dr-congo`, fr=`/fr/tools/guide-nif/dr-congo/`, sw=`/sw/zana/mwongozo-tin/dr-congo/`; x-default=`/tools/tin-guide/dr-congo`
 
 ## Shadowed Routing Rules
 
