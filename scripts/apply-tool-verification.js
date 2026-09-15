@@ -138,6 +138,8 @@ function shouldKeepToolSource(url, toolId) {
     /^(?:rw-paye|rw-paye-fr)$/i.test(toolId)
     && /\/value-added-tax\/|vat[_-]law/i.test(decodedUrl)
   ) return false;
+  if (/^(?:mw-paye|mw-paye-fr)$/i.test(toolId)
+    && /1767960417|NEW_INCOME_TAX_RATES_2022/i.test(decodedUrl)) return false;
   if (/^so-vat$/i.test(toolId) && /income[ _-]tax/i.test(decodedUrl)) return false;
   return true;
 }
@@ -509,6 +511,7 @@ const PANEL_COPY = {
 };
 
 const FR_VERIFICATION_VALUES = new Map([
+  ['MRA Taxation (Amendment) (No. 2) Act, 2025 — employment-income rates, Appendix B', 'MRA : loi fiscale modificative n° 2 de 2025 — barème des revenus d’emploi, annexe B'],
   ['The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.', 'Le calculateur annualise le salaire lorsque nécessaire, applique les retenues salariales modélisées, traite le revenu imposable selon les tranches PAYE du pays et déduit le PAYE et les retenues modélisées du salaire brut. Les lignes de coût employeur sont indicatives.'],
   ['The calculator splits the entered amount into net amount, VAT, and VAT-inclusive total using the displayed standard or custom VAT rate. Zero-rated and exempt categories are treated as decision guidance and must be confirmed against the linked authority material before filing.', 'Le calculateur répartit le montant saisi entre montant hors taxe, TVA et total TTC selon le taux standard ou personnalisé affiché. Les catégories exonérées ou à taux zéro servent de guide et doivent être confirmées auprès de l’autorité liée avant toute déclaration.'],
   ['Informational estimate only. It is not professional tax, legal, payroll, or filing advice.', 'Estimation informative uniquement. Elle ne constitue pas un conseil fiscal, juridique, de paie ou de déclaration.'],
@@ -559,7 +562,7 @@ function buildPanel(entry, lang = 'en') {
   const riskText = lang === 'fr' ? `${copy.risk} ${riskLabel}` : `${riskLabel} ${copy.risk}`;
   const sourceItems = entry.source_urls.map((url, index) => {
     const label = entry.source_titles[index] || hostnameTitle(url);
-    return `<li><a href="${escapeAttr(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a></li>`;
+    return `<li><a href="${escapeAttr(url)}" target="_blank" rel="noopener">${escapeHtml(localizeVerificationValue(label, lang))}</a></li>`;
   }).join('\n');
 
   const limitations = htmlList(knownLimitations.map((item) => escapeHtml(localizeVerificationValue(item, lang))));
