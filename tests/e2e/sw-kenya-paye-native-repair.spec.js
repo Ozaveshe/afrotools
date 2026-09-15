@@ -15,6 +15,12 @@ test('Kenya native result keys, PDF, strict invalidation and consented AI stay c
  expect(Number.isFinite(result.grossTax)).toBe(true);
  await expect(page.locator('#resContent')).not.toContainText(/NaN|undefined|Infinity/);
  await page.locator('#localExplainBtn').click();await expect(page.locator('#aiResp')).toContainText('bila mtandao');
+ await expect(page.locator('#aiResp')).not.toContainText(/KES\s+KES/);
+ await page.getByRole('button',{name:'Kwa Mwaka',exact:true}).click();
+ await page.locator('#localExplainBtn').click();
+ await expect(page.locator('#aiResp')).toContainText('kiasi cha kila mwezi');
+ await expect(page.locator('#aiResp')).not.toContainText(/KES\s+KES/);
+ expect(await page.locator('#aiResp').textContent()).toContain(await page.evaluate(()=>fmt(RESULT.net)));
  expect(payloads).toHaveLength(0);
  const popupEvent=page.waitForEvent('popup');await page.locator('button[onclick="generatePdf()"]').click();const popup=await popupEvent;await popup.waitForLoadState('domcontentloaded');
  const parsed=await pdfParse(await popup.pdf());expect(parsed.text).not.toMatch(/NaN|undefined/);expect(parsed.text).toContain(Math.round(result.grossTax).toLocaleString('en'));expect(parsed.text).toContain(Math.round(result.net).toLocaleString('en'));await popup.close();
