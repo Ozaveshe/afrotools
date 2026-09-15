@@ -103,8 +103,10 @@ test('French tariff references and form limitation remain readable without JavaS
   const page=await context.newPage();
   await page.goto(baseURL+route);
   // Playwright's text matcher deliberately omits noscript nodes from collected text.
-  expect(await page.locator('noscript').textContent()).toContain('Le formulaire nécessite JavaScript');
-  await expect(page.locator('noscript')).toBeVisible();
+  const pageFallback = page.locator('main noscript:not(form noscript)');
+  await expect(pageFallback).toHaveCount(1);
+  expect(await pageFallback.textContent()).toContain('Le formulaire nécessite JavaScript');
+  await expect(pageFallback).toBeVisible();
   await expect(page.locator('[data-provider-table]')).toHaveCount(2);
   await expect(page.locator('[data-provider-table]').first()).toContainText('Barème MTN Mobile Money en Ouganda');
   await context.close();
