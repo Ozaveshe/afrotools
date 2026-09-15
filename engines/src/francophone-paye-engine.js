@@ -173,47 +173,7 @@
       },
       additionalTaxes: []
     },
-    MA: {
-      name: "Morocco",
-      nameLocal: "Maroc",
-      slug: "maroc",
-      flag: "🇲🇦",
-      currency: "MAD",
-      currencySymbol: "MAD",
-      taxAuthority: "DGI",
-      taxAuthorityFull: "Direction Générale des Impôts",
-      incomeTaxBands: [ {
-        min: 0,
-        max: 3e4,
-        rate: 0
-      }, {
-        min: 30001,
-        max: 5e4,
-        rate: .1
-      }, {
-        min: 50001,
-        max: 6e4,
-        rate: .2
-      }, {
-        min: 60001,
-        max: 8e4,
-        rate: .3
-      }, {
-        min: 80001,
-        max: 18e4,
-        rate: .34
-      }, {
-        min: 180001,
-        max: 1 / 0,
-        rate: .38
-      } ],
-      socialSecurity: {
-        name: "CNSS",
-        employeeRate: .0448,
-        ceiling: 72e3
-      },
-      additionalTaxes: []
-    },
+    MA: {name:'Morocco',nameLocal:'Maroc',slug:'maroc',flag:'🇲🇦',currency:'MAD',currencySymbol:'MAD',taxAuthority:'DGI',taxAuthorityFull:'Direction Générale des Impôts',owner:'morocco-paye.js'},
     DZ: {
       name: "Algeria",
       nameLocal: "Algérie",
@@ -914,6 +874,12 @@
   };
   window.FrancoPayeEngine = {
     calculate: function(e, n) {
+      if(e==='MA'){
+        var api=window.AfroTools&&window.AfroTools.moroccoPaye;
+        if(!api)throw new Error('Load morocco-paye.js before calculating Morocco');
+        var r=api.calculate(n,'annual');
+        return {country:'Morocco',countryLocal:'Maroc',countryCode:'MA',flag:'🇲🇦',taxAuthorityFull:'Direction Générale des Impôts',currency:'MAD',currencySymbol:'MAD',taxAuthority:'DGI',grossAnnual:n,grossMonthly:n/12,socialSecurity:{name:'CNSS + AMO',rate:null,components:{cnss:r.cnss,amo:r.amo},annual:r.mandatory,monthly:r.mandatory/12},taxableAnnual:r.taxable,incomeTax:{annual:r.incomeTax,monthly:r.incomeTax/12},bandBreakdown:r.bands,additionalTaxes:[],totalTax:{annual:r.incomeTax,monthly:r.incomeTax/12},totalDeductions:{annual:r.mandatory+r.incomeTax,monthly:(r.mandatory+r.incomeTax)/12},netAnnual:r.annualNet,netMonthly:r.annualNet/12,effectiveRate:n?r.incomeTax/n:0,assumptions:r.contributionEvidence};
+      }
       var i = a[e];
       if (!i) {
         return {

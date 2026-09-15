@@ -1576,6 +1576,7 @@ function build() {
       const hasPageTranslation = translatedPages[lang].has(clean);
       // Tunisia's shared source owns both locale pages and its tax runtime.
       if (clean === 'tunisia/tn-paye') { totalSkipped++; continue; }
+      if (clean === 'morocco/ma-paye') { totalSkipped++; continue; } // Shared Morocco source owns locale output.
       const allowExplicitSourceRebuild = Boolean(flags.overwriteExisting && flags.page);
       if (flags.dryRun && flags.page) {
         logDryRunOutputPlan(pagePath, lang, hasPageTranslation, resolveSourceFile(pagePath));

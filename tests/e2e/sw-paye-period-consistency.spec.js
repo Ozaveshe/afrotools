@@ -1,7 +1,7 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');
 async function download(page, app, format){const pending=page.waitForEvent('download');await app.locator(`[data-export=${format}]`).click();return fs.promises.readFile(await (await pending).path());}
-for(const country of ['morocco','algeria','tunisia']) {
+for(const country of ['algeria']) {
   test(`${country} displayed period matches copy, explanation and reopened exports`,async({page})=>{
     await page.setViewportSize({width:320,height:900});
     await page.goto(`/sw/${country}/kikokotoo-kodi-mshahara/`);

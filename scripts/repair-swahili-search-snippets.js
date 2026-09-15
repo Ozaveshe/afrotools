@@ -42,6 +42,10 @@ function countryName(slug) {
 }
 
 function metadataFor(countrySlug, family) {
+  if (countrySlug === "morocco" && family === "kikokotoo-kodi-mshahara") {
+    const copy = require("./lib/morocco-paye-content").sw;
+    return { title: copy.title, schemaName: copy.heading };
+  }
   if (!FAMILIES[family]) throw new Error("Unknown Swahili employment family: " + family);
   if (countrySlug === "tunisia" && family === "kikokotoo-kodi-mshahara") {
     const copy = require("./lib/tunisia-paye-content").sw;

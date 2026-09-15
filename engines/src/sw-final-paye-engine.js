@@ -32,7 +32,7 @@
   var PAYE_PROFILES = {
     'ng-paye': { country: 'Nigeria', currency: 'NGN', period: 'annual', bands: [[800000,0],[3000000,.15],[12000000,.18],[25000000,.21],[50000000,.23],[null,.25]], source: 'https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf', reviewed: '2026-03-01', options: ['regime','pension','nhf','nhis','annualRent','lifeAssurance','mortgageInterest'] },
     'za-paye': { country: 'Afrika Kusini', currency: 'ZAR', period: 'annual', bands: [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[null,.45]], source: 'https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/', reviewed: '2026-01-01', options: ['ageGroup','retirement','medMembers','uif'] },
-    'ma-paye': { country: 'Moroko', currency: 'MAD', period: 'annual', bands: [[30000,0],[50000,.10],[60000,.20],[80000,.30],[180000,.34],[null,.38]], source: 'https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf', reviewed: '2025-01-01', options: ['cnss','amo'] },
+    'ma-paye': { country:'Moroko',currency:'MAD',period:'annual',owner:'morocco-paye.js',source:'https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf',reviewed:'2026-09-15',confidence:'tax-code-with-contribution-assumptions',options:['cnss','amo','dependents'] },
     'dz-paye': { country: 'Aljeria', currency: 'DZD', period: 'annual', bands: [[240000,0],[480000,.20],[960000,.30],[null,.35]], employeeRate: .09, employeeCap: null, rebate: 0, source: 'https://www.mfdgi.gov.dz/', reviewed: '2026-04-06' },
     'tn-paye': { country: 'Tunisia', currency: 'TND', period: 'annual', owner:'tunisia-paye.js', source:'https://jibaya.tn/wp-content/uploads/2026/03/11.pdf', reviewed:'2026-09-15', confidence:'statutory-with-deductibility-assumption', options:['jobLossDeductible'] },
     'ly-paye': { country: 'Libya', currency: 'LYD', period: 'monthly', bands: [[1000,.05],[null,.10]], employeeRate: .06125, employeeCap: null, rebate: 0, postTaxRate: .005, source: 'https://mof.gov.ly/', reviewed: '2026-08-09', confidence: 'manual' },
@@ -53,6 +53,12 @@
       if(!tn)throw new Error('Tunisia shared engine must be loaded');
       var r=tn.calculate(Number(input&&input.gross),'annual',input);
       return {id:id,country:'Tunisia',currency:'TND',period:'annual',gross:r.annualGross,contribution:r.mandatory,components:{cnss:r.cnss,jobLoss:r.jobLoss,salaryDeduction:r.professional,css:r.css},relief:0,taxable:r.taxable,tax:r.irpp+r.css,postTax:0,net:r.annualNet,effectiveRate:r.annualGross?(r.irpp+r.css)/r.annualGross:0,breakdown:r.bands,source:profile.source,reviewed:profile.reviewed,confidence:profile.confidence,jobLossDeductible:r.jobLossDeductible};
+    }
+    if(id==='ma-paye'){
+      var ma=typeof module==='object'&&module.exports?require('./morocco-paye.js'):globalThis.AfroTools.moroccoPaye;
+      if(!ma)throw new Error('Morocco shared engine must be loaded');
+      var r=ma.calculate(Number(input&&input.gross),'annual',input);
+      return {id:id,country:'Morocco',currency:'MAD',period:'annual',gross:r.annualGross,contribution:r.mandatory,components:{cnss:r.cnss,amo:r.amo,salaryDeduction:r.professional,dependentRelief:r.familyRelief},relief:r.familyRelief,taxable:r.taxable,tax:r.incomeTax,postTax:0,net:r.annualNet,effectiveRate:r.annualGross?r.incomeTax/r.annualGross:0,breakdown:r.bands,source:profile.source,reviewed:profile.reviewed,confidence:profile.confidence};
     }
     var gross = finite(input && input.gross);
     if (!(gross > 0)) throw new RangeError('Gross must be positive');
@@ -100,13 +106,6 @@
       tax = Math.max(0, taxResult.tax - relief);
       components.retirement = retirement;
       components.medicalCredit = medicalMonthly * 12;
-    } else if (id === 'ma-paye') {
-      components.cnss = input.cnss === false ? 0 : Math.min(gross, 72000) * .0448;
-      components.amo = input.amo === false ? 0 : gross * .0226;
-      contribution = components.cnss + components.amo;
-      taxable = Math.max(0, gross - contribution);
-      taxResult = progressiveTax(taxable, profile.bands);
-      tax = taxResult.tax;
     } else if (id === 'sl-paye' && input.secondary === true) {
       components.nassit = input.nassit === false ? 0 : gross * .05;
       contribution = components.nassit;
