@@ -66,7 +66,7 @@ These are rounded UI totals, not an exported dataset. Page-level findings priori
 - Full deploy build at source `45d25390` passed, producing 18,083 files. Its artifact audit and security scan passed. A separate SSCE source-comparison gate failed after postprocessing; the comparison was repaired and tested against the actual built pages while preserving schema and metadata checks.
 - That build does not cover subsequent commits. A final combined build, release gates and artifact checks are still required.
 
-The Swahili ledger records 1,256 accepted current app routes, including the finder and SSCE acceptances added here. Most acceptance records are historical. That count is not evidence that every current calculation or workflow was freshly retested.
+The effective Swahili inventory records 1,256 accepted current app routes, including the finder and SSCE acceptances added here, with zero missing, fallback or unaccepted routes. The raw ledger has one additional historical prepaid-meter entry outside that inventory. Most acceptance records are historical. These counts are not evidence that every current calculation or workflow was freshly retested.
 
 ## Remaining work
 
