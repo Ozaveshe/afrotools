@@ -335,6 +335,12 @@
       saveHistory();
     }
 
+    function savingsLabel(original, output, digits) {
+      if (!original || !output) return 'Waiting';
+      const percent = 100 - output / original * 100;
+      return Math.abs(percent).toFixed(digits) + (percent < 0 ? '% larger' : '% saved');
+    }
+
     function renderMetrics() {
       const original = queue.reduce((sum, item) => sum + item.originalBytes, 0);
       const output = queue.reduce((sum, item) => sum + (item.outputBytes || 0), 0);
@@ -342,7 +348,8 @@
       $('metricFiles').textContent = queue.length;
       $('metricOriginal').textContent = formatBytes(original);
       $('metricOutput').textContent = output ? formatBytes(output) : '0 KB';
-      $('metricSaved').textContent = original && output ? Math.max(0, (100 - output / original * 100)).toFixed(0) + '%' : '0%';
+      const completed = queue.filter((item) => item.status === 'done');
+      $('metricSaved').textContent = savingsLabel(completed.reduce((sum, item) => sum + item.originalBytes, 0), completed.reduce((sum, item) => sum + item.outputBytes, 0), 0);
       downloadAllBtn.disabled = done === 0;
     }
 
@@ -354,7 +361,7 @@
         return;
       }
       queueList.innerHTML = queue.map((item) => {
-        const saved = item.outputBytes ? Math.max(0, (100 - item.outputBytes / item.originalBytes * 100)).toFixed(1) + '% saved' : 'Waiting';
+        const saved = savingsLabel(item.originalBytes, item.outputBytes, 1);
         const detail = item.error || [formatBytes(item.originalBytes), item.outputBytes ? formatBytes(item.outputBytes) : '', item.outputWidth ? item.outputWidth + 'x' + item.outputHeight : ''].filter(Boolean).join(' -> ');
         return '<article class="queue-card' + (item.id === selectedId ? ' is-active' : '') + '" data-id="' + item.id + '">' +
           '<img class="queue-thumb" src="' + item.url + '" alt="">' +
@@ -387,12 +394,13 @@
       afterImage.src = item.outputUrl;
       $('detailDimensions').textContent = item.outputWidth + 'x' + item.outputHeight;
       $('detailFormat').textContent = extForMime(item.outputMime).toUpperCase() + ' q' + item.qualityUsed;
-      $('detailSaved').textContent = Math.max(0, (100 - item.outputBytes / item.originalBytes * 100)).toFixed(1) + '%';
+      $('detailSaved').textContent = savingsLabel(item.originalBytes, item.outputBytes, 1);
       updateCompare();
     }
 
     function updateCompare() {
-      const value = Number(compareSlider.value) || 50;
+      const position = Number(compareSlider.value);
+      const value = Number.isFinite(position) ? Math.max(0, Math.min(100, position)) : 50;
       afterImage.style.clipPath = 'inset(0 0 0 ' + value + '%)';
       compareLine.style.left = value + '%';
     }
@@ -422,7 +430,7 @@
         count: done.length,
         original,
         output,
-        saved: original && output ? Math.max(0, 100 - output / original * 100) : 0
+        saved: original && output ? 100 - output / original * 100 : 0
       };
       try {
         const history = JSON.parse(window.localStorage.getItem(HISTORY_KEY) || '[]');
@@ -443,7 +451,7 @@
       }
       historyList.innerHTML = history.slice(0, 5).map((entry) => {
         const date = new Date(entry.date).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        return '<div class="history-item"><strong>' + escapeHtml(date) + '</strong><br>' + entry.count + ' file' + (entry.count === 1 ? '' : 's') + ', ' + formatBytes(entry.original) + ' to ' + formatBytes(entry.output) + ', ' + entry.saved.toFixed(0) + '% saved.</div>';
+        return '<div class="history-item"><strong>' + escapeHtml(date) + '</strong><br>' + entry.count + ' file' + (entry.count === 1 ? '' : 's') + ', ' + formatBytes(entry.original) + ' to ' + formatBytes(entry.output) + ', ' + savingsLabel(entry.original, entry.output, 0) + '.</div>';
       }).join('');
     }
 
