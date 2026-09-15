@@ -112,7 +112,7 @@ test('French tariff references and form limitation remain readable without JavaS
   await context.close();
 });
 
-for (const article of ['frais-orange-money-guide-2026','mobile-money-fees-africa-compared']) {
+for (const article of ['frais-orange-money-guide-2026','mobile-money-fees-africa-compared','wave-vs-orange-money-senegal-2026']) {
   test(`mobile discovery from ${article} reaches the honest French comparison form`,async({page})=>{
     await page.setViewportSize({width:375,height:812});
     await page.goto('/fr/blog/'+article+'/');
