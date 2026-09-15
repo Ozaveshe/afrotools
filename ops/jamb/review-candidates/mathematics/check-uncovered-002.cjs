@@ -9,12 +9,24 @@ assert.equal(b.source.content_sha256,'dfc7168d207757e9db0b59b378aa16aa0f1449c501
 const ledger=JSON.parse(fs.readFileSync(process.argv.find(x=>x.startsWith('--ledger='))?.slice(9)||path.join(root,'data/jamb/review-ledger.json'))),pool=JSON.parse(fs.readFileSync(process.argv.find(x=>x.startsWith('--pool='))?.slice(7)||path.join(root,'ops/jamb/source-pool.json'))).questions;
 assert.deepEqual(b.records.map(r=>r.id),audit.uncovered_ids.slice(9,29));
 const review={status:'accepted',reviewer:'Codex (AI)',reviewer_type:'ai',reviewed_at:b.reviewed_at,evidence:'Temporary independent Mathematics source review test'};
+// Two historical holds were superseded by source-inspected September 15 reviews.
+// Preserve the original immutable batch, and require the exact replacement evidence.
+const recovered=require('../../verification/math-1987-publishable-900.json');
+const recoveredIds=new Set(['mathematics-1987-27-e00476e5ae5b','mathematics-1987-46-77f7e9e79042']);
 let candidates=0,held=0,wrong=0,negative=0;
 function solve(q){const k=q.id.split('-').slice(1,3).join('-');if(k==='1987-19'){assert.equal(q.answer,'B');assert.equal(2*7**2,98);for(const R of [2,7,14])assert.equal((98/R**2)*R**2,98);}
 else if(k==='1987-50'){assert.equal(q.answer,'A');const oppositeParallelPairs={square:2,rectangle:2,rhombus:2,kite:0,trapezium:1};assert.equal(Object.values(oppositeParallelPairs).filter(x=>x===2).length/5,3/5);}
 else if(k==='1988-25'){assert.equal(q.answer,'A');const roots=[(1+Math.sqrt(5))/2,(1-Math.sqrt(5))/2];assert.deepEqual(roots.map(x=>Number(x.toFixed(1))),[1.6,-0.6]);for(const x of roots)assert(Math.abs(x*x-x-1)<1e-12);}else throw Error(k);}
 for(const r of b.records){assert.equal(trust.questionFingerprint(r.original_record),r.original_content_sha256);assert.equal(r.original_content_sha256,audit.records.find(q=>q.id===r.id).current_content_sha256);const current=pool.find(q=>q.id===r.id);assert(current);
-if(!r.candidate){held++;assert(r.hold_reason.length>100);assert.equal(trust.questionFingerprint(current),r.original_content_sha256);assert.notEqual(trust.assessQuestion(current,ledger).state,'eligible');continue;}
+if(!r.candidate){held++;assert(r.hold_reason.length>100);
+if(process.argv.includes('--integrated')&&recoveredIds.has(r.id)){
+const replacement=recovered.records.find(q=>q.id===r.id);assert(replacement);
+assert.equal(trust.questionFingerprint(replacement.before),r.original_content_sha256);
+assert.deepEqual(current,replacement.after);assert.equal(trust.questionFingerprint(current),replacement.content_sha256);
+assert.equal(ledger.questions[r.id].content_sha256,replacement.content_sha256);
+assert(ledger.questions[r.id].answer_review.evidence.includes('math-1987-publishable-900.json#'+r.id));
+assert.equal(trust.assessQuestion(current,ledger).state,'eligible');
+}else{assert.equal(trust.questionFingerprint(current),r.original_content_sha256);assert.notEqual(trust.assessQuestion(current,ledger).state,'eligible');}continue;}
 candidates++;solve(r.candidate);assert.equal(trust.questionFingerprint(r.candidate),r.content_sha256);
 if(trust.questionFingerprint(current)!==r.original_content_sha256){assert(process.argv.includes('--integrated'));assert.deepEqual(current,r.candidate);assert.equal(trust.assessQuestion(current,ledger).state,'eligible');}
 for(const answer of Object.keys(r.candidate.options).filter(k=>k!==r.candidate.answer)){assert.throws(()=>solve({...r.candidate,answer}));wrong++;}

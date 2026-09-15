@@ -19,6 +19,8 @@ Base: 3c35b8fdab0ba04c13800387cdb661d72012c8ef. This is a development checkpoint
 
 ## Validation already observed
 
+- Production-context build and deploy-artifact audit passed. All 76 optimized-artifact browser checks passed, covering the three changed JAMB years, Education Hub workspace, student day, applications, WAEC companions, Physics and French practice.
+- Historical Mathematics uncovered-batch replay now accepts only the exact two source-inspected 1987 replacement records. Original evidence remains immutable; five negative replay cases pass, including altered replacement answers and missing replacement reviews. Full repository tests are running after this reconciliation.
 - JAMB answer-evidence suite passed at the 7,913-question checkpoint: all AI reviews had current executable batch evidence; student explanations contained no internal repair history. Subsequent 1985 and 1987 batch checkers passed independently; the combined release needs a fresh full evidence check.
 - Final 14-test SSCE browser rerun passed, including every companion at mobile width. Fresh SEO report passed with zero missing titles, descriptions, canonicals or hreflang violations.
 - All seven held Mathematics 1984 records were reinspected against the original PDF. Exact source conflicts are retained in ops/jamb/verification/math-1984-source-reinspection-20260915.json; no guessed keys were published.

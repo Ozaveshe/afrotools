@@ -7,4 +7,7 @@ let result=run(pool,ledger);assert.equal(result.status,0,result.stderr);const id
 const missing=structuredClone(ledger);delete missing.questions[id];assert.notEqual(run(pool,missing).status,0);
 const mismatched=structuredClone(ledger);mismatched.questions[id].content_sha256='0'.repeat(64);assert.notEqual(run(pool,mismatched).status,0);
 const changed=structuredClone(pool);changed.questions.find(q=>q.id===held).question+=' unauthorized';assert.notEqual(run(changed,ledger).status,0);
-console.log(JSON.stringify({pass:true,synthetic_integrated_candidates:3,missing_private_pdf_replay:true,negative_cases:3,shared_writes:false}));
+const recoveredId='mathematics-1987-27-e00476e5ae5b';
+const alteredRecovery=structuredClone(pool);alteredRecovery.questions.find(q=>q.id===recoveredId).answer='A';assert.notEqual(run(alteredRecovery,ledger).status,0);
+const missingRecovery=structuredClone(ledger);delete missingRecovery.questions[recoveredId].answer_review;assert.notEqual(run(pool,missingRecovery).status,0);
+console.log(JSON.stringify({pass:true,synthetic_integrated_candidates:3,missing_private_pdf_replay:true,negative_cases:5,shared_writes:false}));
