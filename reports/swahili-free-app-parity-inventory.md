@@ -11,16 +11,16 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1257 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1256** |
-| Swahili physical HTML pages | 1599 |
-| Swahili coverage records | 1594 |
+| Swahili physical HTML pages | 1600 |
+| Swahili coverage records | 1595 |
 | Native candidates | 588 |
-| Localized shell candidates | 666 |
+| Localized shell candidates | 667 |
 | English fallbacks | 0 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 2 |
+| Missing | 1 |
 | **Accepted** | **1254** |
 
 ## Category reconciliation
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 43 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 1 | 42 |
 | Energy & Utilities | 19 | 16 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 19 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
-| Finance, Tax & Market Data | 132 | 5 | 126 | 0 | 0 | 0 | 0 | 0 | 1 | 131 |
+| Finance, Tax & Market Data | 132 | 5 | 127 | 0 | 0 | 0 | 0 | 0 | 0 | 131 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -720,7 +720,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Native candidate | `/sw/zana/mpango-bajeti` | Yes |
 | African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-sarafu` | Yes |
 | AfroFuel — Local Fuel Price Finder | Finance, Tax & Market Data | `/tools/fuel-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-mafuta` | Yes |
-| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Missing | None | No |
+| PAYE Authority Finder | Finance, Tax & Market Data | `/tools/paye-authority-finder` | Localized shell candidate | `/sw/zana/tafuta-mamlaka-ya-paye` | No |
 | Route Fare Budget Planner | Finance, Tax & Market Data | `/tools/route-fares` | Localized shell candidate | `/sw/zana/nauli-za-ruti` | Yes |
 | Backup Power Cost Calculator | Finance, Tax & Market Data | `/tools/backup-power-costs` | Localized shell candidate | `/sw/zana/gharama-ya-nishati-ya-dharura` | Yes |
 | AfroRates — Reviewed Policy Rates | Finance, Tax & Market Data | `/tools/afrorates` | Localized shell candidate | `/sw/zana/viwango-benki` | Yes |
