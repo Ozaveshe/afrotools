@@ -40,6 +40,10 @@ assert.strictEqual(
 );
 
 const unavailable = syncContent(input, { ...record, state: "unavailable", fallbackRoute: undefined });
+const withNav = input.replace('<body>', '<body><afro-navbar active="tools"></afro-navbar>');
+const navResult = syncContent(withNav, record);
+assert.ok(navResult.indexOf('</afro-navbar>') < navResult.indexOf('<!-- yoruba-fallback:start -->'), 'Notice must not displace the fixed mobile menu from its navbar');
+assert.strictEqual(syncContent(navResult, record), navResult);
 assert.match(unavailable, /href="\/yo\/awon-ise\/"/);
 assert.doesNotMatch(unavailable, /href="undefined"|hreflang="en"/);
 assert.strictEqual(syncContent(unavailable, { ...record, state: "unavailable", fallbackRoute: undefined }), unavailable);

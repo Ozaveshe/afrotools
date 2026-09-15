@@ -74,6 +74,8 @@ function syncContent(html, record) {
   }
   const body = output.match(/<body\b[^>]*>/i);
   if (!body) throw new Error(record.sourceOwner + " has no body element.");
+  const navbar = output.match(/<afro-navbar\b[^>]*>[\s\S]*?<\/afro-navbar>/i);
+  if (navbar) return output.replace(navbar[0], navbar[0] + "\n" + renderBanner(record) + "\n");
   return output.replace(body[0], body[0] + "\n" + renderBanner(record) + "\n");
 }
 
