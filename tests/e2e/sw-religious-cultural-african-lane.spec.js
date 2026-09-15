@@ -7,16 +7,21 @@ const africanManifest = require('../../data/localization/sw-uniquely-african-par
 
 const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
 const remittanceIds = new Set(['remittance-compare','remittance-v2']);
-const routes = [
+const allRoutes = [
   ...Array.from(religiousBuilder.ACCEPTED, (id) => ({ id, family:'religious', route:religiousBuilder.ROUTES[id] })),
   ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':row.english.id==='burial-cost'?'funeral':row.english.id==='japa-calculator'?'relocation':row.english.id==='brideprice-advisor'?'marriage':'african', route:row.swahili.route }))
 ];
 
+const requestedIds = new Set((process.env.SW_AFRICAN_APP_IDS || '').split(',').map(x=>x.trim()).filter(Boolean));
+for(const id of requestedIds)if(!allRoutes.some(row=>row.id===id))throw new Error('Unknown SW_AFRICAN_APP_IDS: '+id);
+const routes = requestedIds.size ? allRoutes.filter(row=>requestedIds.has(row.id)) : allRoutes;
+
 test.describe.configure({ mode:'serial' });
 
-test('33 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test(`${routes.length} selected apps pass native workflow, export, privacy and responsive browser proof`, async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(33);
+  expect(allRoutes).toHaveLength(32); // remittance-v2 is a canonical alias, not a second native owner.
+  expect(routes.length).toBeGreaterThan(0);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
