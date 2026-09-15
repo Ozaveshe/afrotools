@@ -104,7 +104,7 @@
   <script src="/assets/js/components/country-selector.js?v=a55dcf5d" defer></script>
   <script src="/assets/js/data/registry-counts.js?v=918e26fc" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536"></script>
+<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
   <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
   <script src="/assets/js/bundles/core.2969eb2e.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81" defer></script>
@@ -151,8 +151,13 @@
   <style id="home-lighthouse-hardening">
     afro-navbar {
       display:block;
+      /* Reserve the final shell while deferred navigation styles load. */
+      height:64px;
       min-height:var(--nav-height,62px);
       background:#0A1628;
+    }
+    @media (max-width:480px) {
+      afro-navbar { height:62px; }
     }
     .signup-bar {
       display:flex;
