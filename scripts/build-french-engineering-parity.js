@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
+const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const {
   OWNER_COPY,
@@ -588,7 +589,7 @@ function frenchHtml(row, html, frenchRoute, rawPairs) {
     `<script>window.AfroToolsFrenchEngineering=${payload};</script>\n` +
     '</body>'
   );
-  return dedupeRepeatedParagraphs(html).html.replace(/^[ \t]+$/gm, '');
+  return repairFrenchNavigation(dedupeRepeatedParagraphs(html).html.replace(/^[ \t]+$/gm, '')).next;
 }
 
 function writeAfrodraftWorkspace() {
