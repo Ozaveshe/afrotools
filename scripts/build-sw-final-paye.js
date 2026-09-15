@@ -86,7 +86,7 @@ function removeLeadModal(html){
 function removeUnsafeRuntime(html){
   return html
     .replace(/<p><strong>2025\/26:<\/strong> IRPP Tunisia:[\s\S]*?CNSS mfanyakazi <strong>9\.18%<\/strong>\.<\/p>/i,'<p><strong>Jedwali rasmi limekaguliwa 9 Agosti 2026:</strong> IRPP ni 0% hadi TND 5,000; 26% kwa TND 5,000.001–20,000; 28% kwa TND 20,000.001–30,000; 32% kwa TND 30,000.001–50,000; na 35% juu ya TND 50,000. Punguzo la mshahara ni 10% hadi TND 2,000 kwa mwaka. CNSS 9.18% ni dhana ya kupanga inayohitaji uthibitisho wa payroll.</p>')
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,block=>/var RESULT|function calculate\s*\(|salarySlider|grossSalary|pdfModal|ai-advisor|calcSave|chatIn|toggleSaveTool|_grossToNet/i.test(block)?'':block)
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,block=>/gtag\s*\(\s*['"]config['"]|var RESULT|function calculate\s*\(|salarySlider|grossSalary|pdfModal|ai-advisor|calcSave|chatIn|toggleSaveTool|_grossToNet/i.test(block)?'':block)
     .replace(/\s*<script src="\/assets\/js\/lib\/net-to-gross[^>]*><\/script>/gi,'')
     .replace(/\s*<script src="\/assets\/js\/pages\/sw-final-(?:parity|paye)\.js[^>]*><\/script>/gi,'')
     .replace(/\s*<script src="\/(?:assets\/js\/engines\/sw-final-parity|engines\/sw-final-paye-engine)\.js[^>]*><\/script>/gi,'');
