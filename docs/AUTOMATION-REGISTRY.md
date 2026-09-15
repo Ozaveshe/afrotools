@@ -17,6 +17,26 @@ Use it to distinguish four different things that are easy to confuse:
 - Any automation that supports public claims should list the matching `claim_id` from `data/audits/public-claim-registry.json` in `public_claims_supported`.
 - Every record should list at least one validation command, even when the lane is manual.
 
+## Time-limited SEO director program
+
+The September 15, 2026 user request authorizes `afrotools-six-week-seo-director`
+to audit blogs and tools, inspect search analytics, improve evidenced SEO issues,
+and create useful pages for relevant query intent without a suitable existing page.
+It runs as a daily 10:00 Asia/Tashkent heartbeat through October 27, 2026.
+The heartbeat inherits its task's model settings and resumes checkpointed work.
+
+This is a producer lane: isolated branches, validated schema-v1 handoffs, and no
+direct integration or deployment. The existing publisher remains the release owner.
+It coordinates with the SEO guardrail and content lanes to avoid duplicate work.
+Private analytics stay outside public repository artifacts. The six-month traffic
+target is measured from a recorded baseline and is not a guaranteed outcome.
+
+The active automation budget increases from 25 to 26 solely for this additional
+user-authorized lane; existing roles, required lanes, schedules, and release gates
+remain unchanged. At the program closeout, pause the heartbeat and reconcile its
+allowlist entry and budget with the remaining active lanes. Do not leave an expired
+heartbeat listed as required active work.
+
 ## Validation
 
 Run:
