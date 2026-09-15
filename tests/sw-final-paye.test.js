@@ -10,7 +10,7 @@ const baselineById = new Map(baselineReceipt.metrics.map((row) => [row.id, row.b
 const rows = [
   ['ng-paye','sw/nigeria/kikokotoo-kodi-mshahara/index.html','/nigeria/ng-salary-tax',['regime','pension','nhf','nhis','annualRent','lifeAssurance','mortgageInterest']],
   ['za-paye','sw/south-africa/kikokotoo-kodi-mshahara/index.html','/south-africa/za-paye',['ageGroup','retirement','medMembers','uif']],
-  ['ma-paye','sw/morocco/kikokotoo-kodi-mshahara/index.html','/morocco/ma-paye',['cnss','amo']],
+  // Morocco moved to its shared current-law owner; its current contract is checked below.
   ['dz-paye','sw/algeria/kikokotoo-kodi-mshahara/index.html','/algeria/dz-paye',['includeContribution']],
   // Tunisia moved to its shared current-law owner: tests/tunisia-paye.test.js.
   ['ly-paye','sw/libya/kikokotoo-kodi-mshahara/index.html','/libya/ly-paye',['includeContribution']],
@@ -66,13 +66,28 @@ const fixtures=JSON.parse(fs.readFileSync(path.join(ROOT,'tests/fixtures/sw-fina
 assert.strictEqual(fixtures.frozenEnglishBase,BASE);
 assert.strictEqual(baselineReceipt.accepted,13,'static receipt covers all PAYE owners');
 assert.strictEqual(baselineById.size,13,'static receipt has one baseline per PAYE owner');
-for(const fixture of fixtures.cases){const actual=engine.calculatePaye(fixture.id,fixture.input);for(const [field,expected] of Object.entries(fixture.expected))assert.ok(Math.abs(Number(actual[field]||0)-expected)<0.001,`${fixture.id} ${field}: expected ${expected}, got ${actual[field]}`);}
+for(const fixture of fixtures.cases.filter(row=>row.id!=='ma-paye')){const actual=engine.calculatePaye(fixture.id,fixture.input);for(const [field,expected] of Object.entries(fixture.expected))assert.ok(Math.abs(Number(actual[field]||0)-expected)<0.001,`${fixture.id} ${field}: expected ${expected}, got ${actual[field]}`);}
 assert.strictEqual(new Set(fixtures.cases.map(row=>row.id)).size,13,'all 13 PAYE profiles covered');
-for(const [id,profile] of Object.entries(engine.PAYE_PROFILES)){assert.match(profile.source,/^https:\/\//,`${id}: authority URL`);assert.match(profile.reviewed,/^\d{4}-\d{2}-\d{2}$/,`${id}: review date`);if(id!=='tn-paye')assert.throws(()=>engine.calculatePaye(id,{gross:0}),RangeError,`${id}: invalid fails closed`);}
+for(const [id,profile] of Object.entries(engine.PAYE_PROFILES)){assert.match(profile.source,/^https:\/\//,`${id}: authority URL`);assert.match(profile.reviewed,/^\d{4}-\d{2}-\d{2}$/,`${id}: review date`);if(!['tn-paye','ma-paye'].includes(id))assert.throws(()=>engine.calculatePaye(id,{gross:0}),RangeError,`${id}: invalid fails closed`);}
 
 const tunisia=fs.readFileSync(path.join(ROOT,'sw/tunisia/kikokotoo-kodi-mshahara/index.html'),'utf8');
 assert.ok(tunisia.includes('https://jibaya.tn/wp-content/uploads/2026/03/11.pdf'));
 assert.ok(tunisia.includes('scripts/build-tunisia-paye.js'));
 assert.doesNotMatch(tunisia,/TND 1,200|30,001[^<]*50,000[\s\S]{0,180}>34%|5,001[^<]*10,000|10,001[^<]*20,000/i,'Tunisia contradictory visible bands removed');
 
-console.log(JSON.stringify({legacyOwnersTested:rows.length,fixtures:fixtures.cases.length,metrics:metricReceipt},null,2));
+
+
+const morocco=fs.readFileSync(path.join(ROOT,'sw/morocco/kikokotoo-kodi-mshahara/index.html'),'utf8');
+assert.match(morocco, /scripts\/build-morocco-paye\.js/);
+assert.match(morocco, /\/engines\/morocco-paye\.js/);
+assert.match(morocco, /\/assets\/js\/pages\/morocco-paye\.js/);
+for(const id of ['ma-period','ma-gross','ma-target','ma-dependents','ma-cnss','ma-amo','ma-consent','ma-breakdown','ma-chart'])assert.ok(morocco.includes('id="'+id+'"'), 'Morocco current control '+id);
+for(const action of ['data-reset','data-reverse','data-copy','data-save','data-load','data-print','data-explain','data-ai'])assert.ok(morocco.includes(action), 'Morocco action '+action);
+for(const format of ['json','csv','txt','pdf'])assert.ok(morocco.includes('data-export="'+format+'"'));
+assert.deepStrictEqual(require('../scripts/lib/paye-verification-contract').dedicatedContract(morocco).errors, []);
+
+// The frozen receipt stays historical; the current adapter must match its dedicated engine.
+const moroccoEngine=require('../engines/src/morocco-paye');
+for(const input of [{gross:120000},{gross:120000,dependents:6},{gross:120000,cnss:false,amo:false}]){const current=moroccoEngine.calculate(input.gross,'annual',input),adapter=engine.calculatePaye('ma-paye',input);for(const [legacy,field]of [['gross','annualGross'],['net','annualNet'],['tax','incomeTax'],['taxable','taxable'],['contribution','mandatory']])assert.ok(Math.abs(adapter[legacy]-current[field])<0.001,'Morocco current adapter '+legacy);}
+
+console.log(JSON.stringify({legacyOwnersTested:rows.length,historicalFixtures:fixtures.cases.length,legacyFixturesTested:fixtures.cases.filter(row=>row.id!=='ma-paye').length,dedicatedMoroccoFixtures:3,metrics:metricReceipt},null,2));

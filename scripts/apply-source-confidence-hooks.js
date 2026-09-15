@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { dedicatedContract } = require('./lib/paye-verification-contract');
 
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'source-registry.json');
@@ -145,6 +146,11 @@ function applyTargets(targets) {
       return;
     }
     const original = fs.readFileSync(filePath, 'utf8');
+    const dedicated = dedicatedContract(original);
+    if (dedicated) {
+      results.push(Object.assign({}, target, { action: dedicated.errors.length ? 'conflict' : 'already-present', message: dedicated.errors.join('; ') || 'Dedicated dated source disclosure retained.' }));
+      return;
+    }
     const hookResult = addSourceHook(original, target.sourceId, target.file);
     if (hookResult.action === 'conflict') {
       results.push(Object.assign({}, target, hookResult));

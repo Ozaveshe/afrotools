@@ -29,6 +29,19 @@ function normalizeReleaseOwnedHtml(input, options = {}) {
     .replace(/\s*<script\b[^>]*\bsrc=["']\/assets\/js\/lazy-analytics\.js(?:\?v=[0-9a-f]+)?["'][^>]*><\/script>\s*/gi, '')
     .replace(/\s*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[0-9a-f]+)?["'][^>]*><\/script>\s*/gi, '');
 
+  if (options.relatedToolsOwner) {
+    const owner = options.relatedToolsOwner;
+    let removedRelatedTools = false;
+    html = html.replace(/<afro-related-tools\b([^>]*)>([\s\S]*?)<\/afro-related-tools>/gi, (block, attributes, content) => {
+      const attribute = name => attributes.match(new RegExp('\\b'+name+'=["\']([^"\']+)["\']', 'i'))?.[1];
+      const markedNavigation = /^\s*<!-- RELATED_TOOLS_SSR_START -->\s*<nav\b[^>]*data-related-tools-ssr[^>]*>[\s\S]*?<\/nav>\s*<!-- RELATED_TOOLS_SSR_END -->\s*$/.test(content);
+      const removable = attribute('data-ssr') === '1' && attribute('current') === owner.current && attribute('category') === owner.category && markedNavigation && !/<(?:script|form|input|select|textarea|button)\b/i.test(content);
+      if (removable) removedRelatedTools = true;
+      return removable ? '' : block;
+    });
+    if (removedRelatedTools) html = html.replace(/<script\b[^>]*src=["']\/assets\/js\/components\/related-tools\.js["'][^>]*><\/script>/gi, '');
+  }
+
   if (options.stripReleaseMetadata) {
     html = html
       .replace(/\s*<meta\b[^>]*name=["'](?:afrotools-content-id|afrotools-sw-source-hash)["'][^>]*>\s*/gi, '')

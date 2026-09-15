@@ -26,3 +26,12 @@ for (const locale of ['en', 'fr', 'sw', 'legacy']) {
     }
   });
 }
+
+test('only the identified release related-tools component is comparison-owned', () => {
+ const source=outputs().get('morocco/ma-paye.html');
+ const component='<afro-related-tools data-ssr="1" category="financial" current="ma-paye"><!-- RELATED_TOOLS_SSR_START --><nav data-related-tools-ssr><h2>Related tools</h2><a href="/kenya/ke-paye">Kenya</a></nav><!-- RELATED_TOOLS_SSR_END --></afro-related-tools>';
+ const runtime='<script src="/assets/js/components/related-tools.js" defer></script>';
+ const withRelated=source.replace('</body>',component+runtime+'</body>');
+ assert.equal(normalizePage(withRelated),normalizePage(source));
+ for(const mutation of [withRelated.replace('current="ma-paye"','current="other"'),withRelated.replace('<!-- RELATED_TOOLS_SSR_START -->',''),withRelated.replace('<h2>Related tools</h2>','<input name="salary">'),withRelated.replace('id="ma-form"','id="broken"'),source.replace('</body>',runtime+'</body>')])assert.notEqual(normalizePage(mutation),normalizePage(source));
+});

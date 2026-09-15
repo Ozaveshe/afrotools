@@ -240,6 +240,11 @@ test("registered money routes render their primary source metadata", function ()
   assert.ok(targets.length >= 100, "at least 100 money routes should have a primary source hook");
   for (const target of targets) {
     const html = fs.readFileSync(path.join(ROOT, target.file), "utf8");
+    const dedicated = require("../scripts/lib/paye-verification-contract").dedicatedContract(html);
+    if (dedicated) {
+      assert.deepStrictEqual(dedicated.errors, [], target.file + " must retain visible dated sources, methodology, limitations and error reporting");
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
     const hookIndex = html.indexOf('data-source-meta-id="' + target.sourceId + '"');
