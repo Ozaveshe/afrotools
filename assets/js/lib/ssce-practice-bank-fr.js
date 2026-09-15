@@ -5,6 +5,8 @@
 })(typeof window==='undefined'?null:window,function(source){
   'use strict';
   var bank=JSON.parse(JSON.stringify(source));bank.locale='fr';
+  // Only expose subjects with reviewed French teaching content.
+  bank.questions=bank.questions.filter(function(q){return q.subject==='Mathematics'||q.subject==='English';});
   bank.title='Fondamentaux de mathématiques et d’anglais';
   bank.scope='Exercices originaux pour préparer le WAEC ou le NECO. Ce pilote couvre certains thèmes ; il ne constitue ni un programme complet ni une collection d’annales.';
   var maths={

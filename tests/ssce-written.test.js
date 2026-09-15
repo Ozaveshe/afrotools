@@ -13,12 +13,16 @@ test('written responses round-trip without losing another task and reject malfor
 });
 test('every written task has provenance, complete local context and a worked self-review guide',()=>{
  assert.equal(new Set(bank.items.map(q=>q.id)).size,bank.items.length);
- for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.equal(q.year,2023);assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
+ for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
  assert.ok(bank.items.find(q=>q.id==='written-e-summary').passage.includes('refill station'));
  assert.match(api.report(bank,{...api.empty(bank),entries:{'written-m1':{answer:'45',checks:[true,false]}}}),/My response:\n45/);
 });
 test('mathematics worked answers are checked using independent computations',()=>{
  const answer=id=>bank.items.find(q=>q.id===id).answer;
+ const bookSolutions=[];for(let y=0;y<=180;y++)if(300*y+237.5*(180-y)-180*250===7125)bookSolutions.push(y);assert.deepEqual(bookSolutions,[150]);const cost=24*20+103,revenue=33*20-20**2/20;assert.equal(((revenue-cost)/cost*100).toFixed(2),'9.78');assert.match(answer('waec-2022-mathematics-p2-q7'),/150 books.*9.78/);
+ const chord=Math.sqrt(2*24.5**2*(1-Math.cos(72*Math.PI/180)));const arc=72/360*2*(22/7)*24.5;assert.equal((chord+arc).toFixed(2),'59.60');assert.match(answer('waec-2022-mathematics-p2-q3'),/59.60/);
+ const angleSolutions=[];for(let x=1;x<100;x++)if(2*(2*x+40)+(5*x-35)===360)angleSolutions.push(x);assert.deepEqual(angleSolutions,[35]);assert.equal((180-110-10)/2,30);assert.equal(110-40,70);assert.match(answer('waec-2022-mathematics-p2-q4'),/x = 35; y = 30; angle ABC = 70/);
+ const ratioSolutions=[];for(let small=1;small<68;small++)for(let large=small+1;large<68;large++)if(4*small===3*large&&3*small+2*large===68)ratioSolutions.push([small,large]);assert.deepEqual(ratioSolutions,[[12,16]]);assert.equal(answer('waec-2022-mathematics-p2-q1b'),'12.');assert.equal(bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q1b').subpart,'b');
  const base4=parseInt('231',4);assert.ok(answer('written-m1').includes(String(base4)));assert.equal(0.000056*300000,16.8);
  const final=240000*(1.15)*(0.9);assert.ok(Math.abs(final-248400)<1e-8);assert.ok(answer('written-m2').includes('248,400'));
  const solutions=[];for(let adults=0;adults<=180;adults++)if((180-adults)*500+adults*800===114000)solutions.push(adults);assert.deepEqual(solutions,[80]);assert.match(answer('written-m3'),/100 student.*80 adult/);
@@ -40,7 +44,7 @@ test('mathematics worked answers are checked using independent computations',()=
  const shaded=(22/7)*49/6-0.5*(7*Math.cos(Math.PI/3))*(7*Math.sin(Math.PI/3));assert.equal(shaded.toFixed(1),'15.1');assert.equal(-8*(-3/4),6);assert.equal(21*(2/7),6);assert.match(answer('waec-2023-mathematics-p2-q13'),/15.1.*−8x \+ 21y = 6/);
  const triples=[];for(let a=1;a<81;a++)if(a+2*a+(2*a+6)===81)triples.push([a,2*a,2*a+6]);assert.deepEqual(triples,[[15,30,36]]);assert.equal(4*(-1)+10,6);assert.equal(4*((7-5)/(-5-3)),-1);assert.match(answer('waec-2023-mathematics-p2-q7'),/15, 30 and 36.*y = 4x \+ 10/);
  const sideCounts=[];for(let n=3;n<100;n++)if(360/n-360/(2*n)===45)sideCounts.push(2*n);assert.deepEqual(sideCounts,[8]);assert.equal(Math.PI*8**2/2,32*Math.PI);assert.match(answer('waec-2023-mathematics-p2-q11'),/8 sides.*8π \+ 16/);
- assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics').map(q=>q.number),[1,2,3,5,7,8,9,11,13]);
+ assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics'&&q.year===2023).map(q=>q.number),[1,2,3,5,7,8,9,11,13]);
 });
 test('coverage never turns consecutive or repeated compilation numbers into a complete paper',()=>{
  const rows=coverage.inventory([{id:'a',subject:'english',year:2020,num:1},{id:'b',subject:'english',year:2020,num:1},{id:'c',subject:'english',year:2020,num:3}],[{id:'a'}],[2026]);

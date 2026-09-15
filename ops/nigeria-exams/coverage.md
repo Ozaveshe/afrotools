@@ -6,22 +6,76 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 | Exam | Subject | Year | Source records | Published | Next step |
 | --- | --- | ---: | ---: | ---: | --- |
+| JAMB | accounts | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | accounts | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | accounts | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | accounts | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | accounts | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | accounts | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | biology | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | chemistry | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | commerce | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | crk | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | economics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2025 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2024 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2023 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | government | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | literature | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2025 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2024 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2023 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2021 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2026 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2025 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2024 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2023 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | physics | 2021 | 0 | 0 | Acquire and authenticate source |
 
 ## First written-practice delivery
 
-14 original written tasks and 5 WAEC 2023 writing companions, plus 9 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks and 5 WAEC 2023 writing companions, plus 13 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 ## Acquisition queue
 
@@ -31,6 +85,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 - **neco-english-acquisition** (source-needed): Acquire complete recent paper scans including reading passages, writing instructions, oral-English components and source provenance. The board homepage is not a past-paper source. Source: https://neco.gov.ng/
 - **jamb-2023-mathematics-compilation** (candidate-unverified): Resolve missing rendered prompts, source provenance, version/session identity and source-use basis. Do not treat website question numbering or an advertised year as proof of a complete UTME sitting. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
 - **jamb-2024-english-compilation** (candidate-unverified): Inspect the complete source, passages and reading-text identity; authenticate year/session and review all answers. Search snippets and publisher claims are leads, not imported or verified questions. Source: https://pdfmadeazy.com/2024-jamb-english-past-questions-and-answer/
+- **waec-2022-mathematics-p2** (mathematics-companion): Parts 1(b), 3, 4 and 7 have complete adapted briefs and independently checked solutions. Continue recovering other images and paper instructions; reconcile questions 2 and 5 before publication. Question 6 image was inspected but its graph needs reliable coordinate and scale reconstruction. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
 
 ## Definition of complete
 

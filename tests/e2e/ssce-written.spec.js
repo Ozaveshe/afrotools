@@ -1,5 +1,20 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs/promises');
+test('2022 subpart has an optional explanation and survives save and reload on mobile',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await expect(page.locator('h1')).toContainText('WAEC and NECO Mathematics');
+ await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content',/^WAEC & NECO/);
+ await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await expect(page.locator('#written-editor')).toContainText('2022 · Paper 2 · Question 1(b)');
+ await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');
+ await page.getByText('Show worked solution',{exact:true}).click();
+ await expect(page.locator('#written-editor details')).toContainText('17k = 68');
+ await page.getByLabel('Your written answer',{exact:true}).fill('12; checked using 16 as the larger value.');
+ await page.getByRole('button',{name:'Save response on this device',exact:true}).click();await page.reload();
+ await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await expect(page.getByLabel('Your written answer',{exact:true})).toHaveValue('12; checked using 16 as the larger value.');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});
 test('large valid backups and dark enlarged-text diagrams remain usable',async({page},info)=>{
  await page.addInitScript(()=>localStorage.setItem('aft_theme','dark'));
  await page.setViewportSize({width:390,height:844});await page.goto('/tools/ssce-practice/#written-practice');

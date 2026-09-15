@@ -1,5 +1,23 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs/promises');
+test('Physics pilot explains, saves and resumes at narrow mobile width',async({page})=>{
+ await page.setViewportSize({width:320,height:740});await page.goto('/tools/ssce-practice/');
+ await page.getByLabel('Subject',{exact:true}).selectOption('Physics');
+ await page.getByRole('button',{name:'Start practice',exact:true}).click();
+ await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 12');
+ await page.getByRole('radio',{name:'A. 150 J',exact:true}).check();
+ await page.getByRole('button',{name:'Check answer',exact:true}).click();
+ await expect(page.locator('.practice-feedback')).toHaveText('Correct.');
+ await expect(page.locator('.practice-explanation')).not.toHaveAttribute('open','');
+ await page.getByText('Show explanation',{exact:true}).click();
+ await expect(page.locator('.practice-explanation')).toContainText('25 × 6 = 150 J');
+ await page.getByRole('button',{name:'Save progress on this device',exact:true}).click();
+ await page.reload();await page.getByRole('button',{name:'Resume saved practice',exact:true}).click();
+ await expect(page.locator('.practice-feedback')).toHaveText('Correct.');
+ await page.getByRole('button',{name:'Next question',exact:true}).click();
+ await expect(page.locator('#practice-session h2')).toHaveText('Question 2 of 12');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});
 test('practice explains on demand, resumes and exports at mobile width',async({page})=>{
  await page.setViewportSize({width:320,height:740});await page.goto('/tools/ssce-practice/');
  await page.getByRole('button',{name:'Start practice',exact:true}).click();
