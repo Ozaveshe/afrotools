@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 161 | 0 | 291 |
-| sw | 138 | 0 | 314 |
+| fr | 160 | 1 | 291 |
+| sw | 137 | 1 | 314 |
 
 ## By surface class
 
@@ -18,7 +18,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
 | editorial | 324 | 40 | 0 | 284 | 21 | 0 | 303 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
-| home | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
+| home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
 | product-entry | 8 | 5 | 0 | 3 | 3 | 0 | 5 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
@@ -27,6 +27,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | English | Class | Locale | Localized route | Status | Reasons |
 | --- | --- | --- | --- | --- | --- |
+| / | home | fr | /fr/ | under-standard | form controls 5/6 |
+| / | home | sw | /sw/ | under-standard | visible content 57% of English |
 | /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
