@@ -25,10 +25,20 @@ assert.strictEqual(
   repair.legalMetadata(fs.readFileSync("fr/tools/contrat-bail/senegal.html", "utf8"), senegal, "contrat-bail").title,
   "Contrat de bail — Sénégal | AfroTools"
 );
-assert.strictEqual(
-  repair.fuelMetadata(fs.readFileSync("fr/tools/suivi-carburant/senegal/index.html", "utf8"), senegal).title,
-  "Prix du carburant — Sénégal | AfroFuel"
-);
+// The legacy parser owns the old price-bearing description format only.
+const legacyFuel = '<link rel="canonical" href="https://afrotools.com/fr/tools/suivi-carburant/senegal/"><meta name="description" content="Senegal: petrol XOF 990/L, diesel XOF 755/L, LPG XOF 625/kg (7 September 2026). Compare generator fuel costs and African countries.">';
+const legacyMetadata = repair.fuelMetadata(legacyFuel, senegal);
+assert.strictEqual(legacyMetadata.title, "Prix du carburant — Sénégal | AfroFuel");
+assert.ok(legacyMetadata.description.includes("essence XOF 990/L, diesel XOF 755/L, GPL XOF 625/kg (7 September 2026)"), "legacy prices, units and observation date must survive unchanged");
+assert.throws(() => repair.fuelMetadata('<meta name="description" content="Missing price payload">', senegal), /Could not preserve current fuel values/, "unrecognized legacy data must still fail closed");
+
+const nativeFuelTargets = repair.targets().filter((target) => target.family === "suivi-carburant");
+assert.strictEqual(nativeFuelTargets.length, 54);
+for (const target of nativeFuelTargets) {
+  const current = fs.readFileSync(target.file, "utf8");
+  assert.match(current, /name="afrotools-source-owner" content="scripts\/build-french-fuel-country-pages\.js"/);
+  assert.strictEqual(repair.expectedForTarget(target), current, target.file + ": the native fuel owner must retain all prices, dates, sources and metadata byte-for-byte");
+}
 assert.strictEqual(
   repair.insuranceMetadata(fs.readFileSync("fr/tools/assurance-obseques/senegal.html", "utf8"), senegal, "assurance-obseques").title,
   "Assurance obsèques — Sénégal | AfroTools"

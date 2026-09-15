@@ -309,4 +309,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { applyMetadata, countryForSlug, fuelMetadata, insuranceMetadata, legalMetadata, run, targets };
+module.exports = { applyMetadata, countryForSlug, expectedForTarget, fuelMetadata, insuranceMetadata, legalMetadata, run, targets };
