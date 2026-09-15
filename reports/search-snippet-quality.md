@@ -11,16 +11,16 @@
 
 | Locale | Indexable pages | Native | Localized shell | Pages with errors | Pages with review signals |
 |---|---:|---:|---:|---:|---:|
-| en | 5048 | 5048 | 0 | 0 | 416 |
-| fr | 3244 | 1797 | 1447 | 0 | 145 |
-| sw | 1583 | 761 | 822 | 0 | 87 |
+| en | 5049 | 5049 | 0 | 0 | 416 |
+| fr | 3244 | 1798 | 1446 | 0 | 146 |
+| sw | 1584 | 762 | 822 | 0 | 87 |
 
 ## Signal counts
 
 | Signal | Pages |
 |---|---:|
 | TITLE_LONG | 530 |
-| DESCRIPTION_LONG | 152 |
+| DESCRIPTION_LONG | 153 |
 | TITLE_SHORT | 18 |
 
 ## Ranked interpretation

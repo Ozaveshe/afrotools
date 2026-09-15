@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11555 |
-| Indexable pages | 9976 |
+| Public pages | 11556 |
+| Indexable pages | 9977 |
 | Permanent and temporary redirects | 2963 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5286 |
-| Documented fallbacks | 14822 |
-| Routes eligible for primary sitemaps | 9976 |
+| Genuine equivalence groups | 5287 |
+| Documented fallbacks | 14823 |
+| Routes eligible for primary sitemaps | 9977 |
 
 ## Locale Coverage
 
-- en: 6008 page records
+- en: 6009 page records
 - fr: 3803 page records
 - ha: 105 page records
 - sw: 1594 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 528
+- article: 529
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6623,6 +6623,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ad90f31a6b6f: en=`/cars/ethiopia/nissan/x-trail/`, fr=`/fr/cars/ethiopie/nissan/x-trail/`; x-default=`/cars/ethiopia/nissan/x-trail/`
 - equivalence:ad92fb39400f: en=`/cars/botswana/toyota/prado/2016/`, fr=`/fr/cars/botswana/toyota/prado/2016/`; x-default=`/cars/botswana/toyota/prado/2016/`
 - equivalence:ada1803328d3: en=`/agriculture/livestock-feed/tunisia`, fr=`/fr/agriculture/livestock-feed/tunisia`, sw=`/sw/kilimo/chakula-cha-mifugo/tunisia/`; x-default=`/agriculture/livestock-feed/tunisia`
+- equivalence:adacd2fd2915: en=`/blog/burundi-vat-filing-guide-2026-27/`; x-default=`/blog/burundi-vat-filing-guide-2026-27/`
 - equivalence:adad1069a5b9: en=`/cars/botswana/nissan/x-trail/2015/`, fr=`/fr/cars/botswana/nissan/x-trail/2015/`; x-default=`/cars/botswana/nissan/x-trail/2015/`
 - equivalence:adad76cc154a: en=`/tools/health-insurance-compare/nigeria`, fr=`/fr/tools/comparateur-assurance-sante/nigeria`; x-default=`/tools/health-insurance-compare/nigeria`
 - equivalence:adba1518bcb5: en=`/tools/afrokitchen/countries/somalia/`; x-default=`/tools/afrokitchen/countries/somalia/`
