@@ -42,11 +42,11 @@ These are rounded UI totals, not an exported dataset. Page-level findings priori
 
 - Combined SSCE, Tanzania, period/export and clipboard browser run: 15 passed before the latest integration.
 - Post-main-integration fuel/RDC browser run: 7 passed; focused fuel/SSCE/source-generation tests: 12 passed.
-- French transport agent run: all 18 workflows passed with reopened TXT/PDF exports. Coordinator independently passed the four affected workflows and initial dark-mode check, but manual dark switching exposed a contrast/readiness issue that remains open.
-- French personal-finance browser review: 6 passed. Telecom request-guard review remains separate from product functionality.
+- French transport agent run: all 18 workflows passed with reopened TXT/PDF exports. Coordinator independently passed the four affected workflows. A hidden-label style-cache issue prompted a readiness correction; all three independent theme tests now pass, including opened labels and rapid changes.
+- French personal-finance browser review: 6 passed.
 - French telecom agent browser review: 17 passed after distinguishing the existing static auth SDK download from data requests. The revised guard still rejects bodies, writes, API calls and input state in URL queries.
 - Tunisia coordinator verification after integration: 12 source tests and 10 browser tests passed, including source boundaries, all four routes, saved-input migration, PDF parsing, monthly export context and late AI response safety.
-- Swahili PAYE directory: all 54 destinations and 320/375px reflow passed. The extended Rwanda/Uganda export/privacy tests exceeded the default 60-second test budget during their deliberate delayed-network wait; Rwanda passed a serial rerun with a 120-second budget. Uganda rerun remains pending.
+- Swahili PAYE directory: all 54 destinations and 320/375px reflow passed. The extended Rwanda/Uganda export/privacy tests exceeded the default 60-second test budget during their deliberate delayed-network wait; Rwanda and Uganda both passed serial reruns with a 120-second budget.
 - Current localization tests passed. Hreflang validation represented 11,558 public pages, 32,528 declared relationships and 5,287 equivalence groups; native equivalents passed canonical, language, indexing and reciprocity checks.
 - Full deploy build at source `45d25390` passed, producing 18,083 files. Its artifact audit and security scan passed. A separate SSCE source-comparison gate failed after postprocessing; the comparison was repaired and tested against the actual built pages while preserving schema and metadata checks.
 - That build does not cover subsequent commits. A final combined build, release gates and artifact checks are still required.
@@ -56,7 +56,7 @@ The Swahili ledger records 1,256 accepted current app routes, including the find
 ## Remaining work
 
 1. Finish and independently verify shared Morocco calculations against dated sources, exposing unresolved contribution assumptions rather than treating an old English engine as authoritative.
-2. Resolve French car-import manual-theme readiness/contrast and finish telecom request-contract validation.
+2. Include the verified French car-import readiness and telecom request-contract changes in final combined validation.
 3. Complete current Swahili salary-entry and export regressions, then review remaining category evidence against the actual product scope.
 4. Regenerate the combined source tree and pass release checks on the final candidate. Preserve current upstream data and unrelated canonical-checkout work.
 5. Report deployment separately. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.
