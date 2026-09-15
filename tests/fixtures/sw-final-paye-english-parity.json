@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "frozenEnglishBase": "2f5fb8988ddd40e28eb17123fe653b18ff0801c3",
-  "note": "Fixed outcomes transcribed from the canonical English owner formula branches. Tunisia is the documented correction boundary: the Ministry table replaces the stale inline page scale and applies the official 10% salary deduction capped at TND 2,000.",
+  "note": "Fixed outcomes transcribed from the frozen English owner formula branches except Tunisia. Tunisia now uses the 2026 statutory sources and explicit job-loss deductibility planning assumption documented in docs/TUNISIA-PAYE-2026.md, independently tested in tests/tunisia-paye.test.js.",
   "cases": [
     { "id": "ng-paye", "basis": "nigeria/ng-salary-tax.html calcNTA defaults", "input": { "gross": 5000000 }, "expected": { "contribution": 525000, "taxable": 4475000, "tax": 595500, "net": 3879500 } },
     { "id": "ng-paye", "basis": "nigeria/ng-salary-tax.html calcPITA defaults", "input": { "gross": 5000000, "regime": "PITA_2025" }, "expected": { "contribution": 525000, "taxable": 3275000, "tax": 578000, "net": 3897000 } },
@@ -9,7 +9,7 @@
     { "id": "za-paye", "basis": "south-africa/za-paye.html age, retirement and medical-credit branch", "input": { "gross": 1000000, "ageGroup": "75plus", "retirement": 50000, "medMembers": 3 }, "expected": { "contribution": 2125.44, "taxable": 950000, "tax": 247507, "net": 750367.56 } },
     { "id": "ma-paye", "basis": "netlify/functions/_engines/ma-paye.js maintained CNSS and AMO contract", "input": { "gross": 1000000 }, "expected": { "contribution": 25825.6, "taxable": 974174.4, "tax": 345786.272, "net": 628388.128 } },
     { "id": "dz-paye", "basis": "algeria/dz-paye.html annual IRG owner", "input": { "gross": 1000000 }, "expected": { "contribution": 90000, "taxable": 910000, "tax": 177000, "net": 733000 } },
-    { "id": "tn-paye", "basis": "Tunisia Ministry IRPP table and salary-deduction correction checked 2026-08-09", "input": { "gross": 100000 }, "expected": { "contribution": 9180, "taxable": 88820, "tax": 26687, "net": 64133 } },
+    { "id": "tn-paye", "basis": "IRPP2026 art26/44, LF2025 art17/84, CSS note1/2026; default deductible job-loss planning interpretation", "input": { "gross": 100000 }, "expected": { "contribution": 9680, "taxable": 88320, "tax": 28519.6, "net": 61800.4 } },
     { "id": "ly-paye", "basis": "libya/ly-paye.html PAYE, SSF, SUF and stamp owner", "input": { "gross": 2000 }, "expected": { "contribution": 122.5, "taxable": 1877.5, "tax": 137.75, "postTax": 8.69875, "net": 1731.05125 } },
     { "id": "sd-paye", "basis": "sudan/sd-paye.html monthly band owner", "input": { "gross": 100000 }, "expected": { "contribution": 8000, "taxable": 92000, "tax": 7800, "net": 84200 } },
     { "id": "mz-paye", "basis": "mozambique/mz-paye.html monthly IRPS owner", "input": { "gross": 100000 }, "expected": { "contribution": 3000, "taxable": 97000, "tax": 21275, "net": 75725 } },

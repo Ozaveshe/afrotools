@@ -245,6 +245,7 @@ function exportScript(page) {
 
 let updated = 0;
 for (const page of pages) {
+  if (page.file === 'fr/tunisie/calculateur-salaire-net.html') continue; // build-tunisia-paye.js owns its evidence and exports.
   let html = read(page.file);
   const before = html;
 

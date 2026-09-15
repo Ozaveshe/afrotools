@@ -34,7 +34,7 @@
     'za-paye': { country: 'Afrika Kusini', currency: 'ZAR', period: 'annual', bands: [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[null,.45]], source: 'https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/', reviewed: '2026-01-01', options: ['ageGroup','retirement','medMembers','uif'] },
     'ma-paye': { country: 'Moroko', currency: 'MAD', period: 'annual', bands: [[30000,0],[50000,.10],[60000,.20],[80000,.30],[180000,.34],[null,.38]], source: 'https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf', reviewed: '2025-01-01', options: ['cnss','amo'] },
     'dz-paye': { country: 'Aljeria', currency: 'DZD', period: 'annual', bands: [[240000,0],[480000,.20],[960000,.30],[null,.35]], employeeRate: .09, employeeCap: null, rebate: 0, source: 'https://www.mfdgi.gov.dz/', reviewed: '2026-04-06' },
-    'tn-paye': { country: 'Tunisia', currency: 'TND', period: 'annual', bands: [[5000,0],[20000,.26],[30000,.28],[50000,.32],[null,.35]], employeeRate: .0918, employeeCap: null, salaryDeductionRate: .10, salaryDeductionCap: 2000, rebate: 0, source: 'https://www.finances.gov.tn/fr/apercu-general-sur-la-fiscalite', reviewed: '2026-08-09', options: ['cnss','salaryDeduction'] },
+    'tn-paye': { country: 'Tunisia', currency: 'TND', period: 'annual', owner:'tunisia-paye.js', source:'https://jibaya.tn/wp-content/uploads/2026/03/11.pdf', reviewed:'2026-09-15', confidence:'statutory-with-deductibility-assumption', options:['jobLossDeductible'] },
     'ly-paye': { country: 'Libya', currency: 'LYD', period: 'monthly', bands: [[1000,.05],[null,.10]], employeeRate: .06125, employeeCap: null, rebate: 0, postTaxRate: .005, source: 'https://mof.gov.ly/', reviewed: '2026-08-09', confidence: 'manual' },
     'sd-paye': { country: 'Sudan', currency: 'SDG', period: 'monthly', bands: [[10000,0],[40000,.05],[70000,.10],[null,.15]], employeeRate: .08, employeeCap: null, rebate: 0, source: 'https://tax.gov.sd/en/tax-laws/', reviewed: '2026-01-01' },
     'mz-paye': { country: 'Msumbiji', currency: 'MZN', period: 'monthly', bands: [[3500,.10],[14000,.15],[42000,.20],[126000,.25],[null,.32]], employeeRate: .03, employeeCap: null, rebate: 0, source: 'https://www.at.gov.mz/por/Comercio-Internacional/Procedimento-Fiscais/Taxas-IRPS', reviewed: '2026-04-06' },
@@ -48,6 +48,12 @@
   function calculatePaye(id, input) {
     var profile = PAYE_PROFILES[id];
     if (!profile) throw new Error('Unknown PAYE profile: ' + id);
+    if(id==='tn-paye'){
+      var tn=typeof module==='object'&&module.exports?require('./tunisia-paye.js'):globalThis.AfroTools.tunisiaPaye;
+      if(!tn)throw new Error('Tunisia shared engine must be loaded');
+      var r=tn.calculate(Number(input&&input.gross),'annual',input);
+      return {id:id,country:'Tunisia',currency:'TND',period:'annual',gross:r.annualGross,contribution:r.mandatory,components:{cnss:r.cnss,jobLoss:r.jobLoss,salaryDeduction:r.professional,css:r.css},relief:0,taxable:r.taxable,tax:r.irpp+r.css,postTax:0,net:r.annualNet,effectiveRate:r.annualGross?(r.irpp+r.css)/r.annualGross:0,breakdown:r.bands,source:profile.source,reviewed:profile.reviewed,confidence:profile.confidence,jobLossDeductible:r.jobLossDeductible};
+    }
     var gross = finite(input && input.gross);
     if (!(gross > 0)) throw new RangeError('Gross must be positive');
     input = input || {};

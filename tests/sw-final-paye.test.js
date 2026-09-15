@@ -12,7 +12,7 @@ const rows = [
   ['za-paye','sw/south-africa/kikokotoo-kodi-mshahara/index.html','/south-africa/za-paye',['ageGroup','retirement','medMembers','uif']],
   ['ma-paye','sw/morocco/kikokotoo-kodi-mshahara/index.html','/morocco/ma-paye',['cnss','amo']],
   ['dz-paye','sw/algeria/kikokotoo-kodi-mshahara/index.html','/algeria/dz-paye',['includeContribution']],
-  ['tn-paye','sw/tunisia/kikokotoo-kodi-mshahara/index.html','/tunisia/tn-paye',['cnss']],
+  // Tunisia moved to its shared current-law owner: tests/tunisia-paye.test.js.
   ['ly-paye','sw/libya/kikokotoo-kodi-mshahara/index.html','/libya/ly-paye',['includeContribution']],
   ['sd-paye','sw/sudan/kikokotoo-kodi-mshahara/index.html','/sudan/sd-paye',['includeContribution']],
   ['mz-paye','sw/mozambique/kikokotoo-kodi-mshahara/index.html','/mozambique/mz-paye',['includeContribution']],
@@ -68,11 +68,11 @@ assert.strictEqual(baselineReceipt.accepted,13,'static receipt covers all PAYE o
 assert.strictEqual(baselineById.size,13,'static receipt has one baseline per PAYE owner');
 for(const fixture of fixtures.cases){const actual=engine.calculatePaye(fixture.id,fixture.input);for(const [field,expected] of Object.entries(fixture.expected))assert.ok(Math.abs(Number(actual[field]||0)-expected)<0.001,`${fixture.id} ${field}: expected ${expected}, got ${actual[field]}`);}
 assert.strictEqual(new Set(fixtures.cases.map(row=>row.id)).size,13,'all 13 PAYE profiles covered');
-for(const [id,profile] of Object.entries(engine.PAYE_PROFILES)){assert.match(profile.source,/^https:\/\//,`${id}: authority URL`);assert.match(profile.reviewed,/^\d{4}-\d{2}-\d{2}$/,`${id}: review date`);assert.throws(()=>engine.calculatePaye(id,{gross:0}),RangeError,`${id}: invalid fails closed`);}
+for(const [id,profile] of Object.entries(engine.PAYE_PROFILES)){assert.match(profile.source,/^https:\/\//,`${id}: authority URL`);assert.match(profile.reviewed,/^\d{4}-\d{2}-\d{2}$/,`${id}: review date`);if(id!=='tn-paye')assert.throws(()=>engine.calculatePaye(id,{gross:0}),RangeError,`${id}: invalid fails closed`);}
 
 const tunisia=fs.readFileSync(path.join(ROOT,'sw/tunisia/kikokotoo-kodi-mshahara/index.html'),'utf8');
-assert.ok(tunisia.includes('https://www.finances.gov.tn/fr/apercu-general-sur-la-fiscalite'));
-assert.ok(tunisia.includes('10% ya mshahara, hadi TND 2,000'));
+assert.ok(tunisia.includes('https://jibaya.tn/wp-content/uploads/2026/03/11.pdf'));
+assert.ok(tunisia.includes('scripts/build-tunisia-paye.js'));
 assert.doesNotMatch(tunisia,/TND 1,200|30,001[^<]*50,000[\s\S]{0,180}>34%|5,001[^<]*10,000|10,001[^<]*20,000/i,'Tunisia contradictory visible bands removed');
 
-console.log(JSON.stringify({accepted:13,fixtures:fixtures.cases.length,metrics:metricReceipt},null,2));
+console.log(JSON.stringify({legacyOwnersTested:rows.length,fixtures:fixtures.cases.length,metrics:metricReceipt},null,2));
