@@ -21,7 +21,7 @@ const flows = [
   ['/fr/tools/dimensionnement-fosse-septique/', /Calculer/i, /2\.0\s*m|367,?600/i],
   ['/fr/tools/cout-cloture/', /Calculer/i, /2,?720,?000/i],
   ['/fr/tools/cout-piscine/', /Estimer/i, /48,?000\s*L|6,?584,?000/i],
-  ['/fr/tools/honoraires-architecte/', /Calculer/i, /2,?295,?000|6\.4%/i],
+  ['/fr/tools/honoraires-architecte/', /Calculer/i, /533,?500/i],
   ['/fr/tools/estimateur-du-cout-de-preparation-d-un-terrain/', /Calculer/i, /2,?011,?500/i],
   ['/fr/tools/estimateur-du-cout-de-construction-routiere/', /Estimer/i, /74\.25\s*M|61\.88\s*M/i],
   ['/fr/tools/calculateur-echafaudage/', /Calculer/i, /540\s*m|6,?018,?000/i],
@@ -51,6 +51,13 @@ test('all 26 French Engineering workflows reproduce the English output oracles',
 
   for (const [route, action, expected] of selectedFlows) {
     await page.goto(route, { waitUntil: 'domcontentloaded' });
+    if (route === '/fr/tools/honoraires-architecte/') {
+      await page.locator('[name="country"]').selectOption('KE');
+      await page.locator('[name="scope"]').selectOption('concept');
+      for (const [name, value] of Object.entries({constructionValue:'10000000',minRate:'5',typicalRate:'7',maxRate:'9',scopeShare:'50',practiceAdjustment:'10',disbursements:'100000',taxPct:'10'})) await page.locator('[name="'+name+'"]').fill(value);
+      await page.locator('[name="assumptionsConfirmed"]').check();
+      await page.locator('[name="localVerificationConfirmed"]').check();
+    }
     if (action) {
       const button = page.getByRole('button', { name: action }).first();
       await expect(button, `${route} primary workflow button`).toBeVisible();

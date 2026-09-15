@@ -8,6 +8,7 @@ const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
 const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 const { localizeVisibleLanguage } = require('./lib/french-visible-language');
 const { enhanceCategory } = require('./lib/localized-category-standard');
+const { app: architecturalFeeForm } = require('./lib/architectural-fee-form');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const {
   OWNER_COPY,
@@ -576,6 +577,10 @@ function frenchHtml(row, html, frenchRoute, rawPairs) {
     /\/assets\/js\/pages\/engineering-tool-focus\.js(?:\?[^"]*)?/g,
     '/assets/js/pages/fr-engineering-tool-focus.js'
   );
+  if (row.id === 'architectural-fee') {
+    html = html.replace(/<main class="afp-main">[\s\S]*?<\/main>/, architecturalFeeForm('fr'));
+    html = html.replace(/(<script\b[^>]*src="\/assets\/js\/pages\/architectural-fee-workspace\.js[^>]*>)/, '<script src="/assets/js/lib/architectural-fee-fr.js"></script>$1');
+  }
   html = applyFrenchMetadata(row, html, frenchRoute);
   if (row.id === 'afrodraft') {
     html = html
