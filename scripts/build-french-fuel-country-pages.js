@@ -114,6 +114,15 @@ function priceUsd(row, fuel) {
     : `${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(item.usd)}/${fuel === "lpg" ? "kg" : "L"}`;
 }
 
+function sourceDisclosure(row) {
+  const sourceUrl = row.official_verified === true ? row.official_source_url : row.source_url;
+  const safeUrl = typeof sourceUrl === "string" && /^https:\/\//i.test(sourceUrl) ? sourceUrl : null;
+  const official = row.official_verified === true && safeUrl;
+  const label = official ? "Source officielle vérifiée" : "Relevé tiers non vérifié par une source officielle";
+  const provider = row.source === "globalpetrolprices" ? "GlobalPetrolPrices" : "Source du relevé";
+  return { label, link: safeUrl ? `<a href="${escapeHtml(safeUrl)}" rel="noopener noreferrer">${escapeHtml(provider)}</a>` : "Lien de source indisponible pour cette ligne" };
+}
+
 function monthlyGeneratorEstimate(row) {
   const litresPerHour = 1.5;
   const hoursPerDay = 8;
@@ -318,7 +327,8 @@ function visiblePage(row, rows, country) {
   const estimate = monthlyGeneratorEstimate(row);
   const related = relatedCountries(row, rows);
   const faqs = localizedFaqs(row, name, estimate, date);
-  const description = `Prix du carburant ${location} : essence ${priceLocal(row, "petrol")}, diesel ${priceLocal(row, "diesel")} et GPL ${priceLocal(row, "lpg")}. Comparez les pays et estimez un budget.`;
+  const source = sourceDisclosure(row);
+  const description = `Carburant ${location} : relevé du ${date}, à vérifier localement. Consultez essence, diesel et GPL, puis calculez votre budget selon la quantité consommée.`;
   const canonical = `${BASE_URL}/fr/tools/suivi-carburant/${slug}/`;
   const compareHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#fuel-compare`;
   const generatorHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#generator-cost`;
@@ -335,7 +345,7 @@ function visiblePage(row, rows, country) {
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>Prix du carburant — ${escapeHtml(region)}</span></div>
         <h1>Prix du carburant — ${escapeHtml(name)}</h1>
         <p class="fuel-lede">Consultez le dernier relevé disponible des prix de l’essence, du diesel et du GPL ${escapeHtml(location)}, en ${escapeHtml(row.currency)}. Estimez un budget de transport, de groupe électrogène ou de ménage, puis vérifiez le prix local.</p>
-        <p class="fuel-trust">Données du ${escapeHtml(date)} · Estimation de planification · Vérifiez localement avant tout achat.</p>
+        <p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Prix à revalider avant utilisation.</p>
       </div>
       <aside class="fuel-price-card" aria-label="Résumé des prix du carburant ${escapeHtml(location)}">
         <div class="fuel-card-top"><div><strong>${escapeHtml(name)}</strong><div class="fuel-date">Dernière mise à jour : ${escapeHtml(date)}</div></div><div class="fuel-flag" aria-hidden="true">${flag}</div></div>
@@ -354,12 +364,12 @@ function visiblePage(row, rows, country) {
     <h2 id="fuel-planner-title">Planifier un budget carburant ${escapeHtml(location)}</h2>
     <p>Transformez le prix disponible en estimation mensuelle simple pour le transport, un groupe électrogène, une livraison ou le suivi des dépenses.</p>
     <div class="fuel-planner-grid">
-      <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" value="petrol">Essence</option><option data-price="${row.diesel.price}" value="diesel">Diesel</option><option data-price="${row.lpg.price}" value="lpg">GPL</option></select></label>
-      <label>Litres par jour<input name="litres_per_day" type="number" min="0" step="0.1" value="10" inputmode="decimal"></label>
+      <label>Type de carburant<select name="fuel_type"><option data-price="${row.petrol.price}" data-unit="L" value="petrol">Essence</option><option data-price="${row.diesel.price}" data-unit="L" value="diesel">Diesel</option><option data-price="${row.lpg.price}" data-unit="kg" value="lpg">GPL</option></select></label>
+      <label><span data-fuel-quantity-label>Litres par jour</span><input name="litres_per_day" type="number" min="0" step="any" value="10" inputmode="decimal" aria-describedby="fuel-planner-help"></label>
       <label>Jours par mois<input name="days_per_month" type="number" min="1" max="31" step="1" value="26" inputmode="numeric"></label>
     </div>
     <output class="fuel-planner-output" data-fuel-planner-output aria-live="polite">Entrez une consommation pour obtenir une estimation.</output>
-    <div class="fuel-note" style="margin-top:14px"><strong>Méthodologie et source :</strong> litres par jour × jours par mois × prix du relevé AfroFuel. <a href="/data/fuel/latest.json">Consulter le jeu de données</a> (ligne datée du ${escapeHtml(date)}). Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat, un devis ou une décision financière.</div>
+    <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}. <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
     <div class="fuel-source-row"><a href="/fr/tools/suivi-carburant/#fuel-compare">Comparer les pays</a><a href="/fr/tools/suivi-carburant/#generator-cost">Calculateur de groupe électrogène</a></div>
   </section>`;
 
@@ -451,14 +461,11 @@ function localizePage(html, row, rows, country) {
   next = replaceRequired(next, /<section class="fuel-section" aria-labelledby="related-tools">[\s\S]*?<\/section>/i, visible.tools, "outils liés");
   next = replaceRequired(next, /<section class="fuel-section" aria-labelledby="related-countries">[\s\S]*?<\/section>/i, visible.relatedBlock, "pays liés");
   next = replaceRequired(next, /<section class="fuel-section fuel-faq" aria-labelledby="country-faq">[\s\S]*?<\/section>/i, visible.faq, "FAQ");
-  if (!/output\.textContent='Estimation locale : '[\s\S]*?Vérifiez le prix local avant achat ou devis\.';/.test(next)) {
-    next = replaceRequired(
-      next,
-      /output\.textContent='Estimation locale:[\s\S]*?avant achat ou devis\.';/,
-      "output.textContent='Estimation locale : '+fmt(total)+' '+currency+' par mois pour '+daily+' litres/jour de carburant ('+fuelLabel()+') pendant '+month+' jours. Vérifiez le prix local avant achat ou devis.';",
-      "résultat du planificateur"
-    );
-  }
+  // Own the complete runtime instead of preserving an inherited inline calculator.
+  next = next.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (script) =>
+    /document\.querySelectorAll\(['"]\[data-fr-fuel-planner\]['"]\)/.test(script) ? "" : script);
+  next = next.replace(/<script\b[^>]*src=["']\/assets\/js\/pages\/fr-fuel-country-planner\.js(?:\?[^"']*)?["'][^>]*>\s*<\/script>/gi, "");
+  next = next.replace(/\s*<\/body>/i, '\n<script src="/assets/js/pages/fr-fuel-country-planner.js" defer></script>\n</body>');
   return next;
 }
 
@@ -507,4 +514,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { countrySlug, localizePage, run };
+module.exports = { countrySlug, localizePage, run, sourceDisclosure };

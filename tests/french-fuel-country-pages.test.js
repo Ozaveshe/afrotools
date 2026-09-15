@@ -4,6 +4,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
+const { sourceDisclosure } = require("../scripts/build-french-fuel-country-pages");
 
 const ROOT = path.resolve(__dirname, "..");
 const FUEL_DIR = path.join(ROOT, "fr", "tools", "suivi-carburant");
@@ -64,4 +65,34 @@ test("French fuel structured data is localized and self-referential", () => {
     assert.doesNotMatch(JSON.stringify(data), /Prix de l’diesel|Prix duGPL|moyenne de Afrique|voisins de Afrique/, page.slug);
     assert.doesNotMatch(html, /Verifiez le prix local|litres\/jour de '\+fuelLabel/, page.slug);
   }
+});
+
+test("fuel planner declares fuel-specific units and a source-owned runtime", () => {
+  for (const page of pages) {
+    const html = fs.readFileSync(page.file, "utf8");
+    assert.match(html, /data-unit="kg" value="lpg"/, page.slug);
+    assert.match(html, /data-unit="L" value="petrol"/, page.slug);
+    assert.match(html, /data-unit="L" value="diesel"/, page.slug);
+    assert.match(html, /fr-fuel-country-planner\.js/, page.slug);
+    assert.doesNotMatch(html, /function n\(el,fallback\)/, "legacy zero-to-ten fallback must be removed");
+  }
+});
+
+test("priority fuel pages disclose the row date and non-official confidence without changing rates", () => {
+  const snapshot = JSON.parse(fs.readFileSync(path.join(ROOT, "data/fuel/latest.json"), "utf8"));
+  for (const [code, slug] of [["TN", "tunisia"], ["TG", "togo"], ["ML", "mali"], ["NE", "niger"]]) {
+    const row = snapshot.countries.find((item) => item.code === code);
+    const date = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${row.last_updated}T00:00:00Z`));
+    const html = fs.readFileSync(path.join(FUEL_DIR, slug, "index.html"), "utf8");
+    assert.ok(html.includes(`relevé du ${date}`), `${slug}: snippet must disclose the actual row date`);
+    if (!row.official_verified) assert.match(html, /Relevé tiers non vérifié par une source officielle/, slug);
+    assert.match(html, /Prix à revalider avant utilisation/, slug);
+    if (row.source_url) assert.ok(html.includes(`href="${row.source_url}"`), slug);
+    else assert.match(html, /Lien de source indisponible pour cette ligne/, slug);
+    for (const fuel of ["petrol", "diesel", "lpg"]) {
+      assert.ok(html.includes(`data-price="${row[fuel].price}" data-unit="${fuel === "lpg" ? "kg" : "L"}" value="${fuel}"`), `${slug}/${fuel}: snapshot price must remain unchanged`);
+    }
+  }
+  assert.match(sourceDisclosure({ official_verified: true }).label, /non vérifié/, "a verification flag alone cannot establish an official source");
+  assert.match(sourceDisclosure({ source_url: "javascript:alert(1)" }).link, /indisponible/, "unusable source links must not be rendered");
 });
