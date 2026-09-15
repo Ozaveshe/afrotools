@@ -13,7 +13,7 @@
 - `npm run calculation-quality:check`: passed; 789 artifacts, 307/307 fixtures, one stale dataset warning.
 - All commands following calculation-quality in `build:checks` were run in their original order and passed. Search snippets: 9,874 indexable pages, zero error pages, 653 review candidates.
 - `npm run security:scan`: passed after these source changes.
-- Final `npm run build:deploy` is being rerun; its terminal result and artifact audit must be recorded before release readiness is claimed.
+- Repeated `npm run build:deploy`: passed (main build 539.3 seconds; 18,074 files packaged). Final service-worker stamp uses the current navbar version. A subsequently discovered country-picker keyboard repair is being repackaged and requires its own final artifact audit.
 
 ## Browser confirmation on the first complete build
 
