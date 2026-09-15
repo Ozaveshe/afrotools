@@ -19,6 +19,7 @@ The frozen cohort in `data/image-generation/placement-review-cohort.json` contai
 
 - 120 active bindings: 107 dated live creator/news references, the root favicon, and 12 dedicated article images (10 inline heroes and 2 social images).
 - 201 reserved car images map to exact unpublished catalogue CSV rows. Vehicle appearance, provenance and catalogue readiness still need validation before launch.
+- Car catalogue/upload generators now use an existing image extension before requesting a new JPG. Candidate and upload manifests point to the delivered WebP files; this filename reconciliation changes no catalogue facts or publication states.
 - 338 retired alternatives retain their original files and paths for history and compatibility.
 - 89 rejected designs are unsuitable for automatic public placement, including mock interfaces, unverified details, embedded promotional copy, and a receipt illustration misnamed as an IP calculator.
 - 44 flags remain assigned to the archived Matchday product.
