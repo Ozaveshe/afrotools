@@ -313,6 +313,14 @@ window.addEventListener('load', function() {
       <button type="button" class="search-clear" id="searchClear" aria-label="Effacer la recherche" onclick="clearSearch()" hidden>&times;</button>
       <span class="search-icon" aria-hidden="true"></span>
     </div>
+<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_START -->
+<div id="directoryCountryControls" hidden style="width:100%;min-width:0;padding:8px 0">
+  <label for="directoryCountry">Pays ou marché</label>
+  <select id="directoryCountry" style="max-width:100%;min-height:44px;font:inherit"><option value="">Tous les pays</option></select>
+  <button type="button" id="directoryCountryReset" class="filter-tab" style="min-height:44px!important" hidden>Effacer le pays</button>
+  <p id="directoryCountryStatus" role="status" style="margin:6px 0;overflow-wrap:anywhere"></p>
+</div>
+<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_END -->
     <div class="filter-tabs" id="filterTabs">
       <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">Tous <span class="filter-count" id="countAll">1 452</span></button>
       <button type="button" class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Publiés <span class="filter-count" id="countLive">1 452</span></button>
@@ -2167,6 +2175,35 @@ const PAGE_SIZE = 60;
 let visibleLimit = PAGE_SIZE;
 let initialFilterApplied = false;
 
+// FRENCH_DIRECTORY_COUNTRY_START
+const directoryCountries = [{"code":"ZA","name":"Afrique du Sud","aliases":["ZA","south-africa","Afrique du Sud","South Africa","south-africa"]},{"code":"DZ","name":"Algérie","aliases":["DZ","algeria","Algérie","Algeria","algerie"]},{"code":"AO","name":"Angola","aliases":["AO","angola","Angola","Angola","angola"]},{"code":"BJ","name":"Bénin","aliases":["BJ","benin","Bénin","Benin","benin"]},{"code":"BW","name":"Botswana","aliases":["BW","botswana","Botswana","Botswana","botswana"]},{"code":"BF","name":"Burkina Faso","aliases":["BF","burkina-faso","Burkina Faso","Burkina Faso","burkina-faso"]},{"code":"BI","name":"Burundi","aliases":["BI","burundi","Burundi","Burundi","burundi"]},{"code":"CM","name":"Cameroun","aliases":["CM","cameroon","Cameroun","Cameroon","cameroun"]},{"code":"CV","name":"Cap-Vert","aliases":["CV","cape-verde","Cap-Vert","Cape Verde","cabo-verde"]},{"code":"KM","name":"Comores","aliases":["KM","comoros","Comores","Comoros","comores"]},{"code":"CG","name":"Congo-Brazzaville","aliases":["CG","congo","Congo-Brazzaville","Congo - Brazzaville","congo"]},{"code":"CD","name":"Congo-Kinshasa","aliases":["CD","dr-congo","Congo-Kinshasa","Congo - Kinshasa","rdc"]},{"code":"CI","name":"Côte d’Ivoire","aliases":["CI","cote-divoire","Côte d’Ivoire","Côte d’Ivoire","cote-divoire"]},{"code":"DJ","name":"Djibouti","aliases":["DJ","djibouti","Djibouti","Djibouti","djibouti"]},{"code":"EG","name":"Égypte","aliases":["EG","egypt","Égypte","Egypt","egypt"]},{"code":"ER","name":"Érythrée","aliases":["ER","eritrea","Érythrée","Eritrea","eritrea"]},{"code":"SZ","name":"Eswatini","aliases":["SZ","eswatini","Eswatini","Eswatini","eswatini"]},{"code":"ET","name":"Éthiopie","aliases":["ET","ethiopia","Éthiopie","Ethiopia","ethiopia"]},{"code":"GA","name":"Gabon","aliases":["GA","gabon","Gabon","Gabon","gabon"]},{"code":"GM","name":"Gambie","aliases":["GM","gambia","Gambie","Gambia","gambia"]},{"code":"GH","name":"Ghana","aliases":["GH","ghana","Ghana","Ghana","ghana"]},{"code":"GN","name":"Guinée","aliases":["GN","guinea","Guinée","Guinea","guinee"]},{"code":"GQ","name":"Guinée équatoriale","aliases":["GQ","equatorial-guinea","Guinée équatoriale","Equatorial Guinea","guinee-equatoriale"]},{"code":"GW","name":"Guinée-Bissau","aliases":["GW","guinea-bissau","Guinée-Bissau","Guinea-Bissau","guinea-bissau"]},{"code":"KE","name":"Kenya","aliases":["KE","kenya","Kenya","Kenya","kenya"]},{"code":"LS","name":"Lesotho","aliases":["LS","lesotho","Lesotho","Lesotho","lesotho"]},{"code":"LR","name":"Liberia","aliases":["LR","liberia","Liberia","Liberia","liberia"]},{"code":"LY","name":"Libye","aliases":["LY","libya","Libye","Libya","libya"]},{"code":"MG","name":"Madagascar","aliases":["MG","madagascar","Madagascar","Madagascar","madagascar"]},{"code":"MW","name":"Malawi","aliases":["MW","malawi","Malawi","Malawi","malawi"]},{"code":"ML","name":"Mali","aliases":["ML","mali","Mali","Mali","mali"]},{"code":"MA","name":"Maroc","aliases":["MA","morocco","Maroc","Morocco","maroc"]},{"code":"MU","name":"Maurice","aliases":["MU","mauritius","Maurice","Mauritius","mauritius"]},{"code":"MR","name":"Mauritanie","aliases":["MR","mauritania","Mauritanie","Mauritania","mauritanie"]},{"code":"MZ","name":"Mozambique","aliases":["MZ","mozambique","Mozambique","Mozambique","mozambique"]},{"code":"NA","name":"Namibie","aliases":["NA","namibia","Namibie","Namibia","namibia"]},{"code":"NE","name":"Niger","aliases":["NE","niger","Niger","Niger","niger"]},{"code":"NG","name":"Nigeria","aliases":["NG","nigeria","Nigeria","Nigeria","nigeria"]},{"code":"UG","name":"Ouganda","aliases":["UG","uganda","Ouganda","Uganda","uganda"]},{"code":"CF","name":"République centrafricaine","aliases":["CF","central-african-republic","République centrafricaine","Central African Republic","centrafrique"]},{"code":"RW","name":"Rwanda","aliases":["RW","rwanda","Rwanda","Rwanda","rwanda"]},{"code":"ST","name":"Sao Tomé-et-Principe","aliases":["ST","sao-tome","Sao Tomé-et-Principe","São Tomé & Príncipe","sao-tome"]},{"code":"SN","name":"Sénégal","aliases":["SN","senegal","Sénégal","Senegal","senegal"]},{"code":"SC","name":"Seychelles","aliases":["SC","seychelles","Seychelles","Seychelles","seychelles"]},{"code":"SL","name":"Sierra Leone","aliases":["SL","sierra-leone","Sierra Leone","Sierra Leone","sierra-leone"]},{"code":"SO","name":"Somalie","aliases":["SO","somalia","Somalie","Somalia","somalia"]},{"code":"SD","name":"Soudan","aliases":["SD","sudan","Soudan","Sudan","sudan"]},{"code":"SS","name":"Soudan du Sud","aliases":["SS","south-sudan","Soudan du Sud","South Sudan","south-sudan"]},{"code":"TZ","name":"Tanzanie","aliases":["TZ","tanzania","Tanzanie","Tanzania","tanzania"]},{"code":"TD","name":"Tchad","aliases":["TD","chad","Tchad","Chad","tchad"]},{"code":"TG","name":"Togo","aliases":["TG","togo","Togo","Togo","togo"]},{"code":"TN","name":"Tunisie","aliases":["TN","tunisia","Tunisie","Tunisia","tunisie"]},{"code":"ZM","name":"Zambie","aliases":["ZM","zambia","Zambie","Zambia","zambia"]},{"code":"ZW","name":"Zimbabwe","aliases":["ZW","zimbabwe","Zimbabwe","Zimbabwe","zimbabwe"]}];
+let activeCountry = '';
+function resolveDirectoryCountry(value){
+  const key = normalizeText(value);
+  return directoryCountries.find(country => country.aliases.some(alias => normalizeText(alias) === key));
+}
+function matchesDirectoryCountry(tool){
+  if(!activeCountry) return true;
+  const country = resolveDirectoryCountry(activeCountry);
+  return Boolean(country && Array.isArray(tool.countries) &&
+    (tool.countries.includes(country.code) || tool.countries.includes('ALL')));
+}
+function updateDirectoryCountry(){
+  const select = document.getElementById('directoryCountry');
+  const country = resolveDirectoryCountry(activeCountry);
+  select.value = country ? country.code : '';
+  document.getElementById('directoryCountryStatus').textContent = !activeCountry ? 'Tous les pays.' :
+    country ? 'Pays : ' + country.name + '. Inclut les outils utilisables dans tous les pays.' :
+    'Pays non reconnu. Choisissez un pays ou effacez ce filtre.';
+  document.getElementById('directoryCountryReset').hidden = !activeCountry;
+}
+function setDirectoryCountry(value){
+  activeCountry = value;
+  visibleLimit = PAGE_SIZE;
+  updateDirectoryCountry();
+  renderTools();
+}
+// FRENCH_DIRECTORY_COUNTRY_END
 function applyInitialCategoryFilter(){
   if(initialFilterApplied) return;
   initialFilterApplied = true;
@@ -2179,9 +2216,18 @@ function applyInitialCategoryFilter(){
   const input = document.getElementById('searchInput');
   if(initialQuery && input){
     input.value = initialQuery;
-    activeFilter = 'all';
     updateSearchClear();
   }
+  activeCountry = (params.get('country') || '').trim().slice(0, 100);
+  const select = document.getElementById('directoryCountry');
+  directoryCountries.forEach(country => select.add(new Option(country.name, country.code)));
+  select.addEventListener('change', () => setDirectoryCountry(select.value));
+  document.getElementById('directoryCountryReset').addEventListener('click', () => {
+    setDirectoryCountry('');
+    select.focus();
+  });
+  document.getElementById('directoryCountryControls').hidden = false;
+  updateDirectoryCountry();
 }
 
 function isAiTool(tool){
@@ -2246,7 +2292,7 @@ function updateSearchClear(){
 
 function handleSearchInput(){
   const input = document.getElementById('searchInput');
-  if(input && input.value.trim()) resetFilterToAll();
+  // Keep the selected category and country while searching.
   updateSearchClear();
   visibleLimit = PAGE_SIZE;
   renderTools();
@@ -2358,7 +2404,7 @@ function renderTools(){
   });
 
   const frenchTools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/'));
-  let tools = frenchTools.slice();
+  let tools = frenchTools.filter(matchesDirectoryCountry);
 
   // Filter
   if(activeFilter === 'live'){

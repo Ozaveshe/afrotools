@@ -1,5 +1,60 @@
 const { test, expect } = require('@playwright/test');
 
+test.describe('French country discovery', () => {
+  test('homepage country and category submission works at 390px', async ({ page }, testInfo) => {
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/fr/');
+    await expect(page.locator('#frEvidence')).toHaveCount(0);
+    await page.locator('#frCountry').selectOption('senegal');
+    await page.locator('#frCategory').selectOption('financial');
+    await page.getByRole('button', { name: 'Afficher les outils', exact: true }).click();
+    await expect(page.locator('#directoryCountry')).toHaveValue('SN');
+    await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#directoryCountryStatus')).toContainText('Sénégal');
+    await expect(page.locator('#toolsGrid > a').first()).toBeVisible();
+    const unsupported = await page.locator('#toolsGrid > a').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')).filter(href => {
+      return !AFRO_TOOLS.some(tool => tool.href === href && tool.lang === 'fr' && tool.category === 'financial' &&
+        Array.isArray(tool.countries) && (tool.countries.includes('SN') || tool.countries.includes('ALL')));
+    }));
+    expect(unsupported).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+    expect((await page.locator('#directoryCountryReset').boundingBox()).height).toBeGreaterThanOrEqual(44);
+    await page.locator('#directoryCountry').scrollIntoViewIfNeeded();
+    await page.screenshot({ path: testInfo.outputPath('country-filter-390.png') });
+    await page.getByRole('button', { name: 'Effacer le pays' }).click();
+    await expect(page.locator('#directoryCountry')).toBeFocused();
+    await expect(page.locator('#directoryCountry')).toHaveValue('');
+    await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+    expect(errors).toEqual([]);
+  });
+
+  test('country aliases and search preserve the category', async ({ page }) => {
+    for (const country of ['cote-divoire', 'Côte d’Ivoire', 'CI']) {
+      await page.goto('/fr/all-tools/?category=financial&q=TVA&country=' + encodeURIComponent(country));
+      await expect(page.locator('#directoryCountry')).toHaveValue('CI');
+      await expect(page.locator('#searchInput')).toHaveValue('TVA');
+      await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+    }
+    await page.locator('#searchInput').fill('salaire');
+    await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#directoryCountry')).toHaveValue('CI');
+    await page.getByRole('button', { name: 'Effacer la recherche' }).click();
+    await expect(page.locator('#directoryCountry')).toHaveValue('CI');
+    await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  test('unknown country fails closed and can be cleared', async ({ page }) => {
+    await page.goto('/fr/all-tools/?country=unrecognized-country&category=financial');
+    await expect(page.locator('#directoryCountryStatus')).toContainText('Pays non reconnu');
+    await expect(page.locator('#toolsGrid > a')).toHaveCount(0);
+    await page.getByRole('button', { name: 'Effacer le pays' }).click();
+    await expect(page.locator('#toolsGrid > a').first()).toBeVisible();
+    await expect(page.locator('[data-filter="financial"]')).toHaveAttribute('aria-pressed', 'true');
+  });
+});
+
 test.describe('French discovery foundation', () => {
   test('categories and filtered directory expose the complete French discovery model', async ({ page }) => {
     const consoleErrors = [];

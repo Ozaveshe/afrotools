@@ -414,6 +414,88 @@ repair('fr/all-tools/index.html', [
   ["'career':{name:'Career'", "'career':{name:'Carrière'"]
 ]);
 
+// The directory combines country, category and search; country identity comes
+// from the shared registry, never from translated tool names or currency.
+function repairFrenchDirectoryFilters() {
+  const rel = 'fr/all-tools/index.html';
+  const countries = JSON.parse(read('data/registry/countries.json')).map((country) => ({
+    code: country.isoCode,
+    name: country.displayNames.fr,
+    aliases: [country.isoCode, country.routeSlug, country.displayNames.fr,
+      country.displayNames.en, country.localeCoverage.fr?.route?.split('/').filter(Boolean).pop()].filter(Boolean)
+  })).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+  const runtime = `// FRENCH_DIRECTORY_COUNTRY_START
+const directoryCountries = ${JSON.stringify(countries)};
+let activeCountry = '';
+function resolveDirectoryCountry(value){
+  const key = normalizeText(value);
+  return directoryCountries.find(country => country.aliases.some(alias => normalizeText(alias) === key));
+}
+function matchesDirectoryCountry(tool){
+  if(!activeCountry) return true;
+  const country = resolveDirectoryCountry(activeCountry);
+  return Boolean(country && Array.isArray(tool.countries) &&
+    (tool.countries.includes(country.code) || tool.countries.includes('ALL')));
+}
+function updateDirectoryCountry(){
+  const select = document.getElementById('directoryCountry');
+  const country = resolveDirectoryCountry(activeCountry);
+  select.value = country ? country.code : '';
+  document.getElementById('directoryCountryStatus').textContent = !activeCountry ? 'Tous les pays.' :
+    country ? 'Pays : ' + country.name + '. Inclut les outils utilisables dans tous les pays.' :
+    'Pays non reconnu. Choisissez un pays ou effacez ce filtre.';
+  document.getElementById('directoryCountryReset').hidden = !activeCountry;
+}
+function setDirectoryCountry(value){
+  activeCountry = value;
+  visibleLimit = PAGE_SIZE;
+  updateDirectoryCountry();
+  renderTools();
+}
+// FRENCH_DIRECTORY_COUNTRY_END
+function applyInitialCategoryFilter(){
+  if(initialFilterApplied) return;
+  initialFilterApplied = true;
+  const params = new URLSearchParams(window.location.search);
+  const requested = params.get('category');
+  const matchingButton = requested && Array.from(document.querySelectorAll('.filter-tab'))
+    .find(button => button.dataset.filter === requested);
+  if(matchingButton) activeFilter = requested;
+  const initialQuery = (params.get('q') || '').trim().slice(0, 200);
+  const input = document.getElementById('searchInput');
+  if(initialQuery && input){
+    input.value = initialQuery;
+    updateSearchClear();
+  }
+  activeCountry = (params.get('country') || '').trim().slice(0, 100);
+  const select = document.getElementById('directoryCountry');
+  directoryCountries.forEach(country => select.add(new Option(country.name, country.code)));
+  select.addEventListener('change', () => setDirectoryCountry(select.value));
+  document.getElementById('directoryCountryReset').addEventListener('click', () => {
+    setDirectoryCountry('');
+    select.focus();
+  });
+  document.getElementById('directoryCountryControls').hidden = false;
+  updateDirectoryCountry();
+}`;
+  const controls = `<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_START -->
+<div id="directoryCountryControls" hidden style="width:100%;min-width:0;padding:8px 0">
+  <label for="directoryCountry">Pays ou marché</label>
+  <select id="directoryCountry" style="max-width:100%;min-height:44px;font:inherit"><option value="">Tous les pays</option></select>
+  <button type="button" id="directoryCountryReset" class="filter-tab" style="min-height:44px!important" hidden>Effacer le pays</button>
+  <p id="directoryCountryStatus" role="status" style="margin:6px 0;overflow-wrap:anywhere"></p>
+</div>
+<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_END -->`;
+  let html = read(rel).replace(/\/\/ FRENCH_DIRECTORY_COUNTRY_START[\s\S]*?\/\/ FRENCH_DIRECTORY_COUNTRY_END\r?\n/g, '');
+  html = html.replace(/function applyInitialCategoryFilter\(\)\{[\s\S]*?\r?\n\}/, runtime);
+  html = html.replace(/<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_START -->[\s\S]*?<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_END -->\r?\n?/g, '');
+  html = html.replace('    <div class="filter-tabs" id="filterTabs">', controls + '\n    <div class="filter-tabs" id="filterTabs">');
+  html = html.replace('let tools = frenchTools.slice();', 'let tools = frenchTools.filter(matchesDirectoryCountry);');
+  html = html.replace('  if(input && input.value.trim()) resetFilterToAll();', '  // Keep the selected category and country while searching.');
+  output(rel, html);
+}
+repairFrenchDirectoryFilters();
+
 function homePage() {
   const categoryCards = FRENCH_CATEGORIES.map((category) => `
 <a class="fr-home-category" href="${category.href}" data-category="${category.key}">
@@ -473,7 +555,7 @@ function homePage() {
 </div><div class="fr-home-actions"><a class="btn btn-secondary" href="/fr/countries/">Voir les 54 pays</a></div>
 </div><aside class="fr-home-boundary"><h3>Une estimation n’est pas une décision officielle</h3><p>Pour la fiscalité, la douane, la santé, le droit, l’immigration, l’assurance ou une donnée de marché, vérifiez la source, la date et l’autorité indiquées avant d’agir.</p></aside></div></section>
 
-<section class="fr-home-section fr-home-section--muted" aria-labelledby="frEvidenceTitle"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Choisir avec une preuve</p><h2 id="frEvidenceTitle">Cinq contrôles avant de faire confiance au résultat.</h2></div><p>La qualité ne se mesure pas au nombre de pages. Il faut comprendre la question traitée, la provenance de la donnée et la vérification qui reste à faire.</p></div><div class="fr-home-trust-grid"><article><h3>1. Nommer la décision</h3><p>Commencez par le résultat attendu : budget, déclaration, achat, expédition, document ou comparaison. Deux outils proches peuvent répondre à des questions différentes. Lisez les entrées et la sortie avant de remplir le formulaire.</p></article><article><h3>2. Choisir la juridiction</h3><p>Le pays, la région, le type d’entreprise ou la période peut modifier la règle. Une devise ne suffit pas à prouver la juridiction. Contrôlez l’autorité et la période indiquées.</p></article><article><h3>3. Contrôler la source et la date</h3><p>Pour une taxe, un tarif, un calendrier ou un prix, ouvrez la source et lisez la date de revue. Une page officielle accessible aujourd’hui ne prouve pas qu’une valeur enregistrée plusieurs mois plus tôt est encore actuelle.</p></article><article><h3>4. Remplacer les hypothèses</h3><p>Les coûts, marges, rendements, frais ou taux de marché sont plus utiles lorsqu’ils proviennent de vos données ou d’un devis actuel. Testez un scénario bas, central et haut avant de choisir.</p></article><article><h3>5. Conserver la preuve</h3><p>Téléchargez le format annoncé ou imprimez le résumé avec les entrées, la date et la source. Confirmez ensuite auprès de l’autorité, du professionnel ou du fournisseur avant de déclarer, payer ou signer.</p></article></div><div class="fr-home-country-layout"><form class="fr-home-country-card" action="/fr/all-tools/" method="get"><h3>Filtrer le catalogue</h3><label for="frCountry">Pays</label><select id="frCountry" name="country"><option value="">Tous les pays</option><option value="senegal">Sénégal</option><option value="cote-divoire">Côte d’Ivoire</option><option value="cameroon">Cameroun</option><option value="morocco">Maroc</option><option value="kenya">Kenya</option></select><label for="frCategory">Type de tâche</label><select id="frCategory" name="category"><option value="">Toutes les catégories</option><option value="financial">Finance et fiscalité</option><option value="document-pdf">Documents et PDF</option><option value="agriculture">Agriculture</option><option value="engineering">Ingénierie</option></select><label for="frEvidence">Niveau de preuve</label><select id="frEvidence" name="evidence"><option value="">Tous</option><option value="local">Saisie utilisateur</option><option value="dated">Source datée</option><option value="official">Source officielle</option></select><button class="btn btn-primary" type="submit">Afficher les outils</button></form><form class="fr-home-ai-card" action="/fr/ai/" method="get"><h3>Décrire la tâche</h3><label for="frAiTask">Quelle tâche voulez-vous terminer ?</label><textarea id="frAiTask" name="q" rows="5" placeholder="Ex. comparer le coût d’une importation au Sénégal"></textarea><input type="hidden" name="source" value="fr-home"><button class="btn btn-primary" type="submit">Ouvrir l’assistant</button><p>N’ajoutez ni mot de passe, ni identifiant, ni document sensible.</p></form></div><div class="fr-home-link-cloud"><a href="/fr/salary-tax/">Salaire et fiscalité</a><a href="/fr/vat-business-tax/">TVA et entreprise</a><a href="/fr/document-pdf/">Documents et PDF</a><a href="/fr/agriculture/">Agriculture</a><a href="/fr/energy/">Énergie</a><a href="/fr/trade/">Commerce</a><a href="/fr/transport/">Transport</a><a href="/fr/education/">Éducation</a><a href="/fr/health/">Santé</a><a href="/fr/developer-tools/">Développeurs</a><a href="/fr/image-design/">Image et design</a><a href="/fr/religion-culture/">Religion et culture</a><a href="/fr/mortgage-property/">Immobilier</a><a href="/fr/business-roi/">Business et ROI</a><a href="/fr/insurance/">Assurance</a><a href="/fr/telecom/">Télécom</a><a href="/fr/travel/">Voyage</a><a href="/fr/language/">Langues</a><a href="/fr/climat-environnement/">Climat</a><a href="/fr/countries/">54 pays</a><a href="/fr/categories/">32 catégories</a><a href="/fr/blog/">Guides</a><a href="/fr/about/">À propos</a><a href="/fr/contact/">Contact</a></div></div></section>
+<section class="fr-home-section fr-home-section--muted" aria-labelledby="frEvidenceTitle"><div class="fr-home-wrap"><div class="fr-home-heading"><div><p class="fr-home-eyebrow">Choisir avec une preuve</p><h2 id="frEvidenceTitle">Cinq contrôles avant de faire confiance au résultat.</h2></div><p>La qualité ne se mesure pas au nombre de pages. Il faut comprendre la question traitée, la provenance de la donnée et la vérification qui reste à faire.</p></div><div class="fr-home-trust-grid"><article><h3>1. Nommer la décision</h3><p>Commencez par le résultat attendu : budget, déclaration, achat, expédition, document ou comparaison. Deux outils proches peuvent répondre à des questions différentes. Lisez les entrées et la sortie avant de remplir le formulaire.</p></article><article><h3>2. Choisir la juridiction</h3><p>Le pays, la région, le type d’entreprise ou la période peut modifier la règle. Une devise ne suffit pas à prouver la juridiction. Contrôlez l’autorité et la période indiquées.</p></article><article><h3>3. Contrôler la source et la date</h3><p>Pour une taxe, un tarif, un calendrier ou un prix, ouvrez la source et lisez la date de revue. Une page officielle accessible aujourd’hui ne prouve pas qu’une valeur enregistrée plusieurs mois plus tôt est encore actuelle.</p></article><article><h3>4. Remplacer les hypothèses</h3><p>Les coûts, marges, rendements, frais ou taux de marché sont plus utiles lorsqu’ils proviennent de vos données ou d’un devis actuel. Testez un scénario bas, central et haut avant de choisir.</p></article><article><h3>5. Conserver la preuve</h3><p>Téléchargez le format annoncé ou imprimez le résumé avec les entrées, la date et la source. Confirmez ensuite auprès de l’autorité, du professionnel ou du fournisseur avant de déclarer, payer ou signer.</p></article></div><div class="fr-home-country-layout"><form class="fr-home-country-card" action="/fr/all-tools/" method="get"><h3>Filtrer le catalogue</h3><label for="frCountry">Pays</label><select id="frCountry" name="country"><option value="">Tous les pays</option><option value="senegal">Sénégal</option><option value="cote-divoire">Côte d’Ivoire</option><option value="cameroon">Cameroun</option><option value="morocco">Maroc</option><option value="kenya">Kenya</option></select><label for="frCategory">Type de tâche</label><select id="frCategory" name="category"><option value="">Toutes les catégories</option><option value="financial">Finance et fiscalité</option><option value="document-pdf">Documents et PDF</option><option value="agriculture">Agriculture</option><option value="engineering">Ingénierie</option></select><button class="btn btn-primary" type="submit">Afficher les outils</button></form><form class="fr-home-ai-card" action="/fr/ai/" method="get"><h3>Décrire la tâche</h3><label for="frAiTask">Quelle tâche voulez-vous terminer ?</label><textarea id="frAiTask" name="q" rows="5" placeholder="Ex. comparer le coût d’une importation au Sénégal"></textarea><input type="hidden" name="source" value="fr-home"><button class="btn btn-primary" type="submit">Ouvrir l’assistant</button><p>N’ajoutez ni mot de passe, ni identifiant, ni document sensible.</p></form></div><div class="fr-home-link-cloud"><a href="/fr/salary-tax/">Salaire et fiscalité</a><a href="/fr/vat-business-tax/">TVA et entreprise</a><a href="/fr/document-pdf/">Documents et PDF</a><a href="/fr/agriculture/">Agriculture</a><a href="/fr/energy/">Énergie</a><a href="/fr/trade/">Commerce</a><a href="/fr/transport/">Transport</a><a href="/fr/education/">Éducation</a><a href="/fr/health/">Santé</a><a href="/fr/developer-tools/">Développeurs</a><a href="/fr/image-design/">Image et design</a><a href="/fr/religion-culture/">Religion et culture</a><a href="/fr/mortgage-property/">Immobilier</a><a href="/fr/business-roi/">Business et ROI</a><a href="/fr/insurance/">Assurance</a><a href="/fr/telecom/">Télécom</a><a href="/fr/travel/">Voyage</a><a href="/fr/language/">Langues</a><a href="/fr/climat-environnement/">Climat</a><a href="/fr/countries/">54 pays</a><a href="/fr/categories/">32 catégories</a><a href="/fr/blog/">Guides</a><a href="/fr/about/">À propos</a><a href="/fr/contact/">Contact</a></div></div></section>
 
 <section class="fr-home-section" aria-labelledby="frReplayTitle"><div class="fr-home-wrap fr-home-heading"><div><p class="fr-home-eyebrow">Une preuve portable</p><h2 id="frReplayTitle">Rouvrez le résultat avant de le partager.</h2></div><p>Avant de transmettre une estimation, rechargez la page ou rouvrez le fichier exporté et vérifiez que les entrées, les unités, la devise et la période sont encore visibles. Une capture d’écran sans hypothèses est difficile à auditer. Pour un PDF, un CSV, un JSON ou une image, contrôlez que le fichier est lisible dans un logiciel indépendant et qu’il ne contient pas de données que vous ne vouliez pas transmettre. Si le résultat dépend d’une source externe, conservez aussi son lien et sa date de consultation. Cette étape transforme un chiffre isolé en dossier de décision que vous, un collègue ou un professionnel pouvez reprendre sans deviner le contexte. AfroTools indique le format disponible ; il appartient ensuite à l’utilisateur de protéger le fichier, de limiter les destinataires et de confirmer la règle auprès de l’autorité ou du professionnel compétent.</p></div></section>
 
