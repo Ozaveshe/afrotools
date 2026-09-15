@@ -12,6 +12,7 @@ const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const {
   OWNER_COPY,
   OWNER_PAIRS,
+  combinedPairs,
   nativeGuide,
   sanitizeResidualEnglishHtml,
   structuredData,
@@ -395,6 +396,11 @@ function extractControllers(row, html) {
 function localizeOwnerRuntimeCode(code, row) {
   let localized = code;
   if (row.id === 'boq-gen') {
+    // Translate descriptive engine output before both rendering and CSV export.
+    // Keep item IDs, units of calculation, quantities, rates and totals unchanged.
+    const engineSource = fs.readFileSync(path.join(ROOT, 'assets/js/engines/boq-gen-engine.js'), 'utf8');
+    const dictionary = Object.fromEntries(combinedPairs(OWNER_PAIRS[row.id] || []).filter(([from]) => engineSource.includes(JSON.stringify(from))));
+    localized = localized.replace('var output = engine.calculate(input());', 'var output = engine.calculate(input());\n    if (!output.error) { var labels = ' + JSON.stringify(dictionary) + '; output.sections.forEach(function(section) { section.name = labels[section.name] || section.name; section.items.forEach(function(item) { item.description = labels[item.description] || item.description; item.note = labels[item.note] || item.note; }); }); }');
     localized = localized
       .replace(/,,,,Labour,/g, ',,,,Main-d’œuvre,')
       .replace(/,,,,Subtotal,/g, ',,,,Sous-total,')
