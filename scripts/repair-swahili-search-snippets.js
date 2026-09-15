@@ -18,6 +18,7 @@ const FAMILIES = Object.freeze({
   "kilinganisha-mkandarasi-na-mfanyakazi": "Mkandarasi au Mfanyakazi"
 });
 const SHORT_NAMES = Object.freeze({
+  "morocco": "Moroko",
   "central-african-republic": "Afrika ya Kati",
   "cote-divoire": "Côte d’Ivoire",
   "dr-congo": "Kongo-Kinshasa",
