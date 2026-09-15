@@ -10,11 +10,21 @@ const REGISTRY = fs.readFileSync(path.join(ROOT, 'assets/js/components/tool-regi
 const BLOG_MANIFEST = fs.readFileSync(path.join(ROOT, 'data/localization/fr-blog-manifest.json'), 'utf8');
 
 test('RDC salary search copy answers with the current official SMIG boundary', () => {
-  assert.match(PAGE, /<title>Salaire moyen RDC 2026 : SMIG 21 500 CDF et brut-net<\/title>/);
+  assert.match(PAGE, /<title>Salaire moyen en RDC 2026 : SMIG et comparaison d'offre<\/title>/);
   assert.match(PAGE, /<meta name="description" content="[^"]*21 500 CDF par jour depuis janvier 2026/i);
   assert.match(PAGE, /décret n° 25\/22 du 30 mai 2025/i);
   assert.match(PAGE, /annuairetravail-rdc\.cd\/detail\?slug=decret-n-25-22/i);
   assert.match(PAGE, /n'a pas trouvé[^.]*moyenne nationale/i);
+});
+
+test('the offer workflow exposes local actions and keeps source dates unchanged', () => {
+  const hero = PAGE.split('<main')[0];
+  assert.match(hero, /href="#outil"/);
+  assert.match(hero, /href="\/fr\/rdc\/calculateur-salaire-net"/);
+  assert.match(PAGE, /Page revue le 17 août 2026/);
+  assert.match(PAGE, /"dateModified":"2026-08-17"/);
+  assert.match(PAGE, /https:\/\/dgi.gouv.cd\/impot-professionnel-sur-les-remunerations\//);
+  assert.doesNotMatch(PAGE, /value="2200"|\|\| 2200|calculate\(\) \|\| lastSummary/);
 });
 
 test('the guide no longer invents salary ranges or city multipliers', () => {
