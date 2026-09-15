@@ -28,6 +28,7 @@ assert.match(swahili, /<html\b[^>]*\blang="sw"/);
 assert.ok(swahili.includes('Source owner: scripts/build-sw-thumbnail-maker.js; engine: assets/js/lib/thumbnail-maker-studio.js'));
 assert.ok(swahili.includes('/assets/js/lib/thumbnail-maker-studio.js?v=6f0b6a39'));
 assert.ok(swahili.includes('/assets/js/lib/thumbnail-maker-studio-sw.js'));
+assert.match(swahili, /href="\/assets\/css\/sw-zana-mobile\.css(?:\?v=[a-f0-9]{8})?"/, 'mobile stylesheet must survive shared CSS cache updates');
 assert.ok(!/<iframe\b/i.test(swahili));
 assert.ok(!/<script\b[^>]+src="https?:\/\//i.test(swahili), 'Swahili route must not load a remote script');
 

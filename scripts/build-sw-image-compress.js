@@ -81,6 +81,8 @@ const translations = new Map([
   ['Original', 'Asili'],
   ['Output', 'Matokeo'],
   ['Saved', 'Iliyookolewa'],
+  ['Size change', 'Mabadiliko ya ukubwa'],
+  ['Choose image files', 'Chagua faili za picha'],
   ['No images yet. Add files above to start.', 'Bado hakuna picha. Ongeza faili hapo juu kuanza.'],
   ['Before and after', 'Kabla na baada'],
   ['Inspect one export.', 'Kagua faili moja.'],

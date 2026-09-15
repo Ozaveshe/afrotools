@@ -1,0 +1,750 @@
+{
+  "generatedAt": "2026-09-15T16:17:45.197Z",
+  "root": "C:\\Users\\Oza\\.codex\\worktrees\\design-mobile-20260915\\afrotools",
+  "scope": {
+    "htmlPagesAudited": 3,
+    "includePrefixes": [
+      "index.html",
+      "document-pdf/",
+      "tools/naira-to-words/"
+    ],
+    "excludedDirs": [
+      "node_modules",
+      ".git",
+      ".claude",
+      ".agents",
+      ".github",
+      ".playwright",
+      "test-results",
+      "tests",
+      "scripts",
+      "docs",
+      "reports",
+      "dist"
+    ],
+    "excludedHtmlPatterns": [
+      "/(^|\\/)\\.[^/]+/i",
+      "/(^|\\/)__[^/]+/i",
+      "/(^|\\/)lang\\/pages\\/.+\\/[a-z-]+\\.body\\.html$/i",
+      "/\\.body\\.html$/i"
+    ]
+  },
+  "issueDefinitions": {
+    "missing_viewport_meta": {
+      "label": "Missing viewport meta",
+      "shortLabel": "Viewport",
+      "baseScore": 38
+    },
+    "sub16_form_controls": {
+      "label": "Form controls likely below 16px",
+      "shortLabel": "Sub-16 controls",
+      "baseScore": 18
+    },
+    "tap_targets_below_44": {
+      "label": "Tap targets likely below 44px",
+      "shortLabel": "Tap targets",
+      "baseScore": 18
+    },
+    "late_multicolumn_collapse": {
+      "label": "Multi-column layout stays multi-column too long",
+      "shortLabel": "Late collapse",
+      "baseScore": 20
+    },
+    "fixed_sidebar_320plus": {
+      "label": "Fixed-width sidebar around 320px+ compresses content",
+      "shortLabel": "Fixed sidebar",
+      "baseScore": 22
+    },
+    "overlay_100vh_without_dvh": {
+      "label": "Overlay or drawer uses 100vh without 100dvh/safe-area handling",
+      "shortLabel": "100vh overlay",
+      "baseScore": 22
+    },
+    "horizontal_overflow_risk": {
+      "label": "Horizontal overflow risk from 100vw or hard widths",
+      "shortLabel": "Overflow risk",
+      "baseScore": 18
+    },
+    "missing_shared_foundation_css": {
+      "label": "Page is not using the shared CSS foundation",
+      "shortLabel": "Missing CSS foundation",
+      "baseScore": 14
+    },
+    "missing_shared_navbar": {
+      "label": "Full page is not using the shared navbar foundation",
+      "shortLabel": "Missing navbar",
+      "baseScore": 14
+    },
+    "custom_mobile_nav_search": {
+      "label": "Custom mobile nav/search pattern looks inconsistent",
+      "shortLabel": "Custom nav/search",
+      "baseScore": 16
+    },
+    "fixed_header_without_scroll_padding": {
+      "label": "Sticky/fixed header without scroll-padding compensation",
+      "shortLabel": "Fixed header",
+      "baseScore": 16
+    }
+  },
+  "summary": {
+    "pagesAudited": 3,
+    "pagesWithIssues": 2,
+    "pagesWithoutIssues": 1,
+    "totalIssues": 2,
+    "averageScore": 16.7,
+    "pagesUsingSharedFoundationCss": 3,
+    "pagesUsingSharedNavbar": 3,
+    "issueCounts": {
+      "late_multicolumn_collapse": 2
+    }
+  },
+  "topIssueClusters": [
+    {
+      "clusterKey": "document-pdf::late_multicolumn_collapse",
+      "issueId": "late_multicolumn_collapse",
+      "label": "document pdf: Multi-column layout stays multi-column too long",
+      "family": "document-pdf",
+      "familyLabel": "document pdf",
+      "affectedPages": 1,
+      "totalScore": 26,
+      "issueCount": 1,
+      "samplePages": [
+        "document-pdf/index.html"
+      ],
+      "sampleEvidence": [
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-catalog-drawer summary keeps 2 columns until 460px."
+        },
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-noscript-catalog ul keeps 3 columns until 520px."
+        },
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-noscript-catalog ul keeps 2 columns until 520px."
+        }
+      ],
+      "fixCandidates": [
+        {
+          "candidate": "document-pdf/index.html",
+          "count": 1
+        },
+        {
+          "candidate": "shared early-collapse layout pattern",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "clusterKey": "(root)::late_multicolumn_collapse",
+      "issueId": "late_multicolumn_collapse",
+      "label": "Root pages: Multi-column layout stays multi-column too long",
+      "family": "(root)",
+      "familyLabel": "Root pages",
+      "affectedPages": 1,
+      "totalScore": 24,
+      "issueCount": 1,
+      "samplePages": [
+        "index.html"
+      ],
+      "sampleEvidence": [
+        {
+          "route": "/",
+          "relPath": "index.html",
+          "source": "assets/css/homepage-refine.css",
+          "detail": ".country-picker-form div keeps 2 columns until 720px."
+        },
+        {
+          "route": "/",
+          "relPath": "index.html",
+          "source": "assets/css/homepage-hero.css",
+          "detail": ".home-routing-preview__why keeps 2 columns until 700px."
+        }
+      ],
+      "fixCandidates": [
+        {
+          "candidate": "assets/css/homepage-hero.css",
+          "count": 1
+        },
+        {
+          "candidate": "assets/css/homepage-refine.css",
+          "count": 1
+        },
+        {
+          "candidate": "shared early-collapse layout pattern",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "worstPages": [
+    {
+      "route": "/document-pdf/",
+      "relPath": "document-pdf/index.html",
+      "title": "PDF Tools & Workspace — Merge, Convert, Sign | AfroTools",
+      "family": "document-pdf",
+      "familyLabel": "document pdf",
+      "language": "en",
+      "score": 26,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/design-system.min.css",
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/document-pdf-workflow.css",
+          "assets/css/document-pdf-workflow-tight.css",
+          "assets/css/workflow-tightening.css",
+          "assets/css/document-pdf-focus.css",
+          "assets/css/document-pdf-hub.css",
+          "assets/css/english-df-app-upgrades.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "document-pdf/index.html#inline-style-1",
+          "document-pdf/index.html#inline-style-2"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/components/tool-registry.min.js",
+          "assets/js/components/category-hub-card-images.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/lib/workspace-sync.js",
+          "assets/js/lib/document-pdf-report-sync.js",
+          "assets/js/lib/document-pdf-workflow.js",
+          "assets/js/pages/document-pdf-focus.js",
+          "assets/js/pages/document-pdf-hub.js",
+          "assets/js/lazy-analytics.js",
+          "assets/js/pages/english-df-app-upgrades.js",
+          "assets/js/components/related-tools.min.js",
+          "document-pdf/index.html#inline-script-1",
+          "document-pdf/index.html#inline-script-2"
+        ]
+      },
+      "issues": [
+        {
+          "id": "late_multicolumn_collapse",
+          "label": "Multi-column layout stays multi-column too long",
+          "shortLabel": "Late collapse",
+          "score": 26,
+          "family": "document-pdf",
+          "clusterKey": "document-pdf::late_multicolumn_collapse",
+          "evidence": [
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-catalog-drawer summary keeps 2 columns until 460px."
+            },
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-noscript-catalog ul keeps 3 columns until 520px."
+            },
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-noscript-catalog ul keeps 2 columns until 520px."
+            }
+          ],
+          "fixCandidates": [
+            "document-pdf/index.html",
+            "shared early-collapse layout pattern"
+          ]
+        }
+      ],
+      "fixCandidates": [
+        "document-pdf/index.html",
+        "shared early-collapse layout pattern"
+      ]
+    },
+    {
+      "route": "/",
+      "relPath": "index.html",
+      "title": "AfroTools AI - Africa's Practical AI Hub and Free Tool Directory",
+      "family": "(root)",
+      "familyLabel": "Root pages",
+      "language": "en",
+      "score": 24,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/homepage.css",
+          "assets/css/homepage-refine.css",
+          "assets/css/homepage-hero.css",
+          "assets/css/design-system.min.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "index.html#inline-style-1",
+          "index.html#inline-style-2",
+          "index.html#inline-style-3",
+          "index.html#inline-style-4",
+          "index.html#inline-style-5",
+          "index.html#inline-style-6",
+          "index.html#inline-style-7",
+          "index.html#inline-style-8",
+          "index.html#inline-style-9",
+          "index.html#inline-style-10",
+          "index.html#inline-style-11",
+          "index.html#inline-style-12"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/data/african-countries.js",
+          "assets/js/components/country-selector.js",
+          "assets/js/data/registry-counts.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/bundles/core.2969eb2e.min.js",
+          "assets/js/lib/recent-tools.js",
+          "assets/js/ai/intent-analytics.js",
+          "assets/js/favorites.js",
+          "assets/js/lib/saved-tools.js",
+          "assets/js/lib/emoji-icons.js",
+          "assets/js/ai/example-registry.js",
+          "assets/js/ai/i18n.js",
+          "assets/js/lazy-analytics.js",
+          "index.html#inline-script-1",
+          "index.html#inline-script-2",
+          "index.html#inline-script-3",
+          "index.html#inline-script-4",
+          "index.html#inline-script-5",
+          "index.html#inline-script-6",
+          "index.html#inline-script-7",
+          "index.html#inline-script-8",
+          "index.html#inline-script-9"
+        ]
+      },
+      "issues": [
+        {
+          "id": "late_multicolumn_collapse",
+          "label": "Multi-column layout stays multi-column too long",
+          "shortLabel": "Late collapse",
+          "score": 24,
+          "family": "(root)",
+          "clusterKey": "(root)::late_multicolumn_collapse",
+          "evidence": [
+            {
+              "source": "assets/css/homepage-refine.css",
+              "detail": ".country-picker-form div keeps 2 columns until 720px."
+            },
+            {
+              "source": "assets/css/homepage-hero.css",
+              "detail": ".home-routing-preview__why keeps 2 columns until 700px."
+            }
+          ],
+          "fixCandidates": [
+            "assets/css/homepage-refine.css",
+            "assets/css/homepage-hero.css",
+            "shared early-collapse layout pattern"
+          ]
+        }
+      ],
+      "fixCandidates": [
+        "assets/css/homepage-refine.css",
+        "assets/css/homepage-hero.css",
+        "shared early-collapse layout pattern"
+      ]
+    },
+    {
+      "route": "/tools/naira-to-words/",
+      "relPath": "tools/naira-to-words/index.html",
+      "title": "Naira to Words Converter - Cheques, Invoices and Kobo",
+      "family": "tools/naira-to-words",
+      "familyLabel": "tools / naira to words",
+      "language": "en",
+      "score": 0,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/african-workflow.css",
+          "assets/css/design-system.min.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "assets/css/seo-clusters.css",
+          "tools/naira-to-words/index.html#inline-style-1"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/favorites.js",
+          "assets/js/bundles/core.2969eb2e.min.js",
+          "assets/js/afro-history.js",
+          "assets/js/components/related-tools.min.js",
+          "assets/js/components/newsletter-cta.min.js",
+          "assets/js/african-workflow.js",
+          "assets/js/engines/amount-words-input.js",
+          "assets/js/lazy-analytics.js",
+          "tools/naira-to-words/index.html#inline-script-1",
+          "tools/naira-to-words/index.html#inline-script-2"
+        ]
+      },
+      "issues": [],
+      "fixCandidates": []
+    }
+  ],
+  "sharedFixLevers": [
+    {
+      "key": "shared early-collapse layout pattern",
+      "affectedPages": 2,
+      "totalScore": 50,
+      "clusters": [
+        "document pdf: Multi-column layout stays multi-column too long",
+        "Root pages: Multi-column layout stays multi-column too long"
+      ]
+    },
+    {
+      "key": "document-pdf/index.html",
+      "affectedPages": 1,
+      "totalScore": 26,
+      "clusters": [
+        "document pdf: Multi-column layout stays multi-column too long"
+      ]
+    },
+    {
+      "key": "assets/css/homepage-hero.css",
+      "affectedPages": 1,
+      "totalScore": 24,
+      "clusters": [
+        "Root pages: Multi-column layout stays multi-column too long"
+      ]
+    },
+    {
+      "key": "assets/css/homepage-refine.css",
+      "affectedPages": 1,
+      "totalScore": 24,
+      "clusters": [
+        "Root pages: Multi-column layout stays multi-column too long"
+      ]
+    }
+  ],
+  "recommendedNextFixOrder": [
+    {
+      "rank": 1,
+      "label": "document pdf: Multi-column layout stays multi-column too long",
+      "whyFirst": "1 pages / 26 score; repeated family pattern worth fixing before one-off pages.",
+      "topFixCandidates": [
+        "document-pdf/index.html",
+        "shared early-collapse layout pattern"
+      ]
+    },
+    {
+      "rank": 2,
+      "label": "Root pages: Multi-column layout stays multi-column too long",
+      "whyFirst": "1 pages / 24 score; repeated family pattern worth fixing before one-off pages.",
+      "topFixCandidates": [
+        "assets/css/homepage-hero.css",
+        "assets/css/homepage-refine.css",
+        "shared early-collapse layout pattern"
+      ]
+    }
+  ],
+  "assumptions": [
+    "This is a static source audit. It does not execute runtime JS, evaluate computed styles, or emulate touch interactions in a browser.",
+    "Minified assets are read when pages depend on them, but fix recommendations prefer non-minified siblings or shared source patterns when they are obvious.",
+    "Control size, tap target, and collapse timing are heuristic scores based on selectors and declarations, not pixel-perfect layout measurements.",
+    "Shadow DOM internals from shared web components are inferred from component source usage, not from rendered DOM snapshots.",
+    "Runtime-generated tables, charts, and map canvases may still overflow on mobile even when the static source looks safe."
+  ],
+  "pages": [
+    {
+      "route": "/document-pdf/",
+      "relPath": "document-pdf/index.html",
+      "title": "PDF Tools & Workspace — Merge, Convert, Sign | AfroTools",
+      "family": "document-pdf",
+      "familyLabel": "document pdf",
+      "language": "en",
+      "score": 26,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/design-system.min.css",
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/document-pdf-workflow.css",
+          "assets/css/document-pdf-workflow-tight.css",
+          "assets/css/workflow-tightening.css",
+          "assets/css/document-pdf-focus.css",
+          "assets/css/document-pdf-hub.css",
+          "assets/css/english-df-app-upgrades.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "document-pdf/index.html#inline-style-1",
+          "document-pdf/index.html#inline-style-2"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/components/tool-registry.min.js",
+          "assets/js/components/category-hub-card-images.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/lib/workspace-sync.js",
+          "assets/js/lib/document-pdf-report-sync.js",
+          "assets/js/lib/document-pdf-workflow.js",
+          "assets/js/pages/document-pdf-focus.js",
+          "assets/js/pages/document-pdf-hub.js",
+          "assets/js/lazy-analytics.js",
+          "assets/js/pages/english-df-app-upgrades.js",
+          "assets/js/components/related-tools.min.js",
+          "document-pdf/index.html#inline-script-1",
+          "document-pdf/index.html#inline-script-2"
+        ]
+      },
+      "issues": [
+        {
+          "id": "late_multicolumn_collapse",
+          "label": "Multi-column layout stays multi-column too long",
+          "shortLabel": "Late collapse",
+          "score": 26,
+          "family": "document-pdf",
+          "clusterKey": "document-pdf::late_multicolumn_collapse",
+          "evidence": [
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-catalog-drawer summary keeps 2 columns until 460px."
+            },
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-noscript-catalog ul keeps 3 columns until 520px."
+            },
+            {
+              "source": "document-pdf/index.html",
+              "detail": ".docpdf-noscript-catalog ul keeps 2 columns until 520px."
+            }
+          ],
+          "fixCandidates": [
+            "document-pdf/index.html",
+            "shared early-collapse layout pattern"
+          ]
+        }
+      ],
+      "fixCandidates": [
+        "document-pdf/index.html",
+        "shared early-collapse layout pattern"
+      ]
+    },
+    {
+      "route": "/",
+      "relPath": "index.html",
+      "title": "AfroTools AI - Africa's Practical AI Hub and Free Tool Directory",
+      "family": "(root)",
+      "familyLabel": "Root pages",
+      "language": "en",
+      "score": 24,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/homepage.css",
+          "assets/css/homepage-refine.css",
+          "assets/css/homepage-hero.css",
+          "assets/css/design-system.min.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "index.html#inline-style-1",
+          "index.html#inline-style-2",
+          "index.html#inline-style-3",
+          "index.html#inline-style-4",
+          "index.html#inline-style-5",
+          "index.html#inline-style-6",
+          "index.html#inline-style-7",
+          "index.html#inline-style-8",
+          "index.html#inline-style-9",
+          "index.html#inline-style-10",
+          "index.html#inline-style-11",
+          "index.html#inline-style-12"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/data/african-countries.js",
+          "assets/js/components/country-selector.js",
+          "assets/js/data/registry-counts.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/bundles/core.2969eb2e.min.js",
+          "assets/js/lib/recent-tools.js",
+          "assets/js/ai/intent-analytics.js",
+          "assets/js/favorites.js",
+          "assets/js/lib/saved-tools.js",
+          "assets/js/lib/emoji-icons.js",
+          "assets/js/ai/example-registry.js",
+          "assets/js/ai/i18n.js",
+          "assets/js/lazy-analytics.js",
+          "index.html#inline-script-1",
+          "index.html#inline-script-2",
+          "index.html#inline-script-3",
+          "index.html#inline-script-4",
+          "index.html#inline-script-5",
+          "index.html#inline-script-6",
+          "index.html#inline-script-7",
+          "index.html#inline-script-8",
+          "index.html#inline-script-9"
+        ]
+      },
+      "issues": [
+        {
+          "id": "late_multicolumn_collapse",
+          "label": "Multi-column layout stays multi-column too long",
+          "shortLabel": "Late collapse",
+          "score": 24,
+          "family": "(root)",
+          "clusterKey": "(root)::late_multicolumn_collapse",
+          "evidence": [
+            {
+              "source": "assets/css/homepage-refine.css",
+              "detail": ".country-picker-form div keeps 2 columns until 720px."
+            },
+            {
+              "source": "assets/css/homepage-hero.css",
+              "detail": ".home-routing-preview__why keeps 2 columns until 700px."
+            }
+          ],
+          "fixCandidates": [
+            "assets/css/homepage-refine.css",
+            "assets/css/homepage-hero.css",
+            "shared early-collapse layout pattern"
+          ]
+        }
+      ],
+      "fixCandidates": [
+        "assets/css/homepage-refine.css",
+        "assets/css/homepage-hero.css",
+        "shared early-collapse layout pattern"
+      ]
+    },
+    {
+      "route": "/tools/naira-to-words/",
+      "relPath": "tools/naira-to-words/index.html",
+      "title": "Naira to Words Converter - Cheques, Invoices and Kobo",
+      "family": "tools/naira-to-words",
+      "familyLabel": "tools / naira to words",
+      "language": "en",
+      "score": 0,
+      "usesSharedFoundationCss": true,
+      "usesSharedNavbar": true,
+      "linkedAssets": {
+        "css": [
+          "assets/css/tokens.min.css",
+          "assets/css/global.min.css",
+          "assets/css/african-workflow.css",
+          "assets/css/design-system.min.css",
+          "assets/css/top-level-page-ui-refresh.css",
+          "assets/css/seo-clusters.css",
+          "tools/naira-to-words/index.html#inline-style-1"
+        ],
+        "js": [
+          "assets/js/analytics-bootstrap.js",
+          "assets/js/components/navbar.min.js",
+          "assets/js/components/footer.min.js",
+          "assets/js/favorites.js",
+          "assets/js/bundles/core.2969eb2e.min.js",
+          "assets/js/afro-history.js",
+          "assets/js/components/related-tools.min.js",
+          "assets/js/components/newsletter-cta.min.js",
+          "assets/js/african-workflow.js",
+          "assets/js/engines/amount-words-input.js",
+          "assets/js/lazy-analytics.js",
+          "tools/naira-to-words/index.html#inline-script-1",
+          "tools/naira-to-words/index.html#inline-script-2"
+        ]
+      },
+      "issues": [],
+      "fixCandidates": []
+    }
+  ],
+  "clusters": [
+    {
+      "clusterKey": "document-pdf::late_multicolumn_collapse",
+      "issueId": "late_multicolumn_collapse",
+      "label": "document pdf: Multi-column layout stays multi-column too long",
+      "family": "document-pdf",
+      "familyLabel": "document pdf",
+      "affectedPages": 1,
+      "totalScore": 26,
+      "issueCount": 1,
+      "samplePages": [
+        "document-pdf/index.html"
+      ],
+      "sampleEvidence": [
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-catalog-drawer summary keeps 2 columns until 460px."
+        },
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-noscript-catalog ul keeps 3 columns until 520px."
+        },
+        {
+          "route": "/document-pdf/",
+          "relPath": "document-pdf/index.html",
+          "source": "document-pdf/index.html",
+          "detail": ".docpdf-noscript-catalog ul keeps 2 columns until 520px."
+        }
+      ],
+      "fixCandidates": [
+        {
+          "candidate": "document-pdf/index.html",
+          "count": 1
+        },
+        {
+          "candidate": "shared early-collapse layout pattern",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "clusterKey": "(root)::late_multicolumn_collapse",
+      "issueId": "late_multicolumn_collapse",
+      "label": "Root pages: Multi-column layout stays multi-column too long",
+      "family": "(root)",
+      "familyLabel": "Root pages",
+      "affectedPages": 1,
+      "totalScore": 24,
+      "issueCount": 1,
+      "samplePages": [
+        "index.html"
+      ],
+      "sampleEvidence": [
+        {
+          "route": "/",
+          "relPath": "index.html",
+          "source": "assets/css/homepage-refine.css",
+          "detail": ".country-picker-form div keeps 2 columns until 720px."
+        },
+        {
+          "route": "/",
+          "relPath": "index.html",
+          "source": "assets/css/homepage-hero.css",
+          "detail": ".home-routing-preview__why keeps 2 columns until 700px."
+        }
+      ],
+      "fixCandidates": [
+        {
+          "candidate": "assets/css/homepage-hero.css",
+          "count": 1
+        },
+        {
+          "candidate": "assets/css/homepage-refine.css",
+          "count": 1
+        },
+        {
+          "candidate": "shared early-collapse layout pattern",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

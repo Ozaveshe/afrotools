@@ -38,8 +38,12 @@
     if (match) return `${match[1]} inazidi MB 50.`;
     match = value.match(/^(\d+(?:\.\d+)?)% saved$/);
     if (match) return `${match[1]}% imeokolewa`;
+    match = value.match(/^(\d+(?:\.\d+)?)% larger$/);
+    if (match) return `${match[1]}% kubwa zaidi`;
     match = value.match(/^(\d+) files?, (.+) to (.+), (\d+)% saved\.$/);
     if (match) return `Faili ${match[1]}, ${match[2]} hadi ${match[3]}, ${match[4]}% imeokolewa.`;
+    match = value.match(/^(\d+) files?, (.+) to (.+), (\d+)% larger\.$/);
+    if (match) return `Faili ${match[1]}, ${match[2]} hadi ${match[3]}, ${match[4]}% kubwa zaidi.`;
     return value;
   }
 
@@ -54,7 +58,7 @@
     });
   }
 
-  const roots = ['studioStatus', 'presetNote', 'queueList', 'historyList']
+  const roots = ['studioStatus', 'presetNote', 'queueList', 'historyList', 'metricSaved', 'detailSaved']
     .map((id) => document.getElementById(id))
     .filter(Boolean);
   const observer = new MutationObserver(() => roots.forEach(localize));
