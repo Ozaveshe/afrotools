@@ -7,7 +7,7 @@ const tool = process.argv[2];
 const defs = {
   'stamp-duty': ['Stamp Tariff Assumption Calculator', 'Calculate from a transaction value, rate and fixed charge you enter; no statutory band is preloaded.', 'rate'],
   'rental-yield': ['Rental Yield Calculator', 'Calculate net yield from property value, rent and annual costs you enter; no rent or valuation is forecast.', 'yield'],
-  'home-renovation-cost': ['Home Renovation Cost Planner', 'Build a quantity-and-unit-cost renovation scenario without presenting a contractor quote.', 'cost'],
+  'home-renovation-cost': ['Home Renovation Cost Calculator', 'Estimate renovation costs from your own quantities and contractor prices. Include fixed costs and contingency, then plan an itemized budget.', 'cost'],
   'land-title-check': ['Land Title Verification Checklist', 'Prepare evidence and official-search steps without claiming to verify title or ownership.', 'checklist'],
   'property-valuation': ['Comparable Property Value Worksheet', 'Build a transparent comparable-price scenario without presenting an appraisal or market valuation.', 'valuation'],
   'rent-affordability': ['Rent Affordability Boundary', 'Compare rent with a budget ratio you enter without deciding tenant eligibility.', 'affordability'],
@@ -32,12 +32,14 @@ if (!defs[tool]) {
   process.exit(1);
 }
 const [title, description, mode] = defs[tool];
+const renovation = tool === 'home-renovation-cost';
 const file = path.join(root, 'tools', tool, 'index.html');
 const old = fs.readFileSync(file, 'utf8');
 const alternates = [...old.matchAll(/<link rel="alternate"[^>]+>/g)].map(match => match[0]).join('\n');
 const canonical = `https://afrotools.com/tools/${tool}/`;
 function fields() {
   const currency = '<label>Currency label<input name="currency" value="your currency" required></label>';
+  if (renovation) return `<div class="property-assumption__grid"><label>Currency (for example, NGN or ZAR)<input name="currency" placeholder="Your currency" required></label><label>Measured quantity or area<input name="quantity" type="number" min="0.01" step="any" required></label><label>Quoted cost per unit or square metre<input name="unitCost" type="number" min="0.01" step="any" required></label><label>Additional fixed costs<input name="fixed" type="number" min="0" step="any" required></label><label>Contingency allowance (%)<input name="contingency" type="number" min="0" max="100" step="any" required></label></div>`;
   const templates = {
     rate: `${currency}<label>Transaction value<input name="value" type="number" min="0.01" step="any" required></label><label>Your duty rate (%)<input name="rate" type="number" min="0" max="100" step="any" required></label><label>Your fixed charges<input name="fixed" type="number" min="0" step="any" required></label>`,
     yield: `${currency}<label>Property value<input name="value" type="number" min="0.01" step="any" required></label><label>Monthly rent<input name="rent" type="number" min="0" step="any" required></label><label>Annual operating costs<input name="costs" type="number" min="0" step="any" required></label>`,
@@ -72,7 +74,7 @@ const html = `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${title} | AfroTools</title>
-  <meta name="description" content="${description} Local-first planning with explicit legal, official and valuation boundaries.">
+  <meta name="description" content="${description}${renovation ? "" : " Local-first planning with explicit legal, official and valuation boundaries."}">
   <link rel="canonical" href="${canonical}">
   ${alternates}
   <meta property="og:title" content="${title} | AfroTools">
@@ -85,6 +87,7 @@ const html = `<!doctype html>
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <link rel="stylesheet" href="/assets/css/property-assumption-workflow.css">
+${renovation ? '  <!-- Avoid a skipped cross-document transition when opening the BOQ app. -->\n  <style>@view-transition { navigation: none; }</style>' : ''}
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/assets/js/engines/property-assumption.js" defer></script>
@@ -98,10 +101,11 @@ const html = `<!doctype html>
       <p class="property-assumption__eyebrow">Local-first worksheet</p>
       <h1>${title}</h1>
       <p>${description}</p>
-      <p class="property-assumption__notice"><strong>Boundary:</strong> no live rate, price, valuation, legal rule, title status, eligibility, approval or official integration is supplied. Empty inputs stay empty.</p>
+      <p class="property-assumption__notice">${renovation ? "Use a dated supplier or contractor quote in one currency. This is a planning estimate; prices are not supplied by AfroTools." : "<strong>Boundary:</strong> no live rate, price, valuation, legal rule, title status, eligibility, approval or official integration is supplied. Empty inputs stay empty."}</p>
     </header>
     <section class="property-assumption__panel" aria-labelledby="workflow-heading">
-      <h2 id="workflow-heading">${mode === 'checklist' ? 'Prepare your verification file' : 'Enter your own assumptions'}</h2>
+      <h2 id="workflow-heading">${renovation ? 'Estimate one renovation work item' : mode === 'checklist' ? 'Prepare your verification file' : 'Enter your own assumptions'}</h2>
+      ${renovation ? '<p>Use matching units: square metres with a price per square metre, or a count with a price per item. Enter 0 for fixed costs or contingency when none applies.</p>' : ""}
       <form novalidate>
         ${fields()}
         <div class="property-assumption__actions">
@@ -113,12 +117,31 @@ const html = `<!doctype html>
       </form>
       <p class="property-assumption__small">This workflow sends no form values over the network and writes nothing to browser storage.</p>
     </section>
+${renovation ? `
+    <section class="property-assumption__panel" aria-labelledby="example-heading">
+      <h2 id="example-heading">How renovation cost is calculated</h2>
+      <p><strong>Total = (quantity × unit cost + fixed costs) × (1 + contingency ÷ 100).</strong> The contingency applies to the item cost and fixed costs together.</p>
+      <p>For an illustrative painting job, 40 m² × 50 currency units per m² gives 2,000. Add 200 for separately quoted preparation or transport, then 10% contingency: (2,000 + 200) × 1.10 = <strong>2,420</strong>.</p>
+      <p>These numbers demonstrate the arithmetic; they are not market prices or a recommended contingency. Replace them with measurements, scope and quotes for your project.</p>
+    </section>
+    <section class="property-assumption__panel" aria-labelledby="budget-heading">
+      <h2 id="budget-heading">Build a complete renovation budget</h2>
+      <ul><li>Measure each room or work area and record the unit used in the quote.</li><li>Separate materials and labour when quoted separately; do not add labour again when the unit price already includes it.</li><li>Check removal, surface preparation, delivery, access, waste disposal and making good.</li><li>Confirm whether tax is included. Add any separately quoted fees or tax once; this worksheet does not calculate a statutory tax rate.</li><li>Agree what is excluded and choose a contingency for the uncertainty in your scope.</li></ul>
+      <p>For painting, flooring, plumbing and other items with different units or prices, use an itemized budget instead of combining their quantities.</p>
+      <p><a href="/tools/boq-builder/app.html">Build an itemized renovation BOQ</a>. Choose the Residential Renovation template or start with your own items, then replace quantities and rates with your project information. Values from this calculator are not transferred.</p>
+    </section>
     <section class="property-assumption__source" aria-labelledby="source-heading">
+      <h2 id="source-heading">Check your quotes before committing</h2>
+      <p>Record the supplier, quote date, currency, unit, validity period and included work. Reconfirm prices when the scope or start date changes.</p>
+      <p>The result covers only what you enter. Have the contractor check site conditions and scope; obtain qualified advice for structural work and local approvals where needed.</p>
+    </section>
+    ` : `    <section class="property-assumption__source" aria-labelledby="source-heading">
       <h2 id="source-heading">Source, freshness and confidence</h2>
       <p><strong>Rate data:</strong> none is bundled. All monetary, percentage, price and duration assumptions come from you.</p>
       <p><strong>Freshness:</strong> confirm current requirements with the responsible land registry, revenue or planning authority, lender, licensed valuer, surveyor, quantity surveyor or legal professional.</p>
       <p><strong>Confidence:</strong> high for the displayed arithmetic or checklist count; low for any legal, official, valuation, market, eligibility or approval conclusion because the tool does not make one.</p>
     </section>
+    `}
   </main>
   <afro-footer></afro-footer>
 </body>
