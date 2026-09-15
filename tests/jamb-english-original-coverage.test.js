@@ -41,3 +41,16 @@ test('coverage rejects incomplete or mismatching accepted review evidence and al
  const h=batches[0].batch.held_records[0];
  assert.throws(()=>reconstructOriginals(current.map(q=>q.id===h.id?{...q,question:q.question+' altered'}:q),batches,ledger),/held current fingerprint/);
 });
+test('later reviewed intake cannot hide altered records from the original inventory',()=>{
+ const ledger=require('../data/jamb/review-ledger.json');
+ const records=require('../ops/jamb/verification/english-2019-publishable-900.json').records;
+ const {batches}=load();
+ for(const r of records){
+  assert.deepEqual(reconstructOriginals([r.after],batches,ledger),r.before?[r.before]:[]);
+  assert.throws(()=>reconstructOriginals([{...r.after,answer:r.after.answer==='A'?'B':'A'}],batches,ledger));
+  const missing=structuredClone(ledger);delete missing.questions[r.id].answer_review;
+  assert.throws(()=>reconstructOriginals([r.after],batches,missing));
+ }
+ const unknown={...records.find(r=>!r.before).after,id:'english-unregistered-new-record'};
+ assert.deepEqual(reconstructOriginals([unknown],batches,ledger),[unknown]);
+});

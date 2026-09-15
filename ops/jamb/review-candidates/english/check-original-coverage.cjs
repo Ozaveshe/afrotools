@@ -2,6 +2,8 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../../../..');
 const {questionFingerprint:fp,assessQuestion}=require(path.join(root,'scripts/lib/jamb-content-trust'));
+const {verifyRecoveredHold}=require('./check-2019-recovered-holds.cjs');
+const laterRecords=new Map(require('../../verification/english-2019-publishable-900.json').records.map(r=>[r.id,r]));
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 function inspect(originals,batches){
  const originalsById=new Map(originals.map(q=>[q.id,q]));
@@ -34,9 +36,25 @@ function reconstructOriginals(current,batches,ledger={questions:{},sources:{}}){
   for(const r of batch.records||[]){assert.ok(!candidates.has(r.id),'duplicate candidate ID');candidates.set(r.id,{r,batch});}
   for(const r of batch.held_records||[])held.set(r.id,r);
  }
- return current.map(q=>{
+ return current.flatMap(q=>{
   const entry=candidates.get(q.id),hash=fp(q);
-  if(!entry){if(held.has(q.id))assert.equal(hash,held.get(q.id).original_content_sha256,'held current fingerprint '+q.id);return q;}
+  if(!entry){
+   const h=held.get(q.id),later=laterRecords.get(q.id);
+   if(h&&hash!==h.original_content_sha256&&verifyRecoveredHold(h,q,true,ledger))return [later.before];
+   if(h)assert.equal(hash,h.original_content_sha256,'held current fingerprint '+q.id);
+   if(!h&&later&&later.before===null){
+    // New intake is excluded from the immutable original-import inventory only
+    // after exact payload, review and eligibility checks.
+    assert.deepEqual(q,later.after,'later intake payload changed '+q.id);
+    assert.equal(hash,later.content_sha256,'later intake fingerprint '+q.id);
+    const review=ledger.questions?.[q.id];
+    assert.equal(review?.content_sha256,hash,'later intake review required '+q.id);
+    assert.ok(review.answer_review?.evidence.includes('english-2019-publishable-900.json#'+q.id),'later intake evidence required');
+    assert.equal(assessQuestion(q,ledger).state,'eligible','later intake eligibility required');
+    return [];
+   }
+   return [q];
+  }
   const {r,batch}=entry;
   assert.equal(fp(r.original_record),r.original_content_sha256,'stored original changed');
   assert.equal(fp(r.candidate),r.content_sha256,'stored candidate changed');
