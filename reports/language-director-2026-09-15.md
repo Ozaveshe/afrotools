@@ -32,6 +32,7 @@ These are rounded UI totals, not an exported dataset. Page-level findings priori
 - All 54 French fuel country planners use the appropriate unit, reject invalid input, permit zero quantity, and disclose recorded dates/source confidence. Current main-branch fuel data was preserved during integration; this task did not independently verify every price.
 - RDC salary guide distinguishes minimum wage from national average, brings calculator actions into the opening, and requires an explicit positive exchange rate for USD comparisons. Invalid input clears results and prevents stale exports. Existing factual review date retained.
 - Swahili PAYE authority finder has a native workflow, accessible feedback, country matching and explicit ambiguity handling without sending raw search text to analytics.
+- Swahili homepage guidance now uses practical Kiswahili instead of implementation jargon about routes, owners and internal calculation code.
 - French and Swahili SSCE practice now support the English app's 40 quick questions and 28 written tasks. English assessment content stays in English; guidance and controls are localized. Backup identities remain compatible.
 - Twelve Swahili salary pages use the result keys expected by annual results and exports. Tanzania has restored annual/reverse workflow and correct sector labels. Shared Swahili PAYE output keeps period, explanations and exports consistent.
 - Tunisia's four English/French/Swahili routes now share the dated-source calculation, localized workflow and exports. Job-loss contribution deductibility is an explicit planning assumption with both treatments available; actual collection remains unverified. See `docs/TUNISIA-PAYE-2026.md`.
@@ -48,6 +49,7 @@ These are rounded UI totals, not an exported dataset. Page-level findings priori
 - Tunisia coordinator verification after integration: 12 source tests and 10 browser tests passed, including source boundaries, all four routes, saved-input migration, PDF parsing, monthly export context and late AI response safety.
 - Swahili PAYE directory: all 54 destinations and 320/375px reflow passed. The extended Rwanda/Uganda export/privacy tests exceeded the default 60-second test budget during their deliberate delayed-network wait; Rwanda and Uganda both passed serial reruns with a 120-second budget.
 - Current localization tests passed. Hreflang validation represented 11,558 public pages, 32,528 declared relationships and 5,287 equivalence groups; native equivalents passed canonical, language, indexing and reciprocity checks.
+- Current Swahili surface suite: 12 passed, covering home/navigation, directory fallback/search, currency-data failure and manual-rate recovery, VAT validation, mobile layouts, consent links and useful HTML without JavaScript. Old currency/VAT selectors and consent wording were updated to the current owned interfaces; the final run used the real consent-loading path.
 - Full deploy build at source `45d25390` passed, producing 18,083 files. Its artifact audit and security scan passed. A separate SSCE source-comparison gate failed after postprocessing; the comparison was repaired and tested against the actual built pages while preserving schema and metadata checks.
 - That build does not cover subsequent commits. A final combined build, release gates and artifact checks are still required.
 
@@ -57,6 +59,6 @@ The Swahili ledger records 1,256 accepted current app routes, including the find
 
 1. Finish and independently verify shared Morocco calculations against dated sources, exposing unresolved contribution assumptions rather than treating an old English engine as authoritative.
 2. Include the verified French car-import readiness and telecom request-contract changes in final combined validation.
-3. Complete current Swahili salary-entry and export regressions, then review remaining category evidence against the actual product scope.
+3. Complete the Kenya result-field and consent repair found by deeper Swahili export testing, and finish current salary export regressions. Review remaining category evidence against the actual product scope.
 4. Regenerate the combined source tree and pass release checks on the final candidate. Preserve current upstream data and unrelated canonical-checkout work.
 5. Report deployment separately. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.

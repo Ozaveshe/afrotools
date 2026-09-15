@@ -78,38 +78,43 @@ test('representative PAYE calculation validates in Swahili and favorites stay lo
   await expect(favorite).toContainText('Imehifadhiwa');
 });
 
-test('currency lookup distinguishes success, malformed data, empty data, and network failure', async ({ page }) => {
+test('currency lookup fails closed on malformed, empty and unavailable data and retains manual mode', async ({ page }) => {
   for (const response of [
     { body: '{', contentType: 'application/json' },
-    { body: JSON.stringify({ rates: {} }), contentType: 'application/json' }
+    { body: JSON.stringify({ rates: {} }), contentType: 'application/json' },
+    null
   ]) {
-    await page.route('**/data/forex/latest.json', (route) => route.fulfill(response), { times: 1 });
-    await page.goto('/sw/zana/kibadilishaji-sarafu/', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#fxDataStatus')).toContainText('Chanzo cha mtandao hakipatikani');
-    await expect(page.locator('#fxDataStatus')).toContainText('si viwango vya moja kwa moja');
-    await expect(page.locator('#fxRetry')).toBeVisible();
+    for (const path of ['**/api/forex?base=USD', '**/data/forex/latest.json']) {
+      await page.route(path, route => response ? route.fulfill(response) : route.abort(), { times: 1 });
+    }
+    await page.goto('/sw/zana/kibadilishaji-sarafu/?from=USD&to=NGN', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#fxStatus')).toHaveText('Viwango havipatikani');
+    await expect(page.locator('#fxConvert')).toBeDisabled();
+    await expect(page.locator('#fxResult')).toBeHidden();
+    await page.getByLabel('Kiwango cha mtoa huduma', { exact: true }).check();
+    await page.locator('#fxAmount').fill('200');
+    await page.locator('#fxManualRate').fill('15.25');
+    await page.locator('#fxConvert').click();
+    await expect(page.locator('#fxResultValue')).toContainText(/3[\s,]?050/);
+    await expect(page.locator('#fxRateStatus')).toHaveText('Kiwango chako cha mtoa huduma');
   }
-
-  await page.route('**/data/forex/latest.json', (route) => route.abort(), { times: 1 });
-  await page.reload({ waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#fxDataStatus')).toContainText('Chanzo cha mtandao hakipatikani');
-  await expect(page.locator('#fxRetry')).toBeVisible();
 });
 
 test('VAT calculator gives accessible validation and a non-zero localized result', async ({ page }) => {
   await page.goto('/sw/zana/kikokotoo-vat/', { waitUntil: 'domcontentloaded' });
-  const amount = page.locator('#vatAmount');
-  await amount.fill('0');
-  await page.getByRole('button', { name: 'Kokotoa', exact: true }).click();
+  const amount = page.locator('#amount');
+  await page.locator('#rate').fill('16');
+  await amount.fill('-1');
+  await page.locator('#calculateSingle').click();
   await expect(amount).toBeFocused();
-  await expect(page.locator('#vatStatus')).toContainText('kikubwa kuliko sifuri');
-
-  await page.locator('#vatCountry').selectOption('KE');
+  await expect(amount).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#singleStatus')).not.toBeEmpty();
+  await expect(page.locator('#singleResult')).toBeHidden();
   await amount.fill('1000');
-  await page.getByRole('button', { name: 'Kokotoa', exact: true }).click();
-  await expect(page.locator('#vatStatus')).toHaveText('');
-  await expect(page.locator('#resultTotal')).not.toHaveText('-');
-  await expect(page.locator('#formulaText')).toContainText('16%');
+  await page.locator('#calculateSingle').click();
+  await expect(page.locator('#singleResult')).toBeVisible();
+  await expect(page.locator('#singleVat')).toHaveText('160.00');
+  await expect(page.locator('#singleTotal')).toHaveText('1,160.00');
 });
 
 test('repeated calculator controls gain keyboard activation without changing their calculation behavior', async ({ page }) => {
@@ -147,7 +152,7 @@ test('cookie consent keeps the privacy journey in Swahili', async ({ browser }) 
   const page = await context.newPage();
   await blockExternalNoise(page);
   await page.goto('/sw/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#afro-cookie-consent')).toHaveAttribute('aria-label', 'Idhini ya kuki');
+  await expect(page.locator('#afro-cookie-consent')).toHaveAttribute('aria-label', 'Idhini ya vidakuzi');
   await expect(page.locator('#afro-cc-learn')).toHaveAttribute('href', '/sw/faragha/');
   await context.close();
 });
@@ -187,7 +192,7 @@ test('representative Swahili discovery and calculator routes stay mobile-safe an
   const aiColumns = await page.locator('.ai-local-hero').evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(' ').length);
   expect(aiColumns).toBe(1);
 
-  for (const selector of ['#vatAmount', '#vatCountry']) {
+  for (const selector of ['#amount', '#country']) {
     await page.goto('/sw/zana/kikokotoo-vat/', { waitUntil: 'domcontentloaded' });
     const box = await page.locator(selector).boundingBox();
     expect(box && box.height, `${selector} must be a usable mobile touch target`).toBeGreaterThanOrEqual(44);
@@ -205,6 +210,8 @@ test('core discovery and calculator journeys retain useful HTML without JavaScri
   await expect(page.locator('#salaryInput')).toBeVisible();
   await expect(page.getByRole('button', { name: /Kokotoa Mshahara/i })).toBeVisible();
   await page.goto('/sw/zana/kibadilishaji-sarafu/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('main')).toContainText('viwango vya akiba');
+  await expect(page.locator('#fxEmpty')).toContainText('Snapshot halali yenye tarehe inahitajika');
+  await expect(page.locator('#fxConvert')).toBeDisabled();
+  await expect(page.locator('main')).toContainText('Ada na spread hazijajumuishwa');
   await context.close();
 });
