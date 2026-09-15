@@ -25,8 +25,9 @@
     return state;
   }
   function report(bank,state){
-    state=normalize(state,bank);var lines=['AfroTools written practice',bank.scope];
-    bank.items.forEach(function(q){var entry=state.entries[q.id];if(!entry)return;lines.push('',q.title,q.origin,q.sourceUse,q.source,q.passage||'',q.prompt,'My response:',entry.answer,'Self-review:',...q.checks.map(function(c,i){return (entry.checks[i]?'[x] ':'[ ] ')+c;}),'Worked guide:',q.answer,...q.steps);});
+    var t=function(text){return bank.ui&&bank.ui[text]||text;};
+    state=normalize(state,bank);var lines=[t('AfroTools written practice'),bank.scope];
+    bank.items.forEach(function(q){var entry=state.entries[q.id];if(!entry)return;lines.push('',q.title,t(q.origin),q.sourceUse,q.source,q.passage||'',q.prompt,t('My response:'),entry.answer,t('Self-review:'),...q.checks.map(function(c,i){return (entry.checks[i]?'[x] ':'[ ] ')+c;}),t('Worked guide:'),q.answer,...q.steps);});
     return lines.filter(function(line){return line!==undefined;}).join('\n');
   }
   return {key:key,empty:empty,normalize:normalize,read:read,write:write,report:report};

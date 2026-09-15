@@ -4,7 +4,7 @@
   var area=document.getElementById('practice-session'),status=document.getElementById('practice-status'),state=null;
   var subject=document.getElementById('practice-subject'),topic=document.getElementById('practice-topic');
   function t(text){return bank.ui&&bank.ui[text]||text;}
-  function errorText(error){return bank.locale==='fr'?(bank.ui[error.message]||'Impossible de terminer cette action. Les données enregistrées sont conservées.'):error.message;}
+  function errorText(error){return bank.locale&&bank.locale!=='en'?(bank.ui[error.message]||bank.ui['Action failed. Saved data has been kept.']||'Impossible de terminer cette action. Les données enregistrées sont conservées.'):error.message;}
   function node(tag,text,cls){var el=document.createElement(tag);if(text!==undefined)el.textContent=t(text);if(cls)el.className=cls;return el;}
   function message(text){status.textContent=t(text);}
   function act(label,fn,primary){var b=node('button',label,'btn '+(primary?'btn-primary':'btn-secondary'));b.type='button';b.addEventListener('click',function(){try{fn();}catch(e){message(errorText(e));}});return b;}
@@ -15,7 +15,7 @@
   function render(){
     area.replaceChildren();if(!state)return;
     var score=api.result(state,bank),q=bank.questions.find(function(q){return q.id===state.ids[state.index];});
-    var heading=node('h2',q?'Question '+(state.index+1)+t(' of ')+state.ids.length:'Session complete');heading.tabIndex=-1;area.append(heading);
+    var heading=node('h2',q?t('Question ')+(state.index+1)+t(' of ')+state.ids.length:'Session complete');heading.tabIndex=-1;area.append(heading);
     if(q){
       area.append(node('p',t(q.subject)+' · '+t(q.topic)+' · '+t('Original practice'),'practice-meta'));
       if(q.passageId){var passage=bank.passages[q.passageId],box=node('section',undefined,'practice-passage');box.lang='en';box.append(node('h3',passage.title),node('p',passage.text));area.append(box);}
