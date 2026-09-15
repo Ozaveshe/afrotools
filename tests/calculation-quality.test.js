@@ -310,6 +310,17 @@ test('shared presentation cache hashes do not create protected formula drift', f
   assert.strictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(after));
 });
 
+test('shared page-refresh CSS cache changes preserve formulas and route protection', function () {
+  const page = (hash, rate = '0.15') => '<script>const rate = ' + rate +
+    '; const printHtml = \'<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=' + hash + '">\';</script>';
+  const before = page('9ab47fa3');
+  const after = page('f1530a1b');
+  assert.strictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(after));
+  for (const changed of [page('f1530a1b', '0.16'), after.replace('top-level-page-ui-refresh.css', 'calculator.css'), after.replace('f1530a1b', 'f1530a1b&mode=other')]) {
+    assert.notStrictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(changed));
+  }
+});
+
 test('formula country, currency, route, and source jurisdictions agree', function () {
   const result = quality.checkCountryIdentity(artifacts, ROOT);
   assert.deepStrictEqual(result.errors, []);
