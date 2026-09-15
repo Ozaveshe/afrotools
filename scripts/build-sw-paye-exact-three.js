@@ -151,13 +151,13 @@ const TARGETS = {
     currency: 'UGX',
     authority: 'URA',
     period: 'viwango vya sasa vya URA',
-    checkedDate: '2 Agosti 2026',
-    fixture: { gross: 2000000, tax: 472000, employeeSocial: 100000, lst: 100000, net: 1328000, employerCost: 2200000 },
+    checkedDate: '16 Septemba 2026 (PAYE ya mkazi)',
+    fixture: { gross: 2000000, tax: 458250, employeeSocial: 100000, lst: 100000, net: 1341750, employerCost: 2200000 },
     seoDescription: 'Kokotoa PAYE ya sasa ya Uganda kwa mkazi au asiye mkazi, NSSF tofauti, na LST ya mwaka inayotathminiwa kwa mshahara ghafi na kupunguzwa kabla ya PAYE.',
-    hero: 'PAYE ya sasa ya URA kwa mkazi: 0% hadi UGX 235,000, kisha 10%, 20% na 30%, pamoja na nyongeza ya 10% kwa sehemu inayozidi UGX 10,000,000. Jedwali la asiye mkazi ni la hatua. NSSF ni 5%/10% na haipunguzi PAYE; LST huchaguliwa kwa mshahara ghafi wa mwezi, kisha hukatwa kabla ya PAYE.',
-    fact: '<strong>Viwango vilivyothibitishwa 2 Agosti 2026:</strong> Mkazi hulipa 0% hadi UGX 235,000, 10% hadi UGX 335,000, 20% hadi UGX 410,000 na 30% zaidi ya hapo; sehemu inayozidi UGX 10,000,000 ina nyongeza ya 10%. Asiye mkazi hutumia jedwali la 10%, 20% na 30% pamoja na nyongeza hiyo. Muswada ambao haujaidhinishwa haujatumiwa kama sheria inayotumika.',
-    sourceMeta: 'Imethibitishwa: 2 Agosti 2026 · Vyanzo: URA, KCCA na NSSF Uganda · Uhakika wa juu kwa mabanda ya PAYE, LST na NSSF; si muswada ambao haujaidhinishwa',
-    disclaimer: '<strong>Onyo:</strong> Kwa madhumuni ya habari na kupanga pekee. Si ushauri wa kodi au kisheria. Viwango vya sasa vimetokana na kurasa rasmi za URA; LST imetokana na mwongozo wa KCCA; NSSF imetokana na NSSF Uganda. Imethibitishwa 2 Agosti 2026.',
+    hero: 'PAYE ya sasa ya URA kwa mkazi: 0% hadi UGX 335,000, kisha 20%, 25% na 30%, pamoja na nyongeza ya 10% kwa sehemu inayozidi UGX 10,000,000. Jedwali la asiye mkazi ni la hatua. NSSF ni 5%/10% na haipunguzi PAYE; LST huchaguliwa kwa mshahara ghafi wa mwezi, kisha hukatwa kabla ya PAYE.',
+    fact: '<strong>PAYE ya mkazi kuanzia 1 Julai 2026:</strong> taarifa ya URA ya 7 Septemba 2026 inaweka 0% hadi UGX 335,000, 20% hadi UGX 410,000, 25% hadi UGX 485,000 na 30% kwa ziada; zaidi ya UGX 10,000,000 kuna nyongeza ya 10%.',
+    sourceMeta: 'PAYE ya mkazi imekaguliwa 16 Septemba 2026; vigezo vingine vinatumia ukaguzi wa 2 Agosti 2026.',
+    disclaimer: '<strong>Onyo:</strong> Kwa madhumuni ya habari na kupanga pekee. Si ushauri wa kodi au kisheria. Viwango vya sasa vimetokana na kurasa rasmi za URA; LST imetokana na mwongozo wa KCCA; NSSF imetokana na NSSF Uganda. PAYE ya mkazi imekaguliwa 16 Septemba 2026; vigezo vingine vilikaguliwa 2 Agosti 2026.',
     toggles: `
               <div class="tog on" data-tog="nssf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -179,10 +179,10 @@ const TARGETS = {
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)"><span class="card-title">Mabanda ya Sasa ya URA (Kwa Mwezi)</span><span class="tog-arrow">▾</span></div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">Mkazi: UGX 0 – 235,000</span><span class="band-zero">0%</span></div>
-          <div class="band-row"><span class="band-range">Mkazi: UGX 235,001 – 335,000</span><span class="band-rate">10%</span></div>
+          <div class="band-row"><span class="band-range">Mkazi: UGX 0 – 335,000</span><span class="band-zero">0%</span></div>
           <div class="band-row"><span class="band-range">Mkazi: UGX 335,001 – 410,000</span><span class="band-rate">20%</span></div>
-          <div class="band-row"><span class="band-range">Mkazi: UGX 410,001 – 10,000,000</span><span class="band-rate">UGX 25,000 + 30% ya ziada</span></div>
+          <div class="band-row"><span class="band-range">Mkazi: UGX 410,001 – 485,000</span><span class="band-rate">UGX 15,000 + 25%</span></div>
+          <div class="band-row"><span class="band-range">Mkazi: UGX 485,001 – 10,000,000</span><span class="band-rate">UGX 33,750 + 30% ya ziada</span></div>
           <div class="band-row"><span class="band-range">Mkazi: zaidi ya UGX 10,000,000</span><span class="band-rate">Kiasi cha bendi + nyongeza ya 10% ya ziada</span></div>
           <div class="band-row"><span class="band-range">Asiye mkazi: UGX 0 – 335,000</span><span class="band-rate">10%</span></div>
           <div class="band-row"><span class="band-range">Asiye mkazi: UGX 335,001 – 410,000</span><span class="band-rate">UGX 33,500 + 20% ya ziada</span></div>
@@ -201,28 +201,28 @@ const TARGETS = {
         </div>
       </div>`,
     faqs: [
-      ['Mabanda ya PAYE ya mkazi Uganda ni yapi?', 'PAYE ni 0% hadi UGX 235,000, 10% kwa UGX 235,001–335,000, 20% kwa UGX 335,001–410,000, na UGX 25,000 pamoja na 30% ya sehemu inayozidi UGX 410,000. Zaidi ya UGX 10,000,000 kuna nyongeza ya 10% kwa sehemu ya ziada.'],
+      ['Mabanda ya PAYE ya mkazi Uganda ni yapi?', 'PAYE ni 0% hadi UGX 335,000; 20% kwa ziada hadi UGX 410,000; UGX 15,000 pamoja na 25% kwa ziada hadi UGX 485,000; kisha UGX 33,750 pamoja na 30% kwa ziada. Zaidi ya UGX 10,000,000 kuna nyongeza ya 10% kwa sehemu ya ziada.'],
       ['Asiye mkazi hulipa PAYE kiasi gani?', 'Asiye mkazi hutumia jedwali la hatua: 10% hadi UGX 335,000; UGX 33,500 pamoja na 20% ya ziada hadi UGX 410,000; kisha UGX 48,500 pamoja na 30% ya ziada. Sehemu inayozidi UGX 10,000,000 ina nyongeza ya 10%.'],
       ['NSSF inapunguza mapato ya PAYE?', 'Hapana. NSSF ni 5% kwa mfanyakazi na 10% kwa mwajiri, lakini PAYE hukokotolewa kwa mshahara ghafi bila kupunguza NSSF.'],
       ['LST inahesabiwaje?', 'LST ni chaguo la hiari lililozimwa kwa chaguo-msingi. Jedwali la KCCA hutumia mshahara ghafi wa mwezi, na tathmini ya mwaka hupunguzwa kabla ya PAYE. Mwajiri anaweza kuikusanya kwa awamu zisizozidi nne.'],
-      ['Mfano rasmi wa UGX 420,000 unatoka vipi?', 'Mwongozo wa KCCA unaonyesha ghafi UGX 420,000: LST ya mwaka ni UGX 30,000, msingi wa PAYE ni UGX 390,000, PAYE ni UGX 21,000. NSSF ikiwa imewashwa ni UGX 21,000 na halisi ni UGX 348,000.'],
-      ['Mfano wa UGX 2,000,000 unatoka vipi?', 'LST ikiwa imewashwa, jedwali linatoa LST ya mwaka UGX 100,000 na msingi wa PAYE ni UGX 1,900,000. PAYE ni UGX 472,000; NSSF ya mfanyakazi ni UGX 100,000; halisi ni UGX 1,328,000; gharama ya mwajiri ni UGX 2,200,000.'],
+      ['Mfano wa UGX 420,000 kwa viwango vya 2026 unatoka vipi?', 'Kwa kutumia tathmini ya LST ya KCCA na PAYE ya mkazi ya 2026, ghafi UGX 420,000: LST ya mwaka ni UGX 30,000, msingi wa PAYE ni UGX 390,000, PAYE ni UGX 11,000. NSSF ikiwa imewashwa ni UGX 21,000 na halisi ni UGX 358,000.'],
+      ['Mfano wa UGX 2,000,000 unatoka vipi?', 'LST ikiwa imewashwa, jedwali linatoa LST ya mwaka UGX 100,000 na msingi wa PAYE ni UGX 1,900,000. PAYE ni UGX 458,250; NSSF ya mfanyakazi ni UGX 100,000; halisi ni UGX 1,341,750; gharama ya mwajiri ni UGX 2,200,000.'],
     ],
     guide: [
-      'Kwa mkazi, kikokotoo hutumia 0% hadi UGX 235,000, 10% hadi UGX 335,000, 20% hadi UGX 410,000 na 30% kwa ziada. Sehemu inayozidi UGX 10,000,000 ina nyongeza ya 10%. Asiye mkazi hutumia jedwali rasmi la hatua, si kiwango tambarare.',
+      'Kwa mkazi, kikokotoo hutumia 0% hadi UGX 335,000, 20% hadi UGX 410,000, 25% hadi UGX 485,000 na 30% kwa ziada. Sehemu inayozidi UGX 10,000,000 ina nyongeza ya 10%. Asiye mkazi hutumia jedwali rasmi la hatua, si kiwango tambarare.',
       'NSSF ni 5% kwa mfanyakazi na 10% kwa mwajiri na haipunguzi PAYE. LST ikiwa imechaguliwa hutokana na jedwali la KCCA la mshahara ghafi wa mwezi na hupunguzwa kabla ya PAYE. Tathmini ya mwaka inaweza kukusanywa kwa awamu zisizozidi nne.',
-      '<strong>Mfano rasmi wa KCCA uliokaguliwa:</strong> ghafi UGX 420,000 na LST imewashwa → LST UGX 30,000; msingi wa PAYE UGX 390,000; PAYE UGX 21,000; NSSF UGX 21,000; halisi UGX 348,000.',
-      '<strong>Mfano uliokaguliwa:</strong> ghafi UGX 2,000,000 na LST imewashwa → LST UGX 100,000; msingi wa PAYE UGX 1,900,000; PAYE UGX 472,000; NSSF UGX 100,000; halisi UGX 1,328,000; gharama ya mwajiri UGX 2,200,000.',
+      '<strong>Mfano wa LST ya KCCA na PAYE ya mkazi ya 2026:</strong> ghafi UGX 420,000 na LST imewashwa → LST UGX 30,000; msingi wa PAYE UGX 390,000; PAYE UGX 11,000; NSSF UGX 21,000; halisi UGX 358,000.',
+      '<strong>Mfano uliokaguliwa:</strong> ghafi UGX 2,000,000 na LST imewashwa → LST UGX 100,000; msingi wa PAYE UGX 1,900,000; PAYE UGX 458,250; NSSF UGX 100,000; halisi UGX 1,341,750; gharama ya mwajiri UGX 2,200,000.',
     ],
     sources: [
       ['URA — viwango vya PAYE', 'https://ura.go.ug/en/domestic-taxes/paye-rates/'],
-      ['Bunge la Uganda — Muswada wa 2026 ulirejeshwa bila idhini', 'https://www.parliament.go.ug/news/4488/president-museveni-returns-two-tax-bills-parliament'],
+      ['URA — PAYE ya mkazi kuanzia 1 Julai 2026', 'https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/'],
       ['Sheria ya Kodi ya Mapato ya Uganda — maandishi yaliyounganishwa', 'https://ulii.org/en/akn/ug/act/1997/11/eng@2024-12-23'],
       ['URA — kodi ya mapato ya ajira na punguzo la LST', 'https://ura.go.ug/en/taxes-on-employment-income/'],
       ['KCCA — jedwali rasmi na awamu za LST', 'https://kcca.go.ug/uDocs/Local_Service_Tax_FAQs.pdf'],
       ['NSSF Uganda — 5% ya mfanyakazi na 10% ya mwajiri', 'https://www.nssfug.org/about-us/membership/'],
     ],
-    law: 'Viwango vya sasa vya URA: mkazi 0%/10%/20%/30% + nyongeza ya 10% juu ya UGX 10m; asiye mkazi 10%/20%/30% + nyongeza; NSSF 5%/10% isiyopunguza PAYE; LST ya KCCA huchaguliwa kwa mshahara ghafi wa mwezi na hupunguzwa kabla ya PAYE. Imethibitishwa 2 Agosti 2026.',
+    law: 'Viwango vya sasa vya URA: mkazi 0%/20%/25%/30% + nyongeza ya 10% juu ya UGX 10m; asiye mkazi 10%/20%/30% + nyongeza; NSSF 5%/10% isiyopunguza PAYE; LST ya KCCA huchaguliwa kwa mshahara ghafi wa mwezi na hupunguzwa kabla ya PAYE. PAYE ya mkazi imekaguliwa 16 Septemba 2026; vigezo vingine vilikaguliwa 2 Agosti 2026.',
   },
 };
 
@@ -1023,6 +1023,9 @@ function applyTarget(config) {
     .replace(/<meta property="article:modified_time" content="[^"]*">/, '<meta property="article:modified_time" content="2026-08-02">');
   if (config.id === 'ug-paye') {
     source = source
+      .replace(/"dateModified":\s*"[^"]*"/g, '"dateModified":"2026-09-16"')
+      .replace(/(<meta (?:http-equiv="last-modified"|property="article:modified_time") content=")[^"]*/g, '$12026-09-16')
+      .replace(/(Imesasishwa mwisho: |Ilisasishwa: )(?:2 Agosti 2026|Machi 2026)/g, '$116 Septemba 2026')
       .replace(/2025\/26|2026\/27/g, 'viwango vya sasa')
       .replace(/Machi 2026/g, '2 Agosti 2026')
       .replace('/blog/tax-updates-2026/', 'https://ura.go.ug/en/domestic-taxes/paye-rates/')

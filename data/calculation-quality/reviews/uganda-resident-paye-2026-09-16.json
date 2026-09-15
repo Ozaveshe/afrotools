@@ -1,0 +1,35 @@
+{
+  "reviewedBy": "Codex SEO director: source and calculation review",
+  "reviewedAt": "2026-09-16",
+  "sourceUrl": "https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/",
+  "reason": "URA notice dated 7 September 2026 confirms resident bands effective 1 July 2026. Replace old resident schedule; preserve nonresident, NSSF and LST parameters. Shared boundary tests and EN/FR/SW mobile tests passed. Official monthly500000 example changes52000 to38250.",
+  "formulaIds": [
+    "paye-server-ug"
+  ],
+  "fixtureDeltas": [
+    {
+      "id": "paye-ug-defaults",
+      "change": "No tax change: monthly income remains below exemption."
+    },
+    {
+      "id": "paye-ug-zero",
+      "change": "No change: zero income."
+    },
+    {
+      "id": "paye-ug-large-decimal",
+      "change": "Resident annual PAYE falls165000 (12 x13750). Expected tax386659000, totaldeductions436659000, netannual563341000, netmonthly46945083.",
+      "before": {
+        "tax": 386824000,
+        "totalDeductions": 436824000,
+        "netAnnual": 563176000,
+        "netMonthly": 46931333
+      },
+      "after": {
+        "tax": 386659000,
+        "totalDeductions": 436659000,
+        "netAnnual": 563341000,
+        "netMonthly": 46945083
+      }
+    }
+  ]
+}

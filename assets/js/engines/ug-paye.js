@@ -35,9 +35,10 @@
   }
   function residentTax(value) {
     var income = Math.max(0, Number(value) || 0);
-    var tax = income > 410000 ? 25000 + (income - 410000) * 0.30
-      : income > 335000 ? 10000 + (income - 335000) * 0.20
-        : income > 235000 ? (income - 235000) * 0.10 : 0;
+    // URA notice of 7 September 2026: resident rates effective 1 July 2026.
+    var tax = income > 485000 ? 33750 + (income - 485000) * 0.30
+      : income > 410000 ? 15000 + (income - 410000) * 0.25
+        : income > 335000 ? (income - 335000) * 0.20 : 0;
     if (income > HIGH_INCOME_THRESHOLD) tax += (income - HIGH_INCOME_THRESHOLD) * HIGH_INCOME_SUPPLEMENT_RATE;
     return tax;
   }
@@ -52,7 +53,7 @@
     var income = Math.max(0, Number(value) || 0);
     var bands = normalizeRegime(regime) === NON_RESIDENT
       ? [{ from: 0, to: 335000, rate: 0.10 }, { from: 335000, to: 410000, rate: 0.20 }, { from: 410000, to: HIGH_INCOME_THRESHOLD, rate: 0.30 }, { from: HIGH_INCOME_THRESHOLD, to: null, rate: 0.40 }]
-      : [{ from: 0, to: 235000, rate: 0 }, { from: 235000, to: 335000, rate: 0.10 }, { from: 335000, to: 410000, rate: 0.20 }, { from: 410000, to: HIGH_INCOME_THRESHOLD, rate: 0.30 }, { from: HIGH_INCOME_THRESHOLD, to: null, rate: 0.40 }];
+      : [{ from: 0, to: 335000, rate: 0 }, { from: 335000, to: 410000, rate: 0.20 }, { from: 410000, to: 485000, rate: 0.25 }, { from: 485000, to: HIGH_INCOME_THRESHOLD, rate: 0.30 }, { from: HIGH_INCOME_THRESHOLD, to: null, rate: 0.40 }];
     return bands.map(function (band) {
       var upper = band.to == null ? income : Math.min(income, band.to);
       var bandIncome = Math.max(0, upper - band.from);
@@ -129,12 +130,12 @@
     };
   }
   return {
-    country: 'UG', currency: 'UGX', lastUpdated: '2026-08-02',
+    country: 'UG', currency: 'UGX', lastUpdated: '2026-09-16',
     regimes: [RESIDENT, NON_RESIDENT], residentRegime: RESIDENT, nonResidentRegime: NON_RESIDENT,
     employeeNssfRate: EMPLOYEE_NSSF_RATE, employerNssfRate: EMPLOYER_NSSF_RATE,
     highIncomeThreshold: HIGH_INCOME_THRESHOLD, highIncomeSupplementRate: HIGH_INCOME_SUPPLEMENT_RATE,
-    lstBands: LST_BANDS, sourceCheckedOn: '2026-08-02', effectiveDateStatus: 'current-law-confirmed',
-    formulaParameters: { method: 'monthly-employment-income-with-gross-salary-lst-assessment-before-paye-and-before-nssf', regimes: [RESIDENT, NON_RESIDENT], residentThresholds: [235000, 335000, 410000, HIGH_INCOME_THRESHOLD], nonResidentThresholds: [335000, 410000, HIGH_INCOME_THRESHOLD], highIncomeSupplementRate: HIGH_INCOME_SUPPLEMENT_RATE, employeeNssfRate: EMPLOYEE_NSSF_RATE, employerNssfRate: EMPLOYER_NSSF_RATE, nssfDeductibleFromPayeBase: false, lstAssessmentBase: 'monthly gross salary as defined by the KCCA guidance', lstDeductedBeforePaye: true, lstCollectionInstallmentsMaximum: 4, lstBands: LST_BANDS },
+    lstBands: LST_BANDS, sourceCheckedOn: '2026-09-16', residentRatesEffectiveFrom: '2026-07-01', residentRatesSource: 'https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/', otherParametersCheckedOn: '2026-08-02', effectiveDateStatus: 'current-law-confirmed',
+    formulaParameters: { method: 'monthly-employment-income-with-gross-salary-lst-assessment-before-paye-and-before-nssf', regimes: [RESIDENT, NON_RESIDENT], residentThresholds: [335000, 410000, 485000, HIGH_INCOME_THRESHOLD], nonResidentThresholds: [335000, 410000, HIGH_INCOME_THRESHOLD], highIncomeSupplementRate: HIGH_INCOME_SUPPLEMENT_RATE, employeeNssfRate: EMPLOYEE_NSSF_RATE, employerNssfRate: EMPLOYER_NSSF_RATE, nssfDeductibleFromPayeBase: false, lstAssessmentBase: 'monthly gross salary as defined by the KCCA guidance', lstDeductedBeforePaye: true, lstCollectionInstallmentsMaximum: 4, lstBands: LST_BANDS },
     roundingPolicy: { method: 'display-only', stages: ['retain exact statutory calculation values', 'round only for displayed UGX and exported rows'] },
     normalizeRegime: normalizeRegime, taxMonthly: taxMonthly, lstFromGross: lstFromGross,
     resolveLst: resolveLst, annualLst: annualLst, calculate: calculate

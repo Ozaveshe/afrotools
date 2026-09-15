@@ -16,12 +16,12 @@ const TAXABLE_FIXTURES = {
 const COPY_ORACLES = {
   'bi-paye': [/0%/, /20%/, /30%/, /450,000/, /80,000/, /84,600/, /529,400/],
   'rw-paye': [/60,000/, /100,000/, /200,000/, /6%/, /0\.3%/, /CBHI/, /0\.5%/, /mshahara halisi/, /hatari ya kazi/, /2%/, /48,600/, /1,157/, /231,343/, /324,900/],
-  'ug-paye': [/2 Agosti 2026/, /235,000/, /335,000/, /410,000/, /10,000,000/, /nyongeza ya 10%/, /Asiye Mkazi/, /imezimwa kwa chaguo-msingi/, /mshahara ghafi/, /420,000/, /30,000/, /348,000/, /472,000/, /1,328,000/],
+  'ug-paye': [/16 Septemba 2026/, /485,000/, /335,000/, /410,000/, /10,000,000/, /nyongeza ya 10%/, /Asiye Mkazi/, /imezimwa kwa chaguo-msingi/, /mshahara ghafi/, /420,000/, /30,000/, /358,000/, /458,250/, /1,341,750/],
 };
 const STALE_COPY = {
   'bi-paye': [/4% ya mshahara wote/i, /BIF 20,000/, /BIF 530,000/],
   'rw-paye': [/RWF 30,001/, /RSSB[^\n.]*5% mfanyakazi/i, /RWF 69,500/, /RWF 315,900/],
-  'ug-paye': [/2025\/26/, /2026\/27/, /UGX 485,000/, /NSSF.*inapunguza PAYE/i, /LST (?:hukatwa|inakatwa) baada ya PAYE/i, /30% kwa ghafi/i, /UGX 488,250/, /UGX 458,250/],
+  'ug-paye': [/2025\/26/, /2026\/27/, /NSSF.*inapunguza PAYE/i, /LST (?:hukatwa|inakatwa) baada ya PAYE/i, /30% kwa ghafi/i, /UGX 488,250/, /UGX 472,000/],
 };
 const OFFICIAL_SOURCES = {
   'bi-paye': ['https://obr.gov.bi'],
@@ -34,7 +34,7 @@ const OFFICIAL_SOURCES = {
   ],
   'ug-paye': [
     'https://ura.go.ug/en/domestic-taxes/paye-rates/',
-    'https://www.parliament.go.ug/news/4488/president-museveni-returns-two-tax-bills-parliament',
+    'https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/',
     'https://ulii.org/en/akn/ug/act/1997/11/eng@2024-12-23',
     'https://ura.go.ug/en/taxes-on-employment-income/',
     'https://kcca.go.ug/uDocs/Local_Service_Tax_FAQs.pdf',
@@ -163,7 +163,7 @@ for (const config of Object.values(TARGETS)) {
   if (config.id === 'ug-paye') {
     assert.deepStrictEqual(
       [235000, 335000, 410000, 10000000, 10000001].map((income) => UgandaPaye.taxMonthly(income, 'RESIDENT').tax),
-      [0, 10000, 25000, 2902000, 2902000.4],
+      [0, 0, 15000, 2888250, 2888250.4],
       'ug-paye current resident boundaries',
     );
     assert.deepStrictEqual(
@@ -175,7 +175,7 @@ for (const config of Object.values(TARGETS)) {
     const boundary = UgandaPaye.calculate({ grossMonthly: 420000, regime: 'RESIDENT', nssfEnabled: true, lstEnabled: true });
     assert.deepStrictEqual(
       [boundary.lstAssessmentGross, boundary.lstAnnual, boundary.monthlyPaye, boundary.employeeNssfMonthly, boundary.netMonthly],
-      [420000, 30000, 21000, 21000, 348000],
+      [420000, 30000, 11000, 21000, 358000],
       'ug-paye KCCA gross-salary LST worked example',
     );
   }

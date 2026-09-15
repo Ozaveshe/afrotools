@@ -5,8 +5,8 @@ function round(value) { return Math.round(value); }
 
 module.exports = {
   country: 'UG', countryName: 'Uganda', currency: 'UGX', regimes: engine.regimes,
-  lastUpdated: '2026-08-02', sourceCheckedOn: '2026-08-02', nextReviewDate: '2026-11-02',
-  source: 'Uganda Revenue Authority current PAYE rates and Uganda Income Tax Act schedule; KCCA Local Service Tax assessed from monthly gross salary and deducted before PAYE; the 2026 amendment bill was returned without assent',
+  lastUpdated: '2026-09-16', sourceCheckedOn: '2026-09-16', nextReviewDate: '2026-12-16',
+  source: 'URA notice of 7 September 2026: resident PAYE rates effective 1 July 2026, checked 16 September 2026 (https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/); non-resident schedule, NSSF and KCCA Local Service Tax assessed from monthly gross salary and deducted before PAYE retain their 2 August 2026 review basis',
   formulaParameters: engine.formulaParameters, roundingPolicy: engine.roundingPolicy,
   calculate(params) {
     params = params || {};
