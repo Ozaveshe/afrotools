@@ -25,4 +25,6 @@ The frozen cohort in `data/image-generation/placement-review-cohort.json` contai
 
 Use `node scripts/apply-reviewed-blog-images.js` after article generation; the main build runs it before the feed. It changes images and dimensions only. The inventory reads dated, read-only Supabase media evidence from the correct AfroTools project. Refresh this evidence through the configured MCP before inferring current live usage; it is not a runtime database mirror.
 
+Keep the original 792-row `placement-review-cohort.json` and its matching `placement-decisions.json` frozen. When a later source change intentionally removes the last binding for an existing asset, record a hash-pinned, visually reviewed non-active decision in `placement-lifecycle-additions.json`. Preserve the file, cite the removal evidence in the reason, and never use this registry to invent a placement or bypass review.
+
 Retired, reserved and rejected files are preserved in place. Their stable URLs are not removed by this task. Do not treat a zero unassigned count as zero visual/provenance work: those gates remain explicit on reserved assets, and the three held recipe deliveries remain separate.
