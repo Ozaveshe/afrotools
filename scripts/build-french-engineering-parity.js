@@ -6,6 +6,8 @@ const path = require('path');
 const vm = require('vm');
 const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
 const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
+const { localizeVisibleLanguage } = require('./lib/french-visible-language');
+const { enhanceCategory } = require('./lib/localized-category-standard');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const {
   OWNER_COPY,
@@ -571,7 +573,7 @@ function frenchHtml(row, html, frenchRoute, rawPairs) {
   html = applyFrenchMetadata(row, html, frenchRoute);
   if (row.id === 'afrodraft') {
     html = html
-      .replace(/href="app\.html/g, 'href="/fr/ingenierie/afrodraft/app.html')
+      .replace(/href="app\.html/g, 'href="/fr/ingenierie/afrodraft/app')
       .replace(/href="assets\//g, 'href="/engineering/afrodraft/assets/')
       .replace(/src="assets\//g, 'src="/engineering/afrodraft/assets/');
   }
@@ -589,7 +591,7 @@ function frenchHtml(row, html, frenchRoute, rawPairs) {
     `<script>window.AfroToolsFrenchEngineering=${payload};</script>\n` +
     '</body>'
   );
-  return repairFrenchNavigation(dedupeRepeatedParagraphs(html).html.replace(/^[ \t]+$/gm, '')).next;
+  return repairFrenchNavigation(localizeVisibleLanguage(dedupeRepeatedParagraphs(html).html.replace(/^[ \t]+$/gm, ''))).next;
 }
 
 function writeAfrodraftWorkspace() {
@@ -794,7 +796,7 @@ body{margin:0;background:var(--color-bg,#f8fafc);color:var(--color-text,#0f172a)
 </body>
 </html>
 `;
-  writeOwnedFile('fr/ingenierie/index.html', html);
+  writeOwnedFile('fr/ingenierie/index.html', enhanceCategory(html, 'fr'));
 }
 
 const controllerDir = path.join(ROOT, 'assets/js/pages/engineering-parity');

@@ -16,7 +16,7 @@ const flows = [
   ['/fr/tools/cout-forage/', /Estimer/i, /1,?732,?000|60\s*m/i],
   ['/fr/tools/calculateur-armature/', /Calculer/i, /290\s*kg|60 barres|60 bars/i],
   ['/fr/tools/dimensionnement-generateur/', /Calculer/i, /2\.5\s*kVA|0\.9\s*kW/i],
-  ['/fr/tools/generateur-boq/', /Générer/i, /13,?622,?239|8,?845,?610/i],
+  ['/fr/tools/generateur-boq/', /Générer/i, /12,?910,?759/i],
   ['/fr/tools/cout-renovation/', /Estimer/i, /rénovation|total/i],
   ['/fr/tools/dimensionnement-fosse-septique/', /Calculer/i, /2\.0\s*m|367,?600/i],
   ['/fr/tools/cout-cloture/', /Calculer/i, /2,?720,?000/i],
@@ -34,7 +34,8 @@ test('all 26 French Engineering workflows reproduce the English output oracles',
   test.setTimeout(600_000);
   const writes = [];
   const flowStart = Number.parseInt(process.env.FLOW_START || '0', 10);
-  const selectedFlows = flows.slice(Number.isFinite(flowStart) ? flowStart : 0);
+  const flowEnd = Number.parseInt(process.env.FLOW_END || String(flows.length), 10);
+  const selectedFlows = flows.slice(Number.isFinite(flowStart) ? flowStart : 0, Number.isFinite(flowEnd) ? flowEnd : flows.length);
   await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
   await page.route(/^https?:\/\//, async (route) => {
     const hostname = new URL(route.request().url()).hostname;
@@ -72,4 +73,17 @@ test('all 26 French Engineering workflows reproduce the English output oracles',
     expect(unnamed, `${route} unnamed controls`).toEqual([]);
   }
   expect(writes).toEqual([]);
+});
+
+test('BOQ planning totals match current English inputs and assumptions', async ({ page }) => {
+  const results = [];
+  await page.route(/^https?:\/\//, route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+  for (const [url, action] of [['/tools/boq-generator/', /Generate/i], ['/fr/tools/generateur-boq/', /Générer/i]]) {
+    await page.goto(url);
+    await page.getByRole('button', { name: action }).first().click();
+    const amounts = await page.locator('tr').allTextContents();
+    results.push(amounts.filter(row => /NGN (?:8,383,610|3,353,444|12,910,759)/.test(row)).map(row => row.match(/NGN [\d,]+/)[0]));
+  }
+  expect(results[0]).toEqual(['NGN 8,383,610', 'NGN 3,353,444', 'NGN 12,910,759']);
+  expect(results[1]).toEqual(results[0]);
 });
