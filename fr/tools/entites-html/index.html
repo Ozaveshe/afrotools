@@ -122,7 +122,7 @@ body{background:#f7f9fc;color:var(--he-ink)}
               <div class="he-field">
                 <label for="entityStyle">Style de sortie</label>
                 <select id="entityStyle" name="entityStyle">
-                  <option value="named">Nomme si possible, sinon numérique</option>
+                  <option value="named">Entités nommées courantes</option>
                   <option value="numeric">Numérique decimal</option>
                   <option value="hex">Numérique hexadecimal</option>
                   <option value="minimal">Minimal: &, <, >, guillemets</option>
@@ -232,6 +232,7 @@ body{background:#f7f9fc;color:var(--he-ink)}
 </main>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/web-text-codecs.js"></script>
 <script>
 (function () {
   'use strict';
@@ -253,28 +254,9 @@ body{background:#f7f9fc;color:var(--he-ink)}
   function encodeMinimal(text) {
     return text.replace(/[&<>"']/g, function (ch) { return named[ch]; });
   }
-  function encodeNumeric(text, base) {
-    var first = encodeMinimal(text);
-    return Array.from(first).map(function (ch) {
-      if (ch.charCodeAt(0) < 128) return ch;
-      var code = ch.codePointAt(0);
-      return base === 'hex' ? '&#x' + code.toString(16).toUpperCase() + ';' : '&#' + code + ';';
-    }).join('');
-  }
-  function encodeNamed(text) {
-    var output = '';
-    Array.from(text).forEach(function (ch) {
-      if (named[ch]) output += named[ch];
-      else if (ch.codePointAt(0) > 127) output += '&#' + ch.codePointAt(0) + ';';
-      else output += ch;
-    });
-    return output;
-  }
-  function decodeEntities(text) {
-    var area = document.createElement('textarea');
-    area.innerHTML = text;
-    return area.value;
-  }
+  function encodeNumeric(text, base) { return window.AfroToolsWebTextCodecs.html.encode(text, base === 'hex' ? 'hex' : 'decimal'); }
+  function encodeNamed(text) { return window.AfroToolsWebTextCodecs.html.encode(text, 'named'); }
+  function decodeEntities(text) { return window.AfroToolsWebTextCodecs.html.decode(text, document); }
   function convert() {
     var input = byId('inputText').value;
     var style = byId('entityStyle').value;

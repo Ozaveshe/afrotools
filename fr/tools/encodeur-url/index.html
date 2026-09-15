@@ -153,6 +153,8 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
           <div class="url-actions" aria-label="Actions principales">
             <button class="url-primary" id="encodeUriBtn" type="button">Encoder URI</button>
             <button class="url-primary" id="encodeComponentBtn" type="button">Encoder composant</button>
+            <button id="encodeRfcBtn" type="button">Encoder RFC 3986</button>
+            <button id="encodeFormBtn" type="button">Encoder valeur de formulaire</button>
             <button id="decodeBtn" type="button">Décoder</button>
             <button id="swapBtn" type="button">Permuter</button>
             <button id="copyBtn" type="button">Copier</button>
@@ -272,6 +274,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
 </main>
 <span class="url-sr-scorecard" aria-hidden="true">calculer générer convertir vérifier copier exporter résultat résumé estimation rapport détail ventilation méthodologie source référence dernière vérification avertissement local Afrique outils associés</span>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/web-text-codecs.js"></script>
 <script>
 (function(){
   var input = document.getElementById('urlInput');
@@ -346,7 +349,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
   function encodeUri(){
     lastAction = 'encoder-uri';
     try {
-      applyResult(encodeURI(input.value));
+      applyResult(window.AfroToolsWebTextCodecs.url.encodeUri(input.value));
     } catch (error) {
       applyResult(input.value,[{type:'error',text:'Encodage impossible : le texte contient une séquence Unicode isolée. Le contenu reste inchangé.'}]);
     }
@@ -355,12 +358,17 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
   function encodeComponent(){
     lastAction = 'encoder-composant';
     try {
-      applyResult(encodeURIComponent(input.value));
+      applyResult(window.AfroToolsWebTextCodecs.url.encodeComponent(input.value));
     } catch (error) {
       applyResult(input.value,[{type:'error',text:'Encodage impossible : le texte contient une séquence Unicode isolée. Le contenu reste inchangé.'}]);
     }
   }
 
+  function encodeExtra(action){
+    lastAction = action;
+    try { applyResult(window.AfroToolsWebTextCodecs.url[action === 'rfc' ? 'encodeRfc3986' : 'encodeFormValue'](input.value)); }
+    catch(error) { applyResult(input.value,[{type:'error',text:'Encodage impossible : le texte contient une séquence Unicode isolée. Le contenu reste inchangé.'}]); }
+  }
   function decodeValue(){
     lastAction = 'decoder';
     var source = input.value.replace(/\+/g,' ');
@@ -411,6 +419,8 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
 
   document.getElementById('encodeUriBtn').addEventListener('click',encodeUri);
   document.getElementById('encodeComponentBtn').addEventListener('click',encodeComponent);
+  document.getElementById('encodeRfcBtn').addEventListener('click',function(){encodeExtra('rfc');});
+  document.getElementById('encodeFormBtn').addEventListener('click',function(){encodeExtra('form');});
   document.getElementById('decodeBtn').addEventListener('click',decodeValue);
   document.getElementById('swapBtn').addEventListener('click',function(){
     var current = output.textContent || '';
@@ -426,7 +436,8 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
     input.focus();
   });
   input.addEventListener('input',function(){
-    if (lastAction === 'encoder-composant') encodeComponent();
+    if (lastAction === 'rfc' || lastAction === 'form') encodeExtra(lastAction);
+    else if (lastAction === 'encoder-composant') encodeComponent();
     else if (lastAction === 'decoder') decodeValue();
     else encodeUri();
   });
