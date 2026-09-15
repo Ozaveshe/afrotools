@@ -19,6 +19,8 @@ test('every written task has provenance, complete local context and a worked sel
 });
 test('mathematics worked answers are checked using independent computations',()=>{
  const answer=id=>bank.items.find(q=>q.id===id).answer;
+ const polygon=[];for(let x=1;x<100;x++){const y=x+7;if([42,38,57,x,x+y,2*x-15,3*x-y].reduce((a,b)=>a+b)===360)polygon.push([x,y]);}assert.deepEqual(polygon,[[34,41]]);const inscribedAngle=146/2;assert.equal(180-inscribedAngle-34-34,39);assert.match(answer('waec-2022-mathematics-p2-q11'),/x = 34; y = 41.*39°/);
+ const baseArea=1200*3/24;assert.equal(baseArea*84/3,4200);assert.equal(answer('waec-2022-mathematics-p2-q12b'),'4,200 cm³.');
  const bookSolutions=[];for(let y=0;y<=180;y++)if(300*y+237.5*(180-y)-180*250===7125)bookSolutions.push(y);assert.deepEqual(bookSolutions,[150]);const cost=24*20+103,revenue=33*20-20**2/20;assert.equal(((revenue-cost)/cost*100).toFixed(2),'9.78');assert.match(answer('waec-2022-mathematics-p2-q7'),/150 books.*9.78/);
  const chord=Math.sqrt(2*24.5**2*(1-Math.cos(72*Math.PI/180)));const arc=72/360*2*(22/7)*24.5;assert.equal((chord+arc).toFixed(2),'59.60');assert.match(answer('waec-2022-mathematics-p2-q3'),/59.60/);
  const angleSolutions=[];for(let x=1;x<100;x++)if(2*(2*x+40)+(5*x-35)===360)angleSolutions.push(x);assert.deepEqual(angleSolutions,[35]);assert.equal((180-110-10)/2,30);assert.equal(110-40,70);assert.match(answer('waec-2022-mathematics-p2-q4'),/x = 35; y = 30; angle ABC = 70/);
