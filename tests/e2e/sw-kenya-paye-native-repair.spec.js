@@ -1,0 +1,34 @@
+const {test,expect}=require('@playwright/test');
+const pdfParse=require('pdf-parse');
+test('Kenya native result keys, PDF, strict invalidation and consented AI stay consistent',async({page})=>{
+ await page.setViewportSize({width:320,height:820});
+ const errors=[],requests=[],payloads=[],disclosures=[];
+ let accept=false,release,status=200;
+ page.on('pageerror',e=>errors.push(e.message));
+ page.on('request',r=>requests.push(r));
+ page.on('dialog',async d=>{if(d.type()==='confirm'){disclosures.push(d.message());if(accept)await d.accept();else await d.dismiss();}else await d.dismiss();});
+ await page.route('**/.netlify/functions/ai-advisor',async route=>{payloads.push(route.request().postDataJSON());if(release)await release;await route.fulfill({status:status,contentType:'application/json',body:JSON.stringify({text:'Maelezo ya majaribio.'})}).catch(()=>{});});
+ await page.goto('/sw/kenya/kikokotoo-kodi-mshahara/');
+ const salary=page.locator('#salaryInput'),calc=page.locator('button[onclick="calculate()"]');
+ await salary.fill('123456');await calc.click();
+ const result=await page.evaluate(()=>RESULT);
+ expect(Number.isFinite(result.grossTax)).toBe(true);
+ await expect(page.locator('#resContent')).not.toContainText(/NaN|undefined|Infinity/);
+ await page.locator('#localExplainBtn').click();await expect(page.locator('#aiResp')).toContainText('bila mtandao');
+ expect(payloads).toHaveLength(0);
+ const popupEvent=page.waitForEvent('popup');await page.locator('button[onclick="generatePdf()"]').click();const popup=await popupEvent;await popup.waitForLoadState('domcontentloaded');
+ const parsed=await pdfParse(await popup.pdf());expect(parsed.text).not.toMatch(/NaN|undefined/);expect(parsed.text).toContain(Math.round(result.grossTax).toLocaleString('en'));expect(parsed.text).toContain(Math.round(result.net).toLocaleString('en'));await popup.close();
+ await page.locator('#aiBtn').click();expect(payloads).toHaveLength(0);expect(disclosures[0]).toContain('Eleza ndani bila mtandao');
+ accept=true;await page.locator('#aiBtn').click();await expect(page.locator('#aiResp')).toHaveText('Maelezo ya majaribio.');expect(payloads).toHaveLength(1);expect(payloads[0].aiConsent).toBe('accepted');expect(payloads[0].context.period).toBe('monthly');expect(disclosures.at(-1)).toContain(JSON.stringify(payloads[0],null,2));
+ await page.locator('#chatIn').fill('Eleza punguzo langu.');accept=false;await page.locator('.chat-send').click();expect(payloads).toHaveLength(1);
+ accept=true;await page.locator('.chat-send').click();await expect.poll(()=>payloads.length).toBe(2);expect(disclosures.at(-1)).toContain(JSON.stringify(payloads[1],null,2));await expect(page.locator('#chatIn')).toHaveValue('');
+ expect(requests.filter(r=>r.method()==='POST')).toHaveLength(2);
+ expect(requests.filter(r=>r.method()!=='POST').some(r=>(r.url()+' '+(r.postData()||'')).includes('123456'))).toBe(false);
+ for(const value of ['0','-1','abc','123abc','Infinity','1e309','']){await salary.fill(value);await calc.click();expect(await page.evaluate(()=>RESULT)).toBeNull();await expect(page.locator('#aiBtn')).toBeDisabled();await expect(page.locator('#localExplainBtn')).toBeDisabled();await expect(page.locator('#resultsCard')).not.toHaveClass(/\bon\b/);}
+ await salary.fill('50000');await calc.click();
+ let resolve;release=new Promise(r=>resolve=r);await page.locator('#aiBtn').click();await expect(page.locator('#aiBtn')).toBeDisabled();await expect.poll(()=>payloads.length).toBe(3);
+ await salary.fill('0');await calc.click();resolve();await page.waitForTimeout(100);await expect(page.locator('#aiResp')).toBeEmpty();await expect(page.locator('#aiBtn')).toBeDisabled();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+ release=null;status=503;await salary.fill('50000');await calc.click();await page.locator('#aiBtn').click();await expect(page.locator('#aiResp')).toContainText('Tumia maelezo ya ndani');await expect(page.locator('#aiBtn')).toBeEnabled();
+ expect(errors).toEqual([]);
+});

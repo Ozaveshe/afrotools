@@ -259,7 +259,7 @@
           </div>
           <div class="ai-body">
             <p class="ai-status" id="aiStatus">Kokotoa mshahara wako kwanza &mdash; nitachambua nafasi yako ya kodi ya KRA PAYE, kueleza SHIF dhidi ya NHIF, AHL na punguzo la kibinafsi, na kutoa vidokezo maalum vya kuboresha kodi yako Kenya.</p>
-            <div class="ai-response" id="aiResp"></div>
+            <p>Hesabu na maelezo ya ndani hubaki kwenye kifaa. AI ni ya hiari: kabla ya kutuma, utaona taarifa zote zinazotumwa.</p><div class="ai-response" id="aiResp" aria-live="polite"></div><button type="button" class="ai-btn" id="localExplainBtn" onclick="explainKenyaLocally()" disabled>Eleza ndani bila mtandao</button>
             <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Kokotoa kwanza ili kufungua &rarr;</button>
             <div class="ai-chat" id="aiChat">
               <div class="chat-msgs" id="chatMsgs"></div>
@@ -476,10 +476,37 @@ var PERIOD = 'monthly';
 var CHART = null;
 var CHART_TYPE = 'donut';
 var CHAT_HISTORY = [];
+var KENYA_AI_PENDING = false;
+var KENYA_AI_ABORT = null;
+function setKenyaActions() {
+  document.getElementById('aiBtn').disabled = !RESULT || KENYA_AI_PENDING;
+  document.getElementById('localExplainBtn').disabled = !RESULT;
+  document.querySelector('.chat-send').disabled = !RESULT || KENYA_AI_PENDING;
+}
+function clearKenyaResult() {
+  if (KENYA_AI_ABORT) KENYA_AI_ABORT.abort();
+  KENYA_AI_ABORT = null;
+  KENYA_AI_PENDING = false;
+  RESULT = null;
+  CHAT_HISTORY = [];
+  if (CHART) { CHART.destroy(); CHART = null; }
+  document.getElementById('resultsCard').classList.remove('on');
+  ['resAmount','resGross','resContent','bandDetailContent','employerStrip','aiResp','chatMsgs'].forEach(function(id) { var node = document.getElementById(id); if(node) node.textContent = ''; });
+  document.getElementById('aiChat').style.display = 'none';
+  document.getElementById('aiStatus').style.display = '';
+  document.getElementById('aiStatus').textContent = 'Kokotoa tena ili kupata matokeo na maelezo mapya.';
+  setKenyaActions();
+}
+function explainKenyaLocally() {
+  if (!RESULT) return;
+  var r = RESULT, el = document.getElementById('aiResp');
+  el.style.display = 'block'; el.className = 'ai-response on';
+  el.textContent = 'Maelezo ya ndani, bila mtandao: ghafi KES ' + fmt(r.gross) + ' kwa mwezi; kodi kabla ya punguzo KES ' + fmt(r.grossTax) + '; PAYE KES ' + fmt(r.paye) + '; halisi KES ' + fmt(r.net) + '. Haya ni makadirio; thibitisha na KRA.';
+}
 
 var fmt = function(n) { return 'KES\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-KE'); };
 var pct = function(r) { var v = typeof r === 'number' && r <= 1 ? r * 100 : r; return (v % 1 === 0 ? (+v).toFixed(0) : parseFloat((+v).toFixed(2)).toString()) + '%'; };
-var parseNum = function(s) { return parseFloat(String(s).replace(/,/g, '')) || 0; };
+var parseNum = function(s) { var value = String(s).trim(); return /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value) ? Number(value.replace(/,/g, '')) : NaN; };
 
 // Slider
 var slider = document.getElementById('salarySlider');
@@ -557,8 +584,9 @@ function setPreset(val, btn) {
 }
 
 function calculate() {
+  clearKenyaResult();
   var gross = parseNum(document.getElementById('salaryInput').value);
-  if (!gross || gross <= 0) {
+  if (!Number.isFinite(gross) || gross <= 0 || !Number.isFinite(gross * 12)) {
     var el = document.getElementById('salaryInput');
     el.focus(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Ingiza mshahara sahihi');
@@ -587,7 +615,7 @@ function calculate() {
 
   RESULT = {
     gross: gross, nssf: nssf, shif: shif, ahl: ahl, taxable: taxable,
-    grossKodi: grossTax, personalRelief: personalRelief, paye: paye, net: net,
+    grossTax: grossTax, personalRelief: personalRelief, paye: paye, net: net,
     effectiveRate: effectiveRate, totalDeductions: totalDeductions, bandDetail: bandDetail,
     employerNSSF: employerNSSF, employerAHL: employerAHL
   };
@@ -641,7 +669,7 @@ function renderResults() {
     '<div class="res-row total"><span class="res-row-lbl">Gharama Jumla za Mwajiri</span><span class="res-row-val grn">' + fmt(empTotal * d) + '</span></div>';
   document.getElementById('resultsCard').classList.add('on');
 
-  document.getElementById('aiBtn').disabled = false;
+  setKenyaActions();
   document.getElementById('aiBtn').textContent = 'Changanua Nafasi Yangu ya Kodi Kenya \u2192';
   document.getElementById('aiStatus').textContent = 'Ghafi: ' + fmt(r.gross) + '/mwezi \u00B7 Halisi: ' + fmt(r.net) + '/mwezi \u00B7 Kiwango: ' + pct(r.effectiveRate);
 }
@@ -814,91 +842,42 @@ function whatsappShare() {
 }
 
 // AI Advisor
-async function getAI() {
-  if (!RESULT) return;
-  var r = matokeo;
-  var btn = document.getElementById('aiBtn');
-  var respEl = document.getElementById('aiResp');
-  btn.disabled = true;
-  btn.textContent = 'Inachambua\u2026';
-  respEl.style.display = 'block';
-  respEl.className = 'ai-response on typing';
-  respEl.textContent = '';
-  document.getElementById('aiStatus').style.display = 'none';
-
-  var prompt = 'Uchambuzi wa PAYE Kenya (2026, KRA):\n'
-    + '- Mshahara ghafi wa mwezi: KES ' + Math.round(r.gross).toLocaleString() + '/mwezi\n'
-    + '- NSSF: KES ' + Math.round(r.nssf).toLocaleString() + ' | SHIF: KES ' + Math.round(r.shif).toLocaleString() + ' | AHL: KES ' + Math.round(r.ahl).toLocaleString() + '\n'
-    + '- Mapato yanayolipishwa kodi: KES ' + Math.round(r.taxable).toLocaleString() + ' | Kodi kabla ya punguzo: KES ' + Math.round(r.grossTax).toLocaleString() + ' | Punguzo la kibinafsi: KES ' + Math.round(r.personalRelief).toLocaleString() + '\n'
-    + '- PAYE: KES ' + Math.round(r.paye).toLocaleString() + ' | Mshahara halisi: KES ' + Math.round(r.net).toLocaleString() + '/mwezi | Kiwango: ' + pct(r.effectiveRate) + '\n'
-    + 'Toa uchambuzi mfupi kwa Kiswahili: 1) Muhtasari wa nafasi ya PAYE 2) Njia mbili za kisheria za kupunguza kodi Kenya 3) Jambo moja kuhusu SHIF au AHL 4) Kosa moja la kawaida. Chini ya maneno 200. Bila alama za markdown.';
-
+async function requestKenyaAI(question) {
+  if (!RESULT || KENYA_AI_PENDING) return;
+  var captured = RESULT;
+  var payload = {
+    aiConsent: 'accepted',
+    context: {toolId:'ke-paye-sw',locale:'sw',period:'monthly',currency:'KES',gross:captured.gross,grossTax:captured.grossTax,paye:captured.paye,net:captured.net,nssf:captured.nssf,shif:captured.shif,ahl:captured.ahl,personalRelief:captured.personalRelief},
+    messages: CHAT_HISTORY.concat([{role:'user',content:question || 'Eleza makadirio haya kwa Kiswahili. Tumia hesabu zilizotolewa, usibuni sheria au viwango. Thibitisha kuwa ni makadirio ya kupanga.'}])
+  };
+  if (!window.confirm('AI itatuma taarifa zifuatazo kwa seva kwa uchambuzi. Kataa ili kutumia “Eleza ndani bila mtandao”.\n\n' + JSON.stringify(payload, null, 2))) return;
+  var controller = new AbortController(); KENYA_AI_ABORT = controller;
+  KENYA_AI_PENDING = true; setKenyaActions();
+  var el = document.getElementById('aiResp'); el.style.display='block'; el.className='ai-response on'; el.textContent='Inachambua…';
   try {
-    var reqH = { 'Content-Type': 'application/json' };
-    if (window.AfroAuth) { var t = AfroAuth.getSessionToken(); if (t) reqH['Authorization'] = 'Bearer ' + t; }
-    var res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: reqH,
-      body: JSON.stringify({
-        system: 'Wewe ni Mshauri wa Kodi wa AI wa AfroTools kwa Kenya \u2014 KRA PAYE, NSSF, SHIF, AHL, punguzo la kibinafsi. Jibu kwa Kiswahili. Kuwa mfupi, maalum, wa vitendo. Bila markdown.',
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    if (res.status === 429) throw new hitilafu('Ombi moja kwa wakati mmoja. Jaribu tena hivi karibuni.');
-    if (!res.ok) throw new hitilafu('Hitilafu ya API');
-    var data = await res.json();
-    var text = data.text || data.reply || 'Haiwezekani kuchambua.';
-    respEl.className = 'ai-response on';
-    respEl.textContent = '';
-    var i = 0;
-    var typeChar = function() {
-      if (i < text.length) {
-        respEl.textContent += text[i++];
-        setTimeout(typeChar, 12);
-      } else {
-        document.getElementById('aiChat').classList.add('on');
-        CHAT_HISTORY = [{ role: 'user', content: prompt }, { role: 'assistant', content: text }];
-      }
-    };
-    typeChar();
-    btn.textContent = 'Uliza swali la ufuatiliaji hapa chini \u2193';
-  } catch(err) {
-    respEl.className = 'ai-response on';
-    respEl.textContent = err.message || 'Uchambuzi wa AI haupatikani kwa sasa.';
-    btn.disabled = false;
-    btn.textContent = 'Jaribu tena';
+    var headers = {'Content-Type':'application/json','X-AfroTools-AI-Consent':'accepted'};
+    if (window.AfroAuth) { var token=AfroAuth.getSessionToken(); if(token)headers.Authorization='Bearer '+token; }
+    var response = await fetch('/.netlify/functions/ai-advisor', {method:'POST',signal:controller.signal,headers:headers,body:JSON.stringify(payload)});
+    if (!response.ok) throw new Error('AI haipatikani. Tumia maelezo ya ndani.');
+    var data = await response.json();
+    if (RESULT !== captured || controller.signal.aborted) return;
+    el.textContent = data.text || data.reply || 'AI haikutoa maelezo. Tumia maelezo ya ndani.';
+    CHAT_HISTORY = payload.messages.concat([{role:'assistant',content:el.textContent}]);
+    document.getElementById('aiChat').style.display='block';
+    if (question) document.getElementById('chatIn').value='';
+  } catch(error) {
+    if (RESULT === captured && !controller.signal.aborted) el.textContent='AI haipatikani. Tumia maelezo ya ndani; hesabu zako hazijabadilika.';
+  } finally {
+    if (KENYA_AI_ABORT === controller) { KENYA_AI_ABORT=null; KENYA_AI_PENDING=false; setKenyaActions(); }
   }
 }
+function getAI() { return requestKenyaAI(''); }
+function sendChat() { var question=document.getElementById('chatIn').value.trim(); if(question)return requestKenyaAI(question); }
 
-async function sendChat() {
-  var input = document.getElementById('chatIn'), msg = input.value.trim();
-  if (!msg || !RESULT) return;
-  input.value = '';
-  var msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += '<div class="msg u">' + msg.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
-  var aiEl = document.createElement('div');
-  aiEl.className = 'msg a';
-  aiEl.textContent = '\u2026';
-  msgs.appendChild(aiEl);
-  msgs.scrollTop = msgs.scrollHeight;
-  CHAT_HISTORY.push({ role: 'user', content: msg });
-  try {
-    var res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: 'Mshauri wa Kodi wa AfroTools AI, Kenya. Ghafi KES ' + Math.round(RESULT.gross).toLocaleString() + '/mwezi. Jibu kwa Kiswahili. Mfupi. Bila markdown.',
-        messages: CHAT_HISTORY
-      })
-    });
-    var data = await res.json();
-    var text = data.text || data.reply || 'Haiwezekani kujibu.';
-    aiEl.textContent = text;
-    CHAT_HISTORY.push({ role: 'assistant', content: text });
-    msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) { aiEl.textContent = 'Hitilafu ya mtandao.'; }
-}
-
+document.getElementById('salaryInput').addEventListener('input', clearKenyaResult);
+slider.addEventListener('input', clearKenyaResult);
+document.querySelectorAll('[data-tog]').forEach(function(node){ node.addEventListener('click', clearKenyaResult); });
+setKenyaActions();
 document.getElementById('salaryInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') calculate(); });
 document.getElementById('chatIn').addEventListener('keydown', function(e) { if (e.key === 'Enter') sendChat(); });
 </script>
