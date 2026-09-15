@@ -373,7 +373,6 @@
       { "country": "CF", "authority": "DGI Centrafrique", "needs": ["payeBands", "statutory.cnps"], "note": "Central African Republic IRPP bands are in the francophone engine with the authority named but no bound URL. Bind the DGI notice or show as planning-grade." },
       { "country": "TD", "authority": "DGI Tchad", "needs": ["payeBands", "statutory.cnps"], "note": "Chad IRPP bands are in the francophone engine with the authority named but no bound URL. Bind the DGI notice or show as planning-grade." },
       { "country": "NE", "authority": "DGI Niger", "needs": ["payeBands", "statutory.cnss"], "note": "Niger ITS bands are in the francophone engine with the authority named but no bound URL. Bind the DGI notice or show as planning-grade." },
-      { "country": "ML", "authority": "INPS Mali", "needs": ["statutory.inps"], "note": "The DGI ITS source is now bound, but the engine's INPS parameters still need a direct, current official INPS publication. Keep that component planning-grade until it is bound and reverified." },
       { "country": "GW", "authority": "DGCI Guiné-Bissau", "needs": ["payeBands"], "note": "Guinea-Bissau income tax is a bundled planning default with no bound authority URL. Bind the official notice or show as planning-grade." },
       { "country": "SL", "authority": "NRA (National Revenue Authority, Sierra Leone)", "needs": ["payeBands"], "note": "Sierra Leone PAYE is a bundled planning default with no bound authority URL. Bind nra.gov.sl or show as planning-grade." },
       { "country": "LR", "authority": "LRA (Liberia Revenue Authority)", "needs": ["payeBands"], "note": "Liberia PAYE is a bundled planning default with no bound authority URL. Bind lra.gov.lr or show as planning-grade." },
@@ -391,8 +390,13 @@
     ],
     "unsourcedClaims": [
       {
+        "field": "statutory.inps",
+        "markets": "ML",
+        "why": "The DGI Mali ITS source is bound in rev-ml, but it does not verify INPS contributions. The engine's INPS parameters still need a direct, current official INPS publication. Keep that component planning-grade until it is bound and reverified."
+      },
+      {
         "field": "payeBands / reliefs / thresholds",
-        "markets": "every market in gaps.revenueAuthoritiesWithoutUrl (37 of 54)",
+        "markets": "every market in gaps.revenueAuthoritiesWithoutUrl",
         "why": "The band tables, personal reliefs and tax-free thresholds for these markets are bundled planning defaults (many in engines/francophone-paye-engine.js) with the revenue authority named but no bound URL. They are estimates for planning, not filing-grade figures. Treat any figure past highRiskCadenceDays as planning-grade and confirm with the authority."
       },
       {

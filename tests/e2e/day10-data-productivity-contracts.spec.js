@@ -104,7 +104,7 @@ test('Public-holiday worksheet exports a parser-valid user-confirmed Nigeria ent
   expect(ics).toContain('DTSTART;VALUE=DATE:20260914');
   expect(ics).toContain('DTEND;VALUE=DATE:20260915');
   expect(ics).toContain('SUMMARY:Synthetic Civic Day');
-  expect(ics).toContain('X-AFROTOOLS-BOUNDARY:User-confirmed entry; not an official calendar');
+  expect(ics).toContain('X-AFROTOOLS-BOUNDARY:User-confirmed entry; unofficial calendar');
   expect(ics.trimEnd()).toMatch(/END:VCALENDAR$/);
   expect((ics.match(/BEGIN:VEVENT/g) || []).length).toBe(1);
 });
