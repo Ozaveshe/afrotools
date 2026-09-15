@@ -754,6 +754,8 @@ const appTranslations = {
     'At this point, the steepest depreciation curve has flattened and you retain more value per year of use. Selling before year 3 means absorbing the worst depreciation without enough benefit. Holding beyond year 8 gives very slow further depreciation but increases maintenance risk.': 'À ce stade, la baisse la plus forte est passée et vous conservez davantage de valeur par année d’usage. Vendre avant la troisième année revient à absorber la plus forte dépréciation sans assez d’usage. Après la huitième année, la dépréciation ralentit mais le risque d’entretien augmente.'
   },
   'fleet-fuel': {
+    'A 10% efficiency improvement would save approximately': 'Une amélioration de 10 % de l’efficacité énergétique permettrait d’économiser environ',
+    'per year.': 'par an.',
     'Fleet Details': 'Détails de la flotte',
     'Number of Vehicles': 'Nombre de véhicules',
     'Average Daily Distance per Vehicle (km)': 'Distance quotidienne moyenne par véhicule (km)',
@@ -892,6 +894,15 @@ const appTranslations = {
     '/year on this route).': 'par an sur ce trajet).'
   },
   'truck-load': {
+    "High utilization. Confirm axle, gross-weight and route limits before dispatch.": "Utilisation élevée. Vérifiez les limites par essieu, de poids total et de trajet avant le départ.",
+    "Moderate utilization. Compare consolidation or a smaller vehicle using your own dispatch constraints.": "Utilisation modérée. Comparez le regroupement des chargements ou un véhicule plus petit selon vos contraintes d’expédition.",
+    "Low utilization. Review consolidation, timing or vehicle size using your own operating constraints.": "Faible utilisation. Examinez le regroupement des chargements, les horaires ou la taille du véhicule selon vos contraintes d’exploitation.",
+    "This is a planning calculation from your entered capacity and cost, not a legal load approval or carrier quote.": "Ce calcul de planification utilise la capacité et le coût saisis ; il ne constitue ni une autorisation légale de chargement ni un devis de transporteur.",
+    "Load Utilization": "Taux d’utilisation de la capacité",
+    "Unused Capacity": "Capacité inutilisée",
+    "Capacity-share Trip Cost": "Part du coût du trajet liée à la capacité",
+    "utilization": "d’utilisation",
+    'Verify the vehicle plate, registration and route/axle restrictions. This input is not a legal approval.': 'Vérifiez la plaque du véhicule, son immatriculation et les restrictions liées au trajet et aux essieux. Cette saisie ne constitue pas une autorisation légale.',
     'Load & Route Details': 'Chargement et trajet',
     'Truck Type': 'Type de camion',
     'Truck Capacity (tonnes)': 'Capacité du camion (tonnes)',
@@ -913,6 +924,7 @@ const appTranslations = {
     'Running at less than 65% capacity significantly increases your cost per tonne-km. Consolidate loads, postpone the trip until you have more cargo, or use a smaller truck for this load.': 'Une charge inférieure à 65 % augmente fortement le coût par tonne-km. Regroupez les charges, attendez davantage de fret ou utilisez un camion plus petit.'
   },
   'vehicle-operating-cost': {
+    'Planning model only. Maintenance, registration and depreciation use the displayed fixed assumptions; replace the result with current quotes before acting.': 'Modèle de planification uniquement. L’entretien, l’immatriculation et la dépréciation utilisent les hypothèses fixes affichées ; remplacez le résultat par des devis actuels avant de prendre une décision.',
     'Vehicle Details & Annual Usage': 'Véhicule et utilisation annuelle',
     'Vehicle Details &amp; Annual Usage': 'Véhicule et utilisation annuelle',
     'Planning assumptions:': 'Hypothèses de planification :',

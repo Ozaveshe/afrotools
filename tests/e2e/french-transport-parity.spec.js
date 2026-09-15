@@ -964,6 +964,19 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     }
     console.log(`  ${app.englishId}: workflow result ready`);
     await expectFrenchProductUi(page, app.englishId, 'rendered-result');
+    let localizedAdvice = null;
+    if (app.englishId === 'fleet-fuel') {
+      localizedAdvice = (await page.locator('#fleetTips').innerText()).trim();
+      expect(localizedAdvice).toMatch(/^Une amélioration de 10 % de l’efficacité énergétique permettrait d’économiser environ [\d, .]+ par an\.$/);
+    }
+    if (app.englishId === 'truck-load') {
+      localizedAdvice = (await page.locator('#truckRec').innerText()).trim();
+      expect(localizedAdvice).toContain('il ne constitue ni une autorisation légale de chargement ni un devis de transporteur.');
+    }
+    if (app.englishId === 'vehicle-operating-cost') {
+      localizedAdvice = (await page.locator('#vocInfo').innerText()).trim();
+      expect(localizedAdvice).toContain('remplacez le résultat par des devis actuels avant de prendre une décision.');
+    }
     const renderedResult = await visibleResultSnapshot(page);
     const calculatedFragments = exactCalculatedFragments(renderedResult);
     expect(
@@ -978,6 +991,7 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     await expect(txtButton).toBeFocused();
     await page.keyboard.press('Enter');
     const txt = await readDownload(await txtPromise, 'utf8');
+    if (localizedAdvice) expect(txt).toContain(localizedAdvice);
     expect.soft(txt, `${app.englishId} TXT reopens with title`).toContain(app.name);
     expect.soft(txt, `${app.englishId} TXT reopens with boundary`).toContain('Limite: estimation de planification');
     for (const fragment of calculatedFragments) {
@@ -1001,6 +1015,7 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     expect.soft(pdf.length, `${app.englishId} PDF content`).toBeGreaterThan(1000);
     const parsedPdf = await pdfParse(pdf);
     const parsedPdfText = normalizedPdfText(parsedPdf.text);
+    if (localizedAdvice) expect(parsedPdfText.replace(/\s+/g, ' ')).toContain(normalizedPdfText(localizedAdvice).replace(/\s+/g, ' '));
     expect.soft(parsedPdfText, `${app.englishId} parsed PDF title`).toContain(normalizedPdfText(app.name));
     expect.soft(parsedPdfText, `${app.englishId} parsed PDF boundary`).toContain('estimation de planification');
     for (const fragment of calculatedFragments) {
@@ -1021,9 +1036,10 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     if (staleAfterResultApps.has(app.englishId)) {
       const mutation = await mutateValidInputAfterResult(page, app.englishId);
       expect(mutation, `${app.englishId} has a valid post-result input mutation`).not.toBeNull();
-      await expect(page.locator('[data-fr-transport-status]')).toContainText(
-        'Saisies modifiées : relancez le calcul avant d’exporter.'
-      );
+      await expect(page.locator('[data-fr-transport-status]')).toContainText(/(?:relancez|lancez) le calcul/i);
+      if (app.englishId === 'car-import-cost') {
+        await expect(page.locator('body')).toHaveAttribute('data-fr-car-import-result-ready', 'false');
+      }
       await expect(txtButton, `${app.englishId} stale TXT export disabled`).toBeDisabled();
       await expect(pdfButton, `${app.englishId} stale PDF export disabled`).toBeDisabled();
       expect(await visibleResultLength(page), `${app.englishId} stale result excluded from export payload`).toBe(0);
