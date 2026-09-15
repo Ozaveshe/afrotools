@@ -1,0 +1,25 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../..');
+const {questionFingerprint}=require(path.join(root,'scripts/lib/jamb-content-trust'));
+const pool=JSON.parse(fs.readFileSync(path.join(root,'ops/jamb/source-pool.json')));
+const ledger=JSON.parse(fs.readFileSync(path.join(root,'data/jamb/review-ledger.json')));
+const destination=path.join(__dirname,'math-1985-publishable-901.json');
+if(fs.existsSync(destination))throw Error('Batch already prepared.');
+const edits=[{id:'mathematics-1985-46-f1350c4c61af',page:12,question:'Two points X and Y are both at latitude 60°S, with longitudes 147°E and 153°W respectively. Find, to the nearest kilometre, the shorter distance between them along this parallel of latitude. Take the equatorial circumference 2πR = 4 × 10⁴ km.',options:{A:'28,850 km',B:'16,667 km',C:'8,333 km',D:'6,667 km',E:'3,333 km'},answer:'E',explanation:'The longitude difference measured the long way is 147° + 153° = 300°. The shorter separation across the date line is 360° − 300° = 60°. The circumference of the 60°S parallel is 40000 cos 60° = 20000 km. The distance is (60/360) × 20000 = 3333.333… km, which rounds to 3,333 km.',reason:'Inspected original PDF page 12. Restored pi in equatorial circumference, normalized source option thousands punctuation and made the shorter-arc convention explicit. Independently corrected the stored key and erroneous long-arc calculation.'}];
+const records=edits.map(edit=>{
+ const q=pool.questions.find(q=>q.id===edit.id);if(!q)throw Error(edit.id);
+ const before=JSON.parse(JSON.stringify(q));
+ q.question=edit.question;if(edit.options)q.options=edit.options;
+ q.answer=edit.answer;q.format=5;q.has_diagram=false;q.ai_explanation=edit.explanation;
+ q.verification={method:'ai-calculation-checked',reviewed_at:'2026-09-15'};
+ const evidence='ops/jamb/verification/math-1985-publishable-901.json#'+q.id;
+ const review={status:'accepted',reviewer:'Codex (AI)',reviewer_type:'ai',reviewed_at:'2026-09-15',evidence};
+ const hash=questionFingerprint(q);
+ ledger.questions[q.id]={content_sha256:hash,source_id:'owner-supplied-math-1983-2004',question_review:{...review},answer_review:{...review,evidence:evidence+'; ops/jamb/verification/check-math-1985-901.cjs'},explanation_review:{...review}};
+ return {id:q.id,num:q.num,source_pdf_page:edit.page,before,after:q,content_sha256:hash,publication_candidate:true,reasoning:edit.reason};
+});
+const batch={schema_version:1,reviewed_at:'2026-09-15',source_file:'MATHEMATICS-JAMB-Past-Questions.pdf',source_pdf_sha256:'dfc7168d207757e9db0b59b378aa16aa0f1449c501d6af3bf040abb37af95264',reviewer:'Codex (AI)',records};
+fs.writeFileSync(path.join(root,'ops/jamb/source-pool.json'),JSON.stringify(pool)+'\n');
+fs.writeFileSync(path.join(root,'data/jamb/review-ledger.json'),JSON.stringify(ledger,null,2)+'\n');
+fs.writeFileSync(destination,JSON.stringify(batch,null,2)+'\n');
