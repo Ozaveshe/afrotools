@@ -43,10 +43,17 @@ function translateVisibleFragment(fragment, transforms = VISIBLE_LANGUAGE_TRANSF
       (whole, boundary, text) => `${boundary}${applyTransforms(text, transforms)}`
     )
     .replace(
-      /\b(placeholder|aria-label|title|alt|value)=(['"])(.*?)\2/gi,
+      /\b(placeholder|aria-label|title|alt)=(['"])(.*?)\2/gi,
       (whole, attribute, quote, text) =>
         `${attribute}=${quote}${applyTransforms(text, transforms)}${quote}`
-    );
+    )
+    // Values are application data except for the visible label of these
+    // input buttons. In particular, option values must retain engine keys.
+    .replace(/<input\b[^>]*>/gi, (tag) => {
+      if (!/\stype\s*=\s*(['"])(?:button|submit|reset)\1/i.test(tag)) return tag;
+      return tag.replace(/(\s)value=(['"])(.*?)\2/gi,
+        (whole, space, quote, text) => `${space}value=${quote}${applyTransforms(text, transforms)}${quote}`);
+    });
 }
 
 function localizeVisibleLanguage(html, transforms = VISIBLE_LANGUAGE_TRANSFORMS) {
