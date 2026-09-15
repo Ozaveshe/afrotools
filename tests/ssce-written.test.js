@@ -55,3 +55,10 @@ test('coverage never turns consecutive or repeated compilation numbers into a co
  const proof={complete:true,sourceFingerprint:'a'.repeat(64),exam:'WAEC',subject:'mathematics',session:'school',paper:'2',year:2023,instructionsVerified:true,sourceUseVerified:true,expectedIds:['q1a','q1b'],reviewedIds:['q1a','q1b'],allPassagesVerified:true,allFiguresVerified:true,allSubpartsVerified:true,allAnswersVerified:true};
  assert.doesNotThrow(()=>coverage.validateCompletePaper(proof));assert.throws(()=>coverage.validateCompletePaper({...proof,reviewedIds:['q1a','q1a']}));assert.throws(()=>coverage.validateCompletePaper({...proof,allFiguresVerified:false}));
 });
+test('new 2022 companions agree with independently reconstructed distributions and geometry',()=>{
+ const get=n=>bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+n);
+ const percentages=[35,7.5,10,15,17.5];const remainder=100-percentages.reduce((a,b)=>a+b);assert.equal(remainder,15);assert.deepEqual([...percentages,remainder].map(p=>p*360/100),[126,27,36,54,63,54]);assert.equal(get('8ab').subpart,'a–b');assert.match(get('8ab').answer,/126°.*27°.*36°.*54°.*63°.*54°/);
+ const candidates=[];for(let k=0;k<100;k++){const ages=[3,4,5,6,7,8,9,10].flatMap((age,i)=>Array([2,6,5,k,6,9,8,5][i]).fill(age));if(ages.reduce((a,b)=>a+b)/ages.length===7)candidates.push({k,ages});}assert.equal(candidates.length,1);assert.equal(candidates[0].k,4);const ages=candidates[0].ages;assert.ok(Math.abs(ages.reduce((s,a)=>s+a*a,0)/ages.length-49-196/45)<1e-12);assert.match(get(10).answer,/k = 4.*2.087/);
+ assert.equal(2*(22/7)*3.5*(3.5+6),209);const H=19*Math.sin(38*Math.PI/180)*Math.sin(43*Math.PI/180)/Math.sin(5*Math.PI/180);assert.equal(H.toFixed(1),'91.5');assert.match(get(13).answer,/6 cm.*91.5 m/);
+ assert.match(bank.scope,new RegExp(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics').length+' WAEC Mathematics companions'));
+});

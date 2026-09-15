@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks and 5 WAEC 2023 writing companions, plus 15 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks and 5 WAEC 2023 writing companions, plus 18 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 ## Acquisition queue
 
@@ -85,7 +85,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 - **neco-english-acquisition** (source-needed): Acquire complete recent paper scans including reading passages, writing instructions, oral-English components and source provenance. The board homepage is not a past-paper source. Source: https://neco.gov.ng/
 - **jamb-2023-mathematics-compilation** (candidate-unverified): Resolve missing rendered prompts, source provenance, version/session identity and source-use basis. Do not treat website question numbering or an advertised year as proof of a complete UTME sitting. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
 - **jamb-2024-english-compilation** (candidate-unverified): Inspect the complete source, passages and reading-text identity; authenticate year/session and review all answers. Search snippets and publisher claims are leads, not imported or verified questions. Source: https://pdfmadeazy.com/2024-jamb-english-past-questions-and-answer/
-- **waec-2022-mathematics-p2** (mathematics-companion): Parts 1(b), 3, 4, 7, 11 and 12(b) have complete adapted briefs and independently checked solutions. Continue recovering other images and paper instructions; reconcile questions 2 and 5 before publication. Question 6 needs reliable graph reconstruction. Question 12(a) has ambiguous probability wording and does not explicitly state independent race outcomes; hold pending reconciliation. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
+- **waec-2022-mathematics-p2** (mathematics-companion): Companions now cover 1(b), 3, 4, 7, 8(a–b), 10, 11, 12(b) and 13. Other questions remain incomplete or held for source conflicts; no complete paper is claimed. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
 
 ## Definition of complete
 

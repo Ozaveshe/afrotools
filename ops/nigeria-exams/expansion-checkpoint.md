@@ -4,20 +4,23 @@ Base: 3c35b8fdab0ba04c13800387cdb661d72012c8ef. This is a development checkpoint
 
 ## Delivered in source
 
-- JAMB coverage now includes all 11 existing subjects, with 323 subject/year groups and 66 explicit source gaps for 2021–2026. The development bank contains 7,917 eligible questions, including seven recovered Mathematics questions: 1983 (4, 7, 45), 1985 (37, 46), and 1987 (27, 46). Original owner-supplied PDF pages were visually inspected and answers independently calculated. No recent JAMB questions have been imported.
-- WAEC 2022 Mathematics companions cover 1(b), 3, 4, 7, 11 and 12(b), with independent answer calculations. Together with the existing 2023 content, the written bank has 15 Mathematics companions, 5 writing companions and 14 original tasks. These are not complete past papers.
+- JAMB coverage now includes all 11 existing subjects, with 323 subject/year groups and 66 explicit source gaps for 2021–2026. The development bank contains 7,949 eligible questions, including seven recovered Mathematics questions: 1983 (4, 7, 45), 1985 (37, 46), and 1987 (27, 46). Original owner-supplied PDF pages were visually inspected and answers independently calculated. A further 32 English questions from the owner-supplied 2019 compilation have been independently reviewed: 28 missing records and four recovered records with stable IDs. The 2019 English page now contains 62 eligible questions. Compilation year is retained without claiming a separately authenticated official sitting. No 2021–2026 JAMB questions have been imported.
+- WAEC 2022 Mathematics companions cover 1(b), 3, 4, 7, 8(a–b), 10, 11, 12(b) and 13, with independent answer calculations. Together with the existing 2023 content, the written bank has 18 Mathematics companions, 5 writing companions and 14 original tasks. These are not complete past papers.
 - Twelve original Physics exercises cover work/energy and elementary Ohm's-law calculations. They use the existing scoring, explanation, retry, local-save and export workflow. Physics is currently English-only; the French adaptation continues to expose its reviewed Mathematics and English content.
 - The practice page has explicit exam/subject heading text, corrected social-title escaping and updated year/subject coverage. Physics exports identify their subject.
 - Coverage JSON records WAEC year, paper, question and subpart. Candidate-only JAMB research is in jamb-2023-mathematics-intake.json.
 
 ## Remaining goal requirements
 
-1. Add a substantive verified JAMB batch. Recent compilation sources require source-use and year-provenance reconciliation; existing held records often require original notation or figures. Do not infer eligibility from stored AI explanations.
-2. Expand the WAEC batch further and reconcile held items. The source ledger records concrete conflicts; do not present those conflicts as student teaching copy.
+1. The substantive JAMB batch is now in development: 32 source-inspected English questions, fingerprinted independent review and teaching explanations. Validate its combined historical-evidence replay before release.
+2. Three further WAEC companions are now in development. Statistics, pie-chart angles and cylinder/trigonometry calculations have independent checks. Remaining source conflicts stay held; no repair-history copy appears in student explanations.
 3. Validate the final combined source, generated outputs and release artifact. Earlier browser and SEO passes are scoped evidence, not final release proof.
 4. Integrate and deploy one consolidated release through the existing release process, then verify production identity and affected workflows.
 
 ## Validation already observed
+
+- Current English/WAEC development batch: all 12 browser tests passed at small and desktop widths, including all 32 English explanations and all three new WAEC solutions. Source calculations and historical recovery tests are included in the final combined evidence run.
+- Prior consolidated production milestone bb427182 was verified live with matching artifact hashes. The new English/WAEC batch above is not yet deployed.
 
 - Production-context build and deploy-artifact audit passed. All 76 optimized-artifact browser checks passed, covering the three changed JAMB years, Education Hub workspace, student day, applications, WAEC companions, Physics and French practice.
 - Historical Mathematics uncovered-batch replay now accepts only the exact two source-inspected 1987 replacement records. Original evidence remains immutable; five negative replay cases pass, including altered replacement answers and missing replacement reviews. Full repository tests are running after this reconciliation.
