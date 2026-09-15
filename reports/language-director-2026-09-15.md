@@ -64,13 +64,16 @@ These are rounded UI totals, not an exported dataset. Page-level findings priori
 - Final source integration passed 22 combined Morocco/Tunisia node tests. The coordinator's 17-case browser run passed Morocco, architectural-fee and bill-of-quantities workflows together, including reopened exports, mobile layout and consent/stale-response handling. The Morocco peer separately passed all 9 source and 11 browser tests; source-law confidence remains limited as documented.
 - Engineering's full 26-owner generation check passed after integration; Morocco, Tunisia and all 134 Swahili employment snippets also matched their owners.
 - Full deploy build at source `45d25390` passed, producing 18,083 files. Its artifact audit and security scan passed. A separate SSCE source-comparison gate failed after postprocessing; the comparison was repaired and tested against the actual built pages while preserving schema and metadata checks.
-- That build does not cover subsequent commits. A final combined build, release gates and artifact checks are still required.
+- The later combined deploy build at product source `e2eb4026` passed in 681.8 seconds, producing 18,093 files. Artifact audit and security scan passed. All 17 focused artifact browser tests passed in 51.2 seconds. Built-source pretest passed across 11,785 HTML pages with zero content-integrity blockers or warnings and three reviewed exceptions.
+- Morocco and Tunisia engine registration now passes the calculation-quality gate: 791 artifacts and 328 fixtures, including 21 new literal fixtures. The quality-system tests passed. Both new formula records retain `review-required` source status; registration does not resolve the documented source assumptions.
+- A separate broad diagnostic at unbuilt source `e2eb4026` completed with 2,873 passing and 17 failing Node tests; its seven repository audits passed. Its `npm test` invocation stopped at pretest provenance. The later built pretest passed, but the broad result remains a failure until its remaining contracts and generated-state checks are reconciled. No failures are classified as pre-existing without baseline reproduction.
+- The successful artifact predates the pending verification-panel changes. Final release checks must cover those changes before delivery.
 
 The effective Swahili inventory records 1,256 accepted current app routes, including the finder and SSCE acceptances added here, with zero missing, fallback or unaccepted routes. The raw ledger has one additional historical prepaid-meter entry outside that inventory. Most acceptance records are historical. These counts are not evidence that every current calculation or workflow was freshly retested.
 
 ## Remaining work
 
-1. Complete the combined deploy build started at e2eb4026, then run release, security, artifact and locale checks against its output.
+1. Complete the dedicated payroll verification panels and refresh the deploy artifact for the final source state; finish release and locale checks.
 2. Review generated changes and reconcile any remaining gate failures. Keep historical acceptance and fresh regression evidence distinct.
 3. Complete the requirement-by-requirement closeout review and prepare the reviewable delivery.
 4. Report deployment separately. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.
