@@ -47,9 +47,9 @@ assert.equal(angolaPaye.selectedToolId, "ao-paye");
 assert.equal(angolaPaye.selectedRoute, `${routeMap.ids["ao-paye"]}?source=ask`);
 assert.equal(angolaPaye._meta.localeRoute.status, "mapped");
 
-assert.equal(inventory.totals.remainingUnaccepted, 1, "SSCE practice remains unavailable until independently accepted");
-assert.equal(inventory.rows.find((row) => row.englishId === "ssce-practice").state, "missing");
-assert.equal(routeEntry.resolveToolRoute("ssce-practice", routeMap), null);
+assert.equal(inventory.totals.remainingUnaccepted, 0, "all current app routes have recorded coordinator acceptance");
+assert.equal(inventory.rows.find((row) => row.englishId === "ssce-practice").accepted, true, "SSCE practice has independent coordinator acceptance");
+assert.equal(routeEntry.resolveToolRoute("ssce-practice", routeMap), "/sw/zana/mazoezi-waec-neco/");
 assert.equal(inventory.rows.find((row) => row.englishId === "paye-authority-finder").state, "localized-shell-candidate");
 assert.equal(inventory.rows.find((row) => row.englishId === "paye-authority-finder").accepted, true, "finder has independent coordinator acceptance");
 assert.equal(routeEntry.resolveToolRoute("paye-authority-finder", routeMap), "/sw/zana/tafuta-mamlaka-ya-paye/");
