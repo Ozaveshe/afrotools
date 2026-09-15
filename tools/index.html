@@ -27,8 +27,8 @@
   <script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
   <script src="/assets/js/components/tool-registry.min.js?v=6bb4281e" defer data-directory-dependency></script>
   <script src="/assets/js/data/african-countries.js?v=0d872b4b" defer></script>
-  <script src="/assets/js/components/country-selector.js?v=46e251cd" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=d1ec4375" defer></script>
+  <script src="/assets/js/components/country-selector.js?v=a55dcf5d" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
   <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -58,6 +58,7 @@
     .search-bar{display:flex;align-items:center;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
     .search-bar:focus-within{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.1),0 4px 12px rgba(0,0,0,.06)}
     .search-bar svg{margin-left:16px;flex-shrink:0;color:#94a3b8}
+    .tools-section .directory-more{margin-top:16px;min-height:44px;white-space:normal;text-align:left;max-width:100%}
     .search-bar input{flex:1;padding:14px 12px;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--color-text)}
     .search-bar input::placeholder{color:#94a3b8}
     .search-bar kbd{margin-right:12px;padding:4px 8px;border:1px solid #e2e8f0;border-radius:5px;font-size:11px;font-weight:600;color:#94a3b8;background:#f8fafc;white-space:nowrap;font-family:'DM Sans',sans-serif}
@@ -129,6 +130,27 @@
     .no-results svg{width:48px;height:48px;color:#cbd5e1;margin-bottom:16px}
     .no-results h3{font-size:1.1rem;font-weight:700;color:#334155;margin-bottom:8px}
     .no-results p{font-size:.85rem;color:#64748b}
+
+    #directory-result-summary{margin:0 20px 18px;color:var(--color-text-secondary,#64748b);font-size:.85rem}
+    [data-theme="dark"] .stat-pill,
+    [data-theme="dark"] .search-bar,
+    [data-theme="dark"] .search-bar kbd,
+    [data-theme="dark"] .f-tab,
+    [data-theme="dark"] .section-count,
+    [data-theme="dark"] .directory-country-note,
+    [data-theme="dark"] .goal-context-inner,
+    [data-theme="dark"] .goal-actions a,
+    [data-theme="dark"] .goal-actions button{background:#121f33;color:#d9e6f7;border-color:#354963}
+    [data-theme="dark"] .f-tab.on{background:#0057b8;color:#fff;border-color:#93c5fd}
+    [data-theme="dark"] .f-tab:hover{background:#1c3553;color:#eef5ff}
+    [data-theme="dark"] .search-bar input{background:transparent;color:#eef5ff}
+    [data-theme="dark"] .search-bar input::placeholder,
+    [data-theme="dark"] .tc p,
+    [data-theme="dark"] .tc-meta,
+    [data-theme="dark"] .goal-copy,
+    [data-theme="dark"] #directory-result-summary{color:#b8c7dc}
+    [data-theme="dark"] .goal-title{color:#eef5ff}
+    [data-theme="dark"] .f-tab:focus-visible{outline:2px solid #93c5fd;outline-offset:3px}
 
     /* -- Responsive -- */
     @media(max-width:640px){
@@ -239,7 +261,7 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="canonical" href="https://afrotools.com/tools/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/">
@@ -328,6 +350,8 @@
     <option value="en">English</option>
     <option value="fr">French</option>
     <option value="sw">Swahili</option>
+    <option value="ha">Hausa</option>
+    <option value="yo">Yoruba</option>
   </select>
   <select id="sort-filter" aria-label="Sort tools">
     <option value="popular">Popular</option>
@@ -338,6 +362,7 @@
 </div>
 
 <div class="wrap">
+  <p id="directory-result-summary" role="status" aria-live="polite"></p>
   <div id="tools-container">
     <!-- TOOL_DIRECTORY_FALLBACK_START -->
 <p class="directory-note">Static fallback generated from the validated canonical AfroTools registry. Filters and search enhance this list when JavaScript loads; without JavaScript, every published canonical record below remains crawlable.</p>
@@ -8457,9 +8482,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var arrowSvg = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+  var categoryLimits = {};
+  var lastFilterKey = '';
+
   function render() {
     var query = normalizeText(searchInput.value || '');
     var tokens = query.split(/\s+/).filter(function(t) { return t.length > 0; });
+    var filterKey = [query, activeFilter, activeGoal, countryFilter && countryFilter.value, statusFilter && statusFilter.value, languageFilter && languageFilter.value, sortFilter && sortFilter.value].join('|');
+    if (filterKey !== lastFilterKey) categoryLimits = {};
+    lastFilterKey = filterKey;
 
     // Group tools by category
     var grouped = {};
@@ -8518,6 +8549,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var catKeys = Object.keys(AFRO_CATEGORIES);
     var html = '';
     var totalShown = 0;
+    var visibleCount = 0;
 
     catKeys.forEach(function(k) {
       var tools = grouped[k];
@@ -8534,7 +8566,9 @@ document.addEventListener('DOMContentLoaded', function() {
       html += '</div>';
       html += '<div class="tg-grid">';
 
-      tools.forEach(function(t) {
+      var visibleTools = tools.slice(0, categoryLimits[k] || 8);
+      visibleCount += visibleTools.length;
+      visibleTools.forEach(function(t) {
         var isLive = t.status === 'live' || t.status === 'new';
         var tag = isLive ? 'a' : 'div';
         var href = isLive ? ' href="' + t.href + '"' : '';
@@ -8562,10 +8596,15 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '</' + tag + '>';
       });
 
-      html += '</div></div>';
+      html += '</div>';
+      if (visibleTools.length < tools.length) {
+        html += '<button type="button" class="f-tab directory-more" data-more-category="' + esc(k) + '">Show more ' + esc(cat.name) + ' tools (' + visibleTools.length + ' of ' + tools.length + ' shown)</button>';
+      }
+      html += '</div>';
     });
 
     container.innerHTML = html;
+    document.getElementById('directory-result-summary').textContent = 'Showing ' + visibleCount + ' of ' + totalShown + ' matching tools.';
     noResults.style.display = totalShown === 0 ? 'block' : 'none';
     if (window.AfroProgressiveDirectory) {
       if (totalShown === 0) window.AfroProgressiveDirectory.markNoResults(Boolean(query || activeFilter !== 'all'));
@@ -8573,6 +8612,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     updateGoalContext();
   }
+
+  container.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-more-category]');
+    if (!button) return;
+    var category = button.getAttribute('data-more-category');
+    var previousLimit = categoryLimits[category] || 8;
+    categoryLimits[category] = previousLimit + 24;
+    var sectionIndex = Array.prototype.indexOf.call(container.querySelectorAll('.tools-section'), button.closest('.tools-section'));
+    render();
+    var section = container.querySelectorAll('.tools-section')[sectionIndex];
+    var nextCard = section && section.querySelectorAll('.tc')[previousLimit];
+    if (nextCard) {
+      if (!nextCard.hasAttribute('href')) nextCard.setAttribute('tabindex', '-1');
+      nextCard.focus();
+    }
+  });
 
   // Search input
   var debounce;

@@ -13,13 +13,24 @@ const END = "<!-- yoruba-fallback:end -->";
 const STYLESHEET = '<link rel="stylesheet" href="/assets/css/yoruba-fallback.css" data-yoruba-fallback-style>';
 
 function renderBanner(record) {
+  const unavailable = record.state === "unavailable";
+  if (!unavailable && (typeof record.fallbackRoute !== "string" || !/^\/(?!\/)[^\s"'<>]+$/.test(record.fallbackRoute))) {
+    throw new Error("A valid local English fallback route is required for " + record.sourceOwner);
+  }
+  const message = unavailable ? [
+    '    <h2 id="yoruba-fallback-title">Iṣẹ́ yìí kò tíì ṣetan.</h2>',
+    '    <p>Yan iṣẹ́ mìíràn nínú àkójọ àwọn irinṣẹ́ Yorùbá.</p>',
+    '    <a href="/yo/awon-ise/">Àwọn irinṣẹ́ Yorùbá</a>'
+  ] : [
+    '    <h2 id="yoruba-fallback-title">Ìtumọ̀ Yorùbá pípé kò tíì sí fún iṣẹ́ yìí</h2>',
+    '    <p>Ojú-ìwé yìí ní àkóónú díẹ̀ ní Yorùbá, ṣùgbọ́n iṣẹ́ pípé ṣì wà ní Gẹ̀ẹ́sì. A kò ní yí èdè padà láì sọ fún ọ.</p>',
+    '    <a lang="en" hreflang="en" href="' + record.fallbackRoute + '">Tẹ̀síwájú sí ojú-ìwé Gẹ̀ẹ́sì</a>'
+  ];
   return [
     START,
     '<aside class="yoruba-fallback" data-yoruba-fallback role="note" aria-labelledby="yoruba-fallback-title">',
     '  <div class="yoruba-fallback__inner">',
-    '    <h2 id="yoruba-fallback-title">Ìtumọ̀ Yorùbá pípé kò tíì sí fún iṣẹ́ yìí</h2>',
-    '    <p>Ojú-ìwé yìí ní àkóónú díẹ̀ ní Yorùbá, ṣùgbọ́n iṣẹ́ pípé ṣì wà ní Gẹ̀ẹ́sì. A kò ní yí èdè padà láì sọ fún ọ.</p>',
-    '    <a lang="en" hreflang="en" href="' + record.fallbackRoute + '">Tẹ̀síwájú sí ojú-ìwé Gẹ̀ẹ́sì</a>',
+    ...message,
     '  </div>',
     '</aside>',
     END
@@ -63,6 +74,8 @@ function syncContent(html, record) {
   }
   const body = output.match(/<body\b[^>]*>/i);
   if (!body) throw new Error(record.sourceOwner + " has no body element.");
+  const navbar = output.match(/<afro-navbar\b[^>]*>[\s\S]*?<\/afro-navbar>/i);
+  if (navbar) return output.replace(navbar[0], navbar[0] + "\n" + renderBanner(record) + "\n");
   return output.replace(body[0], body[0] + "\n" + renderBanner(record) + "\n");
 }
 
