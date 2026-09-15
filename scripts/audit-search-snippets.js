@@ -22,12 +22,31 @@ const ENGLISH_MARKERS = {
 function decodeHtml(value) {
   const named = {
     amp: "&", apos: "'", copy: "©", gt: ">", hellip: "…", laquo: "«",
-    lt: "<", mdash: "—", nbsp: " ", ndash: "–", quot: '"', raquo: "»", reg: "®"
+    lt: "<", mdash: "—", nbsp: " ", ndash: "–", quot: '"', raquo: "»", reg: "®",
+    AMP: "&", GT: ">", LT: "<", QUOT: '"',
+    Agrave: "À", Aacute: "Á", Acirc: "Â", Atilde: "Ã", Auml: "Ä", Aring: "Å", AElig: "Æ",
+    Ccedil: "Ç", Egrave: "È", Eacute: "É", Ecirc: "Ê", Euml: "Ë",
+    Igrave: "Ì", Iacute: "Í", Icirc: "Î", Iuml: "Ï", Ntilde: "Ñ",
+    Ograve: "Ò", Oacute: "Ó", Ocirc: "Ô", Otilde: "Õ", Ouml: "Ö", Oslash: "Ø", OElig: "Œ",
+    Ugrave: "Ù", Uacute: "Ú", Ucirc: "Û", Uuml: "Ü", Yacute: "Ý", Yuml: "Ÿ",
+    agrave: "à", aacute: "á", acirc: "â", atilde: "ã", auml: "ä", aring: "å", aelig: "æ",
+    ccedil: "ç", egrave: "è", eacute: "é", ecirc: "ê", euml: "ë",
+    igrave: "ì", iacute: "í", icirc: "î", iuml: "ï", ntilde: "ñ",
+    ograve: "ò", oacute: "ó", ocirc: "ô", otilde: "õ", ouml: "ö", oslash: "ø", oelig: "œ",
+    ugrave: "ù", uacute: "ú", ucirc: "û", uuml: "ü", yacute: "ý", yuml: "ÿ",
+    euro: "€", pound: "£", cent: "¢", deg: "°", times: "×", divide: "÷",
+    lsquo: "‘", rsquo: "’", ldquo: "“", rdquo: "”"
   };
   return String(value || "")
-    .replace(/&#(\d+);/g, (_, raw) => String.fromCodePoint(Number(raw)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, raw) => String.fromCodePoint(Number.parseInt(raw, 16)))
-    .replace(/&([a-z]+);/gi, (match, name) => named[name.toLowerCase()] || match)
+    // Decode once: &amp;eacute; is literal "&eacute;", not an accented letter.
+    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity) => {
+      if (!entity.startsWith("#")) return Object.hasOwn(named, entity) ? named[entity] : match;
+      const hex = entity[1].toLowerCase() === "x";
+      const point = Number.parseInt(entity.slice(hex ? 2 : 1), hex ? 16 : 10);
+      // HTML replaces null, surrogate and out-of-range character references.
+      if (!Number.isFinite(point) || point === 0 || point > 0x10ffff || (point >= 0xd800 && point <= 0xdfff)) return "�";
+      return String.fromCodePoint(point);
+    })
     .replace(/\s+/g, " ")
     .trim();
 }

@@ -12,15 +12,15 @@
 | Locale | Indexable pages | Native | Localized shell | Pages with errors | Pages with review signals |
 |---|---:|---:|---:|---:|---:|
 | en | 5048 | 5048 | 0 | 0 | 416 |
-| fr | 3244 | 1797 | 1447 | 0 | 150 |
+| fr | 3244 | 1797 | 1447 | 0 | 145 |
 | sw | 1582 | 761 | 821 | 0 | 87 |
 
 ## Signal counts
 
 | Signal | Pages |
 |---|---:|
-| TITLE_LONG | 535 |
-| DESCRIPTION_LONG | 154 |
+| TITLE_LONG | 530 |
+| DESCRIPTION_LONG | 152 |
 | TITLE_SHORT | 18 |
 
 ## Ranked interpretation

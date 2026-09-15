@@ -19,6 +19,20 @@ assert.deepStrictEqual(
 );
 
 assert.strictEqual(audit.normalized("Calculateur — Côte d’Ivoire"), "calculateur côte d ivoire");
+assert.deepStrictEqual(
+  audit.extractMetadata('<title>&Eacute;pargne au S&eacute;n&eacute;gal | AfroTools</title><meta name="description" content="Pr&eacute;parez votre budget en C&ocirc;te d&rsquo;Ivoire, &agrave; partir de vos revenus."><h1>&OElig;uvre &amp; cr&eacute;ation</h1>'),
+  {
+    title: "Épargne au Sénégal | AfroTools",
+    description: "Préparez votre budget en Côte d’Ivoire, à partir de vos revenus.",
+    h1: "Œuvre & création",
+    iframeSrc: ""
+  },
+  "French named entities must preserve accent and case across snippet fields"
+);
+assert.strictEqual(audit.normalized("&Eacute;pargne en C&ocirc;te d&rsquo;Ivoire"), audit.normalized("Épargne en Côte d’Ivoire"), "encoded and literal French must compare equally");
+assert.strictEqual(audit.decodeHtml("&#201; &#xE9; &#X153;"), "É é œ", "decimal and hexadecimal references must decode");
+assert.strictEqual(audit.decodeHtml("&#0; &#xD800; &#1114112; &#999999999999999999999999999999999999999;"), "� � � �", "invalid Unicode references must not crash the report");
+assert.strictEqual(audit.decodeHtml("&amp;eacute; &#38;eacute; &unknown; &EACUTE;"), "&eacute; &eacute; &unknown; &EACUTE;", "decoding must be single-pass and preserve unknown case-sensitive names");
 
 const rows = audit.buildRows();
 const report = audit.buildReport(rows);
@@ -44,6 +58,10 @@ assert.deepStrictEqual(report.topDuplicateTitles, [], "indexable English, French
 assert.deepStrictEqual(report.topDuplicateDescriptions, [], "indexable English, French and Swahili routes must not share exact locale descriptions");
 
 const byRoute = new Map(rows.map((row) => [row.route, row]));
+const senegalTransfer = byRoute.get("/blog/frais-transfert-argent-senegal/");
+assert.strictEqual(senegalTransfer.title, "Frais de Transfert d'Argent vers le Sénégal - AfroTools");
+assert.strictEqual(senegalTransfer.title.length, 55, "snippet length must count the rendered accents rather than entity source bytes");
+assert.ok(!senegalTransfer.signals.some((signal) => signal.code === "TITLE_LONG"), "encoded accents must not create a false long-title finding");
 for (const retiredRoute of [
   "/business/invoice/",
   "/business/payroll/",
