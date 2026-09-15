@@ -565,7 +565,7 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
     expect(ics).toContain('DTSTART;VALUE=DATE:20260914');
     expect(ics).toContain('DTEND;VALUE=DATE:20260915');
     expect(ics).toContain('SUMMARY:Synthetic Civic Day');
-    expect(ics).toContain('X-AFROTOOLS-BOUNDARY:User-confirmed entry; not an official calendar');
+    expect(ics).toContain('X-AFROTOOLS-BOUNDARY:User-confirmed entry; unofficial calendar');
     expect(ics.trim().endsWith('END:VCALENDAR')).toBe(true);
 
     await page.getByRole('button', { name: 'Reset' }).click();

@@ -7,10 +7,12 @@ const path = require('node:path');
 const engine = require('../assets/js/engines/afrorates-verified');
 
 const root = path.resolve(__dirname, '..');
-const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data', 'rates', 'latest.json'), 'utf8'));
+// Retain the reviewed thirteen-row case independently of changing live fallbacks.
+const snapshot = require('./fixtures/afrorates-evidence-2026-09-08.json');
+const committed = JSON.parse(fs.readFileSync(path.join(root, 'data', 'rates', 'latest.json'), 'utf8'));
 const now = snapshot.timestamp;
 
-test('AfroRates exposes only the thirteen rows with complete official evidence', () => {
+test('AfroRates exposes only the thirteen verified rows in the fixed evidence fixture', () => {
   const rows = engine.selectVerified(snapshot, { maxAgeDays: 45, now });
   assert.deepEqual(rows.map((row) => row.code).sort(), ['BW', 'CI', 'EG', 'ET', 'GH', 'KE', 'MA', 'MU', 'NG', 'SN', 'TZ', 'UG', 'ZA']);
   assert.deepEqual(engine.coverage(snapshot, { maxAgeDays: 45, now }), {
@@ -22,9 +24,31 @@ test('AfroRates exposes only the thirteen rows with complete official evidence',
   assert.ok(rows.every((row) => row.annual_inflation && /^\d{4}$/.test(row.annual_inflation.year)));
 });
 
+test('committed rates expose exactly the declared verified subset', () => {
+  const rows = engine.selectVerified(committed, { maxAgeDays: 45, now: committed.timestamp });
+  assert.deepEqual(rows.map((row) => row.code).sort(), committed._verification.verified_codes.slice().sort());
+  assert.equal(rows.length, committed._verification.verified_count);
+  assert.equal(engine.coverage(committed, { now: committed.timestamp }).partial, committed._verification.partial);
+});
+
+test('a verification label cannot replace complete official evidence', () => {
+  const valid = snapshot.countries.find((row) => row.code === 'NG');
+  assert.equal(engine.isVerifiedPolicyRow(valid, snapshot, { now }), true);
+  for (const field of ['policy_rate', 'policy_rate_source_url', 'policy_rate_source_date', 'policy_rate_verified_at']) {
+    const incomplete = { ...valid };
+    delete incomplete[field];
+    assert.equal(engine.isVerifiedPolicyRow(incomplete, snapshot, { now }), false, field);
+  }
+  const unlisted = structuredClone(snapshot);
+  unlisted._verification.verified_codes = [];
+  assert.equal(engine.isVerifiedPolicyRow(valid, unlisted, { now }), false);
+  const stale = { ...valid, policy_rate_verified_at: '2026-01-01T00:00:00Z' };
+  assert.equal(engine.isVerifiedPolicyRow(stale, snapshot, { now }), false);
+});
+
 test('unowned rate capabilities remain unavailable in the committed snapshot', () => {
-  assert.equal(snapshot.countries.filter((row) => row.next_mpc || row.next_mpc_date).length, 0);
-  assert.equal(snapshot.countries.filter((row) => row.tbill_91d || row.tbill_182d || row.tbill_364d || row.bond_10y).length, 0);
+  assert.equal(committed.countries.filter((row) => row.next_mpc || row.next_mpc_date).length, 0);
+  assert.equal(committed.countries.filter((row) => row.tbill_91d || row.tbill_182d || row.tbill_364d || row.bond_10y).length, 0);
 });
 
 test('future verification, decision and dataset dates fail closed', () => {

@@ -19,10 +19,13 @@ The frozen cohort in `data/image-generation/placement-review-cohort.json` contai
 
 - 120 active bindings: 107 dated live creator/news references, the root favicon, and 12 dedicated article images (10 inline heroes and 2 social images).
 - 201 reserved car images map to exact unpublished catalogue CSV rows. Vehicle appearance, provenance and catalogue readiness still need validation before launch.
+- Car catalogue/upload generators now use an existing image extension before requesting a new JPG. Candidate and upload manifests point to the delivered WebP files; this filename reconciliation changes no catalogue facts or publication states.
 - 338 retired alternatives retain their original files and paths for history and compatibility.
 - 89 rejected designs are unsuitable for automatic public placement, including mock interfaces, unverified details, embedded promotional copy, and a receipt illustration misnamed as an IP calculator.
 - 44 flags remain assigned to the archived Matchday product.
 
 Use `node scripts/apply-reviewed-blog-images.js` after article generation; the main build runs it before the feed. It changes images and dimensions only. The inventory reads dated, read-only Supabase media evidence from the correct AfroTools project. Refresh this evidence through the configured MCP before inferring current live usage; it is not a runtime database mirror.
+
+Keep the original 792-row `placement-review-cohort.json` and its matching `placement-decisions.json` frozen. When a later source change intentionally removes the last binding for an existing asset, record a hash-pinned, visually reviewed non-active decision in `placement-lifecycle-additions.json`. Preserve the file, cite the removal evidence in the reason, and never use this registry to invent a placement or bypass review.
 
 Retired, reserved and rejected files are preserved in place. Their stable URLs are not removed by this task. Do not treat a zero unassigned count as zero visual/provenance work: those gates remain explicit on reserved assets, and the three held recipe deliveries remain separate.
