@@ -4,6 +4,15 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+const CURRENT_REVIEW = require('../data/localization/sw-paye-current-source-review.json');
+function currentSwHash(country, historicalHash) {
+  const review = CURRENT_REVIEW.entries.find((entry) => entry.countrySlug === country);
+  if (!review) return historicalHash;
+  assert.strictEqual(review.previousHash, historicalHash, 'Review must extend the exact frozen receipt');
+  assert.match(review.currentHash, /^[a-f0-9]{64}$/);
+  assert.ok(review.reason && review.sourceCommit);
+  return review.currentHash;
+}
 const TARGETS = [
   'angola',
   'botswana',
@@ -173,8 +182,8 @@ for (const country of TARGETS) {
     /You are|Answer concisely|Give [123]\)|tax position|tax optimization|compliance point|Generating analysis|Analysis unavailable|Ask follow-up|Network error|Unable to|Try Again/i,
     `${rel} AI prompts, progress and error copy must remain native Swahili`,
   );
-  assert.strictEqual(formulaHash(html), FORMULA_HASHES[country], `${rel} formula functions changed`);
+  assert.strictEqual(formulaHash(html), currentSwHash(country, FORMULA_HASHES[country]), `${rel} formula functions changed`);
 }
 
 assert.strictEqual(TARGETS.length, 26, 'The exact report-language lane must remain explicit');
-console.log(`Verified native report, artwork, AI-consent, SEO and frozen-formula contracts for ${TARGETS.length} Swahili PAYE routes.`);
+console.log(`Verified native report, artwork, AI-consent, SEO and historical/current reviewed source contracts for ${TARGETS.length} Swahili PAYE routes.`);

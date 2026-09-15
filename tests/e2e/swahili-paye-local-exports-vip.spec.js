@@ -89,6 +89,14 @@ for (const entry of ENTRIES) {
     await calculate.click();
     expect(await page.evaluate(() => window.RESULT == null)).toBe(true);
 
+    // The frozen Uganda oracle models collection of the annual LST in this payroll.
+    // Current EN/SW defaults leave that optional collection off. Select the fixture's scenario explicitly.
+    if (entry.englishId === 'ug-paye') {
+      const lst = page.locator('[data-tog="lst"]');
+      await expect(lst).toHaveAttribute('aria-checked', 'false');
+      await lst.click();
+      await expect(lst).toHaveAttribute('aria-checked', 'true');
+    }
     await gross.fill(String(entry.input));
 
     await calculate.click();
