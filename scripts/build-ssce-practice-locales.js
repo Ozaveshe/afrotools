@@ -7,7 +7,8 @@ const written = require('../assets/js/lib/ssce-written-bank');
 const quickSw = require('./lib/ssce-practice-sw-content');
 const writtenText = require('./lib/ssce-written-locale-content');
 const ui = require('./lib/ssce-locale-ui');
-const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
+const { stableId } = require('./lib/content-integrity');
 const root = path.resolve(__dirname, '..');
 const routes = { en: '/tools/ssce-practice/', fr: '/fr/tools/pratique-waec-neco/', sw: '/sw/zana/mazoezi-waec-neco/' };
 const scope = {
@@ -89,6 +90,12 @@ const pageCopy = {
   }
 };
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+function normalizePage(html) {
+  // Preserve every schema value; release processing only reformats JSON.
+  const compact = String(html).replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/gi,
+    (_, start, json, end) => start + JSON.stringify(JSON.parse(json)) + end);
+  return normalizeReleaseOwnedHtml(compact);
+}
 function page(locale) {
   const c = pageCopy[locale], route = routes[locale];
   // A missing secondary localization is an explicit English destination, never an invented route.
@@ -106,9 +113,10 @@ ${Object.entries(routes).map(([lang, url]) => `<link rel="alternate" hreflang="$
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com${routes.en}">
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(c.title)}"><meta property="og:description" content="${esc(c.description)}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:locale" content="${locale === 'fr' ? 'fr_FR' : 'sw_KE'}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/waec-calculator.webp">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(c.title)}"><meta name="twitter:description" content="${esc(c.description)}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/waec-calculator.webp">
-<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.title,url:'https://afrotools.com'+route,isBasedOn:'https://afrotools.com'+routes.en,inLanguage:locale,applicationCategory:'EducationalApplication',operatingSystem:'Web'})}</script>
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.title,url:'https://afrotools.com'+route,isBasedOn:'https://afrotools.com'+routes.en,inLanguage:locale,applicationCategory:'EducationalApplication',operatingSystem:'Web',image:'https://afrotools.com/assets/img/tools/waec-calculator.webp'})}</script>
 ${['design-system','ssce-practice','ssce-written','education-workspace'].map(name => `<link rel="stylesheet" href="/assets/css/${name}.css">`).join('\n')}
 ${scripts.map(src => `<script src="/assets/js/${src}" defer></script>`).join('\n')}
+<meta name="afrotools-content-id" content="${stableId(route)}">
 </head><body class="education-workspace"><afro-navbar></afro-navbar><main class="page-shell practice-shell">
 <nav aria-label="${locale === 'fr' ? 'Fil d’Ariane' : 'Njia ya ukurasa'}"><a href="${c.hub}">${c.education}</a> / WAEC · NECO · <a href="${routes.en}" lang="en">English</a> · <a href="${routes.fr}" lang="fr">Français</a> · <a href="${routes.sw}" lang="sw">Kiswahili</a></nav>
 <header class="page-header"><p>${c.eyebrow}</p><h1>${c.h1}</h1><p class="page-description">${c.intro}</p></header>
@@ -141,7 +149,7 @@ function run(write) {
   const changed = [];
   for (const [file, content] of outputs()) {
     const absolute = path.join(root, file), previous = fs.existsSync(absolute) ? fs.readFileSync(absolute, 'utf8') : '';
-    const normalize = file.endsWith('.html') ? normalizeBuildManagedHtml : value => value.replace(/\r\n/g, '\n');
+    const normalize = file.endsWith('.html') ? normalizePage : value => value.replace(/\r\n/g, '\n');
     if (normalize(previous) === normalize(content)) continue;
     changed.push(file);
     if (write) { fs.mkdirSync(path.dirname(absolute), { recursive: true }); fs.writeFileSync(absolute, content); }
@@ -150,4 +158,4 @@ function run(write) {
   console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: 40 quick questions and 28 written tasks per locale (${changed.length} changed files).`);
 }
 if (require.main === module) run(process.argv.includes('--write'));
-module.exports = { quickBank, writtenBank, outputs, run, routes };
+module.exports = { quickBank, writtenBank, outputs, run, routes, normalizePage };
