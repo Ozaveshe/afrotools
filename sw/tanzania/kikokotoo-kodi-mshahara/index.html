@@ -87,6 +87,12 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tanzania/tz-paye">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/tanzania/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tanzania/tz-paye">
+<style>
+.mode-toggle { display:flex; gap:4px; margin:16px 0; padding:3px; border:1px solid #b8c4cc; border-radius:7px; }
+.mode-toggle .mode-btn { flex:1; min-height:44px; border:0; border-radius:5px; background:transparent; color:inherit; font:inherit; font-weight:700; cursor:pointer; }
+.mode-toggle .mode-btn.on { background:#e4f4ee; color:#16583e; }
+.mode-toggle .mode-btn:focus-visible { outline:3px solid #007d61; outline-offset:2px; }
+</style>
 </head>
 <body class="tool-page top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -149,7 +155,7 @@
 
           <!-- INPUT -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Au ingiza kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
+            <div class="f-label"><span class="f-label-text" data-net-to-gross-label>Au ingiza kiasi halisi cha mwezi</span><span class="f-hint">Kiasi cha mwezi kwa hali uliyochagua</span></div>
             <div class="f-wrap">
               <span class="f-prefix">TZS</span>
               <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
@@ -190,7 +196,7 @@
         <div class="res-hero">
           <div class="res-hero-label">Mshahara Halisi wa Mwezi</div>
           <div class="res-hero-amount" id="resAmount">TZS 0</div>
-          <div class="res-hero-period">Baada ya PAYE, NSSF na makato yote</div>
+          <div class="res-hero-period">Baada ya PAYE na michango uliyochagua</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
@@ -488,7 +494,7 @@
 
 <script>
 var RESULT=null;
-let PERIOD='monthly';
+var PERIOD='monthly';
 let CHART=null;
 let CHART_TYPE='donut';
 let CHAT_HISTORY=[];
@@ -588,11 +594,11 @@ function calculate() {
   const annual = v => v * 12;
   RESULT = {
     gross, monthly: gross, social, socialRate, empSocial,
-    monthlyPAYE, bandBreakdown, isSecondary, sekta: SECTOR,
+    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     sdl, wcf,
     totalEmployeeDeductions, netMonthly, effectiveRate,
-    annualGhafi: annual(gross), annualNet: annual(netMonthly),
-    annualKodi: annual(monthlyPAYE), annualSocial: annual(social),
+    annualGross: annual(gross), annualNet: annual(netMonthly),
+    annualTax: annual(monthlyPAYE), annualSocial: annual(social),
     totalEmployerCostMonthly: gross + empSocial + sdl + wcf,
   };
   document.getElementById('resAmount').textContent = fmt(netMonthly);
@@ -602,7 +608,7 @@ function calculate() {
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = '<strong>Gharama Jumla za Mwajiri: ' + fmt(RESULT.totalEmployerCostMonthly) + '/mwezi</strong><br>Ghafi + NSSF ' + fmt(empSocial) + '/mwezi + SDL ' + fmt(sdl) + '/mwezi + WCF ' + fmt(wcf) + '/mwezi.';
+  strip.innerHTML = '<strong>Gharama Jumla za Mwajiri: ' + fmt(RESULT.totalEmployerCostMonthly) + '/mwezi</strong><br>Ghafi + ' + (SECTOR === 'private' ? 'NSSF' : 'PSSSF') + ' ' + fmt(empSocial) + '/mwezi + SDL ' + fmt(sdl) + '/mwezi + WCF ' + fmt(wcf) + '/mwezi.';
   strip.classList.add('on');
   document.getElementById('resultsCard').classList.add('on');
   renderChart(CHART_TYPE);
@@ -855,47 +861,20 @@ async function sendChat() {
 }
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+// Same forward calculation used by the English Tanzania net-to-gross workflow.
+window._grossToNet = function(g) {
+  var isSecondary = isOn('secondary');
+  var hasNSSF = isOn('nssf');
+  var socialRate = hasNSSF ? (SECTOR === 'private' ? 0.10 : 0.05) : 0;
+  var social = g * socialRate;
+  if (isSecondary) return g - (social + g * 0.30);
+  return g - (social + calcMonthlyPAYE(Math.max(0, g - social)).tax);
+};
 </script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-<script data-sw-paye-mode-localizer>
-(function () {
-  "use strict";
-  const replacements = new Map([
-    ["Gross → Net", "Ghafi → Halisi"],
-    ["Net → Gross", "Halisi → Ghafi"],
-    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
-    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
-    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
-    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
-    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
-    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
-  ]);
-  function localizeModeCopy() {
-    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
-      .forEach(function (element) {
-        const current = (element.textContent || "").trim();
-        if (replacements.has(current)) element.textContent = replacements.get(current);
-      });
-    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
-    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
-      grossLine.textContent = grossLine.textContent
-        .replace(/Gross:/g, "Ghafi:")
-        .replace(/Take-home:/g, "Halisi:")
-        .replace(/\/month/g, "/mwezi")
-        .replace(/\/year/g, "/mwaka");
-    }
-  }
-  document.addEventListener("DOMContentLoaded", localizeModeCopy);
-  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  });
-  setTimeout(localizeModeCopy, 150);
-}());
-</script>
 </body>
 </html>
