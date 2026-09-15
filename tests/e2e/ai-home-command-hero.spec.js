@@ -169,15 +169,19 @@ test("homepage dropdown retains keyboard discovery and ARIA state", async ({ pag
   await quietExternalNoise(page);
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  const input = page.locator("#hero-search-input");
+  const input = page.getByRole("combobox", { name: "Describe what you would like to do" });
+  await expect(input).toHaveAttribute("aria-controls", "search-dropdown");
   await input.fill("electrical engineer in Ghana");
   await expect(page.locator("#search-dropdown .sd-item").first()).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole("listbox", { name: "Suggested AfroTools workflows" })).toHaveCount(1);
   await expect(input).toHaveAttribute("aria-expanded", "true");
   await input.press("ArrowDown");
   await expect(page.locator("#search-dropdown [aria-selected='true']")).toHaveCount(1);
   await expect(input).toHaveAttribute("aria-activedescendant", /sd-option-\d+/);
   await input.press("Escape");
   await expect(input).toHaveAttribute("aria-expanded", "false");
+  await expect(input).not.toHaveAttribute("aria-activedescendant", /.+/);
+  await expect(input).toBeFocused();
 });
 
 test("all hero, preview, and quick-start routes are published", async ({ page, request }) => {
