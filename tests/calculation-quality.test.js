@@ -19,6 +19,14 @@ function test(name, fn) {
 
 const artifacts = quality.loadQualityArtifacts(ROOT);
 
+test('fixture history requires an exact source-reviewed delta', function () {
+  const delta = { fixtureId: 'example', before: { tax: 1 }, after: { tax: 2 } };
+  const review = { reviewedBy: 'test reviewer', reviewedAt: '2026-09-15', sourceUrl: 'https://example.org/source', reason: 'Reviewed rate change', fixtureDeltas: [delta] };
+  assert.deepStrictEqual(quality.validateFixtureDeltaReviews([delta], [review]), [delta]);
+  assert.throws(() => quality.validateFixtureDeltaReviews([delta], []), /matching source review/);
+  assert.throws(() => quality.validateFixtureDeltaReviews([{ ...delta, after: { tax: 3 } }], [review]), /matching source review/);
+});
+
 test('calculation quality JSON schema exposes all protected contracts', function () {
   const schema = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/calculation-quality/calculation-quality.schema.json'), 'utf8'));
   for (const definition of ['EngineInventory', 'FormulaRegistry', 'FormulaRecord', 'GoldenFixtureRegistry', 'ExternalDataRegistry', 'FixtureDeltaRegistry']) {
@@ -245,7 +253,11 @@ test('golden fixtures cover required boundary classes and current results', func
   const run = quality.runGoldenFixtures(artifacts, ROOT);
   assert.strictEqual(run.failed, 0, JSON.stringify(run.failures, null, 2));
   assert.ok(run.total >= 53 * 3, 'expected at least three PAYE fixtures per server engine');
-  assert.deepStrictEqual(run.changes, []);
+  for (const delta of artifacts.fixtureDeltas.deltas) {
+    const fixture = artifacts.fixtures.fixtures.find((entry) => entry.id === delta.fixtureId);
+    assert.ok(fixture, 'reviewed delta must identify a current fixture');
+    assert.deepStrictEqual(fixture.expected, delta.after, 'reviewed result must match the current golden expectation');
+  }
 });
 
 test('external data contracts reject incompatible payloads and expose staleness', function () {
@@ -323,7 +335,7 @@ test('quality report is deterministic for an explicit as-of date', function () {
   assert.strictEqual(JSON.stringify(first), JSON.stringify(second));
   assert.strictEqual(first.findings.filter((finding) => finding.severity === 'error').length, 0);
   assert.strictEqual(first.fixtures.failed, 0);
-  assert.deepStrictEqual(first.fixtures.changes, []);
+  assert.deepStrictEqual(first.fixtures.changes, artifacts.fixtureDeltas.deltas.map((delta) => delta.fixtureId).sort());
   assert.strictEqual(first.reviewBacklog.highRiskSources, 0, 'every high-risk formula must have a reviewed source');
   assert.ok(first.reviewBacklog.highRiskEffectiveDates > 0, 'unknown legacy effective dates must remain visible');
 });

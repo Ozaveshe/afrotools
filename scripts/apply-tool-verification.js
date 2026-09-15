@@ -130,6 +130,8 @@ function shouldKeepUrl(url) {
 }
 
 function shouldKeepToolSource(url, toolId) {
+  // Preserve the reviewed pension authority notice in this tool's source ledger.
+  if (toolId === 'zm-paye' && url === 'https://www.linkedin.com/posts/national-pension-scheme-authority_public-notice-revision-in-contribution-ceiling-activity-7417941633180090368-y4Dr') return true;
   if (!shouldKeepUrl(url)) return false;
   const decodedUrl = (() => {
     try { return decodeURIComponent(url); } catch { return url; }
@@ -139,6 +141,7 @@ function shouldKeepToolSource(url, toolId) {
     && /\/value-added-tax\/|vat[_-]law/i.test(decodedUrl)
   ) return false;
   if (/^so-vat$/i.test(toolId) && /income[ _-]tax/i.test(decodedUrl)) return false;
+  if (toolId === 'zm-paye' && /VSDC-API|\/node\/12767/i.test(decodedUrl)) return false;
   return true;
 }
 
@@ -757,4 +760,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { applyPanelToFile, shouldKeepToolSource };

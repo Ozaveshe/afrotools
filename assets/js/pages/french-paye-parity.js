@@ -81,8 +81,8 @@
     },
     'zm-paye': {
       country: 'Zambie', currency: 'ZMW', symbol: 'K', period: 'annual',
-      checkedOn: '2026-01-01', employeeRate: 0.05, employeeCapMonthly: 1708.20,
-      employerRate: 0.05, employerCapMonthly: 1708.20,
+      checkedOn: '2026-09-15', employeeRate: 0.05, employeeCapMonthly: 1861.80,
+      employerRate: 0.05, employerCapMonthly: 1861.80, basicHealthRate: 0.01,
       bands: [[61200, 0], [85200, 0.20], [110400, 0.30], [Infinity, 0.37]]
     },
     'zw-paye': {
@@ -143,7 +143,15 @@
     return monthly;
   }
 
-  function calculate(config, grossMonthly) {
+  function calculate(config, grossMonthly, basicMonthly) {
+    var healthMonthly = 0;
+    if (config.basicHealthRate) {
+      var basic = basicMonthly == null || basicMonthly === '' ? grossMonthly : Number(basicMonthly);
+      if (!Number.isFinite(basic) || basic < 0 || basic > grossMonthly) {
+        throw new RangeError('Le salaire de base doit être compris entre zéro et le salaire brut.');
+      }
+      healthMonthly = basic * config.basicHealthRate;
+    }
     var employeeMonthly;
     var employerMonthly;
     if (config.customContribution === 'mauritius') {
@@ -184,7 +192,7 @@
     var stampMonthly = config.stampRate
       ? Math.max(0, grossMonthly - employeeMonthly - taxMonthly) * config.stampRate
       : 0;
-    var deductionsMonthly = employeeMonthly + taxMonthly + stampMonthly;
+    var deductionsMonthly = employeeMonthly + healthMonthly + taxMonthly + stampMonthly;
     return {
       grossMonthly: grossMonthly,
       grossAnnual: grossMonthly * 12,
@@ -195,7 +203,8 @@
       stampMonthly: stampMonthly,
       deductionsMonthly: deductionsMonthly,
       netMonthly: Math.max(0, grossMonthly - deductionsMonthly),
-      employerCostMonthly: grossMonthly + employerMonthly,
+      employerCostMonthly: grossMonthly + employerMonthly + healthMonthly,
+      ...(config.basicHealthRate ? { healthMonthly: healthMonthly } : {}),
       effectiveRate: grossMonthly > 0 ? (taxMonthly / grossMonthly) * 100 : 0
     };
   }
@@ -209,6 +218,7 @@
       '.fr-paye-native h2{margin:0 0 8px}.fr-paye-native__lead,.fr-paye-native__meta{color:var(--color-text-muted,#475569);line-height:1.6}',
       '.fr-paye-native form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;margin:20px 0}',
       '.fr-paye-native label{display:grid;gap:7px;font-weight:750}.fr-paye-native input{min-height:46px;padding:10px 12px;border:1px solid #94a3b8;border-radius:8px;font:inherit}',
+      '.fr-paye-native [hidden]{display:none!important}',
       '.fr-paye-native button{min-height:46px;padding:10px 16px;border:0;border-radius:8px;background:#0062cc;color:#fff;font-weight:800;cursor:pointer}',
       '.fr-paye-native__actions{display:flex;gap:8px;flex-wrap:wrap}.fr-paye-native__actions button{background:#334155}',
       '.fr-paye-native [data-results]{margin-top:18px;border-top:1px solid #dbe3ed;padding-top:16px}.fr-paye-native dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px}.fr-paye-native dt{color:var(--color-text-muted,#475569)}.fr-paye-native dd{margin:0;font-weight:800;text-align:right}',
@@ -239,6 +249,7 @@
       '<form novalidate>',
       hubMode ? '<label for="frPayeCountry">Pays et barème<select id="frPayeCountry" name="country">' + Object.keys(CONFIGS).map(function (key) { return '<option value="' + key + '">' + CONFIGS[key].country + '</option>'; }).join('') + '</select></label>' : '',
       '<label for="frPayeGross">Salaire brut mensuel (' + config.currency + ')<input id="frPayeGross" name="grossMonthly" type="number" min="0" step="0.01" inputmode="decimal" required value="500000"></label>',
+      '<label for="frPayeBasic" data-basic-field' + (config.basicHealthRate ? '' : ' hidden') + '>Salaire de base mensuel pour la NHIMA (K)<input id="frPayeBasic" name="basicMonthly" type="number" min="0" step="0.01" aria-describedby="frPayeBasicNote"><small id="frPayeBasicNote">Sans montant saisi, le salaire brut est utilisé comme salaire de base. Excluez les indemnités du salaire de base.</small></label>',
       '<button type="submit" data-calculate>Calculer le salaire net</button>',
       '</form>',
       '<p data-error role="alert"></p><p data-status role="status" aria-live="polite"></p>',
@@ -254,6 +265,8 @@
     var form = app.querySelector('form');
     var input = app.querySelector('#frPayeGross');
     var country = app.querySelector('#frPayeCountry');
+    var basicInput = app.querySelector('#frPayeBasic');
+    var basicField = app.querySelector('[data-basic-field]');
     var results = app.querySelector('[data-results]');
     var rows = app.querySelector('[data-result-rows]');
     var error = app.querySelector('[data-error]');
@@ -281,13 +294,21 @@
         error.textContent = 'Saisissez un salaire brut mensuel positif.';
         return;
       }
-      var result = calculate(config, gross);
+      var result;
+      try { result = calculate(config, gross, config.basicHealthRate ? basicInput.value : undefined); }
+      catch (validationError) {
+        results.hidden = true;
+        error.textContent = validationError.message;
+        basicInput.focus();
+        return;
+      }
       var outputRows = [
         ['Salaire brut mensuel', money(config, result.grossMonthly)],
         ['Retenues sociales salariées', money(config, result.employeeMonthly)],
         ['Revenu imposable mensuel', money(config, result.taxableMonthly)],
         ['PAYE mensuel estimé', money(config, result.taxMonthly)]
       ];
+      if (config.basicHealthRate) outputRows.push(['NHIMA salariée (1 % du salaire de base)', money(config, result.healthMonthly)], ['NHIMA employeur', money(config, result.healthMonthly)]);
       if (result.stampMonthly > 0) outputRows.push(['Droit de timbre mensuel', money(config, result.stampMonthly)]);
       outputRows.push(
         ['Total des retenues mensuelles', money(config, result.deductionsMonthly)],
@@ -301,16 +322,20 @@
       }).join('');
       results.hidden = false;
       status.textContent = 'Simulation calculée localement avec les paramètres vérifiés le ' + config.checkedOn + '.';
+      if (config.basicHealthRate && basicInput.value.trim() === '') status.textContent += ' Le salaire brut est utilisé comme salaire de base pour la NHIMA.';
       results.focus({ preventScroll: true });
     }
 
     form.addEventListener('submit', render);
     if (country) country.addEventListener('change', function () {
+      basicField.hidden = !CONFIGS[country.value].basicHealthRate;
+      basicInput.value = '';
       status.textContent = 'Barème sélectionné : ' + CONFIGS[country.value].country + '. Lancez le calcul pour actualiser le résultat.';
       results.hidden = true;
     });
     app.querySelector('[data-reset]').addEventListener('click', function () {
       form.reset();
+      basicField.hidden = !(country ? CONFIGS[country.value] : config).basicHealthRate;
       results.hidden = true;
       rows.innerHTML = '';
       error.textContent = '';
