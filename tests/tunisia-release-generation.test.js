@@ -26,3 +26,15 @@ for (const locale of ['en', 'fr', 'sw', 'legacy']) {
     }
   });
 }
+
+test('legacy French route remains functional and canonicalizes to the normalized primary', () => {
+  const pages = outputs();
+  const legacy = pages.get('fr/tunisia/tn-paye.html');
+  const primary = pages.get('fr/tunisie/calculateur-salaire-net.html');
+  for (const html of [legacy, primary]) {
+    assert.match(html, /rel="canonical" href="https:\/\/afrotools.com\/fr\/tunisie\/calculateur-salaire-net"/);
+    assert.match(html, /id="tn-form"/);
+    assert.match(html, /src="\/assets\/js\/pages\/tunisia-paye.js"/);
+  }
+  assert.equal(legacy.replace(/<meta name="afrotools-content-id"[^>]*>/, ''), primary.replace(/<meta name="afrotools-content-id"[^>]*>/, ''));
+});
