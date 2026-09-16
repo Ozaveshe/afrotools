@@ -13,3 +13,9 @@ PDF uses existing licensed Noto Sans asset, glyph preflight and page-boundary wr
 Nine combined core browser cases passed26.4s, including3corridor,3native export/state and3PDF fidelity cases. Original engine unit test and syntax/diff checks passed. Updated historical EN/FR/SW fixtures for required country fields; those suites not yet rerun.
 
 Remaining findings: mobile baseline6lightPASS/6darkFAIL across320/390 (contrast); PDF visual inspection revealed CLDR obsolete ZR region alias overwriting Congo-Kinshasa name while CD code remainsCD. This shared normalizer defect requires separate immediate correction. Ordinary analytics consent-mode policy also needs separate scoped privacy evaluation. No whole-app acceptance, release build or deployment.
+
+## Canonical region alias follow-up
+
+PDF visual review showed Congo-Kinshasa incorrectly normalized to deprecated ZR. Intl.DisplayNames can give a modern name for an obsolete code, and the old loop overwrote the current CD name mapping. The shared engine now skips codes whose Intl.Locale canonical region differs, while retaining the explicit UK→GB alias. ZR is rejected, CD and Congo-Kinshasa agree, and CD versus CG remains non-comparable. Intl names establish identity only, never provider eligibility.
+
+Independent node assertions cover those cases and UK/GB; baseline arithmetic still passes. Twelve browser cases across both remittance families passed29.9s, including PDF assertions for CD and no ZR. Quality digest/native fingerprint review follows separately.

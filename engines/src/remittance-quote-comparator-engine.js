@@ -56,7 +56,7 @@
   function countryKey(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
   function countryCode(value){
     if(!countryAliases){countryAliases={uk:'GB'};var locales=['en','fr','sw'];
-      if(typeof Intl.DisplayNames==='function')locales.forEach(function(locale){var names=new Intl.DisplayNames([locale],{type:'region'});for(var a=65;a<=90;a++)for(var b=65;b<=90;b++){var code=String.fromCharCode(a,b),name=names.of(code);if(name&&name!==code&&!['ZZ','UK','EU','EZ','UN','XA','XB'].includes(code)){countryAliases[countryKey(name)]=code;countryAliases[code.toLowerCase()]=code;}}});
+      if(typeof Intl.DisplayNames==='function')locales.forEach(function(locale){var names=new Intl.DisplayNames([locale],{type:'region'});for(var a=65;a<=90;a++)for(var b=65;b<=90;b++){var code=String.fromCharCode(a,b),name=names.of(code);if(name&&name!==code&&new Intl.Locale('und-'+code).region===code&&!['ZZ','UK','EU','EZ','UN','XA','XB'].includes(code)){countryAliases[countryKey(name)]=code;countryAliases[code.toLowerCase()]=code;}}});
     }
     return countryAliases[countryKey(value)]||null;
   }

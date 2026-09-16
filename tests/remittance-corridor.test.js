@@ -8,3 +8,7 @@ assert.throws(()=>run({sendCountry:''}),/SEND_COUNTRY_REQUIRED/);
 assert.equal(run({sendCountry:'US'}).hasEligibleComparison,false);
 assert.equal(run({payoutMethod:'cash'}).hasEligibleComparison,true);
 console.log('remittance corridor: pass');
+
+assert.equal(engine.countryCode('Congo - Kinshasa'),'CD');assert.equal(engine.countryCode('CD'),'CD');assert.equal(engine.countryCode('ZR'),null);assert.equal(engine.countryCode('UK'),'GB');assert.equal(engine.countryCode('GB'),'GB');
+const congo=engine.calculate({requireCorridor:true,asOf:'2026-09-16T12:00:00Z',quotes:[{...quote,receiveCountry:'CD'},{...quote,receiveCountry:'Congo - Kinshasa'}]});assert.equal(congo.hasEligibleComparison,true);
+const separate=engine.calculate({requireCorridor:true,asOf:'2026-09-16T12:00:00Z',quotes:[{...quote,receiveCountry:'CD'},{...quote,receiveCountry:'CG'}]});assert.equal(separate.hasEligibleComparison,false);
