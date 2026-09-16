@@ -181,6 +181,7 @@
 
   [resultMsg, pageInfoEl, selInfoEl, deleteDesc, fileNameEl].forEach(el => el.setAttribute('translate', 'no'));
   /* ── State ── */
+  let generation = 0; // Invalidate asynchronous work when source or reviewed layout changes.
   let currentFile     = null;   // original File
   let originalBytes   = null;   // ArrayBuffer of original
   let pdfJsDoc        = null;   // pdf.js document (for rendering)
@@ -216,6 +217,7 @@
   }
 
   function resetReview() {
+    generation++;
     if (reviewConfirm) reviewConfirm.checked = false;
   }
 
@@ -241,6 +243,7 @@
   }
 
   function restoreSnapshot(snapshot) {
+    resetReview();
     pages = clonePageList(snapshot.pages);
     selectedSet = new Set(snapshot.selected.filter(idx => idx >= 0 && idx < pages.length));
     resultBar.classList.remove('error');
@@ -271,8 +274,9 @@
     return doc.name + ' · ' + tr('Page {0}', [page.origIndex + 1]);
   }
 
-  async function loadPdfFileAsPages(file, docId) {
+  async function loadPdfFileAsPages(file, docId, version) {
     const result = await PdfUtils.loadPdf(file);
+    if (version !== generation) { if (result.pdfDoc.destroy) await result.pdfDoc.destroy(); throw new Error('Stale source'); }
     const docRecord = {
       id: docId,
       name: file.name,
@@ -286,20 +290,21 @@
         const canvas = await PdfUtils.renderThumb(result.pdfDoc, i + 1);
         page.thumbDataUrl = canvas.toDataURL('image/jpeg', 0.6);
       } catch (e) { /* thumbnail fallback is handled by renderGrid */ }
+      if (version !== generation) throw new Error('Stale source');
       importedPages.push(page);
       progressFill.style.width = ((i + 1) / result.pageCount * 100) + '%';
     }
     return { doc: docRecord, pages: importedPages, pdfDoc: result.pdfDoc };
   }
 
-  async function buildPdfBytes(pageList) {
+  async function buildPdfBytes(pageList, sourceDocuments) {
     if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
     const { PDFDocument, degrees } = window.PDFLib;
     const outDoc = await PDFDocument.create();
     const cache = new Map();
 
     for (const pg of pageList) {
-      const docRecord = documents.find(d => d.id === pg.docId);
+      const docRecord = sourceDocuments.find(d => d.id === pg.docId);
       if (!docRecord) throw new Error('Missing source PDF for page ' + (pg.origIndex + 1));
       if (!cache.has(pg.docId)) {
         cache.set(pg.docId, await PDFDocument.load(docRecord.bytes.slice(0)));
@@ -329,6 +334,9 @@
 
   /* ── Load PDF ── */
   async function loadFile(file) {
+    resetReview();
+    const version = generation;
+    pages = []; originalPages = [];
     currentFile = file;
     documents = [];
     nextDocId = 1;
@@ -340,13 +348,15 @@
     resultBar.classList.add('on');
     resultMsg.textContent = tr('Loading thumbnails...');
     selectedSet.clear();
+    updateToolbar();
     pageGrid.innerHTML = '<div class="loading-overlay" style="position:relative;padding:60px 0;"><div class="loading-spinner"></div><div class="loading-text">' + tr('Loading PDF...') + '</div></div>';
 
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
 
     try {
-      const imported = await loadPdfFileAsPages(file, 'doc0');
+      const imported = await loadPdfFileAsPages(file, 'doc0', version);
+      if (version !== generation) return;
       originalBytes = imported.doc.bytes;
       pdfJsDoc = imported.pdfDoc;
       documents = [imported.doc];
@@ -357,6 +367,7 @@
       renderGrid();
       updateToolbar();
     } catch (err) {
+      if (version !== generation) return;
       pageGrid.innerHTML = '';
       progressBar.style.display = 'none';
       toast(tr('This PDF could not be opened. Choose a readable PDF and try again.'), true);
@@ -532,12 +543,18 @@
         selectedSet.add(idx);
       }
     }
-    lastClickIdx = idx;
     renderGrid();
+    lastClickIdx = idx;
     updateToolbar();
+    if (e.type === 'keydown') {
+      const replacement = pageGrid.querySelector('[data-idx="' + idx + '"]');
+      if (replacement) replacement.focus();
+    }
   }
 
   function updateToolbar() {
+    btnDownload.textContent = tr('Download PDF');
+    btnExtract.textContent = tr('Extract');
     const sel = selectedSet.size;
     const total = pages.length;
     pageInfoEl.textContent = tr('{0} pages', [total]) + (documents.length > 1 ? tr(' from {0} PDFs', [documents.length]) : '');
@@ -549,6 +566,9 @@
       selInfoEl.style.display = 'none';
     }
 
+    btnReset.disabled = total === 0;
+    btnSelectAll.disabled = total === 0;
+    btnAddPdf.disabled = total === 0;
     btnDeselectAll.disabled = sel === 0;
     btnRotateCW.disabled = sel === 0;
     btnRotateCCW.disabled = sel === 0;
@@ -653,20 +673,24 @@
     const indices = selectedIndices();
     if (!indices.length) return;
     if (!requireReview()) return;
+    const version = generation;
+    const snapshot = { pages: clonePageList(indices.map(idx => pages[idx])), documents: documents.slice(), name: currentFile ? currentFile.name : 'document' };
     btnExtract.disabled = true;
     btnExtract.textContent = tr('Extracting...');
     try {
-      const extractedPages = indices.map(idx => pages[idx]);
-      const pdfBytes = await buildPdfBytes(extractedPages);
-      const baseName = (currentFile ? currentFile.name : 'document').replace(/\.pdf$/i, '');
+      const pdfBytes = await buildPdfBytes(snapshot.pages, snapshot.documents);
+      if (version !== generation) return;
+      const baseName = snapshot.name.replace(/\.pdf$/i, '');
       PdfUtils.downloadPdf(pdfBytes, baseName + '_selected_pages.pdf');
       resultBar.classList.remove('error');
       resultBar.classList.add('on');
       resultMsg.textContent = tr('Extracted {0} pages ({1})', [indices.length, PdfUtils.formatSize(pdfBytes.byteLength)]);
     } catch (err) {
+      if (version !== generation) return;
       resultBar.classList.add('on', 'error');
       resultMsg.textContent = tr('The PDF could not be exported. Review the pages and try again.');
     }
+    if (version !== generation) return;
     btnExtract.disabled = false;
     btnExtract.textContent = tr('Extract');
   });
@@ -680,6 +704,7 @@
     const files = Array.from(insertFileInput.files || []).filter(isPdfFile);
     if (!files.length) return;
     pushHistory('Add pages');
+    const version = generation;
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
     resultBar.classList.remove('error');
@@ -688,12 +713,17 @@
     try {
       const insertAt = selectedSet.size === 1 ? selectedIndices()[0] + 1 : pages.length;
       const importedPages = [];
+      const importedDocuments = [];
       for (const file of files) {
         const docId = 'doc' + nextDocId++;
-        const imported = await loadPdfFileAsPages(file, docId);
-        documents.push(imported.doc);
+        const imported = await loadPdfFileAsPages(file, docId, version);
+        if (version !== generation) return;
+        importedDocuments.push(imported.doc);
         importedPages.push(...imported.pages);
       }
+      if (version !== generation) return;
+      resetReview(); // The completed addition invalidates exports of the previous layout.
+      documents.push(...importedDocuments);
       pages.splice(insertAt, 0, ...clonePageList(importedPages));
       selectedSet = new Set(importedPages.map((_, i) => insertAt + i));
       progressBar.style.display = 'none';
@@ -701,6 +731,7 @@
       renderGrid();
       updateToolbar();
     } catch (err) {
+      if (version !== generation) return;
       progressBar.style.display = 'none';
       resultBar.classList.add('on', 'error');
       resultMsg.textContent = tr('Pages could not be added. Check the PDF files and try again.');
@@ -771,6 +802,8 @@
     if (pages.length === 0) return;
     if (!requireReview()) return;
 
+    const version = generation;
+    const snapshot = { pages: clonePageList(pages), documents: documents.slice(), name: currentFile.name };
     btnDownload.disabled = true;
     btnDownload.textContent = tr('Building PDF...');
     resultBar.classList.remove('error');
@@ -778,18 +811,21 @@
     resultMsg.textContent = tr('Building PDF...');
 
     try {
-      const pdfBytes = await buildPdfBytes(pages);
-      const baseName = currentFile.name.replace(/\.pdf$/i, '');
+      const pdfBytes = await buildPdfBytes(snapshot.pages, snapshot.documents);
+      if (version !== generation) return;
+      const baseName = snapshot.name.replace(/\.pdf$/i, '');
       PdfUtils.downloadPdf(pdfBytes, baseName + '_managed.pdf');
 
       resultBar.classList.remove('error');
       resultBar.classList.add('on');
-      resultMsg.textContent = tr('PDF downloaded: {0} pages ({1})', [pages.length, PdfUtils.formatSize(pdfBytes.byteLength)]);
+      resultMsg.textContent = tr('PDF downloaded: {0} pages ({1})', [snapshot.pages.length, PdfUtils.formatSize(pdfBytes.byteLength)]);
     } catch (err) {
+      if (version !== generation) return;
       resultBar.classList.add('on', 'error');
       resultMsg.textContent = tr('The PDF could not be exported. Review the pages and try again.');
     }
 
+    if (version !== generation) return;
     btnDownload.disabled = false;
     btnDownload.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ' + tr('Download PDF');
   });
@@ -798,6 +834,7 @@
   btnNewFile.addEventListener('click', resetToUpload);
 
   function resetToUpload() {
+    resetReview();
     currentFile = null;
     originalBytes = null;
     pdfJsDoc = null;
