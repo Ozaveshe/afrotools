@@ -142,6 +142,10 @@ function shouldKeepToolSource(url, toolId) {
   ) return false;
   if (/^so-vat$/i.test(toolId) && /income[ _-]tax/i.test(decodedUrl)) return false;
   if (toolId === 'zm-paye' && /VSDC-API|\/node\/12767/i.test(decodedUrl)) return false;
+  // Liberia's reviewed tax table and employer guide are more specific than
+  // homepage links inferred from authority names in the same page.
+  if (/^lr-paye(?:-fr)?$/.test(toolId)
+    && /^https?:\/\/(?:www\.)?(?:(?:revenue\.)?lra\.gov\.lr|nasscorp\.org\.lr)\/?$/i.test(decodedUrl)) return false;
   return true;
 }
 
@@ -762,4 +766,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { applyPanelToFile, shouldKeepToolSource };
+module.exports = { applyPanelToFile, buildManifest, shouldKeepToolSource };
