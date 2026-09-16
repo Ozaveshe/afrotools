@@ -46,6 +46,7 @@
     'Compress PDF': ['Compresser un PDF', 'Bana PDF'],
     'Download compressed PDF': ['Télécharger le PDF compressé', 'Pakua PDF iliyobanwa'],
     'Download ZIP': ['Télécharger le ZIP', 'Pakua ZIP'],
+    'Grayscale was applied. The converted PDF is not smaller than the original.': ['Le PDF a été converti en niveaux de gris. Il n’est pas plus petit que l’original.', 'PDF imebadilishwa kuwa kijivu. Ukubwa wake haujapungua ikilinganishwa na asili.'],
     'Clean': ['Nettoyage', 'Safi'], 'Balanced': ['Équilibré', 'Wastani'], 'Strong': ['Fort', 'Nguvu'],
     'High quality': ['Haute qualité', 'Ubora wa juu'], 'Custom': ['Personnalisé', 'Maalum'],
     'Clean fallback': ['Repli vers le nettoyage', 'Imetumia hatua safi'], 'Original kept': ['Original conservé', 'Asili imehifadhiwa'],
@@ -138,6 +139,7 @@
     var saved = original - compressed;
     var percentage = saved <= 0 ? 0 : Math.round((saved / original) * 100);
     var locale = document.documentElement.lang.split('-')[0];
+    if (saved < 0) return '+' + Math.round((-saved / original) * 100) + (locale === 'fr' ? ' % plus volumineux' : locale === 'sw' ? '% kubwa zaidi' : '% larger');
     return percentage + (locale === 'fr' ? ' % économisés' : locale === 'sw' ? '% imeokolewa' : '% saved');
   }
 
@@ -426,7 +428,7 @@
       return resultFor(file, new Uint8Array(sourceBytes), originalSize, clean.pageCount, 'Original kept', warnings);
     }
 
-    if (settings.cleanFirst && clean.bytes.length <= originalSize * 0.97 && (!settings.targetBytes || clean.bytes.length <= settings.targetBytes)) {
+    if (!settings.grayscale && settings.cleanFirst && clean.bytes.length <= originalSize * 0.97 && (!settings.targetBytes || clean.bytes.length <= settings.targetBytes)) {
       report(0.94, 'Preparing clean result...', 'The clean rewrite met the size goal and preserved selectable text');
       await waitForPaint();
       warnings.push('Clean rewrite was enough, so selectable text was preserved.');
@@ -453,18 +455,19 @@
     }
 
     if (!best) throw new Error('Compression failed before output was created.');
-    if (best.bytes.length >= originalSize && clean.bytes.length < originalSize) {
+    if (!settings.grayscale && best.bytes.length >= originalSize && clean.bytes.length < originalSize) {
       best = clean;
       warnings.push('Raster output was larger; clean PDF output used instead.');
       if (settings.targetBytes && best.bytes.length > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
       return resultFor(file, best.bytes, originalSize, best.pageCount, 'Clean fallback', warnings);
     }
-    if (best.bytes.length >= originalSize) {
+    if (!settings.grayscale && best.bytes.length >= originalSize) {
       warnings.push('No smaller output was produced; original kept.');
       if (settings.targetBytes && originalSize > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
       return resultFor(file, new Uint8Array(sourceBytes), originalSize, clean.pageCount, 'Original kept', warnings);
     }
     if (settings.targetBytes && best.bytes.length > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
+    if (settings.grayscale && best.bytes.length >= originalSize) warnings.push('Grayscale was applied. The converted PDF is not smaller than the original.');
     if (settings.mode === 'raster') warnings.push('Raster mode keeps the page appearance but may remove selectable text.');
     return resultFor(file, best.bytes, originalSize, best.pageCount, settings.label || 'Compressed', warnings);
   }
