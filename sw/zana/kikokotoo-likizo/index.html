@@ -691,6 +691,7 @@ function poCalc() {
 }
 
 function buildParentalPlanState(code, type, dueVal) {
+  if (code === 'GH' && type === 'mat') return {unsupported:true,message:'Tumia sehemu ya Ghana hapa chini kuthibitisha mwanzo, cheti na nyongeza chini ya kifungu 57.'};
   if (code === 'CI' && type === 'pat') return {unsupported:true,message:'Ruhusa ya kuzaliwa kwa mtoto ina masharti. Tumia sehemu ya Côte d’Ivoire hapa chini kuhakiki miezi sita, kikomo cha familia na idhini.'};
   if (!code || !LEAVE_DATA[code] || !dueVal) return null;
   var d = LEAVE_DATA[code];
@@ -1002,5 +1003,7 @@ function lcCompareFilter(type, btn) {
 <script src="/assets/js/engines/senegal-child-leave.js?v=e54b5207" defer></script>
 <script src="/assets/js/pages/senegal-leave-reports.js?v=ee3177ef" defer></script>
 <script src="/assets/js/pages/senegal-child-leave.js?v=2a61932a" defer></script>
+<script src="/assets/js/engines/ghana-maternity-leave.js" defer></script>
+<script src="/assets/js/pages/ghana-maternity-leave.js" defer></script>
 </body>
 </html>

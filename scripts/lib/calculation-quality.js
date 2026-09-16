@@ -356,7 +356,7 @@ function classifyArtifact(relativePath) {
   const name = path.posix.basename(value);
   let riskDomain = "general_utility";
 
-  if (value === "assets/js/engines/ci-birth-leave.js" || value === "assets/js/engines/senegal-child-leave.js" || /import-landed-cost/.test(value)) {
+  if (value === "assets/js/engines/ci-birth-leave.js" || value === "assets/js/engines/senegal-child-leave.js" || value === "assets/js/engines/ghana-maternity-leave.js" || /import-landed-cost/.test(value)) {
     riskDomain = "legal_regulatory";
   } else if (
     /paye|payroll|payslip|employee-cost|staff-cost|(^|-)tax|(^|-)cit|tva|(^|-)vat|(^|-)wht|withholding|creator-invoice/.test(
@@ -1406,6 +1406,7 @@ function buildJsFormula(
     ...require("./calculation-quality-ci-birth").metadata(artifactPath),
     ...require("./calculation-quality-senegal-leave").metadata(artifactPath),
     ...require("./calculation-quality-remittance").metadata(artifactPath),
+    ...require("./calculation-quality-ghana-leave").metadata(artifactPath),
   };
 }
 
@@ -4328,6 +4329,7 @@ function generateGoldenFixtures(formulas, root) {
   fixtures.push(...require("./calculation-quality-ci-birth").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-senegal-leave").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-remittance").fixtures(formulas.formulas));
+  fixtures.push(...require("./calculation-quality-ghana-leave").fixtures(formulas.formulas));
 
   return {
     $schema: "./calculation-quality.schema.json#/$defs/GoldenFixtureRegistry",
@@ -4999,6 +5001,8 @@ function runGoldenFixtures(artifacts, root) {
       } else if (fixture.operation === "car-loan-calculate") {
         const engine = require(path.join(root, formula.artifactPath));
         actual = engine.calculate(fixture.input.values, fixture.input.today);
+      } else if (fixture.operation === "ghana-maternity-leave") {
+        actual = require("./calculation-quality-ghana-leave").run(root, fixture.input);
       } else if (fixture.operation === "senegal-child-leave") {
         actual = require("./calculation-quality-senegal-leave").run(root, fixture.input);
       } else if (fixture.operation === "remittance-corridor") {
