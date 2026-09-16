@@ -11,6 +11,11 @@ for(const locale of Object.keys(routes))for(const count of [1,36])test(`${locale
  await page.locator('#importJson').setInputFiles({name:'visual.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({version:2,data:backup}))});
  await page.locator('#paymentReference').fill('SYNTHETIC-PAYMENT');await page.locator('h1').first().click();
  await expect(page.locator('#receiptPreview')).toContainText('ITEM '+String(count).padStart(2,'0'));
+ await expect(page.locator('#receiptPreview .r-grid .r-value').first()).toHaveText('Synthetic Customer');
+ await expect(page.locator('#receiptPreview .r-payment')).toContainText('SYNTHETIC-PAYMENT');
+ await expect(page.locator('#receiptPreview .r-grid .r-label').first()).toHaveText({en:'Customer',fr:'Client',sw:'Mteja'}[locale]);
+ await expect(page.locator('#receiptPreview .r-grid .r-value').nth(1)).toHaveText({en:'PAID',fr:'PAYÉ',sw:'IMELIPWA'}[locale]);
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools-receipt-current-v2')).status)).toBe('PAID');
  await expect(page.locator('#metricTotal')).toContainText((count*30).toLocaleString('en-US',{minimumFractionDigits:2}));
  await page.evaluate(()=>{const original=window.html2canvas;window.html2canvas=async function(...args){const clone=args[1].onclone;args[1].onclone=function(doc){clone(doc);const table=doc.querySelector("#receiptPreview .r-table");window.__receiptGeometry={width:table.getBoundingClientRect().width,rows:Array.from(table.querySelectorAll("tr")).map(row=>{const rect=row.getBoundingClientRect(),top=doc.getElementById("receiptPreview").getBoundingClientRect().top;return {top:Math.floor((rect.top-top)*2),bottom:Math.ceil((rect.bottom-top)*2)};}),cells:Array.from(table.querySelectorAll("tbody tr:first-child td")).map(cell=>({width:cell.clientWidth,scroll:cell.scrollWidth}))};};const canvas=await original.apply(this,args);window.__receiptCanvas=canvas;return canvas;};});
  await page.locator('#receiptReviewConfirm').check();

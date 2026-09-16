@@ -850,6 +850,7 @@
 
   function translateElement(element, routeExact) {
     if (!element || element.nodeType !== 1) return;
+    if (element.closest('[translate="no"]')) return;
     var tag = element.tagName;
     if (/^(SCRIPT|STYLE|CODE|PRE)$/i.test(tag)) return;
     if (element.isContentEditable || element.closest('[contenteditable="true"]')) return;
@@ -863,6 +864,7 @@
 
   function translateTree(root, routeExact) {
     if (!root) return;
+    if (root.closest && root.closest('[translate="no"]')) return;
     if (root.nodeType === 1) translateElement(root, routeExact);
     var doc = root.ownerDocument || root;
     if (!doc.createTreeWalker) return;
@@ -871,6 +873,7 @@
     while ((node = walker.nextNode())) {
       var parent = node.parentElement;
       if (!parent || /^(SCRIPT|STYLE|CODE|PRE|TEXTAREA)$/i.test(parent.tagName)) continue;
+      if (parent.closest('[translate="no"]')) continue;
       if (parent.isContentEditable || parent.closest('[contenteditable="true"]')) continue;
       var translatedText = translate(node.nodeValue, routeExact);
       if (translatedText !== node.nodeValue) node.nodeValue = translatedText;
@@ -1057,12 +1060,12 @@
               }
             }
             if (node.nodeType === 1 || node.nodeType === 11) translateTree(node, routeExact);
-            else if (node.nodeType === 3 && node.parentElement) {
+            else if (node.nodeType === 3 && node.parentElement && !node.parentElement.closest('[translate="no"]')) {
               var translatedNode = translate(node.nodeValue, routeExact);
               if (translatedNode !== node.nodeValue) node.nodeValue = translatedNode;
             }
           });
-          if (mutation.type === 'characterData' && mutation.target.parentElement) {
+          if (mutation.type === 'characterData' && mutation.target.parentElement && !mutation.target.parentElement.closest('[translate="no"]')) {
             var translatedMutation = translate(mutation.target.nodeValue, routeExact);
             if (translatedMutation !== mutation.target.nodeValue) mutation.target.nodeValue = translatedMutation;
           }

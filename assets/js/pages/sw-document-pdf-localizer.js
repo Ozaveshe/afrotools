@@ -754,12 +754,13 @@
 
   function translateElement(root) {
     if (!root) return;
+    if (root.closest && root.closest('[translate="no"]')) return;
     var doc = root.ownerDocument || root;
     var walker = doc.createTreeWalker(root, 4);
     var nodes = [];
     while (walker.nextNode()) {
       var parent = walker.currentNode.parentElement;
-      if (parent && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
+      if (parent && !parent.closest('[translate="no"]') && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
     }
     nodes.forEach(function (node) {
       var translated = translate(node.nodeValue);
@@ -769,6 +770,7 @@
       var elements = Array.from(root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]'));
       if (root.matches && root.matches('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]')) elements.unshift(root);
       elements.forEach(function (element) {
+        if (element.closest('[translate="no"]')) return;
         ['placeholder', 'aria-label', 'title', 'value'].forEach(function (attribute) {
           if (!element.hasAttribute(attribute)) return;
           var value = element.getAttribute(attribute);
