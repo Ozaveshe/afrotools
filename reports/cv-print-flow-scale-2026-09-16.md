@@ -14,3 +14,5 @@ Evidence:
 Source hashes,30 artifact hashes and105-page count are in cv-print-family-final-2026-09-16.json. It supersedes the earlier108-page print baseline, whose hashes remain preserved. Local PDFs and contact sheets are in ../cv-print-flow-final-proof.
 
 The separate mobile More-menu→Print interaction test is still under investigation and is not a claimed pass. This candidate covers actual print outputs, not every template/mode/control combination or other browser print drivers. The120 styled-PDF historical matrix remains separate; no whole-CV acceptance or deployment is claimed.
+
+Hash encoding clarification: the original sourceHashes matched raw CRLF file bytes in the verification worktree. The matrix now explicitly records that normalization and adds sourceHashesLF for portable LF comparisons. Original source hashes and all PDF artifact hashes are preserved unchanged.
