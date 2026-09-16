@@ -37,3 +37,8 @@ Private evidence: `C:/Users/Oza/.codex/worktrees/pdf-image-parity-20260916/evide
 ## Limits
 
 No universal PDF-form compatibility claim: XFA, signatures, password/encryption handling, arbitrary Unicode font coverage, rich text and every AcroForm flag are not proven. Multi-select artifact proof covers PDFOptionList; PDFDropdown uses the same isMultiselect/selectedOptions path, but only single-select dropdowns have separate existing artifact proof. Browser download/parser proof is local source proof, not production proof. No full build, release audit or whole-app acceptance ledger update was performed in this isolated task.
+
+## Coordinator integration proof
+Cherry-picked b11670cf as08059732 onto6cb0d04d. Both targeted locale owners regenerated their pages; bothchecks passed, Frenchzero staleoutputs. Runtimeinstaller node test anddiffcheckpassed. Generateddiff removes duplicatedinlinecontrollers in favorof shared readable source; no filedeletions.
+
+Root actualsource browser session86435 passed18/18cases in55.1seconds on port4518, defaultanalytics/freshserver. Initialattempt on4512 stoppedbeforetests because another server occupiedthatport; itwasnotreused or terminated. All final18cases used coordinator source. No rebuilt-dist or production claim.
