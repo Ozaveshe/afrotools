@@ -24,7 +24,7 @@ test('an English backup resumes in French and produces a French teaching report 
 
 test('all current French written tasks retain source identities and reviewed guidance',()=>{
  const source=require('../assets/js/lib/ssce-written-bank'),localized=require('../assets/js/lib/ssce-written-bank-fr'),written=require('../assets/js/lib/ssce-written');
- assert.equal(localized.items.length,40);assert.deepEqual(localized.items.map(q=>q.id),source.items.map(q=>q.id));
+ assert.equal(localized.items.length,42);assert.deepEqual(localized.items.map(q=>q.id),source.items.map(q=>q.id));
  for(const q of localized.items){const original=source.items.find(x=>x.id===q.id);for(const key of ['id','subject','year','paper','number','subpart','source'])assert.deepEqual(q[key],original[key],q.id+'/'+key);assert.equal(q.checks.length,original.checks.length);assert.notDeepEqual(q.steps,original.steps);assert.notDeepEqual(q.checks,original.checks);if(q.subject==='English'||q.year===2022){assert.equal(q.questionLanguage,'en');assert.equal(q.prompt,original.prompt);}else{assert.equal(q.questionLanguage,'fr');assert.notEqual(q.prompt,original.prompt);}}
  const saved={version:1,bankId:source.id,entries:Object.fromEntries(source.items.map(q=>[q.id,{answer:'Synthetic reviewed response',checks:q.checks.map(()=>true)}]))};assert.deepEqual(written.normalize(saved,localized),written.normalize(saved,source));
 });
