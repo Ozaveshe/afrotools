@@ -1405,6 +1405,7 @@ function buildJsFormula(
     ...require("./calculation-quality-private-paye").metadata(root, artifactPath),
     ...require("./calculation-quality-ci-birth").metadata(artifactPath),
     ...require("./calculation-quality-senegal-leave").metadata(artifactPath),
+    ...require("./calculation-quality-remittance").metadata(artifactPath),
   };
 }
 
@@ -4326,6 +4327,7 @@ function generateGoldenFixtures(formulas, root) {
 
   fixtures.push(...require("./calculation-quality-ci-birth").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-senegal-leave").fixtures(formulas.formulas));
+  fixtures.push(...require("./calculation-quality-remittance").fixtures(formulas.formulas));
 
   return {
     $schema: "./calculation-quality.schema.json#/$defs/GoldenFixtureRegistry",
@@ -4999,6 +5001,8 @@ function runGoldenFixtures(artifacts, root) {
         actual = engine.calculate(fixture.input.values, fixture.input.today);
       } else if (fixture.operation === "senegal-child-leave") {
         actual = require("./calculation-quality-senegal-leave").run(root, fixture.input);
+      } else if (fixture.operation === "remittance-corridor") {
+        actual = require("./calculation-quality-remittance").run(root, fixture.input);
       } else if (fixture.operation === "ci-birth-leave") {
         actual = require("./calculation-quality-ci-birth").run(root, fixture.input);
       } else if (fixture.operation === "student-loan-calculate") {

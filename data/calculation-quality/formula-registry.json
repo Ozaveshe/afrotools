@@ -8957,29 +8957,32 @@
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
     },
     {
-      "applicablePopulation": "Users comparing indicative exchange, remittance, or policy-rate scenarios before obtaining a provider quote.",
-      "artifactDigest": "sha256:bb658fcd573fd4ea4190ce22ac544fa6ce4345937e2ef5ad7a21dce298745822",
+      "applicablePopulation": "Users comparing two or three independently checked quotes.",
+      "artifactDigest": "sha256:bea7d5fca56affa84b433ee5beae9b03d531c6ca40de00e2edb6e677552dfaad",
       "artifactPath": "engines/remittance-quote-comparator-engine.js",
       "currency": "MULTI",
-      "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
+      "currencyAssumption": "Each quote explicitly supplies sending and receiving currency; matching currencies alone do not establish the same corridor.",
       "currencyOverride": null,
-      "disclaimer": "Indicative planning data only. Obtain a current executable quote before committing funds.",
+      "disclaimer": "Compare only checked quotes for the intended corridor. Highest recipient amount is not a recommendation; confirm current availability, expiry, payout method, limits and safety.",
       "effectiveDateStatus": "not-applicable",
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "engines-remittance-quote-comparator-engine",
-      "formulaVersion": "legacy-current+sha256.bb658fcd573f",
+      "formulaVersion": "legacy-current+sha256.bea7d5fca56a",
       "id": "formula-engines-remittance-quote-comparator-engine",
       "jurisdictions": [
         "ALL"
       ],
       "knownExclusions": [
-        "Provider spreads, fees, liquidity, settlement delay, and executable market quotes are excluded unless shown."
+        "No live provider quotes, tariff tables, payment execution, safety or provider eligibility verification.",
+        "Strict corridor grouping is opt-in and enabled by the remittance comparator; the separate crypto-remittance caller retains legacy currency/debit-only grouping pending review.",
+        "Country-name recognition uses runtime Intl/CLDR data, not a provider service-country database or legal status certification.",
+        "Payout methods and delivery times remain visible alternatives within the same corridor, not equivalent-service certification."
       ],
-      "lastVerified": "2026-03-01",
+      "lastVerified": "2026-09-16",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:bb658fcd573fd4ea4190ce22ac544fa6ce4345937e2ef5ad7a21dce298745822",
+        "artifactDigest": "sha256:bea7d5fca56affa84b433ee5beae9b03d531c6ca40de00e2edb6e677552dfaad",
         "artifactPath": "engines/remittance-quote-comparator-engine.js",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -8988,10 +8991,11 @@
       "riskDomain": "exchange_rates",
       "riskLevel": "medium",
       "rounding": {
-        "method": "runtime-defined",
-        "precision": "Preserve current executable behavior.",
+        "method": "IEEE-754 arithmetic; display-only locale formatting",
+        "precision": "Effective rate is recipient amount divided by total debit; no fee added to the already inclusive debit.",
         "stages": [
-          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+          "No intermediate monetary rounding.",
+          "Highest eligible comparable recipient amount and exact differences; tie comparison tolerance 1e-9."
         ]
       },
       "sourceJurisdictions": [
@@ -8999,18 +9003,22 @@
       ],
       "sources": [
         {
-          "authorityStatus": "reviewed-dataset",
-          "kind": "third_party_snapshot",
-          "registryId": "forex-third-party-snapshot",
-          "title": "Foreign-exchange third-party API snapshot",
-          "url": null
+          "authorityStatus": "source-reviewed",
+          "kind": "user-entered-values-and-locale-reference",
+          "registryId": null,
+          "title": "User-entered checked quotes; Unicode CLDR supplies localized region names only",
+          "url": "https://www.unicode.org/cldr/charts/48/summary/fr.html"
         }
       ],
       "supportStatus": "registered",
       "units": [
-        "currency"
+        "sending-currency",
+        "receiving-currency",
+        "receiving-currency-per-sending-currency",
+        "minutes",
+        "ISO-timestamp"
       ],
-      "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
+      "verificationBasis": "Synthetic arithmetic and corridor tests; no current provider quote, tariff, eligibility or exchange-rate verification."
     },
     {
       "applicablePopulation": "Users preparing non-binding financial projections from the entered assumptions.",
