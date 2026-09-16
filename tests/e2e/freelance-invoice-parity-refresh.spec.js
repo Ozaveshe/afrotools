@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const pdfParse=require('pdf-parse');
 const routes={en:'/tools/freelance-invoice/',fr:'/fr/tools/facture-freelance/',sw:'/sw/zana/ankara-ya-freelancer/'};
 for(const [locale,route] of Object.entries(routes))test(`${locale} freelance edits survive field blur, saved drafts and parsed exports`,async({page})=>{
- await page.setViewportSize({width:1280,height:900});
+ await page.setViewportSize({width:320,height:844});
  const requests=[],errors=[];
  page.on('request',r=>requests.push(r.url()+' '+(r.postData()||'')));
  page.on('pageerror',e=>errors.push(e.message));
@@ -33,8 +33,7 @@ for(const [locale,route] of Object.entries(routes))test(`${locale} freelance edi
  await expect(page.locator('#invoicePreview')).toContainText('45.32');
  // A real local save followed by a new document and a restored saved record.
  await page.locator('#invoicePreview').focus();
- await page.locator('#saveInvoiceBtn').focus();
- await page.locator('#saveInvoiceBtn').press('Enter');
+ await page.locator('#saveInvoiceBtn').click();
  await expect(page.locator('[data-open-saved]')).toHaveCount(1);
  await page.locator('#newInvoiceBtn').click();
  await page.locator('[data-open-saved]').click();

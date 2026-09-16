@@ -16,3 +16,8 @@ Three Chromium tests pass: EN/FR/SW actual editing, input-node identity, indepen
 - All six initial routes loaded without page errors and fit390px. Invoice-generator common PDF audit remains incomplete; tax controls require expanded details, and French observed tax total needs a controlled follow-up.
 
 Evidence: sibling exports-audit.jsonl (before), exports-after.jsonl (after), freelance-focus-proof (3passed), freelance-sw-repeat / freelance-390-proof (mobile failures). Synthetic fixtures only. Source/SEO/hreflang and full-build checks are not claimed by this first runtime-only repair.
+
+## Follow-up: Swahili pointer repair
+The shared integrity helper moved the active a11y stylesheet when late footer/assistant assets entered the head. Removing/reinserting the link temporarily removed its styles between pointerdown and mousedown (Save y398→-380), causing mouseup/click to hit its parent. The helper now leaves that sheet attached and inserts later style owners before it. No script or metadata reordering.
+
+11 Chromium checks pass: the three full EN/FR/SW workflows now use real mobile pointer Save/review/export at320px; eight targeted cases cover both invoice apps at320/390px and light/dark. Tests assert the original a11y link is never removed, its CSSStyleSheet identity remains stable, style priority remains last, pointer geometry changes under2px, and the clicked action actually completes. Existing real footer/assistant loading remains active; an additional late style insertion makes the ordering test deterministic. No keyboard substitution or sleep-based readiness workaround.

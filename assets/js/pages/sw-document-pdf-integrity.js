@@ -32,9 +32,16 @@
 
     function pin() {
       var link = stylesheet();
-      if (!link || link.parentNode !== document.head || link === document.head.lastElementChild) return;
+      if (!link || link.parentNode !== document.head) return;
+      // Keep the active accessibility sheet attached. Moving it can temporarily
+      // remove its rules between pointerdown and mouseup, shifting the target.
+      const laterStyles = [];
+      for (let node = link.nextElementSibling; node; node = node.nextElementSibling) {
+        if (node.matches('style, link[rel="stylesheet"]')) laterStyles.push(node);
+      }
+      if (!laterStyles.length) return;
       moving = true;
-      document.head.appendChild(link);
+      laterStyles.forEach(function (node) { document.head.insertBefore(node, link); });
       Promise.resolve().then(function () {
         moving = false;
       });
