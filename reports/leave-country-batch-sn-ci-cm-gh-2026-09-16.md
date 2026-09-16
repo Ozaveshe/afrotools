@@ -1,6 +1,6 @@
 # Leave country batch: SN, CI, CM, GH
 
-Read-only source review, 16 September 2026. No country is accepted as fully current or fully implemented by this report. No entitlement data was changed.
+Source review, 16 September 2026. No country is accepted as fully current or fully implemented by this report. The later bounded CI annual-base repair is recorded below.
 
 ## Repository source ownership
 
@@ -33,3 +33,11 @@ Confirmed model limits: blanket “after 12 months” omits the calendar-year/ir
 ## Next implementation boundary
 
 Prioritize CI annual accrual and SN/CI maternity scheduling after the specific missing legal checks. Use a shared rule record with original units, employee scope, source version, base amount, eligibility and separately identified planning assumptions. Add actual birth date and conditional extensions only when source-supported; test expected calendar dates and locale outputs. The all-country conflict report remains open, and this four-country batch does not reduce its scope.
+
+## Follow-up: bounded CI annual-base correction
+
+The university's 2025 compilation was downloaded (2,147,893 bytes) and parsed locally. Printed pages 67–69 reproduce unchanged article 25.1 and explicitly amended article 25.2 (2021 ordinance). This establishes the 2.2 monthly base independently of the amended individual additions. The government's full indexed April 2026 announcement enumerates the eleven decree subjects; it identifies no amendment to the annual base. Full Presidency retrieval remains 502, so this is not a complete review of those decrees.
+
+The EN inline source and shared data now represent 26.4 as the **unrounded twelve-month base**, with native EN/FR/SW limitations. No statutory rounding convention is invented. Individual bonuses, absences and employer rounding are excluded explicitly; the scope remains employees covered by the Labour Code, not public-service statutes. Paternity and maternity amounts/timing are unchanged pending separate conditional modeling. The 2025 compilation's article 25.12 gives two working birth-permission days after six months within a ten-day annual family-permission limit, which differs materially from the apps' unconditional three days and remains open.
+
+Validation: three Playwright locale tests verify 26.4, independent elapsed-year planning accrual 13.1, and native exports; FR parsed TXT/PDF and JSON backup reproduce 22.4 remaining after four days taken. These are annual-base checks, not calendar-law acceptance. No calendar rules changed in this slice.

@@ -204,7 +204,7 @@
           <div class="tl-field"><label class="tl-label" for="ac-country">NCHI (hujaza haki kiotomatiki)</label><select id="ac-country" onchange="acCountryChange()"><option value="">&mdash; Chagua nchi &mdash;</option></select></div>
           <div class="tl-field"><label class="tl-label" for="ac-start">TAREHE YA KUANZA AJIRA</label><input type="date" id="ac-start" oninput="acCalc()"></div>
           <div class="tl-field"><label class="tl-label" for="ac-today">TAREHE YA HESABU</label><input type="date" id="ac-today" oninput="acCalc()"></div>
-          <div class="tl-field"><label class="tl-label" for="ac-entitlement">HAKI YA MWAKA (SIKU)</label><input type="number" id="ac-entitlement" placeholder="mf. 21" min="1" max="60" oninput="acCalc()"></div>
+          <div class="tl-field"><label class="tl-label" for="ac-entitlement">HAKI YA MWAKA (SIKU)</label><input type="number" id="ac-entitlement" step="0.1" placeholder="mf. 21" min="1" max="60" oninput="acCalc()"></div>
           <div class="tl-field"><label class="tl-label" for="ac-requested">SIKU NINAZOTAKA KUOMBA (si lazima)</label><input type="number" id="ac-requested" placeholder="mf. 10" min="0" max="60" oninput="acCalc()"></div>
         </div>
         <div id="ac-result" style="display:none"></div>
@@ -500,7 +500,7 @@ function buildLeaveView(code) {
     flag: leave.flag || '',
     annual: leave.annualLeave && typeof leave.annualLeave.days === 'number' ? leave.annualLeave.days : 0,
     annualUnit: getAnnualUnit(code),
-    annualNote: lcSwText(getAnnualNoteText(leave)),
+    annualNote: code === 'CI' ? 'Kifungu 25.1: siku 2.2 ouvrables kwa mwezi wa huduma halisi; siku 26.4 kwa miezi 12 bila kuzungusha. Nyongeza, kutokuwepo kazini na namna mwajiri anavyozungusha hazijahesabiwa.' : lcSwText(getAnnualNoteText(leave)),
     accrual: lcSwText(getAnnualAccrualText(leave)),
     sick: getSickValue(leave),
     sickNote: getSickNoteText(leave),
