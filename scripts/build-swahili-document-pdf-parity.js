@@ -59,7 +59,7 @@ const apps = [
   { id: 'invoice-generator', englishRoute: '/tools/invoice-generator/', englishFile: 'tools/invoice-generator/index.html', swahiliRoute: '/sw/zana/kizalishaji-ankara/', swahiliFile: 'sw/zana/kizalishaji-ankara/index.html', name: 'Kizalishaji Ankara', exports: ['pdf'], sensitive: true },
   { id: 'cover-letter', englishRoute: '/tools/cover-letter-generator/', englishFile: 'tools/cover-letter-generator/index.html', swahiliRoute: '/sw/zana/barua-ombi/', swahiliFile: 'sw/zana/barua-ombi/index.html', name: 'Barua ya Maombi', exports: ['pdf', 'doc', 'txt', 'json', 'print'], alternates: { fr: '/fr/tools/generateur-lettre-motivation/', ha: '/ha/kayan-aiki/rubuta-wasikar-aiki/' }, sensitive: true },
   { id: 'freelance-invoice', englishRoute: '/tools/freelance-invoice/', englishFile: 'tools/freelance-invoice/index.html', swahiliRoute: '/sw/zana/ankara-ya-freelancer/', swahiliFile: 'sw/zana/ankara-ya-freelancer/index.html', name: 'Ankara ya Freelancer', exports: ['pdf', 'doc', 'txt', 'csv', 'json', 'print'], sensitive: true },
-  { id: 'pdf-compress', englishRoute: '/tools/pdf-compress/', englishFile: 'tools/pdf-compress/index.html', swahiliRoute: '/sw/zana/kubana-pdf/', swahiliFile: 'sw/zana/kubana-pdf/index.html', name: 'Bana PDF', exports: ['pdf', 'zip'] },
+  { id: 'pdf-compress', localFirstDownloads: true, englishRoute: '/tools/pdf-compress/', englishFile: 'tools/pdf-compress/index.html', swahiliRoute: '/sw/zana/kubana-pdf/', swahiliFile: 'sw/zana/kubana-pdf/index.html', name: 'Bana PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-image-convert', englishRoute: '/tools/pdf-image-convert/', englishFile: 'tools/pdf-image-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-pdf-na-picha/', swahiliFile: 'sw/zana/kubadilisha-pdf-na-picha/index.html', name: 'Badilisha PDF na Picha', exports: ['pdf', 'png', 'jpeg', 'zip'] },
   { id: 'pdf-watermark', englishRoute: '/tools/pdf-watermark/', englishFile: 'tools/pdf-watermark/index.html', swahiliRoute: '/sw/zana/watermark-pdf/', swahiliFile: 'sw/zana/watermark-pdf/index.html', name: 'Alama ya Maji ya PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-password', englishRoute: '/tools/pdf-password/', englishFile: 'tools/pdf-password/index.html', swahiliRoute: '/sw/zana/kulinda-pdf-kwa-nenosiri/', swahiliFile: 'sw/zana/kulinda-pdf-kwa-nenosiri/index.html', name: 'Linda PDF kwa Nenosiri', exports: ['pdf', 'zip'] },
@@ -445,7 +445,7 @@ function applyDownloadGateContract(html, app) {
   html = html
     .replace(/\s*<email-gate-modal\b[^>]*><\/email-gate-modal>/gi, '')
     .replace(/\s*<script\b[^>]+src=["'][^"']*(?:auto-email-gate|pdf-download-gate)[^"']*["'][^>]*><\/script>/gi, '');
-  if (sensitive) return html;
+  if (sensitive || app.localFirstDownloads === true) return html;
   const gate = `
   <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
   <script src="/assets/js/lib/pdf-download-gate.js?v=20260502" defer></script>
@@ -459,7 +459,7 @@ function injectParityRuntime(html, app) {
   const payload = JSON.stringify({
     id: app.id,
     name: app.name,
-    downloadContract: app.sensitive === true ? 'sensitive-guest' : 'free-account'
+    downloadContract: app.sensitive === true ? 'sensitive-guest' : app.localFirstDownloads === true ? 'local-guest' : 'free-account'
   });
   const injection = `
   <script type="application/json" id="sw-document-pdf-locale">${payload}</script>
@@ -841,8 +841,8 @@ function validateOutputs() {
     }
     const gateScripts = (html.match(/\/assets\/js\/lib\/pdf-download-gate\.js/g) || []).length;
     const gateElements = (html.match(/<email-gate-modal\b/g) || []).length;
-    if (app.sensitive === true) {
-      if (gateScripts || gateElements) failures.push(`${app.id}: sensitive route must remain guest-ungated`);
+    if (app.sensitive === true || app.localFirstDownloads === true) {
+      if (gateScripts || gateElements) failures.push(`${app.id}: guest-local route must remain ungated`);
     } else if (gateScripts !== 1 || gateElements !== 1) {
       failures.push(`${app.id}: free-account gate contract expected exactly once; found scripts=${gateScripts}, elements=${gateElements}`);
     }

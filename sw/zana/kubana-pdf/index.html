@@ -269,6 +269,24 @@
     background: rgba(0, 113, 227, 0.1);
   }
 
+  .file-input-label[aria-disabled="true"] {
+    cursor: wait;
+    opacity: 0.68;
+  }
+
+  .file-advice {
+    display: none;
+    margin-top: 8px;
+    color: #475569;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .file-advice[data-size-state="large"] {
+    color: #92400e;
+    font-weight: 700;
+  }
+
   .preset-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
@@ -523,9 +541,9 @@
 
   .progress-bar {
     width: 100%;
-    height: 4px;
+    height: 10px;
     background: #e5e7eb;
-    border-radius: 2px;
+    border-radius: 999px;
     overflow: hidden;
     margin-top: 12px;
   }
@@ -535,6 +553,25 @@
     background: var(--color-primary);
     width: 0%;
     transition: width 0.3s;
+  }
+
+  .progress-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 9px;
+    color: #64748b;
+    font-size: 0.7rem;
+    line-height: 1.45;
+    text-align: left;
+  }
+
+  .progress-percent {
+    flex: 0 0 auto;
+    color: #1d4ed8;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
   }
 
   :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
@@ -587,15 +624,15 @@
   body.top-level-page-ui-refresh .tool-hero h2,
   body.top-level-page-ui-refresh .tool-hero h3 { color: #0f172a; }
 </style>
-<meta name="afrotools-content-id" content="sw-document-pdf:pdf-compress">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=676825f9">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kubana-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-compress/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compresser-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubana-pdf/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/matsa-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-compress/">
+  <meta name="afrotools-content-id" content="sw-document-pdf:pdf-compress">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
@@ -641,6 +678,7 @@
           <div id="fileInfo" style="display:none; margin-top:12px;">
             <div class="f-label-text"><span id="fileName"></span></div>
             <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Jumla ya ukubwa: <span id="fileSize"></span></div>
+            <div class="file-advice" id="fileAdvice" role="status" aria-live="polite"></div>
           </div>
           <div id="batchFileList" class="file-list" style="display:none;"></div>
         </div>
@@ -696,8 +734,8 @@
               </div>
             </div>
             <div class="setting-checks">
-              <label class="check-option"><input aria-label="GrayscaleToggle" type="checkbox" id="grayscaleToggle"> Uchanganuzi wa rangi ya kijivu</label>
-              <label class="check-option"><input aria-label="KeepTextToggle" type="checkbox" id="keepTextToggle"> Tumia hali safi inapowezekana</label>
+              <label class="check-option"><input type="checkbox" id="grayscaleToggle"> Uchanganuzi wa rangi ya kijivu</label>
+              <label class="check-option"><input type="checkbox" id="keepTextToggle"> Tumia hali safi inapowezekana</label>
             </div>
           </div>
           <button type="button" class="calc-btn" id="compressBtn" disabled>Finya PDF</button>
@@ -726,10 +764,11 @@
             </div>
           </div>
           <div id="processingText" style="display:none;text-align:center;color:#334155;" aria-live="polite">
-            <div style="margin-bottom:12px;">Inabana...</div>
-            <div class="progress-bar">
+            <div id="processingLabel" style="margin-bottom:12px;font-weight:700;">Inabana...</div>
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-labelledby="processingLabel" aria-describedby="processingDetail" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-fill" id="progressFill"></div>
             </div>
+            <div class="progress-meta"><span id="processingDetail">Preparing local processing</span><span class="progress-percent" id="progressPercent">0%</span></div>
           </div>
         </div>
       </div>
@@ -844,12 +883,9 @@
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-compress","name":"Bana PDF","downloadContract":"free-account"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=88f01476" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=a94ca530" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-compress","name":"Bana PDF","downloadContract":"local-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

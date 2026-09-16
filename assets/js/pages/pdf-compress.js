@@ -13,6 +13,16 @@
   };
   var els = {};
 
+  function feedback(key, count) {
+    var locale = document.documentElement.lang.split('-')[0];
+    var messages = {
+      rejected: ['Skipped {n} non-PDF file(s). Choose a PDF file.', '{n} fichier(s) non PDF ignoré(s). Choisissez un fichier PDF.', 'Faili {n} zisizo PDF zimerukwa. Chagua faili ya PDF.'],
+      failed: ['Unable to read or compress this PDF.', 'Impossible de lire ou de compresser ce PDF.', 'Haiwezekani kusoma au kubana PDF hii.'],
+      retry: ['Check that the file is a valid, unlocked PDF. Try Clean mode or a smaller batch. The source file stays on this device.', 'Vérifiez que le fichier est un PDF valide et déverrouillé. Essayez le mode nettoyage ou un lot plus petit. Le fichier source reste sur cet appareil.', 'Hakikisha faili ni PDF halali isiyofungwa. Jaribu hali safi au kundi dogo. Faili asili inabaki kwenye kifaa hiki.']
+    };
+    return messages[key][{ en: 0, fr: 1, sw: 2 }[locale] || 0].replace('{n}', String(count));
+  }
+
   var PRESETS = {
     screen: { label: 'Clean', mode: 'clean' },
     web: { label: 'Balanced', mode: 'raster', dpi: 110, quality: 0.72, grayscale: false, cleanFirst: true },
@@ -113,6 +123,7 @@
     document.querySelectorAll('.preset-btn').forEach(function (button) {
       button.disabled = value;
     });
+    [els.dpiSlider, els.qualitySlider, els.targetSizeInput, els.grayscaleToggle, els.keepTextToggle].forEach(function (input) { input.disabled = value; });
   }
 
   function addFiles(fileList) {
@@ -134,7 +145,8 @@
     state.results = [];
     state.download = null;
     renderFiles();
-    resetResult(rejected ? 'Skipped ' + rejected + ' non-PDF file' + (rejected === 1 ? '.' : 's.') : '');
+    resetResult('');
+    if (rejected) showProcessing(feedback('rejected', rejected), '', true);
   }
 
   function renderFiles() {
@@ -175,6 +187,8 @@
   }
 
   function resetResult(note) {
+    state.results = [];
+    state.download = null;
     els.resultCard.classList.remove('on');
     els.resultContent.style.display = 'none';
     els.processingText.style.display = 'none';
@@ -445,7 +459,8 @@
       renderResults();
       setProgress(100, 'Compression complete');
     } catch (err) {
-      showProcessing('Error: ' + (err.message || 'Compression failed.'), 'The source PDF remains on this device. Try Clean mode or a smaller batch.', true);
+      // Library errors may contain document fragments or implementation details.
+      showProcessing(feedback('failed'), feedback('retry'), true);
       els.resultContent.style.display = 'none';
       if (els.progressBar) els.progressBar.setAttribute('aria-valuetext', 'Compression failed');
     } finally {
@@ -567,6 +582,10 @@
     });
     els.dpiSlider.addEventListener('input', function () { els.dpiVal.textContent = els.dpiSlider.value; });
     els.qualitySlider.addEventListener('input', function () { els.qualityVal.textContent = els.qualitySlider.value; });
+    [els.dpiSlider, els.qualitySlider, els.targetSizeInput, els.grayscaleToggle, els.keepTextToggle].forEach(function (input) {
+      input.addEventListener('input', function () { if (!state.busy) resetResult(''); });
+      input.addEventListener('change', function () { if (!state.busy) resetResult(''); });
+    });
     els.compressBtn.addEventListener('click', compressSelected);
     els.downloadBtn.addEventListener('click', function () {
       if (state.download) downloadBlob(state.download.blob, state.download.filename);
