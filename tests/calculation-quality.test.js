@@ -341,7 +341,11 @@ test('quality report is deterministic for an explicit as-of date', function () {
     assert.strictEqual(formula.supportStatus, 'review-required');
     assert.match(formula.disclaimer, /assumptions|unconfirmed/);
   }
-  assert.strictEqual(first.reviewBacklog.highRiskSources, planningIds.length, 'only the explicitly documented PAYE, CI birth-permission Senegal annual-leave and Ghana maternity source uncertainties remain');
+  const inflation = artifacts.formulas.formulas.find(item => item.id === 'formula-assets-js-lib-minimum-wage-inflation');
+  assert.strictEqual(inflation.supportStatus, 'review-required');
+  assert.strictEqual(inflation.effectiveDate, 'unknown');
+  assert.match(inflation.verificationBasis, /CPI observations have no specified source/);
+  assert.strictEqual(first.reviewBacklog.highRiskSources, planningIds.length + 1, 'documented legal and CPI source uncertainties remain visible');
   assert.ok(first.reviewBacklog.highRiskEffectiveDates > 0, 'unknown legacy effective dates must remain visible');
 });
 

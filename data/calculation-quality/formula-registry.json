@@ -3942,6 +3942,70 @@
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
     },
     {
+      "applicablePopulation": "Users reading recorded minimum-wage purchasing-power comparisons.",
+      "artifactDigest": "sha256:522850ae5d9b8c8f9caf801dbc99b7161245f892b754fd62c0c38ec871459f61",
+      "artifactPath": "assets/js/lib/minimum-wage-inflation.js",
+      "currency": "MULTI",
+      "currencyAssumption": "Same local currency in both observations; no FX conversion.",
+      "currencyOverride": null,
+      "disclaimer": "Historical comparison using stored observations. CPI source and verification date are unspecified.",
+      "effectiveDate": "unknown",
+      "effectiveDateStatus": "not-applicable",
+      "effectiveFrom": null,
+      "effectiveTo": null,
+      "formulaFamily": "assets-js-lib-minimum-wage-inflation",
+      "formulaVersion": "legacy-current+sha256.522850ae5d9b",
+      "id": "formula-assets-js-lib-minimum-wage-inflation",
+      "jurisdictions": [
+        "ALL"
+      ],
+      "knownExclusions": [
+        "Stored CPI values and nominal wage history are not independently verified by these fixtures.",
+        "No current living-cost estimate, household affordability conclusion, source freshness or statutory compliance.",
+        "Only first/last observations are summarized; original chart series remains independently owned."
+      ],
+      "lastVerified": "2026-09-16",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:522850ae5d9b8c8f9caf801dbc99b7161245f892b754fd62c0c38ec871459f61",
+        "artifactPath": "assets/js/lib/minimum-wage-inflation.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [],
+      "riskDomain": "legal_regulatory",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "IEEE-754; unrounded direction and percent comparison",
+        "precision": "Display up to two decimal places",
+        "stages": [
+          "Real final value equals final nominal times first CPI divided by final CPI.",
+          "Percent change compares unrounded real final value to first nominal.",
+          "Absolute change below1e-9 percentage points is unchanged; format separately."
+        ]
+      },
+      "sourceJurisdictions": [
+        "ALL"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "review-required",
+          "kind": "methodology-reference",
+          "registryId": null,
+          "title": "ILO consumer price index manual: purchasing-power methodology only",
+          "url": "https://www.ilo.org/publications/consumer-price-index-manual-concepts-and-methods-2020"
+        }
+      ],
+      "supportStatus": "review-required",
+      "units": [
+        "local-currency",
+        "CPI-index",
+        "percent",
+        "observation-year"
+      ],
+      "verificationBasis": "Synthetic arithmetic and EN/SW browser summaries verified; CPI observations have no specified source or verification date. No statutory or dataset freshness certified."
+    },
+    {
       "applicablePopulation": "Users comparing monthly pay with a selected recorded national/state/category reference.",
       "artifactDigest": "sha256:fdc304ef4442fb0418c22e47472c7569298af5c4b86d85fc974773a6e2f6a056",
       "artifactPath": "assets/js/pages/minimum-wage-reference-comparison.js",
