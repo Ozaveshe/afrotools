@@ -1407,6 +1407,7 @@ function buildJsFormula(
     ...require("./calculation-quality-senegal-leave").metadata(artifactPath),
     ...require("./calculation-quality-remittance").metadata(artifactPath),
     ...require("./calculation-quality-ghana-leave").metadata(artifactPath),
+    ...require("./calculation-quality-sw-fuel").metadata(artifactPath),
   };
 }
 
@@ -4330,6 +4331,7 @@ function generateGoldenFixtures(formulas, root) {
   fixtures.push(...require("./calculation-quality-senegal-leave").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-remittance").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-ghana-leave").fixtures(formulas.formulas));
+  fixtures.push(...require("./calculation-quality-sw-fuel").fixtures(formulas.formulas));
 
   return {
     $schema: "./calculation-quality.schema.json#/$defs/GoldenFixtureRegistry",
@@ -5001,6 +5003,8 @@ function runGoldenFixtures(artifacts, root) {
       } else if (fixture.operation === "car-loan-calculate") {
         const engine = require(path.join(root, formula.artifactPath));
         actual = engine.calculate(fixture.input.values, fixture.input.today);
+      } else if (fixture.operation === "sw-fuel-scenario") {
+        actual = require("./calculation-quality-sw-fuel").run(root, fixture.input);
       } else if (fixture.operation === "ghana-maternity-leave") {
         actual = require("./calculation-quality-ghana-leave").run(root, fixture.input);
       } else if (fixture.operation === "senegal-child-leave") {

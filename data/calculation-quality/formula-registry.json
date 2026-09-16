@@ -3236,6 +3236,68 @@
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
     },
     {
+      "applicablePopulation": "Households and businesses estimating utility consumption, tariffs, backup power, or energy investment.",
+      "artifactDigest": "sha256:dcbabeade9e9dab505f6a6db868c4fe102d9a1f5dbb2e8aec255314fa98aa8c0",
+      "artifactPath": "assets/js/engines/sw-fuel-scenario.js",
+      "currency": null,
+      "currencyAssumption": "Both prices and resulting amounts use the explicitly selected input currency; no exchange conversion.",
+      "currencyOverride": null,
+      "disclaimer": "Manual planning estimate, not a current pump-price quote.",
+      "effectiveDateStatus": "not-applicable",
+      "effectiveFrom": null,
+      "effectiveTo": null,
+      "formulaFamily": "assets-js-engines-sw-fuel-scenario",
+      "formulaVersion": "legacy-current+sha256.dcbabeade9e9",
+      "id": "formula-assets-js-engines-sw-fuel-scenario",
+      "jurisdictions": [
+        "ALL"
+      ],
+      "knownExclusions": [
+        "No tax, FX conversion, energy-density or volume/mass conversion.",
+        "Input prices and inspection-age claims are not independently verified.",
+        "Country reference freshness belongs to the shared fuel-tracker engine, separately tested."
+      ],
+      "lastVerified": "2026-09-16",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:dcbabeade9e9dab505f6a6db868c4fe102d9a1f5dbb2e8aec255314fa98aa8c0",
+        "artifactPath": "assets/js/engines/sw-fuel-scenario.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [],
+      "riskDomain": "utilities_meters",
+      "riskLevel": "medium",
+      "rounding": {
+        "method": "display-only",
+        "precision": "Full arithmetic precision; display at most two decimal places.",
+        "stages": [
+          "Monthly cost = entered price × entered quantity.",
+          "Monthly difference = (entered price − comparison price) × quantity."
+        ]
+      },
+      "sourceJurisdictions": [
+        "ALL"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "review-required",
+          "kind": "implementation",
+          "registryId": null,
+          "title": "Manual fuel scenario arithmetic; user-supplied prices, no rate verification",
+          "url": "https://github.com/Ozaveshe/afrotools/blob/main/assets/js/engines/sw-fuel-scenario.js"
+        }
+      ],
+      "supportStatus": "registered",
+      "units": [
+        "input-currency",
+        "litres",
+        "kilograms",
+        "months"
+      ],
+      "verificationBasis": "Independent arithmetic fixtures, not verification of any fuel tariff."
+    },
+    {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
       "artifactDigest": "sha256:cd5e9c92181ba25b8570e4bed0f2e1c9811017fdd8e21daf3bad4f0f998d0fd5",
       "artifactPath": "assets/js/engines/sw-hr-payroll-six.js",

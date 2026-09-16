@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),{calculate}=require('../assets/js/engines/sw-fuel-scenario');
+const input={fuelType:'LPG',currency:'TZS',currentPrice:2500,previousPrice:2400,litresMonth:12.5,officialLag:3};
+test('mass scenario independently preserves cost and price impact',()=>{const r=calculate(input);assert.equal(r.unit,'kg');assert.equal(r.monthlyCost,31250);assert.equal(r.monthlyChange,1250);assert.equal(calculate({...input,currentPrice:0}).monthlyCost,0);assert.equal(calculate({...input,fuelType:'Diesel'}).unit,'L');});
+test('reject missing, malformed, negative and fractional age without coercion',()=>{for(const value of ['',null,'1x',-1,Infinity])for(const key of ['currentPrice','previousPrice','litresMonth','officialLag'])assert.throws(()=>calculate({...input,[key]:value}));assert.throws(()=>calculate({...input,officialLag:1.5}));assert.throws(()=>calculate({...input,fuelType:'unknown'}));});
