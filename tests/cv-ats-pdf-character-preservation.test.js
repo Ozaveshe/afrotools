@@ -73,7 +73,7 @@ for (const kind of ['cv', 'cover-letter']) test(kind + ' preserves extended Lati
 });
 for (const [locale, headings] of Object.entries({en:['Summary','Experience','Education','Skills','Projects','Certifications','Languages','References'],fr:['Profil','Expérience professionnelle','Formation','Compétences','Projets','Certifications','Langues','Références'],sw:['Muhtasari','Uzoefu wa kazi','Elimu','Ujuzi','Miradi','Vyeti vya taaluma','Lugha','Wadhamini']})) {
   test(locale + ' CV builder localizes section labels without translating user content', async () => {
-    const state = {data:{fn:'Élodie',ln:'François',title:'References research',summary:'Synthetic profile',exps:[{t:'Engineer',c:'Example',s:'2020',cur:true,d:'Original evidence'}],edus:[{deg:'Degree',sch:'Example'}],skills:{h:'Analysis',s:'Communication',t:'Tools'},projs:[{n:'Project example',d:'Evidence'}],certs:[{n:'Certificate'}],langs:[{l:'Kiswahili',lv:'Fluent'}]}};
+    const state = {data:{showProjs:true,showRefs:true,refs:[{n:'Synthetic referee',rel:'Former supervisor'}],fn:'Élodie',ln:'François',title:'References research',summary:'Synthetic profile',exps:[{t:'Engineer',c:'Example',s:'2020',cur:true,d:'Original evidence'}],edus:[{deg:'Degree',sch:'Example'}],skills:{h:'Analysis',s:'Communication',t:'Tools'},projs:[{n:'Project example',d:'Evidence'}],certs:[{n:'Certificate'}],langs:[{l:'Kiswahili',lv:'Fluent'}]}};
     const context = {window:{CVApp:{getState:()=>state}},document:{documentElement:{lang:locale},readyState:'loading',addEventListener(){}},setTimeout(){}};
     const owner = locale === 'fr' ? 'fr/tools/generateur-cv/js/cv-ats-plain-mode.js' : 'tools/cv-builder/js/cv-ats-plain-mode.js';
     vm.runInNewContext(fs.readFileSync(owner,'utf8'),context);
