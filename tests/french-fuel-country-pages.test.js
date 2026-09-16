@@ -96,3 +96,30 @@ test("priority fuel pages disclose the row date and non-official confidence with
   assert.match(sourceDisclosure({ official_verified: true }).label, /non vérifié/, "a verification flag alone cannot establish an official source");
   assert.match(sourceDisclosure({ source_url: "javascript:alert(1)" }).link, /indisponible/, "unusable source links must not be rendered");
 });
+
+test("reviewed search snippets preserve dated data, routes and visible FAQ intent", () => {
+  const { localizePage } = require("../scripts/build-french-fuel-country-pages");
+  const rows = require("../data/fuel/latest.json").countries;
+  const registry = new Map(require("../data/registry/countries.json").map(row => [row.id, row]));
+  for (const [code, slug] of [["TN", "tunisia"], ["TG", "togo"], ["ML", "mali"]]) {
+    const row = rows.find(item => item.code === code), country = registry.get(code);
+    country.registryByCode = registry;
+    const html = fs.readFileSync(path.join(FUEL_DIR, slug, "index.html"), "utf8");
+    assert.match(html, /<title>Prix .*essence et gasoil/i);
+    assert.match(html, /<h1[^>]*>Prix .*essence et gasoil/i);
+    const description = html.match(/<meta name="description" content="([^"]+)"/)[1];
+    assert.ok(description.includes(row.currency));
+    assert.match(description, /calculateur de budget mensuel/);
+    assert.doesNotMatch(description, /prix du jour|temps réel|prix officiel/i);
+    const data = schemas(html), faq = data.find(item => item['@type'] === 'FAQPage');
+    const answer = faq.mainEntity.find(item => item.name.includes('aujourd’hui')).acceptedAnswer.text;
+    assert.match(answer, /ne confirme pas le tarif du jour/);
+    assert.ok(visibleText(html).includes(answer));
+    assert.equal(data.find(item => item['@type'] === 'Dataset').dateModified, row.last_updated);
+    const clean = localizePage(html, row, rows, country);
+    assert.equal(localizePage(clean, row, rows, country), clean);
+    const stamped = clean.replace('/assets/js/pages/fr-fuel-country-planner.js"', '/assets/js/pages/fr-fuel-country-planner.js?v=synthetic-release-hash"');
+    assert.equal(localizePage(stamped, row, rows, country), clean);
+    if (code === 'TN') assert.match(answer, /ne distingue pas les différentes qualités commerciales/);
+  }
+});

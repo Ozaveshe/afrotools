@@ -15,6 +15,18 @@ const BASE_URL = "https://afrotools.com";
 const WRITE = process.argv.includes("--write");
 const CHECK = process.argv.includes("--check");
 
+// Scoped query-intent review: Search Console Web, 2026-08-18 through 2026-09-14.
+// Keep the row date; these pages do not establish today's pump price.
+const SEARCH_REVIEW_COUNTRIES = new Set(["TN", "TG", "ML"]);
+function searchIntentCopy(row, location, date) {
+  if (!SEARCH_REVIEW_COUNTRIES.has(row.code)) return null;
+  return {
+    title: row.code === "TN" ? "Prix essence et gasoil en Tunisie | AfroFuel" : `Prix du carburant ${location} : essence et gasoil | AfroFuel`,
+    description: `Essence, gasoil et GPL ${location} : relevé du ${date} en ${row.currency}. Prix à confirmer en station et calculateur de budget mensuel.`,
+    note: `Vous cherchez le prix du litre aujourd’hui ? Ce relevé daté du ${date} ne confirme pas le tarif du jour. Comparez la même unité et le même carburant avec le prix affiché par votre station avant de calculer votre budget.` + (row.code === "TN" ? " Le jeu de données ne distingue pas les différentes qualités commerciales de gasoil : ne considérez pas la ligne diesel comme le tarif confirmé d’une qualité précise." : ""),
+  };
+}
+
 const REGION_LABELS = Object.freeze({
   north: "Afrique du Nord",
   west: "Afrique de l’Ouest",
@@ -328,7 +340,9 @@ function visiblePage(row, rows, country) {
   const related = relatedCountries(row, rows);
   const faqs = localizedFaqs(row, name, estimate, date);
   const source = sourceDisclosure(row);
-  const description = `Carburant ${location} : relevé du ${date}, à vérifier localement. Consultez essence, diesel et GPL, puis calculez votre budget selon la quantité consommée.`;
+  const intent = searchIntentCopy(row, location, date);
+  if (intent) { faqs[4] = { q: `Ces prix du carburant ${location} sont-ils ceux d’aujourd’hui ?`, a: intent.note }; }
+  const description = intent ? intent.description : `Carburant ${location} : relevé du ${date}, à vérifier localement. Consultez essence, diesel et GPL, puis calculez votre budget selon la quantité consommée.`;
   const canonical = `${BASE_URL}/fr/tools/suivi-carburant/${slug}/`;
   const compareHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#fuel-compare`;
   const generatorHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#generator-cost`;
@@ -343,9 +357,9 @@ function visiblePage(row, rows, country) {
     <div class="fuel-country-grid">
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>Prix du carburant — ${escapeHtml(region)}</span></div>
-        <h1>Prix du carburant — ${escapeHtml(name)}</h1>
+        <h1${intent ? ' style="color:#173e32"' : ""}>${escapeHtml(intent ? intent.title.replace(" | AfroFuel", "") : `Prix du carburant — ${name}`)}</h1>
         <p class="fuel-lede">Consultez le dernier relevé disponible des prix de l’essence, du diesel et du GPL ${escapeHtml(location)}, en ${escapeHtml(row.currency)}. Estimez un budget de transport, de groupe électrogène ou de ménage, puis vérifiez le prix local.</p>
-        <p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Prix à revalider avant utilisation.</p>
+        ${intent ? `<p class="fuel-note">${escapeHtml(intent.note)}</p>\n        ` : ""}<p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Prix à revalider avant utilisation.</p>
       </div>
       <aside class="fuel-price-card" aria-label="Résumé des prix du carburant ${escapeHtml(location)}">
         <div class="fuel-card-top"><div><strong>${escapeHtml(name)}</strong><div class="fuel-date">Dernière mise à jour : ${escapeHtml(date)}</div></div><div class="fuel-flag" aria-hidden="true">${flag}</div></div>
@@ -426,7 +440,8 @@ function localizePage(html, row, rows, country) {
   const date = row.last_updated || readJson(SNAPSHOT_PATH).source_reviewed_at || "2026-06-12";
   const visible = visiblePage(row, rows, country);
   const location = COUNTRY_PHRASES[row.code] || `en ${name}`;
-  const title = `Prix du carburant ${location} | AfroFuel`;
+  const intent = searchIntentCopy(row, location, formatDate(row.last_updated));
+  const title = intent ? intent.title : `Prix du carburant ${location} | AfroFuel`;
   let next = html;
 
   next = replaceRequired(next, /<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`, "title");
