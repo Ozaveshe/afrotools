@@ -755,7 +755,7 @@
   // Career renderers own native labels; their document text and marked saved
   // values are user content, not a dictionary-translation surface.
   function careerUserContent(element) {
-    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], .cv-app textarea, .cv-modal textarea, .cv-export-modal textarea');
+    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content], .cv-app textarea, .cv-modal textarea, .cv-export-modal textarea');
   }
 
   function translateElement(root) {
@@ -776,7 +776,7 @@
       var elements = Array.from(root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]'));
       if (root.matches && root.matches('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]')) elements.unshift(root);
       elements.forEach(function (element) {
-        if (element.closest('[translate="no"], .cv-prod, .cv-expanded-template, [data-cv-user-text]')) return;
+        if (element.closest('[translate="no"], .cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content]')) return;
         ['placeholder', 'aria-label', 'title', 'value'].forEach(function (attribute) {
           if (!element.hasAttribute(attribute)) return;
           if (attribute === 'value' && element.closest('.cv-app, .cv-modal, .cv-export-modal') && !/^(button|submit)$/i.test(element.type || '')) return;

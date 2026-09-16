@@ -853,7 +853,7 @@
     if (element.closest('[translate="no"]')) return;
     var tag = element.tagName;
     if (/^(SCRIPT|STYLE|CODE|PRE)$/i.test(tag)) return;
-    if (element.isContentEditable || element.closest('[contenteditable="true"]')) return;
+    if (element.isContentEditable || element.closest('[contenteditable="true"], [data-cover-letter-user-content]')) return;
     ['placeholder', 'title', 'aria-label', 'aria-description', 'data-name', 'data-desc'].forEach(function (name) {
       if (!element.hasAttribute(name)) return;
       var source = element.getAttribute(name);
@@ -874,7 +874,7 @@
       var parent = node.parentElement;
       if (!parent || /^(SCRIPT|STYLE|CODE|PRE|TEXTAREA)$/i.test(parent.tagName)) continue;
       if (parent.closest('[translate="no"]')) continue;
-      if (parent.isContentEditable || parent.closest('[contenteditable="true"]')) continue;
+      if (parent.isContentEditable || parent.closest('[contenteditable="true"], [data-cover-letter-user-content]')) continue;
       var translatedText = translate(node.nodeValue, routeExact);
       if (translatedText !== node.nodeValue) node.nodeValue = translatedText;
     }
