@@ -407,13 +407,14 @@
                                 document.head.appendChild(script);
                             });
                             var bytes = await window.CareerDocumentPdf.buildPdf(snapshot.letterText, "cover-letter");
-                            if (y().letterText !== snapshot.letterText || !document.getElementById("exportReviewConfirm").checked) {
+                            var latest = y();
+                            if (Object.keys(snapshot).some(function(key) { return key !== "updatedAt" && latest[key] !== snapshot[key]; }) || !document.getElementById("exportReviewConfirm").checked) {
                                 h("Letter changed. Review the final preview again before export."); return;
                             }
                             I(m(T(snapshot), "cover-letter") + ".pdf", "application/pdf", bytes);
                             h("PDF downloaded.");
                         } catch (failure) {
-                            h(window.CareerDocumentPdf ? window.CareerDocumentPdf.message(failure, document.documentElement.lang, "cover-letter") : "PDF unavailable. Export Word or TXT.");
+                            h(window.CareerDocumentPdf ? window.CareerDocumentPdf.message(failure, document.documentElement.lang, "cover-letter") : document.documentElement.lang === "fr" ? "PDF indisponible. Exportez en Word ou TXT." : document.documentElement.lang === "sw" ? "PDF haipatikani. Hamisha kama Word au TXT." : "PDF unavailable. Export Word or TXT.");
                         }
                     }(), "txt" === i && (I(m(T(t = y()), "cover-letter") + ".txt", "text/plain;charset=utf-8", t.letterText),
                     h("TXT downloaded.")), "word" === i && function() {

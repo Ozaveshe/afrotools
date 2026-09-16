@@ -89,3 +89,36 @@ test('cover-letter edits during font loading require a fresh review', async ({pa
   await expect(page.locator('#toast')).toHaveText('Letter changed. Review the final preview again before export.');
   expect(downloads).toHaveLength(0);
 });
+for (const route of routes) test('native CV headings and stale export cancellation on ' + route, async ({page, baseURL}) => {
+  await page.route('**/*', request => new URL(request.request().url()).origin === new URL(baseURL).origin ? request.continue() : request.fulfill({status:204}));
+  let resume;
+  const held = new Promise(resolve => { resume = resolve; });
+  await page.route('**/NotoSans-*.ttf', async request => { await held; await request.continue(); });
+  await page.goto(route);
+  await page.waitForFunction(() => window.CVExportUpgrade && window.CVExportUpgrade.buildAtsPlainText && window.CVApp);
+  const fontRequest = page.waitForRequest('**/NotoSans-Regular.ttf');
+  const downloads = [];
+  page.on('download', value => downloads.push(value));
+  await page.evaluate(() => { window.__pendingCareerExport = window.CVExportAtsPlainPdf.exportAtsPdf(); });
+  await fontRequest;
+  await page.evaluate(() => { window.CVApp.updateData('fn', 'Élodie'); window.CVApp.updateData('ln', 'François'); });
+  resume();
+  await page.evaluate(() => window.__pendingCareerExport);
+  expect(downloads).toHaveLength(0);
+  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'Le CV a changé.' : route.startsWith('/sw') ? 'CV imebadilika.' : 'CV changed.');
+  const expected = await page.evaluate(() => window.CVExportUpgrade.buildAtsPlainText());
+  expect(expected.split('\n')).toContain(route.startsWith('/fr') ? 'Références' : route.startsWith('/sw') ? 'Wadhamini' : 'References');
+  const pending = page.waitForEvent('download');
+  await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf());
+  const result = await pending;
+  const parsed = await pdfParse(new Uint8Array(fs.readFileSync(await result.path())));
+  expect(parsed.text.replace(/\s+/g, ' ').trim()).toBe(expected.replace(/\s+/g, ' ').trim());
+});
+for (const route of routes) test('native guidance when PDF helper is unavailable on ' + route, async ({page, baseURL}) => {
+  await page.route('**/*', request => new URL(request.request().url()).origin === new URL(baseURL).origin ? request.continue() : request.fulfill({status:204}));
+  await page.route('**/career-document-pdf.js', request => request.abort());
+  await page.goto(route);
+  await page.waitForFunction(() => window.CVExportAtsPlainPdf);
+  await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf('Élodie François'));
+  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'PDF indisponible. Exportez en DOCX ou TXT.' : route.startsWith('/sw') ? 'PDF haipatikani. Hamisha kama DOCX au TXT.' : 'PDF unavailable. Export DOCX or TXT.');
+});
