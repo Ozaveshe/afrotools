@@ -1,0 +1,9 @@
+const {test,expect}=require('@playwright/test');const fs=require('fs'),pdf=require('pdf-parse');
+test.use({trace:'off',screenshot:'off',video:'off'});
+for(const route of ['/tools/cv-builder/','/fr/tools/generateur-cv/','/sw/zana/mjenzi-cv/'])test('expanded sidebar stays narrow in actual mobile export raster: '+route,async({page,baseURL},info)=>{
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));await page.setViewportSize({width:320,height:844});await page.goto(route);await page.waitForFunction(()=>window.CVExportPdfQuality&&window.CVTemplateRegistry);
+ await page.evaluate(()=>{Object.assign(CVApp.getState().data,{fn:'Élodie',ln:'Mwang’ombe',summary:'Synthetic summary',skills:{h:'Coordination, Analyse',s:'Communication',t:'SQL'}});CVApp.getState().template='kigali-developer';CVApp.renderAll();});
+ const pending=page.waitForEvent('download');await page.evaluate(()=>CVExportUpgrade.exportPdf());const file=info.outputPath('sidebar.pdf');await(await pending).saveAs(file);expect((await pdf(new Uint8Array(fs.readFileSync(file)))).numpages).toBeGreaterThan(0);
+ const raster=await page.evaluate(async()=>{const c=await CVExportPdfQuality.renderPreviewCanvas({density:'comfortable'}),ctx=c.getContext('2d'),data=ctx.getImageData(0,0,c.width,c.height).data;let widest=0;for(let y=50;y<Math.min(c.height,600);y+=4){let n=0;for(let x=0;x<c.width;x++){const p=(y*c.width+x)*4;if(data[p]<35&&data[p+1]<45&&data[p+2]<65)n++;}widest=Math.max(widest,n);}return {width:c.width,darkFraction:widest/c.width,chipColor:getComputedStyle(document.querySelector('#cvpreview .cvx-chips span')).color};});
+ expect(raster.width).toBeGreaterThanOrEqual(1190);expect(raster.darkFraction).toBeGreaterThan(.1);expect(raster.darkFraction).toBeLessThan(.5);expect(raster.chipColor).toBe('rgb(11, 18, 32)');
+});
