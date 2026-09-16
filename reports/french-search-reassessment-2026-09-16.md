@@ -58,3 +58,15 @@ Next measurement: after actual deployment and recrawl, compare a complete subseq
 
 The first 390px hero image exposed a white H1 on a pale background. The generator now applies a dark heading color only to the three reviewed countries. Final rerun on PORT4365: the three search-intent browser tests PASS including an axe `color-contrast` check on each H1; six node tests PASS again. This is a targeted heading check, not a full-page accessibility certification. Final Tunisia hero image was visually inspected at:
 `C:/Users/Oza/.codex/worktrees/fr-search-reassessment-20260916/afrotools/test-results/french-fuel-search-intent--66f55-visible-and-native-at-390px-chromium/french-fuel-tunisia-hero-390.png`.
+
+### Sticky-header capture investigation
+
+The initial tall hero screenshot is not reliable evidence of viewport placement. Reproduced after focusing the FAQ, then calling `locator('.fuel-country-hero').screenshot()`: capture left the page at scrollY361 while hero document top was56. The viewport-top navbar consequently appeared at image y305 (361−56) inside the tall element capture. Actual `afro-navbar` host uses `position:sticky`, not fixed positioning.
+
+Replaced that test capture with real 390×844 viewport screenshots at exact scrollY0,200,600 and assertions that the visible sticky host remains at viewport y0 with height1–64px. At top, H1 is below the navbar. Used reduced motion plus instant scroll and verified actual scrollY to avoid capturing a smooth-scroll intermediate. All three country tests PASS on PORT4368; retained title contrast, FAQ keyboard, canonical and overflow assertions. No product code change was required. Ordinary content scrolling behind the top sticky header is distinct from the misleading middle-of-image capture. This check does not certify other sticky/floating widgets or every viewport size.
+
+Final Tunisia viewport0 and viewport600 images were visually inspected:
+- `C:/Users/Oza/.codex/worktrees/fr-search-reassessment-20260916/afrotools/test-results/french-fuel-search-intent--66f55-visible-and-native-at-390px-chromium/french-fuel-tunisia-viewport-0-390.png`
+- `C:/Users/Oza/.codex/worktrees/fr-search-reassessment-20260916/afrotools/test-results/french-fuel-search-intent--66f55-visible-and-native-at-390px-chromium/french-fuel-tunisia-viewport-600-390.png`
+
+The initial diagnostic and geometry are preserved outside product source at `C:/Users/Oza/.codex/worktrees/fr-search-reassessment-20260916/fuel-sticky-evidence/`. An intermediate test incorrectly searched for a fixed descendant instead of the sticky custom-element host; that test assumption was corrected before the passing final run.
