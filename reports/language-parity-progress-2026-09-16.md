@@ -107,3 +107,13 @@ Subsequent inspection confirmed release-relevant defects, now repaired and integ
 - French document metadata (1dba4e30): reviewed route-specific artwork is preserved before generic fallback; only breadcrumb parent URLs are localized. Two focused tests pass. Full regeneration and final artifact validation remain pending for this source change.
 
 The combined payment and mobile-CV coordinator run passed all nine cases. A final full rebuild is running with these additions. No deployment has occurred for this repair batch. CV backup recovery, Pan-African Minimal and remaining template selection/field coverage, plus the EN/SW leave-calendar candidate, remain separate work toward the full free-app goal.
+
+### Production-package checks and remaining release integration
+
+The final full build passed, followed by build checks, artifact audit, security scan, lint and type checks. All 17 optimized-artifact invoice/payment/mobile-CV cases passed, plus all 12 receipt-template cases. These checks establish the repaired workflows above, not whole-app or whole-catalog acceptance.
+
+Physical inspection found that the ordinary build did not invoke the French document generator, leaving 30 generated breadcrumb lists with English parent destinations. Commit f5fa6d8f moves the exact-route repair into the SEO step every build runs; ea987c10 regenerates those 30 pages. All 32 physical source artwork mappings and 31 existing breadcrumb lists pass, and a second SEO run produces zero changes. This was stale generated output, not a demonstrated later overwrite. Final rebuilt-artifact verification of this metadata change remains pending.
+
+Remote main advanced to 06e37ce57a8f8d705e032bee47768a98aa73371c with education changes. A merge preview reports only two generated public-claims report conflicts, with no deletions. The full local test rerun is in its last batch with no failure reported yet. Integration, exact-commit CI, provider deployment and live verification remain pending; no deployment has occurred for this batch.
+
+Full local rerun completed successfully: 1,082 test files and all seven audits passed. Test-generated Hausa audit-ledger churn was reviewed and restored; it is outside this repair batch.
