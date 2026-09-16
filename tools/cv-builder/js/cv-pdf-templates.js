@@ -264,7 +264,7 @@
         e.extras.hobbies && o.push(f(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[String(window.document && window.document.documentElement.lang || "en").split("-")[0]] || "Interests"), h(e.extras.hobbies), t)),
         e.extras.memberships && o.push(f(copy.section2, '<div style="font-size:8.2px;line-height:1.32">' + s(e.extras.memberships) + "</div>", t)),
         e.customSections.forEach(function(e) {
-            o.push(f(e.title || "Additional", '<div style="font-size:8.2px;line-height:1.32">' + s(e.content || "") + "</div>", t));
+            o.push(f(e.title || ({fr:"Informations complémentaires",sw:"Maelezo ya ziada"}[String(window.document.documentElement.lang || "en").split("-")[0]] || "Additional"), '<div style="font-size:8.2px;line-height:1.32">' + s(e.content || "") + "</div>", t));
         }), i.nyscStatus && o.push(f(copy.section3, '<div style="font-size:8.8px">' + [ i.nyscStatus, i.nyscYear, i.nyscState, i.nyscPPA ].filter(Boolean).map(c).join(" | ") + "</div>", t)),
         (i.nsYear || i.nsOrg) && o.push(f(copy.section4, '<div style="font-size:8.8px">' + [ i.nsYear, i.nsOrg ].filter(Boolean).map(c).join(" | ") + "</div>", t)),
         o.join("");
