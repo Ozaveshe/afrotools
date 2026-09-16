@@ -3,7 +3,7 @@
 
   var MEASUREMENT_ID = 'G-D859CGF391';
   var CONSENT_KEY = 'afrotools_cookie_consent';
-  var PRIVATE_QUOTE_PAGE = /^\/(?:tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname);
+  var PRIVATE_QUOTE_PAGE = /^\/(?:(?:fr\/)?crypto\/remittance|sw\/zana\/ulinganisho-nukuu-za-kutuma-fedha|tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname);
   var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js';
 
   function readConsent() {
