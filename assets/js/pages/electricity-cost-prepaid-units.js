@@ -140,6 +140,11 @@
     return rows;
   }
 
+  function invalidateResult() {
+    latestResult = null;
+    result.hidden = true;
+  }
+
   function clearError() {
     status.textContent = '';
     [amount, customRate, customFixed, customTax, percentDeduction, fixedDeduction].forEach(function (input) { input.removeAttribute('aria-invalid'); });
@@ -200,6 +205,9 @@
     if (!official) track('electricity_custom_rate_used', { country_code: country.value, currency: record.currency, mode: mode() });
   }
 
+  // A visible estimate must always belong to the controls and source shown.
+  form.addEventListener('input', invalidateResult, true);
+  form.addEventListener('change', invalidateResult, true);
   country.addEventListener('change', updateProviders);
   provider.addEventListener('change', function () { updateTariffs(); track('electricity_provider_selected', { country_code: country.value, provider_id: provider.value }); });
   customCurrency.addEventListener('change', updateCustomCurrency);
