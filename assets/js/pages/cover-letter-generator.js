@@ -450,6 +450,10 @@
     function N() {
         var printStyle=document.createElement("style");
         printStyle.id="cover-letter-print-feedback";printStyle.media="print";printStyle.textContent="#toast{display:none!important}";document.head.appendChild(printStyle);
+        var mobileStyle=document.createElement("style");
+        mobileStyle.id="cover-letter-mobile-navigation";
+        mobileStyle.textContent="@media(max-width:900px){.app-shell .workflow-progress{position:static;top:auto}.app-shell .stage-tabs{top:0}}";
+        document.head.appendChild(mobileStyle);
         document.addEventListener("click",function(event){
             var action=event.target.closest&&event.target.closest("[data-action]");
             if(!action||["pdf","word","txt","json","print"].indexOf(action.dataset.action)===-1)return;
