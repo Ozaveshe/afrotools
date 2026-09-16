@@ -759,6 +759,18 @@ function normalizeExistingPage(app) {
   const target = path.join(ROOT, app.swahiliFile);
   let html = fs.readFileSync(target, 'utf8');
   html = installFormFillerRuntime(html, app);
+  if (app.id === 'pdf-sign') {
+    const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');
+    const runtime = english.match(/<script data-pdf-sign-runtime>[\s\S]*?<\/script>/);
+    if (!runtime) throw new Error('Missing authored PDF signing runtime');
+    let replaced = 0;
+    html = html.replace(/<script(?:\s[^>]*)?>[\s\S]*?<\/script>/g, (script) => {
+      if (!script.includes('let signatureData = null;')) return script;
+      replaced++;
+      return runtime[0];
+    });
+    if (replaced !== 1) throw new Error('Expected one Swahili PDF signing runtime');
+  }
   html = rewriteLocalDocumentAssets(html);
   const artwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
   html = upsertMeta(html, 'name', 'viewport', 'width=device-width, initial-scale=1');

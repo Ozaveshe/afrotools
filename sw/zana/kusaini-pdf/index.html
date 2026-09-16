@@ -1090,7 +1090,7 @@
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
-<script>
+<script data-pdf-sign-runtime>
   pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
   function getPDFLib() {
     if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
@@ -1106,6 +1106,37 @@
   let signatureType = null;
   let signatureColor = '#000000';
   let finalPdfBytes = null;
+  let finalPdfSnapshot = null;
+  let generationVersion = 0;
+  function signingSnapshot() {
+    return JSON.stringify([signatureData, signatureType, currentPageNum, renderScale,
+      overlayX, overlayY, overlayWidth, overlayHeight, overlayImg.src,
+      document.querySelector('.placement-option.active').dataset.placement,
+      document.getElementById('addDateCheckbox').checked]);
+  }
+  function invalidateSignedPdf() {
+    if (finalPdfBytes) document.getElementById('resultText').textContent = changedSigningMessage();
+    generationVersion++;
+    finalPdfBytes = null;
+    finalPdfSnapshot = null;
+    document.getElementById('actionRow').style.display = 'none';
+    document.getElementById('finalDownloadBtn').disabled = true;
+  }
+  function changedSigningMessage() {
+    const lang = document.documentElement.lang.split('-')[0];
+    return lang === 'fr' ? 'Le document ou la signature a changé. Appliquez à nouveau la signature avant de télécharger.' :
+      lang === 'sw' ? 'Hati au sahihi imebadilika. Weka sahihi tena kabla ya kupakua.' :
+      'The document or signature changed. Apply the signature again before downloading.';
+  }
+  document.addEventListener('change', (event) => {
+    if (event.target.closest('#step1Card,#step2Card,#step3Card')) invalidateSignedPdf();
+  });
+  document.addEventListener('input', (event) => {
+    if (event.target.closest('#step1Card,#step2Card,#step3Card')) invalidateSignedPdf();
+  });
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('.placement-option,#prevPageBtn,#nextPageBtn,#useDrawBtn,#useTypeBtn,#useImageBtn,#useSavedSignatureBtn')) invalidateSignedPdf();
+  });
   let renderScale = 1;
 
   // Saved signatures in localStorage
@@ -1193,6 +1224,7 @@
   });
 
   async function handlePdfUpload(file) {
+    invalidateSignedPdf();
     currentPdfFile = file;
     const arrayBuffer = await file.arrayBuffer();
     currentPdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -1487,6 +1519,7 @@
   }
 
   function updateOverlayPosition() {
+    invalidateSignedPdf();
     sigOverlay.style.left = overlayX + 'px';
     sigOverlay.style.top = overlayY + 'px';
     sigOverlay.style.width = overlayWidth + 'px';
@@ -1497,14 +1530,16 @@
     } else if (signatureType === 'type') {
       const data = JSON.parse(signatureData);
       const canvas = document.createElement('canvas');
-      canvas.width = overlayWidth;
-      canvas.height = overlayHeight;
+      const pixelRatio = 3;
+      canvas.width = Math.ceil(overlayWidth * pixelRatio);
+      canvas.height = Math.ceil(overlayHeight * pixelRatio);
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = data.color;
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.fillStyle = data.color === 'var(--color-primary)' ? getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#0062cc' : data.color;
       ctx.font = '24px ' + data.font;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(data.text, overlayWidth / 2, overlayHeight / 2);
+      ctx.fillText(data.text, overlayWidth / 2, overlayHeight / 2, Math.max(1, overlayWidth - 4));
       overlayImg.src = canvas.toDataURL();
     }
   }
@@ -1580,12 +1615,17 @@
     const actionRow = document.getElementById('actionRow');
     const resultCard = document.getElementById('resultCard');
 
+    invalidateSignedPdf();
+    const version = generationVersion;
+    const sourceFile = currentPdfFile;
+    const snapshot = signingSnapshot();
+    const signatureImage = overlayImg.src;
     resultText.textContent = 'Creating signed PDF...';
     actionRow.style.display = 'none';
     resultCard.classList.add('on');
 
     try {
-      const arrayBuffer = await currentPdfFile.arrayBuffer();
+      const arrayBuffer = await sourceFile.arrayBuffer();
       const { PDFDocument, rgb } = getPDFLib();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const placement = document.querySelector('.placement-option.active').dataset.placement;
@@ -1598,45 +1638,42 @@
         const page = pdfDoc.getPage(pageIdx);
         const { width, height } = page.getSize();
 
-        if (signatureType === 'draw' || signatureType === 'image') {
-          const b64 = signatureData.split(',')[1];
-          const bin = atob(b64);
-          const imgBytes = new Uint8Array(bin.length);
-          for (let ci = 0; ci < bin.length; ci++) imgBytes[ci] = bin.charCodeAt(ci);
-          const image = /^data:image\/jpe?g/i.test(signatureData) ? await pdfDoc.embedJpg(imgBytes) : await pdfDoc.embedPng(imgBytes);
-          const ratio = overlayWidth / overlayHeight;
-          const scaledHeight = overlayHeight / renderScale;
-          const scaledWidth = scaledHeight * ratio;
-          page.drawImage(image, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - scaledHeight,
-            width: scaledWidth,
-            height: scaledHeight
-          });
-        } else if (signatureType === 'type') {
-          const data = JSON.parse(signatureData);
-          const rgbColor = data.color === '#001f3f' ? rgb(0, 31/255, 63/255) :
-                          data.color === 'var(--color-primary)' ? rgb(0, 135/255, 81/255) : rgb(0, 0, 0);
-          page.drawText(data.text, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - 20,
-            size: 24,
-            color: rgbColor
-          });
-        }
+        const b64 = signatureImage.split(',')[1];
+        const bin = atob(b64);
+        const imgBytes = Uint8Array.from(bin, (character) => character.charCodeAt(0));
+        const image = /^data:image\/jpe?g/i.test(signatureImage) ? await pdfDoc.embedJpg(imgBytes) : await pdfDoc.embedPng(imgBytes);
+        const dateSpace = addDate ? 16 : 0;
+        const fit = Math.min(1, width / (overlayWidth / renderScale), (height - dateSpace) / (overlayHeight / renderScale));
+        const scaledHeight = overlayHeight / renderScale * fit;
+        const scaledWidth = overlayWidth / renderScale * fit;
+        const imageX = Math.max(0, Math.min(overlayX / renderScale, width - scaledWidth));
+        const imageY = Math.max(dateSpace, Math.min(height - overlayY / renderScale - scaledHeight, height - scaledHeight));
+        page.drawImage(image, {
+          x: imageX,
+          y: imageY,
+          width: scaledWidth,
+          height: scaledHeight
+        });
 
         if (addDate) {
           const today = new Date().toLocaleDateString();
           page.drawText(today, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - 50,
+            x: imageX,
+            y: imageY - 12,
             size: 10,
             color: rgb(100/255, 100/255, 100/255)
           });
         }
       }
 
-      finalPdfBytes = await pdfDoc.save();
+      const output = await pdfDoc.save();
+      if (version !== generationVersion || sourceFile !== currentPdfFile || snapshot !== signingSnapshot()) {
+        resultText.textContent = changedSigningMessage();
+        return;
+      }
+      finalPdfBytes = output;
+      finalPdfSnapshot = snapshot;
+      document.getElementById('finalDownloadBtn').disabled = false;
       resultText.textContent = 'PDF signed successfully.';
       actionRow.style.display = 'grid';
     } catch (err) {
@@ -1646,7 +1683,7 @@
   });
 
   function doSignDownload() {
-    if (!finalPdfBytes) return;
+    if (!finalPdfBytes || finalPdfSnapshot !== signingSnapshot()) { invalidateSignedPdf(); document.getElementById('resultText').textContent = changedSigningMessage(); return; }
     const link = document.createElement('a');
     const url = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
     link.href = url;

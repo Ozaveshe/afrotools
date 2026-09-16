@@ -1,6 +1,6 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');
-const {PDFDocument}=require('../../assets/vendor/pdf-lib/pdf-lib.min.js');
+const {PDFDocument,PDFName,decodePDFRawStream}=require('../../assets/vendor/pdf-lib/pdf-lib.min.js');
 const pdfParse=require('pdf-parse');
 const routes={en:'/tools/pdf-sign/',fr:'/fr/tools/signer-pdf/',sw:'/sw/zana/kusaini-pdf/'};
 test.use({trace:'off',screenshot:'off',video:'off',storageState:{cookies:[],origins:[]}});
@@ -24,7 +24,7 @@ for(const[locale,route]of Object.entries(routes))test(`${locale} guest signs sel
  for(const mode of ['current','all']){
   await page.locator(`[data-placement="${mode}"]`).click();
   await expect(page.locator(`[data-placement="${mode}"]`)).toHaveAttribute('aria-pressed','true');
-  const placement=await page.evaluate(()=>{const c=document.querySelector('#pdfRenderCanvas'),o=document.querySelector('#sigOverlay');return{x:parseFloat(o.style.left)/(c.width/800),yOffset:parseFloat(o.style.top)/(c.width/800)};});
+  const placement=await page.evaluate(()=>{const c=document.querySelector('#pdfRenderCanvas'),o=document.querySelector('#sigOverlay');return{x:parseFloat(o.style.left)/(c.width/800),h:parseFloat(o.style.height)/(c.width/800),w:parseFloat(o.style.width)/(c.width/800),yOffset:parseFloat(o.style.top)/(c.width/800)};});
   await page.locator('#downloadPdfBtn').click();
   await expect(page.locator('#finalDownloadBtn')).toBeVisible();
   const pending=page.waitForEvent('download');
@@ -35,8 +35,18 @@ for(const[locale,route]of Object.entries(routes))test(`${locale} guest signs sel
   const pages=[];await pdfParse(bytes,{pagerender:async p=>{const content=await p.getTextContent();pages.push(content.items);return content.items.map(i=>i.str).join(' ');}});
   for(let n=0;n<2;n++){
    expect(pages[n].map(i=>i.str).join(' ')).toContain('SYNTHETIC ORIGINAL PAGE '+(n+1));
-   const sign=pages[n].filter(i=>i.str==='SYNTHETIC SIGN');expect(sign).toHaveLength(mode==='all'||n===1?1:0);
-   if(sign.length){expect(sign[0].transform[4]).toBeCloseTo(placement.x,1);expect(sign[0].transform[5]).toBeCloseTo((n===0?800:600)-placement.yOffset-20,1);expect(sign[0].transform[4]).toBeGreaterThanOrEqual(0);expect(sign[0].transform[4]+sign[0].width).toBeLessThanOrEqual(n===0?600:800);expect(sign[0].transform[5]).toBeGreaterThanOrEqual(0);}
+   const resources=saved.getPage(n).node.Resources(),objects=resources.lookup(PDFName.of('XObject'));
+   const images=objects?objects.entries().map(([key,value])=>saved.context.lookup(value)).filter(item=>item.dict.get(PDFName.of('Subtype')).toString()==='/Image'):[];
+   expect(images).toHaveLength(mode==='all'||n===1?1:0);
+   if(images.length){
+    const contents=saved.getPage(n).node.Contents();let operators='';for(let i=0;i<contents.size();i++)operators+=Buffer.from(decodePDFRawStream(saved.context.lookup(contents.get(i))).decode()).toString();
+    const matrices=[...operators.matchAll(/([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+) cm/g)].map(m=>m.slice(1).map(Number));
+    const x=Math.max(0,Math.min(placement.x,(n===0?600:800)-placement.w));
+    const y=Math.max(0,(n===0?800:600)-placement.yOffset-placement.h);
+    expect(matrices.some(m=>Math.abs(m[4]-x)<.02&&Math.abs(m[5]-y)<.02)).toBe(true);
+    expect(matrices.some(m=>Math.abs(m[0]-placement.w)<.02&&Math.abs(m[3]-placement.h)<.02)).toBe(true);
+    expect(x).toBeGreaterThanOrEqual(0);expect(x+placement.w).toBeLessThanOrEqual(n===0?600:800);expect(y).toBeGreaterThanOrEqual(0);
+   }
   }
  }
  expect(uploads).toEqual([]);
