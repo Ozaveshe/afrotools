@@ -49,3 +49,12 @@ finished tool, a partial translation, or an intentional fallback. Verify actual
 input-to-output and export journeys before changing availability claims. Run a
 controlled form-delivery test separately from the already-verified required-field
 checks, then release the validated UX fixes through the normal release gates.
+
+## Follow-up: result period and export feedback
+
+- Fixed annual hero labels and period text, including recalculation while Annual remains selected. Exposed the existing period variable to the shared net-to-gross and saved-scenario controls so they read the selected period correctly.
+- PDF action now announces preparation, missing-library and failure states, prevents duplicate requests while busy, and uses the actual generation date in the filename. The primary action calls the shared PDF generator; legacy print-window code is not the active button path.
+- Browser: monthly net 1,073,000; annual net 12,876,000; recalculating retains Annual Take-Home Pay and Per year labels. PDF generator resolves, status reads prepared, and no console errors were captured. The in-app browser did not expose a download event within 15 seconds, so a saved file and PDF contents are not certified.
+- Node: uganda-paye-interactions.test.js passes monthly/annual rendering and missing, rejected and successful export-provider cases. uganda-paye-shared-engine.test.js and git diff --check pass.
+- All 39 static repair-first flags now have explicit policy classification: 19 English fallbacks and 20 unavailable locale routes. Their noindex protections and score caps remain intact. This does not certify their runtime workflows.
+- These changes are local source work; not deployed. Remaining goal work includes fallback browser handoffs and wider form/export verification.

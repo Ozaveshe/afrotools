@@ -222,9 +222,9 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
       <!-- RESULTS CARD -->
       <div class="card results-card" id="resultsCard">
         <div class="res-hero">
-          <div class="res-hero-label">Monthly Take-Home Pay</div>
+          <div class="res-hero-label" id="resLabel">Monthly Take-Home Pay</div>
           <div class="res-hero-amount" id="resAmount">UGX 0</div>
-          <div class="res-hero-period">Per month in Uganda</div>
+          <div class="res-hero-period" id="resPeriod">Per month in Uganda</div>
           <div class="res-hero-gross" id="resGross">Gross: UGX 0 · Annual: UGX 0</div>
         </div>
 
@@ -267,6 +267,7 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
           </button>
           <button type="button" class="act-btn act-share" id="ugShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button>
         </div>
+        <p id="pdfStatus" role="status" aria-live="polite"></p>
         <div class="calc-save-shell" id="calcSaveShell">
           <div class="calc-save-head">
             <div>
@@ -612,7 +613,7 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
 // ══════════════════════════════════════════════════════════════════
 
 var RESULT=null;
-let PERIOD       = 'monthly';
+var PERIOD       = 'monthly'; // Shared net-to-gross and saved-scenario controls read window.PERIOD.
 let CHART        = null;
 let CHART_TYPE   = 'donut';
 let CHAT_HISTORY = [];
@@ -751,9 +752,7 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
     totalEmployerCostMonthly: value.employerCostMonthly,
   };
 
-  document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  renderPeriodResult();
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
@@ -812,16 +811,22 @@ function setPeriod(period, btn) {
   PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
+  renderPeriodResult();
+}
+
+function renderPeriodResult() {
   if (RESULT) {
     // Update hero
-    var isMonthly = period === 'monthly';
+    var isMonthly = PERIOD === 'monthly';
     var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
     var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
     document.getElementById('resAmount').textContent = fmt(net);
+    document.getElementById('resLabel').textContent = isMonthly ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
+    document.getElementById('resPeriod').textContent = isMonthly ? 'Per month in Uganda' : 'Per year in Uganda';
     document.getElementById('resGross').textContent = isMonthly
       ? 'Gross: ' + fmt(gr) + '/month'
       : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+    document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   }
 }
 
@@ -886,10 +891,19 @@ function renderChart(type) {
 
 // ── PDF MODAL ─────────────────────────────────────────────────
 async function downloadPdfSummary(){
-  if(!RESULT || !window.AfroTools?.pdf) return;
+  if(!RESULT) return;
+  const status = document.getElementById('pdfStatus');
+  const button = document.getElementById('pdfBtn');
+  if(!window.AfroTools?.pdf) {
+    status.textContent = 'PDF export could not load. Reload the page and try again.';
+    return;
+  }
+  button.disabled = true;
+  status.textContent = 'Preparing your PDF…';
+  try {
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename:'afrotools-ug-paye-uganda-2026-07-03.pdf',
+    filename:'afrotools-ug-paye-uganda-' + new Date().toISOString().slice(0,10) + '.pdf',
     title:'Uganda PAYE Summary',
     subtitle:'Monthly employment tax estimate',
     country:'Uganda',
@@ -907,6 +921,12 @@ async function downloadPdfSummary(){
     ],
     skipGate:true
   });
+  status.textContent = 'PDF prepared. Check your downloads.';
+  } catch (error) {
+    status.textContent = 'PDF export failed. Please try again.';
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
