@@ -82,3 +82,9 @@ Validation:7date/export unit tests and390px browser download/reopen/stale-state 
 ### Invoice and receipt integration checks
 
 All9current invoice-generator browser cases passed in the coordinator workspace (including EN/FR/SW migration workflows), alongside the earlier11DOCX/receipt/invoice-word checks and21CVtext cases. Security scan passed at1138b520. Receipt user-text/default patches integratedea4480d6/aad22be8; final6render plus3French invoice smoke checks are running. Release remains pending: French serialized-export wrapper can rewrite exact user dictionary words in backups, so invoice-only optout e3ac6c18 awaits collision-test evidence beforeintegration. This is an integrity fix, not broad template/currency acceptance.
+
+### Backup integrity and styled-document follow-up
+
+Final receipt6+Frenchinvoice3 checks passed. Invoice/freelance owner export optout56153e14 and global JSONbyte-preservation a6db8721 integrated, with collisiontest80fd930c;3JSONunit and2actualinvoicebackup browser tests PASS. Freelance import safety13efa91e integrated; actualmerge/prototype check and3browser importer checksPASS. StyledCV9ad638d8 passed5node tests; receiptTXT/nativecopy629ddb36 andinvoicePDFseparator4e894c8d integrated. Coordinator6styledCV/modernreceipt cases running.
+
+A thermal/compact receipt-width regression introduced by the printable clone is being fixed before release. Fullbuild/releasechecks stillpending. Further CVJSONrestore/Pan-African Minimal, receiptremainingtemplates andlonginvoice checks remainseparate next-batch work; no broadappacceptance implied.
