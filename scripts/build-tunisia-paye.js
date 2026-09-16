@@ -5,7 +5,7 @@ const copy=require('./lib/tunisia-paye-content');
 const verification=require('./lib/paye-verification-contract');
 const {normalizeReleaseOwnedHtml}=require('./lib/release-owned-html-normalizer');
 const {stableId}=require('./lib/content-integrity');
-function normalizePage(html){return normalizeReleaseOwnedHtml(String(html).replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/gi,(_,a,json,b)=>a+JSON.stringify(JSON.parse(json))+b));}
+function normalizePage(html){return normalizeReleaseOwnedHtml(String(html).replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/gi,(_,a,json,b)=>a+JSON.stringify(JSON.parse(json))+b),{relatedToolsOwner:{current:'tn-paye',category:'financial'}});}
 const root=path.resolve(__dirname,'..');
 const routes={en:'/tunisia/tn-paye',fr:'/fr/tunisie/calculateur-salaire-net',sw:'/sw/tunisia/kikokotoo-kodi-mshahara/'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

@@ -38,3 +38,12 @@ test('legacy French route remains functional and canonicalizes to the normalized
   }
   assert.equal(legacy.replace(/<meta name="afrotools-content-id"[^>]*>/, ''), primary.replace(/<meta name="afrotools-content-id"[^>]*>/, ''));
 });
+
+test('only the identified release related-tools component is comparison-owned', () => {
+ const source=outputs().get('tunisia/tn-paye.html');
+ const component='<afro-related-tools data-ssr="1" category="financial" current="tn-paye"><!-- RELATED_TOOLS_SSR_START --><nav data-related-tools-ssr><h2>Related tools</h2><a href="/kenya/ke-paye">Kenya</a></nav><!-- RELATED_TOOLS_SSR_END --></afro-related-tools>';
+ const runtime='<script src="/assets/js/components/related-tools.js" defer></script>';
+ const withRelated=source.replace('</body>',component+runtime+'</body>');
+ assert.equal(normalizePage(withRelated),normalizePage(source));
+ for(const mutation of [withRelated.replace('current="tn-paye"','current="other"'),withRelated.replace('<!-- RELATED_TOOLS_SSR_START -->',''),withRelated.replace('category="financial"','category="other"'),withRelated.replace('<h2>Related tools</h2>','<input name="salary">'),withRelated.replace('id="tn-form"','id="broken"'),source.replace('</body>',runtime+'</body>')])assert.notEqual(normalizePage(mutation),normalizePage(source));
+});
