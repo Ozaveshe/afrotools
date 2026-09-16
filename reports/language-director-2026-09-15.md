@@ -1,6 +1,6 @@
 # French search and Swahili parity review
 
-Status: implementation and validation in progress. No production deployment or search uplift verified.
+Status: implementation and local release validation complete; deployment authorized and pending. No production deployment or search uplift verified in this report.
 
 ## Search baseline
 
@@ -77,7 +77,11 @@ The effective Swahili inventory records 1,256 accepted current app routes, inclu
 
 ## Remaining work
 
-1. Finish the production build at product source `7b708f37`, refresh the two identified generated snapshots and finish release/artifact checks.
-2. Review generated changes and reconcile any remaining gate failures. Keep historical acceptance and fresh regression evidence distinct.
-3. Complete the requirement-by-requirement closeout review and prepare the reviewable delivery.
-4. The user authorized deployment on September 16. Publish the validated merged release and verify the live pages. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.
+The production build at product source `7b708f37` passed and produced 18,095 files. The health snapshot and finder metadata ordering were refreshed through their owners, and the artifact was repackaged. Final `build:checks`, `seo:report`, `build:i18n:validate`, `validate:hreflang`, lint, type checks, artifact audit, security scan and whitespace checks passed. All 43 final artifact browser tests passed, including the priority French pages, dedicated payroll tools, engineering exports, expanded SSCE and Swahili finder.
+
+The final local `npm test` ran 1,070 files: 2,906 of 2,907 Node tests passed and all seven audits passed. Its sole failure was the legacy French SSCE test expecting 40 questions. The corrected contract now checks 52 questions, all 37 written tasks, answer preservation, native guidance, backup compatibility and Physics reporting; all four corrected coordinator tests and the agent's 24 SSCE tests passed. The full local suite was not repeated after this test-only correction; remote CI remains a separate check.
+
+No generated file deletions were introduced. The independent source review found no additional actionable product defect in the reviewed scope. Historical acceptance and fresh regression evidence remain distinct.
+
+1. Commit the reviewed generated outputs, publish the authorized merged release and verify the live pages and remote CI.
+2. Record deployment proof separately. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.
