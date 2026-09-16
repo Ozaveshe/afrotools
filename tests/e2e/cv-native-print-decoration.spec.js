@@ -1,0 +1,9 @@
+const {test,expect}=require('@playwright/test'),fs=require('fs'),pdf=require('pdf-parse');
+const fixture=require('../fixtures/cv-complete-form');
+test.use({trace:'off',screenshot:'off',video:'off'});
+for(const [lang,route,label] of [['en','/tools/cv-builder/','candidate.profile'],['fr','/fr/tools/generateur-cv/','profil.candidat'],['sw','/sw/zana/mjenzi-cv/','wasifu.wa.mwombaji']])test('Nairobi print owns native decoration and preserves user heading: '+lang,async({page},info)=>{
+ await page.setViewportSize({width:320,height:844});await page.goto(route);await page.waitForFunction(()=>window.CVExportPdfQuality);await page.waitForTimeout(1100);
+ await page.evaluate(async f=>{Object.assign(CVApp.getState().data,f,{customSections:[{title:'candidate.profile',content:'USERDECORATIONBOUNDARY'}]});CVApp.getState().template='nairobi-tech';CVApp.renderAll();CVExportUpgrade.setOptions({density:'comfortable'});await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));},fixture);
+ const header=page.locator('#cvpreview header');await expect(header).toContainText(label);await expect(page.locator('#cvpreview [data-cv-section="custom"]')).toContainText('candidate.profile');
+ const pending=page.waitForEvent('popup');await page.evaluate(()=>CVExportUpgrade.printCv());const popup=await pending;await popup.waitForFunction(()=>[...document.querySelectorAll('link[rel=stylesheet]')].every(n=>n.sheet));await popup.evaluate(()=>document.fonts.ready);const file=info.outputPath(lang+'-native-decoration.pdf');await popup.pdf({path:file,printBackground:true,preferCSSPageSize:true});const parsed=await pdf(new Uint8Array(fs.readFileSync(file)));const text=parsed.text.toLowerCase().replace(/\s+/g,'');expect(text).toContain(label);expect(text).toContain('candidate.profile');expect(text).toContain('userdecorationboundary');await popup.close();
+});

@@ -3,6 +3,8 @@
 !function(e) {
     var localeCopy = {
   "en": {
+    "candidateProfile": "candidate.profile",
+    "referencesAvailable": "Available on request.",
     "section0": "Awards",
     "section1": "Volunteering",
     "section2": "Memberships",
@@ -47,6 +49,8 @@
     "present": "Present"
   },
   "fr": {
+    "candidateProfile": "profil.candidat",
+    "referencesAvailable": "Disponibles sur demande.",
     "section0": "Distinctions",
     "section1": "Bénévolat",
     "section2": "Affiliations",
@@ -91,6 +95,8 @@
     "present": "Aujourd’hui"
   },
   "sw": {
+    "candidateProfile": "wasifu.wa.mwombaji",
+    "referencesAvailable": "Taarifa za wadhamini zinapatikana ukiomba.",
     "section0": "Tuzo",
     "section1": "Kujitolea",
     "section2": "Uanachama",
@@ -252,7 +258,7 @@
     function y(e) {
         return e.length ? e.map(function(e) {
             return '<div style="font-size:8.4px;margin-bottom:5px"><strong>' + c(e.n) + "</strong>" + (e.t ? " | " + c(e.t) : "") + (e.org ? ", " + c(e.org) : "") + '<div style="color:#64748b">' + [ e.e, e.p, e.rel ].filter(Boolean).map(c).join(" | ") + "</div></div>";
-        }).join("") : '<div style="font-size:8.8px;color:#475569">Available on request.</div>';
+        }).join("") : '<div style="font-size:8.8px;color:#475569">' + c(copy.referencesAvailable) + '</div>';
     }
     function j(e, t) {
         return d(e, (t = t || {}).limit || 18).map(function(e) {
@@ -384,7 +390,7 @@
         }), "</aside>", "</div>", "</main>", "</div>" ].join("");
     }, t.nairobiTech = function(e, t, i) {
         var o = p(e), n = i || "#2563eb";
-        return [ '<div class="cv-prod cv-prod-nairobi-tech" style="' + g("padding:25px 28px;background:#f8fafc") + '">', '<header style="background:#0f172a;color:#fff;border-radius:13px;padding:18px 20px;margin-bottom:14px">', '<div style="font-family:Consolas,monospace;color:#93c5fd;font-size:7.6px;font-weight:800;text-transform:uppercase;letter-spacing:.12em">candidate.profile</div>', '<h1 style="color:inherit;margin:4px 0 0;font-size:24px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:4px;color:#bfdbfe;font-size:10px;font-weight:900">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:9px;color:#cbd5e1;font-size:8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:1.35fr .78fr;gap:12px">', "<div>", f(copy.section18, h(e.summary, "9.5px"), {
+        return [ '<div class="cv-prod cv-prod-nairobi-tech" style="' + g("padding:25px 28px;background:#f8fafc") + '">', '<header style="background:#0f172a;color:#fff;border-radius:13px;padding:18px 20px;margin-bottom:14px">', '<div style="font-family:Consolas,monospace;color:#93c5fd;font-size:7.6px;font-weight:800;text-transform:uppercase;letter-spacing:.12em">' + c(copy.candidateProfile) + '</div>', '<h1 style="color:inherit;margin:4px 0 0;font-size:24px;line-height:1.02;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:4px;color:#bfdbfe;font-size:10px;font-weight:900">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:9px;color:#cbd5e1;font-size:8px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:1.35fr .78fr;gap:12px">', "<div>", f(copy.section18, h(e.summary, "9.5px"), {
             color: n,
             tight: !0
         }), f(copy.section9, m(o.projects, {
