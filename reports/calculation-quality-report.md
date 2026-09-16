@@ -1,13 +1,13 @@
 # Calculation Quality Report
 
-As of: 2026-08-17
+As of: 2026-09-16
 
 ## Inventory
 
-- Total artifacts: 785
-- High risk: 542
+- Total artifacts: 792
+- High risk: 547
 - Medium risk: 108
-- Low risk: 135
+- Low risk: 137
 
 ## Traceability
 
@@ -19,14 +19,14 @@ As of: 2026-08-17
 
 - High-risk effective dates requiring review: 202
 - Medium-risk effective dates requiring review: 0
-- High-risk sources requiring review: 0
+- High-risk sources requiring review: 2
 - Medium-risk sources requiring review: 41
 - Currency overrides requiring review: 3
 - Legacy protected formula records: 152
 
 ## Golden fixtures
 
-- Passed: 307/307
+- Passed: 328/328
 - Documented result changes: 0
 
 ## External data
@@ -38,5 +38,5 @@ As of: 2026-08-17
 ## Findings
 
 - WARNING CURRENCY_OVERRIDE_REVIEW_REQUIRED formula-registry: 3 formula currency override remains explicitly review-required.
-- WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 201 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
-- WARNING SOURCE_REVIEW_REQUIRED formula-registry: 0 high-risk and 41 medium-risk formula records still require authoritative-source review.
+- WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 202 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
+- WARNING SOURCE_REVIEW_REQUIRED formula-registry: 2 high-risk and 41 medium-risk formula records still require authoritative-source review.

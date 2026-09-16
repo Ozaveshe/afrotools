@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11559 |
-| Indexable pages | 9980 |
+| Public pages | 11560 |
+| Indexable pages | 9981 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5288 |
-| Documented fallbacks | 14827 |
-| Routes eligible for primary sitemaps | 9980 |
+| Genuine equivalence groups | 5289 |
+| Documented fallbacks | 14828 |
+| Routes eligible for primary sitemaps | 9981 |
 
 ## Locale Coverage
 
-- en: 6010 page records
+- en: 6011 page records
 - fr: 3803 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5429
-- tool: 4002
+- tool: 4003
 - widget: 379
 
 ## Canonical Migrations
@@ -6179,6 +6179,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:990cd0e968e0: sw=`/sw/zana/mwongozo-bei-ya-hoteli-kwa-nyota/`; x-default=`/sw/zana/mwongozo-bei-ya-hoteli-kwa-nyota/`
 - equivalence:9921cfed9b10: en=`/cars/kenya/toyota/prado/2020/`, fr=`/fr/cars/kenya/toyota/prado/2020/`; x-default=`/cars/kenya/toyota/prado/2020/`
 - equivalence:99233d2b2f70: en=`/tools/health-insurance-compare/angola`, fr=`/fr/tools/comparateur-assurance-sante/angola`; x-default=`/tools/health-insurance-compare/angola`
+- equivalence:9925174c9eba: en=`/tools/unit-converter/feddan-to-acre/`; x-default=`/tools/unit-converter/feddan-to-acre/`
 - equivalence:992611d8cc46: en=`/tools/maternity-leave/lesotho/`; x-default=`/tools/maternity-leave/lesotho/`
 - equivalence:994051039848: en=`/tools/gratuity-calculator/namibia/`, sw=`/sw/namibia/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/namibia/`
 - equivalence:99444e1c0512: en=`/cars/mozambique/honda/accord/`, fr=`/fr/cars/mozambique/honda/accord/`; x-default=`/cars/mozambique/honda/accord/`
