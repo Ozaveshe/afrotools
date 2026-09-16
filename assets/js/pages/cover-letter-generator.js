@@ -176,8 +176,29 @@
     function w(e, t) {
         e && (s.forEach(function(t) {
             Object.prototype.hasOwnProperty.call(e, t) && v(t, e[t]);
-        }), n = e.selectedId || n || null, !t && e.letterText && (v("letterText", e.letterText),
-        r = !0), g("letterText") ? x() : k(), C());
+        }), n = e.selectedId || n || null, !t && Object.prototype.hasOwnProperty.call(e, "letterText") && (v("letterText", e.letterText),
+        r = !0), Object.prototype.hasOwnProperty.call(e, "letterText") || g("letterText") ? x() : k(), C());
+    }
+    function validateBackup(value) {
+        if (!value || typeof value !== "object" || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) throw new Error("Invalid backup");
+        if (value.schemaVersion !== undefined && value.schemaVersion !== 1) throw new Error("Unsupported backup");
+        if (value.selectedId != null && typeof value.selectedId !== "string") throw new Error("Invalid saved ID");
+        if (value.updatedAt !== undefined && (typeof value.updatedAt !== "number" || !Number.isFinite(value.updatedAt))) throw new Error("Invalid timestamp");
+        if (typeof value.fullName !== "string" || typeof value.letterText !== "string") throw new Error("Missing letter fields");
+        var allowed = s.concat(["letterText", "selectedId", "updatedAt", "schemaVersion"]);
+        Object.keys(value).forEach(function(key) {
+            if (allowed.indexOf(key) === -1) throw new Error("Unknown backup field");
+            if ((s.indexOf(key) !== -1 || key === "letterText") && (typeof value[key] !== "string" || value[key].length > 200000)) throw new Error("Invalid text field");
+        });
+        var defaults = {templateId:"technology",toneId:"professional",market:"Pan-African",lengthId:"standard"}, result = {};
+        s.forEach(function(key) { result[key] = Object.prototype.hasOwnProperty.call(value,key) ? value[key] : defaults[key] || ""; });
+        [["templateId",a.map(function(row){return row.id;})],["toneId",i.map(function(row){return row.id;})],["market",c],["lengthId",l.map(function(row){return row.id;})]].forEach(function(entry){if(entry[1].indexOf(result[entry[0]]) === -1) throw new Error("Unknown option");});
+        result.letterText = value.letterText; result.selectedId = null;
+        return result;
+    }
+    function importMessage(ok) {
+        var locale=String(document.documentElement.lang||"en").split("-")[0];
+        return ({fr:ok?"Lettre importée comme nouveau brouillon local.":"Fichier JSON invalide ou non compatible. Le brouillon actuel est conservé.",sw:ok?"Barua imeingizwa kama rasimu mpya kwenye kifaa hiki.":"Faili ya JSON si sahihi au haitumiki. Rasimu ya sasa imehifadhiwa."})[locale] || (ok?"Letter imported as a new local draft.":"Invalid or unsupported JSON file. Current draft preserved.");
     }
     function b(e, t) {
         var n = String(e || "").trim();
@@ -424,7 +445,7 @@
                         I(m(T(e), "cover-letter") + ".doc", "application/msword;charset=utf-8", n), h("Word-compatible document downloaded.");
                     }(), "json" === i && function() {
                         var e = y();
-                        I(m(T(e), "cover-letter") + ".json", "application/json;charset=utf-8", JSON.stringify(e, null, 2)),
+                        I(m(T(e), "cover-letter") + ".json", "application/json;charset=utf-8", JSON.stringify(Object.assign({schemaVersion:1},e), null, 2)),
                         h("JSON downloaded.");
                     }(), "import" === i && u("importInput").click(), "print" === i && window.print();
                 }
@@ -444,14 +465,16 @@
             t && t.addEventListener("change", function() {
                 !function(e) {
                     if (e) {
+                        if(e.size > 2000000) { h(importMessage(false)); return; }
                         var t = new FileReader;
+                        t.onerror=function(){h(importMessage(false));};
                         t.onload = function() {
                             try {
-                                var e = JSON.parse(String(t.result || "{}"));
-                                n = e.selectedId || null, w(e, !1), history.replaceState(null, "", window.location.pathname),
-                                h("Imported letter.");
+                                var e = validateBackup(JSON.parse(String(t.result || "{}")));
+                                n = null, w(e, !1), history.replaceState(null, "", window.location.pathname),
+                                h(importMessage(true));
                             } catch (e) {
-                                h("Invalid JSON file.");
+                                h(importMessage(false));
                             }
                         }, t.readAsText(e);
                     }
