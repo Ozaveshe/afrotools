@@ -13,6 +13,68 @@
   };
   var els = {};
 
+  // Only compressor-owned display text is localized; filenames and PDF contents are not translated.
+  var stageCopy = {
+    'Starting compression...': ['Démarrage de la compression…', 'Inaanza kubana…'],
+    'Preparing local browser memory; no upload is happening': ['Préparation de la mémoire locale ; aucun téléversement', 'Inaandaa kumbukumbu ya kivinjari; hakuna upakiaji'],
+    'Analyzing PDF structure...': ['Analyse de la structure du PDF…', 'Inachanganua muundo wa PDF…'],
+    'Checking pages, objects, and existing compression': ['Vérification des pages, objets et de la compression existante', 'Inakagua kurasa, vipengele na ubanaji uliopo'],
+    'Rewriting PDF efficiently...': ['Réécriture optimisée du PDF…', 'Inaandika PDF upya kwa ufanisi…'],
+    'Repacking the PDF while preserving its document structure': ['Réorganisation du PDF en conservant sa structure', 'Inapanga PDF upya huku ikihifadhi muundo wake'],
+    'Clean pass complete': ['Nettoyage terminé', 'Hatua safi imekamilika'],
+    'The local rewrite finished; preparing the result': ['Réécriture locale terminée ; préparation du résultat', 'Uandishi wa ndani umekamilika; inaandaa matokeo'],
+    'Opening pages for image compression...': ['Ouverture des pages pour la compression en images…', 'Inafungua kurasa kwa ubanaji wa picha…'],
+    'Preparing the local PDF renderer': ['Préparation du moteur de rendu PDF local', 'Inaandaa uonyeshaji wa PDF kwenye kifaa'],
+    'Compressing page images locally': ['Compression des images de pages sur cet appareil', 'Inabana picha za kurasa kwenye kifaa'],
+    'Releasing page memory before continuing': ['Libération de la mémoire de la page avant de continuer', 'Inaachia kumbukumbu ya ukurasa kabla ya kuendelea'],
+    'Packing compressed PDF...': ['Assemblage du PDF compressé…', 'Inaunganisha PDF iliyobanwa…'],
+    'Writing the rebuilt pages into one local PDF': ['Écriture des pages reconstruites dans un PDF local', 'Inaandika kurasa zilizoundwa upya katika PDF moja ya ndani'],
+    'Image compression pass complete': ['Compression en images terminée', 'Ubanaji wa picha umekamilika'],
+    'The rebuilt PDF is ready for size comparison': ['Le PDF reconstruit est prêt pour la comparaison des tailles', 'PDF iliyoundwa upya iko tayari kulinganishwa ukubwa'],
+    'Reading the PDF on this device; no upload is happening': ['Lecture du PDF sur cet appareil ; aucun téléversement', 'Inasoma PDF kwenye kifaa hiki; hakuna upakiaji'],
+    'Preparing clean result...': ['Préparation du résultat du nettoyage…', 'Inaandaa matokeo ya hatua safi…'],
+    'Comparing the rewritten PDF with the original size': ['Comparaison du PDF réécrit avec la taille d’origine', 'Inalinganisha ukubwa wa PDF iliyoandikwa upya na asili'],
+    'The clean rewrite met the size goal and preserved selectable text': ['Le nettoyage a atteint la taille visée et conservé le texte sélectionnable', 'Hatua safi imefikia ukubwa uliolengwa na kuhifadhi maandishi yanayochagulika'],
+    'Preparing download...': ['Préparation du téléchargement…', 'Inaandaa upakuaji…'],
+    'Building the final local PDF or ZIP result': ['Création du PDF ou ZIP final sur cet appareil', 'Inaunda PDF au ZIP ya mwisho kwenye kifaa'],
+    'Compression complete': ['Compression terminée', 'Ubanaji umekamilika'],
+    'Compression failed': ['Échec de la compression', 'Ubanaji umeshindikana'],
+    'Waiting to start': ['En attente du démarrage', 'Inasubiri kuanza'],
+    'DPI, quality, target': ['PPP, qualité, taille cible', 'DPI, ubora, ukubwa lengwa'],
+    'Processing locally': ['Traitement local', 'Inachakata kwenye kifaa'],
+    'Compressing...': ['Compression en cours…', 'Inabana…'],
+    'Compress PDF': ['Compresser un PDF', 'Bana PDF'],
+    'Download compressed PDF': ['Télécharger le PDF compressé', 'Pakua PDF iliyobanwa'],
+    'Download ZIP': ['Télécharger le ZIP', 'Pakua ZIP'],
+    'Clean': ['Nettoyage', 'Safi'], 'Balanced': ['Équilibré', 'Wastani'], 'Strong': ['Fort', 'Nguvu'],
+    'High quality': ['Haute qualité', 'Ubora wa juu'], 'Custom': ['Personnalisé', 'Maalum'],
+    'Clean fallback': ['Repli vers le nettoyage', 'Imetumia hatua safi'], 'Original kept': ['Original conservé', 'Asili imehifadhiwa'],
+    'Already optimized; original kept because clean rewrite was larger.': ['Déjà optimisé ; original conservé car la réécriture était plus volumineuse.', 'Tayari imeboreshwa; asili imehifadhiwa kwa sababu uandishi mpya ulikuwa mkubwa zaidi.'],
+    'No smaller output was produced; original kept.': ['Aucun résultat plus petit n’a été produit ; original conservé.', 'Hakuna matokeo madogo zaidi yaliyopatikana; asili imehifadhiwa.'],
+    'Clean rewrite was enough, so selectable text was preserved.': ['Le nettoyage a suffi ; le texte sélectionnable a été conservé.', 'Hatua safi ilitosha; maandishi yanayochagulika yamehifadhiwa.'],
+    'Raster output was larger; clean PDF output used instead.': ['Le résultat en images était plus volumineux ; le PDF nettoyé a été retenu.', 'Matokeo ya picha yalikuwa makubwa zaidi; PDF ya hatua safi imetumika.'],
+    'File was already compact; output may not be smaller.': ['Le fichier était déjà compact ; le résultat peut ne pas être plus petit.', 'Faili ilikuwa tayari ndogo; matokeo huenda yasiwe madogo zaidi.'],
+    'Target size could not be reached without going below safe quality limits.': ['La taille cible n’a pas été atteinte dans les limites de qualité prévues.', 'Ukubwa uliolengwa haukufikiwa ndani ya mipaka ya ubora iliyowekwa.'],
+    'Raster mode keeps the page appearance but may remove selectable text.': ['Le mode en images conserve l’apparence, mais peut supprimer le texte sélectionnable.', 'Hali ya picha huhifadhi mwonekano lakini inaweza kuondoa maandishi yanayochagulika.'],
+    'Ready for browser-only processing. The PDF is read and compressed on this device; nothing is uploaded.': ['Prêt pour le traitement dans le navigateur. Le PDF est lu et compressé sur cet appareil ; rien n’est téléversé.', 'Iko tayari kuchakatwa kwenye kivinjari. PDF inasomwa na kubanwa kwenye kifaa hiki; hakuna kinachopakiwa.'],
+    'Large PDF selected. Browser-only processing may take several minutes and use significant device memory. Keep this tab open; nothing is uploaded.': ['PDF volumineux sélectionné. Le traitement local peut prendre plusieurs minutes et utiliser beaucoup de mémoire. Gardez cet onglet ouvert ; rien n’est téléversé.', 'PDF kubwa imechaguliwa. Uchakataji wa ndani unaweza kuchukua dakika kadhaa na kutumia kumbukumbu nyingi. Acha kichupo hiki wazi; hakuna kinachopakiwa.']
+  };
+
+  function nativeUi(value) {
+    var locale = document.documentElement.lang.split('-')[0], index = locale === 'fr' ? 0 : locale === 'sw' ? 1 : -1;
+    if (index < 0 || !value) return value;
+    if (stageCopy[value]) return stageCopy[value][index];
+    var match = value.match(/^Reading (\d+)\/(\d+): ([\s\S]*)$/);
+    if (match) return (index === 0 ? 'Lecture ' : 'Inasoma ') + match[1] + '/' + match[2] + ': ' + match[3];
+    match = value.match(/^(Rendering|Rendered) page (\d+) of (\d+)(\.\.\.)?$/);
+    if (match) return (index === 0 ? (match[1] === 'Rendering' ? 'Rendu de la page ' : 'Page rendue ') : (match[1] === 'Rendering' ? 'Inaonyesha ukurasa ' : 'Ukurasa umeonyeshwa ')) + match[2] + '/' + match[3];
+    match = value.match(/^Attempt (\d+)\/(\d+): ([\s\S]*)$/);
+    if (match) return (index === 0 ? 'Tentative ' : 'Jaribio ') + match[1] + '/' + match[2] + ': ' + nativeUi(match[3]);
+    match = value.match(/^(.+) of (.+) read locally$/);
+    if (match) return match[1] + '/' + match[2] + (index === 0 ? ' lus localement' : ' zimesomwa kwenye kifaa');
+    return value;
+  }
+
   function feedback(key, count) {
     var locale = document.documentElement.lang.split('-')[0];
     var messages = {
@@ -74,8 +136,9 @@
 
   function savingsText(original, compressed) {
     var saved = original - compressed;
-    if (saved <= 0) return '0% saved';
-    return Math.round((saved / original) * 100) + '% saved';
+    var percentage = saved <= 0 ? 0 : Math.round((saved / original) * 100);
+    var locale = document.documentElement.lang.split('-')[0];
+    return percentage + (locale === 'fr' ? ' % économisés' : locale === 'sw' ? '% imeokolewa' : '% saved');
   }
 
   function waitForPaint() {
@@ -86,6 +149,8 @@
   }
 
   function showProcessing(message, detail, isError) {
+    message = nativeUi(message);
+    detail = nativeUi(detail);
     els.resultCard.classList.add('on');
     els.resultContent.style.display = 'none';
     els.processingText.style.display = 'block';
@@ -97,11 +162,12 @@
   }
 
   function setProgress(percent, detail) {
+    detail = nativeUi(detail);
     var rounded = Math.max(0, Math.min(100, Math.round(percent)));
     els.progressFill.style.width = rounded + '%';
     if (els.progressBar) {
       els.progressBar.setAttribute('aria-valuenow', String(rounded));
-      els.progressBar.setAttribute('aria-valuetext', rounded + '%: ' + (detail || 'Processing locally'));
+      els.progressBar.setAttribute('aria-valuetext', rounded + '%: ' + (detail || nativeUi('Processing locally')));
     }
     if (els.progressPercent) els.progressPercent.textContent = rounded + '%';
     if (detail && els.processingDetail) els.processingDetail.textContent = detail;
@@ -116,7 +182,7 @@
   function setBusy(value) {
     state.busy = value;
     els.compressBtn.disabled = value || state.files.length === 0;
-    els.compressBtn.textContent = value ? 'Compressing...' : 'Compress PDF';
+    els.compressBtn.textContent = nativeUi(value ? 'Compressing...' : 'Compress PDF');
     els.pdfFileInput.disabled = value;
     els.fileInputLabel.setAttribute('aria-disabled', value ? 'true' : 'false');
     els.resultCard.setAttribute('aria-busy', value ? 'true' : 'false');
@@ -166,7 +232,8 @@
     }
     var total = state.files.reduce(function (sum, file) { return sum + file.size; }, 0);
     var largest = state.files.reduce(function (max, file) { return Math.max(max, file.size); }, 0);
-    els.fileName.textContent = state.files.length === 1 ? state.files[0].name : state.files.length + ' PDFs selected';
+    var locale = document.documentElement.lang.split('-')[0];
+    els.fileName.textContent = state.files.length === 1 ? state.files[0].name : state.files.length + (locale === 'fr' ? ' PDF sélectionnés' : locale === 'sw' ? ' PDF zimechaguliwa' : ' PDFs selected');
     els.fileSize.textContent = formatBytes(total);
     if (els.fileAdvice) {
       els.fileAdvice.style.display = 'block';
@@ -174,6 +241,7 @@
       els.fileAdvice.textContent = largest >= LARGE_FILE_BYTES
         ? 'Large PDF selected. Browser-only processing may take several minutes and use significant device memory. Keep this tab open; nothing is uploaded.'
         : 'Ready for browser-only processing. The PDF is read and compressed on this device; nothing is uploaded.';
+      els.fileAdvice.textContent = nativeUi(els.fileAdvice.textContent);
     }
     els.batchFileList.innerHTML = '';
     state.files.forEach(function (file) {
@@ -385,12 +453,17 @@
     }
 
     if (!best) throw new Error('Compression failed before output was created.');
-    if (best.bytes.length >= originalSize && clean.bytes.length < best.bytes.length) {
+    if (best.bytes.length >= originalSize && clean.bytes.length < originalSize) {
       best = clean;
       warnings.push('Raster output was larger; clean PDF output used instead.');
+      if (settings.targetBytes && best.bytes.length > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
       return resultFor(file, best.bytes, originalSize, best.pageCount, 'Clean fallback', warnings);
     }
-    if (best.bytes.length >= originalSize) warnings.push('File was already compact; output may not be smaller.');
+    if (best.bytes.length >= originalSize) {
+      warnings.push('No smaller output was produced; original kept.');
+      if (settings.targetBytes && originalSize > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
+      return resultFor(file, new Uint8Array(sourceBytes), originalSize, clean.pageCount, 'Original kept', warnings);
+    }
     if (settings.targetBytes && best.bytes.length > settings.targetBytes) warnings.push('Target size could not be reached without going below safe quality limits.');
     if (settings.mode === 'raster') warnings.push('Raster mode keeps the page appearance but may remove selectable text.');
     return resultFor(file, best.bytes, originalSize, best.pageCount, settings.label || 'Compressed', warnings);
@@ -424,10 +497,10 @@
       row.className = 'result-row';
       row.innerHTML = '<div><div class="result-row-name"></div><div class="result-row-meta"></div></div><div class="result-row-meta"></div>';
       row.querySelector('.result-row-name').textContent = item.sourceName;
-      row.querySelectorAll('.result-row-meta')[0].textContent = item.mode + ' | ' + item.pageCount + ' page' + (item.pageCount === 1 ? '' : 's');
+      row.querySelectorAll('.result-row-meta')[0].textContent = nativeUi(item.mode) + ' | ' + item.pageCount + (document.documentElement.lang === 'sw' ? ' kurasa' : ' page' + (item.pageCount === 1 ? '' : 's'));
       row.querySelectorAll('.result-row-meta')[1].textContent = formatBytes(item.originalSize) + ' -> ' + formatBytes(item.compressedSize);
       els.resultRows.appendChild(row);
-      item.warnings.forEach(function (warning) { notes.push(item.sourceName + ': ' + warning); });
+      item.warnings.forEach(function (warning) { notes.push(item.sourceName + ': ' + nativeUi(warning)); });
     });
     els.resultNote.style.display = notes.length ? 'block' : 'none';
     els.resultNote.textContent = notes.join(' ');
@@ -439,7 +512,7 @@
       ? new Blob([state.results[0].bytes], { type: 'application/pdf' })
       : buildZip(state.results.map(function (item) { return { name: item.name, data: item.bytes }; }));
     state.download = { blob: blob, filename: single ? state.results[0].name : ZIP_NAME };
-    els.downloadBtn.textContent = single ? 'Download compressed PDF' : 'Download ZIP';
+    els.downloadBtn.textContent = nativeUi(single ? 'Download compressed PDF' : 'Download ZIP');
   }
 
   async function compressSelected() {
@@ -462,7 +535,7 @@
       // Library errors may contain document fragments or implementation details.
       showProcessing(feedback('failed'), feedback('retry'), true);
       els.resultContent.style.display = 'none';
-      if (els.progressBar) els.progressBar.setAttribute('aria-valuetext', 'Compression failed');
+      if (els.progressBar) els.progressBar.setAttribute('aria-valuetext', nativeUi('Compression failed'));
     } finally {
       setBusy(false);
     }
@@ -625,6 +698,7 @@
     els.grayscaleToggle = $('grayscaleToggle');
     els.keepTextToggle = $('keepTextToggle');
     getPdfJs();
+    document.querySelectorAll('.preset-desc').forEach(function (element) { element.textContent = nativeUi(element.textContent.trim()); });
     bindEvents();
     renderFiles();
     setProgress(0, 'Waiting to start');
