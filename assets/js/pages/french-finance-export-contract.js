@@ -270,9 +270,15 @@
   }
 
   function calendarText(data) {
-    var date = data.inputs.map(function (item) { return item.value; }).find(function (value) {
+    var dates = data.inputs.map(function (item) { return item.value; }).filter(function (value) {
       return /^\d{4}-\d{2}-\d{2}$/.test(value);
-    }) || '2026-07-01';
+    });
+    if (dates.length !== 1) throw new Error('Le calendrier nécessite une date explicite et unique. Utilisez le planificateur pour définir les dates de votre événement.');
+    var date = dates[0];
+    var parsedDate = new Date(date + 'T00:00:00Z');
+    if (!Number.isFinite(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) {
+      throw new Error('La date du calendrier est invalide. Corrigez-la avant l’export.');
+    }
     var compactDate = date.replace(/-/g, '');
     return [
       'BEGIN:VCALENDAR',

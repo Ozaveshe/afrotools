@@ -68,3 +68,7 @@ Passed: three independent engine/owner tests, existing payroll checks, French HR
 This wave is committed locally and has not been deployed. Free apps remain first; Pro assessment follows later.
 
 Coordinator second-wave validation completed: all23 combined document/invoice browser checks passed (18document +3freelance +2inert-preview), i18n/hreflang passed, diff check passed. Career run remains16/18 pending two pointer-feedback retests;14node tests passed. Private1,256-row matrix now includes scoped review notes without upgrading full-dimension verdicts.
+
+### Calendar export gap under repair
+
+The French generic finance calendar exporter used a hardcoded2026-07-01 date when no date input existed. The leave route advertisesICS but has no parental-planning date fields; the DCA route also needs workflow-specific schedule review. The exporter now rejects missing, ambiguous or impossible dates instead of inventing one. Three focused date tests pass, including leap-day preservation. This is an interim integrity repair, not calendar feature parity: restoring the real French leave planner and DCA schedule semantics remains required. English parental planning also needs review of inclusive/end dates and paternity working-day assumptions before reuse.
