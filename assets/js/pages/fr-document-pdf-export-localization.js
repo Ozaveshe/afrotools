@@ -93,23 +93,6 @@
     }).join('\n');
   }
 
-  function localizeJson(source) {
-    try {
-      var parsed = JSON.parse(source);
-      function visit(value) {
-        if (Array.isArray(value)) return value.map(visit);
-        if (value && typeof value === 'object') {
-          Object.keys(value).forEach(function (key) { value[key] = visit(value[key]); });
-          return value;
-        }
-        return typeof value === 'string' ? exact(value) : value;
-      }
-      return JSON.stringify(visit(parsed), null, 2);
-    } catch (_) {
-      return source;
-    }
-  }
-
   function localizeLines(source) {
     return source.split(/\r?\n/).map(function (line) {
       var match = line.match(/^(\s*)([^:]{1,60})(:\s*)([\s\S]*)$/);
@@ -142,7 +125,8 @@
   function localizePart(part, type) {
     if (typeof part !== 'string') return part;
     if (/text\/csv/i.test(type)) return localizeCsv(part);
-    if (/application\/json/i.test(type)) return localizeJson(part);
+    // JSON is backup/state data. Preserve bytes, including unknown keys and string values.
+    if (/application\/json/i.test(type)) return part;
     if (/text\/html|application\/msword/i.test(type)) return localizeHtml(part);
     if (/text\/calendar/i.test(type)) return localizeCalendar(part);
     if (/text\/plain/i.test(type)) return localizeLines(part);
@@ -162,4 +146,3 @@
   Object.setPrototypeOf(FrenchExportBlob, NativeBlob);
   window.Blob = FrenchExportBlob;
 })();
-
