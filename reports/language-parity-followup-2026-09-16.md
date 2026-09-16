@@ -23,7 +23,13 @@ At 46c857a3, full build, artifact/security audits and 31 artifact browser cases 
 
 ## Release state
 
-Production was subsequently verified at UX release 6e9cea8ae9d7bbc72e5ab059a76cbfde9769322e. The UX publisher released its lease; this task has not acquired a new release lease or deployed this batch. Verified origin/main 7e2fba2b3cc82959cf903b72172ada1231f91a13 is preserved in merge 19905cd2. Current-source full build, generated-output review, artifact checks and exact release validation remain required.
+The first batch at `bfca5b2763fc0dc12b267b152f738eb606752e47` passed the full local suite (1,113 test files, seven audits, zero quarantines), artifact/security/build checks, 21 artifact browser cases, and all three GitHub CI jobs in run 35130757307. It was pushed to main through the verified release checkout.
+
+Its hosted deploy `6aaadd990136db00086742f6` failed on the time limit after building successfully and reaching 80% upload. It did not publish. The site build limit was increased from the default to 1,800 seconds using Netlify's supported API. A single retry, `6aaae2e2c2e3579bb132b2fd`, is building the same exact commit. Production verification is pending; the previous verified live release is still `6e9cea8ae9d7bbc72e5ab059a76cbfde9769322e`.
+
+The separate follow-up candidate is not deployed. Its `fe0cc90e` source passed a full build, build checks, artifact and security audits, and 32 actual artifact browser cases. Generated outputs were reviewed and committed as `3c0a9122`: 68 HTML cache-version updates, one equivalent metadata reorder with cache updates, and two public-claims reports. No deletions.
+
+Further source repairs through `d47694b5` passed 23 combined browser cases, five native-scoring node tests, 20 extracted and 14 native French owner contracts, and the wage runtime ownership check. They require a fresh build and full release validation. No whole-app or catalogue dimension is accepted on these bounded counts. Free apps remain ahead of Pro assessment.
 
 ## Subsequent integration through cd15cbb8
 
