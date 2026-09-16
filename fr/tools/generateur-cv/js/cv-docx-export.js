@@ -260,7 +260,7 @@
         return !!(e.Blob && e.URL && e.TextEncoder && t && t.createElement);
     }
     function T() {
-        if (!b()) return p("DOCX export is not available in this browser."), !1;
+        if (!b()) return p(copy.unavailable), !1;
         try {
             return function(n, r) {
                 if (e.CVExportUpgrade && "function" == typeof e.CVExportUpgrade.downloadBlob) return e.CVExportUpgrade.downloadBlob(n, r);

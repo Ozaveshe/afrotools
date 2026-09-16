@@ -15,3 +15,9 @@ for(const [lang,headings]of [['en',['Summary','Experience','Education','Referenc
  assert.ok(!zip['word/numbering.xml'].includes('\\u2022'));
  if(lang!=='en')for(const heading of ['Summary','Experience','Education','References'])assert.ok(!xml.includes('>'+heading+'<'),heading);
 });
+
+for(const [lang,expected]of [['en','DOCX export is unavailable in this browser'],['fr','L’export DOCX est indisponible dans ce navigateur'],['sw','Uhamishaji wa DOCX haupatikani kwenye kivinjari hiki']])test('unsupported DOCX browser has native fallback: '+lang,()=>{
+ let feedback;const ctx={document:{readyState:'loading',documentElement:{lang},addEventListener(){}},CVApp:{showToast:value=>{feedback=value;}}};ctx.window=ctx;
+ vm.runInNewContext(fs.readFileSync(lang==='fr'?'fr/tools/generateur-cv/js/cv-docx-export.js':'tools/cv-builder/js/cv-docx-export.js','utf8'),ctx);
+ assert.equal(ctx.CVDocxExport.exportDocx(),false);assert.equal(feedback,expected);
+});
