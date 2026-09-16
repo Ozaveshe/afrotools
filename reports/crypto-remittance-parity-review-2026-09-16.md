@@ -25,3 +25,7 @@ Independent node assertions cover those cases and UK/GB; baseline arithmetic sti
 Reviewed only the changed remittance engine digest through the existing protected workflow. Added independent golden cases for CD/name agreement, CD versus CG separation, rejected ZR and UK alias. Metadata now records both UI callers using strict corridors; optional legacy API callers must not infer route equivalence. No tariff or eligibility verification added.
 
 Full calculation-quality check passed794artifacts/385fixtures with zero stale-data warnings; system tests and focused13case runner passed. Native20/20+14/14 oracle checks passed after only the two existing remittance dependency fingerprints were refreshed to54a1d84c. Unrelated formula/fixture records remained identical.
+
+## Mobile contrast
+
+All six dark cases initially failed the Compare button at2.37:1; all six light cases passed. A single selector scoped to data-remittance-comparator now uses the existing dark foreground variable. All12final cases passed25.3s acrossEN/FR/SW,320/390px, light/manual-dark, keyboard third-quote entry, three results, axe serious/critical contrast and reset. Other calculator selectors unchanged.
