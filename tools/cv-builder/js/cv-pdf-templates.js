@@ -267,6 +267,36 @@
         (i.nsYear || i.nsOrg) && o.push(f(copy.section4, '<div style="font-size:8.8px">' + [ i.nsYear, i.nsOrg ].filter(Boolean).map(c).join(" | ") + "</div>", t)),
         o.join("");
     }
+    // The editor uses the lexical CVTemplates object; the expanded gallery uses
+    // window.CVTemplates. Register this reviewed renderer in both owners.
+    t.panAfricanMinimal = function(data, country, accent) {
+        var model = p(data), rule = "1px solid #cbd5e1";
+        return [
+            '<article class="cv-prod cv-prod-pan-african-minimal" data-layout="text-first" style="' + g("padding:30px 36px;overflow-wrap:anywhere") + '">',
+            '<header style="margin-bottom:14px;padding-bottom:10px;border-bottom:3px solid ' + c(accent || "#087f5b") + '">',
+            '<h1 style="margin:0;color:#111827;font-size:25px;line-height:1.15;font-weight:900">' + model.name + '</h1>',
+            '<div style="margin-top:5px;color:#334155;font-size:11px;font-weight:800">' + model.title + '</div>',
+            model.contact.length ? '<div style="margin-top:8px;color:#475569;font-size:8.8px;line-height:1.5">' + model.contact.join(" | ") + '</div>' : '',
+            '</header>',
+            f(copy.section5, h(data.summary), {rule:rule}),
+            f(copy.section6, x(model.experience), {rule:rule}),
+            f(copy.section7, u(model.education), {rule:rule}),
+            f(copy.section8, '<div style="font-size:9px;line-height:1.5">' + model.hard.concat(model.soft, model.tools).map(c).join(" | ") + '</div>', {rule:rule}),
+            f(copy.section9, m(model.projects), {rule:rule}),
+            f(copy.section10, v(model.certs), {rule:rule}),
+            f(copy.section11, b(model.languages), {rule:rule}),
+            model.sensitive.length ? f(copy.section17, model.sensitive.join(" | "), {rule:rule}) : '',
+            w(model, {rule:rule}),
+            model.extras.interests ? f(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[String(e.document && e.document.documentElement.lang || "en").split("-")[0]] || "Interests"), h(model.extras.interests), {rule:rule}) : '',
+            model.refs.length ? f(copy.section12, y(model.refs), {rule:rule}) : '',
+            '</article>'
+        ].join('');
+    };
+    t["pan-african-minimal"] = t.panAfricanMinimal;
+    if (e.CVTemplates && e.CVTemplates !== t) {
+        e.CVTemplates.panAfricanMinimal = t.panAfricanMinimal;
+        e.CVTemplates["pan-african-minimal"] = t.panAfricanMinimal;
+    }
     t.atsClassic = function(e, t, i) {
         var o = p(Object.assign({}, e, {
             showPhoto: !1,
@@ -621,6 +651,6 @@
     t["accra-graduate"] = t.accraGraduate, t["cape-town-executive"] = t.capeTownExecutive,
     t["ngo-development"] = t.ngoDevelopment, t["diaspora-international"] = t.diasporaInternational,
     t["creative-portfolio"] = t.creativePortfolio, e.CVProductionTemplates = {
-        ids: [ "atsClassic", "lagosCorporate", "nairobiTech", "accraGraduate", "capeTownExecutive", "ngoDevelopment", "diasporaInternational", "creativePortfolio" ]
+        ids: [ "panAfricanMinimal", "atsClassic", "lagosCorporate", "nairobiTech", "accraGraduate", "capeTownExecutive", "ngoDevelopment", "diasporaInternational", "creativePortfolio" ]
     };
 }("undefined" != typeof window ? window : globalThis);

@@ -136,7 +136,7 @@
     function s() {
         var t = n().data || {}, e = [];
         return e.push(r([ t.fn, t.ln ], " ") || t.name || copy.name), e.push(o(t.title || copy.target)),
-        e.push(r([ t.email, r([ t.phoneCode, t.phone ], " "), t.altPhone, t.loc || t.location, t.linkedin || t.li, t.github, t.web || t.portfolio ])),
+        e.push(r([ t.email, r([ t.phoneCode, t.phone ], " "), t.altPhone, t.loc || t.location, t.linkedin || t.li, t.github, t.web, t.portfolio ])),
         e.push(copy.notePrefix + a), l(e, copy.summary, t.summary), l(e, copy.experience, (t.exps || t.experience || []).map(function(t) {
             return o(r([ t.t, t.title, t.c, t.company, t.d, t.desc ], " ")) ? [ r([ t.t || t.title || copy.role, t.c || t.company || t.org, t.l || t.loc || t.location ], " - "), i(t), (e = t.d || t.desc || t.description,
             String(e || "").split(/\n+/).map(function(t) {
@@ -146,7 +146,7 @@
             }).join("\n") ].filter(Boolean).join("\n") : "";
             var e;
         })), l(e, copy.education, (t.edus || t.education || []).map(function(t) {
-            return o(r([ t.deg, t.degree, t.sch, t.school ], " ")) ? [ r([ t.deg || t.degree || copy.qualification, t.sch || t.school || t.c, t.loc || t.location ], " - "), i(t), o(t.g || t.grade || t.d) ].filter(Boolean).join("\n") : "";
+            return o(r([ t.deg, t.degree, t.sch, t.school ], " ")) ? [ r([ t.deg || t.degree || copy.qualification, t.sch || t.school || t.c, t.loc || t.location ], " - "), i(t), o(t.g || t.grade), o(t.d) ].filter(Boolean).join("\n") : "";
         })), l(e, copy.skills, [ t.skills && t.skills.h ? copy.technical + o(t.skills.h) : "", t.skills && t.skills.s ? copy.workplace + o(t.skills.s) : "", t.skills && t.skills.t ? copy.tools + o(t.skills.t) : "" ]),
         l(e, copy.projects, (t.projs || t.projects || []).map(function(t) {
             return o(r([ t.n, t.name, t.d, t.desc ], " ")) ? [ t.n || t.name || copy.project, t.tech ? copy.tools + o(t.tech) : "", o(t.d || t.desc || t.description) ].filter(Boolean).join("\n") : "";

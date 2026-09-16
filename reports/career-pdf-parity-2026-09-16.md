@@ -51,7 +51,7 @@ The active production-template owner now retains alternate phone, GitHub, websit
 
 Validation: five node renderer/locale tests passed; three browser cases passed together across EN/FR/SW (two production templates per locale, complete supplied-field assertions, dark-header colors, 320/390px reflow and toolbar keyboard focus). Synthetic actual PDFs were rendered with Poppler and visually inspected for readable names, retained links/details and clipping. This is bounded fixture proof, not every template, arbitrary-content pagination or full accessibility acceptance.
 
-Remaining confirmed gaps: Pan-African Minimal still omits several supplied fields through another renderer path; JSON restoration was subsequently repaired as documented below. Other template families, print and application-pack behavior remain incompletely exercised. The earlier ATS pointer-stability observation remains open.
+The initially confirmed Pan-African Minimal field gap and JSON restoration gap were subsequently repaired as documented below. Other template families, print and application-pack behavior remain incompletely exercised. The earlier ATS pointer-stability observation remains open.
 
 ## JSON backup restoration
 
@@ -64,3 +64,16 @@ Fresh proof: `node --test tests/cv-json-backup.test.js` passed 12 tests. `tests/
 Existing French document contracts (40) and CV DOCX/application-pack verifier passed. The French importer was regenerated through `build-french-cv-runtime.js`. PDF proof covers ATS PDF; this restoration change does not establish new acceptance for all styled templates, arbitrary Unicode scripts or Microsoft Word rendering. No deployment was performed.
 
 JSON final followups: all three roundtrip cases passed again after synchronizing the immediate saved-CV list with the existing version-system mirror. Known legacy renderer IDs remain compatible: a focused `slate` backup import/reload case passed after resolving the legacy global binding. There are seven distinct browser cases with passing evidence across these runs. `npm run build:i18n:validate` passed. No broad build/deployment was run for this next-batch candidate.
+
+
+## Pan-African Minimal field completeness
+
+The editor reads the lexical `CVTemplates` binding, while expanded renderers register on a distinct `window.CVTemplates` object. Selecting Pan-African Minimal therefore fell back to Slate in the real editor/export path. Its reviewed renderer is now registered on both bindings in `tools/cv-builder/js/cv-pdf-templates.js`; other expanded IDs are not newly activated or accepted.
+
+The text-first, intentionally photo-free template retains independent contact links, alternate phone, education grade and description, reference relationship, native section/date labels and all supplied skills. Existing shared helpers retain enabled projects, certifications, languages and optional extra sections. ATS text export also now retains both website and portfolio, and both education grade and description, instead of selecting one value with `||`. French ATS runtime was regenerated through its owner.
+
+Validation after the separately committed mobile sizing repair:17 node tests passed (three template-binding/field/native tests plus14 PDF character/native contracts); three browser cases passed together in44.2seconds on port4216. Each locale exported a real styled PDF and ATS PDF from a320px input viewport. Styled PDFs parsed as one page with paper-resolution image streams; ATS parser output retained every checked contact, education and reference value.320/390px app overflow and synthetic-content network checks passed. Poppler-rendered EN/FR/SW styled first pages were visually inspected: native headings, readable accented name, full-width header, retained contacts and education/reference details, no visible clipping in this fixture.
+
+This is bounded template/fixture evidence, not all30-template acceptance, arbitrary-length pagination or universal script shaping. Styled PDFs remain raster; ATS PDF provides selectable text. The independent sizing repair is documented in `reports/cv-mobile-pdf-sizing-2026-09-16.md`. No push or deployment was performed.
+
+Pan-African Minimal owner/route checks: CV template registry verifier PASS, French CV runtime regeneration completed, build:i18n:validate PASS, git diff --check PASS. Full release checks remain coordinator-owned.
