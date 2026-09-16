@@ -37,6 +37,7 @@ const JS_PAIRS = [
   ['assets/js/favorites.js',                'assets/js/favorites.min.js'],
   ['assets/js/pages/pdf-compress.js',       'tools/pdf-compress/app.js'],
   ['assets/js/pages/pdf-image-convert.js',  'tools/pdf-image-convert/app.js'],
+  ['assets/js/pages/pdf-merge-split.js',  'tools/pdf-merge-split/app.js'],
 ];
 
 // CSS files: source -> min

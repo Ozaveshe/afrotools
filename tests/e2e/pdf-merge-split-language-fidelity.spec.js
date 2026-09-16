@@ -1,0 +1,31 @@
+const {test,expect}=require('@playwright/test'),fs=require('node:fs'),JSZip=require('jszip');
+const {PDFDocument,rgb}=require('../../assets/vendor/pdf-lib/pdf-lib.min.js');
+const routes={en:'/tools/pdf-merge-split/',fr:'/fr/tools/fusionner-diviser-pdf/',sw:'/sw/zana/unganisha-na-gawanya-pdf/'};
+let a,b;
+test.beforeAll(async()=>{async function fixture(prefix){const d=await PDFDocument.create();for(let i=1;i<=4;i++){const p=d.addPage([200+i,250+i]);p.drawText(prefix+i,{x:20,y:200,size:18});p.drawRectangle({x:20,y:20,width:40,height:30,color:rgb(i/4,0,1-i/4)});}return Buffer.from(await d.save());}a=await fixture('A');b=await fixture('B');});
+async function getDownload(page,selector){const pending=page.waitForEvent('download',{timeout:10000});await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
+async function pages(page,bytes){return page.evaluate(async bytes=>{const d=await pdfjsLib.getDocument({data:new Uint8Array(bytes)}).promise,out=[];for(let i=1;i<=d.numPages;i++){const p=await d.getPage(i);const v=p.getViewport({scale:1}),c=document.createElement('canvas');c.width=v.width;c.height=v.height;await p.render({canvasContext:c.getContext('2d'),viewport:v}).promise;out.push({text:(await p.getTextContent()).items.map(x=>x.str).join(''),width:p.view[2],height:p.view[3],pixel:Array.from(c.getContext('2d').getImageData(30,c.height-30,1,1).data)});}await d.destroy();return out;},[...bytes]);}
+async function text(page,bytes){return(await pages(page,bytes)).map(p=>{const i=Number(p.text.slice(1));expect(p.width).toBe(200+i);expect(p.height).toBe(250+i);expect(Math.abs(p.pixel[0]-i*255/4)).toBeLessThan(2);expect(p.pixel[1]).toBe(0);expect(Math.abs(p.pixel[2]-(1-i/4)*255)).toBeLessThan(2);return p.text;});}
+async function zipText(page,bytes){const z=await JSZip.loadAsync(bytes),out=[];for(const k of Object.keys(z.files))out.push(await text(page,await z.file(k).async('nodebuffer')));return out;}
+async function mergeInputs(page){await page.locator('#mergeFileInput').setInputFiles([{name:'A.pdf',mimeType:'application/pdf',buffer:a},{name:'B.pdf',mimeType:'application/pdf',buffer:b}]);await expect(page.locator('#mergeBtn')).toBeEnabled();}
+for(const[locale,route]of Object.entries(routes))test(`${locale} actual merge selected ordering and all split outputs`,async({page})=>{
+ await page.goto(route);await expect(page.locator('email-gate-modal')).toHaveCount(0);await mergeInputs(page);
+ await page.locator('#mergeFileList .file-item').nth(0).locator('input').fill('4,2');await page.locator('#mergeFileList .file-item').nth(1).locator('input').fill('3,1');await page.locator('#mergeFileList .file-item').nth(1).locator('[data-action=up]').click();
+ await page.locator('#mergeBtn').click();await expect(page.locator('#actionRow .act-download')).toBeVisible();const merged=await getDownload(page,'#actionRow .act-download');expect(await text(page,merged)).toEqual(['B3','B1','A4','A2']);expect((await pages(page,merged)).map(p=>p.width)).toEqual([203,201,204,202]);
+ await page.locator('[data-mode=split]').click();await page.locator('#splitFileInput').setInputFiles({name:'A.pdf',mimeType:'application/pdf',buffer:a});await expect(page.locator('.sp-cell')).toHaveCount(4);
+ await page.locator('.sp-cut').nth(1).click();expect(await zipText(page,await getDownload(page,'#splitBtn'))).toEqual([['A1','A2'],['A3','A4']]);
+ await page.locator('[data-split-mode=ranges]').click();await page.locator('#rangeInput').fill('3-4,1');expect(await zipText(page,await getDownload(page,'#splitBtn'))).toEqual([['A3','A4'],['A1']]);
+ await page.locator('#rangeCombine').check();expect(await text(page,await getDownload(page,'#splitBtn'))).toEqual(['A3','A4','A1']);
+ await page.locator('[data-split-mode=extract]').click();await page.locator('#extractInput').fill('4,2');expect(await text(page,await getDownload(page,'#splitBtn'))).toEqual(['A4','A2']);
+ await page.locator('[data-split-mode=every]').click();expect(await zipText(page,await getDownload(page,'#splitBtn'))).toEqual([['A1'],['A2'],['A3'],['A4']]);
+});
+for(const[locale,route]of Object.entries(routes))test(`${locale} edits invalidate merge download`,async({page})=>{await page.goto(route);await mergeInputs(page);await page.locator('#mergeBtn').click();await expect(page.locator('#actionRow .act-download')).toBeVisible();await page.locator('#mergeFileList input').first().fill('999');await expect(page.locator('#mergeBtn')).toBeDisabled();await expect(page.locator('#actionRow .act-download')).toBeHidden();});
+
+for(const[locale,route]of Object.entries(routes))test(`${locale} native invalid ranges PDF errors and keyboard selection`,async({page},info)=>{
+ await page.setViewportSize({width:390,height:844});await page.goto(route);await page.locator('[data-mode=split]').click();await page.locator('#splitFileInput').setInputFiles({name:'A.pdf',mimeType:'application/pdf',buffer:a});await expect(page.locator('.sp-cell')).toHaveCount(4);
+ await page.locator('[data-split-mode=extract]').click();await page.locator('#extractInput').fill('99');await expect(page.locator('#splitBtn')).toBeDisabled();await expect(page.locator('#splitSummary')).toContainText({en:'Pages must be between',fr:'Les pages doivent être',sw:'Kurasa lazima ziwe'}[locale]);
+ await page.locator('#extractInput').fill('');await page.locator('.sp-cell').nth(2).focus();await page.keyboard.press('Enter');expect(await text(page,await getDownload(page,'#splitBtn'))).toEqual(['A3']);
+ await page.locator('#extractInput').fill('1');await expect(page.locator('#actionRow .act-download')).toBeHidden();
+ await page.locator('#splitFileInput').setInputFiles({name:'invalid.pdf',mimeType:'application/pdf',buffer:Buffer.from('private-invalid-file')});await expect(page.locator('#resultText')).toContainText({en:'Could not read this PDF',fr:'Impossible de lire ce PDF',sw:'PDF hii haisomeki'}[locale]);await expect(page.locator('#resultText')).not.toContainText('private-invalid-file');await expect(page.locator('#resultCard')).toBeVisible();await expect(page.locator('#splitBtn')).toBeDisabled();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.locator('#resultCard').scrollIntoViewIfNeeded();await page.screenshot({path:info.outputPath(`merge-split-${locale}-390.png`)});
+});
