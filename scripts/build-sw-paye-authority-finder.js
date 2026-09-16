@@ -1,6 +1,8 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const { stableId } = require('./lib/content-integrity');
+const { normalizeReleaseOwnedHtml } = require('./lib/release-owned-html-normalizer');
 const root = path.resolve(__dirname, '..');
 const dataset = require('../data/salary-tax/authority-router.json');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated.js');
@@ -33,6 +35,7 @@ function build() {
 <link rel="icon" href="/assets/img/logo-mark.svg"><link rel="stylesheet" href="/assets/css/tokens.css"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/paye-authority-finder.css">
 <style>.authority-page{padding-top:6rem;overflow-wrap:anywhere;--color-background:var(--color-bg);--color-text-secondary:var(--color-text-muted)}#main-content .authority-status{color:var(--color-text)}#main-content .authority-status.warn{color:#774000!important}#main-content .authority-button,#main-content .authority-actions .authority-choice:not(.secondary){background:#0057b8;color:#fff!important}.authority-wrap,.authority-field,.authority-result{min-width:0}.authority-choice,.authority-list a{overflow-wrap:anywhere;max-width:100%}.authority-field input,.authority-field select{box-sizing:border-box;min-width:0}.authority-button:disabled{opacity:.65;cursor:wait}.authority-choice-grid .authority-choice{flex-wrap:wrap}.authority-crumb a,.authority-note a{text-decoration:underline}</style>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:title,url:site+route,description,inLanguage:'sw',applicationCategory:'FinanceApplication',operatingSystem:'Web',isAccessibleForFree:true})}</script>
+<meta name="afrotools-content-id" content="${stableId(route)}">
 </head><body><a class="skip-link" href="#authority-finder">Nenda kwenye kitafutaji</a><afro-navbar></afro-navbar>
 <main class="authority-page" id="main-content"><div class="authority-wrap">
 <nav class="authority-crumb" aria-label="Njia ya ukurasa"><a href="/sw/">AfroTools</a> / <a href="/sw/mshahara-na-kodi/">Mshahara na kodi</a> / Mamlaka ya PAYE</nav>
@@ -47,7 +50,7 @@ function build() {
 function main() {
   const html = build();
   if (process.argv.includes('--check')) {
-    if (!fs.existsSync(file) || fs.readFileSync(file,'utf8') !== html) throw new Error('Swahili PAYE finder output is stale.');
+    if (!fs.existsSync(file) || normalizeReleaseOwnedHtml(fs.readFileSync(file,'utf8')) !== normalizeReleaseOwnedHtml(html)) throw new Error('Swahili PAYE finder output is stale.');
   } else { fs.mkdirSync(path.dirname(file),{recursive:true}); fs.writeFileSync(file,html); }
   for (const counterpart of ['tools/paye-authority-finder/index.html', 'fr/tools/trouver-administration-paye/index.html']) {
     const target = path.join(root, counterpart);
