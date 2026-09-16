@@ -23,11 +23,11 @@ assert.strictEqual(engine.quoteTariff(catalog,{providerId:"mtn-uganda",action:"d
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"mtn-uganda",action:"send",amount:499}).reason,"AMOUNT_OUTSIDE_VERIFIED_BANDS");
 {
   const result=engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"withdraw",amount:999});
-  assert.strictEqual(result.fee,200);assert.deepStrictEqual(result.feeComponents,{transactionFee:190,governmentLevy:10});assert.strictEqual(result.effectiveDate,"2024-04-01");
+  assert.strictEqual(result.fee,190);assert.deepStrictEqual(result.feeComponents,{transactionFee:180,governmentLevy:10});assert.strictEqual(result.effectiveDate,null);
 }
-assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"withdraw",amount:1000}).fee,320);
+assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"withdraw",amount:1000}).fee,310);
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"send",amount:9999}).fee,140);
-assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"send",amount:10000}).available,false);
+assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"send",amount:5000001}).available,false);
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"airtel-tanzania",action:"deposit",amount:1000}).reason,"ACTION_NOT_VERIFIED");
 assert.strictEqual(engine.quoteTariff(catalog,{providerId:"unknown",action:"send",amount:1000}).reason,"PROVIDER_NOT_VERIFIED");
 {

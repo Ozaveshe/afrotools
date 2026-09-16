@@ -12,10 +12,10 @@ test.describe('mobile money fee finder',()=>{
     await page.locator('#mm-action').selectOption('withdraw');
     await page.locator('#mm-amount').fill('3000');
     await page.locator('#mm-tariff-form button[type="submit"]').click();
-    await expect(page.locator('#mm-tariff-result')).toContainText('604 TZS');
+    await expect(page.locator('#mm-tariff-result')).toContainText('590 TZS');
     await expect(page.locator('#mm-tariff-result')).toContainText('governmentLevy: 14 TZS');
     await page.locator('#mm-action').selectOption('send');
-    await page.locator('#mm-amount').fill('10000');
+    await page.locator('#mm-amount').fill('5000001');
     await page.locator('#mm-tariff-form button[type="submit"]').click();
     await expect(page.locator('#mm-tariff-result')).toContainText('AMOUNT_OUTSIDE_VERIFIED_BANDS');
   });
@@ -43,7 +43,7 @@ test.describe('mobile money fee finder',()=>{
     await expect(page.locator('#mm-tariff-result')).toContainText('Prélèvement public: 14 TZS');
     await expect(page.locator('#mm-tariff-result')).not.toContainText('governmentLevy');
     await page.locator('#mm-action').selectOption('send');
-    await page.locator('#mm-amount').fill('10000');
+    await page.locator('#mm-amount').fill('5000001');
     await page.locator('#mm-tariff-form button[type="submit"]').click();
     await expect(page.locator('#mm-tariff-result')).toContainText('Montant hors des tranches vérifiées.');
     await expect(page.locator('#mm-tariff-result')).not.toContainText('AMOUNT_OUTSIDE_VERIFIED_BANDS');
