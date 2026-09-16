@@ -1355,14 +1355,16 @@ function populateTable() {
 }
 
 function renderTable() {
-  var data = _tableData;
-  if (_tableFilter === 'top10')  data = data.slice(0, 10);
-  if (_tableFilter === 'bot10')  data = data.slice(-10);
+  // Select ranking membership independently of the current presentation sort.
+  var ranked = _tableData.slice().sort(function(a, b) { return b.usdMonthly - a.usdMonthly || a.code.localeCompare(b.code); });
+  var selected = _tableFilter === 'top10' ? ranked.slice(0, 10) : (_tableFilter === 'bot10' ? ranked.slice(-10) : ranked);
+  var selectedCodes = new Set(selected.map(function(country) { return country.code; }));
+  var data = _tableData.filter(function(country) { return selectedCodes.has(country.code); });
 
   var html = '';
   for (var i = 0; i < data.length; i++) {
     var c = data[i];
-    var rank     = _tableData.indexOf(c) + 1;
+    var rank     = ranked.indexOf(c) + 1;
     var localStr = c.monthly > 0 ? fmtWage(c.monthly, c.symbol) + '/mo' : '<span class="ct-nomin">Not set</span>';
     var usdClass = c.usdMonthly >= 200 ? 'ct-usd usd-high' : (c.usdMonthly < 50 && c.usdMonthly > 0 ? 'ct-usd usd-low' : 'ct-usd');
     var usdStr   = c.usdMonthly > 0 ? 'US$' + c.usdMonthly : '<span class="ct-nomin">N/A</span>';

@@ -455,6 +455,11 @@
   }
 
   async function runExport(format, config, status) {
+    if (config.englishId === 'minimum-wage') {
+      global.dispatchEvent(new Event('afrotools-minimum-wage-validate'));
+      var wageForm = document.getElementById('wageForm');
+      if (!wageForm || wageForm.dataset.valid !== 'true') throw new Error('Corrigez les données de paie avant l’export.');
+    }
     var data = snapshot(config);
     var text = summaryText(data);
     var filenameBase = 'afrotools-' + slug(data.title) + '-' + new Date().toISOString().slice(0, 10);

@@ -381,7 +381,7 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
       "Comparer le coût employeur mensuel " + money(data.employerCost) + " au budget réel.",
       data.gap < 0 ? "Corriger l'écart avant signature ou paie: le salaire saisi est sous le minimum." : "Conserver la preuve de taux et le résumé avec le dossier de paie."
     ];
-    $("checklist").innerHTML = items.map((item) => "<li>"+item+"</li>").join("");
+    $("checklist").replaceChildren(...items.map((item) => { const li = document.createElement("li"); li.textContent = item; return li; }));
   }
   function renderSteps(data){
     const steps = [
@@ -414,9 +414,43 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
       "Avertissement: estimation seulement. Confirmer taux, charges, déductions et règles de paie auprès de la source officielle ou d'un professionnel."
     ].join("\n");
   }
+  function invalidField(){
+    const required = ['country','minWage','actualPay','hoursWeek','daysMonth'];
+    const fields = Array.from($("wageForm").querySelectorAll('input,select,textarea'));
+    fields.forEach(field => field.removeAttribute('aria-invalid'));
+    return fields.find(field => (required.includes(field.id) && !field.value.trim()) || !field.validity.valid || (field.type === 'number' && field.value !== '' && (!Number.isFinite(Number(field.value)) || Number(field.value) < 0)) || (field.id === 'minWage' && Number(field.value) <= 0));
+  }
+  function setExportState(valid){
+    $("wageForm").dataset.valid = String(valid);
+    [$("copySummary"), $("downloadSummary"), ...document.querySelectorAll('.fr-finance-export-actions button')].forEach(button => { button.disabled = !valid; });
+  }
   function update(event){
     if (event) event.preventDefault();
+    const invalid = invalidField();
+    if (invalid) {
+      invalid.setAttribute('aria-invalid','true');
+      invalid.setAttribute('aria-describedby','copyStatus');
+      currentSummary = '';
+      setExportState(false);
+      ['gapOut','employerCostOut','netOut'].forEach(id => { $(id).textContent = '—'; });
+      $("complianceOut").textContent = 'Calcul indisponible';
+      ['breakdownRows','scenarioRows','checklist','workflowSteps','summaryOutput'].forEach(id => $(id).replaceChildren());
+      $("recommendation").className = 'alert warn';
+      $("recommendation").textContent = 'Corrigez les champs indiqués pour recalculer. Le minimum doit être strictement positif ; les montants doivent être valides et non négatifs.';
+      $("copyStatus").textContent = 'Saisie invalide : corrigez le champ indiqué avant de calculer ou exporter.';
+      if (event && event.type === 'submit') invalid.focus();
+      return false;
+    }
     const data = calc();
+    if (!Object.values(data).every(Number.isFinite)) {
+      $("actualPay").setAttribute('aria-invalid','true'); currentSummary = ''; setExportState(false);
+      ['breakdownRows','scenarioRows','checklist','workflowSteps','summaryOutput'].forEach(id => $(id).replaceChildren());
+      ['gapOut','employerCostOut','netOut'].forEach(id => { $(id).textContent = '—'; });
+      $("complianceOut").textContent = 'Calcul indisponible';
+      $("recommendation").textContent = 'Les montants dépassent la capacité de calcul. Réduisez les valeurs avant de recalculer.';
+      return false;
+    }
+    setExportState(true);
     $("gapOut").textContent = money(data.gap);
     $("complianceOut").textContent = statusText(data.gap);
     $("employerCostOut").textContent = money(data.employerCost);
@@ -439,9 +473,10 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     currentSummary = buildSummary(data);
     $("summaryOutput").textContent = currentSummary;
     $("copyStatus").textContent = "";
+    return true;
   }
   async function copySummary(){
-    if (!currentSummary) update();
+    if (!update()) return;
     try {
       await navigator.clipboard.writeText(currentSummary);
       $("copyStatus").textContent = "Résumé copié.";
@@ -450,7 +485,7 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     }
   }
   function downloadSummary(){
-    if (!currentSummary) update();
+    if (!update()) return;
     const blob = new Blob([currentSummary], { type:"text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -486,6 +521,8 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     $("wageForm").reset();
     update();
   }
+  window.addEventListener("afrotools-minimum-wage-validate", () => update());
+  $("copyStatus").setAttribute("role", "status");
   $("wageForm").addEventListener("submit", update);
   Array.from($("wageForm").elements).forEach((field) => {
     field.addEventListener("input", update);
