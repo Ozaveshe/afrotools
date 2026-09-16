@@ -13,3 +13,9 @@ Limits and open findings:
 - Template-owned Nairobi decoration `candidate.profile` remains English in FR/SW; native decorative-label followup remains pending. User content must remain untouched.
 
 No product source, route, analytics or network behavior changed in this evidence-only candidate. Only synthetic fixture data was used.
+
+## Direct shortcut repair
+
+The unchecked mobile More → View → Print shortcut now opens the existing export drawer and focuses its unchecked review checkbox. Native EN/FR/SW guidance asks the user to review and choose Print or a download. It does not automatically check review or print. The French runtime was regenerated with `node scripts/build-french-cv-runtime.js`.
+
+Modified real-click test passed EN/SW in run60896 and FR after regeneration in run42269; all three actual PDFs parsed successfully. The initial FR failure used the old generated runtime and is superseded by the explicit regenerated run. This replaces the former hidden-guard finding above.
