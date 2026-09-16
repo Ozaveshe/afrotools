@@ -25,5 +25,5 @@ run(['scripts/build-mobile-money-fee-finder.js']);
 // The one-time exact baseline output comparison is recorded in the lane handoff;
 // this recurring test must also work in a shallow CI checkout.
 assert.match(builder.page('fr'),/Orange Money n’est pas inclus dans les tarifs intégrés/);
-assert.match(builder.page('fr'),/Saisissez un pays africain de la liste/);
+assert.match(builder.page('fr'),/Saisissez un pays proposé, son code ou un nom de marché libre/);
 console.log('French money source-owner roundtrip passed.');
