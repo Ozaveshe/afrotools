@@ -97,6 +97,17 @@
         for (var n = Math.max(e + Math.round(120 * a), r - Math.round(34 * a)), d = r; d >= n; d -= 2) if (u(t, d, i) && u(t, Math.max(0, d - 2), i)) return d;
         return r;
     }
+    // Move a cut before fitting blocks, including overlapping columns. Oversized
+    // blocks and blocks already continued from a prior page cannot be kept whole.
+    function avoidBlockSplit(start, candidate, pageHeight, blocks) {
+        var cut=candidate;
+        for(var pass=0;pass<blocks.length;pass++) {
+            var crossings=blocks.filter(function(block){return block.bottom-block.top<=pageHeight && block.top>start+1 && block.top<cut-1 && block.bottom>cut+1;});
+            if(!crossings.length) break;
+            cut=Math.min.apply(null,crossings.map(function(block){return block.top;}));
+        }
+        return Math.max(start+1,Math.min(candidate,Math.floor(cut)));
+    }
     function m(t, r, a) {
         var o = e.createElement("canvas");
         return o.width = t.width, o.height = a, o.getContext("2d").drawImage(t, 0, r, t.width, a, 0, 0, t.width, a),
@@ -136,6 +147,7 @@
             }));
             var origin=i.getBoundingClientRect().top, ratio=captured.width/i.scrollWidth;
             captured.cvManualBreaks=Array.prototype.map.call(i.querySelectorAll(".cv-export-break-before"),function(section){return Math.round((section.getBoundingClientRect().top-origin)*ratio);}).filter(function(y){return y>0&&y<captured.height;}).sort(function(a,b){return a-b;});
+            captured.cvAvoidBlocks=r.avoidSplits ? Array.prototype.map.call(i.querySelectorAll(".cv-export-avoid-break"),function(block){var rect=block.getBoundingClientRect();return {top:(rect.top-origin)*ratio,bottom:(rect.bottom-origin)*ratio};}).filter(function(block){return block.bottom>block.top;}) : [];
             return captured;
         } finally {
             o.parentNode && o.parentNode.removeChild(o);
@@ -157,7 +169,7 @@
                     willReadFrequently: !0
                 }), V = 0, U = 0; V < f.height - 1; ) {
                     var limit=Math.min(f.height,V+E), forced=(f.cvManualBreaks||[]).find(function(point){return point>V+1&&point<=limit;});
-                    var A = forced || v(P, V, limit, f.height, f.width), F = Math.max(1, A - V);
+                    var A = forced || avoidBlockSplit(V,v(P, V, limit, f.height, f.width),E,f.cvAvoidBlocks||[]), F = Math.max(1, A - V);
                     U > 0 && u.addPage();
                     var D = m(f, V, F), S = F / b;
                     u.addImage(D.toDataURL("image/jpeg", .96), "JPEG", 6, 8, C, S, void 0, "FAST"),
@@ -245,6 +257,7 @@
         exportPdf: y,
         exportAtsPdf: C,
         printCv: w,
-        renderPreviewCanvas: x
+        renderPreviewCanvas: x,
+        avoidBlockSplit: avoidBlockSplit
     };
 }(window, document);

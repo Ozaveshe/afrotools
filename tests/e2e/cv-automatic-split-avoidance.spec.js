@@ -1,0 +1,11 @@
+const{test,expect}=require('@playwright/test'),fs=require('fs');
+const fixture=require('../fixtures/cv-long-form'),{inspectRasterPdf}=require('../support/cv-raster-pdf-bounds');
+test.use({trace:'off',screenshot:'off',video:'off'});
+for(const[lang,route]of [['en','/tools/cv-builder/'],['fr','/fr/tools/generateur-cv/'],['sw','/sw/zana/mjenzi-cv/']])test('automatic split avoidance preserves fitting blocks in actual PDF: '+lang,async({page,baseURL},info)=>{
+ await page.context().route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));await page.setViewportSize({width:320,height:844});await page.goto(route);await page.waitForFunction(()=>window.CVExportPdfQuality);await page.waitForTimeout(1100);
+ await page.evaluate(async f=>{Object.assign(CVApp.getState().data,f);CVExportUpgrade.setOptions({density:'comfortable',avoidSplits:true,breakExp:false,breakEdu:false,breakProjects:false,breakRefs:false});await loadPdfLibs();const original=html2canvas;window.captureEvidence=[];window.html2canvas=async function(node,opts){const origin=node.getBoundingClientRect().top;captureEvidence.push({width:node.scrollWidth,text:node.innerText,blocks:[...node.querySelectorAll('.cv-export-avoid-break')].map(n=>{const r=n.getBoundingClientRect();return{top:r.top-origin,bottom:r.bottom-origin};})});return original(node,opts);};},fixture);
+ for(const template of ['lagos-corporate','cape-town-modern']){
+ await page.evaluate(id=>{CVApp.getState().template=id;CVApp.renderAll();},template);const pending=page.waitForEvent('download');await page.evaluate(()=>CVExportUpgrade.exportPdf());const file=info.outputPath(lang+'-'+template+'.pdf');await(await pending).saveAs(file);const bounds=await inspectRasterPdf(fs.readFileSync(file));expect(bounds.every(b=>b.insidePaper)).toBe(true);
+ const captured=await page.evaluate(()=>captureEvidence.at(-1));expect(captured.text).toContain('FINALVISIBLEMARKER');let previous=0;const crossings=[];for(const box of bounds.slice(0,-1)){const end=previous+(box.yMax-box.yMin)*25.4/72*captured.width/198;for(const block of captured.blocks)if(block.bottom-block.top<=281*captured.width/198&&block.top>previous+1&&block.top<end-1&&block.bottom>end+1)crossings.push({previous,end,block});previous=end;}expect(crossings).toEqual([]);
+ }
+});
