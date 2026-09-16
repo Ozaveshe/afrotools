@@ -23,7 +23,7 @@ At 46c857a3, full build, artifact/security audits and 31 artifact browser cases 
 
 ## Release state
 
-The coordinator directly verified production release 432b193b906e6cc5489df2c0c4ca2a75151d4f70. The UX release task subsequently acquired the publisher lease; this task holds main/deployment writes. This batch needs current-source full build, generated-output review, artifact checks and release validation before publication.
+Production was subsequently verified at UX release 6e9cea8ae9d7bbc72e5ab059a76cbfde9769322e. The UX publisher released its lease; this task has not acquired a new release lease or deployed this batch. Verified origin/main 7e2fba2b3cc82959cf903b72172ada1231f91a13 is preserved in merge 19905cd2. Current-source full build, generated-output review, artifact checks and exact release validation remain required.
 
 ## Subsequent integration through cd15cbb8
 
@@ -37,3 +37,15 @@ The newer source includes:
 - French minimum-wage scenario arithmetic and shared country references, plus Swahili fuel units, validation, dated references and local reports. Remaining shared market-finder and selected-sector work is separate.
 
 Coordinator checks on this newer source: 795 calculation artifacts and 391 golden fixtures passed; 20 extracted and 14 native French oracle contracts passed; 12 focused node tests passed; ten real-loader consent browser cases passed. The combined functional/PDF browser run remains in progress. The earlier dist artifact predates these changes and must be rebuilt. No whole-app or catalogue dimension is promoted to accepted by these counts.
+
+## Free-app integration through 73d753b5
+
+The user explicitly prioritizes the free-app catalogue before Pro assessment. The goal remains incomplete.
+
+- CV: editable Word styles/numbering, local DOCX import with preserved line breaks, and native French ongoing dates are integrated. The coordinator verified 16 focused CV/wage checks; French actual PDF/DOCX dates, local parser retry and all three wage submissions passed. Mobile DOCX import then passed in all three locales after normal consent rejection (four total cases). Earlier attempts correctly exposed consent-banner interception and an obsolete dismissal selector; these are not counted as passes.
+- Minimum wage: selected-sector comparison and inflation direction fixes, native confirmed request outcomes, and suppression of sensitive failure logs are integrated. Synthetic submissions were intercepted; no real alert was sent and delivery remains unverified.
+- Fuel: shared market selection and local exports are integrated. Full regeneration exposed a duplicate Swahili primary heading, now repaired in its generator with a regression test. Rebuilt content audit: 11,788 HTML pages, zero blockers or warnings.
+- PDF compression: native progress/errors, Swahili guest exports, custom-control result invalidation and original-byte retention are integrated. Agent artifact evidence and explicit fidelity limits are in pdf-compress-language-parity-2026-09-16.md.
+- Main integration preserved incoming UX changes. Seven salary-page conflict blocks differed only in build hashes. Three French native owner fingerprints were independently checked against incoming UX plus the existing remittance-description change; 20 extracted and 14 native contracts pass. Public-claims audit reports zero failures.
+
+The latest full build before this merge stopped on the now-repaired duplicate heading; it did not produce a current dist. Neither that failed run nor these targeted checks establish full-suite or production acceptance. A fresh combined build and release checks are next.
