@@ -172,7 +172,7 @@ function localizeSchemas(html, app, canonicalUrl, allRoutes, apps, routeExact, a
     (match, attrs, body) => {
       try {
         const parsed = JSON.parse(body);
-        const localized = recursivelyLocalizeSchema(parsed, app, canonicalUrl, allRoutes, frenchApps, routeExact, artworkUrl);
+        const localized = require('./lib/french-document-seo').localizeBreadcrumbParents(recursivelyLocalizeSchema(parsed, app, canonicalUrl, allRoutes, frenchApps, routeExact, artworkUrl));
         if (localized && typeof localized === 'object') {
           if (['WebApplication', 'WebPage', 'CollectionPage'].includes(localized['@type'])) {
             localized.name = app.name;
