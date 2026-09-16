@@ -146,6 +146,30 @@
     }
     function nativeMessage(message) {
         var locale=String(document.documentElement.lang||"en").split("-")[0], copy={
+            "Strong draft. Do a final human read before sending.":["Brouillon solide. Relisez-le attentivement avant de l’envoyer.", "Rasimu nzuri. Isome kwa makini kabla ya kuituma."],
+            "Good base. Close the warnings below for a sharper letter.":["Bonne base. Traitez les points signalés ci-dessous pour améliorer la lettre.", "Mwanzo mzuri. Rekebisha mambo yaliyoonyeshwa hapa chini ili kuboresha barua."],
+            "Needs more role-specific proof before applying.":["Ajoutez des exemples concrets liés au poste avant de postuler.", "Ongeza mifano halisi inayohusiana na nafasi kabla ya kutuma ombi."],
+            "Word count:":["Nombre de mots :", "Idadi ya maneno:"],
+            "Looks good.":["Point renseigné.", "Kipengele kimejazwa."],
+            "Contact details":["Coordonnées", "Mawasiliano"],
+            "Add name plus email or phone.":["Ajoutez votre nom et une adresse e-mail ou un numéro de téléphone.", "Ongeza jina na barua pepe au namba ya simu."],
+            "Role and company":["Poste et employeur", "Nafasi na mwajiri"],
+            "Name the exact role and employer.":["Précisez le poste et le nom de l’employeur.", "Taja nafasi husika na jina la mwajiri."],
+            "Skills":["Compétences", "Ujuzi"],
+            "Add at least two relevant skills.":["Ajoutez au moins deux compétences pertinentes, séparées par une virgule.", "Ongeza angalau ujuzi wawili unaofaa, ukitenganisha kwa koma."],
+            "Proof with result":["Exemple et résultat", "Mfano wenye matokeo"],
+            "Use a result, metric, or concrete outcome.":["Décrivez un résultat concret ou chiffré de votre travail.", "Eleza matokeo halisi au yanayopimika ya kazi yako."],
+            "Company motivation":["Intérêt pour l’employeur", "Sababu ya kuchagua mwajiri"],
+            "Explain why this company, not just any job.":["Expliquez ce qui vous attire chez cet employeur en particulier.", "Eleza kinachokuvutia kwa mwajiri huyu hasa."],
+            "Job keywords":["Mots-clés de l’offre", "Maneno muhimu ya tangazo"],
+            "Paste a job description and cover the important terms.":["Collez l’offre et reprenez ses termes importants lorsqu’ils correspondent à votre parcours.", "Bandika tangazo la kazi na utumie maneno muhimu yanayolingana na uzoefu wako."],
+            "Letter length":["Longueur de la lettre", "Urefu wa barua"],
+            "Aim for 180 to 520 words.":["Visez 180 à 520 mots.", "Lenga maneno 180 hadi 520."],
+            "Professional structure":["Structure de la lettre", "Muundo wa barua"],
+            "Keep greeting and sign-off clear.":["Ajoutez une formule d’appel et une formule de politesse claires.", "Weka salamu za mwanzo na mwisho zilizo wazi."],
+            "No placeholders":["Texte personnalisé", "Maandishi yaliyokamilishwa"],
+            "Replace generic fallback text.":["Remplacez les éléments génériques et les indications entre crochets.", "Badilisha maandishi ya mfano na maelekezo yaliyo kwenye mabano."],
+            "Paste a job description":["Collez une offre d’emploi", "Bandika maelezo ya kazi"],
             "Draft created from your form. You can edit the text directly before exporting.":["Brouillon créé à partir du formulaire. Vous pouvez modifier le texte avant de l’exporter.","Rasimu imeundwa kutoka kwa fomu yako. Unaweza kuhariri maandishi kabla ya kuyahamisha."],
             "Manual edits are preserved. Use Create cover letter only when you want a fresh draft.":["Vos modifications sont conservées. Utilisez Créer une lettre de motivation uniquement pour produire un nouveau brouillon.","Mabadiliko yako yamehifadhiwa. Tumia Unda barua ya maombi ikiwa unataka rasimu mpya."],
             "Form changed after manual edits. Click Create cover letter to regenerate from the form.":["Le formulaire a changé après vos modifications. Cliquez sur Créer une lettre de motivation pour générer un nouveau brouillon.","Fomu imebadilika baada ya uhariri wako. Bofya Unda barua ya maombi ili kutengeneza rasimu mpya."],
@@ -236,11 +260,11 @@
             if (t && (t.textContent = String(e.score)), n && n.style.setProperty("--score-deg", Math.round(3.6 * e.score) + "deg"),
             r) {
                 var o = e.score >= 85 ? "Strong draft. Do a final human read before sending." : e.score >= 65 ? "Good base. Close the warnings below for a sharper letter." : "Needs more role-specific proof before applying.";
-                r.textContent = o + " Word count: " + e.words + ".";
+                r.textContent = nativeMessage(o) + " " + nativeMessage("Word count:") + " " + e.words + ".";
             }
             var a = u("checksList");
             a && (a.innerHTML = e.checks.map(function(e) {
-                return '<div class="check ' + (e.good ? "good" : "warn") + '"><strong>' + p(e.label) + "</strong><br>" + p(e.good ? "Looks good." : e.detail) + "</div>";
+                return '<div class="check ' + (e.good ? "good" : "warn") + '"><strong>' + p(nativeMessage(e.label)) + "</strong><br>" + p(nativeMessage(e.good ? "Looks good." : e.detail)) + "</div>";
             }).join(""));
             var i = u("keywordChips");
             if (i) if (e.keywords.length) {
@@ -250,24 +274,27 @@
                     return '<span class="chip miss" data-cover-letter-user-content translate="no">' + p(e) + "</span>";
                 });
                 i.innerHTML = l.concat(c).join("");
-            } else i.innerHTML = '<span class="chip">Paste a job description</span>';
-        }(function(e, t) {
-            var n = function(e) {
-                var t = {};
-                return String(e || "").toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/).forEach(function(e) {
-                    var n = e.replace(/^-+|-+$/g, "");
-                    n.length < 4 || d[n] || (t[n] = (t[n] || 0) + 1);
-                }), Object.keys(t).sort(function(e, n) {
-                    return t[n] - t[e] || e.localeCompare(n);
-                }).slice(0, 18);
-            }(e.jobDescription), r = (t + " " + e.skills + " " + e.resumeSummary).toLowerCase(), o = n.filter(function(e) {
-                return -1 !== r.indexOf(e);
-            }), a = n.filter(function(e) {
-                return -1 === r.indexOf(e);
-            }).slice(0, 10), i = function(e) {
-                var t = String(e || "").trim().match(/\b[\w'-]+\b/g);
-                return t ? t.length : 0;
-            }(t), l = [], c = 0;
+            } else i.innerHTML = '<span class="chip">'+p(nativeMessage("Paste a job description"))+'</span>';
+        }(scoreLetter(e, t, document.documentElement.lang)), S(e);
+    }
+    function scoreLetter(e, t, locale) {
+        function hasStructure(text,language) {
+            if(language==="fr")return /(?:Madame|Monsieur|À l’attention de)/iu.test(text)&&/(?:Cordialement|Veuillez agréer|Salutations distinguées)/iu.test(text);
+            if(language==="sw")return /(?:Ndugu|Kwa)\s/iu.test(text)&&/(?:Wenu mwaminifu|Wako mwaminifu|Kwa heshima)/iu.test(text);
+            return /Dear\s/iu.test(text)&&/(?:Yours sincerely|Yours faithfully|Sincerely)/iu.test(text);
+        }
+
+        function tokens(value) {
+            return (String(value || "").normalize("NFC").toLowerCase().match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) || []);
+        }
+        function keywordToken(value) { return value.replace(/^(?:l|d|j|t|m|s|n|c|qu)['’]/u, ""); }
+        var language=String(locale||"en").split("-")[0];
+        var stopwords=(language==="fr"?"avec pour dans vous votre vos notre nous cette cet les des une est sont aux sur par mais plus ainsi être avoir afin dont ces ses leurs leur comme sans tout tous":language==="sw"?"kwa katika kutoka kwenye kuwa wenye kama hivyo hili hiyo haya hizi yetu yako wao wale wale zaidi pamoja lakini ambao ambaye":"").split(" ");
+        var frequency=Object.create(null);
+        tokens(e.jobDescription).map(keywordToken).forEach(function(word){if(word.length>=4&&!d[word]&&stopwords.indexOf(word)===-1)frequency[word]=(frequency[word]||0)+1;});
+        var n=Object.keys(frequency).sort(function(left,right){return frequency[right]-frequency[left]||left.localeCompare(right);}).slice(0,18);
+        var present=new Set(tokens(t+" "+e.skills+" "+e.resumeSummary).map(keywordToken));
+        var o=n.filter(function(word){return present.has(word);}),a=n.filter(function(word){return !present.has(word);}).slice(0,10),i=tokens(t).length,l=[],c=0;
             function s(e, t, n, r) {
                 n && (c += t), l.push({
                     label: e,
@@ -279,10 +306,10 @@
             return s("Contact details", 10, Boolean(e.fullName && (e.email || e.phone)), "Add name plus email or phone."),
             s("Role and company", 12, Boolean(e.jobTitle && e.company), "Name the exact role and employer."),
             s("Skills", 10, Boolean(e.skills && e.skills.split(",").filter(Boolean).length >= 2), "Add at least two relevant skills."),
-            s("Proof with result", 14, /\d|percent|increase|reduced|saved|grew|delivered|launched/i.test(e.achievement), "Use a result, metric, or concrete outcome."),
+            s("Proof with result", 14, /\d|percent|increase|reduced|saved|grew|delivered|launched|pourcent|augment|réduit|réduire|économis|livré|lancé|asilimia|ongez|punguz|okoa|zindua/iu.test(e.achievement), "Use a result, metric, or concrete outcome."),
             s("Company motivation", 10, e.whyCompany.length > 35, "Explain why this company, not just any job."),
             s("Job keywords", 18, n.length ? o.length >= Math.min(4, Math.ceil(.35 * n.length)) : Boolean(e.jobTitle), "Paste a job description and cover the important terms."),
-            s("Letter length", 10, i >= 180 && i <= 520, "Aim for 180 to 520 words."), s("Professional structure", 8, /Dear /.test(t) && /Yours sincerely/.test(t), "Keep greeting and sign-off clear."),
+            s("Letter length", 10, i >= 180 && i <= 520, "Aim for 180 to 520 words."), s("Professional structure", 8, hasStructure(t,language), "Keep greeting and sign-off clear."),
             s("No placeholders", 8, !/\[[^\]]+\]|your organization|the advertised role/i.test(t), "Replace generic fallback text."),
             {
                 score: c = Math.max(0, Math.min(100, c)),
@@ -292,7 +319,6 @@
                 missing: a,
                 words: i
             };
-        }(e, t)), S(e);
     }
     function nativeOption(value, fallback) {
         var locale=String(document.documentElement.lang||"en").split("-")[0], labels={
