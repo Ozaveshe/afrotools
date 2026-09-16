@@ -5,3 +5,5 @@ Nairobi's template-owned `candidate.profile` decoration now reads `profil.candid
 Validation: eight model contracts passed; three EN/FR/SW actual print PDFs at 320px passed parsed native-decoration and literal-user-heading assertions (session29860,27.1s). Source syntax and diff checks passed. SW first page rendered with Poppler and visually inspected: localized label fits the existing header.
 
 Important residual: the short complete-form fixture's SW Nairobi print placed only the header on page1 and moved content to later pages. Parsed full text remains present, but this is a layout defect requiring separate automatic block-break investigation. The earlier long-family print fixture has separate first-role-on-page1 proof and does not cover this shorter fixture. No whole-template acceptance is claimed.
+
+The short-fixture header-only finding above is superseded by the measured grid repair and actual60-PDF comparison in `cv-short-grid-print-2026-09-16.md`; original artifacts remain historical evidence.

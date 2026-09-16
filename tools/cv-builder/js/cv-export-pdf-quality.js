@@ -217,6 +217,31 @@
             }
         }
     }
+    // Chromium may move a whole fitting grid below its header. Give that row
+    // an internal break only when the document's first page would overflow.
+    function prepareFirstPrintGridBreak(doc) {
+        var root=doc.getElementById("cvpreview");
+        if(!root || root.querySelector(".cv-export-break-before") || root.querySelector(".cv-print-grid-break"))return;
+        var scale=root.getBoundingClientRect().width/595, pageHeight=281*595/194;
+        if(!scale)return;
+        var rootTop=root.getBoundingClientRect().top;
+        Array.prototype.some.call(root.querySelectorAll("main"),function(grid){
+            var view=doc.defaultView, box=grid.getBoundingClientRect();
+            if(view.getComputedStyle(grid).display!=="grid" || box.height/scale>pageHeight)return false;
+            var shell=grid.closest(".cv-prod,.cv-expanded-template") || root;
+            var bottomPadding=parseFloat(view.getComputedStyle(shell).paddingBottom)||0;
+            var end=(shell.getBoundingClientRect().bottom-rootTop)/scale;
+            if(end<=pageHeight || (box.top-rootTop)/scale>=pageHeight)return false;
+            var limit=pageHeight-bottomPadding;
+            var candidates=Array.prototype.filter.call(grid.querySelectorAll("[data-cv-section]"),function(section){
+                var r=section.getBoundingClientRect(), top=(r.top-rootTop)/scale, bottom=(r.bottom-rootTop)/scale;
+                return top>0 && top<limit && bottom>limit && r.height/scale<limit;
+            }).sort(function(a,b){return a.getBoundingClientRect().top-b.getBoundingClientRect().top;});
+            if(!candidates.length)return false;
+            candidates[0].classList.add("cv-print-grid-break");
+            return true;
+        });
+    }
     function w() {
         var r = e.getElementById("cvpreview");
         if (r) {
@@ -225,13 +250,13 @@
                 var s = Object.assign({},i()), c = r.cloneNode(!0);
                 confirmOptionalSections(s);
                 f(c, s), a.document.write([ "<!DOCTYPE html><html><head><title>" + l("pdf").replace(/\.pdf$/i, "") + "</title>", '<link rel="stylesheet" href="/assets/css/design-system.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-upgrade.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-polish.css">', "<style>@page{size:A4;margin:8mm}html,body{margin:0;background:#fff}.cv-print-document{width:194mm;margin:0 auto}#cvpreview{width:595px!important;min-height:841px!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;background:#fff!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style>", '</head><body class="cv-export-print-body"><main class="cv-print-document">', c.outerHTML, "</main></body></html>" ].join("")),
-                a.document.close(), n("Print opened"), p("cv_pdf_exported", {
+                a.addEventListener("beforeprint",function(){prepareFirstPrintGridBreak(a.document);}), a.document.close(), n("Print opened"), p("cv_pdf_exported", {
                     template: o().template || "",
                     format: "print",
                     density: s.density || "comfortable"
                 }), a.onload = function() {
                     setTimeout(function() {
-                        a.focus(), a.print();
+                        prepareFirstPrintGridBreak(a.document), a.focus(), a.print();
                     }, 250);
                 };
             } else d("Popup blocked. Allow popups to print this CV.");
