@@ -25,7 +25,18 @@
     "technical": "Technical: ",
     "workplace": "Workplace: ",
     "tools": "Tools: ",
-    "notePrefix": "Note: "
+    "notePrefix": "Note: ",
+    "modalTitle": "ATS Plain Version",
+    "modalDescription": "One column, standard headings, selectable text, no tables, photos, icons, or decorative layout.",
+    "editor": "Editable ATS CV text",
+    "close": "Close",
+    "copyButton": "Copy",
+    "downloadTxt": "Download TXT",
+    "downloadPdf": "Download ATS Plain PDF",
+    "txtDownloaded": "ATS Plain TXT downloaded",
+    "copied": "ATS plain text copied",
+    "pdfUnavailable": "ATS Plain PDF is unavailable. Download TXT instead.",
+    "empty": "Add text before exporting."
   },
   "fr": {
     "note": "Utilisez cette version pour les portails d’emploi qui privilégient les documents simples et lisibles.",
@@ -50,7 +61,18 @@
     "technical": "Techniques : ",
     "workplace": "Professionnelles : ",
     "tools": "Outils : ",
-    "notePrefix": "Remarque : "
+    "notePrefix": "Remarque : ",
+    "modalTitle": "Version simple pour ATS",
+    "modalDescription": "Une colonne, des rubriques standard et du texte sélectionnable, sans tableaux, photos, icônes ni mise en page décorative.",
+    "editor": "Texte du CV ATS à modifier",
+    "close": "Fermer",
+    "copyButton": "Copier",
+    "downloadTxt": "Télécharger le TXT",
+    "downloadPdf": "Télécharger le PDF ATS",
+    "txtDownloaded": "TXT ATS téléchargé",
+    "copied": "Texte ATS copié",
+    "pdfUnavailable": "Le PDF ATS est indisponible. Téléchargez le TXT.",
+    "empty": "Ajoutez du texte avant l’exportation."
   },
   "sw": {
     "note": "Tumia toleo hili kwa tovuti za ajira zinazopendelea nyaraka rahisi kusomeka.",
@@ -75,7 +97,18 @@
     "technical": "Ufundi: ",
     "workplace": "Kazini: ",
     "tools": "Zana: ",
-    "notePrefix": "Maelezo: "
+    "notePrefix": "Maelezo: ",
+    "modalTitle": "Toleo rahisi la ATS",
+    "modalDescription": "Safu moja, vichwa vya kawaida na maandishi yanayoweza kuchaguliwa, bila majedwali, picha, aikoni au mapambo.",
+    "editor": "Maandishi ya CV ya ATS yanayoweza kuhaririwa",
+    "close": "Funga",
+    "copyButton": "Nakili",
+    "downloadTxt": "Pakua TXT",
+    "downloadPdf": "Pakua PDF ya ATS",
+    "txtDownloaded": "TXT ya ATS imepakuliwa",
+    "copied": "Maandishi ya ATS yamenakiliwa",
+    "pdfUnavailable": "PDF ya ATS haipatikani. Pakua TXT badala yake.",
+    "empty": "Ongeza maandishi kabla ya kuhamisha."
   }
 };
     var copy = labels[(e.documentElement && e.documentElement.lang || "en").split("-")[0]] || labels.en;
@@ -128,7 +161,13 @@
     function p(e) {
         t.CVExportUpgrade && t.CVExportUpgrade.status && t.CVExportUpgrade.status(e), t.CVApp && t.CVApp.showToast && t.CVApp.showToast(e);
     }
+    function selectedText() {
+        var editor = e.querySelector(".cv-export-modal-overlay.open [data-export-ats-text]");
+        return editor ? editor.value : s();
+    }
     function d() {
+        var text = selectedText();
+        if (!text.trim()) { p(copy.empty); return false; }
         var a, o;
         !function(a, o) {
             if (t.CVExportUpgrade && t.CVExportUpgrade.downloadBlob) return t.CVExportUpgrade.downloadBlob(a, o);
@@ -137,28 +176,38 @@
             n.click(), n.remove(), setTimeout(function() {
                 URL.revokeObjectURL(r);
             }, 1200);
-        }(new Blob([ s() ], {
+        }(new Blob([ text ], {
             type: "text/plain;charset=utf-8"
         }), t.CVExportUpgrade && t.CVExportUpgrade.filename ? t.CVExportUpgrade.filename("txt", "ATS") : "AfroTools-CV-ATS.txt"),
-        p("ATS Plain TXT downloaded"), a = "cv_export_ats_plain", o = {
+        p(copy.txtDownloaded), a = "cv_export_ats_plain", o = {
             format: "txt",
             template: n().template || ""
         }, t.CVExportUpgrade && t.CVExportUpgrade.track ? t.CVExportUpgrade.track(a, o || {}) : t.CVAnalytics && t.CVAnalytics.track && t.CVAnalytics.track(a, o || {});
     }
     function c() {
-        var e = s();
-        return t.CVExportAtsPlainPdf && t.CVExportAtsPlainPdf.exportAtsPdf ? t.CVExportAtsPlainPdf.exportAtsPdf(e) : t.CVExportPdfQuality && t.CVExportPdfQuality.exportAtsPdf ? t.CVExportPdfQuality.exportAtsPdf(e) : (p("ATS Plain PDF is unavailable. Download TXT instead."),
+        var e = selectedText();
+        if (!e.trim()) { p(copy.empty); return false; }
+        return t.CVExportAtsPlainPdf && t.CVExportAtsPlainPdf.exportAtsPdf ? t.CVExportAtsPlainPdf.exportAtsPdf(e) : t.CVExportPdfQuality && t.CVExportPdfQuality.exportAtsPdf ? t.CVExportPdfQuality.exportAtsPdf(e) : (p(copy.pdfUnavailable),
         !1);
     }
     function u() {
         var t = e.querySelector(".cv-export-modal-overlay");
-        t || ((t = e.createElement("div")).className = "cv-export-modal-overlay", t.innerHTML = [ '<div class="cv-export-modal" role="dialog" aria-modal="true" aria-label="ATS Plain Version">', '<div class="cv-export-modal-head">', "<div><h3>ATS Plain Version</h3><p>One column, standard headings, selectable text, no tables, photos, icons, or decorative layout.</p></div>", '<button type="button" data-export-close>Close</button>', "</div>", '<textarea data-export-ats-text spellcheck="true"></textarea>', '<div class="cv-export-modal-actions">', '<button type="button" data-export-copy-ats>Copy</button>', '<button type="button" data-export-download-ats>Download TXT</button>', '<button type="button" data-export-download-ats-pdf>Download ATS Plain PDF</button>', "</div>", "</div>" ].join(""),
+        t || ((t = e.createElement("div")).className = "cv-export-modal-overlay", t.innerHTML = [
+            '<div class="cv-export-modal" role="dialog" aria-modal="true" aria-label="' + copy.modalTitle + '">',
+            '<div class="cv-export-modal-head"><div><h3>' + copy.modalTitle + '</h3><p>' + copy.modalDescription + '</p></div>',
+            '<button type="button" data-export-close>' + copy.close + '</button></div>',
+            '<textarea data-export-ats-text spellcheck="true" aria-label="' + copy.editor + '"></textarea>',
+            '<div class="cv-export-modal-actions">',
+            '<button type="button" data-export-copy-ats>' + copy.copyButton + '</button>',
+            '<button type="button" data-export-download-ats>' + copy.downloadTxt + '</button>',
+            '<button type="button" data-export-download-ats-pdf>' + copy.downloadPdf + '</button></div></div>'
+        ].join(""),
         e.body.appendChild(t), t.addEventListener("click", function(e) {
             if ((e.target === t || e.target.closest("[data-export-close]")) && t.classList.remove("open"),
             e.target.closest("[data-export-copy-ats]")) {
                 var a = t.querySelector("[data-export-ats-text]").value;
                 navigator.clipboard && navigator.clipboard.writeText && navigator.clipboard.writeText(a).then(function() {
-                    p("ATS plain text copied");
+                    p(copy.copied);
                 });
             }
             e.target.closest("[data-export-download-ats]") && d(), e.target.closest("[data-export-download-ats-pdf]") && c();

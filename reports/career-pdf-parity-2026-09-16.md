@@ -27,7 +27,9 @@ Fonts, license and source-byte hashes: `assets/fonts/noto-sans/provenance.json`.
 - This repairs CV ATS PDF and cover-letter PDF; other CV templates, complete resume import/backup, all templates, optional AI consent/failure flows and Microsoft Word compatibility have not been freshly retested.
 - Cover-letter action inventory matches across the three routes: copy, local save, PDF, rebuild, Word, TXT, JSON, import and print. Presence is not full behavioral proof for unexercised actions.
 - CV section headings, generated date labels, placeholders and reference fallback text now use the page locale. Full generated-text-to-PDF tests preserve user-entered content unchanged. CV data/template/country changes during font loading cancel the pending PDF and preserve the snapshot filename.
-- The editable ATS modal still ignored its edited textarea when downloading TXT/PDF; this is a confirmed followup defect, not accepted parity.
+- The editable ATS modal now exports its current textarea to TXT/PDF, keeps the original CV fields unchanged, rejects empty text, and cancels a PDF if the textarea changes during font loading. Modal labels and its textarea accessible name are native in EN/FR/SW.
 - No public route, SEO metadata, analytics event name or generated page changed. Normal release asset hashing/build remains required. No deployment or production parity claim.
 
 Followup checks: existing French document/PDF contracts (40), CV DOCX/application-pack verifier, `build:i18n:validate`, and `validate:hreflang` passed.
+
+Edited-text followup: `tests/e2e/cv-ats-edited-text.spec.js` passed all four cases together (EN/FR/SW keyboard TXT/PDF downloads and delayed-font stale-editor cancellation). Complete extracted text matches the edited textarea; original CV state is unchanged; no fixture content appears in network URLs/bodies. The 14-case character/label suite passed before this separate modal change; the 14 node tests and DOCX/application-pack verifier passed again after it. The French runtime was regenerated through `build-french-cv-runtime.js` and an independent owner-output equality check passed.

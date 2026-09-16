@@ -49,8 +49,11 @@
         try {
             var state = snapshot(), fingerprint = JSON.stringify(state);
             var filename = e.CVExportUpgrade && e.CVExportUpgrade.filename ? e.CVExportUpgrade.filename("pdf", "ATS") : "AfroTools-CV-ATS.pdf";
-            var p = await o(a || (e.CVExportUpgrade && e.CVExportUpgrade.buildAtsPlainText ? e.CVExportUpgrade.buildAtsPlainText() : ""));
-            if (fingerprint !== JSON.stringify(snapshot())) { n(copy().stale); r(copy().stale); return; }
+            var editor = t.querySelector ? t.querySelector(".cv-export-modal-overlay.open [data-export-ats-text]") : null;
+            var text = typeof a === "string" ? a : (e.CVExportUpgrade && e.CVExportUpgrade.buildAtsPlainText ? e.CVExportUpgrade.buildAtsPlainText() : "");
+            var editorText = editor ? editor.value : null;
+            var p = await o(text);
+            if (fingerprint !== JSON.stringify(snapshot()) || editor && editor.value !== editorText) { n(copy().stale); r(copy().stale); return; }
             !function(n, r) {
                 if (e.CVExportUpgrade && e.CVExportUpgrade.downloadBlob) e.CVExportUpgrade.downloadBlob(n, r); else {
                     var a = URL.createObjectURL(n), o = t.createElement("a");
