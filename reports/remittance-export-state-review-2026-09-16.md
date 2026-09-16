@@ -17,3 +17,9 @@ All six initial light cases passed; all six manual-dark cases failed axe serious
 Final matrix: 12/12 Chromium cases passed in 21.3s (remittance-mobile-after), across EN/FR/SW, 320/390px, initial light and manually switched dark. Each exercises keyboard third-quote selection and calculation, three visible result rows, no horizontal overflow, axe serious/critical checks over hero/main, then reset clearing results and disabling the third quote. Gradient heading contrast, complete screen-reader navigation and every field validation branch are not established by this test.
 
 No current quote or provider freshness is established by these tests. The unchanged pure engine test is baseline arithmetic evidence only.
+
+## Export context follow-up
+
+Copied summaries previously omitted fee, effective rate, payout, delivery and checked/expiry timestamps. They now retain these values with native labels, both currency units and ISO timestamps including timezone; actual expiry state remains separately labeled. Result cards now show payout, delivery and actual expiry too. User labels remain text content and are not translated. JSON retains the existing complete machine-readable schema unchanged.
+
+Combined final browser run: 15/15 passed in 27.4s (remittance-context-final), including native copied context, exact timestamp/fee/currency preservation and the full mobile/dark/reset matrix after the longer result cards. Syntax and diff checks pass. French-only theme button is emitted only by pageFr; its French labels match that existing control. EN/SW use the shared navbar theme control.
