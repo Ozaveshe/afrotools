@@ -1,0 +1,14 @@
+const {test,expect}=require('@playwright/test'),fs=require('node:fs');
+for(const [locale,route]of [['en','/tools/leave-calculator/'],['fr','/fr/tools/calculateur-conges-pto/'],['sw','/sw/zana/kikokotoo-likizo/']])test(`${locale}: Senegal conditional annual allowance and native exports`,async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto(route);const card=page.locator('#senegal-child-leave');await expect(card).toBeVisible();
+ await card.locator('[name=assessment]').fill('2026-09-16');await card.locator('[name=children]').fill('2');await card.locator('[name=taken]').fill('3.5');
+ for(const k of ['mother','service','age'])await card.locator('[name='+k+']').check();await card.locator('button[type=submit]').click();await expect(card.locator('[data-sn-result]')).not.toContainText(': 26');
+ await card.locator('[name=rule]').check();await expect(card.locator('[data-sn-export=txt]')).toBeDisabled();await card.locator('button[type=submit]').focus();await page.keyboard.press('Enter');
+ await expect(card.locator('[data-sn-result]')).toContainText(': 26');await expect(card.locator('[data-sn-result]')).toContainText(': 22.5');
+ for(const ext of ['txt','csv','json']){const download=page.waitForEvent('download');await card.locator('[data-sn-export='+ext+']').click();const body=fs.readFileSync(await(await download).path(),'utf8');expect(body).toContain('2026-09-16');expect(body).toContain('22.5');expect(body).toContain('L.148');expect(body).toContain(locale==='fr'?'entrée en vigueur n’est pas vérifiée':locale==='sw'?'kuanza kwake kutumika hakujathibitishwa':'commencement has not been verified');if(ext==='json'){const data=JSON.parse(body);expect(data.result.inputs.children).toBe(2);expect(data.result.inputs.rule).toBe(true);expect(data.result.totalDays).toBe(26);}}
+ const path=require('node:path').resolve(__dirname,'../../../leave-workflow-evidence/senegal-'+locale+'-mobile.png');fs.mkdirSync(require('node:path').dirname(path),{recursive:true});await card.screenshot({path});
+ await card.locator('[name=children]').fill('0');await card.locator('[name=taken]').fill('0');await card.locator('button[type=submit]').click();await expect(card.locator('[data-sn-result]')).toContainText(': 24');
+ await card.locator('[name=children]').fill('-1');await expect(card.locator('[data-sn-result]')).toBeEmpty();await card.locator('button[type=submit]').click();await expect(card.locator('[data-sn-export=txt]')).toBeDisabled();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.addScriptTag({path:require.resolve('axe-core/axe.min.js')});expect(await page.evaluate(async()=> (await axe.run(document.querySelector('#senegal-child-leave'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa']}})).violations.map(v=>v.id))).toEqual([]);
+});
