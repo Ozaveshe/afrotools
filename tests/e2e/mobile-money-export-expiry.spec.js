@@ -7,7 +7,7 @@ for(const[locale,route]of Object.entries(routes))test(`${locale} copy and JSON r
  await page.locator('#mm-form button[type=submit]').click();await expect(page.locator('#mm-primary-value')).toHaveText('10 XOF');await page.clock.fastForward(120000);
  const pending=page.waitForEvent('download');await page.locator('#mm-json').click();const json=JSON.parse(fs.readFileSync(await(await pending).path(),'utf8'));
  expect(json.result.hasEligibleComparison).toBe(false);expect(Date.parse(json.result.asOf)).toBeGreaterThanOrEqual(Date.parse('2026-09-16T12:02:00Z'));expect(json.result.quotes.map(q=>q.expiryState)).toEqual(['expired','expired']);await expect(page.locator('#mm-primary-value')).not.toHaveText('10 XOF');
- await page.locator('#mm-copy').click();expect(await page.evaluate(()=>window.__quoteCopy)).toContain(locale==='fr'?'Expiré':'expired');
+ await page.locator('#mm-copy').click();expect(await page.evaluate(()=>window.__quoteCopy)).toContain({en:'Expired',fr:'Expiré',sw:'Muda umeisha'}[locale]);
 });
 for(const[locale,route]of Object.entries(routes))test(`${locale} country equivalence preserves user values and excludes other markets`,async({page})=>{
  await page.clock.setFixedTime(new Date('2026-09-16T12:00:00Z'));await page.goto(route);
