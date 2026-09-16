@@ -24,3 +24,7 @@ test('config sync fails clearly for missing, duplicate or invalid configuration'
  const config='<script>window.MobileMoneyTariffCopy={}</script>';assert.throws(()=>syncRuntimeConfig(config+config,'fr'),/exactly one.*found 2/);
  assert.throws(()=>syncRuntimeConfig('<script>window.MobileMoneyTariffCopy={broken}</script>','fr'),/Invalid.*JSON/);
 });
+test('native badge sync preserves every surrounding byte and rejects ambiguous owners',()=>{
+ const{syncBadges}=require('../scripts/build-mobile-money-fee-finder');const before='<header><!-- release art --><div class="rm-badges"><span>Old</span></div></header><main>Keep controls</main>';
+ const after=syncBadges(before,'sw');assert.equal(after.replace(/<div class="rm-badges">[\s\S]*?<\/div>/,'BADGES'),before.replace(/<div class="rm-badges">[\s\S]*?<\/div>/,'BADGES'));assert.match(after,/Rejea rasmi zilizochapishwa/);assert.equal(syncBadges(after,'sw'),after);assert.throws(()=>syncBadges('<main>keep</main>','sw'),/found 0/);assert.throws(()=>syncBadges(before+before,'sw'),/found 2/);
+});

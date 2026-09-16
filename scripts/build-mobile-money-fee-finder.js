@@ -30,11 +30,11 @@ Object.assign(COPY.fr,{subtotalTaxExcluded:'Montant + frais publiés (hors taxe)
 Object.assign(COPY.sw,{subtotalTaxExcluded:'Kiasi + ada iliyochapishwa (bila kodi)',verified:'Chanzo kilikaguliwa',tables:'Rejea za ada zilizochapishwa',feeComponentLabels:{transactionFee:'Ada ya muamala',governmentLevy:'Tozo ya serikali'},publishedBand:'Ada iliyochapishwa kwa kiwango hiki na kitendo hiki.',calculated:'Imehesabiwa kwenye kifaa kutoka katalogi ya ada zilizochapishwa.',ruleLabels:{'Deposit fee published as free':'Ada ya kuweka imechapishwa kuwa bila malipo'}});
 for(const [locale,index] of [['fr',0],['sw',1]]){
  COPY[locale].caveatLabels=Object.fromEntries(Object.entries(TARIFF_CAVEATS).map(([key,values])=>[key,values[index]]));
- COPY[locale].sourceTitles=Object.assign({},COPY[locale].sourceTitles,{'Airtel Money Tanzania tariff, January–March 2026':locale==='fr'?'Barème Airtel Money en Tanzanie, janvier–mars 2026':'Ada za Airtel Money Tanzania, Januari–Machi 2026'});
+ COPY[locale].sourceTitles=Object.assign({},COPY[locale].sourceTitles,locale==='sw'?{'MTN Uganda Mobile Money tariffs':'Ada za MTN Mobile Money Uganda'}:{},{'Airtel Money Tanzania tariff, January–March 2026':locale==='fr'?'Barème Airtel Money en Tanzanie, janvier–mars 2026':'Ada za Airtel Money Tanzania, Januari–Machi 2026'});
 }
 Object.assign(COPY.en,{invalidAmount:'Enter a valid positive amount in the selected provider’s currency.',calculationFailed:'The fee could not be calculated. Check the inputs and try again.',catalogUnavailable:'The published tariff catalog is unavailable.'});
 Object.assign(COPY.fr,{invalidAmount:'Saisissez un montant positif valide dans la devise de l’opérateur sélectionné.',calculationFailed:'Le calcul des frais a échoué. Vérifiez les champs et réessayez.'});
-Object.assign(COPY.sw,{invalidAmount:'Weka kiasi halali chanya katika sarafu ya mtoa huduma aliyechaguliwa.',calculationFailed:'Ada haikuweza kuhesabiwa. Kagua taarifa na ujaribu tena.',catalogUnavailable:'Katalogi ya ada zilizochapishwa haipatikani.',reasonLabels:{PROVIDER_NOT_VERIFIED:'Mtoa huduma hajathibitishwa.',ACTION_NOT_VERIFIED:'Kitendo hakijathibitishwa kwa mtoa huduma huyu.',AMOUNT_OUTSIDE_VERIFIED_BANDS:'Kiasi kiko nje ya viwango vilivyothibitishwa.'}});
+Object.assign(COPY.sw,{badgeSource:'Rejea rasmi zilizochapishwa',badgeLocal:'Hesabu kwenye kifaa',badgeUnavailable:'Kutopatikana kunaonyeshwa wazi',invalidAmount:'Weka kiasi halali chanya katika sarafu ya mtoa huduma aliyechaguliwa.',calculationFailed:'Ada haikuweza kuhesabiwa. Kagua taarifa na ujaribu tena.',catalogUnavailable:'Katalogi ya ada zilizochapishwa haipatikani.',reasonLabels:{PROVIDER_NOT_VERIFIED:'Mtoa huduma hajathibitishwa.',ACTION_NOT_VERIFIED:'Kitendo hakijathibitishwa kwa mtoa huduma huyu.',AMOUNT_OUTSIDE_VERIFIED_BANDS:'Kiasi kiko nje ya viwango vilivyothibitishwa.'}});
 const MARKET_COUNTRIES=JSON.parse(fs.readFileSync(path.join(ROOT,'data/registry/countries.json'),'utf8'));
 Object.values(COPY).forEach(copy=>{copy.marketCountries=MARKET_COUNTRIES.map(country=>({id:country.isoCode,currency:country.currency,names:[country.displayNames.fr,country.displayNames.en,country.displayNames.sw,country.routeSlug].filter(Boolean)}));});
 function esc(value){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
@@ -113,6 +113,13 @@ function syncRuntimeConfig(html,locale){
   try{JSON.parse(matches[0][1]);}catch(_){throw new Error('Invalid MobileMoneyTariffCopy JSON configuration');}
   return html.slice(0,matches[0].index)+'window.MobileMoneyTariffCopy='+JSON.stringify(COPY[locale])+'</script>'+html.slice(matches[0].index+matches[0][0].length);
 }
+function syncBadges(html,locale){
+ const matches=Array.from(html.matchAll(/<div class="rm-badges">([\s\S]*?)<\/div>/g));
+ if(matches.length!==1)throw new Error('Expected exactly one Mobile Money badge container; found '+matches.length);
+ const c=COPY[locale],labels=[c.badgeSource||'Official published references',c.badgeLocal||'Local calculation',c.badgeUnavailable||'Explicit unavailable states'];
+ const output='<div class="rm-badges">'+labels.map(label=>'<span>'+esc(label)+'</span>').join('')+'</div>';
+ return html.slice(0,matches[0].index)+output+html.slice(matches[0].index+matches[0][0].length);
+}
 function syncTariffTables(html,locale){
  const lead='<p>'+esc(COPY[locale].tableLead)+'</p>', headingPattern=/<article><h2>[^<]*<\/h2><p>[^<]*<\/p><\/article>/g;
  const headings=Array.from(html.matchAll(headingPattern)).filter(match=>match[0].includes(lead));
@@ -125,6 +132,6 @@ function syncTariffTables(html,locale){
  while((token=tokens.exec(html))){depth+=token[0].startsWith('</')?-1:1;if(depth===0)return html.slice(0,contentStart)+tariffTables(COPY[locale])+html.slice(token.index);}
  throw new Error('Unclosed Mobile Money tariff table container');
 }
-function build(){const changed=[];['en','fr','sw'].forEach(function(locale){const file=target(COPY[locale].route);if(SYNC_RUNTIME_CONFIG||process.argv.includes('--sync-tariff-tables')){const current=fs.readFileSync(file,'utf8'),output=process.argv.includes('--sync-tariff-tables')?syncTariffTables(current,locale):syncRuntimeConfig(current,locale);if(output!==current){changed.push(path.relative(ROOT,file).replace(/\\/g,'/'));if(WRITE)writeFileSyncWithRetry(file,output,'utf8');}}else emit(file,page(locale),changed);});console.log(JSON.stringify({mode:WRITE?'write':'check',routes:3,catalogProviders:CATALOG.providers.length,changed},null,2));if(!WRITE&&changed.length)process.exitCode=1;return changed;}
+function build(){const changed=[];['en','fr','sw'].forEach(function(locale){const file=target(COPY[locale].route);if(SYNC_RUNTIME_CONFIG||process.argv.includes('--sync-tariff-tables')||process.argv.includes('--sync-badges')){const current=fs.readFileSync(file,'utf8'),output=process.argv.includes('--sync-badges')?syncBadges(current,locale):process.argv.includes('--sync-tariff-tables')?syncTariffTables(current,locale):syncRuntimeConfig(current,locale);if(output!==current){changed.push(path.relative(ROOT,file).replace(/\\/g,'/'));if(WRITE)writeFileSyncWithRetry(file,output,'utf8');}}else emit(file,page(locale),changed);});console.log(JSON.stringify({mode:WRITE?'write':'check',routes:3,catalogProviders:CATALOG.providers.length,changed},null,2));if(!WRITE&&changed.length)process.exitCode=1;return changed;}
 if(require.main===module)build();
-module.exports={APP,CATALOG,page,build,normalizeForOwner,syncRuntimeConfig,syncTariffTables};
+module.exports={APP,CATALOG,page,build,normalizeForOwner,syncRuntimeConfig,syncTariffTables,syncBadges};
