@@ -115,6 +115,15 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
 .links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .links a{display:block;text-decoration:none;border:1px solid #dbe4ee;border-radius:10px;padding:11px 12px;background:#fff;color:#1d4ed8;font-weight:850}
 @media(max-width:900px){.hero{padding-top:70px}.hero-grid,.layout,.grid,.metrics,.steps,.links{grid-template-columns:1fr}.result{position:static}.card,.note{padding:16px}.table{min-width:720px}}
+#wage-reference [hidden]{display:none!important}
+#wage-reference table{width:100%;border-collapse:collapse}
+#wage-reference td,#wage-reference th{padding:10px;text-align:left;border-bottom:1px solid #cbd5e1;vertical-align:top}
+#wage-reference p,#wage-reference a{overflow-wrap:anywhere}
+#wage-reference button{margin:8px 8px 8px 0}
+[data-theme="dark"] #wage-reference{background:#0f172a;color:#e2e8f0}
+[data-theme="dark"] #wage-reference :is(h2,h3,label,summary){color:#e2e8f0}
+[data-theme="dark"] #wage-reference :is(input,select,.table-wrap){background:#17263d;color:#e2e8f0}
+[data-theme="dark"] #wage-reference a{color:#93c5fd}
 </style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/salaire-minimum/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/minimum-wage/">
@@ -142,6 +151,31 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
   </section>
 
   <div class="wrap main">
+    <section class="card" id="wage-reference" aria-labelledby="referenceTitle" style="min-width:0;margin-bottom:24px">
+      <h2 id="referenceTitle">Consulter les références par pays</h2>
+      <p>Explorez le catalogue partagé des salaires minimums. Les références enregistrées ne prouvent pas la conformité de votre paie. Vérifiez la date, le secteur, le lieu et la catégorie avant de transférer un taux dans le calculateur ci-dessous.</p>
+      <div class="grid">
+        <div class="field"><label for="referenceCountry">Pays de référence</label><select id="referenceCountry"><option value="">Choisir un pays</option></select></div>
+        <div class="field"><label for="referenceSector">État ou catégorie disponible</label><select id="referenceSector" disabled><option value="">Référence nationale</option></select></div>
+        <div class="field"><label for="referenceCompare">Second pays à consulter</label><select id="referenceCompare"><option value="">Aucun</option></select></div>
+      </div>
+      <div id="referenceDetail" hidden>
+        <h3 id="referenceHeading"></h3><p id="referenceRate"></p><p id="referenceDate"></p>
+        <p id="referenceSource"></p><a id="referenceOfficial" hidden href="https://www.gov.za/sites/default/files/gcis_document/202602/54075rg11941gon7083.pdf">Lire la gazette officielle sud-africaine (PDF)</a>
+        <p id="referenceLaw" class="small"></p><p id="referenceComparison"></p>
+        <button class="btn" id="referenceUse" type="button" disabled>Utiliser cette référence dans le calculateur</button>
+        <details><summary>Historique et coût de la vie enregistrés</summary>
+          <p id="referenceHistoryNote"></p><div class="table-wrap"><table><thead><tr><th scope="col">Année</th><th scope="col">Montant enregistré</th></tr></thead><tbody id="referenceHistory"></tbody></table></div><p id="referenceLiving"></p>
+        </details>
+      </div>
+      <div class="field"><label for="referenceSearch">Filtrer les références par pays ou devise</label><input id="referenceSearch" type="search"></div>
+      <p id="referenceCount" role="status"></p>
+      <div class="table-wrap" tabindex="0" aria-label="Références des pays, tableau défilant" style="overflow-x:auto;max-width:100%"><table tabindex="0" aria-label="Références des pays"><thead><tr><th scope="col">Pays</th><th scope="col">Devise</th><th scope="col">Taux enregistré</th><th scope="col">Date d’effet</th><th scope="col">Vérification</th></tr></thead><tbody id="referenceRows"></tbody></table></div>
+      <button class="btn ghost" id="referenceCSV" data-no-pdf-gate="true" type="button">Exporter les références filtrées (CSV)</button>
+      <button class="btn ghost" id="referenceReset" type="button">Réinitialiser la consultation</button>
+      <p id="referenceStatus" role="status" aria-live="polite"></p>
+    </section>
+
     <div class="layout">
       <section class="card" aria-labelledby="input-title">
         <h2 id="input-title">Données de paie</h2>
@@ -228,7 +262,7 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     <section class="layout section">
       <article class="note">
         <h2>Sources et fraîcheur</h2>
-        <p class="small">Dernière revue de la page: 18 mai 2026. AfroTools ne maintient pas ici une base officielle de taux. Vérifiez le taux avec la source datée applicable: ministère du Travail, journal officiel, commission nationale des salaires, convention collective ou conseiller paie. Références générales utiles: <a href="https://www.ilo.org/topics/wages/minimum-wages">guide de l'Organisation internationale du Travail sur les salaires minimums</a>, <a href="https://www.ilo.org/ilo-wage-setting-principles">principes de fixation des salaires de l'OIT</a>, et <a href="https://www.ilo.org/publications/minimum-wages-africa-wages-disparities-and-redistributive-potential-minimum">analyse OIT sur les salaires minimums en Afrique</a>.</p>
+        <p class="small">Dernière revue de la page: 18 mai 2026. Le catalogue de référence ci-dessus indique les limites de chaque entrée ; il ne remplace pas une base officielle exhaustive. Vérifiez le taux avec la source datée applicable: ministère du Travail, journal officiel, commission nationale des salaires, convention collective ou conseiller paie. Références générales utiles: <a href="https://www.ilo.org/topics/wages/minimum-wages">guide de l'Organisation internationale du Travail sur les salaires minimums</a>, <a href="https://www.ilo.org/ilo-wage-setting-principles">principes de fixation des salaires de l'OIT</a>, et <a href="https://www.ilo.org/publications/minimum-wages-africa-wages-disparities-and-redistributive-potential-minimum">analyse OIT sur les salaires minimums en Afrique</a>.</p>
       </article>
       <article class="note">
         <h2>Avertissement financier, fiscal et social</h2>
@@ -252,6 +286,8 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
   </div>
 </main>
 <afro-footer></afro-footer>
+<script src="/engines/minimum-wage-engine.js"></script>
+<script src="/assets/js/pages/minimum-wage-fr-reference.js" defer></script>
 <script>
 (function(){
   const $ = (id) => document.getElementById(id);
