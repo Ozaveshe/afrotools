@@ -75,7 +75,7 @@
 <script src="/assets/vendor/html2canvas/html2canvas.min.js?v=d7530aa0" defer></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
 <script src="/assets/vendor/qrcode/qrcode.min.js?v=517b55d3" defer></script>
-<script src="/assets/js/pages/receipt-generator.js?v=1cd96cfd" defer></script>
+<script src="/assets/js/pages/receipt-generator.js?v=c7881a02" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <style>
@@ -559,11 +559,50 @@
     var original=pdfButton.textContent;
     pdfButton.disabled=true;
     pdfButton.textContent='Working';
-    window.html2canvas(document.getElementById('receiptPreview'),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(function(canvas){
+    var receiptPdfRows=[];
+    window.html2canvas(document.getElementById('receiptPreview'),{
+      scale:2,backgroundColor:'#ffffff',useCORS:true,windowWidth:1200,
+      onclone:function(clone){
+        // Responsive interaction overrides belong to the app, not the printed receipt.
+        clone.querySelectorAll('link[href*="/sw-document-pdf-a11y.css"]').forEach(function(link){link.remove();});
+        var receipt=clone.getElementById('receiptPreview');
+        // Preserve the explicit template widths from receipt-generator.css.
+        var templateWidth=receipt.classList.contains('receipt-template-thermal')?308:receipt.classList.contains('receipt-template-compact')?360:receipt.classList.contains('receipt-template-tax')?420:794;
+        receipt.style.setProperty('width',templateWidth+'px','important');
+        receipt.style.setProperty('min-width',templateWidth+'px','important');
+        receipt.style.setProperty('max-width','none','important');
+        receipt.style.boxSizing='border-box';
+        if(receipt.classList.contains('receipt-template-thermal')){
+          receipt.style.setProperty('font-family','"Courier New", monospace','important');
+          receipt.querySelectorAll('*').forEach(function(element){element.style.setProperty('font-family','inherit','important');});
+        }
+        var table=receipt.querySelector('.r-table');
+        if(table){
+          table.style.setProperty('display','table','important');
+          table.style.setProperty('width','100%','important');
+          table.style.tableLayout='fixed';
+          table.querySelectorAll('thead,tbody').forEach(function(group){group.style.setProperty('display',group.tagName==='THEAD'?'table-header-group':'table-row-group','important');});
+          table.querySelectorAll('tr').forEach(function(row){
+            row.style.setProperty('display','table-row','important');
+            Array.from(row.children).forEach(function(cell,index){
+              cell.style.setProperty('display','table-cell','important');
+              cell.style.setProperty('padding',templateWidth<400?'6px 2px':'8px','important');
+              var descriptionShare=templateWidth<400?40:55;
+              cell.style.width=(index===0?descriptionShare:(100-descriptionShare)/(row.children.length-1))+'%';
+              cell.style.whiteSpace='normal';
+              cell.style.overflowWrap='anywhere';
+            });
+          });
+          var origin=receipt.getBoundingClientRect().top;
+          receiptPdfRows=Array.from(table.querySelectorAll('tr')).map(function(row){var rect=row.getBoundingClientRect();return {top:Math.floor((rect.top-origin)*2),bottom:Math.ceil((rect.bottom-origin)*2)};});
+        }
+      }
+    }).then(function(canvas){
       var pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
       var pageWidth=pdf.internal.pageSize.getWidth();
       var pageHeight=pdf.internal.pageSize.getHeight();
-      var printableWidth=pageWidth-20;
+      // At capture scale 2, preserve CSS pixels at 96dpi for narrower templates.
+      var printableWidth=Math.min(pageWidth-20,canvas.width/2*25.4/96);
       var printableHeight=pageHeight-20;
       var widthScale=printableWidth/canvas.width;
       var naturalHeight=canvas.height*widthScale;
@@ -573,6 +612,8 @@
       var pageIndex=0;
       while(offset<canvas.height){
         var height=Math.min(sliceHeight,canvas.height-offset);
+        var crossing=receiptPdfRows.find(function(row){return row.top<offset+height&&row.bottom>offset+height&&row.top>offset;});
+        if(crossing)height=crossing.top-offset;
         var slice=document.createElement('canvas');
         slice.width=canvas.width;
         slice.height=height;

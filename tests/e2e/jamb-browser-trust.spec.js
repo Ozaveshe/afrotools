@@ -207,7 +207,15 @@ async function checkExplanationDisclosure(page, root = page) {
   await expect(box.locator('.hide-explanation')).toBeVisible();
   await page.keyboard.press('Space');
   await expect(explanation).toBeHidden();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  const layout = await page.evaluate(() => ({
+    viewport: innerWidth,
+    width: document.documentElement.scrollWidth,
+    overflow: [...document.querySelectorAll('body *')].filter(element => {
+      const rect = element.getBoundingClientRect();
+      return rect.width && rect.right > innerWidth + 1;
+    }).slice(0, 15).map(element => ({tag: element.tagName, id: element.id, className: String(element.className), width: element.getBoundingClientRect().width}))
+  }));
+  expect(layout.width, JSON.stringify(layout)).toBeLessThanOrEqual(layout.viewport + 1);
 }
 
 async function serveBank(page, fixture) {

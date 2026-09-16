@@ -1,0 +1,22 @@
+const {test,expect}=require('@playwright/test');
+const fs=require('node:fs');
+test('French leave planner exports the entered period and invalidates changed dates',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/fr/tools/calculateur-conges-pto/');
+  await page.locator('#leave-plan-start').fill('2026-09-18');
+  await page.locator('#leave-plan-days').fill('3');
+  await page.locator('#leave-plan-unit').selectOption('working');
+  await page.getByRole('button',{name:'Calculer les dates',exact:true}).click();
+  await expect(page.locator('[data-plan-result]')).toContainText('2026-09-22');
+  await expect(page.locator('[data-plan-result]')).toContainText('2026-09-23');
+  const pending=page.waitForEvent('download');await page.locator('[data-calendar]').click();
+  const body=fs.readFileSync(await(await pending).path(),'utf8');
+  expect(body).toContain('DTSTART;VALUE=DATE:20260918');
+  expect(body).toContain('DTEND;VALUE=DATE:20260923');
+  expect(body).toContain('DTEND;VALUE=DATE:20260924');
+  expect(body).toContain('Reprise du travail');
+  await page.locator('#leave-plan-days').fill('4');
+  await expect(page.locator('[data-calendar]')).toBeDisabled();
+  await expect(page.locator('[data-plan-result]')).toBeHidden();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});

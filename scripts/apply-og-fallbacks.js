@@ -315,6 +315,9 @@ const TOOLS_BY_PATH = buildToolPathIndex(loadRegistryTools());
 
 function getPreferredToolImage(filePath, html) {
   const pathname = normalizePathname(getCanonicalPath(html) || fileToPathname(filePath));
+  const reviewed = require('./lib/french-document-seo').reviewedArtwork(ROOT, pathname,
+    require('../data/localization/fr-document-pdf-parity.json'), require('../data/localization/fr-document-pdf-artwork.json'));
+  if (reviewed && getHtmlLang(html).startsWith('fr')) return {relativePath: reviewed, absoluteUrl: SITE_ORIGIN + reviewed};
   const tools = TOOLS_BY_PATH.get(pathname) || [];
 
   if (!tools.length) {
@@ -440,8 +443,11 @@ function applyFallbacks(html, filePath) {
   }
   if (isRedirectLike(html, filePath)) return { html, changed: false, usedToolImage: false };
 
-  let next = html;
-  let changed = false;
+  let next = getHtmlLang(html).startsWith('fr')
+    ? require('./lib/french-document-seo').repairDocumentBreadcrumbs(html,
+      normalizePathname(getCanonicalPath(html) || fileToPathname(filePath)),
+      require('../data/localization/fr-document-pdf-parity.json')) : html;
+  let changed = next !== html;
 
   const canonicalUrl = getCanonicalUrl(next);
   const existingOgUrl = getMetaContent(next, "property", "og:url");

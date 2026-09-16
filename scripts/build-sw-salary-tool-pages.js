@@ -220,6 +220,7 @@ var SW_COUNTRY_NAMES = ${JSON.stringify(SW_COUNTRY_NAMES, null, 2)};`
     ['Select a country and calculate overtime to see insights on local labour law practices.', 'Chagua nchi uone muhtasari wa sheria za kazi, saa za kawaida na viwango vya muda wa ziada.'],
   ]);
 
+  html = html.replace(/document\.getElementById\('toil-verdict'\)\.textContent = 'Planning comparison:[^\n]+;/, "document.getElementById('toil-verdict').textContent = 'Ulinganisho wa kupanga: kiwango kilekile cha saa na kizidishi cha muda wa ziada vinatoa thamani sawa ya fedha (' + cur + ' ' + fmt(toilCashEquiv) + '). Siku moja ina saa ' + comparison.hoursPerDay + (comparison.hoursPerDayAssumed ? ' (dhana)' : ' kulingana na kanuni iliyorekodiwa') + '. Thibitisha kama mapumziko na ubadilishaji huu vinapatikana.';");
   write('sw/zana/kikokotoo-muda-wa-ziada/index.html', html);
 }
 
@@ -476,7 +477,7 @@ function buildSwObservation(c) {
   ]);
 
   html = replaceRegex(html, [
-    [/var opts = '<option value="">[^<]*National \/ all states[^<]*<\/option>';/, "var opts = '<option value=\"\">a-" Taifa / majimbo yote a-"</option>';"],
+    [/var opts = '<option value="">[^<]*National \/ all states[^<]*<\/option>';/, "var opts = '<option value=\"\">Taifa / majimbo yote</option>';"],
     [/dHTML \+= '<div class="mw-info-row"><span class="mw-info-label">Effective Date<\/span><span class="mw-info-val">' \+ \(sr\.effectiveDate \|\| c\.effectiveDate\) \+ '<\/span><\/div>';/, "dHTML += '<div class=\"mw-info-row\"><span class=\"mw-info-label\">Tarehe ya kuanza</span><span class=\"mw-info-val\">' + (sr.effectiveDate || c.effectiveDate) + '</span></div>';"],
     [/canvas\.setAttribute\('aria-label', c\.name \+ ' minimum wage history ' \+ c\.history\[c\.history\.length-1\]\.year \+ '[^']*' \+ c\.history\[0\]\.year\);/, "canvas.setAttribute('aria-label', 'Historia ya kima cha chini cha mshahara ya ' + c.name + ' ' + c.history[c.history.length-1].year + '-' + c.history[0].year);"],
     [/titleEl\.(?:innerHTML|textContent) = '[^']*No statutory minimum wage in ' \+ result\.flag \+ ' ' \+ result\.country;/, "titleEl.innerHTML = '- Hakuna kima cha chini cha mshahara cha kitaifa katika ' + result.flag + ' ' + swCountryName(_currentCode, result.country);"],
@@ -492,6 +493,7 @@ function buildSwObservation(c) {
     [/html \+= '<div class="mw-cc-row"><span class="mw-cc-label">Effective<\/span><span class="mw-cc-val">' \+ (?:c|country)\.effectiveDate \+ '<\/span><\/div>';/g, "html += '<div class=\"mw-cc-row\"><span class=\"mw-cc-label\">Imeanza</span><span class=\"mw-cc-val\">' + c.effectiveDate + '</span></div>';"],
   ]);
 
+  html = html.replace('var csv = E.exportCSV();', "var csv = E.exportCSV('sw');");
   write('sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/index.html', html);
 }
 

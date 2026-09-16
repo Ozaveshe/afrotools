@@ -295,6 +295,16 @@ const legacyIdRepairs = {
 };
 
 const legacyInlineRepairs = {
+  'invoice-generator': {
+    "${fmtCur(it.price, cur)}": "${((CURRENCIES[cur] || {}).s || cur) + ' ' + Number(it.price || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:20})}",
+    "function getDocumentTypeInfo() {\n  return DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;\n}": "function getDocumentTypeInfo() {\n  const info = DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;\n  const text = window.AfroInvoiceText || ((value) => value);\n  return { ...info, label: text(info.label), title: text(info.title), numberLabel: text(info.numberLabel) };\n}",
+    "$('previewStatus').textContent = paid ? 'Paid' : 'Draft';": "$('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText(paid ? 'Paid' : 'Draft') : (paid ? 'Paid' : 'Draft');",
+    "$('previewStatus').textContent = 'Overdue';": "$('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText('Overdue') : 'Overdue';",
+    "if (pdfBtn) pdfBtn.addEventListener('click', exportNonInvoicePdf, true);": "// The shared invoice-generator enhancements export all document types.",
+    "bizParts.join('<br>')": "bizParts.map(escapeHtml).join('<br>')",
+    "cParts.join('<br>')": "cParts.map(escapeHtml).join('<br>')",
+    ">Save Kiolezo</button>": ">Hifadhi kiolezo</button>"
+  },
   'pdf-convert': {
     'resetPdfMaandishi()': 'resetPdfText()',
     'extractMaandishi()': 'extractText()',
