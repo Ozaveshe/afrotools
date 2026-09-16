@@ -13,6 +13,11 @@ const directoryEntries = JSON.parse(fs.readFileSync(directoryPath, "utf8"));
 const manifest = manifestApi.buildToolManifest(directoryEntries);
 const validation = manifestApi.validateToolManifest(manifest);
 
+const receiptComparator = manifest.find(entry => entry.id === 'remittance-compare');
+assert.strictEqual(receiptComparator.privacyMode, 'browser_local');
+assert.strictEqual(receiptComparator.sourcePolicy, 'user_input');
+assert.strictEqual(receiptComparator.highStakesDomain, 'finance');
+
 assert.deepStrictEqual(validation.errors, [], "AI tool manifest should validate cleanly");
 assert.ok(manifest.length >= 1000, `expected at least 1000 manifest entries, found ${manifest.length}`);
 assert.strictEqual(manifest.length, directoryEntries.length, "canonical directory records should already have unique router-safe routes");

@@ -1018,6 +1018,12 @@
       currencySupport: ['MULTI'],
     },
   );
+  // Quote receipts stay local regardless of words such as "provider" in copy.
+  MAJOR_TOOL_OVERRIDES['remittance-compare'] = {
+    privacyMode: 'browser_local',
+    sourcePolicy: 'user_input',
+    highStakesDomain: 'finance',
+  };
   MAJOR_TOOL_OVERRIDES['crypto-remittance'] = Object.assign(
     major(
       'remittance-quote-comparison',
