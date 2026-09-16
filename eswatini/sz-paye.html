@@ -117,7 +117,7 @@
       <a class="badge b-red" href="#sources-verification" aria-label="ERS 2025/26 Verified evidence">ERS 2025/26 evidence</a>
       <span class="badge b-grey">SZL · Lilangeni</span>
     </div>
-    <p class="hero-meta">Last verified: July 2025 · Source: ERS (ers.org.sz)</p>
+    <p class="hero-meta">Published ERS bands reviewed: 16 September 2026 · Annual planning estimate</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/eswatini/sz-vat" style="color:#0062CC;font-weight:600;">Eswatini VAT Calculator</a></p>
   </div>
 </section>
@@ -128,6 +128,9 @@
   </div>
 </div>
 
+<!-- ESWATINI_ESTIMATE_SCOPE_START -->
+<section id="eswatini-estimate-scope" class="container" aria-labelledby="eswatini-scope-title" style="padding:20px;line-height:1.65"><h2 id="eswatini-scope-title" style="font-size:1.1rem">Independent annual planning estimate</h2><p>AfroTools applies the E8,200 general rebate. The additional over-60 rebate, partial payroll periods, retirement and redundancy are not calculated here.</p><p><a href="https://ers.org.sz/IncomeForms" target="_blank" rel="noopener">Open the official ERS payroll workbook</a></p></section>
+<!-- ESWATINI_ESTIMATE_SCOPE_END -->
 <div class="tool-main" id="main-content">
   <div class="tool-main-inner">
 
@@ -465,24 +468,22 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-01-01</span>
-          <p class="tool-verification-note">Eswatini - high risk - AfroTools source audit</p>
+          <span class="tool-verification-badge">Last verified 2026-09-16</span>
+          <p class="tool-verification-note">Eswatini - high risk - AfroTools: published bands and scope review</p>
         </div>
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
-<li><a href="https://www.era.org.sz" target="_blank" rel="noopener">era.org.sz</a></li>
-<li><a href="https://era.org.sz" target="_blank" rel="noopener">era.org.sz</a></li>
-<li><a href="https://sra.org.sz" target="_blank" rel="noopener">sra.org.sz</a></li>
-<li><a href="https://www.ers.org.sz" target="_blank" rel="noopener">ers.org.sz</a></li>
-<li><a href="https://ers.org.sz" target="_blank" rel="noopener">ers.org.sz</a></li>
+<li><a href="https://ers.org.sz/IncomeTax/RatesandThres" target="_blank" rel="noopener">ERS: individual rates and rebates</a></li>
+<li><a href="https://ers.org.sz/IncomeForms" target="_blank" rel="noopener">ERS: official PAYE computation workbook</a></li>
+<li><a href="https://enpf.co.sz/" target="_blank" rel="noopener">Eswatini National Provident Fund</a></li>
           </ul>
         </div>
         <div class="tool-verification-block">
           <h3>Law, regulation, or version</h3>
-          <p class="tool-verification-meta">Last verified: July 2025 · Source: ERS (ers</p>
+          <p class="tool-verification-meta">ERS individual rates and rebates reviewed 16 September 2026; ENPF calendar-year 2026 contribution ceiling. This is an annual planning estimate, not the ERS payroll workbook.</p>
         </div>
         <div class="tool-verification-block">
           <h3>Calculation methodology</h3>
@@ -491,9 +492,9 @@
         <div class="tool-verification-block">
           <h3>Known limitations</h3>
           <ul class="tool-verification-list">
-<li>Informational estimate only. It is not professional tax, legal, payroll, or filing advice.</li>
-<li>Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.</li>
-<li>Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission.</li>
+<li>The current estimate applies the E8,200 general rebate only; it does not include the additional E2,700 rebate for eligible individuals over 60.</li>
+<li>The ERS payroll workbook uses days. This annual estimate does not reproduce payroll periods, part-year employment or the official workbook.</li>
+<li>Retirement, redundancy, special reliefs and filing calculations require the official ERS guidance or a qualified adviser.</li>
           </ul>
         </div>
         <div class="tool-verification-block">
@@ -739,6 +740,8 @@ function setChart(type, btn) {
 
 function renderChart(type) {
   if (!RESULT) return;
+  // Numeric results remain usable when the optional chart CDN is unavailable.
+  if (typeof Chart === 'undefined' || typeof AfroChartColors === 'undefined') return;
   const R = RESULT;
   const canvas = document.getElementById('mainChart');
   if (CHART) { CHART.destroy(); CHART = null; }
@@ -789,7 +792,8 @@ async function downloadPdfSummary() {
   await window.AfroTools.pdf.generate({
     filename: 'afrotools-sz-paye-eswatini-2026-07-03.pdf',
     title: 'Eswatini PAYE Summary',
-    subtitle: 'ERS PAYE, rebate and ENPF estimate',
+    subtitle: 'Independent annual PAYE and ENPF planning estimate',
+    disclaimer: 'General E8,200 rebate only. Additional age relief, partial payroll periods, retirement and redundancy are excluded. Use the official ERS payroll workbook for payroll calculations: https://ers.org.sz/IncomeForms',
     country: 'Eswatini',
     currency: 'SZL',
     summary: [

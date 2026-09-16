@@ -467,6 +467,27 @@ function htmlList(items) {
   return items.map((item) => `<li>${item}</li>`).join('\n');
 }
 
+// Keep this reviewed record source-owned: generated panels and prior manifests
+// must not reintroduce legacy authority URLs or truncated scraped copy.
+function applyEswatiniPayeEvidence(manifest) {
+  const entry = manifest.tools['sz-paye'];
+  if (!entry) return;
+  entry.source_urls = [
+    'https://ers.org.sz/IncomeTax/RatesandThres',
+    'https://ers.org.sz/IncomeForms',
+    'https://enpf.co.sz/'
+  ];
+  entry.source_titles = ['ERS: individual rates and rebates', 'ERS: official PAYE computation workbook', 'Eswatini National Provident Fund'];
+  entry.law_or_version = 'ERS individual rates and rebates reviewed 16 September 2026; ENPF calendar-year 2026 contribution ceiling. This is an annual planning estimate, not the ERS payroll workbook.';
+  entry.last_verified = '2026-09-16';
+  entry.verified_by = 'AfroTools: published bands and scope review';
+  entry.known_limitations = [
+    'The current estimate applies the E8,200 general rebate only; it does not include the additional E2,700 rebate for eligible individuals over 60.',
+    'The ERS payroll workbook uses days. This annual estimate does not reproduce payroll periods, part-year employment or the official workbook.',
+    'Retirement, redundancy, special reliefs and filing calculations require the official ERS guidance or a qualified adviser.'
+  ];
+}
+
 const PANEL_COPY = {
   en: {
     kicker: 'Official evidence',
@@ -537,12 +558,26 @@ const FR_VERIFICATION_VALUES = new Map([
   ['AfroTools source audit', 'Audit des sources AfroTools']
 ]);
 
+const ESWATINI_VERIFICATION_FR = new Map([
+  ['ERS: individual rates and rebates', 'ERS : taux et réductions d’impôt des particuliers'],
+  ['ERS: official PAYE computation workbook', 'ERS : classeur officiel de calcul du PAYE'],
+  ['Eswatini National Provident Fund', 'Fonds national de prévoyance d’Eswatini'],
+  ['ERS individual rates and rebates reviewed 16 September 2026; ENPF calendar-year 2026 contribution ceiling. This is an annual planning estimate, not the ERS payroll workbook.', 'Taux et réductions d’impôt des particuliers publiés par l’ERS examinés le 16 septembre 2026 ; plafond ENPF pour l’année civile 2026. Il s’agit d’une estimation annuelle, distincte du classeur de paie de l’ERS.'],
+  ['AfroTools: published bands and scope review', 'AfroTools : examen des tranches publiées et du périmètre'],
+  ['The current estimate applies the E8,200 general rebate only; it does not include the additional E2,700 rebate for eligible individuals over 60.', 'L’estimation actuelle applique uniquement la réduction générale de 8 200 E ; elle n’inclut pas la réduction supplémentaire de 2 700 E pour les personnes admissibles de plus de 60 ans.'],
+  ['The ERS payroll workbook uses days. This annual estimate does not reproduce payroll periods, part-year employment or the official workbook.', 'Le classeur de paie de l’ERS utilise les jours. Cette estimation annuelle ne reproduit ni les périodes de paie, ni l’emploi sur une partie de l’année, ni le classeur officiel.'],
+  ['Retirement, redundancy, special reliefs and filing calculations require the official ERS guidance or a qualified adviser.', 'La retraite, le licenciement économique, les allègements particuliers et les calculs destinés aux déclarations nécessitent les instructions officielles de l’ERS ou un conseiller qualifié.']
+]);
+
 function localizeVerificationValue(value, lang) {
   if (lang !== 'fr') return value;
-  return FR_VERIFICATION_VALUES.get(String(value || '')) || value;
+  return ESWATINI_VERIFICATION_FR.get(String(value || '')) || FR_VERIFICATION_VALUES.get(String(value || '')) || value;
 }
 
 function buildPanel(entry, lang = 'en') {
+  if (entry.tool_id === 'sz-paye' && lang === 'fr') {
+    entry = { ...entry, source_titles: entry.source_titles.map(value => localizeVerificationValue(value, lang)) };
+  }
   const copy = PANEL_COPY[lang] || PANEL_COPY.en;
   const kind = kindFor(entry.tool_id);
   const countryCode = codeFor(entry.tool_id, '');
@@ -551,7 +586,7 @@ function buildPanel(entry, lang = 'en') {
   // an owned French translation, use the already translated, calculation-type
   // contract rather than leaking a large English block onto a French route.
   const methodology = lang === 'fr' ? methodologyFor(kind) : entry.methodology_markdown;
-  const knownLimitations = lang === 'fr' ? limitationsFor(kind) : entry.known_limitations;
+  const knownLimitations = lang === 'fr' && entry.tool_id !== 'sz-paye' ? limitationsFor(kind) : entry.known_limitations;
   const testCases = lang === 'fr' ? testCasesFor(kind) : entry.test_cases;
   const riskLabel = lang === 'fr'
     ? ({ critical: 'critique', high: 'élevé', medium: 'moyen', low: 'faible' }[entry.risk_level] || entry.risk_level)
@@ -667,6 +702,23 @@ function applyPanelToFile(file, entry) {
   html = replaceGenericBadges(html);
   html = replaceRatings(html);
   const lang = rel(file).startsWith('fr/') ? 'fr' : 'en';
+  if (entry.tool_id === 'sz-paye') {
+    const scopeStart = '<!-- ESWATINI_ESTIMATE_SCOPE_START -->';
+    const scopeEnd = '<!-- ESWATINI_ESTIMATE_SCOPE_END -->';
+    html = html.replace(/<!-- ESWATINI_ESTIMATE_SCOPE_START -->[\s\S]*?<!-- ESWATINI_ESTIMATE_SCOPE_END -->\s*/g, '');
+    const title = lang === 'fr' ? 'Estimation annuelle indépendante' : 'Independent annual planning estimate';
+    const description = lang === 'fr'
+      ? 'AfroTools applique la réduction générale de 8 200 E. La réduction supplémentaire après 60 ans, les périodes de paie incomplètes, la retraite et le licenciement économique ne sont pas calculés ici.'
+      : 'AfroTools applies the E8,200 general rebate. The additional over-60 rebate, partial payroll periods, retirement and redundancy are not calculated here.';
+    const linkLabel = lang === 'fr' ? 'Ouvrir le classeur de paie officiel de l’ERS' : 'Open the official ERS payroll workbook';
+    const scope = `${scopeStart}\n<section id="eswatini-estimate-scope" class="container" aria-labelledby="eswatini-scope-title" style="padding:20px;line-height:1.65"><h2 id="eswatini-scope-title" style="font-size:1.1rem">${title}</h2><p>${description}</p><p><a href="https://ers.org.sz/IncomeForms" target="_blank" rel="noopener">${linkLabel}</a></p></section>\n${scopeEnd}\n`;
+    const anchor = lang === 'fr' ? '<main class="container"' : '<div class="tool-main" id="main-content">';
+    if (!html.includes(anchor)) throw new Error(`Missing Eswatini calculator scope anchor: ${rel(file)}`);
+    html = html.replace(anchor, scope + anchor);
+    if (lang === 'en') {
+      html = html.replace(/<p class="hero-meta">[\s\S]*?<\/p>/, '<p class="hero-meta">Published ERS bands reviewed: 16 September 2026 · Annual planning estimate</p>');
+    }
+  }
   // Some bespoke French calculators already own a complete localized source
   // panel. Do not add a second generated panel or overwrite its richer copy.
   if (
@@ -716,6 +768,7 @@ function main() {
   });
 
   const manifest = buildManifest(allTargetFiles);
+  applyEswatiniPayeEvidence(manifest);
   for (const file of redirectAliasFiles) {
     const html = removeOldVerificationPanels(fs.readFileSync(file, 'utf8'));
     const toolId = toolIdFor(file, html);

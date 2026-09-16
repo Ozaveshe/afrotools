@@ -541,6 +541,15 @@ function buildRegistry(asOf) {
         entry.notes = 'Sao Tome payroll checker verifies 4% employee and 6% employer INSS. IRS calculation is paused because the current official schedule remains unconfirmed. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
         entry.displayDisclaimer = 'INSS results are planning estimates. IRS and final take-home are intentionally not calculated; confirm current tax and payroll treatment with the authorities.';
       }
+      if (country === 'SZ') {
+        entry.sourceName = 'ERS individual rates and rebates';
+        entry.sourceUrl = 'https://ers.org.sz/IncomeTax/RatesandThres';
+        entry.lastCheckedAt = '2026-09-16';
+        entry.lastReviewedAt = '2026-09-16';
+        entry.freshnessStatus = freshnessStatus(entry.lastCheckedAt, entry.lastReviewedAt, 90, today);
+        entry.notes = 'Published ERS bands, rebates and official workbook availability reviewed on 16 September 2026. This source review does not certify the calculation engine or reproduce the ERS day-based payroll workbook. Formula status: ' + formula.effectiveDateStatus + '; version: ' + formula.formulaVersion + '.';
+        entry.displayDisclaimer = 'Annual planning estimate with the general rebate only. Additional age relief, part-year payroll, retirement and redundancy require separate ERS guidance. Use the official ERS workbook for payroll calculations.';
+      }
       if (country === 'TG') {
         entry.sourceName = 'OTR consolidated CGI/LPF and CNSS Togo';
         entry.sourceUrl = 'https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html';
