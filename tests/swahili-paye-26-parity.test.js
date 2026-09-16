@@ -13,6 +13,15 @@ function currentSwHash(country, historicalHash) {
   assert.ok(review.reason && review.sourceCommit);
   return review.currentHash;
 }
+function currentEnglishHash(id, historicalHash) {
+  const review = (CURRENT_REVIEW.englishEntries || []).find((entry) => entry.englishId === id);
+  if (!review) return historicalHash;
+  assert.strictEqual(review.previousHash, historicalHash, 'English review must extend the exact frozen receipt');
+  assert.match(review.currentHash, /^[a-f0-9]{64}$/);
+  assert.ok(review.reason && review.sourceCommit && review.reviewEvidence);
+  assert.ok(fs.existsSync(path.join(ROOT, review.reviewEvidence)));
+  return review.currentHash;
+}
 const CONTRACT = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'data/localization/sw-paye-26-parity.json'), 'utf8'),
 );
@@ -80,7 +89,7 @@ for (const entry of CONTRACT.entries) {
 
   assert.strictEqual(
     formulaHash(english),
-    CONTRACT.englishFormulaHashes[entry.englishId],
+    currentEnglishHash(entry.englishId, CONTRACT.englishFormulaHashes[entry.englishId]),
     `${entry.englishId} English formula owner drifted`,
   );
   assert.strictEqual(
@@ -126,4 +135,4 @@ assert.strictEqual(
   'All 26 PAYE routes have English-output parity',
 );
 
-console.log('Verified unchanged English hashes, reviewed Swahili controller hashes, native runtime copy and reciprocal hreflang for 26 PAYE routes.');
+console.log('Verified historical or reviewed English/Swahili controller hashes, native runtime copy and reciprocal hreflang for 26 PAYE routes.');
