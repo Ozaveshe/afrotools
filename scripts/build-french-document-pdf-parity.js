@@ -406,6 +406,11 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
 }
 
 function normalizeExisting(source, app, config, lexicon, artwork) {
+  if (app.id === 'receipt-generator') {
+    // Repair the historical native page's translated machine value; retain its French label.
+    source = source.replace(/(<select\b[^>]*\bid=["']discountType["'][^>]*>)([\s\S]*?)(<\/select>)/i,
+      (match, open, options, close) => open + options.replace(/value=(["'])montant\1/g, 'value="amount"') + close);
+  }
   const allRoutes = routeMap(config);
   const canonicalUrl = `https://afrotools.com${app.frenchRoute}`;
   const routeExact = lexicon.routes[app.id] || {};
