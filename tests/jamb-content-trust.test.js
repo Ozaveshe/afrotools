@@ -14,6 +14,43 @@ function fixture() {
   return { question, ledger };
 }
 
+test('owner-directed online collections retain source identity without claiming an authenticated sitting', () => {
+  const { question, ledger } = fixture();
+  const hash = 'a'.repeat(64);
+  const source = ledger.sources.fixture = {
+    source_file: 'ops/synthetic-source.json', content_sha256: hash,
+    source_url: 'https://example.org/question/1', publisher: 'Synthetic publisher',
+    year_basis: 'publisher-collection', collection_year: 2023,
+    reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source',
+      scope: 'AfroTools past-question practice', material_sha256: hash,
+      authorized_by: 'Synthetic owner', authorized_at: '2026-09-16', instruction_ref: 'Synthetic explicit online sourcing instruction' }
+  };
+  question.year = 2023; question.num = null;
+  question.source_provenance = { publisher: source.publisher, url: source.source_url, year_basis: source.year_basis };
+  const assess = candidate => {
+    ledger.questions[question.id].content_sha256 = questionFingerprint(candidate);
+    return assessQuestion(candidate, ledger);
+  };
+  assert.equal(assess(question).state, 'eligible');
+  for (const candidate of [
+    { ...question, year: 2024 }, { ...question, num: 1 },
+    { ...question, source_provenance: undefined },
+    ...[{ url: 'https://example.org/question/2' }, { publisher: 'Another publisher' },
+      { year_basis: 'official-sitting' }, { private_note: 'internal' }]
+      .map(change => ({ ...question, source_provenance: { ...question.source_provenance, ...change } }))
+  ]) assert.ok(assess(candidate).reasons.includes('source_provenance_mismatch'));
+  source.reuse_authorization.material_sha256 = 'b'.repeat(64);
+  assert.ok(assess(question).reasons.includes('permission_unverified'));
+  source.reuse_authorization.material_sha256 = hash;
+  for (const url of ['http://example.org/question/1', 'javascript:alert(1)', 'https://user:pass@example.org/question/1']) {
+    source.source_url = url; question.source_provenance.url = url;
+    assert.ok(assess(question).reasons.includes('permission_unverified'));
+  }
+  source.source_url = question.source_provenance.url = 'https://example.org/question/1';
+  delete ledger.questions[question.id].answer_review;
+  assert.ok(assess(question).reasons.includes('answer_review_missing'));
+});
+
 test('a truthy answer and fluent explanation do not bypass missing evidence', () => {
   const { question } = fixture();
   const result = assessQuestion(question);
