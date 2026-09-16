@@ -77,10 +77,23 @@
   var status=$("rm-status");
   var last=null;
 
+  Object.assign(words,{
+    en:{reset:'Reset',pdfUnsupported:'Some characters are not supported by this PDF font. Download JSON or CSV to preserve all text.',sendCurrency:'Send currency',receiveCurrency:'Receive currency',expiryState:'Expiry state',enough:'Eligible comparable',top:'Highest recipient in comparable set',sendCountry:'Sending country',receiveCountry:'Receiving country',generated:'Compared at',forDebit:'for',copyError:'Could not copy. Download JSON instead.',feeError:'Stated fee cannot exceed total debit.',countryError:'Enter a recognized country name or two-letter code.',corridor:'Only quotes for the same countries, currencies and total debit are ranked. Payout methods and delivery times can differ; services are not necessarily equivalent.',quote:'Quote',eligible:'Eligible comparable',yes:'Yes',no:'No'},
+    fr:{reset:'Réinitialiser',pdfUnsupported:'Certains caractères ne sont pas pris en charge par la police PDF. Téléchargez le JSON ou le CSV pour conserver tout le texte.',sendCurrency:'Devise d’envoi',receiveCurrency:'Devise de réception',expiryState:'État d’expiration',enough:'Comparable admissible',top:'Montant reçu maximal du groupe',sendCountry:'Pays d’envoi',receiveCountry:'Pays de réception',generated:'Comparé le',forDebit:'pour',copyError:'Impossible de copier. Téléchargez le JSON.',feeError:'Les frais indiqués ne peuvent pas dépasser le débit total.',countryError:'Saisissez un pays reconnu ou son code à deux lettres.',corridor:'Seuls les devis pour les mêmes pays, devises et débit total sont classés. Les modes et délais de réception peuvent différer : les services ne sont pas nécessairement équivalents.',quote:'Devis',eligible:'Comparable admissible',yes:'Oui',no:'Non'},
+    sw:{reset:'Anza upya',pdfUnsupported:'Baadhi ya herufi haziauniwi na fonti hii ya PDF. Pakua JSON au CSV ili kuhifadhi maandishi yote.',sendCurrency:'Sarafu ya kutuma',receiveCurrency:'Sarafu ya kupokea',expiryState:'Hali ya muda',enough:'Halali kulinganishwa',top:'Kiasi kikubwa zaidi katika kundi',sendCountry:'Nchi ya kutuma',receiveCountry:'Nchi ya kupokea',generated:'Ililinganishwa',forDebit:'kwa',copyError:'Imeshindikana kunakili. Pakua JSON badala yake.',feeError:'Ada iliyotajwa haiwezi kuzidi jumla inayotoka.',countryError:'Weka jina la nchi linalotambulika au msimbo wake wa herufi mbili.',corridor:'Nukuu hupangwa tu kwa nchi, sarafu na jumla inayotoka zinazofanana. Njia na muda wa kupokea vinaweza kutofautiana; huduma si lazima ziwe sawa.',quote:'Nukuu',eligible:'Halali kulinganishwa',yes:'Ndiyo',no:'Hapana'}
+  }[locale]);
+  words.noGroupDetail=words.corridor;
+  ['a','b','c'].forEach(function(letter){var host=$('rm-'+letter+'-label').closest('.rm-fields');['sendCountry','receiveCountry'].forEach(function(key){var label=document.createElement('label');label.className='rm-field';label.htmlFor='rm-'+letter+'-'+key;var text=document.createElement('span');text.textContent=words[key];var input=document.createElement('input');input.id=label.htmlFor;input.required=true;input.maxLength=80;input.disabled=letter==='c';label.append(text,input);host.append(label);});});
+  var reset=document.createElement('button');reset.type='reset';reset.className='rm-btn rm-btn-secondary';reset.textContent=words.reset;form.querySelector('.rm-actions').append(reset);
+  var help=document.createElement('p');help.className='rm-privacy';help.textContent=words.corridor;form.prepend(help);
+  var errorFields={SEND_COUNTRY_REQUIRED:'sendCountry',RECEIVE_COUNTRY_REQUIRED:'receiveCountry',OBSERVED_AT_REQUIRED:'observed',OBSERVED_AT_FUTURE:'observed',INVALID_EXPIRY:'expires',EXPIRY_BEFORE_OBSERVED:'expires',TOTAL_DEBIT_REQUIRED:'debit',RECIPIENT_AMOUNT_REQUIRED:'recipient',INVALID_STATED_FEE:'fee',FEE_EXCEEDS_DEBIT:'fee',INVALID_DELIVERY:'delivery',LABEL_REQUIRED:'label',SEND_CURRENCY_REQUIRED:'send',RECEIVE_CURRENCY_REQUIRED:'receive',INVALID_PAYOUT_METHOD:'payout'};
+  function clearFieldErrors(){form.querySelectorAll('[aria-invalid="true"]').forEach(function(field){field.removeAttribute('aria-invalid');var ids=(field.getAttribute('aria-describedby')||'').split(' ').filter(function(id){return id&&id!=='rm-error';});if(ids.length)field.setAttribute('aria-describedby',ids.join(' '));else field.removeAttribute('aria-describedby');});}
+  function fail(field,message){clear();error.textContent=(field?form.querySelector('label[for="'+field.id+'"]').textContent+': ':'')+message;error.dataset.show='true';if(field){field.setAttribute('aria-invalid','true');field.setAttribute('aria-describedby',((field.getAttribute('aria-describedby')||'')+' rm-error').trim());field.focus();}return null;}
   function value(id){return $(id).value.trim();}
   function numberValue(id){return $(id).value;}
   function readQuote(letter){
     return {
+      sendCountry:$("rm-"+letter+"-sendCountry").value,receiveCountry:$("rm-"+letter+"-receiveCountry").value,
       label:value("rm-"+letter+"-label"),
       sendCurrency:value("rm-"+letter+"-send"),
       totalDebit:numberValue("rm-"+letter+"-debit"),
@@ -103,25 +116,21 @@
   function errorMessage(code){
     if(code==="OBSERVED_AT_FUTURE")return words.future;
     if(code==="EXPIRY_BEFORE_OBSERVED")return words.expiry;
-    if(code==="FEE_EXCEEDS_DEBIT")return words.fee;
+    if(code==="FEE_EXCEEDS_DEBIT")return words.feeError;
+    if(code==="SEND_COUNTRY_REQUIRED"||code==="RECEIVE_COUNTRY_REQUIRED")return words.countryError;
     return words.required;
   }
   function calculate(event){
     if(event)event.preventDefault();
-    if(!form.checkValidity()){
-      error.textContent=words.required;
-      error.dataset.show="true";
-      form.reportValidity();
-      return null;
-    }
+    clearFieldErrors();var invalid=Array.from(form.elements).find(function(field){return field.willValidate&&!field.validity.valid;});if(invalid)return fail(invalid,words.required);
     var quotes=[readQuote("a"),readQuote("b")];
     if($("rm-third").checked)quotes.push(readQuote("c"));
+    var asOf=new Date().toISOString();
+    for(var i=0;i<quotes.length;i++){try{window.RemittanceQuoteComparatorEngine.calculate({requireCorridor:true,asOf:asOf,quotes:[quotes[i],quotes[i]]});}catch(exception){return fail($('rm-'+['a','b','c'][i]+'-'+(errorFields[exception.message]||'label')),errorMessage(exception.message));}}
     try{
-      last={result:window.RemittanceQuoteComparatorEngine.calculate({asOf:new Date().toISOString(),quotes:quotes})};
+      last={result:window.RemittanceQuoteComparatorEngine.calculate({requireCorridor:true,asOf:asOf,quotes:quotes})};
     }catch(exception){
-      error.textContent=errorMessage(String(exception.message));
-      error.dataset.show="true";
-      return null;
+      return fail(null,errorMessage(String(exception.message)));
     }
     error.dataset.show="false";
     render(last.result);
@@ -179,7 +188,7 @@
       var metrics=document.createElement("div");
       metrics.className="rm-metrics";
       metrics.append(
-        metric(words.totalDebit,amount(row.totalDebit,row.sendCurrency)),
+        metric(words.sendCountry,row.sendCountry),metric(words.receiveCountry,row.receiveCountry),        metric(words.totalDebit,amount(row.totalDebit,row.sendCurrency)),
         metric(words.recipient,amount(row.recipientAmount,row.receiveCurrency)),
         metric(words.effective,formatter(8).format(row.effectiveRate)+" "+row.receiveCurrency+"/"+row.sendCurrency),
         metric(words.fee,row.statedFee===null?"—":amount(row.statedFee,row.sendCurrency)),
@@ -196,11 +205,12 @@
   }
   function summary(data){
     var result=data.result;
-    var lines=[words.title,"Generated: "+result.asOf,result.hasEligibleComparison?words.highest+": "+result.groups.map(function(group){return amount(group.highestRecipientAmount,group.receiveCurrency)+" for "+amount(group.totalDebit,group.sendCurrency);}).join("; "):words.noGroup+": "+words.noGroupDetail];
+    var lines=[words.title,words.generated+": "+result.asOf,result.hasEligibleComparison?words.highest+": "+result.groups.map(function(group){return amount(group.highestRecipientAmount,group.receiveCurrency)+" "+words.forDebit+" "+amount(group.totalDebit,group.sendCurrency);}).join("; "):words.noGroup+": "+words.noGroupDetail];
     result.quotes.forEach(function(row){
       lines.push(
         "",
         row.label,
+        words.sendCountry+": "+row.sendCountry+" ("+row.sendCountryCode+")",words.receiveCountry+": "+row.receiveCountry+" ("+row.receiveCountryCode+")",
         words.totalDebit+": "+amount(row.totalDebit,row.sendCurrency),
         words.recipient+": "+amount(row.recipientAmount,row.receiveCurrency),
         words.effective+": "+formatter(8).format(row.effectiveRate)+" "+row.receiveCurrency+"/"+row.sendCurrency,
@@ -232,13 +242,13 @@
     setTimeout(function(){URL.revokeObjectURL(url);},1000);
     status.textContent=words.downloaded;
   }
-  function ensure(){return last||calculate();}
+  function ensure(){return calculate();}
   $("rm-copy").addEventListener("click",function(){
     var data=ensure();
     if(!data)return;
     if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(summary(data)).then(function(){status.textContent=words.copied;});
-    }
+      navigator.clipboard.writeText(summary(data)).then(function(){if(last===data)status.textContent=words.copied;},function(){if(last===data)status.textContent=words.copyError;});
+    }else status.textContent=words.copyError;
   });
   $("rm-json").addEventListener("click",function(){
     var data=ensure();
@@ -248,38 +258,36 @@
     var data=ensure();
     if(!data)return;
     var result=data.result;
-    var rows=[["Quote label","Send currency","Total debit","Receive currency","Recipient amount","Stated fee","Payout method","Delivery minutes","Checked at","Expires at","Expiry state","Eligible comparable","Highest recipient among eligible comparable","Difference from highest recipient","Effective rate"]];
+    var rows=[[words.quote,words.sendCountry,words.receiveCountry,words.sendCurrency,words.totalDebit,words.receiveCurrency,words.recipient,words.fee,words.payout,words.delivery+' ('+words.minutes+')',words.checked,words.expires,words.expiryState,words.enough,words.top,words.difference,words.effective]];
     result.quotes.forEach(function(row){
-      rows.push([row.label,row.sendCurrency,row.totalDebit,row.receiveCurrency,row.recipientAmount,row.statedFee,row.payoutMethod,row.deliveryMinutes,row.observedAt,row.expiresAt,row.expiryState,row.comparable,row.highestAmongEligibleComparable,row.differenceFromHighestRecipient,row.effectiveRate]);
+      rows.push([row.label,row.sendCountry,row.receiveCountry,row.sendCurrency,row.totalDebit,row.receiveCurrency,row.recipientAmount,row.statedFee,payoutLabels[row.payoutMethod]||payoutLabels.other,row.deliveryMinutes,row.observedAt,row.expiresAt,expiryText(row),row.comparable?words.yes:words.no,row.highestAmongEligibleComparable?words.yes:words.no,row.differenceFromHighestRecipient,row.effectiveRate]);
     });
     download("remittance-quote-comparison.csv","text/csv;charset=utf-8","\uFEFF"+rows.map(function(row){return row.map(csvCell).join(",");}).join("\r\n"));
   });
-  $("rm-pdf").addEventListener("click",function(){
-    var data=ensure();
-    if(!data)return;
+  var fontPromise;
+  function pdfFont(){if(!fontPromise)fontPromise=fetch('/assets/fonts/noto-sans/NotoSans-Regular.ttf',{credentials:'omit',referrerPolicy:'no-referrer'}).then(function(response){if(!response.ok)throw new Error('font');return response.arrayBuffer();}).then(function(buffer){var bytes=new Uint8Array(buffer),binary='';for(var i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(binary);}).catch(function(error){fontPromise=null;throw error;});return fontPromise;}
+  $("rm-pdf").addEventListener("click",async function(){
+    var data=ensure();if(!data)return;
     try{
-      var PDF=window.jspdf&&window.jspdf.jsPDF;
-      if(!PDF)throw new Error("missing");
-      var documentPdf=new PDF();
-      documentPdf.setFontSize(16);
-      documentPdf.text(words.title,18,20);
-      documentPdf.setFontSize(9);
-      var lines=documentPdf.splitTextToSize(summary(data),175);
-      documentPdf.text(lines,18,30);
-      documentPdf.save("remittance-quote-comparison.pdf");
-      status.textContent=words.downloaded;
-    }catch(exception){
-      status.textContent=words.pdfError;
-    }
+      var PDF=window.jspdf&&window.jspdf.jsPDF;if(!PDF)throw new Error('missing');
+      var font=await pdfFont();if(last!==data)return;data=ensure();if(!data)return;
+      var documentPdf=new PDF({putOnlyUsedFonts:true,compress:true});
+      documentPdf.addFileToVFS('NotoSans-Regular.ttf',font);documentPdf.addFont('NotoSans-Regular.ttf','RemittanceNoto','normal');documentPdf.setFont('RemittanceNoto','normal');
+      var text=summary(data).normalize('NFC'),metadata=documentPdf.getFont().metadata;
+      for(var character of text){if(character==='\n')continue;if(!metadata.characterToGlyph(character.codePointAt(0)))throw new Error('unsupported-glyph');}
+      var y=20,bottom=documentPdf.internal.pageSize.getHeight()-18;documentPdf.setFontSize(10);
+      text.split('\n').forEach(function(line){var wrapped=documentPdf.splitTextToSize(line,174);wrapped.forEach(function(part){if(y+5>bottom){documentPdf.addPage();y=20;}documentPdf.text(part,18,y);y+=5;});});
+      documentPdf.setProperties({title:words.title,creator:'AfroTools'});documentPdf.save('remittance-quote-comparison.pdf');status.textContent=words.downloaded;
+    }catch(exception){if(last===data)status.textContent=exception.message==='unsupported-glyph'?words.pdfUnsupported:words.pdfError;}
   });
   function clear(){
-    last=null;
+    last=null;clearFieldErrors();error.textContent="";error.dataset.show="false";
     status.textContent="";
     $("rm-primary-label").textContent="";
     $("rm-primary-value").textContent="—";
     $("rm-primary-detail").textContent="";
     $("rm-result-list").textContent="";
-    $("rm-results").setAttribute("aria-busy","true");
+    $("rm-results").removeAttribute("aria-busy");
   }
   $("rm-third").addEventListener("change",function(){
     var enabled=this.checked;
@@ -291,6 +299,7 @@
     });
     clear();
   });
+  form.addEventListener('reset',function(){setTimeout(function(){$('rm-third').checked=false;var section=$('rm-quote-c');section.hidden=true;section.querySelectorAll('input,select').forEach(function(control){control.disabled=true;});clear();},0);});
   form.addEventListener("submit",calculate);
   form.addEventListener("input",clear);
   form.addEventListener("change",function(event){if(event.target.id!=="rm-third")clear();});

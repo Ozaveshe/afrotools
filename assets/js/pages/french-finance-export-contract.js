@@ -584,7 +584,7 @@
     var config = parseConfig();
     if (!config) return;
     // The native leave owners export validated results and real calendar dates.
-    if (config.englishId === 'leave-calculator') return;
+    if (config.englishId === 'leave-calculator' || config.englishId === 'crypto-remittance') return;
     rememberInitialResultState();
     installStyles();
     var root = render(config);

@@ -18,6 +18,7 @@ async function fillQuote(page,letter,overrides={}){
     observed:letter==="a"?"2026-01-01T10:00":"2026-01-01T10:05",
     expires:"",
   },overrides);
+  await page.locator(`#rm-${letter}-sendCountry`).fill("GB");await page.locator(`#rm-${letter}-receiveCountry`).fill("NG");
   await page.locator(`#rm-${letter}-label`).fill(values.label);
   await page.locator(`#rm-${letter}-send`).fill(values.send);
   await page.locator(`#rm-${letter}-debit`).fill(values.debit);
