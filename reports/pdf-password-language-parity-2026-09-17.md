@@ -33,3 +33,8 @@ Private exact PDFs, PNGs and JSON: `C:/Users/Oza/.codex/worktrees/pdf-image-pari
 SW rendered native result screenshot reviewed: `C:/Users/Oza/.codex/worktrees/pdf-image-parity-20260916/evidence/pdf-password-repair/sw-protect.png`.
 
 No full build or production proof. Tests use a small text PDF, not every PDF version/font/security profile. Batch ZIP, non-Latin passwords, every permission combination/reader enforcement, interruption/cancellation and full keyboard/a11y coverage remain unproven. Permission flags are not DRM. Existing ancillary Share as Image localization is outside this primary protect/unlock repair. No acceptance ledger claim or universal encryption audit.
+
+## Coordinator integration proof
+Candidate802988ce integratedas051b0fee on77a72b53. Regenerated actual minifier output andcheckedSWowner, bothPASS. Independent gitdiff confirms QPDFwrapper/vendor unchanged.
+
+Rootactualsourcebrowser74981 passed6/6cases in39.1seconds on4518/defaultanalytics/freshserver: realencryptedguestdownloads/wrongpasswordrejection/userandownerpasswordopens, permissionflags, exactdecryptedtext, nativeerrors/noinvalidoutput, observedprivacy andmobilechecks. This is integratedsourceproof, not rebuilt-dist or production acceptance.
