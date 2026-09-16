@@ -639,8 +639,26 @@
             color: n,
             tight: !0
         }), "</main>", "</div>" ].join("");
-    }, t["ats-classic"] = t.atsClassic, t["lagos-corporate"] = t.lagosCorporate, t["nairobi-tech"] = t.nairobiTech,
-    e.CVDocumentModel = {normalize:p, renderExtras:w, renderSensitive:function(model){return model.sensitive.length ? f(copy.section17,model.sensitive.join(" | ")) : "";}};
+    }, t["ats-classic"] = t.atsClassic, t["lagos-corporate"] = t.lagosCorporate, t["nairobi-tech"] = t.nairobiTech;
+    // Portable exports follow the same enabled supplemental fields as the document model.
+    function portableSections(data, template) {
+        data = data || {};
+        var model = p(data), sections = [], lang = String(e.document.documentElement.lang || "en").split("-")[0];
+        function add(title, value) { if (value && String(value).trim()) sections.push({title:title, text:String(value)}); }
+        add(copy.section0, model.extras.awards);
+        add(copy.section1, model.extras.volunteer);
+        add(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[lang] || "Interests"), model.extras.hobbies);
+        add(copy.section2, model.extras.memberships);
+        model.customSections.forEach(function(section) { add(section.title || ({fr:"Informations complémentaires",sw:"Maelezo ya ziada"}[lang] || "Additional"), section.content); });
+        if (data.nyscStatus) add(copy.section3, [data.nyscStatus,data.nyscYear,data.nyscState,data.nyscPPA].filter(Boolean).join(" | "));
+        add(copy.section4, [data.nsYear,data.nsOrg].filter(Boolean).join(" | "));
+        if (data.sp && template !== "diaspora-relocation") {
+            var fields = [["nat","Nationality"],["dob","Date of birth"],["mar","Marital status"],["so","Origin"],["lga","LGA"],["idNumber","ID"],["dlStatus","Licence"],["gen","Gender"],["healthStatus","Health"],["milStatus","Military service"],["religion","Religion"]];
+            add(copy.section17, fields.filter(function(field){return data[field[0]];}).map(function(field){return countryLabel(field[1]) + data[field[0]];}).join(" | "));
+        }
+        return sections;
+    }
+    e.CVDocumentModel = {portableSections:portableSections, normalize:p, renderExtras:w, renderSensitive:function(model){return model.sensitive.length ? f(copy.section17,model.sensitive.join(" | ")) : "";}};
     t["accra-graduate"] = t.accraGraduate, t["cape-town-executive"] = t.capeTownExecutive,
     t["ngo-development"] = t.ngoDevelopment, t["diaspora-international"] = t.diasporaInternational,
     t["creative-portfolio"] = t.creativePortfolio, e.CVProductionTemplates = {

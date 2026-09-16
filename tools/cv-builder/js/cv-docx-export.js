@@ -155,7 +155,7 @@
             color: r
         }) ], "Title")), l.push(u(e.title || copy.target)), l.push(u(a([ e.email, a([ e.phoneCode, e.phone ], " "), e.altPhone, e.loc, e.linkedin || e.li, e.github, e.web, e.portfolio ], " | "))),
         l.push(w(copy.summary, u(e.summary))), l.push(w(copy.experience, o(e.exps || e.experience).map(function(e) {
-            return n([ e.t, e.c, e.d ].join(" ")) ? [ f(e.t || copy.role, c(e)), u(a([ e.c, e.l ], " - ")), (t = e.d,
+            return n([ e.t, e.c, e.l, e.s, e.e, e.d ].join(" ")) ? [ f(e.t || copy.role, c(e)), u(a([ e.c, e.l ], " - ")), (t = e.d,
             String(t || "").split(/\n+/).map(function(e) {
                 return n(e.replace(/^\s*(?:[-*]|\u2022|\d+\.)\s*/, ""));
             }).filter(Boolean)).map(m).join("") ].join("") : "";
@@ -163,7 +163,7 @@
         }).join(""))), o(e.exps || e.experience).length >= 3 && l.push('<w:p><w:r><w:br w:type="page"/></w:r></w:p>'),
         l.push(w(copy.education, function(e) {
             return o(e).map(function(e) {
-                return n([ e.deg, e.sch ].join(" ")) ? [ f(e.deg || copy.qualification, c(e)), u(a([ e.sch, e.loc, e.g ], " - ")), e.d ? u(e.d) : "" ].join("") : "";
+                return n([ e.deg, e.sch, e.loc, e.y1, e.y2, e.g, e.d ].join(" ")) ? [ f(e.deg || copy.qualification, c(e)), u(a([ e.sch, e.loc, e.g ], " - ")), e.d ? u(e.d) : "" ].join("") : "";
             }).join("");
         }(e.edus || e.education))), l.push(w(copy.skills, function(e) {
             var t = [];
@@ -174,7 +174,7 @@
             }).join("");
         }(e.skills))), l.push(w(copy.projects, function(e) {
             return o(e).map(function(e) {
-                return n([ e.n, e.name, e.d, e.desc ].join(" ")) ? [ f(e.n || e.name || copy.project, e.tech || ""), u(e.url || ""), u(e.d || e.desc || "") ].join("") : "";
+                return n([ e.n, e.name, e.url, e.tech, e.d, e.desc ].join(" ")) ? [ f(e.n || e.name || copy.project, e.tech || ""), u(e.url || ""), u(e.d || e.desc || "") ].join("") : "";
             }).join("");
         }(e.showProjs ? (e.projs || e.projects) : []))), l.push(w(copy.certifications, function(e) {
             return o(e).map(function(e) {
@@ -188,7 +188,7 @@
             return o(e).map(function(e) {
                 return "string" == typeof e ? u(e) : [ f(e.n || e.name || copy.reference, e.t || e.title || ""), u(a([ e.org, e.e, e.p, e.rel ], " | ")) ].join("");
             }).join("");
-        }(e.refs || e.references))), l.push('<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1008" w:right="1008" w:bottom="1008" w:left="1008" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>'),
+        }(e.refs || e.references))), (e && window.CVDocumentModel && window.CVDocumentModel.portableSections ? window.CVDocumentModel.portableSections(e, i().template) : []).forEach(function(section){l.push(w(section.title, section.text.split(/\n/).map(function(line){return u(line);}).join("")));}), l.push('<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1008" w:right="1008" w:bottom="1008" w:left="1008" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>'),
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + l.join("") + "</w:body></w:document>";
     }
     function g(e) {

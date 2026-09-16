@@ -1,0 +1,12 @@
+const {test,expect}=require('@playwright/test');const fs=require('fs'),pdf=require('pdf-parse');const fixture=require('../fixtures/cv-complete-form');
+test.use({trace:'off',screenshot:'off',video:'off'});
+const privateKeys=['nat','gen','mar','so','lga','idNumber','dlStatus','healthStatus','milStatus','religion'];
+const markers=[...new Set(JSON.stringify(fixture).match(/QZ[A-Za-z0-9]+X/g))];
+for(const [lang,route,native]of [['en','/tools/cv-builder/','Awards'],['fr','/fr/tools/generateur-cv/','Distinctions'],['sw','/sw/zana/mjenzi-cv/','Tuzo']])test('complete portable fields and explicit country policy: '+lang,async({page,baseURL},info)=>{
+ const requests=[];page.on('request',r=>requests.push(r));await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));await page.goto(route);await page.waitForFunction(()=>window.CVDocxExport&&window.CVExportAtsPlainPdf&&window.CVDocumentModel);
+ for(const mode of ['enabled','hidden','diaspora']){const hidden=mode==='hidden',template=mode==='diaspora'?'diaspora-relocation':'pan-african-minimal';await page.evaluate(({fixture,hidden,template})=>{Object.assign(CVApp.getState().data,fixture,{showProjs:!hidden,showRefs:!hidden,sp:!hidden});CVApp.getState().country='NG';CVApp.getState().template=template;CVApp.renderAll();},{fixture,hidden,template});
+ const omitted=new Set([...(hidden?JSON.stringify([fixture.projs,fixture.refs]).match(/QZ[A-Za-z0-9]+X/g):[]),...(mode!=='enabled'?privateKeys.map(k=>fixture[k]):[])]);
+ for(const format of ['ats','docx']){const pending=page.waitForEvent('download');await page.evaluate(format=>format==='ats'?CVExportAtsPlainPdf.exportAtsPdf():CVDocxExport.exportDocx(),format);const file=info.outputPath(format+'-'+mode+'.'+(format==='ats'?'pdf':'docx'));await(await pending).saveAs(file);const bytes=fs.readFileSync(file);const text=format==='ats'?(await pdf(new Uint8Array(bytes))).text:bytes.toString('utf8');const joined=text.replace(/\s/g,'');for(const marker of markers)expect(joined.includes(marker),format+' '+mode+' '+marker).toBe(!omitted.has(marker));expect(text).toContain(native);expect(text).toContain('Élodie');expect(text).toContain('François Łukasz');if(format==='docx')expect(text).not.toContain('<w:drawing');}
+ }
+ expect(requests.every(r=>!decodeURIComponent(r.url()).includes('Élodie')&&!(r.postData()||'').includes('Élodie'))).toBe(true);
+});
