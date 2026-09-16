@@ -1,0 +1,9 @@
+# CV local DOCX import — 2026-09-16
+
+DOCX import now lazily loads the already bundled Mammoth parser from the same origin when a DOCX is selected. The mobile DOCX command is enabled when this local loader is available. Failed loading can retry; malformed input shows native EN/FR/SW guidance and does not mutate the draft.
+
+Mammoth's raw-text API concatenated soft line breaks. The importer now uses its HTML conversion and reads text from an inert, never-mounted template, preserving soft breaks and block separators; document images are ignored. No imported HTML is displayed or executed. Existing supported section-heading recognition now includes the native headings emitted by the French and Swahili DOCX exporter. The existing review/apply flow is preserved.
+
+Proof: three320px mobile export→More→DOCX import→file selection→extract→review→apply cases PASS (run25541). The parser was absent before file selection and loaded once from the local site; native multiline summary was recovered after explicitly confirming replacement of a different local draft. Invalid DOCX did not change the recovered draft. Separate loader-failure/retry test PASS; failed first local script load then successful retry with unchanged state. Four meaningful browser cases total. Source syntax and diff checks PASS; French generated runtime rebuilt through its owner.
+
+Scope limit: this verifies parser loading, textual line-break preservation and reviewed summary recovery in EN/FR/SW. The heuristic importer supports only its existing personal/summary/experience/education/skills/certification/language/reference categories; this is not a full structured DOCX→CV backup roundtrip for all fields. JSON remains the exact structured backup route. Export parser/actual Word rendering evidence is recorded separately. No deployment.

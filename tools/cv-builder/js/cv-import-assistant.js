@@ -27,25 +27,25 @@
         label: "References"
     } ], r = [ {
         target: "summary",
-        re: /^(professional\s+)?(summary|profile|objective|career objective|personal statement)$/i
+        re: /^(professional\s+)?(summary|profile|objective|career objective|personal statement|profil|profil professionnel|muhtasari|muhtasari wa kitaaluma)$/i
     }, {
         target: "experience",
-        re: /^(work\s+)?(experience|employment|employment history|professional experience|career history)$/i
+        re: /^(work\s+)?(experience|employment|employment history|professional experience|career history|expérience|expérience professionnelle|uzoefu|uzoefu wa kazi)$/i
     }, {
         target: "education",
-        re: /^(education|academic background|qualifications|training)$/i
+        re: /^(education|academic background|qualifications|training|formation|elimu)$/i
     }, {
         target: "skills",
-        re: /^(skills|core skills|technical skills|key skills|competencies|expertise)$/i
+        re: /^(skills|core skills|technical skills|key skills|competencies|expertise|compétences|ujuzi)$/i
     }, {
         target: "certifications",
-        re: /^(certifications|certificates|professional certifications|licences|licenses|awards)$/i
+        re: /^(certifications|certificates|professional certifications|licences|licenses|awards|vyeti)$/i
     }, {
         target: "languages",
-        re: /^(languages|language skills)$/i
+        re: /^(languages|language skills|langues|lugha)$/i
     }, {
         target: "references",
-        re: /^(references|referees)$/i
+        re: /^(references|referees|références|wadhamini)$/i
     } ];
     function a(e) {
         var n = t.createElement("div");
@@ -366,6 +366,31 @@
             }(t, p && p.value, d && d.value, r || "paste"), e.classList.remove("open");
         });
     }
+    var docxParserPromise;
+    function ensureDocxParser() {
+        if(e.mammoth)return Promise.resolve(e.mammoth);
+        if(!docxParserPromise)docxParserPromise=new Promise(function(resolve,reject){
+            var script=t.createElement("script");script.src="/assets/vendor/mammoth/mammoth.browser.min.js";
+            script.onload=function(){if(e.mammoth)resolve(e.mammoth);else {script.remove();docxParserPromise=null;reject(new Error("DOCX parser unavailable"));}};
+            script.onerror=function(){script.remove();docxParserPromise=null;reject(new Error("DOCX parser unavailable"));};
+            t.head.appendChild(script);
+        });
+        return docxParserPromise;
+    }
+    async function readDocxFile(file) {
+        try {
+            var parser=await ensureDocxParser();
+            var result=await parser.convertToHtml({arrayBuffer:await file.arrayBuffer()},{convertImage:parser.images.imgElement(function(){return Promise.resolve({src:""});})});
+            // An inert template is never mounted. Preserve soft breaks in local text.
+            var template=t.createElement("template");template.innerHTML=result.value;
+            template.content.querySelectorAll("br").forEach(function(node){node.replaceWith(t.createTextNode("\n"));});
+            template.content.querySelectorAll("p,li,h1,h2,h3,h4").forEach(function(node){node.appendChild(t.createTextNode("\n\n"));});
+            return {ok:true,text:template.content.textContent||"",source:"DOCX"};
+        } catch (_) {
+            var lang=String(t.documentElement.lang||"en").split("-")[0];
+            return {ok:false,text:"",message:({fr:"Impossible de lire ce DOCX localement. Réessayez ou copiez son texte dans la zone de saisie.",sw:"DOCX hii haikuweza kusomwa kwenye kifaa hiki. Jaribu tena au nakili maandishi yake kwenye kisanduku."}[lang]||"This DOCX could not be read locally. Try again or paste its text into the input box.")};
+        }
+    }
     function h() {
         var n = function() {
             var e = t.getElementById("cv-import-assistant-modal");
@@ -380,7 +405,7 @@
             }), e;
         }(), r = n.querySelector("[data-import-input-panel]"), a = n.querySelector("[data-import-review]"), s = n.querySelector("[data-import-status]"), c = n.querySelector("[data-import-text]"), l = n.querySelector("[data-import-file]");
         var backupLocale = String(t.documentElement.lang || "en").split("-")[0];
-        n.querySelector(".cv-import-upload span").textContent = ({fr:"JSON restaure une sauvegarde AfroTools. TXT importe du texte. PDF et DOCX nécessitent un analyseur local compatible.",sw:"JSON hurejesha nakala ya AfroTools. TXT huingiza maandishi. PDF na DOCX zinahitaji kichanganuzi kinachofaa kwenye kifaa hiki."}[backupLocale] || "JSON restores an AfroTools backup. TXT imports text. PDF and DOCX need a compatible local parser.");
+        n.querySelector(".cv-import-upload span").textContent = ({fr:"JSON restaure une sauvegarde AfroTools. TXT importe du texte. DOCX charge un analyseur local à la demande. PDF nécessite un analyseur compatible.",sw:"JSON hurejesha nakala ya AfroTools. TXT huingiza maandishi. DOCX hupakia kichanganuzi cha ndani inapohitajika. PDF inahitaji kichanganuzi kinachofaa."}[backupLocale] || "JSON restores an AfroTools backup. TXT imports text. DOCX loads a local parser when needed. PDF needs a compatible parser.");
         i("cv_import_started", {
             source: "modal"
         }), n.__returnFocus = t.activeElement, n.classList.add("open"), a.hidden = !0, r.hidden = !1, setTimeout(function() {
@@ -433,16 +458,7 @@
                             source: "PDF"
                         };
                     }
-                    if ((/\.docx$/i.test(n) || /officedocument\.wordprocessingml\.document/i.test(t.type)) && e.mammoth) {
-                        var l = await t.arrayBuffer();
-                        return {
-                            ok: !0,
-                            text: (await e.mammoth.extractRawText({
-                                arrayBuffer: l
-                            })).value || "",
-                            source: "DOCX"
-                        };
-                    }
+                    if (/\.docx$/i.test(n) || /officedocument\.wordprocessingml\.document/i.test(t.type)) return await readDocxFile(t);
                     return /\.pdf$/i.test(n) || /pdf/i.test(t.type) ? {
                         ok: !1,
                         text: "",
@@ -481,6 +497,7 @@
     }
     e.CVImportAssistant = {
         open: h,
+        readDocxFile: readDocxFile,
         extractSections: v,
         buildDataFromCards: g
     }, "loading" === t.readyState ? t.addEventListener("DOMContentLoaded", w) : w();
