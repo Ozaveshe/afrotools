@@ -88,3 +88,9 @@ All9current invoice-generator browser cases passed in the coordinator workspace 
 Final receipt6+Frenchinvoice3 checks passed. Invoice/freelance owner export optout56153e14 and global JSONbyte-preservation a6db8721 integrated, with collisiontest80fd930c;3JSONunit and2actualinvoicebackup browser tests PASS. Freelance import safety13efa91e integrated; actualmerge/prototype check and3browser importer checksPASS. StyledCV9ad638d8 passed5node tests; receiptTXT/nativecopy629ddb36 andinvoicePDFseparator4e894c8d integrated. Coordinator6styledCV/modernreceipt cases running.
 
 A thermal/compact receipt-width regression introduced by the printable clone is being fixed before release. Fullbuild/releasechecks stillpending. Further CVJSONrestore/Pan-African Minimal, receiptremainingtemplates andlonginvoice checks remainseparate next-batch work; no broadappacceptance implied.
+
+### Receipt template validation and release checks
+
+Coordinator styled-CV/modern-receipt checks completed: all six passed. Receipt print-width fix aeff9008 restores thermal (308px and monospace), compact (360px), and tax (420px) dimensions; all 12 English/French/Swahili template export cases passed. The coordinator inspected the French thermal PDF visually. Numeric tokens, source-image coverage, native labels and exact user values passed; non-modern long receipts and selectable receipt PDF text remain outside this evidence.
+
+The broad test run identified two release failures: protected minimum-wage artifact metadata differs after the CSV precision change, and three French invoice navigation links led to English destinations. Commit d5ba9aa4 repairs navigation through the existing source-owned helper; both navigation tests now pass. Formula metadata review and the remaining broad test/audit batch are still in progress. Nothing from this repair batch has been deployed. Free-app parity remains the active goal; Pro assessment follows it.
