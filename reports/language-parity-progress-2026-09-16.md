@@ -46,3 +46,15 @@ Coordinator career browser run completed: all eight checks passed together in th
 ### Swahili pointer stability
 
 `9be29016` keeps the active accessibility stylesheet attached while placing later style owners before it. Coordinator syntax/diff checks and all 11 browser tests passed: three locale invoice workflows with real pointer interactions, plus both Swahili invoice apps at 320/390px in light/dark themes. Tests verify that the stylesheet is not removed, its sheet identity is retained, pointer geometry remains stable and the clicked action actually changes app state. These checks address the reproduced defect; they are not universal document-category visual acceptance.
+
+User scope clarification: finish the 1,256 free apps first, then assess Pro separately. Do not expand the current repair wave into paid Pro implementation. Preserve the broader follow-up assessment after free-app evidence is complete.
+
+### Next financial capability review
+
+Source inspection found the English overtime TOIL comparison computes cash and time-off value from algebraically equivalent expressions, then uses strict floating-point greater-than to choose a negotiation verdict. It also hardcodes an eight-hour day. Review this shared EN/SW calculation/display against explicit working-day assumptions and add independent boundary fixtures before promoting the comparison into French. French currently lacks the TOIL controls; copying the English comparison unchanged would import its limitations. No statutory-rate claim or rate update is made by this finding.
+
+### Overtime comparison correction
+
+The shared HR engine now returns a planning-only time-off equivalent using the recorded daily hours, or a disclosed eight-hour fallback. EN/SW show that equivalent directly, avoiding a false cash-advantage verdict from floating-point rounding. French includes equivalent hours/days and the actual multiplier/day assumption in results and exports. Cash-pay formulas and recorded legal rates are unchanged; availability/conversion must still be confirmed separately.
+
+Passed: three independent engine/owner tests, existing payroll checks, French HR contract, i18n/hreflang and all three locale browser cases (EN/SW initial run; FR corrected and rerun). The first FR export check caught an omitted nonnumeric assumption in the generic export collector; the final comparison explicitly includes its numerical multiplier and the downloaded TXT retains the full assumption. This does not prove all generic exports retain every nonnumeric caveat. Country-name localization and the overtime dispute-letter workflow remain outside this scoped comparison repair.

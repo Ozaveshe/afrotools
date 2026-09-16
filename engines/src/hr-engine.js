@@ -85,6 +85,9 @@
       var r = OVERTIME_RULES[t.country], o = r.standardHours.weekly || 40, a = t.monthlySalary / (4.33 * o), l = r.overtimeRate, u = 1.5, c = t.dayType || "weekday";
       "weekday" === c ? u = l.weekday || l.daytime || l.first8hrs || l.day || 1.5 : "weekend" === c || "restDay" === c ? u = l.weekend || l.restDay || l.sunday || l.restDayDay || 2 : "publicHoliday" === c ? u = l.publicHoliday || l.restDay || 2 : "night" === c && (u = l.night || l.nighttime || l.nightWeekday || 1.5);
       var y = a * u * t.overtimeHours, i = t.monthlySalary + y, m = i / (4.33 * o + t.overtimeHours);
+      var dailyHours = Number(r.standardHours.daily);
+      var dailyHoursAssumed = !(dailyHours > 0 && Number.isFinite(dailyHours));
+      if (dailyHoursAssumed) dailyHours = 8;
       return {
         country: r.name,
         currency: r.currency,
@@ -96,6 +99,14 @@
         overtimePay: y,
         totalPay: i,
         effectiveHourly: m,
+        timeOffEquivalent: {
+          hours: t.overtimeHours * u,
+          days: t.overtimeHours * u / dailyHours,
+          hoursPerDay: dailyHours,
+          hoursPerDayAssumed: dailyHoursAssumed,
+          dailyValue: a * dailyHours,
+          cashEquivalent: y
+        },
         maxOvertime: r.maxOvertime || null,
         notes: r.notes || "",
         exemptions: r.exemptions || null,

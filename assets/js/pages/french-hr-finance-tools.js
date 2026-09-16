@@ -72,7 +72,11 @@
       ['Coefficient appliqué', result.otMultiplier.toFixed(2) + '×'],
       ['Paiement des heures supplémentaires', result.fOvertimePay],
       ['Rémunération mensuelle totale', result.fTotalPay],
-      ['Taux horaire effectif', result.fEffectiveHourly]
+      ['Taux horaire effectif', result.fEffectiveHourly],
+      ['Repos équivalent (comparaison indicative)', result.timeOffEquivalent.hours.toLocaleString('fr', { maximumFractionDigits: 2 }) + (result.timeOffEquivalent.hours === 1 ? ' heure' : ' heures')],
+      ['Jours de repos équivalents', result.timeOffEquivalent.days.toLocaleString('fr', { maximumFractionDigits: 2 }) + (result.timeOffEquivalent.days === 1 ? ' jour' : ' jours')],
+      ['Durée de la journée utilisée', result.timeOffEquivalent.hoursPerDay + ' heures' + (result.timeOffEquivalent.hoursPerDayAssumed ? ' (hypothèse)' : ' (règle enregistrée)')],
+      ['Hypothèse de comparaison', 'Le coefficient de ' + result.otMultiplier.toLocaleString('fr') + '× et le même taux horaire donnent une valeur équivalente en espèces. La possibilité de prendre ce repos et sa conversion restent à confirmer.']
     ];
     if (mode === 'leave') {
       var taken = number('daysTaken');

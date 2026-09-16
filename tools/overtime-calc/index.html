@@ -536,20 +536,16 @@ function renderResults(result, rule, inputs) {
   /* TOIL block */
   var toilBlock = document.getElementById('toil-block');
   if (payType === 'toil') {
-    var toilHours = inputs.overtimeHours * result.otMultiplier; /* fair TOIL = OT hours × multiplier */
-    var toilDays = toilHours / 8;
-    var dailyRate = inputs.monthlySalary / (4.33 * (rule.standardHours.weekly || 40)) * 8;
-    var toilCashEquiv = toilDays * dailyRate;
-    var cashIsBetter = result.overtimePay > toilCashEquiv;
-    var diff = Math.abs(result.overtimePay - toilCashEquiv);
-    var pct = toilCashEquiv > 0 ? Math.round((diff / toilCashEquiv) * 100) : 0;
+    var comparison = result.timeOffEquivalent;
+    var toilHours = comparison.hours;
+    var toilDays = comparison.days;
+    var dailyRate = comparison.dailyValue;
+    var toilCashEquiv = comparison.cashEquivalent;
     document.getElementById('toil-cash').textContent = cur + ' ' + fmt(result.overtimePay);
     document.getElementById('toil-hours').textContent = fmt(toilHours, 1) + ' hrs';
     document.getElementById('toil-days').textContent = fmt(toilDays, 1) + ' days';
     document.getElementById('toil-daily-rate').textContent = cur + ' ' + fmt(dailyRate) + '/day';
-    document.getElementById('toil-verdict').textContent = cashIsBetter
-      ? 'Cash is worth ' + pct + '% more than TOIL at your daily rate. Negotiate cash if possible.'
-      : 'TOIL equivalent value (' + cur + ' ' + fmt(toilCashEquiv) + ') is similar to cash. TOIL is a fair deal.';
+    document.getElementById('toil-verdict').textContent = 'Planning comparison: the same hourly rate and overtime multiplier give the same cash value (' + cur + ' ' + fmt(toilCashEquiv) + '). One day uses ' + comparison.hoursPerDay + ' hours' + (comparison.hoursPerDayAssumed ? ' (assumed)' : ' from the recorded rule') + '. Confirm whether time off and this conversion are available.';
     toilBlock.style.display = '';
   } else {
     toilBlock.style.display = 'none';

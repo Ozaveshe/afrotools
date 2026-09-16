@@ -220,6 +220,7 @@ var SW_COUNTRY_NAMES = ${JSON.stringify(SW_COUNTRY_NAMES, null, 2)};`
     ['Select a country and calculate overtime to see insights on local labour law practices.', 'Chagua nchi uone muhtasari wa sheria za kazi, saa za kawaida na viwango vya muda wa ziada.'],
   ]);
 
+  html = html.replace(/document\.getElementById\('toil-verdict'\)\.textContent = 'Planning comparison:[^\n]+;/, "document.getElementById('toil-verdict').textContent = 'Ulinganisho wa kupanga: kiwango kilekile cha saa na kizidishi cha muda wa ziada vinatoa thamani sawa ya fedha (' + cur + ' ' + fmt(toilCashEquiv) + '). Siku moja ina saa ' + comparison.hoursPerDay + (comparison.hoursPerDayAssumed ? ' (dhana)' : ' kulingana na kanuni iliyorekodiwa') + '. Thibitisha kama mapumziko na ubadilishaji huu vinapatikana.';");
   write('sw/zana/kikokotoo-muda-wa-ziada/index.html', html);
 }
 
