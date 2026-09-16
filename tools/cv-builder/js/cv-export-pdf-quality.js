@@ -46,14 +46,22 @@
          }), [[e.breakExp,"experience"],[e.breakEdu,"education"],[e.breakProjects,"projects"],[e.breakRefs,"references"]].forEach(function(entry) {
             if(entry[0]) Array.prototype.forEach.call(t.querySelectorAll('[data-cv-section="'+entry[1]+'"]'),function(section){section.classList.add("cv-export-break-before");});
         }), "one-page" === e.density && e.hideOptionalForOnePage && function(t) {
-            var e = [ /references/i, /additional/i, /awards/i, /volunteer/i, /hobbies/i, /interests/i, /memberships/i ];
-            Array.prototype.forEach.call(t.querySelectorAll("section, article, .prod-section"), function(t) {
-                var r = t.querySelector("h2,h3,h4,strong"), a = r ? r.textContent : t.textContent;
-                e.some(function(t) {
-                    return t.test(a || "");
-                }) && t.classList.add("cv-export-hide-optional");
+            var optional = ["references","awards","volunteering","interests","memberships","custom"];
+            Array.prototype.forEach.call(t.querySelectorAll("[data-cv-section]"),function(section){
+                if(optional.indexOf(section.dataset.cvSection)>=0) section.classList.add("cv-export-hide-optional");
             });
         }(t);
+    }
+    function confirmOptionalSections(options) {
+        options.hideOptionalForOnePage = false;
+        if(options.density !== "one-page") return;
+        var lang=String(e.documentElement.lang||"en").split("-")[0];
+        var messages={
+            en:"For this export, hide references, awards, volunteering, interests, memberships and custom sections to try fitting one page? Cancel keeps every section. Your saved CV stays unchanged; the export may still need several pages.",
+            fr:"Pour cet export, masquer les références, distinctions, bénévolat, centres d’intérêt, affiliations et sections personnalisées afin d’essayer de tenir sur une page ? Annuler conserve toutes les sections. Votre CV enregistré reste inchangé ; plusieurs pages peuvent rester nécessaires.",
+            sw:"Kwa uhamishaji huu, ficha wadhamini, tuzo, kujitolea, mapendeleo, uanachama na sehemu maalum ili kujaribu kutoshea ukurasa mmoja? Ghairi huhifadhi sehemu zote. CV iliyohifadhiwa haibadiliki; bado inaweza kuhitaji kurasa kadhaa."
+        };
+        options.hideOptionalForOnePage=t.confirm(messages[lang]||messages.en);
     }
     function h() {
         return t.loadPdfLibs ? t.loadPdfLibs() : Promise.resolve();
@@ -138,10 +146,8 @@
             r = !0, n("Generating PDF..."), c(!0);
             var e = Object.assign({}, i());
             try {
-                if ("one-page" === e.density && function(e) {
-                    "one-page" === e.density && (e.hideOptionalForOnePage || t.confirm("One-page attempt can hide low-priority optional sections in the exported copy only. Your saved CV data will not change. Continue?") && (e.hideOptionalForOnePage = !0,
-                    t.CVExportUpgrade && t.CVExportUpgrade.setOptions && t.CVExportUpgrade.setOptions(e)));
-                }(e), await h(), !t.html2canvas || !t.jspdf || !t.jspdf.jsPDF) throw new Error("PDF libraries unavailable");
+                confirmOptionalSections(e);
+                if (await h(), !t.html2canvas || !t.jspdf || !t.jspdf.jsPDF) throw new Error("PDF libraries unavailable");
                 for (var f = await x(e), u = new t.jspdf.jsPDF({
                     orientation: "portrait",
                     unit: "mm",
@@ -204,7 +210,8 @@
         if (r) {
             var a = t.open("", "_blank");
             if (a) {
-                var s = i(), c = r.cloneNode(!0);
+                var s = Object.assign({},i()), c = r.cloneNode(!0);
+                confirmOptionalSections(s);
                 f(c, s), a.document.write([ "<!DOCTYPE html><html><head><title>" + l("pdf").replace(/\.pdf$/i, "") + "</title>", '<link rel="stylesheet" href="/assets/css/design-system.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-upgrade.css">', '<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-polish.css">', "<style>@page{size:A4;margin:8mm}html,body{margin:0;background:#fff}.cv-print-document{width:194mm;margin:0 auto}#cvpreview{width:595px!important;min-height:841px!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;background:#fff!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style>", '</head><body class="cv-export-print-body"><main class="cv-print-document">', c.outerHTML, "</main></body></html>" ].join("")),
                 a.document.close(), n("Print opened"), p("cv_pdf_exported", {
                     template: o().template || "",
