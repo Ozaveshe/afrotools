@@ -31,3 +31,14 @@ This resumed phase has not been deployed. Broad app parity remains unproven. No 
 `node scripts/audit-language-capabilities.js --output=<evidence-json-path>` reads fresh route inventories and parses all three locales with an inert browser DOM parser. It does not execute page scripts, and browser network access is blocked. `--ids=invoice-generator,pdf-merge-split` narrows discovery to named apps. Output records file hashes, static controls/scripts and ID differences; every row remains `requires-workflow-review`. Runtime-generated controls, different IDs for equivalent features, and shared app launchers require further inspection.
 
 The initial run inspected all 1,256 apps. It corroborated the French invoice control gaps, while PDF merge/split and CV builder had matching static control IDs. Neither matching IDs nor differences prove functional parity or failure. The complete private evidence file is `language-capabilities-static.json`; page hashes bind it to the inspected files.
+
+## Integrated document wave
+
+- `fd44e743`: PDF evidence now distinguishes structural validity, parsed text and operation semantics. Coordinator passed merge/split page identity/order, actual reverse order, full-page redaction and evidence-negative checks.
+- `47e7a72a`: freelance invoice field changes preserve line-item DOM and focus. Coordinator passed all three locales with independently calculated totals, save/reload/import and parsed PDF/DOC/TXT/CSV/JSON output. These tests do not prove mobile pointer behavior; a separate Swahili stylesheet movement defect is being repaired.
+- Combined coordinator run: seven browser tests passed. Fresh partial receipts were saved outside the repository; historical full-category receipts were restored instead of replacing them with a partial run.
+- `d2f26129` and `50bc82d7`: CV/cover-letter local embedded-font work integrated. Eleven coordinator parser/font-provenance tests passed. Eight browser checks are running. Native CV headings, status text and asynchronous state-change behavior remain under active follow-up.
+
+Static capability baseline: 1,256 apps inspected in all three locales. Raw ID differences are discovery signals; they do not establish missing features without workflow review. French minimum-wage and overtime use materially different forms from English and need capability/correctness review, not an automatic transplant of English assumptions.
+
+Coordinator career browser run completed: all eight checks passed together in the integrated tree. Scope remains the tested exports, mobile overflow, unsupported-character failure and cover-letter stale-draft guard; additional native CV/state work is still pending.
