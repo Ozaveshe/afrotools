@@ -36,6 +36,7 @@ const JS_PAIRS = [
   ['assets/js/components/site-assistant.js', 'assets/js/components/site-assistant.min.js'],
   ['assets/js/favorites.js',                'assets/js/favorites.min.js'],
   ['assets/js/pages/pdf-compress.js',       'tools/pdf-compress/app.js'],
+  ['assets/js/pages/pdf-image-convert.js',  'tools/pdf-image-convert/app.js'],
 ];
 
 // CSS files: source -> min
