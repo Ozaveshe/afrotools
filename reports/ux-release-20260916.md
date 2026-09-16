@@ -19,3 +19,11 @@ Integration base: origin/main at 9a792f300b07352a878e1503f66123e6942666b2. The f
 - Netlify MCP confirmed the intended AfroTools site and registered contact form. No real message was sent.
 
 Full-suite and production evidence will be recorded when complete. This record does not claim deployment or inbox delivery.
+
+## Release gate results
+
+- build:checks passed, including calculation quality and generated route/localization contracts.
+- Full npm test exercised 1,079 test files and all seven audits. The initial run reported three failures: calculation-quality, French uniquely-African source fingerprints, and Swahili PAYE English controller fingerprint. Each was reviewed as documented above, corrected without changing numerical expectations, and rerun together with node --test: 3 passed, 0 failed. All other tests and all seven audits passed. A clean aggregate CI run remains the final confirmation.
+- Final rebuilt artifact passed audit:dist and security:scan again.
+- Optimized reverse-calculation browser check: repeated clicks preserve desired monthly net 1,500,000 and required monthly gross 2,156,922.
+- The release tree was clean after committing expected generated assets and reviewed contracts. Unrelated Hausa audit report churn was removed from this batch.
