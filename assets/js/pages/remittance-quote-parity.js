@@ -18,12 +18,17 @@
   function value(id){return document.getElementById(id).value.trim();}
   function quote(letter){return{label:value(`rm-${letter}-label`),sendCurrency:value(`rm-${letter}-send`),totalDebit:value(`rm-${letter}-debit`),receiveCurrency:value(`rm-${letter}-receive`),recipientAmount:value(`rm-${letter}-recipient`),statedFee:value(`rm-${letter}-fee`),payoutMethod:value(`rm-${letter}-payout`),deliveryMinutes:value(`rm-${letter}-delivery`),observedAt:value(`rm-${letter}-observed`),expiresAt:value(`rm-${letter}-expires`)};}
   function clear(preserveError){last=null;output.replaceChildren();document.getElementById('rm-primary-label').textContent='';document.getElementById('rm-primary-value').textContent='—';status.textContent='';if(!preserveError){error.textContent='';error.removeAttribute('data-show');}}
+  const errorFields={OBSERVED_AT_REQUIRED:'observed',OBSERVED_AT_FUTURE:'observed',INVALID_EXPIRY:'expires',EXPIRY_BEFORE_OBSERVED:'expires',TOTAL_DEBIT_REQUIRED:'debit',RECIPIENT_AMOUNT_REQUIRED:'recipient',INVALID_STATED_FEE:'fee',FEE_EXCEEDS_DEBIT:'fee',INVALID_DELIVERY:'delivery',LABEL_REQUIRED:'label',SEND_CURRENCY_REQUIRED:'send',RECEIVE_CURRENCY_REQUIRED:'receive',INVALID_PAYOUT_METHOD:'payout'};
+  function clearFieldErrors(){form.querySelectorAll('[aria-invalid="true"]').forEach(field=>{field.removeAttribute('aria-invalid');const ids=(field.getAttribute('aria-describedby')||'').split(' ').filter(id=>id&&id!=='rm-error');if(ids.length)field.setAttribute('aria-describedby',ids.join(' '));else field.removeAttribute('aria-describedby');});}
+  function fail(field){clear(true);clearFieldErrors();const label=field&&form.querySelector('label[for="'+field.id+'"] span');error.textContent=(label?label.textContent+': ':'')+t.invalid;error.dataset.show='true';if(field){field.setAttribute('aria-invalid','true');field.setAttribute('aria-describedby',((field.getAttribute('aria-describedby')||'')+' rm-error').trim());field.focus();}return null;}
   function calculate(event){
     if(event)event.preventDefault();
-    if(!form.checkValidity()){error.textContent=t.invalid;error.dataset.show='true';form.reportValidity();clear(true);return null;}
+    clearFieldErrors();const invalid=Array.from(form.elements).find(field=>field.willValidate&&!field.validity.valid);if(invalid)return fail(invalid);
     const quotes=[quote('a'),quote('b')];
     if(document.getElementById('rm-third').checked)quotes.push(quote('c'));
-    try{last=window.RemittanceQuoteComparatorEngine.calculate({asOf:new Date().toISOString(),quotes});}
+    const asOf=new Date().toISOString();
+    for(let index=0;index<quotes.length;index++){try{window.RemittanceQuoteComparatorEngine.calculate({asOf,quotes:[quotes[index],quotes[index]]});}catch(exception){return fail(document.getElementById('rm-'+['a','b','c'][index]+'-'+(errorFields[exception.message]||'label')));}}
+    try{last=window.RemittanceQuoteComparatorEngine.calculate({asOf,quotes});}
     catch(exception){error.textContent=t.invalid;error.dataset.show='true';clear(true);return null;}
     error.textContent='';error.removeAttribute('data-show');render(last);status.textContent=t.updated;return last;
   }
@@ -60,6 +65,6 @@
   const theme=document.getElementById('rm-theme');
   if(theme){const applyTheme=(dark)=>{document.documentElement.dataset.theme=dark?'dark':'light';document.body.dataset.remitTheme=dark?'dark':'light';theme.setAttribute('aria-pressed',String(dark));theme.textContent=dark?'Aperçu clair':'Aperçu sombre';};applyTheme(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);theme.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme!=='dark'));}
   form.addEventListener('submit',calculate);
-  form.addEventListener('input',()=>clear());
-  form.addEventListener('reset',()=>setTimeout(()=>{const third=document.getElementById('rm-third');const section=document.getElementById('rm-quote-c');third.checked=false;section.hidden=true;section.querySelectorAll('input,select').forEach((control)=>{control.disabled=true;});error.textContent='';clear();},0));
+  form.addEventListener('input',()=>{clear();clearFieldErrors();});
+  form.addEventListener('reset',()=>setTimeout(()=>{const third=document.getElementById('rm-third');const section=document.getElementById('rm-quote-c');clearFieldErrors();third.checked=false;section.hidden=true;section.querySelectorAll('input,select').forEach((control)=>{control.disabled=true;});error.textContent='';clear();},0));
 }());

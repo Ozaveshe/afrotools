@@ -23,3 +23,17 @@ No current quote or provider freshness is established by these tests. The unchan
 Copied summaries previously omitted fee, effective rate, payout, delivery and checked/expiry timestamps. They now retain these values with native labels, both currency units and ISO timestamps including timezone; actual expiry state remains separately labeled. Result cards now show payout, delivery and actual expiry too. User labels remain text content and are not translated. JSON retains the existing complete machine-readable schema unchanged.
 
 Combined final browser run: 15/15 passed in 27.4s (remittance-context-final), including native copied context, exact timestamp/fee/currency preservation and the full mobile/dark/reset matrix after the longer result cards. Syntax and diff checks pass. French-only theme button is emitted only by pageFr; its French labels match that existing control. EN/SW use the shared navbar theme control.
+
+## Native controls, validation and discovery
+
+Swahili payout options now read Benki, Pochi ya simu, Taslimu and Nyingine, preserving stable enum values. The generator template owns these labels. Its explicit --sync-payout-labels mode updates exactly three uniquely identified selects per SW route and preserves every other byte; missing/duplicate controls fail. Full generation still composes its existing source owners normally. A trial full regeneration removed release metadata/footer additions, so that trial output was discarded before the scoped synchronization.
+
+Shared validation now identifies the first HTML-invalid field or the exact engine-invalid quote field, focuses it, adds aria-invalid and a description linking the native alert, and removes stale field errors on editing/reset. Tests exercise excessive fees, expiry before observation, future observation and zero recipient amount in all three languages. The French legacy helper remains compatible in the browser evidence.
+
+Registry descriptions no longer advertise eleven named providers, cheapest transfers or available country corridors. EN/FR/SW descriptions state the actual user-entered quote workflow and absence of live provider tariffs.
+
+Checks: six focused Chromium cases passed in 14.9s; payout synchronization owner positive/negative tests passed; repeat synchronization found zero drift; pure engine test passed; registry audit passed; check-links found no broken links (141852 links,11793 HTML files). No provider freshness was verified.
+
+## Corridor gap remains unresolved
+
+Independent synthetic engine reproduction: USD100→XOF58000 labelled Senegal and USD100→XOF59000 labelled Côte d’Ivoire form the same USD|XOF|100 group; the second is marked highest. Supplying receiveCountry SN/CI is ignored. The UI has no explicit country controls. Thus equal currency and debit alone do not prove an interchangeable route. No engine change is included here. Proposed separate correction requires explicit normalized origin/destination context per quote before comparison; missing context should not silently establish route equivalence. Payout service equivalence also needs an explicit grouping decision.
