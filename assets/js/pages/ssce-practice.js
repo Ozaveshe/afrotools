@@ -33,9 +33,9 @@
       var topicsSummary={};state.ids.forEach(function(id){var item=bank.questions.find(function(q){return q.id===id;});var s=topicsSummary[item.topic]||(topicsSummary[item.topic]={total:0,correct:0});s.total++;if(state.answers[id]===item.answer)s.correct++;});
       var list=node('ul');Object.keys(topicsSummary).forEach(function(t){list.append(node('li',(bank.ui&&bank.ui[t]||t)+': '+topicsSummary[t].correct+'/'+topicsSummary[t].total));});area.append(list);
       if(score.missed.length)area.append(act('Retry missed questions',function(){state=api.retry(state,bank);message('A new retry session has started.');render();},true));
-      area.append(act('Save a revision session for tomorrow',function(){var saved=day.read(localStorage),date=day.addDays(day.today(),1),subjects=Array.from(new Set(state.ids.map(function(id){return bank.questions.find(function(q){return q.id===id;}).subject;}))).join(' & '),id='ssce|'+date+'|'+subjects;
-        if(!saved.tasks.some(function(t){return t.id===id;}))saved.tasks.push({id:id,subject:t('WAEC/NECO practice: ')+subjects.split(' & ').map(t).join(' & '),date:date,minutes:20,doneAt:null,sourceId:'ssce-practice'});
-        day.write(localStorage,saved);message('Revision saved for tomorrow in your study day.');
+      area.append(act('Save a revision session for tomorrow',function(){var date=day.addDays(day.today(),1),subjects=Array.from(new Set(state.ids.map(function(id){return bank.questions.find(function(q){return q.id===id;}).subject;}))).map(t).join(' & ');
+        var revision={bankId:bank.id,locale:bank.locale||'en',ids:score.missed.length?score.missed.slice():state.ids.slice()};
+        day.write(localStorage,day.scheduleRevision(day.read(localStorage),revision,t('WAEC/NECO practice: ')+subjects,date));message('Revision saved for tomorrow in your study day.');
       }));
     }
     var controls=node('div',undefined,'practice-actions');
@@ -43,4 +43,14 @@
   }
   document.getElementById('practice-resume').addEventListener('click',function(){try{var raw=localStorage.getItem(api.key);if(!raw){message('There is no saved session on this device.');return;}state=api.normalize(JSON.parse(raw),bank);render();message('Saved session restored.');}catch(e){message('Saved progress could not be loaded. It has been kept unchanged. You can still start a new session and download a backup.');}});
   document.getElementById('practice-import').addEventListener('change',async function(){var file=this.files[0];if(!file)return;try{if(file.size>100000)throw Error('Choose a practice backup smaller than 100 KB.');var next=api.normalize(JSON.parse(await file.text()),bank);state=next;render();message('Backup opened. Choose Save progress to keep it on this device.');}catch(e){message(t('Backup not opened: ')+errorText(e));}this.value='';});
+  function openRevision(){
+    var id=new URLSearchParams(location.hash.slice(1)).get('revision');if(!id)return;
+    try{
+      var task=day.read(localStorage).tasks.find(function(task){return task.id===id;});
+      if(!task||!task.revision||task.revision.locale!==(bank.locale||'en'))throw new Error('This revision session is unavailable on this device.');
+      var next=api.normalize({version:1,bankId:task.revision.bankId,ids:task.revision.ids,index:0,answers:{}},bank);
+      state=next;render();message('Saved session restored.');
+    }catch(error){message(errorText(error));}
+  }
+  window.addEventListener('hashchange',openRevision);openRevision();
 })();

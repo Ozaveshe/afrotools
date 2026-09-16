@@ -92,6 +92,7 @@ ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)
 <main class="jb-wrap jamb-reviewed-paper">
 <nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}</nav>
 <h1>JAMB ${esc(paper)}</h1>
+${subject === 'mathematics' && year === null ? '<p><a href="/jamb/mathematics/recent-practice/">Practise five Mathematics tasks from a source-labelled 2023 collection</a></p>' : ''}
 ${year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
 ${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>Practice selection: full-paper coverage has not been confirmed.</p><div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
     : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}

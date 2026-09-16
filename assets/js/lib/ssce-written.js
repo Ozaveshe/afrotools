@@ -5,6 +5,10 @@
 })(typeof window==='undefined'?null:window,function(){
   'use strict';
   var key='afrotools.ssceWritten.v1';
+  function keyFor(bank){
+    if(!bank||typeof bank.id!=='string'||!/^[-a-z0-9]{1,100}$/.test(bank.id))throw Error('This written-practice backup is not supported.');
+    return bank.id==='ssce-written-v1'?key:key+'.'+bank.id;
+  }
   function empty(bank){return {version:1,bankId:bank.id,entries:{}};}
   function normalize(value,bank){
     if(!value||value.version!==1||value.bankId!==bank.id||!value.entries||typeof value.entries!=='object'||Array.isArray(value.entries))throw Error('This written-practice backup is not supported.');
@@ -16,12 +20,12 @@
     });
     return out;
   }
-  function read(storage,bank){var raw=storage.getItem(key);return raw?normalize(JSON.parse(raw),bank):empty(bank);}
+  function read(storage,bank){var raw=storage.getItem(keyFor(bank));return raw?normalize(JSON.parse(raw),bank):empty(bank);}
   function write(storage,bank,id,entry){
     // Validate the existing snapshot before replacing it. Failed writes preserve the editor.
     var state=read(storage,bank);state.entries[id]=entry;state=normalize(state,bank);
-    var raw=JSON.stringify(state);storage.setItem(key,raw);
-    if(storage.getItem(key)!==raw)throw Error('The browser did not confirm this save. Download a backup to keep your work.');
+    var raw=JSON.stringify(state),storageKey=keyFor(bank);storage.setItem(storageKey,raw);
+    if(storage.getItem(storageKey)!==raw)throw Error('The browser did not confirm this save. Download a backup to keep your work.');
     return state;
   }
   function report(bank,state){
@@ -30,5 +34,5 @@
     bank.items.forEach(function(q){var entry=state.entries[q.id];if(!entry)return;lines.push('',q.title,t(q.origin),q.sourceUse,q.source,q.passage||'',q.prompt,t('My response:'),entry.answer,t('Self-review:'),...q.checks.map(function(c,i){return (entry.checks[i]?'[x] ':'[ ] ')+c;}),t('Worked guide:'),q.answer,...q.steps);});
     return lines.filter(function(line){return line!==undefined;}).join('\n');
   }
-  return {key:key,empty:empty,normalize:normalize,read:read,write:write,report:report};
+  return {key:key,keyFor:keyFor,empty:empty,normalize:normalize,read:read,write:write,report:report};
 });

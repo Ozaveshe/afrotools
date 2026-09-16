@@ -13,7 +13,7 @@ test('written responses round-trip without losing another task and reject malfor
 });
 test('every written task has provenance, complete local context and a worked self-review guide',()=>{
  assert.equal(new Set(bank.items.map(q=>q.id)).size,bank.items.length);
- for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
+ for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.ok([1,5,9].includes(q.number));continue;}assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
  assert.ok(bank.items.find(q=>q.id==='written-e-summary').passage.includes('refill station'));
  assert.match(api.report(bank,{...api.empty(bank),entries:{'written-m1':{answer:'45',checks:[true,false]}}}),/My response:\n45/);
 });
@@ -61,4 +61,13 @@ test('new 2022 companions agree with independently reconstructed distributions a
  const candidates=[];for(let k=0;k<100;k++){const ages=[3,4,5,6,7,8,9,10].flatMap((age,i)=>Array([2,6,5,k,6,9,8,5][i]).fill(age));if(ages.reduce((a,b)=>a+b)/ages.length===7)candidates.push({k,ages});}assert.equal(candidates.length,1);assert.equal(candidates[0].k,4);const ages=candidates[0].ages;assert.ok(Math.abs(ages.reduce((s,a)=>s+a*a,0)/ages.length-49-196/45)<1e-12);assert.match(get(10).answer,/k = 4.*2.087/);
  assert.equal(2*(22/7)*3.5*(3.5+6),209);const H=19*Math.sin(38*Math.PI/180)*Math.sin(43*Math.PI/180)/Math.sin(5*Math.PI/180);assert.equal(H.toFixed(1),'91.5');assert.match(get(13).answer,/6 cm.*91.5 m/);
  assert.match(bank.scope,new RegExp(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics').length+' WAEC Mathematics companions'));
+});
+
+test('2021 complete selected mathematics tasks agree with independently reconstructed journeys and vectors',()=>{
+ const q2=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q2');const q3=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q3');
+ const solutions=[];for(let km=1;km<200;km++)if(Math.abs(km/72*60+(km+2)/40*60+120-235)<1e-10)solutions.push(km);
+ assert.deepEqual(solutions,[48]);assert.equal(q2.answer,'48 km.');assert.match(q2.prompt,/two-hour/);assert.match(q2.prompt,/2 km longer/);
+ const displacement={east:20,north:-15};assert.equal(Math.hypot(displacement.east,displacement.north),25);
+ const bearing=(Math.atan2(displacement.east,displacement.north)*180/Math.PI+360)%360;assert.equal(Math.round(bearing),127);assert.equal(q3.answer,'(a) 25 km. (b) 127°.');assert.match(q3.prompt,/two significant figures/);assert.match(q3.prompt,/nearest degree/);
+ const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2023);assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);assert.match(writing[1].prompt,/national newspaper editor/);assert.match(writing[4].prompt,/Half a loaf is better than none/);
 });

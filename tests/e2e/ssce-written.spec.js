@@ -65,3 +65,20 @@ test('new 2022 tasks show optional complete solutions on small screens',async({p
  const bank=require('../../assets/js/lib/ssce-written-bank');
  for(const num of ['8ab','10','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
 });
+
+test('NECO starter shows exact source numbers and saves a worked response at mobile width',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await page.locator('#written-collection').selectOption('NECO 2023 Mathematics starter');
+ for(const [id,number,answer] of [['percentage',1,'90.'],['walking-time',5,'2/3 hour.'],['compound-interest',9,'₦432.59.']]){
+  await page.locator('#written-task').selectOption('neco-2023-mathematics-'+id);
+  await expect(page.locator('#written-editor')).toContainText('Paper III · Question '+number);
+  await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');
+  await page.getByRole('button',{name:'Save response on this device',exact:true}).click();
+  await page.getByText('Show worked solution',{exact:true}).click();await expect(page.locator('.written-explanation')).toContainText(answer);
+ }
+ await page.getByLabel('Your written answer',{exact:true}).fill('1200 × 1.08^4 − 1200 = 432.59');
+ await page.getByRole('button',{name:'Save response on this device',exact:true}).click();
+ await page.reload();await page.locator('#written-collection').selectOption('NECO 2023 Mathematics starter');await page.locator('#written-task').selectOption('neco-2023-mathematics-compound-interest');
+ await expect(page.getByLabel('Your written answer',{exact:true})).toHaveValue('1200 × 1.08^4 − 1200 = 432.59');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});

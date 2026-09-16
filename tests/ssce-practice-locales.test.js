@@ -11,11 +11,11 @@ const generator = require('../scripts/build-ssce-practice-locales');
 const quickBanks = { en: enQuick, fr: require('../assets/js/lib/ssce-practice-bank-fr'), sw: require('../assets/js/lib/ssce-practice-bank-sw') };
 const writtenBanks = { en: enWritten, fr: require('../assets/js/lib/ssce-written-bank-fr'), sw: require('../assets/js/lib/ssce-written-bank-sw') };
 
-test('all 89 identities, assessment language and backup contracts survive localization', () => {
+test('all 94 identities, assessment language and backup contracts survive localization', () => {
   const originalQuick = JSON.stringify(enQuick), originalWritten = JSON.stringify(enWritten);
   for (const locale of ['fr', 'sw']) {
     const quick = quickBanks[locale], written = writtenBanks[locale];
-    assert.equal(quick.questions.length, 52); assert.equal(written.items.length, 37);
+    assert.equal(quick.questions.length, 52); assert.equal(written.items.length, 42);
     assert.equal(quick.id, enQuick.id); assert.equal(written.id, enWritten.id);
     assert.deepEqual(quick.passages, enQuick.passages);
     for (const question of quick.questions) {
@@ -66,7 +66,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer('waec-2023-mathematics-p2-q3'), /13[,.]01 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q9'), /1[,.]6 m/);
     assert.match(answer('waec-2023-mathematics-p2-q13'), /−8x \+ 21y = 6/);
-    assert.equal(items.filter(q => q.exam === 'WAEC').length, 23);
+    assert.equal(items.filter(q => q.exam === 'WAEC').length, 25);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }
 });

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11559 |
-| Indexable pages | 9980 |
+| Public pages | 11560 |
+| Indexable pages | 9981 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5288 |
-| Documented fallbacks | 14827 |
-| Routes eligible for primary sitemaps | 9980 |
+| Genuine equivalence groups | 5289 |
+| Documented fallbacks | 14828 |
+| Routes eligible for primary sitemaps | 9981 |
 
 ## Locale Coverage
 
-- en: 6010 page records
+- en: 6011 page records
 - fr: 3803 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5429
+- page: 5430
 - tool: 4002
 - widget: 379
 
@@ -6120,6 +6120,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:955e3a7fd44c: en=`/cars/cote-divoire/`, fr=`/fr/cars/cote-divoire/`; x-default=`/cars/cote-divoire/`
 - equivalence:95719cbc6efc: en=`/tools/freelancer-rate/morocco/`, fr=`/fr/tools/calculateur-de-tarif-independant-maroc/`; x-default=`/tools/freelancer-rate/morocco/`
 - equivalence:957c45cfbf0d: en=`/tools/afrokitchen/recipes/gateau-piment/`; x-default=`/tools/afrokitchen/recipes/gateau-piment/`
+- equivalence:9582f1d8ea72: en=`/jamb/mathematics/recent-practice/`; x-default=`/jamb/mathematics/recent-practice/`
 - equivalence:959fb7802e0b: en=`/tools/tin-guide/ethiopia`, sw=`/sw/zana/mwongozo-tin/ethiopia/`; x-default=`/tools/tin-guide/ethiopia`
 - equivalence:95ab78dbf1c6: en=`/tools/solar-roi/lesotho/`, fr=`/fr/tools/roi-solaire/lesotho/`; x-default=`/tools/solar-roi/lesotho/`
 - equivalence:95b434a62743: en=`/tools/employment-contract/comoros`, fr=`/fr/tools/contrat-travail/comoros`; x-default=`/tools/employment-contract/comoros`

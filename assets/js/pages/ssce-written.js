@@ -51,5 +51,7 @@
   try{draft=api.read(localStorage,bank);}catch(e){message('Saved responses could not be read. Existing storage has been kept unchanged. You can write and download a backup.');}
   collection.addEventListener('change',tasks);select.addEventListener('change',render);tasks();
   document.getElementById('written-import').addEventListener('change',async function(){var file=this.files[0];if(!file)return;try{if(file.size>4000000)throw Error('Choose a written-practice backup smaller than 4 MB.');var incoming=api.normalize(JSON.parse(await file.text()),bank);capture();Object.keys(incoming.entries).forEach(function(id){if(!draft.entries[id]){draft.entries[id]=incoming.entries[id];dirty.add(id);}});render(true);message('Backup opened. Existing session responses were kept where tasks overlapped. Save each response you want to keep on this device.');}catch(e){message(t('Backup not opened: ')+errorText(e));}this.value='';});
+  function openLinkedTask(){var id=new URLSearchParams(location.hash.slice(1)).get('written');if(!id)return;var task=bank.items.find(function(q){return q.id===id;});if(!task)return;capture();collection.value=task.collection;tasks();select.value=id;render();area.scrollIntoView({block:'start'});}
+  window.addEventListener('hashchange',openLinkedTask);openLinkedTask();
   window.addEventListener('beforeunload',function(event){if(dirty.size){event.preventDefault();event.returnValue='';}});
 })();

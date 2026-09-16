@@ -75,7 +75,9 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks and 5 WAEC 2023 writing companions, plus 18 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks and 5 WAEC 2023 writing companions, plus 20 Mathematics companions, plus 3 NECO Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+
+5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
 
 ## Acquisition queue
 
@@ -83,9 +85,11 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 - **waec-2023-english-p2** (writing-companion): Acquire the actual comprehension and summary passages, all subquestions and paper instructions. Examiner commentary on questions 6 and 7 does not contain the complete passages. Five paraphrased source-linked writing briefs are available, separately from imported past questions. Source: https://waeconline.org.ng/e-learning/English/Engl240mq1.html
 - **neco-2024-mathematics-research-appendix** (candidate-unverified): Inspect the appendix and original examination identifiers; verify the reported 60-item collection and every option against a source scan. A repository search hit alone does not authenticate the paper or confer reuse permission. The browser retrieval timed out and direct retrieval returned HTTP 403 on 2026-09-14; no appendix items were inspected or imported. Source: https://repository.uniben.edu/sites/default/files/2026-03/RE_final%20copy%20Emamuyovwi%20%20ESUME%20%283%29.pdf
 - **neco-english-acquisition** (source-needed): Acquire complete recent paper scans including reading passages, writing instructions, oral-English components and source provenance. The board homepage is not a past-paper source. Source: https://neco.gov.ng/
-- **jamb-2023-mathematics-compilation** (candidate-unverified): Resolve missing rendered prompts, source provenance, version/session identity and source-use basis. Do not treat website question numbering or an advertised year as proof of a complete UTME sitting. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
+- **jamb-2023-mathematics-compilation** (reviewed-source-linked-revision): Five adapted revision tasks independently solved and implemented, with publisher-labelled 2023 provenance. Verify consolidated release. Original sitting identity and complete-paper inventory remain unresolved; no main-bank imports claimed. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
 - **jamb-2024-english-compilation** (candidate-unverified): Inspect the complete source, passages and reading-text identity; authenticate year/session and review all answers. Search snippets and publisher claims are leads, not imported or verified questions. Source: https://pdfmadeazy.com/2024-jamb-english-past-questions-and-answer/
 - **waec-2022-mathematics-p2** (mathematics-companion): Companions now cover 1(b), 3, 4, 7, 8(a–b), 10, 11, 12(b) and 13. Other questions remain incomplete or held for source conflicts; no complete paper is claimed. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
+- **neco-2023-mathematics-p3-starter** (reviewed-companion-starter): Three independently solved, adapted written companions are integrated for questions 1, 5 and 9. Verify release before reporting live. Further questions require full visual source and answer checks; no complete paper claimed. Source: https://www.scribd.com/document/842881920/NECO-20230001
+- **waec-2021-mathematics-p2-selected** (complete-selected-question-companions): Questions 2 and 3 are fully represented as adapted briefs with independently checked solutions and EN/FR/SW guidance. Verify consolidated release. Full paper remains unavailable; selection is not a paper-completeness claim. Source: https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq2.html
 
 ## Definition of complete
 
