@@ -124,6 +124,9 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
 [data-theme="dark"] #wage-reference :is(h2,h3,label,summary){color:#e2e8f0}
 [data-theme="dark"] #wage-reference :is(input,select,.table-wrap){background:#17263d;color:#e2e8f0}
 [data-theme="dark"] #wage-reference a{color:#93c5fd}
+#referenceInflationGraph svg{display:block;width:100%;height:auto;overflow:visible}
+.mw-inflation-nominal{stroke:#1d4ed8}.mw-inflation-real{stroke:#be123c}
+[data-theme="dark"] .mw-inflation-nominal{stroke:#93c5fd}[data-theme="dark"] .mw-inflation-real{stroke:#fda4af}
 </style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/salaire-minimum/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/minimum-wage/">
@@ -166,6 +169,14 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
         <button class="btn" id="referenceUse" type="button" disabled>Utiliser cette référence dans le calculateur</button>
         <details><summary>Historique et coût de la vie enregistrés</summary>
           <p id="referenceHistoryNote"></p><div class="table-wrap"><table><thead><tr><th scope="col">Année</th><th scope="col">Montant enregistré</th></tr></thead><tbody id="referenceHistory"></tbody></table></div><p id="referenceLiving"></p>
+          <section id="referenceInflation" aria-labelledby="referenceInflationTitle">
+            <h3 id="referenceInflationTitle">Inflation et pouvoir d’achat enregistrés</h3>
+            <p id="referenceInflationSummary" role="status"></p>
+            <div id="referenceInflationBody" hidden><p id="referenceInflationUnits"></p><div id="referenceInflationGraph"></div>
+              <div class="table-wrap"><table tabindex="0" aria-label="Observations de salaire et d’inflation"><thead><tr><th scope="col">Année</th><th scope="col">Salaire nominal</th><th scope="col">Indice IPC</th><th scope="col">Valeur aux prix de base</th></tr></thead><tbody id="referenceInflationRows"></tbody></table></div>
+            </div>
+            <button class="btn ghost" id="referenceInflationCSV" type="button" data-no-pdf-gate="true" disabled>Exporter cette série (CSV)</button><p id="referenceInflationStatus" role="status"></p>
+          </section>
         </details>
       </div>
       <div class="field"><label for="referenceSearch">Filtrer les références par pays ou devise</label><input id="referenceSearch" type="search"></div>
@@ -298,7 +309,9 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
 </main>
 <afro-footer></afro-footer>
 <script src="/engines/minimum-wage-engine.js?v=4b152b33"></script>
+<script src="/assets/js/lib/minimum-wage-inflation.js" defer></script>
 <script src="/assets/js/pages/minimum-wage-fr-reference.js?v=d235390a" defer></script>
+<script src="/assets/js/pages/minimum-wage-fr-inflation.js" defer></script>
 <script>
 (function(){
   const $ = (id) => document.getElementById(id);
