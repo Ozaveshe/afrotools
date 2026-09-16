@@ -24,7 +24,7 @@ Fonts, license and source-byte hashes: `assets/fonts/noto-sans/provenance.json`.
 ## Limitations and remaining parity work
 
 - Noto Sans is not a universal Unicode font. Missing glyphs stop the download with localized Word/DOCX or TXT guidance. Complex script shaping and arbitrary scripts are not accepted by this work.
-- This repairs CV ATS PDF and cover-letter PDF; other CV templates, complete resume import/backup, all templates, optional AI consent/failure flows and Microsoft Word compatibility have not been freshly retested.
+- This repairs CV ATS PDF and cover-letter PDF; other CV templates, text/PDF/DOCX resume import, all templates, optional AI consent/failure flows and Microsoft Word compatibility have not been freshly retested.
 - Cover-letter action inventory matches across the three routes: copy, local save, PDF, rebuild, Word, TXT, JSON, import and print. Presence is not full behavioral proof for unexercised actions.
 - CV section headings, generated date labels, placeholders and reference fallback text now use the page locale. Full generated-text-to-PDF tests preserve user-entered content unchanged. CV data/template/country changes during font loading cancel the pending PDF and preserve the snapshot filename.
 - The editable ATS modal now exports its current textarea to TXT/PDF, keeps the original CV fields unchanged, rejects empty text, and cancels a PDF if the textarea changes during font loading. Modal labels and its textarea accessible name are native in EN/FR/SW.
@@ -41,7 +41,7 @@ Harness validation on port 4216: all 7 edited/empty/stale cases passed together 
 
 Actual EN/FR/SW DOCX downloads omitted website and portfolio whenever GitHub was supplied. The source now retains each contact URL independently, localizes generated headings/date labels/defaults and export guidance, and emits an actual bullet in the Word numbering XML. User text is preserved. French runtime was regenerated through its owner.
 
-Validation: `node --test tests/cv-docx-localized-fields.test.js` (3 passed); `node scripts/verify-cv-docx-export.js` (passed); `playwright test tests/e2e/cv-docx-localized-fields.spec.js --workers=1` (3 passed, port 4216). Actual downloaded ZIP/XML preserves accented names, all supplied contact links, education details and reference relationship text. This checks DOCX package content, not Microsoft Word rendering. Styled PDF templates and JSON import remain separate open work.
+Validation: `node --test tests/cv-docx-localized-fields.test.js` (3 passed); `node scripts/verify-cv-docx-export.js` (passed); `playwright test tests/e2e/cv-docx-localized-fields.spec.js --workers=1` (3 passed, port 4216). Actual downloaded ZIP/XML preserves accented names, all supplied contact links, education details and reference relationship text. This checks DOCX package content, not Microsoft Word rendering. Styled PDF and JSON restoration followups are documented below.
 
 ## Styled PDF scope and remaining inventory
 
@@ -51,4 +51,16 @@ The active production-template owner now retains alternate phone, GitHub, websit
 
 Validation: five node renderer/locale tests passed; three browser cases passed together across EN/FR/SW (two production templates per locale, complete supplied-field assertions, dark-header colors, 320/390px reflow and toolbar keyboard focus). Synthetic actual PDFs were rendered with Poppler and visually inspected for readable names, retained links/details and clipping. This is bounded fixture proof, not every template, arbitrary-content pagination or full accessibility acceptance.
 
-Remaining confirmed gaps: Pan-African Minimal still omits several supplied fields through another renderer path; JSON backup cannot yet be imported in any of the three locales. Other template families, print and application-pack behavior remain incompletely exercised. The earlier ATS pointer-stability observation remains open.
+Remaining confirmed gaps: Pan-African Minimal still omits several supplied fields through another renderer path; JSON restoration was subsequently repaired as documented below. Other template families, print and application-pack behavior remain incompletely exercised. The earlier ATS pointer-stability observation remains open.
+
+## JSON backup restoration
+
+Current schema-v1 AfroTools CV backups can now be restored from the existing import dialog in EN/FR/SW. A native preview and Restore action apply the backup as a new local CV version, preserving the prior master and named versions. No additional consent checkbox or network submission is involved. The JSON file retains original field content, country, template and accent settings.
+
+Validation rejects malformed JSON, unsupported schema/source, prototype keys, invalid field shapes, unknown templates/countries and remote photo URLs before state mutation. Storage failure restores the prior draft state and storage values. JSON review supports keyboard focus containment and Escape; its 320px layout was checked.
+
+Fresh proof: `node --test tests/cv-json-backup.test.js` passed 12 tests. `tests/e2e/cv-json-backup.spec.js` covers six distinct browser cases: actual JSON export, new draft, reviewed import, reload, exact recovered data/settings, and parsed ATS PDF/DOCX recovery in all three locales; plus invalid-file and keyboard checks. The initial final run passed five cases and caught French error-copy encoding corruption. After correcting UTF-8 source handling, both French cases passed in the targeted rerun. All six distinct cases therefore have passing proof; they were not rerun together after that copy-only correction. Tests use synthetic content and verify no fixture content in request URLs or bodies.
+
+Existing French document contracts (40) and CV DOCX/application-pack verifier passed. The French importer was regenerated through `build-french-cv-runtime.js`. PDF proof covers ATS PDF; this restoration change does not establish new acceptance for all styled templates, arbitrary Unicode scripts or Microsoft Word rendering. No deployment was performed.
+
+JSON final followups: all three roundtrip cases passed again after synchronizing the immediate saved-CV list with the existing version-system mirror. Known legacy renderer IDs remain compatible: a focused `slate` backup import/reload case passed after resolving the legacy global binding. There are seven distinct browser cases with passing evidence across these runs. `npm run build:i18n:validate` passed. No broad build/deployment was run for this next-batch candidate.
