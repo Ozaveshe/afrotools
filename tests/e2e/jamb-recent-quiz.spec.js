@@ -20,6 +20,8 @@ for (const width of [390, 1280]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.goto('/jamb/mathematics/2023/');
     await expect(page.locator('[data-reviewed-question]')).toHaveCount(8);
+    expect(await page.locator('.qcard ol').first().evaluate(list => getComputedStyle(list).listStyleType)).toBe('upper-alpha');
+    expect(await page.locator('.qcard li').first().evaluate(item => ({ style: getComputedStyle(item).listStyleType, display: getComputedStyle(item).display }))).toEqual({ style: 'upper-alpha', display: 'list-item' });
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://afrotools.com/jamb/mathematics/2023/');
     await expect(page.locator('body')).toContainText('Original sitting and question number unconfirmed');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
