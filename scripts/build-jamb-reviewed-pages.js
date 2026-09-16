@@ -28,7 +28,7 @@ const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').repla
 
 function renderCard(q, showYear = false) {
   return `<article class="qcard" id="q-${esc(q.id)}" data-reviewed-question="${esc(q.id)}">
-<h2>${showYear ? esc(q.year) + ' · ' : ''}Question ${esc(q.num)}</h2>
+<h2>${showYear ? esc(q.year) + ' · ' : ''}${q.num == null ? 'Practice question' : 'Question ' + esc(q.num)}</h2>${q.source_provenance ? `\n<p class="qcard-source"><a href="${esc(q.source_provenance.url)}">${esc(q.source_provenance.publisher)} ${esc(q.year)} collection</a> · Original sitting and question number unconfirmed.</p>` : ''}
 ${q.passage ? `<blockquote style="white-space:pre-wrap;">${esc(q.passage).replace(/[ \t](?=\r?$)/gm, char => char === ' ' ? '&#32;' : '&#9;')}</blockquote>` : ''}
 ${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status">Enable JavaScript to verify this question's diagram before viewing its answer.</div>` : ''}
 <p class="qcard-text">${esc(q.question)}</p>
@@ -148,7 +148,15 @@ function main(args = process.argv.slice(2)) {
   const privatePool = path.join(ROOT, 'ops/jamb/source-pool.json');
   const pool = JSON.parse(fs.readFileSync(fs.existsSync(privatePool) ? privatePool : path.join(ROOT, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   const ledger = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/jamb/review-ledger.json'), 'utf8'));
-  const routes = existingRoutes();
+  const routeSet = new Set(existingRoutes());
+  for (const q of pool.questions) {
+    if (SUBJECTS[q.subject] && Number.isInteger(q.year) && q.year >= 1978 && q.year <= 2100
+        && assessQuestion(q, ledger).state === 'eligible') {
+      routeSet.add(q.subject);
+      routeSet.add(q.subject + '/' + q.year);
+    }
+  }
+  const routes = [...routeSet].sort();
   let written = 0;
   for (const route of routes) {
     const [subject, year] = route.split('/');

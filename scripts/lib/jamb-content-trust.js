@@ -36,6 +36,13 @@ function completeReview(review) {
     && validReviewDate(review.reviewed_at) && nonempty(review.evidence);
 }
 
+function publicSourceUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password && !url.hash;
+  } catch { return false; }
+}
+
 // An owner's instruction to reuse supplied material is recorded as an owner
 // authorization, never relabelled as an exam-board licence or permission letter.
 function sourceUseAccepted(source) {
@@ -45,7 +52,13 @@ function sourceUseAccepted(source) {
         reviewed_at: permission.reviewed_at, evidence: permission.evidence })) return true;
   const authorization = source && source.reuse_authorization;
   return !!authorization && authorization.status === 'authorized-by-owner'
-    && authorization.basis === 'user-provided-material'
+    && (authorization.basis === 'user-provided-material'
+      || (authorization.basis === 'owner-directed-public-source'
+        && publicSourceUrl(source.source_url)
+        && nonempty(source.publisher)
+        && source.year_basis === 'publisher-collection'
+        && Number.isInteger(source.collection_year)
+        && source.collection_year >= 1978 && source.collection_year <= 2100))
     && authorization.scope === 'AfroTools past-question practice'
     && nonempty(source.source_file) && /^[a-f0-9]{64}$/.test(source.content_sha256 || '')
     && authorization.material_sha256 === source.content_sha256
@@ -65,6 +78,20 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   const fingerprint = questionFingerprint(q);
   const review = (ledger.questions || {})[q.id];
   const source = review && (ledger.sources || {})[review.source_id];
+
+  // Online compilation dates are not authenticated examination sittings.
+  // Bind their public attribution to the reviewed source; never invent a paper number.
+  if (q.source_provenance !== undefined || source?.reuse_authorization?.basis === 'owner-directed-public-source') {
+    const provenance = q.source_provenance;
+    if (!provenance || typeof provenance !== 'object' || Array.isArray(provenance)
+        || Object.keys(provenance).sort().join(',') !== 'publisher,url,year_basis'
+        || provenance.year_basis !== 'publisher-collection'
+        || provenance.year_basis !== source?.year_basis
+        || !publicSourceUrl(provenance.url) || provenance.url !== source?.source_url
+        || !nonempty(provenance.publisher) || provenance.publisher !== source?.publisher
+        || !Number.isInteger(q.year) || q.year !== source?.collection_year
+        || q.num !== null) reasons.push('source_provenance_mismatch');
+  }
 
   if (!nonempty(q.id)) reasons.push('missing_id');
   if (context.duplicateIds && context.duplicateIds.has(q.id)) reasons.push('duplicate_id');

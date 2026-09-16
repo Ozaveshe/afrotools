@@ -27,7 +27,7 @@
 
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script src="/engines/jamb-cbt-engine.js?v=0056b266" defer></script>
+<script src="/engines/jamb-cbt-engine.js?v=a65bf8e1" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
@@ -187,6 +187,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         </div>
         <p id="cbt-passage" style="white-space:pre-wrap;"></p>
         <h2 class="cbt-q-text" id="cbt-q-text">Loading…</h2>
+        <p id="cbt-q-source" hidden></p>
         <div class="cbt-options" id="cbt-options"></div>
         <div class="cbt-actions">
           <button class="cbt-prev" id="cbt-prev" type="button" aria-label="Previous question">← Previous</button>
@@ -1161,6 +1162,15 @@ function renderQuestion() {
   document.getElementById("cbt-q-info").textContent = subjLbl + " · " + data.indexInSubject + " / " + data.subjectTotal;
   document.getElementById("cbt-passage").textContent = q.passage || "";
   document.getElementById("cbt-q-text").textContent = q.question;
+  var sourceHost = document.getElementById('cbt-q-source');
+  sourceHost.replaceChildren();
+  sourceHost.hidden = !q.source_provenance;
+  if (q.source_provenance) {
+    var sourceLink = document.createElement('a');
+    sourceLink.href = q.source_provenance.url;
+    sourceLink.textContent = q.source_provenance.publisher + ' ' + q.year + ' collection';
+    sourceHost.append(sourceLink, ' · Original sitting and question number unconfirmed.');
+  }
   document.querySelectorAll("#cbt-shell .reviewed-question-figure").forEach(function(img) { img.remove(); });
   var figure = sessionFigure(q);
   if (figure) document.getElementById("cbt-q-text").after(figure);
@@ -1473,7 +1483,7 @@ function renderReviewCard(r) {
         : '<span class="meta-chip ungraded">— Ungraded</span>';
 
       var meta = '<div class="rev-meta"><span class="meta-chip subj">' + subjLabel + '</span>'
-        + (r.year ? '<span class="meta-chip">JAMB ' + r.year + '</span>' : '')
+        + (r.year ? '<span class="meta-chip">' + (r.source_provenance ? r.year + ' collection' : 'JAMB ' + r.year) + '</span>' : '')
         + '<span class="meta-chip">Q' + (r.index + 1) + '</span>'
         + statusPill + '</div>';
 

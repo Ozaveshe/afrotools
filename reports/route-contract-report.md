@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11560 |
-| Indexable pages | 9981 |
+| Public pages | 11561 |
+| Indexable pages | 9982 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5289 |
-| Documented fallbacks | 14828 |
-| Routes eligible for primary sitemaps | 9981 |
+| Genuine equivalence groups | 5290 |
+| Documented fallbacks | 14829 |
+| Routes eligible for primary sitemaps | 9982 |
 
 ## Locale Coverage
 
-- en: 6011 page records
+- en: 6012 page records
 - fr: 3803 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5430
+- page: 5431
 - tool: 4002
 - widget: 379
 
@@ -6550,6 +6550,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a9ded7c86183: en=`/tools/retrenchment-calculator/cape-verde/`; x-default=`/tools/retrenchment-calculator/cape-verde/`
 - equivalence:a9e1ddeab9ce: en=`/cars/mozambique/nissan/`, fr=`/fr/cars/mozambique/nissan/`; x-default=`/cars/mozambique/nissan/`
 - equivalence:a9e1f5faaf68: en=`/jamb/accounts/1998/`; x-default=`/jamb/accounts/1998/`
+- equivalence:a9e2e337c026: en=`/jamb/mathematics/2023/`; x-default=`/jamb/mathematics/2023/`
 - equivalence:a9e4a97bff32: en=`/jamb/crk/1997/`; x-default=`/jamb/crk/1997/`
 - equivalence:a9eb20c4af0c: en=`/cars/kenya/toyota/vitz-yaris/`, fr=`/fr/cars/kenya/toyota/vitz-yaris/`; x-default=`/cars/kenya/toyota/vitz-yaris/`
 - equivalence:a9f03a1131b9: en=`/cars/cote-divoire/toyota/camry/2012/`, fr=`/fr/cars/cote-divoire/toyota/camry/2012/`; x-default=`/cars/cote-divoire/toyota/camry/2012/`

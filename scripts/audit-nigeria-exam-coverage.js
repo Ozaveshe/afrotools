@@ -18,6 +18,8 @@ function inventory(raw,published,targets){
     const numbers=[...frequencies.keys()].sort((a,b)=>a-b),seen=new Set(numbers);
     return {exam:group.exam,subject:group.subject,year:group.year,source_records:group.source.length,published_records:group.live.length,
       held_records:group.source.length-group.live.length,observed_source_numbers:numbers,
+      publisher_collection_records:group.live.filter(q=>q.source_provenance?.year_basis==='publisher-collection').length,
+      unknown_original_number_records:group.live.filter(q=>!Number.isInteger(q.num)).length,
       repeated_source_numbers:numbers.filter(n=>frequencies.get(n)>1),
       holes_within_observed_numbering:numbers.length?Array.from({length:numbers.at(-1)},(_,i)=>i+1).filter(n=>!seen.has(n)):[],
       expected_paper_questions:null,complete_paper:false,
