@@ -1,4 +1,6 @@
 const {test,expect}=require('@playwright/test');const fs=require('node:fs'),pdfParse=require('pdf-parse');
+// Avoid recording the entire template gallery and private backup contents at each action.
+test.use({trace:'off',screenshot:'off',video:'off'});
 function xml(b){let p=0;while(b.readUInt32LE(p)===0x04034b50){const z=b.readUInt32LE(p+18),n=b.readUInt16LE(p+26),x=b.readUInt16LE(p+28),a=p+30+n+x;if(b.subarray(p+30,p+30+n).toString()==='word/document.xml')return b.subarray(a,a+z).toString();p=a+z;}throw Error('document missing');}
 for(const route of ['/tools/cv-builder/','/fr/tools/generateur-cv/','/sw/zana/mjenzi-cv/'])test('JSON restore survives reload and document exports: '+route,async({page,baseURL})=>{
  const requests=[];page.on('request',r=>requests.push(r));await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));
