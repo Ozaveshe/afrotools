@@ -138,8 +138,6 @@ function shouldKeepToolSource(url, toolId) {
     /^(?:rw-paye|rw-paye-fr)$/i.test(toolId)
     && /\/value-added-tax\/|vat[_-]law/i.test(decodedUrl)
   ) return false;
-  if (/^(?:mw-paye|mw-paye-fr)$/i.test(toolId)
-    && /1767960417|NEW_INCOME_TAX_RATES_2022/i.test(decodedUrl)) return false;
   if (/^so-vat$/i.test(toolId) && /income[ _-]tax/i.test(decodedUrl)) return false;
   return true;
 }
@@ -400,7 +398,13 @@ function buildManifest(files) {
     // Preserve the same tool's reviewed order and enrich it with currently
     // visible evidence. Invalid parser artifacts are removed before the merge.
     const sourceRecords = dedupeRecords(priorRecords.concat(currentRecords))
-      .filter((item) => item.url)
+      .filter((item) => {
+        if (!item.url) return false;
+        if (!/^(?:mw-paye|mw-paye-fr)$/i.test(page.toolId)) return true;
+        let decodedUrl = item.url;
+        try { decodedUrl = decodeURIComponent(item.url); } catch { /* Keep the original URL for matching. */ }
+        return !/1767960417|NEW_INCOME_TAX_RATES_2022/i.test(decodedUrl);
+      })
       .slice(0, 5);
     const entry = existing || {
       tool_id: page.toolId,
