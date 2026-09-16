@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs');
 
 async function preparePage(page, route, width = 375) {
   const pageErrors = [];
@@ -91,6 +92,17 @@ test('minimum wage: country reference, compliance result, and CSV stay useful in
   await page.getByRole('button', { name: /Hamisha nchi zote kama CSV/i }).click();
   const download = await downloadPromise;
   expect(await download.suggestedFilename()).toMatch(/\.csv$/i);
+  const csv = fs.readFileSync(await download.path(), 'utf8');
+  expect(csv.split('\r\n')[0]).toBe('Nchi,Sarafu,Kwa mwezi (sarafu ya nchi),Kwa mwezi (makadirio ya USD),Tarehe ya kuanza kutumika,Sheria');
+  const rows = csv.split('\r\n');
+  expect(rows).toHaveLength(55);
+  // Reopen the downloaded payload: preserve the engine's recorded amounts,
+  // without treating this consistency check as independent legal verification.
+  const kenya = await page.evaluate(() => window.AfroTools.MinWageEngine.getCountry('KE'));
+  const kenyaRow = rows.find(row => row.startsWith('Kenya,KES,'));
+  expect(kenyaRow).toBeTruthy();
+  expect(Number(kenyaRow.split(',')[2])).toBe(kenya.monthly);
+  expect(csv).not.toContain('undefined');
   await expectMobileReflow(page, route);
   await expectNoRuntimeErrors(errors);
 });

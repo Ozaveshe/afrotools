@@ -28,6 +28,7 @@ test.describe('French Wave 1 invoice generator', () => {
     await page.fill('.li-desc', 'Conseil');
     await page.fill('.li-qty', '2');
     await page.fill('.li-price', '15000');
+    await page.locator('#invoiceReviewConfirm').check();
     const downloadPromise = page.waitForEvent('download');
     await page.click('#btnPDF');
     const download = await downloadPromise;

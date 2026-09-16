@@ -5,6 +5,11 @@
   if (!app || !engine) return;
 
   var mode = app.dataset.frhrApp;
+  if (mode === 'leave') {
+    var plannerScript = document.createElement('script');
+    plannerScript.src = '/assets/js/pages/french-leave-planner.js';
+    document.head.appendChild(plannerScript);
+  }
   var checkedDates = {
     overtime: '2026-03-29',
     leave: '2026-04-03',
@@ -72,7 +77,11 @@
       ['Coefficient appliqué', result.otMultiplier.toFixed(2) + '×'],
       ['Paiement des heures supplémentaires', result.fOvertimePay],
       ['Rémunération mensuelle totale', result.fTotalPay],
-      ['Taux horaire effectif', result.fEffectiveHourly]
+      ['Taux horaire effectif', result.fEffectiveHourly],
+      ['Repos équivalent (comparaison indicative)', result.timeOffEquivalent.hours.toLocaleString('fr', { maximumFractionDigits: 2 }) + (result.timeOffEquivalent.hours === 1 ? ' heure' : ' heures')],
+      ['Jours de repos équivalents', result.timeOffEquivalent.days.toLocaleString('fr', { maximumFractionDigits: 2 }) + (result.timeOffEquivalent.days === 1 ? ' jour' : ' jours')],
+      ['Durée de la journée utilisée', result.timeOffEquivalent.hoursPerDay + ' heures' + (result.timeOffEquivalent.hoursPerDayAssumed ? ' (hypothèse)' : ' (règle enregistrée)')],
+      ['Hypothèse de comparaison', 'Le coefficient de ' + result.otMultiplier.toLocaleString('fr') + '× et le même taux horaire donnent une valeur équivalente en espèces. La possibilité de prendre ce repos et sa conversion restent à confirmer.']
     ];
     if (mode === 'leave') {
       var taken = number('daysTaken');

@@ -32,9 +32,16 @@
 
     function pin() {
       var link = stylesheet();
-      if (!link || link.parentNode !== document.head || link === document.head.lastElementChild) return;
+      if (!link || link.parentNode !== document.head) return;
+      // Keep the active accessibility sheet attached. Moving it can temporarily
+      // remove its rules between pointerdown and mouseup, shifting the target.
+      const laterStyles = [];
+      for (let node = link.nextElementSibling; node; node = node.nextElementSibling) {
+        if (node.matches('style, link[rel="stylesheet"]')) laterStyles.push(node);
+      }
+      if (!laterStyles.length) return;
       moving = true;
-      document.head.appendChild(link);
+      laterStyles.forEach(function (node) { document.head.insertBefore(node, link); });
       Promise.resolve().then(function () {
         moving = false;
       });
@@ -124,10 +131,10 @@
   }
 
   function invalidate() {
-    // This workspace recalculates its preview synchronously on every field
-    // change and already clears its explicit export-review checkbox. There is
-    // no separate generate action that could re-enable a disabled export.
-    if (currentAppId() === 'freelance-invoice') return;
+    // These workspaces update their live preview after field changes and
+    // already clear an explicit export-review checkbox. There is no separate
+    // generate action that could re-enable a generically disabled export.
+    if (['freelance-invoice', 'invoice-generator'].includes(currentAppId())) return;
     if (document.documentElement.dataset.swDocumentResult !== 'fresh') return;
     document.documentElement.dataset.swDocumentResult = 'stale';
     exportButtons().forEach(function (button) {

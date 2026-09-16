@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const localizer = require('../assets/js/lib/fr-document-pdf-localizer.js');
+const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(ROOT, 'data', 'localization', 'fr-document-pdf-parity.json');
@@ -171,7 +172,7 @@ function localizeSchemas(html, app, canonicalUrl, allRoutes, apps, routeExact, a
     (match, attrs, body) => {
       try {
         const parsed = JSON.parse(body);
-        const localized = recursivelyLocalizeSchema(parsed, app, canonicalUrl, allRoutes, frenchApps, routeExact, artworkUrl);
+        const localized = require('./lib/french-document-seo').localizeBreadcrumbParents(recursivelyLocalizeSchema(parsed, app, canonicalUrl, allRoutes, frenchApps, routeExact, artworkUrl));
         if (localized && typeof localized === 'object') {
           if (['WebApplication', 'WebPage', 'CollectionPage'].includes(localized['@type'])) {
             localized.name = app.name;
@@ -406,6 +407,17 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
 }
 
 function normalizeExisting(source, app, config, lexicon, artwork) {
+  if (app.id === 'receipt-generator') {
+    // Keep the reviewed PDF capture geometry aligned with the English active export owner.
+    const capture = /  var pdfButton=document\.getElementById\('downloadPdfBtn'\);[\s\S]*?  \},true\);(?=\r?\n\}\)\(\);)/;
+    const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');
+    const ownerCapture = english.match(capture);
+    if (!ownerCapture || !capture.test(source)) throw new Error('Receipt PDF capture owner missing');
+    source = source.replace(capture, () => ownerCapture[0]);
+    // Repair the historical native page's translated machine value; retain its French label.
+    source = source.replace(/(<select\b[^>]*\bid=["']discountType["'][^>]*>)([\s\S]*?)(<\/select>)/i,
+      (match, open, options, close) => open + options.replace(/value=(["'])montant\1/g, 'value="amount"') + close);
+  }
   const allRoutes = routeMap(config);
   const canonicalUrl = `https://afrotools.com${app.frenchRoute}`;
   const routeExact = lexicon.routes[app.id] || {};
@@ -442,6 +454,7 @@ function ensureDirectory(file) {
 }
 
 function writeOrCheck(relativeFile, output, changed) {
+  output = repairFrenchNavigation(output).next;
   const file = path.join(ROOT, relativeFile);
   const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/\r?\n/g, '\n') : null;
   if (current === output) return;
@@ -473,7 +486,10 @@ function main() {
   const artwork = readJson(ARTWORK_PATH);
   validateConfig(config);
   const changed = [];
+  const selectedId = process.argv.find((arg) => arg.startsWith('--app='))?.slice(6);
+  if (selectedId && !config.apps.some((app) => app.id === selectedId)) throw new Error('Unknown French Document/PDF app: ' + selectedId);
   for (const app of config.apps) {
+    if (selectedId && app.id !== selectedId) continue;
     const englishFile = path.join(ROOT, app.englishFile);
     if (!fs.existsSync(englishFile)) throw new Error(`Missing English owner: ${app.englishFile}`);
     if (!app.preserveExisting) {
@@ -493,7 +509,7 @@ function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`${WRITE ? 'Built' : 'Checked'} French Document/PDF parity: 32 rows, ${changed.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
+  console.log(`${WRITE ? 'Built' : 'Checked'} French Document/PDF parity: ${selectedId ? 1 : config.apps.length} selected rows, ${changed.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
 }
 
 main();

@@ -2247,15 +2247,21 @@
     getInflationData: function(e) {
       return t[e] || null;
     },
-    exportCSV: function() {
-      for (var e = [ [ "Country", "Currency", "Monthly (Local)", "Monthly (USD Approx)", "Effective Date", "Law" ] ], a = this.getAllCountries("name"), i = 0; i < a.length; i++) {
+    exportCSV: function(locale) {
+      var labels = {
+        en: { headers: [ "Country", "Currency", "Monthly (Local)", "Monthly (USD Approx)", "Effective Date", "Law" ], unset: "Not set", unavailable: "N/A" },
+        fr: { headers: [ "Pays", "Devise", "Montant mensuel (devise locale)", "Montant mensuel (USD approximatif)", "Date d'entrée en vigueur", "Loi" ], unset: "Non fixé", unavailable: "Non disponible" },
+        sw: { headers: [ "Nchi", "Sarafu", "Kwa mwezi (sarafu ya nchi)", "Kwa mwezi (makadirio ya USD)", "Tarehe ya kuanza kutumika", "Sheria" ], unset: "Hakijawekwa", unavailable: "Hakuna" }
+      };
+      var copy = labels[locale] || labels.en;
+      for (var e = [ copy.headers ], a = this.getAllCountries("name"), i = 0; i < a.length; i++) {
         var n = a[i];
-        e.push([ n.name, n.currency, n.monthly ? Math.round(n.monthly) : "Not set", n.usdMonthly || "N/A", n.effectiveDate, n.law ]);
+        e.push([ n.name, n.currency, n.monthly ? n.monthly : copy.unset, n.usdMonthly || copy.unavailable, n.effectiveDate, n.law ]);
       }
       return e.map(function(e) {
         return e.map(function(e) {
           var a = String(e);
-          return a.indexOf(",") >= 0 || a.indexOf('"') >= 0 ? '"' + a.replace(/"/g, '""') + '"' : a;
+          return /[,"\r\n]/.test(a) ? '"' + a.replace(/"/g, '""') + '"' : a;
         }).join(",");
       }).join("\r\n");
     },

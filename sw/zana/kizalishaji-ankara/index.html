@@ -395,7 +395,7 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <meta name="afrotools-content-id" content="sw-document-pdf:invoice-generator">
   <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=a70e6c7b">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kizalishaji-ankara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/">
@@ -463,7 +463,7 @@
     <button type="button" class="invoice-starter-card" data-starter-action="receipt" role="listitem">
       <span class="invoice-starter-kicker">Rekodi iliyolipwa</span>
       <strong>Risiti</strong>
-      <span>Tumia sehemu zile zile zilizo na jina la risiti na hali ya kulipwa.</span>
+      <span>Unda risiti kwa kutumia kiasi cha malipo ulichoandika.</span>
     </button>
     <button type="button" class="invoice-starter-card" data-starter-action="estimate" role="listitem">
       <span class="invoice-starter-kicker">Hali ya kunukuu</span>
@@ -813,7 +813,7 @@
 
       <div class="field-checkbox">
         <input type="checkbox" id="markPaid">
-        <label for="markPaid">Weka ankara alama kuwa IMELIPIWA</label>
+        <label for="markPaid">Rekodi malipo kamili (ondoa tiki ili kufuta malipo yaliyorekodiwa)</label>
       </div>
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Vitendo vya ankara">
@@ -826,7 +826,7 @@
             <button class="btn" id="btnPrint" type="button" aria-label="Chapisha ankara">Chapisha</button>
             <button class="btn" id="btnExportJson" type="button" aria-label="Hamisha ankara ya JSON" data-no-pdf-gate="true" onclick="return window.exportInvoiceJsonFallback && window.exportInvoiceJsonFallback(event)">Hamisha JSON</button>
             <button class="btn" id="btnImportJson" type="button" aria-label="Ingiza ankara ya JSON">Ingiza JSON</button>
-            <button class="btn" id="btnSaveTemplate" type="button" aria-label="Hifadhi ankara ya sasa kama kiolezo">hifadhi Kiolezo</button>
+            <button class="btn" id="btnSaveTemplate" type="button" aria-label="Hifadhi ankara ya sasa kama kiolezo">Hifadhi kiolezo</button>
             <button class="btn" id="btnReminder" type="button" aria-label="Nakili kikumbusho cha malipo">Nakili Kikumbusho</button>
             <button class="btn" id="btnNewInvoice" type="button" aria-label="Anzisha ankara mpya tupu">Ankara Mpya</button>
           </div>
@@ -991,7 +991,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Je, hesabu ya VAT inafanyaje kazi?</div>
-      <div class="faq-a">Chagua sarafu yako na ujazo otomatiki wa kiwango cha VAT kulingana na nchi (Nigeria 7.5%, Kenya 16%, Ghana 15%, n.k.). Unaweza kubinafsisha bei wakati wowote.</div>
+      <div class="faq-a">Weka kiwango cha kodi kinachotumika kwa muamala wako. Kubadili sarafu huhifadhi kiwango chako cha kodi na kiasi ulichoingiza; hakubadilishi thamani ya kiasi wala kuamua sheria za kodi.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Je, ninaweza kujumuisha viungo vya malipo, pesa za simu au maelezo ya benki?</div>
@@ -1148,7 +1148,9 @@ function getDocumentType() {
 }
 
 function getDocumentTypeInfo() {
-  return DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;
+  const info = DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;
+  const text = window.AfroInvoiceText || ((value) => value);
+  return { ...info, label: text(info.label), title: text(info.title), numberLabel: text(info.numberLabel) };
 }
 
 function updateDocumentTypeUI() {
@@ -1374,10 +1376,8 @@ function updateActionState() {
   if (mobileHint) mobileHint.textContent = state.valid ? 'Ready to export.' : state.reason;
 }
 
-/* ── CURRENCY CHANGE → AUTO TAX ── */
+/* ── CURRENCY CHANGE: PRESERVE ENTERED TAX AND AMOUNTS ── */
 $('currency').addEventListener('change', function() {
-  const rate = TAX_RATES[this.value];
-  if (rate !== undefined) $('taxRate').value = rate;
   updatePreview();
 });
 
@@ -1394,12 +1394,6 @@ $('taxType').addEventListener('change', function() {
 
 if ($('documentType')) {
   $('documentType').addEventListener('change', function() {
-    if (this.value === 'receipt') {
-      $('paymentTerms').value = 'due-receipt';
-      $('markPaid').checked = true;
-    } else if (this.value === 'estimate') {
-      $('markPaid').checked = false;
-    }
     updatePreview();
   });
 }
@@ -1442,13 +1436,6 @@ function updatePreview() {
   if (taxType === 'none') tax = 0;
 
   const total = subtotal - discAmt + tax;
-  if (getDocumentType() === 'receipt' && $('markPaid').checked && $('amountPaid')) {
-    const paidValue = total.toFixed(2);
-    if ($('amountPaid').value !== paidValue) {
-      $('amountPaid').value = paidValue;
-      $('amountPaid').dispatchEvent(new Event('input', { bubbles: true }));
-    }
-  }
 
   // Summary section
   $('sumSubtotal').textContent = fmtCur(subtotal, cur);
@@ -1460,11 +1447,11 @@ function updatePreview() {
   const compName = $('companyName').value || 'Your Company';
   $('pCompany').textContent = compName;
   const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Tax ID: ' + $('taxID').value : ''].filter(Boolean);
-  $('pBizDetail').innerHTML = bizParts.join('<br>');
+  $('pBizDetail').innerHTML = bizParts.map(escapeHtml).join('<br>');
 
   $('pClient').textContent = $('clientName').value || 'Client Name';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
-  $('pClientDetail').innerHTML = cParts.join('<br>');
+  $('pClientDetail').innerHTML = cParts.map(escapeHtml).join('<br>');
 
   const hasPreviewBasics = Boolean($('companyName').value.trim() && $('clientName').value.trim() && items.length);
   const previewEmpty = $('previewEmptyState');
@@ -1485,7 +1472,7 @@ function updatePreview() {
     tbody.innerHTML = items.map(it => `<tr>
       <td>${escapeHtml(it.desc)}</td>
       <td style="text-align:right">${it.qty}</td>
-      <td style="text-align:right">${fmtCur(it.price, cur)}</td>
+      <td style="text-align:right">${((CURRENCIES[cur] || {}).s || cur) + ' ' + Number(it.price || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:20})}</td>
       <td style="text-align:right">${it.itax > 0 ? it.itax + '%' : '\u2014'}</td>
       <td style="text-align:right;font-weight:600">${fmtCur(it.lineTotal, cur)}</td>
     </tr>`).join('');
@@ -1508,9 +1495,11 @@ function updatePreview() {
   else { $('pNotesSection').style.display = 'none'; }
 
   // Paid stamp
-  const paid = $('markPaid').checked;
+  const payment = window.AfroInvoicePaymentState ? window.AfroInvoicePaymentState() : {paid:false,label:'Unpaid'};
+  const paid = payment.paid;
+  $('markPaid').checked = paid;
   $('paidStamp').style.display = paid ? '' : 'none';
-  $('previewStatus').textContent = paid ? 'Paid' : 'Draft';
+  $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText(payment.label) : payment.label;
   $('previewStatus').style.color = paid ? '#0063D1' : '';
 
   // Overdue check
@@ -1518,10 +1507,9 @@ function updatePreview() {
   const dueDate = parseInvoiceDate(dueVal);
   const today = new Date();
   today.setHours(0,0,0,0);
-  const isOverdue = !paid && dueDate && dueDate < today;
+  const isOverdue = !paid && payment.label !== 'Settled' && dueDate && dueDate < today;
   $('overdueBar').style.display = isOverdue ? '' : 'none';
   if (isOverdue) {
-    $('previewStatus').textContent = 'Overdue';
     $('previewStatus').style.color = '#991b1b';
   }
   updateActionState();
@@ -1854,7 +1842,7 @@ function startNewInvoice(options) {
   $('amountPaid').value = '0';
   $('withholdingPercent').value = '0';
   $('paymentMethod').value = 'bank';
-  $('markPaid').checked = options.documentType === 'receipt';
+  $('markPaid').checked = false;
   $('currency').value = 'NGN';
   $('taxRate').value = '7.5';
   $('taxType').value = 'vat';
@@ -2125,7 +2113,7 @@ init();
       });
     });
     var pdfBtn = $('btnPDF');
-    if (pdfBtn) pdfBtn.addEventListener('click', exportNonInvoicePdf, true);
+    // The shared invoice-generator enhancements export all document types.
     ['btnSaveClient', 'btnSaveInvoice'].forEach(function(id) {
       var btn = $(id);
       if (btn) btn.addEventListener('click', function() { setTimeout(updateStarterState, 250); });
@@ -2136,7 +2124,7 @@ init();
   else bind();
 })();
 </script>
-<script src="/assets/js/pages/invoice-generator-enhancements.js?v=b3e86762"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=56072beb"></script>
 <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {
@@ -2259,7 +2247,7 @@ init();
 
   <script type="application/json" id="sw-document-pdf-locale">{"id":"invoice-generator","name":"Kizalishaji Ankara","downloadContract":"sensitive-guest"}</script>
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=65b487d9" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=a94ca530" defer></script>
 <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>
