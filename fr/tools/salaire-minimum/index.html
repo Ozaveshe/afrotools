@@ -318,8 +318,9 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
   let currentSummary = "";
   function num(id){ return Math.max(0, Number($(id).value || 0)); }
   function money(value){
-    return new Intl.NumberFormat("fr-FR", { style:"currency", currency:$("currency").value, maximumFractionDigits:0 }).format(value || 0);
+    return new Intl.NumberFormat("fr-FR", { style:"currency", currency:$("currency").value, minimumFractionDigits:2, maximumFractionDigits:2 }).format(value || 0);
   }
+  function monetary(value){ return Math.round((value + Number.EPSILON) * 100) / 100; }
   function monthlyFrom(amount, period){
     const days = Math.max(1, num("daysMonth"));
     const monthlyHours = Math.max(1, num("hoursWeek") * 52 / 12);
@@ -332,11 +333,11 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     return amount / monthlyHours;
   }
   function calc(monthlyOverride){
-    const minimumMonthly = monthlyFrom(num("minWage"), $("minPeriod").value);
+    const minimumMonthly = monetary(monthlyFrom(num("minWage"), $("minPeriod").value));
     // Scenario overrides are already monthly; only raw entered pay needs conversion.
-    const actualMonthly = monthlyOverride == null ? monthlyFrom(num("actualPay"), $("payPeriod").value) : monthlyOverride;
+    const actualMonthly = monetary(monthlyOverride == null ? monthlyFrom(num("actualPay"), $("payPeriod").value) : monthlyOverride);
     const grossWithAllowances = actualMonthly + num("allowances");
-    const gap = actualMonthly - minimumMonthly;
+    const gap = monetary(actualMonthly - minimumMonthly);
     const employeeDeduction = grossWithAllowances * num("employeeRate") / 100 + num("fixedDeductions");
     const net = Math.max(0, grossWithAllowances - employeeDeduction);
     const employerContrib = grossWithAllowances * num("employerRate") / 100;
@@ -344,14 +345,15 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
     return { minimumMonthly, actualMonthly, grossWithAllowances, gap, employeeDeduction, net, employerContrib, employerCost };
   }
   function statusText(gap){
-    if (gap >= 0) return "Au-dessus du minimum";
+    if (gap === 0) return "Au minimum saisi";
+    if (gap > 0) return "Au-dessus du minimum";
     return "Sous le minimum";
   }
   function renderBreakdown(data){
     const rows = [
       ["Minimum mensuel de référence", money(data.minimumMonthly), "Taux minimum converti selon période, jours et heures", "À confirmer avec source officielle datée."],
       ["Salaire brut mensuel payé", money(data.actualMonthly), "Salaire proposé converti en mensuel", "Doit respecter le minimum applicable."],
-      ["Écart au minimum", money(data.gap), "Brut mensuel payé - minimum mensuel", data.gap >= 0 ? "Marge positive." : "Risque de non-conformité."],
+      ["Écart au minimum", money(data.gap), "Brut mensuel payé - minimum mensuel", data.gap === 0 ? "Marge nulle." : data.gap > 0 ? "Marge positive." : "Risque de non-conformité."],
       ["Primes ou avantages imposables", money(num("allowances")), "Montant saisi", "Vérifier si comptabilisable pour le minimum."],
       ["Déductions salarié estimées", money(data.employeeDeduction), "Brut + primes x taux salarié + déductions fixes", "Certaines retenues peuvent être plafonnées ou interdites."],
       ["Net estimatif", money(data.net), "Brut + primes - déductions", "Ne remplace pas un bulletin officiel."],
@@ -411,6 +413,7 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
       "",
       "Source ou note: " + $("sourceNote").value.trim(),
       "",
+      "Précision : les montants mensuels comparés sont arrondis à deux décimales après conversion. Les heures et jours saisis restent les hypothèses de calcul.",
       "Avertissement: estimation seulement. Confirmer taux, charges, déductions et règles de paie auprès de la source officielle ou d'un professionnel."
     ].join("\n");
   }

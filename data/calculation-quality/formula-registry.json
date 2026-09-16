@@ -4007,7 +4007,7 @@
     },
     {
       "applicablePopulation": "Users comparing monthly pay with a selected recorded national/state/category reference.",
-      "artifactDigest": "sha256:fdc304ef4442fb0418c22e47472c7569298af5c4b86d85fc974773a6e2f6a056",
+      "artifactDigest": "sha256:cce66183b9c9557440a56f7dcee2e752dc51f056b39fa467e0b52c927c910de8",
       "artifactPath": "assets/js/pages/minimum-wage-reference-comparison.js",
       "currency": "MULTI",
       "currencyAssumption": "Salary and selected reference use the same country currency. No exchange conversion.",
@@ -4018,7 +4018,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "assets-js-pages-minimum-wage-reference-comparison",
-      "formulaVersion": "legacy-current+sha256.fdc304ef4442",
+      "formulaVersion": "legacy-current+sha256.cce66183b9c9",
       "id": "formula-assets-js-pages-minimum-wage-reference-comparison",
       "jurisdictions": [
         "ALL"
@@ -4032,7 +4032,7 @@
       "lastVerified": "2026-09-16",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:fdc304ef4442fb0418c22e47472c7569298af5c4b86d85fc974773a6e2f6a056",
+        "artifactDigest": "sha256:cce66183b9c9557440a56f7dcee2e752dc51f056b39fa467e0b52c927c910de8",
         "artifactPath": "assets/js/pages/minimum-wage-reference-comparison.js",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
@@ -4041,11 +4041,11 @@
       "riskDomain": "legal_regulatory",
       "riskLevel": "high",
       "rounding": {
-        "method": "IEEE-754; no intermediate rounding",
-        "precision": "Up to two decimal places for display",
+        "method": "IEEE-754 conversion followed by nearest cent",
+        "precision": "Two decimal places for monthly comparison",
         "stages": [
           "Hourly rate times 8 times 22; daily rate times 22; monthly rate unchanged.",
-          "Compare unrounded monthly reference with salary.",
+          "Round monthly reference and entered salary to two decimal places before comparison.",
           "Format result separately with Intl.NumberFormat."
         ]
       },
