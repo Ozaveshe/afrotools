@@ -23,6 +23,11 @@
   };
   var els = {};
 
+  function native(en, fr, sw) {
+    var locale = document.documentElement.lang.toLowerCase().split('-')[0];
+    return locale === 'fr' ? fr : locale === 'sw' ? sw : en;
+  }
+
   function $(id) {
     return document.getElementById(id);
   }
@@ -101,10 +106,10 @@
     els.i2pConvertBtn.disabled = value || state.imageItems.length === 0;
     if (active === 'pdf2img') {
       els.p2iConvertBtn.textContent = value
-        ? (els.p2iMode && els.p2iMode.value === 'extract' ? 'Extracting...' : 'Converting...')
-        : (els.p2iMode && els.p2iMode.value === 'extract' ? 'Extract Images from PDF' : 'Convert PDF to Images');
+        ? (els.p2iMode && els.p2iMode.value === 'extract' ? native("Extracting...","Extraction…","Inatoa picha…") : native("Converting...","Conversion…","Inabadilisha…"))
+        : (els.p2iMode && els.p2iMode.value === 'extract' ? native("Extract Images from PDF","Extraire les images du PDF","Toa picha kwenye PDF") : native("Convert PDF to Images","Convertir le PDF en images","Badilisha PDF kuwa picha"));
     }
-    if (active === 'img2pdf') els.i2pConvertBtn.textContent = value ? 'Creating PDF...' : 'Create PDF from Images';
+    if (active === 'img2pdf') els.i2pConvertBtn.textContent = value ? native("Creating PDF...","Création du PDF…","Inaunda PDF…") : native("Create PDF from Images","Créer un PDF à partir des images","Unda PDF kutoka picha");
     els.modePdfToImg.disabled = value;
     els.modeImgToPdf.disabled = value;
   }
@@ -150,11 +155,11 @@
     var p2iMode = els.p2iMode.value;
     var showP2i = format === 'jpeg' || format === 'webp';
     els.p2iQualityWrap.style.display = showP2i ? 'block' : 'none';
-    els.p2iQualityLabel.textContent = format === 'webp' ? 'WebP Quality' : 'JPG Quality';
+    els.p2iQualityLabel.textContent = format === 'webp' ? native("WebP Quality","Qualité WebP","Ubora wa WebP") : native("JPG Quality","Qualité JPG","Ubora wa JPG");
     els.p2iQualityVal.textContent = els.p2iQuality.value;
     els.p2iScale.disabled = p2iMode === 'extract';
-    els.p2iConvertBtn.textContent = p2iMode === 'extract' ? 'Extract Images from PDF' : 'Convert PDF to Images';
-    els.p2iPagesHint.textContent = p2iMode === 'extract' ? 'Optional page filter for image extraction.' : 'Leave blank for every page.';
+    els.p2iConvertBtn.textContent = p2iMode === 'extract' ? native("Extract Images from PDF","Extraire les images du PDF","Toa picha kwenye PDF") : native("Convert PDF to Images","Convertir le PDF en images","Badilisha PDF kuwa picha");
+    els.p2iPagesHint.textContent = p2iMode === 'extract' ? native("Optional page filter for image extraction.","Filtre de pages facultatif pour extraire les images.","Chagua kurasa za kutoa picha ukihitaji.") : native("Leave blank for every page.","Laissez vide pour toutes les pages.","Acha wazi kwa kurasa zote.");
 
     var showI2p = els.i2pImageMode.value === 'jpeg';
     els.i2pQualityWrap.classList.toggle('hidden', !showI2p);
@@ -238,10 +243,13 @@
   }
 
   async function handlePdfFile(file) {
+    if (state.busy) return;
+    invalidateImages();
     if (!isPdfFile(file)) {
-      setText(els.p2iStatus, 'Please choose a PDF file.');
+      setText(els.p2iStatus, native("Please choose a PDF file.","Choisissez un fichier PDF.","Chagua faili la PDF."));
       return;
     }
+    setBusy(true, 'pdf2img');
     try {
       clearProgress('p2i');
       revokeConvertedImages();
@@ -251,7 +259,7 @@
       state.pdfDoc = await pdfjs.getDocument({ data: new Uint8Array(state.pdfBytes.slice(0)) }).promise;
       setText(els.pdfFileName, file.name);
       setText(els.pdfFileSize, formatBytes(file.size));
-      setText(els.pdfPageCount, state.pdfDoc.numPages + ' page' + (state.pdfDoc.numPages === 1 ? '' : 's'));
+      setText(els.pdfPageCount, native('Pages: ', 'Pages : ', 'Kurasa: ') + state.pdfDoc.numPages);
       els.pdfFileInfo.classList.remove('hidden');
       els.pdfDropZone.style.display = 'none';
       els.p2iConvertBtn.disabled = false;
@@ -261,8 +269,10 @@
     } catch (err) {
       state.pdfDoc = null;
       state.pdfBytes = null;
-      setText(els.p2iStatus, 'Error loading PDF: ' + (err.message || 'Unknown error.'));
+      setText(els.p2iStatus, native('Could not read this PDF. Choose a valid, unlocked PDF and try again.', 'Impossible de lire ce PDF. Choisissez un PDF valide et non verrouillé, puis réessayez.', 'PDF hii haisomeki. Chagua PDF halali isiyofungwa, kisha ujaribu tena.'));
       els.p2iConvertBtn.disabled = true;
+    } finally {
+      setBusy(false, 'pdf2img');
     }
   }
 
@@ -296,7 +306,7 @@
     try {
       pages = parsePageRanges(els.p2iPages.value, state.pdfDoc.numPages);
     } catch (err) {
-      setText(els.p2iStatus, err.message);
+      setText(els.p2iStatus, native('Enter valid pages within this PDF, for example 1-3, 5.', 'Saisissez des pages présentes dans ce PDF, par exemple 1-3, 5.', 'Weka kurasa zilizopo kwenye PDF hii, kwa mfano 1-3, 5.'));
       return;
     }
 
@@ -313,19 +323,19 @@
       if (conversionMode === 'extract') {
         await extractEmbeddedImages(pages, format, mimeType, quality, baseName);
         if (!state.convertedImages.length) {
-          setProgress('p2i', 100, 'No embedded images found in the selected pages.');
-          setText(els.p2iStatus, 'No embedded images were found. Try Render pages to export each page as an image.');
+          setProgress('p2i', 100, native("No embedded images found in the selected pages.","Aucune image intégrée dans les pages sélectionnées.","Hakuna picha zilizopachikwa kwenye kurasa zilizochaguliwa."));
+          setText(els.p2iStatus, native("No embedded images were found. Try Render pages to export each page as an image.","Aucune image intégrée trouvée. Choisissez le rendu des pages pour exporter chaque page en image.","Hakuna picha zilizopachikwa. Chagua kutengeneza picha za kurasa ili kutoa kila ukurasa kama picha."));
           return;
         }
-        setProgress('p2i', 100, 'Done. Extracted ' + state.convertedImages.length + ' image' + (state.convertedImages.length === 1 ? '' : 's') + '.');
+        setProgress('p2i', 100, native('Images extracted: ', 'Images extraites : ', 'Picha zilizotolewa: ') + state.convertedImages.length);
         els.p2iResultCard.classList.remove('hidden');
-        setText(els.p2iResultNote, 'Extracted ' + state.convertedImages.length + ' embedded image' + (state.convertedImages.length === 1 ? '' : 's') + ' from the selected pages as ' + ext.toUpperCase() + '.');
+        setText(els.p2iResultNote, native('Embedded images extracted: ', 'Images intégrées extraites : ', 'Picha zilizopachikwa zilizotolewa: ') + state.convertedImages.length + ' (' + ext.toUpperCase() + ').');
         return;
       }
 
       for (var i = 0; i < pages.length; i++) {
         var pageNumber = pages[i];
-        setProgress('p2i', (i / pages.length) * 95, 'Rendering page ' + pageNumber + ' of ' + state.pdfDoc.numPages + '...');
+        setProgress('p2i', (i / pages.length) * 95, native('Rendering page ', 'Rendu de la page ', 'Inachora ukurasa ') + pageNumber + ' / ' + state.pdfDoc.numPages);
         var page = await state.pdfDoc.getPage(pageNumber);
         var baseViewport = page.getViewport({ scale: 1 });
         var renderScale = fitRenderScale(baseViewport.width, baseViewport.height, requestedScale);
@@ -347,19 +357,19 @@
         }
         var url = URL.createObjectURL(blob);
         var name = baseName + '_page_' + String(pageNumber).padStart(digits, '0') + '.' + ext;
-        var item = { name: name, blob: blob, url: url, pageNumber: pageNumber, label: 'Page ' + pageNumber, size: blob.size };
+        var item = { name: name, blob: blob, url: url, pageNumber: pageNumber, label: native('Page ', 'Page ', 'Ukurasa ') + pageNumber, size: blob.size };
         state.convertedImages.push(item);
         renderThumb(item, i);
         canvas.width = 1;
         canvas.height = 1;
       }
-      setProgress('p2i', 100, 'Done. Created ' + state.convertedImages.length + ' image' + (state.convertedImages.length === 1 ? '' : 's') + '.');
+      setProgress('p2i', 100, native('Images created: ', 'Images créées : ', 'Picha zilizoundwa: ') + state.convertedImages.length);
       els.p2iResultCard.classList.remove('hidden');
-      var note = 'Exported ' + state.convertedImages.length + ' page' + (state.convertedImages.length === 1 ? '' : 's') + ' as ' + ext.toUpperCase() + '.';
-      if (scaleWarnings) note += ' Very large pages were capped to protect browser memory.';
+      var note = native('Pages exported: ', 'Pages exportées : ', 'Kurasa zilizotolewa: ') + state.convertedImages.length + ' (' + ext.toUpperCase() + ').';
+      if (scaleWarnings) note += native(' Very large pages were capped to protect browser memory.', ' La taille des très grandes pages a été limitée pour préserver la mémoire du navigateur.', ' Kurasa kubwa sana zimepunguzwa ili kulinda kumbukumbu ya kivinjari.');
       setText(els.p2iResultNote, note);
     } catch (err) {
-      setText(els.p2iStatus, 'Error: ' + (err.message || 'Conversion failed.'));
+      setText(els.p2iStatus, native('Conversion failed. Try fewer pages or PNG output.', 'La conversion a échoué. Essayez moins de pages ou le format PNG.', 'Ubadilishaji umeshindikana. Jaribu kurasa chache au umbizo la PNG.'));
     } finally {
       setBusy(false, 'pdf2img');
     }
@@ -377,7 +387,7 @@
     var imageCount = 0;
     for (var p = 0; p < pages.length; p++) {
       var pageNumber = pages[p];
-      setProgress('p2i', (p / pages.length) * 95, 'Scanning page ' + pageNumber + ' for embedded images...');
+      setProgress('p2i', (p / pages.length) * 95, native('Scanning page ', 'Recherche des images, page ', 'Inatafuta picha, ukurasa ') + pageNumber);
       var page = await state.pdfDoc.getPage(pageNumber);
       var opList = await page.getOperatorList();
       for (var i = 0; i < opList.fnArray.length; i++) {
@@ -395,7 +405,7 @@
           blob: blob,
           url: url,
           pageNumber: pageNumber,
-          label: 'Image ' + imageCount + ' (page ' + pageNumber + ')',
+          label: native('Image ', 'Image ', 'Picha ') + imageCount + native(' (page ', ' (page ', ' (ukurasa ') + pageNumber + ')',
           size: blob.size
         };
         state.convertedImages.push(item);
@@ -506,8 +516,8 @@
     var button = document.createElement('button');
     button.className = 'thumb-dl';
     button.type = 'button';
-    button.title = 'Download ' + labelText.toLowerCase();
-    button.textContent = 'Download';
+    button.title = native('Download ', 'Télécharger ', 'Pakua ') + labelText;
+    button.textContent = native("Download","Télécharger","Pakua");
     button.addEventListener('click', function () {
       downloadSingleImage(index);
     });
@@ -527,7 +537,7 @@
     if (!state.convertedImages.length || state.busy) return;
     var oldText = els.p2iZipBtn.textContent;
     els.p2iZipBtn.disabled = true;
-    els.p2iZipBtn.textContent = 'Creating ZIP...';
+    els.p2iZipBtn.textContent = native("Creating ZIP...","Création du ZIP…","Inaunda ZIP…");
     try {
       var files = [];
       for (var i = 0; i < state.convertedImages.length; i++) {
@@ -537,7 +547,7 @@
       var baseName = cleanBaseName(state.pdfFile && state.pdfFile.name, 'document');
       downloadBlob(buildZip(files), baseName + '_images.zip');
     } catch (err) {
-      setText(els.p2iStatus, 'ZIP error: ' + (err.message || 'Could not create ZIP.'));
+      setText(els.p2iStatus, native('Could not create ZIP. Download images individually or try again.', 'Impossible de créer le ZIP. Téléchargez les images séparément ou réessayez.', 'ZIP haikuundwa. Pakua picha moja moja au ujaribu tena.'));
     } finally {
       els.p2iZipBtn.textContent = oldText;
       els.p2iZipBtn.disabled = false;
@@ -546,6 +556,7 @@
 
   async function addImageFiles(fileList) {
     if (state.busy) return;
+    invalidatePdf();
     var files = Array.from(fileList || []);
     var accepted = files.filter(isImageFile);
     var rejected = files.length - accepted.length;
@@ -570,7 +581,7 @@
     renderImageList();
     els.i2pConvertBtn.disabled = state.imageItems.length === 0;
     els.i2pResultCard.classList.add('hidden');
-    setText(els.i2pStatus, rejected ? 'Skipped ' + rejected + ' unsupported or unreadable image' + (rejected === 1 ? '.' : 's.') : '');
+    setText(els.i2pStatus, rejected ? native('Unsupported or unreadable images skipped: ', 'Images non prises en charge ou illisibles ignorées : ', 'Picha zisizotumika au zisizosomeka zilizoachwa: ') + rejected : '');
   }
 
   function normalizeImageType(file) {
@@ -612,6 +623,7 @@
       nameWrap.style.minWidth = '0';
       var name = document.createElement('div');
       name.className = 'file-item-name';
+      name.setAttribute('translate', 'no');
       name.textContent = item.file.name;
       var meta = document.createElement('div');
       meta.className = 'file-item-size';
@@ -627,19 +639,19 @@
       var up = document.createElement('button');
       up.className = 'mini-btn';
       up.type = 'button';
-      up.textContent = 'Up';
+      up.textContent = native("Up","Monter","Juu");
       up.disabled = index === 0;
       up.addEventListener('click', function () { moveImage(index, -1); });
       var down = document.createElement('button');
       down.className = 'mini-btn';
       down.type = 'button';
-      down.textContent = 'Down';
+      down.textContent = native("Down","Descendre","Chini");
       down.disabled = index === state.imageItems.length - 1;
       down.addEventListener('click', function () { moveImage(index, 1); });
       var remove = document.createElement('button');
       remove.className = 'file-item-remove';
       remove.type = 'button';
-      remove.textContent = 'Remove';
+      remove.textContent = native("Remove","Supprimer","Ondoa");
       remove.addEventListener('click', function () { removeImage(index); });
       actions.appendChild(up);
       actions.appendChild(down);
@@ -814,7 +826,7 @@
       pdfDoc.setProducer('AfroTools PDF Image Converter');
       for (var i = 0; i < state.imageItems.length; i++) {
         var item = state.imageItems[i];
-        setProgress('i2p', (i / state.imageItems.length) * 96, 'Adding image ' + (i + 1) + ' of ' + state.imageItems.length + '...');
+        setProgress('i2p', (i / state.imageItems.length) * 96, native('Adding image ', 'Ajout de l’image ', 'Inaongeza picha ') + (i + 1) + ' / ' + state.imageItems.length);
         var prepared = await imageBytesForPdf(item, quality);
         var embedded = prepared.type === 'png'
           ? await pdfDoc.embedPng(prepared.bytes)
@@ -836,16 +848,16 @@
       var bytes = await pdfDoc.save({ useObjectStreams: true, addDefaultPage: false });
       var blob = new Blob([bytes], { type: 'application/pdf' });
       state.pdfDownload = { blob: blob, filename: outputName };
-      setProgress('i2p', 100, 'Done. PDF created.');
+      setProgress('i2p', 100, native("Done. PDF created.","Terminé. PDF créé.","Imekamilika. PDF imeundwa."));
       setText(els.i2pResultName, outputName);
-      setText(els.i2pResultInfo, state.imageItems.length + ' page' + (state.imageItems.length === 1 ? '' : 's') + ' - ' + formatBytes(blob.size));
-      var note = 'Created from ' + state.imageItems.length + ' image' + (state.imageItems.length === 1 ? '' : 's') + ' using ' + els.i2pPageSize.value.toUpperCase() + ' pages.';
-      if (els.i2pImageMode.value === 'auto') note += ' PNG and JPG originals were preserved where PDF-compatible.';
-      else note += ' Images were recompressed as JPG at ' + els.i2pQuality.value + '% quality.';
+      setText(els.i2pResultInfo, native('Pages: ', 'Pages : ', 'Kurasa: ') + state.imageItems.length + ' - ' + formatBytes(blob.size));
+      var note = native('Source images: ', 'Images sources : ', 'Picha za chanzo: ') + state.imageItems.length + ' (' + els.i2pPageSize.selectedOptions[0].textContent + ').';
+      if (els.i2pImageMode.value === 'auto') note += native(' PNG and JPG originals were preserved where PDF-compatible.', ' Les originaux PNG et JPG ont été conservés lorsque le PDF le permet.', ' Picha asili za PNG na JPG zimehifadhiwa zinapolingana na PDF.');
+      else note += native(' JPG quality: ', ' Qualité JPG : ', ' Ubora wa JPG: ') + els.i2pQuality.value + '%.';
       setText(els.i2pResultNote, note);
       els.i2pResultCard.classList.remove('hidden');
     } catch (err) {
-      setText(els.i2pStatus, 'Error: ' + (err.message || 'Could not create the PDF.'));
+      setText(els.i2pStatus, native('Could not create the PDF. Check the images and try again.', 'Impossible de créer le PDF. Vérifiez les images et réessayez.', 'PDF haikuundwa. Kagua picha kisha ujaribu tena.'));
     } finally {
       setBusy(false, 'img2pdf');
     }
@@ -1030,6 +1042,7 @@
 
   function init() {
     cacheElements();
+    [els.pdfFileName, els.i2pResultName].forEach(function (el) { el.setAttribute('translate', 'no'); });
     getPdfJs();
     updateQualityControls();
     bindEvents();

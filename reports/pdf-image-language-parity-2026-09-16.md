@@ -24,3 +24,26 @@ Stable synthetic evidence: sibling `../evidence/` contains rendered image/PDF pa
 
 ## Remaining work / limits
 Native runtime progress/error/result labels, invalid file feedback, loading races, complete keyboard/axe/default-analytics proof and representative full result screenshots remain for a separate follow-up. No complete app acceptance. Complex PDF masks, transforms, image groups, color profiles, encrypted or huge documents, animation/transparency/EXIF fidelity are not comprehensively verified. No full build, dist or production proof. No upload, push or deployment.
+
+
+## Native/accessibility follow-up
+The remaining native runtime progress, page counts, result explanations, generated image labels, reorder/download buttons and parser/range errors now use explicit EN/FR/SW source copy. Raw parser error messages are not shown. User filenames retain their values and carry translate=no. PDF loading disables controls and invalidates prior output before parsing; additions clear previous image-to-PDF download state. Source helper/result colors improved to satisfy measured contrast, with targeted regenerated FR/SW pages. The French targeted generator now runs in build:surfaces for durable source regeneration.
+
+Final exact run (PowerShell):
+```powershell
+$env:NODE_PATH='C:/Users/Oza/.codex/worktrees/language-director-20260915/afrotools/node_modules'
+$env:PORT='4394'
+$env:CI='1'
+Remove-Item Env:AFROTOOLS_TEST_DISABLE_ANALYTICS -ErrorAction SilentlyContinue
+node C:/Users/Oza/.codex/worktrees/language-director-20260915/afrotools/node_modules/@playwright/test/cli.js test tests/e2e/pdf-image-language-fidelity.spec.js --project=chromium --workers=1
+```
+**16 passed**, with default analytics. Includes the original7 checks, native invalid PDF/page-range and result copy in3locales, keyboard conversion + scoped WCAG2A/AA/2.1AA axe in images-to-PDF panel and actual guest download/observed payload checks in3locales, plus3text/vector PNG tests. Exported PNG decoded pixels equal direct source PDF rendering at scale1; source parser recovers PUBLIC SYNTHETIC PAGE. This tests appearance using the same PDF.js renderer, not an independent rendering implementation. JPG/WebP lossy quality is only bounded by dimensions and expected central-color checks, not universal perceptual fidelity.
+
+Intermediate11/13 run identified5low-contrast hints/status nodes in EN/FR; final run passes after source changes. Prior10-test run passed but minified UTF-8 output was corrected during that run; final16-test clean run supersedes it.
+
+Final targeted FR/SW generator --check both pass; targeted minification and syntax/diff checks pass. No acceptance ledger updates.
+
+Visually inspected final French390px result screenshot and actual text/vector PNG:
+- `C:/Users/Oza/.codex/worktrees/pdf-image-parity-20260916/evidence/pdf-image-language-fidelit-25785-ty-and-local-export-privacy-chromium-result-mobile-fr.png`
+- `C:/Users/Oza/.codex/worktrees/pdf-image-parity-20260916/evidence/pdf-image-language-fidelit-4d76b--appearance-retained-in-PNG-chromium-text-vector-fr.png`
+The actual French result has native accented labels and source-image note, with unchanged filename. Default analytics consent panel remains visible lower on screen; download was reachable. No screenshot proves all control positions at every viewport. Accessibility proof is scoped to active images-to-PDF controls, not the entire site shell or all directions/modes. Embedded-image groups/masks/transforms, huge/complex PDFs, detailed JPEG/WebP visual quality, transparency/EXIF and cross-browser behavior remain unverified. No fullbuild/dist/production or deployment claim.

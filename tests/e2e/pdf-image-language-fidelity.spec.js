@@ -20,3 +20,65 @@ for(const [locale,route]of Object.entries(routes))test(`${locale} actual convers
 });
 for(const [locale,route]of Object.entries(routes))test(`${locale} ordering and settings invalidate prior converted output`,async({page})=>{await page.goto(route);await uploadImages(page);await page.locator('#i2pConvertBtn').click();await expect(page.locator('#i2pDownloadBtn')).toBeVisible();await page.locator('.file-item:nth-child(2) .mini-btn').first().click();await expect(page.locator('#i2pDownloadBtn')).toBeHidden();await page.locator('#i2pConvertBtn').click();await expect(page.locator('#i2pDownloadBtn')).toBeVisible();await page.locator('#i2pOrientation').selectOption('landscape');await expect(page.locator('#i2pDownloadBtn')).toBeHidden();});
 test('cover mode preserves chosen margins',async({page})=>{await page.goto(routes.en);await uploadImages(page);await page.locator('.file-item:nth-child(2) .file-item-remove').click();await page.locator('#i2pPageSize').selectOption('a4');await page.locator('#i2pOrientation').selectOption('portrait');await page.locator('#i2pFit').selectOption('cover');await page.locator('#i2pMargin').fill('10');await page.locator('#i2pConvertBtn').click();await expect(page.locator('#i2pDownloadBtn')).toBeVisible();const pages=await inspectPdf(page,(await download(page,'#i2pDownloadBtn')).bytes);expect(pages[0].center.slice(0,3)).toEqual([255,0,0]);expect(pages[0].edge.slice(0,3)).toEqual([255,255,255]);});
+
+for (const [locale, route] of Object.entries(routes)) test(`${locale} native invalid feedback clears stale output`, async ({page}, info) => {
+ await page.goto(route);
+ await page.locator('#pdfFileInput').setInputFiles({name:'private-95173.pdf',mimeType:'application/pdf',buffer:pdf});
+ await expect(page.locator('#p2iConvertBtn')).toBeEnabled();
+ await page.locator('#p2iConvertBtn').click();
+ await expect(page.locator('.thumb-card')).toHaveCount(2);
+ await page.locator('#p2iPages').fill('999');
+ await expect(page.locator('#p2iResultCard')).toBeHidden();
+ await page.locator('#p2iConvertBtn').click();
+ await expect(page.locator('#p2iStatus')).toContainText({en:'Enter valid pages',fr:'Saisissez des pages',sw:'Weka kurasa'}[locale]);
+ await page.locator('#pdfFileInput').setInputFiles({name:'invalid-private-95173.pdf',mimeType:'application/pdf',buffer:Buffer.from('private-95173 not a pdf')});
+ await expect(page.locator('#p2iStatus')).toContainText({en:'Could not read this PDF',fr:'Impossible de lire ce PDF',sw:'PDF hii haisomeki'}[locale]);
+ await expect(page.locator('#p2iConvertBtn')).toBeDisabled();
+ await expect(page.locator('#p2iStatus')).not.toContainText('private-95173');
+ await expect(page.locator('#p2iResultCard')).toBeHidden();
+ await page.locator('#modeImgToPdf').click();
+ await page.locator('#imgFileInput').setInputFiles({name:'Revenue.png',mimeType:'image/png',buffer:red});
+ await expect(page.locator('#imgFileList')).toContainText('Revenue.png');
+ await page.locator('#i2pConvertBtn').click();
+ await expect(page.locator('#i2pResultNote')).toContainText({en:'Source images',fr:'Images sources',sw:'Picha za chanzo'}[locale]);
+ await page.locator('#i2pResultCard').scrollIntoViewIfNeeded();
+ await page.screenshot({path:info.outputPath(`native-result-${locale}.png`)});
+});
+
+for (const [locale, route] of Object.entries(routes)) test(`${locale} keyboard controls accessibility and local export privacy`, async ({page}, info) => {
+ await page.setViewportSize({width:390,height:844});
+ const requests=[];page.on('request',r=>requests.push(r.url()+' '+(r.postData()||'')));
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(route);
+ await page.locator('#modeImgToPdf').focus();await page.keyboard.press('Enter');
+ await page.locator('#imgFileInput').setInputFiles({name:'private-95173.png',mimeType:'image/png',buffer:red});
+ await expect(page.locator('.file-item')).toHaveCount(1);
+ await page.locator('#i2pConvertBtn').focus();await page.keyboard.press('Enter');
+ await expect(page.locator('#i2pDownloadBtn')).toBeVisible();
+ await download(page,'#i2pDownloadBtn');
+ await page.addScriptTag({path:require.resolve('axe-core/axe.min.js')});
+ const violations=await page.evaluate(async()=> (await axe.run('#img2pdf-panel',{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
+ expect(violations).toEqual([]);
+ expect(errors).toEqual([]);
+ expect(requests.join('\n')).not.toContain('private-95173');
+ expect(requests.join('\n')).not.toContain(red.toString('base64'));
+ await page.locator('#i2pResultCard').scrollIntoViewIfNeeded();
+ await page.screenshot({path:info.outputPath(`result-mobile-${locale}.png`)});
+});
+
+for (const [locale,route] of Object.entries(routes)) test(`${locale} text and vector page appearance retained in PNG`, async ({page},info)=>{
+ const doc=await PDFDocument.create(),p=doc.addPage([300,200]);
+ p.drawText('PUBLIC SYNTHETIC PAGE',{x:20,y:150,size:16});
+ p.drawRectangle({x:30,y:30,width:70,height:60,color:rgb(0,0.7,0.2)});
+ p.drawLine({start:{x:120,y:30},end:{x:250,y:130},thickness:3,color:rgb(0.8,0.1,0.1)});
+ const bytes=Buffer.from(await doc.save());
+ await page.goto(route);await page.locator('#pdfFileInput').setInputFiles({name:'synthetic.pdf',mimeType:'application/pdf',buffer:bytes});
+ await expect(page.locator('#p2iConvertBtn')).toBeEnabled();
+ await page.locator('#p2iScale').selectOption('1');await page.locator('#p2iConvertBtn').click();
+ await expect(page.locator('.thumb-card')).toHaveCount(1);
+ const actual=(await download(page,'.thumb-card button')).bytes;
+ const reference=await inspectPdf(page,bytes);
+ expect(reference[0].text).toContain('PUBLIC SYNTHETIC PAGE');
+ expect(PNG.sync.read(actual).data.equals(PNG.sync.read(Buffer.from(reference[0].png,'base64')).data)).toBe(true);
+ fs.writeFileSync(info.outputPath(`text-vector-${locale}.png`),actual);
+});
