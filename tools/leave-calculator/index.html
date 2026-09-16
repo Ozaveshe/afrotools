@@ -609,7 +609,7 @@ var LEAVE_DATA = {
   ET:{name:"Ethiopia",annual:16,annualUnit:"working days",annualNote:"Increases by 1 day per 2 years of service",sick:"+",sickNote:"Full pay first 2 months; 50% for next 2 months",matWeeks:17,matPay:"100%",matPaySource:"Employer",matElig:"No qualifying period",patDays:3,patPay:"Paid",holidays:13,compassionate:"3 days (death of spouse, parent, child, sibling)",law:"Labour Proclamation (Proclamation 1156/2019)",accrual:"Annual with seniority increase",obs:"Ethiopia stands out with 17 weeks maternity leave (120 days), one of the longest in Africa. The 2019 Labour Proclamation significantly improved worker protections."},
   GA:{name:"Gabon",annual:24,annualUnit:"working days",annualNote:"2 days per month; extra days for seniority",sick:"+",sickNote:"Full pay up to 6 months",matWeeks:14,matPay:"100%",matPaySource:"Social security (CNSS)",matElig:"6 months contributions",patDays:3,patPay:"Paid",holidays:14,compassionate:"3 days (marriage, death, birth)",law:"Labour Code (Law 3/94 of 1994)",accrual:"Monthly",obs:"Gabon provides standard Francophone African leave entitlements. As an oil-rich economy, many employers offer benefits well above statutory minimums."},
   GM:{name:"Gambia",annual:21,annualUnit:"working days",annualNote:"After 1 year of service",sick:"+",sickNote:"Full pay for 30 days; half pay for next 30 days",matWeeks:12,matPay:"100%",matPaySource:"Employer",matElig:"12 months employment",patDays:0,patPay:"N/A",holidays:14,compassionate:"Per employer policy",law:"Labour Act (2007)",accrual:"Annual",obs:"Gambia provides 21 working days annual leave and 14 public holidays. Maternity is fully employer-funded at 100% for 12 weeks. There is no statutory paternity leave."},
-  GH:{name:"Ghana",annual:15,annualUnit:"working days",annualNote:"After 1 year; increases with seniority per collective agreement",sick:"+",sickNote:"Full pay per employer policy; no statutory minimum defined",matWeeks:12,matPay:"100%",matPaySource:"Employer",matElig:"No qualifying period",patDays:0,patPay:"N/A (some employers offer 5–7 days)",holidays:13,compassionate:"Per collective agreement",law:"Labour Act (Act 651 of 2003)",accrual:"Annual",obs:"Ghana provides 15 working days annual leave. There is no statutory paternity leave, though many progressive employers offer 5–7 days. Maternity is 12 weeks at 100% funded entirely by the employer."},
+  GH:{name:"Ghana",annual:15,annualUnit:"working days",annualNote:"Act 651 ss.20–21: calendar-year continuous service, or at least 200 days where work is not regularly maintained. Family-only undertakings are excluded (s.32). Confirm current applicability.",sick:"+",sickNote:"Full pay per employer policy; no statutory minimum defined",matWeeks:12,matPay:"100%",matPaySource:"Employer",matElig:"No qualifying period",patDays:null,patPay:"General current rule unverified. Civil Service Instructions 2020, instruction 324: separate conditional maximum 10 working days; not a universal allowance.",holidays:13,compassionate:"Per collective agreement",law:"Labour Act (Act 651 of 2003)",accrual:"Annual",obs:"Ghana Act 651 provides a conditional fifteen-working-day annual reference. Current amendments and general paternity entitlement are unverified; the Civil Service has separate instructions. Use the source-qualified maternity planner for section 57."},
   GN:{name:"Guinea",annual:24,annualUnit:"working days",annualNote:"2 days per month; extra for seniority",sick:"+",sickNote:"Full pay up to 6 months via social security",matWeeks:14,matPay:"100%",matPaySource:"Social security (CNSS)",matElig:"6 months contributions",patDays:3,patPay:"Paid",holidays:12,compassionate:"3 days (marriage, death)",law:"Labour Code (Law L/2014/072/CNT)",accrual:"Monthly",obs:"Guinea follows the Francophone African standard. The 2014 Labour Code brought Guinea in line with ILO Convention 183 on maternity protection."},
   GW:{name:"Guinea-Bissau",annual:30,annualUnit:"calendar days",annualNote:"After 1 year of service",sick:"+",sickNote:"Per social security provisions",matWeeks:9,matPay:"100%",matPaySource:"Social security (INSS)",matElig:"6 months contributions",patDays:3,patPay:"Paid",holidays:10,compassionate:"3 days (marriage, death)",law:"Labour Code (Law 2/86)",accrual:"Annual",obs:"Guinea-Bissau provides 30 calendar days annual leave but shorter maternity at only 9 weeks. Enforcement of labour laws remains a challenge."},
   KE:{name:"Kenya",annual:21,annualUnit:"working days",annualNote:"After 2 consecutive months with same employer",sick:"+",sickNote:"Full pay for first 7 days; half pay for next 7 days per year",matWeeks:13,matPay:"100%",matPaySource:"Employer",matElig:"No qualifying period",patDays:14,patPay:"Paid",holidays:12,compassionate:"Not legislated; common practice 3–5 days",law:"Employment Act (2007, Cap 226)",accrual:"After 2 months service",obs:"Kenya leads East Africa with 14 days paternity leave, one of the most generous in Africa. Annual leave is 21 working days. The Employment Act 2007 is considered one of the most worker-friendly in the region."},
@@ -720,7 +720,7 @@ function lcOnCountry() {
   html += lcCard('\uD83C\uDFD6', 'Annual Leave', d.annual + ' ' + d.annualUnit, [d.annualNote, 'Accrual: ' + (d.accrual || 'Annual')], d.law);
   html += lcCard('\uD83E\uDE7A', 'Sick Leave', d.sick === '+' ? 'Yes (see details)' : d.sick + ' days', [d.sickNote], null);
   html += lcCard('\uD83E\uDD31', 'Maternity Leave', d.matWeeks + ' weeks', ['Pay: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : ''), d.matElig ? 'Eligibility: ' + d.matElig : null].filter(Boolean), null);
-  html += lcCard('\uD83D\uDC68\u200D\uD83D\uDC76', 'Paternity Leave', d.patDays > 0 ? d.patDays + ' days' : 'Not legislated', [d.patPay ? 'Pay: ' + d.patPay : null].filter(Boolean), null);
+  html += lcCard('\uD83D\uDC68\u200D\uD83D\uDC76', 'Paternity Leave', d.patDays === null ? 'Current scope unverified' : d.patDays > 0 ? d.patDays + ' days' : 'Not legislated', [d.patPay ? 'Pay: ' + d.patPay : null].filter(Boolean), null);
   html += lcCard('\uD83C\uDFDB\uFE0F', 'Public Holidays', d.holidays + ' per year', ['Typical annual count'], null);
   if (d.compassionate) html += lcCard('\uD83D\uDD4A\uFE0F', 'Compassionate / Other', d.compassionate, [], null);
   document.getElementById('leave-grid').innerHTML = html;
@@ -843,6 +843,7 @@ function ppCalc() {
     preWeeks = 2;
     payInfo = 'Pay: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : '');
   } else {
+    if (d.patDays === null) { el.textContent='Current general paternity entitlement is unverified. Ghana Civil Service Instructions 2020, instruction 324, have separate conditions and a maximum of 10 working days. Confirm your employment scope and current rule.';el.style.display='';return; }
     if (!d.patDays || d.patDays === 0) {
       el.innerHTML = '<div class="lc-result-box"><div class="lc-result-sub">No statutory paternity leave in ' + d.name + '. Check your employer for discretionary leave.</div></div>';
       el.style.display = ''; return;
@@ -972,8 +973,8 @@ function lcBuildSummary() {
     lines.push('Annual leave: ' + d.annual + ' ' + d.annualUnit + ' (' + d.annualNote + ')');
     lines.push('Sick leave: ' + d.sickNote);
     lines.push('Maternity: ' + d.matWeeks + ' weeks, pay ' + d.matPay + (d.matPaySource ? ' via ' + d.matPaySource : ''));
-    lines.push('Paternity: ' + (d.patDays > 0 ? d.patDays + ' days' : 'Not legislated'));
-    if (cc === 'CI') lines.push(d.patPay);
+    lines.push('Paternity: ' + (d.patDays === null ? 'Current scope unverified' : d.patDays > 0 ? d.patDays + ' days' : 'Not legislated'));
+    if (cc === 'CI' || cc === 'GH') lines.push(d.patPay);
     lines.push('Public holidays: ' + d.holidays + ' typical per year');
     lines.push('Law/reference: ' + d.law);
     if (d.obs) lines.push('Local note: ' + d.obs);
@@ -1047,10 +1048,11 @@ var lcSortKey = 'name', lcSortAsc = true;
 function lcBuildCompare() {
   var rows = Object.keys(LEAVE_DATA).map(function(cc) {
     var d = LEAVE_DATA[cc];
-    return {cc:cc, name:d.name, annual:d.annual, mat:d.matWeeks, pat:d.patDays||0, holidays:d.holidays};
+    return {cc:cc, name:d.name, annual:d.annual, mat:d.matWeeks, pat:d.patDays, holidays:d.holidays};
   });
   rows.sort(function(a,b) {
     if (lcSortKey === 'name') return lcSortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+    if(a[lcSortKey]===null)return b[lcSortKey]===null?0:1;if(b[lcSortKey]===null)return -1;
     return lcSortAsc ? a[lcSortKey]-b[lcSortKey] : b[lcSortKey]-a[lcSortKey];
   });
   var maxA = Math.max.apply(null,rows.map(function(r){return r.annual;}));
@@ -1063,7 +1065,7 @@ function lcBuildCompare() {
     var mc = r.mat >= maxM-1 ? ' val-hi' : r.mat <= 9 ? ' val-lo' : '';
     var pc = r.pat >= maxP-2 ? ' val-hi' : '';
     var hc = r.holidays >= maxH-1 ? ' val-hi' : '';
-    return '<tr><td>' + r.name + '</td><td class="'+ac+'">' + r.annual + ' days</td><td class="'+mc+'">' + r.mat + ' wks</td><td class="'+pc+'">' + (r.cc==='CI'?'2 days — conditional':r.pat>0?r.pat+' days':'<span class="val-lo">None</span>') + '</td><td class="'+hc+'">' + r.holidays + '</td></tr>';
+    return '<tr><td>' + r.name + '</td><td class="'+ac+'">' + r.annual + ' days</td><td class="'+mc+'">' + r.mat + ' wks</td><td class="'+pc+'">' + (r.pat===null?'Scope unverified':r.cc==='CI'?'2 days — conditional':r.pat>0?r.pat+' days':'<span class="val-lo">None</span>') + '</td><td class="'+hc+'">' + r.holidays + '</td></tr>';
   }).join('');
   document.getElementById('lc-tbody').innerHTML = html;
   ['name','annual','mat','pat','holidays'].forEach(function(k){

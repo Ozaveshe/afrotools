@@ -500,7 +500,7 @@ function buildLeaveView(code) {
     flag: leave.flag || '',
     annual: leave.annualLeave && typeof leave.annualLeave.days === 'number' ? leave.annualLeave.days : 0,
     annualUnit: getAnnualUnit(code),
-    annualNote: code === 'CI' ? 'Kifungu 25.1: siku 2.2 ouvrables kwa mwezi wa huduma halisi; siku 26.4 kwa miezi 12 bila kuzungusha. Nyongeza, kutokuwepo kazini na namna mwajiri anavyozungusha hazijahesabiwa.' : lcSwText(getAnnualNoteText(leave)),
+    annualNote: code === 'GH' ? 'Sheria 651 vifungu 20–21: siku 15 za kazi kwa huduma endelevu katika mwaka wa kalenda; kazi isiyoendelezwa mara kwa mara inahitaji angalau siku 200 katika mwaka huo. Biashara yenye wanafamilia wa mwajiri pekee haijumuishwi (kifungu 32). Thibitisha sheria ya sasa.' : code === 'CI' ? 'Kifungu 25.1: siku 2.2 ouvrables kwa mwezi wa huduma halisi; siku 26.4 kwa miezi 12 bila kuzungusha. Nyongeza, kutokuwepo kazini na namna mwajiri anavyozungusha hazijahesabiwa.' : lcSwText(getAnnualNoteText(leave)),
     accrual: lcSwText(getAnnualAccrualText(leave)),
     sick: getSickValue(leave),
     sickNote: getSickNoteText(leave),
@@ -512,7 +512,7 @@ function buildLeaveView(code) {
     matElig: lcSwText(getMaternityEligibilityText(leave)),
     patDays: LEAVE_ENTITLEMENTS[code] && LEAVE_ENTITLEMENTS[code].paternityLeave && Number.isFinite(LEAVE_ENTITLEMENTS[code].paternityLeave.days) ? LEAVE_ENTITLEMENTS[code].paternityLeave.days : null,
     patPay: lcSwText(leave && leave.paternityLeave && leave.paternityLeave.pay ? leave.paternityLeave.pay : (leave && leave.paternityLeave && leave.paternityLeave.days > 0 ? 'Mara nyingi hulipwa au hutegemea sera ya mwajiri' : 'N/A')),
-    patNote: code === 'CI' ? 'Ruhusa ya kuzaliwa: miezi sita kamili ya uwepo kazini, kikomo cha siku kumi za familia kwa mwaka, familia ya kisheria, idhini na uthibitisho. Tumia sehemu ya kuhakiki masharti.' : lcSwText(leave && leave.paternityLeave && leave.paternityLeave.notes ? leave.paternityLeave.notes : ''),
+    patNote: code === 'GH' ? 'Haki ya jumla chini ya sheria ya sasa haijathibitishwa. Maelekezo ya Utumishi wa Umma 2020, agizo 324, yana kiwango tofauti cha juu cha siku 10 za kazi kwa masharti; si haki ya kila mfanyakazi.' : code === 'CI' ? 'Ruhusa ya kuzaliwa: miezi sita kamili ya uwepo kazini, kikomo cha siku kumi za familia kwa mwaka, familia ya kisheria, idhini na uthibitisho. Tumia sehemu ya kuhakiki masharti.' : lcSwText(leave && leave.paternityLeave && leave.paternityLeave.notes ? leave.paternityLeave.notes : ''),
     holidays: typeof leave.publicHolidays === 'number' ? leave.publicHolidays : 0,
     compassionate: lcSwText(otherLeave.join(' ')),
     law: lcSwText((leave && leave.annualLeave && leave.annualLeave.law) || (leave && leave.sickLeave && leave.sickLeave.law) || (leave && leave.maternityLeave && leave.maternityLeave.law) || (leave && leave.paternityLeave && leave.paternityLeave.law) || 'Marejeo ya kisheria ya moja kwa moja hayajatajwa wazi kwenye seti hii ya data.'),
@@ -865,7 +865,7 @@ function lcBuildSummary() {
     lines.push('Likizo ya ugonjwa: ' + d.sickNote);
     lines.push('Likizo ya uzazi: ' + d.matWeeks + ' wiki, malipo ' + d.matPay + (d.matPaySource ? ' kupitia ' + d.matPaySource : ''));
     lines.push('Likizo ya baba: ' + (d.patDays === null ? 'Taarifa hazipo — hakiki' : d.patDays > 0 ? d.patDays + ' siku' : 'Siku 0 katika chanzo — hakiki'));
-    if (cc === 'CI') lines.push(d.patNote);
+    if (cc === 'CI' || cc === 'GH') lines.push(d.patNote);
     lines.push('Sikukuu: ' + d.holidays + ' kwa mwaka kwa kawaida');
     lines.push('Sheria/rejea: ' + d.law);
     if (d.obs) lines.push('Dokezo: ' + d.obs);
