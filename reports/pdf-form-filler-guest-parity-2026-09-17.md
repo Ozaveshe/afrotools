@@ -32,3 +32,8 @@ Stable tiny artifacts in C:/Users/Oza/.codex/worktrees/pdf-image-parity-20260916
 
 ## Limits
 No full form-filler acceptance. XFA, signatures, encrypted files, complex fonts, arbitraryUnicode, option-list multiselection, seeded radio clearing, invalid-field error reporting and full accessibility remain outside this bounded gate repair. Existing processing logic untouched. Review/validation controls retained.
+
+## Coordinator integration proof
+Source-only candidate8e6becd7 integrated as604828ac on codex/language-document-followup-20260917, based on db561f90. Targeted generator write/check passed; generated SW blob exactly matches55c74c56951cc4293f57305dcdac852fc1b194f1. No files were deleted by integration (older agent tree itself omits unrelated newer files, so only its scoped commit was cherry-picked).
+
+Coordinator actual-source browser session26439 passed all3locale cases in17.3seconds on port4509 with normal analytics and a fresh server; editable/flattened output checks passed. This is source browser proof, not rebuilt-dist or production proof. Further form correctness fixes remain separate.
