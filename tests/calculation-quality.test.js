@@ -335,13 +335,13 @@ test('quality report is deterministic for an explicit as-of date', function () {
   assert.strictEqual(first.findings.filter((finding) => finding.severity === 'error').length, 0);
   assert.strictEqual(first.fixtures.failed, 0);
   assert.deepStrictEqual(first.fixtures.changes, []);
-  const planningIds = ['formula-engines-morocco-paye', 'formula-engines-tunisia-paye'];
+  const planningIds = ['formula-engines-morocco-paye', 'formula-engines-tunisia-paye', 'formula-assets-js-engines-ci-birth-leave'];
   for (const id of planningIds) {
     const formula = artifacts.formulas.formulas.find((item) => item.id === id);
     assert.strictEqual(formula.supportStatus, 'review-required');
     assert.match(formula.disclaimer, /assumptions|unconfirmed/);
   }
-  assert.strictEqual(first.reviewBacklog.highRiskSources, planningIds.length, 'only explicitly documented private PAYE source uncertainties remain');
+  assert.strictEqual(first.reviewBacklog.highRiskSources, planningIds.length, 'only the explicitly documented PAYE and CI birth-permission source uncertainties remain');
   assert.ok(first.reviewBacklog.highRiskEffectiveDates > 0, 'unknown legacy effective dates must remain visible');
 });
 
