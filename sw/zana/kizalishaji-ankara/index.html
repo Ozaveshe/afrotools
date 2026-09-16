@@ -1148,7 +1148,9 @@ function getDocumentType() {
 }
 
 function getDocumentTypeInfo() {
-  return DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;
+  const info = DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;
+  const text = window.AfroInvoiceText || ((value) => value);
+  return { ...info, label: text(info.label), title: text(info.title), numberLabel: text(info.numberLabel) };
 }
 
 function updateDocumentTypeUI() {
@@ -1485,7 +1487,7 @@ function updatePreview() {
     tbody.innerHTML = items.map(it => `<tr>
       <td>${escapeHtml(it.desc)}</td>
       <td style="text-align:right">${it.qty}</td>
-      <td style="text-align:right">${fmtCur(it.price, cur)}</td>
+      <td style="text-align:right">${((CURRENCIES[cur] || {}).s || cur) + ' ' + Number(it.price || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:20})}</td>
       <td style="text-align:right">${it.itax > 0 ? it.itax + '%' : '\u2014'}</td>
       <td style="text-align:right;font-weight:600">${fmtCur(it.lineTotal, cur)}</td>
     </tr>`).join('');
@@ -1510,7 +1512,7 @@ function updatePreview() {
   // Paid stamp
   const paid = $('markPaid').checked;
   $('paidStamp').style.display = paid ? '' : 'none';
-  $('previewStatus').textContent = paid ? 'Paid' : 'Draft';
+  $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText(paid ? 'Paid' : 'Draft') : (paid ? 'Paid' : 'Draft');
   $('previewStatus').style.color = paid ? '#0063D1' : '';
 
   // Overdue check
@@ -1521,7 +1523,7 @@ function updatePreview() {
   const isOverdue = !paid && dueDate && dueDate < today;
   $('overdueBar').style.display = isOverdue ? '' : 'none';
   if (isOverdue) {
-    $('previewStatus').textContent = 'Overdue';
+    $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText('Overdue') : 'Overdue';
     $('previewStatus').style.color = '#991b1b';
   }
   updateActionState();
@@ -2125,7 +2127,7 @@ init();
       });
     });
     var pdfBtn = $('btnPDF');
-    if (pdfBtn) pdfBtn.addEventListener('click', exportNonInvoicePdf, true);
+    // The shared invoice-generator enhancements export all document types.
     ['btnSaveClient', 'btnSaveInvoice'].forEach(function(id) {
       var btn = $(id);
       if (btn) btn.addEventListener('click', function() { setTimeout(updateStarterState, 250); });

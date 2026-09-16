@@ -484,7 +484,10 @@ function main() {
   const artwork = readJson(ARTWORK_PATH);
   validateConfig(config);
   const changed = [];
+  const selectedId = process.argv.find((arg) => arg.startsWith('--app='))?.slice(6);
+  if (selectedId && !config.apps.some((app) => app.id === selectedId)) throw new Error('Unknown French Document/PDF app: ' + selectedId);
   for (const app of config.apps) {
+    if (selectedId && app.id !== selectedId) continue;
     const englishFile = path.join(ROOT, app.englishFile);
     if (!fs.existsSync(englishFile)) throw new Error(`Missing English owner: ${app.englishFile}`);
     if (!app.preserveExisting) {
@@ -504,7 +507,7 @@ function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`${WRITE ? 'Built' : 'Checked'} French Document/PDF parity: 32 rows, ${changed.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
+  console.log(`${WRITE ? 'Built' : 'Checked'} French Document/PDF parity: ${selectedId ? 1 : config.apps.length} selected rows, ${changed.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
 }
 
 main();

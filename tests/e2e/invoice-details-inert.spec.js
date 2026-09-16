@@ -1,5 +1,5 @@
 const {test,expect}=require('@playwright/test');
-for(const route of ['/tools/invoice-generator/','/sw/zana/kizalishaji-ankara/'])test(`${route} billing details stay text in previews`,async({page})=>{
+for(const route of ['/tools/invoice-generator/','/fr/tools/generateur-factures/','/sw/zana/kizalishaji-ankara/'])test(`${route} billing details stay text in previews`,async({page})=>{
  await page.goto(route);
  const payload='<img src=x onerror="window.__invoiceXss=1">';
  for(const id of ['businessAddress','businessEmail','businessPhone','taxID','clientCompany','clientAddress','clientEmail']){
