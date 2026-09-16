@@ -393,15 +393,15 @@
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
-<meta name="afrotools-content-id" content="sw-document-pdf:invoice-generator">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kizalishaji-ankara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-ankara/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/">
+  <meta name="afrotools-content-id" content="sw-document-pdf:invoice-generator">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <a class="skip-to-form" href="#invoiceMain">Ruka hadi kwenye fomu ya ankara</a>
@@ -826,7 +826,7 @@
             <button class="btn" id="btnPrint" type="button" aria-label="Chapisha ankara">Chapisha</button>
             <button class="btn" id="btnExportJson" type="button" aria-label="Hamisha ankara ya JSON" data-no-pdf-gate="true" onclick="return window.exportInvoiceJsonFallback && window.exportInvoiceJsonFallback(event)">Hamisha JSON</button>
             <button class="btn" id="btnImportJson" type="button" aria-label="Ingiza ankara ya JSON">Ingiza JSON</button>
-            <button class="btn" id="btnSaveTemplate" type="button" aria-label="Hifadhi ankara ya sasa kama kiolezo">hifadhi Kiolezo</button>
+            <button class="btn" id="btnSaveTemplate" type="button" aria-label="Hifadhi ankara ya sasa kama kiolezo">Hifadhi kiolezo</button>
             <button class="btn" id="btnReminder" type="button" aria-label="Nakili kikumbusho cha malipo">Nakili Kikumbusho</button>
             <button class="btn" id="btnNewInvoice" type="button" aria-label="Anzisha ankara mpya tupu">Ankara Mpya</button>
           </div>
@@ -1460,11 +1460,11 @@ function updatePreview() {
   const compName = $('companyName').value || 'Your Company';
   $('pCompany').textContent = compName;
   const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Tax ID: ' + $('taxID').value : ''].filter(Boolean);
-  $('pBizDetail').innerHTML = bizParts.join('<br>');
+  $('pBizDetail').innerHTML = bizParts.map(escapeHtml).join('<br>');
 
   $('pClient').textContent = $('clientName').value || 'Client Name';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
-  $('pClientDetail').innerHTML = cParts.join('<br>');
+  $('pClientDetail').innerHTML = cParts.map(escapeHtml).join('<br>');
 
   const hasPreviewBasics = Boolean($('companyName').value.trim() && $('clientName').value.trim() && items.length);
   const previewEmpty = $('previewEmptyState');
@@ -2258,8 +2258,8 @@ init();
 <script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 
   <script type="application/json" id="sw-document-pdf-locale">{"id":"invoice-generator","name":"Kizalishaji Ankara","downloadContract":"sensitive-guest"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

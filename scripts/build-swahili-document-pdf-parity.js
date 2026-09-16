@@ -295,6 +295,11 @@ const legacyIdRepairs = {
 };
 
 const legacyInlineRepairs = {
+  'invoice-generator': {
+    "bizParts.join('<br>')": "bizParts.map(escapeHtml).join('<br>')",
+    "cParts.join('<br>')": "cParts.map(escapeHtml).join('<br>')",
+    ">Save Kiolezo</button>": ">Hifadhi kiolezo</button>"
+  },
   'pdf-convert': {
     'resetPdfMaandishi()': 'resetPdfText()',
     'extractMaandishi()': 'extractText()',

@@ -1460,11 +1460,11 @@ function updatePreview() {
   const compName = $('companyName').value || 'Your Company';
   $('pCompany').textContent = compName;
   const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Tax ID: ' + $('taxID').value : ''].filter(Boolean);
-  $('pBizDetail').innerHTML = bizParts.join('<br>');
+  $('pBizDetail').innerHTML = bizParts.map(escapeHtml).join('<br>');
 
   $('pClient').textContent = $('clientName').value || 'Client Name';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
-  $('pClientDetail').innerHTML = cParts.join('<br>');
+  $('pClientDetail').innerHTML = cParts.map(escapeHtml).join('<br>');
 
   const hasPreviewBasics = Boolean($('companyName').value.trim() && $('clientName').value.trim() && items.length);
   const previewEmpty = $('previewEmptyState');
