@@ -10,6 +10,9 @@ for(const [lang,headings]of [['en',['Summary','Experience','Education','Referenc
  vm.runInNewContext(fs.readFileSync(lang==='fr'?'fr/tools/generateur-cv/js/cv-docx-export.js':'tools/cv-builder/js/cv-docx-export.js','utf8'),ctx);
  const zip=entries(Buffer.from(await ctx.CVDocxExport.buildBlob().arrayBuffer()));
  const xml=zip['word/document.xml'];
+ assert.ok(zip["word/_rels/document.xml.rels"].includes('relationships/styles" Target="styles.xml"'));
+ assert.ok(zip["word/_rels/document.xml.rels"].includes('relationships/numbering" Target="numbering.xml"'));
+ assert.match(zip["word/styles.xml"], /<w:style[^>]*w:styleId="Title"[\s\S]*?<w:pPr>[\s\S]*?<w:rPr>/);
  for(const value of [fixture.fn,fixture.ln,fixture.title,fixture.email,fixture.phone,fixture.altPhone,fixture.loc,fixture.linkedin,fixture.github,fixture.web,fixture.portfolio,fixture.summary,fixture.edus[0].d,fixture.projs[0].d,fixture.refs[0].rel,fixture.refs[0].n,...headings])assert.ok(xml.includes(value),value);
  assert.ok(zip['word/numbering.xml'].includes('w:val="•"'));
  assert.ok(!zip['word/numbering.xml'].includes('\\u2022'));
