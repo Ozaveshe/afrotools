@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
 const path = require('path');
 const swahiliLocalizer = require('../assets/js/pages/sw-document-pdf-localizer.js');
 
@@ -645,6 +646,7 @@ function buildFullParityPage(app) {
     html = html.replace(/id="renderContainer"(?!\s+aria-hidden=)/, 'id="renderContainer" aria-hidden="true"');
   }
   if (app.id === 'cv-builder') html = rewriteRelativeOwnerAssets(html, ownerFile);
+  html = installFormFillerRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
   html = hardenConsentBoundRequests(html, app);
   html = localizeStaticOwnerMarkup(html, app.id);
@@ -756,6 +758,7 @@ function normalizeHubPage() {
 function normalizeExistingPage(app) {
   const target = path.join(ROOT, app.swahiliFile);
   let html = fs.readFileSync(target, 'utf8');
+  html = installFormFillerRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
   const artwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
   html = upsertMeta(html, 'name', 'viewport', 'width=device-width, initial-scale=1');
