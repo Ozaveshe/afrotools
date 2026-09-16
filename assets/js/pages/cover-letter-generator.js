@@ -448,6 +448,8 @@
         k();
     }
     function N() {
+        var printStyle=document.createElement("style");
+        printStyle.id="cover-letter-print-feedback";printStyle.media="print";printStyle.textContent="#toast{display:none!important}";document.head.appendChild(printStyle);
         document.addEventListener("click",function(event){
             var action=event.target.closest&&event.target.closest("[data-action]");
             if(!action||["pdf","word","txt","json","print"].indexOf(action.dataset.action)===-1)return;
