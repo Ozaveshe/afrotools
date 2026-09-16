@@ -91,7 +91,7 @@
         ['Congé annuel restant', Math.max(0, result.annualLeave.days - taken) + ' jours'],
         ['Congé maladie', result.sickLeave.days == null ? 'À vérifier selon règle locale' : result.sickLeave.days + ' jours'],
         ['Congé maternité', result.maternityLeave.weeks + ' semaines'],
-        ['Congé paternité', (result.paternityLeave.days || 0) + ' jours'],
+        ['Congé paternité', dataSet()[country.value].paternityLeave && typeof dataSet()[country.value].paternityLeave.days === 'number' ? dataSet()[country.value].paternityLeave.days + ' jours' : 'Donnée absente — à vérifier'],
         ['Jours fériés indicatifs', result.publicHolidays + ' jours']
       ];
     }
@@ -125,6 +125,7 @@
     error.textContent = '';
     try {
       if (!freshnessReady()) return;
+      if(mode==='leave'&&!form.checkValidity())throw new Error('Vérifiez le pays et le nombre de jours saisis.');
       if (mode === 'overtime') lastResult = engine.calculateOvertime({ country: country.value, monthlySalary: number('salary'), overtimeHours: number('hours'), dayType: field('dayType').value });
       else if (mode === 'leave') lastResult = engine.getLeaveEntitlements(country.value);
       else if (mode === 'social') lastResult = engine.calculateSocialSecurity(country.value, number('salary'));
@@ -168,7 +169,7 @@
   });
   app.querySelector('[data-json]').addEventListener('click', function () {
     if (!ensureResult()) return;
-    download(mode + '-fr.json', 'application/json;charset=utf-8', JSON.stringify({ checkedDate: sourceDate, source: sourceText(lastResult), result: lastResult }, null, 2));
+    download(mode + '-fr.json', 'application/json;charset=utf-8', JSON.stringify(Object.assign({ checkedDate: sourceDate, source: sourceText(lastResult), result: lastResult }, mode === 'leave' ? {schemaVersion:1,tool:'leave-calculator',locale:'fr',inputs:{country:country.value,daysTaken:number('daysTaken')}} : {}), null, 2));
     status.textContent = 'JSON téléchargé localement.';
   });
   app.querySelector('[data-csv]').addEventListener('click', function () {
@@ -183,6 +184,12 @@
   app.querySelector('[data-pdf]').addEventListener('click', async function () {
     if (!ensureResult()) return;
     if (!window.AfroTools || !window.AfroTools.pdf) { status.textContent = 'Bibliothèque PDF indisponible.'; return; }
+    if (mode === 'leave') {
+      var snapshot = country.value + ':' + field('daysTaken').value;
+      try { var completed = await window.AfroTools.leaveReports.pdf({rows:summaryRows(),country:country.value,daysTaken:number('daysTaken'),source:sourceText(lastResult),checkedDate:sourceDate,isCurrent:function(){return lastResult && snapshot === country.value + ':' + field('daysTaken').value;}}); if(completed)status.textContent='PDF généré localement.'; }
+      catch (_) { if(lastResult && snapshot === country.value + ':' + field('daysTaken').value)status.textContent='PDF indisponible. Réessayez ou téléchargez le TXT.'; }
+      return;
+    }
     await window.AfroTools.pdf.generate({ noGate: true, skipGate: true, toolId: mode + '-fr', category: 'financial', title: document.querySelector('h1').textContent, subtitle: 'Estimation locale vérifiée le ' + sourceDate, heroStats: summaryRows().slice(0, 4), sections: [{ title: 'Résultat', rows: summaryRows().slice(4) }, { title: 'Source et hypothèses', rows: [['Règle à vérifier', sourceText(lastResult)], ['Date de vérification', sourceDate]] }], source: sourceText(lastResult), disclaimer: 'Estimation de planification uniquement. Vérifiez les règles, plafonds, exemptions et dates auprès de l’autorité, du régime et de l’employeur.' });
     status.textContent = 'PDF généré localement.';
   });
@@ -195,6 +202,12 @@
   app.querySelector('[data-clear]').addEventListener('click', function () {
     localStorage.removeItem('afrotools.frhr.' + mode); form.reset(); lastResult = null; resultBox.hidden = true; status.textContent = 'Hypothèses locales effacées.';
   });
+  if(mode === 'leave') {
+    var invalidateLeave=function(event){if(event&&event.target===backup)return;lastResult=null;resultBox.hidden=true;status.textContent='Recalculez après modification des entrées.';};
+    form.addEventListener('input',invalidateLeave);form.addEventListener('change',invalidateLeave);
+    var backupLabel=document.createElement('label');backupLabel.textContent='Restaurer une sauvegarde JSON';backupLabel.htmlFor='leave-backup';var backup=document.createElement('input');backup.id='leave-backup';backup.type='file';backup.accept='.json,application/json';form.append(backupLabel,backup);
+    backup.addEventListener('change',async function(){var file=backup.files[0];if(!file)return;var before=country.value+':'+field('daysTaken').value;try{if(file.size>1048576)throw Error('size');var values=window.AfroTools.leaveReports.validateBackup(JSON.parse(await file.text()),dataSet());if(before!==country.value+':'+field('daysTaken').value)throw Error('changed');country.value=values.country;field('daysTaken').value=values.daysTaken;invalidateLeave();status.textContent='Sauvegarde restaurée. Calculez puis enregistrez si nécessaire.';}catch(_){status.textContent='Sauvegarde non reconnue. Les entrées et données enregistrées sont conservées.';}backup.value='';});
+  }
   form.addEventListener('submit', calculate);
   form.addEventListener('reset', function () { window.setTimeout(function () { lastResult = null; resultBox.hidden = true; error.textContent = ''; status.textContent = 'Formulaire réinitialisé.'; }, 0); });
   if (!freshnessReady() || !populateCountries()) { if (!country.options.length) block('Aucun pays n’est disponible dans les données locales.'); return; }
