@@ -10,3 +10,9 @@ test('Senegal full annual base and separate one-day child allowance',()=>{
 test('Senegal malformed and negative inputs do not yield a result',()=>{
  for(const changes of [{assessment:'2026-02-30'},{assessment:''},{children:-1},{children:1.5},{children:''},{taken:-1},{taken:'NaN'},{taken:''}])assert.throws(()=>engine.calculate({...fixture,...changes}));
 });
+test('Senegal calendar spends confirmed balance without prorating child allowance',()=>{
+ const request={start:'2026-09-18',days:3,schedule:'five',exclusions:'2026-09-21',confirmed:true};
+ const r=engine.plan(fixture,request);assert.equal(r.schedule.lastLeaveDate,'2026-09-23');assert.equal(r.schedule.returnDate,'2026-09-24');assert.equal(r.remainingAfterRequest,19.5);
+ for(const patch of [{days:0},{days:23},{days:1.5},{confirmed:false},{start:'2026-09-20'},{exclusions:'bad'}])assert.throws(()=>engine.plan(fixture,{...request,...patch}));
+ assert.throws(()=>engine.plan({...fixture,rule:false},request));
+});
