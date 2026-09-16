@@ -715,6 +715,7 @@ function buildParentalPlanState(code, type, dueVal) {
 
 function ppCalc() {
   lcCurrentPP = null;
+  document.getElementById('pp-result').replaceChildren();
   var state = buildParentalPlanState(document.getElementById('pp-country').value, document.getElementById('pp-type').value, document.getElementById('pp-due').value);
   var el = document.getElementById('pp-result');
   if (!state) { el.style.display = 'none'; return; }
@@ -741,7 +742,7 @@ function ppDownloadICal() {
   if (!p) return;
   ppCalc();
   p = lcCurrentPP; if (!p) return;
-  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:'parental-'+p.start,title:p.title,description:p.title,returnTitle:"Kurudi kazini"});
+  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:crypto.randomUUID(),title:p.title,description:p.title,returnTitle:"Kurudi kazini"});
   ics = ics.replace('END:VEVENT\r\nEND:VCALENDAR', 'BEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Unarudi kazini baada ya wiki 1\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR');
   var blob = new Blob([ics], {type:'text/calendar'});
   var url = URL.createObjectURL(blob);
