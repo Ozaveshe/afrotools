@@ -192,6 +192,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-conges-pto/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-likizo/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/leave-calculator/">
+<script src="/assets/js/lib/leave-calendar.js"></script>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -824,13 +825,15 @@ function poCalc() {
 
 // ── Tab 4: Parental Planner ──
 function ppCalc() {
+  lcCurrentPP = null;
   var cc = document.getElementById('pp-country').value;
   var type = document.getElementById('pp-type').value;
   var dueVal = document.getElementById('pp-due').value;
   var el = document.getElementById('pp-result');
   if (!cc || !LEAVE_DATA[cc] || !dueVal) { el.style.display = 'none'; return; }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dueVal) || !Number.isFinite(Date.parse(dueVal + 'T00:00:00Z')) || new Date(dueVal + 'T00:00:00Z').toISOString().slice(0,10) !== dueVal) { el.style.display = 'none'; return; }
   var d = LEAVE_DATA[cc];
-  var due = new Date(dueVal);
+  var due = new Date(dueVal + 'T00:00:00Z');
   var leaveWeeks, preWeeks = 0, payInfo;
   if (type === 'mat') {
     leaveWeeks = d.matWeeks;
@@ -841,28 +844,31 @@ function ppCalc() {
       el.innerHTML = '<div class="lc-result-box"><div class="lc-result-sub">No statutory paternity leave in ' + d.name + '. Check your employer for discretionary leave.</div></div>';
       el.style.display = ''; return;
     }
-    leaveWeeks = Math.ceil(d.patDays / 5);
+    leaveWeeks = d.patDays / 5;
     payInfo = 'Pay: ' + (d.patPay || 'Varies') + ' | ' + d.patDays + ' days';
   }
-  var leaveStart = new Date(due); leaveStart.setDate(leaveStart.getDate() - preWeeks * 7);
-  var leaveEnd = new Date(leaveStart); leaveEnd.setDate(leaveEnd.getDate() + leaveWeeks * 7);
-  var returnDate = new Date(leaveEnd); returnDate.setDate(returnDate.getDate() + 1);
-  var fdt = function(dt){ return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}); };
-  lcCurrentPP = { start: leaveStart.toISOString().split('T')[0], end: leaveEnd.toISOString().split('T')[0], returnDate: returnDate.toISOString().split('T')[0], title: (type==='mat'?'Maternity':'Paternity') + ' Leave \u2014 ' + d.name, country: d.name };
-  var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + d.name + ' \u2014 ' + (type==='mat'?'Maternity':'Paternity') + ' Leave Plan (' + leaveWeeks + ' weeks)</div><div class="lc-date-row">';
+  var leaveStart = new Date(due); leaveStart.setUTCDate(leaveStart.getUTCDate() - preWeeks * 7);
+  var schedule = window.AfroTools.leaveCalendar.plan({start:leaveStart.toISOString().slice(0,10),days:type === 'mat' ? leaveWeeks * 7 : d.patDays,unit:type === 'mat' ? 'calendar' : 'working'});
+  var leaveEnd = new Date(schedule.lastLeaveDate + 'T00:00:00Z');
+  var returnDate = new Date(schedule.returnDate + 'T00:00:00Z');
+  var fdt = function(dt){ return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); };
+  lcCurrentPP = { schedule:schedule,start: leaveStart.toISOString().split('T')[0], end: leaveEnd.toISOString().split('T')[0], returnDate: returnDate.toISOString().split('T')[0], title: (type==='mat'?'Maternity':'Paternity') + ' Leave \u2014 ' + d.name, country: d.name };
+  var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + d.name + ' \u2014 ' + (type==='mat'?'Maternity':'Paternity') + ' Leave Plan (' + (type === 'mat' ? leaveWeeks + ' weeks' : d.patDays + ' working days') + ')</div><div class="lc-date-row">';
   html += '<div class="lc-date-card"><div class="dc-lbl">Leave Starts</div><div class="dc-dt">' + fdt(leaveStart) + '</div></div>';
   if (type === 'mat') html += '<div class="lc-date-card"><div class="dc-lbl">Due Date</div><div class="dc-dt">' + fdt(due) + '</div></div>';
   html += '<div class="lc-date-card"><div class="dc-lbl">Leave Ends</div><div class="dc-dt">' + fdt(leaveEnd) + '</div></div>';
   html += '<div class="lc-date-card hi"><div class="dc-lbl">Return to Work</div><div class="dc-dt">' + fdt(returnDate) + '</div></div>';
   html += '</div><div class="lc-formula">' + payInfo + (type==='mat' ? ' | Leave starts 2 weeks before due date' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">\uD83D\uDCC5 Download .ics Calendar File</button></div>';
+  html += '<p class="lc-formula">Paternity planning counts Monday–Friday; public holidays are not excluded. Confirm your schedule with your employer.</p>';
   el.innerHTML = html; el.style.display = '';
 }
 
 function ppDownloadICal() {
   var p = lcCurrentPP; if (!p) return;
-  var ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//AfroTools//Leave Calculator//EN\r\n';
-  ics += 'BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:' + p.start.replace(/-/g,'') + '\r\nDTEND;VALUE=DATE:' + p.end.replace(/-/g,'') + '\r\nSUMMARY:' + p.title + '\r\nEND:VEVENT\r\n';
-  ics += 'BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:' + p.returnDate.replace(/-/g,'') + '\r\nDTEND;VALUE=DATE:' + p.returnDate.replace(/-/g,'') + '\r\nSUMMARY:Return to Work \uD83C\uDFE2\r\nDESCRIPTION:Return to work after ' + p.title + '\r\nBEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Return to work in 1 week\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR';
+  ppCalc();
+  p = lcCurrentPP; if (!p) return;
+  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:'parental-'+p.start,title:p.title,description:p.title,returnTitle:"Return to Work"});
+  ics = ics.replace('END:VEVENT\r\nEND:VCALENDAR', 'BEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Return to work in 1 week\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR');
   var blob = new Blob([ics], {type:'text/calendar'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a'); a.href = url; a.download = 'parental-leave.ics';

@@ -122,6 +122,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-conges-pto/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-likizo/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/leave-calculator/">
+<script src="/assets/js/lib/leave-calendar.js"></script>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -691,8 +692,8 @@ function poCalc() {
 function buildParentalPlanState(code, type, dueVal) {
   if (!code || !LEAVE_DATA[code] || !dueVal) return null;
   var d = LEAVE_DATA[code];
-  var due = new Date(dueVal);
-  if (isNaN(due.getTime())) return null;
+  var due = new Date(dueVal + 'T00:00:00Z');
+  if (isNaN(due.getTime()) || due.toISOString().slice(0,10) !== dueVal) return null;
   var leaveWeeks;
   var preWeeks = 0;
   var payInfo;
@@ -702,19 +703,18 @@ function buildParentalPlanState(code, type, dueVal) {
     payInfo = 'Malipo: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : '');
   } else {
     if (!d.patDays || d.patDays === 0) return {unsupported:true,message:'Hakuna likizo ya baba iliyowekwa kisheria katika ' + d.name + '. Angalia sera ya mwajiri kwa siku za hiari au ruhusa nyingine.'};
-    leaveWeeks = Math.ceil(d.patDays / 5);
+    leaveWeeks = d.patDays / 5;
     payInfo = 'Malipo: ' + d.patPay + ' | ' + d.patDays + ' siku';
   }
-  var leaveStart = new Date(due);
-  leaveStart.setDate(leaveStart.getDate() - preWeeks * 7);
-  var leaveEnd = new Date(leaveStart);
-  leaveEnd.setDate(leaveEnd.getDate() + leaveWeeks * 7);
-  var returnDate = new Date(leaveEnd);
-  returnDate.setDate(returnDate.getDate() + 1);
-  return {countryName:d.name,typeLabel:type === 'mat' ? 'Likizo ya uzazi' : 'Likizo ya baba',leaveWeeks:leaveWeeks,payInfo:payInfo,dueDate:due,leaveStart:leaveStart,leaveEnd:leaveEnd,returnDate:returnDate};
+  var leaveStart = new Date(due); leaveStart.setUTCDate(leaveStart.getUTCDate() - preWeeks * 7);
+  var schedule = window.AfroTools.leaveCalendar.plan({start:leaveStart.toISOString().slice(0,10),days:type === 'mat' ? leaveWeeks * 7 : d.patDays,unit:type === 'mat' ? 'calendar' : 'working'});
+  var leaveEnd = new Date(schedule.lastLeaveDate + 'T00:00:00Z');
+  var returnDate = new Date(schedule.returnDate + 'T00:00:00Z');
+  return {schedule:schedule,countryName:d.name,typeLabel:type === 'mat' ? 'Likizo ya uzazi' : 'Likizo ya baba',leaveWeeks:leaveWeeks,payInfo:payInfo,dueDate:due,leaveStart:leaveStart,leaveEnd:leaveEnd,returnDate:returnDate};
 }
 
 function ppCalc() {
+  lcCurrentPP = null;
   var state = buildParentalPlanState(document.getElementById('pp-country').value, document.getElementById('pp-type').value, document.getElementById('pp-due').value);
   var el = document.getElementById('pp-result');
   if (!state) { el.style.display = 'none'; return; }
@@ -723,14 +723,15 @@ function ppCalc() {
     el.style.display = '';
     return;
   }
-  var fmt = function(dt){ return dt.toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short',year:'numeric'}); };
-  lcCurrentPP = {start:state.leaveStart.toISOString().split('T')[0],end:state.leaveEnd.toISOString().split('T')[0],returnDate:state.returnDate.toISOString().split('T')[0],title:state.typeLabel + ' — ' + state.countryName,country:state.countryName};
-  var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + escapeHtml(state.countryName) + ' — ' + escapeHtml(state.typeLabel) + ' (' + state.leaveWeeks + ' wiki)</div><div class="lc-date-row">';
+  var fmt = function(dt){ return dt.toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); };
+  lcCurrentPP = {schedule:state.schedule,start:state.leaveStart.toISOString().split('T')[0],end:state.leaveEnd.toISOString().split('T')[0],returnDate:state.returnDate.toISOString().split('T')[0],title:state.typeLabel + ' — ' + state.countryName,country:state.countryName};
+  var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + escapeHtml(state.countryName) + ' — ' + escapeHtml(state.typeLabel) + ' (' + (document.getElementById('pp-type').value === 'mat' ? state.leaveWeeks + ' wiki' : LEAVE_DATA[document.getElementById('pp-country').value].patDays + ' siku za kazi') + ')</div><div class="lc-date-row">';
   html += '<div class="lc-date-card"><div class="dc-lbl">Likizo inaanza</div><div class="dc-dt">' + escapeHtml(fmt(state.leaveStart)) + '</div></div>';
   if (document.getElementById('pp-type').value === 'mat') html += '<div class="lc-date-card"><div class="dc-lbl">Tarehe inayotarajiwa</div><div class="dc-dt">' + escapeHtml(fmt(state.dueDate)) + '</div></div>';
   html += '<div class="lc-date-card"><div class="dc-lbl">Likizo inaisha</div><div class="dc-dt">' + escapeHtml(fmt(state.leaveEnd)) + '</div></div>';
   html += '<div class="lc-date-card hi"><div class="dc-lbl">Kurudi kazini</div><div class="dc-dt">' + escapeHtml(fmt(state.returnDate)) + '</div></div>';
   html += '</div><div class="lc-formula">' + escapeHtml(state.payInfo) + (document.getElementById('pp-type').value === 'mat' ? ' | Mfumo huu unaweka mwanzo wa mapumziko wiki 2 kabla ya tarehe inayotarajiwa.' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">&#128197; Pakua faili ya kalenda (.ics)</button></div>';
+  html += '<p class="lc-formula">Mpango wa baba huhesabu Jumatatu–Ijumaa; sikukuu hazijaondolewa. Thibitisha ratiba na mwajiri.</p>';
   el.innerHTML = html;
   el.style.display = '';
 }
@@ -738,9 +739,10 @@ function ppCalc() {
 function ppDownloadICal() {
   var p = lcCurrentPP;
   if (!p) return;
-  var ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//AfroTools//Kikokotoo cha Likizo//SW\r\n';
-  ics += 'BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:' + p.start.replace(/-/g,'') + '\r\nDTEND;VALUE=DATE:' + p.end.replace(/-/g,'') + '\r\nSUMMARY:' + p.title + '\r\nEND:VEVENT\r\n';
-  ics += 'BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:' + p.returnDate.replace(/-/g,'') + '\r\nDTEND;VALUE=DATE:' + p.returnDate.replace(/-/g,'') + '\r\nSUMMARY:Kurudi kazini\r\nDESCRIPTION:Kurudi kazini baada ya ' + p.title + '\r\nBEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Unarudi kazini baada ya wiki 1\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR';
+  ppCalc();
+  p = lcCurrentPP; if (!p) return;
+  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:'parental-'+p.start,title:p.title,description:p.title,returnTitle:"Kurudi kazini"});
+  ics = ics.replace('END:VEVENT\r\nEND:VCALENDAR', 'BEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Unarudi kazini baada ya wiki 1\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR');
   var blob = new Blob([ics], {type:'text/calendar'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
