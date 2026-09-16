@@ -702,7 +702,7 @@ function buildParentalPlanState(code, type, dueVal) {
   var payInfo;
   if (type === 'mat') {
     leaveWeeks = d.matWeeks;
-    preWeeks = 2;
+    preWeeks = code === 'CM' ? 4 : 2;
     payInfo = 'Malipo: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : '');
   } else {
     if (d.patDays === null) return {unsupported:true,message:'Taarifa za siku za likizo ya baba hazipo kwa ' + d.name + '. Hakiki sheria ya sasa na mwajiri; taarifa kukosekana hakumaanishi siku sifuri.'};
@@ -714,7 +714,7 @@ function buildParentalPlanState(code, type, dueVal) {
   var schedule = window.AfroTools.leaveCalendar.plan({start:leaveStart.toISOString().slice(0,10),days:type === 'mat' ? leaveWeeks * 7 : d.patDays,unit:type === 'mat' ? 'calendar' : 'working'});
   var leaveEnd = new Date(schedule.lastLeaveDate + 'T00:00:00Z');
   var returnDate = new Date(schedule.returnDate + 'T00:00:00Z');
-  return {schedule:schedule,countryName:d.name,typeLabel:type === 'mat' ? 'Likizo ya uzazi' : 'Likizo ya baba',leaveWeeks:leaveWeeks,payInfo:payInfo,dueDate:due,leaveStart:leaveStart,leaveEnd:leaveEnd,returnDate:returnDate};
+  return {preWeeks:preWeeks,sourceNote:code === 'CM' && type === 'mat' ? 'Kamerun: Kanuni ya Kazi 92/007 (1992), kifungu 84, kumbukumbu ya Wizara. Mpango wa msingi tu: wiki 14, kuanzia wiki 4 kabla ya tarehe ya kujifungua inayotarajiwa. Marekebisho ya sasa na ustahiki wa malipo havijahakikiwa. Kujifungua mapema/baadaye na nyongeza yenye cheti cha kitabibu vinahitaji mpango mpya; thibitisha na mwajiri. https://www.mintss.cm/m/web/uploads/texte_archive/code_du_travail_1993.pdf' : '',schedule:schedule,countryName:d.name,typeLabel:type === 'mat' ? 'Likizo ya uzazi' : 'Likizo ya baba',leaveWeeks:leaveWeeks,payInfo:payInfo,dueDate:due,leaveStart:leaveStart,leaveEnd:leaveEnd,returnDate:returnDate};
 }
 
 function ppCalc() {
@@ -729,14 +729,15 @@ function ppCalc() {
     return;
   }
   var fmt = function(dt){ return dt.toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); };
-  lcCurrentPP = {schedule:state.schedule,start:state.leaveStart.toISOString().split('T')[0],end:state.leaveEnd.toISOString().split('T')[0],returnDate:state.returnDate.toISOString().split('T')[0],title:state.typeLabel + ' — ' + state.countryName,country:state.countryName};
+  lcCurrentPP = {sourceNote:state.sourceNote,schedule:state.schedule,start:state.leaveStart.toISOString().split('T')[0],end:state.leaveEnd.toISOString().split('T')[0],returnDate:state.returnDate.toISOString().split('T')[0],title:state.typeLabel + ' — ' + state.countryName,country:state.countryName};
   var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + escapeHtml(state.countryName) + ' — ' + escapeHtml(state.typeLabel) + ' (' + (document.getElementById('pp-type').value === 'mat' ? state.leaveWeeks + ' wiki' : LEAVE_DATA[document.getElementById('pp-country').value].patDays + ' siku za kazi') + ')</div><div class="lc-date-row">';
   html += '<div class="lc-date-card"><div class="dc-lbl">Likizo inaanza</div><div class="dc-dt">' + escapeHtml(fmt(state.leaveStart)) + '</div></div>';
   if (document.getElementById('pp-type').value === 'mat') html += '<div class="lc-date-card"><div class="dc-lbl">Tarehe inayotarajiwa</div><div class="dc-dt">' + escapeHtml(fmt(state.dueDate)) + '</div></div>';
   html += '<div class="lc-date-card"><div class="dc-lbl">Likizo inaisha</div><div class="dc-dt">' + escapeHtml(fmt(state.leaveEnd)) + '</div></div>';
   html += '<div class="lc-date-card hi"><div class="dc-lbl">Kurudi kazini</div><div class="dc-dt">' + escapeHtml(fmt(state.returnDate)) + '</div></div>';
-  html += '</div><div class="lc-formula">' + escapeHtml(state.payInfo) + (document.getElementById('pp-type').value === 'mat' ? ' | Mfumo huu unaweka mwanzo wa mapumziko wiki 2 kabla ya tarehe inayotarajiwa.' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">&#128197; Pakua faili ya kalenda (.ics)</button></div>';
+  html += '</div><div class="lc-formula">' + escapeHtml(state.payInfo) + (document.getElementById('pp-type').value === 'mat' ? ' | Mfumo huu unaweka mwanzo wa mapumziko wiki ' + state.preWeeks + ' kabla ya tarehe inayotarajiwa.' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">&#128197; Pakua faili ya kalenda (.ics)</button></div>';
   html += '<p class="lc-formula">Mpango wa baba huhesabu Jumatatu–Ijumaa; sikukuu hazijaondolewa. Thibitisha ratiba na mwajiri.</p>';
+  if (lcCurrentPP.sourceNote) html += '<p class="lc-legal">' + lcCurrentPP.sourceNote + '</p>';
   el.innerHTML = html;
   el.style.display = '';
 }
@@ -746,7 +747,7 @@ function ppDownloadICal() {
   if (!p) return;
   ppCalc();
   p = lcCurrentPP; if (!p) return;
-  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:crypto.randomUUID(),title:p.title,description:p.title,returnTitle:"Kurudi kazini"});
+  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:crypto.randomUUID(),title:p.title,description:p.title + (p.sourceNote ? " — " + p.sourceNote : ""),returnTitle:"Kurudi kazini"});
   ics = ics.replace('END:VEVENT\r\nEND:VCALENDAR', 'BEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Unarudi kazini baada ya wiki 1\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR');
   var blob = new Blob([ics], {type:'text/calendar'});
   var url = URL.createObjectURL(blob);

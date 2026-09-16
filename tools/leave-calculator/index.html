@@ -840,7 +840,7 @@ function ppCalc() {
   var leaveWeeks, preWeeks = 0, payInfo;
   if (type === 'mat') {
     leaveWeeks = d.matWeeks;
-    preWeeks = 2;
+    preWeeks = cc === 'CM' ? 4 : 2;
     payInfo = 'Pay: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : '');
   } else {
     if (d.patDays === null) { el.textContent='Current general paternity entitlement is unverified. Ghana Civil Service Instructions 2020, instruction 324, have separate conditions and a maximum of 10 working days. Confirm your employment scope and current rule.';el.style.display='';return; }
@@ -857,13 +857,15 @@ function ppCalc() {
   var returnDate = new Date(schedule.returnDate + 'T00:00:00Z');
   var fdt = function(dt){ return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); };
   lcCurrentPP = { schedule:schedule,start: leaveStart.toISOString().split('T')[0], end: leaveEnd.toISOString().split('T')[0], returnDate: returnDate.toISOString().split('T')[0], title: (type==='mat'?'Maternity':'Paternity') + ' Leave \u2014 ' + d.name, country: d.name };
+  lcCurrentPP.sourceNote = cc === 'CM' && type === 'mat' ? 'Cameroon: Labour Code 92/007 (1992), article 84, Ministry archive. Baseline only: 14 weeks, starting 4 weeks before the expected birth. Current amendments and benefit eligibility are unverified. Early/late birth and medically certified extensions require a revised plan; confirm with your employer. https://www.mintss.cm/m/web/uploads/texte_archive/code_du_travail_1993.pdf' : '';
   var html = '<div class="lc-result-box"><div class="lc-result-sub" style="margin-bottom:12px">' + d.name + ' \u2014 ' + (type==='mat'?'Maternity':'Paternity') + ' Leave Plan (' + (type === 'mat' ? leaveWeeks + ' weeks' : d.patDays + ' working days') + ')</div><div class="lc-date-row">';
   html += '<div class="lc-date-card"><div class="dc-lbl">Leave Starts</div><div class="dc-dt">' + fdt(leaveStart) + '</div></div>';
   if (type === 'mat') html += '<div class="lc-date-card"><div class="dc-lbl">Due Date</div><div class="dc-dt">' + fdt(due) + '</div></div>';
   html += '<div class="lc-date-card"><div class="dc-lbl">Leave Ends</div><div class="dc-dt">' + fdt(leaveEnd) + '</div></div>';
   html += '<div class="lc-date-card hi"><div class="dc-lbl">Return to Work</div><div class="dc-dt">' + fdt(returnDate) + '</div></div>';
-  html += '</div><div class="lc-formula">' + payInfo + (type==='mat' ? ' | Leave starts 2 weeks before due date' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">\uD83D\uDCC5 Download .ics Calendar File</button></div>';
+  html += '</div><div class="lc-formula">' + payInfo + (type==='mat' ? ' | Leave starts ' + preWeeks + ' weeks before due date' : '') + '</div><button type="button" class="lc-ical-btn" onclick="ppDownloadICal()">\uD83D\uDCC5 Download .ics Calendar File</button></div>';
   html += '<p class="lc-formula">Paternity planning counts Monday–Friday; public holidays are not excluded. Confirm your schedule with your employer.</p>';
+  if (lcCurrentPP.sourceNote) html += '<p class="lc-legal">' + lcCurrentPP.sourceNote + '</p>';
   el.innerHTML = html; el.style.display = '';
 }
 
@@ -871,7 +873,7 @@ function ppDownloadICal() {
   var p = lcCurrentPP; if (!p) return;
   ppCalc();
   p = lcCurrentPP; if (!p) return;
-  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:crypto.randomUUID(),title:p.title,description:p.title,returnTitle:"Return to Work"});
+  var ics = window.AfroTools.leaveCalendar.calendar(p.schedule,{uid:crypto.randomUUID(),title:p.title,description:p.title + (p.sourceNote ? " — " + p.sourceNote : ""),returnTitle:"Return to Work"});
   ics = ics.replace('END:VEVENT\r\nEND:VCALENDAR', 'BEGIN:VALARM\r\nTRIGGER:-P7D\r\nACTION:DISPLAY\r\nDESCRIPTION:Return to work in 1 week\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR');
   var blob = new Blob([ics], {type:'text/calendar'});
   var url = URL.createObjectURL(blob);
