@@ -260,6 +260,7 @@
   function syncMergeButton() {
     var valid = state.mergeFiles.filter(function (entry) { return !entry.error && !entry.loading; });
     var hasErrors = state.mergeFiles.some(function (entry) { return !!entry.error; });
+    var hasLoading = state.mergeFiles.some(function (entry) { return entry.loading; });
     var rangeError = false;
     var rangeMessage = '';
     var totalPages = 0;
@@ -273,10 +274,11 @@
         totalPages += parsed.pages.length;
       }
     });
-    els.mergeBtn.disabled = state.busy || valid.length < 2 || hasErrors || rangeError;
+    els.mergeBtn.disabled = state.busy || hasLoading || valid.length < 2 || hasErrors || rangeError;
     els.clearMergeBtn.disabled = state.mergeFiles.length === 0 || state.busy;
     if (!state.mergeFiles.length) els.mergeSummary.textContent = native("Add at least two PDFs to merge.","Ajoutez au moins deux PDF à fusionner.","Ongeza angalau PDF mbili za kuunganisha.");
     else if (hasErrors) els.mergeSummary.textContent = native("Remove unreadable PDFs before merging.","Supprimez les PDF illisibles avant la fusion.","Ondoa PDF zisizosomeka kabla ya kuunganisha.");
+    else if (hasLoading) els.mergeSummary.textContent = native('Reading all selected PDFs. Please wait.', 'Lecture de tous les PDF sélectionnés. Veuillez patienter.', 'Inasoma PDF zote zilizochaguliwa. Tafadhali subiri.');
     else if (rangeError) els.mergeSummary.textContent = rangeMessage;
     else els.mergeSummary.textContent = native('PDFs ready: ', 'PDF prêts : ', 'PDF zilizo tayari: ') + valid.length + native(' | Pages: ', ' | Pages : ', ' | Kurasa: ') + totalPages + '.';
   }
@@ -304,6 +306,7 @@
   }
 
   async function mergePdfs() {
+    if (state.busy || state.mergeFiles.some(function (entry) { return entry.loading || entry.error; })) return;
     var items = state.mergeFiles.filter(function (entry) { return !entry.error && !entry.loading; });
     if (items.length < 2) return;
     setBusy(els.mergeBtn, native("Merging...","Fusion…","Inaunganisha…"));
