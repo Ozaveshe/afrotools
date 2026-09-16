@@ -859,7 +859,7 @@ function renderNegotiationPlan(data) {
   var fullBudget = data.totalValue;
   var remaining = Math.max(0, fullBudget - data.savedAmount);
   var deposit = fullBudget * data.depositPct / 100;
-  var monthly = remaining / data.timelineMonths;
+  var monthly = Math.ceil(remaining / data.timelineMonths);
   var discussionNotes = [];
   if (data.giftItems) discussionNotes.push('Items to discuss: ' + data.giftItems);
   if (data.familyNotes) discussionNotes.push('Notes: ' + data.familyNotes);
