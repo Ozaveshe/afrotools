@@ -4,8 +4,8 @@ Generated: 2026-09-16
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 12809
-- Approved claim hits: 45439
+- Public HTML/shared script files scanned: 12810
+- Approved claim hits: 45415
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
