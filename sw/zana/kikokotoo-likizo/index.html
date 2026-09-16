@@ -342,6 +342,7 @@
 <script src="/data/hr/leave-entitlements.js?v=a3832b14"></script>
 <script src="/engines/hr-engine.js?v=0ff05314"></script>
 <script src="/assets/js/hr-engine-sw-overlay.js?v=ec7fe3ef"></script>
+<section class="tl-card" style="max-width:1160px;margin:24px auto"><h2>Hifadhi muhtasari wa sehemu hii</h2><p>Makadirio ya kupanga tu. Thibitisha sheria, sikukuu na sera ya mwajiri. Taarifa hubaki kwenye kifaa hiki.</p><button type="button" class="lc-ical-btn" onclick="lcCopySummary()">Nakili muhtasari</button> <button type="button" class="lc-ical-btn" data-no-gate="true" onclick="lcDownloadSummary()">Pakua TXT</button><p id="lc-export-status" role="status" aria-live="polite"></p></section>
 <script>
 var E = window.AfroTools && window.AfroTools.HREngine;
 var LC_HOLIDAYS = {
@@ -839,6 +840,95 @@ function lwShare(idx) {
   if (!text) return;
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 }
+
+function lcActiveTabId() {
+  var active = document.querySelector('.lc-tab.active');
+  return active ? active.id.replace('lc-tab-', '') : 'rights';
+}
+
+function lcPlainTextFrom(el) {
+  return el && el.style.display !== 'none' && !el.hidden ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+}
+
+function lcBuildSummary() {
+  var tab = lcActiveTabId();
+  var lines = ['AfroTools — Muhtasari wa likizo', 'Sehemu: ' + ({rights:'Haki',accrual:'Limbikizo',payout:'Malipo',parental:'Wazazi',weekends:'Wikendi ndefu',compare:'Ulinganisho'}[tab] || tab)];
+  if (tab === 'rights') {
+    var cc = document.getElementById('lc-country').value;
+    if (!cc || !LEAVE_DATA[cc]) return '';
+    var d = LEAVE_DATA[cc];
+    lines.push('Nchi: ' + d.name);
+    lines.push('Likizo ya mwaka: ' + d.annual + ' ' + d.annualUnit + ' (' + d.annualNote + ')');
+    lines.push('Likizo ya ugonjwa: ' + d.sickNote);
+    lines.push('Likizo ya uzazi: ' + d.matWeeks + ' wiki, malipo ' + d.matPay + (d.matPaySource ? ' kupitia ' + d.matPaySource : ''));
+    lines.push('Likizo ya baba: ' + (d.patDays > 0 ? d.patDays + ' siku' : 'Haijawekwa kisheria'));
+    lines.push('Sikukuu: ' + d.holidays + ' kwa mwaka kwa kawaida');
+    lines.push('Sheria/rejea: ' + d.law);
+    if (d.obs) lines.push('Dokezo: ' + d.obs);
+  } else if (tab === 'accrual') {
+    var acText = lcPlainTextFrom(document.getElementById('ac-result'));
+    if (!acText) return '';
+    lines.push(acText);
+  } else if (tab === 'payout') {
+    var poText = lcPlainTextFrom(document.getElementById('po-result'));
+    if (!poText) return '';
+    lines.push(poText);
+  } else if (tab === 'parental') {
+    var ppText = lcPlainTextFrom(document.getElementById('pp-result'));
+    if (!ppText) return '';
+    lines.push(ppText);
+    if (lcCurrentPP) lines.push('Tarehe za kalenda: mwanzo ' + lcCurrentPP.start + ', mwisho ' + lcCurrentPP.end + ', kurudi ' + lcCurrentPP.returnDate);
+  } else if (tab === 'weekends') {
+    var lwText = lcPlainTextFrom(document.getElementById('lw-result'));
+    if (!lwText) return '';
+    lines.push(lwText);
+  } else if (tab === 'compare') {
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#lc-tbody tr'), 0, 8).map(function(row) {
+      return Array.prototype.map.call(row.children, function(td) { return td.textContent.trim(); }).join(' | ');
+    });
+    if (!rows.length) return '';
+    lines.push('Safu za juu zinazoonekana kwenye ulinganisho:');
+    lines = lines.concat(rows);
+  }
+  lines.push('');
+  lines.push('Dhana: makadirio ya kupanga tu. Thibitisha sheria ya sasa ya kazi, sikukuu, mkataba na sera ya mwajiri kabla ya hatua.');
+  return lines.join('\n');
+}
+
+function lcCopySummary() {
+  var text = lcBuildSummary();
+  var status = document.getElementById('lc-export-status');
+  if (!text) { status.textContent = 'Fungua sehemu na ukokotoe matokeo kwanza.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Muhtasari umenakiliwa.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Muhtasari umenakiliwa.';
+  });
+}
+
+function lcDownloadSummary() {
+  var text = lcBuildSummary();
+  var status = document.getElementById('lc-export-status');
+  if (!text) { status.textContent = 'Fungua sehemu na ukokotoe matokeo kwanza.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'muhtasari-wa-likizo.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'Muhtasari wa TXT umepakuliwa.';
+}
+
 
 function lcBuildCompare() {
   var rows = Object.keys(LEAVE_DATA).map(function(code) {
