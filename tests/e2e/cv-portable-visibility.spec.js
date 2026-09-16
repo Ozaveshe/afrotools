@@ -1,0 +1,8 @@
+const {test,expect}=require('@playwright/test');const fs=require('fs'),pdf=require('pdf-parse');
+test.use({trace:'off',screenshot:'off',video:'off'});
+for(const route of ['/tools/cv-builder/','/fr/tools/generateur-cv/','/sw/zana/mjenzi-cv/'])test('portable exports obey project and reference switches: '+route,async({page,baseURL},info)=>{
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));await page.goto(route);await page.waitForFunction(()=>window.CVDocxExport&&window.CVExportAtsPlainPdf);
+ for(const enabled of[true,false]){await page.evaluate(enabled=>{Object.assign(CVApp.getState().data,{fn:'Élodie',ln:'Mwang’ombe',summary:'Language Reference Skills',projs:[{n:'ProjectVisibleMarker',url:'https://example.test/project-visible',d:'ProjectDetailMarker'}],refs:[{n:'ReferenceVisibleMarker',e:'reference@example.test'}],showProjs:enabled,showRefs:enabled});CVApp.renderAll();},enabled);
+ for(const format of ['ats','docx']){const pending=page.waitForEvent('download');await page.evaluate(format=>format==='ats'?CVExportAtsPlainPdf.exportAtsPdf():CVDocxExport.exportDocx(),format);const file=info.outputPath(format+'-'+enabled+'.'+(format==='ats'?'pdf':'docx'));await(await pending).saveAs(file);const bytes=fs.readFileSync(file);const text=format==='ats'?(await pdf(new Uint8Array(bytes))).text:bytes.toString('utf8');for(const token of ['ProjectVisibleMarker','https://example.test/project-visible','ProjectDetailMarker','ReferenceVisibleMarker','reference@example.test'])expect(text.includes(token),format+' '+enabled+' '+token).toBe(enabled);expect(text).toContain('Language Reference Skills');expect(text).toContain('Élodie');}
+ }
+});

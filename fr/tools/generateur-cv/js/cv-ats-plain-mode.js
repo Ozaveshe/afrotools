@@ -148,15 +148,15 @@
         })), l(e, copy.education, (t.edus || t.education || []).map(function(t) {
             return o(r([ t.deg, t.degree, t.sch, t.school ], " ")) ? [ r([ t.deg || t.degree || copy.qualification, t.sch || t.school || t.c, t.loc || t.location ], " - "), i(t), o(t.g || t.grade), o(t.d) ].filter(Boolean).join("\n") : "";
         })), l(e, copy.skills, [ t.skills && t.skills.h ? copy.technical + o(t.skills.h) : "", t.skills && t.skills.s ? copy.workplace + o(t.skills.s) : "", t.skills && t.skills.t ? copy.tools + o(t.skills.t) : "" ]),
-        l(e, copy.projects, (t.projs || t.projects || []).map(function(t) {
-            return o(r([ t.n, t.name, t.d, t.desc ], " ")) ? [ t.n || t.name || copy.project, t.tech ? copy.tools + o(t.tech) : "", o(t.d || t.desc || t.description) ].filter(Boolean).join("\n") : "";
+        l(e, copy.projects, (t.showProjs ? (t.projs || t.projects || []) : []).map(function(t) {
+            return o(r([ t.n, t.name, t.d, t.desc ], " ")) ? [ t.n || t.name || copy.project, t.tech ? copy.tools + o(t.tech) : "", o(t.url), o(t.d || t.desc || t.description) ].filter(Boolean).join("\n") : "";
         })), l(e, copy.certifications, (t.certs || t.certifications || []).map(function(t) {
             return r([ t.n || t.name || copy.certification, t.i || t.issuer, t.y || t.year ], " - ");
         })), l(e, copy.languages, (t.langs || t.languages || []).map(function(t) {
             return "string" == typeof t ? o(t) : r([ t.l || t.name, t.lv || t.level ], " - ");
-        })), t.showRefs || (t.refs || t.references || []).length ? l(e, copy.references, (t.refs || t.references || []).map(function(t) {
+        })), t.showRefs ? l(e, copy.references, (t.refs || t.references || []).map(function(t) {
             return "string" == typeof t ? o(t) : [ r([ t.n || t.name || copy.reference, t.t || t.title, t.org ], " - "), r([ t.e || t.email, t.p || t.phone, t.rel ], " | ") ].filter(Boolean).join("\n");
-        })) : l(e, copy.references, copy.available), e.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+        })) : null, e.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }
     function p(e) {
         t.CVExportUpgrade && t.CVExportUpgrade.status && t.CVExportUpgrade.status(e), t.CVApp && t.CVApp.showToast && t.CVApp.showToast(e);

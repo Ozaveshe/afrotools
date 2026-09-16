@@ -174,9 +174,9 @@
             }).join("");
         }(e.skills))), l.push(w(copy.projects, function(e) {
             return o(e).map(function(e) {
-                return n([ e.n, e.name, e.d, e.desc ].join(" ")) ? [ f(e.n || e.name || copy.project, e.tech || ""), u(e.d || e.desc || "") ].join("") : "";
+                return n([ e.n, e.name, e.d, e.desc ].join(" ")) ? [ f(e.n || e.name || copy.project, e.tech || ""), u(e.url || ""), u(e.d || e.desc || "") ].join("") : "";
             }).join("");
-        }(e.projs || e.projects))), l.push(w(copy.certifications, function(e) {
+        }(e.showProjs ? (e.projs || e.projects) : []))), l.push(w(copy.certifications, function(e) {
             return o(e).map(function(e) {
                 return f(e.n || e.name || copy.certification, a([ e.i || e.issuer, e.y || e.year ], " - "));
             }).join("");
@@ -184,7 +184,7 @@
             return o(e).map(function(e) {
                 return u("string" == typeof e ? e : a([ e.l || e.name, e.lv || e.level ], " - "));
             }).join("");
-        }(e.langs || e.languages))), (e.showRefs || o(e.refs || e.references).length) && l.push(w(copy.references, function(e) {
+        }(e.langs || e.languages))), e.showRefs && l.push(w(copy.references, function(e) {
             return o(e).map(function(e) {
                 return "string" == typeof e ? u(e) : [ f(e.n || e.name || copy.reference, e.t || e.title || ""), u(a([ e.org, e.e, e.p, e.rel ], " | ")) ].join("");
             }).join("");
