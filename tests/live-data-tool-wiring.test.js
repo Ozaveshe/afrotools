@@ -19,7 +19,7 @@ const electricityApi = read('netlify/functions/api-electricity.js');
 
 assert.match(fuelPage, /fuel-tracker-vip\.js[^>]+defer/, 'Fuel app should start on page load');
 assert.match(fuelPage, /id="fuel-data-status"/, 'Fuel page needs a visible data status hook');
-assert.match(fuelApp, /\/data\/fuel\/latest\.json/, 'Fuel app should request the dated static snapshot');
+assert.match(fuelApp, /\/data\/fuel\/markets\.json/, 'Fuel app should request the maintained dated market snapshot');
 assert.doesNotMatch(fuelApp, /\/api\/fuel/, 'Fuel app should not imply a live API');
 assert.match(fuelApp, /sourceUrl|source_url/, 'Fuel rows should retain source provenance');
 assert.match(fuelApp, /MAX_AGE_DAYS\s*=\s*45/, 'Fuel rows should have a freshness gate');
