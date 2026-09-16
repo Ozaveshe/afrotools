@@ -77,6 +77,8 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 14 original written tasks and 5 WAEC 2023 writing companions, plus 20 Mathematics companions, plus 3 NECO Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
+5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
+
 ## Acquisition queue
 
 - **waec-2023-mathematics-p2** (mathematics-companion): Nine source-linked worked guides cover questions 1, 2, 3, 5, 7, 8, 9, 11 and 13. Resolve remaining questions 4, 6, 10 and 12 and establish full paper instructions and source-use basis before importing. Companions do not constitute an ingested complete paper. Source: https://waeconline.org.ng/e-learning/Mathematics/maths240mq1.html
