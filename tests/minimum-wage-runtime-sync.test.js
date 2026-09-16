@@ -10,7 +10,7 @@ function run(html) {
   return output;
 }
 const baseline = '<html><head><meta name="release" content="retain"></head><body><main>Actual user controls</main><footer>SSR navigation</footer></body></html>';
-assert.equal(run(baseline),baseline.replace('</body>',tag+'\n</body>'));
+assert.equal(run(baseline),baseline.replace('</body>','<script src="/assets/js/lib/minimum-wage-inflation.js"></script>\n'+tag+'\n</body>'));
 assert.equal(run(run(baseline)),run(baseline));
 assert.throws(()=>run(baseline.replace('</body>','')),/Ambiguous/);
 assert.throws(()=>run(baseline.replace('</body>',tag+tag+'</body>')),/Ambiguous/);
