@@ -2,7 +2,14 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const engine = require('../engines/src/whatsapp-link-engine.js');
-const owner = require('../scripts/build-hausa-whatsapp-link.js');
+const originalWrite = fs.writeFileSync;
+let owner;
+try {
+  fs.writeFileSync = () => { throw new Error('Importing the owner must not write public files'); };
+  owner = require('../scripts/build-hausa-whatsapp-link.js');
+} finally {
+  fs.writeFileSync = originalWrite;
+}
 
 const page = fs.readFileSync(path.resolve(__dirname, '../ha/kayan-aiki/whatsapp-link/index.html'), 'utf8');
 assert.strictEqual(engine.normalize('234', '0801 234 5678'), '2348012345678');

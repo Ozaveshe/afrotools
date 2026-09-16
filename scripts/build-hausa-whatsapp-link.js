@@ -16,13 +16,15 @@ function build(source) {
   return html;
 }
 
+if (require.main === module) {
 const current = fs.readFileSync(PAGE, 'utf8');
 const next = build(current);
 if (CHECK) {
   if (next !== current) throw new Error('Hausa WhatsApp page is stale; run node scripts/build-hausa-whatsapp-link.js');
   console.log('Hausa WhatsApp source owner is current.');
 } else {
-  fs.writeFileSync(PAGE, next, 'utf8');
+  if (next !== current) fs.writeFileSync(PAGE, next, 'utf8');
   console.log(next === current ? 'Hausa WhatsApp page already current.' : 'Updated Hausa WhatsApp page.');
+}
 }
 module.exports = { build };

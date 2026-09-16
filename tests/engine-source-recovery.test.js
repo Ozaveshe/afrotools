@@ -88,11 +88,10 @@ async function canonical(code, filename) {
     const output = fs.readFileSync(path.join(ENGINE_DIR, filename), "utf8");
     new vm.Script(source, { filename: `engines/src/${filename}` });
     new vm.Script(output, { filename: `engines/${filename}` });
-    const [sourceCanonical, outputCanonical] = await Promise.all([
-      canonical(source, filename),
-      canonical(output, filename),
-    ]);
-    assert.strictEqual(outputCanonical, sourceCanonical, `${filename}: rebuilt output changed canonical semantics`);
+    // A second compression pass can rewrite valid first-pass output further.
+    // Verify the published file is exactly what the source build produces.
+    const sourceCanonical = await canonical(source, filename);
+    assert.strictEqual(output.trim(), sourceCanonical, `${filename}: output differs from the source build`);
   }
 
   for (const [filename, globalPath] of Object.entries(SMOKE_GLOBALS)) {
