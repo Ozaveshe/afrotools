@@ -3,6 +3,7 @@
 
   var MEASUREMENT_ID = 'G-D859CGF391';
   var CONSENT_KEY = 'afrotools_cookie_consent';
+  var PRIVATE_QUOTE_PAGE = /^\/(?:tools\/remittance-(?:compare|v2)|fr\/tools\/transfert-(?:argent|v2)|sw\/zana\/ulinganisho-uhamishaji-pesa(?:-kina)?)(?:\/index\.html)?\/?$/.test(window.location.pathname);
   var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js';
 
   function readConsent() {
@@ -26,8 +27,9 @@
 
   function keepConsentModeActive() {
     // Consent Mode, rather than the legacy ga-disable switch, controls whether
-    // GA can use storage. Keeping this false allows denied-state cookieless pings.
-    window['ga-disable-' + MEASUREMENT_ID] = false;
+    // GA can use storage. Ordinary pages permit denied-state cookieless pings.
+    // Checked-quote pages require explicit opt-in and disable collection after withdrawal.
+    window['ga-disable-' + MEASUREMENT_ID] = PRIVATE_QUOTE_PAGE && readConsent() !== 'accepted';
   }
 
   function filteredCampaignQuery(value) {
@@ -135,6 +137,12 @@
 
   function applyConsent(status) {
     if (status !== 'accepted' && status !== 'declined' && status !== 'rejected') return;
+    if (PRIVATE_QUOTE_PAGE && status !== 'accepted') {
+      window['ga-disable-' + MEASUREMENT_ID] = true;
+      syncClarity(status);
+      return;
+    }
+    if (PRIVATE_QUOTE_PAGE) configureAnalytics(status);
     window.gtag('consent', 'update', consentState(status, false));
     keepConsentModeActive();
     window.setTimeout(keepConsentModeActive, 0);
@@ -160,7 +168,8 @@
     if (document.querySelector('script[src^="/assets/js/pages/creative/fr-creative-privacy-bootstrap.js"]')) return;
     if (window.__afroAnalyticsConfigured) return;
     var status = readConsent();
-    configureAnalytics(status);
+    if (!PRIVATE_QUOTE_PAGE || status === 'accepted') configureAnalytics(status);
+    else window['ga-disable-' + MEASUREMENT_ID] = true;
     loadConsentManager();
 
     window.addEventListener('afrotools:cookie-consent', function (event) {
