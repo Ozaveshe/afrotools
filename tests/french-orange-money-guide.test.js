@@ -39,7 +39,7 @@ test("Orange Money structured data matches the refreshed article", () => {
     .map((match) => JSON.parse(match[1]));
   const article = schemas.find((schema) => schema["@type"] === "BlogPosting");
   const faq = schemas.find((schema) => schema["@type"] === "FAQPage");
-  assert.equal(article.dateModified, "2026-09-15");
+  assert.equal(article.dateModified, "2026-09-16"); // Workflow handoff edit; tariff verification dates are unchanged.
   assert.match(article.headline, /Frais de retrait Orange Money 2026/);
   assert.equal(faq.mainEntity.length, 4);
   assert.match(faq.mainEntity[0].name, /Cameroun/);
@@ -55,3 +55,5 @@ test("Cameroon million-franc intent explains the published per-withdrawal limit"
     assert.ok(html.includes(`href="#${anchor}"`) && html.includes(`id="${anchor}"`));
   }
 });
+
+test("Orange guide context links contain no fee or amount assumptions",()=>{for(const code of ['CM','SN','ML','CI'])assert.ok(html.includes('data-orange-quote-context="'+code+'" href="/fr/tools/frais-mobile-money/?market='+code+'&amp;operation=withdraw#mm-form"'));const metadata=JSON.parse(fs.readFileSync(path.join(__dirname,'..','lang/pages/blog/frais-orange-money-guide-2026/fr.json'),'utf8'));assert.equal(metadata.page.title,html.match(/<title>([^<]+)<\/title>/)[1]);assert.doesNotMatch(metadata.page.metaDescription,/Tous les frais|transfert international/);});

@@ -45,6 +45,15 @@
   }else if(result&&navigator.clipboard)navigator.clipboard.writeText(summary(result)).then(()=>{status.textContent=t.copied;});});document.getElementById('mm-json').addEventListener('click',()=>{const result=ensure();if(!result)return;const blob=new Blob([JSON.stringify(fr?{schemaVersion:1,locale:'fr',resume:summary(result),methode:'Comparaison locale de devis saisis par l’utilisateur',methodology:result.methodology,result}: {schemaVersion:1,methodology:result.methodology,result},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),anchor=document.createElement('a');anchor.href=url;anchor.download=fr?'comparaison-devis-mobile-money.json':'mobile-money-quote-comparison.json';document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);status.textContent=t.downloaded;});
   document.getElementById('mm-third').addEventListener('change',function(){const section=document.getElementById('mm-quote-c');section.hidden=!this.checked;section.querySelectorAll('input,select').forEach(control=>{control.disabled=!this.checked;});clear();});form.addEventListener('submit',calculate);form.addEventListener('input',clear);form.addEventListener('reset',()=>setTimeout(()=>{clear();if(fr){const section=document.getElementById('mm-quote-c');section.hidden=true;section.querySelectorAll('input,select').forEach(control=>{control.disabled=true;});}},0));
   if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.ready(form);
+  // Only public country/action context is accepted; amounts, fees and dates remain user-entered.
+  if(fr){
+    const parameters=new URLSearchParams(location.search),country=(window.MobileMoneyTariffCopy.marketCountries||[]).find(row=>row.id===parameters.get('market')),operation=parameters.get('operation');
+    if(country&&['send','withdraw','merchant','bill','other'].includes(operation)){
+      for(const letter of ['a','b','c']){document.getElementById('mm-'+letter+'-market').value=country.names[0];document.getElementById('mm-'+letter+'-currency').value=country.currency;document.getElementById('mm-'+letter+'-type').value=operation;}
+      status.textContent='Pays, devise et opération préremplis. Saisissez les montants, frais et dates que vous avez vérifiés ; aucun tarif Orange Money n’est calculé automatiquement.';
+    }
+  }
+
 }());
 (function(){
   'use strict';
