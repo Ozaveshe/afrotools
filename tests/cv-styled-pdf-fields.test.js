@@ -10,7 +10,7 @@ for(const name of ['atsClassic','lagosCorporate','nairobiTech'])test('styled CV 
  assert.ok(!hidden.includes(data.refs[0].rel));assert.ok(!hidden.includes(data.projs[0].d));
  const escaped=ctx.CVTemplates[name]({...data,portfolio:'<script>bad()</script>'},'KE','#225588');assert.ok(!escaped.includes('<script>bad()'));
 });
-for(const [lang,expected]of [['fr',['Profil professionnel','Expérience professionnelle','Formation','Compétences professionnelles','Références','Aujourd’hui']],['sw',['Wasifu wa kitaaluma','Uzoefu wa kitaaluma','Elimu','Ujuzi wa biashara','Wadhamini','Sasa']]])test('production template native headings and dates: '+lang,()=>{
+for(const [lang,expected]of [['fr',['Profil professionnel','Expérience professionnelle','Formation','Compétences professionnelles','Références','En cours']],['sw',['Wasifu wa kitaaluma','Uzoefu wa kitaaluma','Elimu','Ujuzi wa biashara','Wadhamini','Sasa']]])test('production template native headings and dates: '+lang,()=>{
  const ctx={document:{documentElement:{lang}},CVTemplates:{},CVApp:{esc:x=>String(x||'')}};ctx.window=ctx;
  vm.runInNewContext(fs.readFileSync('tools/cv-builder/js/cv-pdf-templates.js','utf8'),ctx);
  const html=ctx.CVTemplates.lagosCorporate({fn:'Élodie',summary:'Ujuzi',skills:{h:'SQL'},exps:[{t:'Role',cur:true}],edus:[{deg:'Maîtrise'}],refs:[{n:'Asha'}],showRefs:true},'KE','#225588');

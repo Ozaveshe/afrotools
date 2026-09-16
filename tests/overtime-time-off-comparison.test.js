@@ -30,7 +30,7 @@ test('Swahili owner preserves the localized planning comparison', () => {
   const captured = new Map();
   const fakeFs = {...fs, mkdirSync() {}, writeFileSync(file, content) {captured.set(file.replace(/\\/g, '/'), content);}};
   const filename = path.join(__dirname, '../scripts/build-sw-salary-tool-pages.js');
-  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {require: name => name === 'fs' ? fakeFs : require(name), __dirname: path.dirname(filename), console});
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {require: name => name === 'fs' ? fakeFs : require(name), __dirname: path.dirname(filename), process: {argv: []}, console});
   const html = [...captured].find(([file]) => file.endsWith('/sw/zana/kikokotoo-muda-wa-ziada/index.html'))[1];
   assert.ok(html.includes('Ulinganisho wa kupanga:'));
   assert.ok(html.includes('var comparison = result.timeOffEquivalent;'));

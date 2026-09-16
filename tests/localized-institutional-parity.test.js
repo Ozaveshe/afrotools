@@ -30,18 +30,21 @@ for (const [locale, files] of Object.entries(ROUTES)) {
 for (const file of ['fr/index.html','sw/index.html']) {
   const html = read(file);
   assert.ok((html.match(/<form\b/gi) || []).length >= 3, `${file}: three useful discovery forms`);
-  if (file === 'fr/index.html') {
+  {
+    const locale = file.split('/')[0];
     const forms = [...html.matchAll(/<form\b[^>]*>[\s\S]*?<\/form>/gi)].map(match => match[0]);
     for (const [className, action, names] of [['fr-home-search','/fr/all-tools/',['q']],['fr-home-country-card','/fr/all-tools/',['country','category']],['fr-home-ai-card','/fr/ai/',['q','source']]]) {
-      const form = forms.find(value => value.includes(className));
+      const localizedClass = className;
+      const localizedAction = locale === 'sw' ? action.replace('/fr/all-tools/', '/sw/zana-zote/').replace('/fr/ai/', '/sw/ai/') : action;
+      const form = forms.find(value => value.includes(localizedClass));
       assert.ok(form, className + ': discovery form');
-      assert.ok(form.includes('action="'+action+'"') && form.includes('method="get"'), className + ': localized GET handoff');
+      assert.ok(form.includes('action="'+localizedAction+'"') && form.includes('method="get"'), className + ': localized GET handoff');
       for (const name of names) assert.ok(form.includes('name="'+name+'"'), className + ': submitted '+name);
       assert.match(form, /<label\b/, className + ': visible label');
       assert.match(form, /type="submit"/, className + ': submit action');
     }
     assert.doesNotMatch(html, /name="evidence"/, 'homepage must not submit the retired evidence filter');
-  } else assert.ok((html.match(/<(?:input|select|textarea)\b/gi) || []).length >= 6, file + ': discovery controls');
+  }
   assert.ok((html.match(/<a\b/gi) || []).length >= 90, `${file}: discovery links`);
   assert.ok((html.match(/<details\b/gi) || []).length >= 4, `${file}: visible FAQ answers`);
 }
