@@ -55,3 +55,13 @@ The user explicitly prioritizes the free-app catalogue before Pro assessment. Th
 - Main integration preserved incoming UX changes. Seven salary-page conflict blocks differed only in build hashes. Three French native owner fingerprints were independently checked against incoming UX plus the existing remittance-description change; 20 extracted and 14 native contracts pass. Public-claims audit reports zero failures.
 
 The latest full build before this merge stopped on the now-repaired duplicate heading; it did not produce a current dist. Neither that failed run nor these targeted checks establish full-suite or production acceptance. A fresh combined build and release checks are next.
+
+## Follow-up source freeze through e65f5a11
+
+Additional confirmed defects were repaired before the next rebuild:
+
+- Invoices: nonzero lines without descriptions contributed to totals but disappeared from listed items. Native guidance now requires correction before PDF or print; JSON backup and values are preserved. Three integrated browser cases passed, reopening PDFs with independent subtotal150, discount15, tax27 and total162.
+- Wage comparisons: recorded monthly catalogue values remain separate from derived daily/hourly estimates. All three languages compare the displayed cent precision; English/Swahili catalogue CSVs provide native headings and source/conversion limits without email gates. Ten integrated browser cases and thirteen literal controller fixtures passed. The reviewed calculation registry passes797artifacts/408fixtures; no statutory rate or freshness claims were changed.
+- PDF merge/split: Swahili guest downloads, native validation and stale-output clearing are repaired. Nine integrated cases verified actual PDF/ZIP order, dimensions and vector colors. A pending third file could previously enable Merge; six further cases now prove waiting and explicit unreadable-file removal, with complete downloaded outputs.
+
+These changes are committed and targeted checks pass. Fresh full build, artifact checks, full suite and production validation remain required for this follow-up. The first batch's separate Netlify retry has reached processing; publication is not yet verified.
