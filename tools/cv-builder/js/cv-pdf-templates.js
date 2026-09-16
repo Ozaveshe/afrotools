@@ -209,8 +209,14 @@
     function g(e) {
         return [ "font-family:'DM Sans',Arial,sans-serif", "font-size:9.4px", "line-height:1.32", "color:#111827", "background:#fff", "box-sizing:border-box", "min-height:841px", "width:595px", "position:relative", "overflow:hidden", e || "" ].filter(Boolean).join(";");
     }
+    function sectionKind(title) {
+        var groups = {summary:[5,13,18,21,24,26,34],experience:[6,14,22,23,27],education:[7],skills:[8,15,16,19,20,25,29,30,31,32],projects:[9,28,35],certifications:[10],languages:[11],references:[12],awards:[0],volunteering:[1],memberships:[2],service:[3,4],country:[17,33]};
+        for (var key in groups) if (groups[key].some(function(id){return copy["section"+id]===title;})) return key;
+        return ["Interests","Centres d’intérêt","Mapendeleo"].indexOf(title)>=0 ? "interests" : "custom";
+    }
     function f(e, t, i) {
-        return l(t) ? [ '<section class="prod-section" style="margin:0 0 ' + ((i = i || {}).tight ? "6px" : "8px") + ';break-inside:avoid;page-break-inside:avoid">', '<h2 style="margin:0 0 3px;color:' + (i.color || "#111827") + ";font-size:" + (i.size || "8px") + ";font-weight:900;letter-spacing:" + (i.letter || ".08em") + ";text-transform:uppercase;" + (i.rule ? "padding-bottom:3px;border-bottom:" + i.rule : "") + '">' + c(e) + "</h2>", '<div style="color:' + (i.bodyColor || "#334155") + '">' + t + "</div>", "</section>" ].join("") : "";
+        i = i || {};
+        return l(t) ? [ '<section class="prod-section" data-cv-section="' + (i.sectionKind || sectionKind(e)) + '" style="margin:0 0 ' + (i.tight ? "6px" : "8px") + ';break-inside:avoid;page-break-inside:avoid">', '<h2 style="margin:0 0 3px;color:' + (i.color || "#111827") + ";font-size:" + (i.size || "8px") + ";font-weight:900;letter-spacing:" + (i.letter || ".08em") + ";text-transform:uppercase;" + (i.rule ? "padding-bottom:3px;border-bottom:" + i.rule : "") + '">' + c(e) + "</h2>", '<div style="color:' + (i.bodyColor || "#334155") + '">' + t + "</div>", "</section>" ].join("") : "";
     }
     function h(e, t) {
         return e ? '<div style="font-size:' + (t || "9.2px") + ';line-height:1.42;color:#263244">' + c(e) + "</div>" : "";
@@ -264,7 +270,7 @@
         e.extras.hobbies && o.push(f(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[String(window.document && window.document.documentElement.lang || "en").split("-")[0]] || "Interests"), h(e.extras.hobbies), t)),
         e.extras.memberships && o.push(f(copy.section2, '<div style="font-size:8.2px;line-height:1.32">' + s(e.extras.memberships) + "</div>", t)),
         e.customSections.forEach(function(e) {
-            o.push(f(e.title || ({fr:"Informations complémentaires",sw:"Maelezo ya ziada"}[String(window.document.documentElement.lang || "en").split("-")[0]] || "Additional"), '<div style="font-size:8.2px;line-height:1.32">' + s(e.content || "") + "</div>", t));
+            o.push(f(e.title || ({fr:"Informations complémentaires",sw:"Maelezo ya ziada"}[String(window.document.documentElement.lang || "en").split("-")[0]] || "Additional"), '<div style="font-size:8.2px;line-height:1.32">' + s(e.content || "") + "</div>", Object.assign({},t,{sectionKind:"custom"})));
         }), i.nyscStatus && o.push(f(copy.section3, '<div style="font-size:8.8px">' + [ i.nyscStatus, i.nyscYear, i.nyscState, i.nyscPPA ].filter(Boolean).map(c).join(" | ") + "</div>", t)),
         (i.nsYear || i.nsOrg) && o.push(f(copy.section4, '<div style="font-size:8.8px">' + [ i.nsYear, i.nsOrg ].filter(Boolean).map(c).join(" | ") + "</div>", t)),
         o.join("");

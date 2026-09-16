@@ -43,7 +43,7 @@
         return e ? "string" == typeof e ? e : n([ e.h, e.s, e.t, e.lang, e.tools ], ", ") : "";
     }
     function l(e, i, r) {
-        return i ? '<section class="cvx-section ' + t(r || "") + '"><h2>' + t(label(e)) + "</h2>" + i + "</section>" : "";
+        return i ? '<section class="cvx-section" data-cv-section="' + t(r || "") + '"><h2>' + t(label(e)) + "</h2>" + i + "</section>" : "";
     }
     function s(e) {
         return String(e || "").split(/[,;]+/).map(function(e) {
@@ -98,7 +98,7 @@
     function T(e, i) {
         i = i || {};
         var t = o(e.skills);
-        return [ l(i.profileTitle || "Profile", v(e)), l(i.experienceTitle || "Experience", p(e.exps || e.experience, i.roleLabel)), l(i.educationTitle || "Education", d(e.edus || e.education)), l(i.skillsTitle || "Skills", t ? '<div class="cvx-chips">' + s(t) + "</div>" : ""), l(i.projectsTitle || "Projects", f(e.projects)), l(i.certsTitle || "Certifications", u(e.certs || e.certifications)), l("Languages", x(e.languages)), l("References", x(e.refs || e.references)) ].join("");
+        return [ l(i.profileTitle || "Profile", v(e), "summary"), l(i.experienceTitle || "Experience", p(e.exps || e.experience, i.roleLabel), "experience"), l(i.educationTitle || "Education", d(e.edus || e.education), "education"), l(i.skillsTitle || "Skills", t ? '<div class="cvx-chips">' + s(t) + "</div>" : "", "skills"), l(i.projectsTitle || "Projects", f(e.projects), "projects"), l(i.certsTitle || "Certifications", u(e.certs || e.certifications), "certifications"), l("Languages", x(e.languages), "languages"), l("References", x(e.refs || e.references), "references") ].join("");
     }
     function j(e, i) {
         return [ e.showPhoto && e.photo ? '<img src="'+t(e.photo)+'" alt="" style="width:64px;height:64px;object-fit:cover">' : "", i && i.badge ? '<div class="cvx-muted" style="font-weight:950;text-transform:uppercase;letter-spacing:.08em;color:var(--cvx-accent)">' + t(i.badge) + "</div>" : "", "<h1>" + t(n([ e.fn, e.ln ], " ") || e.name || label("Your Name")) + "</h1>", '<div class="cvx-role">' + t(e.title || i.role || label("Target role")) + "</div>", g(e) ].join("");
@@ -110,11 +110,11 @@
     function k(e, i) {
         var t = r(e);
         i = i || {};
-        var c = [ l("Core Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : ""), l("Education", d(t.edus || t.education)), l("Certifications", u(t.certs || t.certifications)), l("Languages", x(t.languages)) ].join(""), n = [ l(i.profileTitle || "Profile", v(t)), l(i.experienceTitle || "Experience", p(t.exps || t.experience, i.roleLabel)), l(i.projectsTitle || "Projects", f(t.projects)), l("Languages",x(t.languages)), l("References", x(t.refs || t.references)) ].join("");
+        var c = [ l("Core Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : "", "skills"), l("Education", d(t.edus || t.education), "education"), l("Certifications", u(t.certs || t.certifications), "certifications"), l("Languages", x(t.languages), "languages") ].join(""), n = [ l(i.profileTitle || "Profile", v(t), "summary"), l(i.experienceTitle || "Experience", p(t.exps || t.experience, i.roleLabel), "experience"), l(i.projectsTitle || "Projects", f(t.projects), "projects"), l("Languages",x(t.languages), "languages"), l("References", x(t.refs || t.references), "references") ].join("");
         return '<article class="' + m("split", i) + '" data-layout="two-column" style="' + b(i.accent, i) + '">' + h() + j(t, i) + '<div class="cvx-header-line"></div><div class="cvx-main-grid"><main>' + n + "</main><aside>" + c + "</aside></div></article>";
     }
     function P(e, i) {
-        var t = r(e), c = '<aside class="cvx-sidebar ' + ((i = i || {}).dark ? "dark" : "") + '">' + j(t, i) + l("Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : "") + l("Education", d(t.edus || t.education)) + l("Languages", x(t.languages)) + "</aside>", n = "<main>" + l(i.profileTitle || "Profile", v(t)) + l(i.experienceTitle || "Experience", p(t.exps || t.experience, i.roleLabel)) + l(i.projectsTitle || "Projects", f(t.projects)) + l(i.certsTitle || "Certifications", u(t.certs || t.certifications)) + l("References", x(t.refs || t.references)) + "</main>";
+        var t = r(e), c = '<aside class="cvx-sidebar ' + ((i = i || {}).dark ? "dark" : "") + '">' + j(t, i) + l("Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : "", "skills") + l("Education", d(t.edus || t.education), "education") + l("Languages", x(t.languages), "languages") + "</aside>", n = "<main>" + l(i.profileTitle || "Profile", v(t), "summary") + l(i.experienceTitle || "Experience", p(t.exps || t.experience, i.roleLabel), "experience") + l(i.projectsTitle || "Projects", f(t.projects), "projects") + l(i.certsTitle || "Certifications", u(t.certs || t.certifications), "certifications") + l("References", x(t.refs || t.references), "references") + "</main>";
         return '<article class="' + m("sidebar", i) + '" data-layout="sidebar" style="' + b(i.accent, i) + '">' + h() + '<div class="cvx-sidebar-grid">' + c + n + "</div></article>";
     }
     function w(e, i) {
@@ -125,7 +125,7 @@
     }
     function C(e, i) {
         var t = r(e);
-        return '<article class="' + m("academic", i = i || {}) + '" data-layout="academic" style="' + b(i.accent, i) + '">' + h() + j(t, i) + '<div class="cvx-header-line"></div>' + [ l("Academic Profile", v(t)), l("Education", d(t.edus || t.education)), l("Research / Projects", f(t.projects)), l("Experience", p(t.exps || t.experience)), l("Awards / Certifications", u(t.certs || t.certifications)), l("Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : ""), l("Languages",x(t.languages)), l("References", x(t.refs || t.references)) ].join("") + "</article>";
+        return '<article class="' + m("academic", i = i || {}) + '" data-layout="academic" style="' + b(i.accent, i) + '">' + h() + j(t, i) + '<div class="cvx-header-line"></div>' + [ l("Academic Profile", v(t), "summary"), l("Education", d(t.edus || t.education), "education"), l("Research / Projects", f(t.projects), "projects"), l("Experience", p(t.exps || t.experience), "experience"), l("Awards / Certifications", u(t.certs || t.certifications), "certifications"), l("Skills", o(t.skills) ? '<div class="cvx-chips">' + s(o(t.skills)) + "</div>" : "", "skills"), l("Languages",x(t.languages), "languages"), l("References", x(t.refs || t.references), "references") ].join("") + "</article>";
     }
     function S(e, i) {
         var t = r(e);
