@@ -600,7 +600,7 @@ var LEAVE_DATA = {
   KM:{name:"Comoros",annual:24,annualUnit:"working days",annualNote:"2 days per month of service",sick:"+",sickNote:"Per collective agreement and social security",matWeeks:14,matPay:"100%",matPaySource:"Social security",matElig:"6 months employment",patDays:2,patPay:"Paid",holidays:13,compassionate:"3 days (marriage), 3 days (death)",law:"Labour Code (Law 84-108/PR)",accrual:"Monthly",obs:"Comoros follows the Francophone African standard with 24 working days plus 13 public holidays, totalling 37+ days off per year."},
   CG:{name:"Congo-Brazzaville",annual:26,annualUnit:"working days",annualNote:"Increases with seniority and age",sick:"+",sickNote:"Full pay up to 6 months",matWeeks:15,matPay:"100%",matPaySource:"Social security (CNSS)",matElig:"6 months contributions",patDays:3,patPay:"Paid",holidays:11,compassionate:"3 days (marriage, death, birth)",law:"Labour Code (Law 45-75 of 1975, amended)",accrual:"Monthly",obs:"Congo-Brazzaville is one of the more generous Francophone African countries with 26 working days annual leave and 15 weeks maternity leave — exceeding the ILO minimum."},
   CD:{name:"DR Congo",annual:12,annualUnit:"working days",annualNote:"1 day per month of service; increases with seniority",sick:"+",sickNote:"Full pay for first 6 months",matWeeks:14,matPay:"67%",matPaySource:"Employer",matElig:"6 months employment",patDays:2,patPay:"Paid",holidays:10,compassionate:"3 days (marriage, death, birth)",law:"Labour Code (Law 015/2002)",accrual:"Monthly",obs:"DR Congo has one of the lowest annual leave minimums in Africa at just 12 working days. Maternity pay at 67% is below the Francophone average of 100%."},
-  CI:{name:"Cote d'Ivoire",annual:26.4,annualUnit:"ouvrable days (unrounded base)",annualNote:"Article 25.1: 2.2 ouvrable days per effective service month; 26.4 for 12 months. Bonuses, absences and employer rounding are not calculated.",sick:"+",sickNote:"Full pay for 5 days; then 50% for up to 6 months via CNPS",matWeeks:14,matPay:"100%",matPaySource:"Social security (CNPS)",matElig:"3 months employment + 6 months contributions",patDays:3,patPay:"Paid",holidays:14,compassionate:"10 days per year for family events",law:"Labour Code (Law 2015-532)",accrual:"Monthly",obs:"Cote d'Ivoire provides a seniority bonus and extra leave for mothers. Compassionate leave is generous at up to 10 days per year. The 26.4-day base is unrounded and excludes individual additions; public-holiday counts are a separate recorded reference."},
+  CI:{name:"Cote d'Ivoire",annual:26.4,annualUnit:"ouvrable days (unrounded base)",annualNote:"Article 25.1: 2.2 ouvrable days per effective service month; 26.4 for 12 months. Bonuses, absences and employer rounding are not calculated.",sick:"+",sickNote:"Full pay for 5 days; then 50% for up to 6 months via CNPS",matWeeks:14,matPay:"100%",matPaySource:"Social security (CNPS)",matElig:"3 months employment + 6 months contributions",patDays:2,patPay:"Conditional paid birth permission: article 25.12; six completed months, annual family cap and authorization. Use eligibility planner.",holidays:14,compassionate:"10 days per year for family events",law:"Labour Code (Law 2015-532)",accrual:"Monthly",obs:"Cote d'Ivoire provides a seniority bonus and extra leave for mothers. Compassionate leave is generous at up to 10 days per year. The 26.4-day base is unrounded and excludes individual additions; public-holiday counts are a separate recorded reference."},
   DJ:{name:"Djibouti",annual:30,annualUnit:"calendar days",annualNote:"2.5 days per month",sick:"+",sickNote:"Per social security and medical assessment",matWeeks:14,matPay:"100%",matPaySource:"Social security (CNSS)",matElig:"Registered with CNSS",patDays:3,patPay:"Paid",holidays:13,compassionate:"3 days (marriage, death)",law:"Labour Code (Law 133/AN/05/5th L)",accrual:"Monthly",obs:"Djibouti follows the Francophone African standard with 30 calendar days annual leave. Combined with 13 public holidays, workers get 43+ days off — one of the most generous in the Horn of Africa."},
   EG:{name:"Egypt",annual:21,annualUnit:"working days",annualNote:"Increases to 30 days after 10 years or age 50; min 30 for hazardous work",sick:"+",sickNote:"75% pay for first 90 days; 85% for next 90 days per 3-year cycle",matWeeks:13,matPay:"100%",matPaySource:"Social insurance",matElig:"10 months social insurance contributions",patDays:0,patPay:"N/A",holidays:14,compassionate:"Not legislated; employer policy",law:"Labour Law (Law 12 of 2003)",accrual:"Annual",obs:"Egypt provides 21 days annual leave increasing to 30 days after 10 years. There is no statutory paternity leave. The 14 public holidays make Egypt one of the highest in that category."},
   GQ:{name:"Equatorial Guinea",annual:30,annualUnit:"calendar days",annualNote:"After 1 year of service",sick:"+",sickNote:"Full pay up to 3 months with medical certificate",matWeeks:12,matPay:"75%",matPaySource:"Social security (INSESO)",matElig:"Registered with social security",patDays:3,patPay:"Paid",holidays:12,compassionate:"3 days (marriage, death)",law:"Labour Law (Law 10/2012)",accrual:"Annual",obs:"Equatorial Guinea provides 30 calendar days annual leave. Maternity pay at 75% is below the Francophone regional average of 100%."},
@@ -829,6 +829,7 @@ function ppCalc() {
   document.getElementById('pp-result').replaceChildren();
   var cc = document.getElementById('pp-country').value;
   var type = document.getElementById('pp-type').value;
+  if (cc === 'CI' && type === 'pat') { var target=document.getElementById('pp-result');target.textContent='Birth permission has eligibility conditions. Use the Côte d’Ivoire section below to check service, the annual family cap and authorization.';target.style.display='';return; }
   var dueVal = document.getElementById('pp-due').value;
   var el = document.getElementById('pp-result');
   if (!cc || !LEAVE_DATA[cc] || !dueVal) { el.style.display = 'none'; return; }
@@ -971,6 +972,7 @@ function lcBuildSummary() {
     lines.push('Sick leave: ' + d.sickNote);
     lines.push('Maternity: ' + d.matWeeks + ' weeks, pay ' + d.matPay + (d.matPaySource ? ' via ' + d.matPaySource : ''));
     lines.push('Paternity: ' + (d.patDays > 0 ? d.patDays + ' days' : 'Not legislated'));
+    if (cc === 'CI') lines.push(d.patPay);
     lines.push('Public holidays: ' + d.holidays + ' typical per year');
     lines.push('Law/reference: ' + d.law);
     if (d.obs) lines.push('Local note: ' + d.obs);
@@ -1060,7 +1062,7 @@ function lcBuildCompare() {
     var mc = r.mat >= maxM-1 ? ' val-hi' : r.mat <= 9 ? ' val-lo' : '';
     var pc = r.pat >= maxP-2 ? ' val-hi' : '';
     var hc = r.holidays >= maxH-1 ? ' val-hi' : '';
-    return '<tr><td>' + r.name + '</td><td class="'+ac+'">' + r.annual + ' days</td><td class="'+mc+'">' + r.mat + ' wks</td><td class="'+pc+'">' + (r.pat>0?r.pat+' days':'<span class="val-lo">None</span>') + '</td><td class="'+hc+'">' + r.holidays + '</td></tr>';
+    return '<tr><td>' + r.name + '</td><td class="'+ac+'">' + r.annual + ' days</td><td class="'+mc+'">' + r.mat + ' wks</td><td class="'+pc+'">' + (r.cc==='CI'?'2 days — conditional':r.pat>0?r.pat+' days':'<span class="val-lo">None</span>') + '</td><td class="'+hc+'">' + r.holidays + '</td></tr>';
   }).join('');
   document.getElementById('lc-tbody').innerHTML = html;
   ['name','annual','mat','pat','holidays'].forEach(function(k){
@@ -1085,5 +1087,7 @@ function lcCompareFilter(type, btn) {
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
+<script src="/assets/js/engines/ci-birth-leave.js" defer></script>
+<script src="/assets/js/pages/ci-birth-leave.js" defer></script>
 </body>
 </html>

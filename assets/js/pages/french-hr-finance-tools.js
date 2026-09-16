@@ -91,7 +91,7 @@
         ['Congé annuel restant', Math.max(0, result.annualLeave.days - taken) + ' jours'],
         ['Congé maladie', result.sickLeave.days == null ? 'À vérifier selon règle locale' : result.sickLeave.days + ' jours'],
         ['Congé maternité', result.maternityLeave.weeks + ' semaines'],
-        ['Congé paternité', dataSet()[country.value].paternityLeave && typeof dataSet()[country.value].paternityLeave.days === 'number' ? dataSet()[country.value].paternityLeave.days + ' jours' : 'Donnée absente — à vérifier'],
+        ['Congé paternité', country.value === 'CI' ? 'Permission pour naissance : 2 jours ouvrables sous conditions (article 25.12). Six mois de présence, plafond familial annuel, autorisation et justificatifs : utilisez le vérificateur ci-dessous.' : dataSet()[country.value].paternityLeave && typeof dataSet()[country.value].paternityLeave.days === 'number' ? dataSet()[country.value].paternityLeave.days + ' jours' : 'Donnée absente — à vérifier'],
         ['Jours fériés indicatifs', result.publicHolidays + ' jours']
       ].concat(country.value === 'CI' ? [['Base et limites', 'Article 25.1 : 2,2 jours ouvrables par mois de service effectif, soit 26,4 pour 12 mois. Majorations, absences et arrondi employeur non calculés.']] : []);
     }

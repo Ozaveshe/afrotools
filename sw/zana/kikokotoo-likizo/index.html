@@ -512,7 +512,7 @@ function buildLeaveView(code) {
     matElig: lcSwText(getMaternityEligibilityText(leave)),
     patDays: LEAVE_ENTITLEMENTS[code] && LEAVE_ENTITLEMENTS[code].paternityLeave && Number.isFinite(LEAVE_ENTITLEMENTS[code].paternityLeave.days) ? LEAVE_ENTITLEMENTS[code].paternityLeave.days : null,
     patPay: lcSwText(leave && leave.paternityLeave && leave.paternityLeave.pay ? leave.paternityLeave.pay : (leave && leave.paternityLeave && leave.paternityLeave.days > 0 ? 'Mara nyingi hulipwa au hutegemea sera ya mwajiri' : 'N/A')),
-    patNote: lcSwText(leave && leave.paternityLeave && leave.paternityLeave.notes ? leave.paternityLeave.notes : ''),
+    patNote: code === 'CI' ? 'Ruhusa ya kuzaliwa: miezi sita kamili ya uwepo kazini, kikomo cha siku kumi za familia kwa mwaka, familia ya kisheria, idhini na uthibitisho. Tumia sehemu ya kuhakiki masharti.' : lcSwText(leave && leave.paternityLeave && leave.paternityLeave.notes ? leave.paternityLeave.notes : ''),
     holidays: typeof leave.publicHolidays === 'number' ? leave.publicHolidays : 0,
     compassionate: lcSwText(otherLeave.join(' ')),
     law: lcSwText((leave && leave.annualLeave && leave.annualLeave.law) || (leave && leave.sickLeave && leave.sickLeave.law) || (leave && leave.maternityLeave && leave.maternityLeave.law) || (leave && leave.paternityLeave && leave.paternityLeave.law) || 'Marejeo ya kisheria ya moja kwa moja hayajatajwa wazi kwenye seti hii ya data.'),
@@ -691,6 +691,7 @@ function poCalc() {
 }
 
 function buildParentalPlanState(code, type, dueVal) {
+  if (code === 'CI' && type === 'pat') return {unsupported:true,message:'Ruhusa ya kuzaliwa kwa mtoto ina masharti. Tumia sehemu ya Côte d’Ivoire hapa chini kuhakiki miezi sita, kikomo cha familia na idhini.'};
   if (!code || !LEAVE_DATA[code] || !dueVal) return null;
   var d = LEAVE_DATA[code];
   var due = new Date(dueVal + 'T00:00:00Z');
@@ -863,6 +864,7 @@ function lcBuildSummary() {
     lines.push('Likizo ya ugonjwa: ' + d.sickNote);
     lines.push('Likizo ya uzazi: ' + d.matWeeks + ' wiki, malipo ' + d.matPay + (d.matPaySource ? ' kupitia ' + d.matPaySource : ''));
     lines.push('Likizo ya baba: ' + (d.patDays === null ? 'Taarifa hazipo — hakiki' : d.patDays > 0 ? d.patDays + ' siku' : 'Siku 0 katika chanzo — hakiki'));
+    if (cc === 'CI') lines.push(d.patNote);
     lines.push('Sikukuu: ' + d.holidays + ' kwa mwaka kwa kawaida');
     lines.push('Sheria/rejea: ' + d.law);
     if (d.obs) lines.push('Dokezo: ' + d.obs);
@@ -952,7 +954,7 @@ function lcBuildCompare() {
     var mc = r.mat >= maxM - 1 ? ' val-hi' : r.mat <= 9 ? ' val-lo' : '';
     var pc = r.pat >= maxP - 2 ? ' val-hi' : '';
     var hc = r.holidays >= maxH - 1 ? ' val-hi' : '';
-    return '<tr><td>' + escapeHtml(r.name) + '</td><td class="' + ac + '">' + r.annual + ' siku</td><td class="' + mc + '">' + r.mat + ' wiki</td><td class="' + pc + '">' + (r.pat === null ? 'Taarifa hazipo — hakiki' : r.pat > 0 ? r.pat + ' siku' : 'Siku 0 — hakiki') + '</td><td class="' + hc + '">' + r.holidays + '</td></tr>';
+    return '<tr><td>' + escapeHtml(r.name) + '</td><td class="' + ac + '">' + r.annual + ' siku</td><td class="' + mc + '">' + r.mat + ' wiki</td><td class="' + pc + '">' + (r.cc === 'CI' ? 'Siku 2 — zina masharti' : r.pat === null ? 'Taarifa hazipo — hakiki' : r.pat > 0 ? r.pat + ' siku' : 'Siku 0 — hakiki') + '</td><td class="' + hc + '">' + r.holidays + '</td></tr>';
   }).join('');
   document.getElementById('lc-tbody').innerHTML = html;
   ['name','annual','mat','pat','holidays'].forEach(function(key){
@@ -995,5 +997,7 @@ function lcCompareFilter(type, btn) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/engines/ci-birth-leave.js" defer></script>
+<script src="/assets/js/pages/ci-birth-leave.js" defer></script>
 </body>
 </html>
