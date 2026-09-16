@@ -6,7 +6,7 @@ for(const [locale,route,failure] of [['en','/tools/remittance-compare/','Could n
   await page.clock.install({time:new Date('2026-09-16T12:00:00Z')});
   const sent=[];page.on('request',request=>{if((request.url()+' '+(request.postData()||'')).includes('Synthetic'))sent.push(request.url());});
   await page.goto(route);
-  for(const letter of ['a','b'])for(const [key,value] of Object.entries({label:`Synthetic ${letter}`,send:'USD',debit:'500',receive:'NGN',recipient:letter==='a'?'780000':'790000',observed:'2026-09-16T11:00',expires:letter==='b'?'2026-09-16T12:01':''})) await page.locator(`#rm-${letter}-${key}`).fill(value);
+  for(const letter of ['a','b'])for(const [key,value] of Object.entries({label:`Synthetic ${letter}`,sendCountry:'GB',receiveCountry:'SN',send:'USD',debit:'500',receive:'NGN',recipient:letter==='a'?'780000':'790000',observed:'2026-09-16T11:00',expires:letter==='b'?'2026-09-16T12:01':''})) await page.locator(`#rm-${letter}-${key}`).fill(value);
   await page.locator('#rm-a-payout').selectOption('bank');await page.locator('#rm-a-fee').fill('5');await page.locator('#rm-a-delivery').fill('60');
   await page.locator('#rm-form button[type=submit]').click();
   await expect(page.locator('.rm-result[data-highest=true]')).toHaveCount(1);

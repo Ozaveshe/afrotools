@@ -1,0 +1,9 @@
+const {test,expect}=require('@playwright/test');const fs=require('fs');
+for(const[locale,route]of[['en','/tools/remittance-compare/'],['fr','/fr/tools/transfert-argent/'],['sw','/sw/zana/ulinganisho-uhamishaji-pesa/']])test(`${locale} confirmed corridors prevent false same-currency ranking`,async({page})=>{
+ await page.goto(route);
+ for(const letter of ['a','b'])for(const[key,value]of Object.entries({label:'Synthetic '+letter,sendCountry:'GB',receiveCountry:letter==='a'?'SN':'CI',send:'USD',debit:'100',receive:'XOF',recipient:letter==='a'?'58000':'59000',observed:'2026-01-01T11:00'}))await page.locator(`#rm-${letter}-${key}`).fill(value);
+ await page.locator('#rm-form button[type=submit]').click();await expect(page.locator('.rm-result[data-highest=true]')).toHaveCount(0);
+ await page.locator('#rm-b-receiveCountry').fill('Sénégal');await page.locator('#rm-b-sendCountry').fill('Royaume-Uni');await page.locator('#rm-form button[type=submit]').click();await expect(page.locator('.rm-result[data-highest=true]')).toHaveCount(1);
+ const event=page.waitForEvent('download');await page.locator('#rm-json').click();const json=JSON.parse(fs.readFileSync(await(await event).path(),'utf8'));expect(json.result.quotes[1].receiveCountry).toBe('Sénégal');expect(json.result.quotes[1].receiveCountryCode).toBe('SN');expect(json.result.groups[0].highestRecipientAmount).toBe(59000);expect(json.result.requireCorridor).toBe(true);const replay=await page.evaluate(input=>window.RemittanceQuoteComparatorEngine.calculate(input),json.result);expect(replay.groups).toEqual(json.result.groups);
+ await page.locator('#rm-b-receiveCountry').fill('Unknown synthetic');await page.locator('#rm-form button[type=submit]').click();await expect(page.locator('#rm-b-receiveCountry')).toBeFocused();await expect(page.locator('#rm-b-receiveCountry')).toHaveAttribute('aria-invalid','true');await expect(page.locator('.rm-result')).toHaveCount(0);
+});

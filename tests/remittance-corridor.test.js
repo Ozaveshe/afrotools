@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),engine=require('../engines/src/remittance-quote-comparator-engine');
+const quote={label:'Synthetic',sendCountry:'GB',receiveCountry:'SN',sendCurrency:'USD',receiveCurrency:'XOF',totalDebit:100,recipientAmount:58000,observedAt:'2026-01-01T10:00:00Z'};
+const run=(second)=>engine.calculate({requireCorridor:true,asOf:'2026-09-16T12:00:00Z',quotes:[quote,{...quote,...second}]});
+assert.equal(run({receiveCountry:'CI',recipientAmount:59000}).hasEligibleComparison,false);
+const same=run({sendCountry:'Royaume-Uni',receiveCountry:' Sénégal ',recipientAmount:59000});assert.equal(same.groups[0].highestRecipientAmount,59000);assert.equal(same.quotes[1].receiveCountry,' Sénégal ');assert.equal(same.quotes[1].receiveCountryCode,'SN');
+assert.throws(()=>run({receiveCountry:'Unknown synthetic'}),/RECEIVE_COUNTRY_REQUIRED/);
+assert.throws(()=>run({sendCountry:''}),/SEND_COUNTRY_REQUIRED/);
+assert.equal(run({sendCountry:'US'}).hasEligibleComparison,false);
+assert.equal(run({payoutMethod:'cash'}).hasEligibleComparison,true);
+console.log('remittance corridor: pass');

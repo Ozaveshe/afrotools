@@ -52,12 +52,23 @@
     return requiredText(value,code,8,/^[A-Za-z0-9]{2,8}$/).toUpperCase();
   }
 
+  var countryAliases;
+  function countryKey(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+  function countryCode(value){
+    if(!countryAliases){countryAliases={uk:'GB'};var locales=['en','fr','sw'];
+      if(typeof Intl.DisplayNames==='function')locales.forEach(function(locale){var names=new Intl.DisplayNames([locale],{type:'region'});for(var a=65;a<=90;a++)for(var b=65;b<=90;b++){var code=String.fromCharCode(a,b),name=names.of(code);if(name&&name!==code&&!['ZZ','UK','EU','EZ','UN','XA','XB'].includes(code)){countryAliases[countryKey(name)]=code;countryAliases[code.toLowerCase()]=code;}}});
+    }
+    return countryAliases[countryKey(value)]||null;
+  }
   function comparisonKey(row){
-    return row.sendCurrency+"|"+row.receiveCurrency+"|"+String(row.totalDebit);
+    return (row.corridorRequired?row.sendCountryCode+"|"+row.receiveCountryCode+"|":"")+row.sendCurrency+"|"+row.receiveCurrency+"|"+String(row.totalDebit);
   }
 
-  function buildQuote(row,index,asOfMs){
+  function buildQuote(row,index,asOfMs,requireCorridor){
     if(!row||typeof row!=="object")throw new Error("QUOTE_REQUIRED");
+    var sendCountryCode=requireCorridor?countryCode(row.sendCountry):null,receiveCountryCode=requireCorridor?countryCode(row.receiveCountry):null;
+    if(requireCorridor&&!sendCountryCode)throw new Error('SEND_COUNTRY_REQUIRED');
+    if(requireCorridor&&!receiveCountryCode)throw new Error('RECEIVE_COUNTRY_REQUIRED');
     var observedMs=dateValue(row.observedAt,"OBSERVED_AT_REQUIRED",true);
     if(observedMs>asOfMs+FUTURE_TOLERANCE_MS)throw new Error("OBSERVED_AT_FUTURE");
     var expiresMs=dateValue(row.expiresAt,"INVALID_EXPIRY",false);
@@ -70,6 +81,7 @@
     var expired=expiresMs!==null&&expiresMs<=asOfMs;
     var quote={
       index:index,
+      corridorRequired:!!requireCorridor,sendCountry:requireCorridor?String(row.sendCountry):null,receiveCountry:requireCorridor?String(row.receiveCountry):null,sendCountryCode:sendCountryCode,receiveCountryCode:receiveCountryCode,
       label:requiredText(row.label,"LABEL_REQUIRED",48),
       sendCurrency:normalizeCurrency(row.sendCurrency,"SEND_CURRENCY_REQUIRED"),
       receiveCurrency:normalizeCurrency(row.receiveCurrency,"RECEIVE_CURRENCY_REQUIRED"),
@@ -92,7 +104,7 @@
     if(!input||typeof input!=="object")throw new Error("INPUT_REQUIRED");
     if(!Array.isArray(input.quotes)||input.quotes.length<2||input.quotes.length>3)throw new Error("QUOTE_COUNT");
     var asOfMs=dateValue(input.asOf||new Date().toISOString(),"INVALID_AS_OF",true);
-    var quotes=input.quotes.map(function(row,index){return buildQuote(row,index,asOfMs);});
+    var quotes=input.quotes.map(function(row,index){return buildQuote(row,index,asOfMs,input.requireCorridor===true);});
     var buckets={};
     quotes.forEach(function(row){
       if(!row.eligible)return;
@@ -121,6 +133,7 @@
       });
     });
     return {
+      requireCorridor:input.requireCorridor===true,
       asOf:new Date(asOfMs).toISOString(),
       methodology:"user-entered-remittance-quotes",
       groups:groups,
@@ -130,5 +143,5 @@
     };
   }
 
-  return {calculate:calculate,MAX_AMOUNT:MAX_AMOUNT,FUTURE_TOLERANCE_MS:FUTURE_TOLERANCE_MS};
+  return {countryCode:countryCode,calculate:calculate,MAX_AMOUNT:MAX_AMOUNT,FUTURE_TOLERANCE_MS:FUTURE_TOLERANCE_MS};
 });
