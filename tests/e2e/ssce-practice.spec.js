@@ -49,7 +49,9 @@ test('complete topic, retry misses and schedule revision in the study day',async
  const schedule=page.getByRole('button',{name:'Save a revision session for tomorrow',exact:true});await schedule.click();await schedule.click();
  await expect(page.locator('#practice-status')).toContainText('Revision saved');
  await page.getByRole('button',{name:'Retry missed questions',exact:true}).click();await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 1');
- await page.goto('/tools/education-hub/#daily-study');await page.getByText('Coming up (1)',{exact:true}).click();await page.getByRole('button',{name:'Start session',exact:true}).click();await expect(page.getByRole('link',{name:'Open WAEC/NECO practice',exact:true})).toHaveAttribute('href','/tools/ssce-practice/');
+ await page.goto('/tools/education-hub/#daily-study');await page.getByText('Coming up (1)',{exact:true}).click();await page.getByRole('button',{name:'Start session',exact:true}).click();await expect(page.getByRole('link',{name:'Open WAEC/NECO practice',exact:true})).toHaveAttribute('href',/^\/tools\/ssce-practice\/#revision=/);
+ await page.getByRole('link',{name:'Open WAEC/NECO practice',exact:true}).click();await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 1');
+ await page.reload();await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 1');
 });
 test('passages are complete and failed saves preserve existing data',async({page})=>{
  await page.addInitScript(()=>localStorage.setItem('afrotools.sscePractice.v1','broken-backup'));
@@ -61,4 +63,23 @@ test('passages are complete and failed saves preserve existing data',async({page
  await page.getByRole('radio').nth(1).check();await page.getByRole('button',{name:'Check answer',exact:true}).click();
  const reportEvent=page.waitForEvent('download');await page.getByRole('button',{name:'Download practice report',exact:true}).click();const report=await reportEvent;
  const text=await fs.readFile(await report.path(),'utf8');expect(text).toContain('a dependable plan would keep it open.');expect(text).toContain('B. To give students access after lessons');
+});
+
+test('planned revision survives another saved practice and missing questions never substitute a generic session',async({page})=>{
+ await page.goto('/tools/ssce-practice/');
+ const taskId=await page.evaluate(()=>{
+  const day=window.AfroTools.studentDay;
+  const plan=day.scheduleRevision(day.empty(),{bankId:window.AfroTools.sscePracticeBank.id,locale:'en',ids:['m3','m1']},'Mathematics',day.today());
+  day.write(localStorage,plan);
+  const ordinary=window.AfroTools.sscePractice.start(window.AfroTools.sscePracticeBank,'English','Writing decisions');
+  localStorage.setItem(window.AfroTools.sscePractice.key,JSON.stringify(ordinary));return plan.tasks[0].id;
+ });
+ const original=await page.evaluate(()=>localStorage.getItem('afrotools.sscePractice.v1'));
+ await page.goto('/tools/ssce-practice/#revision='+encodeURIComponent(taskId));
+ await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 2');
+ await expect(page.locator('#practice-session legend')).toContainText('12,000');
+ expect(await page.evaluate(()=>localStorage.getItem('afrotools.sscePractice.v1'))).toBe(original);
+ await page.evaluate(()=>{const day=window.AfroTools.studentDay,plan=day.read(localStorage);plan.tasks[0].revision.ids=['missing'];day.write(localStorage,plan);});
+ await page.reload();await expect(page.locator('#practice-status')).toContainText('unavailable');await expect(page.locator('#practice-session h2')).toHaveCount(0);
+ expect(await page.evaluate(()=>localStorage.getItem('afrotools.sscePractice.v1'))).toBe(original);
 });

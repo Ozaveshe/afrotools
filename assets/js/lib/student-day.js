@@ -23,7 +23,13 @@
       ids.add(t.id);day(t.date);
       if(!Number.isInteger(t.minutes)||t.minutes<5||t.minutes>240) throw new Error('Session length must be 5–240 minutes.');
       if(t.doneAt!=null&&(typeof t.doneAt!=='string'||!Number.isFinite(Date.parse(t.doneAt)))) throw new Error('A completion date is invalid.');
-      return {id:t.id,subject:t.subject.trim(),date:t.date,minutes:t.minutes,doneAt:t.doneAt||null,sourceId:typeof t.sourceId==='string'?t.sourceId.slice(0,250):null,deckId:typeof t.deckId==='string'?t.deckId.slice(0,100):null};
+      var task={id:t.id,subject:t.subject.trim(),date:t.date,minutes:t.minutes,doneAt:t.doneAt||null,sourceId:typeof t.sourceId==='string'?t.sourceId.slice(0,250):null,deckId:typeof t.deckId==='string'?t.deckId.slice(0,100):null};
+      if(t.revision!=null){
+        var r=t.revision;
+        if(task.sourceId!=='ssce-practice'||!r||typeof r.bankId!=='string'||!/^[-a-zA-Z0-9_]{1,100}$/.test(r.bankId)||!['en','fr','sw'].includes(r.locale)||!Array.isArray(r.ids)||!r.ids.length||r.ids.length>200||new Set(r.ids).size!==r.ids.length||r.ids.some(function(id){return typeof id!=='string'||!/^[-a-zA-Z0-9_]{1,100}$/.test(id);}))throw new Error('A revision session is invalid.');
+        task.revision={bankId:r.bankId,locale:r.locale,ids:r.ids.slice()};
+      }
+      return task;
     });
     return {version:1,tasks:tasks,activeId:tasks.some(function(t){return t.id===value.activeId&&!t.doneAt;})?value.activeId:null};
   }
@@ -50,6 +56,16 @@
     else throw new Error('Unknown study action.');
     return result;
   }
+  function scheduleRevision(state,revision,subject,date){
+    var result=normalize(state);
+    var existing=result.tasks.find(function(t){return !t.doneAt&&t.date===date&&t.subject===subject&&t.revision&&t.revision.bankId===revision.bankId&&t.revision.locale===revision.locale&&JSON.stringify(t.revision.ids)===JSON.stringify(revision.ids);});
+    if(existing)return result;
+    var suffix=1,id;
+    do{id='ssce|'+date+'|'+suffix++;}while(result.tasks.some(function(t){return t.id===id;}));
+    result.tasks.push({id:id,subject:subject,date:date,minutes:20,doneAt:null,sourceId:'ssce-practice',revision:revision});
+    return normalize(result);
+  }
+  function revisionHref(task){return ({en:'/tools/ssce-practice/',fr:'/fr/tools/pratique-waec-neco/',sw:'/sw/zana/mazoezi-waec-neco/'}[task.revision?task.revision.locale:'en'])+(task.revision?'#revision='+encodeURIComponent(task.id):'');}
   function view(state,date){day(date);var tasks=normalize(state).tasks.slice().sort(function(a,b){return a.date.localeCompare(b.date)||a.id.localeCompare(b.id);});return {due:tasks.filter(function(t){return !t.doneAt&&t.date<=date;}),upcoming:tasks.filter(function(t){return !t.doneAt&&t.date>date;}),completed:tasks.filter(function(t){return !!t.doneAt;})};}
-  return {key:KEY,today:today,addDays:addDays,empty:empty,normalize:normalize,read:read,write:write,plan:plan,change:change,view:view};
+  return {key:KEY,today:today,addDays:addDays,empty:empty,normalize:normalize,read:read,write:write,plan:plan,change:change,view:view,scheduleRevision:scheduleRevision,revisionHref:revisionHref};
 });
