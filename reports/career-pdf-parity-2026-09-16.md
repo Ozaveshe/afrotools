@@ -36,3 +36,9 @@ Edited-text followup: `tests/e2e/cv-ats-edited-text.spec.js` passed all four cas
 
 Harness followup: the combined edited-export plus empty-validation test exceeded its 60-second total budget on repeated EN/FR runs. Trace inspection showed successful individual actions and rendered feedback near the deadline. The checks are now separate bounded cases, and feedback assertions target the actual toast rather than the entire page. No assertion or timeout was relaxed. Earlier pointer-stability waits remain an open observation; keyboard activation does not establish pointer usability.
 Harness validation on port 4216: all 7 edited/empty/stale cases passed together (1.6 minutes); all 14 character/native-feedback cases passed together separately (1.3 minutes). Product source was unchanged.
+
+## DOCX field and language followup
+
+Actual EN/FR/SW DOCX downloads omitted website and portfolio whenever GitHub was supplied. The source now retains each contact URL independently, localizes generated headings/date labels/defaults and export guidance, and emits an actual bullet in the Word numbering XML. User text is preserved. French runtime was regenerated through its owner.
+
+Validation: `node --test tests/cv-docx-localized-fields.test.js` (3 passed); `node scripts/verify-cv-docx-export.js` (passed); `playwright test tests/e2e/cv-docx-localized-fields.spec.js --workers=1` (3 passed, port 4216). Actual downloaded ZIP/XML preserves accented names, all supplied contact links, education details and reference relationship text. This checks DOCX package content, not Microsoft Word rendering. Styled PDF templates and JSON import remain separate open work.
