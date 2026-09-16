@@ -27,3 +27,10 @@ Full-suite and production evidence will be recorded when complete. This record d
 - Final rebuilt artifact passed audit:dist and security:scan again.
 - Optimized reverse-calculation browser check: repeated clicks preserve desired monthly net 1,500,000 and required monthly gross 2,156,922.
 - The release tree was clean after committing expected generated assets and reviewed contracts. Unrelated Hausa audit report churn was removed from this batch.
+
+## Integration and release coordination
+
+- Integrated origin/main 7e422c194f6ef126fef13d3d1eec2666c1de216c, preserving the current language/document and JAMB mobile changes. Only generated public-claims reports conflicted; regenerated them with their owning build script. The resulting UX diff against that main passes git diff --check and contains no deletions.
+- After integration, six focused suites passed: calculation quality, French native oracles, Swahili PAYE parity, contact feedback, repeated reverse calculation, and Uganda period/export interactions. Public-claims audit and regeneration passed with zero errors.
+- The Education Hub publisher holds lease recent-jamb-20260916-release and requested a frozen release boundary of current main plus its education batch. This UX batch is preserved separately for the next release window; it has not been pushed to main or deployed.
+- Next release must integrate the completed publisher release, rebuild the combined artifact, pass release/CI checks, and verify production routes. Earlier artifact validation above applies to the pre-integration artifact; it does not prove the newly combined tree or production.
