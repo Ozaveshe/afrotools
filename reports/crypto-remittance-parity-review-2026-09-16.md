@@ -19,3 +19,9 @@ Remaining findings: mobile baseline6lightPASS/6darkFAIL across320/390 (contrast)
 PDF visual review showed Congo-Kinshasa incorrectly normalized to deprecated ZR. Intl.DisplayNames can give a modern name for an obsolete code, and the old loop overwrote the current CD name mapping. The shared engine now skips codes whose Intl.Locale canonical region differs, while retaining the explicit UK→GB alias. ZR is rejected, CD and Congo-Kinshasa agree, and CD versus CG remains non-comparable. Intl names establish identity only, never provider eligibility.
 
 Independent node assertions cover those cases and UK/GB; baseline arithmetic still passes. Twelve browser cases across both remittance families passed29.9s, including PDF assertions for CD and no ZR. Quality digest/native fingerprint review follows separately.
+
+## Protected quality follow-up
+
+Reviewed only the changed remittance engine digest through the existing protected workflow. Added independent golden cases for CD/name agreement, CD versus CG separation, rejected ZR and UK alias. Metadata now records both UI callers using strict corridors; optional legacy API callers must not infer route equivalence. No tariff or eligibility verification added.
+
+Full calculation-quality check passed794artifacts/385fixtures with zero stale-data warnings; system tests and focused13case runner passed. Native20/20+14/14 oracle checks passed after only the two existing remittance dependency fingerprints were refreshed to54a1d84c. Unrelated formula/fixture records remained identical.
