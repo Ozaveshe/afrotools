@@ -42,3 +42,13 @@ Harness validation on port 4216: all 7 edited/empty/stale cases passed together 
 Actual EN/FR/SW DOCX downloads omitted website and portfolio whenever GitHub was supplied. The source now retains each contact URL independently, localizes generated headings/date labels/defaults and export guidance, and emits an actual bullet in the Word numbering XML. User text is preserved. French runtime was regenerated through its owner.
 
 Validation: `node --test tests/cv-docx-localized-fields.test.js` (3 passed); `node scripts/verify-cv-docx-export.js` (passed); `playwright test tests/e2e/cv-docx-localized-fields.spec.js --workers=1` (3 passed, port 4216). Actual downloaded ZIP/XML preserves accented names, all supplied contact links, education details and reference relationship text. This checks DOCX package content, not Microsoft Word rendering. Styled PDF templates and JSON import remain separate open work.
+
+## Styled PDF scope and remaining inventory
+
+The current registry exposes 30 template IDs. Fresh baseline downloads covered Lagos Corporate in EN/FR/SW, plus Pan-African Minimal and Nairobi Tech in EN. This is three distinct templates, not all-template acceptance. Styled PDF uses a raster image; selectable/parser-compatible text remains the separate ATS PDF mode.
+
+The active production-template owner now retains alternate phone, GitHub, website, portfolio, education description and reference relationship. Generated section headings and current-employment dates use native copy. Dark-header names inherit white, and Lagos role text uses a readable light color. The shared Swahili accessibility layer excludes only CV preview/export documents from color overrides, retaining application chrome rules. A real French 320px overflow in saved-draft action labels was fixed by wrapping the card actions.
+
+Validation: five node renderer/locale tests passed; three browser cases passed together across EN/FR/SW (two production templates per locale, complete supplied-field assertions, dark-header colors, 320/390px reflow and toolbar keyboard focus). Synthetic actual PDFs were rendered with Poppler and visually inspected for readable names, retained links/details and clipping. This is bounded fixture proof, not every template, arbitrary-content pagination or full accessibility acceptance.
+
+Remaining confirmed gaps: Pan-African Minimal still omits several supplied fields through another renderer path; JSON backup cannot yet be imported in any of the three locales. Other template families, print and application-pack behavior remain incompletely exercised. The earlier ATS pointer-stability observation remains open.
