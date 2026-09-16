@@ -42,3 +42,7 @@ The initial run inspected all 1,256 apps. It corroborated the French invoice con
 Static capability baseline: 1,256 apps inspected in all three locales. Raw ID differences are discovery signals; they do not establish missing features without workflow review. French minimum-wage and overtime use materially different forms from English and need capability/correctness review, not an automatic transplant of English assumptions.
 
 Coordinator career browser run completed: all eight checks passed together in the integrated tree. Scope remains the tested exports, mobile overflow, unsupported-character failure and cover-letter stale-draft guard; additional native CV/state work is still pending.
+
+### Swahili pointer stability
+
+`9be29016` keeps the active accessibility stylesheet attached while placing later style owners before it. Coordinator syntax/diff checks and all 11 browser tests passed: three locale invoice workflows with real pointer interactions, plus both Swahili invoice apps at 320/390px in light/dark themes. Tests verify that the stylesheet is not removed, its sheet identity is retained, pointer geometry remains stable and the clicked action actually changes app state. These checks address the reproduced defect; they are not universal document-category visual acceptance.
