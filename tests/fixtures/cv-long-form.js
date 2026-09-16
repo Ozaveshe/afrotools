@@ -1,0 +1,2 @@
+const base=require('./cv-complete-form');
+module.exports={...base,exps:Array.from({length:10},(_,i)=>({t:'Responsable de projet '+(i+1),c:'Organisation synthétique',l:'Nairobi — Kigali',s:'2020-01',e:'2025-01',d:Array.from({length:6},(_,j)=>'Étape '+(j+1)+' : coordination d’équipe et contrôle qualité. Ujuzi wa mawasiliano na usimamizi wa miradi.').join('\n')})),customSections:[{title:'Conclusion personnalisée — Hitimisho',content:'FINALVISIBLEMARKER Élodie François Łukasz — Asha Mwang’ombe'}]};

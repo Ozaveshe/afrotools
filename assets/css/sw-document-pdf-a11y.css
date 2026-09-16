@@ -356,8 +356,8 @@ main :where(table),
 }
 
 @media (max-width: 420px) {
-  main,
-  [role="main"] {
+  main:not(:where(.cv-prod main, .cv-expanded-template main)),
+  [role="main"]:not(:where(.cv-prod [role="main"], .cv-expanded-template [role="main"])) {
     width: 100% !important;
     padding-inline: clamp(0.5rem, 3vw, 1rem) !important;
   }
