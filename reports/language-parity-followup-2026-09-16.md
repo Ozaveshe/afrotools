@@ -24,3 +24,16 @@ At 46c857a3, full build, artifact/security audits and 31 artifact browser cases 
 ## Release state
 
 The coordinator directly verified production release 432b193b906e6cc5489df2c0c4ca2a75151d4f70. The UX release task subsequently acquired the publisher lease; this task holds main/deployment writes. This batch needs current-source full build, generated-output review, artifact checks and release validation before publication.
+
+## Subsequent integration through cd15cbb8
+
+The earlier e6b1425e artifact passed build, build checks, security and artifact audits, 31 browser cases (including 30 multilingual print PDFs), and seven actual-loader consent cases. Its full suite failed with 1,104 files, seven passing audits and zero quarantines. Diagnosed failures were repaired separately: import-time public-file writes, a non-idempotent second minification comparison, and reviewed related-link fingerprints. The image metadata check passed after the generated files were committed as 2aa69907. These focused results do not constitute a passing full-suite rerun.
+
+The newer source includes:
+
+- CV mobile review-panel access, native decorative labels, and short-grid pagination, with agent evidence for 60 short/long PDFs across ten families and three locales. Word export/import review remains open.
+- Both remittance families' country-identity correction, native exports, scoped consent and contrast fixes. Catalogue privacy is explicitly local and no longer inferred from description keywords.
+- French Tunisia, Togo and Mali search titles, dated descriptions and heading contrast. GSC observations and uncertainty are in the separate search reassessment report; no click-through uplift is claimed.
+- French minimum-wage scenario arithmetic and shared country references, plus Swahili fuel units, validation, dated references and local reports. Remaining shared market-finder and selected-sector work is separate.
+
+Coordinator checks on this newer source: 795 calculation artifacts and 391 golden fixtures passed; 20 extracted and 14 native French oracle contracts passed; 12 focused node tests passed; ten real-loader consent browser cases passed. The combined functional/PDF browser run remains in progress. The earlier dist artifact predates these changes and must be rebuilt. No whole-app or catalogue dimension is promoted to accepted by these counts.
