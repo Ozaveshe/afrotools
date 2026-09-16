@@ -15,8 +15,9 @@
     var amount=number(row.amount,"AMOUNT_REQUIRED",false),senderFee=number(row.senderFee,"SENDER_FEE_REQUIRED",true),recipientFee=number(row.recipientFee,"RECIPIENT_FEE_REQUIRED",true);
     var currency=text(row.currency,"CURRENCY_REQUIRED",8,/^[A-Za-z0-9]{2,8}$/).toUpperCase(),type=text(row.transactionType,"TRANSACTION_TYPE_REQUIRED",16);
     if(TYPES.indexOf(type)===-1)throw new Error("TRANSACTION_TYPE_REQUIRED");
+    var market=text(row.market,"MARKET_REQUIRED",48),marketKey=row.marketId?text(row.marketId,"MARKET_REQUIRED",2,/^[A-Z]{2}$/):market.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ');
     var totalFee=senderFee+recipientFee,expired=expires!==null&&expires<=asOf;
-    return {index:index,label:text(row.label,"LABEL_REQUIRED",48),market:text(row.market,"MARKET_REQUIRED",48),currency:currency,transactionType:type,amount:amount,senderFee:senderFee,recipientFee:recipientFee,totalFee:totalFee,totalCost:amount+totalFee,feePercent:totalFee/amount*100,observedAt:new Date(observed).toISOString(),expiresAt:expires===null?null:new Date(expires).toISOString(),expiryState:expired?"expired":expires===null?"unknown":"not-expired",eligible:!expired,comparisonKey:[currency,type,amount].join("|")};
+    return {index:index,label:text(row.label,"LABEL_REQUIRED",48),market:market,currency:currency,transactionType:type,amount:amount,senderFee:senderFee,recipientFee:recipientFee,totalFee:totalFee,totalCost:amount+totalFee,feePercent:totalFee/amount*100,observedAt:new Date(observed).toISOString(),expiresAt:expires===null?null:new Date(expires).toISOString(),expiryState:expired?"expired":expires===null?"unknown":"not-expired",eligible:!expired,comparisonKey:[marketKey,currency,type,amount].join("|")};
   }
   function calculate(input){
     if(!input||typeof input!=="object")throw new Error("INPUT_REQUIRED");if(!Array.isArray(input.quotes)||input.quotes.length<2||input.quotes.length>3)throw new Error("QUOTE_COUNT");

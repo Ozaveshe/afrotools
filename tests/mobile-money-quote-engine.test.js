@@ -39,3 +39,8 @@ assert.strictEqual(engine.quoteTariff(catalog,{providerId:"unknown",action:"send
   assert.throws(()=>engine.validateCatalog(invalid),/INVALID_TARIFF_COMPONENT_TOTAL/);
 }
 console.log("mobile-money-quote-engine: ok");
+
+// A shared currency does not make different markets comparable.
+assert.strictEqual(engine.calculate({asOf:AS_OF,quotes:[quote({market:'Senegal',currency:'XOF'}),quote({market:'Mali',currency:'XOF'})]}).hasEligibleComparison,false);
+{const result=engine.calculate({asOf:AS_OF,quotes:[quote({market:'Sénégal',marketId:'SN'}),quote({market:'SN',marketId:'SN'})]});assert.strictEqual(result.hasEligibleComparison,true);assert.deepStrictEqual(result.quotes.map(q=>q.market),['Sénégal','SN']);}
+assert.strictEqual(engine.calculate({asOf:AS_OF,quotes:[quote({expiresAt:AS_OF}),quote({expiresAt:AS_OF})]}).hasEligibleComparison,false);
