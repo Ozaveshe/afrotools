@@ -35,13 +35,14 @@
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="stylesheet" href="/assets/css/sw-financial-shard-a.css?v=e39bf3b6">
+<meta name="afrotools-source-owner" content="scripts/build-sw-fuel-tracker.js">
+<style>[id="main-content"] .swt-container{max-width:1000px;margin:auto;padding:16px}[id="fuel-result"] dd{margin:0 0 12px;overflow-wrap:anywhere}#snapshot-country{max-width:100%;padding:10px}#fuel-txt,#fuel-json,#snapshot-use{min-height:44px;margin:6px}</style>
 <link rel="canonical" href="https://afrotools.com/sw/zana/ufuatiliaji-bei-za-mafuta/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fuel-tracker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-carburant/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ufuatiliaji-bei-za-mafuta/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fuel-tracker/">
-<meta name="afrotools-source-owner" content="scripts/build-sw-fuel-tracker.js">
-<style>[id="main-content"] .swt-container{max-width:1000px;margin:auto;padding:16px}[id="fuel-result"] dd{margin:0 0 12px;overflow-wrap:anywhere}#snapshot-country{max-width:100%;padding:10px}#fuel-txt,#fuel-json,#snapshot-use{min-height:44px;margin:6px}</style>
+<meta name="afrotools-content-id" content="content:11900a4257a0a34c">
 <script src="/assets/js/engines/fuel-tracker-engine.js" defer></script>
 <link rel="stylesheet" href="/assets/css/fuel-tracker-vip.css">
 </head>
@@ -55,7 +56,7 @@
 <p class="swt-sub">Panga matumizi kwa bei za petrol, diesel au LPG na uone athari ya mabadiliko ya bei. Thibitisha bei moja kwa moja na chanzo rasmi au kituo cha mafuta. Tumia hii kwa upangaji, ofa ya bei na maamuzi ya awali, kisha thibitisha na mtoa huduma, mamlaka, insurer, lender au operator.</p>
 <div class="swt-actions"><span class="swt-action">makadirio</span><span class="swt-action">magari</span><span class="swt-action">mafuta</span><span class="swt-action">logistics</span></div>
 </div></header>
-<main class="swt-main" id="main-content"><div class="swt-container"><h1>Bei na bajeti ya mafuta</h1><p>Linganisha bei ulizoingiza na ukokotoe matumizi ya mwezi. Rejea za nchi zina tarehe; si uthibitisho wa bei ya leo au ya kituo kilicho karibu.</p>
+<main class="swt-main" id="main-content"><div class="swt-container"><h2>Bei na bajeti ya mafuta</h2><p>Linganisha bei ulizoingiza na ukokotoe matumizi ya mwezi. Rejea za nchi zina tarehe; si uthibitisho wa bei ya leo au ya kituo kilicho karibu.</p>
 <!-- FUEL_MARKET_START -->
 <div class="fuel-vip" data-fuel-market-locale="sw" style="min-height:0"><style>[data-fuel-market-locale] .fuel-field[hidden]{display:none}[data-fuel-market-locale] h2,[data-fuel-market-locale] h3{color:var(--fuel-ink)}[data-fuel-market-locale] select{min-width:0}</style><div class="fuel-wrap" style="display:grid;gap:22px;padding-block:22px">
 <section class="fuel-card fuel-finder" id="fuel-finder" aria-labelledby="finder-heading"><div class="fuel-find-head"><div><h2 id="finder-heading">Chagua soko la karibu lenye marejeo</h2><p class="fuel-card-intro">Ulinganishaji wa eneo hufanyika kwenye kifaa hiki ukiuomba tu. Viwianishi havitumwi, havihifadhiwi wala kuongezwa kwenye URL.</p></div><button class="fuel-button primary" id="fuel-use-location" type="button">Tumia eneo langu</button></div><p class="fuel-status" id="fuel-location-status" role="status" aria-live="polite">Eneo halitumiki. Chagua hapa chini.</p><div class="fuel-fields fuel-selection">
@@ -69,7 +70,7 @@
 <section class="swt-card" aria-labelledby="scenario-title"><h2 id="scenario-title">Linganisha bei na panga matumizi</h2><p>Weka bei mbili za aina moja ya mafuta, sarafu moja na kipimo kimoja. Kubadili lita kuwa kilogramu hakubadilishi kiasi kiotomatiki: weka thamani mpya zinazolingana.</p><form id="sw-fuel-form"><div class="swt-form"><div class="swt-field"><label for="currency">Sarafu</label><select id="currency" name="currency"><option>USD</option><option>KES</option><option>TZS</option><option>UGX</option><option>RWF</option><option>NGN</option><option>GHS</option><option>ZAR</option><option>ZMW</option><option>BWP</option><option>NAD</option><option>MZN</option><option>ETB</option><option>XOF</option><option>XAF</option><option>EGP</option><option>MAD</option><option>TND</option></select></div><div class="swt-field"><label for="fuelType">Aina ya mafuta</label><select id="fuelType" name="fuelType"><option value="Petrol">Petroli</option><option value="Diesel">Dizeli</option><option value="LPG">Gesi ya LPG</option></select></div><div class="swt-field"><label for="currentPrice">Bei unayotumia kwa lita</label><input id="currentPrice" name="currentPrice" type="number" min="0" step="any" value="1.25" required></div><div class="swt-field"><label for="previousPrice">Bei ya kulinganisha kwa lita</label><input id="previousPrice" name="previousPrice" type="number" min="0" step="any" value="1.18" required></div><div class="swt-field"><label for="litresMonth">Lita kwa mwezi</label><input id="litresMonth" name="litresMonth" type="number" min="0" step="any" value="180" required></div><div class="swt-field"><label for="officialLag">Siku tangu bei unayotumia ihakikiwe</label><input id="officialLag" name="officialLag" type="number" min="0" step="any" value="7" required></div></div><button class="swt-button" type="submit">Kokotoa makadirio</button></form><p id="fuel-feedback" role="status"></p><div id="fuel-result" aria-live="polite"></div><button id="fuel-txt" type="button" disabled>Pakua TXT</button><button id="fuel-json" type="button" disabled>Pakua JSON</button><p>Hesabu na faili hubaki kwenye kifaa. Hakuna akaunti inayohitajika. Weka sifuri kwa gharama sifuri; sehemu tupu au thamani hasi haitakubaliwa.</p></section></div></main>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/lazy-analytics.js?v=733ddc50" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 <script src="/assets/js/engines/sw-fuel-scenario.js" defer></script>
 <script src="/assets/js/pages/sw-fuel-tracker.js" defer></script>
