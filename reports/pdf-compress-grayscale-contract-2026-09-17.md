@@ -11,3 +11,6 @@ Tradeoff: explicit grayscale can increase file size and flatten selectable text.
 Local Chromium proof only; no production/build claim. Encrypted/signed/form-heavy/complex PDFs, dark mode and real-device memory are not certified.
 
 Validation terminal: 13 Chromium tests PASS (2.2 minutes), port4256, one worker, no analytics-disable seam. Both scoped locale generator checks PASS; node syntax and git diff --check PASS. Actual artifacts: test-results/compressor-settings-final. Viewed representative grayscale output PNG; original vector rectangle now gray and marker visually retained. Earlier partial run interrupted after two passes to complete native message wiring; only final thirteen counted.
+
+## Coordinator integration
+Integrated as3fab46c6 above94af89b7. Source and independent peer review found no blocking issue in the bounded change. Locale-generator checks passed; root actual-source run96858 passed31 selected reorder/compressor cases in2.9minutes, including all13 compressor cases. Normal analytics and synthetic files were used. This remains source evidence; next-batch artifact/build/production verification is pending.

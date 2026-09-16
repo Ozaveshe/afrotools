@@ -28,3 +28,6 @@ Private actual download evidence: `C:/Users/Oza/.codex/worktrees/pdf-image-parit
 ## Limits
 
 Bounded source/browser evidence, not production or full-build proof. Synthetic fixtures do not cover every possible interleaving, very large PDFs, encrypted PDFs, forms or annotations. No account, external upload, cryptographic or entitlement changes. No new rates or factual source claims. No generated route edits required because existing routes already reference this readable controller and owner checks pass.
+
+## Coordinator integration
+Integrated on94af89b7 through c131e81a/b1868c1a. Shared locale-generator conflicts were resolved by retaining both form-filler and reorder installers and the existing signing-runtime synchronization. Both installer unit tests and scoped locale checks passed. Root actual-source run96858 passed all31 selected reorder/compressor cases in2.9minutes on4518 with normal analytics; eighteen cover reorder, including current-source outputs, stale suppression, keyboard focus, duplicate pages and independent rendered fidelity. No next-batch build or production claim.
