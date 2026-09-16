@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
+const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
 const localizer = require('../assets/js/lib/fr-document-pdf-localizer.js');
 const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
@@ -253,6 +254,7 @@ function rewriteLocalizedCvRuntime(html, app) {
 
 function rewriteLocalizedPageRuntime(html, app) {
   html = installFormFillerRuntime(html, app);
+  html = installReorderRuntime(html, app);
   const owners = {
     'html-to-pdf': {
       source: '/assets/js/pages/html-to-pdf.js',
