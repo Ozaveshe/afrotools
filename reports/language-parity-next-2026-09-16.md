@@ -21,13 +21,17 @@ Status: in progress; not released. English, French and Swahili free apps remain 
 
 ## Required remaining work
 
-- Confirmed CV defect: three complete-form Nairobi PDFs in the earlier styled-export matrix extend below the A4 page. Repair and superseding physical-bound evidence are pending; the matrix must not be treated as unqualified visual acceptance.
-- CV compact, one-page, manual-break, print and long-string cases remain under review. Raster PDF validity does not establish selectable text, universal shaping or DOCX visual correctness.
-- The conditional birth-leave engine is registered as a high-risk legal calculation with 12 independent fixtures. The integrated quality check passes 792 artifacts and 340/340 fixtures; existing records were preserved. Source authority, current-law support and effective dates remain review-required.
+- The three cropped Nairobi PDFs are repaired. The coordinator independently verified hashes and physical image placement for all 120 superseding fixtures / 273 pages. This proves paper bounds for those fixtures, not unrestricted content or every export mode.
+- CV manual-break and one-page repairs passed the combined 10-case browser run, including Senegal native exports and stale-PDF protection, in all three locales. Compact, print and long-string cases remain under review. Raster PDF validity does not establish selectable text, universal shaping or DOCX visual correctness.
+- The conditional birth-leave engine is registered as a high-risk legal calculation with independent fixtures. Including the Senegal conditional planner and cross-year review cases, the integrated quality check passes 793 artifacts and 354/354 fixtures; existing records were preserved. Source authority, current-law support and effective dates remain review-required.
 - Country leave sources still contain unresolved current-law, effective-date, eligibility and unit differences. The Côte d’Ivoire workflow is conditional planning; Senegal’s adopted 2026 bill must not be called current law without commencement proof.
 - Airtel's reviewed reference is labelled January–March 2026; September validity is unconfirmed. MTN withdrawal tax is excluded from the published-fee subtotal and total debit remains unknown. Account eligibility requires separate confirmation.
 - A complete build, publish-artifact audit/security checks and artifact-level browser checks are still required for this next batch.
 
 ## Release separation
 
-The preceding batch at `7e422c194f6ef126fef13d3d1eec2666c1de216c` passed all three jobs in CI run `35108553583` and was pushed to main. Its genuine Git production deployment `6aaaad6e97879b00088a9fde` was still building at the last provider check. This next batch is isolated and is not part of that deployment. Further main publication is coordinated with the education release task.
+The preceding batch at `7e422c194f6ef126fef13d3d1eec2666c1de216c` passed all three jobs in CI run `35108553583` and was pushed to main. Its genuine Git production deployment `6aaaad6e97879b00088a9fde` failed with a hosting build timeout. Public release verification still identified `06e37ce57a8f8d705e032bee47768a98aa73371c`. The education release coordinator is preparing a combined, separately validated artifact deployment; no retry was initiated here. This next batch is isolated and is not part of that deployment. Further main publication is coordinated with the education release task.
+
+## Broad baseline and repair follow-up
+
+The full run at `8e87d731` finished with 1,095 test files enrolled, seven of seven audits passed, and no quarantines. It failed three CV section-heading fixture cases and the mobile-money owner fingerprint check. The CV fixture now explicitly enables and populates those sections; all 14 character-preservation checks pass. The scoped reviewed money fingerprints also pass their 20 oracle and 14 owner checks. This is targeted repair evidence, not a claim that a fresh full suite has passed after all subsequent integrations.
