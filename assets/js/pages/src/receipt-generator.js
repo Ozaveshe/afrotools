@@ -189,7 +189,7 @@
             id: Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
             desc: e || "",
             qty: void 0 === t ? 1 : Number(t) || 0,
-            unit: a || "item",
+            unit: a || receiptDisplayLabel("item"),
             rate: void 0 === n ? 0 : Number(n) || 0,
             discount: void 0 === r ? 0 : Number(r) || 0,
             note: i || ""
@@ -226,7 +226,7 @@
                 cashier: "",
                 reference: ""
             },
-            items: [ m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "") ],
+            items: [ m(receiptDisplayLabel("Product or service"), 1, receiptDisplayLabel("item"), 0, 0, "") ],
             totals: {
                 taxRate: 7.5,
                 discount: 0,
@@ -258,7 +258,7 @@
         var t = f(v(), e || {});
         return t.items = Array.isArray(t.items) && t.items.length ? t.items.map(function(e) {
             return m(e.desc || e.description, e.qty, e.unit, e.rate || e.price, e.discount, e.note);
-        }) : [ m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "") ], F(t.business.logo) || (t.business.logo = ""),
+        }) : [ m(receiptDisplayLabel("Product or service"), 1, receiptDisplayLabel("item"), 0, 0, "") ], F(t.business.logo) || (t.business.logo = ""),
         s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency), 
         t.totals.taxRate = y(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = y(t.totals.discount, 0), 
         t.totals.serviceCharge = y(t.totals.serviceCharge, 0), t.totals.shipping = y(t.totals.shipping, 0), 
@@ -279,8 +279,19 @@
             fr: {Customer: "Client", PAID: "PAYÉ", "Business Name": "Nom de l’entreprise", "Walk-in customer": "Client de passage", Item: "Article", "Product or service": "Produit ou service", "Thank you for your business.": "Merci pour votre confiance.", "Goods and services received in good condition. Keep this receipt for your records.": "Biens et services reçus en bon état. Conservez ce reçu dans vos dossiers."},
             sw: {Customer: "Mteja", PAID: "IMELIPWA", "Business Name": "Jina la biashara", "Walk-in customer": "Mteja wa dukani", Item: "Kipengee", "Product or service": "Bidhaa au huduma", "Thank you for your business.": "Asante kwa kufanya biashara nasi.", "Goods and services received in good condition. Keep this receipt for your records.": "Bidhaa na huduma zimepokelewa katika hali nzuri. Hifadhi risiti hii kwa kumbukumbu zako."}
         };
+        Object.assign(labels.fr, {"Receipt":"Reçu","Date":"Date","Business":"Entreprise","Business tax ID":"Identifiant fiscal de l’entreprise","Status":"Statut","Items":"Articles","Description":"Description","Qty":"Quantité","Unit":"Unité","Rate":"Prix unitaire","Discount %":"Remise %","Line total":"Total de ligne","Subtotal":"Sous-total","Tax":"Taxe","Total":"Total","Paid":"Payé","Balance":"Solde","Payment":"Paiement","Reference":"Référence","Transaction ref":"Référence de transaction","Auth code":"Code d’autorisation","Card ending":"Fin de carte","Received":"Reçu","Change":"Monnaie rendue","Terms":"Conditions","Note":"Note","Generated with AfroTools.com":"Créé avec AfroTools.com","Mobile money":"Argent mobile","Bank transfer":"Virement bancaire","Cash":"Espèces","Card":"Carte","Payment link":"Lien de paiement","Other":"Autre","Store credit":"Crédit magasin","Transaction":"Transaction","Customer ID":"Identifiant client","Branch":"Agence","Issued by":"Émis par","Ref":"Réf","Line discounts":"Remises de ligne","Discount":"Remise","Service charge":"Frais de service","Delivery":"Livraison","Rounding":"Arrondi","Sales receipt":"Reçu de vente","Tax receipt":"Reçu fiscal","Deposit receipt":"Reçu d’acompte","Refund receipt":"Reçu de remboursement","Gift receipt":"Reçu cadeau","Declined payment slip":"Avis de paiement refusé","PARTIAL":"PARTIEL","REFUNDED":"REMBOURSÉ","DECLINED":"REFUSÉ","DRAFT":"BROUILLON","item":"article"});
+        Object.assign(labels.sw, {"Receipt":"Risiti","Date":"Tarehe","Business":"Biashara","Business tax ID":"Namba ya kodi ya biashara","Status":"Hali","Items":"Vipengee","Description":"Maelezo","Qty":"Idadi","Unit":"Kipimo","Rate":"Bei ya kipimo","Discount %":"Punguzo %","Line total":"Jumla ya mstari","Subtotal":"Jumla ndogo","Tax":"Kodi","Total":"Jumla","Paid":"Imelipwa","Balance":"Salio","Payment":"Malipo","Reference":"Rejeleo","Transaction ref":"Rejeleo la muamala","Auth code":"Msimbo wa idhini","Card ending":"Namba za mwisho za kadi","Received":"Imepokelewa","Change":"Chenji","Terms":"Masharti","Note":"Kumbuka","Generated with AfroTools.com":"Imetengenezwa kwa AfroTools.com","Mobile money":"Pesa kwa simu","Bank transfer":"Uhamisho wa benki","Cash":"Taslimu","Card":"Kadi","Payment link":"Kiungo cha malipo","Other":"Nyingine","Store credit":"Salio la dukani","Transaction":"Muamala","Customer ID":"Namba ya mteja","Branch":"Tawi","Issued by":"Imetolewa na","Ref":"Rej","Line discounts":"Punguzo la mistari","Discount":"Punguzo","Service charge":"Ada ya huduma","Delivery":"Uwasilishaji","Rounding":"Kuzungusha","Sales receipt":"Risiti ya mauzo","Tax receipt":"Risiti ya kodi","Deposit receipt":"Risiti ya amana","Refund receipt":"Risiti ya kurejesha fedha","Gift receipt":"Risiti ya zawadi","Declined payment slip":"Hati ya malipo yaliyokataliwa","PARTIAL":"IMELIPWA KWA SEHEMU","REFUNDED":"IMEREJESHWA","DECLINED":"IMEKATALIWA","DRAFT":"RASIMU","item":"kipengee"});
         var locale = document.documentElement.lang;
         return labels[locale] && labels[locale][value] || value;
+    }
+    function localizeReceiptPreview(element) {
+        var walker = document.createTreeWalker(element, 4), node;
+        while ((node = walker.nextNode())) {
+            if (node.parentElement.closest('[translate="no"]')) continue;
+            var text = node.nodeValue, match = text.match(/^(\s*)([^:]+?)(:\s*)([\s\S]*)$/);
+            if (match) node.nodeValue = match[1] + receiptDisplayLabel(match[2]) + match[3] + match[4];
+            else node.nodeValue = text.replace(text.trim(), receiptDisplayLabel(text.trim()));
+        }
     }
     function b(e) {
         return g(e).replace(/`/g, "&#96;");
@@ -364,7 +375,7 @@
         return '<div class="r-totals"><div class="r-total-row"><span>Subtotal</span><strong>' + x(t.subtotal) + "</strong></div>" + (t.lineDiscount ? '<div class="r-total-row"><span>Line discounts</span><strong>-' + x(t.lineDiscount) + "</strong></div>" : "") + (t.globalDiscount ? '<div class="r-total-row"><span>Discount ' + g(a) + "</span><strong>-" + x(t.globalDiscount) + "</strong></div>" : "") + (y(e.totals.serviceCharge, 0) ? '<div class="r-total-row"><span>Service charge</span><strong>' + x(e.totals.serviceCharge) + "</strong></div>" : "") + (y(e.totals.shipping, 0) ? '<div class="r-total-row"><span>Delivery</span><strong>' + x(e.totals.shipping) + "</strong></div>" : "") + (t.tax ? '<div class="r-total-row"><span>' + g(e.taxLabel || "Tax") + " " + y(e.totals.taxRate, 0).toFixed(2) + "%</span><strong>" + x(t.tax) + "</strong></div>" : "") + (y(e.totals.rounding, 0) ? '<div class="r-total-row"><span>Rounding</span><strong>' + x(e.totals.rounding) + "</strong></div>" : "") + '<div class="r-total-row final"><span>Total</span><strong>' + x(t.total) + "</strong></div></div>";
     }
     function k(t) {
-        return '<div class="r-payment"><div>' + [ '<span class="r-label">Payment</span>', '<div class="r-value">' + g(e.payment.method || "Payment") + (e.payment.provider ? " - " + receiptUserHtml(e.payment.provider) : "") + "</div>", e.payment.reference ? '<div class="r-muted">Transaction ref: ' + receiptUserHtml(e.payment.reference) + "</div>" : "", e.payment.authCode ? '<div class="r-muted">Auth code: ' + receiptUserHtml(e.payment.authCode) + "</div>" : "", e.payment.last4 ? '<div class="r-muted">Card ending: ' + receiptUserHtml(e.payment.last4) + "</div>" : "", "gift" === e.docType ? "" : '<div class="r-muted">Received: ' + x(t.paid) + (t.balance ? " | Balance: " + x(t.balance) : "") + (t.change ? " | Change: " + x(t.change) : "") + "</div>" ].join("") + "</div>" + (D() ? '<div class="r-qr" id="receiptQr" role="img" aria-label="Payment QR"></div>' : "") + "</div>";
+        return '<div class="r-payment"><div>' + [ '<span class="r-label">Payment</span>', '<div class="r-value">' + g(receiptDisplayLabel(e.payment.method || "Payment")) + (e.payment.provider ? " - " + receiptUserHtml(e.payment.provider) : "") + "</div>", e.payment.reference ? '<div class="r-muted">Transaction ref: ' + receiptUserHtml(e.payment.reference) + "</div>" : "", e.payment.authCode ? '<div class="r-muted">Auth code: ' + receiptUserHtml(e.payment.authCode) + "</div>" : "", e.payment.last4 ? '<div class="r-muted">Card ending: ' + receiptUserHtml(e.payment.last4) + "</div>" : "", "gift" === e.docType ? "" : '<div class="r-muted">Received: ' + x(t.paid) + (t.balance ? " | Balance: " + x(t.balance) : "") + (t.change ? " | Change: " + x(t.change) : "") + "</div>" ].join("") + "</div>" + (D() ? '<div class="r-qr" id="receiptQr" role="img" aria-label="Payment QR"></div>' : "") + "</div>";
     }
     function D() {
         return Boolean(e.payment.showQr && E());
@@ -399,9 +410,9 @@
         (function() {
             var t = C(), a = c("receiptPreview"), n = "gift" === e.docType, r = d[e.docType] || "Receipt", i = [ e.business.phone, e.business.email ].filter(Boolean).map(receiptUserHtml).join(" | "), o = [ e.customer.phone, e.customer.email ].filter(Boolean).map(receiptUserHtml).join("<br>"), s = e.items.map(function(e) {
                 var t = y(e.qty, 0), a = y(e.rate, 0), r = t * a, i = r - r * Math.max(0, y(e.discount, 0)) / 100;
-                return n ? "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td></tr>" : "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td><td>" + x(a) + "</td><td>" + x(i) + "</td></tr>";
+                return n ? "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + receiptUserHtml(t + " " + (e.unit || "")) + "</td></tr>" : "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + receiptUserHtml(t + " " + (e.unit || "")) + "</td><td>" + x(a) + "</td><td>" + x(i) + "</td></tr>";
             }).join("");
-            a.className = "receipt-paper receipt-template-" + e.template, a.innerHTML = [ e.status ? '<div class="r-watermark" aria-hidden="true">' + g(receiptDisplayLabel(e.status)) + "</div>" : "", '<div class="r-head">', "<div>", e.business.logo ? '<div class="r-logo"><img src="' + b(e.business.logo) + '" alt="Business logo"></div>' : "", '<div class="r-biz">' + receiptUserHtml(e.business.name || receiptDisplayLabel("Business Name")) + "</div>", e.business.address ? '<div class="r-muted">' + receiptUserHtml(e.business.address) + "</div>" : "", i ? '<div class="r-muted">' + i + "</div>" : "", e.business.taxId ? '<div class="r-small">' + g(e.taxLabel || "Tax") + " ID: " + receiptUserHtml(e.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + g(r) + "</div>", '<div class="r-small">No. ' + receiptUserHtml(e.receipt.number || "") + "</div>", '<div class="r-small">' + g(T(e.receipt.date)) + (e.receipt.time ? " " + receiptUserHtml(e.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">' + g(receiptDisplayLabel("Customer")) + '</span><div class="r-value">' + receiptUserHtml(e.customer.name || receiptDisplayLabel("Walk-in customer")) + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (e.customer.address ? '<div class="r-muted">' + receiptUserHtml(e.customer.address) + "</div>" : "") + (e.customer.taxId ? '<div class="r-small">Customer ID: ' + receiptUserHtml(e.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Transaction</span><div class="r-value">' + g(receiptDisplayLabel(e.status)) + "</div>" + (e.receipt.branch ? '<div class="r-muted">Branch: ' + receiptUserHtml(e.receipt.branch) + "</div>" : "") + (e.receipt.cashier ? '<div class="r-muted">Issued by: ' + receiptUserHtml(e.receipt.cashier) + "</div>" : "") + (e.receipt.reference ? '<div class="r-muted">Ref: ' + receiptUserHtml(e.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Description</th><th>Qty</th>' + (n ? "" : "<th>Rate</th><th>Total</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : B(t), k(t), e.notes ? '<div class="r-note"><strong>Note:</strong><br>' + receiptUserHtml(e.notes) + "</div>" : "", e.terms ? '<div class="r-note"><strong>Terms:</strong><br>' + receiptUserHtml(e.terms) + "</div>" : "", '<div class="r-footer"><span>Generated with AfroTools.com</span><span>' + g(e.currency) + "</span></div>" ].join(""),
+            a.className = "receipt-paper receipt-template-" + e.template, a.innerHTML = [ e.status ? '<div class="r-watermark" aria-hidden="true">' + g(receiptDisplayLabel(e.status)) + "</div>" : "", '<div class="r-head">', "<div>", e.business.logo ? '<div class="r-logo"><img src="' + b(e.business.logo) + '" alt="Business logo"></div>' : "", '<div class="r-biz">' + receiptUserHtml(e.business.name || receiptDisplayLabel("Business Name")) + "</div>", e.business.address ? '<div class="r-muted">' + receiptUserHtml(e.business.address) + "</div>" : "", i ? '<div class="r-muted">' + i + "</div>" : "", e.business.taxId ? '<div class="r-small">' + g(e.taxLabel || "Tax") + " ID: " + receiptUserHtml(e.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + g(r) + "</div>", '<div class="r-small">No. ' + receiptUserHtml(e.receipt.number || "") + "</div>", '<div class="r-small">' + g(T(e.receipt.date)) + (e.receipt.time ? " " + receiptUserHtml(e.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">' + g(receiptDisplayLabel("Customer")) + '</span><div class="r-value">' + receiptUserHtml(e.customer.name || receiptDisplayLabel("Walk-in customer")) + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (e.customer.address ? '<div class="r-muted">' + receiptUserHtml(e.customer.address) + "</div>" : "") + (e.customer.taxId ? '<div class="r-small">Customer ID: ' + receiptUserHtml(e.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Transaction</span><div class="r-value">' + g(receiptDisplayLabel(e.status)) + "</div>" + (e.receipt.branch ? '<div class="r-muted">Branch: ' + receiptUserHtml(e.receipt.branch) + "</div>" : "") + (e.receipt.cashier ? '<div class="r-muted">Issued by: ' + receiptUserHtml(e.receipt.cashier) + "</div>" : "") + (e.receipt.reference ? '<div class="r-muted">Ref: ' + receiptUserHtml(e.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Description</th><th>Qty</th>' + (n ? "" : "<th>Rate</th><th>Total</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : B(t), k(t), e.notes ? '<div class="r-note"><strong>Note:</strong><br>' + receiptUserHtml(e.notes) + "</div>" : "", e.terms ? '<div class="r-note"><strong>Terms:</strong><br>' + receiptUserHtml(e.terms) + "</div>" : "", '<div class="r-footer"><span>Generated with AfroTools.com</span><span>' + g(e.currency) + "</span></div>" ].join(""), localizeReceiptPreview(a),
             function() {
                 if (D()) {
                     var e = c("receiptQr");
@@ -565,12 +576,14 @@
         X(z(), Q() + ".txt", "text/plain;charset=utf-8");
     }
     function H() {
-        var t = C(), a = [ [ "Receipt", e.receipt.number ], [ "Date", e.receipt.date ], [ "Business", e.business.name ], [ "Customer", e.customer.name ], [], [ "Description", "Qty", "Unit", "Rate", "Discount %", "Line total" ] ];
-        e.items.forEach(function(e) {
-            var t = y(e.qty, 0) * y(e.rate, 0), n = t * Math.max(0, y(e.discount, 0)) / 100;
-            a.push([ e.desc, e.qty, e.unit, e.rate, e.discount, (t - n).toFixed(2) ]);
-        }), a.push([], [ "Subtotal", t.subtotal.toFixed(2) ], [ "Tax", t.tax.toFixed(2) ], [ "Total", t.total.toFixed(2) ], [ "Paid", t.paid.toFixed(2) ], [ "Balance", t.balance.toFixed(2) ]), 
-        X(a.map(W).join("\n"), Q() + "-items.csv", "text/csv;charset=utf-8");
+        var totals = C(), label = receiptDisplayLabel;
+        var rows = [[label("Receipt"), e.receipt.number], [label("Date"), e.receipt.date], [label("Business"), e.business.name], [label("Customer"), e.customer.name], [], ["Description", "Qty", "Unit", "Rate", "Discount %", "Line total"].map(label)];
+        e.items.forEach(function(item) {
+            var gross = y(item.qty, 0) * y(item.rate, 0);
+            rows.push([item.desc, item.qty, item.unit, item.rate, item.discount, (gross - gross * Math.max(0, y(item.discount, 0)) / 100).toFixed(2)]);
+        });
+        rows.push([], [label("Subtotal"), totals.subtotal.toFixed(2)], [label("Tax"), totals.tax.toFixed(2)], [label("Total"), totals.total.toFixed(2)], [label("Paid"), totals.paid.toFixed(2)], [label("Balance"), totals.balance.toFixed(2)]);
+        X(rows.map(W).join("\n"), Q() + "-items.csv", "text/csv;charset=utf-8");
     }
     function V() {
         X(JSON.stringify({
@@ -602,12 +615,15 @@
         }).join(",");
     }
     function z() {
-        var t = C(), a = [ d[e.docType] || "Receipt", "Receipt: " + (e.receipt.number || ""), "Date: " + (e.receipt.date || "") + (e.receipt.time ? " " + e.receipt.time : ""), "Business: " + (e.business.name || ""), "Business tax ID: " + (e.business.taxId || ""), "Customer: " + (e.customer.name || receiptDisplayLabel("Walk-in customer")), "Status: " + e.status, "", "Items:" ];
-        return e.items.forEach(function(e) {
-            var t = y(e.qty, 0) * y(e.rate, 0);
-            a.push("- " + (e.desc || receiptDisplayLabel("Item")) + " | " + e.qty + " " + e.unit + " x " + S(e.rate) + " = " + S(t));
-        }), a.push("", "Subtotal: " + S(t.subtotal), "Tax: " + S(t.tax), "Total: " + S(t.total), "Paid: " + S(t.paid), "Balance: " + S(t.balance), "", "Payment: " + (e.payment.method || "") + " " + (e.payment.provider || ""), "Reference: " + (e.payment.reference || e.receipt.reference || ""), "", e.notes || "", e.terms || ""), 
-        a.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+        var totals = C(), label = receiptDisplayLabel;
+        function line(name, value) { return label(name) + ": " + value; }
+        var lines = [label(d[e.docType] || "Receipt"), line("Receipt", e.receipt.number || ""), line("Date", (e.receipt.date || "") + (e.receipt.time ? " " + e.receipt.time : "")), line("Business", e.business.name || ""), line("Business tax ID", e.business.taxId || ""), line("Customer", e.customer.name || label("Walk-in customer")), line("Status", label(e.status)), "", label("Items") + ":"];
+        e.items.forEach(function(item) {
+            var gross = y(item.qty, 0) * y(item.rate, 0), discount = Math.max(0, y(item.discount, 0));
+            lines.push("- " + (item.desc || label("Item")) + " | " + item.qty + " " + item.unit + " x " + S(item.rate) + " | " + label("Discount %") + ": " + discount + " = " + S(gross - gross * discount / 100));
+        });
+        lines.push("", line("Subtotal", S(totals.subtotal)), line("Tax", S(totals.tax)), line("Total", S(totals.total)), line("Paid", S(totals.paid)), line("Balance", S(totals.balance)), "", line("Payment", label(e.payment.method || "") + " " + (e.payment.provider || "")), line("Reference", e.payment.reference || e.receipt.reference || ""), "", e.notes || "", e.terms || "");
+        return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }
     function Q() {
         return (e.receipt.number || "receipt").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "receipt";
@@ -708,11 +724,11 @@
                 var n = a.getAttribute("data-delete-item");
                 e.items = e.items.filter(function(e) {
                     return e.id !== n;
-                }), e.items.length || e.items.push(m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "")),
+                }), e.items.length || e.items.push(m(receiptDisplayLabel("Product or service"), 1, receiptDisplayLabel("item"), 0, 0, "")),
                 L(), N();
             }
         }), c("addItemBtn").addEventListener("click", function() {
-            e.items.push(m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "")), L(), N();
+            e.items.push(m(receiptDisplayLabel("Product or service"), 1, receiptDisplayLabel("item"), 0, 0, "")), L(), N();
         }), c("addServiceBtn").addEventListener("click", function() {
             e.items.push(m("Professional service", 1, "service", 0, 0, "")), L(), N();
         }), c("renumberBtn").addEventListener("click", function() {

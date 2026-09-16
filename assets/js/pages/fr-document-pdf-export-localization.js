@@ -6,7 +6,7 @@
 
   // These owners translate labels before serialization. Their user values must stay literal.
   var ownerId = window.__AFROTOOLS_FR_DOCUMENT_PDF__ && window.__AFROTOOLS_FR_DOCUMENT_PDF__.id;
-  if (['invoice-generator', 'freelance-invoice'].indexOf(ownerId) !== -1) return;
+  if (['receipt-generator', 'invoice-generator', 'freelance-invoice'].indexOf(ownerId) !== -1) return;
 
   var NativeBlob = window.Blob;
   if (typeof NativeBlob !== 'function') return;
