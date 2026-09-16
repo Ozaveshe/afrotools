@@ -3,6 +3,7 @@
 !function(e, t) {
     var localeCopy = {
   "en": {
+    "invalidText": "DOCX cannot contain an invalid text character. Remove it or keep a JSON backup; your saved CV is unchanged.",
     "name": "Your Name",
     "target": "Target role",
     "present": "Present",
@@ -32,6 +33,7 @@
     "unavailable": "DOCX export is unavailable in this browser"
   },
   "fr": {
+    "invalidText": "Un caractère de texte invalide empêche l’export DOCX. Supprimez-le ou conservez une sauvegarde JSON ; votre CV enregistré reste inchangé.",
     "name": "Votre nom",
     "target": "Poste visé",
     "present": "Aujourd’hui",
@@ -61,6 +63,7 @@
     "unavailable": "L’export DOCX est indisponible dans ce navigateur"
   },
   "sw": {
+    "invalidText": "Herufi batili inazuia uhamishaji wa DOCX. Iondoe au hifadhi nakala ya JSON; CV yako iliyohifadhiwa haijabadilishwa.",
     "name": "Jina lako",
     "target": "Nafasi lengwa",
     "present": "Sasa",
@@ -96,7 +99,7 @@
         return String(e || "").replace(/\s+/g, " ").trim();
     }
     function r(e) {
-        return n(e).replace(/[&<>"']/g, function(e) {
+        return String(e == null ? "" : e).replace(/\r\n?/g, "\n").replace(/[&<>"']/g, function(e) {
             return {
                 "&": "&amp;",
                 "<": "&lt;",
@@ -132,7 +135,7 @@
         var n = "";
         return (t = t || {}).bold && (n += "<w:b/>"), t.italic && (n += "<w:i/>"), t.color && (n += '<w:color w:val="' + function(e) {
             return r(e).replace(/"/g, "&quot;");
-        }(t.color) + '"/>'), "<w:r>" + (n ? "<w:rPr>" + n + "</w:rPr>" : "") + '<w:t xml:space="preserve">' + r(e) + "</w:t></w:r>";
+        }(t.color) + '"/>'), "<w:r>" + (n ? "<w:rPr>" + n + "</w:rPr>" : "") + '<w:t xml:space="preserve">' + r(e).replace(/\n/g, '</w:t><w:br/><w:t xml:space="preserve">').replace(/\t/g, '</w:t><w:tab/><w:t xml:space="preserve">') + "</w:t></w:r>";
     }
     function u(e, t) {
         return e ? s([ d(e) ], t) : "";
@@ -207,6 +210,7 @@
         return [ 255 & e, e >>> 8 & 255, e >>> 16 & 255, e >>> 24 & 255 ];
     }
     function v(e) {
+        for(var character of String(e)){var cp=character.codePointAt(0);if(!(cp===9||cp===10||cp===13||(cp>=32&&cp<=55295)||(cp>=57344&&cp<=65533)||(cp>=65536&&cp<=1114111))){var error=new Error("Invalid DOCX XML character");error.code="CV_DOCX_INVALID_TEXT";throw error;}}
         return (new TextEncoder).encode(e);
     }
     function C() {
@@ -279,7 +283,7 @@
             }, e.CVExportUpgrade && "function" == typeof e.CVExportUpgrade.track ? e.CVExportUpgrade.track(n, r || {}) : e.CVAnalytics && "function" == typeof e.CVAnalytics.track && e.CVAnalytics.track(n, r || {}),
             !0;
         } catch (e) {
-            return console.error("DOCX export failed:", e), p(copy.failure),
+            return p(e && e.code === "CV_DOCX_INVALID_TEXT" ? copy.invalidText : copy.failure),
             !1;
         }
         var n, r;
