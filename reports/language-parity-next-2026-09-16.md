@@ -26,7 +26,7 @@ Status: in progress; not released. English, French and Swahili free apps remain 
 - The conditional birth-leave engine is registered as a high-risk legal calculation with independent fixtures. Including the Senegal conditional planner and cross-year review cases, the integrated quality check passes 793 artifacts and 354/354 fixtures; existing records were preserved. Source authority, current-law support and effective dates remain review-required.
 - Country leave sources still contain unresolved current-law, effective-date, eligibility and unit differences. The Côte d’Ivoire workflow is conditional planning; Senegal’s adopted 2026 bill must not be called current law without commencement proof.
 - Airtel's reviewed reference is labelled January–March 2026; September validity is unconfirmed. MTN withdrawal tax is excluded from the published-fee subtotal and total debit remains unknown. Account eligibility requires separate confirmation.
-- A complete build, publish-artifact audit/security checks and artifact-level browser checks are still required for this next batch.
+- Full build:deploy, audit:dist, security:scan and the separate build:checks gate passed. Optimized-artifact browser runs passed 31 cases: 24 CV/mobile-money cases, four Senegal export/stale-result cases and three Côte d’Ivoire calendar/source-condition cases. A fresh full suite has not yet completed on this batch.
 
 ## Release separation
 
