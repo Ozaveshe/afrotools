@@ -5,6 +5,12 @@ const {PDFDocument,PDFName}=require('../../assets/vendor/pdf-lib/pdf-lib.min.js'
 const routes={en:'/tools/receipt-generator/',fr:'/fr/tools/generateur-recu/',sw:'/sw/zana/kizalishaji-risiti/'};
 for(const locale of Object.keys(routes))for(const count of [1,36])test(`${locale}: receipt raster PDF ${count} items retains visible content`,async({page},info)=>{
  test.setTimeout(90000);await page.setViewportSize({width:390,height:844});await page.goto(routes[locale]);
+ const defaults={en:{business:'Business Name',customer:'Walk-in customer',item:'Product or service',notes:'Thank you for your business.',terms:'Goods and services received in good condition. Keep this receipt for your records.'},fr:{business:'Nom de l’entreprise',customer:'Client de passage',item:'Produit ou service',notes:'Merci pour votre confiance.',terms:'Biens et services reçus en bon état. Conservez ce reçu dans vos dossiers.'},sw:{business:'Jina la biashara',customer:'Mteja wa dukani',item:'Bidhaa au huduma',notes:'Asante kwa kufanya biashara nasi.',terms:'Bidhaa na huduma zimepokelewa katika hali nzuri. Hifadhi risiti hii kwa kumbukumbu zako.'}}[locale];
+ await expect(page.locator('#receiptPreview .r-biz')).toHaveText(defaults.business);
+ await expect(page.locator('#receiptPreview .r-grid .r-value').first()).toHaveText(defaults.customer);
+ await expect(page.locator('[data-item-field="desc"]').first()).toHaveValue(defaults.item);
+ await expect(page.locator('[data-bind="notes"]')).toHaveValue(defaults.notes);
+ await expect(page.locator('[data-bind="terms"]')).toHaveValue(defaults.terms);
  await page.locator('#businessName').fill('SYNTHETIC RECEIPT LAB');
  await expect.poll(()=>page.evaluate(()=>localStorage.getItem('afrotools-receipt-current-v2'))).toContain('SYNTHETIC RECEIPT LAB');
  const backup=await page.evaluate(count=>{const data=JSON.parse(localStorage.getItem('afrotools-receipt-current-v2'));data.customer.name='Synthetic Customer';data.receipt.number='VISUAL-2026';data.receipt.date='2026-09-16';data.payment.reference='SYNTHETIC-PAYMENT';data.items=Array.from({length:count},(_,i)=>({...data.items[0],desc:'ITEM '+String(i+1).padStart(2,'0')+' synthetic service',qty:1,rate:25,discount:0}));Object.assign(data.totals,{taxRate:20,discount:0,serviceCharge:0,shipping:0,rounding:0});if(count>1){const canvas=document.createElement('canvas');canvas.width=120;canvas.height=40;const ctx=canvas.getContext('2d');ctx.fillStyle='#005bbb';ctx.fillRect(0,0,120,40);ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('TEST',26,29);data.business.logo=canvas.toDataURL('image/png');}return data;},count);
@@ -13,6 +19,7 @@ for(const locale of Object.keys(routes))for(const count of [1,36])test(`${locale
  await expect(page.locator('#receiptPreview')).toContainText('ITEM '+String(count).padStart(2,'0'));
  await expect(page.locator('#receiptPreview .r-grid .r-value').first()).toHaveText('Synthetic Customer');
  await expect(page.locator('#receiptPreview .r-payment')).toContainText('SYNTHETIC-PAYMENT');
+ await expect(page.locator('#receiptPreview')).toContainText(defaults.notes);await expect(page.locator('#receiptPreview')).toContainText(defaults.terms);
  await expect(page.locator('#receiptPreview .r-grid .r-label').first()).toHaveText({en:'Customer',fr:'Client',sw:'Mteja'}[locale]);
  await expect(page.locator('#receiptPreview .r-grid .r-value').nth(1)).toHaveText({en:'PAID',fr:'PAYÉ',sw:'IMELIPWA'}[locale]);
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools-receipt-current-v2')).status)).toBe('PAID');

@@ -226,7 +226,7 @@
                 cashier: "",
                 reference: ""
             },
-            items: [ m("Product or service", 1, "item", 0, 0, "") ],
+            items: [ m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "") ],
             totals: {
                 taxRate: 7.5,
                 discount: 0,
@@ -245,8 +245,8 @@
                 showQr: !0,
                 qrData: ""
             },
-            notes: "Thank you for your business.",
-            terms: "Goods and services received in good condition. Keep this receipt for your records."
+            notes: receiptDisplayLabel("Thank you for your business."),
+            terms: receiptDisplayLabel("Goods and services received in good condition. Keep this receipt for your records.")
         };
     }
     function f(e, t) {
@@ -258,7 +258,7 @@
         var t = f(v(), e || {});
         return t.items = Array.isArray(t.items) && t.items.length ? t.items.map(function(e) {
             return m(e.desc || e.description, e.qty, e.unit, e.rate || e.price, e.discount, e.note);
-        }) : [ m("Product or service", 1, "item", 0, 0, "") ], F(t.business.logo) || (t.business.logo = ""), 
+        }) : [ m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "") ], F(t.business.logo) || (t.business.logo = ""),
         s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency), 
         t.totals.taxRate = y(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = y(t.totals.discount, 0), 
         t.totals.serviceCharge = y(t.totals.serviceCharge, 0), t.totals.shipping = y(t.totals.shipping, 0), 
@@ -275,7 +275,10 @@
         return '<span translate="no">' + g(value) + '</span>';
     }
     function receiptDisplayLabel(value) {
-        var labels = {fr: {Customer: "Client", PAID: "PAYÉ"}, sw: {Customer: "Mteja", PAID: "IMELIPWA"}};
+        var labels = {
+            fr: {Customer: "Client", PAID: "PAYÉ", "Business Name": "Nom de l’entreprise", "Walk-in customer": "Client de passage", Item: "Article", "Product or service": "Produit ou service", "Thank you for your business.": "Merci pour votre confiance.", "Goods and services received in good condition. Keep this receipt for your records.": "Biens et services reçus en bon état. Conservez ce reçu dans vos dossiers."},
+            sw: {Customer: "Mteja", PAID: "IMELIPWA", "Business Name": "Jina la biashara", "Walk-in customer": "Mteja wa dukani", Item: "Kipengee", "Product or service": "Bidhaa au huduma", "Thank you for your business.": "Asante kwa kufanya biashara nasi.", "Goods and services received in good condition. Keep this receipt for your records.": "Bidhaa na huduma zimepokelewa katika hali nzuri. Hifadhi risiti hii kwa kumbukumbu zako."}
+        };
         var locale = document.documentElement.lang;
         return labels[locale] && labels[locale][value] || value;
     }
@@ -396,9 +399,9 @@
         (function() {
             var t = C(), a = c("receiptPreview"), n = "gift" === e.docType, r = d[e.docType] || "Receipt", i = [ e.business.phone, e.business.email ].filter(Boolean).map(receiptUserHtml).join(" | "), o = [ e.customer.phone, e.customer.email ].filter(Boolean).map(receiptUserHtml).join("<br>"), s = e.items.map(function(e) {
                 var t = y(e.qty, 0), a = y(e.rate, 0), r = t * a, i = r - r * Math.max(0, y(e.discount, 0)) / 100;
-                return n ? "<tr><td>" + receiptUserHtml(e.desc || "Item") + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td></tr>" : "<tr><td>" + receiptUserHtml(e.desc || "Item") + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td><td>" + x(a) + "</td><td>" + x(i) + "</td></tr>";
+                return n ? "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td></tr>" : "<tr><td>" + receiptUserHtml(e.desc || receiptDisplayLabel("Item")) + (e.note ? '<span class="item-note">' + receiptUserHtml(e.note) + "</span>" : "") + "</td><td>" + g(t + " " + (e.unit || "")) + "</td><td>" + x(a) + "</td><td>" + x(i) + "</td></tr>";
             }).join("");
-            a.className = "receipt-paper receipt-template-" + e.template, a.innerHTML = [ e.status ? '<div class="r-watermark" aria-hidden="true">' + g(receiptDisplayLabel(e.status)) + "</div>" : "", '<div class="r-head">', "<div>", e.business.logo ? '<div class="r-logo"><img src="' + b(e.business.logo) + '" alt="Business logo"></div>' : "", '<div class="r-biz">' + receiptUserHtml(e.business.name || "Business Name") + "</div>", e.business.address ? '<div class="r-muted">' + receiptUserHtml(e.business.address) + "</div>" : "", i ? '<div class="r-muted">' + i + "</div>" : "", e.business.taxId ? '<div class="r-small">' + g(e.taxLabel || "Tax") + " ID: " + receiptUserHtml(e.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + g(r) + "</div>", '<div class="r-small">No. ' + receiptUserHtml(e.receipt.number || "") + "</div>", '<div class="r-small">' + g(T(e.receipt.date)) + (e.receipt.time ? " " + receiptUserHtml(e.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">' + g(receiptDisplayLabel("Customer")) + '</span><div class="r-value">' + receiptUserHtml(e.customer.name || "Walk-in customer") + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (e.customer.address ? '<div class="r-muted">' + receiptUserHtml(e.customer.address) + "</div>" : "") + (e.customer.taxId ? '<div class="r-small">Customer ID: ' + receiptUserHtml(e.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Transaction</span><div class="r-value">' + g(receiptDisplayLabel(e.status)) + "</div>" + (e.receipt.branch ? '<div class="r-muted">Branch: ' + receiptUserHtml(e.receipt.branch) + "</div>" : "") + (e.receipt.cashier ? '<div class="r-muted">Issued by: ' + receiptUserHtml(e.receipt.cashier) + "</div>" : "") + (e.receipt.reference ? '<div class="r-muted">Ref: ' + receiptUserHtml(e.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Description</th><th>Qty</th>' + (n ? "" : "<th>Rate</th><th>Total</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : B(t), k(t), e.notes ? '<div class="r-note"><strong>Note:</strong><br>' + receiptUserHtml(e.notes) + "</div>" : "", e.terms ? '<div class="r-note"><strong>Terms:</strong><br>' + receiptUserHtml(e.terms) + "</div>" : "", '<div class="r-footer"><span>Generated with AfroTools.com</span><span>' + g(e.currency) + "</span></div>" ].join(""),
+            a.className = "receipt-paper receipt-template-" + e.template, a.innerHTML = [ e.status ? '<div class="r-watermark" aria-hidden="true">' + g(receiptDisplayLabel(e.status)) + "</div>" : "", '<div class="r-head">', "<div>", e.business.logo ? '<div class="r-logo"><img src="' + b(e.business.logo) + '" alt="Business logo"></div>' : "", '<div class="r-biz">' + receiptUserHtml(e.business.name || receiptDisplayLabel("Business Name")) + "</div>", e.business.address ? '<div class="r-muted">' + receiptUserHtml(e.business.address) + "</div>" : "", i ? '<div class="r-muted">' + i + "</div>" : "", e.business.taxId ? '<div class="r-small">' + g(e.taxLabel || "Tax") + " ID: " + receiptUserHtml(e.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + g(r) + "</div>", '<div class="r-small">No. ' + receiptUserHtml(e.receipt.number || "") + "</div>", '<div class="r-small">' + g(T(e.receipt.date)) + (e.receipt.time ? " " + receiptUserHtml(e.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">' + g(receiptDisplayLabel("Customer")) + '</span><div class="r-value">' + receiptUserHtml(e.customer.name || receiptDisplayLabel("Walk-in customer")) + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (e.customer.address ? '<div class="r-muted">' + receiptUserHtml(e.customer.address) + "</div>" : "") + (e.customer.taxId ? '<div class="r-small">Customer ID: ' + receiptUserHtml(e.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Transaction</span><div class="r-value">' + g(receiptDisplayLabel(e.status)) + "</div>" + (e.receipt.branch ? '<div class="r-muted">Branch: ' + receiptUserHtml(e.receipt.branch) + "</div>" : "") + (e.receipt.cashier ? '<div class="r-muted">Issued by: ' + receiptUserHtml(e.receipt.cashier) + "</div>" : "") + (e.receipt.reference ? '<div class="r-muted">Ref: ' + receiptUserHtml(e.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Description</th><th>Qty</th>' + (n ? "" : "<th>Rate</th><th>Total</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : B(t), k(t), e.notes ? '<div class="r-note"><strong>Note:</strong><br>' + receiptUserHtml(e.notes) + "</div>" : "", e.terms ? '<div class="r-note"><strong>Terms:</strong><br>' + receiptUserHtml(e.terms) + "</div>" : "", '<div class="r-footer"><span>Generated with AfroTools.com</span><span>' + g(e.currency) + "</span></div>" ].join(""),
             function() {
                 if (D()) {
                     var e = c("receiptQr");
@@ -599,10 +602,10 @@
         }).join(",");
     }
     function z() {
-        var t = C(), a = [ d[e.docType] || "Receipt", "Receipt: " + (e.receipt.number || ""), "Date: " + (e.receipt.date || "") + (e.receipt.time ? " " + e.receipt.time : ""), "Business: " + (e.business.name || ""), "Business tax ID: " + (e.business.taxId || ""), "Customer: " + (e.customer.name || "Walk-in customer"), "Status: " + e.status, "", "Items:" ];
+        var t = C(), a = [ d[e.docType] || "Receipt", "Receipt: " + (e.receipt.number || ""), "Date: " + (e.receipt.date || "") + (e.receipt.time ? " " + e.receipt.time : ""), "Business: " + (e.business.name || ""), "Business tax ID: " + (e.business.taxId || ""), "Customer: " + (e.customer.name || receiptDisplayLabel("Walk-in customer")), "Status: " + e.status, "", "Items:" ];
         return e.items.forEach(function(e) {
             var t = y(e.qty, 0) * y(e.rate, 0);
-            a.push("- " + (e.desc || "Item") + " | " + e.qty + " " + e.unit + " x " + S(e.rate) + " = " + S(t));
+            a.push("- " + (e.desc || receiptDisplayLabel("Item")) + " | " + e.qty + " " + e.unit + " x " + S(e.rate) + " = " + S(t));
         }), a.push("", "Subtotal: " + S(t.subtotal), "Tax: " + S(t.tax), "Total: " + S(t.total), "Paid: " + S(t.paid), "Balance: " + S(t.balance), "", "Payment: " + (e.payment.method || "") + " " + (e.payment.provider || ""), "Reference: " + (e.payment.reference || e.receipt.reference || ""), "", e.notes || "", e.terms || ""), 
         a.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }
@@ -705,11 +708,11 @@
                 var n = a.getAttribute("data-delete-item");
                 e.items = e.items.filter(function(e) {
                     return e.id !== n;
-                }), e.items.length || e.items.push(m("Product or service", 1, "item", 0, 0, "")), 
+                }), e.items.length || e.items.push(m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "")),
                 L(), N();
             }
         }), c("addItemBtn").addEventListener("click", function() {
-            e.items.push(m("Product or service", 1, "item", 0, 0, "")), L(), N();
+            e.items.push(m(receiptDisplayLabel("Product or service"), 1, "item", 0, 0, "")), L(), N();
         }), c("addServiceBtn").addEventListener("click", function() {
             e.items.push(m("Professional service", 1, "service", 0, 0, "")), L(), N();
         }), c("renumberBtn").addEventListener("click", function() {
