@@ -340,6 +340,8 @@ function discoverEngineArtifacts(root) {
     }
   }
   out.push(...toolVerificationArtifacts(root));
+  const minimumWageRuntime = "assets/js/pages/minimum-wage-reference-comparison.js";
+  if (fs.existsSync(path.join(root, minimumWageRuntime))) out.push(minimumWageRuntime);
   return [...new Set(out)].sort();
 }
 
@@ -1406,6 +1408,7 @@ function buildJsFormula(
     ...require("./calculation-quality-ci-birth").metadata(artifactPath),
     ...require("./calculation-quality-senegal-leave").metadata(artifactPath),
     ...require("./calculation-quality-remittance").metadata(artifactPath),
+    ...require("./calculation-quality-minimum-wage-reference").metadata(artifactPath),
     ...require("./calculation-quality-ghana-leave").metadata(artifactPath),
     ...require("./calculation-quality-sw-fuel").metadata(artifactPath),
   };
@@ -4330,6 +4333,7 @@ function generateGoldenFixtures(formulas, root) {
   fixtures.push(...require("./calculation-quality-ci-birth").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-senegal-leave").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-remittance").fixtures(formulas.formulas));
+  fixtures.push(...require("./calculation-quality-minimum-wage-reference").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-ghana-leave").fixtures(formulas.formulas));
   fixtures.push(...require("./calculation-quality-sw-fuel").fixtures(formulas.formulas));
 
@@ -5009,6 +5013,8 @@ function runGoldenFixtures(artifacts, root) {
         actual = require("./calculation-quality-ghana-leave").run(root, fixture.input);
       } else if (fixture.operation === "senegal-child-leave") {
         actual = require("./calculation-quality-senegal-leave").run(root, fixture.input);
+      } else if (fixture.operation === "minimum-wage-controller") {
+        actual = require("./calculation-quality-minimum-wage-reference").run(root, fixture.input);
       } else if (fixture.operation === "remittance-corridor") {
         actual = require("./calculation-quality-remittance").run(root, fixture.input);
       } else if (fixture.operation === "ci-birth-leave") {

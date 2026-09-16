@@ -3942,6 +3942,72 @@
       "verificationBasis": "Artifact or reviewed-dataset date; authority review may still be required."
     },
     {
+      "applicablePopulation": "Users comparing monthly pay with a selected recorded national/state/category reference.",
+      "artifactDigest": "sha256:fdc304ef4442fb0418c22e47472c7569298af5c4b86d85fc974773a6e2f6a056",
+      "artifactPath": "assets/js/pages/minimum-wage-reference-comparison.js",
+      "currency": "MULTI",
+      "currencyAssumption": "Salary and selected reference use the same country currency. No exchange conversion.",
+      "currencyOverride": null,
+      "disclaimer": "Compare the selected recorded reference; confirm applicable law, scope, date and actual hours. A missing record does not establish no statutory minimum.",
+      "effectiveDate": "2026-03-01",
+      "effectiveDateStatus": "not-applicable",
+      "effectiveFrom": null,
+      "effectiveTo": null,
+      "formulaFamily": "assets-js-pages-minimum-wage-reference-comparison",
+      "formulaVersion": "legacy-current+sha256.fdc304ef4442",
+      "id": "formula-assets-js-pages-minimum-wage-reference-comparison",
+      "jurisdictions": [
+        "ALL"
+      ],
+      "knownExclusions": [
+        "No complete jurisdiction, sector, location, age, exemption, effective-date or statutory compliance determination.",
+        "Hourly/daily monthly equivalents assume 8 hours/day and 22 days/month; actual employment hours can differ.",
+        "Other country rates, historic values and source validity are not reviewed by these fixtures.",
+        "DOM stubs prove controller transitions only; actual pointer, focus, layout and accessibility are separate browser evidence."
+      ],
+      "lastVerified": "2026-09-16",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:fdc304ef4442fb0418c22e47472c7569298af5c4b86d85fc974773a6e2f6a056",
+        "artifactPath": "assets/js/pages/minimum-wage-reference-comparison.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [],
+      "riskDomain": "legal_regulatory",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "IEEE-754; no intermediate rounding",
+        "precision": "Up to two decimal places for display",
+        "stages": [
+          "Hourly rate times 8 times 22; daily rate times 22; monthly rate unchanged.",
+          "Compare unrounded monthly reference with salary.",
+          "Format result separately with Intl.NumberFormat."
+        ]
+      },
+      "sourceJurisdictions": [
+        "ALL"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "official-gazette-and-synthetic-fixtures",
+          "registryId": null,
+          "title": "South Africa Gazette 54075 Schedule 1; synthetic controller conversion fixtures",
+          "url": "https://www.gov.za/sites/default/files/gcis_document/202602/54075rg11941gon7083.pdf"
+        }
+      ],
+      "supportStatus": "review-required",
+      "units": [
+        "local-currency-per-month",
+        "local-currency-per-day",
+        "local-currency-per-hour",
+        "hours-per-day",
+        "days-per-month"
+      ],
+      "verificationBasis": "Only ZA general/EPWP hourly reference corroborated; controller fixtures verify selection/conversion, not current law or all country data."
+    },
+    {
       "applicablePopulation": "Users preparing non-binding financial projections from the entered assumptions.",
       "artifactDigest": "sha256:b7a9a3c9536b3e058af09af15cfa5e0e5345da63cb1cbcb2a814ed6964bebd7e",
       "artifactPath": "engines/afroideas-engine.js",
