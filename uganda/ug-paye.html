@@ -230,8 +230,8 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
 
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly', this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual', this)">Annual</button>
+            <button type="button" class="per-btn on" aria-pressed="true" onclick="setPeriod('monthly', this)">Monthly</button>
+            <button type="button" class="per-btn" aria-pressed="false" onclick="setPeriod('annual', this)">Annual</button>
           </div>
 
           <div id="resContent"></div>
@@ -618,7 +618,7 @@ let CHART        = null;
 let CHART_TYPE   = 'donut';
 let CHAT_HISTORY = [];
 
-const fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
+var fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 function invalidateResult(message) {
@@ -809,8 +809,12 @@ function renderRows(R, period) {
 // ── PERIOD ────────────────────────────────────────────────────
 function setPeriod(period, btn) {
   PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.per-btn').forEach(b => {
+    b.classList.remove('on');
+    b.setAttribute('aria-pressed', 'false');
+  });
   btn.classList.add('on');
+  btn.setAttribute('aria-pressed', 'true');
   renderPeriodResult();
 }
 
