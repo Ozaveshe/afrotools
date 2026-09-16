@@ -56,7 +56,8 @@ test(`${routes.length} selected apps pass native workflow, export, privacy and r
       const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
       for (const letter of ['a','b']) {
         await page.locator(`#rm-${letter}-label`).fill(`Nukuu ${letter.toUpperCase()}`);
-        await page.locator(`#rm-${letter}-send`).fill('USD');
+        await page.locator(`#rm-${letter}-sendCountry`).fill('GB');await page.locator(`#rm-${letter}-receiveCountry`).fill('KE');
+      await page.locator(`#rm-${letter}-send`).fill('USD');
         await page.locator(`#rm-${letter}-debit`).fill('500');
         await page.locator(`#rm-${letter}-receive`).fill('KES');
         await page.locator(`#rm-${letter}-recipient`).fill(letter==='a'?'64000':'64500');
@@ -259,6 +260,7 @@ test('English remittance owners share the receipt engine without static provider
     const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
     for (const letter of ['a','b']) {
       await page.locator(`#rm-${letter}-label`).fill(`Quote ${letter.toUpperCase()}`);
+      await page.locator(`#rm-${letter}-sendCountry`).fill('GB');await page.locator(`#rm-${letter}-receiveCountry`).fill('KE');
       await page.locator(`#rm-${letter}-send`).fill('USD');
       await page.locator(`#rm-${letter}-debit`).fill('500');
       await page.locator(`#rm-${letter}-receive`).fill('KES');

@@ -401,6 +401,8 @@ async function captureNativeSemantic(page, id, locale) {
     }
     if (routeId === "remittance-v2" || routeId === "remittance-compare") {
       const readQuote = (letter) => ({
+        sendCountry: document.querySelector(`#rm-${letter}-sendCountry`).value,
+        receiveCountry: document.querySelector(`#rm-${letter}-receiveCountry`).value,
         label: document.querySelector(`#rm-${letter}-label`).value,
         sendCurrency: document.querySelector(`#rm-${letter}-send`).value,
         totalDebit: document.querySelector(`#rm-${letter}-debit`).value,
@@ -413,6 +415,7 @@ async function captureNativeSemantic(page, id, locale) {
         expiresAt: document.querySelector(`#rm-${letter}-expires`).value
       });
       const result = window.RemittanceQuoteComparatorEngine.calculate({
+        requireCorridor: true,
         asOf: "2026-08-09T10:00:00.000Z",
         quotes: [readQuote("a"), readQuote("b")]
       });

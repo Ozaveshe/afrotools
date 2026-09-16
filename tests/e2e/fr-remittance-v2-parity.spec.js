@@ -3,7 +3,7 @@ const fs=require('fs');
 
 const route='/fr/tools/transfert-v2/';
 async function fillQuote(page,letter,values={}){
-  const row=Object.assign({label:letter==='a'?'Devis A':'Devis B',send:'USD',debit:'500',receive:'NGN',recipient:letter==='a'?'780000':'790000',fee:'5',payout:'bank',delivery:'60',observed:letter==='a'?'2026-08-08T10:00':'2026-08-08T10:05',expires:''},values);
+  const row=Object.assign({label:letter==='a'?'Devis A':'Devis B',sendCountry:'GB',receiveCountry:'NG',send:'USD',debit:'500',receive:'NGN',recipient:letter==='a'?'780000':'790000',fee:'5',payout:'bank',delivery:'60',observed:letter==='a'?'2026-08-08T10:00':'2026-08-08T10:05',expires:''},values);
   for(const [id,value] of Object.entries(row)){
     const locator=page.locator(`#rm-${letter}-${id}`);
     if(id==='payout')await locator.selectOption(value);else await locator.fill(value);
@@ -24,7 +24,7 @@ test('French remittance-v2 uses the shared checked-quote contract and local JSON
   await expect(page.locator('#rm-primary-value')).toContainText('790');
   await expect(page.locator('.rm-result[data-highest=true]')).toHaveCount(1);
   const exact=await page.evaluate(()=>({
-    firstRate:Number(document.querySelectorAll('.rm-result')[0].querySelectorAll('.rm-metric strong')[2].textContent.split(' ')[0].replace(/\s/g,'').replace(',','.')),
+    firstRate:Number(Array.from(document.querySelectorAll('.rm-result')[0].querySelectorAll('.rm-metric')).find(node=>node.querySelector('span').textContent==='Taux effectif').querySelector('strong').textContent.split(' ')[0].replace(/\s/g,'').replace(',','.')),
     rows:document.querySelectorAll('.rm-result').length
   }));
   expect(exact.rows).toBe(2);
@@ -37,7 +37,7 @@ test('French remittance-v2 uses the shared checked-quote contract and local JSON
   const payload=JSON.parse(fs.readFileSync(await download.path(),'utf8'));
   expect(payload.methodology).toBe('user-entered-remittance-quotes');
   expect(payload.result.groups[0].highestRecipientAmount).toBe(790000);
-  const reopened=await page.evaluate((input)=>window.RemittanceQuoteComparatorEngine.calculate({asOf:input.asOf,quotes:input.quotes.map((row)=>({label:row.label,sendCurrency:row.sendCurrency,totalDebit:row.totalDebit,receiveCurrency:row.receiveCurrency,recipientAmount:row.recipientAmount,statedFee:row.statedFee,payoutMethod:row.payoutMethod,deliveryMinutes:row.deliveryMinutes,observedAt:row.observedAt,expiresAt:row.expiresAt}))}),payload.result);
+  const reopened=await page.evaluate((input)=>window.RemittanceQuoteComparatorEngine.calculate({requireCorridor:input.requireCorridor,asOf:input.asOf,quotes:input.quotes.map((row)=>({sendCountry:row.sendCountry,receiveCountry:row.receiveCountry,label:row.label,sendCurrency:row.sendCurrency,totalDebit:row.totalDebit,receiveCurrency:row.receiveCurrency,recipientAmount:row.recipientAmount,statedFee:row.statedFee,payoutMethod:row.payoutMethod,deliveryMinutes:row.deliveryMinutes,observedAt:row.observedAt,expiresAt:row.expiresAt}))}),payload.result);
   expect(reopened.groups[0].highestRecipientAmount).toBe(790000);
   expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(storageBefore);
   expect(remote).toEqual([]);
@@ -76,8 +76,8 @@ test('French remittance-v2 supports 200 percent reflow, themes, keyboard and met
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1)).toBe(true);
   await page.keyboard.press('Tab');expect(await page.evaluate(()=>document.activeElement!==document.body)).toBe(true);
   expect(await page.locator('#rm-form input:not([type=checkbox]),#rm-form select').evaluateAll((nodes)=>nodes.every((node)=>{const label=document.querySelector(`label[for="${node.id}"]`);return !!label&&label.textContent.trim().length>0;}))).toBe(true);
-  await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href','https://afrotools.com/fr/tools/transfert-v2/');
+  await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href','https://afrotools.com/fr/tools/transfert-argent/');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content','https://afrotools.com/assets/img/tools/remittance-v2.webp');
-  const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());expect(schema.inLanguage).toBe('fr');expect(schema.url).toBe('https://afrotools.com/fr/tools/transfert-v2/');
+  const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());expect(schema.inLanguage).toBe('fr');expect(schema.url).toBe('https://afrotools.com/fr/tools/transfert-argent/');
   await context.close();
 });
