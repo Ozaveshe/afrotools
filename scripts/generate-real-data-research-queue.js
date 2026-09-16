@@ -216,15 +216,18 @@ function main() {
     "model",
     "year",
     "body_type",
+    "normalized_trim",
     "candidate_priority",
     "target_country_code",
     "source_market",
     "verification_status",
+    "local_observed_date",
     "observed_local_prices",
     "local_currency",
     "local_median_price",
     "local_sample_count",
     "local_listing_urls",
+    "source_observed_date",
     "observed_source_prices",
     "source_currency",
     "source_median_price",
@@ -250,15 +253,18 @@ function main() {
       candidate.model,
       candidate.year,
       candidate.body_type,
+      evidence && evidence.vehicle ? evidence.vehicle.trim || "" : "",
       candidate.candidate_priority,
       primaryEvidence ? primaryEvidence.countryCode : "",
       primaryEvidence ? primaryEvidence.sourceMarket : "",
       evidence ? "verified-source-backed" : "research-pending",
+      primaryEvidence ? primaryEvidence.localMarketSample.verifiedAt || "" : "",
       formatObservation(localValues),
       primaryEvidence ? primaryEvidence.localMarketSample.currency : "",
       median(localValues),
       primaryEvidence ? primaryEvidence.localMarketSample.sampleCount : "",
       primaryEvidence ? formatUrls(primaryEvidence.localMarketSample.urls) : "",
+      primaryEvidence ? primaryEvidence.sourceMarketSample.verifiedAt || "" : "",
       formatObservation(sourceValues),
       primaryEvidence ? primaryEvidence.sourceMarketSample.currency : "",
       median(sourceValues),
@@ -274,7 +280,8 @@ function main() {
   });
 
   fs.writeFileSync(outputPath, `${stringifyCsv([header, ...rows])}\n`, "utf8");
-  const verifiedCount = rows.filter((row) => row[8] === "verified-source-backed").length;
+  const verificationStatusIndex = header.indexOf("verification_status");
+  const verifiedCount = rows.filter((row) => row[verificationStatusIndex] === "verified-source-backed").length;
   console.log(`Updated ${path.relative(root, outputPath)} with ${rows.length} rows (${verifiedCount} verified so far).`);
 }
 
