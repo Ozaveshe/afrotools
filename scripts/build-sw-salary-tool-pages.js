@@ -509,6 +509,10 @@ if (process.argv.includes('--sync-minimum-wage-runtime')) {
   const inflationMatches = html.match(/<script src="\/assets\/js\/lib\/minimum-wage-inflation\.js(?:\?[^"]*)?"><\/script>/g) || [];
   if (inflationMatches.length > 1) throw new Error('Ambiguous inflation runtime boundary');
   html = inflationMatches.length ? html.replace(inflationMatches[0], inflationTag) : html.replace(tag, inflationTag + '\n' + tag);
+  const submissionTag = '<script src="/assets/js/pages/minimum-wage-submissions.js"></script>';
+  const submissionMatches = html.match(/<script src="\/assets\/js\/pages\/minimum-wage-submissions\.js(?:\?[^"]*)?"><\/script>/g) || [];
+  if (submissionMatches.length > 1) throw new Error('Ambiguous submissions runtime boundary');
+  html = submissionMatches.length ? html.replace(submissionMatches[0], submissionTag) : html.replace('</body>', submissionTag + '\n</body>');
   write(route, html);
 } else {
   buildOvertimePage();

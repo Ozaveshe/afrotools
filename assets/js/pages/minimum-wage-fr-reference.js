@@ -15,7 +15,7 @@
   const countries = engine.getAllCountries('name').sort((a, b) => countryName(a).localeCompare(countryName(b), 'fr'));
   const sectorNames = { general: 'Minimum national général', farm: 'Travailleurs agricoles', domestic: 'Travailleurs domestiques', epwp: 'Programme de travaux publics EPWP' };
   function option(select, value, label) { const item = document.createElement('option'); item.value = value; item.textContent = label; select.append(item); }
-  for (const c of countries) { option($('referenceCountry'), c.code, countryName(c)); option($('referenceCompare'), c.code, countryName(c)); }
+  for (const c of countries) { option($('referenceCountry'), c.code, countryName(c)); option($('referenceCompare'), c.code, countryName(c)); option($('vf-country'), c.code, countryName(c)); }
   function selected() {
     const c = engine.getCountry($('referenceCountry').value);
     if (!c) return null;

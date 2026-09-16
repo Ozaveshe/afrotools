@@ -174,6 +174,17 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
       <button class="btn ghost" id="referenceCSV" data-no-pdf-gate="true" type="button">Exporter les références filtrées (CSV)</button>
       <button class="btn ghost" id="referenceReset" type="button">Réinitialiser la consultation</button>
       <p id="referenceStatus" role="status" aria-live="polite"></p>
+      <details><summary>Notifications et signalement de salaire</summary>
+        <h3 class="mw-alert-title">Demander des notifications</h3><p class="mw-alert-sub"></p>
+        <div class="field"><label for="alert-email">Adresse e-mail</label><input id="alert-email" type="email" autocomplete="email"></div>
+        <button class="btn" type="button" onclick="subscribeAlert()">Enregistrer la demande</button><p id="alert-result" role="status" aria-live="polite"></p>
+        <h3>Signaler un salaire observé</h3><p class="mw-vf-note"></p>
+        <div class="grid"><div class="field"><label for="vf-country">Pays du signalement</label><select id="vf-country"><option value="">Choisir un pays</option></select></div>
+        <div class="field"><label for="vf-sector">Secteur</label><input id="vf-sector" maxlength="100"></div>
+        <div class="field"><label for="vf-salary">Salaire mensuel (devise du pays)</label><input id="vf-salary" type="number" min="0" step="any"></div>
+        <div class="field"><label for="vf-city">Ville (facultatif)</label><input id="vf-city" maxlength="100"></div></div>
+        <button class="btn" type="button" onclick="submitViolation()">Envoyer le signalement</button><p id="vf-result" role="status" aria-live="polite"></p>
+      </details>
     </section>
 
     <div class="layout">
@@ -479,5 +490,6 @@ h1{max-width:830px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04
 <script type="application/json" id="afrotools-fr-finance-export-contract">{"schemaVersion":1,"englishId":"minimum-wage","englishRoute":"/tools/minimum-wage","frenchRoute":"/fr/tools/salaire-minimum","formats":["copy","csv","print"]}</script>
 <script src="/assets/js/pages/french-finance-export-contract.js?v=71417250" defer></script>
 <!-- french-finance-export-contract:end -->
+<script src="/assets/js/pages/minimum-wage-submissions.js" defer></script>
 </body>
 </html>
