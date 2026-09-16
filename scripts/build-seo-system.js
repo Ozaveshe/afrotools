@@ -349,14 +349,16 @@ function buildClusterBlock(pagePath, pageConfig, data) {
     .join("\n");
 }
 
-function replaceOrInsertBlock(html, block, anchors, markerName) {
+function replaceOrInsertBlock(html, block, anchors, markerName, relocate) {
   const marker = markerName || "seo-cluster-block";
   const markerPattern = new RegExp(
     "<!-- " + marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ":start -->[\\s\\S]*?<!-- " + marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ":end -->",
     "i"
   );
 
-  if (markerPattern.test(html)) {
+  if (relocate) {
+    html = html.replace(markerPattern, "").replace(/\n[ \t]*\n[ \t]*\n/g, "\n\n");
+  } else if (markerPattern.test(html)) {
     return html.replace(markerPattern, block);
   }
 
@@ -526,10 +528,11 @@ function getAnchors(role) {
   return ["<afro-footer>", "</main>", "</body>"];
 }
 
-function applyPageConfig(data) {
+function applyPageConfig(data, selectedPages) {
   let patchedPages = 0;
 
   Object.keys(data.pages || {}).forEach(function (pagePath) {
+    if (selectedPages.length && !selectedPages.includes(pagePath)) return;
     const pageConfig = data.pages[pagePath];
     const filePath = path.join(ROOT, pageConfig.file);
 
@@ -557,7 +560,7 @@ function applyPageConfig(data) {
 
     if (Array.isArray(pageConfig.quickAnswerAnchors) && pageConfig.quickAnswerAnchors.length) {
       const quickBlock = buildQuickAnswerBlock(pagePath, pageConfig, data);
-      html = replaceOrInsertBlock(html, quickBlock, pageConfig.quickAnswerAnchors, "seo-quick-answer-block");
+      html = replaceOrInsertBlock(html, quickBlock, pageConfig.quickAnswerAnchors, "seo-quick-answer-block", pageConfig.relocateQuickAnswer === true);
     }
     const block = buildClusterBlock(pagePath, pageConfig, data);
     html = replaceOrInsertBlock(html, block, getAnchors(pageConfig.role), "seo-cluster-block");
@@ -571,7 +574,11 @@ function applyPageConfig(data) {
 
 function main() {
   const data = readJson(DATA_PATH);
-  const patchedPages = applyPageConfig(data);
+  const selectedPages = process.argv.slice(2);
+  selectedPages.forEach(function (pagePath) {
+    if (!data.pages[pagePath]) throw new Error("Unknown priority page: " + pagePath);
+  });
+  const patchedPages = applyPageConfig(data, selectedPages);
   console.log("Priority pages patched:", patchedPages);
 }
 
