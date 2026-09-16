@@ -805,7 +805,7 @@ function poCalc() {
   var unused = parseFloat(document.getElementById('po-unused').value);
   var salary = parseFloat(document.getElementById('po-salary').value);
   var el = document.getElementById('po-result');
-  if (!unused || !salary) { el.style.display = 'none'; return; }
+  if (!Number.isFinite(unused) || unused < 0 || unused > 60 || !Number.isFinite(salary) || salary < 0 || !Number.isFinite(salary * 12) || !Number.isFinite(salary * 12 / 260 * unused)) { el.replaceChildren(); el.style.display = 'none'; return; }
   var d = (cc && LEAVE_DATA[cc]) ? LEAVE_DATA[cc] : null;
   var cName = d ? d.name : 'your country';
   var cur = '';

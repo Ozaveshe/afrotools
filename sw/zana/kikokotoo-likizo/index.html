@@ -510,7 +510,7 @@ function buildLeaveView(code) {
     matPaySourceType: source.type,
     matPaySourceNote: source.note,
     matElig: lcSwText(getMaternityEligibilityText(leave)),
-    patDays: leave.paternityLeave && leave.paternityLeave.days ? leave.paternityLeave.days : 0,
+    patDays: LEAVE_ENTITLEMENTS[code] && LEAVE_ENTITLEMENTS[code].paternityLeave && Number.isFinite(LEAVE_ENTITLEMENTS[code].paternityLeave.days) ? LEAVE_ENTITLEMENTS[code].paternityLeave.days : null,
     patPay: lcSwText(leave && leave.paternityLeave && leave.paternityLeave.pay ? leave.paternityLeave.pay : (leave && leave.paternityLeave && leave.paternityLeave.days > 0 ? 'Mara nyingi hulipwa au hutegemea sera ya mwajiri' : 'N/A')),
     patNote: lcSwText(leave && leave.paternityLeave && leave.paternityLeave.notes ? leave.paternityLeave.notes : ''),
     holidays: typeof leave.publicHolidays === 'number' ? leave.publicHolidays : 0,
@@ -605,7 +605,7 @@ function lcOnCountry() {
   html += lcCard('🏖', 'Likizo ya mwaka', d.annual + ' ' + d.annualUnit, [d.annualNote, 'Upatikanaji: ' + d.accrual], d.law);
   html += lcCard('🤒', 'Likizo ya ugonjwa', d.sick, [d.sickNote], null);
   html += lcCard('🤱', 'Likizo ya uzazi', d.matWeeks + ' wiki', ['Malipo: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : ''), d.matElig ? 'Ustahiki: ' + d.matElig : null].filter(Boolean), null);
-  html += lcCard('👨‍👶', 'Likizo ya baba', d.patDays > 0 ? d.patDays + ' siku' : 'Haijawekwa kisheria', [d.patPay ? 'Malipo: ' + d.patPay : null, d.patNote || null].filter(Boolean), null);
+  html += lcCard('👨‍👶', 'Likizo ya baba', d.patDays === null ? 'Taarifa hazipo — hakiki' : d.patDays > 0 ? d.patDays + ' siku' : 'Siku 0 katika chanzo — hakiki', [d.patPay ? 'Malipo: ' + d.patPay : null, d.patNote || null].filter(Boolean), null);
   html += lcCard('🏛️', 'Sikukuu za umma', d.holidays + ' kwa mwaka', ['Makadirio ya kawaida kwa mwaka'], null);
   if (d.compassionate) html += lcCard('🕊️', 'Likizo nyingine', d.compassionate.length > 90 ? 'Tazama maelezo' : 'Ipo', [d.compassionate], null);
   document.getElementById('leave-grid').innerHTML = html;
@@ -649,7 +649,7 @@ function acCountryChange() {
 function acCalc() {
   var state = buildAccrualState(document.getElementById('ac-start').value, document.getElementById('ac-today').value, parseFloat(document.getElementById('ac-entitlement').value), document.getElementById('ac-requested').value);
   var el = document.getElementById('ac-result');
-  if (!state) { el.style.display = 'none'; return; }
+  if (!state) { el.replaceChildren(); el.style.display = 'none'; return; }
   var html = '<div class="lc-result-box"><div class="lc-result-headline">' + state.accrued + ' siku zimepatikana</div><div class="lc-result-sub">' + state.remaining + ' siku zimebaki ndani ya mwaka wako wa sasa wa likizo</div>';
   if (state.requested > 0) {
     html += state.canTake ? '<div class="lc-avail-yes">&#10003; Unaweza kuomba siku ' + state.requested + ' kwa sasa &mdash; tayari una siku ' + state.accrued + '</div>' : '<div class="lc-avail-no">&#10007; Bado haitoshi &mdash; una siku ' + state.accrued + ' lakini umeomba ' + state.requested + '</div>';
@@ -665,7 +665,7 @@ function getCurrencyPrefix(code) {
 }
 
 function buildPayoutState(code, unused, salary) {
-  if (!unused || !salary) return null;
+  if (!Number.isFinite(unused) || unused < 0 || unused > 60 || !Number.isFinite(salary) || salary < 0 || !Number.isFinite(salary * 12) || !Number.isFinite(salary * 12 / 260 * unused)) return null;
   var d = code && LEAVE_DATA[code] ? LEAVE_DATA[code] : null;
   var cName = d ? d.name : 'nchi uliyochagua';
   var cur = code ? getCurrencyPrefix(code) : '';
@@ -683,7 +683,7 @@ function buildPayoutState(code, unused, salary) {
 function poCalc() {
   var state = buildPayoutState(document.getElementById('po-country').value, parseFloat(document.getElementById('po-unused').value), parseFloat(document.getElementById('po-salary').value));
   var el = document.getElementById('po-result');
-  if (!state) { el.style.display = 'none'; return; }
+  if (!state) { el.replaceChildren(); el.style.display = 'none'; return; }
   var fmt = function(n){ return Math.round(n).toLocaleString(); };
   var html = '<div class="lc-result-box"><div class="lc-result-headline">' + state.currency + fmt(state.encashment) + '</div><div class="lc-result-sub">Makadirio ya malipo kwa siku ' + document.getElementById('po-unused').value + ' za likizo isiyotumika katika ' + escapeHtml(state.countryName) + '</div><div class="lc-formula">Mshahara wa mwezi: ' + state.currency + fmt(document.getElementById('po-salary').value) + '<br>Mshahara wa mwaka: ' + state.currency + fmt(state.annualSalary) + ' (× 12)<br>Siku za kazi kwa mwaka: ' + state.workingDaysPerYear + '<br>Kiwango cha siku: ' + state.currency + fmt(state.dailyRate) + '<br>Malipo ya kuondoka: ' + state.currency + fmt(state.dailyRate) + ' × ' + document.getElementById('po-unused').value + ' siku = <strong>' + state.currency + fmt(state.encashment) + '</strong></div><div class="lc-legal">&#9878;&#65039; <strong>Dokezo la kisheria:</strong> ' + escapeHtml(state.note) + '</div></div>';
   el.innerHTML = html;
@@ -703,7 +703,8 @@ function buildParentalPlanState(code, type, dueVal) {
     preWeeks = 2;
     payInfo = 'Malipo: ' + d.matPay + (d.matPaySource ? ' (' + d.matPaySource + ')' : '');
   } else {
-    if (!d.patDays || d.patDays === 0) return {unsupported:true,message:'Hakuna likizo ya baba iliyowekwa kisheria katika ' + d.name + '. Angalia sera ya mwajiri kwa siku za hiari au ruhusa nyingine.'};
+    if (d.patDays === null) return {unsupported:true,message:'Taarifa za siku za likizo ya baba hazipo kwa ' + d.name + '. Hakiki sheria ya sasa na mwajiri; taarifa kukosekana hakumaanishi siku sifuri.'};
+    if (d.patDays === 0) return {unsupported:true,message:'Chanzo kilichohifadhiwa kinaonyesha siku sifuri za likizo ya baba kwa ' + d.name + '. Hakiki sheria ya sasa na sera ya mwajiri.'};
     leaveWeeks = d.patDays / 5;
     payInfo = 'Malipo: ' + d.patPay + ' | ' + d.patDays + ' siku';
   }
@@ -861,7 +862,7 @@ function lcBuildSummary() {
     lines.push('Likizo ya mwaka: ' + d.annual + ' ' + d.annualUnit + ' (' + d.annualNote + ')');
     lines.push('Likizo ya ugonjwa: ' + d.sickNote);
     lines.push('Likizo ya uzazi: ' + d.matWeeks + ' wiki, malipo ' + d.matPay + (d.matPaySource ? ' kupitia ' + d.matPaySource : ''));
-    lines.push('Likizo ya baba: ' + (d.patDays > 0 ? d.patDays + ' siku' : 'Haijawekwa kisheria'));
+    lines.push('Likizo ya baba: ' + (d.patDays === null ? 'Taarifa hazipo — hakiki' : d.patDays > 0 ? d.patDays + ' siku' : 'Siku 0 katika chanzo — hakiki'));
     lines.push('Sikukuu: ' + d.holidays + ' kwa mwaka kwa kawaida');
     lines.push('Sheria/rejea: ' + d.law);
     if (d.obs) lines.push('Dokezo: ' + d.obs);
@@ -933,10 +934,12 @@ function lcDownloadSummary() {
 function lcBuildCompare() {
   var rows = Object.keys(LEAVE_DATA).map(function(code) {
     var d = LEAVE_DATA[code];
-    return {cc:code,name:d.name,annual:d.annual,mat:d.matWeeks,pat:d.patDays || 0,holidays:d.holidays};
+    return {cc:code,name:d.name,annual:d.annual,mat:d.matWeeks,pat:d.patDays,holidays:d.holidays};
   });
   rows.sort(function(a,b) {
     if (lcSortKey === 'name') return lcSortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+    if (a[lcSortKey] === null) return b[lcSortKey] === null ? 0 : 1;
+    if (b[lcSortKey] === null) return -1;
     return lcSortAsc ? a[lcSortKey] - b[lcSortKey] : b[lcSortKey] - a[lcSortKey];
   });
   var maxA = Math.max.apply(null, rows.map(function(r){ return r.annual; }));
@@ -949,7 +952,7 @@ function lcBuildCompare() {
     var mc = r.mat >= maxM - 1 ? ' val-hi' : r.mat <= 9 ? ' val-lo' : '';
     var pc = r.pat >= maxP - 2 ? ' val-hi' : '';
     var hc = r.holidays >= maxH - 1 ? ' val-hi' : '';
-    return '<tr><td>' + escapeHtml(r.name) + '</td><td class="' + ac + '">' + r.annual + ' siku</td><td class="' + mc + '">' + r.mat + ' wiki</td><td class="' + pc + '">' + (r.pat > 0 ? r.pat + ' siku' : '<span class="val-lo">Hakuna</span>') + '</td><td class="' + hc + '">' + r.holidays + '</td></tr>';
+    return '<tr><td>' + escapeHtml(r.name) + '</td><td class="' + ac + '">' + r.annual + ' siku</td><td class="' + mc + '">' + r.mat + ' wiki</td><td class="' + pc + '">' + (r.pat === null ? 'Taarifa hazipo — hakiki' : r.pat > 0 ? r.pat + ' siku' : 'Siku 0 — hakiki') + '</td><td class="' + hc + '">' + r.holidays + '</td></tr>';
   }).join('');
   document.getElementById('lc-tbody').innerHTML = html;
   ['name','annual','mat','pat','holidays'].forEach(function(key){
