@@ -88,6 +88,8 @@ test.beforeAll(async ({ request }) => {
     const font = await document.embedFont(StandardFonts.Helvetica);
     for (let pageNumber = 1; pageNumber <= pages; pageNumber += 1) {
       const page = document.addPage([420, 594]);
+      // A vector marker makes visual preservation testable without system-font availability.
+      page.drawRectangle({ x: 42, y: 440, width: pageNumber * 36, height: 20, color: rgb(0, 0, 0) });
       page.drawText(`${label} - page ${pageNumber}`, {
         x: 42,
         y: 520,
@@ -211,17 +213,19 @@ async function parsePdf(download, minimumPages = 1) {
   const document = await PDFDocument.load(download.bytes);
   expect(document.getPageCount()).toBeGreaterThanOrEqual(minimumPages);
   let text = '';
+  let textExtraction = 'parsed';
   try {
     text = (await pdfParse(download.bytes)).text || '';
   } catch {
-    text = '';
+    // Structural validity does not imply extractable text. Keep this limitation visible.
+    textExtraction = 'parser-failed';
   }
   expect(download.bytes.length).toBeGreaterThan(700);
-  return { pages: document.getPageCount(), text };
+  return { pages: document.getPageCount(), text, textExtraction };
 }
 
-async function parsePdfInBrowser(page, download) {
-  return page.evaluate(async (values) => {
+async function inspectPdfPages(page, download, render = false) {
+  return page.evaluate(async ({ values, render }) => {
     if (!window.pdfjsLib) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -232,15 +236,36 @@ async function parsePdfInBrowser(page, download) {
       });
     }
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js';
-    const document = await window.pdfjsLib.getDocument({ data: new Uint8Array(values) }).promise;
+    const pdf = await window.pdfjsLib.getDocument({ data: new Uint8Array(values) }).promise;
     const pages = [];
-    for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
-      const current = await document.getPage(pageNumber);
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const current = await pdf.getPage(pageNumber);
       const content = await current.getTextContent();
-      pages.push(content.items.map((item) => item.str || '').join(' '));
+      const entry = { text: content.items.map((item) => item.str || '').join(' ') };
+      if (render) {
+        const viewport = current.getViewport({ scale: 0.5 });
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(viewport.width); canvas.height = Math.ceil(viewport.height);
+        const context = canvas.getContext('2d');
+        await current.render({ canvasContext: context, viewport }).promise;
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        let dark = 0;
+        entry.grayPixels = [];
+        for (let index = 0; index < pixels.length; index += 4) {
+          entry.grayPixels.push((pixels[index] + pixels[index + 1] + pixels[index + 2]) / 3);
+          if (pixels[index] < 40 && pixels[index + 1] < 40 && pixels[index + 2] < 40) dark += 1;
+        }
+        entry.darkFraction = dark / (canvas.width * canvas.height);
+      }
+      pages.push(entry);
     }
-    return pages.join('\n');
-  }, Array.from(download.bytes));
+    await pdf.destroy();
+    return pages;
+  }, { values: Array.from(download.bytes), render });
+}
+
+async function parsePdfInBrowser(page, download) {
+  return (await inspectPdfPages(page, download)).map((entry) => entry.text).join('\n');
 }
 
 async function acceptPdf(id, download, options = {}) {
@@ -254,7 +279,15 @@ async function acceptPdf(id, download, options = {}) {
     eof: true,
     pages: parsed.pages,
     parsedText: Boolean(recoveredText.trim()),
-    fixtureRecovered: options.expectedText ? recoveredText.includes(options.expectedText) : true,
+    structuralValidity: 'proven',
+    primaryTextExtraction: parsed.textExtraction,
+    textExtraction: !parsed.text && options.fallbackText ? 'browser-fallback-parsed' : parsed.textExtraction,
+    contentProof: {
+      status: options.expectedText ? 'proven' : (options.textNotApplicableReason ? 'not-applicable' : 'unverified'),
+      reason: options.textNotApplicableReason || (options.expectedText ? 'Expected fixture text recovered' : 'No content oracle supplied'),
+      scope: 'text-content'
+    },
+    fixtureRecovered: options.expectedText ? recoveredText.includes(options.expectedText) : null,
     outputChangedFromFixture: options.inputBytes ? !download.bytes.equals(Buffer.from(options.inputBytes)) : undefined,
     operation: options.operation
   });
@@ -272,7 +305,7 @@ async function acceptZip(id, download, options = {}) {
     }
   }
   let parsedPayload = false;
-  let fixtureRecovered = !options.expected;
+  let fixtureRecovered = options.expected ? false : null;
   for (const name of names) {
     const bytes = Buffer.from(await zip.file(name).async('uint8array'));
     if (options.expected && bytes.toString('utf8').includes(options.expected)) fixtureRecovered = true;
@@ -285,7 +318,7 @@ async function acceptZip(id, download, options = {}) {
     }
   }
   expect(parsedPayload).toBe(true);
-  expect(fixtureRecovered).toBe(true);
+  if (options.expected) expect(fixtureRecovered).toBe(true);
   addReceipt(id, 'zip', {
     filename: download.filename,
     members: names,
@@ -318,7 +351,7 @@ function acceptText(id, format, download, options = {}) {
     filename: download.filename,
     bytes: download.bytes.length,
     parsed,
-    fixtureRecovered: options.expected ? text.includes(options.expected) : true
+    fixtureRecovered: options.expected ? text.includes(options.expected) : null
   });
   return text;
 }
@@ -397,6 +430,18 @@ async function acceptImageZip(id, format, download) {
   acceptImage(id, format, { filename: imageName, bytes });
 }
 
+test('preuve PDF: validité structurelle ne vaut pas preuve de contenu', async () => {
+  // This helper-only ID is deliberately absent from the app catalog and earns no app credit.
+  const id = 'receipt-contract-only';
+  const download = { filename: 'synthetic.pdf', bytes: secondPdf };
+  await acceptPdf(id, download);
+  expect(receipts.get(id).pdf.structuralValidity).toBe('proven');
+  expect(receipts.get(id).pdf.contentProof.status).toBe('unverified');
+  expect(receipts.get(id).pdf.fixtureRecovered).toBeNull();
+  await expect(acceptPdf(id, download, { expectedText: 'ABSENT_ORACLE_MARKER' })).rejects.toThrow();
+  await expect(parsePdf({ filename: 'broken.pdf', bytes: Buffer.from('%PDF- broken %%EOF') })).rejects.toThrow();
+});
+
 test('espace PDF: PDF, PNG dans ZIP, archive et impression sont prouvés', async ({ page }) => {
   await open(page, '/fr/tools/espace-pdf/');
   await uploadPdf(page, '#fileIn');
@@ -471,10 +516,19 @@ test('fusionner/diviser: PDF fusionné et ZIP de pages sont rouverts', async ({ 
   await open(page, '/fr/tools/fusionner-diviser-pdf/');
   await uploadPdfs(page, '#mergeFileInput');
   await page.locator('#mergeBtn').click();
-  await acceptPdf('pdf-merge-split', await captureDownload(page, '#actionRow .act-download'), {
-    minimumPages: 3,
-    expectedText: PRIVATE_MARKER
+  const merged = await captureDownload(page, '#actionRow .act-download');
+  const mergedPages = await inspectPdfPages(page, merged);
+  expect(mergedPages).toHaveLength(3);
+  ['Document A - page 1', 'Document A - page 2', 'Document B modifie - page 1'].forEach((label, index) => {
+    expect(mergedPages[index].text).toContain(label);
+    expect(mergedPages[index].text).toContain(PRIVATE_MARKER);
   });
+  await acceptPdf('pdf-merge-split', merged, {
+    minimumPages: 3,
+    expectedText: PRIVATE_MARKER,
+    fallbackText: mergedPages.map((entry) => entry.text).join('\n')
+  });
+  receipts.get('pdf-merge-split').pdf.operationProof = { status: 'proven', scope: 'Exact three-page merge order and each source page identity' };
 
   await open(page, '/fr/tools/fusionner-diviser-pdf/');
   await page.locator('[data-mode="split"]').click();
@@ -482,10 +536,21 @@ test('fusionner/diviser: PDF fusionné et ZIP de pages sont rouverts', async ({ 
   await page.locator('[data-split-mode="every"]').click();
   await waitEnabled(page, '#splitBtn');
   await page.locator('#splitBtn').click();
-  await acceptZip('pdf-merge-split', await captureDownload(page, '#actionRow .act-download'), {
+  const split = await acceptZip('pdf-merge-split', await captureDownload(page, '#actionRow .act-download'), {
     minimumMembers: 2,
     extensions: ['.pdf']
   });
+  expect(split.names).toHaveLength(2);
+  const splitLabels = [];
+  for (const filename of split.names) {
+    const bytes = Buffer.from(await split.zip.file(filename).async('uint8array'));
+    const pages = await inspectPdfPages(page, { filename, bytes });
+    expect(pages).toHaveLength(1);
+    expect(pages[0].text).toContain(PRIVATE_MARKER);
+    splitLabels.push(pages[0].text.match(/Document A - page [12]/)?.[0]);
+  }
+  expect(splitLabels.sort()).toEqual(['Document A - page 1', 'Document A - page 2']);
+  Object.assign(receipts.get('pdf-merge-split').zip, { fixtureRecovered: true, operationProof: { status: 'proven', scope: 'Two one-page PDFs preserve each distinct source page exactly once' } });
 });
 
 test('compresser: PDF seul et lot ZIP sont rouverts', async ({ page }) => {
@@ -525,7 +590,9 @@ test('images PDF: PNG/JPEG, ZIP et PDF image sont rouverts', async ({ page }) =>
     buffer: firstPng.bytes
   });
   await page.locator('#i2pConvertBtn').click();
-  await acceptPdf('pdf-image-convert', await captureDownload(page, '#i2pDownloadBtn'));
+  await acceptPdf('pdf-image-convert', await captureDownload(page, '#i2pDownloadBtn'), {
+    textNotApplicableReason: 'Image-to-PDF output contains raster images; no text-layer recovery is promised.'
+  });
 
   await page.locator('#modePdfToImg').click();
   await page.locator('#p2iFormat').selectOption('jpeg');
@@ -694,7 +761,29 @@ test('caviardage: PDF revu, exporté et rouvert', async ({ page }) => {
   await page.locator('#fullPageBtn').click();
   await page.locator('#reviewConfirm').check();
   await page.locator('#exportBtn').click();
-  await acceptPdf('pdf-redact', await captureDownload(page, '#downloadBtn'), { minimumPages: 2 });
+  const redacted = await captureDownload(page, '#downloadBtn');
+  const outputPages = await inspectPdfPages(page, redacted, true);
+  const originalPages = await inspectPdfPages(page, { bytes: firstPdf }, true);
+  expect(outputPages).toHaveLength(2);
+  expect(outputPages.every((entry) => entry.text.trim() === '')).toBe(true);
+  expect(outputPages[0].darkFraction).toBeGreaterThan(0.98);
+  expect(outputPages[1].darkFraction, JSON.stringify({ originalDark: originalPages.map(p => p.darkFraction), outputDark: outputPages.map(p => p.darkFraction) })).toBeGreaterThan(0.001);
+  expect(outputPages[1].grayPixels).toHaveLength(originalPages[1].grayPixels.length);
+  const retainedPagePixelError = outputPages[1].grayPixels.reduce((sum, value, index) => sum + Math.abs(value - originalPages[1].grayPixels[index]), 0) / outputPages[1].grayPixels.length;
+  // Sample the marker interior and adjacent white region; JPEG edge differences
+  // and font rasterization are not mistaken for loss of the untouched marker.
+  for (let y = 69; y <= 74; y += 1) {
+    for (let x = 23; x <= 54; x += 1) {
+      expect(originalPages[1].grayPixels[y * 210 + x]).toBeLessThan(20);
+      expect(outputPages[1].grayPixels[y * 210 + x]).toBeLessThan(20);
+    }
+    expect(outputPages[1].grayPixels[y * 210 + 62]).toBeGreaterThan(240);
+  }
+  await acceptPdf('pdf-redact', redacted, {
+    minimumPages: 2,
+    textNotApplicableReason: 'Flattened redaction intentionally removes the text layer. Separate checks verify full-page masking and the retained page pixels.'
+  });
+  receipts.get('pdf-redact').pdf.operationProof = { status: 'proven', scope: 'First page blacked out, no extractable text, second page synthetic vector marker preserved', retainedPagePixelError };
 });
 
 test('en-tête/pied: texte appliqué et PDF rouvert', async ({ page }) => {
@@ -724,12 +813,21 @@ test('réorganiser: PDF revu, téléchargé et rouvert', async ({ page }) => {
   await open(page, '/fr/tools/reorganiser-pdf/');
   await uploadPdf(page, '#fileInput');
   await expect(page.locator('#reviewConfirm')).toBeVisible({ timeout: 30_000 });
-  await page.waitForTimeout(1200);
+  await waitEnabled(page, '#btnReverse');
+  await page.locator('#btnReverse').click();
   await page.locator('#reviewConfirm').check();
-  await acceptPdf('pdf-reorder', await captureDownload(page, '#btnDownload'), {
+  const reordered = await captureDownload(page, '#btnDownload');
+  const reorderedPages = await inspectPdfPages(page, reordered);
+  expect(reorderedPages).toHaveLength(2);
+  expect(reorderedPages[0].text).toContain('Document A - page 2');
+  expect(reorderedPages[1].text).toContain('Document A - page 1');
+  reorderedPages.forEach((entry) => expect(entry.text).toContain(PRIVATE_MARKER));
+  await acceptPdf('pdf-reorder', reordered, {
     minimumPages: 2,
-    expectedText: PRIVATE_MARKER
+    expectedText: PRIVATE_MARKER,
+    fallbackText: reorderedPages.map((entry) => entry.text).join('\n')
   });
+  receipts.get('pdf-reorder').pdf.operationProof = { status: 'proven', scope: 'Reverse action changes exact page order from 1,2 to 2,1 without losing fixture text' };
 });
 
 test('chat PDF: chemin local, consentement d’envoi et TXT parsé', async ({ page }) => {
