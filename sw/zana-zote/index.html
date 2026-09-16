@@ -997,6 +997,9 @@
   function initSwAllToolsSearch() {
     var params = new URLSearchParams(window.location.search);
     var query = (params.get('q') || '').trim();
+    var requestedCountry = (params.get('country') || '').trim();
+    var requestedCategory = (params.get('category') || '').trim();
+    var requestedEvidence = (params.get('evidence') || '').trim();
     var heroInput = document.getElementById('hero-search-query');
     var section = document.getElementById('search-results-section');
     var title = document.getElementById('search-results-title');
@@ -1006,8 +1009,17 @@
     if (heroInput) {
       heroInput.value = query;
     }
+    document.querySelectorAll('form[action="/sw/zana-zote/"]').forEach(function(form) {
+      [['country', requestedCountry], ['category', requestedCategory]].forEach(function(pair) {
+        var field = form.querySelector('[name="' + pair[0] + '"]');
+        if (!field && pair[1]) {
+          field = document.createElement('input'); field.type = 'hidden'; field.name = pair[0]; form.appendChild(field);
+        }
+        if (field) field.value = pair[1];
+      });
+    });
 
-    if (!query || !section || !title || !summary || !grid || !window.AFRO_TOOLS) {
+    if ((!query && !requestedCountry && !requestedCategory && !requestedEvidence) || !section || !title || !summary || !grid || !window.AFRO_TOOLS) {
       return;
     }
 
@@ -1316,7 +1328,12 @@
         }
       };
 
-      return overrides[tool.id] ? Object.assign({}, tool, overrides[tool.id]) : tool;
+      var override = overrides[tool.id];
+      if (!override) return tool;
+      var registered = window.AFRO_TOOLS.find(function(candidate) {
+        return candidate.href === override.href && isPreferredLocale(candidate);
+      });
+      return registered || Object.assign({}, tool, override);
     }
 
     function score(tool, tokens) {
@@ -1351,16 +1368,34 @@
     }
 
     var tokens = tokenize(query);
+    function countryCode(value) {
+      var normalized = normalizeSearchText(value).replace(/[^a-z0-9]/g, '');
+      var country = (window.AFRICAN_COUNTRIES || []).find(function(row) {
+        return [row.code, row.slug, row.name].concat(Object.values(row.displayNames || {})).some(function(alias) {
+          return normalizeSearchText(alias).replace(/[^a-z0-9]/g, '') === normalized;
+        });
+      });
+      return country ? country.code.toUpperCase() : null;
+    }
+    var selectedCountry = requestedCountry ? countryCode(requestedCountry) : null;
+    function matchesFilters(tool) {
+      if (requestedCategory && tool.category !== requestedCategory) return false;
+      if (!requestedCountry) return true;
+      if (!selectedCountry) return false;
+      return (tool.countries || []).some(function(country) {
+        return String(country).toUpperCase() === 'ALL' || countryCode(country) === selectedCountry;
+      });
+    }
     var scoredEntries = window.AFRO_TOOLS
       .filter(function(tool) {
-        return isPreferredLocale(tool) || (tool.lang || 'en') === 'en';
+        return matchesFilters(tool) && (isPreferredLocale(tool) || (tool.lang || 'en') === 'en');
       })
       .map(function(tool) {
         tool = localizeTool(tool);
-        return { tool: tool, score: score(tool, tokens) };
+        return { tool: tool, score: tokens.length ? score(tool, tokens) : 1 };
       })
       .filter(function(entry) {
-        return entry.score > 0;
+        return entry.score > 0 && matchesFilters(entry.tool);
       })
       .sort(function(a, b) {
         if (isPreferredLocale(a.tool) !== isPreferredLocale(b.tool)) {
@@ -1381,7 +1416,7 @@
     var preferredEntries = scoredEntries.filter(function(entry) {
       return isPreferredLocale(entry.tool);
     });
-    var manual = manualSearchResults[normalizeSearchText(query)] || [];
+    var manual = requestedCountry || requestedCategory ? [] : (manualSearchResults[normalizeSearchText(query)] || []);
     var registrySource = manual.length ? preferredEntries : (preferredEntries.length ? preferredEntries : scoredEntries);
     var registryResults = registrySource.slice(0, 12).map(function(entry) {
       return entry.tool;
@@ -1395,10 +1430,19 @@
     }).slice(0, 12);
 
     section.hidden = false;
-    title.textContent = 'Matokeo ya "' + query + '"';
+    title.textContent = 'Matokeo: ' + [query, requestedCountry, categoryLabels[requestedCategory] || requestedCategory].filter(Boolean).join(' · ');
     summary.textContent = results.length
       ? 'Tumeonyesha zana zinazokaribiana zaidi na utafutaji wako. Zana za Kiswahili zimepewa kipaumbele pale zinapopatikana.'
       : 'Hatukupata zana inayolingana moja kwa moja. Jaribu neno jingine, au vinjari vitovu vya mishahara, PAYE, PDF, VAT, WAEC, sarafu na makundi hapa chini.';
+    if (requestedCountry || requestedCategory) summary.textContent += ' Nchi na kundi ulilochagua zimetumika kwenye matokeo.';
+    if (requestedEvidence) summary.textContent += ' Kichujio cha aina ya chanzo hakipatikani; hakijatumika. Kagua chanzo na tarehe ndani ya kila zana.';
+    if (requestedCountry || requestedCategory || requestedEvidence) {
+      var reset = document.createElement('a');
+      reset.href = '/sw/zana-zote/' + (query ? '?q=' + encodeURIComponent(query) : '');
+      reset.textContent = 'Ondoa vichujio';
+      reset.id = 'sw-directory-clear-filters';
+      summary.appendChild(document.createTextNode(' ')); summary.appendChild(reset);
+    }
 
     if (!results.length) {
       grid.innerHTML = '<div class="results-empty">Hakuna zana iliyopatikana kwa "<strong>' + escapeHtml(query) + '</strong>". Jaribu nchi, aina ya zana, au neno kama PAYE, PDF, WAEC, mshahara, likizo, saa za ziada, VAT, sarafu au ankara.</div>';
