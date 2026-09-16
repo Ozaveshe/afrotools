@@ -497,5 +497,16 @@ function buildSwObservation(c) {
   write('sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/index.html', html);
 }
 
-buildOvertimePage();
-buildMinimumWagePage();
+if (process.argv.includes('--sync-minimum-wage-runtime')) {
+  // Update this owned script reference only; preserve release metadata and all app markup.
+  const route = 'sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/index.html';
+  let html = read(route);
+  const tag = '<script src="/assets/js/pages/minimum-wage-reference-comparison.js"></script>';
+  const matches = html.match(/<script src="\/assets\/js\/pages\/minimum-wage-reference-comparison\.js(?:\?[^"]*)?"><\/script>/g) || [];
+  if (matches.length > 1 || (html.match(/<\/body>/g) || []).length !== 1) throw new Error('Ambiguous minimum-wage runtime boundary');
+  html = matches.length ? html.replace(matches[0], tag) : html.replace('</body>', tag + '\n</body>');
+  write(route, html);
+} else {
+  buildOvertimePage();
+  buildMinimumWagePage();
+}
