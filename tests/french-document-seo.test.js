@@ -10,3 +10,10 @@ test('only breadcrumb parent destinations change, including nested graph',()=>{
  const source={'@graph':[{'@type':'Organization',url:'https://afrotools.com/',logo:'https://afrotools.com/tools/'},{'@type':'BreadcrumbList',itemListElement:[{position:1,name:'Accueil',item:'https://afrotools.com/'},{position:2,name:'Outils',item:'https://afrotools.com/tools/'},{position:3,item:'https://afrotools.com/fr/tools/generateur-factures/'}]}]};
  const out=localizeBreadcrumbParents(source);assert.deepEqual(out['@graph'][0],source['@graph'][0]);assert.equal(out['@graph'][1].itemListElement[0].item,'https://afrotools.com/fr/');assert.equal(out['@graph'][1].itemListElement[1].item,'https://afrotools.com/fr/all-tools/');assert.deepEqual(out['@graph'][1].itemListElement[2],source['@graph'][1].itemListElement[2]);assert.deepEqual(localizeBreadcrumbParents(out),out);
 });
+test('final SEO boundary scopes physical JSON-LD repair and preserves unrelated schema bytes',()=>{
+ const {repairDocumentBreadcrumbs}=require('../scripts/lib/french-document-seo');
+ const org='<script type="application/ld+json">{ "@type":"Organization", "url":"https://afrotools.com/" }</script>';
+ const crumb='<script type="application/ld+json">{"@type":"BreadcrumbList","itemListElement":[{"item":"https://afrotools.com/"},{"item":"https://afrotools.com/tools/"}]}</script>';
+ for(const app of config.apps){const repaired=repairDocumentBreadcrumbs(org+crumb,app.frenchRoute,config);assert.ok(repaired.startsWith(org));assert.ok(repaired.includes('https://afrotools.com/fr/all-tools/'));assert.equal(repairDocumentBreadcrumbs(repaired,app.frenchRoute,config),repaired);}
+ assert.equal(repairDocumentBreadcrumbs(org+crumb,'/fr/other/',config),org+crumb);
+});

@@ -26,4 +26,13 @@ function localizeBreadcrumbParents(schema) {
   });
   return result;
 }
-module.exports = {reviewedArtwork, localizeBreadcrumbParents};
+function repairDocumentBreadcrumbs(html, pathname, config) {
+  const normalize = value => '/' + String(value).replace(/^\/+|\/+$/g, '') + '/';
+  if (!config.apps.some(app => [app.frenchRoute, app.frenchWorkspaceRoute].filter(Boolean).some(route => normalize(route) === normalize(pathname)))) return html;
+  return html.replace(/<script\b([^>]*type=["']application\/ld\+json["'][^>]*)>([\s\S]*?)<\/script>/gi, (match, attrs, body) => {
+    const parsed = JSON.parse(body);
+    const localized = localizeBreadcrumbParents(parsed);
+    return JSON.stringify(parsed) === JSON.stringify(localized) ? match : '<script' + attrs + '>' + JSON.stringify(localized).replace(/</g, '\\u003c') + '</script>';
+  });
+}
+module.exports = {reviewedArtwork, localizeBreadcrumbParents, repairDocumentBreadcrumbs};
