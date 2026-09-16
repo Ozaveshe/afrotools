@@ -1112,6 +1112,9 @@
   // State
   let currentPdfFile = null;
   let currentPdfDoc = null;
+  let pdfLoadVersion = 0;
+  let pageRenderVersion = 0;
+  let previewReady = false;
   let currentPageNum = 1;
   let totalPages = 0;
   let signatureData = null;
@@ -1212,9 +1215,7 @@
 
   pdfInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    if (isPdfFile(file)) {
-      await handlePdfUpload(file);
-    }
+    if (file) await handlePdfUpload(file);
   });
 
   fileLabel.addEventListener('dragover', (e) => {
@@ -1230,25 +1231,60 @@
     e.preventDefault();
     fileLabel.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (isPdfFile(file)) {
-      await handlePdfUpload(file);
-    }
+    if (file) await handlePdfUpload(file);
   });
 
+  function signingFeedback(key) {
+    const language = document.documentElement.lang.split('-')[0];
+    const messages = {
+      loading: { en: 'Loading PDF. Wait for the preview before signing.', fr: 'Chargement du PDF. Attendez son aperçu avant de signer.', sw: 'PDF inapakiwa. Subiri onyesho kabla ya kuweka sahihi.' },
+      failed: { en: 'This PDF could not be opened. Choose a valid PDF and try again.', fr: 'Impossible d’ouvrir ce PDF. Choisissez un PDF valide et réessayez.', sw: 'PDF hii haikuweza kufunguliwa. Chagua PDF halali na ujaribu tena.' },
+      small: { en: 'A page is too small for the signature and date. Use a larger page or turn off the date.', fr: 'Une page est trop petite pour la signature et la date. Utilisez une page plus grande ou désactivez la date.', sw: 'Ukurasa ni mdogo mno kwa sahihi na tarehe. Tumia ukurasa mkubwa au zima tarehe.' },
+      image: { en: 'A page is too small for a visible signature. Use a larger page.', fr: 'Une page est trop petite pour une signature visible. Utilisez une page plus grande.', sw: 'Ukurasa ni mdogo mno kwa sahihi inayoonekana. Tumia ukurasa mkubwa.' }
+    };
+    return messages[key][language] || messages[key].en;
+  }
+  function showSigningFeedback(key) {
+    document.getElementById('resultText').textContent = signingFeedback(key);
+    document.getElementById('resultCard').classList.add('on');
+  }
   async function handlePdfUpload(file) {
+    const version = ++pdfLoadVersion;
+    ++pageRenderVersion;
     invalidateSignedPdf();
-    currentPdfFile = file;
-    const arrayBuffer = await file.arrayBuffer();
-    currentPdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    totalPages = currentPdfDoc.numPages;
-    currentPageNum = 1;
-
-    document.getElementById('pdfFileName').textContent = file.name;
-    document.getElementById('pdfPageCount').textContent = totalPages;
-    document.getElementById('pdfFileSize').textContent = formatBytes(file.size);
-    pdfPreview.classList.add('active');
-
-    showStep(2);
+    previewReady = false;
+    currentPdfFile = null;
+    currentPdfDoc = null;
+    document.getElementById('downloadPdfBtn').disabled = true;
+    document.getElementById('pdfFileName').textContent = '-';
+    document.getElementById('pdfPageCount').textContent = '-';
+    document.getElementById('pdfFileSize').textContent = '-';
+    pdfPreview.classList.remove('active');
+    showStep(1);
+    showSigningFeedback('loading');
+    try {
+      if (!isPdfFile(file)) throw new Error('Invalid PDF');
+      const arrayBuffer = await file.arrayBuffer();
+      if (version !== pdfLoadVersion) return;
+      const loadedDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      if (version !== pdfLoadVersion) { if (loadedDoc.destroy) await loadedDoc.destroy(); return; }
+      currentPdfFile = file;
+      currentPdfDoc = loadedDoc;
+      totalPages = loadedDoc.numPages;
+      currentPageNum = 1;
+      window.document.getElementById('pdfFileName').textContent = file.name;
+      window.document.getElementById('pdfPageCount').textContent = totalPages;
+      window.document.getElementById('pdfFileSize').textContent = formatBytes(file.size);
+      pdfPreview.classList.add('active');
+      window.document.getElementById('resultCard').classList.remove('on');
+      showStep(2);
+    } catch (_) {
+      if (version !== pdfLoadVersion) return;
+      currentPdfFile = null;
+      currentPdfDoc = null;
+      previewReady = false;
+      showSigningFeedback('failed');
+    }
   }
 
   // Step 2: Signature Creation
@@ -1500,34 +1536,47 @@
   const totalPagesSpan = document.getElementById('totalPages');
   let overlayX = 100, overlayY = 100, overlayWidth = 100, overlayHeight = 50;
 
-  function renderPdfPage(pageNum) {
-    if (!currentPdfDoc) return;
-    currentPageNum = pageNum;
-    currentPageSpan.textContent = pageNum;
-    totalPagesSpan.textContent = totalPages;
-
-    currentPdfDoc.getPage(pageNum).then(page => {
+  async function renderPdfPage(pageNum) {
+    const sourceDoc = currentPdfDoc;
+    if (!sourceDoc) return;
+    const loadVersion = pdfLoadVersion;
+    const renderVersion = ++pageRenderVersion;
+    const isCurrent = () => loadVersion === pdfLoadVersion && renderVersion === pageRenderVersion && sourceDoc === currentPdfDoc;
+    previewReady = false;
+    invalidateSignedPdf();
+    document.getElementById('downloadPdfBtn').disabled = true;
+    try {
+      const page = await sourceDoc.getPage(pageNum);
+      if (!isCurrent()) return;
       const baseViewport = page.getViewport({ scale: 1 });
       const containerWidth = Math.max(280, document.querySelector('.pdf-canvas-container').clientWidth - 4);
-      renderScale = Math.min(1.5, containerWidth / baseViewport.width);
-      const viewport = page.getViewport({ scale: renderScale });
-      pdfRenderCanvas.width = viewport.width;
-      pdfRenderCanvas.height = viewport.height;
-
-      if (!renderCtx) return;
-      page.render({
-        canvasContext: renderCtx,
-        viewport: viewport
-      }).promise.then(() => {
-        overlayWidth = 150;
-        overlayHeight = 60;
-        overlayX = viewport.width / 2 - overlayWidth / 2;
-        overlayY = viewport.height / 2;
-        updateOverlayPosition();
-      });
-    }).catch(err => {
-      console.error('Page render error:', err);
-    });
+      const scale = Math.min(1.5, containerWidth / baseViewport.width);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+      if (!isCurrent()) return;
+      pdfRenderCanvas.width = canvas.width;
+      pdfRenderCanvas.height = canvas.height;
+      renderCtx.drawImage(canvas, 0, 0);
+      renderScale = scale;
+      currentPageNum = pageNum;
+      currentPageSpan.textContent = pageNum;
+      totalPagesSpan.textContent = totalPages;
+      overlayWidth = 150;
+      overlayHeight = 60;
+      overlayX = viewport.width / 2 - overlayWidth / 2;
+      overlayY = viewport.height / 2;
+      updateOverlayPosition();
+      previewReady = true;
+      document.getElementById('downloadPdfBtn').disabled = false;
+    } catch (_) {
+      if (!isCurrent()) return;
+      previewReady = false;
+      invalidateSignedPdf();
+      showSigningFeedback('failed');
+    }
   }
 
   function updateOverlayPosition() {
@@ -1627,6 +1676,7 @@
     const actionRow = document.getElementById('actionRow');
     const resultCard = document.getElementById('resultCard');
 
+    if (!previewReady || !currentPdfFile) { showSigningFeedback('loading'); return; }
     invalidateSignedPdf();
     const version = generationVersion;
     const sourceFile = currentPdfFile;
@@ -1638,10 +1688,13 @@
 
     try {
       const arrayBuffer = await sourceFile.arrayBuffer();
-      const { PDFDocument, rgb } = getPDFLib();
+      const { PDFDocument, rgb, StandardFonts } = getPDFLib();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const placement = document.querySelector('.placement-option.active').dataset.placement;
       const addDate = document.getElementById('addDateCheckbox').checked;
+      const dateText = new Date().toLocaleDateString();
+      const dateFont = addDate ? await pdfDoc.embedFont(StandardFonts.Helvetica) : null;
+      const dateWidth = dateFont ? dateFont.widthOfTextAtSize(dateText, 10) : 0;
       const pagesToSign = placement === 'all' ?
         Array.from({length: pdfDoc.getPageCount()}, (_, i) => i) :
         [currentPageNum - 1];
@@ -1655,9 +1708,11 @@
         const imgBytes = Uint8Array.from(bin, (character) => character.charCodeAt(0));
         const image = /^data:image\/jpe?g/i.test(signatureImage) ? await pdfDoc.embedJpg(imgBytes) : await pdfDoc.embedPng(imgBytes);
         const dateSpace = addDate ? 16 : 0;
+        if (addDate && (height <= dateSpace || width < dateWidth + 8)) throw new Error(signingFeedback('small'));
         const fit = Math.min(1, width / (overlayWidth / renderScale), (height - dateSpace) / (overlayHeight / renderScale));
         const scaledHeight = overlayHeight / renderScale * fit;
         const scaledWidth = overlayWidth / renderScale * fit;
+        if (!Number.isFinite(fit) || fit <= 0 || scaledWidth < 1 || scaledHeight < 1) throw new Error(signingFeedback(addDate ? 'small' : 'image'));
         const imageX = Math.max(0, Math.min(overlayX / renderScale, width - scaledWidth));
         const imageY = Math.max(dateSpace, Math.min(height - overlayY / renderScale - scaledHeight, height - scaledHeight));
         page.drawImage(image, {
@@ -1668,9 +1723,9 @@
         });
 
         if (addDate) {
-          const today = new Date().toLocaleDateString();
-          page.drawText(today, {
-            x: imageX,
+          page.drawText(dateText, {
+            x: Math.max(4, Math.min(imageX, width - dateWidth - 4)),
+            font: dateFont,
             y: imageY - 12,
             size: 10,
             color: rgb(100/255, 100/255, 100/255)
@@ -1689,8 +1744,8 @@
       resultText.textContent = 'PDF signed successfully.';
       actionRow.style.display = 'grid';
     } catch (err) {
-      console.error(err);
-      resultText.textContent = 'Error: ' + err.message;
+      if (version !== generationVersion || sourceFile !== currentPdfFile) return;
+      resultText.textContent = err.message;
     }
   });
 

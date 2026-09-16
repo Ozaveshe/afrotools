@@ -28,3 +28,8 @@ Final strict run11953:12/12PASS53.9s, including actual pointer geometry-change a
 
 ## Coordinator integration
 Appliedsourcepatch on e06bb341; regeneratedbothFR/SWsignroutes withactualowners,checksPASS(0staleFrench). Rootactualsourcebrowser58021 passed12/12 in1.0minute on4518/defaultanalytics/freshserver, including updatedcurrent/allartifactproof, typed/drawn/uploadedimagefidelity, actualpointerplacementanddatedoutputbounds, staleasyncresults andregeneration. npm pdf:verify alsoPASS(31registrytools,34surfaces andworkflowcontracts). No fullbuild/dist/production claim. Independentpeerreview stillpending before releasefreeze.
+
+## Upload identity and tiny-page follow-up
+Independent peer review reproduced negative-size tiny-page signatures/date clipping and a delayed-upload preview/export mismatch. The authored English runtime now checks upload identity after reading and parsing, commits file/document together, and renders into an offscreen canvas guarded by render identity. Pending or failed previews cannot export. Actual embedded date width is measured; impossible dated placement returns native guidance, while date-free small-page images retain positive bounded dimensions.
+
+Both locale owners regenerated and checked successfully. Coordinator session84989 passed18/18 actual-source browser cases in1.5minutes on4518 with default analytics, including delayed reading, parsing and actual painting, stale failures,20x10/40x100-page rejection with dates, valid date-free images and80x160 dated output. Synthetic PDF artifacts are retained privately. This resolves the reproduced source-level hold; full artifact and production checks remain separate. Rotated/cropped signing pages and arbitrary scripts remain unverified.
