@@ -1,0 +1,25 @@
+const{test,expect}=require('@playwright/test');
+test.use({trace:'off',screenshot:'off',video:'off'});
+test('Swahili preserves dictionary-collision career text and native chrome',async({page,baseURL})=>{
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.fulfill({status:204}));await page.goto('/sw/zana/mjenzi-cv/');await page.waitForFunction(()=>window.CVVersionSystem&&window.AfroTools?.SwahiliDocumentPdfLocalizer);
+ const value='Language Reference Skills Élodie Kiswahili';
+ await page.evaluate(value=>{const s=CVApp.getState();Object.assign(s.data,{fn:'Language',ln:'Reference',summary:value,skills:{h:'Skills'},customSections:[{title:value,content:value}]});s.template='pan-african-minimal';CVApp.renderAll();CVVersionSystem.saveMaster();CVVersionSystem.createVersion({title:value,targetRole:value,targetOrg:value,notes:value});},value);
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ expect(await page.locator('#cvpreview').textContent()).toContain(value);
+ expect(await page.locator('#cvpreview h1').textContent()).toBe('Language Reference');
+ expect(await page.locator('#cvpreview h2').allTextContents()).toContain('Ujuzi');
+ expect(await page.locator('[data-path="summary"]').inputValue()).toBe(value);
+ expect(await page.locator('.cv-version-form input[name="title"]').inputValue()).toBe(value);
+ expect(await page.locator('.cv-version-form textarea[name="notes"]').inputValue()).toBe(value);
+ expect(await page.locator('.cv-version-item strong[data-cv-user-text]').allTextContents()).toContain(value);
+ expect(await page.locator('.cv-saved-card-name').allTextContents()).toContain(value);
+ const savedSubs=await page.locator('.cv-saved-card-sub').allTextContents();expect(savedSubs.some(text=>text.includes('Language Reference'))).toBe(true);
+ expect(await page.locator('[data-action="save"]').first().textContent()).toContain('Hifadhi');
+ await page.locator('[data-path="summary"]').evaluate(el=>el.setAttribute('placeholder','Skills'));
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ expect(await page.locator('[data-path="summary"]').getAttribute('placeholder')).toBe('Ujuzi');
+ expect(await page.locator('[data-path="summary"]').inputValue()).toBe(value);
+ await page.evaluate(()=>{CVApp.getState().template='slate';CVApp.renderPreview();});
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ expect((await page.locator('#cvpreview').textContent()).toLowerCase()).toContain('ujuzi');
+});

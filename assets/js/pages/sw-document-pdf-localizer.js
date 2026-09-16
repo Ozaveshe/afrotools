@@ -752,6 +752,12 @@
     return translatePartial(text);
   }
 
+  // Career renderers own native labels; their document text and marked saved
+  // values are user content, not a dictionary-translation surface.
+  function careerUserContent(element) {
+    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], .cv-app textarea, .cv-modal textarea, .cv-export-modal textarea');
+  }
+
   function translateElement(root) {
     if (!root) return;
     if (root.closest && root.closest('[translate="no"]')) return;
@@ -760,7 +766,7 @@
     var nodes = [];
     while (walker.nextNode()) {
       var parent = walker.currentNode.parentElement;
-      if (parent && !parent.closest('[translate="no"]') && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
+      if (parent && !parent.closest('[translate="no"]') && !careerUserContent(parent) && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
     }
     nodes.forEach(function (node) {
       var translated = translate(node.nodeValue);
@@ -770,9 +776,10 @@
       var elements = Array.from(root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]'));
       if (root.matches && root.matches('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]')) elements.unshift(root);
       elements.forEach(function (element) {
-        if (element.closest('[translate="no"]')) return;
+        if (element.closest('[translate="no"], .cv-prod, .cv-expanded-template, [data-cv-user-text]')) return;
         ['placeholder', 'aria-label', 'title', 'value'].forEach(function (attribute) {
           if (!element.hasAttribute(attribute)) return;
+          if (attribute === 'value' && element.closest('.cv-app, .cv-modal, .cv-export-modal') && !/^(button|submit)$/i.test(element.type || '')) return;
           var value = element.getAttribute(attribute);
           var translated = translate(value);
           if (translated !== value) element.setAttribute(attribute, translated);

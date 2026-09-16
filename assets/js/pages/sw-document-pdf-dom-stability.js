@@ -7,6 +7,11 @@
   if (!descriptor || !descriptor.get || !descriptor.set || descriptor.set.__swDocumentPdfStable) return;
   var lastSource = new WeakMap();
 
+  function userContent(node) {
+    var element = node && (node.nodeType === 1 ? node : node.parentElement);
+    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], textarea');
+  }
+
   function localizeMarkup(source, localizer) {
     var template = document.createElement('template');
     descriptor.set.call(template, source);
@@ -14,12 +19,14 @@
     var textNodes = [];
     while (walker.nextNode()) textNodes.push(walker.currentNode);
     textNodes.forEach(function (node) {
-      if (node.parentElement && /^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(node.parentElement.tagName)) return;
+      if (userContent(node) || (node.parentElement && /^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(node.parentElement.tagName))) return;
       node.nodeValue = localizer.translate(node.nodeValue);
     });
     template.content.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(function (element) {
+      if (element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text]')) return;
       ['placeholder', 'aria-label', 'title', 'value'].forEach(function (attribute) {
         if (!element.hasAttribute(attribute)) return;
+        if (attribute === 'value' && !/^(button|submit)$/i.test(element.type || '')) return;
         element.setAttribute(attribute, localizer.translate(element.getAttribute(attribute)));
       });
     });
@@ -29,7 +36,7 @@
   function setInnerHtml(value) {
     var source = String(value == null ? '' : value);
     var localizer = window.AfroTools && window.AfroTools.SwahiliDocumentPdfLocalizer;
-    var next = localizer && typeof localizer.translate === 'function'
+    var next = !userContent(this) && localizer && typeof localizer.translate === 'function'
       ? localizeMarkup(source, localizer)
       : source;
     if (lastSource.get(this) === source && descriptor.get.call(this) === next) return;
@@ -50,7 +57,7 @@
     function setTextContent(value) {
       var source = String(value == null ? '' : value);
       var localizer = window.AfroTools && window.AfroTools.SwahiliDocumentPdfLocalizer;
-      var next = localizer && typeof localizer.translate === 'function'
+      var next = this.isConnected && !userContent(this) && localizer && typeof localizer.translate === 'function'
         ? localizer.translate(source)
         : source;
       if (textDescriptor.get.call(this) === next) return;

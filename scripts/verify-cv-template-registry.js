@@ -188,7 +188,9 @@ expandedVisible.forEach((template) => {
     summary: "Synthetic verification profile for export renderer checks.",
     exps: [{ t: "Role", c: "Company", d: "Improved reporting by 30%." }]
   });
-  if (!rendered || !rendered.includes("cv-expanded-template")) fail(`${template.id} renderer returned unexpected output`);
+  const production = new Set(["pan-african-minimal","lagos-corporate","nairobi-tech","accra-graduate","creative-portfolio"]);
+  if (expandedSandbox.CVTemplates[template.id] !== template.previewRenderer) fail(`${template.id} editor/gallery resolver differs`);
+  if (!rendered || !(production.has(template.id) ? rendered.includes("cv-prod") : rendered.includes("cv-expanded-template"))) fail(`${template.id} renderer returned unexpected output`);
 });
 
 if (!expandedRegistry.render("ats-plain", {}).includes('data-layout="text-first"')) fail("ATS Plain must render as text-first");

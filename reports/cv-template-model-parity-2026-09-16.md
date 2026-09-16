@@ -1,0 +1,26 @@
+# CV template resolver and saved-field model — candidate evidence
+
+## Changed scope
+This next-batch candidate follows preserved JSON/Pan commits. It is not part of the coordinator's frozen release and has not been pushed or deployed.
+
+- `tools/cv-builder/js/cv-template-expanded-renderers.js` now uses the same lexical/window renderer object as the editor. Reviewed production renderers take precedence. All30 advertised IDs resolve to their named renderer; the25 prior silent Slate fallbacks are removed. Gallery and editor use the same functions after the complete script load order.
+- `tools/cv-builder/js/cv-pdf-templates.js` exposes the shared saved-field projection used by expanded layouts. Actual `projs`, `certs`, `langs`, references, contact values, education details, extras and custom sections are retained. Partial rows with entered content survive. Hobbies and legacy interests are retained independently; skill lists are not silently capped. Accra retains memberships/custom/service details, Creative retains soft skills, and Lagos/Accra honor their advertised optional-photo support.
+- Expanded layouts keep their distinct design families. Generated section labels and current-date labels are native EN/FR/SW. User-entered text is not translated. Photo-support metadata, showPhoto/showProjs/showRefs and sensitive-detail visibility are explicit; the international relocation template keeps sensitive details suppressed without mutating saved data. User-selected hex accent colors are retained.
+- `scripts/verify-cv-template-registry.js` checks actual resolver identity and the expected production/expanded ownership instead of requiring every output to carry an expanded-layout class.
+
+## User-text localization boundary
+The Swahili DOM stability owner translated text before insertion, including detached escaping helpers; the general localizer also walked rendered user text. Both owners now preserve native CV document subtrees and explicitly marked saved values. Textarea contents and non-button input values stay unchanged. Placeholders, generated labels and app controls remain localizable; legacy templates are not broadly excluded.
+
+CV app and version-system owners mark user-controlled saved names/profile names/version titles/target metadata. French runtime outputs were regenerated through `build-french-cv-runtime.js`. A dedicated browser case uses literal `Language Reference Skills` plus French/Swahili values: preview, editable fields, saved cards and versions remain intact while native Ujuzi/Hifadhi labels remain present.
+
+## Validation and limits
+-46 focused node tests PASS, including actual script-load-order identity across30IDs×3locales, complete/partial saved-field markers, native headings across all renderers, legacy hobbies, colors, existing Unicode PDF/DOCX/JSON contracts.
+-Registry verifier PASS; French runtime owner regenerated; `build:i18n:validate` PASS; final whitespace check recorded below.
+-The formal browser suite uses the visible template picker with keyboard activation, actual editor/gallery field comparisons, explicit on/off controls, photo presence rules, and saved versions restored after reload. The tests are grouped into five templates per case. Trace snapshots are disabled for this large synthetic gallery DOM; assertions retain the bounded evidence. This does not claim pointer behavior or full accessibility acceptance.
+-The first full21-case run found8 failures (two production omissions and six Swahili user-text translation cases);13 passed, including all three30-template saved-version restoration cases. Focused corrected cases are recorded below. The full suite was not silently relabeled as passing.
+
+No new all-template PDF/DOCX/print acceptance is claimed. Actual90styled PDFs, rendered layout/pagination review, long-content fixtures, and export-specific completeness remain the next phase. The photo tests check DOM presence and visibility, not final PDF image rendering. Existing Unicode support remains bounded by the local font/glyph contract; Arabic shaping/bilingual template names do not establish Arabic export acceptance. Country input fields are retained under the explicit sensitive-detail switch; this is not a country hiring/legal-rules validation. DOB/date edge cases and arbitrary-length inputs are not newly accepted by these fixtures.
+
+No route, canonical, account gate, analytics event or network-send feature changed. Sensitive fixtures are synthetic and no fixture content is sent in request URLs/bodies. Rollback is the scoped candidate commit; JSON/Pan predecessors remain preserved separately.
+
+Final focused browser rerun:10/10 PASS (3.3 minutes), covering all8 corrected failures, Swahili saved-version restoration and the user-text boundary. The collision case passed again with placeholder and legacy-Slate localization checks. Three additional browser DOM-family cases PASS across all30IDs×3locales, checking exact production classes or the intended text/two-column/sidebar/impact/academic layout. Thus25 distinct browser cases have passing evidence across these runs; no claim that all25 ran together after the final fixes. git diff --check PASS. No all-template PDF export or release build was performed in this candidate.

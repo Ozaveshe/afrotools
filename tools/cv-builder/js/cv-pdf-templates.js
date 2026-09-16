@@ -167,10 +167,11 @@
         return o(l(e));
     }
     function d(e, t) {
-        return (e || []).filter(Boolean).slice(0, t || 18);
+        return (e || []).filter(Boolean);
     }
+    function countryLabel(key){var values={"Nationality": ["Nationalité", "Uraia"], "Date of birth": ["Date de naissance", "Tarehe ya kuzaliwa"], "Marital status": ["État civil", "Hali ya ndoa"], "Origin": ["Origine", "Asili"], "LGA": ["Collectivité locale", "Eneo la serikali za mitaa"], "ID": ["Identifiant", "Kitambulisho"], "Licence": ["Permis", "Leseni"], "Gender": ["Genre", "Jinsia"], "Health": ["Santé", "Afya"], "Military service": ["Service militaire", "Huduma ya kijeshi"], "Religion": ["Religion", "Dini"]};var lang=String(e.document && e.document.documentElement.lang || "en").split("-")[0];return (values[key] && values[key][lang==="fr"?0:lang==="sw"?1:2] || key)+": ";}
     function p(e) {
-        var t = (e = e || {}).skills || {}, o = a(t.h), n = a(t.s), r = a(t.t), s = l([ e.fn, e.ln ].filter(Boolean).join(" ")) || copy.name, d = l(e.title) || copy.title, p = [ e.email, [ e.phoneCode, e.phone ].filter(Boolean).join(" "), e.altPhone, e.loc, e.linkedin, e.github, e.web, e.portfolio ].map(l).filter(Boolean), g = e.sp ? [ e.nat && "Nationality: " + e.nat, e.dob && "Date of birth: " + (i.fmtDOB ? i.fmtDOB(e.dob) : e.dob), e.mar && "Marital status: " + e.mar, e.so && "Origin: " + e.so, e.lga && "LGA: " + e.lga, e.idNumber && "ID: " + e.idNumber, e.dlStatus && "Licence: " + e.dlStatus ].filter(Boolean) : [];
+        var t = (e = e || {}).skills || {}, o = a(t.h), n = a(t.s), r = a(t.t), s = l([ e.fn, e.ln ].filter(Boolean).join(" ")) || copy.name, d = l(e.title) || copy.title, p = [ e.email, [ e.phoneCode, e.phone ].filter(Boolean).join(" "), e.altPhone, e.loc, e.linkedin, e.github, e.web, e.portfolio ].map(l).filter(Boolean), g = e.sp ? [ e.nat && countryLabel("Nationality") + e.nat, e.dob && countryLabel("Date of birth") + (i.fmtDOB ? i.fmtDOB(e.dob) : e.dob), e.mar && countryLabel("Marital status") + e.mar, e.so && countryLabel("Origin") + e.so, e.lga && countryLabel("LGA") + e.lga, e.idNumber && countryLabel("ID") + e.idNumber, e.dlStatus && countryLabel("Licence") + e.dlStatus,e.gen && countryLabel("Gender")+e.gen,e.healthStatus && countryLabel("Health")+e.healthStatus,e.milStatus && countryLabel("Military service")+e.milStatus,e.religion && countryLabel("Religion")+e.religion ].filter(Boolean) : [];
         return {
             data: e,
             name: c(s),
@@ -182,24 +183,24 @@
             allSkills: o.concat(n),
             sensitive: g.map(c),
             experience: (e.exps || []).filter(function(e) {
-                return l(e.t || e.c || e.d);
+                return [e.t,e.c,e.l,e.s,e.e,e.d].some(l);
             }),
             education: (e.edus || []).filter(function(e) {
-                return l(e.deg || e.sch);
+                return [e.deg,e.sch,e.loc,e.y1,e.y2,e.g,e.d].some(l);
             }),
             projects: e.showProjs ? (e.projs || []).filter(function(e) {
-                return l(e.n || e.d);
+                return [e.n,e.url,e.tech,e.d].some(l);
             }) : [],
             certs: (e.certs || []).filter(function(e) {
-                return l(e.n);
+                return [e.n,e.i,e.y,e.t,e.org,e.e,e.p,e.rel].some(l);
             }),
             languages: (e.langs || []).filter(function(e) {
-                return l(e.l);
+                return [e.l,e.lv].some(l);
             }),
             refs: e.showRefs ? (e.refs || []).filter(function(e) {
-                return l(e.n);
+                return [e.n,e.i,e.y,e.t,e.org,e.e,e.p,e.rel].some(l);
             }) : [],
-            extras: e.extras || {},
+            extras: Object.assign({}, e.extras || {}, {hobbies:Array.from(new Set([(e.extras || {}).hobbies,(e.extras || {}).interests].filter(Boolean))).join("\n")}),
             customSections: (e.customSections || []).filter(function(e) {
                 return l(e.title || e.content);
             })
@@ -260,6 +261,7 @@
         var i = e.data, o = [];
         return e.extras.awards && o.push(f(copy.section0, '<div style="font-size:8.2px;line-height:1.32">' + s(e.extras.awards) + "</div>", t)),
         e.extras.volunteer && o.push(f(copy.section1, '<div style="font-size:8.2px;line-height:1.32">' + s(e.extras.volunteer) + "</div>", t)),
+        e.extras.hobbies && o.push(f(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[String(window.document && window.document.documentElement.lang || "en").split("-")[0]] || "Interests"), h(e.extras.hobbies), t)),
         e.extras.memberships && o.push(f(copy.section2, '<div style="font-size:8.2px;line-height:1.32">' + s(e.extras.memberships) + "</div>", t)),
         e.customSections.forEach(function(e) {
             o.push(f(e.title || "Additional", '<div style="font-size:8.2px;line-height:1.32">' + s(e.content || "") + "</div>", t));
@@ -287,7 +289,6 @@
             f(copy.section11, b(model.languages), {rule:rule}),
             model.sensitive.length ? f(copy.section17, model.sensitive.join(" | "), {rule:rule}) : '',
             w(model, {rule:rule}),
-            model.extras.interests ? f(({fr:"Centres d’intérêt",sw:"Mapendeleo"}[String(e.document && e.document.documentElement.lang || "en").split("-")[0]] || "Interests"), h(model.extras.interests), {rule:rule}) : '',
             model.refs.length ? f(copy.section12, y(model.refs), {rule:rule}) : '',
             '</article>'
         ].join('');
@@ -336,7 +337,7 @@
         }) : "", "</div>" ].join("");
     }, t.lagosCorporate = function(e, t, i) {
         var o = p(e), n = "#0b1f3a", r = i || "#d89b18";
-        return [ '<div class="cv-prod cv-prod-lagos" style="' + g("padding:0") + '">', '<header style="background:' + n + ";color:#fff;padding:31px 36px 22px;border-bottom:5px solid " + r + '">', '<h1 style="color:inherit;margin:0;font-size:28px;line-height:1.02;font-weight:950;letter-spacing:.01em">' + o.name + "</h1>", '<div style="margin-top:5px;color:#dbeafe;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:12px;color:#dbeafe;font-size:8.7px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:24px 34px 30px">', f(copy.section13, h(e.summary), {
+        return [ '<div class="cv-prod cv-prod-lagos" style="' + g("padding:0") + '">', '<header style="background:' + n + ";color:#fff;padding:31px 36px 22px;border-bottom:5px solid " + r + '">', (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin:0 0 10px 14px">' : '') + '<h1 style="color:inherit;margin:0;font-size:28px;line-height:1.02;font-weight:950;letter-spacing:.01em">' + o.name + "</h1>", '<div style="margin-top:5px;color:#dbeafe;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:12px;color:#dbeafe;font-size:8.7px">' + o.contact.join(" | ") + "</div>" : "", "</header>", '<main style="padding:24px 34px 30px">', f(copy.section13, h(e.summary), {
             color: n,
             rule: "2px solid " + r
         }), '<div style="display:grid;grid-template-columns:1.55fr .85fr;gap:22px">', "<div>", f(copy.section14, x(o.experience, {
@@ -422,7 +423,7 @@
         }), f(copy.section11, b(o.languages), {
             color: n,
             tight: !0
-        }), w(o, {
+        }), (o.sensitive.length ? f(copy.section17,o.sensitive.join(" | ")) : "") + w(o, {
             color: n,
             tight: !0
         }), f(copy.section12, y(o.refs), {
@@ -431,7 +432,7 @@
         }), "</aside>", "</main>", "</div>" ].join("");
     }, t.accraGraduate = function(e, t, i) {
         var o = p(e), n = i || "#b45309";
-        return [ '<div class="cv-prod cv-prod-accra-graduate" style="' + g("padding:30px 34px;background:#fffdf7") + '">', '<header style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:16px;padding-bottom:13px;border-bottom:3px solid ' + n + '">', '<div><h1 style="color:inherit;margin:0;font-size:26px;line-height:1.02;font-weight:950;color:#1c1007">' + o.name + '</h1><div style="margin-top:5px;color:' + n + ';font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.2px;color:#57402a;text-align:right;max-width:220px">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:.9fr 1.15fr;gap:18px">', "<aside>", f(copy.section7, u(o.education), {
+        return [ '<div class="cv-prod cv-prod-accra-graduate" style="' + g("padding:30px 34px;background:#fffdf7") + '">', '<header style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:16px;padding-bottom:13px;border-bottom:3px solid ' + n + '">', '<div>' + (e.showPhoto && e.photo ? '<img src="'+c(e.photo)+'" alt="" style="float:right;width:64px;height:64px;object-fit:cover;border-radius:8px;margin-left:12px">' : '') + '<h1 style="color:inherit;margin:0;font-size:26px;line-height:1.02;font-weight:950;color:#1c1007">' + o.name + '</h1><div style="margin-top:5px;color:' + n + ';font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div></div>", o.contact.length ? '<div style="font-size:8.2px;color:#57402a;text-align:right;max-width:220px">' + o.contact.join("<br>") + "</div>" : "", "</header>", '<main style="display:grid;grid-template-columns:.9fr 1.15fr;gap:18px">', "<aside>", f(copy.section7, u(o.education), {
             color: n,
             tight: !0
         }), f(copy.section8, j(o.hard.concat(o.soft).concat(o.tools), {
@@ -448,10 +449,7 @@
         }), f(copy.section11, b(o.languages), {
             color: n,
             tight: !0
-        }), e.nsYear || e.nsOrg ? f(copy.section4, '<div style="font-size:8.7px">' + [ e.nsYear, e.nsOrg ].filter(Boolean).map(c).join(" | ") + "</div>", {
-            color: n,
-            tight: !0
-        }) : "", "</aside>", "<div>", f(copy.section21, h(e.summary), {
+        }), "</aside>", "<div>", f(copy.section21, h(e.summary), {
             color: n,
             rule: "1px solid #fcd34d"
         }), f(copy.section22, x(o.experience, {
@@ -467,13 +465,7 @@
         }), {
             color: n,
             tight: !0
-        }), o.extras.volunteer ? f(copy.section1, '<div style="font-size:8.2px;line-height:1.32">' + s(o.extras.volunteer) + "</div>", {
-            color: n,
-            tight: !0
-        }) : "", o.extras.awards ? f(copy.section0, '<div style="font-size:8.2px;line-height:1.32">' + s(o.extras.awards) + "</div>", {
-            color: n,
-            tight: !0
-        }) : "", f(copy.section12, y(o.refs), {
+        }), (o.sensitive.length ? f(copy.section17,o.sensitive.join(" | ")) : "") + w(o, {color:n,tight:!0}), f(copy.section12, y(o.refs), {
             color: n,
             tight: !0
         }), "</div>", "</main>", "</div>" ].join("");
@@ -601,7 +593,7 @@
         }) : "", "</div>" ].join("");
     }, t.creativePortfolio = function(e, t, i) {
         var o = p(e), n = i || "#1d4ed8", r = e.showPhoto && e.photo ? '<img src="' + e.photo + '" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:18px;border:3px solid rgba(255,255,255,.2);margin-bottom:14px">' : "";
-        return [ '<div class="cv-prod cv-prod-creative" style="' + g("padding:0;display:grid;grid-template-columns:34% 66%") + '">', '<aside style="background:#102033;color:#e2e8f0;min-height:841px;padding:30px 18px">', r, '<h1 style="color:inherit;margin:0;color:#fff;font-size:25px;line-height:1;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:6px;color:#bfdbfe;font-size:9.4px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:14px;color:#cbd5e1;font-size:8px;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", f(copy.section32, j(o.hard.concat(o.tools), {
+        return [ '<div class="cv-prod cv-prod-creative" style="' + g("padding:0;display:grid;grid-template-columns:34% 66%") + '">', '<aside style="background:#102033;color:#e2e8f0;min-height:841px;padding:30px 18px">', r, '<h1 style="color:inherit;margin:0;color:#fff;font-size:25px;line-height:1;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:6px;color:#bfdbfe;font-size:9.4px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:14px;color:#cbd5e1;font-size:8px;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", f(copy.section32, j(o.hard.concat(o.soft).concat(o.tools), {
             bg: "rgba(255,255,255,.1)",
             color: "#fff",
             limit: 16,
@@ -648,6 +640,7 @@
             tight: !0
         }), "</main>", "</div>" ].join("");
     }, t["ats-classic"] = t.atsClassic, t["lagos-corporate"] = t.lagosCorporate, t["nairobi-tech"] = t.nairobiTech,
+    e.CVDocumentModel = {normalize:p, renderExtras:w, renderSensitive:function(model){return model.sensitive.length ? f(copy.section17,model.sensitive.join(" | ")) : "";}};
     t["accra-graduate"] = t.accraGraduate, t["cape-town-executive"] = t.capeTownExecutive,
     t["ngo-development"] = t.ngoDevelopment, t["diaspora-international"] = t.diasporaInternational,
     t["creative-portfolio"] = t.creativePortfolio, e.CVProductionTemplates = {
