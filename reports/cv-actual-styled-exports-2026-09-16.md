@@ -57,3 +57,7 @@ Reusable collector: `node tests/support/cv-styled-export-audit.js`; set `CV_PDF_
 - DOCX content/ZIP proof does not establish Word/LibreOffice rendering fidelity.
 - Prior JSON roundtrip/restore and actual editor/gallery selection evidence remains separate; these output runs use the actual export API with synthetic state, not 90 repeated UI selections.
 - No push, deployment, production acceptance, or acceptance-ledger self-signoff.
+
+## Later bounded mode/content candidates
+
+Manual-break and one-page work has separate reports (`cv-manual-page-breaks-2026-09-16.md`, `cv-one-page-content-choice-2026-09-16.md`). A subsequent document-wrapping stylesheet repair has six styled and three print artifacts in `cv-long-unbroken-exports-2026-09-16.json`. The 120 artifacts above retain their recorded historical hashes; they are not relabeled as a fresh full sweep of that later stylesheet. Whole-CV acceptance remains open.
