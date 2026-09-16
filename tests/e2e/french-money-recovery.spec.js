@@ -51,7 +51,7 @@ test('French results, clipboard and JSON summary retain amount, country and expi
 
 test('French validation, reset and denied clipboard recover without stale results', async ({page}) => {
   await page.goto(route);await compare(page);
-  await expect(page.locator('#mm-error')).toContainText('Renseignez chaque devis');
+  await expect(page.locator('#mm-error')).toContainText('Renseignez un libellé valide');
   await expect(page.locator('#mm-a-label')).toBeFocused();
   await quotes(page);await page.locator('#mm-b-observed').fill('2026-09-09T12:00');await compare(page);
   await expect(page.locator('#mm-error')).toContainText('ne peut pas être dans le futur');
@@ -127,13 +127,13 @@ for (const article of ['frais-orange-money-guide-2026','mobile-money-fees-africa
 }
 
 for (const [locale,path] of [['en','/tools/mobile-money-fees/'],['sw','/sw/zana/ada-pesa-simu/']]) {
-  test(`${locale} keeps its result codes and JSON export contract`,async({page})=>{
+  test(`${locale} localizes expiry while preserving machine result codes in JSON`,async({page})=>{
     await page.goto(path);await quotes(page);await compare(page);
     await expect(page.locator('#mm-primary-value')).toHaveText('50 XOF');
-    await expect(page.locator('#mm-result-list')).toContainText('unknown');
+    await expect(page.locator('#mm-result-list')).toContainText(locale==='sw'?'Muda wa mwisho haujawekwa':'Expiry not provided');
     const promise=page.waitForEvent('download');await page.locator('#mm-json').click();const download=await promise;
     expect(download.suggestedFilename()).toBe('mobile-money-quote-comparison.json');
     const json=JSON.parse(await fs.readFile(await download.path(),'utf8'));
-    expect(Object.keys(json)).toEqual(['schemaVersion','methodology','result']);
+    expect(json.schemaVersion).toBe(1);expect(json.locale).toBe(locale);expect(json.summary).toContain(locale==='sw'?'Muda wa mwisho haujawekwa':'Expiry not provided');expect(json.methodology).toBe('user-entered-mobile-money-quotes');expect(json.result.quotes.every(row=>row.expiryState==='unknown')).toBe(true);
   });
 }

@@ -11,6 +11,8 @@ assert.strictEqual(engine.calculate({asOf:AS_OF,quotes:[quote(),quote({amount:50
 assert.strictEqual(engine.calculate({asOf:AS_OF,quotes:[quote(),quote({transactionType:"withdraw"})]}).hasEligibleComparison,false);
 assert.throws(()=>engine.calculate({asOf:AS_OF,quotes:[quote(),quote({observedAt:"2026-08-09T10:00:00.000Z"})]}),/OBSERVED_AT_FUTURE/);
 assert.throws(()=>engine.calculate({asOf:AS_OF,quotes:[quote(),quote({senderFee:-1})]}),/SENDER_FEE_REQUIRED/);
+assert.throws(()=>engine.calculate({asOf:AS_OF,quotes:[quote(),quote({observedAt:'not-a-date'})]}),/OBSERVED_AT_REQUIRED/);
+assert.throws(()=>engine.calculate({asOf:AS_OF,quotes:[quote(),quote({expiresAt:'not-a-date'})]}),/INVALID_EXPIRY/);
 assert.throws(()=>engine.calculate({asOf:AS_OF,quotes:[quote(),quote({label:"<route>"})]}),/LABEL_REQUIRED/);
 const catalog=require("../data/fintech/mobile-money-tariffs.json");
 assert.strictEqual(engine.validateCatalog(catalog),true);
