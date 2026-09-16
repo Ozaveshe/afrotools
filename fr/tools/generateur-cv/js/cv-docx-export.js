@@ -36,7 +36,7 @@
     "invalidText": "Un caractère de texte invalide empêche l’export DOCX. Supprimez-le ou conservez une sauvegarde JSON ; votre CV enregistré reste inchangé.",
     "name": "Votre nom",
     "target": "Poste visé",
-    "present": "Aujourd’hui",
+    "present": "En cours",
     "to": " à ",
     "summary": "Profil",
     "experience": "Expérience",

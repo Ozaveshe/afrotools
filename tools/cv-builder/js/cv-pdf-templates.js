@@ -92,7 +92,7 @@
     "role": "Poste",
     "qualification": "Diplôme",
     "project": "Projet",
-    "present": "Aujourd’hui"
+    "present": "En cours"
   },
   "sw": {
     "candidateProfile": "wasifu.wa.mwombaji",

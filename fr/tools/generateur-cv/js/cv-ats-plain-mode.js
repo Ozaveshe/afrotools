@@ -49,7 +49,7 @@
     "languages": "Langues",
     "references": "Références",
     "available": "Disponibles sur demande.",
-    "present": "Aujourd’hui",
+    "present": "En cours",
     "to": " à ",
     "name": "Prénom Nom",
     "target": "Poste recherché",
