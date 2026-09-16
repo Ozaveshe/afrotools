@@ -28,6 +28,12 @@
 
 ## SEO Footguns
 
+- Pro subscription JSON-LD on `/pro/` and `/pricing/` uses
+  `data-registry-schema="pro-subscription"`. The canonical registry builder
+  synchronizes its USD offers from `assets/js/lib/pro-plan.js`; run
+  `npm run registry:build` after changing plans. Keep the WebApplication type
+  and billing durations. Do not add unverified ratings or price-expiry dates,
+  or treat valid Schema.org markup as proof of Google rich-result eligibility.
 - Avoid manual mass edits when a script already exists.
 - When public copy uses scale, coverage, official-source, AI, privacy, sponsor,
   or superlative language, check `docs/public-claim-rules.md` and run

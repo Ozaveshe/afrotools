@@ -1118,7 +1118,7 @@ function buildCountryMetaDescription(country) {
 function buildRecipeMetaDescription(recipe) {
   const base = String(recipe.description || "").trim();
   const expanded = base.length < 90
-    ? `${base}${/[.!?]$/.test(base) ? "" : "."} Get ingredients, steps, timing and serving notes for this ${recipe.country_name || "African"} recipe.`
+    ? `${base}${/[.!?]$/.test(base) ? "" : "."} Get ingredients, steps and serving notes.`
     : base;
   return metaDescription(expanded, 158);
 }
@@ -2967,7 +2967,37 @@ function updateLandingSource(manifest, cuisineIntelligence) {
   writeTextFileSync(LANDING_PATH, trimTrailingWhitespace(content), "utf8");
 }
 
+function refreshRecipeDescriptions() {
+  const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, "utf8"));
+  let changed = 0;
+  for (const recipe of manifest.recipes.filter((item) => item.generated_in_wave && String(item.description || "").trim().length < 90)) {
+    const file = path.join(RECIPES_DIR, recipe.slug, "index.html");
+    const existing = fs.readFileSync(file, "utf8");
+    const base = String(recipe.description || "").trim();
+    const previous = escapeHtml(metaDescription(`${base}${/[.!?]$/.test(base) ? "" : "."} Get ingredients, steps, timing and serving notes for this ${recipe.country_name || "African"} recipe.`, 158));
+    const description = escapeHtml(buildRecipeMetaDescription(recipe));
+    const current = existing.match(/<meta name="description" content="([^"]*)">/)?.[1];
+    // Preserve later editorial overrides instead of replacing them with saved inventory copy.
+    if (current !== previous && current !== description) continue;
+    let matches = 0;
+    const next = existing.replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*(">)/g, (_, start, end) => {
+      matches += 1;
+      return start + description + end;
+    });
+    if (matches !== 3) throw new Error(`Expected three description tags in ${file}; found ${matches}`);
+    if (next !== existing) {
+      fs.writeFileSync(file, next, "utf8");
+      changed += 1;
+    }
+  }
+  console.log(`Refreshed recipe description tags from saved manifest: ${changed} pages.`);
+}
+
 async function main() {
+  if (process.argv.includes("--refresh-recipe-descriptions")) {
+    refreshRecipeDescriptions();
+    return;
+  }
   const waveStrategy = readFlag("--wave") || DEFAULT_WAVE_STRATEGY;
   const engine = loadAfroKitchenEngine();
   const recipeImages = loadRecipeImages();
@@ -3085,4 +3115,4 @@ function refreshRecipeImages(existing, generated) {
   });
   return trimTrailingWhitespace(next);
 }
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages };
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, buildRecipeMetaDescription };

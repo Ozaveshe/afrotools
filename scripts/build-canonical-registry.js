@@ -125,6 +125,38 @@ function replaceCountMarkers(content, file, registry) {
     seen.set(key, (seen.get(key) || 0) + 1);
     return `${open}${plan[field]}${close}`;
   });
+  const schemaMarker = /(<script\b[^>]*\bdata-registry-schema="pro-subscription"[^>]*>)([\s\S]*?)(<\/script>)/g;
+  updated = updated.replace(schemaMarker, (match, open, current, close) => {
+    const schema = JSON.parse(current);
+    if (schema.mainEntity?.['@type'] !== 'WebApplication') {
+      throw new Error(`${file}: Pro subscription schema must describe a WebApplication`);
+    }
+    schema.mainEntity.offers = ['product:monthly', 'product:annual'].map((id) => {
+      const plan = plans.get(id);
+      if (!plan || plan.currency !== 'USD' || !Number.isInteger(plan.amountMinor) || plan.amountMinor < 0) {
+        throw new Error(`${file}: invalid USD subscription plan ${id}`);
+      }
+      const duration = { monthly: 'P1M', annually: 'P1Y' }[plan.interval];
+      if (!duration) throw new Error(`${file}: unsupported subscription interval ${plan.interval}`);
+      const price = (plan.amountMinor / 100).toFixed(2);
+      return {
+        '@type': 'Offer',
+        name: plan.interval === 'monthly' ? 'Monthly subscription' : 'Annual subscription',
+        price,
+        priceCurrency: plan.currency,
+        description: `${plan.title}${plan.suffix}. ${plan.detail}`,
+        url: 'https://afrotools.com/pro/',
+        priceSpecification: {
+          '@type': 'UnitPriceSpecification',
+          price,
+          priceCurrency: plan.currency,
+          billingDuration: duration
+        }
+      };
+    });
+    seen.set('schema:pro-subscription', (seen.get('schema:pro-subscription') || 0) + 1);
+    return `${open}\n${JSON.stringify(schema, null, 2).replace(/</g, '\\u003c')}\n${close}`;
+  });
   return { content: updated, markerCount: [...seen.values()].reduce((sum, count) => sum + count, 0), seen };
 }
 

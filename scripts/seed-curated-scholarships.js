@@ -14,8 +14,16 @@ const SKIP_LINK_CHECK = process.env.SCHOLARSHIP_SEED_SKIP_LINK_CHECK === '1';
 const ALLOW_HTTP_BLOCKED = process.env.SCHOLARSHIP_SEED_ALLOW_HTTP_BLOCKED !== '0';
 const DRY_RUN = process.argv.includes('--dry-run');
 
-function normalizeSeedStatus(status) {
+function isPastDeadlineDate(deadlineDate) {
+  const dateKey = String(deadlineDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  return !!dateKey && dateKey < todayKey;
+}
+
+function normalizeSeedStatus(status, deadlineDate) {
   const value = String(status || '').toLowerCase();
+  if (isPastDeadlineDate(deadlineDate)) return 'closed';
   return value === 'variable' ? 'unclear' : value;
 }
 
@@ -41,6 +49,7 @@ const seedEntries = [
   ['peo-international-peace-scholarship', 'P.E.O. International Peace Scholarship', 'P.E.O. International', 'https://www.peointernational.org/international-peace-scholarship-fund/', 'us|canada', 'masters|phd', 'partial'],
   ['zonta-amelia-earhart-fellowship', 'Amelia Earhart Fellowship', 'Zonta International', 'https://www.zonta.org/Web/Programs/Education/Amelia_Earhart_Fellowship', 'global', 'phd', 'partial'],
   ['schlumberger-faculty-for-future', 'Faculty for the Future Fellowships', 'SLB Foundation', 'https://www.slb.com/who-we-are/schlumberger-foundation/faculty-for-the-future', 'global', 'phd|postdoc', 'partial'],
+  ['umich-midas-african-faculty-fellowship-2027', 'University of Michigan MIDAS African Faculty Fellowship 2027', 'University of Michigan MIDAS', 'https://midas.umich.edu/training/postdoctoral-programs/african-faculty-fellowship/apply/', 'us', 'postdoc', 'full'],
   ['margaret-mcnamara-education-grants', 'Margaret McNamara Education Grants', 'MMEG', 'https://www.mmeg.org/', 'global', 'undergrad|masters|phd', 'partial'],
   ['owsd-phd-fellowship', 'OWSD PhD Fellowship', 'Organization for Women in Science for the Developing World', 'https://owsd.net/career-development/phd-fellowship', 'global', 'phd', 'full'],
   ['twas-fellowships', 'TWAS Fellowships', 'The World Academy of Sciences', 'https://twas.org/opportunities/fellowships', 'global', 'phd|postdoc', 'full'],
@@ -249,6 +258,11 @@ function buildRow(entry, status, sourceId, now) {
   const funding = entry[6] || 'partial';
   const blocked = allowedBlockedStatuses.has(status);
   const deadlineOverride = getDeadlineOverride(entry[0]);
+  const deadlineDate = deadlineOverride ? deadlineOverride.deadline_date || null : null;
+  const scholarshipStatus = deadlineOverride
+    ? normalizeSeedStatus(deadlineOverride.status || 'upcoming', deadlineDate)
+    : 'unclear';
+  const shouldArchive = scholarshipStatus === 'closed';
   const summary = entry[1] + ' from ' + entry[2] +
     '. Curated official-link record for African students to verify cycle dates, eligibility, and application requirements on the provider page.';
 
@@ -265,9 +279,9 @@ function buildRow(entry, status, sourceId, now) {
     funding_type: funding,
     min_gpa: null,
     min_ielts: null,
-    deadline_date: deadlineOverride ? deadlineOverride.deadline_date || null : null,
+    deadline_date: deadlineDate,
     deadline_text: deadlineOverride ? deadlineOverride.deadline_text || null : 'Check official page',
-    status: deadlineOverride ? normalizeSeedStatus(deadlineOverride.status || 'upcoming') : 'unclear',
+    status: scholarshipStatus,
     confidence_mode: 'curated',
     proof_level: deadlineOverride ? 'official_deadline_manual_review' : (blocked ? 'official_link_http_blocked' : 'official_link'),
     summary,
@@ -275,7 +289,7 @@ function buildRow(entry, status, sourceId, now) {
     last_verified_at: now,
     last_source_id: sourceId,
     is_featured: false,
-    is_active: true,
+    is_active: !shouldArchive,
     raw_snapshot: {
       source_key: BACKUP_SOURCE_KEY,
       source_type: 'curated_import',
@@ -294,6 +308,11 @@ function buildRow(entry, status, sourceId, now) {
       curated_at: now
     }
   };
+  if (shouldArchive) {
+    row.is_archived = true;
+    row.archived_at = now;
+    row.archive_reason = isPastDeadlineDate(deadlineDate) ? 'deadline_passed' : 'source_closed';
+  }
   if (deadlineOverride) {
     const deadlineConfidence = deadlineOverrideConfidence(deadlineOverride);
     row.raw_snapshot.deadline_override = Object.assign({}, deadlineOverride, {

@@ -194,6 +194,36 @@ function createMirrorClient() {
   assert.strictEqual(Object.prototype.hasOwnProperty.call(scholarshipUpsert.payload[0].raw_snapshot, 'raw_snapshot'), false, 'persisted scholarship snapshot must remain flat');
   assert.strictEqual(scholarshipUpsert.payload[0].raw_snapshot.award_value_preservation.confidence, 'official', 'import snapshot should retain non-PII preservation provenance');
 
+  const expiredImportClient = createImportClient(authoritativeAward({
+    slug: 'expired-scholarship',
+    is_active: true,
+    is_archived: false
+  }));
+  await importSourceItems(expiredImportClient, {
+    id: 'source-2',
+    source_key: 'expired-source',
+    source_type: 'official_page',
+    name: 'Expired official source',
+    parser_key: 'manual_review',
+    trust_level: 'official'
+  }, [{
+    slug: 'expired-scholarship',
+    title: 'Expired Scholarship',
+    provider: 'Official Provider',
+    source_url: 'https://provider.example/expired',
+    official_url: 'https://provider.example/expired',
+    deadline_date: '2020-01-01',
+    status: 'open',
+    is_active: true
+  }]);
+  const expiredUpsert = expiredImportClient.calls.find(function (call) {
+    return call.table === 'scholarships' && call.op === 'upsert';
+  });
+  assert.strictEqual(expiredUpsert.payload[0].status, 'closed', 'a past exact date must override stale open source status');
+  assert.strictEqual(expiredUpsert.payload[0].is_active, false, 'past exact-date scholarships must not remain public-active');
+  assert.strictEqual(expiredUpsert.payload[0].is_archived, true, 'past exact-date scholarships should be soft-archived');
+  assert.strictEqual(expiredUpsert.payload[0].archive_reason, 'deadline_passed', 'expiry retirement should retain a non-destructive reason');
+
   const mirrorClient = createMirrorClient();
   await fetchMirrorRows(mirrorClient);
   assert(mirrorClient.calls.some(function (call) {
