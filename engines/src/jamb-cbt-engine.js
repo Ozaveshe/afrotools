@@ -208,6 +208,7 @@
           id: e.id,
           subject: e.subject,
           year: e.year,
+          source_provenance: e.source_provenance || null,
           num: e.num,
           question: e.question,
           passage: e.passage || "",

@@ -22,4 +22,3 @@ for(const route of ['/fr/tools/facture-freelance/','/sw/zana/ankara-ya-freelance
   for(const word of ['Invoice','Withholding','Receipt','Description','Total'])expect(text).toContain(word);
  }
 });
-

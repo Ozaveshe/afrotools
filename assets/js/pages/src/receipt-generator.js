@@ -259,9 +259,9 @@
         return t.items = Array.isArray(t.items) && t.items.length ? t.items.map(function(e) {
             return m(e.desc || e.description, e.qty, e.unit, e.rate || e.price, e.discount, e.note);
         }) : [ m(receiptDisplayLabel("Product or service"), 1, receiptDisplayLabel("item"), 0, 0, "") ], F(t.business.logo) || (t.business.logo = ""),
-        s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency), 
-        t.totals.taxRate = y(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = y(t.totals.discount, 0), 
-        t.totals.serviceCharge = y(t.totals.serviceCharge, 0), t.totals.shipping = y(t.totals.shipping, 0), 
+        s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency),
+        t.totals.taxRate = y(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = y(t.totals.discount, 0),
+        t.totals.serviceCharge = y(t.totals.serviceCharge, 0), t.totals.shipping = y(t.totals.shipping, 0),
         t.totals.rounding = y(t.totals.rounding, 0), t;
     }
     function y(e, t) {
@@ -424,13 +424,13 @@
                         colorLight: "#ffffff",
                         correctLevel: window.QRCode.CorrectLevel.M
                     }), e.querySelectorAll("canvas,img,table").forEach(function(e) {
-                        e.setAttribute("aria-hidden", "true"), "IMG" === e.tagName && e.setAttribute("alt", ""), 
+                        e.setAttribute("aria-hidden", "true"), "IMG" === e.tagName && e.setAttribute("alt", ""),
                         e.style.display = "block", e.style.maxWidth = "74px", e.style.maxHeight = "74px";
                     }));
                 }
             }();
-        })(), a = C(), c("metricSubtotal").textContent = x(a.subtotal), c("metricTax").textContent = x(a.tax), 
-        c("metricTotal").textContent = x(a.total), c("metricBalance").textContent = x(a.balance), 
+        })(), a = C(), c("metricSubtotal").textContent = x(a.subtotal), c("metricTax").textContent = x(a.tax),
+        c("metricTotal").textContent = x(a.total), c("metricBalance").textContent = x(a.balance),
         function() {
             var t = C(), a = ![ "Cash", "Other", "Store credit" ].includes(e.payment.method), n = [ {
                 label: "Business details",
@@ -473,8 +473,8 @@
             } ], r = n.reduce(function(e, t) {
                 return e + (t.ok ? t.points : 0);
             }, 0);
-            c("scoreValue").textContent = String(r), c("scoreMeter").style.width = r + "%", 
-            c("scoreBadge").textContent = r >= 90 ? "Ready" : r >= 70 ? "Review" : "Draft", 
+            c("scoreValue").textContent = String(r), c("scoreMeter").style.width = r + "%",
+            c("scoreBadge").textContent = r >= 90 ? "Ready" : r >= 70 ? "Review" : "Draft",
             c("checkList").innerHTML = n.map(function(e) {
                 return '<div class="check-item ' + (e.ok ? "ok" : "") + '"><span class="check-dot">' + (e.ok ? "OK" : "!") + "</span><span><strong>" + g(e.label) + "</strong></span></div>";
             }).join("");
@@ -489,7 +489,7 @@
     function O(t) {
         var a = t.target.files && t.target.files[0];
         if (a) {
-            if (!/^image\/(png|jpe?g|webp)$/i.test(a.type)) return Z("Use PNG, JPG, or WebP logos only."), 
+            if (!/^image\/(png|jpe?g|webp)$/i.test(a.type)) return Z("Use PNG, JPG, or WebP logos only."),
             void (t.target.value = "");
             if (a.size > 1228800) return Z("Logo must be under 1.2 MB."), void (t.target.value = "");
             var n = new FileReader;
@@ -632,7 +632,7 @@
         var n = e instanceof Blob ? e : new Blob([ e ], {
             type: a || "application/octet-stream"
         }), r = document.createElement("a");
-        r.href = URL.createObjectURL(n), r.download = t, document.body.appendChild(r), r.click(), 
+        r.href = URL.createObjectURL(n), r.download = t, document.body.appendChild(r), r.click(),
         r.remove(), setTimeout(function() {
             URL.revokeObjectURL(r.href);
         }, 500);
@@ -650,7 +650,7 @@
                     format: "a4",
                     orientation: "portrait"
                 }), a = t.internal.pageSize.getWidth(), n = t.internal.pageSize.getHeight(), r = a - 20, i = e.height * r / e.width, o = e.toDataURL("image/png"), s = n - 20, d = 10, c = i;
-                for (t.addImage(o, "PNG", 10, d, r, i), c -= s; c > 0; ) t.addPage(), d = 10 - (i - c), 
+                for (t.addImage(o, "PNG", 10, d, r, i), c -= s; c > 0; ) t.addPage(), d = 10 - (i - c),
                 t.addImage(o, "PNG", 10, d, r, i), c -= s;
                 t.save(Q() + ".pdf"), Z("PDF downloaded.");
             }).catch(function() {
@@ -662,9 +662,9 @@
     }
     function Z(e) {
         var t = c("receiptToast");
-        t || ((t = document.createElement("div")).id = "receiptToast", t.setAttribute("role", "status"), 
-        t.setAttribute("aria-live", "polite"), t.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:9999;max-width:320px;padding:11px 14px;border-radius:8px;background:#0f172a;color:#fff;font:700 13px DM Sans,system-ui;box-shadow:0 18px 36px rgba(15,23,42,.24);opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease;", 
-        document.body.appendChild(t)), t.textContent = e, t.style.opacity = "1", t.style.transform = "translateY(0)", 
+        t || ((t = document.createElement("div")).id = "receiptToast", t.setAttribute("role", "status"),
+        t.setAttribute("aria-live", "polite"), t.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:9999;max-width:320px;padding:11px 14px;border-radius:8px;background:#0f172a;color:#fff;font:700 13px DM Sans,system-ui;box-shadow:0 18px 36px rgba(15,23,42,.24);opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease;",
+        document.body.appendChild(t)), t.textContent = e, t.style.opacity = "1", t.style.transform = "translateY(0)",
         clearTimeout(Z.timer), Z.timer = setTimeout(function() {
             t.style.opacity = "0", t.style.transform = "translateY(8px)";
         }, 2400);
@@ -700,11 +700,11 @@
                 !function(t, a) {
                     for (var n = t.split("."), r = e, i = 0; i < n.length - 1; i += 1) r = r[n[i]];
                     r[n[n.length - 1]] = a;
-                }(a, r), "country" === a && (n = s[e.country] || s.NG, e.currency = n.currency, 
-                e.taxLabel = n.taxLabel, e.totals.taxRate = n.taxRate, e.payment.provider && R().includes(e.payment.method) || (e.payment.provider = n.provider, 
-                e.payment.method = n.methods[0] || "Cash"), w()), "status" === a && "DECLINED" === e.status && (e.docType = "declined"), 
-                "docType" === a && "refund" === e.docType && (e.status = "REFUNDED"), "docType" === a && "declined" === e.docType && (e.status = "DECLINED"), 
-                "payment.method" !== a || e.payment.provider || (e.payment.provider = e.payment.method), 
+                }(a, r), "country" === a && (n = s[e.country] || s.NG, e.currency = n.currency,
+                e.taxLabel = n.taxLabel, e.totals.taxRate = n.taxRate, e.payment.provider && R().includes(e.payment.method) || (e.payment.provider = n.provider,
+                e.payment.method = n.methods[0] || "Cash"), w()), "status" === a && "DECLINED" === e.status && (e.docType = "declined"),
+                "docType" === a && "refund" === e.docType && (e.status = "REFUNDED"), "docType" === a && "declined" === e.docType && (e.status = "DECLINED"),
+                "payment.method" !== a || e.payment.provider || (e.payment.provider = e.payment.method),
                 M(), N();
             });
         }), c("itemsList").addEventListener("input", function(t) {
@@ -735,14 +735,14 @@
             e.receipt.number = p(), M(), N();
         }), c("newReceiptBtn").addEventListener("click", function() {
             var t = j();
-            (e = h(t ? f(v(), t) : v())).receipt.number = p(), e.receipt.date = l(), e.receipt.time = u(), 
+            (e = h(t ? f(v(), t) : v())).receipt.number = p(), e.receipt.date = l(), e.receipt.time = u(),
             w(), M(), L(), N(), Z("New receipt started.");
-        }), c("saveReceiptBtn").addEventListener("click", I), c("saveProfileBtn").addEventListener("click", G), 
+        }), c("saveReceiptBtn").addEventListener("click", I), c("saveProfileBtn").addEventListener("click", G),
         c("downloadPdfBtn").addEventListener("click", K), c("printBtn").addEventListener("click", function() {
             window.print();
-        }), c("copySummaryBtn").addEventListener("click", U), c("txtBtn").addEventListener("click", q), 
-        c("csvBtn").addEventListener("click", H), c("jsonBtn").addEventListener("click", V), 
-        c("importJson").addEventListener("change", J), c("logoInput").addEventListener("change", O), 
+        }), c("copySummaryBtn").addEventListener("click", U), c("txtBtn").addEventListener("click", q),
+        c("csvBtn").addEventListener("click", H), c("jsonBtn").addEventListener("click", V),
+        c("importJson").addEventListener("change", J), c("logoInput").addEventListener("change", O),
         c("clearLogoBtn").addEventListener("click", function() {
             e.business.logo = "", c("logoInput").value = "", P(), N();
         }), c("savedReceipts").addEventListener("click", function(t) {
@@ -753,7 +753,7 @@
             }
             if (r) {
                 var o = r.getAttribute("data-delete-saved"), s = n.load(o);
-                window.confirm('Delete "' + (s ? s.title : "this receipt") + '" from this browser?') && (n.delete(o), 
+                window.confirm('Delete "' + (s ? s.title : "this receipt") + '" from this browser?') && (n.delete(o),
                 A());
             }
         }), N(), A();

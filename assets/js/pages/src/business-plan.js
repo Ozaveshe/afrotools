@@ -531,26 +531,26 @@
                     assumptions: "List the logic behind your prices, volumes, costs, hiring, and growth."
                 }
             };
-            return t.sections.company.name = e.legalName || e.businessName || "", t.sections.company.legalStructure = e.legalStructure || "", 
-            t.sections.company.location = e.location || "", t.sections.company.team = e.team || "", 
-            t.sections.company.mission = e.mission || "", t.sections.company.concept = e.overview || e.vision || "", 
-            t.sections.market.targetCustomers = e.targetMarket || "", t.sections.market.marketSize = e.marketSize || "", 
-            t.sections.market.competitors = e.competitors || "", t.sections.market.advantage = e.swot || "", 
-            t.sections.products.offer = e.offerings || "", t.sections.products.pricing = e.pricing || "", 
-            t.sections.products.customerProof = e.competitive || "", t.sections.marketing.channels = e.channels || "", 
-            t.sections.marketing.budget = e.budget || "", t.sections.marketing.positioning = e.gtm || "", 
-            t.sections.funding.amountNeeded = e.fundingNeeded || "", t.sections.funding.useOfFunds = e.fundingUse || "", 
+            return t.sections.company.name = e.legalName || e.businessName || "", t.sections.company.legalStructure = e.legalStructure || "",
+            t.sections.company.location = e.location || "", t.sections.company.team = e.team || "",
+            t.sections.company.mission = e.mission || "", t.sections.company.concept = e.overview || e.vision || "",
+            t.sections.market.targetCustomers = e.targetMarket || "", t.sections.market.marketSize = e.marketSize || "",
+            t.sections.market.competitors = e.competitors || "", t.sections.market.advantage = e.swot || "",
+            t.sections.products.offer = e.offerings || "", t.sections.products.pricing = e.pricing || "",
+            t.sections.products.customerProof = e.competitive || "", t.sections.marketing.channels = e.channels || "",
+            t.sections.marketing.budget = e.budget || "", t.sections.marketing.positioning = e.gtm || "",
+            t.sections.funding.amountNeeded = e.fundingNeeded || "", t.sections.funding.useOfFunds = e.fundingUse || "",
             t.sections.funding.sources = e.fundingSources || "", [ "revenue", "cogs", "opex", "marketing_cost", "salaries" ].forEach(function(n) {
                 for (var a = "marketing_cost" === n ? "marketing" : n, i = 1; i <= 3; i += 1) t.financials[a][i - 1] = m(e["fin_" + n + "_y" + i]);
             }), t;
         }(e || {}));
-        return t.meta.forecastYears = Math.min(5, Math.max(3, Number(t.meta.forecastYears) || 3)), 
+        return t.meta.forecastYears = Math.min(5, Math.max(3, Number(t.meta.forecastYears) || 3)),
         s[t.meta.currency] || (t.meta.currency = o[t.meta.country] || "NGN"), Object.keys(t.financials).forEach(function(e) {
             if (Array.isArray(t.financials[e])) {
                 for (;t.financials[e].length < 5; ) t.financials[e].push(0);
                 t.financials[e] = t.financials[e].slice(0, 5).map(m);
             }
-        }), t.financials.startupCosts = m(t.financials.startupCosts), t.financials.ownerEquity = m(t.financials.ownerEquity), 
+        }), t.financials.startupCosts = m(t.financials.startupCosts), t.financials.ownerEquity = m(t.financials.ownerEquity),
         t;
     }
     function m(e) {
@@ -602,7 +602,7 @@
         }), t;
     }
     function k() {
-        var t, n = Math.max(0, -y()[0].netCash), a = (t = e.sections.funding.amountNeeded, 
+        var t, n = Math.max(0, -y()[0].netCash), a = (t = e.sections.funding.amountNeeded,
         m(String(t || "").replace(/[^\d.-]/g, ""))), i = m(e.financials.startupCosts), r = m(e.financials.ownerEquity);
         return Math.max(0, i + n - r - a);
     }
@@ -613,7 +613,7 @@
                     var n = [ "revenue", "cogs", "opex" ], a = 0, i = 3 * n.length + 1;
                     return n.forEach(function(t) {
                         for (var n = 0; n < 3; n += 1) m(e.financials[t][n]) > 0 && (a += 1);
-                    }), e.financials.assumptions && e.financials.assumptions.length > 20 && (a += 1), 
+                    }), e.financials.assumptions && e.financials.assumptions.length > 20 && (a += 1),
                     a / i;
                 }
                 var r = t.fields || [];
@@ -645,7 +645,7 @@
     function L(t) {
         if (t) return A();
         var n = "<h1>" + g(E()) + "</h1>";
-        return n += "<p><strong>Plan type:</strong> " + g(F(e.meta.format)) + " | <strong>Country:</strong> " + g(e.meta.country) + " | <strong>Currency:</strong> " + g(e.meta.currency) + "</p>", 
+        return n += "<p><strong>Plan type:</strong> " + g(F(e.meta.format)) + " | <strong>Country:</strong> " + g(e.meta.country) + " | <strong>Currency:</strong> " + g(e.meta.currency) + "</p>",
         l.forEach(function(t) {
             n += "<h2>" + g(t.label) + "</h2>", t.financial ? n += N() : (t.fields || []).forEach(function(a) {
                 var i = e.sections[t.id][a[0]];
@@ -666,7 +666,7 @@
                 var a = t[0] in n ? n[t[0]] : m(e.financials[t[0]][n.year - 1]);
                 i += "<td>" + g(v(a)) + "</td>";
             }), i += "</tr>";
-        }), i += "</tbody></table>", !t && e.financials.assumptions && (i += "<p><strong>Assumptions:</strong><br>" + g(e.financials.assumptions) + "</p>"), 
+        }), i += "</tbody></table>", !t && e.financials.assumptions && (i += "<p><strong>Assumptions:</strong><br>" + g(e.financials.assumptions) + "</p>"),
         i;
     }
     function F(e) {
@@ -722,15 +722,15 @@
         } ], a = n.reduce(function(e, t) {
             return e + (t.ok ? t.points : 0);
         }, 0);
-        u("scoreValue").textContent = String(a), u("scoreMeter").style.width = a + "%", 
-        u("scoreLabel").textContent = a >= 90 ? "Ready" : a >= 70 ? "Review" : "Draft", 
+        u("scoreValue").textContent = String(a), u("scoreMeter").style.width = a + "%",
+        u("scoreLabel").textContent = a >= 90 ? "Ready" : a >= 70 ? "Review" : "Draft",
         u("checkList").innerHTML = n.map(function(e) {
             return '<div class="bp-check ' + (e.ok ? "ok" : "") + '"><span class="bp-check-dot">' + (e.ok ? "OK" : "!") + "</span><span><strong>" + g(e.label) + "</strong></span></div>";
         }).join("");
     }
     function O() {
         var e = y()[0];
-        u("metricRevenue").textContent = h(e.revenue), u("metricProfit").textContent = h(e.ebitda), 
+        u("metricRevenue").textContent = h(e.revenue), u("metricProfit").textContent = h(e.ebitda),
         u("metricMargin").textContent = (e.grossMargin || 0).toFixed(1) + "%", u("metricFunding").textContent = h(k());
     }
     function R() {
@@ -762,10 +762,10 @@
             t.value = null == n ? "" : n;
         }), function() {
             var t, n, i, r = l[a];
-            u("sectionKicker").textContent = "Section " + (a + 1) + " of " + l.length, u("sectionTitle").textContent = r.label, 
-            u("sectionHelp").textContent = r.help, u("prevSectionBtn").disabled = 0 === a, u("nextSectionBtn").textContent = a === l.length - 1 ? "Export PDF" : "Next", 
-            r.financial ? u("sectionBody").innerHTML = (t = [ [ "revenue", "Revenue" ], [ "cogs", "Cost of goods or direct costs" ], [ "grossProfit", "Gross profit", !0 ], [ "opex", "Operating expenses" ], [ "salaries", "Salaries and wages" ], [ "marketing", "Marketing and sales" ], [ "capex", "Capital expenditure" ], [ "ebitda", "Operating profit", !0 ], [ "netCash", "Net cash after capex", !0 ] ], 
-            n = y(), i = '<div class="bp-grid three"><label>Startup costs<input data-fin-single="startupCosts" type="number" min="0" step="1" value="' + f(e.financials.startupCosts) + '"></label><label>Owner equity<input data-fin-single="ownerEquity" type="number" min="0" step="1" value="' + f(e.financials.ownerEquity) + '"></label><label>Financial assumptions<input data-fin-single="assumptions" type="text" value="' + f(e.financials.assumptions) + '"></label></div><div class="bp-fin-wrap"><table class="bp-fin-table"><thead><tr><th>Line item</th>', 
+            u("sectionKicker").textContent = "Section " + (a + 1) + " of " + l.length, u("sectionTitle").textContent = r.label,
+            u("sectionHelp").textContent = r.help, u("prevSectionBtn").disabled = 0 === a, u("nextSectionBtn").textContent = a === l.length - 1 ? "Export PDF" : "Next",
+            r.financial ? u("sectionBody").innerHTML = (t = [ [ "revenue", "Revenue" ], [ "cogs", "Cost of goods or direct costs" ], [ "grossProfit", "Gross profit", !0 ], [ "opex", "Operating expenses" ], [ "salaries", "Salaries and wages" ], [ "marketing", "Marketing and sales" ], [ "capex", "Capital expenditure" ], [ "ebitda", "Operating profit", !0 ], [ "netCash", "Net cash after capex", !0 ] ],
+            n = y(), i = '<div class="bp-grid three"><label>Startup costs<input data-fin-single="startupCosts" type="number" min="0" step="1" value="' + f(e.financials.startupCosts) + '"></label><label>Owner equity<input data-fin-single="ownerEquity" type="number" min="0" step="1" value="' + f(e.financials.ownerEquity) + '"></label><label>Financial assumptions<input data-fin-single="assumptions" type="text" value="' + f(e.financials.assumptions) + '"></label></div><div class="bp-fin-wrap"><table class="bp-fin-table"><thead><tr><th>Line item</th>',
             b().forEach(function(e) {
                 i += "<th>Year " + e + "</th>";
             }), i += "</tr></thead><tbody>", t.forEach(function(t) {
@@ -812,20 +812,20 @@
                 subject: "Business plan generated with AfroTools",
                 author: E(),
                 creator: "AfroTools Business Plan Builder"
-            }), t.setFont("helvetica", "bold"), t.setFontSize(18), r = D(t, E(), i, r, s, 8, a - 16) + 4, 
-            t.setFont("helvetica", "normal"), t.setFontSize(10), r = D(t, F(e.meta.format) + " | " + e.meta.country + " | " + e.meta.currency, i, r, s, 5.5, a - 16) + 3, 
+            }), t.setFont("helvetica", "bold"), t.setFontSize(18), r = D(t, E(), i, r, s, 8, a - 16) + 4,
+            t.setFont("helvetica", "normal"), t.setFontSize(10), r = D(t, F(e.meta.format) + " | " + e.meta.country + " | " + e.meta.currency, i, r, s, 5.5, a - 16) + 3,
             l.forEach(function(n) {
-                r > a - 34 && (t.addPage(), r = 22), t.setFont("helvetica", "bold"), t.setFontSize(13), 
-                t.setTextColor(15, 74, 162), r = D(t, n.label, i, r, s, 7, a - 16) + 1, t.setTextColor(0, 0, 0), 
+                r > a - 34 && (t.addPage(), r = 22), t.setFont("helvetica", "bold"), t.setFontSize(13),
+                t.setTextColor(15, 74, 162), r = D(t, n.label, i, r, s, 7, a - 16) + 1, t.setTextColor(0, 0, 0),
                 t.setFont("times", "normal"), t.setFontSize(10.5), n.financial ? (j().forEach(function(e) {
                     r = D(t, e, i, r, s, 5.2, a - 16);
                 }), r += 3) : (n.fields || []).forEach(function(o) {
                     var c = e.sections[n.id][o[0]];
-                    x(c) && (t.setFont("helvetica", "bold"), r = D(t, o[1] + ":", i, r, s, 5.5, a - 16), 
+                    x(c) && (t.setFont("helvetica", "bold"), r = D(t, o[1] + ":", i, r, s, 5.5, a - 16),
                     t.setFont("times", "normal"), r = D(t, c, i, r, s, 5.5, a - 16) + 2);
                 });
             });
-            for (var o = 1; o <= t.getNumberOfPages(); o += 1) t.setPage(o), t.setFont("helvetica", "normal"), 
+            for (var o = 1; o <= t.getNumberOfPages(); o += 1) t.setPage(o), t.setFont("helvetica", "normal"),
             t.setFontSize(8), t.setTextColor(140), t.text("Generated with AfroTools.com", n / 2, a - 8, {
                 align: "center"
             }), t.text(String(o), n - i, a - 8, {
@@ -843,7 +843,7 @@
         var t = y(), n = [];
         return t.forEach(function(e) {
             n.push("Year " + e.year + ": revenue " + v(e.revenue) + ", gross profit " + v(e.grossProfit) + ", operating profit " + v(e.ebitda) + ", net cash " + v(e.netCash) + ", gross margin " + e.grossMargin.toFixed(1) + "%.");
-        }), e.financials.assumptions && n.push("Assumptions: " + e.financials.assumptions), 
+        }), e.financials.assumptions && n.push("Assumptions: " + e.financials.assumptions),
         n;
     }
     function G() {
@@ -866,7 +866,7 @@
             t.push([ a[1] ].concat(n.map(function(t) {
                 return a[0] in t ? t[a[0]] : e.financials[a[0]][t.year - 1];
             })));
-        }), t.push([], [ "Startup costs", e.financials.startupCosts ], [ "Owner equity", e.financials.ownerEquity ], [ "Funding required", e.sections.funding.amountNeeded || "" ]), 
+        }), t.push([], [ "Startup costs", e.financials.startupCosts ], [ "Owner equity", e.financials.ownerEquity ], [ "Funding required", e.sections.funding.amountNeeded || "" ]),
         W(t.map(K).join("\n"), J() + "-forecast.csv", "text/csv;charset=utf-8");
     }
     function z() {
@@ -910,7 +910,7 @@
         var a = e instanceof Blob ? e : new Blob([ e ], {
             type: n || "application/octet-stream"
         }), i = document.createElement("a");
-        i.href = URL.createObjectURL(a), i.download = t, document.body.appendChild(i), i.click(), 
+        i.href = URL.createObjectURL(a), i.download = t, document.body.appendChild(i), i.click(),
         i.remove(), setTimeout(function() {
             URL.revokeObjectURL(i.href);
         }, 500);
@@ -920,8 +920,8 @@
     }
     function V(e) {
         var t = document.querySelector(".bp-toast");
-        t || ((t = document.createElement("div")).className = "bp-toast", t.setAttribute("role", "status"), 
-        t.setAttribute("aria-live", "polite"), document.body.appendChild(t)), t.textContent = e, 
+        t || ((t = document.createElement("div")).className = "bp-toast", t.setAttribute("role", "status"),
+        t.setAttribute("aria-live", "polite"), document.body.appendChild(t)), t.textContent = e,
         t.classList.add("show"), clearTimeout(V.timer), V.timer = setTimeout(function() {
             t.classList.remove("show");
         }, 2400);
@@ -982,12 +982,12 @@
                 return e.sections[a[0]][a[1]] = n.value, w(), C(), M(), void P();
             }
             var i = t.target.closest("[data-fin-row]");
-            if (i) return e.financials[i.getAttribute("data-fin-row")][Number(i.getAttribute("data-fin-year"))] = m(i.value), 
+            if (i) return e.financials[i.getAttribute("data-fin-row")][Number(i.getAttribute("data-fin-year"))] = m(i.value),
             S(), w(), C(), M(), O(), void P();
             var r = t.target.closest("[data-fin-single]");
             if (r) {
                 var s = r.getAttribute("data-fin-single");
-                e.financials[s] = "assumptions" === s ? r.value : m(r.value), S(), w(), C(), M(), 
+                e.financials[s] = "assumptions" === s ? r.value : m(r.value), S(), w(), C(), M(),
                 O(), P();
             }
         }), document.body.addEventListener("change", function(t) {
@@ -997,12 +997,12 @@
                 !function(t, n) {
                     for (var a = t.split("."), i = e, r = 0; r < a.length - 1; r += 1) i = i[a[r]];
                     i[a[a.length - 1]] = n;
-                }(a, n.value), "meta.country" === a && (e.meta.currency = o[e.meta.country] || e.meta.currency), 
+                }(a, n.value), "meta.country" === a && (e.meta.currency = o[e.meta.country] || e.meta.currency),
                 "meta.forecastYears" === a && (e.meta.forecastYears = Number(n.value) || 3), T();
             }
         }), u("templateRow").addEventListener("click", function(t) {
             var n, a, i = t.target.closest("[data-template]");
-            i && (n = i.getAttribute("data-template"), (e = p(d(e, (a = c[n] || c.blank).data || {}))).meta.template = n, 
+            i && (n = i.getAttribute("data-template"), (e = p(d(e, (a = c[n] || c.blank).data || {}))).meta.template = n,
             e.meta.industry = a.sector || e.meta.industry, T(), V(a.label + " template applied."));
         }), u("sectionNav").addEventListener("click", function(e) {
             var t = e.target.closest("[data-section-index]");
@@ -1011,10 +1011,10 @@
             a > 0 && (a -= 1, T());
         }), u("nextSectionBtn").addEventListener("click", function() {
             a < l.length - 1 ? (a += 1, T()) : q();
-        }), u("savePlanBtn").addEventListener("click", B), u("savePlanSideBtn").addEventListener("click", B), 
-        u("pdfBtn").addEventListener("click", q), u("docBtn").addEventListener("click", G), 
-        u("txtBtn").addEventListener("click", H), u("csvBtn").addEventListener("click", U), 
-        u("jsonBtn").addEventListener("click", z), u("copyBriefBtn").addEventListener("click", I), 
+        }), u("savePlanBtn").addEventListener("click", B), u("savePlanSideBtn").addEventListener("click", B),
+        u("pdfBtn").addEventListener("click", q), u("docBtn").addEventListener("click", G),
+        u("txtBtn").addEventListener("click", H), u("csvBtn").addEventListener("click", U),
+        u("jsonBtn").addEventListener("click", z), u("copyBriefBtn").addEventListener("click", I),
         u("onePageBtn").addEventListener("click", function() {
             u("planPreview").innerHTML = A(), V("One-page brief previewed.");
         }), u("importJson").addEventListener("change", Y), u("savedPlans").addEventListener("click", function(t) {
@@ -1024,7 +1024,7 @@
                 r && r.data && (i = r.id, e = p(r.data), a = 0, T(), V("Plan loaded."));
             }(r.getAttribute("data-open-saved")), s && function(e) {
                 var t = n && n.load(e);
-                window.confirm('Delete "' + (t ? t.title : "this plan") + '" from this browser?') && (n.delete(e), 
+                window.confirm('Delete "' + (t ? t.title : "this plan") + '" from this browser?') && (n.delete(e),
                 R());
             }(s.getAttribute("data-delete-saved"));
         }), T(), R();

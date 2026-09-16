@@ -7,7 +7,7 @@ const SUBJECTS = Object.freeze({ english: 'Use of English', mathematics: 'Mathem
   literature: 'Literature in English', crk: 'Christian Religious Knowledge', commerce: 'Commerce', accounts: 'Principles of Accounts' });
 const HASH = /^[a-f0-9]{64}$/;
 const QUESTION_FIELDS = new Set(['id', 'subject', 'year', 'num', 'question', 'options', 'answer', 'format',
-  'has_diagram', 'ai_explanation', 'explanation', 'passage', 'image', 'image_alt', 'topic', 'verification']);
+  'has_diagram', 'ai_explanation', 'explanation', 'passage', 'image', 'image_alt', 'topic', 'verification', 'source_provenance']);
 
 function without(object, key) { const copy = { ...object }; delete copy[key]; return copy; }
 function reviewed(object) { return { ...object, review: { status: 'reviewed', content_sha256: digest(object) } }; }

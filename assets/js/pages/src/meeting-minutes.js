@@ -114,8 +114,8 @@
         var e = {};
         return l.forEach(function(t) {
             e[t] = T(t);
-        }), e.attendees = o.slice(), e.agendaItems = r.slice(), e.decisions = s.slice(), 
-        e.actions = d.slice(), e.minutesText = T("minutesText"), e.selectedId = n, e.updatedAt = Date.now(), 
+        }), e.attendees = o.slice(), e.agendaItems = r.slice(), e.decisions = s.slice(),
+        e.actions = d.slice(), e.minutesText = T("minutesText"), e.selectedId = n, e.updatedAt = Date.now(),
         e;
     }
     function S(e, t) {
@@ -169,7 +169,7 @@
             }).filter(function(e) {
                 return e.text;
             });
-        }(e.actions), n = e.selectedId || n || null, L(), !t && e.minutesText && (b("minutesText", e.minutesText), 
+        }(e.actions), n = e.selectedId || n || null, L(), !t && e.minutesText && (b("minutesText", e.minutesText),
         i = !0), T("minutesText") ? A() : E(), R());
     }
     function y(e, t, n) {
@@ -189,14 +189,14 @@
                             var o = document.createElement("p");
                             return o.className = "paper-title", o.textContent = a, void t.appendChild(o);
                         }
-                        if (/^[A-Z0-9 ,&/-]{4,}$/.test(a) && a.length < 40) return (i = document.createElement("h3")).textContent = a, 
+                        if (/^[A-Z0-9 ,&/-]{4,}$/.test(a) && a.length < 40) return (i = document.createElement("h3")).textContent = a,
                         void t.appendChild(i);
                         var r = document.createElement("p");
                         r.textContent = a, t.appendChild(r);
                     }
                 });
                 var a = document.createElement("div");
-                a.className = "paper-muted", a.textContent = "Generated privately with AfroTools.com", 
+                a.className = "paper-muted", a.textContent = "Generated privately with AfroTools.com",
                 t.appendChild(a);
             }
         }(t.minutesText), e = function(e) {
@@ -217,13 +217,13 @@
             }).length, l = d.filter(function(e) {
                 return e.due;
             }).length;
-            return i("Meeting basics", 12, Boolean(e.meetingTitle && e.meetingDate && e.chair), "Add title, date, and chair."), 
-            i("Minute ownership", 8, Boolean(e.minuteTaker), "Name the minute taker."), i("Attendees", 12, o.length > 0, "Add attendees and their status."), 
-            i("Agenda evidence", 16, r.length > 0 && a >= Math.min(r.length, 2), "Add agenda items with notes or outcomes."), 
-            i("Decisions", 14, c > 0, "Record at least one decision or outcome."), i("Action owners", 14, d.length > 0 && u === d.length, "Every action should have an owner."), 
-            i("Action due dates", 12, d.length > 0 && l === d.length, "Every action should have a due date."), 
-            i("Next meeting", 6, Boolean(e.nextDate || e.nextAgenda), "Add next meeting date or proposed agenda."), 
-            i("Risk handling", 6, Boolean(e.risks || e.parkingLot), "Capture risks, blockers, or unresolved topics."), 
+            return i("Meeting basics", 12, Boolean(e.meetingTitle && e.meetingDate && e.chair), "Add title, date, and chair."),
+            i("Minute ownership", 8, Boolean(e.minuteTaker), "Name the minute taker."), i("Attendees", 12, o.length > 0, "Add attendees and their status."),
+            i("Agenda evidence", 16, r.length > 0 && a >= Math.min(r.length, 2), "Add agenda items with notes or outcomes."),
+            i("Decisions", 14, c > 0, "Record at least one decision or outcome."), i("Action owners", 14, d.length > 0 && u === d.length, "Every action should have an owner."),
+            i("Action due dates", 12, d.length > 0 && l === d.length, "Every action should have a due date."),
+            i("Next meeting", 6, Boolean(e.nextDate || e.nextAgenda), "Add next meeting date or proposed agenda."),
+            i("Risk handling", 6, Boolean(e.risks || e.parkingLot), "Capture risks, blockers, or unresolved topics."),
             {
                 score: Math.max(0, Math.min(100, n)),
                 checks: t,
@@ -232,10 +232,10 @@
                 actionsWithOwner: u,
                 actionsWithDue: l
             };
-        }(t), m("scoreValue").textContent = String(e.score), m("scoreRing").style.setProperty("--score-deg", Math.round(3.6 * e.score) + "deg"), 
-        m("scoreCopy").textContent = e.score >= 85 ? "Strong minutes. Ready to share after a final read." : e.score >= 65 ? "Good base. Close the warnings below before sharing." : "Needs more structure before this can drive follow-through.", 
-        m("metricAttendees").textContent = String(o.length), m("metricAgenda").textContent = String(r.length), 
-        m("metricDecisions").textContent = String(e.decisionsTotal), m("metricActions").textContent = String(d.length), 
+        }(t), m("scoreValue").textContent = String(e.score), m("scoreRing").style.setProperty("--score-deg", Math.round(3.6 * e.score) + "deg"),
+        m("scoreCopy").textContent = e.score >= 85 ? "Strong minutes. Ready to share after a final read." : e.score >= 65 ? "Good base. Close the warnings below before sharing." : "Needs more structure before this can drive follow-through.",
+        m("metricAttendees").textContent = String(o.length), m("metricAgenda").textContent = String(r.length),
+        m("metricDecisions").textContent = String(e.decisionsTotal), m("metricActions").textContent = String(d.length),
         m("checksList").innerHTML = e.checks.map(function(e) {
             return '<div class="check ' + (e.good ? "good" : "warn") + '"><strong>' + p(e.label) + "</strong><br>" + p(e.good ? "Looks good." : e.detail) + "</div>";
         }).join(""), D(t);
@@ -251,16 +251,16 @@
             }).length, l = d.length - u;
             t.push(n.toUpperCase()), e.organization && t.push(e.organization);
             var m = [];
-            e.meetingDate && m.push("Date: " + w(e.meetingDate)), (e.startTime || e.endTime) && m.push("Time: " + [ e.startTime, e.endTime ].filter(Boolean).join(" to ")), 
-            e.location && m.push("Location: " + e.location), m.length && t.push(m.join(" | ")), 
-            (e.chair || e.minuteTaker) && t.push([ e.chair ? "Chair: " + e.chair : "", e.minuteTaker ? "Minutes by: " + e.minuteTaker : "" ].filter(Boolean).join(" | ")), 
-            t.push(""), t.push("SUMMARY"), "standup" === i ? t.push("This meeting covered " + r.length + " agenda item(s), recorded " + s.length + " decision(s), and left " + l + " open action item(s).") : t.push("The meeting recorded " + o.length + " attendee(s), " + r.length + " agenda item(s), " + s.length + " decision(s), and " + d.length + " action item(s). " + u + " action item(s) are complete and " + l + " remain open."), 
+            e.meetingDate && m.push("Date: " + w(e.meetingDate)), (e.startTime || e.endTime) && m.push("Time: " + [ e.startTime, e.endTime ].filter(Boolean).join(" to ")),
+            e.location && m.push("Location: " + e.location), m.length && t.push(m.join(" | ")),
+            (e.chair || e.minuteTaker) && t.push([ e.chair ? "Chair: " + e.chair : "", e.minuteTaker ? "Minutes by: " + e.minuteTaker : "" ].filter(Boolean).join(" | ")),
+            t.push(""), t.push("SUMMARY"), "standup" === i ? t.push("This meeting covered " + r.length + " agenda item(s), recorded " + s.length + " decision(s), and left " + l + " open action item(s).") : t.push("The meeting recorded " + o.length + " attendee(s), " + r.length + " agenda item(s), " + s.length + " decision(s), and " + d.length + " action item(s). " + u + " action item(s) are complete and " + l + " remain open."),
             a.length && y(t, "ATTENDEES PRESENT", a.map(function(e) {
                 return "- " + e.name + (e.role ? ", " + e.role : "") + ("remote" === e.status ? " (remote)" : "");
             }).join("\n")), c.length && y(t, "APOLOGIES OR ABSENT", c.map(function(e) {
                 return "- " + e.name + (e.role ? ", " + e.role : "") + " (" + e.status + ")";
             }).join("\n")), r.length && (t.push(""), t.push("AGENDA AND DISCUSSION"), r.forEach(function(e, n) {
-                t.push(String(n + 1) + ". " + (e.title || "Untitled agenda item")), e.discussion && t.push("   Discussion: " + e.discussion), 
+                t.push(String(n + 1) + ". " + (e.title || "Untitled agenda item")), e.discussion && t.push("   Discussion: " + e.discussion),
                 e.decision && t.push("   Outcome: " + e.decision);
             }));
             var g = s.slice();
@@ -278,15 +278,15 @@
                     day: "numeric",
                     month: "short",
                     year: "numeric"
-                })), e.priority && i.push("Priority: " + e.priority), e.status && i.push("Status: " + e.status), 
+                })), e.priority && i.push("Priority: " + e.priority), e.status && i.push("Status: " + e.status),
                 t.push(String(n + 1) + ". " + e.text + (i.length ? " (" + i.join("; ") + ")" : ""));
-            })), e.risks && y(t, "RISKS OR BLOCKERS", e.risks), e.parkingLot && y(t, "PARKING LOT", e.parkingLot), 
-            (e.nextDate || e.nextAgenda) && (t.push(""), t.push("NEXT MEETING"), e.nextDate && t.push("Date: " + w(e.nextDate) + (e.nextTime ? " at " + e.nextTime : "")), 
-            e.nextAgenda && t.push("Proposed agenda: " + e.nextAgenda)), t.push(""), t.push("Prepared with AfroTools Meeting Minutes Generator."), 
+            })), e.risks && y(t, "RISKS OR BLOCKERS", e.risks), e.parkingLot && y(t, "PARKING LOT", e.parkingLot),
+            (e.nextDate || e.nextAgenda) && (t.push(""), t.push("NEXT MEETING"), e.nextDate && t.push("Date: " + w(e.nextDate) + (e.nextTime ? " at " + e.nextTime : "")),
+            e.nextAgenda && t.push("Proposed agenda: " + e.nextAgenda)), t.push(""), t.push("Prepared with AfroTools Meeting Minutes Generator."),
             t.join("\n");
         }(x())), i = !1;
         var e = m("editState");
-        e && (e.textContent = "Generated from the structured form. You can edit the text directly before exporting."), 
+        e && (e.textContent = "Generated from the structured form. You can edit the text directly before exporting."),
         A();
     }
     function D(t) {
@@ -307,7 +307,7 @@
         var e;
         (e = m("attendeeList")) && (o.length ? e.innerHTML = o.map(function(e) {
             return '<div class="list-item"><div class="list-title">' + p(e.name) + '</div><div class="list-meta">' + p([ e.role, e.status, e.email ].filter(Boolean).join(" | ")) + '</div><div class="list-actions"><button class="btn btn-danger" type="button" data-remove-attendee="' + p(e.id) + '">Remove</button></div></div>';
-        }).join("") : e.innerHTML = '<div class="helper">No attendees yet.</div>'), N(), 
+        }).join("") : e.innerHTML = '<div class="helper">No attendees yet.</div>'), N(),
         function() {
             var e = m("decisionList");
             e && (s.length ? e.innerHTML = s.map(function(e) {
@@ -351,7 +351,7 @@
         var i = new Blob([ n ], {
             type: t
         }), a = URL.createObjectURL(i), o = document.createElement("a");
-        o.href = a, o.download = e, document.body.appendChild(o), o.click(), o.remove(), 
+        o.href = a, o.download = e, document.body.appendChild(o), o.click(), o.remove(),
         setTimeout(function() {
             URL.revokeObjectURL(a);
         }, 5e3);
@@ -398,7 +398,7 @@
         }
         if (i) {
             var n = m("editState");
-            return n && (n.textContent = "Structured fields changed after manual edits. Click Rebuild to regenerate the minutes."), 
+            return n && (n.textContent = "Structured fields changed after manual edits. Click Rebuild to regenerate the minutes."),
             void A();
         }
         E();
@@ -417,7 +417,7 @@
             e && e.addEventListener("input", function() {
                 i = !0;
                 var e = m("editState");
-                e && (e.textContent = "Manual edits are preserved. Use Rebuild only when you want a fresh structured version."), 
+                e && (e.textContent = "Manual edits are preserved. Use Rebuild only when you want a fresh structured version."),
                 A();
             }), document.addEventListener("input", function(e) {
                 var t = e.target;
@@ -439,7 +439,7 @@
                                 data: e,
                                 thumbnail: null
                             });
-                            n = t.id, e.selectedId = n, D(e), history.replaceState(null, "", "?id=" + encodeURIComponent(n)), 
+                            n = t.id, e.selectedId = n, D(e), history.replaceState(null, "", "?id=" + encodeURIComponent(n)),
                             R(), v("Saved.");
                         } else v("Saving is not available in this browser.");
                     }(), "copy" === y && function() {
@@ -464,12 +464,12 @@
                                 creator: "AfroTools Meeting Minutes Generator"
                             }), String(e.minutesText || "").split("\n").forEach(function(e, n) {
                                 var r = e || " ", s = /^[A-Z0-9 ,&/-]{4,}$/.test(r.trim()) && r.trim().length < 42;
-                                t.setFont(s || 0 === n ? "helvetica" : "times", s || 0 === n ? "bold" : "normal"), 
+                                t.setFont(s || 0 === n ? "helvetica" : "times", s || 0 === n ? "bold" : "normal"),
                                 t.setFontSize(0 === n ? 14 : s ? 10 : 10.5), t.splitTextToSize(r, o).forEach(function(e) {
                                     a > i - 20 && (t.addPage(), a = 20), t.text(e, 18, a), a += 5.5;
                                 }), !s && e || (a += 1.5);
                             });
-                            for (var r = t.getNumberOfPages(), s = 1; s <= r; s += 1) t.setPage(s), t.setFont("helvetica", "normal"), 
+                            for (var r = t.getNumberOfPages(), s = 1; s <= r; s += 1) t.setPage(s), t.setFont("helvetica", "normal"),
                             t.setFontSize(8), t.setTextColor(130), t.text("Generated privately with AfroTools.com", n / 2, i - 10, {
                                 align: "center"
                             }), t.setTextColor(0);
@@ -477,11 +477,11 @@
                         } else v("PDF library is still loading. Try again in a moment.");
                     }(), "word" === y && (c = x(), u = String(c.minutesText || "").split(/\n{2,}/).map(function(e) {
                         return "<p>" + p(e).replace(/\n/g, "<br>") + "</p>";
-                    }).join(""), l = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + p(C(c)) + "</title><style>body{font-family:Georgia,serif;font-size:11pt;line-height:1.55;margin:54pt;}p{margin:0 0 12pt;}</style></head><body>" + u + "</body></html>", 
-                    M(f(C(c), "meeting-minutes") + ".doc", "application/msword;charset=utf-8", l), v("Word-compatible document downloaded.")), 
+                    }).join(""), l = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + p(C(c)) + "</title><style>body{font-family:Georgia,serif;font-size:11pt;line-height:1.55;margin:54pt;}p{margin:0 0 12pt;}</style></head><body>" + u + "</body></html>",
+                    M(f(C(c), "meeting-minutes") + ".doc", "application/msword;charset=utf-8", l), v("Word-compatible document downloaded.")),
                     "txt" === y && function() {
                         var e = x();
-                        M(f(C(e), "meeting-minutes") + ".txt", "text/plain;charset=utf-8", e.minutesText), 
+                        M(f(C(e), "meeting-minutes") + ".txt", "text/plain;charset=utf-8", e.minutesText),
                         v("TXT downloaded.");
                     }(), "csv" === y && function() {
                         var e = [ [ "Action", "Owner", "Due date", "Priority", "Status", "Source" ] ];
@@ -491,10 +491,10 @@
                         var t = e.map(function(e) {
                             return e.map(k).join(",");
                         }).join("\n");
-                        M(f(T("meetingTitle"), "meeting-actions") + "-actions.csv", "text/csv;charset=utf-8", t), 
+                        M(f(T("meetingTitle"), "meeting-actions") + "-actions.csv", "text/csv;charset=utf-8", t),
                         v("Actions CSV downloaded.");
                     }(), "ics" === y && function() {
-                        var e, t, n = x(), i = (e = n.nextDate || n.meetingDate, t = n.nextTime || n.startTime, 
+                        var e, t, n = x(), i = (e = n.nextDate || n.meetingDate, t = n.nextTime || n.startTime,
                         e ? String(e).replace(/-/g, "") + "T" + String(t || "0900").replace(":", "").padEnd(4, "0") + "00" : "");
                         if (i) {
                             var a = "Next meeting: " + C(n), o = (n.nextAgenda || "Follow-up meeting generated from AfroTools minutes.").replace(/\r?\n/g, "\\n"), r = [ "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AfroTools//Meeting Minutes//EN", "BEGIN:VEVENT", "UID:" + g("meeting") + "@afrotools.com", "DTSTAMP:" + (new Date).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z"), "DTSTART:" + i, "SUMMARY:" + a, "DESCRIPTION:" + o, "LOCATION:" + (n.location || ""), "END:VEVENT", "END:VCALENDAR" ].join("\r\n");
@@ -502,9 +502,9 @@
                         } else v("Add a next meeting date first.");
                     }(), "json" === y && function() {
                         var e = x();
-                        M(f(C(e), "meeting-minutes") + ".json", "application/json;charset=utf-8", JSON.stringify(e, null, 2)), 
+                        M(f(C(e), "meeting-minutes") + ".json", "application/json;charset=utf-8", JSON.stringify(e, null, 2)),
                         v("JSON downloaded.");
-                    }(), "import" === y && m("importInput").click(), "print" === y && window.print(), 
+                    }(), "import" === y && m("importInput").click(), "print" === y && window.print(),
                     "add-attendee" === y && ((i = T("attendeeName")) ? (o.push({
                         id: g("attendee"),
                         name: i,
@@ -546,10 +546,10 @@
                         }), I()) : v("Add an action.");
                     }();
                 }
-                (h = e.target.closest("[data-remove-attendee]") && e.target.closest("[data-remove-attendee]").getAttribute("data-remove-attendee")) && (o = O(o, h), 
-                I()), (h = e.target.closest("[data-remove-agenda]") && e.target.closest("[data-remove-agenda]").getAttribute("data-remove-agenda")) && (r = O(r, h), 
-                I()), (h = e.target.closest("[data-remove-decision]") && e.target.closest("[data-remove-decision]").getAttribute("data-remove-decision")) && (s = O(s, h), 
-                I()), (h = e.target.closest("[data-remove-action]") && e.target.closest("[data-remove-action]").getAttribute("data-remove-action")) && (d = O(d, h), 
+                (h = e.target.closest("[data-remove-attendee]") && e.target.closest("[data-remove-attendee]").getAttribute("data-remove-attendee")) && (o = O(o, h),
+                I()), (h = e.target.closest("[data-remove-agenda]") && e.target.closest("[data-remove-agenda]").getAttribute("data-remove-agenda")) && (r = O(r, h),
+                I()), (h = e.target.closest("[data-remove-decision]") && e.target.closest("[data-remove-decision]").getAttribute("data-remove-decision")) && (s = O(s, h),
+                I()), (h = e.target.closest("[data-remove-action]") && e.target.closest("[data-remove-action]").getAttribute("data-remove-action")) && (d = O(d, h),
                 I()), (h = e.target.closest("[data-toggle-action]") && e.target.closest("[data-toggle-action]").getAttribute("data-toggle-action")) && (d = d.map(function(e) {
                     return e.id === h && (e.status = "done" === e.status ? "open" : "done"), e;
                 }), I());
@@ -557,7 +557,7 @@
                 A && function(e) {
                     if (a) {
                         var t = a.load(e);
-                        t && t.data ? (n = t.id, S(t.data, !1), history.replaceState(null, "", "?id=" + encodeURIComponent(t.id)), 
+                        t && t.data ? (n = t.id, S(t.data, !1), history.replaceState(null, "", "?id=" + encodeURIComponent(t.id)),
                         v("Loaded saved minutes.")) : v("Saved minutes not found.");
                     }
                 }(A.getAttribute("data-load"));
@@ -574,7 +574,7 @@
                         t.onload = function() {
                             try {
                                 var e = validateDocumentBackup(JSON.parse(String(t.result || "{}")));
-                                n = e.selectedId || null, S(e, !1), history.replaceState(null, "", window.location.pathname), 
+                                n = e.selectedId || null, S(e, !1), history.replaceState(null, "", window.location.pathname),
                                 v("Imported minutes.");
                             } catch (e) {
                                 v("Invalid JSON file.");
@@ -608,7 +608,7 @@
                     return null;
                 }
             }();
-            return !(!c || !c.meetingTitle && !c.minutesText || (n = c.selectedId || null, S(c, !1), 
+            return !(!c || !c.meetingTitle && !c.minutesText || (n = c.selectedId || null, S(c, !1),
             0));
         }() || E(), L(), R();
     }

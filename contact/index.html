@@ -33,7 +33,7 @@
   body {
     font-family: -apple-system, 'SF Pro Display', 'DM Sans', system-ui, sans-serif;
     background: #f5f5f7;
-    color: #1d1d1f;
+    color: var(--color-text);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -197,12 +197,12 @@
   .success-msg h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: #1d1d1f;
+    color: var(--color-text);
     margin-bottom: 8px;
   }
   .success-msg p {
     font-size: 0.84rem;
-    color: #6e6e73;
+    color: var(--color-text-muted);
     line-height: 1.6;
   }
 
@@ -210,7 +210,7 @@
   .sidebar { display: flex; flex-direction: column; gap: 14px; }
 
   .info-card {
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 20px;
     padding: 22px 22px;
     box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.04);
@@ -242,12 +242,12 @@
   .info-content h3 {
     font-size: 0.88rem;
     font-weight: 700;
-    color: #1d1d1f;
+    color: var(--color-text);
     margin-bottom: 4px;
   }
   .info-content p {
     font-size: 0.78rem;
-    color: #6e6e73;
+    color: var(--color-text-muted);
     line-height: 1.55;
   }
   .info-content a {
@@ -368,8 +368,9 @@
       </div>
 
       <button type="submit" class="submit-btn btn btn-primary">Send Message →</button>
+      <p id="contactStatus" role="status" aria-live="polite"></p>
 
-      <div class="success-msg" id="successMsg">
+      <div class="success-msg" id="successMsg" role="status">
         <div class="success-icon">✅</div>
         <h3>Message sent!</h3>
         <p>Thank you — we'll get back to you within 24 hours.</p>
@@ -428,33 +429,50 @@
 
 </div>
 
-<section style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:48px 24px;">
+<section style="background:var(--color-surface-muted);border-top:1px solid var(--color-border);padding:48px 24px;">
   <div style="max-width:900px;margin:0 auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;color:#111827;margin-bottom:16px;">What We Can Help With</h2>
-    <p style="font-size:0.88rem;color:#374151;line-height:1.75;margin-bottom:16px;">Our team reviews every message personally. Here are the types of enquiries we handle most often:</p>
+    <h2 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin-bottom:16px;">What We Can Help With</h2>
+    <p style="font-size:0.88rem;color:var(--color-text-muted);line-height:1.75;margin-bottom:16px;">Our team reviews every message personally. Here are the types of enquiries we handle most often:</p>
     <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:24px;">
-      <li style="padding:14px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;font-size:0.84rem;color:#374151;line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:#111827;">Bug Reports &amp; Calculation Errors</strong>If a calculator gives incorrect results, tell us the inputs you used and what the correct figure should be. We typically fix reported bugs within 48 hours.</li>
-      <li style="padding:14px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;font-size:0.84rem;color:#374151;line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:#111827;">Feature Requests &amp; Tool Suggestions</strong>Want a new tool or country added? We prioritise based on community demand. High-request tools move to the front of our roadmap.</li>
-      <li style="padding:14px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;font-size:0.84rem;color:#374151;line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:#111827;">Partnership &amp; Collaboration</strong>We work with African fintech companies, NGOs, government agencies, and educational institutions to build custom tools and integrations.</li>
-      <li style="padding:14px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;font-size:0.84rem;color:#374151;line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:#111827;">Advertising &amp; Sponsorship</strong>Reach African professionals making real financial decisions. We offer banner placements, sponsored tools, and newsletter sponsorships.</li>
+      <li style="padding:14px 16px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:10px;font-size:0.84rem;color:var(--color-text-muted);line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:var(--color-text);">Bug Reports &amp; Calculation Errors</strong>If a calculator gives incorrect results, tell us the inputs you used and what the correct figure should be. We typically fix reported bugs within 48 hours.</li>
+      <li style="padding:14px 16px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:10px;font-size:0.84rem;color:var(--color-text-muted);line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:var(--color-text);">Feature Requests &amp; Tool Suggestions</strong>Want a new tool or country added? We prioritise based on community demand. High-request tools move to the front of our roadmap.</li>
+      <li style="padding:14px 16px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:10px;font-size:0.84rem;color:var(--color-text-muted);line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:var(--color-text);">Partnership &amp; Collaboration</strong>We work with African fintech companies, NGOs, government agencies, and educational institutions to build custom tools and integrations.</li>
+      <li style="padding:14px 16px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:10px;font-size:0.84rem;color:var(--color-text-muted);line-height:1.6;"><strong style="display:block;margin-bottom:4px;color:var(--color-text);">Advertising &amp; Sponsorship</strong>Reach African professionals making real financial decisions. We offer banner placements, sponsored tools, and newsletter sponsorships.</li>
     </ul>
-    <p style="font-size:0.88rem;color:#374151;line-height:1.75;margin-bottom:12px;"><strong>Response times:</strong> We aim to respond within 1-2 business days. Bug reports and calculation errors are treated as high priority and often resolved same-day.</p>
-    <p style="font-size:0.88rem;color:#374151;line-height:1.75;">AfroTools is built by a small, Africa-focused team passionate about creating world-class tools for the continent. Every message matters to us because our users shape what we build next.</p>
+    <p style="font-size:0.88rem;color:var(--color-text-muted);line-height:1.75;margin-bottom:12px;"><strong>Response times:</strong> We aim to respond within 1-2 business days. Bug reports and calculation errors are treated as high priority and often resolved same-day.</p>
+    <p style="font-size:0.88rem;color:var(--color-text-muted);line-height:1.75;">AfroTools is built by a small, Africa-focused team passionate about creating world-class tools for the continent. Every message matters to us because our users shape what we build next.</p>
   </div>
 </section>
 
 <afro-footer></afro-footer>
 
 <script>
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
     const form = this;
-    setTimeout(function() {
+    const button = form.querySelector('.submit-btn');
+    const status = document.getElementById('contactStatus');
+    if (button.disabled) return;
+    button.disabled = true;
+    status.textContent = 'Sending your message…';
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      });
+      if (!response.ok) throw new Error('Submission rejected');
       form.reset();
+      status.textContent = '';
       document.getElementById('successMsg').style.display = 'block';
       form.querySelectorAll('.field, .form-row').forEach(el => el.style.display = 'none');
-      form.querySelector('.submit-btn').style.display = 'none';
+      button.style.display = 'none';
       form.closest('.form-card').querySelector('.form-card-sub').style.display = 'none';
-    }, 200);
+    } catch (error) {
+      status.textContent = 'Your message could not be sent. Your text is still here; please try again.';
+    } finally {
+      button.disabled = false;
+    }
   });
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>

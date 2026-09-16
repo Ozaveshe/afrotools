@@ -34,5 +34,3 @@ for(const locale of Object.keys(routes))for(const count of [1,36])test(`${locale
  for(const [index,url]of [result.source,...result.renders].entries()){const name=index===0?'source.png':`page-${index}.png`;const image=Buffer.from(url.split(',')[1],'base64');fs.writeFileSync(path.join(folder,name),image);await info.attach(name,{body:image,contentType:'image/png'});}
  console.log(`${locale}/${count}: ${result.pages} pages saved ${folder}`);
 });
-
-

@@ -49,5 +49,3 @@ for(const locale of ['en','fr','sw'])for(const app of Object.keys(routes))test(`
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
  expect(leaks).toEqual([]);
 });
-
-

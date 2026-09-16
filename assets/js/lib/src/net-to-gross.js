@@ -73,12 +73,10 @@
                                 l && (l.textContent = (n ? "Brut : " : "Gross: ") + o(w) + "/" + y + (n ? " · Net : " : " · Take-home: ") + o(m) + "/" + y);
                             }
                         }(isSwahili() && window.RESULT ? window.RESULT.gross : a);
-                        // Keep the requested net in the Swahili input; repeated clicks must not treat the previous gross as a new target.
-                        if (isSwahili()) {
-                            o.value = r;
-                            if (u) u.value = r;
-                            if (s && window.fmt) s.textContent = window.fmt(r);
-                        }
+                        // Preserve the requested net in every locale so repeated calculations keep the same target.
+                        o.value = r;
+                        if (u) u.value = r;
+                        if (s && window.fmt) s.textContent = window.fmt(r);
                     } else {
                         t();
                         var l = document.getElementById("resLabel") || document.querySelector(".res-hero-label");

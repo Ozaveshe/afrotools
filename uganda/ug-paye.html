@@ -94,6 +94,33 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<style>
+.toggles button.tog { font: inherit; text-align: left; color: inherit; background: transparent; }
+.tog-label, .tog-rate { display: block; }
+html[data-theme="dark"] .toggles .tog-label { color: var(--color-text); }
+html[data-theme="dark"] .toggles .tog-rate { color: var(--color-text-muted); }
+html[data-theme="dark"] #resultsCard .res-row-lbl { color: var(--color-text-muted) !important; }
+html[data-theme="dark"] #resultsCard .res-row-val,
+html[data-theme="dark"] #resultsCard .res-row.total .res-row-lbl { color: var(--color-text) !important; }
+html[data-theme="dark"] #resultsCard .res-row-val.c-red { color: #fca5a5 !important; }
+html[data-theme="dark"] #resultsCard .res-row-val.c-grn { color: #6ee7b7 !important; }
+html[data-theme="dark"] #resultsCard #effRateDisplay { color: var(--color-text) !important; }
+html[data-theme="dark"] #resultsCard .chart-tab,
+html[data-theme="dark"] #resultsCard .calc-save-status,
+html[data-theme="dark"] #resultsCard .calc-save-empty span { color: var(--color-text-muted) !important; }
+html[data-theme="dark"] #resultsCard .per-btn.on,
+html[data-theme="dark"] #resultsCard .chart-tab.on { color: #fff !important; background: #1e40af !important; }
+button.rate-toggle { width: 100%; font: inherit; text-align: left; color: inherit; }
+button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+.ng-guide-grid, .ng-guide-col, .ng-guide-card { min-width: 0; }
+.ng-bands-table-wrap { max-width: 100%; overflow-x: auto; }
+@media (max-width: 600px) {
+  .tool-main-inner > div { min-width: 0; }
+  .res-hero-amount { font-size: clamp(1.5rem, 7vw, 2.2rem); overflow-wrap: anywhere; }
+  .ng-guide-grid { grid-template-columns: minmax(0, 1fr); }
+  .ng-guide-card-table { display: block; }
+}
+</style>
 <link rel="canonical" href="https://afrotools.com/uganda/ug-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/uganda/ug-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/uganda/ug-paye">
@@ -142,7 +169,7 @@
               <span class="slider-label">Monthly Salary</span>
               <span class="slider-val" id="sliderVal">UGX 1,500,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" value="1500000" step="50000" oninput="onSlider(this)">
+            <input aria-label="Monthly salary slider" type="range" id="salarySlider" min="100000" max="20000000" value="1500000" step="50000" oninput="onSlider(this)">
             <div class="slider-limits">
               <span>UGX 100k</span>
               <span>UGX 20M</span>
@@ -174,14 +201,14 @@
               <span class="f-label-text">Employment Status</span>
             </div>
             <div class="toggles">
-              <div class="tog on" data-tog="resident" onclick="togItem(this)">
-                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
-                <div class="tog-label">Resident<div class="tog-rate">Progressive tax</div></div>
-              </div>
-              <div class="tog" data-tog="nonres" onclick="togItem(this)">
-                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
-                <div class="tog-label">Non-Resident<div class="tog-rate">Progressive 10% · 20% · 30%</div></div>
-              </div>
+              <button type="button" class="tog on" data-tog="resident" aria-pressed="true" onclick="togItem(this)">
+                <span class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></span>
+                <span class="tog-label">Resident<span class="tog-rate">Progressive tax</span></span>
+              </button>
+              <button type="button" class="tog" data-tog="nonres" aria-pressed="false" onclick="togItem(this)">
+                <span class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></span>
+                <span class="tog-label">Non-Resident<span class="tog-rate">Progressive 10% · 20% · 30%</span></span>
+              </button>
             </div>
           </div>
 
@@ -190,14 +217,14 @@
               <span class="f-label-text">Deductions & Levies</span>
             </div>
             <div class="toggles">
-              <div class="tog on" data-tog="nssf" onclick="togItem(this)">
-                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
-                <div class="tog-label" id="nssfLabel">NSSF (5%)<div class="tog-rate">Not deductible from tax</div></div>
-              </div>
-              <div class="tog" data-tog="lst" onclick="togItem(this)">
-                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
-                <div class="tog-label">LST<div class="tog-rate">Official annual bands</div></div>
-              </div>
+              <button type="button" class="tog on" data-tog="nssf" aria-pressed="true" onclick="togItem(this)">
+                <span class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></span>
+                <span class="tog-label" id="nssfLabel">NSSF (5%)<span class="tog-rate">Not deductible from tax</span></span>
+              </button>
+              <button type="button" class="tog" data-tog="lst" aria-pressed="false" onclick="togItem(this)">
+                <span class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></span>
+                <span class="tog-label">LST<span class="tog-rate">Official annual bands</span></span>
+              </button>
             </div>
           </div>
 
@@ -208,16 +235,16 @@
       <!-- RESULTS CARD -->
       <div class="card results-card" id="resultsCard">
         <div class="res-hero">
-          <div class="res-hero-label">Monthly Take-Home Pay</div>
+          <div class="res-hero-label" id="resLabel">Monthly Take-Home Pay</div>
           <div class="res-hero-amount" id="resAmount">UGX 0</div>
-          <div class="res-hero-period">Per month in Uganda</div>
+          <div class="res-hero-period" id="resPeriod">Per month in Uganda</div>
           <div class="res-hero-gross" id="resGross">Gross: UGX 0 · Annual: UGX 0</div>
         </div>
 
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly', this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual', this)">Annual</button>
+            <button type="button" class="per-btn on" aria-pressed="true" onclick="setPeriod('monthly', this)">Monthly</button>
+            <button type="button" class="per-btn" aria-pressed="false" onclick="setPeriod('annual', this)">Annual</button>
           </div>
 
           <div id="resContent"></div>
@@ -253,6 +280,7 @@
           </button>
           <button type="button" class="act-btn act-share" id="ugShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button>
         </div>
+        <p id="pdfStatus" role="status" aria-live="polite"></p>
         <div class="calc-save-shell" id="calcSaveShell">
           <div class="calc-save-head">
             <div>
@@ -272,11 +300,11 @@
 
       <!-- TAX BANDS CARD -->
       <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
+        <button type="button" class="card-head rate-toggle" aria-expanded="false" aria-controls="rate-panel-1" onclick="toggleBands(this)">
           <span class="card-title">Current Uganda PAYE Tax Bands</span>
           <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
+        </button>
+        <div class="bands-body" id="rate-panel-1">
           <div class="band-row"><span class="band-range">Resident: UGX 0 – 235,000</span><span class="band-zero">Nil</span></div>
           <div class="band-row"><span class="band-range">Resident: UGX 235,001 – 335,000</span><span class="band-rate">10%</span></div>
           <div class="band-row"><span class="band-range">Resident: UGX 335,001 – 410,000</span><span class="band-rate">UGX 10,000 + 20%</span></div>
@@ -288,11 +316,11 @@
 
       <!-- LEVIES CARD -->
       <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">NSSF · LST Rates 2025</span>
+        <button type="button" class="card-head rate-toggle" aria-expanded="false" aria-controls="rate-panel-2" onclick="toggleBands(this)">
+          <span class="card-title">NSSF · LST rates</span>
           <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
+        </button>
+        <div class="bands-body" id="rate-panel-2">
           <div class="band-row"><span class="band-range">Employee NSSF contribution</span><span class="band-rate">5% of gross (no cap)</span></div>
           <div class="band-row"><span class="band-range">Employer NSSF contribution</span><span class="band-rate">10% of gross (no cap)</span></div>
           <div class="band-row"><span class="band-range">Local Service Tax (LST)</span><span class="band-rate">UGX 5,000–100,000/yr by gross salary band</span></div>
@@ -333,7 +361,7 @@
           </button>
         </div>
         <div class="tool-info-footer">
-          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <span class="tool-info-updated">Sources checked: 2 Aug 2026</span>
           <div class="tool-info-actions">
             <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/salary-tax/">All Countries</a>
@@ -598,12 +626,12 @@
 // ══════════════════════════════════════════════════════════════════
 
 var RESULT=null;
-let PERIOD       = 'monthly';
+var PERIOD       = 'monthly'; // Shared net-to-gross and saved-scenario controls read window.PERIOD.
 let CHART        = null;
 let CHART_TYPE   = 'donut';
 let CHAT_HISTORY = [];
 
-const fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
+var fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 function invalidateResult(message) {
@@ -644,7 +672,20 @@ function updateSliderFill(el) {
 updateSliderFill(document.getElementById('salarySlider'));
 
 // ── TOGGLES ───────────────────────────────────────────────────
-function togItem(el) { el.classList.toggle('on'); }
+function setChoice(el, enabled) {
+  el.classList.toggle('on', enabled);
+  el.setAttribute('aria-pressed', String(enabled));
+}
+function togItem(el) {
+  const name = el.dataset.tog;
+  if (name === 'resident' || name === 'nonres') {
+    document.querySelectorAll('[data-tog="resident"], [data-tog="nonres"]').forEach(function (choice) {
+      setChoice(choice, choice === el);
+    });
+  } else {
+    setChoice(el, !el.classList.contains('on'));
+  }
+}
 function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
 
 // ══════════════════════════════════════════════════════════════
@@ -724,9 +765,7 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
     totalEmployerCostMonthly: value.employerCostMonthly,
   };
 
-  document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  renderPeriodResult();
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
@@ -761,7 +800,7 @@ function renderRows(R, period) {
   return `
     <div class="res-section">
       <div class="res-section-title">Gross Income</div>
-      ${row(`Annual Gross Salary${lbl}`, fmt(gross))}
+      ${row(`Gross Salary${lbl}`, fmt(gross))}
     </div>
     <div class="res-section">
       <div class="res-section-title">Deductions</div>
@@ -783,18 +822,28 @@ function renderRows(R, period) {
 // ── PERIOD ────────────────────────────────────────────────────
 function setPeriod(period, btn) {
   PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.per-btn').forEach(b => {
+    b.classList.remove('on');
+    b.setAttribute('aria-pressed', 'false');
+  });
   btn.classList.add('on');
+  btn.setAttribute('aria-pressed', 'true');
+  renderPeriodResult();
+}
+
+function renderPeriodResult() {
   if (RESULT) {
     // Update hero
-    var isMonthly = period === 'monthly';
+    var isMonthly = PERIOD === 'monthly';
     var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
     var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
     document.getElementById('resAmount').textContent = fmt(net);
+    document.getElementById('resLabel').textContent = isMonthly ? 'Monthly Take-Home Pay' : 'Annual Take-Home Pay';
+    document.getElementById('resPeriod').textContent = isMonthly ? 'Per month in Uganda' : 'Per year in Uganda';
     document.getElementById('resGross').textContent = isMonthly
       ? 'Gross: ' + fmt(gr) + '/month'
       : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+    document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   }
 }
 
@@ -802,7 +851,8 @@ function setPeriod(period, btn) {
 function toggleBands(header) {
   const body = header.nextElementSibling;
   const arr  = header.querySelector('.tog-arrow');
-  body.classList.toggle('open');
+  const open = body.classList.toggle('open');
+  header.setAttribute('aria-expanded', String(open));
   arr.classList.toggle('open');
 }
 
@@ -858,10 +908,19 @@ function renderChart(type) {
 
 // ── PDF MODAL ─────────────────────────────────────────────────
 async function downloadPdfSummary(){
-  if(!RESULT || !window.AfroTools?.pdf) return;
+  if(!RESULT) return;
+  const status = document.getElementById('pdfStatus');
+  const button = document.getElementById('pdfBtn');
+  if(!window.AfroTools?.pdf) {
+    status.textContent = 'PDF export could not load. Reload the page and try again.';
+    return;
+  }
+  button.disabled = true;
+  status.textContent = 'Preparing your PDF…';
+  try {
   const R = RESULT;
   await window.AfroTools.pdf.generate({
-    filename:'afrotools-ug-paye-uganda-2026-07-03.pdf',
+    filename:'afrotools-ug-paye-uganda-' + new Date().toISOString().slice(0,10) + '.pdf',
     title:'Uganda PAYE Summary',
     subtitle:'Monthly employment tax estimate',
     country:'Uganda',
@@ -879,6 +938,12 @@ async function downloadPdfSummary(){
     ],
     skipGate:true
   });
+  status.textContent = 'PDF prepared. Check your downloads.';
+  } catch (error) {
+    status.textContent = 'PDF export failed. Please try again.';
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
@@ -1153,8 +1218,8 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
   function setToggleState(toggleName, enabled) {
     var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
     if (!toggle) return;
-    toggle.classList.toggle('on', !!enabled);
-    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+    setChoice(toggle, !!enabled);
+    if (toggleName === 'nonres') setChoice(document.querySelector('[data-tog="resident"]'), !enabled);
   }
 
   return {
@@ -1236,7 +1301,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
   };
 })();
 </script>
-<script src="/assets/js/lib/net-to-gross.js?v=698aa4ac" defer></script>
+<script src="/assets/js/lib/net-to-gross.js?v=5bba1ca0" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
