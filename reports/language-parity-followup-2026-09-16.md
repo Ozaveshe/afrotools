@@ -25,7 +25,7 @@ At 46c857a3, full build, artifact/security audits and 31 artifact browser cases 
 
 The first batch at `bfca5b2763fc0dc12b267b152f738eb606752e47` passed the full local suite (1,113 test files, seven audits, zero quarantines), artifact/security/build checks, 21 artifact browser cases, and all three GitHub CI jobs in run 35130757307. It was pushed to main through the verified release checkout.
 
-Its hosted deploy `6aaadd990136db00086742f6` failed on the time limit after building successfully and reaching 80% upload. It did not publish. The site build limit was increased from the default to 1,800 seconds using Netlify's supported API. A single retry, `6aaae2e2c2e3579bb132b2fd`, is building the same exact commit. Production verification is pending; the previous verified live release is still `6e9cea8ae9d7bbc72e5ab059a76cbfde9769322e`.
+Its hosted deploy `6aaadd990136db00086742f6` failed on the time limit after building successfully and reaching 80% upload. It did not publish. The site build limit was increased from the default to 1,800 seconds using Netlify's supported API. The single retry, `6aaae2e2c2e3579bb132b2fd`, published the same exact commit at 2026-09-16T19:10:10.056Z. The public release identity independently matched bfca5b2763fc0dc12b267b152f738eb606752e47. All 21 selected production browser cases passed (5.6 minutes); synthetic wage submissions were intercepted and do not prove real alert delivery.
 
 The separate follow-up candidate is not deployed. Its `fe0cc90e` source passed a full build, build checks, artifact and security audits, and 32 actual artifact browser cases. Generated outputs were reviewed and committed as `3c0a9122`: 68 HTML cache-version updates, one equivalent metadata reorder with cache updates, and two public-claims reports. No deletions.
 
@@ -64,4 +64,14 @@ Additional confirmed defects were repaired before the next rebuild:
 - Wage comparisons: recorded monthly catalogue values remain separate from derived daily/hourly estimates. All three languages compare the displayed cent precision; English/Swahili catalogue CSVs provide native headings and source/conversion limits without email gates. Ten integrated browser cases and thirteen literal controller fixtures passed. The reviewed calculation registry passes797artifacts/408fixtures; no statutory rate or freshness claims were changed.
 - PDF merge/split: Swahili guest downloads, native validation and stale-output clearing are repaired. Nine integrated cases verified actual PDF/ZIP order, dimensions and vector colors. A pending third file could previously enable Merge; six further cases now prove waiting and explicit unreadable-file removal, with complete downloaded outputs.
 
-These changes are committed and targeted checks pass. Fresh full build, artifact checks, full suite and production validation remain required for this follow-up. The first batch's separate Netlify retry has reached processing; publication is not yet verified.
+These changes are committed and targeted checks pass. Fresh full build, artifact checks, full suite and production validation remain required for this follow-up. The first batch was subsequently published and its selected live checks passed; see the release state above.
+
+## Final follow-up release candidate validation
+
+Frozen source b027ff71312ba5e500f8efc0b557cad96e56f2b3 completed build:deploy successfully. Artifact audit, security scan and build:checks passed. The first build:checks attempt lacked the shared dependency path; the corrected environment passed without a product change.
+
+All 60 browser cases across 11 test files passed against the rebuilt dist artifact (5.7 minutes): cover-letter navigation/backups/native drafts/long outputs, PDF image fidelity/orientation/transparency, wage basis/inflation, invoice charged-line validation, and PDF merge/split including pending files. Actual downloaded outputs were parsed or rendered by the relevant cases.
+
+The full repository suite passed 1,115 test files, seven of seven audits, and zero quarantines. Generated output review covered 137 HTML asset-version-only changes, one equivalent Swahili merge/split metadata reorder plus asset versions, and two public-claim reports (12,840 scanned files, 45,483 approved hits, zero errors). No deletions. Incidental Hausa audit reports created by tests were excluded.
+
+This follow-up candidate still requires exact-commit CI, deployment and selected live verification. Whole-app and catalogue-wide acceptance remain unproven. Separate form-filler/signing/redaction work is not included in this frozen batch.
