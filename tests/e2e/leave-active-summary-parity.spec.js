@@ -11,3 +11,10 @@ for(const [locale,route]of [['en','/tools/leave-calculator/'],['sw','/sw/zana/ki
  expect(await page.locator('#lc-tbody tr').count()).toBeGreaterThan(40);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(failures).toEqual([]);
 });
+test.describe('UTC-negative browser calendar',()=>{
+ test.use({timezoneId:'America/New_York'});
+ for(const [locale,route]of [['en','/tools/leave-calculator/'],['sw','/sw/zana/kikokotoo-likizo/']])test(`${locale}: Thursday holiday and anniversary stay on their source date`,async({page})=>{
+  await page.goto(route);await page.locator('#lc-tab-weekends').click();await page.evaluate(()=>{LC_HOLIDAYS.NG[2026]=[{d:'2026-01-01',n:'Synthetic holiday'}];});await page.locator('#lw-country').selectOption('NG');await page.locator('#lw-year').selectOption('2026');await expect(page.locator('#lw-result .lc-lw-badge').first()).toContainText('4');expect(await page.evaluate(()=>lcShareTexts.join('\n'))).toContain('2');
+  await page.locator('#lc-tab-accrual').click();await page.locator('#ac-start').fill('2025-01-01');await page.locator('#ac-today').fill('2026-01-01');await page.locator('#ac-entitlement').fill('12');await expect(page.locator('#ac-result .lc-result-headline')).toContainText('0');
+ });
+});

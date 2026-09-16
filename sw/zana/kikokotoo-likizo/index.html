@@ -628,8 +628,8 @@ function buildAccrualState(startVal, todayVal, entitlement, requested) {
   var today = new Date(todayVal);
   if (isNaN(start.getTime()) || isNaN(today.getTime()) || today < start) return null;
   var lys = new Date(start);
-  while (new Date(lys.getFullYear() + 1, lys.getMonth(), lys.getDate()) <= today) lys.setFullYear(lys.getFullYear() + 1);
-  var lysNext = new Date(lys.getFullYear() + 1, lys.getMonth(), lys.getDate());
+  while (new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate())) <= today) lys.setUTCFullYear(lys.getUTCFullYear()+1);
+  var lysNext = new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate()));
   var yearMs = lysNext - lys;
   var workedMs = Math.min(today - lys, yearMs);
   var frac = workedMs / yearMs;
@@ -654,7 +654,7 @@ function acCalc() {
   if (state.requested > 0) {
     html += state.canTake ? '<div class="lc-avail-yes">&#10003; Unaweza kuomba siku ' + state.requested + ' kwa sasa &mdash; tayari una siku ' + state.accrued + '</div>' : '<div class="lc-avail-no">&#10007; Bado haitoshi &mdash; una siku ' + state.accrued + ' lakini umeomba ' + state.requested + '</div>';
   }
-  html += '<div class="lc-formula">Mwaka wa likizo ulianza: ' + state.leaveYearStart.toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'}) + '<br>Miezi iliyofanya kazi: ' + state.months + ' kati ya 12 (' + (state.fraction * 100).toFixed(1) + '% ya mwaka)<br>Formula: ' + (state.fraction * 100).toFixed(1) + '% × ' + document.getElementById('ac-entitlement').value + ' siku = <strong>' + state.accrued + ' siku</strong></div></div>';
+  html += '<div class="lc-formula">Mwaka wa likizo ulianza: ' + state.leaveYearStart.toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}) + '<br>Miezi iliyofanya kazi: ' + state.months + ' kati ya 12 (' + (state.fraction * 100).toFixed(1) + '% ya mwaka)<br>Formula: ' + (state.fraction * 100).toFixed(1) + '% × ' + document.getElementById('ac-entitlement').value + ' siku = <strong>' + state.accrued + ' siku</strong></div></div>';
   el.innerHTML = html;
   el.style.display = '';
 }
@@ -778,17 +778,17 @@ function lwCalc() {
 
   function addDays(date, amount) {
     var next = new Date(date);
-    next.setDate(next.getDate() + amount);
+    next.setUTCDate(next.getUTCDate()+amount);
     return next;
   }
 
   function fmt(dt) {
-    return dt.toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short'});
+    return dt.toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});
   }
 
   holidays.forEach(function(holiday) {
     var date = new Date(holiday.d);
-    var dow = date.getDay();
+    var dow = date.getUTCDay();
     var name = localizeHolidayName(holiday.n);
     if (dow === 4) {
       var friday = addDays(date, 1);

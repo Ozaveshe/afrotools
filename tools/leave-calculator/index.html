@@ -782,10 +782,10 @@ function acCalc() {
   if (today < start) { el.style.display = 'none'; return; }
   // Find leave year start (anniversary before today)
   var lys = new Date(start);
-  while (new Date(lys.getFullYear()+1, lys.getMonth(), lys.getDate()) <= today) {
-    lys.setFullYear(lys.getFullYear() + 1);
+  while (new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate())) <= today) {
+    lys.setUTCFullYear(lys.getUTCFullYear()+1);
   }
-  var lysNext = new Date(lys.getFullYear()+1, lys.getMonth(), lys.getDate());
+  var lysNext = new Date(Date.UTC(lys.getUTCFullYear()+1, lys.getUTCMonth(), lys.getUTCDate()));
   var yearMs = lysNext - lys;
   var workedMs = Math.min(today - lys, yearMs);
   var frac = workedMs / yearMs;
@@ -795,7 +795,7 @@ function acCalc() {
   var canTake = requested > 0 && requested <= accrued;
   var html = '<div class="lc-result-box"><div class="lc-result-headline">' + accrued + ' days accrued</div><div class="lc-result-sub">' + remaining + ' days remaining in your current leave year</div>';
   if (requested > 0) html += canTake ? '<div class="lc-avail-yes">\u2713 You can take ' + requested + ' days \u2014 you have ' + accrued + ' days accrued</div>' : '<div class="lc-avail-no">\u2717 Not enough \u2014 you have ' + accrued + ' days but requested ' + requested + '</div>';
-  html += '<div class="lc-formula">Leave year started: ' + lys.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) + '<br>Months worked: ' + months + ' of 12 (' + (frac*100).toFixed(1) + '% of year)<br>Formula: ' + (frac*100).toFixed(1) + '% \u00d7 ' + entitlement + ' days = <strong>' + accrued + ' days accrued</strong></div></div>';
+  html += '<div class="lc-formula">Leave year started: ' + lys.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}) + '<br>Months worked: ' + months + ' of 12 (' + (frac*100).toFixed(1) + '% of year)<br>Formula: ' + (frac*100).toFixed(1) + '% \u00d7 ' + entitlement + ' days = <strong>' + accrued + ' days accrued</strong></div></div>';
   el.innerHTML = html; el.style.display = '';
 }
 
@@ -890,10 +890,10 @@ function lwCalc() {
   var holidays = LC_HOLIDAYS[cc][yr];
   var cName = LEAVE_DATA[cc] ? LEAVE_DATA[cc].name : cc;
   var days4 = [], days3 = [], other = [];
-  function addDays(d, n) { var r = new Date(d); r.setDate(r.getDate()+n); return r; }
-  function fmt(dt) { return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}); }
+  function addDays(d, n) { var r = new Date(d); r.setUTCDate(r.getUTCDate()+n); return r; }
+  function fmt(dt) { return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}); }
   holidays.forEach(function(h) {
-    var date = new Date(h.d), dow = date.getDay();
+    var date = new Date(h.d), dow = date.getUTCDay();
     if (dow === 4) {
       var fri = addDays(date,1);
       var tip = 'Take <strong>' + fmt(fri) + '</strong> off \u2192 ' + fmt(date) + '\u2013Fri\u2013Sat\u2013Sun = <strong>4-day weekend</strong>';
