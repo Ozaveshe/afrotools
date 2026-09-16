@@ -25,6 +25,9 @@ const LANGUAGE_IDS = new Set([
   'meeting-minutes', 'receipt-generator', 'business-plan'
 ]);
 const ROUTE_OVERRIDES = {
+  'pdf-redact': {
+    'Confirm the final review checkbox before exporting the flattened redacted PDF.': 'Weka tiki kuthibitisha ukaguzi wa mwisho kabla ya kuhamisha PDF. Sehemu ulizoficha zitafutwa, na kurasa zitahifadhiwa kama picha.'
+  },
   'pdf-workspace': {
     'What may be sent:': 'Kinachoweza kutumwa:',
     'Nothing is sent to a model.': 'Hakuna chochote kinachotumwa kwa modeli.'
@@ -292,7 +295,39 @@ async function mapConcurrent(items, limit, worker) {
   return output;
 }
 
+// Refresh existing, route-owned overrides without translating unrelated catalogue gaps.
+function syncKnownOverrides(ids) {
+  if (!ids.length) throw new Error('Select at least one existing override route');
+  const output = JSON.parse(fs.readFileSync(OUTPUT_JSON, 'utf8'));
+  const originalJs = fs.readFileSync(OUTPUT_JS, 'utf8');
+  const match = originalJs.match(/Object\.freeze\((\{.*\})\);/s);
+  if (!match) throw new Error('Unrecognized generated Swahili lexicon boundary');
+  const combined = JSON.parse(match[1]);
+  for (const id of ids) {
+    if (!ROUTE_OVERRIDES[id] || !output.routes[id]) throw new Error(`Unknown existing override route: ${id}`);
+    for (const [phrase, value] of Object.entries(ROUTE_OVERRIDES[id])) {
+      const owners = Object.keys(output.routes).filter((route) => Object.hasOwn(output.routes[route], phrase));
+      if (owners.length !== 1 || owners[0] !== id || !Object.hasOwn(combined, phrase)) {
+        throw new Error(`Override must have one existing route owner: ${id}: ${phrase}`);
+      }
+      output.routes[id][phrase] = normalizeTranslation(value);
+      combined[phrase] = normalizeTranslation(value);
+    }
+  }
+  const json = `${JSON.stringify(output, null, 2)}\n`;
+  const js = originalJs.replace(match[1], JSON.stringify(combined));
+  if (WRITE) {
+    fs.writeFileSync(OUTPUT_JSON, json, 'utf8');
+    fs.writeFileSync(OUTPUT_JS, js, 'utf8');
+  } else if (fs.readFileSync(OUTPUT_JSON, 'utf8') !== json || originalJs !== js) {
+    throw new Error('Selected Swahili overrides are stale; run with --write.');
+  }
+  console.log(`Swahili existing overrides: ${ids.join(', ')} reconciled.`);
+}
+
 async function main() {
+  const syncArg = process.argv.find((arg) => arg.startsWith('--sync-overrides='));
+  if (syncArg) return syncKnownOverrides(syncArg.slice('--sync-overrides='.length).split(',').filter(Boolean));
   const french = JSON.parse(fs.readFileSync(FRENCH_LEXICON, 'utf8'));
   const previous = fs.existsSync(OUTPUT_JSON) ? JSON.parse(fs.readFileSync(OUTPUT_JSON, 'utf8')) : { routes: {} };
   const routeSources = new Map();

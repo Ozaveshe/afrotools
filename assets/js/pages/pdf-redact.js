@@ -475,23 +475,30 @@
   }
 
   function makeTextRunBox(item, viewport, padding, style) {
+    // Transform the whole text run, not just its origin. CropBox offsets and
+    // page/text rotation are already represented by this viewport matrix.
     var tx = pdfJs().Util.transform(viewport.transform, item.transform);
-    var x = tx[4];
-    var y = tx[5];
-    var height = Math.max(Math.abs(tx[3]), item.height || 10, 8);
-    var width = Math.max(item.width || 0, String(item.str || "").length * height * 0.45, 8);
-    var pageHeight = viewport.height;
-    var box = {
-      x: clamp(x - padding, 0, viewport.width),
-      y: clamp(pageHeight - y - padding, 0, pageHeight),
-      w: clamp(width + padding * 2, 1, viewport.width),
-      h: clamp(height + padding * 2, 1, pageHeight),
-      color: style.color,
-      label: style.label
-    };
-    if (box.x + box.w > viewport.width) box.w = viewport.width - box.x;
-    if (box.y + box.h > pageHeight) box.h = pageHeight - box.y;
-    return box;
+    var advanceLength = Math.hypot(tx[0], tx[1]);
+    var verticalLength = Math.hypot(tx[2], tx[3]);
+    var height = Math.max(verticalLength, (item.height || 0) * viewport.scale, 8);
+    var width = Math.max((item.width || 0) * viewport.scale, String(item.str || "").length * height * 0.45, 8);
+    var advanceX = advanceLength ? tx[0] / advanceLength * width : width;
+    var advanceY = advanceLength ? tx[1] / advanceLength * width : 0;
+    var upX = verticalLength ? tx[2] / verticalLength * height : 0;
+    var upY = verticalLength ? tx[3] / verticalLength * height : -height;
+    // Include a conservative descent below the baseline as well as the em box.
+    var points = [
+      [tx[4] - upX * 0.25, tx[5] - upY * 0.25],
+      [tx[4] - upX * 0.25 + advanceX, tx[5] - upY * 0.25 + advanceY],
+      [tx[4] + upX, tx[5] + upY],
+      [tx[4] + upX + advanceX, tx[5] + upY + advanceY]
+    ];
+    var left = clamp(Math.min.apply(null, points.map(function (point) { return point[0]; })) - padding, 0, viewport.width);
+    var right = clamp(Math.max.apply(null, points.map(function (point) { return point[0]; })) + padding, 0, viewport.width);
+    var top = clamp(Math.min.apply(null, points.map(function (point) { return point[1]; })) - padding, 0, viewport.height);
+    var bottom = clamp(Math.max.apply(null, points.map(function (point) { return point[1]; })) + padding, 0, viewport.height);
+    // Stored boxes use the flattened display-page coordinates shared with manual marks.
+    return { x: left, y: viewport.height - bottom, w: right - left, h: bottom - top, color: style.color, label: style.label };
   }
 
   async function addSearchMatches() {

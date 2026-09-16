@@ -18,7 +18,7 @@ for(const [locale,route] of routes)test(locale+' redaction burns pixels and remo
  expect(posts).toEqual([]);await expect(page.locator('#pdgEmail:visible')).toHaveCount(0);
  await page.locator('#undoBtn').click();await expect(page.locator('#downloadRow')).not.toHaveClass(/(^|\s)on(\s|$)/);await expect(page.locator('#downloadBtn')).toBeDisabled();await expect(page.locator('#reviewConfirm')).not.toBeChecked();
  await page.locator('#exportBtn').click();await expect(page.locator('#downloadRow')).not.toHaveClass(/(^|\s)on(\s|$)/);await expect(page.locator('#reviewConfirm')).toBeFocused();
- const reviewCopy={en:['Review required','Confirm the final review checkbox before exporting the flattened redacted PDF.'],fr:['Examen requis','Cochez la case de révision finale avant d’exporter le PDF expurgé aplati.'],sw:['Ukaguzi unahitajika','Thibitisha kisanduku tiki cha mwisho kabla ya kuhamisha PDF iliyosawazishwa upya.']}[locale];
+ const reviewCopy={en:['Review required','Confirm the final review checkbox before exporting the flattened redacted PDF.'],fr:['Examen requis','Cochez la case de révision finale avant d’exporter le PDF expurgé aplati.'],sw:['Ukaguzi unahitajika','Weka tiki kuthibitisha ukaguzi wa mwisho kabla ya kuhamisha PDF. Sehemu ulizoficha zitafutwa, na kurasa zitahifadhiwa kama picha.']}[locale];
  await expect(page.locator('#resultTitle')).toHaveText(reviewCopy[0]);await expect(page.locator('#resultNote')).toHaveText(reviewCopy[1]);
  await page.locator('#clearAllBtn').click();await expect(page.locator('#exportBtn')).toBeDisabled();
  await page.setViewportSize({width:390,height:844});await page.locator('#overlayCanvas').scrollIntoViewIfNeeded();
