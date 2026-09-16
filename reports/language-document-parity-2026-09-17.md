@@ -24,11 +24,16 @@ The category/workflow verifier passed for 31 registry tools and 34 surfaces. Foc
 
 ## Release requirements still open
 
-1. Signing edge repairs passed the independent integrated-source rerun; preserve this source for release checks.
-2. Freeze source, rebuild the deploy artifact, and review generated changes separately.
-3. Run artifact/security/build checks, selected artifact browser cases, and the full repository suite.
-4. Obtain exact-commit CI success, deploy, verify public release identity, and run selected live cases.
+Local source, artifact, security, language, browser and full-suite gates passed. Remaining: obtain exact-commit CI success, deploy, verify public release identity, and run selected live cases.
 
 ## Limits
 
 Detailed fixtures and limitations are in the per-tool reports. Complex scripts, arbitrary malformed/encrypted forms, OCR/scanned redaction, rotated signing page boxes, every permission combination and reader enforcement, named external cursive-font availability, and complete keyboard/accessibility coverage remain unproven. Redaction intentionally rasterizes exported pages; visual signatures are not cryptographic signatures. Narrow passing cases must not promote any whole catalogue dimension to accepted.
+
+## Packaged artifact validation
+
+The full deploy build completed from source9ccb9b51:18139 publish files,1831 JavaScript and623 CSS assets optimized. Content integrity checked11788 HTML pages with0 blockers/0 warnings; the three reviewed exceptions are existing declared cases. Artifact audit, security scan and build checks passed. Dictionary validation and hreflang validation passed:11561 public pages,9982 pages with declarations,32534 relationships and5290 equivalence groups.
+
+Selected artifact browsers:63 cases passed in the first64-case run. The French Agriculture consent/theme test blocked its own local navigation because its network allowlist defaulted to4173 while the configured server used4518. Setting PLAYWRIGHT_BASE_URL=http://127.0.0.1:4518 and rerunning that single case passed in3.2seconds without source changes. All64 selected cases therefore have passing artifact evidence; preserve both logs instead of claiming one uninterrupted64-pass run. Default analytics remained enabled. Production verification must set PLAYWRIGHT_BASE_URL=https://afrotools.com for this existing test.
+
+Generated-output review:44 HTML files changed only asset cache identifiers; four Swahili document pages additionally moved unchanged source-owner metadata/style entries within the head. Two public-claim reports reflect12843 scanned files and45486 approved hits,0 errors. No file deletions. The full repository suite passed:1117 test files,7/7 audits,0 quarantines. Exact-commit CI and production checks remain pending. Incidental Hausa ledger reports rewritten by tests were restored and excluded from this release.
