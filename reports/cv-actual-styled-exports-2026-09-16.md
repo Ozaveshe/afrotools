@@ -6,10 +6,10 @@ Isolated candidate at `C:/Users/Oza/.codex/worktrees/career-parity-20260916/afro
 
 | Fixture | EN | FR | SW | Total |
 |---|---:|---:|---:|---:|
-| All 30 advertised templates, complete form, 320px input viewport | 30 PDFs / 56 pages | 30 / 56 | 30 / 56 | 90 PDFs / 168 pages |
+| All 30 advertised templates, complete form, 320px input viewport | 30 PDFs / 57 pages | 30 / 57 | 30 / 57 | 90 PDFs / 171 pages |
 | Ten layout families, long experience and later sections | 10 PDFs / 34 pages | 10 / 34 | 10 / 34 | 30 PDFs / 102 pages |
 
-All 120 final selected downloads parsed successfully, have A4 MediaBox dimensions, and have embedded capture width at least 1190px. Every page was rendered with Poppler and reviewed in locale contact sheets. No remaining collapsed columns, invisible skill chips, clipped document width, or missing continuation page was observed in these fixtures. Long outputs reach 3–4 pages, including later education/reference/custom/service sections according to each layout's column order.
+Correction after the first visual review: three complete-form Nairobi PDFs placed a short final strip about 4.5mm below A4. The initial validity/width/contact-sheet review missed that crop. They have been superseded by two-page exports; original hashes remain in the matrix. All 120 selected PDFs (273 pages) now pass physical image-placement bounds, in addition to parsing, A4 MediaBox and capture-width checks. Every page was rendered with Poppler and reviewed in locale contact sheets. No remaining collapsed columns, invisible skill chips, clipped document width, or missing continuation page was observed in these fixtures. Long outputs reach 3–4 pages, including later education/reference/custom/service sections according to each layout's column order.
 
 Exact enabled field markers were independently checked in all 90 pre-capture document DOMs (zero mismatches, including diaspora country-field exclusion). Raster PDF content was visually inspected; this is **not** a claim of selectable text or automated exact glyph extraction from styled PDFs. Actual selectable-text ATS and DOCX field assertions are separately recorded in the portable-export reports.
 
@@ -29,11 +29,14 @@ All directories below are siblings of this worktree under `C:/Users/Oza/.codex/w
 - `cv-sw-final-paper-proof`: final SW complete-form PDFs after padding fix; supersedes earlier SW copies.
 - `cv-long-template-pdf-proof`: final EN/FR long PDFs and sheets.
 - `cv-sw-long-final-paper-proof`: final SW long PDFs after padding fix.
+- `cv-final-bounds-proof`: superseding Nairobi complete-form PDFs in all three locales; physical image transforms checked and new pages visually reviewed.
 - Earlier `cv-all-template-pdf-proof` is an interrupted pre-fix investigation, not final evidence.
 
 `cv-styled-export-matrix-2026-09-16.json` records the 120 selected artifacts and SHA256 hashes. EN/FR rendered paths were unchanged by subsequent portable-export helper additions and the SW-only padding fix. No claim is made that every earlier downloaded file came from one final full-build SHA.
 
 ## Focused automated proof
+
+- `tests/e2e/cv-pdf-page-bounds.spec.js`: 3 PASS, actual Nairobi downloads with both pages inside A4. `tests/cv-raster-pdf-bounds.test.js`: 3 PASS, including negative/above-page transforms. Permanent collector now validates physical bounds.
 
 - `tests/e2e/cv-expanded-pdf-layout.spec.js`: 3 PASS; actual downloads plus export-raster sidebar width and contrast.
 - `tests/e2e/cv-creative-mobile-paper.spec.js`: 2 PASS; actual long SW PDFs at 320/390px, paper padding, 3 pages, width and mobile overflow.

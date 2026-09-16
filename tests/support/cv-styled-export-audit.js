@@ -1,6 +1,7 @@
 const {chromium: chromium} = require("playwright");
 
 const fs = require("fs"), path = require("path"), pdf = require("pdf-parse");
+const {inspectRasterPdf} = require("./cv-raster-pdf-bounds");
 
 const root = process.cwd(), out = path.resolve(process.env.CV_PDF_AUDIT_OUTPUT || "test-results/cv-all-template-pdf-proof");
 
@@ -82,12 +83,15 @@ fs.writeFileSync(path.join(out, "manifest.json"), JSON.stringify(manifest, null,
                 const file = path.join(out, locale + "-" + id + ".pdf");
                 await (await pending).saveAs(file);
                 const bytes = fs.readFileSync(file), parsed = await pdf(new Uint8Array(bytes));
+                const placements = await inspectRasterPdf(bytes);
+                if (placements.some(box=>!box.insidePaper)) throw new Error("Raster image extends beyond physical paper");
                 const widths = [ ...bytes.toString("latin1").matchAll(/\/Width\s+(\d+)/g) ].map(m => +m[1]);
                 const media = [ ...bytes.toString("latin1").matchAll(/\/MediaBox\s*\[([^\]]+)\]/g) ].map(m => m[1]);
                 fs.writeFileSync(file + ".dom.json", JSON.stringify(dom, null, 2));
                 results.push({
                     locale: locale,
                     id: id,
+                    placements,
                     preCaptureFields: "pass",
                     pages: parsed.numpages,
                     widths: widths,
