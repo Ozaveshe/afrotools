@@ -37,13 +37,6 @@
   function calculate(event){if(event)event.preventDefault();if(!form.checkValidity()){
     const fields=Array.from(form.querySelectorAll('input:invalid,select:invalid')),field=fields[0],suffix=field&&field.id.split('-').pop(),detail=fieldErrors[{observed:'OBSERVED_AT_REQUIRED',expires:'INVALID_EXPIRY',label:'LABEL_REQUIRED',market:'MARKET_REQUIRED',currency:'CURRENCY_REQUIRED',amount:'AMOUNT_REQUIRED',sender:'SENDER_FEE_REQUIRED',recipient:'RECIPIENT_FEE_REQUIRED'}[suffix]];fieldError(detail?detail[0]:t.invalid,fields);return null;
   }const quotes=[quote('a'),quote('b')];if(document.getElementById('mm-third').checked)quotes.push(quote('c'));
-    const markets=fr?quotes.map(row=>marketIdentifier(row.market)):[];
-    if(fr && markets.some(market=>!market)){
-      fieldError('Pays non reconnu. Choisissez un pays africain de la liste ou son code à deux lettres.',Array.from(form.querySelectorAll('input[id$="-market"]')).filter(field=>!field.disabled&&!marketIdentifier(field.value)));return null;
-    }
-    if(fr && new Set(markets).size!==1){
-      fieldError('Choisissez le même pays ou marché pour tous les devis. Une devise commune ne suffit pas à rendre deux pays comparables.',Array.from(form.querySelectorAll('input[id$="-market"]')).filter(field=>!field.disabled));return null;
-    }
     quotes.forEach(row=>{const id=marketIdentifier(row.market);if(id)row.marketId=id;});
     const asOf=new Date().toISOString();
     for(let index=0;index<quotes.length;index++){

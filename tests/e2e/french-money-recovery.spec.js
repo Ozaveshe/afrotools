@@ -71,13 +71,12 @@ test('French validation, reset and denied clipboard recover without stale result
 test('country, currency and transaction comparisons remain independent of French language', async ({page}) => {
   await page.goto(route);await quotes(page);
   await page.locator('#mm-b-market').fill('inconnu');await compare(page);
-  await expect(page.locator('#mm-error')).toContainText('Pays non reconnu');
+  await expect(page.locator('#mm-error')).toHaveText('');await expect(page.locator('#mm-primary-value')).toHaveText('Aucun devis admissible et comparable.');
   await expect(page.locator('#mm-b-market')).toHaveValue('inconnu');
-  await expect(page.locator('#mm-b-market')).toBeFocused();
   await page.locator('#mm-b-market').fill('SN');await compare(page);
   await expect(page.locator('#mm-primary-value')).toHaveText('50 XOF');
   await page.locator('#mm-b-market').fill('Mali');await compare(page);
-  await expect(page.locator('#mm-error')).toContainText('même pays ou marché');
+  await expect(page.locator('#mm-error')).toHaveText('');await expect(page.locator('#mm-primary-value')).toHaveText('Aucun devis admissible et comparable.');
   await page.locator('#mm-b-market').fill('Sénégal');await page.locator('#mm-b-currency').fill('XAF');await compare(page);
   await expect(page.locator('#mm-primary-value')).toHaveText('Aucun devis admissible et comparable.');
   await page.locator('#mm-b-currency').fill('XOF');await page.locator('#mm-b-type').selectOption('withdraw');await compare(page);

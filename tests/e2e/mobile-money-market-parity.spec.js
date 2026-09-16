@@ -1,0 +1,12 @@
+const{test,expect}=require('@playwright/test');const fs=require('fs');
+for(const[locale,route]of[['en','/tools/mobile-money-fees/'],['fr','/fr/tools/frais-mobile-money/'],['sw','/sw/zana/ada-pesa-simu/']])test(locale+' groups compatible markets without rejecting free text or comparing another country',async({page})=>{
+ await page.goto(route);async function fill(letter,market,fee){for(const[k,v]of Object.entries({label:'Synthetic '+letter,market,currency:'XOF',amount:'10000',sender:fee,recipient:'0',observed:'2020-01-01T12:00'}))await page.locator('#mm-'+letter+'-'+k).fill(v);}
+ async function calculate(){await page.locator('#mm-form button[type=submit]').click();await expect(page.locator('#mm-error')).toHaveText('');}
+ async function exported(){const pending=page.waitForEvent('download');await page.locator('#mm-json').click();return JSON.parse(fs.readFileSync(await(await pending).path(),'utf8')).result;}
+ await fill('a','Senegal','30');await fill('b','Mali','0');await calculate();let result=await exported();expect(result.hasEligibleComparison).toBe(false);expect(result.groups).toEqual([]);
+ await page.locator('#mm-third').check();await fill('c','Sénégal','10');await calculate();await expect(page.locator('#mm-primary-value')).toHaveText('10 XOF');result=await exported();expect(result.groups).toHaveLength(1);expect(result.groups[0].quoteIndexes).toEqual([0,2]);expect(result.quotes[1].comparable).toBe(false);expect(result.quotes[1].lowestAmongEligibleComparable).toBe(false);expect(result.quotes.map(q=>q.market)).toEqual(['Senegal','Mali','Sénégal']);
+ await page.locator('#mm-c-expires').fill('2020-01-02T12:00');await calculate();result=await exported();expect(result.hasEligibleComparison).toBe(false);expect(result.quotes[2].expiryState).toBe('expired');
+ await page.locator('#mm-third').uncheck();await fill('a','Marché Éwé libre','30');await fill('b','Marché Éwé libre','5');await calculate();await expect(page.locator('#mm-primary-value')).toHaveText('5 XOF');result=await exported();expect(result.hasEligibleComparison).toBe(true);expect(result.quotes.map(q=>q.market)).toEqual(['Marché Éwé libre','Marché Éwé libre']);
+ await page.locator('#mm-b-currency').fill('XAF');await calculate();expect((await exported()).hasEligibleComparison).toBe(false);
+ await page.locator('#mm-b-currency').fill('XOF');await page.locator('#mm-b-type').selectOption('withdraw');await calculate();expect((await exported()).hasEligibleComparison).toBe(false);
+});
