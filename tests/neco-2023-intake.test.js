@@ -8,12 +8,17 @@ test('NECO intake arithmetic is independently checked without inventing paper id
  assert.equal(Number((4*logarithm.given.log10of3-1).toFixed(4)),logarithm.answer);
  let balance=interest.given.principal;for(let i=0;i<interest.given.years;i++)balance+=balance*interest.given.annualRate;
  assert.equal(Number((balance-interest.given.principal).toFixed(2)),interest.answer);
- assert.equal(intake.status,'candidate-only');assert.equal(percentage.number,1);assert.ok(intake.items.slice(1).every(q=>q.number===null));
+ assert.equal(intake.status,'reviewed-selected-companions');assert.equal(percentage.number,1);assert.deepEqual(intake.items.map(q=>q.number),[1,5,6,7,9]);
 });
 
 test('NECO starter draft retains selected scope and independently checked results',()=>{
  const draft=require('../ops/nigeria-exams/neco-starter-draft.json');
- assert.equal(draft.status,'draft-not-published');assert.equal(draft.items.length,3);
+ assert.equal(draft.status,'reviewed-pending-release');assert.equal(draft.items.length,3);
  assert.equal(draft.items[0].answer,'90.');assert.equal(draft.items[1].answer,'2/3 hour.');assert.equal(draft.items[2].answer,'₦432.59.');
  for(const q of draft.items){assert.equal(q.exam,'NECO');assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+});
+
+test('public NECO companions preserve visually verified identities and independently checked answers',()=>{
+ const bank=require('../assets/js/lib/ssce-written-bank');const items=bank.items.filter(q=>q.exam==='NECO');assert.deepEqual(items.map(q=>q.number),[1,5,9]);assert.equal(items[0].answer,'90.');assert.equal(items[1].answer,'2/3 hour.');assert.equal(items[2].answer,'₦432.59.');
+ for(const q of items)assert.match(q.sourceUse,/not a complete paper/);
 });

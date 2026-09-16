@@ -59,4 +59,6 @@ const rows = [
 const fr = Object.fromEntries(rows.map(([key, french]) => [key, french]));
 Object.assign(sw, Object.fromEntries(rows.map(([key, , swahili]) => [key, swahili])));
 Object.assign(fr, {'Electric circuits':'Circuits électriques','Physics':'Physique','Work and energy':'Travail et énergie',"Ohm’s law":'Loi d’Ohm','WAEC 2022 Mathematics companion':'Guide de mathématiques WAEC 2022'});
+Object.assign(fr,{"NECO 2023 Mathematics starter":"Initiation aux mathématiques NECO 2023","NECO scan-linked revision task":"Exercice de révision lié à une copie NECO","View the NECO source scan":"Voir la copie source NECO","Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.":"Énoncé adapté ; solution élaborée indépendamment par AfroTools. Exercices sélectionnés, pas une épreuve complète."});
+Object.assign(sw,{"NECO 2023 Mathematics starter":"Mwanzo wa Hisabati NECO 2023","NECO scan-linked revision task":"Zoezi la marudio lenye kiungo cha nakala ya NECO","View the NECO source scan":"Angalia nakala ya chanzo cha NECO","Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.":"Muhtasari uliorekebishwa; suluhisho limefanyiwa kazi kwa kujitegemea na AfroTools. Kazi zilizochaguliwa, si karatasi kamili."});
 module.exports = { fr, sw };

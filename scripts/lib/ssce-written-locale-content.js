@@ -97,4 +97,15 @@ row('written-e-summary',
  ['Résumé : sélectionner et condenser',null,null,'Choisir les trois actions qui réduisent directement les bouteilles jetées près du terrain : réparation du robinet, point de remplissage et bouteilles réutilisables.|Écrire une phrase complète par action. Le comptage a aidé au diagnostic mais ne fait pas partie de ces trois interventions.|Écarter le nom de l’école, les félicitations, le tournoi et l’essai à l’arrêt de bus : ils ne répondent pas à cette consigne.','J’ai écrit exactement trois phrases complètes.|Chaque phrase présente une action distincte.|J’ai retiré les détails secondaires et les répétitions.'],
  ['Muhtasari: kuchagua na kufupisha',null,null,'Chagua hatua tatu zilizopunguza moja kwa moja chupa karibu na uwanja: kukarabati bomba, kituo cha kujaza maji na chupa zinazotumika tena.|Tumia sentensi kamili kwa kila hatua. Kuhesabu chupa kulisaidia kubaini tatizo, lakini si mojawapo ya hatua hizi tatu.|Ondoa jina la shule, sifa, mashindano na jaribio la kituo cha basi; havijibu kazi hii ya muhtasari.','Nimeandika sentensi kamili tatu hasa.|Kila sentensi ina hatua moja tofauti.|Nimeondoa maelezo ya ziada na marudio.']);
 
+
+row('neco-2023-mathematics-percentage',
+ ['Diminution en pourcentage','Réduire 120 de 25 %.','90.','Une diminution de 25 % laisse 75 %.|Un quart de 120 vaut 30.|Soustraire : 120 − 30 = 90.','J’ai calculé la réduction à partir de 120.|J’ai soustrait cette réduction.'],
+ ['Kupunguza kwa asilimia','Punguza 120 kwa 25%.','90.','Kupunguza kwa 25% kunaacha 75%.|Robo ya 120 ni 30.|Toa: 120 − 30 = 90.','Nimehesabu punguzo kwa kutumia 120.|Nimetoa punguzo hilo.']);
+row('neco-2023-mathematics-walking-time',
+ ['Durée d’une marche','À 88 pas par minute, chaque pas mesurant 0,55 m, combien d’heures faut-il pour parcourir 1 936 m ?','2/3 d’heure.','Vitesse = 88 × 0,55 = 48,4 mètres/minute.|Durée = 1936/48,4 = 40 minutes.|Convertir en heures : 40/60 = 2/3.','J’ai exprimé la vitesse en mètres par minute.|J’ai converti la durée finale en heures.'],
+ ['Muda wa kutembea','Kwa hatua 88 kwa dakika, kila hatua ikiwa na urefu wa mita 0.55, ni saa ngapi zinahitajika kutembea mita 1,936?','Saa 2/3.','Kasi = 88 × 0.55 = mita 48.4 kwa dakika.|Muda = 1936/48.4 = dakika 40.|Badili dakika kuwa saa: 40/60 = 2/3.','Nimetumia kasi katika mita kwa dakika.|Nimebadili muda wa mwisho kuwa saa.']);
+row('neco-2023-mathematics-compound-interest',
+ ['Intérêts composés','Calculer les intérêts sur 1 200 ₦ pendant quatre ans, au taux annuel de 8 %, avec capitalisation annuelle.','432,59 ₦.','Montant final = capital × (1 + taux)^durée.|Montant = 1200 × 1,08⁴ = 1632,586752.|Soustraire le capital, puis arrondir : 432,59 ₦.','J’ai appliqué la capitalisation annuelle.|J’ai distingué les intérêts du montant final.'],
+ ['Riba ya mchanganyiko','Hesabu riba ya ₦1,200 kwa miaka minne kwa kiwango cha 8% kwa mwaka, riba ikiongezwa kwenye mtaji kila mwaka.','₦432.59.','Kiasi cha mwisho = mtaji × (1 + kiwango)^miaka.|Kiasi = 1200 × 1.08⁴ = 1632.586752.|Toa mtaji, kisha zungusha: ₦432.59.','Nimeongeza riba kwenye mtaji kila mwaka.|Nimetofautisha riba na kiasi cha mwisho.']);
+
 module.exports = { fr, sw };

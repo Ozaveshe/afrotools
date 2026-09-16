@@ -14,8 +14,8 @@ const { stableId } = require('./lib/content-integrity');
 const root = path.resolve(__dirname, '..');
 const routes = { en: '/tools/ssce-practice/', fr: '/fr/tools/pratique-waec-neco/', sw: '/sw/zana/mazoezi-waec-neco/' };
 const scope = {
-  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 18 guides de mathématiques WAEC et 5 guides de rédaction WAEC. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
-  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 18 ya Hisabati WAEC na 5 ya uandishi WAEC. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
+  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 18 guides de mathématiques WAEC 5 guides de rédaction WAEC et 3 guides de mathématiques NECO 2023. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
+  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 18 ya Hisabati WAEC 5 ya uandishi WAEC na 3 ya Hisabati NECO 2023. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
 };
 function assertComplete(sourceIds, translatedIds, label) {
   if (JSON.stringify(sourceIds.slice().sort()) !== JSON.stringify(translatedIds.slice().sort())) throw Error(`${label}: source and translation identities differ`);
@@ -60,9 +60,9 @@ function serializedBank(bank, name) {
 const pageCopy = {
   fr: {
     title: 'Entraînement WAEC / NECO : maths, anglais et physique',
-    description: '52 questions et 37 exercices rédigés de préparation WAEC / NECO, avec explications en français, sauvegardes locales et comptes rendus téléchargeables.',
+    description: '52 questions et 40 exercices rédigés de préparation WAEC / NECO, avec explications en français, sauvegardes locales et comptes rendus téléchargeables.',
     education: 'Éducation', hub: '/fr/education/', eyebrow: 'Préparation WAEC / NECO · Pilote', h1: 'Comprendre.<br>Puis s’entraîner.',
-    intro: '24 questions de mathématiques et 16 d’anglais, 12 questions de physique, puis 37 exercices rédigés et guides WAEC 2022–2023. Vérifiez vos réponses, conservez votre travail et reprenez vos erreurs.',
+    intro: '24 questions de mathématiques et 16 d’anglais, 12 questions de physique, puis 40 exercices rédigés et guides WAEC 2022–2023 et NECO 2023. Vérifiez vos réponses, conservez votre travail et reprenez vos erreurs.',
     nav: 'Choisir le format', quick: 'Questions rapides', written: 'Réponses rédigées et rédaction WAEC', coverage: 'Couverture des annales',
     subject: 'Matière', math: 'Mathématiques', english: 'Anglais', topic: 'Thème', topics: 'Tous les thèmes du pilote', start: 'Commencer', resume: 'Reprendre ma séance', import: 'Ouvrir une sauvegarde', session: 'Séance d’entraînement',
     boundary: 'Les nouveaux énoncés de physique et de mathématiques WAEC 2022 restent en anglais, avec une aide en français. Les questions, choix et textes qui évaluent l’anglais restent en anglais ; répondez en anglais à ces exercices. Les explications et les commandes sont en français. La langue de l’interface ne change pas l’examen ni le pays concerné.',
@@ -71,16 +71,16 @@ const pageCopy = {
     writtenHeading: 'Construire une réponse rédigée', collection: 'Collection', task: 'Exercice rédigé', writtenImport: 'Ouvrir une sauvegarde des réponses rédigées',
     writtenScope: 'Votre texte reste sur cet appareil. La vérification personnelle ne produit aucune note officielle. Les guides de rédaction WAEC couvrent les questions 1 à 5 ; les textes complets de compréhension et de résumé des questions 6 et 7 de cette épreuve ne sont pas reproduits.',
     coverageHeading: 'Ce que vous pouvez travailler',
-    coverageBody: 'Les exercices originaux ne portent aucune année d’examen. Les guides WAEC conservent les années 2022 et 2023, le numéro de question et le lien vers la source ; consultez-la pour l’énoncé original et les schémas. Cette sélection n’est ni une épreuve complète ni un programme complet. Elle ne comprend pas de correction automatique de dissertations ni d’anglais oral avec audio.',
+    coverageBody: 'Les exercices originaux ne portent aucune année d’examen. Trois guides NECO 2023 renvoient aux questions 1, 5 et 9 d’une copie numérisée. Les guides WAEC conservent les années 2022 et 2023, le numéro de question et le lien vers la source ; consultez-la pour l’énoncé original et les schémas. Cette sélection n’est ni une épreuve complète ni un programme complet. Elle ne comprend pas de correction automatique de dissertations ni d’anglais oral avec audio.',
     jamb: 'Sélections JAMB par année (pages en anglais)', mathYears: 'Mathématiques', englishYears: 'Anglais',
     official: 'Ressources officielles en anglais', guidanceMath: 'Conseils WAEC en mathématiques', guidanceEnglish: 'Conseils WAEC en anglais', independent: 'AfroTools est indépendant des organismes d’examen.',
     daily: 'Mon planning quotidien (interface anglaise)', planner: 'Planifier mes études', plannerRoute: '/fr/tools/planificateur-etudes/', result: 'Planifier avec mes résultats WAEC / NECO', resultRoute: '/fr/tools/calculateur-waec/'
   },
   sw: {
     title: 'Mazoezi WAEC / NECO: Hisabati, Kiingereza na Fizikia',
-    description: 'Maswali 52 na kazi 37 za kuandika za maandalizi ya WAEC / NECO, maelezo ya Kiswahili, nakala za maendeleo na ripoti zinazopakuliwa kwenye kifaa.',
+    description: 'Maswali 52 na kazi 40 za kuandika za maandalizi ya WAEC / NECO, maelezo ya Kiswahili, nakala za maendeleo na ripoti zinazopakuliwa kwenye kifaa.',
     education: 'Elimu', hub: '/sw/elimu/', eyebrow: 'Maandalizi ya WAEC / NECO · Majaribio', h1: 'Elewa.<br>Kisha fanya mazoezi.',
-    intro: 'Maswali 24 ya Hisabati na 16 ya Kiingereza, maswali 12 ya Fizikia, pamoja na kazi 37 za kuandika na miongozo ya WAEC 2022–2023. Hakiki majibu, hifadhi kazi yako na urudie uliyokosea.',
+    intro: 'Maswali 24 ya Hisabati na 16 ya Kiingereza, maswali 12 ya Fizikia, pamoja na kazi 40 za kuandika na miongozo ya WAEC 2022–2023 na NECO 2023. Hakiki majibu, hifadhi kazi yako na urudie uliyokosea.',
     nav: 'Chagua aina ya mazoezi', quick: 'Maswali mafupi', written: 'Majibu ya kuandika na uandishi WAEC', coverage: 'Upeo wa mitihani iliyopita',
     subject: 'Somo', math: 'Hisabati', english: 'Kiingereza', topic: 'Mada', topics: 'Mada zote za majaribio', start: 'Anza mazoezi', resume: 'Endelea na kipindi kilichohifadhiwa', import: 'Fungua nakala ya maendeleo', session: 'Kipindi cha mazoezi',
     boundary: 'Maswali mapya ya Fizikia na Hisabati WAEC 2022 yanabaki kwa Kiingereza, yakiwa na maelezo ya Kiswahili. Maswali, chaguo na vifungu vinavyopima Kiingereza vinabaki kwa Kiingereza; jibu mazoezi hayo kwa Kiingereza. Maelezo na vidhibiti ni vya Kiswahili. Lugha ya ukurasa haibadili mtihani wala nchi inayohusika.',
@@ -89,7 +89,7 @@ const pageCopy = {
     writtenHeading: 'Jenga jibu la kuandika', collection: 'Mkusanyiko', task: 'Kazi ya kuandika', writtenImport: 'Fungua nakala ya majibu ya kuandika',
     writtenScope: 'Jibu lako linabaki kwenye kifaa hiki. Kujihakiki hakutoi alama rasmi. Miongozo ya uandishi WAEC inahusu maswali 1–5; vifungu kamili vya ufahamu na muhtasari vya maswali 6–7 vya karatasi hiyo havijawekwa hapa.',
     coverageHeading: 'Unachoweza kufanya mazoezi',
-    coverageBody: 'Mazoezi asilia hayana mwaka wa mtihani. Miongozo ya WAEC inahifadhi miaka 2022 na 2023, namba ya swali na kiungo cha chanzo; kifungue kuona swali na michoro asilia. Huu si mtihani kamili wala mtaala kamili. Hakuna utoaji wa alama za insha kiotomatiki wala sauti za mtihani wa Kiingereza cha mazungumzo.',
+    coverageBody: 'Mazoezi asilia hayana mwaka wa mtihani. Miongozo mitatu ya NECO 2023 inahusu maswali 1, 5 na 9 ya nakala iliyochanganuliwa. Miongozo ya WAEC inahifadhi miaka 2022 na 2023, namba ya swali na kiungo cha chanzo; kifungue kuona swali na michoro asilia. Huu si mtihani kamili wala mtaala kamili. Hakuna utoaji wa alama za insha kiotomatiki wala sauti za mtihani wa Kiingereza cha mazungumzo.',
     jamb: 'Chaguo za JAMB kwa mwaka (kurasa za Kiingereza)', mathYears: 'Hisabati', englishYears: 'Kiingereza',
     official: 'Vyanzo rasmi vya Kiingereza', guidanceMath: 'Mwongozo wa Hisabati wa WAEC', guidanceEnglish: 'Mwongozo wa Kiingereza wa WAEC', independent: 'AfroTools haifungamani na bodi za mitihani.',
     daily: 'Ratiba yangu ya kila siku (ukurasa wa Kiingereza)', planner: 'Panga masomo yangu', plannerRoute: '/sw/zana/mpango-masomo/', result: 'Panga kwa matokeo yangu ya WAEC / NECO', resultRoute: '/sw/zana/kikokotoo-waec-neco/'
@@ -162,7 +162,7 @@ function run(write) {
     if (write) { fs.mkdirSync(path.dirname(absolute), { recursive: true }); fs.writeFileSync(absolute, content); }
   }
   if (!write && changed.length) throw Error(`Stale SSCE localized output: ${changed.join(', ')}`);
-  console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: 52 quick questions and 37 written tasks per locale (${changed.length} changed files).`);
+  console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: 52 quick questions and 40 written tasks per locale (${changed.length} changed files).`);
 }
 if (require.main === module) run(process.argv.includes('--write'));
 module.exports = { quickBank, writtenBank, outputs, run, routes, normalizePage };

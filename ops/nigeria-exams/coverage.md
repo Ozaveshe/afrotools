@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks and 5 WAEC 2023 writing companions, plus 18 Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks and 5 WAEC 2023 writing companions, plus 18 Mathematics companions, plus 3 NECO Mathematics companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 ## Acquisition queue
 
@@ -86,6 +86,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 - **jamb-2023-mathematics-compilation** (candidate-unverified): Resolve missing rendered prompts, source provenance, version/session identity and source-use basis. Do not treat website question numbering or an advertised year as proof of a complete UTME sitting. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
 - **jamb-2024-english-compilation** (candidate-unverified): Inspect the complete source, passages and reading-text identity; authenticate year/session and review all answers. Search snippets and publisher claims are leads, not imported or verified questions. Source: https://pdfmadeazy.com/2024-jamb-english-past-questions-and-answer/
 - **waec-2022-mathematics-p2** (mathematics-companion): Companions now cover 1(b), 3, 4, 7, 8(a–b), 10, 11, 12(b) and 13. Other questions remain incomplete or held for source conflicts; no complete paper is claimed. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
+- **neco-2023-mathematics-p3-starter** (reviewed-companion-starter): Three independently solved, adapted written companions are integrated for questions 1, 5 and 9. Verify release before reporting live. Further questions require full visual source and answer checks; no complete paper claimed. Source: https://www.scribd.com/document/842881920/NECO-20230001
 
 ## Definition of complete
 
