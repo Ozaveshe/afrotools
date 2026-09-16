@@ -32,6 +32,9 @@ for(const [locale,index] of [['fr',0],['sw',1]]){
  COPY[locale].caveatLabels=Object.fromEntries(Object.entries(TARIFF_CAVEATS).map(([key,values])=>[key,values[index]]));
  COPY[locale].sourceTitles=Object.assign({},COPY[locale].sourceTitles,{'Airtel Money Tanzania tariff, January–March 2026':locale==='fr'?'Barème Airtel Money en Tanzanie, janvier–mars 2026':'Ada za Airtel Money Tanzania, Januari–Machi 2026'});
 }
+Object.assign(COPY.en,{invalidAmount:'Enter a valid positive amount in the selected provider’s currency.',calculationFailed:'The fee could not be calculated. Check the inputs and try again.',catalogUnavailable:'The published tariff catalog is unavailable.'});
+Object.assign(COPY.fr,{invalidAmount:'Saisissez un montant positif valide dans la devise de l’opérateur sélectionné.',calculationFailed:'Le calcul des frais a échoué. Vérifiez les champs et réessayez.'});
+Object.assign(COPY.sw,{invalidAmount:'Weka kiasi halali chanya katika sarafu ya mtoa huduma aliyechaguliwa.',calculationFailed:'Ada haikuweza kuhesabiwa. Kagua taarifa na ujaribu tena.',catalogUnavailable:'Katalogi ya ada zilizochapishwa haipatikani.',reasonLabels:{PROVIDER_NOT_VERIFIED:'Mtoa huduma hajathibitishwa.',ACTION_NOT_VERIFIED:'Kitendo hakijathibitishwa kwa mtoa huduma huyu.',AMOUNT_OUTSIDE_VERIFIED_BANDS:'Kiasi kiko nje ya viwango vilivyothibitishwa.'}});
 const MARKET_COUNTRIES=JSON.parse(fs.readFileSync(path.join(ROOT,'data/registry/countries.json'),'utf8'));
 Object.values(COPY).forEach(copy=>{copy.marketCountries=MARKET_COUNTRIES.map(country=>({id:country.isoCode,currency:country.currency,names:[country.displayNames.fr,country.displayNames.en,country.displayNames.sw,country.routeSlug].filter(Boolean)}));});
 function esc(value){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}

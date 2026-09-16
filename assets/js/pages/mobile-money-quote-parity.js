@@ -60,8 +60,8 @@
   const root=document.querySelector('[data-mobile-money-tariffs]');
   if(!root||!window.MobileMoneyQuoteEngine)return;
   const form=document.getElementById('mm-tariff-form'),providerSelect=document.getElementById('mm-provider'),actionSelect=document.getElementById('mm-action'),amountInput=document.getElementById('mm-amount'),currency=document.getElementById('mm-currency'),resultNode=document.getElementById('mm-tariff-result'),status=document.getElementById('mm-tariff-status'),copy=window.MobileMoneyTariffCopy||{};
-  const french=root.dataset.locale==='fr';
-  if(french)form.noValidate=true;
+  form.noValidate=true;
+  amountInput.max=String(window.MobileMoneyQuoteEngine.MAX_AMOUNT);
   let catalog=null;
   function localized(map,value){return map&&map[value]||value;}
   function localizedRule(quote){const exact=localized(copy.ruleLabels,quote.rule);if(exact!==quote.rule)return exact;if(copy.publishedBand&&/^Published\s+\w+\s+fee for this amount band$/.test(quote.rule))return copy.publishedBand;return quote.rule;}
@@ -82,11 +82,20 @@
     if(quote.caveats.length){const list=document.createElement('ul');quote.caveats.forEach(function(value){const item=document.createElement('li');item.textContent=localized(copy.caveatLabels,value);list.appendChild(item);});article.append(list);}
     resultNode.replaceChildren(article);
   }
-  form.addEventListener('submit',function(event){event.preventDefault();if(!catalog||!form.checkValidity()){
-      if(french){resultNode.replaceChildren();status.textContent='Saisissez un montant positif dans la devise de l’opérateur sélectionné.';amountInput.setAttribute('aria-invalid','true');amountInput.focus();}else form.reportValidity();return;
+  function clearResult(){resultNode.replaceChildren();amountInput.removeAttribute('aria-invalid');if(!form.dataset.readiness||form.dataset.readiness==='ready')status.textContent=copy.ready;}
+  form.addEventListener('submit',function(event){
+    event.preventDefault();resultNode.replaceChildren();
+    if(!catalog){status.textContent=copy.catalogUnavailable;return;}
+    if(!form.checkValidity()){
+      status.textContent=copy.invalidAmount;amountInput.setAttribute('aria-invalid','true');amountInput.focus();return;
     }
-    if(french)amountInput.removeAttribute('aria-invalid');try{const quote=window.MobileMoneyQuoteEngine.quoteTariff(catalog,{providerId:providerSelect.value,action:actionSelect.value,amount:amountInput.value});render(quote);status.textContent=quote.available?(copy.calculated||'Calculated locally from the published tariff catalog.'):copy.unavailable;}catch(error){status.textContent=copy.unavailable||'Unavailable';}});
+    amountInput.removeAttribute('aria-invalid');
+    try{const quote=window.MobileMoneyQuoteEngine.quoteTariff(catalog,{providerId:providerSelect.value,action:actionSelect.value,amount:amountInput.value});render(quote);status.textContent=quote.available?(copy.calculated||'Calculated locally from the published tariff catalog.'):copy.unavailable;}
+    catch(error){resultNode.replaceChildren();status.textContent=copy.calculationFailed;}
+  });
   providerSelect.addEventListener('change',updateActions);
-  if(french){form.addEventListener('input',function(){resultNode.replaceChildren();if(!form.dataset.readiness||form.dataset.readiness==='ready')status.textContent=copy.ready;amountInput.removeAttribute('aria-invalid');});form.addEventListener('change',function(){resultNode.replaceChildren();if(!form.dataset.readiness||form.dataset.readiness==='ready')status.textContent=copy.ready;});}
-  fetch('/data/fintech/mobile-money-tariffs.json').then(function(response){if(!response.ok)throw new Error('CATALOG_UNAVAILABLE');return response.json();}).then(function(data){window.MobileMoneyQuoteEngine.validateCatalog(data);catalog=data;updateActions();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.ready(form);status.textContent='';}).catch(function(){if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.fail(form);status.textContent=copy.catalogUnavailable||copy.unavailable||'Tariff catalog unavailable.';form.querySelectorAll('input,select,button').forEach(function(control){control.disabled=true;});});
+  form.addEventListener('input',clearResult);
+  form.addEventListener('change',clearResult);
+  form.addEventListener('reset',function(){queueMicrotask(function(){updateActions();clearResult();});});
+  fetch('/data/fintech/mobile-money-tariffs.json').then(function(response){if(!response.ok)throw new Error('CATALOG_UNAVAILABLE');return response.json();}).then(function(data){window.MobileMoneyQuoteEngine.validateCatalog(data);catalog=data;updateActions();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.ready(form);status.textContent='';}).catch(function(){catalog=null;resultNode.replaceChildren();if(window.MobileMoneyReadiness)window.MobileMoneyReadiness.fail(form);status.textContent=copy.catalogUnavailable||copy.unavailable||'Tariff catalog unavailable.';form.querySelectorAll('input,select,button').forEach(function(control){control.disabled=true;});});
 }());
