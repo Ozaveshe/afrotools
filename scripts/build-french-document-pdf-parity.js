@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const localizer = require('../assets/js/lib/fr-document-pdf-localizer.js');
+const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(ROOT, 'data', 'localization', 'fr-document-pdf-parity.json');
@@ -453,6 +454,7 @@ function ensureDirectory(file) {
 }
 
 function writeOrCheck(relativeFile, output, changed) {
+  output = repairFrenchNavigation(output).next;
   const file = path.join(ROOT, relativeFile);
   const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/\r?\n/g, '\n') : null;
   if (current === output) return;
