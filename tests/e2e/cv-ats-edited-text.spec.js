@@ -17,7 +17,9 @@ for (const route of routes) test('edited ATS text drives keyboard TXT/PDF downlo
   await page.goto(route.path);
   await page.waitForFunction(() => window.CVExportUpgrade && window.CVExportUpgrade.openAtsModal && window.CVAtsPlainMode);
   await page.evaluate(() => { window.CVApp.updateData('fn','Synthetic original'); window.CVExportUpgrade.openAtsModal(); });
-  const dialog = page.getByRole('dialog', {name:route.title, exact:true});
+  const dialog = page.locator('.cv-export-modal-overlay.open .cv-export-modal');
+  await expect(dialog).toHaveAttribute('role', 'dialog');
+  await expect(dialog).toHaveAccessibleName(route.title);
   await expect(dialog).toBeVisible();
   const editor = dialog.locator('[data-export-ats-text]');
   await expect(editor).toHaveAccessibleName(/.+/);
@@ -34,12 +36,21 @@ for (const route of routes) test('edited ATS text drives keyboard TXT/PDF downlo
   }
   expect(await page.evaluate(() => window.CVApp.getState().data.fn)).toBe('Synthetic original');
   expect(sent.every(request => !decodeURIComponent(request.url()).includes('Élodie') && !(request.postData() || '').includes('Élodie'))).toBe(true);
+});
+for (const route of routes) test('empty ATS editor rejects TXT and PDF: ' + route.path, async ({page, baseURL}) => {
+  await localOnly(page, baseURL);
+  await page.goto(route.path);
+  await page.waitForFunction(() => window.CVExportUpgrade && window.CVExportUpgrade.openAtsModal && window.CVAtsPlainMode);
+  await page.evaluate(() => window.CVExportUpgrade.openAtsModal());
+  const dialog = page.locator('.cv-export-modal-overlay.open .cv-export-modal');
   const unexpected = [];
   page.on('download', value => unexpected.push(value));
-  await editor.fill('');
-  await dialog.locator('[data-export-download-ats]').click();
-  await dialog.locator('[data-export-download-ats-pdf]').click();
-  await expect(page.locator('body')).toContainText(route.empty);
+  await dialog.locator('[data-export-ats-text]').fill('');
+  for (const selector of ['[data-export-download-ats]', '[data-export-download-ats-pdf]']) {
+    await dialog.locator(selector).focus();
+    await dialog.locator(selector).press('Enter');
+    await expect(page.locator('.cv-toast')).toContainText(route.empty);
+  }
   expect(unexpected).toHaveLength(0);
 });
 test('editing ATS textarea while fonts load cancels the old PDF', async ({page, baseURL}) => {
@@ -59,11 +70,12 @@ test('editing ATS textarea while fonts load cancels the old PDF', async ({page, 
   const downloads = [];
   page.on('download', value => downloads.push(value));
   const pending = page.waitForRequest('**/NotoSans-Regular.ttf');
-  await page.locator('[data-export-download-ats-pdf]').click();
+  await page.locator('[data-export-download-ats-pdf]').focus();
+  await page.locator('[data-export-download-ats-pdf]').press('Enter');
   await pending;
   await editor.fill(edited + '\nLatest edited evidence.');
   resume();
   await page.evaluate(() => window.__editedPdfPending);
   expect(downloads).toHaveLength(0);
-  await expect(page.locator('body')).toContainText('CV changed. Review it and export again.');
+  await expect(page.locator('.cv-toast')).toContainText('CV changed. Review it and export again.');
 });

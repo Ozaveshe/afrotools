@@ -16,7 +16,7 @@ for (const route of routes) test('ATS PDF preserves accented text on ' + route, 
   const downloads = [];
   page.on('download', download => downloads.push(download));
   await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf('名字'));
-  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'Exportez en DOCX ou TXT' : route.startsWith('/sw') ? 'Hamisha kama DOCX au TXT' : 'Export DOCX or TXT');
+  await expect(page.locator('.cv-toast')).toContainText(route.startsWith('/fr') ? 'Exportez en DOCX ou TXT' : route.startsWith('/sw') ? 'Hamisha kama DOCX au TXT' : 'Export DOCX or TXT');
   expect(downloads).toHaveLength(0);
   for (const width of [320, 390]) {
     await page.setViewportSize({width, height:844});
@@ -50,7 +50,7 @@ for (const route of letterRoutes) test('Embedded-font cover-letter exports on ' 
   const unexpected = [];
   page.on('download', value => unexpected.push(value));
   await page.locator('[data-action=pdf]').first().click();
-  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'Exportez en Word ou TXT' : route.startsWith('/sw') ? 'Hamisha kama Word au TXT' : 'Export Word or TXT');
+  await expect(page.locator('#toast')).toContainText(route.startsWith('/fr') ? 'Exportez en Word ou TXT' : route.startsWith('/sw') ? 'Hamisha kama Word au TXT' : 'Export Word or TXT');
   expect(unexpected).toHaveLength(0);
   expect(requests.every(request => !decodeURIComponent(request.url()).includes('Élodie') && !(request.postData() || '').includes('Élodie'))).toBe(true);
   for (const width of [320, 390]) {
@@ -64,7 +64,7 @@ test('font loading failure has a local fallback and retry succeeds', async ({pag
   await page.goto('/tools/cv-builder/');
   await page.waitForFunction(() => window.CVExportAtsPlainPdf);
   await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf('Élodie François'));
-  await expect(page.locator('body')).toContainText('Try again or export DOCX or TXT');
+  await expect(page.locator('.cv-toast')).toContainText('Try again or export DOCX or TXT');
   await page.unroute('**/NotoSans-*.ttf');
   const pending = page.waitForEvent('download');
   await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf('Élodie François'));
@@ -105,7 +105,7 @@ for (const route of routes) test('native CV headings and stale export cancellati
   resume();
   await page.evaluate(() => window.__pendingCareerExport);
   expect(downloads).toHaveLength(0);
-  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'Le CV a changé.' : route.startsWith('/sw') ? 'CV imebadilika.' : 'CV changed.');
+  await expect(page.locator('.cv-toast')).toContainText(route.startsWith('/fr') ? 'Le CV a changé.' : route.startsWith('/sw') ? 'CV imebadilika.' : 'CV changed.');
   const expected = await page.evaluate(() => window.CVExportUpgrade.buildAtsPlainText());
   expect(expected.split('\n')).toContain(route.startsWith('/fr') ? 'Références' : route.startsWith('/sw') ? 'Wadhamini' : 'References');
   const pending = page.waitForEvent('download');
@@ -120,5 +120,5 @@ for (const route of routes) test('native guidance when PDF helper is unavailable
   await page.goto(route);
   await page.waitForFunction(() => window.CVExportAtsPlainPdf);
   await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf('Élodie François'));
-  await expect(page.locator('body')).toContainText(route.startsWith('/fr') ? 'PDF indisponible. Exportez en DOCX ou TXT.' : route.startsWith('/sw') ? 'PDF haipatikani. Hamisha kama DOCX au TXT.' : 'PDF unavailable. Export DOCX or TXT.');
+  await expect(page.locator('.cv-toast')).toContainText(route.startsWith('/fr') ? 'PDF indisponible. Exportez en DOCX ou TXT.' : route.startsWith('/sw') ? 'PDF haipatikani. Hamisha kama DOCX au TXT.' : 'PDF unavailable. Export DOCX or TXT.');
 });
