@@ -1,60 +1,39 @@
 # App consistency repair pass — 16 September 2026
 
-## Changed
+## User-facing fixes
 
-- `uganda/ug-paye.html`: native keyboard-operable buttons for residency,
-  deductions, and rate panels; pressed/expanded state exposed to assistive
-  technology. Residency choices are mutually exclusive, including saved-scenario
-  restoration. Corrected gross-salary period label, readable slider name, and
-  source-check date. Fixed 320px guide overflow and dark-mode toggle-label contrast.
-- `tools/lobola-calculator/index.html`: the negotiation brief now rounds monthly
-  savings upward, matching the existing savings cards and covering the budget.
-- `reports/repair-first-triage-20260916.md`: all 39 repair-first flags classified
-  against their HTML and score evidence. Every flagged route is noindex; these
-  are indexing/locale-readiness review items, not 39 established runtime failures.
-  No indexing restrictions or locale launch policies were changed.
+- Uganda PAYE: native keyboard controls and pressed/expanded states for residence, deductions, period selection and rate panels; correct monthly/annual labels on recalculation; readable dark-mode labels; no 320px guide overflow; currency formatting retained in reverse-calculation results.
+- Shared net-to-gross control: preserves the desired take-home input after calculation in every locale, preventing repeated clicks from increasing the target. Readable source changed and the owned generated asset rebuilt with the targeted minifier.
+- Lobola: negotiation-brief savings round upward, consistently with the savings cards.
+- Contact: shows success only after a successful server response; failures retain the message and enable retry. Added live status feedback and theme-aware cards/help content.
+- Uganda PDF: announced preparation/error feedback, duplicate-request protection, and a filename using the generation date.
 
-## Verified
+## Completion evidence
 
-- PASS: Uganda shared-engine tests and Lobola cluster contract tests.
-- PASS: whitespace check.
-- Browser: Space/Enter operate Uganda's controls; only one residency choice stays
-  selected; rate panel reports its expanded state. Monthly and annual gross
-  labels match their period. Synthetic resident input 1,500,000 still yields
-  1,073,000 net with the existing default deductions.
-- Browser: Uganda has no document overflow at 320, 390, and 1280px in the checked
-  states. Dark toggle labels now resolve to a light foreground, and focused
-  controls remain outlined. No captured console errors.
-- Browser: Lobola synthetic 10,000 cash + 1,000 gifts + 2,000 ceremony has total
-  14,300 including the default buffer; both six-month targets and the brief now
-  show 2,384. Copy-family-summary action reports success. No document overflow at
-  390px and no captured console errors.
+| Requirement | Evidence | Scope |
+| --- | --- | --- |
+| Uganda keyboard/accessibility | Space/Enter exercise residence, NSSF and rate panels; exclusive residence and expanded state verified; period controls expose pressed state | Local browser and source |
+| Mobile/theme | Uganda checked at 320/390/1280px; Lobola at 390px; contact at 390/1280px; no document overflow in sampled states. Dark label/card colors and focus visually checked; contact light theme checked | Sampled routes/states, not whole-site certification |
+| Calculator consistency | Uganda 1,500,000 monthly gross gives 1,073,000 monthly and 12,876,000 annual net; Annual survives recalculation. Reverse input 1,500,000 remains unchanged on repeated calculation, required gross stays 2,156,922, annual gross 25,883,064 | Browser plus engine and interaction tests |
+| Lobola rounding | Synthetic total 14,300 gives 2,384 for both six-month savings displays; copy-summary reports success | Local browser and cluster contract |
+| 39 repair-first records | Every flagged route joined to locale policy: 19 English fallback, 20 unavailable. Per-route source owner and readiness classification in repair-first-triage-20260916.md. No noindex protections or audit score caps removed | Complete source triage; runtime certification not claimed |
+| Fallback handoff | Swahili AfroPayroll notice explicitly labels the English destination; following it renders the English tool. Yoruba invoice shows an unavailable notice with a Yoruba directory link; underlying form is still present, so policy classification is not proof the workflow is broken | Two browser samples |
+| Form behavior | Empty contact submission focuses invalid name. Mocked successful response, rejected response and network exception verify success/retry and preservation of input | Browser validation and isolated handler tests; no real message sent |
+| PDF export | Full Edge browser downloaded `afrotools-ug-paye-uganda-2026-09-16 (2).pdf`. Actual 13,200-byte file parsed as one page with Uganda PAYE Summary, monthly/annual sections and matching 1,073,000 / 12,876,000 / 352,000 values | Actual browser download plus PDF parser; synthetic data |
 
-## Limits and release
+## Tests run — all passed
 
-Local verification only; not deployed. Tax law was not changed or independently
-re-researched. Engine behavior is guarded by existing tests. The 39 metadata
-flags do not constitute browser certification. No real contact/newsletter
-message was sent, and server email delivery remains unverified. No account,
-payment, or database operation was performed. PDF export was not reverified in
-this pass. Full release build, artifact, and security gates remain for shipping.
+- node tests/uganda-paye-shared-engine.test.js
+- node tests/uganda-paye-interactions.test.js
+- node tests/net-to-gross-repeat.test.js (English, French and Swahili; source and generated asset)
+- node tests/lobola-cluster-contract.test.js
+- node tests/contact-form-feedback.test.js
+- node tests/tool-quality-integrity-caps.test.js
+- git diff --check
+- Targeted regeneration: node scripts/minify.js --only=assets/js/lib/src/net-to-gross.js (using existing canonical dependency installation)
 
-Prior audit output changes in `reports/tool-quality-ranking.*` remain preserved
-separately from this repair commit. Prior three-tool UX commit is also preserved.
+## Risks and release boundary
 
-## Next quality work
+Local source and browser verification only; not deployed. Tax law and calculation engines were not changed or independently re-researched. No sensitive real input, actual contact/newsletter message, account, database, or payment operation was used. Contact delivery to a real inbox remains unverified; handler tests used an isolated fake provider. Production acceptance still requires normal build, publish-artifact and security gates; these were not run because this batch is not a deployment. Routes, canonical URLs, analytics event names and locale launch policy were preserved. The only regenerated product asset is the shared net-to-gross output.
 
-Use the locale readiness policy to decide whether each noindex surface is a
-finished tool, a partial translation, or an intentional fallback. Verify actual
-input-to-output and export journeys before changing availability claims. Run a
-controlled form-delivery test separately from the already-verified required-field
-checks, then release the validated UX fixes through the normal release gates.
-
-## Follow-up: result period and export feedback
-
-- Fixed annual hero labels and period text, including recalculation while Annual remains selected. Exposed the existing period variable to the shared net-to-gross and saved-scenario controls so they read the selected period correctly.
-- PDF action now announces preparation, missing-library and failure states, prevents duplicate requests while busy, and uses the actual generation date in the filename. The primary action calls the shared PDF generator; legacy print-window code is not the active button path.
-- Browser: monthly net 1,073,000; annual net 12,876,000; recalculating retains Annual Take-Home Pay and Per year labels. PDF generator resolves, status reads prepared, and no console errors were captured. The in-app browser did not expose a download event within 15 seconds, so a saved file and PDF contents are not certified.
-- Node: uganda-paye-interactions.test.js passes monthly/annual rendering and missing, rejected and successful export-provider cases. uganda-paye-shared-engine.test.js and git diff --check pass.
-- All 39 static repair-first flags now have explicit policy classification: 19 English fallbacks and 20 unavailable locale routes. Their noindex protections and score caps remain intact. This does not certify their runtime workflows.
-- These changes are local source work; not deployed. Remaining goal work includes fallback browser handoffs and wider form/export verification.
+Prior tool-quality report changes and the untracked website-health report remain preserved separately. Rollback is by reverting the scoped repair commits; no feature flag is required.
