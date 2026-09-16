@@ -11,3 +11,8 @@ test('five-day counting, explicit holidays and evidence deadline remain distinct
  assert.equal(engine.calculate({...base,authorization:'force',force:true,proof:'2026-10-04'}).eligible,false);
  assert.equal(engine.calculate({...base,start:'2026-09-20'}).eligible,false);
 });
+test('cross-year cap allocation requires review, without inventing entitlement',()=>{
+ const base={birth:'2026-12-31',start:'2026-12-31',months:6,used:0,schedule:'five',family:true,authorization:'prior',confirmed:true};
+ const engine=require('../assets/js/engines/ci-birth-leave.js');
+ for(const start of ['2026-12-31','2027-01-04']){const result=engine.calculate({...base,start});assert.equal(result.eligible,false);assert.ok(result.reasons.includes('crossYear'));assert.equal(result.schedule,null);}
+});

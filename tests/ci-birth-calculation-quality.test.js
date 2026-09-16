@@ -8,8 +8,8 @@ test('CI birth permission is high-risk legal logic with noncurrency review-requi
  assert.deepEqual(registration.metadata('assets/js/engines/unrelated.js'),{});
 });
 test('registered golden runner checks all literal expectations and detects date regression',()=>{
- const artifacts=quality.loadQualityArtifacts(root);artifacts.fixtures.fixtures=artifacts.fixtures.fixtures.filter(f=>f.operation==='ci-birth-leave');assert.equal(artifacts.fixtures.fixtures.length,12);
- const result=quality.runGoldenFixtures(artifacts,root);assert.equal(result.passed,12);assert.deepEqual(result.failures,[]);
+ const artifacts=quality.loadQualityArtifacts(root);artifacts.fixtures.fixtures=artifacts.fixtures.fixtures.filter(f=>f.operation==='ci-birth-leave');assert.equal(artifacts.fixtures.fixtures.length,14);
+ const result=quality.runGoldenFixtures(artifacts,root);assert.equal(result.passed,14);assert.deepEqual(result.failures,[]);
  const fixture=artifacts.fixtures.fixtures.find(f=>f.id==='ci-birth-six-day-friday');fixture.expected['schedule.returnDate']='2026-09-20';
  const negative=quality.runGoldenFixtures(artifacts,root);assert.equal(negative.failures.length,1);assert.equal(negative.failures[0].id,fixture.id);
 });

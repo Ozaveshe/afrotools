@@ -22,7 +22,9 @@
     if(input.confirmed!==true)reasons.push('confirmed');
     var weekdays=input.schedule==='five'?[1,2,3,4,5]:[1,2,3,4,5,6];
     if(weekdays.indexOf(new Date(start).getUTCDay())<0||exclusions.indexOf(input.start)>=0)reasons.push('start');
-    return {eligible:reasons.length===0,reasons:reasons,days:2,remainingFamilyDays:10-used,year:new Date(birth).getUTCFullYear(),source:source,sourceVersion:'Code du travail, article 25.12; compilation 2025, pages 71–72',schedule:reasons.length?null:calendar.plan({start:input.start,days:2,unit:'working',weekdays:weekdays,excludedDates:exclusions})};
+    var planned=calendar.plan({start:input.start,days:2,unit:'working',weekdays:weekdays,excludedDates:exclusions});
+    if(input.start.slice(0,4)!==input.birth.slice(0,4)||planned.lastLeaveDate.slice(0,4)!==input.birth.slice(0,4))reasons.push('crossYear');
+    return {eligible:reasons.length===0,reasons:reasons,days:2,remainingFamilyDays:10-used,year:new Date(birth).getUTCFullYear(),source:source,sourceVersion:'Code du travail, article 25.12; compilation 2025, pages 71–72',schedule:reasons.length?null:planned};
   }
   return {calculate:calculate,source:source};
 });
