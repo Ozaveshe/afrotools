@@ -30,3 +30,9 @@ Both workflows retain the shared local backup keys and engines. Written response
 - Regenerate locale coverage and route contracts through their existing owners before localization/hreflang validation and release packaging.
 
 These checks produce candidate evidence. They do not set a locale acceptance record or prove production deployment.
+
+## Upstream education integration, 16 September 2026
+
+Production source ab47607e expanded the shared English bank to 52 quick questions and 37 written tasks. FR and SW now retain all 89 identities, including 12 original Physics questions and nine WAEC 2022 mathematics companions. New assessment prompts and answers remain English and carry `lang=en`; localized teaching steps, pitfalls, checklists, subject/topic labels and the page boundary explain this choice. Existing localized mathematics and English assessment boundaries remain unchanged. Sources, numerical answer indices, subparts and backup identities are preserved. The former 40/28 counts describe the earlier checkpoint only.
+
+The reviewed French quick-content base is `scripts/lib/ssce-practice-fr-base.js`; the locale generator now owns both emitted quick banks. New guidance is owned by `scripts/lib/ssce-2022-physics-locale-content.js`. This does not claim full examination coverage or official marking.

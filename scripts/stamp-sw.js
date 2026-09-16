@@ -74,7 +74,7 @@ function injectGeneratedPrecache(sw, urls) {
   return sw.replace(pattern, [PRECACHE_START, ...entries, PRECACHE_END].join('\n'));
 }
 
-let sw = fs.readFileSync(SW_PATH, 'utf8');
+let sw = readNormalizedText(SW_PATH);
 const generatedPrecacheUrls = [
   readCachebustedScriptUrl('/assets/js/components/navbar.min.js'),
   readCachebustedScriptUrl('/assets/js/components/footer.min.js'),

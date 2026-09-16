@@ -24,10 +24,10 @@ test('service worker never serves a reviewed bank from its cache or an offline f
 test('a review revision change rotates the service worker cache without changing shell assets', () => {
   const root = path.resolve(__dirname, '..');
   const indexPath = path.join(root, 'data/jamb/pools/index.json');
-  function stamp(revision) {
+  function stamp(revision, lineEnding = '\n') {
     let written;
     const mockFs = { ...fs, readFileSync(file, encoding) {
-      const value = fs.readFileSync(file, encoding);
+      const value = fs.readFileSync(file, encoding).replace(/\r\n/g, '\n').replace(/\n/g, lineEnding);
       if (path.resolve(file) !== indexPath) return value;
       const data = JSON.parse(value); data.review_revision = revision; return JSON.stringify(data);
     } };
@@ -43,4 +43,5 @@ test('a review revision change rotates the service worker cache without changing
   }
   assert.equal(stamp('a'.repeat(64)), stamp('a'.repeat(64)));
   assert.notEqual(stamp('a'.repeat(64)), stamp('b'.repeat(64)));
+  assert.equal(stamp('a'.repeat(64), '\n'), stamp('a'.repeat(64), '\r\n'));
 });

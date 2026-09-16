@@ -4,6 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const quick = require('../assets/js/lib/ssce-practice-bank');
 const written = require('../assets/js/lib/ssce-written-bank');
+const expansion = require('./lib/ssce-2022-physics-locale-content');
+const quickFr = require('./lib/ssce-practice-fr-base');
 const quickSw = require('./lib/ssce-practice-sw-content');
 const writtenText = require('./lib/ssce-written-locale-content');
 const ui = require('./lib/ssce-locale-ui');
@@ -12,19 +14,22 @@ const { stableId } = require('./lib/content-integrity');
 const root = path.resolve(__dirname, '..');
 const routes = { en: '/tools/ssce-practice/', fr: '/fr/tools/pratique-waec-neco/', sw: '/sw/zana/mazoezi-waec-neco/' };
 const scope = {
-  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 9 guides de mathématiques WAEC et 5 guides de rédaction WAEC. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
-  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 9 ya Hisabati WAEC na 5 ya uandishi WAEC. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
+  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 18 guides de mathématiques WAEC et 5 guides de rédaction WAEC. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
+  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 18 ya Hisabati WAEC na 5 ya uandishi WAEC. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
 };
 function assertComplete(sourceIds, translatedIds, label) {
   if (JSON.stringify(sourceIds.slice().sort()) !== JSON.stringify(translatedIds.slice().sort())) throw Error(`${label}: source and translation identities differ`);
 }
-function quickBank() {
-  assertComplete(quick.questions.map(q => q.id), [...Object.keys(quickSw.maths), ...Object.keys(quickSw.english)], 'Quick practice');
-  const bank = structuredClone(quick);
-  bank.locale = 'sw'; bank.title = 'Misingi ya Hisabati na Kiingereza';
-  bank.scope = 'Mazoezi asilia ya kujiandaa kwa WAEC au NECO. Sehemu hii ya majaribio inahusu mada chache; si mtaala kamili wala mkusanyiko wa karatasi za mitihani iliyopita.';
-  bank.ui = ui.sw;
+function quickBank(locale = 'sw') {
+  assertComplete(quick.questions.filter(q => q.subject !== 'Physics').map(q => q.id), [...Object.keys(quickSw.maths), ...Object.keys(quickSw.english)], 'Quick practice');
+  const bank = structuredClone(locale === 'fr' ? quickFr : quick);
+  if (locale === 'fr') bank.questions.push(...structuredClone(quick.questions.filter(q => q.subject === 'Physics')));
+  bank.locale = locale; bank.title = locale === 'fr' ? 'Mathématiques, anglais et physique' : 'Hisabati, Kiingereza na Fizikia';
+  bank.scope = locale === 'fr' ? quickFr.scope : 'Mazoezi asilia ya kujiandaa kwa WAEC au NECO. Sehemu hii ya majaribio inahusu mada chache; si mtaala kamili wala mkusanyiko wa karatasi za mitihani iliyopita.';
+  bank.ui = locale === 'fr' ? Object.assign({}, quickFr.ui, ui.fr) : ui.sw;
   bank.questions.forEach(q => {
+    if (q.subject === 'Physics') { const row = expansion[locale].physics[Number(q.id.slice(1))-1]; if (!row) throw Error('Missing Physics guidance: '+q.id); q.steps=row.slice(0,2); q.pitfall=row[2]; q.questionLanguage='en'; return; }
+    if (locale === 'fr') return;
     const math = quickSw.maths[q.id], english = quickSw.english[q.id];
     q.origin = 'Zoezi asilia la AfroTools'; q.questionLanguage = math ? 'sw' : 'en';
     if (math) { [q.prompt, q.steps, q.pitfall] = math; q.options = q.options.map(option => option.replace(/\bor\b/g, 'au')); }
@@ -33,10 +38,11 @@ function quickBank() {
   return bank;
 }
 function writtenBank(locale) {
-  assertComplete(written.items.map(q => q.id), Object.keys(writtenText[locale]), `Written ${locale}`);
+  assertComplete(written.items.filter(q => q.year !== 2022).map(q => q.id), Object.keys(writtenText[locale]), `Written ${locale}`);
   const bank = structuredClone(written);
   bank.locale = locale; bank.scope = scope[locale]; bank.ui = ui[locale];
   bank.items.forEach(q => {
+    if (q.year === 2022) { const row=expansion[locale].maths['q'+q.number+(q.subpart ? q.subpart.replace('a–b','ab') : '')]; if(!row)throw Error('Missing WAEC guidance: '+q.id); q.title=row[0]; q.steps=row[1]; q.checks=row[2]; q.questionLanguage='en'; q.answerLanguage='en'; q.sourceLabel=ui[locale][q.sourceLabel]; q.sourceUse=locale==='fr'?'Énoncé adapté de la source WAEC liée ; solution expliquée par AfroTools. '+(q.subpart?'Partie '+q.subpart+' uniquement.':''):'Muhtasari umetokana na chanzo cha WAEC kilichounganishwa; maelezo ya suluhisho ni ya AfroTools. '+(q.subpart?'Sehemu '+q.subpart+' pekee.':''); return; }
     const translation = writtenText[locale][q.id];
     if (translation.checks.length !== q.checks.length) throw Error(`${q.id}: checklist order/count must preserve saved states`);
     if (q.subject === 'English' && translation.prompt) throw Error(`${q.id}: English assessment prompt must remain English`);
@@ -53,37 +59,37 @@ function serializedBank(bank, name) {
 }
 const pageCopy = {
   fr: {
-    title: 'Entraînement WAEC / NECO : maths et anglais — AfroTools',
-    description: '40 questions et 28 exercices rédigés de préparation WAEC / NECO, avec explications en français, sauvegardes locales et comptes rendus téléchargeables.',
+    title: 'Entraînement WAEC / NECO : maths, anglais et physique',
+    description: '52 questions et 37 exercices rédigés de préparation WAEC / NECO, avec explications en français, sauvegardes locales et comptes rendus téléchargeables.',
     education: 'Éducation', hub: '/fr/education/', eyebrow: 'Préparation WAEC / NECO · Pilote', h1: 'Comprendre.<br>Puis s’entraîner.',
-    intro: '24 questions de mathématiques et 16 d’anglais, puis 28 exercices rédigés et guides WAEC 2023. Vérifiez vos réponses, conservez votre travail et reprenez vos erreurs.',
+    intro: '24 questions de mathématiques et 16 d’anglais, 12 questions de physique, puis 37 exercices rédigés et guides WAEC 2022–2023. Vérifiez vos réponses, conservez votre travail et reprenez vos erreurs.',
     nav: 'Choisir le format', quick: 'Questions rapides', written: 'Réponses rédigées et rédaction WAEC', coverage: 'Couverture des annales',
     subject: 'Matière', math: 'Mathématiques', english: 'Anglais', topic: 'Thème', topics: 'Tous les thèmes du pilote', start: 'Commencer', resume: 'Reprendre ma séance', import: 'Ouvrir une sauvegarde', session: 'Séance d’entraînement',
-    boundary: 'Les questions, choix et textes qui évaluent l’anglais restent en anglais ; répondez en anglais à ces exercices. Les explications et les commandes sont en français. La langue de l’interface ne change pas l’examen ni le pays concerné.',
+    boundary: 'Les nouveaux énoncés de physique et de mathématiques WAEC 2022 restent en anglais, avec une aide en français. Les questions, choix et textes qui évaluent l’anglais restent en anglais ; répondez en anglais à ces exercices. Les explications et les commandes sont en français. La langue de l’interface ne change pas l’examen ni le pays concerné.',
     saving: 'Les réponses restent dans ce navigateur. La progression est temporaire jusqu’à son enregistrement explicite. Une nouvelle séance remplace les réponses rapides non enregistrées.',
     noscript: 'Activez JavaScript pour répondre et enregistrer votre progression. Les ressources officielles ci-dessous restent accessibles.',
     writtenHeading: 'Construire une réponse rédigée', collection: 'Collection', task: 'Exercice rédigé', writtenImport: 'Ouvrir une sauvegarde des réponses rédigées',
     writtenScope: 'Votre texte reste sur cet appareil. La vérification personnelle ne produit aucune note officielle. Les guides de rédaction WAEC couvrent les questions 1 à 5 ; les textes complets de compréhension et de résumé des questions 6 et 7 de cette épreuve ne sont pas reproduits.',
     coverageHeading: 'Ce que vous pouvez travailler',
-    coverageBody: 'Les exercices originaux ne portent aucune année d’examen. Les guides WAEC conservent l’année 2023, le numéro de question et le lien vers la source ; consultez-la pour l’énoncé original et les schémas. Cette sélection n’est ni une épreuve complète ni un programme complet. Elle ne comprend pas de correction automatique de dissertations ni d’anglais oral avec audio.',
+    coverageBody: 'Les exercices originaux ne portent aucune année d’examen. Les guides WAEC conservent les années 2022 et 2023, le numéro de question et le lien vers la source ; consultez-la pour l’énoncé original et les schémas. Cette sélection n’est ni une épreuve complète ni un programme complet. Elle ne comprend pas de correction automatique de dissertations ni d’anglais oral avec audio.',
     jamb: 'Sélections JAMB par année (pages en anglais)', mathYears: 'Mathématiques', englishYears: 'Anglais',
     official: 'Ressources officielles en anglais', guidanceMath: 'Conseils WAEC en mathématiques', guidanceEnglish: 'Conseils WAEC en anglais', independent: 'AfroTools est indépendant des organismes d’examen.',
     daily: 'Mon planning quotidien (interface anglaise)', planner: 'Planifier mes études', plannerRoute: '/fr/tools/planificateur-etudes/', result: 'Planifier avec mes résultats WAEC / NECO', resultRoute: '/fr/tools/calculateur-waec/'
   },
   sw: {
-    title: 'Mazoezi ya WAEC / NECO: Hisabati na Kiingereza | AfroTools',
-    description: 'Maswali 40 na kazi 28 za kuandika za maandalizi ya WAEC / NECO, maelezo ya Kiswahili, nakala za maendeleo na ripoti zinazopakuliwa kwenye kifaa.',
+    title: 'Mazoezi WAEC / NECO: Hisabati, Kiingereza na Fizikia',
+    description: 'Maswali 52 na kazi 37 za kuandika za maandalizi ya WAEC / NECO, maelezo ya Kiswahili, nakala za maendeleo na ripoti zinazopakuliwa kwenye kifaa.',
     education: 'Elimu', hub: '/sw/elimu/', eyebrow: 'Maandalizi ya WAEC / NECO · Majaribio', h1: 'Elewa.<br>Kisha fanya mazoezi.',
-    intro: 'Maswali 24 ya Hisabati na 16 ya Kiingereza, pamoja na kazi 28 za kuandika na miongozo ya WAEC 2023. Hakiki majibu, hifadhi kazi yako na urudie uliyokosea.',
+    intro: 'Maswali 24 ya Hisabati na 16 ya Kiingereza, maswali 12 ya Fizikia, pamoja na kazi 37 za kuandika na miongozo ya WAEC 2022–2023. Hakiki majibu, hifadhi kazi yako na urudie uliyokosea.',
     nav: 'Chagua aina ya mazoezi', quick: 'Maswali mafupi', written: 'Majibu ya kuandika na uandishi WAEC', coverage: 'Upeo wa mitihani iliyopita',
     subject: 'Somo', math: 'Hisabati', english: 'Kiingereza', topic: 'Mada', topics: 'Mada zote za majaribio', start: 'Anza mazoezi', resume: 'Endelea na kipindi kilichohifadhiwa', import: 'Fungua nakala ya maendeleo', session: 'Kipindi cha mazoezi',
-    boundary: 'Maswali, chaguo na vifungu vinavyopima Kiingereza vinabaki kwa Kiingereza; jibu mazoezi hayo kwa Kiingereza. Maelezo na vidhibiti ni vya Kiswahili. Lugha ya ukurasa haibadili mtihani wala nchi inayohusika.',
+    boundary: 'Maswali mapya ya Fizikia na Hisabati WAEC 2022 yanabaki kwa Kiingereza, yakiwa na maelezo ya Kiswahili. Maswali, chaguo na vifungu vinavyopima Kiingereza vinabaki kwa Kiingereza; jibu mazoezi hayo kwa Kiingereza. Maelezo na vidhibiti ni vya Kiswahili. Lugha ya ukurasa haibadili mtihani wala nchi inayohusika.',
     saving: 'Majibu yanabaki katika kivinjari hiki. Maendeleo ni ya muda hadi uyahifadhi mwenyewe. Kipindi kipya kinachukua nafasi ya majibu mafupi ambayo hayajahifadhiwa.',
     noscript: 'Washa JavaScript ili kujibu na kuhifadhi maendeleo. Viungo vya vyanzo rasmi hapa chini vinapatikana bila JavaScript.',
     writtenHeading: 'Jenga jibu la kuandika', collection: 'Mkusanyiko', task: 'Kazi ya kuandika', writtenImport: 'Fungua nakala ya majibu ya kuandika',
     writtenScope: 'Jibu lako linabaki kwenye kifaa hiki. Kujihakiki hakutoi alama rasmi. Miongozo ya uandishi WAEC inahusu maswali 1–5; vifungu kamili vya ufahamu na muhtasari vya maswali 6–7 vya karatasi hiyo havijawekwa hapa.',
     coverageHeading: 'Unachoweza kufanya mazoezi',
-    coverageBody: 'Mazoezi asilia hayana mwaka wa mtihani. Miongozo ya WAEC inahifadhi mwaka 2023, namba ya swali na kiungo cha chanzo; kifungue kuona swali na michoro asilia. Huu si mtihani kamili wala mtaala kamili. Hakuna utoaji wa alama za insha kiotomatiki wala sauti za mtihani wa Kiingereza cha mazungumzo.',
+    coverageBody: 'Mazoezi asilia hayana mwaka wa mtihani. Miongozo ya WAEC inahifadhi miaka 2022 na 2023, namba ya swali na kiungo cha chanzo; kifungue kuona swali na michoro asilia. Huu si mtihani kamili wala mtaala kamili. Hakuna utoaji wa alama za insha kiotomatiki wala sauti za mtihani wa Kiingereza cha mazungumzo.',
     jamb: 'Chaguo za JAMB kwa mwaka (kurasa za Kiingereza)', mathYears: 'Hisabati', englishYears: 'Kiingereza',
     official: 'Vyanzo rasmi vya Kiingereza', guidanceMath: 'Mwongozo wa Hisabati wa WAEC', guidanceEnglish: 'Mwongozo wa Kiingereza wa WAEC', independent: 'AfroTools haifungamani na bodi za mitihani.',
     daily: 'Ratiba yangu ya kila siku (ukurasa wa Kiingereza)', planner: 'Panga masomo yangu', plannerRoute: '/sw/zana/mpango-masomo/', result: 'Panga kwa matokeo yangu ya WAEC / NECO', resultRoute: '/sw/zana/kikokotoo-waec-neco/'
@@ -121,7 +127,7 @@ ${scripts.map(src => `<script src="/assets/js/${src}" defer></script>`).join('\n
 <nav aria-label="${locale === 'fr' ? 'Fil d’Ariane' : 'Njia ya ukurasa'}"><a href="${c.hub}">${c.education}</a> / WAEC · NECO · <a href="${routes.en}" lang="en">English</a> · <a href="${routes.fr}" lang="fr">Français</a> · <a href="${routes.sw}" lang="sw">Kiswahili</a></nav>
 <header class="page-header"><p>${c.eyebrow}</p><h1>${c.h1}</h1><p class="page-description">${c.intro}</p></header>
 <nav class="practice-actions" aria-label="${c.nav}"><a href="#practice-subject">${c.quick}</a><a href="#written-practice">${c.written}</a><a href="#exam-coverage">${c.coverage}</a></nav>
-<div class="practice-setup"><div class="form-field"><label class="form-label" for="practice-subject">${c.subject}</label><select class="form-select" id="practice-subject"><option value="Mathematics">${c.math}</option><option value="English">${c.english}</option></select></div><div class="form-field"><label class="form-label" for="practice-topic">${c.topic}</label><select class="form-select" id="practice-topic"><option value="">${c.topics}</option></select></div><button type="button" class="btn btn-primary" id="practice-start">${c.start}</button></div>
+<div class="practice-setup"><div class="form-field"><label class="form-label" for="practice-subject">${c.subject}</label><select class="form-select" id="practice-subject"><option value="Mathematics">${c.math}</option><option value="English">${c.english}</option><option value="Physics">${locale === 'fr' ? 'Physique' : 'Fizikia'}</option></select></div><div class="form-field"><label class="form-label" for="practice-topic">${c.topic}</label><select class="form-select" id="practice-topic"><option value="">${c.topics}</option></select></div><button type="button" class="btn btn-primary" id="practice-start">${c.start}</button></div>
 <p data-assessment-language-notice>${c.boundary}</p><p>${c.saving}</p>
 <div class="practice-actions"><button type="button" class="btn btn-secondary" id="practice-resume">${c.resume}</button><div class="form-field"><label class="form-label" for="practice-import">${c.import}</label><input id="practice-import" type="file" accept=".json,application/json"></div></div>
 <p id="practice-status" role="status" aria-live="polite"></p><section id="practice-session" aria-label="${c.session}"></section><noscript><p>${c.noscript}</p></noscript>
@@ -135,6 +141,7 @@ ${scripts.map(src => `<script src="/assets/js/${src}" defer></script>`).join('\n
 }
 function outputs() {
   const result = new Map([
+    ['assets/js/lib/ssce-practice-bank-fr.js', serializedBank(quickBank('fr'), 'sscePracticeBank')],
     ['assets/js/lib/ssce-practice-bank-sw.js', serializedBank(quickBank(), 'sscePracticeBank')],
     ...['fr', 'sw'].map(locale => [`assets/js/lib/ssce-written-bank-${locale}.js`, serializedBank(writtenBank(locale), 'ssceWrittenBank')]),
     ...['fr', 'sw'].map(locale => [routes[locale].slice(1)+'index.html', page(locale)])
@@ -155,7 +162,7 @@ function run(write) {
     if (write) { fs.mkdirSync(path.dirname(absolute), { recursive: true }); fs.writeFileSync(absolute, content); }
   }
   if (!write && changed.length) throw Error(`Stale SSCE localized output: ${changed.join(', ')}`);
-  console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: 40 quick questions and 28 written tasks per locale (${changed.length} changed files).`);
+  console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: 52 quick questions and 37 written tasks per locale (${changed.length} changed files).`);
 }
 if (require.main === module) run(process.argv.includes('--write'));
 module.exports = { quickBank, writtenBank, outputs, run, routes, normalizePage };

@@ -1,5 +1,20 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs/promises');
+test('2022 subpart has an optional explanation and survives save and reload on mobile',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await expect(page.locator('h1')).toContainText('WAEC and NECO Mathematics');
+ await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content',/^WAEC & NECO/);
+ await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await expect(page.locator('#written-editor')).toContainText('2022 · Paper 2 · Question 1(b)');
+ await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');
+ await page.getByText('Show worked solution',{exact:true}).click();
+ await expect(page.locator('#written-editor details')).toContainText('17k = 68');
+ await page.getByLabel('Your written answer',{exact:true}).fill('12; checked using 16 as the larger value.');
+ await page.getByRole('button',{name:'Save response on this device',exact:true}).click();await page.reload();
+ await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await expect(page.getByLabel('Your written answer',{exact:true})).toHaveValue('12; checked using 16 as the larger value.');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});
 test('large valid backups and dark enlarged-text diagrams remain usable',async({page},info)=>{
  await page.addInitScript(()=>localStorage.setItem('aft_theme','dark'));
  await page.setViewportSize({width:390,height:844});await page.goto('/tools/ssce-practice/#written-practice');
@@ -44,4 +59,9 @@ test('every companion renders complete briefs and accessible geometry at mobile 
   if([3,13].includes(number)){const figure=page.locator('.written-diagram');await expect(figure).toHaveAttribute('role','img');expect((await figure.getAttribute('aria-label')).length).toBeGreaterThan(100);const rect=await figure.boundingBox();expect(rect.width).toBeLessThanOrEqual(390);await figure.scrollIntoViewIfNeeded();await page.screenshot({path:info.outputPath('geometry-'+number+'.png')});}
  }
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});
+test('new 2022 tasks show optional complete solutions on small screens',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ const bank=require('../../assets/js/lib/ssce-written-bank');
+ for(const num of ['8ab','10','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
 });

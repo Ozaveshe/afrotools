@@ -1,0 +1,25 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../..');
+const {questionFingerprint}=require(path.join(root,'scripts/lib/jamb-content-trust'));
+const pool=JSON.parse(fs.readFileSync(path.join(root,'ops/jamb/source-pool.json')));
+const ledger=JSON.parse(fs.readFileSync(path.join(root,'data/jamb/review-ledger.json')));
+const destination=path.join(__dirname,'math-1985-publishable-900.json');
+if(fs.existsSync(destination))throw Error('Batch already prepared.');
+const edits=[{id:'mathematics-1985-37-dee5b14b0184',page:11,question:'M, N, Q and P lie in that order on a circle. Lines MN and PQ meet at X, with M–N–X and P–Q–X in that order. Lines NQ and MP meet at Y, with N–Q–Y and M–P–Y in that order. Angle MNQ = 86° and angle NQP = 122°. Find x = angle NXQ and y = angle QYP.',options:{A:'(28°, 36°)',B:'(36°, 28°)',C:'(43°, 61°)',D:'(61°, 43°)',E:'(36°, 43°)'},answer:'A',explanation:'In triangle NXQ, angle XNQ = 180° − 86° = 94° and angle NQX = 180° − 122° = 58°. Thus x = 180° − 94° − 58° = 28°. Opposite angles of cyclic quadrilateral MNQP sum to 180°, so angle MPQ = 180° − 86° = 94°. In triangle PQY, angle QPY = 180° − 94° = 86° and angle PQY = 180° − 122° = 58°. Therefore y = 180° − 86° − 58° = 36°.',reason:'Visually inspected original PDF page 11. Replaced missing diagram with all vertex-order and extension relationships, corrected quadrilateral vertex typo MNOP to MNQP, normalized degree symbols in options, and independently derived both exterior intersection angles.'}];
+const records=edits.map(edit=>{
+ const q=pool.questions.find(q=>q.id===edit.id);if(!q)throw Error(edit.id);
+ const before=JSON.parse(JSON.stringify(q));
+ q.question=edit.question;if(edit.options)q.options=edit.options;
+ q.answer=edit.answer;q.format=5;q.has_diagram=false;q.ai_explanation=edit.explanation;
+ q.verification={method:'ai-calculation-checked',reviewed_at:'2026-09-15'};
+ const evidence='ops/jamb/verification/math-1985-publishable-900.json#'+q.id;
+ const review={status:'accepted',reviewer:'Codex (AI)',reviewer_type:'ai',reviewed_at:'2026-09-15',evidence};
+ const hash=questionFingerprint(q);
+ ledger.questions[q.id]={content_sha256:hash,source_id:'owner-supplied-math-1983-2004',question_review:{...review},answer_review:{...review,evidence:evidence+'; ops/jamb/verification/check-math-1985-900.cjs'},explanation_review:{...review}};
+ return {id:q.id,num:q.num,source_pdf_page:edit.page,before,after:q,content_sha256:hash,publication_candidate:true,reasoning:edit.reason};
+});
+const batch={schema_version:1,reviewed_at:'2026-09-15',source_file:'MATHEMATICS-JAMB-Past-Questions.pdf',source_pdf_sha256:'dfc7168d207757e9db0b59b378aa16aa0f1449c501d6af3bf040abb37af95264',reviewer:'Codex (AI)',records};
+fs.writeFileSync(path.join(root,'ops/jamb/source-pool.json'),JSON.stringify(pool)+'\n');
+fs.writeFileSync(path.join(root,'data/jamb/review-ledger.json'),JSON.stringify(ledger,null,2)+'\n');
+fs.writeFileSync(destination,JSON.stringify(batch,null,2)+'\n');

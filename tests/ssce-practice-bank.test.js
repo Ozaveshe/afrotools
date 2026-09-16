@@ -7,7 +7,7 @@ test('every offered item has complete options, worked explanations and honest pr
   const ids=new Set();
   for(const q of bank.questions){
     assert.ok(!ids.has(q.id),q.id);ids.add(q.id);
-    assert.ok(['Mathematics','English'].includes(q.subject));
+    assert.ok(['Mathematics','English','Physics'].includes(q.subject));
     assert.ok(q.prompt.trim()&&q.topic.trim());
     assert.equal(q.options.length,4);assert.equal(new Set(q.options).size,4);
     assert.ok(q.options.every(s=>typeof s==='string'&&s.trim()));

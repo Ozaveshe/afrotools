@@ -31,7 +31,7 @@
   }
   function render(skipCapture){
     if(skipCapture!==true)capture();current=bank.items.find(function(q){return q.id===select.value;});area.replaceChildren();checks=[];answer=null;if(!current)return;
-    var q=current,entry=draft.entries[q.id],heading=el('h3',q.title);area.append(heading,el('p',t(q.origin)+(q.year?' · '+q.year+t(' · Paper ')+q.paper+t(' · Question ')+q.number:''),'practice-meta'));
+    var q=current,entry=draft.entries[q.id],heading=el('h3',q.title);area.append(heading,el('p',t(q.origin)+(q.year?' · '+q.year+t(' · Paper ')+q.paper+t(' · Question ')+q.number+(q.subpart?'('+q.subpart+')':''):''),'practice-meta'));
     var source=el('a',q.sourceLabel);source.href=q.source;source.target='_blank';source.rel='noopener noreferrer';area.append(source,el('p',q.sourceUse,'practice-meta'));
     if(q.passage){var passage=el('section',undefined,'practice-passage'),passageText=el('p',q.passage);passageText.lang='en';passage.append(el('h4','Read the passage'),passageText);area.append(passage);}
     var prompt=el('p',q.prompt,'written-prompt');prompt.lang=q.questionLanguage||'en';area.append(prompt);if(q.figure)area.append(diagram(q.figure));
@@ -46,7 +46,7 @@
     var actions=el('div',undefined,'practice-actions');actions.append(button('Save response on this device',function(){dirty.add(q.id);capture();api.write(localStorage,bank,q.id,draft.entries[q.id]);dirty.delete(q.id);message('Response saved on this device.');}),button('Download written-practice backup',function(){capture();download('afrotools-written-practice.json',JSON.stringify(api.normalize(draft,bank),null,2),'application/json');message('Backup downloaded. It includes responses opened or edited in this session.');}),button('Download written-practice report',function(){capture();download('afrotools-written-practice.txt',api.report(bank,draft),'text/plain;charset=utf-8');message('Written-practice report downloaded.');}));area.append(actions);
     area.append(el('p','The checklist records your own review. It does not award an official exam mark.','practice-meta'));
   }
-  function tasks(){capture();select.replaceChildren();bank.items.filter(function(q){return q.collection===collection.value;}).forEach(function(q){select.add(new Option((q.number?t('Question ')+q.number+' · ':'')+q.title,q.id));});render();}
+  function tasks(){capture();select.replaceChildren();bank.items.filter(function(q){return q.collection===collection.value;}).forEach(function(q){select.add(new Option((q.number?t('Question ')+q.number+(q.subpart?'('+q.subpart+')':'')+' · ':'')+q.title,q.id));});render();}
   Array.from(new Set(bank.items.map(function(q){return q.collection;}))).forEach(function(name){collection.add(new Option(t(name),name));});
   try{draft=api.read(localStorage,bank);}catch(e){message('Saved responses could not be read. Existing storage has been kept unchanged. You can write and download a backup.');}
   collection.addEventListener('change',tasks);select.addEventListener('change',render);tasks();

@@ -4,7 +4,8 @@ const artifactRoot = process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT === '1' ? '../.
 const bank = require(path.resolve(__dirname, artifactRoot, 'data/jamb/pools/practice-pool.json'));
 
 const routes = [
-  '/jamb/commerce/1997/', '/jamb/english/2000/', '/jamb/english/2009/', '/jamb/mathematics/1987/'
+  '/jamb/commerce/1997/', '/jamb/english/2000/', '/jamb/english/2009/',
+  '/jamb/mathematics/1983/', '/jamb/mathematics/1985/', '/jamb/mathematics/1987/'
 ];
 
 for (const width of [390, 1440]) {

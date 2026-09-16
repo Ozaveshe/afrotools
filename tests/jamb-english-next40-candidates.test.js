@@ -6,7 +6,8 @@ const {verify}=require('../ops/jamb/review-candidates/english/check-english-2018
 const pool=require('../ops/jamb/source-pool.json').questions;
 const candidateById=new Map(batch.records.map(r=>[r.id,r.candidate]));
 const originalById=new Map(batch.records.map(r=>[r.id,r.original_record]));
-const originals=pool.map(q=>originalById.get(q.id)||q);
+const recoveredOriginals=new Map(require('../ops/jamb/verification/english-2019-publishable-900.json').records.filter(r=>r.before).map(r=>[r.id,r.before]));
+const originals=pool.map(q=>originalById.get(q.id)||recoveredOriginals.get(q.id)||q);
 const integrated=pool.map(q=>candidateById.get(q.id)||q);
 test('next40 checker accepts original pool only before intake and candidates after intake',()=>{
  assert.equal(verify(originals).candidates,27);

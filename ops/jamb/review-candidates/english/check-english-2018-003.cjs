@@ -4,6 +4,7 @@ const path=require('node:path');
 const batch=require('./english-2018-003.json');
 const check=require('./check-candidate-integrity.cjs');
 const {questionFingerprint}=require('../../../../scripts/lib/jamb-content-trust');
+const {verifyRecoveredHold}=require('./check-2019-recovered-holds.cjs');
 const keys={
  2015:{1:'D'},
  2018:{55:'A',56:'D',57:'A',58:'B',59:'C',60:'C',61:'C',72:'A',73:'D',74:'B',78:'D'},
@@ -23,6 +24,7 @@ function verify(pool,integrated=false){
  }
  for(const h of batch.held_records){
   assert.ok(!ids.has(h.id),'Duplicate held ID');ids.add(h.id);
+  if(verifyRecoveredHold(h,live.get(h.id),integrated))continue;
   assert.equal(questionFingerprint(live.get(h.id)),h.original_content_sha256,h.id+': held pool changed');
  }
  assert.equal(ids.size,40);

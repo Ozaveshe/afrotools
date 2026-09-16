@@ -180,6 +180,13 @@ function normalizeHtmlFormulaPresentation(source) {
     "$1__FORMULA_DIGEST_CACHE__",
     )
     .replace(
+      /(assets\/css\/top-level-page-ui-refresh\.css\?v=)[a-f0-9]{8}/gi,
+      // Preserve the reviewed baseline representation. This shared stylesheet
+      // also occurs inside legacy print templates; its cache key is not a
+      // formula change. Keep the asset path and any other query fields covered.
+      "$19ab47fa3",
+    )
+    .replace(
       /(assets\/css\/global(?:\.min)?\.css\?v=)[a-f0-9]{8}/gi,
       function normalizeGlobalCssHash(match, prefix) {
         return prefix + "0ff6e9dc";

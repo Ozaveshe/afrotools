@@ -15,7 +15,7 @@ test('corrupt, foreign and fabricated progress is rejected before persistence',(
  const valid=api.start(bank,'English','Comprehension');
  const bad=[{...valid,bankId:'old'},{...valid,ids:['missing']},{...valid,ids:[valid.ids[0],valid.ids[0]]},{...valid,index:1},{...valid,answers:{[valid.ids[0]]:4}},{...valid,answers:{[valid.ids[1]]:0}}];
  bad.forEach(value=>assert.throws(()=>api.normalize(value,bank)));
- assert.throws(()=>api.start(bank,'Physics',''),/available/);
+ assert.throws(()=>api.start(bank,'Chemistry',''),/available/);
 });
 test('reading reports include the complete passage once and preserve question context',()=>{
  let state=api.start(bank,'English','Comprehension');

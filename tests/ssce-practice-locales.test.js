@@ -11,11 +11,11 @@ const generator = require('../scripts/build-ssce-practice-locales');
 const quickBanks = { en: enQuick, fr: require('../assets/js/lib/ssce-practice-bank-fr'), sw: require('../assets/js/lib/ssce-practice-bank-sw') };
 const writtenBanks = { en: enWritten, fr: require('../assets/js/lib/ssce-written-bank-fr'), sw: require('../assets/js/lib/ssce-written-bank-sw') };
 
-test('all 68 identities, assessment language and backup contracts survive localization', () => {
+test('all 89 identities, assessment language and backup contracts survive localization', () => {
   const originalQuick = JSON.stringify(enQuick), originalWritten = JSON.stringify(enWritten);
   for (const locale of ['fr', 'sw']) {
     const quick = quickBanks[locale], written = writtenBanks[locale];
-    assert.equal(quick.questions.length, 40); assert.equal(written.items.length, 28);
+    assert.equal(quick.questions.length, 52); assert.equal(written.items.length, 37);
     assert.equal(quick.id, enQuick.id); assert.equal(written.id, enWritten.id);
     assert.deepEqual(quick.passages, enQuick.passages);
     for (const question of quick.questions) {
@@ -23,7 +23,7 @@ test('all 68 identities, assessment language and backup contracts survive locali
       for (const key of ['id','subject','topic','answer','examYear','passageId']) assert.deepEqual(question[key], source[key], `${locale}/${question.id}/${key}`);
       assert.notDeepEqual(question.steps, source.steps);
       assert.notEqual(question.pitfall, source.pitfall);
-      if (source.subject === 'English') {
+      if ((source.subject === 'English' || source.subject === 'Physics')) {
         assert.equal(question.questionLanguage, 'en'); assert.equal(question.prompt, source.prompt); assert.deepEqual(question.options, source.options);
       } else { assert.equal(question.questionLanguage, locale); assert.notEqual(question.prompt, source.prompt); }
     }
@@ -33,7 +33,7 @@ test('all 68 identities, assessment language and backup contracts survive locali
       assert.equal(question.checks.length, source.checks.length, 'saved checklist positions must remain stable');
       assert.ok(question.steps.length >= 3); assert.notDeepEqual(question.steps, source.steps); assert.notDeepEqual(question.checks, source.checks);
       assert.notEqual(question.sourceUse, source.sourceUse); assert.notEqual(question.sourceLabel, source.sourceLabel);
-      if (source.subject === 'English') {
+      if (source.subject === 'English' || source.year === 2022) {
         assert.equal(question.questionLanguage, 'en'); assert.equal(question.prompt, source.prompt);
         if (source.passage) { assert.equal(question.answerLanguage, 'en'); assert.equal(question.answer, source.answer); }
       } else { assert.equal(question.questionLanguage, locale); assert.notEqual(question.prompt, source.prompt); }
@@ -43,12 +43,12 @@ test('all 68 identities, assessment language and backup contracts survive locali
 });
 
 test('every quick answer grades identically and every written entry round-trips among EN FR SW', () => {
-  let quickState = { version:1, bankId:enQuick.id, ids:enQuick.questions.map(q => q.id), index:39,
+  let quickState = { version:1, bankId:enQuick.id, ids:enQuick.questions.map(q => q.id), index:51,
     answers:Object.fromEntries(enQuick.questions.map(q => [q.id, q.answer])) };
   const writtenState = { version:1, bankId:enWritten.id, entries:Object.fromEntries(enWritten.items.map(q => [q.id, { answer:'Synthetic answer '+q.id, checks:q.checks.map((_, i) => i % 2 === 0) }])) };
   for (const locale of ['en','fr','sw']) {
     quickState = quickApi.normalize(JSON.parse(JSON.stringify(quickState)), quickBanks[locale]);
-    assert.equal(quickApi.result(quickState, quickBanks[locale]).correct, 40);
+    assert.equal(quickApi.result(quickState, quickBanks[locale]).correct, 52);
     assert.deepEqual(writtenApi.normalize(JSON.parse(JSON.stringify(writtenState)), writtenBanks[locale]), writtenState);
     const report = writtenApi.report(writtenBanks[locale], writtenState);
     for (const q of writtenBanks[locale].items) { assert.ok(report.includes(q.prompt)); assert.ok(report.includes(q.source)); assert.ok(report.includes(q.steps[0])); }
@@ -66,7 +66,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer('waec-2023-mathematics-p2-q3'), /13[,.]01 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q9'), /1[,.]6 m/);
     assert.match(answer('waec-2023-mathematics-p2-q13'), /−8x \+ 21y = 6/);
-    assert.equal(items.filter(q => q.exam === 'WAEC').length, 14);
+    assert.equal(items.filter(q => q.exam === 'WAEC').length, 23);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }
 });

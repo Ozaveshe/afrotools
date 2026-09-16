@@ -29,7 +29,7 @@
   function report(state,bank){
     var safe=normalize(state,bank),score=result(safe,bank),seen=new Set();
     var t=function(text){return bank.ui&&bank.ui[text]||text;};
-    var lines=[t('AfroTools Mathematics and English practice'),bank.scope,t('Score so far: ')+score.correct+t(' correct / ')+score.answered+t(' answered')];
+    var lines=[bank.locale==='fr'?t('AfroTools Mathematics and English practice'):'AfroTools '+Array.from(new Set(safe.ids.map(function(id){return bank.questions.find(function(q){return q.id===id;}).subject;}))).join(', ')+' practice',bank.scope,t('Score so far: ')+score.correct+t(' correct / ')+score.answered+t(' answered')];
     safe.ids.forEach(function(id){
       var q=bank.questions.find(function(q){return q.id===id;}),a=safe.answers[id];if(a===undefined)return;
       if(q.passageId&&!seen.has(q.passageId)){var passage=bank.passages[q.passageId];lines.push('',passage.title,passage.text);seen.add(q.passageId);}
