@@ -463,7 +463,7 @@
     <button type="button" class="invoice-starter-card" data-starter-action="receipt" role="listitem">
       <span class="invoice-starter-kicker">Rekodi iliyolipwa</span>
       <strong>Risiti</strong>
-      <span>Tumia sehemu zile zile zilizo na jina la risiti na hali ya kulipwa.</span>
+      <span>Unda risiti kwa kutumia kiasi cha malipo ulichoandika.</span>
     </button>
     <button type="button" class="invoice-starter-card" data-starter-action="estimate" role="listitem">
       <span class="invoice-starter-kicker">Hali ya kunukuu</span>
@@ -813,7 +813,7 @@
 
       <div class="field-checkbox">
         <input type="checkbox" id="markPaid">
-        <label for="markPaid">Weka ankara alama kuwa IMELIPIWA</label>
+        <label for="markPaid">Rekodi malipo kamili (ondoa tiki ili kufuta malipo yaliyorekodiwa)</label>
       </div>
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Vitendo vya ankara">
@@ -991,7 +991,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Je, hesabu ya VAT inafanyaje kazi?</div>
-      <div class="faq-a">Chagua sarafu yako na ujazo otomatiki wa kiwango cha VAT kulingana na nchi (Nigeria 7.5%, Kenya 16%, Ghana 15%, n.k.). Unaweza kubinafsisha bei wakati wowote.</div>
+      <div class="faq-a">Weka kiwango cha kodi kinachotumika kwa muamala wako. Kubadili sarafu huhifadhi kiwango chako cha kodi na kiasi ulichoingiza; hakubadilishi thamani ya kiasi wala kuamua sheria za kodi.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Je, ninaweza kujumuisha viungo vya malipo, pesa za simu au maelezo ya benki?</div>
@@ -1376,10 +1376,8 @@ function updateActionState() {
   if (mobileHint) mobileHint.textContent = state.valid ? 'Ready to export.' : state.reason;
 }
 
-/* ── CURRENCY CHANGE → AUTO TAX ── */
+/* ── CURRENCY CHANGE: PRESERVE ENTERED TAX AND AMOUNTS ── */
 $('currency').addEventListener('change', function() {
-  const rate = TAX_RATES[this.value];
-  if (rate !== undefined) $('taxRate').value = rate;
   updatePreview();
 });
 
@@ -1396,12 +1394,6 @@ $('taxType').addEventListener('change', function() {
 
 if ($('documentType')) {
   $('documentType').addEventListener('change', function() {
-    if (this.value === 'receipt') {
-      $('paymentTerms').value = 'due-receipt';
-      $('markPaid').checked = true;
-    } else if (this.value === 'estimate') {
-      $('markPaid').checked = false;
-    }
     updatePreview();
   });
 }
@@ -1444,13 +1436,6 @@ function updatePreview() {
   if (taxType === 'none') tax = 0;
 
   const total = subtotal - discAmt + tax;
-  if (getDocumentType() === 'receipt' && $('markPaid').checked && $('amountPaid')) {
-    const paidValue = total.toFixed(2);
-    if ($('amountPaid').value !== paidValue) {
-      $('amountPaid').value = paidValue;
-      $('amountPaid').dispatchEvent(new Event('input', { bubbles: true }));
-    }
-  }
 
   // Summary section
   $('sumSubtotal').textContent = fmtCur(subtotal, cur);
@@ -1510,9 +1495,11 @@ function updatePreview() {
   else { $('pNotesSection').style.display = 'none'; }
 
   // Paid stamp
-  const paid = $('markPaid').checked;
+  const payment = window.AfroInvoicePaymentState ? window.AfroInvoicePaymentState() : {paid:false,label:'Unpaid'};
+  const paid = payment.paid;
+  $('markPaid').checked = paid;
   $('paidStamp').style.display = paid ? '' : 'none';
-  $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText(paid ? 'Paid' : 'Draft') : (paid ? 'Paid' : 'Draft');
+  $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText(payment.label) : payment.label;
   $('previewStatus').style.color = paid ? '#0063D1' : '';
 
   // Overdue check
@@ -1520,10 +1507,9 @@ function updatePreview() {
   const dueDate = parseInvoiceDate(dueVal);
   const today = new Date();
   today.setHours(0,0,0,0);
-  const isOverdue = !paid && dueDate && dueDate < today;
+  const isOverdue = !paid && payment.label !== 'Settled' && dueDate && dueDate < today;
   $('overdueBar').style.display = isOverdue ? '' : 'none';
   if (isOverdue) {
-    $('previewStatus').textContent = window.AfroInvoiceText ? window.AfroInvoiceText('Overdue') : 'Overdue';
     $('previewStatus').style.color = '#991b1b';
   }
   updateActionState();
@@ -1856,7 +1842,7 @@ function startNewInvoice(options) {
   $('amountPaid').value = '0';
   $('withholdingPercent').value = '0';
   $('paymentMethod').value = 'bank';
-  $('markPaid').checked = options.documentType === 'receipt';
+  $('markPaid').checked = false;
   $('currency').value = 'NGN';
   $('taxRate').value = '7.5';
   $('taxType').value = 'vat';
