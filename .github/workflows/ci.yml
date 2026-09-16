@@ -90,6 +90,9 @@ jobs:
       - name: Audit deploy artifact
         run: npm run audit:dist
 
+      - name: Verify French document artwork and breadcrumbs in the artifact
+        run: node scripts/check-french-document-seo.js --dist
+
       - name: Security scan publish surfaces
         run: npm run security:scan
 
