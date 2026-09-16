@@ -1,13 +1,15 @@
 const assert=require('node:assert/strict');
 const {chromium}=require('playwright');
+const startServer=require('./support/consent-static-server');
 (async()=>{
- const browser=await chromium.launch();
- try{for(const status of ['declined','accepted']){
+ const server=await startServer();
+ let browser;
+ try{browser=await chromium.launch();for(const status of ['declined','accepted']){
   const context=await browser.newContext();
   await context.addInitScript(value=>localStorage.setItem('afrotools_cookie_consent',value),status);
   const page=await context.newPage(),requests=[];
   page.on('request',request=>requests.push(request));
-  await page.goto((process.env.CONSENT_TEST_ORIGIN||'http://127.0.0.1:4196')+'/sw/sierra-leone/kikokotoo-kodi-mshahara/');
+  await page.goto(server.origin+'/sw/sierra-leone/kikokotoo-kodi-mshahara/');
   await page.locator('[name=gross]').fill('1234567.89');
   await page.locator('[data-sw-paye-app] form button[type=submit]').click();
   await page.locator('[data-explain]').click();
@@ -26,5 +28,5 @@ const {chromium}=require('playwright');
   const postHosts=requests.filter(r=>r.method()==='POST').map(r=>new URL(r.url()).hostname);
   console.log(JSON.stringify({status,configCount:configs.length,cookieNames:cookies.map(c=>c.name),postHosts,salaryAbsent:true}));
   await context.close();
- }}finally{await browser.close();}
+ }}finally{try{if(browser)await browser.close();}finally{await server.stop();}}
 })().catch(error=>{console.error(error.message);process.exitCode=1;});
