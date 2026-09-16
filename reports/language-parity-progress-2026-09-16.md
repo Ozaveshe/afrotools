@@ -72,3 +72,9 @@ Coordinator second-wave validation completed: all23 combined document/invoice br
 ### Calendar export gap under repair
 
 The French generic finance calendar exporter used a hardcoded2026-07-01 date when no date input existed. The leave route advertisesICS but has no parental-planning date fields; the DCA route also needs workflow-specific schedule review. The exporter now rejects missing, ambiguous or impossible dates instead of inventing one. Three focused date tests pass, including leap-day preservation. This is an interim integrity repair, not calendar feature parity: restoring the real French leave planner and DCA schedule semantics remains required. English parental planning also needs review of inclusive/end dates and paternity working-day assumptions before reuse.
+
+### Explicit French leave calendar workflow
+
+Added source-owned French leave planner controls with user-confirmed duration, start date, leave type and calendar/Monday–Friday counting. Shared pure date helper records last included leave date, exclusive calendar end and return date, emits two localized events with identities/timestamps and UTF-8 line folding. It does not infer statutory entitlement; assumptions are visible. Modified dates invalidate the prepared download. Removed duplicate generic leave ICS button; dedicated planner owns actual scheduling.
+
+Validation:7date/export unit tests and390px browser download/reopen/stale-state check PASS. Firstbrowserrun exposed generic export interception; dedicated planner now bypasses that summary interceptor, rerunPASS. Parental due-date workflow, variable work weeks/holidays UI, EN/SW scheduling repair and DCA recurring schedule remain open; this is not fullleave-app parity. Calendar serialization reference: https://www.rfc-editor.org/rfc/rfc5545 (event end is exclusive).

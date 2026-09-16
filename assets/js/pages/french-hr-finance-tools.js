@@ -5,6 +5,11 @@
   if (!app || !engine) return;
 
   var mode = app.dataset.frhrApp;
+  if (mode === 'leave') {
+    var plannerScript = document.createElement('script');
+    plannerScript.src = '/assets/js/pages/french-leave-planner.js';
+    document.head.appendChild(plannerScript);
+  }
   var checkedDates = {
     overtime: '2026-03-29',
     leave: '2026-04-03',

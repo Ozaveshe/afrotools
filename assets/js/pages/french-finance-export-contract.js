@@ -545,6 +545,8 @@
     var actions = root.querySelector('.fr-finance-export-actions');
     FORMAT_ORDER.forEach(function (format) {
       if (config.formats.indexOf(format) === -1) return;
+      // Leave dates are exported by the explicit planner, not the financial summary.
+      if (format === 'ics' && config.englishId === 'leave-calculator') return;
       var button = document.createElement('button');
       button.type = 'button';
       button.className = 'fr-finance-export-button';
