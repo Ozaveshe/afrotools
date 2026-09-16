@@ -85,3 +85,13 @@ No generated file deletions were introduced. The independent source review found
 
 1. Commit the reviewed generated outputs, publish the authorized merged release and verify the live pages and remote CI.
 2. Record deployment proof separately. Search results need an appropriate post-release comparison window; no click improvement can be claimed from local tests.
+
+## Production deployment and follow-up
+
+The authorized release `4d747ce135f4693d4b053ce41752b73d40c3d12a` was published on September 16, 2026 at 02:37:53 UTC. Netlify deploy `6aa9ffffc4e2b826778a37eb` is ready; the production release marker independently reports that commit. Nineteen live HTTP checks matched the prepared artifact byte-for-byte. Thirty-two distinct live browser checks passed: 24 initially, then eight after correcting test guards to allow the configured site origin while continuing to block external requests.
+
+The initial remote CI run `35047285137` passed Playwright smoke, build, artifact audit and security scan, but failed two repository checks. The consent browser test depended on a server that CI did not start; it now owns an ephemeral server with readiness and cleanup tests. The Swahili finder owner omitted provenance before release normalization; it now emits the existing stable ID and has a repeat-composition regression test. Both fixes preserve public output. Four focused Node tests, finder validation and the actual-provider consent browser check passed after integration; declined consent left no cookies, accepted consent set analytics cookies, and synthetic salary content was absent from requests in both states. Follow-up remote CI remains pending.
+
+Production proof: https://app.netlify.com/projects/afrotools/deploys/6aa9ffffc4e2b826778a37eb
+
+Search-click improvement remains unmeasured and requires a post-release comparison against the recorded French baseline.

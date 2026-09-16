@@ -1,7 +1,7 @@
 const {test,expect}=require('@playwright/test');
-for(const country of ['morocco','tunisia'])test(country+' source evidence and report-error links remain visible in each locale',async({page,request})=>{
+for(const country of ['morocco','tunisia'])test(country+' source evidence and report-error links remain visible in each locale',async({page,request,baseURL})=>{
  await page.setViewportSize({width:320,height:900});
- await page.route(/^https?:\/\//,r=>new URL(r.request().url()).hostname==='127.0.0.1'?r.continue():r.abort());
+ await page.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
  for(const [file]of require('../../scripts/build-'+country+'-paye').outputs()){
   await page.goto('/'+file.replace(/index.html$/,'').replace(/\.html$/,''));
   const panel=page.locator('[data-tool-verification-panel]');await expect(panel).toBeVisible();await expect(panel.locator('h2')).toBeVisible();

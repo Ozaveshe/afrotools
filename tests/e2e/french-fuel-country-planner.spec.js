@@ -2,12 +2,12 @@ const { test, expect } = require('@playwright/test');
 const snapshot = require('../../data/fuel/latest.json');
 
 for (const [code, slug] of [['TN', 'tunisia'], ['TG', 'togo'], ['ML', 'mali'], ['NE', 'niger']]) {
-  test(`${slug}: mobile planner uses correct units, valid inputs and dated sources`, async ({ page }, testInfo) => {
+  test(`${slug}: mobile planner uses correct units, valid inputs and dated sources`, async ({ page, baseURL }, testInfo) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
-      return ['127.0.0.1', 'localhost'].includes(url.hostname) ? route.continue() : route.abort();
+      return url.origin === new URL(baseURL).origin ? route.continue() : route.abort();
     });
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
