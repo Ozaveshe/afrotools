@@ -15,6 +15,17 @@ const VALID_COUNTRY_CODES = new Set([
   'ZA','SS','SD','TZ','TG','TN','UG','ZM','ZW'
 ]);
 
+// Do not inspect or log database response bodies or rejected fetch errors: they
+// can contain submitted email, salary, sector or city values.
+async function insertRecord(url, options) {
+  try { return await fetch(url, options); }
+  catch { return { ok: false, status: 0 }; }
+}
+function logInsertFailure(operation, response) {
+  const status = Number.isInteger(response.status) && response.status >= 100 && response.status <= 599 ? response.status : 0;
+  console.error('minimum-wage insert failed', { operation, status });
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': getAllowedOrigin(event),
@@ -47,7 +58,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: 'Invalid email address' }) };
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/mw_alert_subscriptions`, {
+    const res = await insertRecord(`${SUPABASE_URL}/rest/v1/mw_alert_subscriptions`, {
       method: 'POST',
       headers: {
         apikey:        SUPABASE_KEY,
@@ -59,8 +70,7 @@ exports.handler = async (event) => {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error('mw-alerts insert error:', err);
+      logInsertFailure('alert', res);
       return { statusCode: 500, headers, body: JSON.stringify({ ok: false, error: 'Subscription failed' }) };
     }
 
@@ -77,7 +87,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: 'Missing required fields: sector, salary' }) };
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/mw_crowdsource_reports`, {
+    const res = await insertRecord(`${SUPABASE_URL}/rest/v1/mw_crowdsource_reports`, {
       method: 'POST',
       headers: {
         apikey:        SUPABASE_KEY,
@@ -89,8 +99,7 @@ exports.handler = async (event) => {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error('mw-violation insert error:', err);
+      logInsertFailure('violation', res);
       return { statusCode: 500, headers, body: JSON.stringify({ ok: false, error: 'Report submission failed' }) };
     }
 
