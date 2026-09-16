@@ -480,7 +480,7 @@
   }
 
   function canvasToOutputBlob(canvas, format, mimeType, quality) {
-    if (format === 'png') return canvasToBlob(canvas, mimeType, quality);
+    if (format === 'png' || format === 'webp') return canvasToBlob(canvas, mimeType, quality);
     var flat = document.createElement('canvas');
     flat.width = canvas.width;
     flat.height = canvas.height;
@@ -770,13 +770,55 @@
     };
   }
 
+  // PDF JPEG embedding ignores EXIF display orientation. Normalize only oriented
+  // JPEGs; ordinary JPEG bytes remain untouched in automatic mode.
+  function jpegOrientation(bytes) {
+    var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    if (bytes.length < 4 || view.getUint16(0) !== 0xffd8) return 1;
+    for (var offset = 2; offset + 4 <= bytes.length;) {
+      var marker = view.getUint16(offset);
+      if (marker === 0xffda || marker === 0xffd9) break;
+      var length = view.getUint16(offset + 2), end = offset + 2 + length;
+      if (length < 2 || end > bytes.length) break;
+      if (marker === 0xffe1 && length >= 16 && view.getUint32(offset + 4) === 0x45786966 && view.getUint16(offset + 8) === 0) {
+        var tiff = offset + 10, little = view.getUint16(tiff) === 0x4949;
+        if (!little && view.getUint16(tiff) !== 0x4d4d) return 1;
+        if (view.getUint16(tiff + 2, little) !== 42) return 1;
+        var directory = tiff + view.getUint32(tiff + 4, little);
+        if (directory < tiff || directory + 2 > end) return 1;
+        var count = view.getUint16(directory, little);
+        for (var i = 0; i < count; i++) {
+          var entry = directory + 2 + i * 12;
+          if (entry + 12 > end) break;
+          if (view.getUint16(entry, little) === 0x112 && view.getUint16(entry + 2, little) === 3 && view.getUint32(entry + 4, little) === 1) {
+            var orientation = view.getUint16(entry + 8, little);
+            return orientation >= 1 && orientation <= 8 ? orientation : 1;
+          }
+        }
+      }
+      offset = end;
+    }
+    return 1;
+  }
+
+  async function imageToPngBytes(item) {
+    var img = await loadImageElement(item.url), canvas = document.createElement('canvas');
+    canvas.width = item.width;
+    canvas.height = item.height;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    var blob = await canvasToBlob(canvas, 'image/png', 1);
+    return new Uint8Array(await blob.arrayBuffer());
+  }
+
   async function imageBytesForPdf(item, quality) {
     var mode = els.i2pImageMode.value;
-    if (mode === 'auto' && item.type === 'image/png') {
-      return { type: 'png', bytes: new Uint8Array(await item.file.arrayBuffer()) };
-    }
-    if (mode === 'auto' && item.type === 'image/jpeg') {
-      return { type: 'jpg', bytes: new Uint8Array(await item.file.arrayBuffer()) };
+    if (mode === 'auto') {
+      var bytes = new Uint8Array(await item.file.arrayBuffer());
+      if (item.type === 'image/png') return { type: 'png', bytes: bytes };
+      if (item.type === 'image/jpeg' && jpegOrientation(bytes) === 1) return { type: 'jpg', bytes: bytes };
+      // Browser decoding applies EXIF transforms. PNG retains decoded alpha for
+      // WebP and avoids a second lossy JPEG encode for rotated/mirrored photos.
+      return { type: 'png', bytes: await imageToPngBytes(item) };
     }
     return { type: 'jpg', bytes: await imageToJpegBytes(item, quality) };
   }
@@ -852,8 +894,8 @@
       setText(els.i2pResultName, outputName);
       setText(els.i2pResultInfo, native('Pages: ', 'Pages : ', 'Kurasa: ') + state.imageItems.length + ' - ' + formatBytes(blob.size));
       var note = native('Source images: ', 'Images sources : ', 'Picha za chanzo: ') + state.imageItems.length + ' (' + els.i2pPageSize.selectedOptions[0].textContent + ').';
-      if (els.i2pImageMode.value === 'auto') note += native(' PNG and JPG originals were preserved where PDF-compatible.', ' Les originaux PNG et JPG ont été conservés lorsque le PDF le permet.', ' Picha asili za PNG na JPG zimehifadhiwa zinapolingana na PDF.');
-      else note += native(' JPG quality: ', ' Qualité JPG : ', ' Ubora wa JPG: ') + els.i2pQuality.value + '%.';
+      if (els.i2pImageMode.value === 'auto') note += native(' Compatible originals are preserved. Rotated or mirrored JPEGs and WebP use decoded PNG pixels; transparency is retained.', ' Les originaux compatibles sont conservés. Les JPEG orientés et les WebP utilisent des pixels PNG décodés ; la transparence est conservée.', ' Picha asili zinazolingana huhifadhiwa. JPEG zenye mwelekeo na WebP hutumia pikseli za PNG zilizofasiriwa; uwazi huhifadhiwa.');
+      else note += native(' Transparency is flattened onto white. ', ' La transparence est aplatie sur fond blanc. ', ' Uwazi huwekwa kwenye mandharinyuma meupe. ') + native(' JPG quality: ', ' Qualité JPG : ', ' Ubora wa JPG: ') + els.i2pQuality.value + '%.';
       setText(els.i2pResultNote, note);
       els.i2pResultCard.classList.remove('hidden');
     } catch (err) {
