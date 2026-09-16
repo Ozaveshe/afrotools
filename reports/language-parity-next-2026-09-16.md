@@ -17,11 +17,13 @@ Status: in progress; not released. English, French and Swahili free apps remain 
 
 - Link check passed: 141,852 internal links across 11,793 HTML files. Hreflang validation passed: 9,981 declaring pages, 32,532 relationships and 5,289 equivalence groups. These establish route integrity, not app behavior.
 
+- Actual downloaded-PDF photo checks passed in all three locales (three browser cases); this does not resolve the separate clipping defect.
+
 ## Required remaining work
 
 - Confirmed CV defect: three complete-form Nairobi PDFs in the earlier styled-export matrix extend below the A4 page. Repair and superseding physical-bound evidence are pending; the matrix must not be treated as unqualified visual acceptance.
 - CV compact, one-page, manual-break, print and long-string cases remain under review. Raster PDF validity does not establish selectable text, universal shaping or DOCX visual correctness.
-- Register the new conditional birth-leave engine as a high-risk legal calculation, with versioned provenance and independent fixtures. Current calculation-quality inventory is stale; no blanket digest refresh is authorized by this report.
+- The conditional birth-leave engine is registered as a high-risk legal calculation with 12 independent fixtures. The integrated quality check passes 792 artifacts and 340/340 fixtures; existing records were preserved. Source authority, current-law support and effective dates remain review-required.
 - Country leave sources still contain unresolved current-law, effective-date, eligibility and unit differences. The Côte d’Ivoire workflow is conditional planning; Senegal’s adopted 2026 bill must not be called current law without commencement proof.
 - Airtel's reviewed reference is labelled January–March 2026; September validity is unconfirmed. MTN withdrawal tax is excluded from the published-fee subtotal and total debit remains unknown. Account eligibility requires separate confirmation.
 - A complete build, publish-artifact audit/security checks and artifact-level browser checks are still required for this next batch.
