@@ -19,6 +19,6 @@ test('NECO starter draft retains selected scope and independently checked result
 });
 
 test('public NECO companions preserve visually verified identities and independently checked answers',()=>{
- const bank=require('../assets/js/lib/ssce-written-bank');const items=bank.items.filter(q=>q.exam==='NECO');assert.deepEqual(items.map(q=>q.number),[1,5,9]);assert.equal(items[0].answer,'90.');assert.equal(items[1].answer,'2/3 hour.');assert.equal(items[2].answer,'₦432.59.');
+ const bank=require('../assets/js/lib/ssce-written-bank');const items=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');assert.deepEqual(items.map(q=>q.number),[1,5,9]);assert.equal(items[0].answer,'90.');assert.equal(items[1].answer,'2/3 hour.');assert.equal(items[2].answer,'₦432.59.');
  for(const q of items)assert.match(q.sourceUse,/not a complete paper/);
 });
