@@ -7,7 +7,7 @@ const test = require('node:test');
 const vm = require('node:vm');
 
 const ROOT = path.resolve(__dirname, '..');
-const CHECKED_AT = Date.parse('2026-07-28T00:00:00Z');
+const CHECKED_AT = Date.parse('2026-09-24T00:00:00Z');
 const DAY = 86400000;
 
 function loadBrowserScript(relativePath) {

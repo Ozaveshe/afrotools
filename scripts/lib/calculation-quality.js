@@ -4413,8 +4413,26 @@ function externalDataContracts() {
   };
 }
 
+function validateFixtureDeltaReviews(deltas, reviews) {
+  for (const delta of deltas) {
+    const supported = reviews.some((review) =>
+      review.reviewedBy && /^\d{4}-\d{2}-\d{2}$/.test(review.reviewedAt || '') &&
+      /^https?:\/\//.test(review.sourceUrl || '') && review.reason &&
+      (review.fixtureDeltas || []).some((entry) => stableJson(entry) === stableJson(delta))
+    );
+    if (!supported) throw new Error('Fixture delta lacks a matching source review: ' + delta.fixtureId);
+  }
+  return deltas;
+}
+
 function buildQualityArtifacts(root) {
   const built = buildInventoryAndFormulas(root);
+  const deltaPath = path.join(root, QUALITY_FILES.fixtureDeltas);
+  const deltas = fs.existsSync(deltaPath) ? readJson(deltaPath).deltas || [] : [];
+  const reviewDirectory = path.join(root, 'data/calculation-quality/reviews');
+  const reviews = deltas.length && fs.existsSync(reviewDirectory)
+    ? fs.readdirSync(reviewDirectory).filter((file) => file.endsWith('.json')).map((file) => readJson(path.join(reviewDirectory, file)))
+    : [];
   return {
     inventory: built.inventory,
     formulas: built.formulas,
@@ -4423,7 +4441,7 @@ function buildQualityArtifacts(root) {
     fixtureDeltas: {
       $schema: "./calculation-quality.schema.json#/$defs/FixtureDeltaRegistry",
       schemaVersion: 1,
-      deltas: [],
+      deltas: validateFixtureDeltaReviews(deltas, reviews),
     },
   };
 }
@@ -5455,6 +5473,7 @@ module.exports = {
   classifyArtifact,
   loadQualityArtifacts,
   buildQualityArtifacts,
+  validateFixtureDeltaReviews,
   assertFormulaMetadata,
   checkHighRiskRouteTraceability,
   resolveFormula,

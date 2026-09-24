@@ -1,0 +1,31 @@
+const { test, expect } = require('@playwright/test');
+
+test('Addis dated schedule validates inputs, minimum, classes and returning to flat mode', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/tools/water-bill/ethiopia/');
+  await page.locator('#tariffMode').selectOption('addis-149-year5');
+  await expect(page.locator('#waterSource')).toContainText('not confirmed');
+  await page.locator('#monthlyUsage').fill('0');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#waterError')).toContainText('other charges');
+  await page.locator('#customFee').fill('0');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 66.51');
+  await expect(page.locator('#rDaily')).toHaveText('0.0 L');
+  await page.locator('#monthlyUsage').fill('15');
+  await expect(page.locator('#results')).not.toHaveClass(/\bon\b/);
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 532.12');
+  await page.locator('#customerType').selectOption('non-domestic');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 1081.05');
+  await page.locator('#tariffMode').selectOption('custom');
+  await expect(page.locator('#customRate')).toBeEnabled();
+  await expect(page.locator('#addisClassField')).toBeHidden();
+  await page.locator('#customRate').fill('12.5');
+  await page.locator('#householdSize').fill('4');
+  await page.locator('#customFee').fill('7.25');
+  await page.locator('#calcBtn').click();
+  await expect(page.locator('#rBill')).toHaveText('ETB 194.75');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

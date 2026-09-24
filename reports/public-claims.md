@@ -1,11 +1,11 @@
 # Public claims report
 
-Generated: 2026-09-16
+Generated: 2026-09-24
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 12840
-- Approved claim hits: 45483
+- Public HTML/shared script files scanned: 12848
+- Approved claim hits: 45793
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
@@ -23,11 +23,11 @@ Generated: 2026-09-16
 | ai.optional-provider | Deterministic routing works without model consent; optional model requests go through AfroTools functions to the configured supported provider after consent and can be unavailable. | AI platform and privacy owner | 2026-09-11 | 2026-10-11 | 5 |
 | freshness.live-data | Approved live/current wording requires a successful observation with a named source, timestamp, and feature-specific live-age threshold; other states must downgrade visibly. Renewal verifies this shared policy, not every public occurrence. | Live-data freshness owner | 2026-09-11 | 2026-10-11 | 8 |
 | authority.evidence-scope | Official/verified/accurate/compliant wording applies only to the named source, record, jurisdiction, period, or validated workflow—not the whole platform or an outcome. | Source-confidence owner | 2026-09-11 | 2026-10-11 | 37 |
-| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-09-10 | 2026-09-17 | 6 |
+| performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-09-24 | 2026-10-01 | 6 |
 | statutory.jurisdiction-period | Tax/statutory claims identify the applicable jurisdiction, tax year/effective period, source, and review state and remain planning guidance unless filing is implemented. | Tax and statutory source owner | 2026-09-11 | 2026-10-11 | 6 |
-| account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-09-11 | 2026-09-18 | 1 |
+| account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-09-24 | 2026-10-01 | 1 |
 | payment.provider-processing | AfroTools initializes checkout and reads subscription state; payment details and final transaction/cancellation confirmation are handled by the payment provider. | Billing and payment owner | 2026-09-11 | 2026-10-11 | 20 |
 | analytics.consent-metadata | Consented analytics can send bounded product/session metadata to configured analytics processors; raw sensitive workflow content is prohibited. | Analytics and privacy owner | 2026-09-11 | 2026-10-11 | 199 |
 | documents.local-processing | Named local PDF/image operations use browser processing; network features such as AI, TTS, email, sync, or vault upload are separate explicit actions. | Document and PDF workflow owner | 2026-09-11 | 2026-10-11 | 4 |
-| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; local downloads remain separate. | Vault and storage owner | 2026-09-11 | 2026-09-18 | 1 |
+| vault.explicit-cloud-upload | Signed-in users can explicitly upload supported files to a private configured vault when the current client/service is available; local downloads remain separate. | Vault and storage owner | 2026-09-24 | 2026-10-01 | 1 |
 | forms.email-handling | Email/contact data is used for the disclosed submission or account purpose and processed by the configured form/email/account service; provider delivery and deletion timing are not guaranteed. | Forms, email, and privacy owner | 2026-09-11 | 2026-10-11 | 3 |

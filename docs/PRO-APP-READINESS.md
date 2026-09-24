@@ -1,14 +1,16 @@
 # Pro App Readiness
 
-Updated: 2026-05-13
+Updated: 2026-09-16
 
-This matrix is the close-out truth sheet for the 20-app Pro architecture. Payroll is the only fully active Pro app. Other routes may be useful local previews, but they must keep the early-access waitlist and must not promise account sync, official filing, payment execution, legal certification, or private intelligence.
+This matrix describes the 21 app routes in the current Pro registries: 11 control/growth apps and 10 daily OS apps. Payroll and SEO Studio have `active` route status. Payroll has account-backed workspace code; SEO Studio combines server-side audits with device-saved work. An active route or passing repository check does not prove live account access, provider configuration, or production readiness.
 
-Commercial product strategy for all 20 apps lives in `docs/AFROTOOLS-PRO-APP-PRODUCT-BRIEFS.md`. Use that brief for market references, unique selling points, sellable packaging, and app-specific improvement priorities, while keeping this readiness matrix as the implementation truth sheet.
+Shell and limited-preview routes must retain their truthful readiness labels and early-access waitlist. They must not promise unverified account sync, official filing, payment execution, legal certification, or private intelligence.
+
+Commercial product strategy for the original 20 apps lives in `docs/AFROTOOLS-PRO-APP-PRODUCT-BRIEFS.md`. Use that brief for market references, unique selling points, sellable packaging, and app-specific improvement priorities. Current route membership and status come from `assets/js/lib/pro-app-registry.js` and `assets/js/lib/pro-daily-os-registry.js`; this matrix records their implementation boundaries, not a live certification.
 
 | App | Status | Data backing | Pro gate | Timeline | Close-out decision |
 | --- | --- | --- | --- | --- | --- |
-| Payroll | Active | Account/profile plus device workspace history | Yes | Ship | Keep as the active Pro app and continue hardening. |
+| Payroll | Active | Account/profile plus device workspace history | Yes | Maintain | Continue hardening; verify live account access and provider behavior separately. |
 | Tax Compliance | Shell | localStorage/device review data | Yes | Disclaim | Review packet only, not filing or payment proof. |
 | Books | Shell | localStorage/device finance records | Yes | Disclaim | Local preview until account-backed Books tables are applied and tested. |
 | HR | Shell | localStorage/device HR records | Yes | Disclaim | Local preview until team/member and document storage are verified. |
@@ -16,7 +18,8 @@ Commercial product strategy for all 20 apps lives in `docs/AFROTOOLS-PRO-APP-PRO
 | Legal Desk | Shell | localStorage/device legal intake | Yes | Disclaim | Draft/handoff only, no legal advice, e-signature, or certification. |
 | Grants & Tenders | Shell | localStorage/device opportunity pipeline | Yes | Disclaim | Pipeline preview until source/deadline model is live. |
 | Creator Studio | Shell | localStorage/device creator workspace | Yes | Disclaim | Separate from public AfroStream data; no account sync claim. |
-| Stream Intelligence | Blocked shell | limited public-source review notes | Yes | Sunset unless hardened | Keep private intelligence and account-saved review queues out of copy until verified. |
+| Stream Intelligence | Limited preview | Public-source review notes | Yes | Disclaim | Keep private intelligence and account-saved review queues out of copy until verified. |
+| SEO Studio | Active | Server-side page audits plus device-saved projects and history | Yes | Maintain | Account-synced history and multi-page crawling are not established by this status; verify server execution separately. |
 | Property Projects | Shell | localStorage plus workspace API bridge where available | Yes | Disclaim | Local/project packet only, no escrow, valuation, title, or filing claim. |
 | Seller | Shell | localStorage/device commerce records | Yes | Disclaim | Practical local workspace, no hosted storefront, checkout, or payment collection. |
 | Events | Shell | localStorage/device event records | Yes | Disclaim | Local ceremony workspace only. |

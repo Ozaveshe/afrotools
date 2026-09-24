@@ -229,7 +229,7 @@ function localizedFaqs(row, name, estimate, date) {
     },
     {
       q: `Puis-je comparer ${name} avec un autre pays africain ?`,
-      a: `Oui. Le comparateur AfroFuel permet de confronter ${name} aux marchés voisins en ${REGION_LABELS[row.region] || "Afrique"} ou à tout autre pays présent dans le tableau.`,
+      a: `Consultez les relevés des autres pays ci-dessous pour comparer leurs prix enregistrés à ceux ${location}. Vérifiez les dates et les unités de chaque relevé ; il ne s’agit pas de prix actuels en station.`,
     },
   ];
 }
@@ -344,8 +344,8 @@ function visiblePage(row, rows, country) {
   if (intent) { faqs[4] = { q: `Ces prix du carburant ${location} sont-ils ceux d’aujourd’hui ?`, a: intent.note }; }
   const description = intent ? intent.description : `Carburant ${location} : relevé du ${date}, à vérifier localement. Consultez essence, diesel et GPL, puis calculez votre budget selon la quantité consommée.`;
   const canonical = `${BASE_URL}/fr/tools/suivi-carburant/${slug}/`;
-  const compareHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#fuel-compare`;
-  const generatorHref = `/fr/tools/suivi-carburant/?country=${encodeURIComponent(row.code)}#generator-cost`;
+  const compareHref = '#related-countries';
+  const generatorHref = '/fr/tools/couts-secours-energie/';
 
   const header = `<header class="fuel-country-hero">
   <div class="fuel-country-shell">
@@ -359,16 +359,16 @@ function visiblePage(row, rows, country) {
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>Prix du carburant — ${escapeHtml(region)}</span></div>
         <h1${intent ? ' style="color:#173e32"' : ""}>${escapeHtml(intent ? intent.title.replace(" | AfroFuel", "") : `Prix du carburant — ${name}`)}</h1>
         <p class="fuel-lede">Consultez le dernier relevé disponible des prix de l’essence, du diesel et du GPL ${escapeHtml(location)}, en ${escapeHtml(row.currency)}. Estimez un budget de transport, de groupe électrogène ou de ménage, puis vérifiez le prix local.</p>
-        ${intent ? `<p class="fuel-note">${escapeHtml(intent.note)}</p>\n        ` : ""}<p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Prix à revalider avant utilisation.</p>
+        ${intent ? `<p class="fuel-note">${escapeHtml(intent.note)}</p>\n        ` : ""}<p class="fuel-trust">Relevé du ${escapeHtml(date)} · ${escapeHtml(source.label)}. Ne constitue pas un prix actuel en station. Prix à revalider avant utilisation.</p>
       </div>
       <aside class="fuel-price-card" aria-label="Résumé des prix du carburant ${escapeHtml(location)}">
-        <div class="fuel-card-top"><div><strong>${escapeHtml(name)}</strong><div class="fuel-date">Dernière mise à jour : ${escapeHtml(date)}</div></div><div class="fuel-flag" aria-hidden="true">${flag}</div></div>
+        <div class="fuel-card-top"><div><strong>${escapeHtml(name)}</strong><div class="fuel-date">Date de la ligne du jeu de données : ${escapeHtml(date)}</div></div><div class="fuel-flag" aria-hidden="true">${flag}</div></div>
         <div class="fuel-price-list">
           <div class="fuel-price-row"><span>Essence</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "petrol"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "petrol"))} · comparaison</span></div></div>
           <div class="fuel-price-row"><span>Diesel</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "diesel"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "diesel"))} · comparaison</span></div></div>
           <div class="fuel-price-row"><span>GPL</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, "lpg"))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, "lpg"))} · comparaison</span></div></div>
         </div>
-        <div class="fuel-actions"><a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Comparer ${escapeHtml(name)} à un autre pays</a><a class="fuel-btn" href="${escapeHtml(generatorHref)}">Calculer un budget de groupe électrogène</a></div>
+        <div class="fuel-actions"><a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Consulter les relevés d’autres pays</a><a class="fuel-btn" href="${escapeHtml(generatorHref)}">Calculer un budget de groupe électrogène</a></div>
       </aside>
     </div>
   </div>
@@ -384,7 +384,7 @@ function visiblePage(row, rows, country) {
     </div>
     <output class="fuel-planner-output" data-fuel-planner-output aria-live="polite">Entrez une consommation pour obtenir une estimation.</output>
     <div class="fuel-note" id="fuel-planner-help" style="margin-top:14px"><strong>Méthode :</strong> quantité par jour × jours par mois × prix du relevé. Utilisez des litres pour l’essence et le diesel, des kilogrammes pour le GPL. <strong>Source :</strong> ${source.link}. ${escapeHtml(source.label)} ; ligne datée du ${escapeHtml(date)}. <a href="/data/fuel/latest.json">Consulter le jeu de données</a>. Les prix peuvent varier selon la station, la ville, le dépôt et le fournisseur ; vérifiez localement avant un achat ou un devis.</div>
-    <div class="fuel-source-row"><a href="/fr/tools/suivi-carburant/#fuel-compare">Comparer les pays</a><a href="/fr/tools/suivi-carburant/#generator-cost">Calculateur de groupe électrogène</a></div>
+    <div class="fuel-source-row"><a href="#related-countries">Consulter les autres pays</a><a href="/fr/tools/couts-secours-energie/">Calculateur de groupe électrogène</a></div>
   </section>`;
 
   const generator = `<section class="fuel-section" aria-labelledby="generator-estimate">
@@ -407,9 +407,8 @@ function visiblePage(row, rows, country) {
   const tools = `<section class="fuel-section" aria-labelledby="related-tools">
     <h2 id="related-tools">Planifier carburant, transport et énergie de secours</h2>
     <div class="fuel-links">
-      <a class="fuel-link-card" href="/fr/tools/suivi-carburant/#generator-cost">Calculateur de carburant pour groupe électrogène<span>Estimez la dépense mensuelle.</span></a>
+      <a class="fuel-link-card" href="/fr/tools/couts-secours-energie/">Calculateur de carburant pour groupe électrogène<span>Saisissez votre prix local et votre consommation mesurée.</span></a>
       <a class="fuel-link-card" href="/fr/tools/tarifs-itineraire/">Tarifs d’itinéraire<span>Évaluez les coûts de transport influencés par le carburant.</span></a>
-      <a class="fuel-link-card" href="/fr/tools/couts-secours-energie/">Coût de l’énergie de secours<span>Comparez groupe électrogène, GPL, onduleur et solaire.</span></a>
       <a class="fuel-link-card" href="/fr/tools/roi-solaire/">Calculateur de ROI solaire<span>Comparez le solaire aux dépenses de carburant.</span></a>
       <a class="fuel-link-card" href="/fr/tools/cout-de-la-vie/">Comparateur du coût de la vie<span>Replacez carburant et transport dans un budget complet.</span></a>
     </div>
@@ -443,6 +442,9 @@ function localizePage(html, row, rows, country) {
   const intent = searchIntentCopy(row, location, formatDate(row.last_updated));
   const title = intent ? intent.title : `Prix du carburant ${location} | AfroFuel`;
   let next = html;
+  if (!next.includes('.fuel-country-hero h1 { color: #142018;')) {
+    next = replaceRequired(next, /h1 \{ margin: 16px 0 12px;/, '.fuel-country-hero h1 { color: #142018; margin: 16px 0 12px;', 'contraste du titre');
+  }
 
   next = replaceRequired(next, /<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`, "title");
   next = setMeta(next, { name: "description" }, visible.description);

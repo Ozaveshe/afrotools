@@ -9,6 +9,39 @@ function load(code) {
   return context.window.AfroTools.WaterBillEngine;
 }
 const engine = load(fs.readFileSync('engines/src/water-bill-engine.js', 'utf8'));
+
+test('Addis fifth-year schedule uses progressive domestic versus whole-volume non-domestic blocks', () => {
+  const input = { tariffMode: 'addis-149-year5', monthlyUsage: 15, customFee: 20, customerType: 'domestic' };
+  const domestic = engine.calculate(input, 'ET');
+  // Schedule I: first 5 × 22.17 + next 9 × 38.80 + final 1 × 72.07.
+  assert.equal(domestic.waterCharge, 532.12);
+  assert.equal(domestic.total, 552.12);
+  assert.equal(domestic.breakdown.length, 3);
+  const business = engine.calculate({ ...input, customerType: 'non-domestic' }, 'ET');
+  assert.equal(business.waterCharge, 1081.05); // All 15 × 72.07.
+  assert.equal(business.total, 1101.05);
+  assert.match(domestic.schedule, /8 July 2026 to 7 July 2027/);
+  assert.match(domestic.observations.join(' '), /not confirmed/);
+});
+
+test('Addis minimum, first threshold and final tier retain schedule arithmetic', () => {
+  const calculate = (monthlyUsage) => engine.calculate({ tariffMode: 'addis-149-year5', monthlyUsage, customFee: 0, customerType: 'domestic' }, 'ET');
+  assert.equal(calculate(0).waterCharge, 66.51);
+  assert.equal(calculate(0).actualUsage, 0);
+  assert.equal(calculate(0).billableUsage, 3);
+  assert.equal(calculate(5).waterCharge, 110.85);
+  assert.equal(calculate(6).waterCharge, 149.65);
+  assert.equal(calculate(51).waterCharge, 4878.24);
+  assert.equal(calculate(5.5).waterCharge, 130.25);
+});
+
+test('Addis rejects missing charges and unsupported class rather than silently filling them', () => {
+  const input = { tariffMode: 'addis-149-year5', monthlyUsage: 15, customFee: 0, customerType: 'domestic' };
+  for (const key of ['monthlyUsage', 'customFee']) for (const value of ['', null, undefined, -1, Infinity, NaN]) {
+    assert.ok(engine.calculate({ ...input, [key]: value }, 'ET').error);
+  }
+  assert.ok(engine.calculate({ ...input, customerType: 'residential' }, 'ET').error);
+});
 test('Ethiopia explicit flat-rate arithmetic preserves cents and charges', () => {
   const r = engine.calculate({ monthlyUsage: 15, householdSize: 4, customRate: 12.5, customFee: 7.25 }, 'ET');
   assert.equal(r.monthlyBill, 'ETB 194.75'); // 15 × 12.50 + 7.25; no implicit surcharge.

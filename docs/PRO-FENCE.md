@@ -1,6 +1,6 @@
 # AfroTools Pro Fence
 
-Updated: 2026-05-13
+Updated: 2026-09-16
 
 ## Rule
 
@@ -26,14 +26,18 @@ Free calculators and public discovery stay reachable to guests. Pro unlocks acco
 
 The free PAYE and payroll calculators remain public. AfroPayroll Pro extends them into an operating workspace: payroll runs, review packs, saved rows, packet exports, warnings, and audit-style handoff. It does not submit statutory filings, disburse salaries, or prove tax remittance.
 
-## Shell App Boundary
+## Readiness And Storage Boundary
 
-Every non-payroll Pro app must show one of these truthful labels:
+Read route status from the Pro registries and `docs/PRO-APP-READINESS.md`. Payroll and SEO Studio are marked active, with different storage contracts: Payroll includes account-backed workspace code, while SEO Studio keeps projects and history on the device and uses a server endpoint for page audits. Neither the active label nor repository tests certify live subscriptions, account isolation, or provider execution.
+
+Shell apps must show a label that matches the implemented workflow, such as:
 
 - `Local preview only`
 - `Coming soon`
 - `Account sync pending`
 - `Review packet only`
+
+Stream Intelligence is a `Limited preview` for public-source review; account-saved review queues and private intelligence remain unverified. Keep early-access waitlists for shell and limited-preview routes. Do not require a shell label merely because an app is not Payroll.
 
 Shell apps must not claim official filing, salary disbursement, bank sync, legal certification, tax approval, cloud sync, team invites sent, or private intelligence verification unless that flow is backed by a real API or live Supabase table with verified access control.
 

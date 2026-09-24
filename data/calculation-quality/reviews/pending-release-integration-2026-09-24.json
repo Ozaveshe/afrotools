@@ -1,0 +1,75 @@
+{
+  "reviewedBy": "Codex release coordinator; integrated source and calculation review",
+  "reviewedAt": "2026-09-24",
+  "sourceUrl": "https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/",
+  "sourceUrls": [
+    "https://www.aajs.gov.et/uploads/Publication/149-2015-2024-09-25-66f40296e8daa.pdf",
+    "https://ura.go.ug/en/changes-to-paye-return-form-following-the-income-tax-amendment-act-2026/",
+    "https://www.zra.org.zm/tax-information/",
+    "https://ers.org.sz/IncomeTax/RatesandThres"
+  ],
+  "reason": "Release integration of five reviewed source changes: Addis Ababa dated water schedule, Uganda resident 2026 PAYE browser/server/routes, Zambia 2026 PAYE server/route, and Eswatini source-evidence wording. The Eswatini route digest changes because source labels change; its formula remains review-required. Existing individual review records and targeted tests are the authority for numerical deltas. This composite permits only the listed artifact digest and fixture updates; it does not certify live provider billing or all statutory contexts.",
+  "formulaIds": [
+    "formula-engines-water-bill-engine",
+    "paye-browser-ug",
+    "paye-server-ug",
+    "paye-server-zm",
+    "route-sz-paye",
+    "route-ug-paye",
+    "route-ug-paye-fr",
+    "route-zm-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-ug-large-decimal",
+      "formulaId": "paye-server-ug",
+      "before": {
+        "deductions.totalDeductions": 436824000,
+        "result.netAnnual": 563176000,
+        "result.netMonthly": 46931333,
+        "tax.netTax": 386824000
+      },
+      "after": {
+        "deductions.totalDeductions": 436659000,
+        "result.netAnnual": 563341000,
+        "result.netMonthly": 46945083,
+        "tax.netTax": 386659000
+      },
+      "reason": "URA 2026 resident schedule reduces the annual tax for this reviewed boundary fixture."
+    },
+    {
+      "fixtureId": "paye-zm-defaults",
+      "formulaId": "paye-server-zm",
+      "before": {
+        "deductions.totalDeductions": 360726,
+        "result.netAnnual": 639274,
+        "result.netMonthly": 53273,
+        "tax.netTax": 330228
+      },
+      "after": {
+        "deductions.totalDeductions": 373854,
+        "result.netAnnual": 626146,
+        "result.netMonthly": 52179,
+        "tax.netTax": 341512
+      },
+      "reason": "PAYE on gross employment income, 2026 NAPSA ceiling and disclosed gross-as-basic NHIMA default."
+    },
+    {
+      "fixtureId": "paye-zm-large-decimal",
+      "formulaId": "paye-server-zm",
+      "before": {
+        "deductions.totalDeductions": 376284426,
+        "result.netAnnual": 623715574,
+        "result.netMonthly": 51976298,
+        "tax.netTax": 366263928
+      },
+      "after": {
+        "deductions.totalDeductions": 379993854,
+        "result.netAnnual": 620006147,
+        "result.netMonthly": 51667179,
+        "tax.netTax": 369971512
+      },
+      "reason": "PAYE on gross employment income, 2026 NAPSA ceiling and disclosed gross-as-basic NHIMA default."
+    }
+  ]
+}

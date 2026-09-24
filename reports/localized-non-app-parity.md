@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 1 | 292 |
-| sw | 137 | 1 | 315 |
+| fr | 160 | 1 | 294 |
+| sw | 137 | 1 | 317 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 325 | 40 | 0 | 285 | 21 | 0 | 304 |
+| editorial | 327 | 40 | 0 | 287 | 21 | 0 | 306 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -87,6 +87,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/burundi-vat-filing-guide-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/business-insurance-quote-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/business-insurance-quote-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/cabo-verde-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/cabo-verde-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/calculate-tithe/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/calculate-tithe/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/cameroon-paye-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -514,6 +516,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/small-business-waste-audit-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-container-vgm-checklist-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-container-vgm-checklist-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-electricity-tariffs-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-electricity-tariffs-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-emp501-reconciliation-2026/ | editorial | fr | — | missing | no localized route or owner file |

@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11561 |
-| Indexable pages | 9982 |
+| Public pages | 11565 |
+| Indexable pages | 9986 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5290 |
-| Documented fallbacks | 14829 |
-| Routes eligible for primary sitemaps | 9982 |
+| Genuine equivalence groups | 5293 |
+| Documented fallbacks | 14833 |
+| Routes eligible for primary sitemaps | 9986 |
 
 ## Locale Coverage
 
-- en: 6012 page records
-- fr: 3803 page records
+- en: 6015 page records
+- fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
 - yo: 45 page records
@@ -28,13 +28,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 530
+- article: 532
 - auth: 3
 - category: 695
 - country-tool: 514
 - legal: 4
 - page: 5431
-- tool: 4002
+- tool: 4004
 - widget: 379
 
 ## Canonical Migrations
@@ -3628,7 +3628,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1c9fbd4fc84f: en=`/tools/informal-fx-watch/`, fr=`/fr/tools/taux-change-parallele/`, sw=`/sw/zana/ufuatiliaji-soko-la-fedha/`; x-default=`/tools/informal-fx-watch/`
 - equivalence:1cb9e7c1abcb: fr=`/fr/widgets/plan-heures-etude/`; x-default=`/fr/widgets/plan-heures-etude/`
 - equivalence:1cc430553fe0: en=`/blog/central-bank-interest-rates-africa/`; x-default=`/blog/central-bank-interest-rates-africa/`
-- equivalence:1cc6608d2bee: en=`/tools/tin-guide/dr-congo`, sw=`/sw/zana/mwongozo-tin/dr-congo/`; x-default=`/tools/tin-guide/dr-congo`
 - equivalence:1cedc59b0b29: en=`/agriculture/crop-yield/cabo-verde`, fr=`/fr/agriculture/crop-yield/cabo-verde`, sw=`/sw/kilimo/mavuno/cape-verde/`; x-default=`/agriculture/crop-yield/cabo-verde`
 - equivalence:1cf2b7380c3e: en=`/cars/ghana/mazda/demio/`, fr=`/fr/cars/ghana/mazda/demio/`; x-default=`/cars/ghana/mazda/demio/`
 - equivalence:1cf66dd4e818: en=`/tools/health-contribution/namibia`; x-default=`/tools/health-contribution/namibia`
@@ -5724,6 +5723,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:81d72541141d: en=`/blog/salary-comparison-africa-2026/`; x-default=`/blog/salary-comparison-africa-2026/`
 - equivalence:81ee8ecbc0f4: en=`/cars/tanzania/hyundai/elantra/2018/`, fr=`/fr/cars/tanzanie/hyundai/elantra/2018/`; x-default=`/cars/tanzania/hyundai/elantra/2018/`
 - equivalence:820fe9e63eba: en=`/agriculture/soil-ph/`, fr=`/fr/agriculture/soil-ph/`, sw=`/sw/zana/ph-ya-udongo/`; x-default=`/agriculture/soil-ph/`
+- equivalence:821bd0730a25: en=`/blog/south-africa-container-vgm-checklist-2026/`; x-default=`/blog/south-africa-container-vgm-checklist-2026/`
 - equivalence:821cfad1410e: en=`/blog/import-duty-nigeria-2026/`, fr=`/fr/blog/import-duty-nigeria-2026/`; x-default=`/blog/import-duty-nigeria-2026/`
 - equivalence:8220359aff1c: en=`/blog/cost-of-living-africa/`; x-default=`/blog/cost-of-living-africa/`
 - equivalence:822a0b5f8406: en=`/tools/fuel-tracker/equatorial-guinea/`, fr=`/fr/tools/suivi-carburant/equatorial-guinea/`; x-default=`/tools/fuel-tracker/equatorial-guinea/`
@@ -6180,6 +6180,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:990cd0e968e0: sw=`/sw/zana/mwongozo-bei-ya-hoteli-kwa-nyota/`; x-default=`/sw/zana/mwongozo-bei-ya-hoteli-kwa-nyota/`
 - equivalence:9921cfed9b10: en=`/cars/kenya/toyota/prado/2020/`, fr=`/fr/cars/kenya/toyota/prado/2020/`; x-default=`/cars/kenya/toyota/prado/2020/`
 - equivalence:99233d2b2f70: en=`/tools/health-insurance-compare/angola`, fr=`/fr/tools/comparateur-assurance-sante/angola`; x-default=`/tools/health-insurance-compare/angola`
+- equivalence:9925174c9eba: en=`/tools/unit-converter/feddan-to-acre/`; x-default=`/tools/unit-converter/feddan-to-acre/`
 - equivalence:992611d8cc46: en=`/tools/maternity-leave/lesotho/`; x-default=`/tools/maternity-leave/lesotho/`
 - equivalence:994051039848: en=`/tools/gratuity-calculator/namibia/`, sw=`/sw/namibia/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/namibia/`
 - equivalence:99444e1c0512: en=`/cars/mozambique/honda/accord/`, fr=`/fr/cars/mozambique/honda/accord/`; x-default=`/cars/mozambique/honda/accord/`
@@ -6391,6 +6392,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a28b0aeafa93: en=`/blog/crypto-tax-laws-africa-complete-guide/`; x-default=`/blog/crypto-tax-laws-africa-complete-guide/`
 - equivalence:a28c7d80e9b0: en=`/tools/production-cost/`, fr=`/fr/tools/cout-production/`, sw=`/sw/zana/gharama-ya-uzalishaji/`; x-default=`/tools/production-cost/`
 - equivalence:a28e6b35d72a: en=`/jamb/english/2013/`; x-default=`/jamb/english/2013/`
+- equivalence:a295029ba3ab: en=`/blog/cabo-verde-vat-filing-guide-2026/`; x-default=`/blog/cabo-verde-vat-filing-guide-2026/`
 - equivalence:a29d9ec674b2: en=`/tools/afrokitchen/collections/west-african-street-food/`; x-default=`/tools/afrokitchen/collections/west-african-street-food/`
 - equivalence:a2a93b8d9835: en=`/tools/gas-lpg-cost/angola/`, fr=`/fr/tools/calculateur-du-cout-du-gaz-gpl-angola/`; x-default=`/tools/gas-lpg-cost/angola/`
 - equivalence:a2ae5eb178fb: en=`/agriculture/irrigation/south-sudan`, fr=`/fr/agriculture/irrigation/south-sudan`, sw=`/sw/kilimo/umwagiliaji/south-sudan/`; x-default=`/agriculture/irrigation/south-sudan`
@@ -8296,6 +8298,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ffe48b69eda3: en=`/tools/tin-guide/djibouti`, sw=`/sw/zana/mwongozo-tin/djibouti/`; x-default=`/tools/tin-guide/djibouti`
 - equivalence:ffed8a242413: en=`/blog/kenya-capital-gains-tax-2026/`; x-default=`/blog/kenya-capital-gains-tax-2026/`
 - legal:privacy: en=`/privacy/`, fr=`/fr/privacy/`, sw=`/sw/faragha/`; x-default=`/privacy/`
+- tool:tin-guide:dr-congo: en=`/tools/tin-guide/dr-congo`, fr=`/fr/tools/guide-nif/dr-congo/`, sw=`/sw/zana/mwongozo-tin/dr-congo/`; x-default=`/tools/tin-guide/dr-congo`
 
 ## Shadowed Routing Rules
 

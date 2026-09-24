@@ -493,7 +493,7 @@ ${legalScripts}${propertyScript}${englishOwnerScript}  <script src="/assets/js/l
       <p>${html(row.description)}</p>
       <p><strong>Limite :</strong> estimation ou projet de préparation uniquement. Aucun taux manquant n’est remplacé par zéro et aucune décision officielle n’est déduite.</p>
     </header>
-    <figure class="mp-artwork" data-artwork-panel>
+${row.englishId === 'tin-guide' ? '    <p><a href="/fr/tools/guide-nif/dr-congo/">NIF en RDC : demande gratuite, portail e-NIF et préparation</a></p>\n' : ''}    <figure class="mp-artwork" data-artwork-panel>
       <img src="${html(row.imageUrl)}" alt="${html(row.artworkAlt)}" loading="eager" decoding="async" data-route-artwork data-artwork-state="pending">
       <figcaption>Repère visuel propre à l’application ${html(row.name)}.</figcaption>
     </figure>

@@ -1,0 +1,13 @@
+# Qualified public claim review — 24 September 2026
+
+This review covers the three claim policies whose review dates expired during the pending release build. It renews their conditional meanings through 1 October 2026. It does not establish successful production account transactions, upload a customer file, or certify every device and network.
+
+| Claim | Evidence and conclusion | Limit |
+| --- | --- | --- |
+| `performance.measured-support` | `npm run mobile:network` measured six local routes at 390 px with 900 Kbps down, 350 Kbps up, 220 ms RTT and 4× CPU throttle. All returned 200; one passed and five warned. No horizontal overflow or controls below 16 px were reported. The conditional policy that performance claims need route-specific evidence remains valid. | This is a local static smoke, not 2G or a field measurement. The home page took 17.0 s to load and had 6.2 s LCP; three routes had large layout shifts. These results do not support blanket speed, offline or device claims. See `reports/mobile-network-smoke.md`. |
+| `account.optional-sync` | `assets/js/lib/workspace-sync.js` initiates optional account synchronization; `netlify/functions/api-workspace.js` authenticates and scopes workspace operations. Read-only metadata from the configured AfroTools Supabase project confirmed `workspace_items` RLS and authenticated own-user SELECT, INSERT, UPDATE and DELETE policies. The existing wording requires sign-in, a supported item and a successful request. | No sign-in, customer row, cross-device sync, or production request was exercised. |
+| `vault.explicit-cloud-upload` | `assets/js/afro-vault.js` initiates explicit upload for a signed-in user. Read-only metadata confirmed a private `vault` bucket, `vault_documents` RLS with authenticated own-user policies, and authenticated own-prefix SELECT and INSERT policies on storage objects. The existing wording remains conditional on service availability and successful upload. | No file was uploaded, downloaded or deleted. Storage object DELETE permission was not established; no retention or availability guarantee is made. |
+
+The live metadata check used `supabase_afrotools` MCP after `get_project_url` verified `zpclagtgczsygrgztlts`. Queries inspected schema and policy metadata only. No user data, object contents, tokens or credentials were read, and no live writes occurred.
+
+The registry's `lastVerifiedAt` dates this policy and evidence review. It does not represent production end-to-end verification. Product wording and translations have not been broadened. Release build, claim audit, security scan, deploy artifact audit and production verification remain separate gates.

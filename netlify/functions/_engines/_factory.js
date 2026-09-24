@@ -80,14 +80,31 @@ function createEngine(config) {
 
     calculate(params) {
       const { grossAnnual, ...opts } = params;
-      const monthly = grossAnnual / 12;
+      const contributionAssumptions = [];
+      function contributionBase(rule) {
+        let annualBase = grossAnnual;
+        if (rule.baseAnnualKey) {
+          const supplied = params[rule.baseAnnualKey];
+          if (supplied == null || supplied === '') {
+            const assumption = `${rule.baseAnnualKey} not supplied; gross annual salary is used as the contribution base.`;
+            if (!contributionAssumptions.includes(assumption)) contributionAssumptions.push(assumption);
+          } else {
+            annualBase = Number(supplied);
+            if (!Number.isFinite(annualBase) || annualBase < 0 || annualBase > grossAnnual) {
+              throw new RangeError(`${rule.baseAnnualKey} must be between zero and grossAnnual.`);
+            }
+          }
+        }
+        const periodBase = isMonthly ? annualBase / 12 : annualBase;
+        return rule.baseCap ? Math.min(periodBase, rule.baseCap * (isMonthly ? 1 : 12)) : periodBase;
+      }
 
       // Calculate social security deductions
       let totalSS = 0;
       const deductions = {};
       for (const ss of socialSecurity) {
         if (opts[ss.key] === false) { deductions[ss.key] = 0; continue; }
-        const base = ss.baseCap ? Math.min(isMonthly ? monthly : grossAnnual, ss.baseCap * (isMonthly ? 1 : 12)) : (isMonthly ? monthly : grossAnnual);
+        const base = contributionBase(ss);
         let amt = base * ss.rate;
         if (ss.cap) amt = Math.min(amt, ss.cap * (isMonthly ? 1 : 12));
         if (isMonthly) amt *= 12;
@@ -117,7 +134,7 @@ function createEngine(config) {
       let empTotal = 0;
       const employer = {};
       for (const es of employerSS) {
-        const base = es.baseCap ? Math.min(isMonthly ? monthly : grossAnnual, es.baseCap * (isMonthly ? 1 : 12)) : (isMonthly ? monthly : grossAnnual);
+        const base = contributionBase(es);
         let amt = base * es.rate;
         if (es.cap) amt = Math.min(amt, es.cap * (isMonthly ? 1 : 12));
         if (isMonthly) amt *= 12;
@@ -146,13 +163,27 @@ function createEngine(config) {
           marginalRate: lastBand ? (lastBand.rate * 100) + '%' : '0%'
         },
         employer,
-        meta: { regime: regimes[0], currency, lastUpdated, sourceCheckedOn, nextReviewDate, source }
+        meta: { regime: regimes[0], currency, lastUpdated, sourceCheckedOn, nextReviewDate, source,
+          ...(contributionAssumptions.length ? { assumptions: contributionAssumptions } : {}) }
       };
     },
 
     reverseCalculate(params) {
       const { netAnnual, ...opts } = params;
       let lo = netAnnual, hi = netAnnual * 3;
+      for (const rule of [...socialSecurity, ...employerSS]) {
+        if (rule.baseAnnualKey && opts[rule.baseAnnualKey] != null && opts[rule.baseAnnualKey] !== '') {
+          const base = Number(opts[rule.baseAnnualKey]);
+          if (!Number.isFinite(base) || base < 0) throw new RangeError(`${rule.baseAnnualKey} must be non-negative.`);
+          lo = Math.max(lo, base);
+        }
+      }
+      if (lo > netAnnual) {
+        if (this.calculate({ grossAnnual: lo, ...opts }).result.netAnnual > netAnnual) {
+          throw new RangeError('The supplied basic salary is too high for the requested net salary.');
+        }
+        hi = Math.max(hi, lo * 2);
+      }
       for (let i = 0; i < 60; i++) {
         const mid = (lo + hi) / 2;
         const r = this.calculate({ grossAnnual: mid, ...opts });

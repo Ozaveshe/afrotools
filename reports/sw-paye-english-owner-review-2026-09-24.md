@@ -1,0 +1,5 @@
+# Swahili PAYE English-owner review — 24 September 2026
+
+The Zambia English PAYE page changed in the pending release. Its `calculate` function now uses the reviewed 2026 ZRA bands and NAPSA monthly ceiling, computes NHIMA on the entered basic salary (or a disclosed gross-as-basic fallback), validates basic salary bounds, and clears stale results on invalid input. The changed function fingerprint is recorded as a current-source overlay in `data/localization/sw-paye-current-source-review.json`; the historical 26-route acceptance receipt remains unchanged.
+
+The source change is carried by the pending producer commit `e0f5e5ae86220eafd1a76dffdc252d1c73d4c515` and the detailed calculation review is `data/calculation-quality/reviews/zambia-paye-2026-09-15.json`. The Swahili Zambia page remains a separately checked owner. The overlay records code provenance and does not claim the Swahili route has adopted these newer rates. The dedicated Zambia engine and route tests, source-ledger checks, and browser journey are separate release gates.

@@ -41,7 +41,7 @@ test("Orange Money structured data matches the refreshed article", () => {
   const faq = schemas.find((schema) => schema["@type"] === "FAQPage");
   assert.equal(article.dateModified, "2026-09-16"); // Workflow handoff edit; tariff verification dates are unchanged.
   assert.match(article.headline, /Frais de retrait Orange Money 2026/);
-  assert.equal(faq.mainEntity.length, 4);
+  assert.equal(faq.mainEntity.length, 5);
   assert.match(faq.mainEntity[0].name, /Cameroun/);
 });
 
@@ -50,7 +50,7 @@ test("Cameroon million-franc intent explains the published per-withdrawal limit"
   assert.match(html, /500 000 FCFA par opération de retrait/);
   assert.match(html, /Ne prolongez pas la formule à 1 % au-delà de sa tranche/);
   assert.match(html, /comptes OM Asso ont une grille distincte/);
-  assert.match(html, /Cameroun ont été revérifiés le <strong>15 septembre 2026/);
+  assert.match(html, /Cameroun ont été revérifiés le <strong>16 septembre 2026/);
   for (const anchor of ["cameroun", "retrait-million", "senegal", "mali", "cote-ivoire"]) {
     assert.ok(html.includes(`href="#${anchor}"`) && html.includes(`id="${anchor}"`));
   }

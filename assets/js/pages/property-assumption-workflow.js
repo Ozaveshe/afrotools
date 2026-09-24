@@ -69,7 +69,9 @@
     } else if (result.kind === 'yield') {
       say('Net annual income from your inputs: ' + money(result.netAnnual) + '. Net yield: ' + formatter.format(result.yieldPercent) + '%. No rent, vacancy or valuation forecast is supplied.');
     } else if (result.kind === 'cost') {
-      say('Cost scenario from your inputs: ' + money(result.total) + '. This is not a contractor quote, bill of quantities, survey fee schedule or valuation.');
+      say(tool === 'home-renovation-cost'
+        ? 'Renovation estimate: ' + money(result.total) + '. Includes your fixed costs and contingency. Review the quote checklist below before committing.'
+        : 'Cost scenario from your inputs: ' + money(result.total) + '. This is not a contractor quote, bill of quantities, survey fee schedule or valuation.');
     } else if (result.kind === 'valuation') {
       say('Comparable-based scenario: ' + money(result.total) + '. This is arithmetic from one entered comparable, not an appraisal, market valuation or lending value.');
     } else if (result.kind === 'affordability') {

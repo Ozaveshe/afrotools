@@ -12,9 +12,9 @@ const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 const exact = (actual, expected, label) => assert.strictEqual(actual, expected, `${label}: expected ${expected}, got ${actual}`);
 
 const resident = [
-  [0, 0], [235000, 0], [235001, 0.1], [335000, 10000], [335001, 10000.2],
-  [410000, 25000], [410001, 25000.3], [1900000, 472000],
-  [10000000, 2902000], [10000001, 2902000.4],
+  [0, 0], [235000, 0], [235001, 0], [335000, 0], [335001, 0.2],
+  [410000, 15000], [410001, 15000.25], [485000, 33750], [485001, 33750.3], [500000, 38250], [1900000, 458250],
+  [10000000, 2888250], [10000001, 2888250.4],
 ];
 const nonResident = [
   [0, 0], [1, 0.1], [335000, 33500], [335001, 33500.2],
@@ -31,9 +31,9 @@ assert.strictEqual(kccaExample.ok, true, 'KCCA UGX 420,000 worked example calcul
 exact(kccaExample.lstAnnual, 30000, 'KCCA example annual LST');
 exact(kccaExample.lstAssessmentGross, 420000, 'KCCA example gross assessment base');
 exact(kccaExample.taxableIncome, 390000, 'KCCA example PAYE base after LST');
-exact(kccaExample.monthlyPaye, 21000, 'KCCA example resident PAYE');
+exact(kccaExample.monthlyPaye, 11000, 'KCCA example resident PAYE');
 exact(kccaExample.employeeNssfMonthly, 21000, 'KCCA example employee NSSF');
-exact(kccaExample.netMonthly, 348000, 'KCCA example net pay');
+exact(kccaExample.netMonthly, 358000, 'KCCA example net pay');
 assert.deepStrictEqual(kccaExample.lstCollectionSchedule, [30000], 'default payroll collects the annual LST once');
 
 const customCollection = engine.calculate({ grossMonthly: 2000000, regime: 'RESIDENT', lstEnabled: true, nssfEnabled: true, lstPayrollDeduction: 25000 });
@@ -41,9 +41,9 @@ assert.strictEqual(customCollection.ok, true, 'custom LST collection calculates'
 exact(customCollection.lstAnnual, 100000, 'custom collection does not change annual LST assessment');
 exact(customCollection.lstPayrollDeduction, 25000, 'custom collection applies to the current payroll once');
 assert.deepStrictEqual(customCollection.lstCollectionSchedule, [25000, 75000], 'remaining annual LST is allocated to a later collection payroll');
-exact(customCollection.monthlyPaye, 494500, 'current PAYE uses current LST collection');
-exact(customCollection.annualPaye, 5994000, 'annual PAYE uses the actual collection schedule, not twelve custom deductions');
-exact(customCollection.netAnnual, 16706000, 'annual net deducts annual LST exactly once');
+exact(customCollection.monthlyPaye, 480750, 'current PAYE uses current LST collection');
+exact(customCollection.annualPaye, 5829000, 'annual PAYE uses the actual collection schedule, not twelve custom deductions');
+exact(customCollection.netAnnual, 16871000, 'annual net deducts annual LST exactly once');
 
 for (const regime of engine.regimes) {
   const browserValue = engine.calculate({ grossMonthly: 2000000, regime, lstEnabled: true, nssfEnabled: true });
@@ -53,7 +53,7 @@ for (const regime of engine.regimes) {
   exact(browserValue.taxableIncome, 1900000, `${regime} taxable income after LST`);
   exact(browserValue.employeeNssfMonthly, 100000, `${regime} employee NSSF remains separate`);
   exact(browserValue.employerNssfMonthly, 200000, `${regime} employer NSSF remains separate`);
-  exact(browserValue.monthlyPaye, regime === 'RESIDENT' ? 472000 : 495500, `${regime} monthly PAYE oracle`);
+  exact(browserValue.monthlyPaye, regime === 'RESIDENT' ? 458250 : 495500, `${regime} monthly PAYE oracle`);
   const serverValue = server.calculate({ grossMonthly: 2000000, regime, lst: true, nssf: true });
   exact(serverValue.tax.taxableIncomeMonthly, browserValue.taxableIncome, `${regime} server taxable parity`);
   exact(serverValue.deductions.paye, browserValue.annualPaye, `${regime} server annual PAYE parity`);
@@ -66,13 +66,14 @@ for (const regime of engine.regimes) {
 const serverBoundary = server.calculate({ grossMonthly: 420000, regime: 'RESIDENT', lst: true, nssf: true });
 exact(serverBoundary.deductions.localServiceTax, 30000, 'server KCCA example LST');
 exact(serverBoundary.deductions.paye, kccaExample.annualPaye, 'server KCCA example annual PAYE parity');
-exact(serverBoundary.result.netMonthly, 348000, 'server KCCA example net parity');
+exact(serverBoundary.result.netMonthly, 358000, 'server LST example net parity with 2026 resident PAYE');
 const serverCustom = server.calculate({ grossMonthly: 2000000, regime: 'RESIDENT', lst: true, nssf: true, lstPayrollDeduction: 25000 });
 assert.deepStrictEqual(serverCustom.deductions.localServiceTaxCollectionSchedule, [25000, 75000], 'server preserves custom LST collection semantics');
-exact(serverCustom.deductions.paye, 5994000, 'server custom annual PAYE parity');
+exact(serverCustom.deductions.paye, 5829000, 'server custom annual PAYE parity');
 
 const consumers = [
   'uganda/ug-paye.html',
+  'fr/uganda/ug-paye.html',
   'sw/uganda/kikokotoo-kodi-mshahara/index.html',
 ];
 for (const file of consumers) {
@@ -81,8 +82,10 @@ for (const file of consumers) {
   assert.match(source, /ugandaPaye/, `${file} calls the shared engine`);
   assert.doesNotMatch(source, /income\s*>\s*410000|income\s*<=\s*335000/, `${file} does not duplicate the statutory formula`);
   assert.doesNotMatch(source, /flat 30|30 % forfaitaire/i, `${file} does not claim flat non-resident tax`);
-  assert.doesNotMatch(source, /effective 1 July 2026|en vigueur au 1er juillet 2026/i, `${file} does not claim the returned bill is effective`);
+  assert.doesNotMatch(source, /returned without assent/i, `${file} does not present superseded bill status as current law`);
 }
+assert.match(read('uganda/ug-paye.html'), /effective 1 July 2026/, 'English page identifies the resident rate commencement');
+assert.match(read('uganda/ug-paye.html'), /UGX 33,750 \+ 30%/, 'English resident table matches the revised cumulative band');
 assert.match(read('netlify/functions/_engines/ug-paye.js'), /require\('\.\.\/\.\.\/\.\.\/assets\/js\/engines\/ug-paye'\)/, 'Netlify consumes the shared engine');
 
 const context = JSON.parse(read('data/ai/tool-context/ug-paye.json'));

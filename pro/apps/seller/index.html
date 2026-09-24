@@ -42,7 +42,7 @@
 </head>
 <body class="top-level-page-ui-refresh">
   <main class="seller-shell pro-gated-content">
-  <div data-pro-waitlist-host data-app-label="Seller" data-source-route="/pro/apps/seller/"></div>
+  <div style="grid-column:1 / -1" data-pro-waitlist-host data-app-label="Seller" data-source-route="/pro/apps/seller/"></div>
 
     <aside class="seller-side" aria-label="AfroSeller navigation">
       <div class="seller-brand">
@@ -531,11 +531,12 @@
         if (number(customer.totalBalance) > 0) customer.labels = addUnique(customer.labels, "Owes balance");
         return customer;
       }
-      function normalizeMovement(movement) {
+      function normalizeMovement(movement, products) {
+        var product = products.find(function (item) { return item.id === movement.productId; }) || {};
         movement.date = movement.date || todayKey();
         movement.type = movement.type || "adjustment";
-        movement.productName = movement.productName || (findProduct(movement.productId) || {}).name || "";
-        movement.variantName = movement.variantName || (findProduct(movement.productId) || {}).variant || "";
+        movement.productName = movement.productName || product.name || "";
+        movement.variantName = movement.variantName || product.variant || "";
         movement.quantity = number(movement.quantity);
         movement.stockAfter = number(movement.stockAfter);
         movement.note = movement.note || "";
@@ -556,7 +557,7 @@
         data.products = Array.isArray(data.products) ? data.products.map(normalizeProduct) : [];
         data.orders = Array.isArray(data.orders) ? data.orders.map(normalizeOrder) : [];
         data.customers = Array.isArray(data.customers) ? data.customers.map(normalizeCustomer) : [];
-        data.stockMovements = Array.isArray(data.stockMovements) ? data.stockMovements.map(normalizeMovement) : [];
+        data.stockMovements = Array.isArray(data.stockMovements) ? data.stockMovements.map(function (movement) { return normalizeMovement(movement, data.products); }) : [];
         return data;
       }
       function loadState() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) { var parsed = normalizeState(JSON.parse(raw)); if (parsed && Array.isArray(parsed.products) && Array.isArray(parsed.orders) && Array.isArray(parsed.customers)) return parsed; } } catch (err) {} var fresh = normalizeState(clone(blankState)); saveState(fresh, false); return fresh; }

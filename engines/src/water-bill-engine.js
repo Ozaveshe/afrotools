@@ -3,6 +3,48 @@
   window.AfroTools = window.AfroTools || {}, window.AfroTools.WaterBillEngine = {
     calculate: function(e, r) {
       if (r === 'ET') {
+        if (e.tariffMode === 'addis-149-year5') {
+          var usage149 = Number(e.monthlyUsage), fee149 = Number(e.customFee);
+          if (e.monthlyUsage === '' || e.monthlyUsage == null || !Number.isFinite(usage149) || usage149 < 0 ||
+              e.customFee === '' || e.customFee == null || !Number.isFinite(fee149) || fee149 < 0 ||
+              ['domestic', 'non-domestic'].indexOf(e.customerType) === -1) {
+            return { error: 'Enter nonnegative monthly usage and other charges, and select a customer class.' };
+          }
+          // Regulation 149/2023, articles 4-5; Schedule I fifth-year column;
+          // Schedule 5 item 11 specifies a 3 m³ minimum billable consumption.
+          // This is a dated schedule model, not confirmation of current implementation.
+          var volume149 = Math.max(3, usage149);
+          var limits149 = [5, 14, 23, 32, 41, 50, Infinity];
+          var rates149 = [22.17, 38.80, 72.07, 110.87, 133.04, 155.22, 177.39];
+          var lines149 = [], charge149 = 0, lower149 = 0;
+          for (var b149 = 0; b149 < limits149.length; b149++) {
+            if (e.customerType === 'non-domestic') {
+              if (volume149 <= limits149[b149]) {
+                charge149 = volume149 * rates149[b149];
+                lines149.push({ volume: volume149, rate: rates149[b149], amount: charge149 });
+                break;
+              }
+            } else {
+              var block149 = Math.max(0, Math.min(volume149, limits149[b149]) - lower149);
+              if (block149 > 0) {
+                lines149.push({ volume: block149, rate: rates149[b149], amount: block149 * rates149[b149] });
+                charge149 += block149 * rates149[b149];
+              }
+              lower149 = limits149[b149];
+            }
+          }
+          if (!Number.isFinite(charge149 + fee149)) return { error: 'These inputs exceed the supported calculation range.' };
+          return {
+            waterCharge: Math.round(charge149 * 100) / 100,
+            otherCharges: fee149,
+            total: Math.round((charge149 + fee149) * 100) / 100,
+            billableUsage: volume149, actualUsage: usage149, breakdown: lines149,
+            schedule: 'Regulation 149/2023, fifth year: 8 July 2026 to 7 July 2027',
+            observations: ['Dated schedule estimate; later adjustments and current provider implementation are not confirmed.',
+              'Water charge plus your entered other charges. Sewerage, meter rent, waste collection, tax and arrears are not added automatically.',
+              'Minimum billable consumption is 3 m³. Domestic blocks are progressive; non-domestic consumption uses the rate of the reached block.']
+          };
+        }
         var required = ['monthlyUsage', 'householdSize', 'customRate', 'customFee'];
         if (required.some(function(key) { return e[key] === '' || e[key] == null || !Number.isFinite(Number(e[key])); })) {
           return { error: 'Enter usage, household size, a rate and other charges. Enter 0 for no other charges.' };

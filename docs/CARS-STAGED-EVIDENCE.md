@@ -41,6 +41,11 @@ Use `primaryEvidenceIndex` to choose which pair should drive queue exports and o
 3. Keep the strongest or clearest pair as the primary summary and point `primaryEvidenceIndex` at it.
 4. Rebuild the research queues after staged evidence changes.
 
+Queue exports preserve the primary evidence pair's local and source listing URLs,
+sample counts, separate observation dates, normalized vehicle trim, and licensed
+image status. Pending rows leave evidence-only fields empty instead of inventing
+values.
+
 ## Validation
 
 - `npm run cars:research:queue`

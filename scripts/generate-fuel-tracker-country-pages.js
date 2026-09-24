@@ -135,7 +135,7 @@ function formatNumber(value) {
 }
 
 function formatDate(value) {
-  if (!value) return 'latest available snapshot';
+  if (!value) return 'undated snapshot';
   const date = new Date(`${value}T00:00:00Z`);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat('en', {
@@ -238,11 +238,11 @@ function faqItems(row, rows, estimate) {
   return [
     {
       q: `What is the petrol price in ${row.name}?`,
-      a: `The latest available AfroFuel snapshot shows petrol in ${row.name} at ${priceLocal(row, 'petrol')}, with a USD comparison of ${priceUsd(row, 'petrol')}. Prices can vary between ${cities[0]}, ${cities[1]}, highways, depots, and individual stations.`,
+      a: `The AfroFuel snapshot dated ${date} records petrol in ${row.name} at ${priceLocal(row, 'petrol')}, with a USD comparison of ${priceUsd(row, 'petrol')}. Prices can vary between ${cities[0]}, ${cities[1]}, highways, depots, and individual stations.`,
     },
     {
       q: `What is the diesel price in ${row.name}?`,
-      a: `Diesel is shown at ${priceLocal(row, 'diesel')} in the latest available snapshot. Use the USD comparison of ${priceUsd(row, 'diesel')} only for cross-country comparison, not as a pump quote.`,
+      a: `Diesel is shown at ${priceLocal(row, 'diesel')} in the AfroFuel snapshot dated ${date}. Use the USD comparison of ${priceUsd(row, 'diesel')} only for cross-country comparison, not as a pump quote.`,
     },
     {
       q: `How much is LPG in ${row.name}?`,
@@ -254,11 +254,11 @@ function faqItems(row, rows, estimate) {
     },
     {
       q: `When were these ${row.name} fuel prices updated?`,
-      a: `This country page uses the latest available AfroFuel row updated ${date}. Treat it as a planning estimate and verify the local pump, depot, or supplier price before buying fuel or quoting transport.`,
+      a: `This country page uses an AfroFuel snapshot dated ${date}. Treat it as a planning estimate and verify the local pump, depot, or supplier price before buying fuel or quoting transport.`,
     },
     {
       q: `Can I compare ${row.name} with another African country?`,
-      a: `Yes. Use the comparison tool to compare ${row.name} against nearby ${REGION_LABELS[row.region] || 'African'} markets or any other country in the AfroFuel table.`,
+      a: `Open the related country snapshots below to compare their recorded prices with ${row.name}. Check each snapshot date and unit before comparing; these are not current station quotes.`,
     },
   ];
 }
@@ -278,9 +278,9 @@ function htmlPage(row, rows) {
   const title = row.name.length >= 20
     ? `Fuel prices in ${row.name} | AfroFuel`
     : `Fuel prices in ${row.name}: petrol, diesel and LPG | AfroFuel`;
-  const description = `Latest available fuel prices in ${row.name}: petrol ${priceLocal(row, 'petrol')}, diesel ${priceLocal(row, 'diesel')}, LPG ${priceLocal(row, 'lpg')}. Compare generator fuel costs and African countries.`;
-  const compareHref = `/tools/fuel-tracker/?country=${encodeURIComponent(row.code)}#fuel-compare`;
-  const generatorHref = `/tools/fuel-tracker/?country=${encodeURIComponent(row.code)}#generator-cost`;
+  const description = `Fuel price snapshot for ${row.name}, dated ${date}. View petrol, diesel and LPG references, then calculate generator costs with a locally verified price.`;
+  const compareHref = '#related-countries';
+  const generatorHref = '/tools/backup-power-costs/';
   const ogImage = ogImageFor(slug);
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -323,7 +323,7 @@ function htmlPage(row, rows) {
     '@type': 'Dataset',
     '@id': url,
     name: `AfroFuel ${row.name} fuel price snapshot`,
-    description: `Latest available petrol, diesel, and LPG price snapshot for ${row.name}. Prices may vary by city, station, supplier, and timing.`,
+    description: `Petrol, diesel, and LPG snapshot for ${row.name}, dated ${date}. Prices may vary by city, station, supplier, and timing.`,
     url,
     dateModified: snapshotDate,
     temporalCoverage: snapshotDate,
@@ -404,7 +404,7 @@ function htmlPage(row, rows) {
   .fuel-breadcrumb a { color: #235c39; font-weight: 700; text-decoration: none; }
   .fuel-country-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 28px; align-items: stretch; }
   .fuel-country-kicker { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; background: #fff; color: #235c39; font-weight: 800; border: 1px solid rgba(35,92,57,.14); }
-  h1 { margin: 16px 0 12px; font-size: clamp(2.15rem, 5vw, 4.5rem); line-height: .96; letter-spacing: 0; max-width: 850px; }
+  .fuel-country-hero h1 { color: #142018; margin: 16px 0 12px; font-size: clamp(2.15rem, 5vw, 4.5rem); line-height: .96; letter-spacing: 0; max-width: 850px; }
   .fuel-lede { max-width: 760px; color: #506158; font-size: 1.1rem; line-height: 1.65; margin: 0; }
   .fuel-trust { margin-top: 18px; color: #5d6b62; font-size: .96rem; }
   .fuel-price-card, .fuel-panel { background: #fff; border: 1px solid rgba(20,32,24,.1); border-radius: 8px; box-shadow: 0 18px 40px rgba(20,32,24,.08); }
@@ -456,14 +456,15 @@ function htmlPage(row, rows) {
       <div>
         <div class="fuel-country-kicker"><span aria-hidden="true">${flag}</span><span>${escapeHtml(region)} fuel prices</span></div>
         <h1>Fuel prices in ${escapeHtml(row.name)}</h1>
-        <p class="fuel-lede">Check the latest available petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
-        <p class="fuel-trust">Updated ${escapeHtml(date)} &middot; Latest available prices &middot; Verify locally before purchase.</p>
+        <p class="fuel-lede">Check the dated petrol, diesel, and LPG snapshot for ${escapeHtml(row.name)} in ${escapeHtml(row.currency)}. Use this page to plan generator spend, compare ${escapeHtml(row.name)} with other African countries, and sanity-check transport or household fuel budgets.</p>
+        <p class="fuel-trust">Dataset row dated ${escapeHtml(date)} &middot; Not a current station quote &middot; Verify locally before purchase.</p>
+        <p class="fuel-date">Third-party snapshot, not an officially verified price. Separate observation dates for each fuel, including LPG, are not supplied. <a href="/data/fuel/latest.json">View the source dataset</a>.</p>
       </div>
       <aside class="fuel-price-card" aria-label="${escapeHtml(row.name)} fuel price summary">
         <div class="fuel-card-top">
           <div>
             <strong>${escapeHtml(row.name)}</strong>
-            <div class="fuel-date">Last updated ${escapeHtml(date)}</div>
+            <div class="fuel-date">Dataset row date: ${escapeHtml(date)}</div>
           </div>
           <div class="fuel-flag" aria-hidden="true">${flag}</div>
         </div>
@@ -473,7 +474,7 @@ function htmlPage(row, rows) {
           <div class="fuel-price-row"><span>LPG</span><div><strong class="fuel-local">${escapeHtml(priceLocal(row, 'lpg'))}</strong><span class="fuel-usd">${escapeHtml(priceUsd(row, 'lpg'))} comparison</span></div></div>
         </div>
         <div class="fuel-actions">
-          <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Compare ${escapeHtml(row.name)} with another African country</a>
+          <a class="fuel-btn primary" href="${escapeHtml(compareHref)}">Browse other country snapshots</a>
           <a class="fuel-btn" href="${escapeHtml(generatorHref)}">Open generator calculator</a>
         </div>
       </aside>
@@ -494,14 +495,14 @@ function htmlPage(row, rows) {
     <h2 id="country-context">How to use these ${escapeHtml(row.name)} fuel prices</h2>
     <p>AfroFuel shows ${escapeHtml(row.name)} prices in local currency first because households, drivers, shops, and procurement teams usually pay locally. The USD values are secondary comparison figures for checking ${escapeHtml(row.name)} against the wider African table.</p>
     <p>In this snapshot, ${escapeHtml(row.name)} petrol is ${escapeHtml(petrolRelation)}. Prices may still differ between ${escapeHtml(cities[0])}, ${escapeHtml(cities[1])}, rural stations, bulk suppliers, and border corridors.</p>
-    <div class="fuel-note">AfroFuel shows the latest available fuel-price snapshots. Prices may vary by city, station, supplier, and timing. Use this as a planning estimate and verify locally before buying fuel or quoting transport.</div>
+    <div class="fuel-note">This snapshot is dated ${escapeHtml(date)} and does not establish today’s pump price. Prices may vary by city, station, supplier, and timing. Use this as a planning estimate and verify locally before buying fuel or quoting transport.</div>
   </section>
   <section class="fuel-section" aria-labelledby="related-tools">
     <h2 id="related-tools">Plan fuel, transport, and backup power</h2>
     <div class="fuel-links">
-      <a class="fuel-link-card" href="/tools/fuel-tracker/#generator-cost">Generator fuel calculator<span>Estimate monthly generator spend.</span></a>
+      <a class="fuel-link-card" href="/tools/backup-power-costs/">Generator fuel calculator<span>Enter your local price and measured fuel use.</span></a>
       <a class="fuel-link-card" href="/tools/route-fares/">Route fares<span>Check transport costs affected by fuel.</span></a>
-      <a class="fuel-link-card" href="/tools/backup-power-costs/">Backup power costs<span>Compare generator, LPG, inverter, and solar backups.</span></a>
+      <a class="fuel-link-card" href="/tools/fuel-tracker/#fuel-finder">Find a supported fuel reference<span>Check market coverage and dates, or enter your own price.</span></a>
       <a class="fuel-link-card" href="/tools/solar-roi/">Solar ROI calculator<span>Compare solar payback against generator fuel spend.</span></a>
       <a class="fuel-link-card" href="/tools/cost-of-living/">Cost of living comparison<span>Put fuel and transport into a wider budget.</span></a>
     </div>
