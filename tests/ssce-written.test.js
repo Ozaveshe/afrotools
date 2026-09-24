@@ -40,7 +40,12 @@ test('mathematics worked answers are checked using independent computations',()=
  assert.equal(112/70+60/50,2.8);assert.equal((6+3)/(3+1),9/4);assert.match(answer('waec-2023-mathematics-p2-q1'),/2.8.*9\/4/);
  assert.equal(250*5+150*3,1700);assert.equal(175*5+75*3,1100);assert.match(answer('waec-2023-mathematics-p2-q2'),/250.*1,100/);
  const altitude=Math.sqrt(18*18-9*9),triangle=18*altitude/2,sector=(22/7)*altitude*altitude/6;assert.equal((triangle-sector).toFixed(2),'13.01');assert.match(answer('waec-2023-mathematics-p2-q3'),/13.01/);
+ const baseAngle=(180-80)/2;const oppositeAtQ=180-(baseAngle+41),oppositeAtP=180-2*baseAngle;
+ assert.equal(baseAngle,50);assert.deepEqual([oppositeAtQ,oppositeAtP],[89,80]);assert.match(answer('waec-2023-mathematics-p2-q4'),/89°.*80°/);
  const height=50*Math.tan(66*Math.PI/180),walk=height/Math.tan(53*Math.PI/180)-50;assert.equal(height.toFixed(1),'112.3');assert.equal(walk.toFixed(1),'34.6');assert.match(answer('waec-2023-mathematics-p2-q5'),/112.3.*34.6/);
+ const set=Array.from({length:20},(_,i)=>i+1);const multiples=set.filter(n=>n%3===0),factors=set.filter(n=>10%n===0);
+ assert.equal(multiples.length/set.length,3/10);assert.equal(factors.length/set.length,1/5);
+ const onePart=200000/3;assert.equal((5*onePart).toFixed(2),'333333.33');assert.equal((2*onePart).toFixed(2),'133333.33');assert.match(answer('waec-2023-mathematics-p2-q6'),/3\/10.*1\/5.*333,333.33.*133,333.33/);
  assert.deepEqual([-3,-2,-1,0,1,2,3].map(x=>2*x*x-x-4),[17,6,-1,-4,-3,2,11]);const roots=[(1-Math.sqrt(33))/4,(1+Math.sqrt(33))/4];roots.forEach(x=>assert.ok(Math.abs(2*x*x-x-4)<1e-10));assert.match(answer('waec-2023-mathematics-p2-q8'),/−1.19.*1.69.*0.25.*−4.125/);
  const trees=[3,4,5,6,7,8].flatMap((height,i)=>Array([4,6,4,5,6,2][i]).fill(height));const mean=trees.reduce((a,b)=>a+b)/trees.length;const sd=Math.sqrt(trees.reduce((a,b)=>a+(b-mean)**2,0)/trees.length);assert.equal(trees[13],5);assert.equal(mean.toFixed(1),'5.3');assert.equal(sd.toFixed(1),'1.6');assert.match(answer('waec-2023-mathematics-p2-q9'),/5 m.*5.3 m.*1.6 m/);
  const shaded=(22/7)*49/6-0.5*(7*Math.cos(Math.PI/3))*(7*Math.sin(Math.PI/3));assert.equal(shaded.toFixed(1),'15.1');assert.equal(-8*(-3/4),6);assert.equal(21*(2/7),6);assert.match(answer('waec-2023-mathematics-p2-q13'),/15.1.*−8x \+ 21y = 6/);
@@ -51,8 +56,10 @@ test('mathematics worked answers are checked using independent computations',()=
  const y=bearingPoint(distancePY,150);const distanceXY=Math.hypot(x.east-y.east,x.north-y.north);
  const bearingYX=(Math.atan2(x.east-y.east,x.north-y.north)/radians+360)%360;
  assert.ok(Math.abs(distanceXY-180)<1e-10);assert.equal(distancePY.toPrecision(3),'167');assert.equal(bearingYX.toPrecision(3),'349');
- const q10=bank.items.find(q=>q.id==='waec-2023-mathematics-p2-q10');assert.equal(q10.answer,'(a) 349°. (b) 167 m.');assert.match(q10.prompt,/X from Y/);assert.match(q10.sourceUse,/wording says/);
- assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics'&&q.year===2023).map(q=>q.number),[1,2,3,5,7,8,9,10,11,13]);
+ const q10=bank.items.find(q=>q.id==='waec-2023-mathematics-p2-q10');assert.equal(q10.answer,'(a) 349°. (b) 167 m.');assert.match(q10.prompt,/X from Y/);assert.doesNotMatch(q10.sourceUse,/wording says|ambiguous/);
+ const centralAngle=180-2*54;const m=centralAngle/2,n=centralAngle/2;const width=(40-2*4)/4;
+ assert.deepEqual([m,n,width,width*(width+4)],[36,36,8,96]);assert.match(answer('waec-2023-mathematics-p2-q12'),/36°.*36°.*96 cm²/);
+ assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics'&&q.year===2023).map(q=>q.number),Array.from({length:13},(_,i)=>i+1));
 });
 test('coverage never turns consecutive or repeated compilation numbers into a complete paper',()=>{
  const rows=coverage.inventory([{id:'a',subject:'english',year:2020,num:1},{id:'b',subject:'english',year:2020,num:1},{id:'c',subject:'english',year:2020,num:3}],[{id:'a'}],[2026]);
