@@ -61,6 +61,6 @@ test('actual reviewed Mathematics years and counts match the current bank', asyn
   expect(await year.locator('option').evaluateAll(options => options.slice(1).map(o => Number(o.value))))
     .toEqual([...counts.keys()].sort((a,b) => b-a));
   await expect(page.locator('#year-coverage')).toContainText('Practice selection: ' + counts.get(latest) + ' questions from ' + latest);
-  const numbers = rows.filter(q => q.year === latest).map(q => q.num).sort((a,b) => a-b).slice(0,20);
+  const numbers = rows.filter(q => q.year === latest && Number.isInteger(q.num)).map(q => q.num).sort((a,b) => a-b).slice(0,20);
   await expect(page.locator('.qcard .qcard-meta .meta-chip:nth-child(3)')).toHaveText(numbers.map(n => 'Q' + n));
 });
