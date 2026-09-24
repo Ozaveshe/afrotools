@@ -70,3 +70,52 @@ test('AI reviews are backed by current batch evidence and reproducible integrity
   assert.ok(aiReviews.length > 0, 'No actual answer reviews were exercised');
   for (const [id,review] of aiReviews) assert.equal(covered.get(id), review.content_sha256, 'AI review lacks executable evidence: ' + id);
 });
+
+test('2024 English publisher collection imports only eight independently checked, nonduplicate items', () => {
+  const { prepareBatch } = require('../ops/nigeria-exams/import-jamb-english-2024.cjs');
+  const { verify } = require('../ops/jamb/verification/check-english-2024-902.cjs');
+  const bytes = fs.readFileSync(path.join(root, 'ops/nigeria-exams/jamb-english-2024-curated.json'));
+  const manifest = JSON.parse(bytes);
+  const hash = crypto.createHash('sha256').update(bytes).digest('hex');
+  const sourcePool = JSON.parse(fs.readFileSync(path.join(root, 'ops/jamb/source-pool.json'), 'utf8'));
+  const sourceLedger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
+  const beforeEnglish = sourcePool.questions.filter(question => question.subject === 'english'
+    && [2022, 2023].includes(question.year));
+  const prepared = prepareBatch(manifest, hash, sourcePool, sourceLedger);
+  assert.equal(prepared.batch.records.length, 8);
+  assert.equal(prepared.pool.questions.length, sourcePool.questions.length +
+    prepared.batch.records.filter(record => !sourcePool.questions.some(question => question.id === record.id)).length);
+  assert.deepEqual(prepared.pool.questions.filter(question => question.subject === 'english'
+    && [2022, 2023].includes(question.year)), beforeEnglish);
+  assert.equal(beforeEnglish.length, 50, 'Expected reviewed 2022-23 comparison cohort');
+  assert.equal(verify(manifest, hash, prepared.pool, prepared.ledger, prepared.batch).passed, true);
+  for (const record of prepared.batch.records) {
+    const question = prepared.pool.questions.find(candidate => candidate.id === record.id);
+    assert.ok(!beforeEnglish.some(candidate => candidate.question === question.question), record.id + ': repeat prompt');
+    assert.equal(question.source_provenance.year_basis, 'publisher-collection', record.id);
+    assert.equal(question.num, null, record.id);
+    assert.doesNotMatch(question.explanation, /source|publisher|repair|transcription|corrected/i, record.id);
+  }
+  const secondPass = prepareBatch(manifest, hash, prepared.pool, prepared.ledger);
+  assert.equal(secondPass.pool.questions.length, prepared.pool.questions.length, 'Importer must be idempotent');
+  assert.deepEqual(secondPass.batch, prepared.batch);
+
+  const wrongAnswerPool = structuredClone(prepared.pool);
+  const wrongId = 'english-2024-myschool-69885';
+  const wrongQuestion = wrongAnswerPool.questions.find(question => question.id === wrongId);
+  wrongQuestion.answer = 'A';
+  const wrongHash = require('../scripts/lib/jamb-content-trust').questionFingerprint(wrongQuestion);
+  const wrongLedger = structuredClone(prepared.ledger);
+  wrongLedger.questions[wrongId].content_sha256 = wrongHash;
+  const wrongBatch = structuredClone(prepared.batch);
+  wrongBatch.records.find(record => record.id === wrongId).content_sha256 = wrongHash;
+  wrongBatch.records.find(record => record.id === wrongId).independently_selected_answer = 'Cloth';
+  assert.throws(() => verify(manifest, hash, wrongAnswerPool, wrongLedger, wrongBatch),
+    /independently selected answer/);
+  const falseYear = structuredClone(manifest);
+  falseYear.year_basis = 'authenticated-sitting';
+  assert.throws(() => prepareBatch(falseYear, hash, sourcePool, sourceLedger), /Unexpected 2024 English source manifest/);
+  const heldAsAccepted = structuredClone(manifest);
+  heldAsAccepted.held_source_items.push({ source_item: 1, reason: 'test hold' });
+  assert.throws(() => prepareBatch(heldAsAccepted, hash, sourcePool, sourceLedger), /Held source item/);
+});
