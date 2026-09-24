@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 1 | 292 |
-| sw | 137 | 1 | 315 |
+| fr | 160 | 1 | 293 |
+| sw | 137 | 1 | 316 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 325 | 40 | 0 | 285 | 21 | 0 | 304 |
+| editorial | 326 | 40 | 0 | 286 | 21 | 0 | 305 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -368,6 +368,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/mobile-money-fees-comparison/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mobile-money-payment-receipt-template-ghana/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/mobile-money-payment-receipt-template-ghana/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/morocco-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/morocco-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mortgage-calculator-nigeria-homebuyer/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/mortgage-calculator-nigeria-homebuyer/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/mortgage-rates-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
