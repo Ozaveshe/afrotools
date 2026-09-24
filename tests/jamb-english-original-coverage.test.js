@@ -1,6 +1,6 @@
 'use strict';
-const test=require('node:test'),assert=require('node:assert/strict');
-const {inspect,load,verify,reconstructOriginals}=require('../ops/jamb/review-candidates/english/check-original-coverage.cjs');
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const {inspect,load,verify,reconstructOriginals,publisherCollectionRecords}=require('../ops/jamb/review-candidates/english/check-original-coverage.cjs');
 test('all original English imports have exactly one pinned candidate or private hold',()=>{const r=verify();assert.equal(r.original_records,4163);assert.equal(r.remaining,0);assert.equal(r.candidates,2162);assert.equal(r.held,2001);});
 test('coverage rejects omissions, duplicate dispositions and unknown IDs',()=>{
  const {originals,batches}=load();
@@ -62,4 +62,25 @@ test('recent reviewed collection intake is excluded only with exact source and l
  assert.throws(()=>reconstructOriginals([{...row,answer:row.answer==='A'?'B':'A'}],batches,ledger),/recent intake fingerprint/);
  const missing=structuredClone(ledger);delete missing.questions[row.id].answer_review;
  assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required/);
+});
+
+test('2024 publisher collection is excluded only with its pinned per-item source and accepted review',()=>{
+ const root=path.resolve(__dirname,'..');
+ const bytes=fs.readFileSync(path.join(root,'ops/nigeria-exams/jamb-english-2024-curated.json'));
+ const manifest=JSON.parse(bytes),hash=crypto.createHash('sha256').update(bytes).digest('hex');
+ const pool=require('../ops/jamb/source-pool.json'),ledger=require('../data/jamb/review-ledger.json');
+ const {prepareBatch}=require('../ops/nigeria-exams/import-jamb-english-2024.cjs');
+ const prepared=prepareBatch(manifest,hash,pool,ledger);
+ const releases=publisherCollectionRecords([prepared.batch]);
+ const {originals,batches}=load();
+ const row=prepared.pool.questions.find(q=>q.id==='english-2024-myschool-69885');
+ assert.deepEqual(reconstructOriginals([row],batches,prepared.ledger,releases),[]);
+ assert.throws(()=>reconstructOriginals([{...row,answer:'A'}],batches,prepared.ledger,releases),/recent intake fingerprint/);
+ const missing=structuredClone(prepared.ledger);delete missing.questions[row.id].answer_review;
+ assert.throws(()=>reconstructOriginals([row],batches,missing,releases),/recent intake eligibility required/);
+ const wrongSource=structuredClone(prepared.ledger);wrongSource.sources[wrongSource.questions[row.id].source_id].source_url='https://myschool.ng/wrong-source';
+ assert.throws(()=>reconstructOriginals([row],batches,wrongSource,releases),/recent intake source URL/);
+ assert.equal(publisherCollectionRecords([{...prepared.batch,year_basis:'authenticated-sitting'}]).size,0);
+ assert.deepEqual(reconstructOriginals([row],batches,prepared.ledger,new Map()),[row]);
+ assert.throws(()=>inspect([...originals,row],batches),/unexamined original IDs/);
 });

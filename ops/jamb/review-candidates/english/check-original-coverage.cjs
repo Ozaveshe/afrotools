@@ -4,10 +4,23 @@ const root=path.resolve(__dirname,'../../../..');
 const {questionFingerprint:fp,assessQuestion}=require(path.join(root,'scripts/lib/jamb-content-trust'));
 const {verifyRecoveredHold}=require('./check-2019-recovered-holds.cjs');
 const laterRecords=new Map(require('../../verification/english-2019-publishable-900.json').records.map(r=>[r.id,r]));
-const recentRecords=new Map([2022,2023].flatMap(year=>{
- const release=require('../../verification/english-'+year+'-publishable-901.json');
- return release.records.map(record=>[record.id,{record,release}]);
-}));
+function publisherCollectionRecords(releases){
+ const records=new Map();
+ for(const release of releases){
+  if(release.year_basis!=='publisher-collection')continue;
+  assert.ok(typeof release.source_file==='string'&&/^[a-f0-9]{64}$/.test(release.source_snapshot_sha256||''),'publisher collection source evidence');
+  for(const record of release.records||[]){
+   assert.ok(/^english-/.test(record.id)&&typeof record.source_url==='string'&&/^[a-f0-9]{64}$/.test(record.content_sha256||''),'publisher collection record evidence');
+   assert.ok(!records.has(record.id),'duplicate publisher collection ID '+record.id);
+   records.set(record.id,{record,release});
+  }
+ }
+ return records;
+}
+const verificationDir=path.join(root,'ops/jamb/verification');
+const recentRecords=publisherCollectionRecords(fs.readdirSync(verificationDir)
+ .filter(file=>/^english-\d{4}-publishable-\d{3}\.json$/.test(file)).sort()
+ .map(file=>JSON.parse(fs.readFileSync(path.join(verificationDir,file)))));
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 function inspect(originals,batches){
  const originalsById=new Map(originals.map(q=>[q.id,q]));
@@ -34,7 +47,7 @@ function inspect(originals,batches){
  const missing=originals.filter(q=>!seen.has(q.id)).map(q=>q.id);assert.deepEqual(missing,[],'unexamined original IDs');
  return {original_records:originals.length,examined:seen.size,candidates,held,remaining:missing.length,batch_files:batches.length,duplicate_original_dispositions:0,duplicate_printed_source_numbers:0,original_ids_sha256:sha(JSON.stringify(originals.map(q=>q.id).sort())),original_fingerprints_sha256:sha(JSON.stringify(originals.map(q=>[q.id,fp(q)]).sort((a,b)=>a[0].localeCompare(b[0])))),dispositions_sha256:sha(JSON.stringify(dispositions.sort((a,b)=>a[0].localeCompare(b[0]))))};
 }
-function reconstructOriginals(current,batches,ledger={questions:{},sources:{}}){
+function reconstructOriginals(current,batches,ledger={questions:{},sources:{}},publisherRecords=recentRecords){
  const candidates=new Map(),held=new Map();
  for(const {batch} of batches){
   for(const r of batch.records||[]){assert.ok(!candidates.has(r.id),'duplicate candidate ID');candidates.set(r.id,{r,batch});}
@@ -46,7 +59,7 @@ function reconstructOriginals(current,batches,ledger={questions:{},sources:{}}){
    const h=held.get(q.id),later=laterRecords.get(q.id);
    if(h&&hash!==h.original_content_sha256&&verifyRecoveredHold(h,q,true,ledger))return [later.before];
    if(h)assert.equal(hash,h.original_content_sha256,'held current fingerprint '+q.id);
-   const recent=recentRecords.get(q.id);
+   const recent=publisherRecords.get(q.id);
    if(!h&&recent){
     const {record,release}=recent;
     assert.equal(record.publication_candidate,true,'recent intake is not approved '+q.id);
@@ -96,5 +109,5 @@ function load(sourceRoot=root){
  return {originals:reconstructOriginals(current,batches,ledger),batches};
 }
 function verify(sourceRoot=root){const {originals,batches}=load(sourceRoot),receipt=JSON.parse(fs.readFileSync(path.join(__dirname,'original-coverage-receipt.json'))),actual=inspect(originals,batches);assert.deepEqual(actual,receipt.coverage);return {passed:true,...actual,scope:receipt.scope};}
-module.exports={inspect,load,verify,sha,reconstructOriginals};
+module.exports={inspect,load,verify,sha,reconstructOriginals,publisherCollectionRecords};
 if(require.main===module){const args=process.argv.slice(2);assert.ok(args.length===0||(args.length===2&&args[0]==='--source-root'),'usage: check-original-coverage.cjs [--source-root PATH]');console.log(JSON.stringify(verify(args.length?path.resolve(args[1]):root),null,2));}
