@@ -51,9 +51,11 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   for (const q of approved) yearCounts.set(q.year, (yearCounts.get(q.year) || 0) + 1);
   const name = SUBJECTS[subject];
   const paper = year === null ? name : name + ' ' + year;
+  const publisherCollection = year !== null && approved.length > 0 && approved.every(q => q.source_provenance?.year_basis === 'publisher-collection');
   const canonical = `https://afrotools.com/jamb/${subject}/${year === null ? '' : year + '/'}`;
-  const title = `JAMB ${paper} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
-  const description = approved.length ? `Practise ${approved.length} reviewed JAMB ${paper} questions. Check answers, open worked explanations and plan your next revision session with AfroJAMB.`
+  const title = `JAMB ${paper}${publisherCollection ? ' collection' : ''} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
+  const description = publisherCollection ? `Practise ${approved.length} reviewed questions adapted from a publisher-labelled ${year} JAMB ${name} collection. The original UTME sitting and question numbers are unconfirmed.`
+    : approved.length ? `Practise ${approved.length} reviewed JAMB ${paper} questions. Check answers, open worked explanations and plan your next revision session with AfroJAMB.`
     : `The ${paper} question collection is under review. Use the study planner while sources, questions and answer keys are checked.`;
   const schemas = [{ '@context': 'https://schema.org', '@type': 'WebPage', name: title, url: canonical, description },
     ...approved.slice(0, 50).map(q => ({ '@context': 'https://schema.org', '@type': 'Question', name: q.question,
@@ -91,10 +93,10 @@ ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)
 <afro-navbar active="education"></afro-navbar>
 <main class="jb-wrap jamb-reviewed-paper">
 <nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}</nav>
-<h1>JAMB ${esc(paper)}</h1>
+<h1>JAMB ${esc(paper)}${publisherCollection ? ' practice collection' : ''}</h1>
 ${subject === 'mathematics' && year === null ? '<p><a href="/jamb/mathematics/recent-practice/">Practise five Mathematics tasks from a source-labelled 2023 collection</a></p>' : ''}
 ${year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
-${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>Practice selection: full-paper coverage has not been confirmed.</p><div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
+${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>${publisherCollection ? `These adapted questions come from a publisher-labelled ${esc(year)} collection. The original UTME sitting and question numbers are unconfirmed. ` : ''}Practice selection: full-paper coverage has not been confirmed.</p><div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
     : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
 <p class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/tools/study-planner/">Plan your study week</a><a href="/jamb/${subject}/">All ${esc(name)} years</a></p>
 </main>

@@ -65,7 +65,7 @@ for (const [locale, c] of Object.entries(configs)) {
         expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
       }
     }
-    expect(visited.length).toBe(42);
+    expect(visited.length).toBe(47);
     await page.locator('#written-collection').selectOption('Mathematics written practice');
     await page.locator('#written-task').selectOption('written-m1');
     await page.locator('#written-answer').fill(marker+' 45; 1.68 × 10¹');

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11566 |
-| Indexable pages | 9987 |
+| Public pages | 11568 |
+| Indexable pages | 9989 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5294 |
-| Documented fallbacks | 14834 |
-| Routes eligible for primary sitemaps | 9987 |
+| Genuine equivalence groups | 5296 |
+| Documented fallbacks | 14836 |
+| Routes eligible for primary sitemaps | 9989 |
 
 ## Locale Coverage
 
-- en: 6016 page records
+- en: 6018 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5431
+- page: 5433
 - tool: 4004
 - widget: 379
 
@@ -5228,6 +5228,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:69d23d4b34ba: en=`/tools/health-contribution/liberia`; x-default=`/tools/health-contribution/liberia`
 - equivalence:69d3dc95c06e: fr=`/fr/widgets/risque-surestaries/`; x-default=`/fr/widgets/risque-surestaries/`
 - equivalence:69d960f18628: en=`/agriculture/fertilizer/lesotho`, fr=`/fr/agriculture/fertilizer/lesotho`, sw=`/sw/kilimo/mbolea/lesotho/`; x-default=`/agriculture/fertilizer/lesotho`
+- equivalence:69d9fbfc6bb0: en=`/jamb/english/2022/`; x-default=`/jamb/english/2022/`
 - equivalence:69e9629a5535: en=`/cars/mozambique/ford/ranger/2018/`, fr=`/fr/cars/mozambique/ford/ranger/2018/`; x-default=`/cars/mozambique/ford/ranger/2018/`
 - equivalence:69ee0ca5c920: en=`/cars/ghana/toyota/noah/2014/`, fr=`/fr/cars/ghana/toyota/noah/2014/`; x-default=`/cars/ghana/toyota/noah/2014/`
 - equivalence:6a02225cadcc: en=`/cars/senegal/mercedes-benz/e-class/`, fr=`/fr/cars/senegal/mercedes-benz/e-class/`; x-default=`/cars/senegal/mercedes-benz/e-class/`
@@ -6221,6 +6222,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:9aad5f4ac366: en=`/tools/afrokitchen/recipes/shahan-ful-er/`; x-default=`/tools/afrokitchen/recipes/shahan-ful-er/`
 - equivalence:9ab15cbd82d3: en=`/tools/afrokitchen/recipes/kenyan-pilau/`; x-default=`/tools/afrokitchen/recipes/kenyan-pilau/`
 - equivalence:9ac7db72effe: en=`/tools/retrenchment-calculator/angola/`; x-default=`/tools/retrenchment-calculator/angola/`
+- equivalence:9acf7785c0ac: en=`/jamb/english/2023/`; x-default=`/jamb/english/2023/`
 - equivalence:9ad64720457e: en=`/agriculture/farm-profit/sudan`, fr=`/fr/agriculture/farm-profit/sudan`, sw=`/sw/kilimo/faida-ya-shamba/sudan/`; x-default=`/agriculture/farm-profit/sudan`
 - equivalence:9ade7aab9849: en=`/tools/afrokitchen/recipes/alouda-mu/`; x-default=`/tools/afrokitchen/recipes/alouda-mu/`
 - equivalence:9aded0b5e040: en=`/blog/car-import-cost-africa-comparison-2026/`; x-default=`/blog/car-import-cost-africa-comparison-2026/`

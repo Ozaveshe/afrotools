@@ -2,6 +2,8 @@
 
 This is a measurement checkpoint, not a claim that a complete past-paper archive has been published. Search Console and Analytics were inspected in the signed-in AfroTools properties on 24 September 2026. The production release endpoint reported commit `146c5183006f23002d87ca1360f9285f4f3d6661` (built at 07:00 UTC); the JAMB archive, JAMB Mathematics 2023, SSCE practice, and Education Hub routes returned HTTP 200.
 
+The combined local content candidate later in this batch has **8,059 eligible JAMB questions** (102 more than the live baseline), including 60 Mathematics items from a publisher-labelled 2023 collection and 31/19 English items from publisher-labelled 2022/2023 collections. The latest coverage audit still has 63 recent JAMB subject-year source gaps and **zero complete past papers**. The original UTME sitting and paper numbers of the new publisher-collection items are unconfirmed; the English publisher describes its 2023 set as modelled practice. These are pre-release counts until the exact combined artifact is deployed and verified.
+
 ## Search Console
 
 Property: `sc-domain:afrotools.com`. Individual URL inspection reported:

@@ -45,8 +45,8 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2025 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2024 | 0 | 0 | Acquire and authenticate source |
-| JAMB | english | 2023 | 0 | 0 | Acquire and authenticate source |
-| JAMB | english | 2022 | 0 | 0 | Acquire and authenticate source |
+| JAMB | english | 2023 | 19 | 19 | Acquire and authenticate source |
+| JAMB | english | 2022 | 31 | 31 | Acquire and authenticate source |
 | JAMB | english | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | government | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | government | 2025 | 0 | 0 | Acquire and authenticate source |
@@ -63,7 +63,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | mathematics | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2025 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2024 | 0 | 0 | Acquire and authenticate source |
-| JAMB | mathematics | 2023 | 8 | 8 | Acquire and authenticate source |
+| JAMB | mathematics | 2023 | 60 | 60 | Acquire and authenticate source |
 | JAMB | mathematics | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | physics | 2026 | 0 | 0 | Acquire and authenticate source |

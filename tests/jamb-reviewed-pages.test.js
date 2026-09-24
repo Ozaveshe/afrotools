@@ -40,6 +40,25 @@ test('JSON-LD string content cannot terminate its script element', () => {
   assert.deepEqual(JSON.parse(encoded), value);
 });
 
+test('publisher-labelled collection years do not present themselves as confirmed UTME sittings', () => {
+  const q = { id: 'synthetic-collection', subject: 'english', year: 2023, num: null,
+    question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
+    answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
+    source_provenance: { publisher: 'Example', url: 'https://example.com/collection', year_basis: 'publisher-collection' } };
+  const review = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-24', evidence: 'synthetic fixture only' };
+  const sourceHash = 'a'.repeat(64);
+  const ledger = { sources: { fixture: { source_file: 'synthetic fixture', content_sha256: sourceHash,
+    source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2023,
+    reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source', scope: 'AfroTools past-question practice',
+      material_sha256: sourceHash, authorized_by: 'test', authorized_at: '2026-09-24', instruction_ref: 'synthetic fixture' } } },
+    questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review } } };
+  const page = renderYear('english', 2023, [q], ledger);
+  assert.deepEqual(page.approvedIds, [q.id]);
+  assert.ok(page.html.includes('JAMB Use of English 2023 practice collection'));
+  assert.ok(page.html.includes('publisher-labelled 2023'));
+  assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
+});
+
 test('only the reviewed content version appears in both cards and answer schemas', () => {
   const q = { id: 'synthetic-reviewed', subject: 'mathematics', year: 1987, num: 1, question: 'Which comparison is correct?',
     options: { A: '5 < 6', B: '5 > 6', C: '5 = 6', D: '5 = 7' }, answer: 'A', format: 4, has_diagram: false,
