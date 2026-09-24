@@ -5,7 +5,8 @@ const bank = require(path.resolve(__dirname, artifactRoot, 'data/jamb/pools/prac
 
 const routes = [
   '/jamb/commerce/1997/', '/jamb/english/2000/', '/jamb/english/2009/',
-  '/jamb/mathematics/1983/', '/jamb/mathematics/1985/', '/jamb/mathematics/1987/'
+  '/jamb/mathematics/1983/', '/jamb/mathematics/1985/', '/jamb/mathematics/1987/',
+  '/jamb/english/2024/', '/jamb/mathematics/2024/', '/jamb/mathematics/2025/'
 ];
 
 for (const width of [390, 1440]) {
