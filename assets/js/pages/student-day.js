@@ -1,6 +1,7 @@
 (function(){
  'use strict';
  var api=window.AfroTools.studentDay;
+ function trackCompletion(task){var analytics=window.AfroTools&&window.AfroTools.analytics;if(analytics&&typeof analytics.track==='function')analytics.track('education_study_session_complete',{source:task.sourceId==='ssce-practice'?'ssce_practice':'study_plan'});}
  function node(tag,text,cls){var el=document.createElement(tag);if(text)el.textContent=text;if(cls)el.className=cls;return el;}
  function boot(){document.querySelectorAll('[data-student-day]').forEach(mount);}
  function mount(host){
@@ -17,7 +18,7 @@
    if(task.doneAt)actions.append(button('Undo completion',function(){save(api.change(state,task.id,'undo'),'Session restored.');}));
    else{
     actions.append(button(state.activeId===task.id?'Continue session':'Start session',function(){if(save(api.change(state,task.id,'start'),'Session ready. Mark it done when you finish studying.'))host.querySelector('.sd-focus').focus();}));
-    actions.append(button('Mark done',function(){save(api.change(state,task.id,'done'),'Session completed.');}));
+    actions.append(button('Mark done',function(){if(save(api.change(state,task.id,'done'),'Session completed.'))trackCompletion(task);}));
     var move=node('details','','sd-move');move.append(node('summary','Move date'));
     var label=node('label','New date for '+task.subject),date=node('input');date.type='date';date.value=task.date;label.append(date);move.append(label);
     move.append(button('Move session',function(){try{save(api.change(state,task.id,'move',date.value),'Session moved.');}catch(e){status.textContent=e.message;}}));actions.append(move);
@@ -29,7 +30,7 @@
    var v=api.view(state,api.today());host.append(node('p',v.due.length+(v.due.length===1?' session ready':' sessions ready')+' · '+v.completed.length+' completed · '+(storageOK?'Saved on this device':'Storage unavailable'),'sd-summary'));
    if(!state.tasks.length){host.append(node('p','Start with one subject for today, or bring in your weekly timetable.'));}
    var active=state.tasks.find(function(t){return t.id===state.activeId;});
-   if(active){var focus=node('section','','sd-focus');focus.tabIndex=-1;focus.append(node('h3','Continue: '+active.subject));focus.append(node('p','Spend '+active.minutes+' minutes studying. Practise a question, check your reasoning, then mark this session complete.'));var paths=node('div','','sd-actions');paths.append(link(active.deckId?'Review this deck':'Open my flashcards','/tools/flashcard-maker/'+(active.deckId?'#review='+encodeURIComponent(active.deckId):'')),link('JAMB past questions','/jamb/past-questions/'));if(active.sourceId==='ssce-practice')paths.prepend(link('Open WAEC/NECO practice',api.revisionHref(active)));paths.append(button('Finish this session',function(){save(api.change(state,active.id,'done'),'Session complete. Your next task is ready.');}));focus.append(paths);host.append(focus);}
+   if(active){var focus=node('section','','sd-focus');focus.tabIndex=-1;focus.append(node('h3','Continue: '+active.subject));focus.append(node('p','Spend '+active.minutes+' minutes studying. Practise a question, check your reasoning, then mark this session complete.'));var paths=node('div','','sd-actions');paths.append(link(active.deckId?'Review this deck':'Open my flashcards','/tools/flashcard-maker/'+(active.deckId?'#review='+encodeURIComponent(active.deckId):'')),link('JAMB past questions','/jamb/past-questions/'));if(active.sourceId==='ssce-practice')paths.prepend(link('Open WAEC/NECO practice',api.revisionHref(active)));paths.append(button('Finish this session',function(){if(save(api.change(state,active.id,'done'),'Session complete. Your next task is ready.'))trackCompletion(active);}));focus.append(paths);host.append(focus);}
    if(v.due.length){var list=node('ul','','sd-list');v.due.forEach(function(t){list.append(taskRow(t));});host.append(list);}
    else if(state.tasks.length)host.append(node('p','You have no unfinished sessions due today. You can start an upcoming session or add a new task.'));
    [['Coming up',v.upcoming],['Completed sessions',v.completed]].forEach(function(group){if(!group[1].length)return;var details=node('details','','sd-history');details.append(node('summary',group[0]+' ('+group[1].length+')'));var list=node('ul','','sd-list');group[1].forEach(function(t){list.append(taskRow(t));});details.append(list);host.append(details);});

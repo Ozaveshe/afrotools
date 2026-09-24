@@ -3,6 +3,15 @@
   var bank=window.AfroTools.sscePracticeBank,api=window.AfroTools.sscePractice,day=window.AfroTools.studentDay;
   var area=document.getElementById('practice-session'),status=document.getElementById('practice-status'),state=null;
   var subject=document.getElementById('practice-subject'),topic=document.getElementById('practice-topic');
+  function track(name,values){
+    var analytics=window.AfroTools&&window.AfroTools.analytics;
+    if(analytics&&typeof analytics.track==='function')analytics.track(name,values);
+  }
+  function subjectMetric(ids){
+    var subjects=Array.from(new Set(ids.map(function(id){var q=bank.questions.find(function(item){return item.id===id;});return q&&q.subject;})));
+    return subjects.length===1&&['Mathematics','English','Physics'].includes(subjects[0])?subjects[0].toLowerCase():'mixed';
+  }
+  function countBucket(count){return count<5?'1-4':count<15?'5-14':'15+';}
   function t(text){return bank.ui&&bank.ui[text]||text;}
   function errorText(error){return bank.locale&&bank.locale!=='en'?(bank.ui[error.message]||bank.ui['Action failed. Saved data has been kept.']||'Impossible de terminer cette action. Les données enregistrées sont conservées.'):error.message;}
   function node(tag,text,cls){var el=document.createElement(tag);if(text!==undefined)el.textContent=t(text);if(cls)el.className=cls;return el;}
@@ -11,7 +20,7 @@
   function download(name,text,type){var url=URL.createObjectURL(new Blob([text],{type:type})),a=node('a');a.href=url;a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
   function topics(){topic.replaceChildren(new Option(t('All pilot topics'),''));Array.from(new Set(bank.questions.filter(function(q){return q.subject===subject.value;}).map(function(q){return q.topic;}))).forEach(function(label){topic.add(new Option(t(label),label));});}
   subject.addEventListener('change',topics);topics();
-  document.getElementById('practice-start').addEventListener('click',function(){try{state=api.start(bank,subject.value,topic.value);message('Session started. Your saved session is kept until you choose Save progress.');render();}catch(e){message(errorText(e));}});
+  document.getElementById('practice-start').addEventListener('click',function(){try{state=api.start(bank,subject.value,topic.value);track('education_practice_start',{exam:'waec_neco',subject:subjectMetric(state.ids),entry:'new',question_count:countBucket(state.ids.length)});message('Session started. Your saved session is kept until you choose Save progress.');render();}catch(e){message(errorText(e));}});
   function render(){
     area.replaceChildren();if(!state)return;
     var score=api.result(state,bank),q=bank.questions.find(function(q){return q.id===state.ids[state.index];});
@@ -26,22 +35,22 @@
       else{
         var feedback=node('p',chosen===q.answer?'Correct.':t('Correct answer: ')+q.options[q.answer],'practice-feedback');area.append(feedback);
         var details=node('details',undefined,'practice-explanation'),steps=node('ol');details.append(node('summary','Show explanation'));q.steps.forEach(function(s){steps.append(node('li',s));});details.append(steps,node('p',q.pitfall));area.append(details);
-        area.append(act(state.index===state.ids.length-1?'See results':'Next question',function(){state=api.advance(state,bank);message('');render();},true));
+        area.append(act(state.index===state.ids.length-1?'See results':'Next question',function(){state=api.advance(state,bank);if(state.index===state.ids.length){var result=api.result(state,bank);track('education_practice_complete',{exam:'waec_neco',subject:subjectMetric(state.ids),question_count:countBucket(result.total),score_band:result.total?String(Math.floor(4*result.correct/result.total)*25)+'-'+String(Math.min(100,Math.floor(4*result.correct/result.total)*25+24)):'unknown'});}message('');render();},true));
       }
     }else{
       area.append(node('p',score.correct+t(' correct out of ')+score.total+t('. This is a practice score, not an exam-grade prediction.'),'practice-score'));
       var topicsSummary={};state.ids.forEach(function(id){var item=bank.questions.find(function(q){return q.id===id;});var s=topicsSummary[item.topic]||(topicsSummary[item.topic]={total:0,correct:0});s.total++;if(state.answers[id]===item.answer)s.correct++;});
       var list=node('ul');Object.keys(topicsSummary).forEach(function(t){list.append(node('li',(bank.ui&&bank.ui[t]||t)+': '+topicsSummary[t].correct+'/'+topicsSummary[t].total));});area.append(list);
-      if(score.missed.length)area.append(act('Retry missed questions',function(){state=api.retry(state,bank);message('A new retry session has started.');render();},true));
+      if(score.missed.length)area.append(act('Retry missed questions',function(){state=api.retry(state,bank);track('education_practice_start',{exam:'waec_neco',subject:subjectMetric(state.ids),entry:'retry',question_count:countBucket(state.ids.length)});message('A new retry session has started.');render();},true));
       area.append(act('Save a revision session for tomorrow',function(){var date=day.addDays(day.today(),1),subjects=Array.from(new Set(state.ids.map(function(id){return bank.questions.find(function(q){return q.id===id;}).subject;}))).map(t).join(' & ');
         var revision={bankId:bank.id,locale:bank.locale||'en',ids:score.missed.length?score.missed.slice():state.ids.slice()};
-        day.write(localStorage,day.scheduleRevision(day.read(localStorage),revision,t('WAEC/NECO practice: ')+subjects,date));message('Revision saved for tomorrow in your study day.');
+        day.write(localStorage,day.scheduleRevision(day.read(localStorage),revision,t('WAEC/NECO practice: ')+subjects,date));track('education_revision_saved',{exam:'waec_neco',subject:subjectMetric(state.ids),question_count:countBucket(revision.ids.length)});message('Revision saved for tomorrow in your study day.');
       }));
     }
     var controls=node('div',undefined,'practice-actions');
     controls.append(act('Save progress on this device',function(){var raw=localStorage.getItem(api.key);if(raw)api.normalize(JSON.parse(raw),bank);localStorage.setItem(api.key,JSON.stringify(api.normalize(state,bank)));message('Progress saved on this device.');}),act('Download progress backup',function(){download('afrotools-ssce-progress.json',JSON.stringify(state,null,2),'application/json');message('Progress backup downloaded.');}),act('Download practice report',function(){download('afrotools-ssce-report.txt',api.report(state,bank),'text/plain;charset=utf-8');message('Practice report downloaded.');}));area.append(controls);heading.focus();heading.scrollIntoView({block:"start",behavior:"instant"});
   }
-  document.getElementById('practice-resume').addEventListener('click',function(){try{var raw=localStorage.getItem(api.key);if(!raw){message('There is no saved session on this device.');return;}state=api.normalize(JSON.parse(raw),bank);render();message('Saved session restored.');}catch(e){message('Saved progress could not be loaded. It has been kept unchanged. You can still start a new session and download a backup.');}});
+  document.getElementById('practice-resume').addEventListener('click',function(){try{var raw=localStorage.getItem(api.key);if(!raw){message('There is no saved session on this device.');return;}state=api.normalize(JSON.parse(raw),bank);track('education_practice_resume',{exam:'waec_neco',subject:subjectMetric(state.ids),question_count:countBucket(state.ids.length)});render();message('Saved session restored.');}catch(e){message('Saved progress could not be loaded. It has been kept unchanged. You can still start a new session and download a backup.');}});
   document.getElementById('practice-import').addEventListener('change',async function(){var file=this.files[0];if(!file)return;try{if(file.size>100000)throw Error('Choose a practice backup smaller than 100 KB.');var next=api.normalize(JSON.parse(await file.text()),bank);state=next;render();message('Backup opened. Choose Save progress to keep it on this device.');}catch(e){message(t('Backup not opened: ')+errorText(e));}this.value='';});
   function openRevision(){
     var id=new URLSearchParams(location.hash.slice(1)).get('revision');if(!id)return;
@@ -49,7 +58,7 @@
       var task=day.read(localStorage).tasks.find(function(task){return task.id===id;});
       if(!task||!task.revision||task.revision.locale!==(bank.locale||'en'))throw new Error('This revision session is unavailable on this device.');
       var next=api.normalize({version:1,bankId:task.revision.bankId,ids:task.revision.ids,index:0,answers:{}},bank);
-      state=next;render();message('Saved session restored.');
+      state=next;track('education_revision_opened',{exam:'waec_neco',subject:subjectMetric(state.ids),question_count:countBucket(state.ids.length)});render();message('Saved session restored.');
     }catch(error){message(errorText(error));}
   }
   window.addEventListener('hashchange',openRevision);openRevision();

@@ -27,6 +27,7 @@
 
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/lib/analytics.js" defer></script>
 <script src="/engines/jamb-cbt-engine.js?v=a65bf8e1" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
@@ -657,6 +658,20 @@ var SUBJ_META = {
   accounts: {emoji:"📒", label:"Accounts"},
 };
 
+function trackCbt(name, details) {
+  var analytics = window.AfroTools && window.AfroTools.analytics;
+  if (analytics && typeof analytics.track === "function") analytics.track(name, details);
+}
+
+function cbtSubjectMetric() {
+  return SELECTED_SUBJECTS.length === 1 && Object.prototype.hasOwnProperty.call(SUBJ_META, SELECTED_SUBJECTS[0])
+    ? SELECTED_SUBJECTS[0] : "mixed";
+}
+
+function cbtQuestionBucket(count) {
+  return count < 15 ? "1-14" : count < 50 ? "15-49" : "50+";
+}
+
 function questionsPerSubjectForMode() {
   return SELECTED_MODE === "quick" ? 10 : 40;
 }
@@ -948,8 +963,10 @@ async function startCBT(resumeSnapshot) {
   try {
     if (resumeSnapshot && typeof AfroJAMB.CBT.restore === "function") {
       AfroJAMB.CBT.restore(cfg, resumeSnapshot);
+      trackCbt("education_jamb_resume", { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(selected.length) });
     } else {
       AfroJAMB.CBT.init(cfg);
+      trackCbt("education_jamb_start", { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(selected.length) });
       if (typeof window.fbq === "function") {
         window.fbq("trackCustom", "StartMock", {
           content_name: "AfroJAMB CBT Mock",
@@ -1264,6 +1281,15 @@ function submitTest(timedOut) {
   try { score = AfroJAMB.CBT.submit(); }
   catch (error) { showPracticeUnavailable(error.message); return; }
   if (!score || !score.outOf) { showPracticeUnavailable("No reviewed questions were scored. Start a new reviewed practice session."); return; }
+  var percent = Math.max(0, Math.min(100, parseFloat(score.pctCorrect) || 0));
+  var lowerBand = Math.floor(percent / 25) * 25;
+  trackCbt("education_jamb_complete", {
+    mode: SELECTED_MODE,
+    subject: cbtSubjectMetric(),
+    question_count: cbtQuestionBucket(score.outOf),
+    score_band: lowerBand === 100 ? "100" : lowerBand + "-" + (lowerBand + 24),
+    timed_out: !!timedOut
+  });
   document.getElementById("cbt-shell").hidden = true;
   document.getElementById("results-screen").hidden = false;
   if (score.outOf === 0) {
