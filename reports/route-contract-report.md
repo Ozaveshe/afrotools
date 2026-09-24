@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11569 |
-| Indexable pages | 9990 |
+| Public pages | 11572 |
+| Indexable pages | 9993 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5297 |
-| Documented fallbacks | 14837 |
-| Routes eligible for primary sitemaps | 9990 |
+| Genuine equivalence groups | 5300 |
+| Documented fallbacks | 14840 |
+| Routes eligible for primary sitemaps | 9993 |
 
 ## Locale Coverage
 
-- en: 6019 page records
+- en: 6022 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5433
+- page: 5436
 - tool: 4004
 - widget: 379
 
@@ -3368,6 +3368,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0fe3a61f6279: en=`/tools/afroatlas/country/guinea/`; x-default=`/tools/afroatlas/country/guinea/`
 - equivalence:0ff22918da3d: en=`/tools/fuel-tracker/mozambique/`, fr=`/fr/tools/suivi-carburant/mozambique/`; x-default=`/tools/fuel-tracker/mozambique/`
 - equivalence:0ffe22c24ada: en=`/cars/tunisia/toyota/noah/`, fr=`/fr/cars/tunisie/toyota/noah/`; x-default=`/cars/tunisia/toyota/noah/`
+- equivalence:0ffefa0e410b: en=`/jamb/mathematics/2024/`; x-default=`/jamb/mathematics/2024/`
 - equivalence:1001fd94a8de: en=`/tools/afrokitchen/recipes/mandazi-tanzania-tz/`; x-default=`/tools/afrokitchen/recipes/mandazi-tanzania-tz/`
 - equivalence:10152c145e90: en=`/tools/roman-numerals/`, fr=`/fr/tools/chiffres-romains/`, sw=`/sw/zana/namba-za-kirumi/`; x-default=`/tools/roman-numerals/`
 - equivalence:101a79fd6543: en=`/tools/tenancy-agreement/kenya`, fr=`/fr/tools/contrat-bail/kenya`; x-default=`/tools/tenancy-agreement/kenya`
@@ -4161,6 +4162,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:36e71b0edd9e: en=`/tools/voter-registration/`, fr=`/fr/tools/guide-inscription-electorale/`, sw=`/sw/zana/usajili-wa-mpiga-kura/`; x-default=`/tools/voter-registration/`
 - equivalence:36f076d4b53c: en=`/blog/password-protect-pdf-before-sharing-africa/`; x-default=`/blog/password-protect-pdf-before-sharing-africa/`
 - equivalence:36f168bc96e1: en=`/tools/africa-conflict/conflicts/burkina-faso-insurgency/`; x-default=`/tools/africa-conflict/conflicts/burkina-faso-insurgency/`
+- equivalence:3710281a2d92: en=`/jamb/english/2024/`; x-default=`/jamb/english/2024/`
 - equivalence:3710d0906039: en=`/agriculture/vaccination-schedule/ethiopia`; x-default=`/agriculture/vaccination-schedule/ethiopia`
 - equivalence:371b9cac0b4a: en=`/cars/zambia/toyota/camry/2005/`, fr=`/fr/cars/zambie/toyota/camry/2005/`; x-default=`/cars/zambia/toyota/camry/2005/`
 - equivalence:37221c293499: en=`/agriculture/irrigation/togo`, fr=`/fr/agriculture/irrigation/togo`, sw=`/sw/kilimo/umwagiliaji/togo/`; x-default=`/agriculture/irrigation/togo`
@@ -8273,6 +8275,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fe71cfa364e1: en=`/cars/senegal/honda/cr-v/2020/`, fr=`/fr/cars/senegal/honda/cr-v/2020/`; x-default=`/cars/senegal/honda/cr-v/2020/`
 - equivalence:fe79bb06b330: en=`/cars/algeria/nissan/x-trail/2015/`, fr=`/fr/cars/algerie/nissan/x-trail/2015/`; x-default=`/cars/algeria/nissan/x-trail/2015/`
 - equivalence:fe7cf61ffdd8: en=`/tools/afrokitchen/recipes/ntaba-cd/`; x-default=`/tools/afrokitchen/recipes/ntaba-cd/`
+- equivalence:fe8da5f1393e: en=`/jamb/mathematics/2025/`; x-default=`/jamb/mathematics/2025/`
 - equivalence:fe8da940467b: en=`/agriculture/seed-rate/sudan`, fr=`/fr/agriculture/seed-rate/sudan`, sw=`/sw/kilimo/kiwango-cha-mbegu/sudan/`; x-default=`/agriculture/seed-rate/sudan`
 - equivalence:fea36d092061: en=`/tools/generator-fuel/kenya/`, fr=`/fr/tools/calculateur-de-carburant-pour-groupe-electrogene-kenya/`; x-default=`/tools/generator-fuel/kenya/`
 - equivalence:fea6e009d0bc: en=`/tools/employment-contract/mali`, fr=`/fr/tools/contrat-travail/mali`; x-default=`/tools/employment-contract/mali`
