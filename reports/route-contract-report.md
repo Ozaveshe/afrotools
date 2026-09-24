@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11568 |
-| Indexable pages | 9989 |
+| Public pages | 11569 |
+| Indexable pages | 9990 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5296 |
-| Documented fallbacks | 14836 |
-| Routes eligible for primary sitemaps | 9989 |
+| Genuine equivalence groups | 5297 |
+| Documented fallbacks | 14837 |
+| Routes eligible for primary sitemaps | 9990 |
 
 ## Locale Coverage
 
-- en: 6018 page records
+- en: 6019 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 533
+- article: 534
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4254,6 +4254,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3b91a2349a8e: en=`/creative/`, fr=`/fr/creative/`, sw=`/sw/ubunifu-na-watayarishi/`; x-default=`/creative/`
 - equivalence:3ba2c4ee2f64: en=`/tools/workers-comp/egypt`; x-default=`/tools/workers-comp/egypt`
 - equivalence:3bd0bab65e2d: en=`/agriculture/vaccination-schedule/zambia`; x-default=`/agriculture/vaccination-schedule/zambia`
+- equivalence:3bd631af00af: en=`/blog/nafdac-product-registration-checklist-nigeria-2026/`; x-default=`/blog/nafdac-product-registration-checklist-nigeria-2026/`
 - equivalence:3bd6747eef9a: en=`/tools/sars-efiling/`, fr=`/fr/tools/guide-de-sars-efiling/`, sw=`/sw/zana/mwongozo-wa-sars-efiling/`; x-default=`/tools/sars-efiling/`
 - equivalence:3bdbbeb20c3a: en=`/tools/exam-timetable/`, fr=`/fr/tools/planning-examens/`, sw=`/sw/zana/ratiba-ya-mtihani/`; x-default=`/tools/exam-timetable/`
 - equivalence:3c015c464aea: en=`/tools/motor-third-party/guinea-bissau`; x-default=`/tools/motor-third-party/guinea-bissau`
