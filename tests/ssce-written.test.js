@@ -13,7 +13,7 @@ test('written responses round-trip without losing another task and reject malfor
 });
 test('every written task has provenance, complete local context and a worked self-review guide',()=>{
  assert.equal(new Set(bank.items.map(q=>q.id)).size,bank.items.length);
- for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.ok([1,5,9].includes(q.number));continue;}assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
+ for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.year,2023);if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok([1,5,9].includes(q.number));}else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4].includes(q.number));assert.match(q.sourceUse,/at least 450 words/);}continue;}assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
  assert.ok(bank.items.find(q=>q.id==='written-e-summary').passage.includes('refill station'));
  assert.match(api.report(bank,{...api.empty(bank),entries:{'written-m1':{answer:'45',checks:[true,false]}}}),/My response:\n45/);
 });
@@ -46,7 +46,13 @@ test('mathematics worked answers are checked using independent computations',()=
  const shaded=(22/7)*49/6-0.5*(7*Math.cos(Math.PI/3))*(7*Math.sin(Math.PI/3));assert.equal(shaded.toFixed(1),'15.1');assert.equal(-8*(-3/4),6);assert.equal(21*(2/7),6);assert.match(answer('waec-2023-mathematics-p2-q13'),/15.1.*−8x \+ 21y = 6/);
  const triples=[];for(let a=1;a<81;a++)if(a+2*a+(2*a+6)===81)triples.push([a,2*a,2*a+6]);assert.deepEqual(triples,[[15,30,36]]);assert.equal(4*(-1)+10,6);assert.equal(4*((7-5)/(-5-3)),-1);assert.match(answer('waec-2023-mathematics-p2-q7'),/15, 30 and 36.*y = 4x \+ 10/);
  const sideCounts=[];for(let n=3;n<100;n++)if(360/n-360/(2*n)===45)sideCounts.push(2*n);assert.deepEqual(sideCounts,[8]);assert.equal(Math.PI*8**2/2,32*Math.PI);assert.match(answer('waec-2023-mathematics-p2-q11'),/8 sides.*8π \+ 16/);
- assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics'&&q.year===2023).map(q=>q.number),[1,2,3,5,7,8,9,11,13]);
+ const palace={east:0,north:0};const radians=Math.PI/180;const bearingPoint=(distance,bearing)=>({east:distance*Math.sin(bearing*radians),north:distance*Math.cos(bearing*radians)});
+ const x=bearingPoint(60,57);const angle=93*radians;const distancePY=60*Math.cos(angle)+Math.sqrt((60*Math.cos(angle))**2+180**2-60**2);
+ const y=bearingPoint(distancePY,150);const distanceXY=Math.hypot(x.east-y.east,x.north-y.north);
+ const bearingYX=(Math.atan2(x.east-y.east,x.north-y.north)/radians+360)%360;
+ assert.ok(Math.abs(distanceXY-180)<1e-10);assert.equal(distancePY.toPrecision(3),'167');assert.equal(bearingYX.toPrecision(3),'349');
+ const q10=bank.items.find(q=>q.id==='waec-2023-mathematics-p2-q10');assert.equal(q10.answer,'(a) 349°. (b) 167 m.');assert.match(q10.prompt,/X from Y/);assert.match(q10.sourceUse,/wording says/);
+ assert.deepEqual(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics'&&q.year===2023).map(q=>q.number),[1,2,3,5,7,8,9,10,11,13]);
 });
 test('coverage never turns consecutive or repeated compilation numbers into a complete paper',()=>{
  const rows=coverage.inventory([{id:'a',subject:'english',year:2020,num:1},{id:'b',subject:'english',year:2020,num:1},{id:'c',subject:'english',year:2020,num:3}],[{id:'a'}],[2026]);
