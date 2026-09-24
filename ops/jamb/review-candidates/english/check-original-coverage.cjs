@@ -4,6 +4,10 @@ const root=path.resolve(__dirname,'../../../..');
 const {questionFingerprint:fp,assessQuestion}=require(path.join(root,'scripts/lib/jamb-content-trust'));
 const {verifyRecoveredHold}=require('./check-2019-recovered-holds.cjs');
 const laterRecords=new Map(require('../../verification/english-2019-publishable-900.json').records.map(r=>[r.id,r]));
+const recentRecords=new Map([2022,2023].flatMap(year=>{
+ const release=require('../../verification/english-'+year+'-publishable-901.json');
+ return release.records.map(record=>[record.id,{record,release}]);
+}));
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 function inspect(originals,batches){
  const originalsById=new Map(originals.map(q=>[q.id,q]));
@@ -42,6 +46,19 @@ function reconstructOriginals(current,batches,ledger={questions:{},sources:{}}){
    const h=held.get(q.id),later=laterRecords.get(q.id);
    if(h&&hash!==h.original_content_sha256&&verifyRecoveredHold(h,q,true,ledger))return [later.before];
    if(h)assert.equal(hash,h.original_content_sha256,'held current fingerprint '+q.id);
+   const recent=recentRecords.get(q.id);
+   if(!h&&recent){
+    const {record,release}=recent;
+    assert.equal(record.publication_candidate,true,'recent intake is not approved '+q.id);
+    assert.equal(hash,record.content_sha256,'recent intake fingerprint '+q.id);
+    const review=ledger.questions?.[q.id],source=ledger.sources?.[review?.source_id];
+    assert.equal(review?.content_sha256,hash,'recent intake review required '+q.id);
+    assert.equal(source?.source_file,release.source_file,'recent intake source file '+q.id);
+    assert.equal(source?.content_sha256,release.source_snapshot_sha256,'recent intake source fingerprint '+q.id);
+    assert.equal(source?.source_url,record.source_url,'recent intake source URL '+q.id);
+    assert.equal(assessQuestion(q,ledger).state,'eligible','recent intake eligibility required '+q.id);
+    return [];
+   }
    if(!h&&later&&later.before===null){
     // New intake is excluded from the immutable original-import inventory only
     // after exact payload, review and eligibility checks.

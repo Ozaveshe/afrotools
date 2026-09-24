@@ -54,3 +54,12 @@ test('later reviewed intake cannot hide altered records from the original invent
  const unknown={...records.find(r=>!r.before).after,id:'english-unregistered-new-record'};
  assert.deepEqual(reconstructOriginals([unknown],batches,ledger),[unknown]);
 });
+test('recent reviewed collection intake is excluded only with exact source and ledger evidence',()=>{
+ const {batches}=load();
+ const ledger=require('../data/jamb/review-ledger.json');
+ const row=require('../ops/jamb/source-pool.json').questions.find(q=>q.id==='english-2023-poscholars-26');
+ assert.deepEqual(reconstructOriginals([row],batches,ledger),[]);
+ assert.throws(()=>reconstructOriginals([{...row,answer:row.answer==='A'?'B':'A'}],batches,ledger),/recent intake fingerprint/);
+ const missing=structuredClone(ledger);delete missing.questions[row.id].answer_review;
+ assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required/);
+});

@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const evidenceDir = path.join(root, 'ops/jamb/verification');
@@ -41,6 +42,28 @@ test('AI reviews are backed by current batch evidence and reproducible integrity
       assert.ok(review.answer_review.evidence.includes(filename + '#' + record.id));
       assert.ok(review.answer_review.evidence.includes(script));
       covered.set(record.id, record.content_sha256);
+    }
+  }
+  for (const number of ['02','03']) {
+    const batchName = `jamb-math-2023-reviewed-batch-${number}.json`;
+    const snapshotName = `jamb-math-2023-source-snapshot-${number}.json`;
+    const batch = JSON.parse(fs.readFileSync(path.join(root, 'ops/nigeria-exams', batchName), 'utf8'));
+    const raw = fs.readFileSync(path.join(root, 'ops/nigeria-exams', snapshotName));
+    const snapshot = JSON.parse(raw);
+    const snapshotHash = crypto.createHash('sha256').update(raw).digest('hex');
+    assert.equal(snapshot.records.length, batch.items.length, batchName);
+    for (const item of batch.items) {
+      const id = `mathematics-2023-myschool-${item.sourceItem}`;
+      const question = pool.find(q => q.id === id);
+      const review = ledger.questions[id];
+      assert.ok(question && review, 'Missing reviewed Mathematics item ' + id);
+      assert.equal(review.content_sha256, require('../scripts/lib/jamb-content-trust').questionFingerprint(question), id);
+      assert.equal(ledger.sources[review.source_id]?.content_sha256, snapshotHash, id);
+      assert.equal(snapshot.records.find(r => r.source_item === item.sourceItem)?.adapted_prompt, item.question, id);
+      assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
+      for (const evidence of [batchName, snapshotName, 'tests/jamb-math-2023-batches.test.js'])
+        assert.ok(review.answer_review.evidence.includes(evidence), id + ': missing ' + evidence);
+      covered.set(id, review.content_sha256);
     }
   }
   const aiReviews = Object.entries(ledger.questions).filter(([,review]) => review.answer_review?.reviewer_type === 'ai');
