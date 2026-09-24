@@ -153,8 +153,83 @@ function buildWiseQuoteRecords(source, text) {
 }
 
 async function collectWiseQuotes(source) {
-  const text = cleanHtmlText(await fetchText(source.base_url));
+  const html = await fetchText(source.base_url);
+  // Morocco now renders a target-amount quote: each funding method has its
+  // own send amount. The prose omits that amount and even lists disabled fees.
+  if (source.source_key === 'wise-ma-corridor') {
+    return buildWiseMoroccoQuoteRecords(source, html);
+  }
+  const text = cleanHtmlText(html);
   return buildWiseQuoteRecords(source, text);
+}
+
+function buildWiseMoroccoQuoteRecords(source, html) {
+  const match = html.match(/<script\b[^>]*\bid=["']__NEXT_DATA__["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (!match) throw new Error('Wise Morocco structured quote is missing');
+  let page;
+  try {
+    page = JSON.parse(match[1]).props?.pageProps;
+  } catch {
+    throw new Error('Wise Morocco structured quote is invalid JSON');
+  }
+  const quote = page?.quote;
+  const request = page?.calculatorRequest;
+  const positive = value => typeof value === 'number' && Number.isFinite(value) && value > 0;
+  const matchesCorridor = value => value?.sourceCurrency === 'USD' &&
+    value?.targetCurrency === 'MAD' && value?.payInCountry === 'US';
+  if (getDestinationCode(source) !== 'MA' || !matchesCorridor(quote) || !matchesCorridor(request)) {
+    throw new Error('Wise Morocco structured quote corridor mismatch');
+  }
+  const mode = quote.providedAmountType;
+  const amountKey = mode === 'TARGET' ? 'targetAmount' : mode === 'SOURCE' ? 'sourceAmount' : null;
+  if (!amountKey || !positive(quote[amountKey]) || !positive(request[amountKey]) ||
+      Math.abs(quote[amountKey] - request[amountKey]) > 0.01 || !positive(quote.rate) ||
+      !Array.isArray(quote.paymentOptions)) {
+    throw new Error('Wise Morocco structured quote amount is invalid');
+  }
+
+  const fundingMethods = { BANK_TRANSFER: 'Bank transfer', DIRECT_DEBIT: 'Direct debit', BALANCE: 'Wise account' };
+  const seen = new Set();
+  const observedAt = new Date().toISOString();
+  const records = [];
+  for (const option of quote.paymentOptions) {
+    if (!option || option.disabled !== false || !Object.hasOwn(fundingMethods, option.payIn)) continue;
+    const fee = option.fee?.total;
+    if (!positive(option.sourceAmount) || !positive(option.targetAmount) ||
+        typeof fee !== 'number' || !Number.isFinite(fee) || fee < 0 || fee >= option.sourceAmount ||
+        Math.abs(option[amountKey] - quote[amountKey]) > 0.01 ||
+        // Allow only cent rounding of the sender amount at the quoted FX rate.
+        Math.abs((option.sourceAmount - fee) * quote.rate - option.targetAmount) > Math.max(0.02, quote.rate * 0.02) ||
+        seen.has(option.payIn)) {
+      throw new Error('Wise Morocco payment option has inconsistent amounts');
+    }
+    seen.add(option.payIn);
+    records.push({
+      country_code: 'MA',
+      city: 'Online',
+      send_country: 'US',
+      receive_country: 'MA',
+      send_currency: 'USD',
+      receive_currency: 'MAD',
+      send_amount: option.sourceAmount,
+      fee_amount: fee,
+      fx_rate: quote.rate,
+      received_amount: option.targetAmount,
+      provider_name: 'Wise',
+      payout_method: 'Local bank account',
+      funding_method: fundingMethods[option.payIn],
+      source_type: 'official_notice',
+      source_url: source.base_url,
+      observed_at: observedAt,
+      payload: {
+        evidence: 'Wise public calculator quote.paymentOptions: ' + option.payIn,
+        provided_amount_type: mode,
+        delivery_text: cleanText(option.formattedEstimatedDelivery)
+      }
+    });
+  }
+  if (!records.length) throw new Error('Wise Morocco has no enabled supported payment options');
+  return records;
 }
 
 async function collectMtnGhanaFees(source) {
