@@ -24,6 +24,24 @@
         const period = document.querySelector('.res-hero-period');
         if (period) period.textContent = window.CALC_MODE === 'net' ? 'Kabla ya PAYE na michango uliyochagua' : 'Baada ya PAYE na michango uliyochagua';
     }
+    function wholeGrossForTarget(estimate, target) {
+        const forward = window._grossToNet;
+        const candidate = Math.max(0, Math.ceil(estimate));
+        if (!forward || forward(candidate) >= target) return candidate;
+        let low = candidate, high = candidate + 1, step = 1;
+        for (let attempt = 0; attempt < 32 && forward(high) < target; attempt++) {
+            low = high;
+            step *= 2;
+            high += step;
+        }
+        if (forward(high) < target) return candidate;
+        while (high - low > 1) {
+            const middle = Math.floor((low + high) / 2);
+            if (forward(middle) >= target) high = middle;
+            else low = middle;
+        }
+        return high;
+    }
     function t() {
         window._grossToNet ? (function() {
             const t = document.querySelector(".calc-btn");
@@ -54,11 +72,11 @@
                             }
                             return (n + o) / 2;
                         }(r);
-                        o.value = Math.round(a);
+                        o.value = wholeGrossForTarget(a, r);
                         var u = document.getElementById("salarySlider");
-                        u && (u.value = Math.round(a));
+                        u && (u.value = o.value);
                         var s = document.getElementById("sliderVal");
-                        s && window.fmt && (s.textContent = window.fmt(a)), t(), function(e) {
+                        s && window.fmt && (s.textContent = window.fmt(Number(o.value))), t(), function(e) {
                             var t = window.RESULT;
                             if (t) {
                                 var o = window.fmt || function(e) {
@@ -72,7 +90,7 @@
                                 var i = t.netMonthly || t.net || 0, c = t.annualNet || 12 * i || 0, m = r ? i : c, w = a || r ? e : 12 * e, y = n ? r ? "mois" : "an" : r ? "month" : "year";
                                 l && (l.textContent = (n ? "Brut : " : "Gross: ") + o(w) + "/" + y + (n ? " · Net : " : " · Take-home: ") + o(m) + "/" + y);
                             }
-                        }(isSwahili() && window.RESULT ? window.RESULT.gross : a);
+                        }(isSwahili() && window.RESULT ? window.RESULT.gross : Number(o.value));
                         // Preserve the requested net in every locale so repeated calculations keep the same target.
                         o.value = r;
                         if (u) u.value = r;
