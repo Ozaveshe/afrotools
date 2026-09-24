@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11565 |
-| Indexable pages | 9986 |
+| Public pages | 11566 |
+| Indexable pages | 9987 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5293 |
-| Documented fallbacks | 14833 |
-| Routes eligible for primary sitemaps | 9986 |
+| Genuine equivalence groups | 5294 |
+| Documented fallbacks | 14834 |
+| Routes eligible for primary sitemaps | 9987 |
 
 ## Locale Coverage
 
-- en: 6015 page records
+- en: 6016 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 532
+- article: 533
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6151,6 +6151,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:9770d7e1d021: en=`/tools/retrenchment-calculator/burkina-faso/`; x-default=`/tools/retrenchment-calculator/burkina-faso/`
 - equivalence:9792b7c8ab2c: en=`/cars/tanzania/mercedes-benz/e-class/2017/`, fr=`/fr/cars/tanzanie/mercedes-benz/e-class/2017/`; x-default=`/cars/tanzania/mercedes-benz/e-class/2017/`
 - equivalence:97a4736dad13: en=`/cars/namibia/mazda/demio/`, fr=`/fr/cars/namibie/mazda/demio/`; x-default=`/cars/namibia/mazda/demio/`
+- equivalence:97a52cb1c992: en=`/blog/morocco-vat-filing-guide-2026/`; x-default=`/blog/morocco-vat-filing-guide-2026/`
 - equivalence:97b1f231e0b5: en=`/jamb/economics/1984/`; x-default=`/jamb/economics/1984/`
 - equivalence:97b39f2af098: en=`/blog/waec-result-guide-2026/`; x-default=`/blog/waec-result-guide-2026/`
 - equivalence:97b3c5b5a8fe: en=`/agriculture/irrigation/rwanda`, fr=`/fr/agriculture/irrigation/rwanda`, sw=`/sw/kilimo/umwagiliaji/rwanda/`; x-default=`/agriculture/irrigation/rwanda`
