@@ -13,7 +13,7 @@ test('written responses round-trip without losing another task and reject malfor
 });
 test('every written task has provenance and a self-review guide, with linked scan context for NECO reading',()=>{
  assert.equal(new Set(bank.items.map(q=>q.id)).size,bank.items.length);
- for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.year,2023);if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok([1,5,9].includes(q.number));}else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}continue;}assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');assert.ok(q.source.includes('mq'+q.number+'.html'));}}
+ for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.year,2023);if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok([1,5,9].includes(q.number));}else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}continue;}if(q.exam==='WAEC'&&q.subject==='English'&&q.year===2023&&q.number>=6){assert.ok(q.source.startsWith('https://wikiquestions.org/wiki/'));assert.match(q.sourceUse,/third-party transcription/);assert.equal(q.passage,undefined);}else{assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam!==null)assert.ok(q.source.includes('mq'+q.number+'.html'));}if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');}}
  assert.ok(bank.items.find(q=>q.id==='written-e-summary').passage.includes('refill station'));
  assert.match(api.report(bank,{...api.empty(bank),entries:{'written-m1':{answer:'45',checks:[true,false]}}}),/My response:\n45/);
 });
@@ -82,5 +82,19 @@ test('2021 complete selected mathematics tasks agree with independently reconstr
  assert.deepEqual(solutions,[48]);assert.equal(q2.answer,'48 km.');assert.match(q2.prompt,/two-hour/);assert.match(q2.prompt,/2 km longer/);
  const displacement={east:20,north:-15};assert.equal(Math.hypot(displacement.east,displacement.north),25);
  const bearing=(Math.atan2(displacement.east,displacement.north)*180/Math.PI+360)%360;assert.equal(Math.round(bearing),127);assert.equal(q3.answer,'(a) 25 km. (b) 127°.');assert.match(q3.prompt,/two significant figures/);assert.match(q3.prompt,/nearest degree/);
- const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2023);assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);assert.match(writing[1].prompt,/national newspaper editor/);assert.match(writing[4].prompt,/Half a loaf is better than none/);
+ const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2023&&q.number<=5);assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);assert.match(writing[1].prompt,/national newspaper editor/);assert.match(writing[4].prompt,/Half a loaf is better than none/);
+});
+
+test('WAEC 2023 English reading guides cover the linked tasks without hosting passages or claiming a verified paper',()=>{
+ const selected=require('../ops/nigeria-exams/selected-waec-components.json').components.find(row=>row.id==='waec-2023-english-reading-guides');
+ assert.deepEqual(selected.expectedIds,['waec-2023-english-p2-q6','waec-2023-english-p2-q7']);
+ assert.equal(selected.complete_selected_prompts,false);assert.equal(selected.complete_paper,false);
+ const [q6,q7]=selected.expectedIds.map(id=>bank.items.find(q=>q.id===id));
+ for(const q of [q6,q7]){assert.ok(q);assert.equal(q.passage,undefined);assert.equal(q.exam,'WAEC');assert.equal(q.year,2023);assert.equal(q.paper,'2');assert.equal(q.source,q6.source);assert.match(q.sourceUse,/not an official mark scheme/);}
+ for(const part of 'abcdefghij')assert.match(q6.answer,new RegExp('\\('+part+'\\)'),`missing comprehension part ${part}`);
+ assert.match(q6.answer,/Compassion/);assert.match(q6.answer,/70–74/);assert.match(q6.answer,/Personification/);assert.match(q6.answer,/adverbial clause of time/);
+ for(const word of ['delicate','ominous','an obligation','overcast','pensively'])assert.ok(q6.answer.includes(word+':'));
+ const model=q7.answer.split('Suggested six-sentence response: ')[1].split(' Equivalent concise')[0];
+ assert.equal(model.split(/(?<=\.)\s+/).length,6);
+ for(const quality of ['self-control','humility','resilient','integrity','work ethic','obey laws'])assert.ok(model.includes(quality));
 });
