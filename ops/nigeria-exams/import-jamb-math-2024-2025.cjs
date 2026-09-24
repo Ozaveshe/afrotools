@@ -41,6 +41,8 @@ for (const { year, file } of batches) {
   };
   const snapshotText = serialize(snapshot);
   const snapshotHash = sha(snapshotText);
+  const verificationFile = `mathematics-${year}-publishable-001.json`;
+  const checkerFile = `check-mathematics-${year}-001.cjs`;
   const reviewed = [];
 
   for (const item of batch.items) {
@@ -69,7 +71,7 @@ for (const { year, file } of batches) {
     };
     const review = {
       status: 'accepted', reviewer: 'Codex (AI)', reviewed_at: batch.observed_at,
-      evidence: `${snapshotPath}#${item.sourceItem}; ${file}#${item.sourceItem}; tests/jamb-math-2024-2025-batches.test.js`
+      evidence: `${snapshotPath}#${item.sourceItem}; ${file}#${item.sourceItem}; ${verificationFile}#${id}; ${checkerFile}; tests/jamb-math-2024-2025-batches.test.js`
     };
     ledger.questions[id] = {
       source_id: sourceId, content_sha256: questionFingerprint(question),
@@ -88,7 +90,7 @@ for (const { year, file } of batches) {
       answer: question.answer, publication_candidate: true });
   }
   outputs.set(snapshotPath, snapshotText);
-  outputs.set(`ops/jamb/verification/math-${year}-publishable-01.json`, serialize({
+  outputs.set(`ops/jamb/verification/${verificationFile}`, serialize({
     schema_version: 1, reviewed_at: batch.observed_at, reviewer: 'Codex (AI)',
     source_file: snapshotPath, source_snapshot_sha256: snapshotHash,
     authority_note: 'Owner-directed public source use; publisher collection year only. Adapted briefs and original checked solutions. No official sitting, exam-board licence or teacher approval asserted.',
