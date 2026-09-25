@@ -1,0 +1,9 @@
+# JAMB Mathematics 2025 publisher collection, positions 46–55
+
+Reviewed on 2026-09-25 from the individual Myschool Mathematics pages linked by collection [page 10](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2025&page=10) and [page 11](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2025&page=11). The `2025` year is the publisher's collection label. It does not authenticate a UTME sitting, original paper order, question number, official answer key, or publisher licence. The source IDs and one disposition for each collection position are pinned in `jamb-math-2025-curated-batch-03.json`.
+
+Two self-contained items were adapted and independently solved. At [position 48 / item 74196](https://myschool.ng/classroom/mathematics/74196?exam_type=jamb&exam_year=2025&page=10), entrywise addition gives `[[7, −11], [4, −1]]`, choice A. At [position 54 / item 74202](https://myschool.ng/classroom/mathematics/74202?exam_type=jamb&exam_year=2025&page=11), the first bearing creates 100 km of northward travel; the S30°E second leg must cancel that component, giving `QR = 200/√3 km`, choice D. The independent checker recomputes both results and validates the source snapshot hash, answer fingerprints, and eligible ledger state. The publisher answers served only as comparison inputs.
+
+Eight positions were held: 46 has no correct option for the displayed equation; 47 omits the quadrant needed to determine the sign of tangent; 49–51, 53, and 55 depend on diagrams or tables not independently verified; 52 states a binary operation on a finite set but evaluates to a number outside that set. None enters the reviewed pool or public page. The affected year page retains the publisher-collection caveat and closed answer disclosures.
+
+Owner-directed public-source reuse authorizes this adapted practice in the repository, but it is not evidence of a publisher or exam-board licence. No teacher review is asserted.
