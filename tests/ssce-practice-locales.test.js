@@ -94,6 +94,14 @@ test('worked numerical results and exam references retain the English meanings',
     assert.equal(items.filter(q => q.exam === 'WAEC').length, enWritten.items.filter(q => q.exam === 'WAEC').length);
     assert.match(answer('neco-2023-mathematics-percentage-error'), /0[,.]4\s*%/);
     assert.equal(answer('neco-2023-mathematics-arithmetic-progression'),'43.');
+    assert.match(answer('neco-2023-mathematics-venn-students'),/17.*36/);
+    assert.equal(answer('neco-2023-mathematics-geometric-progression'),'2.');
+    assert.match(answer('neco-2023-mathematics-rectangle-perimeter'),/42/);
+    assert.equal(answer('neco-2023-mathematics-matrix-determinant'),'−15.');
+    assert.match(answer('neco-2023-mathematics-helicopter-time'),/12/);
+    assert.equal(answer('neco-2023-mathematics-fraction-equations'),'3/5.');
+    assert.equal(answer('neco-2023-mathematics-partial-variation'),'y = x − 1.');
+    assert.equal(answer('neco-2023-mathematics-quadratic-roots'),'3x² − 5x − 2 = 0.');
     assert.equal(items.filter(q => q.exam === 'NECO').length, enWritten.items.filter(q => q.exam === 'NECO').length);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }

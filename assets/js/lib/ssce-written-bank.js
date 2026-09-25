@@ -288,10 +288,82 @@
       steps:['For common difference d, the third term is 3 + 2d and the twelfth is 3 + 11d.','Their sum is 6 + 13d = 38½, so 13d = 32½ and d = 2½.','The seventeenth term is 3 + 16d = 3 + 16 × 2½ = 43.'],
       checks:['I used term n = first term + (n − 1)d.','My third and twelfth terms add to 38½.','I used 16 common differences to reach term 17.'],
       source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-venn-students',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:13,
+      title:'Students taking at least two subjects',
+      prompt:'A school survey has 6 students taking only Biology, 3 only Physics and 6 only Mathematics. Exactly two subjects were taken by 5 in Biology and Physics, 7 in Biology and Mathematics, and 1 in Physics and Mathematics. Another 4 took all three, while 4 took none of them. How many took at least two subjects, and how many students are in the school?',
+      answer:'17 took at least two subjects; 36 students in the school.',
+      steps:['The three exactly-two regions contain 5 + 7 + 1 = 13 students. Include the 4 taking all three: 13 + 4 = 17.','The seven disjoint subject regions contain 6 + 3 + 6 + 5 + 7 + 1 + 4 = 32 students.','Include the 4 outside all three subject groups: 32 + 4 = 36 students in the school.'],
+      checks:['I included the three-subject group when counting at least two.','I counted each disjoint region only once.','I included students outside all three circles in the school total.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-geometric-progression',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:14,
+      title:'First term of a geometric progression',
+      prompt:'The third term of a geometric progression is 18 and the sixth is 486. Find its first term.',
+      answer:'2.',
+      steps:['With first term a and common ratio r, the third and sixth terms are ar² = 18 and ar⁵ = 486.','Divide the equations: r³ = 486/18 = 27, so r = 3.','Substitute into ar² = 18: 9a = 18, hence a = 2.'],
+      checks:['I used powers 2 and 5 for the third and sixth terms.','I divided the equations to eliminate a.','My first term and ratio reproduce both given terms.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-rectangle-perimeter',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:15,
+      title:'Perimeter from a rectangle’s area',
+      prompt:'A rectangular piece of cardboard has area 104 cm² and width 8 cm. Find its perimeter.',
+      answer:'42 cm.',
+      steps:['Area = length × width, so the length is 104 ÷ 8 = 13 cm.','Add the two side lengths: 13 + 8 = 21 cm.','The perimeter is twice that sum: 2 × 21 = 42 cm.'],
+      checks:['I divided area by width to find the length.','I counted both lengths and both widths.','My final unit is centimetres, not square centimetres.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-matrix-determinant',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:16,
+      title:'Determinant of a three-by-three matrix',
+      prompt:'Find the determinant of the 3 × 3 matrix whose rows, from top to bottom, are (2, 3, 1), (1, 0, 2) and (0, 2, 3).',
+      answer:'−15.',
+      steps:['Expand along the first row, alternating signs: 2(0 × 3 − 2 × 2) − 3(1 × 3 − 2 × 0) + 1(1 × 2 − 0 × 0).','The three terms are −8, −9 and +2.','Add them: −8 − 9 + 2 = −15.'],
+      checks:['I kept the middle cofactor negative.','Each 2 × 2 minor uses the correct remaining rows and columns.','I added all three signed terms.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-helicopter-time',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:17,
+      title:'Journey time at one-quarter speed',
+      prompt:'A helicopter flies from Kano to Lagos in 3 hours at a constant speed. A second helicopter takes the same route at one-quarter of that speed. How long does the second journey take?',
+      answer:'12 hours.',
+      steps:['For the same distance, travel time is inversely proportional to speed.','The second speed is one-quarter as large, so its time is four times as long.','Multiply: 3 × 4 = 12 hours.'],
+      checks:['I compared times over the same distance.','I increased, rather than reduced, the time at the lower speed.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-fraction-equations',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:18,
+      title:'Recovering a fraction from two changes',
+      prompt:'Adding 1 to the denominator of a fraction makes it 1/2. Adding 3 to both its numerator and denominator instead makes it 3/4. Find the original fraction.',
+      answer:'3/5.',
+      steps:['Let the fraction be n/d. From n/(d + 1) = 1/2, obtain d = 2n − 1.','The other condition gives (n + 3)/(d + 3) = 3/4, so 4n + 12 = 3d + 9. Substituting d = 2n − 1 gives n = 3 and d = 5.','Check both changes: 3/(5 + 1) = 1/2 and (3 + 3)/(5 + 3) = 6/8 = 3/4.'],
+      checks:['I changed only the denominator in the first condition.','I changed both numerator and denominator in the second.','My fraction satisfies both conditions.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-partial-variation',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:19,
+      title:'Constant part and direct variation',
+      prompt:'A quantity y has a constant part and a part directly proportional to x. When x = 3, y = 2; when x = 6, y = 5. Find the relationship between x and y.',
+      answer:'y = x − 1.',
+      steps:['Write y = a + bx, where a is constant and bx varies directly with x.','The change in y divided by the change in x gives b = (5 − 2)/(6 − 3) = 1.','Use x = 3 and y = 2: 2 = a + 3, so a = −1 and y = x − 1.'],
+      checks:['I included a constant term in the model.','I checked that x = 6 gives y = 5.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-quadratic-roots',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:20,
+      title:'Quadratic equation from its roots',
+      prompt:'Find a quadratic equation with roots 2 and −1/3.',
+      answer:'3x² − 5x − 2 = 0.',
+      steps:['A polynomial with these roots has factors (x − 2)(x + 1/3).','Clear the fraction by multiplying the equation by 3: (x − 2)(3x + 1) = 0.','Expand: 3x² + x − 6x − 2 = 3x² − 5x − 2 = 0.'],
+      checks:['Each stated root makes one factor zero.','I multiplied the whole equation when clearing the fraction.','My expanded coefficients have the correct signs.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
     }
   ];
   const necoMathPosition = items.findIndex(function(item){return item.id === 'neco-2023-mathematics-compound-interest';});
   if (necoMathPosition < 0) throw new Error('NECO Mathematics insertion point missing');
   items.splice(necoMathPosition + 1, 0, ...necoMathCompanions);
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-25',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 27 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 12 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-25',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 27 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 20 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });
