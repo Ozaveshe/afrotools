@@ -62,7 +62,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | literature | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2025 | 34 | 34 | Acquire and authenticate source |
-| JAMB | mathematics | 2024 | 20 | 20 | Acquire and authenticate source |
+| JAMB | mathematics | 2024 | 32 | 32 | Acquire and authenticate source |
 | JAMB | mathematics | 2023 | 60 | 60 | Acquire and authenticate source |
 | JAMB | mathematics | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2021 | 0 | 0 | Acquire and authenticate source |
