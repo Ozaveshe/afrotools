@@ -11,6 +11,7 @@ const { assessQuestion, questionFingerprint } = require('../../../scripts/lib/ja
 const root = path.resolve(__dirname, '../../..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-batch-03.json');
+const recoveredSourceItems = new Set(read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items.map(item => item.sourceItem));
 const snapshotPath = 'ops/nigeria-exams/jamb-math-2025-source-snapshot-03.json';
 const snapshotBytes = fs.readFileSync(path.join(root, snapshotPath));
 const snapshot = JSON.parse(snapshotBytes);
@@ -67,6 +68,7 @@ for (const item of manifest.items) {
   checkedIds.push(id);
 }
 for (const held of manifest.held) {
+  if (recoveredSourceItems.has(held.sourceItem)) continue;
   assert.ok(!pool.some(row => row.id === `mathematics-2025-myschool-${held.sourceItem}`), held.sourceItem);
 }
 process.stdout.write(JSON.stringify({ passed: true, accepted: checkedIds.length, held: manifest.held.length, question_ids: checkedIds,

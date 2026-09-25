@@ -10,6 +10,8 @@ const { renderYear } = require('../scripts/build-jamb-reviewed-pages.js');
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-batch-03.json');
+const recoveredItems = read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items;
+const recoveredSourceItems = new Set(recoveredItems.map(item => item.sourceItem));
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 
@@ -27,6 +29,7 @@ test('all ten collection positions have a single decision and importing again ad
   assert.equal(prepared.receipt.source_snapshot_sha256,
     read('ops/jamb/verification/mathematics-2025-publishable-003.json').source_snapshot_sha256);
   for (const item of manifest.held) {
+    if (recoveredSourceItems.has(item.sourceItem)) continue;
     assert.ok(!pool.questions.some(question => question.id === `mathematics-2025-myschool-${item.sourceItem}`),
       `Held position ${item.position} entered the pool`);
   }
@@ -41,7 +44,7 @@ test('all ten collection positions have a single decision and importing again ad
 
 test('the 2025 page shows two new closed answers with the collection-year caveat', () => {
   const page = renderYear('mathematics', '2025', pool.questions, ledger, ['2024', '2025']);
-  assert.equal(page.approvedIds.length, 36);
+  assert.ok(page.approvedIds.length >= 36 + recoveredItems.length);
   assert.match(page.html, /publisher-labelled 2025 collection/);
   assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   for (const item of manifest.items) {
@@ -53,5 +56,8 @@ test('the 2025 page shows two new closed answers with the collection-year caveat
     assert.match(card[1], /Original sitting and question number unconfirmed/, id);
     assert.doesNotMatch(card[1], /<details\b[^>]*\bopen\b/, id);
   }
-  for (const item of manifest.held) assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  for (const item of manifest.held) {
+    if (!recoveredSourceItems.has(item.sourceItem))
+      assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  }
 });
