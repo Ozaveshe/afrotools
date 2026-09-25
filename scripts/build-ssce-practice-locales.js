@@ -14,8 +14,8 @@ const { stableId } = require('./lib/content-integrity');
 const root = path.resolve(__dirname, '..');
 const routes = { en: '/tools/ssce-practice/', fr: '/fr/tools/pratique-waec-neco/', sw: '/sw/zana/mazoezi-waec-neco/' };
 const scope = {
-  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 27 guides de mathématiques WAEC, 10 guides de rédaction et 2 de lecture WAEC, 9 guides de mathématiques NECO 2023, 4 guides de rédaction et 2 de lecture NECO. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
-  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 27 ya Hisabati WAEC, 10 ya uandishi na 2 ya kusoma WAEC, 9 ya Hisabati NECO 2023, 4 ya uandishi na 2 ya kusoma NECO. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
+  fr: '12 exercices originaux de mathématiques, 2 d’anglais, 27 guides de mathématiques WAEC, 10 guides de rédaction et 3 de lecture WAEC, 9 guides de mathématiques NECO 2023, 4 guides de rédaction et 2 de lecture NECO. Il ne s’agit pas d’une épreuve complète WAEC ou NECO. Les réponses rédigées sont vérifiées par l’utilisateur, sans notation automatique.',
+  sw: 'Kazi 12 asilia za Hisabati, 2 za Kiingereza, miongozo 27 ya Hisabati WAEC, 10 ya uandishi na 3 ya kusoma WAEC, 9 ya Hisabati NECO 2023, 4 ya uandishi na 2 ya kusoma NECO. Hii si karatasi kamili ya WAEC au NECO. Majibu ya kuandika yanahakikiwa na mwanafunzi mwenyewe, bila kutolewa alama kiotomatiki.'
 };
 function assertComplete(sourceIds, translatedIds, label) {
   if (JSON.stringify(sourceIds.slice().sort()) !== JSON.stringify(translatedIds.slice().sort())) throw Error(`${label}: source and translation identities differ`);

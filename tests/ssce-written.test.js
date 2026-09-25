@@ -13,7 +13,25 @@ test('written responses round-trip without losing another task and reject malfor
 });
 test('every written task has provenance and a self-review guide, with linked scan context for NECO reading',()=>{
  assert.equal(new Set(bank.items.map(q=>q.id)).size,bank.items.length);
- for(const q of bank.items){assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);if(q.exam==='NECO'){assert.equal(q.year,2023);if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok(q.number>=1&&q.number<=9);}else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}continue;}if(q.exam==='WAEC'&&q.subject==='English'&&q.year===2023&&q.number>=6){assert.ok(q.source.startsWith('https://wikiquestions.org/wiki/'));assert.match(q.sourceUse,/third-party transcription/);assert.equal(q.passage,undefined);}else{assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));if(q.exam!==null)assert.ok(q.source.includes('mq'+q.number+'.html'));}if(q.exam===null)assert.equal(q.year,null);else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');}}
+ for(const q of bank.items){
+  assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);
+  if(q.exam==='NECO'){
+   assert.equal(q.year,2023);
+   if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok(q.number>=1&&q.number<=9);}
+   else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}
+   continue;
+  }
+  if(q.exam==='WAEC'&&q.origin==='WAEC third-party-linked reading task'){
+   assert.ok(['waec-2022-english-p2-q7','waec-2023-english-p2-q6','waec-2023-english-p2-q7'].includes(q.id));
+   assert.ok(['itsmyschoollibrary.wordpress.com','wikiquestions.org'].includes(new URL(q.source).hostname));
+   assert.match(q.sourceUse,/third-party transcription/);assert.equal(q.passage,undefined);
+  }else{
+   assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));
+   if(q.exam!==null)assert.ok(q.source.includes('mq'+q.number+'.html'));
+  }
+  if(q.exam===null)assert.equal(q.year,null);
+  else{assert.equal(q.exam,'WAEC');assert.ok([2021,2022,2023].includes(q.year));assert.equal(q.paper,'2');}
+ }
  assert.ok(bank.items.find(q=>q.id==='written-e-summary').passage.includes('refill station'));
  assert.match(api.report(bank,{...api.empty(bank),entries:{'written-m1':{answer:'45',checks:[true,false]}}}),/My response:\n45/);
 });
@@ -131,7 +149,7 @@ test('WAEC 2023 English reading guides cover the linked tasks without hosting pa
 });
 
 test('WAEC 2022 English composition companions preserve each task and examiner pitfall without grading',()=>{
- const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2022);
+ const writing=bank.items.filter(q=>q.collection==='WAEC 2022 writing companion');
  assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);
  assert.deepEqual(writing.map(q=>q.id),[1,2,3,4,5].map(n=>'waec-2022-english-p2-q'+n));
  for(const q of writing){
@@ -150,7 +168,7 @@ test('WAEC 2022 English composition companions preserve each task and examiner p
  assert.match(writing[3].steps.join(' '),/speech, not a letter/);
  assert.match(writing[4].prompt,/position of authority.*worry and difficult decisions/);
  assert.match(writing[4].steps.join(' '),/beginning, rising problem and turning point/);
- assert.match(bank.scope,/10 WAEC writing companions/);
+ assert.match(bank.scope,/10 WAEC English writing companions, 3 WAEC English reading companions/);
  const store={value:null,getItem(){return this.value;},setItem(_,value){this.value=value;}};
  const draft='Synthetic school speech draft';
  api.write(store,bank,writing[3].id,{answer:draft,checks:[true,false,true]});
@@ -159,4 +177,15 @@ test('WAEC 2022 English composition companions preserve each task and examiner p
  const report=api.report(bank,saved);
  assert.match(report,/Synthetic school speech draft/);assert.match(report,/Engl255mq4\.html/);
  assert.doesNotMatch(report,/score:|grade:|official mark:/i);
+});
+
+test('WAEC 2022 Section C guide separates three passage-based causes from three prevention measures',()=>{
+ const q=bank.items.find(item=>item.id==='waec-2022-english-p2-q7');
+ assert.ok(q);assert.equal(q.exam,'WAEC');assert.equal(q.year,2022);assert.equal(q.paper,'2');
+ assert.equal(q.passage,undefined);assert.match(q.sourceUse,/does not host the passage/);
+ assert.match(q.prompt,/three distinct factors.*three distinct ways/i);
+ const response=q.answer.split('Suggested six-sentence response: ')[1].split(' Equivalent concise')[0];
+ assert.equal(response.split(/(?<=\.)\s+/).length,6);
+ for(const idea of ['work and employable skills','displays of wealth','moral conduct','Parents','Government','Police'])assert.ok(response.includes(idea),idea);
+ assert.equal(q.steps.length,3);assert.equal(q.checks.length,3);
 });

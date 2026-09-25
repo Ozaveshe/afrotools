@@ -91,7 +91,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer('waec-2023-mathematics-p2-q10'), /349°.*167 m/);
     assert.match(answer('waec-2023-mathematics-p2-q12'), /36°.*36°.*96 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q13'), /−8x \+ 21y = 6/);
-    assert.equal(items.filter(q => q.exam === 'WAEC').length, 39);
+    assert.equal(items.filter(q => q.exam === 'WAEC').length, enWritten.items.filter(q => q.exam === 'WAEC').length);
     assert.equal(items.filter(q => q.exam === 'NECO').length, 15);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }
