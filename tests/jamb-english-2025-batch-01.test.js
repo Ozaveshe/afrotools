@@ -19,7 +19,7 @@ const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 const receipt = read('ops/jamb/verification/english-2025-publishable-001.json');
 
-test('all 15 collection positions are classified, with no held item imported', () => {
+test('all 15 collection positions are classified, with no unreviewed held item imported', () => {
   assert.deepEqual([...manifest.records, ...manifest.held_source_items].map(row => row.source_item).sort((a, b) => a - b),
     Array.from({ length: 15 }, (_, index) => index + 193));
   assert.deepEqual(manifest.records.map(row => row.source_item), [194, 198, 199]);
@@ -28,6 +28,12 @@ test('all 15 collection positions are classified, with no held item imported', (
   assert.equal(replay.pool.questions.length, pool.questions.length, 'replay must not append duplicates');
   assert.equal(replay.batch.records.length, 3);
   for (const row of manifest.held_source_items) {
+    const id = 'english-2025-myschool-' + row.source_question_id;
+    const laterReview = ledger.questions[id];
+    if (laterReview) {
+      assert.notEqual(ledger.sources[laterReview.source_id].source_file, manifestPath);
+      continue;
+    }
     assert.ok(!pool.questions.some(question => question.id === `english-2025-myschool-${row.source_question_id}`));
   }
   const falseSitting = structuredClone(manifest);
@@ -43,9 +49,9 @@ test('independent answer checker agrees with source-linked review and catches an
   assert.throws(() => verify(manifest, hash, changed, ledger, receipt));
 });
 
-test('the 2025 English page presents only the three reviewed items as a labelled collection', () => {
+test('the 2025 English page presents the three batch-01 reviewed items in the collection', () => {
   const page = renderYear('english', '2025', pool.questions, ledger, ['2024', '2025']);
-  assert.equal(page.approvedIds.length, 3);
+  assert.ok(page.approvedIds.length >= 3);
   assert.match(page.html, /publisher-labelled 2025 collection/);
   assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   for (const row of manifest.records) {
@@ -54,6 +60,7 @@ test('the 2025 English page presents only the three reviewed items as a labelled
     assert.match(page.html, new RegExp(`data-reviewed-question="${id}"`));
   }
   for (const row of manifest.held_source_items) {
+    if (ledger.questions['english-2025-myschool-' + row.source_question_id]) continue;
     assert.ok(!page.html.includes(`english-2025-myschool-${row.source_question_id}`));
   }
 });

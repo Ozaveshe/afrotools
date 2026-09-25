@@ -13,6 +13,6 @@ Three short items were adapted for revision and independently checked. The [mani
 | 195 | Hold: past progressive and present perfect progressive permit different readings without a reference time. |
 | 197 | Hold for practice diversity: repeats position 196's *each of* agreement concept. |
 | 202–204, 207 | Hold for editorial review: awkward adjective order, malformed comparative stem, missing time reference, or non-exclusive animal collective nouns, respectively. |
-| 196, 200, 205–206 | Complete source items reviewed but deferred under this three-item batch limit. They have not been independently checked or imported. |
+| 196, 200, 205–206 | Complete source items reviewed but deferred under this three-item batch limit. They were not independently checked or imported in batch 01; positions 196, 200, and 205 were later accepted in batch 02, while 206 remains held. |
 
-All twelve held positions remain outside the reviewed pool. The three accepted questions use `year_basis: publisher-collection` and `num: null`. The owner authorized existing past-question practice; this review asserts no publisher or exam-board licence.
+At the batch-01 checkpoint, all twelve held positions were outside the reviewed pool; batch 02 subsequently reviewed positions 196, 200, and 205. The three accepted questions use `year_basis: publisher-collection` and `num: null`. The owner authorized existing past-question practice; this review asserts no publisher or exam-board licence.
