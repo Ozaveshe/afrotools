@@ -26,7 +26,7 @@ test('held recovery admits only individually sourced, nonduplicate and independe
   for (const year of [2024, 2025]) {
     assert.deepEqual(again.outputs[year].receipt, read(receiptPath(year)));
     for (const held of manifest.remaining_held.filter(x => x.year === year)) {
-      assert.ok(!pool.questions.some(q => q.id === `mathematics-${year}-myschool-${held.sourceItem}`), held.sourceItem);
+      assert.ok(!again.outputs[year].receipt.records.some(row => row.source_item === held.sourceItem), held.sourceItem);
     }
   }
   const falseYear = structuredClone(manifest);

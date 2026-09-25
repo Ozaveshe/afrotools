@@ -110,7 +110,7 @@ function verify(year) {
     checkedIds.push(id);
   }
   for (const held of manifest.remaining_held.filter(item => item.year === year)) {
-    assert.ok(!pool.some(row => row.id === `mathematics-${year}-myschool-${held.sourceItem}`), held.sourceItem);
+    assert.ok(!receipt.records.some(row => row.source_item === held.sourceItem), held.sourceItem);
   }
   return { passed: true, accepted: checkedIds.length,
     held: manifest.remaining_held.filter(item => item.year === year).length,
