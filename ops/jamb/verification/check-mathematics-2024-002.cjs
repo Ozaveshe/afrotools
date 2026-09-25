@@ -50,6 +50,7 @@ assert.equal(receipt.records.length, 12);
 assert.equal(receipt.source_file, snapshotPath);
 assert.equal(receipt.source_snapshot_sha256, crypto.createHash('sha256').update(snapshotBytes).digest('hex'));
 assert.equal(Object.keys(selected).length, 12);
+const ids = [];
 for (const item of manifest.items) {
   const id = `mathematics-2024-myschool-${item.sourceItem}`;
   const expected = selected[item.sourceItem];
@@ -72,9 +73,10 @@ for (const item of manifest.items) {
   assert.equal(review.content_sha256, proof.content_sha256, id);
   assert.equal(ledger.sources[review.source_id].content_sha256, receipt.source_snapshot_sha256, id);
   assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
+  ids.push(id);
 }
 for (const held of manifest.held) {
   assert.ok(!pool.some(row => row.id === `mathematics-2024-myschool-${held.sourceItem}`), held.sourceItem);
 }
-process.stdout.write(JSON.stringify({ passed: true, accepted: 12, held: 3,
+process.stdout.write(JSON.stringify({ passed: true, question_ids: ids, accepted: 12, held: 3,
   scope: 'Independently calculated adapted revision items; publisher collection year is not an authenticated UTME sitting.' }) + '\n');
