@@ -24,6 +24,14 @@ test('selected WAEC component evidence matches current briefs without claiming c
   assert.equal(source.checked_at,'2026-09-25');
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-english-writing-prompts').expectedIds,[1,2,3,4,5].map(n=>'waec-2023-english-p2-q'+n));
+ const comprehension2022=manifest.components.find(c=>c.id==='waec-2022-english-comprehension-guide');
+ assert.deepEqual(comprehension2022.expectedIds,['waec-2022-english-p2-q6']);
+ assert.equal(comprehension2022.complete_selected_prompts,false);assert.equal(comprehension2022.complete_paper,false);
+ assert.deepEqual(comprehension2022.answer_review.map(row=>row.part),[...'abcdefgh']);
+ assert.ok(comprehension2022.answer_review.every(row=>row.basis.length>30));
+ assert.match(comprehension2022.rights_basis,/no claim of permission/);
+ assert.ok(comprehension2022.source_urls.some(url=>url.includes('waeconline.org.ng/e-learning/English/Engl255mq6.html')));
+ assert.ok(comprehension2022.source_urls.includes(bank.items.find(q=>q.id===comprehension2022.expectedIds[0]).source));
  const summary2022=manifest.components.find(c=>c.id==='waec-2022-english-summary-guide');
  assert.deepEqual(summary2022.expectedIds,['waec-2022-english-p2-q7']);
  assert.equal(summary2022.complete_selected_prompts,false);

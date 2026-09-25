@@ -22,8 +22,8 @@ test('every written task has provenance and a self-review guide, with linked sca
    continue;
   }
   if(q.exam==='WAEC'&&q.origin==='WAEC third-party-linked reading task'){
-   assert.ok(['waec-2022-english-p2-q7','waec-2023-english-p2-q6','waec-2023-english-p2-q7'].includes(q.id));
-   assert.ok(['itsmyschoollibrary.wordpress.com','wikiquestions.org'].includes(new URL(q.source).hostname));
+   assert.ok(['waec-2022-english-p2-q6','waec-2022-english-p2-q7','waec-2023-english-p2-q6','waec-2023-english-p2-q7'].includes(q.id));
+   assert.ok(['itsmyschoollibrary.wordpress.com','wikiquestions.org','studyzone.ng'].includes(new URL(q.source).hostname));
    assert.match(q.sourceUse,/third-party transcription/);assert.equal(q.passage,undefined);
   }else{
    assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));
@@ -168,7 +168,7 @@ test('WAEC 2022 English composition companions preserve each task and examiner p
  assert.match(writing[3].steps.join(' '),/speech, not a letter/);
  assert.match(writing[4].prompt,/position of authority.*worry and difficult decisions/);
  assert.match(writing[4].steps.join(' '),/beginning, rising problem and turning point/);
- assert.match(bank.scope,/10 WAEC English writing companions, 3 WAEC English reading companions/);
+ assert.match(bank.scope,/10 WAEC English writing companions, 4 WAEC English reading companions/);
  const store={value:null,getItem(){return this.value;},setItem(_,value){this.value=value;}};
  const draft='Synthetic school speech draft';
  api.write(store,bank,writing[3].id,{answer:draft,checks:[true,false,true]});
@@ -177,6 +177,19 @@ test('WAEC 2022 English composition companions preserve each task and examiner p
  const report=api.report(bank,saved);
  assert.match(report,/Synthetic school speech draft/);assert.match(report,/Engl255mq4\.html/);
  assert.doesNotMatch(report,/score:|grade:|official mark:/i);
+});
+
+test('WAEC 2022 Section B guide covers every comprehension task while keeping the passage at its source',()=>{
+ const q=bank.items.find(item=>item.id==='waec-2022-english-p2-q6');
+ assert.ok(q);assert.equal(q.exam,'WAEC');assert.equal(q.year,2022);assert.equal(q.paper,'2');assert.equal(q.number,6);
+ assert.equal(q.passage,undefined);assert.match(q.prompt,/Open the linked.*Section B passage/);
+ assert.doesNotMatch(q.prompt,/Alani was the seventh child|When five of his workers resigned/i);
+ assert.match(q.sourceUse,/third-party transcription/);assert.match(q.sourceUse,/does not host the passage/);
+ assert.match(q.sourceUse,/not an official mark scheme or complete paper/);
+ for(const part of 'abcdefgh')assert.match(q.answer,new RegExp('\\('+part+'\\)'),`missing comprehension part ${part}`);
+ assert.match(q.answer,/\(g\)\(i\).*relative or adjectival clause; \(ii\).*secretary/);
+ for(const pair of ['laurels: awards','sustenance: food','reputable: respected','venture: enterprise','pompous: arrogant','dwindled: declined'])assert.ok(q.answer.includes(pair),pair);
+ assert.equal(q.steps.length,3);assert.equal(q.checks.length,3);
 });
 
 test('WAEC 2022 Section C guide separates three passage-based causes from three prevention measures',()=>{
