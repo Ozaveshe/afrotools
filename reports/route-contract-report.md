@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11572 |
-| Indexable pages | 9993 |
+| Public pages | 11573 |
+| Indexable pages | 9994 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5300 |
-| Documented fallbacks | 14840 |
-| Routes eligible for primary sitemaps | 9993 |
+| Genuine equivalence groups | 5301 |
+| Documented fallbacks | 14841 |
+| Routes eligible for primary sitemaps | 9994 |
 
 ## Locale Coverage
 
-- en: 6022 page records
+- en: 6023 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5436
+- page: 5437
 - tool: 4004
 - widget: 379
 
@@ -4480,6 +4480,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:457f2aad1725: en=`/crypto/mining-calculator/`, fr=`/fr/crypto/mining-calculator/`, sw=`/sw/zana/kikokotoo-margin-uchimbaji-crypto/`; x-default=`/crypto/mining-calculator/`
 - equivalence:45a55050e4f4: en=`/cars/kenya/honda/`, fr=`/fr/cars/kenya/honda/`; x-default=`/cars/kenya/honda/`
 - equivalence:45be78bd7522: en=`/agriculture/export-docs/zambia`; x-default=`/agriculture/export-docs/zambia`
+- equivalence:45c25ca09035: en=`/jamb/english/2025/`; x-default=`/jamb/english/2025/`
 - equivalence:45dccf6b8259: en=`/cars/cote-divoire/toyota/noah/2014/`, fr=`/fr/cars/cote-divoire/toyota/noah/2014/`; x-default=`/cars/cote-divoire/toyota/noah/2014/`
 - equivalence:45e51621d4dd: en=`/tools/music-royalty-splitter/`, fr=`/fr/tools/partage-redevances-musicales/`, sw=`/sw/zana/mgawanyo-wa-mrahaba-wa-muziki/`; x-default=`/tools/music-royalty-splitter/`
 - equivalence:45eac1e60a86: en=`/tools/solar-roi/algeria/`, fr=`/fr/tools/roi-solaire/algeria/`; x-default=`/tools/solar-roi/algeria/`

@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = '26f23602';
+const CACHE_VERSION = '5b43952e';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
