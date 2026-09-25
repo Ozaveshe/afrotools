@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 1 | 296 |
-| sw | 137 | 1 | 319 |
+| fr | 160 | 1 | 297 |
+| sw | 137 | 1 | 320 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 329 | 40 | 0 | 289 | 21 | 0 | 308 |
+| editorial | 330 | 40 | 0 | 290 | 21 | 0 | 309 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -145,6 +145,8 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/cost-of-living-lagos-vs-nairobi/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/cote-divoire-fne-e-invoicing-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/cote-divoire-vat-filing-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/cote-divoire-vat-filing-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crop-insurance-quote-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/crop-insurance-quote-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/crop-yield-calculator-african-farming/ | editorial | fr | — | missing | no localized route or owner file |
