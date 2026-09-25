@@ -1,24 +1,37 @@
-const {test}=require('node:test');const assert=require('node:assert/strict');
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict');
 const intake=require('../ops/nigeria-exams/neco-2023-mathematics-intake.json');
-test('NECO intake arithmetic is independently checked without inventing paper identities',()=>{
- const [percentage,walking,modulus,logarithm,interest]=intake.items;
- assert.equal(percentage.given.initial-percentage.given.initial*percentage.given.decreasePercent/100,percentage.answer);
- assert.ok(Math.abs(walking.answerHours*60*walking.given.pacesPerMinute*walking.given.metresPerPace-walking.given.distanceMetres)<1e-9);
- const product=modulus.given.factors.reduce((a,b)=>a*b,1);assert.equal(product%modulus.given.modulus,modulus.answer);
- assert.equal(Number((4*logarithm.given.log10of3-1).toFixed(4)),logarithm.answer);
- let balance=interest.given.principal;for(let i=0;i<interest.given.years;i++)balance+=balance*interest.given.annualRate;
- assert.equal(Number((balance-interest.given.principal).toFixed(2)),interest.answer);
- assert.equal(intake.status,'reviewed-selected-companions');assert.equal(percentage.number,1);assert.deepEqual(intake.items.map(q=>q.number),[1,5,6,7,9]);
+const bank=require('../assets/js/lib/ssce-written-bank');
+
+test('NECO 2023 Mathematics source intake keeps nine visually reviewed questions and independent answers',()=>{
+ assert.equal(intake.status,'reviewed-selected-companions');
+ assert.deepEqual(intake.items.map(q=>q.number),[1,2,3,4,5,6,7,8,9]);
+ assert.deepEqual(intake.visual_review.numbers,[1,2,3,4,5,6,7,8,9]);
+ assert.deepEqual(intake.visual_review.correctOptions,['C','A','C','C','D','C','D','E','C']);
+ const item=n=>intake.items.find(q=>q.number===n);
+ assert.equal(120*(1-25/100),item(1).answer);
+ assert.equal((parseInt('10110',2)*parseInt('11',2)).toString(2),item(2).answerBinary);
+ assert.equal(5+2/100+3/1000+4/100000,item(3).answer);
+ assert.equal((2*Math.sqrt(5)/Math.sqrt(10)).toFixed(12),Math.sqrt(2).toFixed(12));
+ assert.equal(item(4).answer,'√2');
+ assert.ok(Math.abs(1936/(88*0.55)/60-item(5).answerHours)<1e-12);
+ assert.equal((3*8)%9,item(6).answer);
+ assert.equal(Number((4*0.4771-1).toFixed(4)),item(7).answer);
+ assert.equal(item(8).answer,'y=p⁴q²');
+ assert.equal(Number((1200*(1.08**4-1)).toFixed(2)),item(9).answer);
+ assert.match(intake.source_rights,/Link only/);
 });
 
-test('NECO starter draft retains selected scope and independently checked results',()=>{
+test('NECO starter draft remains a three-item source record',()=>{
  const draft=require('../ops/nigeria-exams/neco-starter-draft.json');
- assert.equal(draft.status,'reviewed-pending-release');assert.equal(draft.items.length,3);
- assert.equal(draft.items[0].answer,'90.');assert.equal(draft.items[1].answer,'2/3 hour.');assert.equal(draft.items[2].answer,'₦432.59.');
+ assert.equal(draft.status,'reviewed-pending-release');
+ assert.equal(draft.items.length,3);
  for(const q of draft.items){assert.equal(q.exam,'NECO');assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
 });
 
-test('public NECO companions preserve visually verified identities and independently checked answers',()=>{
- const bank=require('../assets/js/lib/ssce-written-bank');const items=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');assert.deepEqual(items.map(q=>q.number),[1,5,9]);assert.equal(items[0].answer,'90.');assert.equal(items[1].answer,'2/3 hour.');assert.equal(items[2].answer,'₦432.59.');
- for(const q of items)assert.match(q.sourceUse,/not a complete paper/);
+test('public NECO Mathematics guides are selected, ordered and explain independently checked answers',()=>{
+ const items=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');
+ assert.deepEqual(items.map(q=>q.number),[1,2,3,4,5,6,7,8,9]);
+ assert.deepEqual(items.map(q=>q.answer),['90.','1000010₂.','5.02304.','√2.','2/3 hour.','6.','0.9084.','y = p⁴q².','₦432.59.']);
+ for(const q of items){assert.equal(q.source,intake.source_url);assert.equal(q.steps.length,3);assert.ok(q.checks.length>=2);assert.match(q.sourceUse,/not a complete paper/);}
 });

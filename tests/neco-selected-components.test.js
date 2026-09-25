@@ -3,8 +3,18 @@ const {test}=require('node:test'),assert=require('node:assert/strict'),crypto=re
 const bank=require('../assets/js/lib/ssce-written-bank');
 const manifest=require('../ops/nigeria-exams/selected-neco-components.json');
 
+test('NECO 2023 Mathematics selected questions 1–9 are complete adapted guides, not a full paper',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q1-q9');
+ assert.ok(section);assert.equal(section.exam,'NECO');assert.equal(section.subject,'Mathematics');assert.equal(section.paper,'III');
+ assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),[1,2,3,4,5,6,7,8,9]);
+ for(const guide of guides){assert.equal(guide.year,2023);assert.equal(guide.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.match(guide.sourceUse,/not a complete paper/);}
+});
+
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,2);const section=manifest.components[0];
+ assert.equal(manifest.components.length,3);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));
@@ -14,7 +24,7 @@ test('NECO 2023 English Section A covers all four inspected choices without clai
 });
 
 test('NECO 2023 English B and C guides link to the inspected scan without reproducing passages',()=>{
- const section=manifest.components[1];
+ const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-sections-b-c-linked-guides');
  assert.deepEqual(section.expectedIds,['neco-2023-english-p2-q5','neco-2023-english-p2-q6']);
  assert.equal(section.complete_selected_prompts,false);assert.equal(section.complete_paper,false);
  for(const id of section.expectedIds){
