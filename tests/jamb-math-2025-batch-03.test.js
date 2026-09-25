@@ -12,6 +12,9 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-batch-03.json');
 const recoveredItems = read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items;
 const recoveredSourceItems = new Set(recoveredItems.map(item => item.sourceItem));
+for (const item of read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items.filter(x => x.year === 2025)) {
+  recoveredSourceItems.add(item.sourceItem);
+}
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 

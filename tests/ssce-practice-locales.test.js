@@ -102,6 +102,14 @@ test('worked numerical results and exam references retain the English meanings',
     assert.equal(answer('neco-2023-mathematics-fraction-equations'),'3/5.');
     assert.equal(answer('neco-2023-mathematics-partial-variation'),'y = x − 1.');
     assert.equal(answer('neco-2023-mathematics-quadratic-roots'),'3x² − 5x − 2 = 0.');
+    assert.match(answer('neco-2023-mathematics-p3-q29'),/x = 2.*y = −3/);
+    assert.match(answer('neco-2023-mathematics-p3-q30'),/9\(a \+ 3b\)\(a − b\)/);
+    assert.match(answer('neco-2023-mathematics-p3-q31'),/7[,.]95/);
+    assert.match(answer('neco-2023-mathematics-p3-q32'),/x² \+ 4x − 12/);
+    assert.match(answer('neco-2023-mathematics-p3-q33'),/3\(x − 6\).*x ≠ 2.*x ≠ −3/);
+    assert.equal(answer('neco-2023-mathematics-p3-q34'),'93°.');
+    assert.equal(answer('neco-2023-mathematics-p3-q35'),'92°.');
+    assert.equal(answer('neco-2023-mathematics-p3-q36'),'315 m.');
     assert.equal(items.filter(q => q.exam === 'NECO').length, enWritten.items.filter(q => q.exam === 'NECO').length);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }

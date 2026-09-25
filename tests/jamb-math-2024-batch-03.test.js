@@ -10,6 +10,8 @@ const { renderYear } = require('../scripts/build-jamb-reviewed-pages.js');
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2024-curated-batch-03.json');
+const subsequentlyRecovered = new Set(read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items
+  .filter(item => item.year === 2024).map(item => item.sourceItem));
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 
@@ -26,7 +28,8 @@ test('positions 41–50 have distinct decisions and repeat import cannot add dup
   assert.equal(prepared.pool.questions.length, pool.questions.length);
   assert.equal(prepared.receipt.source_snapshot_sha256,
     read('ops/jamb/verification/mathematics-2024-publishable-003.json').source_snapshot_sha256);
-  assert.ok(!pool.questions.some(row => row.id === 'mathematics-2024-myschool-70347'));
+  if (!subsequentlyRecovered.has('70347'))
+    assert.ok(!pool.questions.some(row => row.id === 'mathematics-2024-myschool-70347'));
 
   const falselyAuthenticated = structuredClone(manifest);
   falselyAuthenticated.sitting_authenticated = true;
@@ -54,5 +57,6 @@ test('the 2024 page keeps the collection-year caveat and all new answers closed'
     assert.match(card[1], /Original sitting and question number unconfirmed/, id);
     assert.doesNotMatch(card[1], /<details\b[^>]*\bopen\b/, id);
   }
-  assert.ok(!page.html.includes('mathematics-2024-myschool-70347'));
+  if (!subsequentlyRecovered.has('70347'))
+    assert.ok(!page.html.includes('mathematics-2024-myschool-70347'));
 });

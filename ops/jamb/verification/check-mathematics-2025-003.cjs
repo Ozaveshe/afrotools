@@ -12,6 +12,9 @@ const root = path.resolve(__dirname, '../../..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-batch-03.json');
 const recoveredSourceItems = new Set(read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items.map(item => item.sourceItem));
+for (const item of read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items.filter(x => x.year === 2025)) {
+  recoveredSourceItems.add(item.sourceItem);
+}
 const snapshotPath = 'ops/nigeria-exams/jamb-math-2025-source-snapshot-03.json';
 const snapshotBytes = fs.readFileSync(path.join(root, snapshotPath));
 const snapshot = JSON.parse(snapshotBytes);

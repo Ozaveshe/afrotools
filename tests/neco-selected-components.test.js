@@ -7,7 +7,7 @@ test('NECO 2023 Mathematics selected questions 1–20 are complete adapted guide
  const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q1-q20');
  assert.ok(section);assert.equal(section.exam,'NECO');assert.equal(section.subject,'Mathematics');assert.equal(section.paper,'III');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
- const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number<=20);
  assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
  assert.deepEqual(guides.map(q=>q.number),Array.from({length:20},(_,i)=>i+1));
  for(const guide of guides){assert.equal(guide.year,2023);assert.equal(guide.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.match(guide.sourceUse,/not a complete paper/);}
@@ -22,8 +22,22 @@ test('NECO 2023 Mathematics selected questions 1–20 are complete adapted guide
  assert.equal(guides[19].answer,'3x² − 5x − 2 = 0.');
 });
 
+test('NECO 2023 Mathematics Q29–36 is a separate complete selection with described diagrams',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q29-q36');
+ assert.ok(section);assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=29&&q.number<=36);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),[29,30,31,32,33,34,35,36]);
+ assert.match(section.review,/page 7/);assert.match(section.sourceRights,/rights-reserved/);
+ assert.match(guides[6].prompt,/∠POQ.*arc PQ/);
+ assert.match(guides[7].prompt,/vertical sides correspond.*bases correspond/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.match(guides[4].answer,/x ≠ 2.*x ≠ −3/);
+ assert.equal(guides[6].answer,'92°.');assert.equal(guides[7].answer,'315 m.');
+});
+
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,3);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
+ assert.equal(manifest.components.length,4);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));

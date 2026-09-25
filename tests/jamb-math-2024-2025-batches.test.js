@@ -116,9 +116,11 @@ test('historical holds stay unpublished unless a later recovery separately verif
   const held = read('ops/nigeria-exams/jamb-math-2024-2025-held-20260924.json').held;
   const recovered = new Set(read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items
     .map(item => item.sourceItem));
+  for (const item of read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items)
+    recovered.add(item.sourceItem);
   assert.equal(held.length, 10);
   for (const item of held) {
-    if (item.collection_year === 2025 && recovered.has(item.sourceItem)) continue;
+    if (recovered.has(item.sourceItem)) continue;
     assert.ok(!pool.questions.some(q => q.id === `mathematics-${item.collection_year}-myschool-${item.sourceItem}`));
   }
 });

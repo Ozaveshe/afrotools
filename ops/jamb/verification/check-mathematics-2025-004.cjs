@@ -17,6 +17,8 @@ const snapshot = JSON.parse(snapshotBytes);
 const receipt = read('ops/jamb/verification/mathematics-2025-publishable-004.json');
 const pool = read('ops/jamb/source-pool.json').questions;
 const ledger = read('data/jamb/review-ledger.json');
+const subsequentlyRecovered = new Set(read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items
+  .filter(item => item.year === 2025).map(item => item.sourceItem));
 
 const triangleArea = ((11 + 9) * 13) / 2;
 const determinant = 5 * 3 - (-2) * (-1);
@@ -105,6 +107,7 @@ for (const item of manifest.items) {
   checkedIds.push(id);
 }
 for (const held of manifest.reinspected_holds) {
+  if (subsequentlyRecovered.has(held.sourceItem)) continue;
   assert.ok(!pool.some(row => row.id === `mathematics-2025-myschool-${held.sourceItem}`), held.sourceItem);
 }
 process.stdout.write(JSON.stringify({ passed: true, accepted: checkedIds.length, held: manifest.reinspected_holds.length,

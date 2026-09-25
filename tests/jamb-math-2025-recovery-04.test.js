@@ -10,6 +10,8 @@ const { renderYear } = require('../scripts/build-jamb-reviewed-pages.js');
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json');
+const subsequentlyRecovered = new Set(read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items
+  .filter(item => item.year === 2025).map(item => item.sourceItem));
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 
@@ -28,6 +30,7 @@ test('recovery records are source scoped and reimporting is idempotent', () => {
   assert.equal(prepared.receipt.source_snapshot_sha256,
     read('ops/jamb/verification/mathematics-2025-publishable-004.json').source_snapshot_sha256);
   for (const item of manifest.reinspected_holds) {
+    if (subsequentlyRecovered.has(item.sourceItem)) continue;
     assert.ok(!pool.questions.some(question => question.id === `mathematics-2025-myschool-${item.sourceItem}`),
       `Held position ${item.position} entered the pool`);
   }
@@ -57,5 +60,8 @@ test('the 2025 page shows nine recovered closed answers with the collection-year
     assert.match(card[1], /Original sitting and question number unconfirmed/, id);
     assert.doesNotMatch(card[1], /<details\b[^>]*\bopen\b/, id);
   }
-  for (const item of manifest.reinspected_holds) assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  for (const item of manifest.reinspected_holds) {
+    if (subsequentlyRecovered.has(item.sourceItem)) continue;
+    assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  }
 });

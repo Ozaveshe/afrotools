@@ -37,4 +37,17 @@ The [user-uploaded Scribd scan](https://www.scribd.com/document/842881920/NECO-2
 | Q19 | y=x−1 (B) | Page 5: y=a+bx through (3,2) and (6,5) has b=1 and a=−1. |
 | Q20 | 3x²−5x−2=0 (B) | Page 5: roots 2 and −1/3 give (x−2)(3x+1)=0. |
 
-These source checks support adapted, scan-linked guides after content and locale checks. They do not prove a complete paper.
+Page 7 of the same scan shows questions 29–36 and all five options for each. The geometry diagrams in Q35–36 were visually checked; the public guides describe their necessary relationships in words. The [NECO 2023 internal timetable](https://neco.gov.ng/2023%20SSCE%20INTERNAL%20TIMETABLE.pdf) corroborates the Mathematics Paper III subject code, but does not authenticate this uploaded scan's sitting or answer key. The visible scan extends to Q60; Q21–28 and Q37–60 remain unreviewed for publication.
+
+| Question | Verified answer | Independent check |
+| --- | --- | --- |
+| Q29 | x=2, y=−3 (C) | Eliminate x from x+2y=−4 and 2x+3y=−5, then check both equations. |
+| Q30 | 9(a+3b)(a−b) (A) | Factor 3 and apply the difference of squares. |
+| Q31 | T≈7.95 (D) | 2(22/7)√(16/10)≈7.95087. |
+| Q32 | x²+4x−12 (A) | Expand (x−2)(x+6). |
+| Q33 | 3(x−6), x≠2,−3 (D) | Factor the original numerator and denominator before cancelling; preserve both exclusions. |
+| Q34 | 93° (A) | Both longitudes are east, so 147°−54°=93°. |
+| Q35 | ∠POQ=92° (C) | The angle at R over arc PQ is 46°; the central angle over that arc is twice 46°. |
+| Q36 | L=315 m (E) | Diagram-marked corresponding vertical and base sides give L/420=18/24. |
+
+These source checks support adapted, scan-linked guides after content and locale checks. They do not prove a complete paper, reproduction rights, or an official key.

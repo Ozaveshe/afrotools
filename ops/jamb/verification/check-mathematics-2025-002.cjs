@@ -98,6 +98,9 @@ for (const item of manifest.items) {
 // A later, independently checked recovery can supersede a historical hold.
 const recoveredSourceItems = new Set(read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items
   .map(item => item.sourceItem));
+for (const item of read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items.filter(x => x.year === 2025)) {
+  recoveredSourceItems.add(item.sourceItem);
+}
 for (const held of manifest.held) {
   if (recoveredSourceItems.has(held.sourceItem)) continue;
   assert.ok(!pool.some(row => row.id === `mathematics-2025-myschool-${held.sourceItem}`), held.sourceItem);

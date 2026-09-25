@@ -16,6 +16,8 @@ const snapshot = JSON.parse(snapshotBytes);
 const receipt = read('ops/jamb/verification/mathematics-2024-publishable-002.json');
 const pool = read('ops/jamb/source-pool.json').questions;
 const ledger = read('data/jamb/review-ledger.json');
+const subsequentlyRecovered = new Set(read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items
+  .filter(item => item.year === 2024).map(item => item.sourceItem));
 const choose = (n, k) => {
   let result = 1;
   for (let i = 1; i <= k; i++) result = result * (n - k + i) / i;
@@ -76,6 +78,7 @@ for (const item of manifest.items) {
   ids.push(id);
 }
 for (const held of manifest.held) {
+  if (subsequentlyRecovered.has(held.sourceItem)) continue;
   assert.ok(!pool.some(row => row.id === `mathematics-2024-myschool-${held.sourceItem}`), held.sourceItem);
 }
 process.stdout.write(JSON.stringify({ passed: true, question_ids: ids, accepted: 12, held: 3,

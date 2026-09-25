@@ -3,13 +3,13 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const intake=require('../ops/nigeria-exams/neco-2023-mathematics-intake.json');
 const bank=require('../assets/js/lib/ssce-written-bank');
 
-test('NECO 2023 Mathematics source intake keeps twenty visually reviewed questions and independent answers',()=>{
+test('NECO 2023 Mathematics source intake keeps 28 selected, visually reviewed questions and independent answers',()=>{
  assert.equal(intake.status,'reviewed-selected-companions');
- const numbers=Array.from({length:20},(_,i)=>i+1);
+ const numbers=[...Array.from({length:20},(_,i)=>i+1),...Array.from({length:8},(_,i)=>i+29)];
  assert.deepEqual(intake.items.map(q=>q.number),numbers);
  assert.deepEqual(intake.visual_review.numbers,numbers);
- assert.deepEqual(intake.visual_review.pages,[2,3,4,5]);
- assert.deepEqual(intake.visual_review.correctOptions,['C','A','C','C','D','C','D','E','C','E','B','B','D','A','B','A','D','C','B','B']);
+ assert.deepEqual(intake.visual_review.pages,[2,3,4,5,7]);
+ assert.deepEqual(intake.visual_review.correctOptions,['C','A','C','C','D','C','D','E','C','E','B','B','D','A','B','A','D','C','B','B','C','A','D','A','D','A','C','E']);
  const item=n=>intake.items.find(q=>q.number===n);
  assert.equal(120*(1-25/100),item(1).answer);
  assert.equal((parseInt('10110',2)*parseInt('11',2)).toString(2),item(2).answerBinary);
@@ -39,7 +39,17 @@ test('NECO 2023 Mathematics source intake keeps twenty visually reviewed questio
  for(const [x,y] of item(19).given.points)assert.equal(x-1,y);
  for(const x of [2,-1/3])assert.ok(Math.abs(3*x*x-5*x-2)<1e-12);
  assert.equal(item(20).answer,'3x²-5x-2=0');
- assert.deepEqual(intake.items.slice(12).map(q=>q.source_page),[4,4,4,4,4,4,5,5]);
+ assert.deepEqual(intake.items.slice(12,20).map(q=>q.source_page),[4,4,4,4,4,4,5,5]);
+ assert.deepEqual(intake.items.slice(20).map(q=>q.source_page),Array(8).fill(7));
+ assert.deepEqual(item(29).answer,{x:2,y:-3});
+ for(const [a,b] of [[2,1],[-1,3]])assert.equal(12*a*a-3*(a-3*b)**2,9*(a+3*b)*(a-b));
+ assert.equal(Number((2*(22/7)*Math.sqrt(16/10)).toFixed(2)),item(31).answer);
+ for(const x of [-2,0,5])assert.equal((x-2)*(x+6),x*x+4*x-12);
+ assert.deepEqual(item(33).answer.excludedX,[2,-3]);
+ for(const x of [0,4,10])assert.equal(((x*x-8*x+12)/(3*(x*x+x-6)))*9*(x+3),3*(x-6));
+ assert.equal(item(34).given.longitudesEast[1]-item(34).given.longitudesEast[0],item(34).answerDegrees);
+ assert.equal(2*item(35).given.angleQRPDegrees,item(35).answerDegrees);
+ assert.equal(item(36).given.largeBaseM*item(36).given.smallVerticalCm/item(36).given.smallBaseCm,item(36).answerMetres);
  assert.match(intake.source_rights,/Link only/);
 });
 
@@ -52,8 +62,9 @@ test('NECO starter draft remains a three-item source record',()=>{
 
 test('public NECO Mathematics guides are selected, ordered and explain independently checked answers',()=>{
  const items=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');
- assert.deepEqual(items.map(q=>q.number),Array.from({length:20},(_,i)=>i+1));
- assert.deepEqual(items.map(q=>q.answer),['90.','1000010₂.','5.02304.','√2.','2/3 hour.','6.','0.9084.','y = p⁴q².','₦432.59.','{a, 1, c, 4, d, 9}.','0.4%.','43.','17 took at least two subjects; 36 students in the school.','2.','42 cm.','−15.','12 hours.','3/5.','y = x − 1.','3x² − 5x − 2 = 0.']);
+ assert.deepEqual(items.map(q=>q.number),[...Array.from({length:20},(_,i)=>i+1),...Array.from({length:8},(_,i)=>i+29)]);
+ assert.deepEqual(items.slice(0,20).map(q=>q.answer),['90.','1000010₂.','5.02304.','√2.','2/3 hour.','6.','0.9084.','y = p⁴q².','₦432.59.','{a, 1, c, 4, d, 9}.','0.4%.','43.','17 took at least two subjects; 36 students in the school.','2.','42 cm.','−15.','12 hours.','3/5.','y = x − 1.','3x² − 5x − 2 = 0.']);
+ assert.deepEqual(items.slice(20).map(q=>q.answer),['x = 2; y = −3.','9(a + 3b)(a − b).','T ≈ 7.95.','x² + 4x − 12.','3(x − 6), with x ≠ 2 and x ≠ −3.','93°.','92°.','315 m.']);
  assert.match(items.find(q=>q.number===13).prompt,/4 took all three.*4 took none/);
  for(const q of items){assert.equal(q.source,intake.source_url);assert.equal(q.steps.length,3);assert.ok(q.checks.length>=2);assert.match(q.sourceUse,/not a complete paper/);}
 });

@@ -82,3 +82,17 @@ test('NECO starter shows exact source numbers and saves a worked response at mob
  await expect(page.getByLabel('Your written answer',{exact:true})).toHaveValue('1200 × 1.08^4 − 1200 = 432.59');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
 });
+
+test('new NECO diagram guides retain the right arc and side correspondence on a small screen',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await page.locator('#written-collection').selectOption('NECO 2023 Mathematics starter');
+ for(const [number,answer,detail] of [[35,'92°','arc PQ'],[36,'315 m','vertical sides correspond']]){
+  await page.locator('#written-task').selectOption(`neco-2023-mathematics-p3-q${number}`);
+  await expect(page.locator('#written-editor')).toContainText(`Paper III · Question ${number}`);
+  await expect(page.locator('.written-prompt')).toContainText(detail);
+  await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');
+  await page.getByText('Show worked solution',{exact:true}).click();
+  await expect(page.locator('.written-explanation')).toContainText(answer);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+ }
+});
