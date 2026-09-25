@@ -45,10 +45,16 @@
     return { kind: 'upcoming', days: days, label: days + ' calendar days' };
   }
 
-  function planningPhase(days, kind) {
+  function planningPhase(days, kind, eventKind) {
     if (kind === 'past') return {
-      label: 'Update the date',
-      actions: ['Open the official timetable', 'Replace this past date', 'Check venue and paper times']
+      label: 'Past date — keep for history or update',
+      actions: eventKind === 'registration' || eventKind === 'application'
+        ? ['Check whether the application or registration was submitted', 'Ask the authority about any current route or next cycle', 'Enter a new confirmed deadline if one exists']
+        : ['Check the official result or next timetable', 'Keep this date for your history or replace it with a new confirmed date']
+    };
+    if (eventKind === 'registration' || eventKind === 'application') return {
+      label: kind === 'today' ? 'Deadline today' : 'Submission preparation',
+      actions: ['Confirm the official deadline and required documents', 'Complete and check the submission before the deadline', 'Keep the authority’s confirmation or receipt']
     };
     if (kind === 'today') return {
       label: 'Today',
@@ -82,7 +88,7 @@
       name: name,
       date: date,
       key: String(raw.key || ''),
-      kind: raw.kind === 'registration' ? 'registration' : 'exam',
+      kind: raw.kind === 'registration' || raw.kind === 'application' ? raw.kind : 'exam',
       country: String(raw.country || ''),
       source: /^https:\/\//.test(String(raw.source || '')) ? String(raw.source) : '',
       sourceLabel: String(raw.sourceLabel || ''),
@@ -96,11 +102,11 @@
     var item = normaliseCountdown(raw);
     if (!item) return '';
     var state = dateState(item.date, now);
-    var phase = planningPhase(state.days, state.kind);
+    var phase = planningPhase(state.days, state.kind, item.kind);
     var lines = [
       item.name,
       'Date: ' + item.date,
-      'Date meaning: ' + (item.dateMeaning || (item.kind === 'registration' ? 'Registration deadline' : 'Date entered by user')),
+      'Date meaning: ' + (item.dateMeaning || (item.kind === 'registration' ? 'Registration deadline' : item.kind === 'application' ? 'Application deadline' : 'Date entered by user')),
       'Countdown: ' + state.label,
       'Planning stage: ' + phase.label,
       item.country ? 'Country: ' + item.country : '',

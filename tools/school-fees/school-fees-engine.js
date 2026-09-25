@@ -144,6 +144,36 @@
     };
   }
 
+  function compareManualQuotes(input) {
+    input = input || {};
+    var currency = normalizeCurrency(input.currency);
+    var period = String(input.period || '').trim();
+    var errors = [];
+    if (!currency) errors.push('Enter one three-letter currency code for both quotes.');
+    if (!['Annual', 'Term', 'Semester', 'One-time'].includes(period)) errors.push('Choose the fee period shown on both quotes.');
+    var quotes = (Array.isArray(input.quotes) ? input.quotes : []).slice(0, 2).map(function (raw, index) {
+      var name = String(raw.name || '').trim();
+      var tuition = finiteNumber(raw.tuition);
+      var extras = finiteNumber(raw.extras);
+      function validPrecision(value) {
+        var text = String(value == null ? '' : value).trim();
+        return /^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/.test(text) && Number.isSafeInteger(Math.round(Number(text) * 100));
+      }
+      if (!name) errors.push('Name option ' + (index + 1) + '.');
+      if (tuition === null || tuition < 0) errors.push('Enter tuition for option ' + (index + 1) + ', using 0 if none.');
+      if (extras === null || extras < 0) errors.push('Enter extras for option ' + (index + 1) + ', using 0 if none.');
+      if (tuition !== null && tuition >= 0 && !validPrecision(raw.tuition)) errors.push('Use at most two decimal places for option ' + (index + 1) + ' tuition.');
+      if (extras !== null && extras >= 0 && !validPrecision(raw.extras)) errors.push('Use at most two decimal places for option ' + (index + 1) + ' extras.');
+      if (tuition !== null && extras !== null && !Number.isFinite(tuition + extras)) errors.push('The total for option ' + (index + 1) + ' is too large.');
+      return { name: name, tuition: tuition, extras: extras, total: tuition === null || extras === null ? null : tuition + extras };
+    });
+    if (quotes.length !== 2) errors.push('Enter two school quotes.');
+    if (errors.length) return { ok: false, errors: errors };
+    return { ok: true, currency: currency, period: period, quotes: quotes,
+      difference: Math.abs(quotes[0].total - quotes[1].total),
+      lowerIndex: quotes[0].total === quotes[1].total ? null : quotes[0].total < quotes[1].total ? 0 : 1 };
+  }
+
   return {
     calculate: calculate,
     buildText: buildText,
@@ -151,6 +181,7 @@
     normalizeCurrency: normalizeCurrency,
     normalizeRow: normalizeRow,
     safeProofUrl: safeProofUrl,
-    trustState: trustState
+    trustState: trustState,
+    compareManualQuotes: compareManualQuotes
   };
 });

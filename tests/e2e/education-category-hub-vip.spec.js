@@ -14,8 +14,8 @@ function educationRoutes() {
     .filter((tool) => tool.category === 'education')
     .map((tool) => tool.href);
 
-  if (routes.length !== 42 || new Set(routes).size !== 42) {
-    throw new Error(`Expected 42 unique English Education apps, found ${routes.length}`);
+  if (!routes.length || new Set(routes).size !== routes.length) {
+    throw new Error(`Expected unique English Education apps, found ${routes.length}`);
   }
 
   return routes;
@@ -23,7 +23,7 @@ function educationRoutes() {
 
 const EDUCATION_ROUTES = educationRoutes();
 
-test.describe('Day 5 Education category hub VIP contract', () => {
+test.describe('Education task hub contract', () => {
   for (const scenario of [
     { name: '360px dark', width: 360, theme: 'dark', textScale: '100%' },
     { name: '375px dark at 200% text', width: 375, theme: 'dark', textScale: '200%' },
@@ -47,10 +47,9 @@ test.describe('Day 5 Education category hub VIP contract', () => {
       }, scenario);
 
       await expect(page.locator('h1')).toHaveCount(1);
-      await expect(page.locator('#hero-registry-count')).toHaveText('42');
-      await expect(page.locator('.product-card')).toHaveCount(3);
-      await expect(page.locator('.route-card')).toHaveCount(4);
-      await expect(page.locator('.tool-card')).toHaveCount(31);
+      await expect(page.locator('.edu-task')).toHaveCount(5);
+      await expect(page.locator('.edu-directory-links a')).toHaveCount(EDUCATION_ROUTES.length);
+      await expect(page.locator('#education-search')).toBeVisible();
 
       const audit = await page.evaluate((expectedRoutes) => {
         const links = new Set(

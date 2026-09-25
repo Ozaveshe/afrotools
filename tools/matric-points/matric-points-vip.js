@@ -23,10 +23,11 @@
     ['homeLanguage', 'learningLanguage'].forEach(function (id) {
       var select = byId(id);
       var current = select.value;
-      select.innerHTML = '<option value="">Select entered subject</option>' + selectedSubjects.map(function (subject) {
+      var choices = selectedSubjects.filter(id === 'homeLanguage' ? engine.isHomeLanguage : engine.isLearningLanguage);
+      select.innerHTML = '<option value="">Select entered language</option>' + choices.map(function (subject) {
         return '<option value="' + escape(subject) + '">' + escape(subject) + '</option>';
       }).join('');
-      if (selectedSubjects.indexOf(current) !== -1) select.value = current;
+      if (choices.indexOf(current) !== -1) select.value = current;
     });
   }
   function renderRows() {

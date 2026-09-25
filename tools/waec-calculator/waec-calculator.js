@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'afrotools_waec';
   var state = {
     system: 'ng-waec-neco',
+    examType: '',
     pathway: 'science',
     subjects: []
   };
@@ -65,6 +66,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         examSystem: state.system,
+        examType: state.examType,
         pathway: state.pathway,
         subjects: state.subjects
       }));
@@ -77,6 +79,7 @@
     try {
       var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
       if (SYSTEMS[saved.examSystem]) state.system = saved.examSystem;
+      if (saved.examType === 'waec' || saved.examType === 'neco') state.examType = saved.examType;
       if (saved.pathway === 'science' || saved.pathway === 'non-science') state.pathway = saved.pathway;
       if (Array.isArray(saved.subjects) && saved.subjects.length) state.subjects = saved.subjects;
     } catch (error) {
@@ -109,6 +112,7 @@
     var pathwaySelect = byId('trackSelect');
     if (state.system === 'gh-wassce') {
       pathwayGroup.style.display = '';
+      byId('ngExamGroup').style.display = 'none';
       pathwayGroup.querySelector('label').textContent = 'Programme core used';
       pathwaySelect.setAttribute('aria-label', 'Choose Ghana programme core');
       pathwaySelect.innerHTML = [
@@ -118,6 +122,8 @@
       pathwaySelect.value = state.pathway;
     } else {
       pathwayGroup.style.display = 'none';
+      byId('ngExamGroup').style.display = '';
+      byId('ngExamSelect').value = state.examType;
     }
   }
 
@@ -293,7 +299,9 @@
 
   function shareText() {
     var result = getResult();
-    return SYSTEMS[state.system].name + '\n' +
+    var examName = state.system === 'gh-wassce' ? SYSTEMS[state.system].name :
+      (state.examType === 'waec' ? 'Nigeria — WAEC WASSCE' : state.examType === 'neco' ? 'Nigeria — NECO SSCE' : SYSTEMS[state.system].name);
+    return examName + '\n' +
       result.metricLabel + ': ' + (result.value === null ? 'Incomplete' : result.value) + '\n' +
       'Credits recorded: ' + result.credits + '\n' +
       result.note + '\nhttps://afrotools.com/tools/waec-calculator/';
@@ -392,6 +400,11 @@
       renderSubjects();
       calculate();
       announce('Exam system changed. Enter the results shown on your official statement.');
+    });
+    byId('ngExamSelect').addEventListener('change', function () {
+      state.examType = this.value;
+      save();
+      announce('Nigeria exam updated. The next study links now use this exam context.');
     });
     byId('trackSelect').addEventListener('change', function () {
       state.pathway = this.value;

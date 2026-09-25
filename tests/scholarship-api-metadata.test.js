@@ -52,4 +52,23 @@ assert.deepStrictEqual(
   'source health metadata should be present for the frontend status panel'
 );
 
+const chevening = {
+  title: 'Chevening Scholarship',
+  status: 'open',
+  deadline_date: '2026-10-06',
+  deadline_at: '2026-10-06T11:00:00Z',
+  deadline_confidence: 'verified',
+  official_url: 'https://www.chevening.org/scholarships/application-timeline/'
+};
+const justBefore = new Date('2026-10-06T10:59:59Z');
+const atCutoff = new Date('2026-10-06T11:00:00Z');
+assert.strictEqual(api._private.getScholarshipStatus(chevening, justBefore), 'open');
+assert.strictEqual(api._private.getScholarshipStatus(chevening, atCutoff), 'closed');
+assert.strictEqual(api._private.getScholarshipStatus({ status: 'open', deadline_date: '2026-10-06' }, atCutoff),
+  'open', 'date-only status must not close at 11:00 UTC');
+assert.strictEqual(api._private.buildScholarshipMetadata([chevening], {}, justBefore).closing_soon_count, 1);
+assert.strictEqual(api._private.buildScholarshipMetadata([chevening], {}, atCutoff).closing_soon_count, 0,
+  'closed exact deadlines must not remain in the closing-soon count');
+assert.strictEqual(api._private.buildScholarshipSummary([chevening], {}, atCutoff).closed, 1);
+
 console.log('Scholarship API metadata contract verified.');

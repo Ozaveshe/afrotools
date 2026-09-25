@@ -639,16 +639,25 @@ function getScholarshipDeadlineOverride(slug) {
   return entry && typeof entry === 'object' ? entry : null;
 }
 
-function isPastDeadlineDate(deadlineDate) {
+function isPastDeadlineDate(deadlineDate, now = new Date()) {
   const dateKey = String(deadlineDate || '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
-  const todayKey = new Date().toISOString().slice(0, 10);
+  const todayKey = new Date(now).toISOString().slice(0, 10);
   return !!dateKey && dateKey < todayKey;
 }
 
-function normalizeDeadlineStatus(status, deadlineDate) {
+function isPastDeadline(deadlineDate, deadlineAt, now = new Date()) {
+  const exact = String(deadlineAt || '');
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(exact)) {
+    const cutoff = Date.parse(exact);
+    if (Number.isFinite(cutoff)) return new Date(now).getTime() >= cutoff;
+  }
+  return isPastDeadlineDate(deadlineDate, now);
+}
+
+function normalizeDeadlineStatus(status, deadlineDate, deadlineAt, now = new Date()) {
   const explicit = String(status || '').toLowerCase();
-  if (isPastDeadlineDate(deadlineDate)) return 'closed';
+  if (isPastDeadline(deadlineDate, deadlineAt, now)) return 'closed';
   if (['open', 'upcoming', 'unclear', 'closed', 'variable'].indexOf(explicit) !== -1) return explicit;
   return deadlineDate ? 'open' : 'unclear';
 }
@@ -710,9 +719,12 @@ function isManualReviewParser(source) {
   return !!source && MANUAL_REVIEW_PARSER_KEYS.has(String(source.parser_key || '').trim());
 }
 
-function buildLegacyScholarship(row) {
+function buildLegacyScholarship(row, now = new Date()) {
   const snapshot = row && row.raw_snapshot && typeof row.raw_snapshot === 'object' ? row.raw_snapshot : {};
   const source = row && row._source && typeof row._source === 'object' ? row._source : {};
+  const deadlineOverride = getScholarshipDeadlineOverride(row.slug);
+  const deadlineDate = row.deadline_date || snapshot.deadline_date || null;
+  const deadlineAt = row.deadline_at || snapshot.deadline_at || (deadlineOverride && deadlineOverride.deadline_at) || null;
   return {
     id: row.id,
     slug: row.slug,
@@ -753,7 +765,8 @@ function buildLegacyScholarship(row) {
     min_gpa_4: snapshot.min_gpa_4 != null ? snapshot.min_gpa_4 : row.min_gpa,
     min_gpa_5: snapshot.min_gpa_5 != null ? snapshot.min_gpa_5 : null,
     min_ielts: row.min_ielts != null ? row.min_ielts : toNumber(snapshot.min_ielts),
-    deadline_date: row.deadline_date || snapshot.deadline_date || null,
+    deadline_date: deadlineDate,
+    deadline_at: deadlineAt,
     deadline_text: row.deadline_text || snapshot.deadline_text || '',
     deadline_month: snapshot.deadline_month || null,
     deadline_status: row.deadline_status || snapshot.deadline_status || null,
@@ -764,7 +777,7 @@ function buildLegacyScholarship(row) {
     deadline_notes: row.deadline_notes || snapshot.deadline_notes || '',
     deadline_evidence: snapshot.deadline_evidence || '',
     deadline_checked_urls: Array.isArray(snapshot.deadline_checked_urls) ? snapshot.deadline_checked_urls : [],
-    status: row.status,
+    status: normalizeDeadlineStatus(row.status, deadlineDate, deadlineAt, now),
     confidence_mode: row.confidence_mode,
     source_confidence: row.source_confidence != null ? row.source_confidence : null,
     freshness_score: row.freshness_score != null ? row.freshness_score : null,
@@ -1038,18 +1051,20 @@ function normalizeScholarshipRecord(raw, source) {
   const slug = slugify(raw.slug || title + '-' + (raw.provider || raw.destination || raw.country || 'scholarship'));
   const deadlineOverride = getScholarshipDeadlineOverride(slug);
   const deadlineDate = parseDeadlineDate((deadlineOverride && deadlineOverride.deadline_date) || raw.deadline_date || raw.deadlineDate);
+  const deadlineAt = (deadlineOverride && deadlineOverride.deadline_at) || raw.deadline_at || null;
   const overrideConfidence = deadlineOverride ? getDeadlineOverrideConfidence(deadlineOverride) : '';
   const status = overrideConfidence === 'no_single_public_deadline'
     ? 'variable'
-    : normalizeDeadlineStatus((deadlineOverride && deadlineOverride.status) || raw.status, deadlineDate);
+    : normalizeDeadlineStatus((deadlineOverride && deadlineOverride.status) || raw.status, deadlineDate, deadlineAt);
   const databaseStatus = status === 'variable' ? 'unclear' : status;
-  const deadlinePassed = isPastDeadlineDate(deadlineDate);
+  const deadlinePassed = isPastDeadline(deadlineDate, deadlineAt);
   const hasExplicitArchiveState = Object.prototype.hasOwnProperty.call(raw, 'is_archived');
   const shouldArchive = databaseStatus === 'closed' || raw.is_archived === true;
   const studyLevels = uniqueStrings(raw.study_levels || raw.levels);
   const deadlineStatus = deadlineDate ? 'dated' : (status === 'variable' ? 'varies' : (status === 'rolling' ? 'rolling' : null));
   const checkedAt = new Date().toISOString();
   const sourceSnapshot = buildScholarshipSourceSnapshot(raw, source);
+  if (deadlineAt) sourceSnapshot.deadline_at = deadlineAt;
   if (deadlineOverride) {
     const deadlineConfidence = overrideConfidence;
     sourceSnapshot.deadline_override = Object.assign({}, deadlineOverride, {
@@ -1062,6 +1077,7 @@ function normalizeScholarshipRecord(raw, source) {
     sourceSnapshot.deadline_evidence = deadlineOverride.evidence || '';
     sourceSnapshot.deadline_checked_urls = Array.isArray(deadlineOverride.checked_urls) ? deadlineOverride.checked_urls : [];
     sourceSnapshot.deadline_date = deadlineDate;
+    sourceSnapshot.deadline_at = deadlineAt;
     sourceSnapshot.deadline_text = deadlineOverride.deadline_text || '';
     sourceSnapshot.deadline_status = status;
   }
@@ -1914,6 +1930,11 @@ function hasDatedFutureDeadline(scholarship, options) {
 
   const settings = options || {};
   const current = settings.now instanceof Date ? settings.now : new Date();
+  const snapshot = scholarship.raw_snapshot && typeof scholarship.raw_snapshot === 'object'
+    ? scholarship.raw_snapshot : {};
+  const override = getScholarshipDeadlineOverride(scholarship.slug);
+  const deadlineAt = scholarship.deadline_at || snapshot.deadline_at || (override && override.deadline_at);
+  if (isPastDeadline(scholarship.deadline_date, deadlineAt, current)) return false;
   const today = Date.UTC(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate());
   const deadline = new Date(parsed + 'T00:00:00Z');
   return deadline.getTime() >= today;
@@ -2192,6 +2213,7 @@ module.exports = {
   SOURCE_KEYS,
   buildFeedMeta,
   buildLegacyScholarship,
+  normalizeDeadlineStatus,
   buildScholarshipSourceSnapshot,
   buildReminderSchedule,
   filterScholarships,

@@ -22,6 +22,9 @@ test.describe('WAEC/NECO result planner VIP', () => {
     await expect(page.locator('#resultAggregate')).toHaveText('10');
     await expect(page.locator('#resultCredits')).toHaveText('7');
     await expect(page.locator('#resultBestOf')).toHaveText('Best-five planning index');
+    await expect(page.locator('[data-waec-next="study-planner"]')).toHaveAttribute('href', '/tools/study-planner/?exam=nigeria-waec-neco');
+    await expect(page.locator('[data-waec-next="flashcard-maker"]')).toHaveAttribute('href', '/tools/flashcard-maker/?exam=nigeria-waec-neco');
+    await expect(page.locator('[data-waec-next="exam-timetable"]')).toHaveAttribute('href', '/tools/exam-timetable/?exam=nigeria-waec-neco');
     await expect(page.locator('#eligibilityList')).toContainText('not an official Nigerian admission aggregate');
     await page.getByRole('tab', { name: 'Official checks' }).click();
     await expect(page.getByRole('link', { name: /JAMB IBASS eligibility checker/i })).toHaveAttribute('href', 'https://eligibility.jamb.gov.ng/');
@@ -37,6 +40,11 @@ test.describe('WAEC/NECO result planner VIP', () => {
   test('Ghana aggregate uses the selected programme core and three electives', async ({ page }) => {
     await page.goto('/tools/waec-calculator/', { waitUntil: 'domcontentloaded' });
     await page.selectOption('#examSystem', 'gh-wassce');
+    await expect(page.locator('[data-waec-next="study-planner"]')).toHaveAttribute('href', '/tools/study-planner/?exam=ghana-waec');
+    await expect(page.locator('[data-waec-next="flashcard-maker"]')).toHaveAttribute('href', '/tools/flashcard-maker/?exam=ghana-waec');
+    await expect(page.locator('[data-waec-next="exam-timetable"]')).toHaveAttribute('href', '/tools/exam-timetable/?exam=ghana-waec');
+    await expect(page.locator('[data-waec-ng-only]').first()).toBeHidden();
+    await expect(page.locator('[data-waec-gh-only]').first()).toHaveJSProperty('hidden', false);
 
     const rows = page.locator('.wc-subject-row');
     await rows.nth(0).locator('select').selectOption('B3');
@@ -58,6 +66,10 @@ test.describe('WAEC/NECO result planner VIP', () => {
     await expect(page.locator('#resultAggregate')).toHaveText('15');
     await expect(page.locator('#selectedSubjects')).toContainText('Social Studies');
     await expect(page.locator('#selectedSubjects')).not.toContainText('Integrated Science (C4)');
+    await page.locator('button[onclick="saveWaecActionPack()"]') .click();
+    const ghPack = await page.evaluate(() => JSON.parse(localStorage.getItem('afrotools_waec_action_pack')).text);
+    expect(ghPack).toContain('Ghana — WASSCE');
+    expect(ghPack).not.toContain('JAMB IBASS');
   });
 
   test('mobile dark mode stays usable without overflow and print action works', async ({ page }) => {
@@ -80,5 +92,39 @@ test.describe('WAEC/NECO result planner VIP', () => {
     await page.getByRole('button', { name: /PDF/ }).click();
     expect(await page.evaluate(() => window.__printCalled)).toBe(true);
     expect(errors).toEqual([]);
+  });
+
+  test('Nigeria handoff arrives with Nigeria context in each study route', async ({ page }) => {
+    await page.goto('/tools/waec-calculator/');
+    await page.selectOption('#ngExamSelect', 'neco');
+    await expect(page.locator('[data-waec-next="study-planner"]')).toHaveAttribute('href', '/tools/study-planner/?exam=nigeria-neco');
+    await expect(page.locator('[data-waec-next="flashcard-maker"]')).toHaveAttribute('href', '/tools/flashcard-maker/?exam=nigeria-neco');
+    await expect(page.locator('[data-waec-next="exam-timetable"]')).toHaveAttribute('href', '/tools/exam-timetable/?exam=nigeria-neco');
+    await page.locator('button[onclick="saveWaecActionPack()"]') .click();
+    const necoPack = await page.evaluate(() => JSON.parse(localStorage.getItem('afrotools_waec_action_pack')).text);
+    expect(necoPack).toContain('Nigeria — NECO SSCE');
+    await page.reload();
+    await expect(page.locator('#ngExamSelect')).toHaveValue('neco');
+    await page.selectOption('#ngExamSelect', 'waec');
+    await expect(page.locator('[data-waec-next="study-planner"]')).toHaveAttribute('href', '/tools/study-planner/?exam=nigeria-waec');
+    await page.goto('/tools/study-planner/?exam=nigeria-waec-neco');
+    await expect(page.locator('#examContext')).toContainText('Nigeria WAEC or NECO');
+    await page.goto('/tools/flashcard-maker/?exam=nigeria-waec-neco');
+    await expect(page.locator('#examDeckContext')).toContainText('Nigeria WAEC or NECO');
+    await page.goto('/tools/exam-timetable/?exam=nigeria-waec-neco');
+    await expect(page.locator('#planName')).toHaveValue('Nigeria WAEC or NECO revision');
+    await expect(page.locator('#examHandoffContext')).toContainText('No dates are assumed');
+    await page.goto('/tools/study-planner/?exam=nigeria-neco');
+    await expect(page.locator('#examContext')).toContainText('Nigeria NECO SSCE');
+    await page.goto('/tools/flashcard-maker/?exam=nigeria-waec');
+    await expect(page.locator('#examDeckContext')).toContainText('Nigeria WAEC WASSCE');
+    await page.goto('/tools/exam-timetable/?exam=nigeria-neco');
+    await expect(page.locator('#planName')).toHaveValue('Nigeria NECO SSCE revision');
+    await page.goto('/tools/study-planner/?exam=ghana-waec');
+    await expect(page.locator('#examContext')).toContainText('Ghana WAEC');
+    await page.goto('/tools/flashcard-maker/?exam=ghana-waec');
+    await expect(page.locator('#examDeckContext')).toContainText('Ghana WAEC');
+    await page.goto('/tools/exam-timetable/?exam=ghana-waec');
+    await expect(page.locator('#planName')).toHaveValue('Ghana WASSCE revision');
   });
 });

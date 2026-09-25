@@ -2,6 +2,8 @@
 
 const assert = require('node:assert/strict');
 const engine = require('../tools/jamb-aggregate/jamb-aggregate-engine.js');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const example = engine.calculate({
   utme: 280,
@@ -47,5 +49,10 @@ assert.match(engine.calculate({
   postUtmeWeight: 50,
   benchmark: 101
 }).error, /benchmark/);
+
+const page = fs.readFileSync(path.join(__dirname, '../tools/jamb-aggregate/index.html'), 'utf8');
+assert.doesNotMatch(page, /var (?:FORMULAS|CUTOFFS)\s*=/);
+assert.doesNotMatch(page, /Competitive courses like Medicine|Cutoff data sourced|16,000\+/);
+assert.equal((page.match(/class="jamb-faq-item"/g) || []).length, 3);
 
 console.log('JAMB screening worksheet verified: normalized UTME, published weights, benchmark comparison, and invalid-state guards.');

@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const appJs = fs.readFileSync(path.join(root, "education-hub.js"), "utf8");
 const vipCss = fs.readFileSync(path.join(root, "education-hub-vip.css"), "utf8");
 
-assert.match(html, /Private Education Planning Dashboard/);
+assert.match(html, /<title>My Study Space \| AfroTools<\/title>/);
 assert.match(html, /Privacy and interpretation/);
 assert.match(html, /planner, not an eligibility decision/i);
 assert.match(html, /source-filter overlaps/i);

@@ -115,6 +115,12 @@ assert(!variableHtml.includes('Report deadline'), 'verified no-single-public-dea
 const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'tools/scholarship-finder/index.html'), 'utf8');
 assert(indexHtml.includes('scholarship-deadline-trust.css'), 'Scholarship Finder should load deadline-trust CSS');
 assert(indexHtml.includes('scholarship-deadline-trust.js'), 'Scholarship Finder should load deadline-trust script');
+assert(indexHtml.includes("min_gpa_4:null,min_gpa_5:null,min_ielts:null,deadline_text:'Check current cycle on official page'"),
+  'Chevening fallback must not invent GPA, IELTS or a standing November deadline');
+
+const fallbackFeed = fs.readFileSync(path.join(__dirname, '..', 'assets/js/education-scholarship-feed.js'), 'utf8');
+assert(fallbackFeed.includes('min_gpa_4:null,min_gpa_5:null,min_ielts:null,deadline_text:"Check current cycle on official page"'),
+  'feed fallback must retain Chevening source uncertainty');
 
 const deadlineOverrides = require(path.join(__dirname, '..', 'data', 'scholarships', 'deadline-overrides.json'));
 const chevening = deadlineOverrides.overrides['chevening-scholarship-uk-government-fcdo'];
@@ -122,6 +128,46 @@ assert.strictEqual(chevening.deadline_date, '2026-10-06', 'Chevening should reta
 assert.strictEqual(chevening.status, 'open', 'Chevening should remain open during the verified 2027-28 application window');
 assert.strictEqual(chevening.deadline_confidence, 'verified', 'Chevening deadline should remain tied to official timeline evidence');
 assert.strictEqual(chevening.deadline_source_url, 'https://www.chevening.org/scholarships/application-timeline/', 'Chevening should use the current official timeline URL');
+assert.strictEqual(chevening.deadline_at, '2026-10-06T11:00:00Z', 'Chevening must carry the official UTC cutoff');
+
+const beforeCutoff = new Date('2026-10-06T10:59:59Z');
+const atCutoff = new Date('2026-10-06T11:00:00Z');
+const cheveningPublic = {
+  name: 'Chevening Scholarship',
+  deadline_date: chevening.deadline_date,
+  deadline_at: chevening.deadline_at,
+  deadline_text: chevening.deadline_text,
+  deadline_confidence: chevening.deadline_confidence,
+  source_url: chevening.deadline_source_url,
+  last_verified_at: '2026-09-25T00:00:00Z',
+  status: 'open'
+};
+assert.strictEqual(trust.normalizeDeadline(cheveningPublic, beforeCutoff).deadlineStatus, 'urgent',
+  'Chevening should remain open immediately before 11:00 UTC');
+const afterCutoffTrust = trust.normalizeDeadline(cheveningPublic, atCutoff);
+assert.strictEqual(afterCutoffTrust.deadlineStatus, 'closed', 'Chevening should close at 11:00 UTC');
+assert(afterCutoffTrust.displayText.includes('11:00 UTC'), 'the sourced closing time should remain visible');
+assert.strictEqual(trust.normalizeDeadline({ deadline_date: '2026-10-06', status: 'open' }, atCutoff).deadlineStatus,
+  'urgent', 'date-only awards should retain end-of-date behavior');
+
+const adb = deadlineOverrides.overrides['adb-japan-scholarship-program'];
+assert.strictEqual(adb.deadline_date, null, 'ADB-JSP must not be given one universal deadline');
+assert(adb.deadline_notes.includes('no African country'), 'ADB-JSP override should explain the African eligibility exclusion');
+const curatedSeed = require(path.join(__dirname, '..', 'scripts', 'seed-curated-scholarships.js'));
+assert.strictEqual(curatedSeed.normalizeSeedStatus('open', chevening, beforeCutoff), 'open');
+assert.strictEqual(curatedSeed.normalizeSeedStatus('open', chevening, atCutoff), 'closed');
+const adbSeed = curatedSeed.seedEntries.find((entry) => entry[0] === 'adb-japan-scholarship-program');
+const adbRow = curatedSeed.buildRow(adbSeed, 'skipped', 'source-id', '2026-09-25T00:00:00Z');
+assert.strictEqual(adbRow.is_active, false, 'a seed run should deactivate an older ADB-JSP row');
+assert.strictEqual(adbRow.is_archived, true, 'a seed run should archive an older ADB-JSP row');
+assert.deepStrictEqual(adbRow.eligible_origins, [], 'ADB-JSP should not claim African eligibility');
+assert.strictEqual(adbRow.raw_snapshot.archive_reason, 'african_citizenship_ineligible');
+assert.strictEqual(adbRow.archive_reason, undefined,
+  'archive reason belongs in the snapshot, not an untracked scholarship column');
+assert.strictEqual(adbRow.proof_level, 'official_deadline_no_single_public_date',
+  'a variable institution deadline must not be labeled an exact verified date');
+assert.strictEqual(curatedSeed.shouldUpsertEntry(adbSeed, 'ERR'), true,
+  'ADB-JSP must still be deactivated when its link check is unavailable');
 
 const twas = deadlineOverrides.overrides['twas-fellowships'];
 assert.strictEqual(twas.deadline_date, null, 'TWAS umbrella record must not inherit a programme-specific deadline');
@@ -151,6 +197,37 @@ assert.strictEqual(midasAfricanFaculty.deadline_date, '2026-10-05', 'MIDAS Afric
 assert.strictEqual(midasAfricanFaculty.status, 'open', 'MIDAS African Faculty Fellowship should remain open during Phase 1');
 
 const deadlineOverrideApplier = require(path.join(__dirname, '..', 'scripts', 'apply-scholarship-deadline-overrides.js'));
+assert.strictEqual(deadlineOverrideApplier.normalizeStatus(chevening, beforeCutoff), 'open');
+assert.strictEqual(deadlineOverrideApplier.normalizeStatus(chevening, atCutoff), 'closed');
+assert.strictEqual(deadlineOverrideApplier.normalizeStatus({ deadline_date: '2026-10-06', status: 'open' }, atCutoff),
+  'open', 'date-only overrides should remain open on their deadline date');
+assert.strictEqual(deadlineOverrideApplier.buildPatch(chevening, atCutoff.toISOString()).status, 'closed');
+assert.strictEqual(deadlineOverrideApplier.buildSnapshot({}, chevening, atCutoff).deadline_at,
+  chevening.deadline_at, 'the exact cutoff should survive the override snapshot');
+
+const scholarshipPlatform = require(path.join(__dirname, '..', 'netlify/functions/_shared/scholarship-platform.js'));
+assert.strictEqual(scholarshipPlatform.normalizeDeadlineStatus('open', chevening.deadline_date, chevening.deadline_at, beforeCutoff), 'open');
+assert.strictEqual(scholarshipPlatform.normalizeDeadlineStatus('open', chevening.deadline_date, chevening.deadline_at, atCutoff), 'closed');
+assert.strictEqual(scholarshipPlatform.normalizeDeadlineStatus('open', '2026-10-06', null, atCutoff), 'open');
+const cheveningMirrorRow = {
+  id: 'chevening-test', slug: 'chevening-scholarship-uk-government-fcdo', title: 'Chevening Scholarship',
+  status: 'open', deadline_date: chevening.deadline_date,
+  source_url: chevening.deadline_source_url,
+  raw_snapshot: { deadline_at: chevening.deadline_at }
+};
+assert.strictEqual(scholarshipPlatform.buildLegacyScholarship(cheveningMirrorRow, beforeCutoff).status, 'open');
+const afterCutoffPublic = scholarshipPlatform.buildLegacyScholarship(cheveningMirrorRow, atCutoff);
+assert.strictEqual(afterCutoffPublic.status, 'closed', 'live feed should close a stale open mirror row at the cutoff');
+assert.strictEqual(afterCutoffPublic.deadline_at, chevening.deadline_at, 'live feed should project the exact cutoff');
+assert.strictEqual(scholarshipPlatform.buildLegacyScholarship(Object.assign({}, cheveningMirrorRow, {
+  raw_snapshot: {}
+}), atCutoff).status, 'closed', 'packaged override should close an older mirror row before reseeding');
+assert.strictEqual(scholarshipPlatform.hasDatedFutureDeadline({
+  status: 'open', deadline_date: chevening.deadline_date, raw_snapshot: { deadline_at: chevening.deadline_at }
+}, { now: atCutoff }), false, 'reminders should stop at the exact cutoff');
+assert.strictEqual(scholarshipPlatform.hasDatedFutureDeadline({
+  slug: 'chevening-scholarship-uk-government-fcdo', status: 'open', deadline_date: chevening.deadline_date
+}, { now: atCutoff }), false, 'packaged override should stop reminders for an older mirror row');
 assert.strictEqual(
   deadlineOverrideApplier.normalizeStatus({ deadline_date: '2026-09-09', status: 'open' }),
   'closed',

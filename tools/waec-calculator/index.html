@@ -204,6 +204,14 @@
         <label for="trackSelect">Subject Track</label>
         <select id="trackSelect" class="wc-select" aria-label="Select subject track"></select>
     </div>
+    <div class="wc-select-group" id="ngExamGroup">
+        <label for="ngExamSelect">Nigeria exam</label>
+        <select id="ngExamSelect" class="wc-select">
+            <option value="">WAEC or NECO — choose if known</option>
+            <option value="waec">WAEC WASSCE</option>
+            <option value="neco">NECO SSCE</option>
+        </select>
+    </div>
 </div>
 
 <nav class="wc-tabs" role="tablist" aria-label="Calculator tabs">
@@ -246,15 +254,15 @@
                 <h2>Finish the decision on an official source</h2>
                 <p class="desc">Admission depends on the institution, programme, entry mode, subject combination, year and sometimes number of sittings. This page does not invent a universal cutoff.</p>
                 <div class="wc-source-grid">
-                    <a class="wc-source-card" href="https://eligibility.jamb.gov.ng/" rel="noopener" target="_blank">
+                    <a class="wc-source-card" data-waec-ng-only href="https://eligibility.jamb.gov.ng/" rel="noopener" target="_blank">
                         <strong>Nigeria — JAMB IBASS eligibility checker</strong>
                         <span>Choose the institution and programme, then verify O-Level credits, passes and UTME subjects.</span>
                     </a>
-                    <a class="wc-source-card" href="https://waecgh.org/home/wassce-school/" rel="noopener" target="_blank">
+                    <a class="wc-source-card" data-waec-gh-only href="https://waecgh.org/home/wassce-school/" rel="noopener" target="_blank">
                         <strong>Ghana — WAEC WASSCE subject structure</strong>
                         <span>Confirm the four core subjects and the elective programme used on your result.</span>
                     </a>
-                    <a class="wc-source-card" href="https://admissions.ug.edu.gh/undergraduate/entry-requirements" rel="noopener" target="_blank">
+                    <a class="wc-source-card" data-waec-gh-only href="https://admissions.ug.edu.gh/undergraduate/entry-requirements" rel="noopener" target="_blank">
                         <strong>Example — University of Ghana requirements</strong>
                         <span>See how an institution defines relevant core subjects, electives and programme-specific aggregates.</span>
                     </a>
@@ -340,10 +348,10 @@
     <aside>
       <div class="wc-action-links">
         <a href="/tools/university-admission/">Open pathway finder</a>
-        <a href="/tools/jamb-aggregate/">Calculate JAMB aggregate</a>
-        <a href="/tools/study-planner/?exam=ghana-waec">Build study plan</a>
-        <a href="/tools/flashcard-maker/?exam=ghana-waec">Drill flashcards</a>
-        <a href="/tools/exam-timetable/?exam=ghana-waec">Make exam timetable</a>
+        <a data-waec-ng-only href="/tools/jamb-aggregate/">Calculate JAMB aggregate</a>
+        <a data-waec-next="study-planner" href="/tools/study-planner/?exam=nigeria-waec-neco">Build study plan</a>
+        <a data-waec-next="flashcard-maker" href="/tools/flashcard-maker/?exam=nigeria-waec-neco">Make study flashcards</a>
+        <a data-waec-next="exam-timetable" href="/tools/exam-timetable/?exam=nigeria-waec-neco">Make exam timetable</a>
       </div>
       <div class="wc-action-actions">
         <button type="button" onclick="copyWaecActionPack()">Copy plan</button>
@@ -445,7 +453,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Planning Dashboard" data-category="education" data-icon="EP" data-desc="Privately organise saved education details, school and scholarship shortlists, cost scenarios and deadlines; filter over">Education Planning Dashboard</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME, Post-UTME, and institution-published weights, then complete official eligibili">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li><li><a href="/tools/university-ranking/" data-related-tool data-id="university-ranking" data-name="African University Comparison Worksheet" data-category="education" data-icon="AU" data-desc="Compare user-supplied official programme links, same-currency first-year costs, deadlines, accreditation checks and evid">African University Comparison Worksheet</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="My Study Space" data-category="education" data-icon="MS" data-desc="Continue locally saved study plans, school and scholarship shortlists, cost scenarios and deadlines on this device.">My Study Space</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME and a screening score using weights you enter; confirm the institution&#39;s actual">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li><li><a href="/tools/university-ranking/" data-related-tool data-id="university-ranking" data-name="African University Comparison Worksheet" data-category="education" data-icon="AU" data-desc="Compare user-supplied official programme links, same-currency first-year costs, deadlines, accreditation checks and evid">African University Comparison Worksheet</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -456,7 +464,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/bundles/core.2969eb2e.min.js" defer></script>
 <script src="/tools/waec-calculator/waec-engine.js?v=48229d04" defer></script>
-<script src="/tools/waec-calculator/waec-calculator.js?v=a47c3b6c" defer></script>
+<script src="/tools/waec-calculator/waec-calculator.js?v=592ad962" defer></script>
 
 <script>
 (function(){
@@ -586,9 +594,31 @@
   }
   function selectedSystemName(saved){
     var select=byId('examSystem');
+    var nigeriaExam=byId('ngExamSelect');
+    if(select&&select.value==='ng-waec-neco'&&nigeriaExam&&nigeriaExam.value)return 'Nigeria — '+(nigeriaExam.value==='neco'?'NECO SSCE':'WAEC WASSCE');
     if(select&&select.selectedOptions&&select.selectedOptions[0])return select.selectedOptions[0].textContent.trim();
     if(saved&&saved.examSystem==='gh-wassce')return 'Ghana — WASSCE';
     return 'WAEC/NECO';
+  }
+  function selectedExamContext(){
+    var select=byId('examSystem');
+    if(select&&select.value==='gh-wassce')return 'ghana-waec';
+    var nigeriaExam=byId('ngExamSelect');
+    return nigeriaExam&&nigeriaExam.value?'nigeria-'+nigeriaExam.value:'nigeria-waec-neco';
+  }
+  function updateNextLinks(){
+    var context=selectedExamContext();
+    document.querySelectorAll('[data-waec-next]').forEach(function(link){
+      link.href='/tools/'+link.getAttribute('data-waec-next')+'/?exam='+encodeURIComponent(context);
+    });
+    document.querySelectorAll('[data-waec-ng-only]').forEach(function(link){
+      link.hidden=context==='ghana-waec';
+      link.style.display=link.hidden?'none':'';
+    });
+    document.querySelectorAll('[data-waec-gh-only]').forEach(function(link){
+      link.hidden=context!=='ghana-waec';
+      link.style.display=link.hidden?'none':'';
+    });
   }
   function resultSnapshot(){
     var saved=readSaved();
@@ -607,17 +637,18 @@
     };
   }
   function actionChecks(snap){
+    var gh=selectedExamContext()==='ghana-waec';
     if(!snap.ready){
       return [
         ['Enter grades','Fill at least the required subjects so the aggregate and credit count can be calculated.'],
-        ['Check course requirements','Use the official-check links for your intended institution and programme.'],
+        ['Check course requirements',gh?'Use the current Ghana institution requirements for your intended programme.':'Use JAMB IBASS and the current Nigeria institution requirements for your intended programme.'],
         ['Plan next prep','Open the study planner or flashcards when a subject is still weak.']
       ];
     }
     var checks=[
       ['Planning result','Planning value '+snap.aggregate+' with '+snap.credits+' credit-level subject'+(snap.credits==='1'?'':'s')+'.'],
       ['Requirement check','Use the Official checks tab for institution and programme rules.'],
-      ['Admission next step','Compare this plan with JAMB IBASS or the institution admissions portal.']
+      ['Admission next step',gh?'Compare this Ghana WASSCE plan with the institution admissions portal.':'Compare this Nigeria result plan with JAMB IBASS and the institution admissions portal.']
     ];
     var creditNum=parseInt(snap.credits,10)||0;
     if(creditNum<5)checks.unshift(['Credit gap','Fewer than five credit-level results are currently recorded; confirm the exact requirement for your programme.']);
@@ -626,7 +657,7 @@
   function buildActionText(){
     var snap=resultSnapshot();
     var lines=[
-      'AfroTools WAEC/NECO Result Verification Pack',
+      'AfroTools '+snap.system+' Result Verification Pack',
       'Exam system: '+snap.system,
       'Planning value: '+snap.aggregate,
       'Credits: '+snap.credits,
@@ -643,10 +674,11 @@
     lines.push('');
     lines.push('Tools');
     lines.push('Pathway finder: https://afrotools.com/tools/university-admission/');
-    lines.push('JAMB aggregate: https://afrotools.com/tools/jamb-aggregate/');
-    lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam=ghana-waec');
-    lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam=ghana-waec');
-    lines.push('Exam timetable: https://afrotools.com/tools/exam-timetable/?exam=ghana-waec');
+    if(selectedExamContext()!=='ghana-waec')lines.push('JAMB aggregate: https://afrotools.com/tools/jamb-aggregate/');
+    var exam=selectedExamContext();
+    lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam='+exam);
+    lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam='+exam);
+    lines.push('Exam timetable: https://afrotools.com/tools/exam-timetable/?exam='+exam);
     lines.push('');
     lines.push('Confirm final admission rules, cutoffs, and subject requirements with the exam body and institution before applying.');
     return lines.join('\n');
@@ -699,6 +731,7 @@
     var checks=byId('wcActionChecks');
     if(!summary||!checks)return;
     var snap=resultSnapshot();
+    updateNextLinks();
     summary.innerHTML=[
       ['Plan value',snap.aggregate],
       ['Credits',snap.credits],
@@ -711,7 +744,7 @@
   document.addEventListener('DOMContentLoaded',function(){
     setTimeout(function(){repairWaecRowsIfMissing(render);},450);
     render();
-    ['resultAggregate','resultCredits','classBadge','examSystem'].forEach(function(id){
+    ['resultAggregate','resultCredits','classBadge','examSystem','ngExamSelect'].forEach(function(id){
       var el=byId(id);
       if(!el)return;
       if(el.tagName==='SELECT')el.addEventListener('change',function(){setTimeout(render,220);});

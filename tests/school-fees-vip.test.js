@@ -49,3 +49,16 @@ test('does not treat non-annual fee periods as annual amounts', () => {
   assert.equal(annual.isAnnual, true);
   assert.equal(term.isAnnual, false);
 });
+
+test('manual quote comparison requires explicit amounts and a shared period', () => {
+  const base = { currency: 'NGN', period: 'Term', quotes: [
+    { name: 'School A', tuition: '120000', extras: '30000' },
+    { name: 'School B', tuition: '110000', extras: '5000' }
+  ] };
+  const result = engine.compareManualQuotes(base);
+  assert.equal(result.ok, true);
+  assert.equal(result.lowerIndex, 1);
+  assert.equal(result.difference, 35000);
+  assert.equal(engine.compareManualQuotes({ ...base, quotes: [base.quotes[0], { ...base.quotes[1], extras: '' }] }).ok, false);
+  assert.equal(engine.compareManualQuotes({ ...base, quotes: [base.quotes[0], { ...base.quotes[1], extras: '0.001' }] }).ok, false);
+});

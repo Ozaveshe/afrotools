@@ -146,6 +146,7 @@ img{max-width:100%}
 .prac-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .prac-pill .p-icon{font-size:1.1rem}
 .prac-pill.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.prac-pill:disabled{opacity:.45;cursor:not-allowed;background:var(--surface,#f8fafc);color:var(--muted,#64748b)}
 .prac-start-btn{margin-top:16px}
 
 /* practice session */
@@ -486,11 +487,11 @@ img{max-width:100%}
   <div class="edu-ecosystem-card">
     <div class="edu-ecosystem-copy">
       <div class="edu-ecosystem-label">AfroTools Education System</div>
-      <p>AfroStudy is the KCSE-focused exam prep product in the AfroTools education ecosystem. Use the main education hub for the full taxonomy, and Education Hub when you want a profile-led route across scholarships and study tools.</p>
+      <p>AfroStudy is the KCSE-focused exam practice route. Use Education Tools to find other study tasks, or My Study Space to continue saved plans and deadlines.</p>
     </div>
     <div class="edu-ecosystem-links">
       <a href="/education/">Education category</a>
-      <a href="/tools/education-hub/">Education Hub</a>
+      <a href="/tools/education-hub/">My Study Space</a>
       <a href="/jamb/">AfroJAMB</a>
     </div>
   </div>
@@ -640,15 +641,16 @@ img{max-width:100%}
       <div class="prac-step-label">Step 3: Select Mode</div>
       <div class="prac-pills">
         <button type="button" class="prac-pill active" data-mode="random" onclick="selectPracMode('random')">Random Mix</button>
-        <button type="button" class="prac-pill" data-mode="topic" onclick="selectPracMode('topic')">By Topic</button>
-        <button type="button" class="prac-pill" data-mode="year" onclick="selectPracMode('year')">By Year</button>
-        <button type="button" class="prac-pill" data-mode="weak" onclick="selectPracMode('weak')">Weak Topics</button>
+        <button type="button" class="prac-pill" data-mode="topic" disabled title="Topic filtering is not available for this starter bank">By Topic · unavailable</button>
+        <button type="button" class="prac-pill" data-mode="year" disabled title="Year filtering is not available for this starter bank">By Year · unavailable</button>
+        <button type="button" class="prac-pill" data-mode="weak" disabled title="Weak-topic filtering is not available for this starter bank">Weak Topics · unavailable</button>
       </div>
     </div>
 
     <!-- Step 4: Question count (hidden until mode chosen) -->
     <div class="prac-step" id="prac-step-4" style="display:none">
       <div class="prac-step-label">Step 4: Number of Questions</div>
+      <p id="prac-available" role="status" aria-live="polite"></p>
       <div class="prac-pills">
         <button type="button" class="prac-pill active" data-count="10" onclick="selectPracCount(10)">10</button>
         <button type="button" class="prac-pill" data-count="20" onclick="selectPracCount(20)">20</button>
@@ -1247,12 +1249,32 @@ window.selectPracSubject = function(id){
   document.getElementById('prac-step-3').style.display = '';
   document.getElementById('prac-step-4').style.display = '';
   document.getElementById('prac-start-btn').style.display = '';
+  updatePracticeAvailability();
 };
 
 window.selectPracPaper = function(p){
   practiceState.paper = p;
   document.querySelectorAll('#prac-papers .prac-pill').forEach(function(b){b.classList.toggle('active', parseInt(b.dataset.paper)===p)});
+  updatePracticeAvailability();
 };
+
+function availablePracticeCount(){
+  var pool = (window.AFROSTUDY_QUESTIONS || []).filter(function(q){
+    return q.subject === practiceState.subject && q.paper === practiceState.paper;
+  });
+  return pool.length || getSampleQuestions(practiceState.subject, practiceState.paper).length;
+}
+
+function updatePracticeAvailability(){
+  var available = availablePracticeCount();
+  document.getElementById('prac-available').textContent = available + ' questions available for this subject and paper. A larger request will not start extra questions.';
+  document.querySelectorAll('#prac-step-4 .prac-pill').forEach(function(button){
+    var count = Number(button.dataset.count);
+    button.disabled = button.dataset.count !== 'all' && count > available;
+    button.title = button.disabled ? 'Only ' + available + ' questions are available' : '';
+  });
+  if(practiceState.count !== 'all' && practiceState.count > available) window.selectPracCount('all');
+}
 
 window.selectPracMode = function(m){
   practiceState.mode = m;

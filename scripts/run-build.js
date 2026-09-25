@@ -8,6 +8,7 @@ const path = require('path');
 const STAGES = [
   'build:jamb',
   'build:registry',
+  'education:build',
   'build:surfaces',
   'build:assets',
   'build:seo'

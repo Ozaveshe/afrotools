@@ -26,7 +26,17 @@ test('uses practical planning stages and distinguishes past dates', () => {
   assert.equal(engine.planningPhase(31, 'upcoming').label, 'Revision build');
   assert.equal(engine.planningPhase(30, 'upcoming').label, 'Timed practice');
   assert.equal(engine.planningPhase(7, 'upcoming').label, 'Final week');
-  assert.equal(engine.planningPhase(-1, 'past').label, 'Update the date');
+  assert.equal(engine.planningPhase(-1, 'past').label, 'Past date — keep for history or update');
+});
+
+test('expired registration and upcoming application dates get submission actions', () => {
+  const past = engine.planText({ name: 'Registration', date: '2026-07-31', kind: 'registration' }, new Date(2026, 8, 25));
+  assert.match(past, /Past date/);
+  assert.match(past, /registration was submitted/);
+  assert.doesNotMatch(past, /Review mistakes and key recall/);
+  const future = engine.planText({ name: 'Application', date: '2026-10-31', kind: 'application' }, new Date(2026, 8, 25));
+  assert.match(future, /Application deadline/);
+  assert.match(future, /required documents/);
 });
 
 test('rejects invalid saved records and unsafe source URLs', () => {

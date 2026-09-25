@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
 <link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=494d4054">
-<link rel="stylesheet" href="/tools/school-fees/school-fees-app.css?v=80c512ed">
+<link rel="stylesheet" href="/tools/school-fees/school-fees-app.css?v=f6af4c72">
 <link rel="stylesheet" href="/tools/school-fees/school-fees-vip.css?v=be97ecc8">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <style>
@@ -40,19 +40,38 @@
     <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/education/">Education</a><span>/</span><span>School Fees</span></div>
     <div class="md-eyebrow">Education Costs</div>
     <h1>School Fees Comparator</h1>
-    <p>Filter published fee records, inspect how each row is supported, and pass only annual-labelled amounts into Student Budget. Always confirm the current schedule directly with the school.</p>
+    <p>Compare your own written fee quotes immediately, then inspect published records when available. Confirm the current schedule directly with each school.</p>
     <div class="md-chip-row"><span class="md-chip">Published records</span><span class="md-chip">Trust labels</span><span class="md-chip">Period-safe handoff</span><span class="md-chip">Local shortlist context</span></div>
   </div>
 </section>
 <div class="md-shell">
   <div class="md-main">
+    <section class="md-panel" aria-labelledby="manualQuoteTitle">
+      <div class="md-panel-head"><h2 class="md-panel-title" id="manualQuoteTitle">Compare two fee quotes</h2><div class="md-panel-subtitle">Your entries stay in this tab. Use amounts for the same currency and fee period; no live feed is needed.</div></div>
+      <div class="md-panel-body">
+        <form id="sfManualForm" class="sf-manual-form" novalidate>
+          <div class="sf-manual-settings">
+            <div class="md-field"><label for="sfManualCurrency">Currency</label><input id="sfManualCurrency" class="md-input" maxlength="3" placeholder="e.g. NGN" autocomplete="off"></div>
+            <div class="md-field"><label for="sfManualPeriod">Period on both quotes</label><select id="sfManualPeriod" class="md-select"><option value="Annual">Annual</option><option value="Term">Term</option><option value="Semester">Semester</option><option value="One-time">One-time</option></select></div>
+          </div>
+          <div class="sf-manual-quotes">
+            <fieldset><legend>Option 1</legend><div class="md-field"><label for="sfName1">School or option</label><input id="sfName1" class="md-input" maxlength="100"></div><div class="md-field"><label for="sfTuition1">Tuition</label><input id="sfTuition1" class="md-input" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter 0 if none"></div><div class="md-field"><label for="sfExtras1">Other quoted fees</label><input id="sfExtras1" class="md-input" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter 0 if none"></div></fieldset>
+            <fieldset><legend>Option 2</legend><div class="md-field"><label for="sfName2">School or option</label><input id="sfName2" class="md-input" maxlength="100"></div><div class="md-field"><label for="sfTuition2">Tuition</label><input id="sfTuition2" class="md-input" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter 0 if none"></div><div class="md-field"><label for="sfExtras2">Other quoted fees</label><input id="sfExtras2" class="md-input" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter 0 if none"></div></fieldset>
+          </div>
+          <button type="submit" class="md-btn">Compare quotes</button>
+          <p id="sfManualError" role="alert" aria-live="assertive"></p>
+        </form>
+        <div id="sfManualResult" class="sf-manual-result" aria-live="polite" hidden></div>
+        <p class="sf-coverage-note">Comparison only. These are your own amounts, not verified school records. Check included items, payment deadlines, refunds, and any fee changes before deciding.</p>
+      </div>
+    </section>
     <div class="md-panel">
       <div class="md-panel-head"><div class="md-panel-title">Published School Fee Records</div><div class="md-panel-subtitle">Filter the public feed and inspect whether each row is a community record, proof-linked, or reports verified and reviewed states.</div></div>
       <div class="md-panel-body">
         <div class="md-note-strip">
           <div>
             <strong>Compare annual fees with the route already in mind</strong>
-            <p>Live fee rows stay the trust layer. Saved shortlist fee bands and route posture simply make the comparison more decision-ready, not more precise than the data supports.</p>
+            <p>Published records are additional planning references when the feed is available. Compare your own current written quotes above at any time.</p>
           </div>
           <a href="/tools/student-budget/">Open Student Budget</a>
         </div>
@@ -105,8 +124,8 @@
 <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560"></script>
 <script src="/assets/js/market-data-app.js?v=1b8c8bd6"></script>
-<script src="/tools/school-fees/school-fees-engine.js?v=e760c413"></script>
-<script src="/tools/school-fees/school-fees-app.js?v=0091f121"></script>
+<script src="/tools/school-fees/school-fees-engine.js?v=25b44f35"></script>
+<script src="/tools/school-fees/school-fees-app.js?v=075ad710"></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>

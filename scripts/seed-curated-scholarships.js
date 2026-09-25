@@ -8,22 +8,34 @@ const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_KEY;
 
 const BACKUP_SOURCE_KEY = 'afrotools-curated-backup';
+// ADB-JSP's official citizenship list contains no African country. Keep its
+// existing slug in the seed so a subsequent run deactivates any old row.
+const INELIGIBLE_FOR_AFRICAN_AUDIENCE = new Set(['adb-japan-scholarship-program']);
 const CONCURRENCY = Number(process.env.SCHOLARSHIP_SEED_CONCURRENCY || 8);
 const LINK_TIMEOUT_MS = Number(process.env.SCHOLARSHIP_SEED_LINK_TIMEOUT_MS || 6000);
 const SKIP_LINK_CHECK = process.env.SCHOLARSHIP_SEED_SKIP_LINK_CHECK === '1';
 const ALLOW_HTTP_BLOCKED = process.env.SCHOLARSHIP_SEED_ALLOW_HTTP_BLOCKED !== '0';
 const DRY_RUN = process.argv.includes('--dry-run');
 
-function isPastDeadlineDate(deadlineDate) {
+function isPastDeadlineDate(deadlineDate, now = new Date()) {
   const dateKey = String(deadlineDate || '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
-  const todayKey = new Date().toISOString().slice(0, 10);
+  const todayKey = new Date(now).toISOString().slice(0, 10);
   return !!dateKey && dateKey < todayKey;
 }
 
-function normalizeSeedStatus(status, deadlineDate) {
+function isPastDeadline(override, now = new Date()) {
+  const exact = String(override.deadline_at || '');
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(exact)) {
+    const cutoff = Date.parse(exact);
+    if (Number.isFinite(cutoff)) return new Date(now).getTime() >= cutoff;
+  }
+  return isPastDeadlineDate(override.deadline_date, now);
+}
+
+function normalizeSeedStatus(status, deadlineOverride, now = new Date()) {
   const value = String(status || '').toLowerCase();
-  if (isPastDeadlineDate(deadlineDate)) return 'closed';
+  if (isPastDeadline(deadlineOverride, now)) return 'closed';
   return value === 'variable' ? 'unclear' : value;
 }
 
@@ -217,6 +229,11 @@ function shouldKeepStatus(status) {
   return ALLOW_HTTP_BLOCKED && allowedBlockedStatuses.has(status);
 }
 
+function shouldUpsertEntry(entry, status) {
+  return INELIGIBLE_FOR_AFRICAN_AUDIENCE.has(entry[0]) ||
+    (shouldKeepStatus(status) && !rejectStatuses.has(status));
+}
+
 function getDeadlineOverride(slug) {
   const overrides = deadlineOverrides && deadlineOverrides.overrides && typeof deadlineOverrides.overrides === 'object'
     ? deadlineOverrides.overrides
@@ -260,11 +277,14 @@ function buildRow(entry, status, sourceId, now) {
   const deadlineOverride = getDeadlineOverride(entry[0]);
   const deadlineDate = deadlineOverride ? deadlineOverride.deadline_date || null : null;
   const scholarshipStatus = deadlineOverride
-    ? normalizeSeedStatus(deadlineOverride.status || 'upcoming', deadlineDate)
+    ? normalizeSeedStatus(deadlineOverride.status || 'upcoming', deadlineOverride, now)
     : 'unclear';
-  const shouldArchive = scholarshipStatus === 'closed';
-  const summary = entry[1] + ' from ' + entry[2] +
-    '. Curated official-link record for African students to verify cycle dates, eligibility, and application requirements on the provider page.';
+  const isIneligible = INELIGIBLE_FOR_AFRICAN_AUDIENCE.has(entry[0]);
+  const shouldArchive = scholarshipStatus === 'closed' || isIneligible;
+  const summary = isIneligible
+    ? 'ADB-JSP does not list African citizenships among eligible countries. This record is archived from the Africa-focused finder.'
+    : entry[1] + ' from ' + entry[2] +
+      '. Curated official-link record for African students to verify cycle dates, eligibility, and application requirements on the provider page.';
 
   const row = {
     slug: entry[0],
@@ -273,7 +293,7 @@ function buildRow(entry, status, sourceId, now) {
     source_url: entry[3],
     official_url: entry[3],
     destination_countries: destinations,
-    eligible_origins: ['Africa', 'global'],
+    eligible_origins: isIneligible ? [] : ['Africa', 'global'],
     study_levels: levels,
     fields,
     funding_type: funding,
@@ -283,13 +303,17 @@ function buildRow(entry, status, sourceId, now) {
     deadline_text: deadlineOverride ? deadlineOverride.deadline_text || null : 'Check official page',
     status: scholarshipStatus,
     confidence_mode: 'curated',
-    proof_level: deadlineOverride ? 'official_deadline_manual_review' : (blocked ? 'official_link_http_blocked' : 'official_link'),
+    proof_level: deadlineOverride
+      ? (deadlineOverrideConfidence(deadlineOverride) === 'verified'
+        ? 'official_deadline_manual_review' : 'official_deadline_no_single_public_date')
+      : (blocked ? 'official_link_http_blocked' : 'official_link'),
     summary,
     last_seen_at: now,
     last_verified_at: now,
     last_source_id: sourceId,
     is_featured: false,
     is_active: !shouldArchive,
+    is_archived: shouldArchive,
     raw_snapshot: {
       source_key: BACKUP_SOURCE_KEY,
       source_type: 'curated_import',
@@ -309,9 +333,9 @@ function buildRow(entry, status, sourceId, now) {
     }
   };
   if (shouldArchive) {
-    row.is_archived = true;
-    row.archived_at = now;
-    row.archive_reason = isPastDeadlineDate(deadlineDate) ? 'deadline_passed' : 'source_closed';
+    row.raw_snapshot.archived_at = now;
+    row.raw_snapshot.archive_reason = isIneligible ? 'african_citizenship_ineligible'
+      : isPastDeadline(deadlineOverride || {}, now) ? 'deadline_passed' : 'source_closed';
   }
   if (deadlineOverride) {
     const deadlineConfidence = deadlineOverrideConfidence(deadlineOverride);
@@ -325,10 +349,11 @@ function buildRow(entry, status, sourceId, now) {
     row.raw_snapshot.deadline_evidence = deadlineOverride.evidence || '';
     row.raw_snapshot.deadline_checked_urls = Array.isArray(deadlineOverride.checked_urls) ? deadlineOverride.checked_urls : [];
     row.raw_snapshot.deadline_date = deadlineOverride.deadline_date || null;
+    row.raw_snapshot.deadline_at = deadlineOverride.deadline_at || null;
     row.raw_snapshot.deadline_text = deadlineOverride.deadline_text || '';
     row.raw_snapshot.deadline_status = deadlineConfidence === 'no_single_public_deadline'
       ? 'variable'
-      : deadlineOverride.status || 'upcoming';
+      : scholarshipStatus;
   }
   return row;
 }
@@ -372,7 +397,9 @@ async function main() {
   const rows = seedEntries
     .map((entry, index) => ({ entry, status: statuses[index] }))
     .filter(({ entry, status }) => {
-      const keep = shouldKeepStatus(status) && !rejectStatuses.has(status);
+      // An archived exclusion must still reach the database when its link
+      // check fails, or an older active row could remain visible.
+      const keep = shouldUpsertEntry(entry, status);
       if (!keep) skipped.push({ slug: entry[0], status, url: entry[3] });
       return keep;
     })
@@ -407,7 +434,11 @@ async function main() {
   }, null, 2));
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { buildRow, seedEntries, shouldUpsertEntry, isPastDeadline, normalizeSeedStatus };

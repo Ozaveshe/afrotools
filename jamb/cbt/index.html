@@ -127,7 +127,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         </div>
       </fieldset>
 
-      <p><a href="/tools/education-hub/">Plan your study in the Education Hub</a></p>
+      <p><a href="/tools/education-hub/">Plan your study in My Study Space</a></p>
       <div id="setup-warning" role="status" aria-live="polite" hidden style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:14px;padding:16px 18px;margin-bottom:14px;font-size:.8rem;line-height:1.55;color:#9a3412;"></div>
 
       <div id="resume-card" hidden style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:14px;padding:18px 20px;margin-bottom:14px;">
@@ -719,7 +719,7 @@ function updateSetupState() {
   warning.hidden = coverage.gradable >= coverage.total;
   startBtn.textContent = "Start Reviewed Practice →";
   if (!coverage.gradable) {
-    warning.textContent = "No reviewed questions are available for this selection yet. No score will be generated. Use the Education Hub to plan your study while the bank is reviewed.";
+    warning.textContent = "No reviewed questions are available for this selection yet. No score will be generated. Use My Study Space to plan your study while the bank is reviewed.";
   } else if (coverage.gradable < coverage.total) {
     warning.textContent = "Up to " + coverage.gradable + " reviewed questions are available for this selection. This is a limited practice session, not a complete exam paper.";
   }
@@ -806,7 +806,7 @@ async function ensurePoolLoaded() {
   var data = await AfroJAMB.QuestionTrust.loadPool("/data/jamb/pools/practice-pool.json");
   POOL = data.questions.filter(isLaunchSafeQuestion);
   POOL_REVISION = data.review_revision;
-  if (!POOL.length) throw new Error("No reviewed questions are available yet. Use the Education Hub study planner while this bank is reviewed.");
+  if (!POOL.length) throw new Error("No reviewed questions are available yet. Use My Study Space to plan your study while this bank is reviewed.");
   return POOL;
 }
 

@@ -58,6 +58,9 @@
     var effectiveWorkHourIncome = afterCostAndReserve / workHoursMonthly;
     var packagePrice = perLearnerSession * values.packageSessions * (1 - values.packageDiscount / 100);
     var packageRevenueLoss = perLearnerSession * values.packageSessions - packagePrice;
+    var packageMonthlyRevenue = (packagePrice / values.packageSessions) * values.groupSize * sessionsMonthly;
+    var packageMonthlyGap = packageMonthlyRevenue - requiredRevenueMonthly;
+    var sustainablePackagePrice = perLearnerSession * values.packageSessions;
     var comparison = null;
     if (values.proposedPrice !== null) {
       var proposedMonthlyRevenue = values.proposedPrice * values.groupSize * sessionsMonthly;
@@ -84,6 +87,9 @@
       effectiveWorkHourIncome: effectiveWorkHourIncome,
       packagePrice: packagePrice,
       packageRevenueLoss: packageRevenueLoss,
+      packageMonthlyRevenue: packageMonthlyRevenue,
+      packageMonthlyGap: packageMonthlyGap,
+      sustainablePackagePrice: sustainablePackagePrice,
       comparison: comparison
     };
   }
