@@ -43,7 +43,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | economics | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | economics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
-| JAMB | english | 2025 | 14 | 14 | Acquire and authenticate source |
+| JAMB | english | 2025 | 29 | 29 | Acquire and authenticate source |
 | JAMB | english | 2024 | 26 | 26 | Acquire and authenticate source |
 | JAMB | english | 2023 | 19 | 19 | Acquire and authenticate source |
 | JAMB | english | 2022 | 31 | 31 | Acquire and authenticate source |
@@ -62,7 +62,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | literature | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2025 | 45 | 45 | Acquire and authenticate source |
-| JAMB | mathematics | 2024 | 32 | 32 | Acquire and authenticate source |
+| JAMB | mathematics | 2024 | 41 | 41 | Acquire and authenticate source |
 | JAMB | mathematics | 2023 | 60 | 60 | Acquire and authenticate source |
 | JAMB | mathematics | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2021 | 0 | 0 | Acquire and authenticate source |

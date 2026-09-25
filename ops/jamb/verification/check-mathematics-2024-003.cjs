@@ -94,5 +94,5 @@ for (const item of manifest.items) {
 for (const held of manifest.held) {
   assert.ok(!pool.some(row => row.id === `mathematics-2024-myschool-${held.sourceItem}`), held.sourceItem);
 }
-process.stdout.write(JSON.stringify({ passed: true, accepted: 9, held: 1,
+process.stdout.write(JSON.stringify({ passed: true, question_ids: receipt.records.map(row => row.id), accepted: 9, held: 1,
   scope: 'Independent calculation and publisher-collection-only review.' }) + '\n');
