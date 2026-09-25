@@ -50,8 +50,20 @@ test('NECO 2023 Mathematics Q21–28 keeps seven checked guides and holds the co
  assert.equal(guides[6].answer,'49/8.');
 });
 
+test('NECO 2023 Mathematics Q37–44 has eight checked teaching companions with linked figures',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q37-q44');
+ assert.ok(section);assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=37&&q.number<=44);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),[37,38,39,40,41,42,43,44]);
+ assert.match(section.review,/pages 8–9/);assert.match(section.sourceRights,/rights-reserved/);
+ assert.match(guides[3].prompt,/chords EC and BD/);assert.match(guides[5].prompt,/opposite.*apex/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.equal(guides[3].answer,'66°.');assert.equal(guides[7].answer,'386 km.');
+});
+
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,5);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
+ assert.equal(manifest.components.length,6);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));

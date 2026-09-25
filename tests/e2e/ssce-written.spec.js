@@ -112,3 +112,17 @@ test('NECO Q21–28 selected guides open on mobile while the held item stays abs
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
  }
 });
+
+test('NECO Q37–44 guides retain source, hidden method and mobile layout',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await page.locator('#written-collection').selectOption('NECO 2023 Mathematics starter');
+ for(const [number,answer] of [[37,'21.'],[38,'5 sides.'],[39,'68°.'],[40,'66°.'],[41,'27°.'],[42,'140°.'],[43,'65°.'],[44,'386 km.']]){
+  await page.locator('#written-task').selectOption(`neco-2023-mathematics-p3-q${number}`);
+  await expect(page.locator('#written-editor')).toContainText(`Paper III · Question ${number}`);
+  await expect(page.locator('#written-editor a')).toHaveAttribute('href','https://www.scribd.com/document/842881920/NECO-20230001');
+  await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');
+  await page.getByText('Show worked solution',{exact:true}).click();
+  await expect(page.locator('.written-explanation')).toContainText(answer);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+ }
+});

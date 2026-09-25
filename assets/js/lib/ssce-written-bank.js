@@ -309,7 +309,47 @@
       prompt:'Two right triangles have matching acute-angle marks, so their vertical sides correspond and their horizontal bases correspond. The larger triangle has a 420 m base and unknown vertical side L. The smaller has a 24 cm base and an 18 cm vertical side. Find L in metres.',
       answer:'315 m.',
       steps:['Write the ratio of corresponding sides: L / 420 m = 18 cm / 24 cm. The centimetres cancel on the right.','The scale factor for the vertical side is 18/24 = 3/4.','Thus L = 420 × 3/4 = 315 m.'],
-      checks:['I matched vertical to vertical and base to base.','I left the final length in metres.']}
+      checks:['I matched vertical to vertical and base to base.','I left the final length in metres.']},
+    {id:'neco-2023-mathematics-p3-q37',number:37,title:'Gradient of a quadratic curve',
+      prompt:'For the curve y = 2x² + 5x − 1, find its gradient at x = 4.',
+      answer:'21.',
+      steps:['Differentiate term by term: dy/dx = 4x + 5.','At x = 4, substitute into the derivative: 4(4) + 5.','The gradient of the tangent there is 21.'],
+      checks:['I differentiated 2x² to 4x.','I evaluated the derivative at x = 4, rather than the curve height.']},
+    {id:'neco-2023-mathematics-p3-q38',number:38,title:'Sides of a regular polygon',
+      prompt:'Each interior angle of a regular polygon measures 108°. How many sides does the polygon have?',
+      answer:'5 sides.',
+      steps:['An exterior angle and its interior angle sum to 180°, so each exterior angle is 72°.','The exterior angles of any polygon sum to 360°.','For a regular polygon, the number of equal exterior angles is 360° ÷ 72° = 5.'],
+      checks:['I used the exterior angle of 72°, not 108°, in the side-count formula.','Five interior angles of 108° sum to (5 − 2) × 180° = 540°.']},
+    {id:'neco-2023-mathematics-p3-q39',number:39,title:'Angle between two perpendiculars',
+      prompt:'In the linked page 8 figure, triangle ABC has equal angles at A and C. E lies on AC, D lies on BC, BE is perpendicular to AC and ED is perpendicular to BC. If ∠ABE = 68°, find ∠CED.',
+      answer:'68°.',
+      steps:['Because BE is perpendicular to AC, the angle at A is 90° − ∠ABE = 22°.','The base angles at A and C are equal, so ∠ACB = 22°.','ED is perpendicular to BC; therefore the angle from EC (along AC) to ED is 90° − 22° = 68°.'],
+      checks:['I used the equal angles at A and C.','I matched the requested angle at E to EC and ED, not to BE.']},
+    {id:'neco-2023-mathematics-p3-q40',number:40,title:'Angle formed by crossing circle chords',
+      prompt:'Open the linked page 8 circle diagram. A–E–D and A–B–C are secants, BD passes through centre O, ∠EAB = 34° and ∠EDB = 40°. The chords EC and BD cross inside the circle. Find the upper angle x between the rays toward E and D.',
+      answer:'66°.',
+      steps:['∠EDB intercepts arc EB, so arc EB = 80°. The exterior secant angle gives 34° = (arc DC − arc EB)/2; hence arc DC = 148°.','BD is a diameter. Its semicircles give arc BC = 180° − 148° = 32° and arc ED = 180° − 80° = 100°.','For chords intersecting inside a circle, x = (arc ED + arc BC)/2 = (100° + 32°)/2 = 66°.'],
+      checks:['I used the exterior secant rule for the 34° angle at A.','I averaged the arcs opposite the upper crossing angle, ED and BC.']},
+    {id:'neco-2023-mathematics-p3-q41',number:41,title:'Diameter and an isosceles triangle',
+      prompt:'In the linked page 8 circle, AB is a diameter, D lies on AB, DB = BC and ∠ABC = 54°. Find ∠ACD.',
+      answer:'27°.',
+      steps:['Since D lies on AB, ∠DBC = ∠ABC = 54°. Triangle DBC has DB = BC, so its two base angles are (180° − 54°)/2 = 63°.','An angle at C subtended by diameter AB is 90°, so ∠ACB = 90°.','Subtract the part at C inside triangle DBC: ∠ACD = 90° − 63° = 27°.'],
+      checks:['I used the diameter to establish a right angle at C.','I used DB = BC to find the 63° base angle at C.']},
+    {id:'neco-2023-mathematics-p3-q42',number:42,title:'Exterior angle of an isosceles triangle',
+      prompt:'In the linked page 9 diagram, an isosceles triangle has exterior angles labelled 2x opposite one base angle and 5x opposite its apex angle. Find 7x.',
+      answer:'140°.',
+      steps:['Vertically opposite angles are equal, so the interior base angle is 2x and the interior apex angle is 5x. The second base angle is also 2x because the marked sides are equal.','Use the triangle angle sum: 2x + 2x + 5x = 180°, so 9x = 180° and x = 20°.','The requested angle is 7x = 7 × 20° = 140°.'],
+      checks:['I included both equal base angles.','I evaluated 7x after finding x.']},
+    {id:'neco-2023-mathematics-p3-q43',number:43,title:'Tangent and chord angle',
+      prompt:'In the linked page 9 circle, KTN is tangent at T and the angle at B between BA and BT is 65°. Find the angle ∠NTA between the tangent and chord TA.',
+      answer:'65°.',
+      steps:['The inscribed angle ∠ABT subtends chord AT.','The tangent–chord theorem says the angle between tangent TN and chord TA equals the inscribed angle in the opposite segment.','Thus ∠NTA = ∠ABT = 65°.'],
+      checks:['I used the chord TA for both angles.','I did not use the supplementary tangent angle on the other side of T.']},
+    {id:'neco-2023-mathematics-p3-q44',number:44,title:'Bearing and eastward displacement',
+      prompt:'A plane travels 200 km from P to Q on a bearing of 045°. It then flies from Q on a bearing of 120° to R, which is directly east of P. Find PR to the nearest kilometre.',
+      answer:'386 km.',
+      steps:['PQ has equal north and east components: each is 200 sin 45° = 100√2 km.','A 120° bearing gives QR a southward component equal to half its length. To return to P’s latitude, QR = 200√2 km, with eastward component QR sin 120° = 100√6 km.','Add eastward components: PR = 100√2 + 100√6 = 100√2(1 + √3) ≈ 386.37 km, so 386 km to the nearest kilometre.'],
+      checks:['I made R due east of P by cancelling the northward displacement.','I rounded only after adding both eastward distances.']}
   ].forEach(function(q){items.push(Object.assign({subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'},q));});
   items.push({
     id:'waec-2022-mathematics-p2-q6',subject:'Mathematics',collection:'WAEC 2022 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2022,paper:'2',number:6,
@@ -451,5 +491,5 @@
   const necoMathPosition = items.findIndex(function(item){return item.id === 'neco-2023-mathematics-compound-interest';});
   if (necoMathPosition < 0) throw new Error('NECO Mathematics insertion point missing');
   items.splice(necoMathPosition + 1, 0, ...necoMathCompanions);
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 28 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 35 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 28 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 43 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });
