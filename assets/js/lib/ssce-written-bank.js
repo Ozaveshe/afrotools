@@ -491,5 +491,29 @@
   const necoMathPosition = items.findIndex(function(item){return item.id === 'neco-2023-mathematics-compound-interest';});
   if (necoMathPosition < 0) throw new Error('NECO Mathematics insertion point missing');
   items.splice(necoMathPosition + 1, 0, ...necoMathCompanions);
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 28 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 43 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  [
+    {id:'waec-2021-mathematics-p2-q1a',number:1,subpart:'a',title:'Simple interest and equal repayments',
+      prompt:'A loan of 25,000 monetary units carries 21% simple interest per year for a fixed three-year term. The full three-year amount is repaid in two equal annual instalments. Find the amount of each instalment.',
+      answer:'20,375 monetary units per year.',
+      steps:['Compute the interest for the agreed term: 25,000 × 0.21 × 3 = 15,750 monetary units.',
+        'Add the interest to the principal: 25,000 + 15,750 = 40,750 monetary units due.',
+        'Split that total into two equal payments: 40,750 ÷ 2 = 20,375 monetary units per year. Check that two payments recover the full 40,750.'],
+      checks:['I used the stated three-year interest term.','I included principal and interest before dividing by two.']},
+    {id:'waec-2021-mathematics-p2-q1b',number:1,subpart:'b',title:'Consecutive numbers and a percentage',
+      prompt:'Two consecutive positive integers satisfy this condition: three times the smaller plus twice the larger is 17. Find the smaller as a percentage of their sum, to three significant figures.',
+      answer:'42.9%.',
+      steps:['Call the smaller number n; the larger is n + 1. Then 3n + 2(n + 1) = 17.',
+        'Simplify to 5n + 2 = 17, so n = 3 and the consecutive numbers are 3 and 4.',
+        'The smaller contributes 3/(3 + 4) × 100 = 42.857…%. To three significant figures this is 42.9%.'],
+      checks:['I used consecutive integers, not two unrelated numbers.','I divided by the sum of both numbers.','I rounded the percentage to three significant figures.']},
+    {id:'waec-2021-mathematics-p2-q11',number:11,title:'Study hours: mean and standard deviation',
+      prompt:'For daily study hours 4, 5, 6, 7, 8, 9, 10 and 11, the respective frequencies among 50 students are 5, 7, 5, 9, 12, 4, 3 and 5. Calculate the mean and population standard deviation, each to two decimal places.',
+      answer:'Mean = 7.30 hours; standard deviation = 2.04 hours.',
+      steps:['Check the frequencies total 50. Multiplying each hour value by its frequency and adding gives Σfx = 365, so mean = 365/50 = 7.30 hours.',
+        'Square each hour value before multiplying by its frequency. The total is Σfx² = 2,873.',
+        'Population variance is Σfx²/50 − (Σfx/50)² = 2,873/50 − 7.3² = 4.17 hours².',
+        'Take the square root: √4.17 ≈ 2.0421 hours, which rounds to 2.04 hours.'],
+      checks:['I multiplied every value and squared value by its frequency.','I divided by all 50 students for the population standard deviation.','I took a square root and kept the final unit in hours.']}
+  ].forEach(function(item){items.push(Object.assign({subject:'Mathematics',collection:'WAEC 2021 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2021,paper:'2',source:'https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq'+item.number+'.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Selected task in adapted form; independently worked solution by AfroTools. Not a complete paper.'},item));});
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 31 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 43 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });

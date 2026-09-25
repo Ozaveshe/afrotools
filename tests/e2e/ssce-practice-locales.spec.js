@@ -92,3 +92,17 @@ for (const [locale, c] of Object.entries(configs)) {
   });
 }
 for (const [locale,c] of Object.entries(configs)) test(`${locale}: new Physics assessment and native guidance round-trip`, async({page})=>{await page.goto(c.route);await page.locator('#practice-subject').selectOption('Physics');await page.locator('#practice-topic').selectOption('Electric circuits');await page.getByRole('button',{name:c.start,exact:true}).click();const questions=quick.questions.filter(q=>q.subject==='Physics'&&q.topic==='Electric circuits');for(const [i,q] of questions.entries()){await expect(page.locator('#practice-session fieldset')).toHaveAttribute('lang','en');await page.getByRole('radio').nth(q.answer).check();await page.getByRole('button',{name:c.check,exact:true}).click();await page.getByRole('button',{name:i===questions.length-1?c.results:c.next,exact:true}).click();}const backup=JSON.parse(await downloadText(page,c.backup));expect(backup.ids).toEqual(questions.map(q=>q.id));const report=await downloadText(page,c.report);expect(report).toContain(questions[0].prompt);expect(report).toContain(locale==='fr'?'résistance':'ukinzani');});
+
+for (const [locale,c] of Object.entries(configs)) test(`${locale}: WAEC 2021 selected Mathematics guides are translated and hidden until opened`,async({page})=>{
+  await page.setViewportSize({width:375,height:820});await page.goto(c.route);
+  await page.locator('#written-collection').selectOption('WAEC 2021 Mathematics companion');
+  for (const [id,pattern,number] of [['waec-2021-mathematics-p2-q1a',/20[ ,]?375/,1],['waec-2021-mathematics-p2-q1b',/42[,.]9\s*%/,1],['waec-2021-mathematics-p2-q11',/7[,.]30.*2[,.]04/,11]]) {
+    await page.locator('#written-task').selectOption(id);
+    await expect(page.locator('.written-prompt')).toHaveAttribute('lang',locale);
+    await expect(page.locator('#written-editor a')).toHaveAttribute('href',`https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq${number}.html`);
+    await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');
+    await page.locator('.written-explanation summary').click();
+    await expect(page.locator('.written-explanation')).toContainText(pattern);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});

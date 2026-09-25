@@ -84,6 +84,18 @@ test('worked numerical results and exam references retain the English meanings',
     const answer = id => items.find(q => q.id === id).answer;
     assert.match(answer('written-m1'), /45/); assert.match(answer('written-m1'), /1[,.]68 × 10¹/);
     assert.match(answer('written-m2'), /248[ ,]?400/); assert.match(answer('written-m2'), /3[,.]5\s*%/);
+    const newIds=['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q11'];
+    for (const id of newIds) {
+      const localized=items.find(q=>q.id===id), original=enWritten.items.find(q=>q.id===id);
+      assert.ok(localized&&original);
+      assert.notEqual(localized.prompt,original.prompt);
+      assert.notEqual(localized.steps.join(' '),original.steps.join(' '));
+      assert.equal(localized.source,original.source);
+      assert.equal(localized.checks.length,original.checks.length);
+    }
+    assert.match(answer(newIds[0]),/20[ ,]?375/);
+    assert.match(answer(newIds[1]),/42[,.]9\s*%/);
+    assert.match(answer(newIds[2]),/7[,.]30.*2[,.]04/);
     assert.match(answer('waec-2023-mathematics-p2-q3'), /13[,.]01 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q4'), /89°.*80°/);
     assert.match(answer('waec-2023-mathematics-p2-q6'), /3\/10.*1\/5.*333[ ,]?333[,.]33.*133[ ,]?333[,.]33/);

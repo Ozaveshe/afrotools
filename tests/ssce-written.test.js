@@ -136,6 +136,25 @@ test('2021 complete selected mathematics tasks agree with independently reconstr
  const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2023&&q.number<=5);assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);assert.match(writing[1].prompt,/national newspaper editor/);assert.match(writing[4].prompt,/Half a loaf is better than none/);
 });
 
+test('WAEC 2021 Q1 and Q11 selected sections agree with independent interest, integer and frequency calculations',()=>{
+ const ids=['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q11'];
+ const [loan,integers,study]=ids.map(id=>bank.items.find(q=>q.id===id));
+ const selected=require('../ops/nigeria-exams/selected-waec-components.json').components.find(row=>row.id==='waec-2021-maths-q1-q11-selected');
+ assert.deepEqual(selected.expectedIds,ids);assert.equal(selected.complete_selected_prompts,true);assert.equal(selected.complete_paper,false);
+ assert.deepEqual([loan.subpart,integers.subpart,study.number],['a','b',11]);
+ for(const q of [loan,integers,study]){assert.ok(q);assert.equal(q.source,`https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq${q.number}.html`);assert.match(q.sourceUse,/Not a complete paper/);}
+ const installments=(25000+25000*21*3/100)/2;assert.equal(installments,20375);assert.match(loan.answer,/20,375/);
+ const pairs=[];for(let small=1;small<20;small++)if(3*small+2*(small+1)===17)pairs.push([small,small+1]);
+ assert.deepEqual(pairs,[[3,4]]);assert.equal((100*pairs[0][0]/(pairs[0][0]+pairs[0][1])).toPrecision(3),'42.9');assert.equal(integers.answer,'42.9%.');
+ const hours=[4,5,6,7,8,9,10,11],counts=[5,7,5,9,12,4,3,5];
+ const observations=hours.flatMap((hour,i)=>Array(counts[i]).fill(hour));
+ const average=observations.reduce((sum,hour)=>sum+hour,0)/observations.length;
+ const directVariance=observations.reduce((sum,hour)=>sum+(hour-average)**2,0)/observations.length;
+ const squaredMoment=observations.reduce((sum,hour)=>sum+hour*hour,0)/observations.length-average**2;
+ assert.equal(observations.length,50);assert.equal(average,7.3);assert.equal(directVariance.toFixed(2),'4.17');assert.ok(Math.abs(directVariance-squaredMoment)<1e-10);assert.equal(Math.sqrt(directVariance).toFixed(2),'2.04');assert.match(study.answer,/7\.30 hours.*2\.04 hours/);
+ assert.match(bank.scope,/31 WAEC Mathematics companions/);
+});
+
 test('WAEC 2023 English reading guides cover the linked tasks without hosting passages or claiming a verified paper',()=>{
  const selected=require('../ops/nigeria-exams/selected-waec-components.json').components.find(row=>row.id==='waec-2023-english-reading-guides');
  assert.deepEqual(selected.expectedIds,['waec-2023-english-p2-q6','waec-2023-english-p2-q7']);
