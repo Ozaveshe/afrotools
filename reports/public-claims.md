@@ -5,7 +5,7 @@ Generated: 2026-09-25
 - Canonical claims: 21
 - Feature data flows: 10
 - Public HTML/shared script files scanned: 12855
-- Approved claim hits: 45944
+- Approved claim hits: 45950
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |
