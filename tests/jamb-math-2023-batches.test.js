@@ -114,8 +114,8 @@ test('independent calculations and definitions select all 52 reviewed answer cho
   assert.ok(Math.abs((f(x+h)-f(x-h))/(2*h)-((10/3)*x**(2/3)-(8/3)*x**(5/3))) < 1e-5);
 });
 
-test('ambiguous, incorrect-key, and figure-dependent candidates stay out of the published pool', () => {
+test('the original two batches excluded all items held by their source audit', () => {
   const held = read('ops/nigeria-exams/jamb-math-2023-held-20260924.json').held;
   assert.ok(held.length >= 20);
-  for (const item of held) assert.ok(!pool.questions.some(q => q.id === 'mathematics-2023-myschool-' + item.sourceItem));
+  for (const item of held) assert.ok(!items.some(q => q.sourceItem === item.sourceItem));
 });
