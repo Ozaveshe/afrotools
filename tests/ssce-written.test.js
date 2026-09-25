@@ -76,6 +76,37 @@ test('new 2022 companions agree with independently reconstructed distributions a
  assert.match(bank.scope,new RegExp(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics').length+' WAEC Mathematics companions'));
 });
 
+test('WAEC 2022 graph and probability guides have independently checked results and honest source boundaries',()=>{
+ const get=id=>bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+id);
+ const q6=get('6'),q9=get('9'),q12a=get('12a');
+ assert.ok(q6&&q9&&q12a);
+ assert.match(q6.prompt,/Open the linked WAEC graph/);
+ assert.match(q6.sourceUse,/not a reproduced graph/);
+ const leftRoot=-2,rightRoot=4,r=8;
+ const a=r/(leftRoot*rightRoot),b=-a*(leftRoot+rightRoot);
+ assert.deepEqual([a,b,r],[-1,2,8]);
+ assert.equal((5-(-27))/(3-(-5)),4);
+ assert.deepEqual([-3,-2,0,4,5].map(x=>Math.sign(a*x*x+b*x+r)),[-1,0,1,0,-1]);
+ assert.match(q6.answer,/−1, n = 2, r = 8.*Gradient 4.*−2 < x < 4/);
+ const degrees=x=>x*Math.PI/180;
+ const values=Array.from({length:10},(_,i)=>3*Math.sin(degrees(20*i))+7*Math.cos(degrees(20*i)));
+ assert.deepEqual(values.map(v=>v.toFixed(1)),['7.0','7.6','7.3','6.1','4.2','1.7','-0.9','-3.4','-5.6','-7.0']);
+ assert.equal(values[4].toFixed(1),'4.2');assert.equal(values[6].toFixed(1),'-0.9');
+ assert.equal((3*Math.sin(degrees(150))+7*Math.cos(degrees(150))).toFixed(1),'-4.6');
+ const zero=180-Math.atan2(7,3)*180/Math.PI;assert.ok(zero>113&&zero<114);
+ assert.match(q9.answer,/7\.0, 7\.6, 7\.3, 6\.1, 4\.2, 1\.7, −0\.9, −3\.4, −5\.6 and −7\.0.*−4\.6.*113°/);
+ assert.match(q12a.prompt,/three independent races/);
+ const outcomes=Array.from({length:8},(_,mask)=>[0,1,2].map(i=>Boolean(mask&(1<<i))));
+ const probability=outcome=>outcome.reduce((p,win)=>p*(win?3/4:1/4),1);
+ const onlySecond=outcomes.filter(o=>!o[0]&&o[1]&&!o[2]).reduce((p,o)=>p+probability(o),0);
+ const allThree=outcomes.filter(o=>o.every(Boolean)).reduce((p,o)=>p+probability(o),0);
+ const exactlyTwo=outcomes.filter(o=>o.filter(Boolean).length===2).reduce((p,o)=>p+probability(o),0);
+ assert.deepEqual([onlySecond,allThree,exactlyTwo],[3/64,27/64,27/64]);
+ assert.equal(q12a.answer,'(i) 3/64. (ii) 27/64. (iii) 27/64.');
+ assert.equal(q12a.subpart,'a');assert.equal(q12a.passage,undefined);
+ assert.doesNotMatch(q12a.sourceUse,/ambiguous|incorrect|repair/i);
+});
+
 test('2021 complete selected mathematics tasks agree with independently reconstructed journeys and vectors',()=>{
  const q2=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q2');const q3=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q3');
  const solutions=[];for(let km=1;km<200;km++)if(Math.abs(km/72*60+(km+2)/40*60+120-235)<1e-10)solutions.push(km);
