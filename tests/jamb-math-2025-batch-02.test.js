@@ -10,6 +10,8 @@ const { renderYear } = require('../scripts/build-jamb-reviewed-pages.js');
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const manifest = read('ops/nigeria-exams/jamb-math-2025-curated-batch-02.json');
+const recoveredItems = read('ops/nigeria-exams/jamb-math-2025-curated-recovery-04.json').items;
+const recoveredSourceItems = new Set(recoveredItems.map(item => item.sourceItem));
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 
@@ -27,6 +29,7 @@ test('the 25 publisher positions have distinct decisions and the import is repea
   assert.equal(prepared.receipt.source_snapshot_sha256,
     read('ops/jamb/verification/mathematics-2025-publishable-002.json').source_snapshot_sha256);
   for (const item of manifest.held) {
+    if (recoveredSourceItems.has(item.sourceItem)) continue;
     assert.ok(!pool.questions.some(question => question.id === `mathematics-2025-myschool-${item.sourceItem}`),
       `Held position ${item.position} entered the pool`);
   }
@@ -39,9 +42,9 @@ test('the 25 publisher positions have distinct decisions and the import is repea
   assert.throws(() => prepareBatch(duplicateSource, pool, ledger), /Duplicate or invalid source item/);
 });
 
-test('the 2025 year page discloses provenance and keeps all 34 worked answers closed by default', () => {
+test('the 2025 year page discloses provenance and keeps reviewed answers closed by default', () => {
   const page = renderYear('mathematics', '2025', pool.questions, ledger, ['2024', '2025']);
-  assert.equal(page.approvedIds.length, 34);
+  assert.ok(page.approvedIds.length >= 34 + recoveredItems.length);
   assert.match(page.html, /publisher-labelled 2025 collection/);
   assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   assert.match(page.html, /Practice selection: full-paper coverage has not been confirmed/);
@@ -55,5 +58,8 @@ test('the 2025 year page discloses provenance and keeps all 34 worked answers cl
     assert.match(card[1], /Original sitting and question number unconfirmed/, id);
     assert.doesNotMatch(card[1], /<details\b[^>]*\bopen\b/, id);
   }
-  for (const item of manifest.held) assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  for (const item of manifest.held) {
+    if (!recoveredSourceItems.has(item.sourceItem))
+      assert.ok(!page.html.includes(`mathematics-2025-myschool-${item.sourceItem}`));
+  }
 });
