@@ -63,7 +63,7 @@ test('every companion renders complete briefs and accessible geometry at mobile 
 test('new 2022 tasks show optional complete solutions on small screens',async({page})=>{
  await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
  const bank=require('../../assets/js/lib/ssce-written-bank');
- for(const num of ['6','8ab','9','10','12a','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
+ for(const num of ['6','8ab','8c','9','10','12a','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
 });
 
 test('NECO starter shows exact source numbers and saves a worked response at mobile width',async({page})=>{

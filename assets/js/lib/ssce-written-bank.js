@@ -303,6 +303,15 @@
     checks:['I treated only the second win as one specific order.','I counted all three positions for the single non-win in exactly two wins.','I multiplied probabilities because the races are independent.'],
     source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq12.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Part (a) adapted as an independent-races probability model. Original worked guidance by AfroTools; part (b) is a separate companion.'
   });
+  items.push({
+    id:'waec-2022-mathematics-p2-q8c',subject:'Mathematics',collection:'WAEC 2022 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2022,paper:'2',number:8,subpart:'c',
+    title:'Monthly tax and savings after tax',
+    prompt:'A worker earns $28,800 gross in a year and pays 12% income tax. The budget from part (a) saves 15% of take-home pay. Calculate the monthly tax and the amount saved each month.',
+    answer:'Monthly tax: $288. Monthly savings: $316.80.',
+    steps:['Annual tax is 12% of $28,800: 0.12 × 28,800 = $3,456. Divide by 12 for monthly tax of $288.','Subtract annual tax before applying the savings rate: annual take-home pay is $28,800 − $3,456 = $25,344, or $2,112 per month.','Savings are 15% of monthly take-home pay: 0.15 × $2,112 = $316.80. Check that 12 × $316.80 = 15% of $25,344.'],
+    checks:['I calculated tax from gross pay.','I applied the 15% savings rate to take-home pay.','I reported both monthly amounts in money units.'],
+    source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq8.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Part (c) adapted from the linked WAEC question and worked image; independently checked explanation by AfroTools. Part (a) supplies the savings rate.'
+  });
   const necoMathCompanions = [
     {
       id:'neco-2023-mathematics-set-operations',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:10,
@@ -407,5 +416,5 @@
   const necoMathPosition = items.findIndex(function(item){return item.id === 'neco-2023-mathematics-compound-interest';});
   if (necoMathPosition < 0) throw new Error('NECO Mathematics insertion point missing');
   items.splice(necoMathPosition + 1, 0, ...necoMathCompanions);
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-25',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 27 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 28 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 28 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 28 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });

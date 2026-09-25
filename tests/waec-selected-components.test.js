@@ -10,6 +10,10 @@ test('selected WAEC component evidence matches current briefs without claiming c
   }
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
+ const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
+ assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
+ assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);
+ assert.match(maths2022q8.official_worked_image_sha256,/^[a-f0-9]{64}$/);
  const english2022=manifest.components.find(c=>c.id==='waec-2022-english-writing-prompts');
  assert.deepEqual(english2022.expectedIds,[1,2,3,4,5].map(n=>'waec-2022-english-p2-q'+n));
  assert.equal(english2022.official_hub_url,'https://www.waeconline.org.ng/e-learning/English/Engl255mc.html');
