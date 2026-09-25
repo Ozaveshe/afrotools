@@ -96,3 +96,19 @@ test('new NECO diagram guides retain the right arc and side correspondence on a 
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
  }
 });
+
+test('NECO Q21–28 selected guides open on mobile while the held item stays absent',async({page})=>{
+ await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
+ await page.locator('#written-collection').selectOption('NECO 2023 Mathematics starter');
+ const options=await page.locator('#written-task option').evaluateAll(elements=>elements.map(element=>element.value));
+ expect(options).not.toContain('neco-2023-mathematics-p3-q23');
+ for(const [number,answer] of [[21,'(−1, 0) and (3, 7).'],[22,'x = 0.5.'],[24,'Region Z.'],[25,'x ≥ −1.'],[26,'x = 2/3 or x = −4/7.'],[27,'y = x + 2.'],[28,'49/8.']]){
+  await page.locator('#written-task').selectOption(`neco-2023-mathematics-p3-q${number}`);
+  await expect(page.locator('#written-editor')).toContainText(`Paper III · Question ${number}`);
+  await expect(page.locator('#written-editor a')).toHaveAttribute('href','https://www.scribd.com/document/842881920/NECO-20230001');
+  await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');
+  await page.getByText('Show worked solution',{exact:true}).click();
+  await expect(page.locator('.written-explanation')).toContainText(answer);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+ }
+});
