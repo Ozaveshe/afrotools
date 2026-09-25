@@ -660,6 +660,10 @@ var SUBJ_META = {
 function trackCbt(name, details) {
   var analytics = window.AfroTools && window.AfroTools.analytics;
   if (analytics && typeof analytics.track === "function") analytics.track(name, details);
+  if (analytics && typeof analytics.trackEducationPractice === "function" &&
+      (name === "education_jamb_start" || name === "education_jamb_resume")) {
+    analytics.trackEducationPractice("jamb", cbtSubjectMetric(), name === "education_jamb_start" ? "start" : "resume");
+  }
 }
 
 function cbtSubjectMetric() {

@@ -6,6 +6,11 @@
   function track(name,values){
     var analytics=window.AfroTools&&window.AfroTools.analytics;
     if(analytics&&typeof analytics.track==='function')analytics.track(name,values);
+    if(analytics&&typeof analytics.trackEducationPractice==='function'){
+      var action=name==='education_practice_start'?(values.entry==='retry'?'retry':'start')
+        :(name==='education_practice_resume'||name==='education_revision_opened'?'resume':'');
+      if(action)analytics.trackEducationPractice('waec_neco',values.subject,action);
+    }
   }
   function subjectMetric(ids){
     var subjects=Array.from(new Set(ids.map(function(id){var q=bank.questions.find(function(item){return item.id===id;});return q&&q.subject;})));
