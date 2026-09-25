@@ -118,6 +118,8 @@ test('historical holds stay unpublished unless a later recovery separately verif
     .map(item => item.sourceItem));
   for (const item of read('ops/nigeria-exams/jamb-math-2024-2025-held-recovery-05.json').items)
     recovered.add(item.sourceItem);
+  for (const item of read('ops/nigeria-exams/jamb-math-2024-held-recovery-06.json').items)
+    recovered.add(item.sourceItem);
   assert.equal(held.length, 10);
   for (const item of held) {
     if (recovered.has(item.sourceItem)) continue;

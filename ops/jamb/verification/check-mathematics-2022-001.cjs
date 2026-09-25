@@ -79,4 +79,5 @@ for (const item of manifest.items) {
   assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
 }
 process.stdout.write(JSON.stringify({ passed: true, accepted: 16,
+  question_ids: receipt.records.map(record => record.id),
   scope: 'Independently calculated adapted Mathematics 2022 revision items; publisher year is not an authenticated UTME sitting.' }) + '\n');

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11573 |
-| Indexable pages | 9994 |
+| Public pages | 11574 |
+| Indexable pages | 9995 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 107 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5301 |
-| Documented fallbacks | 14841 |
-| Routes eligible for primary sitemaps | 9994 |
+| Genuine equivalence groups | 5302 |
+| Documented fallbacks | 14842 |
+| Routes eligible for primary sitemaps | 9995 |
 
 ## Locale Coverage
 
-- en: 6023 page records
+- en: 6024 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5437
+- page: 5438
 - tool: 4004
 - widget: 379
 
@@ -3805,6 +3805,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:263c7597642b: en=`/agriculture/fish-farming/egypt`, fr=`/fr/agriculture/fish-farming/egypt`, sw=`/sw/kilimo/ufugaji-samaki/egypt/`; x-default=`/agriculture/fish-farming/egypt`
 - equivalence:2649e20387b9: en=`/tools/employee-cost/algeria/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-algerie/`, sw=`/sw/algeria/kikokotoo-gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/algeria/`
 - equivalence:265672cd40b3: en=`/mauritania/mr-vat`, fr=`/fr/mauritanie/calculateur-tva`, sw=`/sw/mauritania/kikokotoo-vat/`; x-default=`/mauritania/mr-vat`
+- equivalence:2677f0cb6836: en=`/jamb/mathematics/2022/`; x-default=`/jamb/mathematics/2022/`
 - equivalence:267d7b317db7: en=`/cars/ghana/mercedes-benz/e-class/2017/`, fr=`/fr/cars/ghana/mercedes-benz/e-class/2017/`; x-default=`/cars/ghana/mercedes-benz/e-class/2017/`
 - equivalence:267e0f4256c8: en=`/cars/nigeria/lexus/rx/`, fr=`/fr/cars/nigeria/lexus/rx/`; x-default=`/cars/nigeria/lexus/rx/`
 - equivalence:26805c2d4a29: en=`/blog/record-blood-pressure-clinic-visit-africa/`; x-default=`/blog/record-blood-pressure-clinic-visit-africa/`

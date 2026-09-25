@@ -5,6 +5,7 @@
 - Official WAEC WASSCE school-candidate Paper 2 [Question 1](https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq1.html) displays both numerical parts and the examiner's methods. [Question 11](https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq11.html) displays the entire eight-value study-hours frequency table and both requested statistics. Its linked worked image was visually checked in the browser.
 - This batch adds three **adapted teaching guides**, not exam-question imports, an official key, or a complete paper. The original prompts and worked image stay at WAEC; the public guides use independent wording. The 2021 Q2–3 selection already exists and is unchanged.
 - WAEC's Q1(a) wording permits confusion about early repayment. Its examiner solution charges interest over the stated three-year term and then splits that total into two payments. The adapted brief states the full three-year amount is payable, so the arithmetic is unambiguous. The site does not assert an uncertain currency symbol.
+- The internal selected-component manifest pins the UTF-8 HTTP response-body SHA-256 for the two official WAEC pages as observed on 2026-09-26, and separate SHA-256 values for each adapted student brief. These fingerprints document the source snapshot; they do not assert WAEC approval of the adaptations.
 
 ## Independent checks
 
