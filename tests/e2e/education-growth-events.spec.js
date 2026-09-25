@@ -93,9 +93,17 @@ for (const consent of ['accepted', 'declined']) {
     await page.getByRole('button', { name: 'Start practice', exact: true }).click();
     const started = await educationGtagEvents(page);
     if (consent === 'accepted') {
-      expect(started).toEqual([{ name: 'education_practice_start', params: {
-        exam: 'waec_neco', subject: 'english', entry: 'new', question_count: '1-4'
-      } }]);
+      expect(started).toEqual([
+        { name: 'education_practice_start', params: {
+          exam: 'waec_neco', subject: 'english', entry: 'new', question_count: '1-4'
+        } },
+        { name: 'education_practice_cohort_started', params: {
+          action: 'start',
+          cohort_day_utc: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+          cohort_exam: 'waec_neco',
+          cohort_subject: 'english'
+        } }
+      ]);
     } else {
       expect(started).toEqual([]);
     }
