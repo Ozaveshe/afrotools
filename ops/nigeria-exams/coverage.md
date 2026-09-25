@@ -61,7 +61,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | literature | 2022 | 0 | 0 | Acquire and authenticate source |
 | JAMB | literature | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | mathematics | 2026 | 0 | 0 | Acquire and authenticate source |
-| JAMB | mathematics | 2025 | 15 | 15 | Acquire and authenticate source |
+| JAMB | mathematics | 2025 | 34 | 34 | Acquire and authenticate source |
 | JAMB | mathematics | 2024 | 20 | 20 | Acquire and authenticate source |
 | JAMB | mathematics | 2023 | 60 | 60 | Acquire and authenticate source |
 | JAMB | mathematics | 2022 | 0 | 0 | Acquire and authenticate source |
@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks, 7 WAEC English writing companions and 27 WAEC Mathematics companions, plus 3 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks, 12 WAEC English writing companions and 27 WAEC Mathematics companions, plus 3 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
 
