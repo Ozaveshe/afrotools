@@ -129,3 +129,34 @@ test('WAEC 2023 English reading guides cover the linked tasks without hosting pa
  assert.equal(model.split(/(?<=\.)\s+/).length,6);
  for(const quality of ['self-control','humility','resilient','integrity','work ethic','obey laws'])assert.ok(model.includes(quality));
 });
+
+test('WAEC 2022 English composition companions preserve each task and examiner pitfall without grading',()=>{
+ const writing=bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='English'&&q.year===2022);
+ assert.deepEqual(writing.map(q=>q.number),[1,2,3,4,5]);
+ assert.deepEqual(writing.map(q=>q.id),[1,2,3,4,5].map(n=>'waec-2022-english-p2-q'+n));
+ for(const q of writing){
+  assert.equal(q.paper,'2');assert.equal(q.collection,'WAEC 2022 writing companion');assert.equal(q.passage,undefined);
+  assert.equal(q.source,`https://www.waeconline.org.ng/e-learning/English/Engl255mq${q.number}.html`);
+  assert.match(q.answer,/no single model answer/i);assert.match(q.sourceUse,/self-review.*not an official mark or complete paper/i);
+  assert.doesNotMatch(q.sourceUse,/450|official marking scheme|automatic grade/i);
+  assert.ok(q.steps.length>=3&&q.checks.length>=3);
+ }
+ assert.match(writing[0].prompt,/friend at another school.*career.*country/i);
+ assert.match(writing[0].steps.join(' '),/benefit.*country/);
+ assert.match(writing[1].prompt,/fake medicines/);assert.match(writing[1].steps.join(' '),/not illicit or hard-drug use/);
+ assert.match(writing[2].prompt,/former senior prefect.*60th anniversary.*three improvements/);
+ assert.match(writing[2].steps.join(' '),/Congratulate.*three distinct suggestions/);
+ assert.match(writing[3].prompt,/senior prefect.*welcome.*three areas/);
+ assert.match(writing[3].steps.join(' '),/speech, not a letter/);
+ assert.match(writing[4].prompt,/position of authority.*worry and difficult decisions/);
+ assert.match(writing[4].steps.join(' '),/beginning, rising problem and turning point/);
+ assert.match(bank.scope,/10 WAEC writing companions/);
+ const store={value:null,getItem(){return this.value;},setItem(_,value){this.value=value;}};
+ const draft='Synthetic school speech draft';
+ api.write(store,bank,writing[3].id,{answer:draft,checks:[true,false,true]});
+ const saved=api.read(store,bank);
+ assert.equal(saved.entries[writing[3].id].answer,draft);
+ const report=api.report(bank,saved);
+ assert.match(report,/Synthetic school speech draft/);assert.match(report,/Engl255mq4\.html/);
+ assert.doesNotMatch(report,/score:|grade:|official mark:/i);
+});

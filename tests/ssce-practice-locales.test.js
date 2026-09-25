@@ -11,6 +11,27 @@ const generator = require('../scripts/build-ssce-practice-locales');
 const quickBanks = { en: enQuick, fr: require('../assets/js/lib/ssce-practice-bank-fr'), sw: require('../assets/js/lib/ssce-practice-bank-sw') };
 const writtenBanks = { en: enWritten, fr: require('../assets/js/lib/ssce-written-bank-fr'), sw: require('../assets/js/lib/ssce-written-bank-sw') };
 
+test('WAEC 2022 English writing keeps its assessment in English with distinct FR/SW coaching', () => {
+  const ids = [1,2,3,4,5].map(n => `waec-2022-english-p2-q${n}`);
+  for (const locale of ['fr','sw']) {
+    const localized = generator.writtenBank(locale);
+    assert.ok(localized.ui['WAEC 2022 writing companion']);
+    for (const id of ids) {
+      const source = enWritten.items.find(q => q.id === id), question = localized.items.find(q => q.id === id);
+      assert.ok(source && question, id);
+      assert.equal(question.prompt, source.prompt);
+      assert.equal(question.questionLanguage, 'en');
+      assert.equal(question.answerLanguage, locale);
+      assert.deepEqual(question.checks.length, source.checks.length);
+      assert.notDeepEqual(question.steps, source.steps);
+      assert.notDeepEqual(question.checks, source.checks);
+      assert.notEqual(question.sourceUse, source.sourceUse);
+      assert.notEqual(question.sourceLabel, source.sourceLabel);
+      assert.equal(question.source, source.source);
+    }
+  }
+});
+
 test('all practice identities, assessment language and backup contracts survive localization', () => {
   const originalQuick = JSON.stringify(enQuick), originalWritten = JSON.stringify(enWritten);
   for (const locale of ['fr', 'sw']) {
@@ -70,7 +91,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer('waec-2023-mathematics-p2-q10'), /349°.*167 m/);
     assert.match(answer('waec-2023-mathematics-p2-q12'), /36°.*36°.*96 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q13'), /−8x \+ 21y = 6/);
-    assert.equal(items.filter(q => q.exam === 'WAEC').length, 34);
+    assert.equal(items.filter(q => q.exam === 'WAEC').length, 39);
     assert.equal(items.filter(q => q.exam === 'NECO').length, 9);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }

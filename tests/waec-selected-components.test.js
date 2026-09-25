@@ -10,6 +10,19 @@ test('selected WAEC component evidence matches current briefs without claiming c
   }
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
+ const english2022=manifest.components.find(c=>c.id==='waec-2022-english-writing-prompts');
+ assert.deepEqual(english2022.expectedIds,[1,2,3,4,5].map(n=>'waec-2022-english-p2-q'+n));
+ assert.equal(english2022.official_hub_url,'https://www.waeconline.org.ng/e-learning/English/Engl255mc.html');
+ assert.match(english2022.shared_rubric_review,/do not display.*word limit.*secondary.*not authenticated/i);
+ assert.equal(english2022.complete_selected_prompts,true);
+ assert.equal(english2022.complete_paper,false);
+ for(const id of english2022.expectedIds){
+  const source=manifest.sources.find(row=>row.id===id),q=bank.items.find(row=>row.id===id);
+  assert.ok(source&&q);
+  assert.equal(source.fingerprint_scope,'UTF-8 visible WAEC question text, excluding examiner observations and page HTML');
+  assert.notEqual(source.sha256,source.questionBriefSha256,'adapted brief must differ from official question text');
+  assert.equal(source.checked_at,'2026-09-25');
+ }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-english-writing-prompts').expectedIds,[1,2,3,4,5].map(n=>'waec-2023-english-p2-q'+n));
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-english-reading-guides').expectedIds,[6,7].map(n=>'waec-2023-english-p2-q'+n));
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-mathematics-q10').expectedIds,['waec-2023-mathematics-p2-q10']);

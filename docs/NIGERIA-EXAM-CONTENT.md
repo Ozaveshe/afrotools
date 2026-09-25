@@ -37,6 +37,15 @@ mathematical guide require independent numerical checks in
 `tests/ssce-written.test.js`. Narrative and writing tasks use self-review, not
 an invented official score or an automatic essay-quality grade.
 
+The WAEC 2022 school-candidate English Paper 2 composition selection covers
+questions 1–5 as adapted writing companions. The official WAEC hub and each
+question page establish the sitting, task and examiner observation; they do not
+show the common Section A instruction or word minimum. A secondary 2022 paper
+transcription says to answer one question in at least 450 words, but the
+companion does not attribute or enforce that threshold as an official rubric.
+The original wording stays at WAEC. The related selected-components ledger
+records source links and the distinct fingerprint basis used for these pages.
+
 The NECO 2023 English Paper II Section A selection covers all four writing choices in the inspected scan. The shared instruction asks candidates to choose one and write at least 450 words. It is not a complete English paper: the scan's Sections B and C contain passages that are linked, not hosted, and the scan does not establish internal/external sitting identity or reuse permission. Keep that distinction in the selected-components record and public copy.
 
 `assets/js/lib/ssce-written.js` owns validated local state and report exports;
