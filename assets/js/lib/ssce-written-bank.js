@@ -261,5 +261,37 @@
     checks:['I treated only the second win as one specific order.','I counted all three positions for the single non-win in exactly two wins.','I multiplied probabilities because the races are independent.'],
     source:'https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq12.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Part (a) adapted as an independent-races probability model. Original worked guidance by AfroTools; part (b) is a separate companion.'
   });
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-25',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 27 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 9 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  const necoMathCompanions = [
+    {
+      id:'neco-2023-mathematics-set-operations',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:10,
+      title:'Intersection of two unions',
+      prompt:'Let A = {a, 1, c, 4, d}, B = {b, 4, 0, 9, 7, 6}, and C = {a, 4, 8, 9, d, 2, 5}. Find (A ∪ B) ∩ (A ∪ C).',
+      answer:'{a, 1, c, 4, d, 9}.',
+      steps:['Use the distributive law: (A ∪ B) ∩ (A ∪ C) = A ∪ (B ∩ C).','The only elements shared by B and C are 4 and 9, so B ∩ C = {4, 9}.','Add those shared elements to A without repeating 4: the result is {a, 1, c, 4, d, 9}.'],
+      checks:['I included every element of A.','I added only elements found in both B and C.','I listed each element once.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-percentage-error',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:11,
+      title:'Percentage error in a measurement',
+      prompt:'A measurement was recorded as 21.23 cm³, while its true value is 21.32 cm³. Calculate the percentage error to one decimal place.',
+      answer:'0.4%.',
+      steps:['Find the absolute error: |21.23 − 21.32| = 0.09 cm³.','Divide by the true value, then multiply by 100: (0.09 ÷ 21.32) × 100 ≈ 0.4221%.','Round the percentage to one decimal place: 0.4%.'],
+      checks:['I used the true value as the denominator.','I took the absolute difference, so the error is positive.','I rounded the final percentage to one decimal place.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    },
+    {
+      id:'neco-2023-mathematics-arithmetic-progression',subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',number:12,
+      title:'Seventeenth term of an arithmetic progression',
+      prompt:'An arithmetic progression starts with 3. Its third and twelfth terms add to 38½. Find its seventeenth term.',
+      answer:'43.',
+      steps:['For common difference d, the third term is 3 + 2d and the twelfth is 3 + 11d.','Their sum is 6 + 13d = 38½, so 13d = 32½ and d = 2½.','The seventeenth term is 3 + 16d = 3 + 16 × 2½ = 43.'],
+      checks:['I used term n = first term + (n − 1)d.','My third and twelfth terms add to 38½.','I used 16 common differences to reach term 17.'],
+      source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'
+    }
+  ];
+  const necoMathPosition = items.findIndex(function(item){return item.id === 'neco-2023-mathematics-compound-interest';});
+  if (necoMathPosition < 0) throw new Error('NECO Mathematics insertion point missing');
+  items.splice(necoMathPosition + 1, 0, ...necoMathCompanions);
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-25',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 27 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 12 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });

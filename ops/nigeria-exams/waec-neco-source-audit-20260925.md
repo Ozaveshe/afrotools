@@ -25,5 +25,8 @@ The [user-uploaded Scribd scan](https://www.scribd.com/document/842881920/NECO-2
 | Q6 | 6 (C) | 3×8=24=2×9+6. |
 | Q7 | 0.9084 (D) | 8.1=3⁴/10; 4×0.4771−1=0.9084. |
 | Q8 | y=p⁴q² (E) | Divide 2log y=8log p+4log q by two; apply log laws for positive p,q,y. |
+| Q10 | {a, 1, c, 4, d, 9} (E) | (A∪B)∩(A∪C)=A∪(B∩C); B∩C={4,9}. |
+| Q11 | 0.4% (B) | Absolute error 0.09; 0.09/21.32×100≈0.4221%, rounded to one decimal. |
+| Q12 | 43 (B) | The scan reads 38½, not the corrupted OCR text. 6+13d=38.5, so d=2.5 and a₁₇=3+16d=43. |
 
-These six can become adapted source-linked guides after content and locale checks. They do not prove a complete paper.
+These source checks support adapted, scan-linked guides after content and locale checks. They do not prove a complete paper.

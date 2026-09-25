@@ -92,7 +92,9 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer('waec-2023-mathematics-p2-q12'), /36°.*36°.*96 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q13'), /−8x \+ 21y = 6/);
     assert.equal(items.filter(q => q.exam === 'WAEC').length, enWritten.items.filter(q => q.exam === 'WAEC').length);
-    assert.equal(items.filter(q => q.exam === 'NECO').length, 15);
+    assert.match(answer('neco-2023-mathematics-percentage-error'), /0[,.]4\s*%/);
+    assert.equal(answer('neco-2023-mathematics-arithmetic-progression'),'43.');
+    assert.equal(items.filter(q => q.exam === 'NECO').length, enWritten.items.filter(q => q.exam === 'NECO').length);
     assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
   }
 });
