@@ -41,6 +41,7 @@ assert.equal(receipt.source_file, snapshotPath);
 assert.equal(receipt.source_snapshot_sha256,
   crypto.createHash('sha256').update(snapshotBytes).digest('hex'));
 
+const checkedIds = [];
 for (const item of manifest.items) {
   const id = `mathematics-2025-myschool-${item.sourceItem}`;
   const expected = independentlySelected[item.sourceItem];
@@ -63,9 +64,10 @@ for (const item of manifest.items) {
   assert.equal(review.content_sha256, proof.content_sha256, id);
   assert.equal(ledger.sources[review.source_id].content_sha256, receipt.source_snapshot_sha256, id);
   assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
+  checkedIds.push(id);
 }
 for (const held of manifest.held) {
   assert.ok(!pool.some(row => row.id === `mathematics-2025-myschool-${held.sourceItem}`), held.sourceItem);
 }
-process.stdout.write(JSON.stringify({ passed: true, accepted: 2, held: 8,
+process.stdout.write(JSON.stringify({ passed: true, accepted: checkedIds.length, held: manifest.held.length, question_ids: checkedIds,
   scope: 'adapted publisher-collection practice; authenticated UTME sitting not asserted' }) + '\n');
