@@ -24,6 +24,24 @@ try {
   const pending=path.join(root,'pending.jsonl');
   write(pending,events('pending',[]));
   assert.strictEqual(parseRollout(pending).status,'incomplete','prompt words do not classify execution');
+  // Approval and delegated sessions can inherit the full automation prompt.
+  // Their success must never replace the scheduled owner's failed outcome.
+  for (const [index, metadata] of [
+    {parent_thread_id:'same-session'},
+    {source:{subagent:{other:'guardian'}}},
+    {thread_source:'guardian_review'},
+  ].entries()) {
+    const child=path.join(root,'sessions','rollout-2026-09-09T09-00-00-child-'+index+'.jsonl');
+    const records=events('child-'+index,[{type:'event_msg',payload:{type:'task_complete',last_agent_message:'allow'}}]).split('\n').map(JSON.parse);
+    Object.assign(records[0].payload,metadata,{timestamp:'2026-09-09T09:00:00Z'});
+    write(child,records.map(JSON.stringify).join('\n'));
+    assert.strictEqual(parseRollout(child),null,'child/review metadata excludes inherited automation evidence');
+  }
+  const interactive=path.join(root,'interactive.jsonl');
+  const interactiveRecords=events('interactive',[{type:'event_msg',payload:{type:'task_complete'}}]).split('\n').map(JSON.parse);
+  interactiveRecords[0].payload.source='cli';
+  write(interactive,interactiveRecords.map(JSON.stringify).join('\n'));
+  assert.strictEqual(parseRollout(interactive).status,'completed','root sessions with ordinary source metadata remain valid');
   write(path.join(root,'archived_sessions','rollout-2020-01-01T00-00-00-old.jsonl'),'not current evidence');
   write(path.join(root,'automations','fixture','automation.toml'),'id = "fixture"\nname = "Fixture"\nkind = "cron"\nstatus = "ACTIVE"\n');
   const output=path.join(root,'reports');

@@ -142,6 +142,10 @@ function parseRollout(filePath) {
     }
 
     if (event.type === 'session_meta') {
+      const meta = event.payload || {};
+      // Child tasks inherit the automation prompt, but their terminal events
+      // (including approval decisions) are not the scheduled owner's outcome.
+      if (meta.parent_thread_id || meta.source?.subagent || meta.thread_source === 'guardian_review') return null;
       result.sessionId = event.payload && event.payload.id;
       result.timestamp = event.payload && event.payload.timestamp;
       result.cwd = event.payload && event.payload.cwd;
