@@ -23,7 +23,7 @@ for (const width of [320,390,768,1440]) {
    return {width:icon.width,height:icon.height,stacked:name.top>=icon.bottom,inside:icon.left>=card.left&&icon.right<=card.right,overflow:el.scrollWidth>el.clientWidth+1};
   }));
   for(const card of cards) expect(card).toEqual({width:44,height:44,stacked:true,inside:true,overflow:false});
-  for(const route of ['/jamb/','/jamb/cbt/','/jamb/past-questions/','/jamb/study-plan/','/jamb/history/']) {
+  for(const route of ['/jamb/','/jamb/cbt/','/jamb/past-questions/','/jamb/study-plan/','/jamb/history/','/jamb/mathematics/2024/']) {
    await page.goto(route);
    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
@@ -33,4 +33,3 @@ for (const width of [320,390,768,1440]) {
   await expect(page.locator('input[value="subject"]')).toBeChecked();
  });
 }
-
