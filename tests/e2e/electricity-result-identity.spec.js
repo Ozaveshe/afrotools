@@ -1,4 +1,6 @@
 const { test, expect } = require('@playwright/test');
+// This checks result identity; reduced motion prevents smooth auto-scroll moving the click target.
+test.use({ contextOptions: { reducedMotion: 'reduce' } });
 const routes = { en: '/tools/electricity-tariff/', fr: '/fr/tools/tarifs-electricite/', sw: '/sw/zana/kikokotoo-tariff-ya-umeme/' };
 for (const [locale, route] of Object.entries(routes)) {
   test(`${locale} electricity estimates stay tied to current inputs and source`, async ({ page, baseURL }) => {
@@ -8,10 +10,17 @@ for (const [locale, route] of Object.entries(routes)) {
     await page.route('**/*', request => new URL(request.request().url()).origin === origin ? request.continue() : request.abort());
     await page.goto(route);
     await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY === true);
+    expect(await page.evaluate(() => ({
+      reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior
+    }))).toEqual({ reducedMotion: true, scrollBehavior: 'auto' });
     if (await page.locator('#afro-cc-decline').isVisible()) await page.locator('#afro-cc-decline').click();
     const result = page.locator('#electricityResult');
     const primary = page.locator('#electricityPrimary');
-    const calculate = () => page.locator('.electricity-button').click();
+    const calculate = async () => {
+      await page.locator('.electricity-button').click();
+      await expect(result).toBeVisible();
+    };
     await calculate();
     await expect(primary).toContainText('12.83 kWh');
     await page.locator('#electricityAmount').fill('20000');
