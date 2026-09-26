@@ -42,6 +42,10 @@ for (const [id, expected] of Object.entries(EXPECTED)) {
     const response = await page.goto(`/tools/${id}/`, { waitUntil: 'domcontentloaded' });
     expect(response && response.status()).toBe(200);
     await expect(page.locator('.sports-result-value')).toHaveText(expected);
+    if (id === 'afcon-predictor') {
+      const inputsTop = await page.locator('#sports-tool-root').evaluate((element) => element.getBoundingClientRect().top);
+      expect(inputsTop).toBeLessThan(600);
+    }
     await expect(page.locator('[data-day9-sports-boundary]')).toBeVisible();
     await expect(page.locator('.sports-lead-form')).toHaveCount(0);
     await expect(page.locator('[data-print-report]')).toBeVisible();
@@ -68,6 +72,12 @@ for (const [id, expected] of Object.entries(EXPECTED)) {
       document.documentElement.style.fontSize = '200%';
     });
     const audit = await page.evaluate(() => {
+      const luminance = (value) => {
+        const channels = value.match(/[\d.]+/g).slice(0, 3).map((channel) => Number(channel) / 255);
+        const linear = channels.map((channel) => channel <= 0.04045
+          ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+      };
       const visible = (element) => {
         const style = getComputedStyle(element);
         const rect = element.getBoundingClientRect();
@@ -77,8 +87,15 @@ for (const [id, expected] of Object.entries(EXPECTED)) {
       const controls = Array.from(document.querySelectorAll(
         '#sports-tool-root button, #sports-tool-root input, #sports-tool-root select'
       )).filter(visible);
+      const panel = document.querySelector('.sports-panel');
+      const label = document.querySelector('.sports-label');
+      const panelBg = getComputedStyle(panel).backgroundColor;
+      const light = Math.max(luminance(panelBg), luminance(getComputedStyle(label).color));
+      const dark = Math.min(luminance(panelBg), luminance(getComputedStyle(label).color));
       return {
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        panelBg,
+        labelContrast: (light + 0.05) / (dark + 0.05),
         unnamed: controls.filter((control) => !(
           (control.textContent || '').trim()
           || control.getAttribute('aria-label')
@@ -88,6 +105,8 @@ for (const [id, expected] of Object.entries(EXPECTED)) {
       };
     });
     expect(audit.overflow).toBeLessThanOrEqual(1);
+    expect(audit.panelBg).not.toBe('rgb(255, 255, 255)');
+    expect(audit.labelContrast).toBeGreaterThanOrEqual(4.5);
     expect(audit.unnamed).toBe(0);
     expect(audit.minTarget).toBeGreaterThanOrEqual(40);
     expect(forbidden).toEqual([]);
