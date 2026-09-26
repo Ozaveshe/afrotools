@@ -87,4 +87,3 @@ async function captureRun(event) {
   }
   console.log('Scholarship scheduled provenance: PASS (natural, manual, private metadata, failure).');
 })().catch(error => { console.error(error); process.exitCode = 1; });
-
