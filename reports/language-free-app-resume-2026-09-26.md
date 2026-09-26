@@ -36,3 +36,11 @@ Exact candidate CI, production release identity and selected live verification r
 The frozen initial package passed all151 selected browser cases in18.9minutes, with default analytics enabled. The full repository run enrolled1143 test files: the protected fuel-renderer metadata test was the sole failing file; all7/7 audits passed and0 tests were quarantined. No incidental Hausa report changes remained afterward.
 
 Corrections were integrated as `be84fc7c` (French full-sentence ordering) and `2f24f6de` (reviewed fuel fingerprint). The four targeted owner/calculation/live-data/fuel Node test files passed together after integration. A fresh deploy rebuild and its verification are in progress; the earlier failed full run is not relabelled as a full-suite pass.
+
+## Corrected rebuild checkpoint
+
+The corrected deploy build completed at source `6aa1aedb`:18168 copied files,1838 JS/623 CSS assets optimized,0 content blockers/warnings,0 public-claim errors and11508/11508 analytics coverage. Both French energy static/owner tests passed after regeneration (20/20 owners).
+
+An exact SHA256 comparison against the151-case artifact found18158 unchanged files, no deletions, one added scoped fuel review record, and ten changed files: the fuel formula registry, release timestamp metadata and eight French energy HTML pages. All tested PDF pages and executable assets remained byte-identical. The eight HTML differences are complete native labels/headings/sentences replacing prior partial translations; no calculation code or input machine values changed. The generated source diff was reviewed (162 files) and had no whitespace errors or deletions.
+
+Main advanced to `22c93812c1c97a2645260cd96fe7f52c08577fa9` during this build. Preserve its separate blog and function-release changes through integration and validate the combined candidate before publication. The current language batch remains undeployed.
