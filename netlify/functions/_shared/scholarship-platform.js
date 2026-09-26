@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 const { getData, setData } = require('./data-store');
+const { isScheduledEvent } = require('./scheduled-event');
 
 let fallbackFeedModule = null;
 let sourceAdapters = null;
@@ -945,10 +946,10 @@ async function ensureScholarshipSources(client) {
   return rows;
 }
 
-async function beginIngestRun(client, sourceId) {
+async function beginIngestRun(client, sourceId, invocation) {
   const { data, error } = await client
     .from('scholarship_ingest_runs')
-    .insert({ source_id: sourceId, status: 'running' })
+    .insert({ source_id: sourceId, status: 'running', fetch_meta: invocation })
     .select('id')
     .single();
   if (error) throw error;
@@ -1308,6 +1309,14 @@ async function fetchSourceItems(source) {
 async function syncScholarshipMirror(options) {
   const client = (options && options.client) || getAuthClient();
   if (!client) throw new Error('Scholarship auth client not configured');
+  // Store only code-owned invocation metadata, never the request or source payload.
+  const scheduledEvent = options && options.scheduledEvent;
+  const invocation = {
+    trigger: isScheduledEvent(scheduledEvent, 'scheduled-verify-scholarships') ? 'netlify-schedule' : 'manual-or-unknown',
+    function_name: scheduledEvent ? 'scheduled-verify-scholarships' : null,
+    invocation_started_at: new Date().toISOString(),
+    release_commit: /^[a-f0-9]{40}$/i.test(process.env.COMMIT_REF || '') ? process.env.COMMIT_REF : null
+  };
 
   await ensureScholarshipSources(client);
 
@@ -1325,7 +1334,7 @@ async function syncScholarshipMirror(options) {
   let staleRetirement = null;
 
   for (const source of (sources || [])) {
-    const runId = await beginIngestRun(client, source.id);
+    const runId = await beginIngestRun(client, source.id, invocation);
     try {
       const fetchResult = await fetchSourceItems(source);
       if (fetchResult.manualReview) {
@@ -1383,7 +1392,7 @@ async function syncScholarshipMirror(options) {
       .maybeSingle();
 
     if (backupSource) {
-      const runId = await beginIngestRun(client, backupSource.id);
+      const runId = await beginIngestRun(client, backupSource.id, invocation);
       const rawItems = getFallbackScholarships();
       const counts = await importSourceItems(client, backupSource, rawItems);
       if (counts.scholarshipIds && counts.scholarshipIds.length) {
