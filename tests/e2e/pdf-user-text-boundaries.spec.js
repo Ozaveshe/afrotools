@@ -9,6 +9,16 @@ const routes = {
   fr: { merge: '/fr/tools/fusionner-diviser-pdf/', sign: '/fr/tools/signer-pdf/', aria: 'Pages du fichier Upload PDF.pdf à inclure', error: 'Les pages doivent être comprises entre 1 et 2.', ready: 'PDF prêts : 2 | Pages : 3.', placeholder: 'Votre nom' },
   sw: { merge: '/sw/zana/unganisha-na-gawanya-pdf/', sign: '/sw/zana/kusaini-pdf/', aria: 'Kurasa za Upload PDF.pdf za kujumuisha', error: 'Kurasa lazima ziwe kati ya 1 na 2.', ready: 'PDF zilizo tayari: 2 | Kurasa: 3.', placeholder: 'Jina Lako' }
 };
+const pageErrors = new WeakMap();
+test.beforeEach(async ({ page }) => {
+  const errors = []; pageErrors.set(page, errors);
+  page.on('pageerror', error => errors.push(error.message));
+});
+test.afterEach(async ({ page }) => {
+  await settleTranslations(page);
+  expect(pageErrors.get(page)).toEqual([]);
+  await expect(page.locator('#afro-error-banner')).toHaveCount(0);
+});
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 test.use({ contextOptions: { reducedMotion: 'reduce' }, viewport: { width: 390, height: 844 } });
 
@@ -74,6 +84,8 @@ for (const [locale, copy] of Object.entries(routes)) {
     await expect(page.locator('.sp-cell')).toHaveCount(2);
     await settleTranslations(page);
     await expect(page.locator('#splitFileName')).toHaveText('Upload PDF.pdf');
+    // Literal '$1' keys do not introduce template substitution.
+    if (locale === 'sw') await expect(page.locator('.sp-cell-label').nth(1)).toHaveText('Page 2');
     await page.locator('[data-split-mode="extract"]').click();
     await page.locator('#extractInput').fill('2');
     const split = await downloaded(page, '#splitBtn', info, `${locale}-extracted.pdf`);

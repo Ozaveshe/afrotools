@@ -696,6 +696,8 @@
     }
   });
 
+  // Source characters cannot collide with this non-string terminal key.
+  var phraseTranslation = Symbol('phraseTranslation');
   var phraseTrie = null;
   var exactOnly = false;
 
@@ -709,7 +711,7 @@
         node[character] = node[character] || Object.create(null);
         node = node[character];
       }
-      node.$ = phrases[phrase];
+      node[phraseTranslation] = phrases[phrase];
     });
     return phraseTrie;
   }
@@ -726,8 +728,8 @@
       while (cursor < text.length && node[text[cursor]]) {
         node = node[text[cursor]];
         cursor += 1;
-        if (node.$) {
-          match = node.$;
+        if (node[phraseTranslation]) {
+          match = node[phraseTranslation];
           matchEnd = cursor;
         }
       }
