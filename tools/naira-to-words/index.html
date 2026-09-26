@@ -232,7 +232,7 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
-<link rel="stylesheet" href="/assets/css/amount-words-ux.css?v=60624fec">
+<link rel="stylesheet" href="/assets/css/amount-words-ux.css?v=cc7c7c3f">
 <link rel="canonical" href="https://afrotools.com/tools/naira-to-words/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/naira-to-words/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/naira-en-lettres/">
@@ -247,9 +247,7 @@
 <div style="max-width:1200px;margin:0 auto;padding:0 24px">
 <div class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">AfroTools</a> / <a href="/uniquely-african/" style="color:rgba(255,255,255,.3);text-decoration:none">Uniquely African</a> / <span style="color:#93c5fd">Amount to Words (Naira)</span></div>
 <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Amount to Words <em style="color:var(--color-primary);font-style:normal">(Naira)</em></h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Convert Nigerian Naira amounts to words for cheques, invoices, receipts, and payment documents. Instant and free.</p>
-<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">🇳🇬 Nigeria</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Works in your browser</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
-<p style="margin:16px 0 0"><a class="btn btn-primary" href="#amount">Convert an amount</a></p>
+<p class="hero-sub" style="font-size:.88rem;line-height:1.6;max-width:560px;margin-bottom:0">Convert Nigerian Naira amounts to words for cheques, invoices, receipts, and payment documents.</p>
 </div></section>
 
 <div class="container">
@@ -282,37 +280,6 @@
     <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to two places, with 5 rounded up.</p>
     <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
     <div class="format-display" id="formatted"></div>
-    <details class="document-options">
-<summary>Document details and text style (optional)</summary>
-<div class="doc-grid">
-      <div>
-        <label for="docMode">Document Format</label>
-        <select id="docMode" onchange="convert()" disabled data-amount-control>
-          <option value="cheque">Cheque line</option>
-          <option value="invoice">Invoice wording</option>
-          <option value="receipt">Receipt wording</option>
-          <option value="voucher">Payment voucher</option>
-        </select>
-      </div>
-      <div>
-        <label for="caseMode">Text Style</label>
-        <select id="caseMode" onchange="convert()" disabled data-amount-control>
-          <option value="title">Title Case</option>
-          <option value="upper">UPPERCASE</option>
-          <option value="sentence">Sentence case</option>
-        </select>
-      </div>
-      <div>
-        <label for="payeeName">Payee or Vendor</label>
-        <input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control>
-      </div>
-      <div>
-        <label for="docReference">Invoice, Memo, or Ref</label>
-        <input type="text" id="docReference" placeholder="Optional" oninput="convert()" disabled data-amount-control>
-      </div>
-    </div>
-<div class="quality-row" id="qualityRow" style="display:none;"></div>
-</details>
   </div>
 
   <div class="card" id="resultCard" style="display:none;">
@@ -325,10 +292,19 @@
     </div>
     <div class="doc-preview" id="docPreview"></div>
     <div class="doc-note">Check that the written amount matches the figures before signing, printing, or sharing. The "Only" suffix is kept to reduce room for extra words after the amount.</div>
-    <div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px">
-      <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px">Did You Know?</div>
-      <div style="font-size:.82rem;color:#4c1d95;line-height:1.7">The Nigerian Naira was introduced on January 1, 1973, replacing the Nigerian Pound. The name "Naira" comes from "Nigeria" — simply rearranging the letters!</div>
-    </div>
+  </div>
+
+  <div class="card amount-words-options">
+    <details class="document-options">
+      <summary>Document details and text style (optional)</summary>
+      <div class="doc-grid">
+        <div><label for="docMode">Document Format</label><select id="docMode" onchange="convert()" disabled data-amount-control><option value="cheque">Cheque line</option><option value="invoice">Invoice wording</option><option value="receipt">Receipt wording</option><option value="voucher">Payment voucher</option></select></div>
+        <div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()" disabled data-amount-control><option value="title">Title Case</option><option value="upper">UPPERCASE</option><option value="sentence">Sentence case</option></select></div>
+        <div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
+        <div><label for="docReference">Invoice, Memo, or Ref</label><input type="text" id="docReference" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
+      </div>
+      <div class="quality-row" id="qualityRow" style="display:none;"></div>
+    </details>
   </div>
 
   <section style="margin-top:2.5rem;padding:2rem 0">
