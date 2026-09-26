@@ -3,6 +3,21 @@
   const root=document.querySelector('[data-mobile-money-parity]');if(!root||!window.MobileMoneyQuoteEngine)return;
   const locale=root.dataset.locale||'en',sw=locale==='sw',fr=locale==='fr',form=document.getElementById('mm-form'),output=document.getElementById('mm-result-list'),status=document.getElementById('mm-status'),error=document.getElementById('mm-error');let last=null;
   const t=sw?{invalid:'Jaza nukuu zote kwa thamani halali.',updated:'Ulinganisho umekokotolewa kwenye kifaa hiki.',copied:'Muhtasari umenakiliwa.',downloaded:'JSON imepakuliwa.',lowest:'Ada ya chini iliyoingizwa',none:'Hakuna nukuu halali zinazolingana.',amount:'Kiasi cha muamala',send:'Ada ya mtumaji',receive:'Ada ya kupokea/kutoa',total:'Jumla ya ada',percent:'Asilimia ya ada',checked:'Ilikaguliwa',expiry:'Hali ya muda',difference:'Tofauti na ada ya chini',boundary:'Ada ndogo si pendekezo la mtoa huduma. Thibitisha nukuu, muda, mipaka, usalama na masharti kabla ya muamala.'}:fr?{invalid:'Renseignez chaque devis avec des valeurs valides.',updated:'Comparaison calculée sur cet appareil.',copied:'Résumé copié.',downloaded:'JSON téléchargé.',lowest:'Frais totaux saisis les plus bas',none:'Aucun devis admissible et comparable.',amount:'Montant de la transaction',send:'Frais d’envoi',receive:'Frais de réception ou de retrait',total:'Frais totaux',percent:'Pourcentage des frais',checked:'Vérifié le',expiry:'État d’expiration',difference:'Écart par rapport au moins cher',boundary:'Les frais les plus bas ne constituent pas une recommandation. Revérifiez le devis, son expiration, les limites, la sécurité et les conditions avant la transaction.'}:{invalid:'Complete every quote with valid values.',updated:'Comparison calculated on this device.',copied:'Summary copied.',downloaded:'JSON downloaded.',lowest:'Lowest entered total fee',none:'No eligible comparable quotes.',amount:'Transaction amount',send:'Sender fee',receive:'Recipient/cash-out fee',total:'Total fee',percent:'Fee percentage',checked:'Checked',expiry:'Expiry state',difference:'Difference from lowest',boundary:'Lowest fee is not a provider recommendation. Recheck the quote, expiry, limits, safety and terms before transacting.'};
+  const contextCopy=fr?{
+    action:'Opération',comparison:'Participation à la comparaison',asOf:'Comparaison calculée le',expires:'Expire le',noExpiry:'Non renseignée',
+    included:'Inclus dans cette comparaison',expired:'Exclu : devis expiré',unmatched:'Exclu : aucun autre devis non expiré ne correspond au marché, à la devise, à l’opération et au montant.',
+    actions:{send:'Envoi',withdraw:'Retrait',merchant:'Paiement marchand',bill:'Paiement de facture',other:'Autre'}
+  }:sw?{
+    action:'Aina ya muamala',comparison:'Kushiriki katika ulinganisho',asOf:'Ilikokotolewa',expires:'Muda wa mwisho',noExpiry:'Haujawekwa',
+    included:'Imejumuishwa katika ulinganisho huu',expired:'Haijajumuishwa: muda wa nukuu umeisha',unmatched:'Haijajumuishwa: hakuna nukuu nyingine ambayo muda wake haujaisha yenye soko, sarafu, aina ya muamala na kiasi sawa.',
+    actions:{send:'Kutuma',withdraw:'Kutoa',merchant:'Kulipa mfanyabiashara',bill:'Kulipa bili',other:'Nyingine'}
+  }:{
+    action:'Transaction type',comparison:'Comparison participation',asOf:'Comparison calculated at',expires:'Expires at',noExpiry:'Not provided',
+    included:'Included in this comparison',expired:'Excluded: quote expired',unmatched:'Excluded: no other unexpired quote matches the market, currency, transaction type and amount.',
+    actions:{send:'Send',withdraw:'Withdraw',merchant:'Merchant payment',bill:'Bill payment',other:'Other'}
+  };
+  function timestamp(value){return new Intl.DateTimeFormat(localeTag(),{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZoneName:'shortOffset'}).format(new Date(value));}
+  function participation(row){return row.expiryState==='expired'?contextCopy.expired:row.comparable?contextCopy.included:contextCopy.unmatched;}
   const frenchExpiry = {expired:'Expiré', unknown:'Expiration non renseignée', 'not-expired':'Non expiré'};
   const frenchErrors = {
     OBSERVED_AT_FUTURE:['La date de vérification ne peut pas être dans le futur.', 'observed'],
@@ -33,7 +48,18 @@
   function clear(){last=null;output.replaceChildren();document.getElementById('mm-primary-label').textContent='';document.getElementById('mm-primary-value').textContent='—';status.textContent='';error.textContent='';error.dataset.show='false';form.querySelectorAll('[aria-invalid="true"]').forEach(node=>node.removeAttribute('aria-invalid'));}
   function localeTag(){return sw?'sw-TZ':fr?'fr-FR':'en';}
   function fmt(number,currency){return `${Number(number).toLocaleString(localeTag(),{maximumFractionDigits:8})} ${currency}`;}function metric(label,text){const box=document.createElement('div');box.className='rm-metric';const name=document.createElement('span');name.textContent=label;const strong=document.createElement('strong');strong.textContent=text;box.append(name,strong);return box;}
-  function render(result){document.getElementById('mm-primary-label').textContent=result.hasEligibleComparison?t.lowest:'';document.getElementById('mm-primary-value').textContent=result.hasEligibleComparison?result.groups.map(group=>fmt(group.lowestTotalFee,group.currency)).join(' · '):t.none;output.replaceChildren();result.quotes.forEach(row=>{const card=document.createElement('article');card.className='rm-result';card.dataset.highest=String(row.lowestAmongEligibleComparable);card.dataset.expiry=row.expiryState;const head=document.createElement('strong');head.textContent=`${row.label} — ${row.market}`;const metrics=document.createElement('div');metrics.className='rm-metrics';metrics.append(metric(t.amount,fmt(row.amount,row.currency)),metric(t.send,fmt(row.senderFee,row.currency)),metric(t.receive,fmt(row.recipientFee,row.currency)),metric(t.total,fmt(row.totalFee,row.currency)),metric(t.percent,`${row.feePercent.toLocaleString(localeTag(),{maximumFractionDigits:4})}%`),metric(t.checked,new Date(row.observedAt).toLocaleString(localeTag())),metric(t.expiry,expiryLabel(row.expiryState)),metric(t.difference,row.differenceFromLowest===null?'—':fmt(row.differenceFromLowest,row.currency)));card.append(head,metrics);output.appendChild(card);});}
+  function render(result){
+    document.getElementById('mm-primary-label').textContent=result.hasEligibleComparison?t.lowest:'';
+    document.getElementById('mm-primary-value').textContent=result.hasEligibleComparison?result.groups.map(group=>fmt(group.lowestTotalFee,group.currency)).join(' · '):t.none;
+    output.replaceChildren();
+    result.quotes.forEach(row=>{
+      const card=document.createElement('article');card.className='rm-result';card.dataset.highest=String(row.lowestAmongEligibleComparable);card.dataset.expiry=row.expiryState;
+      const head=document.createElement('strong');head.textContent=`${row.label} — ${row.market}`;
+      const metrics=document.createElement('div');metrics.className='rm-metrics';
+      metrics.append(metric(contextCopy.action,contextCopy.actions[row.transactionType]),metric(contextCopy.comparison,participation(row)),metric(t.amount,fmt(row.amount,row.currency)),metric(t.send,fmt(row.senderFee,row.currency)),metric(t.receive,fmt(row.recipientFee,row.currency)),metric(t.total,fmt(row.totalFee,row.currency)),metric(t.percent,`${row.feePercent.toLocaleString(localeTag(),{maximumFractionDigits:4})}%`),metric(t.checked,timestamp(row.observedAt)),metric(contextCopy.asOf,timestamp(result.asOf)),metric(contextCopy.expires,row.expiresAt?timestamp(row.expiresAt):contextCopy.noExpiry),metric(t.expiry,expiryLabel(row.expiryState)),metric(t.difference,row.differenceFromLowest===null?'—':fmt(row.differenceFromLowest,row.currency)));
+      card.append(head,metrics);output.appendChild(card);
+    });
+  }
   function calculate(event){if(event)event.preventDefault();if(!form.checkValidity()){
     const fields=Array.from(form.querySelectorAll('input:invalid,select:invalid')),field=fields[0],suffix=field&&field.id.split('-').pop(),detail=fieldErrors[{observed:'OBSERVED_AT_REQUIRED',expires:'INVALID_EXPIRY',label:'LABEL_REQUIRED',market:'MARKET_REQUIRED',currency:'CURRENCY_REQUIRED',amount:'AMOUNT_REQUIRED',sender:'SENDER_FEE_REQUIRED',recipient:'RECIPIENT_FEE_REQUIRED'}[suffix]];fieldError(detail?detail[0]:t.invalid,fields);return null;
   }const quotes=[quote('a'),quote('b')];if(document.getElementById('mm-third').checked)quotes.push(quote('c'));
@@ -46,7 +72,13 @@
     try{last=window.MobileMoneyQuoteEngine.calculate({asOf,quotes});}
     catch(exception){fieldError(t.invalid,[]);return null;}
     error.textContent='';error.dataset.show='false';render(last);status.textContent=t.updated;return last;}
-  function summary(result){return [t.lowest+': '+(result.hasEligibleComparison?result.groups.map(group=>fmt(group.lowestTotalFee,group.currency)).join('; '):t.none),...result.quotes.map(row=>`${row.label} (${row.market}): ${t.amount} ${fmt(row.amount,row.currency)}; ${t.send} ${fmt(row.senderFee,row.currency)}; ${t.receive} ${fmt(row.recipientFee,row.currency)}; ${t.total} ${fmt(row.totalFee,row.currency)}; ${t.checked} ${new Date(row.observedAt).toLocaleString(localeTag())}; ${t.expiry} ${expiryLabel(row.expiryState)}`),t.boundary].join('\n');}function ensure(){return calculate();}
+  function summary(result){return [
+    t.lowest+': '+(result.hasEligibleComparison?result.groups.map(group=>fmt(group.lowestTotalFee,group.currency)).join('; '):t.none),
+    contextCopy.asOf+': '+timestamp(result.asOf),
+    ...result.quotes.map(row=>`${row.label} (${row.market}): ${contextCopy.action} ${contextCopy.actions[row.transactionType]}; ${contextCopy.comparison} ${participation(row)}; ${t.amount} ${fmt(row.amount,row.currency)}; ${t.send} ${fmt(row.senderFee,row.currency)}; ${t.receive} ${fmt(row.recipientFee,row.currency)}; ${t.total} ${fmt(row.totalFee,row.currency)}; ${t.checked} ${timestamp(row.observedAt)}; ${contextCopy.expires} ${row.expiresAt?timestamp(row.expiresAt):contextCopy.noExpiry}; ${t.expiry} ${expiryLabel(row.expiryState)}`),
+    t.boundary
+  ].join('\n');}
+  function ensure(){return calculate();}
   const copyFeedback=sw?{unavailable:'Kunakili hakupatikani katika kivinjari hiki. Pakua faili ya JSON ili kuhifadhi muhtasari.',denied:'Kunakili kumekataliwa. Pakua faili ya JSON ili kuhifadhi muhtasari.'}:fr?{unavailable:'La copie est indisponible dans ce navigateur. Téléchargez le fichier JSON pour conserver le résumé.',denied:'La copie a été refusée. Téléchargez le fichier JSON pour conserver le résumé.'}:{unavailable:'Copy is unavailable in this browser. Download the JSON file to save the summary.',denied:'Copy was denied. Download the JSON file to save the summary.'};
   document.getElementById('mm-copy').addEventListener('click',async()=>{const result=ensure();if(!result)return;
     if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function'){status.textContent=copyFeedback.unavailable;return;}
