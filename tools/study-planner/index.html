@@ -151,6 +151,8 @@
 
 /* ── Actions bar ── */
 .sp-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.sp-export-menu{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}
+.sp-export-menu strong{font-size:.8rem;color:var(--text);margin-right:4px}
 .sp-action-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text);font-family:inherit;transition:all .2s}
 .sp-action-btn:hover{border-color:var(--green);color:var(--green)}
 .sp-action-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
@@ -289,7 +291,7 @@
 <link rel="stylesheet" href="/tools/study-planner/study-planner-vip.css?v=360a1c25">
 <link rel="stylesheet" href="/assets/css/student-day.css?v=89369187">
 <script src="/assets/js/lib/student-day.js?v=c62b0b32"></script>
-<script src="/assets/js/pages/student-day.js?v=f5cdec20" defer></script>
+<script src="/assets/js/pages/student-day.js?v=3ee608bb" defer></script>
 <link rel="stylesheet" href="/assets/css/education-workspace.css?v=6770fbdb">
 <script src="/assets/js/pages/education-workspace.js?v=ccd80f04" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/study-planner/">
@@ -418,7 +420,7 @@
         <input aria-label="Start time" type="time" id="startTime" value="08:00">
       </div>
     </div>
-    <p class="sp-method-note">The planner divides only complete sessions that fit inside each day. Any unused minutes are shown in the result.</p>
+    <p class="sp-method-note">This is a repeating weekly routine. The planner divides only complete sessions that fit inside each day. Subject exam dates update the countdown, but do not automatically reserve paper days. For date-specific revision, <a href="/tools/exam-timetable/">use Exam Timetable</a>.</p>
     <div class="sp-save-actions">
       <button type="button" class="sp-action-btn primary" onclick="savePlanOnDevice()">Save on this device</button>
       <button type="button" class="sp-action-btn" onclick="clearSavedPlan()">Clear saved plan</button>
@@ -440,10 +442,9 @@
     <div class="sp-session-progress" id="sessionProgress" aria-live="polite"></div><p class="sp-progress-note">These checkmarks belong to this timetable. Save dated sessions below to track each week in My study day.</p>
     <div class="sp-breakdown" id="breakdown"></div>
     <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
-    <div class="sd-plan-save"><h3>Bring this timetable into your study day</h3><p>Save the next seven days. Existing sessions and completion records are kept.</p><label for="studentPlanStart">Start date <input type="date" id="studentPlanStart"></label><button class="sp-action-btn primary" type="button" onclick="saveDailyStudyPlan()">Save sessions to my study day</button><a href="/tools/education-hub/#daily-study">Open my study day</a><p id="studentPlanSaveStatus" role="status"></p></div>
+    <div class="sd-plan-save"><h3>Bring this timetable into your study day</h3><p>Save the next seven days. Existing sessions and completion records are kept. Review the dated sessions and move any revision you do not want on a confirmed paper day.</p><label for="studentPlanStart">Start date <input type="date" id="studentPlanStart"></label><button class="sp-action-btn primary" type="button" onclick="saveDailyStudyPlan()">Save sessions to my study day</button><a href="/tools/education-hub/#daily-study">Open my study day</a><p id="studentPlanSaveStatus" role="status"></p></div>
 <div class="sp-actions">
-      <button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button>
-      <button type="button" class="sp-action-btn" onclick="downloadStudyPlan()">Download TXT</button>
+      <div class="sp-export-menu" role="group" aria-label="Export weekly timetable"><strong>Export timetable</strong><button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button><button type="button" class="sp-action-btn" onclick="downloadStudyPlan()">Download TXT</button></div>
       <button type="button" class="sp-action-btn" onclick="switchTab('setup')">Edit subjects</button>
       <button type="button" class="sp-action-btn" onclick="regenerate()">Shuffle timetable</button>
       <button type="button" class="sp-action-btn" onclick="copyStudyProgress()">Copy progress</button>
@@ -535,7 +536,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Planning Dashboard" data-category="education" data-icon="EP" data-desc="Privately organise saved education details, school and scholarship shortlists, cost scenarios and deadlines; filter over">Education Planning Dashboard</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Result Planner" data-category="education" data-icon="WN" data-desc="Organise Nigeria WAEC or NECO grades, count credits, and calculate a transparent Ghana WASSCE planning aggregate before ">WAEC/NECO Result Planner</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME, Post-UTME, and institution-published weights, then complete official eligibili">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="My Study Space" data-category="education" data-icon="MS" data-desc="Continue locally saved study plans, school and scholarship shortlists, cost scenarios and deadlines on this device.">My Study Space</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Result Planner" data-category="education" data-icon="WN" data-desc="Count Nigeria WAEC or NECO credits, or calculate a separate Ghana WASSCE planning aggregate before official admission ch">WAEC/NECO Result Planner</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME and a screening score using weights you enter; confirm the institution&#39;s actual">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -548,6 +549,9 @@ var COLORS = ['#008751','#6366f1','#ea580c','#dc2626','#2563eb','#ca8a04','#9333
 var DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 var PRESETS_DATA = {
   waec:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Civic Education','easy'],['Further Maths','hard']],
+  'nigeria-waec-neco':[['English Language','medium'],['Mathematics','hard'],['Civic Education','medium'],['Biology','medium'],['Chemistry','hard'],['Physics','hard']],
+  'nigeria-waec':[['English Language','medium'],['Mathematics','hard'],['Civic Education','medium'],['Biology','medium'],['Chemistry','hard'],['Physics','hard']],
+  'nigeria-neco':[['English Language','medium'],['Mathematics','hard'],['Civic Education','medium'],['Biology','medium'],['Chemistry','hard'],['Physics','hard']],
   jamb:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium']],
   kcse:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Kiswahili','easy'],['History','medium']],
   'zambia-grade-7':[['Mathematics','hard'],['English','medium'],['Integrated Science','medium'],['Social Studies','medium'],['Special Paper','hard']],
@@ -564,6 +568,9 @@ var PRESETS_DATA = {
 };
 
 var EXAM_META = {
+  'nigeria-waec-neco':{name:'Nigeria WAEC or NECO study plan',targetDate:'',source:'',note:'Choose the exact WAEC or NECO examination series and enter each verified paper date. This subject list is editable and supplies no official exam date.',checklist:['Choose WAEC or NECO and the correct candidate category','Check the current authority timetable','Enter exact subject paper dates']},
+  'nigeria-waec':{name:'Nigeria WAEC WASSCE study plan',targetDate:'',source:'https://www.waecnigeria.org/news',note:'Choose the correct WASSCE series and candidate category, then enter each paper date from the current WAEC Nigeria timetable.',checklist:['Choose school or private candidate series','Check WAEC Nigeria timetable','Enter exact subject paper dates']},
+  'nigeria-neco':{name:'Nigeria NECO SSCE study plan',targetDate:'',source:'https://neco.gov.ng/',note:'Choose the correct internal or external SSCE series, then enter each paper date from the current NECO timetable.',checklist:['Choose internal or external SSCE','Check NECO timetable','Enter exact subject paper dates']},
   'zambia-gce':{name:'Zambia ECZ GCE 2026',targetDate:'',source:'https://www.exams-council.org.zm/gce/',note:'The 2026 GCE window has ended. Use the official page for later timetable updates.',checked:'26 July 2026',checklist:['Check every paper date against ECZ','Prioritise weak subjects and past papers','Prepare ID, stationery, calculator, and centre route']},
   'uganda-uneb-registration':{name:'Uganda UNEB PLE/UCE/UACE 2026',targetDate:'',source:'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/',note:'31 July is a late-registration deadline, not an examination date. Enter each paper date from the official timetable.',checked:'26 July 2026',checklist:['Confirm registration status with school','Collect candidate documents','Add exact paper dates when published']},
   'zambia-grade-7':{name:'Zambia ECZ Grade 7 2026',targetDate:'2026-10-26',source:'https://www.exams-council.org.zm/grade-7/',note:'ECZ lists the 2026 Grade 7 exam window as 26 October to 30 October 2026.',checklist:['Print the official subject timetable','Run two timed practice sets per week','Prepare transport and exam materials']},
@@ -695,7 +702,8 @@ function updateExamContext(key) {
   box.innerHTML = '<div><strong>' + esc(meta.name) + '.</strong> ' + esc(dateText) + ' ' + esc(meta.note) + '</div>' +
     (meta.checked ? '<div class="sp-source-check">Source checked ' + esc(meta.checked) + '.</div>' : '') +
     '<div class="sp-context-actions">' +
-    '<a href="' + esc(meta.source) + '" target="_blank" rel="noopener noreferrer">Official source</a>' +
+    (meta.source ? '<a href="' + esc(meta.source) + '" target="_blank" rel="noopener noreferrer">Official source</a>' :
+      '<a href="https://www.waecnigeria.org/news" target="_blank" rel="noopener noreferrer">WAEC Nigeria</a><a href="https://neco.gov.ng/" target="_blank" rel="noopener noreferrer">NECO</a>') +
     '<a href="/tools/exam-countdown/?exam=' + encodeURIComponent(key) + '">Countdown</a>' +
     '<a href="/tools/exam-timetable/?exam=' + encodeURIComponent(key) + '">Exam timetable</a>' +
     '<a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(key) + '">Flashcards</a>' +

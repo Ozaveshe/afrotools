@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const ROOT = path.resolve(__dirname, "..");
 const DATA_PATH = path.join(ROOT, "data", "ai", "vertical-landing-pages.json");
@@ -11,7 +12,18 @@ const { imageSizeFromUrl } = require("./lib/image-size.js");
 const COUNTRY_NAMES = { NG: "Nigeria", KE: "Kenya", GH: "Ghana", ZA: "South Africa" };
 
 function readData() {
-  return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
+  const data = JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
+  const education = data.verticals.find((page) => page.slug === "education");
+  if (education) {
+    const source = fs.readFileSync(path.join(ROOT, "assets/js/components/tool-registry.js"), "utf8");
+    const registry = vm.runInNewContext(source + ";AFRO_TOOLS", { console });
+    education.tools = education.tools.map((tool) => {
+      const record = registry.find((row) => row.href === tool.href && (row.lang || "en") === "en");
+      if (!record) throw new Error("Missing Education capability: " + tool.href);
+      return { ...tool, label: record.name, note: record.desc };
+    });
+  }
+  return data;
 }
 
 function readBundlePaths() {
@@ -454,7 +466,7 @@ function renderPage(page, data) {
         ${renderCountrySection(page)}
         <section class="vl-section" id="tools" aria-labelledby="tools-title">
           <h2 id="tools-title">The tools it opens</h2>
-          <p>Every route ends in a real calculator or document tool &mdash; the assistant fills in what it learned, and you stay in control of the numbers.</p>
+          <p>${page.slug === "education" ? "These links open specific worksheets and source-led tools. Add your own figures and verify admission or funding rules at the source." : "Every route ends in a real calculator or document tool &mdash; the assistant fills in what it learned, and you stay in control of the numbers."}</p>
           <div class="vl-tools">${tools}</div>
         </section>
         <section class="vl-section" aria-labelledby="honest-title">
@@ -496,8 +508,11 @@ function writePage(page, data) {
 
 function main() {
   const data = readData();
-  data.verticals.forEach((page) => writePage(page, data));
-  console.log(`Generated ${data.verticals.length} AfroTools AI landing pages.`);
+  const requestedSlug = process.argv.find((arg) => arg.startsWith("--slug="));
+  const pages = requestedSlug ? data.verticals.filter((page) => page.slug === requestedSlug.slice(7)) : data.verticals;
+  if (!pages.length) throw new Error("Unknown AI landing-page slug");
+  pages.forEach((page) => writePage(page, data));
+  console.log(`Generated ${pages.length} AfroTools AI landing page${pages.length === 1 ? "" : "s"}.`);
   console.log("Run `npm run analytics:inject` next — regeneration strips the injected analytics loader, and a page without it ships dark (GA4 coverage loss, Jul 2026).");
 }
 

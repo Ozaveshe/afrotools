@@ -129,7 +129,6 @@
     }
     lastResult = result;
     field('resultCard').classList.remove('hidden');
-    field('cutoffResult').classList.add('hidden');
     field('aggregateScore').textContent = result.aggregate.toFixed(2);
     field('formulaUsed').textContent = 'User-entered weights: UTME ' + result.utmeWeight + '% + Post-UTME ' + result.postUtmeWeight + '%';
     field('breakdown').textContent = formulaLines(result).join('\n');
@@ -218,12 +217,4 @@
     }
   };
 
-  window.CUTOFFS = [];
-  window.FORMULAS = {
-    planning: {
-      name: 'Published-weight worksheet',
-      desc: 'Enter the weights published by the institution for the current cycle.',
-      needsOlevel: false
-    }
-  };
 }());

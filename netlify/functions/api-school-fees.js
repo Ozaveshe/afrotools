@@ -7,6 +7,7 @@ exports.handler = async function (event) {
     table: 'school_fee_reports',
     select: '*',
     baseFilters: ['is_public=eq.true'],
+    requireFresh: false,
     responseKey: 'fees',
     extendFilters(filters, params, appendFilter) {
       if (params.education_level) appendFilter(filters, 'education_level', params.education_level);

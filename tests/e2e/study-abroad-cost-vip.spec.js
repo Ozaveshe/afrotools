@@ -8,3 +8,25 @@ for(const width of[320,360])test(`no overflow at ${width}px`,async({page})=>{awa
 test('dark 375px at 200% text remains readable',async({page})=>{await page.setViewportSize({width:375,height:900});await page.goto(route,{waitUntil:'commit'});await page.waitForFunction(()=>window.AFROTOOLS_STUDY_COST_VIP===true);await page.waitForFunction(()=>window.AfroTools&&window.AfroTools.darkMode);await page.evaluate(()=>{window.AfroTools.darkMode.set('dark');document.documentElement.style.fontSize='200%'});const m=await page.evaluate(()=>{const p=document.querySelector('.sv-panel');return[document.documentElement.scrollWidth,document.documentElement.clientWidth,getComputedStyle(p).backgroundColor,getComputedStyle(p.querySelector('h2')).color]});expect(m[0]).toBeLessThanOrEqual(m[1]+1);expect(m[2]).not.toBe(m[3])});
 test('controls have accessible names',async({page})=>{await page.goto(route,{waitUntil:'commit'});await page.waitForFunction(()=>window.AFROTOOLS_STUDY_COST_VIP===true);const n=await page.evaluate(()=>Array.from(document.querySelectorAll('main input,main select,main textarea,main button')).filter(e=>!e.closest('label')&&!e.getAttribute('aria-label')&&!e.textContent.trim()).length);expect(n).toBe(0)});
 });
+
+test('blank costs are incomplete, explicit zero is valid, and edits clear stale totals', async ({ page }) => {
+  await page.goto(route, { waitUntil: 'commit' });
+  await page.waitForFunction(() => window.AFROTOOLS_STUDY_COST_VIP === true);
+  await page.getByRole('button', { name: 'Calculate study budget' }).click();
+  await expect(page.locator('#costError')).toContainText('Tuition per academic year');
+  await expect(page.locator('#tuitionAnnual')).toBeFocused();
+  await expect(page.locator('#costResults')).toBeHidden();
+
+  for (const id of [
+    'tuitionAnnual', 'accommodationMonthly', 'livingMonthly', 'insuranceAnnual',
+    'governmentFees', 'setupCosts', 'confirmedAid', 'availableFunds',
+    'upfrontTuition', 'otherUpfront', 'refundableDeposit'
+  ]) await page.locator('#' + id).fill('0');
+  await page.getByRole('button', { name: 'Calculate study budget' }).click();
+  await expect(page.locator('#costResults')).toBeVisible();
+  await expect(page.locator('#metricGrid')).toContainText('$0');
+
+  await page.locator('#tuitionAnnual').fill('1000');
+  await expect(page.locator('#costResults')).toBeHidden();
+  await expect(page.locator('#costError')).toContainText('Calculate again');
+});

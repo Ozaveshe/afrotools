@@ -69,6 +69,23 @@ test('raw apply fills bands but never creates an eligibility result', async ({ p
   await expect(page.locator('#ieltsFormStatus')).toContainText('Estimated bands applied');
 });
 
+test('changing a calculated band or target clears the old result and export', async ({ page }) => {
+  await page.goto(route);
+  await page.waitForLoadState('networkidle');
+  await page.locator('#planningTarget').selectOption('6.5');
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#resultsPanel')).toBeVisible();
+
+  await page.locator('#writing').selectOption('7.0');
+  await expect(page.locator('#resultsPanel')).toBeHidden();
+  await expect(page.locator('#actionPlanCard')).toBeHidden();
+
+  await page.locator('#calculateBtn').click();
+  await expect(page.locator('#resultsPanel')).toBeVisible();
+  await page.locator('#planningTarget').selectOption('7.0');
+  await expect(page.locator('#resultsPanel')).toBeHidden();
+});
+
 test('action pack print invokes the browser print boundary', async ({ page }) => {
   await page.goto(route);
   await page.waitForLoadState('networkidle');

@@ -46,6 +46,20 @@ test.describe('NSC study admission and Matric points VIP', () => {
     await expect(page.locator('#resultCard')).toBeHidden();
   });
 
+  test('language roles exclude mathematics and reject forged nonlanguage selections', async ({ page }) => {
+    await page.goto('/tools/matric-points/', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#homeLanguage option[value="Mathematics"]')).toHaveCount(0);
+    await expect(page.locator('#learningLanguage option[value="Mathematics"]')).toHaveCount(0);
+    await page.evaluate(() => {
+      const select = document.getElementById('homeLanguage');
+      select.add(new Option('Mathematics', 'Mathematics'));
+      select.value = 'Mathematics';
+    });
+    await page.getByRole('button', { name: 'Check NSC route and points' }).click();
+    await expect(page.locator('#matricFormStatus')).toContainText('Home Language must');
+    await expect(page.locator('#resultCard')).toBeHidden();
+  });
+
   test('320px mobile dark mode has named percentage controls and no overflow', async ({ page }) => {
     const errors = [];
     page.on('console', (message) => {

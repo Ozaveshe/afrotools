@@ -39,7 +39,10 @@
       metric("Per-learner session quote", money(result.perLearnerSession), "At entered group size") +
       metric("Client hourly equivalent", money(result.clientHourlyEquivalent), "Per 60 billed minutes") +
       metric("Monthly revenue required", money(result.requiredRevenueMonthly), "Before entered reserves") +
-      metric("Package per learner", money(result.packagePrice), result.input.packageSessions + " sessions; " + result.input.packageDiscount + "% discount");
+      metric("Package per learner", money(result.packagePrice), result.input.packageSessions + " sessions; " + result.input.packageDiscount + "% discount") +
+      metric("Package at full capacity", money(result.packageMonthlyRevenue) + "/month", result.packageMonthlyGap < 0
+        ? money(-result.packageMonthlyGap) + " below required monthly revenue; sustaining price " + money(result.sustainablePackagePrice) + "/learner/package"
+        : "Covers the entered monthly revenue target at full attendance");
     document.getElementById("monthlyBreakdown").innerHTML =
       row("Target personal income", money(result.input.targetIncome)) +
       row("Fixed monthly costs", money(result.input.monthlyCosts)) +
@@ -90,6 +93,9 @@
       "Client hourly equivalent: " + money(c.clientHourlyEquivalent),
       "Effective personal income/work hour: " + money(c.effectiveWorkHourIncome),
       c.input.packageSessions + "-session package per learner: " + money(c.packagePrice) + " (" + c.input.packageDiscount + "% user-entered discount)",
+      "Package revenue/month at full attendance: " + money(c.packageMonthlyRevenue),
+      "Package revenue gap/month: " + money(c.packageMonthlyGap) + " (negative means shortfall)",
+      "Package price per learner to sustain entered plan: " + money(c.sustainablePackagePrice),
       "",
       "Boundary: This result does not measure local demand, affordability or competitor prices. Verify current comparable quotes and applicable tax rules."
     ].join("\n");
@@ -116,6 +122,16 @@
     }
     error.textContent = "";
     render(result);
+  });
+  form.addEventListener("input", function () {
+    current = null;
+    results.hidden = true;
+    status("Inputs changed. Calculate again to update the quote.");
+  });
+  form.addEventListener("change", function () {
+    current = null;
+    results.hidden = true;
+    status("Inputs changed. Calculate again to update the quote.");
   });
   document.getElementById("copyReport").addEventListener("click", function () {
     navigator.clipboard.writeText(report()).then(function () { status("Quote brief copied."); });

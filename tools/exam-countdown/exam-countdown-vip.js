@@ -174,22 +174,28 @@
   function renderPresets() {
     var grid = $('presetGrid');
     if (!grid) return;
-    grid.innerHTML = presets.map(function (preset) {
+    function card(preset) {
       var selected = selectedPreset && selectedPreset.key === preset.key;
+      var past = preset.date && engine.calendarDaysUntil(preset.date) < 0;
       return '<button type="button" class="preset-btn" data-preset-key="' + escapeHtml(preset.key) +
         '" data-needs-date="' + String(!preset.date) + '" aria-pressed="' + String(!!selected) + '">' +
-        '<span class="preset-kind">' + (preset.kind === 'registration' ? 'Registration deadline' : 'Exam timetable') + '</span>' +
+        '<span class="preset-kind">' + (past ? 'Past · ' : '') + (preset.kind === 'registration' ? 'Registration deadline' : preset.kind === 'application' ? 'Application deadline' : 'Exam timetable') + '</span>' +
         '<span class="preset-name">' + escapeHtml(preset.name) + '</span>' +
         '<span class="preset-date">' + (preset.date ? escapeHtml(formatDate(preset.date)) : 'Enter the date that applies to you') + '</span>' +
         '<span class="preset-meaning">' + escapeHtml(preset.dateMeaning) + '</span>' +
         '<span class="preset-country">' + escapeHtml(preset.country) + ' · source checked ' + CHECKED_DATE + '</span>' +
         '</button>';
-    }).join('');
+    }
+    var current = presets.filter(function (preset) { return !preset.date || engine.calendarDaysUntil(preset.date) >= 0; });
+    var past = presets.filter(function (preset) { return preset.date && engine.calendarDaysUntil(preset.date) < 0; });
+    grid.innerHTML = current.map(card).join('') + (past.length
+      ? '<details class="past-presets"><summary>Past source dates (' + past.length + ') · check the next cycle</summary><div class="preset-grid">' + past.map(card).join('') + '</div></details>' : '');
   }
 
   function prepLinks(item) {
     if (!item.key) return '';
     var key = encodeURIComponent(item.key);
+    if (item.kind !== 'exam' || engine.calendarDaysUntil(item.date) < 0) return '';
     return '<div class="cd-links">' +
       '<a class="cd-link" href="/tools/study-planner/?exam=' + key + '">Study planner</a>' +
       '<a class="cd-link" href="/tools/exam-timetable/?exam=' + key + '">Build timetable</a>' +
@@ -207,7 +213,7 @@
     }
     grid.innerHTML = countdowns.map(function (item) {
       var state = engine.dateState(item.date);
-      var phase = engine.planningPhase(state.days, state.kind);
+      var phase = engine.planningPhase(state.days, state.kind, item.kind);
       var source = item.source ? '<div class="cd-source">' +
         escapeHtml(item.note || 'Confirm the official timetable before acting.') +
         ' <a href="' + escapeHtml(item.source) + '" target="_blank" rel="noopener">' +
@@ -273,7 +279,9 @@
     $('customName').dataset.presetKey = preset.key;
     $('customKind').value = preset.kind;
     setFormStatus(preset.date
-      ? 'Review the date meaning and official source, then add it.'
+      ? (engine.calendarDaysUntil(preset.date) < 0
+        ? 'This source date has passed. Keep it for history, or enter a new deadline only after confirming it with the authority.'
+        : 'Review the date meaning and official source, then add it.')
       : 'Open the official source and enter the first date that applies to you.', true);
     updateCoach(preset);
     if (!preset.date) $('customDate').focus();
@@ -292,7 +300,7 @@
       sourceLabel: preset ? preset.sourceLabel : '',
       note: preset ? preset.note : '',
       checked: preset ? preset.checked : '',
-      dateMeaning: preset ? preset.dateMeaning : ($('customKind').value === 'registration' ? 'Registration deadline entered by user' : 'Date entered by user')
+      dateMeaning: preset ? preset.dateMeaning : ($('customKind').value === 'registration' ? 'Registration deadline entered by user' : $('customKind').value === 'application' ? 'Application deadline entered by user' : 'Date entered by user')
     };
     if (!addCountdown(raw)) return;
     event.currentTarget.reset();
@@ -378,7 +386,7 @@
       return engine.calendarDaysUntil(a.date) - engine.calendarDaysUntil(b.date);
     }).find(function (item) { return engine.calendarDaysUntil(item.date) >= 0; }) || countdowns[0];
     var state = engine.dateState(active.date);
-    var phase = engine.planningPhase(state.days, state.kind);
+    var phase = engine.planningPhase(state.days, state.kind, active.kind);
     coach.innerHTML = '<h2>Next: ' + escapeHtml(active.name) + '</h2><p>' + escapeHtml(state.label) +
       '. ' + escapeHtml(active.note || 'Confirm the exact date, time, venue, and subject entry.') +
       '</p><ul>' + phase.actions.map(function (action) { return '<li>' + escapeHtml(action) + '</li>'; }).join('') + '</ul>';

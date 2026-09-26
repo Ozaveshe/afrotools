@@ -24,6 +24,9 @@
   function money(value, currency) {
     return (currency ? currency + ' ' : '') + Math.round(Number(value) || 0).toLocaleString('en');
   }
+  function quoteMoney(value, currency) {
+    return currency + ' ' + Number(value).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
   function sourceLabel(value) {
     return {
       self_observed: 'Self reported',
@@ -137,15 +140,43 @@
       '<a class="md-card-link" href="' + helpers.escapeHtml(studentBudgetUrl(row, normalized)) + '">Plan in Student Budget</a>' +
       '</div></article>';
   }
+  function mountManualComparison() {
+    var form = byId('sfManualForm');
+    if (!form || !engine) return;
+    function invalidate() { byId('sfManualResult').hidden = true; byId('sfManualError').textContent = ''; }
+    form.addEventListener('input', invalidate);
+    form.addEventListener('change', invalidate);
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var result = engine.compareManualQuotes({
+        currency: byId('sfManualCurrency').value,
+        period: byId('sfManualPeriod').value,
+        quotes: [1, 2].map(function (i) { return {
+          name: byId('sfName' + i).value,
+          tuition: byId('sfTuition' + i).value,
+          extras: byId('sfExtras' + i).value
+        }; })
+      });
+      if (!result.ok) { byId('sfManualError').textContent = result.errors[0]; return; }
+      byId('sfManualError').textContent = '';
+      byId('sfManualResult').innerHTML = '<strong>Same-period comparison · ' + escapeHtml(result.period) + ' · ' + escapeHtml(result.currency) + '</strong>' +
+        result.quotes.map(function (quote) { return '<p>' + escapeHtml(quote.name) + ': ' + escapeHtml(quoteMoney(quote.total, result.currency)) + ' (tuition + other quoted fees)</p>'; }).join('') +
+        '<p>' + (result.lowerIndex === null ? 'Both entered totals are equal.' : escapeHtml(result.quotes[result.lowerIndex].name) + ' has the lower entered total by ' + escapeHtml(quoteMoney(result.difference, result.currency)) + '.') + '</p>' +
+        '<p>Compare deadlines and included items before treating the lower amount as the better option.</p>';
+      byId('sfManualResult').hidden = false;
+    });
+  }
   function mount() {
+    mountManualComparison();
     if (!engine || !window.MarketDataApp || !window.AfroPointsEngine) {
-      byId('mdList').innerHTML = '<div class="md-empty" role="status">The fee comparator could not start. Reload the page; if the issue continues, use the private quick check on the main School Fees page.</div>';
+      byId('mdList').innerHTML = '<div class="md-empty" role="status">The published fee feed could not start. Compare your own written quotes above; reload later to retry the feed.</div>';
       return;
     }
     renderContext();
     new MutationObserver(function () {
       var list = byId('mdList');
       if (list && !/Loading (school fees|live data)/i.test(list.textContent || '')) list.setAttribute('aria-busy', 'false');
+      if (list && /Live data is temporarily unavailable/i.test(list.textContent || '')) byId('sfCoverageNote').textContent = 'Published fee records are unavailable right now. You can compare your own written quotes above without the feed; retry later for published records.';
     }).observe(byId('mdList'), { childList: true, subtree: true });
     document.addEventListener('click', function (event) {
       var levelButton = event.target.closest('[data-level]');
@@ -182,6 +213,11 @@
       vertical: 'school_fees',
       reportButtonLabel: 'Submit fee for review',
       emptyStateHtml: 'No published records match these filters. Try a broader filter. Signed-in contributors can submit a record for review.',
+      renderEmptyState: function (response) {
+        return response && response.error
+          ? 'Published fee records are unavailable right now. Compare your own written quotes above and retry later.'
+          : 'The feed responded, but no published records match these filters. Try a broader filter; this does not mean a school has no fees.';
+      },
       reportFields: [
         { key: 'institution_name', label: 'Institution name', type: 'text', required: true },
         { key: 'education_level', label: 'Level', type: 'select', required: true, options: ['Primary', 'Secondary', 'University', 'Vocational', 'International'] },

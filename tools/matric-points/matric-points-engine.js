@@ -17,6 +17,14 @@
     return 1;
   }
 
+  function isHomeLanguage(subject) {
+    return / Home Language$/.test(String(subject || ''));
+  }
+
+  function isLearningLanguage(subject) {
+    return / (Home Language|First Additional Language)$/.test(String(subject || ''));
+  }
+
   function calculate(input) {
     var rows = Array.isArray(input && input.results) ? input.results : [];
     var homeLanguage = String(input && input.homeLanguage || '');
@@ -40,6 +48,11 @@
     }
     if (!seen.has(homeLanguage)) return { ok: false, error: 'Select the Home Language from the entered subjects.' };
     if (!seen.has(learningLanguage)) return { ok: false, error: 'Select the institution language of learning and teaching from the entered subjects.' };
+    if (!isHomeLanguage(homeLanguage)) return { ok: false, error: 'Home Language must be an entered Home Language subject.' };
+    if (!isLearningLanguage(learningLanguage)) return { ok: false, error: 'The language of learning and teaching must be an entered language subject.' };
+    if (!results.some(function (row) { return / First Additional Language$/.test(row.subject); })) {
+      return { ok: false, error: 'Enter a First Additional Language subject for the standard NSC subject package.' };
+    }
 
     var counted = results
       .filter(function (row) { return row.subject !== 'Life Orientation'; })
@@ -88,6 +101,8 @@
 
   return {
     levelFromPercentage: levelFromPercentage,
+    isHomeLanguage: isHomeLanguage,
+    isLearningLanguage: isLearningLanguage,
     calculate: calculate
   };
 }));

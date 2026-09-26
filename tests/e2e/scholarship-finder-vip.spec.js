@@ -3,6 +3,54 @@ const { test, expect } = require('@playwright/test');
 const route = '/tools/scholarship-finder/';
 test.use({ serviceWorkers: 'block' });
 
+for (const [label, instant, expectedOpen] of [
+  ['before', '2026-10-06T10:59:59Z', 2],
+  ['at', '2026-10-06T11:00:00Z', 1]
+]) {
+  test(`exact Chevening cutoff is reflected in the closing tab ${label} 11:00 UTC`, async ({ page }) => {
+    await page.clock.setFixedTime(new Date(instant));
+    await page.addInitScript(() => { window.__AfroScholarshipLocalPreviewFetch = true; });
+    let apiHits = 0;
+    await page.route(/\/api\/scholarships(?:\?|$)/, route => {
+      apiHits += 1;
+      return route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ scholarships: [
+        {
+          id: 'chevening-scholarship-uk-government-fcdo',
+          title: 'Chevening Scholarship',
+          provider: 'Chevening',
+          status: 'open',
+          deadline_date: '2026-10-06',
+          deadline_at: '2026-10-06T11:00:00Z',
+          deadline_text: '6 October 2026, 11:00 UTC',
+          deadline_confidence: 'verified',
+          deadline_source_url: 'https://www.chevening.org/scholarships/application-timeline/',
+          official_url: 'https://www.chevening.org/scholarships/application-timeline/'
+        },
+        {
+          id: 'date-only-award',
+          title: 'Date-only award',
+          provider: 'Example',
+          status: 'open',
+          deadline_date: '2026-10-06',
+          deadline_text: '6 October 2026',
+          official_url: 'https://example.edu/date-only'
+        }
+      ] })
+      });
+    });
+    await page.goto(route);
+    await expect.poll(() => apiHits).toBeGreaterThan(0);
+    await expect(page.locator('.sch-card')).toHaveCount(2);
+    await page.locator('[data-sch-tab="closing"]').click();
+    await expect(page.locator('.sch-card')).toHaveCount(expectedOpen);
+    await expect(page.locator('.sch-card h3')).toContainText(expectedOpen === 1 ? ['Date-only award'] :
+      ['Chevening Scholarship', 'Date-only award']);
+  });
+}
+
 test('fallback mode is honest, searchable, filterable and private', async ({ page }) => {
   const errors = [];
   const writes = [];

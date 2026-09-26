@@ -43,3 +43,10 @@ test("compares a proposed quote without calling it a market benchmark", () => {
   assert.equal(result.comparison.proposedMonthlyRevenue, 480000);
   assert.equal(result.comparison.monthlyGap, 5000);
 });
+
+test("shows the full-capacity monthly shortfall from a discounted package", () => {
+  const result = engine.calculate({ ...base, packageDiscount: 20 });
+  assert.equal(result.packageMonthlyRevenue, 380000);
+  assert.equal(result.packageMonthlyGap, -95000);
+  assert.equal(result.sustainablePackagePrice, result.perLearnerSession * 5);
+});

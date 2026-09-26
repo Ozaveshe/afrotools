@@ -57,10 +57,14 @@ function getScholarshipMode(item) {
   return 'curated';
 }
 
-function getScholarshipStatus(item) {
+function getScholarshipStatus(item, now = new Date()) {
   if (item && item.deadline_confidence === 'no_single_public_deadline') {
     return 'variable';
   }
+
+  const exact = String(item && item.deadline_at || '');
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(exact) &&
+      new Date(now).getTime() >= Date.parse(exact)) return 'closed';
 
   const status = String(item && item.status ? item.status : '').toLowerCase();
   if (status === 'open' || status === 'upcoming' || status === 'unclear' || status === 'closed' || status === 'variable') {
@@ -127,7 +131,7 @@ function buildScholarshipMetadata(items, meta, now) {
   };
 
   const counts = list.reduce(function (state, item) {
-    const status = getScholarshipStatus(item);
+    const status = getScholarshipStatus(item, current);
     const days = daysUntil(item && item.deadline_date, current);
     const verifiedAt = firstTimestamp(item, [
       'verified_at',
@@ -141,7 +145,7 @@ function buildScholarshipMetadata(items, meta, now) {
     const staleDate = parseDate(staleAnchor);
 
     if (status === 'open' || status === 'upcoming' || status === 'variable') state.open += 1;
-    if ((typeof days === 'number' && days >= 0 && days <= 30) || status === 'closing_soon') state.closingSoon += 1;
+    if (status !== 'closed' && ((typeof days === 'number' && days >= 0 && days <= 30) || status === 'closing_soon')) state.closingSoon += 1;
     if (verifiedAt && utcDateKey(verifiedAt) === todayKey) state.verifiedToday += 1;
     if (addedAt && utcDateKey(addedAt) === todayKey) state.addedToday += 1;
     if (!staleDate || current.getTime() - staleDate.getTime() > 30 * 86400000) state.stale += 1;
@@ -172,7 +176,7 @@ function buildScholarshipMetadata(items, meta, now) {
   };
 }
 
-function buildScholarshipSummary(items, meta) {
+function buildScholarshipSummary(items, meta, now = new Date()) {
   const list = Array.isArray(items) ? items : [];
   const summary = {
     total: list.length,
@@ -196,7 +200,7 @@ function buildScholarshipSummary(items, meta) {
 
   list.forEach(function (item) {
     const mode = getScholarshipMode(item);
-    const status = getScholarshipStatus(item);
+    const status = getScholarshipStatus(item, now);
     summary[mode] += 1;
     summary[status] += 1;
     if (hasOfficialLink(item)) summary.officialLink += 1;

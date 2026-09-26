@@ -20,6 +20,19 @@
     node.classList.toggle('is-ok', type === 'ok');
   }
 
+  function invalidateResult() {
+    byId('resultsPanel').classList.add('hidden');
+    byId('actionPlanCard').classList.add('hidden');
+    byId('qualificationCard').classList.add('hidden');
+  }
+
+  function invalidateAfterChange() {
+    invalidateResult();
+    // The legacy controller also listens for changes and may rerender the
+    // previous result later in the same event dispatch.
+    Promise.resolve().then(invalidateResult);
+  }
+
   function values() {
     var output = {};
     componentNames.forEach(function (name) { output[name] = byId(name).value; });
@@ -86,6 +99,7 @@
   function renderResult() {
     var target = byId('planningTarget').value;
     if (!target) {
+      invalidateResult();
       status('Choose the overall target published by your receiving organisation before calculating.', 'error');
       byId('planningTarget').focus();
       return;
@@ -97,6 +111,7 @@
       result = engine.calculateOverall(values());
       comparison = engine.compare(result.overall, target);
     } catch (error) {
+      invalidateResult();
       status(error.message, 'error');
       return;
     }
@@ -156,6 +171,7 @@
     }
     byId('listening').value = listening.band.toFixed(1);
     byId('reading').value = reading.band.toFixed(1);
+    invalidateResult();
     status('Estimated bands applied. Choose your own overall target, add Writing and Speaking bands, then calculate.', 'ok');
   }
 
@@ -191,7 +207,13 @@
     byId('applyRawBtn').addEventListener('click', applyRaw, true);
     byId('resetBtn').addEventListener('click', reset, true);
     ['planningTarget', 'targetDestination', 'targetPathway'].forEach(function (id) {
-      byId(id).addEventListener('change', function () { window.setTimeout(updateBoundary, 0); });
+      byId(id).addEventListener('change', function () {
+        invalidateAfterChange();
+        window.setTimeout(updateBoundary, 0);
+      });
+    });
+    componentNames.forEach(function (name) {
+      byId(name).addEventListener('change', invalidateAfterChange);
     });
     ['rawListening', 'rawReading'].forEach(function (id) {
       byId(id).addEventListener('input', function (event) {
@@ -201,9 +223,9 @@
     });
     ['modeAcademic', 'modeGeneral'].forEach(function (id) {
       byId(id).addEventListener('click', function () {
+        invalidateResult();
         window.setTimeout(function () {
           updateRawPreview();
-          if (!byId('resultsPanel').classList.contains('hidden')) renderResult();
         }, 0);
       });
     });

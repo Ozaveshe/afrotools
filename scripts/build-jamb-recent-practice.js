@@ -19,7 +19,7 @@ ${earlyBootstrapTag(bootstrapVersion(),analyticsVersion())}
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'JAMB Mathematics source-linked revision',url:'https://afrotools.com'+route,applicationCategory:'EducationalApplication',operatingSystem:'Web',inLanguage:'en',description})}</script>
 ${['components/navbar.min.js','components/footer.min.js','lib/jamb-recent-written-bank.js','lib/ssce-written.js','pages/ssce-written.js'].map(s=>`<script src="/assets/js/${s}" defer></script>`).join('\n')}
 </head><body><afro-navbar active="education"></afro-navbar><main class="practice-shell">
-<nav aria-label="Breadcrumb"><a href="/tools/education-hub/">Education Hub</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/mathematics/">Mathematics</a></nav>
+<nav aria-label="Breadcrumb"><a href="/tools/education-hub/">My Study Space</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/mathematics/">Mathematics</a></nav>
 <header class="page-header"><h1>JAMB Mathematics revision</h1><p>Five source-linked tasks from Myschool’s 2023 collection. Write your reasoning, then open the worked solution.</p></header>
 <p>The year is the publisher’s collection label. These adapted tasks are a selected revision set, not a complete authenticated exam sitting or an official marking scheme.</p>
 <nav class="practice-actions" aria-label="Revision topics">${bank.items.map(q=>`<a class="btn btn-secondary" href="#written=${encodeURIComponent(q.id)}">${esc(q.title)}</a>`).join('')}</nav>

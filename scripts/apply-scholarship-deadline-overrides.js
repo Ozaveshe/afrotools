@@ -8,24 +8,33 @@ const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
 
-function isPastDeadlineDate(deadlineDate) {
+function isPastDeadlineDate(deadlineDate, now = new Date()) {
   const dateKey = String(deadlineDate || '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return false;
-  return dateKey < new Date().toISOString().slice(0, 10);
+  return dateKey < new Date(now).toISOString().slice(0, 10);
 }
 
-function normalizeStatus(override) {
+function isPastDeadline(override, now = new Date()) {
+  const exact = String(override.deadline_at || '');
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(exact)) {
+    const cutoff = Date.parse(exact);
+    if (Number.isFinite(cutoff)) return new Date(now).getTime() >= cutoff;
+  }
+  return isPastDeadlineDate(override.deadline_date, now);
+}
+
+function normalizeStatus(override, now = new Date()) {
   if (deadlineConfidence(override) === 'no_single_public_deadline') return 'variable';
-  if (isPastDeadlineDate(override.deadline_date)) return 'closed';
+  if (isPastDeadline(override, now)) return 'closed';
   const status = String(override.status || '').toLowerCase();
   if (['open', 'upcoming', 'unclear', 'closed', 'variable'].includes(status)) return status;
   const deadline = override.deadline_date ? new Date(override.deadline_date) : null;
-  if (deadline && !Number.isNaN(deadline.getTime()) && deadline.getTime() < Date.now()) return 'closed';
+  if (deadline && !Number.isNaN(deadline.getTime()) && deadline.getTime() < new Date(now).getTime()) return 'closed';
   return override.deadline_date ? 'upcoming' : 'unclear';
 }
 
-function normalizeDatabaseStatus(override) {
-  const status = normalizeStatus(override);
+function normalizeDatabaseStatus(override, now = new Date()) {
+  const status = normalizeStatus(override, now);
   return status === 'variable' ? 'unclear' : status;
 }
 
@@ -46,7 +55,7 @@ function buildPatch(override, now) {
   const patch = {
     deadline_date: override.deadline_date || null,
     deadline_text: override.deadline_text || null,
-    status: normalizeDatabaseStatus(override),
+    status: normalizeDatabaseStatus(override, now),
     proof_level: confidence === 'verified'
       ? 'official_deadline_manual_review'
       : 'official_deadline_no_single_public_date',
@@ -60,7 +69,7 @@ function buildPatch(override, now) {
   return patch;
 }
 
-function buildSnapshot(current, override) {
+function buildSnapshot(current, override, now = new Date()) {
   const confidence = deadlineConfidence(override);
   const providerUrl = override.official_provider_url || override.provider_source_url || '';
   const snapshot = Object.assign({}, current && typeof current === 'object' ? current : {}, {
@@ -69,8 +78,9 @@ function buildSnapshot(current, override) {
     deadline_source_url: override.deadline_source_url || null,
     deadline_notes: override.deadline_notes || '',
     deadline_date: override.deadline_date || null,
+    deadline_at: override.deadline_at || null,
     deadline_text: override.deadline_text || null,
-    deadline_status: normalizeStatus(override),
+    deadline_status: normalizeStatus(override, now),
     deadline_evidence: override.evidence || '',
     deadline_checked_urls: Array.isArray(override.checked_urls) ? override.checked_urls : [],
     deadline_override: Object.assign({}, override, {
@@ -127,7 +137,7 @@ async function main() {
 
     const override = deadlineOverrides.overrides[item.slug];
     const patch = Object.assign({}, item.patch, {
-      raw_snapshot: buildSnapshot(existing.raw_snapshot, override)
+      raw_snapshot: buildSnapshot(existing.raw_snapshot, override, now)
     });
 
     const { data, error } = await client
@@ -162,6 +172,7 @@ if (require.main === module) {
 
 module.exports = {
   isPastDeadlineDate,
+  isPastDeadline,
   normalizeStatus,
   normalizeDatabaseStatus,
   buildPatch,

@@ -52,4 +52,22 @@ const duplicate = engine.calculate({
 });
 assert.match(duplicate.error, /only once/);
 
+const invalidHome = engine.calculate({
+  homeLanguage: 'Mathematics',
+  learningLanguage: 'Mathematics',
+  results: bachelor.results
+});
+assert.equal(invalidHome.ok, false);
+assert.match(invalidHome.error, /Home Language must/);
+
+const invalidLearning = engine.calculate({
+  homeLanguage: 'Afrikaans Home Language',
+  learningLanguage: 'Mathematics',
+  results: bachelor.results
+});
+assert.equal(invalidLearning.ok, false);
+assert.match(invalidLearning.error, /language of learning and teaching/);
+assert.equal(engine.isHomeLanguage('Mathematics'), false);
+assert.equal(engine.isLearningLanguage('English First Additional Language'), true);
+
 console.log('Matric planner verified: percentage levels, DBE route checks, LO exclusion, best-six planning index, and duplicate guard.');

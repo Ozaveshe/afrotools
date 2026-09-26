@@ -48,7 +48,7 @@
    var actions=node('div','','sd-actions');
    if(window.AfroTools.scholarshipShortlist){actions.append(button('Track my saved scholarships',function(){try{var latest=api.read(localStorage),next=api.importShortlist(latest,window.AfroTools.scholarshipShortlist.items());var count=next.items.length-latest.items.length;save(next,count?count+' applications added. Confirm each deadline at its official source.':'No new scholarships to add. Existing progress is kept.');}catch(e){status.textContent='Could not import shortlist: '+e.message;}}));}
    else actions.append(link('Choose scholarships to track','/tools/scholarship-finder/#my-applications'));
-   actions.append(link('Education Hub','/tools/education-hub/#my-applications'),link('Admission checklists','/tools/university-admission/'));host.append(actions);
+   actions.append(link('My Study Space','/tools/education-hub/#my-applications'),link('Admission checklists','/tools/university-admission/'));host.append(actions);
    active.slice().sort(function(a,b){return (a.deadline||'9999').localeCompare(b.deadline||'9999');}).forEach(function(item){host.append(edit(item));});
    var archived=state.items.filter(function(item){return item.archived;});if(archived.length){var history=node('details','','sd-history');history.append(node('summary','Archived applications ('+archived.length+')'));archived.forEach(function(item){history.append(edit(item));});host.append(history);}
    var form=node('form','','sd-add');form.append(node('h3','Add an application'));var fields=node('div','','sd-fields');
