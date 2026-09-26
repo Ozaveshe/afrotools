@@ -17,7 +17,7 @@ test('every written task has provenance and a self-review guide, with linked sca
   assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);
   if(q.exam==='NECO'){
    assert.equal(q.year,2023);
-   if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok((q.number>=1&&q.number<=22)||(q.number>=24&&q.number<=44));}
+   if(q.subject==='Mathematics'){const base='https://www.scribd.com/document/842881920/NECO-20230001';assert.equal(q.source,base+(q.number>=45?'#page='+q.sourcePage:''));assert.equal(q.paper,'III');assert.ok((q.number>=1&&q.number<=22)||(q.number>=24&&q.number<=60));}
    else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}
    continue;
   }
@@ -152,7 +152,21 @@ test('WAEC 2021 Q1 and Q11 selected sections agree with independent interest, in
  const directVariance=observations.reduce((sum,hour)=>sum+(hour-average)**2,0)/observations.length;
  const squaredMoment=observations.reduce((sum,hour)=>sum+hour*hour,0)/observations.length-average**2;
  assert.equal(observations.length,50);assert.equal(average,7.3);assert.equal(directVariance.toFixed(2),'4.17');assert.ok(Math.abs(directVariance-squaredMoment)<1e-10);assert.equal(Math.sqrt(directVariance).toFixed(2),'2.04');assert.match(study.answer,/7\.30 hours.*2\.04 hours/);
- assert.match(bank.scope,/31 WAEC Mathematics companions/);
+ assert.match(bank.scope,/32 WAEC Mathematics companions/);
+});
+
+test('WAEC 2021 Q5 pie sectors and dependent bead draws use both complete parts',()=>{
+ const q=bank.items.find(item=>item.id==='waec-2021-mathematics-p2-q5');
+ const component=require('../ops/nigeria-exams/selected-waec-components.json').components.find(row=>row.id==='waec-2021-maths-q5');
+ assert.ok(q);assert.deepEqual(component.expectedIds,[q.id]);assert.equal(component.complete_selected_prompts,true);assert.equal(component.complete_paper,false);
+ assert.equal(q.source,'https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq5.html');
+ const shares=[5,15,10,45,25],angles=shares.map(share=>share*360/100);
+ assert.deepEqual(angles,[18,54,36,162,90]);assert.equal(angles.reduce((sum,angle)=>sum+angle,0),360);
+ for(const angle of angles)assert.match(q.answer,new RegExp(`${angle}°`));
+ const firstRed=5/(5+3+4),secondRedAfterFirst=4/(4+3+4);
+ assert.equal(firstRed*secondRedAfterFirst,5/33);assert.match(q.answer,/5\/33/);
+ assert.match(q.prompt,/without replacement/);assert.match(q.steps.join(' '),/4 red remain among 11 beads/);
+ assert.ok(q.steps.length>=3&&q.checks.length>=2);
 });
 
 test('WAEC 2023 English reading guides cover the linked tasks without hosting passages or claiming a verified paper',()=>{

@@ -1,0 +1,24 @@
+# JAMB Mathematics 2022: second reviewed publisher-collection batch
+
+Checked 2026-09-26 against the [Myschool 2022 Mathematics collection](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2022), its [page 2](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2022&page=2), [page 7](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2022&page=7), [page 8](https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2022&page=8), and unfiltered [page 785](https://myschool.ng/classroom/mathematics?page=785&type=obj) and [page 786](https://myschool.ng/classroom/mathematics?page=786&type=obj) where the filtered view omitted stems. The collection's year and positions are publisher labels, not authenticated UTME sittings or official question numbers. No exam-board key, publisher licence, or complete-paper claim is made. The owner authorised using public past-question sources; these are original text adaptations with separately checked answers and explanations, not a reproduction of source pages or images.
+
+| Publisher position / item | Source evidence and independent result |
+| --- | --- |
+| [6 / 64173](https://myschool.ng/classroom/mathematics/64173?exam_type=jamb&exam_year=2022) | Item and collection: sin θ=−3/5 in quadrant III; cos θ=−√(1−9/25)=**−4/5**. |
+| [7 / 64209](https://myschool.ng/classroom/mathematics/64209?exam_type=jamb&exam_year=2022) | Item and collection: multiply 1/(3−√2) by its conjugate to obtain **(3+√2)/7**. Adapted distractors avoid the source's awkward nonstandard equivalent forms. |
+| [8 / 64218](https://myschool.ng/classroom/mathematics/64218?exam_type=jamb&exam_year=2022) | Full stem and choices on unfiltered page 785; individual item was unavailable to the reader. A radius 5 cm and centre-to-chord distance 3 cm give **2√(25−9)=8 cm**. |
+| [9 / 64229](https://myschool.ng/classroom/mathematics/64229?exam_type=jamb&exam_year=2022) | Full stem/table and choices on unfiltered page 785; item search result confirms its selected value. The food share is 28%, so **0.28×360°=100.8°**. |
+| [10 / 64239](https://myschool.ng/classroom/mathematics/64239?exam_type=jamb&exam_year=2022) | Full stem and choices on unfiltered page 786; individual item was unavailable. A pyramid's volume is base area × height / 3 = **24×7.5/3=60 cm³**. |
+| [11 / 64250](https://myschool.ng/classroom/mathematics/64250?exam_type=jamb&exam_year=2022) | Item and collection: 32=3/2+9d gives d=61/18; fourth term **35/3**. |
+| [19 / 64277](https://myschool.ng/classroom/mathematics/64277?exam_type=jamb&exam_year=2022) | Item shows the intended circle-locus concept. The original adaptation states the necessary positive fixed distance explicitly; the unique result is **a circle**. |
+| [32 / 64391](https://myschool.ng/classroom/mathematics/64391?exam_type=jamb&exam_year=2022) | Item and collection: 3−5+(3×5)²=**223**. |
+| [33 / 64392](https://myschool.ng/classroom/mathematics/64392?exam_type=jamb&exam_year=2022) | Item and collection: xy=3×4=12; at y=12, **x=1**. |
+| [34 / 64393](https://myschool.ng/classroom/mathematics/64393?exam_type=jamb&exam_year=2022) | Item and collection: common difference (26−8)/3=6, hence **p=14, q=20**. |
+| [36 / 64395](https://myschool.ng/classroom/mathematics/64395?exam_type=jamb&exam_year=2022) | Item and collection: difference of squares **(2a−3b)(2a+3b)**; expansion was checked separately. |
+| [37 / 64402](https://myschool.ng/classroom/mathematics/64402?exam_type=jamb&exam_year=2022) | Source item indexed with full stem/key and page 8 options. Inclusion–exclusion gives **20+30−40=10** in both sets. |
+| [38 / 64404](https://myschool.ng/classroom/mathematics/64404?exam_type=jamb&exam_year=2022) | Item and collection: 3x−2<x−6 reduces to **x<−2**; boundary and sample values were checked. |
+| [40 / 64412](https://myschool.ng/classroom/mathematics/64412?exam_type=jamb&exam_year=2022) | Item and collection: ₦3,800 is 80% of the original price, so the original is **₦4,750**. |
+
+The 2022 publisher collection has 40 displayed positions; this batch adds 14 to the previously reviewed 16, for **30 eligible original adaptations** in the source pool. It is still not a complete authenticated paper. Position 3, 12, 31 and 39 require figures; position 24 has an unresolved intercept ambiguity. Position 35 was explicitly excluded: its stated mean yields x=29/14, while its offered choice and publisher key say 2.0. Other unreviewed positions remain held until their full stems and unique answers are checked. Nothing about a repaired source defect is shown to students.
+
+`ops/jamb/verification/check-mathematics-2022-002.cjs` recomputes the answers, checks the source snapshot hash and all review fingerprints, confirms the fourteen selected items are eligible, and returns their IDs. The manifest, intake and test are repeatable. The coordinator owns generated public data/pages and release verification after integration.

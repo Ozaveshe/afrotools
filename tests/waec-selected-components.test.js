@@ -10,6 +10,10 @@ test('selected WAEC component evidence matches current briefs without claiming c
   }
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
+ const maths2021q5=manifest.components.find(c=>c.id==='waec-2021-maths-q5');
+ assert.deepEqual(maths2021q5.expectedIds,['waec-2021-mathematics-p2-q5']);
+ assert.match(maths2021q5.official_prompt_image_sha256,/^[a-f0-9]{64}$/);
+ assert.match(maths2021q5.official_worked_image_sha256,/^[a-f0-9]{64}$/);
  const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
  assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
  assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);

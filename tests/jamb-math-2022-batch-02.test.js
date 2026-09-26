@@ -4,35 +4,33 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { prepareBatch } = require('../ops/nigeria-exams/import-jamb-math-2022-batch-01.cjs');
+const { prepareBatch } = require('../ops/nigeria-exams/import-jamb-math-2022-batch-02.cjs');
 const { renderYear } = require('../scripts/build-jamb-reviewed-pages.js');
 
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-const manifest = read('ops/nigeria-exams/jamb-math-2022-curated-batch-01.json');
+const manifest = read('ops/nigeria-exams/jamb-math-2022-curated-batch-02.json');
+const first = read('ops/nigeria-exams/jamb-math-2022-curated-batch-01.json');
 const pool = read('ops/jamb/source-pool.json');
 const ledger = read('data/jamb/review-ledger.json');
 
-test('2022 batch has traceable publisher positions, unique answers and repeatable intake', () => {
+test('second 2022 Mathematics batch is traceable, unique and idempotent', () => {
   const prepared = prepareBatch(manifest, pool, ledger);
-  assert.equal(prepared.receipt.records.length, 16);
-  assert.equal(prepared.pool.questions.length, pool.questions.length, 'Repeated import must not add duplicates');
+  assert.equal(prepared.receipt.records.length, 14);
+  assert.equal(prepared.pool.questions.length, pool.questions.length);
   assert.deepEqual(manifest.items.map(item => item.position),
-    [1, 2, 4, 5, 13, 14, 16, 17, 18, 23, 25, 26, 27, 28, 29, 30]);
-  assert.equal(new Set(manifest.items.map(item => item.sourceItem)).size, 16);
-  for (const item of manifest.items) {
-    assert.equal(new Set(Object.values(item.options)).size, 4, item.sourceItem);
-    assert.ok(item.options[item.answer], item.sourceItem);
-  }
+    [6, 7, 8, 9, 10, 11, 19, 32, 33, 34, 36, 37, 38, 40]);
+  assert.equal(new Set(manifest.items.map(item => item.sourceItem)).size, 14);
+  assert.ok(manifest.items.every(item => !first.items.some(prior => prior.position === item.position || prior.sourceItem === item.sourceItem)));
+  const duplicate = structuredClone(manifest);
+  duplicate.items[0].position = first.items[0].position;
+  assert.throws(() => prepareBatch(duplicate, pool, ledger), /Duplicate or invalid source position/);
   const wronglyAuthenticated = structuredClone(manifest);
   wronglyAuthenticated.sitting_authenticated = true;
   assert.throws(() => prepareBatch(wronglyAuthenticated, pool, ledger), /provenance or size/);
-  const duplicateSource = structuredClone(manifest);
-  duplicateSource.items[1].sourceItem = duplicateSource.items[0].sourceItem;
-  assert.throws(() => prepareBatch(duplicateSource, pool, ledger), /Duplicate or invalid source position/);
 });
 
-test('2022 Mathematics page discloses collection provenance and keeps solutions closed', () => {
+test('second batch renders as publisher-labelled practice with closed explanations', () => {
   const page = renderYear('mathematics', '2022', pool.questions, ledger, ['2022', '2023', '2024', '2025']);
   assert.equal(page.approvedIds.length, 30);
   assert.match(page.html, /publisher-labelled 2022 collection/);
@@ -45,5 +43,6 @@ test('2022 Mathematics page discloses collection provenance and keeps solutions 
     assert.ok(card, id);
     assert.match(card[1], /<details><summary>Answer and explanation<\/summary>/, id);
     assert.doesNotMatch(card[1], /<details\b[^>]*\bopen\b/, id);
+    assert.doesNotMatch(card[1], /repaired|publisher error|source defect/i, id);
   }
 });

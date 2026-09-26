@@ -44,7 +44,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | economics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2025 | 65 | 65 | Acquire and authenticate source |
-| JAMB | english | 2024 | 26 | 26 | Acquire and authenticate source |
+| JAMB | english | 2024 | 40 | 40 | Acquire and authenticate source |
 | JAMB | english | 2023 | 19 | 19 | Acquire and authenticate source |
 | JAMB | english | 2022 | 31 | 31 | Acquire and authenticate source |
 | JAMB | english | 2021 | 0 | 0 | Acquire and authenticate source |
@@ -64,7 +64,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | mathematics | 2025 | 53 | 53 | Acquire and authenticate source |
 | JAMB | mathematics | 2024 | 47 | 47 | Acquire and authenticate source |
 | JAMB | mathematics | 2023 | 69 | 69 | Acquire and authenticate source |
-| JAMB | mathematics | 2022 | 16 | 16 | Acquire and authenticate source |
+| JAMB | mathematics | 2022 | 30 | 30 | Acquire and authenticate source |
 | JAMB | mathematics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | physics | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | physics | 2025 | 0 | 0 | Acquire and authenticate source |
@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 31 WAEC Mathematics companions, plus 43 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 32 WAEC Mathematics companions, plus 59 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
 

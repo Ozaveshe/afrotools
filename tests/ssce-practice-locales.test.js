@@ -96,6 +96,10 @@ test('worked numerical results and exam references retain the English meanings',
     assert.match(answer(newIds[0]),/20[ ,]?375/);
     assert.match(answer(newIds[1]),/42[,.]9\s*%/);
     assert.match(answer(newIds[2]),/7[,.]30.*2[,.]04/);
+    const q5=items.find(q=>q.id==='waec-2021-mathematics-p2-q5');
+    assert.ok(q5);assert.match(q5.prompt,/Ann.*Afia.*Kojo.*Nuno.*Akosua/);
+    assert.match(q5.answer,/18°.*54°.*36°.*162°.*90°.*5\/33/);
+    assert.match(q5.steps.join(' '),/5\/12.*4\/11/);
     assert.match(answer('waec-2023-mathematics-p2-q3'), /13[,.]01 cm²/);
     assert.match(answer('waec-2023-mathematics-p2-q4'), /89°.*80°/);
     assert.match(answer('waec-2023-mathematics-p2-q6'), /3\/10.*1\/5.*333[ ,]?333[,.]33.*133[ ,]?333[,.]33/);
@@ -144,5 +148,7 @@ test('localized source generation is current and every locale page declares all 
     for (const lang of ['en','fr','sw']) assert.ok(html.includes(`hreflang="${lang}" href="https://afrotools.com${generator.routes[lang]}"`));
     assert.ok(html.includes('id="written-practice"')); assert.ok(html.includes('data-assessment-language-notice'));
     assert.ok(html.includes('scripts/build-ssce-practice-locales.js'));
+    assert.match(html,new RegExp(`(?:questions et |kazi )${enWritten.items.length}(?: exercices| za)`));
+    assert.match(writtenBanks[locale].scope,locale==='fr'?/32 guides de mathématiques WAEC/:/miongozo 32 ya Hisabati WAEC/);
   }
 });

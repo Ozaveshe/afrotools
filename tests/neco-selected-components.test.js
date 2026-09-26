@@ -62,8 +62,22 @@ test('NECO 2023 Mathematics Q37–44 has eight checked teaching companions with 
  assert.equal(guides[3].answer,'66°.');assert.equal(guides[7].answer,'386 km.');
 });
 
+test('NECO 2023 Mathematics Q45–60 completes the selected range while Q23 remains held',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q45-q60');
+ assert.ok(section);assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=45&&q.number<=60);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),Array.from({length:16},(_,i)=>i+45));
+ assert.match(section.review,/pages 9–12/);assert.match(section.sourceRights,/rights-reserved/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.source,/NECO-20230001#page=(9|10|11|12)$/);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.match(guides.find(q=>q.number===52).prompt,/Literature.*Physics.*English/);
+ assert.equal(guides.find(q=>q.number===58).answer,'4/3 (1⅓).');
+ assert.equal(bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics').length,59);
+ assert.ok(!bank.items.some(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number===23));
+});
+
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,6);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
+ assert.equal(manifest.components.length,7);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));
