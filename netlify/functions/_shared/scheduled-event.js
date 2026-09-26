@@ -13,6 +13,7 @@ const SCHEDULED_ONLY_FUNCTIONS = Object.freeze([
   'scheduled-send-jamb-daily',
   'scheduled-send-scholarship-reminders',
   'scheduled-source-health-watchdog',
+  'scheduled-verify-scholarships',
   'send-activity-milestones',
   'send-lead-followups',
   'send-monthly-digest',
