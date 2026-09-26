@@ -25,6 +25,13 @@ const LANGUAGE_IDS = new Set([
   'meeting-minutes', 'receipt-generator', 'business-plan'
 ]);
 const ROUTE_OVERRIDES = {
+  'pdf-form-filler': {
+    '1. Upload a PDF that contains form fields': '1. Pakia PDF yenye sehemu za fomu zinazojazwa',
+    'Choose PDF form': 'Chagua PDF yenye fomu',
+    'Optional flatten': 'Kuunganisha thamani na ukurasa (hiari)',
+    'Flatten form (burn values in, non-editable)': 'Unganisha thamani zilizojazwa na maudhui ya ukurasa',
+    '3. Optionally flatten to lock the values in': '3. Ukipenda, unganisha thamani zilizojazwa na maudhui ya ukurasa'
+  },
   'pdf-redact': {
     'Confirm the final review checkbox before exporting the flattened redacted PDF.': 'Weka tiki kuthibitisha ukaguzi wa mwisho kabla ya kuhamisha PDF. Sehemu ulizoficha zitafutwa, na kurasa zitahifadhiwa kama picha.'
   },

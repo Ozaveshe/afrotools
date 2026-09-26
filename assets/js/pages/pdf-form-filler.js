@@ -10,6 +10,7 @@
     processing: {en:'Processing...',fr:'Traitement en cours…',sw:'Inachakata...'}
   };
   const message = key => messages[key][locale] || messages[key].en;
+  const fieldCountLabel = count => locale === 'sw' ? 'Sehemu ' + count : count + ' field' + (count !== 1 ? 's' : '');
   let sourceVersion = 0;
   // State
   function getPDFLib() {
@@ -291,7 +292,7 @@
     }
 
     // Show count bar
-    fieldCountBadge.textContent = formFields.length + ' field' + (formFields.length !== 1 ? 's' : '');
+    fieldCountBadge.textContent = fieldCountLabel(formFields.length);
     fieldCountBar.style.display = 'flex';
     fieldCountBar.innerHTML = '';
     if (textCount) fieldCountBar.innerHTML += '<span class="fc-item"><strong>' + textCount + '</strong> Text</span>';
@@ -424,7 +425,7 @@
     completionMeter.style.display = 'none';
     downloadWrap.classList.remove('on');
     downloadBtn.disabled = true;
-    fieldCountBadge.textContent = '0 fields';
+    fieldCountBadge.textContent = fieldCountLabel(0);
     fieldCountBar.style.display = 'none';
   }
 
