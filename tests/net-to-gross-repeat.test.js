@@ -29,12 +29,15 @@ for(const file of ['assets/js/lib/src/net-to-gross.js','assets/js/lib/net-to-gro
  const document={documentElement:{lang:'en'},readyState:'complete',getElementById:id=>nodes[id],querySelector:()=>null,querySelectorAll:()=>[]};
  vm.runInNewContext(fs.readFileSync(file,'utf8'),{window,document,setTimeout:fn=>fn()});
  window.calculate();
- assert.equal(window.RESULT.gross,2156924,`${file} uses the smallest whole-UGX gross that reaches the target`);
+ const firstGross=window.RESULT.gross;
+ assert.ok(Number.isInteger(firstGross),`${file} uses a whole-UGX gross`);
+ assert.ok(window._grossToNet(firstGross)>=1500000,`${file} reaches the requested monthly take-home`);
+ assert.ok(window._grossToNet(firstGross-1)<1500000,`${file} uses the smallest whole-UGX gross that reaches the target`);
  assert.ok(window.RESULT.netMonthly>=1500000,`${file} reaches the requested monthly take-home`);
  assert.equal(nodes.resAmount.textContent,String(window.RESULT.annualGross),`${file} annual headline uses calculated gross`);
  assert.match(nodes.resGross.textContent,new RegExp(`Gross: ${window.RESULT.annualGross}/year`),`${file} annual summary uses calculated gross`);
  assert.equal(nodes.grossSalary.value,1500000,`${file} preserves desired net after annual calculation`);
  window.calculate();
- assert.equal(window.RESULT.gross,2156924,`${file} repeated calculation keeps the same gross`);
+ assert.equal(window.RESULT.gross,firstGross,`${file} repeated calculation keeps the same gross`);
 }
 console.log('Shared net-to-gross repeat, target and Uganda annual checks passed in English, French and Swahili, source and generated output');
