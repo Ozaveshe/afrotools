@@ -193,7 +193,6 @@ function breadcrumbLd(page) {
 }
 
 function renderPage(page) {
-  const promise = page.promise.concat(['PDF-ready report unlock, lead capture, and dashboard save after the result.']).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
   return `<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
 <head>
@@ -214,7 +213,7 @@ function renderPage(page) {
 <script type="application/ld+json">${breadcrumbLd(page)}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5"><link rel="stylesheet" href="/assets/css/sports-tools.css">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5"><link rel="stylesheet" href="/assets/css/sports-tools.css"><link rel="stylesheet" href="/assets/css/sports-tools-theme.css">
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 </head>
 <body data-sports-tool="${escapeHtml(page.id)}">
@@ -229,27 +228,11 @@ function renderPage(page) {
 </nav>
 <h1>${escapeHtml(page.h1)}</h1>
 <p>${escapeHtml(page.intro)}</p>
-<div class="en-tool-hero-meta">
-<span class="en-tool-hero-pill">${escapeHtml(page.eyebrow)}</span>
-<span class="en-tool-hero-pill">Africa-first assumptions</span>
-<span class="en-tool-hero-pill">Free interactive calculator</span>
-<span class="en-tool-hero-pill">PDF-ready report</span>
-</div>
 </div>
 </section>
 
 <main class="sports-page-main">
 <div class="sports-tool-layout">
-<section class="sports-tool-intro">
-<div class="sports-tool-brief">
-<h2>What this app does</h2>
-<p>${escapeHtml(page.intro)}</p>
-</div>
-<div class="sports-tool-promise">
-<h2>Built for this use case</h2>
-<ul>${promise}</ul>
-</div>
-</section>
 <div id="sports-tool-root" class="sports-tool-root"></div>
 </div>
 </main>

@@ -1,0 +1,69 @@
+/* Shared sports tool surfaces follow the global theme after the base styles load. */
+:root[data-theme="dark"] body[data-sports-tool] {
+  --sports-card: var(--color-bg-card);
+  --sports-ink: var(--color-text);
+  --sports-muted: var(--color-text-muted);
+  --sports-border: var(--color-border);
+  --sports-accent-dark: var(--color-accent);
+  --sports-accent-pale: var(--color-bg-subtle);
+  --sports-accent-soft: var(--color-border-strong);
+}
+
+:root[data-theme="dark"] body[data-sports-tool] :is(
+  .sports-panel,
+  .sports-metric,
+  .sports-table,
+  .sports-insights,
+  .sports-source-card,
+  .sports-next-apps a,
+  .sports-workflow-strip,
+  .sports-workflow-step,
+  .sports-report-preview,
+  .sports-hub-chooser,
+  .sports-path-card
+) {
+  background: var(--sports-card);
+  color: var(--sports-ink);
+}
+
+:root[data-theme="dark"] body[data-sports-tool] .sports-report-gate {
+  background: var(--color-surface-raised);
+}
+
+:root[data-theme="dark"] body[data-sports-tool] .sports-btn:not(.secondary) {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  color: #fff;
+}
+
+:root[data-theme="dark"] body[data-sports-tool] .sports-input,
+:root[data-theme="dark"] body[data-sports-tool] .sports-select {
+  background: var(--color-surface-inset);
+  color: var(--sports-ink);
+}
+
+@media print {
+  body[data-sports-tool] {
+    --sports-card: #fff;
+    --sports-ink: #0f172a;
+    --sports-muted: #475569;
+    --sports-border: #cbd5e1;
+    --sports-accent-dark: #991b1b;
+    --sports-accent-pale: #fff7f7;
+    --sports-accent-soft: #fecaca;
+    background: #fff;
+    color: #0f172a;
+  }
+
+  :root[data-theme="dark"] body[data-sports-tool] :is(
+    .sports-panel,
+    .sports-metric,
+    .sports-table,
+    .sports-insights,
+    .sports-source-card,
+    .sports-report-gate,
+    .sports-report-preview
+  ) {
+    background: #fff;
+    color: #0f172a;
+  }
+}
