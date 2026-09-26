@@ -32,6 +32,7 @@
   const uploadStatus = document.getElementById('uploadStatus');
   const workspace = document.getElementById('workspace');
   const fileInfo = document.getElementById('fileInfo');
+  fileInfo.setAttribute('translate', 'no');
   const loadNewBtn = document.getElementById('loadNewBtn');
   const pdfCanvas = document.getElementById('pdfCanvas');
   const prevPageBtn = document.getElementById('prevPage');
@@ -85,8 +86,12 @@
     const requiredTotal = formFields.filter(info => info.required).length;
     const requiredMissing = formFields.filter(info => info.required && !getFieldElementValue(info)).length;
     const pct = total ? Math.round((complete / total) * 100) : 0;
-    completionText.textContent = complete + ' of ' + total + ' fields complete';
-    requiredText.textContent = requiredTotal ? requiredMissing + ' required left' : 'Required fields: 0';
+    completionText.textContent = locale === 'sw'
+      ? 'Sehemu zilizojazwa: ' + complete + ' kati ya ' + total
+      : complete + ' of ' + total + ' fields complete';
+    requiredText.textContent = locale === 'sw'
+      ? (requiredTotal ? 'Sehemu za lazima zilizobaki: ' + requiredMissing : 'Sehemu za lazima: 0')
+      : (requiredTotal ? requiredMissing + ' required left' : 'Required fields: 0');
     completionFill.style.width = pct + '%';
     completionMeter.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', String(pct));
     formFields.forEach(info => {
@@ -311,7 +316,7 @@
       label.className = 'field-label';
 
       const badgeClass = { text: 'ftb-text', checkbox: 'ftb-check', dropdown: 'ftb-drop', radio: 'ftb-radio' }[info.kind] || 'ftb-text';
-      const kindLabel = { text: 'Text', checkbox: 'Check', dropdown: 'Dropdown', radio: 'Radio' }[info.kind] || 'Field';
+      const kindLabel = { text: 'Text', checkbox: locale === 'sw' ? 'Kisanduku cha kuteua' : 'Check', dropdown: 'Dropdown', radio: 'Radio' }[info.kind] || 'Field';
       label.innerHTML = '<span class="field-type-badge ' + badgeClass + '">' + kindLabel + '</span> ' + '<span translate="no">' + escHtml(info.name) + '</span>';
       if (info.required) {
         const required = document.createElement('span');
@@ -345,6 +350,7 @@
         const cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.id = 'pdf-form-field-' + idx;
+        cb.setAttribute('translate', 'no');
         cb.setAttribute('aria-label', info.name);
         cb.checked = info.currentValue || false;
         cb.dataset.fieldIdx = idx;
@@ -381,6 +387,7 @@
         const rg = document.createElement('div');
         rg.className = 'radio-group';
         rg.setAttribute('role', 'radiogroup');
+        rg.setAttribute('translate', 'no');
         rg.setAttribute('aria-label', info.name);
         const radioName = 'radio_' + idx;
         (info.options || []).forEach(opt => {
@@ -530,7 +537,10 @@
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
 
-      showStatus('PDF downloaded successfully' + (flattenCheck.checked ? ' (flattened)' : '') + '.', 'success');
+      const downloaded = locale === 'sw'
+        ? 'PDF imepakuliwa.' + (flattenCheck.checked ? ' Thamani zilizojazwa zimeunganishwa na maudhui ya ukurasa.' : '')
+        : 'PDF downloaded successfully' + (flattenCheck.checked ? ' (flattened)' : '') + '.';
+      showStatus(downloaded, 'success');
     } catch (err) {
       if (version !== sourceVersion) return;
       showStatus(message('failed'), 'error');

@@ -50,9 +50,44 @@ Completed local synthetic screenshots, private evidence outside the product tree
 - Analytics: unchanged.
 - Source freshness/confidence: wording describes existing pdf-lib flatten behavior without security guarantees; no rate/data changes.
 - Generated output: only selected lexicon entries and one generated route; no minified runtime exists for this readable form-filler source.
-- Carried limitations: English text inside related-card artwork remains separate. Existing valid-form completion text such as `0 of 1 fields complete` remains outside the authorized no-fields/count-badge vocabulary scope. This does not claim complete language parity for the form-filler or all 31 document apps.
+- Carried limitations: English text inside related-card artwork remains separate. The first commit left valid-form completion text such as `0 of 1 fields complete`; the authorized follow-up below resolves it. This does not claim complete language parity for the form-filler or all 31 document apps.
 
 ## Rollout Flag
 
 - Flag/config: none.
 - Rollback path: revert the scoped commit and regenerate owner outputs.
+
+
+## Follow-up: valid-form statuses and uploaded-name preservation
+
+Second scoped change on top of a7ea5a18. Only the readable runtime, browser tests and this report change; no generated output is required because public EN/FR/SW form-filler pages directly load assets/js/pages/pdf-form-filler.js.
+
+### Reproduced and changed
+
+A fresh local browser audit of a7ea5a18 with a synthetic three-field PDF showed:
+
+- Completion: “0 of 3 fields complete”, then “1 of 3 fields complete”.
+- Required count: “1 required left”, then “0 required left”.
+- Checkbox type badge: “Check”.
+- Flattened export success: “PDF imepakuliwa (flattened).”.
+- Uploaded checkbox/radio accessible names “Upload PDF” / “Download PDF” became “Pakia PDF” / “Pakua PDF”. Their underlying PDF names were not renamed, but the displayed accessible names were wrong.
+
+The maintained runtime now renders Swahili completion as “Sehemu zilizojazwa: X kati ya Y”, remaining required count as “Sehemu za lazima zilizobaki: N”, a native checkbox type badge, and a native flattened-download explanation. The already-calculated totals, percentage, required-field rules and export algorithms are unchanged; EN/FR retain their original status source strings.
+
+The runtime also marks the uploaded filename and checkbox/radio name containers with the existing translate=no contract. This aligns them with protected text-field names and dropdown/radio option text. It does not modify source PDF field identifiers, options, file names, or entered values. Checkbox status text remains separately localizable.
+
+### Active status audit boundary
+
+Reviewed every runtime-owned text/status assignment in the form-filler controller. Existing loading, invalid-file, no-fields explanation, required-export error, failure, processing, ordinary download, review guidance, page indicator, placeholder, dropdown prompt and remaining type/status labels already use native messages or existing exact localizer/integrity rules. The new changes target the concrete uncovered completion, required count, checkbox-type and flattened-success gaps. User text, format tokens, machine identifiers and app-generated sample input values are excluded from vocabulary replacement. Artwork remains a separate carried limitation.
+
+### Exact follow-up proof
+
+- PASS: 22/22 Chromium tests in one run, 52.4 seconds, using the private focused config. Includes all 18 existing EN/FR/SW correctness/export cases plus four expanded Swahili vocabulary cases.
+- Verified actual completion states 0/1, 1/1, 0/2, 1/2, 2/2; percentage semantics 0%, 50%, 100%.
+- Verified mixed text/checkbox/dropdown/radio states 0/4, 1/4, 2/4, 4/4 and reset to 0/4; remaining required counts 2, 1, 0 and reset to 2; required-field export rejection remains native.
+- Verified uploaded filename, field names, option labels and values matching translation phrases stay exact in the visible/accessibility surfaces and downloaded interactive PDF. Existing one/two-field tests still verify flattened PDF text independently with pdf.js.
+- Verified ordinary and flattened success messages, native checkbox label, keyboard upload, and 320px no-overflow checks.
+- PASS: runtime-owner unit test 1/1, changed-JS syntax, diff whitespace and no deletions. The first unit-test attempt could not spawn under the sandbox (EPERM); the permitted rerun passed.
+- Evidence: ../evidence/sw-form-filler-status-followup/ in the isolated worktree parent. Earlier evidence remains preserved.
+
+No full build, push, deploy, frozen-candidate edit, image edit, math/feature change, or generated registry change. Prior localization/hreflang checks from the first commit remain applicable to unchanged localized page and lexicon outputs; they were not repeated for this runtime-only follow-up.
