@@ -35,6 +35,9 @@ test('recipe pages put cooking first and preserve serving controls on a phone', 
   await expectNoHorizontalOverflow(page);
   await page.setViewportSize({ width: 320, height: 720 });
   await expectNoHorizontalOverflow(page);
+  const servingTargets = await page.locator('.ak-servings-btn').evaluateAll(buttons =>
+    buttons.map(button => button.getBoundingClientRect().width));
+  servingTargets.forEach(width => expect(width).toBeGreaterThanOrEqual(44));
 });
 
 test('country and collection hubs reach their recipes before editorial panels', async ({ page }) => {

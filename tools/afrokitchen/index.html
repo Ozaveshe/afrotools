@@ -141,7 +141,7 @@
 <script src="/assets/js/african-workflow.js?v=932feed9" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
-<link rel="stylesheet" href="home-improvements.css?v=20260926">
+<link rel="stylesheet" href="home-improvements.css?v=a5226482">
 <link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/">
@@ -196,7 +196,7 @@
 
         <div class="ak-search-wrap ak-search-wrap-light">
           <svg class="ak-search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"></circle><path d="M13 13l4 4"></path></svg>
-          <input type="search" class="ak-search" id="search-input" placeholder="Search dishes or countries…" aria-label="Search dishes or countries">
+          <input type="search" class="ak-search" id="search-input" placeholder="Search recipes…" aria-label="Search dishes or countries">
         </div>
         <div class="ak-quick-picks" aria-label="Quick recipe filters">
           <span>Quick picks</span>
@@ -206,8 +206,8 @@
           <button type="button" data-quick-filter="breakfast">Breakfast</button>
         </div>
 
-        <div class="ak-filter-deck ak-filters-light">
-          <p class="ak-filter-note">Narrow the results</p>
+        <details class="ak-filter-deck ak-filters-light" id="ak-more-filters">
+          <summary>More filters <span aria-hidden="true">▾</span></summary>
           <div class="ak-filters">
             <div class="ak-filter-field"><label for="filter-country">Country</label><select class="ak-filter-select" id="filter-country"><option value="">All countries</option></select></div>
             <div class="ak-filter-field"><label for="filter-category">Dish type</label><select class="ak-filter-select" id="filter-category"><option value="">All types</option></select></div>
@@ -215,14 +215,14 @@
             <div class="ak-filter-field"><label for="filter-difficulty">Difficulty</label><select class="ak-filter-select" id="filter-difficulty"><option value="">Any difficulty</option></select></div>
             <div class="ak-filter-field"><label for="filter-time">Total time</label><select class="ak-filter-select" id="filter-time"><option value="">Any time</option><option value="30">30 minutes or less</option><option value="45">45 minutes or less</option><option value="60">60 minutes or less</option></select></div>
           </div>
-        </div>
+        </details>
 
         <div class="ak-browse-footer">
           <p class="ak-results-summary" id="results-summary" aria-live="polite">Showing all recipes across AfroKitchen.</p>
           <div class="ak-browse-links">
             <a href="#recipe-results" class="ak-browse-link">See recipes</a>
             <a href="#country-grid" class="ak-browse-link">Countries</a>
-            <button type="button" class="ak-browse-link ak-clear-filters" id="clear-recipe-filters">Clear filters</button>
+            <button type="button" class="ak-browse-link ak-clear-filters" id="clear-recipe-filters" hidden>Clear filters</button>
           </div>
         </div>
       </div>
@@ -1261,6 +1261,18 @@
     empty.style.display = 'none';
 
     var filters = getFilters();
+    var activeFilterKeys = Object.keys(filters).filter(function (key) { return !!filters[key]; });
+    document.getElementById('clear-recipe-filters').hidden = activeFilterKeys.length === 0;
+    var quickPick = '';
+    if (activeFilterKeys.length === 1) {
+      if (filters.maxTime === 45) quickPick = 'time';
+      if (filters.diet === 'vegetarian') quickPick = 'vegetarian';
+      if (filters.difficulty === 'easy') quickPick = 'easy';
+      if (filters.category === 'breakfast') quickPick = 'breakfast';
+    }
+    document.querySelectorAll('[data-quick-filter]').forEach(function (button) {
+      button.setAttribute('aria-pressed', button.getAttribute('data-quick-filter') === quickPick ? 'true' : 'false');
+    });
     visibleRecipeCount = PAGE_SIZE;
     if (resultsSummary) {
       resultsSummary.textContent = 'Updating the archive…';
@@ -1934,6 +1946,14 @@
   if (params.get('category')) catSelect.value = params.get('category');
   if (params.get('diet')) dietSelect.value = params.get('diet');
   if (params.get('q')) document.getElementById('search-input').value = params.get('q');
+
+  var moreFilters = document.getElementById('ak-more-filters');
+  var smallFilterScreen = window.matchMedia('(max-width: 640px)');
+  function syncFilterDisclosure() {
+    moreFilters.open = !smallFilterScreen.matches || !!(params.get('country') || params.get('category') || params.get('diet'));
+  }
+  syncFilterDisclosure();
+  smallFilterScreen.addEventListener('change', syncFilterDisclosure);
 
   // ── Init ──
   loadLandingMeta();

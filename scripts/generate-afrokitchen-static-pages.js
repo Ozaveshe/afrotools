@@ -1542,7 +1542,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=20260926a">
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
 ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema-blockers" content="${escapeHtml(schemaBlockers.join(","))}">\n` : ""}
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
@@ -2448,7 +2448,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
       .ak-country-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
-  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=20260926a">
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
@@ -2620,7 +2620,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
       .ak-collection-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
-  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=20260926a">
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>

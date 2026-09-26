@@ -59,6 +59,14 @@
   border-color: var(--ak-primary);
   background: var(--ak-primary-soft);
 }
+.ak-page .ak-quick-picks button[aria-pressed="true"] {
+  border-color: var(--ak-primary);
+  background: var(--ak-primary-soft);
+  color: var(--ak-primary-deep);
+}
+.ak-page .ak-filter-deck > summary {
+  display: none;
+}
 .ak-page .ak-filters {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -82,6 +90,9 @@
   border: 0;
   cursor: pointer;
   font: inherit;
+}
+.ak-page .ak-clear-filters[hidden] {
+  display: none !important;
 }
 .ak-page #recipe-results {
   padding-top: 42px;
@@ -110,6 +121,38 @@
 }
 
 @media (max-width: 640px) {
+  .ak-page .ak-filter-deck {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .ak-page .ak-filter-deck > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid var(--ak-line-strong);
+    border-radius: 12px;
+    background: var(--ak-panel);
+    color: var(--ak-text);
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+  }
+  .ak-page .ak-filter-deck > summary::-webkit-details-marker {
+    display: none;
+  }
+  .ak-page .ak-filter-deck > summary:focus-visible {
+    outline: 2px solid var(--ak-primary);
+    outline-offset: 3px;
+  }
+  .ak-page .ak-filter-deck[open] > summary span {
+    transform: rotate(180deg);
+  }
+  .ak-page .ak-filter-deck .ak-filters {
+    margin-top: 14px;
+  }
   .ak-page .ak-home-hero {
     padding: 32px 0 56px;
   }

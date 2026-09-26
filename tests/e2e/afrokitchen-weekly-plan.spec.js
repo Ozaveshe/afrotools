@@ -117,6 +117,8 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   const consoleErrors = installConsoleGuard(page);
   await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toBeVisible();
+  await expect(page.locator("#ak-more-filters")).toHaveAttribute("open", "");
+  await expect(page.locator("#clear-recipe-filters")).toBeHidden();
 
   const gap = await page.evaluate(function () {
     const browse = document.getElementById("browse-panel").getBoundingClientRect();
@@ -144,6 +146,16 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toContainText("Jollof");
 
   await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("#ak-more-filters")).not.toHaveAttribute("open", "");
+  await page.locator("#clear-recipe-filters").click();
+  await expect(page.locator("#clear-recipe-filters")).toBeHidden();
+  await page.locator("#ak-more-filters summary").click();
+  await expect(page.locator("#filter-country")).toBeVisible();
+  await page.locator("#filter-country").selectOption("NG");
+  await expect(page.locator("#results-summary")).toContainText("Nigeria");
+  await page.locator("#ak-more-filters summary").click();
+  await expect(page.locator("#filter-country")).toBeHidden();
+  await expect(page.locator("#clear-recipe-filters")).toBeVisible();
   const overflow = await page.evaluate(function () {
     return document.documentElement.scrollWidth - document.documentElement.clientWidth;
   });

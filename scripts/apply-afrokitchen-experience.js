@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', 'tools', 'afrokitchen');
-const STYLESHEET = '  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=20260926a">';
+const STYLESHEET = '  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">';
 const WRITE = process.argv.includes('--write');
 
 function required(condition, message) {
