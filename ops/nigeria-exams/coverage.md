@@ -45,7 +45,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2025 | 65 | 65 | Acquire and authenticate source |
 | JAMB | english | 2024 | 40 | 40 | Acquire and authenticate source |
-| JAMB | english | 2023 | 19 | 19 | Acquire and authenticate source |
+| JAMB | english | 2023 | 34 | 34 | Acquire and authenticate source |
 | JAMB | english | 2022 | 31 | 31 | Acquire and authenticate source |
 | JAMB | english | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | government | 2026 | 0 | 0 | Acquire and authenticate source |
