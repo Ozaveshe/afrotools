@@ -4,6 +4,14 @@ const {
   FRENCH_ENERGY_APPS,
 } = require("../../scripts/lib/french-energy-parity-contract");
 
+// Fixture date for the 20-app smoke: the August 15 electricity reference is
+// 17 days old (current), while the March 1 planning references are stale.
+// Boundary tests below separately prove that those same dates become stale.
+const SMOKE_AS_OF = '2026-09-01T12:00:00Z';
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date(SMOKE_AS_OF));
+});
+
 const WORKFLOW_SELECTORS = {
   "electricity-tariff": ["#electricityResult", ".electricity-button"],
   "solar-roi": ["#solarAssumptionPreview", "#solarRootCountrySelect"],
@@ -188,3 +196,26 @@ test("all 20 apps support light, manual dark, and system-dark presentation", asy
     await expect(page.locator(".fr-energy-trust")).toBeVisible();
   }
 });
+
+for (const fixture of [
+  { asOf: '2026-08-14T12:00:00Z', state: 'unavailable', label: 'Date de référence incohérente' },
+  { asOf: '2026-09-14T23:59:59Z', state: 'current', label: 'Références révisées récemment' },
+  { asOf: '2026-09-15T00:00:00Z', state: 'stale', label: 'Références archivées — valeurs à confirmer' },
+  { asOf: '2026-09-26T12:00:00Z', state: 'stale', label: 'Références archivées — valeurs à confirmer' },
+]) {
+  test(`French electricity trust respects its source date at ${fixture.asOf}`, async ({ page }) => {
+    await offlineLocal(page);
+    await page.clock.setFixedTime(new Date(fixture.asOf));
+    for (const app of FRENCH_ENERGY_APPS.filter(app => ['electricity-tariff', 'prepaid-meter'].includes(app.id))) {
+      const response = await page.goto(app.frRoute, { waitUntil: 'domcontentloaded' });
+      expect(response && response.ok()).toBeTruthy();
+      const config = await page.locator('script[data-fr-energy-config]').textContent();
+      expect(JSON.parse(config).reviewedAt).toBe('2026-08-15');
+      const trust = page.locator('.fr-energy-trust');
+      await expect(trust).toHaveAttribute('data-state', fixture.state);
+      await expect(trust).toHaveAttribute('data-fr-energy-data-state', fixture.state);
+      await expect(trust).toContainText(fixture.label);
+      await expect(trust).toContainText('2026-08-15');
+    }
+  });
+}
