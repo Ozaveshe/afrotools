@@ -1,4 +1,12 @@
 const { test, expect } = require('@playwright/test');
+const { COPY } = require('../../scripts/build-bf-payroll-review');
+async function expectReviewExplanation(page, lang) {
+  for (const field of ['reason', 'scope', 'inputs', 'recovery']) {
+    const copy = page.getByText(COPY[lang][field], { exact: true });
+    await expect(copy).toHaveCount(1);
+    await expect(copy).toBeVisible();
+  }
+}
 const SAVED_KEY = 'afrotools-saved-bf-paye';
 const SAVED_BYTES = JSON.stringify([{ id: 'synthetic-old-payroll', title: 'Synthetic prior salary', data: { grossSalary: '987654', salarySlider: '987654', summary: 'XOF 999,999/month SYNTHETIC OLD NET' }, thumbnail: null, createdAt: 1767225600000, updatedAt: 1767225600000 }]);
 async function expectHistoricalDataProtected(page, context) {
@@ -31,6 +39,7 @@ for (const [lang, route, heading] of targets) {
     await page.goto(route + '?id=synthetic-old-payroll');
     await expectHistoricalDataProtected(page, page.context());
     await expect(page.locator('#bf-payroll-review h2')).toHaveText(heading);
+    await expectReviewExplanation(page, lang);
     await expect(page.locator('#sources-verification')).toHaveAttribute('data-source-freshness', 'stale');
     await expect(page.locator('#sources-verification time')).toHaveAttribute('datetime', '2025-07-01');
     await page.locator('#grossSalary').fill('123456');
@@ -65,6 +74,7 @@ for (const [lang, route, heading] of targets) {
       if (failure === 'runtime-blocked') await page.route('**/bf-payroll-review.js*', request => request.abort());
       await page.goto(route + '?id=synthetic-old-payroll');
       await expect(page.locator('#bf-payroll-review h2')).toHaveText(heading);
+      await expectReviewExplanation(page, lang);
       await page.locator('#grossSalary').fill('654321');
       await expect(page.locator('#grossSalary')).toHaveValue('654321');
       await expect(page.locator('#resultsCard, #resAmount, #pdfModal, .action-row, .mode-toggle, .ai-card, .fr-finance-export-contract')).toHaveCount(0);

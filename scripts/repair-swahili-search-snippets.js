@@ -43,6 +43,9 @@ function countryName(slug) {
 }
 
 function metadataFor(countrySlug, family) {
+  if (countrySlug === "burkina-faso" && family === "kikokotoo-kodi-mshahara") {
+    return require("./build-bf-payroll-review").metadataFor("sw");
+  }
   if (countrySlug === "morocco" && family === "kikokotoo-kodi-mshahara") {
     const copy = require("./lib/morocco-paye-content").sw;
     return { title: copy.title, schemaName: copy.heading };
@@ -83,6 +86,11 @@ function apply(html, metadata) {
   let output = html.replace(/(<title\b[^>]*>)[\s\S]*?(<\/title>)/i, "$1" + escapeHtml(metadata.title) + "$2");
   output = setMeta(output, "property", "og:title", metadata.title);
   output = setMeta(output, "name", "twitter:title", metadata.title);
+  if (metadata.description) {
+    output = setMeta(output, "name", "description", metadata.description);
+    output = setMeta(output, "property", "og:description", metadata.description);
+    output = setMeta(output, "name", "twitter:description", metadata.description);
+  }
   return syncSchema(output, metadata);
 }
 
