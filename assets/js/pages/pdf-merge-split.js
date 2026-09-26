@@ -230,6 +230,8 @@
       pageLabel.textContent = native("Pages","Pages","Kurasa");
       var pageInput = document.createElement('input');
       pageInput.type = 'text';
+      // Native range labels include the user's filename; never dictionary-translate it.
+      pageInput.setAttribute('translate', 'no');
       pageInput.value = entry.pageSpec || '';
       pageInput.placeholder = entry.pageCount ? native('All / 1-', 'Toutes / 1-', 'Zote / 1-') + entry.pageCount : native("All pages","Toutes les pages","Kurasa zote");
       pageInput.dataset.action = 'pages';
@@ -822,6 +824,8 @@
     els.mergeBtn = $('mergeBtn');
     els.clearMergeBtn = $('clearMergeBtn');
     els.mergeSummary = $('mergeSummary');
+    // Every summary is authored natively here, including filename-bearing errors.
+    els.mergeSummary.setAttribute('translate', 'no');
     els.splitBtn = $('splitBtn');
     els.splitInfo = $('splitInfo');
     els.splitFileName = $('splitFileName');

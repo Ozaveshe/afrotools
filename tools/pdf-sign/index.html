@@ -1122,6 +1122,9 @@
     return window.PDFLib;
   }
 
+  // Uploaded filenames are user content, even while their step is hidden.
+  document.getElementById('pdfFileName').setAttribute('translate', 'no');
+
   // State
   let currentPdfFile = null;
   let currentPdfDoc = null;
@@ -1462,6 +1465,7 @@
   const typeNameInput = document.getElementById('typeName');
   const fontButtons = document.querySelectorAll('[data-font]');
   const fontPreview = document.getElementById('fontPreview');
+  fontPreview.setAttribute('translate', 'no');
   let selectedFont = 'Dancing Script';
   let selectedTypeColor = '#000000';
 
@@ -1486,7 +1490,9 @@
   });
 
   function updateFontPreview() {
-    const name = typeNameInput.value || 'Your Name';
+    const lang = document.documentElement.lang.split('-')[0];
+    const placeholder = lang === 'fr' ? 'Votre nom' : lang === 'sw' ? 'Jina Lako' : 'Your Name';
+    const name = typeNameInput.value || placeholder;
     fontPreview.style.fontFamily = selectedFont;
     fontPreview.style.color = selectedTypeColor;
     fontPreview.textContent = name;
