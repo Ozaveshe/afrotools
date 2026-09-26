@@ -1,0 +1,254 @@
+/* AfroKitchen home: keep recipe discovery close to the controls that drive it. */
+.ak-page .ak-home-hero {
+  padding: 54px 0 76px;
+}
+.ak-page .ak-home-hero .ak-hero-home {
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+}
+.ak-page .ak-home-hero .ak-hero-intro {
+  gap: 18px;
+}
+.ak-page .ak-home-hero h1 {
+  max-width: 11ch;
+  font-size: clamp(3.2rem, 6vw, 5.2rem);
+  line-height: .94;
+}
+.ak-page .ak-home-hero .ak-hero-sub {
+  max-width: 48ch;
+}
+.ak-page .ak-home-hero .ak-hero-preview,
+.ak-page .ak-home-hero .ak-featured-card,
+.ak-page .ak-home-hero .ak-featured-img,
+.ak-page .ak-home-hero .ak-featured-fallback {
+  height: 320px;
+  min-height: 320px;
+}
+.ak-page .ak-home-hero + .ak-browse-band {
+  margin-top: -28px;
+}
+.ak-page .ak-browse-shell {
+  padding: clamp(22px, 3vw, 32px);
+}
+.ak-page .ak-quick-picks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin: 16px 0 22px;
+}
+.ak-page .ak-quick-picks > span {
+  margin-right: 4px;
+  color: var(--ak-muted);
+  font-size: .82rem;
+  font-weight: 700;
+}
+.ak-page .ak-quick-picks button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--ak-line-strong);
+  border-radius: 999px;
+  background: var(--ak-panel);
+  color: var(--ak-text);
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ak-page .ak-quick-picks button:hover,
+.ak-page .ak-quick-picks button:focus-visible {
+  border-color: var(--ak-primary);
+  background: var(--ak-primary-soft);
+}
+.ak-page .ak-filters {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.ak-page .ak-filter-field {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+.ak-page .ak-filter-field label {
+  color: var(--ak-muted);
+  font-size: .78rem;
+  font-weight: 700;
+}
+.ak-page .ak-filter-field select {
+  width: 100%;
+  min-height: 48px;
+}
+.ak-page .ak-clear-filters {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.ak-page #recipe-results {
+  padding-top: 42px;
+  scroll-margin-top: 72px;
+}
+.ak-page #recipe-results .ak-section-head {
+  margin-bottom: 22px;
+}
+.ak-page #recipe-results .ak-section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.ak-page #cook-this-week {
+  scroll-margin-top: 72px;
+}
+
+@media (max-width: 960px) {
+  .ak-page .ak-home-hero .ak-hero-home {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ak-page .ak-home-hero .ak-hero-aside {
+    display: none;
+  }
+  .ak-page .ak-filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ak-page .ak-home-hero {
+    padding: 32px 0 56px;
+  }
+  .ak-page .ak-home-hero h1 {
+    max-width: 12ch;
+    font-size: clamp(2.55rem, 10vw, 3.5rem);
+  }
+  .ak-page .ak-home-hero .ak-hero-intro {
+    gap: 16px;
+  }
+  .ak-page .ak-home-hero .ak-hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .ak-page .ak-home-hero .ak-btn-quiet {
+    display: inline-flex;
+  }
+  .ak-page .ak-home-hero .ak-hero-actions .ak-btn {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 12px;
+  }
+  .ak-page .ak-hero-quick-actions {
+    display: flex;
+  }
+  .ak-page .ak-home-hero + .ak-browse-band {
+    margin-top: -18px;
+  }
+  .ak-page .ak-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ak-page .ak-browse-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .ak-page .ak-browse-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ak-page .ak-browse-link {
+    min-height: 44px;
+  }
+  .ak-page #recipe-results {
+    padding-top: 30px;
+  }
+}
+
+@media (max-width: 390px) {
+  .ak-page .ak-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+[data-theme="dark"] .ak-page {
+  --ak-bg: #151b1c;
+  --ak-panel: #20292a;
+  --ak-panel-tint: #1c2526;
+  --ak-text: #f2f4f1;
+  --ak-muted: #bdc9c3;
+  --ak-line: #40504a;
+  --ak-line-strong: #60736b;
+  --ak-primary-soft: #493126;
+  background: var(--ak-bg);
+}
+[data-theme="dark"] .ak-page .ak-browse-shell,
+[data-theme="dark"] .ak-page #recipe-results .ak-recipe-card {
+  background: var(--ak-panel);
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-filter-deck,
+[data-theme="dark"] .ak-page .ak-filter-select,
+[data-theme="dark"] .ak-page .ak-search,
+[data-theme="dark"] .ak-page .ak-quick-picks button {
+  background: var(--ak-panel-tint);
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page #recipe-results .ak-recipe-card-desc,
+[data-theme="dark"] .ak-page #recipe-results .ak-recipe-card-meta {
+  color: var(--ak-muted);
+}
+[data-theme="dark"] .ak-page #recipe-results .ak-recipe-card-meta-item,
+[data-theme="dark"] .ak-page .ak-plan-day-meta span,
+[data-theme="dark"] .ak-page .ak-planner-metrics span {
+  background: #2b3938;
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-planner-card,
+[data-theme="dark"] .ak-page .ak-plan-output,
+[data-theme="dark"] .ak-page .ak-plan-day,
+[data-theme="dark"] .ak-page .ak-plan-shopping,
+[data-theme="dark"] .ak-page .ak-plan-shopping-group,
+[data-theme="dark"] .ak-page .ak-planner-empty {
+  background: var(--ak-panel);
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+  box-shadow: none;
+}
+[data-theme="dark"] .ak-page .ak-planner-field select,
+[data-theme="dark"] .ak-page .ak-planner-field input {
+  background: #162022;
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+  box-shadow: none;
+}
+[data-theme="dark"] .ak-page .ak-planner-field label,
+[data-theme="dark"] .ak-page .ak-planner-help,
+[data-theme="dark"] .ak-page .ak-planner-status,
+[data-theme="dark"] .ak-page .ak-plan-day-copy p {
+  color: var(--ak-muted);
+}
+[data-theme="dark"] .ak-page .ak-plan-days > h4,
+[data-theme="dark"] .ak-page .ak-plan-shopping h3,
+[data-theme="dark"] .ak-page .ak-plan-day-copy h4,
+[data-theme="dark"] .ak-page .ak-plan-shopping-group h4 {
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-plan-chip,
+[data-theme="dark"] .ak-page .ak-plan-warning {
+  background: #2b3938;
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-recipe-card-meta-text,
+[data-theme="dark"] .ak-page .ak-section-soft,
+[data-theme="dark"] .ak-page .ak-method-card,
+[data-theme="dark"] .ak-page .ak-intel-preview-card,
+[data-theme="dark"] .ak-page .ak-country-chip,
+[data-theme="dark"] .ak-page .ak-advisor-suggestion {
+  background: var(--ak-panel);
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-browse-link {
+  background: #2b3938;
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}

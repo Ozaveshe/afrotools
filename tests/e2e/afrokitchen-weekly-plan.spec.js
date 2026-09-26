@@ -97,5 +97,61 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
     return document.documentElement.scrollWidth - document.documentElement.clientWidth;
   });
   expect(overflow).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  const darkBackgrounds = await page.evaluate(function () {
+    return [".ak-planner-card", ".ak-method-card", ".ak-recipe-card-meta-text"].map(function (selector) {
+      return getComputedStyle(document.querySelector(selector)).backgroundColor;
+    });
+  });
+  darkBackgrounds.forEach(function (color) {
+    expect(Number(color.match(/\d+/)[0])).toBeLessThan(100);
+  });
+  expect(consoleErrors).toEqual([]);
+});
+
+test("AfroKitchen search results stay close to filters and quick picks narrow recipes", async ({ page }) => {
+  await quietExternalNoise(page);
+  const consoleErrors = installConsoleGuard(page);
+  await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toBeVisible();
+
+  const gap = await page.evaluate(function () {
+    const browse = document.getElementById("browse-panel").getBoundingClientRect();
+    const results = document.getElementById("recipe-results").getBoundingClientRect();
+    return results.top - browse.bottom;
+  });
+  expect(gap).toBeLessThan(100);
+
+  await page.locator('[data-quick-filter="time"]').click();
+  await expect(page.locator("#filter-time")).toHaveValue("45");
+  await expect(page.locator("#results-summary")).toContainText("45 minutes or less");
+  const times = await page.locator("#recipes-grid .ak-recipe-card-meta-item").filter({ hasText: "Time" }).allTextContents();
+  expect(times.length).toBeGreaterThan(0);
+  times.forEach(function (time) { expect(Number(time.match(/\d+/)[0])).toBeLessThanOrEqual(45); });
+
+  await page.locator("#clear-recipe-filters").click();
+  await expect(page.locator("#filter-time")).toHaveValue("");
+  await page.locator('[data-quick-filter="vegetarian"]').click();
+  await expect(page.locator("#filter-diet")).toHaveValue("vegetarian");
+  await expect(page.locator("#results-summary")).toContainText("Vegetarian");
+
+  await page.locator("#clear-recipe-filters").click();
+  await page.locator("#search-input").fill("jollof");
+  await expect(page.locator("#results-summary")).toContainText('"jollof"');
+  await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toContainText("Jollof");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const overflow = await page.evaluate(function () {
+    return document.documentElement.scrollWidth - document.documentElement.clientWidth;
+  });
+  expect(overflow).toBeLessThanOrEqual(1);
+  await page.setViewportSize({ width: 320, height: 720 });
+  const narrowOverflow = await page.evaluate(function () {
+    return document.documentElement.scrollWidth - document.documentElement.clientWidth;
+  });
+  expect(narrowOverflow).toBeLessThanOrEqual(1);
   expect(consoleErrors).toEqual([]);
 });
