@@ -186,6 +186,15 @@
     setText(els.resultText, "");
   }
 
+  function optionControls() {
+    return [
+      els.templateSelect, els.startNumber, els.padLength, els.startPage, els.pageRange,
+      els.subsetSelect, els.prefixInput, els.suffixInput, els.fontSelect, els.fontSize,
+      els.opacity, els.marginX, els.marginY, els.rotation, els.colorInput, els.colorText,
+      els.facingMode
+    ];
+  }
+
   function setBusy(value) {
     state.busy = value;
     els.numberBtn.disabled = value || state.files.length === 0;
@@ -193,7 +202,11 @@
     [els.clearFilesBtn].forEach(function (button) {
       if (button) button.disabled = value;
     });
-    document.querySelectorAll(".mini-btn,.choice-btn").forEach(function (button) {
+    // Keep the displayed options and the async batch's captured options identical.
+    optionControls().concat([els.pdfFileInput]).forEach(function (control) {
+      if (control) control.disabled = value;
+    });
+    document.querySelectorAll(".mini-btn,.choice-btn,[data-page-preset]").forEach(function (button) {
       button.disabled = value;
     });
   }
@@ -483,6 +496,14 @@
       }
 
       var successes = state.results.filter(function (item) { return item.ok; });
+      // ZIP extractors commonly compare names without case and overwrite duplicates.
+      var usedNames = Object.create(null);
+      successes.forEach(function (item) {
+        var base = item.name.replace(/\.pdf$/i, ""), name = item.name, suffix = 2;
+        while (usedNames[name.toLowerCase()]) name = base + "_" + suffix++ + ".pdf";
+        usedNames[name.toLowerCase()] = true;
+        item.name = name;
+      });
       if (successes.length === 1) {
         state.download = {
           blob: new Blob([successes[0].bytes], { type: "application/pdf" }),
@@ -632,6 +653,7 @@
     els.dropZone.addEventListener("keydown", function (event) {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
+        if (state.busy) return;
         els.pdfFileInput.click();
       }
     });
@@ -650,12 +672,7 @@
   }
 
   function bindControlUpdates() {
-    [
-      els.templateSelect, els.startNumber, els.padLength, els.startPage, els.pageRange,
-      els.subsetSelect, els.prefixInput, els.suffixInput, els.fontSelect, els.fontSize,
-      els.opacity, els.marginX, els.marginY, els.rotation, els.colorInput, els.colorText,
-      els.facingMode
-    ].forEach(function (control) {
+    optionControls().forEach(function (control) {
       control.addEventListener("input", function () {
         if (control === els.colorInput) els.colorText.value = els.colorInput.value.toUpperCase();
         syncLabels();
