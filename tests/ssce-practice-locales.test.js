@@ -82,6 +82,10 @@ test('worked numerical results and exam references retain the English meanings',
   for (const locale of ['fr','sw']) {
     const items = writtenBanks[locale].items;
     const answer = id => items.find(q => q.id === id).answer;
+    const q1a=items.find(q=>q.id==='waec-2022-mathematics-p2-q1a');
+    assert.ok(q1a);assert.match(q1a.answer,/x = 2 or x = −19\/10/);assert.match(q1a.steps.join(' '),/5\/6/);
+    assert.equal(q1a.source,enWritten.items.find(q=>q.id===q1a.id).source);
+    assert.doesNotMatch(q1a.sourceUse,/missing|wrong|incorrect|repair|manquant|erreur|kosa/i);
     assert.match(answer('written-m1'), /45/); assert.match(answer('written-m1'), /1[,.]68 × 10¹/);
     assert.match(answer('written-m2'), /248[ ,]?400/); assert.match(answer('written-m2'), /3[,.]5\s*%/);
     const newIds=['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q11'];
@@ -149,6 +153,6 @@ test('localized source generation is current and every locale page declares all 
     assert.ok(html.includes('id="written-practice"')); assert.ok(html.includes('data-assessment-language-notice'));
     assert.ok(html.includes('scripts/build-ssce-practice-locales.js'));
     assert.match(html,new RegExp(`(?:questions et |kazi )${enWritten.items.length}(?: exercices| za)`));
-    assert.match(writtenBanks[locale].scope,locale==='fr'?/32 guides de mathématiques WAEC/:/miongozo 32 ya Hisabati WAEC/);
+    assert.match(writtenBanks[locale].scope,locale==='fr'?/33 guides de mathématiques WAEC/:/miongozo 33 ya Hisabati WAEC/);
   }
 });

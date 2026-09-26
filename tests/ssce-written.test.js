@@ -25,6 +25,9 @@ test('every written task has provenance and a self-review guide, with linked sca
    assert.ok(['waec-2022-english-p2-q6','waec-2022-english-p2-q7','waec-2023-english-p2-q6','waec-2023-english-p2-q7'].includes(q.id));
    assert.ok(['itsmyschoollibrary.wordpress.com','wikiquestions.org','studyzone.ng'].includes(new URL(q.source).hostname));
    assert.match(q.sourceUse,/third-party transcription/);assert.equal(q.passage,undefined);
+  }else if(q.id==='waec-2022-mathematics-p2-q1a'){
+   assert.equal(q.source,'https://www.scribd.com/document/919631528/Nija-wassce2#page=2');
+   assert.match(q.sourceUse,/linked original-paper scan/);
   }else{
    assert.ok(q.source.startsWith('https://www.waeconline.org.ng/'));
    if(q.exam!==null)assert.ok(q.source.includes('mq'+q.number+'.html'));
@@ -127,6 +130,20 @@ test('WAEC 2022 graph and probability guides have independently checked results 
  assert.doesNotMatch(q12a.sourceUse,/ambiguous|incorrect|repair/i);
 });
 
+test('WAEC 2022 Question 1(a) retains both roots after the positive-ratio check',()=>{
+ const q=bank.items.find(item=>item.id==='waec-2022-mathematics-p2-q1a');
+ assert.ok(q);assert.equal(q.subpart,'a');assert.equal(q.answer,'x = 2 or x = −19/10.');
+ const roots=[];
+ for(let tenth=-100;tenth<=100;tenth++){
+  const x=tenth/10,terms=[7-2*x,9,5*x+17];
+  if(Math.abs(terms[1]**2-terms[0]*terms[2])>1e-9)continue;
+  const firstRatio=terms[1]/terms[0],secondRatio=terms[2]/terms[1];
+  if(firstRatio>0&&Math.abs(firstRatio-secondRatio)<1e-9)roots.push({x,firstRatio:Number(firstRatio.toFixed(6))});
+ }
+ assert.deepEqual(roots,[{x:-1.9,firstRatio:0.833333},{x:2,firstRatio:3}]);
+ assert.match(q.steps.join(' '),/both roots are valid/i);
+});
+
 test('2021 complete selected mathematics tasks agree with independently reconstructed journeys and vectors',()=>{
  const q2=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q2');const q3=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q3');
  const solutions=[];for(let km=1;km<200;km++)if(Math.abs(km/72*60+(km+2)/40*60+120-235)<1e-10)solutions.push(km);
@@ -152,7 +169,7 @@ test('WAEC 2021 Q1 and Q11 selected sections agree with independent interest, in
  const directVariance=observations.reduce((sum,hour)=>sum+(hour-average)**2,0)/observations.length;
  const squaredMoment=observations.reduce((sum,hour)=>sum+hour*hour,0)/observations.length-average**2;
  assert.equal(observations.length,50);assert.equal(average,7.3);assert.equal(directVariance.toFixed(2),'4.17');assert.ok(Math.abs(directVariance-squaredMoment)<1e-10);assert.equal(Math.sqrt(directVariance).toFixed(2),'2.04');assert.match(study.answer,/7\.30 hours.*2\.04 hours/);
- assert.match(bank.scope,/32 WAEC Mathematics companions/);
+ assert.match(bank.scope,/33 WAEC Mathematics companions/);
 });
 
 test('WAEC 2021 Q5 pie sectors and dependent bead draws use both complete parts',()=>{

@@ -5,7 +5,7 @@ test('selected WAEC component evidence matches current briefs without claiming c
  assert.ok(manifest.components.length>=4);assert.ok(manifest.sources.length>=8);
  for(const c of manifest.components){assert.equal(c.complete_paper,false);assert.equal(new Set(c.expectedIds).size,c.expectedIds.length);
   for(const id of c.expectedIds){const q=bank.items.find(q=>q.id===id);assert.ok(q,id);assert.equal(q.year,c.year);assert.equal(q.subject,c.subject);assert.equal(q.paper,c.paper);assert.ok(q.steps.length>=3&&q.checks.length>=2);
-   if(c.complete_selected_prompts){const s=manifest.sources.find(s=>s.id===id);assert.ok(s,id);assert.equal(q.source,s.url);assert.match(s.sha256,/^[a-f0-9]{64}$/);assert.equal(s.questionBriefSha256,crypto.createHash('sha256').update(q.prompt).digest('hex'));}
+   if(c.complete_selected_prompts){const s=manifest.sources.find(s=>s.id===id);assert.ok(s,id);assert.equal(q.source,s.url);if(s.sha256===null){assert.equal(id,'waec-2022-mathematics-p2-q1a');assert.equal(s.visual_page,2);assert.match(s.fingerprint_scope,/no scan bytes archived or hash asserted/);}else assert.match(s.sha256,/^[a-f0-9]{64}$/);assert.equal(s.questionBriefSha256,crypto.createHash('sha256').update(q.prompt).digest('hex'));}
    else{assert.equal(q.passage,undefined);assert.match(q.sourceUse,/does not host the passage/);}
   }
  }
@@ -14,6 +14,13 @@ test('selected WAEC component evidence matches current briefs without claiming c
  assert.deepEqual(maths2021q5.expectedIds,['waec-2021-mathematics-p2-q5']);
  assert.match(maths2021q5.official_prompt_image_sha256,/^[a-f0-9]{64}$/);
  assert.match(maths2021q5.official_worked_image_sha256,/^[a-f0-9]{64}$/);
+ const q1a=manifest.components.find(c=>c.id==='waec-2022-maths-q1a');
+ assert.deepEqual(q1a.expectedIds,['waec-2022-mathematics-p2-q1a']);
+ assert.deepEqual(q1a.existingCompanionIds,['waec-2022-mathematics-p2-q1b']);
+ assert.ok(bank.items.some(q=>q.id===q1a.existingCompanionIds[0]));
+ assert.match(q1a.official_examiner_url,/waeconline\.org\.ng\/e-Learning\/Mathematics\/maths235mq1\.html/);
+ assert.match(q1a.scan_url,/scribd\.com\/document\/919631528\/Nija-wassce2#page=2/);
+ assert.match(q1a.review,/both candidate ratios checked positive/);
  const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
  assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
  assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);

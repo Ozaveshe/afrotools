@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 32 WAEC Mathematics companions, plus 59 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 33 WAEC Mathematics companions, plus 59 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
 
