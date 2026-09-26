@@ -147,6 +147,9 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     keepAccessibilityStylesLast();
+    // Repair owns source/settings revisions and its export review state, including
+    // asynchronous PDF and ZIP completion. Report-format changes need no rerun.
+    if (currentAppId() === 'pdf-repair') return;
     document.addEventListener('input', function (event) {
       if (event.target.matches('input, textarea, select') && !isReviewControl(event.target)) invalidate();
     }, true);

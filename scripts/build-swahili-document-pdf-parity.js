@@ -55,7 +55,7 @@ const apps = [
   { id: 'pdf-bates', englishRoute: '/tools/pdf-bates/', englishFile: 'tools/pdf-bates/index.html', swahiliRoute: '/sw/zana/namba-bates-pdf/', swahiliFile: 'sw/zana/namba-bates-pdf/index.html', name: 'Namba za Bates za PDF', exports: ['pdf', 'zip', 'csv'] },
   { id: 'html-to-pdf', englishRoute: '/tools/html-to-pdf/', englishFile: 'tools/html-to-pdf/index.html', swahiliRoute: '/sw/zana/html-kwenda-pdf/', swahiliFile: 'sw/zana/html-kwenda-pdf/index.html', name: 'HTML kwenda PDF', exports: ['pdf', 'html', 'json'] },
   { id: 'pdf-find-replace', englishRoute: '/tools/pdf-find-replace/', englishFile: 'tools/pdf-find-replace/index.html', swahiliRoute: '/sw/zana/tafuta-na-badilisha-pdf/', swahiliFile: 'sw/zana/tafuta-na-badilisha-pdf/index.html', name: 'Tafuta na Badilisha kwenye PDF', exports: ['pdf', 'csv'] },
-  { id: 'pdf-repair', englishRoute: '/tools/pdf-repair/', englishFile: 'tools/pdf-repair/index.html', swahiliRoute: '/sw/zana/kurekebisha-pdf/', swahiliFile: 'sw/zana/kurekebisha-pdf/index.html', name: 'Rekebisha PDF', exports: ['pdf', 'zip', 'json', 'csv'] },
+  { id: 'pdf-repair', localFirstDownloads: true, englishRoute: '/tools/pdf-repair/', englishFile: 'tools/pdf-repair/index.html', swahiliRoute: '/sw/zana/kurekebisha-pdf/', swahiliFile: 'sw/zana/kurekebisha-pdf/index.html', name: 'Rekebisha PDF', exports: ['pdf', 'zip', 'json', 'csv'] },
   { id: 'pdf-workflow', englishRoute: '/tools/pdf-workflow/', englishFile: 'tools/pdf-workflow/index.html', swahiliRoute: '/sw/zana/workflow-ya-pdf/', swahiliFile: 'sw/zana/workflow-ya-pdf/index.html', name: 'Mtiririko wa Kazi wa PDF', exports: ['pdf', 'json'] },
   { id: 'cv-builder', englishRoute: '/tools/cv-builder/', englishFile: 'tools/cv-builder/index.html', swahiliRoute: '/sw/zana/mjenzi-cv/', swahiliFile: 'sw/zana/mjenzi-cv/index.html', name: 'Mjenzi wa CV', exports: ['pdf', 'docx', 'txt', 'csv', 'json', 'zip', 'print'], sensitive: true },
   { id: 'invoice-generator', englishRoute: '/tools/invoice-generator/', englishFile: 'tools/invoice-generator/index.html', swahiliRoute: '/sw/zana/kizalishaji-ankara/', swahiliFile: 'sw/zana/kizalishaji-ankara/index.html', name: 'Kizalishaji Ankara', exports: ['pdf'], sensitive: true },
@@ -304,6 +304,10 @@ const legacyInlineRepairs = {
     '<option value="even">Hata kurasa za PDF pekee</option>': '<option value="even">Kurasa shufwa pekee</option>',
     'data-position="middle-right">Sawa</button>': 'data-position="middle-right">Kulia</button>',
     'data-position="center">Kituo</button>': 'data-position="center">Katikati</button>'
+  },
+  'pdf-repair': {
+    '>Raster salvage kurasa</option>': '>Rejesha kurasa kama picha</option>',
+    '>Pakua Repaired PDF</button>': '>Pakua PDF iliyorekebishwa</button>'
   },
   'invoice-generator': {
     "${fmtCur(it.price, cur)}": "${((CURRENCIES[cur] || {}).s || cur) + ' ' + Number(it.price || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:20})}",
