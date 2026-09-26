@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const {test, expect} = require('@playwright/test');
 const JSZip = require('jszip');
-const {PDFDocument, rgb, degrees} = require('../../assets/vendor/pdf-lib/pdf-lib.min.js');
+const {PDFDocument, PDFName, PDFNumber, rgb, degrees} = require('../../assets/vendor/pdf-lib/pdf-lib.min.js');
 test.use({trace: 'off', screenshot: 'off', video: 'off', viewport: {width: 320, height: 740}});
 test.describe.configure({timeout: 180000});
 const routes = {en: '/tools/pdf-repair/', fr: '/fr/tools/reparer-pdf/', sw: '/sw/zana/kurekebisha-pdf/'};
@@ -187,5 +187,65 @@ for (const locale of Object.keys(routes)) {
     await page.waitForFunction(() => window.heldRepairFinished);
     expect(downloads).toHaveLength(0); await expect(page.locator('#actionRow')).toBeHidden();
     await run(page, 'normalize'); await expect(page.locator('#downloadZipBtn')).toBeVisible();
+  });
+}
+
+
+// Read physical dimensions from PDF dictionaries, independently of PDF.js's
+// scale-1 viewport (which does not include UserUnit in the bundled version).
+function physicalGeometry(page) {
+  const crop = page.getCropBox(), unit = page.node.get(PDFName.of('UserUnit'))?.asNumber() || 1;
+  const rotation = ((page.getRotation().angle % 360) + 360) % 360;
+  const swapped = rotation === 90 || rotation === 270;
+  return {unit, physical: [swapped ? crop.height * unit : crop.width * unit, swapped ? crop.width * unit : crop.height * unit]};
+}
+for (const locale of Object.keys(routes)) {
+  test(locale + ': UserUnit physical sizes survive normalization and raster without scaling bitmap allocation', async ({page}, info) => {
+    const source = await PDFDocument.create();
+    for (const unit of [0.5, 2, 25]) for (const rotation of [0, 90, 180, 270]) {
+      const p = source.addPage([450, 300]);
+      p.setCropBox(20, 30, 400, 240); p.setRotation(degrees(rotation));
+      p.node.set(PDFName.of('UserUnit'), PDFNumber.of(unit));
+      p.drawText('SYNTHETIC UNIT ' + unit + ' ROTATION ' + rotation, {x: 50, y: 150, size: 12});
+      p.drawRectangle({x: 60, y: 80, width: 40, height: 30, color: rgb(0, 1, 0)});
+    }
+    const input = Buffer.from(await source.save({useObjectStreams: false}));
+    const expectedGeometry = source.getPages().map(physicalGeometry);
+    fs.writeFileSync(info.outputPath('userunit-input.pdf'), input);
+    await open(page, locale);
+    const original = await inspect(page, input);
+    for (const [mode, quality] of [['normalize', '1.25'], ['raster', '1'], ['raster', '1.6']]) {
+      await upload(page, input, 'synthetic-userunit.pdf');
+      await page.locator('#rasterScale').selectOption(quality); await run(page, mode);
+      const bytes = await download(page, '#downloadBtn', info, mode + '-userunit-' + quality + '.pdf');
+      const reopened = await PDFDocument.load(bytes);
+      const actualGeometry = reopened.getPages().map(physicalGeometry);
+      expect(actualGeometry).toEqual(expectedGeometry);
+      const visual = await inspect(page, bytes);
+      if (mode === 'normalize') {
+        expect(visual.boxes).toEqual(original.boxes);
+        visual.pages.forEach((p, i) => {expect(p.text).toBe(original.pages[i].text); expect(p.png).toBe(original.pages[i].png);});
+      } else {
+        visual.pages.forEach((p, i) => {
+          expect(p.visible).toEqual(original.pages[i].visible); expect(p.text).toBe('');
+          expect(Math.abs(p.green - original.pages[i].green)).toBeLessThan(100);
+          expect(Math.abs(p.center[0] - original.pages[i].center[0])).toBeLessThan(1);
+          expect(Math.abs(p.center[1] - original.pages[i].center[1])).toBeLessThan(1);
+          expect(visual.boxes[i].rotation).toBe(0);
+        });
+        // Embedded bitmap dimensions depend on quality and logical crop size only,
+        // including UserUnit 25, which would otherwise allocate 625 times the pixels.
+        reopened.getPages().forEach((p, i) => {
+          const xobjects = p.node.Resources().lookup(PDFName.of('XObject'));
+          const images = xobjects.keys().map(key => xobjects.lookup(key)).filter(object => object.dict?.get(PDFName.of('Subtype'))?.toString() === '/Image');
+          expect(images).toHaveLength(1);
+          expect([images[0].dict.get(PDFName.of('Width')).asNumber(), images[0].dict.get(PDFName.of('Height')).asNumber()])
+            .toEqual(original.pages[i].visible.map(size => Math.ceil(size * Number(quality))));
+        });
+      }
+      fs.writeFileSync(info.outputPath(mode + '-userunit-' + quality + '-geometry.json'), JSON.stringify({expectedGeometry, actualGeometry, visual: visual.pages.map(({png, ...p}) => p)}, null, 2));
+      await page.locator('main #clearBtn').click();
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
   });
 }

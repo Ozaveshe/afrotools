@@ -283,9 +283,10 @@
                 if (run !== revision) throw new Error('Superseded');
                 d(55 + Math.round(pageNumber / source.numPages * 30), text('Salvaging page {page} of {total}...', {page: pageNumber, total: source.numPages}));
                 var page = await source.getPage(pageNumber);
-                // PDF.js applies CropBox, UserUnit and rotation. Resolution changes only
-                // image pixels; the output retains the physical visible page size.
-                var physical = page.getViewport({scale: 1});
+                // This bundled PDF.js viewport applies CropBox and rotation, but not UserUnit.
+                // Preserve UserUnit separately so physical dimensions remain unchanged
+                // without multiplying bitmap allocation by the physical unit scale.
+                var visible = page.getViewport({scale: 1});
                 var viewport = page.getViewport({scale: scale});
                 var canvas = document.createElement('canvas');
                 canvas.width = Math.ceil(viewport.width);
@@ -296,8 +297,10 @@
                     await page.render({canvasContext: canvas.getContext('2d'), viewport: viewport,
                         transform: [canvas.width / viewport.width, 0, 0, canvas.height / viewport.height, 0, 0]}).promise;
                     var png = await output.embedPng(await b(canvas));
-                    output.addPage([physical.width, physical.height]).drawImage(png,
-                        {x: 0, y: 0, width: physical.width, height: physical.height});
+                    var recoveredPage = output.addPage([visible.width, visible.height]);
+                    if (page.userUnit !== 1) recoveredPage.node.set(window.PDFLib.PDFName.of('UserUnit'),
+                        window.PDFLib.PDFNumber.of(page.userUnit));
+                    recoveredPage.drawImage(png, {x: 0, y: 0, width: visible.width, height: visible.height});
                 } finally {
                     canvas.width = canvas.height = 0;
                     page.cleanup();
