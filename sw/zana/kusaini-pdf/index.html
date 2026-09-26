@@ -803,7 +803,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <meta name="afrotools-content-id" content="sw-document-pdf:pdf-sign">
   <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=676825f9">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=379bc1ff">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kusaini-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-sign/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/signer-pdf/">
@@ -1090,7 +1090,7 @@
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
-<script>
+<script data-pdf-sign-runtime>
   pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
   function getPDFLib() {
     if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
@@ -1100,12 +1100,46 @@
   // State
   let currentPdfFile = null;
   let currentPdfDoc = null;
+  let pdfLoadVersion = 0;
+  let pageRenderVersion = 0;
+  let previewReady = false;
   let currentPageNum = 1;
   let totalPages = 0;
   let signatureData = null;
   let signatureType = null;
   let signatureColor = '#000000';
   let finalPdfBytes = null;
+  let finalPdfSnapshot = null;
+  let generationVersion = 0;
+  function signingSnapshot() {
+    return JSON.stringify([signatureData, signatureType, currentPageNum, renderScale,
+      overlayX, overlayY, overlayWidth, overlayHeight, overlayImg.src,
+      document.querySelector('.placement-option.active').dataset.placement,
+      document.getElementById('addDateCheckbox').checked]);
+  }
+  function invalidateSignedPdf() {
+    if (finalPdfBytes) document.getElementById('resultText').textContent = changedSigningMessage();
+    generationVersion++;
+    finalPdfBytes = null;
+    finalPdfSnapshot = null;
+    document.getElementById('actionRow').style.display = 'none';
+    document.getElementById('finalDownloadBtn').disabled = true;
+  }
+  function changedSigningMessage() {
+    const lang = document.documentElement.lang.split('-')[0];
+    return lang === 'fr' ? 'Le document ou la signature a changé. Appliquez à nouveau la signature avant de télécharger.' :
+      lang === 'sw' ? 'Hati au sahihi imebadilika. Weka sahihi tena kabla ya kupakua.' :
+      'The document or signature changed. Apply the signature again before downloading.';
+  }
+  document.addEventListener('change', (event) => {
+    if (event.target.closest('#step1Card,#step2Card,#step3Card')) invalidateSignedPdf();
+  });
+  document.addEventListener('input', (event) => {
+    if (event.target.closest('#step1Card,#step2Card,#step3Card')) invalidateSignedPdf();
+  });
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('.placement-option,#prevPageBtn,#nextPageBtn,#useDrawBtn,#useTypeBtn,#useImageBtn,#useSavedSignatureBtn')) invalidateSignedPdf();
+  });
   let renderScale = 1;
 
   // Saved signatures in localStorage
@@ -1169,9 +1203,7 @@
 
   pdfInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    if (isPdfFile(file)) {
-      await handlePdfUpload(file);
-    }
+    if (file) await handlePdfUpload(file);
   });
 
   fileLabel.addEventListener('dragover', (e) => {
@@ -1187,24 +1219,60 @@
     e.preventDefault();
     fileLabel.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (isPdfFile(file)) {
-      await handlePdfUpload(file);
-    }
+    if (file) await handlePdfUpload(file);
   });
 
+  function signingFeedback(key) {
+    const language = document.documentElement.lang.split('-')[0];
+    const messages = {
+      loading: { en: 'Loading PDF. Wait for the preview before signing.', fr: 'Chargement du PDF. Attendez son aperçu avant de signer.', sw: 'PDF inapakiwa. Subiri onyesho kabla ya kuweka sahihi.' },
+      failed: { en: 'This PDF could not be opened. Choose a valid PDF and try again.', fr: 'Impossible d’ouvrir ce PDF. Choisissez un PDF valide et réessayez.', sw: 'PDF hii haikuweza kufunguliwa. Chagua PDF halali na ujaribu tena.' },
+      small: { en: 'A page is too small for the signature and date. Use a larger page or turn off the date.', fr: 'Une page est trop petite pour la signature et la date. Utilisez une page plus grande ou désactivez la date.', sw: 'Ukurasa ni mdogo mno kwa sahihi na tarehe. Tumia ukurasa mkubwa au zima tarehe.' },
+      image: { en: 'A page is too small for a visible signature. Use a larger page.', fr: 'Une page est trop petite pour une signature visible. Utilisez une page plus grande.', sw: 'Ukurasa ni mdogo mno kwa sahihi inayoonekana. Tumia ukurasa mkubwa.' }
+    };
+    return messages[key][language] || messages[key].en;
+  }
+  function showSigningFeedback(key) {
+    document.getElementById('resultText').textContent = signingFeedback(key);
+    document.getElementById('resultCard').classList.add('on');
+  }
   async function handlePdfUpload(file) {
-    currentPdfFile = file;
-    const arrayBuffer = await file.arrayBuffer();
-    currentPdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    totalPages = currentPdfDoc.numPages;
-    currentPageNum = 1;
-
-    document.getElementById('pdfFileName').textContent = file.name;
-    document.getElementById('pdfPageCount').textContent = totalPages;
-    document.getElementById('pdfFileSize').textContent = formatBytes(file.size);
-    pdfPreview.classList.add('active');
-
-    showStep(2);
+    const version = ++pdfLoadVersion;
+    ++pageRenderVersion;
+    invalidateSignedPdf();
+    previewReady = false;
+    currentPdfFile = null;
+    currentPdfDoc = null;
+    document.getElementById('downloadPdfBtn').disabled = true;
+    document.getElementById('pdfFileName').textContent = '-';
+    document.getElementById('pdfPageCount').textContent = '-';
+    document.getElementById('pdfFileSize').textContent = '-';
+    pdfPreview.classList.remove('active');
+    showStep(1);
+    showSigningFeedback('loading');
+    try {
+      if (!isPdfFile(file)) throw new Error('Invalid PDF');
+      const arrayBuffer = await file.arrayBuffer();
+      if (version !== pdfLoadVersion) return;
+      const loadedDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      if (version !== pdfLoadVersion) { if (loadedDoc.destroy) await loadedDoc.destroy(); return; }
+      currentPdfFile = file;
+      currentPdfDoc = loadedDoc;
+      totalPages = loadedDoc.numPages;
+      currentPageNum = 1;
+      window.document.getElementById('pdfFileName').textContent = file.name;
+      window.document.getElementById('pdfPageCount').textContent = totalPages;
+      window.document.getElementById('pdfFileSize').textContent = formatBytes(file.size);
+      pdfPreview.classList.add('active');
+      window.document.getElementById('resultCard').classList.remove('on');
+      showStep(2);
+    } catch (_) {
+      if (version !== pdfLoadVersion) return;
+      currentPdfFile = null;
+      currentPdfDoc = null;
+      previewReady = false;
+      showSigningFeedback('failed');
+    }
   }
 
   // Step 2: Signature Creation
@@ -1456,37 +1524,51 @@
   const totalPagesSpan = document.getElementById('totalPages');
   let overlayX = 100, overlayY = 100, overlayWidth = 100, overlayHeight = 50;
 
-  function renderPdfPage(pageNum) {
-    if (!currentPdfDoc) return;
-    currentPageNum = pageNum;
-    currentPageSpan.textContent = pageNum;
-    totalPagesSpan.textContent = totalPages;
-
-    currentPdfDoc.getPage(pageNum).then(page => {
+  async function renderPdfPage(pageNum) {
+    const sourceDoc = currentPdfDoc;
+    if (!sourceDoc) return;
+    const loadVersion = pdfLoadVersion;
+    const renderVersion = ++pageRenderVersion;
+    const isCurrent = () => loadVersion === pdfLoadVersion && renderVersion === pageRenderVersion && sourceDoc === currentPdfDoc;
+    previewReady = false;
+    invalidateSignedPdf();
+    document.getElementById('downloadPdfBtn').disabled = true;
+    try {
+      const page = await sourceDoc.getPage(pageNum);
+      if (!isCurrent()) return;
       const baseViewport = page.getViewport({ scale: 1 });
       const containerWidth = Math.max(280, document.querySelector('.pdf-canvas-container').clientWidth - 4);
-      renderScale = Math.min(1.5, containerWidth / baseViewport.width);
-      const viewport = page.getViewport({ scale: renderScale });
-      pdfRenderCanvas.width = viewport.width;
-      pdfRenderCanvas.height = viewport.height;
-
-      if (!renderCtx) return;
-      page.render({
-        canvasContext: renderCtx,
-        viewport: viewport
-      }).promise.then(() => {
-        overlayWidth = 150;
-        overlayHeight = 60;
-        overlayX = viewport.width / 2 - overlayWidth / 2;
-        overlayY = viewport.height / 2;
-        updateOverlayPosition();
-      });
-    }).catch(err => {
-      console.error('Page render error:', err);
-    });
+      const scale = Math.min(1.5, containerWidth / baseViewport.width);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+      if (!isCurrent()) return;
+      pdfRenderCanvas.width = canvas.width;
+      pdfRenderCanvas.height = canvas.height;
+      renderCtx.drawImage(canvas, 0, 0);
+      renderScale = scale;
+      currentPageNum = pageNum;
+      currentPageSpan.textContent = pageNum;
+      totalPagesSpan.textContent = totalPages;
+      overlayWidth = 150;
+      overlayHeight = 60;
+      overlayX = viewport.width / 2 - overlayWidth / 2;
+      overlayY = viewport.height / 2;
+      updateOverlayPosition();
+      previewReady = true;
+      document.getElementById('downloadPdfBtn').disabled = false;
+    } catch (_) {
+      if (!isCurrent()) return;
+      previewReady = false;
+      invalidateSignedPdf();
+      showSigningFeedback('failed');
+    }
   }
 
   function updateOverlayPosition() {
+    invalidateSignedPdf();
     sigOverlay.style.left = overlayX + 'px';
     sigOverlay.style.top = overlayY + 'px';
     sigOverlay.style.width = overlayWidth + 'px';
@@ -1497,14 +1579,16 @@
     } else if (signatureType === 'type') {
       const data = JSON.parse(signatureData);
       const canvas = document.createElement('canvas');
-      canvas.width = overlayWidth;
-      canvas.height = overlayHeight;
+      const pixelRatio = 3;
+      canvas.width = Math.ceil(overlayWidth * pixelRatio);
+      canvas.height = Math.ceil(overlayHeight * pixelRatio);
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = data.color;
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.fillStyle = data.color === 'var(--color-primary)' ? getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#0062cc' : data.color;
       ctx.font = '24px ' + data.font;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(data.text, overlayWidth / 2, overlayHeight / 2);
+      ctx.fillText(data.text, overlayWidth / 2, overlayHeight / 2, Math.max(1, overlayWidth - 4));
       overlayImg.src = canvas.toDataURL();
     }
   }
@@ -1580,16 +1664,25 @@
     const actionRow = document.getElementById('actionRow');
     const resultCard = document.getElementById('resultCard');
 
+    if (!previewReady || !currentPdfFile) { showSigningFeedback('loading'); return; }
+    invalidateSignedPdf();
+    const version = generationVersion;
+    const sourceFile = currentPdfFile;
+    const snapshot = signingSnapshot();
+    const signatureImage = overlayImg.src;
     resultText.textContent = 'Creating signed PDF...';
     actionRow.style.display = 'none';
     resultCard.classList.add('on');
 
     try {
-      const arrayBuffer = await currentPdfFile.arrayBuffer();
-      const { PDFDocument, rgb } = getPDFLib();
+      const arrayBuffer = await sourceFile.arrayBuffer();
+      const { PDFDocument, rgb, StandardFonts } = getPDFLib();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const placement = document.querySelector('.placement-option.active').dataset.placement;
       const addDate = document.getElementById('addDateCheckbox').checked;
+      const dateText = new Date().toLocaleDateString();
+      const dateFont = addDate ? await pdfDoc.embedFont(StandardFonts.Helvetica) : null;
+      const dateWidth = dateFont ? dateFont.widthOfTextAtSize(dateText, 10) : 0;
       const pagesToSign = placement === 'all' ?
         Array.from({length: pdfDoc.getPageCount()}, (_, i) => i) :
         [currentPageNum - 1];
@@ -1598,55 +1691,54 @@
         const page = pdfDoc.getPage(pageIdx);
         const { width, height } = page.getSize();
 
-        if (signatureType === 'draw' || signatureType === 'image') {
-          const b64 = signatureData.split(',')[1];
-          const bin = atob(b64);
-          const imgBytes = new Uint8Array(bin.length);
-          for (let ci = 0; ci < bin.length; ci++) imgBytes[ci] = bin.charCodeAt(ci);
-          const image = /^data:image\/jpe?g/i.test(signatureData) ? await pdfDoc.embedJpg(imgBytes) : await pdfDoc.embedPng(imgBytes);
-          const ratio = overlayWidth / overlayHeight;
-          const scaledHeight = overlayHeight / renderScale;
-          const scaledWidth = scaledHeight * ratio;
-          page.drawImage(image, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - scaledHeight,
-            width: scaledWidth,
-            height: scaledHeight
-          });
-        } else if (signatureType === 'type') {
-          const data = JSON.parse(signatureData);
-          const rgbColor = data.color === '#001f3f' ? rgb(0, 31/255, 63/255) :
-                          data.color === 'var(--color-primary)' ? rgb(0, 135/255, 81/255) : rgb(0, 0, 0);
-          page.drawText(data.text, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - 20,
-            size: 24,
-            color: rgbColor
-          });
-        }
+        const b64 = signatureImage.split(',')[1];
+        const bin = atob(b64);
+        const imgBytes = Uint8Array.from(bin, (character) => character.charCodeAt(0));
+        const image = /^data:image\/jpe?g/i.test(signatureImage) ? await pdfDoc.embedJpg(imgBytes) : await pdfDoc.embedPng(imgBytes);
+        const dateSpace = addDate ? 16 : 0;
+        if (addDate && (height <= dateSpace || width < dateWidth + 8)) throw new Error(signingFeedback('small'));
+        const fit = Math.min(1, width / (overlayWidth / renderScale), (height - dateSpace) / (overlayHeight / renderScale));
+        const scaledHeight = overlayHeight / renderScale * fit;
+        const scaledWidth = overlayWidth / renderScale * fit;
+        if (!Number.isFinite(fit) || fit <= 0 || scaledWidth < 1 || scaledHeight < 1) throw new Error(signingFeedback(addDate ? 'small' : 'image'));
+        const imageX = Math.max(0, Math.min(overlayX / renderScale, width - scaledWidth));
+        const imageY = Math.max(dateSpace, Math.min(height - overlayY / renderScale - scaledHeight, height - scaledHeight));
+        page.drawImage(image, {
+          x: imageX,
+          y: imageY,
+          width: scaledWidth,
+          height: scaledHeight
+        });
 
         if (addDate) {
-          const today = new Date().toLocaleDateString();
-          page.drawText(today, {
-            x: overlayX / renderScale,
-            y: height - (overlayY / renderScale) - 50,
+          page.drawText(dateText, {
+            x: Math.max(4, Math.min(imageX, width - dateWidth - 4)),
+            font: dateFont,
+            y: imageY - 12,
             size: 10,
             color: rgb(100/255, 100/255, 100/255)
           });
         }
       }
 
-      finalPdfBytes = await pdfDoc.save();
+      const output = await pdfDoc.save();
+      if (version !== generationVersion || sourceFile !== currentPdfFile || snapshot !== signingSnapshot()) {
+        resultText.textContent = changedSigningMessage();
+        return;
+      }
+      finalPdfBytes = output;
+      finalPdfSnapshot = snapshot;
+      document.getElementById('finalDownloadBtn').disabled = false;
       resultText.textContent = 'PDF signed successfully.';
       actionRow.style.display = 'grid';
     } catch (err) {
-      console.error(err);
-      resultText.textContent = 'Error: ' + err.message;
+      if (version !== generationVersion || sourceFile !== currentPdfFile) return;
+      resultText.textContent = err.message;
     }
   });
 
   function doSignDownload() {
-    if (!finalPdfBytes) return;
+    if (!finalPdfBytes || finalPdfSnapshot !== signingSnapshot()) { invalidateSignedPdf(); document.getElementById('resultText').textContent = changedSigningMessage(); return; }
     const link = document.createElement('a');
     const url = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
     link.href = url;
@@ -1662,15 +1754,12 @@
   updateSavedSignatureUi();
 </script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
+<script src="/assets/js/pages/document-pdf-tool-focus.js?v=02d5184e" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-sign","name":"Saini PDF","downloadContract":"free-account"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-sign","name":"Saini PDF","downloadContract":"local-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=7eb02d34" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=7443667a" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=a94ca530" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=289245d2" defer></script>
 <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

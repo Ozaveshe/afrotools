@@ -47,3 +47,15 @@ for(const [locale,route]of Object.entries(routes))test(`${locale} compressor key
  await page.locator('[data-preset="screen"]').click();await page.locator('#pdfFileInput').setInputFiles({name:'private-synthetic-filename-739251.pdf',mimeType:'application/pdf',buffer:textPdf});await page.locator('#compressBtn').focus();await page.keyboard.press('Enter');await expect(page.locator('#downloadBtn')).toBeVisible();await output(page);
  const transcript=JSON.stringify(requests);for(const needle of [marker,'private-synthetic-filename-739251.pdf',textPdf.toString('base64')]){expect(transcript).not.toContain(needle);expect(transcript).not.toContain(encodeURIComponent(needle));}expect(requests.filter(r=>/application\/pdf|multipart\/form-data/.test(r.mime)||r.body.includes('%PDF-'))).toEqual([]);expect(errors).toEqual([]);
 });
+
+for(const [locale,route]of Object.entries(routes))test(`${locale} explicit grayscale survives size fallback and clean preference`,async({page},info)=>{
+ await page.setViewportSize({width:320,height:844});await page.goto(route);await page.locator('[data-preset="custom"]').click();
+ for(const id of ['dpiSlider','qualitySlider']){const input=page.locator('#'+id);await expect(input).not.toHaveAttribute('aria-label',/Slider/);expect(await input.evaluate(e=>Array.from(e.labels).some(l=>l.textContent.trim().length>0))).toBe(true);}
+ await page.locator('#grayscaleToggle').check();
+ for(const clean of [false,true]){
+  const source=clean?Buffer.concat([textPdf,Buffer.alloc(512,32)]):textPdf;await page.locator('#keepTextToggle').setChecked(clean);await page.locator('#pdfFileInput').setInputFiles({name:'color-vector.pdf',mimeType:'application/pdf',buffer:source});await page.locator('#compressBtn').click();await expect(page.locator('#downloadBtn')).toBeVisible();const saved=await output(page),pages=await inspect(page,saved.bytes);expect(saved.bytes.equals(source)).toBe(false);expect(saved.bytes.length).toBeGreaterThan(source.length);expect(pages).toHaveLength(2);
+  for(const [i,p]of pages.entries()){expect([p.width,p.height]).toEqual([420,594]);const image=PNG.sync.read(Buffer.from(p.png,'base64'));const pixel=Array.from(image.data.subarray((110*image.width+80)*4,(110*image.width+80)*4+3));expect(Math.max(...pixel)-Math.min(...pixel)).toBeLessThanOrEqual(2);expect(pixel[0]).toBeGreaterThan(10);expect(pixel[0]).toBeLessThan(120);fs.writeFileSync(info.outputPath('gray-'+clean+'-'+i+'.png'),Buffer.from(p.png,'base64'));}
+  await expect(page.locator('#savingsBadge')).toContainText({en:'larger',fr:'plus volumineux',sw:'kubwa zaidi'}[locale]);await expect(page.locator('#resultNote')).toContainText({en:'Grayscale was applied',fr:'converti en niveaux de gris',sw:'imebadilishwa kuwa kijivu'}[locale]);await expect(page.locator('#resultNote')).toContainText({en:'selectable text',fr:'texte sélectionnable',sw:'maandishi yanayochagulika'}[locale]);fs.writeFileSync(info.outputPath('grayscale-'+clean+'.pdf'),saved.bytes);
+ }
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

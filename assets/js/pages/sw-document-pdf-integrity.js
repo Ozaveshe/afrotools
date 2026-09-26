@@ -134,7 +134,7 @@
     // These workspaces update their live preview after field changes and
     // already clear an explicit export-review checkbox. There is no separate
     // generate action that could re-enable a generically disabled export.
-    if (['freelance-invoice', 'invoice-generator'].includes(currentAppId())) return;
+    if (['freelance-invoice', 'invoice-generator', 'pdf-sign'].includes(currentAppId())) return;
     if (document.documentElement.dataset.swDocumentResult !== 'fresh') return;
     document.documentElement.dataset.swDocumentResult = 'stale';
     exportButtons().forEach(function (button) {

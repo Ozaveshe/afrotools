@@ -2,6 +2,8 @@
 'use strict';
 
 const fs = require('fs');
+const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
+const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
 const swahiliLocalizer = require('../assets/js/pages/sw-document-pdf-localizer.js');
 
@@ -43,11 +45,11 @@ function ensureSwAccessibilityRuntime(html) {
 const apps = [
   { id: 'pdf-workspace', englishRoute: '/tools/pdf-workspace/', englishFile: 'tools/pdf-workspace/index.html', swahiliRoute: '/sw/zana/nafasi-pdf/', swahiliFile: 'sw/zana/nafasi-pdf/index.html', name: 'Nafasi ya PDF', exports: ['pdf', 'png', 'zip', 'print'] },
   { id: 'pdf-merge-split', localFirstDownloads: true, englishRoute: '/tools/pdf-merge-split/', englishFile: 'tools/pdf-merge-split/index.html', swahiliRoute: '/sw/zana/unganisha-na-gawanya-pdf/', swahiliFile: 'sw/zana/unganisha-na-gawanya-pdf/index.html', name: 'Unganisha na Gawanya PDF', exports: ['pdf', 'zip'] },
-  { id: 'pdf-form-filler', englishRoute: '/tools/pdf-form-filler/', englishFile: 'tools/pdf-form-filler/index.html', swahiliRoute: '/sw/zana/kujaza-fomu-pdf/', swahiliFile: 'sw/zana/kujaza-fomu-pdf/index.html', name: 'Jaza Fomu ya PDF', exports: ['pdf'] },
-  { id: 'pdf-redact', englishRoute: '/tools/pdf-redact/', englishFile: 'tools/pdf-redact/index.html', swahiliRoute: '/sw/zana/kuficha-taarifa-pdf/', swahiliFile: 'sw/zana/kuficha-taarifa-pdf/index.html', name: 'Ficha Taarifa za PDF', exports: ['pdf'] },
+  { id: 'pdf-form-filler', localFirstDownloads: true, englishRoute: '/tools/pdf-form-filler/', englishFile: 'tools/pdf-form-filler/index.html', swahiliRoute: '/sw/zana/kujaza-fomu-pdf/', swahiliFile: 'sw/zana/kujaza-fomu-pdf/index.html', name: 'Jaza Fomu ya PDF', exports: ['pdf'] },
+  { id: 'pdf-redact', englishRoute: '/tools/pdf-redact/', englishFile: 'tools/pdf-redact/index.html', swahiliRoute: '/sw/zana/kuficha-taarifa-pdf/', swahiliFile: 'sw/zana/kuficha-taarifa-pdf/index.html', name: 'Ficha Taarifa za PDF', exports: ['pdf'], sensitive: true },
   { id: 'pdf-header-footer', englishRoute: '/tools/pdf-header-footer/', englishFile: 'tools/pdf-header-footer/index.html', swahiliRoute: '/sw/zana/kichwa-na-kijachini-pdf/', swahiliFile: 'sw/zana/kichwa-na-kijachini-pdf/index.html', name: 'Kichwa na Kijachini cha PDF', exports: ['pdf'] },
   { id: 'pdf-convert', englishRoute: '/tools/pdf-convert/', englishFile: 'tools/pdf-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-format-pdf/', swahiliFile: 'sw/zana/kubadilisha-format-pdf/index.html', name: 'Badilisha Muundo wa PDF', exports: ['pdf', 'txt', 'png', 'jpeg', 'zip'] },
-  { id: 'pdf-reorder', englishRoute: '/tools/pdf-reorder/', englishFile: 'tools/pdf-reorder/index.html', swahiliRoute: '/sw/zana/kupanga-kurasa-pdf/', swahiliFile: 'sw/zana/kupanga-kurasa-pdf/index.html', name: 'Panga Kurasa za PDF', exports: ['pdf'] },
+  { id: 'pdf-reorder', localFirstDownloads: true, englishRoute: '/tools/pdf-reorder/', englishFile: 'tools/pdf-reorder/index.html', swahiliRoute: '/sw/zana/kupanga-kurasa-pdf/', swahiliFile: 'sw/zana/kupanga-kurasa-pdf/index.html', name: 'Panga Kurasa za PDF', exports: ['pdf'] },
   { id: 'pdf-translate', englishRoute: '/tools/pdf-translate/', englishFile: 'tools/pdf-translate/index.html', swahiliRoute: '/sw/zana/kutafsiri-pdf/', swahiliFile: 'sw/zana/kutafsiri-pdf/index.html', name: 'Tafsiri PDF', exports: ['pdf', 'txt'], requiresConsent: true },
   { id: 'pdf-to-audio', englishRoute: '/tools/pdf-to-audio/', englishFile: 'tools/pdf-to-audio/index.html', swahiliRoute: '/sw/zana/pdf-kwenda-sauti/', swahiliFile: 'sw/zana/pdf-kwenda-sauti/index.html', name: 'PDF kwenda Sauti', exports: ['txt'] },
   { id: 'pdf-bates', englishRoute: '/tools/pdf-bates/', englishFile: 'tools/pdf-bates/index.html', swahiliRoute: '/sw/zana/namba-bates-pdf/', swahiliFile: 'sw/zana/namba-bates-pdf/index.html', name: 'Namba za Bates za PDF', exports: ['pdf', 'zip', 'csv'] },
@@ -62,9 +64,9 @@ const apps = [
   { id: 'pdf-compress', localFirstDownloads: true, englishRoute: '/tools/pdf-compress/', englishFile: 'tools/pdf-compress/index.html', swahiliRoute: '/sw/zana/kubana-pdf/', swahiliFile: 'sw/zana/kubana-pdf/index.html', name: 'Bana PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-image-convert', localFirstDownloads: true, englishRoute: '/tools/pdf-image-convert/', englishFile: 'tools/pdf-image-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-pdf-na-picha/', swahiliFile: 'sw/zana/kubadilisha-pdf-na-picha/index.html', name: 'Badilisha PDF na Picha', exports: ['pdf', 'png', 'jpeg', 'zip'] },
   { id: 'pdf-watermark', englishRoute: '/tools/pdf-watermark/', englishFile: 'tools/pdf-watermark/index.html', swahiliRoute: '/sw/zana/watermark-pdf/', swahiliFile: 'sw/zana/watermark-pdf/index.html', name: 'Alama ya Maji ya PDF', exports: ['pdf', 'zip'] },
-  { id: 'pdf-password', englishRoute: '/tools/pdf-password/', englishFile: 'tools/pdf-password/index.html', swahiliRoute: '/sw/zana/kulinda-pdf-kwa-nenosiri/', swahiliFile: 'sw/zana/kulinda-pdf-kwa-nenosiri/index.html', name: 'Linda PDF kwa Nenosiri', exports: ['pdf', 'zip'] },
+  { id: 'pdf-password', localFirstDownloads: true, englishRoute: '/tools/pdf-password/', englishFile: 'tools/pdf-password/index.html', swahiliRoute: '/sw/zana/kulinda-pdf-kwa-nenosiri/', swahiliFile: 'sw/zana/kulinda-pdf-kwa-nenosiri/index.html', name: 'Linda PDF kwa Nenosiri', exports: ['pdf', 'zip'] },
   { id: 'pdf-page-numbers', englishRoute: '/tools/pdf-page-numbers/', englishFile: 'tools/pdf-page-numbers/index.html', swahiliRoute: '/sw/zana/namba-za-kurasa-pdf/', swahiliFile: 'sw/zana/namba-za-kurasa-pdf/index.html', name: 'Namba za Kurasa za PDF', exports: ['pdf', 'zip'] },
-  { id: 'pdf-sign', englishRoute: '/tools/pdf-sign/', englishFile: 'tools/pdf-sign/index.html', swahiliRoute: '/sw/zana/kusaini-pdf/', swahiliFile: 'sw/zana/kusaini-pdf/index.html', name: 'Saini PDF', exports: ['pdf'] },
+  { id: 'pdf-sign', localFirstDownloads: true, englishRoute: '/tools/pdf-sign/', englishFile: 'tools/pdf-sign/index.html', swahiliRoute: '/sw/zana/kusaini-pdf/', swahiliFile: 'sw/zana/kusaini-pdf/index.html', name: 'Saini PDF', exports: ['pdf'] },
   { id: 'pdf-ocr', englishRoute: '/tools/pdf-ocr/', englishFile: 'tools/pdf-ocr/index.html', swahiliRoute: '/sw/zana/ocr-pdf/', swahiliFile: 'sw/zana/ocr-pdf/index.html', name: 'OCR ya PDF', exports: ['txt'] },
   { id: 'pdf-editor', englishRoute: '/tools/pdf-editor/', englishFile: 'tools/pdf-editor/index.html', swahiliRoute: '/sw/zana/hariri-pdf/', swahiliFile: 'sw/zana/hariri-pdf/index.html', name: 'Hariri PDF', exports: ['pdf'] },
   { id: 'pdf-chat', englishRoute: '/tools/pdf-chat/', englishFile: 'tools/pdf-chat/index.html', swahiliRoute: '/sw/zana/chat-na-pdf/', swahiliFile: 'sw/zana/chat-na-pdf/index.html', name: 'Uliza PDF', exports: ['txt'], requiresConsent: true },
@@ -645,6 +647,8 @@ function buildFullParityPage(app) {
     html = html.replace(/id="renderContainer"(?!\s+aria-hidden=)/, 'id="renderContainer" aria-hidden="true"');
   }
   if (app.id === 'cv-builder') html = rewriteRelativeOwnerAssets(html, ownerFile);
+  html = installFormFillerRuntime(html, app);
+  html = installReorderRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
   html = hardenConsentBoundRequests(html, app);
   html = localizeStaticOwnerMarkup(html, app.id);
@@ -756,6 +760,20 @@ function normalizeHubPage() {
 function normalizeExistingPage(app) {
   const target = path.join(ROOT, app.swahiliFile);
   let html = fs.readFileSync(target, 'utf8');
+  html = installFormFillerRuntime(html, app);
+  if (app.id === 'pdf-sign') {
+    const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');
+    const runtime = english.match(/<script data-pdf-sign-runtime>[\s\S]*?<\/script>/);
+    if (!runtime) throw new Error('Missing authored PDF signing runtime');
+    let replaced = 0;
+    html = html.replace(/<script(?:\s[^>]*)?>[\s\S]*?<\/script>/g, (script) => {
+      if (!script.includes('let signatureData = null;')) return script;
+      replaced++;
+      return runtime[0];
+    });
+    if (replaced !== 1) throw new Error('Expected one Swahili PDF signing runtime');
+  }
+  html = installReorderRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
   const artwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
   html = upsertMeta(html, 'name', 'viewport', 'width=device-width, initial-scale=1');
