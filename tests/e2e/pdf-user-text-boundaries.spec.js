@@ -84,8 +84,10 @@ for (const [locale, copy] of Object.entries(routes)) {
     await expect(page.locator('.sp-cell')).toHaveCount(2);
     await settleTranslations(page);
     await expect(page.locator('#splitFileName')).toHaveText('Upload PDF.pdf');
-    // Literal '$1' keys do not introduce template substitution.
-    if (locale === 'sw') await expect(page.locator('.sp-cell-label').nth(1)).toHaveText('Page 2');
+    const pageLabels = locale === 'sw' ? ['Ukurasa 1', 'Ukurasa 2'] : ['Page 1', 'Page 2'];
+    await expect(page.locator('.sp-cell-label')).toHaveText(pageLabels);
+    await expect(page.locator('.sp-cell-thumb img')).toHaveCount(2);
+    for (let n = 0; n < 2; n++) await expect(page.locator('.sp-cell-thumb img').nth(n)).toHaveAttribute('alt', pageLabels[n]);
     await page.locator('[data-split-mode="extract"]').click();
     await page.locator('#extractInput').fill('2');
     const split = await downloaded(page, '#splitBtn', info, `${locale}-extracted.pdf`);

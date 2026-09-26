@@ -429,10 +429,11 @@
       var selectable = state.splitMode === 'extract';
       cell.className = 'sp-cell' + (selectable ? ' selectable' : '') + (state.splitSelectedPages[i] ? ' selected' : '');
       cell.dataset.pageIndex = i;
+      var pageLabel = native('Page ', 'Page ', 'Ukurasa ') + (i + 1);
       var thumb = state.splitThumbnails[i]
-        ? '<img src="' + state.splitThumbnails[i] + '" alt="Page ' + (i + 1) + '">'
-        : '<div class="sp-ph">Page ' + (i + 1) + '</div>';
-      cell.innerHTML = '<div class="sp-cell-thumb">' + thumb + '</div><div class="sp-cell-label">Page ' + (i + 1) + '</div>';
+        ? '<img src="' + state.splitThumbnails[i] + '" alt="' + pageLabel + '">'
+        : '<div class="sp-ph" translate="no">' + pageLabel + '</div>';
+      cell.innerHTML = '<div class="sp-cell-thumb">' + thumb + '</div><div class="sp-cell-label" translate="no">' + pageLabel + '</div>';
       if (state.splitMode === 'cuts' && i < total - 1) {
         var cut = document.createElement('button');
         cut.type = 'button';
