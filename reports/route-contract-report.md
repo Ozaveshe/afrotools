@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11574 |
-| Indexable pages | 9995 |
+| Public pages | 11576 |
+| Indexable pages | 9997 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5302 |
-| Documented fallbacks | 14843 |
-| Routes eligible for primary sitemaps | 9995 |
+| Genuine equivalence groups | 5304 |
+| Documented fallbacks | 14845 |
+| Routes eligible for primary sitemaps | 9997 |
 
 ## Locale Coverage
 
-- en: 6024 page records
+- en: 6026 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 534
+- article: 536
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3470,6 +3470,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:14ff9931c6bf: en=`/tools/work-permit-cost/mauritius/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maurice/`; x-default=`/tools/work-permit-cost/mauritius/`
 - equivalence:1503b08ba5a9: en=`/agriculture/seed-rate/algeria`, fr=`/fr/agriculture/seed-rate/algeria`, sw=`/sw/kilimo/kiwango-cha-mbegu/algeria/`; x-default=`/agriculture/seed-rate/algeria`
 - equivalence:150932ca5eda: fr=`/fr/widgets/selecteur-couleur/`; x-default=`/fr/widgets/selecteur-couleur/`
+- equivalence:150b079417d4: en=`/blog/truck-load-planning-checklist-africa/`; x-default=`/blog/truck-load-planning-checklist-africa/`
 - equivalence:151cadfb1334: en=`/blog/fertilizer-bags-per-acre-nigeria/`; x-default=`/blog/fertilizer-bags-per-acre-nigeria/`
 - equivalence:1536f28ef448: en=`/cars/tanzania/toyota/hilux/2020/`, fr=`/fr/cars/tanzanie/toyota/hilux/2020/`; x-default=`/cars/tanzania/toyota/hilux/2020/`
 - equivalence:154d4a036b23: en=`/tools/gdpr-vs-africa/`, fr=`/fr/tools/rgpd-vs-lois-africaines/`, sw=`/sw/zana/gdpr-dhidi-ya-sheria-za-afrika/`; x-default=`/tools/gdpr-vs-africa/`
@@ -5977,6 +5978,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8e1c0f5571da: en=`/tools/afrokitchen/recipes/basbousa-sd/`; x-default=`/tools/afrokitchen/recipes/basbousa-sd/`
 - equivalence:8e300dd47446: en=`/tools/afrokitchen/countries/ivory-coast/`; x-default=`/tools/afrokitchen/countries/ivory-coast/`
 - equivalence:8e37e62c00e3: en=`/tools/workers-comp/sao-tome-and-principe`; x-default=`/tools/workers-comp/sao-tome-and-principe`
+- equivalence:8e3fe1f3efe9: en=`/blog/cote-divoire-vat-filing-guide-2026/`; x-default=`/blog/cote-divoire-vat-filing-guide-2026/`
 - equivalence:8e4c1446bae0: en=`/tools/freelancer-rate/cote-divoire/`, fr=`/fr/tools/calculateur-de-tarif-independant-cote-d-ivoire/`; x-default=`/tools/freelancer-rate/cote-divoire/`
 - equivalence:8e4d044b2081: en=`/agriculture/vaccination-schedule/sierra-leone`; x-default=`/agriculture/vaccination-schedule/sierra-leone`
 - equivalence:8e635392ffc1: en=`/tools/employment-contract/djibouti`, fr=`/fr/tools/contrat-travail/djibouti`; x-default=`/tools/employment-contract/djibouti`

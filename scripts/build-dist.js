@@ -212,7 +212,7 @@ function assertInsideWorkspace(target) {
   }
 }
 
-function writeReleaseMetadata() {
+function writeReleaseMetadata({ distDir = DIST, functionDir = path.join(ROOT, 'netlify/functions/_shared') } = {}) {
   const context = String(process.env.CONTEXT || 'local').trim();
   const production = process.env.NETLIFY === 'true' && context === 'production';
   const safe = productHealth.safeReleaseMetadata({
@@ -221,15 +221,23 @@ function writeReleaseMetadata() {
     commit: process.env.COMMIT_REF || '',
     built_at: new Date().toISOString()
   });
-  const targetDir = path.join(DIST, 'status');
+  if (production && !/^[0-9a-f]{40}$/.test(safe.commit || '')) {
+    throw new Error('Production release metadata requires the full build commit SHA');
+  }
+  const targetDir = path.join(distDir, 'status');
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(path.join(targetDir, 'release.json'), JSON.stringify({
+  const metadata = JSON.stringify({
     schema_version: 1,
     context: safe.context,
     production: safe.production,
     commit: safe.commit,
     built_at: safe.built_at
-  }, null, 2) + '\n');
+  }, null, 2) + '\n';
+  fs.writeFileSync(path.join(targetDir, 'release.json'), metadata);
+  // COMMIT_REF exists at build time, not in the serverless runtime. A literal
+  // require in function-release.js lets the function bundler embed this file.
+  fs.mkdirSync(functionDir, { recursive: true });
+  fs.writeFileSync(path.join(functionDir, 'generated-release.json'), metadata);
 }
 
 function sleep(ms) {
@@ -502,6 +510,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  writeReleaseMetadata,
   minifyCss,
   optimizeDistAssets,
   shouldOptimizeCss,
