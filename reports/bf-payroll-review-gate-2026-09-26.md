@@ -37,3 +37,13 @@ No full build, deploy artifact, main push, merge or production validation was pe
 
 Stage 2 remains a shared pure engine with verified reference rules and explicit inputs/contributions. Stage 3 remains proof of latest amendments, rounding, regimes and RAMU applicability before any current-law claim. The primary-source investigation is preserved separately under `burkina-salary-research-20260926/evidence/REPORT.md`; this stage adds no legal certification or freshness claim.
 
+
+## Saved-history correction after independent review
+
+Follow-up to `f0282192dc6c0549be6d9095a28133465950b816`: independent review found the shared `paye-save.js` widget still rendered unqualified historical net summaries on EN/SW. The first nine-case suite used an unrelated storage sentinel and did not cover this actual returning-user path; its earlier broad no-old-output claim was incomplete.
+
+The static owner now makes the `PAYE_SAVE_SLUG` bootstrap inactive as well. This prevents both the summary widget and its delayed `?id=` input restoration from starting, independently of the new runtime. No shared save module or storage record is changed. Native text explains that saved calculations remain stored but unverified summaries and automatic restoration are temporarily unavailable. FR has no active slug bootstrap; it receives the same explanation and regression coverage.
+
+The revised nine-case suite seeds the real `afrotools-saved-bf-paye` key with the existing saved-record schema, loads `?id=synthetic-old-payroll`, and verifies exact stored bytes through `context.storageState()`, including JavaScript-disabled contexts. All three locales pass normal, runtime-blocked and JavaScript-disabled cases. The suite asserts no saved widget, prior summary/title or English saved-calculation label appears; inputs remain editable and normal-case output/share/AI blocking remains covered.
+
+Red/green evidence: the updated EN test failed on the original candidate with two saved-widget elements; after the static change, all nine tests pass (15.6s). Private evidence: `../evidence/saved-regression-before/` and `../evidence/saved-regression-final/`. All inline non-schema script bodies remain byte-for-byte equal to f028; source registry unchanged; transformation from f028 produces the exact current pages. Owner zero-drift, BF static guard, SW historical controller hashes/export checks and diff check pass. No full build, merge, deployment or legal-rule change.

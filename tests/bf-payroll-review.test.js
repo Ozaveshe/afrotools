@@ -10,7 +10,7 @@ for (const [lang, file] of Object.entries(TARGETS)) {
   assert.equal(transform(html, lang, source), html, lang + ' gate owner must be idempotent');
   assert.equal((html.match(/id="bf-payroll-review"/g) || []).length, 1);
   for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
-    if (/function\s|RESULT|calculate\(/.test(match[2]) && !/application\/json/.test(match[1])) assert.match(match[1], /type="application\/x-bf-review-required"/, lang + ' legacy controller must not execute');
+    if (/function\s|RESULT|calculate\(|PAYE_SAVE_SLUG/.test(match[2]) && !/application\/json/.test(match[1])) assert.match(match[1], /type="application\/x-bf-review-required"/, lang + ' legacy controller must not execute');
     if (/net-to-gross|french-finance-export-contract|sw-paye-local-export/.test(match[1])) assert.match(match[1], /type="application\/x-bf-review-required"/);
   }
   assert.ok(html.includes('data-bf-source-id="paye-bf-source"'));
