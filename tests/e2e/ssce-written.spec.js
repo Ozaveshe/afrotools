@@ -5,6 +5,7 @@ test('2022 subpart has an optional explanation and survives save and reload on m
  await expect(page.locator('h1')).toContainText('WAEC and NECO Mathematics');
  await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content',/^WAEC & NECO/);
  await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await page.getByLabel('Written task',{exact:true}).selectOption('waec-2022-mathematics-p2-q1b');
  await expect(page.locator('#written-editor')).toContainText('2022 · Paper 2 · Question 1(b)');
  await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');
  await page.getByText('Show worked solution',{exact:true}).click();
@@ -12,6 +13,7 @@ test('2022 subpart has an optional explanation and survives save and reload on m
  await page.getByLabel('Your written answer',{exact:true}).fill('12; checked using 16 as the larger value.');
  await page.getByRole('button',{name:'Save response on this device',exact:true}).click();await page.reload();
  await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2022 Mathematics companion');
+ await page.getByLabel('Written task',{exact:true}).selectOption('waec-2022-mathematics-p2-q1b');
  await expect(page.getByLabel('Your written answer',{exact:true})).toHaveValue('12; checked using 16 as the larger value.');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
 });
@@ -66,12 +68,12 @@ test('new 2022 tasks show optional complete solutions on small screens',async({p
  for(const num of ['6','8ab','8c','9','10','12a','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
 });
 
-test('WAEC 2021 Q1 and Q11 selected guides are ordered and teach verified results on mobile',async({page})=>{
+test('WAEC 2021 Q1, Q5 and Q11 selected guides are ordered and teach verified results on mobile',async({page})=>{
  await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/#written-practice');
  await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2021 Mathematics companion');
  const options=await page.locator('#written-task option').evaluateAll(elements=>elements.map(element=>element.value));
- expect(options).toEqual(['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3','waec-2021-mathematics-p2-q11']);
- for(const [id,answer,number] of [['waec-2021-mathematics-p2-q1a','20,375 monetary units',1],['waec-2021-mathematics-p2-q1b','42.9%',1],['waec-2021-mathematics-p2-q11','Mean = 7.30 hours',11]]){
+ expect(options).toEqual(['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3','waec-2021-mathematics-p2-q5','waec-2021-mathematics-p2-q11']);
+ for(const [id,answer,number] of [['waec-2021-mathematics-p2-q1a','20,375 monetary units',1],['waec-2021-mathematics-p2-q1b','42.9%',1],['waec-2021-mathematics-p2-q5','5/33',5],['waec-2021-mathematics-p2-q11','Mean = 7.30 hours',11]]){
   await page.getByLabel('Written task',{exact:true}).selectOption(id);
   await expect(page.locator('#written-editor a')).toHaveAttribute('href',`https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq${number}.html`);
   await expect(page.locator('.written-explanation')).not.toHaveAttribute('open','');

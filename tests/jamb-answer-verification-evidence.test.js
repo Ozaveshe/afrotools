@@ -87,7 +87,7 @@ test('2024 English publisher collection imports only eight independently checked
     prepared.batch.records.filter(record => !sourcePool.questions.some(question => question.id === record.id)).length);
   assert.deepEqual(prepared.pool.questions.filter(question => question.subject === 'english'
     && [2022, 2023].includes(question.year)), beforeEnglish);
-  assert.equal(beforeEnglish.length, 50, 'Expected reviewed 2022-23 comparison cohort');
+  assert.equal(beforeEnglish.length, 65, 'Expected reviewed 2022-23 comparison cohort');
   assert.equal(verify(manifest, hash, prepared.pool, prepared.ledger, prepared.batch).passed, true);
   for (const record of prepared.batch.records) {
     const question = prepared.pool.questions.find(candidate => candidate.id === record.id);
