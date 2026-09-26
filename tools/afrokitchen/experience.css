@@ -1,0 +1,153 @@
+/* Shared finishing layer for the recipe, country, collection, and contribution routes. */
+.ak-page :is(#recipe-ingredients, #recipe-method, #country-recipes, #collection-recipes, #submit-form) {
+  scroll-margin-top: 88px;
+}
+
+.ak-page .ak-hero-more {
+  max-width: 62ch;
+  margin-top: 12px;
+  color: rgba(255, 255, 255, .86);
+}
+.ak-page .ak-hero-more summary {
+  width: fit-content;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ak-page .ak-hero-more p { margin: 0 0 12px; line-height: 1.65; }
+.ak-page .ak-hero-actions .ak-btn { min-height: 46px; }
+
+.ak-page.ak-static-page .ak-cook-shell {
+  margin-top: 0;
+  background: var(--ak-panel);
+}
+.ak-page.ak-static-page .ak-static-summary-shell {
+  margin-top: 30px;
+}
+.ak-page.ak-static-page .ak-hero-sub { max-width: 54ch; }
+.ak-page.ak-static-page .ak-static-hero-card { align-self: center; }
+.ak-page .ak-submit-guidance {
+  background: var(--ak-bg-warm);
+}
+.ak-page .ak-submit-guidance summary {
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.ak-page .ak-submit-guidance[open] summary { margin-bottom: 16px; }
+
+@media (max-width: 760px) {
+  .ak-page .ak-hero { padding-block: 36px 46px; }
+  .ak-page .ak-hero-inner { gap: 20px; }
+  .ak-page .ak-hero-badges,
+  .ak-page .ak-static-hero-card,
+  .ak-page .ak-hero-facts { display: none; }
+  .ak-page .ak-breadcrumb { margin-bottom: 18px; }
+  .ak-page .ak-hero h1 { margin-bottom: 6px; line-height: 1.04; }
+  .ak-page .ak-hero-sub { margin-top: 8px; line-height: 1.5; }
+  .ak-page .ak-hero-stats { margin-top: 18px; }
+  .ak-page .ak-stat { padding-block: 8px; }
+  .ak-page .ak-stat-val { line-height: 1.15; }
+  .ak-page .ak-hero-actions { margin-top: 18px; }
+  .ak-page .ak-hero-actions .ak-btn { min-height: 46px; }
+  .ak-page .ak-section { padding-block: 34px; }
+  .ak-page.ak-static-page .ak-cook-shell { padding: 14px; }
+  .ak-page .ak-form-panel { padding: 18px; }
+}
+
+@media (max-width: 520px) {
+  .ak-page.ak-static-page .ak-servings {
+    display: grid;
+    grid-template-columns: 44px minmax(38px, 1fr) 44px;
+    justify-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+  .ak-page.ak-static-page .ak-servings-label {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  .ak-page.ak-static-page .ak-servings-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* AfroKitchen owns light color tokens; remap them when the site switches theme. */
+[data-theme="dark"] .ak-page {
+  --ak-bg: #111a23;
+  --ak-bg-warm: #1d2a34;
+  --ak-bg-cool: #1b2933;
+  --ak-panel: #1b2833;
+  --ak-panel-tint: #202f3a;
+  --ak-surface-soft: #243540;
+  --ak-dark: #f5eee6;
+  --ak-text: #f5eee6;
+  --ak-muted: #d0c4b7;
+  --ak-subtle: #b5a99b;
+  --ak-line: #41515a;
+  --ak-line-strong: #60717a;
+  --ak-primary-deep: #ffb398;
+  --ak-primary-border: #a76555;
+  --ak-leaf-deep: #a7ddb7;
+  --ak-accent-soft: #403a27;
+  color-scheme: dark;
+}
+[data-theme="dark"] .ak-page .ak-btn-primary,
+[data-theme="dark"] .ak-page .ak-hero .ak-btn-primary { color: #fff !important; }
+[data-theme="dark"] .ak-page .ak-hero :is(.ak-btn-secondary, .ak-btn-outline),
+[data-theme="dark"] .ak-page .ak-btn-outline { color: var(--ak-text) !important; }
+[data-theme="dark"] .ak-page .ak-hero-more summary { color: #fff; }
+[data-theme="dark"] .ak-page.ak-static-page .ak-cook-shell,
+[data-theme="dark"] .ak-page.ak-static-page .ak-ingredients-panel,
+[data-theme="dark"] .ak-page .ak-submit-guidance,
+[data-theme="dark"] .ak-page .ak-intel-panel,
+[data-theme="dark"] .ak-page .ak-social-card,
+[data-theme="dark"] .ak-page .ak-social-showcase-card {
+  background: var(--ak-panel);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page.ak-static-page .ak-static-summary-card,
+[data-theme="dark"] .ak-page .ak-static-recipe-card,
+[data-theme="dark"] .ak-page .ak-step,
+[data-theme="dark"] .ak-page .ak-recipe-card,
+[data-theme="dark"] .ak-page .ak-intel-mini,
+[data-theme="dark"] .ak-page .ak-intel-preview-card,
+[data-theme="dark"] .ak-page .ak-country-region-card {
+  background: var(--ak-bg-warm);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-static-recipe-card-meta > span,
+[data-theme="dark"] .ak-page .ak-recipe-card-meta-item {
+  background: var(--ak-surface-soft);
+  border-color: var(--ak-line);
+  color: var(--ak-text);
+}
+[data-theme="dark"] .ak-page .ak-static-recipe-card-meta :is(small, strong),
+[data-theme="dark"] .ak-page .ak-recipe-card-meta-item :is(small, strong) { color: var(--ak-text); }
+[data-theme="dark"] .ak-page .ak-static-recipe-card,
+[data-theme="dark"] .ak-page .ak-step { border-color: var(--ak-line); }
+[data-theme="dark"] .ak-page .ak-static-recipe-card { color: var(--ak-text) !important; }
+[data-theme="dark"] .ak-page.ak-static-page .ak-static-timer-chip {
+  background: var(--ak-surface-soft) !important;
+  color: var(--ak-text) !important;
+}
+[data-theme="dark"] .ak-page.ak-static-page .ak-static-timer-chip strong { color: var(--ak-text) !important; }
+[data-theme="dark"] .ak-page .ak-ing-amount,
+[data-theme="dark"] .ak-page .ak-step-text,
+[data-theme="dark"] .ak-page .ak-step-title { color: var(--ak-text); }
+[data-theme="dark"] .ak-page.ak-static-page .ak-step-tip { background: var(--ak-bg-warm); }
+[data-theme="dark"] .ak-page.ak-static-page .ak-panel-pill { color: #1a0e08; }
+[data-theme="dark"] .ak-page .ak-form-input:focus-visible,
+[data-theme="dark"] .ak-page .ak-form-select:focus-visible,
+[data-theme="dark"] .ak-page .ak-form-textarea:focus-visible { background: var(--ak-bg-warm); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ak-page .ak-static-recipe-card,
+  .ak-page .ak-hero-actions .ak-btn { transition: none; }
+}

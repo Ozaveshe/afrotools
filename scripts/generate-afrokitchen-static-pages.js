@@ -1542,6 +1542,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
 ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema-blockers" content="${escapeHtml(schemaBlockers.join(","))}">\n` : ""}
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
@@ -1565,8 +1566,8 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
+          <a href="#recipe-ingredients" class="ak-btn ak-btn-primary">${akIcon("shopping", "ak-icon-sm")}<span>Start cooking</span></a>
           <a href="${recipe.country_route_path}" class="ak-btn ak-btn-secondary">${akIcon("country", "ak-icon-sm")}<span>Explore ${escapeHtml(recipe.country_name)} recipes</span></a>
-          ${recipe.primary_collection_route_path ? `<a href="${recipe.primary_collection_route_path}" class="ak-btn ak-btn-primary">${akIcon("category", "ak-icon-sm")}<span>Open ${escapeHtml(recipe.primary_collection_name)}</span></a>` : `<a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">${akIcon("shopping", "ak-icon-sm")}<span>Browse AfroKitchen</span></a>`}
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -1587,29 +1588,7 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
 
   <section class="ak-section">
     <div class="ak-container">
-      <div class="ak-static-summary-shell rv visible">
-        <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">What to know before you cook</h2>
-        <p class="ak-section-sub">Use this overview to check the occasion, serving ideas, regional context, and cooking commitment before you begin.</p>
-        <div class="ak-static-summary-grid">
-          <div class="ak-static-summary-card">
-            <strong>When to cook it</strong>
-            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
-          </div>
-          <div class="ak-static-summary-card">
-            <strong>What to serve alongside it</strong>
-            <p>${escapeHtml(recipe.best_served_with || "Use the country hub to explore pairings and nearby dishes.")}</p>
-          </div>
-          ${renderRecipeCollectionSummaryCard(recipe)}
-          ${renderedInsightCards}
-        </div>
-      </div>
-
-      ${renderedGallery}
-      ${renderedPairingRail}
-      ${renderedSocialPlate}
-
-      <div class="ak-cook-shell">
+      <div class="ak-cook-shell" id="recipe-ingredients">
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
@@ -1633,7 +1612,7 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
             ${renderedNutrition ? `<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate</h3>${renderedNutrition}</div>` : ""}
           </aside>
 
-          <section class="ak-method-panel">
+          <section class="ak-method-panel" id="recipe-method">
             <div class="ak-method-head">
               <div>
                 <div class="ak-panel-kicker">How to cook it</div>
@@ -1656,6 +1635,28 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
           </section>
         </div>
       </div>
+
+      <div class="ak-static-summary-shell rv visible">
+        <div class="ak-section-kicker">Recipe context</div>
+        <h2 class="ak-section-title">More about this dish</h2>
+        <p class="ak-section-sub">Serving ideas, regional context, and cooking cues for when you want more detail.</p>
+        <div class="ak-static-summary-grid">
+          <div class="ak-static-summary-card">
+            <strong>When to cook it</strong>
+            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
+          </div>
+          <div class="ak-static-summary-card">
+            <strong>What to serve alongside it</strong>
+            <p>${escapeHtml(recipe.best_served_with || "Use the country hub to explore pairings and nearby dishes.")}</p>
+          </div>
+          ${renderRecipeCollectionSummaryCard(recipe)}
+          ${renderedInsightCards}
+        </div>
+      </div>
+
+      ${renderedGallery}
+      ${renderedPairingRail}
+      ${renderedSocialPlate}
 
       ${relatedSection}
     </div>
@@ -2345,7 +2346,7 @@ function renderCollectionArchive(collection, manifest, recipeImages) {
   const isSmall = collection.total_recipes < 3;
   const cards = renderCollectionRecipeCards(collection, recipeImages);
 
-  return `<div class="ak-country-hub-shell rv visible">
+  return `<div class="ak-country-hub-shell rv visible" id="collection-recipes">
         <div class="ak-section-kicker">Collection archive</div>
         <h2 class="ak-section-title">Dishes inside ${escapeHtml(collection.name)}</h2>
         <p class="ak-section-sub">${escapeHtml(
@@ -2370,6 +2371,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
   const title = `${country.country_name} Recipes | AfroKitchen`;
   const description = buildCountryMetaDescription(country);
   const introParagraph = buildCountryIntroParagraph(country);
+  const introLead = introParagraph.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || introParagraph;
   const featuredDishes = renderCountryFeaturedDishes(country, recipeImages);
   const popularCategoryLinks = renderCountryPopularCategoryLinks(country);
   const categoryLanes = renderCountryCategoryLanes(country);
@@ -2446,6 +2448,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
       .ak-country-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
@@ -2466,14 +2469,15 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
         </div>
         <div class="ak-eyebrow">${escapeHtml(country.region)}</div>
         <h1>${escapeHtml(country.country_name)} Recipes</h1>
-        <p class="ak-hero-sub">${escapeHtml(introParagraph)}</p>
+        <p class="ak-hero-sub">${escapeHtml(introLead)}</p>
+        <details class="ak-hero-more"><summary>About this cuisine</summary><p>${escapeHtml(introParagraph)}</p></details>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(country.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Featured dishes</div><div class="ak-stat-val">${escapeHtml(String(country.featured_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Ready to cook</div><div class="ak-stat-val">${escapeHtml(String(country.generated_recipe_count))}</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
+          <a href="#country-recipes" class="ak-btn ak-btn-primary">See ${escapeHtml(country.country_name)} recipes</a>
           <a href="/tools/afrokitchen/#collections-grid" class="ak-btn ak-btn-outline">Browse collections</a>
         </div>
       </div>
@@ -2497,7 +2501,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
       ${popularCategoryLinks}
       ${categoryLanes}
 
-      <div class="ak-country-hub-shell rv visible">
+      <div class="ak-country-hub-shell rv visible" id="country-recipes">
         <div class="ak-section-kicker">Country archive</div>
         <h2 class="ak-section-title">All ${escapeHtml(country.country_name)} recipes in one place</h2>
         <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
@@ -2531,6 +2535,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
   const title = `${collection.name} Recipes | AfroKitchen`;
   const description = buildCollectionMetaDescription(collection);
   const introParagraph = buildCollectionIntroParagraph(collection);
+  const introLead = introParagraph.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || introParagraph;
   const bestForPanel = renderCollectionBestForPanel(collection);
   const shareIntro = renderCollectionShareIntro(collection);
   const collectionArchive = renderCollectionArchive(collection, manifest, recipeImages);
@@ -2615,6 +2620,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
       .ak-collection-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
@@ -2634,14 +2640,15 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
         </div>
         <div class="ak-eyebrow">Curated collection</div>
         <h1>${escapeHtml(collection.name)}</h1>
-        <p class="ak-hero-sub">${escapeHtml(introParagraph)}</p>
+        <p class="ak-hero-sub">${escapeHtml(introLead)}</p>
+        <details class="ak-hero-more"><summary>About this collection</summary><p>${escapeHtml(introParagraph)}</p></details>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(collection.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Country hubs</div><div class="ak-stat-val">${escapeHtml(String(collection.country_count))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Ready to cook</div><div class="ak-stat-val">${escapeHtml(String(collection.generated_recipe_count))}</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
+          <a href="#collection-recipes" class="ak-btn ak-btn-primary">See recipes</a>
           <a href="/tools/afrokitchen/#country-grid" class="ak-btn ak-btn-outline">Browse country hubs</a>
         </div>
       </div>
@@ -2661,9 +2668,9 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
 
   <section class="ak-section">
     <div class="ak-container">
+      ${collectionArchive}
       ${bestForPanel}
       ${shareIntro}
-      ${collectionArchive}
       ${collectionIntelligence}
       ${collectionSocialShowcase}
       ${renderCollectionCountryLinks(collection)}
