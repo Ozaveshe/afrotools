@@ -205,7 +205,31 @@
     return results.slice(0, 32);
   }
 
+  function fuelSnapshot(config) {
+    var report = global.AfroTools && global.AfroTools.fuelFillReport && global.AfroTools.fuelFillReport();
+    if (!report) throw new Error('Calculez ou actualisez le coût du plein avant l’export.');
+    var input = report.inputs, calc = report.calculation;
+    var unit = input.unit === 'gallon' ? 'gallons US' : 'L';
+    var inputs = [
+      {label:'Carburant',value:input.fuelType === 'diesel' ? 'Gazole' : 'Essence'},
+      {label:'Prix par litre',value:input.pricePerLitre+' '+input.currency+' / L'},
+      {label:'Mode',value:input.mode === 'tank' ? 'Compléter le réservoir' : 'Quantité à acheter'},
+      {label:'Quantité à acheter',value:calc.inputAmount+' '+unit},
+      {label:'Base du prix',value:report.market ? 'Référence de marché datée' : 'Prix saisi manuellement'}
+    ];
+    if (input.mode === 'tank') inputs.push({label:'Capacité du réservoir',value:input.tankSize+' '+unit},{label:'Niveau actuel',value:input.currentLevelPct+' %'});
+    if (report.market) inputs.push(
+      {label:'Marché',value:report.market.name}, {label:'Pays',value:report.market.countryName},
+      {label:'Couverture',value:report.market.granularity === 'national' ? 'Référence nationale' : 'Référence locale'},
+      {label:'Date d’effet',value:report.market.effectiveDate},{label:'Dernière vérification',value:report.market.lastVerifiedAt},
+      {label:'Source',value:report.market.sourceName+' '+report.market.sourceUrl});
+    return {schema:'afrotools.fr.finance.export.v1',route:global.location.pathname,title:'Estimation du coût du plein',generatedAt:new Date().toISOString(),inputs:inputs,
+      results:[{label:'Coût estimé du plein',value:String(calc.totalCost)+' '+input.currency},{label:'Volume à acheter',value:String(calc.litres)+' L'}],
+      privacy:{processing:'local',accountRequired:false,emailRequired:false},englishOwnerRoute:config.englishRoute};
+  }
+
   function snapshot(config) {
+    if (config.englishId === 'fuel-tracker') return fuelSnapshot(config);
     var data = {
       schema: 'afrotools.fr.finance.export.v1',
       route: global.location.pathname.replace(/\/index\.html$/, '/'),
