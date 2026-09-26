@@ -34,13 +34,16 @@ function build() {
   const reviewed = new Map(incoming.map(r => [r.path, r]));
   const shared = JSON.parse(read(OUT + '/reviewed-shared-artwork.json'));
   for (const id of shared.tool_ids) reviewed.set('/assets/img/tools/' + id + '.webp', { text_status:'text-free-reviewed', locale_reuse:true, review_note:shared.note });
+  for (const item of shared.language_specific_images || []) reviewed.set(item.path, { ...item, review_note:item.note });
   reviewed.set('/assets/img/kitchen/kondowole.webp', { text_status:'text-free-reviewed', locale_reuse:true, review_note:'Visually reviewed for same-dish image alias kondowole-mw; no visible text.' });
   const byPath = new Map();
   for (const file of all.filter(f => imageExt.test(f))) {
     const bytes = fs.readFileSync(path.join(ROOT, file));
     const dimensions = imageSize(path.join(ROOT, file));
     const review = reviewed.get('/' + file);
-    byPath.set(file, { id: file.replace(/\.[^.]+$/, ''), path: '/' + file, sha256: crypto.createHash('sha256').update(bytes).digest('hex'), bytes: bytes.length, width: dimensions?.w || null, height: dimensions?.h || null, family: file.startsWith('assets/img/') ? (file.split('/').length > 3 ? file.split('/')[2] : 'brand-and-banners') : file.split('/')[0], status: review?.status || 'unassigned', placements: [], text_status: review?.text_status || (/\.svg$/.test(file) && /<text\b/i.test(bytes.toString()) ? 'contains-text' : 'not-reviewed'), locale_reuse: review?.locale_reuse || false, duplicate_of: null, review_note: review?.review_note || 'Visual/text review pending; reference scan is not visual approval.' });
+    const sha256 = crypto.createHash('sha256').update(bytes).digest('hex');
+    if (review?.sha256 && review.sha256 !== sha256) throw new Error('Reviewed image hash changed: /' + file);
+    byPath.set(file, { id: file.replace(/\.[^.]+$/, ''), path: '/' + file, sha256, bytes: bytes.length, width: dimensions?.w || null, height: dimensions?.h || null, family: file.startsWith('assets/img/') ? (file.split('/').length > 3 ? file.split('/')[2] : 'brand-and-banners') : file.split('/')[0], status: review?.status || 'unassigned', placements: [], text_status: review?.text_status || (/\.svg$/.test(file) && /<text\b/i.test(bytes.toString()) ? 'contains-text' : 'not-reviewed'), locale_reuse: review?.locale_reuse || false, duplicate_of: null, review_note: review?.review_note || 'Visual/text review pending; reference scan is not visual approval.' });
   }
   const missing = new Map();
   function placement(file, owner, kind) {
@@ -107,6 +110,7 @@ function build() {
   json(OUT + '/image-library.json', { schema_version: 1, generated_at, source_commit: cp.execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(), scope: 'Repository product images plus dated verified AfroTools Supabase creator/news media bindings. Excludes build, dependency, test and evidence directories. Lifecycle decisions distinguish active use from reserved, retired and rejected artwork. No claim of exhaustive runtime reachability or live URL availability.', summary, images });
   json(OUT + '/missing-image-references.json', { schema_version: 1, generated_at, note: 'Static reference candidates: may include dormant templates and dynamic fallbacks. Review before changing routes.', images: [...missing].map(([path, owners]) => ({ path: '/' + path, owners: [...new Set(owners)] })) });
   write(OUT + '/image-library.csv', csv(images.map(i=>({...i,locales:i.locales_in_use,placement_count:i.placements.length})), ['path','family','status','assignment','width','height','bytes','sha256','duplicate_of','placement_count','text_status','locale_reuse','locales','review_note']));
+  write(OUT+'/image-audit.md',`# Image library audit\n\nGenerated ${generated_at}. Repository proof only; no deployment.\n\n`+Object.entries(summary).map(([k,v])=>`- ${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`).join('\n')+`\n\n## Review boundaries\n\nAll product image files are inventoried and hashed. Existing raster artwork is not labelled text-free without visual review. Shared references across languages do not prove text-free content. Unassigned files and duplicates have explicit review assignments; none are deleted or forced onto unrelated pages. Reference candidates are not verified live 404s. The 60 accepted new food images were visually checked; three are held with reasons in the import receipt.\n\n## Reuse\n\nUse one canonical asset path for the same subject in every locale; translate HTML alt text/captions instead of burning text into pixels. The shared tool registry and AfroKitchen cuisine image data already support canonical paths. Do not reuse an English social card with embedded text as translated artwork. Do not conflate related but distinct regional dishes.\n\n## Daily batch\n\nRun node scripts/build-image-library.js --batch=YYYY-MM-DD after reviewed deliveries are imported. Use node scripts/build-image-library.js --inventory-only when references or review metadata changed but the current batch is still pending. The next-200 outputs are the current work queue; pending prompts remain pending until their files exist and pass review. CSV includes exact destination, route, priority and complete prompt.\n`);
   return { images, manifest, generated_at, summary, byPath };
 }
 function nextBatch(library) {
@@ -147,9 +151,12 @@ function nextBatch(library) {
   json(OUT+'/next-200.json',pack);
   write(OUT+'/next-200.csv',csv(selected,['order','id','type','priority','name','route','path','dimensions','reference_image','alt','locale_reuse','status','reason','prompt']));
   write(OUT+'/next-200.md',`# AfroTools image batch ${batch_id}\n\n200 images. Text-free artwork is shared by equivalent translated pages; localize alt text and captions in HTML. Review every generated result before placement. These prompts use the saved repository catalogue, not a fresh source audit.\n\n`+selected.map(r=>`## ${r.order}. ${r.name}\n\n- Destination: \`${r.path}\`\n- Route: ${r.route}\n- Dimensions: ${r.dimensions}\n- Priority: ${r.priority}\n- Alt text (English): ${r.alt}\n- Reason: ${r.reason}\n\n${r.prompt}\n`).join('\n'));
-  write(OUT+'/image-audit.md',`# Image library audit\n\nGenerated ${generated_at}. Repository proof only; no deployment.\n\n`+Object.entries(library.summary).map(([k,v])=>`- ${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`).join('\n')+`\n\n## Review boundaries\n\nAll product image files are inventoried and hashed. Existing raster artwork is not labelled text-free without visual review. Shared references across languages do not prove text-free content. Unassigned files and duplicates have explicit review assignments; none are deleted or forced onto unrelated pages. Reference candidates are not verified live 404s. The 60 accepted new food images were visually checked; three are held with reasons in the import receipt.\n\n## Reuse\n\nUse one canonical asset path for the same subject in every locale; translate HTML alt text/captions instead of burning text into pixels. The shared tool registry and AfroKitchen cuisine image data already support canonical paths. Do not reuse an English social card with embedded text as translated artwork. Do not conflate related but distinct regional dishes.\n\n## Daily batch\n\nRun node scripts/build-image-library.js --batch=YYYY-MM-DD after reviewed deliveries are imported. The next-200 outputs are the current work queue; pending prompts remain pending until their files exist and pass review. CSV includes exact destination, route, priority and complete prompt.\n`);
   console.log(JSON.stringify({...library.summary,batch:batch_id,queued:selected.length,types:selected.reduce((a,r)=>(a[r.type]=(a[r.type]||0)+1,a),{})}));
 }
 let registryCache;
-if(require.main===module) nextBatch(build());
+if(require.main===module) {
+  const library=build();
+  if(process.argv.includes('--inventory-only')) console.log(JSON.stringify({...library.summary,mode:'inventory-only'}));
+  else nextBatch(library);
+}
 module.exports={build,nextBatch,routeFile,csv};
