@@ -19,9 +19,12 @@
   var exam = document.getElementById('education-exam');
   var status = document.getElementById('education-search-status');
   var empty = document.getElementById('education-no-results');
+  var clear = document.getElementById('education-clear');
+  var starting = document.getElementById('education-starting-tools');
   var directory = document.getElementById('directory');
   var links = Array.prototype.slice.call(directory.querySelectorAll('.edu-directory-links [data-education-tool]'));
   var featured = Array.prototype.slice.call(document.querySelectorAll('.edu-tool-grid [data-education-tool]'));
+  var groups = Array.prototype.slice.call(directory.querySelectorAll('.edu-directory-group'));
   var wasEmpty = false;
   function matches(link) {
     var terms = (query.value || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -34,22 +37,39 @@
   }
   function update() {
     var visible = 0;
+    var active = Boolean(query.value.trim() || country.value || exam.value);
     links.forEach(function (link) {
       var show = matches(link);
       link.hidden = !show;
       if (show) visible++;
     });
-    featured.forEach(function (link) { link.hidden = !matches(link); });
-    directory.querySelectorAll('.edu-directory-group').forEach(function (group) {
-      group.hidden = !group.querySelector('.edu-directory-links a:not([hidden])');
+    var featuredCount = 0;
+    featured.forEach(function (link) {
+      link.hidden = !matches(link);
+      if (!link.hidden) featuredCount++;
+    });
+    starting.hidden = active && featuredCount === 0;
+    groups.forEach(function (group) {
+      var hasMatch = Boolean(group.querySelector('.edu-directory-links a:not([hidden])'));
+      group.hidden = !hasMatch;
+      if (active && hasMatch) group.open = true;
+      else if (!active) group.open = group.getAttribute('data-default-open') === 'true';
     });
     status.textContent = visible + (visible === 1 ? ' tool matches.' : ' tools match.');
+    clear.hidden = !active;
     empty.hidden = visible !== 0;
     if (visible === 0 && !wasEmpty) track('education_discovery_empty', {
       country_code: country.value || 'all', exam: exam.value || 'all'
     });
     wasEmpty = visible === 0;
   }
+  clear.addEventListener('click', function () {
+    query.value = '';
+    country.value = '';
+    exam.value = '';
+    update();
+    query.focus();
+  });
   [query, country, exam].forEach(function (field) { field.addEventListener(field === query ? 'input' : 'change', update); });
   update();
 })();
