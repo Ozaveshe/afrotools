@@ -69,13 +69,20 @@
 .salary-hero-action.primary{background:#0057b8;color:#fff}
 .salary-hero-action.secondary{background:#fff;color:#0057b8;border:1px solid rgba(0,87,184,.22)}
 .salary-hero-action:hover{transform:translateY(-1px)}
-.salary-hub-reviewed{color:#52637a;font-size:.82rem;line-height:1.5;margin:14px 0 0;max-width:52rem}
+.salary-search-label{display:block;align-self:stretch;margin:0 0 8px;color:#334155;font-size:.82rem;font-weight:800;text-align:left}
+.hero-search-wrap .find-results{margin:10px 0 0;max-width:100%}
+.hero-search-wrap .fr-item{display:flex!important;width:100%;min-width:0;box-sizing:border-box}
+.hero-search-wrap .fr-info{min-width:0}
+.hero-search-wrap .fr-name{overflow-wrap:anywhere}
+.hero-search-wrap .fr-desc{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden;font-size:.82rem;line-height:1.45}
+.hero-search-wrap .fr-cta{font-size:.82rem}
 @media (max-width:640px){.hub-hero{text-align:left!important;padding:2.25rem 16px 2rem!important}.hub-breadcrumb,.hero-stats,.hero-search-wrap{margin-left:0!important;margin-right:0!important}.hub-breadcrumb{justify-content:flex-start!important}.hero-trust-line{align-items:flex-start!important}.hub-hero p{margin-left:0!important;margin-right:0!important}.hero-stats{width:100%!important;max-width:20rem!important}.hub-card{padding:1.2rem!important}.hc-icon,.why-icon{height:34px!important}}
 html[data-theme="dark"] body.salary-tax-ui-refresh{background:#08111f!important;color:#eef5ff!important}
 html[data-theme="dark"] .hub-hero{background:#0b1524!important;background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(77,163,255,.14) 0%,transparent 70%)!important;border-bottom-color:#26364e!important;color:#eef5ff!important}
 html[data-theme="dark"] .hub-hero h1,html[data-theme="dark"] .hc-name,html[data-theme="dark"] .why-body h3,html[data-theme="dark"] .hub-section h2,html[data-theme="dark"] .why-section h2,html[data-theme="dark"] .faq-section h2{color:#f8fbff!important}
 html[data-theme="dark"] .hero-em,html[data-theme="dark"] .hc-arrow,html[data-theme="dark"] .sec-ey{color:#93c5fd!important}
-html[data-theme="dark"] .hub-breadcrumb,html[data-theme="dark"] .hub-breadcrumb a,html[data-theme="dark"] .hero-browse-link,html[data-theme="dark"] .hero-trust-line,html[data-theme="dark"] .hub-hero p,html[data-theme="dark"] .hc-desc,html[data-theme="dark"] .why-body p,html[data-theme="dark"] .faq-a,html[data-theme="dark"] .salary-hub-reviewed{color:#c8d8ee!important}
+html[data-theme="dark"] .hub-breadcrumb,html[data-theme="dark"] .hub-breadcrumb a,html[data-theme="dark"] .hero-browse-link,html[data-theme="dark"] .hero-trust-line,html[data-theme="dark"] .hub-hero p,html[data-theme="dark"] .hc-desc,html[data-theme="dark"] .why-body p,html[data-theme="dark"] .faq-a{color:#c8d8ee!important}
+html[data-theme="dark"] .salary-search-label{color:#eef5ff}
 html[data-theme="dark"] .hero-search-bar input,html[data-theme="dark"] .hero-stats,html[data-theme="dark"] .hub-card,html[data-theme="dark"] .why-card,html[data-theme="dark"] .faq-item,html[data-theme="dark"] .find-section{background:#121f33!important;border-color:#344761!important;color:#eef5ff!important}
 html[data-theme="dark"] .hero-stat-val{color:#f8fbff!important}
 html[data-theme="dark"] .hero-stat-lbl{color:#b7c7dc!important}
@@ -116,40 +123,24 @@ html[data-theme="dark"] .hub-cta{background:#123a70!important;color:#fff!importa
       Take-home pay &middot; Payroll costs &middot; Tax estimates
     </div>
     <h1>Salary &amp; Tax Tools <span class="hero-em">for Africa</span></h1>
-    <p>Choose a calculator by job or country. Estimate take-home pay, payroll cost, business tax, property costs, savings, crypto tax, and FX fees. Use the result for planning, then confirm official filings with the revenue authority.</p>
+    <p>Choose a country or what you need to calculate. Compare take-home pay, payroll costs, taxes, and more. Check each tool's sources before filing.</p>
     <div class="hero-search-wrap" role="search">
+      <label class="salary-search-label" for="tool-search">Find a calculator or country</label>
       <div class="hero-search-bar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" id="tool-search" placeholder="Find a tool or country" autocomplete="off" spellcheck="false" aria-label="Search salary and tax tools">
+        <input type="search" id="tool-search" placeholder="Try Kenya, PAYE, pension..." autocomplete="off" spellcheck="false">
       </div>
+      <div id="find-results" class="find-results" style="display:none" aria-live="polite" aria-atomic="false" aria-label="Tool search results"></div>
     </div>
     <div class="salary-hero-actions" aria-label="Main salary and tax actions">
       <a class="salary-hero-action primary" href="/salary-tax/paye/">Estimate take-home pay</a>
       <a class="salary-hero-action secondary" href="#hub-cards">Choose another tool</a>
     </div>
-    <div class="hero-stats" aria-label="Platform statistics">
-      <div class="hero-stat">
-        <div class="hero-stat-val">134</div>
-        <div class="hero-stat-lbl">English tools</div>
-      </div>
-      <div class="hero-stat-divider" aria-hidden="true"></div>
-      <div class="hero-stat"><div class="hero-stat-val">54</div><div class="hero-stat-lbl">Countries</div></div>
-      <div class="hero-stat-divider" aria-hidden="true"></div>
-      <div class="hero-stat"><div class="hero-stat-val">Dated</div><div class="hero-stat-lbl">Source checks</div></div>
-      <div class="hero-stat-divider" aria-hidden="true"></div>
-      <div class="hero-stat"><div class="hero-stat-val">Free</div><div class="hero-stat-lbl">Core use</div></div>
-    </div>
-    <p class="salary-hub-reviewed">Hub navigation and search contract checked 22 July 2026. Each calculator owns its own assumptions, source links, checked date, privacy boundary, and export support.</p>
     </div>
   </div>
 </section>
 
 <main class="hub-main">
-
-  <!-- Search Results -->
-  <div class="find-section" id="find-section">
-    <div id="find-results" class="find-results" style="display:none" aria-live="polite" aria-atomic="false" aria-label="Tool search results"></div>
-  </div>
 
   <!-- Hub Cards -->
   <section class="hub-section" id="hub-cards">
