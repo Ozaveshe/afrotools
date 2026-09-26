@@ -2,6 +2,24 @@
   "use strict";
 
   var exact = [
+    // Native names, eligibility notes and tier labels from the maintained tariff records.
+    ["Domestic standard — Code 10.1","Nyumbani kawaida — msimbo 10.1"],
+    ["Average domestic rate. Receipt totals can still differ because of arrears, debt recovery, or vending adjustments not included in the published energy rate.","Tarifa ya wastani ya nyumbani. Jumla ya risiti inaweza kutofautiana kwa sababu ya malimbikizo, urejeshaji wa madeni au marekebisho wakati wa ununuzi ambayo hayajajumuishwa kwenye bei ya nishati iliyochapishwa."],
+    ["Domestic energy charge","Gharama ya nishati ya nyumbani"],
+    ["Domestic lifeline eligible — Code 10.1","Nyumbani wanaostahiki tarifa nafuu — msimbo 10.1"],
+    ["Only choose this class when the account qualifies: the regulator says the rolling six-month average must not exceed 100 kWh. The calculator does not infer eligibility.","Chagua daraja hili tu ikiwa akaunti inastahiki: mdhibiti anasema wastani unaosogea wa miezi sita usizidi 100 kWh. Kikokotoo hakiamui ustahiki."],
+    ["Lifeline — first 15 kWh","Tarifa nafuu — kWh 15 za kwanza"],
+    ["Standard domestic rate after 15 kWh","Tarifa ya kawaida ya nyumbani baada ya kWh 15"],
+    ["Commercial low voltage — Code 10.2 average","Biashara ya volteji ya chini — wastani wa msimbo 10.2"],
+    ["Uses the published average commercial rate. Time-of-use peak, shoulder and off-peak pricing is outside this first release.","Hutumia tarifa ya wastani ya biashara iliyochapishwa. Bei kulingana na vipindi vya matumizi ya juu, ya kati na ya chini haijajumuishwa katika toleo hili."],
+    ["Commercial average energy charge","Wastani wa gharama ya nishati ya biashara"],
+    ["D1 low-usage domestic","D1 matumizi madogo ya nyumbani"],
+    ["D1 is for domestic customers averaging less than 75 kWh per month. Select this class only when TANESCO assigns it to the account.","D1 ni kwa wateja wa nyumbani wenye wastani wa matumizi chini ya kWh 75 kwa mwezi. Chagua daraja hili tu ikiwa TANESCO imeipa akaunti daraja hilo."],
+    ["First 75 kWh","kWh 75 za kwanza"],
+    ["Usage above 75 kWh","Matumizi zaidi ya kWh 75"],
+    ["T1 general-use low voltage","T1 matumizi ya jumla ya volteji ya chini"],
+    ["T1 covers low-voltage general use, including residential, small commercial, light industrial, public lighting and billboards.","T1 inahusu matumizi ya jumla ya volteji ya chini, yakiwemo makazi, biashara ndogo, viwanda vyepesi, taa za maeneo ya umma na mabango."],
+    ["General-use energy charge","Gharama ya nishati kwa matumizi ya jumla"],
     ["Home", "Mwanzo"],
     ["Energy & Utilities", "Nishati na Huduma"],
     ["Electricity cost", "Gharama ya umeme"],

@@ -10,6 +10,24 @@
   }
 
   var exact = [
+    // Native names, eligibility notes and tier labels from the maintained tariff records.
+    ["Domestic standard — Code 10.1","Résidentiel standard — code 10.1"],
+    ["Average domestic rate. Receipt totals can still differ because of arrears, debt recovery, or vending adjustments not included in the published energy rate.","Tarif résidentiel moyen. Le montant du reçu peut différer en raison d’arriérés, de recouvrement de dettes ou d’ajustements à l’achat qui ne sont pas inclus dans le tarif publié de l’énergie."],
+    ["Domestic energy charge","Coût de l’énergie résidentielle"],
+    ["Domestic lifeline eligible — Code 10.1","Résidentiel au tarif social — code 10.1"],
+    ["Only choose this class when the account qualifies: the regulator says the rolling six-month average must not exceed 100 kWh. The calculator does not infer eligibility.","Choisissez cette catégorie uniquement si le compte remplit les conditions : selon le régulateur, la moyenne glissante sur six mois ne doit pas dépasser 100 kWh. Le calculateur ne détermine pas l’admissibilité."],
+    ["Lifeline — first 15 kWh","Tarif social — 15 premiers kWh"],
+    ["Standard domestic rate after 15 kWh","Tarif résidentiel standard au-delà de 15 kWh"],
+    ["Commercial low voltage — Code 10.2 average","Professionnels basse tension — moyenne code 10.2"],
+    ["Uses the published average commercial rate. Time-of-use peak, shoulder and off-peak pricing is outside this first release.","Utilise le tarif moyen publié pour les professionnels. La tarification selon les périodes de pointe, intermédiaires et creuses n’est pas couverte par cette version."],
+    ["Commercial average energy charge","Coût moyen de l’énergie pour les professionnels"],
+    ["D1 low-usage domestic","D1 résidentiel à faible consommation"],
+    ["D1 is for domestic customers averaging less than 75 kWh per month. Select this class only when TANESCO assigns it to the account.","D1 concerne les clients résidentiels dont la consommation moyenne est inférieure à 75 kWh par mois. Sélectionnez cette catégorie uniquement si TANESCO l’attribue au compte."],
+    ["First 75 kWh","75 premiers kWh"],
+    ["Usage above 75 kWh","Consommation au-delà de 75 kWh"],
+    ["T1 general-use low voltage","T1 usage général basse tension"],
+    ["T1 covers low-voltage general use, including residential, small commercial, light industrial, public lighting and billboards.","T1 couvre les usages généraux en basse tension : logements, petits commerces, industrie légère, éclairage public et panneaux publicitaires."],
+    ["General-use energy charge","Coût de l’énergie pour usage général"],
     ["Home", "Accueil"],
     ["Energy & Utilities", "Énergie et services publics"],
     ["Electricity cost", "Coût de l’électricité"],
