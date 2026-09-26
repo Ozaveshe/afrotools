@@ -106,7 +106,8 @@ function runtimeVisibleTransforms() {
   const match = runtime.match(/var exact = (\[[\s\S]*?\]);\s*\n\s*var words =/);
   if (!match) throw new Error("French Energy runtime translation catalog is unreadable.");
   const exact = vm.runInNewContext(match[1]);
-  return exact.map(([english, french]) => [
+  // Match the browser catalog: whole sentences must precede shorter names.
+  return exact.sort((a, b) => b[0].length - a[0].length).map(([english, french]) => [
     new RegExp(String(english).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
     french,
   ]);

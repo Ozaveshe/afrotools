@@ -92,6 +92,10 @@ for (const app of FRENCH_ENERGY_APPS) {
   const english = fs.readFileSync(englishFile, "utf8");
   const source = fs.readFileSync(sourceFile, "utf8");
   const french = fs.readFileSync(frenchFile, "utf8");
+  if (["electricity-tariff", "prepaid-meter"].includes(app.id)) {
+    assert.ok(french.includes("catégories TANESCO D1 domestique à faible consommation et T1 usage général selon la grille publiée par l’EWURA."), `${app.id}: Tanzania coverage must remain entirely French`);
+    assert.ok(!french.includes("and T1 general-use classes"), `${app.id}: short tariff names must not preempt the full coverage sentence`);
+  }
   assert.match(french, /<html\b[^>]*lang=["']fr["']/i, `${app.id}: html language`);
   assert.ok(french.includes(`<link rel="canonical" href="https://afrotools.com${app.frRoute}">`), `${app.id}: canonical`);
   if (!app.standaloneLocalizedAlias) {
