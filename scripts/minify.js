@@ -39,6 +39,7 @@ const JS_PAIRS = [
   ['assets/js/pages/pdf-compress.js',       'tools/pdf-compress/app.js'],
   ['assets/js/pages/pdf-image-convert.js',  'tools/pdf-image-convert/app.js'],
   ['assets/js/pages/pdf-merge-split.js',  'tools/pdf-merge-split/app.js'],
+  ['assets/js/pages/pdf-watermark.js', 'tools/pdf-watermark/app.js'],
   ['assets/js/pages/pdf-password.js', 'tools/pdf-password/app.js'],
   ['assets/js/pages/pdf-redact.js', 'tools/pdf-redact/app.js'],
 ];
