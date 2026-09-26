@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const { localizeDocumentRelatedTools } = require('./lib/localized-document-related-tools');
 const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
 const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
@@ -405,6 +406,7 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
   }
   html = rewriteLocalizedCvRuntime(html, app);
   html = rewriteLocalizedPageRuntime(html, app);
+  html = localizeDocumentRelatedTools(html, 'fr', config.apps);
   html = addRuntime(html, app, allRoutes, routeExact);
   html = placeRouteLinksLast(html);
   return html.replace(/\r?\n/g, '\n');
@@ -449,6 +451,7 @@ function normalizeExisting(source, app, config, lexicon, artwork) {
   });
   html = rewriteLocalizedCvRuntime(html, app);
   html = rewriteLocalizedPageRuntime(html, app);
+  html = localizeDocumentRelatedTools(html, 'fr', config.apps);
   html = addRuntime(html, app, allRoutes, routeExact);
   return html.replace(/\r?\n/g, '\n');
 }
@@ -494,6 +497,13 @@ function main() {
   if (selectedId && !config.apps.some((app) => app.id === selectedId)) throw new Error('Unknown French Document/PDF app: ' + selectedId);
   for (const app of config.apps) {
     if (selectedId && app.id !== selectedId) continue;
+    if (process.argv.includes('--related-tools-only')) {
+      for (const relative of [app.frenchFile, app.frenchWorkspaceFile].filter(Boolean)) {
+        const source = fs.readFileSync(path.join(ROOT, relative), 'utf8');
+        writeOrCheck(relative, localizeDocumentRelatedTools(source, 'fr', config.apps).replace(/\r?\n/g, '\n'), changed);
+      }
+      continue;
+    }
     const englishFile = path.join(ROOT, app.englishFile);
     if (!fs.existsSync(englishFile)) throw new Error(`Missing English owner: ${app.englishFile}`);
     if (!app.preserveExisting) {

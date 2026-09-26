@@ -20,6 +20,21 @@ class AfroRelatedTools extends HTMLElement {
   }
   static get observedAttributes() { return ['category','current']; }
   connectedCallback() {
+    // Localizers update the SSR links after this element may already have rendered.
+    // Observe only our light DOM; shadow rendering cannot feed back into this observer.
+    this._metadataObserver = new MutationObserver(() => {
+      if (this._metadataRenderQueued) return;
+      this._metadataRenderQueued = true;
+      queueMicrotask(() => {
+        this._metadataRenderQueued = false;
+        if (this.isConnected && this.getAttribute('data-ssr') === '1') this._render();
+      });
+    });
+    this._metadataObserver.observe(this, {
+      subtree: true, childList: true, characterData: true, attributes: true,
+      attributeFilter: ['data-ssr', 'data-related-tools-ssr', 'data-related-tool',
+        'data-name', 'data-desc', 'data-id', 'data-category', 'data-icon', 'href']
+    });
     if (this._getSsrTools().length || window.AFRO_RELATED_TOOLS) {
       this._render();
       return;
@@ -27,6 +42,7 @@ class AfroRelatedTools extends HTMLElement {
     this._deferDataLoad();
   }
   disconnectedCallback() {
+    if (this._metadataObserver) this._metadataObserver.disconnect();
     if (this._dataObserver) this._dataObserver.disconnect();
   }
   attributeChangedCallback() {
@@ -193,12 +209,19 @@ class AfroRelatedTools extends HTMLElement {
     return res.slice(0,6);
   }
 
+  _escape(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
+  }
+
   _render() {
     const tools = this._getTools();
     if (!tools.length) { this.shadowRoot.innerHTML=''; return; }
     const pageLanguage = (document.documentElement.lang || 'en').toLowerCase();
     const isHausa = pageLanguage.startsWith('ha');
     const isFrench = pageLanguage.startsWith('fr');
+    const isSwahili = pageLanguage.startsWith('sw');
     const categoryHa = {
       african:'Na Afirka', education:'Ilimi', financial:'Kudi', 'document-pdf':'Takardu da PDF',
       engineering:'Injiniya', 'data-productivity':'Tsarin aiki', health:'Lafiya', legal:'Doka',
@@ -212,6 +235,13 @@ class AfroRelatedTools extends HTMLElement {
       ecommerce:'Commerce', 'image-design':'Design', developer:'Développement',
       language:'Langues', agriculture:'Agriculture', telecom:'Télécoms',
       'salary-tax':'Salaire et impôts', 'pdf-docs':'PDF et documents'
+    };
+    const categorySw = {
+      african:'Za Afrika', education:'Elimu', financial:'Fedha', 'document-pdf':'Hati na PDF',
+      engineering:'Uhandisi', 'data-productivity':'Uzalishaji', health:'Afya', legal:'Sheria',
+      ecommerce:'Biashara', 'image-design':'Ubunifu', developer:'Zana za programu',
+      language:'Lugha', agriculture:'Kilimo', telecom:'Mawasiliano',
+      'salary-tax':'Mshahara na kodi', 'pdf-docs':'Hati na PDF'
     };
     const fallbackOnlyIds = new Set(['html-to-pdf','pdf-bates','pdf-chat','pdf-compare','pdf-convert','pdf-find-replace','pdf-image-convert','pdf-reorder','pdf-repair','pdf-to-audio','pdf-translate','pdf-workflow']);
 
@@ -229,22 +259,22 @@ class AfroRelatedTools extends HTMLElement {
         ? (categoryHa[t.category] || 'Kayan aiki')
         : isFrench
           ? (categoryFr[t.category] || cs.label || 'Outil')
-          : cs.label;
+          : isSwahili ? (categorySw[t.category] || 'Zana') : cs.label;
       return `
-        <a class="card" href="${t.href}" aria-label="${t.name}">
+        <a class="card" href="${this._escape(t.href)}" aria-label="${this._escape(t.name)}">
           <div class="card-visual">
             ${useImage ? `<img class="card-img" src="${img}" alt=""
                  loading="lazy"
                  onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">` : ''}
-            <div class="card-monogram" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${this._monogram(t)}</div>
+            <div class="card-monogram" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${this._escape(this._monogram(t))}</div>
           </div>
           <div class="card-body">
-            <span class="category-meta">${categoryLabel}</span>
-            <div class="card-name">${t.name}</div>
-            <div class="card-desc">${desc}</div>
+            <span class="category-meta">${this._escape(categoryLabel)}</span>
+            <div class="card-name">${this._escape(t.name)}</div>
+            <div class="card-desc">${this._escape(desc)}</div>
           </div>
           <div class="card-cta">
-            <span class="cta-btn">${isHausa ? 'Bude kayan aiki' : isFrench ? 'Ouvrir l’outil' : 'Open tool'}</span>
+            <span class="cta-btn">${isHausa ? 'Bude kayan aiki' : isFrench ? 'Ouvrir l’outil' : isSwahili ? 'Fungua zana' : 'Open tool'}</span>
             <svg class="cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -478,11 +508,11 @@ class AfroRelatedTools extends HTMLElement {
       <div class="wrap">
         <div class="header">
           <div class="header-left">
-            <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : isFrench ? 'Plus d’outils AfroTools' : 'More from AfroTools'}</p>
-            <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : isFrench ? 'Ces outils peuvent aussi vous aider' : 'You might also like'}</h2>
+            <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : isFrench ? 'Plus d’outils AfroTools' : isSwahili ? 'Zana zaidi za AfroTools' : 'More from AfroTools'}</p>
+            <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : isFrench ? 'Ces outils peuvent aussi vous aider' : isSwahili ? 'Zana nyingine zinazoweza kukusaidia' : 'You might also like'}</h2>
           </div>
-          <a href="${isHausa ? '/ha/kayan-aiki/' : isFrench ? '/fr/tools/' : '/tools/'}" class="all-link">
-            ${isHausa ? 'Duba duk kayan aiki' : isFrench ? 'Voir tous les outils' : 'Browse all tools'}
+          <a href="${isHausa ? '/ha/kayan-aiki/' : isFrench ? '/fr/all-tools/' : isSwahili ? '/sw/zana-zote/' : '/tools/'}" class="all-link">
+            ${isHausa ? 'Duba duk kayan aiki' : isFrench ? 'Voir tous les outils' : isSwahili ? 'Angalia zana zote' : 'Browse all tools'}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2.5 6h7M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const { localizeDocumentRelatedTools } = require('./lib/localized-document-related-tools');
 const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
 const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
@@ -470,6 +471,7 @@ function applyDownloadGateContract(html, app) {
 }
 
 function injectParityRuntime(html, app) {
+  html = localizeDocumentRelatedTools(html, 'sw', apps);
   const payload = JSON.stringify({
     id: app.id,
     name: app.name,
@@ -901,6 +903,20 @@ function validateOutputs() {
 
 function main() {
   validateDirectory();
+  if (process.argv.includes('--related-tools-only')) {
+    const stale = [];
+    for (const app of selectedApps) {
+      const target = path.join(ROOT, app.swahiliFile);
+      const source = fs.readFileSync(target, 'utf8');
+      const output = localizeDocumentRelatedTools(source, 'sw', apps);
+      if (source === output) continue;
+      stale.push(app.swahiliFile);
+      if (WRITE) fs.writeFileSync(target, output, 'utf8');
+    }
+    if (CHECK && stale.length) throw new Error('Stale Swahili related tools: ' + stale.join(', '));
+    console.log(`Swahili related tools: ${stale.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
+    return;
+  }
   if (WRITE) {
     if (CONTENT_IDS_ONLY) {
       selectedApps.forEach((app) => {
