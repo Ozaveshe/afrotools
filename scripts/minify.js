@@ -35,6 +35,7 @@ const JS_PAIRS = [
   ['assets/js/components/related-tools.js',  'assets/js/components/related-tools.min.js'],
   ['assets/js/components/site-assistant.js', 'assets/js/components/site-assistant.min.js'],
   ['assets/js/favorites.js',                'assets/js/favorites.min.js'],
+  ['assets/js/pages/pdf-page-numbers.js', 'tools/pdf-page-numbers/app.js'],
   ['assets/js/pages/pdf-compress.js',       'tools/pdf-compress/app.js'],
   ['assets/js/pages/pdf-image-convert.js',  'tools/pdf-image-convert/app.js'],
   ['assets/js/pages/pdf-merge-split.js',  'tools/pdf-merge-split/app.js'],

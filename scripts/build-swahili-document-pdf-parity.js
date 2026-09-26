@@ -65,7 +65,7 @@ const apps = [
   { id: 'pdf-image-convert', localFirstDownloads: true, englishRoute: '/tools/pdf-image-convert/', englishFile: 'tools/pdf-image-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-pdf-na-picha/', swahiliFile: 'sw/zana/kubadilisha-pdf-na-picha/index.html', name: 'Badilisha PDF na Picha', exports: ['pdf', 'png', 'jpeg', 'zip'] },
   { id: 'pdf-watermark', englishRoute: '/tools/pdf-watermark/', englishFile: 'tools/pdf-watermark/index.html', swahiliRoute: '/sw/zana/watermark-pdf/', swahiliFile: 'sw/zana/watermark-pdf/index.html', name: 'Alama ya Maji ya PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-password', localFirstDownloads: true, englishRoute: '/tools/pdf-password/', englishFile: 'tools/pdf-password/index.html', swahiliRoute: '/sw/zana/kulinda-pdf-kwa-nenosiri/', swahiliFile: 'sw/zana/kulinda-pdf-kwa-nenosiri/index.html', name: 'Linda PDF kwa Nenosiri', exports: ['pdf', 'zip'] },
-  { id: 'pdf-page-numbers', englishRoute: '/tools/pdf-page-numbers/', englishFile: 'tools/pdf-page-numbers/index.html', swahiliRoute: '/sw/zana/namba-za-kurasa-pdf/', swahiliFile: 'sw/zana/namba-za-kurasa-pdf/index.html', name: 'Namba za Kurasa za PDF', exports: ['pdf', 'zip'] },
+  { id: 'pdf-page-numbers', localFirstDownloads: true, englishRoute: '/tools/pdf-page-numbers/', englishFile: 'tools/pdf-page-numbers/index.html', swahiliRoute: '/sw/zana/namba-za-kurasa-pdf/', swahiliFile: 'sw/zana/namba-za-kurasa-pdf/index.html', name: 'Namba za Kurasa za PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-sign', localFirstDownloads: true, englishRoute: '/tools/pdf-sign/', englishFile: 'tools/pdf-sign/index.html', swahiliRoute: '/sw/zana/kusaini-pdf/', swahiliFile: 'sw/zana/kusaini-pdf/index.html', name: 'Saini PDF', exports: ['pdf'] },
   { id: 'pdf-ocr', englishRoute: '/tools/pdf-ocr/', englishFile: 'tools/pdf-ocr/index.html', swahiliRoute: '/sw/zana/ocr-pdf/', swahiliFile: 'sw/zana/ocr-pdf/index.html', name: 'OCR ya PDF', exports: ['txt'] },
   { id: 'pdf-editor', englishRoute: '/tools/pdf-editor/', englishFile: 'tools/pdf-editor/index.html', swahiliRoute: '/sw/zana/hariri-pdf/', swahiliFile: 'sw/zana/hariri-pdf/index.html', name: 'Hariri PDF', exports: ['pdf'] },
@@ -297,6 +297,14 @@ const legacyIdRepairs = {
 };
 
 const legacyInlineRepairs = {
+  'pdf-page-numbers': {
+    'value="page-of-jumla"': 'value="page-of-total"',
+    'value="number-of-jumla"': 'value="number-of-total"',
+    '<option value="odd">Kurasa za PDF pekee</option>': '<option value="odd">Kurasa witiri pekee</option>',
+    '<option value="even">Hata kurasa za PDF pekee</option>': '<option value="even">Kurasa shufwa pekee</option>',
+    'data-position="middle-right">Sawa</button>': 'data-position="middle-right">Kulia</button>',
+    'data-position="center">Kituo</button>': 'data-position="center">Katikati</button>'
+  },
   'invoice-generator': {
     "${fmtCur(it.price, cur)}": "${((CURRENCIES[cur] || {}).s || cur) + ' ' + Number(it.price || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:20})}",
     "function getDocumentTypeInfo() {\n  return DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;\n}": "function getDocumentTypeInfo() {\n  const info = DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;\n  const text = window.AfroInvoiceText || ((value) => value);\n  return { ...info, label: text(info.label), title: text(info.title), numberLabel: text(info.numberLabel) };\n}",
