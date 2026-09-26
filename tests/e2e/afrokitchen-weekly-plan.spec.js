@@ -117,6 +117,7 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   const consoleErrors = installConsoleGuard(page);
   await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toBeVisible();
+  expect(await page.locator('#browse-panel').evaluate(panel => getComputedStyle(panel).opacity)).toBe('1');
   await expect(page.locator("#ak-more-filters")).toHaveAttribute("open", "");
   await expect(page.locator("#clear-recipe-filters")).toBeHidden();
 
@@ -146,6 +147,12 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toContainText("Jollof");
 
   await page.setViewportSize({ width: 390, height: 844 });
+  const firstCardLayout = await page.locator('#recipes-grid .ak-recipe-card').first().evaluate(card => ({
+    columns: getComputedStyle(card.querySelector('.ak-recipe-card-meta')).gridTemplateColumns.split(' ').length,
+    metaItems: card.querySelectorAll('.ak-recipe-card-meta-item').length
+  }));
+  expect(firstCardLayout.columns).toBe(2);
+  expect(firstCardLayout.metaItems).toBeLessThanOrEqual(4);
   await expect(page.locator("#ak-more-filters")).not.toHaveAttribute("open", "");
   await page.locator("#clear-recipe-filters").click();
   await expect(page.locator("#clear-recipe-filters")).toBeHidden();
@@ -161,6 +168,16 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   });
   expect(overflow).toBeLessThanOrEqual(1);
   await page.setViewportSize({ width: 320, height: 720 });
+  const narrowHero = await page.evaluate(() => {
+    const links = document.querySelectorAll('.ak-home-hero .ak-hero-quick-actions a');
+    return {
+      firstRight: links[0].getBoundingClientRect().right,
+      secondLeft: links[1].getBoundingClientRect().left,
+      browseTop: document.querySelector('#browse-panel').getBoundingClientRect().top + window.scrollY
+    };
+  });
+  expect(narrowHero.firstRight).toBeLessThanOrEqual(narrowHero.secondLeft);
+  expect(narrowHero.browseTop).toBeLessThan(600);
   const narrowOverflow = await page.evaluate(function () {
     return document.documentElement.scrollWidth - document.documentElement.clientWidth;
   });
