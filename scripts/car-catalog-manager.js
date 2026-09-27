@@ -313,7 +313,7 @@ function syncSeedJson(rows) {
       currency: item.currency,
       sample_size: item.sampleSize,
       collected_at: item.reviewedAt,
-      confidence: item.sampleSize >= 10 ? "medium" : "low",
+      confidence: item.confidence || (item.sampleSize >= 10 ? "medium" : "low"),
       source_type: "dated-marketplace-observation",
       source_url: item.sourceUrl
     };

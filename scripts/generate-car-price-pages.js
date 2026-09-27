@@ -256,12 +256,12 @@ ${rows}
 
 function rootObservationLinksHTML() {
   return marketObservations
-    .filter((entry) => entry.countryCode === "NG")
     .map((entry) => {
+      const country = data.countries[entry.countryCode];
       const vehicle = data.vehicles.find((item) => item.id === entry.vehicleId);
-      if (!vehicle) return "";
-      const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
-      return `<li><a href="${route}">${escapeHtml(entry.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence</a></li>`;
+      if (!country || !vehicle) return "";
+      const route = `/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+      return `<li><a href="${route}">${escapeHtml(entry.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence in ${escapeHtml(country.name)}</a></li>`;
     })
     .join("");
 }
@@ -270,7 +270,11 @@ function staticContentHTML(meta) {
   if (meta.pageType === "root") {
     const options = catalogOptionsHTML();
     const observationLinks = rootObservationLinksHTML();
-    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} priced vehicles. Most source-market bands are older planning estimates; the dated source and local asking-price snapshots are marked on their vehicle pages. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul><li><a href="/cars/nigeria/">Browse Nigeria car prices and market snapshots</a></li>${observationLinks}</ul></section>
+    const observedCountryLinks = Object.values(data.countries)
+      .filter((country) => marketObservations.some((entry) => entry.countryCode === country.code))
+      .map((country) => `<li><a href="/cars/${country.slug}/">Browse ${escapeHtml(country.name)} car prices and market snapshots</a></li>`)
+      .join("");
+    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} priced vehicles. Most source-market bands are older planning estimates; the dated source and local asking-price snapshots are marked on their vehicle pages. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul>${observedCountryLinks}${observationLinks}</ul></section>
 <section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Most do not have a current local asking-price sample. The calculator will ask for your actual seller price and show country-specific costs for six supported destinations.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
   }
   if (!meta.pageType) return "";
@@ -309,7 +313,7 @@ function schema(meta, routePath) {
       operatingSystem: "Web",
       description: meta.description,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-      publisher: { "@type": "Organization", name: "AfroTools", url: "https://afrotools.com" }
+      publisher: { "@type": "Organization", name: "AfroTools", url: "https://afrotools.com/" }
     },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs }
   ];
@@ -350,7 +354,7 @@ function html(routePath, meta) {
   <title>${escapeHtml(meta.title)}</title>
   <meta name="description" content="${escapeHtml(meta.description)}">
   <link rel="canonical" href="${canonicalUrl}">
-${routePath === "cars" ? '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-na-akili-ya-gari/">' : ''}
+${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afrotools.com/cars/">\n<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/cars/">\n<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-na-akili-ya-gari/">\n<link rel="alternate" hreflang="x-default" href="https://afrotools.com/cars/">' : ''}
   <meta name="robots" content="${meta.noindex ? "noindex, follow" : "index, follow"}">
   <meta name="tool-id" content="car-price-intelligence">
   <meta property="og:title" content="${escapeHtml(meta.title)}">
@@ -418,13 +422,18 @@ if (process.argv.includes("--catalog-only")) {
   process.exit(0);
 }
 
-writePage("cars", {
+const rootPageMeta = {
   title: "African Car Price Directory | AfroTools",
   description: "Compare indicative source-market car budgets and import costs across 20 African markets, with dated local asking-price observations where available.",
   includeFaq: true,
   listVehicles: data.vehicles,
   pageType: "root"
-});
+};
+writePage("cars", rootPageMeta);
+if (process.argv.includes("--root-only")) {
+  console.log("Generated car price directory root page");
+  process.exit(0);
+}
 writePage("cars/compare", {
   title: "Compare Car Source Markets | Japan, UAE, UK, South Africa | AfroTools",
   description: "Compare source-market price, shipping assumptions, landed cost, local dealer ranges, financing outlook, and risk layers for African car imports.",

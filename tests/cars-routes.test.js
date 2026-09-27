@@ -55,7 +55,8 @@ const indexedObservations = observations.filter((item) => item.searchIndexEligib
 const vehicleCatalog = JSON.parse(read("data/cars/price-intelligence.json")).vehicles;
 for (const observation of observations) {
   const vehicle = vehicleCatalog.find((item) => item.id === observation.vehicleId);
-  const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+  const country = data.countries[observation.countryCode];
+  const route = `/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
   assert.ok(main.includes(`href="${route}"`), `directory links observed ${observation.vehicleId}`);
   const page = read(`${route}index.html`.replace(/^\//, ""));
   if (observation.searchIndexEligible === false) {
@@ -72,12 +73,17 @@ assert.ok(corolla.includes("Estimate import cost for this car"), "observed page 
 assert.ok(corolla.includes("toyota-corolla-2018-hero.webp"), "observed page uses its existing model image");
 assert.ok(corolla.includes('content="index, follow"'), "observed detail is indexable");
 assert.ok(sitemap.includes("https://afrotools.com/cars/nigeria/toyota/corolla/2018/"), "observed detail is in car sitemap");
+const ghCorolla = read("cars/ghana/toyota/corolla/2018/index.html");
+assert.ok(ghCorolla.includes("GHS 194,000") && ghCorolla.includes("GHS 176,000"), "Ghana page keeps Autochek and Jiji asking-price checks separate");
+assert.ok(ghCorolla.includes("engine displacement not stated"), "Ghana page discloses model matching limit");
+assert.ok(read("cars/ghana/index.html").includes('content="index, follow"'), "Ghana hub has dated local evidence");
+assert.ok(sitemap.includes("https://afrotools.com/cars/ghana/toyota/corolla/2018/"), "Ghana observed detail is in car sitemap");
 assert.ok(!sitemap.includes("https://afrotools.com/cars/ghana/toyota/camry/2005/"), "unobserved detail stays out of sitemap");
 assert.ok(!sitemap.includes("https://afrotools.com/cars/south-africa/toyota/corolla/2018/"), "directory-only detail stays out of sitemap");
 assert.ok(!sitemap.includes("https://afrotools.com/cars/south-africa/"), "country without a sourced local price stays out of sitemap");
 assert.ok(read("cars/south-africa/index.html").includes('content="noindex, follow"'), "unobserved country hub remains browsable but noindex");
 assert.ok(read("cars/south-africa/toyota/corolla/2018/index.html").includes('content="noindex, follow"'), "unobserved detail is noindex");
 assert.ok(read("cars/nigeria/toyota/index.html").includes('content="noindex, follow"'), "thin make page is noindex");
-assert.strictEqual((sitemap.match(/<url>/g) || []).length, 2 + indexedObservations.length, "sitemap includes root, observed country, and search-ready observed details only");
+assert.strictEqual((sitemap.match(/<url>/g) || []).length, 1 + new Set(observations.map((item) => item.countryCode)).size + indexedObservations.length, "sitemap includes root, observed countries, and search-ready observed details only");
 assert.ok(read("sitemap-index.xml").includes("sitemap-cars.xml"), "sitemap index includes cars sitemap");
 console.log("cars-routes.test.js passed");

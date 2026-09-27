@@ -30,6 +30,9 @@ for (const item of marketData.observations || []) {
   if (item.searchIndexEligible !== undefined && typeof item.searchIndexEligible !== "boolean") {
     problems.push(`${key}: searchIndexEligible must be a boolean`);
   }
+  if (item.confidence !== undefined && !["low", "medium", "high"].includes(item.confidence)) {
+    problems.push(`${key}: confidence must be low, medium, or high`);
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(item.reviewedAt || "") || !Number.isFinite(Date.parse(item.reviewedAt))) problems.push(`${key}: invalid review date`);
   else if (new Date(item.reviewedAt) > now) problems.push(`${key}: review date is in the future`);
   if (!Number.isInteger(item.sampleSize) || item.sampleSize < 3) problems.push(`${key}: sample count too small or missing`);
@@ -37,7 +40,8 @@ for (const item of marketData.observations || []) {
       || !(item.lowerQuartile <= item.median && item.median <= item.upperQuartile)) problems.push(`${key}: invalid price band`);
   const vehicle = priceData.vehicles.find((entry) => entry.id === item.vehicleId);
   const projected = vehicle && priceData.localMarketPrices.find((entry) => entry.country_code === item.countryCode && entry.make === vehicle.make && entry.model === vehicle.model && entry.year === vehicle.year && entry.source_url === item.sourceUrl);
-  if (!projected || projected.median_ask !== item.median || projected.sample_size !== item.sampleSize) {
+  if (!projected || projected.median_ask !== item.median || projected.sample_size !== item.sampleSize
+      || (item.confidence && projected.confidence !== item.confidence)) {
     problems.push(`${key}: reviewed asking prices are missing from the interactive price pack; run cars:catalog:sync`);
   }
   for (const source of item.corroboratingSources || []) {

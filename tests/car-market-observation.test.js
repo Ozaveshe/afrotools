@@ -56,6 +56,18 @@ assert.ok(Math.abs(context.localPrice.median * forex.rates.NGN - observation.med
 assert.equal(context.recommendation.status, "price-check-needed", "stale source budget cannot produce a buy/import recommendation");
 assert.match(context.calculatorUrl, /^\/tools\/car-import-cost\/nigeria\//);
 
+const ghCorollaObservation = observations.find((item) => item.vehicleId === "toyota-corolla-2018" && item.countryCode === "GH");
+assert.equal(ghCorollaObservation.sampleSize, 11, "Ghana Corolla sample excludes mismatched or anomalous cards");
+assert.equal(ghCorollaObservation.median, 194000);
+assert.equal(ghCorollaObservation.corroboratingSources[0].sampleSize, 9, "the engine-specific Jiji check remains separate");
+const ghCorollaContext = Price.buildVehicleContext(data, importData, {
+  country: "ghana", make: "toyota", model: "corolla", year: 2018
+});
+assert.equal(ghCorollaContext.localPrice.sourceUrl, ghCorollaObservation.sourceUrl);
+assert.equal(ghCorollaContext.localPrice.sampleSize, 11);
+assert.equal(ghCorollaContext.localPrice.confidence, "low", "unverified engine displacement lowers confidence");
+assert.equal(ghCorollaContext.recommendation.status, "price-check-needed", "older source budget cannot settle Ghana import versus local");
+
 const oldCamryContext = Price.buildVehicleContext(data, importData, {
   country: "nigeria", make: "toyota", model: "camry", year: 2005
 });
