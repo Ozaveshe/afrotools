@@ -53,7 +53,8 @@ assert.equal(context.localPrice.sourceType, "dated-marketplace-observation");
 assert.equal(context.localPrice.sampleSize, observation.sampleSize);
 assert.equal(context.localPrice.sourceUrl, observation.sourceUrl);
 assert.ok(Math.abs(context.localPrice.median * forex.rates.NGN - observation.median) < forex.rates.NGN * 0.01, "NGN ask is normalized only for engine math");
-assert.equal(context.recommendation.status, "price-check-needed", "stale source budget cannot produce a buy/import recommendation");
+assert.equal(context.recommendation.status, "price-check-needed", "a policy-review customs pack cannot produce a buy/import recommendation");
+assert.match(context.recommendation.explanation, /planning rule pack or has a critical customs warning/, "the buyer sees why the decision is withheld");
 assert.match(context.calculatorUrl, /^\/tools\/car-import-cost\/nigeria\//);
 
 const ghCorollaObservation = observations.find((item) => item.vehicleId === "toyota-corolla-2018" && item.countryCode === "GH");
@@ -63,10 +64,18 @@ assert.equal(ghCorollaObservation.corroboratingSources[0].sampleSize, 9, "the en
 const ghCorollaContext = Price.buildVehicleContext(data, importData, {
   country: "ghana", make: "toyota", model: "corolla", year: 2018
 });
+const corollaSource = sourceObservations.find((item) => item.vehicleId === "toyota-corolla-2018" && item.sourceMarket === "uae");
+assert.equal(corollaSource.sampleSize, 4, "only exact petrol 1.8L UAE offers are in the source sample");
+assert.equal(corollaSource.median, 30750);
+assert.equal(ghCorollaContext.sourceMarket, "uae");
+assert.equal(ghCorollaContext.sourcePrice.sourceType, "dated-marketplace-observation");
+assert.equal(ghCorollaContext.sourcePrice.sampleSize, 4);
+assert.equal(ghCorollaContext.sourcePrice.median, 8400);
+assert.equal(ghCorollaContext.sourcePrice.sourceUrl, corollaSource.sourceUrl);
 assert.equal(ghCorollaContext.localPrice.sourceUrl, ghCorollaObservation.sourceUrl);
 assert.equal(ghCorollaContext.localPrice.sampleSize, 11);
 assert.equal(ghCorollaContext.localPrice.confidence, "low", "unverified engine displacement lowers confidence");
-assert.equal(ghCorollaContext.recommendation.status, "price-check-needed", "older source budget cannot settle Ghana import versus local");
+assert.equal(ghCorollaContext.recommendation.status, "price-check-needed", "small source and variant-mixed local samples cannot settle Ghana import versus local");
 
 const oldCamryContext = Price.buildVehicleContext(data, importData, {
   country: "nigeria", make: "toyota", model: "camry", year: 2005

@@ -75,6 +75,8 @@ assert.ok(corolla.includes('content="index, follow"'), "observed detail is index
 assert.ok(sitemap.includes("https://afrotools.com/cars/nigeria/toyota/corolla/2018/"), "observed detail is in car sitemap");
 const ghCorolla = read("cars/ghana/toyota/corolla/2018/index.html");
 assert.ok(ghCorolla.includes("GHS 194,000") && ghCorolla.includes("GHS 176,000"), "Ghana page keeps Autochek and Jiji asking-price checks separate");
+assert.ok(ghCorolla.includes("USD sampled median") && ghCorolla.includes("$8,400"), "Ghana page uses the reviewed UAE source band in its summary");
+assert.ok(ghCorolla.includes("4 asking prices; page updated 2026-09-24"), "source band gives its sample depth and snapshot date");
 assert.ok(ghCorolla.includes("engine displacement not stated"), "Ghana page discloses model matching limit");
 assert.ok(read("cars/ghana/index.html").includes('content="index, follow"'), "Ghana hub has dated local evidence");
 assert.ok(sitemap.includes("https://afrotools.com/cars/ghana/toyota/corolla/2018/"), "Ghana observed detail is in car sitemap");

@@ -173,12 +173,17 @@ function catalogOptionsHTML() {
 }
 
 function priceBandCells(vehicle, country) {
-  const [low, , high] = vehicle.price;
+  const observation = sourceMarketObservation(vehicle);
+  const toUsd = (value) => Math.round(value / observation.sourceCurrencyPerUsd / 100) * 100;
+  const [low, median, high] = observation
+    ? [observation.lowerQuartile, observation.median, observation.upperQuartile].map(toUsd)
+    : vehicle.price;
   const usd = `$${low.toLocaleString("en-US")}–$${high.toLocaleString("en-US")}`;
+  const usdMedian = `$${median.toLocaleString("en-US")}`;
   const rate = fxRate(country);
-  if (!rate || country.currency_code === "USD") return { local: usd, usd };
+  if (!rate || country.currency_code === "USD") return { local: usd, usd, usdMedian, observation };
   const local = `${formatMoney(low * rate, country.currency_symbol || country.currency_code)} – ${formatMoney(high * rate, country.currency_symbol || country.currency_code)}`;
-  return { local, usd };
+  return { local, usd, usdMedian, observation };
 }
 
 function vehicleRow(vehicle, country, linkPrefix) {
@@ -187,7 +192,8 @@ function vehicleRow(vehicle, country, linkPrefix) {
   const label = linkPrefix
     ? `<a href="${linkPrefix}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/">${escapeHtml(name)}</a>`
     : escapeHtml(name);
-  return `<tr><td>${label}</td><td>${escapeHtml(vehicle.body || "")}</td><td>${escapeHtml(cells.local)}</td><td>${escapeHtml(cells.usd)}</td></tr>`;
+  const basis = cells.observation ? `<br><small>Observed ${escapeHtml(cells.observation.market)} asks, ${escapeHtml(cells.observation.sourceSnapshotAt)}</small>` : "";
+  return `<tr><td>${label}</td><td>${escapeHtml(vehicle.body || "")}</td><td>${escapeHtml(cells.local)}</td><td>${escapeHtml(cells.usd)}${basis}</td></tr>`;
 }
 
 function vehicleTableHTML(vehicles, country, linkPrefix, caption) {
@@ -199,12 +205,12 @@ function vehicleTableHTML(vehicles, country, linkPrefix, caption) {
   return `<section class="cars-panel cars-static-summary">
 <h2>${escapeHtml(caption)}</h2>
 <table>
-<thead><tr><th>Vehicle</th><th>Body</th><th>Illustrative source budget (${escapeHtml(country ? country.currency_code : "USD")})</th><th>USD source budget</th></tr></thead>
+<thead><tr><th>Vehicle</th><th>Body</th><th>Source purchase band (${escapeHtml(country ? country.currency_code : "USD")})</th><th>USD source band and basis</th></tr></thead>
 <tbody>
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">${vehicles.some(sourceMarketObservation) ? "The dated source-market asking sample is described on its vehicle page. Other bands are older planning estimates." : "These are older source-market planning estimates."} Source bands come from the AfroTools car dataset (last vehicle price update ${escapeHtml(latestVehicleUpdate(vehicles))}); local conversions use the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. They are not local asking prices. Use a current source quote and the import-cost calculator before comparing with local asking prices.${fxNote}</p>
+<p class="cars-static-note">${vehicles.some(sourceMarketObservation) ? "Rows marked observed use dated marketplace asking-price samples; their source, selection method, and limits are on the vehicle pages. Other bands are older AfroTools planning estimates." : "These are older AfroTools source-market planning estimates."} Seed price updates run through ${escapeHtml(latestVehicleUpdate(vehicles))}; local conversions use the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. These are not local asking prices or export quotes. Use a current seller quote and the import-cost calculator before comparing with local asking prices.${fxNote}</p>
 </section>`;
 }
 
@@ -228,6 +234,9 @@ ${parts.join("\n")}
 
 function vehicleDetailHTML(vehicle, country) {
   const cells = priceBandCells(vehicle, country);
+  const sourceBasis = cells.observation
+    ? `${cells.observation.market} marketplace sample; ${cells.observation.sampleSize} asking prices; page updated ${cells.observation.sourceSnapshotAt}`
+    : `AfroTools planning estimate updated ${vehicle.lastUpdated}`;
   const specs = [
     ["Trim", vehicle.trim],
     ["Engine", Array.isArray(vehicle.cc) ? vehicle.cc.map((cc) => `${cc} cc`).join(" / ") : vehicle.cc],
@@ -236,10 +245,11 @@ function vehicleDetailHTML(vehicle, country) {
     ["Typical mileage", vehicle.mileage],
     ["Typical condition", vehicle.condition],
     ["Common source markets", Array.isArray(vehicle.sources) ? vehicle.sources.join(", ") : vehicle.sources],
-    [`Illustrative source budget (${country.currency_code})`, cells.local],
-    ["USD source budget", cells.usd],
-    ["Data confidence", vehicle.confidence],
-    ["Last updated", vehicle.lastUpdated]
+    [`Source purchase band (${country.currency_code})`, cells.local],
+    ["USD source band", cells.usd],
+    ...(cells.observation ? [["USD sampled median", cells.usdMedian]] : []),
+    ["Source price basis", sourceBasis],
+    ["Data confidence", cells.observation ? "low (small asking-price sample)" : vehicle.confidence]
   ].filter(([, value]) => value);
   const rows = specs.map(([label, value]) => `<tr><th scope="row">${escapeHtml(label)}</th><td>${escapeHtml(String(value))}</td></tr>`).join("\n");
   return `<section class="cars-panel cars-static-summary">

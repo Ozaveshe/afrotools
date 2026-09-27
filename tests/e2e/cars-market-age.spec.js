@@ -58,6 +58,19 @@ test("2018 RAV4 shows reviewed Lagos and UAE asks with an editable import handof
   expect(errors).toEqual([]);
 });
 
+test("2018 Corolla keeps weak local evidence labelled low confidence", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/cars/nigeria/toyota/corolla/2018/");
+
+  await expect(page.locator("#carsApp .cars-price-layer", { hasText: "Dated local asking price" })).toContainText("low confidence");
+  await expect(page.locator("#carsApp .cars-price-layer", { hasText: "Dated source-market asking price" })).toContainText("USD $7,600 - $9,400");
+  await expect(page.locator("#carsApp")).toContainText("Verify import charges before deciding");
+  await expect(page.locator(".cars-market-evidence").first()).toContainText("AED 30,750");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  expect(errors).toEqual([]);
+});
+
 test("car directory counts priced vehicles and offers one Camry catalog option", async ({ page }) => {
   await page.goto("/cars/");
   await expect(page.locator("#carsApp")).toContainText("27 priced vehicles");
