@@ -55,7 +55,7 @@ for (const width of [320, 390]) {
     await expect(page.locator('#resAmount')).toHaveText(/UGX\s*979,500/);
     await expect(page.locator('#resContent')).toContainText(/UGX\s*345,500/);
 
-    const notes = page.locator('#resultsCard .payroll-context-note');
+    const notes = page.locator('#resultsCard .res-section:nth-child(2) > div[style]');
     await expect(notes).toHaveCount(2);
     const samples = await notes.evaluateAll(elements => {
       const luminance = color => {
@@ -71,6 +71,8 @@ for (const width of [320, 390]) {
         return { text: element.textContent.trim(), foreground: style.color, background: style.backgroundColor, ratio: (values[0] + 0.05) / (values[1] + 0.05) };
       });
     });
+    expect(samples.some(sample => sample.text.startsWith('Non-resident:'))).toBe(true);
+    expect(samples.some(sample => sample.text.startsWith('Actual LST'))).toBe(true);
     for (const sample of samples) {
       expect(sample.background, JSON.stringify(sample)).toBe('rgb(63, 23, 23)');
       expect(sample.ratio, JSON.stringify(sample)).toBeGreaterThanOrEqual(4.5);
