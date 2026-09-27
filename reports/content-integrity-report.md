@@ -1,8 +1,8 @@
 # Content Integrity Report
 
-Generated: 2026-09-26T02:55:32.331Z
+Generated: 2026-09-27T11:37:44.459Z
 
-- HTML pages scanned: 11803
+- HTML pages scanned: 11804
 - Generated pages with provenance: 1862
 - Stable content IDs: 2395
 - Generated source owners: 105

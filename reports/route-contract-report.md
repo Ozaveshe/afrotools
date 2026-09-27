@@ -6,7 +6,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11576 |
+| Public pages | 11577 |
 | Indexable pages | 9997 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
@@ -14,12 +14,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
 | Genuine equivalence groups | 5304 |
-| Documented fallbacks | 14845 |
+| Documented fallbacks | 14846 |
 | Routes eligible for primary sitemaps | 9997 |
 
 ## Locale Coverage
 
-- en: 6026 page records
+- en: 6027 page records
 - fr: 3804 page records
 - ha: 105 page records
 - sw: 1596 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5438
-- tool: 4004
+- tool: 4005
 - widget: 379
 
 ## Canonical Migrations
@@ -3917,7 +3917,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2bbb5430626e: en=`/cars/kenya/toyota/camry/2012/`, fr=`/fr/cars/kenya/toyota/camry/2012/`; x-default=`/cars/kenya/toyota/camry/2012/`
 - equivalence:2bd5ef48b86e: en=`/ai/`, fr=`/fr/ai/`, sw=`/sw/ai/`; x-default=`/ai/`
 - equivalence:2bdb920b12be: en=`/tools/property-mgmt-fees/`, fr=`/fr/tools/frais-gestion-immobiliere/`, sw=`/sw/zana/ada-usimamizi-wa-mali/`; x-default=`/tools/property-mgmt-fees/`
-- equivalence:2bdf2bd290ce: en=`/tools/afrostream/creator`; x-default=`/tools/afrostream/creator`
 - equivalence:2be6efed440f: en=`/cars/ghana/honda/accord/2014/`, fr=`/fr/cars/ghana/honda/accord/2014/`; x-default=`/cars/ghana/honda/accord/2014/`
 - equivalence:2beb952bee93: en=`/agriculture/irrigation/comoros`, fr=`/fr/agriculture/irrigation/comoros`, sw=`/sw/kilimo/umwagiliaji/comoros/`; x-default=`/agriculture/irrigation/comoros`
 - equivalence:2bf23979d894: en=`/tanzania/tz-paye`, fr=`/fr/tanzania/tz-paye`, sw=`/sw/tanzania/kikokotoo-kodi-mshahara/`; x-default=`/tanzania/tz-paye`
@@ -4741,6 +4740,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:52a5b1a18d42: en=`/agriculture/crop-yield/congo-brazzaville`, fr=`/fr/agriculture/crop-yield/congo-brazzaville`, sw=`/sw/kilimo/mavuno/congo/`; x-default=`/agriculture/crop-yield/congo-brazzaville`
 - equivalence:52aa1f8c3f8f: fr=`/fr/widgets/louer-vs-acheter-widget/`; x-default=`/fr/widgets/louer-vs-acheter-widget/`
 - equivalence:52b5d91f0378: en=`/jamb/government/1994/`; x-default=`/jamb/government/1994/`
+- equivalence:52b850c26841: en=`/tools/afrostream/directory/`; x-default=`/tools/afrostream/directory/`
 - equivalence:52b99d142de0: en=`/tools/work-permit-cost/tunisia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-tunisie/`, sw=`/sw/tunisia/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/tunisia/`
 - equivalence:52bffbd5c686: en=`/jamb/government/1981/`; x-default=`/jamb/government/1981/`
 - equivalence:52c98b5f8311: en=`/comoros/km-vat`, fr=`/fr/comores/calculateur-tva`, sw=`/sw/comoros/kikokotoo-vat/`; x-default=`/comoros/km-vat`
