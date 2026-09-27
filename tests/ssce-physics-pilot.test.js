@@ -11,9 +11,9 @@ test('Physics numerical choices agree with independent energy and circuit calcul
  const ratio=bank.questions.find(q=>q.id==='p12');const [a,b]=ratio.options[ratio.answer].split(':').map(Number);assert.equal(a/b,(12/4)/(12/8));
 });
 test('Physics can be completed, retried and backed up using the shared practice workflow',()=>{
- let state=api.start(bank,'Physics','');assert.equal(state.ids.length,12);
- for(let i=0;i<12;i++){const q=bank.questions.find(q=>q.id===state.ids[state.index]);state=api.advance(api.answer(state,i===0?(q.answer+1)%4:q.answer,bank),bank);}
- assert.equal(api.result(state,bank).correct,11);assert.equal(api.retry(state,bank).ids.length,1);
+ let state=api.start(bank,'Physics','');assert.equal(state.ids.length,24);
+ for(let i=0;i<24;i++){const q=bank.questions.find(q=>q.id===state.ids[state.index]);state=api.advance(api.answer(state,i===0?(q.answer+1)%4:q.answer,bank),bank);}
+ assert.equal(api.result(state,bank).correct,23);assert.equal(api.retry(state,bank).ids.length,1);
  assert.deepEqual(api.normalize(JSON.parse(JSON.stringify(state)),bank),state);
- assert.match(api.report(state,bank),/^AfroTools Physics practice/);
+ assert.match(api.report(state,bank),/^AfroTools practice/);
 });

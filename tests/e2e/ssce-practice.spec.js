@@ -4,7 +4,7 @@ test('Physics pilot explains, saves and resumes at narrow mobile width',async({p
  await page.setViewportSize({width:320,height:740});await page.goto('/tools/ssce-practice/');
  await page.getByLabel('Subject',{exact:true}).selectOption('Physics');
  await page.getByRole('button',{name:'Start practice',exact:true}).click();
- await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 12');
+ await expect(page.locator('#practice-session h2')).toHaveText('Question 1 of 24');
  await page.getByRole('radio',{name:'A. 150 J',exact:true}).check();
  await page.getByRole('button',{name:'Check answer',exact:true}).click();
  await expect(page.locator('.practice-feedback')).toHaveText('Correct.');
@@ -15,7 +15,23 @@ test('Physics pilot explains, saves and resumes at narrow mobile width',async({p
  await page.reload();await page.getByRole('button',{name:'Resume saved practice',exact:true}).click();
  await expect(page.locator('.practice-feedback')).toHaveText('Correct.');
  await page.getByRole('button',{name:'Next question',exact:true}).click();
- await expect(page.locator('#practice-session h2')).toHaveText('Question 2 of 12');
+ await expect(page.locator('#practice-session h2')).toHaveText('Question 2 of 24');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+});
+
+test('original motion graph can be solved from its complete text description at 320px',async({page})=>{
+ await page.setViewportSize({width:320,height:740});await page.goto('/tools/ssce-practice/');
+ await page.getByLabel('Subject',{exact:true}).selectOption('Physics');
+ await page.getByLabel('Topic',{exact:true}).selectOption('Motion graphs');
+ await page.getByRole('button',{name:'Start practice',exact:true}).click();
+ const question=page.locator('#practice-session fieldset');
+ await expect(question).toContainText('time in seconds on the horizontal axis');
+ await expect(question).toContainText('(4 s, 8 m/s)');
+ await page.getByRole('radio',{name:'B. 2 m/s²',exact:true}).check();
+ await page.getByRole('button',{name:'Check answer',exact:true}).click();
+ await expect(page.locator('.practice-feedback')).toHaveText('Correct.');
+ await page.getByText('Show explanation',{exact:true}).click();
+ await expect(page.locator('.practice-explanation')).toContainText('(8 − 0)/(4 − 0) = 2 m/s²');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
 });
 test('practice explains on demand, resumes and exports at mobile width',async({page})=>{

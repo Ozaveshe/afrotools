@@ -64,12 +64,12 @@ test('all practice identities, assessment language and backup contracts survive 
 });
 
 test('every quick answer grades identically and every written entry round-trips among EN FR SW', () => {
-  let quickState = { version:1, bankId:enQuick.id, ids:enQuick.questions.map(q => q.id), index:51,
+  let quickState = { version:1, bankId:enQuick.id, ids:enQuick.questions.map(q => q.id), index:63,
     answers:Object.fromEntries(enQuick.questions.map(q => [q.id, q.answer])) };
   const writtenState = { version:1, bankId:enWritten.id, entries:Object.fromEntries(enWritten.items.map(q => [q.id, { answer:'Synthetic answer '+q.id, checks:q.checks.map((_, i) => i % 2 === 0) }])) };
   for (const locale of ['en','fr','sw']) {
     quickState = quickApi.normalize(JSON.parse(JSON.stringify(quickState)), quickBanks[locale]);
-    assert.equal(quickApi.result(quickState, quickBanks[locale]).correct, 52);
+    assert.equal(quickApi.result(quickState, quickBanks[locale]).correct, 64);
     assert.deepEqual(writtenApi.normalize(JSON.parse(JSON.stringify(writtenState)), writtenBanks[locale]), writtenState);
     const report = writtenApi.report(writtenBanks[locale], writtenState);
     for (const q of writtenBanks[locale].items) { assert.ok(report.includes(q.prompt)); assert.ok(report.includes(q.source)); assert.ok(report.includes(q.steps[0])); }

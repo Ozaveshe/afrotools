@@ -1,7 +1,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const en=require('../assets/js/lib/ssce-practice-bank'),fr=require('../assets/js/lib/ssce-practice-bank-fr'),api=require('../assets/js/lib/ssce-practice');
 test('French adaptation preserves every reviewed answer and complete English learning text',()=>{
- assert.equal(fr.questions.length,52);assert.deepEqual(fr.questions.map(q=>q.id).sort(),en.questions.map(q=>q.id).sort());assert.equal(fr.questions.filter(q=>q.subject==='Physics').length,12);assert.equal(fr.id,en.id);assert.equal(fr.locale,'fr');
+ assert.equal(fr.questions.length,64);assert.deepEqual(fr.questions.map(q=>q.id).sort(),en.questions.map(q=>q.id).sort());assert.equal(fr.questions.filter(q=>q.subject==='Physics').length,24);assert.equal(fr.id,en.id);assert.equal(fr.locale,'fr');
  for(const q of fr.questions){
   const original=en.questions.find(item=>item.id===q.id);assert.equal(q.answer,original.answer);assert.equal(q.examYear,null);assert.equal(q.subject,original.subject);assert.equal(q.topic,original.topic);
   assert.notDeepEqual(q.steps,original.steps);assert.notEqual(q.pitfall,original.pitfall);assert.ok(q.steps.length>=2);
