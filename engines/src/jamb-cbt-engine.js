@@ -1,6 +1,10 @@
 !function(e) {
   "use strict";
   var n = "afrojamb-cbt-state", t = null, r = null, u = null;
+  function storageKey(mode) {
+    return mode === "original-practice" ? "afrojamb-original-cbt-state-v1" : "afrojamb-cbt-state";
+  }
+  function setStorageKey(mode) { n = storageKey(mode); }
   function requireReviewed(pool, revision) {
     if (!e.AfroJAMB || !e.AfroJAMB.QuestionTrust) throw new Error("Reviewed question verification is unavailable.");
     e.AfroJAMB.QuestionTrust.assertEligible(pool, revision);
@@ -97,7 +101,8 @@
       var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ], r = e.questionsPerSubject || ("quick" === e.mode ? 10 : 40), u = e.durationMinutes || ("quick" === e.mode ? 30 : 120), a = !0 === e.answeredOnly, f = [];
       if (n.forEach(function(n) {
         var t = e.pool.filter(function(t) {
-          return !(t.subject !== n || a && !t.answer || e.year && t.year !== e.year);
+          return !(t.subject !== n || a && !t.answer || e.year && t.year !== e.year ||
+            e.mode === "original-practice" && (t.year !== null || !/^ato-(math|english)-v1-\d{2}$/.test(t.id)));
         }), u = t.filter(function(e) {
           return e.answer && (4 === e.format || 4 === Object.keys(e.options || {}).length);
         }), s = t.filter(function(e) {
@@ -123,6 +128,7 @@
       var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ];
       var u = e.durationMinutes || ("quick" === e.mode ? 30 : 120);
       var f = selectQuestions(e);
+      setStorageKey(e.mode);
       return t = {
         sessionId: s(),
         poolRevision: e.poolRevision || null,
@@ -233,7 +239,7 @@
         subjectCorrect: o,
         subjectGraded: c,
         subjectTotal: i,
-        aggregate: l,
+        aggregate: t.mode === "original-practice" ? null : l,
         gradedSubjects: d,
         durationSeconds: Math.floor((Date.now() - t.startedAt) / 1e3),
         reviewItems: b,
@@ -247,7 +253,7 @@
       try {
         // A publisher-labelled year collection is not a confirmed UTME sitting.
         // Keep its raw practice result local instead of writing a /400 mock attempt.
-        if (t.year === null) fetch("/.netlify/functions/jamb-attempt", {
+        if (t.year === null && t.mode !== "original-practice") fetch("/.netlify/functions/jamb-attempt", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -278,9 +284,9 @@
       var e = t.subjectIndex[t.currentSubject];
       return j().slice(e[0], e[1]);
     },
-    tryRestore: function() {
+    tryRestore: function(mode) {
       try {
-        var e = localStorage.getItem(n);
+        var e = localStorage.getItem(storageKey(mode));
         return e ? JSON.parse(e) : null;
       } catch (e) {
         return null;
@@ -293,6 +299,10 @@
       if (!Array.isArray(e.pool)) {
         throw new Error("CBT.restore requires config.pool (question array)");
       }
+      if (e.mode === "original-practice" && n.mode !== "original-practice") {
+        throw new Error("CBT.restore: saved practice mode changed");
+      }
+      setStorageKey(e.mode);
       try { requireReviewed(e.pool, e.poolRevision); }
       catch (error) { t = null; a(); throw error; }
       var r = Object.create(null);

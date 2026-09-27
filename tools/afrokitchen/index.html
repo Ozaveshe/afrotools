@@ -6,17 +6,17 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroKitchen | African Recipe Atlas & Weekly Planner | AfroTools</title>
-<meta name="description" content="A warm African recipe atlas with 410 dishes across 55 country hubs. Search by country, ingredient, occasion, difficulty, or collection.">
+<meta name="description" content="A warm African recipe atlas with 410 dishes across 55 country and territory hubs. Search by country, ingredient, occasion, difficulty, or collection.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="AfroKitchen | African Recipe Atlas | AfroTools">
-<meta property="og:description" content="Browse a warmer AfroKitchen recipe atlas with 410 dishes across 55 African country hubs.">
+<meta property="og:description" content="Browse a warmer AfroKitchen recipe atlas with 410 dishes across 55 country and territory hubs.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/afrokitchen.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AfroKitchen | African Recipe Atlas | AfroTools">
-<meta name="twitter:description" content="Browse a warmer AfroKitchen recipe atlas with 410 dishes across 55 African country hubs.">
+<meta name="twitter:description" content="Browse a warmer AfroKitchen recipe atlas with 410 dishes across 55 country and territory hubs.">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +74,24 @@
   .ak-planner-metrics span{display:block;border:1px solid rgba(124,58,35,0.12);border-radius:8px;padding:10px;background:#fff8f1;font-size:0.76rem;color:#6b4b36}
   .ak-planner-metrics strong{display:block;color:#2b1d15;font-size:0.94rem;margin-top:2px}
   .ak-planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .ak-planner-command-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .ak-planner-command-actions [hidden]{display:none}
+  .ak-picked-recipes{margin:0 0 16px;padding:16px;border:1px solid rgba(124,58,35,0.16);border-radius:8px;background:#fffaf5}
+  .ak-picked-recipes[hidden]{display:none}
+  .ak-picked-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .ak-picked-head h3{margin:0;color:#26180f;font-size:1.05rem}
+  .ak-picked-head p{margin:4px 0 0;color:#6b4b36;font-size:.84rem;line-height:1.5}
+  .ak-picked-list{display:flex;gap:8px;flex-wrap:wrap;list-style:none;margin:12px 0;padding:0}
+  .ak-picked-list li{display:flex;align-items:center;gap:8px;max-width:100%;padding:6px 8px 6px 12px;border:1px solid rgba(124,58,35,.16);border-radius:8px;background:#fff}
+  .ak-picked-list a{font-size:.86rem;font-weight:700;color:#4e2b18;overflow-wrap:anywhere}
+  .ak-picked-list button{min-width:44px;min-height:44px;border:0;border-radius:8px;background:transparent;color:#8b3a20;font-size:.78rem;font-weight:700;cursor:pointer}
+  .ak-picked-list button:hover,.ak-picked-list button:focus-visible{background:#f9e9dc;outline:2px solid #9a2a11;outline-offset:2px}
+  .ak-picked-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .ak-picked-actions .ak-btn:disabled{opacity:.55;cursor:not-allowed}
+  .ak-picked-status{margin:8px 0 0;color:#6b4b36;font-size:.84rem;line-height:1.5}
+  [data-theme="dark"] .ak-page .ak-picked-recipes,[data-theme="dark"] .ak-page .ak-picked-list li{background:var(--ak-panel-tint);border-color:var(--ak-line)}
+  [data-theme="dark"] .ak-page .ak-picked-head h3,[data-theme="dark"] .ak-page .ak-picked-list a,[data-theme="dark"] .ak-page .ak-picked-list button{color:var(--ak-text)}
+  [data-theme="dark"] .ak-page .ak-picked-head p,[data-theme="dark"] .ak-page .ak-picked-status{color:var(--ak-muted)}
   .ak-method-card{max-width:1120px;margin:0 auto 52px;border:1px solid rgba(15,123,67,0.18);border-radius:8px;background:#fff;padding:22px 24px;box-shadow:0 14px 34px rgba(38,24,15,0.05);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:20px;align-items:start}
   .ak-method-card h2{margin:4px 0 8px;color:#26180f;font-size:1.65rem;line-height:1.05}
   .ak-method-card p{margin:0;color:#5d3f2b;font-size:.9rem;line-height:1.65}
@@ -97,14 +115,19 @@
   .ak-page .ak-country-chip-count{display:flex;align-items:baseline;justify-content:flex-end;justify-self:end;gap:4px;min-width:58px;padding:0;border:0;border-radius:0;background:transparent;color:#3f3329;text-align:right}
   .ak-page .ak-country-chip-count strong{font-family:var(--ak-font-body);font-size:.88rem;font-weight:850;line-height:1;color:#20160f}
   .ak-page .ak-country-chip-count small{font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase;color:#7b6a5b}
+  .ak-picked-status a{text-decoration:underline;font-weight:700}
+  html[data-theme="dark"] .ak-page :is(.ak-browse-shell,.ak-method-card,.ak-support-card) .ak-section-kicker{color:#a7ddb7}
+  html[data-theme="dark"] .ak-page :is(.ak-browse-shell,.ak-method-card,.ak-support-card) .ak-section-kicker::before{background:#a7ddb7}
+  html[data-theme="dark"] .ak-page #cook-this-week .ak-section-kicker{color:#a7ddb7}
+  html[data-theme="dark"] .ak-page #cook-this-week .ak-section-kicker::before{background:#a7ddb7}
   @media (max-width:960px){.ak-planner-grid{grid-template-columns:repeat(2,1fr)}.ak-plan-day-grid,.ak-plan-shopping-grid{grid-template-columns:1fr}.ak-planner-pick{grid-template-columns:1fr}.ak-planner-metrics{grid-template-columns:repeat(2,1fr)}}
   @media (max-width:760px){.ak-method-card{grid-template-columns:1fr;margin-left:20px;margin-right:20px}}
-  @media (max-width:560px){.ak-planner-card{padding:18px}.ak-planner-head{flex-direction:column}.ak-planner-head .ak-section-title{font-size:2rem}.ak-planner-grid,.ak-planner-metrics{grid-template-columns:1fr}.ak-planner-command .ak-btn,.ak-planner-actions .ak-btn{width:100%;justify-content:center}.ak-plan-summary .ak-planner-actions{width:100%}.ak-method-card{padding:18px}.ak-page .ak-country-grid{gap:8px}.ak-page .ak-country-chip{grid-template-columns:28px minmax(0,1fr) auto;min-height:58px;padding:9px 10px}.ak-page .ak-country-chip-flag{width:28px}.ak-page .ak-country-chip-count{min-width:30px}.ak-page .ak-country-chip-count small{display:none}}
+  @media (max-width:560px){.ak-planner-card{padding:18px}.ak-planner-head{flex-direction:column}.ak-planner-head .ak-section-title{font-size:2rem}.ak-planner-grid,.ak-planner-metrics{grid-template-columns:1fr}.ak-planner-command-actions{width:100%}.ak-planner-command .ak-btn,.ak-planner-actions .ak-btn,.ak-picked-actions .ak-btn{width:100%;justify-content:center}.ak-plan-summary .ak-planner-actions{width:100%}.ak-method-card{padding:18px}.ak-page .ak-country-grid{gap:8px}.ak-page .ak-country-chip{grid-template-columns:28px minmax(0,1fr) auto;min-height:58px;padding:9px 10px}.ak-page .ak-country-chip-flag{width:28px}.ak-page .ak-country-chip-count{min-width:30px}.ak-page .ak-country-chip-count small{display:none}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroKitchen | African Recipes","description":"A warm African recipe atlas with 410 dishes across 55 country hubs. Search by country, ingredient, occasion, difficulty, or collection.","url":"https://afrotools.com/tools/afrokitchen/","inLanguage":"en","applicationCategory":"FoodApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroKitchen | African Recipes","url":"https://afrotools.com/tools/afrokitchen/","description":"A warm African recipe atlas with 410 dishes across 55 country hubs. Search by country, ingredient, occasion, difficulty, or collection.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroKitchen | African Recipes","description":"A warm African recipe atlas with 410 dishes across 55 country and territory hubs. Search by country, ingredient, occasion, difficulty, or collection.","url":"https://afrotools.com/tools/afrokitchen/","inLanguage":"en","applicationCategory":"FoodApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroKitchen | African Recipes","url":"https://afrotools.com/tools/afrokitchen/","description":"A warm African recipe atlas with 410 dishes across 55 country and territory hubs. Search by country, ingredient, occasion, difficulty, or collection.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many African recipes does AfroKitchen have?","acceptedAnswer":{"@type":"Answer","text":"AfroKitchen has 410 recipes across 55 African country hubs, spanning West African, East African, North African, Southern African, and Central African cuisines."}},{"@type":"Question","name":"Can I adjust serving sizes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every recipe supports dynamic serving size adjustment. Change the number of servings and all ingredient quantities update automatically."}},{"@type":"Question","name":"Does AfroKitchen show ingredient costs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Ingredient costs are shown in local African currencies including NGN, KES, GHS, and ZAR, so you can estimate how much a dish will cost to make."}},{"@type":"Question","name":"Is AfroKitchen free to use?","acceptedAnswer":{"@type":"Answer","text":"Completely free. Browse recipes, use cooking timers, adjust servings, and use the kitchen advisor when the service is available."}},{"@type":"Question","name":"Can I submit my own recipe?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the submit page to share your family's dish for editorial review. Submissions are not published instantly."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many African recipes does AfroKitchen have?","acceptedAnswer":{"@type":"Answer","text":"AfroKitchen has 410 recipes across 55 country and territory hubs, spanning West African, East African, North African, Southern African, and Central African cuisines."}},{"@type":"Question","name":"Can I adjust serving sizes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every recipe supports dynamic serving size adjustment. Change the number of servings and all ingredient quantities update automatically."}},{"@type":"Question","name":"Does AfroKitchen show ingredient costs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Ingredient costs are shown in local African currencies including NGN, KES, GHS, and ZAR, so you can estimate how much a dish will cost to make."}},{"@type":"Question","name":"Is AfroKitchen free to use?","acceptedAnswer":{"@type":"Answer","text":"Completely free. Browse recipes, use cooking timers, adjust servings, and use the kitchen advisor when the service is available."}},{"@type":"Question","name":"Can I submit my own recipe?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the submit page to share your family's dish for editorial review. Submissions are not published instantly."}}]}
 </script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -315,13 +338,31 @@
       </div>
       <div class="ak-planner-command">
         <p class="ak-planner-status" id="ak-plan-status" aria-live="polite">Use the filters, then generate a plan from existing AfroKitchen recipes.</p>
-        <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="idle">
-          <svg class="ak-planner-cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M7 3v3M17 3v3M4.5 9.5h15M6.5 5h11A2.5 2.5 0 0 1 20 7.5v10A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5v-10A2.5 2.5 0 0 1 6.5 5Z"></path>
-            <path d="M8 13h3M8 16h6"></path>
-          </svg>
-          <span class="ak-planner-cta-label">Generate plan</span>
-        </button>
+        <div class="ak-planner-command-actions">
+          <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-restore" hidden>Open saved plan</button>
+          <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-clear" hidden>Clear saved plan</button>
+          <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="idle">
+            <svg class="ak-planner-cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M7 3v3M17 3v3M4.5 9.5h15M6.5 5h11A2.5 2.5 0 0 1 20 7.5v10A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 6.5 5Z"></path>
+              <path d="M8 13h3M8 16h6"></path>
+            </svg>
+            <span class="ak-planner-cta-label">Generate plan</span>
+          </button>
+        </div>
+      </div>
+      <div class="ak-picked-recipes" id="ak-picked-recipes" hidden>
+        <div class="ak-picked-head">
+          <div>
+            <h3>Your picked recipes</h3>
+            <p>Saved on this device. Meal recipes fill day slots; sides, snacks, and drinks stay as ideas.</p>
+          </div>
+          <div class="ak-picked-actions">
+            <button class="ak-btn ak-btn-secondary" type="button" id="ak-plan-from-picks">Build plan from my picks</button>
+            <button class="ak-btn ak-btn-outline" type="button" id="ak-picks-clear">Clear picks</button>
+          </div>
+        </div>
+        <ul class="ak-picked-list" id="ak-picked-list"></ul>
+        <p class="ak-picked-status" id="ak-picked-status" aria-live="polite"></p>
       </div>
       <div class="ak-planner-result" id="ak-plan-result" aria-live="polite"></div>
     </div>
@@ -346,7 +387,7 @@
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">First bites</div>
         <h2 class="ak-section-title">Popular dishes to open first</h2>
-        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. 410 recipes, 55 country hubs, and 11 new chef-built collections are now wired into the archive.</p>
+        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. 410 recipes, 55 country and territory hubs, and 11 new chef-built collections are now wired into the archive.</p>
         <div class="ak-hero-route-grid">
           <a class="ak-support-link" href="/tools/afrokitchen/recipes/couscous-royal-dz/">Couscous Royal</a>
 <a class="ak-support-link" href="/tools/afrokitchen/recipes/amiwo-bj/">Amiwo</a>
@@ -911,7 +952,7 @@
           <div class="ak-faq">
             <details class="ak-faq-item" open>
               <summary>How many African recipes does AfroKitchen have?</summary>
-              <div class="ak-faq-answer">AfroKitchen has 410 recipes across 55 African country hubs, spanning West African, East African, North African, Southern African, and Central African cuisines.</div>
+              <div class="ak-faq-answer">AfroKitchen has 410 recipes across 55 country and territory hubs, spanning West African, East African, North African, Southern African, and Central African cuisines.</div>
             </details>
             <details class="ak-faq-item">
               <summary>Can I adjust serving sizes?</summary>
@@ -978,13 +1019,14 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/engines/afrokitchen-engine.js?v=d9593a0c"></script>
-<script src="cuisine-intelligence-data.js?v=7ce04e73"></script>
-<script src="image-pipeline.js?v=1897dd1a"></script>
+<script src="/engines/afrokitchen-engine.js?v=5c7a30c1"></script>
+<script src="cuisine-intelligence-data.js?v=f0841dd2"></script>
+<script src="image-manifest.js?v=80421c10"></script>
+<script src="image-pipeline.js?v=f8570562"></script>
 <script src="static-routes.js?v=476490b3"></script>
 <script>
 (function () {
@@ -1083,6 +1125,9 @@
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
+  var planGenerationCount = 0;
+  var SAVED_PLAN_KEY = 'ak_saved_plan_v1';
+  var PICKED_RECIPES_KEY = 'ak_meal_plan_v1';
   var SHOPPING_GROUP_ORDER = ['Grains', 'Vegetables', 'Protein', 'Spices', 'Liquids', 'Pantry', 'Garnish'];
 
   function planIcon(name) {
@@ -1396,7 +1441,10 @@
       recipeTotal.textContent = String(allRecipes.length);
     }
     renderCountryGrid(allRecipes || []);
+    renderPickedRecipes();
     renderPlanEmpty('Use the filters, then generate a 3-day or 7-day plan from existing recipes.');
+    updateSavedPlanControls();
+    if (readSavedPlan()) await restoreSavedPlan();
   }
 
   function recipeTotalMinutes(recipe) {
@@ -1559,7 +1607,7 @@
     currentShoppingText = '';
     var chips = inputs ? '<div class="ak-plan-chip-row">' + planFilterChips(inputs) + '</div>' : '';
     var warning = typeof matchedCount === 'number'
-      ? '<div class="ak-plan-warning">' + planIcon('warning') + '<span>' + esc(matchedCount + ' matching recipes found. Widen the time, country, diet, or occasion filters to build a fuller plan.') + '</span></div>'
+      ? '<div class="ak-plan-warning">' + planIcon('warning') + '<span>' + esc(matchedCount + ' matching meal recipes found. Widen the time, country, diet, or occasion filters to build a fuller plan.') + '</span></div>'
       : '';
     result.innerHTML =
       '<section class="ak-plan-output ak-plan-output-empty">' +
@@ -1580,14 +1628,162 @@
 
   function getPlanInputs() {
     var days = Number((document.getElementById('ak-plan-days') || {}).value || 7);
+    var rawServings = Number((document.getElementById('ak-plan-servings') || {}).value || 4);
     return {
       days: days === 3 ? 3 : 7,
       maxTime: Number((document.getElementById('ak-plan-time') || {}).value || 45),
-      servings: Math.max(1, Math.min(30, Number((document.getElementById('ak-plan-servings') || {}).value || 4))),
+      servings: Number.isFinite(rawServings) ? Math.max(1, Math.min(30, Math.round(rawServings))) : 4,
       diet: (document.getElementById('ak-plan-diet') || {}).value || '',
       country: (document.getElementById('ak-plan-country') || {}).value || '',
       occasion: (document.getElementById('ak-plan-occasion') || {}).value || ''
     };
+  }
+
+  function readPickedRecipes() {
+    if (!mealPlannerRecipes.length) return [];
+    var stored;
+    try {
+      stored = JSON.parse(window.localStorage.getItem(PICKED_RECIPES_KEY) || '[]');
+    } catch (error) {
+      return [];
+    }
+    if (!Array.isArray(stored)) return [];
+    var bySlug = Object.create(null);
+    mealPlannerRecipes.forEach(function (recipe) {
+      if (recipe && typeof recipe.slug === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipe.slug)) bySlug[recipe.slug] = recipe;
+    });
+    var seen = Object.create(null);
+    return stored.slice(0, 21).reduce(function (picks, item) {
+      var slug = item && typeof item.slug === 'string' ? item.slug : '';
+      if (!Object.prototype.hasOwnProperty.call(bySlug, slug) || seen[slug]) return picks;
+      seen[slug] = true;
+      picks.push(bySlug[slug]);
+      return picks;
+    }, []);
+  }
+
+  function writePickedRecipes(recipes) {
+    try {
+      window.localStorage.setItem(PICKED_RECIPES_KEY, JSON.stringify(recipes.map(function (recipe) { return { slug: recipe.slug }; })));
+      return true;
+    } catch (error) {
+      setPlanStatus('This browser could not update your picked recipes.');
+      return false;
+    }
+  }
+
+  function renderPickedRecipes() {
+    var panel = document.getElementById('ak-picked-recipes');
+    var list = document.getElementById('ak-picked-list');
+    var status = document.getElementById('ak-picked-status');
+    var buildButton = document.getElementById('ak-plan-from-picks');
+    if (!panel || !list || !status || !buildButton) return;
+    var picks = readPickedRecipes();
+    panel.hidden = !picks.length;
+    list.replaceChildren();
+    if (!picks.length) return;
+    var inputs = getPlanInputs();
+    var mealPicks = picks.filter(isPlanMeal);
+    var eligible = mealPicks.filter(function (recipe) { return matchesPlan(recipe, inputs); });
+    buildButton.disabled = !eligible.length;
+    status.textContent = eligible.length
+      ? eligible.length + ' of ' + picks.length + ' picked ' + (picks.length === 1 ? 'recipe matches' : 'recipes match') + ' your filters. Up to ' + inputs.days + ' will start your plan.'
+      : mealPicks.length
+        ? 'None of your picks match these filters. Widen the filters to use them.'
+        : 'These picks are sides, snacks, drinks, or desserts. Add a main dish, stew, soup, seafood, grill, or rice recipe to fill a day.';
+    if (!mealPicks.length) {
+      var browseLink = document.createElement('a');
+      browseLink.href = '#browse-panel';
+      browseLink.textContent = 'Browse recipes, then use More filters to choose Main';
+      status.append(' ', browseLink);
+    }
+    picks.forEach(function (recipe) {
+      var item = document.createElement('li');
+      var link = document.createElement('a');
+      var remove = document.createElement('button');
+      link.href = AKRoutes.recipe(recipe.slug);
+      link.textContent = recipe.name;
+      remove.type = 'button';
+      remove.textContent = 'Remove';
+      remove.setAttribute('aria-label', 'Remove ' + recipe.name + ' from picked recipes');
+      remove.addEventListener('click', function () {
+        var next = readPickedRecipes().filter(function (pick) { return pick.slug !== recipe.slug; });
+        if (!writePickedRecipes(next)) return;
+        renderPickedRecipes();
+        setPlanStatus(recipe.name + ' removed from your picked recipes.');
+        var nextFocus = list.querySelector('button') || (next.length ? buildButton : document.getElementById('ak-plan-generate'));
+        if (nextFocus) nextFocus.focus();
+      });
+      item.appendChild(link);
+      item.appendChild(remove);
+      list.appendChild(item);
+    });
+  }
+
+  function readSavedPlan() {
+    try {
+      var plan = JSON.parse(window.localStorage.getItem(SAVED_PLAN_KEY) || 'null');
+      if (!plan || plan.version !== 1 || !Array.isArray(plan.slugs) || !plan.inputs) return null;
+      if (!plan.slugs.length || plan.slugs.length > 7) return null;
+      if (plan.slugs.some(function (slug) { return typeof slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug); })) return null;
+      if (new Set(plan.slugs).size !== plan.slugs.length) return null;
+      if (plan.inputs.days !== 3 && plan.inputs.days !== 7) return null;
+      if (plan.slugs.length > plan.inputs.days) return null;
+      if ([30, 45, 75, 999].indexOf(plan.inputs.maxTime) === -1) return null;
+      if (!Number.isInteger(plan.inputs.servings) || plan.inputs.servings < 1 || plan.inputs.servings > 30) return null;
+      if (typeof plan.inputs.diet !== 'string' || (plan.inputs.diet && AK.DIETS.indexOf(plan.inputs.diet) === -1)) return null;
+      if (typeof plan.inputs.country !== 'string' || (plan.inputs.country && !AK.COUNTRIES[plan.inputs.country])) return null;
+      if (typeof plan.inputs.occasion !== 'string' || ['', 'everyday', 'celebration', 'festive', 'budget-friendly', 'street-food'].indexOf(plan.inputs.occasion) === -1) return null;
+      return plan;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function updateSavedPlanControls() {
+    var hasSavedPlan = !!readSavedPlan();
+    var restore = document.getElementById('ak-plan-restore');
+    var clear = document.getElementById('ak-plan-clear');
+    if (restore) restore.hidden = !hasSavedPlan;
+    if (clear) clear.hidden = !hasSavedPlan;
+  }
+
+  function savePlan(recipes, inputs) {
+    var saved = {
+      version: 1,
+      slugs: recipes.map(function (recipe) { return recipe.slug; }),
+      inputs: inputs,
+      savedAt: new Date().toISOString()
+    };
+    try {
+      window.localStorage.setItem(SAVED_PLAN_KEY, JSON.stringify(saved));
+      updateSavedPlanControls();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async function restoreSavedPlan() {
+    var saved = readSavedPlan();
+    if (!saved || !mealPlannerRecipes.length) return;
+    var bySlug = {};
+    mealPlannerRecipes.forEach(function (recipe) { bySlug[recipe.slug] = recipe; });
+    var recipes = saved.slugs.map(function (slug) { return bySlug[slug]; });
+    if (recipes.some(function (recipe) { return !recipe; })) {
+      renderPlanEmpty('A recipe in your saved plan is no longer available. Generate and save a new plan.');
+      setPlanStatus('Saved plan could not be restored because a recipe is unavailable.');
+      return;
+    }
+    ['days', 'maxTime', 'servings', 'diet', 'country', 'occasion'].forEach(function (key) {
+      var id = { days: 'ak-plan-days', maxTime: 'ak-plan-time', servings: 'ak-plan-servings', diet: 'ak-plan-diet', country: 'ak-plan-country', occasion: 'ak-plan-occasion' }[key];
+      var field = document.getElementById(id);
+      if (field) field.value = saved.inputs[key] == null ? '' : String(saved.inputs[key]);
+    });
+    var detailed = await Promise.all(recipes.map(fetchRecipeDetails));
+    renderPlan(detailed, saved.inputs);
+    setPlanStatus('Saved plan restored from this device.');
+    if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_restored', { days: saved.inputs.days, recipe_count: detailed.length });
   }
 
   function matchesPlan(recipe, inputs) {
@@ -1602,22 +1798,35 @@
     return ok;
   }
 
+  // A day in the weekly plan needs a meal recipe; drinks, snacks, sides and desserts remain browseable.
+  function isPlanMeal(recipe) {
+    return !!recipe && ['main', 'stew', 'soup', 'seafood', 'grill', 'rice'].indexOf(String(recipe.category || '').toLowerCase()) !== -1;
+  }
+
+  function isStarchLedPlanMeal(recipe) {
+    return !!recipe && ['papa-le-moroho-ls', 'sishwala-emasi-sz', 'ugali-na-sukuma-wiki', 'kondowole'].indexOf(recipe.slug) !== -1;
+  }
+
   function scoreRecipe(recipe, index) {
-    var categoryBonus = recipe.category === 'main' || recipe.category === 'stew' || recipe.category === 'soup' ? 80 : 0;
-    return (recipe.is_featured ? 1000 : 0) + (Number(recipe.view_count || 0) / 10) + categoryBonus - index;
+    var categoryBonus = ['stew', 'soup', 'seafood', 'grill'].indexOf(recipe.category) !== -1 ? 50 : 40;
+    return categoryBonus + (recipe.is_featured ? 10 : 0) + Math.min(5, Number(recipe.view_count || 0) / 100) - (isStarchLedPlanMeal(recipe) ? 20 : 0) - index / 1000;
   }
 
   function choosePlanRecipes(pool, days) {
     var seenCountries = {};
     var seenCategories = {};
+    var starchLedCount = 0;
+    var maxStarchLed = days <= 3 ? 1 : 2;
     var picks = [];
     pool.forEach(function (recipe) {
       if (picks.length >= days) return;
+      if (isStarchLedPlanMeal(recipe) && starchLedCount >= maxStarchLed) return;
       var countryCount = seenCountries[recipe.country_code] || 0;
       var categoryCount = seenCategories[recipe.category] || 0;
       if (countryCount > 1 && pool.length >= days + 3) return;
       if (categoryCount > 2 && pool.length >= days + 3) return;
       picks.push(recipe);
+      if (isStarchLedPlanMeal(recipe)) starchLedCount += 1;
       seenCountries[recipe.country_code] = countryCount + 1;
       seenCategories[recipe.category] = categoryCount + 1;
     });
@@ -1625,7 +1834,9 @@
       pool.forEach(function (recipe) {
         if (picks.length >= days) return;
         if (picks.some(function (pick) { return pick.slug === recipe.slug; })) return;
+        if (isStarchLedPlanMeal(recipe) && starchLedCount >= maxStarchLed) return;
         picks.push(recipe);
+        if (isStarchLedPlanMeal(recipe)) starchLedCount += 1;
       });
     }
     return picks.slice(0, days);
@@ -1726,7 +1937,8 @@
     var labels = {
       idle: 'Generate plan',
       loading: 'Building your plan…',
-      success: 'Plan ready'
+      success: 'Plan ready',
+      partial: 'Partial plan'
     };
     button.dataset.state = nextState;
     button.disabled = nextState === 'loading';
@@ -1741,6 +1953,9 @@
   function renderPlan(recipes, inputs) {
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
+    var savedPlan = readSavedPlan();
+    var planSlugs = recipes.map(function (recipe) { return recipe.slug; });
+    var isSaved = !!savedPlan && JSON.stringify(savedPlan.slugs) === JSON.stringify(planSlugs) && JSON.stringify(savedPlan.inputs) === JSON.stringify(inputs);
     currentPlanText = buildPlanText(recipes, inputs);
     var shoppingGroups = buildGroupedShoppingList(recipes, inputs.servings);
     currentShoppingText = buildShoppingTextFromGroups(shoppingGroups);
@@ -1783,11 +1998,12 @@
         '<div class="ak-plan-output-head">' +
           '<div>' +
             '<p class="ak-plan-eyebrow">' + planIcon('shopping') + '<span>Weekly plan</span></p>' +
-            '<h3>' + inputs.days + '-day plan ready</h3>' +
+            '<h3>' + (recipes.length === inputs.days ? inputs.days + '-day plan ready' : 'Partial ' + inputs.days + '-day plan') + '</h3>' +
             '<p>' + esc(summaryText) + '</p>' +
           '</div>' +
           '<div class="ak-plan-result-actions">' +
             '<button class="ak-btn ak-btn-outline" type="button" id="ak-plan-regenerate">' + planIcon('timer') + '<span>Regenerate</span></button>' +
+            '<button class="ak-btn ak-btn-primary" type="button" id="ak-plan-save"' + (isSaved ? ' disabled' : '') + '>' + planIcon('action') + '<span>' + (isSaved ? 'Saved on this device' : 'Save plan on this device') + '</span></button>' +
             '<button class="ak-btn ak-btn-secondary" type="button" id="ak-plan-copy">' + planIcon('copy') + '<span>Copy shopping list</span></button>' +
             '<button class="ak-btn ak-btn-outline" type="button" id="ak-plan-export">' + planIcon('share') + '<span>Export TXT</span></button>' +
             '<button class="ak-btn ak-btn-outline" type="button" id="ak-plan-print">' + planIcon('print') + '<span>Print plan</span></button>' +
@@ -1801,11 +2017,24 @@
         '</div>' +
       '</section>';
     var regenerateButton = document.getElementById('ak-plan-regenerate');
+    var saveButton = document.getElementById('ak-plan-save');
     var copyButton = document.getElementById('ak-plan-copy');
     var exportButton = document.getElementById('ak-plan-export');
     var printButton = document.getElementById('ak-plan-print');
     if (regenerateButton) {
       regenerateButton.addEventListener('click', generateMealPlan);
+    }
+    if (saveButton) {
+      saveButton.addEventListener('click', function () {
+        if (!savePlan(recipes, inputs)) {
+          setPlanStatus('This browser could not save your plan. You can still export it as a text file.');
+          return;
+        }
+        saveButton.disabled = true;
+        saveButton.querySelector('span').textContent = 'Saved on this device';
+        setPlanStatus('Plan saved on this device. Open it again whenever you return.');
+        if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_saved', { days: inputs.days, recipe_count: recipes.length });
+      });
     }
     if (copyButton) {
       copyButton.addEventListener('click', function () {
@@ -1822,6 +2051,7 @@
       exportButton.addEventListener('click', function () {
         exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText);
         setPlanStatus('Plan exported as a text file.');
+        if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_exported', { days: inputs.days, recipe_count: recipes.length, format: 'txt' });
       });
     }
     if (printButton) {
@@ -1833,9 +2063,10 @@
     if (AKImages && typeof AKImages.hydrate === 'function') AKImages.hydrate(result);
   }
 
-  async function generateMealPlan() {
+  async function generateMealPlan(options) {
     var generateButton = document.getElementById('ak-plan-generate');
     var inputs = getPlanInputs();
+    var usePicked = options && options.usePicked === true;
     var pool = mealPlannerRecipes.slice();
     if (!pool.length) {
       renderPlanEmpty('Loading recipe ideas. Try again in a moment.');
@@ -1844,9 +2075,15 @@
     }
     setPlanButtonState('loading');
     setPlanStatus('Finding matching stored recipes…');
-    pool = pool.filter(function (recipe) { return matchesPlan(recipe, inputs); });
+    pool = pool.filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); });
+    var savedPicks = usePicked ? readPickedRecipes().filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); }).slice(0, inputs.days) : [];
+    if (usePicked && !savedPicks.length) {
+      setPlanStatus('None of your picked recipes match these filters. Widen the filters to use them.');
+      setPlanButtonState('idle');
+      return;
+    }
     if (!pool.length) {
-      renderPlanEmpty('No stored recipes match those choices yet. Widen the time, country, diet, or occasion to build a plan.', inputs, 0);
+      renderPlanEmpty('No meal recipes match those choices yet. Widen the time, country, diet, or occasion to build a plan.', inputs, 0);
       setPlanStatus('No complete plan generated.');
       setPlanButtonState('idle');
       return;
@@ -1861,14 +2098,22 @@
     }).map(function (item) {
       return item.recipe;
     });
+    if (pool.length > inputs.days) {
+      var offset = (planGenerationCount * inputs.days) % pool.length;
+      pool = pool.slice(offset).concat(pool.slice(0, offset));
+    }
+    planGenerationCount += 1;
     try {
-      var picked = choosePlanRecipes(pool, inputs.days);
+      var savedSlugs = new Set(savedPicks.map(function (recipe) { return recipe.slug; }));
+      var picked = savedPicks.concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - savedPicks.length));
       var detailed = await Promise.all(picked.map(fetchRecipeDetails));
       renderPlan(detailed, inputs);
-      setPlanStatus(detailed.length < inputs.days
-        ? 'Partial plan generated from ' + detailed.length + ' existing recipes.'
-        : 'Plan generated from ' + detailed.length + ' existing recipes.');
-      setPlanButtonState('success');
+      if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_created', {
+        days: inputs.days, recipe_count: detailed.length, country_code: inputs.country || 'all', picked_count: savedPicks.length
+      });
+      var countLabel = detailed.length + ' existing ' + (detailed.length === 1 ? 'recipe' : 'recipes');
+      setPlanStatus((detailed.length < inputs.days ? 'Partial plan generated from ' : 'Plan generated from ') + countLabel + (savedPicks.length ? ', including ' + savedPicks.length + ' of your picks.' : '.'));
+      setPlanButtonState(detailed.length < inputs.days ? 'partial' : 'success');
     } catch (error) {
       renderPlanEmpty('The planner could not finish loading recipe details. Try again in a moment.');
       setPlanStatus('Plan generation failed.');
@@ -1910,11 +2155,15 @@
     var el = document.getElementById(id);
     if (el) {
       el.addEventListener('change', function () {
+        planGenerationCount = 0;
+        renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');
         setPlanStatus('Ready to generate a fresh plan.');
         setPlanButtonState('idle');
       });
       el.addEventListener('input', function () {
+        planGenerationCount = 0;
+        renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');
         setPlanStatus('Ready to generate a fresh plan.');
         setPlanButtonState('idle');
@@ -1926,6 +2175,38 @@
     setPlanButtonState('idle');
     generatePlanButton.addEventListener('click', generateMealPlan);
   }
+  var planFromPicksButton = document.getElementById('ak-plan-from-picks');
+  if (planFromPicksButton) planFromPicksButton.addEventListener('click', function () { generateMealPlan({ usePicked: true }); });
+  var clearPicksButton = document.getElementById('ak-picks-clear');
+  if (clearPicksButton) clearPicksButton.addEventListener('click', function () {
+    try {
+      window.localStorage.removeItem(PICKED_RECIPES_KEY);
+      renderPickedRecipes();
+      setPlanStatus('Picked recipes cleared from this device.');
+      if (generatePlanButton) generatePlanButton.focus();
+    } catch (error) {
+      setPlanStatus('This browser could not clear your picked recipes.');
+    }
+  });
+  var restorePlanButton = document.getElementById('ak-plan-restore');
+  if (restorePlanButton) restorePlanButton.addEventListener('click', function () {
+    restoreSavedPlan().catch(function () { setPlanStatus('Saved plan could not be opened. Try generating a new plan.'); });
+  });
+  var clearPlanButton = document.getElementById('ak-plan-clear');
+  if (clearPlanButton) clearPlanButton.addEventListener('click', function () {
+    try {
+      window.localStorage.removeItem(SAVED_PLAN_KEY);
+      updateSavedPlanControls();
+      var saveButton = document.getElementById('ak-plan-save');
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.querySelector('span').textContent = 'Save plan on this device';
+      }
+      setPlanStatus('Saved plan cleared from this device.');
+    } catch (error) {
+      setPlanStatus('This browser could not clear the saved plan.');
+    }
+  });
   if (recipesMoreBtn) {
     recipesMoreBtn.addEventListener('click', function () {
       visibleRecipeCount += PAGE_SIZE;
@@ -2000,7 +2281,7 @@ async function askAI(preset){
   els.forEach(function (el) { obs.observe(el); });
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
 </body>
 </html>

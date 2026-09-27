@@ -31,9 +31,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=cec70638">
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script>
 <style>
   :root {
     --rd-blue: var(--color-primary);
@@ -47,7 +47,7 @@
 
   .tool-hero {
     background: linear-gradient(135deg, var(--rd-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    padding: 30px 0 28px;
   }
 
   .tool-hero-inner,
@@ -130,6 +130,29 @@
     display: grid;
     gap: 22px;
     grid-template-columns: minmax(0, 1fr) 390px;
+  }
+
+  .redact-upload {
+    grid-column: 1 / -1;
+  }
+
+  .redact-upload .drop-zone {
+    display: grid;
+    place-items: center;
+    gap: 4px;
+    padding: 20px 18px;
+  }
+
+  .tool-main-inner > .card + .card {
+    margin-top: 0;
+  }
+
+  .redact-editor .editor-shell {
+    min-height: 320px;
+  }
+
+  .redact-editor .canvas-stage {
+    min-height: 280px;
   }
 
   .card {
@@ -761,18 +784,33 @@
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/document-pdf/">Document PDF</a> / <span>PDF Redact</span></div>
     <h1>PDF <em>Redaction</em> Tool</h1>
     <p class="hero-sub">Draw redaction boxes, find matching text, review every page, then export a flattened PDF that removes the generated file's text layer. Everything runs locally in your browser.</p>
-    <div class="hero-badges">
-      <span class="badge">Browser Only</span>
-      <span class="badge red">Secure Flattened Export</span>
-      <span class="badge">Search Redaction</span>
-      <span class="badge">Manual Review</span>
-    </div>
   </div>
 </header>
 
 <main class="tool-main">
   <div class="tool-main-inner">
-    <section class="card" aria-label="PDF redaction editor">
+    <section class="card redact-upload" aria-labelledby="redact-upload-title">
+      <div class="card-head">
+        <span class="card-title" id="redact-upload-title">Choose a PDF to redact</span>
+        <span class="card-kicker">One PDF</span>
+      </div>
+      <div class="card-body">
+        <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Choose a PDF to redact">
+          <div class="drop-title">Choose a PDF</div>
+          <div class="drop-hint">or drop it here</div>
+        </div>
+        <input aria-label="Choose a PDF to redact" class="hidden-input" id="fileInput" type="file" accept="application/pdf,.pdf">
+        <div class="file-summary" id="fileSummary">
+          <div style="min-width:0">
+            <div class="file-name" id="fileName">No file selected</div>
+            <div class="file-meta" id="fileMeta"></div>
+          </div>
+          <button type="button" class="mini-btn" id="removeFileBtn">Remove</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card redact-editor" aria-label="PDF redaction editor">
       <div class="card-head">
         <span class="card-title">Redaction Editor</span>
         <span class="card-kicker" id="pageStatus">No PDF loaded</span>
@@ -812,27 +850,6 @@
     </section>
 
     <aside>
-      <section class="card">
-        <div class="card-head">
-          <span class="card-title">Upload</span>
-          <span class="card-kicker">One PDF</span>
-        </div>
-        <div class="card-body">
-          <div class="drop-zone" id="dropZone" role="button" tabindex="0">
-            <div class="drop-title">Drop a PDF here</div>
-            <div class="drop-hint">or click to choose a file</div>
-          </div>
-          <input aria-label="Choose a PDF to redact" class="hidden-input" id="fileInput" type="file" accept="application/pdf,.pdf">
-          <div class="file-summary" id="fileSummary">
-            <div style="min-width:0">
-              <div class="file-name" id="fileName">No file selected</div>
-              <div class="file-meta" id="fileMeta"></div>
-            </div>
-            <button type="button" class="mini-btn" id="removeFileBtn">Remove</button>
-          </div>
-        </div>
-      </section>
-
       <section class="card">
         <div class="card-head">
           <span class="card-title">Redaction Style</span>
@@ -996,7 +1013,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/document-pdf/" data-related-tool data-id="document-pdf" data-name="All PDF &amp; document tools" data-category="document-pdf" data-icon="PDF" data-desc="Choose from 31 browser PDF and document tools by task.">All PDF &amp; document tools</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>

@@ -53,9 +53,9 @@
     if (!response.ok) throw new Error('The reviewed bank could not be loaded. Please try again.');
     return response.json();
   }
-  async function fetchIndex() {
+  async function fetchIndex(url) {
     try {
-      var index = await validatePublication(await fetchJson('/data/jamb/pools/index.json'));
+      var index = await validatePublication(await fetchJson(url || '/data/jamb/pools/index.json'));
       currentRevision = index.review_revision;
       return index;
     } catch (error) {
@@ -93,8 +93,8 @@
     pool.questions.forEach(function (question) { registered.set(question, pool.review_revision); });
     return pool;
   }
-  async function loadPool(url) {
-    var index = await fetchIndex();
+  async function loadPool(url, indexUrl) {
+    var index = await fetchIndex(indexUrl);
     try {
       return await validatePool(await fetchJson(url || '/data/jamb/pools/practice-pool.json'), index);
     } catch (error) {

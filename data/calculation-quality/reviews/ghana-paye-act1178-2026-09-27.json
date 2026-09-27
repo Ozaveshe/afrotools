@@ -1,0 +1,48 @@
+{
+  "reviewedBy": "Codex primary-source and calculation review",
+  "reviewedAt": "2026-09-27",
+  "sourceUrl": "https://gra.gov.gh/news/portfolio/amendments-income-tax-act-2026-act-1178/",
+  "reason": "GRA Act 1178 changed resident PAYE bands effective 1 September 2026. The GRA PAYE table confirms monthly widths of GHS 588, 80, 100, 2,900, 16,000 and 30,332 before 35% above GHS 50,000. SSNIT's January 2026 notice at https://www.ssnit.org.gh/wp-content/uploads/2026/01/Public-Notice-Min-Max-Insurable.pdf states a GHS 69,000 monthly maximum insurable earning; the old annual interpretation was wrong. The GRA personal-relief page states GHS 600 child education relief for up to three children. Independent literal tests check every PAYE boundary, the SSNIT ceiling, relief, a Tier III worked example and rounding.",
+  "formulaIds": [
+    "paye-browser-gh",
+    "paye-server-gh",
+    "route-gh-paye",
+    "route-gh-paye-fr"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-gh-defaults",
+      "formulaId": "paye-server-gh",
+      "before": {
+        "deductions.totalDeductions": 305174.75,
+        "result.netAnnual": 694825.25,
+        "result.netMonthly": 57902.1,
+        "tax.netTax": 301819.75
+      },
+      "after": {
+        "deductions.totalDeductions": 333054.2,
+        "result.netAnnual": 666945.8,
+        "result.netMonthly": 55578.82,
+        "tax.netTax": 287514.2
+      },
+      "reason": "Act 1178 band widths and the corrected monthly SSNIT ceiling change this annual-pay example."
+    },
+    {
+      "fixtureId": "paye-gh-large-decimal",
+      "formulaId": "paye-server-gh",
+      "before": {
+        "deductions.totalDeductions": 349955174.94,
+        "result.netAnnual": 650044825.61,
+        "result.netMonthly": 54170402.13,
+        "tax.netTax": 349951819.94
+      },
+      "after": {
+        "deductions.totalDeductions": 349983054.39,
+        "result.netAnnual": 650016946.16,
+        "result.netMonthly": 54168078.85,
+        "tax.netTax": 349937514.39
+      },
+      "reason": "The large-decimal case now uses Act 1178 bands and caps annual employee SSNIT at twelve times GHS 69,000."
+    }
+  ]
+}

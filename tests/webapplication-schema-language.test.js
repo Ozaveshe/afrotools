@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
+  extractVisibleFaq,
   pageLanguage,
   parseJsonLd,
   shouldAddWebApplication,
@@ -33,6 +34,21 @@ test('WebApplication schema follows the document language', () => {
 test('WebApplication schema defaults safely to English for an invalid document locale', () => {
   const html = '<html lang="https://afrotools.com/fr/"><head><title>Tool</title><meta name="description" content="Tool description."></head></html>';
   assert.equal(pageLanguage(html), 'en');
+});
+
+test('FAQ schema ignores interactive help while keeping visible questions', () => {
+  const html = `<main>
+    <details data-structured-data-exclude><summary>Need help choosing a PDF action?</summary>
+      <form><label>What do you want to do?</label><input></form>
+    </details>
+    <section><details><summary>Do PDF tools upload files?</summary>
+      <p>Core PDF actions run in the browser unless a tool explains a server feature.</p>
+    </details></section>
+  </main>`;
+  assert.deepEqual(extractVisibleFaq(html), [{
+    question: 'Do PDF tools upload files?',
+    answer: 'Core PDF actions run in the browser unless a tool explains a server feature.',
+  }]);
 });
 
 test('editorial structured data is not recast as a WebApplication', () => {

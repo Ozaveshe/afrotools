@@ -182,7 +182,7 @@ const BLOCKED_RELATIVE_DIRS = new Set([
 ]);
 
 const BLOCKED_RELATIVE_FILE_PATTERNS = [
-  /^data\/jamb\/(?!universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
+  /^data\/jamb\/(?!universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|original-practice|original-practice-index|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
   /^assets\/css\/matchday-os(?:\.min)?\.css$/i,
   /^assets\/js\/matchday-os(?:\.min)?\.js$/i
 ];

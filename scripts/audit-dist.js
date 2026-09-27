@@ -15,6 +15,9 @@ const REQUIRED_PATHS = [
   '_redirects',
   'robots.txt',
   'sitemap.xml',
+  'jamb/original-practice/index.html',
+  'data/jamb/pools/original-practice.json',
+  'data/jamb/pools/original-practice-index.json',
   'assets',
   'tools'
 ];
@@ -65,7 +68,7 @@ const FORBIDDEN_PATHS = [
 ];
 
 const FORBIDDEN_FILE_PATTERNS = [
-  /^data\/jamb\/(?!pools$|universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
+  /^data\/jamb\/(?!pools$|universities\.json$|flashcard-decks\.json$|pools\/(?:index|practice-pool|original-practice|original-practice-index|patterns|english|mathematics|physics|chemistry|biology|government|economics|literature|crk|commerce|accounts)\.json$).+$/i,
   /(^|\/)package(?:-lock)?\.json$/i,
   /^.*\.(?:pid|exit)$/i,
   /^.*\.md$/i,

@@ -666,9 +666,10 @@
 <afro-footer></afro-footer>
 
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/tools/afroatlas/world-bank-core-indicators.js?v=0a9479d2"></script>
 <script src="/assets/js/lib/afroatlas-twemoji.js?v=0428ee7b"></script>
 <script>
 (function() {
@@ -678,6 +679,7 @@
   var params = new URLSearchParams(window.location.search);
   var codeA = params.get('countryA') || params.get('a');
   var codeB = params.get('countryB') || params.get('b');
+  var requestedPair = !!(codeA && codeB);
   if (!codeA && !codeB) {
     codeA = 'NG';
     codeB = 'AO';
@@ -692,6 +694,20 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function coreSourceSummary(country) {
+    var source = country.coreSources;
+    if (!source) return esc(country.name) + ': undated reference values';
+    return esc(country.name) + ': ' + [
+      ['GDP', source.gdp],
+      ['population', source.population],
+      ['GDP/person', source.gdpPC]
+    ].map(function(item) {
+      return item[1]
+        ? '<a href="' + esc(item[1].source_url) + '">' + item[0] + ' ' + item[1].year + '</a>'
+        : item[0] + ' unavailable (2016–2025)';
+    }).join(', ');
   }
 
   function flagHtml(code, country, className) {
@@ -878,6 +894,11 @@
 
   var codeAUpper = findCode(c1) || codeA.toUpperCase();
   var codeBUpper = findCode(c2) || codeB.toUpperCase();
+  if (requestedPair) document.addEventListener('DOMContentLoaded', function() {
+    if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afroatlas_comparison_viewed', {
+      country_a: codeAUpper, country_b: codeBUpper
+    });
+  });
 
   /* ── Header ── */
   var html = '';
@@ -886,7 +907,7 @@
   html +=     '<div>';
   html +=       '<p class="aa-cmp-kicker">Comparison workbench</p>';
   html +=       '<h1 class="aa-cmp-workbench-title">' + c1.name + ' vs ' + c2.name + '</h1>';
-  html +=       '<p class="aa-cmp-workbench-copy">Use this as a first-pass decision note. The badges identify higher values, while the context below explains where higher is not automatically better.</p>';
+  html +=       '<p class="aa-cmp-workbench-copy">Use this as a first-pass decision note. Figures here are reference snapshots without source dates in this view; verify current primary sources before making decisions.</p>';
   html +=     '</div>';
   html +=     '<button type="button" class="aa-cmp-swap" id="aa-swap-btn">';
   html +=       '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M7 16l-4-4 4-4"/><path d="M17 8l4 4-4 4"/><path d="M3 12h18"/></svg>';
@@ -918,7 +939,7 @@
   html +=   '<div class="aa-cmp-legend-item"><span class="aa-cmp-legend-dot aa-dot-a"></span>' + c1.name + '</div>';
   html +=   '<div class="aa-cmp-legend-item"><span class="aa-cmp-legend-dot aa-dot-b"></span>' + c2.name + '</div>';
   html += '</div>';
-  html += '<div class="aa-cmp-source-note" role="note">Source metadata is not attached to this legacy comparison dataset yet. Treat these values as directional, and use country profile footnotes before citing a figure.</div>';
+  html += '<div class="aa-cmp-source-note" role="note">Core economic measures: World Bank WDI. ' + coreSourceSummary(c1) + '; ' + coreSourceSummary(c2) + '. GDP history uses available WDI years for African countries. Other indicators and world reference figures remain undated and should be checked before use.</div>';
 
   /* ── Metric Comparison Bars ── */
   var metricDefs = [
@@ -942,15 +963,16 @@
     var va = c1[md.key];
     var vb = c2[md.key];
     if (va == null && vb == null) continue;
+    var hasComparablePair = typeof va === 'number' && typeof vb === 'number';
     var numA = typeof va === 'number' ? va : 0;
     var numB = typeof vb === 'number' ? vb : 0;
     var maxVal = Math.max(numA, numB);
-    var pctA = maxVal > 0 ? (numA / maxVal * 100) : 0;
-    var pctB = maxVal > 0 ? (numB / maxVal * 100) : 0;
-    var ratio = calcRatio(numA, numB);
+    var pctA = typeof va === 'number' && maxVal > 0 ? (numA / maxVal * 100) : 0;
+    var pctB = typeof vb === 'number' && maxVal > 0 ? (numB / maxVal * 100) : 0;
+    var ratio = hasComparablePair ? calcRatio(numA, numB) : null;
 
-    var leaderText = 'Similar values';
-    if (maxVal > 0 && Math.abs(numA - numB) / maxVal >= 0.02) {
+    var leaderText = hasComparablePair ? 'Similar values' : 'No comparable pair';
+    if (hasComparablePair && maxVal > 0 && Math.abs(numA - numB) / maxVal >= 0.02) {
       leaderText = 'Higher: ' + (numA > numB ? c1.name : c2.name);
     }
 
@@ -1293,6 +1315,6 @@
 
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>

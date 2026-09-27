@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=cec70638">
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.js?v=c525f171" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
@@ -36,7 +36,7 @@
 
   .tool-hero {
     background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    padding: 30px 0 28px;
     position: relative;
     overflow: hidden;
   }
@@ -103,11 +103,11 @@
 
   .tool-main { padding: 28px 0 72px; }
   .tool-main-inner {
-    max-width: 1200px;
+    max-width: 840px;
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
     align-items: start;
   }
@@ -141,7 +141,7 @@
 
   .file-input-label {
     display: block;
-    padding: 36px 24px;
+    padding: 24px 18px;
     background: #EFF6FF;
     border: 2px dashed #BFDBFE;
     border-radius: 8px;
@@ -151,7 +151,7 @@
     font-size: 0.9rem;
     color: #334155;
     font-weight: 600;
-    min-height: 112px;
+    min-height: 96px;
     touch-action: manipulation;
   }
   .file-input-label:hover {
@@ -164,13 +164,25 @@
   }
   .file-input-label .drop-icon { display: none; }
   .file-input-label .drop-hint {
+    display: block;
     font-size: 0.72rem;
     color: #6B8CAE;
     font-weight: 500;
     margin-top: 6px;
   }
 
-  input[type="file"] { display: none; }
+  input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  input[type="file"]:focus-visible + .file-input-label {
+    outline: 3px solid var(--afro-blue);
+    outline-offset: 3px;
+  }
 
   .file-info {
     margin-top: 12px;
@@ -200,6 +212,17 @@
 
   .field { margin-bottom: 18px; }
   .field:last-child { margin-bottom: 0; }
+  .ocr-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 220px);
+    gap: 16px;
+    align-items: end;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #DBEAFE;
+  }
+  .ocr-controls .field, .ocr-controls .calc-btn { margin: 0; }
+  .ocr-controls .progress-section { grid-column: 1 / -1; }
   .f-label-text {
     font-size: 0.75rem;
     font-weight: 700;
@@ -439,7 +462,18 @@
     line-height: 1.6;
   }
   .info-text li { margin-bottom: 6px; }
-  .info-text ul { margin: 0; padding-left: 16px; }
+  .info-text ul, .info-text ol { margin: 0; padding-left: 20px; }
+  .ocr-help summary.info-title {
+    cursor: pointer;
+    min-height: 44px;
+    margin: 0;
+    padding: 12px 4px;
+  }
+  .ocr-help summary:focus-visible { outline: 3px solid var(--afro-blue); outline-offset: 3px; }
+  .ocr-help[open] .info-text { border-top: 1px solid #DBEAFE; padding-top: 12px; }
+  .ocr-help h3 { color: #1e293b; font-size: 0.82rem; margin: 14px 0 6px; }
+  .ocr-help h3:first-child { margin-top: 0; }
+  .ocr-help p { margin: 12px 0 0; }
 
   .note-box {
     background: #FFFBEB;
@@ -495,11 +529,15 @@
   :root[data-theme="dark"] .seo-section p,
   :root[data-theme="dark"] .extracted-text,
   :root[data-theme="dark"] .ocr-summary strong { color:#d8e4f5; }
+  :root[data-theme="dark"] .ocr-help h3 { color:#eef5ff; }
+  :root[data-theme="dark"] .ocr-help[open] .info-text { border-color:#3a4c68; }
+  :root[data-theme="dark"] .ocr-controls { border-color:#3a4c68; }
   :root[data-theme="dark"] .ocr-summary span,
   :root[data-theme="dark"] .status-line { color:#b8c7dc; }
 
   @media (max-width: 768px) {
     .tool-main-inner { grid-template-columns: 1fr; }
+    .ocr-controls { grid-template-columns: 1fr; }
     .action-row { grid-template-columns: 1fr; }
     .ocr-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .page-tabs { padding: 0 14px; }
@@ -516,7 +554,7 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"OCR PDF Online","description":"Extract text from scanned PDFs and document images locally in the browser with OCR page tabs, confidence checks, copy, and TXT download.","url":"https://afrotools.com/tools/pdf-ocr/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and WebAssembly","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-ocr.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"OCR PDF Online","url":"https://afrotools.com/tools/pdf-ocr/","description":"Extract text from scanned PDFs and images with browser-based OCR, page-by-page text tabs, confidence checks, and local TXT export.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-ocr.webp"}</script>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-ocr.webp">
@@ -551,6 +589,10 @@
 
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does OCR work, and which files can I use?","acceptedAnswer":{"@type":"Answer","text":"How it works Upload a scanned PDF or image Select the document language Each PDF page is rendered as an image Tesseract.js OCR extracts text Review confidence, then copy or download text Supported formats PDF -- scanned or image-based PNG, JPG, JPEG -- photos of documents WEBP, BMP, TIFF -- other image formats Large PDFs can take several minutes. OCR runs with AfroTools local assets in your browser; this tool does not upload the file or extracted text. For better results Use high-resolution scans (300+ DPI) Ensure text is not rotated or skewed Select the correct language Clean, high-contrast documents work best"}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/pdf-ocr/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-ocr/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ocr-pdf/">
@@ -566,13 +608,7 @@
       <a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>PDF OCR</span>
     </div>
     <h1>OCR PDF <em>Online</em></h1>
-    <p class="hero-sub">Extract copyable text from scanned PDFs and document images. Choose the document language, review page-level confidence, then copy or download a TXT file.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Local OCR</span>
-      <span class="badge b-green">Page confidence</span>
-      <span class="badge b-green">5 Languages</span>
-      <span class="badge b-green">PDF and images</span>
-    </div>
+    <p class="hero-sub">Extract copyable text from scanned PDFs and images. Choose a language, review the result, and download TXT. Files stay on your device.</p>
   </div>
 </div>
 
@@ -582,46 +618,37 @@
       <!-- Upload -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Upload File</span>
+          <span class="card-title">Extract text from a file</span>
         </div>
         <div class="card-body">
           <input type="file" id="fileInput" accept=".pdf,image/*">
           <label for="fileInput" class="file-input-label" id="dropZone">
-            Choose or drop a scanned PDF or document image
-            <span class="drop-hint">Supports PDF, PNG, JPG, WEBP, BMP, TIFF</span>
+            Choose a PDF or image
+            <span class="drop-hint">or drop it here</span>
           </label>
           <div class="file-info" id="fileInfo">
             <span class="file-name" id="fileName"></span>
             <button type="button" class="file-remove" id="fileRemove">Remove</button>
           </div>
           <div class="status-line" id="fileStatus" role="status" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">OCR Settings</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label-text" for="languageSelect">Document language</label>
-            <select class="f-input" id="languageSelect">
-              <option value="eng">English</option>
-              <option value="fra">French (Francais)</option>
-              <option value="ara">Arabic</option>
-              <option value="swa">Swahili</option>
-              <option value="por">Portuguese (Portugues)</option>
-            </select>
-          </div>
-
-          <button type="button" class="calc-btn" id="extractBtn" disabled>Extract Text with OCR</button>
-
-          <div class="progress-section" id="progressSection">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="OCR progress">
-              <div class="progress-fill" id="progressFill"></div>
+          <div class="ocr-controls">
+            <div class="field">
+              <label class="f-label-text" for="languageSelect">Document language</label>
+              <select class="f-input" id="languageSelect">
+                <option value="eng">English</option>
+                <option value="fra">French (Francais)</option>
+                <option value="ara">Arabic</option>
+                <option value="swa">Swahili</option>
+                <option value="por">Portuguese (Portugues)</option>
+              </select>
             </div>
-            <div class="progress-text" id="progressText" role="status" aria-live="polite">Preparing...</div>
+            <button type="button" class="calc-btn" id="extractBtn" disabled>Extract Text with OCR</button>
+            <div class="progress-section" id="progressSection">
+              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="OCR progress">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-text" id="progressText" role="status" aria-live="polite">Preparing...</div>
+            </div>
           </div>
         </div>
       </div>
@@ -650,39 +677,27 @@
       </div>
     </div>
 
-    <!-- Sidebar -->
+    <!-- Optional help follows the task controls. -->
     <div class="sidebar">
-      <div class="info-card">
-        <div class="info-title">How It Works</div>
+      <details class="info-card ocr-help">
+        <summary class="info-title">How does OCR work, and which files can I use?</summary>
         <div class="info-text">
-          <ul>
+          <h3>How it works</h3>
+          <ol>
             <li>Upload a scanned PDF or image</li>
             <li>Select the document language</li>
             <li>Each PDF page is rendered as an image</li>
             <li>Tesseract.js OCR extracts text</li>
             <li>Review confidence, then copy or download text</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Supported Formats</div>
-        <div class="info-text">
+          </ol>
+          <h3>Supported formats</h3>
           <ul>
             <li><strong>PDF</strong> -- scanned or image-based</li>
             <li><strong>PNG, JPG, JPEG</strong> -- photos of documents</li>
             <li><strong>WEBP, BMP, TIFF</strong> -- other image formats</li>
           </ul>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <strong>Note:</strong> OCR on large PDFs can take several minutes. The OCR engine and language data load from AfroTools local assets. Processing happens entirely in your browser -- your files and extracted text are never uploaded by this tool.
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Tips for Better Results</div>
-        <div class="info-text">
+          <p>Large PDFs can take several minutes. OCR runs with AfroTools local assets in your browser; this tool does not upload the file or extracted text.</p>
+          <h3>For better results</h3>
           <ul>
             <li>Use high-resolution scans (300+ DPI)</li>
             <li>Ensure text is not rotated or skewed</li>
@@ -690,7 +705,7 @@
             <li>Clean, high-contrast documents work best</li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </main>
@@ -754,7 +769,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/document-pdf/" data-related-tool data-id="document-pdf" data-name="All PDF &amp; document tools" data-category="document-pdf" data-icon="PDF" data-desc="Choose from 31 browser PDF and document tools by task.">All PDF &amp; document tools</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>

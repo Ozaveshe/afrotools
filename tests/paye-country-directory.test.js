@@ -37,6 +37,19 @@ assert.deepStrictEqual(directory.resolveCountry('GW', 'en'), {
 assert.strictEqual(directory.resolveCountry('GW', 'sw').route, '/sw/guinea-bissau/kikokotoo-kodi-mshahara/');
 assert.strictEqual(directory.resolveCountry('XX', 'en'), null);
 
+const payeHandoff = {
+  type: 'afrotools_ai_prefill',
+  toolId: 'paye-calculator',
+  adapterId: 'paye-calculator-prefill',
+  expiresAt: 2000,
+  normalizedInputs: { country: 'Uganda' }
+};
+assert.strictEqual(directory.resolvePrefillCountry(payeHandoff, 1000).code, 'UG');
+assert.strictEqual(directory.resolvePrefillCountry({ ...payeHandoff, normalizedInputs: { countryCode: 'UG' } }, 1000).code, 'UG');
+assert.strictEqual(directory.resolvePrefillCountry({ ...payeHandoff, normalizedInputs: { country: 'Uganda', countryCode: 'KE' } }, 1000), null);
+assert.strictEqual(directory.resolvePrefillCountry({ ...payeHandoff, toolId: 'vat-calc-pan-african' }, 1000), null);
+assert.strictEqual(directory.resolvePrefillCountry(payeHandoff, 2000), null);
+
 assert.deepStrictEqual(manifest.aiCapabilities, ['route_only', 'prefill']);
 assert.deepStrictEqual(manifest.requiredInputs.map(input => input.name), ['country']);
 assert.deepStrictEqual(manifest.optionalInputs.map(input => input.name), ['grossPay', 'payPeriod']);

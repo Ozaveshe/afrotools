@@ -1815,7 +1815,10 @@
         if (e.key === 'Escape') {
           closeMenus();
           closeLanguageMenu();
-          if (this._menuOpen) setMenuOpen(false);
+          if (this._menuOpen) {
+            setMenuOpen(false);
+            burger?.focus();
+          }
         }
       };
       document.addEventListener('keydown', this._keydownFn);

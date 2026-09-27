@@ -1,24 +1,26 @@
 // Ghana PAYE Engine
 // Source: Ghana Revenue Authority (GRA)
-// Updated: Apr 2026
+// Reviewed: 27 Sep 2026. GRA Act 1178 took effect 1 Sep 2026.
 
 const GH_BANDS = [
-  [5880, 0.00],
-  [1320, 0.05],
-  [1560, 0.10],
-  [38000, 0.175],
+  [7056, 0.00],
+  [960, 0.05],
+  [1200, 0.10],
+  [34800, 0.175],
   [192000, 0.25],
-  [366240, 0.30],
+  [363984, 0.30],
   [Infinity, 0.35]
 ];
 
-const SSNIT_CAP = 61000;
+// SSNIT's GHS 69,000 cap is a monthly insurable earning (13.5% = GHS 9,315).
+// This engine accepts annual pay, so convert the cap to an annual base.
+const SSNIT_CAP = 69000 * 12;
 const SSNIT_EMPLOYEE_RATE = 0.055;
 const SSNIT_EMPLOYER_RATE = 0.13;
 const TIER3_CAP_RATE = 0.165;
 const MARRIAGE_RELIEF = 1200;
-const CHILD_RELIEF = 1200;
-const MAX_CHILDREN = 2;
+const CHILD_RELIEF = 600;
+const MAX_CHILDREN = 3;
 const OLD_AGE_RELIEF = 1500;
 const DEPENDENT_RELIEF = 1000;
 
@@ -69,13 +71,13 @@ module.exports = {
   countryName: 'Ghana',
   currency: 'GHS',
   regimes: ['STANDARD'],
-  lastUpdated: '2026-04-06',
+  lastUpdated: '2026-09-27',
   /* source-confidence-stamp:start */
-  sourceCheckedOn: '2026-05-04',
-  nextReviewDate: '2026-08-02',
+  sourceCheckedOn: '2026-09-27',
+  nextReviewDate: '2026-10-27',
   /* source-confidence-stamp:end */
 
-  source: 'Ghana Revenue Authority (GRA)',
+  source: 'GRA Income Tax (Amendment) Act 2026 (Act 1178); SSNIT 2026 public notice',
 
   calculate(params) {
     const {

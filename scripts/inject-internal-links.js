@@ -88,6 +88,8 @@ const RELATED_INLINE_ASSET_LINE_RE = /^\s*["']\/assets\/js\/components\/related-
 const RELATED_COMPONENT_SCRIPT_RE = /<script\b[^>]*src=["'][^"']*related-tools(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
 const TOOL_DIRECTORY_PATH = path.join(ROOT, 'data', 'tool-directory.json');
 const RELATED_COMPONENT_PATH = path.join(ROOT, 'assets', 'js', 'components', 'related-tools.min.js');
+// Editorial routes can provide reviewed in-context navigation instead of the generic tool grid.
+const MANUAL_RELATED_NAV_RE = /<body\b[^>]*\bdata-related-tools=["']manual["']/i;
 
 function escapeHtml(value) {
   return String(value == null ? '' : value)
@@ -144,10 +146,13 @@ function relatedForTool(current, allTools) {
 }
 
 function relatedNav(tool, related) {
-  const links = related.map((item) => {
+  const hasPdfHub = tool.category_key === 'document-pdf' && String(tool.url || '').startsWith('/tools/');
+  const links = (hasPdfHub ? related.slice(0, 5) : related).map((item) => {
     const description = String(item.description || '').replace(/\s+/g, ' ').trim().slice(0, 120);
     return `<li><a href="${escapeHtml(item.url)}" data-related-tool data-id="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}" data-category="${escapeHtml(item.category_key || '')}" data-icon="${escapeHtml(initials(item.name))}" data-desc="${escapeHtml(description)}">${escapeHtml(item.name)}</a></li>`;
-  }).join('');
+  }).join('') + (hasPdfHub
+    ? '<li><a href="/document-pdf/" data-related-tool data-id="document-pdf" data-name="All PDF &amp; document tools" data-category="document-pdf" data-icon="PDF" data-desc="Choose from 31 browser PDF and document tools by task.">All PDF &amp; document tools</a></li>'
+    : '');
   return `${RELATED_START}
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
@@ -237,6 +242,7 @@ function processRelatedTools(options = {}) {
       continue;
     }
     const original = fs.readFileSync(absolute, 'utf8');
+    if (MANUAL_RELATED_NAV_RE.test(original)) continue;
     const related = relatedForTool(tool, allTools);
     const updated = transformRelatedTools(original, tool, related);
     stats.links += related.length;
@@ -427,6 +433,7 @@ function processToolSubPages() {
     const subFiles = fs.readdirSync(toolDir)
       .filter(f => isPublicHtmlSubPage(f))
       .filter(f => !TOOL_SUBPAGE_EXCLUSIONS.has(f))
+      .filter(f => !(tool.name === 'afrostream' && (f === 'creator.html' || f === 'article.html')))
       .filter(f => !(tool.name === 'africa-conflict' && f === 'detail.html'))
       .sort();
 

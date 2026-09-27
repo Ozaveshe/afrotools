@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { imageSizeFromUrl } = require('./lib/image-size');
+const { writeRecipeIndex } = require('./lib/afrokitchen-recipe-index');
 const {
   ROOT,
   TOOL_DIR,
@@ -3026,6 +3027,7 @@ async function main() {
 
   writeManifest(manifest, MANIFEST_PATH);
   writeStaticRoutes(manifest);
+  writeRecipeIndex(manifest);
   updateLandingSource(manifest, cuisineIntelligence);
 
   const keepRecipeSlugs = new Set(manifest.routes.generated_recipe_slugs);

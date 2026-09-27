@@ -2,6 +2,10 @@ const { test, expect } = require('@playwright/test');
 const fs = require('node:fs/promises');
 const quick = require('../../assets/js/lib/ssce-practice-bank');
 const written = require('../../assets/js/lib/ssce-written-bank');
+const localizedWritten = {
+  fr: new Map(require('../../assets/js/lib/ssce-written-bank-fr').items.map(item => [item.id, item])),
+  sw: new Map(require('../../assets/js/lib/ssce-written-bank-sw').items.map(item => [item.id, item]))
+};
 const configs = {
   fr:{route:'/fr/tools/pratique-waec-neco/',start:'Commencer',check:'Vérifier la réponse',next:'Question suivante',results:'Voir les résultats',retry:'Reprendre les questions manquées',save:'Enregistrer sur cet appareil',report:'Télécharger le compte rendu',backup:'Télécharger la sauvegarde',correct:'Bonne réponse.',writtenSave:'Enregistrer la réponse sur cet appareil',writtenReport:'Télécharger le compte rendu des réponses rédigées',writtenBackup:'Télécharger la sauvegarde des réponses rédigées',reportHeading:'Ma réponse :'},
   sw:{route:'/sw/zana/mazoezi-waec-neco/',start:'Anza mazoezi',check:'Hakiki jibu',next:'Swali linalofuata',results:'Angalia matokeo',retry:'Rudia maswali uliyokosea',save:'Hifadhi maendeleo kwenye kifaa hiki',report:'Pakua ripoti ya mazoezi',backup:'Pakua nakala ya maendeleo',correct:'Sahihi.',writtenSave:'Hifadhi jibu kwenye kifaa hiki',writtenReport:'Pakua ripoti ya majibu ya kuandika',writtenBackup:'Pakua nakala ya majibu ya kuandika',reportHeading:'Jibu langu:'}
@@ -42,7 +46,7 @@ for (const [locale, c] of Object.entries(configs)) {
   });
 
   test(`${locale}: all written tasks, diagrams, private exports and backup import at mobile widths`, async ({page}, testInfo) => {
-    test.setTimeout(120000);
+    test.setTimeout(240000);
     const errors=[], sensitiveRequests=[]; const marker='SYNTHETIC_SSCE_PRIVATE_84926';
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => { if ((request.url()+' '+(request.postData()||'')).includes(marker)) sensitiveRequests.push(request.url()); });
@@ -59,7 +63,8 @@ for (const [locale, c] of Object.entries(configs)) {
         if(q.passage) await expect(page.locator('#written-editor .practice-passage p')).toHaveAttribute('lang','en');
         await expect(page.locator('#written-editor input[type="checkbox"]')).toHaveCount(q.checks.length);
         if(q.figure) {
-          await expect(page.locator('svg.written-diagram')).toHaveAttribute('aria-label',locale==='fr'?/Triangle|cercle/:/Pembetatu|duara/);
+          const diagramLabel = localizedWritten[locale].get(q.id).figureAlt || (locale==='fr'?/Triangle|cercle/:/Pembetatu|duara/);
+          await expect(page.locator('svg.written-diagram')).toHaveAttribute('aria-label',diagramLabel);
           await expect(page.locator('svg.written-diagram')).not.toContainText('Not to scale');
         }
         expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);

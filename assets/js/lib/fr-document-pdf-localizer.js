@@ -13,6 +13,7 @@
   var EXACT = Object.freeze({
     'Home': 'Accueil',
     'Tools': 'Outils',
+    'PDF tools': 'Outils PDF',
     'Document & PDF': 'Documents et PDF',
     'Document & PDF Tools': 'Outils de documents et PDF',
     'PDF workflow proof': 'Preuve du flux PDF',

@@ -1560,6 +1560,19 @@ function generateGoldenFixtures(formulas, root) {
   addCalculate("KE", "rounding-stage", { grossAnnual: 1200000 }, [
     "rounding_stage",
   ]);
+  for (const threshold of [7056, 8016, 9216, 44016, 236016, 600000]) {
+    addCalculate("GH", "act1178-band-" + threshold,
+      { grossAnnual: threshold, ssnit: false }, ["exact_threshold", "band_boundary"]);
+  }
+  addCalculate("GH", "ssnit-cap",
+    { grossAnnual: 828000, basicSalary: 828000 },
+    ["exact_ceiling", "statutory_contribution"]);
+  addCalculate("GH", "ssnit-above-cap",
+    { grossAnnual: 900000, basicSalary: 900000 },
+    ["above_contribution_ceiling", "statutory_contribution"]);
+  addCalculate("GH", "child-relief-cap",
+    { grossAnnual: 100000, children: 5 },
+    ["exact_ceiling", "personal_relief"]);
   addCalculate(
     "NG",
     "pita-2025",

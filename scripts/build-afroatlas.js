@@ -30,6 +30,19 @@ var faqTemplatePattern = /<script type="application\/ld\+json" data-schema-templ
  */
 var codeBySlug = {};
 var codes = Object.keys(COUNTRIES);
+var coreSnapshotPath = path.join(__dirname, '..', 'data', 'afroatlas', 'world-bank-core-indicators.json');
+var coreSnapshot = JSON.parse(fs.readFileSync(coreSnapshotPath, 'utf8'));
+require('./refresh-afroatlas-world-bank').validSnapshot(coreSnapshot, codes.slice().sort());
+var coreOverlayPath = path.join(__dirname, '..', 'tools', 'afroatlas', 'world-bank-core-indicators.js');
+var corePayload = JSON.stringify({ retrieved_at: coreSnapshot.retrieved_at, countries: coreSnapshot.countries }).replace(/</g, '\\u003c');
+fs.writeFileSync(coreOverlayPath,
+  '(function(root){"use strict";var data=' + corePayload + ';root.AfroAtlasCoreIndicators=data;' +
+  'if(!root.AfroAtlas||!root.AfroAtlas.COUNTRIES)return;' +
+  'Object.keys(data.countries).forEach(function(code){var country=root.AfroAtlas.COUNTRIES[code],row=data.countries[code];if(!country)return;' +
+  'country.gdp=row.gdp?row.gdp.value:null;country.population=row.population?row.population.value:null;' +
+  'country.gdpPC=row.gdpPC?row.gdpPC.value:null;country.gdpHist=row.gdp_history||{};' +
+  'country.coreSources={gdp:row.gdp||null,population:row.population||null,gdpPC:row.gdpPC||null};});' +
+  '})(typeof window!=="undefined"?window:globalThis);\n', 'utf8');
 for (var i = 0; i < codes.length; i++) {
   var entry = COUNTRIES[codes[i]];
   codeBySlug[entry.slug] = codes[i];
@@ -39,19 +52,110 @@ function findCode(country) {
   return codeBySlug[country.slug] || '';
 }
 
-/**
- * Format GDP as a human-readable string.
- *   >= 1 trillion  → "1.81 trillion"
- *   >= 1 billion   → "363 billion"
- *   >= 1 million   → "640 million"
- *   otherwise      → raw number
- */
-function fmtGDP(n) {
-  if (n == null) return 'N/A';
-  if (n >= 1e12) return (n / 1e12).toFixed(2).replace(/\.?0+$/, '') + ' trillion';
-  if (n >= 1e9)  return (n / 1e9).toFixed(1).replace(/\.0$/, '') + ' billion';
-  if (n >= 1e6)  return (n / 1e6).toFixed(1).replace(/\.0$/, '') + ' million';
-  return String(n);
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function regionName(code) {
+  var regions = AfroAtlas.getRegions();
+  var keys = Object.keys(regions);
+  for (var i = 0; i < keys.length; i++) {
+    if (regions[keys[i]].codes.indexOf(code) !== -1) return regions[keys[i]].name;
+  }
+  return 'Africa';
+}
+
+function countryFaq(country) {
+  var resourceNames = (country.resources || []).map(function(item) {
+    var type = AfroAtlas.RESOURCE_TYPES[item.type];
+    return type ? type.label : item.type;
+  });
+  var exportNames = (country.exports || []).slice(0, 5).map(function(item) { return item.p; });
+  return [
+    {
+      question: 'What are ' + country.name + "'s main natural resources?",
+      answer: resourceNames.length
+        ? country.name + "'s main natural resources include " + resourceNames.join(', ') + '.'
+        : 'Limited natural resource data is currently available for ' + country.name + '.'
+    },
+    {
+      question: 'Which exports appear in the ' + country.name + ' profile?',
+      answer: exportNames.length
+        ? country.name + "'s export profile includes " + exportNames.join(', ') + '.'
+        : 'Export data for ' + country.name + ' is currently limited.'
+    }
+  ];
+}
+
+function generateCountryStaticContent(country, code) {
+  var core = coreSnapshot.countries[code] || {};
+  var coreLabels = [
+    { key: 'gdp', label: 'GDP', format: function(value) { return '$' + (value / 1e9).toFixed(1) + 'B'; } },
+    { key: 'population', label: 'Population', format: function(value) { return (value / 1e6).toFixed(1) + 'M'; } },
+    { key: 'gdpPC', label: 'GDP per person', format: function(value) { return '$' + Math.round(value).toLocaleString('en-US'); } }
+  ];
+  var coreHtml = coreLabels.map(function(item) {
+    var point = core[item.key];
+    return '<div><dt>' + escapeHtml(item.label) + '</dt><dd>' + (point ? escapeHtml(item.format(point.value)) : 'N/A') +
+      '<small>' + (point ? '<a href="' + escapeHtml(point.source_url) + '">World Bank WDI, ' + point.year + '</a>' : 'World Bank WDI: no 2016–2025 observation') + '</small></dd></div>';
+  }).join('');
+  var resourceNames = (country.resources || []).slice(0, 5).map(function(resource) {
+    var type = AfroAtlas.RESOURCE_TYPES[resource.type];
+    return type ? type.label : resource.type;
+  });
+  var exportNames = (country.exports || []).slice(0, 3).map(function(item) { return item.p; });
+  var region = regionName(code);
+  var otherCode = Object.keys(COUNTRIES).filter(function(candidate) {
+    return candidate !== code && regionName(candidate) === region;
+  })[0] || (code === 'NG' ? 'KE' : 'NG');
+  var otherCountry = COUNTRIES[otherCode];
+  var countryName = escapeHtml(country.name);
+  var comparison = '/tools/afroatlas/compare?a=' + encodeURIComponent(code) + '&amp;b=' + otherCode;
+  var resources = resourceNames.length
+    ? '<p>AfroAtlas lists ' + escapeHtml(resourceNames.join(', ')) + ' among the resources in its ' + countryName + ' reference profile.</p>'
+    : '<p>Resource coverage for ' + countryName + ' is limited in this dataset.</p>';
+  var exports = exportNames.length
+    ? '<p>The trade profile highlights ' + escapeHtml(exportNames.join(', ')) + '. Open the interactive profile for the full export view.</p>'
+    : '<p>Open the interactive profile to review the available trade indicators.</p>';
+  var faqHtml = countryFaq(country).map(function(item) {
+    return '<h3>' + escapeHtml(item.question) + '</h3><p>' + escapeHtml(item.answer) + '</p>';
+  }).join('');
+  return '<section class="aa-country-hero"><div class="aa-wrap">' +
+    '<p class="aa-eyebrow">' + escapeHtml(region) + ' country profile</p>' +
+    '<h1>' + countryName + ' economy and natural resources</h1>' +
+    '<p>Explore the resource, trade, and economic indicators recorded for ' + countryName + ' in AfroAtlas.</p>' +
+    '</div></section>' +
+    '<section class="aa-section"><div class="aa-wrap">' +
+    '<h2 class="aa-section-title">Dated economy snapshot</h2>' +
+    '<dl class="aa-core-snapshot">' + coreHtml + '</dl>' +
+    '<p>World Bank World Development Indicators. The latest available year can differ by measure; values may be revised.</p>' +
+    '<h2 class="aa-section-title">Resources and trade in ' + countryName + '</h2>' +
+    resources + exports +
+    '<p>Resource and trade figures in this reference profile still lack verified source dates. Check current primary sources before making financial or policy decisions.</p>' +
+    '<p><a class="aa-btn" href="' + comparison + '">Compare ' + countryName + ' with ' + escapeHtml(otherCountry.name) + '</a></p>' +
+    '<h2 class="aa-section-title">Questions about ' + countryName + '</h2>' + faqHtml +
+    '</div></section>';
+}
+
+function updateLandingCountryGrid() {
+  var landingPath = path.join(__dirname, '..', 'tools', 'afroatlas', 'index.html');
+  var html = fs.readFileSync(landingPath, 'utf8');
+  var marker = /<!-- aa-static-country-grid:start -->[\s\S]*?<!-- aa-static-country-grid:end -->/;
+  if (!marker.test(html)) throw new Error('AfroAtlas landing country grid markers are missing');
+  var cards = countries.slice().sort(function(a, b) { return a.name.localeCompare(b.name); }).map(function(country) {
+    var code = findCode(country);
+    return '        <a class="aa-card" href="/tools/afroatlas/country/' + escapeHtml(country.slug) + '/">' +
+      '<div class="aa-card-top"><div class="aa-card-info"><h3 class="aa-card-name">' + escapeHtml(country.name) +
+      '</h3><span class="aa-card-region">' + escapeHtml(regionName(code)) +
+      '</span></div></div><span>Open country profile &rarr;</span></a>';
+  }).join('\n');
+  var updated = html.replace(marker, '<!-- aa-static-country-grid:start -->\n' + cards + '\n        <!-- aa-static-country-grid:end -->');
+  if (updated !== html) fs.writeFileSync(landingPath, updated, 'utf8');
 }
 
 /**
@@ -71,23 +175,14 @@ function jsonEscape(str) {
  * Generate meta description from country data.
  */
 function generateMetaDescription(country) {
-  var gdpStr = fmtGDP(country.gdp);
-  var topExports = '';
-  if (country.exports && country.exports.length > 0) {
-    var names = [];
-    var limit = Math.min(country.exports.length, 2);
-    for (var i = 0; i < limit; i++) {
-      names.push(country.exports[i].p);
-    }
-    topExports = names.join(', ');
-  }
-
-  var desc = "Explore " + country.name + ": GDP ($" + gdpStr + "), natural resources and exports";
-  if (topExports) {
-    desc += " such as " + topExports;
-  }
-  desc += ", plus trade data and economic indicators in AfroAtlas.";
-  return desc;
+  var prefix = "Explore " + country.name + "'s economy, natural resources and exports";
+  var suffix = '. Compare country profiles and review trade indicators in AfroAtlas.';
+  var names = (country.exports || []).slice(0, 2).map(function(item) { return item.p; });
+  var detail = names.length ? ' such as ' + names.join(', ') : '';
+  var description = prefix + detail + suffix;
+  if (escapeHtml(description).length > 180 && names.length) description = prefix + ' such as ' + names[0] + suffix;
+  if (escapeHtml(description).length > 180) description = prefix + suffix;
+  return escapeHtml(description);
 }
 
 /**
@@ -107,88 +202,16 @@ function generateBreadcrumbSchema(country) {
   return JSON.stringify(schema);
 }
 
-/**
- * Generate FAQPage JSON-LD schema with 3 questions.
- */
+/** Generate only answers that are also visible in the static country profile. */
 function generateFAQSchema(country) {
-  // Q1 — Natural resources
-  var resourceAnswer = '';
-  if (country.resources && country.resources.length > 0) {
-    var resList = [];
-    for (var i = 0; i < country.resources.length; i++) {
-      var r = country.resources[i];
-      var label = (AfroAtlas.RESOURCE_TYPES[r.type] && AfroAtlas.RESOURCE_TYPES[r.type].label) || r.type;
-      var entry = label;
-      if (r.prod) entry += ' (' + r.prod + ')';
-      resList.push(entry);
-    }
-    resourceAnswer = country.name + "'s key natural resources include: " + resList.join(', ') + '.';
-  } else {
-    resourceAnswer = 'Data on ' + country.name + "'s natural resources is currently limited.";
-  }
-
-  // Q2 — GDP
-  var gdpAnswer = '';
-  if (country.gdp != null) {
-    gdpAnswer = country.name + " has a nominal GDP of $" + fmtGDP(country.gdp);
-    if (country.gdpPC != null) {
-      gdpAnswer += ' (GDP per capita: $' + country.gdpPC.toLocaleString('en-US') + ')';
-    }
-    if (country.gdpGrowth != null) {
-      gdpAnswer += ' with a growth rate of ' + country.gdpGrowth + '%.';
-    } else {
-      gdpAnswer += '.';
-    }
-  } else {
-    gdpAnswer = 'GDP data for ' + country.name + ' is not currently available.';
-  }
-
-  // Q3 — Top exports
-  var exportAnswer = '';
-  if (country.exports && country.exports.length > 0) {
-    var expList = [];
-    var limit = Math.min(country.exports.length, 5);
-    for (var j = 0; j < limit; j++) {
-      var ex = country.exports[j];
-      expList.push(ex.p + ' ($' + fmtGDP(ex.v) + ')');
-    }
-    exportAnswer = country.name + "'s top exports are: " + expList.join(', ') + '.';
-    if (country.totalExports != null) {
-      exportAnswer += ' Total exports: $' + fmtGDP(country.totalExports) + '.';
-    }
-  } else {
-    exportAnswer = 'Export data for ' + country.name + ' is currently limited.';
-  }
-
+  var faq = countryFaq(country);
   var schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What are " + country.name + "'s main natural resources?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": resourceAnswer
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is " + country.name + "'s GDP?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": gdpAnswer
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are " + country.name + "'s top exports?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": exportAnswer
-        }
-      }
-    ]
+    "mainEntity": faq.map(function(item) {
+      return { "@type": "Question", "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer } };
+    })
   };
 
   return JSON.stringify(schema);
@@ -210,6 +233,7 @@ countries.forEach(function(country) {
     var slug = country.slug;
     var dir = path.join(outputDir, slug);
     var routeUrl = 'https://afrotools.com/tools/afroatlas/country/' + slug + '/';
+    var countryOgPath = path.join(__dirname, '..', 'assets', 'img', 'og', 'countries', 'country-' + slug + '.webp');
 
     // Create directory
     if (!fs.existsSync(dir)) {
@@ -218,10 +242,11 @@ countries.forEach(function(country) {
 
     // Replace placeholders
     var html = template
-      .replace(/\{\{COUNTRY_NAME\}\}/g, country.name)
+      .replace(/\{\{COUNTRY_NAME\}\}/g, escapeHtml(country.name))
       .replace(/\{\{SLUG\}\}/g, slug)
       .replace(/\{\{COUNTRY_CODE\}\}/g, code)
       .replace(/\{\{META_DESCRIPTION\}\}/g, generateMetaDescription(country))
+      .replace(/\{\{COUNTRY_STATIC_CONTENT\}\}/g, generateCountryStaticContent(country, code))
       .replace('<meta name="robots" content="noindex, follow">', '<meta name="robots" content="index, follow">')
       .replace('<meta property="og:url" content="https://afrotools.com/tools/afroatlas/_country-template">', '<meta property="og:url" content="' + routeUrl + '">')
       .replace(
@@ -234,6 +259,13 @@ countries.forEach(function(country) {
       .replace(faqTemplatePattern, '<script type="application/ld+json">' + generateFAQSchema(country) + '</script>')
       .replace(/\{\{BREADCRUMB_SCHEMA\}\}/g, generateBreadcrumbSchema(country))
       .replace(/\{\{FAQ_SCHEMA\}\}/g, generateFAQSchema(country));
+
+    if (fs.existsSync(countryOgPath)) {
+      var countryOgUrl = 'https://afrotools.com/assets/img/og/countries/country-' + slug + '.webp';
+      html = html
+        .replace('<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">', '<meta property="og:image" content="' + countryOgUrl + '">')
+        .replace('<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">', '<meta name="twitter:image" content="' + countryOgUrl + '">');
+    }
 
     fs.writeFileSync(path.join(dir, 'index.html'), html);
     generated++;
@@ -259,3 +291,5 @@ if (errors.length > 0) {
 if (generated !== 54) {
   console.warn('\nWarning: expected 54 countries but generated ' + generated + '.');
 }
+
+updateLandingCountryGrid();

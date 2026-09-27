@@ -24,6 +24,41 @@
         const period = document.querySelector('.res-hero-period');
         if (period) period.textContent = window.CALC_MODE === 'net' ? 'Kabla ya PAYE na michango uliyochagua' : 'Baada ya PAYE na michango uliyochagua';
     }
+    function wholeGrossForTarget(estimate, target) {
+        const forward = window._grossToNet;
+        const candidate = Math.max(0, Math.ceil(estimate));
+        if (!forward) return candidate;
+        let high = candidate;
+        if (forward(high) < target) {
+            let step = 1;
+            high += step;
+            for (let attempt = 0; attempt < 32 && forward(high) < target; attempt++) {
+                step *= 2;
+                high += step;
+            }
+        }
+        if (forward(high) < target) return candidate;
+        const rawBreakpoints = typeof window._grossToNetBreakpoints === 'function'
+            ? window._grossToNetBreakpoints() : window._grossToNetBreakpoints;
+        const breakpoints = Array.isArray(rawBreakpoints) ? rawBreakpoints
+            .filter(function(point) { return Number.isSafeInteger(point) && point >= 0 && point < high; })
+            .sort(function(a, b) { return a - b; }) : [];
+        let start = 0;
+        for (const end of breakpoints.concat(high)) {
+            if (end < start) continue;
+            if (forward(end) >= target) {
+                let left = start, right = end;
+                while (left < right) {
+                    const middle = Math.floor((left + right) / 2);
+                    if (forward(middle) >= target) right = middle;
+                    else left = middle + 1;
+                }
+                return left;
+            }
+            start = end + 1;
+        }
+        return high;
+    }
     function t() {
         window._grossToNet ? (function() {
             const t = document.querySelector(".calc-btn");
@@ -54,11 +89,11 @@
                             }
                             return (n + o) / 2;
                         }(r);
-                        o.value = Math.round(a);
+                        o.value = wholeGrossForTarget(a, r);
                         var u = document.getElementById("salarySlider");
-                        u && (u.value = Math.round(a));
+                        u && (u.value = o.value);
                         var s = document.getElementById("sliderVal");
-                        s && window.fmt && (s.textContent = window.fmt(a)), t(), function(e) {
+                        s && window.fmt && (s.textContent = window.fmt(Number(o.value))), t(), function(e) {
                             var t = window.RESULT;
                             if (t) {
                                 var o = window.fmt || function(e) {
@@ -72,7 +107,7 @@
                                 var i = t.netMonthly || t.net || 0, c = t.annualNet || 12 * i || 0, m = r ? i : c, w = a || r ? e : 12 * e, y = n ? r ? "mois" : "an" : r ? "month" : "year";
                                 l && (l.textContent = (n ? "Brut : " : "Gross: ") + o(w) + "/" + y + (n ? " · Net : " : " · Take-home: ") + o(m) + "/" + y);
                             }
-                        }(isSwahili() && window.RESULT ? window.RESULT.gross : a);
+                        }(isSwahili() && window.RESULT ? window.RESULT.gross : Number(o.value));
                         // Preserve the requested net in every locale so repeated calculations keep the same target.
                         o.value = r;
                         if (u) u.value = r;

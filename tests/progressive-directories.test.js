@@ -90,6 +90,15 @@ englishDirectoryRows.forEach((tool) => {
     ? `${tool.url.replace(/^\//, '')}index.html`
     : `${tool.url.replace(/^\//, '')}.html`;
   const html = read(relative);
+  if (/<body\b[^>]*\bdata-related-tools="manual"/i.test(html)) {
+    assert.strictEqual(relative, 'tools/africa-election-tracker/index.html', 'manual related navigation is limited to the reviewed civic desk');
+    assert.ok(/<nav class="et-civic-links"[^>]*aria-label="More civic coverage"/.test(html), `${relative} needs crawlable civic navigation`);
+    for (const route of ['/tools/africa-election-tracker/news/', '/tools/africa-election-tracker/news/feed.xml', '/government/']) {
+      assert.ok(html.includes(`href="${route}"`), `${relative} needs its reviewed civic link ${route}`);
+    }
+    assert.ok(!/<afro-related-tools|related-tools(?:\.min)?\.js/.test(html), `${relative} must not reload the generic tool grid`);
+    return;
+  }
   const blocks = html.match(/data-related-tools-ssr/g) || [];
   const block = html.match(/<!-- RELATED_TOOLS_SSR_START -->([\s\S]*?)<!-- RELATED_TOOLS_SSR_END -->/);
   assert.strictEqual(blocks.length, 1, `${relative} must contain one static related-tools block`);

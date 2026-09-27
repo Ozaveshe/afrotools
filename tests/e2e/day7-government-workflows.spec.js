@@ -272,6 +272,7 @@ test.describe('Day 7 Government & Civic serial workflow proof', () => {
       /Generated .* (?:within \d+-day review cadence|review overdue by \d+ days)/
     );
     await expect(page.locator('#metricRecords')).not.toHaveText('0');
+    await page.locator('#findElection summary').click();
     await page.locator('#sourceFilter').selectOption('official');
     await expect(page.locator('#electionList .et-pill-official').first()).toContainText('Official source');
 

@@ -347,6 +347,8 @@ test('quality report is deterministic for an explicit as-of date', function () {
   assert.strictEqual(first.findings.filter((finding) => finding.severity === 'error').length, 0);
   assert.strictEqual(first.fixtures.failed, 0);
   assert.deepStrictEqual(first.fixtures.changes, [
+    'paye-gh-defaults',
+    'paye-gh-large-decimal',
     'paye-ug-large-decimal',
     'paye-zm-defaults',
     'paye-zm-large-decimal'

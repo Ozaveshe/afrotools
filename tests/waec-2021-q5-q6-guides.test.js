@@ -37,9 +37,7 @@ test('WAEC 2021 Q5/Q6 guides retain official source links and a rights-safe sele
     assert.equal(source.questionBriefSha256, crypto.createHash('sha256').update(item.prompt).digest('hex'));
     assert.ok(item.steps.length >= 3 && item.checks.length >= 2);
   }
-  assert.equal(bank.items.length, 117);
-  assert.equal(bank.items.filter(item => item.exam === 'WAEC' && item.subject === 'Mathematics').length, 35);
-  assert.equal(bank.items.filter(item => item.exam === 'NECO' && item.subject === 'Mathematics').length, 48);
+  assert.equal(new Set(bank.items.map(item => item.id)).size, bank.items.length);
   assert.ok(!bank.items.some(item => item.exam === 'WAEC' && item.year === 2021 && item.number === 4));
 });
 

@@ -5,6 +5,8 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { buildPublications } = require('../scripts/lib/jamb-publication');
+const { publications: originalPublications, SOURCE: ORIGINAL_SOURCE } = require('../scripts/build-jamb-original-practice');
+const originalSource = require('../ops/nigeria-exams/jamb-original-practice-v1.json');
 const { renderYear } = require('../scripts/build-jamb-reviewed-pages');
 const { audit } = require('../scripts/audit-jamb-publication');
 const { sitemap } = require('../scripts/build-jamb-sitemap');
@@ -18,13 +20,16 @@ test('artifact audit rejects an exposed ledger, changed public data and indexed 
   };
   const pool = { questions: [] }; const cards = { decks: [] }; const ledger = { schema_version: 1, questions: {}, sources: {} };
   const built = buildPublications(pool, cards, ledger);
+  const original = originalPublications(originalSource);
   try {
     write(root, 'ops/jamb/source-pool.json', pool); write(root, 'ops/jamb/source-flashcards.json', cards);
+    write(root, ORIGINAL_SOURCE, originalSource);
     write(root, 'data/jamb/review-ledger.json', ledger);
     const page = renderYear('mathematics', 1987, [], ledger);
     write(root, 'jamb/mathematics/1987/index.html', page.html);
     write(target, 'jamb/mathematics/1987/index.html', page.html);
     for (const [file, payload] of Object.entries(built.files)) write(target, 'data/jamb/' + file, payload);
+    for (const [file, payload] of Object.entries(original.outputs)) write(target, file, payload);
     write(target, 'jamb/sitemap.xml', sitemap(root));
     assert.doesNotThrow(() => audit(target, root));
     assert.doesNotMatch(sitemap(root), /<loc>/);

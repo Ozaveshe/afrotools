@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <link rel="stylesheet" href="/assets/css/french-finance-mobile-fixes.css?v=e14fa05a">
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -1098,13 +1098,15 @@ window._grossToNet = function(g) {
   var _isNonRes = isOn('nonres');
   var _hasNSSF = isOn('nssf');
   var _hasLST = isOn('lst');
-  var nssf = _hasNSSF ? g * 0.05 : 0;
-  var paye = calcMonthlyPAYE(g, _isNonRes).tax;
-  var lstMo = _hasLST ? calcAnnualLST(g - paye) / 12 : 0;
-  return g - (nssf + paye + lstMo);
+  var value = ugandaPayeEngine().calculate({ grossMonthly: g, regime: _isNonRes ? 'NON_RESIDENT' : 'RESIDENT', nssfEnabled: _hasNSSF, lstEnabled: _hasLST });
+  return value.ok ? value.netMonthly : 0;
+};
+window._grossToNetBreakpoints = function() {
+  return isOn('lst') ? ugandaPayeEngine().formulaParameters.lstBands
+    .map(function(band) { return band.upTo; }).filter(Number.isFinite) : [];
 };
 </script>
-<script src="/assets/js/lib/net-to-gross.js?v=5bba1ca0" defer></script>
+<script src="/assets/js/lib/net-to-gross.js?v=fdcfe940" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>

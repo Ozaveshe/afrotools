@@ -80,12 +80,25 @@ test('NECO 2023 Mathematics Q45–50 has five checked guides and holds the confl
  const prime=n=>n>1&&Array.from({length:Math.floor(Math.sqrt(n))-1},(_,i)=>i+2).every(d=>n%d!==0);
  assert.equal(Array.from({length:30},(_,i)=>i+1).filter(prime).length/30,1/3);assert.equal(guides[4].answer,'1/3.');
  assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
- assert.deepEqual(intake.visual_review.numbers.slice(-5),[45,46,47,49,50]);
- assert.deepEqual(intake.visual_review.correctOptions.slice(-5),['C','B','B','A','E']);
+ assert.deepEqual(intake.visual_review.numbers.slice(43,48),[45,46,47,49,50]);
+ assert.deepEqual(intake.visual_review.correctOptions.slice(43,48),['C','B','B','A','E']);
+});
+
+test('NECO 2023 Mathematics Q51–60 adds ten adapted guides without releasing held items',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q51-q60');
+ assert.ok(section);assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=51&&q.number<=60);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),Array.from({length:10},(_,i)=>i+51));
+ assert.match(section.review,/pages 10–12/);assert.match(section.sourceRights,/rights-reserved/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.deepEqual(guides.map(q=>q.answer),['8/15.','120°.','42%.','6.3.','1/2.','21/50.','3.','4/3 (1⅓).','2/3.','40 m.']);
+ assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
+ assert.ok(!bank.items.some(q=>q.id==='neco-2023-mathematics-p3-q23'||q.id==='neco-2023-mathematics-p3-q48'));
 });
 
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,7);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
+ assert.equal(manifest.components.length,8);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));

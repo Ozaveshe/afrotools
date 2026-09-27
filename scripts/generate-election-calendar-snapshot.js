@@ -108,11 +108,12 @@ function renderRecord(record, dateStatusLabels) {
     '      <h4 class="et-election-title">' + escapeHtml(record.country) + ': ' + escapeHtml(record.office) + '</h4>',
     '      <span class="et-pill">' + escapeHtml(sourceStatus) + '</span><span class="et-pill">Date: ' + escapeHtml(dateStatus) + '</span>',
     '      <p class="et-election-meta">' + escapeHtml([record.jurisdiction, record.region, String(record.electionType || '').replace(/-/g, ' ')].filter(Boolean).join(' / ')) + '</p>',
+    '      <p class="et-election-brief">' + escapeHtml(record.notes || '') + '</p>',
     '    </div>',
     '  </div>',
-  '  <details class="et-record-details"><summary>Read source note and official links</summary>',
-    '    <p class="et-election-note">' + escapeHtml(record.notes || '') + '</p>',
+  '  <details class="et-record-details"><summary>Official notices and next watch for ' + escapeHtml(record.country) + ' ' + escapeHtml(record.office) + '</summary>',
     '    <div class="et-election-bottom"><div class="et-source-links">' + sourceMarkup + '</div></div>',
+    '    <p class="et-watch"><strong>Watch:</strong> ' + escapeHtml(record.nextWatch || '') + '</p>',
     '  </details>',
     '</article>'
   ].join('\n');

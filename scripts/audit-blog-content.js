@@ -7,6 +7,17 @@ const OUTPUT_DIR = path.join(ROOT, 'output');
 const OUTPUT_JSON = path.join(OUTPUT_DIR, 'blog-audit.json');
 const OUTPUT_MD = path.join(OUTPUT_DIR, 'blog-audit.md');
 const CURRENT_YEAR = 2026;
+const TOOL_ROUTES = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tool-directory.json'), 'utf8'))
+  .map((entry) => normalizeSitePath(entry.url))
+  .filter(Boolean));
+
+function normalizeSitePath(value) {
+  try {
+    const url = new URL(value, 'https://afrotools.com');
+    if (url.origin !== 'https://afrotools.com') return '';
+    return url.pathname.replace(/\.html$/i, '').replace(/\/$/, '') || '/';
+  } catch { return ''; }
+}
 
 const AI_TERMS = [
   'delve',
@@ -157,6 +168,8 @@ function extractLinks(raw) {
 
 function extractReviewDate(raw) {
   const patterns = [
+    /<strong>\s*(?:official\s+|primary\s+)?sources?\s+(?:reviewed|checked|verified):?\s+([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})\.?\s*<\/strong>/i,
+    /(?:<strong>\s*)?Verification date:\s*(?:<\/strong>\s*)?([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})/i,
     /<strong>(?:official sources?|primary sources?|sources?)\s+(?:reviewed|checked|verified):<\/strong>\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
     /(?:sources?|primary sources?|official sources?)\s+(?:were\s+)?(?:reviewed|checked|verified)(?:\s+on|\s+against)?\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
     /(?:last reviewed|source check|sources checked on|editorial review)[: ,]+\s*(?:<strong>)?([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})/i,
@@ -266,7 +279,7 @@ function parsePost(filePath) {
   const links = extractLinks(raw);
   const externalLinks = links.filter(isExternalLink);
   const internalLinks = links.filter((href) => /^\//.test(href));
-  const toolLinks = internalLinks.filter((href) => /^\/tools\//.test(href));
+  const toolLinks = internalLinks.filter((href) => TOOL_ROUTES.has(normalizeSitePath(href)));
   const blogLinks = internalLinks.filter((href) => /^\/blog\//.test(href));
   const officialLinks = countOfficialLinks(externalLinks);
   const aiHits = countMatches(bodyText, AI_TERMS);
@@ -296,7 +309,8 @@ function parsePost(filePath) {
   const punctuationSpacingHits = (bodyHtml.match(/(?:<\/strong>|\b20\d{2})\s+,/g) || []).length;
   const longSentenceCount = countLongSentences(bodyText);
   const thinContent = !isRedirect && words < 800;
-  const weakToolHandoff = !isRedirect && toolLinks.length === 0;
+  const toolHandoffApplicable = /\b(?:calculator|tool|template|converter|generator|tax|paye|payroll|salary after tax|pdf|roi)\b/i.test(`${slug} ${title}`);
+  const weakToolHandoff = !isRedirect && toolHandoffApplicable && toolLinks.length === 0;
   const weakRelatedLinks = !isRedirect && blogLinks.length < 2;
 
   let qualityScore = 100;
@@ -343,6 +357,7 @@ function parsePost(filePath) {
     externalLinks: externalLinks.length,
     internalLinks: internalLinks.length,
     toolLinks: toolLinks.length,
+    toolHandoffApplicable,
     blogLinks: blogLinks.length,
     officialLinks,
     sourceReviewDate,

@@ -526,4 +526,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { buildReport, parseArgs };
+module.exports = { buildReport, parseArgs, parseCsv };

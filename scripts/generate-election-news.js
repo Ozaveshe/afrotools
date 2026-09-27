@@ -173,12 +173,21 @@ function calendarLabel(record) {
   return formatDate(record.electionDate, 'en');
 }
 
+function compareReviewedArticles(locale, a, b) {
+  const publication = b.localizations[locale].publishedOn.localeCompare(a.localizations[locale].publishedOn);
+  if (publication) return publication;
+  // The first source is the notice the brief reports; later sources may be corrections.
+  return b.officialSources[0].publishedOn.localeCompare(a.officialSources[0].publishedOn)
+    || a.slug.localeCompare(b.slug);
+}
+
 function renderFrontPage(data, tracker, officialLedger) {
   const { elections } = validateModel(data, tracker, officialLedger);
   assert(isDate(tracker.generatedAt), 'Tracker generation date is required for the front page.');
-  const lead = [...data.articles]
+  const englishArticles = [...data.articles]
     .filter((article) => article.localizations.en)
-    .sort((a, b) => b.localizations.en.publishedOn.localeCompare(a.localizations.en.publishedOn) || a.slug.localeCompare(b.slug))[0];
+    .sort((a, b) => compareReviewedArticles('en', a, b));
+  const lead = englishArticles[0];
   assert(lead, 'A source-reviewed English brief is required for the front page.');
   const content = lead.localizations.en;
   const election = elections.get(lead.electionId);
@@ -196,6 +205,17 @@ function renderFrontPage(data, tracker, officialLedger) {
     '</li>'
   ].join('\n')).join('\n');
   const emptyCalendar = '<li class="et-rail-item"><strong id="nextElectionTitle">No upcoming record</strong><span id="nextElectionMeta">Browse the published calendar and its source links below.</span></li>';
+  const otherBriefs = englishArticles.slice(1, 4).map((article) => {
+    const brief = article.localizations.en;
+    const record = elections.get(article.electionId);
+    return [
+      '<article class="et-secondary-brief">',
+      '<p class="et-story-meta"><span>' + escapeHtml(record.country) + ' · ' + escapeHtml(record.office) + '</span><time datetime="' + brief.publishedOn + '">' + escapeHtml(formatDate(brief.publishedOn, 'en')) + '</time></p>',
+      '<h3><a href="' + escapeHtml(articleRoute(data.localeRoutes.en, article.slug)) + '">' + escapeHtml(brief.headline) + '</a></h3>',
+      '<p>' + escapeHtml(brief.summary) + '</p>',
+      '</article>'
+    ].join('\n');
+  }).join('\n');
   return [
     '<section class="et-frontpage" aria-labelledby="leadStoryTitle">',
     '  <div class="et-frontpage-rubric"><span>Latest reviewed brief</span><span>Independent civic reporting</span></div>',
@@ -214,6 +234,13 @@ function renderFrontPage(data, tracker, officialLedger) {
     '      <a href="#calendar">Open the full calendar and official links <span aria-hidden="true">→</span></a>',
     '    </aside>',
     '  </div>',
+    ...(otherBriefs ? [
+      '  <section class="et-more-briefs" aria-labelledby="moreBriefsTitle">',
+      '    <h2 id="moreBriefsTitle">More from the civic desk</h2>',
+      '    <div class="et-more-briefs-grid">' + otherBriefs + '</div>',
+      '    <a class="et-all-briefs" href="' + escapeHtml(data.localeRoutes.en) + '">All reviewed briefs <span aria-hidden="true">→</span></a>',
+      '  </section>'
+    ] : []),
     '</section>'
   ].join('\n');
 }
@@ -296,6 +323,8 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
     '<script type="application/ld+json">' + jsonLd(breadcrumbSchema) + '</script>',
     '<style>',
     'body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)}',
+    '.en-skip{position:absolute;top:-5rem;left:var(--space-4);z-index:1000;padding:var(--space-3) var(--space-4);background:var(--color-bg);color:var(--color-link);border:2px solid var(--color-link)}',
+    '.en-skip:focus{top:var(--space-4)}',
     '.en-wrap{max-width:1120px;margin:auto;padding:var(--space-8) var(--page-gutter) var(--space-16)}',
     '.en-breadcrumb{font-size:var(--text-sm);color:var(--color-text-muted);display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-8)}',
     '.en-breadcrumb a,.en-source a,.en-back{color:var(--color-link);text-underline-offset:3px}',
@@ -323,8 +352,8 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
 }
 
 function pageShell(head, body) {
-  return head + '\n<body>\n<!-- ' + MARKER + ' -->\n<afro-navbar active="government"></afro-navbar>\n'
-    + '<main class="en-wrap">\n' + body + '\n</main>\n<afro-footer></afro-footer>\n'
+  return head + '\n<body>\n<!-- ' + MARKER + ' -->\n<a class="en-skip" href="#main">Skip to main content</a>\n<afro-navbar active="government"></afro-navbar>\n'
+    + '<main class="en-wrap" id="main">\n' + body + '\n</main>\n<afro-footer></afro-footer>\n'
     + '<script src="/assets/js/lazy-analytics.js?v=' + rawAssetHash('/assets/js/lazy-analytics.js') + '" defer></script>\n'
     + '</body>\n</html>\n';
 }
@@ -457,7 +486,7 @@ function generateOutputs(data, tracker, officialLedger) {
   for (const [locale, route] of Object.entries(data.localeRoutes)) {
     const articles = data.articles.filter((article) => article.localizations[locale]);
     if (!articles.length) continue; // Never expose an empty translated desk or feed.
-    articles.sort((a, b) => b.localizations[locale].publishedOn.localeCompare(a.localizations[locale].publishedOn) || a.slug.localeCompare(b.slug));
+    articles.sort((a, b) => compareReviewedArticles(locale, a, b));
     outputs.set(routeToFile(route), archivePage(locale, route, articles, elections, archiveAlternates));
     outputs.set(route.slice(1) + 'feed.xml', feedPage(locale, route, articles, elections));
     for (const article of articles) {

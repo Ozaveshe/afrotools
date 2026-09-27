@@ -1947,19 +1947,30 @@ function copyLink() {
 function restoreFromUrl() {
   if (!window.AfroTools || !window.AfroTools.shareState || !window.AfroTools.shareState.hasState()) return;
   const s = window.AfroTools.shareState.decode();
-  if (s.g) {
-    document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
-    slider.value = Math.min(Math.max(s.g, 500000), 50000000);
-    document.getElementById('sliderVal').textContent = fmt(s.g);
-    updateSliderFill(slider);
-  }
+  // Tracking and AI-prefill parameters are not a shared calculation.
+  if (typeof s.g !== 'number' || !Number.isFinite(s.g) || s.g <= 0) return;
+  document.getElementById('grossSalary').value = Math.round(s.g).toLocaleString('en-NG');
+  slider.value = Math.min(Math.max(s.g, 500000), 50000000);
+  document.getElementById('sliderVal').textContent = fmt(s.g);
+  updateSliderFill(slider);
   if (s.r === 'nta') {
     setRegime('nta', document.getElementById('tabNta'));
   }
-  // Restore toggles
-  ['pension', 'nhf', 'nhis'].forEach(t => {
-    const el = document.querySelector(`[data-tog="${t}"]`);
-    if (el) { if (s[t[0]] || s.p || s.n || s.h) el.classList.add('on'); else el.classList.remove('on'); }
+  // Shared links include only enabled deductions; restore each one independently.
+  [['pension', 'p'], ['nhf', 'n'], ['nhis', 'h']].forEach(([toggle, key]) => {
+    const enabled = s[key] === 1 || s[key] === true;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    if (toggle === 'nhis') document.getElementById('nhisField').classList.toggle('on', enabled);
+  });
+  [['life', 'li', 'lifeAmt', 'lifeField'], ['homeloan', 'hl', 'homeloanAmt', 'homeloanField']].forEach(([toggle, key, inputId, fieldId]) => {
+    const enabled = Object.prototype.hasOwnProperty.call(s, key) && typeof s[key] === 'number' && Number.isFinite(s[key]) && s[key] >= 0;
+    const el = document.querySelector(`[data-tog="${toggle}"]`);
+    el.classList.toggle('on', enabled);
+    el.setAttribute('aria-checked', String(enabled));
+    document.getElementById(fieldId).classList.toggle('on', enabled);
+    if (enabled) document.getElementById(inputId).value = s[key].toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   if (s.pe) document.getElementById('pensionableAmt').value = Math.round(s.pe).toLocaleString('en-NG');
   if (s.rt) document.getElementById('annualRent').value = Math.round(s.rt).toLocaleString('en-NG');

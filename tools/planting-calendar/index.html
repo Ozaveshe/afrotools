@@ -13,13 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#16a34a}
 .tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.78);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}.breadcrumb span{color:#bbf7d0}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bbf7d0;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.88);line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
 .tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
@@ -30,20 +30,41 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
 .btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
 .calendar-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;margin-top:18px;font-size:.66rem}
+.calendar-note{grid-column:1/-1;border-radius:7px;padding:10px 14px;font-size:.78rem;font-weight:600;margin-bottom:12px}.calendar-note--bimodal{background:#f0fdf4;border:1px solid #86efac;color:#14532d}.calendar-note--warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
 .month-header{text-align:center;font-weight:700;padding:6px 2px;background:#f8fafc;border-radius:4px;color:#64748b}
 .crop-row{display:contents}
 .crop-name{grid-column:1/-1;font-weight:700;font-size:.78rem;color:var(--afro-dark);padding:10px 0 4px;border-bottom:1px solid #e2e8f0}
 .cell{height:24px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.58rem;color:#fff}
-.cell.plant{background:#16a34a}.cell.grow{background:#86efac;color:#14532d}.cell.harvest{background:#eab308;color:#78350f}.cell.none{background:#f8fafc}
+.cell-month,.cell.grow .cell-status{display:none}.cell.plant{background:#16a34a}.cell.grow{background:#86efac;color:#14532d}.cell.harvest{background:#eab308;color:#78350f}.cell.none{background:#f8fafc;color:#475569}
 .legend{display:flex;gap:14px;margin-top:14px;font-size:.72rem;font-weight:600}
 .legend-item{display:flex;align-items:center;gap:4px}
 .legend-dot{width:14px;height:14px;border-radius:3px}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.calendar-grid{grid-template-columns:repeat(6,1fr)}}
+html[data-theme="dark"] .tool-main{--afro-dark:var(--color-text)}
+html[data-theme="dark"] .tool-main .card{background:var(--color-surface);border-color:var(--color-border)}
+html[data-theme="dark"] .tool-main .card-head,html[data-theme="dark"] .tool-main .month-header{background:var(--color-surface-muted);border-color:var(--color-border)}
+html[data-theme="dark"] .tool-main label,html[data-theme="dark"] .tool-main .month-header{color:var(--color-text-muted)}
+html[data-theme="dark"] .tool-main select{background:var(--color-surface-inset);color:var(--color-text);border-color:var(--color-border-strong)}
+html[data-theme="dark"] .tool-main .crop-name{border-color:var(--color-border)}
+html[data-theme="dark"] .tool-main .cell.none{background:var(--color-surface-inset);color:var(--color-text-muted)}
+html[data-theme="dark"] .tool-main .calendar-note--bimodal{background:#143023;border-color:#327b4d;color:#bbf7d0}
+html[data-theme="dark"] .tool-main .calendar-note--warning{background:#3b2b13;border-color:#8d6620;color:#fde68a}
+html[data-theme="dark"] .seo-section h2,html[data-theme="dark"] .faq-item summary{color:var(--color-text)}
+html[data-theme="dark"] .seo-section p{color:var(--color-text-muted)}
+html[data-theme="dark"] .faq-item{border-color:var(--color-border)}
+@media(max-width:960px){#calendarGrid.calendar-grid{grid-template-columns:repeat(12,minmax(0,1fr))!important}}
+@media(max-width:768px){
+  .tool-main-inner{padding:0 12px}.card-head{padding:14px 16px}.card-body{padding:16px 12px}
+  .row{grid-template-columns:minmax(0,1fr)}.legend{flex-wrap:wrap;gap:8px 12px}
+  .tool-main select{font-size:1rem}
+  #calendarGrid.calendar-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+  .cell{height:40px;flex-direction:column;gap:1px;line-height:1.1;font-size:.65rem}
+  .cell-month{display:block;font-size:.7rem}.cell.grow .cell-status{display:inline}
+}
 </style>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -199,6 +220,7 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div> Harvest</div>
 <div class="legend-item"><div class="legend-dot" style="background:#f8fafc;border:1px solid #e2e8f0"></div> Off-season</div>
 </div>
+<p class="sr-only" id="calendarStatus" role="status"></p>
 <div class="calendar-grid" id="calendarGrid"></div>
 </div></div>
 </div></main>
@@ -230,7 +252,7 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 
 <script src="/data/agriculture/planting-calendar-data.js?v=918c1604"></script>
 <script src="/engines/planting-calendar-engine.js?v=c608029b"></script>
-<script src="/assets/js/pages/planting-calendar-controller.js?v=afd1e83e"></script>
+<script src="/assets/js/pages/planting-calendar-controller.js?v=23ce59a0"></script>
 
 <script>
 // Save/Share buttons — manual placement needed

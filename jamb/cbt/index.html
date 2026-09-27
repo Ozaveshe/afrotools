@@ -3,7 +3,7 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>
 <meta charset="UTF-8">
-<script src="/assets/js/lib/jamb-question-trust.js?v=ac1b3406"></script>
+<script src="/assets/js/lib/jamb-question-trust.js?v=0ae71207"></script>
 <script src="/assets/js/lib/jamb-reviewed-figure.js?v=407d43cb"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB CBT Mock Exam — AfroJAMB</title>
@@ -25,37 +25,15 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/jamb.css?v=60191dc2">
 
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=06328f6c" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=a73f75b6" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
 <script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
 <!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1443999710469672');
-fbq('track', 'PageView');
-</script>
-<script>
-if (typeof window.fbq === "function") {
-  window.fbq("track", "ViewContent", {
-    content_name: "AfroJAMB CBT Mock",
-    content_category: "jamb_cbt"
-  });
-}
-</script>
-<!-- End Meta Pixel Code -->
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="canonical" href="https://afrotools.com/jamb/cbt/">
@@ -63,9 +41,6 @@ if (typeof window.fbq === "function") {
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/cbt/">
 </head>
 <body class="jamb-page top-level-page-ui-refresh">
-<noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
-/></noscript>
 
 <!-- ===== Pre-test setup screen ===== -->
 <div id="setup-screen">
@@ -724,6 +699,12 @@ function cbtQuestionBucket(count) {
   return count < 15 ? "1-14" : count < 50 ? "15-49" : "50+";
 }
 
+function cbtSessionMetrics(cfg, count) {
+  var details = { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(count) };
+  if (SESSION_YEAR !== null) details.collection_year = SESSION_YEAR;
+  return details;
+}
+
 function questionsPerSubjectForMode() {
   return SELECTED_MODE === "quick" ? 10 : 40;
 }
@@ -1066,19 +1047,10 @@ async function startCBT(resumeSnapshot) {
   try {
     if (resumeSnapshot && typeof AfroJAMB.CBT.restore === "function") {
       AfroJAMB.CBT.restore(cfg, resumeSnapshot);
-      trackCbt("education_jamb_resume", { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(selected.length) });
+      trackCbt("education_jamb_resume", cbtSessionMetrics(cfg, selected.length));
     } else {
       AfroJAMB.CBT.init(cfg);
-      trackCbt("education_jamb_start", { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(selected.length) });
-      if (SESSION_YEAR === null && typeof window.fbq === "function") {
-        window.fbq("trackCustom", "StartMock", {
-          content_name: "AfroJAMB CBT Mock",
-          mode: cfg.mode,
-          subjects: cfg.subjects.join(","),
-          questions_per_subject: cfg.questionsPerSubject,
-          duration_minutes: cfg.durationMinutes
-        });
-      }
+      trackCbt("education_jamb_start", cbtSessionMetrics(cfg, selected.length));
     }
   } catch(e) {
     throw e;

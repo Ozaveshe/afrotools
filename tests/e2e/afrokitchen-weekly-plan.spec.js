@@ -28,6 +28,31 @@ function installConsoleGuard(page) {
   return errors;
 }
 
+test("AfroKitchen default plan uses meals and labels a short filtered plan honestly", async ({ page }) => {
+  await quietExternalNoise(page);
+  await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#ak-plan-time")).toHaveValue("45");
+  await page.locator("#ak-plan-generate").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(7, { timeout: 30000 });
+  const plan = await page.locator(".ak-plan-day").evaluateAll(cards => cards.map(card => ({
+    category: card.querySelector(".ak-plan-day-badges span:nth-child(2)")?.textContent.trim().toLowerCase(),
+    slug: card.querySelector("h4 a")?.pathname.split("/").filter(Boolean).pop()
+  })));
+  const mealCategories = ["main", "stew", "soup", "seafood", "grill", "rice"];
+  expect(plan.every(recipe => mealCategories.includes(recipe.category))).toBe(true);
+  const starchLed = ["papa-le-moroho-ls", "sishwala-emasi-sz", "ugali-na-sukuma-wiki", "kondowole"];
+  expect(plan.filter(recipe => starchLed.includes(recipe.slug)).length).toBeLessThanOrEqual(2);
+
+  await page.locator("#ak-plan-country").selectOption("LS");
+  await page.locator("#ak-plan-generate").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(1);
+  await expect(page.locator("#ak-plan-result h3").first()).toHaveText("Partial 7-day plan");
+  await expect(page.locator(".ak-plan-warning")).toContainText("Widen filters to fill every day");
+  await expect(page.locator("#ak-plan-status")).toContainText("1 existing recipe.");
+  await expect(page.locator("#ak-plan-generate")).toHaveAttribute("data-state", "partial");
+  await expect(page.locator("#ak-plan-generate")).toContainText("Partial plan");
+});
+
 test("AfroKitchen weekly planner generates plans, exports shopping list, handles empty state, and fits mobile", async ({ page }) => {
   test.setTimeout(120000);
   await quietExternalNoise(page);
@@ -54,19 +79,45 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await expect(page.locator("#ak-plan-result")).toContainText("3-day plan ready", { timeout: 30000 });
   await expect(page.locator(".ak-plan-day")).toHaveCount(3);
   await expect(page.locator(".ak-plan-shopping")).toContainText("Grouped shopping list");
-  await expect(page.locator(".ak-plan-shopping-group").first()).toContainText("Day 1:");
+  await expect(page.locator(".ak-plan-shopping")).toContainText("Day 1:");
+  const initialPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  await page.locator("#ak-plan-regenerate").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(3);
+  const regeneratedPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  expect(regeneratedPlan).not.toEqual(initialPlan);
+
+  await page.locator("#ak-plan-save").click();
+  await expect(page.locator("#ak-plan-status")).toContainText("saved on this device");
+  const savedPlan = await page.evaluate(() => JSON.parse(localStorage.getItem("ak_saved_plan_v1")));
+  expect(savedPlan.slugs).toHaveLength(3);
+  expect(savedPlan).not.toHaveProperty("ingredients");
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.locator("#ak-plan-status")).toContainText("Saved plan restored", { timeout: 30000 });
+  const restoredPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  expect(restoredPlan).toEqual(regeneratedPlan);
+  const firstPlannedRecipe = await page.locator(".ak-plan-day h4").first().innerText();
 
   await page.locator("#ak-plan-copy").click();
   await expect(page.locator("#ak-plan-status")).toContainText("Shopping list copied");
   const copiedText = await page.evaluate(function () { return window.__akCopiedText || ""; });
   expect(copiedText).toContain("Shopping list");
-  expect(copiedText).toContain("Nigerian Jollof Rice");
+  expect(copiedText).toContain(firstPlannedRecipe);
 
   const download = await Promise.all([
     page.waitForEvent("download"),
     page.locator("#ak-plan-export").click()
   ]).then(function (values) { return values[0]; });
   expect(download.suggestedFilename()).toBe("afrokitchen-3-day-plan.txt");
+  await page.locator("#ak-plan-clear").click();
+  expect(await page.evaluate(() => localStorage.getItem("ak_saved_plan_v1"))).toBeNull();
+  await page.evaluate(function (plan) {
+    plan.inputs.servings = '<img src=x onerror=alert(1)>';
+    localStorage.setItem('ak_saved_plan_v1', JSON.stringify(plan));
+  }, savedPlan);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#ak-plan-restore')).toBeHidden();
+  await expect(page.locator('#ak-plan-result')).toContainText('No complete plan yet');
+  await page.evaluate(() => localStorage.removeItem('ak_saved_plan_v1'));
 
   await page.locator("#ak-plan-days").selectOption("7");
   await page.locator("#ak-plan-time").selectOption("999");
@@ -83,7 +134,7 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await page.locator("#ak-plan-occasion").selectOption("street-food");
   await page.locator("#ak-plan-generate").click();
   await expect(page.locator("#ak-plan-status")).toContainText("No complete plan generated", { timeout: 30000 });
-  await expect(page.locator("#ak-plan-result")).toContainText("stored", { timeout: 30000 });
+  await expect(page.locator("#ak-plan-result")).toContainText("No meal recipes match", { timeout: 30000 });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator("#ak-plan-days").selectOption("3");
@@ -109,7 +160,67 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   darkBackgrounds.forEach(function (color) {
     expect(Number(color.match(/\d+/)[0])).toBeLessThan(100);
   });
+  const kickerContrast = await page.locator("#cook-this-week .ak-section-kicker").evaluate(function (kicker) {
+    const card = kicker.closest(".ak-planner-card");
+    function luminance(color) {
+      const channels = color.match(/\d+/g).slice(0, 3).map(Number).map(value => {
+        const unit = value / 255;
+        return unit <= 0.04045 ? unit / 12.92 : Math.pow((unit + 0.055) / 1.055, 2.4);
+      });
+      return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    }
+    const text = luminance(getComputedStyle(kicker).color);
+    const background = luminance(getComputedStyle(card).backgroundColor);
+    return (Math.max(text, background) + 0.05) / (Math.min(text, background) + 0.05);
+  });
+  expect(kickerContrast).toBeGreaterThanOrEqual(4.5);
   expect(consoleErrors).toEqual([]);
+});
+
+test("AfroKitchen saves a side as an idea and guides the visitor to a meal", async ({ page }) => {
+  await quietExternalNoise(page);
+  await page.goto("/tools/afrokitchen/recipes/gozo-cf/", { waitUntil: "domcontentloaded" });
+  const saveIdea = page.locator("[data-ak-add-meal-plan]");
+  await expect(saveIdea).toContainText("Save recipe idea");
+  await saveIdea.click();
+  await expect(page.locator("#ak-static-action-status")).toContainText("Add a main dish");
+  const browse = page.locator("#ak-static-action-status a");
+  await expect(browse).toHaveAttribute("href", "/tools/afrokitchen/#browse-panel");
+  await expect(browse).toContainText("More filters to choose Main");
+  await browse.click();
+  await expect(page.locator("#ak-picked-recipes")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator("#ak-plan-from-picks")).toBeDisabled();
+  await expect(page.locator("#ak-picked-status")).toContainText("Add a main dish");
+  await expect(page.locator("#ak-picked-status a")).toHaveAttribute("href", "#browse-panel");
+  await expect(page.locator("#ak-picked-status a")).toContainText("More filters to choose Main");
+});
+
+test("AfroKitchen only requests known local recipe image paths", async ({ page }) => {
+  await quietExternalNoise(page);
+  const missingResponses = [];
+  page.on("response", response => {
+    if (response.status() === 404 && response.url().includes("/assets/img/kitchen/")) missingResponses.push(response.url());
+  });
+  await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#recipes-grid .ak-recipe-card").first()).toBeVisible();
+  const imagePaths = await page.evaluate(async () => {
+    const legacySlugs = [
+      "ugali-sukuma-wiki", "ethiopian-doro-wat", "south-african-bobotie",
+      "senegalese-thieboudienne", "egyptian-koshari", "moroccan-chicken-tagine", "ghanaian-waakye"
+    ];
+    const catalog = await fetch("/tools/afrokitchen/recipe-index.json").then(response => response.json());
+    const known = window.AfroKitchenImageManifest;
+    return {
+      count: known.size,
+      recipeCount: catalog.recipes.length,
+      unknown: catalog.recipes.concat(legacySlugs).flatMap(recipe => window.AfroKitchenImages.getCandidatePaths(recipe))
+        .filter(path => path.startsWith("/assets/img/kitchen/") && !known.has(path))
+    };
+  });
+  expect(imagePaths.count).toBeGreaterThan(300);
+  expect(imagePaths.recipeCount).toBe(410);
+  expect(imagePaths.unknown).toEqual([]);
+  expect(missingResponses).toEqual([]);
 });
 
 test("AfroKitchen search results stay close to filters and quick picks narrow recipes", async ({ page }) => {
@@ -182,5 +293,68 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
     return document.documentElement.scrollWidth - document.documentElement.clientWidth;
   });
   expect(narrowOverflow).toBeLessThanOrEqual(1);
+  expect(consoleErrors).toEqual([]);
+});
+
+test("AfroKitchen recipe picks open in the planner and lead a filtered weekly plan", async ({ page }) => {
+  test.setTimeout(120000);
+  await quietExternalNoise(page);
+  const consoleErrors = installConsoleGuard(page);
+  await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
+  await page.locator("[data-ak-add-meal-plan]").click();
+  const planLink = page.getByRole("link", { name: "Build a plan from your picks" });
+  await expect(planLink).toHaveAttribute("href", "/tools/afrokitchen/#cook-this-week");
+  await page.evaluate(function () {
+    localStorage.setItem("ak_meal_plan_v1", JSON.stringify([
+      { slug: "jollof-rice-ng", name: '<img src=x onerror=alert(1)>', url: "https://example.invalid/" },
+      { slug: "../../unknown", name: "Untrusted recipe", url: "https://example.invalid/" }
+    ]));
+  });
+  await planLink.click();
+  await expect(page.locator("#ak-picked-recipes")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator("#ak-picked-list li")).toHaveCount(1);
+  await expect(page.locator("#ak-picked-list a")).toHaveText("Jollof Rice");
+  await expect(page.locator("#ak-picked-list a")).toHaveAttribute("href", "/tools/afrokitchen/recipes/jollof-rice-ng/");
+  await expect(page.locator("#ak-picked-list img")).toHaveCount(0);
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  const pickedBackground = await page.locator("#ak-picked-recipes").evaluate(node => getComputedStyle(node).backgroundColor);
+  expect(Number(pickedBackground.match(/\d+/)[0])).toBeLessThan(100);
+
+  await page.locator("#ak-plan-days").selectOption("3");
+  await page.locator("#ak-plan-time").selectOption("30");
+  await expect(page.locator("#ak-plan-from-picks")).toBeDisabled();
+  await expect(page.locator("#ak-picked-status")).toContainText("None of your picks match");
+  await page.locator("#ak-plan-time").selectOption("999");
+  await expect(page.locator("#ak-plan-from-picks")).toBeEnabled();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  await page.locator("#ak-plan-from-picks").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(3, { timeout: 30000 });
+  await expect(page.locator(".ak-plan-day h4 a").first()).toHaveText("Jollof Rice");
+  await expect(page.locator("#ak-plan-status")).toContainText("including 1 of your picks");
+
+  await page.locator('#ak-picked-list button').click();
+  await expect(page.locator('#ak-picked-recipes')).toBeHidden();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('ak_meal_plan_v1')))).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+});
+
+test("AfroKitchen remembers and reverses a cooked recipe mark on this device", async ({ page }) => {
+  await quietExternalNoise(page);
+  const consoleErrors = installConsoleGuard(page);
+  await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
+  const cookedButton = page.locator("[data-ak-mark-cooked]");
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "false");
+  await cookedButton.click();
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#ak-static-action-status")).toContainText("Marked as cooked on this device");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ak_cooked_recipes_v1")))).toEqual([
+    expect.objectContaining({ slug: "jollof-rice-ng", cooked_at: expect.any(String) })
+  ]);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
+  await cookedButton.click();
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "false");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ak_cooked_recipes_v1")))).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });

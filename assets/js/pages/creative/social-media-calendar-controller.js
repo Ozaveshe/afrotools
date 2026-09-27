@@ -21,9 +21,10 @@
     for (var day = 1; day <= result.daysInMonth; day += 1) {
       var post = byDay[day];
       html += post ? '<div class="cal-day"><div class="cal-day-num">' + day + '</div><div class="cal-post ' + classes[post.type] + '">' + labels[post.type] + '</div><div style="font-size:.72rem;color:#334155;line-height:1.3;margin-bottom:4px">' + post.topic + '</div><div class="cal-time">⏰ ' + post.time + "</div></div>" :
-        '<div class="cal-day"><div class="cal-day-num" style="color:#cbd5e1">' + day + "</div></div>";
+        '<div class="cal-day"><div class="cal-day-num" style="color:#64748b">' + day + "</div></div>";
     }
-    document.getElementById("calendar").innerHTML = html;
+    var calendar = document.getElementById("calendar");
+    calendar.innerHTML = html;
     document.getElementById("postCount").textContent = result.totalPosts;
     document.getElementById("mixMetrics").innerHTML =
       '<div class="en-metric"><div class="en-metric-label">Educational (30%)</div><div class="en-metric-value">' + result.counts.edu + '</div><div class="en-metric-unit" style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">Educate</div></div>' +
@@ -41,6 +42,12 @@
       return '<div style="margin-bottom:16px"><div style="font-size:.85rem;font-weight:700;color:var(--en-accent-dark);margin-bottom:8px">' + captionLabels[type] + '</div><div style="background:#f8fafd;border:1px solid var(--en-border);border-radius:10px;padding:14px;font-size:.83rem;line-height:1.7;color:#334155;white-space:pre-line">' + captions[type] + "</div></div>";
     }).join("");
     document.getElementById("results").classList.add("on");
+    var calendarScroll = calendar.closest(".cal-scroll");
+    var firstDay = calendar.querySelector(".cal-day");
+    if (calendarScroll && firstDay && calendarScroll.scrollWidth > calendarScroll.clientWidth) {
+      // Keep the first date in view when a month begins beyond the phone's visible columns.
+      calendarScroll.scrollLeft += firstDay.getBoundingClientRect().left - calendarScroll.getBoundingClientRect().left;
+    }
     if (global.AfroToolsCreativeResultActions) global.AfroToolsCreativeResultActions.publish({ slug: "social-media-calendar", title: "Social media content calendar", result: result });
     document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
   }

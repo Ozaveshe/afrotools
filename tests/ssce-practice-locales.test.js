@@ -122,7 +122,16 @@ test('worked numerical results and exam references retain the English meanings',
       assert.equal(localized.source,original.source);assert.equal(localized.checks.length,original.checks.length);
       assert.match(localized.answer,result);
     }
+    for(const [number,result] of [[51,/8\/15/],[52,/120°/],[53,/42\s*%/],[54,/6[,.]3/],[55,/1\/2/],[56,/21\/50/],[57,/3/],[58,/4\/3/],[59,/2\/3/],[60,/40 m/]]){
+      const id=`neco-2023-mathematics-p3-q${number}`;
+      const localized=items.find(q=>q.id===id),original=enWritten.items.find(q=>q.id===id);
+      assert.ok(localized&&original,id);assert.notEqual(localized.prompt,original.prompt);
+      assert.notEqual(localized.steps.join(' '),original.steps.join(' '));
+      assert.equal(localized.source,original.source);assert.equal(localized.checks.length,original.checks.length);
+      assert.match(localized.answer,result);
+    }
     assert.ok(!items.some(q=>q.id==='neco-2023-mathematics-p3-q48'));
+    assert.ok(!items.some(q=>q.id==='neco-2023-mathematics-p3-q23'));
     assert.match(answer('neco-2023-mathematics-p3-q29'),/x = 2.*y = −3/);
     assert.match(answer('neco-2023-mathematics-p3-q30'),/9\(a \+ 3b\)\(a − b\)/);
     assert.match(answer('neco-2023-mathematics-p3-q31'),/7[,.]95/);

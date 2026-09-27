@@ -15,9 +15,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
-<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script>
 <style>
 /* ── Compliance Calendar App — ccal- prefix, orange accent ── */
 :root{
@@ -79,25 +79,29 @@ body{margin:0}
 /* ─────────────────────────────────────────────────────────────────────────
    CALENDAR VIEW
 ───────────────────────────────────────────────────────────────────────── */
+.ccal-grid-hint{display:none}
 .ccal-grid-wrap{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
-.ccal-grid-head{display:grid;grid-template-columns:repeat(7,1fr);background:#f1f5f9;border-bottom:1px solid var(--bd)}
+.ccal-grid-head{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))!important;background:#f1f5f9;border-bottom:1px solid var(--bd)}
 .ccal-grid-head-cell{padding:8px 4px;text-align:center;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--m)}
-.ccal-grid-body{display:grid;grid-template-columns:repeat(7,1fr)}
+.ccal-grid-body{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))!important}
+@media(max-width:360px){.ccal-grid-hint{display:block;margin:0 0 8px;color:var(--m);font-size:.72rem}.ccal-grid-wrap{overflow-x:auto}.ccal-grid-head,.ccal-grid-body{min-width:308px}}
 .ccal-grid-cell{min-height:90px;padding:6px;border-right:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .1s;position:relative}
 @media(max-width:640px){.ccal-grid-cell{min-height:60px;padding:4px}}
 .ccal-grid-cell:nth-child(7n){border-right:none}
 .ccal-grid-cell:hover{background:#fffbf5}
+.ccal-grid-cell:not(.has-events){cursor:default}
 .ccal-grid-cell.empty{background:#fafafa;cursor:default}
 .ccal-grid-cell.today{background:#fff7ed}
 .ccal-grid-cell.today .ccal-day-num{background:var(--ccal);color:#fff;border-radius:50%}
 .ccal-grid-cell.has-events{background:#fffbf5}
 .ccal-day-num{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;color:var(--t);margin-bottom:4px}
 .ccal-day-dots{display:flex;flex-wrap:wrap;gap:3px}
-.ccal-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ccal-dot{width:24px;height:24px;min-height:24px!important;border:0;border-radius:50%;flex-shrink:0;cursor:pointer;padding:0}
+.ccal-dot:focus-visible,.ccal-day-event-chip:focus-visible{outline:3px solid var(--ccal);outline-offset:2px}
 .ccal-dot-label{font-size:.6rem;font-weight:600;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;line-height:1.3}
-@media(max-width:480px){.ccal-dot-label{display:none}}
 .ccal-day-events{display:flex;flex-direction:column;gap:2px;margin-top:2px}
-.ccal-day-event-chip{font-size:.6rem;font-weight:600;padding:1px 4px;border-radius:3px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.ccal-day-event-chip{font-size:.6rem;font-weight:600;padding:1px 4px;border:0;border-radius:3px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-align:left;font-family:inherit}
+@media(max-width:480px){.ccal-dot{width:28px;height:28px;min-height:28px!important}.ccal-dot-label,.ccal-day-events{display:none}}
 .ccal-heavy-week{position:absolute;inset:0;border:2px dashed #fed7aa;border-radius:0;pointer-events:none;opacity:.5}
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -159,9 +163,9 @@ table.ccal-table tr:last-child td{border-bottom:none}
 .ccal-btn-sm a{color:inherit;text-decoration:none}
 
 /* ── Event Detail Drawer ── */
-.ccal-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;opacity:0;pointer-events:none;transition:opacity .2s}
+.ccal-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100000;opacity:0;pointer-events:none;transition:opacity .2s}
 .ccal-drawer-overlay.open{opacity:1;pointer-events:all}
-.ccal-drawer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;z-index:401;transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1);max-height:80vh;overflow-y:auto;padding:0 0 env(safe-area-inset-bottom,16px)}
+.ccal-drawer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;z-index:100001;transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1);max-height:80vh;overflow-y:auto;padding:0 0 env(safe-area-inset-bottom,16px)}
 @media(min-width:768px){
   .ccal-drawer{left:auto;right:0;top:0;bottom:0;border-radius:0;max-height:100vh;width:380px;transform:translateX(100%)}
   .ccal-drawer.open{transform:translateX(0)}
@@ -182,7 +186,7 @@ table.ccal-table tr:last-child td{border-bottom:none}
 .ccal-drawer-actions{padding:0 20px 16px;display:flex;gap:8px;flex-wrap:wrap}
 
 /* ── Alert Modal ── */
-.ccal-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.ccal-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100002;display:none;align-items:flex-end;justify-content:center}
 @media(min-width:480px){.ccal-modal-overlay{align-items:center}}
 .ccal-modal-overlay.open{display:flex}
 .ccal-modal{background:#fff;border-radius:16px 16px 0 0;padding:24px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto}
@@ -208,6 +212,36 @@ table.ccal-table tr:last-child td{border-bottom:none}
 .ccal-no-events-icon{font-size:2.5rem;margin-bottom:12px}
 .ccal-no-events-title{font-size:.96rem;font-weight:700;color:var(--t);margin-bottom:6px}
 .ccal-no-events-desc{font-size:.8rem;color:var(--m);line-height:1.55}
+html[data-theme="dark"] .ccal-app,
+html[data-theme="dark"] .ccal-drawer,
+html[data-theme="dark"] .ccal-modal-overlay{--t:#eef5ff;--m:#b8c7dc;--bd:#304159;--bg:#09111f}
+html[data-theme="dark"] .ccal-filters,
+html[data-theme="dark"] .ccal-grid-wrap,
+html[data-theme="dark"] .ccal-tl-card,
+html[data-theme="dark"] .ccal-table-wrap,
+html[data-theme="dark"] .ccal-drawer,
+html[data-theme="dark"] .ccal-modal{background:#122036}
+html[data-theme="dark"] .ccal-grid-head,
+html[data-theme="dark"] table.ccal-table th{background:#1b2b43}
+html[data-theme="dark"] .ccal-grid-cell,
+html[data-theme="dark"] table.ccal-table td{border-color:#304159}
+html[data-theme="dark"] .ccal-grid-cell.empty{background:#101b2d}
+html[data-theme="dark"] .ccal-grid-cell.today{background:#332617}
+html[data-theme="dark"] .ccal-grid-cell.has-events,
+html[data-theme="dark"] .ccal-grid-cell:hover,
+html[data-theme="dark"] table.ccal-table tr:hover td{background:#223047}
+html[data-theme="dark"] .ccal-tl-card.overdue{background:#33212a}
+html[data-theme="dark"] .ccal-btn-sm,
+html[data-theme="dark"] .ccal-choice-chip,
+html[data-theme="dark"] .ccal-modal-input{background:#1b2b43;color:#eef5ff}
+html[data-theme="dark"] .ccal-btn-orange,
+html[data-theme="dark"] .ccal-choice-chip.selected{background:#9a3412;color:#fff;border-color:#9a3412}
+html[data-theme="dark"] .ccal-drawer-penalty-box{background:#332617;border-color:#a6531b}
+html[data-theme="dark"] .ccal-drawer-penalty-label,
+html[data-theme="dark"] .ccal-drawer-penalty-val,
+html[data-theme="dark"] .ccal-tl-penalty,
+html[data-theme="dark"] .ccal-table-penalty{color:#fdba74}
+html[data-theme="dark"] .ccal-urgency-pill.ok{background:#24364c}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/compliance-calendar/calendar">
 <link rel="canonical" href="https://afrotools.com/tools/compliance-calendar/calendar">
@@ -287,7 +321,8 @@ table.ccal-table tr:last-child td{border-bottom:none}
 
     <!-- ── CALENDAR VIEW ── -->
     <div class="ccal-view active" id="view-calendar">
-      <div class="ccal-grid-wrap">
+      <p class="ccal-grid-hint">Scroll sideways to see all seven days.</p>
+      <div class="ccal-grid-wrap" role="region" aria-label="Deadline calendar; scroll sideways to see all seven days" tabindex="0">
         <div class="ccal-grid-head">
           <div class="ccal-grid-head-cell">Mon</div>
           <div class="ccal-grid-head-cell">Tue</div>
@@ -344,8 +379,8 @@ table.ccal-table tr:last-child td{border-bottom:none}
 </div>
 
 <!-- ── Event Detail Drawer ── -->
-<div class="ccal-drawer-overlay" id="ccal-drawer-overlay" role="dialog" aria-modal="true" aria-labelledby="ccal-drawer-name"></div>
-<div class="ccal-drawer" id="ccal-drawer">
+<div class="ccal-drawer-overlay" id="ccal-drawer-overlay"></div>
+<div class="ccal-drawer" id="ccal-drawer" role="dialog" aria-modal="true" aria-labelledby="ccal-drawer-name" aria-hidden="true" inert>
   <div class="ccal-drawer-handle"></div>
   <div class="ccal-drawer-head">
     <div class="ccal-drawer-type" id="ccal-drawer-type-badge"></div>
@@ -433,6 +468,8 @@ table.ccal-table tr:last-child td{border-bottom:none}
   var tableTitle    = document.getElementById('ccal-table-title');
   var drawer        = document.getElementById('ccal-drawer');
   var drawerOverlay = document.getElementById('ccal-drawer-overlay');
+  var drawerReturnFocus = null;
+  var modalReturnFocus = null;
   var alertModal    = document.getElementById('ccal-alert-modal');
 
   // ── Country select ─────────────────────────────────────────────────────
@@ -517,11 +554,9 @@ table.ccal-table tr:last-child td{border-bottom:none}
   document.getElementById('ccal-add-reminder').addEventListener('click', function () {
     openAlertModal(state.activeEvent);
   });
-  document.getElementById('ccal-modal-close').addEventListener('click', function () {
-    alertModal.classList.remove('open');
-  });
+  document.getElementById('ccal-modal-close').addEventListener('click', closeAlertModal);
   alertModal.addEventListener('click', function (e) {
-    if (e.target === alertModal) alertModal.classList.remove('open');
+    if (e.target === alertModal) closeAlertModal();
   });
 
   // ── Helpers ────────────────────────────────────────────────────────────
@@ -592,7 +627,7 @@ table.ccal-table tr:last-child td{border-bottom:none}
         if (dayEvs.length) {
           html += '<div class="ccal-day-dots">';
           dayEvs.forEach(function (ev) {
-            html += '<span class="ccal-dot" style="background:' + typeColor(ev.type) + '" title="' + esc(ev.name) + '"></span>';
+            html += '<button type="button" class="ccal-dot" style="background:' + typeColor(ev.type) + '" data-event-id="' + esc(ev.id) + '" aria-label="' + esc(ev.name + ', due ' + E.formatDate(ev.dueDate)) + '" title="' + esc(ev.name) + '"></button>';
           });
           html += '</div>';
           html += '<div class="ccal-day-events">';
@@ -626,7 +661,7 @@ table.ccal-table tr:last-child td{border-bottom:none}
         var dayEvs = byDay[day] || [];
         if (dayEvs.length === 0) return;
         // If chip clicked, show that event; else show first
-        var chipTarget = e.target.closest('.ccal-day-event-chip');
+        var chipTarget = e.target.closest('[data-event-id]');
         var ev = dayEvs[0];
         if (chipTarget) {
           var id = chipTarget.dataset.eventId;
@@ -766,6 +801,7 @@ table.ccal-table tr:last-child td{border-bottom:none}
   // EVENT DRAWER
   // ─────────────────────────────────────────────────────────────────────
   function openDrawer(ev) {
+    drawerReturnFocus = document.activeElement;
     state.activeEvent = ev;
     var c = countryMeta(ev.country);
     var color = typeColor(ev.type);
@@ -792,14 +828,20 @@ table.ccal-table tr:last-child td{border-bottom:none}
 
     drawer.classList.add('open');
     drawerOverlay.classList.add('open');
+    drawer.inert = false;
+    drawer.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    document.getElementById('ccal-drawer-close').focus();
   }
 
-  function closeDrawer() {
+  function closeDrawer(restoreFocus) {
     drawer.classList.remove('open');
     drawerOverlay.classList.remove('open');
+    drawer.inert = true;
+    drawer.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     state.activeEvent = null;
+    if (restoreFocus !== false && drawerReturnFocus && drawerReturnFocus.isConnected) drawerReturnFocus.focus();
   }
 
   // ─────────────────────────────────────────────────────────────────────
@@ -807,7 +849,8 @@ table.ccal-table tr:last-child td{border-bottom:none}
   // ─────────────────────────────────────────────────────────────────────
   function openAlertModal(ev) {
     if (!ev) return;
-    closeDrawer();
+    modalReturnFocus = drawerReturnFocus || document.activeElement;
+    closeDrawer(false);
 
     var mc = document.getElementById('ccal-modal-content');
     mc.innerHTML = [
@@ -839,10 +882,18 @@ table.ccal-table tr:last-child td{border-bottom:none}
       });
     });
     mc.querySelector('#ccal-alert-submit').addEventListener('click', function () {
-      alertModal.classList.remove('open');
+      closeAlertModal();
     });
 
     alertModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('ccal-modal-close').focus();
+  }
+
+  function closeAlertModal() {
+    alertModal.classList.remove('open');
+    document.body.style.overflow = '';
+    if (modalReturnFocus && modalReturnFocus.isConnected) modalReturnFocus.focus();
   }
 
   // ── Utility: find event by id from state.events ────────────────────────
@@ -871,8 +922,18 @@ table.ccal-table tr:last-child td{border-bottom:none}
   // ── Keyboard: Escape closes drawer/modal ──────────────────────────────
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      if (alertModal.classList.contains('open')) alertModal.classList.remove('open');
+      if (alertModal.classList.contains('open')) closeAlertModal();
       else if (drawer.classList.contains('open')) closeDrawer();
+    } else if (e.key === 'Tab' && (alertModal.classList.contains('open') || drawer.classList.contains('open'))) {
+      var panel = alertModal.classList.contains('open') ? alertModal : drawer;
+      var focusable = Array.prototype.slice.call(panel.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled])'));
+      if (!focusable.length) return;
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+        e.preventDefault(); first.focus();
+      }
     }
   });
 

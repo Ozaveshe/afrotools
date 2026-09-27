@@ -10,10 +10,12 @@ const cohortKey = 'afrotools_education_practice_cohort_v1';
 const dayMs = 86400000;
 const firstDay = Date.UTC(2026, 8, 26, 12);
 
-function context(consent = 'accepted') {
+function context(consent = 'accepted', { gtagAvailable = true } = {}) {
   let now = firstDay;
   const store = new Map([['afrotools_cookie_consent', consent]]);
   const calls = [];
+  const listeners = {};
+  const intervals = [];
   class ClockDate extends Date { static now() { return now; } }
   const window = {
     localStorage: {
@@ -23,17 +25,28 @@ function context(consent = 'accepted') {
     },
     location: { pathname: '/jamb/cbt/', search: '' },
     sessionStorage: { getItem() { return null; }, setItem() {} },
-    gtag() { calls.push(Array.from(arguments)); },
     setTimeout() { return 1; }, clearTimeout() {},
-    setInterval() { return 1; }, clearInterval() {},
-    addEventListener() {}
+    setInterval(handler) { intervals.push(handler); return intervals.length; }, clearInterval() {},
+    addEventListener(type, handler) { (listeners[type] ||= []).push(handler); }
   };
+  if (gtagAvailable) window.gtag = (...args) => calls.push(args);
   const document = { readyState: 'loading', addEventListener() {} };
   vm.runInNewContext(source, { window, document, Date: ClockDate, URL, URLSearchParams, Set, console });
   return {
     track: window.AfroTools.analytics.trackEducationPractice,
+    trackFeature: window.AfroTools.analytics.trackFeature,
     events(name) { return calls.filter(call => call[0] === 'event' && call[1] === name).map(call => call[2]); },
+    enableGtag() { window.gtag = (...args) => calls.push(args); },
+    flush() { intervals.forEach(handler => handler()); },
     setDay(offset) { now = firstDay + offset * dayMs; },
+    setConsent(value) {
+      store.set('afrotools_cookie_consent', value);
+      (listeners['afrotools:cookie-consent'] || []).forEach(handler => handler({ detail: { status: value } }));
+    },
+    crossTabConsent(value) {
+      store.set('afrotools_cookie_consent', value);
+      (listeners.storage || []).forEach(handler => handler({ key: 'afrotools_cookie_consent', newValue: value }));
+    },
     store
   };
 }
@@ -56,17 +69,69 @@ test('one consented JAMB cohort returns once across a later WAEC practice action
   assert.equal(visit.events('education_practice_returned')[0].cohort_day_utc, '2026-09-26');
 });
 
-test('the seven-day return boundary excludes day zero and day eight', () => {
+test('day eight starts a new cohort and its next-day return is counted once', () => {
   const within = context();
   within.track('jamb', 'english', 'start');
   within.setDay(7);
   assert.equal(within.track('jamb', 'english', 'resume'), true);
   assert.equal(within.events('education_practice_returned')[0].return_day, 7);
-  const late = context();
-  late.track('jamb', 'english', 'start');
-  late.setDay(8);
-  assert.equal(late.track('jamb', 'english', 'resume'), false);
-  assert.equal(late.events('education_practice_returned').length, 0);
+  within.setDay(8);
+  assert.equal(within.track('waec', 'mathematics', 'start'), true);
+  assert.equal(within.events('education_practice_cohort_started').length, 2);
+  assert.equal(within.events('education_practice_cohort_started')[1].cohort_exam, 'waec');
+  assert.equal(within.track('waec', 'mathematics', 'resume'), false);
+  within.setDay(9);
+  assert.equal(within.track('neco', 'english', 'start'), true);
+  assert.equal(within.events('education_practice_returned').length, 2);
+  assert.equal(within.events('education_practice_returned')[1].cohort_exam, 'waec');
+  assert.equal(within.events('education_practice_returned')[1].return_exam, 'neco');
+  assert.equal(within.events('education_practice_returned')[1].return_day, 1);
+  assert.equal(within.track('neco', 'english', 'retry'), false);
+});
+
+test('withdrawing consent clears the marker and does not turn later acceptance into a return', () => {
+  const visit = context();
+  assert.equal(visit.track('jamb', 'english', 'start'), true);
+  assert.equal(visit.store.has(cohortKey), true);
+  visit.setConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+  visit.setDay(1);
+  assert.equal(visit.track('neco', 'mathematics', 'start'), false);
+  assert.equal(visit.events('education_practice_returned').length, 0);
+  visit.setConsent('accepted');
+  assert.equal(visit.track('neco', 'mathematics', 'start'), true);
+  assert.equal(visit.events('education_practice_cohort_started').length, 2);
+  assert.equal(visit.events('education_practice_returned').length, 0);
+  visit.crossTabConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+});
+
+test('withdrawal drops pre-gtag events, so reacceptance cannot replay old activity', () => {
+  const visit = context('accepted', { gtagAvailable: false });
+  assert.equal(visit.track('jamb', 'english', 'start'), true);
+  visit.trackFeature('revision', 'jamb');
+  assert.equal(visit.store.has(cohortKey), true);
+  visit.setConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+  visit.setConsent('accepted');
+  visit.enableGtag();
+  visit.flush();
+  assert.equal(visit.events('education_practice_cohort_started').length, 0);
+  assert.equal(visit.events('feature_used').length, 0);
+  assert.equal(visit.track('neco', 'mathematics', 'start'), true);
+  assert.equal(visit.events('education_practice_cohort_started').length, 1);
+  assert.equal(visit.events('education_practice_cohort_started')[0].cohort_exam, 'neco');
+});
+
+test('cross-tab withdrawal also drops pre-gtag events before later acceptance', () => {
+  const visit = context('accepted', { gtagAvailable: false });
+  assert.equal(visit.track('waec', 'english', 'start'), true);
+  visit.crossTabConsent('declined');
+  visit.crossTabConsent('accepted');
+  visit.enableGtag();
+  visit.flush();
+  assert.equal(visit.events('education_practice_cohort_started').length, 0);
+  assert.equal(visit.store.has(cohortKey), false);
 });
 
 test('declined consent and corrupt local state emit no cohort event or private value', () => {
@@ -78,6 +143,10 @@ test('declined consent and corrupt local state emit no cohort event or private v
   corrupt.setDay(1);
   assert.equal(corrupt.track('waec_neco', 'english', 'resume'), false);
   assert.equal(corrupt.events('education_practice_returned').length, 0);
+  const unknownSubject = context();
+  assert.equal(unknownSubject.track('waec', 'private@example.com', 'start'), true);
+  assert.equal(unknownSubject.events('education_practice_cohort_started')[0].cohort_subject, 'other');
+  assert.doesNotMatch(JSON.stringify(unknownSubject.events('education_practice_cohort_started')), /private@example/);
 });
 
 test('invalid actions and unavailable storage fail closed', () => {

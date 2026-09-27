@@ -73,6 +73,7 @@ const aliases = require('../data/image-generation/recipe-image-aliases.json').al
 const sandbox = { window:{} };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/cuisine-intelligence-data.js'),'utf8'),sandbox);
+vm.runInContext(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/image-manifest.js'),'utf8'),sandbox);
 vm.runInContext(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/image-pipeline.js'),'utf8'),sandbox);
 for(const [slug,canonical] of Object.entries(aliases)) {
   const expected='/assets/img/kitchen/'+canonical+'.webp';
