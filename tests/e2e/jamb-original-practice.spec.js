@@ -37,7 +37,7 @@ for (const width of [320, 390, 1280]) {
     await page.route('**/.netlify/functions/jamb-attempt', route => { attempts.push(route.request().postDataJSON()); return route.fulfill({ status: 200, json: {} }); });
     await page.goto('/jamb/original-practice/?subject=mathematics');
     await expect(page.getByRole('heading', { name: /Practise a subject/ })).toBeVisible();
-    await expect(page.locator('#setup-status')).toContainText('32 reviewed original questions');
+    await expect(page.locator('#setup-status')).toContainText('40 reviewed original questions');
     await expect(page.locator('#start-btn')).toBeEnabled();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 
@@ -85,7 +85,7 @@ for (const width of [320, 390, 1280]) {
 
 test('Use of English presents the authored passage and can resume only its original session', async ({ page }) => {
   await page.goto('/jamb/original-practice/?subject=english');
-  await expect(page.locator('#setup-status')).toContainText('32 reviewed original questions');
+  await expect(page.locator('#setup-status')).toContainText('40 reviewed original questions');
   await page.locator('#start-btn').click();
   await expect(page.locator('#quiz-heading')).toHaveText('Use of English');
   for (let i = 0; i < 12; i++) {
@@ -118,6 +118,30 @@ test('an original cloze question keeps its full passage and choices usable at 32
       await expect(page.locator('#options label')).toHaveCount(4);
       const prompt = await page.locator('#question').textContent();
       const item = source.questions.find(q => q.question === prompt);
+      await page.locator(`#options input[value="${item.answer}"]`).check();
+      await expect(page.locator('#progress')).toContainText('1 of 12 answered');
+      break;
+    }
+  }
+  expect(found).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test('a graph question presents its plotted values as accessible text at 320px', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.addInitScript(() => { Math.random = () => 0.5; });
+  await page.goto('/jamb/original-practice/?subject=mathematics');
+  await page.locator('#start-btn').click();
+  let found = false;
+  for (let i = 0; i < 12; i++) {
+    await page.locator('#nav-grid button').nth(i).click();
+    const prompt = await page.locator('#question').textContent();
+    const item = source.questions.find(q => q.question === prompt);
+    if (item?.topic.startsWith('Graph interpretation:')) {
+      found = true;
+      await expect(page.locator('#passage')).toBeVisible();
+      await expect(page.locator('#passage')).toContainText('plotted points');
+      await expect(page.locator('#options label')).toHaveCount(4);
       await page.locator(`#options input[value="${item.answer}"]`).check();
       await expect(page.locator('#progress')).toContainText('1 of 12 answered');
       break;

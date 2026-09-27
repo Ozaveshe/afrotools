@@ -21,8 +21,8 @@ function validate(source) {
   assert(source.provenance?.includes('Original AfroTools practice'), 'Missing original-work provenance');
   assert(source.official_syllabus_portal === OFFICIAL_PORTAL && source.learning_objective_origin?.includes('authored by AfroTools'), 'Missing authored learning-objective or portal reference metadata');
   assert(source.mathematics_alignment_review?.status === 'unverified', 'Mathematics alignment must remain unverified until the official document can be checked');
-  assert(source.english_alignment_review?.status === 'verified-topics' && source.english_alignment_review.official_document === ENGLISH_SYLLABUS,
-    'Missing official Use of English topic-alignment evidence');
+  assert(source.english_alignment_review?.status === 'unverified' && source.english_alignment_review.direct_pdf_attempted === ENGLISH_SYLLABUS,
+    'English syllabus alignment must remain unverified until the official document can be checked');
   assert(Array.isArray(source.questions) && source.questions.length >= 24, 'Original practice needs at least 24 reviewed items');
   const ids = new Set();
   const fingerprints = new Set();
