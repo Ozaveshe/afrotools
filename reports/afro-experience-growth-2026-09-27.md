@@ -1,6 +1,6 @@
 # AfroStream, AfroAtlas, AfroKitchen: deeper-use growth goal
 
-Status: first source change set prepared in `codex/afro-experience-growth`; production effect has not been measured.
+Status: first source change set is committed on `codex/afro-experience-growth`; a second scoped follow-up is prepared on `codex/afro-experience-growth-followup`. The publisher controls integration and deployment. Production effect has not been measured.
 
 ## Goal and measurement
 
@@ -8,9 +8,9 @@ Increase the share of organic visitors who complete a useful product action on e
 
 | Product | Primary deeper-use action | Current event added | Next action to measure |
 | --- | --- | --- | --- |
-| AfroStream | Open a stream, creator platform, or copy a creator brief | `afrostream_stream_opened`, `afrostream_platform_opened`, `afrostream_creator_brief_copied` | Measure creator profile opens and any verified follow flow |
+| AfroStream | Open a stream, creator platform, or copy a creator brief | `afrostream_stream_opened`, `afrostream_platform_opened`, `afrostream_creator_brief_copied`, `afrostream_follow_platform_opened` | Measure creator profile opens and verified platform follows where the platform allows attribution |
 | AfroAtlas | Open a completed two-country comparison | `afroatlas_comparison_viewed` | Measure brief export after data provenance is added |
-| AfroKitchen | Generate and use a recipe plan | `afrokitchen_plan_created`, `afrokitchen_plan_exported` | Add a local "cooked this" completion action |
+| AfroKitchen | Generate and use a recipe plan | `afrokitchen_plan_created`, `afrokitchen_plan_exported`, `afrokitchen_plan_saved`, `afrokitchen_plan_restored` | Add a local "cooked this" completion action |
 
 All new event parameters are non-personal metadata. The existing `assets/js/lib/analytics.js` wrapper sends product events only after analytics consent.
 
@@ -31,10 +31,24 @@ All new event parameters are non-personal metadata. The existing `assets/js/lib/
 
 ## Next work, in priority order
 
-1. Build source-dated, reviewed country indicators for Atlas. Do not increase numeric search copy until the data has source, year, unit, and confidence per value.
-2. Produce indexable AfroStream creator/news discovery from a reviewed public snapshot with canonical routes and source dates. Keep live status separate from historical creator data.
-3. Add a local recipe completion/save action in Kitchen and track its use without account capture.
+1. Source-date Atlas resource, trade, HDI, and other indicators before treating them as current figures. The follow-up only adds World Bank GDP, population, and GDP/person.
+2. Produce indexable AfroStream creator/news discovery from a reviewed public snapshot with canonical routes and source dates. Only 78 of 407 published creators had bios of at least 60 characters, so avoid bulk thin profiles.
+3. Add a local "cooked this" completion action in Kitchen and track its use without account capture. Plan save and restore are complete in the follow-up.
 4. Capture Search Console and GA4 baselines per route group, then compare organic deeper-use rates and search metrics after release. Investigate pages with impressions but weak CTR and pages with clicks but weak action completion.
+
+## Follow-up change set
+
+- AfroAtlas: fetched a dated snapshot from the official World Bank WDI API on 2026-09-27. GDP and GDP/person cover 52 of 54 countries; population covers all 54. Eritrea and South Sudan show unavailable GDP and GDP/person where the selected 2016–2025 WDI window has no observation. The snapshot records source URL, indicator, unit, year, and retrieval date. The generated browser overlay and 54 static country profiles show these figures and source links consistently; comparison and brief views use the same values. A missing value no longer receives a false "higher" comparison badge. Legacy resource and trade fields are explicitly identified as undated.
+- AfroKitchen: regeneration rotates through eligible recipes, a plan can be saved and restored on the same device, and malformed saved settings are rejected. Storage contains recipe slugs and planner settings, not ingredient text. The plan creation event no longer carries a diet filter.
+- AfroStream: a creator profile offers a direct link to a validated HTTPS creator platform instead of a local "Follow" toggle that did not follow on any platform. Missing creator IDs render an unavailable page and `noindex` rather than silently displaying the first listed creator. The old local `as_following` state is no longer shown; it was not used by a follow service.
+
+## Follow-up validation
+
+- Snapshot validation: 54 expected country records; GDP 52, population 54, GDP/person 52.
+- Static Atlas country search pages: 54 passed. Playwright Chromium: Atlas 3 passed, Kitchen 2 passed, Stream 2 passed on fresh isolated ports. Checks include mobile overflow, no-JavaScript Atlas content, source gaps, Kitchen save/restore/clear, and Stream link validation.
+- `npm run seo:report`: 0 missing canonical/title/description/hreflang issues. `npm run check-links`: 0 broken internal links across 142,255 links.
+- `npm run build:deploy`, `npm run audit:dist`, `npm run security:scan`, and `git diff --check`: passed. The full build generated unrelated cache-hash and localization/report changes; those were reviewed and restored before a scoped `dist` rebuild and repeat artifact audit.
+- No production, Search Console, GA4 uplift, platform follow completion, or user retention result is claimed. The publisher's next intake must integrate the follow-up branch and verify its exact SHA in production.
 
 ## Validation boundary
 

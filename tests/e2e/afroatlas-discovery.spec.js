@@ -14,8 +14,23 @@ test('Atlas country directory and country answers remain usable without JavaScri
   await expect(page.getByRole('heading', { name: 'Nigeria economy and natural resources' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Compare Nigeria with/ })).toHaveAttribute('href', /compare\?a=NG/);
   await expect(page.getByRole('heading', { name: 'Questions about Nigeria' })).toBeVisible();
+  await expect(page.locator('.aa-core-snapshot')).toContainText('World Bank WDI, 2025');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await context.close();
+});
+
+test('Atlas shows dated sources after enhancement and honest gaps in comparison', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/tools/afroatlas/country/eritrea/');
+  await expect(page.locator('.aa-stats-row')).toContainText('N/A');
+  await expect(page.locator('.aa-hero-meta').last()).toContainText('GDP unavailable (2016–2025)');
+  await expect(page.locator('.aa-hero-meta').last().getByRole('link', { name: /population 2025/ })).toHaveAttribute('href', /SP\.POP\.TOTL/);
+  await page.goto('/tools/afroatlas/compare?a=ER&b=NG');
+  await expect(page.locator('.aa-cmp-source-note')).toContainText('Eritrea: GDP unavailable (2016–2025)');
+  await expect(page.locator('.aa-cmp-source-note').getByRole('link', { name: /GDP 2025/ })).toHaveAttribute('href', /NY\.GDP\.MKTP\.CD/);
+  await expect(page.locator('.aa-cmp-metric').first()).toContainText('No comparable pair');
+  await expect(page.locator('.aa-cmp-metric').first()).toContainText('N/A');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
 test('Atlas profile comparison works at mobile width', async ({ page }) => {

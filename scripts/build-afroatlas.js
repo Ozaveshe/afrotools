@@ -30,6 +30,19 @@ var faqTemplatePattern = /<script type="application\/ld\+json" data-schema-templ
  */
 var codeBySlug = {};
 var codes = Object.keys(COUNTRIES);
+var coreSnapshotPath = path.join(__dirname, '..', 'data', 'afroatlas', 'world-bank-core-indicators.json');
+var coreSnapshot = JSON.parse(fs.readFileSync(coreSnapshotPath, 'utf8'));
+require('./refresh-afroatlas-world-bank').validSnapshot(coreSnapshot, codes.slice().sort());
+var coreOverlayPath = path.join(__dirname, '..', 'tools', 'afroatlas', 'world-bank-core-indicators.js');
+var corePayload = JSON.stringify({ retrieved_at: coreSnapshot.retrieved_at, countries: coreSnapshot.countries }).replace(/</g, '\\u003c');
+fs.writeFileSync(coreOverlayPath,
+  '(function(root){"use strict";var data=' + corePayload + ';root.AfroAtlasCoreIndicators=data;' +
+  'if(!root.AfroAtlas||!root.AfroAtlas.COUNTRIES)return;' +
+  'Object.keys(data.countries).forEach(function(code){var country=root.AfroAtlas.COUNTRIES[code],row=data.countries[code];if(!country)return;' +
+  'country.gdp=row.gdp?row.gdp.value:null;country.population=row.population?row.population.value:null;' +
+  'country.gdpPC=row.gdpPC?row.gdpPC.value:null;country.gdpHist=row.gdp_history||{};' +
+  'country.coreSources={gdp:row.gdp||null,population:row.population||null,gdpPC:row.gdpPC||null};});' +
+  '})(typeof window!=="undefined"?window:globalThis);\n', 'utf8');
 for (var i = 0; i < codes.length; i++) {
   var entry = COUNTRIES[codes[i]];
   codeBySlug[entry.slug] = codes[i];
@@ -80,6 +93,17 @@ function countryFaq(country) {
 }
 
 function generateCountryStaticContent(country, code) {
+  var core = coreSnapshot.countries[code] || {};
+  var coreLabels = [
+    { key: 'gdp', label: 'GDP', format: function(value) { return '$' + (value / 1e9).toFixed(1) + 'B'; } },
+    { key: 'population', label: 'Population', format: function(value) { return (value / 1e6).toFixed(1) + 'M'; } },
+    { key: 'gdpPC', label: 'GDP per person', format: function(value) { return '$' + Math.round(value).toLocaleString('en-US'); } }
+  ];
+  var coreHtml = coreLabels.map(function(item) {
+    var point = core[item.key];
+    return '<div><dt>' + escapeHtml(item.label) + '</dt><dd>' + (point ? escapeHtml(item.format(point.value)) : 'N/A') +
+      '<small>' + (point ? '<a href="' + escapeHtml(point.source_url) + '">World Bank WDI, ' + point.year + '</a>' : 'World Bank WDI: no 2016–2025 observation') + '</small></dd></div>';
+  }).join('');
   var resourceNames = (country.resources || []).slice(0, 5).map(function(resource) {
     var type = AfroAtlas.RESOURCE_TYPES[resource.type];
     return type ? type.label : resource.type;
@@ -107,9 +131,12 @@ function generateCountryStaticContent(country, code) {
     '<p>Explore the resource, trade, and economic indicators recorded for ' + countryName + ' in AfroAtlas.</p>' +
     '</div></section>' +
     '<section class="aa-section"><div class="aa-wrap">' +
+    '<h2 class="aa-section-title">Dated economy snapshot</h2>' +
+    '<dl class="aa-core-snapshot">' + coreHtml + '</dl>' +
+    '<p>World Bank World Development Indicators. The latest available year can differ by measure; values may be revised.</p>' +
     '<h2 class="aa-section-title">Resources and trade in ' + countryName + '</h2>' +
     resources + exports +
-    '<p>AfroAtlas is a reference profile. Its figures are not live or source-dated here; check current primary sources before making financial or policy decisions.</p>' +
+    '<p>Resource and trade figures in this reference profile still lack verified source dates. Check current primary sources before making financial or policy decisions.</p>' +
     '<p><a class="aa-btn" href="' + comparison + '">Compare ' + countryName + ' with ' + escapeHtml(otherCountry.name) + '</a></p>' +
     '<h2 class="aa-section-title">Questions about ' + countryName + '</h2>' + faqHtml +
     '</div></section>';

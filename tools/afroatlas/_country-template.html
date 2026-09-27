@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
 <link rel="stylesheet" href="/tools/afroatlas/style.css?v=5e706072">
+<link rel="stylesheet" href="/tools/afroatlas/core-snapshot.css?v=86a0d57b">
 <link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <script type="application/ld+json" data-schema-template="breadcrumb">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[]}</script>
@@ -55,6 +56,7 @@
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/tools/afroatlas/world-bank-core-indicators.js?v=0a9479d2"></script>
 <script src="/assets/js/lib/afroatlas-twemoji.js?v=0428ee7b"></script>
 <script>
 (function() {
@@ -145,6 +147,14 @@
 
   var code = findCode(country);
 
+  function sourceLink(point, label) {
+    return point
+      ? '<a href="' + esc(point.source_url) + '">' + label + ' ' + point.year + '</a>'
+      : label + ' unavailable (2016–2025)';
+  }
+
+  var coreSources = country.coreSources || {};
+
   /* ── Build HTML ── */
   var html = '';
 
@@ -159,12 +169,12 @@
   html += ' &middot; Currency: ' + (country.currency ? country.currency.name + ' (' + country.currency.sym + ')' : 'N/A');
   html += '</p>';
   html += '<div class="aa-stats-row">';
-  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdp) + '</strong> <span>GDP</span></span>';
-  html += '<span class="aa-stat-pill"><strong>' + fmtPop(country.population) + '</strong> <span>Population</span></span>';
-  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdpPC) + '</strong> <span>GDP/Capita</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdp) + '</strong> <span>GDP' + (coreSources.gdp ? ' (' + coreSources.gdp.year + ')' : '') + '</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtPop(country.population) + '</strong> <span>Population' + (coreSources.population ? ' (' + coreSources.population.year + ')' : '') + '</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdpPC) + '</strong> <span>GDP/person' + (coreSources.gdpPC ? ' (' + coreSources.gdpPC.year + ')' : '') + '</span></span>';
   html += '<span class="aa-stat-pill"><strong>' + (country.rrs != null ? country.rrs + '/100' : 'N/A') + '</strong> <span>Resource Score</span></span>';
   html += '</div>';
-  html += '<p class="aa-hero-meta">Reference figures are not live or source-dated here. Confirm current primary sources before decisions.</p>';
+  html += '<p class="aa-hero-meta">World Bank WDI: ' + sourceLink(coreSources.gdp, 'GDP') + ' · ' + sourceLink(coreSources.population, 'population') + ' · ' + sourceLink(coreSources.gdpPC, 'GDP/person') + '. Values may be revised. Resource and trade indicators remain undated in this reference profile.</p>';
   html += '</div>';
   html += '</section>';
 

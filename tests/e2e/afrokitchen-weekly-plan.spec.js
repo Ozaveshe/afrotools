@@ -55,6 +55,21 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await expect(page.locator(".ak-plan-day")).toHaveCount(3);
   await expect(page.locator(".ak-plan-shopping")).toContainText("Grouped shopping list");
   await expect(page.locator(".ak-plan-shopping")).toContainText("Day 1:");
+  const initialPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  await page.locator("#ak-plan-regenerate").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(3);
+  const regeneratedPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  expect(regeneratedPlan).not.toEqual(initialPlan);
+
+  await page.locator("#ak-plan-save").click();
+  await expect(page.locator("#ak-plan-status")).toContainText("saved on this device");
+  const savedPlan = await page.evaluate(() => JSON.parse(localStorage.getItem("ak_saved_plan_v1")));
+  expect(savedPlan.slugs).toHaveLength(3);
+  expect(savedPlan).not.toHaveProperty("ingredients");
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.locator("#ak-plan-status")).toContainText("Saved plan restored", { timeout: 30000 });
+  const restoredPlan = await page.locator(".ak-plan-day h4 a").evaluateAll(links => links.map(link => link.getAttribute("href")));
+  expect(restoredPlan).toEqual(regeneratedPlan);
   const firstPlannedRecipe = await page.locator(".ak-plan-day h4").first().innerText();
 
   await page.locator("#ak-plan-copy").click();
@@ -68,6 +83,16 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
     page.locator("#ak-plan-export").click()
   ]).then(function (values) { return values[0]; });
   expect(download.suggestedFilename()).toBe("afrokitchen-3-day-plan.txt");
+  await page.locator("#ak-plan-clear").click();
+  expect(await page.evaluate(() => localStorage.getItem("ak_saved_plan_v1"))).toBeNull();
+  await page.evaluate(function (plan) {
+    plan.inputs.servings = '<img src=x onerror=alert(1)>';
+    localStorage.setItem('ak_saved_plan_v1', JSON.stringify(plan));
+  }, savedPlan);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#ak-plan-restore')).toBeHidden();
+  await expect(page.locator('#ak-plan-result')).toContainText('No complete plan yet');
+  await page.evaluate(() => localStorage.removeItem('ak_saved_plan_v1'));
 
   await page.locator("#ak-plan-days").selectOption("7");
   await page.locator("#ak-plan-time").selectOption("999");
