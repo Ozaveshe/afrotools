@@ -1,6 +1,6 @@
 # French and Swahili Non-App Parity
 
-Indexable English top-level public routes plus English blog articles; app subroutes and long-tail tool/country calculators are excluded.
+Indexable English top-level public routes plus English blog articles; shared English author profiles, app subroutes and long-tail tool/country calculators are excluded.
 
 ## Summary
 
