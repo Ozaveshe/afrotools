@@ -106,6 +106,7 @@ html[data-theme="dark"] #resultsCard .res-row-val,
 html[data-theme="dark"] #resultsCard .res-row.total .res-row-lbl { color: var(--color-text) !important; }
 html[data-theme="dark"] #resultsCard .res-row-val.c-red { color: #fca5a5 !important; }
 html[data-theme="dark"] #resultsCard .res-row-val.c-grn { color: #6ee7b7 !important; }
+html[data-theme="dark"] #resultsCard .payroll-context-note { color: #fecaca !important; background: #3f1717 !important; border-color: #9f3a3a !important; }
 html[data-theme="dark"] #resultsCard #effRateDisplay { color: var(--color-text) !important; }
 html[data-theme="dark"] #resultsCard .chart-tab,
 html[data-theme="dark"] #resultsCard .calc-save-status,
@@ -803,8 +804,8 @@ function renderRows(R, period) {
       <div class="res-section-title">Deductions</div>
       ${R.nssf > 0 ? row(`NSSF (5%, not tax-deductible)`, fmt(nssf), 'c-red') : ''}
       ${R.hasLST && R.lstAnnual > 0 ? row(lstLabel, fmt(lst), 'c-red') : ''}
-      ${R.hasLST && R.lstInstallment > 0 && !isAnnual ? `<div style="background:rgba(217,0,0,.06);border:1px solid rgba(217,0,0,.15);border-radius:5px;padding:8px 12px;font-size:.76rem;color:#7a3800;line-height:1.5;margin:6px 0">Actual LST is typically collected as 4 equal instalments of ${fmt(R.lstInstallment)} in the first four months of the financial year.</div>` : ''}
-      ${R.isNonRes ? `<div style="background:rgba(217,0,0,.06);border:1px solid rgba(217,0,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">Non-resident: the separate progressive 10%/20%/30% schedule and high-income supplement are applied.</div>` : ''}
+      ${R.hasLST && R.lstInstallment > 0 && !isAnnual ? `<div class="payroll-context-note" style="background:rgba(217,0,0,.06);border:1px solid rgba(217,0,0,.15);border-radius:5px;padding:8px 12px;font-size:.76rem;color:#7a3800;line-height:1.5;margin:6px 0">Actual LST is typically collected as 4 equal instalments of ${fmt(R.lstInstallment)} in the first four months of the financial year.</div>` : ''}
+      ${R.isNonRes ? `<div class="payroll-context-note" style="background:rgba(217,0,0,.06);border:1px solid rgba(217,0,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">Non-resident: the separate progressive 10%/20%/30% schedule and high-income supplement are applied.</div>` : ''}
     </div>
     <div class="res-section">
       <div class="res-section-title">PAYE (URA)</div>
