@@ -1,10 +1,10 @@
 const { test, expect } = require('@playwright/test');
 
-test('Atlas country directory and country answers remain usable without JavaScript', async ({ browser }) => {
+test('Atlas country directory and country answers remain usable without JavaScript', async ({ browser, baseURL }) => {
   const context = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 390, height: 844 },
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173'
+    baseURL
   });
   const page = await context.newPage();
   await page.goto('/tools/afroatlas/');

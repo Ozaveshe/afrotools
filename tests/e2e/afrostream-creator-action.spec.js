@@ -37,6 +37,9 @@ test('creator profile opens a real platform and rejects an unknown creator', asy
   await mockCreatorApi(page);
   await page.goto('/tools/afrostream/creator.html?id=test-creator');
   await expect(page.locator('#profileName')).toHaveText('Test Creator');
+  await expect(page).toHaveURL(/\/tools\/afrostream\/creator\?id=test-creator$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/tools\/afrostream\/creator\?id=test-creator$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
   await expect(page.locator('#followPlatformBtn')).toHaveText('Follow on YouTube');
   await expect(page.locator('#followPlatformBtn')).toHaveAttribute('href', creator.youtube_url);
   await expect(page.locator('#platformFollowNote')).toContainText('platform link');

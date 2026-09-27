@@ -6,10 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
 <title>Creator Profile — AfroStream | AfroTools</title>
-<meta name="description" content="View detailed stats, stream history, net worth estimate, and upcoming streams for African creators on AfroStream.">
+<meta name="description" content="Open a published AfroStream creator profile for platform links and reported activity.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Creator Profile — AfroStream | AfroTools">
-<meta property="og:description" content="Detailed creator stats, stream history, net worth estimates, and more on AfroStream.">
+<meta property="og:description" content="Published creator profile, platform links, and reported activity on AfroStream.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,9 +18,9 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Creator Profile — AfroStream | AfroTools">
-<meta name="twitter:description" content="Detailed creator stats and stream history on AfroStream.">
+<meta name="twitter:description" content="Published creator profile, platform links, and reported activity on AfroStream.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
@@ -133,8 +133,6 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <script src="/tools/afrostream/subnav.js?v=bdc266a0" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/creator">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/creator">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/creator">
 </head>
 <body class="as-page as-body top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -945,7 +943,7 @@ function renderMissingProfile() {
   var coverage = creator._apiCoverage || {};
   var relatedFromApi = Array.isArray(creator._apiSimilar) ? creator._apiSimilar.map(normalizeCreator) : [];
   var creatorKey = creator.slug || creator.id;
-  var creatorPath = '/tools/afrostream/creator.html?id=' + encodeURIComponent(creatorKey);
+  var creatorPath = '/tools/afrostream/creator?id=' + encodeURIComponent(creatorKey);
   var creatorUrl = window.location.origin + creatorPath;
 
   /* ===== RENDER PROFILE HERO ===== */
@@ -1043,7 +1041,8 @@ function renderMissingProfile() {
     var ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.setAttribute('content', creatorUrl);
 
-    if (window.location.search !== '?id=' + encodeURIComponent(creatorKey)) {
+    if (window.location.pathname !== '/tools/afrostream/creator' ||
+        window.location.search !== '?id=' + encodeURIComponent(creatorKey)) {
       window.history.replaceState({}, '', creatorPath);
     }
 
