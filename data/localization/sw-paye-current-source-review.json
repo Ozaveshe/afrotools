@@ -1,15 +1,25 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-24",
+  "reviewedAt": "2026-09-27",
   "baseCommit": "0031df05a2f4f789c5ab519cd660d0497f138926",
   "historicalContract": "data/localization/sw-paye-26-parity.json",
-  "scope": "Current source overlay only for thirteen reviewed Swahili result/controller repairs. Original acceptance and tax expectations remain historical and unchanged; no current-law re-verification is implied.",
+  "scope": "Current source overlay for fourteen reviewed Swahili result/controller repairs and reviewed English controller changes. Original acceptance and tax expectations remain historical and unchanged; no current-law re-verification is implied.",
   "checks": [
+    "tests/swahili-paye-26-parity.test.js",
+    "tests/e2e/eswatini-paye-period.spec.js",
     "tests/e2e/sw-paye-annual-result-contract.spec.js",
     "tests/e2e/sw-tanzania-paye-parity.spec.js",
     "tests/e2e/swahili-paye-local-exports-vip.spec.js"
   ],
   "entries": [
+    {
+      "englishId": "sz-paye",
+      "countrySlug": "eswatini",
+      "previousHash": "8534e1bbaa041b409eb1874812ea9639fbc1dd6947eb86051d33b07a87504c40",
+      "currentHash": "8c19c71d62cacfed346128dc9879a203f2b304d5990ba4293adf05ca3d1f4b3a",
+      "sourceCommit": "f6923ac4470b4d213503e74c1f4ba4b22b0ca652",
+      "reason": "Match Eswatini English annual/monthly and gross-to-net/net-to-gross results in Kiswahili. The forward PAYE calculation and statutory parameters remain unchanged; monthly result keys now match the localized renderer."
+    },
     {
       "englishId": "ao-paye",
       "countrySlug": "angola",
@@ -127,6 +137,14 @@
     "limits": "Local fixture, export and source-contract regression evidence only; no new statutory verification, production proof or acceptance-ledger update."
   },
   "englishEntries": [
+    {
+      "englishId": "sz-paye",
+      "previousHash": "11831e424a5927e42609efdde662e3d7c3115cb014d1f76db94a9a319256bc3b",
+      "currentHash": "76eb27f338dd4b39567900e0e5e618082b5587adda8d9f3c81e7a62572622086",
+      "sourceCommit": "4b8b13f1a2d315c8759c18351e6ea64d16d5b828",
+      "reviewEvidence": "reports/sw-paye-eswatini-owner-review-2026-09-27.md",
+      "reason": "The Eswatini English calculate controller now chooses the inverse gross target in net-to-gross mode and uses the same forward PAYE calculation for results. Annual/monthly presentation is synchronized; PAYE bands, rebate, ENPF deduction, and forward gross-to-net arithmetic remain unchanged."
+    },
     {
       "englishId": "ug-paye",
       "previousHash": "02b2f751b9f1a7bf629445becb802be659b943e9029b420bee3036f784fac6e4",
