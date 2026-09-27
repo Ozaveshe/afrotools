@@ -1,5 +1,26 @@
 const { test, expect } = require('@playwright/test');
 
+for (const width of [320, 390]) {
+  test(`homepage signup prompt stays readable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    const prompt = page.locator('#signup-bar');
+    await expect(prompt).toBeVisible();
+    await expect(prompt.getByRole('link', { name: 'Sign up free' })).toBeVisible();
+    const layout = await prompt.evaluate(bar => {
+      const text = bar.querySelector('span');
+      const link = bar.querySelector('a');
+      return {
+        textFits: text.scrollWidth <= text.clientWidth + 1,
+        noOverlap: text.getBoundingClientRect().right <= link.getBoundingClientRect().left
+      };
+    });
+    expect(layout.textFits).toBe(true);
+    expect(layout.noOverlap).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  });
+}
+
 test('homepage content renders while the navbar script is still downloading', async ({ page, baseURL }) => {
   let release;
   const pending = new Promise(resolve => { release = resolve; });

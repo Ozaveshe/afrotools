@@ -246,6 +246,43 @@
 <meta property="article:modified_time" content="2026-04-25">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
+<style>
+  .document-pdf-focus .docpdf-catalog-controls {
+    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  }
+  .document-pdf-focus .docpdf-search-control { min-width: 0; }
+  .document-pdf-focus .docpdf-search-control label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--dp-ink);
+    font-size: .78rem;
+    font-weight: 800;
+  }
+  html[data-theme="dark"] .document-pdf-focus .docpdf-request {
+    background: var(--dp-surface);
+  }
+  html[data-theme="dark"] .document-pdf-focus .docpdf-request a {
+    background: var(--dp-action);
+    color: #fff !important;
+  }
+  @media (max-width: 980px) {
+    .document-pdf-focus .docpdf-catalog-controls { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+  @media (max-width: 640px) {
+    .document-pdf-focus .docpdf-filter-row {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 8px;
+    }
+    .document-pdf-focus .docpdf-filter-row button {
+      min-width: 0;
+      min-height: 48px !important;
+      padding: 6px 8px;
+      border-radius: 8px;
+      line-height: 1.25;
+    }
+  }
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -335,6 +372,13 @@
     <a href="/tools/pdf-workspace/">Open the full workspace</a>
   </div>
   <div class="docpdf-catalog-controls">
+    <div class="docpdf-search-control">
+      <label for="tool-search">Search all 31 tools</label>
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="tool-search" placeholder="Try merge, OCR, invoice..." autocomplete="off" spellcheck="false">
+      </div>
+    </div>
     <div class="docpdf-filter-row" role="group" aria-label="Filter PDF tools by job">
       <button type="button" data-docpdf-filter="popular" aria-pressed="true">Popular</button>
       <button type="button" data-docpdf-filter="organize" aria-pressed="false">Organize</button>
@@ -342,10 +386,6 @@
       <button type="button" data-docpdf-filter="review" aria-pressed="false">Review &amp; protect</button>
       <button type="button" data-docpdf-filter="create" aria-pressed="false">Create documents</button>
       <button type="button" data-docpdf-filter="all" aria-pressed="false">All 31</button>
-    </div>
-    <div class="search-bar">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input aria-label="Search all 31 PDF and document tools" type="search" id="tool-search" placeholder="Search merge, OCR, compare, invoice..." autocomplete="off" spellcheck="false">
     </div>
   </div>
   <div id="search-label" class="search-results-label" aria-live="polite"></div>

@@ -217,7 +217,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
-<link rel="stylesheet" href="/assets/css/amount-words-ux.css?v=60624fec">
+<link rel="stylesheet" href="/assets/css/amount-words-ux.css?v=cc7c7c3f">
 <link rel="canonical" href="https://afrotools.com/tools/amount-words-gh/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/amount-words-gh/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/montant-lettres-gh/">
@@ -230,8 +230,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/uniquely-african/">Uniquely African</a> / <span>Amount to Words (GHS)</span></div>
 <h1>Ghana Cedis <em>in Words</em></h1>
 <p class="hero-sub">Convert any GHS amount into written words for cheques, contracts, invoices and legal documents. Handles pesewas and amounts up to billions.</p>
-<div class="hero-badges"><span class="badge b-em">GHS Currency</span><span class="badge b-em">Cheque Writing</span><span class="badge b-em">Instant</span></div>
-
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -243,7 +241,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <input type="text" id="amount" inputmode="decimal" aria-describedby="amountHelp amountError" placeholder="e.g. 12,500.75" style="font-size:1.2rem;padding:14px" oninput="convert()" disabled data-amount-control>
 <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to the nearest pesewa, with 5 rounded up.</p>
 <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
-<div class="quick-amounts">
+<details class="quick-amounts">
+<summary>Try a common amount</summary>
+<div class="quick-amount-list">
 <button type="button" class="quick-btn" onclick="setAmt(100)" disabled data-amount-control>100</button>
 <button type="button" class="quick-btn" onclick="setAmt(500)" disabled data-amount-control>500</button>
 <button type="button" class="quick-btn" onclick="setAmt(1000)" disabled data-amount-control>1,000</button>
@@ -252,15 +252,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <button type="button" class="quick-btn" onclick="setAmt(50000)" disabled data-amount-control>50,000</button>
 <button type="button" class="quick-btn" onclick="setAmt(100000)" disabled data-amount-control>100,000</button>
 </div>
-<details class="document-options">
-<summary>Document details and text style (optional)</summary>
-<div class="doc-grid">
-<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
-<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()" disabled data-amount-control></div>
-<div><label for="docMode">Output Format</label><select id="docMode" onchange="convert()" disabled data-amount-control><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
-<div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()" disabled data-amount-control><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
-</div>
-<div class="review-grid" id="reviewGrid" style="display:none"></div>
 </details>
 </div></div>
 
@@ -272,10 +263,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="copy-row"><button type="button" class="copy-btn" onclick="copyWords()" disabled data-amount-control>Copy Words</button><button type="button" class="copy-btn" onclick="copyDocumentLine()" disabled data-amount-control>Copy Document Line</button></div>
 <p id="copyStatus" role="status" aria-live="polite"></p>
 <div class="doc-preview" id="docPreview"></div>
-<div style="margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;text-align:left">
-  <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px">Did You Know?</div>
-  <div style="font-size:.82rem;color:#4c1d95;line-height:1.7">Ghana's Cedi (GH&#8373;) comes from the Akan word "sedie" meaning cowry shell — the original African currency! Ghana has redenominated its currency twice.</div>
-</div>
 </div>
 <div class="card" style="margin-top:18px">
 <div class="card-head"><span class="card-title">Cheque Format</span></div>
@@ -283,6 +270,18 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div id="chequeFormat" style="font-size:.88rem;color:#475569;line-height:1.8;font-weight:600;background:#f8fafc;padding:16px;border-radius:8px;border:1px solid #e2e8f0"></div>
 </div></div>
 </div>
+<div class="card amount-words-options"><div class="card-body">
+<details class="document-options">
+<summary>Document details and text style (optional)</summary>
+<div class="doc-grid">
+<div><label for="payeeName">Payee or Vendor</label><input type="text" id="payeeName" placeholder="Optional" oninput="convert()" disabled data-amount-control></div>
+<div><label for="docRef">Reference</label><input type="text" id="docRef" placeholder="Invoice, rent, contract, or memo" oninput="convert()" disabled data-amount-control></div>
+<div><label for="docMode">Output Format</label><select id="docMode" onchange="convert()" disabled data-amount-control><option value="cheque">Cheque line</option><option value="invoice">VAT invoice</option><option value="rent">Rent or tenancy payment</option><option value="transfer">Bank or MoMo transfer note</option></select></div>
+<div><label for="caseMode">Text Style</label><select id="caseMode" onchange="convert()" disabled data-amount-control><option value="upper">UPPERCASE</option><option value="title">Title Case</option><option value="sentence">Sentence case</option></select></div>
+</div>
+<div class="review-grid" id="reviewGrid" style="display:none"></div>
+</details>
+</div></div>
 </div>
 
 <div class="sidebar">
