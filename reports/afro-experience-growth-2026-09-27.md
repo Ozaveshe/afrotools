@@ -1,10 +1,10 @@
 # AfroStream, AfroAtlas, AfroKitchen: deeper-use growth goal
 
-Status: the first two source change sets were pushed for publisher intake. A third recipe journey change set is on `codex/afro-experience-growth-journey` in an isolated worktree. The publisher controls integration and deployment. Production effect has not been measured.
+Status: three cumulative source change sets were pushed for publisher intake. The latest source commit on `codex/afro-experience-growth-journey` is `7225083bae1a1f587fc4ebd424653034e265d68d`. The publisher controls integration and deployment. Production effect has not been measured.
 
 ## Goal and measurement
 
-Increase the share of organic visitors who complete a useful product action on each surface. Use a 28-day pre-release baseline and a comparable 28-day post-release window; aim for a 20% relative lift in each product's organic deeper-use rate within eight weeks. Report both numerator and denominator so a traffic mix change is visible. Search Console clicks, impressions, CTR, and indexed URL coverage are separate SEO measures. No traffic or conversion baseline was available in this checkout, so the target is a hypothesis until the baseline is captured.
+Increase the share of organic visitors who complete a useful product action on each surface. Use a 28-day pre-release baseline and a comparable 28-day post-release window; aim for a 20% relative lift in each product's organic deeper-use rate within eight weeks. Report both numerator and denominator so a traffic mix change is visible. Search Console clicks, impressions, CTR, and indexed URL coverage are separate SEO measures. GA4 page exposure and Search Console visibility baselines are recorded below; an organic-session deeper-use event baseline is still needed before the conversion target can be evaluated.
 
 Operational definition: denominator = organic-search sessions that begin on a route in that product family; numerator = those sessions with at least one listed deeper-use event before the session ends. Deduplicate repeated actions within a session. Keep returning users, direct visits, and product-to-product referrals in separate views. Compare the same route families before and after release, and include the deployed SHA and release date in the readout.
 
@@ -34,7 +34,21 @@ An authenticated read-only check of AfroTools GA4 property `528083834`, **Pages 
 | AfroStream | 27 | 4 | 5 | Rankings 14 views / 3 users; hub 9 / 4; community 2 / 1; creator 1 / 1; news 1 / 1 |
 | AfroAtlas | 4 | 3 | 3 | Hub 2 / 2; Somalia 1 / 1; Togo 1 / 1 |
 
-This is an **all-users exposure baseline**, not an organic-search or deeper-use conversion baseline. It shows that Kitchen already has many recipe entry routes, while Atlas and Stream have little observed traffic in this window. We still need Search Console clicks, impressions, indexed coverage, and GA4 event counts segmented by organic session before calculating conversion rates or attributing an uplift. Public search spot checks found individual Kitchen recipe results and the Stream hub; they are not an index coverage audit.
+This is an **all-users exposure baseline**, not an organic-search or deeper-use conversion baseline. It shows that Kitchen already has many recipe entry routes, while Atlas and Stream have little observed traffic in this window. We still need GA4 event counts segmented by organic session before calculating conversion rates or attributing an uplift. Public search spot checks found individual Kitchen recipe results and the Stream hub; they are not an index coverage audit.
+
+## Search Console baseline: 28 August–24 September 2026
+
+On 2026-09-27, an authenticated read-only check of the `sc-domain:afrotools.com` property used **Performance → Search results**, Web search, the last 28 complete days, and a **Page → URLs containing** filter for each exact route-family prefix. Search Console warns that chart totals and table results may be partial when filters are applied. These figures describe pre-release search exposure, not the impact of the branch above.
+
+| Route-family filter | Clicks | Impressions | CTR | Average position | Reported pages with search data |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `/tools/afrokitchen/` | 274 | 33,784 | 0.8% | 14.7 | 436 |
+| `/tools/afrostream/` | 0 | 77 | 0% | 10.0 | 8 |
+| `/tools/afroatlas/` | 1 | 659 | 0.2% | 55.1 | 42 |
+
+The page counts are rows in the Performance report, **not** indexed-URL coverage. The GA4 window above is two days later, so do not combine these reports into a funnel or conversion rate. Kitchen's top search landing rows are recipes; `tuo-zaafi-gh` had 2,846 impressions and 6 clicks, and `fufu-light-soup-gh` had 1,796 impressions and 12 clicks. Stream's 77 impressions were spread across its hub and university pages; the hub had 29 and the platforms guide 25. Atlas had visibility on 42 country URLs; Sudan had 172 impressions and no clicks. These page-level examples are diagnostic, not proof of a page defect or an expected click rate.
+
+The sitewide Search Console **Recipes** enhancement report, last updated 2026-09-26, showed 124 valid recipe items and 0 invalid items. It listed missing `aggregateRating` and `video` as optional improvement issues on those 124 items. Do not invent ratings or videos to clear those warnings. This enhancement count is not a count of all Kitchen recipes indexed or eligible for search.
 
 ## First change set
 
@@ -48,7 +62,7 @@ This is an **all-users exposure baseline**, not an organic-search or deeper-use 
 1. Source-date Atlas resource, trade, HDI, and other indicators before treating them as current figures. The follow-up only adds World Bank GDP, population, and GDP/person.
 2. Produce indexable AfroStream creator/news discovery from a reviewed public snapshot with canonical routes and source dates. Only 78 of 407 published creators had bios of at least 60 characters, so avoid bulk thin profiles.
 3. Measure Kitchen recipe-open to cooked-mark and saved-pick to generated-plan rates after the journey change set is published. The cooked mark is local and reversible; plan save and restore are complete in the follow-up.
-4. Capture Search Console route-group baselines and GA4 deeper-use event counts segmented to organic traffic, then compare rates after release. Investigate pages with impressions but weak CTR and pages with clicks but weak action completion. The all-users GA4 page-path exposure baseline is recorded above.
+4. Capture GA4 deeper-use event counts segmented to organic landing sessions, then compare rates after release. Investigate Kitchen pages with impressions but weak CTR and pages with clicks but weak action completion. Recheck Search Console route-family exposure and page coverage after the publisher's exact-SHA deployment. The all-users GA4 and pre-release Search Console baselines are recorded above.
 
 ## Follow-up change set
 
@@ -62,7 +76,7 @@ This is an **all-users exposure baseline**, not an organic-search or deeper-use 
 - Static Atlas country search pages: 54 passed. Playwright Chromium: Atlas 3 passed, Kitchen 2 passed, Stream 2 passed on fresh isolated ports. Checks include mobile overflow, no-JavaScript Atlas content, source gaps, Kitchen save/restore/clear, and Stream link validation.
 - `npm run seo:report`: 0 missing canonical/title/description/hreflang issues. `npm run check-links`: 0 broken internal links across 142,255 links.
 - `npm run build:deploy`, `npm run audit:dist`, `npm run security:scan`, and `git diff --check`: passed. The full build generated unrelated cache-hash and localization/report changes; those were reviewed and restored before a scoped `dist` rebuild and repeat artifact audit.
-- No production, Search Console, GA4 uplift, platform follow completion, or user retention result is claimed. The publisher's next intake must integrate the follow-up branch and verify its exact SHA in production.
+- No production, post-release Search Console or GA4 uplift, platform follow completion, or user retention result is claimed. The publisher's next intake must integrate the follow-up branch and verify its exact SHA in production.
 
 ## Validation boundary
 
