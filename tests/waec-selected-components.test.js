@@ -10,6 +10,7 @@ test('selected WAEC component evidence matches current briefs without claiming c
   }
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
+ assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q7-q8').expectedIds,[7,8].map(n=>'waec-2021-mathematics-p2-q'+n));
  const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
  assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
  assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);
@@ -43,4 +44,30 @@ test('selected WAEC component evidence matches current briefs without claiming c
  assert.ok(summary2022.source_urls.some(url=>url.includes('waeconline.org.ng/e-learning/English/Engl255mq7.html')));
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-english-reading-guides').expectedIds,[6,7].map(n=>'waec-2023-english-p2-q'+n));
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2023-mathematics-q10').expectedIds,['waec-2023-mathematics-p2-q10']);
+});
+
+test('WAEC 2021 Q7–Q8 guidance keeps graph readings distinct from exact answers',()=>{
+ const q7=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q7');
+ const q8=bank.items.find(q=>q.id==='waec-2021-mathematics-p2-q8');
+ const f=x=>2*x*x-x-2,g=x=>2*x+3;
+ assert.deepEqual(Array.from({length:9},(_,i)=>f(i-4)),[34,19,8,1,-2,-1,4,13,26]);
+ assert.deepEqual([-1,2.5].map(x=>f(x)-g(x)),[0,0]);
+ const lower=(1-Math.sqrt(17))/4,upper=(1+Math.sqrt(17))/4;
+ assert.ok(lower<0&&upper>0&&f((lower+upper)/2)<0);
+ assert.ok(f(lower-0.1)>0&&f(upper+0.1)>0);
+ assert.match(q7.answer,/√17/);assert.match(q7.answer,/−0\.781.*1\.281/);
+ assert.equal(q7.figure,'quadratic-line');assert.ok(q7.figureAlt.length>100);
+ const k=Math.sqrt(216/6);assert.equal(k,6);assert.equal(Math.hypot(3*k,4*k),30);
+ const years=47-2*17;assert.equal(years,13);assert.equal(47+years,2*(17+years));
+ assert.equal(q8.figure,'right-triangle-ratio');assert.match(q8.answer,/30 cm.*13 years/);
+ const {writtenBank}=require('../scripts/build-ssce-practice-locales');
+ for(const locale of ['fr','sw']){
+  const translated=writtenBank(locale);
+  for(const id of [q7.id,q8.id]){
+   const source=bank.items.find(q=>q.id===id),item=translated.items.find(q=>q.id===id);
+   assert.ok(item&&item.figureAlt!==source.figureAlt&&item.figureAlt.length>80);
+   assert.ok(item.figureCaption!==source.figureCaption&&item.figureCaption.length>30);
+   assert.equal(item.source,source.source);assert.equal(item.checks.length,source.checks.length);
+  }
+ }
 });
