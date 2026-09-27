@@ -147,7 +147,7 @@
               <span class="slider-label">Annual Gross Salary</span>
               <span class="slider-val" id="sliderVal">E600,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
+            <input aria-label="Annual gross salary" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
             <div class="slider-limits"><span>E50,000</span><span>E3,000,000</span></div>
           </div>
 
@@ -155,7 +155,7 @@
             <div class="f-label"><span class="f-label-text">Or type exact annual amount</span><span class="f-hint">Before any deductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">E</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
+              <input aria-label="Annual gross salary" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -178,6 +178,10 @@
             <p class="f-note">ENPF employee contribution (5% annually, capped at E215/month) is deductible from taxable income before ERS PAYE is calculated. Employer ENPF (5%) is additional cost to employer.</p>
           </div>
 
+          <div class="mode-toggle" role="group" aria-label="Calculation direction">
+            <button type="button" class="mode-btn on" aria-pressed="true" onclick="setCalcMode('gross',this)">Gross → Net</button>
+            <button type="button" class="mode-btn" aria-pressed="false" onclick="setCalcMode('net',this)">Net → Gross</button>
+          </div>
           <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
         </div>
       </div>
@@ -530,6 +534,8 @@
 <script>
 var RESULT=null;
 let PERIOD = 'annual';
+window.PERIOD = PERIOD;
+window.CALC_MODE = 'gross';
 let CHART = null;
 let CHART_TYPE = 'donut';
 let CHAT_HISTORY = [];
@@ -607,6 +613,66 @@ function calcAnnualPAYE(annualTaxableIncome) {
   return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
 }
 
+function grossForAnnualNet(target) {
+  let low = target;
+  let high = Math.max(target * 2, 50000);
+  while (window._grossToNet(high) < target) high *= 2;
+  for (let i = 0; i < 60; i++) {
+    const mid = (low + high) / 2;
+    if (window._grossToNet(mid) < target) low = mid;
+    else high = mid;
+  }
+  return Math.round((low + high) / 2);
+}
+
+function renderResultHero() {
+  if (!RESULT) return;
+  const monthly = PERIOD === 'monthly';
+  const period = monthly ? 'Monthly' : 'Annual';
+  const suffix = monthly ? 'month' : 'year';
+  const gross = monthly ? RESULT.monthlyGross : RESULT.gross;
+  const net = monthly ? RESULT.monthlyNet : RESULT.netAnnual;
+  const reverse = window.CALC_MODE === 'net';
+  document.querySelector('.res-hero-label').textContent = reverse
+    ? `Required ${period} Gross` : `${period} Take-Home Pay`;
+  document.getElementById('resAmount').textContent = fmt(reverse ? gross : net);
+  document.getElementById('resGross').textContent = reverse
+    ? `Gross: ${fmt(gross)}/${suffix} · Take-home: ${fmt(net)}/${suffix}`
+    : monthly
+      ? `Gross: ${fmt(gross)}/month`
+      : `Gross: ${fmt(gross)}/year (${fmt(RESULT.monthlyGross)}/month)`;
+  document.querySelector('.res-hero-period').textContent = reverse
+    ? 'To reach your desired take-home after PAYE and ENPF'
+    : 'After PAYE, ENPF & all deductions';
+}
+
+function setCalcMode(mode, btn) {
+  if (mode === window.CALC_MODE) return;
+  if (RESULT) {
+    const value = Math.round(mode === 'net' ? RESULT.netAnnual : RESULT.gross);
+    document.getElementById('grossSalary').value = value;
+    const slider = document.getElementById('salarySlider');
+    slider.value = value;
+    document.getElementById('sliderVal').textContent = fmt(value);
+    updateSliderFill(slider);
+  }
+  window.CALC_MODE = mode;
+  document.querySelectorAll('.mode-btn').forEach(button => {
+    const active = button === btn;
+    button.classList.toggle('on', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  const label = mode === 'net' ? 'Desired annual take-home pay' : 'Annual gross salary';
+  document.querySelector('.slider-label').textContent = label;
+  document.querySelector('.f-label-text').textContent = mode === 'net'
+    ? 'Or type exact annual take-home target' : 'Or type exact annual amount';
+  document.getElementById('salarySlider').setAttribute('aria-label', label);
+  document.getElementById('grossSalary').setAttribute('aria-label', label);
+  document.querySelector('.calc-btn').textContent = mode === 'net'
+    ? 'Find Required Gross Salary →' : 'Calculate My Take-Home Pay →';
+  if (RESULT) calculate();
+}
+
   function setPreset(val, btn) {
     document.getElementById('grossSalary').value = val;
     document.getElementById('salarySlider').value = val;
@@ -617,14 +683,15 @@ function calcAnnualPAYE(annualTaxableIncome) {
   }
 
   function calculate() {
-  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (!gross || gross <= 0) {
+  const entered = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!Number.isFinite(entered) || entered <= 0) {
     const el = document.getElementById('grossSalary');
     el.focus(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Enter a valid salary');
     setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
+  const gross = window.CALC_MODE === 'net' ? grossForAnnualNet(entered) : entered;
 
   const hasSNPF = isOn('snpf');
   const snpfCap = 2580; // E215 * 12 months
@@ -654,9 +721,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
     employerENPF, totalEmployerCost,
   };
 
-  const netMonthly = netAnnual / 12;
-  document.getElementById('resAmount').textContent = fmt(netAnnual);
-  document.getElementById('resGross').textContent = `Gross: E${Math.round(gross).toLocaleString()}/yr (E${Math.round(gross/12).toLocaleString()}/mo)`;
+  renderResultHero();
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
@@ -709,17 +774,11 @@ function renderRows(R, period) {
 
 function setPeriod(period, btn) {
   PERIOD = period;
+  window.PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? (RESULT.monthlyNet || RESULT.netAnnual / 12) : RESULT.netAnnual;
-    var gr = isMonthly ? (RESULT.monthlyGross || RESULT.gross / 12) : RESULT.gross;
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
+    renderResultHero();
     document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
   }
 }
@@ -1027,7 +1086,6 @@ async function sendChat() {
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('snpf')?Math.min(g*0.05,215*12):0;var raw=calcAnnualPAYE(Math.max(0,g-d)).tax;var tax=Math.max(0,raw-8200);return g-(d+tax);};</script>
-<script src="/assets/js/lib/net-to-gross.js?v=5bba1ca0" defer></script>
 <script>
 (function(){
   var KEY='afro_favs_v2',TOOL_ID='sz-paye',LIMIT=10;
