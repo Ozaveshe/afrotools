@@ -21,10 +21,10 @@ const pool = seal({ kind: 'original-practice', collection_id: source.collection_
 const index = seal({ kind: 'original-practice', collection_id: source.collection_id,
   count: rows.length, subjects: subjectCounts }, revision);
 
-test('all 40 items are original, yearless and answer-reviewed without changing the historical pool', () => {
-  assert.equal(source.questions.length, 40);
+test('all 64 items are original, yearless and answer-reviewed without changing the historical pool', () => {
+  assert.equal(source.questions.length, 64);
   assert.deepEqual(source.questions.reduce((counts, item) => { counts[item.subject] = (counts[item.subject] || 0) + 1; return counts; }, {}),
-    { mathematics: 20, english: 20 });
+    { mathematics: 32, english: 32 });
   assert.ok(source.questions.every(item => item.year === null && item.num === null && item.origin === 'AfroTools original'));
   assert.ok(source.questions.every(item => item.options[item.answer] && item.review.independent_check && item.review.content_sha256));
   assert.equal(source.mathematics_alignment_review.status, 'unverified');
@@ -34,7 +34,7 @@ test('all 40 items are original, yearless and answer-reviewed without changing t
   assert.ok(!historical.questions.some(item => item.id.startsWith('ato-')));
   const normalize = value => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   const historicalPrompts = new Set(historical.questions.map(item => normalize(item.question)));
-  assert.ok(source.questions.filter(item => /-v1-(?:1[3-9]|20)$/.test(item.id))
+  assert.ok(source.questions.filter(item => Number(item.id.slice(-2)) >= 13)
     .every(item => !historicalPrompts.has(normalize(item.question))));
   assert.ok(!fs.readFileSync(path.join(ROOT, 'jamb/index.html'), 'utf8').includes('/null/'));
   const route = fs.readFileSync(path.join(ROOT, 'jamb/original-practice/index.html'), 'utf8');
@@ -75,7 +75,7 @@ test('the first Maths answer keys match independent calculations and inverses', 
 });
 
 test('the next Maths answers follow independent set, logarithm and graph calculations', () => {
-  const next = source.questions.filter(q => q.subject === 'mathematics').slice(12);
+  const next = source.questions.filter(q => q.subject === 'mathematics').slice(12, 20);
   assert.deepEqual(next.map(q => q.id), Array.from({ length: 8 }, (_, i) => 'ato-math-v1-' + String(i + 13).padStart(2, '0')));
   assert.deepEqual(next.map(q => q.options[q.answer]),
     ['11', '{1, 7}', '6', '3', '10', '2', 'Wednesday to Thursday', 'The traveller stayed at the same distance for five minutes']);
@@ -97,6 +97,22 @@ test('the next Maths answers follow independent set, logarithm and graph calcula
   assert.ok(next.every(q => q.year === null && q.num === null && q.origin === 'AfroTools original'));
 });
 
+test('the third Maths batch has independently recomputed keys and accessible graph scales', () => {
+  const next = source.questions.filter(q => q.subject === 'mathematics').slice(20);
+  assert.deepEqual(next.map(q => q.id), Array.from({ length: 12 }, (_, i) =>
+    'ato-math-v1-' + String(i + 21).padStart(2, '0')));
+  assert.deepEqual(next.map(q => q.options[q.answer]), [
+    String(2 * 4 + 3 * 5), String(6 ** 2 - (2 ** 2 - 3)), String((13 + 2 * 4) / 3),
+    String(9 * 8 / 12), (6 * 15 / 10) + ' hours', String(14 + 6 * -3).replace('-', '−'),
+    ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'][(58 - 4) / 6],
+    String([3, 7, 11, 15, 19, 23, 27, 31].reduce((sum, value) => sum + value, 0)),
+    ((30 - 18) / (5 - 2)) + ' parcels per minute', (4 * 5) + ' books',
+    Number(0.004867).toPrecision(2), '7.86 × 10⁴'
+  ]);
+  assert.ok(next.slice(8, 10).every(q => q.passage && /horizontal axis|vertical axis/.test(q.passage)));
+  assert.ok(next.every(q => q.review.independent_check.length >= 30 && q.year === null && q.num === null));
+});
+
 test('English comprehension is grounded in the authored passage and all lexical keys are unique', () => {
   const english = source.questions.filter(q => q.subject === 'english');
   const passage = english[0].passage;
@@ -116,7 +132,7 @@ test('English comprehension is grounded in the authored passage and all lexical 
 });
 
 test('the next English batch covers oral forms and one complete original cloze passage', () => {
-  const next = source.questions.filter(q => q.subject === 'english').slice(12);
+  const next = source.questions.filter(q => q.subject === 'english').slice(12, 20);
   assert.deepEqual(next.map(q => q.id), Array.from({ length: 8 }, (_, i) => 'ato-english-v1-' + String(i + 13).padStart(2, '0')));
   assert.deepEqual(next.map(q => q.options[q.answer]),
     ['seen', 'sprint', 'site', 'relax', 'The colour of the folder', 'evaporate', 'compared', 'based']);
@@ -128,6 +144,28 @@ test('the next English batch covers oral forms and one complete original cloze p
   assert.ok(cloze.every((q, i) => q.passage.includes('___(' + (i + 1) + ')___') && q.review.independent_check.length >= 30));
   assert.ok(next.every(q => q.year === null && q.num === null && q.origin === 'AfroTools original'));
   assert.equal(new Set(next.map(q => q.question.toLowerCase())).size, 8);
+});
+
+test('the third English batch has two complete passages and independently checked oral items', () => {
+  const next = source.questions.filter(q => q.subject === 'english').slice(20);
+  assert.deepEqual(next.map(q => q.id), Array.from({ length: 12 }, (_, i) =>
+    'ato-english-v1-' + String(i + 21).padStart(2, '0')));
+  assert.deepEqual(next.map(q => q.options[q.answer]), [
+    'It remained usable when the stepping stones were covered.',
+    'New pupils needed the directions before they reached the school gate.',
+    'The footbridge recommendation may not have been the only cause.',
+    'The better route could depend on weather conditions.',
+    'recorded', 'correct', 'improvement', 'discrepancy',
+    'leaf', 'We record the rainfall each day.', 'Ngozi gave away five rulers to Idris.', 'Did the bus arrive?'
+  ]);
+  assert.ok(next.slice(0, 4).every(q => q.passage === next[0].passage));
+  assert.match(next[0].passage, /four rainy mornings nobody could use them/);
+  assert.match(next[0].passage, /new bus timetable/);
+  assert.ok(next.slice(4, 8).every(q => q.passage === next[4].passage));
+  for (let number = 1; number <= 4; number++) assert.ok(next[4].passage.includes('___(' + number + ')___'));
+  assert.ok(next.slice(8).every(q => !q.passage && q.topic.startsWith('Oral forms:')));
+  assert.ok([next[8], next[9], next[11]].every(q => q.review.evidence_urls?.length > 0));
+  assert.ok(next.every(q => q.year === null && q.num === null && q.review.independent_check.length >= 30));
 });
 
 test('the original CBT trusts its own index, isolates its resume key and never posts a mock attempt', async () => {
