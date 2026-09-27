@@ -28,6 +28,7 @@ const rows = [
   ['NECO scan-linked reading task','Exercice de lecture lié à une copie NECO','Zoezi la kusoma lenye kiungo cha nakala ya NECO'],
   [' · Paper ',' · Épreuve ',' · Karatasi '],[' · Question ',' · Question ',' · Swali '],
   ['Read the passage','Lire le texte en anglais','Soma kifungu cha Kiingereza'],
+  ['Opened written task: ','Exercice ouvert : ','Kazi ya kuandika imefunguliwa: '],
   ['Your written answer','Votre réponse rédigée','Jibu lako la kuandika'],
   [' words · saved only when you choose Save response',' mots · enregistrement uniquement avec le bouton Enregistrer la réponse',' maneno · huhifadhiwa tu unapochagua Hifadhi jibu'],
   ['Show worked solution','Voir la solution détaillée','Onyesha ufumbuzi kwa hatua'],
@@ -52,6 +53,7 @@ const rows = [
   ['WAEC examiner guidance','Conseils des examinateurs WAEC (anglais)','Mwongozo wa watahini wa WAEC (Kiingereza)'],
   ['WAEC comprehension guidance','Conseils WAEC en compréhension (anglais)','Mwongozo wa ufahamu wa WAEC (Kiingereza)'],
   ['WAEC summary guidance','Conseils WAEC sur le résumé (anglais)','Mwongozo wa muhtasari wa WAEC (Kiingereza)'],
+  ['WAEC English examiner guidance','Conseils des examinateurs WAEC en anglais','Mwongozo wa watahini wa WAEC wa Kiingereza'],
   ['Read the exact WAEC question','Lire la question WAEC exacte (anglais)','Soma swali halisi la WAEC (Kiingereza)'],
   ['Read the exact WAEC question and any diagram','Lire la question et le schéma WAEC (anglais)','Soma swali na mchoro wa WAEC (Kiingereza)'],
   ['Read the exact WAEC question and examiner comments','Lire la question et les commentaires WAEC (anglais)','Soma swali na maoni ya watahini wa WAEC (Kiingereza)'],
@@ -74,6 +76,7 @@ const rows = [
   ['Open PDF pages 7–8 for the complete passage and question. AfroTools does not host the passage. Suggested answers are independently reviewed teaching guidance, not an official mark scheme.','Ouvrez les pages 7 et 8 du PDF pour lire le texte et la question complets. AfroTools ne reproduit pas le texte. Les réponses proposées sont un guide pédagogique vérifié indépendamment, pas un barème officiel.','Fungua kurasa 7 na 8 za PDF kwa kifungu na swali kamili. AfroTools haiweki kifungu hapa. Majibu yaliyopendekezwa ni mwongozo wa kujifunza uliohakikiwa kwa kujitegemea, si mwongozo rasmi wa alama.'],
   ['Guidance only. The passage and questions above are original AfroTools material.','Référence méthodologique uniquement. Le texte et les questions ci-dessus sont des créations AfroTools.','Ni mwongozo tu. Kifungu na maswali hapo juu ni kazi asilia ya AfroTools.'],
   ['Guidance only. The passage and task above are original AfroTools material.','Référence méthodologique uniquement. Le texte et la consigne ci-dessus sont des créations AfroTools.','Ni mwongozo tu. Kifungu na kazi hapo juu ni kazi asilia ya AfroTools.'],
+  ['Guidance only. This letter prompt and self-review guide are original AfroTools material.','Référence méthodologique uniquement. Cette consigne de lettre et le guide de vérification personnelle sont des créations AfroTools.','Ni mwongozo tu. Agizo hili la barua na mwongozo wa kujihakiki ni kazi asilia ya AfroTools.'],
   ['Equilateral triangle PQR of side 18 centimetres. P is at the top, Q and R are the base endpoints and M is their midpoint. The arc AB has centre P and touches the base at M. The two regions between the arc and the base are shaded.','Triangle équilatéral PQR de côté 18 cm. P est au sommet, Q et R aux extrémités de la base et M en son milieu. L’arc AB de centre P touche la base en M. Les deux régions entre l’arc et la base sont ombrées.','Pembetatu PQR yenye pande sawa za 18 cm. P iko juu; Q na R ni ncha za msingi, M ni katikati yake. Tao AB lina kitovu P na linagusa msingi kwenye M. Maeneo mawili kati ya tao na msingi yametiwa kivuli.'],
   ['O is the centre of a circle with radius 7 centimetres. OM points horizontally right. ON makes a 60 degree angle above OM. T is directly below N on OM. The region bounded by NT, TM and arc NM is shaded.','O est le centre d’un cercle de rayon 7 cm. OM est horizontal vers la droite. ON fait un angle de 60° au-dessus de OM. T se situe sur OM, à la verticale de N. La région bordée par NT, TM et l’arc NM est ombrée.','O ni kitovu cha duara lenye radius 7 cm. OM inaelekea kulia kwa mlalo. ON inafanya pembe ya 60° juu ya OM. T iko kwenye OM chini ya N kwa wima. Eneo linalozungukwa na NT, TM na tao NM limetiwa kivuli.']
 ];

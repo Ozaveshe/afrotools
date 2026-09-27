@@ -141,7 +141,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.equal(answer('neco-2023-mathematics-p3-q35'),'92°.');
     assert.equal(answer('neco-2023-mathematics-p3-q36'),'315 m.');
     assert.equal(items.filter(q => q.exam === 'NECO').length, enWritten.items.filter(q => q.exam === 'NECO').length);
-    assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
+    assert.equal(items.filter(q => q.exam === null && q.year === null).length, 17);
   }
 });
 
@@ -162,5 +162,19 @@ test('localized source generation is current and every locale page declares all 
     for (const lang of ['en','fr','sw']) assert.ok(html.includes(`hreflang="${lang}" href="https://afrotools.com${generator.routes[lang]}"`));
     assert.ok(html.includes('id="written-practice"')); assert.ok(html.includes('data-assessment-language-notice'));
     assert.ok(html.includes('scripts/build-ssce-practice-locales.js'));
+  }
+});
+
+test('regenerated locale pages retain the release runtime shell and current bank versions', () => {
+  const generated = generator.outputs();
+  for (const locale of ['fr', 'sw']) {
+    const file = generator.routes[locale].slice(1) + 'index.html';
+    const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
+    assert.match(html, /data-chat-bundle="\/assets\/js\/bundles\/chat\.[0-9a-f]+\.min\.js"/);
+    assert.match(html, /<script src="\/assets\/js\/lazy-analytics\.js\?v=[0-9a-f]{8}" defer><\/script>/);
+    if (locale === 'fr') assert.match(html, /<script src="\/assets\/js\/analytics-bootstrap\.js\?v=[0-9a-f]{8}"[^>]*><\/script>/);
+    if (locale === 'sw') assert.match(html, /<script src="\/assets\/js\/lib\/sw-accessibility\.js\?v=[0-9a-f]{8}" defer><\/script>/);
+    assert.match(html, new RegExp(`ssce-written-bank-${locale}\\.js\\?v=[0-9a-f]{8}`));
+    assert.equal(generator.preserveReleaseShell(generated.get(file), html), html);
   }
 });

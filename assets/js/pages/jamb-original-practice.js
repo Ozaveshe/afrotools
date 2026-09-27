@@ -202,11 +202,12 @@
     try {
       pool = await trust.loadPool(POOL_URL, INDEX_URL);
       if (pool.kind !== 'original-practice' || pool.collection_id !== 'afrotools-original-jamb-practice-v1' ||
-          pool.questions.length !== 24 || pool.questions.some(function (q) { return q.year !== null || q.num !== null; }) ||
-          ['mathematics', 'english'].some(function (subject) { return pool.questions.filter(function (q) { return q.subject === subject; }).length !== 12; })) {
+          pool.questions.length !== pool.count ||
+          pool.questions.some(function (q) { return q.year !== null || q.num !== null || !LABELS[q.subject]; }) ||
+          ['mathematics', 'english'].some(function (subject) { return pool.questions.filter(function (q) { return q.subject === subject; }).length < 12; })) {
         throw new Error('Unexpected original-practice publication');
       }
-      $('setup-status').textContent = '24 reviewed original questions are ready.';
+      $('setup-status').textContent = pool.count + ' reviewed original questions are ready.';
       $('start-btn').disabled = false;
       var saved = cbt.tryRestore('original-practice');
       $('resume-btn').hidden = !(saved && saved.mode === 'original-practice' && saved.poolRevision === pool.review_revision);
