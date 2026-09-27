@@ -12,6 +12,7 @@ test('calendar is source-readable without JavaScript', async ({ browser }) => {
     const page = await context.newPage();
     await page.goto('/tools/africa-election-tracker/');
     await expect(page.locator('[data-snapshot-election-id]')).toHaveCount(tracker.elections.length);
+    await expect(page.locator('[data-snapshot-election-id="ss-president-2026"] time')).toHaveAttribute('datetime', '2026-12');
     await expect(page.locator('#searchInput')).toBeDisabled();
     const noJsNote = await page.locator('main noscript p').evaluate((node) => ({
       text: node.textContent,
@@ -58,6 +59,9 @@ test('successful JSON fetch enhances the snapshot with working filters', async (
   await expect(page.locator('#searchInput')).toBeEnabled();
   await expect(page.locator('[data-snapshot-election-id]')).toHaveCount(0);
   await expect(page.locator('#electionList article').first()).toBeVisible();
+  const southSudanDate = page.locator('#reviewQueue .et-side-item').filter({ hasText: 'South Sudan' }).locator('span').first();
+  await expect(southSudanDate).toContainText('Dec 2026');
+  await expect(southSudanDate).not.toContainText('22 Dec');
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(overflow).toBe(false);
 });

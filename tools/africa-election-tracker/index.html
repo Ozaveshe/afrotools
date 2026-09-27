@@ -424,7 +424,7 @@ body.election-desk-page{
               </article>
               <article class="et-election-card" data-snapshot-election-id="ss-president-2026">
                 <div class="et-election-top">
-                  <div class="et-date-box"><time datetime="2026-12-22" aria-label="22 Dec 2026; Tentative"><strong>22</strong><span>Dec 2026</span></time></div>
+                  <div class="et-date-box"><time datetime="2026-12" aria-label="Dec 2026; Tentative"><strong>Dec</strong><span>2026</span></time></div>
                   <div>
                     <h4 class="et-election-title">South Sudan: President</h4>
                     <span class="et-pill">Official source</span><span class="et-pill">Date: Tentative</span>
@@ -697,7 +697,7 @@ body.election-desk-page{
 
   function displayDate(record) {
     if (record.datePrecision === 'year') return String(record.electionDate || '').slice(0, 4);
-    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected' || record.dateStatus === 'tentative') {
       return new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' })
         .format(new Date(dateUtc(record.electionDate)));
     }
@@ -706,7 +706,7 @@ body.election-desk-page{
 
   function displayDateParts(record) {
     if (record.datePrecision === 'year') return { day: String(record.electionDate || '').slice(0, 4), month: '', year: '' };
-    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected' || record.dateStatus === 'tentative') {
       const parts = monthDay(record.electionDate);
       return { day: parts.month, month: parts.year, year: '' };
     }
@@ -720,7 +720,7 @@ body.election-desk-page{
   function recordEndUtc(record) {
     if (record.dateEnd) return dateUtc(record.dateEnd);
     if (record.datePrecision === 'year') return Date.UTC(Number(record.electionDate.slice(0, 4)), 11, 31);
-    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected' || record.dateStatus === 'tentative') {
       const [year, month] = record.electionDate.split('-').map(Number);
       return Date.UTC(year, month, 0);
     }

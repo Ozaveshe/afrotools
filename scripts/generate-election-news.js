@@ -316,7 +316,7 @@ function articlePage(locale, baseRoute, article, election, localeRoutes) {
     datePublished: content.publishedOn,
     dateModified: content.updatedOn,
     author: { '@type': 'Organization', name: 'AfroTools' },
-    publisher: { '@type': 'Organization', name: 'AfroTools', url: BASE_URL },
+    publisher: { '@type': 'Organization', name: 'AfroTools', url: BASE_URL + '/' },
     citation: article.officialSources.map((source) => source.url),
     articleSection: 'Election notices'
   };

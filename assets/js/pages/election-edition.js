@@ -1,11 +1,7 @@
 (function () {
   'use strict';
 
-  var root = document.querySelector('[data-election-edition]');
-  if (!root) return;
-
-  var locale = root.getAttribute('data-election-edition');
-  var copy = {
+  var localeCopy = {
     ha: {
       language: 'ha-NG',
       loading: 'Ana loda jadawalin zaɓe…',
@@ -86,7 +82,15 @@
         'Local councils': 'Àwọn ìgbìmọ̀ ìbílẹ̀'
       }
     }
-  }[locale];
+  };
+
+  if (typeof module !== 'undefined' && module.exports) module.exports = { localeCopy: localeCopy };
+  if (typeof document === 'undefined') return;
+
+  var root = document.querySelector('[data-election-edition]');
+  if (!root) return;
+  var locale = root.getAttribute('data-election-edition');
+  var copy = localeCopy[locale];
 
   if (!copy) return;
 
@@ -97,6 +101,8 @@
   var entries = [];
   var generatedAt = '';
   var reviewCadenceDays = 7;
+  var snapshotHtml = list.innerHTML;
+  var snapshotDate = list.querySelector('[data-ed-snapshot-date]')?.getAttribute('data-ed-snapshot-date') || '';
 
   function node(tag, className, value) {
     var element = document.createElement(tag);
@@ -121,7 +127,17 @@
 
   function unconfirmedDate(entry) {
     return entry.dateStatus === 'tentative' || entry.dateStatus === 'projected' ||
-      !Object.prototype.hasOwnProperty.call(copy.dateStatus, entry.dateStatus);
+      entry.datePrecision !== 'day' || !Object.prototype.hasOwnProperty.call(copy.dateStatus, entry.dateStatus);
+  }
+
+  function recordEndDate(entry) {
+    if (entry.dateEnd) return entry.dateEnd;
+    if (entry.datePrecision === 'year') return String(entry.electionDate || '').slice(0, 4) + '-12-31';
+    if (entry.datePrecision === 'month' || entry.dateStatus === 'projected' || entry.dateStatus === 'tentative') {
+      var match = String(entry.electionDate || '').match(/^(\d{4})-(\d{2})-\d{2}$/);
+      if (match) return match[1] + '-' + match[2] + '-' + String(new Date(Date.UTC(Number(match[1]), Number(match[2]), 0)).getUTCDate()).padStart(2, '0');
+    }
+    return entry.electionDate || '';
   }
 
   function localToday() {
@@ -147,13 +163,24 @@
     return age > reviewCadenceDays;
   }
 
+  function validEntry(entry) {
+    return entry && typeof entry.id === 'string' && entry.id.length > 0 &&
+      typeof entry.countryCode === 'string' && entry.countryCode.length > 0 &&
+      typeof entry.office === 'string' && entry.office.length > 0 &&
+      /^\d{4}-\d{2}-\d{2}$/.test(entry.electionDate || '') &&
+      Array.isArray(entry.sources);
+  }
+
   function renderEntry(entry) {
     var article = node('article', 'ed-entry');
     var dateColumn = node('div', 'ed-entry-date');
     var needsConfirmation = unconfirmedDate(entry);
-    var date = node('time', '', needsConfirmation ? formattedMonth(entry.electionDate) : formattedDate(entry.electionDate));
+    var date = node('time', '', entry.datePrecision === 'year'
+      ? String(entry.electionDate || '').slice(0, 4)
+      : needsConfirmation ? formattedMonth(entry.electionDate) : formattedDate(entry.electionDate));
     if (/^\d{4}-\d{2}-\d{2}$/.test(entry.electionDate || '')) {
-      date.dateTime = needsConfirmation ? entry.electionDate.slice(0, 7) : entry.electionDate;
+      date.dateTime = entry.datePrecision === 'year' ? entry.electionDate.slice(0, 4)
+        : needsConfirmation ? entry.electionDate.slice(0, 7) : entry.electionDate;
     }
     dateColumn.appendChild(date);
 
@@ -203,8 +230,7 @@
     var today = localToday();
     var selected = entries.filter(function (entry) {
       return (!countryCode || entry.countryCode === countryCode) &&
-        (!upcoming.checked || !entry.electionDate ||
-          (unconfirmedDate(entry) ? entry.electionDate.slice(0, 7) >= today.slice(0, 7) : entry.electionDate >= today));
+        (!upcoming.checked || !entry.electionDate || recordEndDate(entry) >= today);
     }).sort(function (a, b) {
       return String(a.electionDate || '').localeCompare(String(b.electionDate || '')) ||
         String(a.country || '').localeCompare(String(b.country || ''));
@@ -223,7 +249,11 @@
       return response.json();
     })
     .then(function (data) {
-      if (!data || !Array.isArray(data.elections)) throw new Error('election data invalid');
+      if (!data || !Array.isArray(data.elections) || !data.elections.length ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(data.generatedAt || '') ||
+        !data.elections.every(validEntry)) {
+        throw new Error('election data invalid');
+      }
       entries = data.elections;
       generatedAt = data.generatedAt || '';
       reviewCadenceDays = Number.isFinite(data.reviewCadenceDays) && data.reviewCadenceDays > 0
@@ -239,10 +269,14 @@
       });
       select.addEventListener('change', render);
       upcoming.addEventListener('change', render);
+      select.disabled = false;
+      upcoming.disabled = false;
       render();
     })
     .catch(function () {
-      list.replaceChildren();
-      status.textContent = copy.failed;
+      select.disabled = true;
+      upcoming.disabled = true;
+      list.innerHTML = snapshotHtml;
+      status.textContent = copy.failed + (snapshotDate ? ' ' + copy.ledgerDate + ': ' + formattedDate(snapshotDate) + '.' : '');
     });
 })();
