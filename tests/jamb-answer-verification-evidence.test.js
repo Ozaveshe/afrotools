@@ -37,7 +37,11 @@ test('AI reviews are backed by current batch evidence and reproducible integrity
       assert.equal(record.content_sha256, review.content_sha256, record.id);
       if (record.publication_candidate === true) {
         const result = assessQuestion(pool.find(q => q.id === record.id), ledger);
-        assert.equal(result.state, 'eligible', record.id + ': approved evidence cannot silently remain quarantined: ' + result.reasons.join(', '));
+        const hold = ledger.publication_holds?.[record.id];
+        if (hold) {
+          assert.equal(hold.content_sha256, record.content_sha256, record.id);
+          assert.deepEqual(result.reasons, ['publication_hold'], record.id);
+        } else assert.equal(result.state, 'eligible', record.id + ': approved evidence cannot silently remain quarantined: ' + result.reasons.join(', '));
       }
       assert.ok(review.answer_review.evidence.includes(filename + '#' + record.id));
       assert.ok(review.answer_review.evidence.includes(script));

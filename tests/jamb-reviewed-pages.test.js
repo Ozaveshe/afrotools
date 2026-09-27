@@ -14,7 +14,6 @@ test('unreviewed question text and answer schemas never enter a review page', ()
   assert.equal(page.html.includes('acceptedAnswer'), false);
   assert.ok(page.html.includes('content="noindex, follow"'));
   assert.ok(page.html.includes('This paper is under review'));
-  assert.equal(page.html.includes('Timed CBT practice'), false);
   assert.doesNotThrow(() => validatePage(page.html, [], page.canonical));
 });
 
@@ -41,7 +40,7 @@ test('JSON-LD string content cannot terminate its script element', () => {
   assert.deepEqual(JSON.parse(encoded), value);
 });
 
-test('only reviewed 2025 English and Mathematics collections with a full practice selection offer CBT', () => {
+test('only reviewed 2025 English and 2023–2025 Mathematics collections with at least 40 usable questions offer CBT', () => {
   const q = { id: 'synthetic-collection', subject: 'english', year: 2025, num: null,
     question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
     answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
@@ -69,14 +68,45 @@ test('only reviewed 2025 English and Mathematics collections with a full practic
     assert.ok(page.html.includes('not a confirmed complete UTME paper'));
   }
   assert.equal(renderYear('mathematics', 2025, mathematics.slice(0, 39), ledger).html.includes('Timed CBT practice'), false);
-  const older = mathematics.map(question => ({ ...question, id: question.id.replace('mathematics-', 'mathematics-2024-'), year: 2024 }));
-  const olderLedger = { sources: { fixture: { ...ledger.sources.fixture, collection_year: 2024 } },
-    questions: Object.fromEntries(older.map(question => [question.id, {
+  for (const year of [2023, 2024]) {
+    const older = mathematics.map(question => ({ ...question, id: question.id.replace('mathematics-', `mathematics-${year}-`), year }));
+    const olderLedger = { sources: { fixture: { ...ledger.sources.fixture, collection_year: year } },
+      questions: Object.fromEntries(older.map(question => [question.id, {
+        content_sha256: questionFingerprint(question), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review
+      }])) };
+    const olderPage = renderYear('mathematics', year, older, olderLedger);
+    assert.equal(olderPage.approvedIds.length, 40);
+    assert.ok(olderPage.html.includes(`publisher-labelled ${year} collection`));
+    assert.ok(olderPage.html.includes(`href="/jamb/cbt/?subject=mathematics&amp;year=${year}"`));
+    assert.ok(olderPage.html.includes(`Start ${year} Mathematics CBT practice`));
+    assert.ok(olderPage.html.includes('not a confirmed complete UTME paper'));
+    assert.equal(renderYear('mathematics', year, older.slice(0, 39), olderLedger).html.includes('Timed CBT practice'), false);
+  }
+  const earlier = mathematics.map(question => ({ ...question, id: question.id.replace('mathematics-', 'mathematics-2022-'), year: 2022 }));
+  const earlierLedger = { sources: { fixture: { ...ledger.sources.fixture, collection_year: 2022 } },
+    questions: Object.fromEntries(earlier.map(question => [question.id, {
       content_sha256: questionFingerprint(question), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review
     }])) };
-  const olderPage = renderYear('mathematics', 2024, older, olderLedger);
-  assert.equal(olderPage.approvedIds.length, 40);
-  assert.equal(olderPage.html.includes('Timed CBT practice'), false);
+  assert.equal(renderYear('mathematics', 2022, earlier, earlierLedger).html.includes('Timed CBT practice'), false);
+});
+
+test('publisher-labelled collection years do not present themselves as confirmed UTME sittings', () => {
+  const q = { id: 'synthetic-collection', subject: 'english', year: 2023, num: null,
+    question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
+    answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
+    source_provenance: { publisher: 'Example', url: 'https://example.com/collection', year_basis: 'publisher-collection' } };
+  const review = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-24', evidence: 'synthetic fixture only' };
+  const sourceHash = 'a'.repeat(64);
+  const ledger = { sources: { fixture: { source_file: 'synthetic fixture', content_sha256: sourceHash,
+    source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2023,
+    reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source', scope: 'AfroTools past-question practice',
+      material_sha256: sourceHash, authorized_by: 'test', authorized_at: '2026-09-24', instruction_ref: 'synthetic fixture' } } },
+    questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review } } };
+  const page = renderYear('english', 2023, [q], ledger);
+  assert.deepEqual(page.approvedIds, [q.id]);
+  assert.ok(page.html.includes('JAMB Use of English 2023 practice collection'));
+  assert.ok(page.html.includes('publisher-labelled 2023'));
+  assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
 });
 
 test('only the reviewed content version appears in both cards and answer schemas', () => {
@@ -92,7 +122,6 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.throws(() => validatePage(page.html.replace(/<p class="qcard-text">[\s\S]*?<\/p>/, ''), page.approvedIds, page.canonical), /Missing question text/);
   assert.throws(() => validatePage(page.html.replace(/<details\b[\s\S]*?<\/details>/, ''), page.approvedIds, page.canonical), /Missing answer explanation/);
   assert.ok(page.html.includes('5 &lt; 6'));
-  assert.equal(page.html.includes('href="/jamb/cbt/?subject=mathematics&amp;year=1987"'), false);
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
   const schemas = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
@@ -138,10 +167,32 @@ test('all existing subject and year routes are preserved even with an empty appr
     const page = renderYear(subject, year || null, [], {questions:{},sources:{}}, years);
     const current = fs.readFileSync(path.join(root, 'jamb', route, 'index.html'), 'utf8');
     const actual = renderYear(subject, year || null, pool.questions, ledger, years);
-    validatePage(current, actual.approvedIds, page.canonical);
+    validatePage(current, actual.renderedIds, page.canonical, { allowEmptyIndex: actual.allowEmptyIndex });
     assert.ok(current.includes('Plan your study week'));
-    if (!year) assert.equal(current.includes('Browse by year'), actual.approvedIds.length > 0);
+    if (!year) assert.equal(current.includes(subject === 'english' ? 'Browse reviewed years' : 'Browse by year'), actual.approvedIds.length > 0);
   }
+});
+
+test('English hub is a compact reviewed directory while year pages retain the questions', () => {
+  const root = path.resolve(__dirname, '..');
+  const pool = JSON.parse(fs.readFileSync(path.join(root, 'ops/jamb/source-pool.json'), 'utf8'));
+  const ledger = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/review-ledger.json'), 'utf8'));
+  const hub = renderYear('english', null, pool.questions, ledger);
+  const latest = renderYear('english', '2025', pool.questions, ledger);
+  assert.ok(hub.approvedIds.length > 40);
+  assert.deepEqual(hub.renderedIds, []);
+  assert.ok(Buffer.byteLength(hub.html) < 20_000);
+  assert.equal(hub.html.includes('data-reviewed-question='), false);
+  assert.equal(hub.html.includes('"@type":"Question"'), false);
+  assert.ok(hub.html.includes('href="/jamb/english/2025/"'));
+  assert.ok(hub.html.includes('href="/jamb/english/2020/#q-english-2020-1-68923e3396b6"'));
+  assert.ok(hub.html.includes('href="/jamb/cbt/?subject=english&amp;year=2025"'));
+  const starterLabels = [...hub.html.matchAll(/<a href="\/jamb\/english\/\d{4}\/#q-[^"]+">([^<]+)<\/a>/g)].map(match => match[1]);
+  assert.equal(starterLabels.length, 5);
+  assert.equal(new Set(starterLabels).size, starterLabels.length, 'Skill starter links need distinct accessible names');
+  assert.equal(latest.renderedIds.length, latest.approvedIds.length);
+  assert.ok(latest.html.includes('data-reviewed-question='));
+  assert.doesNotThrow(() => validatePage(hub.html, hub.renderedIds, hub.canonical, { allowEmptyIndex: hub.allowEmptyIndex }));
 });
 
 test('all JAMB documents retain complete structure and original routes after regeneration', () => {

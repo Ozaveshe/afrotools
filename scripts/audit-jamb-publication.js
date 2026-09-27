@@ -35,7 +35,7 @@ function audit(target = path.join(ROOT, 'dist'), root = ROOT) {
     const [subject, year] = route.split('/');
     const page = renderYear(subject, year || null, candidates, ledger);
     const actual = fs.readFileSync(path.join(target, 'jamb', route, 'index.html'), 'utf8');
-    validatePage(actual, page.approvedIds, page.canonical);
+    validatePage(actual, page.renderedIds, page.canonical, { allowEmptyIndex: page.allowEmptyIndex });
     const schemas = html => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
       .map(match => JSON.parse(match[1])).filter(schema => schema['@type'] === 'Question');
     if (digest(schemas(actual)) !== digest(schemas(page.html))) throw new Error('Published answer schemas differ from reviewed content: ' + route);

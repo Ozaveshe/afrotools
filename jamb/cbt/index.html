@@ -303,6 +303,10 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
 <style>
 #setup-screen[hidden], #cbt-shell[hidden], #results-screen[hidden] { display: none !important; }
+/* Optional site prompts return after the timed test, without covering answer controls. */
+body:has(#cbt-shell:not([hidden])) :is(#afro-cookie-consent, #afro-pwa-banner) {
+  display: none !important;
+}
 .cbt-collection-setup { background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:22px; margin-bottom:18px; }
 .cbt-collection-setup h2 { margin:0 0 8px; font-size:1.15rem; }
 .cbt-collection-setup p { margin:8px 0; line-height:1.6; color:#334155; }
@@ -525,6 +529,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   color: #0f172a;
   font-weight: 500;
   margin-bottom: 14px;
+  overflow-wrap: anywhere;
 }
 .rev-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
 .rev-opt {
@@ -987,7 +992,7 @@ document.getElementById("start-btn").addEventListener("click", async function(){
   }
 });
 
-window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", function () {
   loadPoolStats();
   maybeShowResume();
 });

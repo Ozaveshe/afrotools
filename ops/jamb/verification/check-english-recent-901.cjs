@@ -68,7 +68,11 @@ function verify(year) {
     assert.equal(question.source_provenance.url, batch.source_url, id);
     assert.equal(question.num, null, id + ': webpage item number is not an official paper number');
     assert.equal(question.passage, undefined, id + ': no passage-dependent question is published');
-    assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
+    const assessment = assessQuestion(question, ledger);
+    if (id === 'english-2023-poscholars-49') {
+      assert.equal(ledger.publication_holds[id]?.content_sha256, record.content_sha256, id);
+      assert.deepEqual(assessment.reasons, ['publication_hold'], id);
+    } else assert.equal(assessment.state, 'eligible', id);
     checked.push(id);
   }
   assert.equal(checked.length, Object.keys(expected).length);

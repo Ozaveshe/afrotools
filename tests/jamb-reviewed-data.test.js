@@ -8,6 +8,7 @@ const vm = require('node:vm');
 const { createRequire } = require('node:module');
 const { questionFingerprint: digest } = require('../scripts/lib/jamb-content-trust');
 const { buildPublications, normalizeCard, seal, validatePublication } = require('../scripts/lib/jamb-publication');
+const { renderYear } = require('../scripts/build-jamb-reviewed-pages');
 const { createReviewedBank, reviewedTutorRequest, dailyAvailability } = require('../netlify/functions/_shared/jamb-reviewed-data');
 
 function fixture() {
@@ -58,6 +59,31 @@ test('source edits and permission revocation change revision and quarantine prev
   assert.throws(() => createReviewedBank(before.files['pools/practice-pool.json'], before.files['pools/index.json'], f.ledger));
   f.q.options.B = '43';
   assert.notEqual(after.revision, buildPublications(f.pool, f.flashcards, f.ledger).revision);
+});
+
+test('later quality holds remove ambiguous items from scored data and public pages while retaining raw records', () => {
+  const root = path.resolve(__dirname, '..');
+  const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), 'utf8'));
+  const pool = read('ops/jamb/source-pool.json');
+  const ledger = read('data/jamb/review-ledger.json');
+  const held = [
+    ['english-2023-poscholars-49', 2023, 19, 18],
+    ['english-2024-myschool-69979', 2024, 26, 25]
+  ];
+  const published = buildPublications(pool, read('ops/jamb/source-flashcards.json'), ledger);
+  const scoredIds = new Set(published.files['pools/practice-pool.json'].questions.map(question => question.id));
+  for (const [id, year, rawCount, reviewedCount] of held) {
+    const raw = pool.questions.filter(question => question.subject === 'english' && question.year === year);
+    assert.equal(raw.length, rawCount);
+    assert.ok(raw.some(question => question.id === id));
+    assert.equal(ledger.publication_holds[id].content_sha256, digest(raw.find(question => question.id === id)));
+    assert.equal(scoredIds.has(id), false);
+    const page = renderYear('english', String(year), pool.questions, ledger);
+    assert.equal(page.approvedIds.length, reviewedCount);
+    assert.equal(page.approvedIds.includes(id), false);
+    assert.equal(page.html.includes(`data-reviewed-question="${id}"`), false);
+    assert.equal(page.html.includes(`#q-${id}`), false);
+  }
 });
 
 test('empty ledger publishes useful zero counts, no cards and no historical or prediction claims', () => {
