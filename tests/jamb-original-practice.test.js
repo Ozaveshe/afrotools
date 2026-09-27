@@ -14,15 +14,17 @@ const ROOT = path.resolve(__dirname, '..');
 const source = validate(require('../ops/nigeria-exams/jamb-original-practice-v1.json'));
 const rows = source.questions.map(publicQuestion);
 const revision = questionFingerprint(source);
+const subjectCounts = { mathematics: source.questions.filter(q => q.subject === 'mathematics').length,
+  english: source.questions.filter(q => q.subject === 'english').length };
 const pool = seal({ kind: 'original-practice', collection_id: source.collection_id,
-  count: 24, answered_count: 24, questions: rows }, revision);
+  count: rows.length, answered_count: rows.length, questions: rows }, revision);
 const index = seal({ kind: 'original-practice', collection_id: source.collection_id,
-  count: 24, subjects: { mathematics: 12, english: 12 } }, revision);
+  count: rows.length, subjects: subjectCounts }, revision);
 
-test('all 24 items are original, yearless and answer-reviewed without changing the historical pool', () => {
-  assert.equal(source.questions.length, 24);
+test('all 32 items are original, yearless and answer-reviewed without changing the historical pool', () => {
+  assert.equal(source.questions.length, 32);
   assert.deepEqual(source.questions.reduce((counts, item) => { counts[item.subject] = (counts[item.subject] || 0) + 1; return counts; }, {}),
-    { mathematics: 12, english: 12 });
+    { mathematics: 12, english: 20 });
   assert.ok(source.questions.every(item => item.year === null && item.num === null && item.origin === 'AfroTools original'));
   assert.ok(source.questions.every(item => item.options[item.answer] && item.review.independent_check && item.review.content_sha256));
   assert.equal(source.mathematics_alignment_review.status, 'unverified');
@@ -37,6 +39,7 @@ test('all 24 items are original, yearless and answer-reviewed without changing t
   const published = publications(source).outputs['data/jamb/pools/original-practice.json'];
   assert.match(published.provenance, /AfroTools original practice questions/);
   assert.doesNotMatch(published.provenance, /syllabus-aligned|aligned with JAMB syllabus/i);
+  assert.equal(source.english_alignment_review.official_document, 'https://ibass.jamb.gov.ng/assets/uploads/Use-of-English.pdf');
 });
 
 test('an altered answer, wording or invented year invalidates the original review', () => {
@@ -74,14 +77,28 @@ test('English comprehension is grounded in the authored passage and all lexical 
   assert.ok(passage.includes('service fair'));
   assert.ok(passage.includes('did not solve every study problem'));
   assert.ok(english.slice(0, 4).every(q => q.passage === passage));
-  assert.ok(english.slice(4).every(q => !q.passage));
-  assert.deepEqual(english.map(q => q.options[q.answer]), [
+  assert.ok(english.slice(4, 17).every(q => !q.passage));
+  assert.deepEqual(english.slice(0, 12).map(q => q.options[q.answer]), [
     'They need light for evening study when power is unreliable.',
     'To charge returned lamps before lending them again.',
     'Demand had grown and the team wanted fair access.',
     'It helped some pupils study, though other problems remained.',
     'is', 'had packed', 'would have arrived', 'into', 'short', 'unwilling', 'plentiful', 'shrink'
   ]);
+});
+
+test('the next English batch covers oral forms and one complete original cloze passage', () => {
+  const next = source.questions.filter(q => q.subject === 'english').slice(12);
+  assert.deepEqual(next.map(q => q.id), Array.from({ length: 8 }, (_, i) => 'ato-english-v1-' + String(i + 13).padStart(2, '0')));
+  assert.deepEqual(next.map(q => q.options[q.answer]),
+    ['seen', 'sprint', 'site', 'relax', 'The colour of the folder', 'evaporate', 'compared', 'based']);
+  assert.ok(next.slice(0, 5).every(q => q.topic.startsWith('Oral forms:') && !q.passage));
+  const cloze = next.slice(5);
+  assert.ok(cloze.every(q => q.topic.startsWith('Cloze:') && q.passage === cloze[0].passage));
+  assert.ok(cloze[0].passage.split(/\s+/).length >= 190 && cloze[0].passage.split(/\s+/).length <= 210);
+  assert.ok(cloze.every((q, i) => q.passage.includes('___(' + (i + 1) + ')___') && q.review.independent_check.length >= 30));
+  assert.ok(next.every(q => q.year === null && q.num === null && q.origin === 'AfroTools original'));
+  assert.equal(new Set(next.map(q => q.question.toLowerCase())).size, 8);
 });
 
 test('the original CBT trusts its own index, isolates its resume key and never posts a mock attempt', async () => {
