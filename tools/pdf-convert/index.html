@@ -193,7 +193,8 @@
   :root[data-theme="dark"] .act-copy { background: #12372f; border-color: #3d8b75; color: #d1fae5; }
 
   @media (max-width: 768px) {
-    .mode-row { grid-template-columns: 1fr; }
+    .mode-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .mode-btn { padding: 12px 8px; line-height: 1.25; }
     .settings-row, .settings-row-3 { grid-template-columns: 1fr; }
     .tips-grid { grid-template-columns: 1fr; }
     .result-actions { flex-direction: column; }
@@ -285,10 +286,10 @@
     <div class="card-head"><span class="card-title">Conversion Mode</span></div>
     <div class="card-body">
       <div class="mode-row">
-        <button type="button" class="mode-btn on" id="modeWord" onclick="switchMode('word2pdf')">Word &rarr; PDF</button>
-        <button type="button" class="mode-btn" id="modeExcel" onclick="switchMode('excel2pdf')">Excel &rarr; PDF</button>
-        <button type="button" class="mode-btn" id="modePdfText" onclick="switchMode('pdf2text')">PDF &rarr; Text</button>
-        <button type="button" class="mode-btn" id="modePdfImages" onclick="switchMode('pdf2images')">PDF &rarr; Images</button>
+        <button type="button" class="mode-btn on" id="modeWord" aria-pressed="true" onclick="switchMode('word2pdf')">Word &rarr; PDF</button>
+        <button type="button" class="mode-btn" id="modeExcel" aria-pressed="false" onclick="switchMode('excel2pdf')">Excel &rarr; PDF</button>
+        <button type="button" class="mode-btn" id="modePdfText" aria-pressed="false" onclick="switchMode('pdf2text')">PDF &rarr; Text</button>
+        <button type="button" class="mode-btn" id="modePdfImages" aria-pressed="false" onclick="switchMode('pdf2images')">PDF &rarr; Images</button>
       </div>
     </div>
   </div>
@@ -773,10 +774,12 @@ async function ensurePdfJs() {
 // ============================================================
 function switchMode(mode) {
   currentMode = mode;
-  document.getElementById('modeWord').classList.toggle('on', mode === 'word2pdf');
-  document.getElementById('modeExcel').classList.toggle('on', mode === 'excel2pdf');
-  document.getElementById('modePdfText').classList.toggle('on', mode === 'pdf2text');
-  document.getElementById('modePdfImages').classList.toggle('on', mode === 'pdf2images');
+  [['modeWord', 'word2pdf'], ['modeExcel', 'excel2pdf'], ['modePdfText', 'pdf2text'], ['modePdfImages', 'pdf2images']].forEach(function(entry) {
+    var button = document.getElementById(entry[0]);
+    var active = mode === entry[1];
+    button.classList.toggle('on', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
   document.getElementById('word2pdf-panel').classList.toggle('hidden', mode !== 'word2pdf');
   document.getElementById('excel2pdf-panel').classList.toggle('hidden', mode !== 'excel2pdf');
   document.getElementById('pdf2text-panel').classList.toggle('hidden', mode !== 'pdf2text');
