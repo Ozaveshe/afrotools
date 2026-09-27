@@ -210,6 +210,7 @@ countries.forEach(function(country) {
     var slug = country.slug;
     var dir = path.join(outputDir, slug);
     var routeUrl = 'https://afrotools.com/tools/afroatlas/country/' + slug + '/';
+    var countryOgPath = path.join(__dirname, '..', 'assets', 'img', 'og', 'countries', 'country-' + slug + '.webp');
 
     // Create directory
     if (!fs.existsSync(dir)) {
@@ -234,6 +235,13 @@ countries.forEach(function(country) {
       .replace(faqTemplatePattern, '<script type="application/ld+json">' + generateFAQSchema(country) + '</script>')
       .replace(/\{\{BREADCRUMB_SCHEMA\}\}/g, generateBreadcrumbSchema(country))
       .replace(/\{\{FAQ_SCHEMA\}\}/g, generateFAQSchema(country));
+
+    if (fs.existsSync(countryOgPath)) {
+      var countryOgUrl = 'https://afrotools.com/assets/img/og/countries/country-' + slug + '.webp';
+      html = html
+        .replace('<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">', '<meta property="og:image" content="' + countryOgUrl + '">')
+        .replace('<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">', '<meta name="twitter:image" content="' + countryOgUrl + '">');
+    }
 
     fs.writeFileSync(path.join(dir, 'index.html'), html);
     generated++;
