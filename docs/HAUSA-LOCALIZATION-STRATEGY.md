@@ -38,17 +38,17 @@ Source artifacts:
 
 Current visible-copy readiness:
 
-- Hausa routes scanned: `105`.
+- Hausa routes scanned: `106`.
 - Clean routes: `49`.
 - Routes with blockers: `0`.
 - `BLOCKER_VISIBLE_ENGLISH` findings: `0`.
-- `POSSIBLE_FALSE_POSITIVE` findings: `149`.
-- `ACCEPTED_TECH_TERM` findings: `596`.
+- `POSSIBLE_FALSE_POSITIVE` findings: `151`.
+- `ACCEPTED_TECH_TERM` findings: `600`.
 - Hausa registry rows: `87`.
 - Missing Hausa registry targets: `0`.
 - `lang: 'ha'` rows pointing outside `/ha/`: `0`.
 
-The current route graph contains `22` native routes, `58` localized shells,
+The current route graph contains `23` native routes, `58` localized shells,
 and `25` explicit English fallbacks. English fallbacks are `noindex`, excluded
 from Hausa sitemaps, and carry no Hausa hreflang claim. Hausa still has `87`
 published registry rows; bridge routes are product navigation, not tools.
@@ -60,7 +60,8 @@ fallback messaging.
 
 ## Route Inventory Summary
 
-Current public Hausa route count: `105` HTML routes under `/ha/`.
+Current public Hausa route count: `106` HTML routes under `/ha/`, including the
+native, indexable election edition at `/ha/zabe/`.
 
 Core and category hubs:
 

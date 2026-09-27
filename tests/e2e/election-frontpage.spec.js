@@ -1,11 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
 const news = require('../../data/government/election-news.json');
+const tracker = require('../../data/government/africa-election-tracker.json');
 const lead = news.articles[0];
 const headline = lead.localizations.en.headline;
 const articleRoute = '/tools/africa-election-tracker/news/' + lead.slug + '/';
 
-for (const width of [1280, 390]) {
+for (const width of [1280, 390, 320]) {
   test(`election desk leads with a reviewed story at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 850 });
     const response = await page.goto('/tools/africa-election-tracker/');
@@ -38,7 +39,9 @@ test('reviewed headline and dated source remain readable without JavaScript', as
   expect(response.status()).toBe(200);
   await expect(page.getByRole('heading', { level: 2, name: headline })).toBeVisible();
   await expect(page.locator('.et-story-source')).toContainText('Published 22 September 2026; checked 27 September 2026');
-  await expect(page.locator('.et-calendar-rail')).toContainText('26 September 2026');
+  const ledgerDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+    .format(new Date(tracker.generatedAt + 'T00:00:00Z'));
+  await expect(page.locator('.et-calendar-rail')).toContainText(ledgerDate);
   await expect(page.locator('#searchInput')).toBeDisabled();
   await context.close();
 });
