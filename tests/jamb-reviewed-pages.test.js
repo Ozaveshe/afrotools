@@ -14,6 +14,7 @@ test('unreviewed question text and answer schemas never enter a review page', ()
   assert.equal(page.html.includes('acceptedAnswer'), false);
   assert.ok(page.html.includes('content="noindex, follow"'));
   assert.ok(page.html.includes('This paper is under review'));
+  assert.equal(page.html.includes('Timed CBT practice'), false);
   assert.doesNotThrow(() => validatePage(page.html, [], page.canonical));
 });
 
@@ -57,6 +58,8 @@ test('publisher-labelled collection years do not present themselves as confirmed
   assert.ok(page.html.includes('JAMB Use of English 2023 practice collection'));
   assert.ok(page.html.includes('publisher-labelled 2023'));
   assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
+  assert.ok(page.html.includes('href="/jamb/cbt/?subject=english&amp;year=2023"'));
+  assert.ok(page.html.includes('up to 40 reviewed Use of English questions'));
 });
 
 test('only the reviewed content version appears in both cards and answer schemas', () => {
@@ -72,6 +75,7 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.throws(() => validatePage(page.html.replace(/<p class="qcard-text">[\s\S]*?<\/p>/, ''), page.approvedIds, page.canonical), /Missing question text/);
   assert.throws(() => validatePage(page.html.replace(/<details\b[\s\S]*?<\/details>/, ''), page.approvedIds, page.canonical), /Missing answer explanation/);
   assert.ok(page.html.includes('5 &lt; 6'));
+  assert.ok(page.html.includes('href="/jamb/cbt/?subject=mathematics&amp;year=1987"'));
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
   const schemas = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));

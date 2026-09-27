@@ -32,6 +32,7 @@
         sessionId: t.sessionId,
         poolRevision: t.poolRevision,
         mode: t.mode,
+        year: t.year,
         subjects: t.subjects,
         subjectIndex: t.subjectIndex,
         questionIds: t.questions.map(function(e) {
@@ -126,6 +127,7 @@
         sessionId: s(),
         poolRevision: e.poolRevision || null,
         mode: e.mode || "cbt-full",
+        year: Number.isInteger(e.year) ? e.year : null,
         subjects: n,
         subjectIndex: c(n, f),
         questions: f,
@@ -243,7 +245,9 @@
         }).length
       }, a();
       try {
-        fetch("/.netlify/functions/jamb-attempt", {
+        // A publisher-labelled year collection is not a confirmed UTME sitting.
+        // Keep its raw practice result local instead of writing a /400 mock attempt.
+        if (t.year === null) fetch("/.netlify/functions/jamb-attempt", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -306,6 +310,13 @@
         t = null, a();
         throw new Error("CBT.restore: question reviews changed; start a new practice session");
       }
+      var savedYear = Number.isInteger(n.year) ? n.year : null;
+      if ((Number.isInteger(e.year) && e.year !== savedYear) ||
+          (savedYear !== null && u.some(function(question) { return question.year !== savedYear; })) ||
+          (Number.isInteger(e.year) && u.some(function(question) { return question.year !== e.year; }))) {
+        t = null, a();
+        throw new Error("CBT.restore: saved collection changed; start a new practice session");
+      }
       var o = Array.isArray(n.subjects) && n.subjects.length ? n.subjects.slice() : u.reduce(function(e, n) {
         return -1 === e.indexOf(n.subject) && e.push(n.subject), e;
       }, []);
@@ -313,6 +324,7 @@
         sessionId: n.sessionId || s(),
         poolRevision: e.poolRevision || null,
         mode: n.mode || e.mode || "cbt-full",
+        year: savedYear,
         subjects: o,
         subjectIndex: c(o, u),
         questions: u,
