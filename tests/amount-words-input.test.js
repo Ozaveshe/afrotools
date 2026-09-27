@@ -40,3 +40,24 @@ for (const slug of ['amount-words-gh', 'naira-to-words']) {
     assert.doesNotMatch(wording(max + '.99'), /undefined|NaN/);
   });
 }
+
+test('naira-to-words uses singular GHS units and preserves NGN wording', () => {
+  const html = fs.readFileSync('tools/naira-to-words/index.html', 'utf8');
+  const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('function amountToWords('));
+  const sandbox = { window: { AfroTools: { engines: { amountWordsInput: engine } } } };
+  vm.runInNewContext(inline, sandbox);
+  const option = code => {
+    const tag = html.match(new RegExp(`<option value="${code}"[^>]*>`))?.[0];
+    assert.ok(tag, `${code} option is present`);
+    const dataset = {};
+    for (const [, name, value] of tag.matchAll(/data-([a-z-]+)="([^"]*)"/g)) {
+      dataset[name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+    }
+    return { dataset };
+  };
+  const wording = (raw, code) => sandbox.amountToWords(engine.parse(raw, maximum), option(code));
+  assert.equal(wording('1.01', 'GHS'), 'One Cedi and One Pesewa Only');
+  assert.equal(wording('2.02', 'GHS'), 'Two Cedis and Two Pesewas Only');
+  assert.equal(wording('1.01', 'NGN'), 'One Naira and One Kobo Only');
+  assert.equal(wording('2.02', 'NGN'), 'Two Naira and Two Kobo Only');
+});
