@@ -1329,6 +1329,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   setupFilter('asViewToggle', function(v) { currentView = v; });
 
   var subnavScroller = document.querySelector('.as-subnav-links');
+  requestAnimationFrame(function() {
+    var currentLink = subnavScroller.querySelector('a[data-as-nav="calendar"]');
+    if (currentLink && subnavScroller.scrollWidth > subnavScroller.clientWidth) {
+      var link = currentLink.getBoundingClientRect();
+      var viewport = subnavScroller.getBoundingClientRect();
+      subnavScroller.scrollLeft += (link.left + link.right - viewport.left - viewport.right) / 2;
+    }
+  });
   subnavScroller.addEventListener('focusin', function(e) {
     if (!e.target.matches('a')) return;
     requestAnimationFrame(function() {
