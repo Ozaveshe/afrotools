@@ -254,6 +254,22 @@ test('24- and 40-item original sessions resume in the 64-item bank only when sel
     assert.deepEqual(persisted.questionReviewHashes,
       saved.questionIds.map(id => loaded.questions.find(q => q.id === id).review.content_sha256));
   }
+  const currentSaved = cbt.tryRestore('original-practice');
+  assert.ok(compat.migrate(currentSaved, loaded), 'current snapshots receive full validation');
+  const idOnly = structuredClone(currentSaved);
+  delete idOnly.originalReviewSchema; delete idOnly.questionReviewHashes;
+  assert.ok(compat.migrate(idOnly, loaded), 'valid current ID-only snapshots remain compatible');
+  for (const patch of [
+    saved => { delete saved.questionIds; },
+    saved => { saved.questionIds = []; },
+    saved => { saved.questionIds[0] = 'ato-math-v1-09'; },
+    saved => { saved.answers[0] = 'Z'; },
+    saved => { saved.durationMs = 3600000; },
+    saved => { saved.year = 2025; }
+  ]) {
+    const malformed = structuredClone(currentSaved); patch(malformed);
+    assert.equal(compat.migrate(malformed, loaded), null);
+  }
   const old40 = makeSnapshot(revisions[1][0], 'english', 9);
   const reject = patch => { const copy = structuredClone(old40); patch(copy); assert.equal(compat.migrate(copy, loaded), null); };
   reject(saved => { saved.questionIds[0] = 'ato-english-v1-21'; });
@@ -273,4 +289,19 @@ test('24- and 40-item original sessions resume in the 64-item bank only when sel
   assert.equal(storage.get('afrojamb-original-history-v1'), '[{"subject":"mathematics","correct":8,"total":12}]');
   assert.equal(storage.get('afrojamb-cbt-state'), '{"mode":"cbt-full"}');
   assert.deepEqual(posts, []);
+});
+
+
+test('explicit original cleanup cannot remove a full-CBT snapshot before restoration', () => {
+  const storage = new Map([['afrojamb-cbt-state', 'keep-full-cbt'],
+    ['afrojamb-original-cbt-state-v1', 'damaged-original'], ['afrojamb-original-history-v1', 'keep-history']]);
+  const context = { localStorage: { getItem: key => storage.get(key),
+    setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) },
+    clearInterval: () => {} };
+  context.window = context;
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'engines/src/jamb-cbt-engine.js'), 'utf8'), context);
+  context.AfroJAMB.CBT.clearSession('original-practice');
+  assert.equal(storage.has('afrojamb-original-cbt-state-v1'), false);
+  assert.equal(storage.get('afrojamb-cbt-state'), 'keep-full-cbt');
+  assert.equal(storage.get('afrojamb-original-history-v1'), 'keep-history');
 });

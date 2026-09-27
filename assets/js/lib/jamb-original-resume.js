@@ -68,7 +68,6 @@
         !pool || pool.kind !== 'original-practice' ||
         pool.collection_id !== 'afrotools-original-jamb-practice-v1' ||
         !HEX.test(pool.review_revision || '') || !HEX.test(saved.poolRevision || '') ||
-        pool.review_revision === saved.poolRevision ||
         !Array.isArray(pool.questions) || !Array.isArray(saved.questionIds) ||
         saved.questionIds.length !== 12 || new Set(saved.questionIds).size !== 12 ||
         !Array.isArray(saved.subjects) || saved.subjects.length !== 1 ||
@@ -87,10 +86,11 @@
       if (!trust || !trust.assertEligible(pool.questions, pool.review_revision)) return null;
     } catch (error) { return null; }
 
+    var sameRevision = pool.review_revision === saved.poolRevision;
     var max = LEGACY_MAX[saved.poolRevision];
     var savedHashes = saved.originalReviewSchema === 2 && Array.isArray(saved.questionReviewHashes) &&
       saved.questionReviewHashes.length === 12 ? saved.questionReviewHashes : null;
-    if (!max && !savedHashes) return null;
+    if (!sameRevision && !max && !savedHashes) return null;
     var currentById = new Map(pool.questions.map(function (question) { return [question.id, question]; }));
     var selected = [];
     for (var i = 0; i < saved.questionIds.length; i++) {
@@ -98,8 +98,9 @@
       var match = typeof id === 'string' && new RegExp('^ato-' + prefix + '-v1-([0-9]{2})$').exec(id);
       if (!match) return null;
       var ordinal = Number(match[1]);
-      var expected = max ? ordinal >= 1 && ordinal <= max && LEGACY_HASHES[subject][ordinal - 1] : savedHashes[i];
       var question = currentById.get(id);
+      var expected = sameRevision ? question && question.review && question.review.content_sha256 :
+        max ? ordinal >= 1 && ordinal <= max && LEGACY_HASHES[subject][ordinal - 1] : savedHashes[i];
       if (!HEX.test(expected || '') || !question || question.subject !== subject ||
           question.year !== null || question.num !== null || question.format !== 4 ||
           question.review?.status !== 'reviewed' || question.review.content_sha256 !== expected) return null;

@@ -113,3 +113,25 @@ test('discarding a saved original practice leaves completed history and mock sto
   expect(posts).toHaveLength(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
+
+
+for (const questionIds of [null, []]) {
+  test('damaged current saved practice is not offered for resume and preserves full CBT: ' + JSON.stringify(questionIds), async ({ page }) => {
+    await serveReviewedOriginal(page);
+    const pool = publications(source).outputs['data/jamb/pools/original-practice.json'];
+    await page.addInitScript(({ revision, ids }) => {
+      const saved = { mode: 'original-practice', poolRevision: revision, subjects: ['mathematics'] };
+      if (ids !== null) saved.questionIds = ids;
+      localStorage.setItem('afrojamb-original-cbt-state-v1', JSON.stringify(saved));
+      localStorage.setItem('afrojamb-cbt-state', 'keep-full-cbt');
+      localStorage.setItem('afrojamb-original-history-v1', '[]');
+    }, { revision: pool.review_revision, ids: questionIds });
+    await page.goto('/jamb/original-practice/');
+    await expect(page.locator('#start-btn')).toBeEnabled();
+    await expect(page.locator('#resume-btn')).toBeHidden();
+    await expect(page.locator('#discard-btn')).toBeVisible();
+    expect(await page.evaluate(() => localStorage.getItem('afrojamb-cbt-state'))).toBe('keep-full-cbt');
+    expect(await page.evaluate(() => localStorage.getItem('afrojamb-original-history-v1'))).toBe('[]');
+    expect(await page.evaluate(() => localStorage.getItem('afrojamb-original-cbt-state-v1'))).toBeTruthy();
+  });
+}

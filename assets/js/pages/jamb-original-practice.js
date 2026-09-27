@@ -271,7 +271,6 @@
   }
   function resumable(saved) {
     if (!saved || saved.mode !== 'original-practice' || !pool) return null;
-    if (saved.poolRevision === pool.review_revision) return saved;
     return resumeCompat && resumeCompat.migrate(saved, pool);
   }
   function resume() {
@@ -287,7 +286,7 @@
       track('education_jamb_original_resume', compatible.subjects[0], 12);
       show('quiz'); renderQuestion(true);
     } catch (error) {
-      cbt.clearSession();
+      cbt.clearSession('original-practice');
       $('resume-btn').hidden = true;
       $('discard-btn').hidden = !hasSavedPractice();
       $('setup-status').textContent = 'The saved session is out of date. Start a new practice session.';

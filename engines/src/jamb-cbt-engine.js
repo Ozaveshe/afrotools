@@ -363,8 +363,11 @@
         score: null
       }, b(), i(), d(e.onTick, e.onTimeout), l(), t;
     },
-    clearSession: function() {
-      t = null, a();
+    clearSession: function(mode) {
+      if (mode) setStorageKey(mode);
+      if (r) clearInterval(r);
+      if (u) clearInterval(u);
+      r = null; u = null; t = null; a();
     },
     getState: function() {
       return t;
