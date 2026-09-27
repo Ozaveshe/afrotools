@@ -902,17 +902,20 @@ function renderModelPage(page) {
   const route = `fr/cars/${country.frSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   const enRoute = `cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   const observation = observationFor(country.code, ctx.vehicle);
+  const importIneligible = ctx.eligibilityStatus === "ineligible";
   const indexable = freshObservation(observation);
   rememberReciprocal(enRoute, route, indexable);
   const place = countryPlace(country);
   const vehicleName = `${ctx.vehicle.year} ${ctx.vehicle.make} ${ctx.vehicle.model}`;
   const title = `Prix ${vehicleName} — ${country.frName} | AfroTools`;
   const description = observation
-    ? `Prix demandés observés pour ${vehicleName} ${place}: médiane, quartiles, date, échantillon et source. Le coût d'import reste illustratif.`
+    ? importIneligible
+      ? `Prix demandés observés pour ${vehicleName} ${place}: médiane, quartiles, date et source. Ce modèle déclenche une alerte d'admissibilité à l'import.`
+      : `Prix demandés observés pour ${vehicleName} ${place}: médiane, quartiles, date, échantillon et source. Le coût d'import reste illustratif.`
     : `Budget source et coût d'import illustratifs pour ${vehicleName} ${place}. Aucun relevé de prix local daté n'est disponible.`;
   const priceRows = [
     ["Budget source illustratif", money(ctx.sourcePrice.median * ctx.usdToLocal, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
-    ["Coût rendu illustratif", money(ctx.landed.normal * ctx.usdToLocal, ctx.localCurrency), money(ctx.landed.normal, "USD"), country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
+    ["Coût rendu illustratif", importIneligible ? "Non applicable" : money(ctx.landed.normal * ctx.usdToLocal, ctx.localCurrency), importIneligible ? "—" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
     ["Prix demandé local observé", observation ? money(observation.median, observation.currency) : "Aucun relevé local daté", "—", observation ? `${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>` : "Un budget import ne prouve pas le prix d'un véhicule local."]
   ].map(([label, local, usd, note]) => `<tr><td data-label="Couche de prix">${label}</td><td data-label="Devise locale">${local}</td><td data-label="Référence USD">${usd}</td><td data-label="Note">${note}</td></tr>`).join("\n");
 
@@ -952,7 +955,7 @@ function renderModelPage(page) {
       </div>
     </section>
     <section class="fr-cars-shell fr-cars-band">
-      <p class="fr-cars-note">${observation ? `Relevé : ${escapeHtml(observation.market)}, ${escapeHtml(observation.condition)}, ${observation.sampleSize} annonces. Prix demandés, non ventes conclues. Les annonces peuvent varier selon la version, le kilométrage et l'état du véhicule. La méthode détaillée et les exclusions figurent sur la fiche anglaise.` : "Sans relevé local, aucune recommandation d'achat local ou d'import ne peut être déduite de ce budget."} ${country.code === "NG" ? "Les taux d'import du Nigeria sont sous revue pour 2026." : "Confirmez les règles d'import avant paiement."}</p>
+      <p class="fr-cars-note">${observation ? `Relevé : ${escapeHtml(observation.market)}, ${escapeHtml(observation.condition)}, ${observation.sampleSize} annonces. Prix demandés, non ventes conclues. Les annonces peuvent varier selon la version, le kilométrage et l'état du véhicule. La méthode détaillée et les exclusions figurent sur la fiche anglaise.` : "Sans relevé local, aucune recommandation d'achat local ou d'import ne peut être déduite de ce budget."} ${importIneligible && country.code === "NG" ? "Le portail commercial du Nigeria indique que les véhicules importés doivent avoir moins de 15 ans depuis leur année de fabrication. Ce modèle dépasse la limite indiquée ; confirmez la règle actuelle auprès des douanes." : country.code === "NG" ? "Les taux d'import du Nigeria sont sous revue pour 2026." : "Confirmez les règles d'import avant paiement."}</p>
       <div class="fr-cars-table-wrap"><table class="fr-cars-table">
         <thead><tr><th>Couche de prix</th><th>Devise locale</th><th>Référence USD</th><th>Note</th></tr></thead>
         <tbody>${priceRows}</tbody>

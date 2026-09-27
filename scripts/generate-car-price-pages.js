@@ -13,6 +13,7 @@ const coreScriptTag = bundleManifest.core?.path
   : '<script src="/assets/js/lib/analytics.js" defer></script>';
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelligence.json"), "utf8"));
 const marketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/market-observations.json"), "utf8")).observations;
+const nigeriaAgeRules = JSON.parse(fs.readFileSync(path.join(root, "data/trade/car-import-cost-ng.json"), "utf8")).ageRules;
 const contentRevisionDate = "2026-09-27";
 function parseCsvRows(text) {
   const rows = [];
@@ -96,6 +97,13 @@ function marketObservation(country, vehicle) {
   return marketObservations.find((entry) => entry.countryCode === country.code && entry.vehicleId === vehicle.id) || null;
 }
 
+function nigeriaImportAgeRestricted(country, vehicle) {
+  return country.code === "NG"
+    && nigeriaAgeRules.basis === "manufactureYear"
+    && Number.isFinite(nigeriaAgeRules.maxYearsExclusive)
+    && new Date().getUTCFullYear() - vehicle.year >= nigeriaAgeRules.maxYearsExclusive;
+}
+
 function countryMarketHTML(country) {
   const observations = data.vehicles
     .map((vehicle) => ({ vehicle, observation: marketObservation(country, vehicle) }))
@@ -111,9 +119,13 @@ function marketEvidenceHTML(country, vehicle) {
   const observation = marketObservation(country, vehicle);
   if (!observation) return "";
   const name = observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
-  const calculatorUrl = country.import_enabled
+  const importAgeRestricted = nigeriaImportAgeRestricted(country, vehicle);
+  const calculatorUrl = country.import_enabled && !importAgeRestricted
     ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}`
     : "";
+  const comparisonCopy = importAgeRestricted
+    ? "This is a local purchase snapshot. The Nigeria Trade Information Portal states that imported vehicles must be less than 15 years from their year of manufacture; this model year is outside that stated limit. Confirm the current rule with Customs before paying."
+    : "Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding.";
   const corroboration = (observation.corroboratingSources || []).map((source) => `<li><a href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.sourceName)}</a>: ${escapeHtml(formatMoney(source.median, source.currency))} median asking price across ${source.sampleSize} comparable listings (reviewed ${escapeHtml(source.reviewedAt)}). ${escapeHtml(source.method)}</li>`).join("\n");
   return `<section class="cars-panel cars-static-summary cars-market-evidence">
 <h2>${escapeHtml(name)} asking prices in ${escapeHtml(observation.market)}</h2>
@@ -121,7 +133,7 @@ function marketEvidenceHTML(country, vehicle) {
 <p><strong>Method:</strong> ${escapeHtml(observation.method)}</p>
 <p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
 ${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
-<p>Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding.</p>
+<p>${comparisonCopy}</p>
 <div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a>${calculatorUrl ? `<a href="${escapeHtml(calculatorUrl)}">Estimate import cost for this car</a>` : ""}</div>
 </section>`;
 }
@@ -448,18 +460,21 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
   });
 
   data.vehicles.forEach((vehicle) => {
+    const observation = marketObservation(country, vehicle);
     writePage(`cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model} Price — ${country.name} | AfroTools`,
-      description: marketObservation(country, vehicle)
-        ? `Compare a dated local asking-price sample with an editable import-cost estimate for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`
+      description: observation
+        ? nigeriaImportAgeRestricted(country, vehicle)
+          ? `See a dated local asking-price sample for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name} and the current import age warning.`
+          : `Compare a dated local asking-price sample with an editable import-cost estimate for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`
         : `Explore illustrative source-price and import-cost assumptions for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`,
       country: country.name,
       countryObj: country,
       make: vehicle.make,
       pageType: "vehicle",
       vehicleObj: vehicle,
-      noindex: !marketObservation(country, vehicle),
-      lastmod: marketObservation(country, vehicle)?.reviewedAt || contentRevisionDate
+      noindex: !observation,
+      lastmod: observation?.reviewedAt || contentRevisionDate
     });
     // Same vehicle data with different framing — keep for users/app deep links,
     // but canonicalize to the vehicle page and keep out of sitemaps/index.

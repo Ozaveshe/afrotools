@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11576 |
-| Indexable pages | 7856 |
+| Indexable pages | 7858 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4233 |
+| Genuine equivalence groups | 4234 |
 | Documented fallbacks | 14845 |
-| Routes eligible for primary sitemaps | 7856 |
+| Routes eligible for primary sitemaps | 7858 |
 
 ## Locale Coverage
 
@@ -6930,6 +6930,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:eb70be79c149: en=`/jamb/government/1984/`; x-default=`/jamb/government/1984/`
 - equivalence:eb842edbfb49: en=`/tools/water-bill/nigeria/`; x-default=`/tools/water-bill/nigeria/`
 - equivalence:eb8b70b4a207: en=`/agriculture/fertilizer/eritrea`, fr=`/fr/agriculture/fertilizer/eritrea`, sw=`/sw/kilimo/mbolea/eritrea/`; x-default=`/agriculture/fertilizer/eritrea`
+- equivalence:eba90fdfc703: en=`/cars/nigeria/toyota/camry/2005/`, fr=`/fr/cars/nigeria/toyota/camry/2005/`; x-default=`/cars/nigeria/toyota/camry/2005/`
 - equivalence:eba9fafb3e82: en=`/tools/employment-contract/lesotho`, fr=`/fr/tools/contrat-travail/lesotho`; x-default=`/tools/employment-contract/lesotho`
 - equivalence:ebe735895b57: en=`/tools/afrokitchen/recipes/sardine-kefta-tagine-ma/`; x-default=`/tools/afrokitchen/recipes/sardine-kefta-tagine-ma/`
 - equivalence:ebfef3b16fcb: en=`/tools/fuel-tracker/mali/`, fr=`/fr/tools/suivi-carburant/mali/`; x-default=`/tools/fuel-tracker/mali/`
