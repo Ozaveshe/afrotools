@@ -210,10 +210,23 @@ ${rows}
 </section>`;
 }
 
+function rootObservationLinksHTML() {
+  return marketObservations
+    .filter((entry) => entry.countryCode === "NG")
+    .map((entry) => {
+      const vehicle = data.vehicles.find((item) => item.id === entry.vehicleId);
+      if (!vehicle) return "";
+      const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+      return `<li><a href="${route}">${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence</a></li>`;
+    })
+    .join("");
+}
+
 function staticContentHTML(meta) {
   if (meta.pageType === "root") {
     const options = catalogOptionsHTML();
-    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} vehicles with older source-market planning budgets. Dated local asking-price snapshots are available for selected cars; the remaining local market prices still need research. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul><li><a href="/cars/nigeria/">Browse Nigeria car prices and market snapshots</a></li><li><a href="/cars/nigeria/toyota/corolla/2018/">2018 Toyota Corolla asking-price evidence</a></li><li><a href="/cars/nigeria/toyota/camry/2012/">2012 Toyota Camry asking-price evidence</a></li><li><a href="/cars/nigeria/toyota/hilux/2020/">2020 Toyota Hilux asking-price evidence</a></li></ul></section>
+    const observationLinks = rootObservationLinksHTML();
+    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} vehicles with older source-market planning budgets. Dated local asking-price snapshots are available for selected cars; the remaining local market prices still need research. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul><li><a href="/cars/nigeria/">Browse Nigeria car prices and market snapshots</a></li>${observationLinks}</ul></section>
 <section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Most do not have a current local asking-price sample. The calculator will ask for your actual seller price and show country-specific costs for six supported destinations.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
   }
   if (!meta.pageType) return "";

@@ -51,6 +51,13 @@ assert.ok(transport.includes("/cars/"), "transport hub links car directory"), as
 const sitemap = read("sitemap-cars.xml");
 
 const observations = JSON.parse(read("data/cars/market-observations.json")).observations;
+const vehicleCatalog = JSON.parse(read("data/cars/price-intelligence.json")).vehicles;
+for (const observation of observations) {
+  const vehicle = vehicleCatalog.find((item) => item.id === observation.vehicleId);
+  const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+  assert.ok(main.includes(`href="${route}"`), `directory links observed ${observation.vehicleId}`);
+  assert.ok(sitemap.includes(`https://afrotools.com${route}`), `sitemap includes observed ${observation.vehicleId}`);
+}
 const corolla = read("cars/nigeria/toyota/corolla/2018/index.html");
 assert.ok(corolla.includes("asking prices in Lagos State"), "observed page explains the dated local sample");
 assert.ok(corolla.includes("Estimate import cost for this car"), "observed page links to the supported calculator");

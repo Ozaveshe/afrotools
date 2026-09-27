@@ -20,7 +20,7 @@ const importData = ImportEngine.mergeData(
 assert.ok(vehicle, "market observation matches a catalog vehicle");
 assert.ok(observation.lowerQuartile < observation.median && observation.median < observation.upperQuartile);
 assert.match(observation.sourceUrl, /^https:\/\/jiji\.ng\/lagos\/cars\//);
-assert.equal(observations.length, 3, "three dated Nigeria marketplace samples are available");
+assert.equal(observations.length, 6, "six dated Nigeria marketplace samples are available");
 assert.ok(observations.every((item) => item.sampleSize >= 9 && item.sourceUrl && item.reviewedAt));
 assert.equal(observation.corroboratingSources[0].sampleSize, 9, "Autochek year-filtered check is recorded separately");
 
