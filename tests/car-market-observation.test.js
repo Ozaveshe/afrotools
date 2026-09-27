@@ -20,9 +20,13 @@ const importData = ImportEngine.mergeData(
 assert.ok(vehicle, "market observation matches a catalog vehicle");
 assert.ok(observation.lowerQuartile < observation.median && observation.median < observation.upperQuartile);
 assert.match(observation.sourceUrl, /^https:\/\/jiji\.ng\/lagos\/cars\//);
-assert.equal(observations.length, 6, "six dated Nigeria marketplace samples are available");
-assert.ok(observations.every((item) => item.sampleSize >= 9 && item.sourceUrl && item.reviewedAt));
+assert.ok(observations.length >= 9, "the dated Nigeria marketplace sample set has expanded");
+assert.ok(observations.every((item) => item.sampleSize >= 3 && item.sourceUrl && item.reviewedAt && item.method && item.limitations));
+for (const vehicleId of ["mercedes-e-class-2017", "lexus-rx-2017", "lexus-es-2016"]) {
+  assert.ok(observations.some((item) => item.vehicleId === vehicleId && item.countryCode === "NG" && item.sampleVariant), `${vehicleId} identifies the sampled trim`);
+}
 assert.equal(observation.corroboratingSources[0].sampleSize, 9, "Autochek year-filtered check is recorded separately");
+assert.equal(observations.find((item) => item.vehicleId === "lexus-es-2016").corroboratingSources[0].sampleSize, 5, "the Lagos Autochek ES check stays separate from the Jiji sample");
 
 const withObservation = structuredClone(data);
 withObservation.localMarketPrices.push({

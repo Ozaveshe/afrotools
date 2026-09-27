@@ -635,7 +635,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
 | /cars/ | product-entry | fr | /fr/cars/ | under-standard | form controls 1/2 |
-| /cars/ | product-entry | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 40% of English |
+| /cars/ | product-entry | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 33% of English |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |

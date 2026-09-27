@@ -3,6 +3,14 @@ const path = require("path");
 const { addHelperScript, addSourceHook } = require("./apply-source-confidence-hooks");
 
 const root = path.join(__dirname, "..");
+const bundleManifestPath = path.join(root, "assets/js/bundles/manifest.json");
+const bundleManifest = fs.existsSync(bundleManifestPath)
+  ? JSON.parse(fs.readFileSync(bundleManifestPath, "utf8"))
+  : {};
+const chatBundlePath = bundleManifest.chat?.path || "/assets/js/components/chat-panel.min.js";
+const coreScriptTag = bundleManifest.core?.path
+  ? `<script src="${bundleManifest.core.path}" defer></script>`
+  : '<script src="/assets/js/lib/analytics.js" defer></script>';
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelligence.json"), "utf8"));
 const marketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/market-observations.json"), "utf8")).observations;
 const contentRevisionDate = "2026-09-27";
@@ -94,7 +102,7 @@ function countryMarketHTML(country) {
     .filter((entry) => entry.observation);
   if (!observations.length) return "";
   const rows = observations.map(({ vehicle, observation }) =>
-    `<li><a href="/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/">${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a> — ${escapeHtml(formatMoney(observation.median, observation.currency))} median asking price from ${observation.sampleSize} ${escapeHtml(observation.condition)} listings in ${escapeHtml(observation.market)} (reviewed ${escapeHtml(observation.reviewedAt)}).</li>`
+    `<li><a href="/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/">${escapeHtml(observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a> — ${escapeHtml(formatMoney(observation.median, observation.currency))} median asking price from ${observation.sampleSize} ${escapeHtml(observation.condition)} listings in ${escapeHtml(observation.market)} (reviewed ${escapeHtml(observation.reviewedAt)}).</li>`
   ).join("\n");
   return `<section class="cars-panel cars-static-summary"><h2>Dated local asking-price snapshots</h2><ul>${rows}</ul><p class="cars-static-note">These are small asking-price samples, not completed sale prices or live dealer quotes. Open a vehicle for the source, method, and import-cost comparison.</p></section>`;
 }
@@ -102,7 +110,7 @@ function countryMarketHTML(country) {
 function marketEvidenceHTML(country, vehicle) {
   const observation = marketObservation(country, vehicle);
   if (!observation) return "";
-  const name = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
+  const name = observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
   const calculatorUrl = country.import_enabled
     ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}`
     : "";
@@ -217,7 +225,7 @@ function rootObservationLinksHTML() {
       const vehicle = data.vehicles.find((item) => item.id === entry.vehicleId);
       if (!vehicle) return "";
       const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
-      return `<li><a href="${route}">${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence</a></li>`;
+      return `<li><a href="${route}">${escapeHtml(entry.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence</a></li>`;
     })
     .join("");
 }
@@ -299,7 +307,7 @@ function schema(meta, routePath) {
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
   return `<!DOCTYPE html>
-<html lang="en" data-chat-bundle="/assets/js/components/chat-panel.min.js">
+<html lang="en" data-chat-bundle="${chatBundlePath}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -321,7 +329,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="sw" href="https://afro
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/cars-directory.css">
@@ -333,8 +341,7 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="sw" href="https://afro
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
-  <script src="/assets/js/lib/analytics.js" defer></script>
-  <script src="/assets/js/afro-history.js" defer></script>
+  ${coreScriptTag}<script src="/assets/js/afro-history.js" defer></script>
   <script src="/assets/js/components/save-result-button.js" defer></script>
   <script src="/assets/js/lib/export-tools.js" defer></script>
   <script src="/assets/js/lib/share-state.js" defer></script>

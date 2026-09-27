@@ -604,7 +604,7 @@ function renderHub() {
     if (!vehicle || !country) return null;
     return {
       route: `/fr/cars/${country.frSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`,
-      label: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+      label: row.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
       observation: row
     };
   }).filter(Boolean);
@@ -712,7 +712,7 @@ function renderCountryPage(country) {
   const rows = localObservations.map(({ observation, vehicle }) => {
     const modelRoute = `/fr/cars/${country.frSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
     return `<tr>
-      <td data-label="Voiture"><a href="${modelRoute}">${vehicle.year} ${escapeHtml(vehicle.make)} ${escapeHtml(vehicle.model)}</a></td>
+      <td data-label="Voiture"><a href="${modelRoute}">${escapeHtml(observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a></td>
       <td data-label="Médiane demandée">${money(observation.median, observation.currency)}</td>
       <td data-label="Quartiles observés">${money(observation.lowerQuartile, observation.currency)}–${money(observation.upperQuartile, observation.currency)}</td>
       <td data-label="Relevé">${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Source</a></td>
@@ -944,7 +944,7 @@ function renderModelPage(page) {
       <div class="fr-cars-shell">
         <span class="fr-kicker">Fiche voiture</span>
         <h1>${escapeHtml(vehicleName)} ${escapeHtml(place)}</h1>
-        <p>${observation ? `Au ${escapeHtml(observation.reviewedAt)}, un petit relevé de ${observation.sampleSize} annonces donnait un prix demandé médian de ${money(observation.median, observation.currency)}. Ce n'est pas un prix de vente conclu.` : "Aucun prix local observé et daté n'est disponible pour cette voiture. Demandez un devis vendeur avant de comparer."}</p>
+        <p>${observation ? `Au ${escapeHtml(observation.reviewedAt)}, un petit relevé de ${observation.sampleSize} annonces${observation.sampleVariant ? ` pour ${escapeHtml(observation.sampleVariant)}` : ""} donnait un prix demandé médian de ${money(observation.median, observation.currency)}. Ce n'est pas un prix de vente conclu.` : "Aucun prix local observé et daté n'est disponible pour cette voiture. Demandez un devis vendeur avant de comparer."}</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/">Voir ${escapeHtml(country.frName)}</a>
           <a class="fr-cars-button secondary" href="/cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}/">Voir la fiche complète en anglais</a>
@@ -952,7 +952,7 @@ function renderModelPage(page) {
       </div>
     </section>
     <section class="fr-cars-shell fr-cars-band">
-      <p class="fr-cars-note">${observation ? `Relevé : ${escapeHtml(observation.market)}, ${escapeHtml(observation.condition)}, ${observation.sampleSize} annonces. ${escapeHtml(observation.method)} ${escapeHtml(observation.limitations)}` : "Sans relevé local, aucune recommandation d'achat local ou d'import ne peut être déduite de ce budget."} ${country.code === "NG" ? "Les taux d'import du Nigeria sont sous revue pour 2026." : "Confirmez les règles d'import avant paiement."}</p>
+      <p class="fr-cars-note">${observation ? `Relevé : ${escapeHtml(observation.market)}, ${escapeHtml(observation.condition)}, ${observation.sampleSize} annonces. Prix demandés, non ventes conclues. Les annonces peuvent varier selon la version, le kilométrage et l'état du véhicule. La méthode détaillée et les exclusions figurent sur la fiche anglaise.` : "Sans relevé local, aucune recommandation d'achat local ou d'import ne peut être déduite de ce budget."} ${country.code === "NG" ? "Les taux d'import du Nigeria sont sous revue pour 2026." : "Confirmez les règles d'import avant paiement."}</p>
       <div class="fr-cars-table-wrap"><table class="fr-cars-table">
         <thead><tr><th>Couche de prix</th><th>Devise locale</th><th>Référence USD</th><th>Note</th></tr></thead>
         <tbody>${priceRows}</tbody>

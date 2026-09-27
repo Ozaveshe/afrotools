@@ -17,6 +17,12 @@ for (const item of marketData.observations || []) {
   if (!vehicles.has(item.vehicleId)) problems.push(`${key}: no matching priced vehicle`);
   if (!priceData.countries[item.countryCode]) problems.push(`${key}: unknown country`);
   if (!/^https:\/\//.test(item.sourceUrl || "")) problems.push(`${key}: missing source URL`);
+  if (![item.market, item.condition, item.currency, item.sourceName, item.method, item.limitations].every((value) => typeof value === "string" && value.trim())) {
+    problems.push(`${key}: market, condition, currency, source name, method, or limitations missing`);
+  }
+  if (item.sampleVariant !== undefined && (typeof item.sampleVariant !== "string" || !item.sampleVariant.trim())) {
+    problems.push(`${key}: invalid sampled variant`);
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(item.reviewedAt || "") || !Number.isFinite(Date.parse(item.reviewedAt))) problems.push(`${key}: invalid review date`);
   else if (new Date(item.reviewedAt) > now) problems.push(`${key}: review date is in the future`);
   if (!Number.isInteger(item.sampleSize) || item.sampleSize < 3) problems.push(`${key}: sample count too small or missing`);
