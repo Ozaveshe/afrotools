@@ -653,6 +653,15 @@ else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_
   document.addEventListener('DOMContentLoaded',function(){
     var host=document.querySelector('[data-docpdf-public-planner-only]');
     if(!host)return;
+    host.addEventListener('click',function(event){
+      var tab=event.target.closest('[data-docpdf-job]');
+      if(!tab)return;
+      var job=tab.getAttribute('data-docpdf-job');
+      requestAnimationFrame(function(){
+        var selected=host.querySelector('[data-docpdf-job="'+job+'"]');
+        if(selected&&document.activeElement!==selected)selected.focus({preventScroll:true});
+      });
+    },true);
     pruneDocPdfWorkspace();
     new MutationObserver(pruneDocPdfWorkspace).observe(document.body,{childList:true,subtree:true});
   });
