@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11576 |
-| Indexable pages | 8920 |
+| Indexable pages | 8923 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5303 |
+| Genuine equivalence groups | 5306 |
 | Documented fallbacks | 14845 |
-| Routes eligible for primary sitemaps | 8920 |
+| Routes eligible for primary sitemaps | 8923 |
 
 ## Locale Coverage
 
@@ -4394,6 +4394,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:41ef5c0656ff: en=`/tools/motor-third-party/egypt`; x-default=`/tools/motor-third-party/egypt`
 - equivalence:41ff50b2d5bd: en=`/tools/afrokitchen/recipes/taameya-eg/`; x-default=`/tools/afrokitchen/recipes/taameya-eg/`
 - equivalence:42091a9e7522: en=`/tools/student-budget/`, fr=`/fr/tools/budget-etudiant/`, ha=`/ha/kayan-aiki/kasafin-dalibi/`, sw=`/sw/zana/bajeti-ya-mwanafunzi/`; x-default=`/tools/student-budget/`
+- equivalence:42390977ee59: en=`/cars/nigeria/honda/cr-v/2016/`; x-default=`/cars/nigeria/honda/cr-v/2016/`
 - equivalence:424c74033ef2: en=`/ecommerce/`, fr=`/fr/ecommerce/`; x-default=`/ecommerce/`
 - equivalence:425963b2365b: en=`/agriculture/cassava-processing/cote-d-ivoire`, fr=`/fr/agriculture/cassava-processing/cote-d-ivoire`, sw=`/sw/kilimo/usindikaji-mihogo/cote-divoire/`; x-default=`/agriculture/cassava-processing/cote-d-ivoire`
 - equivalence:427db8f94e38: fr=`/fr/cars/mozambique/kia/sportage/2017/`; x-default=`/fr/cars/mozambique/kia/sportage/2017/`
@@ -4537,6 +4538,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:482d3dd54acc: en=`/tools/domestic-worker/cameroon/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cameroun/`; x-default=`/tools/domestic-worker/cameroon/`
 - equivalence:483245eaca8a: en=`/jamb/government/2016/`; x-default=`/jamb/government/2016/`
 - equivalence:4838f46913f5: fr=`/fr/cars/namibie/hyundai/elantra/`; x-default=`/fr/cars/namibie/hyundai/elantra/`
+- equivalence:484607143671: en=`/cars/nigeria/hyundai/elantra/2018/`; x-default=`/cars/nigeria/hyundai/elantra/2018/`
 - equivalence:485a0161f342: en=`/jamb/biology/2013/`; x-default=`/jamb/biology/2013/`
 - equivalence:4864a84d2ce9: en=`/tools/sql-formatter/`, fr=`/fr/tools/formateur-sql/`, sw=`/sw/zana/kirekebisha-sql/`; x-default=`/tools/sql-formatter/`
 - equivalence:48699624907c: en=`/tools/afrostream/university/benchmark/`; x-default=`/tools/afrostream/university/benchmark/`
@@ -5256,6 +5258,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6a6af46e379e: fr=`/fr/cars/nigeria/nissan/x-trail/`; x-default=`/fr/cars/nigeria/nissan/x-trail/`
 - equivalence:6a7b05cbf506: en=`/jamb/physics/2004/`; x-default=`/jamb/physics/2004/`
 - equivalence:6a817645b932: en=`/tools/work-permit-cost/morocco/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-maroc/`, sw=`/sw/morocco/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/morocco/`
+- equivalence:6a83851710e0: en=`/cars/nigeria/honda/accord/2014/`; x-default=`/cars/nigeria/honda/accord/2014/`
 - equivalence:6a8e10e4e10b: en=`/tools/afrokitchen/collections/quick-and-easy/`; x-default=`/tools/afrokitchen/collections/quick-and-easy/`
 - equivalence:6a91110c03ef: en=`/tools/carbon-credit/`, fr=`/fr/tools/revenus-credits-carbone/`, sw=`/sw/zana/mapato-ya-carbon-credit/`; x-default=`/tools/carbon-credit/`
 - equivalence:6a93e129ed91: en=`/chad/td-paye`, fr=`/fr/tchad/calculateur-salaire-net/`, sw=`/sw/chad/kikokotoo-kodi-mshahara/`; x-default=`/chad/td-paye`

@@ -7,7 +7,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
 | fr | 160 | 1 | 298 |
-| sw | 137 | 1 | 321 |
+| sw | 136 | 2 | 321 |
 
 ## By surface class
 
@@ -20,7 +20,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 8 | 5 | 0 | 3 | 3 | 0 | 5 |
+| product-entry | 8 | 5 | 0 | 3 | 2 | 1 | 5 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
@@ -634,6 +634,7 @@ Indexable English top-level public routes plus English blog articles; app subrou
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
+| /cars/ | product-entry | sw | /sw/zana/bei-na-akili-ya-gari/ | under-standard | link/discovery depth 40% of English |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |
