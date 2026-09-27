@@ -32,3 +32,23 @@
 :root[data-theme="dark"] .market-days-page .calendar-day{color:var(--color-text)}
 :root[data-theme="dark"] .market-days-page .cycle-item-name{color:var(--color-text)}
 :root[data-theme="dark"] .market-days-page #selectedDayToken{color:var(--color-text)!important}
+
+/* Keep the month planner a calendar when the shared mobile grid rule collapses other grids. */
+@media (max-width: 960px) {
+  .market-days-page .calendar-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .market-days-page .calendar-grid { gap: 4px; }
+  .market-days-page .calendar-day { min-width: 0; padding: 6px 3px; }
+  .market-days-page .calendar-market {
+    min-width: 0;
+    width: 100%;
+    padding: 3px 1px;
+    font-size: 0.64rem;
+    letter-spacing: 0;
+  }
+  .market-days-page .calendar-nav { width: 44px; height: 44px; }
+}
