@@ -645,6 +645,9 @@ else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_
     setText(routeTitle,'Open next');
     host.querySelectorAll('.docpdf-flow-route-card a').forEach(function(link){
       setText(link,'Open');
+      var step=link.closest('.docpdf-flow-route-card');
+      var title=step&&step.querySelector('h4');
+      if(title)link.setAttribute('aria-label','Open '+title.textContent.trim());
     });
   }
   document.addEventListener('DOMContentLoaded',function(){
