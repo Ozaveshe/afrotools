@@ -330,7 +330,13 @@ function validateYorubaRouteManifest(routeManifest = loadYorubaRouteManifest()) 
     if (record.state === 'localized-shell' && !record.engineLocaleNeutral) {
       errors.push(issue('YORUBA_ROUTE_ENGINE_UNDECLARED', owner, 'engineLocaleNeutral', `${route} must declare a language-neutral engine.`, { route, locale: 'yo' }));
     }
-    if (['native', 'localized-shell'].includes(record.state) && !record.englishEquivalent) {
+    if (record.standaloneLocaleSection && record.state !== 'native') {
+      errors.push(issue('YORUBA_STANDALONE_STATE_INVALID', owner, 'standaloneLocaleSection', `${route} must be native to be a standalone locale section.`, { route, locale: 'yo' }));
+    }
+    if (record.standaloneLocaleSection && record.englishEquivalent) {
+      errors.push(issue('YORUBA_STANDALONE_EQUIVALENT_INVALID', owner, 'englishEquivalent', `${route} cannot declare an English equivalent when it is a standalone locale section.`, { route, locale: 'yo' }));
+    }
+    if (['native', 'localized-shell'].includes(record.state) && !record.englishEquivalent && !record.standaloneLocaleSection) {
       errors.push(issue('YORUBA_EQUIVALENT_MISSING', owner, 'englishEquivalent', `${route} requires an English equivalent for reciprocal hreflang.`, { route, locale: 'yo' }));
     }
     if (record.state === 'english-fallback' && !record.fallbackRoute) {
