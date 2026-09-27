@@ -9,6 +9,7 @@
   var CONSENT_KEY = 'afrotools_cookie_consent';
   var QUEUE_MAX_AGE_MS = 300000;
   var EDUCATION_COHORT_KEY = 'afrotools_education_practice_cohort_v1';
+  var EDUCATION_EXAMS = ['jamb', 'waec', 'neco', 'waec_neco'];
   var DAY_MS = 86400000;
   var queue = [];
   var flushing = false;
@@ -64,11 +65,11 @@
     return true;
   }
 
-  // A cohort begins at the first consented practice action on this browser.
-  // A return requires another practice action on UTC day 1–7 and is sent once.
+  // One consented practice cohort per browser per seven-day window. A later
+  // practice action on UTC days 1–7 sends one return event; day 8 starts anew.
   function trackEducationPractice(exam, subject, action) {
     if (!hasAnalyticsConsent()) return false;
-    if (!['jamb', 'waec_neco'].includes(exam) || !['start', 'resume', 'retry'].includes(action)) return false;
+    if (!EDUCATION_EXAMS.includes(exam) || !['start', 'resume', 'retry'].includes(action)) return false;
     var safeSubject = ['english', 'mathematics', 'physics', 'biology', 'chemistry', 'government', 'economics', 'literature', 'crk', 'commerce', 'accounts', 'mixed'].includes(subject) ? subject : 'other';
     var day = Math.floor(Date.now() / DAY_MS);
     var marker;
@@ -77,9 +78,10 @@
       marker = JSON.parse(window.localStorage.getItem(EDUCATION_COHORT_KEY) || 'null');
     } catch (_) { return false; }
     if (marker && (!Number.isInteger(marker.day) || marker.day < 0 || marker.day > day ||
-        !['jamb', 'waec_neco'].includes(marker.exam) ||
+        !EDUCATION_EXAMS.includes(marker.exam) ||
         !['english', 'mathematics', 'physics', 'biology', 'chemistry', 'government', 'economics', 'literature', 'crk', 'commerce', 'accounts', 'mixed', 'other'].includes(marker.subject) ||
         typeof marker.returned !== 'boolean')) return false;
+    if (marker && day - marker.day > 7) marker = null;
     if (!marker) {
       marker = { day: day, exam: exam, subject: safeSubject, returned: false };
       try { window.localStorage.setItem(EDUCATION_COHORT_KEY, JSON.stringify(marker)); }
@@ -92,7 +94,7 @@
       return started;
     }
     var elapsedDays = day - marker.day;
-    if (elapsedDays < 1 || elapsedDays > 7 || marker.returned) return false;
+    if (elapsedDays < 1 || marker.returned) return false;
     marker.returned = true;
     try { window.localStorage.setItem(EDUCATION_COHORT_KEY, JSON.stringify(marker)); }
     catch (_) { return false; }
@@ -107,6 +109,18 @@
     }
     return returned;
   }
+
+  function clearEducationCohort() {
+    try { if (window.localStorage) window.localStorage.removeItem(EDUCATION_COHORT_KEY); } catch (_) {}
+  }
+
+  if (!hasAnalyticsConsent()) clearEducationCohort();
+  window.addEventListener('afrotools:cookie-consent', function (event) {
+    if (!event || !event.detail || event.detail.status !== 'accepted') clearEducationCohort();
+  });
+  window.addEventListener('storage', function (event) {
+    if (event && event.key === CONSENT_KEY && event.newValue !== 'accepted') clearEducationCohort();
+  });
 
   function valueBucket(value, currency) {
     var amount = Number(value);

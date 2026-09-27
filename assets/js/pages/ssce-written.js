@@ -9,6 +9,15 @@
   function el(tag,text,cls){var node=document.createElement(tag);if(text!==undefined)node.textContent=t(text);if(cls)node.className=cls;return node;}
   function message(text){status.textContent=t(text);}
   function button(text,fn){var b=el('button',text,'btn btn-secondary');b.type='button';b.addEventListener('click',function(){try{fn();}catch(e){message(errorText(e));}});return b;}
+  function trackWrittenSave(task,entry){
+    if(!entry||(!String(entry.answer||'').trim()&&!(Array.isArray(entry.checks)&&entry.checks.some(Boolean))))return;
+    if(!task||!['WAEC','NECO'].includes(task.exam)||!['Mathematics','English'].includes(task.subject))return;
+    var year=Number(task.year),analytics=window.AfroTools&&window.AfroTools.analytics;
+    if(!Number.isInteger(year)||year<1900||year>new Date().getFullYear()||!analytics)return;
+    var exam=task.exam.toLowerCase(),subject=task.subject.toLowerCase();
+    if(typeof analytics.track==='function')analytics.track('education_written_response_saved',{exam:exam,subject:subject,collection_year:year});
+    if(typeof analytics.trackEducationPractice==='function')analytics.trackEducationPractice(exam,subject,'start');
+  }
   function capture(){if(current&&answer&&(dirty.has(current.id)||draft.entries[current.id])){draft.entries[current.id]={answer:answer.value,checks:checks.map(function(c){return c.checked;})};}}
   function download(name,text,type){var url=URL.createObjectURL(new Blob([text],{type:type})),a=el('a');a.href=url;a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
   function diagram(question){
@@ -78,7 +87,7 @@
     var details=el('details',undefined,'written-explanation'),steps=el('ol'),guide=el('p',q.answer);guide.lang=q.answerLanguage||q.questionLanguage||'en';details.append(el('summary',q.subject==='Mathematics'?'Show worked solution':'Show writing guide'));q.steps.forEach(function(step){steps.append(el('li',step));});details.append(guide,steps);if(figure&&q.figureAfterAnswer)details.append(figure);area.append(details);
     var field=el('fieldset');field.append(el('legend','Self-review checklist'));
     q.checks.forEach(function(text,i){var row=el('label',undefined,'practice-option'),check=el('input');check.type='checkbox';check.checked=!!(entry&&entry.checks[i]);check.addEventListener('change',function(){dirty.add(q.id);});checks.push(check);row.append(check,el('span',text));field.append(row);});area.append(field);
-    var actions=el('div',undefined,'practice-actions');actions.append(button('Save response on this device',function(){dirty.add(q.id);capture();api.write(localStorage,bank,q.id,draft.entries[q.id]);dirty.delete(q.id);message('Response saved on this device.');}),button('Download written-practice backup',function(){capture();download('afrotools-written-practice.json',JSON.stringify(api.normalize(draft,bank),null,2),'application/json');message('Backup downloaded. It includes responses opened or edited in this session.');}),button('Download written-practice report',function(){capture();download('afrotools-written-practice.txt',api.report(bank,draft),'text/plain;charset=utf-8');message('Written-practice report downloaded.');}));area.append(actions);
+    var actions=el('div',undefined,'practice-actions');actions.append(button('Save response on this device',function(){dirty.add(q.id);capture();api.write(localStorage,bank,q.id,draft.entries[q.id]);dirty.delete(q.id);trackWrittenSave(q,draft.entries[q.id]);message('Response saved on this device.');}),button('Download written-practice backup',function(){capture();download('afrotools-written-practice.json',JSON.stringify(api.normalize(draft,bank),null,2),'application/json');message('Backup downloaded. It includes responses opened or edited in this session.');}),button('Download written-practice report',function(){capture();download('afrotools-written-practice.txt',api.report(bank,draft),'text/plain;charset=utf-8');message('Written-practice report downloaded.');}));area.append(actions);
     area.append(el('p','The checklist records your own review. It does not award an official exam mark.','practice-meta'));
   }
   function tasks(){capture();select.replaceChildren();bank.items.filter(function(q){return q.collection===collection.value;}).sort(function(a,b){return (a.number||Infinity)-(b.number||Infinity)||String(a.subpart||'').localeCompare(String(b.subpart||''));}).forEach(function(q){select.add(new Option((q.number?t('Question ')+q.number+(q.subpart?'('+q.subpart+')':'')+' · ':'')+q.title,q.id));});render();}

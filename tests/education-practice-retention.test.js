@@ -14,6 +14,7 @@ function context(consent = 'accepted') {
   let now = firstDay;
   const store = new Map([['afrotools_cookie_consent', consent]]);
   const calls = [];
+  const listeners = {};
   class ClockDate extends Date { static now() { return now; } }
   const window = {
     localStorage: {
@@ -26,7 +27,7 @@ function context(consent = 'accepted') {
     gtag() { calls.push(Array.from(arguments)); },
     setTimeout() { return 1; }, clearTimeout() {},
     setInterval() { return 1; }, clearInterval() {},
-    addEventListener() {}
+    addEventListener(type, handler) { (listeners[type] ||= []).push(handler); }
   };
   const document = { readyState: 'loading', addEventListener() {} };
   vm.runInNewContext(source, { window, document, Date: ClockDate, URL, URLSearchParams, Set, console });
@@ -34,6 +35,14 @@ function context(consent = 'accepted') {
     track: window.AfroTools.analytics.trackEducationPractice,
     events(name) { return calls.filter(call => call[0] === 'event' && call[1] === name).map(call => call[2]); },
     setDay(offset) { now = firstDay + offset * dayMs; },
+    setConsent(value) {
+      store.set('afrotools_cookie_consent', value);
+      (listeners['afrotools:cookie-consent'] || []).forEach(handler => handler({ detail: { status: value } }));
+    },
+    crossTabConsent(value) {
+      store.set('afrotools_cookie_consent', value);
+      (listeners.storage || []).forEach(handler => handler({ key: 'afrotools_cookie_consent', newValue: value }));
+    },
     store
   };
 }
@@ -56,17 +65,41 @@ test('one consented JAMB cohort returns once across a later WAEC practice action
   assert.equal(visit.events('education_practice_returned')[0].cohort_day_utc, '2026-09-26');
 });
 
-test('the seven-day return boundary excludes day zero and day eight', () => {
+test('day eight starts a new cohort and its next-day return is counted once', () => {
   const within = context();
   within.track('jamb', 'english', 'start');
   within.setDay(7);
   assert.equal(within.track('jamb', 'english', 'resume'), true);
   assert.equal(within.events('education_practice_returned')[0].return_day, 7);
-  const late = context();
-  late.track('jamb', 'english', 'start');
-  late.setDay(8);
-  assert.equal(late.track('jamb', 'english', 'resume'), false);
-  assert.equal(late.events('education_practice_returned').length, 0);
+  within.setDay(8);
+  assert.equal(within.track('waec', 'mathematics', 'start'), true);
+  assert.equal(within.events('education_practice_cohort_started').length, 2);
+  assert.equal(within.events('education_practice_cohort_started')[1].cohort_exam, 'waec');
+  assert.equal(within.track('waec', 'mathematics', 'resume'), false);
+  within.setDay(9);
+  assert.equal(within.track('neco', 'english', 'start'), true);
+  assert.equal(within.events('education_practice_returned').length, 2);
+  assert.equal(within.events('education_practice_returned')[1].cohort_exam, 'waec');
+  assert.equal(within.events('education_practice_returned')[1].return_exam, 'neco');
+  assert.equal(within.events('education_practice_returned')[1].return_day, 1);
+  assert.equal(within.track('neco', 'english', 'retry'), false);
+});
+
+test('withdrawing consent clears the marker and does not turn later acceptance into a return', () => {
+  const visit = context();
+  assert.equal(visit.track('jamb', 'english', 'start'), true);
+  assert.equal(visit.store.has(cohortKey), true);
+  visit.setConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+  visit.setDay(1);
+  assert.equal(visit.track('neco', 'mathematics', 'start'), false);
+  assert.equal(visit.events('education_practice_returned').length, 0);
+  visit.setConsent('accepted');
+  assert.equal(visit.track('neco', 'mathematics', 'start'), true);
+  assert.equal(visit.events('education_practice_cohort_started').length, 2);
+  assert.equal(visit.events('education_practice_returned').length, 0);
+  visit.crossTabConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
 });
 
 test('declined consent and corrupt local state emit no cohort event or private value', () => {
@@ -78,6 +111,10 @@ test('declined consent and corrupt local state emit no cohort event or private v
   corrupt.setDay(1);
   assert.equal(corrupt.track('waec_neco', 'english', 'resume'), false);
   assert.equal(corrupt.events('education_practice_returned').length, 0);
+  const unknownSubject = context();
+  assert.equal(unknownSubject.track('waec', 'private@example.com', 'start'), true);
+  assert.equal(unknownSubject.events('education_practice_cohort_started')[0].cohort_subject, 'other');
+  assert.doesNotMatch(JSON.stringify(unknownSubject.events('education_practice_cohort_started')), /private@example/);
 });
 
 test('invalid actions and unavailable storage fail closed', () => {
