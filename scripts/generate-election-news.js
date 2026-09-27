@@ -275,8 +275,6 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
     '<meta name="description" content="' + escapeHtml(summary) + '">',
     '<meta name="afrotools-source-owner" content="scripts/generate-election-news.js">',
     '<meta name="afrotools-content-id" content="' + stableId(route) + '">',
-    '<link rel="canonical" href="' + escapeHtml(absolute) + '">',
-    ...alternateLinks,
     '<link rel="alternate" type="application/rss+xml" title="Africa election news RSS" href="' + escapeHtml(feedRoute) + '">',
     '<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">',
     '<meta property="og:type" content="' + (schema['@type'] === 'NewsArticle' ? 'article' : 'website') + '">',
@@ -318,6 +316,9 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
     'a:focus-visible{outline:3px solid var(--color-primary);outline-offset:3px}',
     '@media(max-width:600px){.en-wrap{padding:var(--space-6) var(--page-gutter-sm) var(--space-12)}}',
     '</style>',
+    // Keep the source generator in the route contract's normalized head order.
+    '<link rel="canonical" href="' + escapeHtml(absolute) + '">',
+    ...alternateLinks,
     '</head>'
   ].filter(Boolean).join('\n');
 }
