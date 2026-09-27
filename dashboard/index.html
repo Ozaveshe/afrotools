@@ -288,6 +288,7 @@
         }
         .editor-tabs {
             display: flex;
+            justify-content: flex-start;
             border-bottom: 1px solid var(--dash-border, #E8EDF5);
             background: var(--dash-bg-subtle, #F4F7FB);
             padding: 0 8px;
@@ -3187,6 +3188,7 @@
             var container = document.getElementById('toastContainer');
             var toast = document.createElement('div');
             toast.className = 'toast ' + type;
+            toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
             toast.textContent = message;
             container.appendChild(toast);
             requestAnimationFrame(function() {
@@ -3202,7 +3204,7 @@
 
         // ===================== SUPABASE PROFILE HELPERS =====================
         async function fetchFullProfile() {
-            var user = AfroAuth.getUser();
+            var user = currentUser || (AfroAuth.getUser && AfroAuth.getUser());
             if (!user || !user.id) return null;
 
             // Try Netlify function first (bypasses ad-blockers)
@@ -3210,17 +3212,16 @@
                 var token = null;
                 try { if (AfroAuth.getSessionTokenAsync) token = await AfroAuth.getSessionTokenAsync(); } catch (e) {}
                 if (!token) { try { token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null; } catch (e) {} }
-                if (token) {
-                    var res = await withTimeout(
-                        fetch('/api/profile', {
-                            headers: { 'Authorization': 'Bearer ' + token }
-                        }),
-                        8000
-                    );
-                    if (res.ok) {
-                        var data = await res.json();
-                        if (data.profile) return data.profile;
-                    }
+                var res = await withTimeout(
+                    fetch('/api/profile', {
+                        credentials: 'same-origin',
+                        headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+                    }),
+                    8000
+                );
+                if (res.ok) {
+                    var data = await res.json();
+                    if (data.profile) return data.profile;
                 }
             } catch(e) {
                 console.warn('[Profile] API fetch failed, trying direct:', e.message);
@@ -3251,7 +3252,7 @@
         }
 
         async function saveFullProfile(profileData) {
-            var user = AfroAuth.getUser();
+            var user = currentUser || (AfroAuth.getUser && AfroAuth.getUser());
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
 
             var cleanData = Object.assign({}, profileData);
@@ -3270,23 +3271,21 @@
                     try { token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null; } catch (e) {}
                 }
 
-                if (!token) {
-                    console.warn('[Profile] No auth token available');
-                    return { ok: false, synced: false, error: 'Could not verify your signed-in session. Please sign in again.' };
-                }
-
                 console.log('[Profile] Saving via /api/profile...', Object.keys(cleanData));
+                var headers = { 'Content-Type': 'application/json' };
+                if (token) headers.Authorization = 'Bearer ' + token;
                 var res = await withTimeout(
                     fetch('/api/profile', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + token
-                        },
+                        credentials: 'same-origin',
+                        headers: headers,
                         body: JSON.stringify(cleanData)
                     }),
                     10000
                 );
+                if (res.status === 401 || res.status === 403) {
+                    return { ok: false, synced: false, error: 'Your session has expired. Please sign in again.' };
+                }
                 var result = await res.json();
 
                 if (res.ok && result.synced === true && !result.partial) {
@@ -3411,6 +3410,8 @@
             var editor = document.getElementById('profileEditor');
             editor.classList.add('open');
             // Reset to personal tab
+            var tabStrip = editor.querySelector('.editor-tabs');
+            if (tabStrip) tabStrip.scrollLeft = 0;
             document.querySelectorAll('.editor-tab').forEach(function(t) { t.classList.remove('active'); });
             document.querySelector('.editor-tab[data-tab="personal"]').classList.add('active');
             document.querySelectorAll('.editor-panel').forEach(function(p) { p.classList.remove('active'); });
