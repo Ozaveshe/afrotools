@@ -19,12 +19,14 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   const second = generateOutputs(news, tracker, official);
   const prefix = 'tools/africa-election-tracker/news/';
   const slug = news.articles[0].slug;
+  const southAfricaSlug = 'south-africa-local-election-special-votes-september-2026';
 
   assert.deepEqual([...first], [...second], 'output must not depend on build time');
   assert.deepEqual([...first.keys()].sort(), [
     prefix + 'feed.xml',
     prefix + 'index.html',
-    prefix + slug + '/index.html'
+    prefix + slug + '/index.html',
+    prefix + southAfricaSlug + '/index.html'
   ].sort());
   assert.match(first.get(prefix + 'index.html'), /Election news, with receipts/);
   assert.match(first.get(prefix + 'index.html'), /rel="alternate" type="application\/rss\+xml"/);
@@ -40,10 +42,17 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   assert.match(article, /not a final post-appeal roster/);
   assert.match(article, /cne\.cv\/sala_de_imprensa_/);
 
+  const southAfricaArticle = first.get(prefix + southAfricaSlug + '/index.html');
+  assert.match(southAfricaArticle, /"@type":"NewsArticle"/);
+  assert.match(southAfricaArticle, /Published 21 September 2026; checked 27 September 2026/);
+  assert.match(southAfricaArticle, /17:00 on Monday, 12 October 2026/);
+  assert.match(southAfricaArticle, /gov\.za\/news\/media-statements\/electoral-commission-opens-special-vote-applications/);
+
   const feed = first.get(prefix + 'feed.xml');
   assert.match(feed, /<rss version="2.0"/);
   assert.match(feed, /<dc:language>en<\/dc:language>/);
-  assert.equal((feed.match(/<item>/g) || []).length, 1);
+  assert.equal((feed.match(/<item>/g) || []).length, 2);
+  assert.match(feed, /south-africa-local-election-special-votes-september-2026/);
   assert.doesNotMatch(feed, /guardian\.ng|premiumtimesng\.com/);
   const itemUrl = feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/)[1];
   assert.equal(itemUrl, 'https://afrotools.com/' + prefix + slug + '/');

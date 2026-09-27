@@ -37,7 +37,10 @@ test('published HTML snapshot matches every ledger record and is deterministic',
   assert.doesNotMatch(southSudan[1], /<time datetime="2026-12-22"/);
   assert.doesNotMatch(first, /\b\d+ days(?: ago)?\b/);
   assert.doesNotMatch(first, /guardian\.ng|premiumtimesng\.com/);
-  assert.match(html, /<noscript><p class="et-snapshot-note">Filters require JavaScript/);
+  assert.match(html, /<noscript><p class="et-snapshot-note">The published calendar above remains readable without JavaScript/);
+  assert.ok(html.indexOf('id="calendar"') < html.indexOf('id="findElection"'), 'calendar must precede utility filters');
+  assert.match(html, /<details class="et-card et-filter-panel" id="findElection">/);
+  assert.doesNotMatch(html, /government-focus\.js|<afro-related-tools/);
 });
 
 test('snapshot leads with dates upcoming on the ledger date, then earlier records', () => {

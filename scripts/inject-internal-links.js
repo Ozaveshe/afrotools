@@ -88,6 +88,8 @@ const RELATED_INLINE_ASSET_LINE_RE = /^\s*["']\/assets\/js\/components\/related-
 const RELATED_COMPONENT_SCRIPT_RE = /<script\b[^>]*src=["'][^"']*related-tools(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
 const TOOL_DIRECTORY_PATH = path.join(ROOT, 'data', 'tool-directory.json');
 const RELATED_COMPONENT_PATH = path.join(ROOT, 'assets', 'js', 'components', 'related-tools.min.js');
+// Editorial routes can provide reviewed in-context navigation instead of the generic tool grid.
+const MANUAL_RELATED_NAV_RE = /<body\b[^>]*\bdata-related-tools=["']manual["']/i;
 
 function escapeHtml(value) {
   return String(value == null ? '' : value)
@@ -237,6 +239,7 @@ function processRelatedTools(options = {}) {
       continue;
     }
     const original = fs.readFileSync(absolute, 'utf8');
+    if (MANUAL_RELATED_NAV_RE.test(original)) continue;
     const related = relatedForTool(tool, allTools);
     const updated = transformRelatedTools(original, tool, related);
     stats.links += related.length;

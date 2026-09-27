@@ -176,9 +176,10 @@ function calendarLabel(record) {
 function renderFrontPage(data, tracker, officialLedger) {
   const { elections } = validateModel(data, tracker, officialLedger);
   assert(isDate(tracker.generatedAt), 'Tracker generation date is required for the front page.');
-  const lead = [...data.articles]
+  const englishArticles = [...data.articles]
     .filter((article) => article.localizations.en)
-    .sort((a, b) => b.localizations.en.publishedOn.localeCompare(a.localizations.en.publishedOn) || a.slug.localeCompare(b.slug))[0];
+    .sort((a, b) => b.localizations.en.publishedOn.localeCompare(a.localizations.en.publishedOn) || a.slug.localeCompare(b.slug));
+  const lead = englishArticles[0];
   assert(lead, 'A source-reviewed English brief is required for the front page.');
   const content = lead.localizations.en;
   const election = elections.get(lead.electionId);
@@ -196,6 +197,17 @@ function renderFrontPage(data, tracker, officialLedger) {
     '</li>'
   ].join('\n')).join('\n');
   const emptyCalendar = '<li class="et-rail-item"><strong id="nextElectionTitle">No upcoming record</strong><span id="nextElectionMeta">Browse the published calendar and its source links below.</span></li>';
+  const otherBriefs = englishArticles.slice(1, 4).map((article) => {
+    const brief = article.localizations.en;
+    const record = elections.get(article.electionId);
+    return [
+      '<article class="et-secondary-brief">',
+      '<p class="et-story-meta"><span>' + escapeHtml(record.country) + ' · ' + escapeHtml(record.office) + '</span><time datetime="' + brief.publishedOn + '">' + escapeHtml(formatDate(brief.publishedOn, 'en')) + '</time></p>',
+      '<h3><a href="' + escapeHtml(articleRoute(data.localeRoutes.en, article.slug)) + '">' + escapeHtml(brief.headline) + '</a></h3>',
+      '<p>' + escapeHtml(brief.summary) + '</p>',
+      '</article>'
+    ].join('\n');
+  }).join('\n');
   return [
     '<section class="et-frontpage" aria-labelledby="leadStoryTitle">',
     '  <div class="et-frontpage-rubric"><span>Latest reviewed brief</span><span>Independent civic reporting</span></div>',
@@ -214,6 +226,13 @@ function renderFrontPage(data, tracker, officialLedger) {
     '      <a href="#calendar">Open the full calendar and official links <span aria-hidden="true">→</span></a>',
     '    </aside>',
     '  </div>',
+    ...(otherBriefs ? [
+      '  <section class="et-more-briefs" aria-labelledby="moreBriefsTitle">',
+      '    <h2 id="moreBriefsTitle">More from the civic desk</h2>',
+      '    <div class="et-more-briefs-grid">' + otherBriefs + '</div>',
+      '    <a class="et-all-briefs" href="' + escapeHtml(data.localeRoutes.en) + '">All reviewed briefs <span aria-hidden="true">→</span></a>',
+      '  </section>'
+    ] : []),
     '</section>'
   ].join('\n');
 }

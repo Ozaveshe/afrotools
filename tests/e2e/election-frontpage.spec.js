@@ -18,8 +18,16 @@ for (const width of [1280, 390, 320]) {
     expect((await title.boundingBox()).y).toBeLessThan(550);
     await expect(title.getByRole('link')).toHaveAttribute('href', articleRoute);
     await expect(page.locator('.et-story-source a')).toHaveAttribute('href', lead.officialSources[0].url);
+    await expect(page.locator('.et-secondary-brief')).toHaveCount(1);
+    await expect(page.locator('.et-secondary-brief a')).toHaveAttribute('href', '/tools/africa-election-tracker/news/south-africa-local-election-special-votes-september-2026/');
     await expect(page.locator('#calendarRailList .et-rail-item')).toHaveCount(3);
     await expect(page.locator('.et-issue-nav a').first()).toHaveText('Calendar');
+    expect(await page.locator('#calendar').evaluate((node) => node.compareDocumentPosition(document.querySelector('#findElection')) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy();
+    await expect(page.locator('afro-related-tools, .gov-focus-panel')).toHaveCount(0);
+    await expect(page.locator('#findElection')).not.toHaveAttribute('open');
+    await page.locator('#findElection summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#findElection')).toHaveAttribute('open', '');
 
     const geometry = await page.evaluate(() => ({
       viewport: window.innerWidth,
@@ -39,6 +47,8 @@ test('reviewed headline and dated source remain readable without JavaScript', as
   expect(response.status()).toBe(200);
   await expect(page.getByRole('heading', { level: 2, name: headline })).toBeVisible();
   await expect(page.locator('.et-story-source')).toContainText('Published 22 September 2026; checked 27 September 2026');
+  await expect(page.locator('.et-secondary-brief')).toHaveCount(1);
+  await expect(page.locator('#electionList .et-election-card')).toHaveCount(tracker.elections.length);
   const ledgerDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
     .format(new Date(tracker.generatedAt + 'T00:00:00Z'));
   await expect(page.locator('.et-calendar-rail')).toContainText(ledgerDate);

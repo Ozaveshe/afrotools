@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11580 |
-| Indexable pages | 10001 |
+| Public pages | 11581 |
+| Indexable pages | 10002 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5308 |
-| Documented fallbacks | 14849 |
-| Routes eligible for primary sitemaps | 10001 |
+| Genuine equivalence groups | 5309 |
+| Documented fallbacks | 14850 |
+| Routes eligible for primary sitemaps | 10002 |
 
 ## Locale Coverage
 
-- en: 6028 page records
+- en: 6029 page records
 - fr: 3804 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5440
-- tool: 4006
+- tool: 4007
 - widget: 379
 
 ## Canonical Migrations
@@ -3707,6 +3707,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:20c3db305044: en=`/agriculture/greenhouse/tunisia`, fr=`/fr/agriculture/greenhouse/tunisia`, sw=`/sw/kilimo/greenhouse/tunisia/`; x-default=`/agriculture/greenhouse/tunisia`
 - equivalence:20c9e301bedb: en=`/tools/afrokitchen/recipes/kisra-mulah/`; x-default=`/tools/afrokitchen/recipes/kisra-mulah/`
 - equivalence:20ca049075fc: en=`/tools/afropoints/how-it-works`; x-default=`/tools/afropoints/how-it-works`
+- equivalence:20e0b2670a30: en=`/tools/africa-election-tracker/news/south-africa-local-election-special-votes-september-2026/`; x-default=`/tools/africa-election-tracker/news/south-africa-local-election-special-votes-september-2026/`
 - equivalence:21035448ee27: en=`/tools/afrokitchen/recipes/lakh-mr/`; x-default=`/tools/afrokitchen/recipes/lakh-mr/`
 - equivalence:210650f75a68: en=`/cars/egypt/toyota/axio/`, fr=`/fr/cars/egypte/toyota/axio/`; x-default=`/cars/egypt/toyota/axio/`
 - equivalence:210732c78f0c: en=`/tools/electricity-bill-verify/ghana/`; x-default=`/tools/electricity-bill-verify/ghana/`
