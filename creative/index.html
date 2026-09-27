@@ -40,7 +40,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/creative-focus.css?v=132bc2a2">
 <script src="/assets/js/components/tool-registry.min.js?v=454bac3d" defer></script>
@@ -316,6 +316,7 @@ button:focus-visible {
 
 .creative-nav-link {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 8px;
   padding: 16px 14px;
@@ -980,6 +981,92 @@ button:focus-visible {
     content: "";
     display: none;
   }
+}
+/* Creative dark-mode content surfaces */
+:root[data-theme="dark"].creative-focus {
+  --cr-focus-bg: #09111f;
+  --cr-focus-surface: #121f33;
+  --cr-focus-ink: #eef5ff;
+  --cr-focus-muted: #b8c7dc;
+  --cr-focus-border: #26364e;
+}
+
+:root[data-theme="dark"].creative-focus .creative-focus-meta span,
+:root[data-theme="dark"].creative-focus .creative-focus-actions :is(button, a:not(.primary)),
+:root[data-theme="dark"].creative-focus .creative-focus-filter input {
+  background: #0b1524;
+  border-color: #26364e;
+  color: #eef5ff;
+}
+
+:root[data-theme="dark"].creative-focus .creative-focus-filter input::placeholder {
+  color: #b8c7dc;
+}
+
+:root[data-theme="dark"] body.creative-ui-refresh .creative-section {
+  background: var(--dm-bg, #09111f) !important;
+}
+
+:root[data-theme="dark"] body.creative-ui-refresh :is(
+  .creative-surface-card,
+  .creative-taxonomy-card,
+  .creative-bucket,
+  .creative-tool-card,
+  .creative-bucket-note
+) {
+  background: var(--dm-surface, #121f33) !important;
+  background-image: none !important;
+  border-color: var(--dm-border, #26364e) !important;
+  color: var(--dm-text, #eef5ff) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="dark"] body.creative-ui-refresh [class*="creative-theme-"] {
+  --creative-soft: var(--dm-inset, #0b1524);
+}
+:root[data-theme="dark"] body.creative-ui-refresh :is(.creative-theme-ink, .creative-theme-sand) {
+  --creative-accent: #fbbf24;
+}
+:root[data-theme="dark"] body.creative-ui-refresh .creative-theme-rose {
+  --creative-accent: #fb7185;
+}
+:root[data-theme="dark"] body.creative-ui-refresh .creative-theme-sky {
+  --creative-accent: #7dd3fc;
+}
+:root[data-theme="dark"] body.creative-ui-refresh .creative-theme-mint {
+  --creative-accent: #6ee7b7;
+}
+:root[data-theme="dark"] body.creative-ui-refresh .creative-theme-cobalt {
+  --creative-accent: #93c5fd;
+}
+
+:root[data-theme="dark"] body.creative-ui-refresh main .creative-section-eyebrow {
+  color: var(--dm-blue, #93c5fd) !important;
+}
+:root[data-theme="dark"] body.creative-ui-refresh :is(
+  .creative-surface-type,
+  .creative-surface-cta,
+  .creative-tool-footer
+) {
+  color: var(--dm-text, #eef5ff) !important;
+}
+:root[data-theme="dark"] body.creative-ui-refresh :is(
+  .creative-surface-accent,
+  .creative-tool-subtitle,
+  .creative-tool-footer span:first-child,
+  .creative-remaining-label,
+  .creative-bucket-note
+) {
+  color: var(--dm-muted, #b8c7dc) !important;
+}
+:root[data-theme="dark"] body.creative-ui-refresh :is(
+  .creative-surface-icon,
+  .creative-surface-chip,
+  .creative-remaining-link
+) {
+  background: var(--dm-inset, #0b1524) !important;
+  border-color: var(--dm-border, #26364e) !important;
+  color: var(--dm-blue, #93c5fd) !important;
 }
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">

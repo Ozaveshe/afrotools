@@ -95,7 +95,12 @@ const changedLedger = audit.preserveGeneratedAt(
 );
 assert.strictEqual(changedLedger.generatedAt, '2026-07-26T00:00:00.000Z', 'changed Hausa ledgers must receive a fresh timestamp');
 const coverage = coverageApi.buildReport();
-assert.strictEqual(coverage.summary.total, 105);
+assert.strictEqual(coverage.summary.total, 106, 'Hausa route inventory must include the election edition');
+const electionEdition = coverage.records.find((entry) => entry.route === '/ha/zabe/');
+assert.ok(electionEdition, 'Hausa election edition must appear in route coverage');
+assert.strictEqual(electionEdition.state, 'native');
+assert.strictEqual(electionEdition.indexable, true);
+assert.strictEqual(electionEdition.sitemapIncluded, true);
 const launch = launchApi.buildReport();
 assert.strictEqual(launch.core25.length, 25);
 assert.strictEqual(launch.gates.languageCountryIndependent, true);

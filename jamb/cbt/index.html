@@ -22,12 +22,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/assets/css/jamb.css?v=60191dc2">
 
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=a65bf8e1" defer></script>
+<script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=06328f6c" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
@@ -83,16 +83,22 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   <main id="setup-main">
   <section class="jb-hero" style="padding:48px 0 56px;">
     <div class="jb-wrap jb-hero-z">
-      <span class="jb-hero-tag"><span class="pulse" aria-hidden="true"></span>Free Mock Exam</span>
-      <h1>Set Up Your <b>JAMB CBT Mock</b></h1>
-      <p class="sub">Choose your subjects for timed practice with reviewed questions. Session length depends on the reviewed questions available; results describe this practice session.</p>
+      <span class="jb-hero-tag"><span class="pulse" aria-hidden="true"></span><span id="setup-badge-label">Free Mock Exam</span></span>
+      <h1 id="setup-heading">Set Up Your <b>JAMB CBT Mock</b></h1>
+      <p id="setup-intro" class="sub">Choose your subjects for timed practice with reviewed questions. Session length depends on the reviewed questions available; results describe this practice session.</p>
     </div>
   </section>
 
   <section class="jb-sec">
     <div class="jb-wrap" style="max-width:760px;">
 
-      <fieldset style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
+      <section id="collection-setup" class="cbt-collection-setup" aria-labelledby="collection-title" hidden>
+        <h2 id="collection-title"></h2>
+        <p>Timed practice draws up to 40 reviewed questions from this year and subject. You have 40 minutes. This selection is not a confirmed complete UTME paper or original question order.</p>
+        <p><a id="collection-page-link" href="/jamb/">Read the year collection</a> · <a href="/jamb/cbt/">Choose a different mock</a></p>
+      </section>
+
+      <fieldset id="mode-setup" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
         <legend style="font-size:1rem;font-weight:700;color:#0f172a;padding:0 6px;">1. Test Mode</legend>
         <p style="font-size:.84rem;color:#475569;margin:4px 0 16px;">Pick how long you have right now.</p>
 
@@ -118,7 +124,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         </div>
       </fieldset>
 
-      <fieldset style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
+      <fieldset id="subject-setup" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
         <legend style="font-size:1rem;font-weight:700;color:#0f172a;padding:0 6px;">2. Subjects</legend>
         <p style="font-size:.84rem;color:#475569;margin:4px 0 16px;">Use of English is compulsory. Pick 3 more (or 1 if Single Subject mode).</p>
 
@@ -138,6 +144,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
           <button id="discard-resume-btn" class="jb-btn jb-btn-ghost" type="button" style="background:#fff;color:#475569;border:1.5px solid #cbd5e1;">Start fresh instead</button>
         </div>
       </div>
+      <p id="resume-conflict" class="cbt-resume-conflict" role="status" hidden></p>
 
       <div class="cbt-shortcuts-panel" style="margin-bottom:16px;">
         <div class="cbt-shortcuts-title">Official JAMB eight-key shortcuts</div>
@@ -181,12 +188,13 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   <main class="cbt-body" id="cbt-main">
     <section id="cbt-question-panel" role="tabpanel" aria-live="polite" aria-atomic="false">
       <div class="cbt-question-card">
+        <p id="cbt-session-context" class="cbt-session-context" hidden></p>
         <div class="cbt-q-meta">
           <span class="cbt-q-num" id="cbt-q-num">Q1</span>
           <span id="cbt-q-info">— · — / —</span>
         </div>
         <p id="cbt-passage" style="white-space:pre-wrap;"></p>
-        <h2 class="cbt-q-text" id="cbt-q-text">Loading…</h2>
+        <h2 class="cbt-q-text" id="cbt-q-text" tabindex="-1">Loading…</h2>
         <p id="cbt-q-source" hidden></p>
         <div class="cbt-options" id="cbt-options"></div>
         <div class="cbt-actions">
@@ -246,18 +254,18 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
   <section class="jb-hero" style="padding:40px 0 48px;">
     <div class="jb-wrap jb-hero-z">
-      <span class="jb-hero-tag">✓ Mock Complete</span>
-      <h2>Your <b>Practice Result</b></h2>
-      <p class="sub">Your practice answers by subject, with a scaled aggregate. This is not an official UTME score or an admission prediction.</p>
+      <span id="result-badge" class="jb-hero-tag">✓ Mock Complete</span>
+      <h2 id="result-heading" tabindex="-1">Your <b>Practice Result</b></h2>
+      <p id="result-intro" class="sub">Your practice answers by subject, with a scaled aggregate. This is not an official UTME score or an admission prediction.</p>
     </div>
   </section>
 
   <section class="jb-sec">
     <div class="jb-wrap" style="max-width:780px;">
       <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center;">
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px;">Scaled Practice Aggregate</div>
+        <div id="result-score-label" style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px;">Scaled Practice Aggregate</div>
         <div id="result-aggregate" style="font-size:4rem;font-weight:800;color:#0062CC;line-height:1;letter-spacing:-.02em;">—</div>
-        <div style="font-size:.86rem;color:#64748b;margin-top:8px;">out of 400 · <span id="result-pct">—</span>% correct</div>
+        <div id="result-score-detail" style="font-size:.86rem;color:#64748b;margin-top:8px;">out of 400 · <span id="result-pct">—</span>% correct</div>
       </div>
 
       <div id="result-subjects" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;"></div>
@@ -284,7 +292,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
       </div>
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="/jamb/cbt/" class="jb-btn jb-btn-primary" style="flex:1;justify-content:center;">Try Another Mock</a>
+        <a id="result-again" href="/jamb/cbt/" class="jb-btn jb-btn-primary" style="flex:1;justify-content:center;">Try Another Mock</a>
         <a href="/jamb/tutor/" class="jb-btn jb-btn-ghost" style="flex:1;justify-content:center;background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;">Open AI Tutor</a>
       </div>
     </div>
@@ -295,6 +303,13 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
 <style>
 #setup-screen[hidden], #cbt-shell[hidden], #results-screen[hidden] { display: none !important; }
+.cbt-collection-setup { background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:22px; margin-bottom:18px; }
+.cbt-collection-setup h2 { margin:0 0 8px; font-size:1.15rem; }
+.cbt-collection-setup p { margin:8px 0; line-height:1.6; color:#334155; }
+.cbt-resume-conflict { padding:14px 16px; background:#eff6ff; border:1px solid #93c5fd; border-radius:12px; color:#1e3a5f; line-height:1.6; }
+.cbt-session-context { margin:0 0 14px; color:#334155; font-size:.85rem; font-weight:700; line-height:1.5; overflow-wrap:anywhere; }
+.cbt-collection-setup a:focus-visible, .cbt-resume-conflict a:focus-visible { outline:3px solid #0062cc; outline-offset:3px; }
+.cbt-collection-setup a, .cbt-resume-conflict a { display:inline-flex; align-items:center; min-height:44px; }
 .mode-card {
   display:block;
   padding:16px;
@@ -657,6 +672,35 @@ var SUBJ_META = {
   accounts: {emoji:"📒", label:"Accounts"},
 };
 
+function parseYearScope(search) {
+  var params = new URLSearchParams(search);
+  if (!params.has("subject") && !params.has("year")) return { scope: null, error: null };
+  var subject = params.get("subject");
+  var rawYear = params.get("year");
+  if (params.getAll("subject").length !== 1 || params.getAll("year").length !== 1 ||
+      !Object.prototype.hasOwnProperty.call(SUBJ_META, subject) ||
+      !/^\d{4}$/.test(rawYear || "") || Number(rawYear) < 1978 || Number(rawYear) > new Date().getFullYear()) {
+    return { scope: null, error: "This year and subject link is invalid. Choose a reviewed year page or open the general CBT setup." };
+  }
+  return { scope: { subject: subject, year: Number(rawYear) }, error: null };
+}
+
+var YEAR_LINK = parseYearScope(location.search);
+var YEAR_SCOPE = YEAR_LINK.scope;
+var SESSION_YEAR = YEAR_SCOPE ? YEAR_SCOPE.year : null;
+if (YEAR_SCOPE) {
+  SELECTED_MODE = "subject";
+  SELECTED_SUBJECTS = [YEAR_SCOPE.subject];
+}
+
+function scopedCbtUrl(subject, year) {
+  return "/jamb/cbt/?subject=" + encodeURIComponent(subject) + "&year=" + encodeURIComponent(year);
+}
+
+function startButtonLabel() {
+  return YEAR_SCOPE ? "Start " + YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " practice →" : "Start Reviewed Practice →";
+}
+
 function trackCbt(name, details) {
   var analytics = window.AfroTools && window.AfroTools.analytics;
   if (analytics && typeof analytics.track === "function") analytics.track(name, details);
@@ -705,6 +749,8 @@ function isLaunchSafeQuestion(q) {
 function syncModeCards() {
   document.querySelectorAll(".mode-card").forEach(function (card) {
     card.classList.toggle("selected", card.dataset.mode === SELECTED_MODE);
+    var input = card.querySelector('input[name="mode"]');
+    if (input) input.checked = card.dataset.mode === SELECTED_MODE;
   });
 }
 
@@ -712,6 +758,18 @@ function updateSetupState() {
   var startBtn = document.getElementById("start-btn");
   var warning = document.getElementById("setup-warning");
   if (!startBtn || !warning) return;
+
+  if (YEAR_LINK.error) {
+    warning.hidden = false;
+    warning.textContent = YEAR_LINK.error;
+    startBtn.disabled = true;
+    return;
+  }
+  if (YEAR_SCOPE) {
+    warning.hidden = true;
+    startBtn.textContent = startButtonLabel();
+    return;
+  }
 
   if (!POOL_STATS || !SELECTED_SUBJECTS.length) {
     warning.hidden = true;
@@ -721,7 +779,7 @@ function updateSetupState() {
 
   var coverage = getCoverageSummary();
   warning.hidden = coverage.gradable >= coverage.total;
-  startBtn.textContent = "Start Reviewed Practice →";
+  startBtn.textContent = startButtonLabel();
   if (!coverage.gradable) {
     warning.textContent = "No reviewed questions are available for this selection yet. No score will be generated. Use My Study Space to plan your study while the bank is reviewed.";
   } else if (coverage.gradable < coverage.total) {
@@ -732,6 +790,7 @@ function updateSetupState() {
 // Mode picker
 document.querySelectorAll(".mode-card").forEach(function(card){
   card.addEventListener("click", function(){
+    if (YEAR_SCOPE) return;
     SELECTED_MODE = card.dataset.mode;
     if (SELECTED_MODE === "subject" && SELECTED_SUBJECTS.length > 1) {
       SELECTED_SUBJECTS = [SELECTED_SUBJECTS[0]];
@@ -769,6 +828,7 @@ function renderSubjectPicker() {
       labelBox.innerHTML = '<span class="subj-name">' + labelBox.innerHTML + '</span><span class="subj-stat">' + coverageText + '</span>';
     }
     btn.addEventListener("click", function(e){
+      if (YEAR_SCOPE) return;
       if (isLocked) return;
       if (SELECTED_MODE === "subject") {
         SELECTED_SUBJECTS = [key];
@@ -788,10 +848,21 @@ renderSubjectPicker();
 // Auto-load pool from URL params (e.g. ?mode=quick from hero CTA)
 (function(){
   var p = new URLSearchParams(location.search);
-  if (p.get("mode") === "quick") {
+  if (YEAR_SCOPE) {
+    document.getElementById("setup-badge-label").textContent = "Reviewed collection practice";
+    document.getElementById("setup-heading").textContent = YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " CBT practice";
+    document.getElementById("setup-intro").textContent = "Answer reviewed year-labelled questions in a timed CBT session, then see your raw score and explanations.";
+    document.getElementById("collection-title").textContent = YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " reviewed collection";
+    document.getElementById("collection-page-link").href = "/jamb/" + YEAR_SCOPE.subject + "/" + YEAR_SCOPE.year + "/";
+    document.getElementById("collection-setup").hidden = false;
+    document.getElementById("mode-setup").hidden = true;
+    document.getElementById("subject-setup").hidden = true;
+    syncModeCards();
+  } else if (p.get("mode") === "quick") {
     SELECTED_MODE = "quick";
     syncModeCards();
   }
+  updateSetupState();
 })();
 
 async function loadPoolStats() {
@@ -811,6 +882,9 @@ async function ensurePoolLoaded() {
   POOL = data.questions.filter(isLaunchSafeQuestion);
   POOL_REVISION = data.review_revision;
   if (!POOL.length) throw new Error("No reviewed questions are available yet. Use My Study Space to plan your study while this bank is reviewed.");
+  if (YEAR_SCOPE && !POOL.some(function(question) {
+    return question.subject === YEAR_SCOPE.subject && question.year === YEAR_SCOPE.year;
+  })) throw new Error("No reviewed questions are available for this year and subject yet. Return to the year page or choose another mock.");
   return POOL;
 }
 
@@ -832,12 +906,24 @@ function maybeShowResume() {
     return;
   }
 
+  if (YEAR_SCOPE && (snapshot.year !== YEAR_SCOPE.year || snapshot.mode !== "subject" ||
+      !Array.isArray(snapshot.subjects) || snapshot.subjects.length !== 1 || snapshot.subjects[0] !== YEAR_SCOPE.subject)) {
+    var conflict = document.getElementById("resume-conflict");
+    conflict.textContent = "A different CBT session is saved on this device. ";
+    var link = document.createElement("a");
+    link.href = "/jamb/cbt/";
+    link.textContent = "Resume it from the general CBT page";
+    conflict.append(link, ". Starting this year collection will replace that saved session.");
+    conflict.hidden = false;
+    return;
+  }
+
   RESUME_SNAPSHOT = snapshot;
   var labels = (snapshot.subjects || []).map(function (subject) {
     return SUBJ_META[subject] ? SUBJ_META[subject].label : subject;
   });
   document.getElementById("resume-meta").textContent =
-    labels.join(", ") + " • " + Math.ceil(remainingSeconds / 60) + " min left";
+    (Number.isInteger(snapshot.year) ? snapshot.year + " collection • " : "") + labels.join(", ") + " • " + Math.ceil(remainingSeconds / 60) + " min left";
   document.getElementById("resume-card").hidden = false;
 }
 
@@ -862,6 +948,7 @@ document.getElementById("resume-btn").addEventListener("click", async function (
     if (Array.isArray(RESUME_SNAPSHOT.subjects) && RESUME_SNAPSHOT.subjects.length) {
       SELECTED_SUBJECTS = RESUME_SNAPSHOT.subjects.slice();
     }
+    SESSION_YEAR = Number.isInteger(RESUME_SNAPSHOT.year) ? RESUME_SNAPSHOT.year : null;
     syncModeCards();
     renderSubjectPicker();
     await ensurePoolLoaded();
@@ -883,6 +970,7 @@ document.getElementById("discard-resume-btn").addEventListener("click", function
 });
 
 document.getElementById("start-btn").addEventListener("click", async function(){
+  if (YEAR_LINK.error) return;
   if (SELECTED_SUBJECTS.length === 0) {
     alert("Pick at least 1 subject");
     return;
@@ -895,7 +983,7 @@ document.getElementById("start-btn").addEventListener("click", async function(){
   } catch(e) {
     showPracticeUnavailable(e.message);
     this.disabled = false;
-    this.textContent = "Start CBT Mock →";
+    this.textContent = startButtonLabel();
   }
 });
 
@@ -934,10 +1022,14 @@ function sessionFigure(q) {
 
 async function startCBT(resumeSnapshot) {
 
+  SESSION_YEAR = resumeSnapshot && Number.isInteger(resumeSnapshot.year)
+    ? resumeSnapshot.year : (YEAR_SCOPE ? YEAR_SCOPE.year : null);
+
   var cfg = {
     pool: POOL,
     poolRevision: POOL_REVISION,
     subjects: SELECTED_SUBJECTS,
+    year: SESSION_YEAR,
     mode: SELECTED_MODE === "quick" ? "quick" : (SELECTED_MODE === "subject" ? "subject" : "full"),
     questionsPerSubject: SELECTED_MODE === "quick" ? 10 : 40,
     durationMinutes: SELECTED_MODE === "quick" ? 30 : (SELECTED_MODE === "subject" ? 40 : 120),
@@ -955,6 +1047,9 @@ async function startCBT(resumeSnapshot) {
     }
     return question;
   }) : AfroJAMB.CBT.selectQuestions(cfg);
+  if (SESSION_YEAR !== null && selected.some(function(question) {
+    return question.year !== SESSION_YEAR || (YEAR_SCOPE && question.subject !== YEAR_SCOPE.subject);
+  })) throw new Error("The saved collection does not match this year and subject. Start a new practice session.");
   try {
     for (var question of selected) {
       if (question.image) SESSION_FIGURES.set(question.id, await AfroJAMB.ReviewedFigure.load(question, POOL_REVISION));
@@ -970,7 +1065,7 @@ async function startCBT(resumeSnapshot) {
     } else {
       AfroJAMB.CBT.init(cfg);
       trackCbt("education_jamb_start", { mode: cfg.mode, subject: cbtSubjectMetric(), question_count: cbtQuestionBucket(selected.length) });
-      if (typeof window.fbq === "function") {
+      if (SESSION_YEAR === null && typeof window.fbq === "function") {
         window.fbq("trackCustom", "StartMock", {
           content_name: "AfroJAMB CBT Mock",
           mode: cfg.mode,
@@ -985,6 +1080,9 @@ async function startCBT(resumeSnapshot) {
   }
   document.getElementById("setup-screen").hidden = true;
   document.getElementById("cbt-shell").hidden = false;
+  var sessionContext = document.getElementById("cbt-session-context");
+  sessionContext.hidden = SESSION_YEAR === null;
+  if (SESSION_YEAR !== null) sessionContext.textContent = SESSION_YEAR + " " + SUBJ_META[SELECTED_SUBJECTS[0]].label + " collection practice · year-labelled reviewed questions";
 
   lastMilestoneSpoken = null;
   closeSubmitDialog(false);
@@ -992,6 +1090,7 @@ async function startCBT(resumeSnapshot) {
   renderSubjectsBar();
   renderQuestion();
   renderNavGrid();
+  document.getElementById("cbt-q-text").focus();
 
   if (!CBT_EVENTS_BOUND) {
     document.getElementById("cbt-prev").addEventListener("click", prevQuestion);
@@ -1289,15 +1388,23 @@ function submitTest(timedOut) {
   trackCbt("education_jamb_complete", {
     mode: SELECTED_MODE,
     subject: cbtSubjectMetric(),
+    collection_year: SESSION_YEAR,
     question_count: cbtQuestionBucket(score.outOf),
     score_band: lowerBand === 100 ? "100" : lowerBand + "-" + (lowerBand + 24),
     timed_out: !!timedOut
   });
   document.getElementById("cbt-shell").hidden = true;
   document.getElementById("results-screen").hidden = false;
-  if (score.outOf === 0) {
-    document.getElementById("result-aggregate").textContent = "Practice";
-    document.getElementById("result-pct").textContent = "0";
+  if (SESSION_YEAR !== null) {
+    var subjectLabel = SUBJ_META[SELECTED_SUBJECTS[0]] ? SUBJ_META[SELECTED_SUBJECTS[0]].label : "JAMB";
+    document.getElementById("result-badge").textContent = "✓ Practice complete";
+    document.getElementById("result-heading").textContent = SESSION_YEAR + " " + subjectLabel + " practice result";
+    document.getElementById("result-intro").textContent = "This score describes your reviewed year-collection practice only. It is not an official UTME score, a confirmed complete paper, or an admission prediction.";
+    document.getElementById("result-score-label").textContent = "Questions correct";
+    document.getElementById("result-aggregate").textContent = score.total + "/" + score.outOf;
+    document.getElementById("result-score-detail").textContent = score.pctCorrect + "% correct in this practice selection";
+    document.getElementById("result-again").href = scopedCbtUrl(SELECTED_SUBJECTS[0], SESSION_YEAR);
+    document.getElementById("result-again").textContent = "Practise this collection again";
   } else {
     document.getElementById("result-aggregate").textContent = score.aggregate;
     document.getElementById("result-pct").textContent = score.pctCorrect;
@@ -1330,6 +1437,11 @@ function submitTest(timedOut) {
         '<div style="font-size:1rem;font-weight:800;color:#94a3b8;margin-top:4px;">Ungraded</div>' +
         '<div style="font-size:.7rem;color:#64748b;margin-top:4px;font-weight:600;">' + meta.label + '</div>' +
         '<div style="font-size:.62rem;color:#94a3b8;margin-top:2px;">' + total + ' Qs · no answer key yet</div>';
+    } else if (SESSION_YEAR !== null) {
+      card.innerHTML = '<div style="font-size:1.4rem;">' + meta.emoji + '</div>' +
+        '<div style="font-size:1.6rem;font-weight:800;color:#0062CC;margin-top:4px;">' + score.subjectCorrect[s] + ' / ' + graded + '</div>' +
+        '<div style="font-size:.7rem;color:#64748b;margin-top:4px;font-weight:600;">' + meta.label + ' collection practice</div>' +
+        '<div style="font-size:.68rem;color:#475569;margin-top:2px;">' + score.subjectScores[s] + '% correct</div>';
     } else {
       card.innerHTML = '<div style="font-size:1.4rem;">' + meta.emoji + '</div>' +
         '<div style="font-size:1.6rem;font-weight:800;color:#0062CC;margin-top:4px;">' + score.subjectScores[s] + '<span style="font-size:.8rem;color:#94a3b8;">/100</span></div>' +
@@ -1341,30 +1453,40 @@ function submitTest(timedOut) {
 
   // ===== Review screen =====
   REVIEW_ITEMS = score.reviewItems || [];
-  CURRENT_FILTER = "wrong";
+  CURRENT_FILTER = SESSION_YEAR !== null ? "all" : "wrong";
+  document.querySelectorAll(".rev-filter").forEach(function(button) {
+    button.classList.toggle("active", button.dataset.filter === CURRENT_FILTER);
+  });
   prepareRetryPractice();
 
   // Persist last attempt to history (localStorage) BEFORE telling AfroEdu,
   // because the bridge derives bestMockAggregate from afrojamb-history.
   try {
-    var hist = JSON.parse(localStorage.getItem("afrojamb-history") || "[]");
-    hist.unshift({
-      ts: Date.now(),
-      mode: SELECTED_MODE,
-      subjects: SELECTED_SUBJECTS,
-      aggregate: score.aggregate,
-      pctCorrect: score.pctCorrect,
-      ungraded: score.ungraded,
-      outOf: score.outOf,
-      subjectScores: score.subjectScores,
-      durationSeconds: score.durationSeconds,
-    });
-    localStorage.setItem("afrojamb-history", JSON.stringify(hist.slice(0, 30)));
+    if (SESSION_YEAR !== null) {
+      var collectionHistory = JSON.parse(localStorage.getItem("afrojamb-collection-history") || "[]");
+      collectionHistory.unshift({ ts: Date.now(), year: SESSION_YEAR, subject: SELECTED_SUBJECTS[0],
+        correct: score.total, graded: score.outOf, percent: score.pctCorrect, durationSeconds: score.durationSeconds });
+      localStorage.setItem("afrojamb-collection-history", JSON.stringify(collectionHistory.slice(0, 30)));
+    } else {
+      var hist = JSON.parse(localStorage.getItem("afrojamb-history") || "[]");
+      hist.unshift({
+        ts: Date.now(),
+        mode: SELECTED_MODE,
+        subjects: SELECTED_SUBJECTS,
+        aggregate: score.aggregate,
+        pctCorrect: score.pctCorrect,
+        ungraded: score.ungraded,
+        outOf: score.outOf,
+        subjectScores: score.subjectScores,
+        durationSeconds: score.durationSeconds,
+      });
+      localStorage.setItem("afrojamb-history", JSON.stringify(hist.slice(0, 30)));
+    }
   } catch (e) { /* ignore */ }
 
   // Cross-tool mirror: push this mock into the unified profile + activity feed.
   // Anonymous users get localStorage-only; logged-in users get a profile sync.
-  if (window.AfroEdu && typeof AfroEdu.recordMock === "function") {
+  if (SESSION_YEAR === null && window.AfroEdu && typeof AfroEdu.recordMock === "function") {
     try {
       AfroEdu.recordMock({
         aggregate: score.aggregate,
@@ -1385,6 +1507,7 @@ function submitTest(timedOut) {
   document.getElementById("rf-right").textContent = score.reviewItems.filter(function(r){return r.correct;}).length;
   document.getElementById("rf-all").textContent = score.reviewItems.length;
   renderReviewList();
+  document.getElementById("result-heading").focus();
 
   document.querySelectorAll(".rev-filter").forEach(function(btn){
     btn.addEventListener("click", function(){

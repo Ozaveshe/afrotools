@@ -99,6 +99,12 @@
 - Use the configured `supabase` MCP server first for AfroStream news publishing or inspection
 - Run the narrowest validation for the surface you touched
 
+### Africa election newsroom
+
+- Read `docs/ELECTION-NEWSROOM-WORKFLOW.md` and the government-source workflow before adding an election brief.
+- Publish only reviewed, dated electoral-authority facts through `data/government/election-news.json`; watched media/RSS items are discovery signals, not article inputs.
+- Run `npm run elections:news:build` to render the static newsroom and RSS feed, then `npm run elections:news:check`, `npm run elections:validate`, and the relevant link, SEO, and locale checks.
+
 ### Translation or hreflang issue
 
 - Use the i18n rule
