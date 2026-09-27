@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
 <link rel="stylesheet" href="/tools/afroatlas/style.css?v=5e706072">
+<link rel="stylesheet" href="/tools/afroatlas/core-snapshot.css?v=86a0d57b">
 <link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <script type="application/ld+json" data-schema-template="breadcrumb">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[]}</script>
@@ -33,7 +34,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-09-27">
 <link rel="canonical" href="https://afrotools.com/tools/afroatlas/_country-template">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -43,9 +44,9 @@
   <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <a href="/tools/afroatlas/">AfroAtlas</a> <span>/</span> <span>{{COUNTRY_NAME}}</span>
 </nav>
 
-<!-- The rest is rendered dynamically by JS from the engine -->
+<!-- The build supplies a useful country profile before JavaScript enhances it. -->
 <div class="aa-page" id="aa-country-page">
-  <!-- JS fills this -->
+  {{COUNTRY_STATIC_CONTENT}}
 </div>
 
 <afro-footer></afro-footer>
@@ -55,6 +56,7 @@
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/tools/afroatlas/world-bank-core-indicators.js?v=0a9479d2"></script>
 <script src="/assets/js/lib/afroatlas-twemoji.js?v=0428ee7b"></script>
 <script>
 (function() {
@@ -145,6 +147,14 @@
 
   var code = findCode(country);
 
+  function sourceLink(point, label) {
+    return point
+      ? '<a href="' + esc(point.source_url) + '">' + label + ' ' + point.year + '</a>'
+      : label + ' unavailable (2016–2025)';
+  }
+
+  var coreSources = country.coreSources || {};
+
   /* ── Build HTML ── */
   var html = '';
 
@@ -159,11 +169,12 @@
   html += ' &middot; Currency: ' + (country.currency ? country.currency.name + ' (' + country.currency.sym + ')' : 'N/A');
   html += '</p>';
   html += '<div class="aa-stats-row">';
-  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdp) + '</strong> <span>GDP</span></span>';
-  html += '<span class="aa-stat-pill"><strong>' + fmtPop(country.population) + '</strong> <span>Population</span></span>';
-  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdpPC) + '</strong> <span>GDP/Capita</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdp) + '</strong> <span>GDP' + (coreSources.gdp ? ' (' + coreSources.gdp.year + ')' : '') + '</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtPop(country.population) + '</strong> <span>Population' + (coreSources.population ? ' (' + coreSources.population.year + ')' : '') + '</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdpPC) + '</strong> <span>GDP/person' + (coreSources.gdpPC ? ' (' + coreSources.gdpPC.year + ')' : '') + '</span></span>';
   html += '<span class="aa-stat-pill"><strong>' + (country.rrs != null ? country.rrs + '/100' : 'N/A') + '</strong> <span>Resource Score</span></span>';
   html += '</div>';
+  html += '<p class="aa-hero-meta">World Bank WDI: ' + sourceLink(coreSources.gdp, 'GDP') + ' · ' + sourceLink(coreSources.population, 'population') + ' · ' + sourceLink(coreSources.gdpPC, 'GDP/person') + '. Values may be revised. Resource and trade indicators remain undated in this reference profile.</p>';
   html += '</div>';
   html += '</section>';
 
@@ -314,7 +325,7 @@
     for (var fi = 0; fi < country.resources.length; fi++) {
       var rr = country.resources[fi];
       var rrInfo = RT[rr.type] || { label: rr.type };
-      resNames.push(rrInfo.label + (rr.rank ? ' (#' + rr.rank + ' in Africa)' : ''));
+      resNames.push(rrInfo.label);
     }
     faq1 = country.name + '\'s main natural resources include ' + resNames.join(', ') + '.';
   } else {
@@ -322,24 +333,18 @@
   }
   faqs.push({ q: 'What are ' + country.name + '\'s main natural resources?', a: faq1 });
 
-  /* FAQ 2 — GDP */
-  var faq2 = country.name + '\'s GDP is ' + fmtGdp(country.gdp);
-  faq2 += ', with a GDP per capita of ' + fmtGdp(country.gdpPC);
-  faq2 += (country.gdpGrowth != null ? ' and a growth rate of ' + country.gdpGrowth + '%.' : '.');
-  faqs.push({ q: 'What is ' + country.name + '\'s GDP?', a: faq2 });
-
-  /* FAQ 3 — Exports */
-  var faq3 = '';
+  /* FAQ 2 — Exports */
+  var faq2 = '';
   if (country.exports && country.exports.length > 0) {
     var expNames = [];
     for (var ei = 0; ei < Math.min(country.exports.length, 5); ei++) {
-      expNames.push(country.exports[ei].p + ' (' + fmtMoney(country.exports[ei].v) + ')');
+      expNames.push(country.exports[ei].p);
     }
-    faq3 = country.name + '\'s top exports are ' + expNames.join(', ') + '. Total exports: ' + fmtMoney(country.totalExports) + '.';
+    faq2 = country.name + '\'s export profile includes ' + expNames.join(', ') + '.';
   } else {
-    faq3 = 'Detailed export data is not currently available for ' + country.name + '.';
+    faq2 = 'Export data for ' + country.name + ' is currently limited.';
   }
-  faqs.push({ q: 'What does ' + country.name + ' export?', a: faq3 });
+  faqs.push({ q: 'Which exports appear in the ' + country.name + ' profile?', a: faq2 });
 
   for (var fqi = 0; fqi < faqs.length; fqi++) {
     html += '<div class="aa-faq-item">';

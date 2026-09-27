@@ -1703,8 +1703,23 @@ var AfroKitchenEngine = function() {
     description: "Ugali, chapati, and the dishes that define the region",
     is_featured: !1
   } ];
-  function h(e) {
-    var t = g;
+  var staticRecipePromise = null;
+  function loadPublishedRecipeIndex() {
+    if (!staticRecipePromise) {
+      staticRecipePromise = typeof window.fetch === 'function'
+        ? window.fetch('/tools/afrokitchen/recipe-index.json').then(function(response) {
+          if (!response.ok) throw new Error('Published recipe index unavailable');
+          return response.json();
+        }).then(function(payload) {
+          return payload && payload.version === 1 && Array.isArray(payload.recipes) && payload.recipes.length
+            ? payload.recipes : null;
+        }).catch(function() { return null; })
+        : Promise.resolve(null);
+    }
+    return staticRecipePromise;
+  }
+  function h(e, rows) {
+    var t = rows || g;
     if (!e) {
       return t;
     }
@@ -1723,10 +1738,14 @@ var AfroKitchenEngine = function() {
     })), e.search) {
       var r = e.search.toLowerCase();
       t = t.filter(function(e) {
-        return -1 !== e.name.toLowerCase().indexOf(r) || -1 !== e.description.toLowerCase().indexOf(r) || -1 !== e.country_name.toLowerCase().indexOf(r) || e.tags && e.tags.some(function(e) {
-          return -1 !== e.indexOf(r);
+        return -1 !== String(e.name || '').toLowerCase().indexOf(r) || -1 !== String(e.description || '').toLowerCase().indexOf(r) || -1 !== String(e.country_name || '').toLowerCase().indexOf(r) || e.tags && e.tags.some(function(e) {
+          return -1 !== String(e).toLowerCase().indexOf(r);
         });
       });
+    }
+    if (e.ids && e.ids.length) {
+      var ids = e.ids.map(String);
+      t = t.filter(function(item) { return ids.indexOf(String(item.id)) !== -1; });
     }
     return e.slug && (t = t.filter(function(t) {
       return t.slug === e.slug;
@@ -1777,6 +1796,12 @@ var AfroKitchenEngine = function() {
       var r = "recipes_" + JSON.stringify(e || {}), i = o(r);
       if (i) {
         return i;
+      }
+      var published = await loadPublishedRecipeIndex();
+      if (published) {
+        var matching = h(e, published);
+        n(r, matching);
+        return matching;
       }
       var a = t();
       if (!a) {

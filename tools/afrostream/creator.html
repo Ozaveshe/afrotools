@@ -6,10 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
 <title>Creator Profile — AfroStream | AfroTools</title>
-<meta name="description" content="View detailed stats, stream history, net worth estimate, and upcoming streams for African creators on AfroStream.">
+<meta name="description" content="Open a published AfroStream creator profile for platform links and reported activity.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Creator Profile — AfroStream | AfroTools">
-<meta property="og:description" content="Detailed creator stats, stream history, net worth estimates, and more on AfroStream.">
+<meta property="og:description" content="Published creator profile, platform links, and reported activity on AfroStream.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,9 +18,9 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Creator Profile — AfroStream | AfroTools">
-<meta name="twitter:description" content="Detailed creator stats and stream history on AfroStream.">
+<meta name="twitter:description" content="Published creator profile, platform links, and reported activity on AfroStream.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
@@ -121,6 +121,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   .as-lc-card-count{font-size:1.3rem}
   .as-lc-grid{grid-template-columns:1fr 1fr}
 }
+.as-profile-follow-note{margin:10px 0 0;color:rgba(255,255,255,.78);font-size:.84rem;line-height:1.5}
+.as-profile-actions #followPlatformBtn[hidden]{display:none}
 </style>
 <script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
@@ -131,8 +133,6 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
 <script src="/tools/afrostream/subnav.js?v=bdc266a0" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/creator">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/creator">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/creator">
 </head>
 <body class="as-page as-body top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -177,9 +177,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           </div>
           <div class="as-profile-platforms" id="profilePlatforms"></div>
           <div class="as-profile-actions">
-            <button type="button" class="as-btn as-btn-primary" id="followBtn" onclick="toggleFollow()">Follow</button>
+            <a class="as-btn as-btn-primary" id="followPlatformBtn" href="#profilePlatforms" hidden>Open creator platform</a>
             <button type="button" class="as-btn as-btn-outline" onclick="shareProfile()">Share</button>
           </div>
+          <p class="as-profile-follow-note" id="platformFollowNote">Use a creator's platform link to follow them there.</p>
         </div>
       </div>
     </div>
@@ -328,6 +329,24 @@ function asNumber(value) {
 
 function isImageUrl(value) {
   return typeof value === 'string' && (value.indexOf('http') === 0 || value.charAt(0) === '/');
+}
+
+function safePlatformUrl(value, platform) {
+  var domains = {
+    youtube: ['youtube.com', 'youtu.be'],
+    twitch: ['twitch.tv'],
+    tiktok: ['tiktok.com'],
+    instagram: ['instagram.com'],
+    kick: ['kick.com']
+  };
+  try {
+    var url = new URL(String(value || ''));
+    var host = url.hostname.toLowerCase();
+    if (url.protocol !== 'https:' || !domains[platform]) return '';
+    return domains[platform].some(function(domain) { return host === domain || host.endsWith('.' + domain); }) ? url.href : '';
+  } catch (error) {
+    return '';
+  }
 }
 
 function normalizeCreator(d) {
@@ -852,11 +871,14 @@ function emptyCard(message) {
 function renderMissingProfile() {
   var main = document.getElementById('creatorPage');
   if (!main) return;
+  document.title = 'Creator profile unavailable — AfroStream | AfroTools';
+  var robots = document.querySelector('meta[name="robots"]');
+  if (robots) robots.setAttribute('content', 'noindex, follow');
   main.innerHTML = '<section class="as-profile-empty">' +
     '<div class="as-container">' +
       '<div class="as-empty-card">' +
         '<h1>Creator profile unavailable</h1>' +
-        '<p>We could not load this creator profile from the public AfroStream data API. Try the rankings page or check this profile again after the next data sync.</p>' +
+        '<p>This creator may be unavailable or unpublished. Browse the current rankings to find another profile.</p>' +
         '<a href="/tools/afrostream/rankings" class="as-btn as-btn-primary">Open rankings</a>' +
       '</div>' +
     '</div>' +
@@ -867,7 +889,11 @@ function renderMissingProfile() {
 (async function init() {
   /* Read ?id= param — supports numeric ids and slugs */
   var params = new URLSearchParams(window.location.search);
-  var creatorParam = params.get('id') || '1';
+  var creatorParam = params.get('id');
+  if (!creatorParam) {
+    renderMissingProfile();
+    return;
+  }
 
   /* Fetch creator + all creators in parallel */
   var results = await Promise.all([
@@ -880,11 +906,6 @@ function renderMissingProfile() {
 
   /* If API returned a creator not in the list, ensure it has score/rank */
   computeRanks(CREATORS);
-
-  /* If single-creator fetch failed, fall back to first in list */
-  if (!creator) {
-    creator = CREATORS[0];
-  }
 
   if (!creator) {
     renderMissingProfile();
@@ -922,7 +943,7 @@ function renderMissingProfile() {
   var coverage = creator._apiCoverage || {};
   var relatedFromApi = Array.isArray(creator._apiSimilar) ? creator._apiSimilar.map(normalizeCreator) : [];
   var creatorKey = creator.slug || creator.id;
-  var creatorPath = '/tools/afrostream/creator.html?id=' + encodeURIComponent(creatorKey);
+  var creatorPath = '/tools/afrostream/creator?id=' + encodeURIComponent(creatorKey);
   var creatorUrl = window.location.origin + creatorPath;
 
   /* ===== RENDER PROFILE HERO ===== */
@@ -973,27 +994,34 @@ function renderMissingProfile() {
       kick: raw.platform_kick || raw.kick_url || ''
     };
     var platHTML = '';
+    var firstPlatform = null;
     creator.platforms.forEach(function(p, idx) {
       var pm = PLATFORM_META[p];
       if (!pm) return;
       var share = idx === 0 ? 0.5 : (idx === 1 ? 0.3 : 0.2);
       var exactCount = creator.platformCounts && creator.platformCounts[p] ? creator.platformCounts[p] : 0;
       var pFollowers = exactCount || Math.floor(totalF * share);
-      var href = platURLs[p] || '#';
-      var target = href !== '#' ? ' target="_blank" rel="noopener"' : '';
-      platHTML += '<a href="' + href + '"' + target + ' class="as-platform-badge" style="border-color:' + pm.color + '">' +
+      var href = safePlatformUrl(platURLs[p], p);
+      if (href && !firstPlatform) firstPlatform = { url: href, name: pm.name, id: p };
+      platHTML += (href ? '<a href="' + href + '" target="_blank" rel="noopener noreferrer"' : '<span') + ' class="as-platform-badge" style="border-color:' + pm.color + '">' +
         '<span class="as-platform-badge-icon" style="color:' + pm.color + '">' + pm.icon + '</span>' +
         '<span class="as-platform-badge-name">' + pm.name + '</span>' +
-        '<span class="as-platform-badge-count">' + (exactCount ? fmtNum(pFollowers) : 'Linked') + '</span>' +
-      '</a>';
+        '<span class="as-platform-badge-count">' + (href ? (exactCount ? fmtNum(pFollowers) : 'Open platform') : 'Link unavailable') + '</span>' +
+      (href ? '</a>' : '</span>');
     });
     document.getElementById('profilePlatforms').innerHTML = platHTML;
-
-    /* Follow button state */
-    var followed = JSON.parse(localStorage.getItem('as_following') || '[]');
-    if (followed.indexOf(creator.id) !== -1) {
-      document.getElementById('followBtn').textContent = 'Following';
-      document.getElementById('followBtn').classList.add('as-btn-following');
+    var followButton = document.getElementById('followPlatformBtn');
+    if (firstPlatform) {
+      followButton.href = firstPlatform.url;
+      followButton.textContent = 'Follow on ' + firstPlatform.name;
+      followButton.target = '_blank';
+      followButton.rel = 'noopener noreferrer';
+      followButton.hidden = false;
+      followButton.addEventListener('click', function() {
+        if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrostream_follow_platform_opened', { platform: firstPlatform.id, source_lane: 'creator_profile' });
+      });
+    } else {
+      document.getElementById('platformFollowNote').textContent = 'A platform link is not available for this profile yet.';
     }
 
     document.title = creator.name + ' — AfroStream | AfroTools';
@@ -1013,7 +1041,8 @@ function renderMissingProfile() {
     var ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.setAttribute('content', creatorUrl);
 
-    if (window.location.search !== '?id=' + encodeURIComponent(creatorKey)) {
+    if (window.location.pathname !== '/tools/afrostream/creator' ||
+        window.location.search !== '?id=' + encodeURIComponent(creatorKey)) {
       window.history.replaceState({}, '', creatorPath);
     }
 
@@ -1350,24 +1379,6 @@ function renderMissingProfile() {
 })();
 
 /* ===== ACTIONS ===== */
-function toggleFollow() {
-  var creator = window._asCreator;
-  if (!creator) return;
-  var followed = JSON.parse(localStorage.getItem('as_following') || '[]');
-  var idx = followed.indexOf(creator.id);
-  var btn = document.getElementById('followBtn');
-  if (idx === -1) {
-    followed.push(creator.id);
-    btn.textContent = 'Following';
-    btn.classList.add('as-btn-following');
-  } else {
-    followed.splice(idx, 1);
-    btn.textContent = 'Follow';
-    btn.classList.remove('as-btn-following');
-  }
-  localStorage.setItem('as_following', JSON.stringify(followed));
-}
-
 function shareProfile() {
   var creator = window._asCreator;
   var url = (creator && creator.url) || window.location.href;

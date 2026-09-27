@@ -427,6 +427,7 @@ function processToolSubPages() {
     const subFiles = fs.readdirSync(toolDir)
       .filter(f => isPublicHtmlSubPage(f))
       .filter(f => !TOOL_SUBPAGE_EXCLUSIONS.has(f))
+      .filter(f => !(tool.name === 'afrostream' && (f === 'creator.html' || f === 'article.html')))
       .filter(f => !(tool.name === 'africa-conflict' && f === 'detail.html'))
       .sort();
 
