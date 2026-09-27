@@ -42,23 +42,23 @@ test('JSON-LD string content cannot terminate its script element', () => {
 });
 
 test('publisher-labelled collection years do not present themselves as confirmed UTME sittings', () => {
-  const q = { id: 'synthetic-collection', subject: 'english', year: 2023, num: null,
+  const q = { id: 'synthetic-collection', subject: 'english', year: 2025, num: null,
     question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
     answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
     source_provenance: { publisher: 'Example', url: 'https://example.com/collection', year_basis: 'publisher-collection' } };
   const review = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-24', evidence: 'synthetic fixture only' };
   const sourceHash = 'a'.repeat(64);
   const ledger = { sources: { fixture: { source_file: 'synthetic fixture', content_sha256: sourceHash,
-    source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2023,
+    source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2025,
     reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source', scope: 'AfroTools past-question practice',
       material_sha256: sourceHash, authorized_by: 'test', authorized_at: '2026-09-24', instruction_ref: 'synthetic fixture' } } },
     questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review } } };
-  const page = renderYear('english', 2023, [q], ledger);
+  const page = renderYear('english', 2025, [q], ledger);
   assert.deepEqual(page.approvedIds, [q.id]);
-  assert.ok(page.html.includes('JAMB Use of English 2023 practice collection'));
-  assert.ok(page.html.includes('publisher-labelled 2023'));
+  assert.ok(page.html.includes('JAMB Use of English 2025 practice collection'));
+  assert.ok(page.html.includes('publisher-labelled 2025'));
   assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
-  assert.ok(page.html.includes('href="/jamb/cbt/?subject=english&amp;year=2023"'));
+  assert.ok(page.html.includes('href="/jamb/cbt/?subject=english&amp;year=2025"'));
   assert.ok(page.html.includes('up to 40 reviewed Use of English questions'));
 });
 
@@ -75,7 +75,7 @@ test('only the reviewed content version appears in both cards and answer schemas
   assert.throws(() => validatePage(page.html.replace(/<p class="qcard-text">[\s\S]*?<\/p>/, ''), page.approvedIds, page.canonical), /Missing question text/);
   assert.throws(() => validatePage(page.html.replace(/<details\b[\s\S]*?<\/details>/, ''), page.approvedIds, page.canonical), /Missing answer explanation/);
   assert.ok(page.html.includes('5 &lt; 6'));
-  assert.ok(page.html.includes('href="/jamb/cbt/?subject=mathematics&amp;year=1987"'));
+  assert.equal(page.html.includes('href="/jamb/cbt/?subject=mathematics&amp;year=1987"'), false);
   assert.ok(page.html.includes('Answer and explanation'));
   assert.ok(page.html.includes('acceptedAnswer'));
   const schemas = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));

@@ -24,7 +24,9 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
     localStorage.setItem('afrojamb-cbt-state', JSON.stringify({ year: null, mode: 'full', subjects: ['english','mathematics'],
       questionIds: ['old-mock'], startedAt: Date.now(), durationMs: 120 * 60 * 1000 }));
   });
-  await page.goto('/jamb/cbt/?subject=english&year=2025', { waitUntil: 'load' });
+  const yearLink = page.getByRole('link', { name: 'Start 2025 Use of English CBT practice' });
+  await expect(yearLink).toHaveAttribute('href', '/jamb/cbt/?subject=english&year=2025');
+  await yearLink.click();
   await expect(page.locator('#collection-setup')).toBeVisible();
   await expect(page.locator('#subject-setup')).toBeHidden();
   await expect(page.locator('#mode-setup')).toBeHidden();
