@@ -13,7 +13,10 @@ async function createSession(enginePath = '../engines/src/jamb-cbt-engine.js') {
   const rows = [
     reviewed({ ...base, id: 'english-2025-a', subject: 'english', year: 2025 }),
     reviewed({ ...base, id: 'english-2025-b', subject: 'english', year: 2025 }),
-    reviewed({ ...base, id: 'english-2024-a', subject: 'english', year: 2024 })
+    reviewed({ ...base, id: 'english-2024-a', subject: 'english', year: 2024 }),
+    reviewed({ ...base, id: 'mathematics-2025-a', subject: 'mathematics', year: 2025 }),
+    reviewed({ ...base, id: 'mathematics-2025-b', subject: 'mathematics', year: 2025 }),
+    reviewed({ ...base, id: 'mathematics-2024-a', subject: 'mathematics', year: 2024 })
   ];
   const fixture = bank(rows);
   const storage = new Map();
@@ -44,7 +47,11 @@ for (const enginePath of ['../engines/src/jamb-cbt-engine.js', '../engines/jamb-
     const snapshot = JSON.parse(storage.get('afrojamb-cbt-state'));
     assert.equal(snapshot.year, 2025);
     assert.equal(snapshot.questionIds.length, 2);
+    const savedAttempt = storage.get('afrojamb-cbt-state');
     assert.throws(() => cbt.restore({ ...config, year: 2024 }, snapshot), /saved collection changed/);
+    assert.throws(() => cbt.restore({ ...config, subjects: ['mathematics'] }, snapshot), /saved collection changed/);
+    assert.equal(storage.get('afrojamb-cbt-state'), savedAttempt, 'opening another collection must preserve saved answers');
+    assert.equal(storage.get('afrojamb-history'), undefined);
     cbt.restore(config, snapshot);
     assert.equal(cbt.getCurrentQuestion().selectedAnswer, 'B');
     const result = cbt.submit();
@@ -61,5 +68,30 @@ for (const enginePath of ['../engines/src/jamb-cbt-engine.js', '../engines/jamb-
     const result = cbt.submit();
     assert.equal(result.outOf, 3);
     assert.equal(posts.length, 1);
+  });
+
+  test(`${enginePath}: 2025 Mathematics practice excludes other subjects and years and keeps a raw result`, async () => {
+    const { cbt, pool, revision, storage, posts } = await createSession(enginePath);
+    const config = { pool, poolRevision: revision, subjects: ['mathematics'], mode: 'subject', year: 2025,
+      questionsPerSubject: 40, durationMinutes: 40 };
+    const selected = cbt.selectQuestions(config);
+    assert.equal(selected.length, 2);
+    assert.ok(selected.every(question => question.subject === 'mathematics' && question.year === 2025));
+    cbt.init(config);
+    cbt.selectAnswer('B');
+    const snapshot = JSON.parse(storage.get('afrojamb-cbt-state'));
+    assert.deepEqual(snapshot.subjects, ['mathematics']);
+    assert.equal(snapshot.year, 2025);
+    const savedAttempt = storage.get('afrojamb-cbt-state');
+    assert.throws(() => cbt.restore({ ...config, subjects: ['english'] }, snapshot), /saved collection changed/);
+    assert.equal(storage.get('afrojamb-cbt-state'), savedAttempt);
+    cbt.restore(config, snapshot);
+    assert.equal(cbt.getCurrentQuestion().selectedAnswer, 'B');
+    const result = cbt.submit();
+    assert.equal(result.total, 1);
+    assert.equal(result.outOf, 2);
+    assert.equal(result.pctCorrect, 50);
+    assert.ok(result.reviewItems.every(item => item.subject === 'mathematics' && item.year === 2025 && item.explanation));
+    assert.equal(posts.length, 0);
   });
 }

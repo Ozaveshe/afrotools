@@ -311,9 +311,17 @@
         throw new Error("CBT.restore: question reviews changed; start a new practice session");
       }
       var savedYear = Number.isInteger(n.year) ? n.year : null;
+      var scopedSubject = Number.isInteger(e.year) && Array.isArray(e.subjects) && e.subjects.length === 1 ? e.subjects[0] : null;
+      // A link for another collection must not discard a valid saved attempt.
       if ((Number.isInteger(e.year) && e.year !== savedYear) ||
-          (savedYear !== null && u.some(function(question) { return question.year !== savedYear; })) ||
-          (Number.isInteger(e.year) && u.some(function(question) { return question.year !== e.year; }))) {
+          (scopedSubject !== null && (n.mode !== "subject" || !Array.isArray(n.subjects) || n.subjects.length !== 1 ||
+            n.subjects[0] !== scopedSubject))) {
+        t = null;
+        throw new Error("CBT.restore: saved collection changed; start a new practice session");
+      }
+      if ((savedYear !== null && u.some(function(question) { return question.year !== savedYear; })) ||
+          (Number.isInteger(e.year) && u.some(function(question) { return question.year !== e.year; })) ||
+          (scopedSubject !== null && u.some(function(question) { return question.subject !== scopedSubject; }))) {
         t = null, a();
         throw new Error("CBT.restore: saved collection changed; start a new practice session");
       }

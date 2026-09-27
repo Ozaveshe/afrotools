@@ -41,25 +41,42 @@ test('JSON-LD string content cannot terminate its script element', () => {
   assert.deepEqual(JSON.parse(encoded), value);
 });
 
-test('publisher-labelled collection years do not present themselves as confirmed UTME sittings', () => {
+test('only reviewed 2025 English and Mathematics collections with a full practice selection offer CBT', () => {
   const q = { id: 'synthetic-collection', subject: 'english', year: 2025, num: null,
     question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
     answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
     source_provenance: { publisher: 'Example', url: 'https://example.com/collection', year_basis: 'publisher-collection' } };
   const review = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-24', evidence: 'synthetic fixture only' };
   const sourceHash = 'a'.repeat(64);
+  const english = Array.from({ length: 40 }, (_, index) => ({ ...q, id: `synthetic-english-${index + 1}`, question: `Which word means clear? ${index + 1}` }));
+  const mathematics = english.map((question, index) => ({ ...question, id: `synthetic-mathematics-${index + 1}`, subject: 'mathematics' }));
   const ledger = { sources: { fixture: { source_file: 'synthetic fixture', content_sha256: sourceHash,
     source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2025,
     reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source', scope: 'AfroTools past-question practice',
       material_sha256: sourceHash, authorized_by: 'test', authorized_at: '2026-09-24', instruction_ref: 'synthetic fixture' } } },
-    questions: { [q.id]: { content_sha256: questionFingerprint(q), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review } } };
-  const page = renderYear('english', 2025, [q], ledger);
-  assert.deepEqual(page.approvedIds, [q.id]);
-  assert.ok(page.html.includes('JAMB Use of English 2025 practice collection'));
-  assert.ok(page.html.includes('publisher-labelled 2025'));
-  assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
-  assert.ok(page.html.includes('href="/jamb/cbt/?subject=english&amp;year=2025"'));
-  assert.ok(page.html.includes('up to 40 reviewed Use of English questions'));
+    questions: Object.fromEntries([...english, ...mathematics].map(question => [question.id, {
+      content_sha256: questionFingerprint(question), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review
+    }])) };
+  const englishPage = renderYear('english', 2025, english, ledger);
+  const mathematicsPage = renderYear('mathematics', 2025, mathematics, ledger);
+  for (const [subject, name, page] of [['english', 'Use of English', englishPage], ['mathematics', 'Mathematics', mathematicsPage]]) {
+    assert.equal(page.approvedIds.length, 40);
+    assert.ok(page.html.includes(`JAMB ${name} 2025 practice collection`));
+    assert.ok(page.html.includes('publisher-labelled 2025'));
+    assert.ok(page.html.includes('original UTME sitting and question numbers are unconfirmed'));
+    assert.ok(page.html.includes(`href="/jamb/cbt/?subject=${subject}&amp;year=2025"`));
+    assert.ok(page.html.includes(`up to 40 reviewed ${name} questions`));
+    assert.ok(page.html.includes('not a confirmed complete UTME paper'));
+  }
+  assert.equal(renderYear('mathematics', 2025, mathematics.slice(0, 39), ledger).html.includes('Timed CBT practice'), false);
+  const older = mathematics.map(question => ({ ...question, id: question.id.replace('mathematics-', 'mathematics-2024-'), year: 2024 }));
+  const olderLedger = { sources: { fixture: { ...ledger.sources.fixture, collection_year: 2024 } },
+    questions: Object.fromEntries(older.map(question => [question.id, {
+      content_sha256: questionFingerprint(question), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review
+    }])) };
+  const olderPage = renderYear('mathematics', 2024, older, olderLedger);
+  assert.equal(olderPage.approvedIds.length, 40);
+  assert.equal(olderPage.html.includes('Timed CBT practice'), false);
 });
 
 test('only the reviewed content version appears in both cards and answer schemas', () => {
