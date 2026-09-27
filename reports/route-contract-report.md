@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11581 |
-| Indexable pages | 10001 |
+| Public pages | 11586 |
+| Indexable pages | 10006 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5308 |
-| Documented fallbacks | 14850 |
-| Routes eligible for primary sitemaps | 10001 |
+| Genuine equivalence groups | 5313 |
+| Documented fallbacks | 14855 |
+| Routes eligible for primary sitemaps | 10006 |
 
 ## Locale Coverage
 
-- en: 6029 page records
+- en: 6034 page records
 - fr: 3804 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5440
+- page: 5445
 - tool: 4007
 - widget: 379
 
@@ -3998,6 +3998,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2fc03d5712c8: fr=`/fr/widgets/frais-mobile-money/`; x-default=`/fr/widgets/frais-mobile-money/`
 - equivalence:2fc26622d446: en=`/tools/tin-guide/mozambique`, sw=`/sw/zana/mwongozo-tin/mozambique/`; x-default=`/tools/tin-guide/mozambique`
 - equivalence:2fcbcc66f69b: en=`/agriculture/fertilizer/central-african-republic`, fr=`/fr/agriculture/fertilizer/central-african-republic`, sw=`/sw/kilimo/mbolea/central-african-republic/`; x-default=`/agriculture/fertilizer/central-african-republic`
+- equivalence:2fd11cfad208: en=`/authors/amara-moyo/`; x-default=`/authors/amara-moyo/`
 - equivalence:2fd53dc562a1: en=`/cars/algeria/toyota/hilux/`, fr=`/fr/cars/algerie/toyota/hilux/`; x-default=`/cars/algeria/toyota/hilux/`
 - equivalence:2fe268872dd0: en=`/tools/business-insurance/angola`; x-default=`/tools/business-insurance/angola`
 - equivalence:2fe75639a104: en=`/cars/rwanda/nissan/x-trail/`, fr=`/fr/cars/rwanda/nissan/x-trail/`; x-default=`/cars/rwanda/nissan/x-trail/`
@@ -4386,6 +4387,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:410e2f610ede: en=`/agriculture/harvest-date/gabon`; x-default=`/agriculture/harvest-date/gabon`
 - equivalence:411dd54bbde3: en=`/tools/roof-calculator/`, fr=`/fr/tools/calculateur-toiture/`, sw=`/sw/zana/vifaa-vya-paa/`; x-default=`/tools/roof-calculator/`
 - equivalence:4130c99cc2a6: en=`/tools/ip-protection/`, fr=`/fr/tools/guide-protection-pi/`, sw=`/sw/zana/mpango-wa-ulinzi-wa-mali-bunifu/`; x-default=`/tools/ip-protection/`
+- equivalence:41420a872b0a: en=`/authors/idris-diallo/`; x-default=`/authors/idris-diallo/`
 - equivalence:41570d4acb89: en=`/blog/togo-paye-tax-2026/`; x-default=`/blog/togo-paye-tax-2026/`
 - equivalence:415df306ed35: en=`/cars/egypt/lexus/es/`, fr=`/fr/cars/egypte/lexus/es/`; x-default=`/cars/egypt/lexus/es/`
 - equivalence:4176645cb163: en=`/tools/health-contribution/central-african-republic`; x-default=`/tools/health-contribution/central-african-republic`
@@ -4865,6 +4867,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5790d5165ef3: en=`/tools/employment-contract/mozambique`, fr=`/fr/tools/contrat-travail/mozambique`; x-default=`/tools/employment-contract/mozambique`
 - equivalence:579e5125f4ea: en=`/agriculture/export-docs/nigeria`; x-default=`/agriculture/export-docs/nigeria`
 - equivalence:579ee7137a0a: en=`/tools/work-permit-cost/central-african-republic/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-republique-centrafricaine/`; x-default=`/tools/work-permit-cost/central-african-republic/`
+- equivalence:57a3b5ee97a9: en=`/authors/`; x-default=`/authors/`
 - equivalence:57b1e9692b76: en=`/cars/tanzania/lexus/`, fr=`/fr/cars/tanzanie/lexus/`; x-default=`/cars/tanzania/lexus/`
 - equivalence:57ca1cf46fcc: en=`/agriculture/vaccination-schedule/tunisia`; x-default=`/agriculture/vaccination-schedule/tunisia`
 - equivalence:57f32659b301: en=`/cars/algeria/hyundai/elantra/2018/`, fr=`/fr/cars/algerie/hyundai/elantra/2018/`; x-default=`/cars/algeria/hyundai/elantra/2018/`
@@ -5136,6 +5139,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:64f0d197f9ab: en=`/agriculture/farm-profit/central-african-republic`, fr=`/fr/agriculture/farm-profit/central-african-republic`, sw=`/sw/kilimo/faida-ya-shamba/central-african-republic/`; x-default=`/agriculture/farm-profit/central-african-republic`
 - equivalence:6511d8191af2: en=`/jamb/literature/2017/`; x-default=`/jamb/literature/2017/`
 - equivalence:651a5cd1de60: en=`/tools/afroatlas/country/egypt/`; x-default=`/tools/afroatlas/country/egypt/`
+- equivalence:6520e46d4090: en=`/authors/nia-adeyemi/`; x-default=`/authors/nia-adeyemi/`
 - equivalence:6524f404b4e0: sw=`/sw/zana/ushuru-kuagiza-gari/`; x-default=`/sw/zana/ushuru-kuagiza-gari/`
 - equivalence:6527fc0493c0: en=`/cars/morocco/toyota/hilux/2015/`, fr=`/fr/cars/maroc/toyota/hilux/2015/`; x-default=`/cars/morocco/toyota/hilux/2015/`
 - equivalence:65299edef6d0: en=`/agriculture/poultry-roi/kenya`; x-default=`/agriculture/poultry-roi/kenya`
@@ -7034,6 +7038,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c03f248dd38e: en=`/cars/cameroon/kia/sportage/`, fr=`/fr/cars/cameroun/kia/sportage/`; x-default=`/cars/cameroon/kia/sportage/`
 - equivalence:c05225983653: en=`/tools/employment-contract/malawi`, fr=`/fr/tools/contrat-travail/malawi`; x-default=`/tools/employment-contract/malawi`
 - equivalence:c0821db8dc29: en=`/career/`, sw=`/sw/kazi-na-ajira/`; x-default=`/career/`
+- equivalence:c08ea05d5c3b: en=`/authors/david-mensah/`; x-default=`/authors/david-mensah/`
 - equivalence:c0ba4425f3ee: en=`/cars/senegal/ford/ranger/`, fr=`/fr/cars/senegal/ford/ranger/`; x-default=`/cars/senegal/ford/ranger/`
 - equivalence:c0c12a27e84c: en=`/jamb/economics/2013/`; x-default=`/jamb/economics/2013/`
 - equivalence:c0ccb74798bf: en=`/cars/kenya/toyota/prado/2016/`, fr=`/fr/cars/kenya/toyota/prado/2016/`; x-default=`/cars/kenya/toyota/prado/2016/`

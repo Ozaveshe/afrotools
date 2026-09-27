@@ -70,6 +70,14 @@ Use this for finance, tax, business, tool, and country guides that should live u
 7. Put the newest articles near the top of the article grid.
 8. Only add to the featured row when the topic is strategically important.
 
+### Author and post-publish link passes
+
+- The four current bylines are David Mensah, Amara Moyo, Nia Adeyemi, and Idris Diallo. The last three are disclosed editorial pen names. `npm run blog:authors:build` links each article byline and Article schema to a first-party profile; `npm run blog:authors:check` detects drift. The credited name does not imply a professional qualification or a fresh fact check.
+- Do not add an external personal-profile URL until that exact profile exists and is verified. The author pages link to the existing AfroTools company LinkedIn page, clearly labeled as the company account.
+- After publishing a new article, review its outbound guide links. Choose one to three older guides where a return link genuinely helps the reader, then create `data/content/blog-backlinks/<new-slug>.json` with `slug` and `from` fields. The new article must already link to each selected older guide.
+- `npm run blog:links:build` is a separate post-publish pass. It adds crawlable return links in older articles after article generation. Run `npm run blog:links:check` and `npm run blog:links:audit` after it. The ledger is curated; do not link every article pair or change article modification dates for a link-only update.
+- The main blog hub and author pages are additional discovery paths. The link audit's article-inbound count is narrower: it measures links from one article to another.
+
 ### Main blog content standards
 
 - Prefer practical and current topics over generic thought pieces.
@@ -89,6 +97,7 @@ Use this for finance, tax, business, tool, and country guides that should live u
 - Run `npm run blog:feed:check` to catch feed drift without writing files.
 - Run `npm run blog:verify` for the static blog backend checks: hub count, duplicate cards, canonical routes, JSON-LD validity, RSS item links, and latest-post feed coverage.
 - `npm run check-links` for new article paths and hub links
+- `npm run blog:authors:check` and `npm run blog:links:check` for author and return-link consistency
 - `npm test` when the change is broader than one article card
 
 ## AfroStream News Workflow
@@ -171,7 +180,8 @@ After publishing, verify:
 
 For the current content operating model, the default cadence is:
 
-- 2 main blog posts per day
+- 1 new main blog post per day in the AM, when source and duplicate checks pass
+- 1 PM pass on an existing blog post for a substantive source-backed refresh and reciprocal internal links
 - 2 AfroStream news posts per day
 - 2 localized content items per day through the language rotation batch
 - creative/news can exceed the baseline when the creator cycle is active
@@ -185,8 +195,9 @@ A safe operating pattern is two batches per day:
 
 ### Static automation release contract
 
-- The 09:00 AM and 17:00 PM static-blog slots are new-post-only. Refreshing an existing slug does not satisfy either daily slot.
-- Existing-article refreshes run in the separate weekly refresh lane and must preserve the slug, canonical, hub-card uniqueness, and RSS uniqueness.
+- The 09:00 AM static-blog slot creates one new post when it clears source and duplicate checks. A refresh does not satisfy that slot.
+- The 17:00 PM static-blog slot refreshes an existing post and runs the separate internal-link pass. It does not create a second new post. Preserve the slug, canonical, hub-card uniqueness, and RSS uniqueness.
+- The separate weekly refresh lane can still handle deeper source-sensitive backlog work.
 - Every successful static content run must commit on a named `automation/<automation-id>-YYYY-MM-DD` branch and push that branch. A detached-only commit is not a ready batch.
 - Each content automation writes a machine-readable `handoff.json` under its `$CODEX_HOME/automations/<automation-id>/` folder. The handoff records the branch, commit, slug, files, feed state, validations, and one of `ready`, `blocked`, or `consumed`.
 - Rate-limit exhaustion, interruption, missing terminal output, validation failure, push failure, or a missing handoff is a failed run. It must not be reported as a successful no-op.
@@ -209,6 +220,7 @@ The `Daily Blog Image Queue` automation runs after the content batches. It shoul
 ### Main blog
 
 - Start from `docs/BLOG-STRATEGY-2026.md` for current pillars, refresh queues, and priority topic families.
+- Before choosing a new topic, crawl the relevant AfroTools blog articles, category pages, and working tools. Compare the intended search question with a small set of current competing pages, recording their URLs and the useful gap to fill. Do not copy competitor prose or treat a keyword tool's estimate as Search Console performance.
 - Prioritize tool-adjacent topics that can link into existing calculators and hubs.
 - Avoid publishing two posts that cannibalize the same keyword unless one is clearly an update or a different intent.
 - Favor country-specific or rules-based topics when they create search entry points for tools.

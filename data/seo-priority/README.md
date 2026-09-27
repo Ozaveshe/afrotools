@@ -9,3 +9,5 @@ npm run seo:priority:report
 The reporter accepts Search Console or Bing-style CSV headers where available, including page/url, query, clicks, impressions, CTR, average position, citation count, and AI grounding query fields. Generated reports are written to `reports/seo-priority-report.json` by default.
 
 Do not commit private raw exports unless they have been intentionally sanitized for the repo.
+
+`blogRefreshCandidates` contains only measured `/blog/` pages with average position 8 to 20 and at least 100 impressions. Use it as an editorial review queue, not a ranking forecast. Check page-level queries and primary sources before changing any claim or `dateModified`. If no CSV is present, the candidate list is empty.
