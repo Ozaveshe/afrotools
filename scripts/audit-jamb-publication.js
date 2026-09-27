@@ -4,6 +4,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { buildPublications, validatePublication } = require('./lib/jamb-publication');
+const { publications: originalPublications, SOURCE: ORIGINAL_SOURCE } = require('./build-jamb-original-practice');
 const { questionFingerprint: digest } = require('./lib/jamb-content-trust');
 const { existingRoutes, renderYear, validatePage } = require('./build-jamb-reviewed-pages');
 const ROOT = path.resolve(__dirname, '..');
@@ -16,7 +17,13 @@ function audit(target = path.join(ROOT, 'dist'), root = ROOT) {
     validatePublication(actual, expected.revision);
     if (digest(actual) !== digest(payload)) throw new Error('Published JAMB data differs from reviewed source: ' + name);
   }
-  const allowed = new Set([...Object.keys(expected.files), 'universities.json']);
+  const original = originalPublications(read(root, ORIGINAL_SOURCE));
+  for (const [name, payload] of Object.entries(original.outputs)) {
+    const actual = read(target, name);
+    validatePublication(actual, original.revision);
+    if (digest(actual) !== digest(payload)) throw new Error('Published original JAMB practice differs from reviewed source: ' + name);
+  }
+  const allowed = new Set([...Object.keys(expected.files), ...Object.keys(original.outputs).map(name => name.replace(/^data\/jamb\//, '')), 'universities.json']);
   function walk(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const file = path.join(dir, entry.name);
