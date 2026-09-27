@@ -12,6 +12,16 @@ test('selected WAEC component evidence matches current briefs without claiming c
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q7-q8').expectedIds,[7,8].map(n=>'waec-2021-mathematics-p2-q'+n));
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q9-q10').expectedIds,[9,10].map(n=>'waec-2021-mathematics-p2-q'+n));
+ const q12q13=manifest.components.find(c=>c.id==='waec-2021-maths-q12-q13');
+ assert.deepEqual(q12q13.expectedIds,[12,13].map(n=>'waec-2021-mathematics-p2-q'+n));
+ assert.equal(q12q13.complete_selected_prompts,true);assert.equal(q12q13.complete_paper,false);
+ assert.match(q12q13.rights_basis,/not a reuse licence/);
+ assert.deepEqual(q12q13.official_images.map(row=>row.question_number),[12,13]);
+ for(const image of q12q13.official_images){
+  for(const key of ['prompt_sha256','worked_sha256'])assert.match(image[key],/^[a-f0-9]{64}$/);
+  assert.notEqual(image.prompt_sha256,image.worked_sha256);
+  assert.equal(manifest.sources.find(row=>row.id==='waec-2021-mathematics-p2-q'+image.question_number).sha256,image.prompt_sha256);
+ }
  const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
  assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
  assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);
@@ -101,5 +111,44 @@ test('WAEC 2021 Q9–Q10 guides match independent geometry, bearing and ladder c
    assert.notEqual(item.figureCaption,source.figureCaption);
    assert.equal(item.checks.length,source.checks.length);assert.equal(item.source,source.source);
   }
+ }
+});
+
+test('WAEC 2021 Q12–Q13 retain every source subpart and independently verified result',()=>{
+ const ids=[12,13].map(n=>'waec-2021-mathematics-p2-q'+n);
+ const [angles,interest]=ids.map(id=>bank.items.find(q=>q.id===id));
+ assert.ok(angles&&interest);
+ for(const q of [angles,interest]){
+  assert.equal(q.source,`https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq${q.number}.html`);
+  assert.match(q.sourceUse,/Not a complete paper/);
+  assert.ok(q.figureAlt.length>100&&q.figureCaption.length>35);
+ }
+ const part=180/(2+3+3),atQ=2*part,atP=3*part,sameChord=26;
+ const pqr=atQ+sameChord,rpq=atP-sameChord,prq=180-pqr-rpq;
+ assert.deepEqual([pqr,rpq,prq],[71,41.5,67.5]);
+ assert.equal(angles.answer,'∠PQR = 71°; ∠RPQ = 41.5°; ∠PRQ = 67.5°; x = −2 or 8.');
+ const roots=[3-Math.sqrt(29-(7-5)**2),3+Math.sqrt(29-(7-5)**2)];
+ assert.deepEqual(roots,[-2,8]);
+ for(const x of roots)assert.ok(Math.abs(Math.hypot(7-5,3-x)-Math.sqrt(29))<1e-12);
+ const elapsedYears=4-1,balance=1000*(1.04)**elapsedYears;
+ assert.equal(elapsedYears,3);assert.equal(balance.toFixed(2),'1124.86');
+ const cad=180-90-50,abc=180-50,bac=(180-abc)/2;
+ assert.equal(bac+cad,65);
+ assert.equal(interest.answer,'Balance = $1,124.86; ∠BAD = 65°.');
+ assert.match(interest.steps[0],/three annual compounding periods, not four/);
+ assert.equal(bank.items.filter(q=>q.exam==='WAEC'&&q.subject==='Mathematics').length,41);
+ const {writtenBank}=require('../scripts/build-ssce-practice-locales');
+ for(const locale of ['fr','sw']){
+  const translated=writtenBank(locale);
+  for(const q of [angles,interest]){
+   const item=translated.items.find(row=>row.id===q.id);
+   assert.ok(item);assert.notEqual(item.prompt,q.prompt);assert.notEqual(item.answer,q.answer);
+   assert.equal(item.source,q.source);assert.equal(item.checks.length,q.checks.length);
+   assert.notEqual(item.figureAlt,q.figureAlt);assert.notEqual(item.figureCaption,q.figureCaption);
+  }
+  const translatedAngles=translated.items.find(row=>row.id===angles.id).answer;
+  const translatedInterest=translated.items.find(row=>row.id===interest.id).answer;
+  assert.match(translatedAngles,/71°.*41[,.]5°.*67[,.]5°.*−2.*8/);
+  assert.match(translatedInterest,/1[ ,]?124[,.]86.*65°/);
  }
 });

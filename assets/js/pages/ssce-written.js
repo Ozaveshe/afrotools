@@ -45,6 +45,17 @@
       add('path',{d:'M165 236 L151 231 L146 245',class:'written-line'});
       add('path',{d:'M280 125 L280 57 M280 57 L274 68 M280 57 L286 68',class:'written-line'});
       [['M',59,218],['C',159,274],['D',209,102],['3 km',99,226],['5 km',192,190],['N',274,46]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
+    }else if(kind==='circle-equal-chords'){
+      add('circle',{cx:160,cy:140,r:100,class:'written-line'});
+      add('path',{d:'M73 190 L186 43 L259 154 L210 227 Z M73 190 L259 154 M186 43 L210 227',class:'written-line'});
+      add('path',{d:'M121 110 L135 122 M190 135 L206 133',class:'written-line'});
+      [['P',52,199],['Q',180,30],['R',266,158],['S',208,249],['26°',102,211]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
+    }else if(kind==='diameter-equal-chords'){
+      add('circle',{cx:160,cy:140,r:105,class:'written-line'});
+      add('path',{d:'M61 104 L124 41 L212 49 L259 176 L61 104',class:'written-line'});
+      add('path',{d:'M85 76 L97 84 M163 38 L161 52',class:'written-line'});
+      add('circle',{cx:160,cy:140,r:2.5,fill:'currentColor'});
+      [['A',44,104],['B',116,29],['C',217,43],['D',267,188],['O',147,134],['50°',224,170]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
     }else{
       add('path',{d:'M40 50 L40 260 L250 260 A210 210 0 0 0 40 50',class:'written-sector'});
       add('path',{d:'M145 78.135 A210 210 0 0 1 250 260 L145 260 Z',class:'written-shade'});
