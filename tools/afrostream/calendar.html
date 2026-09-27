@@ -330,6 +330,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   overflow: hidden;
   border: 1px solid #e5e7eb;
 }
+.as-week-scroll-hint { display: none; }
+.as-week-scroll { max-width: 100%; }
+.as-week-scroll:focus-visible { outline: 2px solid #0063CC; outline-offset: 3px; }
 .as-week-slot-label {
   padding: 12px 10px;
   font-size: .6875rem;
@@ -737,6 +740,11 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 }
 
 /* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 960px) {
+  /* The shared mobile grid rule uses !important; keep calendar tracks intact. */
+  #asCalendarContainer .as-cal-grid { grid-template-columns: repeat(7, minmax(0, 1fr)) !important; }
+  #asCalendarContainer .as-week-grid { grid-template-columns: 80px repeat(7, minmax(0, 1fr)) !important; }
+}
 @media (max-width: 900px) {
   .as-week-grid { grid-template-columns: 80px repeat(7, 1fr); }
   .as-week-slot-label { font-size: .6rem; padding: 8px 4px; }
@@ -747,11 +755,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   .as-cal-hero h1 { font-size: 1.75rem; }
   .as-cal-filters { padding: 14px 16px; }
   .as-cal-grid { border-radius: 12px; }
+  .as-cal-dow { padding: 8px 0; font-size: .625rem; letter-spacing: 0; }
   .as-cal-cell { min-height: 64px; padding: 4px; }
   .as-cal-day-num { font-size: .6875rem; }
   .as-cal-dot { width: 6px; height: 6px; }
   .as-cal-preview { display: none; }
-  .as-week-grid { grid-template-columns: 60px repeat(7, 1fr); font-size: .6875rem; }
+  .as-week-scroll-hint { display: block; margin: 0 0 8px; color: #475569; font-size: .75rem; }
+  .as-week-scroll { overflow-x: auto; overscroll-behavior-inline: contain; }
+  #asCalendarContainer .as-week-grid { min-width: 600px; grid-template-columns: 72px repeat(7, minmax(74px, 1fr)) !important; font-size: .6875rem; }
   .as-week-slot-label { font-size: .5rem; }
   .as-week-day-header { font-size: .6875rem; padding: 8px 2px; }
   .as-week-block { padding: 4px 6px; font-size: .6875rem; }
@@ -1201,7 +1212,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     weekStart.setDate(ref.getDate() - dayOfWeek);
 
     var slots = ['Morning (6\u201312)', 'Afternoon (12\u201318)', 'Evening (18\u201324)'];
-    var h = '<div class="as-week-grid">';
+    var h = '<p class="as-week-scroll-hint" id="asWeekScrollHint">Scroll sideways to see all seven days.</p>' +
+      '<div class="as-week-scroll" role="region" aria-label="Weekly stream schedule" aria-describedby="asWeekScrollHint" tabindex="0"><div class="as-week-grid">';
     h += '<div class="as-week-slot-label"></div>';
     for (var wd = 0; wd < 7; wd++) {
       var dd = new Date(weekStart);
@@ -1236,7 +1248,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         h += '</div>';
       }
     });
-    h += '</div>';
+    h += '</div></div>';
     return h;
   }
 
