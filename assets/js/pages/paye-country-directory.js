@@ -131,6 +131,32 @@
     };
   }
 
+  function resolvePrefillCountry(payload, now) {
+    if (!payload || payload.type !== 'afrotools_ai_prefill' || payload.toolId !== 'paye-calculator' || payload.adapterId !== 'paye-calculator-prefill') return null;
+    var expiresAt = Number(payload.expiresAt);
+    if (!Number.isFinite(expiresAt) || expiresAt <= now) return null;
+    var inputs = payload.normalizedInputs || {};
+    var code = String(inputs.countryCode || '').trim().toUpperCase();
+    var name = String(inputs.country || '').trim().toLowerCase();
+    var byCode = countries.find(function (item) { return item.code === code; }) || null;
+    var byName = countries.find(function (item) { return item.name.toLowerCase() === name; }) || null;
+    if (byCode && byName && byCode.code !== byName.code) return null;
+    return byCode || byName;
+  }
+
+  function readPrefillCountry(doc) {
+    try {
+      var view = doc.defaultView;
+      if (!view || !view.sessionStorage || !view.location) return null;
+      var params = new view.URLSearchParams(view.location.search || '');
+      if (params.get('source') !== 'ask' || params.get('prefill') !== '1') return null;
+      var payload = JSON.parse(view.sessionStorage.getItem('afrotools.aiPrefillDraft') || 'null');
+      return resolvePrefillCountry(payload, Date.now());
+    } catch (err) {
+      return null;
+    }
+  }
+
   function init(documentRef) {
     var doc = documentRef || (typeof document !== 'undefined' ? document : null);
     if (!doc) return;
@@ -149,6 +175,9 @@
       option.textContent = french ? (frenchNames[country.code] || country.name) : (swahili ? (swahiliNames[country.code] || country.name) : country.name);
       select.appendChild(option);
     });
+
+    var prefilledCountry = readPrefillCountry(doc);
+    if (prefilledCountry) select.value = prefilledCountry.code;
 
     function update() {
       var match = resolveCountry(select.value, lang);
@@ -189,5 +218,5 @@
     else init(document);
   }
 
-  return { countries: countries, frenchNames: frenchNames, swahiliNames: swahiliNames, swahiliRoutes: swahiliRoutes, resolveCountry: resolveCountry, init: init };
+  return { countries: countries, frenchNames: frenchNames, swahiliNames: swahiliNames, swahiliRoutes: swahiliRoutes, resolveCountry: resolveCountry, resolvePrefillCountry: resolvePrefillCountry, init: init };
 });

@@ -101,6 +101,28 @@ test("salary intake asks for pay period without guessing monthly", async ({ page
   expect(state.missingInputs).toContain("payPeriod");
 });
 
+test("PAYE handoff keeps the stated country in the country directory", async ({ page }) => {
+  await quietExternalNoise(page);
+  await page.goto("/ai/?q=Calculate%20Uganda%20take-home%20pay&router=off", { waitUntil: "domcontentloaded" });
+
+  const card = page.locator("[data-workflow-card]").first();
+  await expect(card).toContainText("PAYE Calculator");
+  const state = await page.evaluate(() => window.AfroToolsAICommandPage.getState());
+  expect(state.extractedInputs.country).toBe("Uganda");
+  await card.locator(".ai-open").click();
+
+  await page.waitForURL(/\/tools\/paye-calculator\/\?source=ask&prefill=1/);
+  const storedCountry = await page.evaluate(() => JSON.parse(sessionStorage.getItem("afrotools.aiPrefillDraft") || "null")?.normalizedInputs?.country);
+  expect(storedCountry).toBe("Uganda");
+  await expect(page.locator("#paye-country")).toHaveValue("UG");
+  await expect(page.locator("#paye-country-open")).toHaveAttribute("href", "/uganda/ug-paye");
+  await expect(page.locator("#paye-country-open")).toBeVisible();
+  expect(page.url()).not.toContain("Uganda");
+
+  await page.goto("/tools/paye-calculator/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#paye-country")).toHaveValue("");
+});
+
 test("real-life local routing covers common intake prompts", async ({ page }) => {
   await quietExternalNoise(page);
 
