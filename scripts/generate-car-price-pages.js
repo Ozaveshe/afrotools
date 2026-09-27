@@ -473,7 +473,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
       make: vehicle.make,
       pageType: "vehicle",
       vehicleObj: vehicle,
-      noindex: !observation,
+      noindex: !observation || observation.searchIndexEligible === false,
       lastmod: observation?.reviewedAt || contentRevisionDate
     });
     // Same vehicle data with different framing — keep for users/app deep links,

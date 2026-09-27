@@ -51,12 +51,20 @@ assert.ok(transport.includes("/cars/"), "transport hub links car directory"), as
 const sitemap = read("sitemap-cars.xml");
 
 const observations = JSON.parse(read("data/cars/market-observations.json")).observations;
+const indexedObservations = observations.filter((item) => item.searchIndexEligible !== false);
 const vehicleCatalog = JSON.parse(read("data/cars/price-intelligence.json")).vehicles;
 for (const observation of observations) {
   const vehicle = vehicleCatalog.find((item) => item.id === observation.vehicleId);
   const route = `/cars/nigeria/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
   assert.ok(main.includes(`href="${route}"`), `directory links observed ${observation.vehicleId}`);
-  assert.ok(sitemap.includes(`https://afrotools.com${route}`), `sitemap includes observed ${observation.vehicleId}`);
+  const page = read(`${route}index.html`.replace(/^\//, ""));
+  if (observation.searchIndexEligible === false) {
+    assert.ok(page.includes('content="noindex, follow"'), `thin observed ${observation.vehicleId} remains noindex`);
+    assert.ok(!sitemap.includes(`https://afrotools.com${route}`), `thin observed ${observation.vehicleId} stays out of sitemap`);
+  } else {
+    assert.ok(page.includes('content="index, follow"'), `observed ${observation.vehicleId} is indexable`);
+    assert.ok(sitemap.includes(`https://afrotools.com${route}`), `sitemap includes observed ${observation.vehicleId}`);
+  }
 }
 const corolla = read("cars/nigeria/toyota/corolla/2018/index.html");
 assert.ok(corolla.includes("asking prices in Lagos State"), "observed page explains the dated local sample");
@@ -70,6 +78,6 @@ assert.ok(!sitemap.includes("https://afrotools.com/cars/south-africa/"), "countr
 assert.ok(read("cars/south-africa/index.html").includes('content="noindex, follow"'), "unobserved country hub remains browsable but noindex");
 assert.ok(read("cars/south-africa/toyota/corolla/2018/index.html").includes('content="noindex, follow"'), "unobserved detail is noindex");
 assert.ok(read("cars/nigeria/toyota/index.html").includes('content="noindex, follow"'), "thin make page is noindex");
-assert.strictEqual((sitemap.match(/<url>/g) || []).length, 2 + observations.length, "sitemap includes root, observed country, and observed details only");
+assert.strictEqual((sitemap.match(/<url>/g) || []).length, 2 + indexedObservations.length, "sitemap includes root, observed country, and search-ready observed details only");
 assert.ok(read("sitemap-index.xml").includes("sitemap-cars.xml"), "sitemap index includes cars sitemap");
 console.log("cars-routes.test.js passed");

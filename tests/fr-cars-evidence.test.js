@@ -12,9 +12,9 @@ function read(route) {
   return fs.readFileSync(path.join(root, route.replace(/^\/+|\/+$/g, ''), 'index.html'), 'utf8');
 }
 
-function isFresh(reviewedAt) {
-  const ageDays = (Date.now() - Date.parse(`${reviewedAt}T00:00:00Z`)) / 86400000;
-  return ageDays >= 0 && ageDays <= 14;
+function isSearchReady(observation) {
+  const ageDays = (Date.now() - Date.parse(`${observation.reviewedAt}T00:00:00Z`)) / 86400000;
+  return observation.searchIndexEligible !== false && ageDays >= 0 && ageDays <= 14;
 }
 
 test('French car directory links dated market samples and the editable import quote', () => {
@@ -45,7 +45,7 @@ test('French model pages index only recent local observations and preserve sourc
     assert.ok(html.includes(observation.reviewedAt), `${french} shows the review date`);
     assert.ok(html.includes(`${observation.sampleSize} annonces`), `${french} shows sample size`);
     assert.ok(html.includes('prix de vente conclu'), `${french} distinguishes asks from completed sales`);
-    if (isFresh(observation.reviewedAt)) {
+    if (isSearchReady(observation)) {
       assert.match(html, /name="robots" content="index, follow"/);
       assert.ok(englishHtml.includes(`<link rel="alternate" hreflang="fr" href="${frenchUrl}">`));
     } else {

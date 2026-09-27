@@ -407,8 +407,12 @@ function observationFor(countryCode, vehicle) {
   return observations.find((row) => row.countryCode === countryCode && row.vehicleId === vehicle.id) || null;
 }
 
+function observationLabel(observation, vehicle) {
+  return observation.sampleVariantFr || observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
+}
+
 function freshObservation(observation) {
-  if (!observation || !/^\d{4}-\d{2}-\d{2}$/.test(observation.reviewedAt || "")) return false;
+  if (!observation || observation.searchIndexEligible === false || !/^\d{4}-\d{2}-\d{2}$/.test(observation.reviewedAt || "")) return false;
   const ageDays = (Date.now() - Date.parse(`${observation.reviewedAt}T00:00:00Z`)) / 86400000;
   return ageDays >= 0 && ageDays <= 14;
 }
@@ -604,7 +608,7 @@ function renderHub() {
     if (!vehicle || !country) return null;
     return {
       route: `/fr/cars/${country.frSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`,
-      label: row.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+      label: observationLabel(row, vehicle),
       observation: row
     };
   }).filter(Boolean);
@@ -712,7 +716,7 @@ function renderCountryPage(country) {
   const rows = localObservations.map(({ observation, vehicle }) => {
     const modelRoute = `/fr/cars/${country.frSlug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
     return `<tr>
-      <td data-label="Voiture"><a href="${modelRoute}">${escapeHtml(observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a></td>
+      <td data-label="Voiture"><a href="${modelRoute}">${escapeHtml(observationLabel(observation, vehicle))}</a></td>
       <td data-label="Médiane demandée">${money(observation.median, observation.currency)}</td>
       <td data-label="Quartiles observés">${money(observation.lowerQuartile, observation.currency)}–${money(observation.upperQuartile, observation.currency)}</td>
       <td data-label="Relevé">${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Source</a></td>
@@ -947,7 +951,7 @@ function renderModelPage(page) {
       <div class="fr-cars-shell">
         <span class="fr-kicker">Fiche voiture</span>
         <h1>${escapeHtml(vehicleName)} ${escapeHtml(place)}</h1>
-        <p>${observation ? `Au ${escapeHtml(observation.reviewedAt)}, un petit relevé de ${observation.sampleSize} annonces${observation.sampleVariant ? ` pour ${escapeHtml(observation.sampleVariant)}` : ""} donnait un prix demandé médian de ${money(observation.median, observation.currency)}. Ce n'est pas un prix de vente conclu.` : "Aucun prix local observé et daté n'est disponible pour cette voiture. Demandez un devis vendeur avant de comparer."}</p>
+        <p>${observation ? `Au ${escapeHtml(observation.reviewedAt)}, un petit relevé de ${observation.sampleSize} annonces${observation.sampleVariant ? ` pour ${escapeHtml(observationLabel(observation, ctx.vehicle))}` : ""} donnait un prix demandé médian de ${money(observation.median, observation.currency)}. Ce n'est pas un prix de vente conclu.` : "Aucun prix local observé et daté n'est disponible pour cette voiture. Demandez un devis vendeur avant de comparer."}</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/">Voir ${escapeHtml(country.frName)}</a>
           <a class="fr-cars-button secondary" href="/cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}/">Voir la fiche complète en anglais</a>

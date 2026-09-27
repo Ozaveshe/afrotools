@@ -23,6 +23,12 @@ for (const item of marketData.observations || []) {
   if (item.sampleVariant !== undefined && (typeof item.sampleVariant !== "string" || !item.sampleVariant.trim())) {
     problems.push(`${key}: invalid sampled variant`);
   }
+  if (item.sampleVariantFr !== undefined && (typeof item.sampleVariantFr !== "string" || !item.sampleVariantFr.trim())) {
+    problems.push(`${key}: invalid French sampled variant`);
+  }
+  if (item.searchIndexEligible !== undefined && typeof item.searchIndexEligible !== "boolean") {
+    problems.push(`${key}: searchIndexEligible must be a boolean`);
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(item.reviewedAt || "") || !Number.isFinite(Date.parse(item.reviewedAt))) problems.push(`${key}: invalid review date`);
   else if (new Date(item.reviewedAt) > now) problems.push(`${key}: review date is in the future`);
   if (!Number.isInteger(item.sampleSize) || item.sampleSize < 3) problems.push(`${key}: sample count too small or missing`);

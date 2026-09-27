@@ -21,7 +21,7 @@ const importData = ImportEngine.mergeData(
 assert.ok(vehicle, "market observation matches a catalog vehicle");
 assert.ok(observation.lowerQuartile < observation.median && observation.median < observation.upperQuartile);
 assert.match(observation.sourceUrl, /^https:\/\/jiji\.ng\/lagos\/cars\//);
-assert.ok(observations.length >= 10, "the dated Nigeria marketplace sample set has expanded");
+assert.ok(observations.length >= 11, "the dated Nigeria marketplace sample set has expanded");
 assert.ok(observations.every((item) => item.sampleSize >= 3 && item.sourceUrl && item.reviewedAt && item.method && item.limitations));
 for (const vehicleId of ["mercedes-e-class-2017", "lexus-rx-2017", "lexus-es-2016"]) {
   assert.ok(observations.some((item) => item.vehicleId === vehicleId && item.countryCode === "NG" && item.sampleVariant), `${vehicleId} identifies the sampled trim`);
@@ -32,6 +32,11 @@ const oldCamryObservation = observations.find((item) => item.vehicleId === "toyo
 assert.equal(oldCamryObservation.condition, "Local Used");
 assert.equal(oldCamryObservation.sampleSize, 10);
 assert.equal(oldCamryObservation.median, 4600000);
+const thinCrvObservation = observations.find((item) => item.vehicleId === "honda-cr-v-2020" && item.countryCode === "NG");
+assert.equal(thinCrvObservation.sampleSize, 5);
+assert.equal(thinCrvObservation.median, 35000000);
+assert.equal(thinCrvObservation.searchIndexEligible, false, "thin CR-V evidence remains buyer-visible without an indexable vehicle page");
+assert.equal(thinCrvObservation.sampleVariantFr, "2020 Honda CR-V, version non vérifiée");
 
 const withObservation = structuredClone(data);
 withObservation.localMarketPrices.push({
