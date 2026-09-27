@@ -376,9 +376,9 @@
         <div class="field-help" id="currencyHelp">Use the currency both families are discussing. This does not fetch live exchange rates.</div>
       </div>
       <div class="field">
-        <label for="familyExpectation">Known family-agreed cash amount (optional)</label>
+        <label for="familyExpectation">Agreed cash instead of livestock estimate (optional)</label>
         <input type="number" id="familyExpectation" value="0" min="0" step="1" inputmode="decimal" aria-describedby="familyExpectationHelp">
-        <div class="field-help" id="familyExpectationHelp">Enter a known cash amount, or leave 0 to use the editable livestock reference.</div>
+        <div class="field-help" id="familyExpectationHelp">Enter the cash amount agreed by the families to replace the livestock estimate. Leave 0 to calculate from the editable livestock reference.</div>
       </div>
     </div>
     <div class="planner-step"><span>2</span><div><strong>Edit the livestock or cash reference</strong><small>Use only what has actually been discussed. The starting figures are examples, not recommendations.</small></div></div>
@@ -733,7 +733,7 @@ function calculate() {
     breakdown = [
       ['Family-entered livestock reference', cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
       ['Additional cash component', money(symbol, extra)],
-      ['Family expectation override', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Agreed cash instead of livestock', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingency)],
@@ -750,7 +750,7 @@ function calculate() {
       ['Livestock / cattle equivalent', cattleCount + ' head'],
       ['Value per head', money(symbol, cattlePrice)],
       ['Livestock value', money(symbol, livestockValue)],
-      ['Family expectation override', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Agreed cash instead of livestock', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingencyGeneral)],
