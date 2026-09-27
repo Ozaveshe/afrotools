@@ -89,6 +89,44 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
   expect(errors).toEqual([]);
 });
 
+test('mobile CBT keeps question navigation reachable before analytics consent is chosen', async ({ page }) => {
+  const { review, ...base } = questions()[0];
+  const fixture = bank([1, 2, 3].map(number => reviewed({
+    ...base, id: `english-2025-consent-${number}`, subject: 'english', year: 2025
+  })));
+  await page.route('**/data/jamb/pools/*.json', route => route.fulfill({
+    json: route.request().url().endsWith('/index.json') ? fixture.index : fixture.pool
+  }));
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/jamb/cbt/?subject=english&year=2025', { waitUntil: 'load' });
+  await expect(page.locator('#afro-cookie-consent')).toBeVisible();
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q1');
+  await expect(page.locator('#afro-cookie-consent')).toBeHidden();
+  await page.evaluate(() => {
+    if (!document.getElementById('afro-pwa-banner')) {
+      const prompt = document.createElement('div');
+      prompt.id = 'afro-pwa-banner';
+      prompt.textContent = 'Install AfroTools';
+      document.body.appendChild(prompt);
+    }
+  });
+  await expect(page.locator('#afro-pwa-banner')).toBeHidden();
+  await page.keyboard.press('PageDown');
+  await page.locator('#cbt-next').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q2');
+  await expect(page).toHaveURL(/\/jamb\/cbt\//);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.keyboard.press('PageDown');
+  await page.locator('#cbt-next').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q3');
+  await page.locator('#cbt-submit-top').click();
+  await page.locator('#confirm-submit-btn').click();
+  await expect(page.locator('#afro-cookie-consent')).toBeVisible();
+  await expect(page.locator('#afro-pwa-banner')).toBeVisible();
+});
+
 test('2025 Mathematics collection opens a subject-only CBT with raw score and explanations', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
