@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="cuisine-intelligence.css?v=d0ebe756">
 <link rel="stylesheet" href="responsive-fixes.css?v=f72d0d62">
 <style>
+  #recipes-more-wrap[hidden]{display:none}
   .ak-planner-section{padding:0 20px 56px;background:#fff}
   .ak-planner-card{max-width:1120px;margin:0 auto;border:1px solid rgba(124,58,35,0.14);border-radius:8px;background:linear-gradient(180deg,#fff 0%,#fff7ed 100%);padding:24px;box-shadow:0 14px 34px rgba(38,24,15,0.06)}
   .ak-planner-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}
@@ -1492,11 +1493,12 @@
 
   function shoppingBucket(name) {
     var value = String(name || '').toLowerCase();
-    if (/chicken|beef|fish|goat|lamb|egg|tilapia|shrimp|prawn|meat|stockfish|crayfish|sausage|mutton|turkey/.test(value)) return 'Protein';
-    if (/rice|maize|flour|cassava|yam|plantain|potato|macaroni|pasta|couscous|millet|sorghum|beans|lentils|peas|chickpeas|bread|garri|fufu|semolina/.test(value)) return 'Grains';
-    if (/oil|butter|milk|cream|water|vinegar|stock|coconut|yogurt|broth|juice/.test(value)) return 'Liquids';
-    if (/tomato|pepper|onion|garlic|ginger|greens|leaf|leaves|spinach|okra|carrot|cabbage|eggplant|aubergine|vegetable|avocado/.test(value)) return 'Vegetables';
-    if (/salt|curry|thyme|cumin|spice|seasoning|bay|berbere|turmeric|paprika|saffron|bouillon|maggi|knorr|chili|clove|peppercorn|nutmeg|cinnamon/.test(value)) return 'Spices';
+    if (/\b(?:vanilla beans?|alligator pepper)\b/.test(value)) return 'Spices';
+    if (/\b(?:chicken|beef|fish|goat|lamb|eggs?|tilapia|shrimp|prawn|meat|stockfish|crayfish|sausage|mutton|turkey|lobster|crab|oyster|mussel|clam|periwinkle)s?\b/.test(value)) return 'Protein';
+    if (/\b(?:rice|maize|flour|cassava|yam|plantain|potato|macaroni|pasta|couscous|millet|sorghum|beans?|lentils?|peas?|chickpeas?|bread|garri|fufu|semolina)\b/.test(value)) return 'Grains';
+    if (/\b(?:oil|butter|milk|cream|water|vinegar|stock|coconut|yogurt|broth|juice)\b/.test(value)) return 'Liquids';
+    if (/\b(?:tomato|pepper|onion|garlic|ginger|greens|leaf|leaves|waterleaf|spinach|okra|carrot|cabbage|eggplant|aubergine|vegetable|avocado)s?\b/.test(value)) return 'Vegetables';
+    if (/\b(?:salt|curry|thyme|cumin|spice|seasoning|bay|berbere|turmeric|paprika|saffron|bouillon|maggi|knorr|chili|clove|peppercorn|nutmeg|cinnamon)\b/.test(value)) return 'Spices';
     if (/lemon|lime|herb|coriander|parsley|cilantro|spring onion|scallion|banana|mint|garnish/.test(value)) return 'Garnish';
     return 'Pantry';
   }
@@ -1541,20 +1543,35 @@
   function formatShoppingAmount(value, unit) {
     var amount = Number(value || 0);
     if (!Number.isFinite(amount) || amount <= 0) return '';
+    if (/^(?:whole|small|medium|large|each|pieces?|cloves?|heads?|bunch(?:es)?|pods?|stalks?)$/i.test(unit || '')) {
+      return String(Math.ceil(amount - 1e-9));
+    }
+    if (/^cups?$/i.test(unit || '')) {
+      var denominator = amount >= 2 ? 4 : 8;
+      var parts = Math.ceil(amount * denominator - 1e-9);
+      var whole = Math.floor(parts / denominator);
+      var remainder = parts % denominator * (8 / denominator);
+      var fractions = ['', '⅛', '¼', '⅜', '½', '⅝', '¾', '⅞'];
+      return (whole ? String(whole) : '') + fractions[remainder];
+    }
     if (/^(g|gram|grams|ml|millilitre|millilitres)$/i.test(unit || '')) {
-      return amount >= 10 ? String(Math.round(amount)) : String(Math.round(amount * 10) / 10);
+      return amount >= 10 ? String(Math.ceil(amount - 1e-9)) : String(Math.ceil(amount * 10 - 1e-9) / 10);
     }
     if (/^(kg|kilogram|kilograms|l|litre|litres|liter|liters)$/i.test(unit || '')) {
-      return String(Math.round(amount * 10) / 10);
+      return String(Math.ceil(amount * 10 - 1e-9) / 10);
     }
-    if (amount >= 100) return String(Math.round(amount));
-    if (amount >= 10) return String(Math.round(amount * 10) / 10);
-    return AK.formatAmount(amount);
+    if (amount >= 100) return String(Math.ceil(amount - 1e-9));
+    if (amount >= 10) return String(Math.ceil(amount * 10 - 1e-9) / 10);
+    return AK.formatAmount(Math.ceil(amount * 8 - 1e-9) / 8);
   }
 
   function groupedShoppingLine(item) {
     var amount = item.hasAmount ? formatShoppingAmount(item.amount, item.unit) + (item.unit ? ' ' + item.unit : '') + ' ' : '';
-    return amount + item.name + ' (' + item.recipes.join(', ') + ')';
+    var name = item.name;
+    if (item.hasAmount && Math.ceil(Number(item.amount) - 1e-9) > 1 && /^(?:whole|small|medium|large)$/i.test(item.unit || '') && /\bonion$/i.test(name)) {
+      name += 's';
+    }
+    return amount + name + ' (' + item.recipes.join(', ') + ')';
   }
 
   function renderGroupedShoppingList(groups) {
