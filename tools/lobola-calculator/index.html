@@ -376,9 +376,9 @@
         <div class="field-help" id="currencyHelp">Use the currency both families are discussing. This does not fetch live exchange rates.</div>
       </div>
       <div class="field">
-        <label for="familyExpectation">Agreed cash instead of livestock estimate (optional)</label>
+        <label for="familyExpectation">Family-agreed base cash amount (optional)</label>
         <input type="number" id="familyExpectation" value="0" min="0" step="1" inputmode="decimal" aria-describedby="familyExpectationHelp">
-        <div class="field-help" id="familyExpectationHelp">Enter the cash amount agreed by the families to replace the livestock estimate. Leave 0 to calculate from the editable livestock reference.</div>
+        <div class="field-help" id="familyExpectationHelp">Use this amount as the base instead of the livestock estimate, including any Zimbabwe additional cash. Gifts, ceremony costs, and the optional buffer are added separately. Leave 0 to use the editable references.</div>
       </div>
     </div>
     <div class="planner-step"><span>2</span><div><strong>Edit the livestock or cash reference</strong><small>Use only what has actually been discussed. The starting figures are examples, not recommendations.</small></div></div>
@@ -396,7 +396,8 @@
     <div class="form-row hidden" id="zwFields">
       <div class="field">
         <label for="zwCustom">Additional cash component (planning currency)</label>
-        <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal">
+        <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal" aria-describedby="zwCustomHelp">
+        <div class="field-help" id="zwCustomHelp">Adds to the livestock reference only when no family-agreed base cash amount is entered above.</div>
       </div>
     </div>
     <div class="planner-step"><span>3</span><div><strong>Add practical costs</strong><small>Keep gifts and meeting costs separate so families can see what each line represents.</small></div></div>
@@ -731,9 +732,9 @@ function calculate() {
     var contingency = totalValue * giftBuffer / 100;
     totalValue += contingency;
     breakdown = [
-      ['Family-entered livestock reference', cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
-      ['Additional cash component', money(symbol, extra)],
-      ['Agreed cash instead of livestock', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Family-entered livestock reference' + (familyExpectation ? ' (replaced by agreed base)' : ''), cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
+      ['Additional cash component' + (familyExpectation ? ' (replaced by agreed base)' : ''), money(symbol, extra)],
+      ['Agreed base cash amount', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingency)],
@@ -749,8 +750,8 @@ function calculate() {
     breakdown = [
       ['Livestock / cattle equivalent', cattleCount + ' head'],
       ['Value per head', money(symbol, cattlePrice)],
-      ['Livestock value', money(symbol, livestockValue)],
-      ['Agreed cash instead of livestock', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Livestock value' + (familyExpectation ? ' (replaced by agreed base)' : ''), money(symbol, livestockValue)],
+      ['Agreed base cash amount', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingencyGeneral)],
