@@ -66,11 +66,11 @@ test('new 2022 tasks show optional complete solutions on small screens',async({p
  for(const num of ['6','8ab','8c','9','10','12a','13']){const q=bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+num);await page.getByLabel('Written task',{exact:true}).selectOption(q.id);await expect(page.locator('.written-prompt')).toContainText(q.prompt);await expect(page.locator('#written-editor details')).not.toHaveAttribute('open','');await page.getByText('Show worked solution',{exact:true}).click();for(const step of q.steps)await expect(page.locator('#written-editor details')).toContainText(step);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);}
 });
 
-test('WAEC 2021 selected Q1, Q5, Q6 and Q11 guides stay ordered and teach verified results on mobile',async({page})=>{
+test('WAEC 2021 selected guides stay ordered and teach verified results on mobile',async({page})=>{
  await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/#written-practice');
  await page.getByLabel('Collection',{exact:true}).selectOption('WAEC 2021 Mathematics companion');
  const options=await page.locator('#written-task option').evaluateAll(elements=>elements.map(element=>element.value));
- expect(options).toEqual(['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3','waec-2021-mathematics-p2-q5a','waec-2021-mathematics-p2-q5b','waec-2021-mathematics-p2-q6a','waec-2021-mathematics-p2-q6b','waec-2021-mathematics-p2-q11']);
+ expect(options).toEqual(['waec-2021-mathematics-p2-q1a','waec-2021-mathematics-p2-q1b','waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3','waec-2021-mathematics-p2-q5a','waec-2021-mathematics-p2-q5b','waec-2021-mathematics-p2-q6a','waec-2021-mathematics-p2-q6b','waec-2021-mathematics-p2-q7','waec-2021-mathematics-p2-q8','waec-2021-mathematics-p2-q9','waec-2021-mathematics-p2-q10','waec-2021-mathematics-p2-q11']);
  for(const [id,answer,number] of [['waec-2021-mathematics-p2-q1a','20,375 monetary units',1],['waec-2021-mathematics-p2-q1b','42.9%',1],['waec-2021-mathematics-p2-q5a','18°, 54°, 36°, 162° and 90°',5],['waec-2021-mathematics-p2-q5b','5/33',5],['waec-2021-mathematics-p2-q6a','Both subjects: 28 learners',6],['waec-2021-mathematics-p2-q6b','GH¢109,320',6],['waec-2021-mathematics-p2-q11','Mean = 7.30 hours',11]]){
   await page.getByLabel('Written task',{exact:true}).selectOption(id);
   await expect(page.locator('#written-editor a')).toHaveAttribute('href',`https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq${number}.html`);
@@ -79,6 +79,30 @@ test('WAEC 2021 selected Q1, Q5, Q6 and Q11 guides stay ordered and teach verifi
   await expect(page.locator('.written-explanation')).toContainText(answer);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
  }
+});
+
+test('WAEC 2021 Q7–Q10 original diagrams and worked guidance fit 320px in each locale',async({page},info)=>{
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.setViewportSize({width:320,height:800});
+ for(const route of ['/tools/ssce-practice/','/fr/tools/pratique-waec-neco/','/sw/zana/mazoezi-waec-neco/']){
+  await page.goto(route);
+  await page.locator('#written-collection').selectOption('WAEC 2021 Mathematics companion');
+  for(const number of [7,8,9,10]){
+   await page.locator('#written-task').selectOption('waec-2021-mathematics-p2-q'+number);
+   const editor=page.locator('#written-editor'),figure=editor.locator('.written-figure svg');
+   await expect(figure).toHaveAttribute('role','img');
+   expect((await figure.getAttribute('aria-label')).length).toBeGreaterThan(100);
+   await expect(editor.locator('details')).not.toHaveAttribute('open','');
+   if(number===7||number===10)await expect(figure).not.toBeVisible();
+   else await expect(figure).toBeVisible();
+   await editor.locator('summary').click();
+   await expect(figure).toBeVisible();
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+   const bounds=await figure.boundingBox();expect(bounds.width).toBeLessThanOrEqual(320);
+   if(route==='/tools/ssce-practice/')await editor.locator('.written-figure').screenshot({path:info.outputPath('waec-2021-q'+number+'-320.png')});
+  }
+ }
+ expect(errors).toEqual([]);
 });
 
 test('NECO starter shows exact source numbers and saves a worked response at mobile width',async({page})=>{

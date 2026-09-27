@@ -11,6 +11,7 @@ test('selected WAEC component evidence matches current briefs without claiming c
  }
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q2-q3').expectedIds,['waec-2021-mathematics-p2-q2','waec-2021-mathematics-p2-q3']);
  assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q7-q8').expectedIds,[7,8].map(n=>'waec-2021-mathematics-p2-q'+n));
+ assert.deepEqual(manifest.components.find(c=>c.id==='waec-2021-maths-q9-q10').expectedIds,[9,10].map(n=>'waec-2021-mathematics-p2-q'+n));
  const maths2022q8=manifest.components.find(c=>c.id==='waec-2022-maths-q8');
  assert.deepEqual(maths2022q8.expectedIds,['waec-2022-mathematics-p2-q8ab','waec-2022-mathematics-p2-q8c']);
  assert.equal(maths2022q8.complete_selected_prompts,true);assert.equal(maths2022q8.complete_paper,false);
@@ -68,6 +69,37 @@ test('WAEC 2021 Q7–Q8 guidance keeps graph readings distinct from exact answer
    assert.ok(item&&item.figureAlt!==source.figureAlt&&item.figureAlt.length>80);
    assert.ok(item.figureCaption!==source.figureCaption&&item.figureCaption.length>30);
    assert.equal(item.source,source.source);assert.equal(item.checks.length,source.checks.length);
+  }
+ }
+});
+
+test('WAEC 2021 Q9–Q10 guides match independent geometry, bearing and ladder calculations',()=>{
+ const ids=[9,10].map(n=>'waec-2021-mathematics-p2-q'+n);
+ const selected=manifest.components.find(row=>row.id==='waec-2021-maths-q9-q10');
+ assert.deepEqual(selected.expectedIds,ids);assert.equal(selected.complete_selected_prompts,true);assert.equal(selected.complete_paper,false);
+ const [trapezium,bearings]=ids.map(id=>bank.items.find(q=>q.id===id));
+ const radians=Math.PI/180,top=2*20/12,lower=5+top+12/Math.tan(50*radians);
+ const perimeter=Math.hypot(5,12)+top+12/Math.sin(50*radians)+lower,area=(top+lower)*12/2;
+ assert.equal(Math.round(perimeter),50);assert.equal(Math.round(area),130);
+ assert.equal(trapezium.answer,'Perimeter = 50 cm; area = 130 cm².');
+ assert.equal(trapezium.figure,'trapezium-geometry');assert.ok(trapezium.figureAlt.length>100);
+ const point=(km,bearing)=>({east:km*Math.sin(bearing*radians),north:km*Math.cos(bearing*radians)});
+ const D=point(5,20),M=point(3,290),east=M.east-D.east,north=M.north-D.north;
+ assert.equal(Math.hypot(east,north).toPrecision(2),'5.8');
+ assert.equal(Math.round((Math.atan2(east,north)/radians+360)%360),231);
+ const positiveWallHeight=(-2+Math.sqrt(4+192))/2;assert.equal(positiveWallHeight,6);
+ assert.equal(bearings.answer,'DM = 5.8 km; bearing of M from D = 231°; wall height x = 6 m.');
+ assert.equal(bearings.figure,'farm-bearings');assert.equal(bearings.figureAfterAnswer,true);
+ assert.match(bearings.steps.join(' '),/020°.*290°.*90°/);
+ const {writtenBank}=require('../scripts/build-ssce-practice-locales');
+ for(const locale of ['fr','sw']){
+  const translated=writtenBank(locale);
+  for(const id of ids){
+   const source=bank.items.find(q=>q.id===id),item=translated.items.find(q=>q.id===id);
+   assert.ok(item);assert.notEqual(item.prompt,source.prompt);assert.notEqual(item.answer,source.answer);
+   assert.notEqual(item.figureAlt,source.figureAlt);assert.ok(item.figureAlt.length>100);
+   assert.notEqual(item.figureCaption,source.figureCaption);
+   assert.equal(item.checks.length,source.checks.length);assert.equal(item.source,source.source);
   }
  }
 });

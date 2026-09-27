@@ -35,13 +35,23 @@
       add('path',{d:'M160 30 L56 210 A208 208 0 0 0 264 210 Z',class:'written-sector'});
       add('path',{d:'M160 30 L160 238',class:'written-line','stroke-dasharray':'5 5'});
       [['P',154,22],['Q',23,248],['R',285,248],['M',155,258],['A',38,210],['B',271,210],['18 cm',69,125]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
+    }else if(kind==='trapezium-geometry'){
+      add('path',{d:'M20 236 L68 91 L175 91 L300 236 Z',class:'written-sector'});
+      add('path',{d:'M68 91 L68 236 M175 91 L175 236 M20 236 L175 91',class:'written-line','stroke-dasharray':'5 5'});
+      add('path',{d:'M68 222 L82 222 L82 236 M175 222 L189 222 L189 236',class:'written-line'});
+      [['P',6,249],['Q',62,77],['R',174,77],['S',301,252],['U',63,254],['T',169,254],['5 cm',30,273],['12 cm',77,130],['50°',256,226]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
+    }else if(kind==='farm-bearings'){
+      add('path',{d:'M76 220 L160 250 L210 110 Z',class:'written-sector'});
+      add('path',{d:'M165 236 L151 231 L146 245',class:'written-line'});
+      add('path',{d:'M280 125 L280 57 M280 57 L274 68 M280 57 L286 68',class:'written-line'});
+      [['M',59,218],['C',159,274],['D',209,102],['3 km',99,226],['5 km',192,190],['N',274,46]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
     }else{
       add('path',{d:'M40 50 L40 260 L250 260 A210 210 0 0 0 40 50',class:'written-sector'});
       add('path',{d:'M145 78.135 A210 210 0 0 1 250 260 L145 260 Z',class:'written-shade'});
       add('path',{d:'M40 260 L145 78.135 M145 260 L145 78.135 M132 260 L132 247 L145 247',class:'written-line'});
       [['O',22,278],['P',25,45],['M',258,278],['N',151,75],['T',140,278],['7 cm',3,155],['60°',66,242]].forEach(function(v){add('text',{x:v[1],y:v[2]},v[0]);});
     }
-    if(!graph&&kind!=='right-triangle-ratio')add('text',{x:160,y:297,'text-anchor':'middle'},t('Not to scale'));return svg;
+    if(!graph&&kind!=='right-triangle-ratio'&&kind!=='trapezium-geometry'&&kind!=='farm-bearings')add('text',{x:160,y:297,'text-anchor':'middle'},t('Not to scale'));return svg;
   }
   function render(skipCapture){
     if(skipCapture!==true)capture();current=bank.items.find(function(q){return q.id===select.value;});area.replaceChildren();checks=[];answer=null;if(!current)return;
