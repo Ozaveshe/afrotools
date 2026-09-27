@@ -1,6 +1,6 @@
 # Blog Audit
 
-Generated: 2026-09-27T17:59:28.575Z
+Generated: 2026-09-27T18:09:26.933Z
 
 ## Summary
 - Posts audited: 341
@@ -11,8 +11,8 @@ Generated: 2026-09-27T17:59:28.575Z
 - Thin article bodies under 800 words: 0
 - Posts without a tool handoff: 2
 - Posts with fewer than two related blog links: 0
-- Fact-heavy posts with dated source review: 108
-- Fact-heavy posts with sources but no proven review date: 116
+- Fact-heavy posts with dated source review: 109
+- Fact-heavy posts with sources but no proven review date: 109
 - Average quality score: 94.3/100
 - Average word count: 1952
 - Average AI-pattern hits: 0.3
@@ -47,7 +47,7 @@ Generated: 2026-09-27T17:59:28.575Z
 - rwanda-vat-guide-2026: score 86, priority 3, words=2184, toolLinks=4, blogLinks=9, sourceState=sources-present-date-unproven
 - solar-panel-costs-nigeria-2026: score 86, priority 3, words=2128, toolLinks=2, blogLinks=8, sourceState=sources-present-date-unproven
 - south-africa-medical-tax-credits-2026-27: score 86, priority 3, words=2095, toolLinks=5, blogLinks=8, sourceState=sources-present-date-unproven
-- south-africa-vat-registration-2026: score 86, priority 3, words=2053, toolLinks=3, blogLinks=9, sourceState=sources-present-date-unproven
+- south-africa-vat-registration-2026: score 86, priority 3, words=2053, toolLinks=3, blogLinks=9, sourceState=review-date-stale
 - vat-rates-africa-2026: score 86, priority 3, words=1823, toolLinks=1, blogLinks=9, sourceState=sources-present-date-unproven
 - best-p2p-platforms-nigeria-2026: score 87, priority 3, words=3961, toolLinks=5, blogLinks=8, sourceState=sources-present-date-unproven
 
