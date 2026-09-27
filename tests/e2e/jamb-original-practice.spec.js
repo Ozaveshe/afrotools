@@ -1,5 +1,34 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs');
+const path = require('node:path');
+const { publications } = require('../../scripts/build-jamb-original-practice');
 const source = require('../../ops/nigeria-exams/jamb-original-practice-v1.json');
+
+test('320px practice shows the question before navigation and submission', async ({ page }) => {
+  const generated = publications(source).outputs;
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.route('**/data/jamb/pools/original-practice*.json', route => {
+    const file = new URL(route.request().url()).pathname.slice(1);
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(generated[file]) });
+  });
+  await page.route('**/engines/jamb-cbt-engine.js', route => route.fulfill({
+    status: 200, contentType: 'application/javascript',
+    body: fs.readFileSync(path.resolve(__dirname, '../../engines/src/jamb-cbt-engine.js'), 'utf8')
+  }));
+  await page.goto('/jamb/original-practice/?subject=mathematics');
+  await expect(page.getByRole('heading', { name: /Practise a subject/ })).toBeVisible();
+  await expect(page.locator('#start-btn')).toBeEnabled();
+  await page.locator('#start-btn').click();
+  const question = await page.locator('.original-question').boundingBox();
+  const navigator = await page.locator('.original-navigator').boundingBox();
+  expect(question).toBeTruthy();
+  expect(navigator).toBeTruthy();
+  expect(navigator.y).toBeGreaterThanOrEqual(question.y + question.height - 1);
+  await expect(page.locator('#question-position')).toContainText('Question 1 of 12');
+  await page.locator('#next-btn').click();
+  await expect(page.locator('#question-position')).toContainText('Question 2 of 12');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
 
 for (const width of [320, 390, 1280]) {
   test(`original practice is usable at ${width}px without mixing mock history`, async ({ page }) => {
@@ -7,7 +36,7 @@ for (const width of [320, 390, 1280]) {
     await page.setViewportSize({ width, height: 850 });
     await page.route('**/.netlify/functions/jamb-attempt', route => { attempts.push(route.request().postDataJSON()); return route.fulfill({ status: 200, json: {} }); });
     await page.goto('/jamb/original-practice/?subject=mathematics');
-    await expect(page.getByRole('heading', { name: /Practise a topic/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Practise a subject/ })).toBeVisible();
     await expect(page.locator('#setup-status')).toContainText('24 reviewed original questions');
     await expect(page.locator('#start-btn')).toBeEnabled();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
