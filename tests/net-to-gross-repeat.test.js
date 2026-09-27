@@ -40,4 +40,26 @@ for(const file of ['assets/js/lib/src/net-to-gross.js','assets/js/lib/net-to-gro
  window.calculate();
  assert.equal(window.RESULT.gross,firstGross,`${file} repeated calculation keeps the same gross`);
 }
+for(const file of ['assets/js/lib/src/net-to-gross.js','assets/js/lib/net-to-gross.js']) {
+ for(const nssfEnabled of [false,true]) {
+  for(const target of [1,1000,100000,335000,400000,500000,1000000,1500000,5000000,10000000]) {
+   const nodes={grossSalary:{value:target},salarySlider:{value:target},sliderVal:{textContent:''},resLabel:{textContent:''},resAmount:{textContent:''},resGross:{textContent:''}};
+   const window={CALC_MODE:'net',PERIOD:'monthly',fmt:n=>String(Math.round(n))};
+   window._grossToNet=gross=>ugandaPaye.calculate({grossMonthly:gross,nssfEnabled,lstEnabled:false}).netMonthly;
+   window.calculate=()=>{
+    const gross=Number(nodes.grossSalary.value);
+    const result=ugandaPaye.calculate({grossMonthly:gross,nssfEnabled,lstEnabled:false});
+    window.RESULT={gross,monthly:gross,netMonthly:result.netMonthly,annualGross:result.grossAnnual,annualNet:result.netAnnual};
+   };
+   const document={documentElement:{lang:'en'},readyState:'complete',getElementById:id=>nodes[id],querySelector:()=>null,querySelectorAll:()=>[]};
+   vm.runInNewContext(fs.readFileSync(file,'utf8'),{window,document,setTimeout:fn=>fn()});
+   window.calculate();
+   const gross=window.RESULT.gross;
+   assert.ok(Number.isInteger(gross),`${file} nssf=${nssfEnabled} target=${target} uses whole-UGX gross`);
+   assert.ok(window._grossToNet(gross)>=target,`${file} nssf=${nssfEnabled} target=${target} reaches the requested net`);
+   assert.ok(gross===0 || window._grossToNet(gross-1)<target,`${file} nssf=${nssfEnabled} target=${target} uses the smallest qualifying gross`);
+   assert.equal(nodes.grossSalary.value,target,`${file} nssf=${nssfEnabled} target=${target} preserves the target`);
+  }
+ }
+}
 console.log('Shared net-to-gross repeat, target and Uganda annual checks passed in English, French and Swahili, source and generated output');

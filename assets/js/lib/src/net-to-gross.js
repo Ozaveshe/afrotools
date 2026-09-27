@@ -27,20 +27,25 @@
     function wholeGrossForTarget(estimate, target) {
         const forward = window._grossToNet;
         const candidate = Math.max(0, Math.ceil(estimate));
-        if (!forward || forward(candidate) >= target) return candidate;
-        let low = candidate, high = candidate + 1, step = 1;
-        for (let attempt = 0; attempt < 32 && forward(high) < target; attempt++) {
+        if (!forward) return candidate;
+        let low = 0, high = candidate;
+        if (forward(high) < target) {
             low = high;
-            step *= 2;
+            let step = 1;
             high += step;
+            for (let attempt = 0; attempt < 32 && forward(high) < target; attempt++) {
+                low = high;
+                step *= 2;
+                high += step;
+            }
         }
         if (forward(high) < target) return candidate;
-        while (high - low > 1) {
+        while (low < high) {
             const middle = Math.floor((low + high) / 2);
             if (forward(middle) >= target) high = middle;
-            else low = middle;
+            else low = middle + 1;
         }
-        return high;
+        return low;
     }
     function t() {
         window._grossToNet ? (function() {
