@@ -62,15 +62,17 @@ function removeAlternates(html) {
 
 function syncContent(html, record) {
   let output = removeBanner(html);
+  const existingStylesheet = output.match(/<link rel="stylesheet" href="\/assets\/css\/yoruba-fallback\.css(?:\?v=[0-9a-f]{8})?" data-yoruba-fallback-style>/i);
+  const stylesheet = existingStylesheet ? existingStylesheet[0] : STYLESHEET;
   output = output.replace(/^[ \t]*<link rel="stylesheet" href="\/assets\/css\/yoruba-fallback\.css(?:\?[^"\s>]*)?" data-yoruba-fallback-style>\s*\r?\n?/gim, "");
   if (!["english-fallback", "unavailable"].includes(record.state)) return output;
   output = setRobots(output, "noindex, follow");
   output = removeAlternates(output);
   const canonical = /<link\b[^>]*\brel=["']canonical["'][^>]*>/i;
   if (canonical.test(output)) {
-    output = output.replace(canonical, STYLESHEET + "\n$&");
+    output = output.replace(canonical, stylesheet + "\n$&");
   } else {
-    output = output.replace(/<\/head>/i, "  " + STYLESHEET + "\n</head>");
+    output = output.replace(/<\/head>/i, "  " + stylesheet + "\n</head>");
   }
   const body = output.match(/<body\b[^>]*>/i);
   if (!body) throw new Error(record.sourceOwner + " has no body element.");

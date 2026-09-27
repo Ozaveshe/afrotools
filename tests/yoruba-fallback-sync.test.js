@@ -33,11 +33,7 @@ const cacheBusted = first.replace(
   "/assets/css/yoruba-fallback.css?v=72ea27b7"
 );
 const normalizedCacheBusted = syncContent(cacheBusted, record);
-assert.strictEqual(
-  (normalizedCacheBusted.match(/data-yoruba-fallback-style/g) || []).length,
-  1,
-  "Cache-busted fallback stylesheets must be normalized instead of duplicated"
-);
+assert.strictEqual(normalizedCacheBusted, cacheBusted, "Cache-busted fallback stylesheets must remain stable after synchronization");
 
 const unavailable = syncContent(input, { ...record, state: "unavailable", fallbackRoute: undefined });
 const withNav = input.replace('<body>', '<body><afro-navbar active="tools"></afro-navbar>');
