@@ -44,8 +44,8 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 | JAMB | economics | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2026 | 0 | 0 | Acquire and authenticate source |
 | JAMB | english | 2025 | 65 | 65 | Acquire and authenticate source |
-| JAMB | english | 2024 | 26 | 26 | Acquire and authenticate source |
-| JAMB | english | 2023 | 19 | 19 | Acquire and authenticate source |
+| JAMB | english | 2024 | 26 | 25 | Acquire and authenticate source |
+| JAMB | english | 2023 | 19 | 18 | Acquire and authenticate source |
 | JAMB | english | 2022 | 31 | 31 | Acquire and authenticate source |
 | JAMB | english | 2021 | 0 | 0 | Acquire and authenticate source |
 | JAMB | government | 2026 | 0 | 0 | Acquire and authenticate source |
@@ -75,7 +75,7 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 
 ## First written-practice delivery
 
-14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 31 WAEC Mathematics companions, plus 43 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
+14 original written tasks, 10 WAEC English writing and 4 WAEC English reading companions and 35 WAEC Mathematics companions, plus 48 NECO Mathematics, 4 NECO English writing and 2 NECO English reading companions. No new imported WAEC/NECO past questions and no complete past papers are claimed.
 
 5 separate JAMB Mathematics revision companions use publisher-labelled 2023 provenance. They do not change authenticated past-question counts or close the recent-year source gaps.
 
@@ -88,8 +88,8 @@ Counts and observed numbering do not prove a complete exam paper. Null expected 
 - **jamb-2023-mathematics-compilation** (reviewed-source-linked-revision): Main-branch source now includes 69 reviewed publisher-labelled 2023 Mathematics adaptations in the JAMB main bank and five separate adapted revision companions. Original sitting identity, question numbering and complete-paper inventory remain unresolved; authenticate a matching sitting and reconcile its full inventory before claiming a complete paper. Source: https://myschool.ng/classroom/mathematics?exam_type=jamb&exam_year=2023
 - **jamb-2024-english-compilation** (candidate-unverified): Inspect the complete source, passages and reading-text identity; authenticate year/session and review all answers. Search snippets and publisher claims are leads, not imported or verified questions. Source: https://pdfmadeazy.com/2024-jamb-english-past-questions-and-answer/
 - **waec-2022-mathematics-p2** (mathematics-companion): Companions now cover 1(b), 3, 4, 6, 7, 8(a–c), 9, 10, 11, 12(a–b) and 13. Question 6 requires opening WAEC's linked graph; questions 2 and 5 remain held for source conflicts. Missing paper instructions and other subparts prevent a complete-paper claim. Source: https://www.waeconline.org.ng/e-learning/Mathematics/maths235mq1.html
-- **neco-2023-mathematics-p3-starter** (reviewed-companion-selection): Forty-three independently solved, adapted written companions cover questions 1–22 and 24–44. Verify build/release before reporting the new set live. Question 23 remains held because its graph conflicts with a monic answer choice; questions 45–60 remain unreviewed. No complete paper or official key claimed. Source: https://www.scribd.com/document/842881920/NECO-20230001
-- **waec-2021-mathematics-p2-selected** (complete-selected-question-companions): Question 1 parts (a) and (b), questions 2 and 3, and question 11 parts (a) and (b) are represented as adapted briefs with independently checked solutions and EN/FR/SW guidance. Authenticate the complete paper instructions and source-use basis before any full-paper import. This selection is not a paper-completeness claim. Source: https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq1.html
+- **neco-2023-mathematics-p3-starter** (reviewed-companion-selection): Forty-eight independently solved, adapted written companions cover questions 1–22, 24–47 and 49–50. Verify build/release before reporting the new set live. Questions 23 and 48 remain held for source conflicts; questions 51–60 remain unreviewed. No complete paper or official key claimed. Source: https://www.scribd.com/document/842881920/NECO-20230001
+- **waec-2021-mathematics-p2-selected** (complete-selected-question-companions): Questions 1–3, 5–6 and 11 have selected adapted briefs with independently checked solutions and EN/FR/SW guidance. Question 4 stays held because its official prompt and working images do not render. Authenticate complete-paper instructions and source-use rights before any full-paper import. This is not a paper-completeness claim. Source: https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq1.html
 
 ## Definition of complete
 

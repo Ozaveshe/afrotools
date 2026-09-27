@@ -1,6 +1,29 @@
 const { test, expect } = require('@playwright/test');
 const { bank, questions, reviewed } = require('../support/jamb-reviewed-fixtures');
 
+// Keep external tracker availability deterministic; the consent UI remains real.
+test.beforeEach(async ({ page }) => {
+  await page.route('https://connect.facebook.net/**', route => route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
+});
+
+test('saved collection conflict initializes while an optional tracker is stalled', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  let tracker;
+  await page.route('https://connect.facebook.net/**', route => { tracker = route; });
+  await page.goto('/jamb/english/2025/', { waitUntil: 'load' });
+  await page.evaluate(() => localStorage.setItem('afrojamb-cbt-state', JSON.stringify({ year: null, mode: 'full', subjects: ['english', 'mathematics'], questionIds: ['synthetic-saved-mock'], startedAt: Date.now(), durationMs: 7200000 })));
+  try {
+    await page.getByRole('link', { name: 'Start 2025 Use of English CBT practice' }).click();
+    await expect.poll(() => Boolean(tracker)).toBe(true);
+    await expect(page.locator('#resume-conflict')).toContainText('different CBT session');
+    expect(await page.evaluate(() => document.readyState)).toBe('interactive');
+    expect(await page.evaluate(() => AfroJAMB.CBT.tryRestore().questionIds)).toEqual(['synthetic-saved-mock']);
+  } finally {
+    if (tracker) await tracker.fulfill({ status: 200, contentType: 'application/javascript', body: '' });
+  }
+});
+
+
 async function expectHeadingInViewport(page, selector) {
   await expect.poll(() => page.locator(selector).evaluate(element => {
     const bounds = element.getBoundingClientRect();
@@ -89,6 +112,44 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
   expect(errors).toEqual([]);
 });
 
+test('mobile CBT keeps question navigation reachable before analytics consent is chosen', async ({ page }) => {
+  const { review, ...base } = questions()[0];
+  const fixture = bank([1, 2, 3].map(number => reviewed({
+    ...base, id: `english-2025-consent-${number}`, subject: 'english', year: 2025
+  })));
+  await page.route('**/data/jamb/pools/*.json', route => route.fulfill({
+    json: route.request().url().endsWith('/index.json') ? fixture.index : fixture.pool
+  }));
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/jamb/cbt/?subject=english&year=2025', { waitUntil: 'load' });
+  await expect(page.locator('#afro-cookie-consent')).toBeVisible();
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q1');
+  await expect(page.locator('#afro-cookie-consent')).toBeHidden();
+  await page.evaluate(() => {
+    if (!document.getElementById('afro-pwa-banner')) {
+      const prompt = document.createElement('div');
+      prompt.id = 'afro-pwa-banner';
+      prompt.textContent = 'Install AfroTools';
+      document.body.appendChild(prompt);
+    }
+  });
+  await expect(page.locator('#afro-pwa-banner')).toBeHidden();
+  await page.keyboard.press('PageDown');
+  await page.locator('#cbt-next').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q2');
+  await expect(page).toHaveURL(/\/jamb\/cbt\//);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.keyboard.press('PageDown');
+  await page.locator('#cbt-next').click();
+  await expect(page.locator('#cbt-q-num')).toHaveText('Q3');
+  await page.locator('#cbt-submit-top').click();
+  await page.locator('#confirm-submit-btn').click();
+  await expect(page.locator('#afro-cookie-consent')).toBeVisible();
+  await expect(page.locator('#afro-pwa-banner')).toBeVisible();
+});
+
 test('2025 Mathematics collection opens a subject-only CBT with raw score and explanations', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -146,6 +207,63 @@ test('2025 Mathematics collection opens a subject-only CBT with raw score and ex
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   expect(errors).toEqual([]);
 });
+
+for (const { year, width } of [{ year: 2023, width: 320 }, { year: 2024, width: 390 }]) {
+  test(`${year} Mathematics reviewed collection runs a 40-question mobile CBT from the published bank`, async ({ page }) => {
+    const errors = [];
+    const posts = [];
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    await page.route('**/.netlify/functions/jamb-attempt', route => {
+      posts.push(route.request().postDataJSON());
+      return route.fulfill({ json: { ok: true } });
+    });
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(`/jamb/mathematics/${year}/`, { waitUntil: 'load' });
+    await page.evaluate(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://afrotools.com/jamb/mathematics/${year}/`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+    await expect(page.locator('[data-reviewed-question]')).not.toHaveCount(0);
+    const yearLink = page.getByRole('link', { name: `Start ${year} Mathematics CBT practice` });
+    await expect(yearLink).toHaveAttribute('href', `/jamb/cbt/?subject=mathematics&year=${year}`);
+    await expect(page.locator('.jamb-reviewed-practice')).toContainText('not a confirmed complete UTME paper');
+    await yearLink.click();
+    await expect(page.locator('#setup-badge-label')).toHaveText('Reviewed collection practice');
+    await expect(page.locator('#collection-setup')).toContainText(`${year} Mathematics reviewed collection`);
+    await page.locator('#start-btn').click();
+    await expect(page.locator('#cbt-q-text')).toBeFocused();
+    await expectHeadingInViewport(page, '#cbt-q-text');
+    const session = await page.evaluate(() => {
+      const state = AfroJAMB.CBT.getState();
+      return { year: state.year, years: state.questions.map(q => q.year),
+        subjects: state.questions.map(q => q.subject), answer: state.questions[0].answer };
+    });
+    expect(session.year).toBe(year);
+    expect(session.years).toHaveLength(40);
+    expect(session.years.every(value => value === year)).toBe(true);
+    expect(session.subjects.every(value => value === 'mathematics')).toBe(true);
+    await page.locator(`#cbt-options [aria-label^="Option ${session.answer}:"]`).click();
+    await page.locator('#cbt-submit-top').click();
+    await page.locator('#confirm-submit-btn').click();
+    await expect(page.locator('#result-heading')).toHaveText(`${year} Mathematics practice result`);
+    await expect(page.locator('#result-heading')).toBeFocused();
+    await expectHeadingInViewport(page, '#result-heading');
+    await expect(page.locator('#result-aggregate')).toHaveText('1/40');
+    await expect(page.locator('#result-score-detail')).toContainText('3% correct');
+    await expect(page.locator('#result-intro')).toContainText('not an official UTME score');
+    await page.locator('.rev-filter[data-filter="all"]').click();
+    const explanation = page.locator('#review-list .answer-explanation').first();
+    await explanation.locator('summary').click();
+    await expect(explanation.locator('.reviewed-explanation')).not.toBeEmpty();
+    await expect(page.locator('#result-again')).toHaveAttribute('href', `/jamb/cbt/?subject=mathematics&year=${year}`);
+    expect(posts).toHaveLength(0);
+    expect(await page.evaluate(() => ({ generic: localStorage.getItem('afrojamb-history'),
+      collection: JSON.parse(localStorage.getItem('afrojamb-collection-history') || '[]') }))).toMatchObject({ generic: null,
+      collection: [{ year, subject: 'mathematics', correct: 1, graded: 40, percent: 3 }] });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    expect(errors).toEqual([]);
+  });
+}
 
 test('a timed-out collection scrolls its result heading into view', async ({ page }) => {
   const { review, ...base } = questions()[0];

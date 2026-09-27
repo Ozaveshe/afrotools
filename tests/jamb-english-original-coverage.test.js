@@ -64,6 +64,26 @@ test('recent reviewed collection intake is excluded only with exact source and l
  assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required/);
 });
 
+test('recent collection quality holds require pinned fingerprints, reasons and no other trust failure',()=>{
+ const ledger=require('../data/jamb/review-ledger.json');
+ const pool=require('../ops/jamb/source-pool.json').questions;
+ for(const id of ['english-2023-poscholars-49','english-2024-myschool-69979']){
+  const row=pool.find(q=>q.id===id);
+  assert.ok(row,'held source row '+id);
+  assert.deepEqual(reconstructOriginals([row],[],ledger),[]);
+  const badHash=structuredClone(ledger);badHash.publication_holds[id].content_sha256='0'.repeat(64);
+  assert.throws(()=>reconstructOriginals([row],[],badHash),/recent intake hold fingerprint/);
+  const noReason=structuredClone(ledger);noReason.publication_holds[id].reason='';
+  assert.throws(()=>reconstructOriginals([row],[],noReason),/recent intake hold reason/);
+  const noEvidence=structuredClone(ledger);noEvidence.publication_holds[id].evidence='';
+  assert.throws(()=>reconstructOriginals([row],[],noEvidence),/recent intake hold evidence/);
+  const incompleteReview=structuredClone(ledger);delete incompleteReview.questions[id].answer_review;
+  assert.throws(()=>reconstructOriginals([row],[],incompleteReview),/recent intake hold disposition/);
+  const wrongSource=structuredClone(ledger);wrongSource.sources[wrongSource.questions[id].source_id].source_url='https://example.com/other';
+  assert.throws(()=>reconstructOriginals([row],[],wrongSource),/recent intake source URL/);
+ }
+});
+
 test('2024 publisher collection is excluded only with its pinned per-item source and accepted review',()=>{
  const root=path.resolve(__dirname,'..');
  const bytes=fs.readFileSync(path.join(root,'ops/nigeria-exams/jamb-english-2024-curated.json'));

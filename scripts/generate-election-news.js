@@ -316,7 +316,6 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
     'a:focus-visible{outline:3px solid var(--color-primary);outline-offset:3px}',
     '@media(max-width:600px){.en-wrap{padding:var(--space-6) var(--page-gutter-sm) var(--space-12)}}',
     '</style>',
-    // Keep the source generator in the route contract's normalized head order.
     '<link rel="canonical" href="' + escapeHtml(absolute) + '">',
     ...alternateLinks,
     '</head>'

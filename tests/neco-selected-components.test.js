@@ -2,6 +2,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const bank=require('../assets/js/lib/ssce-written-bank');
 const manifest=require('../ops/nigeria-exams/selected-neco-components.json');
+const intake=require('../ops/nigeria-exams/neco-2023-mathematics-intake.json');
 
 test('NECO 2023 Mathematics selected questions 1–20 are complete adapted guides, not a full paper',()=>{
  const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q1-q20');
@@ -62,8 +63,29 @@ test('NECO 2023 Mathematics Q37–44 has eight checked teaching companions with 
  assert.equal(guides[3].answer,'66°.');assert.equal(guides[7].answer,'386 km.');
 });
 
+test('NECO 2023 Mathematics Q45–50 has five checked guides and holds the conflicting Q48',()=>{
+ const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q45-q50-partial');
+ assert.ok(section);assert.equal(section.complete_selected_prompts,false);assert.equal(section.complete_paper,false);
+ assert.deepEqual(section.heldNumbers,[48]);
+ const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=45&&q.number<=50);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
+ assert.deepEqual(guides.map(q=>q.number),[45,46,47,49,50]);
+ assert.match(section.review,/pages 9–10/);assert.match(section.sourceRights,/rights-reserved/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.equal(guides[0].answer,'72°.');
+ assert.ok(Math.abs(Math.sqrt(1-0.8**2)/0.8-3/4)<1e-12);assert.equal(guides[1].answer,'3/4.');
+ assert.equal((12/Math.sin(54*Math.PI/180)).toPrecision(3),'14.8');assert.equal(guides[2].answer,'14.8 m.');
+ const scores=[4,5,3,2,1],mean=scores.reduce((sum,value)=>sum+value,0)/scores.length;
+ assert.equal(scores.reduce((sum,value)=>sum+Math.abs(value-mean),0)/scores.length,1.2);assert.equal(guides[3].answer,'1.2.');
+ const prime=n=>n>1&&Array.from({length:Math.floor(Math.sqrt(n))-1},(_,i)=>i+2).every(d=>n%d!==0);
+ assert.equal(Array.from({length:30},(_,i)=>i+1).filter(prime).length/30,1/3);assert.equal(guides[4].answer,'1/3.');
+ assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
+ assert.deepEqual(intake.visual_review.numbers.slice(-5),[45,46,47,49,50]);
+ assert.deepEqual(intake.visual_review.correctOptions.slice(-5),['C','B','B','A','E']);
+});
+
 test('NECO 2023 English Section A covers all four inspected choices without claiming the paper',()=>{
- assert.equal(manifest.components.length,6);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
+ assert.equal(manifest.components.length,7);const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-section-a');
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));

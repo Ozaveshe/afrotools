@@ -114,6 +114,15 @@ test('worked numerical results and exam references retain the English meanings',
     assert.equal(answer('neco-2023-mathematics-fraction-equations'),'3/5.');
     assert.equal(answer('neco-2023-mathematics-partial-variation'),'y = x − 1.');
     assert.equal(answer('neco-2023-mathematics-quadratic-roots'),'3x² − 5x − 2 = 0.');
+    for(const [number,result] of [[45,/72°/],[46,/3\/4/],[47,/14[,.]8 m/],[49,/1[,.]2/],[50,/1\/3/]]){
+      const id=`neco-2023-mathematics-p3-q${number}`;
+      const localized=items.find(q=>q.id===id),original=enWritten.items.find(q=>q.id===id);
+      assert.ok(localized&&original,id);assert.notEqual(localized.prompt,original.prompt);
+      assert.notEqual(localized.steps.join(' '),original.steps.join(' '));
+      assert.equal(localized.source,original.source);assert.equal(localized.checks.length,original.checks.length);
+      assert.match(localized.answer,result);
+    }
+    assert.ok(!items.some(q=>q.id==='neco-2023-mathematics-p3-q48'));
     assert.match(answer('neco-2023-mathematics-p3-q29'),/x = 2.*y = −3/);
     assert.match(answer('neco-2023-mathematics-p3-q30'),/9\(a \+ 3b\)\(a − b\)/);
     assert.match(answer('neco-2023-mathematics-p3-q31'),/7[,.]95/);

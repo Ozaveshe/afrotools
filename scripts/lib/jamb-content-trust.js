@@ -78,6 +78,8 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   const fingerprint = questionFingerprint(q);
   const review = (ledger.questions || {})[q.id];
   const source = review && (ledger.sources || {})[review.source_id];
+  // A later quality hold overrides an earlier accepted review until the item is re-reviewed.
+  if (Object.hasOwn(ledger.publication_holds || {}, q.id)) reasons.push('publication_hold');
 
   // Online compilation dates are not authenticated examination sittings.
   // Bind their public attribution to the reviewed source; never invent a paper number.
