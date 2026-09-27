@@ -1,5 +1,27 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs/promises');
+test('original English deep links announce and focus the selected written task',async({page})=>{
+ await page.setViewportSize({width:320,height:800});
+ for(const [route,announcement] of [
+  ['/tools/ssce-practice/','Opened written task: '],
+  ['/fr/tools/pratique-waec-neco/','Exercice ouvert : '],
+  ['/sw/zana/mazoezi-waec-neco/','Kazi ya kuandika imefunguliwa: ']
+ ]){
+  await page.goto(route+'#written=written-e-library-comprehension');
+  const editor=page.locator('#written-editor');
+  await expect(page.locator('#written-task')).toHaveValue('written-e-library-comprehension');
+  await expect(editor.locator('h3')).toBeFocused();
+  await expect(page.locator('#written-status')).toContainText(announcement);
+  await expect(editor.locator('.practice-passage p')).toHaveCount(3);
+  await expect(editor.locator('details')).not.toHaveAttribute('open','');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+ }
+ await page.goto('/tools/ssce-practice/');
+ await page.getByRole('link',{name:'Practise its summary'}).click();
+ await expect(page.locator('#written-task')).toHaveValue('written-e-library-summary');
+ await expect(page.locator('#written-editor h3')).toBeFocused();
+ await expect(page.locator('#written-status')).toContainText('Opened written task: Summary: three access changes');
+});
 test('2022 subpart has an optional explanation and survives save and reload on mobile',async({page})=>{
  await page.setViewportSize({width:320,height:800});await page.goto('/tools/ssce-practice/');
  await expect(page.locator('h1')).toContainText('WAEC and NECO Mathematics');

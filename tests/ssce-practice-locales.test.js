@@ -141,7 +141,7 @@ test('worked numerical results and exam references retain the English meanings',
     assert.equal(answer('neco-2023-mathematics-p3-q35'),'92°.');
     assert.equal(answer('neco-2023-mathematics-p3-q36'),'315 m.');
     assert.equal(items.filter(q => q.exam === 'NECO').length, enWritten.items.filter(q => q.exam === 'NECO').length);
-    assert.equal(items.filter(q => q.exam === null && q.year === null).length, 14);
+    assert.equal(items.filter(q => q.exam === null && q.year === null).length, 17);
   }
 });
 
