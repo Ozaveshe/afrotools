@@ -24,8 +24,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-
 a{text-decoration:none;color:inherit}
 :root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px}
-.cal-header{text-align:center;font-size:.75rem;font-weight:700;color:#64748b;padding:8px 4px;text-transform:uppercase;letter-spacing:.05em}
+.cal-scroll{overflow-x:auto;overscroll-behavior-x:contain}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:6px;margin-bottom:8px}
+.cal-scroll-hint{display:none}
+.cal-header{text-align:center;font-size:.75rem;font-weight:700;color:var(--color-text-muted,#64748b);padding:8px 4px;text-transform:uppercase;letter-spacing:.05em}
 .cal-day{background:#fff;border:1px solid var(--en-border);border-radius:10px;padding:10px 8px;min-height:100px;position:relative}
 .cal-day-num{font-size:.75rem;font-weight:800;color:var(--en-muted,#64748b);margin-bottom:6px}
 .cal-post{border-radius:6px;padding:4px 6px;font-size:.72rem;font-weight:600;margin-bottom:4px;line-height:1.3}
@@ -33,8 +35,8 @@ a{text-decoration:none;color:inherit}
 .post-ent{background:#fce7f3;color:#9d174d}
 .post-promo{background:#dcfce7;color:#166534}
 .post-personal{background:#fef3c7;color:#92400e}
-.cal-time{font-size:.68rem;color:#94a3b8;margin-top:2px}
-@media(max-width:600px){.cal-grid{grid-template-columns:repeat(4,1fr)}}
+.cal-time{font-size:.68rem;color:#475569;margin-top:2px}
+@media(max-width:700px){.cal-scroll .cal-grid{min-width:672px}.cal-scroll-hint{display:block;margin:0 0 10px;color:var(--color-text-muted,#64748b);font-size:.8rem}}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/social-media-calendar/">
 <meta name="twitter:card" content="summary_large_image">
@@ -182,8 +184,11 @@ a{text-decoration:none;color:inherit}
 
     <div class="en-card">
       <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c5;</div>30-Day Calendar</div>
-      <div class="cal-grid" id="calHeaders"></div>
-      <div class="cal-grid" id="calendar"></div>
+      <p class="cal-scroll-hint">Scroll sideways to see all seven days.</p>
+      <div class="cal-scroll" role="region" aria-label="30-day content calendar; scroll sideways to see all seven days" tabindex="0">
+        <div class="cal-grid" id="calHeaders"></div>
+        <div class="cal-grid" id="calendar"></div>
+      </div>
     </div>
 
     <div class="en-card">
@@ -214,7 +219,7 @@ a{text-decoration:none;color:inherit}
 <afro-footer></afro-footer>
 <script src="/engines/social-media-calendar-engine.js?v=2725b2f5"></script>
 <script src="/assets/js/pages/creative/creative-result-actions.js?v=a6db9431"></script>
-<script src="/assets/js/pages/creative/social-media-calendar-controller.js?v=e4924f4c"></script>
+<script src="/assets/js/pages/creative/social-media-calendar-controller.js?v=d0d4bb10"></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
