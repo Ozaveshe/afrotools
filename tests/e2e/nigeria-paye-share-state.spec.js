@@ -40,11 +40,11 @@ test('an all-off shared scenario stays off in the controls and result', async ({
 });
 
 test('shared custom deductions restore their amounts and visible fields', async ({ page }) => {
-  await page.goto('/nigeria/ng-salary-tax?g=6000000&r=pita&li=120000&hl=200000');
-  await expect.poll(() => page.evaluate(() => window.RESULT?.statutory)).toBe(320000);
+  await page.goto('/nigeria/ng-salary-tax?g=6000000&r=pita&li=120000&hl=200000.75');
+  await expect.poll(() => page.evaluate(() => window.RESULT?.statutory)).toBe(320000.75);
   await expectDeductions(page, { pension: false, nhf: false, nhis: false, life: true, homeloan: true });
   await expect(page.locator('#lifeAmt')).toHaveValue('120,000');
-  await expect(page.locator('#homeloanAmt')).toHaveValue('200,000');
+  await expect(page.locator('#homeloanAmt')).toHaveValue('200,000.75');
   await expect(page.locator('#lifeField')).toHaveClass(/\bon\b/);
   await expect(page.locator('#homeloanField')).toHaveClass(/\bon\b/);
 });

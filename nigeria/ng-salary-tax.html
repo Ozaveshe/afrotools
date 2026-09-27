@@ -1970,7 +1970,7 @@ function restoreFromUrl() {
     el.classList.toggle('on', enabled);
     el.setAttribute('aria-checked', String(enabled));
     document.getElementById(fieldId).classList.toggle('on', enabled);
-    if (enabled) document.getElementById(inputId).value = Math.round(s[key]).toLocaleString('en-NG');
+    if (enabled) document.getElementById(inputId).value = s[key].toLocaleString('en-NG', { maximumFractionDigits: 20 });
   });
   if (s.pe) document.getElementById('pensionableAmt').value = Math.round(s.pe).toLocaleString('en-NG');
   if (s.rt) document.getElementById('annualRent').value = Math.round(s.rt).toLocaleString('en-NG');
