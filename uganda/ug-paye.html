@@ -1191,6 +1191,10 @@ window._grossToNet = function(g) {
   var value = ugandaPayeEngine().calculate({ grossMonthly: g, regime: _isNonRes ? 'NON_RESIDENT' : 'RESIDENT', nssfEnabled: _hasNSSF, lstEnabled: _hasLST });
   return value.ok ? value.netMonthly : 0;
 };
+window._grossToNetBreakpoints = function() {
+  return isOn('lst') ? ugandaPayeEngine().formulaParameters.lstBands
+    .map(function(band) { return band.upTo; }).filter(Number.isFinite) : [];
+};
 </script>
 <script>
 window.PAYE_CALC_SYNC_CONFIG = {
@@ -1296,7 +1300,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
   };
 })();
 </script>
-<script src="/assets/js/lib/net-to-gross.js?v=d60a98e8" defer></script>
+<script src="/assets/js/lib/net-to-gross.js?v=fdcfe940" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>

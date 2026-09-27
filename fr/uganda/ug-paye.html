@@ -1098,13 +1098,15 @@ window._grossToNet = function(g) {
   var _isNonRes = isOn('nonres');
   var _hasNSSF = isOn('nssf');
   var _hasLST = isOn('lst');
-  var nssf = _hasNSSF ? g * 0.05 : 0;
-  var paye = calcMonthlyPAYE(g, _isNonRes).tax;
-  var lstMo = _hasLST ? calcAnnualLST(g - paye) / 12 : 0;
-  return g - (nssf + paye + lstMo);
+  var value = ugandaPayeEngine().calculate({ grossMonthly: g, regime: _isNonRes ? 'NON_RESIDENT' : 'RESIDENT', nssfEnabled: _hasNSSF, lstEnabled: _hasLST });
+  return value.ok ? value.netMonthly : 0;
+};
+window._grossToNetBreakpoints = function() {
+  return isOn('lst') ? ugandaPayeEngine().formulaParameters.lstBands
+    .map(function(band) { return band.upTo; }).filter(Number.isFinite) : [];
 };
 </script>
-<script src="/assets/js/lib/net-to-gross.js?v=d60a98e8" defer></script>
+<script src="/assets/js/lib/net-to-gross.js?v=fdcfe940" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>

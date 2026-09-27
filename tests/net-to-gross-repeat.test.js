@@ -59,6 +59,51 @@ for(const file of ['assets/js/lib/src/net-to-gross.js','assets/js/lib/net-to-gro
    assert.ok(window._grossToNet(gross)>=target,`${file} nssf=${nssfEnabled} target=${target} reaches the requested net`);
    assert.ok(gross===0 || window._grossToNet(gross-1)<target,`${file} nssf=${nssfEnabled} target=${target} uses the smallest qualifying gross`);
    assert.equal(nodes.grossSalary.value,target,`${file} nssf=${nssfEnabled} target=${target} preserves the target`);
+ }
+}
+}
+const lstBreakpoints=ugandaPaye.formulaParameters.lstBands.map(band=>band.upTo).filter(Number.isFinite);
+for(const route of ['uganda/ug-paye.html','fr/uganda/ug-paye.html']) {
+ const html=fs.readFileSync(route,'utf8');
+ const start=html.indexOf('window._grossToNet = function(g) {');
+ assert.ok(start>=0,`${route} registers a reverse-calculation forward function`);
+ const script=html.slice(start,html.indexOf('</script>',start));
+ const toggles={nssf:true,lst:true,nonres:false};
+ const page={window:{},isOn:key=>toggles[key],ugandaPayeEngine:()=>ugandaPaye};
+ vm.runInNewContext(script,page);
+ assert.deepEqual(Array.from(page.window._grossToNetBreakpoints()),lstBreakpoints,`${route} uses engine LST gross boundaries`);
+ for(const regime of ['RESIDENT','NON_RESIDENT']) {
+  toggles.nonres=regime==='NON_RESIDENT';
+  for(const nssfEnabled of [false,true]) {
+   toggles.nssf=nssfEnabled;
+   for(const gross of [100000,335000,500000,1000000]) {
+    const expected=ugandaPaye.calculate({grossMonthly:gross,regime,nssfEnabled,lstEnabled:true}).netMonthly;
+    assert.equal(page.window._grossToNet(gross),expected,`${route} forward net matches displayed engine result for ${gross}`);
+   }
+  }
+ }
+ toggles.lst=false;
+ assert.deepEqual(Array.from(page.window._grossToNetBreakpoints()),[],`${route} needs no LST boundaries when disabled`);
+}
+for(const file of ['assets/js/lib/src/net-to-gross.js','assets/js/lib/net-to-gross.js']) {
+ for(const regime of ['RESIDENT','NON_RESIDENT']) {
+  for(const nssfEnabled of [false,true]) {
+   for(const expectedGross of lstBreakpoints) {
+    const forward=gross=>ugandaPaye.calculate({grossMonthly:gross,regime,nssfEnabled,lstEnabled:true}).netMonthly;
+    const target=forward(expectedGross);
+    const nodes={grossSalary:{value:target},salarySlider:{value:target},sliderVal:{textContent:''},resLabel:{textContent:''},resAmount:{textContent:''},resGross:{textContent:''}};
+    const window={CALC_MODE:'net',PERIOD:'monthly',fmt:n=>String(Math.round(n)),_grossToNet:forward,_grossToNetBreakpoints:()=>lstBreakpoints};
+    window.calculate=()=>{
+     const gross=Number(nodes.grossSalary.value);
+     const result=ugandaPaye.calculate({grossMonthly:gross,regime,nssfEnabled,lstEnabled:true});
+     window.RESULT={gross,monthly:gross,netMonthly:result.netMonthly,annualGross:result.grossAnnual,annualNet:result.netAnnual};
+    };
+    const document={documentElement:{lang:'en'},readyState:'complete',getElementById:id=>nodes[id],querySelector:()=>null,querySelectorAll:()=>[]};
+    vm.runInNewContext(fs.readFileSync(file,'utf8'),{window,document,setTimeout:fn=>fn()});
+    window.calculate();
+    assert.equal(window.RESULT.gross,expectedGross,`${file} ${regime} nssf=${nssfEnabled} LST edge ${expectedGross} uses earliest gross`);
+    assert.ok(window.RESULT.netMonthly>=target,`${file} LST edge ${expectedGross} reaches requested net`);
+   }
   }
  }
 }
