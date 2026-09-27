@@ -199,3 +199,78 @@ test('the original CBT trusts its own index, isolates its resume key and never p
   assert.equal(posts.length, 0);
   assert.ok(!storage.has('afrojamb-original-cbt-state-v1'));
 });
+
+test('24- and 40-item original sessions resume in the 64-item bank only when selected reviews are unchanged', async () => {
+  const storage = new Map([['afrojamb-original-history-v1', '[{"subject":"mathematics","correct":8,"total":12}]'],
+    ['afrojamb-cbt-state', '{"mode":"cbt-full"}']]);
+  const posts = [];
+  const context = { crypto: webcrypto, TextEncoder, Date,
+    fetch: async (url, options) => {
+      if (options?.method === 'POST') { posts.push(url); return { ok: true }; }
+      return { ok: true, json: async () => JSON.parse(JSON.stringify(url.endsWith('original-practice-index.json') ? index : pool)) };
+    },
+    localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) },
+    setInterval: () => 1, clearInterval: () => {}
+  };
+  context.window = context;
+  for (const file of ['assets/js/lib/jamb-question-trust.js', 'engines/src/jamb-cbt-engine.js', 'assets/js/lib/jamb-original-resume.js']) {
+    vm.runInNewContext(fs.readFileSync(path.join(ROOT, file), 'utf8'), context);
+  }
+  const loaded = await context.AfroJAMB.QuestionTrust.loadPool('/data/jamb/pools/original-practice.json', '/data/jamb/pools/original-practice-index.json');
+  const cbt = context.AfroJAMB.CBT;
+  const compat = context.AfroJAMB.OriginalResume;
+  const config = subject => ({ pool: loaded.questions, poolRevision: loaded.review_revision,
+    subjects: [subject], mode: 'original-practice', questionsPerSubject: 12, durationMinutes: 20 });
+  const makeSnapshot = (revision, subject, first) => ({
+    sessionId: 'local-original-session', poolRevision: revision, mode: 'original-practice', year: null,
+    subjects: [subject], currentSubject: subject,
+    questionIds: Array.from({ length: 12 }, (_, i) => 'ato-' + (subject === 'mathematics' ? 'math' : 'english') + '-v1-' + String(first + i).padStart(2, '0')),
+    answers: { 0: 'A', 11: 'B' }, marked: { 1: true }, currentIndex: 5,
+    startedAt: Date.now() - 60000, durationMs: 1200000
+  });
+  const revisions = [
+    ['84a11be138a1e2b25d0db124f8d925290cfb00282d71021dd5d9f653c1a6d3bd', 'mathematics', 1],
+    ['7fdc0826891c9b33d6f83be340f0ab4f3d14b7bec805bc53d6fe03d3534099a3', 'english', 9]
+  ];
+  for (const [oldRevision, subject, first] of revisions) {
+    const saved = makeSnapshot(oldRevision, subject, first);
+    storage.set('afrojamb-original-cbt-state-v1', JSON.stringify(saved));
+    const migrated = compat.migrate(cbt.tryRestore('original-practice'), loaded);
+    assert.ok(migrated, oldRevision);
+    assert.equal(saved.poolRevision, oldRevision, 'migration must not mutate saved data');
+    assert.equal(JSON.parse(storage.get('afrojamb-original-cbt-state-v1')).poolRevision, oldRevision, 'migration must not write before restore');
+    const state = cbt.restore(config(subject), migrated);
+    assert.deepEqual(Array.from(state.questions, q => q.id), saved.questionIds);
+    assert.deepEqual({ ...state.answers }, saved.answers);
+    assert.deepEqual({ ...state.marked }, saved.marked);
+    assert.equal(state.currentIndex, saved.currentIndex);
+    assert.equal(state.startedAt, saved.startedAt);
+    assert.equal(state.durationMs, saved.durationMs);
+    assert.ok(cbt.timeRemainingSeconds() > 1100 && cbt.timeRemainingSeconds() <= 1140);
+    const persisted = JSON.parse(storage.get('afrojamb-original-cbt-state-v1'));
+    assert.equal(persisted.poolRevision, loaded.review_revision);
+    assert.equal(persisted.originalReviewSchema, 2);
+    assert.deepEqual(persisted.questionIds, saved.questionIds);
+    assert.deepEqual(persisted.questionReviewHashes,
+      saved.questionIds.map(id => loaded.questions.find(q => q.id === id).review.content_sha256));
+  }
+  const old40 = makeSnapshot(revisions[1][0], 'english', 9);
+  const reject = patch => { const copy = structuredClone(old40); patch(copy); assert.equal(compat.migrate(copy, loaded), null); };
+  reject(saved => { saved.questionIds[0] = 'ato-english-v1-21'; });
+  reject(saved => { saved.questionIds[0] = 'ato-math-v1-09'; });
+  reject(saved => { saved.questionIds[0] = saved.questionIds[1]; });
+  reject(saved => { saved.answers[0] = 'Z'; });
+  reject(saved => { saved.marked[1] = 'yes'; });
+  reject(saved => { saved.currentIndex = 12; });
+  reject(saved => { saved.durationMs = 60 * 60 * 1000; });
+  reject(saved => { saved.subjects = ['mathematics']; });
+  reject(saved => { saved.mode = 'cbt-full'; });
+  reject(saved => { saved.year = 2025; });
+  reject(saved => { saved.poolRevision = 'f'.repeat(64); });
+  assert.equal(compat.migrate(old40, { ...loaded, questions: loaded.questions.filter(q => q.id !== old40.questionIds[0]) }), null);
+  assert.equal(compat.migrate(old40, { ...loaded, questions: loaded.questions.map(q => q.id === old40.questionIds[0] ?
+    { ...q, review: { ...q.review, content_sha256: 'f'.repeat(64) } } : q) }), null);
+  assert.equal(storage.get('afrojamb-original-history-v1'), '[{"subject":"mathematics","correct":8,"total":12}]');
+  assert.equal(storage.get('afrojamb-cbt-state'), '{"mode":"cbt-full"}');
+  assert.deepEqual(posts, []);
+});

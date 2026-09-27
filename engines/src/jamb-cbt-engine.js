@@ -42,6 +42,10 @@
         questionIds: t.questions.map(function(e) {
           return e.id;
         }),
+        originalReviewSchema: t.mode === "original-practice" ? 2 : undefined,
+        questionReviewHashes: t.mode === "original-practice" ? t.questions.map(function(e) {
+          return e.review.content_sha256;
+        }) : undefined,
         answers: t.answers,
         marked: t.marked,
         currentIndex: t.currentIndex,

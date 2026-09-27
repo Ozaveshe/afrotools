@@ -10,6 +10,7 @@
   var submitted = false;
   var cbt = root.AfroJAMB && root.AfroJAMB.CBT;
   var trust = root.AfroJAMB && root.AfroJAMB.QuestionTrust;
+  var resumeCompat = root.AfroJAMB && root.AfroJAMB.OriginalResume;
   var $ = function (id) { return document.getElementById(id); };
 
   function track(event, subject, count) {
@@ -178,16 +179,22 @@
       show('quiz'); renderQuestion(true);
     } catch (error) { $('setup-status').textContent = 'This subject set is unavailable. Please reload and try again.'; }
   }
+  function resumable(saved) {
+    if (!saved || saved.mode !== 'original-practice' || !pool) return null;
+    if (saved.poolRevision === pool.review_revision) return saved;
+    return resumeCompat && resumeCompat.migrate(saved, pool);
+  }
   function resume() {
     var saved = cbt.tryRestore('original-practice');
-    if (!saved || saved.mode !== 'original-practice' || !Array.isArray(saved.subjects) || saved.subjects.length !== 1 || !LABELS[saved.subjects[0]]) return;
+    var compatible = resumable(saved);
+    if (!compatible || !Array.isArray(compatible.subjects) || compatible.subjects.length !== 1 || !LABELS[compatible.subjects[0]]) return;
     try {
-      $('subject').value = saved.subjects[0];
-      config = makeConfig(saved.subjects[0]);
-      cbt.restore(config, saved);
+      $('subject').value = compatible.subjects[0];
+      config = makeConfig(compatible.subjects[0]);
+      cbt.restore(config, compatible);
       if (cbt.getState().questions.length !== 12) throw new Error('Incomplete saved subject set');
       submitted = false;
-      track('education_jamb_original_resume', saved.subjects[0], 12);
+      track('education_jamb_original_resume', compatible.subjects[0], 12);
       show('quiz'); renderQuestion(true);
     } catch (error) {
       cbt.clearSession();
@@ -210,7 +217,7 @@
       $('setup-status').textContent = pool.count + ' reviewed original questions are ready.';
       $('start-btn').disabled = false;
       var saved = cbt.tryRestore('original-practice');
-      $('resume-btn').hidden = !(saved && saved.mode === 'original-practice' && saved.poolRevision === pool.review_revision);
+      $('resume-btn').hidden = !resumable(saved);
       renderHistory();
     } catch (error) { $('setup-status').textContent = 'The reviewed question set could not be verified. Please try again later.'; }
   }
