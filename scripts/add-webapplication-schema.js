@@ -131,6 +131,13 @@ function hasType(blocks, type) {
   return blocks.some((block) => block.value && collectTypes(block.value).has(type));
 }
 
+function shouldAddWebApplication(blocks) {
+  // Editorial pages under tools/ are not applications merely because their
+  // route is nested there. Preserve their article/collection schema instead.
+  return !["WebApplication", "CollectionPage", "Article", "NewsArticle", "BlogPosting"]
+    .some((type) => hasType(blocks, type));
+}
+
 function sanitizeOrphanSteps(value, ancestors, stats) {
   if (!value || typeof value !== "object") return value;
   if (Array.isArray(value)) {
@@ -426,7 +433,7 @@ function processFile(file, stats) {
     blocks = parseJsonLd(html);
   }
 
-  if (!hasType(blocks, "WebApplication") && !hasType(blocks, "CollectionPage")) {
+  if (shouldAddWebApplication(blocks)) {
     const schema = webApplicationSchema(file, html);
     if (schema) {
       html = injectSchema(html, schema);
@@ -574,6 +581,7 @@ module.exports = {
   normalizeJsonLd,
   pageLanguage,
   parseJsonLd,
+  shouldAddWebApplication,
   plainText,
   webApplicationSchema,
 };

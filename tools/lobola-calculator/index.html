@@ -289,13 +289,14 @@
 </style>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
+<link rel="stylesheet" href="/assets/css/lobola-main-ux.css?v=d4e5d216">
 <link rel="canonical" href="https://afrotools.com/tools/lobola-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/lobola-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-lobola/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-lobola-na-mahari/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/lobola-calculator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh lobola-page">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero lb-hero">
@@ -329,7 +330,7 @@
 <circle cx="92" cy="118" r="2.6" fill="#1c1917"/><circle cx="108" cy="118" r="2.6" fill="#1c1917"/>
 </svg>
 </div>
-<div class="lb-art-cap"><strong>Cash + cattle + gifts + ceremony</strong><span>6 country presets &middot; local currency first</span></div>
+<div class="lb-art-cap"><strong>Cash + cattle + gifts + ceremony</strong><span>7 editable country examples &middot; local currency first</span></div>
 </div>
 </div>
 </section>
@@ -363,7 +364,7 @@
     <div class="form-row">
       <div class="field">
         <label for="currency">Planning currency</label>
-        <select id="currency">
+        <select id="currency" aria-describedby="currencyHelp">
           <option value="ZAR">South African rand (ZAR)</option>
           <option value="USD">US dollar (USD)</option>
           <option value="BWP">Botswana pula (BWP)</option>
@@ -372,12 +373,12 @@
           <option value="LSL">Lesotho loti (LSL)</option>
           <option value="NAD">Namibian dollar (NAD)</option>
         </select>
-        <div class="field-help">Use the currency both families are discussing. This does not fetch live exchange rates.</div>
+        <div class="field-help" id="currencyHelp">Use the currency both families are discussing. This does not fetch live exchange rates.</div>
       </div>
       <div class="field">
-        <label for="familyExpectation">Known family-agreed cash amount (optional)</label>
-        <input type="number" id="familyExpectation" value="0" min="0" step="1" inputmode="decimal">
-        <div class="field-help">Enter a known cash amount, or leave 0 to use the editable livestock reference.</div>
+        <label for="familyExpectation">Family-agreed base cash amount (optional)</label>
+        <input type="number" id="familyExpectation" value="0" min="0" step="1" inputmode="decimal" aria-describedby="familyExpectationHelp">
+        <div class="field-help" id="familyExpectationHelp">Use this amount as the base instead of the livestock estimate, including any Zimbabwe additional cash. Gifts, ceremony costs, and the optional buffer are added separately. Leave 0 to use the editable references.</div>
       </div>
     </div>
     <div class="planner-step"><span>2</span><div><strong>Edit the livestock or cash reference</strong><small>Use only what has actually been discussed. The starting figures are examples, not recommendations.</small></div></div>
@@ -388,17 +389,18 @@
       </div>
       <div class="field">
         <label for="customCattle">Livestock or cattle equivalent</label>
-        <input type="number" id="customCattle" placeholder="Use starter estimate" min="0" max="100" inputmode="numeric">
-        <div class="field-help">Leave blank for the country example, or enter 0 for no livestock. Enter only the count discussed by the families.</div>
+        <input type="number" id="customCattle" placeholder="Use starter estimate" min="0" max="100" inputmode="numeric" aria-describedby="customCattleHelp">
+        <div class="field-help" id="customCattleHelp">Leave blank for the country example, or enter 0 for no livestock. Enter only the count discussed by the families.</div>
       </div>
     </div>
     <div class="form-row hidden" id="zwFields">
       <div class="field">
         <label for="zwCustom">Additional cash component (planning currency)</label>
-        <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal">
+        <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal" aria-describedby="zwCustomHelp">
+        <div class="field-help" id="zwCustomHelp">Adds to the livestock reference only when no family-agreed base cash amount is entered above.</div>
       </div>
     </div>
-    <div class="planner-step"><span>3</span><div><strong>Add practical costs</strong><small>Keep gifts and meeting costs separate so families can see what each line represents.</small></div></div>
+    <div class="planner-step"><span>3</span><div><strong>Add practical costs</strong><small>Keep gifts and meeting costs separate. An editable 10% planning buffer is included by default; adjust it or set it to 0 below.</small></div></div>
     <div class="form-row">
       <div class="field">
         <label for="giftValue">Gifts and practical items</label>
@@ -410,7 +412,7 @@
       </div>
     </div>
     <details class="planner-more">
-      <summary>Add savings timing, a contingency buffer, and family notes (optional)</summary>
+      <summary>Adjust the planning buffer, savings timing, and family notes</summary>
       <div class="planner-more-body">
         <div class="form-row">
           <div class="field"><label for="savedAmount">Contribution already available</label><input type="number" id="savedAmount" value="0" min="0" inputmode="decimal"></div>
@@ -437,7 +439,7 @@
     <!-- Cattle Visual -->
     <div class="cattle-visual">
       <h3>Your Lobola Estimate</h3>
-      <div class="cattle-grid" id="cattleGrid"></div>
+      <div class="cattle-grid" id="cattleGrid" aria-hidden="true"></div>
       <div class="cattle-count" id="cattleCountDisplay">0</div>
       <div class="cattle-label">editable livestock reference</div>
     </div>
@@ -529,7 +531,7 @@
     <div class="example-box"><strong>Livestock equivalent</strong><span>8 head x 18,000 = 144,000 in the selected currency.</span></div>
     <div class="example-box"><strong>Gifts and custom items</strong><span>Blankets, clothing, groceries, travel, or agreed items: 12,000.</span></div>
     <div class="example-box"><strong>Ceremony and meeting costs</strong><span>Food, transport, witnesses, venue, or family hosting: 8,000.</span></div>
-    <div class="example-box example-total"><strong>Total planning budget</strong><span>144,000 + 12,000 + 8,000 = 164,000 before any family-agreed instalment plan.</span></div>
+    <div class="example-box example-total"><strong>Total planning budget</strong><span>164,000 subtotal + 16,400 default 10% contingency buffer = 180,400 in the selected currency.</span></div>
   </div>
   <h3>Assumptions</h3>
   <ul>
@@ -730,9 +732,9 @@ function calculate() {
     var contingency = totalValue * giftBuffer / 100;
     totalValue += contingency;
     breakdown = [
-      ['Family-entered livestock reference', cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
-      ['Additional cash component', money(symbol, extra)],
-      ['Family expectation override', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Family-entered livestock reference' + (familyExpectation ? ' (replaced by agreed base)' : ''), cattleCount+' head = '+money(symbol, cattleCount*cattlePrice)],
+      ['Additional cash component' + (familyExpectation ? ' (replaced by agreed base)' : ''), money(symbol, extra)],
+      ['Agreed base cash amount', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingency)],
@@ -748,8 +750,8 @@ function calculate() {
     breakdown = [
       ['Livestock / cattle equivalent', cattleCount + ' head'],
       ['Value per head', money(symbol, cattlePrice)],
-      ['Livestock value', money(symbol, livestockValue)],
-      ['Family expectation override', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
+      ['Livestock value' + (familyExpectation ? ' (replaced by agreed base)' : ''), money(symbol, livestockValue)],
+      ['Agreed base cash amount', familyExpectation ? money(symbol, familyExpectation) : 'Not entered'],
       ['Gifts / custom items', money(symbol, giftValue)],
       ['Ceremony / meeting budget', money(symbol, ceremonyCost)],
       ['Contingency buffer', giftBuffer + '% = ' + money(symbol, contingencyGeneral)],

@@ -5,8 +5,14 @@ const assert = require('node:assert/strict');
 const {
   extractVisibleFaq,
   pageLanguage,
+  parseJsonLd,
+  shouldAddWebApplication,
   webApplicationSchema,
 } = require('../scripts/add-webapplication-schema');
+
+function blocksFor(schema) {
+  return parseJsonLd(`<script type="application/ld+json">${JSON.stringify(schema)}</script>`);
+}
 
 test('WebApplication schema follows the document language', () => {
   const html = `<!doctype html>
@@ -43,4 +49,12 @@ test('FAQ schema ignores interactive help while keeping visible questions', () =
     question: 'Do PDF tools upload files?',
     answer: 'Core PDF actions run in the browser unless a tool explains a server feature.',
   }]);
+});
+
+test('editorial structured data is not recast as a WebApplication', () => {
+  for (const type of ['NewsArticle', 'Article', 'BlogPosting', 'CollectionPage']) {
+    assert.equal(shouldAddWebApplication(blocksFor({ '@type': type })), false, type);
+  }
+  assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'WebApplication' })), false);
+  assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'FAQPage' })), true);
 });
