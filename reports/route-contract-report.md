@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11581 |
-| Indexable pages | 10002 |
+| Public pages | 11582 |
+| Indexable pages | 10003 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5309 |
-| Documented fallbacks | 14850 |
-| Routes eligible for primary sitemaps | 10002 |
+| Genuine equivalence groups | 5310 |
+| Documented fallbacks | 14851 |
+| Routes eligible for primary sitemaps | 10003 |
 
 ## Locale Coverage
 
-- en: 6029 page records
+- en: 6030 page records
 - fr: 3804 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5440
-- tool: 4007
+- tool: 4008
 - widget: 379
 
 ## Canonical Migrations
@@ -3309,6 +3309,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0d11ad26787a: en=`/tools/visa-checker/zambia`; x-default=`/tools/visa-checker/zambia`
 - equivalence:0d2e460c9b54: en=`/tools/afroatlas/country/cape-verde/`; x-default=`/tools/afroatlas/country/cape-verde/`
 - equivalence:0d40b89e6abe: en=`/blog/business-insurance-quote-checklist-africa/`; x-default=`/blog/business-insurance-quote-checklist-africa/`
+- equivalence:0d47214cd625: en=`/tools/africa-election-tracker/news/cabo-verde-presidential-appeal-six-candidacies-september-2026/`; x-default=`/tools/africa-election-tracker/news/cabo-verde-presidential-appeal-six-candidacies-september-2026/`
 - equivalence:0d47cdbb6173: en=`/cars/angola/toyota/prado/2016/`, fr=`/fr/cars/angola/toyota/prado/2016/`; x-default=`/cars/angola/toyota/prado/2016/`
 - equivalence:0d7093609afb: en=`/tools/afrokitchen/recipes/garba-ci/`; x-default=`/tools/afrokitchen/recipes/garba-ci/`
 - equivalence:0d7c9dd132d8: en=`/jamb/chemistry/1993/`; x-default=`/jamb/chemistry/1993/`

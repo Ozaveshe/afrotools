@@ -19,6 +19,7 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   const second = generateOutputs(news, tracker, official);
   const prefix = 'tools/africa-election-tracker/news/';
   const slug = news.articles[0].slug;
+  const earlierCaboVerdeSlug = 'cabo-verde-presidential-candidacies-september-2026';
   const southAfricaSlug = 'south-africa-local-election-special-votes-september-2026';
 
   assert.deepEqual([...first], [...second], 'output must not depend on build time');
@@ -26,21 +27,32 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
     prefix + 'feed.xml',
     prefix + 'index.html',
     prefix + slug + '/index.html',
+    prefix + earlierCaboVerdeSlug + '/index.html',
     prefix + southAfricaSlug + '/index.html'
   ].sort());
   assert.match(first.get(prefix + 'index.html'), /Election news, with receipts/);
+  assert.match(first.get(prefix + 'index.html'), /<a class="en-skip" href="#main">Skip to main content<\/a>/);
+  assert.match(first.get(prefix + 'index.html'), /<main class="en-wrap" id="main">/);
   assert.match(first.get(prefix + 'index.html'), /rel="alternate" type="application\/rss\+xml"/);
   assert.match(first.get(prefix + 'index.html'), /afrotools-source-owner" content="scripts\/generate-election-news\.js"/);
 
   const article = first.get(prefix + slug + '/index.html');
+  assert.match(article, /<a class="en-skip" href="#main">Skip to main content<\/a>/);
+  assert.match(article, /<main class="en-wrap" id="main">/);
   assert.match(article, /"@type":"NewsArticle"/);
   assert.match(article, /"@type":"BreadcrumbList"/);
   assert.doesNotMatch(article, /"@type":"WebApplication"/);
   assert.match(article, /assets\/js\/lazy-analytics\.js\?v=[0-9a-f]{8}/);
   assert.match(article, /datePublished":"2026-09-27"/);
-  assert.match(article, /Published 22 September 2026; checked 27 September 2026/);
-  assert.match(article, /not a final post-appeal roster/);
+  assert.match(article, /Published 27 September 2026; checked 27 September 2026/);
+  assert.match(article, /bringing the 15 November presidential field to six/);
   assert.match(article, /cne\.cv\/sala_de_imprensa_/);
+
+  const earlierCaboVerdeArticle = first.get(prefix + earlierCaboVerdeSlug + '/index.html');
+  assert.match(earlierCaboVerdeArticle, /initial decision/);
+  assert.match(earlierCaboVerdeArticle, /Published 22 September 2026; checked 27 September 2026/);
+  assert.match(earlierCaboVerdeArticle, /bringing the admitted count to six/);
+  assert.match(earlierCaboVerdeArticle, /final ballot order/);
 
   const southAfricaArticle = first.get(prefix + southAfricaSlug + '/index.html');
   assert.match(southAfricaArticle, /"@type":"NewsArticle"/);
@@ -51,7 +63,8 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   const feed = first.get(prefix + 'feed.xml');
   assert.match(feed, /<rss version="2.0"/);
   assert.match(feed, /<dc:language>en<\/dc:language>/);
-  assert.equal((feed.match(/<item>/g) || []).length, 2);
+  assert.equal((feed.match(/<item>/g) || []).length, 3);
+  assert.match(feed, /cabo-verde-presidential-appeal-six-candidacies-september-2026/);
   assert.match(feed, /south-africa-local-election-special-votes-september-2026/);
   assert.doesNotMatch(feed, /guardian\.ng|premiumtimesng\.com/);
   const itemUrl = feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/)[1];
@@ -65,6 +78,16 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   for (const [relative, expected] of first) {
     assert.equal(fs.readFileSync(path.join(root, relative), 'utf8'), expected, relative + ' has drifted');
   }
+});
+
+test('same-day briefs lead with the newer primary official notice, not slug spelling', () => {
+  const reordered = clone(news);
+  reordered.articles[0].slug = 'z-cabo-verde-presidential-appeal-six-candidacies-september-2026';
+  const feature = renderFrontPage(reordered, tracker, official);
+  const feed = generateOutputs(reordered, tracker, official).get('tools/africa-election-tracker/news/feed.xml');
+  assert.match(feature, /Cabo Verde court admits sixth presidential bid/);
+  assert.match(feature, /z-cabo-verde-presidential-appeal-six-candidacies-september-2026/);
+  assert.match(feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/)[1], /z-cabo-verde-presidential-appeal-six-candidacies-september-2026/);
 });
 
 test('publication requires a known election and dated official ledger source', () => {
@@ -143,14 +166,14 @@ test('front-page lead and dated calendar rail are generated from reviewed models
   assert.ok(feature.includes(escapeHtml(lead.localizations.en.headline)));
   assert.ok(feature.includes(escapeHtml(lead.localizations.en.summary)));
   assert.ok(feature.includes(source.url));
-  assert.match(feature, /Published 22 September 2026; checked 27 September 2026/);
+  assert.match(feature, /Published 27 September 2026; checked 27 September 2026/);
   assert.ok(feature.includes('datetime="' + tracker.generatedAt + '"'));
   assert.match(feature, /id="calendarRailList"/);
   assert.doesNotMatch(feature, /guardian\.ng|premiumtimesng\.com|polling|predictions/i);
   assert.equal(replaceFrontPageBlock(trackerHtml, feature), trackerHtml, 'front-page teaser must match the curated model');
 
   const revised = clone(news);
-  revised.articles[0].localizations.en.headline = 'Cabo Verde court reports five admitted presidential candidacies; appeals remained available';
+  revised.articles[0].localizations.en.headline = 'Cabo Verde CNE reports six admitted presidential candidacies after appeal';
   const changedFeature = renderFrontPage(revised, tracker, official);
   assert.notEqual(changedFeature, feature, 'a source-reviewed headline change must alter the teaser');
   assert.notEqual(replaceFrontPageBlock(trackerHtml, changedFeature), trackerHtml, 'check mode must detect stale teaser copy');

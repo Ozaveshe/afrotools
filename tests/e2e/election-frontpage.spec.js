@@ -18,8 +18,9 @@ for (const width of [1280, 390, 320]) {
     expect((await title.boundingBox()).y).toBeLessThan(550);
     await expect(title.getByRole('link')).toHaveAttribute('href', articleRoute);
     await expect(page.locator('.et-story-source a')).toHaveAttribute('href', lead.officialSources[0].url);
-    await expect(page.locator('.et-secondary-brief')).toHaveCount(1);
-    await expect(page.locator('.et-secondary-brief a')).toHaveAttribute('href', '/tools/africa-election-tracker/news/south-africa-local-election-special-votes-september-2026/');
+    await expect(page.locator('.et-secondary-brief')).toHaveCount(2);
+    await expect(page.locator('.et-secondary-brief a').nth(0)).toHaveAttribute('href', '/tools/africa-election-tracker/news/cabo-verde-presidential-candidacies-september-2026/');
+    await expect(page.locator('.et-secondary-brief a').nth(1)).toHaveAttribute('href', '/tools/africa-election-tracker/news/south-africa-local-election-special-votes-september-2026/');
     await expect(page.locator('#calendarRailList .et-rail-item')).toHaveCount(3);
     await expect(page.locator('.et-issue-nav a').first()).toHaveText('Calendar');
     expect(await page.locator('#calendar').evaluate((node) => node.compareDocumentPosition(document.querySelector('#findElection')) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy();
@@ -46,8 +47,8 @@ test('reviewed headline and dated source remain readable without JavaScript', as
   const response = await page.goto('/tools/africa-election-tracker/');
   expect(response.status()).toBe(200);
   await expect(page.getByRole('heading', { level: 2, name: headline })).toBeVisible();
-  await expect(page.locator('.et-story-source')).toContainText('Published 22 September 2026; checked 27 September 2026');
-  await expect(page.locator('.et-secondary-brief')).toHaveCount(1);
+  await expect(page.locator('.et-story-source')).toContainText('Published 27 September 2026; checked 27 September 2026');
+  await expect(page.locator('.et-secondary-brief')).toHaveCount(2);
   await expect(page.locator('#electionList .et-election-card')).toHaveCount(tracker.elections.length);
   const ledgerDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
     .format(new Date(tracker.generatedAt + 'T00:00:00Z'));
@@ -63,4 +64,16 @@ test('the editorial lead survives an unavailable calendar JSON request', async (
   await expect(page.locator('.et-story-source a')).toHaveAttribute('href', lead.officialSources[0].url);
   await expect(page.locator('#calendarRailList .et-rail-item')).toHaveCount(3);
   await expect(page.locator('#searchInput')).toBeDisabled();
+});
+
+test('newsroom article offers a keyboard bypass to its main content', async ({ page }) => {
+  const response = await page.goto(articleRoute);
+  expect(response.status()).toBe(200);
+  await page.keyboard.press('Tab');
+  const skip = page.getByRole('link', { name: 'Skip to main content' });
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#main$/);
+  await expect(page.locator('main#main')).toContainText(headline);
 });
