@@ -137,7 +137,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">E600,000</span>
             </div>
-            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
+            <input aria-label="Mshahara Ghafi wa Mwaka" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
             <div class="slider-limits"><span>E50,000</span><span>E3,000,000</span></div>
           </div>
 
@@ -145,7 +145,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwaka</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">E</span>
-              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi wa Mwaka" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -168,6 +168,10 @@
             <p class="f-note">Mchango wa ENPF wa mfanyakazi (5% kwa mwaka, wenye kikomo cha E215 kwa mwezi) unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi kabla ya ERA PAYE kuhesabiwa. ENPF ya mwajiri (5%) ni gharama ya ziada kwa mwajiri.</p>
           </div>
 
+          <div class="mode-toggle" role="group" aria-label="Mwelekeo wa hesabu">
+            <button type="button" class="mode-btn on" aria-pressed="true" onclick="setCalcMode('gross',this)">Ghafi → Halisi</button>
+            <button type="button" class="mode-btn" aria-pressed="false" onclick="setCalcMode('net',this)">Halisi → Ghafi</button>
+          </div>
           <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button>
         </div>
       </div>
@@ -428,6 +432,8 @@
 <script>
 var RESULT=null;
 let PERIOD = 'annual';
+window.PERIOD = PERIOD;
+window.CALC_MODE = 'gross';
 let CHART = null;
 let CHART_TYPE = 'donut';
 let CHAT_HISTORY = [];
@@ -505,6 +511,66 @@ function calcAnnualPAYE(annualTaxableIncome) {
   return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
 }
 
+function grossForAnnualNet(target) {
+  let low = target;
+  let high = Math.max(target * 2, 50000);
+  while (window._grossToNet(high) < target) high *= 2;
+  for (let i = 0; i < 60; i++) {
+    const mid = (low + high) / 2;
+    if (window._grossToNet(mid) < target) low = mid;
+    else high = mid;
+  }
+  return Math.ceil(high);
+}
+
+function renderResultHero() {
+  if (!RESULT) return;
+  const monthly = PERIOD === 'monthly';
+  const period = monthly ? 'Mwezi' : 'Mwaka';
+  const suffix = monthly ? 'mwezi' : 'mwaka';
+  const gross = monthly ? RESULT.monthlyGross : RESULT.gross;
+  const net = monthly ? RESULT.monthlyNet : RESULT.netAnnual;
+  const reverse = window.CALC_MODE === 'net';
+  document.querySelector('.res-hero-label').textContent = reverse
+    ? `Mshahara Ghafi wa ${period} Unaohitajika` : `Mshahara Halisi wa ${period}`;
+  document.getElementById('resKiasi').textContent = fmt(reverse ? gross : net);
+  document.getElementById('resGross').textContent = reverse
+    ? `Ghafi: ${fmt(gross)}/${suffix} · Halisi: ${fmt(net)}/${suffix}`
+    : monthly
+      ? `Ghafi: ${fmt(gross)}/mwezi`
+      : `Ghafi: ${fmt(gross)}/mwaka (${fmt(RESULT.monthlyGross)}/mwezi)`;
+  document.querySelector('.res-hero-period').textContent = reverse
+    ? 'Ili kufikia mshahara halisi unaolengwa baada ya PAYE na ENPF'
+    : 'Baada ya PAYE, ENPF na makato yote';
+}
+
+function setCalcMode(mode, btn) {
+  if (mode === window.CALC_MODE) return;
+  if (RESULT) {
+    const value = Math.round(mode === 'net' ? RESULT.netAnnual : RESULT.gross);
+    document.getElementById('grossSalary').value = value;
+    const slider = document.getElementById('salarySlider');
+    slider.value = value;
+    document.getElementById('sliderVal').textContent = fmt(value);
+    updateSliderFill(slider);
+  }
+  window.CALC_MODE = mode;
+  document.querySelectorAll('.mode-btn').forEach(button => {
+    const active = button === btn;
+    button.classList.toggle('on', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  const label = mode === 'net' ? 'Mshahara Halisi wa Mwaka Unaolengwa' : 'Mshahara Ghafi wa Mwaka';
+  document.querySelector('.slider-label').textContent = label;
+  document.querySelector('.f-label-text').textContent = mode === 'net'
+    ? 'Au andika mshahara halisi wa mwaka unaolengwa' : 'Au andika kiasi halisi cha mwaka';
+  document.getElementById('salarySlider').setAttribute('aria-label', label);
+  document.getElementById('grossSalary').setAttribute('aria-label', label);
+  document.querySelector('.calc-btn').textContent = mode === 'net'
+    ? 'Tafuta Mshahara Ghafi Unaohitajika →' : 'Kokotoa Mshahara Halisi →';
+  if (RESULT) calculate();
+}
+
   function setPreset(val, btn) {
     document.getElementById('grossSalary').value = val;
     document.getElementById('salarySlider').value = val;
@@ -515,14 +581,15 @@ function calcAnnualPAYE(annualTaxableIncome) {
   }
 
   function calculate() {
-  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (!gross || gross <= 0) {
+  const entered = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!Number.isFinite(entered) || entered <= 0) {
     const el = document.getElementById('grossSalary');
     el.focus(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Weka mshahara sahihi');
     setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
+  const gross = window.CALC_MODE === 'net' ? grossForAnnualNet(entered) : entered;
 
   const hasSNPF = isOn('snpf');
   const snpfCap = 2580; // E215 * 12 months
@@ -546,15 +613,15 @@ function calcAnnualPAYE(annualTaxableIncome) {
     gross, annual: gross, snpf,
     annualTax, bandBreakdown, taxRebate,
     netAnnual, effectiveRate,
+    monthlyGross: gross / 12,
+    monthlyTax: annualTax / 12,
     monthlyGhafi: gross / 12,
     monthlyNet: netAnnual / 12,
     monthlyKodi: annualTax / 12,
     employerENPF, totalEmployerCost,
   };
 
-  const netMonthly = netAnnual / 12;
-  document.getElementById('resKiasi').textContent = fmt(netAnnual);
-  document.getElementById('resGross').textContent = `Ghafi: E${Math.round(gross).toLocaleString()}/mwaka (E${Math.round(gross/12).toLocaleString()}/mwezi)`;
+  renderResultHero();
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
@@ -625,17 +692,11 @@ function renderRows(R, period) {
 
 function setPeriod(period, btn) {
   PERIOD = period;
+  window.PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? (RESULT.monthlyNet || RESULT.netAnnual / 12) : RESULT.netAnnual;
-    var gr = isMonthly ? (RESULT.monthlyGross || RESULT.gross / 12) : RESULT.gross;
-    document.getElementById('resKiasi').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Ghafi: ' + fmt(gr) + '/mwezi'
-      : 'Ghafi: ' + fmt(gr) + '/mwaka';
+    renderResultHero();
     document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
   }
 }
@@ -895,7 +956,6 @@ async function sendChat() {
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('snpf')?Math.min(g*0.05,215*12):0;var raw=calcAnnualPAYE(Math.max(0,g-d)).tax;var tax=Math.max(0,raw-8200);return g-(d+tax);};</script>
-<script src="/assets/js/lib/net-to-gross.js?v=5bba1ca0" defer></script>
 <script>
 (function(){
   var KEY='afro_favs_v2',TOOL_ID='sz-paye',LIMIT=10;
