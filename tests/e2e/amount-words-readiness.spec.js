@@ -73,3 +73,44 @@ test('Ghana common-amount shortcuts remain available in their disclosure', async
   await page.locator('.quick-amount-list').getByRole('button', { name: '100', exact: true }).click();
   await expect(page.locator('#wordsResult')).toHaveText('GHANA CEDIS ONE HUNDRED ONLY');
 });
+
+for (const width of [320, 390]) {
+  for (const theme of ['light', 'dark']) {
+    test(`Ghana singular units and document modes at ${width}px in ${theme} mode`, async ({ page, context }) => {
+      const errors = [];
+      page.on('pageerror', error => errors.push(error.message));
+      await page.setViewportSize({ width, height: 720 });
+      await context.addInitScript(selectedTheme => {
+        localStorage.setItem('aft_theme', selectedTheme);
+        localStorage.setItem('afrotools_cookie_consent', 'declined');
+      }, theme);
+      await page.goto('/tools/amount-words-gh/');
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+      await expect(page.locator('#amount')).toBeEnabled();
+      await page.locator('#amount').fill('1.01');
+      await expect(page.locator('#wordsResult')).toHaveText('GHANA CEDI ONE AND PESEWA ONE ONLY');
+      await expect(page.locator('#docPreview')).toHaveText('GHANA CEDI ONE AND PESEWA ONE ONLY (GHS 1.01)');
+      await page.locator('.document-options summary').click();
+      await page.locator('#docMode').selectOption('invoice');
+      await page.locator('#caseMode').selectOption('title');
+      await expect(page.locator('#docPreview')).toHaveText('VAT invoice amount GHS 1.01 (Ghana Cedi One and Pesewa One Only)');
+      await page.evaluate(() => {
+        window.copiedAmountText = '';
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: { writeText: async text => { window.copiedAmountText = text; } }
+        });
+      });
+      await page.getByRole('button', { name: 'Copy Words' }).click();
+      await expect(page.locator('#copyStatus')).toHaveText('Copied.');
+      expect(await page.evaluate(() => window.copiedAmountText)).toBe('Ghana Cedi One and Pesewa One Only');
+      await page.getByRole('button', { name: 'Copy Document Line' }).click();
+      await expect(page.locator('#copyStatus')).toHaveText('Copied.');
+      expect(await page.evaluate(() => window.copiedAmountText)).toBe('VAT invoice amount GHS 1.01 (Ghana Cedi One and Pesewa One Only)');
+      await page.locator('#amount').fill('2.02');
+      await expect(page.locator('#wordsResult')).toHaveText('Ghana Cedis Two and Pesewas Two Only');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+      expect(errors).toEqual([]);
+    });
+  }
+}

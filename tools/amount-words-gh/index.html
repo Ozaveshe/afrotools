@@ -521,11 +521,12 @@ function amountToWords(amount) {
   if (cedis === 0 && pesewas === 0) return 'Zero Ghana Cedis Only';
 
   if (cedis > 0) {
-    words = 'Ghana Cedis ' + numWords(cedis);
+    words = (cedis === 1 ? 'Ghana Cedi ' : 'Ghana Cedis ') + numWords(cedis);
   }
   if (pesewas > 0) {
-    if (cedis > 0) words += ' and Pesewas ';
-    else words = 'Pesewas ';
+    const pesewaUnit = pesewas === 1 ? 'Pesewa ' : 'Pesewas ';
+    if (cedis > 0) words += ' and ' + pesewaUnit;
+    else words = pesewaUnit;
     words += numWords(pesewas);
   }
   words += ' Only';

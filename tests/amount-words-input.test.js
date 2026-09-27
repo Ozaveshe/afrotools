@@ -32,8 +32,20 @@ for (const slug of ['amount-words-gh', 'naira-to-words']) {
     const max = slug === 'amount-words-gh' ? '999999999999' : maximum;
     const wording = raw => sandbox.amountToWords(engine.parse(raw, max), curr);
     assert.match(wording('0'), /Zero.*Only/);
-    assert.match(wording('0.01'), /(?:Pesewas One|One Kobo) Only/);
-    assert.match(wording('1.005'), /(?:Pesewas One|One Kobo) Only/);
+    if (slug === 'amount-words-gh') {
+      for (const [amount, expected] of [
+        ['1.00', 'Ghana Cedi One Only'],
+        ['0.01', 'Pesewa One Only'],
+        ['1.01', 'Ghana Cedi One and Pesewa One Only'],
+        ['1.005', 'Ghana Cedi One and Pesewa One Only'],
+        ['2.01', 'Ghana Cedis Two and Pesewa One Only'],
+        ['1.02', 'Ghana Cedi One and Pesewas Two Only'],
+        ['2.02', 'Ghana Cedis Two and Pesewas Two Only']
+      ]) assert.equal(wording(amount), expected, amount);
+    } else {
+      assert.match(wording('0.01'), /One Kobo Only/);
+      assert.match(wording('1.005'), /One Kobo Only/);
+    }
     assert.match(wording('999.995'), /One Thousand/);
     assert.match(wording(max + '.99'), /Ninety-Nine/);
     if (slug === 'naira-to-words') assert.match(wording(max + '.99'), /Trillion/);
