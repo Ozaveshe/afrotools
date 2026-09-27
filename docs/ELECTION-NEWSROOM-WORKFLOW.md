@@ -41,3 +41,12 @@ collection of source-linked articles with its own RSS feed. Hausa and Yoruba
 edition fronts may explain the calendar in their own languages, but are not
 automatically equivalent to every English article or feature. Add reciprocal
 hreflang only for genuinely equivalent reviewed pages.
+
+The English calendar also contains a source-generated HTML snapshot, so dated
+records and their available official links remain readable without JavaScript or
+when the live JSON request fails. Generate it with
+`npm run elections:calendar:build` and prove it matches the ledger with
+`npm run elections:calendar:check`. The snapshot is not a live result or an
+independent fact source: it carries the ledger generation date and date-status
+labels. Regenerate it whenever the election ledger changes, including when an
+earlier handoff is integrated before this one.

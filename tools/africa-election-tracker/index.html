@@ -87,6 +87,11 @@
 .et-table th,.et-table td{padding:var(--space-3) var(--space-2);border-bottom:1px solid var(--color-border);text-align:left;font-size:.8rem;vertical-align:top}
 .et-table th{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em}
 .et-empty{border:1px dashed var(--color-border-strong);padding:var(--space-8) var(--space-4);text-align:center;font-size:.88rem}
+.et-snapshot-note{margin:0 0 var(--space-5);font-size:.82rem;line-height:1.6;color:var(--color-text-muted)}
+.et-snapshot-heading{margin:var(--space-6) 0 var(--space-4);font-family:var(--font-heading);font-size:1.35rem;font-weight:400}
+.et-snapshot-source{display:inline-flex;flex-direction:column;gap:.2rem;max-width:100%}
+.et-snapshot-source a{overflow-wrap:anywhere}
+.et-filter-panel :disabled{cursor:not-allowed;opacity:.65}
 .et-error{border:1px solid var(--color-warning);padding:var(--space-4);font-size:.84rem;line-height:1.6}
 .et-sr-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 /* Editorial composition. Shared design tokens carry both light and dark themes. */
@@ -256,8 +261,8 @@ body.election-desk-page{
         </div>
         <aside class="et-hero-panel" aria-live="polite">
           <div class="et-hero-panel-label">Next date on the calendar</div>
-          <div class="et-hero-next" id="nextElectionTitle">Loading election tracker...</div>
-          <div class="et-hero-next-meta" id="nextElectionMeta">Checking election dates and source status.</div>
+          <div class="et-hero-next" id="nextElectionTitle">Browse the published calendar below</div>
+          <div class="et-hero-next-meta" id="nextElectionMeta">Each record shows its date status and an official source link.</div>
           <p class="et-hero-panel-note">Dates can change. Open each record for its current status and source links.</p>
         </aside>
       </div>
@@ -277,10 +282,10 @@ body.election-desk-page{
     <h2 id="trackerTitle" class="et-sr-status">Election desk</h2>
 
     <div class="et-metrics" aria-label="Tracker summary">
-      <div class="et-metric"><strong id="metricRecords">0</strong><span>tracked elections</span></div>
-      <div class="et-metric"><strong id="metricCountries">0</strong><span>countries</span></div>
-      <div class="et-metric"><strong id="metricOfficial">0</strong><span>official-source records</span></div>
-      <div class="et-metric"><strong id="metricReview">0</strong><span>dates to verify</span></div>
+      <div class="et-metric"><strong id="metricRecords">—</strong><span>tracked elections</span></div>
+      <div class="et-metric"><strong id="metricCountries">—</strong><span>countries</span></div>
+      <div class="et-metric"><strong id="metricOfficial">—</strong><span>official-source records</span></div>
+      <div class="et-metric"><strong id="metricReview">—</strong><span>dates to verify</span></div>
     </div>
 
     <section class="et-dispatches" aria-labelledby="dispatchesTitle">
@@ -308,23 +313,23 @@ body.election-desk-page{
             <div class="et-controls">
               <div class="et-field">
                 <label for="searchInput">Search</label>
-                <input class="et-input" id="searchInput" type="search" placeholder="Country, office, state, source">
+                <input class="et-input" id="searchInput" type="search" placeholder="Country, office, state, source" disabled>
               </div>
               <div class="et-field">
                 <label for="regionFilter">Region</label>
-                <select class="et-select" id="regionFilter">
+                <select class="et-select" id="regionFilter" disabled>
                   <option value="all">All regions</option>
                 </select>
               </div>
               <div class="et-field">
                 <label for="typeFilter">Election type</label>
-                <select class="et-select" id="typeFilter">
+                <select class="et-select" id="typeFilter" disabled>
                   <option value="all">All types</option>
                 </select>
               </div>
               <div class="et-field">
                 <label for="sourceFilter">Source</label>
-                <select class="et-select" id="sourceFilter">
+                <select class="et-select" id="sourceFilter" disabled>
                   <option value="all">All source states</option>
                   <option value="official">Official only</option>
                   <option value="mixed">Mixed</option>
@@ -334,29 +339,204 @@ body.election-desk-page{
             </div>
             <div class="et-filter-row">
               <label class="et-check" for="executiveOnly">
-                <input id="executiveOnly" type="checkbox">
+                <input id="executiveOnly" type="checkbox" disabled>
                 <span>Executive only</span>
               </label>
               <label class="et-check" for="upcomingOnly">
-                <input id="upcomingOnly" type="checkbox" checked>
+                <input id="upcomingOnly" type="checkbox" checked disabled>
                 <span>Upcoming only</span>
               </label>
-              <button class="et-source-link" id="resetFilters" type="button">Reset filters</button>
+              <button class="et-source-link" id="resetFilters" type="button" disabled>Reset filters</button>
             </div>
           </div>
         </section>
+        <noscript><p class="et-snapshot-note">Filters require JavaScript. The published calendar below remains readable, including a linked official source for each record.</p></noscript>
 
         <section class="et-card et-calendar" id="calendar" aria-labelledby="resultsTitle">
           <div class="et-card-head">
             <div>
               <p class="et-kicker">The calendar</p>
               <h2 id="resultsTitle" class="et-card-title">Election dates</h2>
-              <div class="et-card-sub" id="resultCount" role="status" aria-live="polite">Loading records</div>
+              <div class="et-card-sub" id="resultCount" role="status" aria-live="polite">Published calendar snapshot</div>
             </div>
           </div>
           <div class="et-card-body">
             <div id="errorBox"></div>
-            <div class="et-list" id="electionList"></div>
+            <div class="et-list" id="electionList">
+              <!-- ELECTION_CALENDAR_SNAPSHOT_START -->
+              <p class="et-snapshot-note" data-snapshot-date="2026-09-26">Published ledger snapshot generated 26 Sep 2026. Dates can change. Each record links its available official notices; live filters load with JavaScript.</p>
+              <h3 class="et-snapshot-heading">Upcoming as of 26 Sep 2026</h3>
+              <article class="et-election-card" data-snapshot-election-id="stp-local-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-09-27" aria-label="27 Sep 2026; Official"><strong>27</strong><span>Sep 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Sao Tome and Principe: Local government</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National local-election cycle / Central Africa / local government</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">The CEN voter portal lists the 2026 local elections (Eleições Autárquicas) for 27 September 2026, alongside legislative and regional elections on the same date.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">CEN current 2026 electoral calendar</a><span class="et-source-checked">Checked 25 Aug 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="za-local-government-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-11-04" aria-label="4 Nov 2026; Official"><strong>4</strong><span>Nov 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">South Africa: Local councils</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">Municipalities / Southern Africa / local government</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">The 4 November 2026 election remains formally proclaimed. On 16 September the IEC certified 136,790 candidates for 10,526 council seats after statutory review and said that 5,096 nominees had been disqualified for specified administrative or voter-registration requirements. Its 23 September keynote records the Electoral Code of Conduct signing and ballot-paper draw ceremony and says ballot printing would begin after the draw.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-welcomes-announcement-of-4-November-2026-as-Local-Government-Elections-date?a=AISDGvpz75ps1usOfX7oijDmyJafW5sb%2Fd%2BcisS2zzc%3D" rel="noopener noreferrer" target="_blank">IEC announcement of 4 November 2026 local elections</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/Calendar" rel="noopener noreferrer" target="_blank">IEC 2026 election calendar</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.cogta.gov.za/index.php/2026/08/07/minister-hlabisa-gazzetes-the-date-for-the-2026-local-government-elections/" rel="noopener noreferrer" target="_blank">CoGTA proclamation of the 2026 local-government election</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.sanews.gov.za/south-africa/minister-gazettes-date-local-government-elections" rel="noopener noreferrer" target="_blank">South African government proclamation report</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-reminds-Political-Parties-and-Independent-Candidates-of-the-28-August-deadline-for-Candidate-Nominations?a=AISDGvpz75ps1usOfX7ointdjz3mYUpD1RwI9ws9LWs=" rel="noopener noreferrer" target="_blank">IEC candidate nomination deadline notice, 25 August 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-clarifies-candidate-nomination-process-for-2026-LGE?a=AISDGvpz75ps1usOfX7oil1MKoYpsV9R9bf4y%2BMJCQ0%3D" rel="noopener noreferrer" target="_blank">IEC candidate nomination process clarification, 1 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Over-140-000-candidates-submitted-nominations-to-contest-10-500-seats-in-LGE-2026?a=AISDGvpz75ps1usOfX7oiuwmL6QYMOh4HO60GXT87Ik=" rel="noopener noreferrer" target="_blank">IEC candidate nomination review update, 2 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-introduces-new-Disinformation-Code-ahead-of-2026-Local-Government-Elections?a=AISDGvpz75ps1usOfX7oikyeREfJWYio%2FY8t0ASpRUI%3D" rel="noopener noreferrer" target="_blank">IEC election Disinformation Code notice, 8 September 2026</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-Certifies-136-790-Candidates-to-Contest-the-2026-Local-Government-Elections?a=AISDGvpz75ps1usOfX7oirNAolCsgzLmsu%2BE2CNkQaA%3D" rel="noopener noreferrer" target="_blank">IEC final candidate certification notice, 16 September 2026</a><span class="et-source-checked">Checked 25 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Chairperson-%2339%3Bs-Keynote-at-Code-of-Conduct-Signing-and-Ballot-Draw-LGE-2026?a=AISDGvpz75ps1usOfX7oivJHO3FHY5pOOi5BDmmouNg%3D" rel="noopener noreferrer" target="_blank">IEC Code of Conduct signing and ballot draw keynote, 23 September 2026</a><span class="et-source-checked">Checked 25 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="cv-president-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-11-15" aria-label="15 Nov 2026; Official"><strong>15</strong><span>Nov 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Cabo Verde: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National / West Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">Cabo Verde&#39;s CNE confirms the 15 November 2026 presidential election. On 22 September it reported that the Constitutional Court had admitted the candidacies of Gilson João dos Santos Alves, Joana Gomes Rosa Amado, José Maria Pereira Neves, Antero Lúcio Lopes Francês Tavares, and Casimiro Jesus Lopes de Pina in a 21 September decision. The notice also records rejected candidacies and one withdrawal, with a 24-hour appeal window, so this is not presented as a final post-appeal roster.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/presidenciais-de-15-de-novembro-de-2026-cada-voto-conta-o-teu-tambem-participe/" rel="noopener noreferrer" target="_blank">CNE presidential election notice</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/presidenciais-2026-recenseamento-eleitoral-suspenso-a-partir-de-11-de-setembro/" rel="noopener noreferrer" target="_blank">CNE presidential calendar and voter-registration deadlines</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-inicia-pelo-senegal-missoes-a-diaspora-no-ambito-das-presidenciais-de-2026/" rel="noopener noreferrer" target="_blank">CNE 2026 presidential diaspora mission cycle</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-prossegue-missoes-institucionais-a-diaspora-com-deslocacao-a-portugal/" rel="noopener noreferrer" target="_blank">CNE Portugal diaspora preparation update</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/presidenciais-2026-cne-promove-acoes-de-capacitacao-dos-intervenientes-eleitorais-em-portugal/" rel="noopener noreferrer" target="_blank">CNE Portugal electoral training notice, 25 August 2026</a><span class="et-source-checked">Checked 30 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-inicia-agenda-em-franca-com-encontros-institucionais-e-visita-ao-ministerio-do-interior/" rel="noopener noreferrer" target="_blank">CNE France mission report, 28 August 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-designa-43-delegados-para-acompanhamento-das-eleicoes-presidenciais-de-2026/" rel="noopener noreferrer" target="_blank">CNE appointment of 43 presidential-election delegates, 7 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-prossegue-missoes-institucionais-a-diaspora-com-deslocacao-aos-eua/" rel="noopener noreferrer" target="_blank">CNE United States diaspora mission, 7-11 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/cne-reforca-parceria-com-associacoes-cabo-verdianas-nos-eua-para-promover-participacao-eleitoral/" rel="noopener noreferrer" target="_blank">CNE United States community-association meetings, 10 September 2026</a><span class="et-source-checked">Checked 11 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://cne.cv/sala_de_imprensa_/tribunal-constitucional-decide-sobre-admissibilidade-das-candidaturas-as-eleicoes-presidenciais-de-2026/" rel="noopener noreferrer" target="_blank">CNE Constitutional Court candidacy-admissibility notice, 22 September 2026</a><span class="et-source-checked">Checked 25 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="gm-president-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-12-05" aria-label="5 Dec 2026; Official"><strong>5</strong><span>Dec 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">The Gambia: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National / West Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">The IEC 2026-2027 electoral calendar lists the 5 December presidential election and revising-court work through 21 September. On 8 September the IEC issued media and observer accreditation guidance with a 20 November closing date. No voter-roll outcome or separate gazette publication is inferred from either notice.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://iec.gm/electoral-calendar-2026-2027/" rel="noopener noreferrer" target="_blank">The Gambia IEC 2026-2027 electoral calendar</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://iec.gm/revising-court-hearings/" rel="noopener noreferrer" target="_blank">The Gambia IEC Revising Court Hearings notice, 2 September 2026</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://iec.gm/guidelines-for-media-and-observer-accreditation/" rel="noopener noreferrer" target="_blank">The Gambia IEC media and observer accreditation guidance, 8 September 2026</a><span class="et-source-checked">Checked 9 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="ss-president-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-12-22" aria-label="22 Dec 2026; Tentative"><strong>22</strong><span>Dec 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">South Sudan: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Tentative</span>
+                    <p class="et-election-meta">National / East Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">South Sudan&#39;s NEC still references 22 December 2026 as polling day. On 2 September it began training state election committees on voter registration and separately clarified that registration had not started and that dates, centres, and required documents would be announced by public notice. The election date remains tentative until a formal calendar or statutory instrument is published.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/press-statement-of-the-chairperson-of-the-national-elections-commission-of-the-republic-of-south-sudan/" rel="noopener noreferrer" target="_blank">South Sudan NEC December 2026 election statement</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/frequently-asked-questions/" rel="noopener noreferrer" target="_blank">South Sudan NEC election-date FAQ</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/shec-induction-workshop-scheduled-for-october-8-11/" rel="noopener noreferrer" target="_blank">South Sudan NEC dated election-preparation notice</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/jonglei-launches-civic-and-voter-education-campaign-in-bor/" rel="noopener noreferrer" target="_blank">South Sudan NEC civic and voter education launch</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/nec-trains-state-elections-committees-on-voter-registration-ahead-of-december-polls/" rel="noopener noreferrer" target="_blank">South Sudan NEC voter-registration training, 2 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://nec.gov.ss/press-statement-on-false-reports-about-voter-registration/" rel="noopener noreferrer" target="_blank">South Sudan NEC registration-status clarification, 2 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="ng-president-2027">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2027-01-16" aria-label="16 Jan 2027; Official"><strong>16</strong><span>Jan 2027</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Nigeria: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National / West Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">INEC&#39;s current official election calendar, reviewed on 9 September 2026, lists the presidential election for 16 January 2027. The date is unchanged; the current calendar replaces unavailable legacy timetable links.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a><span class="et-source-checked">Checked 9 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="ng-governors-general-2027">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2027-02-06" aria-label="6 Feb 2027; Official"><strong>6</strong><span>Feb 2027</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Nigeria: Governors</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">States with in-cycle governorship contests / West Africa / governorship</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">INEC&#39;s current official election calendar, reviewed on 9 September 2026, lists governorship and State Houses of Assembly elections for 6 February 2027. The date is unchanged; the current calendar replaces the unavailable legacy remarks link.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a><span class="et-source-checked">Checked 9 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="ke-general-2027">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2027-08-10" aria-label="10 Aug 2027; Official"><strong>10</strong><span>Aug 2027</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Kenya: President and county governors</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National and 47 counties / East Africa / general executive</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">IEBC&#39;s 25 August 2026 critical-timelines notice confirms the 10 August 2027 general election and sets party-administration deadlines for October and November 2026. After clarifying voter-registration locations and transfer rules on 11 September, the Commission published the formal Notice of General Election on 14 September, covering the respective elections and campaign-financing timelines in Kenya Gazette notices published on 20 and 26 August.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/uploads/resources/tpFfOlBLRh.pdf" rel="noopener noreferrer" target="_blank">IEBC Election Operation Plan 2025-2027</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?Continuous_voter_registration_to_resume_in_September_in_preparation_for_2027_GE=" rel="noopener noreferrer" target="_blank">IEBC continuous voter registration update</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?Press_Release_-_Status_of_Election_Preparedness=" rel="noopener noreferrer" target="_blank">IEBC notice commencing the 2027 election period</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?Critical_Timelines_for_the_2027GE=" rel="noopener noreferrer" target="_blank">IEBC critical timelines for the 2027 General Election, 25 August 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?High-Level_National_Election_Security_Forum_Convened_Ahead_of_the_2027_General_Election" rel="noopener noreferrer" target="_blank">IEBC national election-security forum, 2 September 2026</a><span class="et-source-checked">Checked 8 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?IEBC_Leads_Multi-Agency_Review_of_Electoral_Security_Arrangements_Ahead_of_2027_General_Election" rel="noopener noreferrer" target="_blank">IEBC multi-agency electoral-security review, 8 September 2026</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?IEBC_Presents_2027_General_Election_Preparedness_Update_to_National_Assembly_Liaison_Committee" rel="noopener noreferrer" target="_blank">IEBC 2027 preparedness update to National Assembly Liaison Committee, 10 September 2026</a><span class="et-source-checked">Checked 11 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?Press_Release_-_Clarification_on_voter_registration_incident_at_Kenyatta_University" rel="noopener noreferrer" target="_blank">IEBC voter-registration service clarification, 11 September 2026</a><span class="et-source-checked">Checked 14 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.iebc.or.ke/news/?PUBLICATION_OF_NOTICE_OF_GENERAL_ELECTION" rel="noopener noreferrer" target="_blank">IEBC publication of the 2027 General Election notice, 14 September 2026</a><span class="et-source-checked">Checked 15 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <h3 class="et-snapshot-heading">Earlier records</h3>
+              <article class="et-election-card" data-snapshot-election-id="ng-osun-governor-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-08-15" aria-label="15 Aug 2026; Official revised"><strong>15</strong><span>Aug 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Nigeria: Governor</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official revised</span>
+                    <p class="et-election-meta">Osun State / West Africa / governorship</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">INEC&#39;s current IReV listing identifies the Osun poll as 15 August 2026. On 9 September it still showed 3,752 of 3,763 polling-unit result sheets uploaded (99.71%). This is a result-sheet upload count, not a vote tally; no official declaration was captured, so no outcome is shown here.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://wp1.inecnigeria.org/media-accreditation-for-osun-state-governorship-election/" rel="noopener noreferrer" target="_blank">INEC Osun media accreditation notice</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://inecelectionresults.ng/elections/6a7f788adcbc755a763f082a?type=gov" rel="noopener noreferrer" target="_blank">INEC IReV Osun result-sheet listing</a><span class="et-source-checked">Checked 9 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="zm-president-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-08-13" aria-label="13 Aug 2026; Official"><strong>13</strong><span>Aug 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Zambia: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National / Southern Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">The ECZ roadmap scheduled declaration for 17 August 2026 and publication through 24 August. On 30 August the official 2026 results portal still showed 0 of 226 constituencies approved, 0.0% of results received, and pending valid votes, so no outcome is published here.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.zm/wp-content/uploads/2026-Elections-Timetable-14-August-2025-30-days.pdf" rel="noopener noreferrer" target="_blank">ECZ revised 2026 General Election roadmap</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://www.elections.org.zm/?page_id=4293" rel="noopener noreferrer" target="_blank">ECZ general election results page</a><span class="et-source-checked">Checked 25 Aug 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://results.elections.org.zm/?type=PRESIDENTIAL&amp;year=2026" rel="noopener noreferrer" target="_blank">ECZ official 2026 presidential results portal</a><span class="et-source-checked">Checked 30 Aug 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="stp-president-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-07-19" aria-label="19 Jul 2026; Official"><strong>19</strong><span>Jul 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Sao Tome and Principe: President</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">National / Central Africa / presidential</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">The recorded 19 July 2026 presidential poll date has passed. The CEN portal reviewed on 30 August now highlights the September legislative, regional, and local elections. No official presidential declaration was captured, so no outcome is published here.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">Sao Tome and Principe CEN</a><span class="et-source-checked">Checked 30 Aug 2026</span></div></div></div>
+                </details>
+              </article>
+              <article class="et-election-card" data-snapshot-election-id="ng-ekiti-governor-2026">
+                <div class="et-election-top">
+                  <div class="et-date-box"><time datetime="2026-06-20" aria-label="20 Jun 2026; Official"><strong>20</strong><span>Jun 2026</span></time></div>
+                  <div>
+                    <h4 class="et-election-title">Nigeria: Governor</h4>
+                    <span class="et-pill">Official source</span><span class="et-pill">Date: Official</span>
+                    <p class="et-election-meta">Ekiti State / West Africa / governorship</p>
+                  </div>
+                </div>
+                <details class="et-record-details"><summary>Read source note and official links</summary>
+                  <p class="et-election-note">INEC&#39;s current IReV listing identifies the Ekiti poll as 20 June 2026. On 9 September it still showed 2,390 of 2,445 polling-unit result sheets uploaded (97.75%). Upload totals are not a declaration; no official declaration was captured, so no outcome is published here.</p>
+                  <div class="et-election-bottom"><div class="et-source-links"><div class="et-snapshot-source"><a class="et-source-link" href="https://inecelectionresults.ng/elections/6a35bb87b4e45d80b33a6e38?type=gov" rel="noopener noreferrer" target="_blank">INEC IReV Ekiti 2026 result-sheet listing</a><span class="et-source-checked">Checked 9 Sep 2026</span></div><div class="et-snapshot-source"><a class="et-source-link" href="https://inecnigeria.org/" rel="noopener noreferrer" target="_blank">INEC homepage election update</a><span class="et-source-checked">Checked 9 Sep 2026</span></div></div></div>
+                </details>
+              </article>
+              <!-- ELECTION_CALENDAR_SNAPSHOT_END -->
+            </div>
           </div>
         </section>
 
@@ -487,6 +667,8 @@ body.election-desk-page{
     metricOfficial: document.getElementById('metricOfficial'),
     metricReview: document.getElementById('metricReview')
   };
+  const snapshotHtml = els.electionList.innerHTML;
+  const snapshotDate = els.electionList.querySelector('[data-snapshot-date]')?.getAttribute('data-snapshot-date');
 
   function todayUtc() {
     const now = new Date();
@@ -513,15 +695,41 @@ body.election-desk-page{
     };
   }
 
+  function displayDate(record) {
+    if (record.datePrecision === 'year') return String(record.electionDate || '').slice(0, 4);
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+      return new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' })
+        .format(new Date(dateUtc(record.electionDate)));
+    }
+    return formatDate(record.electionDate);
+  }
+
+  function displayDateParts(record) {
+    if (record.datePrecision === 'year') return { day: String(record.electionDate || '').slice(0, 4), month: '', year: '' };
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+      const parts = monthDay(record.electionDate);
+      return { day: parts.month, month: parts.year, year: '' };
+    }
+    return monthDay(record.electionDate);
+  }
+
   function daysUntil(record) {
     return Math.ceil((dateUtc(record.electionDate) - todayUtc()) / MS_PER_DAY);
   }
 
   function recordEndUtc(record) {
-    return dateUtc(record.dateEnd || record.electionDate);
+    if (record.dateEnd) return dateUtc(record.dateEnd);
+    if (record.datePrecision === 'year') return Date.UTC(Number(record.electionDate.slice(0, 4)), 11, 31);
+    if (record.datePrecision === 'month' || record.dateStatus === 'projected') {
+      const [year, month] = record.electionDate.split('-').map(Number);
+      return Date.UTC(year, month, 0);
+    }
+    return dateUtc(record.electionDate);
   }
 
   function humanDays(record) {
+    if (record.datePrecision !== 'day') return 'exact day not listed';
+    if (record.dateStatus === 'tentative' || record.dateStatus === 'projected') return 'date not confirmed';
     const days = daysUntil(record);
     if (days === 0) return 'Today';
     if (days === 1) return 'Tomorrow';
@@ -626,24 +834,24 @@ body.election-desk-page{
     }
 
     els.nextElectionTitle.textContent = `${next.country}: ${next.office}`;
-    els.nextElectionMeta.textContent = `${formatDate(next.electionDate)} / ${humanDays(next)} / ${dateStatusLabel(next.dateStatus)} / ${sourceLabel(next.sourceStatus)}`;
+    els.nextElectionMeta.textContent = `${displayDate(next)} / ${humanDays(next)} / ${dateStatusLabel(next.dateStatus)} / ${sourceLabel(next.sourceStatus)}`;
   }
 
   function renderRecord(record) {
-    const dateParts = monthDay(record.electionDate);
+    const dateParts = displayDateParts(record);
     const sourceLinks = (record.sources || []).map((source) => {
       return `<a class="et-source-link" href="${escapeHtml(source.url)}" rel="noopener" target="_blank">${escapeHtml(source.label)}</a>`;
     }).join('');
     const dateText = record.dateEnd
-      ? `${formatDate(record.electionDate)} to ${formatDate(record.dateEnd)}`
-      : formatDate(record.electionDate);
+      ? `${displayDate(record)} to ${displayDate({ ...record, electionDate: record.dateEnd })}`
+      : displayDate(record);
 
     return `
       <article class="et-election-card">
         <div class="et-election-top">
           <div class="et-date-box" aria-label="${escapeHtml(dateText)}">
             <strong>${escapeHtml(dateParts.day)}</strong>
-            <span>${escapeHtml(dateParts.month)} ${escapeHtml(dateParts.year)}</span>
+            <span>${escapeHtml([dateParts.month, dateParts.year].filter(Boolean).join(' '))}</span>
           </div>
           <div>
             <div class="et-election-title-row">
@@ -689,7 +897,7 @@ body.election-desk-page{
     els.reviewQueue.innerHTML = queue.map((record) => `
       <div class="et-side-item">
         <strong>${escapeHtml(record.country)} - ${escapeHtml(record.office)}</strong>
-        <span>${escapeHtml(formatDate(record.electionDate))} / ${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
+        <span>${escapeHtml(displayDate(record))} / ${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
         <span>${escapeHtml(record.nextWatch)}</span>
       </div>
     `).join('');
@@ -813,7 +1021,7 @@ body.election-desk-page{
             <td><strong>${escapeHtml(entry.country)}</strong></td>
             <td>${escapeHtml(entry.region)}</td>
             <td>${escapeHtml(offices)}</td>
-            <td>${escapeHtml(next ? formatDate(next.electionDate) : 'No date')}</td>
+            <td>${escapeHtml(next ? displayDate(next) : 'No date')}</td>
             <td>${escapeHtml(sourceStates)}</td>
           </tr>
         `;
@@ -833,6 +1041,8 @@ body.election-desk-page{
   }
 
   function bindEvents() {
+    [els.searchInput, els.regionFilter, els.typeFilter, els.sourceFilter, els.executiveOnly, els.upcomingOnly, els.resetFilters]
+      .forEach((control) => { control.disabled = false; });
     els.searchInput.addEventListener('input', () => {
       state.filters.search = els.searchInput.value;
       renderList();
@@ -880,7 +1090,9 @@ body.election-desk-page{
   async function loadData() {
     const response = await fetch(DATA_URL, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Election data returned HTTP ${response.status}`);
-    return response.json();
+    const data = await response.json();
+    if (!data || !Array.isArray(data.elections) || !data.elections.length) throw new Error('Election data was invalid');
+    return data;
   }
 
   loadData()
@@ -896,11 +1108,18 @@ body.election-desk-page{
       renderAll();
     })
     .catch((error) => {
-      els.errorBox.innerHTML = `<div class="et-error">The published election data could not load: ${escapeHtml(error.message)}.</div>`;
-      els.nextElectionTitle.textContent = 'Tracker unavailable';
-      els.nextElectionMeta.textContent = 'Check the published election data file.';
-      els.resultCount.textContent = '0 records shown';
-      els.electionList.innerHTML = '';
+      [els.searchInput, els.regionFilter, els.typeFilter, els.sourceFilter, els.executiveOnly, els.upcomingOnly, els.resetFilters]
+        .forEach((control) => { control.disabled = true; });
+      els.electionList.innerHTML = snapshotHtml;
+      [els.metricRecords, els.metricCountries, els.metricOfficial, els.metricReview]
+        .forEach((metric) => { metric.textContent = '—'; });
+      [els.reviewQueue, els.newsWatch, els.candidateFacts, els.countryRows]
+        .forEach((panel) => { panel.innerHTML = ''; });
+      els.ledgerMeta.textContent = snapshotDate ? `Snapshot generated ${formatDate(snapshotDate)} / live data unavailable` : 'Live data unavailable';
+      els.errorBox.innerHTML = `<div class="et-error">The live election data could not load: ${escapeHtml(error.message)}. The published snapshot below may be older; confirm each date with its linked electoral authority.</div>`;
+      els.nextElectionTitle.textContent = 'Live data unavailable';
+      els.nextElectionMeta.textContent = 'Use the published snapshot below and check its source dates.';
+      els.resultCount.textContent = 'Published calendar snapshot below; live filters unavailable.';
     });
 })();
 </script>
