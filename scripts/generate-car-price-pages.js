@@ -13,6 +13,7 @@ const coreScriptTag = bundleManifest.core?.path
   : '<script src="/assets/js/lib/analytics.js" defer></script>';
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelligence.json"), "utf8"));
 const marketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/market-observations.json"), "utf8")).observations;
+const sourceMarketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/source-market-observations.json"), "utf8")).observations;
 const nigeriaAgeRules = JSON.parse(fs.readFileSync(path.join(root, "data/trade/car-import-cost-ng.json"), "utf8")).ageRules;
 const contentRevisionDate = "2026-09-27";
 function parseCsvRows(text) {
@@ -34,11 +35,13 @@ function parseCsvRows(text) {
   const header = rows.shift() || [];
   return rows.map((cells) => Object.fromEntries(header.map((key, index) => [key, cells[index] || ""])));
 }
-const catalogOptions = [
+const catalogOptions = [...new Map([
   ...parseCsvRows(fs.readFileSync(path.join(root, "data/cars/master-vehicle-catalog.csv"), "utf8")),
   ...parseCsvRows(fs.readFileSync(path.join(root, "data/cars/import-duty-vehicle-estimates.csv"), "utf8"))
 ]
   .filter((row) => row.vehicle_id && row.make && row.model && /^\d{4}$/.test(row.year))
+  .map((row) => [row.vehicle_id, row])
+).values()]
   .sort((left, right) => left.make.localeCompare(right.make) || left.model.localeCompare(right.model) || Number(right.year) - Number(left.year));
 const forex = (() => {
   try {
@@ -93,8 +96,16 @@ function formatMoney(amount, currency) {
   return `${currency} ${rounded.toLocaleString("en-US")}`;
 }
 
+function formatObservedMoney(amount, currency) {
+  return `${currency} ${Math.round(amount).toLocaleString("en-US")}`;
+}
+
 function marketObservation(country, vehicle) {
   return marketObservations.find((entry) => entry.countryCode === country.code && entry.vehicleId === vehicle.id) || null;
+}
+
+function sourceMarketObservation(vehicle) {
+  return sourceMarketObservations.find((entry) => entry.vehicleId === vehicle.id) || null;
 }
 
 function nigeriaImportAgeRestricted(country, vehicle) {
@@ -121,11 +132,11 @@ function marketEvidenceHTML(country, vehicle) {
   const name = observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
   const importAgeRestricted = nigeriaImportAgeRestricted(country, vehicle);
   const calculatorUrl = country.import_enabled && !importAgeRestricted
-    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}`
+    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}&price=${Math.round(sourceMarketObservation(vehicle).median / sourceMarketObservation(vehicle).sourceCurrencyPerUsd / 100) * 100}` : ""}`
     : "";
   const comparisonCopy = importAgeRestricted
     ? "This is a local purchase snapshot. The Nigeria Trade Information Portal states that imported vehicles must be less than 15 years from their year of manufacture; this model year is outside that stated limit. Confirm the current rule with Customs before paying."
-    : "Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding.";
+    : `Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. ${sourceMarketObservation(vehicle) ? "The source-market band is also a dated asking-price sample; confirm the exact seller quote before deciding." : "The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding."}`;
   const corroboration = (observation.corroboratingSources || []).map((source) => `<li><a href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.sourceName)}</a>: ${escapeHtml(formatMoney(source.median, source.currency))} median asking price across ${source.sampleSize} comparable listings (reviewed ${escapeHtml(source.reviewedAt)}). ${escapeHtml(source.method)}</li>`).join("\n");
   return `<section class="cars-panel cars-static-summary cars-market-evidence">
 <h2>${escapeHtml(name)} asking prices in ${escapeHtml(observation.market)}</h2>
@@ -140,8 +151,21 @@ ${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
 
 function vehicleImageHTML(vehicle) {
   const binding = (data.mediaLibrary && data.mediaLibrary.bindings || []).find((entry) => entry.vehicleId === vehicle.id && entry.isPrimary && entry.status === "approved");
-  const asset = binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && entry.sourceType === "licensed");
-  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="640" height="400"><figcaption>Illustrative model image; the marketplace sample refers to different cars.</figcaption></figure>` : "";
+  const asset = binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && ["licensed", "generated"].includes(entry.sourceType));
+  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="640" height="400"><figcaption>${asset.sourceType === "generated" ? "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."}</figcaption></figure>` : "";
+}
+
+function sourceMarketEvidenceHTML(vehicle) {
+  const observation = sourceMarketObservation(vehicle);
+  if (!observation) return "";
+  return `<section class="cars-panel cars-static-summary cars-market-evidence">
+<h2>${escapeHtml(observation.market)} source-market asking prices</h2>
+<p>For ${escapeHtml(observation.sampleVariant)}, ${observation.sampleSize} used-car asks had a median of <strong>${escapeHtml(formatObservedMoney(observation.median, observation.currency))}</strong>; the middle half ran from ${escapeHtml(formatObservedMoney(observation.lowerQuartile, observation.currency))} to ${escapeHtml(formatObservedMoney(observation.upperQuartile, observation.currency))}. The source page stated an update of ${escapeHtml(observation.sourceSnapshotAt)}; reviewed ${escapeHtml(observation.reviewedAt)}.</p>
+<p><strong>Method:</strong> ${escapeHtml(observation.method)}</p>
+<p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
+<p>The USD source band is converted using ${escapeHtml(observation.sourceCurrencyPerUsd)} AED per USD from <a href="${escapeHtml(observation.fxSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(observation.fxSourceName)}</a>. It excludes import costs and is a planning input, not a landed or local price.</p>
+<div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a></div>
+</section>`;
 }
 
 function catalogOptionsHTML() {
@@ -180,7 +204,7 @@ function vehicleTableHTML(vehicles, country, linkPrefix, caption) {
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">These are source-market planning estimates from the AfroTools car dataset (last vehicle price update ${escapeHtml(latestVehicleUpdate(vehicles))}), converted with the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. They are not local asking prices. Use a current source quote and the import-cost calculator before comparing with local asking prices.${fxNote}</p>
+<p class="cars-static-note">${vehicles.some(sourceMarketObservation) ? "The dated source-market asking sample is described on its vehicle page. Other bands are older planning estimates." : "These are older source-market planning estimates."} Source bands come from the AfroTools car dataset (last vehicle price update ${escapeHtml(latestVehicleUpdate(vehicles))}); local conversions use the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. They are not local asking prices. Use a current source quote and the import-cost calculator before comparing with local asking prices.${fxNote}</p>
 </section>`;
 }
 
@@ -226,7 +250,7 @@ ${marketObservation(country, vehicle) ? vehicleImageHTML(vehicle) : ""}
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">The source budget above is an older dataset estimate, not a local asking price or dealer quote. Local-currency conversion uses the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. Enter a current source quote for a useful landed-cost estimate in ${escapeHtml(country.name)}.</p>
+<p class="cars-static-note">${sourceMarketObservation(vehicle) ? "The USD source band above comes from a dated marketplace asking-price sample described below." : "The source budget above is an older dataset estimate."} It is not a local asking price or dealer quote. Local-currency conversion uses the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. Enter a current seller quote for a useful landed-cost estimate in ${escapeHtml(country.name)}.</p>
 </section>`;
 }
 
@@ -246,7 +270,7 @@ function staticContentHTML(meta) {
   if (meta.pageType === "root") {
     const options = catalogOptionsHTML();
     const observationLinks = rootObservationLinksHTML();
-    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} vehicles with older source-market planning budgets. Dated local asking-price snapshots are available for selected cars; the remaining local market prices still need research. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul><li><a href="/cars/nigeria/">Browse Nigeria car prices and market snapshots</a></li>${observationLinks}</ul></section>
+    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} priced vehicles. Most source-market bands are older planning estimates; the dated source and local asking-price snapshots are marked on their vehicle pages. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul><li><a href="/cars/nigeria/">Browse Nigeria car prices and market snapshots</a></li>${observationLinks}</ul></section>
 <section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Most do not have a current local asking-price sample. The calculator will ask for your actual seller price and show country-specific costs for six supported destinations.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
   }
   if (!meta.pageType) return "";
@@ -263,7 +287,7 @@ function staticContentHTML(meta) {
     return vehicleTableHTML(vehicles, country, `/cars/${country.slug}`, `${meta.make} ${meta.model} year variants in ${country.name}`);
   }
   if (meta.pageType === "vehicle" || meta.pageType === "import-vs-local") {
-    return vehicleDetailHTML(meta.vehicleObj, country) + marketEvidenceHTML(country, meta.vehicleObj);
+    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + marketEvidenceHTML(country, meta.vehicleObj);
   }
   return "";
 }

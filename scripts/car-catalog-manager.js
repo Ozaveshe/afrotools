@@ -6,6 +6,8 @@ const root = path.join(__dirname, "..");
 const masterCatalogPath = path.join(root, "data/cars/master-vehicle-catalog.csv");
 const imageManifestPath = path.join(root, "data/cars/image-upload-manifest.csv");
 const seedJsonPath = path.join(root, "data/cars/price-intelligence.json");
+const localObservationsPath = path.join(root, "data/cars/market-observations.json");
+const sourceObservationsPath = path.join(root, "data/cars/source-market-observations.json");
 const targetsPath = path.join(root, "data/cars/catalog-expansion-targets.json");
 const validStatuses = new Set(["active", "planned", "draft", "archived"]);
 const validBodies = new Set(["sedan", "suv", "pickup", "hatchback", "mpv", "wagon", "coupe", "van", "truck"]);
@@ -294,6 +296,61 @@ function printSummary(summary) {
 function syncSeedJson(rows) {
   const data = readJson(seedJsonPath);
   data.vehicles = buildVehicles(rows);
+  const vehicleById = new Map(data.vehicles.map((vehicle) => [vehicle.id, vehicle]));
+  const reviewedLocal = readJson(localObservationsPath).observations.map((item) => {
+    const vehicle = vehicleById.get(item.vehicleId);
+    if (!vehicle) throw new Error(`Local observation has no active vehicle: ${item.vehicleId}`);
+    return {
+      country_code: item.countryCode,
+      make: vehicle.make,
+      model: vehicle.model,
+      year: vehicle.year,
+      trim: item.sampleVariant || vehicle.trim,
+      condition_band: item.condition,
+      min_ask: item.lowerQuartile,
+      median_ask: item.median,
+      max_ask: item.upperQuartile,
+      currency: item.currency,
+      sample_size: item.sampleSize,
+      collected_at: item.reviewedAt,
+      confidence: item.sampleSize >= 10 ? "medium" : "low",
+      source_type: "dated-marketplace-observation",
+      source_url: item.sourceUrl
+    };
+  });
+  const localKeys = new Set(reviewedLocal.map((item) => `${item.country_code}:${item.make}:${item.model}:${item.year}`));
+  data.localMarketPrices = reviewedLocal.concat((data.localMarketPrices || []).filter((item) =>
+    !localKeys.has(`${item.country_code}:${item.make}:${item.model}:${item.year}`) && item.source_type !== "dated-marketplace-observation"
+  ));
+
+  const sourceObservations = readJson(sourceObservationsPath).observations;
+  const reviewedSources = sourceObservations.map((item) => {
+    const vehicle = vehicleById.get(item.vehicleId);
+    if (!vehicle) throw new Error(`Source-market observation has no active vehicle: ${item.vehicleId}`);
+    const toUsd = (value) => Math.round(value / item.sourceCurrencyPerUsd / 100) * 100;
+    return {
+      source_market: item.sourceMarket,
+      make: vehicle.make,
+      model: vehicle.model,
+      year: vehicle.year,
+      trim: item.sampleVariant,
+      condition_band: item.condition,
+      mileage_band: vehicle.mileage,
+      min_price: toUsd(item.lowerQuartile),
+      median_price: toUsd(item.median),
+      max_price: toUsd(item.upperQuartile),
+      currency: "USD",
+      sample_size: item.sampleSize,
+      collected_at: item.sourceSnapshotAt,
+      confidence: "low",
+      source_type: "dated-marketplace-observation",
+      source_url: item.sourceUrl
+    };
+  });
+  const sourceKeys = new Set(reviewedSources.map((item) => `${item.source_market}:${item.make}:${item.model}:${item.year}`));
+  data.sourceMarketPrices = reviewedSources.concat((data.sourceMarketPrices || []).filter((item) =>
+    !sourceKeys.has(`${item.source_market}:${item.make}:${item.model}:${item.year}`) && item.source_type !== "dated-marketplace-observation"
+  ));
   writeFile(seedJsonPath, `${JSON.stringify(data, null, 2)}\n`);
 }
 

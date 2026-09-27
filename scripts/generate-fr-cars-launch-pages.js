@@ -14,6 +14,7 @@ if (!currentChatBundle) {
 const chatBundlePath = currentChatBundle[1];
 const priceData = readJson("data/cars/price-intelligence.json");
 const observations = readJson("data/cars/market-observations.json").observations || [];
+const sourceObservations = readJson("data/cars/source-market-observations.json").observations || [];
 const importData = loadImportData();
 const reciprocalPairs = [];
 
@@ -465,6 +466,12 @@ function frenchVehicleProfile(vehicle) {
 
 function layout({ title, description, canonical, enUrl, swUrl, schema, body, indexable = false }) {
   const pageBody = normalizeFrenchText(body);
+  const alternateLinks = indexable ? [
+    `<link rel="alternate" hreflang="en" href="${enUrl}">`,
+    `<link rel="alternate" hreflang="fr" href="${canonical}">`,
+    ...(swUrl ? [`<link rel="alternate" hreflang="sw" href="${swUrl}">`] : []),
+    `<link rel="alternate" hreflang="x-default" href="${enUrl}">`
+  ].map((line) => `  ${line}`).join("\n") + "\n" : "";
   return `<!DOCTYPE html>
 <html lang="fr" data-chat-bundle="${chatBundlePath}">
 <head>
@@ -473,8 +480,7 @@ function layout({ title, description, canonical, enUrl, swUrl, schema, body, ind
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${canonical}">
-  ${indexable ? `<link rel="alternate" hreflang="en" href="${enUrl}">\n  <link rel="alternate" hreflang="fr" href="${canonical}">\n  ${swUrl ? `<link rel="alternate" hreflang="sw" href="${swUrl}">` : ""}\n  <link rel="alternate" hreflang="x-default" href="${enUrl}">` : ""}
-  <meta name="robots" content="${indexable ? "index, follow" : "noindex, follow"}">
+${alternateLinks}  <meta name="robots" content="${indexable ? "index, follow" : "noindex, follow"}">
   <meta name="tool-id" content="car-price-intelligence-fr">
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
@@ -906,6 +912,7 @@ function renderModelPage(page) {
   const route = `fr/cars/${country.frSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   const enRoute = `cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   const observation = observationFor(country.code, ctx.vehicle);
+  const sourceObservation = sourceObservations.find((item) => item.vehicleId === ctx.vehicle.id && item.sourceMarket === ctx.sourceMarket);
   const importIneligible = ctx.eligibilityStatus === "ineligible";
   const indexable = freshObservation(observation);
   rememberReciprocal(enRoute, route, indexable);
@@ -918,7 +925,7 @@ function renderModelPage(page) {
       : `Prix demandés observés pour ${vehicleName} ${place}: médiane, quartiles, date, échantillon et source. Le coût d'import reste illustratif.`
     : `Budget source et coût d'import illustratifs pour ${vehicleName} ${place}. Aucun relevé de prix local daté n'est disponible.`;
   const priceRows = [
-    ["Budget source illustratif", money(ctx.sourcePrice.median * ctx.usdToLocal, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
+    [sourceObservation ? "Prix demandé marché source" : "Budget source illustratif", money(ctx.sourcePrice.median * ctx.usdToLocal, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), sourceObservation ? `${sourceObservation.sampleSize} annonces aux Émirats arabes unis, page datée du ${escapeHtml(sourceObservation.sourceSnapshotAt)} · <a href="${escapeHtml(sourceObservation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>. Prix demandé converti, pas coût rendu.` : "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
     ["Coût rendu illustratif", importIneligible ? "Non applicable" : money(ctx.landed.normal * ctx.usdToLocal, ctx.localCurrency), importIneligible ? "—" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
     ["Prix demandé local observé", observation ? money(observation.median, observation.currency) : "Aucun relevé local daté", "—", observation ? `${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>` : "Un budget import ne prouve pas le prix d'un véhicule local."]
   ].map(([label, local, usd, note]) => `<tr><td data-label="Couche de prix">${label}</td><td data-label="Devise locale">${local}</td><td data-label="Référence USD">${usd}</td><td data-label="Note">${note}</td></tr>`).join("\n");

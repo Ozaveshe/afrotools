@@ -6,21 +6,21 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 11576 |
-| native | 9005 |
+| rawPages | 11617 |
+| native | 9046 |
 | localizedShell | 2517 |
 | englishFallback | 33 |
 | unavailable | 20 |
 | deprecated | 1 |
-| indexableEligible | 7858 |
-| sitemapEligible | 7858 |
+| indexableEligible | 7860 |
+| sitemapEligible | 7860 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 6026 | 6026 | 0 | 0 | 0 | 0 | 3996 | 180 |
-| fr | launched | 3804 | 2185 | 1618 | 0 | 0 | 1 | 2176 | 180 |
+| en | default | 6066 | 6066 | 0 | 0 | 0 | 0 | 3997 | 180 |
+| fr | launched | 3805 | 2186 | 1618 | 0 | 0 | 1 | 2177 | 180 |
 | sw | launched | 1596 | 763 | 828 | 5 | 0 | 0 | 1584 | 180 |
 | yo | partial | 45 | 9 | 13 | 3 | 20 | 0 | 22 | 180 |
 | ha | launched | 105 | 22 | 58 | 25 | 0 | 0 | 80 | 180 |
@@ -38,7 +38,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
 | country-tool | 514 | 186 | 327 | 0 | 0 | 1 | 510 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
-| page | 5438 | 4708 | 678 | 32 | 20 | 0 | 2444 |
+| page | 5479 | 4749 | 678 | 32 | 20 | 0 | 2446 |
 | tool | 4004 | 2636 | 1368 | 0 | 0 | 0 | 3655 |
 | widget | 379 | 235 | 144 | 0 | 0 | 0 | 145 |
 

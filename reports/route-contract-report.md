@@ -6,21 +6,21 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11576 |
-| Indexable pages | 7858 |
+| Public pages | 11617 |
+| Indexable pages | 7860 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4234 |
-| Documented fallbacks | 14845 |
-| Routes eligible for primary sitemaps | 7858 |
+| Genuine equivalence groups | 4235 |
+| Documented fallbacks | 14886 |
+| Routes eligible for primary sitemaps | 7860 |
 
 ## Locale Coverage
 
-- en: 6026 page records
-- fr: 3804 page records
+- en: 6066 page records
+- fr: 3805 page records
 - ha: 105 page records
 - sw: 1596 page records
 - yo: 45 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5438
+- page: 5479
 - tool: 4004
 - widget: 379
 
@@ -6773,6 +6773,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e205aca3a833: en=`/agriculture/vaccination-schedule/nigeria`; x-default=`/agriculture/vaccination-schedule/nigeria`
 - equivalence:e20e2275a2e2: fr=`/fr/widgets/taux-freelance/`; x-default=`/fr/widgets/taux-freelance/`
 - equivalence:e212618d40d2: en=`/jamb/biology/1997/`; x-default=`/jamb/biology/1997/`
+- equivalence:e22f022234a0: en=`/cars/nigeria/toyota/camry/2018/`, fr=`/fr/cars/nigeria/toyota/camry/2018/`; x-default=`/cars/nigeria/toyota/camry/2018/`
 - equivalence:e230eba8ecee: en=`/tools/business-license/angola`; x-default=`/tools/business-license/angola`
 - equivalence:e2332e44b80a: en=`/jamb/mathematics/1983/`; x-default=`/jamb/mathematics/1983/`
 - equivalence:e23b5bf337a4: en=`/tools/business-license/cote-d-ivoire`; x-default=`/tools/business-license/cote-d-ivoire`

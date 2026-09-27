@@ -8,6 +8,7 @@ const root = path.join(__dirname, "..");
 const read = (file) => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 const data = read("data/cars/price-intelligence.json");
 const observations = read("data/cars/market-observations.json").observations;
+const sourceObservations = read("data/cars/source-market-observations.json").observations;
 const observation = observations.find((item) => item.vehicleId === "toyota-corolla-2018" && item.countryCode === "NG");
 assert.ok(observation, "Nigeria Corolla observation exists");
 const vehicle = data.vehicles.find((item) => item.id === observation.vehicleId);
@@ -21,7 +22,7 @@ const importData = ImportEngine.mergeData(
 assert.ok(vehicle, "market observation matches a catalog vehicle");
 assert.ok(observation.lowerQuartile < observation.median && observation.median < observation.upperQuartile);
 assert.match(observation.sourceUrl, /^https:\/\/jiji\.ng\/lagos\/cars\//);
-assert.ok(observations.length >= 11, "the dated Nigeria marketplace sample set has expanded");
+assert.ok(observations.length >= 12, "the dated Nigeria marketplace sample set has expanded");
 assert.ok(observations.every((item) => item.sampleSize >= 3 && item.sourceUrl && item.reviewedAt && item.method && item.limitations));
 for (const vehicleId of ["mercedes-e-class-2017", "lexus-rx-2017", "lexus-es-2016"]) {
   assert.ok(observations.some((item) => item.vehicleId === vehicleId && item.countryCode === "NG" && item.sampleVariant), `${vehicleId} identifies the sampled trim`);
@@ -38,24 +39,13 @@ assert.equal(thinCrvObservation.median, 35000000);
 assert.equal(thinCrvObservation.searchIndexEligible, false, "thin CR-V evidence remains buyer-visible without an indexable vehicle page");
 assert.equal(thinCrvObservation.sampleVariantFr, "2020 Honda CR-V, version non vérifiée");
 
-const withObservation = structuredClone(data);
-withObservation.localMarketPrices.push({
-  country_code: observation.countryCode,
-  make: vehicle.make,
-  model: vehicle.model,
-  year: vehicle.year,
-  min_ask: observation.lowerQuartile,
-  median_ask: observation.median,
-  max_ask: observation.upperQuartile,
-  currency: observation.currency,
-  sample_size: observation.sampleSize,
-  collected_at: observation.reviewedAt,
-  source_url: observation.sourceUrl,
-  confidence: "medium",
-  source_type: "dated-marketplace-observation"
-});
+const projectedObservation = data.localMarketPrices.find((item) => item.source_url === observation.sourceUrl);
+assert.ok(projectedObservation, "the production price pack contains the reviewed Corolla source");
+assert.equal(projectedObservation.median_ask, observation.median);
+assert.equal(data.localMarketPrices.filter((item) => item.country_code === "NG" && item.make === "Toyota" && item.model === "Camry" && item.year === 2005).length, 1, "reviewed local data replaces the older seed row");
+assert.equal(data.localMarketPrices.filter((item) => item.source_type === "dated-marketplace-observation").length, observations.length, "every reviewed observation reaches the interactive price pack");
 
-const context = Price.buildVehicleContext(withObservation, importData, {
+const context = Price.buildVehicleContext(data, importData, {
   country: "nigeria", make: "toyota", model: "corolla", year: 2018
 });
 assert.ok(context, "Nigeria Corolla comparison loads");
@@ -66,28 +56,30 @@ assert.ok(Math.abs(context.localPrice.median * forex.rates.NGN - observation.med
 assert.equal(context.recommendation.status, "price-check-needed", "stale source budget cannot produce a buy/import recommendation");
 assert.match(context.calculatorUrl, /^\/tools\/car-import-cost\/nigeria\//);
 
-withObservation.localMarketPrices.push({
-  country_code: oldCamryObservation.countryCode,
-  make: "Toyota",
-  model: "Camry",
-  year: 2005,
-  min_ask: oldCamryObservation.lowerQuartile,
-  median_ask: oldCamryObservation.median,
-  max_ask: oldCamryObservation.upperQuartile,
-  currency: oldCamryObservation.currency,
-  sample_size: oldCamryObservation.sampleSize,
-  collected_at: oldCamryObservation.reviewedAt,
-  source_url: oldCamryObservation.sourceUrl,
-  confidence: "medium",
-  source_type: "dated-marketplace-observation"
-});
-const oldCamryContext = Price.buildVehicleContext(withObservation, importData, {
+const oldCamryContext = Price.buildVehicleContext(data, importData, {
   country: "nigeria", make: "toyota", model: "camry", year: 2005
 });
 assert.equal(oldCamryContext.localPrice.sourceUrl, oldCamryObservation.sourceUrl);
 assert.equal(oldCamryContext.recommendation.status, "too-risky", "2005 local price must not imply import eligibility");
 
-const directoryOnly = Price.buildVehicleContext(withObservation, importData, {
+const newCamryObservation = observations.find((item) => item.vehicleId === "toyota-camry-2018");
+const newCamrySource = sourceObservations.find((item) => item.vehicleId === "toyota-camry-2018" && item.sourceMarket === "uae");
+assert.equal(newCamryObservation.sampleSize, 12);
+assert.equal(newCamryObservation.median, 25300000);
+assert.equal(newCamrySource.sampleSize, 8);
+const newCamryContext = Price.buildVehicleContext(data, importData, {
+  country: "nigeria", make: "toyota", model: "camry", year: 2018
+});
+assert.equal(newCamryContext.localPrice.sourceUrl, newCamryObservation.sourceUrl);
+assert.equal(newCamryContext.localPrice.sampleSize, 12);
+assert.equal(newCamryContext.sourceMarket, "uae");
+assert.equal(newCamryContext.sourcePrice.sourceType, "dated-marketplace-observation");
+assert.equal(newCamryContext.sourcePrice.median, 10700);
+assert.equal(newCamryContext.sourcePrice.sourceUrl, newCamrySource.sourceUrl);
+assert.equal(Math.round(newCamryContext.localPrice.median * forex.rates.NGN), newCamryObservation.median, "the browser can display the reviewed NGN ask without conversion drift");
+assert.equal(newCamryContext.media.hero.sourceType, "generated");
+
+const directoryOnly = Price.buildVehicleContext(data, importData, {
   country: "south-africa", make: "toyota", model: "corolla", year: 2018
 });
 assert.equal(directoryOnly.calculatorUrl, "", "directory-only market has no nonexistent country calculator URL");
