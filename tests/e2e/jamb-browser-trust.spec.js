@@ -270,6 +270,8 @@ test('six-option questions render and grade F across all practice tools', async 
 });
 
 test('current calculation-checked bank renders its labels and grades the actual answers', async ({ page }) => {
+  // This flow answers the full multi-subject bank through the UI before submitting.
+  test.setTimeout(180000);
   const pool = require('../../data/jamb/pools/practice-pool.json');
   const index = require('../../data/jamb/pools/index.json');
   const rows = pool.questions.filter(q => q.verification?.method === 'ai-calculation-checked');
