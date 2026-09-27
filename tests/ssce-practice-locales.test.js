@@ -164,3 +164,17 @@ test('localized source generation is current and every locale page declares all 
     assert.ok(html.includes('scripts/build-ssce-practice-locales.js'));
   }
 });
+
+test('regenerated locale pages retain the release runtime shell and current bank versions', () => {
+  const generated = generator.outputs();
+  for (const locale of ['fr', 'sw']) {
+    const file = generator.routes[locale].slice(1) + 'index.html';
+    const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
+    assert.match(html, /data-chat-bundle="\/assets\/js\/bundles\/chat\.[0-9a-f]+\.min\.js"/);
+    assert.match(html, /<script src="\/assets\/js\/lazy-analytics\.js\?v=[0-9a-f]{8}" defer><\/script>/);
+    if (locale === 'fr') assert.match(html, /<script src="\/assets\/js\/analytics-bootstrap\.js\?v=[0-9a-f]{8}"[^>]*><\/script>/);
+    if (locale === 'sw') assert.match(html, /<script src="\/assets\/js\/lib\/sw-accessibility\.js\?v=[0-9a-f]{8}" defer><\/script>/);
+    assert.match(html, new RegExp(`ssce-written-bank-${locale}\\.js\\?v=[0-9a-f]{8}`));
+    assert.equal(generator.preserveReleaseShell(generated.get(file), html), html);
+  }
+});

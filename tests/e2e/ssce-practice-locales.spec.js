@@ -60,7 +60,11 @@ for (const [locale, c] of Object.entries(configs)) {
         await page.locator('#written-task').selectOption(q.id); visited.push(q.id);
         await expect(page.locator('.written-prompt')).toHaveAttribute('lang',q.subject==='English'||q.year===2022?'en':locale);
         if(q.subject==='English') await expect(page.locator('.written-prompt')).toHaveText(q.prompt);
-        if(q.passage) await expect(page.locator('#written-editor .practice-passage p')).toHaveAttribute('lang','en');
+        if(q.passage) {
+          const languages = await page.locator('#written-editor .practice-passage p').evaluateAll(paragraphs => paragraphs.map(p => p.getAttribute('lang')));
+          expect(languages.length).toBeGreaterThan(0);
+          expect(languages.every(language => language === 'en')).toBe(true);
+        }
         await expect(page.locator('#written-editor input[type="checkbox"]')).toHaveCount(q.checks.length);
         if(q.figure) {
           const diagramLabel = localizedWritten[locale].get(q.id).figureAlt || (locale==='fr'?/Triangle|cercle/:/Pembetatu|duara/);

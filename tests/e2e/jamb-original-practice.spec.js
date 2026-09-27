@@ -30,6 +30,20 @@ test('320px practice shows the question before navigation and submission', async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
 
+test('390px review control stays clear of the fixed AI bubble', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/jamb/original-practice/?subject=mathematics');
+  await page.locator('#start-btn').click();
+  const bubble = page.locator('afro-site-assistant #fab');
+  await expect(bubble).toBeVisible();
+  const mark = await page.locator('#mark-btn').boundingBox();
+  const fab = await bubble.boundingBox();
+  const horizontalOverlap = Math.max(0, Math.min(mark.x + mark.width, fab.x + fab.width) - Math.max(mark.x, fab.x));
+  const verticalOverlap = Math.max(0, Math.min(mark.y + mark.height, fab.y + fab.height) - Math.max(mark.y, fab.y));
+  expect(horizontalOverlap * verticalOverlap).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
 for (const width of [320, 390, 1280]) {
   test(`original practice is usable at ${width}px without mixing mock history`, async ({ page }) => {
     const attempts = [];

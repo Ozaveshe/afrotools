@@ -1,7 +1,12 @@
 'use strict';
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {inventory}=require('../scripts/audit-nigeria-exam-coverage');
+const {inventory,build}=require('../scripts/audit-nigeria-exam-coverage');
+const path=require('node:path');
+
+test('checked-in exam coverage matches the reviewed publication bank',()=>{
+  assert.doesNotThrow(()=>build(path.resolve(__dirname,'..'),true));
+});
 
 test('coverage includes other subjects and explicit recent-year acquisition gaps',()=>{
   const raw=[{id:'p1',subject:'physics',year:2020,num:1},{id:'p2',subject:'physics',year:2020,num:3},{id:'b1',subject:'biology',year:2019,num:1}];

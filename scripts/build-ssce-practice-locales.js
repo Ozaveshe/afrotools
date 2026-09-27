@@ -2,6 +2,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const quick = require('../assets/js/lib/ssce-practice-bank');
 const written = require('../assets/js/lib/ssce-written-bank');
 const expansion = require('./lib/ssce-2022-physics-locale-content');
@@ -69,7 +70,7 @@ const pageCopy = {
     saving: 'Les réponses restent dans ce navigateur. La progression est temporaire jusqu’à son enregistrement explicite. Une nouvelle séance remplace les réponses rapides non enregistrées.',
     noscript: 'Activez JavaScript pour répondre et enregistrer votre progression. Les ressources officielles ci-dessous restent accessibles.',
     writtenHeading: 'Construire une réponse rédigée', collection: 'Collection', task: 'Exercice rédigé', writtenImport: 'Ouvrir une sauvegarde des réponses rédigées',
-    writtenScope: 'Votre texte reste sur cet appareil. La vérification personnelle ne produit aucune note officielle. Les cinq sujets de rédaction WAEC 2022 et les cinq de 2023 ont chacun un guide ; les guides de lecture couvrent la question 6 de 2022 et les questions 6 et 7 de 2023. Les textes et questions complets de lecture restent dans la transcription tierce liée.',
+    writtenScope: 'Votre texte reste sur cet appareil. La vérification personnelle ne produit aucune note officielle. Les cinq sujets de rédaction WAEC 2022 et les cinq de 2023 ont chacun un guide ; les guides de lecture couvrent la question 6 de 2022 et les questions 6 et 7 de 2023. Pour ces guides liés aux examens, les textes et questions complets de lecture restent dans la transcription tierce liée.',
     coverageHeading: 'Ce que vous pouvez travailler',
     coverageBody: 'Les exercices originaux ne portent aucune année d’examen. En mathématiques WAEC 2021, les questions 1(a–b), 2, 3, 5(a–b), 6(a–b), 7, 8, 9, 10, 11(a–b), 12 et 13 ont des guides pour toutes les parties sélectionnées ; cinq sujets de rédaction WAEC 2022 et cinq de 2023 ont chacun un guide. Le guide de lecture WAEC 2022 porte sur la question 6 ; deux guides de 2023 portent sur les questions 6 et 7. Les textes et questions complets restent dans les transcriptions tierces liées. Cinquante-huit guides de mathématiques NECO 2023 renvoient aux questions sélectionnées 1–22, 24–47 et 49–60 ; les questions 23 et 48 restent suspendues ; quatre guides de rédaction couvrent les choix de la section A de l’épreuve II. Deux autres guides portent sur la compréhension et le résumé des sections B et C ; leurs textes complets restent dans la copie liée à la source. Les guides WAEC conservent les années 2021, 2022 et 2023, le numéro de question et le lien vers la source. Cette sélection n’est ni une épreuve complète ni un programme complet. Elle ne comprend pas de correction automatique de dissertations ni d’anglais oral avec audio.',
     jamb: 'Sélections JAMB par année (pages en anglais)', mathYears: 'Mathématiques', englishYears: 'Anglais',
@@ -87,7 +88,7 @@ const pageCopy = {
     saving: 'Majibu yanabaki katika kivinjari hiki. Maendeleo ni ya muda hadi uyahifadhi mwenyewe. Kipindi kipya kinachukua nafasi ya majibu mafupi ambayo hayajahifadhiwa.',
     noscript: 'Washa JavaScript ili kujibu na kuhifadhi maendeleo. Viungo vya vyanzo rasmi hapa chini vinapatikana bila JavaScript.',
     writtenHeading: 'Jenga jibu la kuandika', collection: 'Mkusanyiko', task: 'Kazi ya kuandika', writtenImport: 'Fungua nakala ya majibu ya kuandika',
-    writtenScope: 'Jibu lako linabaki kwenye kifaa hiki. Kujihakiki hakutoi alama rasmi. Maswali yote matano ya uandishi WAEC 2022 na matano ya 2023 yana mwongozo; miongozo ya kusoma inahusu swali la 6 la 2022 na maswali 6 na 7 ya 2023. Vifungu na maswali kamili ya kusoma yanabaki kwenye nakala ya mhusika mwingine iliyo kwenye kiungo.',
+    writtenScope: 'Jibu lako linabaki kwenye kifaa hiki. Kujihakiki hakutoi alama rasmi. Maswali yote matano ya uandishi WAEC 2022 na matano ya 2023 yana mwongozo; miongozo ya kusoma inahusu swali la 6 la 2022 na maswali 6 na 7 ya 2023. Kwa miongozo hii inayohusu mitihani, vifungu na maswali kamili ya kusoma yanabaki kwenye nakala ya mhusika mwingine iliyo kwenye kiungo.',
     coverageHeading: 'Unachoweza kufanya mazoezi',
     coverageBody: 'Mazoezi asilia hayana mwaka wa mtihani. Kwa Hisabati WAEC 2021, maswali 1(a–b), 2, 3, 5(a–b), 6(a–b), 7, 8, 9, 10, 11(a–b), 12 na 13 yana miongozo ya sehemu zote zilizochaguliwa; mada tano za uandishi WAEC 2022 na tano za 2023 zina mwongozo. Mwongozo wa kusoma WAEC 2022 unahusu swali la 6; miongozo miwili ya 2023 inahusu maswali 6 na 7. Vifungu na maswali kamili viko kwenye nakala za mhusika mwingine zilizo kwenye viungo. Miongozo 58 ya Hisabati NECO 2023 inahusu maswali yaliyochaguliwa 1–22, 24–47 na 49–60; maswali 23 na 48 yamewekwa pembeni; miongozo minne ya uandishi inahusu chaguo zote za Sehemu A ya Karatasi II. Miongozo miwili zaidi inahusu ufahamu na muhtasari wa Sehemu B na C; vifungu kamili viko kwenye nakala ya chanzo iliyo kwenye kiungo. Miongozo ya WAEC inahifadhi miaka 2021, 2022 na 2023, namba ya swali na kiungo cha chanzo. Huu si mtihani kamili wala mtaala kamili. Hakuna utoaji wa alama za insha kiotomatiki wala sauti za mtihani wa Kiingereza cha mazungumzo.',
     jamb: 'Chaguo za JAMB kwa mwaka (kurasa za Kiingereza)', mathYears: 'Hisabati', englishYears: 'Kiingereza',
@@ -101,6 +102,47 @@ function normalizePage(html) {
   const compact = String(html).replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/gi,
     (_, start, json, end) => start + JSON.stringify(JSON.parse(json)) + end);
   return normalizeReleaseOwnedHtml(compact);
+}
+function preserveReleaseShell(content, previous) {
+  // The full build owns these runtime additions. When a source-owned page is
+  // regenerated between full builds, carry its installed shell forward rather
+  // than replacing it with the unprocessed template.
+  if (!previous || !/data-chat-bundle|analytics-bootstrap\.js|\?v=[0-9a-f]{8}/i.test(previous)) return content;
+  let html = content;
+  const opening = previous.match(/<html\b[^>]*>/i)?.[0];
+  if (opening && /\bdata-chat-bundle=/.test(opening)) html = html.replace(/<html\b[^>]*>/i, opening);
+  if (/<meta name="afrotools-content-id"[^>]*>\s*<link rel="canonical"/i.test(previous)) {
+    const links = [];
+    html = html.replace(/<link\b(?=[^>]*\brel=["'](?:canonical|alternate)["'])[^>]*>\s*/gi, tag => {
+      links.push(tag.trim());
+      return '';
+    });
+    html = html.replace(/<\/head>/i, `${links.join('\n')}\n</head>`);
+  }
+  const bootstrap = previous.match(/<script\b[^>]*\bsrc=["']\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*><\/script>/i)?.[0];
+  if (bootstrap) html = html.replace(/<head>/i, `<head>${bootstrap}\n`);
+  const tail = previous.match(/<\/afro-footer>([\s\S]*?)<\/body>/i)?.[1] || '';
+  if (tail) html = html.replace(/<\/body>/i, `${tail}</body>`);
+
+  const assetKey = value => value.split('?')[0].replace(/\.min\.(css|js)$/i, '.$1');
+  const versioned = new Map();
+  previous.replace(/\b(?:src|href)=["'](\/assets\/[^"']+)["']/gi, (_, value) => {
+    if (/\?v=[0-9a-f]{8}$/i.test(value)) versioned.set(assetKey(value), value.split('?')[0]);
+    return _;
+  });
+  const hash = asset => {
+    const absolute = path.join(root, asset.slice(1));
+    if (!fs.existsSync(absolute)) throw Error(`Missing release asset for SSCE locale page: ${asset}`);
+    return crypto.createHash('md5').update(fs.readFileSync(absolute, 'utf8').replace(/\r\n?/g, '\n')).digest('hex').slice(0, 8);
+  };
+  html = html.replace(/((?:src|href)=["'])(\/assets\/[^"']+)(["'])/gi, (tag, prefix, value, suffix) => {
+    const asset = versioned.get(assetKey(value));
+    return asset ? `${prefix}${asset}?v=${hash(asset)}${suffix}` : tag;
+  });
+  if (bootstrap) html = html.replace(/(data-loader-version=["'])[0-9a-f]{8}(["'])/i,
+    (_, prefix, suffix) => `${prefix}${hash('/assets/js/lazy-analytics.js')}${suffix}`);
+  if (normalizePage(html) !== normalizePage(content)) throw Error('SSCE locale release shell changed source-owned page content');
+  return html;
 }
 function page(locale) {
   const c = pageCopy[locale], route = routes[locale];
@@ -159,10 +201,13 @@ function run(write) {
     const normalize = file.endsWith('.html') ? normalizePage : value => value.replace(/\r\n/g, '\n');
     if (normalize(previous) === normalize(content)) continue;
     changed.push(file);
-    if (write) { fs.mkdirSync(path.dirname(absolute), { recursive: true }); fs.writeFileSync(absolute, content); }
+    if (write) {
+      fs.mkdirSync(path.dirname(absolute), { recursive: true });
+      fs.writeFileSync(absolute, file.endsWith('.html') ? preserveReleaseShell(content, previous) : content);
+    }
   }
   if (!write && changed.length) throw Error(`Stale SSCE localized output: ${changed.join(', ')}`);
   console.log(`${write ? 'Generated' : 'Validated'} SSCE FR/SW: ${quick.questions.length} quick questions and ${written.items.length} written tasks per locale (${changed.length} changed files).`);
 }
 if (require.main === module) run(process.argv.includes('--write'));
-module.exports = { quickBank, writtenBank, outputs, run, routes, normalizePage };
+module.exports = { quickBank, writtenBank, outputs, run, routes, normalizePage, preserveReleaseShell };
