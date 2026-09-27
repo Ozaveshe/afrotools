@@ -1045,6 +1045,11 @@ function removeTagBySrc(html, pattern) {
 }
 
 function sourceProof(app, sourceManifest, parityManifest) {
+  const carDirectory = app.englishId === 'car-price-intelligence';
+  const carObservations = carDirectory
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cars/market-observations.json'), 'utf8')).observations
+    : [];
+  const latestCarReview = carObservations.reduce((latest, row) => row.reviewedAt > latest ? row.reviewedAt : latest, '');
   const sourceTool = sourceManifest.tools.find((tool) => tool.id === app.englishId);
   const sourceIds = sourceTool ? sourceTool.sourceIds : [];
   const sources = sourceIds.map((id) => sourceManifest.sources.find((source) => source.id === id)).filter(Boolean);
@@ -1072,24 +1077,32 @@ function sourceProof(app, sourceManifest, parityManifest) {
     <img data-fr-transport-artwork src="/assets/img/tools/${app.imageId}.webp" alt="Illustration de ${escapeHtml(app.name)}" loading="eager" decoding="async">
     <figcaption>Illustration associée à ${escapeHtml(app.name)}</figcaption>
   </figure>
-  <div class="fr-transport-proof__grid">
+  ${carDirectory ? `<div class="fr-transport-proof__grid">
+    <div class="fr-transport-proof__item"><strong>${carObservations.length} relevés</strong><span>Petits échantillons de prix demandés</span></div>
+    <div class="fr-transport-proof__item"><strong>${escapeHtml(latestCarReview)}</strong><span>Dernière date de revue enregistrée</span></div>
+    <div class="fr-transport-proof__item"><strong>14 jours</strong><span>Fenêtre de revue avant réévaluation de l’indexabilité</span></div>
+  </div>` : `<div class="fr-transport-proof__grid">
     <div class="fr-transport-proof__item"><strong>${escapeHtml(parityManifest.sourceReviewDate)}</strong><span>Dernière revue enregistrée</span></div>
-    <div class="fr-transport-proof__item"><strong>${parityManifest.sourceReviewCadenceDays} jours</strong><span>Cadence prévue, revue effectuée dans le délai</span></div>
+    <div class="fr-transport-proof__item"><strong>${parityManifest.sourceReviewCadenceDays} jours</strong><span>Cadence prévue ; comparer avec la date de revue</span></div>
     <div class="fr-transport-proof__item"><strong>Confiance prudente</strong><span>${parityManifest.sourceChangedCount} sources modifiées et ${parityManifest.sourceBlockedManualCount} bloquées ou manuelles restent à examiner ; aucune donnée tarifaire en direct</span></div>
-  </div>
+  </div>`}
   <p class="fr-transport-proof__warning"><strong>Limite non négociable :</strong> ${escapeHtml(parityManifest.claimBoundary)}</p>
-  <p>Les champs et le résultat restent dans ce navigateur. Aucun document, identifiant, trajet, devis, numéro de châssis ou détail client n’est envoyé par cette couche française. L’assistant central reste déterministe sans consentement ; tout appel à un modèle exige un choix explicite et conserve un parcours local.</p>
+  <p>${carDirectory
+    ? 'Les prix demandés affichés sont de petits relevés datés, liés à leur source. La sélection d’une voiture reste dans ce navigateur et ouvre sa fiche ; le devis d’import se prépare dans le calculateur dédié.'
+    : 'Les champs et le résultat restent dans ce navigateur. Aucun document, identifiant, trajet, devis, numéro de châssis ou détail client n’est envoyé par cette couche française. L’assistant central reste déterministe sans consentement ; tout appel à un modèle exige un choix explicite et conserve un parcours local.'}</p>
   <details>
     <summary>Sources de vérification associées</summary>
     <ul>${sourceLinks || '<li>Aucune source liée dans le registre Transport ; vérification manuelle obligatoire.</li>'}</ul>
   </details>
-  <div class="fr-transport-proof__actions">
+  ${carDirectory ? `<div class="fr-transport-proof__actions">
+    <a class="secondary" href="/tools/car-import-cost/">Préparer un devis d’import modifiable</a>
+  </div>` : `<div class="fr-transport-proof__actions">
     <button type="button" data-fr-transport-download-text>Télécharger le résumé TXT</button>
     <button type="button" class="secondary" data-fr-transport-download-pdf>Télécharger le PDF local</button>
     <a class="secondary" href="/fr/ai/?outil=${encodeURIComponent(app.englishId)}">Assistant AfroTools (optionnel)</a>
   </div>
   <p class="fr-transport-proof__status" data-fr-transport-status aria-live="polite">Lancez le calcul, puis exportez le résultat local.</p>
-  <p class="fr-transport-proof__error" data-fr-transport-error role="alert"></p>
+  <p class="fr-transport-proof__error" data-fr-transport-error role="alert"></p>`}
 </section>
 <!-- FR_TRANSPORT_PARITY_END -->`;
 }
@@ -1307,9 +1320,11 @@ ${applicationSchema(app)}
   html = html.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/i, `<h1>${escapeHtml(app.name)}</h1>`);
   html = html.replace(/<afro-footer\b/i, `${sourceProof(app, sourceManifest, parityManifest)}\n<afro-footer`);
   html = html.replace(/\s*<\/body>/i, '\n</body>');
-  html = html.replace('</body>', `<script src="/assets/js/lib/pdf-template.js" defer></script>
+  if (app.englishId !== 'car-price-intelligence') {
+    html = html.replace('</body>', `<script src="/assets/js/lib/pdf-template.js" defer></script>
 <script src="/assets/js/pages/french-transport-parity.js" defer></script>
 </body>`);
+  }
   html = html.replace(/"inLanguage"\s*:\s*"en"/g, '"inLanguage":"fr"');
   return normalizeGeneratedHtml(html);
 }
@@ -1399,7 +1414,7 @@ html[data-theme="dark"] body{background:#0b1220;color:#e5edf7}html[data-theme="d
 <afro-navbar active="transport"></afro-navbar>
 <header class="frt-hero"><div class="frt-inner"><nav aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › Transport</nav><p>Transport et logistique</p><h1>18 applications Transport, chacune disponible en français</h1><p>Chaque carte correspond à un propriétaire anglais canonique. Les calculs restent locaux et les hypothèses restent visibles. Aucun tarif, horaire, trajet, disponibilité, règlement ou statut officiel n’est présenté comme une donnée en direct.</p></div></header>
 <main class="frt-main">
-<section class="fr-transport-proof" aria-labelledby="frt-source-title"><h2 id="frt-source-title">Frontière de confiance</h2><p class="fr-transport-proof__warning"><strong>Revue enregistrée : ${escapeHtml(manifest.sourceReviewDate)}.</strong> Revue effectuée dans la cadence de ${manifest.sourceReviewCadenceDays} jours. ${manifest.sourceChangedCount} sources modifiées et ${manifest.sourceBlockedManualCount} sources bloquées ou manuelles restent à examiner ; aucun fait, tarif, règle, trajet ou statut n’a été accepté automatiquement.</p><p>Le hub compte exactement les 18 applications Transport canoniques. Les cinq outils transversaux visibles sur le hub anglais restent accessibles par leurs catégories propriétaires et ne gonflent pas ce dénominateur.</p></section>
+<section class="fr-transport-proof" aria-labelledby="frt-source-title"><h2 id="frt-source-title">Frontière de confiance</h2><p class="fr-transport-proof__warning"><strong>Revue enregistrée : ${escapeHtml(manifest.sourceReviewDate)}.</strong> Cadence prévue : ${manifest.sourceReviewCadenceDays} jours ; comparez cette date avant de vous fier aux sources. ${manifest.sourceChangedCount} sources modifiées et ${manifest.sourceBlockedManualCount} sources bloquées ou manuelles restent à examiner ; aucun fait, tarif, règle, trajet ou statut n’a été accepté automatiquement.</p><p>Le hub compte exactement les 18 applications Transport canoniques. Les cinq outils transversaux visibles sur le hub anglais restent accessibles par leurs catégories propriétaires et ne gonflent pas ce dénominateur.</p></section>
 <section aria-labelledby="frt-apps-title"><h2 id="frt-apps-title">Les 18 applications</h2><div class="frt-grid">${cards}</div></section>
 <div class="frt-lanes">${laneSections}</div>
 </main>
