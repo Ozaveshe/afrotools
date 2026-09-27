@@ -210,3 +210,66 @@ test("AfroKitchen search results stay close to filters and quick picks narrow re
   expect(narrowOverflow).toBeLessThanOrEqual(1);
   expect(consoleErrors).toEqual([]);
 });
+
+test("AfroKitchen recipe picks open in the planner and lead a filtered weekly plan", async ({ page }) => {
+  test.setTimeout(120000);
+  await quietExternalNoise(page);
+  const consoleErrors = installConsoleGuard(page);
+  await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
+  await page.locator("[data-ak-add-meal-plan]").click();
+  const planLink = page.getByRole("link", { name: "Build a plan from your picks" });
+  await expect(planLink).toHaveAttribute("href", "/tools/afrokitchen/#cook-this-week");
+  await page.evaluate(function () {
+    localStorage.setItem("ak_meal_plan_v1", JSON.stringify([
+      { slug: "jollof-rice-ng", name: '<img src=x onerror=alert(1)>', url: "https://example.invalid/" },
+      { slug: "../../unknown", name: "Untrusted recipe", url: "https://example.invalid/" }
+    ]));
+  });
+  await planLink.click();
+  await expect(page.locator("#ak-picked-recipes")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator("#ak-picked-list li")).toHaveCount(1);
+  await expect(page.locator("#ak-picked-list a")).toHaveText("Jollof Rice");
+  await expect(page.locator("#ak-picked-list a")).toHaveAttribute("href", "/tools/afrokitchen/recipes/jollof-rice-ng/");
+  await expect(page.locator("#ak-picked-list img")).toHaveCount(0);
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  const pickedBackground = await page.locator("#ak-picked-recipes").evaluate(node => getComputedStyle(node).backgroundColor);
+  expect(Number(pickedBackground.match(/\d+/)[0])).toBeLessThan(100);
+
+  await page.locator("#ak-plan-days").selectOption("3");
+  await page.locator("#ak-plan-time").selectOption("30");
+  await expect(page.locator("#ak-plan-from-picks")).toBeDisabled();
+  await expect(page.locator("#ak-picked-status")).toContainText("None of your picks match");
+  await page.locator("#ak-plan-time").selectOption("999");
+  await expect(page.locator("#ak-plan-from-picks")).toBeEnabled();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  await page.locator("#ak-plan-from-picks").click();
+  await expect(page.locator(".ak-plan-day")).toHaveCount(3, { timeout: 30000 });
+  await expect(page.locator(".ak-plan-day h4 a").first()).toHaveText("Jollof Rice");
+  await expect(page.locator("#ak-plan-status")).toContainText("including 1 of your picks");
+
+  await page.locator('#ak-picked-list button').click();
+  await expect(page.locator('#ak-picked-recipes')).toBeHidden();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('ak_meal_plan_v1')))).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+});
+
+test("AfroKitchen remembers and reverses a cooked recipe mark on this device", async ({ page }) => {
+  await quietExternalNoise(page);
+  const consoleErrors = installConsoleGuard(page);
+  await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
+  const cookedButton = page.locator("[data-ak-mark-cooked]");
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "false");
+  await cookedButton.click();
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#ak-static-action-status")).toContainText("Marked as cooked on this device");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ak_cooked_recipes_v1")))).toEqual([
+    expect.objectContaining({ slug: "jollof-rice-ng", cooked_at: expect.any(String) })
+  ]);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
+  await cookedButton.click();
+  await expect(cookedButton).toHaveAttribute("aria-pressed", "false");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ak_cooked_recipes_v1")))).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+});

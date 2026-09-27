@@ -1,16 +1,18 @@
 # AfroStream, AfroAtlas, AfroKitchen: deeper-use growth goal
 
-Status: first source change set is committed on `codex/afro-experience-growth`; a second scoped follow-up is prepared on `codex/afro-experience-growth-followup`. The publisher controls integration and deployment. Production effect has not been measured.
+Status: the first two source change sets were pushed for publisher intake. A third recipe journey change set is on `codex/afro-experience-growth-journey` in an isolated worktree. The publisher controls integration and deployment. Production effect has not been measured.
 
 ## Goal and measurement
 
 Increase the share of organic visitors who complete a useful product action on each surface. Use a 28-day pre-release baseline and a comparable 28-day post-release window; aim for a 20% relative lift in each product's organic deeper-use rate within eight weeks. Report both numerator and denominator so a traffic mix change is visible. Search Console clicks, impressions, CTR, and indexed URL coverage are separate SEO measures. No traffic or conversion baseline was available in this checkout, so the target is a hypothesis until the baseline is captured.
 
+Operational definition: denominator = organic-search sessions that begin on a route in that product family; numerator = those sessions with at least one listed deeper-use event before the session ends. Deduplicate repeated actions within a session. Keep returning users, direct visits, and product-to-product referrals in separate views. Compare the same route families before and after release, and include the deployed SHA and release date in the readout.
+
 | Product | Primary deeper-use action | Current event added | Next action to measure |
 | --- | --- | --- | --- |
 | AfroStream | Open a stream, creator platform, or copy a creator brief | `afrostream_stream_opened`, `afrostream_platform_opened`, `afrostream_creator_brief_copied`, `afrostream_follow_platform_opened` | Measure creator profile opens and verified platform follows where the platform allows attribution |
 | AfroAtlas | Open a completed two-country comparison | `afroatlas_comparison_viewed` | Measure brief export after data provenance is added |
-| AfroKitchen | Generate and use a recipe plan | `afrokitchen_plan_created`, `afrokitchen_plan_exported`, `afrokitchen_plan_saved`, `afrokitchen_plan_restored` | Add a local "cooked this" completion action |
+| AfroKitchen | Generate a plan, use a saved recipe pick, or mark a recipe cooked | `afrokitchen_plan_created`, `afrokitchen_plan_exported`, `afrokitchen_plan_saved`, `afrokitchen_plan_restored`, `afrokitchen_recipe_cooked` | Measure recipe-open to cooked-mark and saved-pick to generated-plan rates |
 
 All new event parameters are non-personal metadata. The existing `assets/js/lib/analytics.js` wrapper sends product events only after analytics consent.
 
@@ -20,7 +22,19 @@ All new event parameters are non-personal metadata. The existing `assets/js/lib/
 - The public AfroStream page loaded 50 creators into its hero while health reported 407 published creators. Its visible live feed showed 0 while the health check marked 8 live. The views use different requests, so the status is now shown as a mismatch instead of asserting a single live count.
 - AfroAtlas had 54 generated country URLs but almost no profile body until JavaScript ran. The country pages also exposed numeric GDP and trade claims in metadata without a source year in that view.
 - AfroKitchen had 410 generated recipe pages and a working planner, but its browser fallback contained only 8 seed recipes. The new compact index is generated from the verified public route manifest and includes ingredients for all 410.
-- Repository search found no product-specific Search Console or GA4 baseline for these three surfaces. These structural findings do not establish a ranking or conversion lift.
+- Repository search found no product-specific Search Console or GA4 export in this checkout. An authenticated GA4 route report was later obtained separately; see the online baseline below. Structural findings alone do not establish a ranking or conversion lift.
+
+## Online baseline: 30 August–26 September 2026
+
+An authenticated read-only check of AfroTools GA4 property `528083834`, **Pages and screens → Page path → All Users**, returned these route-family totals. Views can be summed across paths; the active-user figures below are deduplicated across each family and must not be reconstructed by adding per-path user counts.
+
+| Family | Views | Active users | Paths with activity | Route detail |
+| --- | ---: | ---: | ---: | --- |
+| AfroKitchen | 301 | 115 | 109 | Hub 35 views / 11 users; 80 recipe paths 196 views; 25 country paths 67 views |
+| AfroStream | 27 | 4 | 5 | Rankings 14 views / 3 users; hub 9 / 4; community 2 / 1; creator 1 / 1; news 1 / 1 |
+| AfroAtlas | 4 | 3 | 3 | Hub 2 / 2; Somalia 1 / 1; Togo 1 / 1 |
+
+This is an **all-users exposure baseline**, not an organic-search or deeper-use conversion baseline. It shows that Kitchen already has many recipe entry routes, while Atlas and Stream have little observed traffic in this window. We still need Search Console clicks, impressions, indexed coverage, and GA4 event counts segmented by organic session before calculating conversion rates or attributing an uplift. Public search spot checks found individual Kitchen recipe results and the Stream hub; they are not an index coverage audit.
 
 ## First change set
 
@@ -33,8 +47,8 @@ All new event parameters are non-personal metadata. The existing `assets/js/lib/
 
 1. Source-date Atlas resource, trade, HDI, and other indicators before treating them as current figures. The follow-up only adds World Bank GDP, population, and GDP/person.
 2. Produce indexable AfroStream creator/news discovery from a reviewed public snapshot with canonical routes and source dates. Only 78 of 407 published creators had bios of at least 60 characters, so avoid bulk thin profiles.
-3. Add a local "cooked this" completion action in Kitchen and track its use without account capture. Plan save and restore are complete in the follow-up.
-4. Capture Search Console and GA4 baselines per route group, then compare organic deeper-use rates and search metrics after release. Investigate pages with impressions but weak CTR and pages with clicks but weak action completion.
+3. Measure Kitchen recipe-open to cooked-mark and saved-pick to generated-plan rates after the journey change set is published. The cooked mark is local and reversible; plan save and restore are complete in the follow-up.
+4. Capture Search Console route-group baselines and GA4 deeper-use event counts segmented to organic traffic, then compare rates after release. Investigate pages with impressions but weak CTR and pages with clicks but weak action completion. The all-users GA4 page-path exposure baseline is recorded above.
 
 ## Follow-up change set
 
@@ -53,3 +67,11 @@ All new event parameters are non-personal metadata. The existing `assets/js/lib/
 ## Validation boundary
 
 Static and browser checks in the isolated checkout passed for Atlas profile discovery and mobile comparison, Kitchen search/planner/export/mobile, Stream count/status/mobile, recipe-index parity, links, route metadata, and sitemap generation. A production deployment, Search Console crawl, and post-release conversion lift remain unverified.
+
+## Recipe journey change set
+
+- AfroKitchen: the landing planner now reads the existing `ak_meal_plan_v1` picks saved by static recipe pages. It displays only slugs found in the trusted 410-recipe index, links to canonical recipe routes, lets people remove or clear picks, and puts matching picks first in a 3-day or 7-day plan. Active filters remain authoritative; the button explains when no pick matches. The plan creation event retains its name and gains only a non-personal `picked_count`.
+- Static recipe pages: the existing save confirmation now links directly to the planner. A reversible "I cooked this" action stores a slug and timestamp on this device and emits `afrokitchen_recipe_cooked` only when marked. It requires no account or server write. The repository cachebust owner updated the runtime reference on all 410 generated recipe pages.
+- AfroKitchen engine delivery: the committed HTML references used an older engine query hash than the tracked engine content. The cachebust owner refreshed engine references on the affected Kitchen and localized surfaces, so browser caches fetch the engine that the planner was verified against.
+- AfroStream copy: removed an unsupported "Net Worth Tracker" and "AI-powered" claim from the landing feature list, replacing it with the actual creator-news route; removed a stale suite-wide tool count from the visible FAQ and its structured data.
+- Validation: the final focused Chromium suites passed 10 tests: Kitchen 4, Stream 3, Atlas 3. They cover recipe-to-planner handoff, malformed local storage, filtered picks, dark/mobile layout, cooked-mark persistence and undo, creator platform safety, and dated Atlas sources. `node --check`, `git diff --check`, `npm run security:scan`, and `npm run seo:report` passed; the SEO report found 0 missing canonical/title/description or hreflang issues. `npm run build:deploy` passed with the existing dependency install provided through `NODE_PATH`; the first attempt stopped because this isolated worktree had no local `@supabase/supabase-js` installation. After restoring unrelated generated build changes, `node scripts/build-dist.js` and `npm run audit:dist` passed again. No production or post-release event-rate result is claimed.
