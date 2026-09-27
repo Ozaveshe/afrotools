@@ -36,7 +36,7 @@ assert.ok(main.includes("African Car Price Directory"), "main directory title"),
 assert.ok(main.includes("African markets"), "main directory local-market description"),
 assert.ok(main.includes("/assets/js/lib/car-import-cost-engine.js"), "main route reuses landed-cost engine");
 assert.ok(main.includes('id="carsCatalogForm"'), "main directory offers the wider model catalog");
-assert.strictEqual((main.match(/data-make="/g) || []).length, 481, "all 25 starter and 456 additional model/year options are searchable from the car directory");
+assert.strictEqual((main.match(/data-make="/g) || []).length, 482, "all 27 priced vehicles and 455 additional model/year options are searchable from the car directory");
 assert.ok(main.includes("/assets/js/pages/car-catalog-search.js"), "model search has an editable import-cost handoff");
 
 const admin = read("admin/car-price-intelligence.html");

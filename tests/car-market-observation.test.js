@@ -79,6 +79,27 @@ assert.equal(newCamryContext.sourcePrice.sourceUrl, newCamrySource.sourceUrl);
 assert.equal(Math.round(newCamryContext.localPrice.median * forex.rates.NGN), newCamryObservation.median, "the browser can display the reviewed NGN ask without conversion drift");
 assert.equal(newCamryContext.media.hero.sourceType, "generated");
 
+const rav4Observation = observations.find((item) => item.vehicleId === "toyota-rav4-2018" && item.countryCode === "NG");
+const rav4Source = sourceObservations.find((item) => item.vehicleId === "toyota-rav4-2018" && item.sourceMarket === "uae");
+assert.equal(rav4Observation.sampleSize, 10);
+assert.equal(rav4Observation.median, 24000000);
+assert.equal(rav4Source.sampleSize, 10);
+assert.equal(rav4Source.median, 48650);
+const rav4Context = Price.buildVehicleContext(data, importData, {
+  country: "nigeria", make: "toyota", model: "rav4", year: 2018
+});
+assert.ok(rav4Context, "Nigeria 2018 RAV4 comparison loads");
+assert.equal(rav4Context.localPrice.sourceUrl, rav4Observation.sourceUrl);
+assert.equal(rav4Context.localPrice.sampleSize, 10);
+assert.equal(rav4Context.sourceMarket, "uae");
+assert.equal(rav4Context.sourcePrice.sourceType, "dated-marketplace-observation");
+assert.equal(rav4Context.sourcePrice.median, 13200);
+assert.equal(rav4Context.sourcePrice.sourceUrl, rav4Source.sourceUrl);
+assert.equal(Math.round(rav4Context.localPrice.median * forex.rates.NGN), rav4Observation.median);
+assert.equal(rav4Context.media.hero.sourceType, "generated");
+assert.match(rav4Context.media.hero.imageUrl, /toyota-rav4-2018-hero\.webp$/);
+assert.match(rav4Context.calculatorUrl, /source=uae.*price=13200/);
+
 const directoryOnly = Price.buildVehicleContext(data, importData, {
   country: "south-africa", make: "toyota", model: "corolla", year: 2018
 });
