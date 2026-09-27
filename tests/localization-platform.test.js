@@ -17,6 +17,14 @@ assert.strictEqual(manifestValidation.ok, true, manifestValidation.errors.map(lo
 assert.strictEqual(manifest.defaultLocale, 'en');
 assert.strictEqual(manifest.normalization, 'NFC');
 assert.deepStrictEqual(localeApi.getPublicLocaleIds(manifest), ['en', 'fr', 'sw', 'yo', 'ha']);
+const standaloneYorubaManifest = localeApi.clone(localeApi.loadYorubaRouteManifest());
+const standaloneYorubaRoot = standaloneYorubaManifest.routes.find((entry) => entry.route === '/yo/');
+delete standaloneYorubaRoot.englishEquivalent;
+standaloneYorubaRoot.standaloneLocaleSection = true;
+assert.strictEqual(localeApi.validateYorubaRouteManifest(standaloneYorubaManifest).ok, true,
+  'a genuinely standalone native Yoruba section does not need a false English equivalent');
+standaloneYorubaRoot.state = 'localized-shell';
+assert.ok(codes(localeApi.validateYorubaRouteManifest(standaloneYorubaManifest)).has('YORUBA_STANDALONE_STATE_INVALID'));
 assert.strictEqual(localeApi.getLocale(manifest, 'ig').launchStatus, 'planned');
 assert.strictEqual(localeApi.getLocale(manifest, 'ig').routePrefix, null);
 assert.ok(!localeApi.getPublicLocaleIds(manifest).includes('ig'));

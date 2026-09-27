@@ -1,18 +1,18 @@
 # Yoruba Visible Copy Leakage Ledger
 
-Generated: 2026-07-22
+Generated: 2026-09-27
 
 This audit scans `yo/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
 ## Headline Metrics
 
 - Yoruba route tree exists: yes
-- Yoruba routes scanned: 45
-- Clean routes: 13
+- Yoruba routes scanned: 46
+- Clean routes: 14
 - Routes with blockers: 20
 - BLOCKER_VISIBLE_ENGLISH findings: 51
 - POSSIBLE_FALSE_POSITIVE findings: 62
-- ACCEPTED_TECH_TERM findings: 309
+- ACCEPTED_TECH_TERM findings: 306
 
 ## Top 20 Blocker Routes
 
@@ -75,11 +75,11 @@ This audit scans `yo/**/*.html` for visible English leakage only. It ignores scr
 | `/yo/awon-ise/kalkuletan-waec-neco/` | 165 | English UI label | Download .txt | Batch 1 - Education and exam shell |
 | `/yo/awon-ise/kalkuletan-waec-neco/` | 174 | English advisory phrase | Official verification: Verify final WAEC, NECO, school and admission requirements from the official exam body, school portal or admissions office. | Batch 1 - Education and exam shell |
 | `/yo/awon-ise/kalkuletan-waec-neco/` | 176 | English result label | Limitations: This is an education planning estimate, not an official result checker, certificate validation, or admission decision. | Batch 1 - Education and exam shell |
-| `/yo/awon-ise/kiriiro-invoice/` | 112 | English UI label; English result label; English form label | Methodology: this page adds invoice lines, quantity, unit price, VAT rate, paid amount, total due, and balance, then lets you copy the summary or print as PDF from the browser. | Batch 1 - Document, PDF, invoice, and Naira shell |
-| `/yo/awon-ise/kiriiro-invoice/` | 113 | English advisory phrase | Source check: confirm VAT treatment, TIN, invoice numbering, e-invoicing, and record rules with FIRS or your accountant before filing. | Batch 1 - Document, PDF, invoice, and Naira shell |
-| `/yo/awon-ise/kiriiro-invoice/` | 114 | English advisory phrase | Disclaimer: planning invoice only, not an official tax invoice, legal advice, tax advice, or government filing. | Batch 1 - Document, PDF, invoice, and Naira shell |
-| `/yo/awon-ise/kiriiro-invoice/` | 115 | English UI label | Privacy: values stay in your browser unless you choose to copy, print, or share them. | Batch 1 - Document, PDF, invoice, and Naira shell |
-| `/yo/awon-ise/kiriiro-invoice/` | 117 | English UI label; English result label | Next workflow Build the invoice, copy the summary, then print or save as PDF. For a branded invoice widget or client workflow, use business enquiry , widgets , or custom calculators . | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/awon-ise/kiriiro-invoice/` | 118 | English UI label; English result label; English form label | Methodology: this page adds invoice lines, quantity, unit price, VAT rate, paid amount, total due, and balance, then lets you copy the summary or print as PDF from the browser. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/awon-ise/kiriiro-invoice/` | 119 | English advisory phrase | Source check: confirm VAT treatment, TIN, invoice numbering, e-invoicing, and record rules with FIRS or your accountant before filing. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/awon-ise/kiriiro-invoice/` | 120 | English advisory phrase | Disclaimer: planning invoice only, not an official tax invoice, legal advice, tax advice, or government filing. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/awon-ise/kiriiro-invoice/` | 121 | English UI label | Privacy: values stay in your browser unless you choose to copy, print, or share them. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/awon-ise/kiriiro-invoice/` | 123 | English UI label; English result label | Next workflow Build the invoice, copy the summary, then print or save as PDF. For a branded invoice widget or client workflow, use business enquiry , widgets , or custom calculators . | Batch 1 - Document, PDF, invoice, and Naira shell |
 | `/yo/awon-ise/kiriiro-risiti/` | 112 | English UI label; English result label; English form label | Methodology: this receipt adds line items, VAT, payment method, reference, amount received, and receipt status, then lets you copy the summary or print as PDF from the browser. | Batch 1 - Document, PDF, invoice, and Naira shell |
 | `/yo/awon-ise/kiriiro-risiti/` | 113 | English advisory phrase | Source check: confirm VAT, payment proof, receipt numbering, and tax-record rules with FIRS, your bank record, or your accountant before using it for filing. | Batch 1 - Document, PDF, invoice, and Naira shell |
 | `/yo/awon-ise/kiriiro-risiti/` | 114 | English advisory phrase | Disclaimer: planning receipt only, not an official government receipt, legal advice, tax advice, or proof of bank settlement by itself. | Batch 1 - Document, PDF, invoice, and Naira shell |
@@ -112,9 +112,9 @@ This audit scans `yo/**/*.html` for visible English leakage only. It ignores scr
 | `/yo/awon-ise/lambobin-ussd/` | 73 | brand or platform name | àpẹẹrẹ: MTN, ìyókù, káríìdì | Batch 1 - Telecom, USSD, and WhatsApp shell |
 | `/yo/awon-ise/lambobin-ussd/` | 79 | brand or platform name | Orisun, ona ise ati ikilo: Atokọ yii n ka data lati katalogi telecom AfroTools ti o wa ninu repo, kii se ipe live si MTN, Airtel, Glo, 9mobile tabi banki. Ilana iṣẹ rẹ ni yan orilẹ-ede, wa iṣẹ, daakọ lambar, lẹhinna ṣ... | Batch 1 - Telecom, USSD, and WhatsApp shell |
 | `/yo/awon-ise/lambobin-ussd/` | 82 | brand or platform name | Ṣe gbogbo lambar ṣiṣẹ fun gbogbo SIM? Rara. Lambar kan le jẹ́ ti MTN, Airtel, Glo, 9mobile tabi banki kan pato. Yan orílẹ̀-èdè ati olùpèsè to ba SIM rẹ mu. | Batch 1 - Telecom, USSD, and WhatsApp shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 101 | English route label marked as fallback | Ojú ìwé Gẹẹsi Yorùbá phrasebook tó gbooro Ojú Gẹẹsi naa ni akojọ gbolohun diẹ sii. | Batch 1 - General Yoruba shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 102 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìtumọ̀ PDF Lo fun ìmúrasílẹ̀ nikan, kii ṣe ìtumọ̀ tí a fọwọ́sí. | Batch 1 - General Yoruba shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 103 | English route label marked as fallback | Ojú ìwé Gẹẹsi Hausa translator Phrasebook Hausa fun ìkíni ati ọrọ ojoojumọ. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 104 | English route label marked as fallback | Ojú ìwé Gẹẹsi Yorùbá phrasebook tó gbooro Ojú Gẹẹsi naa ni akojọ gbolohun diẹ sii. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 105 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìtumọ̀ PDF Lo fun ìmúrasílẹ̀ nikan, kii ṣe ìtumọ̀ tí a fọwọ́sí. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 106 | English route label marked as fallback | Ojú ìwé Gẹẹsi Hausa translator Phrasebook Hausa fun ìkíni ati ọrọ ojoojumọ. | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/ounje-eranko/` | 112 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/owo-ile-iwosan/` | 110 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi fun ẹya kikun to ṣi wà ní Gẹẹsi. | Batch 1 - Health and family shell |
 | `/yo/awon-ise/owo-oja-ogbin/` | 111 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - Agriculture shell |
@@ -180,6 +180,7 @@ The JSON ledger contains line-level accepted-term examples. These are tracked so
 - `/yo/awon-ise/wht-naijiria/`
 - `/yo/awon-ise/wurin-pdf/`
 - `/yo/eko/`
+- `/yo/idibo/`
 - `/yo/naijiria/owo-ori-owo-osu/`
 - `/yo/ogbin/`
 - `/yo/owo-osu-ati-owo-ori/`

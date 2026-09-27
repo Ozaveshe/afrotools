@@ -2,12 +2,12 @@
 
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
-- Public Hausa routes: 105
-- Native: 22
+- Public Hausa routes: 106
+- Native: 23
 - Localized shells: 58
 - Explicit English fallbacks: 25
-- Indexable: 80
-- Sitemap members: 80
+- Indexable: 81
+- Sitemap members: 81
 
 | Route | State | Indexable | Sitemap | Equivalent or fallback | Owner |
 |---|---|---:|---:|---|---|
@@ -116,3 +116,4 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/sirri/ | english-fallback | no | no | /privacy/ | data/localization/ha-bridge-manifest.json: explicit privacy bridge |
 | /ha/takardu-da-pdf/ | native | yes | yes |  | ha/takardu-da-pdf/index.html |
 | /ha/tuntube-mu/ | native | yes | yes |  | scripts/build-hausa-institutional-pages.js |
+| /ha/zabe/ | native | yes | yes |  | ha/zabe/index.html |
