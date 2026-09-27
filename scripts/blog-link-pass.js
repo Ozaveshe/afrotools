@@ -96,6 +96,7 @@ function audit(articles) {
   const withoutArticleInbound = [...inbound].filter(([, sources]) => sources.length === 0).map(([slug]) => slug);
   return {
     articles: articles.length,
+    inboundArticleCounts: Object.fromEntries([...inbound].map(([slug, sources]) => [slug, sources.length])),
     withoutArticleInbound,
     suggestedBacklinkSources: withoutArticleInbound.map((slug) => {
       const newer = bySlug.get(slug);
@@ -105,7 +106,7 @@ function audit(articles) {
           && (!newer.date || !older.date || older.date <= newer.date);
       }).slice(0, 5) };
     }),
-    withoutHubLink: articles.filter((item) => !hubLinks.has(item.slug)).map((item) => item.slug)
+    withoutHubLink: articles.filter((item) => item.lang === 'en' && !hubLinks.has(item.slug)).map((item) => item.slug)
   };
 }
 
@@ -197,4 +198,4 @@ function main() {
 if (require.main === module) {
   try { main(); } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
-module.exports = { addBacklink, audit, blogSlug, linksIn, matchingClose, parseArgs };
+module.exports = { addBacklink, allArticles, audit, blogSlug, linksIn, matchingClose, parseArgs };

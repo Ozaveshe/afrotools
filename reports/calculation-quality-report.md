@@ -1,6 +1,6 @@
 # Calculation Quality Report
 
-As of: 2026-09-24
+As of: 2026-09-27
 
 ## Inventory
 
@@ -26,13 +26,13 @@ As of: 2026-09-24
 
 ## Golden fixtures
 
-- Passed: 408/408
-- Documented result changes: 3
+- Passed: 417/417
+- Documented result changes: 5
 
 ## External data
 
 - Registered datasets: 3
-- Stale: none
+- Stale: forex-live-rates
 - Incompatible: none
 
 ## Findings
@@ -40,3 +40,4 @@ As of: 2026-09-24
 - WARNING CURRENCY_OVERRIDE_REVIEW_REQUIRED formula-registry: 3 formula currency override remains explicitly review-required.
 - WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 205 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
 - WARNING SOURCE_REVIEW_REQUIRED formula-registry: 6 high-risk and 42 medium-risk formula records still require authoritative-source review.
+- WARNING STALE_EXTERNAL_DATA forex-live-rates: Stale exchange-rate estimate
