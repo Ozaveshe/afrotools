@@ -13,6 +13,9 @@ assert.deepEqual(audit.missingIds, []);
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const hub = read('education/index.html');
 assert.match(hub, /<h1>What do you need to do for your studies\?<\/h1>/);
+assert.match(hub, /<title>Education Tools for African Students \| AfroTools<\/title>/);
+assert.equal((hub.match(/class="edu-task-icon"/g) || []).length, 5);
+assert.equal((hub.match(/<details class="edu-directory-group"/g) || []).length, taxonomy.getBuckets(rows).length);
 assert.match(hub, /href="\/tools\/ssce-practice\/"/);
 assert.match(hub, /href="\/tools\/education-hub\/"/);
 assert.match(hub, /href="\/jamb\/english\/2025\/"/);
@@ -26,13 +29,13 @@ assert.equal((directory.match(/<a href="[^"]+" data-education-tool/g) || []).len
 for (const tool of taxonomy.getRegistryTools(rows)) {
   assert.ok(directory.includes('href="' + tool.href + '"'), tool.id);
 }
-assert.equal((hub.match(/class="edu-directory-group"/g) || []).length, taxonomy.getBuckets(rows).length);
 for (const slug of ['fees', 'loans', 'scholarships', 'study-abroad']) {
   const html = read('education/' + slug + '/index.html');
   const expected = taxonomy.getSubhub(slug, rows);
   assert.ok(html.includes('href="https://afrotools.com/education/' + slug + '/"'), slug + ' canonical');
   assert.ok(!html.includes('>0</div>'), slug + ' zero shell');
   assert.ok(html.includes('href="' + expected.tools[0].href + '"'), slug + ' first action');
+  assert.equal((html.match(/class="edu-step-number"/g) || []).length, 3, slug + ' practical path');
   for (const tool of expected.tools) assert.ok(html.includes('href="' + tool.href + '"'), slug + ': ' + tool.id);
   for (const link of expected.relatedLinks) assert.ok(html.includes('href="' + link.href + '"'), slug + ': ' + link.href);
 }
@@ -48,5 +51,11 @@ for (const route of [...taxonomy.getRegistryTools(rows).map((tool) => tool.href)
   const html = read(file);
   assert.doesNotMatch(html, /<meta\s+name=["']robots["'][^>]*noindex/i, route + ' noindex');
   assert.ok(html.includes('href="https://afrotools.com' + route + '"'), route + ' canonical');
+}
+for (const tool of taxonomy.getRegistryTools(rows)) {
+  const html = read(tool.href.replace(/^\//, '') + 'index.html');
+  assert.equal((html.match(/<!-- education-tool-journey:start -->/g) || []).length, 1, tool.id + ' journey');
+  assert.ok(html.includes('/assets/css/education-tool-journey.css'), tool.id + ' journey CSS');
+  assert.ok(html.includes('Browse all Education tools'), tool.id + ' category return');
 }
 console.log('Education discovery static routes match the registry.');

@@ -19,6 +19,19 @@ function esc(value) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[char]);
 }
+const iconPaths = {
+  practice: '<path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8l-5-5H8Z"/><path d="M8 3v5h8V3M8 13h8m-8 4h5"/>',
+  admissions: '<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/>',
+  finance: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18m-6 5h3"/>',
+  abroad: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"/>',
+  coursework: '<path d="M12 7c-2-2-5-2-9-1v13c4-1 7-1 9 1 2-2 5-2 9-1V6c-4-1-7-1-9 1Zm0 0v13"/>',
+  teaching: '<path d="M3 5h18v12H3zM8 21h8m-4-4v4M7 9h10m-10 4h6"/>',
+  after: '<path d="M12 3 3 7l9 4 9-4-9-4Zm-6 6v6c0 2 3 4 6 4s6-2 6-4V9M21 7v7"/>',
+  saved: '<path d="M5 4h14v17l-7-4-7 4V4Z"/>'
+};
+function icon(key) {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${iconPaths[key] || iconPaths.coursework}</svg>`;
+}
 function head(title, description, route, type = 'CollectionPage') {
   const url = 'https://afrotools.com' + route;
   const json = JSON.stringify({
@@ -48,7 +61,6 @@ ${route === '/education/' ? '<link rel="alternate" hreflang="fr" href="https://a
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta property="article:modified_time" content="2026-09-25">
 <script type="application/ld+json">${json}</script>
 <script type="application/ld+json">${breadcrumbJson}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,15 +92,37 @@ function breadcrumb(items) {
 const groups = taxonomy.getBuckets(registry);
 const byGroup = Object.fromEntries(groups.map((group) => [group.key, group]));
 const taskCards = [
-  { title: 'Practise for an exam', href: '/jamb/', desc: 'Start JAMB practice, or choose WAEC/NECO and KCSE from the directory.', label: 'Start practice' },
-  { title: 'Check results and admissions', href: '/tools/waec-calculator/', desc: 'Count credits, calculate a supported score, then check official entry rules.', label: 'Check results' },
-  { title: 'Pay for education', href: '/education/fees/', desc: 'Compare fee quotes, monthly costs, savings and repayment.', label: 'Compare costs' },
-  { title: 'Plan study abroad', href: '/education/study-abroad/', desc: 'Start with a destination budget and identify the evidence still missing.', label: 'Plan a destination' },
-  { title: 'Study and coursework', href: '/tools/study-planner/', desc: 'Make a weekly plan, then use writing and calculation tools as needed.', label: 'Make a study plan' }
+  { icon: 'practice', title: 'Practise for an exam', href: '/jamb/', desc: 'Start JAMB practice, or choose WAEC/NECO and KCSE from the directory.', label: 'Start practice' },
+  { icon: 'admissions', title: 'Check results and admissions', href: '/tools/waec-calculator/', desc: 'Count credits, calculate a supported score, then check official entry rules.', label: 'Check results' },
+  { icon: 'finance', title: 'Pay for education', href: '/education/fees/', desc: 'Compare fee quotes, monthly costs, savings and repayment.', label: 'Compare costs' },
+  { icon: 'abroad', title: 'Plan study abroad', href: '/education/study-abroad/', desc: 'Start with a destination budget and identify the evidence still missing.', label: 'Plan a destination' },
+  { icon: 'coursework', title: 'Study and coursework', href: '/tools/study-planner/', desc: 'Make a weekly plan, then use writing and calculation tools as needed.', label: 'Make a study plan' }
 ];
+const focusSteps = {
+  fees: [
+    { id: 'school-fees', title: 'Compare written fee quotes', detail: 'Check the same cost period and list what each quote includes.' },
+    { id: 'student-budget', title: 'Test the monthly budget', detail: 'Add living, travel and school costs using amounts you know.' },
+    { id: 'edu-savings', title: 'Plan the funding gap', detail: 'Set a target and timeline based on the remaining cost.' }
+  ],
+  loans: [
+    { id: 'student-loan-repay', title: 'Use your loan terms', detail: 'Model a statement-based repayment scenario.' },
+    { id: 'ke-helb', title: 'Check HELB separately', detail: 'If relevant, work from your own HELB balance and deduction.' },
+    { id: 'student-budget', title: 'Check affordability', detail: 'See how the planned payment fits your monthly budget.' }
+  ],
+  scholarships: [
+    { id: 'scholarship-finder', title: 'Find source-linked options', detail: 'Open current requirements and deadlines at the source.' },
+    { id: 'study-abroad-cost', title: 'Estimate the uncovered cost', detail: 'Use a single currency and verified cost figures.' },
+    { id: 'university-ranking', title: 'Compare your shortlist', detail: 'Put programme evidence and missing checks side by side.' }
+  ],
+  'study-abroad': [
+    { id: 'study-abroad-cost', title: 'Build the destination budget', detail: 'Start with tuition and living costs you can verify.' },
+    { id: 'degree-checker', title: 'Check recognition', detail: 'Find the authority responsible for the qualification route.' },
+    { id: 'university-ranking', title: 'Compare programmes', detail: 'Review official links, deadlines and evidence gaps.' }
+  ]
+};
 const primary = ['waec-calculator', 'jamb-aggregate', 'school-fees', 'scholarship-finder', 'study-planner', 'citation-generator'];
 const toolMap = Object.fromEntries(taxonomy.getRegistryTools(registry).map((tool) => [tool.id, tool]));
-const hub = `${head('Education Tools', 'Find exam practice, results and admissions checks, fee planning, study abroad tools and coursework help for African students and families.', '/education/')}
+const hub = `${head('Education Tools for African Students', 'Find exam practice, admissions checks, school fee planning, scholarships, study abroad worksheets and coursework tools for African students and families.', '/education/')}
 <body class="education-discovery">
 <afro-navbar active="education"></afro-navbar>
 <main id="main-content" class="edu-shell">
@@ -97,9 +131,10 @@ ${breadcrumb([{ label: 'Education Tools' }])}
   <p class="edu-eyebrow">Education Tools</p>
   <h1>What do you need to do for your studies?</h1>
   <p>Find a practical starting point, complete the task, and keep your plan moving.</p>
+  <a class="edu-browse-link" href="#directory">Browse all ${audit.registryCount} Education tools <span aria-hidden="true">↓</span></a>
 </header>
 <nav class="edu-task-grid" aria-label="Choose an education task">
-${taskCards.map((task) => `<a class="edu-task" href="${task.href}"><strong>${esc(task.title)}</strong><span>${esc(task.desc)}</span><b>${esc(task.label)} <span aria-hidden="true">→</span></b></a>`).join('\n')}
+${taskCards.map((task) => `<a class="edu-task" href="${task.href}"><span class="edu-task-icon">${icon(task.icon)}</span><strong>${esc(task.title)}</strong><span class="edu-task-desc">${esc(task.desc)}</span><b>${esc(task.label)} <span aria-hidden="true">→</span></b></a>`).join('\n')}
 </nav>
 <section class="edu-section" aria-labelledby="search-heading">
   <h2 id="search-heading">Find an education tool</h2>
@@ -110,10 +145,11 @@ ${taskCards.map((task) => `<a class="edu-task" href="${task.href}"><strong>${esc
       <div><label for="education-country">Country (optional)</label><select id="education-country"><option value="">All countries</option><option value="NG">Nigeria</option><option value="GH">Ghana</option><option value="KE">Kenya</option><option value="ZA">South Africa</option></select></div>
       <div><label for="education-exam">Exam (optional)</label><select id="education-exam"><option value="">All exams</option><option value="jamb">JAMB</option><option value="waec">WAEC / NECO</option><option value="wassce">WASSCE</option><option value="kcse">KCSE</option><option value="nsc">NSC</option><option value="ielts">IELTS</option></select></div>
     </div>
+    <button class="edu-clear" id="education-clear" type="button" hidden>Clear search and filters</button>
     <p id="education-search-status" role="status" aria-live="polite"></p>
   </div>
 </section>
-<section class="edu-section" aria-labelledby="start-heading">
+<section class="edu-section" id="education-starting-tools" aria-labelledby="start-heading">
   <h2 id="start-heading">Useful starting tools</h2>
   <div class="edu-tool-grid">${primary.map((id) => toolLink(toolMap[id], true)).join('\n')}</div>
 </section>
@@ -125,7 +161,7 @@ ${taskCards.map((task) => `<a class="edu-task" href="${task.href}"><strong>${esc
   <h2 id="directory-heading">All Education tools</h2>
   <p class="edu-muted">Browse the complete ${audit.registryCount}-tool directory. Each link opens the specific tool.</p>
   <div class="edu-directory">
-${groups.map((group) => `<section class="edu-directory-group"><h3>${esc(group.title)}</h3><div class="edu-directory-links">${group.allTools.map((tool) => toolLink(tool)).join('')}</div></section>`).join('\n')}
+${groups.map((group, index) => `<details class="edu-directory-group" data-default-open="${index === 0 ? 'true' : 'false'}"${index === 0 ? ' open' : ''}><summary><h3><span class="edu-directory-icon">${icon(group.key)}</span><span class="edu-directory-heading"><strong>${esc(group.title)}</strong><small>${group.allTools.length} ${group.allTools.length === 1 ? 'tool' : 'tools'}</small></span><svg class="edu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></h3></summary><div class="edu-directory-links">${group.allTools.map((tool) => toolLink(tool)).join('')}</div></details>`).join('\n')}
   </div>
   <p id="education-no-results" class="edu-empty" hidden>No tools match these filters. Clear a filter or try another term.</p>
 </section>
@@ -144,17 +180,22 @@ function subhub(slug) {
   const title = data.title;
   const route = '/education/' + slug + '/';
   const first = data.tools[0];
+  const steps = focusSteps[slug].map((step) => ({ ...step, tool: toolMap[step.id] }));
   return `${head(title, data.description, route)}
 <body class="education-discovery">
 <afro-navbar active="education"></afro-navbar>
 <main id="main-content" class="edu-shell">
 ${breadcrumb([{ href: '/education/', label: 'Education Tools' }, { label: title }])}
 <header class="edu-intro">
-  <p class="edu-eyebrow">Education Tools</p>
+  <p class="edu-eyebrow"><span class="edu-inline-icon">${icon(slug === 'fees' || slug === 'loans' ? 'finance' : 'abroad')}</span> Education Tools</p>
   <h1>${esc(title)}</h1>
   <p>${esc(data.description)}</p>
   <a class="btn btn-primary" href="${esc(first.href)}">Start with ${esc(first.name)}</a>
 </header>
+<section class="edu-section" aria-labelledby="path-heading">
+  <h2 id="path-heading">A practical path</h2>
+  <ol class="edu-path-steps">${steps.map((step, index) => `<li><span class="edu-step-number">${index + 1}</span><div><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p><a href="${esc(step.tool.href)}">${esc(step.tool.name)} <span aria-hidden="true">→</span></a></div></li>`).join('')}</ol>
+</section>
 <section class="edu-section" aria-labelledby="focused-heading">
   <h2 id="focused-heading">Tools for this task</h2>
   <div class="edu-tool-grid" id="edu-subhub-tools">${data.tools.map((tool) => toolLink(tool, true)).join('\n')}</div>

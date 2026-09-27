@@ -24,6 +24,19 @@ function educationRoutes() {
 const EDUCATION_ROUTES = educationRoutes();
 
 test.describe('Education task hub contract', () => {
+  test('search reveals matching groups and clearing restores the directory', async ({ page }) => {
+    await page.goto('/education/', { waitUntil: 'domcontentloaded' });
+    await page.locator('#education-search').fill('HELB');
+    const finance = page.locator('.edu-directory-group').filter({ hasText: 'Pay for education' });
+    await expect(finance).toHaveAttribute('open', '');
+    await expect(finance.getByRole('link', { name: /Kenya HELB Repayment Worksheet/i })).toBeVisible();
+    await expect(page.locator('#education-search-status')).toHaveText('1 tool matches.');
+    await page.getByRole('button', { name: 'Clear search and filters' }).click();
+    await expect(page.locator('#education-search-status')).toHaveText(`${EDUCATION_ROUTES.length} tools match.`);
+    await expect(page.locator('#education-search')).toBeFocused();
+    await expect(page.locator('.edu-directory-group[open]')).toHaveCount(1);
+  });
+
   for (const scenario of [
     { name: '360px dark', width: 360, theme: 'dark', textScale: '100%' },
     { name: '375px dark at 200% text', width: 375, theme: 'dark', textScale: '200%' },
