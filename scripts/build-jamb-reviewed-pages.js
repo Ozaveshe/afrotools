@@ -37,6 +37,31 @@ ${q.image ? `<div data-reviewed-figure="${questionFingerprint(q)}" role="status"
 </article>`;
 }
 
+const ENGLISH_SKILL_STARTERS = [
+  { id: 'english-2020-1-68923e3396b6', label: 'Reading comprehension', detail: 'Read the passage, then answer from what the writer actually says.' },
+  { id: 'english-2025-myschool-74807', label: 'Grammar and agreement', detail: 'Check how the subject controls the form of the verb.' },
+  { id: 'english-2025-myschool-74822', label: 'Vocabulary in context', detail: 'Use the sentence to decide which meaning fits.' },
+  { id: 'english-2025-myschool-74841', label: 'Idioms and expressions', detail: 'Interpret the phrase as a whole, not word by word.' },
+  { id: 'english-2025-myschool-74850', label: 'Oral English', detail: 'Compare the sound asked about with the answer choices.' }
+];
+
+function renderEnglishHub(approved, yearCounts, timedYear) {
+  if (!approved.length) return '<section aria-labelledby="review-heading"><h2 id="review-heading">This subject is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p></section>';
+  const count = new Intl.NumberFormat('en').format(approved.length);
+  const years = [...yearCounts.keys()].sort((a, b) => b - a);
+  const yearLink = value => `<li><a href="/jamb/english/${value}/"><strong>${value}</strong><span>${yearCounts.get(value)} reviewed questions</span></a></li>`;
+  const byId = new Map(approved.map(q => [q.id, q]));
+  const starters = ENGLISH_SKILL_STARTERS.filter(item => byId.has(item.id)).map(item => {
+    const q = byId.get(item.id);
+    return `<li><h3>${esc(item.label)}</h3><p>${esc(item.detail)}</p><a href="/jamb/english/${q.year}/#q-${encodeURIComponent(q.id)}">Try a reviewed ${q.year} ${esc(item.label.toLowerCase())} example</a></li>`;
+  });
+  return `<p class="jamb-hub-lede">Choose a reviewed collection, practise a question, then open its explanation. ${count} reviewed questions are available across ${years.length} year-labelled collections.</p>
+<p class="jamb-hub-caveat">A collection year does not confirm the original UTME sitting or question order. These selections have not been verified as complete papers.</p>
+${timedYear ? `<section class="jamb-hub-timed" aria-labelledby="timed-heading"><h2 id="timed-heading">Try a timed English session</h2><p>Practise 40 questions from the reviewed 2025 collection in 40 minutes. This is collection practice, not a confirmed complete paper.</p><div class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/jamb/cbt/?subject=english&amp;year=2025">Start reviewed 2025 CBT</a><a href="/jamb/english/2025/">Browse the 2025 questions</a></div></section>` : ''}
+${starters.length ? `<section class="jamb-hub-skills" aria-labelledby="skill-heading"><h2 id="skill-heading">Start with a skill</h2><p>Each link opens one reviewed example in its year collection. Choose a year below for more practice.</p><ul>${starters.join('')}</ul></section>` : ''}
+<section class="jamb-hub-years" aria-labelledby="year-heading"><h2 id="year-heading">Browse reviewed years</h2><p>Counts show the questions available here, not the length of the original exam.</p><nav aria-label="Browse paper years"><ul>${years.slice(0, 10).map(yearLink).join('')}</ul>${years.length > 10 ? `<details><summary>Show ${years.length - 10} earlier years</summary><ul>${years.slice(10).map(yearLink).join('')}</ul></details>` : ''}</nav></section>`;
+}
+
 function renderYear(subject, year, candidates, ledger, years = []) {
   if (!SUBJECTS[subject] || (year !== null && !/^\d{4}$/.test(String(year)))) throw new Error('Unknown JAMB subject/year route');
   const ids = new Set();
@@ -51,19 +76,27 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   for (const q of approved) yearCounts.set(q.year, (yearCounts.get(q.year) || 0) + 1);
   const name = SUBJECTS[subject];
   const paper = year === null ? name : name + ' ' + year;
+  const englishHub = subject === 'english' && year === null;
+  const rendered = englishHub ? [] : approved;
   const publisherCollection = year !== null && approved.length > 0 && approved.every(q => q.source_provenance?.year_basis === 'publisher-collection');
   const multiplePublisherCollections = publisherCollection && new Set(approved.map(q => q.source_provenance.publisher)).size > 1;
   const collectionLabel = multiplePublisherCollections ? 'collections' : 'collection';
   const collectionArticle = multiplePublisherCollections ? '' : 'a ';
-  const timedPracticeCollection = String(year) === '2025' && ['english', 'mathematics'].includes(subject)
-    && publisherCollection && approved.length >= 40;
+  const timedPracticeCollection = ((subject === 'english' && String(year) === '2025')
+    || (subject === 'mathematics' && ['2023', '2024', '2025'].includes(String(year))))
+    && publisherCollection && approved.filter(q => !q.image && !q.has_diagram).length >= 40;
+  const englishTimedCollection = englishHub ? approved.filter(q => Number(q.year) === 2025) : [];
+  const englishTimedYear = englishTimedCollection.length > 0
+    && englishTimedCollection.every(q => q.source_provenance?.year_basis === 'publisher-collection')
+    && englishTimedCollection.filter(q => !q.image && !q.has_diagram).length >= 40;
   const canonical = `https://afrotools.com/jamb/${subject}/${year === null ? '' : year + '/'}`;
-  const title = `JAMB ${paper}${publisherCollection ? ' ' + collectionLabel : ''} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
-  const description = publisherCollection ? `Practise ${approved.length} reviewed questions adapted from ${collectionArticle}publisher-labelled ${year} JAMB ${name} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed.`
+  const title = englishHub && approved.length ? 'JAMB Use of English practice by year | AfroJAMB' : `JAMB ${paper}${publisherCollection ? ' ' + collectionLabel : ''} — ${approved.length ? 'Reviewed practice' : 'Content review'} | AfroJAMB`;
+  const description = englishHub && approved.length ? `Browse reviewed JAMB Use of English questions by year, try a skill starter and ${englishTimedYear ? 'practise a timed reviewed collection' : 'plan your next study session'}. Year labels do not confirm original UTME sittings.`
+    : publisherCollection ? `Practise ${approved.length} reviewed questions adapted from ${collectionArticle}publisher-labelled ${year} JAMB ${name} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed.`
     : approved.length ? `Practise ${approved.length} reviewed JAMB ${paper} questions. Check answers, open worked explanations and plan your next revision session with AfroJAMB.`
     : `The ${paper} question collection is under review. Use the study planner while sources, questions and answer keys are checked.`;
   const schemas = [{ '@context': 'https://schema.org', '@type': 'WebPage', name: title, url: canonical, description },
-    ...approved.slice(0, 50).map(q => ({ '@context': 'https://schema.org', '@type': 'Question', name: q.question,
+    ...rendered.slice(0, 50).map(q => ({ '@context': 'https://schema.org', '@type': 'Question', name: q.question,
       text: [q.passage, q.question].filter(Boolean).join('\n\n'), url: canonical + '#q-' + encodeURIComponent(q.id),
       acceptedAnswer: { '@type': 'Answer', text: q.options[q.answer] }, answerExplanation: q.explanation || q.ai_explanation }))];
   const html = `<!DOCTYPE html>
@@ -86,35 +119,38 @@ ${earlyBootstrapTag(bootstrapVersion(), analyticsVersion())}
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/design-system.css">
 <link rel="stylesheet" href="/assets/css/jamb.css">
 <link rel="stylesheet" href="/assets/css/jamb-reviewed-pages.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>${approved.some(q => q.image) ? '\n<script src="/assets/js/lib/jamb-question-trust.js" defer></script>\n<script src="/assets/js/lib/jamb-reviewed-figure.js" defer></script>\n<script src="/assets/js/pages/jamb-reviewed-page-figures.js" defer></script>' : ''}
+<script src="/assets/js/components/footer.min.js" defer></script>${rendered.some(q => q.image) ? '\n<script src="/assets/js/lib/jamb-question-trust.js" defer></script>\n<script src="/assets/js/lib/jamb-reviewed-figure.js" defer></script>\n<script src="/assets/js/pages/jamb-reviewed-page-figures.js" defer></script>' : ''}
 ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)}</script>`).join('\n')}
 </head>
 <body class="jamb-page">
 <afro-navbar active="education"></afro-navbar>
-<main class="jb-wrap jamb-reviewed-paper">
-<nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / <a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}</nav>
-<h1>JAMB ${esc(paper)}${publisherCollection ? ' practice collection' : ''}</h1>
+<main class="jb-wrap jamb-reviewed-paper${englishHub ? ' jamb-english-hub' : ''}">
+<nav aria-label="Breadcrumb"><a href="/education/">Education</a> / <a href="/jamb/">AfroJAMB</a> / ${englishHub ? esc(name) : `<a href="/jamb/${subject}/">${esc(name)}</a> ${year === null ? '' : '/ ' + year}`}</nav>
+<h1>${englishHub && approved.length ? 'JAMB Use of English practice by year' : `JAMB ${esc(paper)}${publisherCollection ? ' practice collection' : ''}`}</h1>
 ${subject === 'mathematics' && year === null ? '<p><a href="/jamb/mathematics/recent-practice/">Practise five Mathematics tasks from a source-labelled 2023 collection</a></p>' : ''}
-${year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
-${approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>${publisherCollection ? `These adapted questions come from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed. ` : ''}Practice selection: full-paper coverage has not been confirmed.</p>${timedPracticeCollection ? `<section class="jamb-reviewed-practice" aria-label="Timed CBT practice"><h2>Test yourself before reading answers</h2><p>Take up to 40 reviewed ${esc(name)} questions from ${collectionArticle}publisher-labelled 2025 ${collectionLabel} in a timed CBT session. See your raw score and explanations afterward. This is not a confirmed complete UTME paper.</p><a class="jb-btn jb-btn-primary" href="/jamb/cbt/?subject=${encodeURIComponent(subject)}&amp;year=2025">Start 2025 ${esc(name)} CBT practice</a></section>` : ''}<div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
+${englishHub ? renderEnglishHub(approved, yearCounts, englishTimedYear) : year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
+${englishHub ? '' : approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>${publisherCollection ? `These adapted questions come from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed. ` : ''}Practice selection: full-paper coverage has not been confirmed.</p>${timedPracticeCollection ? `<section class="jamb-reviewed-practice" aria-label="Timed CBT practice"><h2>Test yourself before reading answers</h2><p>Take up to 40 reviewed ${esc(name)} questions from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel} in a timed CBT session. See your raw score and explanations afterward. This is not a confirmed complete UTME paper.</p><a class="jb-btn jb-btn-primary" href="/jamb/cbt/?subject=${encodeURIComponent(subject)}&amp;year=${encodeURIComponent(year)}">Start ${esc(year)} ${esc(name)} CBT practice</a></section>` : ''}<div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
     : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
-<p class="jamb-reviewed-actions"><a class="jb-btn jb-btn-primary" href="/tools/study-planner/">Plan your study week</a><a href="/jamb/${subject}/">All ${esc(name)} years</a></p>
+<p class="jamb-reviewed-actions"><a class="jb-btn${englishHub ? '' : ' jb-btn-primary'}" href="/tools/study-planner/">Plan your study week</a>${englishHub ? '<a href="/jamb/">Explore AfroJAMB</a>' : `<a href="/jamb/${subject}/">All ${esc(name)} years</a>`}</p>
 </main>
 <afro-footer></afro-footer>
 ${canonicalLoaderTag(analyticsVersion())}
 </body>
 </html>
 `;
-  validatePage(html, approved.map(q => q.id), canonical);
-  return { html, approvedIds: approved.map(q => q.id), canonical };
+  const renderedIds = rendered.map(q => q.id);
+  const allowEmptyIndex = englishHub && approved.length > 0;
+  validatePage(html, renderedIds, canonical, { allowEmptyIndex });
+  return { html, approvedIds: approved.map(q => q.id), renderedIds, allowEmptyIndex, canonical };
 }
 
-function validatePage(html, expectedIds, canonical) {
+function validatePage(html, expectedIds, canonical, { allowEmptyIndex = false } = {}) {
   for (const tag of ['html', 'head', 'body', 'main']) {
     if ((html.match(new RegExp('<' + tag + '(?:\\s|>)', 'gi')) || []).length !== 1
         || (html.match(new RegExp('</' + tag + '\\s*>', 'gi')) || []).length !== 1) throw new Error('Incomplete document: ' + tag);
@@ -135,7 +171,8 @@ function validatePage(html, expectedIds, canonical) {
     const schema = JSON.parse(match[1]); if (schema['@type'] === 'Question') questionSchemas++;
   }
   if (questionSchemas !== Math.min(50, expectedIds.length)) throw new Error('Answer schema differs from approved content');
-  if (!expectedIds.length && !html.includes('content="noindex, follow"')) throw new Error('Empty review page must be noindex');
+  if (!expectedIds.length && !allowEmptyIndex && !html.includes('content="noindex, follow"')) throw new Error('Empty review page must be noindex');
+  if (allowEmptyIndex && !html.includes('content="index, follow"')) throw new Error('Reviewed directory must be indexable');
 }
 
 function atomicWrite(file, html, validate) {
@@ -170,8 +207,8 @@ function main(args = process.argv.slice(2)) {
     const years = routes.filter(value => value.startsWith(subject + '/')).map(value => value.split('/')[1]);
     const page = renderYear(subject, year || null, pool.questions, ledger, years);
     const file = path.join(ROOT, 'jamb', route, 'index.html');
-    if (args.includes('--write')) written += Number(atomicWrite(file, page.html, html => validatePage(html, page.approvedIds, page.canonical)));
-    else validatePage(fs.readFileSync(file, 'utf8'), page.approvedIds, page.canonical);
+    if (args.includes('--write')) written += Number(atomicWrite(file, page.html, html => validatePage(html, page.renderedIds, page.canonical, { allowEmptyIndex: page.allowEmptyIndex })));
+    else validatePage(fs.readFileSync(file, 'utf8'), page.renderedIds, page.canonical, { allowEmptyIndex: page.allowEmptyIndex });
   }
   console.log(JSON.stringify({ routes: routes.length, written, policy: 'Only ledger-approved questions and answer schemas; all other source records preserved for review.' }));
 }

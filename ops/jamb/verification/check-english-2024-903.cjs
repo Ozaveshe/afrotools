@@ -68,7 +68,11 @@ function verify(manifest, manifestHash, pool, ledger, batch) {
     assert.deepEqual(record.independent_source_urls, row.independent_source_urls, id);
     assert.equal(record.independently_selected_answer, expectedAnswerText[row.source_question_id], id);
     assert.equal(record.independent_reasoning, row.explanation, id);
-    assert.equal(assessQuestion(question, ledger).state, 'eligible', id);
+    const assessment = assessQuestion(question, ledger);
+    if (id === 'english-2024-myschool-69979') {
+      assert.equal(ledger.publication_holds[id]?.content_sha256, record.content_sha256, id);
+      assert.deepEqual(assessment.reasons, ['publication_hold'], id);
+    } else assert.equal(assessment.state, 'eligible', id);
     checked.push(id);
   }
   assert.equal(new Set(checked).size, checked.length);

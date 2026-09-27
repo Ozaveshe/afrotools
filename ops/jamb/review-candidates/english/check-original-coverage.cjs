@@ -69,7 +69,15 @@ function reconstructOriginals(current,batches,ledger={questions:{},sources:{}},p
     assert.equal(source?.source_file,release.source_file,'recent intake source file '+q.id);
     assert.equal(source?.content_sha256,release.source_snapshot_sha256,'recent intake source fingerprint '+q.id);
     assert.equal(source?.source_url,record.source_url,'recent intake source URL '+q.id);
-    assert.equal(assessQuestion(q,ledger).state,'eligible','recent intake eligibility required '+q.id);
+    const assessment=assessQuestion(q,ledger),hold=ledger.publication_holds?.[q.id];
+    if(hold){
+     assert.equal(hold.content_sha256,hash,'recent intake hold fingerprint '+q.id);
+     assert.ok(typeof hold.reason==='string'&&hold.reason.trim().length>15,'recent intake hold reason '+q.id);
+     assert.ok(typeof hold.evidence==='string'&&hold.evidence.trim().length>15,'recent intake hold evidence '+q.id);
+     assert.match(hold.held_at||'',/^\d{4}-\d{2}-\d{2}$/,'recent intake hold date '+q.id);
+     assert.deepEqual(assessment.reasons,['publication_hold'],'recent intake hold disposition '+q.id);
+     assert.equal(assessment.state,'quarantined','recent intake hold quarantine '+q.id);
+    }else assert.equal(assessment.state,'eligible','recent intake eligibility required '+q.id);
     return [];
    }
    if(!h&&later&&later.before===null){
