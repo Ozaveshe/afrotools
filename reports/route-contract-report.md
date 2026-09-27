@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11585 |
-| Indexable pages | 10006 |
+| Public pages | 11586 |
+| Indexable pages | 10007 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 5313 |
-| Documented fallbacks | 14854 |
-| Routes eligible for primary sitemaps | 10006 |
+| Genuine equivalence groups | 5314 |
+| Documented fallbacks | 14855 |
+| Routes eligible for primary sitemaps | 10007 |
 
 ## Locale Coverage
 
-- en: 6033 page records
+- en: 6034 page records
 - fr: 3804 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5445
+- page: 5446
 - tool: 4006
 - widget: 379
 
@@ -5854,6 +5854,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:875bfaf61446: en=`/tools/loan-shark-compare/`, fr=`/fr/tools/pret-usurier-vs-banque/`, sw=`/sw/zana/mkopeshaji-hatari-dhidi-ya-benki/`; x-default=`/tools/loan-shark-compare/`
 - equivalence:876e4abd5213: en=`/tools/export-docs/`, fr=`/fr/tools/documents-export/`, sw=`/sw/zana/orodha-nyaraka-usafirishaji/`; x-default=`/tools/export-docs/`
 - equivalence:876e6d0629c6: en=`/cars/ghana/toyota/camry/2012/`, fr=`/fr/cars/ghana/toyota/camry/2012/`; x-default=`/cars/ghana/toyota/camry/2012/`
+- equivalence:8779ab8a3fe0: en=`/jamb/original-practice/`; x-default=`/jamb/original-practice/`
 - equivalence:878a1dd4fc32: en=`/agriculture/poultry-roi/`, fr=`/fr/agriculture/poultry-roi/`, sw=`/sw/zana/faida-ya-ufugaji-kuku/`; x-default=`/agriculture/poultry-roi/`
 - equivalence:878c3ec64e72: en=`/tools/afrokitchen/recipes/djabadji-ml/`; x-default=`/tools/afrokitchen/recipes/djabadji-ml/`
 - equivalence:87a7321068da: en=`/blog/mobile-money-fees-comparison/`; x-default=`/blog/mobile-money-fees-comparison/`

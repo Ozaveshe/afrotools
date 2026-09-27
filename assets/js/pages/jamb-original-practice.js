@@ -17,6 +17,11 @@
     if (analytics && typeof analytics.track === 'function') {
       analytics.track(event, { subject: subject, question_count: count, practice_kind: 'afrotools-original' });
     }
+    var action = event === 'education_jamb_original_start' ? 'start' :
+      event === 'education_jamb_original_resume' ? 'resume' : null;
+    if (action && analytics && typeof analytics.trackEducationPractice === 'function') {
+      analytics.trackEducationPractice('jamb', subject, action);
+    }
   }
   function show(screen) {
     ['setup', 'quiz', 'result'].forEach(function (name) { $(name + '-screen').hidden = name !== screen; });

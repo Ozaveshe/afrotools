@@ -145,7 +145,7 @@ test('all JAMB entry routes have no Meta Pixel requests before consent or after 
     '/jamb/', '/jamb/past-questions/', '/jamb/daily/', '/jamb/cram/',
     '/jamb/exam-day-kit/', '/jamb/flashcards/', '/jamb/history/',
     '/jamb/patterns/', '/jamb/score-predictor/', '/jamb/study-plan/',
-    '/jamb/tutor/', '/jamb/universities/', '/jamb/cbt/'
+    '/jamb/tutor/', '/jamb/universities/', '/jamb/cbt/', '/jamb/original-practice/'
   ];
   for (const route of routes) {
     await page.goto(route, { waitUntil: 'load' });
