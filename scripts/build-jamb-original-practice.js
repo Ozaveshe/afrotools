@@ -10,28 +10,28 @@ const ROOT = path.resolve(__dirname, '..');
 const SOURCE = 'ops/nigeria-exams/jamb-original-practice-v1.json';
 const OUTPUT = 'data/jamb/pools/original-practice.json';
 const INDEX = 'data/jamb/pools/original-practice-index.json';
-const SYLLABUS = Object.freeze({
-  mathematics: 'https://ibass.jamb.gov.ng/assets/uploads/Mathematics.pdf',
-  english: 'https://ibass.jamb.gov.ng/assets/uploads/Use-of-English.pdf'
-});
+const OFFICIAL_PORTAL = 'https://ibass.jamb.gov.ng/e-syllabus';
+const SUBJECTS = new Set(['mathematics', 'english']);
 const PUBLIC_FIELDS = ['id', 'subject', 'year', 'num', 'topic', 'question', 'passage', 'options', 'answer', 'explanation'];
 
 function assert(condition, message) { if (!condition) throw new Error(message); }
 function validate(source) {
   assert(source?.schema_version === 1 && source.collection_id === 'afrotools-original-jamb-practice-v1', 'Invalid original-practice manifest');
   assert(source.provenance?.includes('Original AfroTools practice'), 'Missing original-work provenance');
+  assert(source.official_syllabus_portal === OFFICIAL_PORTAL && source.learning_objective_origin?.includes('authored by AfroTools'), 'Missing authored learning-objective or portal reference metadata');
+  assert(source.mathematics_alignment_review?.status === 'unverified', 'Mathematics alignment must remain unverified until the official document can be checked');
   assert(Array.isArray(source.questions) && source.questions.length === 24, 'The pilot must contain exactly 24 reviewed items');
   const ids = new Set();
   const fingerprints = new Set();
   const bySubject = { mathematics: 0, english: 0 };
   for (const q of source.questions) {
-    assert(q && typeof q === 'object' && Object.hasOwn(SYLLABUS, q.subject), 'Unsupported original-practice subject');
+    assert(q && typeof q === 'object' && SUBJECTS.has(q.subject), 'Unsupported original-practice subject');
     assert(typeof q.id === 'string' && /^ato-(math|english)-v1-\d{2}$/.test(q.id) && !ids.has(q.id), 'Invalid or duplicate item ID: ' + q.id);
     ids.add(q.id);
     bySubject[q.subject]++;
     assert(q.year === null && q.num === null && !Object.hasOwn(q, 'source_provenance'), 'Original practice cannot have a historical sitting: ' + q.id);
-    assert(q.origin === 'AfroTools original' && q.syllabus_url === SYLLABUS[q.subject], 'Missing authored provenance or official syllabus link: ' + q.id);
-    assert(typeof q.topic === 'string' && q.topic.trim() && typeof q.objective === 'string' && q.objective.trim(), 'Missing syllabus area or learning objective: ' + q.id);
+    assert(q.origin === 'AfroTools original' && q.official_syllabus_portal === OFFICIAL_PORTAL, 'Missing authored provenance or official portal reference: ' + q.id);
+    assert(typeof q.topic === 'string' && q.topic.trim() && typeof q.learning_objective === 'string' && q.learning_objective.trim() && !Object.hasOwn(q, 'objective'), 'Missing AfroTools-authored learning objective: ' + q.id);
     assert(typeof q.question === 'string' && q.question.length >= 20 && typeof q.explanation === 'string' && q.explanation.length >= 30, 'Incomplete question or explanation: ' + q.id);
     assert(q.options && Object.keys(q.options).sort().join('') === 'ABCD'
       && Object.values(q.options).every(value => typeof value === 'string' && value.trim())
@@ -55,7 +55,7 @@ function publications(source) {
   validate(source);
   const revision = questionFingerprint(source);
   const questions = source.questions.map(publicQuestion);
-  const provenance = 'AfroTools original questions aligned with JAMB syllabus; not an official JAMB paper or past-question collection.';
+  const provenance = 'AfroTools original practice questions; independent of JAMB and not a past-question collection.';
   const outputs = {
     [OUTPUT]: seal({ kind: 'original-practice', collection_id: source.collection_id,
       count: questions.length, answered_count: questions.length, provenance, questions }, revision),

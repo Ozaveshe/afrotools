@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const { webcrypto } = require('node:crypto');
-const { validate, publicQuestion } = require('../scripts/build-jamb-original-practice');
+const { validate, publicQuestion, publications } = require('../scripts/build-jamb-original-practice');
 const { seal } = require('../scripts/lib/jamb-publication');
 const { questionFingerprint } = require('../scripts/lib/jamb-content-trust');
 
@@ -25,10 +25,18 @@ test('all 24 items are original, yearless and answer-reviewed without changing t
     { mathematics: 12, english: 12 });
   assert.ok(source.questions.every(item => item.year === null && item.num === null && item.origin === 'AfroTools original'));
   assert.ok(source.questions.every(item => item.options[item.answer] && item.review.independent_check && item.review.content_sha256));
+  assert.equal(source.mathematics_alignment_review.status, 'unverified');
+  assert.ok(source.questions.every(item => item.learning_objective && !Object.hasOwn(item, 'objective') && item.official_syllabus_portal === source.official_syllabus_portal));
   assert.ok(!source.questions.some(item => Object.hasOwn(item, 'source_provenance')));
   const historical = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/jamb/pools/practice-pool.json'), 'utf8'));
   assert.ok(!historical.questions.some(item => item.id.startsWith('ato-')));
   assert.ok(!fs.readFileSync(path.join(ROOT, 'jamb/index.html'), 'utf8').includes('/null/'));
+  const route = fs.readFileSync(path.join(ROOT, 'jamb/original-practice/index.html'), 'utf8');
+  assert.ok(route.includes('https://ibass.jamb.gov.ng/e-syllabus'));
+  assert.ok(!route.includes('Mathematics.pdf') && !/syllabus-aligned|aligned with JAMB syllabus/i.test(route));
+  const published = publications(source).outputs['data/jamb/pools/original-practice.json'];
+  assert.match(published.provenance, /AfroTools original practice questions/);
+  assert.doesNotMatch(published.provenance, /syllabus-aligned|aligned with JAMB syllabus/i);
 });
 
 test('an altered answer, wording or invented year invalidates the original review', () => {
