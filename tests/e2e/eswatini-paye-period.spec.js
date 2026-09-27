@@ -35,7 +35,8 @@ test('Eswatini PAYE keeps annual and monthly results aligned in both calculation
   await expect(label).toHaveText('Required Annual Gross');
   const required = await page.evaluate(() => ({ gross: RESULT.gross, net: RESULT.netAnnual }));
   expect(Math.abs(required.gross - annual.gross)).toBeLessThan(2);
-  expect(Math.abs(required.net - 426971)).toBeLessThan(1);
+  expect(required.net).toBeGreaterThanOrEqual(426971);
+  expect(required.net - 426971).toBeLessThan(1);
   await expect(summary).toContainText('Take-home: E\u00a0426,971/year');
 
   await page.locator('.per-btn').nth(1).click();
