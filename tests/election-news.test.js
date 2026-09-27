@@ -4,7 +4,9 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
-const { validateModel, generateOutputs, escapeHtml, escapeXml } = require('../scripts/generate-election-news');
+const {
+  validateModel, generateOutputs, renderFrontPage, replaceFrontPageBlock, escapeHtml, escapeXml
+} = require('../scripts/generate-election-news');
 
 const root = path.resolve(__dirname, '..');
 const news = require('../data/government/election-news.json');
@@ -122,6 +124,28 @@ test('inbound RSS and media watch changes never become published briefs', () => 
     [...generateOutputs(news, noisyTracker, official)],
     [...generateOutputs(news, tracker, official)]
   );
+});
+
+test('front-page lead and dated calendar rail are generated from reviewed models', () => {
+  const trackerHtml = fs.readFileSync(path.join(root, 'tools/africa-election-tracker/index.html'), 'utf8');
+  const feature = renderFrontPage(news, tracker, official);
+  const lead = news.articles[0];
+  const source = lead.officialSources[0];
+  assert.ok(feature.includes(escapeHtml(lead.localizations.en.headline)));
+  assert.ok(feature.includes(escapeHtml(lead.localizations.en.summary)));
+  assert.ok(feature.includes(source.url));
+  assert.match(feature, /Published 22 September 2026; checked 27 September 2026/);
+  assert.ok(feature.includes('datetime="' + tracker.generatedAt + '"'));
+  assert.match(feature, /id="calendarRailList"/);
+  assert.doesNotMatch(feature, /guardian\.ng|premiumtimesng\.com|polling|predictions/i);
+  assert.equal(replaceFrontPageBlock(trackerHtml, feature), trackerHtml, 'front-page teaser must match the curated model');
+
+  const revised = clone(news);
+  revised.articles[0].localizations.en.headline = 'Cabo Verde court reports five admitted presidential candidacies; appeals remained available';
+  const changedFeature = renderFrontPage(revised, tracker, official);
+  assert.notEqual(changedFeature, feature, 'a source-reviewed headline change must alter the teaser');
+  assert.notEqual(replaceFrontPageBlock(trackerHtml, changedFeature), trackerHtml, 'check mode must detect stale teaser copy');
+  assert.throws(() => replaceFrontPageBlock('<main></main>', feature), /markers are missing/);
 });
 
 test('rendering helpers escape untrusted text', () => {
