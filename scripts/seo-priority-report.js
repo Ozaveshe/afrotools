@@ -452,6 +452,11 @@ function buildReport(args) {
   const csvFiles = listCsvFiles(args.inputDir);
   const extracted = extractRows(csvFiles);
   const pages = Array.from(extracted.pageMap.values()).map((item) => finalizeMetric(item, args.fallbackTargetCtr));
+  const blogRefreshCandidates = pages
+    .filter((item) => item.url && item.url.startsWith(`${SITE_ORIGIN}/blog/`)
+      && item.averagePosition >= 8 && item.averagePosition <= 20
+      && item.impressions >= 100)
+    .sort((a, b) => b.impressions - a.impressions || a.averagePosition - b.averagePosition);
   const aiPages = Array.from(extracted.aiPageMap.values()).map((item) => finalizeMetric(item, args.fallbackTargetCtr));
   const aiQueries = Array.from(extracted.aiQueryMap.values()).map((item) => finalizeMetric(item, args.fallbackTargetCtr));
   const recipeSeo = args.recipeScan ? scanRecipeSeo() : { scanned: 0, pagesMissingRequiredSeoFields: [] };
@@ -465,12 +470,14 @@ function buildReport(args) {
       limit: args.limit,
       fallbackTargetCtr: args.fallbackTargetCtr,
       recipeScan: args.recipeScan,
+      blogRefreshRule: "Measured blog pages at average positions 8-20 with at least 100 impressions. Review queries, sources and intent before editing; rank movement is not guaranteed.",
       ctrOpportunity: "Missed clicks are estimated against a position-aware CTR target when average position is available, otherwise the fallback target CTR is used."
     },
     inputs: extracted.fileSummaries,
     summary: {
       csvFiles: csvFiles.length,
       pageRows: extracted.pageMap.size,
+      blogRefreshCandidates: blogRefreshCandidates.length,
       aiPageRows: extracted.aiPageMap.size,
       aiQueryRows: extracted.aiQueryMap.size,
       slashDuplicateGroups: detectSlashDuplicates(extracted.variantMap).length,
@@ -485,6 +492,7 @@ function buildReport(args) {
       .filter((item) => item.url && item.missedClicks > 0)
       .sort(sortByNumber("missedClicks"))
       .slice(0, args.limit),
+    blogRefreshCandidates: blogRefreshCandidates.slice(0, args.limit),
     pagesWithImpressionsButZeroClicks: pages
       .filter((item) => item.url && item.impressions > 0 && item.clicks === 0)
       .sort(sortByNumber("impressions"))
@@ -512,8 +520,10 @@ function main() {
 
   console.log(`SEO priority report written to ${path.relative(ROOT, args.outputPath).replace(/\\/g, "/")}`);
   console.log(`CSV files read: ${report.summary.csvFiles}`);
+  console.log(`Measured blog refresh candidates: ${report.summary.blogRefreshCandidates}`);
   console.log(`Recipe pages scanned: ${report.summary.recipePagesScanned}`);
   console.log(`Recipe pages missing required SEO fields: ${report.summary.recipePagesMissingRequiredSeoFields}`);
 }
 
-main();
+if (require.main === module) main();
+module.exports = { buildReport, parseArgs };
