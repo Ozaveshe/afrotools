@@ -10,11 +10,12 @@ const cohortKey = 'afrotools_education_practice_cohort_v1';
 const dayMs = 86400000;
 const firstDay = Date.UTC(2026, 8, 26, 12);
 
-function context(consent = 'accepted') {
+function context(consent = 'accepted', { gtagAvailable = true } = {}) {
   let now = firstDay;
   const store = new Map([['afrotools_cookie_consent', consent]]);
   const calls = [];
   const listeners = {};
+  const intervals = [];
   class ClockDate extends Date { static now() { return now; } }
   const window = {
     localStorage: {
@@ -24,16 +25,19 @@ function context(consent = 'accepted') {
     },
     location: { pathname: '/jamb/cbt/', search: '' },
     sessionStorage: { getItem() { return null; }, setItem() {} },
-    gtag() { calls.push(Array.from(arguments)); },
     setTimeout() { return 1; }, clearTimeout() {},
-    setInterval() { return 1; }, clearInterval() {},
+    setInterval(handler) { intervals.push(handler); return intervals.length; }, clearInterval() {},
     addEventListener(type, handler) { (listeners[type] ||= []).push(handler); }
   };
+  if (gtagAvailable) window.gtag = (...args) => calls.push(args);
   const document = { readyState: 'loading', addEventListener() {} };
   vm.runInNewContext(source, { window, document, Date: ClockDate, URL, URLSearchParams, Set, console });
   return {
     track: window.AfroTools.analytics.trackEducationPractice,
+    trackFeature: window.AfroTools.analytics.trackFeature,
     events(name) { return calls.filter(call => call[0] === 'event' && call[1] === name).map(call => call[2]); },
+    enableGtag() { window.gtag = (...args) => calls.push(args); },
+    flush() { intervals.forEach(handler => handler()); },
     setDay(offset) { now = firstDay + offset * dayMs; },
     setConsent(value) {
       store.set('afrotools_cookie_consent', value);
@@ -99,6 +103,34 @@ test('withdrawing consent clears the marker and does not turn later acceptance i
   assert.equal(visit.events('education_practice_cohort_started').length, 2);
   assert.equal(visit.events('education_practice_returned').length, 0);
   visit.crossTabConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+});
+
+test('withdrawal drops pre-gtag events, so reacceptance cannot replay old activity', () => {
+  const visit = context('accepted', { gtagAvailable: false });
+  assert.equal(visit.track('jamb', 'english', 'start'), true);
+  visit.trackFeature('revision', 'jamb');
+  assert.equal(visit.store.has(cohortKey), true);
+  visit.setConsent('declined');
+  assert.equal(visit.store.has(cohortKey), false);
+  visit.setConsent('accepted');
+  visit.enableGtag();
+  visit.flush();
+  assert.equal(visit.events('education_practice_cohort_started').length, 0);
+  assert.equal(visit.events('feature_used').length, 0);
+  assert.equal(visit.track('neco', 'mathematics', 'start'), true);
+  assert.equal(visit.events('education_practice_cohort_started').length, 1);
+  assert.equal(visit.events('education_practice_cohort_started')[0].cohort_exam, 'neco');
+});
+
+test('cross-tab withdrawal also drops pre-gtag events before later acceptance', () => {
+  const visit = context('accepted', { gtagAvailable: false });
+  assert.equal(visit.track('waec', 'english', 'start'), true);
+  visit.crossTabConsent('declined');
+  visit.crossTabConsent('accepted');
+  visit.enableGtag();
+  visit.flush();
+  assert.equal(visit.events('education_practice_cohort_started').length, 0);
   assert.equal(visit.store.has(cohortKey), false);
 });
 

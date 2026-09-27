@@ -114,12 +114,18 @@
     try { if (window.localStorage) window.localStorage.removeItem(EDUCATION_COHORT_KEY); } catch (_) {}
   }
 
-  if (!hasAnalyticsConsent()) clearEducationCohort();
+  function clearConsentBoundState() {
+    // An event queued before gtag loads must not replay after withdrawal and reacceptance.
+    queue.length = 0;
+    clearEducationCohort();
+  }
+
+  if (!hasAnalyticsConsent()) clearConsentBoundState();
   window.addEventListener('afrotools:cookie-consent', function (event) {
-    if (!event || !event.detail || event.detail.status !== 'accepted') clearEducationCohort();
+    if (!event || !event.detail || event.detail.status !== 'accepted') clearConsentBoundState();
   });
   window.addEventListener('storage', function (event) {
-    if (event && event.key === CONSENT_KEY && event.newValue !== 'accepted') clearEducationCohort();
+    if (event && event.key === CONSENT_KEY && event.newValue !== 'accepted') clearConsentBoundState();
   });
 
   function valueBucket(value, currency) {

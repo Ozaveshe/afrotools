@@ -132,7 +132,7 @@ test('a saved WAEC or NECO written answer records only coarse exam metadata', as
   expect(await page.evaluate(() => window.__educationEvents)).toEqual(recorded);
 });
 
-test('JAMB CBT has no Meta Pixel requests before or after accepting analytics', async ({ page }) => {
+test('all JAMB entry routes have no Meta Pixel requests before consent or after accepting analytics', async ({ page }) => {
   const metaRequests = [];
   page.on('request', (request) => {
     if (/connect\.facebook\.net|facebook\.com\/tr(?:\?|$)/.test(request.url())) metaRequests.push(request.url());
@@ -141,7 +141,16 @@ test('JAMB CBT has no Meta Pixel requests before or after accepting analytics', 
     status: 200, contentType: 'application/javascript', body: 'window.__fakeGoogleTagLoaded = true;'
   }));
   await page.route('https://www.google-analytics.com/**', (route) => route.fulfill({ status: 204, body: '' }));
-  await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+  const routes = [
+    '/jamb/', '/jamb/past-questions/', '/jamb/daily/', '/jamb/cram/',
+    '/jamb/exam-day-kit/', '/jamb/flashcards/', '/jamb/history/',
+    '/jamb/patterns/', '/jamb/score-predictor/', '/jamb/study-plan/',
+    '/jamb/tutor/', '/jamb/universities/', '/jamb/cbt/'
+  ];
+  for (const route of routes) {
+    await page.goto(route, { waitUntil: 'load' });
+    expect(metaRequests, route).toEqual([]);
+  }
   await expect(page.getByRole('button', { name: 'Accept analytics' })).toBeVisible();
   expect(metaRequests).toEqual([]);
   await page.getByRole('button', { name: 'Accept analytics' }).click();
