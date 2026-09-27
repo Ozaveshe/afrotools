@@ -71,11 +71,11 @@ p {
 }
 
 /* ── DARK HERO HEADING SAFETY NET ───────────────────────── */
-/* Prevent dark-on-dark headings: any section with hero-style dark bg
-   should always show white headings regardless of tool-specific CSS. */
-[class*="-hero"] h1,
-[class*="-hero"] h2,
-[class*="-hero"] h3 {
+/* Limit the fallback to hero components. Category page bodies may carry
+   dark-hero-contrast, which must not turn every later section heading white. */
+[class*="-hero"]:where(:not(body)) h1,
+[class*="-hero"]:where(:not(body)) h2,
+[class*="-hero"]:where(:not(body)) h3 {
   color: #fff;
 }
 
