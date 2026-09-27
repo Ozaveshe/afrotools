@@ -276,9 +276,10 @@ function extractVisibleFaq(html) {
     pairs.push({ question: name, answer: text });
   };
 
-  for (const match of source.matchAll(/<details\b[^>]*>([\s\S]*?)<\/details>/gi)) {
-    const summary = match[1].match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/i);
-    if (summary) add(summary[1], match[1].replace(summary[0], ""));
+  for (const match of source.matchAll(/<details\b([^>]*)>([\s\S]*?)<\/details>/gi)) {
+    if (/\bdata-structured-data-exclude\b/i.test(match[1])) continue;
+    const summary = match[2].match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/i);
+    if (summary) add(summary[1], match[2].replace(summary[0], ""));
   }
 
   const classPair = /<([a-z0-9]+)\b[^>]*class=["'][^"']*(?:faq-q|faq-question|__question)[^"']*["'][^>]*>([\s\S]*?)<\/\1>\s*<([a-z0-9]+)\b[^>]*class=["'][^"']*(?:faq-a|faq-answer|faq-body|__answer)[^"']*["'][^>]*>([\s\S]*?)<\/\3>/gi;

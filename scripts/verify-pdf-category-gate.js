@@ -154,6 +154,33 @@ function verifyHubJsonLd(tools) {
   tools.forEach((tool) => {
     if (!itemUrls.has(tool.href)) failures.push(`${rel(hubPath)} ItemList is missing ${tool.href}.`);
   });
+
+  const catalogMatch = /<nav class="docpdf-static-catalog"[^>]*>[\s\S]*?<\/nav>/i.exec(html);
+  if (!catalogMatch) {
+    failures.push(`${rel(hubPath)} is missing the static PDF catalog.`);
+    return;
+  }
+  const catalogStart = catalogMatch.index;
+  const beforeCatalog = html.slice(0, catalogStart).toLowerCase();
+  if (beforeCatalog.lastIndexOf('<noscript') > beforeCatalog.lastIndexOf('</noscript>')) {
+    failures.push(`${rel(hubPath)} static PDF catalog must be visible in the initial HTML, outside <noscript>.`);
+  }
+  const catalogUrls = [...catalogMatch[0].matchAll(/<a\s+href="([^"]+)"/gi)].map((match) => match[1]);
+  const uniqueCatalogUrls = new Set(catalogUrls);
+  if (catalogUrls.length !== tools.length || uniqueCatalogUrls.size !== tools.length) {
+    failures.push(`${rel(hubPath)} static PDF catalog has ${catalogUrls.length} links (${uniqueCatalogUrls.size} unique), expected ${tools.length}.`);
+  }
+  tools.forEach((tool) => {
+    if (!uniqueCatalogUrls.has(tool.href)) failures.push(`${rel(hubPath)} static PDF catalog is missing ${tool.href}.`);
+  });
+
+  const faq = jsonLdBlocks(html).find((block) => block['@type'] === 'FAQPage');
+  const faqSection = /<section class="docpdf-faq-clean"[^>]*>[\s\S]*?<\/section>/i.exec(html)?.[0] || '';
+  const visibleQuestions = [...faqSection.matchAll(/<summary>([^<]+)<\/summary>/gi)].map((match) => match[1]);
+  const schemaQuestions = (faq?.mainEntity || []).map((item) => item.name);
+  if (!visibleQuestions.length || JSON.stringify(visibleQuestions) !== JSON.stringify(schemaQuestions)) {
+    failures.push(`${rel(hubPath)} visible FAQ questions do not match FAQPage JSON-LD.`);
+  }
 }
 
 function main() {

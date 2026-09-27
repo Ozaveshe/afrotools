@@ -33,7 +33,7 @@
     .ws-page img{display:block}
     .priv-bar{background:#0f172a;padding:8px 20px;text-align:center;font-size:13px;color:rgba(255,255,255,.72)}.priv-bar strong{color:#fff}
     .crumb{max-width:1200px;margin:0 auto;padding:12px 20px 0;font-size:12px;font-weight:500;color:#64748b}.crumb a{color:#64748b;text-decoration:none}.crumb a:hover{color:var(--color-primary)}.crumb span{margin:0 5px}
-    .up-screen{max-width:880px;margin:0 auto;padding:72px 24px 92px;text-align:center}
+    .up-screen{max-width:880px;margin:0 auto;padding:32px 24px 64px;text-align:center}
     .up-screen h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(28px,5vw,44px);font-weight:800;color:#111;margin-bottom:14px;line-height:1.08;letter-spacing:-.03em}
     .up-screen h1 b{background:linear-gradient(135deg,var(--color-primary),var(--color-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .up-screen>p{font-size:16px;color:#4b5563;max-width:620px;margin:0 auto 24px;line-height:1.7}
@@ -61,6 +61,11 @@
     .pdf-specialist-links{display:flex;flex-wrap:wrap;gap:7px}
     .pdf-specialist-links a{display:inline-flex;align-items:center;min-height:34px;padding:0 10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#1d4ed8;font-size:12px;font-weight:850;text-decoration:none}
     .pdf-specialist-links a:hover,.pdf-specialist-links a:focus-visible{border-color:#2563eb;background:#eff6ff;outline:2px solid rgba(37,99,235,.18);outline-offset:2px}
+    .pdf-help{max-width:760px;margin:14px auto 0;text-align:left}
+    .pdf-help>summary{display:flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#1e293b;font-size:13px;font-weight:800;cursor:pointer}
+    .pdf-help>summary:focus-visible{outline:3px solid rgba(37,99,235,.3);outline-offset:2px}
+    .pdf-help[open]>summary{border-color:#93c5fd;background:#eff6ff}
+    .pdf-help .pdf-ai-assist{margin-top:10px;box-shadow:none}
     .pdf-ai-assist{max-width:760px;margin:16px auto 0;padding:18px;border:1px solid #d1d5db;background:#fff;border-radius:14px;text-align:left;box-shadow:0 16px 40px rgba(15,23,42,.08)}
     .pdf-ai-kicker{display:inline-flex;margin-bottom:6px;font-size:11px;font-weight:900;color:#166534;text-transform:uppercase;letter-spacing:.06em}
     .pdf-ai-assist h2{margin:0 0 6px;font-size:18px;line-height:1.25;color:#111827}
@@ -89,9 +94,11 @@
     :root[data-theme="dark"] .pdf-workflow-card span,:root[data-theme="dark"] .pdf-fast-start-note,:root[data-theme="dark"] .pdf-ai-assist p{color:#b8c7dc!important}
     :root[data-theme="dark"] .pdf-fast-start-actions button,:root[data-theme="dark"] .pdf-specialist-links a,:root[data-theme="dark"] .pdf-ai-chip,:root[data-theme="dark"] .pdf-ai-result{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-ai-result strong{color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help>summary{background:#121f33;border-color:#3a4c68;color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help[open]>summary{background:#1c3553}
     :root[data-theme="dark"] .pdf-pill-row span{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-pill-row .primary{background:#17263d;border-color:#60a5fa;color:#bfdbfe}
-    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:44px 18px 64px}}
+    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:24px 18px 48px}}
     @media(max-width:640px){.pdf-fast-start-actions{grid-template-columns:1fr 1fr}.pdf-fast-start,.pdf-ai-assist{padding:14px}.pdf-ai-input-row{flex-direction:column}.pdf-ai-input-row button{width:100%}.pdf-ai-chip{flex:1 1 calc(50% - 8px)}.pdf-specialist-links{display:grid;grid-template-columns:1fr 1fr}.pdf-specialist-links a{justify-content:center}}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
     body.pdf-workspace-active{overflow:hidden}
@@ -518,9 +525,8 @@
 </head>
 <body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
-<div class="priv-bar"><strong>Private by default:</strong> core PDF actions run in this browser with no source-file upload.</div>
 <section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="PDF files stay local" data-consent-copy="Merge, split, sign, annotate, and export PDFs in this browser. AfroTools does not send files to AI or a server unless a future workflow clearly asks and you choose it." aria-label="PDF Workspace privacy notice"></section>
-<nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>PDF Workspace</nav>
+<nav class="crumb"><a href="/">Home</a><span>/</span><a href="/document-pdf/">PDF tools</a><span>/</span>PDF Workspace</nav>
 <main id="main-content">
 <div class="ws-page">
 
@@ -537,18 +543,6 @@
 <div class="up-screen" id="upScreen">
   <h1>Free online <b>PDF editor</b> and workspace</h1>
   <p>Upload a PDF, then organize pages, add text, highlights, signatures, watermarks, visual cover boxes, compression, and page numbers before downloading a checked copy.</p>
-  <div class="pdf-pill-row" aria-label="PDF Workspace capabilities">
-    <span class="primary">Merge and split PDFs</span>
-    <span>Edit and annotate</span>
-    <span>Sign and stamp</span>
-    <span>Compress export</span>
-    <span>No source upload by default</span>
-  </div>
-  <div class="pdf-workflow-summary" aria-label="How PDF Workspace works">
-    <div class="pdf-workflow-card"><strong>1. Upload locally</strong><span>Open one PDF or add more files. The source file stays in this browser workflow.</span></div>
-    <div class="pdf-workflow-card"><strong>2. Choose the tool group</strong><span>Pages, Edit, Annotate, Sign, Protect, and Export mirror the actual toolbar.</span></div>
-    <div class="pdf-workflow-card"><strong>3. Download and verify</strong><span>Check page order, text, signatures, covers, permissions, and file size before sharing.</span></div>
-  </div>
   <div class="dz" id="dz"><div class="dz-mark" aria-hidden="true">PDF</div><h3>Drop a PDF here to get started</h3><p>or <span class="gr">click to browse</span></p><input aria-label="Choose a PDF file to edit in the workspace" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
   <div class="pdf-fast-start" aria-label="PDF workflow shortcuts">
     <div class="pdf-fast-start-head">
@@ -576,6 +570,8 @@
         <a href="/document-pdf/">Browse all PDF tools</a>
       </div>
     </nav>
+    <details class="pdf-help" data-structured-data-exclude>
+      <summary>Need help choosing a PDF action?</summary>
     <section class="pdf-ai-assist" data-pdf-ai-assist aria-labelledby="pdfAiAssistTitle">
     <span class="pdf-ai-kicker">Workflow helper, no file upload</span>
     <h2 id="pdfAiAssistTitle">Choose the safest PDF action</h2>
@@ -602,8 +598,8 @@
       Future features that read PDF pages or text will require explicit consent and will show exactly what would be sent. Nothing here sends file bytes, OCR text, passwords, or document contents.
       <button id="pdfAiContentAssist" type="button" disabled aria-disabled="true">Analyze PDF content — future explicit consent required</button>
     </div>
-  </section>
-  <div class="up-feats"><div class="uf">Private by default</div><div class="uf">Browser-based</div><div class="uf">Touch-friendly tools</div><div class="uf">Metadata-only save notes</div></div>
+   </section>
+    </details>
 </div>
 <div class="ws" id="ws">
   <div class="toolbar cmd-bar" id="cmdBar" data-mode="organize">
@@ -813,7 +809,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li><li><a href="/tools/pdf-convert/" data-related-tool data-id="pdf-convert" data-name="PDF Format Converter" data-category="document-pdf" data-icon="PF" data-desc="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.">PDF Format Converter</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li><li><a href="/document-pdf/" data-related-tool data-id="document-pdf" data-name="All PDF &amp; document tools" data-category="document-pdf" data-icon="PDF" data-desc="Choose from 31 browser PDF and document tools by task.">All PDF &amp; document tools</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
