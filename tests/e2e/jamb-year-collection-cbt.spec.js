@@ -1,6 +1,13 @@
 const { test, expect } = require('@playwright/test');
 const { bank, questions, reviewed } = require('../support/jamb-reviewed-fixtures');
 
+async function expectHeadingInViewport(page, selector) {
+  await expect.poll(() => page.locator(selector).evaluate(element => {
+    const bounds = element.getBoundingClientRect();
+    return bounds.top >= 0 && bounds.bottom <= innerHeight;
+  })).toBe(true);
+}
+
 test('2025 English collection opens scoped CBT, resumes safely, then shows a raw practice result', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -27,6 +34,7 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
   const yearLink = page.getByRole('link', { name: 'Start 2025 Use of English CBT practice' });
   await expect(yearLink).toHaveAttribute('href', '/jamb/cbt/?subject=english&year=2025');
   await yearLink.click();
+  await expect(page.locator('#setup-badge-label')).toHaveText('Reviewed collection practice');
   await expect(page.locator('#collection-setup')).toBeVisible();
   await expect(page.locator('#subject-setup')).toBeHidden();
   await expect(page.locator('#mode-setup')).toBeHidden();
@@ -46,6 +54,7 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
     return { year: state.year, years: state.questions.map(q => q.year), subjects: state.questions.map(q => q.subject) };
   })).toEqual({ year: 2025, years: [2025, 2025], subjects: ['english', 'english'] });
   await expect(page.locator('#cbt-q-text')).toBeFocused();
+  await expectHeadingInViewport(page, '#cbt-q-text');
   await page.locator('#cbt-options [aria-label^="Option B:"]').click();
   await page.reload({ waitUntil: 'load' });
   await expect(page.locator('#resume-card')).toBeVisible();
@@ -58,6 +67,7 @@ test('2025 English collection opens scoped CBT, resumes safely, then shows a raw
   await page.locator('#confirm-submit-btn').click();
   await expect(page.locator('#result-badge')).toContainText('Practice complete');
   await expect(page.locator('#result-heading')).toBeFocused();
+  await expectHeadingInViewport(page, '#result-heading');
   await expect(page.locator('#result-aggregate')).toHaveText('1/2');
   await expect(page.locator('#result-score-detail')).toContainText('50% correct');
   await expect(page.locator('#result-subjects')).toContainText('1 / 2');
@@ -102,6 +112,7 @@ test('2025 Mathematics collection opens a subject-only CBT with raw score and ex
   const yearLink = page.getByRole('link', { name: 'Start 2025 Mathematics CBT practice' });
   await expect(yearLink).toHaveAttribute('href', '/jamb/cbt/?subject=mathematics&year=2025');
   await yearLink.click();
+  await expect(page.locator('#setup-badge-label')).toHaveText('Reviewed collection practice');
   await expect(page.locator('#collection-setup')).toContainText('2025 Mathematics reviewed collection');
   await expect(page.locator('#start-btn')).toContainText('2025 Mathematics practice');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
@@ -116,6 +127,7 @@ test('2025 Mathematics collection opens a subject-only CBT with raw score and ex
   await page.locator('#confirm-submit-btn').click();
   await expect(page.locator('#result-heading')).toHaveText('2025 Mathematics practice result');
   await expect(page.locator('#result-heading')).toBeFocused();
+  await expectHeadingInViewport(page, '#result-heading');
   await expect(page.locator('#result-aggregate')).toHaveText('1/2');
   await expect(page.locator('#result-score-detail')).toContainText('50% correct');
   await expect(page.locator('#result-subjects')).toContainText('1 / 2');
@@ -135,9 +147,32 @@ test('2025 Mathematics collection opens a subject-only CBT with raw score and ex
   expect(errors).toEqual([]);
 });
 
+test('a timed-out collection scrolls its result heading into view', async ({ page }) => {
+  const { review, ...base } = questions()[0];
+  const fixture = bank([reviewed({ ...base, id: 'mathematics-2025-expiry', subject: 'mathematics', year: 2025 })]);
+  await page.route('**/data/jamb/pools/*.json', route => route.fulfill({ json: route.request().url().endsWith('/index.json') ? fixture.index : fixture.pool }));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/jamb/cbt/?subject=mathematics&year=2025', { waitUntil: 'load' });
+  await page.evaluate(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-q-text')).toBeFocused();
+  await page.evaluate(() => {
+    const session = AfroJAMB.CBT.getState();
+    session.startedAt = Date.now() - session.durationMs - 1000;
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  await expect(page.locator('#results-screen')).toBeVisible();
+  await expect(page.locator('#result-heading')).toHaveText('2025 Mathematics practice result');
+  await expect(page.locator('#result-heading')).toBeFocused();
+  await expectHeadingInViewport(page, '#result-heading');
+  await expect(page.locator('#result-aggregate')).toHaveText('0/1');
+});
+
 test('invalid scoped link cannot silently start an all-year CBT', async ({ page }) => {
   await page.goto('/jamb/cbt/?subject=english&year=wrong', { waitUntil: 'load' });
   await expect(page.locator('#setup-warning')).toContainText('link is invalid');
   await expect(page.locator('#start-btn')).toBeDisabled();
   await expect(page.locator('#cbt-shell')).toBeHidden();
+  await page.goto('/jamb/cbt/', { waitUntil: 'load' });
+  await expect(page.locator('#setup-badge-label')).toHaveText('Free Mock Exam');
 });
