@@ -152,7 +152,7 @@ test('WAEC 2021 Q1 and Q11 selected sections agree with independent interest, in
  const directVariance=observations.reduce((sum,hour)=>sum+(hour-average)**2,0)/observations.length;
  const squaredMoment=observations.reduce((sum,hour)=>sum+hour*hour,0)/observations.length-average**2;
  assert.equal(observations.length,50);assert.equal(average,7.3);assert.equal(directVariance.toFixed(2),'4.17');assert.ok(Math.abs(directVariance-squaredMoment)<1e-10);assert.equal(Math.sqrt(directVariance).toFixed(2),'2.04');assert.match(study.answer,/7\.30 hours.*2\.04 hours/);
- assert.match(bank.scope,/31 WAEC Mathematics companions/);
+ assert.match(bank.scope,/35 WAEC Mathematics companions/);
 });
 
 test('WAEC 2023 English reading guides cover the linked tasks without hosting passages or claiming a verified paper',()=>{
