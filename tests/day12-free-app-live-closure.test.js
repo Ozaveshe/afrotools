@@ -11,7 +11,10 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'u
 test('live-closure category surfaces opt into targeted dark-mode ownership', () => {
   assert.match(read('mining/index.html'), /<body class="mining-ui-refresh top-level-page-ui-refresh">/);
   assert.match(read('tools/mining-royalty/index.html'), /<body class="mining-ui-refresh top-level-page-ui-refresh">/);
-  assert.match(read('sports/index.html'), /<body class="sports-ui-refresh top-level-page-ui-refresh">/);
+  const sportsBodyClasses = read('sports/index.html').match(/<body\b[^>]*\bclass="([^"]+)"/)?.[1].split(/\s+/) || [];
+  for (const className of ['sports-ui-refresh', 'top-level-page-ui-refresh', 'dark-hero-contrast']) {
+    assert.ok(sportsBodyClasses.includes(className), `sports body missing ${className}`);
+  }
 
   const darkCss = read('assets/css/theme-dark.css');
   const darkMin = read('assets/css/theme-dark.min.css');
