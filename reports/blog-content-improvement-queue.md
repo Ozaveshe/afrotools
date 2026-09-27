@@ -1,11 +1,11 @@
 # Blog Content Improvement Queue
 
-Generated: 2026-09-27T16:02:33.058Z
+Generated: 2026-09-27T17:59:44.628Z
 
 ## Summary
 - Articles classified: 341
 - Needs official-source refresh: 70
-- Needs freshness review: 144
+- Needs freshness review: 143
 - Needs image cleanup: 0
 - Needs metadata cleanup: 0
 - Needs source-gap handling: 0
@@ -45,9 +45,9 @@ Generated: 2026-09-27T16:02:33.058Z
 30. import-cost-checklist-african-small-business - official-refresh - Official-source refresh
 
 ## Buckets
-- freshness: 144
+- freshness: 143
 - official-refresh: 70
-- monitor: 126
+- monitor: 127
 - content-depth: 1
 
 ## Operating Notes

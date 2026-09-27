@@ -168,6 +168,7 @@ function extractLinks(raw) {
 
 function extractReviewDate(raw) {
   const patterns = [
+    /<strong>\s*(?:official\s+|primary\s+)?sources?\s+(?:reviewed|checked|verified):?\s+([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})\.?\s*<\/strong>/i,
     /<strong>(?:official sources?|primary sources?|sources?)\s+(?:reviewed|checked|verified):<\/strong>\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
     /(?:sources?|primary sources?|official sources?)\s+(?:were\s+)?(?:reviewed|checked|verified)(?:\s+on|\s+against)?\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
     /(?:last reviewed|source check|sources checked on|editorial review)[: ,]+\s*(?:<strong>)?([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})/i,

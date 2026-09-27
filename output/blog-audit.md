@@ -1,6 +1,6 @@
 # Blog Audit
 
-Generated: 2026-09-27T15:58:55.027Z
+Generated: 2026-09-27T17:59:28.575Z
 
 ## Summary
 - Posts audited: 341
@@ -11,10 +11,10 @@ Generated: 2026-09-27T15:58:55.027Z
 - Thin article bodies under 800 words: 0
 - Posts without a tool handoff: 2
 - Posts with fewer than two related blog links: 0
-- Fact-heavy posts with dated source review: 107
-- Fact-heavy posts with sources but no proven review date: 117
+- Fact-heavy posts with dated source review: 108
+- Fact-heavy posts with sources but no proven review date: 116
 - Average quality score: 94.3/100
-- Average word count: 1951
+- Average word count: 1952
 - Average AI-pattern hits: 0.3
 
 ## Category Counts
