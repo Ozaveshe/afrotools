@@ -14,7 +14,8 @@ async function expectDeductions(page, expected) {
 test('AI handoff parameters leave default deductions intact', async ({ page }) => {
   await page.goto('/nigeria/ng-salary-tax?source=ask&prefill=1');
   await expectDeductions(page, { pension: true, nhf: true, nhis: true });
-  await page.waitForTimeout(900); // Include the delayed script-chain restore path.
+  await page.waitForFunction(() => Boolean(window.AfroTools?.shareState));
+  await page.evaluate(() => document.dispatchEvent(new Event('afro:lazy-script-chain-complete')));
   await expectDeductions(page, { pension: true, nhf: true, nhis: true });
 
   const salary = page.locator('#grossSalary');
