@@ -15,7 +15,9 @@ for (const width of [320,390,768,1440]) {
   await more.focus();
   await more.press('Enter');
   await expect(page.locator('.jb-more-education details')).toHaveAttribute('open','');
-  await expect(page.locator('.jb-more-education').getByRole('link',{name:'Education Hub',exact:true})).toBeVisible();
+  const educationTools = page.locator('.jb-more-education').getByRole('link',{name:'Education Tools',exact:true});
+  await expect(educationTools).toBeVisible();
+  await expect(educationTools).toHaveAttribute('href','/education/');
   await more.press('Enter');
   await expect(page.locator('.jb-more-education details')).not.toHaveAttribute('open','');
   const cards = await page.locator('.jb-tool-grid > .jb-tool').evaluateAll(els=>els.map(el=>{

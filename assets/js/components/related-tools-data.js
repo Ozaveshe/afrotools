@@ -10544,9 +10544,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "truck-load",
-        "imageId": "truck-load"
+        "imageId": "truck-load",
+        "imageKey": "truck-load"
       }
     ],
     "fr::fintech": [
@@ -19597,7 +19598,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "truck-load"
       },
       {
         "id": "vehicle-operating-cost",

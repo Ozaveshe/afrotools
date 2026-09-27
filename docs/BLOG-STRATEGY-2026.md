@@ -174,15 +174,15 @@ P0 refresh families:
 
 ## Publishing Mix
 
-Default weekly mix for the static blog:
+Default daily mix for the static blog:
 
-- 2 source-refresh updates to existing high-intent articles.
-- 1 new article in an under-served tool category.
-- 1 image/internal-link improvement pass on existing articles.
+- AM: one new article in an under-served tool category, only when it clears source, duplicate, and quality checks.
+- PM: one substantive refresh of an existing high-intent article, plus a separate reciprocal internal-link pass. Keep its slug and canonical.
+- Use measured Search Console or Bing positions 8-20 to prioritize refreshes when impressions support the opportunity; otherwise use the source-sensitive editorial queue and label the selection basis.
 
-The AM and PM content automations must run the editorial, content, and feed audits before choosing the static item. A substantive source, freshness, metadata, depth, internal-link, or tool-handoff refresh counts as the batch's static item. Create a new article only when no higher-impact gap fits that automation lane.
+The AM and PM content automations must run the editorial, content, and feed audits before selecting their static work. The PM refresh should improve dated claims, search intent, depth, metadata, or the handoff into a relevant AfroTools tool; a cosmetic date change does not count. Run the link pass after the article is ready so older relevant posts can point back to it. The separate weekly lane handles deeper source-sensitive backlog work.
 
-Daily cadence can still be used during campaigns, but only after the source and quality bar is met. The blog is large enough that maintenance and cluster depth now matter more than raw post count.
+The one-new-post daily cadence is an operating limit, not a claim that a particular publishing rate improves indexing. Source quality and maintenance gates still apply.
 
 ## Ruthless SEO Operating System
 
@@ -268,6 +268,8 @@ Track strategy progress with repo-native evidence:
 - `npm run blog:verify`: hub cards, article count, canonical routes, feed coverage.
 - `node scripts/audit-blog-content.js`: image and content-quality triage.
 - `npm run seo:priority:report`: Search Console or Bing opportunity report when sanitized exports are available.
+- The report's `blogRefreshCandidates` list uses measured blog page averages at positions 8 to 20 with at least 100 impressions. Review the actual queries, source freshness, page intent, and current content before editing. The list is empty when no export is available; never infer rankings from a qualitative brief or promise a position gain.
+- Run `npm run blog:links:audit` after a publish and add only reviewed return links through per-article ledgers in `data/content/blog-backlinks/`. The link pass runs after article generation so future builds preserve those links.
 
 Content success should be judged by:
 

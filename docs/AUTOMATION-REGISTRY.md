@@ -273,7 +273,7 @@ replay consumed work. Backups and private run evidence remain outside Git.
 
 | Responsibility | Owner | Outcome |
 | --- | --- | --- |
-| Daily useful content | AM and PM producers | Two distinct source-backed articles with remote handoffs; live AfroStream proof remains separate |
+| Daily useful content | AM and PM producers | One source-backed new static article in AM and one substantive existing-article refresh plus internal-link pass in PM, with separate remote handoffs; live AfroStream proof remains separate |
 | Civic source maintenance | Election freshness | Verified dated changes, no predictions or unsupported outcomes |
 | Live health detection | Health watch | Fresh observations with issue keys, severity and active owner |
 | Live-data remediation | Live Data Product Upgrade | One proven scheduler/source defect repaired, then natural-run proof |

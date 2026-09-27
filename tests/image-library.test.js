@@ -80,11 +80,25 @@ for(const [slug,canonical] of Object.entries(aliases)) {
   assert.ok(fs.readFileSync(path.join(ROOT,'tools/afrokitchen/recipes',slug,'index.html'),'utf8').includes('src="'+expected+'"'));
   assert.ok(!batch.images.some(i=>i.path==='/assets/img/kitchen/'+slug+'.webp'),'Aliased recipe must not request a duplicate image');
 }
+const sharedArtwork = require('../data/image-generation/reviewed-shared-artwork.json');
+for(const id of sharedArtwork.tool_ids) {
+  const entry=libraryByPath.get('/assets/img/tools/'+id+'.webp');
+  assert.ok(entry,'Missing reviewed shared artwork '+id);
+  assert.equal(entry.text_status,'text-free-reviewed',id+' text review');
+  assert.equal(entry.locale_reuse,true,id+' locale reuse');
+}
+for(const review of sharedArtwork.language_specific_images || []) {
+  const entry=libraryByPath.get(review.path);
+  assert.ok(entry,'Missing reviewed language-specific artwork '+review.path);
+  assert.equal(entry.sha256,review.sha256,'Reviewed hash drift '+review.path);
+  assert.equal(entry.text_status,review.text_status,'Reviewed text state '+review.path);
+  assert.equal(entry.locale_reuse,false,'Language-specific artwork must not be canonical '+review.path);
+}
 for(const file of ['tool-registry.js','tool-registry.min.js']) {
   const tools = {};
   vm.createContext(tools);
   vm.runInContext(fs.readFileSync(path.join(ROOT,'assets/js/components',file),'utf8'),tools);
-  for(const id of require('../data/image-generation/reviewed-shared-artwork.json').tool_ids) {
+  for(const id of sharedArtwork.tool_ids) {
     const row = tools.AFRO_TOOLS.find(r=>r.id===id);
     assert.ok(row);
     assert.equal(tools.getToolCardImagePath(row),'/assets/img/tools/'+id+'.webp',file+' '+id);

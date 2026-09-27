@@ -265,6 +265,9 @@ function build() {
 
   const englishRows = records.filter((record) => {
     if (record.locale !== 'en' || !record.indexableEligible) return false;
+    // Author identity pages deliberately use one first-party English profile
+    // across locales; they are not translated discovery workflow owners.
+    if (record.route === '/authors/') return false;
     if (record.route === '/' || routeDepth(record.route) === 1) return true;
     return record.route.startsWith('/blog/') && record.pageType === 'article';
   });
@@ -331,7 +334,7 @@ function build() {
 
   return {
     schemaVersion: '1.0.0',
-    scope: 'Indexable English top-level public routes plus English blog articles; app subroutes and long-tail tool/country calculators are excluded.',
+    scope: 'Indexable English top-level public routes plus English blog articles; shared English author profiles, app subroutes and long-tail tool/country calculators are excluded.',
     thresholds: {
       general: { visibleContentRatio: 0.65, headingRatio: 0.6, linkRatio: 0.5 },
       editorial: { visibleContentRatio: 0.75, headingRatio: 0.6, linkRatio: 0.5 }

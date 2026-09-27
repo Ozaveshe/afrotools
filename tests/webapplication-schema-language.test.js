@@ -4,8 +4,14 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
   pageLanguage,
+  parseJsonLd,
+  shouldAddWebApplication,
   webApplicationSchema,
 } = require('../scripts/add-webapplication-schema');
+
+function blocksFor(schema) {
+  return parseJsonLd(`<script type="application/ld+json">${JSON.stringify(schema)}</script>`);
+}
 
 test('WebApplication schema follows the document language', () => {
   const html = `<!doctype html>
@@ -27,4 +33,12 @@ test('WebApplication schema follows the document language', () => {
 test('WebApplication schema defaults safely to English for an invalid document locale', () => {
   const html = '<html lang="https://afrotools.com/fr/"><head><title>Tool</title><meta name="description" content="Tool description."></head></html>';
   assert.equal(pageLanguage(html), 'en');
+});
+
+test('editorial structured data is not recast as a WebApplication', () => {
+  for (const type of ['NewsArticle', 'Article', 'BlogPosting', 'CollectionPage']) {
+    assert.equal(shouldAddWebApplication(blocksFor({ '@type': type })), false, type);
+  }
+  assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'WebApplication' })), false);
+  assert.equal(shouldAddWebApplication(blocksFor({ '@type': 'FAQPage' })), true);
 });
