@@ -349,7 +349,32 @@
       prompt:'A plane travels 200 km from P to Q on a bearing of 045°. It then flies from Q on a bearing of 120° to R, which is directly east of P. Find PR to the nearest kilometre.',
       answer:'386 km.',
       steps:['PQ has equal north and east components: each is 200 sin 45° = 100√2 km.','A 120° bearing gives QR a southward component equal to half its length. To return to P’s latitude, QR = 200√2 km, with eastward component QR sin 120° = 100√6 km.','Add eastward components: PR = 100√2 + 100√6 = 100√2(1 + √3) ≈ 386.37 km, so 386 km to the nearest kilometre.'],
-      checks:['I made R due east of P by cancelling the northward displacement.','I rounded only after adding both eastward distances.']}
+      checks:['I made R due east of P by cancelling the northward displacement.','I rounded only after adding both eastward distances.']},
+    {id:'neco-2023-mathematics-p3-q45',number:45,title:'Angle of elevation and depression',
+      prompt:'From a rooftop, a boy on level ground is seen at an angle of depression of 72°. What angle of elevation does the boy measure to the rooftop?',
+      answer:'72°.',
+      steps:['Imagine a horizontal line at the rooftop and another horizontal line through the boy; these lines are parallel.','The line of sight cuts both horizontal lines, creating equal alternate interior angles.','The boy’s angle of elevation therefore equals the 72° angle of depression.'],
+      checks:['I measured each angle from a horizontal line.','I used the same line of sight in both directions.']},
+    {id:'neco-2023-mathematics-p3-q46',number:46,title:'Tangent from an acute-angle cosine',
+      prompt:'An acute angle θ has cos θ = 0.8. Find tan θ.',
+      answer:'3/4.',
+      steps:['Treat cos θ as adjacent/hypotenuse = 0.8 = 4/5.','For an acute right triangle with adjacent side 4 and hypotenuse 5, the opposite side is √(5² − 4²) = 3.','Hence tan θ = opposite/adjacent = 3/4. The acute-angle condition makes the opposite side positive.'],
+      checks:['I found the opposite side from the Pythagorean theorem.','I divided opposite by adjacent, not by hypotenuse.']},
+    {id:'neco-2023-mathematics-p3-q47',number:47,title:'Ladder length from vertical height',
+      prompt:'A straight ladder reaches 12 m up a vertical pole and makes a 54° angle with level ground. Find the ladder length to three significant figures.',
+      answer:'14.8 m.',
+      steps:['The ladder is the hypotenuse of a right triangle; the 12 m vertical height is opposite the 54° ground angle.','Use sin 54° = 12/ladder length, so ladder length = 12/sin 54°.','This is approximately 14.8328 m, which rounds to 14.8 m to three significant figures.'],
+      checks:['I used sine because the known side is opposite the ground angle.','I rounded only the final length to three significant figures.']},
+    {id:'neco-2023-mathematics-p3-q49',number:49,title:'Mean absolute deviation of five scores',
+      prompt:'Calculate the mean deviation from the mean for the scores 4, 5, 3, 2 and 1.',
+      answer:'1.2.',
+      steps:['The mean score is (4 + 5 + 3 + 2 + 1)/5 = 3.','The absolute deviations from 3 are 1, 2, 0, 1 and 2; their sum is 6.','Divide by the five scores: mean deviation = 6/5 = 1.2.'],
+      checks:['I used absolute deviations, so none cancel.','I divided the total deviation by all five scores.']},
+    {id:'neco-2023-mathematics-p3-q50',number:50,title:'Probability of selecting a prime',
+      prompt:'One integer is chosen uniformly from 1 through 30. What is the probability that it is prime?',
+      answer:'1/3.',
+      steps:['The prime numbers in this range are 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29. One is not prime.','There are 10 favourable integers among 30 equally likely choices.','The probability is 10/30 = 1/3.'],
+      checks:['I excluded 1 from the prime list.','I used all 30 integers as the denominator.']}
   ].forEach(function(q){items.push(Object.assign({subject:'Mathematics',collection:'NECO 2023 Mathematics starter',origin:'NECO scan-linked revision task',exam:'NECO',year:2023,paper:'III',source:'https://www.scribd.com/document/842881920/NECO-20230001',sourceLabel:'View the NECO source scan',sourceUse:'Adapted brief; independently worked solution by AfroTools. Selected tasks, not a complete paper.'},q));});
   items.push({
     id:'waec-2022-mathematics-p2-q6',subject:'Mathematics',collection:'WAEC 2022 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2022,paper:'2',number:6,
@@ -515,5 +540,5 @@
         'Take the square root: √4.17 ≈ 2.0421 hours, which rounds to 2.04 hours.'],
       checks:['I multiplied every value and squared value by its frequency.','I divided by all 50 students for the population standard deviation.','I took a square root and kept the final unit in hours.']}
   ].forEach(function(item){items.push(Object.assign({subject:'Mathematics',collection:'WAEC 2021 Mathematics companion',origin:'WAEC source-linked Mathematics task',exam:'WAEC',year:2021,paper:'2',source:'https://www.waeconline.org.ng/e-Learning/Mathematics/maths233mq'+item.number+'.html',sourceLabel:'Read the exact WAEC question',sourceUse:'Selected task in adapted form; independently worked solution by AfroTools. Not a complete paper.'},item));});
-  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-26',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 31 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 43 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
+  return {version:1,id:'ssce-written-v1',reviewedAt:'2026-09-27',items:items,scope:'12 original Mathematics tasks, 2 original English tasks, 31 WAEC Mathematics companions, 10 WAEC English writing companions, 4 WAEC English reading companions, 48 NECO Mathematics companions, 4 NECO English writing companions and 2 NECO English reading companions. Not a complete WAEC or NECO paper. Written answers are self-reviewed, not automatically graded.'};
 });

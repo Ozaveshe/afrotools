@@ -8,7 +8,16 @@ for (const width of [320, 390]) for (const subject of subjects) {
     rows.forEach(q => counts.set(q.year, (counts.get(q.year) || 0) + 1));
     await page.setViewportSize({ width, height: 900 });
     await page.goto(`/jamb/${subject}/`);
-    await expect(page.locator('.qcard > h2')).toHaveText(rows.map(q => `${q.year} · Question ${q.num}`));
+    if (subject === 'english') {
+      await expect(page.getByRole('heading', { name: 'JAMB Use of English practice by year' })).toBeVisible();
+      await expect(page.locator('.qcard')).toHaveCount(0);
+      await expect(page.getByRole('navigation', { name: 'Browse paper years' }).locator('a')).toHaveCount(counts.size);
+      await expect(page.getByRole('link', { name: 'Start reviewed 2025 CBT' })).toHaveAttribute('href', '/jamb/cbt/?subject=english&year=2025');
+      await expect(page.getByRole('link', { name: 'Try a reviewed 2020 reading comprehension example' })).toHaveAttribute('href', /\/jamb\/english\/2020\/#q-/);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      return;
+    }
+    await expect(page.locator('.qcard > h2')).toHaveText(rows.map(q => `${q.year} · ${q.num == null ? 'Practice question' : `Question ${q.num}`}`));
     await expect(page.getByRole('navigation', { name: 'Browse paper years' }).locator('a')).toHaveText([...counts].map(([year,count]) => `${year} (${count})`));
     await expect(page.getByText('Practice selection: full-paper coverage has not been confirmed.', { exact: true })).toBeVisible();
     const q = rows.find(q => !q.image);
