@@ -31,7 +31,7 @@
     .ws-page img{display:block}
     .priv-bar{background:#0f172a;padding:8px 20px;text-align:center;font-size:13px;color:rgba(255,255,255,.72)}.priv-bar strong{color:#fff}
     .crumb{max-width:1200px;margin:0 auto;padding:12px 20px 0;font-size:12px;font-weight:500;color:#64748b}.crumb a{color:#64748b;text-decoration:none}.crumb a:hover{color:var(--color-primary)}.crumb span{margin:0 5px}
-    .up-screen{max-width:880px;margin:0 auto;padding:72px 24px 92px;text-align:center}
+    .up-screen{max-width:880px;margin:0 auto;padding:32px 24px 64px;text-align:center}
     .up-screen h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(28px,5vw,44px);font-weight:800;color:#111;margin-bottom:14px;line-height:1.08;letter-spacing:-.03em}
     .up-screen h1 b{background:linear-gradient(135deg,var(--color-primary),var(--color-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .up-screen>p{font-size:16px;color:#4b5563;max-width:620px;margin:0 auto 24px;line-height:1.7}
@@ -59,6 +59,11 @@
     .pdf-specialist-links{display:flex;flex-wrap:wrap;gap:7px}
     .pdf-specialist-links a{display:inline-flex;align-items:center;min-height:34px;padding:0 10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#1d4ed8;font-size:12px;font-weight:850;text-decoration:none}
     .pdf-specialist-links a:hover,.pdf-specialist-links a:focus-visible{border-color:#2563eb;background:#eff6ff;outline:2px solid rgba(37,99,235,.18);outline-offset:2px}
+    .pdf-help{max-width:760px;margin:14px auto 0;text-align:left}
+    .pdf-help>summary{display:flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#1e293b;font-size:13px;font-weight:800;cursor:pointer}
+    .pdf-help>summary:focus-visible{outline:3px solid rgba(37,99,235,.3);outline-offset:2px}
+    .pdf-help[open]>summary{border-color:#93c5fd;background:#eff6ff}
+    .pdf-help .pdf-ai-assist{margin-top:10px;box-shadow:none}
     .pdf-ai-assist{max-width:760px;margin:16px auto 0;padding:18px;border:1px solid #d1d5db;background:#fff;border-radius:14px;text-align:left;box-shadow:0 16px 40px rgba(15,23,42,.08)}
     .pdf-ai-kicker{display:inline-flex;margin-bottom:6px;font-size:11px;font-weight:900;color:#166534;text-transform:uppercase;letter-spacing:.06em}
     .pdf-ai-assist h2{margin:0 0 6px;font-size:18px;line-height:1.25;color:#111827}
@@ -87,9 +92,11 @@
     :root[data-theme="dark"] .pdf-workflow-card span,:root[data-theme="dark"] .pdf-fast-start-note,:root[data-theme="dark"] .pdf-ai-assist p{color:#b8c7dc!important}
     :root[data-theme="dark"] .pdf-fast-start-actions button,:root[data-theme="dark"] .pdf-specialist-links a,:root[data-theme="dark"] .pdf-ai-chip,:root[data-theme="dark"] .pdf-ai-result{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-ai-result strong{color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help>summary{background:#121f33;border-color:#3a4c68;color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help[open]>summary{background:#1c3553}
     :root[data-theme="dark"] .pdf-pill-row span{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-pill-row .primary{background:#17263d;border-color:#60a5fa;color:#bfdbfe}
-    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:44px 18px 64px}}
+    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:24px 18px 48px}}
     @media(max-width:640px){.pdf-fast-start-actions{grid-template-columns:1fr 1fr}.pdf-fast-start,.pdf-ai-assist{padding:14px}.pdf-ai-input-row{flex-direction:column}.pdf-ai-input-row button{width:100%}.pdf-ai-chip{flex:1 1 calc(50% - 8px)}.pdf-specialist-links{display:grid;grid-template-columns:1fr 1fr}.pdf-specialist-links a{justify-content:center}}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
     body.pdf-workspace-active{overflow:hidden}
@@ -465,56 +472,7 @@
       .p-spin{animation:none!important;border-top-color:var(--color-primary)}
       .sd-thumb:hover:not(.sel),.rotate-page:hover{transform:none}
     }
-</style> <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Espace PDF",
-  "alternateName": "Éditeur PDF en ligne gratuit",
-  "description": "Organisez, fusionnez, divisez, tournez, compressez et préparez des PDF localement dans votre navigateur, sans téléverser les fichiers source.",
-  "url": "https://afrotools.com/fr/tools/espace-pdf/",
-  "inLanguage": "fr",
-  "applicationCategory": "UtilitairesApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Nécessite JavaScript et un navigateur moderne avec des API de fichiers locaux",
-  "featureList": [
-    "Fusionner des fichiers PDF",
-    "Diviser et extraire des pages PDF",
-    "Réorganiser et faire pivoter les pages",
-    "Ajoutez du texte, des surlignages, des images, des tampons, des signatures et des dates",
-    "Ajouter des numéros de page et des filigranes",
-    "Créez des copies protégées par mot de passe lorsque le runtime de chiffrement local est disponible",
-    "Compresser et exporter des copies PDF",
-    "Créez des boîtes de couverture visuelles et des copies de révision aplaties"
-  ],
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/fr/pdf-workspace.png"
-}
-</script> <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Espace PDF",
-  "url": "https://afrotools.com/fr/tools/espace-pdf/",
-  "description": "Organisez, fusionnez, divisez, tournez, compressez et préparez des PDF localement dans votre navigateur, sans téléverser les fichiers source.",
-  "inLanguage": "fr",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/fr/pdf-workspace.png"
-}
-</script> <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script> <script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=2690ecaa" defer></script>
+</style> <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Espace PDF","alternateName":"Éditeur PDF en ligne gratuit","description":"Organisez, fusionnez, divisez, tournez, compressez et préparez des PDF localement dans votre navigateur, sans téléverser les fichiers source.","url":"https://afrotools.com/fr/tools/espace-pdf/","inLanguage":"fr","applicationCategory":"UtilitairesApplication","operatingSystem":"Web","browserRequirements":"Nécessite JavaScript et un navigateur moderne avec des API de fichiers locaux","featureList":["Fusionner des fichiers PDF","Diviser et extraire des pages PDF","Réorganiser et faire pivoter les pages","Ajoutez du texte, des surlignages, des images, des tampons, des signatures et des dates","Ajouter des numéros de page et des filigranes","Créez des copies protégées par mot de passe lorsque le runtime de chiffrement local est disponible","Compresser et exporter des copies PDF","Créez des boîtes de couverture visuelles et des copies de révision aplaties"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fr/pdf-workspace.png"}</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Espace PDF","url":"https://afrotools.com/fr/tools/espace-pdf/","description":"Organisez, fusionnez, divisez, tournez, compressez et préparez des PDF localement dans votre navigateur, sans téléverser les fichiers source.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fr/pdf-workspace.png"}</script> <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script> <script src="/assets/js/bundles/core.7a57ca14.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=2690ecaa" defer></script>
 <meta property="og:locale" content="fr_FR">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fr/pdf-workspace.png">
@@ -538,9 +496,7 @@
 </head>
 <body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
-<div class="priv-bar"><strong>Privé par défaut :</strong> Les actions PDF principales s'exécutent dans ce navigateur sans téléchargement de fichier source.</div>
-<section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="Les fichiers PDF restent sur votre appareil" data-consent-copy="Merge, split, sign, annotate, and export PDFs in this browser. AfroTools does not send files to AI or a server unless a future workflow clearly asks and you choose it." aria-label="Avis de confidentialité de l'espace de travail PDF"></section>
-<nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Espace de travail PDF</nav>
+<nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/document-pdf/">Outils PDF</a><span>/</span>Espace de travail PDF</nav>
 <main id="main-content">
 <div class="ws-page">
 
@@ -557,19 +513,8 @@
 <div class="up-screen" id="upScreen">
   <h1>Espace PDF</h1>
   <p>Organisez, fusionnez, divisez, tournez, compressez et préparez des PDF localement dans votre navigateur, sans téléverser les fichiers source.</p>
-  <div class="pdf-pill-row" aria-label="Fonctionnalités de l'espace de travail PDF">
-    <span class="primary">Fusionner et diviser des PDF</span>
-    <span>Modifier et annoter</span>
-    <span>Signer et tamponner</span>
-    <span>Compresser l'exportation</span>
-    <span>Aucun téléchargement de source par défaut</span>
-  </div>
-  <div class="pdf-workflow-summary" aria-label="Comment fonctionne l'espace de travail PDF">
-    <div class="pdf-workflow-card"><strong>1. Téléchargez localement</strong><span>Ouvrez un PDF ou ajoutez plusieurs fichiers. Le fichier source reste dans ce workflow de navigateur.</span></div>
-    <div class="pdf-workflow-card"><strong>2. Choisissez le groupe d'outils</strong><span>Pages, Modifier, Annoter, Signer, Protéger et Exporter reflètent la barre d'outils réelle.</span></div>
-    <div class="pdf-workflow-card"><strong>3. Téléchargez et vérifiez</strong><span>Vérifiez l'ordre des pages, le texte, les signatures, les couvertures, les autorisations et la taille du fichier avant de le partager.</span></div>
-  </div>
   <div class="dz" id="dz"><div class="dz-mark" aria-hidden="true">PDF</div><h3>Déposez un PDF ici pour commencer</h3><p>or <span class="gr">cliquez pour parcourir</span></p><input aria-label="Choisissez un fichier PDF à modifier dans l'espace de travail" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
+  <section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="Les fichiers PDF restent sur votre appareil" data-consent-copy="Merge, split, sign, annotate, and export PDFs in this browser. AfroTools does not send files to AI or a server unless a future workflow clearly asks and you choose it." aria-label="Avis de confidentialité de l'espace de travail PDF"></section>
   <div class="pdf-fast-start" aria-label="Raccourcis du flux de travail PDF">
     <div class="pdf-fast-start-head">
       <span class="pdf-fast-start-title">Démarrages rapides</span>
@@ -596,6 +541,8 @@
         <a href="/fr/document-pdf/">Parcourez tous les outils PDF</a>
       </div>
     </nav>
+    <details class="pdf-help" data-structured-data-exclude>
+      <summary>Need help choosing a PDF action?</summary>
     <section class="pdf-ai-assist" data-pdf-ai-assist aria-labelledby="pdfAiAssistTitle">
     <span class="pdf-ai-kicker">Assistant de workflow, pas de téléchargement de fichier</span>
     <h2 id="pdfAiAssistTitle">Choisir l’action PDF la plus sûre</h2>
@@ -622,8 +569,8 @@
       Les futures fonctionnalités permettant de lire des pages ou du texte PDF nécessiteront un consentement explicite et montreront exactement ce qui sera envoyé. Rien ici n'envoie d'octets de fichier, de texte OCR, de mots de passe ou de contenu de document.
       <button id="pdfAiContentAssist" type="button" disabled aria-disabled="true">Analyser le contenu PDF – consentement explicite futur requis</button>
     </div>
-  </section>
-  <div class="up-feats"><div class="uf">Privé par défaut</div><div class="uf">Basé sur un navigateur</div><div class="uf">Outils tactiles</div><div class="uf">Notes d'enregistrement de métadonnées uniquement</div></div>
+   </section>
+    </details>
 </div>
 <div class="ws" id="ws">
   <div class="toolbar cmd-bar" id="cmdBar" data-mode="organize">
@@ -833,7 +780,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
 <h2 class="seo-links-title">Outils associés</h2>
-<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="Générateur de CV" data-category="document-pdf" data-icon="CR" data-desc="Créez, prévisualisez, sauvegardez localement et exportez un CV en français sans envoyer vos données personnelles.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Générateur de factures" data-category="document-pdf" data-icon="IG" data-desc="Créez une facture en français, appliquez un taux vérifié et exportez un PDF local. Les clients, modèles et montants restent dans votre navigateur.">Générateur de factures</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="Éditeur PDF" data-category="document-pdf" data-icon="PE" data-desc="Ajoutez du texte, des images, des formes, des surlignages, des signatures et des annotations avant d’exporter le PDF.">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Fusionner et diviser des PDF" data-category="document-pdf" data-icon="PM" data-desc="Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="Compresser un PDF" data-category="document-pdf" data-icon="PC" data-desc="Réduisez la taille d’un ou plusieurs PDF avec des réglages de qualité et de taille cible, sans envoyer les fichiers source à un serveur.">Compresser un PDF</a></li><li><a href="/fr/tools/convertir-pdf/" data-related-tool data-id="pdf-convert" data-name="Convertir des documents" data-category="document-pdf" data-icon="PF" data-desc="Convertissez localement des documents et tableaux entre PDF, DOCX, XLSX, CSV, TXT, PNG et JPEG selon les formats pris en charge.">Convertir des documents</a></li></ul>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="Générateur de CV" data-category="document-pdf" data-icon="CR" data-desc="Créez, prévisualisez, sauvegardez localement et exportez un CV en français sans envoyer vos données personnelles.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Générateur de factures" data-category="document-pdf" data-icon="IG" data-desc="Créez une facture en français, appliquez un taux vérifié et exportez un PDF local. Les clients, modèles et montants restent dans votre navigateur.">Générateur de factures</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="Éditeur PDF" data-category="document-pdf" data-icon="PE" data-desc="Ajoutez du texte, des images, des formes, des surlignages, des signatures et des annotations avant d’exporter le PDF.">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Fusionner et diviser des PDF" data-category="document-pdf" data-icon="PM" data-desc="Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="Compresser un PDF" data-category="document-pdf" data-icon="PC" data-desc="Réduisez la taille d’un ou plusieurs PDF avec des réglages de qualité et de taille cible, sans envoyer les fichiers source à un serveur.">Compresser un PDF</a></li><li><a href="/fr/document-pdf/" data-related-tool data-id="document-pdf" data-name="Documents et PDF" data-category="document-pdf" data-icon="PDF" data-desc="Hub PDF français pour les outils prêts à utiliser : compresser, fusionner, diviser, convertir, caviarder, traduire, comparer et interroger un PDF.">Documents et PDF</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
