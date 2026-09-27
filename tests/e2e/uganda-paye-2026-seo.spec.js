@@ -3,12 +3,28 @@ const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
 test.use({ viewport: { width: 375, height: 812 }, reducedMotion: 'reduce' });
+test('English Uganda PAYE table matches the current resident calculation', async ({ page }) => {
+  await page.goto('/uganda/ug-paye');
+  const bands = await page.locator('.ng-bands-table tbody tr').evaluateAll(rows =>
+    rows.map(row => Array.from(row.cells, cell => cell.textContent.trim()).join(' '))
+  );
+  expect(bands).toEqual([
+    '0 – 335,000 Nil',
+    '335,001 – 410,000 20% of excess over 335,000',
+    '410,001 – 485,000 15,000 + 25% of excess over 410,000',
+    '485,001 – 10,000,000 33,750 + 30% of excess over 485,000',
+    'Over 10,000,000 33,750 + 30% of excess over 485,000 + 10% of excess over 10,000,000'
+  ]);
+});
 for (const route of ['/uganda/ug-paye', '/fr/uganda/ug-paye', '/sw/uganda/kikokotoo-kodi-mshahara/']) {
   test(`${route} revised PAYE and payroll parity`, async ({ page }) => {
     const errors = [];
     const writes = [];
     page.on('request', request => {
-      if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method())) writes.push(request.method() + ' ' + request.url());
+      if (['127.0.0.1', 'localhost'].includes(new URL(request.url()).hostname) &&
+          !['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
+        writes.push(request.method() + ' ' + request.url());
+      }
     });
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(route);

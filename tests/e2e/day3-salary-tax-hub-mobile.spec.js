@@ -10,9 +10,12 @@ for (const theme of ['light', 'dark']) {
     await page.evaluate(selectedTheme => document.documentElement.setAttribute('data-theme', selectedTheme), theme);
     await expect(page.locator('afro-navbar')).toHaveAttribute('data-styles-ready', '');
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('.hero-stat-val').nth(0)).toHaveText('134');
-    await expect(page.locator('.hero-stat-val').nth(2)).toHaveText('Dated');
-    await expect(page.getByText('Hub navigation and search contract checked 22 July 2026.')).toBeVisible();
+    const search = page.getByRole('searchbox', { name: 'Find a calculator or country' });
+    await expect(search).toBeVisible();
+    await search.fill('Kenya');
+    const results = page.locator('#find-results');
+    await expect(results).toBeVisible({ timeout: 10000 });
+    await expect(results.locator('.fr-item').first()).toContainText('Kenya PAYE Calculator');
     const schema = await page.evaluate(() => {
       const blocks = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).map(node => JSON.parse(node.textContent));
       const collection = blocks.find(block => block['@type'] === 'CollectionPage');
@@ -23,7 +26,9 @@ for (const theme of ['light', 'dark']) {
     const geometry = await page.evaluate(() => ({
       clientWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
-      statsRight: document.querySelector('.hero-stats').getBoundingClientRect().right,
+      searchBottom: document.querySelector('#tool-search').getBoundingClientRect().bottom,
+      resultsTop: document.querySelector('#find-results').getBoundingClientRect().top,
+      firstResultRight: document.querySelector('.fr-item').getBoundingClientRect().right,
       offenders: Array.from(document.querySelectorAll('body *')).map(element => {
         const rect = element.getBoundingClientRect();
         return { tag: element.tagName, id: element.id, className: String(element.className || ''), left: rect.left, right: rect.right, width: rect.width };
@@ -35,7 +40,10 @@ for (const theme of ['light', 'dark']) {
       })(),
     }));
     expect(geometry.scrollWidth, JSON.stringify({ offenders: geometry.offenders, wideContainers: geometry.wideContainers, navbarWide: geometry.navbarWide })).toBeLessThanOrEqual(geometry.clientWidth + 1);
-    expect(geometry.statsRight).toBeLessThanOrEqual(geometry.clientWidth + 1);
+    expect(geometry.resultsTop - geometry.searchBottom).toBeLessThanOrEqual(30);
+    expect(geometry.firstResultRight).toBeLessThanOrEqual(geometry.clientWidth + 1);
+    await search.fill('');
+    await expect(results).toBeHidden();
     expect(errors).toEqual([]);
     await page.screenshot({ path: `artifacts/salary-tax-hub-320-${theme}.png`, fullPage: true });
   });

@@ -34,7 +34,7 @@
 
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
-  <link rel="stylesheet" href="/assets/css/market-days.css?v=d5d93c41">
+  <link rel="stylesheet" href="/assets/css/market-days.css?v=8b19e5da">
   <style>
     .market-shell{box-sizing:border-box;width:100%;min-width:0}
     .market-layout,.market-primary,.market-sidebar,.surface,.spotlight-layout,.lookup-grid,.today-grid,.cycle-list,.cycle-item{min-width:0;max-width:100%}
@@ -156,7 +156,11 @@
       <div class="market-shell market-layout">
         <div class="market-primary">
           <article class="surface spotlight-card" aria-live="polite">
-            <div class="section-label">Selected date</div>
+            <div class="section-label">Market day for a date</div>
+            <div class="spotlight-date-control">
+              <label class="field-label" for="lookupDate">Pick any Gregorian date</label>
+              <input class="field-input" id="lookupDate" type="date">
+            </div>
             <div class="spotlight-layout">
               <div class="day-token" id="selectedDayToken">—</div>
               <div>
@@ -180,32 +184,22 @@
           </article>
 
           <article class="surface lookup-card">
-            <div class="section-label">Date lookup</div>
-            <div class="lookup-grid">
-              <div>
-                <label class="field-label" for="lookupDate">Pick any Gregorian date</label>
-                <input class="field-input" id="lookupDate" type="date">
-                <p class="lookup-note">The market-day answer is tied to the date itself. The Nigeria vs device comparison below only matters when you want to know what "today" is in two timezones right now.</p>
+            <div class="section-label">Today in two timezones</div>
+            <div class="today-grid">
+              <div class="today-card">
+                <div class="today-card-label">Nigeria today</div>
+                <div class="today-card-day" id="nigeriaDayName">Waiting for date</div>
+                <div class="today-card-date" id="nigeriaDateMeta">Calculated in Nigeria time</div>
+                <div class="today-card-zone" id="nigeriaZoneMeta">Nigeria market time</div>
               </div>
-
-              <div>
-                <div class="today-grid">
-                  <div class="today-card">
-                    <div class="today-card-label">Nigeria today</div>
-                    <div class="today-card-day" id="nigeriaDayName">Waiting for date</div>
-                    <div class="today-card-date" id="nigeriaDateMeta">Calculated in Nigeria time</div>
-                    <div class="today-card-zone" id="nigeriaZoneMeta">Nigeria market time</div>
-                  </div>
-                  <div class="today-card">
-                    <div class="today-card-label">Your device today</div>
-                    <div class="today-card-day" id="deviceDayName">Waiting for date</div>
-                    <div class="today-card-date" id="deviceDateMeta">Calculated in your device timezone</div>
-                    <div class="today-card-zone" id="deviceZoneMeta">Your timezone</div>
-                  </div>
-                </div>
-                <p class="compare-note" id="compareNote">The calculator compares the calendar date in Nigeria with the date on your device.</p>
+              <div class="today-card">
+                <div class="today-card-label">Your device today</div>
+                <div class="today-card-day" id="deviceDayName">Waiting for date</div>
+                <div class="today-card-date" id="deviceDateMeta">Calculated in your device timezone</div>
+                <div class="today-card-zone" id="deviceZoneMeta">Your timezone</div>
               </div>
             </div>
+            <p class="compare-note" id="compareNote">The calculator compares the calendar date in Nigeria with the date on your device.</p>
           </article>
 
           <article class="surface lookup-card">

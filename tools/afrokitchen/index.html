@@ -141,6 +141,7 @@
 <script src="/assets/js/african-workflow.js?v=932feed9" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=f1530a1b">
+<link rel="stylesheet" href="home-improvements.css?v=dcfe994d">
 <link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/">
@@ -159,64 +160,23 @@
           <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>AfroKitchen</span>
         </nav>
         <div class="ak-hero-intro">
-          <div class="ak-hero-badges">
-            <span class="ak-badge ak-badge-live">410 recipes</span>
-            <span class="ak-badge ak-badge-atlas">55 country hubs</span>
-            <span class="ak-badge ak-badge-atlas">17 collections</span>
-            <span class="ak-badge ak-badge-warm">Free to cook</span>
-          </div>
           <div class="ak-eyebrow">AFRICAN FOOD ATLAS</div>
-          <h1>A practical atlas for African home cooking.</h1>
-          <p class="ak-hero-sub">Search stored AfroKitchen recipes by dish, country, ingredient, course, diet, or time, then plan the week from food people can actually cook.</p>
-          <div class="ak-hero-stats">
-            <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent" id="recipe-total">410</div></div>
-            <div class="ak-stat"><div class="ak-stat-lbl">Country hubs</div><div class="ak-stat-val">55</div></div>
-            <div class="ak-stat"><div class="ak-stat-lbl">Collections</div><div class="ak-stat-val">17</div></div>
-            <div class="ak-stat"><div class="ak-stat-lbl">Access</div><div class="ak-stat-val accent">Free</div></div>
-          </div>
+          <h1>Find something good to cook.</h1>
+          <p class="ak-hero-sub">Explore African recipes by dish, country, or cooking time. Choose a recipe for tonight or build a plan for the week.</p>
           <div class="ak-hero-actions">
             <a href="#browse-panel" class="ak-btn ak-btn-primary">Find a dish</a>
             <a href="#cook-this-week" class="ak-btn ak-btn-secondary ak-btn-quiet">Plan this week</a>
           </div>
           <div class="ak-hero-quick-actions" aria-label="AfroKitchen quick actions">
-            <a href="#browse-panel">Find a dish</a>
-            <a href="#cook-this-week">Plan this week</a>
             <a href="#country-grid">Browse countries</a>
             <a href="/tools/afrokitchen/submit">Submit a recipe</a>
-          </div>
-          <p class="ak-hero-methodology">Recipes are structured from AfroKitchen’s stored recipe atlas; family submissions are reviewed before publication.</p>
-          <div class="ak-hero-notes" aria-label="AfroKitchen cooking model">
-            <div class="ak-hero-note">
-              <div class="ak-support-label">Atlas first</div>
-              <p class="ak-support-copy">Start with a country, course, ingredient, or craving, then follow connected recipes and collections.</p>
-            </div>
-            <div class="ak-hero-note">
-              <div class="ak-support-label">Cook-ready pages</div>
-              <p class="ak-support-copy">Recipe pages carry ingredients, serving adjustment, timers, notes, and pairing paths where data allows.</p>
-            </div>
           </div>
         </div>
       </div>
 
       <div class="ak-hero-aside">
         <div class="ak-hero-atlas" aria-label="Featured AfroKitchen dishes and routes">
-          <div class="ak-hero-map-card">
-            <div>
-              <span class="ak-hero-map-kicker">Tonight’s table</span>
-              <strong>From country hubs to weekly plans</strong>
-            </div>
-            <div class="ak-hero-map-grid" aria-hidden="true">
-              <img src="/assets/img/kitchen/jollof-rice-ng.webp" alt="" width="320" height="240" loading="eager" decoding="async">
-              <img src="/assets/img/kitchen/thieboudienne-sn.webp" alt="" width="320" height="240" loading="eager" decoding="async">
-              <img src="/assets/img/kitchen/couscous-royal-dz.webp" alt="" width="320" height="240" loading="eager" decoding="async">
-            </div>
-          </div>
           <div class="ak-hero-preview" id="featured-recipe"></div>
-          <div class="ak-hero-route-strip">
-            <a href="/tools/afrokitchen/countries/nigeria/">Nigerian recipes</a>
-            <a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a>
-            <a href="/tools/afrokitchen/collections/vegetarian-africa/">Vegetarian Africa</a>
-          </div>
         </div>
       </div>
     </div>
@@ -225,37 +185,71 @@
   <!-- BROWSE PANEL -->
   <section class="ak-browse-band">
     <div class="ak-container">
-      <div class="ak-browse-shell rv" id="browse-panel">
+      <div class="ak-browse-shell" id="browse-panel">
         <div class="ak-browse-header">
           <div>
             <div class="ak-section-kicker">Start here</div>
             <h2 class="ak-browse-title">What are you hungry for?</h2>
           </div>
-          <p class="ak-browse-text">Search for a dish, ingredient, country, or cooking style. Use the filters when you already know the kind of meal you want.</p>
+          <p class="ak-browse-text">Search the recipe atlas or use a quick pick to get cooking.</p>
         </div>
 
         <div class="ak-search-wrap ak-search-wrap-light">
           <svg class="ak-search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"></circle><path d="M13 13l4 4"></path></svg>
-          <input type="search" class="ak-search" id="search-input" placeholder="Search recipes, ingredients, or countries…" aria-label="Search recipes, ingredients, or countries">
+          <input type="search" class="ak-search" id="search-input" placeholder="Search recipes…" aria-label="Search dishes or countries">
+        </div>
+        <div class="ak-quick-picks" aria-label="Quick recipe filters">
+          <span>Quick picks</span>
+          <button type="button" data-quick-filter="time">45 minutes or less</button>
+          <button type="button" data-quick-filter="vegetarian">Vegetarian</button>
+          <button type="button" data-quick-filter="easy">Easy recipes</button>
+          <button type="button" data-quick-filter="breakfast">Breakfast</button>
         </div>
 
-        <div class="ak-filter-deck ak-filters-light">
-          <p class="ak-filter-note">Filter by country, dish type, diet, or difficulty.</p>
+        <details class="ak-filter-deck ak-filters-light" id="ak-more-filters">
+          <summary>More filters <span aria-hidden="true">▾</span></summary>
           <div class="ak-filters">
-            <select class="ak-filter-select" id="filter-country" aria-label="Filter by country"><option value="">All Countries</option></select>
-            <select class="ak-filter-select" id="filter-category" aria-label="Filter by category"><option value="">All Categories</option></select>
-            <select class="ak-filter-select" id="filter-diet" aria-label="Filter by diet"><option value="">Any Diet</option></select>
-            <select class="ak-filter-select" id="filter-difficulty" aria-label="Filter by difficulty"><option value="">Any Difficulty</option></select>
+            <div class="ak-filter-field"><label for="filter-country">Country</label><select class="ak-filter-select" id="filter-country"><option value="">All countries</option></select></div>
+            <div class="ak-filter-field"><label for="filter-category">Dish type</label><select class="ak-filter-select" id="filter-category"><option value="">All types</option></select></div>
+            <div class="ak-filter-field"><label for="filter-diet">Diet</label><select class="ak-filter-select" id="filter-diet"><option value="">Any diet</option></select></div>
+            <div class="ak-filter-field"><label for="filter-difficulty">Difficulty</label><select class="ak-filter-select" id="filter-difficulty"><option value="">Any difficulty</option></select></div>
+            <div class="ak-filter-field"><label for="filter-time">Total time</label><select class="ak-filter-select" id="filter-time"><option value="">Any time</option><option value="30">30 minutes or less</option><option value="45">45 minutes or less</option><option value="60">60 minutes or less</option></select></div>
           </div>
-        </div>
+        </details>
 
         <div class="ak-browse-footer">
           <p class="ak-results-summary" id="results-summary" aria-live="polite">Showing all recipes across AfroKitchen.</p>
           <div class="ak-browse-links">
-            <a href="#recipes-grid" class="ak-browse-link">Recipe archive</a>
+            <a href="#recipe-results" class="ak-browse-link">See recipes</a>
             <a href="#country-grid" class="ak-browse-link">Countries</a>
-            <a href="#collections-grid" class="ak-browse-link">Collections</a>
+            <button type="button" class="ak-browse-link ak-clear-filters" id="clear-recipe-filters" hidden>Clear filters</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPE GRID -->
+  <section class="ak-section ak-home-section" id="recipe-results">
+    <div class="ak-container">
+      <div class="ak-section-head rv">
+        <div class="ak-section-eyebrow">BROWSE RECIPES</div>
+        <h2 class="ak-section-title">Recipes to cook</h2>
+        <p class="ak-section-sub">Open a recipe to see ingredients, steps, servings, and cooking tools.</p>
+      </div>
+      <div class="ak-archive-shell">
+        <div class="ak-loading" id="recipes-loading" role="status">
+          <div class="ak-spinner" aria-hidden="true"></div>
+          <div>Loading recipes…</div>
+        </div>
+        <div class="ak-grid" id="recipes-grid"></div>
+        <div class="ak-grid-actions" id="recipes-more-wrap" hidden>
+          <button type="button" class="ak-btn ak-btn-outline" id="recipes-more">Show more recipes</button>
+        </div>
+        <div class="ak-empty" id="recipes-empty" role="status" style="display:none">
+          <div class="ak-empty-mark" aria-hidden="true">AK</div>
+          <h3>No recipes match your search</h3>
+          <p>Try another dish or country, allow more cooking time, or clear the filters to see everything again.</p>
         </div>
       </div>
     </div>
@@ -481,32 +475,6 @@
     </div>
   </section>
 <!-- ak-static-wave:end -->
-
-  <!-- RECIPE GRID -->
-  <section class="ak-section ak-home-section">
-    <div class="ak-container">
-      <div class="ak-section-head rv">
-        <div class="ak-section-eyebrow">BROWSE RECIPES</div>
-        <h2 class="ak-section-title">Start with a dish that looks good</h2>
-        <p class="ak-section-sub">The first cards are easy entry points. Search or filter when you want something specific.</p>
-      </div>
-      <div class="ak-archive-shell">
-        <div class="ak-loading" id="recipes-loading" role="status">
-          <div class="ak-spinner" aria-hidden="true"></div>
-          <div>Loading recipes…</div>
-        </div>
-        <div class="ak-grid" id="recipes-grid"></div>
-        <div class="ak-grid-actions" id="recipes-more-wrap" hidden>
-          <button type="button" class="ak-btn ak-btn-outline" id="recipes-more">Show more recipes</button>
-        </div>
-        <div class="ak-empty" id="recipes-empty" role="status" style="display:none">
-          <div class="ak-empty-mark" aria-hidden="true">AK</div>
-          <h3>No recipes match your search</h3>
-          <p>Try a different country, ingredient, or spelling — or clear the filters to see everything again.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- BROWSE BY COUNTRY -->
   <section class="ak-section ak-section-soft ak-country-directory-section">
@@ -1080,6 +1048,7 @@
     opt.value = d; opt.textContent = d.charAt(0).toUpperCase() + d.slice(1);
     diffSelect.appendChild(opt);
   });
+  var timeSelect = document.getElementById('filter-time');
 
   var planCountry = document.getElementById('ak-plan-country');
   var planDiet = document.getElementById('ak-plan-diet');
@@ -1105,6 +1074,7 @@
   var currentRecipes = [];
   var visibleRecipeCount = PAGE_SIZE;
   var searchTimeout;
+  var recipeRequestId = 0;
   var resultsSummary = document.getElementById('results-summary');
   var recipeTotal = document.getElementById('recipe-total');
   var recipesMoreWrap = document.getElementById('recipes-more-wrap');
@@ -1166,6 +1136,9 @@
     if (filters.difficulty) {
       labels.push(titleCase(filters.difficulty));
     }
+    if (filters.maxTime) {
+      labels.push(filters.maxTime + ' minutes or less');
+    }
     if (filters.search) {
       labels.push('"' + filters.search + '"');
     }
@@ -1195,6 +1168,7 @@
       category: catSelect.value || undefined,
       diet: dietSelect.value || undefined,
       difficulty: diffSelect.value || undefined,
+      maxTime: timeSelect.value ? Number(timeSelect.value) : undefined,
       search: document.getElementById('search-input').value.trim() || undefined
     };
   }
@@ -1225,7 +1199,6 @@
     var countryName = r.country_name || country.name || 'Africa';
     var category = categoryLabel(r.category);
     var diet = primaryDietTag(r);
-    var region = r.region || country.region || '';
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = AKRoutes.recipe(r.slug);
@@ -1248,7 +1221,6 @@
           recipeMetaItem('servings', 'Servings', r.default_servings ? 'Serves ' + r.default_servings : '') +
           recipeMetaItem('difficulty', 'Difficulty', titleCase(r.difficulty || 'medium')) +
           recipeMetaItem('diet', 'Diet', diet) +
-          recipeMetaItem('country', 'Region', region) +
         '</div>' +
         '<span class="ak-recipe-card-cta">Open recipe ' + planIcon('action') + '</span>' +
       '</div>';
@@ -1278,6 +1250,7 @@
   }
 
   async function loadRecipes() {
+    var requestId = ++recipeRequestId;
     var grid = document.getElementById('recipes-grid');
     var loading = document.getElementById('recipes-loading');
     var empty = document.getElementById('recipes-empty');
@@ -1286,11 +1259,36 @@
     empty.style.display = 'none';
 
     var filters = getFilters();
+    var activeFilterKeys = Object.keys(filters).filter(function (key) { return !!filters[key]; });
+    document.getElementById('clear-recipe-filters').hidden = activeFilterKeys.length === 0;
+    var quickPick = '';
+    if (activeFilterKeys.length === 1) {
+      if (filters.maxTime === 45) quickPick = 'time';
+      if (filters.diet === 'vegetarian') quickPick = 'vegetarian';
+      if (filters.difficulty === 'easy') quickPick = 'easy';
+      if (filters.category === 'breakfast') quickPick = 'breakfast';
+    }
+    document.querySelectorAll('[data-quick-filter]').forEach(function (button) {
+      button.setAttribute('aria-pressed', button.getAttribute('data-quick-filter') === quickPick ? 'true' : 'false');
+    });
     visibleRecipeCount = PAGE_SIZE;
     if (resultsSummary) {
       resultsSummary.textContent = 'Updating the archive…';
     }
-    var recipes = await AK.fetchRecipes(filters);
+    var recipes = await AK.fetchRecipes({
+      country: filters.country,
+      category: filters.category,
+      diet: filters.diet,
+      difficulty: filters.difficulty,
+      search: filters.search
+    });
+    if (requestId !== recipeRequestId) return;
+    if (filters.maxTime) {
+      recipes = (recipes || []).filter(function (recipe) {
+        var total = (Number(recipe.prep_time_minutes) || 0) + (Number(recipe.cook_time_minutes) || 0);
+        return total > 0 && total <= filters.maxTime;
+      });
+    }
 
     loading.style.display = 'none';
     if (!recipes || !recipes.length) {
@@ -1883,8 +1881,30 @@
   }
 
   // ── Event listeners ──
-  [countrySelect, catSelect, dietSelect, diffSelect].forEach(function (el) {
+  [countrySelect, catSelect, dietSelect, diffSelect, timeSelect].forEach(function (el) {
     el.addEventListener('change', loadRecipes);
+  });
+  var clearFiltersButton = document.getElementById('clear-recipe-filters');
+  function clearRecipeFilters() {
+    document.getElementById('search-input').value = '';
+    [countrySelect, catSelect, dietSelect, diffSelect, timeSelect].forEach(function (el) { el.value = ''; });
+    clearTimeout(searchTimeout);
+    loadRecipes();
+  }
+  if (clearFiltersButton) clearFiltersButton.addEventListener('click', clearRecipeFilters);
+  document.querySelectorAll('[data-quick-filter]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      clearTimeout(searchTimeout);
+      document.getElementById('search-input').value = '';
+      [countrySelect, catSelect, dietSelect, diffSelect, timeSelect].forEach(function (el) { el.value = ''; });
+      var pick = button.getAttribute('data-quick-filter');
+      if (pick === 'time') timeSelect.value = '45';
+      if (pick === 'vegetarian') dietSelect.value = 'vegetarian';
+      if (pick === 'easy') diffSelect.value = 'easy';
+      if (pick === 'breakfast') catSelect.value = 'breakfast';
+      loadRecipes();
+      document.getElementById('recipe-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
   ['ak-plan-days', 'ak-plan-time', 'ak-plan-servings', 'ak-plan-diet', 'ak-plan-country', 'ak-plan-occasion'].forEach(function (id) {
     var el = document.getElementById(id);
@@ -1924,6 +1944,14 @@
   if (params.get('category')) catSelect.value = params.get('category');
   if (params.get('diet')) dietSelect.value = params.get('diet');
   if (params.get('q')) document.getElementById('search-input').value = params.get('q');
+
+  var moreFilters = document.getElementById('ak-more-filters');
+  var smallFilterScreen = window.matchMedia('(max-width: 640px)');
+  function syncFilterDisclosure() {
+    moreFilters.open = !smallFilterScreen.matches || !!(params.get('country') || params.get('category') || params.get('diet'));
+  }
+  syncFilterDisclosure();
+  smallFilterScreen.addEventListener('change', syncFilterDisclosure);
 
   // ── Init ──
   loadLandingMeta();

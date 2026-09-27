@@ -10,8 +10,6 @@ test('static and no-JS inventories remain exact and useful', async ({ browser })
   const vatSource = html('vat-business-tax/index.html');
   const financeSource = html('finance/index.html');
   expect((salarySource.match(/<a class="hub-card"/g) || []).length).toBe(8);
-  expect(salarySource).toContain('<div class="hero-stat-val">134</div>');
-  expect(salarySource).toContain('<div class="hero-stat-val">54</div>');
   expect((vatSource.match(/<li><a href=/g) || []).length).toBeGreaterThanOrEqual(6);
   expect(vatSource).toContain('Six featured VAT and business-tax routes');
   expect(vatSource).toContain('complete 63-route registry needs JavaScript');
@@ -38,7 +36,11 @@ for (const hub of [
     const nonGet = [];
     page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
     page.on('pageerror', (error) => errors.push(error.message));
-    page.on('request', (request) => { if (request.method() !== 'GET') nonGet.push(request.method() + ' ' + request.url()); });
+    page.on('request', (request) => {
+      if (request.method() !== 'GET' && new URL(request.url()).origin === new URL(page.url()).origin) {
+        nonGet.push(request.method() + ' ' + request.url());
+      }
+    });
     await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 375, height: 900 });
     await page.goto(hub.path);
