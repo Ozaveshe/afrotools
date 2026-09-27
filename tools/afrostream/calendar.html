@@ -49,6 +49,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-logo-icon { -webkit-text-fill-color: #0062CC; margin-right: 2px; }
 .as-subnav-links { display: flex; gap: 4px; margin-left: auto; }
 .as-subnav-links a { padding: 6px 14px; border-radius: 100px; font-size: .8125rem; font-weight: 500; color: #64748b; text-decoration: none; transition: background .2s, color .2s; white-space: nowrap; }
+.as-cal-page .as-subnav-links a { flex: 0 0 auto; }
 .as-subnav-links a:hover, .as-subnav-links a.active { background: rgba(0,98,204,0.06); color: #0063CC; }
 .as-subnav-actions { margin-left: auto; }
 .as-subnav-actions .as-btn { text-decoration: none; }
@@ -1326,6 +1327,17 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   setupFilter('asPlatformFilter', function(v) { filterPlatform = v; });
   setupFilter('asCatFilter', function(v) { filterCat = v; });
   setupFilter('asViewToggle', function(v) { currentView = v; });
+
+  var subnavScroller = document.querySelector('.as-subnav-links');
+  subnavScroller.addEventListener('focusin', function(e) {
+    if (!e.target.matches('a')) return;
+    requestAnimationFrame(function() {
+      var link = e.target.getBoundingClientRect();
+      var viewport = subnavScroller.getBoundingClientRect();
+      if (link.right > viewport.right) subnavScroller.scrollLeft += link.right - viewport.right + 4;
+      else if (link.left < viewport.left) subnavScroller.scrollLeft -= viewport.left - link.left + 4;
+    });
+  });
 
   /* ── MONTH NAVIGATION ───────────────────────────────── */
   document.getElementById('asPrevMonth').addEventListener('click', function() {
