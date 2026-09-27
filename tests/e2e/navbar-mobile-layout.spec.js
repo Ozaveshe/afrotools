@@ -56,3 +56,30 @@ test('localized mobile headers preserve the same brand and menu contract', async
     expect(rightGap).toBeLessThanOrEqual(1);
   }
 });
+
+test('mobile menu returns focus to its trigger on Escape and still closes by trigger', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const navbar = page.locator('afro-navbar');
+  const burger = navbar.locator('.burger');
+  const menu = navbar.locator('.mob');
+  const theme = navbar.locator('#mobThemeToggle');
+
+  await burger.focus();
+  await burger.press('Enter');
+  await expect(menu).toBeVisible();
+  await expect(burger).toHaveAttribute('aria-expanded', 'true');
+  await theme.focus();
+  await expect(theme).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(menu).toHaveAttribute('aria-hidden', 'true');
+  await expect(burger).toHaveAttribute('aria-expanded', 'false');
+  await expect(burger).toBeFocused();
+
+  await burger.click();
+  await expect(menu).toBeVisible();
+  await burger.click();
+  await expect(menu).toBeHidden();
+  await expect(burger).toHaveAttribute('aria-expanded', 'false');
+});
