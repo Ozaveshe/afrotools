@@ -47,7 +47,7 @@
 
   .tool-hero {
     background: linear-gradient(135deg, var(--rd-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    padding: 30px 0 28px;
   }
 
   .tool-hero-inner,
@@ -130,6 +130,26 @@
     display: grid;
     gap: 22px;
     grid-template-columns: minmax(0, 1fr) 390px;
+  }
+
+  .redact-upload {
+    grid-column: 1 / -1;
+  }
+
+  .redact-upload .drop-zone {
+    padding: 20px 18px;
+  }
+
+  .tool-main-inner > .card + .card {
+    margin-top: 0;
+  }
+
+  .redact-editor .editor-shell {
+    min-height: 320px;
+  }
+
+  .redact-editor .canvas-stage {
+    min-height: 280px;
   }
 
   .card {
@@ -761,18 +781,33 @@
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/document-pdf/">Document PDF</a> / <span>PDF Redact</span></div>
     <h1>PDF <em>Redaction</em> Tool</h1>
     <p class="hero-sub">Draw redaction boxes, find matching text, review every page, then export a flattened PDF that removes the generated file's text layer. Everything runs locally in your browser.</p>
-    <div class="hero-badges">
-      <span class="badge">Browser Only</span>
-      <span class="badge red">Secure Flattened Export</span>
-      <span class="badge">Search Redaction</span>
-      <span class="badge">Manual Review</span>
-    </div>
   </div>
 </header>
 
 <main class="tool-main">
   <div class="tool-main-inner">
-    <section class="card" aria-label="PDF redaction editor">
+    <section class="card redact-upload" aria-labelledby="redact-upload-title">
+      <div class="card-head">
+        <span class="card-title" id="redact-upload-title">Choose a PDF to redact</span>
+        <span class="card-kicker">One PDF</span>
+      </div>
+      <div class="card-body">
+        <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Choose a PDF to redact">
+          <div class="drop-title">Drop a PDF here</div>
+          <div class="drop-hint">or click to choose a file</div>
+        </div>
+        <input aria-label="Choose a PDF to redact" class="hidden-input" id="fileInput" type="file" accept="application/pdf,.pdf">
+        <div class="file-summary" id="fileSummary">
+          <div style="min-width:0">
+            <div class="file-name" id="fileName">No file selected</div>
+            <div class="file-meta" id="fileMeta"></div>
+          </div>
+          <button type="button" class="mini-btn" id="removeFileBtn">Remove</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card redact-editor" aria-label="PDF redaction editor">
       <div class="card-head">
         <span class="card-title">Redaction Editor</span>
         <span class="card-kicker" id="pageStatus">No PDF loaded</span>
@@ -812,27 +847,6 @@
     </section>
 
     <aside>
-      <section class="card">
-        <div class="card-head">
-          <span class="card-title">Upload</span>
-          <span class="card-kicker">One PDF</span>
-        </div>
-        <div class="card-body">
-          <div class="drop-zone" id="dropZone" role="button" tabindex="0">
-            <div class="drop-title">Drop a PDF here</div>
-            <div class="drop-hint">or click to choose a file</div>
-          </div>
-          <input aria-label="Choose a PDF to redact" class="hidden-input" id="fileInput" type="file" accept="application/pdf,.pdf">
-          <div class="file-summary" id="fileSummary">
-            <div style="min-width:0">
-              <div class="file-name" id="fileName">No file selected</div>
-              <div class="file-meta" id="fileMeta"></div>
-            </div>
-            <button type="button" class="mini-btn" id="removeFileBtn">Remove</button>
-          </div>
-        </div>
-      </section>
-
       <section class="card">
         <div class="card-head">
           <span class="card-title">Redaction Style</span>

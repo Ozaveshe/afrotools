@@ -36,7 +36,7 @@
 
   .tool-hero {
     background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    padding: 30px 0 28px;
     position: relative;
     overflow: hidden;
   }
@@ -103,11 +103,11 @@
 
   .tool-main { padding: 28px 0 72px; }
   .tool-main-inner {
-    max-width: 1200px;
+    max-width: 840px;
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
     align-items: start;
   }
@@ -170,7 +170,18 @@
     margin-top: 6px;
   }
 
-  input[type="file"] { display: none; }
+  input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  input[type="file"]:focus-visible + .file-input-label {
+    outline: 3px solid var(--afro-blue);
+    outline-offset: 3px;
+  }
 
   .file-info {
     margin-top: 12px;
@@ -200,6 +211,17 @@
 
   .field { margin-bottom: 18px; }
   .field:last-child { margin-bottom: 0; }
+  .ocr-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 220px);
+    gap: 16px;
+    align-items: end;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #DBEAFE;
+  }
+  .ocr-controls .field, .ocr-controls .calc-btn { margin: 0; }
+  .ocr-controls .progress-section { grid-column: 1 / -1; }
   .f-label-text {
     font-size: 0.75rem;
     font-weight: 700;
@@ -439,7 +461,18 @@
     line-height: 1.6;
   }
   .info-text li { margin-bottom: 6px; }
-  .info-text ul { margin: 0; padding-left: 16px; }
+  .info-text ul, .info-text ol { margin: 0; padding-left: 20px; }
+  .ocr-help summary.info-title {
+    cursor: pointer;
+    min-height: 44px;
+    margin: 0;
+    padding: 12px 4px;
+  }
+  .ocr-help summary:focus-visible { outline: 3px solid var(--afro-blue); outline-offset: 3px; }
+  .ocr-help[open] .info-text { border-top: 1px solid #DBEAFE; padding-top: 12px; }
+  .ocr-help h3 { color: #1e293b; font-size: 0.82rem; margin: 14px 0 6px; }
+  .ocr-help h3:first-child { margin-top: 0; }
+  .ocr-help p { margin: 12px 0 0; }
 
   .note-box {
     background: #FFFBEB;
@@ -495,11 +528,15 @@
   :root[data-theme="dark"] .seo-section p,
   :root[data-theme="dark"] .extracted-text,
   :root[data-theme="dark"] .ocr-summary strong { color:#d8e4f5; }
+  :root[data-theme="dark"] .ocr-help h3 { color:#eef5ff; }
+  :root[data-theme="dark"] .ocr-help[open] .info-text { border-color:#3a4c68; }
+  :root[data-theme="dark"] .ocr-controls { border-color:#3a4c68; }
   :root[data-theme="dark"] .ocr-summary span,
   :root[data-theme="dark"] .status-line { color:#b8c7dc; }
 
   @media (max-width: 768px) {
     .tool-main-inner { grid-template-columns: 1fr; }
+    .ocr-controls { grid-template-columns: 1fr; }
     .action-row { grid-template-columns: 1fr; }
     .ocr-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .page-tabs { padding: 0 14px; }
@@ -568,10 +605,7 @@
     <h1>OCR PDF <em>Online</em></h1>
     <p class="hero-sub">Extract copyable text from scanned PDFs and document images. Choose the document language, review page-level confidence, then copy or download a TXT file.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Local OCR</span>
-      <span class="badge b-green">Page confidence</span>
-      <span class="badge b-green">5 Languages</span>
-      <span class="badge b-green">PDF and images</span>
+      <span class="badge b-green">Files stay on your device</span>
     </div>
   </div>
 </div>
@@ -582,7 +616,7 @@
       <!-- Upload -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Upload File</span>
+          <span class="card-title">Extract text from a file</span>
         </div>
         <div class="card-body">
           <input type="file" id="fileInput" accept=".pdf,image/*">
@@ -595,33 +629,24 @@
             <button type="button" class="file-remove" id="fileRemove">Remove</button>
           </div>
           <div class="status-line" id="fileStatus" role="status" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">OCR Settings</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label-text" for="languageSelect">Document language</label>
-            <select class="f-input" id="languageSelect">
-              <option value="eng">English</option>
-              <option value="fra">French (Francais)</option>
-              <option value="ara">Arabic</option>
-              <option value="swa">Swahili</option>
-              <option value="por">Portuguese (Portugues)</option>
-            </select>
-          </div>
-
-          <button type="button" class="calc-btn" id="extractBtn" disabled>Extract Text with OCR</button>
-
-          <div class="progress-section" id="progressSection">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="OCR progress">
-              <div class="progress-fill" id="progressFill"></div>
+          <div class="ocr-controls">
+            <div class="field">
+              <label class="f-label-text" for="languageSelect">Document language</label>
+              <select class="f-input" id="languageSelect">
+                <option value="eng">English</option>
+                <option value="fra">French (Francais)</option>
+                <option value="ara">Arabic</option>
+                <option value="swa">Swahili</option>
+                <option value="por">Portuguese (Portugues)</option>
+              </select>
             </div>
-            <div class="progress-text" id="progressText" role="status" aria-live="polite">Preparing...</div>
+            <button type="button" class="calc-btn" id="extractBtn" disabled>Extract Text with OCR</button>
+            <div class="progress-section" id="progressSection">
+              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="OCR progress">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-text" id="progressText" role="status" aria-live="polite">Preparing...</div>
+            </div>
           </div>
         </div>
       </div>
@@ -650,39 +675,27 @@
       </div>
     </div>
 
-    <!-- Sidebar -->
+    <!-- Optional help follows the task controls. -->
     <div class="sidebar">
-      <div class="info-card">
-        <div class="info-title">How It Works</div>
+      <details class="info-card ocr-help">
+        <summary class="info-title">How OCR works, supported files and tips</summary>
         <div class="info-text">
-          <ul>
+          <h3>How it works</h3>
+          <ol>
             <li>Upload a scanned PDF or image</li>
             <li>Select the document language</li>
             <li>Each PDF page is rendered as an image</li>
             <li>Tesseract.js OCR extracts text</li>
             <li>Review confidence, then copy or download text</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Supported Formats</div>
-        <div class="info-text">
+          </ol>
+          <h3>Supported formats</h3>
           <ul>
             <li><strong>PDF</strong> -- scanned or image-based</li>
             <li><strong>PNG, JPG, JPEG</strong> -- photos of documents</li>
             <li><strong>WEBP, BMP, TIFF</strong> -- other image formats</li>
           </ul>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <strong>Note:</strong> OCR on large PDFs can take several minutes. The OCR engine and language data load from AfroTools local assets. Processing happens entirely in your browser -- your files and extracted text are never uploaded by this tool.
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Tips for Better Results</div>
-        <div class="info-text">
+          <p>Large PDFs can take several minutes. OCR runs with AfroTools local assets in your browser; this tool does not upload the file or extracted text.</p>
+          <h3>For better results</h3>
           <ul>
             <li>Use high-resolution scans (300+ DPI)</li>
             <li>Ensure text is not rotated or skewed</li>
@@ -690,7 +703,7 @@
             <li>Clean, high-contrast documents work best</li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </main>
