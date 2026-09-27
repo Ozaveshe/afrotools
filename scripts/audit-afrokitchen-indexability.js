@@ -11,7 +11,6 @@ const RECIPES_DIR = path.join(AFROKITCHEN_DIR, "recipes");
 const MANIFEST_PATH = path.join(AFROKITCHEN_DIR, "seo-manifest.json");
 const REPORTS_DIR = path.join(ROOT, "reports");
 const REPORT_PATH = path.join(REPORTS_DIR, "afrokitchen-indexability-report.json");
-const TODAY = new Date().toISOString().slice(0, 10);
 
 function readText(filePath) {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
@@ -105,10 +104,8 @@ function maxDate(values) {
 }
 
 function normalizeSitemapLastmod(value) {
-  const formatted = asIsoDate(value);
-  if (!formatted) return "";
-  const ageDays = (Date.now() - new Date(formatted).getTime()) / 86400000;
-  return ageDays > 7 ? TODAY : formatted;
+  // Match the sitemap generator: age alone does not mean a recipe changed.
+  return asIsoDate(value);
 }
 
 function robotsAllowsAfroKitchenRecipes() {

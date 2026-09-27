@@ -6,6 +6,7 @@ const path = require("path");
 
 const root = path.join(__dirname, "..");
 const directory = path.join(root, "tools", "afroatlas", "country");
+const landing = fs.readFileSync(path.join(root, "tools", "afroatlas", "index.html"), "utf8");
 const pages = fs.readdirSync(directory, { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(directory, entry.name, "index.html")));
 
@@ -20,6 +21,10 @@ for (const entry of pages) {
   assert.ok(html.includes(`<link rel="canonical" href="${routeUrl}">`), file + " must self-canonicalize");
   assert.ok(html.includes(`<meta property="og:url" content="${routeUrl}">`), file + " must align OG URL");
   assert.ok(description.length >= 70 && description.length <= 180, file + " description must fit the useful snippet range");
+  assert.match(html, /<div class="aa-page" id="aa-country-page">\s*<section class="aa-country-hero">/, file + " must expose its profile before JavaScript");
+  assert.match(html, /<h2 class="aa-section-title">Questions about /, file + " must expose visible country questions");
+  assert.match(html, /href="\/tools\/afroatlas\/compare\?a=/, file + " must offer a comparison path");
+  assert.ok(landing.includes(`href="/tools/afroatlas/country/${entry.name}/"`), file + " must be linked from the crawlable country directory");
 }
 
 console.log("AfroAtlas country search pages verified: 54");

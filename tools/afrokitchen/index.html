@@ -1822,6 +1822,7 @@
       exportButton.addEventListener('click', function () {
         exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText);
         setPlanStatus('Plan exported as a text file.');
+        if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_exported', { days: inputs.days, recipe_count: recipes.length, format: 'txt' });
       });
     }
     if (printButton) {
@@ -1865,6 +1866,10 @@
       var picked = choosePlanRecipes(pool, inputs.days);
       var detailed = await Promise.all(picked.map(fetchRecipeDetails));
       renderPlan(detailed, inputs);
+      if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_created', {
+        days: inputs.days, recipe_count: detailed.length, country_code: inputs.country || 'all',
+        diet_filter: inputs.diet || 'all'
+      });
       setPlanStatus(detailed.length < inputs.days
         ? 'Partial plan generated from ' + detailed.length + ' existing recipes.'
         : 'Plan generated from ' + detailed.length + ' existing recipes.');
@@ -2000,6 +2005,7 @@ async function askAI(preset){
   els.forEach(function (el) { obs.observe(el); });
 })();
 </script>
+<script src="/assets/js/lib/analytics.js" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
 </body>

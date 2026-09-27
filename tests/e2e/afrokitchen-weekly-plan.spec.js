@@ -54,13 +54,14 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await expect(page.locator("#ak-plan-result")).toContainText("3-day plan ready", { timeout: 30000 });
   await expect(page.locator(".ak-plan-day")).toHaveCount(3);
   await expect(page.locator(".ak-plan-shopping")).toContainText("Grouped shopping list");
-  await expect(page.locator(".ak-plan-shopping-group").first()).toContainText("Day 1:");
+  await expect(page.locator(".ak-plan-shopping")).toContainText("Day 1:");
+  const firstPlannedRecipe = await page.locator(".ak-plan-day h4").first().innerText();
 
   await page.locator("#ak-plan-copy").click();
   await expect(page.locator("#ak-plan-status")).toContainText("Shopping list copied");
   const copiedText = await page.evaluate(function () { return window.__akCopiedText || ""; });
   expect(copiedText).toContain("Shopping list");
-  expect(copiedText).toContain("Nigerian Jollof Rice");
+  expect(copiedText).toContain(firstPlannedRecipe);
 
   const download = await Promise.all([
     page.waitForEvent("download"),

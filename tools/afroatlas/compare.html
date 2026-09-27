@@ -678,6 +678,7 @@
   var params = new URLSearchParams(window.location.search);
   var codeA = params.get('countryA') || params.get('a');
   var codeB = params.get('countryB') || params.get('b');
+  var requestedPair = !!(codeA && codeB);
   if (!codeA && !codeB) {
     codeA = 'NG';
     codeB = 'AO';
@@ -878,6 +879,11 @@
 
   var codeAUpper = findCode(c1) || codeA.toUpperCase();
   var codeBUpper = findCode(c2) || codeB.toUpperCase();
+  if (requestedPair) document.addEventListener('DOMContentLoaded', function() {
+    if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afroatlas_comparison_viewed', {
+      country_a: codeAUpper, country_b: codeBUpper
+    });
+  });
 
   /* ── Header ── */
   var html = '';
@@ -886,7 +892,7 @@
   html +=     '<div>';
   html +=       '<p class="aa-cmp-kicker">Comparison workbench</p>';
   html +=       '<h1 class="aa-cmp-workbench-title">' + c1.name + ' vs ' + c2.name + '</h1>';
-  html +=       '<p class="aa-cmp-workbench-copy">Use this as a first-pass decision note. The badges identify higher values, while the context below explains where higher is not automatically better.</p>';
+  html +=       '<p class="aa-cmp-workbench-copy">Use this as a first-pass decision note. Figures here are reference snapshots without source dates in this view; verify current primary sources before making decisions.</p>';
   html +=     '</div>';
   html +=     '<button type="button" class="aa-cmp-swap" id="aa-swap-btn">';
   html +=       '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M7 16l-4-4 4-4"/><path d="M17 8l4 4-4 4"/><path d="M3 12h18"/></svg>';
@@ -1293,6 +1299,7 @@
 
 })();
 </script>
+<script src="/assets/js/lib/analytics.js" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>
