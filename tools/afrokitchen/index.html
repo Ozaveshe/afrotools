@@ -1300,6 +1300,8 @@
     var grid = document.getElementById('recipes-grid');
     var loading = document.getElementById('recipes-loading');
     var empty = document.getElementById('recipes-empty');
+    currentRecipes = [];
+    updateMoreButton();
     grid.innerHTML = '';
     loading.style.display = '';
     empty.style.display = 'none';
@@ -1620,6 +1622,7 @@
   function renderPlanEmpty(message, inputs, matchedCount) {
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
+    document.body.removeAttribute('data-ak-print-plan');
     currentPlanText = '';
     currentShoppingText = '';
     var chips = inputs ? '<div class="ak-plan-chip-row">' + planFilterChips(inputs) + '</div>' : '';
@@ -2033,6 +2036,7 @@
           '<div class="ak-plan-shopping"><h3>' + planIcon('shopping') + '<span>Grouped shopping list</span></h3><div class="ak-plan-shopping-grid">' + shopping + '</div></div>' +
         '</div>' +
       '</section>';
+    document.body.setAttribute('data-ak-print-plan', '');
     var regenerateButton = document.getElementById('ak-plan-regenerate');
     var saveButton = document.getElementById('ak-plan-save');
     var copyButton = document.getElementById('ak-plan-copy');
