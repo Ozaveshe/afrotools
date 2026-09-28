@@ -103,30 +103,31 @@
     var bar = document.createElement('div');
     bar.className = 'article-utility-bar';
     bar.setAttribute('aria-label', 'Article actions');
-    var note = document.createElement('span');
-    note.textContent = 'Useful guide? Keep the link for later.';
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'article-copy-link';
-    button.textContent = 'Copy article link';
+    button.setAttribute('aria-label', 'Copy article link');
+    button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var label = document.createElement('span');
+    label.textContent = 'Copy link';
+    button.appendChild(label);
     var status = document.createElement('span');
     status.className = 'article-copy-status';
     status.setAttribute('aria-live', 'polite');
     button.addEventListener('click', function () {
       copyText(window.location.href.split('#')[0]).then(function () {
         status.textContent = 'Link copied.';
-        button.textContent = 'Copied';
+        label.textContent = 'Copied';
         window.setTimeout(function () {
           status.textContent = '';
-          button.textContent = 'Copy article link';
+          label.textContent = 'Copy link';
         }, 1800);
       }).catch(function () {
         status.textContent = 'Copy failed. Select the address from your browser.';
       });
     });
-    bar.appendChild(note);
-    bar.appendChild(button);
     bar.appendChild(status);
+    bar.appendChild(button);
     layout.insertBefore(bar, article);
   }
 
