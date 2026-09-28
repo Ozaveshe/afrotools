@@ -6,7 +6,7 @@ const PROTECTED_KEYS = ['afrojamb-original-cbt-state-v1', 'afrojamb-cbt-state',
   'afrojamb-original-history-v1', 'afrojamb-history', 'afrotools.sscePractice.v1'];
 
 function taskFor(questions, overrides = {}) {
-  return { id: 'jamb|2099-01-01|1', subject: 'JAMB original practice: Mathematics',
+  return { id: 'jamb|2099-01-01|1', subject: 'JAMB original practice: ' + (questions[0].subject === 'mathematics' ? 'Mathematics' : 'English'),
     date: '2099-01-01', minutes: 20, doneAt: null, sourceId: 'jamb-original-practice',
     revision: { bankId: pool.collection_id, locale: 'en', subject: questions[0].subject,
       ids: questions.map(question => question.id),
