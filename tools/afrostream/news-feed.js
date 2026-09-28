@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var U = window.AfroStreamNewsUtils;
-  var articles = [], offset = 0, total = 0, visible = 9, remainingMatches = 0, category = 'all', kind = 'all', query = '', loading = false;
+  var articles = [], offset = 0, total = 0, visible = 9, remainingMatches = 0, category = 'all', kind = 'all', query = '', loading = false, loadFailed = false;
   var status = document.getElementById('feedStatus');
   var cover = document.getElementById('heroGrid');
   var grid = document.getElementById('newsGrid');
@@ -34,15 +34,15 @@
       grid.innerHTML = rest.slice(2, visible + 2).map(function (row) { return U.storyCard(row); }).join('');
     }
     status.textContent = matches.length + ' matching stories in ' + articles.length + ' loaded. ' + (total > articles.length ? 'Load more to search older coverage.' : 'You have reached the end of the archive.');
-    more.hidden = articles.length >= total && rest.length <= visible + 2;
+    more.hidden = !loadFailed && articles.length >= total && rest.length <= visible + 2;
     more.disabled = loading;
-    more.textContent = loading ? 'Loading stories…' : (rest.length > visible + 2 ? 'Show more stories' : 'Load older stories');
+    more.textContent = loading ? 'Loading stories…' : (loadFailed ? 'Retry loading stories' : (rest.length > visible + 2 ? 'Show more stories' : 'Load older stories'));
     document.querySelectorAll('[data-filter-category]').forEach(function (btn) { btn.setAttribute('aria-pressed', String(btn.dataset.filterCategory === category)); });
     document.querySelectorAll('[data-filter-kind]').forEach(function (btn) { btn.setAttribute('aria-pressed', String(btn.dataset.filterKind === kind)); });
   }
   async function load() {
     if (loading) return;
-    loading = true; error.hidden = true; more.disabled = true; more.textContent = 'Loading stories…';
+    loading = true; loadFailed = false; error.hidden = true; more.disabled = true; more.textContent = 'Loading stories…';
     try {
       var response = await fetch('/api/afrostream/news?limit=50&offset=' + offset, { signal: AbortSignal.timeout(12000) });
       if (!response.ok) throw new Error('News unavailable');
@@ -55,7 +55,7 @@
       if (!payload.data.length) total = articles.length;
       loading = false; render();
     } catch (_) {
-      loading = false; error.hidden = false;
+      loading = false; loadFailed = true; error.hidden = false;
       if (!articles.length) {
         cover.innerHTML = '<div class="scene-empty" role="status"><h2>The news feed is temporarily unavailable</h2><p>Try again shortly, or explore African creators in the directory.</p><a href="/tools/afrostream/directory/">Explore creators →</a></div>';
         grid.innerHTML = ''; status.textContent = 'News could not be loaded.';
@@ -73,6 +73,7 @@
   });
   document.getElementById('newsSearch').addEventListener('input', function () { query = this.value.trim().toLowerCase(); visible = 9; render(); });
   more.addEventListener('click', function () {
+    if (loadFailed) { load(); return; }
     var canRevealLoadedStories = remainingMatches > visible + 2;
     visible += 9;
     if (canRevealLoadedStories || articles.length >= total) render(); else load();

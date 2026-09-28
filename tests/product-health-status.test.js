@@ -5,6 +5,7 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const test = require('node:test');
+const vm = require('node:vm');
 const health = require('../assets/js/lib/product-health');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -93,11 +94,44 @@ test('public release annotations point to merged history without exposing commit
 test('AfroStream empty and failure surfaces explicitly label live-data degradation', () => {
   for (const relative of [
     'tools/afrostream/index.html',
-    'tools/afrostream/news.html',
     'tools/afrostream/rankings-degradation.js'
   ]) {
     assert.match(read(relative), /Live data temporarily unavailable/);
   }
+});
+
+test('AfroStream news failures expose an unavailable state and a working retry control', async () => {
+  const nodes = Object.fromEntries([
+    'feedStatus', 'heroGrid', 'newsGrid', 'loadMoreBtn', 'feedError', 'newsSearch'
+  ].map((id) => [id, { innerHTML: '', textContent: '', hidden: true, disabled: false, listeners: {}, addEventListener(type, listener) { this.listeners[type] = listener; } }]));
+  let attempts = 0;
+  const context = {
+    window: { AfroStreamNewsUtils: {} },
+    document: {
+      getElementById: (id) => nodes[id] || null,
+      addEventListener() {},
+      querySelectorAll: () => []
+    },
+    AbortSignal,
+    fetch: async () => {
+      attempts += 1;
+      if (attempts === 1) throw new Error('Provider unavailable');
+      return { ok: true, json: async () => ({ success: true, data: [], count: 0 }) };
+    }
+  };
+  vm.runInNewContext(read('tools/afrostream/news-feed.js'), context);
+  await new Promise(setImmediate);
+  assert.match(nodes.heroGrid.innerHTML, /role="status"[\s\S]+The news feed is temporarily unavailable/);
+  assert.equal(nodes.feedError.hidden, false);
+  assert.equal(nodes.loadMoreBtn.hidden, false);
+  assert.equal(nodes.loadMoreBtn.disabled, false);
+  assert.equal(nodes.loadMoreBtn.textContent, 'Retry loading stories');
+  assert.match(read('tools/afrostream/news.html'), /id="feedError" role="alert"/);
+  nodes.loadMoreBtn.listeners.click();
+  await new Promise(setImmediate);
+  assert.equal(attempts, 2);
+  assert.equal(nodes.feedError.hidden, true);
+  assert.doesNotMatch(nodes.heroGrid.innerHTML, /temporarily unavailable/);
 });
 
 test('public API status endpoint does not infer dependency health', async () => {
