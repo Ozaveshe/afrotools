@@ -131,3 +131,23 @@ test('current backup downloads freshly read v2 tasks rather than the controller 
  const store=storage(),tab=ui(store);api.write(store,addJamb());await tab.button('Download study backup').click();assert.equal(tab.downloads.length,1);
  const exported=JSON.parse(await tab.downloads[0].text());assert.equal(exported.version,2);assert.deepEqual(exported.tasks[0].revision.ids,revision().ids);
 });
+test('pending and active JAMB tasks open their exact saved review and cannot be completed from Hub controls',async()=>{
+ const state=addJamb(),id=state.tasks[0].id,store=storage({[api.key]:JSON.stringify(state)}),tab=ui(store);
+ function assertReviewControls(){
+  assert.equal(walk(tab.host).filter(el=>el.tagName==='button'&&['Mark done','Finish this session'].includes(el.textContent)).length,0);
+  const links=walk(tab.host).filter(el=>el.tagName==='a'&&el.textContent==='Open saved JAMB review');assert.equal(links.length,1);assert.equal(links[0].href,api.revisionHref(state.tasks[0]));assert.equal(api.read(store).tasks[0].doneAt,null);
+ }
+ assertReviewControls();await tab.button('Start session').click();assert.equal(api.read(store).activeId,id);assertReviewControls();assert.ok(tab.button('Continue session'));
+ const focus=tab.host.querySelector('.sd-focus');assert.match(focus.textContent,/inside the saved review after reviewing every question/);assert.equal(walk(focus).filter(el=>el.tagName==='a').length,1);
+ api.write(store,api.change(api.read(store),id,'done'));tab.event('storage',{key:api.key});await tab.button('Undo completion').click();assert.equal(api.read(store).tasks[0].doneAt,null);assertReviewControls();
+});
+test('manual, deck and SSCE Hub completion controls remain available while JAMB revisions stay pending',async()=>{
+ for(const source of [task('manual'),task('deck',{deckId:'saved-deck'}),task('ssce',{sourceId:'ssce-practice',revision:{bankId:'ssce-foundations-2026-09',locale:'en',ids:['m1']}})]){
+  let state=addJamb(api.normalize({version:1,tasks:[source],activeId:source.id}));const store=storage({[api.key]:JSON.stringify(state)}),tab=ui(store);
+  await tab.button('Finish this session').click();state=api.read(store);assert.ok(state.tasks[0].doneAt);assert.equal(state.tasks[1].doneAt,null);
+  await tab.button('Undo completion').click();await tab.button('Mark done').click();state=api.read(store);assert.ok(state.tasks[0].doneAt);assert.equal(state.tasks[1].doneAt,null);
+ }
+});
+test('corrupt-storage recovery copy explains paused controls and opening a valid backup in another browser or device',async()=>{
+ const store=storage({[api.key]:'corrupt'}),tab=ui(store);assert.match(tab.status(),/could not be loaded/);assert.match(tab.status(),/controls are paused/);assert.match(tab.status(),/another browser or on another device/);assert.doesNotMatch(tab.status(),/Enable browser storage or use your saved backup/);
+});
