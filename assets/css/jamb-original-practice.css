@@ -44,15 +44,17 @@
 .original-score strong { font-size: clamp(2.4rem, 7vw, 4.5rem); line-height: 1; color: var(--color-primary); }
 .original-score span { color: var(--color-text-muted); }
 .original-result-actions { margin: var(--space-6) 0 var(--space-10); }
-.original-result-actions #retry-btn { max-width: 100%; white-space: normal; text-align: center; }
+.original-result-actions :is(#retry-btn, #save-revision-btn) { max-width: 100%; white-space: normal; text-align: center; }
 .original-retry { max-width: 720px; margin-bottom: var(--space-10); padding: var(--card-padding); border: 1px solid var(--color-border); background: var(--color-surface); overflow-wrap: anywhere; }
 .original-retry h3 { margin: 0 0 var(--space-2); }
-.original-retry h4 { margin: 0 0 var(--space-6); font-size: clamp(1.2rem, 2.2vw, 1.6rem); line-height: 1.38; }
+.original-retry :is(h4, #revision-question) { margin: 0 0 var(--space-6); font-size: clamp(1.2rem, 2.2vw, 1.6rem); line-height: 1.38; }
 .original-retry > p { color: var(--color-text-muted); }
 .original-retry fieldset { margin: 0 0 var(--space-4); padding: 0; border: 0; }
 .original-retry legend { margin-bottom: var(--space-3); font-weight: 700; }
-.original-retry #retry-feedback:not(:empty) { margin-bottom: var(--space-4); }
-.original-retry #retry-feedback p { margin: var(--space-2) 0; }
+.original-retry :is(#retry-feedback, #revision-feedback):not(:empty) { margin-bottom: var(--space-4); }
+.original-retry :is(#retry-feedback, #revision-feedback) p { margin: var(--space-2) 0; }
+.original-retry details { margin-block: var(--space-3); }
+.original-retry summary { color: var(--color-text-link); cursor: pointer; font-weight: 700; }
 .original-review-list { display: grid; gap: var(--space-4); }
 .original-review { padding: var(--card-padding); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
 .original-review h3 { margin: var(--space-2) 0; font-size: 1rem; line-height: 1.45; }
@@ -60,7 +62,7 @@
 .original-review small { color: var(--color-text-muted); }
 .original-review details { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-border); }
 .original-review summary { color: var(--color-text-link); font-weight: 700; cursor: pointer; }
-.original-practice-page :is(button, select, a, input, summary, #retry-question, #retry-complete):focus-visible { outline: 3px solid var(--color-primary-light); outline-offset: 3px; }
+.original-practice-page :is(button, select, a, input, summary, #retry-question, #retry-complete, #revision-question, #revision-complete, #revision-heading):focus-visible { outline: 3px solid var(--color-primary-light); outline-offset: 3px; }
 @media (max-width: 760px) {
   .original-wrap { padding-inline: var(--page-gutter-sm); }
   .original-quiz-layout { grid-template-columns: minmax(0, 1fr); }
