@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
   <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=2df74017">
 <meta name="afrotools-network-policy" content="local-only" data-source-owner="scripts/build-sw-paye-exact-three.js">
-<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a978b460" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -99,6 +99,14 @@
 .tog-label, .tog-rate { display: block; }
 html:not([data-theme="dark"]) .toggles .tog.on .tog-label { color: #fff; }
 html:not([data-theme="dark"]) .toggles .tog.on .tog-rate { color: #cbd5e1; }
+#resultsCard { scroll-margin-top: 76px; }
+.ug-paye-ai-action { display: none; }
+#ugPayeAskStatus:empty { display: none; }
+#ugPayeAskStatus:not(:empty) { margin: 10px 0 0; color: var(--color-text-muted); font-size: .78rem; }
+#ugPayeAskBtn:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+#calcSaveShell .calc-save-name-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+#calcSaveShell .calc-save-name-field label { color: var(--color-text-muted); font-size: .76rem; font-weight: 700; }
+#calcSaveShell .calc-save-button { align-self: end; }
 html[data-theme="dark"] .toggles .tog-label { color: var(--color-text); }
 html[data-theme="dark"] .toggles .tog-rate { color: var(--color-text-muted); }
 html[data-theme="dark"] #resultsCard .res-row-lbl { color: var(--color-text-muted) !important; }
@@ -111,6 +119,11 @@ html[data-theme="dark"] #resultsCard #effRateDisplay { color: var(--color-text) 
 html[data-theme="dark"] #resultsCard .chart-tab,
 html[data-theme="dark"] #resultsCard .calc-save-status,
 html[data-theme="dark"] #resultsCard .calc-save-empty span { color: var(--color-text-muted) !important; }
+html[data-theme="dark"] #calcSaveShell { background: var(--color-bg-card); border-color: var(--color-border-strong); }
+html[data-theme="dark"] #calcSaveShell .calc-save-empty,
+html[data-theme="dark"] #calcSaveShell .calc-save-card { background: var(--color-bg-subtle); border-color: var(--color-border-strong); }
+html[data-theme="dark"] #calcSaveShell .calc-save-card-actions button[data-action="load"] { color: #93c5fd; background: var(--color-bg-card); border-color: var(--color-border-strong); }
+html[data-theme="dark"] #calcSaveShell .calc-save-card-actions button[data-action="delete"] { color: #fca5a5; background: var(--color-bg-card); border-color: var(--color-border-strong); }
 html[data-theme="dark"] #resultsCard .per-btn.on,
 html[data-theme="dark"] #resultsCard .chart-tab.on { color: #fff !important; background: #1e40af !important; }
 button.rate-toggle { width: 100%; font: inherit; text-align: left; color: inherit; }
@@ -121,6 +134,9 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
 @media (max-width: 600px) {
   .tool-main-inner > div { min-width: 0; }
   .res-hero-amount { font-size: clamp(1.5rem, 7vw, 2.2rem); overflow-wrap: anywhere; }
+  .ug-paye-ai-action { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+  body.ug-paye-calculator-in-view afro-site-assistant { display: none !important; }
+  #calcSaveShell .calc-save-card-actions button { min-height: 44px; }
   .ng-guide-grid { grid-template-columns: minmax(0, 1fr); }
   .ng-guide-card-table { display: block; }
 }
@@ -283,7 +299,9 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
             WhatsApp
           </button>
           <button type="button" class="act-btn act-share" id="ugShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button>
+          <button type="button" class="act-btn ug-paye-ai-action" id="ugPayeAskBtn">Ask AfroTools AI</button>
         </div>
+        <p id="ugPayeAskStatus" role="status" aria-live="polite"></p>
         <p id="pdfStatus" role="status" aria-live="polite"></p>
         <div class="calc-save-shell" id="calcSaveShell">
           <div class="calc-save-head">
@@ -294,7 +312,10 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
             <a href="/dashboard/#myWorkspace">Open dashboard</a>
           </div>
           <div class="calc-save-form">
-            <input aria-label="Example: Kampala payroll or non resident check" class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Kampala payroll or non-resident check">
+            <div class="calc-save-name-field">
+              <label for="calcSaveName">Scenario name</label>
+              <input class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Kampala payroll or non-resident check">
+            </div>
             <button class="calc-save-button" id="calcSaveBtn" type="button" disabled>Run a Calculation First</button>
           </div>
           <div class="calc-save-status" id="calcSaveStatus" data-tone="muted"></div>
@@ -1311,6 +1332,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 <script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
+<script src="/assets/js/pages/uganda-paye-assistant-dock.js?v=e2b8603a" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>

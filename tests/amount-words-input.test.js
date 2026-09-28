@@ -32,11 +32,44 @@ for (const slug of ['amount-words-gh', 'naira-to-words']) {
     const max = slug === 'amount-words-gh' ? '999999999999' : maximum;
     const wording = raw => sandbox.amountToWords(engine.parse(raw, max), curr);
     assert.match(wording('0'), /Zero.*Only/);
-    assert.match(wording('0.01'), /(?:Pesewas One|One Kobo) Only/);
-    assert.match(wording('1.005'), /(?:Pesewas One|One Kobo) Only/);
+    if (slug === 'amount-words-gh') {
+      for (const [amount, expected] of [
+        ['1.00', 'Ghana Cedi One Only'],
+        ['0.01', 'Pesewa One Only'],
+        ['1.01', 'Ghana Cedi One and Pesewa One Only'],
+        ['1.005', 'Ghana Cedi One and Pesewa One Only'],
+        ['2.01', 'Ghana Cedis Two and Pesewa One Only'],
+        ['1.02', 'Ghana Cedi One and Pesewas Two Only'],
+        ['2.02', 'Ghana Cedis Two and Pesewas Two Only']
+      ]) assert.equal(wording(amount), expected, amount);
+    } else {
+      assert.match(wording('0.01'), /One Kobo Only/);
+      assert.match(wording('1.005'), /One Kobo Only/);
+    }
     assert.match(wording('999.995'), /One Thousand/);
     assert.match(wording(max + '.99'), /Ninety-Nine/);
     if (slug === 'naira-to-words') assert.match(wording(max + '.99'), /Trillion/);
     assert.doesNotMatch(wording(max + '.99'), /undefined|NaN/);
   });
 }
+
+test('naira-to-words uses singular GHS units and preserves NGN wording', () => {
+  const html = fs.readFileSync('tools/naira-to-words/index.html', 'utf8');
+  const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('function amountToWords('));
+  const sandbox = { window: { AfroTools: { engines: { amountWordsInput: engine } } } };
+  vm.runInNewContext(inline, sandbox);
+  const option = code => {
+    const tag = html.match(new RegExp(`<option value="${code}"[^>]*>`))?.[0];
+    assert.ok(tag, `${code} option is present`);
+    const dataset = {};
+    for (const [, name, value] of tag.matchAll(/data-([a-z-]+)="([^"]*)"/g)) {
+      dataset[name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+    }
+    return { dataset };
+  };
+  const wording = (raw, code) => sandbox.amountToWords(engine.parse(raw, maximum), option(code));
+  assert.equal(wording('1.01', 'GHS'), 'One Cedi and One Pesewa Only');
+  assert.equal(wording('2.02', 'GHS'), 'Two Cedis and Two Pesewas Only');
+  assert.equal(wording('1.01', 'NGN'), 'One Naira and One Kobo Only');
+  assert.equal(wording('2.02', 'NGN'), 'Two Naira and Two Kobo Only');
+});

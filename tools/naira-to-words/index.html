@@ -26,7 +26,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=6747d895">
-<script src="/assets/js/components/navbar.min.js?v=53420a6d" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a978b460" defer></script>
   <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
   <meta name="tool-id" content="naira-to-words">
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
@@ -155,7 +155,7 @@
     .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
     label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .95rem; }
-    .input-row { display: flex; gap: .75rem; margin-bottom: 1rem; }
+    .input-row { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: .75rem; margin-bottom: 1rem; }
     select, input[type="text"], input[type="number"] {
       width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border); border-radius: 10px;
       font-family: inherit; font-size: .95rem; transition: border .2s;
@@ -189,7 +189,7 @@
       .hero h1 { font-size: 1.6rem; }
       .hero { padding: 2rem 1rem; }
       .container { padding: 1rem; }
-      .input-row { flex-direction: column; }
+      .input-row { grid-template-columns: 1fr; }
       .doc-grid, .quality-row { grid-template-columns: 1fr; }
     }
   #amount { scroll-margin-top: 100px; }
@@ -254,28 +254,33 @@
 
   <div class="card">
     <h2>Enter Amount</h2>
-    <label for="amount">Amount to write in words</label>
     <div class="input-row">
-      <select id="currency" style="max-width:200px;" onchange="convert()" aria-label="Currency" disabled data-amount-control>
-        <option value="NGN" data-main="Naira" data-sub="Kobo">🇳🇬 NGN - Naira</option>
-        <option value="KES" data-main="Shillings" data-sub="Cents">🇰🇪 KES - Shilling</option>
-        <option value="GHS" data-main="Cedis" data-sub="Pesewas">🇬🇭 GHS - Cedi</option>
-        <option value="ZAR" data-main="Rand" data-sub="Cents">🇿🇦 ZAR - Rand</option>
-        <option value="EGP" data-main="Pounds" data-sub="Piastres">🇪🇬 EGP - Pound</option>
-        <option value="ETB" data-main="Birr" data-sub="Santim">🇪🇹 ETB - Birr</option>
-        <option value="UGX" data-main="Shillings" data-sub="Cents">🇺🇬 UGX - Shilling</option>
-        <option value="TZS" data-main="Shillings" data-sub="Senti">🇹🇿 TZS - Shilling</option>
-        <option value="XOF" data-main="Francs" data-sub="Centimes">🌍 XOF - CFA Franc (West)</option>
-        <option value="XAF" data-main="Francs" data-sub="Centimes">🌍 XAF - CFA Franc (Central)</option>
-        <option value="MAD" data-main="Dirhams" data-sub="Centimes">🇲🇦 MAD - Dirham</option>
-        <option value="RWF" data-main="Francs" data-sub="Centimes">🇷🇼 RWF - Franc</option>
-        <option value="MWK" data-main="Kwacha" data-sub="Tambala">🇲🇼 MWK - Kwacha</option>
-        <option value="ZMW" data-main="Kwacha" data-sub="Ngwee">🇿🇲 ZMW - Kwacha</option>
-        <option value="USD" data-main="Dollars" data-sub="Cents">🇺🇸 USD - Dollar</option>
-        <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
-        <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
-      </select>
-      <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal" disabled data-amount-control>
+      <div>
+        <label for="currency">Currency</label>
+        <select id="currency" onchange="convert()" disabled data-amount-control>
+          <option value="NGN" data-main="Naira" data-sub="Kobo">🇳🇬 NGN - Naira</option>
+          <option value="KES" data-main="Shillings" data-sub="Cents">🇰🇪 KES - Shilling</option>
+          <option value="GHS" data-main="Cedis" data-main-singular="Cedi" data-sub="Pesewas" data-sub-singular="Pesewa">🇬🇭 GHS - Cedi</option>
+          <option value="ZAR" data-main="Rand" data-sub="Cents">🇿🇦 ZAR - Rand</option>
+          <option value="EGP" data-main="Pounds" data-sub="Piastres">🇪🇬 EGP - Pound</option>
+          <option value="ETB" data-main="Birr" data-sub="Santim">🇪🇹 ETB - Birr</option>
+          <option value="UGX" data-main="Shillings" data-sub="Cents">🇺🇬 UGX - Shilling</option>
+          <option value="TZS" data-main="Shillings" data-sub="Senti">🇹🇿 TZS - Shilling</option>
+          <option value="XOF" data-main="Francs" data-sub="Centimes">🌍 XOF - CFA Franc (West)</option>
+          <option value="XAF" data-main="Francs" data-sub="Centimes">🌍 XAF - CFA Franc (Central)</option>
+          <option value="MAD" data-main="Dirhams" data-sub="Centimes">🇲🇦 MAD - Dirham</option>
+          <option value="RWF" data-main="Francs" data-sub="Centimes">🇷🇼 RWF - Franc</option>
+          <option value="MWK" data-main="Kwacha" data-sub="Tambala">🇲🇼 MWK - Kwacha</option>
+          <option value="ZMW" data-main="Kwacha" data-sub="Ngwee">🇿🇲 ZMW - Kwacha</option>
+          <option value="USD" data-main="Dollars" data-sub="Cents">🇺🇸 USD - Dollar</option>
+          <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
+          <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
+        </select>
+      </div>
+      <div>
+        <label for="amount">Amount to write in words</label>
+        <input type="text" id="amount" aria-describedby="amountHelp amountError" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal" disabled data-amount-control>
+      </div>
     </div>
     <p id="amountHelp">Use a non-negative amount. Extra decimal places are rounded to two places, with 5 rounded up.</p>
     <p id="amountError" role="status" aria-live="polite">Loading converter…</p>
@@ -547,8 +552,8 @@ function chunkToWords(n) {
 }
 
 function amountToWords(amount, currOpt) {
-  var mainUnit = currOpt.dataset.main;
-  var subUnit = currOpt.dataset.sub;
+  var mainUnit = amount.major === 1 && currOpt.dataset.mainSingular ? currOpt.dataset.mainSingular : currOpt.dataset.main;
+  var subUnit = amount.minor === 1 && currOpt.dataset.subSingular ? currOpt.dataset.subSingular : currOpt.dataset.sub;
   var main = amount.major;
   var sub = amount.minor;
   var result = '';

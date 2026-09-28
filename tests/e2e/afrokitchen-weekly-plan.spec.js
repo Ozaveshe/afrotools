@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const fs = require("node:fs/promises");
 
 async function quietExternalNoise(page) {
   await page.route("**/*", async function (route) {
@@ -176,6 +177,105 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   expect(kickerContrast).toBeGreaterThanOrEqual(4.5);
   expect(consoleErrors).toEqual([]);
 });
+
+const shoppingFixtureIngredients = [
+  { name: "vanilla beans", amount: 1, unit: "whole", group_name: "Sauce" },
+  { name: "alligator pepper", amount: 1.5, unit: "tsp", group_name: "Spice" },
+  { name: "lobster tails", amount: 2, unit: "whole", group_name: "Seafood" },
+  { name: "onion", amount: 2, unit: "large", group_name: "Base" },
+  { name: "onion", amount: 2, unit: "large", group_name: "Stew" },
+  { name: "water", amount: 8, unit: "cups", group_name: "Liquid" },
+  { name: "water", amount: 7.5, unit: "cups", group_name: "Liquid" }
+];
+
+test("AfroKitchen hides Show more after all search results are visible", async ({ page }) => {
+  await quietExternalNoise(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
+  await page.locator("#search-input").fill("jollof");
+  await expect(page.locator("#results-summary")).toContainText(/Showing \d+ of \d+ recipes? for "jollof"/, { timeout: 30000 });
+  await expect(page.locator("#recipes-more-wrap")).toHaveAttribute("hidden", "");
+  await expect(page.locator("#recipes-more")).toBeHidden();
+});
+
+for (const width of [320, 390]) {
+  for (const theme of ["light", "dark"]) {
+    test(`AfroKitchen shopping quantities and categories at ${width}px in ${theme} mode`, async ({ page }) => {
+      test.setTimeout(120000);
+      await quietExternalNoise(page);
+      await page.route("**/engines/afrokitchen-engine.js*", async function (route) {
+        const response = await route.fetch();
+        const recipes = shoppingFixtureIngredients.map(function (ingredient, index) {
+          return {
+            id: 9000 + index,
+            slug: `shopping-fixture-${index + 1}`,
+            name: `Shopping fixture ${index + 1}`,
+            country_code: "NG",
+            country_name: "Nigeria",
+            category: "main",
+            difficulty: "easy",
+            default_servings: 6,
+            prep_time_minutes: 10,
+            cook_time_minutes: 15,
+            ingredients: [ingredient]
+          };
+        });
+        const body = await response.text() + "\nAfroKitchenEngine.fetchRecipes = async function () { return " + JSON.stringify(recipes) + "; };";
+        await route.fulfill({ response, body });
+      });
+      await page.addInitScript(function (selectedTheme) {
+        localStorage.setItem("aft_theme", selectedTheme);
+        localStorage.setItem("afrotools_cookie_consent", "declined");
+        Object.defineProperty(navigator, "clipboard", {
+          configurable: true,
+          value: { writeText: async function (text) { window.__akCopiedText = text; } }
+        });
+      }, theme);
+      const consoleErrors = installConsoleGuard(page);
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
+      await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      await page.locator("#ak-plan-days").selectOption("7");
+      await page.locator("#ak-plan-time").selectOption("999");
+      await page.locator("#ak-plan-servings").fill("4");
+      await page.locator("#ak-plan-generate").click();
+      await expect(page.locator("#ak-plan-result")).toContainText("7-day plan ready", { timeout: 30000 });
+      const groups = await page.locator(".ak-plan-shopping-group").evaluateAll(function (nodes) {
+        return nodes.map(function (node) {
+          return {
+            name: node.querySelector("h4 span").textContent,
+            lines: Array.from(node.querySelectorAll("li"), function (line) { return line.textContent; })
+          };
+        });
+      });
+      const linesFor = function (name) { return (groups.find(function (group) { return group.name === name; }) || { lines: [] }).lines.join("\n"); };
+      expect(linesFor("Spices")).toContain("vanilla beans");
+      expect(linesFor("Spices")).toContain("alligator pepper");
+      expect(linesFor("Protein")).toContain("lobster tails");
+      expect(linesFor("Vegetables")).toContain("3 large onions");
+      expect(linesFor("Liquids")).toContain("10½ cups water");
+      expect(linesFor("Grains")).not.toContain("vanilla beans");
+      expect(linesFor("Vegetables")).not.toContain("alligator pepper");
+      expect(linesFor("Pantry")).not.toContain("lobster tails");
+      await page.locator("#ak-plan-copy").click();
+      await expect(page.locator("#ak-plan-status")).toContainText("Shopping list copied");
+      const copiedText = await page.evaluate(function () { return window.__akCopiedText; });
+      expect(copiedText).toContain("3 large onions");
+      expect(copiedText).toContain("10½ cups water");
+      groups.forEach(function (group) {
+        expect(copiedText).toContain(group.name + ":");
+        group.lines.forEach(function (line) { expect(copiedText).toContain("- " + line); });
+      });
+      const download = await Promise.all([
+        page.waitForEvent("download"),
+        page.locator("#ak-plan-export").click()
+      ]).then(function (values) { return values[0]; });
+      expect(await fs.readFile(await download.path(), "utf8")).toContain(copiedText);
+      expect(await page.evaluate(function () { return document.documentElement.scrollWidth - document.documentElement.clientWidth; })).toBeLessThanOrEqual(1);
+      expect(consoleErrors).toEqual([]);
+    });
+  }
+}
 
 test("AfroKitchen saves a side as an idea and guides the visitor to a meal", async ({ page }) => {
   await quietExternalNoise(page);

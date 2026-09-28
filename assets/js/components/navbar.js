@@ -99,7 +99,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=e626f6df';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=ab27dc13';
   // NAVBAR_CSS_HREF_END
 
   // NAVBAR_TOP_LEVEL_DATA_START
@@ -1715,6 +1715,7 @@
       };
       const setMenuOpen = (isOpen) => {
         this._menuOpen = isOpen;
+        this.classList.toggle('menu-open', this._menuOpen);
         burger?.classList.toggle('open', this._menuOpen);
         mob?.classList.toggle('open', this._menuOpen);
         mob?.setAttribute('aria-hidden', String(!this._menuOpen));
