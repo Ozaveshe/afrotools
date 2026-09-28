@@ -333,6 +333,19 @@ test('shared page-refresh CSS cache changes preserve formulas and route protecti
   }
 });
 
+test('typography token cache changes preserve reviewed digests without hiding calculator changes', function () {
+  const page = (hash, rate = '0.15') => '<script>const rate = ' + rate +
+    '; const printHtml = \'<link rel="stylesheet" href="/assets/css/tokens.min.css?v=' + hash + '">\';</script>';
+  const before = page('f987f2a8');
+  const after = page('7f33039a');
+  assert.strictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(after));
+  for (const changed of [page('7f33039a', '0.16'), after.replace('tokens.min.css', 'calculator.min.css'), after.replace('7f33039a', '7f33039a&mode=other')]) {
+    assert.notStrictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(changed));
+  }
+  const shell = (hash) => '<link rel="stylesheet" href="/assets/css/tokens.min.css?v=' + hash + '">';
+  assert.strictEqual(quality.digestHtmlFormulaSource(shell('f987f2a8')), quality.digestHtmlFormulaSource(shell('7f33039a')));
+});
+
 test('formula country, currency, route, and source jurisdictions agree', function () {
   const result = quality.checkCountryIdentity(artifacts, ROOT);
   assert.deepStrictEqual(result.errors, []);

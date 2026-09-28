@@ -187,6 +187,15 @@ function normalizeHtmlFormulaPresentation(source) {
       "$19ab47fa3",
     )
     .replace(
+      /(assets\/css\/tokens\.min\.css\?v=)[a-f0-9]{8}/gi,
+      function normalizeTokensCssHash(match, prefix) {
+        // Retain the reviewed pre-typography representation. Only this
+        // stylesheet's build key is presentation; paths and other query
+        // fields, as well as all calculator code, remain protected.
+        return prefix + "f987f2a8";
+      },
+    )
+    .replace(
       /(assets\/css\/global(?:\.min)?\.css\?v=)[a-f0-9]{8}/gi,
       function normalizeGlobalCssHash(match, prefix) {
         return prefix + "0ff6e9dc";
