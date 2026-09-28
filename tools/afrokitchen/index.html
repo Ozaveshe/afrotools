@@ -165,7 +165,7 @@
 <script src="/assets/js/african-workflow.js?v=932feed9" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=b353fc1d">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
-<link rel="stylesheet" href="home-improvements.css?v=dcfe994d">
+<link rel="stylesheet" href="home-improvements.css?v=4b6a5d12">
 <link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/">
@@ -1300,6 +1300,8 @@
     var grid = document.getElementById('recipes-grid');
     var loading = document.getElementById('recipes-loading');
     var empty = document.getElementById('recipes-empty');
+    currentRecipes = [];
+    updateMoreButton();
     grid.innerHTML = '';
     loading.style.display = '';
     empty.style.display = 'none';
@@ -1620,6 +1622,7 @@
   function renderPlanEmpty(message, inputs, matchedCount) {
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
+    document.body.removeAttribute('data-ak-print-plan');
     currentPlanText = '';
     currentShoppingText = '';
     var chips = inputs ? '<div class="ak-plan-chip-row">' + planFilterChips(inputs) + '</div>' : '';
@@ -2033,6 +2036,7 @@
           '<div class="ak-plan-shopping"><h3>' + planIcon('shopping') + '<span>Grouped shopping list</span></h3><div class="ak-plan-shopping-grid">' + shopping + '</div></div>' +
         '</div>' +
       '</section>';
+    document.body.setAttribute('data-ak-print-plan', '');
     var regenerateButton = document.getElementById('ak-plan-regenerate');
     var saveButton = document.getElementById('ak-plan-save');
     var copyButton = document.getElementById('ak-plan-copy');

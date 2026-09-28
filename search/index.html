@@ -35,10 +35,10 @@
       --green-dim: rgba(0,98,204,0.12);
       --dark: var(--color-bg-dark);
       --ink: var(--color-text);
-      --muted: #6B7280;
-      --border: #E5E7EB;
+      --muted: var(--color-text-muted);
+      --border: var(--color-border);
       --bg: var(--color-bg);
-      --card-bg: #fff;
+      --card-bg: var(--color-surface);
       --radius: 14px;
     }
 
@@ -110,6 +110,11 @@
       border-color: var(--green);
       background: rgba(255,255,255,0.11);
     }
+    /* Keep the query field flexible when shared form guardrails load later. */
+    #search-header .search-bar { flex-wrap: nowrap; }
+    #search-header .search-bar-icon,
+    #search-header .search-hint { flex: 0 0 auto; }
+    #search-header #search-input { flex: 1 1 0%; }
     .search-bar-icon {
       padding: 0 14px 0 18px;
       color: rgba(255,255,255,0.4);
@@ -405,6 +410,8 @@
     .result-card:nth-child(n+8) { animation-delay: 210ms; }
 
     .rc-icon {
+      /* Category tiles keep pale backgrounds in both themes. */
+      color: var(--_neutral-800, #0f172a);
       width: 48px;
       height: 48px;
       border-radius: 12px;
@@ -439,6 +446,11 @@
       border-radius: 2px;
       padding: 0 1px;
       font-weight: 800;
+    }
+    html[data-theme="dark"] .rc-name mark,
+    html[data-theme="dark"] .rc-desc mark {
+      color: var(--color-primary-light);
+      background: rgba(var(--color-primary-rgb), 0.2);
     }
     .rc-badges {
       display: flex;
@@ -694,13 +706,16 @@
         box-shadow: var(--shadow-lg, 0 24px 60px rgba(15,23,42,0.22));
         transform: translateY(calc(100% + 24px));
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition: transform 0.2s ease, opacity 0.2s ease, visibility 0s linear 0.2s;
       }
       .filter-panel.is-open {
         transform: translateY(0);
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
+        transition: transform 0.2s ease, opacity 0.2s ease;
       }
       .filter-scroll {
         gap: 8px;
@@ -995,6 +1010,7 @@ var filterChips   = document.getElementById('filter-chips');
 var filterPanel   = document.getElementById('filter-panel');
 var filterToggle  = document.getElementById('filter-toggle');
 var moreFilters   = document.getElementById('more-filters');
+var mobileFilterLayout = window.matchMedia('(max-width:640px)');
 var isSearchReady = false;
 var isFullTextSearchReady = false;
 var requestSearchIndexLoad = function() {};
@@ -1591,6 +1607,33 @@ function syncFilterUI() {
   }
 }
 
+function syncFilterPanelAccess() {
+  if (!filterPanel) return;
+  var closedOnMobile = mobileFilterLayout.matches && !filterPanel.classList.contains('is-open');
+  if (closedOnMobile && filterPanel.contains(document.activeElement) && filterToggle) {
+    filterToggle.focus();
+  }
+  filterPanel.inert = closedOnMobile;
+  if (closedOnMobile) filterPanel.setAttribute('aria-hidden', 'true');
+  else filterPanel.removeAttribute('aria-hidden');
+}
+
+function setFilterPanelOpen(open, restoreFocus) {
+  if (!filterPanel) return;
+  if (!open && restoreFocus && mobileFilterLayout.matches && filterToggle) {
+    filterToggle.focus();
+  }
+  filterPanel.classList.toggle('is-open', open);
+  if (filterToggle) filterToggle.setAttribute('aria-expanded', String(open));
+  syncFilterPanelAccess();
+}
+
+if (typeof mobileFilterLayout.addEventListener === 'function') {
+  mobileFilterLayout.addEventListener('change', syncFilterPanelAccess);
+} else {
+  mobileFilterLayout.addListener(syncFilterPanelAccess);
+}
+
 // ════════════════════════════════════════════════════════════
 // URL STATE
 // ════════════════════════════════════════════════════════════
@@ -1652,6 +1695,7 @@ function setQuery(q) {
 
 function setFilter(f) {
   if (!f) return;
+  var closesMobilePanel = mobileFilterLayout.matches && filterPanel && filterPanel.classList.contains('is-open');
   if (!isSearchReady) requestSearchIndexLoad();
   state.filter = f;
   state.page = 1;
@@ -1660,8 +1704,7 @@ function setFilter(f) {
   // Scroll chip into view
   var activeChip = document.querySelector('.chip.active');
   if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  if (filterPanel) filterPanel.classList.remove('is-open');
-  if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
+  setFilterPanelOpen(false, closesMobilePanel);
 
   pushURL();
   doRender();
@@ -1706,8 +1749,7 @@ filterChips.addEventListener('click', function(e) {
 if (filterToggle && filterPanel) {
   filterToggle.addEventListener('click', function() {
     var open = !filterPanel.classList.contains('is-open');
-    filterPanel.classList.toggle('is-open', open);
-    filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    setFilterPanelOpen(open, !open);
   });
 }
 
@@ -1735,6 +1777,16 @@ resultsEl.addEventListener('keydown', function(e) {
 });
 
 // Sort
+sortSelect.addEventListener('focus', function() {
+  requestAnimationFrame(function() {
+    if (document.activeElement !== sortSelect) return;
+    var header = document.getElementById('search-header');
+    var navbar = document.querySelector('afro-navbar');
+    var visibleTop = Math.max(header ? header.getBoundingClientRect().bottom : 0, navbar ? navbar.getBoundingClientRect().bottom : 0) + 8;
+    var top = sortSelect.getBoundingClientRect().top;
+    if (top < visibleTop) window.scrollBy({ top: top - visibleTop, behavior: 'instant' });
+  });
+});
 sortSelect.addEventListener('change', function() {
   state.sort = this.value;
   state.page = 1;
@@ -1763,9 +1815,7 @@ document.addEventListener('keydown', function(e) {
     searchInput.select();
   }
   if (e.key === 'Escape' && filterPanel && filterPanel.classList.contains('is-open')) {
-    filterPanel.classList.remove('is-open');
-    if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
-    filterToggle && filterToggle.focus();
+    setFilterPanelOpen(false, true);
     return;
   }
   if (e.key === 'Escape' && document.activeElement === searchInput) {
@@ -1777,6 +1827,7 @@ document.addEventListener('keydown', function(e) {
 // INIT
 // ════════════════════════════════════════════════════════════
 (function init() {
+  syncFilterPanelAccess();
   readURL();
   doRender();
   var registryUnavailableTimer = setTimeout(renderRegistryUnavailable, 8000);

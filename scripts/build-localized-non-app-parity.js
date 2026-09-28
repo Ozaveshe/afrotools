@@ -112,6 +112,25 @@ function count(html, pattern) {
   return (html.match(pattern) || []).length;
 }
 
+function structuralMetrics(html) {
+  // Script, style and comment text are not rendered document controls.
+  // Runtime behavior is verified separately by browser contracts.
+  const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ');
+  return {
+    h1: count(markup, /<h1\b/gi),
+    h2: count(markup, /<h2\b/gi),
+    h3: count(markup, /<h3\b/gi),
+    links: count(markup, /<a\b/gi),
+    buttons: count(markup, /<button\b/gi),
+    forms: count(markup, /<form\b/gi),
+    inputs: count(markup, /<(?:input|textarea|select)\b/gi),
+    images: count(markup, /<img\b/gi),
+    changeEntries: count(markup, /data-change-entry\b/gi),
+  };
+}
+
 function metrics(record) {
   if (!record) return null;
   const routeFile = record.route === '/'
@@ -133,15 +152,7 @@ function metrics(record) {
   return {
     file: metricFile,
     words: visible ? visible.split(/\s+/).length : 0,
-    h1: count(html, /<h1\b/gi),
-    h2: count(html, /<h2\b/gi),
-    h3: count(html, /<h3\b/gi),
-    links: count(html, /<a\b/gi),
-    buttons: count(html, /<button\b/gi),
-    forms: count(html, /<form\b/gi),
-    inputs: count(html, /<(?:input|textarea|select)\b/gi),
-    images: count(html, /<img\b/gi),
-    changeEntries: count(html, /data-change-entry\b/gi),
+    ...structuralMetrics(html),
     schemaBlocks: count(html, /application\/ld\+json/gi),
     hasFaqSchema: /["']FAQPage["']/i.test(html),
     hasCanonical: /<link\b[^>]*\brel=["']canonical["']/i.test(html),
@@ -400,4 +411,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { assess, build, classify, metrics };
+module.exports = { assess, build, classify, metrics, structuralMetrics };

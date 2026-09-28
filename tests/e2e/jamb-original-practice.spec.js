@@ -52,16 +52,19 @@ for (const legacy of [
 }
 
 test('320px practice shows the question before navigation and submission', async ({ page }) => {
-  const generated = publications(source).outputs;
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.route('**/data/jamb/pools/original-practice*.json', route => {
-    const file = new URL(route.request().url()).pathname.slice(1);
-    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(generated[file]) });
-  });
-  await page.route('**/engines/jamb-cbt-engine.js', route => route.fulfill({
-    status: 200, contentType: 'application/javascript',
-    body: fs.readFileSync(path.resolve(__dirname, '../../engines/src/jamb-cbt-engine.js'), 'utf8')
-  }));
+  // Artifact runs exercise the emitted public pool and minified engine.
+  if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT !== '1') {
+    const generated = publications(source).outputs;
+    await page.route('**/data/jamb/pools/original-practice*.json', route => {
+      const file = new URL(route.request().url()).pathname.slice(1);
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(generated[file]) });
+    });
+    await page.route('**/engines/jamb-cbt-engine.js', route => route.fulfill({
+      status: 200, contentType: 'application/javascript',
+      body: fs.readFileSync(path.resolve(__dirname, '../../engines/src/jamb-cbt-engine.js'), 'utf8')
+    }));
+  }
   await page.goto('/jamb/original-practice/?subject=mathematics');
   await expect(page.getByRole('heading', { name: /Practise a subject/ })).toBeVisible();
   await expect(page.locator('#start-btn')).toBeEnabled();
