@@ -167,7 +167,7 @@
     .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
     .btn-outline:hover { border-color: var(--green); color: var(--green); }
     .result-box { background: var(--light-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; font-size: 1.15rem; font-weight: 600; color: var(--dark); line-height: 1.5; min-height: 60px; margin-bottom: 1rem; }
-    .result-box .currency-label { display: block; font-size: .8rem; font-weight: 500; color: #888; margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .5px; }
+    .result-box .currency-label { display: block; font-size: .8rem; font-weight: 500; color: var(--color-text-muted); margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .5px; }
     .format-display { font-size: .95rem; color: #666; margin-bottom: 1rem; }
     .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; }
     .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 1rem; }
@@ -193,6 +193,17 @@
       .doc-grid, .quality-row { grid-template-columns: 1fr; }
     }
   #amount { scroll-margin-top: 100px; }
+
+    [data-amount-print-sheet] { display: none; }
+    @media print {
+      body[data-amount-printing] > :not([data-amount-print-sheet]) { display: none !important; }
+      body[data-amount-printing] { margin: 0 !important; padding: 0 !important; background: #fff !important; color: #111 !important; }
+      body[data-amount-printing] [data-amount-print-sheet] { display: block !important; font: 12pt/1.5 Arial, sans-serif; color: #111; background: #fff; overflow-wrap: anywhere; }
+      [data-amount-print-sheet] h1 { color: #111 !important; font-size: 20pt; margin: 0 0 16pt; }
+      [data-amount-print-sheet] dt { font-weight: bold; margin-top: 12pt; }
+      [data-amount-print-sheet] dd { margin: 0; white-space: pre-wrap; }
+      [data-amount-print-sheet] footer { margin-top: 24pt; font-size: 10pt; }
+    }
 </style>
 <script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
@@ -523,6 +534,9 @@ var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','
 var scales = ['','Thousand','Million','Billion','Trillion'];
 var lastWords = '';
 var lastDocumentLine = '';
+var amountRevision = 0;
+var amountCopyAttempt = 0;
+var amountToastTimer;
 
 function numToWords(n) {
   if (n === 0) return 'Zero';
@@ -600,6 +614,11 @@ function renderQuality(amount, raw) {
 }
 
 function convert() {
+  amountRevision += 1;
+  if (typeof finishAmountPrint === 'function') finishAmountPrint();
+  clearTimeout(amountToastTimer);
+  document.getElementById('toast').textContent = '';
+  document.getElementById('toast').classList.remove('show');
   var input = document.getElementById('amount');
   var amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999999');
   var card = document.getElementById('resultCard');
@@ -632,20 +651,41 @@ function convert() {
 }
 
 function copyResult() {
-  if (convert()) copyAmountText(lastWords);
+  if (convert()) copyAmountText(lastWords, document.querySelector('[onclick="copyResult()"]'));
 }
 
 function copyDocumentLine() {
-  if (convert()) copyAmountText(lastDocumentLine);
+  if (convert()) copyAmountText(lastDocumentLine, document.querySelector('[onclick="copyDocumentLine()"]'));
 }
 
-function copyAmountText(text) {
-  var fallback = function() {
-    showToast('Select and copy the result, or use the copy dialog.');
-    window.prompt('Copy amount text', text);
+function copyAmountText(text, button) {
+  const revision = amountRevision;
+  const attempt = ++amountCopyAttempt;
+  const focusedControl = () => {
+    let control = document.activeElement;
+    while (control?.shadowRoot?.activeElement) control = control.shadowRoot.activeElement;
+    return control;
   };
-  if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
-  navigator.clipboard.writeText(text).then(function(){ showToast('Copied!'); }).catch(fallback);
+  const requestFocus = focusedControl();
+  const words = lastWords;
+  const documentLine = lastDocumentLine;
+  const current = () => revision === amountRevision && attempt === amountCopyAttempt &&
+    button && button.isConnected && words === lastWords && documentLine === lastDocumentLine && !!lastWords;
+  const feedback = message => { if (current()) showToast(message); };
+  const fallback = () => {
+    if (!current()) return;
+    if (focusedControl() !== requestFocus) {
+      feedback('Automatic copy is unavailable. Select and copy the result shown on this page.');
+      return;
+    }
+    feedback('Automatic copy is unavailable. Select and copy the result, or use the copy dialog.');
+    try { window.prompt('Copy amount text', text); }
+    catch (_) { feedback('Automatic copy is unavailable. Select and copy the result shown on this page.'); }
+  };
+  try {
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') { fallback(); return; }
+    Promise.resolve(navigator.clipboard.writeText(text)).then(() => feedback('Copied!'), fallback);
+  } catch (_) { fallback(); }
 }
 
 function clearAll() {
@@ -656,16 +696,86 @@ function clearAll() {
   document.getElementById('qualityRow').style.display = 'none';
   document.getElementById('resultCard').style.display = 'none';
   convert();
-  document.getElementById('amount').focus();
+  revealAmountControl(document.getElementById('amount'));
 }
 
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  clearTimeout(amountToastTimer);
+  amountToastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
 </script>
+
+<script>
+// This wording export belongs to this page; shared workflow exports are unchanged.
+function revealAmountControl(control) {
+  control.focus({ preventScroll: true });
+  control.scrollIntoView({ behavior: 'instant', block: 'center' });
+  requestAnimationFrame(() => {
+    if (document.activeElement !== control) return;
+    const host = document.querySelector('afro-navbar');
+    const header = (host && (host.shadowRoot?.querySelector('nav') || host))?.getBoundingClientRect().bottom || 0;
+    const rect = control.getBoundingClientRect();
+    if (rect.top < header || rect.bottom > innerHeight) control.scrollIntoView({ behavior: 'instant', block: 'center' });
+  });
+}
+
+function finishAmountPrint() {
+  document.querySelector('[data-amount-print-sheet]')?.remove();
+  document.body.removeAttribute('data-amount-printing');
+}
+
+function prepareAmountPrint() {
+  finishAmountPrint();
+  if (!lastWords || !lastDocumentLine) return;
+  const sheet = document.createElement('section');
+  sheet.setAttribute('data-amount-print-sheet', '');
+  const heading = document.createElement('h1');
+  heading.textContent = 'Amount wording';
+  sheet.appendChild(heading);
+  const list = document.createElement('dl');
+  const rows = [
+    ['Amount in figures', document.getElementById('formatted').textContent],
+    ['Amount in words', lastWords],
+    ['Document format', document.getElementById('docMode').selectedOptions[0].textContent],
+    ['Document line', lastDocumentLine]
+  ];
+  const payee = document.getElementById('payeeName').value.trim();
+  const reference = document.getElementById('docReference').value.trim();
+  if (payee) rows.push(['Payee', payee]);
+  if (reference) rows.push(['Reference', reference]);
+  for (const [label, value] of rows) {
+    const term = document.createElement('dt');
+    const detail = document.createElement('dd');
+    term.textContent = label;
+    detail.textContent = value;
+    list.append(term, detail);
+  }
+  sheet.appendChild(list);
+  const caveat = document.createElement('footer');
+  caveat.textContent = 'AfroTools — Naira and currency amount to words. Check that the written amount matches the figures before signing, printing, or sharing. The "Only" suffix is kept to reduce room for extra words after the amount.';
+  sheet.appendChild(caveat);
+  document.body.appendChild(sheet);
+  document.body.setAttribute('data-amount-printing', '');
+}
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('[data-afw-pdf]') || lastWords) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (document.getElementById('amount').disabled) {
+    document.getElementById('amountError').textContent = 'Unable to load the converter. Reload to try again.';
+    return;
+  }
+  document.getElementById('amountError').textContent = 'Enter a valid amount before exporting a wording PDF.';
+  revealAmountControl(document.getElementById('amount'));
+}, true);
+window.addEventListener('beforeprint', prepareAmountPrint);
+window.addEventListener('afterprint', finishAmountPrint);
+</script>
+
 <script>
 if (window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.amountWordsInput) {
   document.querySelectorAll('[data-amount-control]').forEach(function (control) { control.disabled = false; });
