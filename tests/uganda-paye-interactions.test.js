@@ -3,8 +3,16 @@ const vm = require('vm');
 const assert = require('assert');
 const html = fs.readFileSync('uganda/ug-paye.html', 'utf8');
 const nodes = new Map();
-const node = id => { if (!nodes.has(id)) nodes.set(id, {textContent:'', disabled:false}); return nodes.get(id); };
+const node = id => {
+ if (!nodes.has(id)) nodes.set(id, {
+  textContent:'', disabled:false, isConnected:true, attributes:{},
+  setAttribute(name, value) { this.attributes[name] = String(value); },
+  removeAttribute(name) { delete this.attributes[name]; }
+ });
+ return nodes.get(id);
+};
 const context = { document:{getElementById:node}, window:{}, Date,
+ exportRevision:0, pdfAttempt:0,
  RESULT:{netMonthly:1073000,annualNet:12876000,gross:1500000,annualGross:18000000},
  PERIOD:'annual', fmt:String, pct:String, renderRows:(_,period)=>period };
 vm.createContext(context);
