@@ -424,6 +424,9 @@
     .ai-open:hover,.ai-open:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
     .ai-browse{border:1px solid var(--ai-border);background:#fff;color:var(--ai-primary)}
     .ai-browse:hover,.ai-browse:focus-visible{border-color:#9fc4ff;background:#eff6ff}
+    :root[data-theme="dark"] body .ai-amount-words-result .ai-open,
+    :root[data-theme="dark"] body .ai-amount-words-result .ai-small-button.primary{background:var(--dm-blue-solid)!important;border-color:var(--dm-blue-solid)!important;color:var(--dm-text)!important;box-shadow:none!important}
+    :root[data-theme="dark"] body .ai-amount-words-result .ai-browse{background:var(--dm-surface-raised)!important;border-color:var(--dm-border-strong)!important;color:var(--dm-blue)!important}
     .ai-section-title{margin:0 0 6px;color:#0f172a;font-size:1.35rem;line-height:1.2;font-weight:900}
     .ai-fallback-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
     .ai-main a[href].ai-fallback-card{display:grid;align-items:stretch;gap:8px;min-height:150px;border:1px solid var(--ai-border);border-radius:var(--ai-radius);background:#fff;padding:13px;text-decoration:none;color:inherit}
@@ -853,6 +856,7 @@
   <script src="/assets/js/ai/usage-limits.js?v=8177fe31"></script>
   <script src="/assets/js/ai/pro-monetization.js?v=754f962e"></script>
   <script src="/assets/js/ai/direct-answer.js?v=dd671162"></script>
+  <script src="/assets/js/ai/amount-words-routing.js"></script>
   <script>
   (function () {
     "use strict";
@@ -918,6 +922,8 @@
     var lastConsentRequestKey = "";
     var lastClarificationShownKey = "";
     var routerManifestCache = null;
+    var amountWordsRouting = window.AfroToolsAIAmountWordsRouting || null;
+    var routeGeneration = 0;
 
     var WORKFLOWS = [
       card("cv-builder", "CV Builder", "/tools/cv-builder/", "Create or improve a CV/resume for an African job market.", ["cv", "resume", "curriculum vitae", "ats"], ["Target role", "Country or market"], "employment", "browser_local"),
@@ -3420,6 +3426,19 @@
         workflowState = state;
       }
       var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      if (match.amountWordsCurrency) {
+        var currency = match.amountWordsCurrency;
+        var instructions = "Enter your amount in the converter.";
+        if (currency.toolId === "naira-to-words") instructions += " Then choose " + currency.label + " (" + currency.code + ") from Currency.";
+        return {
+          workflow: workflow,
+          launch: launch,
+          html: '<article class="ai-workflow-card ai-amount-words-result" data-workflow-card role="listitem" data-tool-id="' + escapeHtml(workflow.id) + '">' +
+            '<div class="ai-card-head"><div><span class="ai-card-kicker">Amount to words</span><h3 class="ai-card-title">' + escapeHtml(currency.label + " (" + currency.code + ")") + '</h3><p class="ai-card-reason" role="status">' + escapeHtml(instructions) + '</p></div></div>' +
+            '<div class="ai-actions is-primary"><a class="ai-open" data-open-tool data-tool-id="' + escapeHtml(workflow.id) + '" data-supported="false" href="' + escapeHtml(currency.route) + '">Open converter</a><a class="ai-browse" href="/search/?source=ai_private" data-private-search>Search instead</a></div>' +
+            '<div class="ai-notice">Matched in this browser. Your amount is not prefilled or added to the tool URL.</div></article>'
+        };
+      }
       var search = workflowSearchUrl(workflow);
       var privacy = match.highStakesNotice || launch.privacyNote || "Planning help only. Confirm high-stakes decisions with official sources where needed.";
       var sourceHint = sourceHintForTool(match.selectedToolId || workflow.id);
@@ -4145,6 +4164,49 @@
       });
     }
 
+    function showAmountWordsCurrency(currency, query) {
+      var workflow = card(currency.toolId, "Amount to Words (" + currency.label + ")", currency.route, "Write a monetary amount in words.", [], [], "none", "browser_local");
+      var match = { source: "deterministic", confidence: 0.95, workflow: workflow, selectedToolId: currency.toolId, selectedRoute: currency.route, extractedInputs: {}, missingInputs: [], privacyMode: "browser_local", safetyDomain: "none", intentCategory: "african", amountWordsCurrency: currency };
+      match.toolExecution = buildToolPrefillUrl(currency.toolId, {}, {}, currency.route);
+      // This is a route-only launch: do not imply a prefill handoff in its URL.
+      match.toolExecution.launchUrl = currency.route;
+      workflowState = createWorkflowState(match, query, false);
+      renderMatches(resultCards, [match], query, true);
+      setState("result");
+      showConsentCard(true);
+    }
+
+    function routeAmountWordsLocally(query) {
+      var result = amountWordsRouting && amountWordsRouting.detect(query);
+      if (!result) return false;
+      if (result.status === "matched") {
+        showAmountWordsCurrency(result.currency, query);
+        return true;
+      }
+      activeMatch = null;
+      workflowState = createEmptyWorkflowState();
+      workflowState.originalQuery = query;
+      workflowState.source = "deterministic";
+      resultCards.innerHTML = '<section class="ai-workflow-card ai-amount-words-result" role="listitem" aria-labelledby="aiAmountWordsCurrencyTitle" data-amount-words-choice>' +
+        '<div class="ai-card-head"><div><h3 class="ai-card-title" id="aiAmountWordsCurrencyTitle">Which currency do you need?</h3><p class="ai-card-reason" role="status">Choose the currency you want to write in words. You will enter the amount in the converter; this step does not prefill it.</p></div></div>' +
+        '<form class="ai-clarification" data-amount-words-currency-form><div class="ai-clarification-field"><label for="aiAmountWordsCurrency">Currency</label><select id="aiAmountWordsCurrency" required><option value="">Choose a currency</option>' +
+        result.currencies.map(function (currency) { return '<option value="' + currency.code + '">' + escapeHtml(currency.label + " (" + currency.code + ")") + '</option>'; }).join("") + '</select></div>' +
+        '<div class="ai-actions"><button class="ai-small-button primary" type="submit">Use this currency</button><a class="ai-browse" href="/search/?source=ai_private" data-private-search>Currency missing? Search tools</a></div></form></section>';
+      resultCards.querySelector("[data-amount-words-currency-form]").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var code = resultCards.querySelector("#aiAmountWordsCurrency").value;
+        var currency = result.currencies.filter(function (item) { return item.code === code; })[0];
+        if (currency) {
+          showAmountWordsCurrency(currency, query);
+          resultCards.querySelector("[data-open-tool]").focus();
+        }
+      });
+      resultCards.querySelector("[data-private-search]").addEventListener("click", function () { savePrivateSearchHandoff(query, "ai_result"); });
+      setState("result");
+      showConsentCard(true);
+      return true;
+    }
+
     /*
      * Wait for the catalog before giving up on a query.
      *
@@ -4154,15 +4216,17 @@
      * well as success, so a failed fetch still falls through to the same
      * no-match path rather than hanging the result surface.
      */
-    function handleLowConfidence(query) {
+    function handleLowConfidence(query, generation) {
+      if (generation !== routeGeneration) return;
       if (!getRouterManifest().length) {
-        ensureToolDirectory().then(function () { handleLowConfidenceNow(query); });
+        ensureToolDirectory().then(function () { handleLowConfidenceNow(query, generation); });
         return;
       }
-      handleLowConfidenceNow(query);
+      handleLowConfidenceNow(query, generation);
     }
 
-    function handleLowConfidenceNow(query) {
+    function handleLowConfidenceNow(query, generation) {
+      if (generation !== routeGeneration) return;
       var catalogMatch = localCatalogRoute(query);
       if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
         workflowState = createWorkflowState(catalogMatch, query, false);
@@ -4212,11 +4276,15 @@
     }
 
     function routeQuery(query, options) {
+      var generation = ++routeGeneration;
       var consentToModel = Boolean(options && options.consentToModel);
       var clean = String(query || "").trim();
       updateUrl(clean);
       lastClarificationShownKey = "";
       if (!clean) {
+        workflowState = createEmptyWorkflowState();
+        activeMatch = null;
+        clearWorkflowCards();
         setState("empty");
         showConsentCard(false);
         updateIntentDebug();
@@ -4236,10 +4304,12 @@
         source: entrySource,
         consentToModel: consentToModel
       });
+      if (!consentToModel && routeAmountWordsLocally(clean)) return;
       callRouter(clean, consentToModel).then(function (payload) {
+        if (generation !== routeGeneration) return;
         var match = fromServerDecision(payload, clean);
         if (!match || !match.workflow || match.workflow.id === "tool-search" || Number(match.confidence || 0) < LOW_CONFIDENCE) {
-          handleLowConfidence(clean);
+          handleLowConfidence(clean, generation);
           return;
         }
         match.source = consentToModel ? "router" : match.source;
@@ -4261,6 +4331,7 @@
           modelStatus.textContent = fallbackCopy || (consentToModel ? "AI help was requested with consent. Review the selected tool before opening it." : "");
         }
       }).catch(function (err) {
+        if (generation !== routeGeneration) return;
         var routerDisabled = err && err.message === "Router disabled for this session.";
         var catalogMatch = routerDisabled ? null : localCatalogRoute(clean);
         if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
@@ -4285,7 +4356,7 @@
         track("ai_command_fallback_used", { reason: "router_failure", query_length: clean.length });
         if (!fallback) {
           if (routerDisabled) {
-            handleLowConfidence(clean);
+            handleLowConfidence(clean, generation);
             return;
           }
           workflowState = createEmptyWorkflowState();
@@ -4378,8 +4449,7 @@
     input.addEventListener("keydown", function (event) {
       if (event.key !== "Escape" || !input.value) return;
       input.value = "";
-      updateUrl("");
-      setState("empty");
+      routeQuery("");
       input.focus();
     });
 
