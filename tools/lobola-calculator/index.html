@@ -183,6 +183,14 @@
     }
     @media(max-width:480px){.stat-row,.negotiation-grid{grid-template-columns:1fr}.copy-plan{width:100%}.btn-row,.result-actions{flex-direction:column}.btn{width:100%}}
     @media print{afro-navbar,afro-footer,afro-newsletter-cta,.tool-hero,.btn-row,.result-actions{display:none!important}.wrap{max-width:100%;padding:0}.card,.content-section,.context-card,.breakdown,.payment-section,.negotiation-section{box-shadow:none;break-inside:avoid}}
+    [data-lobola-print-summary]{display:none}
+    @media print{
+      body[data-lobola-printing]{background:#fff!important;color:#111!important}
+      body[data-lobola-printing]>:not([data-lobola-print-summary]){display:none!important}
+      body[data-lobola-printing]>[data-lobola-print-summary]{display:block!important;font:12px/1.5 Arial,sans-serif;color:#111;background:#fff;padding:12px}
+      [data-lobola-print-summary] h1{font-size:20px;margin:0 0 12px}
+      [data-lobola-print-summary] pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;color:inherit}
+    }
   </style>
   <script type="application/ld+json">
 {
@@ -642,6 +650,8 @@ var CURRENCY_SYMBOLS = { ZAR:'R', USD:'$', BWP:'P', ZMW:'K', SZL:'E', LSL:'M', N
 var COUNTRY_CURRENCY = { za:'ZAR', zw:'USD', sz:'SZL', ls:'LSL', bw:'BWP', na:'NAD', zm:'ZMW' };
 var lastLobolaBrief = '';
 var lastLobolaPlan = null;
+var lobolaActionRevision = 0;
+var lobolaPrintState = null;
 var queryCurrency = '';
 
 function fmt(n) { return (Number(n) || 0).toLocaleString('en-US',{maximumFractionDigits:0}); }
@@ -685,6 +695,9 @@ function getCattleCount(countryKey) {
 }
 
 function calculate() {
+  lobolaActionRevision += 1;
+  clearLobolaPrint();
+  document.querySelectorAll('#lobola-planner [aria-invalid]').forEach(function(field){ field.removeAttribute('aria-invalid'); });
   var numericInputs = document.querySelectorAll('#lobola-planner input[type="number"]');
   for (var field of numericInputs) {
     if (field.id === 'zwCustom' && document.getElementById('country').value !== 'zw') continue;
@@ -700,7 +713,7 @@ function calculate() {
       document.getElementById('planStatus').textContent = 'Enter ' + (whole ? 'a whole number' : 'an amount') + ' between ' + minimum + ' and ' + maximum + ' for ' + document.querySelector('label[for="' + field.id + '"]').textContent + '.';
       var details = field.closest('details');
       if (details) details.open = true;
-      field.focus();
+      revealLobolaControl(field);
       return;
     }
   }
@@ -848,10 +861,13 @@ function calculate() {
 }
 
 function invalidatePlan() {
+  lobolaActionRevision += 1;
+  clearLobolaPrint();
   var hadPlan = !!lastLobolaPlan;
   lastLobolaPlan = null;
   lastLobolaBrief = '';
   document.getElementById('results').classList.remove('show');
+  setResultStatus('');
   if (hadPlan) document.getElementById('planStatus').textContent = 'Inputs changed. Build the family plan again before copying or saving.';
 }
 
@@ -912,9 +928,10 @@ function renderResultActions() {
   target.innerHTML =
     '<div class="result-actions" aria-label="Family summary actions">' +
       '<button type="button" class="btn btn-outline" onclick="copyLobolaBrief(this)">Copy family summary</button>' +
-      '<button type="button" class="btn btn-outline" onclick="shareLobolaBrief()">Share summary text</button>' +
+      '<button type="button" class="btn btn-outline" onclick="shareLobolaBrief(this)">Share summary text</button>' +
+      '<button type="button" class="btn btn-outline" data-lobola-txt onclick="downloadLobolaBrief(this)">Download summary TXT</button>' +
       '<button type="button" class="btn btn-outline" onclick="saveLobolaPlan()">Save on this device</button>' +
-      '<button type="button" class="btn btn-outline" onclick="printLobolaBrief()">Print summary</button>' +
+      '<button type="button" class="btn btn-outline" onclick="printLobolaBrief(this)">Print summary</button>' +
       '<a class="btn btn-outline" href="/tools/lobola-gift-list/">Build the gift list</a>' +
       '<a class="btn btn-outline" href="/tools/lobola-negotiation-checklist/">Prepare the family meeting</a>' +
       '<span class="result-status" id="resultActionStatus" aria-live="polite"></span>' +
@@ -928,6 +945,7 @@ function setResultStatus(message) {
 
 function saveLobolaPlan() {
   if (!lastLobolaPlan) return;
+  lobolaActionRevision += 1;
   try {
     localStorage.setItem('afrotools_lobola_plan_v1', JSON.stringify(lastLobolaPlan));
     setResultStatus('Plan saved on this device. The checklist and gift list can reuse the country, currency, and totals.');
@@ -936,63 +954,182 @@ function saveLobolaPlan() {
   }
 }
 
-function copyLobolaBrief(btn) {
-  if (!lastLobolaBrief) return;
-  var done = function() {
-    if (btn) {
-      var old = btn.textContent;
-      btn.textContent = 'Copied';
-      setTimeout(function(){ btn.textContent = old; }, 1300);
+function revealLobolaControl(node) {
+  if (!node || !node.isConnected) return;
+  node.focus({ preventScroll:true });
+  node.scrollIntoView({ block:'center', behavior:'instant' });
+}
+
+function activeLobolaFocus() {
+  var node = document.activeElement;
+  while (node && node.shadowRoot && node.shadowRoot.activeElement) node = node.shadowRoot.activeElement;
+  return node;
+}
+
+function lobolaSummaryText() {
+  if (!lastLobolaPlan || !lastLobolaBrief) return '';
+  var breakdown = Array.from(document.querySelectorAll('#breakdownList li')).map(function(row){
+    return Array.from(row.querySelectorAll('span')).map(function(cell){ return cell.textContent.trim(); }).join(': ');
+  });
+  var canonical = document.querySelector('link[rel="canonical"]');
+  return [lastLobolaBrief, '', 'Budget breakdown:', breakdown.join('\n'), '',
+    document.getElementById('contextTitle').textContent, document.getElementById('contextText').textContent,
+    Array.from(document.getElementById('dykBox').children).map(function(note){ return note.textContent; }).join('\n'), document.querySelector('.disclaimer').textContent.trim(),
+    'Planner: ' + (canonical ? canonical.href : 'https://afrotools.com/tools/lobola-calculator/')].join('\n');
+}
+
+function beginLobolaAction(button) {
+  if (!lastLobolaPlan || !lastLobolaBrief || !button || !button.isConnected || !document.getElementById('results').classList.contains('show')) return null;
+  return { revision:++lobolaActionRevision, plan:lastLobolaPlan, brief:lastLobolaBrief, text:lobolaSummaryText(), button:button, focusAtRequest:activeLobolaFocus() };
+}
+
+function currentLobolaAction(action) {
+  return action && action.revision === lobolaActionRevision && action.plan === lastLobolaPlan && action.brief === lastLobolaBrief && action.button.isConnected && document.getElementById('results').classList.contains('show');
+}
+
+function restoreLobolaActionFocus(action, focus) {
+  if (!currentLobolaAction(action)) return;
+  var node = focus || activeLobolaFocus();
+  if (!node || node === action.focusAtRequest || node === document.body || node === document.documentElement) node = action.button;
+  if (node.isConnected) revealLobolaControl(node);
+}
+
+function runLobolaCopy(action, shared) {
+  if (!currentLobolaAction(action)) return;
+  function feedback(copied) {
+    if (!currentLobolaAction(action)) return;
+    setResultStatus(copied ? (shared ? 'Share text copied.' : 'Summary copied.') : 'Copy failed. Download summary TXT to keep the complete family plan.');
+  }
+  function fallback() {
+    if (!currentLobolaAction(action)) return;
+    var focus = activeLobolaFocus();
+    var area = document.createElement('textarea');
+    area.value = action.text;
+    area.setAttribute('readonly','');
+    area.style.position = 'fixed';
+    area.style.left = '-9999px';
+    var copied = false;
+    try {
+      document.body.appendChild(area);
+      area.focus({ preventScroll:true });
+      area.select();
+      copied = document.execCommand('copy') === true;
+    } catch (error) {
+      copied = false;
+    } finally {
+      area.remove();
+      restoreLobolaActionFocus(action, focus);
     }
-    setResultStatus('Summary copied.');
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(lastLobolaBrief).then(done).catch(function(){ fallbackCopyLobolaBrief(done); });
-  } else {
-    fallbackCopyLobolaBrief(done);
+    feedback(copied);
+  }
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      Promise.resolve(navigator.clipboard.writeText(action.text)).then(function(){ feedback(true); }, fallback);
+    } else fallback();
+  } catch (error) {
+    fallback();
   }
 }
 
-function shareLobolaBrief() {
-  if (!lastLobolaBrief) return;
-  if (navigator.share) {
-    navigator.share({ title:'Lobola planning summary', text:lastLobolaBrief }).then(function(){
-      setResultStatus('Share sheet opened.');
-    }).catch(function(){
-      setResultStatus('Share cancelled.');
-    });
-    return;
+function copyLobolaBrief(btn) {
+  runLobolaCopy(beginLobolaAction(btn), false);
+}
+
+function shareLobolaBrief(btn) {
+  var action = beginLobolaAction(btn);
+  if (!action) return;
+  function done(message) {
+    if (!currentLobolaAction(action)) return;
+    setResultStatus(message);
+    restoreLobolaActionFocus(action);
   }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(lastLobolaBrief).then(function(){ setResultStatus('Share text copied.'); });
-  } else {
-    setResultStatus(lastLobolaBrief);
+  function failed(error) {
+    done(error && error.name === 'AbortError' ? 'Share cancelled.' : 'Sharing failed. Download summary TXT to keep the complete family plan.');
+  }
+  try {
+    if (typeof navigator.share === 'function') {
+      Promise.resolve(navigator.share({ title:'Lobola planning summary', text:action.text })).then(function(){ done('Summary shared using your device.'); }, failed);
+    } else runLobolaCopy(action, true);
+  } catch (error) {
+    failed(error);
   }
 }
 
 function shareLobolaWhatsApp() {
   if (!lastLobolaBrief) return;
+  lobolaActionRevision += 1;
   var text = lastLobolaBrief + '\n\nPlan yours: https://afrotools.com/tools/lobola-calculator/';
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
   setResultStatus('WhatsApp share opened.');
 }
 
-function printLobolaBrief() {
-  if (!lastLobolaBrief) return;
-  setResultStatus('Opening print dialog.');
-  window.print();
+function downloadLobolaBrief(button) {
+  var action = beginLobolaAction(button || document.querySelector('[data-lobola-txt]'));
+  if (!action) return;
+  var url = '', link = null, downloaded = false;
+  function releaseURL() {
+    if (!url || typeof URL.revokeObjectURL !== 'function') return;
+    try { URL.revokeObjectURL(url); } catch (error) { /* The browser releases remaining local URLs when the page closes. */ }
+  }
+  try {
+    url = URL.createObjectURL(new Blob([action.text + '\n'], { type:'text/plain;charset=utf-8' }));
+    if (!currentLobolaAction(action)) return;
+    link = document.createElement('a');
+    link.href = url;
+    link.download = 'afrotools-lobola-family-summary.txt';
+    document.body.appendChild(link);
+    link.click();
+    downloaded = true;
+    if (currentLobolaAction(action)) setResultStatus('Family summary TXT downloaded.');
+  } catch (error) {
+    if (currentLobolaAction(action)) {
+      setResultStatus('TXT download failed. Use Copy family summary or Print summary to keep the current plan.');
+      restoreLobolaActionFocus(action);
+    }
+  } finally {
+    if (link) link.remove();
+    if (downloaded) setTimeout(releaseURL, 1000);
+    else releaseURL();
+  }
 }
 
-function fallbackCopyLobolaBrief(done) {
-  var area = document.createElement('textarea');
-  area.value = lastLobolaBrief;
-  area.setAttribute('readonly','');
-  area.style.position = 'fixed';
-  area.style.left = '-9999px';
-  document.body.appendChild(area);
-  area.select();
-  try { document.execCommand('copy'); done(); } catch(e) {}
-  document.body.removeChild(area);
+function clearLobolaPrint() {
+  lobolaPrintState = null;
+  document.body.removeAttribute('data-lobola-printing');
+  var summary = document.querySelector('[data-lobola-print-summary]');
+  if (summary) summary.innerHTML = '';
+}
+
+function prepareLobolaPrint(button) {
+  var text = lobolaSummaryText();
+  if (!text) return;
+  var summary = document.querySelector('[data-lobola-print-summary]');
+  if (!lobolaPrintState) lobolaPrintState = { plan:lastLobolaPlan, focus:button || activeLobolaFocus(), focusAtRequest:activeLobolaFocus() };
+  summary.innerHTML = '<h1>Lobola family planning summary</h1><pre>' + escapeHtml(text) + '</pre>';
+  document.body.setAttribute('data-lobola-printing','');
+}
+
+function finishLobolaPrint() {
+  var state = lobolaPrintState;
+  clearLobolaPrint();
+  if (!state || state.plan !== lastLobolaPlan || !state.focus || !state.focus.isConnected) return;
+  var focus = activeLobolaFocus();
+  if (!focus || focus === state.focusAtRequest || focus === document.body || focus === document.documentElement) focus = state.focus;
+  revealLobolaControl(focus);
+}
+
+function printLobolaBrief(button) {
+  if (!lastLobolaPlan || !lastLobolaBrief) return;
+  lobolaActionRevision += 1;
+  prepareLobolaPrint(button);
+  setResultStatus('Opening print dialog.');
+  try {
+    window.print();
+  } catch (error) {
+    setResultStatus('Printing failed. Download summary TXT to keep the complete family plan.');
+  } finally {
+    finishLobolaPrint();
+  }
 }
 
 function resetCalc() {
@@ -1013,7 +1150,12 @@ function resetCalc() {
   document.getElementById('planStatus').textContent = '';
   updateCountryFields();
   document.getElementById('results').classList.remove('show');
+  document.querySelectorAll('#lobola-planner [aria-invalid]').forEach(function(field){ field.removeAttribute('aria-invalid'); });
+  revealLobolaControl(document.getElementById('country'));
 }
+
+window.addEventListener('beforeprint', function(){ prepareLobolaPrint(); });
+window.addEventListener('afterprint', finishLobolaPrint);
 
 document.addEventListener('DOMContentLoaded', function() {
   applyQueryDefaults();
@@ -1022,6 +1164,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('lobola-planner').addEventListener('change', invalidatePlan);
 });
 </script>
+
+<section data-lobola-print-summary aria-label="Family planning print summary"></section>
 
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b1a73b12" defer></script>
