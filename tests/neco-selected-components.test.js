@@ -102,23 +102,45 @@ test('NECO 2023 English Section A covers all four inspected choices without clai
  assert.equal(section.exam,'NECO');assert.equal(section.subject,'English');assert.equal(section.year,2023);assert.equal(section.paper,'II');assert.equal(section.paper_code,'S1012');
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.deepEqual(section.expectedIds,[1,2,3,4].map(n=>'neco-2023-english-p2-q'+n));
- assert.match(manifest.source.sha256,/^[a-f0-9]{64}$/);assert.match(manifest.source.rights_basis,/no claim of permission/);
+ assert.match(manifest.source.sha256,/^[a-f0-9]{64}$/);assert.match(manifest.source.rights_basis,/no claim of third-party licence, board approval/);
  for(const id of section.expectedIds){const q=bank.items.find(item=>item.id===id);assert.ok(q,id);assert.equal(q.source,manifest.source.url);assert.equal(q.exam,section.exam);assert.equal(q.subject,section.subject);assert.equal(q.year,section.year);assert.equal(q.paper,section.paper);assert.equal(q.passage,undefined);assert.match(q.sourceUse,/at least 450 words/);assert.match(q.answer,/no single model answer/);assert.equal(manifest.questionBriefSha256[id],crypto.createHash('sha256').update(q.prompt).digest('hex'));}
  assert.equal(bank.items.filter(item=>item.exam==='NECO'&&item.subject==='English').length,6);
 });
 
-test('NECO 2023 English B and C guides link to the inspected scan without reproducing passages',()=>{
+test('NECO 2023 English B and C retain two identities with complete matching passages and tasks',()=>{
  const section=manifest.components.find(row=>row.id==='neco-2023-english-p2-sections-b-c-linked-guides');
  assert.deepEqual(section.expectedIds,['neco-2023-english-p2-q5','neco-2023-english-p2-q6']);
- assert.equal(section.complete_selected_prompts,false);assert.equal(section.complete_paper,false);
+ assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
+ assert.equal(section.sitting_authenticated,false);assert.equal(section.official_mark_scheme,false);
+ assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);assert.equal(bank.items.length,136);
+ const passageHashes=['fa57c43585a2431dd930e05c394dca864a27c6d22fdeb917767d54848a8943bb','1311e175390abfcc7c5ea3081f7bdfa7b0e7c0c77322e4b85fed5021d90f4158'];
  for(const id of section.expectedIds){
   const q=bank.items.find(item=>item.id===id);assert.ok(q,id);
-  assert.equal(q.source,manifest.source.url);assert.equal(q.passage,undefined);
-  assert.match(q.prompt,/Open the linked scan at PDF pages/);
-  assert.match(q.sourceUse,/does not host the passage/);
+  const index=section.expectedIds.indexOf(id),component=section.reading_components[index];
+  assert.equal(q.source,manifest.source.url);assert.equal(q.exam,'NECO');assert.equal(q.year,2023);assert.equal(q.paper,'II');assert.equal(q.number,index+5);
+  const paragraphs=q.passage.split('\n\n');assert.equal(paragraphs.length,index+6);assert.equal(q.checks.length,3);assert.equal(q.steps.length,3);
+  assert.equal(crypto.createHash('sha256').update(q.passage).digest('hex'),passageHashes[index], 'complete source transcription, including continuation page');
+  assert.equal(component.passage_sha256_utf8_lf,passageHashes[index]);
+  assert.deepEqual(component.paragraph_sha256_utf8,paragraphs.map(p=>crypto.createHash('sha256').update(p).digest('hex')));
+  assert.equal(component.answer_units,index?6:14);assert.equal(component.printed_marks,index?30:20);assert.equal(component.advised_minutes,30);
+  assert.match(q.sourceUse,/complete selected passage/);assert.doesNotMatch(q.sourceUse,/does not host/);
   assert.match(q.answer,/not an official mark scheme/);
   assert.equal(manifest.questionBriefSha256[id],crypto.createHash('sha256').update(q.prompt).digest('hex'));
+  assert.equal(component.prompt_sha256_utf8,manifest.questionBriefSha256[id]);
  }
- assert.match(bank.items.find(q=>q.id===section.expectedIds[0]).answer,/relative \(adjectival\) clause/);
- assert.match(bank.items.find(q=>q.id===section.expectedIds[1]).answer,/six-sentence response/);
+ assert.equal(section.source_page_fingerprints.length,4);assert.deepEqual(section.source_page_fingerprints.map(p=>p.pdf_page),[5,6,7,8]);
+ assert.equal(manifest.source.sha256,'9724d3ed1199d6aaab2f32b552b0e8e40d5989aeb4feab7f932bc1e4ee696f14');
+ const [q5,q6]=section.expectedIds.map(id=>bank.items.find(q=>q.id===id));
+ assert.deepEqual(section.reading_components[0].answer_unit_labels,['a','b','c','d','e','f','g.i','g.ii','h.i','h.ii','h.iii','h.iv','h.v','h.vi']);
+ for(const label of ['a','b','c','d','e','f','g','h'])assert.ok(q5.prompt.includes('('+label+')'),label);
+ for(const word of ['noble','cradle','impart','affluence','denigrated','important'])assert.ok(q5.prompt.includes(word),word);
+ assert.match(q5.prompt,/\(i\) What grammatical name[\s\S]*\(ii\) What is its function/);
+ assert.match(q5.prompt,/\(vi\) important$/);assert.match(q5.passage.split('\n\n').at(-1),/If he relaxes, things would get worse/);
+ assert.match(q5.answer,/relative \(adjectival\) clause/);assert.match(q5.answer,/describes “the parents”/);
+ assert.match(q5.answer,/from infancy[\s\S]*do not keep “the” before “infancy”/);assert.match(q5.answer,/“Beginning” is broad/);
+ assert.match(q6.prompt,/In six sentences, one for each, state the functions/);
+ assert.match(q6.passage.split('\n\n')[5],/appointed and trained/);assert.match(q6.passage.split('\n\n')[6],/counting of votes and release of the results/);
+ assert.match(q6.answer,/Any six distinct, passage-supported functions/);assert.match(q6.answer,/need not match this model/);
+ assert.match(q6.answer,/Do not count “organising” and “conducting” elections as two/);assert.match(q6.answer,/rather than a statement of current electoral law/);
+ for(const q of [q5,q6])assert.equal(q.figure,undefined);
 });
