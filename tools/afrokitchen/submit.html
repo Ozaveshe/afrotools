@@ -29,6 +29,8 @@
   .ak-copy-checklist{display:grid;gap:12px}
   .ak-checklist-textarea{width:100%;min-height:230px;padding:14px 16px;border:1px solid var(--ak-line);border-radius:var(--ak-r);background:var(--ak-panel);color:var(--ak-text);font:0.86rem/1.55 "JetBrains Mono",monospace;resize:vertical}
   .ak-copy-checklist .ak-btn{width:100%}
+  .ak-submit-actions .ak-btn-primary{color:#fff}
+  .ak-submit-actions .ak-btn-primary:hover,.ak-submit-actions .ak-btn-primary:focus-visible{transform:none}
   @media (max-width:760px){.ak-guidance-grid{grid-template-columns:1fr}.ak-submit-guidance{padding:18px}.ak-checklist-textarea{min-height:260px}}
 </style>
 <link rel="stylesheet" href="experience.css?v=5f210e65">
@@ -234,6 +236,7 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         <div class="ak-submit-actions">
           <button type="submit" class="ak-btn ak-btn-primary" id="submit-btn">Send recipe for review</button>
         </div>
+        <p class="ak-side-note" id="submit-status" role="status" aria-live="polite"></p>
       </form>
         <div id="submit-success" class="ak-success-state" role="status" style="display:none">
           <div class="ak-success-mark" aria-hidden="true">AK</div>
@@ -334,32 +337,60 @@ function buildEditorialContext() {
   return lines.length ? 'Editorial context\n' + lines.join('\n') : '';
 }
 
-function copyText(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text).catch(function () {
-      return fallbackCopyText(text);
-    });
-  }
-  return fallbackCopyText(text);
+function contributionFocus() {
+  var active = document.activeElement;
+  while (active && active.shadowRoot && active.shadowRoot.activeElement) active = active.shadowRoot.activeElement;
+  return active;
 }
 
-function fallbackCopyText(text) {
-  return new Promise(function (resolve, reject) {
-    try {
-      var textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'absolute';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      textarea.remove();
-      resolve();
-    } catch (error) {
-      reject(error);
+function revealContributionControl(control) {
+  if (!control || !control.isConnected) return;
+  var navbar = document.querySelector('afro-navbar');
+  var nodes = navbar ? [navbar].concat(navbar.shadowRoot ? Array.from(navbar.shadowRoot.querySelectorAll('*')) : []) : [];
+  var navBottom = nodes.reduce(function (bottom, node) {
+    var rect = node.getBoundingClientRect();
+    var position = getComputedStyle(node).position;
+    return (position === 'fixed' || position === 'sticky') && rect.height > 20 && rect.height < 150 && rect.top < 150 ? Math.max(bottom, rect.bottom) : bottom;
+  }, 0);
+  var bounds = control.getBoundingClientRect();
+  if (bounds.top <= navBottom || bounds.bottom > innerHeight) control.scrollIntoView({ block: 'center', behavior: 'instant' });
+}
+
+function fallbackCopyText(text, current, button, requestFocus) {
+  if (!current()) return false;
+  var active = contributionFocus();
+  var restore = active && active.isConnected && active !== requestFocus && active !== document.body && active !== document.documentElement ? active : button;
+  var textarea;
+  try {
+    textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    return document.execCommand('copy') === true;
+  } catch (error) {
+    return false;
+  } finally {
+    if (textarea) textarea.remove();
+    if (current() && restore && restore.isConnected) {
+      restore.focus({ preventScroll: true });
+      revealContributionControl(restore);
     }
-  });
+  }
+}
+
+async function copyText(text, current, button, requestFocus) {
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (error) {
+    // A denied or synchronously throwing Clipboard API can still use local manual copy.
+  }
+  return fallbackCopyText(text, current, button, requestFocus);
 }
 
 function setChecklistStatus(message) {
@@ -368,22 +399,62 @@ function setChecklistStatus(message) {
 }
 
 var copyChecklistButton = document.getElementById('copy-checklist-btn');
+var checklistCopyAttempt = 0;
+window.addEventListener('pagehide', function () { checklistCopyAttempt += 1; });
 if (copyChecklistButton) {
   copyChecklistButton.addEventListener('click', function () {
     var checklist = document.getElementById('ak-contribution-checklist');
-    copyText(checklist ? checklist.value : '').then(function () {
-      setChecklistStatus('Checklist copied.');
-      copyChecklistButton.textContent = 'Copied';
-      setTimeout(function () { copyChecklistButton.textContent = 'Copy checklist'; }, 1400);
-    }).catch(function () {
-      setChecklistStatus('Copy failed. Select the checklist text and copy it manually.');
+    var text = checklist ? checklist.value : '';
+    var attempt = ++checklistCopyAttempt;
+    var requestFocus = contributionFocus();
+    function current() {
+      return attempt === checklistCopyAttempt && copyChecklistButton.isConnected && checklist && checklist.isConnected && checklist.value === text;
+    }
+    copyChecklistButton.textContent = 'Copy checklist';
+    setChecklistStatus('Copying checklist…');
+    copyText(text, current, copyChecklistButton, requestFocus).then(function (copied) {
+      if (!current()) return;
+      setChecklistStatus(copied ? 'Checklist copied.' : 'Copy failed. Select the checklist text and copy it manually.');
+      if (copied) {
+        copyChecklistButton.textContent = 'Copied';
+        setTimeout(function () { if (current()) copyChecklistButton.textContent = 'Copy checklist'; }, 1400);
+      }
     });
   });
+}
+
+var recipeDraftRevision = 0;
+var contributionForm = document.getElementById('submit-form');
+contributionForm.addEventListener('input', function () { recipeDraftRevision += 1; });
+contributionForm.addEventListener('change', function () { recipeDraftRevision += 1; });
+function queueContributionReveal(event) {
+  var field = event.target;
+  if (!field.matches('input:not([type="hidden"]), select, textarea')) return;
+  requestAnimationFrame(function () {
+    if (document.activeElement === field && field.isConnected && field.getClientRects().length) revealContributionControl(field);
+  });
+}
+contributionForm.addEventListener('invalid', queueContributionReveal, true);
+contributionForm.addEventListener('focusin', queueContributionReveal);
+
+function recipeDraftPayload() {
+  return {
+    name: fieldValue('f-name'),
+    country_code: fieldValue('f-country'),
+    description: fieldValue('f-desc'),
+    ingredients_text: fieldValue('f-ingredients'),
+    steps_text: fieldValue('f-steps'),
+    story: [fieldValue('f-story'), buildEditorialContext()].filter(Boolean).join('\n\n'),
+    submitted_by: fieldValue('f-author'),
+    email: fieldValue('f-email')
+  };
 }
 
 async function handleSubmit(e) {
   e.preventDefault();
   var btn = document.getElementById('submit-btn');
+  var status = document.getElementById('submit-status');
+  if (btn.disabled) return false;
   var photoLinks = fieldValue('f-photo-links');
   var photoPermission = document.getElementById('f-photo-permission');
   if (photoLinks && photoPermission && !photoPermission.checked) {
@@ -392,28 +463,31 @@ async function handleSubmit(e) {
   }
   btn.disabled = true;
   btn.textContent = 'Sending…';
-  var story = fieldValue('f-story');
-  var editorialContext = buildEditorialContext();
-
-  var res = await AfroKitchenEngine.submitRecipe({
-    name: fieldValue('f-name'),
-    country_code: fieldValue('f-country'),
-    description: fieldValue('f-desc'),
-    ingredients_text: fieldValue('f-ingredients'),
-    steps_text: fieldValue('f-steps'),
-    story: [story, editorialContext].filter(Boolean).join('\n\n'),
-    submitted_by: fieldValue('f-author'),
-    email: fieldValue('f-email')
-  });
-
-  if (res.success) {
-    document.getElementById('submit-form').style.display = 'none';
-    document.getElementById('submit-success').style.display = '';
-  } else {
-    alert('We could not send your recipe: ' + (res.error || 'Please try again'));
+  contributionForm.setAttribute('aria-busy', 'true');
+  status.textContent = 'Sending your recipe for review…';
+  var payload = recipeDraftPayload();
+  var submittedRevision = recipeDraftRevision;
+  try {
+    var res = await AfroKitchenEngine.submitRecipe(payload);
+    if (res && res.success) {
+      if (recipeDraftRevision !== submittedRevision && JSON.stringify(recipeDraftPayload()) !== JSON.stringify(payload)) {
+        status.textContent = 'Your original recipe was submitted for review. Your newer edits are still here and have not been sent.';
+      } else {
+        status.textContent = '';
+        contributionForm.style.display = 'none';
+        document.getElementById('submit-success').style.display = '';
+      }
+    } else {
+      status.textContent = 'We could not send your recipe: ' + (res && res.error || 'Please try again') + '. Your draft is still here.';
+    }
+  } catch (error) {
+    status.textContent = 'We could not send your recipe. Your draft is still here. Please try again.';
+  } finally {
+    contributionForm.removeAttribute('aria-busy');
     btn.disabled = false;
     btn.textContent = 'Send recipe for review';
   }
+  return false;
 }
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
