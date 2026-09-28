@@ -26,6 +26,8 @@ Only `data:refresh` calls the World Bank API. Review changed values, coverage an
 
 Use `npm run afroatlas:flags:import` only to deliberately refresh the pinned official Twemoji assets. Review SVG safety checks, manifest hashes and the graphics license. No flag CDN is called by the product.
 
+After adding or refreshing flags, run `node scripts/build-image-library.js --inventory-only` and `node tests/image-library.test.js` to keep the repository asset inventory current. This preserves the pending image queue. Review the generated inventory separately from the flag source manifest.
+
 The dedicated browser configuration starts a fresh server on port 43824 (`AFROATLAS_TEST_PORT` can override it). It refuses to reuse an existing server, so another checkout cannot supply false passing evidence. Release checks additionally require `npm run build:deploy`, `npm run build:checks`, `npm run security:scan`, `npm run audit:dist`, links and relevant SEO validation.
 
 ## Product and evidence boundaries

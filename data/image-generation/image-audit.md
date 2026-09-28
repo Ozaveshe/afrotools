@@ -1,18 +1,18 @@
 # Image library audit
 
-Generated 2026-09-28T06:26:48.820Z. Repository proof only; no deployment.
+Generated 2026-09-28T08:37:38.426Z. Repository proof only; no deployment.
 
-- images: 2759
-- placed: 2082
+- images: 2833
+- placed: 2156
 - unassigned: 0
 - duplicates: 8
 - held: 3
 - text_free_reviewed: 71
 - shared_across_locales: 1202
-- bytes: 149845350
+- bytes: 149936570
 - missing_reference_candidates: 0
 - placement_review_resolved: 793
-- lifecycle_counts: {"rejected-artwork":90,"placed":2082,"retired-alternative":338,"reserved-catalogue":201,"duplicate-review":1,"archived-product":44,"needs-review":3}
+- lifecycle_counts: {"rejected-artwork":90,"placed":2156,"retired-alternative":338,"reserved-catalogue":201,"duplicate-review":1,"archived-product":44,"needs-review":3}
 
 ## Review boundaries
 
