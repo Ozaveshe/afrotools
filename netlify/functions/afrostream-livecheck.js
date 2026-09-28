@@ -175,13 +175,11 @@ async function probeYouTubeLivePage(creator) {
 
   var html = await res.text();
   var finalUrl = res.url || liveUrl;
-  var liveHints =
-    /"isLiveNow":true/.test(html) ||
-    /"isLive":true/.test(html) ||
-    /"isLiveContent":true/.test(html) ||
-    /"iconType":"LIVE"/.test(html);
+  var selectedState = require('./_shared/afrostream-youtube-live').liveState(html);
+  if (!selectedState.checked) return null;
+  var liveHints = selectedState.is_live;
 
-  var videoId = null;
+  var videoId = selectedState.video_id || null;
   var urlMatch = finalUrl.match(/[?&]v=([A-Za-z0-9_-]{11})/);
   if (urlMatch) videoId = urlMatch[1];
   if (!videoId) {

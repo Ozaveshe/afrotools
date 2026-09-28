@@ -586,7 +586,7 @@ ${entries}
  */
 function generateSitemapIndex(sitemapFiles) {
   const entries = sitemapFiles.map(file =>
-    `  <sitemap>\n    <loc>${BASE_URL}/${file.file}</loc>\n    <lastmod>${file.lastmod}</lastmod>\n  </sitemap>`
+    `  <sitemap>\n    <loc>${BASE_URL}/${file.file}</loc>${file.lastmod ? `\n    <lastmod>${file.lastmod}</lastmod>` : ''}\n  </sitemap>`
   ).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -763,6 +763,9 @@ for (const extraFile of EXTRA_SITEMAPS) {
       : normalizeSitemapLastmod(fs.statSync(fullPath).mtime)),
   });
 }
+
+// Live original reporting has its own endpoint; no clock-only index lastmod.
+sitemapFileNames.push({ file: 'tools/afrostream/sitemap.xml', lastmod: '' });
 
 // Write sitemap index
 const indexXml = generateSitemapIndex(sitemapFileNames);

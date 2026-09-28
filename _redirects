@@ -322,9 +322,14 @@
 /api/afrostream/news-monitor      /.netlify/functions/afrostream-news-monitor 200
 # Force the live RSS function because a static tools/afrostream/feed.xml file also exists in the publish dir.
 /tools/afrostream/feed.xml       /.netlify/functions/afrostream-feed       200!
-/tools/afrostream/news           /tools/afrostream/news.html               200
-/tools/afrostream/article        /tools/afrostream/article.html            200
-/tools/afrostream/news/:slug     /tools/afrostream/article.html?slug=:slug 200
+/api/afrostream/image            /.netlify/functions/afrostream-image      200
+/tools/afrostream/sitemap.xml     /.netlify/functions/afrostream-feed?format=sitemap 200!
+/tools/afrostream/               /.netlify/functions/afrostream-article?view=scene 200!
+/tools/afrostream/news           /.netlify/functions/afrostream-article?view=news 200!
+/tools/afrostream/news.html      /tools/afrostream/news 301!
+/tools/afrostream/article        /.netlify/functions/afrostream-article      200!
+/tools/afrostream/article.html   /.netlify/functions/afrostream-article      200!
+/tools/afrostream/news/:slug     /.netlify/functions/afrostream-article?slug=:slug 200!
 /api/afrostream/og               /.netlify/functions/afrostream-og          200
 /api/admin/*                      /.netlify/functions/conflict-admin 200
 # AfroConflict — SEO-friendly conflict detail URL
@@ -2838,11 +2843,9 @@
 /tools/afropoints/payouts.html  /tools/afropoints/payouts  301!
 /tools/afropoints/privacy-safety.html  /tools/afropoints/privacy-safety  301!
 /tools/afropoints/verification.html  /tools/afropoints/verification  301!
-/tools/afrostream/article.html  /tools/afrostream/article  301!
 /tools/afrostream/calendar.html  /tools/afrostream/calendar  301!
 /tools/afrostream/community.html  /tools/afrostream/community  301!
 /tools/afrostream/creator.html  /tools/afrostream/creator  301!
-/tools/afrostream/news.html  /tools/afrostream/news  301!
 /tools/afrostream/rankings.html  /tools/afrostream/rankings  301!
 /tools/afrostream/submit.html  /tools/afrostream/submit  301!
 /tools/ajo-tracker/app.html  /tools/ajo-tracker/app  301!

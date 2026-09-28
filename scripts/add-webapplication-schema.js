@@ -427,13 +427,14 @@ function processFile(file, stats) {
   const original = fs.readFileSync(file, "utf8");
   let html = normalizeJsonLd(original, stats);
   let blocks = parseJsonLd(html);
+  const editorialPage = /<html\b[^>]*\bdata-editorial-page(?:\s|[=>])/i.test(html);
 
-  if (hasType(blocks, "CollectionPage") && hasType(blocks, "WebApplication")) {
+  if ((editorialPage || hasType(blocks, "CollectionPage")) && hasType(blocks, "WebApplication")) {
     html = removeStandaloneSchemaByType(html, "WebApplication", stats);
     blocks = parseJsonLd(html);
   }
 
-  if (shouldAddWebApplication(blocks)) {
+  if (!editorialPage && shouldAddWebApplication(blocks)) {
     const schema = webApplicationSchema(file, html);
     if (schema) {
       html = injectSchema(html, schema);

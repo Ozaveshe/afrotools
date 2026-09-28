@@ -64,6 +64,13 @@ assert.strictEqual(
   true,
   'African creator and music news should remain eligible'
 );
+assert.strictEqual(
+  monitor.shouldPublishWithoutCreatorMatch(
+    item('Waspito named Best HealthTech in Africa at healthcare awards'), businessSource, Date.now() - 86400000
+  ),
+  false,
+  'healthcare awards should not pass as creator culture because they mention awards and Africa'
+);
 
 assert.strictEqual(
   monitor.shouldInsertNewsCandidate(null),

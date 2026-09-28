@@ -1,1 +1,37 @@
-!function(){"use strict";function t(){!function(){var t;"localhost"!==(t=String(window.location.hostname||"").toLowerCase())&&"127.0.0.1"!==t&&"::1"!==t&&"file:"!==window.location.protocol||document.querySelectorAll("a[href^='/tools/afrostream/']").forEach(function(t){var o=t.getAttribute("href"),a=function(t){if(!t||0!==t.indexOf("/tools/afrostream/"))return t;var o=t.indexOf("#"),a=o>=0?t.slice(o):"",r=o>=0?t.slice(0,o):t,e=r.indexOf("?"),s=e>=0?r.slice(e):"",n=e>=0?r.slice(0,e):r,i={"/tools/afrostream/rankings":"/tools/afrostream/rankings.html","/tools/afrostream/news":"/tools/afrostream/news.html","/tools/afrostream/calendar":"/tools/afrostream/calendar.html","/tools/afrostream/submit":"/tools/afrostream/submit.html","/tools/afrostream/creator":"/tools/afrostream/creator.html","/tools/afrostream/article":"/tools/afrostream/article.html","/tools/afrostream/community":"/tools/afrostream/community.html"};return i[n]?i[n]+s+a:t}(o);a!==o&&t.setAttribute("href",a)})}();var t,o,a=(t=window.location.pathname.replace(/\/+$/,"/"),o=new URLSearchParams(window.location.search),-1!==t.indexOf("/tools/afrostream/university")?"university":-1!==t.indexOf("/tools/afrostream/methodology")||-1!==t.indexOf("/tools/afrostream/afroscore")?"methodology":-1!==t.indexOf("/tools/afrostream/submit")||-1!==t.indexOf("/tools/afrostream/community")?"submit":-1!==t.indexOf("/tools/afrostream/calendar")?"calendar":-1!==t.indexOf("/tools/afrostream/news")||-1!==t.indexOf("/tools/afrostream/article")?"news":-1!==t.indexOf("/tools/afrostream/creator")?"rankings":-1!==t.indexOf("/tools/afrostream/rankings")?"streamers"===o.get("mode")?"streamers":"rankings":"live");document.querySelectorAll(".as-subnav-links a[data-as-nav], .su-subnav-links a[data-as-nav]").forEach(function(t){var o=t.getAttribute("data-as-nav")===a;t.classList.toggle("active",o),o?t.setAttribute("aria-current","page"):t.removeAttribute("aria-current")})}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",t):t(),window.AfroStreamSubnav={refresh:t}}();
+(function () {
+  'use strict';
+  var local = /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname) || location.protocol === 'file:';
+  var aliases = {rankings:'rankings.html',news:'news.html',calendar:'calendar.html',submit:'submit.html',creator:'creator.html',article:'article.html',community:'community.html'};
+  function refresh() {
+    if (local) document.querySelectorAll('a[href^="/tools/afrostream/"]').forEach(function (link) {
+      var url = new URL(link.getAttribute('href'),location.href), base = url.pathname.replace('/tools/afrostream/','');
+      if (aliases[base]) link.setAttribute('href','/tools/afrostream/' + aliases[base] + url.search + url.hash);
+    });
+    var pathname = location.pathname, active = 'live';
+    if (pathname.includes('/university')) active = 'university';
+    else if (pathname.includes('/directory')) active = 'directory';
+    else if (/\/(methodology|afroscore)/.test(pathname)) active = 'methodology';
+    else if (/\/(submit|community)/.test(pathname)) active = 'submit';
+    else if (pathname.includes('/calendar')) active = 'calendar';
+    else if (/\/(news|article|editorial)/.test(pathname)) active = 'news';
+    else if (pathname.includes('/rankings')) active = new URLSearchParams(location.search).get('mode') === 'streamers' ? 'streamers' : 'rankings';
+    else if (pathname.includes('/creator')) active = 'rankings';
+    else if (document.body.classList.contains('as-editorial') && location.hash !== '#live') active = 'news';
+    document.querySelectorAll('.as-subnav-links a[data-as-nav],.su-subnav-links a[data-as-nav]').forEach(function (link) {
+      var current = link.dataset.asNav === active;
+      link.classList.toggle('active',current);
+      if (current) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current');
+    });
+  }
+  document.addEventListener('click',function (event) {
+    var menu = document.querySelector('.scene-nav-more');
+    if (menu && !menu.contains(event.target)) menu.open = false;
+  });
+  document.addEventListener('keydown',function (event) {
+    var menu = document.querySelector('.scene-nav-more');
+    if (event.key === 'Escape' && menu && menu.open) { menu.open = false; menu.querySelector('summary').focus(); }
+  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',refresh); else refresh();
+  window.addEventListener('hashchange',refresh);
+  window.AfroStreamSubnav = {refresh:refresh};
+})();
