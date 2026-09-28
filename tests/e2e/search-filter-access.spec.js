@@ -66,6 +66,11 @@ for (const width of [320, 390, 768, 1280]) {
       const kenya = page.locator('#results-container a[href="/kenya/ke-paye"]');
       await expect(kenya).toBeVisible();
       await expect(page.locator('#results-container')).toHaveAttribute('aria-busy', 'false');
+      const letterIcon = page.locator('#results-container a[href="/fr/kenya/ke-paye"] .rc-icon');
+      await expect(letterIcon).toBeVisible();
+      await expect(letterIcon).toHaveText('KE');
+      const iconContrast = await textContrast(letterIcon);
+      expect(iconContrast.ratio, `KE icon: ${JSON.stringify(iconContrast)}`).toBeGreaterThanOrEqual(4.5);
       const layout = await input.evaluate(element => ({
         fieldWidth: element.getBoundingClientRect().width,
         barWidth: element.closest('.search-bar').getBoundingClientRect().width,
