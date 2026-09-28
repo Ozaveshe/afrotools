@@ -11,6 +11,32 @@ const generator = require('../scripts/build-ssce-practice-locales');
 const quickBanks = { en: enQuick, fr: require('../assets/js/lib/ssce-practice-bank-fr'), sw: require('../assets/js/lib/ssce-practice-bank-sw') };
 const writtenBanks = { en: enWritten, fr: require('../assets/js/lib/ssce-written-bank-fr'), sw: require('../assets/js/lib/ssce-written-bank-sw') };
 
+test('NECO reading additions preserve pre-existing three-slot backups and English assessment in every locale', () => {
+  const ids=['neco-2023-english-p2-q5','neco-2023-english-p2-q6'];
+  const priorBackup={version:1,bankId:'ssce-written-v1',entries:{
+    [ids[0]]:{answer:'Synthetic prior comprehension response',checks:[true,false,true]},
+    [ids[1]]:{answer:'Synthetic prior summary response',checks:[false,true,false]}
+  }};
+  for(const locale of ['en','fr','sw']){
+    const bank=locale==='en'?enWritten:generator.writtenBank(locale);
+    assert.deepEqual(writtenApi.normalize(JSON.parse(JSON.stringify(priorBackup)),bank),priorBackup);
+    const report=writtenApi.report(bank,priorBackup);
+    for(const id of ids){
+      const source=enWritten.items.find(q=>q.id===id),q=bank.items.find(q=>q.id===id);
+      assert.equal(q.passage,source.passage);assert.equal(q.prompt,source.prompt);assert.equal(q.answer,source.answer);
+      assert.equal(q.checks.length,3);assert.ok(report.includes(q.passage));assert.ok(report.includes(q.prompt));assert.ok(report.includes(priorBackup.entries[id].answer));
+      if(locale!=='en'){
+        assert.equal(q.questionLanguage,'en');assert.equal(q.answerLanguage,'en');
+        assert.notDeepEqual(q.steps,source.steps);assert.notDeepEqual(q.checks,source.checks);assert.notEqual(q.sourceUse,source.sourceUse);
+        assert.doesNotMatch(q.steps[0],/PDF/);
+      }
+    }
+    const invalid=JSON.parse(JSON.stringify(priorBackup));invalid.entries[ids[0]].checks.push(false);
+    assert.throws(()=>writtenApi.normalize(invalid,bank));
+    assert.deepEqual(priorBackup.entries[ids[0]].checks,[true,false,true]);
+  }
+});
+
 test('WAEC 2022 English writing keeps its assessment in English with distinct FR/SW coaching', () => {
   const ids = [1,2,3,4,5].map(n => `waec-2022-english-p2-q${n}`);
   for (const locale of ['fr','sw']) {

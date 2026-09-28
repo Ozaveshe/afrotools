@@ -18,7 +18,7 @@ test('every written task has provenance and a self-review guide, with linked sca
   if(q.exam==='NECO'){
    assert.equal(q.year,2023);
    if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok((q.number>=1&&q.number<=22)||(q.number>=24&&q.number<=47)||(q.number>=49&&q.number<=60));}
-   else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else assert.match(q.sourceUse,/does not host the passage/);}
+   else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else {assert.ok(q.passage);assert.match(q.sourceUse,/complete selected passage/);assert.match(q.sourceUse,/not an official mark scheme or complete paper/);}}
    continue;
   }
   if(q.exam==='WAEC'&&q.origin==='WAEC third-party-linked reading task'){
