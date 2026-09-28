@@ -475,6 +475,10 @@ const appTranslations = {
     'CIF / customs value': 'CIF / valeur douanière',
     'Save Result': 'Enregistrer le résultat',
     'estimate using': 'estimation utilisant',
+    "policy-review-required and manual-customs-value": "barème à vérifier et valeur douanière saisie",
+    "policy-review-required and valuation-pack": "barème à vérifier et jeu de valorisation",
+    "policy-review-required and manual": "barème à vérifier et valeur saisie",
+    "policy-review-required": "barème à vérifier",
     'estimate-pack and valuation-pack': 'jeu d’estimation et jeu de valorisation',
     'estimate-pack and manual-customs-value': 'jeu d’estimation et valeur douanière saisie',
     'customs value.': 'comme valeur douanière.',
@@ -488,6 +492,20 @@ const appTranslations = {
     'Required Documents': 'Documents requis',
     'Sources and safeguards': 'Sources et limites',
     'Compare Japan, UAE, UK, South Africa, and local dealer assumptions in one flow.': 'Comparez dans un même parcours les hypothèses du Japon, des Émirats arabes unis, du Royaume-Uni, d’Afrique du Sud et du marché local.',
+    "Official charges vs practical port and clearing extras.": "Coûts du barème, frais portuaires et frais pratiques de dédouanement.",
+    "Nigeria's 2026 tariff amendments are not reflected in this saved rate scenario. Its duty, levy, VAT, and green-tax treatment must be checked against the current official HS-code calculator and confirmed by a licensed clearing agent before relying on the total.": "Les modifications tarifaires de 2026 au Nigéria ne figurent pas dans ce scénario enregistré. Les droits, prélèvements, TVA et taxes environnementales doivent être vérifiés dans le calculateur officiel du code SH et confirmés par un transitaire agréé avant de vous fier au total.",
+    "The Nigeria Trade Information Portal says only vehicles less than 15 years from their year of manufacture are permitted for import. This model year appears outside that limit; confirm the manufacture year and current prohibition list with Nigeria Customs or a licensed clearing agent before buying.": "Le portail nigérian d’information commerciale indique que seuls les véhicules de moins de 15 ans depuis leur année de fabrication peuvent être importés. Ce millésime semble dépasser cette limite ; confirmez l’année de fabrication et la liste actuelle des interdictions auprès des douanes nigérianes ou d’un transitaire agréé avant l’achat.",
+    "Nigeria Trade Information Portal - importing motor vehicles": "Portail nigérian d’information commerciale — importation de véhicules",
+    "The portal states that only vehicles less than 15 years from the year of manufacture are permitted for import. Apply this as a calendar-year planning gate and confirm the applicable prohibition list with Customs before purchase.": "Le portail indique que seuls les véhicules de moins de 15 ans depuis leur année de fabrication peuvent être importés. Utilisez cette limite par année civile pour préparer votre projet et confirmez la liste applicable des interdictions auprès des douanes avant l’achat.",
+    "Nigeria Trade Information Portal - duty calculator": "Portail nigérian d’information commerciale — calculateur de droits",
+    "A synthetic USD 10,000 CIF check for used petrol passenger vehicle HS 8703232000 returned 20% import duty, 15% levy, 7.5% VAT, 0.5% ETLS, 7% surcharge on duty, and 4% FOB FCS. The portal result is code-specific and does not validate this generic rate pack.": "Un contrôle synthétique avec un CIF de 10 000 USD pour une voiture particulière d’occasion à essence, code SH 8703232000, a donné 20 % de droits d’importation, 15 % de prélèvement, 7,5 % de TVA, 0,5 % d’ETLS, une surtaxe de 7 % sur les droits et 4 % du FOB au titre du FCS. Ce résultat dépend du code et ne valide pas ce barème générique.",
+    "Nigeria Customs Service - 2026 Fiscal Policy Measures announcement": "Douanes nigérianes — annonce des mesures fiscales de 2026",
+    "Announces revised tariff schedules and a Green Tax Surcharge for vehicles with engine capacities of 2000cc and above. The linked full order was a placeholder at review time, so no 2026 schedule has been promoted into this pack.": "Annonce des barèmes tarifaires révisés et une surtaxe environnementale pour les véhicules d’une cylindrée de 2 000 cm³ ou plus. Le texte intégral lié était indisponible lors de la revue ; aucun barème de 2026 n’a donc été intégré à ce jeu de données.",
+    "Nigeria's saved 35% duty plus 35% levy scenario is under policy review and omits charges shown by the official HS-code calculator. Do not use this total as a current customs quote.": "Le scénario nigérian enregistré avec 35 % de droits et 35 % de prélèvement est en cours de révision et omet des frais affichés par le calculateur officiel du code SH. N’utilisez pas ce total comme devis douanier actuel.",
+    "The trade portal's less-than-15-year manufacture-year rule is a planning gate. Confirm the current prohibition list and the specific vehicle with Customs or a licensed clearing agent before purchase.": "La règle du portail commercial imposant moins de 15 ans depuis l’année de fabrication sert à préparer votre projet. Confirmez la liste actuelle des interdictions et le véhicule concerné auprès des douanes ou d’un transitaire agréé avant l’achat.",
+    "The saved rate scenario predates Nigeria's 2026 tariff amendments and does not reproduce the current public HS-code calculator for a used petrol car. Check the exact HS code, customs valuation and current charges with the Nigeria Trade Information Portal and a licensed clearing agent before buying.": "Le scénario enregistré précède les modifications tarifaires nigérianes de 2026 et ne reproduit pas le calculateur public actuel du code SH pour une voiture d’occasion à essence. Vérifiez le code SH exact, la valeur douanière et les frais actuels auprès du portail nigérian d’information commerciale et d’un transitaire agréé avant l’achat.",
+    "Build a Nigeria landed-cost planning scenario through Lagos ports. The saved duty and levy rates are under 2026 policy review; verify your exact HS code, valuation, and current charges with the official trade portal before relying on the total.": "Préparez un scénario de coût rendu au Nigéria via les ports de Lagos. Les droits et prélèvements enregistrés font l’objet d’une revue des règles de 2026 ; vérifiez le code SH exact, la valeur douanière et les frais actuels sur le portail commercial officiel avant de vous fier au total.",
+    "Car Price Directory: dated local asking-price samples and the wider car catalog": "Annuaire automobile : prix demandés locaux avec relevés datés et catalogue élargi",
     'Estimate the real cost to land a used or new vehicle in Nigeria through Lagos ports, including customs taxes, practical clearing costs, registration, storage risk, and inland movement.': 'Estimez le coût d’importation d’un véhicule neuf ou d’occasion au Nigéria via les ports de Lagos, avec taxes douanières, frais pratiques de transit, immatriculation, risque de stockage et transport intérieur.',
     'Users often miss terminal delivery orders, scanning or examination fees, local registration, demurrage after free days, and FX spread between the quote date and clearing date.': 'Les coûts souvent oubliés comprennent les bons de livraison du terminal, les frais de scan ou d’inspection, l’immatriculation locale, les surestaries après la période gratuite et l’écart de change entre le devis et le dédouanement.',
     'Estimate a Kenya car import from source price or make/model/year through Mombasa, including KRA taxes, KEBS inspection, inland delivery, and registration.': 'Estimez une importation au Kenya depuis le prix source ou la marque, le modèle et l’année via Mombasa, avec taxes KRA, inspection KEBS, livraison intérieure et immatriculation.',
@@ -1045,6 +1063,11 @@ function removeTagBySrc(html, pattern) {
 }
 
 function sourceProof(app, sourceManifest, parityManifest) {
+  const carDirectory = app.englishId === 'car-price-intelligence';
+  const carObservations = carDirectory
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cars/market-observations.json'), 'utf8')).observations
+    : [];
+  const latestCarReview = carObservations.reduce((latest, row) => row.reviewedAt > latest ? row.reviewedAt : latest, '');
   const sourceTool = sourceManifest.tools.find((tool) => tool.id === app.englishId);
   const sourceIds = sourceTool ? sourceTool.sourceIds : [];
   const sources = sourceIds.map((id) => sourceManifest.sources.find((source) => source.id === id)).filter(Boolean);
@@ -1072,24 +1095,32 @@ function sourceProof(app, sourceManifest, parityManifest) {
     <img data-fr-transport-artwork src="/assets/img/tools/${app.imageId}.webp" alt="Illustration de ${escapeHtml(app.name)}" loading="eager" decoding="async">
     <figcaption>Illustration associée à ${escapeHtml(app.name)}</figcaption>
   </figure>
-  <div class="fr-transport-proof__grid">
+  ${carDirectory ? `<div class="fr-transport-proof__grid">
+    <div class="fr-transport-proof__item"><strong>${carObservations.length} relevés</strong><span>Petits échantillons de prix demandés</span></div>
+    <div class="fr-transport-proof__item"><strong>${escapeHtml(latestCarReview)}</strong><span>Dernière date de revue enregistrée</span></div>
+    <div class="fr-transport-proof__item"><strong>14 jours</strong><span>Fenêtre de revue avant réévaluation de l’indexabilité</span></div>
+  </div>` : `<div class="fr-transport-proof__grid">
     <div class="fr-transport-proof__item"><strong>${escapeHtml(parityManifest.sourceReviewDate)}</strong><span>Dernière revue enregistrée</span></div>
-    <div class="fr-transport-proof__item"><strong>${parityManifest.sourceReviewCadenceDays} jours</strong><span>Cadence prévue, revue effectuée dans le délai</span></div>
+    <div class="fr-transport-proof__item"><strong>${parityManifest.sourceReviewCadenceDays} jours</strong><span>Cadence prévue ; comparer avec la date de revue</span></div>
     <div class="fr-transport-proof__item"><strong>Confiance prudente</strong><span>${parityManifest.sourceChangedCount} sources modifiées et ${parityManifest.sourceBlockedManualCount} bloquées ou manuelles restent à examiner ; aucune donnée tarifaire en direct</span></div>
-  </div>
+  </div>`}
   <p class="fr-transport-proof__warning"><strong>Limite non négociable :</strong> ${escapeHtml(parityManifest.claimBoundary)}</p>
-  <p>Les champs et le résultat restent dans ce navigateur. Aucun document, identifiant, trajet, devis, numéro de châssis ou détail client n’est envoyé par cette couche française. L’assistant central reste déterministe sans consentement ; tout appel à un modèle exige un choix explicite et conserve un parcours local.</p>
+  <p>${carDirectory
+    ? 'Les prix demandés affichés sont de petits relevés datés, liés à leur source. La sélection d’une voiture reste dans ce navigateur et ouvre sa fiche ; le devis d’import se prépare dans le calculateur dédié.'
+    : 'Les champs et le résultat restent dans ce navigateur. Aucun document, identifiant, trajet, devis, numéro de châssis ou détail client n’est envoyé par cette couche française. L’assistant central reste déterministe sans consentement ; tout appel à un modèle exige un choix explicite et conserve un parcours local.'}</p>
   <details>
     <summary>Sources de vérification associées</summary>
     <ul>${sourceLinks || '<li>Aucune source liée dans le registre Transport ; vérification manuelle obligatoire.</li>'}</ul>
   </details>
-  <div class="fr-transport-proof__actions">
+  ${carDirectory ? `<div class="fr-transport-proof__actions">
+    <a class="secondary" href="/tools/car-import-cost/">Préparer un devis d’import modifiable</a>
+  </div>` : `<div class="fr-transport-proof__actions">
     <button type="button" data-fr-transport-download-text>Télécharger le résumé TXT</button>
     <button type="button" class="secondary" data-fr-transport-download-pdf>Télécharger le PDF local</button>
     <a class="secondary" href="/fr/ai/?outil=${encodeURIComponent(app.englishId)}">Assistant AfroTools (optionnel)</a>
   </div>
   <p class="fr-transport-proof__status" data-fr-transport-status aria-live="polite">Lancez le calcul, puis exportez le résultat local.</p>
-  <p class="fr-transport-proof__error" data-fr-transport-error role="alert"></p>
+  <p class="fr-transport-proof__error" data-fr-transport-error role="alert"></p>`}
 </section>
 <!-- FR_TRANSPORT_PARITY_END -->`;
 }
@@ -1307,9 +1338,11 @@ ${applicationSchema(app)}
   html = html.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/i, `<h1>${escapeHtml(app.name)}</h1>`);
   html = html.replace(/<afro-footer\b/i, `${sourceProof(app, sourceManifest, parityManifest)}\n<afro-footer`);
   html = html.replace(/\s*<\/body>/i, '\n</body>');
-  html = html.replace('</body>', `<script src="/assets/js/lib/pdf-template.js" defer></script>
+  if (app.englishId !== 'car-price-intelligence') {
+    html = html.replace('</body>', `<script src="/assets/js/lib/pdf-template.js" defer></script>
 <script src="/assets/js/pages/french-transport-parity.js" defer></script>
 </body>`);
+  }
   html = html.replace(/"inLanguage"\s*:\s*"en"/g, '"inLanguage":"fr"');
   return normalizeGeneratedHtml(html);
 }
@@ -1399,7 +1432,7 @@ html[data-theme="dark"] body{background:#0b1220;color:#e5edf7}html[data-theme="d
 <afro-navbar active="transport"></afro-navbar>
 <header class="frt-hero"><div class="frt-inner"><nav aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> › Transport</nav><p>Transport et logistique</p><h1>18 applications Transport, chacune disponible en français</h1><p>Chaque carte correspond à un propriétaire anglais canonique. Les calculs restent locaux et les hypothèses restent visibles. Aucun tarif, horaire, trajet, disponibilité, règlement ou statut officiel n’est présenté comme une donnée en direct.</p></div></header>
 <main class="frt-main">
-<section class="fr-transport-proof" aria-labelledby="frt-source-title"><h2 id="frt-source-title">Frontière de confiance</h2><p class="fr-transport-proof__warning"><strong>Revue enregistrée : ${escapeHtml(manifest.sourceReviewDate)}.</strong> Revue effectuée dans la cadence de ${manifest.sourceReviewCadenceDays} jours. ${manifest.sourceChangedCount} sources modifiées et ${manifest.sourceBlockedManualCount} sources bloquées ou manuelles restent à examiner ; aucun fait, tarif, règle, trajet ou statut n’a été accepté automatiquement.</p><p>Le hub compte exactement les 18 applications Transport canoniques. Les cinq outils transversaux visibles sur le hub anglais restent accessibles par leurs catégories propriétaires et ne gonflent pas ce dénominateur.</p></section>
+<section class="fr-transport-proof" aria-labelledby="frt-source-title"><h2 id="frt-source-title">Frontière de confiance</h2><p class="fr-transport-proof__warning"><strong>Revue enregistrée : ${escapeHtml(manifest.sourceReviewDate)}.</strong> Cadence prévue : ${manifest.sourceReviewCadenceDays} jours ; comparez cette date avant de vous fier aux sources. ${manifest.sourceChangedCount} sources modifiées et ${manifest.sourceBlockedManualCount} sources bloquées ou manuelles restent à examiner ; aucun fait, tarif, règle, trajet ou statut n’a été accepté automatiquement.</p><p>Le hub compte exactement les 18 applications Transport canoniques. Les cinq outils transversaux visibles sur le hub anglais restent accessibles par leurs catégories propriétaires et ne gonflent pas ce dénominateur.</p></section>
 <section aria-labelledby="frt-apps-title"><h2 id="frt-apps-title">Les 18 applications</h2><div class="frt-grid">${cards}</div></section>
 <div class="frt-lanes">${laneSections}</div>
 </main>

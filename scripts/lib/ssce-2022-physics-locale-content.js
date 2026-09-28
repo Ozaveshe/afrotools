@@ -13,7 +13,19 @@ physics: [
 ['La résistance constante vaut R = 3/0,5 = 6 Ω.','À 9 V, I = 9/6 = 1,5 A.','La proportionnalité exige un conducteur ohmique à température constante.'],
 ['La résistance est la tension divisée par l’intensité.','Un volt par ampère vaut un ohm, de symbole Ω.','L’ampère mesure l’intensité ; le volt mesure la tension.'],
 ['Convertissez les milliampères : 20 mA = 0,020 A.','V = IR = 0,020 × 250 = 5 V.','Prendre 20 A multiplie le résultat correct par mille.'],
-['Les intensités valent 12/4 = 3 A et 12/8 = 1,5 A.','Le rapport 3:1,5 se simplifie en 2:1.','À tension égale, la résistance la plus élevée laisse passer moins de courant.']
+['Les intensités valent 12/4 = 3 A et 12/8 = 1,5 A.','Le rapport 3:1,5 se simplifie en 2:1.','À tension égale, la résistance la plus élevée laisse passer moins de courant.'],
+['L’accélération est la pente du graphique vitesse–temps : variation de vitesse divisée par variation de temps.','(8 − 0)/(4 − 0) = 2 m/s².','L’aire sous ce graphique donne le déplacement, pas l’accélération.'],
+['La distance est l’aire sous le graphique vitesse–temps lorsque la vitesse n’est jamais négative.','Triangle : ½ × 3 × 6 = 9 m ; rectangle : (7 − 3) × 6 = 24 m ; total = 33 m.','La vitesse ne vaut pas 6 m/s pendant les sept secondes entières.'],
+['La vitesse est la pente du graphique déplacement–temps.','(17 − 2)/(5 − 0) = 3 m/s.','Le déplacement initial de 2 m ne fait pas partie de la variation.'],
+['Pour un ressort vérifiant F = kx, divisez la force par l’allongement exprimé en mètres.','À 2 N, 1 cm = 0,01 m ; k = 2/0,01 = 200 N/m.','Convertissez les centimètres en mètres pour obtenir N/m.'],
+['La vitesse moyenne est la distance totale divisée par la durée totale.','(120 + 80)/(20 + 20) = 200/40 = 5 m/s.','120/20 ne décrit que la première partie du trajet.'],
+['Deux forces opposées se soustraient.','12 − 5 = 7 N, vers la plus grande force : l’est.','Précisez la valeur et la direction de la résultante.'],
+['La deuxième loi de Newton donne la force résultante : F = ma.','3 × 4 = 12 N.','La force résultante n’est pas forcément identique à une seule force appliquée.'],
+['La force horizontale résultante est 20 − 8 = 12 N.','Avec F = ma, a = 12/4 = 3 m/s².','Soustrayez le frottement avant de diviser par la masse.'],
+['Les résistances en série s’additionnent, car le même courant les traverse.','R = 2 + 4 = 6 Ω.','La règle des inverses concerne le montage en parallèle.'],
+['En parallèle, 1/R = 1/6 + 1/3 = 1/2 Ω⁻¹.','Donc R = 2 Ω, inférieur à chacune des résistances des branches.','6 Ω + 3 Ω correspondrait à un montage en série.'],
+['Le courant est la charge par unité de temps : Q = It.','0,25 × 40 = 10 C.','Un coulomb est un ampère-seconde ; on divise pour calculer le courant.'],
+['La puissance électrique est VI = 12 × 2 = 24 W.','Énergie = puissance × durée = 24 × 30 = 720 J.','24 W est la puissance ; l’énergie dépend aussi des 30 s.']
 ],
 maths: {
 q6:['Parabole et pente d’une droite',['Sur le graphique WAEC lié, relevez les échelles : 2 cm pour 2 unités en abscisse et 2 cm pour 10 unités en ordonnée. Repérez les zéros −2 et 4 et l’ordonnée à l’origine 8.','Écrivez y = a(x + 2)(x − 4). Comme y(0) = 8, a = −1 ; donc y = −x² + 2x + 8 et (m, n, r) = (−1, 2, 8).','Pour P(−5, −27) et Q(3, 5), la pente vaut (5 + 27)/(3 + 5) = 4.','La parabole est au-dessus de l’axe horizontal entre ses deux zéros : −2 < x < 4.'],['J’ai lu les deux échelles sur le graphique lié.','J’ai utilisé la parabole pour trouver m, n et r.','J’ai gardé le même ordre des points dans les différences.','J’ai exclu les deux zéros de l’intervalle positif.']],
@@ -43,7 +55,19 @@ physics: [
 ['Ukinzani usiobadilika ni R = 3/0.5 = 6 Ω.','Kwa 9 V, I = 9/6 = 1.5 A.','Uwiano huu unahitaji halijoto thabiti na kondakta anayefuata sheria ya Ohm.'],
 ['Ukinzani ni tofauti ya potenshali ikigawanywa kwa mkondo.','Volti moja kwa ampere ni ohm moja, alama Ω.','Ampere hupima mkondo; volti hupima tofauti ya potenshali.'],
 ['Badili milliampere kuwa ampere: 20 mA = 0.020 A.','V = IR = 0.020 × 250 = 5 V.','Kutumia 20 A hufanya jibu liwe kubwa mara elfu.'],
-['Mikondo ni 12/4 = 3 A na 12/8 = 1.5 A.','Uwiano 3:1.5 unapungua kuwa 2:1.','Kwa volti sawa, ukinzani mkubwa hupitisha mkondo mdogo.']
+['Mikondo ni 12/4 = 3 A na 12/8 = 1.5 A.','Uwiano 3:1.5 unapungua kuwa 2:1.','Kwa volti sawa, ukinzani mkubwa hupitisha mkondo mdogo.'],
+['Mchapuko ni mteremko wa grafu ya kasi dhidi ya muda: badiliko la kasi likigawanywa kwa badiliko la muda.','(8 − 0)/(4 − 0) = 2 m/s².','Eneo chini ya grafu hii hutoa uhamisho, si mchapuko.'],
+['Umbali ni eneo chini ya grafu ya kasi dhidi ya muda wakati kasi si hasi.','Pembetatu: ½ × 3 × 6 = 9 m; mstatili: (7 − 3) × 6 = 24 m; jumla = 33 m.','Kasi haikuwa 6 m/s kwa sekunde zote saba.'],
+['Kasi ni mteremko wa grafu ya uhamisho dhidi ya muda.','(17 − 2)/(5 − 0) = 3 m/s.','Uhamisho wa mwanzo wa 2 m si sehemu ya badiliko la uhamisho.'],
+['Kwa chemchemi inayofuata F = kx, gawanya nguvu kwa urefukaji uliobadilishwa kuwa mita.','Kwa 2 N, 1 cm = 0.01 m; k = 2/0.01 = 200 N/m.','Badili sentimita kuwa mita kabla ya kutoa jibu la N/m.'],
+['Kasi wastani ni umbali wote ukigawanywa kwa muda wote.','(120 + 80)/(20 + 20) = 200/40 = 5 m/s.','120/20 inahusu sehemu ya kwanza tu ya safari.'],
+['Nguvu mbili zinazopingana hutolewa.','12 − 5 = 7 N, upande wa nguvu kubwa: mashariki.','Taja ukubwa na mwelekeo wa nguvu halisi.'],
+['Sheria ya pili ya Newton hutoa nguvu halisi: F = ma.','3 × 4 = 12 N.','Nguvu halisi si lazima iwe sawa na nguvu moja iliyowekwa.'],
+['Nguvu halisi ya mlalo ni 20 − 8 = 12 N.','Kwa F = ma, a = 12/4 = 3 m/s².','Toa msuguano kabla ya kugawanya kwa misa.'],
+['Vikinzani vya mfuatano hujumlishwa kwa sababu mkondo uleule hupita kila kimoja.','R = 2 + 4 = 6 Ω.','Kanuni ya vipimo vya kinyume hutumika kwa saketi sambamba.'],
+['Kwa saketi sambamba, 1/R = 1/6 + 1/3 = 1/2 Ω⁻¹.','Hivyo R = 2 Ω, chini ya ukinzani wa kila tawi.','Kujumlisha 6 Ω na 3 Ω kungehusu saketi ya mfuatano.'],
+['Mkondo ni chaji kwa kila sekunde, hivyo Q = It.','0.25 × 40 = 10 C.','Coulomb moja ni ampere-sekunde moja; kugawanya hutumika kupata mkondo.'],
+['Nguvu kazi ya umeme ni VI = 12 × 2 = 24 W.','Nishati = nguvu kazi × muda = 24 × 30 = 720 J.','24 W ni nguvu kazi; nishati pia hutegemea sekunde 30.']
 ],
 maths: {
 q6:['Grafu ya parabola na mteremko wa mstari',['Kwenye grafu ya WAEC iliyounganishwa, soma vipimo: cm 2 kwa vipimo 2 kwenye mhimili wa x na cm 2 kwa vipimo 10 kwenye mhimili wa y. Tambua mizizi −2 na 4 na ukatizaji wa y wa 8.','Andika y = a(x + 2)(x − 4). Kwa kuwa y(0) = 8, a = −1; hivyo y = −x² + 2x + 8 na (m, n, r) = (−1, 2, 8).','Kwa P(−5, −27) na Q(3, 5), mteremko ni (5 + 27)/(3 + 5) = 4.','Parabola iko juu ya mhimili wa x kati ya mizizi yake: −2 < x < 4.'],['Nimesoma vipimo vyote viwili kwenye grafu iliyounganishwa.','Nimetumia parabola kupata m, n na r.','Nimetumia mpangilio uleule wa pointi katika tofauti zote mbili.','Sijajumuisha mizizi kwenye kipindi ambacho y ni chanya.']],

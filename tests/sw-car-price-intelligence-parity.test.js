@@ -15,7 +15,7 @@ const packs = Object.values(core.countryPackFiles).map((file) => json(file.repla
 const importData = Import.mergeData(core, packs, json('data/forex/latest.json').rates);
 
 assert.strictEqual(Object.values(data.countries).filter((row) => row.directory_enabled !== false).length, 20, 'exact English 20-market catalog');
-assert.strictEqual(data.vehicles.length, 25, 'exact English 25-vehicle catalog');
+assert.strictEqual(data.vehicles.length, 27, '27 reviewed English starter vehicles, including Camry and RAV4 additions');
 assert.strictEqual(evidence.officialEndpoints.filter((row) => row.reviewStatus === 'reachable').length, 3, 'three official endpoints reachable');
 assert.strictEqual(evidence.officialEndpoints.filter((row) => row.reviewStatus !== 'reachable').length, 3, 'three official endpoints fail closed');
 assert.strictEqual(evidence.releasePolicy.allowCurrentPriceClaim, false, 'no current-price claim');
@@ -36,6 +36,13 @@ assert.strictEqual(receipt.sourceBandUsd.length, 3, 'historical source band pres
 assert.strictEqual(receipt.localBandUsd.length, 3, 'historical local band preserved');
 
 const html = read('sw/zana/bei-na-akili-ya-gari/index.html');
+assert.match(html, new RegExp('magari ' + data.vehicles.length + ' na masoko 20'), 'generated catalog count matches shared data');
+const directories = Object.values(data.countries).filter(country => country.directory_enabled !== false);
+for (const country of directories) {
+  assert.match(html, new RegExp('href="/cars/' + country.slug + '/" hreflang="en"'), country.slug + ' real directory handoff declares English');
+  assert.ok(fs.existsSync(path.join(root, 'cars', country.slug, 'index.html')), country.slug + ' directory exists');
+}
+assert.match(html, /Upatikanaji wa saraka hauthibitishi bei ya sasa/, 'directory availability does not claim current prices');
 const controller = read('assets/js/pages/sw-car-price-intelligence.js');
 const registry = read('assets/js/components/tool-registry.js');
 assert.match(html, /<html\b(?=[^>]*\blang="sw")(?=[^>]*\bclass="[^"]*\bsw-car-price-page\b[^"]*")[^>]*>/i, 'native Swahili document');

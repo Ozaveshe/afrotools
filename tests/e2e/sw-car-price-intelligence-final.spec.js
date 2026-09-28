@@ -48,6 +48,10 @@ test('native platform fails closed while preserving the full catalog workflow', 
   await expect(page.locator('#swCarRecommendation')).toBeDisabled();
   await expect(page.locator('#swCarDecision')).toContainText('zimezuiwa');
   await expect(page.locator('#swCarSources li')).toHaveCount(6);
+  // Keep the four-source comparison fixture explicit when catalog ordering changes.
+  await page.locator('#swCarSearch').fill('Corolla');
+  await page.getByRole('button', { name: 'Onyesha rekodi' }).click();
+  await expect(page.locator('#swCarVehicle')).toContainText('2018 Toyota Corolla');
   await expect(page.locator('#swCarCompare tr')).toHaveCount(4);
   await expect(page.locator('#swCarSourceDate')).toContainText('2026-');
   await expect(page.locator('#swCarLocalDate')).toContainText('2026-');

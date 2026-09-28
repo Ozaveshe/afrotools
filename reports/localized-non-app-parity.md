@@ -6,7 +6,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 1 | 298 |
+| fr | 159 | 2 | 298 |
 | sw | 137 | 1 | 321 |
 
 ## By surface class
@@ -20,7 +20,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 8 | 5 | 0 | 3 | 3 | 0 | 5 |
+| product-entry | 8 | 4 | 1 | 3 | 3 | 0 | 5 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
@@ -634,6 +634,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
 | /career/ | category-hub | fr | — | missing | no localized route or owner file |
+| /cars/ | product-entry | fr | /fr/cars/ | under-standard | form controls 1/2 |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |
 | /ecommerce/ | category-hub | sw | — | missing | no localized route or owner file |

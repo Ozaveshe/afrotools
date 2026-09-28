@@ -2,14 +2,19 @@
   'use strict';
 
   var HISTORY_KEY = 'afrojamb-original-history-v1';
+  var SAVED_KEY = 'afrojamb-original-cbt-state-v1';
   var POOL_URL = '/data/jamb/pools/original-practice.json';
   var INDEX_URL = '/data/jamb/pools/original-practice-index.json';
   var LABELS = { mathematics: 'Mathematics', english: 'Use of English' };
   var pool = null;
   var config = null;
   var submitted = false;
+  var retrySource = [];
+  var retry = null;
   var cbt = root.AfroJAMB && root.AfroJAMB.CBT;
   var trust = root.AfroJAMB && root.AfroJAMB.QuestionTrust;
+  var resumeCompat = root.AfroJAMB && root.AfroJAMB.OriginalResume;
+  var retryFactory = root.AfroJAMB && root.AfroJAMB.OriginalRetry;
   var $ = function (id) { return document.getElementById(id); };
 
   function track(event, subject, count) {
@@ -119,6 +124,20 @@
       localStorage.setItem(HISTORY_KEY, JSON.stringify(rows.slice(0, 10)));
     } catch (error) { /* Practice remains usable when browser storage is unavailable. */ }
   }
+  function hasSavedPractice() {
+    try { return localStorage.getItem(SAVED_KEY) !== null; }
+    catch (error) { return false; }
+  }
+  function discardSavedPractice() {
+    if (!hasSavedPractice()) return;
+    if (!root.confirm('Discard unfinished original practice on this device? Your completed practice history will remain.')) return;
+    try {
+      localStorage.removeItem(SAVED_KEY);
+      $('resume-btn').hidden = true;
+      $('discard-btn').hidden = true;
+      $('setup-status').textContent = 'Saved practice discarded. Your completed results remain on this device.';
+    } catch (error) { $('setup-status').textContent = 'Could not discard the saved practice. Check browser storage and try again.'; }
+  }
   function reviewCard(item) {
     var card = document.createElement('article'); card.className = 'original-review';
     var meta = document.createElement('small');
@@ -142,6 +161,69 @@
     card.appendChild(details);
     return card;
   }
+  function renderRetry() {
+    var item = retry.current();
+    if (!item) return;
+    $('retry-position').textContent = 'Original question ' + (item.index + 1) + ' · retry ' + retry.position() + ' of ' + retry.count;
+    $('retry-question').textContent = item.question;
+    $('retry-passage').hidden = !item.passage;
+    $('retry-passage').textContent = item.passage || '';
+    var options = $('retry-options');
+    options.disabled = false;
+    options.querySelectorAll('label').forEach(function (label) { label.remove(); });
+    Object.keys(item.options).sort().forEach(function (key) {
+      var label = document.createElement('label'); label.className = 'original-option';
+      var input = document.createElement('input');
+      input.type = 'radio'; input.name = 'retry-answer'; input.value = key;
+      var copy = document.createElement('span');
+      var letter = document.createElement('strong'); letter.textContent = key + '.';
+      copy.append(letter, document.createTextNode(item.options[key]));
+      label.append(input, copy);
+      options.appendChild(label);
+    });
+    $('retry-feedback').replaceChildren();
+    $('retry-check-btn').hidden = false;
+    $('retry-next-btn').hidden = true;
+    $('retry-next-btn').textContent = retry.position() === retry.count ? 'Finish review' : 'Next question';
+    $('retry-question').focus();
+  }
+  function startRetry() {
+    if (!retryFactory) return;
+    retry = retryFactory.create(retrySource);
+    if (!retry.count) return;
+    $('retry-panel').hidden = false;
+    $('retry-card').hidden = false;
+    $('retry-complete').hidden = true;
+    renderRetry();
+  }
+  function checkRetry() {
+    if (!retry) return;
+    var selected = $('retry-options').querySelector('input[name="retry-answer"]:checked');
+    var result = retry.check(selected && selected.value);
+    var feedback = $('retry-feedback');
+    if (!result) { feedback.textContent = 'Choose an answer first.'; return; }
+    var item = retry.current();
+    var verdict = document.createElement('p');
+    verdict.textContent = result.correct ? 'Correct on this retry. Your original score is unchanged.' :
+      'Not quite. Your original score is unchanged.';
+    var answer = document.createElement('p');
+    answer.textContent = 'Correct answer: ' + result.correctAnswer + '. ' + item.options[result.correctAnswer];
+    var explanation = document.createElement('p'); explanation.textContent = result.explanation;
+    feedback.replaceChildren(verdict, answer, explanation);
+    $('retry-options').disabled = true;
+    $('retry-check-btn').hidden = true;
+    $('retry-next-btn').hidden = false;
+    $('retry-next-btn').focus();
+  }
+  function nextRetry() {
+    if (!retry || !retry.next()) return;
+    if (retry.current()) { renderRetry(); return; }
+    $('retry-card').hidden = true;
+    $('retry-complete').textContent = 'You reviewed ' + retry.count + ' missed or skipped ' +
+      (retry.count === 1 ? 'question' : 'questions') + '. Your original score is unchanged.';
+    $('retry-complete').hidden = false;
+    $('retry-complete').focus();
+  }
   function finish(timedOut) {
     if (submitted) return;
     var state = cbt.getState();
@@ -155,6 +237,13 @@
       $('result-note').textContent = (timedOut ? 'Time is up. ' : '') + 'This is a practice result, not a JAMB aggregate or predicted UTME score.';
       var review = $('review-list'); review.replaceChildren();
       score.reviewItems.forEach(function (item) { review.appendChild(reviewCard(item)); });
+      retrySource = score.reviewItems;
+      retry = null;
+      $('retry-panel').hidden = true;
+      var retryCount = retryFactory ? retryFactory.create(retrySource).count : 0;
+      $('retry-btn').hidden = retryCount === 0;
+      $('retry-btn').textContent = 'Retry ' + retryCount + ' missed or skipped ' +
+        (retryCount === 1 ? 'question' : 'questions');
       saveHistory(state.subjects[0], score);
       track('education_jamb_original_submit', state.subjects[0], score.outOf);
       renderHistory();
@@ -174,29 +263,38 @@
       if (selected.length !== 12) throw new Error('Incomplete subject set');
       cbt.init(config);
       submitted = false;
+      retrySource = [];
+      $('discard-btn').hidden = true;
       track('education_jamb_original_start', subject, 12);
       show('quiz'); renderQuestion(true);
     } catch (error) { $('setup-status').textContent = 'This subject set is unavailable. Please reload and try again.'; }
   }
+  function resumable(saved) {
+    if (!saved || saved.mode !== 'original-practice' || !pool) return null;
+    return resumeCompat && resumeCompat.migrate(saved, pool);
+  }
   function resume() {
     var saved = cbt.tryRestore('original-practice');
-    if (!saved || saved.mode !== 'original-practice' || !Array.isArray(saved.subjects) || saved.subjects.length !== 1 || !LABELS[saved.subjects[0]]) return;
+    var compatible = resumable(saved);
+    if (!compatible || !Array.isArray(compatible.subjects) || compatible.subjects.length !== 1 || !LABELS[compatible.subjects[0]]) return;
     try {
-      $('subject').value = saved.subjects[0];
-      config = makeConfig(saved.subjects[0]);
-      cbt.restore(config, saved);
+      $('subject').value = compatible.subjects[0];
+      config = makeConfig(compatible.subjects[0]);
+      cbt.restore(config, compatible);
       if (cbt.getState().questions.length !== 12) throw new Error('Incomplete saved subject set');
       submitted = false;
-      track('education_jamb_original_resume', saved.subjects[0], 12);
+      track('education_jamb_original_resume', compatible.subjects[0], 12);
       show('quiz'); renderQuestion(true);
     } catch (error) {
-      cbt.clearSession();
+      cbt.clearSession('original-practice');
       $('resume-btn').hidden = true;
+      $('discard-btn').hidden = !hasSavedPractice();
       $('setup-status').textContent = 'The saved session is out of date. Start a new practice session.';
     }
   }
   async function ready() {
     if (!cbt || !trust) { $('setup-status').textContent = 'The practice engine could not load. Refresh this page.'; return; }
+    $('discard-btn').hidden = !hasSavedPractice();
     var requested = new URLSearchParams(root.location.search).get('subject');
     if (LABELS[requested]) $('subject').value = requested;
     try {
@@ -210,17 +308,21 @@
       $('setup-status').textContent = pool.count + ' reviewed original questions are ready.';
       $('start-btn').disabled = false;
       var saved = cbt.tryRestore('original-practice');
-      $('resume-btn').hidden = !(saved && saved.mode === 'original-practice' && saved.poolRevision === pool.review_revision);
+      $('resume-btn').hidden = !resumable(saved);
       renderHistory();
     } catch (error) { $('setup-status').textContent = 'The reviewed question set could not be verified. Please try again later.'; }
   }
 
   $('start-btn').addEventListener('click', start);
   $('resume-btn').addEventListener('click', resume);
+  $('discard-btn').addEventListener('click', discardSavedPractice);
   $('prev-btn').addEventListener('click', function () { cbt.prev(); renderQuestion(true); });
   $('next-btn').addEventListener('click', function () { cbt.next(); renderQuestion(true); });
   $('mark-btn').addEventListener('click', function () { cbt.markForReview(); renderQuestion(false); });
   $('submit-btn').addEventListener('click', function () { finish(false); });
-  $('again-btn').addEventListener('click', function () { $('resume-btn').hidden = true; show('setup'); });
+  $('retry-btn').addEventListener('click', startRetry);
+  $('retry-check-btn').addEventListener('click', checkRetry);
+  $('retry-next-btn').addEventListener('click', nextRetry);
+  $('again-btn').addEventListener('click', function () { $('resume-btn').hidden = true; $('discard-btn').hidden = true; show('setup'); });
   ready();
 }(window));

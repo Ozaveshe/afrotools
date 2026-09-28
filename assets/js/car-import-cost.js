@@ -624,7 +624,7 @@
                 } catch (t) {
                     a = null;
                 }
-                var r = a || {};
+                var r = "1" === t.get("newQuote") ? { inputMode: "purchase", purchasePriceUsd: "" } : a || {};
                 t.has("country") && (r.countryCode = t.get("country")), t.has("source") && (r.sourceMarket = t.get("source")),
                 t.has("make") && (r.make = t.get("make")), t.has("model") && (r.model = t.get("model")),
                 t.has("year") && (r.year = t.get("year")), t.has("price") && (r.purchasePriceUsd = t.get("price")),

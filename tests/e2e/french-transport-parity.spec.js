@@ -2,6 +2,7 @@ const { expect, test } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 
 const parity = require('../../data/transport/french-parity.json');
+const carObservations = require('../../data/cars/market-observations.json').observations;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -383,6 +384,10 @@ async function applyGenuine200PercentTextScale(page, route, stage, viewportWidth
     document.documentElement.style.setProperty('font-size', '100%', 'important');
   });
   expect(await page.evaluate(() => window.innerWidth), `${route} ${stage} viewport width`).toBe(viewportWidth);
+  // The prior 200% pass may still be settling when the viewport changes.
+  await expect.poll(() => page.evaluate(
+    () => Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+  ), { message: `${route} ${stage} baseline font reset` }).toBe(16);
   const baseline = await page.evaluate(
     () => Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
   );
@@ -716,7 +721,7 @@ test('French Transport hub is an exact accessible 18-app discovery surface', asy
   for (const schema of schemas) expect(() => JSON.parse(schema)).not.toThrow();
 });
 
-test('all 18 French Transport applications execute, reject stale invalid input, export and reflow locally', async ({ browser, context, page: initialPage }) => {
+test('all 18 French Transport routes browse or calculate, with local exports for calculators', async ({ browser, context, page: initialPage }) => {
   test.setTimeout(18 * 60 * 1000);
   const routePattern = process.env.FR_TRANSPORT_PATTERN
     ? new RegExp(process.env.FR_TRANSPORT_PATTERN)
@@ -808,6 +813,28 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     expect.soft(artworkAudit.renderedHeight, `${app.englishId} artwork rendered height`).toBeGreaterThan(0);
     expect.soft(artworkAudit.aspectDelta, `${app.englishId} artwork aspect preserved`).toBeLessThan(0.02);
     await expect(page.locator('iframe')).toHaveCount(0);
+    if (app.englishId === 'car-price-intelligence') {
+      await expect(page.locator('#frCarsEstimator')).toBeVisible();
+      await expect(page.locator('#fr-car-model option')).toHaveCount(carObservations.length);
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+      await expect(page.locator('[data-fr-transport-download-text],[data-fr-transport-download-pdf],#frCarsLanded')).toHaveCount(0);
+      await expectFrenchProductUi(page, app.englishId, 'directory');
+      await expectStrictReflow(page, app.frenchRoute, 'directory-320', 320);
+      await expectStrictReflow(page, app.frenchRoute, 'directory-375', 375);
+      await page.locator('#fr-car-model').selectOption('/fr/cars/nigeria/toyota/corolla/2018/');
+      await page.locator('#frCarsEstimator button[type="submit"]').focus();
+      await expect(page.locator('#frCarsEstimator button[type="submit"]')).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(page).toHaveURL(/\/fr\/cars\/nigeria\/toyota\/corolla\/2018\/$/);
+      await expect(page.getByRole('row').filter({ hasText: '19 annonces' }).getByRole('link', { name: 'Consulter la source' })).toHaveAttribute('href', 'https://jiji.ng/lagos/cars/toyota-corolla-2018');
+      await expect(page.getByRole('row').filter({ hasText: '4 annonces aux Émirats' }).getByRole('link', { name: 'Consulter la source' })).toHaveAttribute('href', 'https://uae.yallamotor.com/used-cars/toyota/corolla/yr_2018_2018');
+      await expect(page.locator('main')).toContainText('19 annonces');
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+      await expectStrictReflow(page, page.url(), 'observed-model-375', 375);
+      expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => key.includes('cars'))), 'directory navigation does not store a car selection').toEqual([]);
+      await page.close();
+      continue;
+    }
     await expect(page.getByText('Aucun tarif, horaire, trajet, disponibilité', { exact: false })).toBeVisible();
     await expect(page.getByText('Les champs et le résultat restent dans ce navigateur', { exact: false })).toBeVisible();
 
@@ -891,19 +918,6 @@ test('all 18 French Transport applications execute, reject stale invalid input, 
     expect.soft(transportSchema.image, `${app.englishId} schema artwork`).toBe(expectedArtworkUrl);
     console.log(`  ${app.englishId}: metadata, a11y and 320px audit ready`);
     await expectFrenchProductUi(page, app.englishId, 'initial');
-
-    if (app.englishId === 'car-price-intelligence') {
-      await expect(page.locator('#frCarsEstimator')).toBeVisible();
-      await expect(page.locator('#fr-car-market option')).toHaveCount(7);
-      await expect(page.locator('#fr-car-model option')).toHaveCount(5);
-      await page.locator('#frCarsExample').click();
-      await expect(page.locator('#frCarsSummary')).toHaveValue(/Toyota Corolla 2018/);
-      await expect(page.locator('#frCarsLanded')).not.toHaveText('-');
-      expect(
-        await page.evaluate(() => Object.keys(localStorage).filter((key) => key.includes('cars'))),
-        'car-price-intelligence keeps the estimate ephemeral unless the user explicitly exports'
-      ).toEqual([]);
-    }
 
     await expectStrictReflow(page, app.frenchRoute, 'initial-320', 320);
     await expectStrictReflow(page, app.frenchRoute, 'initial-375', 375);

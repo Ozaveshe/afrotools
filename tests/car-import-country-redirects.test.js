@@ -20,14 +20,20 @@ test('every emitted car-directory link has a real country page or an exact non-f
   const fallbacks = rules.filter(rule => rule.target.startsWith(base + '#requested-country='));
   assert.equal(fallbacks.length, missing.length);
   for (const country of countries) {
-    const url = new URL(cars.buildCalculatorUrl({country, sourceMarket: 'japan',
-      vehicle: {make: 'Toyota', model: 'Hilux', year: 2020, cc: [2600, 2600]}, sourcePrice: {median: 28500}}), 'https://afrotools.com');
-    assert.equal(url.pathname, `${base}${country.slug}/`);
-    assert.equal(url.searchParams.get('country'), country.code);
-    const rule = fallbacks.find(rule => rule.route === url.pathname);
+    const emitted = cars.buildCalculatorUrl({country, sourceMarket: 'japan',
+      vehicle: {make: 'Toyota', model: 'Hilux', year: 2020, cc: [2600, 2600]}, sourcePrice: {median: 28500}});
+    if (country.import_enabled === false) {
+      assert.equal(emitted, '', `${country.slug} must not offer an unsupported calculator`);
+    } else {
+      const url = new URL(emitted, 'https://afrotools.com');
+      assert.equal(url.pathname, `${base}${country.slug}/`);
+      assert.equal(url.searchParams.get('country'), country.code);
+    }
+    // Exact legacy bookmarks still retain their non-forced, query-preserving fallback.
+    const rule = fallbacks.find(rule => rule.route === `${base}${country.slug}/`);
     if (real.includes(country)) assert.equal(rule, undefined, `${country.slug} keeps its real page`);
     else {
-      assert.ok(rule, `${country.slug} needs a fallback for the emitted link`);
+      assert.ok(rule, `${country.slug} needs a fallback for legacy bookmarks`);
       assert.equal(rule.statusCode, 301);
       assert.equal(rule.force, false);
       assert.equal(rule.target, base + '#requested-country=' + country.code);

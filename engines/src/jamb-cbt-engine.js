@@ -42,6 +42,10 @@
         questionIds: t.questions.map(function(e) {
           return e.id;
         }),
+        originalReviewSchema: t.mode === "original-practice" ? 2 : undefined,
+        questionReviewHashes: t.mode === "original-practice" ? t.questions.map(function(e) {
+          return e.review.content_sha256;
+        }) : undefined,
         answers: t.answers,
         marked: t.marked,
         currentIndex: t.currentIndex,
@@ -359,8 +363,11 @@
         score: null
       }, b(), i(), d(e.onTick, e.onTimeout), l(), t;
     },
-    clearSession: function() {
-      t = null, a();
+    clearSession: function(mode) {
+      if (mode) setStorageKey(mode);
+      if (r) clearInterval(r);
+      if (u) clearInterval(u);
+      r = null; u = null; t = null; a();
     },
     getState: function() {
       return t;

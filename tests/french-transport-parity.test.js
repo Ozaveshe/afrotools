@@ -14,7 +14,7 @@ const { normalizeBuildManagedHtml } = require('../scripts/lib/shared-asset-refer
 
 const ENGLISH_BEHAVIOR_SHA256 = Object.freeze({
   'car-import-cost': 'a4f0c24612547918092f6bcea3cfb2fb4b4b3a2c2a7c39a31898c51bf351a06e',
-  'car-price-intelligence': '977562c9185e29eeaae0e24066ae8ab76ed76b276b50e98d2e9b107a060e582c',
+  'car-price-intelligence': 'e4f00a32c4b206f07b31fba4059f1839d3c04b8627187fb475bd0bcc7f6a0bd3',
   'ride-fare': '2f6ebd585d5b31ad22c624d78fc9977bb99b3eb8adabe8067e83138b38a56b05',
   'boda-income': 'e796d5d35000ede36e9a98bb78bc4352be38d222378bcc703b472e8fddd73ce5',
   'matatu-fare': 'fd40245a7cd80e7fa4b95e1ad5aee4f8cbe0c04ae853046d3f0ddda1d9571e0a',
@@ -200,24 +200,39 @@ for (const app of parity.apps) {
   } else {
     assert.match(html, /data-fr-transport-schema[^>]*>[^<]*"inLanguage":"fr"/, `${app.englishId} French schema`);
   }
-  assert.match(html, /data-fr-transport-download-text/, `${app.englishId} local TXT export`);
-  assert.match(html, /data-fr-transport-download-pdf/, `${app.englishId} local PDF export`);
+  if (app.englishId === 'car-price-intelligence') {
+    assert.doesNotMatch(html, /data-fr-transport-download-text|data-fr-transport-download-pdf/, 'cars directory does not offer a calculation export');
+    assert.match(html, /id="frCarsEstimator"/, 'cars directory offers an observed-car picker');
+  } else {
+    assert.match(html, /data-fr-transport-download-text/, `${app.englishId} local TXT export`);
+    assert.match(html, /data-fr-transport-download-pdf/, `${app.englishId} local PDF export`);
+  }
   assert.match(
     html,
     new RegExp(`data-fr-transport-artwork[^>]*src=["']/assets/img/tools/${app.imageId}\\.webp["']`),
     `${app.englishId} renders its assigned artwork`
   );
   assert.match(html, /Aucun tarif, horaire, trajet, disponibilit/, `${app.englishId} non-live boundary`);
-  assert.match(html, /restent dans ce navigateur/, `${app.englishId} local privacy boundary`);
-  assert.match(html, /Cadence pr/, `${app.englishId} freshness cadence`);
-  assert.match(html, /Confiance prudente/, `${app.englishId} confidence`);
+  assert.match(html, app.englishId === 'car-price-intelligence' ? /reste dans ce navigateur/ : /restent dans ce navigateur/, `${app.englishId} local privacy boundary`);
+  if (app.englishId === 'car-price-intelligence') {
+    const observedCars = require('../data/cars/market-observations.json').observations.length;
+    assert.ok(html.includes(`${observedCars} relevés`), 'cars directory shows its observed sample count');
+    assert.match(html, /14 jours/, 'cars directory shows its evidence review window');
+  } else {
+    assert.match(html, /Cadence pr/, `${app.englishId} freshness cadence`);
+    assert.match(html, /Confiance prudente/, `${app.englishId} confidence`);
+  }
   assert.ok(!/class=["'][^"']*\bfaq-section\b/.test(html), `${app.englishId} excludes unsupported inherited FAQ claims`);
   if (!app.existingNative) {
     assert.ok(!/"@type"\s*:\s*"FAQPage"/.test(html), `${app.englishId} excludes inherited English FAQ schema`);
   }
   assert.ok(!/class=["'][^"']*\btool-verification-sec\b/.test(html), `${app.englishId} uses one French verification boundary`);
-  assert.match(html, /\/assets\/js\/lib\/pdf-template\.js/, `${app.englishId} PDF engine`);
-  assert.match(html, /\/assets\/js\/pages\/french-transport-parity\.js/, `${app.englishId} French runtime`);
+  if (app.englishId === 'car-price-intelligence') {
+    assert.doesNotMatch(html, /\/assets\/js\/lib\/pdf-template\.js|\/assets\/js\/pages\/french-transport-parity\.js/, 'cars directory uses its own navigation, not a calculator runtime');
+  } else {
+    assert.match(html, /\/assets\/js\/lib\/pdf-template\.js/, `${app.englishId} PDF engine`);
+    assert.match(html, /\/assets\/js\/pages\/french-transport-parity\.js/, `${app.englishId} French runtime`);
+  }
   if (app.englishId === 'car-import-cost') {
     assert.strictEqual(
       (html.match(/src=["']\/assets\/js\/lib\/analytics\.js(?:\?[^"']*)?["']/g) || []).length,

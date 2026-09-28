@@ -3,7 +3,46 @@ const path = require("path");
 const { addHelperScript, addSourceHook } = require("./apply-source-confidence-hooks");
 
 const root = path.join(__dirname, "..");
+const bundleManifestPath = path.join(root, "assets/js/bundles/manifest.json");
+const bundleManifest = fs.existsSync(bundleManifestPath)
+  ? JSON.parse(fs.readFileSync(bundleManifestPath, "utf8"))
+  : {};
+const chatBundlePath = bundleManifest.chat?.path || "/assets/js/components/chat-panel.min.js";
+const coreScriptTag = bundleManifest.core?.path
+  ? `<script src="${bundleManifest.core.path}" defer></script>`
+  : '<script src="/assets/js/lib/analytics.js" defer></script>';
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/cars/price-intelligence.json"), "utf8"));
+const marketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/market-observations.json"), "utf8")).observations;
+const sourceMarketObservations = JSON.parse(fs.readFileSync(path.join(root, "data/cars/source-market-observations.json"), "utf8")).observations;
+const nigeriaAgeRules = JSON.parse(fs.readFileSync(path.join(root, "data/trade/car-import-cost-ng.json"), "utf8")).ageRules;
+const contentRevisionDate = "2026-09-27";
+function parseCsvRows(text) {
+  const rows = [];
+  let row = [], cell = "", quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index], next = text[index + 1];
+    if (char === '"' && quoted && next === '"') { cell += '"'; index += 1; }
+    else if (char === '"') quoted = !quoted;
+    else if (char === "," && !quoted) { row.push(cell); cell = ""; }
+    else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && next === "\n") index += 1;
+      row.push(cell);
+      if (row.some(Boolean)) rows.push(row);
+      row = []; cell = "";
+    } else cell += char;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const header = rows.shift() || [];
+  return rows.map((cells) => Object.fromEntries(header.map((key, index) => [key, cells[index] || ""])));
+}
+const catalogOptions = [...new Map([
+  ...parseCsvRows(fs.readFileSync(path.join(root, "data/cars/master-vehicle-catalog.csv"), "utf8")),
+  ...parseCsvRows(fs.readFileSync(path.join(root, "data/cars/import-duty-vehicle-estimates.csv"), "utf8"))
+]
+  .filter((row) => row.vehicle_id && row.make && row.model && /^\d{4}$/.test(row.year))
+  .map((row) => [row.vehicle_id, row])
+).values()]
+  .sort((left, right) => left.make.localeCompare(right.make) || left.model.localeCompare(right.model) || Number(right.year) - Number(left.year));
 const forex = (() => {
   try {
     return JSON.parse(fs.readFileSync(path.join(root, "data/forex/latest.json"), "utf8"));
@@ -38,7 +77,7 @@ function writePage(routePath, meta) {
     output = helper.html;
   }
   fs.writeFileSync(file, output, "utf8");
-  generatedRoutes.push({ routePath, sitemap: meta.noindex !== true });
+  generatedRoutes.push({ routePath, sitemap: meta.noindex !== true, lastmod: meta.lastmod || contentRevisionDate });
 }
 
 function canonical(routePath) {
@@ -57,13 +96,94 @@ function formatMoney(amount, currency) {
   return `${currency} ${rounded.toLocaleString("en-US")}`;
 }
 
+function formatObservedMoney(amount, currency) {
+  return `${currency} ${Math.round(amount).toLocaleString("en-US")}`;
+}
+
+function marketObservation(country, vehicle) {
+  return marketObservations.find((entry) => entry.countryCode === country.code && entry.vehicleId === vehicle.id) || null;
+}
+
+function sourceMarketObservation(vehicle) {
+  return sourceMarketObservations.find((entry) => entry.vehicleId === vehicle.id) || null;
+}
+
+function nigeriaImportAgeRestricted(country, vehicle) {
+  return country.code === "NG"
+    && nigeriaAgeRules.basis === "manufactureYear"
+    && Number.isFinite(nigeriaAgeRules.maxYearsExclusive)
+    && new Date().getUTCFullYear() - vehicle.year >= nigeriaAgeRules.maxYearsExclusive;
+}
+
+function countryMarketHTML(country) {
+  const observations = data.vehicles
+    .map((vehicle) => ({ vehicle, observation: marketObservation(country, vehicle) }))
+    .filter((entry) => entry.observation);
+  if (!observations.length) return "";
+  const rows = observations.map(({ vehicle, observation }) =>
+    `<li><a href="/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/">${escapeHtml(observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</a> — ${escapeHtml(formatMoney(observation.median, observation.currency))} median asking price from ${observation.sampleSize} ${escapeHtml(observation.condition)} listings in ${escapeHtml(observation.market)} (reviewed ${escapeHtml(observation.reviewedAt)}).</li>`
+  ).join("\n");
+  return `<section class="cars-panel cars-static-summary"><h2>Dated local asking-price snapshots</h2><ul>${rows}</ul><p class="cars-static-note">These are small asking-price samples, not completed sale prices or live dealer quotes. Open a vehicle for the source, method, and import-cost comparison.</p></section>`;
+}
+
+function marketEvidenceHTML(country, vehicle) {
+  const observation = marketObservation(country, vehicle);
+  if (!observation) return "";
+  const name = observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
+  const importAgeRestricted = nigeriaImportAgeRestricted(country, vehicle);
+  const calculatorUrl = country.import_enabled && !importAgeRestricted
+    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}&price=${Math.round(sourceMarketObservation(vehicle).median / sourceMarketObservation(vehicle).sourceCurrencyPerUsd / 100) * 100}` : ""}`
+    : "";
+  const comparisonCopy = importAgeRestricted
+    ? "This is a local purchase snapshot. The Nigeria Trade Information Portal states that imported vehicles must be less than 15 years from their year of manufacture; this model year is outside that stated limit. Confirm the current rule with Customs before paying."
+    : `Compare this local asking snapshot with an import quote that includes the purchase price, freight, customs valuation and duty, port and clearing costs, delays, and registration. ${sourceMarketObservation(vehicle) ? "The source-market band is also a dated asking-price sample; confirm the exact seller quote before deciding." : "The source-price budget elsewhere on this page is an older planning estimate; enter a current source quote before deciding."}`;
+  const corroboration = (observation.corroboratingSources || []).map((source) => `<li><a href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.sourceName)}</a>: ${escapeHtml(formatMoney(source.median, source.currency))} median asking price across ${source.sampleSize} comparable listings (reviewed ${escapeHtml(source.reviewedAt)}). ${escapeHtml(source.method)}</li>`).join("\n");
+  return `<section class="cars-panel cars-static-summary cars-market-evidence">
+<h2>${escapeHtml(name)} asking prices in ${escapeHtml(observation.market)}</h2>
+<p>In a sample of ${observation.sampleSize} ${escapeHtml(observation.condition)} asking prices reviewed ${escapeHtml(observation.reviewedAt)}, the median was <strong>${escapeHtml(formatMoney(observation.median, observation.currency))}</strong>. The middle half ran from ${escapeHtml(formatMoney(observation.lowerQuartile, observation.currency))} to ${escapeHtml(formatMoney(observation.upperQuartile, observation.currency))}.</p>
+<p><strong>Method:</strong> ${escapeHtml(observation.method)}</p>
+<p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
+${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
+<p>${comparisonCopy}</p>
+<div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a>${calculatorUrl ? `<a href="${escapeHtml(calculatorUrl)}">Estimate import cost for this car</a>` : ""}</div>
+</section>`;
+}
+
+function vehicleImageHTML(vehicle) {
+  const binding = (data.mediaLibrary && data.mediaLibrary.bindings || []).find((entry) => entry.vehicleId === vehicle.id && entry.isPrimary && entry.status === "approved");
+  const asset = binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && ["licensed", "generated"].includes(entry.sourceType));
+  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="640" height="400"><figcaption>${asset.sourceType === "generated" ? "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."}</figcaption></figure>` : "";
+}
+
+function sourceMarketEvidenceHTML(vehicle) {
+  const observation = sourceMarketObservation(vehicle);
+  if (!observation) return "";
+  return `<section class="cars-panel cars-static-summary cars-market-evidence">
+<h2>${escapeHtml(observation.market)} source-market asking prices</h2>
+<p>For ${escapeHtml(observation.sampleVariant)}, ${observation.sampleSize} used-car asks had a median of <strong>${escapeHtml(formatObservedMoney(observation.median, observation.currency))}</strong>; the middle half ran from ${escapeHtml(formatObservedMoney(observation.lowerQuartile, observation.currency))} to ${escapeHtml(formatObservedMoney(observation.upperQuartile, observation.currency))}. The source page stated an update of ${escapeHtml(observation.sourceSnapshotAt)}; reviewed ${escapeHtml(observation.reviewedAt)}.</p>
+<p><strong>Method:</strong> ${escapeHtml(observation.method)}</p>
+<p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
+<p>The USD source band is converted using ${escapeHtml(observation.sourceCurrencyPerUsd)} AED per USD from <a href="${escapeHtml(observation.fxSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(observation.fxSourceName)}</a>. It excludes import costs and is a planning input, not a landed or local price.</p>
+<div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a></div>
+</section>`;
+}
+
+function catalogOptionsHTML() {
+  return catalogOptions.map((row) => `<option value="${escapeHtml(`${row.year} ${row.make} ${row.model}`)}" data-make="${escapeHtml(row.make)}" data-model="${escapeHtml(row.model)}" data-year="${escapeHtml(row.year)}" data-body="${escapeHtml(row.body_type)}"></option>`).join("\n");
+}
+
 function priceBandCells(vehicle, country) {
-  const [low, , high] = vehicle.price;
+  const observation = sourceMarketObservation(vehicle);
+  const toUsd = (value) => Math.round(value / observation.sourceCurrencyPerUsd / 100) * 100;
+  const [low, median, high] = observation
+    ? [observation.lowerQuartile, observation.median, observation.upperQuartile].map(toUsd)
+    : vehicle.price;
   const usd = `$${low.toLocaleString("en-US")}–$${high.toLocaleString("en-US")}`;
+  const usdMedian = `$${median.toLocaleString("en-US")}`;
   const rate = fxRate(country);
-  if (!rate || country.currency_code === "USD") return { local: usd, usd };
+  if (!rate || country.currency_code === "USD") return { local: usd, usd, usdMedian, observation };
   const local = `${formatMoney(low * rate, country.currency_symbol || country.currency_code)} – ${formatMoney(high * rate, country.currency_symbol || country.currency_code)}`;
-  return { local, usd };
+  return { local, usd, usdMedian, observation };
 }
 
 function vehicleRow(vehicle, country, linkPrefix) {
@@ -72,7 +192,8 @@ function vehicleRow(vehicle, country, linkPrefix) {
   const label = linkPrefix
     ? `<a href="${linkPrefix}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/">${escapeHtml(name)}</a>`
     : escapeHtml(name);
-  return `<tr><td>${label}</td><td>${escapeHtml(vehicle.body || "")}</td><td>${escapeHtml(cells.local)}</td><td>${escapeHtml(cells.usd)}</td></tr>`;
+  const basis = cells.observation ? `<br><small>Observed ${escapeHtml(cells.observation.market)} asks, ${escapeHtml(cells.observation.sourceSnapshotAt)}</small>` : "";
+  return `<tr><td>${label}</td><td>${escapeHtml(vehicle.body || "")}</td><td>${escapeHtml(cells.local)}</td><td>${escapeHtml(cells.usd)}${basis}</td></tr>`;
 }
 
 function vehicleTableHTML(vehicles, country, linkPrefix, caption) {
@@ -84,12 +205,12 @@ function vehicleTableHTML(vehicles, country, linkPrefix, caption) {
   return `<section class="cars-panel cars-static-summary">
 <h2>${escapeHtml(caption)}</h2>
 <table>
-<thead><tr><th>Vehicle</th><th>Body</th><th>Source price band (${escapeHtml(country ? country.currency_code : "USD")})</th><th>USD reference</th></tr></thead>
+<thead><tr><th>Vehicle</th><th>Body</th><th>Source purchase band (${escapeHtml(country ? country.currency_code : "USD")})</th><th>USD source band and basis</th></tr></thead>
 <tbody>
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">Source-market price bands are planning estimates from the AfroTools car dataset (updated ${escapeHtml(latestVehicleUpdate(vehicles))}). Use the interactive directory above for landed-cost, duty, and import-vs-local recommendations.${fxNote}</p>
+<p class="cars-static-note">${vehicles.some(sourceMarketObservation) ? "Rows marked observed use dated marketplace asking-price samples; their source, selection method, and limits are on the vehicle pages. Other bands are older AfroTools planning estimates." : "These are older AfroTools source-market planning estimates."} Seed price updates run through ${escapeHtml(latestVehicleUpdate(vehicles))}; local conversions use the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. These are not local asking prices or export quotes. Use a current seller quote and the import-cost calculator before comparing with local asking prices.${fxNote}</p>
 </section>`;
 }
 
@@ -113,6 +234,9 @@ ${parts.join("\n")}
 
 function vehicleDetailHTML(vehicle, country) {
   const cells = priceBandCells(vehicle, country);
+  const sourceBasis = cells.observation
+    ? `${cells.observation.market} marketplace sample; ${cells.observation.sampleSize} asking prices; page updated ${cells.observation.sourceSnapshotAt}`
+    : `AfroTools planning estimate updated ${vehicle.lastUpdated}`;
   const specs = [
     ["Trim", vehicle.trim],
     ["Engine", Array.isArray(vehicle.cc) ? vehicle.cc.map((cc) => `${cc} cc`).join(" / ") : vehicle.cc],
@@ -121,28 +245,52 @@ function vehicleDetailHTML(vehicle, country) {
     ["Typical mileage", vehicle.mileage],
     ["Typical condition", vehicle.condition],
     ["Common source markets", Array.isArray(vehicle.sources) ? vehicle.sources.join(", ") : vehicle.sources],
-    [`Source price band (${country.currency_code})`, cells.local],
-    ["USD reference band", cells.usd],
-    ["Data confidence", vehicle.confidence],
-    ["Last updated", vehicle.lastUpdated]
+    [`Source purchase band (${country.currency_code})`, cells.local],
+    ["USD source band", cells.usd],
+    ...(cells.observation ? [["USD sampled median", cells.usdMedian]] : []),
+    ["Source price basis", sourceBasis],
+    ["Data confidence", cells.observation ? "low (small asking-price sample)" : vehicle.confidence]
   ].filter(([, value]) => value);
   const rows = specs.map(([label, value]) => `<tr><th scope="row">${escapeHtml(label)}</th><td>${escapeHtml(String(value))}</td></tr>`).join("\n");
   return `<section class="cars-panel cars-static-summary">
 <h2>${escapeHtml(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)} — ${escapeHtml(country.name)} planning snapshot</h2>
+${marketObservation(country, vehicle) ? vehicleImageHTML(vehicle) : ""}
 <table>
 <tbody>
 ${rows}
 </tbody>
 </table>
-<p class="cars-static-note">These are dataset planning estimates, not dealer quotes. Run the interactive estimate above for landed cost with current duty rules, shipping, and FX for ${escapeHtml(country.name)}.</p>
+<p class="cars-static-note">${sourceMarketObservation(vehicle) ? "The USD source band above comes from a dated marketplace asking-price sample described below." : "The source budget above is an older dataset estimate."} It is not a local asking price or dealer quote. Local-currency conversion uses the ${escapeHtml(String(forex.timestamp || "undated").slice(0, 10))} FX snapshot. Enter a current seller quote for a useful landed-cost estimate in ${escapeHtml(country.name)}.</p>
 </section>`;
 }
 
+function rootObservationLinksHTML() {
+  return marketObservations
+    .map((entry) => {
+      const country = data.countries[entry.countryCode];
+      const vehicle = data.vehicles.find((item) => item.id === entry.vehicleId);
+      if (!country || !vehicle) return "";
+      const route = `/cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}/`;
+      return `<li><a href="${route}">${escapeHtml(entry.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)} asking-price evidence in ${escapeHtml(country.name)}</a></li>`;
+    })
+    .join("");
+}
+
 function staticContentHTML(meta) {
+  if (meta.pageType === "root") {
+    const options = catalogOptionsHTML();
+    const observationLinks = rootObservationLinksHTML();
+    const observedCountryLinks = Object.values(data.countries)
+      .filter((country) => marketObservations.some((entry) => entry.countryCode === country.code))
+      .map((country) => `<li><a href="/cars/${country.slug}/">Browse ${escapeHtml(country.name)} car prices and market snapshots</a></li>`)
+      .join("");
+    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} priced vehicles. Most source-market bands are older planning estimates; the dated source and local asking-price snapshots are marked on their vehicle pages. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul>${observedCountryLinks}${observationLinks}</ul></section>
+<section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Most do not have a current local asking-price sample. The calculator will ask for your actual seller price and show country-specific costs for six supported destinations.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
+  }
   if (!meta.pageType) return "";
   const country = meta.countryObj;
   if (meta.pageType === "country") {
-    return countryEditorialHTML(country) + vehicleTableHTML(data.vehicles, country, `/cars/${country.slug}`, `Popular imports tracked for ${country.name}`);
+    return countryEditorialHTML(country) + countryMarketHTML(country) + vehicleTableHTML(data.vehicles, country, `/cars/${country.slug}`, `Illustrative source-market budgets for ${country.name}`);
   }
   if (meta.pageType === "make") {
     const vehicles = data.vehicles.filter((vehicle) => vehicle.makeSlug === meta.makeSlug);
@@ -153,7 +301,7 @@ function staticContentHTML(meta) {
     return vehicleTableHTML(vehicles, country, `/cars/${country.slug}`, `${meta.make} ${meta.model} year variants in ${country.name}`);
   }
   if (meta.pageType === "vehicle" || meta.pageType === "import-vs-local") {
-    return vehicleDetailHTML(meta.vehicleObj, country);
+    return vehicleDetailHTML(meta.vehicleObj, country) + sourceMarketEvidenceHTML(meta.vehicleObj) + marketEvidenceHTML(country, meta.vehicleObj);
   }
   return "";
 }
@@ -175,7 +323,7 @@ function schema(meta, routePath) {
       operatingSystem: "Web",
       description: meta.description,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-      publisher: { "@type": "Organization", name: "AfroTools", url: "https://afrotools.com" }
+      publisher: { "@type": "Organization", name: "AfroTools", url: "https://afrotools.com/" }
     },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs }
   ];
@@ -209,14 +357,14 @@ function schema(meta, routePath) {
 function html(routePath, meta) {
   const canonicalUrl = canonical(meta.canonicalRoute || routePath);
   return `<!DOCTYPE html>
-<html lang="en" data-chat-bundle="/assets/js/components/chat-panel.min.js">
+<html lang="en" data-chat-bundle="${chatBundlePath}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(meta.title)}</title>
   <meta name="description" content="${escapeHtml(meta.description)}">
   <link rel="canonical" href="${canonicalUrl}">
-  ${routePath === "cars" ? '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-na-akili-ya-gari/">' : ''}
+${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afrotools.com/cars/">\n<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/cars/">\n<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bei-na-akili-ya-gari/">\n<link rel="alternate" hreflang="x-default" href="https://afrotools.com/cars/">' : ''}
   <meta name="robots" content="${meta.noindex ? "noindex, follow" : "index, follow"}">
   <meta name="tool-id" content="car-price-intelligence">
   <meta property="og:title" content="${escapeHtml(meta.title)}">
@@ -231,7 +379,7 @@ function html(routePath, meta) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/cars-directory.css">
@@ -243,14 +391,14 @@ function html(routePath, meta) {
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
-  <script src="/assets/js/lib/analytics.js" defer></script>
-  <script src="/assets/js/afro-history.js" defer></script>
+  ${coreScriptTag}<script src="/assets/js/afro-history.js" defer></script>
   <script src="/assets/js/components/save-result-button.js" defer></script>
   <script src="/assets/js/lib/export-tools.js" defer></script>
   <script src="/assets/js/lib/share-state.js" defer></script>
   <script src="/assets/js/lib/car-import-cost-engine.js" defer></script>
   <script src="/assets/js/lib/car-price-intelligence.js" defer></script>
   <script src="/assets/js/cars-directory.js" defer></script>
+${routePath === "cars" ? '<script src="/assets/js/pages/car-catalog-search.js" defer></script>' : ''}
 </body>
 </html>
 `;
@@ -263,31 +411,54 @@ function escapeHtml(value) {
 function writeSitemap() {
   const urls = generatedRoutes
     .filter((entry) => entry.sitemap)
-    .map((entry) => entry.routePath)
-    .sort()
-    .map((routePath) => `  <url><loc>${canonical(routePath)}</loc><lastmod>2026-05-03</lastmod><changefreq>weekly</changefreq><priority>${routePath === "cars" ? "0.9" : "0.7"}</priority></url>`)
+    .sort((a, b) => a.routePath.localeCompare(b.routePath))
+    .map((entry) => `  <url><loc>${canonical(entry.routePath)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>weekly</changefreq><priority>${entry.routePath === "cars" ? "0.9" : "0.7"}</priority></url>`)
     .join("\n");
   fs.writeFileSync(path.join(root, "sitemap-cars.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, "utf8");
 }
 
-writePage("cars", {
+if (process.argv.includes("--catalog-only")) {
+  const file = path.join(root, "cars/index.html");
+  const current = fs.readFileSync(file, "utf8");
+  if (!/Search \d+ catalog make, model, and year options/.test(current) || !/<datalist id="carsCatalogOptions">[\s\S]*?<\/datalist>/.test(current)) {
+    throw new Error("Car catalog form not found on generated root page");
+  }
+  const updated = current
+    .replace("Find more cars for an import quote", "Find a car for an import quote")
+    .replace(/Search \d+ catalog make, model, and year options/, `Search ${catalogOptions.length} catalog make, model, and year options`)
+    .replace(/<datalist id="carsCatalogOptions">[\s\S]*?<\/datalist>/, `<datalist id="carsCatalogOptions">${catalogOptionsHTML()}</datalist>`);
+  fs.writeFileSync(file, updated, "utf8");
+  console.log(`Updated ${catalogOptions.length} car catalog options in the generated root page`);
+  process.exit(0);
+}
+
+const rootPageMeta = {
   title: "African Car Price Directory | AfroTools",
-  description: "Compare imported cars across 20 African markets with local-currency price bands, landed-cost estimates, asking ranges, finance fit, and import-risk context.",
+  description: "Compare indicative source-market car budgets and import costs across 20 African markets, with dated local asking-price observations where available.",
   includeFaq: true,
-  listVehicles: data.vehicles
-});
+  listVehicles: data.vehicles,
+  pageType: "root"
+};
+writePage("cars", rootPageMeta);
+if (process.argv.includes("--root-only")) {
+  console.log("Generated car price directory root page");
+  process.exit(0);
+}
 writePage("cars/compare", {
   title: "Compare Car Source Markets | Japan, UAE, UK, South Africa | AfroTools",
-  description: "Compare source-market price, shipping assumptions, landed cost, local dealer ranges, financing outlook, and risk layers for African car imports."
+  description: "Compare source-market price, shipping assumptions, landed cost, local dealer ranges, financing outlook, and risk layers for African car imports.",
+  noindex: true
 });
 
 Object.values(data.countries).filter((country) => country.directory_enabled !== false).forEach((country) => {
+  const hasLocalEvidence = marketObservations.some((item) => item.countryCode === country.code);
   writePage(`cars/${country.slug}`, {
-    title: `Car Prices — ${country.name} | AfroTools`,
-    description: `Search car landed-cost and local asking-price ranges in ${country.currency_code || "local currency"} for ${country.name}, including source-market comparisons, financing outlook, and import-vs-local recommendations.`,
+    title: hasLocalEvidence ? `Car Prices — ${country.name} | AfroTools` : `Car Import Budget Guide — ${country.name} | AfroTools`,
+    description: `Browse illustrative source-market car budgets in ${country.currency_code || "local currency"} for ${country.name}, with dated local asking-price samples where available and a car import-cost handoff.`,
     country: country.name,
     countryObj: country,
     pageType: "country",
+    noindex: !hasLocalEvidence,
     includeFaq: true,
     listVehicles: data.vehicles
   });
@@ -305,6 +476,7 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
       make: makeName,
       makeSlug,
       pageType: "make",
+      noindex: true,
       listVehicles: data.vehicles.filter((vehicle) => vehicle.makeSlug === makeSlug)
     });
   });
@@ -325,19 +497,27 @@ Object.values(data.countries).filter((country) => country.directory_enabled !== 
       modelSlug: vehicle.modelSlug,
       model: vehicle.model,
       pageType: "model",
+      noindex: true,
       listVehicles: data.vehicles.filter((v) => v.makeSlug === vehicle.makeSlug && v.modelSlug === vehicle.modelSlug)
     });
   });
 
   data.vehicles.forEach((vehicle) => {
+    const observation = marketObservation(country, vehicle);
     writePage(`cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model} Price — ${country.name} | AfroTools`,
-      description: `Estimate source price, landed cost and local asking range for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}; compare financing and import risk before acting.`,
+      description: observation
+        ? nigeriaImportAgeRestricted(country, vehicle)
+          ? `See a dated local asking-price sample for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name} and the current import age warning.`
+          : `Compare a dated local asking-price sample with an editable import-cost estimate for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`
+        : `Explore illustrative source-price and import-cost assumptions for ${vehicle.year} ${vehicle.make} ${vehicle.model} in ${country.name}.`,
       country: country.name,
       countryObj: country,
       make: vehicle.make,
       pageType: "vehicle",
-      vehicleObj: vehicle
+      vehicleObj: vehicle,
+      noindex: !observation || observation.searchIndexEligible === false,
+      lastmod: observation?.reviewedAt || contentRevisionDate
     });
     // Same vehicle data with different framing — keep for users/app deep links,
     // but canonicalize to the vehicle page and keep out of sitemaps/index.

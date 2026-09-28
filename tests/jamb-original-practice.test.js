@@ -21,10 +21,10 @@ const pool = seal({ kind: 'original-practice', collection_id: source.collection_
 const index = seal({ kind: 'original-practice', collection_id: source.collection_id,
   count: rows.length, subjects: subjectCounts }, revision);
 
-test('all 40 items are original, yearless and answer-reviewed without changing the historical pool', () => {
-  assert.equal(source.questions.length, 40);
+test('all 64 items are original, yearless and answer-reviewed without changing the historical pool', () => {
+  assert.equal(source.questions.length, 64);
   assert.deepEqual(source.questions.reduce((counts, item) => { counts[item.subject] = (counts[item.subject] || 0) + 1; return counts; }, {}),
-    { mathematics: 20, english: 20 });
+    { mathematics: 32, english: 32 });
   assert.ok(source.questions.every(item => item.year === null && item.num === null && item.origin === 'AfroTools original'));
   assert.ok(source.questions.every(item => item.options[item.answer] && item.review.independent_check && item.review.content_sha256));
   assert.equal(source.mathematics_alignment_review.status, 'unverified');
@@ -34,7 +34,7 @@ test('all 40 items are original, yearless and answer-reviewed without changing t
   assert.ok(!historical.questions.some(item => item.id.startsWith('ato-')));
   const normalize = value => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   const historicalPrompts = new Set(historical.questions.map(item => normalize(item.question)));
-  assert.ok(source.questions.filter(item => /-v1-(?:1[3-9]|20)$/.test(item.id))
+  assert.ok(source.questions.filter(item => Number(item.id.slice(-2)) >= 13)
     .every(item => !historicalPrompts.has(normalize(item.question))));
   assert.ok(!fs.readFileSync(path.join(ROOT, 'jamb/index.html'), 'utf8').includes('/null/'));
   const route = fs.readFileSync(path.join(ROOT, 'jamb/original-practice/index.html'), 'utf8');
@@ -75,7 +75,7 @@ test('the first Maths answer keys match independent calculations and inverses', 
 });
 
 test('the next Maths answers follow independent set, logarithm and graph calculations', () => {
-  const next = source.questions.filter(q => q.subject === 'mathematics').slice(12);
+  const next = source.questions.filter(q => q.subject === 'mathematics').slice(12, 20);
   assert.deepEqual(next.map(q => q.id), Array.from({ length: 8 }, (_, i) => 'ato-math-v1-' + String(i + 13).padStart(2, '0')));
   assert.deepEqual(next.map(q => q.options[q.answer]),
     ['11', '{1, 7}', '6', '3', '10', '2', 'Wednesday to Thursday', 'The traveller stayed at the same distance for five minutes']);
@@ -97,6 +97,22 @@ test('the next Maths answers follow independent set, logarithm and graph calcula
   assert.ok(next.every(q => q.year === null && q.num === null && q.origin === 'AfroTools original'));
 });
 
+test('the third Maths batch has independently recomputed keys and accessible graph scales', () => {
+  const next = source.questions.filter(q => q.subject === 'mathematics').slice(20);
+  assert.deepEqual(next.map(q => q.id), Array.from({ length: 12 }, (_, i) =>
+    'ato-math-v1-' + String(i + 21).padStart(2, '0')));
+  assert.deepEqual(next.map(q => q.options[q.answer]), [
+    String(2 * 4 + 3 * 5), String(6 ** 2 - (2 ** 2 - 3)), String((13 + 2 * 4) / 3),
+    String(9 * 8 / 12), (6 * 15 / 10) + ' hours', String(14 + 6 * -3).replace('-', '−'),
+    ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'][(58 - 4) / 6],
+    String([3, 7, 11, 15, 19, 23, 27, 31].reduce((sum, value) => sum + value, 0)),
+    ((30 - 18) / (5 - 2)) + ' parcels per minute', (4 * 5) + ' books',
+    Number(0.004867).toPrecision(2), '7.86 × 10⁴'
+  ]);
+  assert.ok(next.slice(8, 10).every(q => q.passage && /horizontal axis|vertical axis/.test(q.passage)));
+  assert.ok(next.every(q => q.review.independent_check.length >= 30 && q.year === null && q.num === null));
+});
+
 test('English comprehension is grounded in the authored passage and all lexical keys are unique', () => {
   const english = source.questions.filter(q => q.subject === 'english');
   const passage = english[0].passage;
@@ -116,7 +132,7 @@ test('English comprehension is grounded in the authored passage and all lexical 
 });
 
 test('the next English batch covers oral forms and one complete original cloze passage', () => {
-  const next = source.questions.filter(q => q.subject === 'english').slice(12);
+  const next = source.questions.filter(q => q.subject === 'english').slice(12, 20);
   assert.deepEqual(next.map(q => q.id), Array.from({ length: 8 }, (_, i) => 'ato-english-v1-' + String(i + 13).padStart(2, '0')));
   assert.deepEqual(next.map(q => q.options[q.answer]),
     ['seen', 'sprint', 'site', 'relax', 'The colour of the folder', 'evaporate', 'compared', 'based']);
@@ -128,6 +144,28 @@ test('the next English batch covers oral forms and one complete original cloze p
   assert.ok(cloze.every((q, i) => q.passage.includes('___(' + (i + 1) + ')___') && q.review.independent_check.length >= 30));
   assert.ok(next.every(q => q.year === null && q.num === null && q.origin === 'AfroTools original'));
   assert.equal(new Set(next.map(q => q.question.toLowerCase())).size, 8);
+});
+
+test('the third English batch has two complete passages and independently checked oral items', () => {
+  const next = source.questions.filter(q => q.subject === 'english').slice(20);
+  assert.deepEqual(next.map(q => q.id), Array.from({ length: 12 }, (_, i) =>
+    'ato-english-v1-' + String(i + 21).padStart(2, '0')));
+  assert.deepEqual(next.map(q => q.options[q.answer]), [
+    'It remained usable when the stepping stones were covered.',
+    'New pupils needed the directions before they reached the school gate.',
+    'The footbridge recommendation may not have been the only cause.',
+    'The better route could depend on weather conditions.',
+    'recorded', 'correct', 'improvement', 'discrepancy',
+    'leaf', 'We record the rainfall each day.', 'Ngozi gave away five rulers to Idris.', 'Did the bus arrive?'
+  ]);
+  assert.ok(next.slice(0, 4).every(q => q.passage === next[0].passage));
+  assert.match(next[0].passage, /four rainy mornings nobody could use them/);
+  assert.match(next[0].passage, /new bus timetable/);
+  assert.ok(next.slice(4, 8).every(q => q.passage === next[4].passage));
+  for (let number = 1; number <= 4; number++) assert.ok(next[4].passage.includes('___(' + number + ')___'));
+  assert.ok(next.slice(8).every(q => !q.passage && q.topic.startsWith('Oral forms:')));
+  assert.ok([next[8], next[9], next[11]].every(q => q.review.evidence_urls?.length > 0));
+  assert.ok(next.every(q => q.year === null && q.num === null && q.review.independent_check.length >= 30));
 });
 
 test('the original CBT trusts its own index, isolates its resume key and never posts a mock attempt', async () => {
@@ -160,4 +198,110 @@ test('the original CBT trusts its own index, isolates its resume key and never p
   assert.equal(result.aggregate, null);
   assert.equal(posts.length, 0);
   assert.ok(!storage.has('afrojamb-original-cbt-state-v1'));
+});
+
+test('24- and 40-item original sessions resume in the 64-item bank only when selected reviews are unchanged', async () => {
+  const storage = new Map([['afrojamb-original-history-v1', '[{"subject":"mathematics","correct":8,"total":12}]'],
+    ['afrojamb-cbt-state', '{"mode":"cbt-full"}']]);
+  const posts = [];
+  const context = { crypto: webcrypto, TextEncoder, Date,
+    fetch: async (url, options) => {
+      if (options?.method === 'POST') { posts.push(url); return { ok: true }; }
+      return { ok: true, json: async () => JSON.parse(JSON.stringify(url.endsWith('original-practice-index.json') ? index : pool)) };
+    },
+    localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) },
+    setInterval: () => 1, clearInterval: () => {}
+  };
+  context.window = context;
+  for (const file of ['assets/js/lib/jamb-question-trust.js', 'engines/src/jamb-cbt-engine.js', 'assets/js/lib/jamb-original-resume.js']) {
+    vm.runInNewContext(fs.readFileSync(path.join(ROOT, file), 'utf8'), context);
+  }
+  const loaded = await context.AfroJAMB.QuestionTrust.loadPool('/data/jamb/pools/original-practice.json', '/data/jamb/pools/original-practice-index.json');
+  const cbt = context.AfroJAMB.CBT;
+  const compat = context.AfroJAMB.OriginalResume;
+  const config = subject => ({ pool: loaded.questions, poolRevision: loaded.review_revision,
+    subjects: [subject], mode: 'original-practice', questionsPerSubject: 12, durationMinutes: 20 });
+  const makeSnapshot = (revision, subject, first) => ({
+    sessionId: 'local-original-session', poolRevision: revision, mode: 'original-practice', year: null,
+    subjects: [subject], currentSubject: subject,
+    questionIds: Array.from({ length: 12 }, (_, i) => 'ato-' + (subject === 'mathematics' ? 'math' : 'english') + '-v1-' + String(first + i).padStart(2, '0')),
+    answers: { 0: 'A', 11: 'B' }, marked: { 1: true }, currentIndex: 5,
+    startedAt: Date.now() - 60000, durationMs: 1200000
+  });
+  const revisions = [
+    ['84a11be138a1e2b25d0db124f8d925290cfb00282d71021dd5d9f653c1a6d3bd', 'mathematics', 1],
+    ['7fdc0826891c9b33d6f83be340f0ab4f3d14b7bec805bc53d6fe03d3534099a3', 'english', 9]
+  ];
+  for (const [oldRevision, subject, first] of revisions) {
+    const saved = makeSnapshot(oldRevision, subject, first);
+    storage.set('afrojamb-original-cbt-state-v1', JSON.stringify(saved));
+    const migrated = compat.migrate(cbt.tryRestore('original-practice'), loaded);
+    assert.ok(migrated, oldRevision);
+    assert.equal(saved.poolRevision, oldRevision, 'migration must not mutate saved data');
+    assert.equal(JSON.parse(storage.get('afrojamb-original-cbt-state-v1')).poolRevision, oldRevision, 'migration must not write before restore');
+    const state = cbt.restore(config(subject), migrated);
+    assert.deepEqual(Array.from(state.questions, q => q.id), saved.questionIds);
+    assert.deepEqual({ ...state.answers }, saved.answers);
+    assert.deepEqual({ ...state.marked }, saved.marked);
+    assert.equal(state.currentIndex, saved.currentIndex);
+    assert.equal(state.startedAt, saved.startedAt);
+    assert.equal(state.durationMs, saved.durationMs);
+    assert.ok(cbt.timeRemainingSeconds() > 1100 && cbt.timeRemainingSeconds() <= 1140);
+    const persisted = JSON.parse(storage.get('afrojamb-original-cbt-state-v1'));
+    assert.equal(persisted.poolRevision, loaded.review_revision);
+    assert.equal(persisted.originalReviewSchema, 2);
+    assert.deepEqual(persisted.questionIds, saved.questionIds);
+    assert.deepEqual(persisted.questionReviewHashes,
+      saved.questionIds.map(id => loaded.questions.find(q => q.id === id).review.content_sha256));
+  }
+  const currentSaved = cbt.tryRestore('original-practice');
+  assert.ok(compat.migrate(currentSaved, loaded), 'current snapshots receive full validation');
+  const idOnly = structuredClone(currentSaved);
+  delete idOnly.originalReviewSchema; delete idOnly.questionReviewHashes;
+  assert.ok(compat.migrate(idOnly, loaded), 'valid current ID-only snapshots remain compatible');
+  for (const patch of [
+    saved => { delete saved.questionIds; },
+    saved => { saved.questionIds = []; },
+    saved => { saved.questionIds[0] = 'ato-math-v1-09'; },
+    saved => { saved.answers[0] = 'Z'; },
+    saved => { saved.durationMs = 3600000; },
+    saved => { saved.year = 2025; }
+  ]) {
+    const malformed = structuredClone(currentSaved); patch(malformed);
+    assert.equal(compat.migrate(malformed, loaded), null);
+  }
+  const old40 = makeSnapshot(revisions[1][0], 'english', 9);
+  const reject = patch => { const copy = structuredClone(old40); patch(copy); assert.equal(compat.migrate(copy, loaded), null); };
+  reject(saved => { saved.questionIds[0] = 'ato-english-v1-21'; });
+  reject(saved => { saved.questionIds[0] = 'ato-math-v1-09'; });
+  reject(saved => { saved.questionIds[0] = saved.questionIds[1]; });
+  reject(saved => { saved.answers[0] = 'Z'; });
+  reject(saved => { saved.marked[1] = 'yes'; });
+  reject(saved => { saved.currentIndex = 12; });
+  reject(saved => { saved.durationMs = 60 * 60 * 1000; });
+  reject(saved => { saved.subjects = ['mathematics']; });
+  reject(saved => { saved.mode = 'cbt-full'; });
+  reject(saved => { saved.year = 2025; });
+  reject(saved => { saved.poolRevision = 'f'.repeat(64); });
+  assert.equal(compat.migrate(old40, { ...loaded, questions: loaded.questions.filter(q => q.id !== old40.questionIds[0]) }), null);
+  assert.equal(compat.migrate(old40, { ...loaded, questions: loaded.questions.map(q => q.id === old40.questionIds[0] ?
+    { ...q, review: { ...q.review, content_sha256: 'f'.repeat(64) } } : q) }), null);
+  assert.equal(storage.get('afrojamb-original-history-v1'), '[{"subject":"mathematics","correct":8,"total":12}]');
+  assert.equal(storage.get('afrojamb-cbt-state'), '{"mode":"cbt-full"}');
+  assert.deepEqual(posts, []);
+});
+
+
+test('explicit original cleanup cannot remove a full-CBT snapshot before restoration', () => {
+  const storage = new Map([['afrojamb-cbt-state', 'keep-full-cbt'],
+    ['afrojamb-original-cbt-state-v1', 'damaged-original'], ['afrojamb-original-history-v1', 'keep-history']]);
+  const context = { localStorage: { getItem: key => storage.get(key),
+    setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) },
+    clearInterval: () => {} };
+  context.window = context;
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'engines/src/jamb-cbt-engine.js'), 'utf8'), context);
+  context.AfroJAMB.CBT.clearSession('original-practice');
+  assert.equal(storage.has('afrojamb-original-cbt-state-v1'), false);
+  assert.equal(storage.get('afrojamb-cbt-state'), 'keep-full-cbt');
+  assert.equal(storage.get('afrojamb-original-history-v1'), 'keep-history');
 });

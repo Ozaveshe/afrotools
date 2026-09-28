@@ -3,6 +3,14 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 const output = path.join(root, 'sw/zana/bei-na-akili-ya-gari/index.html');
+const dataset = JSON.parse(fs.readFileSync(path.join(root, 'data/cars/price-intelligence.json'), 'utf8'));
+const countries = Object.values(dataset.countries).filter(country => country.directory_enabled !== false);
+const countryNames = { 'South Africa': 'Afrika Kusini', Egypt: 'Misri', Morocco: 'Moroko', Cameroon: 'Kamerun', Mozambique: 'Msumbiji' };
+const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const countryLinks = countries.map(country => {
+  if (!/^[a-z-]+$/.test(country.slug) || !fs.existsSync(path.join(root, 'cars', country.slug, 'index.html'))) throw new Error('Missing Car directory: ' + country.slug);
+  return '<li><a href="/cars/' + country.slug + '/" hreflang="en">' + escapeHtml(countryNames[country.name] || country.name) + ' (Kiingereza)</a></li>';
+}).join('');
 const route = 'https://afrotools.com/sw/zana/bei-na-akili-ya-gari/';
 const title = 'Ushahidi wa Bei za Magari Afrika | AfroTools';
 const description = 'Chuja magari na masoko 20, kagua safu za bei zenye tarehe na vyanzo, linganisha ushahidi, na pakua risiti bila kudai bei ya sasa.';
@@ -46,7 +54,7 @@ const html = `<!doctype html>
     <section class="sw-car-hero">
       <span class="sw-car-kicker">Ushahidi wa mnunuzi · ndani ya kivinjari</span>
       <h1>Ushahidi wa bei za magari Afrika</h1>
-      <p>Chuja katalogi ileile ya Kiingereza ya magari 25 na masoko 20. Kwa sasa data ya bei imepitwa na muda, kwa hiyo AfroTools inaonyesha rekodi zenye tarehe bila kutoa bei ya sasa, uamuzi wa kuagiza, au ahadi ya mkopo.</p>
+      <p>Chuja katalogi ileile ya Kiingereza ya magari ${dataset.vehicles.length} na masoko ${countries.length}. Kwa sasa data ya bei imepitwa na muda, kwa hiyo AfroTools inaonyesha rekodi zenye tarehe bila kutoa bei ya sasa, uamuzi wa kuagiza, au ahadi ya mkopo.</p>
     </section>
     <section class="sw-car-status" role="status" aria-live="polite" id="swCarFreshness"><strong>Inakagua muda wa data…</strong></section>
     <div class="sw-car-grid">
@@ -88,6 +96,11 @@ const html = `<!doctype html>
     <section class="sw-car-panel sw-car-compare" aria-labelledby="swCarCompareTitle"><h2 id="swCarCompareTitle">Linganisha vyanzo vya rekodi</h2><table><thead><tr><th>Chanzo</th><th>Safu ya kihistoria</th><th>Tarehe</th><th>Uaminifu</th></tr></thead><tbody id="swCarCompare"></tbody></table></section>
     <section class="sw-car-panel"><h2>Pakua risiti ya ushahidi</h2><p>Vipakuliwa vina data yenye tarehe na hali ya <strong>imezuiwa</strong>. Havijumuishi pendekezo, bei ya sasa, au uamuzi wa fedha.</p><div class="sw-car-actions"><button class="sw-car-button" id="swCarJson" type="button">Pakua JSON</button><button class="sw-car-button" id="swCarCsv" type="button">Pakua CSV</button><button class="sw-car-button" id="swCarTxt" type="button">Pakua TXT</button></div><p class="sw-car-export-status" id="swCarExportStatus" aria-live="polite"></p></section>
     <section class="sw-car-panel"><h2>Vyanzo na mipaka</h2><ul class="sw-car-source-list" id="swCarSources"></ul><p>Kurasa za mamlaka zinaeleza taratibu au vikokotoo rasmi; hazithibitishi bei ya soko. Nukuu ya muuzaji, ukaguzi wa gari, thamani ya forodha na masharti ya mkopo lazima zithibitishwe upya.</p><div class="sw-car-privacy"><strong>Faragha:</strong> Katalogi na hesabu husomwa kutoka faili za AfroTools. Chaguo lako na orodha ya kufuatilia hubaki kwenye kivinjari; hakuna data ya fomu inayotumwa kwa AI, analytics, barua pepe au seva.</div></section>
+    <section class="sw-car-panel" aria-labelledby="swCarCountriesTitle">
+      <h2 id="swCarCountriesTitle">Saraka za magari kwa nchi</h2>
+      <p>Kurasa hizi ziko kwa Kiingereza. Upatikanaji wa saraka hauthibitishi bei ya sasa au rekodi ya bei ya ndani; kagua vyanzo, tarehe na mipaka kwenye ukurasa wa nchi.</p>
+      <nav aria-label="Saraka za magari kwa nchi katika Kiingereza"><ul class="sw-car-source-list">${countryLinks}</ul></nav>
+    </section>
     <section class="sw-car-panel" aria-labelledby="swCarNextTitle">
       <h2 id="swCarNextTitle">Endelea na uamuzi wa gari</h2>
       <p>Tumia zana hizi za Kiswahili kukagua gharama, usafiri na uwezo wa kulipa kabla ya kuomba nukuu au kusaini mkataba.</p>
