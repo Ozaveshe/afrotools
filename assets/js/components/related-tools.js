@@ -4,6 +4,11 @@
 // Apple-quality UI · Custom tool cards · Image support
 // ═══════════════════════════════════════════════════════════
 
+// Reuse the reviewed text-free document glyph from assets/js/lib/category-icons.js.
+// tests/related-document-artwork.test.js keeps this copy identical to its owner.
+const DOCUMENT_RECOMMENDATION_ICON = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v4h4\"/><path d=\"M9 12h6M9 15.5h4\"/></svg>";
+const DOCUMENT_RECOMMENDATION_ICON_IDS = new Set(['cv-builder', 'invoice-generator', 'pdf-editor']);
+
 const HA_RELATED_FALLBACK = [
   { id:'ng-paye-ha', name:'Kalkuleta PAYE Najeriya', icon:'PAYE', desc:'Lissafa albashin hannu da cire-ciren PAYE a Hausa.', href:'/ha/najeriya/harajin-albashi/', category:'financial', status:'live', lang:'ha' },
   { id:'vat-calculator-ha', name:'Kalkuletan VAT', icon:'VAT', desc:'Kara ko cire VAT sannan ka tabbatar da adadin da hukumar da ta dace.', href:'/ha/kayan-aiki/kalkuletan-vat/', category:'ecommerce', status:'live', lang:'ha' },
@@ -253,7 +258,9 @@ class AfroRelatedTools extends HTMLElement {
       const encodedImageKey = imageKey ? encodeURIComponent(imageKey) : '';
       const img  = imageExt && encodedImageKey ? `/assets/img/tools/${encodedImageKey}.${imageExt}` : '';
       const imgFallback = imageExt && encodedImageKey ? `/assets/img/tools/${encodedImageKey}.${fallbackExt}` : '';
-      const useImage = Boolean(imageExt && encodedImageKey && !fallbackOnlyIds.has(t.id) && !fallbackOnlyIds.has(imageKey));
+      const useDocumentIcon = ['en', 'fr', 'sw'].includes(pageLanguage.split('-')[0])
+        && (DOCUMENT_RECOMMENDATION_ICON_IDS.has(t.id) || DOCUMENT_RECOMMENDATION_ICON_IDS.has(imageKey));
+      const useImage = !useDocumentIcon && Boolean(imageExt && encodedImageKey && !fallbackOnlyIds.has(t.id) && !fallbackOnlyIds.has(imageKey));
       const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
       const categoryLabel = isHausa
         ? (categoryHa[t.category] || 'Kayan aiki')
@@ -263,10 +270,11 @@ class AfroRelatedTools extends HTMLElement {
       return `
         <a class="card" href="${this._escape(t.href)}" aria-label="${this._escape(t.name)}">
           <div class="card-visual">
+            ${useDocumentIcon ? `<span class="card-document-icon" aria-hidden="true">${DOCUMENT_RECOMMENDATION_ICON}</span>` : ''}
             ${useImage ? `<img class="card-img" src="${img}" alt=""
                  loading="lazy"
                  onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">` : ''}
-            <div class="card-monogram" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${this._escape(this._monogram(t))}</div>
+            <div class="card-monogram" style="display:${useImage || useDocumentIcon ? 'none' : 'flex'}" aria-hidden="true">${this._escape(this._monogram(t))}</div>
           </div>
           <div class="card-body">
             <span class="category-meta">${this._escape(categoryLabel)}</span>
@@ -397,6 +405,13 @@ class AfroRelatedTools extends HTMLElement {
           border-radius: var(--radius-sm, 6px);
           background: transparent;
         }
+        .card-document-icon {
+          display: flex;
+          width: 48px;
+          height: 48px;
+          color: var(--color-text-muted, #526173);
+        }
+        .card-document-icon svg { width: 100%; height: 100%; }
         .card-monogram {
           width: 48px;
           height: 48px;

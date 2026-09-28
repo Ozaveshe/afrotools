@@ -249,7 +249,7 @@
     state.files.forEach(function (file) {
       var row = document.createElement('div');
       row.className = 'file-row';
-      row.innerHTML = '<div class="file-row-name"></div><div class="file-row-meta"></div>';
+      row.innerHTML = '<div class="file-row-name" translate="no"></div><div class="file-row-meta"></div>';
       row.querySelector('.file-row-name').textContent = file.name;
       row.querySelector('.file-row-meta').textContent = formatBytes(file.size);
       els.batchFileList.appendChild(row);
@@ -498,7 +498,7 @@
     state.results.forEach(function (item) {
       var row = document.createElement('div');
       row.className = 'result-row';
-      row.innerHTML = '<div><div class="result-row-name"></div><div class="result-row-meta"></div></div><div class="result-row-meta"></div>';
+      row.innerHTML = '<div><div class="result-row-name" translate="no"></div><div class="result-row-meta"></div></div><div class="result-row-meta"></div>';
       row.querySelector('.result-row-name').textContent = item.sourceName;
       row.querySelectorAll('.result-row-meta')[0].textContent = nativeUi(item.mode) + ' | ' + item.pageCount + (document.documentElement.lang === 'sw' ? ' kurasa' : ' page' + (item.pageCount === 1 ? '' : 's'));
       row.querySelectorAll('.result-row-meta')[1].textContent = formatBytes(item.originalSize) + ' -> ' + formatBytes(item.compressedSize);
@@ -700,6 +700,10 @@
     els.targetSizeInput = $('targetSizeInput');
     els.grayscaleToggle = $('grayscaleToggle');
     els.keepTextToggle = $('keepTextToggle');
+    // Native UI formatting already preserves filenames; do not translate its output again.
+    [els.fileName, els.processingLabel, els.resultNote].forEach(function (element) {
+      if (element) element.setAttribute('translate', 'no');
+    });
     getPdfJs();
     document.querySelectorAll('.preset-desc').forEach(function (element) { element.textContent = nativeUi(element.textContent.trim()); });
     bindEvents();

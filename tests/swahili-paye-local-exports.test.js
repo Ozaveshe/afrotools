@@ -45,6 +45,13 @@ const MOBILE_REPAIRS = new Set([
 for (const country of TARGETS) {
   const rel = `sw/${country}/kikokotoo-kodi-mshahara/index.html`;
   const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+  if (country === 'burkina-faso') {
+    assert.match(html, /data-formula-status="review-required"/);
+    assert.match(html, /<script[^>]*type="application\/x-bf-review-required"[^>]*>[\s\S]*?function\s+generatePdf/);
+    assert.doesNotMatch(html, /<button[^>]*onclick=["'](?:generatePdf|openPdfModal)\(/);
+    assert.doesNotMatch(html, /id=["'](?:resultsCard|pdfModal|pdfEmail)["']/);
+    continue;
+  }
   assert.match(html, /function\s+generatePdf\s*\(/, `${rel} must retain its local PDF generator`);
   assert.match(
     html,
@@ -69,4 +76,4 @@ for (const country of TARGETS) {
 }
 
 assert.strictEqual(TARGETS.length, 26, 'The mature local-PDF family must stay explicit');
-console.log(`Verified ${TARGETS.length} Swahili PAYE pages with ungated local PDF exports.`);
+console.log(`Verified ${TARGETS.length - 1} Swahili PAYE pages with ungated local PDF exports and Burkina Faso review-required.`);

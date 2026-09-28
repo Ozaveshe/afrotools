@@ -350,7 +350,8 @@
     state.history = [];
     state.download = null;
     els.fileSummary.classList.remove("on");
-    setText(els.fileName, "No file selected");
+    var emptyFileCopy = { en: "No file selected", fr: "Aucun fichier sélectionné", sw: "Hakuna faili iliyochaguliwa" };
+    setText(els.fileName, emptyFileCopy[document.documentElement.lang.split("-")[0]] || emptyFileCopy.en);
     setText(els.fileMeta, "");
     els.emptyState.style.display = "flex";
     els.canvasWrap.classList.remove("on");
@@ -819,6 +820,7 @@
     els.fileInput = byId("fileInput");
     els.fileSummary = byId("fileSummary");
     els.fileName = byId("fileName");
+    if (els.fileName) els.fileName.setAttribute("translate", "no");
     els.fileMeta = byId("fileMeta");
     els.removeFileBtn = byId("removeFileBtn");
     els.prevPageBtn = byId("prevPageBtn");

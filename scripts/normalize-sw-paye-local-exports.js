@@ -91,6 +91,12 @@ function transform(file, country) {
   if (/<meta name="sw-paye-source-owner" content="scripts\/build-sw-paye-exact-three\.js">/.test(original)) {
     return { original, html: original };
   }
+  // Burkina Faso output is deliberately unavailable until its payroll rules are reviewed.
+  if (country === 'burkina-faso') {
+    const { transform: reviewGate } = require('./build-bf-payroll-review');
+    const source = require('../data/source-registry.json').sources.find(item => item.id === 'paye-bf-source');
+    return { original, html: reviewGate(original, 'sw', source) };
+  }
   if (!/function\s+generatePdf\s*\(/.test(original)) {
     fail('Missing existing local generatePdf() implementation', file);
   }
@@ -187,6 +193,6 @@ if (!WRITE && changed) {
 }
 
 console.log(
-  `${WRITE ? 'Normalized' : 'Verified'} ${TARGETS.length} Swahili PAYE local PDF exports`
+  `${WRITE ? 'Normalized' : 'Verified'} ${TARGETS.length} Swahili PAYE export states (Burkina Faso review-required)`
     + `${WRITE ? ` (${changed} changed)` : ''}.`,
 );

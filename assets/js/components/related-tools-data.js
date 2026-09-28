@@ -16826,7 +16826,7 @@
         "id": "zana-mjenzi-boq-sw",
         "name": "Mjenzi BOQ",
         "icon": "SW",
-        "desc": "Panga Bill of Quantities kwa line items, quantit...",
+        "desc": "Kokotoa jumla ndogo, akiba ya dharura na VAT kwa...",
         "href": "/sw/zana/mjenzi-boq/",
         "category": "engineering",
         "lang": "sw",

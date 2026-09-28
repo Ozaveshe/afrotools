@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..');
+const owner = { window: {} };
+vm.runInNewContext(fs.readFileSync(path.join(root, 'assets/js/lib/category-icons.js'), 'utf8'), owner);
+const component = fs.readFileSync(path.join(root, 'assets/js/components/related-tools.js'), 'utf8');
+const constant = /const DOCUMENT_RECOMMENDATION_ICON = ("(?:[^"\\]|\\.)*");/.exec(component);
+assert.ok(constant, 'Expected the reviewed fixed SVG constant');
+const svg = JSON.parse(constant[1]);
+assert.equal(svg, owner.window.afroCatIcon('document-pdf'), 'Related icon must stay identical to its existing category owner');
+assert.equal(Buffer.byteLength(svg), 227);
+assert.doesNotMatch(svg, /<(?:text|image|foreignObject|script)\b|\b(?:href|on\w+)\s*=/i, 'Artwork must remain text-free and self-contained');
+assert.match(svg, /aria-hidden="true"/);
+assert.match(svg, /stroke="currentColor"/);
+console.log('Related document artwork: exact trusted owner glyph, text-free paths and decorative semantics PASS');

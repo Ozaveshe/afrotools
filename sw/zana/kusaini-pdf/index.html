@@ -1085,7 +1085,7 @@
 </section>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.js?v=c525f171" defer></script>
+<script src="/assets/js/components/related-tools.js?v=815daea1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
@@ -1096,6 +1096,9 @@
     if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
     return window.PDFLib;
   }
+
+  // Uploaded filenames are user content, even while their step is hidden.
+  document.getElementById('pdfFileName').setAttribute('translate', 'no');
 
   // State
   let currentPdfFile = null;
@@ -1437,6 +1440,7 @@
   const typeNameInput = document.getElementById('typeName');
   const fontButtons = document.querySelectorAll('[data-font]');
   const fontPreview = document.getElementById('fontPreview');
+  fontPreview.setAttribute('translate', 'no');
   let selectedFont = 'Dancing Script';
   let selectedTypeColor = '#000000';
 
@@ -1461,7 +1465,9 @@
   });
 
   function updateFontPreview() {
-    const name = typeNameInput.value || 'Your Name';
+    const lang = document.documentElement.lang.split('-')[0];
+    const placeholder = lang === 'fr' ? 'Votre nom' : lang === 'sw' ? 'Jina Lako' : 'Your Name';
+    const name = typeNameInput.value || placeholder;
     fontPreview.style.fontFamily = selectedFont;
     fontPreview.style.color = selectedTypeColor;
     fontPreview.textContent = name;
@@ -1758,8 +1764,8 @@
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
   <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-sign","name":"Saini PDF","downloadContract":"local-guest"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=7eb02d34" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=7443667a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=e0e4b940" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3cafb6cc" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
 <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>
