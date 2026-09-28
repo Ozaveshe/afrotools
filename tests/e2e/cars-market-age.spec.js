@@ -73,7 +73,7 @@ test("2018 Corolla keeps weak local evidence labelled low confidence", async ({ 
 
 test("car directory counts priced vehicles and offers one Camry catalog option", async ({ page }) => {
   await page.goto("/cars/");
-  await expect(page.locator("#carsApp")).toContainText("27 priced vehicles");
+  await expect(page.locator("#carsApp")).toContainText("27 starter profiles");
   await expect(page.locator('#carsCatalogOptions option[value="2018 Toyota Camry"]')).toHaveCount(1);
   await expect(page.locator('#carsCatalogOptions option[value="2018 Toyota RAV4"]')).toHaveCount(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
