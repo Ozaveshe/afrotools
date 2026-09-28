@@ -713,7 +713,7 @@
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transition-delay: 0s;
+        transition: transform 0.2s ease, opacity 0.2s ease;
       }
       .filter-scroll {
         gap: 8px;
@@ -1693,6 +1693,7 @@ function setQuery(q) {
 
 function setFilter(f) {
   if (!f) return;
+  var closesMobilePanel = mobileFilterLayout.matches && filterPanel && filterPanel.classList.contains('is-open');
   if (!isSearchReady) requestSearchIndexLoad();
   state.filter = f;
   state.page = 1;
@@ -1701,7 +1702,7 @@ function setFilter(f) {
   // Scroll chip into view
   var activeChip = document.querySelector('.chip.active');
   if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  setFilterPanelOpen(false, filterPanel && filterPanel.contains(document.activeElement));
+  setFilterPanelOpen(false, closesMobilePanel);
 
   pushURL();
   doRender();
@@ -1774,6 +1775,16 @@ resultsEl.addEventListener('keydown', function(e) {
 });
 
 // Sort
+sortSelect.addEventListener('focus', function() {
+  requestAnimationFrame(function() {
+    if (document.activeElement !== sortSelect) return;
+    var header = document.getElementById('search-header');
+    var navbar = document.querySelector('afro-navbar');
+    var visibleTop = Math.max(header ? header.getBoundingClientRect().bottom : 0, navbar ? navbar.getBoundingClientRect().bottom : 0) + 8;
+    var top = sortSelect.getBoundingClientRect().top;
+    if (top < visibleTop) window.scrollBy({ top: top - visibleTop, behavior: 'instant' });
+  });
+});
 sortSelect.addEventListener('change', function() {
   state.sort = this.value;
   state.page = 1;

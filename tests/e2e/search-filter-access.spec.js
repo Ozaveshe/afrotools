@@ -1,17 +1,21 @@
 const { test, expect } = require('@playwright/test');
 
+async function settleFilterLayout(page) {
+  // WebKit updates native Tab order after the newly visible/non-inert layout paints.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+}
+
 async function expectVisibleFocus(locator) {
   await expect(locator).toBeFocused();
   await expect(locator).toBeVisible();
-  const state = await locator.evaluate(element => {
+  await expect.poll(() => locator.evaluate(element => {
     const rect = element.getBoundingClientRect();
     const atPoint = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
     return {
       insideViewport: rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight,
       receivesPointer: atPoint === element || element.contains(atPoint),
     };
-  });
-  expect(state).toEqual({ insideViewport: true, receivesPointer: true });
+  })).toEqual({ insideViewport: true, receivesPointer: true });
 }
 
 async function textContrast(locator) {
@@ -84,11 +88,19 @@ for (const width of [320, 390, 768, 1280]) {
         await toggle.focus();
         await page.keyboard.press('Tab');
         await expectVisibleFocus(page.getByRole('combobox', { name: 'Sort results' }));
+        await page.evaluate(() => {
+          document.getElementById('search-input').focus({ preventScroll: true });
+          const sort = document.getElementById('sort-select');
+          window.scrollBy({ top: sort.getBoundingClientRect().top, behavior: 'instant' });
+          sort.focus({ preventScroll: true });
+        });
+        await expectVisibleFocus(page.getByRole('combobox', { name: 'Sort results' }));
         await toggle.focus();
         await page.keyboard.press('Enter');
         await expect(toggle).toHaveAttribute('aria-expanded', 'true');
         await expect(panel).toBeVisible();
         await expect(panel).not.toHaveAttribute('inert', '');
+        await settleFilterLayout(page);
         await page.keyboard.press('Tab');
         await expectVisibleFocus(all);
         await finance.focus();
@@ -113,6 +125,7 @@ for (const width of [320, 390, 768, 1280]) {
         await expect(finance).toBeVisible();
         await expect(panel).not.toHaveAttribute('inert', '');
         await expect(panel).not.toHaveAttribute('aria-hidden', 'true');
+        await settleFilterLayout(page);
         await finance.focus();
         await page.keyboard.press('Tab');
         await expectVisibleFocus(panel.locator('[data-filter="document-pdf"]'));
