@@ -100,8 +100,13 @@ test('WAEC 2022 graph and probability guides have independently checked results 
  const get=id=>bank.items.find(q=>q.id==='waec-2022-mathematics-p2-q'+id);
  const q6=get('6'),q9=get('9'),q12a=get('12a');
  assert.ok(q6&&q9&&q12a);
- assert.match(q6.prompt,/Open the linked WAEC graph/);
- assert.match(q6.sourceUse,/not a reproduced graph/);
+ assert.match(q6.prompt,/graph below/);
+ assert.match(q6.sourceUse,/original in-page redraw/);
+ assert.equal(q6.figure,'quadratic-gradient');assert.equal(q6.figureAfterAnswer,undefined);
+ assert.match(q6.figureCaption,/2 cm on the source paper.*do not measure screen/);
+ assert.doesNotMatch(q6.figureAlt,/m =|n =|r =|gradient 4|−2 < x < 4|−x²/i);
+ const selected=require('../ops/nigeria-exams/selected-waec-components.json').components.find(row=>row.id==='waec-2022-maths-q6');
+ assert.deepEqual(selected.expectedIds,[q6.id]);assert.equal(selected.complete_selected_prompts,true);assert.equal(selected.complete_paper,false);
  const leftRoot=-2,rightRoot=4,r=8;
  const a=r/(leftRoot*rightRoot),b=-a*(leftRoot+rightRoot);
  assert.deepEqual([a,b,r],[-1,2,8]);
@@ -125,6 +130,19 @@ test('WAEC 2022 graph and probability guides have independently checked results 
  assert.equal(q12a.answer,'(i) 3/64. (ii) 27/64. (iii) 27/64.');
  assert.equal(q12a.subpart,'a');assert.equal(q12a.passage,undefined);
  assert.doesNotMatch(q12a.sourceUse,/ambiguous|incorrect|repair/i);
+});
+
+test('WAEC 2022 Q6 graph localization preserves saved slots, identities and concealed derivations',()=>{
+ const id='waec-2022-mathematics-p2-q6',source=bank.items.find(q=>q.id===id),locales=require('../scripts/build-ssce-practice-locales');
+ assert.equal(bank.items.length,136);assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);
+ const saved={version:1,bankId:bank.id,entries:{[id]:{answer:'Synthetic saved graph reasoning',checks:[true,false,true,false]},'written-m1':{answer:'45',checks:[false,true]}}};
+ for(const locale of ['fr','sw']){
+  const translated=locales.writtenBank(locale),q=translated.items.find(q=>q.id===id);
+  assert.deepEqual(translated.items.map(item=>item.id),bank.items.map(item=>item.id));assert.deepEqual(api.normalize(saved,translated),saved);
+  assert.equal(q.prompt,source.prompt);assert.equal(q.answer,source.answer);assert.equal(q.questionLanguage,'en');assert.equal(q.checks.length,4);
+  assert.equal(q.figure,source.figure);assert.notEqual(q.figureAlt,source.figureAlt);assert.notEqual(q.figureCaption,source.figureCaption);assert.notEqual(q.sourceUse,source.sourceUse);
+  assert.doesNotMatch(q.figureAlt+' '+q.figureCaption+' '+q.sourceUse,/m\s*=|n\s*=|r\s*=|−x²|−2\s*<\s*x\s*<\s*4|gradient 4/i);
+ }
 });
 
 test('2021 complete selected mathematics tasks agree with independently reconstructed journeys and vectors',()=>{

@@ -43,7 +43,9 @@ function writtenBank(locale) {
   const bank = structuredClone(written);
   bank.locale = locale; bank.scope = scope[locale]; bank.ui = ui[locale];
   bank.items.forEach(q => {
-    if (q.year === 2022 && q.subject === 'Mathematics') { const row=expansion[locale].maths['q'+q.number+(q.subpart ? q.subpart.replace('a–b','ab') : '')]; if(!row)throw Error('Missing WAEC guidance: '+q.id); q.title=row[0]; q.steps=row[1]; q.checks=row[2]; q.questionLanguage='en'; q.answerLanguage='en'; q.sourceLabel=ui[locale][q.sourceLabel]; q.sourceUse=locale==='fr'?'Énoncé adapté de la source WAEC liée ; solution expliquée par AfroTools. '+(q.subpart?'Partie '+q.subpart+' uniquement.':''):'Muhtasari umetokana na chanzo cha WAEC kilichounganishwa; maelezo ya suluhisho ni ya AfroTools. '+(q.subpart?'Sehemu '+q.subpart+' pekee.':''); return; }
+    if (q.year === 2022 && q.subject === 'Mathematics') { const row=expansion[locale].maths['q'+q.number+(q.subpart ? q.subpart.replace('a–b','ab') : '')]; if(!row)throw Error('Missing WAEC guidance: '+q.id); q.title=row[0]; q.steps=row[1]; q.checks=row[2]; q.questionLanguage='en'; q.answerLanguage='en'; q.sourceLabel=ui[locale][q.sourceLabel]; q.sourceUse=locale==='fr'?'Énoncé adapté de la source WAEC liée ; solution expliquée par AfroTools. '+(q.subpart?'Partie '+q.subpart+' uniquement.':''):'Muhtasari umetokana na chanzo cha WAEC kilichounganishwa; maelezo ya suluhisho ni ya AfroTools. '+(q.subpart?'Sehemu '+q.subpart+' pekee.':'');
+      if(q.number===6){if(row[2].length!==4||!row[3])throw Error('Missing Q6 graph localization: '+locale);Object.assign(q,row[3]);}
+      return; }
     const translation = writtenText[locale][q.id];
     if (translation.checks.length !== q.checks.length) throw Error(`${q.id}: checklist order/count must preserve saved states`);
     if (q.subject === 'English' && translation.prompt) throw Error(`${q.id}: English assessment prompt must remain English`);
