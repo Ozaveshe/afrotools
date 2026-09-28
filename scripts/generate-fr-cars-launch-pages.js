@@ -15,6 +15,8 @@ const chatBundlePath = currentChatBundle[1];
 const priceData = readJson("data/cars/price-intelligence.json");
 const observations = readJson("data/cars/market-observations.json").observations || [];
 const sourceObservations = readJson("data/cars/source-market-observations.json").observations || [];
+const { createFxSnapshot } = require("./lib/car-page-fx");
+const forex = createFxSnapshot(readJson("data/forex/latest.json"));
 const importData = loadImportData();
 const reciprocalPairs = [];
 
@@ -273,28 +275,7 @@ function readJson(relPath) {
 function loadImportData() {
   const core = readJson("data/trade/car-import-cost-core.json");
   const packs = ["ng", "ke", "gh", "ug", "zm", "tz"].map((slug) => readJson(`data/trade/car-import-cost-${slug}.json`));
-  return ImportEngine.mergeData(core, packs, {
-    USD: 1,
-    NGN: 1535.5,
-    KES: 129.45,
-    GHS: 14.89,
-    UGX: 3720,
-    ZMW: 27.5,
-    TZS: 2650,
-    ZAR: 18.25,
-    EGP: 53.7,
-    MAD: 9.25,
-    XOF: 560,
-    XAF: 560,
-    ETB: 157,
-    RWF: 1461,
-    AOA: 918,
-    DZD: 132,
-    TND: 2.92,
-    MZN: 63.9,
-    BWP: 13.6,
-    NAD: 18.25
-  });
+  return ImportEngine.mergeData(core, packs, forex.rates);
 }
 
 function ensureDir(dir) {
@@ -384,6 +365,17 @@ function money(value, currency) {
   } catch (_) {
     return `${currency || "USD"} ${Math.round(Number(value || 0)).toLocaleString("fr-FR")}`;
   }
+}
+
+function localEstimate(valueUsd, currency) {
+  const value = forex.convert(valueUsd, currency);
+  return value == null ? "Conversion indisponible" : money(value, currency);
+}
+
+function fxDisclosure(currency) {
+  const rate = forex.rateFor(currency);
+  if (rate == null) return `<p class="fr-cars-note" data-car-fx-currency="${escapeHtml(currency)}">Conversion indisponible : aucun taux daté utilisable pour ${escapeHtml(currency)}. Saisissez un taux vérifié dans le devis modifiable.</p>`;
+  return `<p class="fr-cars-note" data-car-fx-currency="${escapeHtml(currency)}" data-car-fx-rate="${rate}">Taux de conversion : 1 USD = ${rate.toLocaleString("fr-FR", { maximumFractionDigits: 6 })} ${escapeHtml(currency)}. Relevé du ${escapeHtml(forex.timestamp.slice(0, 10))} · source : ${escapeHtml(forex.source)} (<a href="/data/forex/latest.json">relevé daté</a>). Référence de planification, pas un cours en temps réel ni un taux de transaction garanti.</p>`;
 }
 
 function countryByCode(code) {
@@ -789,7 +781,7 @@ function renderMakePage(page) {
     return `<tr>
       <td data-label="Modèle"><a href="${modelRoute}">${escapeHtml(ctx.vehicle.model)}</a></td>
       <td data-label="Année repère">${escapeHtml(ctx.vehicle.year)}</td>
-      <td data-label="Coût rendu illustratif">${money(ctx.landed.normal * ctx.usdToLocal, ctx.localCurrency)}</td>
+      <td data-label="Coût rendu illustratif">${localEstimate(ctx.landed.normal, ctx.localCurrency)}</td>
       <td data-label="Prix local daté">${observedLocalPrice(ctx, country.code)}</td>
       <td data-label="Statut">${observationFor(country.code, ctx.vehicle) ? "Relevé daté" : "Devis vendeur requis"}</td>
     </tr>`;
@@ -827,6 +819,7 @@ function renderMakePage(page) {
     </section>
     <section class="fr-cars-shell fr-cars-band">
       <p class="fr-cars-note">Ces pages restent des repères de budget. Elles n'annoncent pas un tarif officiel et ne remplacent pas un devis de transitaire, de vendeur ou de douane.</p>
+      ${fxDisclosure(priceData.countries[country.code].currency_code)}
       <div class="fr-cars-table-wrap"><table class="fr-cars-table">
         <thead><tr><th>Modèle</th><th>Année repère</th><th>Coût rendu illustratif</th><th>Prix local daté</th><th>Statut</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -852,7 +845,7 @@ function renderModelIndexPage(page) {
     const yearCtx = contextFor(item.countryCode, item);
     return `<tr>
       <td data-label="Année"><a href="/fr/cars/${country.frSlug}/${yearCtx.vehicle.makeSlug}/${yearCtx.vehicle.modelSlug}/${yearCtx.vehicle.year}/">${escapeHtml(yearCtx.vehicle.year)}</a></td>
-      <td data-label="Coût rendu illustratif">${money(yearCtx.landed.normal * yearCtx.usdToLocal, yearCtx.localCurrency)}</td>
+      <td data-label="Coût rendu illustratif">${localEstimate(yearCtx.landed.normal, yearCtx.localCurrency)}</td>
       <td data-label="Prix local daté">${observedLocalPrice(yearCtx, country.code)}</td>
       <td data-label="Risque estimé">${escapeHtml(frenchRisk(yearCtx.importRisk.label))}</td>
       <td data-label="Liquidité estimée">${escapeHtml(frenchLiquidity(yearCtx.liquidity.label))}</td>
@@ -896,6 +889,7 @@ function renderModelIndexPage(page) {
     </section>
     <section class="fr-cars-shell fr-cars-band">
       <p class="fr-cars-note">Ce récapitulatif regroupe uniquement les années déjà présentes dans la vague française. Les autres années restent dans l'annuaire anglais jusqu'à une génération plus large.</p>
+      ${fxDisclosure(priceData.countries[country.code].currency_code)}
       <div class="fr-cars-table-wrap"><table class="fr-cars-table">
         <thead><tr><th>Année</th><th>Coût rendu illustratif</th><th>Prix local daté</th><th>Risque estimé</th><th>Liquidité estimée</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -925,8 +919,8 @@ function renderModelPage(page) {
       : `Prix demandés observés pour ${vehicleName} ${place}: médiane, quartiles, date, échantillon et source. Le coût d'import reste illustratif.`
     : `Budget source et coût d'import illustratifs pour ${vehicleName} ${place}. Aucun relevé de prix local daté n'est disponible.`;
   const priceRows = [
-    [sourceObservation ? "Prix demandé marché source" : "Budget source illustratif", money(ctx.sourcePrice.median * ctx.usdToLocal, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), sourceObservation ? `${sourceObservation.sampleSize} annonces aux Émirats arabes unis, page datée du ${escapeHtml(sourceObservation.sourceSnapshotAt)} · <a href="${escapeHtml(sourceObservation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>. Prix demandé converti, pas coût rendu.` : "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
-    ["Coût rendu illustratif", importIneligible ? "Non applicable" : money(ctx.landed.normal * ctx.usdToLocal, ctx.localCurrency), importIneligible ? "—" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
+    [sourceObservation ? "Prix demandé marché source" : "Budget source illustratif", localEstimate(ctx.sourcePrice.median, ctx.localCurrency), money(ctx.sourcePrice.median, "USD"), sourceObservation ? `${sourceObservation.sampleSize} annonces aux Émirats arabes unis, page datée du ${escapeHtml(sourceObservation.sourceSnapshotAt)} · <a href="${escapeHtml(sourceObservation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>. Prix demandé converti, pas coût rendu.` : "Ancien budget AfroTools, pas une annonce vendeur actuelle."],
+    ["Coût rendu illustratif", importIneligible ? "Non applicable" : localEstimate(ctx.landed.normal, ctx.localCurrency), importIneligible ? "—" : forex.rateFor(ctx.localCurrency) == null ? "Conversion indisponible" : money(ctx.landed.normal, "USD"), importIneligible ? "Ce véhicule déclenche une alerte d'admissibilité à l'import. Confirmez la règle auprès des douanes avant tout achat." : country.code === "NG" ? "Le pack douanier Nigeria est sous revue de la politique 2026." : "Vérifiez les droits et frais avec l'autorité et un transitaire."],
     ["Prix demandé local observé", observation ? money(observation.median, observation.currency) : "Aucun relevé local daté", "—", observation ? `${escapeHtml(observation.reviewedAt)} · ${observation.sampleSize} annonces · <a href="${escapeHtml(observation.sourceUrl)}" rel="nofollow noopener">Consulter la source</a>` : "Un budget import ne prouve pas le prix d'un véhicule local."]
   ].map(([label, local, usd, note]) => `<tr><td data-label="Couche de prix">${label}</td><td data-label="Devise locale">${local}</td><td data-label="Référence USD">${usd}</td><td data-label="Note">${note}</td></tr>`).join("\n");
 
@@ -967,6 +961,7 @@ function renderModelPage(page) {
     </section>
     <section class="fr-cars-shell fr-cars-band">
       <p class="fr-cars-note">${observation ? `Relevé : ${escapeHtml(observation.market)}, ${escapeHtml(observation.condition)}, ${observation.sampleSize} annonces. Prix demandés, non ventes conclues. Les annonces peuvent varier selon la version, le kilométrage et l'état du véhicule. La méthode détaillée et les exclusions figurent sur la fiche anglaise.` : "Sans relevé local, aucune recommandation d'achat local ou d'import ne peut être déduite de ce budget."} ${importIneligible && country.code === "NG" ? "Le portail commercial du Nigeria indique que les véhicules importés doivent avoir moins de 15 ans depuis leur année de fabrication. Ce modèle dépasse la limite indiquée ; confirmez la règle actuelle auprès des douanes." : country.code === "NG" ? "Les taux d'import du Nigeria sont sous revue pour 2026." : "Confirmez les règles d'import avant paiement."}</p>
+      ${fxDisclosure(priceData.countries[country.code].currency_code)}
       <div class="fr-cars-table-wrap"><table class="fr-cars-table">
         <thead><tr><th>Couche de prix</th><th>Devise locale</th><th>Référence USD</th><th>Note</th></tr></thead>
         <tbody>${priceRows}</tbody>

@@ -130,6 +130,7 @@
     .no-results svg{width:48px;height:48px;color:#cbd5e1;margin-bottom:16px}
     .no-results h3{font-size:1.1rem;font-weight:700;color:#334155;margin-bottom:8px}
     .no-results p{font-size:.85rem;color:#64748b}
+    .no-results .btn{margin-top:var(--space-4,16px)}
 
     #directory-result-summary{margin:0 20px 18px;color:var(--color-text-secondary,#64748b);font-size:.85rem}
     [data-theme="dark"] .stat-pill,
@@ -327,7 +328,7 @@
 </div>
 
 <div class="filter-wrap">
-  <div class="filter-bar" id="filter-bar"></div>
+  <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter tools by category or availability"></div>
 </div>
 
 <div class="directory-country" aria-label="Country context">
@@ -8074,6 +8075,7 @@
     <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <h3>No matching tools</h3>
     <p>Try a different search term or clear the filters.</p>
+    <button type="button" class="btn btn-secondary" id="directory-reset">Clear search and filters</button>
   </div>
 </div>
 
@@ -8100,6 +8102,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var filterBar = document.getElementById('filter-bar');
   var searchInput = document.getElementById('tool-search');
   var noResults = document.getElementById('no-results');
+  var directoryReset = document.getElementById('directory-reset');
   var countryFilter = document.getElementById('country-filter');
   var statusFilter = document.getElementById('status-filter');
   var languageFilter = document.getElementById('language-filter');
@@ -8186,16 +8189,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('s-live').textContent = live;
   document.getElementById('s-cats').textContent = cats;
   searchInput.placeholder = 'Search ' + (stats ? stats.display.liveToolsPlus : (live.toLocaleString() + '+')) + ' tools...';
+  var directorySearchPlaceholder = searchInput.placeholder;
   if (activeGoal && GOAL_FILTERS[activeGoal]) {
     searchInput.placeholder = 'Search ' + GOAL_FILTERS[activeGoal].label.toLowerCase() + '...';
   }
 
   // Build filter buttons
-  var filterHtml = '<button type="button" class="f-tab on" data-cat="all">All Tools</button>';
-  filterHtml += '<button type="button" class="f-tab" data-cat="live">Live Only</button>';
+  var filterHtml = '<button type="button" class="f-tab on" data-cat="all" aria-pressed="true">All Tools</button>';
+  filterHtml += '<button type="button" class="f-tab" data-cat="live" aria-pressed="false">Live Only</button>';
   Object.keys(AFRO_CATEGORIES).forEach(function(k) {
     var cat = AFRO_CATEGORIES[k];
-    filterHtml += '<button type="button" class="f-tab" data-cat="' + k + '">' + cat.name + '</button>';
+    filterHtml += '<button type="button" class="f-tab" data-cat="' + k + '" aria-pressed="false">' + cat.name + '</button>';
   });
   filterBar.innerHTML = filterHtml;
 
@@ -8369,14 +8373,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   populateCountryFilter();
 
+  function syncCategoryFilter() {
+    filterBar.querySelectorAll('button[data-cat]').forEach(function(button) {
+      var selected = button.dataset.cat === activeFilter;
+      button.classList.toggle('on', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
+  }
+
   // Filter click
   filterBar.addEventListener('click', function(e) {
     var btn = e.target.closest('.f-tab');
     if (!btn) return;
     clearGoalFilter(true);
-    filterBar.querySelectorAll('.f-tab').forEach(function(b) { b.classList.remove('on'); });
-    btn.classList.add('on');
     activeFilter = btn.dataset.cat;
+    syncCategoryFilter();
     render();
   });
 
@@ -8634,6 +8645,29 @@ document.addEventListener('DOMContentLoaded', function() {
   searchInput.addEventListener('input', function() {
     clearTimeout(debounce);
     debounce = setTimeout(render, 120);
+  });
+
+  if (directoryReset) directoryReset.addEventListener('click', function() {
+    clearTimeout(debounce);
+    searchInput.value = '';
+    searchInput.placeholder = directorySearchPlaceholder;
+    activeFilter = 'all';
+    clearGoalFilter(true);
+    if (window.history && window.history.replaceState) {
+      var params = new URLSearchParams(window.location.search || '');
+      params.delete('country');
+      var next = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', next);
+    }
+    [countryFilter, statusFilter, languageFilter].forEach(function(control) {
+      if (control) control.value = 'all';
+    });
+    if (sortFilter) sortFilter.value = 'popular';
+    syncCategoryFilter();
+    updateCountryContextFromFilter();
+    render();
+    searchInput.focus({ preventScroll: true });
+    searchInput.scrollIntoView({ block: 'center', behavior: 'instant' });
   });
 
   [countryFilter, statusFilter, languageFilter, sortFilter].forEach(function(control) {

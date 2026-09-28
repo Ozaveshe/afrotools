@@ -16,14 +16,15 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=b353fc1d">
 <link rel="stylesheet" href="/assets/css/jamb.css?v=60191dc2">
-<link rel="stylesheet" href="/assets/css/jamb-original-practice.css?v=4c076a05">
+<link rel="stylesheet" href="/assets/css/jamb-original-practice.css?v=d8c83766">
 <script src="/assets/js/components/navbar.min.js?v=bad41ddc" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/lib/jamb-question-trust.js?v=0ae71207" defer></script>
 <script src="/engines/jamb-cbt-engine.js?v=59120510" defer></script>
 <script src="/assets/js/lib/jamb-original-resume.js?v=b87a6110" defer></script>
-<script src="/assets/js/lib/jamb-original-retry.js?v=f2abfa75" defer></script>
-<script src="/assets/js/pages/jamb-original-practice.js?v=c4911a6d" defer></script>
+<script src="/assets/js/lib/jamb-original-retry.js?v=3d728ec8" defer></script>
+<script src="/assets/js/lib/student-day.js?v=cecaad03" defer></script>
+<script src="/assets/js/pages/jamb-original-practice.js?v=7804574d" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="canonical" href="https://afrotools.com/jamb/original-practice/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/original-practice/">
@@ -37,7 +38,7 @@
   <section id="setup-screen" aria-labelledby="page-title">
     <div class="original-intro">
       <p class="original-kicker">Original practice · Mathematics and Use of English</p>
-      <h1 id="page-title">Practise a subject, then understand every answer.</h1>
+      <h1 id="page-title" tabindex="-1">Practise a subject, then understand every answer.</h1>
       <p>Choose one subject for a 12-question timed session. AfroTools wrote these questions for Mathematics and English practice. They are <strong>not</strong> an official JAMB paper or a set of past questions.</p>
     </div>
     <div class="original-setup card">
@@ -66,6 +67,7 @@
       <div><p class="original-kicker">AfroTools original practice</p><h2 id="quiz-heading">Mathematics</h2><p id="progress" class="original-progress"></p></div>
       <div class="original-timer" role="timer" aria-label="Time remaining"><span id="timer">20:00</span> left</div>
     </div>
+    <p id="quiz-status" class="original-status" role="status" aria-live="polite"></p>
     <div class="original-quiz-layout">
       <div class="original-question card">
         <p id="question-position" class="original-kicker"></p>
@@ -91,7 +93,9 @@
     <h2 id="result-heading" tabindex="-1">Your raw score</h2>
     <p class="original-score"><strong id="raw-score">0 / 12</strong><span id="score-context"></span></p>
     <p id="result-note">This is a practice result, not a JAMB aggregate or predicted UTME score.</p>
-    <div class="original-result-actions"><button class="btn btn-primary" id="again-btn" type="button">Practise again</button><button class="btn btn-secondary" id="retry-btn" type="button" hidden>Retry missed or skipped questions</button><a class="btn btn-secondary" href="/jamb/">Back to AfroJAMB</a></div>
+    <div class="original-result-actions"><button class="btn btn-primary" id="again-btn" type="button">Practise again</button><button class="btn btn-secondary" id="retry-btn" type="button" hidden>Retry missed or skipped questions</button><button class="btn btn-secondary" id="save-revision-btn" type="button" hidden>Save missed questions for tomorrow</button><a class="btn btn-secondary" href="/jamb/">Back to AfroJAMB</a></div>
+    <p id="revision-save-status" class="original-status" role="status" aria-live="polite"></p>
+    <p id="study-day-link" hidden><a href="/tools/education-hub/#daily-study">Open My study day</a></p>
     <section id="retry-panel" class="original-retry card" hidden aria-labelledby="retry-heading">
       <h3 id="retry-heading">Retry missed and skipped questions</h3>
       <p>This is a local review of questions you have already seen. It does not change your original score or save a new attempt.</p>
@@ -111,6 +115,32 @@
     <h2>Review your answers</h2>
     <p>Open an explanation when you want to check the method.</p>
     <div id="review-list" class="original-review-list"></div>
+  </section>
+  <section id="revision-screen" hidden aria-labelledby="revision-heading">
+    <p class="original-kicker">Saved revision · Untimed</p>
+    <h2 id="revision-heading" tabindex="-1">Saved JAMB revision</h2>
+    <p>Review your saved questions at your own pace. This review does not create a new practice score.</p>
+    <p id="revision-progress" class="original-progress"></p>
+    <p id="revision-status" class="original-status" role="status" aria-live="polite"></p>
+    <div id="revision-review-panel" class="original-retry card" hidden>
+      <div id="revision-card" hidden>
+        <p id="revision-position" class="original-kicker"></p>
+        <blockquote id="revision-passage" class="original-passage" hidden></blockquote>
+        <h3 id="revision-question" tabindex="-1"></h3>
+        <fieldset id="revision-options"><legend>Choose one answer</legend></fieldset>
+        <div id="revision-feedback" role="status" aria-live="polite"></div>
+        <div class="original-retry-actions">
+          <button class="btn btn-primary" id="revision-check-btn" type="button">Check answer</button>
+          <button class="btn btn-secondary" id="revision-next-btn" type="button" hidden>Next question</button>
+        </div>
+      </div>
+      <p id="revision-complete" tabindex="-1" role="status" hidden></p>
+      <button class="btn btn-primary" id="revision-done-btn" type="button" hidden>Mark revision done</button>
+    </div>
+    <div class="original-result-actions">
+      <a class="btn btn-secondary" href="/tools/education-hub/#daily-study">My study day</a>
+      <button class="btn btn-secondary" id="revision-back-btn" type="button">Back to original practice</button>
+    </div>
   </section>
 </main>
 <afro-footer></afro-footer>

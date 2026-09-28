@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11692 |
-| Indexable pages | 7877 |
+| Public pages | 11693 |
+| Indexable pages | 7878 |
 | Permanent and temporary redirects | 2965 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4251 |
-| Documented fallbacks | 14962 |
-| Routes eligible for primary sitemaps | 7877 |
+| Genuine equivalence groups | 4252 |
+| Documented fallbacks | 14963 |
+| Routes eligible for primary sitemaps | 7878 |
 
 ## Locale Coverage
 
-- en: 6137 page records
+- en: 6138 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5549
+- page: 5550
 - tool: 4009
 - widget: 379
 
@@ -6383,6 +6383,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ca546267a670: en=`/uganda/ug-vat`, fr=`/fr/uganda/ug-vat`, sw=`/sw/uganda/kikokotoo-vat/`; x-default=`/uganda/ug-vat`
 - equivalence:ca5a63d521c7: en=`/tools/solar-roi/togo/`, fr=`/fr/tools/roi-solaire/togo/`; x-default=`/tools/solar-roi/togo/`
 - equivalence:ca86fb23a8ed: en=`/tools/afrokitchen/recipes/calulu-st/`; x-default=`/tools/afrokitchen/recipes/calulu-st/`
+- equivalence:ca8daa876449: en=`/jamb/mathematics/2021/`; x-default=`/jamb/mathematics/2021/`
 - equivalence:ca975abf9466: en=`/tools/contractor-vs-employee/mauritius/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-maurice/`; x-default=`/tools/contractor-vs-employee/mauritius/`
 - equivalence:ca98760b354e: en=`/tools/crop-insurance-calc/ethiopia`; x-default=`/tools/crop-insurance-calc/ethiopia`
 - equivalence:cab1fda1ba89: en=`/cars/ghana/`; x-default=`/cars/ghana/`
