@@ -1,9 +1,17 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs/promises');
 const pool = require('../../data/jamb/pools/original-practice.json');
+const ssceBank = require('../../assets/js/lib/ssce-practice-bank');
 
 const PLAN_KEY = 'afrotools.studentDay.v2';
 const PROTECTED_KEYS = ['afrojamb-original-cbt-state-v1', 'afrojamb-cbt-state',
   'afrojamb-original-history-v1', 'afrojamb-history', 'afrotools.sscePractice.v1'];
+
+test.beforeEach(async ({ page }) => {
+  page.__revisionErrors = [];
+  page.on('pageerror', error => page.__revisionErrors.push(error.message));
+});
+test.afterEach(async ({ page }) => { expect(page.__revisionErrors).toEqual([]); });
 
 function taskFor(questions, overrides = {}) {
   return { id: 'jamb|2099-01-01|1', subject: 'JAMB original practice: ' + (questions[0].subject === 'mathematics' ? 'Mathematics' : 'English'),
@@ -105,7 +113,15 @@ test('finished original practice schedules only its missed subset once and reope
     localStorage.setItem('afrojamb-original-history-v1', history);
   }, { draft: originalDraft, history });
   const before = await protectedSnapshot(page);
-  await page.goto('/jamb/original-practice/#revision=' + encodeURIComponent(task.id));
+  await page.locator('#study-day-link a').click();
+  const day = page.locator('[data-student-day]');
+  await day.getByText('Coming up (1)', { exact: true }).click();
+  await expect(day.getByRole('button', { name: 'Mark done', exact: true })).toHaveCount(0);
+  await day.getByRole('button', { name: 'Start session', exact: true }).click();
+  await expect(day.getByRole('button', { name: 'Finish this session', exact: true })).toHaveCount(0);
+  expect((await page.evaluate(key => JSON.parse(localStorage.getItem(key)), PLAN_KEY)).tasks[0].doneAt).toBeNull();
+  await day.locator('.sd-focus').getByRole('link', { name: 'Open saved JAMB review', exact: true }).click();
+  await expect(page).toHaveURL(new RegExp('/jamb/original-practice/#revision='));
   await expect(page.locator('#revision-screen')).toBeVisible();
   await expect(page.locator('#quiz-screen')).toBeHidden();
   await expect(page.locator('#revision-position')).toHaveText('Question 1 of 2');
@@ -247,4 +263,36 @@ test('revision completion rejects another tab changing the selected task', async
   await page.locator('#revision-done-btn').click();
   await expect(page.locator('#revision-status')).toContainText('changed in another tab');
   expect((await page.evaluate(key => JSON.parse(localStorage.getItem(key)), PLAN_KEY)).tasks[0].doneAt).toBeNull();
+});
+
+test('mixed JAMB, SSCE and deck backup restores exact revision metadata and preserves it through legacy import', async ({ page }) => {
+  const task = taskFor([pool.questions[3], pool.questions[0]]);
+  const ssce = { id: 'ssce|2099-01-01|1', subject: 'WAEC/NECO Mathematics', date: '2099-01-01', minutes: 20,
+    doneAt: null, sourceId: 'ssce-practice', revision: { bankId: ssceBank.id, locale: 'en', ids: [ssceBank.questions[0].id] } };
+  const deck = { id: 'deck-task', subject: 'Fractions', date: '2026-09-20', minutes: 15,
+    doneAt: '2026-09-20T12:00:00Z', deckId: '0', sourceId: 'flashcard-review' };
+  await seed(page, [task, ssce, deck]);
+  await page.goto('/tools/education-hub/#daily-study');
+  const day = page.locator('[data-student-day]');
+  const downloadPromise = page.waitForEvent('download');
+  await day.getByRole('button', { name: 'Download study backup', exact: true }).click();
+  const download = await downloadPromise, raw = await fs.readFile(await download.path(), 'utf8');
+  const backup = JSON.parse(raw);
+  expect(backup.version).toBe(2);
+  expect(backup.tasks.find(item => item.id === task.id).revision).toEqual(task.revision);
+  expect(backup.tasks.find(item => item.id === ssce.id).revision).toEqual(ssce.revision);
+  expect(backup.tasks.find(item => item.id === deck.id).doneAt).toBe(deck.doneAt);
+  for (let repeat = 0; repeat < 2; repeat++) {
+    await day.getByLabel('Restore study backup').setInputFiles({ name: 'study.json', mimeType: 'application/json', buffer: Buffer.from(raw) });
+    await expect(day.locator('.sd-status')).toContainText('Backup imported');
+    expect((await page.evaluate(key => JSON.parse(localStorage.getItem(key)), PLAN_KEY)).tasks).toHaveLength(3);
+  }
+  const legacy = { version: 1, tasks: [{ id: 'legacy-backup-task', subject: 'Biology', date: '2099-01-03', minutes: 25, doneAt: null }], activeId: null };
+  await day.getByLabel('Restore study backup').setInputFiles({ name: 'legacy.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacy)) });
+  await expect(day.locator('.sd-status')).toContainText('Backup imported');
+  const restored = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), PLAN_KEY);
+  expect(restored.tasks).toHaveLength(4);
+  expect(restored.tasks.find(item => item.id === task.id).revision).toEqual(task.revision);
+  expect(restored.tasks.find(item => item.id === ssce.id).revision).toEqual(ssce.revision);
+  expect(restored.tasks.find(item => item.id === deck.id).doneAt).toBe(deck.doneAt);
 });

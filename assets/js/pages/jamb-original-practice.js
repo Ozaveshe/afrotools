@@ -79,6 +79,7 @@
   }
   function renderRevision() {
     if (!revisionSession) return;
+    $('revision-review-panel').hidden = false;
     var queue = revisionSession.queue, item = queue.current();
     $('revision-card').hidden = !item;
     $('revision-complete').hidden = !!item;
@@ -121,6 +122,7 @@
       return;
     }
     revisionSession = null;
+    $('revision-review-panel').hidden = true;
     $('revision-card').hidden = true;
     $('revision-complete').hidden = true;
     $('revision-done-btn').hidden = true;
