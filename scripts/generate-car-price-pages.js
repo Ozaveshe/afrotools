@@ -131,8 +131,11 @@ function marketEvidenceHTML(country, vehicle) {
   if (!observation) return "";
   const name = observation.sampleVariant || `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
   const importAgeRestricted = nigeriaImportAgeRestricted(country, vehicle);
+  const engineCc = vehicle.cc && vehicle.cc[0]
+    ? Math.round((Number(vehicle.cc[0]) + Number(vehicle.cc[1] || vehicle.cc[0])) / 2)
+    : null;
   const calculatorUrl = country.import_enabled && !importAgeRestricted
-    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}&price=${Math.round(sourceMarketObservation(vehicle).median / sourceMarketObservation(vehicle).sourceCurrencyPerUsd / 100) * 100}` : ""}`
+    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}${engineCc ? `&engineCc=${engineCc}` : ""}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}&price=${Math.round(sourceMarketObservation(vehicle).median / sourceMarketObservation(vehicle).sourceCurrencyPerUsd / 100) * 100}` : ""}`
     : "";
   const comparisonCopy = importAgeRestricted
     ? "This is a local purchase snapshot. The Nigeria Trade Information Portal states that imported vehicles must be less than 15 years from their year of manufacture; this model year is outside that stated limit. Confirm the current rule with Customs before paying."
