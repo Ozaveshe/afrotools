@@ -44,6 +44,23 @@
   .market-days-page .cycle-item { display: block; }
 }
 
+/* Keep invalid lookup results and local copy fallback distinct from the active trip. */
+.market-days-page #selectedDateResult[hidden],
+.market-days-page #selectedUpcoming[hidden],
+.market-days-page #tripPlannerOutput[hidden],
+.market-days-page .trip-stale-note[hidden],
+.market-days-page #tripManualCopy[hidden],
+.market-days-page #marketDirectory[data-invalid-lookup] .directory-schedule { display: none !important; }
+.market-days-page .lookup-date-status { color: var(--color-text-muted); font-size: .875rem; line-height: 1.5; margin: 8px 0 0; }
+.market-days-page .lookup-date-status:empty { display: none; }
+.market-days-page #tripStatus,
+.market-days-page .field-label,
+.market-days-page .results-count { color: var(--color-text-muted); }
+.market-days-page .trip-copy { min-height: 44px; }
+.market-days-page .trip-copy:disabled { color: var(--color-text-muted); cursor: not-allowed; }
+.market-days-page .trip-brief-text { box-sizing: border-box; width: 100%; min-width: 0; margin-top: 8px; line-height: 1.5; resize: vertical; }
+.market-days-page .trip-brief-text:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+
 @media (max-width: 560px) {
   .market-days-page .calendar-grid { gap: 4px; }
   .market-days-page .calendar-day { min-width: 0; padding: 6px 3px; }
