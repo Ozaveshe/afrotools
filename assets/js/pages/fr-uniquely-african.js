@@ -251,6 +251,15 @@
         lines.push(`${contract.metrics[key]}: ${metricValue(key, payload.result.values[key], payload.input)}`);
       }
     });
+    if (contract.id === "afrokitchen") {
+      var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
+      var recipe = recipes.find(function (item) { return item.slug === payload.input.recipe; });
+      lines.push("", `Recette: ${recipe ? recipe.name : payload.input.recipe}`, "Ingrédients redimensionnés");
+      payload.result.rows.forEach(function (row) {
+        var amount = Number.isFinite(row.scaledAmount) ? row.scaledAmount.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) : "Selon goût";
+        lines.push(`${row.name}: ${amount}${row.unit ? " " + row.unit : ""}`);
+      });
+    }
     lines.push("", `Source: ${contract.source}`, `Fraîcheur: ${contract.freshness}`, `Confiance: ${contract.confidence}`, `Limites: ${contract.limitations}`);
     return lines.join("\n");
   }
@@ -380,6 +389,14 @@
       if (metricTarget) metricTarget.innerHTML = "";
       var exportTarget = document.querySelector("[data-ua-exports]");
       if (exportTarget) exportTarget.innerHTML = "";
+      if (contract.id === "afrokitchen") {
+        clearKitchenOutput();
+        var invalid = result.field && form.querySelector(`[data-ua-field="${result.field}"]`);
+        if (invalid) invalid.setAttribute("aria-invalid", "true");
+        else status.setAttribute("tabindex", "-1");
+        revealKitchenControl(invalid || status);
+        return;
+      }
       section.focus();
       return;
     }
@@ -435,6 +452,45 @@
     var original = document.querySelector('[data-ua-field="originalServings"]');
     if (original) original.value = recipe.default_servings;
     return { input: input };
+  }
+
+  function syncKitchenRecipe() {
+    if (contract.id !== "afrokitchen") return;
+    var original = form.querySelector('[data-ua-field="originalServings"]');
+    var selected = form.querySelector('[data-ua-field="recipe"]');
+    var recipes = root.AfroKitchenEngine && root.AfroKitchenEngine.SEED_RECIPES || [];
+    var recipe = recipes.find(function (item) { return selected && item.slug === selected.value; });
+    if (original) {
+      original.readOnly = true;
+      original.value = recipe ? recipe.default_servings : "";
+    }
+  }
+
+  function clearKitchenOutput() {
+    if (contract.id !== "afrokitchen") return;
+    lastPayload = null;
+    root.AfroToolsFrenchUniquelyAfricanResult = null;
+    ["[data-ua-metrics]", "[data-ua-table]", "[data-ua-context]", "[data-ua-exports]"].forEach(function (selector) {
+      var node = document.querySelector(selector);
+      if (node) node.innerHTML = "";
+    });
+    form.querySelectorAll('[aria-invalid="true"]').forEach(function (node) { node.removeAttribute("aria-invalid"); });
+  }
+
+  function invalidateKitchenResult() {
+    if (contract.id !== "afrokitchen") return;
+    clearKitchenOutput();
+    var section = document.querySelector("[data-ua-result]");
+    var status = document.querySelector("[data-ua-status]");
+    status.className = "";
+    status.removeAttribute("tabindex");
+    status.textContent = section.hidden ? "" : "La recette ou les portions ont changé. Recalculez pour obtenir les quantités et les exports à jour.";
+  }
+
+  function revealKitchenControl(node) {
+    if (contract.id !== "afrokitchen" || !node) return;
+    node.focus({ preventScroll: true });
+    node.scrollIntoView({ block: "center", behavior: "instant" });
   }
 
   async function prepareConflict(input) {
@@ -548,6 +604,7 @@
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
+    if (contract.id === "afrokitchen") clearKitchenOutput();
     var input = collectInput();
     var submit = form.querySelector('button[type="submit"]');
     submit.disabled = true;
@@ -570,9 +627,35 @@
     var status = document.querySelector("[data-ua-status]");
     if (status) status.textContent = "";
     initializeDelegates();
+    if (contract.id === "afrokitchen") {
+      clearKitchenOutput();
+      syncKitchenRecipe();
+      status.removeAttribute("tabindex");
+      revealKitchenControl(form.querySelector("[data-ua-field]"));
+      return;
+    }
     form.querySelector("[data-ua-field]").focus();
   });
 
   initializeDelegates();
+  if (contract.id === "afrokitchen") {
+    syncKitchenRecipe();
+    var original = form.querySelector('[data-ua-field="originalServings"]');
+    original.addEventListener("focus", function () {
+      root.requestAnimationFrame(function () {
+        if (document.activeElement !== original) return;
+        var bounds = original.getBoundingClientRect();
+        var host = document.querySelector("afro-navbar");
+        var nav = host && host.shadowRoot && host.shadowRoot.querySelector("nav") || host;
+        var headerBottom = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+        if (bounds.top < headerBottom || bounds.bottom > root.innerHeight) revealKitchenControl(original);
+      });
+    });
+    form.querySelector('[data-ua-field="recipe"]').addEventListener("change", function () {
+      syncKitchenRecipe();
+      invalidateKitchenResult();
+    });
+    form.querySelector('[data-ua-field="targetServings"]').addEventListener("input", invalidateKitchenResult);
+  }
   loadFeed();
 })(window, document);
