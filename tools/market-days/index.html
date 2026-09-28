@@ -34,7 +34,7 @@
 
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=7f33039a">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=d5f7e46e">
-  <link rel="stylesheet" href="/assets/css/market-days.css?v=e27d29dd">
+  <link rel="stylesheet" href="/assets/css/market-days.css?v=3052d82e">
   <style>
     .market-shell{box-sizing:border-box;width:100%;min-width:0}
     .market-layout,.market-primary,.market-sidebar,.surface,.spotlight-layout,.lookup-grid,.today-grid,.cycle-list,.cycle-item{min-width:0;max-width:100%}
@@ -59,6 +59,7 @@
   <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
   <script src="/assets/js/engines/igbo-market-days.js?v=af37aef5" defer></script>
   <script src="/assets/js/pages/market-days.js?v=0455d7e2" defer></script>
+  <script src="/assets/js/pages/market-days-trip.js?v=4f484eff" defer></script>
 
   <script type="application/ld+json">
 {
@@ -159,9 +160,10 @@
             <div class="section-label">Market day for a date</div>
             <div class="spotlight-date-control">
               <label class="field-label" for="lookupDate">Pick any Gregorian date</label>
-              <input class="field-input" id="lookupDate" type="date">
+              <input class="field-input" id="lookupDate" type="date" required aria-describedby="lookupDateStatus">
+              <p class="lookup-date-status" id="lookupDateStatus" role="status" aria-live="polite" aria-atomic="true"></p>
             </div>
-            <div class="spotlight-layout">
+            <div class="spotlight-layout" id="selectedDateResult">
               <div class="day-token" id="selectedDayToken">—</div>
               <div>
                 <div class="selected-eyebrow" id="selectedEyebrow">Nigeria date lookup</div>
@@ -217,7 +219,7 @@
             <div class="calendar-grid" id="calendarGrid"></div>
           </article>
 
-          <article class="surface upcoming-card">
+          <article class="surface upcoming-card" id="selectedUpcoming">
             <div class="section-label">Next turns from the selected date</div>
             <div class="upcoming-grid" id="upcomingGrid"></div>
           </article>
@@ -252,6 +254,11 @@
               </div>
             </div>
             <div class="trip-output" id="tripPlannerOutput"></div>
+            <p class="share-status" id="tripStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+            <div class="trip-manual-copy" id="tripManualCopy" hidden>
+              <label class="field-label" for="tripBriefText">Trip brief — select and copy</label>
+              <textarea class="field-input trip-brief-text" id="tripBriefText" rows="8" readonly></textarea>
+            </div>
           </article>
         </div>
 
@@ -288,7 +295,7 @@
             <h2>Real markets tied to the cycle</h2>
             <p>A curated starter list of named markets from southeastern Nigeria. Filter by state, cycle day, or market name and use the selected date above to see the next matching turns.</p>
           </div>
-          <div class="results-count" id="resultsCount">0 results</div>
+          <div class="results-count" id="resultsCount" role="status" aria-live="polite" aria-atomic="true">0 results</div>
         </div>
 
         <div class="surface directory-controls">
@@ -472,69 +479,6 @@
   </main>
 
   <afro-footer></afro-footer>
-  <script>
-    (function(){
-      var lastTripBrief = '';
-      function engine(){ return window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.igboMarketDays; }
-      function selectedDateKey(api){
-        var p = new URLSearchParams(window.location.search).get('date');
-        return api.isValidDateKey(p) ? p : api.getTodayDateKey(api.defaultTimeZone);
-      }
-      function initTripPlanner(){
-        var api = engine();
-        var marketSelect = document.getElementById('tripMarket');
-        if(!api || !marketSelect) return;
-        marketSelect.innerHTML = api.marketDirectory.map(function(m){
-          return '<option value="'+m.id+'">'+m.name+' - '+m.town+', '+m.state+'</option>';
-        }).join('');
-        var btn = document.getElementById('buildTripPlan');
-        if(btn) btn.addEventListener('click', renderTripPlan);
-        renderTripPlan();
-      }
-      function renderTripPlan(){
-        var api = engine();
-        var out = document.getElementById('tripPlannerOutput');
-        if(!api || !out) return;
-        var marketId = document.getElementById('tripMarket').value;
-        var market = api.marketDirectory.find(function(m){ return m.id === marketId; }) || api.marketDirectory[0];
-        var purpose = document.getElementById('tripPurpose').value;
-        var buffer = parseInt(document.getElementById('tripBuffer').value,10) || 0;
-        var base = api.addDays(api.parseDateKey(selectedDateKey(api)), buffer);
-        var dates = api.getUpcomingDates(base, market.dayIndex, 3);
-        var day = api.dayDetails[market.dayIndex];
-        var purposeNote = {
-          shopping: 'Go early, compare at least three stalls, and carry a written target list so the market-day crowd does not push you into impulse buying.',
-          vendor: 'Call your supplier a day before, confirm stock and transport, and keep cash/mobile money split so one payment channel failure does not stop the trip.',
-          ceremony: 'Use the first matching date for scouting and the second for confirmed purchases after family approval.',
-          research: 'Record date, market day, section, stall type, and quoted prices so the visit can become a clean field note.'
-        }[purpose];
-        lastTripBrief = [
-          'IGBO MARKET TRIP BRIEF',
-          'Market: '+market.name+' ('+market.town+', '+market.state+')',
-          'Traditional day: '+day.name,
-          'Next options: '+dates.map(function(d){ return api.formatDate(d,{weekday:'short',day:'numeric',month:'short',year:'numeric'}); }).join(' | '),
-          'Purpose: '+purpose,
-          'Note: '+purposeNote,
-          'Source: '+market.sourceUrl
-        ].join('\n');
-        out.innerHTML =
-          '<div class="trip-output-grid">'+
-          '<div class="trip-output-box"><span>Market day</span><strong>'+day.name+' / '+day.alias+'</strong></div>'+
-          '<div class="trip-output-box"><span>Best next date</span><strong>'+api.formatDate(dates[0],{weekday:'short',day:'numeric',month:'short',year:'numeric'})+'</strong></div>'+
-          '<div class="trip-output-box"><span>Source</span><strong>'+market.sourceLabel+'</strong></div>'+
-          '</div>'+
-          '<p><strong>'+market.name+':</strong> '+market.descriptor+' '+market.operatingPattern+'</p>'+
-          '<p>'+purposeNote+'</p>'+
-          '<button class="trip-copy" type="button" onclick="window.copyMarketTripBrief&&window.copyMarketTripBrief()">Copy trip brief</button>';
-        window.__marketTripBrief = lastTripBrief;
-      }
-      window.copyMarketTripBrief = function(){
-        if(window.__marketTripBrief && navigator.clipboard) navigator.clipboard.writeText(window.__marketTripBrief);
-      };
-      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTripPlanner);
-      else initTripPlanner();
-    })();
-  </script>
   <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
   <script>
     window.dataLayer = window.dataLayer || [];

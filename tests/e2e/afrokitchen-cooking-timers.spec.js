@@ -146,6 +146,9 @@ for (const variant of variants) {
           }));
         }, { key: storageKey, value: fixture.remaining });
         await page.reload({ waitUntil: 'domcontentloaded' });
+        // Static HTML already says 03:00; wait for runtime recovery before reading saved state.
+        const expectedStatus = fixture.stored === 0 ? 'Timer complete.' : fixture.stored === 180 ? 'Timer ready.' : 'Timer paused at ' + fixture.display + '.';
+        await expect(page.locator('#ak-timer-status-6')).toHaveText(expectedStatus);
         await expect(page.locator('#ak-timer-display-6')).toHaveText(fixture.display);
         expect(await readRemaining(page)).toBe(fixture.stored);
         const timer = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).timers['6'], storageKey);

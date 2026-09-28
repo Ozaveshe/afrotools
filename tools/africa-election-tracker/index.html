@@ -116,6 +116,13 @@ body.election-desk-page .et-hero{padding:0!important;background:#192b29;color:#f
 .et-issue-nav a{display:inline-flex;align-items:center;min-height:44px;margin-right:var(--space-6);border-bottom:2px solid transparent;text-decoration:none;color:#e1e8df}
 body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:max-content!important;max-width:none!important;flex:0 0 auto!important}
 .et-issue-nav a:hover,.et-issue-nav a:focus-visible{color:#fff;border-bottom-color:#e8bd7a}
+.et-mobile-contents{display:none}
+.et-mobile-contents summary{cursor:pointer;min-height:48px;padding:var(--space-3) 0;border-top:1px solid #70817b;font-size:.8rem;font-weight:800;color:#f7f3e9}
+.et-mobile-contents summary::after{content:'+';float:right;font-size:1.2rem;line-height:1;color:#e8bd7a}
+.et-mobile-contents[open] summary::after{content:'−'}
+.et-mobile-contents nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--space-4);padding-bottom:var(--space-3)}
+.et-mobile-contents nav a{display:flex;align-items:center;min-height:48px;border-bottom:1px solid #70817b;font-size:.78rem;font-weight:700;line-height:1.3;text-decoration:none;color:#e1e8df}
+.et-mobile-contents nav a:hover,.et-mobile-contents nav a:focus-visible{color:#fff;text-decoration:underline;text-underline-offset:3px}
 .et-hero :is(a,button):focus-visible{outline:2px solid #e8bd7a;outline-offset:3px}
 .et-main{max-width:1200px;background:transparent;padding:0 var(--page-gutter) var(--space-20)}
 .et-frontpage{padding:var(--space-5) 0 var(--space-8);border-bottom:3px double var(--color-border-strong)}
@@ -154,11 +161,22 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
 .et-desk-note{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);padding:var(--space-6) 0;border-bottom:1px solid var(--color-border)}
 .et-desk-note p{max-width:750px;margin:0;font-size:.82rem;line-height:1.65;color:var(--color-text-muted)}
 .et-desk-note a{max-width:100%;font-size:.8rem;font-weight:800;color:var(--color-primary)}
-.et-metrics{display:flex;flex-wrap:wrap;gap:0;margin:0;padding:var(--space-4) 0;border-bottom:1px solid var(--color-border)}
-.et-metric{display:flex;align-items:baseline;gap:var(--space-2);min-height:0;margin-right:var(--space-5);padding:var(--space-1) var(--space-5) var(--space-1) 0;border:0;border-right:1px solid var(--color-border);border-radius:0;background:transparent}
-.et-metric:last-child{border-right:0}
-.et-metric strong{display:inline;font-family:var(--font-heading);font-size:1.5rem;font-weight:400;line-height:1;color:var(--color-text)}
-.et-metric span{display:inline;margin:0;font-size:.7rem;letter-spacing:.02em;text-transform:none;color:var(--color-text-muted)}
+.et-country-edition{padding:var(--space-10) 0 var(--space-4);border-bottom:3px double var(--color-border-strong)}
+.et-country-edition-head{display:flex;align-items:end;justify-content:space-between;gap:var(--space-6);margin-bottom:var(--space-6)}
+.et-country-edition-head h2{margin:0;font-family:var(--font-heading);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;line-height:1.1;color:var(--color-text)}
+.et-country-edition-head p:last-child{max-width:420px;margin:0;font-size:.83rem;line-height:1.65;color:var(--color-text-muted)}
+.et-country-index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-7) var(--space-10);list-style:none;margin:0;padding:0}
+.et-country-file{min-width:0;padding:var(--space-4) 0 var(--space-2);border-top:2px solid var(--color-text)}
+.et-country-file h3{margin:0;font-family:var(--font-heading);font-size:1.85rem;font-weight:400;line-height:1.15;color:var(--color-text)}
+.et-country-region{margin:var(--space-1) 0 var(--space-3);font-size:.72rem;color:var(--color-text-muted)}
+.et-country-records{list-style:none;margin:0;padding:0}
+.et-country-records li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-1) var(--space-3);padding:var(--space-2) 0;border-bottom:1px solid var(--color-border)}
+.et-country-records a{font-size:.86rem;font-weight:800;color:var(--color-primary);text-decoration:none}
+.et-country-records a:hover{text-decoration:underline;text-underline-offset:3px}
+.et-country-records time{font-size:.77rem;white-space:nowrap;color:var(--color-text)}
+.et-country-records span{grid-column:1 / -1;font-size:.71rem;color:var(--color-text-muted)}
+.et-country-records .et-country-record-source{font-size:.71rem;line-height:1.55;color:var(--color-text-muted)}
+.et-country-records .et-country-record-source a{font-size:inherit;font-weight:600;overflow-wrap:anywhere}
 .et-layout{grid-template-columns:minmax(0,1fr) 285px;gap:var(--space-12);padding-top:var(--space-12)}
 .et-card{background:transparent;border:0;border-radius:0;box-shadow:none}
 .et-card+.et-card{margin-top:var(--space-12)}
@@ -228,6 +246,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
 .et-empty{border-color:var(--color-border-strong);border-radius:var(--radius-sm);color:var(--color-text-muted)}
 .et-error{background:var(--color-warning-pale);border-color:var(--color-warning);color:var(--color-text)}
 .election-desk-page :is(a,button,input,select,summary):focus-visible{outline:2px solid var(--color-primary);outline-offset:3px}
+body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-visible){outline:2px solid #e8bd7a;outline-offset:3px}
 @media(max-width:980px){
   .et-layout{grid-template-columns:1fr}
   .et-frontpage-grid{grid-template-columns:minmax(0,1.6fr) minmax(220px,.8fr);gap:var(--space-6)}
@@ -244,9 +263,8 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
   .et-masthead{display:block;padding:var(--space-3) 0}
   .et-title{font-size:2.55rem}
   .et-masthead-note{margin-top:var(--space-2);font-size:.72rem}
-  .et-issue-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
-  .et-issue-nav::after{content:'→';position:sticky;right:0;display:grid;place-items:center;flex:0 0 24px;background:#192b29;color:#e8bd7a}
-  .et-issue-nav a{white-space:nowrap;margin-right:var(--space-5);min-height:44px}
+  body.election-desk-page .et-issue-nav{display:none}
+  body.election-desk-page .et-mobile-contents{display:block}
   .et-frontpage{padding:var(--space-3) 0 var(--space-6)}
   .et-frontpage-rubric{font-size:.6rem}
   .et-frontpage-rubric span:last-child{display:none}
@@ -258,8 +276,10 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
   .et-more-briefs-grid{grid-template-columns:1fr;gap:var(--space-5)}
   .et-desk-note{display:block}
   .et-desk-note a{display:inline-block;margin-top:var(--space-3)}
-  .et-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}
-  .et-metric{margin:0;padding:var(--space-2) 0;border:0}
+  .et-country-edition{padding-top:var(--space-8)}
+  .et-country-edition-head{display:block;margin-bottom:var(--space-4)}
+  .et-country-edition-head p:last-child{margin-top:var(--space-3)}
+  .et-country-index{grid-template-columns:1fr;gap:var(--space-4)}
   .et-layout{padding-top:var(--space-8)}
   .et-controls{grid-template-columns:1fr}
   .et-election-top{grid-template-columns:1fr;gap:var(--space-2)}
@@ -305,15 +325,28 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
         <p class="et-masthead-note">Reviewed notices from electoral authorities, with dates and source records you can inspect.</p>
       </div>
       <nav class="et-issue-nav" aria-label="Election desk sections">
+        <a href="#leadStoryTitle">Latest</a>
+        <a href="#countryCoverage">Country files</a>
         <a href="#calendar">Calendar</a>
-        <a href="#findElection">Find an election</a>
-        <a href="#countryCoverage">Country coverage</a>
         <a href="#candidateFiles">Candidate files</a>
-        <a href="/tools/africa-election-tracker/news/">News desk</a>
-        <a href="/tools/africa-election-tracker/news/feed.xml">RSS feed</a>
-        <a href="/ha/zabe/">Hausa edition</a>
-        <a href="/yo/idibo/">Yoruba edition</a>
+        <a href="/tools/africa-election-tracker/news/">News archive</a>
+        <a href="/tools/africa-election-tracker/news/feed.xml">RSS</a>
+        <a href="/ha/zabe/">Hausa calendar</a>
+        <a href="/yo/idibo/">Yoruba calendar</a>
       </nav>
+      <details class="et-mobile-contents">
+        <summary>Browse this edition</summary>
+        <nav aria-label="Election desk mobile sections">
+          <a href="#leadStoryTitle">Latest</a>
+          <a href="#countryCoverage">Country files</a>
+          <a href="#calendar">Calendar</a>
+          <a href="#candidateFiles">Candidate files</a>
+          <a href="/tools/africa-election-tracker/news/">News archive</a>
+          <a href="/tools/africa-election-tracker/news/feed.xml">RSS</a>
+          <a href="/ha/zabe/">Hausa calendar</a>
+          <a href="/yo/idibo/">Yoruba calendar</a>
+        </nav>
+      </details>
     </div>
   </header>
 
@@ -374,6 +407,64 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
       <a href="/tools/africa-election-tracker/news/feed.xml">Follow reviewed briefs by RSS</a>
     </div>
 
+    <section class="et-country-edition" id="countryCoverage" aria-labelledby="countryTitle">
+      <div class="et-country-edition-head">
+        <div>
+          <p class="et-kicker">Across the continent</p>
+          <h2 id="countryTitle">Country files</h2>
+        </div>
+        <p>An A–Z index of countries currently in the published ledger. Each file links to a calendar record and one official link on file; open the record for its full source set. Coverage is not comprehensive.</p>
+      </div>
+      <ol class="et-country-index">
+        <!-- ELECTION_COUNTRY_INDEX_START -->
+        <li class="et-country-file">
+        <h3>Cabo Verde</h3>
+        <p class="et-country-region">West Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-cv-president-2026" aria-label="Cabo Verde: President — 15 Nov 2026 calendar record">President</a><time datetime="2026-11-15">15 Nov 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://cne.cv/sala_de_imprensa_/presidenciais-2026-tc-admite-candidatura-de-loisito-tavares-de-sousa-e-eleva-para-seis-o-numero-de-candidatos/" rel="noopener noreferrer" target="_blank">CNE Constitutional Court candidacy-appeal notice, 27 September 2026</a> · Checked 27 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>Kenya</h3>
+        <p class="et-country-region">East Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-ke-general-2027" aria-label="Kenya: President and county governors — 10 Aug 2027 calendar record">President and county governors</a><time datetime="2027-08-10">10 Aug 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.iebc.or.ke/news/?PUBLICATION_OF_NOTICE_OF_GENERAL_ELECTION" rel="noopener noreferrer" target="_blank">IEBC publication of the 2027 General Election notice, 14 September 2026</a> · Checked 15 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>Nigeria</h3>
+        <p class="et-country-region">West Africa · 4 elections on file</p>
+        <ul class="et-country-records"><li><a href="#election-ng-ekiti-governor-2026" aria-label="Nigeria: Ekiti State: Governor — 20 Jun 2026 calendar record">Ekiti State: Governor</a><time datetime="2026-06-20">20 Jun 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/" rel="noopener noreferrer" target="_blank">INEC homepage election update</a> · Checked 9 Sep 2026</span></li>
+        <li><a href="#election-ng-osun-governor-2026" aria-label="Nigeria: Osun State: Governor — 15 Aug 2026 calendar record">Osun State: Governor</a><time datetime="2026-08-15">15 Aug 2026</time><span>Date: Official revised</span><span class="et-country-record-source">Official link in record: <a href="https://inecelectionresults.ng/elections/6a7f788adcbc755a763f082a?type=gov" rel="noopener noreferrer" target="_blank">INEC IReV Osun result-sheet listing</a> · Checked 9 Sep 2026</span></li>
+        <li><a href="#election-ng-president-2027" aria-label="Nigeria: President — 16 Jan 2027 calendar record">President</a><time datetime="2027-01-16">16 Jan 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a> · Checked 9 Sep 2026</span></li>
+        <li><a href="#election-ng-governors-general-2027" aria-label="Nigeria: Governors — 6 Feb 2027 calendar record">Governors</a><time datetime="2027-02-06">6 Feb 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a> · Checked 9 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>Sao Tome and Principe</h3>
+        <p class="et-country-region">Central Africa · 2 elections on file</p>
+        <ul class="et-country-records"><li><a href="#election-stp-president-2026" aria-label="Sao Tome and Principe: President — 19 Jul 2026 calendar record">President</a><time datetime="2026-07-19">19 Jul 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">Sao Tome and Principe CEN</a> · Checked 30 Aug 2026</span></li>
+        <li><a href="#election-stp-local-2026" aria-label="Sao Tome and Principe: Local government — 27 Sep 2026 calendar record">Local government</a><time datetime="2026-09-27">27 Sep 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">CEN current 2026 electoral calendar</a> · Checked 27 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>South Africa</h3>
+        <p class="et-country-region">Southern Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-za-local-government-2026" aria-label="South Africa: Local councils — 4 Nov 2026 calendar record">Local councils</a><time datetime="2026-11-04">4 Nov 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.gov.za/news/media-statements/electoral-commission-opens-special-vote-applications-2026-local-government" rel="noopener noreferrer" target="_blank">IEC special-vote application notice, 21 September 2026</a> · Checked 27 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>South Sudan</h3>
+        <p class="et-country-region">East Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-ss-president-2026" aria-label="South Sudan: President — Dec 2026 calendar record">President</a><time datetime="2026-12">Dec 2026</time><span>Date: Tentative</span><span class="et-country-record-source">Official link in record: <a href="https://nec.gov.ss/press-statement-on-false-reports-about-voter-registration/" rel="noopener noreferrer" target="_blank">South Sudan NEC registration-status clarification, 2 September 2026</a> · Checked 8 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>The Gambia</h3>
+        <p class="et-country-region">West Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-gm-president-2026" aria-label="The Gambia: President — 5 Dec 2026 calendar record">President</a><time datetime="2026-12-05">5 Dec 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://iec.gm/electoral-calendar-2026-2027/" rel="noopener noreferrer" target="_blank">The Gambia IEC 2026-2027 electoral calendar</a> · Checked 9 Sep 2026</span></li></ul>
+        </li>
+        <li class="et-country-file">
+        <h3>Zambia</h3>
+        <p class="et-country-region">Southern Africa · 1 election on file</p>
+        <ul class="et-country-records"><li><a href="#election-zm-president-2026" aria-label="Zambia: President — 13 Aug 2026 calendar record">President</a><time datetime="2026-08-13">13 Aug 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://results.elections.org.zm/?type=PRESIDENTIAL&amp;year=2026" rel="noopener noreferrer" target="_blank">ECZ official 2026 presidential results portal</a> · Checked 30 Aug 2026</span></li></ul>
+        </li>
+        <!-- ELECTION_COUNTRY_INDEX_END -->
+      </ol>
+    </section>
+
     <div class="et-layout">
       <div>
         <section class="et-card et-calendar" id="calendar" aria-labelledby="resultsTitle">
@@ -388,9 +479,9 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
             <div id="errorBox"></div>
             <div class="et-list" id="electionList">
               <!-- ELECTION_CALENDAR_SNAPSHOT_START -->
-              <p class="et-snapshot-note" data-snapshot-date="2026-09-27">Published ledger snapshot generated 27 Sep 2026. Dates can change. Each record links its available official notices; live filters load with JavaScript.</p>
+              <p class="et-snapshot-note" data-snapshot-date="2026-09-27" data-ledger-fingerprint="c0742d80">Published ledger snapshot generated 27 Sep 2026. Dates can change. Each record links its available official notices; live filters load with JavaScript.</p>
               <h3 class="et-snapshot-heading">Upcoming as of 27 Sep 2026</h3>
-              <article class="et-election-card" data-snapshot-election-id="stp-local-2026">
+              <article class="et-election-card" id="election-stp-local-2026" data-snapshot-election-id="stp-local-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-09-27" aria-label="27 Sep 2026; Official"><strong>27</strong><span>Sep 2026</span></time></div>
                   <div>
@@ -405,7 +496,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> CEN polling-day administration notices, any verified count publication, provisional-result notices, and final official result declarations; no outcome is added before an official declaration.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="za-local-government-2026">
+              <article class="et-election-card" id="election-za-local-government-2026" data-snapshot-election-id="za-local-government-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-11-04" aria-label="4 Nov 2026; Official"><strong>4</strong><span>Nov 2026</span></time></div>
                   <div>
@@ -420,7 +511,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Candidate certificates from 25 September, ballot-sample sign-off, special-vote application deadline at 17:00 on 12 October, political-party results-system testing from 5 to 12 October, polling notices, and official result administration.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="cv-president-2026">
+              <article class="et-election-card" id="election-cv-president-2026" data-snapshot-election-id="cv-president-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-11-15" aria-label="15 Nov 2026; Official"><strong>15</strong><span>Nov 2026</span></time></div>
                   <div>
@@ -435,7 +526,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Any remaining appeal decisions and a final CNE ballot roster, polling-place notices, campaign start on 29 October, and official result administration.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="gm-president-2026">
+              <article class="et-election-card" id="election-gm-president-2026" data-snapshot-election-id="gm-president-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-12-05" aria-label="5 Dec 2026; Official"><strong>5</strong><span>Dec 2026</span></time></div>
                   <div>
@@ -450,7 +541,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Completion of revising-court work through 21 September, publication of the scheduled election gazette notice, nomination days, the 20 November media and observer accreditation deadline, campaign reconciliation, and polling notices.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="ss-president-2026">
+              <article class="et-election-card" id="election-ss-president-2026" data-snapshot-election-id="ss-president-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-12" aria-label="Dec 2026; Tentative"><strong>Dec</strong><span>2026</span></time></div>
                   <div>
@@ -465,7 +556,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> NEC voter-registration public notice, registration dates and centres, a formal electoral calendar or statutory instrument, funding milestones, and any official timetable change.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="ng-president-2027">
+              <article class="et-election-card" id="election-ng-president-2027" data-snapshot-election-id="ng-president-2027">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2027-01-16" aria-label="16 Jan 2027; Official"><strong>16</strong><span>Jan 2027</span></time></div>
                   <div>
@@ -480,7 +571,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Court-appeal outcomes affecting the revised timetable, nomination windows, final candidate list, CVR, and voter-register cleanup notices.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="ng-governors-general-2027">
+              <article class="et-election-card" id="election-ng-governors-general-2027" data-snapshot-election-id="ng-governors-general-2027">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2027-02-06" aria-label="6 Feb 2027; Official"><strong>6</strong><span>Feb 2027</span></time></div>
                   <div>
@@ -495,7 +586,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Court-appeal outcomes affecting the revised timetable, state candidate lists, off-cycle exceptions, polling-unit changes, and final voter-register notices.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="ke-general-2027">
+              <article class="et-election-card" id="election-ke-general-2027" data-snapshot-election-id="ke-general-2027">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2027-08-10" aria-label="10 Aug 2027; Official"><strong>10</strong><span>Aug 2027</span></time></div>
                   <div>
@@ -511,7 +602,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                 </details>
               </article>
               <h3 class="et-snapshot-heading">Earlier records</h3>
-              <article class="et-election-card" data-snapshot-election-id="ng-osun-governor-2026">
+              <article class="et-election-card" id="election-ng-osun-governor-2026" data-snapshot-election-id="ng-osun-governor-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-08-15" aria-label="15 Aug 2026; Official revised"><strong>15</strong><span>Aug 2026</span></time></div>
                   <div>
@@ -526,7 +617,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> Completion of IReV result-sheet uploads, state collation, official declaration, certificate of return, and any court-ordered update; no outcome is added before a declaration.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="zm-president-2026">
+              <article class="et-election-card" id="election-zm-president-2026" data-snapshot-election-id="zm-president-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-08-13" aria-label="13 Aug 2026; Official"><strong>13</strong><span>Aug 2026</span></time></div>
                   <div>
@@ -541,7 +632,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> ECZ correction or explanation of the empty 2026 portal, an official presidential declaration, and approved constituency results.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="stp-president-2026">
+              <article class="et-election-card" id="election-stp-president-2026" data-snapshot-election-id="stp-president-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-07-19" aria-label="19 Jul 2026; Official"><strong>19</strong><span>Jul 2026</span></time></div>
                   <div>
@@ -556,7 +647,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
                   <p class="et-watch"><strong>Watch:</strong> CEN official result declaration, any runoff notice, and final publication of the presidential result.</p>
                 </details>
               </article>
-              <article class="et-election-card" data-snapshot-election-id="ng-ekiti-governor-2026">
+              <article class="et-election-card" id="election-ng-ekiti-governor-2026" data-snapshot-election-id="ng-ekiti-governor-2026">
                 <div class="et-election-top">
                   <div class="et-date-box"><time datetime="2026-06-20" aria-label="20 Jun 2026; Official"><strong>20</strong><span>Jun 2026</span></time></div>
                   <div>
@@ -620,37 +711,6 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
             </div>
           </div>
         </details>
-
-        <div class="et-metrics" aria-label="Published tracker coverage">
-          <div class="et-metric"><strong id="metricRecords">—</strong><span>tracked elections</span></div>
-          <div class="et-metric"><strong id="metricCountries">—</strong><span>countries</span></div>
-          <div class="et-metric"><strong id="metricOfficial">—</strong><span>official-source records</span></div>
-          <div class="et-metric"><strong id="metricReview">—</strong><span>dates to verify</span></div>
-        </div>
-
-        <section class="et-card" id="countryCoverage" aria-labelledby="countryTitle">
-          <div class="et-card-head">
-            <div>
-              <p class="et-kicker">By country</p>
-              <h2 id="countryTitle" class="et-card-title">Country coverage</h2>
-              <div class="et-card-sub">Published records, grouped by country</div>
-            </div>
-          </div>
-          <div class="et-card-body et-table-wrap">
-            <table class="et-table">
-              <thead>
-                <tr>
-                  <th>Country</th>
-                  <th>Region</th>
-                  <th>Tracked offices</th>
-                  <th>Next date</th>
-                  <th>Source state</th>
-                </tr>
-              </thead>
-              <tbody id="countryRows"></tbody>
-            </table>
-          </div>
-        </section>
 
         <section class="et-card" id="candidateFiles" aria-labelledby="candidateTitle">
           <div class="et-card-head">
@@ -744,18 +804,33 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
     reviewQueue: document.getElementById('reviewQueue'),
     newsWatch: document.getElementById('newsWatch'),
     candidateFacts: document.getElementById('candidateFacts'),
-    countryRows: document.getElementById('countryRows'),
     ledgerMeta: document.getElementById('ledgerMeta'),
     calendarRailList: document.getElementById('calendarRailList'),
     nextElectionTitle: document.getElementById('nextElectionTitle'),
     nextElectionMeta: document.getElementById('nextElectionMeta'),
-    metricRecords: document.getElementById('metricRecords'),
-    metricCountries: document.getElementById('metricCountries'),
-    metricOfficial: document.getElementById('metricOfficial'),
-    metricReview: document.getElementById('metricReview')
   };
   const snapshotHtml = els.electionList.innerHTML;
   const snapshotDate = els.electionList.querySelector('[data-snapshot-date]')?.getAttribute('data-snapshot-date');
+  const snapshotFingerprint = els.electionList.querySelector('[data-ledger-fingerprint]')?.getAttribute('data-ledger-fingerprint');
+
+  function ledgerFingerprint(data) {
+    const payload = JSON.stringify({ generatedAt: data.generatedAt, dateStatusLabels: data.dateStatusLabels, elections: data.elections });
+    let hash = 0x811c9dc5;
+    for (let index = 0; index < payload.length; index += 1) {
+      hash ^= payload.charCodeAt(index);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16).padStart(8, '0');
+  }
+
+  function requestedElectionId() {
+    if (!location.hash.startsWith('#election-')) return '';
+    try {
+      return decodeURIComponent(location.hash.slice(1));
+    } catch (_) {
+      return '';
+    }
+  }
 
   function todayUtc() {
     const now = new Date();
@@ -897,18 +972,6 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
       .join('');
   }
 
-  function renderMetrics() {
-    const countries = new Set(state.records.map((record) => record.countryCode));
-    const official = state.records.filter((record) => record.sourceStatus === 'official').length;
-    const review = state.records.filter((record) => (
-      record.sourceStatus !== 'official' || record.dateStatus === 'tentative' || record.dateStatus === 'projected'
-    )).length;
-    els.metricRecords.textContent = state.records.length.toLocaleString('en-US');
-    els.metricCountries.textContent = countries.size.toLocaleString('en-US');
-    els.metricOfficial.textContent = official.toLocaleString('en-US');
-    els.metricReview.textContent = review.toLocaleString('en-US');
-  }
-
   function renderNextElection() {
     const upcoming = state.records
       .filter((record) => recordEndUtc(record) >= todayUtc())
@@ -940,7 +1003,7 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
       : displayDate(record);
 
     return `
-      <article class="et-election-card">
+      <article class="et-election-card" id="election-${escapeHtml(record.id)}">
         <div class="et-election-top">
           <div class="et-date-box" aria-label="${escapeHtml(dateText)}">
             <strong>${escapeHtml(dateParts.day)}</strong>
@@ -1089,48 +1152,31 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
     }).join('');
   }
 
-  function renderCountryRows() {
-    const grouped = new Map();
-    for (const record of state.records) {
-      if (!grouped.has(record.countryCode)) {
-        grouped.set(record.countryCode, {
-          country: record.country,
-          region: record.region,
-          records: []
-        });
-      }
-      grouped.get(record.countryCode).records.push(record);
-    }
-
-    const rows = Array.from(grouped.values())
-      .sort((a, b) => a.country.localeCompare(b.country))
-      .map((entry) => {
-        const sorted = entry.records.sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate));
-        const next = sorted.find((record) => recordEndUtc(record) >= todayUtc()) || sorted[0];
-        const offices = uniqueSorted(sorted.map((record) => record.office)).join(', ');
-        const sourceStates = uniqueSorted(sorted.map((record) => sourceLabel(record.sourceStatus))).join(', ');
-        return `
-          <tr>
-            <td><strong>${escapeHtml(entry.country)}</strong></td>
-            <td>${escapeHtml(entry.region)}</td>
-            <td>${escapeHtml(offices)}</td>
-            <td>${escapeHtml(next ? displayDate(next) : 'No date')}</td>
-            <td>${escapeHtml(sourceStates)}</td>
-          </tr>
-        `;
-      });
-
-    els.countryRows.innerHTML = rows.join('');
-  }
-
   function renderAll() {
-    renderMetrics();
     renderNextElection();
     renderList();
     renderReviewQueue();
     renderNewsWatch();
     renderCandidateFacts();
-    renderCountryRows();
+  }
+
+  function clearFilters(focusSearch, includeEarlier) {
+    state.filters = {
+      search: '',
+      region: 'all',
+      type: 'all',
+      source: 'all',
+      executiveOnly: false,
+      upcomingOnly: !includeEarlier
+    };
+    els.searchInput.value = '';
+    els.regionFilter.value = 'all';
+    els.typeFilter.value = 'all';
+    els.sourceFilter.value = 'all';
+    els.executiveOnly.checked = false;
+    els.upcomingOnly.checked = !includeEarlier;
+    renderList();
+    if (focusSearch) els.searchInput.focus();
   }
 
   function bindEvents() {
@@ -1160,23 +1206,14 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
       state.filters.upcomingOnly = els.upcomingOnly.checked;
       renderList();
     });
-    els.resetFilters.addEventListener('click', () => {
-      state.filters = {
-        search: '',
-        region: 'all',
-        type: 'all',
-        source: 'all',
-        executiveOnly: false,
-        upcomingOnly: true
-      };
-      els.searchInput.value = '';
-      els.regionFilter.value = 'all';
-      els.typeFilter.value = 'all';
-      els.sourceFilter.value = 'all';
-      els.executiveOnly.checked = false;
-      els.upcomingOnly.checked = true;
-      renderList();
-      els.searchInput.focus();
+    els.resetFilters.addEventListener('click', () => clearFilters(true, false));
+    document.querySelector('.et-country-index').addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#election-"]');
+      if (!link) return;
+      const targetId = link.getAttribute('href').slice(1);
+      if (document.getElementById(targetId)) return;
+      clearFilters(false, true);
+      requestAnimationFrame(() => document.getElementById(targetId)?.scrollIntoView());
     });
   }
 
@@ -1185,6 +1222,9 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
     if (!response.ok) throw new Error(`Election data returned HTTP ${response.status}`);
     const data = await response.json();
     if (!data || !Array.isArray(data.elections) || !data.elections.length) throw new Error('Election data was invalid');
+    if (!snapshotFingerprint || ledgerFingerprint(data) !== snapshotFingerprint) {
+      throw new Error('Election data did not match the published snapshot');
+    }
     return data;
   }
 
@@ -1199,14 +1239,20 @@ body.election-desk-page .et-issue-nav a{width:max-content!important;min-width:ma
       populateFilters();
       bindEvents();
       renderAll();
+      const targetId = requestedElectionId();
+      if (targetId) {
+        if (!document.getElementById(targetId) && state.records.some((record) => `election-${record.id}` === targetId)) {
+          clearFilters(false, true);
+        }
+        const target = document.getElementById(targetId);
+        if (target) requestAnimationFrame(() => target.scrollIntoView());
+      }
     })
     .catch((error) => {
       [els.searchInput, els.regionFilter, els.typeFilter, els.sourceFilter, els.executiveOnly, els.upcomingOnly, els.resetFilters]
         .forEach((control) => { control.disabled = true; });
       els.electionList.innerHTML = snapshotHtml;
-      [els.metricRecords, els.metricCountries, els.metricOfficial, els.metricReview]
-        .forEach((metric) => { metric.textContent = '—'; });
-      [els.reviewQueue, els.newsWatch, els.candidateFacts, els.countryRows]
+      [els.reviewQueue, els.newsWatch, els.candidateFacts]
         .forEach((panel) => { panel.innerHTML = ''; });
       els.ledgerMeta.textContent = snapshotDate ? `Snapshot generated ${formatDate(snapshotDate)} / live data unavailable` : 'Live data unavailable';
       els.errorBox.innerHTML = `<div class="et-error">The live election data could not load: ${escapeHtml(error.message)}. The published snapshot below may be older; confirm each date with its linked electoral authority.</div>`;

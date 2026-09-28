@@ -49,14 +49,25 @@
     var normalized = normalizeCode(code) || '??';
     var name = (label ? label + ' flag' : normalized + ' flag').trim();
     var classes = className ? 'aa-twemoji-flag ' + className : 'aa-twemoji-flag';
-    return '<span class="' + escapeHtml(classes)
-      + ' aa-twemoji-flag--fallback" role="img" aria-label="' + escapeHtml(name)
-      + '">' + escapeHtml(normalized) + '</span>';
+    return '<span class="' + escapeHtml(classes) + '" role="img" aria-label="' + escapeHtml(name) + '">'
+      + '<span class="aa-flag-code" aria-hidden="true">' + escapeHtml(normalized) + '</span>'
+      + (normalized !== '??' ? '<img src="' + flagUrl(normalized) + '" alt="" aria-hidden="true" width="40" height="30" loading="lazy" decoding="async">' : '')
+      + '</span>';
   }
 
+  function flagUrl(code) {
+    var normalized = normalizeCode(code);
+    return normalized ? '/assets/img/flags/afroatlas/' + normalized.toLowerCase() + '.svg' : '';
+  }
+
+  document.addEventListener('error', function (event) {
+    var target = event.target;
+    if (target && target.tagName === 'IMG' && target.parentElement && target.parentElement.classList.contains('aa-twemoji-flag')) target.hidden = true;
+  }, true);
+
   var api = {
-    version: 'native-fallback',
-    flagUrl: function () { return ''; },
+    version: 'twemoji-17.0.3-local',
+    flagUrl: flagUrl,
     flagHtml: flagHtml,
     countryFlagHtml: function (country, className, code) {
       var resolvedCode = code || codeForCountry(country);
