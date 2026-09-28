@@ -10,9 +10,9 @@ for(const width of [390,1440])test(`daily student journey persists across tools 
  await page.goto('/tools/education-hub/#daily-study');await day.getByText('Coming up (1)',{exact:true}).click();await expect(day.locator('.sd-task')).toContainText('2099-01-02');
 });
 test('weekly timetable imports without duplicate sessions and keeps completion',async({page})=>{
- await page.goto('/tools/study-planner/?exam=jamb');const save=page.getByRole('button',{name:'Save sessions to my study day'});await save.click();await expect(page.locator('#studentPlanSaveStatus')).toContainText('Sessions saved');const count=await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks.length);expect(count).toBeGreaterThan(0);await save.click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks.length)).toBe(count);
+ await page.goto('/tools/study-planner/?exam=jamb');const save=page.getByRole('button',{name:'Save sessions to my study day'});await save.click();await expect(page.locator('#studentPlanSaveStatus')).toContainText('Sessions saved');const count=await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).tasks.length);expect(count).toBeGreaterThan(0);await save.click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).tasks.length)).toBe(count);
  await page.locator('.sp-tab[data-tab="setup"]').click();await page.locator('#hoursPerDay').fill('0');await page.locator('.sp-tab[data-tab="timetable"]').click();await save.click();
- await expect(page.locator('#studentPlanSaveStatus')).toContainText('Sessions not saved');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks.length)).toBe(count);
+ await expect(page.locator('#studentPlanSaveStatus')).toContainText('Sessions not saved');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).tasks.length)).toBe(count);
 });
 
 test('saved flashcard review returns to its deck and completes the daily session',async({page})=>{
@@ -44,27 +44,49 @@ test('corrupt study storage is preserved and reported',async({page})=>{
  expect(await page.evaluate(()=>localStorage.getItem('afrotools.studentDay.v1'))).toBe('broken backup');
 });
 
+test('present corrupt v2 never falls back to a valid legacy plan and disables all mutation and backup controls',async({page})=>{
+ await page.addInitScript(()=>{
+  localStorage.setItem('afrotools.studentDay.v2','broken current plan');
+  localStorage.setItem('afrotools.studentDay.v1',JSON.stringify({version:1,tasks:[{id:'legacy',subject:'English',date:'2026-09-28',minutes:25,doneAt:null}],activeId:null}));
+ });
+ await page.goto('/tools/education-hub/#daily-study');const day=page.locator('[data-student-day]');
+ await expect(day.locator('.sd-status')).toContainText('could not be loaded');await expect(day.locator('.sd-task')).toHaveCount(0);
+ for(const control of await day.locator('button').all())await expect(control).toBeDisabled();await expect(day.getByLabel('Restore study backup')).toBeDisabled();
+ expect(await page.evaluate(()=>localStorage.getItem('afrotools.studentDay.v2'))).toBe('broken current plan');
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks[0].id)).toBe('legacy');
+});
+
+test('the first study action migrates legacy sessions without changing the legacy store',async({page})=>{
+ const legacy={version:1,tasks:[{id:'legacy-complete',subject:'Physics',date:'2026-09-27',minutes:25,doneAt:'2026-09-27T08:00:00Z'},{id:'legacy-active',subject:'English',date:'2026-09-28',minutes:20,doneAt:null,deckId:'legacy-deck'}],activeId:'legacy-active'};
+ await page.addInitScript(value=>localStorage.setItem('afrotools.studentDay.v1',JSON.stringify(value)),legacy);
+ await page.goto('/tools/education-hub/#daily-study');const day=page.locator('[data-student-day]');
+ await expect(day.locator('.sd-focus')).toContainText('Continue: English');expect(await page.evaluate(()=>localStorage.getItem('afrotools.studentDay.v2'))).toBeNull();
+ await day.getByRole('button',{name:'Finish this session',exact:true}).click();
+ const migrated=await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')));expect(migrated.version).toBe(2);expect(migrated.tasks).toHaveLength(2);expect(migrated.tasks[0].doneAt).toBe(legacy.tasks[0].doneAt);expect(migrated.tasks[1].deckId).toBe('legacy-deck');expect(migrated.tasks[1].doneAt).toBeTruthy();expect(migrated.activeId).toBeNull();
+ expect(await page.evaluate(()=>localStorage.getItem('afrotools.studentDay.v1'))).toBe(JSON.stringify(legacy));
+});
+
 test('backup import merges without duplicates and rejects invalid dates',async({page})=>{
  await page.goto('/tools/education-hub/#daily-study');
  const day=page.locator('[data-student-day]');
  await day.getByLabel('Subject or topic').fill('English');await day.getByRole('button',{name:'Add session',exact:true}).click();
- const original=await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')));
+ const original=await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')));
  const incoming={...original,tasks:[...original.tasks,{id:'backup-session',subject:'Biology',date:'2099-01-01',minutes:25,doneAt:null}]};
  await day.getByLabel('Restore study backup').setInputFiles({name:'study.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(incoming))});
  await expect(day.locator('.sd-status')).toContainText('Backup imported');
- expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks.length)).toBe(2);
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).tasks.length)).toBe(2);
  incoming.tasks[1].date='2099-02-30';
  await day.getByLabel('Restore study backup').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(incoming))});
  await expect(day.locator('.sd-status')).toContainText('Backup not imported');
- expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).tasks[1].date)).toBe('2099-01-01');
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).tasks[1].date)).toBe('2099-01-01');
 });
 
 test('starting a session reports storage failure without losing the plan',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/tools/education-hub/#daily-study');
  const day=page.locator('[data-student-day]');await day.getByLabel('Subject or topic').fill('English');await day.getByRole('button',{name:'Add session',exact:true}).click();
- await page.evaluate(()=>{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='afrotools.studentDay.v1')throw new Error('Storage full');return original.call(this,k,v);};});
+ await page.evaluate(()=>{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='afrotools.studentDay.v2')throw new Error('Storage full');return original.call(this,k,v);};});
  await day.getByRole('button',{name:'Start session',exact:true}).click();
  await expect(day.locator('.sd-status')).toContainText('Could not save');await expect(day.locator('.sd-focus')).toHaveCount(0);
- expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v1')).activeId)).toBeNull();expect(errors).toEqual([]);
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afrotools.studentDay.v2')).activeId)).toBeNull();expect(errors).toEqual([]);
 });
