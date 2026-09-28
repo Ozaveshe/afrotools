@@ -311,8 +311,9 @@
         </div>
         <div class="ak-planner-field">
           <label for="ak-plan-servings">Servings</label>
-          <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4" aria-describedby="ak-plan-servings-help">
+          <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4" required aria-describedby="ak-plan-servings-help ak-plan-servings-error">
           <p class="ak-planner-help" id="ak-plan-servings-help">Scales the grouped shopping list.</p>
+          <p class="ak-planner-help" id="ak-plan-servings-error" hidden></p>
         </div>
         <div class="ak-planner-field">
           <label for="ak-plan-diet">Diet</label>
@@ -1129,6 +1130,8 @@
   var planCopyAttempt = 0;
   var planCopyRevision = 0;
   window.addEventListener('pagehide', invalidatePlanCopy);
+  var planGenerationRevision = 0;
+  window.addEventListener('pagehide', invalidatePlanGeneration);
   var planGenerationCount = 0;
   var SAVED_PLAN_KEY = 'ak_saved_plan_v1';
   var PICKED_RECIPES_KEY = 'ak_meal_plan_v1';
@@ -1624,6 +1627,7 @@
 
   function renderPlanEmpty(message, inputs, matchedCount) {
     invalidatePlanCopy();
+    invalidatePlanGeneration();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
     document.body.removeAttribute('data-ak-print-plan');
@@ -1661,6 +1665,35 @@
       country: (document.getElementById('ak-plan-country') || {}).value || '',
       occasion: (document.getElementById('ak-plan-occasion') || {}).value || ''
     };
+  }
+
+  function clearPlanServingsError() {
+    var field = document.getElementById('ak-plan-servings');
+    var error = document.getElementById('ak-plan-servings-error');
+    if (field) field.removeAttribute('aria-invalid');
+    if (error) { error.textContent = ''; error.hidden = true; }
+  }
+
+  function validatePlanServings() {
+    var field = document.getElementById('ak-plan-servings');
+    var value = field ? Number(field.value) : NaN;
+    if (field && field.value.trim() !== '' && Number.isInteger(value) && value >= 1 && value <= 30) {
+      clearPlanServingsError();
+      return true;
+    }
+    var message = 'Enter a whole number of servings from 1 to 30.';
+    var error = document.getElementById('ak-plan-servings-error');
+    if (field) field.setAttribute('aria-invalid', 'true');
+    if (error) { error.textContent = message; error.hidden = false; }
+    renderPlanEmpty('Choose a valid servings count before generating a weekly plan.');
+    setPlanStatus(message);
+    setPlanButtonState('idle');
+    revealPlanControl(field);
+    return false;
+  }
+
+  function invalidatePlanGeneration() {
+    planGenerationRevision += 1;
   }
 
   function readPickedRecipes() {
@@ -1791,6 +1824,7 @@
   async function restoreSavedPlan() {
     var saved = readSavedPlan();
     if (!saved || !mealPlannerRecipes.length) return;
+    var generation = ++planGenerationRevision;
     var bySlug = {};
     mealPlannerRecipes.forEach(function (recipe) { bySlug[recipe.slug] = recipe; });
     var recipes = saved.slugs.map(function (slug) { return bySlug[slug]; });
@@ -1804,7 +1838,9 @@
       var field = document.getElementById(id);
       if (field) field.value = saved.inputs[key] == null ? '' : String(saved.inputs[key]);
     });
+    clearPlanServingsError();
     var detailed = await Promise.all(recipes.map(fetchRecipeDetails));
+    if (generation !== planGenerationRevision) return;
     renderPlan(detailed, saved.inputs);
     setPlanStatus('Saved plan restored from this device.');
     if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_restored', { days: saved.inputs.days, recipe_count: detailed.length });
@@ -2157,6 +2193,8 @@
 
   async function generateMealPlan(options) {
     invalidatePlanCopy();
+    var generation = ++planGenerationRevision;
+    if (!validatePlanServings()) return;
     var generateButton = document.getElementById('ak-plan-generate');
     var inputs = getPlanInputs();
     var usePicked = options && options.usePicked === true;
@@ -2200,6 +2238,7 @@
       var savedSlugs = new Set(savedPicks.map(function (recipe) { return recipe.slug; }));
       var picked = savedPicks.concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - savedPicks.length));
       var detailed = await Promise.all(picked.map(fetchRecipeDetails));
+      if (generation !== planGenerationRevision) return;
       renderPlan(detailed, inputs);
       if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_created', {
         days: inputs.days, recipe_count: detailed.length, country_code: inputs.country || 'all', picked_count: savedPicks.length
@@ -2208,11 +2247,12 @@
       setPlanStatus((detailed.length < inputs.days ? 'Partial plan generated from ' : 'Plan generated from ') + countLabel + (savedPicks.length ? ', including ' + savedPicks.length + ' of your picks.' : '.'));
       setPlanButtonState(detailed.length < inputs.days ? 'partial' : 'success');
     } catch (error) {
+      if (generation !== planGenerationRevision) return;
       renderPlanEmpty('The planner could not finish loading recipe details. Try again in a moment.');
       setPlanStatus('Plan generation failed.');
       setPlanButtonState('idle');
     } finally {
-      if (generateButton && generateButton.dataset.state === 'loading') {
+      if (generation === planGenerationRevision && generateButton && generateButton.dataset.state === 'loading') {
         setPlanButtonState('idle');
       }
     }
@@ -2248,6 +2288,7 @@
     var el = document.getElementById(id);
     if (el) {
       el.addEventListener('change', function () {
+        if (id === 'ak-plan-servings') clearPlanServingsError();
         planGenerationCount = 0;
         renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');
@@ -2255,6 +2296,7 @@
         setPlanButtonState('idle');
       });
       el.addEventListener('input', function () {
+        if (id === 'ak-plan-servings') clearPlanServingsError();
         planGenerationCount = 0;
         renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');
