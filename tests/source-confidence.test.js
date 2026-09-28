@@ -245,6 +245,24 @@ test("registered money routes render their primary source metadata", function ()
       assert.deepStrictEqual(dedicated.errors, [], target.file + " must retain visible dated sources, methodology, limitations and error reporting");
       continue;
     }
+    // The withdrawn BF calculator uses static historical evidence; generic
+    // source hydration must not replace its review-required explanation.
+    if (target.file === "burkina-faso/bf-paye.html" && target.sourceId === "paye-bf-source") {
+      const visible = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+      const panel = visible.match(/<section id="sources-verification"[^>]*>[\s\S]*?<\/section>/)?.[0] || "";
+      const source = registry.sources.find(item => item.id === target.sourceId);
+      assert.ok(panel.includes('data-tool-verification-panel'), "BF must retain a visible evidence panel");
+      assert.ok(panel.includes('data-bf-source-id="' + target.sourceId + '"'), "BF must identify its historical source");
+      assert.ok(panel.includes('data-source-freshness="stale"'), "BF must disclose stale evidence");
+      assert.ok(panel.includes('datetime="' + source.lastReviewedAt + '"'), "BF must preserve its actual historical review date");
+      for (const text of ["Historical review date", "Source stale · formula review required", "withdrawn pending review"])
+        assert.ok(panel.includes(text), "BF evidence panel must disclose " + text);
+      for (const href of ["https://dgi.bf/verification/CGI", "https://cnss.bf/?p=2078", "/data/source-registry.json", "/contact/?topic=calculation-error&amp;tool=bf-paye"])
+        assert.ok(panel.includes('href="' + href + '"'), "BF must preserve evidence/recovery link " + href);
+      assert.match(visible, /data-formula-status="review-required"/, "BF must remain unavailable pending review");
+      assert.ok(!panel.includes("data-source-meta-id"), "generic hydration must not overwrite BF review evidence");
+      continue;
+    }
     assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
     const hookIndex = html.indexOf('data-source-meta-id="' + target.sourceId + '"');
