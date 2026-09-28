@@ -8666,7 +8666,8 @@ document.addEventListener('DOMContentLoaded', function() {
     syncCategoryFilter();
     updateCountryContextFromFilter();
     render();
-    searchInput.focus();
+    searchInput.focus({ preventScroll: true });
+    searchInput.scrollIntoView({ block: 'center', behavior: 'instant' });
   });
 
   [countryFilter, statusFilter, languageFilter, sortFilter].forEach(function(control) {
