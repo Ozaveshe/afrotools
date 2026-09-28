@@ -65,9 +65,10 @@ test("shared AfroStream engine normalizes public API records for the French cont
     window,
     fetch: async (url) => ({
       ok: true,
-      json: async () => responses[url],
+      json: async () => responses[new URL(url, 'https://afrotools.com').pathname],
     }),
     URL,
+    AbortSignal,
     Date,
     Promise,
     console,
@@ -79,4 +80,6 @@ test("shared AfroStream engine normalizes public API records for the French cont
   assert.equal(result.creators[0].followers, 12000);
   assert.equal(result.creators[0].score, 88);
   assert.equal(result.news.length, 1);
+  assert.equal(result.streams.live.length, 0);
+  assert.equal(result.streams.upcoming.length, 0);
 });

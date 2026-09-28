@@ -76,9 +76,11 @@ exports.handler = async function(event) {
   var parts = ['is_published=eq.true'];
 
   if (qs.live === 'true') {
-    var liveCutoff = new Date(Date.now() - (24 * 60 * 60 * 1000)).toISOString();
+    // Checks run every 30 minutes. Old live flags are historical observations.
+    var liveCutoff = new Date(Date.now() - (90 * 60 * 1000)).toISOString();
     parts.push('is_live=eq.true');
     parts.push('stream_date=gte.' + liveCutoff);
+    parts.push('stream_date=lte.' + new Date().toISOString());
     parts.push('order=stream_date.desc');
   } else if (qs.live === 'false') {
     parts.push('is_live=eq.false');
@@ -91,12 +93,13 @@ exports.handler = async function(event) {
   if (qs.platform) parts.push('platform=eq.' + encodeURIComponent(qs.platform));
   if (qs.country) parts.push('country=eq.' + encodeURIComponent(qs.country));
 
-  var limit = Math.min(parseInt(qs.limit, 10) || 50, 500);
+  var limit = Math.max(1, Math.min(parseInt(qs.limit, 10) || 50, 500));
   parts.push('limit=' + limit);
 
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_streams?' + parts.join('&'), {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' },
+      signal: AbortSignal.timeout(10000)
     });
     var data = await readJson(res);
     if (!res.ok) {
@@ -109,6 +112,16 @@ exports.handler = async function(event) {
 
     var rows = Array.isArray(data) ? data : [];
     var totalCount = readCount(res, rows.length);
+    if (qs.live === 'true') {
+      var seen = new Set();
+      rows = rows.filter(function(row) {
+        var identity = row.url || [row.platform, row.creator_id || row.creator_name].join('|');
+        if (seen.has(identity)) return false;
+        seen.add(identity);
+        return true;
+      });
+      totalCount = rows.length;
+    }
     rows = await enrichStreamsWithCreators(rows);
     return {
       statusCode: 200,

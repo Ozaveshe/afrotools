@@ -142,7 +142,7 @@
       return a[t];
     }
     var e = Object.keys(r).indexOf(t);
-    return e >= 0 ? e : 0;
+    return e >= 0 ? e : -1;
   }
   function l(r) {
     if (!r) {
@@ -278,7 +278,7 @@
     return r && (r.avatar || c(r._raw || r)) || "";
   }
   async function d(r) {
-    var t = await fetch("/api/afrostream" + r);
+    var t = await fetch("/api/afrostream" + r, { signal: AbortSignal.timeout(12000) });
     if (!t.ok) {
       throw new Error("API " + t.status);
     }
@@ -301,13 +301,20 @@
       }), r;
     },
     loadStreams: async function(r) {
-      var e = await d("/streams"), a = {};
+      var results = await Promise.allSettled([ d("/streams?live=true&limit=100"), d("/streams?live=false&limit=100") ]);
+      if (results[0].status !== 'fulfilled') throw new Error('Live stream checks unavailable');
+      var e = results[0].value.concat(results[1].status === 'fulfilled' ? results[1].value : []), a = {};
       r && r.length && r.forEach(function(r) {
         var t = n(r.name);
         t && (a[t] = r), r.slug && (a[n(r.slug)] = r), r._raw && r._raw.slug && (a[n(r._raw.slug)] = r);
       });
+      var seenLive = new Set(), cutoff = Date.now() - 90 * 60 * 1000;
       var o = e.filter(function(r) {
-        return r.is_live;
+        var key = r.url || r.platform + '|' + (r.creator_id || r.creator_name);
+        var date = Date.parse(r.stream_date);
+        if (!r.is_live || !Number.isFinite(date) || date < cutoff || date > Date.now() + 60000 || seenLive.has(key)) return false;
+        seenLive.add(key);
+        return true;
       }).map(function(r) {
         var e = a[n(r.creator_name)] || a[n(r.name)];
         return {
@@ -328,9 +335,9 @@
       }), l = (new Date).toISOString();
       return {
         live: o,
-        upcoming: e.filter(function(r) {
+        upcoming: results[1].status === 'fulfilled' ? e.filter(function(r) {
           return !r.is_live && r.stream_date > l;
-        }).map(h)
+        }).map(h) : null
       };
     },
     loadNews: async function() {

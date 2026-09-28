@@ -1,70 +1,44 @@
-// netlify/functions/afrostream-feed.js
-// RSS 2.0 feed for AfroStream news articles
-var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
-var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
-
-function escapeXml(s) {
-  return String(s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
+'use strict';
+const U = require('../../tools/afrostream/news-utils');
+const ORIGIN = 'https://afrotools.com';
+const PROJECT = 'https://zpclagtgczsygrgztlts.supabase.co';
+function xml(value) { return U.escapeHTML(value).replace(/&#39;/g,'&apos;'); }
+function rss(rows) {
+  const valid = rows.filter(row => row.slug && row.title && Number.isFinite(Date.parse(row.published_at)) && Date.parse(row.published_at) <= Date.now()).slice(0,30);
+  const items = valid.map(row => {
+    const item = U.story(row), url = U.canonicalUrl(row.slug), image = U.imageHref(row);
+    return '<item><title>' + xml(row.title) + '</title><link>' + xml(url) + '</link><guid isPermaLink="true">' + xml(url) + '</guid>' +
+      '<description>' + xml(item.excerpt + ' [' + item.kind + '; source: ' + item.source + ']') + '</description><category>' + xml(U.categoryLabel(row.category)) + '</category><category>' + xml(item.kind) + '</category>' +
+      '<pubDate>' + new Date(row.published_at).toUTCString() + '</pubDate>' +
+      (U.safeHttpUrl(row.source_url) ? '<dc:source>' + xml(row.source_url) + '</dc:source>' : '') +
+      '<dc:creator>' + xml(U.isNewswire(row) ? item.source : (row.author || 'AfroStream editorial')) + '</dc:creator>' +
+      (image ? '<media:content url="' + xml(image.startsWith('/') ? ORIGIN + image : image) + '" medium="image"/>' : '') + '</item>';
+  }).join('\n');
+  return '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel>' +
+    '<title>AfroStream: The Scene</title><link>' + ORIGIN + '/tools/afrostream/news</link><description>African creator news, music, gaming and streaming culture. Original reports and attributed newswire briefs.</description><language>en</language>' +
+    (valid[0] ? '<lastBuildDate>' + new Date(valid[0].published_at).toUTCString() + '</lastBuildDate>' : '') +
+    '<atom:link href="' + ORIGIN + '/tools/afrostream/feed.xml" rel="self" type="application/rss+xml"/>' + items + '</channel></rss>';
 }
-
-exports.handler = async function(event) {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: { 'Access-Control-Allow-Origin': '*' }, body: '' };
-  }
-
+function sitemap(rows) {
+  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + rows.filter(U.isIndexable).map(row => {
+    const modified = U.articleMetadata(row).jsonLd.dateModified;
+    return '<url><loc>' + xml(U.canonicalUrl(row.slug)) + '</loc><lastmod>' + new Date(modified).toISOString() + '</lastmod></url>';
+  }).join('\n') + '</urlset>';
+}
+exports.handler = async function (event) {
+  if (!['GET','HEAD'].includes(event.httpMethod)) return {statusCode:405,headers:{Allow:'GET, HEAD'},body:''};
+  const paths = [event.path,event.rawUrl].filter(Boolean).map(value => { try { return new URL(value,'https://afrotools.com').pathname.replace(/\/+$/,''); } catch (_) { return ''; } });
+  const format = event.queryStringParameters?.format === 'sitemap' || paths.some(value => value === '/tools/afrostream/sitemap.xml' || value.endsWith('/afrostream-feed/sitemap')) ? 'sitemap' : 'rss';
+  const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!key) return {statusCode:503,body:'Feed temporarily unavailable'};
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/as_news?is_published=eq.true&order=published_at.desc&limit=30', {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
-    });
-    var articles = await res.json();
-
-    var items = '';
-    (articles || []).forEach(function(a) {
-      var pubDate = new Date(a.published_at).toUTCString();
-      var link = a.slug
-        ? 'https://afrotools.com/tools/afrostream/news/' + encodeURIComponent(a.slug)
-        : 'https://afrotools.com/tools/afrostream/news.html';
-      items += '    <item>\n' +
-        '      <title>' + escapeXml(a.title) + '</title>\n' +
-        '      <link>' + link + '</link>\n' +
-        '      <description>' + escapeXml(a.excerpt || '') + '</description>\n' +
-        '      <category>' + escapeXml(a.category || 'News') + '</category>\n' +
-        '      <pubDate>' + pubDate + '</pubDate>\n' +
-        '      <guid isPermaLink="true">' + link + '</guid>\n' +
-        '    </item>\n';
-    });
-
-    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-      '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n' +
-      '  <channel>\n' +
-      '    <title>AfroStream - African Creator News</title>\n' +
-      '    <link>https://afrotools.com/tools/afrostream/news.html</link>\n' +
-      '    <description>Latest news from Africa\'s streaming and creator economy. Milestones, platform updates, collaborations, and rising stars.</description>\n' +
-      '    <language>en</language>\n' +
-      '    <lastBuildDate>' + new Date().toUTCString() + '</lastBuildDate>\n' +
-      '    <atom:link href="https://afrotools.com/tools/afrostream/feed.xml" rel="self" type="application/rss+xml"/>\n' +
-      items +
-      '  </channel>\n' +
-      '</rss>';
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/rss+xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=1800'
-      },
-      body: xml
-    };
-  } catch (e) {
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'text/plain' },
-      body: 'RSS feed error: ' + e.message
-    };
-  }
+    const fields = 'id,title,slug,category,image_url,author,excerpt,published_at,updated_at,source_url,source_name,external_id' + (format === 'sitemap' ? ',body' : '');
+    const query = PROJECT + '/rest/v1/as_news?select=' + fields + '&is_published=eq.true&published_at=lte.' + encodeURIComponent(new Date().toISOString()) + '&order=published_at.desc&limit=' + (format === 'sitemap' ? '1000&or=(author.ilike.AfroStream*,author.ilike.AfroTools*)' : '30');
+    const result = await fetch(query,{signal:AbortSignal.timeout(7000),headers:{apikey:key,Authorization:'Bearer '+key}});
+    if (!result.ok) throw new Error('Feed unavailable');
+    const rows = await result.json();
+    if (!Array.isArray(rows)) throw new Error('Invalid feed');
+    return {statusCode:200,headers:{'Content-Type':format === 'sitemap' ? 'application/xml; charset=utf-8' : 'application/rss+xml; charset=utf-8','Cache-Control':'public,max-age=600','X-Content-Type-Options':'nosniff'},body:event.httpMethod === 'HEAD' ? '' : (format === 'sitemap' ? sitemap(rows) : rss(rows))};
+  } catch (_) { return {statusCode:503,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'},body:'Feed temporarily unavailable'}; }
 };
+exports.__test = {rss,sitemap};

@@ -217,16 +217,28 @@ function parseFeed(xml) {
     var title = stripHtml(tag(block, 'title'));
     var link = stripHtml(tag(block, 'link')) || attrTag(block, 'link', 'href');
     var guid = stripHtml(tag(block, 'guid')) || stripHtml(tag(block, 'id')) || link || title;
-    var description = stripHtml(tag(block, 'description') || tag(block, 'summary') || tag(block, 'content'));
+    var descriptionHtml = tag(block, 'description') || tag(block, 'summary') || tag(block, 'content');
+    var description = stripHtml(descriptionHtml).replace(/\s*The post\s+[\s\S]*?\s+appeared first on\s+[\s\S]*$/i, '').trim();
+    var mediaMatch = block.match(/<media:thumbnail\b[^>]*\burl=["']([^"']+)["']/i);
+    if (!mediaMatch) {
+      var contentTags = block.match(/<media:content\b[^>]*>/gi) || [];
+      var imageTag = contentTags.find(function (value) { return /(?:medium=["']image["']|type=["']image\/|url=["'][^"']+\.(?:jpe?g|png|webp|gif|avif)(?:[?"']))/i.test(value); });
+      if (imageTag) mediaMatch = imageTag.match(/\burl=["']([^"']+)["']/i);
+    }
+    var enclosureMatch = block.match(/<enclosure\b[^>]*\btype=["']image\/[a-z]+["'][^>]*\burl=["']([^"']+)["']/i) || block.match(/<enclosure\b[^>]*\burl=["']([^"']+)["'][^>]*\btype=["']image\/[a-z]+["']/i);
+    var htmlImage = (tag(block, 'encoded') || descriptionHtml).match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i);
+    var imageUrl = decodeXml(mediaMatch && mediaMatch[1] || enclosureMatch && enclosureMatch[1] || htmlImage && htmlImage[1] || '');
+    try { var image = new URL(imageUrl); if (image.protocol !== 'https:' || image.username || image.password) imageUrl = ''; } catch (_) { imageUrl = ''; }
     var publishedRaw = stripHtml(tag(block, 'pubDate') || tag(block, 'published') || tag(block, 'updated'));
-    var publishedAt = publishedRaw ? new Date(publishedRaw) : new Date();
+    var publishedAt = publishedRaw ? new Date(publishedRaw) : null;
     if (!title || !guid) return;
     items.push({
       title: title,
       link: link,
       guid: guid,
       description: description,
-      published_at: isNaN(publishedAt.getTime()) ? new Date().toISOString() : publishedAt.toISOString()
+      image_url: imageUrl || null,
+      published_at: publishedAt && !isNaN(publishedAt.getTime()) ? publishedAt.toISOString() : null
     });
   });
   return items;
@@ -318,10 +330,9 @@ function hasAfricaSignal(item, titleOnly) {
 }
 
 function isRecentEnough(item, cutoffMs) {
-  if (!cutoffMs) return true;
   var publishedAt = new Date(item.published_at).getTime();
-  if (!Number.isFinite(publishedAt)) return true;
-  return publishedAt >= cutoffMs;
+  if (!item.published_at || !Number.isFinite(publishedAt) || publishedAt > Date.now() + 300000) return false;
+  return !cutoffMs || publishedAt >= cutoffMs;
 }
 
 function shouldPublishWithoutCreatorMatch(item, source, cutoffMs) {
@@ -333,8 +344,8 @@ function shouldPublishWithoutCreatorMatch(item, source, cutoffMs) {
   ];
   var offLaneSignals = [
     'agriculture', 'bank', 'banking', 'defence', 'defense', 'fintech', 'gold',
-    'government', 'infrastructure', 'military', 'mining', 'oil', 'payment',
-    'payments', 'policy', 'refinery', 'regulation', 'security', 'telecom'
+    'government', 'health', 'healthcare', 'hospital', 'infrastructure', 'medical', 'military', 'mining', 'oil', 'payment',
+    'payments', 'pharmaceutical', 'policy', 'refinery', 'regulation', 'security', 'telecom'
   ];
   return isRecentEnough(item, cutoffMs) &&
     textHasAny(title, strongTitleSignals) &&
@@ -448,6 +459,7 @@ async function processNewsCandidate(source, item, matches, summary, dryRun, inse
         author: source.name || 'RSS source',
         excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
         body: item.description || item.title,
+        image_url: item.image_url || null,
         source_url: candidateSourceUrl,
         source_name: source.name || 'RSS source',
         external_id: externalId,
@@ -501,6 +513,11 @@ async function processSource(source, creators, summary, options) {
     var items = prepareFeedItems(parseFeed(xml)).slice(0, 30);
     fetchedItemCount = items.length;
     summary.items_seen += items.length;
+    if (!items.length) {
+      await updateSourceHealth(source, { last_checked_at: checkedAt, last_status_code: fetchStatusCode || 200, last_item_count: 0, last_error: 'No RSS/Atom items found' }, options.dryRun);
+      summary.errors.push((source.name || source.feed_url) + ': No RSS/Atom items found');
+      return;
+    }
 
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
@@ -634,6 +651,8 @@ exports.handler = async function(event) {
 };
 
 exports.__test = {
+  parseFeed: parseFeed,
+  isRecentEnough: isRecentEnough,
   decodeXml: decodeXml,
   isEditoriallyRelevant: isEditoriallyRelevant,
   hasAfricaSignal: hasAfricaSignal,

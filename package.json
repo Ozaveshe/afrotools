@@ -311,7 +311,7 @@
     "postbuild": "node scripts/sync-yoruba-fallbacks.js --write && npm run content-integrity:build && npm run claims:build && npm run elections:calendar:check && npm run elections:news:build && npm run elections:news:check && node scripts/build-route-contract.js --write && npm run seo:snippets:build && npm run analytics:check",
     "analytics:inject": "node scripts/inject-analytics-loader.js --write",
     "analytics:check": "node scripts/inject-analytics-loader.js --check",
-    "build:deploy": "npm run build && node scripts/build-dist.js",
+    "build:deploy": "npm run build && node scripts/build-afrostream-templates.js && node scripts/build-dist.js",
     "deploy:channel:verify": "node scripts/verify-deploy-channel.js && node scripts/verify-supabase-consolidation.js",
     "supabase:consolidation:verify": "node scripts/verify-supabase-consolidation.js",
     "supabase:consolidation:verify:live": "node scripts/verify-supabase-consolidation.js --netlify",

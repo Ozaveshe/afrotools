@@ -35,21 +35,22 @@ exports.handler = async function(event) {
 
   var qs = event.queryStringParameters || {};
   h['Cache-Control'] = cacheControl(qs);
-  var parts = ['is_published=eq.true', 'order=published_at.desc'];
+  var parts = ['is_published=eq.true', 'published_at=lte.' + encodeURIComponent(new Date().toISOString()), 'order=published_at.desc'];
 
   if (qs.slug) {
     parts.push('slug=eq.' + encodeURIComponent(qs.slug));
   } else {
     if (qs.category) parts.push('category=eq.' + encodeURIComponent(qs.category));
     if (qs.featured === 'true') parts.push('is_featured=eq.true');
-    var limit = Math.min(parseInt(qs.limit, 10) || 50, 100);
+    var limit = Math.max(1, Math.min(parseInt(qs.limit, 10) || 50, 100));
     parts.push('limit=' + limit);
-    if (qs.offset) parts.push('offset=' + (parseInt(qs.offset, 10) || 0));
+    if (qs.offset) parts.push('offset=' + Math.max(0, parseInt(qs.offset, 10) || 0));
   }
 
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_news?' + parts.join('&'), {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' },
+      signal: AbortSignal.timeout(10000)
     });
     var data = await readJson(res);
     if (!res.ok) {
@@ -61,7 +62,7 @@ exports.handler = async function(event) {
     }
 
     var rows = Array.isArray(data) ? data : [];
-    if (qs.slug) return { statusCode: 200, headers: h, body: JSON.stringify({ success: true, data: rows[0] || null }) };
+    if (qs.slug) return { statusCode: rows[0] ? 200 : 404, headers: h, body: JSON.stringify({ success: !!rows[0], data: rows[0] || null }) };
     var totalCount = readCount(res, rows.length);
     return {
       statusCode: 200,
