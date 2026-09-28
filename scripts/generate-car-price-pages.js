@@ -287,8 +287,8 @@ function staticContentHTML(meta) {
       .filter((country) => marketObservations.some((entry) => entry.countryCode === country.code))
       .map((country) => `<li><a href="/cars/${country.slug}/">Browse ${escapeHtml(country.name)} car prices and market snapshots</a></li>`)
       .join("");
-    return `<section class="cars-panel cars-static-summary"><h2>Start with the price evidence, then estimate the import</h2><p>This directory has ${data.vehicles.length} priced vehicles. Most source-market bands are older planning estimates; the dated source and local asking-price snapshots are marked on their vehicle pages. Browse a country or open a sourced snapshot, then enter a current seller quote in the car import calculator.</p><ul>${observedCountryLinks}${observationLinks}</ul></section>
-<section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Most do not have a current local asking-price sample. The calculator will ask for your actual seller price and show country-specific costs for six supported destinations.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
+    return `<details class="cars-panel cars-static-summary"><summary>Where the prices come from</summary><p>Browse ${data.vehicles.length} starter profiles. Prices are dated asking samples or labelled planning budgets. Open a vehicle to see its source, sample and review date.</p><ul>${observedCountryLinks}${observationLinks}</ul></details>
+<section class="cars-panel cars-static-summary" aria-labelledby="cars-expanded-title"><h2 id="cars-expanded-title">Find a car for an import quote</h2><p>Search ${catalogOptions.length} catalog make, model, and year options. Bring a seller quote; most models have no local price sample.</p><form id="carsCatalogForm" class="cars-catalog-form"><label for="carsCatalogVehicle">Make, model, and year</label><input id="carsCatalogVehicle" list="carsCatalogOptions" autocomplete="off" required placeholder="2018 Toyota Corolla"><datalist id="carsCatalogOptions">${options}</datalist><label for="carsCatalogCountry">Import destination</label><select id="carsCatalogCountry"><option value="NG|nigeria">Nigeria</option><option value="KE|kenya">Kenya</option><option value="GH|ghana">Ghana</option><option value="UG|uganda">Uganda</option><option value="ZM|zambia">Zambia</option><option value="TZ|tanzania">Tanzania</option></select><button class="cars-button" type="submit">Estimate import cost</button><p id="carsCatalogStatus" role="status" aria-live="polite"></p></form><p>For general goods, use the <a href="/tools/import-duty/">import duty calculator</a>. For a car, the <a href="/tools/car-import-cost/">vehicle import calculator</a> keeps its purchase price editable.</p></section>`;
   }
   if (!meta.pageType) return "";
   const country = meta.countryObj;
@@ -380,12 +380,13 @@ ${routePath === "cars" ? '<link rel="alternate" hreflang="en" href="https://afro
   <meta name="twitter:image" content="https://afrotools.com/assets/img/og/og-cars.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/cars-directory.css">
+  <link rel="stylesheet" href="/assets/css/cars-buyer-experience.css">
   <script type="application/ld+json">${schema(meta, routePath)}</script>
 </head>
 <body class="cars-page">

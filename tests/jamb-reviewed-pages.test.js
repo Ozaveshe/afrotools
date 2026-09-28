@@ -40,7 +40,7 @@ test('JSON-LD string content cannot terminate its script element', () => {
   assert.deepEqual(JSON.parse(encoded), value);
 });
 
-test('only reviewed 2025 English and 2023–2025 Mathematics collections with at least 40 usable questions offer CBT', () => {
+test('existing 2025 English and 2023–2025 Mathematics CBT gates retain at least 40 usable questions', () => {
   const q = { id: 'synthetic-collection', subject: 'english', year: 2025, num: null,
     question: 'Which word means clear?', options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
     answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
@@ -88,6 +88,61 @@ test('only reviewed 2025 English and 2023–2025 Mathematics collections with at
       content_sha256: questionFingerprint(question), source_id: 'fixture', question_review: review, answer_review: review, explanation_review: review
     }])) };
   assert.equal(renderYear('mathematics', 2022, earlier, earlierLedger).html.includes('Timed CBT practice'), false);
+});
+
+test('English 2024 launches exactly its reviewed collection at 30 usable questions and hides below that boundary', () => {
+  const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
+  const review = { status: 'accepted', reviewer: 'synthetic fixture', reviewed_at: '2026-09-28', evidence: 'synthetic availability fixture only' };
+  const sourceHash = 'a'.repeat(64);
+  const cohort = Array.from({ length: 34 }, (_, i) => ({ id: 'synthetic-english-2024-' + i, subject: 'english', year: 2024, num: null,
+    question: 'Which option means clear? Fixture ' + i, options: { A: 'Opaque', B: 'Plain', C: 'Hidden', D: 'Blurred' },
+    answer: 'B', format: 4, has_diagram: false, explanation: 'Plain can mean clear.',
+    source_provenance: { publisher: 'Example', url: 'https://example.com/collection', year_basis: 'publisher-collection' } }));
+  const ledger = { sources: { fixture: { source_file: 'synthetic fixture', content_sha256: sourceHash,
+    source_url: 'https://example.com/collection', publisher: 'Example', year_basis: 'publisher-collection', collection_year: 2024,
+    reuse_authorization: { status: 'authorized-by-owner', basis: 'owner-directed-public-source', scope: 'AfroTools past-question practice',
+      material_sha256: sourceHash, authorized_by: 'test fixture', authorized_at: '2026-09-28', instruction_ref: 'synthetic availability fixture only' } } },
+    questions: Object.fromEntries(cohort.map(q => [q.id, { content_sha256: questionFingerprint(q), source_id: 'fixture',
+      question_review: review, answer_review: review, explanation_review: review }])), publication_holds: {} };
+  const launch = renderYear('english', 2024, cohort, ledger);
+  assert.match(launch.html, /href="\/jamb\/cbt\/\?subject=english&amp;year=2024"/);
+  assert.match(launch.html, /Practise 34 reviewed Use of English questions/);
+  assert.match(launch.html, /publisher-labelled 2024 collection in 40 minutes/);
+  assert.match(launch.html, /not a confirmed complete UTME paper/);
+  assert.match(launch.html, /original UTME sitting and question numbers are unconfirmed/);
+  assert.doesNotMatch(launch.html, /Take up to 40 reviewed Use of English questions/);
+  assert.equal(renderYear('english', 2024, cohort.slice(0, 29), ledger).html.includes('Timed CBT practice'), false);
+  const boundary = renderYear('english', 2024, cohort.slice(0, 30), ledger);
+  assert.match(boundary.html, /Practise 30 reviewed Use of English questions/);
+  assert.match(boundary.html, /subject=english&amp;year=2024/);
+  const heldLedger = structuredClone(ledger);
+  heldLedger.publication_holds[cohort[0].id] = { content_sha256: questionFingerprint(cohort[0]), reason: 'synthetic threshold hold' };
+  assert.equal(renderYear('english', 2024, cohort.slice(0, 30), heldLedger).html.includes('Timed CBT practice'), false);
+  const incompleteLedger = structuredClone(ledger);
+  delete incompleteLedger.questions[cohort[0].id];
+  assert.equal(renderYear('english', 2024, cohort.slice(0, 30), incompleteLedger).html.includes('Timed CBT practice'), false);
+  const assetHash = 'f'.repeat(64);
+  const figures = cohort.map(q => ({ ...q, has_diagram: true, image: '/assets/img/jamb/' + assetHash + '.svg', image_alt: 'Synthetic visual availability fixture.' }));
+  const figureLedger = structuredClone(ledger);
+  for (const q of figures) figureLedger.questions[q.id] = { ...figureLedger.questions[q.id], content_sha256: questionFingerprint(q), asset_review: { ...review, content_sha256: assetHash } };
+  assert(figures.every(q => assessQuestion(q, figureLedger).state === 'eligible'), 'The visual guard must be tested with reviewed eligible fixtures');
+  assert.equal(renderYear('english', 2024, figures, figureLedger).html.includes('Timed CBT practice'), false);
+  const mixed = [...cohort.slice(0, 29), ...figures.slice(29)];
+  const mixedLedger = structuredClone(ledger);
+  for (const q of mixed.slice(29)) mixedLedger.questions[q.id] = figureLedger.questions[q.id];
+  assert.equal(renderYear('english', 2024, mixed, mixedLedger).html.includes('Timed CBT practice'), false);
+  const launchableMixed = [...cohort.slice(0, 30), ...figures.slice(30)];
+  const launchableMixedLedger = structuredClone(ledger);
+  for (const q of launchableMixed.slice(30)) launchableMixedLedger.questions[q.id] = figureLedger.questions[q.id];
+  assert(launchableMixed.every(q => assessQuestion(q, launchableMixedLedger).state === 'eligible'));
+  const mixedPage = renderYear('english', 2024, launchableMixed, launchableMixedLedger);
+  assert.match(mixedPage.html, /href="\/jamb\/cbt\/\?subject=english&amp;year=2024"/);
+  assert.match(mixedPage.html, /Take up to 40 reviewed Use of English questions/);
+  assert.equal(mixedPage.html.includes('Practise 34 reviewed Use of English questions'), false,
+    'Reviewed figures with unknown browser support must not inflate an exact launch count');
+  const actualPool = JSON.parse(fs.readFileSync(path.join(__dirname, '../ops/jamb/source-pool.json'), 'utf8'));
+  const actualLedger = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/jamb/review-ledger.json'), 'utf8'));
+  assert.equal(renderYear('mathematics', 2021, actualPool.questions, actualLedger).html.includes('Timed CBT practice'), false);
 });
 
 test('publisher-labelled collection years do not present themselves as confirmed UTME sittings', () => {
