@@ -12,6 +12,35 @@ const variants = [
 ];
 const normalized = text => text.normalize('NFC').replace(/\s+/g, ' ').trim();
 
+async function clickPlannerControl(page, control, browserName) {
+  const id = await control.getAttribute('id');
+  const eventCount = await page.evaluate(() => window.__akPointerEvents.length);
+  if (browserName === 'webkit') {
+    // For Windows WebKit, scroll as a user would and verify the pointer target.
+    await expect(control).toBeVisible();
+    await expect(control).toBeEnabled();
+    const box = await control.boundingBox();
+    const height = page.viewportSize().height;
+    await page.mouse.move(5, height / 2);
+    await page.mouse.wheel(0, box.y + box.height / 2 - height / 2);
+    await expect.poll(() => control.evaluate(async node => {
+      const before = node.getBoundingClientRect();
+      await new Promise(requestAnimationFrame);
+      const after = node.getBoundingClientRect();
+      const x = after.x + after.width / 2, y = after.y + after.height / 2;
+      return after.top >= 0 && after.bottom <= innerHeight && Math.abs(before.y - after.y) < 1
+        && node.contains(document.elementFromPoint(x, y));
+    })).toBe(true);
+    const stable = await control.boundingBox();
+    await page.mouse.click(stable.x + stable.width / 2, stable.y + stable.height / 2);
+  } else {
+    await control.click();
+  }
+  await expect.poll(() => page.evaluate(start => window.__akPointerEvents.slice(start), eventCount)).toEqual([
+    { type: 'mousedown', id }, { type: 'mouseup', id }, { type: 'click', id }
+  ]);
+}
+
 for (const variant of variants) {
   test.describe(`AfroKitchen discovery and print at ${variant.width}px in ${variant.theme} mode`, () => {
     test.use({ viewport: { width: variant.width, height: 844 }, colorScheme: variant.theme });
@@ -28,6 +57,13 @@ for (const variant of variants) {
         localStorage.setItem('afrotools_cookie_consent', 'declined');
         localStorage.setItem('aft_theme', theme);
         window.print = () => { window.__akPrintCalls = (window.__akPrintCalls || 0) + 1; };
+        window.__akPointerEvents = [];
+        for (const type of ['mousedown', 'mouseup', 'click']) {
+          document.addEventListener(type, event => {
+            const control = event.target.closest?.('#ak-plan-from-picks, #ak-plan-print');
+            if (control) window.__akPointerEvents.push({ type, id: control.id });
+          }, true);
+        }
       }, variant.theme);
     });
 
@@ -89,7 +125,10 @@ for (const variant of variants) {
       await page.locator('#ak-plan-days').selectOption('3');
       await page.locator('#ak-plan-time').selectOption('999');
       await page.locator('#ak-plan-servings').fill('5');
-      await page.locator('#ak-plan-from-picks').click();
+      // Commit the number edit before scrolling to the planner actions.
+      await page.locator('#ak-plan-servings').press('Tab');
+      await expect(page.locator('#ak-plan-diet')).toBeFocused();
+      await clickPlannerControl(page, page.locator('#ak-plan-from-picks'), browserName);
       await expect(page.locator('.ak-plan-day')).toHaveCount(3);
       const titles = await page.locator('.ak-plan-day h4 a').allTextContents();
       const shopping = await page.locator('.ak-plan-shopping-group li').allTextContents();
@@ -98,7 +137,7 @@ for (const variant of variants) {
         document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
       expect(await page.locator('body').evaluate(body => getComputedStyle(body).display)).toBe('block');
 
-      await page.locator('#ak-plan-print').click();
+      await clickPlannerControl(page, page.locator('#ak-plan-print'), browserName);
       expect(await page.evaluate(() => window.__akPrintCalls)).toBe(1);
       await expect(page.locator('#ak-plan-status')).toContainText('Opening print dialog');
       await expect(page.locator('#ak-plan-result')).toBeVisible();
