@@ -10,6 +10,18 @@ const original = {id:42,slug:'a-real-report',title:'A creator report',category:'
 const wire = {...original,id:43,slug:'a-publisher-brief',author:'A publisher',source_name:'A publisher',external_id:'9fjqpa',body:'Their short summary.'};
 function player(broadcast, status='OK') {return {videoDetails:{videoId:'selected123',title:'Selected { "video" }',isLiveContent:true},playabilityStatus:{status},microformat:{playerMicroformatRenderer:{liveBroadcastDetails:broadcast}}};}
 function html(value) {return '<script>var ytInitialPlayerResponse = '+JSON.stringify(value)+';</script><script>{"iconType":"LIVE","isLiveNow":true}</script>';}
+test('public and rewritten paths route without relying on injected query parameters',()=>{
+  assert.deepEqual(server.__test.route({path:'/tools/afrostream/'}),{view:'scene',slug:''});
+  assert.deepEqual(server.__test.route({path:'/.netlify/functions/afrostream-article/news'}),{view:'news',slug:''});
+  assert.deepEqual(server.__test.route({rawUrl:'https://afrotools.com/tools/afrostream/news/a-real-report'}),{view:'',slug:'a-real-report'});
+  assert.deepEqual(server.__test.route({path:'/.netlify/functions/afrostream-article/story/a-real-report'}),{view:'',slug:'a-real-report'});
+  assert.deepEqual(server.__test.route({queryStringParameters:{slug:'a-real-report'}}),{view:'',slug:'a-real-report'});
+});
+test('server rendering works outside the source checkout without reading template files',()=>{
+  const before=process.cwd();
+  try { process.chdir(require('node:os').tmpdir());assert.match(server.__test.articlePage(original),/A creator report/);assert.match(server.__test.collectionPage([original],1,'news'),/as-news-bootstrap/); }
+  finally {process.chdir(before);}
+});
 test('an ended selected video is not made live by recommendations or isLiveContent',()=>{
   assert.equal(live.liveState(html(player({isLiveNow:false,endTimestamp:'2026-09-23T13:00:00Z'}))).is_live,false);
   assert.equal(live.liveState(html(player({isLiveNow:true,endTimestamp:'2026-09-23T13:00:00Z'}))).is_live,false);
@@ -101,5 +113,8 @@ test('permalink handlers return real 404 and upstream-unavailable responses',asy
     const failed=await server.handler({httpMethod:'GET',queryStringParameters:{slug:original.slug}});
     assert.equal(failed.statusCode,503);assert.equal(failed.headers['Cache-Control'],'no-store');
     const feedFailed=await feed.handler({httpMethod:'GET',queryStringParameters:{}}); assert.equal(feedFailed.statusCode,503);
+    global.fetch=async()=>new Response(JSON.stringify([original]),{status:200});
+    const map=await feed.handler({httpMethod:'GET',path:'/.netlify/functions/afrostream-feed/sitemap'});
+    assert.equal(map.statusCode,200);assert.match(map.body,/<urlset/);assert.doesNotMatch(map.body,/<rss/);
   } finally {global.fetch=previousFetch;if(previousKey===undefined)delete process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;else process.env.SUPABASE_DATA_SERVICE_ROLE_KEY=previousKey;}
 });

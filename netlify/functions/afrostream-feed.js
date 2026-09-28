@@ -27,7 +27,8 @@ function sitemap(rows) {
 }
 exports.handler = async function (event) {
   if (!['GET','HEAD'].includes(event.httpMethod)) return {statusCode:405,headers:{Allow:'GET, HEAD'},body:''};
-  const format = event.queryStringParameters?.format === 'sitemap' ? 'sitemap' : 'rss';
+  const paths = [event.path,event.rawUrl].filter(Boolean).map(value => { try { return new URL(value,'https://afrotools.com').pathname.replace(/\/+$/,''); } catch (_) { return ''; } });
+  const format = event.queryStringParameters?.format === 'sitemap' || paths.some(value => value === '/tools/afrostream/sitemap.xml' || value.endsWith('/afrostream-feed/sitemap')) ? 'sitemap' : 'rss';
   const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!key) return {statusCode:503,body:'Feed temporarily unavailable'};
   try {

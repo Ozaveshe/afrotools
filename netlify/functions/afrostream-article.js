@@ -1,18 +1,21 @@
 'use strict';
-const fs = require('node:fs');
-const path = require('node:path');
+const templates = require('./_shared/afrostream-templates.json');
 const U = require('../../tools/afrostream/news-utils');
 const PROJECT = 'https://zpclagtgczsygrgztlts.supabase.co';
 const PUBLIC_FIELDS = 'id,title,slug,category,image_url,author,excerpt,body,is_featured,published_at,updated_at,source_url,source_name,external_id';
-const templates = new Map();
 function template(file) {
-  if (!templates.has(file)) {
-    const candidates = [path.join(process.cwd(), 'tools/afrostream', file), path.resolve(__dirname, '../../tools/afrostream', file)];
-    const found = candidates.find(name => fs.existsSync(name));
-    if (!found) throw new Error('Template unavailable');
-    templates.set(file, fs.readFileSync(found, 'utf8'));
-  }
-  return templates.get(file);
+  if (!templates[file]) throw new Error('Template unavailable');
+  return templates[file];
+}
+function route(event) {
+  const qs = event.queryStringParameters || {};
+  const paths = [event.path, event.rawUrl].filter(Boolean).map(value => {
+    try { return new URL(value, 'https://afrotools.com').pathname.replace(/\/+$/, ''); } catch (_) { return ''; }
+  });
+  if (paths.some(value => value === '/tools/afrostream' || value.endsWith('/afrostream-article/scene'))) return {view:'scene',slug:''};
+  if (paths.some(value => value === '/tools/afrostream/news' || value.endsWith('/afrostream-article/news'))) return {view:'news',slug:''};
+  const pretty = paths.map(value => /\/(?:tools\/afrostream\/news|\.netlify\/functions\/afrostream-article\/story)\/([^/]+)$/.exec(value)).find(Boolean);
+  return {view:['scene','news'].includes(qs.view) ? qs.view : '',slug:pretty ? pretty[1] : (qs.slug || '')};
 }
 function json(value) { return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029'); }
 function head(row) {
@@ -68,8 +71,7 @@ function errorPage(statusCode) {
 }
 exports.handler = async function (event) {
   if (!['GET','HEAD'].includes(event.httpMethod)) return {statusCode:405,headers:{Allow:'GET, HEAD'},body:''};
-  const qs = event.queryStringParameters || {}, view = ['scene','news'].includes(qs.view) ? qs.view : '';
-  const slug = qs.slug || '';
+  const {view,slug} = route(event);
   if (!view && !/^[a-z0-9][a-z0-9-]{0,220}$/.test(slug)) return response(404,errorPage(404),'noindex,follow');
   const key = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!key) return response(503,errorPage(503),'noindex,follow');
@@ -87,4 +89,4 @@ exports.handler = async function (event) {
     return resultResponse;
   } catch (_) { return response(503,errorPage(503),'noindex,follow'); }
 };
-exports.__test = { head, json, articlePage, collectionPage, cover };
+exports.__test = { head, json, articlePage, collectionPage, cover, route };
