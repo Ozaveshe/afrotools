@@ -65,3 +65,20 @@ test('French pages without local observations stay out of search and do not inve
   assert.ok(!english.includes(`hreflang="fr" href="https://afrotools.com/${unobserved}/"`));
   assert.match(read('fr/cars/kenya'), /name="robots" content="noindex, follow"/);
 });
+
+test('French observed Car conversions use the same dated FX ledger as English', () => {
+  const ledger = require('../data/forex/latest.json');
+  const sourceObservations = require('../data/cars/source-market-observations.json').observations;
+  for (const observation of sourceObservations) {
+    const vehicle = priceData.vehicles.find(item => item.id === observation.vehicleId);
+    const route = 'fr/cars/nigeria/' + vehicle.makeSlug + '/' + vehicle.modelSlug + '/' + vehicle.year;
+    const html = read(route);
+    const usd = Math.round(observation.median / observation.sourceCurrencyPerUsd / 100) * 100;
+    const expected = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(usd * ledger.rates.NGN);
+    assert.ok(html.includes(expected), route + ' converts the reviewed USD amount with the shared ledger');
+    assert.ok(html.includes('data-car-fx-rate="' + ledger.rates.NGN + '"'));
+    assert.ok(html.includes(ledger.timestamp.slice(0, 10)));
+    assert.ok(html.includes(ledger.source));
+    assert.ok(html.includes('pas un cours en temps réel'));
+  }
+});
