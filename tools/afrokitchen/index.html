@@ -1126,6 +1126,9 @@
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
+  var planCopyAttempt = 0;
+  var planCopyRevision = 0;
+  window.addEventListener('pagehide', invalidatePlanCopy);
   var planGenerationCount = 0;
   var SAVED_PLAN_KEY = 'ak_saved_plan_v1';
   var PICKED_RECIPES_KEY = 'ak_meal_plan_v1';
@@ -1620,6 +1623,7 @@
   }
 
   function renderPlanEmpty(message, inputs, matchedCount) {
+    invalidatePlanCopy();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
     document.body.removeAttribute('data-ak-print-plan');
@@ -1903,45 +1907,98 @@
       lines.push('Category: ' + titleCase(recipe.category || 'recipe'));
       lines.push('Time: ' + recipeTotalMinutes(recipe) + ' minutes');
       lines.push('Servings: ' + inputs.servings);
-      lines.push('Recipe: ' + window.location.origin + AKRoutes.recipe(recipe.slug));
+      lines.push('Recipe: ' + window.location.origin + plannedRecipeUrl(recipe.slug, inputs.servings));
       lines.push('');
     });
     lines.push(buildShoppingTextFromGroups(buildGroupedShoppingList(recipes, inputs.servings)));
     return lines.join('\n');
   }
 
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
+  function plannedRecipeUrl(slug, servings) {
+    return AKRoutes.recipe(slug) + '?plan_servings=' + servings;
+  }
+
+  function invalidatePlanCopy() {
+    planCopyRevision += 1;
+  }
+
+  function activePlanControl() {
+    var active = document.activeElement;
+    while (active && active.shadowRoot && active.shadowRoot.activeElement) active = active.shadowRoot.activeElement;
+    return active;
+  }
+
+  function revealPlanControl(control) {
+    if (!control || !control.isConnected || typeof control.focus !== 'function') return;
+    control.focus({ preventScroll: true });
+    var navbar = document.querySelector('afro-navbar'), bottom = 0;
+    if (navbar) {
+      [navbar].concat(navbar.shadowRoot ? Array.prototype.slice.call(navbar.shadowRoot.querySelectorAll('*')) : []).forEach(function (node) {
+        var bounds = node.getBoundingClientRect(), position = window.getComputedStyle(node).position;
+        if ((position === 'fixed' || position === 'sticky') && bounds.height > 20 && bounds.height < 150 && bounds.top < 150) bottom = Math.max(bottom, bounds.bottom);
+      });
     }
-    return new Promise(function (resolve, reject) {
-      try {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
-        resolve();
-      } catch (error) {
-        reject(error);
+    var bounds = control.getBoundingClientRect();
+    if (bounds.top < bottom + 8 || bounds.bottom > window.innerHeight - 8) control.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }
+
+  function fallbackPlanCopy(text, current, button, requestFocus) {
+    if (!current()) return false;
+    var textarea = document.createElement('textarea'), beforeFallback = activePlanControl(), copied = false;
+    var restore = beforeFallback && beforeFallback !== requestFocus && beforeFallback !== document.body && beforeFallback !== document.documentElement ? beforeFallback : button;
+    try {
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      copied = document.execCommand('copy') === true;
+    } catch (error) {
+      copied = false;
+    } finally {
+      textarea.remove();
+      if (current()) revealPlanControl(restore);
+    }
+    return copied;
+  }
+
+  function copyText(text, current, button, requestFocus) {
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        return Promise.resolve(navigator.clipboard.writeText(text)).then(function () {
+          return true;
+        }, function () {
+          return fallbackPlanCopy(text, current, button, requestFocus);
+        });
       }
-    });
+    } catch (error) {
+      // A synchronous Clipboard API denial uses the same local fallback.
+    }
+    return Promise.resolve(fallbackPlanCopy(text, current, button, requestFocus));
   }
 
   function exportTextFile(filename, text) {
-    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    var url = null, link = null, downloaded = false;
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      url = URL.createObjectURL(blob);
+      link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      downloaded = true;
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      if (link) link.remove();
+      if (url) {
+        if (downloaded) setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        else URL.revokeObjectURL(url);
+      }
+    }
   }
 
   function setPlanStatus(message) {
@@ -1971,6 +2028,7 @@
   }
 
   function renderPlan(recipes, inputs) {
+    invalidatePlanCopy();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
     var savedPlan = readSavedPlan();
@@ -1987,7 +2045,7 @@
       : '';
     var cards = recipes.map(function (recipe, index) {
       var countryInfo = AK.COUNTRIES[recipe.country_code] || {};
-      var href = AKRoutes.recipe(recipe.slug);
+      var href = plannedRecipeUrl(recipe.slug, inputs.servings);
       var countryName = recipe.country_name || countryInfo.name || 'Africa';
       var category = titleCase(recipe.category || 'recipe');
       var diet = primaryDietTag(recipe);
@@ -2059,18 +2117,31 @@
     }
     if (copyButton) {
       copyButton.addEventListener('click', function () {
-        copyText(currentShoppingText || currentPlanText).then(function () {
+        copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>';
+        var text = currentShoppingText || currentPlanText;
+        var attempt = ++planCopyAttempt, revision = planCopyRevision, requestFocus = activePlanControl();
+        function current() {
+          return attempt === planCopyAttempt && revision === planCopyRevision && copyButton.isConnected && text === (currentShoppingText || currentPlanText);
+        }
+        copyText(text, current, copyButton, requestFocus).then(function (copied) {
+          if (!current()) return;
+          if (!copied) {
+            setPlanStatus('Clipboard unavailable. Use Export TXT to keep this plan and shopping list.');
+            return;
+          }
           setPlanStatus('Shopping list copied.');
           copyButton.innerHTML = planIcon('copy') + '<span>Copied</span>';
-          setTimeout(function () { copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>'; }, 1400);
-        }).catch(function () {
-          window.prompt('Copy shopping list', currentShoppingText || currentPlanText);
+          setTimeout(function () { if (current()) copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>'; }, 1400);
         });
       });
     }
     if (exportButton) {
       exportButton.addEventListener('click', function () {
-        exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText);
+        if (!exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText)) {
+          setPlanStatus('Text download unavailable. You can still copy the shopping list or print this plan.');
+          revealPlanControl(exportButton);
+          return;
+        }
         setPlanStatus('Plan exported as a text file.');
         if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_exported', { days: inputs.days, recipe_count: recipes.length, format: 'txt' });
       });
@@ -2085,6 +2156,7 @@
   }
 
   async function generateMealPlan(options) {
+    invalidatePlanCopy();
     var generateButton = document.getElementById('ak-plan-generate');
     var inputs = getPlanInputs();
     var usePicked = options && options.usePicked === true;
