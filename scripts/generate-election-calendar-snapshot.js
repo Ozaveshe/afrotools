@@ -11,6 +11,8 @@ const DATA_PATH = path.join(ROOT, 'data/government/africa-election-tracker.json'
 const PAGE_PATH = path.join(ROOT, 'tools/africa-election-tracker/index.html');
 const START = '<!-- ELECTION_CALENDAR_SNAPSHOT_START -->';
 const END = '<!-- ELECTION_CALENDAR_SNAPSHOT_END -->';
+const COUNTRY_START = '<!-- ELECTION_COUNTRY_INDEX_START -->';
+const COUNTRY_END = '<!-- ELECTION_COUNTRY_INDEX_END -->';
 const EDITIONS = [
   { locale: 'ha', path: path.join(ROOT, 'ha/zabe/index.html'), start: '<!-- ELECTION_HA_SNAPSHOT_START -->', end: '<!-- ELECTION_HA_SNAPSHOT_END -->' },
   { locale: 'yo', path: path.join(ROOT, 'yo/idibo/index.html'), start: '<!-- ELECTION_YO_SNAPSHOT_START -->', end: '<!-- ELECTION_YO_SNAPSHOT_END -->' }
@@ -28,6 +30,17 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// A build/runtime consistency marker, not a security signature.
+function ledgerFingerprint(data) {
+  const payload = JSON.stringify({ generatedAt: data.generatedAt, dateStatusLabels: data.dateStatusLabels, elections: data.elections });
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < payload.length; index += 1) {
+    hash ^= payload.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
 }
 
 function validDate(value) {
@@ -84,6 +97,7 @@ function recordEndDate(record) {
 
 function renderRecord(record, dateStatusLabels) {
   assert(record && record.id && record.country && record.office, 'Election snapshot record is missing identity fields');
+  assert(/^[a-z0-9-]+$/.test(record.id), record.id + ': election id is unsafe for an anchor');
   assert(validDate(record.electionDate), record.id + ': invalid election date');
   assert(['day', 'month', 'year'].includes(record.datePrecision), record.id + ': invalid date precision');
   const dateStatus = dateStatusLabels[record.dateStatus];
@@ -101,7 +115,7 @@ function renderRecord(record, dateStatusLabels) {
     : '<span class="et-source-checked">No official link is available for this record; verify before relying on its date.</span>';
 
   return [
-    '<article class="et-election-card" data-snapshot-election-id="' + escapeHtml(record.id) + '">',
+    '<article class="et-election-card" id="election-' + escapeHtml(record.id) + '" data-snapshot-election-id="' + escapeHtml(record.id) + '">',
     '  <div class="et-election-top">',
     '    <div class="et-date-box"><time datetime="' + escapeHtml(date.datetime) + '" aria-label="' + escapeHtml(date.full + range + '; ' + dateStatus) + '"><strong>' + escapeHtml(date.large) + '</strong><span>' + escapeHtml(date.small) + '</span></time></div>',
     '    <div>',
@@ -131,12 +145,64 @@ function renderSnapshot(data) {
   const upcoming = records.filter((record) => recordEndDate(record) >= data.generatedAt);
   const earlier = records.filter((record) => recordEndDate(record) < data.generatedAt).reverse();
   return [
-    '<p class="et-snapshot-note" data-snapshot-date="' + escapeHtml(data.generatedAt) + '">Published ledger snapshot generated ' + escapeHtml(formatDate(data.generatedAt)) + '. Dates can change. Each record links its available official notices; live filters load with JavaScript.</p>',
+    '<p class="et-snapshot-note" data-snapshot-date="' + escapeHtml(data.generatedAt) + '" data-ledger-fingerprint="' + ledgerFingerprint(data) + '">Published ledger snapshot generated ' + escapeHtml(formatDate(data.generatedAt)) + '. Dates can change. Each record links its available official notices; live filters load with JavaScript.</p>',
     ...(upcoming.length ? ['<h3 class="et-snapshot-heading">Upcoming as of ' + escapeHtml(formatDate(data.generatedAt)) + '</h3>'] : []),
     ...upcoming.map((record) => renderRecord(record, data.dateStatusLabels)),
     ...(earlier.length ? ['<h3 class="et-snapshot-heading">Earlier records</h3>'] : []),
     ...earlier.map((record) => renderRecord(record, data.dateStatusLabels))
   ].join('\n');
+}
+
+function renderCountryIndex(data) {
+  assert(data && data.toolId === 'africa-election-tracker', 'Election tracker ledger is required');
+  assert(validDate(data.generatedAt), 'Election tracker generatedAt must be a valid date');
+  assert(Array.isArray(data.elections) && data.elections.length, 'Country index needs published records');
+  assert(data.dateStatusLabels && typeof data.dateStatusLabels === 'object', 'Election date-status labels are required');
+
+  const countries = new Map();
+  for (const record of data.elections) {
+    assert(record && /^[a-z0-9-]+$/.test(record.id || ''), 'Country index needs a safe election id');
+    assert(/^[A-Z]{2}$/.test(record.countryCode || '') && record.country && record.region, record.id + ': country identity is missing');
+    assert(validDate(record.electionDate), record.id + ': invalid election date');
+    assert(data.dateStatusLabels[record.dateStatus], record.id + ': unknown date status');
+    if (!countries.has(record.countryCode)) {
+      countries.set(record.countryCode, { name: record.country, region: record.region, records: [] });
+    }
+    const country = countries.get(record.countryCode);
+    assert(country.name === record.country && country.region === record.region, record.id + ': country identity changed within the ledger');
+    country.records.push(record);
+  }
+
+  return Array.from(countries.values())
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((country) => {
+      const records = country.records.sort((a, b) => a.electionDate.localeCompare(b.electionDate) || a.office.localeCompare(b.office));
+      const officeCounts = new Map();
+      records.forEach((record) => officeCounts.set(record.office, (officeCounts.get(record.office) || 0) + 1));
+      const notices = records.map((record) => {
+        const date = dateDisplay(record);
+        const range = record.dateEnd ? ' to ' + dateDisplay({ ...record, electionDate: record.dateEnd }).full : '';
+        const label = officeCounts.get(record.office) > 1 ? record.jurisdiction + ': ' + record.office : record.office;
+        const official = officialSources(record).sort((a, b) =>
+          b.checkedAt.localeCompare(a.checkedAt) || a.label.localeCompare(b.label))[0];
+        const source = official
+          ? '<span class="et-country-record-source">Official link in record: <a href="' + escapeHtml(official.url) + '" rel="noopener noreferrer" target="_blank">' + escapeHtml(official.label) + '</a> · Checked ' + escapeHtml(formatDate(official.checkedAt)) + '</span>'
+          : '<span class="et-country-record-source">No official link is available in this ledger.</span>';
+        return [
+          '<li><a href="#election-' + escapeHtml(record.id) + '" aria-label="' + escapeHtml(country.name + ': ' + label + ' — ' + date.full + ' calendar record') + '">' + escapeHtml(label) + '</a>',
+          '<time datetime="' + escapeHtml(date.datetime) + '">' + escapeHtml(date.full + range) + '</time>',
+          '<span>Date: ' + escapeHtml(data.dateStatusLabels[record.dateStatus]) + '</span>',
+          source + '</li>'
+        ].join('');
+      }).join('\n');
+      return [
+        '<li class="et-country-file">',
+        '<h3>' + escapeHtml(country.name) + '</h3>',
+        '<p class="et-country-region">' + escapeHtml(country.region) + ' · ' + records.length + ' ' + (records.length === 1 ? 'election' : 'elections') + ' on file</p>',
+        '<ul class="et-country-records">' + notices + '</ul>',
+        '</li>'
+      ].join('\n');
+    }).join('\n');
 }
 
 function renderLocalizedRecord(record, copy) {
@@ -222,14 +288,15 @@ function injectEditionStatus(html, data, locale) {
 function main() {
   const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
   const targets = [
-    { path: PAGE_PATH, snapshot: renderSnapshot(data), start: START, end: END },
+    { path: PAGE_PATH, snapshot: renderSnapshot(data), countryIndex: renderCountryIndex(data), start: START, end: END },
     ...EDITIONS.map((edition) => ({
       ...edition,
       snapshot: renderLocalizedSnapshot(data, edition.locale)
     }))
   ].map((target) => {
     const current = fs.readFileSync(target.path, 'utf8');
-    const initialized = target.locale ? injectEditionStatus(current, data, target.locale) : current;
+    const initialized = target.locale ? injectEditionStatus(current, data, target.locale) :
+      injectSnapshot(current, target.countryIndex, COUNTRY_START, COUNTRY_END);
     return { ...target, current, next: injectSnapshot(initialized, target.snapshot, target.start, target.end) };
   });
   if (process.argv.includes('--check')) {
@@ -252,4 +319,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { escapeHtml, renderRecord, renderSnapshot, renderLocalizedRecord, renderLocalizedSnapshot, injectSnapshot, injectEditionStatus, main };
+module.exports = { escapeHtml, ledgerFingerprint, renderRecord, renderSnapshot, renderCountryIndex, renderLocalizedRecord, renderLocalizedSnapshot, injectSnapshot, injectEditionStatus, main };

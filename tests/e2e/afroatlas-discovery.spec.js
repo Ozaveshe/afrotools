@@ -12,9 +12,9 @@ test('Atlas country directory and country answers remain usable without JavaScri
   await expect(countryLinks).toHaveCount(54);
   await page.goto('/tools/afroatlas/country/nigeria/');
   await expect(page.getByRole('heading', { name: 'Nigeria economy and natural resources' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Compare Nigeria with/ })).toHaveAttribute('href', /compare\?a=NG/);
+  await expect(page.locator('.aa-country-hero').getByRole('link', { name: /Compare Nigeria with/ })).toHaveAttribute('href', /compare\?a=NG/);
   await expect(page.getByRole('heading', { name: 'Questions about Nigeria' })).toBeVisible();
-  await expect(page.locator('.aa-core-snapshot')).toContainText('World Bank WDI, 2025');
+  await expect(page.locator('#economy .aa-core-snapshot')).toContainText('World Bank WDI, 2025');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await context.close();
 });

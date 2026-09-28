@@ -8,7 +8,7 @@ var fs = require('fs');
 var path = require('path');
 
 // ── Load engine ──────────────────────────────────────────────────────
-var enginePath = path.join(__dirname, '..', 'engines', 'afroatlas-engine.js');
+var enginePath = path.join(__dirname, '..', 'engines', 'src', 'afroatlas-engine.js');
 var engineCode = fs.readFileSync(enginePath, 'utf8');
 eval(engineCode);
 
@@ -22,6 +22,7 @@ var COUNTRIES = AfroAtlas.COUNTRIES;
 var outputDir = path.join(__dirname, '..', 'tools', 'afroatlas', 'country');
 var breadcrumbTemplatePattern = /<script type="application\/ld\+json" data-schema-template="breadcrumb">[\s\S]*?<\/script>/g;
 var faqTemplatePattern = /<script type="application\/ld\+json" data-schema-template="faq">[\s\S]*?<\/script>/g;
+var datasetTemplatePattern = /<script type="application\/ld\+json" data-schema-template="dataset">[\s\S]*?<\/script>/g;
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -30,6 +31,14 @@ var faqTemplatePattern = /<script type="application\/ld\+json" data-schema-templ
  */
 var codeBySlug = {};
 var codes = Object.keys(COUNTRIES);
+var researchSnapshot = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'afroatlas', 'research-indicators.json'), 'utf8'));
+require('./refresh-afroatlas-research-data').validate(researchSnapshot);
+var identities = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'registry', 'countries.json'), 'utf8'));
+var researchApi = require('../assets/js/lib/afroatlas-research');
+var research = researchApi.create(researchSnapshot, AfroAtlas, identities);
+var researchPayload = { snapshot: researchSnapshot, identities: identities.map(function(country) { return { id: country.id, region: country.region }; }) };
+fs.writeFileSync(path.join(__dirname, '..', 'tools', 'afroatlas', 'research-data.js'),
+  'window.AfroAtlasResearchData=' + JSON.stringify(researchPayload).replace(/</g, '\\u003c') + ';\n', 'utf8');
 var coreSnapshotPath = path.join(__dirname, '..', 'data', 'afroatlas', 'world-bank-core-indicators.json');
 var coreSnapshot = JSON.parse(fs.readFileSync(coreSnapshotPath, 'utf8'));
 require('./refresh-afroatlas-world-bank').validSnapshot(coreSnapshot, codes.slice().sort());
@@ -62,6 +71,7 @@ function escapeHtml(value) {
 }
 
 function regionName(code) {
+  if (research.countries[code]) return research.countries[code].region;
   var regions = AfroAtlas.getRegions();
   var keys = Object.keys(regions);
   for (var i = 0; i < keys.length; i++) {
@@ -71,6 +81,10 @@ function regionName(code) {
 }
 
 function countryFaq(country) {
+  var code = findCode(country);
+  var gdp = research.point(code, 'gdp');
+  var population = research.point(code, 'population');
+  var gdpPC = research.point(code, 'gdpPC');
   var resourceNames = (country.resources || []).map(function(item) {
     var type = AfroAtlas.RESOURCE_TYPES[item.type];
     return type ? type.label : item.type;
@@ -78,68 +92,35 @@ function countryFaq(country) {
   var exportNames = (country.exports || []).slice(0, 5).map(function(item) { return item.p; });
   return [
     {
+      question: 'What is the latest GDP figure for ' + country.name + '?',
+      answer: gdp ? 'The World Bank WDI observation is ' + researchApi.format('gdp', gdp.value) + ' for ' + gdp.year + ', in current US dollars. It measures total economic output, not household income or purchasing power.' : 'No World Bank WDI GDP observation is available for ' + country.name + ' in the 2016–2025 snapshot. Missing data is not zero.'
+    },
+    {
+      question: 'What are ' + country.name + "'s population and GDP per person?",
+      answer: (population ? 'Population is ' + researchApi.format('population', population.value) + ' (' + population.year + '). ' : 'Population is unavailable. ')
+        + (gdpPC ? 'GDP per person is ' + researchApi.format('gdpPC', gdpPC.value) + ' (' + gdpPC.year + ') in current US dollars. It is an average output measure, not a salary.' : 'GDP per person is unavailable in this snapshot.')
+    },
+    {
       question: 'What are ' + country.name + "'s main natural resources?",
       answer: resourceNames.length
-        ? country.name + "'s main natural resources include " + resourceNames.join(', ') + '.'
+        ? 'The undated AfroAtlas reference list includes ' + resourceNames.join(', ') + '. These entries do not establish current production amounts or rankings; check primary resource statistics.'
         : 'Limited natural resource data is currently available for ' + country.name + '.'
     },
     {
       question: 'Which exports appear in the ' + country.name + ' profile?',
       answer: exportNames.length
-        ? country.name + "'s export profile includes " + exportNames.join(', ') + '.'
+        ? 'The undated product reference list includes ' + exportNames.join(', ') + '. Goods-only trade sources can differ from the WDI totals, which include goods and services.'
         : 'Export data for ' + country.name + ' is currently limited.'
-    }
+    },
+    { question: 'How can I compare ' + country.name + ' fairly with another country?',
+      answer: 'Use the latest shared observation year for each indicator. AfroAtlas compares matched years by default, shows missing observations as N/A, and offers a latest-observation view that labels differences in years.' },
+    { question: 'How do I cite or download this country data?',
+      answer: 'Each indicator links to the World Bank source and shows its observation year. Download the CSV or create a research brief to retain indicator names, units, dates and source URLs. The snapshot was retrieved on ' + researchSnapshot.retrieved_at.slice(0, 10) + '.' }
   ];
 }
 
 function generateCountryStaticContent(country, code) {
-  var core = coreSnapshot.countries[code] || {};
-  var coreLabels = [
-    { key: 'gdp', label: 'GDP', format: function(value) { return '$' + (value / 1e9).toFixed(1) + 'B'; } },
-    { key: 'population', label: 'Population', format: function(value) { return (value / 1e6).toFixed(1) + 'M'; } },
-    { key: 'gdpPC', label: 'GDP per person', format: function(value) { return '$' + Math.round(value).toLocaleString('en-US'); } }
-  ];
-  var coreHtml = coreLabels.map(function(item) {
-    var point = core[item.key];
-    return '<div><dt>' + escapeHtml(item.label) + '</dt><dd>' + (point ? escapeHtml(item.format(point.value)) : 'N/A') +
-      '<small>' + (point ? '<a href="' + escapeHtml(point.source_url) + '">World Bank WDI, ' + point.year + '</a>' : 'World Bank WDI: no 2016–2025 observation') + '</small></dd></div>';
-  }).join('');
-  var resourceNames = (country.resources || []).slice(0, 5).map(function(resource) {
-    var type = AfroAtlas.RESOURCE_TYPES[resource.type];
-    return type ? type.label : resource.type;
-  });
-  var exportNames = (country.exports || []).slice(0, 3).map(function(item) { return item.p; });
-  var region = regionName(code);
-  var otherCode = Object.keys(COUNTRIES).filter(function(candidate) {
-    return candidate !== code && regionName(candidate) === region;
-  })[0] || (code === 'NG' ? 'KE' : 'NG');
-  var otherCountry = COUNTRIES[otherCode];
-  var countryName = escapeHtml(country.name);
-  var comparison = '/tools/afroatlas/compare?a=' + encodeURIComponent(code) + '&amp;b=' + otherCode;
-  var resources = resourceNames.length
-    ? '<p>AfroAtlas lists ' + escapeHtml(resourceNames.join(', ')) + ' among the resources in its ' + countryName + ' reference profile.</p>'
-    : '<p>Resource coverage for ' + countryName + ' is limited in this dataset.</p>';
-  var exports = exportNames.length
-    ? '<p>The trade profile highlights ' + escapeHtml(exportNames.join(', ')) + '. Open the interactive profile for the full export view.</p>'
-    : '<p>Open the interactive profile to review the available trade indicators.</p>';
-  var faqHtml = countryFaq(country).map(function(item) {
-    return '<h3>' + escapeHtml(item.question) + '</h3><p>' + escapeHtml(item.answer) + '</p>';
-  }).join('');
-  return '<section class="aa-country-hero"><div class="aa-wrap">' +
-    '<p class="aa-eyebrow">' + escapeHtml(region) + ' country profile</p>' +
-    '<h1>' + countryName + ' economy and natural resources</h1>' +
-    '<p>Explore the resource, trade, and economic indicators recorded for ' + countryName + ' in AfroAtlas.</p>' +
-    '</div></section>' +
-    '<section class="aa-section"><div class="aa-wrap">' +
-    '<h2 class="aa-section-title">Dated economy snapshot</h2>' +
-    '<dl class="aa-core-snapshot">' + coreHtml + '</dl>' +
-    '<p>World Bank World Development Indicators. The latest available year can differ by measure; values may be revised.</p>' +
-    '<h2 class="aa-section-title">Resources and trade in ' + countryName + '</h2>' +
-    resources + exports +
-    '<p>Resource and trade figures in this reference profile still lack verified source dates. Check current primary sources before making financial or policy decisions.</p>' +
-    '<p><a class="aa-btn" href="' + comparison + '">Compare ' + countryName + ' with ' + escapeHtml(otherCountry.name) + '</a></p>' +
-    '<h2 class="aa-section-title">Questions about ' + countryName + '</h2>' + faqHtml +
-    '</div></section>';
+  return require('./lib/afroatlas-research-pages').countryContent(research, code, countryFaq(country), AfroAtlas.RESOURCE_TYPES);
 }
 
 function updateLandingCountryGrid() {
@@ -147,15 +128,51 @@ function updateLandingCountryGrid() {
   var html = fs.readFileSync(landingPath, 'utf8');
   var marker = /<!-- aa-static-country-grid:start -->[\s\S]*?<!-- aa-static-country-grid:end -->/;
   if (!marker.test(html)) throw new Error('AfroAtlas landing country grid markers are missing');
-  var cards = countries.slice().sort(function(a, b) { return a.name.localeCompare(b.name); }).map(function(country) {
-    var code = findCode(country);
-    return '        <a class="aa-card" href="/tools/afroatlas/country/' + escapeHtml(country.slug) + '/">' +
-      '<div class="aa-card-top"><div class="aa-card-info"><h3 class="aa-card-name">' + escapeHtml(country.name) +
-      '</h3><span class="aa-card-region">' + escapeHtml(regionName(code)) +
-      '</span></div></div><span>Open country profile &rarr;</span></a>';
-  }).join('\n');
+  var cards = require('./lib/afroatlas-research-pages').cards(research, AfroAtlas.RESOURCE_TYPES);
   var updated = html.replace(marker, '<!-- aa-static-country-grid:start -->\n' + cards + '\n        <!-- aa-static-country-grid:end -->');
   if (updated !== html) fs.writeFileSync(landingPath, updated, 'utf8');
+}
+
+function generateDatasetSchema(country, code) {
+  var url = 'https://afrotools.com/tools/afroatlas/country/' + country.slug + '/';
+  var schema = {
+    '@context': 'https://schema.org', '@type': 'Dataset', '@id': url + '#wdi-dataset',
+    name: country.name + ' economy indicators, 2016–2025',
+    description: 'A dated World Bank WDI snapshot for ' + country.name + ', with missing observations retained as unavailable. Resource reference lists are not part of this dataset.',
+    url: url, creator: { '@type': 'Organization', name: 'World Bank', url: 'https://www.worldbank.org/' },
+    publisher: { '@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/' },
+    dateModified: researchSnapshot.retrieved_at.slice(0, 10), temporalCoverage: '2016/2025',
+    spatialCoverage: { '@type': 'Place', name: country.name },
+    isBasedOn: 'https://databank.worldbank.org/source/world-development-indicators',
+    variableMeasured: Object.keys(researchSnapshot.definitions).filter(function(key) { return research.point(code, key); }).map(function(key) {
+      return { '@type': 'PropertyValue', name: researchSnapshot.definitions[key].label, unitText: researchSnapshot.definitions[key].unit };
+    })
+  };
+  return JSON.stringify(schema).replace(/</g, '\\u003c');
+}
+
+function updateResearchRankings() {
+  var file = path.join(__dirname, '..', 'tools', 'afroatlas', 'rankings.html');
+  var html = fs.readFileSync(file, 'utf8');
+  var marker = /<!-- aa-static-rankings:start -->[\s\S]*?<!-- aa-static-rankings:end -->/;
+  if (!marker.test(html)) throw new Error('Research rankings markers missing');
+  html = html.replace(marker, '<!-- aa-static-rankings:start -->' + require('./lib/afroatlas-research-pages').rankings(research, 'gdp', null) + '<!-- aa-static-rankings:end -->');
+  fs.writeFileSync(file, html);
+}
+
+function updateSourcesPage() {
+  var file = path.join(__dirname, '..', 'tools', 'afroatlas', 'sources', 'index.html');
+  var html = fs.readFileSync(file, 'utf8');
+  var marker = /<!-- aa-sources-data:start -->[\s\S]*?<!-- aa-sources-data:end -->/;
+  if (!marker.test(html)) throw new Error('Sources page markers missing');
+  var rows = Object.keys(researchSnapshot.definitions).map(function(key) {
+    var definition = researchSnapshot.definitions[key];
+    var coverage = codes.filter(function(code) { return research.point(code, key); }).length;
+    return '<tr><th scope="row"><a href="https://data.worldbank.org/indicator/' + definition.indicator + '">' + escapeHtml(definition.label) + '</a></th><td>' + escapeHtml(definition.unit) + '</td><td>' + definition.indicator + '</td><td>' + coverage + '/54</td></tr>';
+  }).join('');
+  var content = '<p>Snapshot retrieved on <time datetime="' + researchSnapshot.retrieved_at + '">' + researchSnapshot.retrieved_at.slice(0, 10) + '</time>. The observation window is 2016–2025. Each indicator keeps its latest available observation and the annual series.</p>' +
+    '<div class="aa-table-wrap" tabindex="0" role="region" aria-label="Indicator definitions and country coverage"><table class="aa-data-table"><caption>World Bank WDI measures and African country coverage</caption><thead><tr><th scope="col">Indicator</th><th scope="col">Unit</th><th scope="col">WDI code</th><th scope="col">Available countries</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+  fs.writeFileSync(file, html.replace(marker, '<!-- aa-sources-data:start -->' + content + '<!-- aa-sources-data:end -->'));
 }
 
 /**
@@ -257,6 +274,7 @@ countries.forEach(function(country) {
       )
       .replace(breadcrumbTemplatePattern, '<script type="application/ld+json">' + generateBreadcrumbSchema(country) + '</script>')
       .replace(faqTemplatePattern, '<script type="application/ld+json">' + generateFAQSchema(country) + '</script>')
+      .replace(datasetTemplatePattern, '<script type="application/ld+json">' + generateDatasetSchema(country, code) + '</script>')
       .replace(/\{\{BREADCRUMB_SCHEMA\}\}/g, generateBreadcrumbSchema(country))
       .replace(/\{\{FAQ_SCHEMA\}\}/g, generateFAQSchema(country));
 
@@ -293,3 +311,5 @@ if (generated !== 54) {
 }
 
 updateLandingCountryGrid();
+updateResearchRankings();
+updateSourcesPage();
