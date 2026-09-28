@@ -68,6 +68,9 @@
   .per-btn.on { color: #BB0000; }
   .mode-btn.on { color: #BB0000; }
   .preset-btn.active { background: #BB0000; border-color: #BB0000; }
+  .ng-guide-col { min-width: 0; }
+  .ng-guide-card-table, .ng-bands-table-wrap { display: block; }
+  .ng-bands-table { display: table; }
   .rate-card-value { color: #BB0000; }
   @media (prefers-color-scheme: dark) {
     .tool-hero, .res-hero, .ai-card { background: #0f0a08; }
@@ -864,9 +867,23 @@ function getMarginalRate(taxable) {
   return 35;
 }
 
+function revealInvalidSalaryField(field) {
+  requestAnimationFrame(() => {
+    if (document.activeElement !== field) return;
+    const navbar = document.querySelector('afro-navbar');
+    const nav = navbar?.shadowRoot?.querySelector('nav') || navbar;
+    const headerBottom = nav?.getBoundingClientRect().bottom || 0;
+    const rect = field.getBoundingClientRect();
+    const hit = document.elementFromPoint((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2);
+    if (rect.top < headerBottom || rect.bottom > innerHeight || !(hit === field || field.contains(hit))) {
+      field.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+    }
+  });
+}
+
 function calculate() {
   const gross = parseNum(document.getElementById('salaryInput').value);
-  if (!gross || gross <= 0) {const _el=document.getElementById('salaryInput');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}
+  if (!gross || gross <= 0) {const _el=document.getElementById('salaryInput');_el.focus();revealInvalidSalaryField(_el);_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}
 
   // Payroll deductions and income adjustments
   const nssf = isOn('nssf') ? calcNSSF(gross) : 0;
@@ -971,7 +988,10 @@ function renderResults() {
   document.getElementById('employerCard').classList.add('on');
 
   // Show results
-  document.getElementById('resultsCard').classList.add('on');
+  const resultsCard = document.getElementById('resultsCard');
+  resultsCard.style.display = '';
+  resultsCard.removeAttribute('aria-hidden');
+  resultsCard.classList.add('on');
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Analyse My Kenya Tax Position \u2192';
   document.getElementById('aiStatus').textContent = `Gross: ${fmt(r.gross)}/mo \u00B7 Take-home: ${fmt(r.net)}/mo \u00B7 Rate: ${pct(r.effectiveRate)}`;
