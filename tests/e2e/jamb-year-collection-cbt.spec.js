@@ -6,10 +6,17 @@ test.beforeEach(async ({ page }) => {
   await page.route('https://connect.facebook.net/**', route => route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
 });
 
-test('saved collection conflict initializes while an optional tracker is stalled', async ({ page }) => {
+test('saved collection conflict initializes while an optional async script is stalled', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
   let tracker;
-  await page.route('https://connect.facebook.net/**', route => { tracker = route; });
+  // Consent may prevent optional trackers from loading. Inject a local mocked
+  // async resource only into this fixture so the page load reliably remains pending.
+  await page.route('**/__test__/cbt-optional-ready.js', route => { tracker = route; });
+  await page.route('**/jamb/cbt/**', async route => {
+    const response = await route.fetch();
+    const source = await response.text();
+    await route.fulfill({ response, body: source.replace('</head>', '<script async src="/__test__/cbt-optional-ready.js"></script></head>') });
+  });
   await page.goto('/jamb/english/2025/', { waitUntil: 'load' });
   await page.evaluate(() => localStorage.setItem('afrojamb-cbt-state', JSON.stringify({ year: null, mode: 'full', subjects: ['english', 'mathematics'], questionIds: ['synthetic-saved-mock'], startedAt: Date.now(), durationMs: 7200000 })));
   try {
@@ -293,4 +300,69 @@ test('invalid scoped link cannot silently start an all-year CBT', async ({ page 
   await expect(page.locator('#cbt-shell')).toBeHidden();
   await page.goto('/jamb/cbt/', { waitUntil: 'load' });
   await expect(page.locator('#setup-badge-label')).toHaveText('Free Mock Exam');
+});
+
+
+test('active historical CBT cleanup stops both timers and preserves other practice storage', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const { review, ...base } = questions()[0];
+  const fixture = bank([1, 2].map(number => reviewed({
+    ...base, id: 'english-2025-cleanup-' + number, subject: 'english', year: 2025
+  })));
+  await page.route('**/data/jamb/pools/*.json', route => route.fulfill({
+    json: route.request().url().endsWith('/index.json') ? fixture.index : fixture.pool
+  }));
+  await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  await page.clock.install({ time: new Date('2026-09-28T08:00:00Z') });
+  await page.goto('/jamb/cbt/?subject=english&year=2025', { waitUntil: 'load' });
+
+  const sentinels = {
+    'afrojamb-original-cbt-state-v1': 'keep-original-session',
+    'afrojamb-original-history-v1': '[]',
+    'afrojamb-history': '[]',
+    'afrojamb-collection-history': '[]'
+  };
+  await page.evaluate(values => {
+    Object.entries(values).forEach(([key, value]) => localStorage.setItem(key, value));
+    window.__cbtRuns = { tick: 0, save: 0 };
+    const schedule = window.setInterval.bind(window);
+    const init = AfroJAMB.CBT.init;
+    let observingInit = false;
+    AfroJAMB.CBT.init = function (config) {
+      observingInit = true;
+      try { return init.call(this, config); }
+      finally { observingInit = false; }
+    };
+    window.setInterval = function (callback, delay, ...args) {
+      const kind = observingInit && (delay === 1000 ? 'tick' : delay === 15000 ? 'save' : null);
+      if (!kind) return schedule(callback, delay, ...args);
+      return schedule(function (...callbackArgs) {
+        window.__cbtRuns[kind]++;
+        return callback.apply(this, callbackArgs);
+      }, delay, ...args);
+    };
+  }, sentinels);
+  await page.locator('#start-btn').click();
+  await expect(page.locator('#cbt-shell')).toBeVisible();
+  await page.locator('#cbt-options [aria-label^="Option B:"]').click();
+  await page.clock.runFor(16_000);
+  const before = await page.evaluate(() => ({
+    runs: { ...window.__cbtRuns }, saved: localStorage.getItem('afrojamb-cbt-state')
+  }));
+  expect(before.saved).toBeTruthy();
+  expect(before.runs.tick).toBeGreaterThan(0);
+  expect(before.runs.save).toBeGreaterThan(0);
+
+  await page.evaluate(() => AfroJAMB.CBT.clearSession());
+  const timer = await page.locator('#cbt-timer').textContent();
+  await page.clock.runFor(16_000);
+  await expect(page.locator('#cbt-timer')).toHaveText(timer);
+  await expect(page.locator('#cbt-shell')).toBeVisible();
+  expect(await page.evaluate(() => window.__cbtRuns)).toEqual(before.runs);
+  expect(await page.evaluate(() => AfroJAMB.CBT.getState())).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem('afrojamb-cbt-state'))).toBeNull();
+  expect(await page.evaluate(keys => Object.fromEntries(keys.map(key => [key, localStorage.getItem(key)])),
+    Object.keys(sentinels))).toEqual(sentinels);
+  expect(errors).toEqual([]);
 });
