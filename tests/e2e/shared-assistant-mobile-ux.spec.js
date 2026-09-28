@@ -220,6 +220,170 @@ async function expectOpenPanel(ui, width, height = 844) {
   }
 }
 
+async function holdLocalAsset(page, baseURL, pathname) {
+  const origin = new URL(baseURL).origin;
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  let held = false;
+  const match = url => url.origin === origin && url.pathname === pathname;
+  await page.route(match, async route => {
+    if (route.request().method() !== 'GET') return route.fallback();
+    held = true;
+    await gate;
+    // Keep the existing method/origin/provider isolation guard in the chain.
+    return route.fallback();
+  });
+  return { release, held: () => held };
+}
+
+async function rememberNavigationOpener(ui) {
+  await ui.navbar.evaluate(host => {
+    window.__navigationIdentity = { burger:host.shadowRoot.querySelector('.burger'), ask:host.shadowRoot.querySelector('#mobAssistantOpen') };
+  });
+}
+
+async function expectNavigationOpenerPreserved(ui) {
+  expect(await ui.navbar.evaluate(host => window.__navigationIdentity.burger === host.shadowRoot.querySelector('.burger') &&
+    window.__navigationIdentity.ask === host.shadowRoot.querySelector('#mobAssistantOpen') && window.__navigationIdentity.burger.isConnected)).toBe(true);
+  await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+}
+
+async function moveToStudyContent(page, ui, refreshExpected = true) {
+  // A native Tab leaves the returned-to burger before deferred markup changes.
+  await page.keyboard.press('Tab');
+  await expect.poll(() => ui.navbar.evaluate(host => document.activeElement !== host)).toBe(true);
+  await page.evaluate(() => { window.__contentFocus = document.activeElement; });
+  if (refreshExpected) await expect.poll(() => ui.navbar.evaluate(() => !window.__navigationIdentity.burger.isConnected)).toBe(true);
+  expect(await page.evaluate(() => document.activeElement === window.__contentFocus)).toBe(true);
+  await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+}
+
+test.describe('Late localized navigation preserves active controls', () => {
+  test('late locale routes keep the French drawer and refresh links after focus leaves', async ({ page, baseURL, observation }) => {
+    const asset = await holdLocalAsset(page, baseURL, '/assets/js/lib/locale-route-resolver.js');
+    try {
+      await visit(page, '/fr/tools/pratique-waec-neco/', 390, 'light');
+      const ui = parts(page);
+      await expect.poll(asset.held).toBe(true);
+      await expect(ui.navbar.locator('#langBtn')).toHaveAttribute('aria-label', 'Changer de langue');
+      await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+      await ui.burger.click();
+      await expect(ui.menuAsk).toBeVisible();
+      await ui.menuAsk.focus();
+      await expect(ui.menuAsk).toBeFocused();
+      await rememberNavigationOpener(ui);
+      asset.release();
+      await page.waitForFunction(() => Boolean(window.AfroLocaleRouteResolver));
+      await twoFrames(page);
+      await expect(ui.menu).toHaveAttribute('aria-hidden', 'false');
+      await expect(ui.menuAsk).toHaveAccessibleName('Assistant AfroTools');
+      await expect(ui.menuAsk).toBeFocused();
+      await expectNavigationOpenerPreserved(ui);
+      await page.keyboard.press('Escape');
+      await expect(ui.menu).toHaveAttribute('aria-hidden', 'true');
+      await expect(ui.burger).toBeFocused();
+      await moveToStudyContent(page, ui, false);
+      await expect(ui.navbar.locator('#langDrop [data-locale-target="en"]')).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/tools\/ssce-practice\/$/);
+      await expect(ui.navbar.locator('#langDrop [data-locale-target="sw"]')).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/sw\/zana\/mazoezi-waec-neco\/$/);
+      // Repeating an unchanged refresh must leave the rendered controls visible.
+      await ui.navbar.evaluate(host => host._renderAndBind());
+      await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+      await ui.navbar.evaluate(host => host._renderAndBind());
+      await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+      await expect(ui.burger).toBeVisible();
+      observation.checkpoints.localeRoutesFlushed = true;
+    } finally { asset.release(); }
+  });
+
+  for (const phase of ['waiting for Ask', 'inside the assistant dialog']) {
+    test(`late localization preserves the opener ${phase}`, async ({ page, baseURL, observation }) => {
+      const asset = await holdLocalAsset(page, baseURL, '/assets/js/lib/localize-shared-ui.js');
+      if (phase === 'waiting for Ask') observation.holdAssistant();
+      try {
+        await visit(page, '/fr/', 320, 'dark');
+        const ui = parts(page);
+        await expect.poll(asset.held).toBe(true);
+        await ui.burger.click();
+        await expect(ui.menuAsk).toBeVisible();
+        await expect(ui.menuAsk).toHaveAccessibleName('Assistant AfroTools');
+        await ui.menuAsk.focus();
+        await expect(ui.menuAsk).toBeFocused();
+        await rememberNavigationOpener(ui);
+        await page.keyboard.press('Enter');
+        if (phase === 'waiting for Ask') {
+          await expect(ui.menuStatus).not.toBeEmpty();
+          await expect(ui.menuAsk).toHaveAttribute('aria-busy', 'true');
+          await expect.poll(() => observation.assistantRequestHeld).toBe(true);
+        } else await expectOpenPanel(ui, 320);
+        asset.release();
+        await page.waitForFunction(() => window.AfroTools?.i18n?.locale() === 'fr');
+        await twoFrames(page);
+        await expectNavigationOpenerPreserved(ui);
+        if (phase === 'waiting for Ask') {
+          await expect(ui.menu).toHaveAttribute('aria-hidden', 'false');
+          await expect(ui.menuStatus).not.toBeEmpty();
+          await expect(ui.menuAsk).toHaveAttribute('aria-busy', 'true');
+          observation.releaseAssistant();
+        }
+        await expectOpenPanel(ui, 320);
+        await page.keyboard.press('Escape');
+        await expect(ui.panel).toBeHidden();
+        await expect(ui.burger).toBeFocused();
+        await expectNavigationOpenerPreserved(ui);
+        await moveToStudyContent(page, ui);
+        await expect(ui.navbar.locator('#langBtn')).toHaveAttribute('aria-label', 'Changer de langue');
+        await expect(ui.navbar.locator('#langDrop [data-locale-target="en"]')).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/$/);
+        await ui.burger.click();
+        await expect(ui.menu.locator('.mob-lang-section .mob-section-label')).toHaveText('Langue');
+        await expect(ui.menu.locator('[data-locale-target="en"]')).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/$/);
+        observation.checkpoints.localizationFlushed = true;
+        expect(observation.assistantScriptRequests).toBe(1);
+      } finally { asset.release(); observation.releaseAssistant(); }
+    });
+  }
+
+  test('cancelled lazy Ask flushes queued localization without stealing outside focus', async ({ page, baseURL, observation }) => {
+    const asset = await holdLocalAsset(page, baseURL, '/assets/js/lib/localize-shared-ui.js');
+    observation.holdAssistant();
+    try {
+      await visit(page, '/fr/', 320, 'dark');
+      const ui = parts(page);
+      await expect.poll(asset.held).toBe(true);
+      await ui.burger.click();
+      await expect(ui.menuAsk).toBeVisible();
+      await ui.menuAsk.focus();
+      await expect(ui.menuAsk).toBeFocused();
+      await rememberNavigationOpener(ui);
+      await page.keyboard.press('Enter');
+      await expect(ui.menuAsk).toHaveAttribute('aria-busy', 'true');
+      await expect.poll(() => observation.assistantRequestHeld).toBe(true);
+      asset.release();
+      await page.waitForFunction(() => window.AfroTools?.i18n?.locale() === 'fr');
+      await twoFrames(page);
+      await expectNavigationOpenerPreserved(ui);
+      await page.keyboard.press('Escape');
+      await expect(ui.menu).toHaveAttribute('aria-hidden', 'true');
+      await expect(ui.burger).toBeFocused();
+      const outsideInput = page.locator('#frHomeSearch');
+      await outsideInput.click();
+      await expect(outsideInput).toBeFocused();
+      await expectNavigationOpenerPreserved(ui);
+      observation.releaseAssistant();
+      await expect(ui.panel).toHaveAttribute('aria-hidden', 'true');
+      await expect(ui.panel).toBeHidden();
+      await expect(ui.menuAsk).not.toHaveAttribute('aria-busy', 'true');
+      await expect.poll(() => ui.navbar.evaluate(() => !window.__navigationIdentity.burger.isConnected)).toBe(true);
+      await expect(outsideInput).toBeFocused();
+      await expect(ui.navbar).toHaveAttribute('data-styles-ready', '');
+      await ui.burger.click();
+      await expect(ui.menu.locator('.mob-lang-section .mob-section-label')).toHaveText('Langue');
+      await expect(ui.menu.locator('[data-locale-target="en"]')).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/$/);
+      observation.checkpoints.cancelledLocalizationFlushed = true;
+      expect(observation.assistantScriptRequests).toBe(1);
+    } finally { asset.release(); observation.releaseAssistant(); }
+  });
+});
+
 const primaryCases = [
   { name: 'homepage discovery', route: '/', width: 320, theme: 'light', task: 'home' },
   { name: 'contact draft', route: '/contact/', width: 320, theme: 'dark', task: 'contact' },

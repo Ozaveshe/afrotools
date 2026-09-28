@@ -700,6 +700,10 @@
         document.head.appendChild(link);
       }
       this._renderAndBind();
+      this._navigationRefreshFn = () => this._scheduleNavigationRefresh();
+      document.addEventListener('focusin', this._navigationRefreshFn);
+      document.addEventListener('click', this._navigationRefreshFn);
+      document.addEventListener('keydown', this._navigationRefreshFn);
       this._ensureLocalizationAssets();
       this._ensureLocaleRouteResolver();
     }
@@ -711,6 +715,11 @@
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
       if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
+      if (this._navigationRefreshFn) {
+        document.removeEventListener('focusin', this._navigationRefreshFn);
+        document.removeEventListener('click', this._navigationRefreshFn);
+        document.removeEventListener('keydown', this._navigationRefreshFn);
+      }
     }
     get active() { return this.getAttribute('active') || ''; }
 
@@ -1182,7 +1191,31 @@
     }
 
     _renderAndBind() {
+      // Async locale assets must not replace an active drawer, pending Ask
+      // request, or the button a native dialog will return focus to.
+      if (this._lastRenderedMarkup && this._navigationInteractionActive()) {
+        this._navigationRefreshPending = true;
+        return;
+      }
+      this._navigationRefreshPending = false;
       if (this._render()) this._bind();
+    }
+
+    _navigationInteractionActive() {
+      const assistant = document.querySelector('afro-site-assistant');
+      return this._menuOpen || this._assistantPending || this._megaOpen || this._countriesOpen || this._businessOpen ||
+        Boolean(this.shadowRoot.activeElement || this.shadowRoot.querySelector('dialog[open]') ||
+          assistant?.shadowRoot?.querySelector('#panel')?.open);
+    }
+
+    _scheduleNavigationRefresh() {
+      if (!this._navigationRefreshPending || this._navigationRefreshScheduled) return;
+      this._navigationRefreshScheduled = true;
+      // Let the current click/key and its native focus movement settle first.
+      Promise.resolve().then(() => {
+        this._navigationRefreshScheduled = false;
+        if (this.isConnected && this._navigationRefreshPending && !this._navigationInteractionActive()) this._renderAndBind();
+      });
     }
 
     _render() {
@@ -1379,7 +1412,6 @@
       };
       if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
-      this.removeAttribute('data-styles-ready');
       const markup = `
         <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
@@ -1579,6 +1611,7 @@
 
 `;
       if (markup === this._lastRenderedMarkup) return false;
+      this.removeAttribute('data-styles-ready');
       this._lastRenderedMarkup = markup;
       this.shadowRoot.innerHTML = markup;
       const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
@@ -1879,6 +1912,7 @@
           this._assistantPending = false;
           assistantButton.disabled = false;
           assistantButton.removeAttribute('aria-busy');
+          this._scheduleNavigationRefresh();
         }
       });
 

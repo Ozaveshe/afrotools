@@ -88,26 +88,111 @@ for (const route of routes) {
   });
 }
 
-test('practice controls align and the optional assistant does not float over the exercise', async ({ page }) => {
-  await page.goto('/tools/ssce-practice/');
-  const select = await page.locator('#practice-topic').boundingBox();
-  const button = await page.locator('#practice-start').boundingBox();
-  expect(Math.abs(select.y + select.height - button.y - button.height)).toBeLessThanOrEqual(2);
-  await page.getByRole('button', { name:'Start practice', exact:true }).click();
-  await page.getByRole('radio').first().check();
-  await page.setViewportSize({ width:390, height:844 });
-  await page.mouse.wheel(0, 600);
-  const assistant = page.locator('afro-site-assistant');
-  await page.locator('afro-footer').scrollIntoViewIfNeeded();
-  await expect(assistant).toBeAttached();
-  expect(await assistant.evaluate(el => getComputedStyle(el).position)).toBe('relative');
-  await assistant.locator('#fab').click();
-  const panel = assistant.locator('#panel');
-  await expect(panel).toHaveClass(/open/);
-  await expect.poll(async () => {
-    const rect = await panel.boundingBox();
-    return rect.x >= 0 && rect.x + rect.width <= 391;
-  }).toBe(true);
-  await assistant.locator('#close').click();
-  await expect(panel).not.toHaveClass(/open/);
+test('practice controls align and the optional assistant does not float over the exercise', async ({ page, baseURL }, testInfo) => {
+  const observation = { pageErrors: [], consoleErrors: [], writes: [], aiRequests: [], geometry: [] };
+  page.on('pageerror', error => observation.pageErrors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') observation.consoleErrors.push(message.text()); });
+  page.on('request', request => {
+    const url = new URL(request.url());
+    if (request.method() !== 'GET') observation.writes.push({ method: request.method(), origin: url.origin });
+    if (/\/api\/ai|\/\.netlify\/functions\/.*(?:ai|chat)|openai|anthropic/i.test(request.url())) observation.aiRequests.push({ method: request.method(), origin: url.origin });
+  });
+  await page.route('**/*', route => {
+    const request = route.request(), url = new URL(request.url());
+    if (request.method() !== 'GET' || url.origin !== new URL(baseURL).origin || /\/api\/|\/\.netlify\/functions\//.test(url.pathname)) return route.abort();
+    return route.continue();
+  });
+  await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  await page.setViewportSize({ width:1280, height:900 });
+  await page.emulateMedia({ reducedMotion:'reduce' });
+  const hit = async locator => {
+    await locator.scrollIntoViewIfNeeded();
+    expect(await locator.evaluate(el => {
+      const r = el.getBoundingClientRect(), root = el.getRootNode();
+      const target = root.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+      return target === el || el.contains(target);
+    })).toBe(true);
+  };
+  try {
+    await page.goto('/tools/ssce-practice/');
+    await expect(page.locator('#practice-topic')).toBeVisible();
+    await expect(page.locator('#practice-start')).toBeEnabled();
+    const select = await page.locator('#practice-topic').boundingBox();
+    const button = await page.locator('#practice-start').boundingBox();
+    expect(Math.abs(select.y + select.height - button.y - button.height)).toBeLessThanOrEqual(2);
+    await page.getByRole('button', { name:'Start practice', exact:true }).click();
+    const session = page.locator('#practice-session'), answer = session.getByRole('radio').first();
+    await expect(session.locator('h2')).toHaveText('Question 1 of 24');
+    await answer.check();
+    await page.setViewportSize({ width:390, height:844 });
+    const assistant = page.locator('afro-site-assistant');
+    await page.locator('afro-footer').scrollIntoViewIfNeeded();
+    const launcher = assistant.locator('#fab'), panel = assistant.locator('#panel');
+    await expect(launcher).toBeVisible();
+    await expect(panel).toHaveJSProperty('open', false);
+    await expect(panel).toHaveAttribute('inert', '');
+    const placement = await assistant.evaluate(el => {
+      const rect = node => { const r = node.getBoundingClientRect(); return { top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height }; };
+      return { host:rect(el), heading:rect(document.querySelector('h1')), setup:rect(document.querySelector('.practice-setup')), exercise:rect(document.querySelector('#practice-session')), viewport:innerWidth };
+    });
+    observation.geometry.push({ state:'closed at footer', ...placement });
+    expect(placement.host.height).toBeGreaterThanOrEqual(44);
+    expect(placement.host.left).toBeGreaterThanOrEqual(0);
+    expect(placement.host.right).toBeLessThanOrEqual(placement.viewport);
+    expect(placement.host.top).toBeGreaterThanOrEqual(placement.heading.bottom);
+    expect(placement.host.bottom).toBeLessThanOrEqual(placement.setup.top);
+    expect(placement.host.bottom).toBeLessThanOrEqual(placement.exercise.top);
+    await launcher.scrollIntoViewIfNeeded();
+    const before = { top:(await launcher.boundingBox()).y, scroll:await page.evaluate(() => scrollY) };
+    await page.mouse.wheel(0, 300);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before.scroll);
+    const after = { top:(await launcher.boundingBox()).y, scroll:await page.evaluate(() => scrollY) };
+    observation.geometry.push({ state:'closed scroll', before, after });
+    expect(Math.abs(after.top - before.top + after.scroll - before.scroll)).toBeLessThanOrEqual(2);
+    await hit(answer);
+    await answer.click();
+    await expect(answer).toBeChecked();
+    await hit(launcher);
+    await launcher.focus();
+    await expect(launcher).toBeFocused();
+    await launcher.press('Enter');
+    await expect(panel).toHaveClass(/open/);
+    await expect(panel).toHaveJSProperty('open', true);
+    expect(await panel.evaluate(el => el.matches(':modal'))).toBe(true);
+    await expect(assistant.locator('#inp')).toBeFocused();
+    await expect.poll(async () => {
+      const rect = await panel.boundingBox(), viewport = page.viewportSize();
+      return rect && rect.x >= 0 && rect.y >= 0 && rect.x + rect.width <= viewport.width + 1 && rect.y + rect.height <= viewport.height + 1;
+    }).toBe(true);
+    await page.keyboard.press('Escape');
+    await expect(panel).toHaveJSProperty('open', false);
+    await expect(panel).toHaveAttribute('inert', '');
+    await expect(launcher).toBeFocused();
+    await launcher.click();
+    await expect(panel).toHaveJSProperty('open', true);
+    await hit(assistant.locator('#close'));
+    await assistant.locator('#close').click();
+    await expect(panel).not.toHaveClass(/open/);
+    await expect(panel).toHaveJSProperty('open', false);
+    await expect(launcher).toBeFocused();
+    await expect(answer).toBeChecked();
+    const check = session.getByRole('button', { name:'Check answer', exact:true });
+    await hit(check);
+    await check.click();
+    await expect(page.locator('#practice-status')).toHaveText('Answer checked.');
+    await expect(session.locator('.practice-feedback')).toBeVisible();
+    await session.getByText('Show explanation', { exact:true }).click();
+    await expect(session.locator('.practice-explanation')).toHaveAttribute('open', '');
+    const next = session.getByRole('button', { name:'Next question', exact:true });
+    await hit(next);
+    await next.click();
+    await expect(session.locator('h2')).toHaveText('Question 2 of 24');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  } finally {
+    await testInfo.attach('education assistant flow and native controls', { body:Buffer.from(JSON.stringify(observation,null,2)), contentType:'application/json' });
+  }
+  expect(observation.pageErrors).toEqual([]);
+  expect(observation.consoleErrors).toEqual([]);
+  expect(observation.writes).toEqual([]);
+  expect(observation.aiRequests).toEqual([]);
 });
