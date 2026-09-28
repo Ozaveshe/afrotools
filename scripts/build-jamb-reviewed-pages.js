@@ -82,9 +82,14 @@ function renderYear(subject, year, candidates, ledger, years = []) {
   const multiplePublisherCollections = publisherCollection && new Set(approved.map(q => q.source_provenance.publisher)).size > 1;
   const collectionLabel = multiplePublisherCollections ? 'collections' : 'collection';
   const collectionArticle = multiplePublisherCollections ? '' : 'a ';
-  const timedPracticeCollection = ((subject === 'english' && String(year) === '2025')
+  const english2024Practice = subject === 'english' && String(year) === '2024';
+  const timedPracticeMinimum = english2024Practice ? 30 : 40;
+  const nonvisualPracticeCount = approved.filter(q => !q.image && !q.has_diagram).length;
+  const timedPracticeCollection = ((subject === 'english' && ['2024', '2025'].includes(String(year)))
     || (subject === 'mathematics' && ['2023', '2024', '2025'].includes(String(year))))
-    && publisherCollection && approved.filter(q => !q.image && !q.has_diagram).length >= 40;
+    && publisherCollection && nonvisualPracticeCount >= timedPracticeMinimum;
+  const timedPracticeQuantity = english2024Practice && nonvisualPracticeCount === approved.length
+    ? `Practise ${Math.min(40, nonvisualPracticeCount)}` : 'Take up to 40';
   const englishTimedCollection = englishHub ? approved.filter(q => Number(q.year) === 2025) : [];
   const englishTimedYear = englishTimedCollection.length > 0
     && englishTimedCollection.every(q => q.source_provenance?.year_basis === 'publisher-collection')
@@ -135,7 +140,7 @@ ${schemas.map(schema => `<script type="application/ld+json">${jsonScript(schema)
 <h1>${englishHub && approved.length ? 'JAMB Use of English practice by year' : `JAMB ${esc(paper)}${publisherCollection ? ' practice collection' : ''}`}</h1>
 ${subject === 'mathematics' && year === null ? '<p><a href="/jamb/mathematics/recent-practice/">Practise five Mathematics tasks from a source-labelled 2023 collection</a></p>' : ''}
 ${englishHub ? renderEnglishHub(approved, yearCounts, englishTimedYear) : year === null && approved.length ? `<nav aria-label="Browse paper years"><h2>Browse by year</h2><p>${[...yearCounts.keys()].sort((a,b) => b-a).map(value => `<a href="/jamb/${subject}/${value}/">${value} (${yearCounts.get(value)})</a>`).join(' · ')}</p></nav>` : ''}
-${englishHub ? '' : approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>${publisherCollection ? `These adapted questions come from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed. ` : ''}Practice selection: full-paper coverage has not been confirmed.</p>${timedPracticeCollection ? `<section class="jamb-reviewed-practice" aria-label="Timed CBT practice"><h2>Test yourself before reading answers</h2><p>Take up to 40 reviewed ${esc(name)} questions from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel} in a timed CBT session. See your raw score and explanations afterward. This is not a confirmed complete UTME paper.</p><a class="jb-btn jb-btn-primary" href="/jamb/cbt/?subject=${encodeURIComponent(subject)}&amp;year=${encodeURIComponent(year)}">Start ${esc(year)} ${esc(name)} CBT practice</a></section>` : ''}<div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
+${englishHub ? '' : approved.length ? `<p>${approved.length} reviewed questions with answers and explanations.</p><p>${publisherCollection ? `These adapted questions come from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel}. The original UTME sitting and question numbers are unconfirmed. ` : ''}Practice selection: full-paper coverage has not been confirmed.</p>${timedPracticeCollection ? `<section class="jamb-reviewed-practice" aria-label="Timed CBT practice"><h2>Test yourself before reading answers</h2><p>${timedPracticeQuantity} reviewed ${esc(name)} questions from ${collectionArticle}publisher-labelled ${esc(year)} ${collectionLabel}${english2024Practice ? ' in 40 minutes' : ' in a timed CBT session'}. See your raw score and explanations afterward. This is not a confirmed complete UTME paper.</p><a class="jb-btn jb-btn-primary" href="/jamb/cbt/?subject=${encodeURIComponent(subject)}&amp;year=${encodeURIComponent(year)}">Start ${esc(year)} ${esc(name)} CBT practice</a></section>` : ''}<div class="qcard-list">${approved.map(q => renderCard(q, year === null)).join('\n')}</div>`
     : `<section aria-labelledby="review-heading"><h2 id="review-heading">This ${year === null ? 'subject' : 'paper'} is under review</h2><p>Questions and answer keys will appear here once their sources, wording and answers have been checked.</p><p>You can continue organising your revision with the study planner.</p></section>`}
 <p class="jamb-reviewed-actions"><a class="jb-btn${englishHub ? '' : ' jb-btn-primary'}" href="/tools/study-planner/">Plan your study week</a>${englishHub ? '<a href="/jamb/">Explore AfroJAMB</a>' : `<a href="/jamb/${subject}/">All ${esc(name)} years</a>`}</p>
 </main>

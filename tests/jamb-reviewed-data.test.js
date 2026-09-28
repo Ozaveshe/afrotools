@@ -68,7 +68,7 @@ test('later quality holds remove ambiguous items from scored data and public pag
   const ledger = read('data/jamb/review-ledger.json');
   const held = [
     ['english-2023-poscholars-49', 2023, 19, 18],
-    ['english-2024-myschool-69979', 2024, 26, 25]
+    ['english-2024-myschool-69979', 2024, 35, 34]
   ];
   const published = buildPublications(pool, read('ops/jamb/source-flashcards.json'), ledger);
   const scoredIds = new Set(published.files['pools/practice-pool.json'].questions.map(question => question.id));
