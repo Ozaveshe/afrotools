@@ -1,8 +1,11 @@
 (function () {
   'use strict';
 
-  var article = document.querySelector('.article-body, main article, article');
+  // Prefer the reading column; querySelector on a selector list otherwise
+  // returns the outer article first and puts generated controls beside it.
+  var article = document.querySelector('.article-body') || document.querySelector('main article, article');
   if (!article) return;
+  var readingRegion = article.closest('.article-layout') || article;
 
   function slugify(value) {
     return String(value || '').toLowerCase().normalize('NFKD')
@@ -14,7 +17,9 @@
     var headings = Array.prototype.slice.call(article.querySelectorAll('h2'));
     if (headings.length < 3) return;
     var used = {};
-    headings.forEach(function (heading) {
+    // Preserve existing fragment targets for FAQs and recommendations too,
+    // while keeping the contents list focused on the guide itself.
+    Array.prototype.slice.call(readingRegion.querySelectorAll('h2')).forEach(function (heading) {
       var base = heading.id || slugify(heading.textContent);
       var id = base;
       var suffix = 2;
@@ -61,8 +66,8 @@
     var queued = false;
     function update() {
       queued = false;
-      var start = article.getBoundingClientRect().top + window.scrollY;
-      var end = start + article.offsetHeight - window.innerHeight;
+      var start = readingRegion.getBoundingClientRect().top + window.scrollY;
+      var end = start + readingRegion.offsetHeight - window.innerHeight;
       var percent = end <= start ? 100 : ((window.scrollY - start) / (end - start)) * 100;
       var bounded = Math.max(0, Math.min(100, percent));
       progress.style.width = bounded + '%';

@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const {
-  validateModel, generateOutputs, renderFrontPage, replaceFrontPageBlock, escapeHtml, escapeXml
+  validateModel, generateOutputs, renderFrontPage, replaceFrontPageBlock, escapeHtml, escapeXml, normalizeNewsOutput
 } = require('../scripts/generate-election-news');
 
 const root = path.resolve(__dirname, '..');
@@ -76,8 +76,16 @@ test('source-reviewed briefs generate stable article, archive, and RSS output', 
   assert.match(trackerHtml, /href="\/tools\/africa-election-tracker\/news\/"/);
 
   for (const [relative, expected] of first) {
-    assert.equal(fs.readFileSync(path.join(root, relative), 'utf8'), expected, relative + ' has drifted');
+    assert.equal(normalizeNewsOutput(fs.readFileSync(path.join(root, relative), 'utf8')), normalizeNewsOutput(expected), relative + ' has drifted');
   }
+});
+
+test('release chat pointer does not hide newsroom content or source drift', () => {
+  const source = '<html lang="en"><body><p>Official notice</p><a href="https://example.org/notice">Source</a></body></html>';
+  const released = source.replace('<html', '<html data-chat-bundle="/assets/js/bundles/chat.12345678.min.js"');
+  assert.equal(normalizeNewsOutput(source), normalizeNewsOutput(released));
+  assert.notEqual(normalizeNewsOutput(source), normalizeNewsOutput(released.replace('Official notice', 'Unreviewed result')));
+  assert.notEqual(normalizeNewsOutput(source), normalizeNewsOutput(released.replace('/notice', '/other-notice')));
 });
 
 test('same-day briefs lead with the newer primary official notice, not slug spelling', () => {

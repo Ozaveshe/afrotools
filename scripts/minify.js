@@ -9,6 +9,7 @@ const path = require('path');
 const vm = require('vm');
 const { minify } = require('terser');
 const { buildNavbarData } = require('./build-navbar-data');
+const { buildUiTypography } = require('./build-ui-typography');
 const { getEngineTerserOptions } = require('./lib/engine-build');
 const {
   writeFileSyncWithRetry: writeTempFileSyncWithRetry,
@@ -120,6 +121,7 @@ function writeFileIfChanged(filePath, data, encoding) {
 }
 
 async function run() {
+  buildUiTypography();
   buildNavbarData();
   let errorCount = 0;
   let jsTotal = { before: 0, after: 0, count: 0 };

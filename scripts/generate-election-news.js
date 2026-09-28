@@ -8,6 +8,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const { stableId } = require('./lib/content-integrity');
+const { MANAGED_CHAT_BUNDLE_RE } = require('./lib/shared-asset-references');
 
 const ROOT = path.resolve(__dirname, '..');
 const DATA_PATH = path.join(ROOT, 'data/government/election-news.json');
@@ -268,6 +269,12 @@ function assetUrl(publicPath) {
 
 function rawAssetHash(publicPath) {
   return crypto.createHash('md5').update(fs.readFileSync(path.join(ROOT, publicPath.slice(1)))).digest('hex').slice(0, 8);
+}
+
+// The release asset pass owns this attribute. Keep every editorial, source,
+// schema, route and asset-reference byte in the source-owner comparison.
+function normalizeNewsOutput(body) {
+  return String(body).replace(MANAGED_CHAT_BUNDLE_RE, '').replace(/\r\n?/g, '\n');
 }
 
 function sharedHead(locale, title, summary, route, feedRoute, schema, alternates, breadcrumbCurrent) {
@@ -532,7 +539,7 @@ function main() {
   for (const [relative, body] of outputs) {
     const absolute = path.join(ROOT, relative);
     const current = fs.existsSync(absolute) ? fs.readFileSync(absolute, 'utf8') : '';
-    if (current === body) continue;
+    if (normalizeNewsOutput(current) === normalizeNewsOutput(body)) continue;
     if (check) {
       drift.push(relative);
     } else {
@@ -565,4 +572,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { validateModel, generateOutputs, renderFrontPage, replaceFrontPageBlock, escapeHtml, escapeXml, main };
+module.exports = { validateModel, generateOutputs, renderFrontPage, replaceFrontPageBlock, escapeHtml, escapeXml, normalizeNewsOutput, main };

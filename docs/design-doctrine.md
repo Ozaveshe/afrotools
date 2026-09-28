@@ -19,7 +19,7 @@ The system should feel boring in the best way: one type scale, one spacing scale
 ## System Contract
 
 - **Page shell:** use `.page-shell`, `.page-header`, `.page-title`, `.page-description`, `.container`, and `.section` before inventing a new page frame.
-- **Typography:** use `DM Sans` for product UI, dense tools, labels, controls, and cards. Reserve `Instrument Serif` for large editorial or brand moments only, using `.headline-editorial` when that treatment is intentional.
+- **Typography:** use self-hosted `DM Sans` for public headings, body copy, product UI, labels, controls, and cards. The shared typography stylesheet also normalizes legacy editorial titles. Keep document/export template typography scoped to its output.
 - **Spacing:** use `--space-*`, `--space-section`, `--page-gutter`, and `--card-padding`. Do not use arbitrary margins to force rhythm.
 - **Buttons:** use `.btn` plus `.btn-primary`, `.btn-secondary`, `.btn-ghost`, or `.btn-danger`. Buttons are sentence case by default, not all caps.
 - **Cards:** use `.card`, `.card-header`, `.card-title`, and `.card-description`. Cards are quiet surfaces for grouping or interaction, not a default page-section wrapper.
@@ -39,7 +39,7 @@ The system should feel boring in the best way: one type scale, one spacing scale
 
 ### 2. Typography carries the brand
 
-- Use `Instrument Serif` for large statements and page-defining headlines.
+- Use upright `DM Sans` for large statements and page-defining headlines.
 - Use `DM Sans` for body, controls, labels, and dense product UI.
 - Use `JetBrains Mono` for commands, metrics, file paths, and operational metadata.
 
