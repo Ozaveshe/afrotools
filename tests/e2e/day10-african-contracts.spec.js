@@ -366,20 +366,21 @@ test("21 Cost-of-living comparator proves city totals and household budget respo
   await verify();
 });
 
-test("22 AfroAtlas generates a Nigeria investment brief and clears on unknown selection", async ({ page }) => {
+test("22 AfroAtlas generates a dated Nigeria research brief and clears on unknown selection", async ({ page }) => {
   const verify = await openApp(page, "/tools/afroatlas/");
   await page.locator("#aa-brief-country").selectOption("NG");
-  await page.locator("#aa-brief-angle").selectOption("investment");
-  await page.locator("#aa-brief-budget").fill("1000");
+  await page.locator("#aa-brief-angle").selectOption("market");
   await page.locator("#aa-brief-generate").click();
-  await expect(page.locator("#aa-brief-status")).toHaveText("Brief generated");
-  await expect(page.locator("#aa-brief-output")).toContainText("GDP$363B");
-  await expect(page.locator("#aa-brief-output")).toContainText("Population224M");
+  await expect(page.locator("#aa-brief-status")).toContainText("Brief ready with observation years");
+  const source = require('../../data/afroatlas/research-indicators.json');
+  await expect(page.locator("#aa-brief-text")).toHaveValue(new RegExp('Snapshot retrieved: ' + source.retrieved_at.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  await expect(page.locator("#aa-brief-text")).toHaveValue(/NY\.GDP\.MKTP\.CD\?locations=NG/);
   await page.locator("#aa-brief-country").evaluate((element) => {
     element.value = "";
   });
   await page.locator("#aa-brief-generate").click();
-  await expect(page.locator("#aa-brief-status")).not.toHaveText("Brief generated");
+  await expect(page.locator("#aa-brief-status")).toHaveText("Choose a country to build a brief.");
+  await expect(page.locator("#aa-brief-text")).toHaveValue('');
   await verify();
 });
 

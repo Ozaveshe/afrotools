@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11691 |
-| Indexable pages | 7876 |
+| Public pages | 11692 |
+| Indexable pages | 7877 |
 | Permanent and temporary redirects | 2965 |
 | Rewrites | 108 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4250 |
-| Documented fallbacks | 14961 |
-| Routes eligible for primary sitemaps | 7876 |
+| Genuine equivalence groups | 4251 |
+| Documented fallbacks | 14962 |
+| Routes eligible for primary sitemaps | 7877 |
 
 ## Locale Coverage
 
-- en: 6136 page records
+- en: 6137 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -34,7 +34,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - country-tool: 514
 - legal: 4
 - page: 5549
-- tool: 4008
+- tool: 4009
 - widget: 379
 
 ## Canonical Migrations
@@ -3811,6 +3811,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:30d681f16ae6: en=`/tools/pdf-workspace/`, fr=`/fr/tools/espace-pdf/`, sw=`/sw/zana/nafasi-pdf/`; x-default=`/tools/pdf-workspace/`
 - equivalence:30d82647dd85: en=`/tools/maternity-leave/mauritius/`; x-default=`/tools/maternity-leave/mauritius/`
 - equivalence:30e3cfa0af78: en=`/tools/tenancy-agreement/mozambique`, fr=`/fr/tools/contrat-bail/mozambique`; x-default=`/tools/tenancy-agreement/mozambique`
+- equivalence:30e6a0d1df28: en=`/tools/afroatlas/sources/`; x-default=`/tools/afroatlas/sources/`
 - equivalence:30ec46f9d29a: fr=`/fr/widgets/acompte-contrat/`; x-default=`/fr/widgets/acompte-contrat/`
 - equivalence:30f3fbbbe646: en=`/suggest-tool/`, fr=`/fr/suggest-tool/`, sw=`/sw/pendekeza-zana/`; x-default=`/suggest-tool/`
 - equivalence:30f746746d2e: en=`/tools/photography-pricing/`, fr=`/fr/tools/prix-seance-photo/`, sw=`/sw/zana/bei-ya-upigaji-picha/`; x-default=`/tools/photography-pricing/`
