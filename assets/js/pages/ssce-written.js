@@ -21,11 +21,24 @@
   function capture(){if(current&&answer&&(dirty.has(current.id)||draft.entries[current.id])){draft.entries[current.id]={answer:answer.value,checks:checks.map(function(c){return c.checked;})};}}
   function download(name,text,type){var url=URL.createObjectURL(new Blob([text],{type:type})),a=el('a');a.href=url;a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
   function diagram(question){
-    var kind=question.figure,graph=kind==='quadratic-line',ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',graph?'0 0 440 340':'0 0 320 300');svg.setAttribute('class',graph?'written-diagram written-diagram-graph':'written-diagram');svg.setAttribute('role','img');
+    var kind=question.figure,graph=kind==='quadratic-line'||kind==='quadratic-gradient',ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',kind==='quadratic-gradient'?'0 0 360 380':graph?'0 0 440 340':'0 0 320 300');svg.setAttribute('class',graph?'written-diagram written-diagram-graph'+(kind==='quadratic-gradient'?' written-diagram-waec-graph':''):'written-diagram');svg.setAttribute('role','img');
     function add(tag,attrs,text){var node=document.createElementNS(ns,tag);Object.keys(attrs||{}).forEach(function(k){node.setAttribute(k,attrs[k]);});if(text)node.textContent=text;svg.append(node);return node;}
     var description=question.figureAlt||(kind==='equilateral-sector'?'Equilateral triangle PQR of side 18 centimetres. P is at the top, Q and R are the base endpoints and M is their midpoint. The arc AB has centre P and touches the base at M. The two regions between the arc and the base are shaded.':'O is the centre of a circle with radius 7 centimetres. OM points horizontally right. ON makes a 60 degree angle above OM. T is directly below N on OM. The region bounded by NT, TM and arc NM is shaded.');
     svg.setAttribute('aria-label',t(description));add('title',{},t(description));
-    if(graph){
+    if(kind==='quadratic-gradient'){
+      svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+      var gx=function(x){return 48+(x+8)*18;},gy=function(y){return 70-y*3.6;};
+      for(var gridX=-8;gridX<=8;gridX++)add('path',{d:'M'+gx(gridX)+' 16 V340',class:'written-grid','stroke-opacity':gridX%2?'.35':'1'});
+      for(var gridY=-75;gridY<=15;gridY++)add('path',{d:'M48 '+gy(gridY)+' H336',class:'written-grid','stroke-opacity':gridY%10?'.35':'1'});
+      for(var tickX=-8;tickX<=8;tickX+=2)if(tickX!==0)add('text',{x:gx(tickX),y:93,'text-anchor':'middle'},String(tickX));
+      for(var tickY=-70;tickY<=10;tickY+=10)if(tickY!==0)add('text',{x:40,y:gy(tickY)+5,'text-anchor':'end'},String(tickY));
+      add('path',{d:'M48 70 H343 M192 340 V10',class:'written-axis'});
+      add('text',{x:345,y:65},'x');add('text',{x:199,y:14},'y');add('text',{x:182,y:91},'0');
+      var curve=[];for(var point=0;point<=160;point++){var value=-8+point/10;curve.push((point?'L':'M')+gx(value)+' '+gy(-value*value+2*value+8));}
+      add('path',{d:curve.join(' '),class:'written-curve'});
+      add('path',{d:'M'+gx(-8)+' '+gy(-39)+' L'+gx(5.5)+' '+gy(15),class:'written-guide-line'});
+      [[-5,-27,'P'],[3,5,'Q']].forEach(function(v){add('circle',{cx:gx(v[0]),cy:gy(v[1]),r:3,fill:'currentColor'});add('text',{x:gx(v[0])+(v[2]==='Q'?9:-15),y:gy(v[1])-8},v[2]);});
+    }else if(graph){
       var px=function(x){return 50+(x+4)*42;},py=function(y){return 282-y*7;};
       for(var x=-4;x<=4;x++){add('path',{d:'M'+px(x)+' 37 V317',class:'written-grid'});add('text',{x:px(x),y:305,'text-anchor':'middle'},String(x));}
       for(var y=-5;y<=35;y+=5){add('path',{d:'M50 '+py(y)+' H386',class:'written-grid'});if(y!==0)add('text',{x:39,y:py(y)+4,'text-anchor':'end'},String(y));}

@@ -6,20 +6,20 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 11691 |
-| native | 9120 |
+| rawPages | 11692 |
+| native | 9121 |
 | localizedShell | 2517 |
 | englishFallback | 33 |
 | unavailable | 20 |
 | deprecated | 1 |
-| indexableEligible | 7876 |
-| sitemapEligible | 7876 |
+| indexableEligible | 7877 |
+| sitemapEligible | 7877 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 6136 | 6136 | 0 | 0 | 0 | 0 | 4009 | 180 |
+| en | default | 6137 | 6137 | 0 | 0 | 0 | 0 | 4010 | 180 |
 | fr | launched | 3807 | 2188 | 1618 | 0 | 0 | 1 | 2179 | 180 |
 | sw | launched | 1596 | 763 | 828 | 5 | 0 | 0 | 1584 | 180 |
 | yo | partial | 46 | 10 | 13 | 3 | 20 | 0 | 23 | 180 |
@@ -38,7 +38,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
 | country-tool | 514 | 186 | 327 | 0 | 0 | 1 | 510 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
-| page | 5549 | 4819 | 678 | 32 | 20 | 0 | 2459 |
+| page | 5550 | 4820 | 678 | 32 | 20 | 0 | 2460 |
 | tool | 4008 | 2640 | 1368 | 0 | 0 | 0 | 3658 |
 | widget | 379 | 235 | 144 | 0 | 0 | 0 | 145 |
 

@@ -313,3 +313,79 @@
   border-color: var(--ak-line);
   color: var(--ak-text);
 }
+
+/* A rendered meal plan is the useful print view of the atlas home page. */
+@media print {
+  @page { size: A4; margin: 12mm; }
+
+  body[data-ak-print-plan],
+  body[data-ak-print-plan] > .ak-page {
+    margin: 0;
+    background: #fff !important;
+    color: #111 !important;
+  }
+  body[data-ak-print-plan] > :not(.ak-page),
+  body[data-ak-print-plan] > .ak-page > :not(#cook-this-week),
+  body[data-ak-print-plan] #cook-this-week .ak-planner-card > :not(#ak-plan-result),
+  body[data-ak-print-plan] #ak-plan-result :is(.ak-plan-result-actions, .ak-planner-actions, .ak-plan-day-image, button, svg) {
+    display: none !important;
+  }
+  body[data-ak-print-plan] :is(#cook-this-week, .ak-planner-card, #ak-plan-result, .ak-plan-output) {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #fff !important;
+    box-shadow: none;
+  }
+  body[data-ak-print-plan] #ak-plan-result * {
+    color: #111 !important;
+    background: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body[data-ak-print-plan] :is(.ak-plan-output-head, .ak-plan-output-grid, .ak-plan-day-grid) {
+    display: block;
+    padding: 0;
+  }
+  body[data-ak-print-plan] .ak-plan-output-head { margin-bottom: 4mm; }
+  body[data-ak-print-plan] .ak-plan-output-head h3 { font-size: 20pt; }
+  body[data-ak-print-plan] .ak-plan-output-head p { margin: 2mm 0; font-size: 10pt; }
+  body[data-ak-print-plan] .ak-plan-chip-row { margin: 0 0 5mm; gap: 2mm; }
+  body[data-ak-print-plan] .ak-plan-chip { min-height: 0; padding: 1mm 2mm; font-size: 9pt; }
+  body[data-ak-print-plan] .ak-plan-warning { margin-bottom: 4mm; font-size: 10pt; }
+  body[data-ak-print-plan] .ak-plan-day {
+    margin: 0 0 4mm;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    break-inside: avoid;
+  }
+  body[data-ak-print-plan] .ak-plan-day-copy { display: block; padding: 3mm; }
+  body[data-ak-print-plan] .ak-plan-day-copy > p { display: none; }
+  body[data-ak-print-plan] .ak-plan-day-copy h4 { margin: 1mm 0 2mm; font-size: 14pt; }
+  body[data-ak-print-plan] .ak-plan-day-kicker { font-size: 9pt; }
+  body[data-ak-print-plan] .ak-plan-day-badges { margin: 1mm 0; font-size: 9pt; }
+  body[data-ak-print-plan] .ak-plan-day-meta { display: flex; flex-wrap: wrap; gap: 2mm; }
+  body[data-ak-print-plan] .ak-plan-day-meta span { min-height: 0; padding: 0 2mm 0 0; border: 0; font-size: 9pt; }
+  body[data-ak-print-plan] .ak-plan-shopping {
+    position: static;
+    margin: 5mm 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  body[data-ak-print-plan] .ak-plan-shopping h3 { font-size: 16pt; }
+  body[data-ak-print-plan] .ak-plan-shopping-grid { display: block; }
+  body[data-ak-print-plan] .ak-plan-shopping-group {
+    margin: 0 0 4mm;
+    padding: 3mm;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    break-inside: avoid;
+  }
+  body[data-ak-print-plan] .ak-plan-shopping-group h4 { margin: 0 0 2mm; font-size: 11pt; }
+  body[data-ak-print-plan] .ak-plan-shopping-group ul { padding-left: 5mm; font-size: 10pt; line-height: 1.4; }
+  body[data-ak-print-plan] .ak-plan-shopping-group li { overflow-wrap: anywhere; }
+}

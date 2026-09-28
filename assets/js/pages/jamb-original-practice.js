@@ -9,12 +9,16 @@
   var pool = null;
   var config = null;
   var submitted = false;
+  var timedActive = false;
+  var resultSubject = null;
   var retrySource = [];
   var retry = null;
+  var revisionSession = null;
   var cbt = root.AfroJAMB && root.AfroJAMB.CBT;
   var trust = root.AfroJAMB && root.AfroJAMB.QuestionTrust;
   var resumeCompat = root.AfroJAMB && root.AfroJAMB.OriginalResume;
   var retryFactory = root.AfroJAMB && root.AfroJAMB.OriginalRetry;
+  var day = root.AfroTools && root.AfroTools.studentDay;
   var $ = function (id) { return document.getElementById(id); };
 
   function track(event, subject, count) {
@@ -29,8 +33,154 @@
     }
   }
   function show(screen) {
-    ['setup', 'quiz', 'result'].forEach(function (name) { $(name + '-screen').hidden = name !== screen; });
+    ['setup', 'quiz', 'result', 'revision'].forEach(function (name) { $(name + '-screen').hidden = name !== screen; });
     root.scrollTo(0, 0);
+  }
+  function countBucket(count) { return count < 5 ? '1-4' : count < 15 ? '5-14' : '15+'; }
+  function trackRevision(event, subject, count) {
+    var analytics = root.AfroTools && root.AfroTools.analytics;
+    if (analytics && typeof analytics.track === 'function') {
+      analytics.track(event, { exam: 'jamb', subject: subject, question_count: countBucket(count) });
+    }
+    if (event === 'education_revision_opened' && analytics && typeof analytics.trackEducationPractice === 'function') {
+      analytics.trackEducationPractice('jamb', subject, 'resume');
+    }
+  }
+  function revisionHash() { return new URLSearchParams(root.location.hash.slice(1)).get('revision'); }
+  function clearRevisionHash() {
+    var hash = new URLSearchParams(root.location.hash.slice(1));
+    hash.delete('revision');
+    root.history.replaceState(null, '', root.location.pathname + root.location.search + (hash.toString() ? '#' + hash.toString() : ''));
+  }
+  function announceStudyChange() { root.dispatchEvent(new CustomEvent('student-day-updated')); }
+  function saveRevision() {
+    if (!submitted || !pool || !resultSubject || !day || !retryFactory) return;
+    try {
+      var missed = retrySource.filter(function (item) { return item.graded && !item.correct && (item.wrong || item.skipped); });
+      if (!missed.length) return;
+      var questions = missed.map(function (item) {
+        var question = pool.questions.find(function (candidate) { return candidate.id === item.id; });
+        if (!question || question.subject !== resultSubject) throw new Error('This reviewed set is unavailable. Reload before saving revision.');
+        return question;
+      });
+      trust.assertEligible(questions, pool.review_revision);
+      var revision = { bankId: pool.collection_id, locale: 'en', ids: questions.map(function (question) { return question.id; }),
+        contentHashes: questions.map(function (question) { return question.review.content_sha256; }), reviewRevision: pool.review_revision };
+      var date = day.addDays(day.today(), 1);
+      day.write(localStorage, day.scheduleJambRevision(day.read(localStorage), revision, resultSubject, date));
+      trackRevision('education_revision_saved', resultSubject, questions.length);
+      announceStudyChange();
+      $('revision-save-status').textContent = questions.length + ' missed or skipped ' +
+        (questions.length === 1 ? 'question is' : 'questions are') + ' saved for tomorrow in My study day.';
+      $('study-day-link').hidden = false;
+    } catch (error) {
+      $('revision-save-status').textContent = 'Could not save revision: ' + error.message + ' Your existing study plan and practice drafts are kept.';
+    }
+  }
+  function renderRevision() {
+    if (!revisionSession) return;
+    $('revision-review-panel').hidden = false;
+    var queue = revisionSession.queue, item = queue.current();
+    $('revision-card').hidden = !item;
+    $('revision-complete').hidden = !!item;
+    $('revision-done-btn').hidden = !!item;
+    if (!item) {
+      $('revision-progress').textContent = queue.count + ' of ' + queue.count + ' reviewed';
+      $('revision-complete').textContent = 'You have reviewed every question in this saved set. Mark the study task done when you are ready.';
+      $('revision-complete').focus();
+      return;
+    }
+    $('revision-progress').textContent = (queue.position() - 1) + ' of ' + queue.count + ' reviewed';
+    $('revision-position').textContent = 'Question ' + queue.position() + ' of ' + queue.count;
+    $('revision-question').textContent = item.question;
+    $('revision-passage').hidden = !item.passage;
+    $('revision-passage').textContent = item.passage || '';
+    var options = $('revision-options');
+    options.disabled = false;
+    options.querySelectorAll('label').forEach(function (label) { label.remove(); });
+    Object.keys(item.options).sort().forEach(function (key) {
+      var label = document.createElement('label'); label.className = 'original-option';
+      var input = document.createElement('input');
+      input.type = 'radio'; input.name = 'revision-answer'; input.value = key;
+      var copy = document.createElement('span');
+      var letter = document.createElement('strong'); letter.textContent = key + '.';
+      copy.append(letter, document.createTextNode(item.options[key]));
+      label.append(input, copy); options.appendChild(label);
+    });
+    $('revision-feedback').replaceChildren();
+    $('revision-check-btn').hidden = false;
+    $('revision-next-btn').hidden = true;
+    $('revision-next-btn').textContent = queue.position() === queue.count ? 'Finish review' : 'Next question';
+    $('revision-question').focus();
+  }
+  function openRevision() {
+    var id = revisionHash();
+    if (!id || !pool) return;
+    if (timedActive && !submitted) {
+      $('quiz-status').textContent = 'Finish this timed session before opening a saved revision. Your practice is still running.';
+      clearRevisionHash();
+      return;
+    }
+    revisionSession = null;
+    $('revision-review-panel').hidden = true;
+    $('revision-card').hidden = true;
+    $('revision-complete').hidden = true;
+    $('revision-done-btn').hidden = true;
+    $('revision-done-btn').disabled = false;
+    $('revision-status').textContent = '';
+    $('revision-progress').textContent = '';
+    show('revision');
+    try {
+      if (!day || !retryFactory) throw new Error('The study-day tools could not load. Refresh this page.');
+      var task = day.read(localStorage).tasks.find(function (task) { return task.id === id; });
+      if (!task || task.sourceId !== 'jamb-original-practice' || !task.revision) {
+        throw new Error('This saved revision is unavailable on this device. Open My study day to choose another task.');
+      }
+      var questions = retryFactory.resolveRevision(task.revision, pool);
+      trust.assertEligible(questions, pool.review_revision);
+      revisionSession = { taskId: task.id, revision: task.revision, queue: retryFactory.createRevision(questions) };
+      $('revision-heading').textContent = LABELS[task.revision.subject] + ' revision';
+      trackRevision('education_revision_opened', task.revision.subject, questions.length);
+      renderRevision();
+    } catch (error) {
+      $('revision-heading').textContent = 'Saved JAMB revision';
+      $('revision-status').textContent = error.message;
+      $('revision-heading').focus();
+    }
+  }
+  function checkRevision() {
+    if (!revisionSession) return;
+    var selected = $('revision-options').querySelector('input[name="revision-answer"]:checked');
+    var result = revisionSession.queue.check(selected && selected.value);
+    var feedback = $('revision-feedback');
+    if (!result) { feedback.textContent = 'Choose an answer first.'; return; }
+    var item = revisionSession.queue.current();
+    var verdict = document.createElement('p'); verdict.textContent = result.correct ? 'Correct.' : 'Not quite.';
+    var answer = document.createElement('p'); answer.textContent = 'Correct answer: ' + result.correctAnswer + '. ' + item.options[result.correctAnswer];
+    var details = document.createElement('details');
+    var summary = document.createElement('summary'); summary.textContent = 'Show explanation';
+    var explanation = document.createElement('p'); explanation.textContent = result.explanation;
+    details.append(summary, explanation); feedback.replaceChildren(verdict, answer, details);
+    $('revision-options').disabled = true;
+    $('revision-check-btn').hidden = true;
+    $('revision-next-btn').hidden = false;
+    $('revision-next-btn').focus();
+  }
+  function completeRevision() {
+    if (!revisionSession || revisionSession.queue.current()) return;
+    try {
+      var current = day.read(localStorage), task = current.tasks.find(function (task) { return task.id === revisionSession.taskId; });
+      if (!task || task.sourceId !== 'jamb-original-practice' || !task.revision ||
+          task.revision.subject !== revisionSession.revision.subject ||
+          JSON.stringify(task.revision.ids) !== JSON.stringify(revisionSession.revision.ids) ||
+          JSON.stringify(task.revision.contentHashes) !== JSON.stringify(revisionSession.revision.contentHashes)) {
+        throw new Error('This study task changed in another tab. Open it again before marking it done.');
+      }
+      if (!task.doneAt) day.write(localStorage, day.change(current, task.id, 'done'));
+      $('revision-status').textContent = 'Revision marked done in My study day.';
+      $('revision-done-btn').disabled = true;
+      announceStudyChange();
+    } catch (error) { $('revision-status').textContent = 'Could not mark revision done: ' + error.message + ' Your saved plan is kept.'; }
   }
   function selectedSubject() { return $('subject').value === 'english' ? 'english' : 'mathematics'; }
   function makeConfig(subject) {
@@ -232,6 +382,8 @@
     try {
       var score = cbt.submit();
       submitted = true;
+      timedActive = false;
+      resultSubject = state.subjects[0];
       $('raw-score').textContent = score.total + ' / ' + score.outOf;
       $('score-context').textContent = score.pctCorrect + '% correct · ' + LABELS[state.subjects[0]];
       $('result-note').textContent = (timedOut ? 'Time is up. ' : '') + 'This is a practice result, not a JAMB aggregate or predicted UTME score.';
@@ -244,6 +396,9 @@
       $('retry-btn').hidden = retryCount === 0;
       $('retry-btn').textContent = 'Retry ' + retryCount + ' missed or skipped ' +
         (retryCount === 1 ? 'question' : 'questions');
+      $('save-revision-btn').hidden = retryCount === 0 || !day;
+      $('revision-save-status').textContent = '';
+      $('study-day-link').hidden = true;
       saveHistory(state.subjects[0], score);
       track('education_jamb_original_submit', state.subjects[0], score.outOf);
       renderHistory();
@@ -263,6 +418,10 @@
       if (selected.length !== 12) throw new Error('Incomplete subject set');
       cbt.init(config);
       submitted = false;
+      timedActive = true;
+      revisionSession = null;
+      clearRevisionHash();
+      $('quiz-status').textContent = '';
       retrySource = [];
       $('discard-btn').hidden = true;
       track('education_jamb_original_start', subject, 12);
@@ -283,6 +442,10 @@
       cbt.restore(config, compatible);
       if (cbt.getState().questions.length !== 12) throw new Error('Incomplete saved subject set');
       submitted = false;
+      timedActive = true;
+      revisionSession = null;
+      clearRevisionHash();
+      $('quiz-status').textContent = '';
       track('education_jamb_original_resume', compatible.subjects[0], 12);
       show('quiz'); renderQuestion(true);
     } catch (error) {
@@ -307,6 +470,7 @@
       }
       $('setup-status').textContent = pool.count + ' reviewed original questions are ready.';
       $('start-btn').disabled = false;
+      if (revisionHash()) { openRevision(); return; }
       var saved = cbt.tryRestore('original-practice');
       $('resume-btn').hidden = !resumable(saved);
       renderHistory();
@@ -323,6 +487,19 @@
   $('retry-btn').addEventListener('click', startRetry);
   $('retry-check-btn').addEventListener('click', checkRetry);
   $('retry-next-btn').addEventListener('click', nextRetry);
+  $('save-revision-btn').addEventListener('click', saveRevision);
+  $('revision-check-btn').addEventListener('click', checkRevision);
+  $('revision-next-btn').addEventListener('click', function () {
+    if (revisionSession && revisionSession.queue.next()) renderRevision();
+  });
+  $('revision-done-btn').addEventListener('click', completeRevision);
+  $('revision-back-btn').addEventListener('click', function () {
+    revisionSession = null; clearRevisionHash(); show('setup');
+    $('resume-btn').hidden = !resumable(cbt.tryRestore('original-practice'));
+    $('discard-btn').hidden = !hasSavedPractice();
+    $('page-title').focus();
+  });
+  root.addEventListener('hashchange', openRevision);
   $('again-btn').addEventListener('click', function () { $('resume-btn').hidden = true; $('discard-btn').hidden = true; show('setup'); });
   ready();
 }(window));
