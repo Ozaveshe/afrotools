@@ -88,6 +88,7 @@
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+#salaryValidationStatus:empty,#ugShareStatus:empty{margin:0;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
 <script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
@@ -202,8 +203,9 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
             </div>
             <div class="f-wrap">
               <span class="f-prefix">UGX</span>
-              <input aria-label="Monthly salary" class="f-input" type="number" id="grossSalary" value="1500000" min="100000" max="20000000" step="50000" oninput="onInput(this)" placeholder="Monthly salary">
+              <input aria-label="Monthly salary" aria-describedby="salaryValidationStatus" class="f-input" type="number" id="grossSalary" value="1500000" min="100000" max="20000000" step="50000" oninput="onInput(this)" placeholder="Monthly salary">
             </div>
+            <p class="f-note" id="salaryValidationStatus" role="status" aria-live="polite"></p>
             <div class="f-note">Net income depends on gross salary, residence, the current PAYE schedule, optional LST deducted before PAYE, and NSSF shown separately.</div>
           <!-- Quick Presets -->
           <div class="presets">
@@ -302,6 +304,7 @@ button.tog:focus-visible, button.rate-toggle:focus-visible { outline: 3px solid 
           <button type="button" class="act-btn ug-paye-ai-action" id="ugPayeAskBtn">Ask AfroTools AI</button>
         </div>
         <p id="ugPayeAskStatus" role="status" aria-live="polite"></p>
+        <p class="f-note" id="ugShareStatus" role="status" aria-live="polite"></p>
         <p id="pdfStatus" role="status" aria-live="polite"></p>
         <div class="calc-save-shell" id="calcSaveShell">
           <div class="calc-save-head">
@@ -659,8 +662,64 @@ let CHAT_HISTORY = [];
 
 var fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+let exportRevision = 0;
+let shareAttempt = 0;
+let pdfAttempt = 0;
+
+function resetResultExportFeedback() {
+  exportRevision += 1;
+  shareAttempt += 1;
+  pdfAttempt += 1;
+  document.getElementById('ugShareStatus').textContent = '';
+  document.getElementById('pdfStatus').textContent = '';
+  const button = document.getElementById('pdfBtn');
+  button.disabled = false;
+  button.removeAttribute('aria-busy');
+}
+
+function clearSalaryValidation() {
+  const field = document.getElementById('grossSalary');
+  field.removeAttribute('aria-invalid');
+  field.style.borderColor = '';
+  field.setAttribute('placeholder', 'Monthly salary');
+  document.getElementById('salaryValidationStatus').textContent = '';
+}
+
+function revealFocusedControl(field) {
+  if (document.activeElement !== field) return;
+  const rect = field.getBoundingClientRect();
+  const host = document.querySelector('afro-navbar');
+  const nav = host?.shadowRoot?.querySelector('nav') || host;
+  const top = nav?.getBoundingClientRect().bottom || 0;
+  const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  if (rect.top < top || rect.bottom > innerHeight || rect.left < 0 || rect.right > innerWidth || !field.contains(hit)) {
+    field.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }
+}
+
+function focusInvalidSalary() {
+  const field = document.getElementById('grossSalary');
+  const revision = exportRevision;
+  field.focus({ preventScroll: true });
+  field.scrollIntoView({ block: 'center', behavior: 'instant' });
+  requestAnimationFrame(() => {
+    if (revision !== exportRevision || document.activeElement !== field) return;
+    revealFocusedControl(field);
+  });
+}
+
+for (const id of ['pdfBtn', 'ugShareBtn']) {
+  document.getElementById(id).addEventListener('focus', event => {
+    const field = event.currentTarget;
+    const revision = exportRevision;
+    requestAnimationFrame(() => {
+      if (revision === exportRevision && RESULT) revealFocusedControl(field);
+    });
+  });
+}
 
 function invalidateResult(message) {
+  resetResultExportFeedback();
   RESULT = null;
   document.getElementById('resultsCard')?.classList.remove('on');
   const strip = document.getElementById('employerStrip');
@@ -673,6 +732,8 @@ function invalidateResult(message) {
 
 // ── SLIDER ────────────────────────────────────────────────────
 function onSlider(el) {
+  clearSalaryValidation();
+  if (RESULT) invalidateResult();
   const v = parseInt(el.value);
   document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = fmt(v);
@@ -681,6 +742,7 @@ function onSlider(el) {
   window._sliderDebounce = setTimeout(calculate, 280);
 }
 function onInput(el) {
+  clearSalaryValidation();
   const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
   const s = document.getElementById('salarySlider');
   s.value = v;
@@ -746,9 +808,10 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
   if (!gross || gross <= 0) {
     invalidateResult('Enter a valid salary above zero.');
     const el = document.getElementById('grossSalary');
-    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('aria-invalid', 'true');
+    document.getElementById('salaryValidationStatus').textContent = 'Enter a salary above zero, then calculate again.';
+    focusInvalidSalary(); el.style.borderColor = '#e53e3e';
     el.setAttribute('placeholder', 'Enter a valid salary');
-    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
 
@@ -758,6 +821,8 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
 
   const value = ugandaPayeEngine().calculate({ grossMonthly: gross, regime: isNonRes ? 'NON_RESIDENT' : 'RESIDENT', nssfEnabled: hasNSSF, lstEnabled: hasLST });
   if (!value.ok) return;
+  clearSalaryValidation();
+  resetResultExportFeedback();
   const nssf = value.employeeNssfMonthly;
   const empNSSF = value.employerNssfMonthly;
   const monthlyPAYE = value.monthlyPaye;
@@ -793,7 +858,10 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
   strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross salary + employer NSSF ${fmt(empNSSF)}/mo.`;
   strip.classList.add('on');
 
-  document.getElementById('resultsCard').classList.add('on');
+  const resultCard = document.getElementById('resultsCard');
+  resultCard.style.removeProperty('display');
+  resultCard.removeAttribute('aria-hidden');
+  resultCard.classList.add('on');
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -840,6 +908,7 @@ function renderRows(R, period) {
 
 // ── PERIOD ────────────────────────────────────────────────────
 function setPeriod(period, btn) {
+  if (period !== PERIOD) resetResultExportFeedback();
   PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => {
     b.classList.remove('on');
@@ -930,14 +999,19 @@ async function downloadPdfSummary(){
   if(!RESULT) return;
   const status = document.getElementById('pdfStatus');
   const button = document.getElementById('pdfBtn');
+  const result = RESULT;
+  const revision = exportRevision;
+  const attempt = ++pdfAttempt;
+  const current = () => revision === exportRevision && attempt === pdfAttempt && RESULT === result && button.isConnected;
   if(!window.AfroTools?.pdf) {
     status.textContent = 'PDF export could not load. Reload the page and try again.';
     return;
   }
   button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
   status.textContent = 'Preparing your PDF…';
   try {
-  const R = RESULT;
+  const R = result;
   await window.AfroTools.pdf.generate({
     filename:'afrotools-ug-paye-uganda-' + new Date().toISOString().slice(0,10) + '.pdf',
     title:'Uganda PAYE Summary',
@@ -957,11 +1031,14 @@ async function downloadPdfSummary(){
     ],
     skipGate:true
   });
-  status.textContent = 'PDF prepared. Check your downloads.';
+  if (current()) status.textContent = 'PDF prepared. Check your downloads.';
   } catch (error) {
-    status.textContent = 'PDF export failed. Please try again.';
+    if (current()) status.textContent = 'PDF export failed. Please try again.';
   } finally {
-    button.disabled = false;
+    if (current()) {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+    }
   }
 }
 
@@ -1113,16 +1190,33 @@ function whatsappShare() {
 }
 
 // ── SHARE ─────────────────────────────────────────────────────
-function shareResult() {
+async function shareResult() {
   if (!RESULT) return;
-  const text = `My Uganda PAYE breakdown: Gross UGX ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home UGX ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/uganda/ug-paye`;
-  if (navigator.share) {
-    navigator.share({title:'My Uganda PAYE',text,url:'https://afrotools.com/uganda/ug-paye'});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('ugShareBtn');
-    btn.textContent = '✓ Copied!';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
+  const result = RESULT;
+  const revision = exportRevision;
+  const attempt = ++shareAttempt;
+  const button = document.getElementById('ugShareBtn');
+  const status = document.getElementById('ugShareStatus');
+  const current = () => revision === exportRevision && attempt === shareAttempt && RESULT === result && button.isConnected;
+  const text = `My Uganda PAYE breakdown: Gross UGX ${Math.round(result.gross).toLocaleString()}/mo → Take-home UGX ${Math.round(result.netMonthly).toLocaleString()}/mo (${pct(result.effectiveRate)} effective rate). Calculated at afrotools.com/uganda/ug-paye`;
+  const canShare = typeof navigator.share === 'function';
+  try {
+    if (canShare) {
+      status.textContent = 'Opening share options…';
+      await navigator.share({title:'My Uganda PAYE',text,url:'https://afrotools.com/uganda/ug-paye'});
+      if (current()) status.textContent = 'Share completed.';
+    } else if (typeof navigator.clipboard?.writeText === 'function') {
+      status.textContent = 'Copying summary…';
+      await navigator.clipboard.writeText(text);
+      if (current()) status.textContent = 'Summary copied.';
+    } else {
+      status.textContent = 'Copy is unavailable. Download PDF or select the result text to copy it manually.';
+    }
+  } catch (error) {
+    if (!current()) return;
+    status.textContent = canShare && error?.name === 'AbortError'
+      ? 'Share cancelled. Your result is still available.'
+      : (canShare ? 'Share could not finish.' : 'Copy was blocked.') + ' Download PDF or try again.';
   }
 }
 

@@ -1010,13 +1010,12 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
   for (let index = 2; index <= 5; index += 1) {
     const localImage = findLocalGalleryImage(`${recipe.slug}-${index}`);
     if (localImage) {
-      const role = index === 2 ? "prep" : index === 3 ? "process" : "serving";
       addGalleryImage(
         images,
         seen,
         localImage,
-        recipeImageAlt(recipe, role),
-        index === 2 ? `${recipe.name} ingredients/prep step` : index === 3 ? `${recipe.name} cooking/process step` : `${recipe.name} serving/detail image`
+        recipeImageAlt(recipe),
+        `${recipe.name} additional recipe photo`
       );
     }
   }

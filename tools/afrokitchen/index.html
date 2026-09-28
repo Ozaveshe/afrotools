@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="style.css?v=b73d8c8f">
 <link rel="stylesheet" href="icon-system.css?v=e947352b">
 <link rel="stylesheet" href="cuisine-intelligence.css?v=d0ebe756">
-<link rel="stylesheet" href="responsive-fixes.css?v=f72d0d62">
+<link rel="stylesheet" href="responsive-fixes.css?v=8f22bc13">
 <style>
   #recipes-more-wrap[hidden]{display:none}
   .ak-planner-section{padding:0 20px 56px;background:#fff}
@@ -311,8 +311,9 @@
         </div>
         <div class="ak-planner-field">
           <label for="ak-plan-servings">Servings</label>
-          <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4" aria-describedby="ak-plan-servings-help">
+          <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4" required aria-describedby="ak-plan-servings-help ak-plan-servings-error">
           <p class="ak-planner-help" id="ak-plan-servings-help">Scales the grouped shopping list.</p>
+          <p class="ak-planner-help" id="ak-plan-servings-error" hidden></p>
         </div>
         <div class="ak-planner-field">
           <label for="ak-plan-diet">Diet</label>
@@ -1126,6 +1127,11 @@
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
+  var planCopyAttempt = 0;
+  var planCopyRevision = 0;
+  window.addEventListener('pagehide', invalidatePlanCopy);
+  var planGenerationRevision = 0;
+  window.addEventListener('pagehide', invalidatePlanGeneration);
   var planGenerationCount = 0;
   var SAVED_PLAN_KEY = 'ak_saved_plan_v1';
   var PICKED_RECIPES_KEY = 'ak_meal_plan_v1';
@@ -1620,6 +1626,8 @@
   }
 
   function renderPlanEmpty(message, inputs, matchedCount) {
+    invalidatePlanCopy();
+    invalidatePlanGeneration();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
     document.body.removeAttribute('data-ak-print-plan');
@@ -1657,6 +1665,35 @@
       country: (document.getElementById('ak-plan-country') || {}).value || '',
       occasion: (document.getElementById('ak-plan-occasion') || {}).value || ''
     };
+  }
+
+  function clearPlanServingsError() {
+    var field = document.getElementById('ak-plan-servings');
+    var error = document.getElementById('ak-plan-servings-error');
+    if (field) field.removeAttribute('aria-invalid');
+    if (error) { error.textContent = ''; error.hidden = true; }
+  }
+
+  function validatePlanServings() {
+    var field = document.getElementById('ak-plan-servings');
+    var value = field ? Number(field.value) : NaN;
+    if (field && field.value.trim() !== '' && Number.isInteger(value) && value >= 1 && value <= 30) {
+      clearPlanServingsError();
+      return true;
+    }
+    var message = 'Enter a whole number of servings from 1 to 30.';
+    var error = document.getElementById('ak-plan-servings-error');
+    if (field) field.setAttribute('aria-invalid', 'true');
+    if (error) { error.textContent = message; error.hidden = false; }
+    renderPlanEmpty('Choose a valid servings count before generating a weekly plan.');
+    setPlanStatus(message);
+    setPlanButtonState('idle');
+    revealPlanControl(field);
+    return false;
+  }
+
+  function invalidatePlanGeneration() {
+    planGenerationRevision += 1;
   }
 
   function readPickedRecipes() {
@@ -1787,6 +1824,7 @@
   async function restoreSavedPlan() {
     var saved = readSavedPlan();
     if (!saved || !mealPlannerRecipes.length) return;
+    var generation = ++planGenerationRevision;
     var bySlug = {};
     mealPlannerRecipes.forEach(function (recipe) { bySlug[recipe.slug] = recipe; });
     var recipes = saved.slugs.map(function (slug) { return bySlug[slug]; });
@@ -1800,7 +1838,9 @@
       var field = document.getElementById(id);
       if (field) field.value = saved.inputs[key] == null ? '' : String(saved.inputs[key]);
     });
+    clearPlanServingsError();
     var detailed = await Promise.all(recipes.map(fetchRecipeDetails));
+    if (generation !== planGenerationRevision) return;
     renderPlan(detailed, saved.inputs);
     setPlanStatus('Saved plan restored from this device.');
     if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_restored', { days: saved.inputs.days, recipe_count: detailed.length });
@@ -1903,45 +1943,98 @@
       lines.push('Category: ' + titleCase(recipe.category || 'recipe'));
       lines.push('Time: ' + recipeTotalMinutes(recipe) + ' minutes');
       lines.push('Servings: ' + inputs.servings);
-      lines.push('Recipe: ' + window.location.origin + AKRoutes.recipe(recipe.slug));
+      lines.push('Recipe: ' + window.location.origin + plannedRecipeUrl(recipe.slug, inputs.servings));
       lines.push('');
     });
     lines.push(buildShoppingTextFromGroups(buildGroupedShoppingList(recipes, inputs.servings)));
     return lines.join('\n');
   }
 
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
+  function plannedRecipeUrl(slug, servings) {
+    return AKRoutes.recipe(slug) + '?plan_servings=' + servings;
+  }
+
+  function invalidatePlanCopy() {
+    planCopyRevision += 1;
+  }
+
+  function activePlanControl() {
+    var active = document.activeElement;
+    while (active && active.shadowRoot && active.shadowRoot.activeElement) active = active.shadowRoot.activeElement;
+    return active;
+  }
+
+  function revealPlanControl(control) {
+    if (!control || !control.isConnected || typeof control.focus !== 'function') return;
+    control.focus({ preventScroll: true });
+    var navbar = document.querySelector('afro-navbar'), bottom = 0;
+    if (navbar) {
+      [navbar].concat(navbar.shadowRoot ? Array.prototype.slice.call(navbar.shadowRoot.querySelectorAll('*')) : []).forEach(function (node) {
+        var bounds = node.getBoundingClientRect(), position = window.getComputedStyle(node).position;
+        if ((position === 'fixed' || position === 'sticky') && bounds.height > 20 && bounds.height < 150 && bounds.top < 150) bottom = Math.max(bottom, bounds.bottom);
+      });
     }
-    return new Promise(function (resolve, reject) {
-      try {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
-        resolve();
-      } catch (error) {
-        reject(error);
+    var bounds = control.getBoundingClientRect();
+    if (bounds.top < bottom + 8 || bounds.bottom > window.innerHeight - 8) control.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }
+
+  function fallbackPlanCopy(text, current, button, requestFocus) {
+    if (!current()) return false;
+    var textarea = document.createElement('textarea'), beforeFallback = activePlanControl(), copied = false;
+    var restore = beforeFallback && beforeFallback !== requestFocus && beforeFallback !== document.body && beforeFallback !== document.documentElement ? beforeFallback : button;
+    try {
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      copied = document.execCommand('copy') === true;
+    } catch (error) {
+      copied = false;
+    } finally {
+      textarea.remove();
+      if (current()) revealPlanControl(restore);
+    }
+    return copied;
+  }
+
+  function copyText(text, current, button, requestFocus) {
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        return Promise.resolve(navigator.clipboard.writeText(text)).then(function () {
+          return true;
+        }, function () {
+          return fallbackPlanCopy(text, current, button, requestFocus);
+        });
       }
-    });
+    } catch (error) {
+      // A synchronous Clipboard API denial uses the same local fallback.
+    }
+    return Promise.resolve(fallbackPlanCopy(text, current, button, requestFocus));
   }
 
   function exportTextFile(filename, text) {
-    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    var url = null, link = null, downloaded = false;
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      url = URL.createObjectURL(blob);
+      link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      downloaded = true;
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      if (link) link.remove();
+      if (url) {
+        if (downloaded) setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        else URL.revokeObjectURL(url);
+      }
+    }
   }
 
   function setPlanStatus(message) {
@@ -1971,6 +2064,7 @@
   }
 
   function renderPlan(recipes, inputs) {
+    invalidatePlanCopy();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
     var savedPlan = readSavedPlan();
@@ -1987,7 +2081,7 @@
       : '';
     var cards = recipes.map(function (recipe, index) {
       var countryInfo = AK.COUNTRIES[recipe.country_code] || {};
-      var href = AKRoutes.recipe(recipe.slug);
+      var href = plannedRecipeUrl(recipe.slug, inputs.servings);
       var countryName = recipe.country_name || countryInfo.name || 'Africa';
       var category = titleCase(recipe.category || 'recipe');
       var diet = primaryDietTag(recipe);
@@ -2059,18 +2153,31 @@
     }
     if (copyButton) {
       copyButton.addEventListener('click', function () {
-        copyText(currentShoppingText || currentPlanText).then(function () {
+        copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>';
+        var text = currentShoppingText || currentPlanText;
+        var attempt = ++planCopyAttempt, revision = planCopyRevision, requestFocus = activePlanControl();
+        function current() {
+          return attempt === planCopyAttempt && revision === planCopyRevision && copyButton.isConnected && text === (currentShoppingText || currentPlanText);
+        }
+        copyText(text, current, copyButton, requestFocus).then(function (copied) {
+          if (!current()) return;
+          if (!copied) {
+            setPlanStatus('Clipboard unavailable. Use Export TXT to keep this plan and shopping list.');
+            return;
+          }
           setPlanStatus('Shopping list copied.');
           copyButton.innerHTML = planIcon('copy') + '<span>Copied</span>';
-          setTimeout(function () { copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>'; }, 1400);
-        }).catch(function () {
-          window.prompt('Copy shopping list', currentShoppingText || currentPlanText);
+          setTimeout(function () { if (current()) copyButton.innerHTML = planIcon('copy') + '<span>Copy shopping list</span>'; }, 1400);
         });
       });
     }
     if (exportButton) {
       exportButton.addEventListener('click', function () {
-        exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText);
+        if (!exportTextFile('afrokitchen-' + inputs.days + '-day-plan.txt', currentPlanText)) {
+          setPlanStatus('Text download unavailable. You can still copy the shopping list or print this plan.');
+          revealPlanControl(exportButton);
+          return;
+        }
         setPlanStatus('Plan exported as a text file.');
         if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_exported', { days: inputs.days, recipe_count: recipes.length, format: 'txt' });
       });
@@ -2085,6 +2192,9 @@
   }
 
   async function generateMealPlan(options) {
+    invalidatePlanCopy();
+    var generation = ++planGenerationRevision;
+    if (!validatePlanServings()) return;
     var generateButton = document.getElementById('ak-plan-generate');
     var inputs = getPlanInputs();
     var usePicked = options && options.usePicked === true;
@@ -2128,6 +2238,7 @@
       var savedSlugs = new Set(savedPicks.map(function (recipe) { return recipe.slug; }));
       var picked = savedPicks.concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - savedPicks.length));
       var detailed = await Promise.all(picked.map(fetchRecipeDetails));
+      if (generation !== planGenerationRevision) return;
       renderPlan(detailed, inputs);
       if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_created', {
         days: inputs.days, recipe_count: detailed.length, country_code: inputs.country || 'all', picked_count: savedPicks.length
@@ -2136,11 +2247,12 @@
       setPlanStatus((detailed.length < inputs.days ? 'Partial plan generated from ' : 'Plan generated from ') + countLabel + (savedPicks.length ? ', including ' + savedPicks.length + ' of your picks.' : '.'));
       setPlanButtonState(detailed.length < inputs.days ? 'partial' : 'success');
     } catch (error) {
+      if (generation !== planGenerationRevision) return;
       renderPlanEmpty('The planner could not finish loading recipe details. Try again in a moment.');
       setPlanStatus('Plan generation failed.');
       setPlanButtonState('idle');
     } finally {
-      if (generateButton && generateButton.dataset.state === 'loading') {
+      if (generation === planGenerationRevision && generateButton && generateButton.dataset.state === 'loading') {
         setPlanButtonState('idle');
       }
     }
@@ -2176,6 +2288,7 @@
     var el = document.getElementById(id);
     if (el) {
       el.addEventListener('change', function () {
+        if (id === 'ak-plan-servings') clearPlanServingsError();
         planGenerationCount = 0;
         renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');
@@ -2183,6 +2296,7 @@
         setPlanButtonState('idle');
       });
       el.addEventListener('input', function () {
+        if (id === 'ak-plan-servings') clearPlanServingsError();
         planGenerationCount = 0;
         renderPickedRecipes();
         renderPlanEmpty('Planner choices changed. Generate again to refresh the weekly plan.');

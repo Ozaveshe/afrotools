@@ -81,6 +81,17 @@ html[data-theme="dark"] .result-display .formatted{color:var(--color-primary-dar
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.doc-grid,.review-grid{grid-template-columns:1fr}}
+
+    [data-amount-print-sheet] { display: none; }
+    @media print {
+      body[data-amount-printing] > :not([data-amount-print-sheet]) { display: none !important; }
+      body[data-amount-printing] { margin: 0 !important; padding: 0 !important; background: #fff !important; color: #111 !important; }
+      body[data-amount-printing] [data-amount-print-sheet] { display: block !important; font: 12pt/1.5 Arial, sans-serif; color: #111; background: #fff; overflow-wrap: anywhere; }
+      [data-amount-print-sheet] h1 { color: #111 !important; font-size: 20pt; margin: 0 0 16pt; }
+      [data-amount-print-sheet] dt { font-weight: bold; margin-top: 12pt; }
+      [data-amount-print-sheet] dd { margin: 0; white-space: pre-wrap; }
+      [data-amount-print-sheet] footer { margin-top: 24pt; font-size: 10pt; }
+    }
 </style>
 <script type="application/ld+json">
 {
@@ -502,6 +513,8 @@ const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
 const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
 let lastWords = '';
 let lastDocumentLine = '';
+let amountRevision = 0;
+let amountCopyAttempt = 0;
 
 function numWords(n) {
   if (n === 0) return '';
@@ -573,6 +586,8 @@ function renderReview(amount) {
 }
 
 function convert() {
+  amountRevision += 1;
+  if (typeof finishAmountPrint === 'function') finishAmountPrint();
   const input = document.getElementById('amount');
   const amount = window.AfroTools.engines.amountWordsInput.parse(input.value, '999999999999');
   lastWords = '';
@@ -611,22 +626,111 @@ function setAmt(n) {
 }
 
 function copyWords() {
-  if (convert()) copyAmountText(lastWords);
+  if (convert()) copyAmountText(lastWords, document.querySelector('[onclick="copyWords()"]'));
 }
 
 function copyDocumentLine() {
-  if (convert()) copyAmountText(lastDocumentLine);
+  if (convert()) copyAmountText(lastDocumentLine, document.querySelector('[onclick="copyDocumentLine()"]'));
 }
 
-function copyAmountText(text) {
-  const status = document.getElementById('copyStatus');
-  const fallback = () => {
-    status.textContent = 'Automatic copy is unavailable. Select and copy the result, or use the copy dialog.';
-    window.prompt('Copy amount text', text);
+function copyAmountText(text, button) {
+  const revision = amountRevision;
+  const attempt = ++amountCopyAttempt;
+  const focusedControl = () => {
+    let control = document.activeElement;
+    while (control?.shadowRoot?.activeElement) control = control.shadowRoot.activeElement;
+    return control;
   };
-  if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
-  navigator.clipboard.writeText(text).then(() => { status.textContent = 'Copied.'; }).catch(fallback);
+  const requestFocus = focusedControl();
+  const words = lastWords;
+  const documentLine = lastDocumentLine;
+  const current = () => revision === amountRevision && attempt === amountCopyAttempt &&
+    button && button.isConnected && words === lastWords && documentLine === lastDocumentLine && !!lastWords;
+  const feedback = message => { if (current()) document.getElementById('copyStatus').textContent = message; };
+  const fallback = () => {
+    if (!current()) return;
+    if (focusedControl() !== requestFocus) {
+      feedback('Automatic copy is unavailable. Select and copy the result shown on this page.');
+      return;
+    }
+    feedback('Automatic copy is unavailable. Select and copy the result, or use the copy dialog.');
+    try { window.prompt('Copy amount text', text); }
+    catch (_) { feedback('Automatic copy is unavailable. Select and copy the result shown on this page.'); }
+  };
+  try {
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') { fallback(); return; }
+    Promise.resolve(navigator.clipboard.writeText(text)).then(() => feedback('Copied.'), fallback);
+  } catch (_) { fallback(); }
 }
+
+</script>
+
+<script>
+// This wording export belongs to this page; shared workflow exports are unchanged.
+function revealAmountControl(control) {
+  control.focus({ preventScroll: true });
+  control.scrollIntoView({ behavior: 'instant', block: 'center' });
+  requestAnimationFrame(() => {
+    if (document.activeElement !== control) return;
+    const host = document.querySelector('afro-navbar');
+    const header = (host && (host.shadowRoot?.querySelector('nav') || host))?.getBoundingClientRect().bottom || 0;
+    const rect = control.getBoundingClientRect();
+    if (rect.top < header || rect.bottom > innerHeight) control.scrollIntoView({ behavior: 'instant', block: 'center' });
+  });
+}
+
+function finishAmountPrint() {
+  document.querySelector('[data-amount-print-sheet]')?.remove();
+  document.body.removeAttribute('data-amount-printing');
+}
+
+function prepareAmountPrint() {
+  finishAmountPrint();
+  if (!lastWords || !lastDocumentLine) return;
+  const sheet = document.createElement('section');
+  sheet.setAttribute('data-amount-print-sheet', '');
+  const heading = document.createElement('h1');
+  heading.textContent = 'Ghana Cedi amount wording';
+  sheet.appendChild(heading);
+  const list = document.createElement('dl');
+  const rows = [
+    ['Amount in figures', document.getElementById('fmtResult').textContent],
+    ['Amount in words', lastWords],
+    ['Document format', document.getElementById('docMode').selectedOptions[0].textContent],
+    ['Document line', lastDocumentLine]
+  ];
+  const payee = document.getElementById('payeeName').value.trim();
+  const reference = document.getElementById('docRef').value.trim();
+  if (payee) rows.push(['Payee', payee]);
+  if (reference) rows.push(['Reference', reference]);
+  for (const [label, value] of rows) {
+    const term = document.createElement('dt');
+    const detail = document.createElement('dd');
+    term.textContent = label;
+    detail.textContent = value;
+    list.append(term, detail);
+  }
+  sheet.appendChild(list);
+  const caveat = document.createElement('footer');
+  caveat.textContent = 'AfroTools — Ghana Cedi amount to words. Check that the written amount matches the figures before signing, printing, or sharing. The "Only" suffix is kept to reduce room for extra words after the amount.';
+  sheet.appendChild(caveat);
+  document.body.appendChild(sheet);
+  document.body.setAttribute('data-amount-printing', '');
+}
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('[data-afw-pdf]') || lastWords) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (document.getElementById('amount').disabled) {
+    document.getElementById('amountError').textContent = 'Unable to load the converter. Reload to try again.';
+    return;
+  }
+  document.getElementById('amountError').textContent = 'Enter a valid amount before exporting a wording PDF.';
+  revealAmountControl(document.getElementById('amount'));
+}, true);
+window.addEventListener('beforeprint', prepareAmountPrint);
+window.addEventListener('afterprint', finishAmountPrint);
 </script>
 
 <script>
