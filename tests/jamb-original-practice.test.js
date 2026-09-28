@@ -59,6 +59,18 @@ test('an altered answer, wording or invented year invalidates the original revie
   }
 });
 
+test('neither-of agreement specifies the formal register before requiring a singular answer', () => {
+  const question = source.questions.find(item => item.id === 'ato-english-v1-05');
+  assert.match(question.question, /^In formal written English,/);
+  assert.equal(question.options[question.answer], 'is');
+  assert.match(question.explanation, /formal written English/);
+  assert.match(question.review.independent_check, /formal singular.*informal plural/);
+  assert.ok(question.review.evidence_urls.some(url => url.startsWith('https://dictionary.cambridge.org/grammar/')));
+  const publicItem = publicQuestion(question);
+  assert.equal(publicItem.question, question.question);
+  assert.deepEqual(Object.keys(publicItem.review).sort(), ['content_sha256', 'status']);
+});
+
 test('the first Maths answer keys match independent calculations and inverses', () => {
   const expected = [
     32 + 8 + 4 + 1, 64 * 3 / 8, 8000 * .85, 4, '3 and 4', 5 + 11 * 4,
