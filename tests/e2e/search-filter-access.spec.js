@@ -65,7 +65,7 @@ for (const width of [320, 390, 768, 1280]) {
       const layout = await input.evaluate(element => ({
         fieldWidth: element.getBoundingClientRect().width,
         barWidth: element.closest('.search-bar').getBoundingClientRect().width,
-        overflow: document.documentElement.scrollWidth - innerWidth,
+        overflow: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
       }));
       expect(layout.overflow).toBe(0);
       expect(layout.fieldWidth).toBeGreaterThan(layout.barWidth * 0.6);
@@ -142,7 +142,7 @@ for (const width of [320, 390, 768, 1280]) {
       await page.locator('#results-container [data-query="Nigeria PAYE"]').click();
       await expect(input).toHaveValue('Nigeria PAYE');
       await expect(page.locator('#results-container a[href="/nigeria/ng-salary-tax"]')).toBeVisible();
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+      expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth))).toBe(0);
       expect(pageErrors).toEqual([]);
     });
   }
