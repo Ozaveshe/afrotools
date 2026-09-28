@@ -468,6 +468,36 @@
 <afro-footer></afro-footer>
 
 <script>
+  document.getElementById('contactForm').addEventListener('invalid', revealContactField, true);
+  document.getElementById('contactForm').addEventListener('focusin', function(event) {
+    if (event.target.matches('input:not([type="hidden"]), select, textarea')) revealContactField(event);
+  });
+
+  function revealContactField(event) {
+    const field = event.target;
+    requestAnimationFrame(function() {
+      if (document.activeElement !== field || !field.getClientRects().length) return;
+      const navbar = document.querySelector('afro-navbar');
+      const nodes = navbar ? [navbar, ...(navbar.shadowRoot ? navbar.shadowRoot.querySelectorAll('*') : [])] : [];
+      const headerBottom = Math.max(0, ...nodes.filter(function(node) {
+        const bounds = node.getBoundingClientRect();
+        const position = getComputedStyle(node).position;
+        return ['fixed', 'sticky'].includes(position) && bounds.height > 20 && bounds.height < 150 && bounds.top < 150;
+      }).map(function(node) { return node.getBoundingClientRect().bottom; }));
+      const bounds = field.getBoundingClientRect();
+      if (bounds.top <= headerBottom || bounds.bottom > window.innerHeight) {
+        field.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+    });
+  }
+
+  document.getElementById('contactForm').addEventListener('input', trackContactDraft);
+  document.getElementById('contactForm').addEventListener('change', trackContactDraft);
+
+  function trackContactDraft() {
+    this._contactDraftRevision = (this._contactDraftRevision || 0) + 1;
+  }
+
   document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = this;
@@ -477,12 +507,19 @@
     button.disabled = true;
     status.textContent = 'Sending your message…';
     try {
+      const submittedRevision = form._contactDraftRevision || 0;
+      const submittedBody = new URLSearchParams(new FormData(form)).toString();
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString()
+        body: submittedBody
       });
       if (!response.ok) throw new Error('Submission rejected');
+      const draftChanged = submittedRevision !== (form._contactDraftRevision || 0);
+      if (draftChanged && new URLSearchParams(new FormData(form)).toString() !== submittedBody) {
+        status.textContent = 'Your original message was sent. Your newer edits are still here and have not been sent.';
+        return;
+      }
       form.reset();
       status.textContent = '';
       document.getElementById('successMsg').style.display = 'block';
