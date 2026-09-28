@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
-const { renderSnapshot, renderLocalizedSnapshot, injectSnapshot, injectEditionStatus, escapeHtml } = require('../scripts/generate-election-calendar-snapshot');
+const { renderSnapshot, renderCountryIndex, renderLocalizedSnapshot, injectSnapshot, injectEditionStatus, escapeHtml, ledgerFingerprint } = require('../scripts/generate-election-calendar-snapshot');
 const { localeCopy } = require('../assets/js/pages/election-edition.js');
 
 const root = path.resolve(__dirname, '..');
@@ -28,10 +28,11 @@ test('published HTML snapshot matches every ledger record and is deterministic',
     assert.ok(first.includes(escapeHtml(source.url)), 'missing official source: ' + source.label);
   }
   assert.ok(first.includes('data-snapshot-date="' + tracker.generatedAt + '"'));
+  assert.ok(first.includes('data-ledger-fingerprint="' + ledgerFingerprint(tracker) + '"'));
   assert.match(first, /Upcoming as of \d{1,2} [A-Za-z]{3} \d{4}/);
   assert.match(first, /Earlier records/);
   assert.match(first, /South Sudan: President[\s\S]*?Date: Tentative/);
-  const southSudan = first.match(/<article class="et-election-card" data-snapshot-election-id="ss-president-2026">([\s\S]*?)<\/article>/);
+  const southSudan = first.match(/<article class="et-election-card" id="election-ss-president-2026" data-snapshot-election-id="ss-president-2026">([\s\S]*?)<\/article>/);
   assert.ok(southSudan);
   assert.match(southSudan[1], /<time datetime="2026-12" aria-label="Dec 2026; Tentative">/);
   assert.doesNotMatch(southSudan[1], /<time datetime="2026-12-22"/);
@@ -41,6 +42,39 @@ test('published HTML snapshot matches every ledger record and is deterministic',
   assert.ok(html.indexOf('id="calendar"') < html.indexOf('id="findElection"'), 'calendar must precede utility filters');
   assert.match(html, /<details class="et-card et-filter-panel" id="findElection">/);
   assert.doesNotMatch(html, /government-focus\.js|<afro-related-tools/);
+});
+
+test('ledger fingerprint changes when a same-day election record changes', () => {
+  const changed = clone(tracker);
+  changed.elections[0].notes += ' A later record revision.';
+  assert.notEqual(ledgerFingerprint(changed), ledgerFingerprint(tracker));
+});
+
+test('country files are a deterministic, source-linked static index into every calendar record', () => {
+  const index = renderCountryIndex(tracker);
+  assert.equal(index, renderCountryIndex(tracker));
+  assert.equal(injectSnapshot(html, index, '<!-- ELECTION_COUNTRY_INDEX_START -->', '<!-- ELECTION_COUNTRY_INDEX_END -->'), html);
+  assert.equal((index.match(/class="et-country-file"/g) || []).length, new Set(tracker.elections.map((record) => record.countryCode)).size);
+  const linkedIds = [...index.matchAll(/href="#election-([a-z0-9-]+)"/g)].map((match) => match[1]).sort();
+  assert.deepEqual(linkedIds, tracker.elections.map((record) => record.id).sort());
+  for (const id of linkedIds) assert.ok(html.includes('id="election-' + id + '"'), id + ' is missing its calendar target');
+  assert.ok(html.indexOf('id="countryCoverage"') < html.indexOf('id="calendar"'), 'country files should precede the detailed calendar');
+  assert.match(index, /Ekiti State: Governor/);
+  assert.match(index, /Osun State: Governor/);
+  assert.match(index, /href="#election-ng-ekiti-governor-2026" aria-label="Nigeria: Ekiti State: Governor — 20 Jun 2026 calendar record"/);
+  const nigeria = index.slice(index.indexOf('<h3>Nigeria</h3>'), index.indexOf('<h3>Sao Tome and Principe</h3>'));
+  assert.equal((nigeria.match(/class="et-country-record-source"/g) || []).length, 4, 'each Nigeria election needs its own scoped source');
+  for (const record of tracker.elections.filter((entry) => entry.countryCode === 'NG')) {
+    const latestOfficial = record.sources.filter((source) => source.type === 'official')
+      .sort((a, b) => b.checkedAt.localeCompare(a.checkedAt) || a.label.localeCompare(b.label))[0];
+    assert.ok(nigeria.includes('href="' + escapeHtml(latestOfficial.url) + '"'), record.id + ' is missing its scoped official link');
+  }
+  assert.doesNotMatch(index, /et-country-source/, 'a country-wide source would imply coverage of every record');
+  assert.equal((index.match(/Official link in record:/g) || []).length, tracker.elections.length);
+  assert.match(index, /South Sudan[\s\S]*?<time datetime="2026-12">Dec 2026<\/time><span>Date: Tentative<\/span>/);
+  assert.doesNotMatch(index, /<time datetime="2026-12-22">/);
+  assert.match(html, /<details class="et-mobile-contents">[\s\S]*?<summary>Browse this edition<\/summary>/);
+  assert.match(html, /id="upcomingOnly" type="checkbox" checked disabled/);
 });
 
 test('snapshot leads with dates upcoming on the ledger date, then earlier records', () => {
@@ -97,6 +131,11 @@ test('snapshot escapes text and rejects unsafe official source URLs', () => {
   const unsafe = clone(tracker);
   unsafe.elections[0].sources.find((source) => source.type === 'official').url = 'javascript:alert(1)';
   assert.throws(() => renderSnapshot(unsafe), /official source must use HTTPS/);
+
+  const unsafeId = clone(tracker);
+  unsafeId.elections[0].id = 'bad" onclick="alert(1)';
+  assert.throws(() => renderSnapshot(unsafeId), /election id is unsafe/);
+  assert.throws(() => renderCountryIndex(unsafeId), /safe election id/);
 });
 
 test('snapshot injection refuses missing or duplicate markers', () => {
