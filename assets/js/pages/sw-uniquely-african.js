@@ -7,6 +7,7 @@
 
   var contract = JSON.parse(contractNode.textContent);
   var lastPayload = null;
+  var kitchenCopyRevision = 0;
   var delegateState = {};
 
   function escapeHtml(value) {
@@ -57,7 +58,7 @@
     if (!result.rows || !result.rows.length) { table.innerHTML = ""; table.hidden = true; return; }
     if (contract.id === "afrokitchen") {
       table.hidden = false;
-      table.innerHTML = "<thead><tr><th scope=\"col\">Kiungo</th><th scope=\"col\">Kiasi kilichorekebishwa</th><th scope=\"col\">Kipimo</th></tr></thead><tbody>" + result.rows.map(function (row) {
+      table.innerHTML = "<thead><tr><th scope=\"col\">Kiungo</th><th scope=\"col\">Kiasi</th><th scope=\"col\">Kipimo</th></tr></thead><tbody>" + result.rows.map(function (row) {
         var amount = Number.isFinite(row.scaledAmount) ? row.scaledAmount.toLocaleString("sw-TZ", { maximumFractionDigits: 2 }) : "Kulingana na ladha";
         return "<tr><td>" + escapeHtml(row.name) + "</td><td>" + escapeHtml(amount) + "</td><td>" + escapeHtml(row.unit) + "</td></tr>";
       }).join("") + "</tbody>";
@@ -120,6 +121,57 @@
     else fallback();
   }
 
+  function copyKitchenPayload(payload, button) {
+    if (contract.id !== "afrokitchen" || payload !== lastPayload || !button.isConnected) return;
+    var attempt = ++kitchenCopyRevision;
+    var text = payloadText(payload);
+    function activeFocus() {
+      var node = document.activeElement;
+      while (node && node.shadowRoot && node.shadowRoot.activeElement) node = node.shadowRoot.activeElement;
+      return node;
+    }
+    var focusAtRequest = activeFocus();
+    function current() {
+      return attempt === kitchenCopyRevision && payload === lastPayload && button.isConnected;
+    }
+    function feedback(copied) {
+      if (!current()) return;
+      button.textContent = copied ? "Imenakiliwa" : "Kunakili kumeshindikana";
+      var status = document.querySelector("[data-ua-status]");
+      if (status) status.textContent = copied ? "Mapishi yamenakiliwa." : "Kunakili kumeshindikana. Tumia Pakua TXT kuhifadhi mapishi kamili.";
+    }
+    function fallback() {
+      if (!current()) return;
+      var restoreFocus = activeFocus();
+      if (!restoreFocus || restoreFocus === focusAtRequest || restoreFocus === document.body || restoreFocus === document.documentElement) restoreFocus = button;
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      var copied = false;
+      try {
+        document.body.appendChild(textarea);
+        textarea.focus({ preventScroll: true });
+        textarea.select();
+        copied = document.execCommand("copy") === true;
+      } catch (error) {
+        copied = false;
+      } finally {
+        textarea.remove();
+        if (current() && restoreFocus.isConnected) revealKitchenControl(restoreFocus);
+      }
+      feedback(copied);
+    }
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        Promise.resolve(navigator.clipboard.writeText(text)).then(function () { feedback(true); }, fallback);
+      } else fallback();
+    } catch (error) {
+      fallback();
+    }
+  }
+
   function renderExports(payload) {
     var target = document.querySelector("[data-ua-exports]");
     var labels = { copy:"Nakili", json:"Pakua JSON", txt:"Pakua TXT", pdf:"Pakua PDF", print:"Chapisha" };
@@ -129,7 +181,10 @@
         var kind = button.getAttribute("data-ua-export");
         var basename = "afrotools-" + contract.id + "-sw";
         var text = payloadText(payload);
-        if (kind === "copy") copyText(text, button);
+        if (kind === "copy") {
+          if (contract.id === "afrokitchen") copyKitchenPayload(payload, button);
+          else copyText(text, button);
+        }
         else if (kind === "json") download(basename + ".json", "application/json", JSON.stringify(payload, null, 2) + "\n");
         else if (kind === "txt") download(basename + ".txt", "text/plain;charset=utf-8", text + "\n");
         else if (kind === "print") root.print();
@@ -185,6 +240,7 @@
 
   function clearKitchenOutput() {
     if (contract.id !== "afrokitchen") return;
+    kitchenCopyRevision += 1;
     lastPayload = null;
     ["[data-ua-metrics]", "[data-ua-table]", "[data-ua-exports]"].forEach(function (selector) {
       var node = document.querySelector(selector);
@@ -254,6 +310,7 @@
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault(); clearInvalid();
+    if (contract.id === "afrokitchen") clearKitchenOutput();
     var submit = form.querySelector('button[type="submit"]'); submit.disabled = true;
     var input = collectInput(); var result = await calculate(input); submit.disabled = false;
     var section = document.querySelector("[data-ua-result]"); var status = document.querySelector("[data-ua-status]");

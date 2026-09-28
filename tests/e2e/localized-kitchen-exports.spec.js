@@ -134,7 +134,7 @@ for (const [locale, settings] of Object.entries(locales)) {
       await expect(rows).toHaveCount(15);
       if (locale === 'sw') {
         await expect(page.locator('[data-ua-metrics]')).toHaveClass('ua-metrics');
-        expect(await page.locator('[data-ua-table] th').allTextContents()).toEqual(['Kiungo', 'Kiasi kilichorekebishwa', 'Kipimo']);
+        expect(await page.locator('[data-ua-table] th').allTextContents()).toEqual(['Kiungo', 'Kiasi', 'Kipimo']);
         await expect(rows.first()).toContainText('long-grain parboiled rice');
         await expect(rows.first().locator('td').nth(1)).toHaveText('6');
       }

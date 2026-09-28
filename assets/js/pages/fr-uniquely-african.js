@@ -9,6 +9,7 @@
 
   var contract = JSON.parse(contractNode.textContent);
   var lastPayload = null;
+  var kitchenCopyRevision = 0;
   var delegateState = {};
 
   function escapeHtml(value) {
@@ -321,6 +322,57 @@
     });
   }
 
+  function copyKitchenPayload(payload, button) {
+    if (contract.id !== "afrokitchen" || payload !== lastPayload || !button.isConnected) return;
+    var attempt = ++kitchenCopyRevision;
+    var text = payloadText(payload);
+    function activeFocus() {
+      var node = document.activeElement;
+      while (node && node.shadowRoot && node.shadowRoot.activeElement) node = node.shadowRoot.activeElement;
+      return node;
+    }
+    var focusAtRequest = activeFocus();
+    function current() {
+      return attempt === kitchenCopyRevision && payload === lastPayload && button.isConnected;
+    }
+    function feedback(copied) {
+      if (!current()) return;
+      button.textContent = copied ? "Copié" : "Copie impossible";
+      var status = document.querySelector("[data-ua-status]");
+      if (status) status.textContent = copied ? "Recette copiée." : "La copie a échoué. Utilisez Exporter TXT pour enregistrer la recette complète.";
+    }
+    function fallback() {
+      if (!current()) return;
+      var restoreFocus = activeFocus();
+      if (!restoreFocus || restoreFocus === focusAtRequest || restoreFocus === document.body || restoreFocus === document.documentElement) restoreFocus = button;
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      var copied = false;
+      try {
+        document.body.appendChild(textarea);
+        textarea.focus({ preventScroll: true });
+        textarea.select();
+        copied = document.execCommand("copy") === true;
+      } catch (error) {
+        copied = false;
+      } finally {
+        textarea.remove();
+        if (current() && restoreFocus.isConnected) revealKitchenControl(restoreFocus);
+      }
+      feedback(copied);
+    }
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        Promise.resolve(navigator.clipboard.writeText(text)).then(function () { feedback(true); }, fallback);
+      } else fallback();
+    } catch (error) {
+      fallback();
+    }
+  }
+
   function renderExports(payload) {
     var target = document.querySelector("[data-ua-exports]");
     if (!target) return;
@@ -333,6 +385,10 @@
         var kind = button.getAttribute("data-ua-export");
         var basename = `afrotools-${contract.id}-fr`;
         if (kind === "copy") {
+          if (contract.id === "afrokitchen") {
+            copyKitchenPayload(payload, button);
+            return;
+          }
           var text = payloadText(payload);
           function fallbackCopy() {
             var textarea = document.createElement("textarea");
@@ -468,6 +524,7 @@
 
   function clearKitchenOutput() {
     if (contract.id !== "afrokitchen") return;
+    kitchenCopyRevision += 1;
     lastPayload = null;
     root.AfroToolsFrenchUniquelyAfricanResult = null;
     ["[data-ua-metrics]", "[data-ua-table]", "[data-ua-context]", "[data-ua-exports]"].forEach(function (selector) {
