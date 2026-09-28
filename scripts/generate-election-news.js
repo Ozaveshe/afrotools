@@ -271,6 +271,23 @@ function rawAssetHash(publicPath) {
   return crypto.createHash('md5').update(fs.readFileSync(path.join(ROOT, publicPath.slice(1)))).digest('hex').slice(0, 8);
 }
 
+function chatBundleAttribute() {
+  let manifest;
+  try {
+    manifest = readJson(path.join(ROOT, 'assets/js/bundles/manifest.json'));
+  } catch (_) {
+    throw new Error('Election news needs a readable chat bundle manifest. Run npm run bundle.');
+  }
+  const bundlePath = manifest && manifest.chat && manifest.chat.path;
+  assert(typeof bundlePath === 'string' && /^\/assets\/js\/bundles\/chat\.[a-f0-9]{8}\.min\.js$/.test(bundlePath),
+    'Election news needs a valid local chat bundle path in the bundle manifest.');
+  assert(fs.existsSync(path.join(ROOT, bundlePath.slice(1))),
+    'Election news chat bundle is missing. Run npm run bundle.');
+  // News runs after the release asset pass too. A rewrite must retain its
+  // current manifest pointer so the next full build remains byte stable.
+  return ' data-chat-bundle="' + escapeHtml(bundlePath) + '"';
+}
+
 // The release asset pass owns this attribute. Keep every editorial, source,
 // schema, route and asset-reference byte in the source-owner comparison.
 function normalizeNewsOutput(body) {
@@ -300,7 +317,7 @@ function sharedHead(locale, title, summary, route, feedRoute, schema, alternates
   }
   return [
     '<!doctype html>',
-    '<html lang="' + escapeHtml(locale) + '">',
+    '<html' + chatBundleAttribute() + ' lang="' + escapeHtml(locale) + '">',
     '<head>',
     '<script src="/assets/js/analytics-bootstrap.js?v=' + rawAssetHash('/assets/js/analytics-bootstrap.js') + '" data-loader-version="' + rawAssetHash('/assets/js/lazy-analytics.js') + '" async></script>',
     '<meta charset="utf-8">',
