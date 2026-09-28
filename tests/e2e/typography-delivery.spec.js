@@ -1,4 +1,9 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const stylesheet = fs.readFileSync(path.resolve(__dirname, '../../assets/fonts/typography.css'), 'utf8').replace(/\r\n?/g, '\n');
+const typographyHash = crypto.createHash('md5').update(stylesheet).digest('hex').slice(0, 8);
 
 const routes = [
   '/',
@@ -44,6 +49,7 @@ test.describe('sitewide typography delivery', () => {
 
       expect(result.faceCount).toBeGreaterThan(0);
       expect(result.resources.some((url) => url.includes('/assets/fonts/typography.css'))).toBe(true);
+      expect(result.resources.some((url) => url.includes(`/assets/fonts/typography.css?v=${typographyHash}`))).toBe(true);
       expect(result.resources.some((url) => url.includes('/assets/fonts/dm-sans/dm-sans-latin.woff2'))).toBe(true);
     });
   }

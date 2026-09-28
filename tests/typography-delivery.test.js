@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const crypto = require('node:crypto');
 
 const root = path.resolve(__dirname, '..');
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -10,36 +11,36 @@ test('canonical typography CSS self-hosts the supported AfroTools families', () 
   const css = read('assets/fonts/typography.css');
   assert.match(css, /font-family:\s*'DM Sans'/);
   assert.match(css, /font-weight:\s*100 1000/);
-  assert.match(css, /font-family:\s*'Instrument Serif'/);
+  assert.doesNotMatch(css, /instrument-serif|font-family:\s*'Instrument Serif'/);
   assert.doesNotMatch(css, /fonts\.(?:googleapis|gstatic)\.com/);
 
   [
     'assets/fonts/dm-sans/dm-sans-latin.woff2',
-    'assets/fonts/dm-sans/dm-sans-latin-ext.woff2',
-    'assets/fonts/instrument-serif/instrument-serif-latin.woff2',
-    'assets/fonts/instrument-serif/instrument-serif-latin-ext.woff2',
-    'assets/fonts/instrument-serif/instrument-serif-italic-latin.woff2',
-    'assets/fonts/instrument-serif/instrument-serif-italic-latin-ext.woff2'
+    'assets/fonts/dm-sans/dm-sans-latin-ext.woff2'
   ].forEach((relativePath) => {
     assert.ok(fs.statSync(path.join(root, relativePath)).size > 10_000, `${relativePath} is unexpectedly small`);
   });
 });
 
 test('shared stylesheets and runtime compatibility paths use canonical typography', () => {
-  ['assets/css/tokens.css', 'assets/css/global.css', 'assets/css/design-system.css'].forEach((relativePath) => {
-    assert.match(read(relativePath), /^@import url\('\/assets\/fonts\/typography\.css'\);/);
+  const hash = crypto.createHash('md5').update(read('assets/fonts/typography.css').replace(/\r\n?/g, '\n')).digest('hex').slice(0, 8);
+  const href = `/assets/fonts/typography.css?v=${hash}`;
+  ['assets/css/tokens.css', 'assets/css/global.css', 'assets/css/design-system.css', 'assets/css/navbar.css', 'blog/assets/css/blog-typography.css'].forEach((relativePath) => {
+    assert(read(relativePath).startsWith(`@import url('${href}');`), `${relativePath} must invalidate the old immutable stylesheet`);
   });
 
   const lazyFonts = read('assets/js/lazy-fonts.js');
   assert.match(lazyFonts, /\/assets\/fonts\/typography\.css/);
+  assert(lazyFonts.includes(href), 'Legacy font delivery must request the current stylesheet version');
   assert.doesNotMatch(lazyFonts, /setTimeout|data-delay|fonts\.googleapis/);
 
   const navbar = read('assets/js/components/navbar.js');
   assert.match(navbar, /data-afrotools-typography/);
   assert.match(navbar, /\/assets\/fonts\/typography\.css/);
+  assert(navbar.includes(href), 'Navigation font delivery must request the current stylesheet version');
 
   const navbarCss = read('assets/css/navbar.min.css');
-  assert.match(navbarCss, /^@import url\('\/assets\/fonts\/typography\.css'\);/);
+  assert(navbarCss.startsWith(`@import url('${href}');`), 'The deployed shadow stylesheet must request the current font policy');
   assert.doesNotMatch(navbarCss, /fonts\.googleapis\.com/);
 });
 
