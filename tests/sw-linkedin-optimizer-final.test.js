@@ -14,6 +14,20 @@ const sw = read(target);
 const controller = read("assets/js/pages/creative/linkedin-optimizer-controller.js");
 const engine = read("engines/src/linkedin-optimizer-engine.js");
 const family = read("scripts/build-sw-creative-parity.js");
+const { localizeDocumentLanguage } = require('../scripts/build-sw-linkedin-optimizer-final');
+
+for (const cacheKey of ['6886c889', '9ca610bf']) {
+  const tag = '<html data-chat-bundle="/assets/js/bundles/chat.' + cacheKey + '.min.js" lang="en">';
+  const source = '<!doctype html>' + tag + '<head><title>Source title</title></head><body>Source body</body></html>';
+  assert.equal(localizeDocumentLanguage(source), source.replace(' lang="en">', ' lang="sw">'), 'Locale regeneration must preserve the current release bundle and every other byte');
+}
+for (const tag of [
+  '<html lang="en">',
+  '<html data-chat-bundle="/assets/js/bundles/chat.invalid.min.js" lang="en">',
+  '<html data-chat-bundle="/assets/js/bundles/tool-page.9ca610bf.min.js" lang="en">',
+  '<html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="fr">',
+  '<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en"><html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">'
+]) assert.throws(() => localizeDocumentLanguage(tag), /source drift/, 'Malformed or ambiguous source must still stop the generator');
 
 for (const pattern of [
   /<html\b[^>]*lang="sw"/, /afrotools-sw-native-owner" content="linkedin-optimizer"/,

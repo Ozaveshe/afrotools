@@ -591,24 +591,79 @@
   /* ── Auto-load site-wide AI advisor (deferred until idle) ── */
   /* Uses chat bundle if available (from manifest), falls back to individual file */
   var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 2000); };
-  var _assistantLoaded = false;
+  var _assistantPromise = null;
   function _loadAssistant() {
-    if (_assistantLoaded) return;
-    if (window.AfroDisableAssistant === true) return;
-    if (document.querySelector('script[src*="site-assistant"]') || document.querySelector('script[src*="chat."]')) return;
-    _assistantLoaded = true;
-    const s = document.createElement('script');
-    // Try chat bundle first, fall back to individual file
-    var bundlePath = document.documentElement.getAttribute('data-chat-bundle');
-    s.src = bundlePath || '/assets/js/components/site-assistant.min.js';
-    s.defer = true;
-    document.head.appendChild(s);
+    if (window.AfroDisableAssistant === true) return Promise.reject(new Error('Assistant disabled on this page'));
+    var current = document.querySelector('afro-site-assistant');
+    if (current && current.isConnected && current.shadowRoot && current.shadowRoot.getElementById('panel')) return Promise.resolve(current);
+    if (_assistantPromise) return _assistantPromise;
+    _assistantPromise = new Promise(function(resolve, reject) {
+      var script = document.querySelector('script[src*="site-assistant"], script[src*="chat."]');
+      var owned = !script;
+      var done = false;
+      var observer;
+      var timeout;
+      function finish(error, assistant) {
+        if (done) return;
+        done = true;
+        clearTimeout(timeout);
+        if (observer) observer.disconnect();
+        if (script) script.removeEventListener('error', failed);
+        if (error) {
+          if (owned && script) script.remove();
+          reject(error);
+        } else {
+          resolve(assistant);
+        }
+      }
+      function ready() {
+        var assistant = document.querySelector('afro-site-assistant');
+        if (assistant && assistant.isConnected && assistant.shadowRoot && assistant.shadowRoot.getElementById('panel')) finish(null, assistant);
+      }
+      function failed() { finish(new Error('Assistant could not load')); }
+      observer = new MutationObserver(ready);
+      observer.observe(document.body, { childList: true, subtree: true });
+      timeout = setTimeout(failed, 8000);
+      customElements.whenDefined('afro-site-assistant').then(ready);
+      if (!script) {
+        script = document.createElement('script');
+        script.src = document.documentElement.getAttribute('data-chat-bundle') || '/assets/js/components/site-assistant.min.js';
+        script.defer = true;
+        script.addEventListener('error', failed);
+        document.head.appendChild(script);
+      } else script.addEventListener('error', failed);
+      ready();
+    });
+    // A failed first load may be retried by a later explicit request.
+    _assistantPromise.catch(function() { _assistantPromise = null; });
+    return _assistantPromise;
   }
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.openSiteAssistant = async function(options) {
+    options = options || {};
+    if (window.AfroDisableAssistant === true) return false;
+    if (options.onStatus) options.onStatus('loading');
+    try {
+      var assistant = await _loadAssistant();
+      if (window.AfroDisableAssistant === true || !assistant.isConnected || (options.isCurrent && !options.isCurrent())) {
+        if (options.onStatus) options.onStatus('');
+        return false;
+      }
+      var opener = options.beforeOpen ? options.beforeOpen() : options.opener;
+      assistant._open_panel(opener);
+      if (options.onStatus) options.onStatus('');
+      return assistant.shadowRoot.getElementById('panel').getAttribute('aria-hidden') === 'false';
+    } catch (_) {
+      if (options.onStatus) options.onStatus('error');
+      return false;
+    }
+  };
+  function _autoloadAssistant() { _loadAssistant().catch(function() {}); }
   ['pointerdown','keydown'].forEach(function(eventName) {
-    window.addEventListener(eventName, _loadAssistant, { once: true, passive: true });
+    window.addEventListener(eventName, _autoloadAssistant, { once: true, passive: true });
   });
   window.addEventListener('load', function() {
-    setTimeout(function() { _idle(_loadAssistant); }, 12000);
+    setTimeout(function() { _idle(_autoloadAssistant); }, 12000);
   }, { once: true });
 
 })();

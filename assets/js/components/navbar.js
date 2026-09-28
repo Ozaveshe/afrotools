@@ -714,6 +714,16 @@
     }
     get active() { return this.getAttribute('active') || ''; }
 
+    _assistantUi() {
+      var copy = {
+        en: { label: 'Ask AfroTools', loading: 'Opening Ask AfroTools…', error: 'Ask AfroTools could not open. Try again.' },
+        fr: { label: 'Assistant AfroTools', loading: 'Ouverture de l’assistant…', error: 'L’assistant n’a pas pu s’ouvrir. Réessayez.' },
+        sw: { label: 'Msaidizi wa AfroTools', loading: 'Msaidizi anafunguliwa…', error: 'Msaidizi hakuweza kufunguka. Jaribu tena.' },
+        ha: { label: 'Tambayi AfroTools', loading: 'Ana bude mataimakin…', error: 'Ba a iya bude mataimakin ba. Sake gwadawa.' }
+      };
+      return copy[this._getLang()] || copy.en;
+    }
+
     _getLang() {
       var segs = window.location.pathname.split('/');
       var first = segs[1];
@@ -1529,6 +1539,12 @@
             <div class="mob-country-results" id="mobileCountrySearchResults" role="listbox" aria-label="${T.startByCountry}"></div>
             <div class="mob-country-grid">${this._mobileCountriesContent()}</div>
           </div>
+          ${window.AfroDisableAssistant === true ? '' : `<div class="mob-theme-section">
+            <button class="mob-theme-toggle" id="mobAssistantOpen" type="button" aria-haspopup="dialog">
+              <span class="mob-theme-copy">${this._assistantUi().label}</span>
+            </button>
+            <p class="mob-note" id="mobAssistantStatus" role="status" aria-live="polite"></p>
+          </div>`}
           <div class="mob-business-block">
             <div class="mob-section-label">${T.business}</div>
             ${this._mobileBusinessContent()}
@@ -1832,6 +1848,38 @@
         // slower devices and left aria-expanded unchanged until the promise settled.
         if (!navbarDataLoaded) this._prepareNavData();
         setMenuOpen(!this._menuOpen);
+      });
+
+      const assistantButton = sr.getElementById('mobAssistantOpen');
+      const assistantStatus = sr.getElementById('mobAssistantStatus');
+      assistantButton?.addEventListener('click', async event => {
+        event.stopPropagation();
+        if (this._assistantPending || window.AfroDisableAssistant === true) return;
+        const copy = this._assistantUi();
+        const open = window.AfroTools && window.AfroTools.openSiteAssistant;
+        if (!open) { assistantStatus.textContent = copy.error; return; }
+        this._assistantPending = true;
+        assistantButton.focus({ preventScroll: true });
+        assistantButton.setAttribute('aria-busy', 'true');
+        assistantButton.disabled = true;
+        try {
+          await open({
+            opener: assistantButton,
+            isCurrent: () => this._menuOpen && assistantButton.isConnected && (sr.activeElement === assistantButton || document.activeElement === document.body),
+            beforeOpen: () => {
+              setMenuOpen(false);
+              burger?.focus({ preventScroll: true });
+              return burger;
+            },
+            onStatus: state => {
+              if (assistantStatus.isConnected) assistantStatus.textContent = state === 'loading' ? copy.loading : state === 'error' ? copy.error : '';
+            }
+          });
+        } finally {
+          this._assistantPending = false;
+          assistantButton.disabled = false;
+          assistantButton.removeAttribute('aria-busy');
+        }
       });
 
       mob?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {

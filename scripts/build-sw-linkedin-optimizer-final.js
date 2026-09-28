@@ -16,9 +16,17 @@ function replaceOnce(html, from, to) {
   return html.slice(0, first) + to + html.slice(first + from.length);
 }
 
+function localizeDocumentLanguage(html) {
+  const tags = html.match(/<html\b[^>]*>/gi) || [];
+  if (tags.length !== 1 || !/^<html data-chat-bundle="\/assets\/js\/bundles\/chat\.[a-f0-9]{8}\.min\.js" lang="en">$/.test(tags[0])) {
+    throw new Error('LinkedIn Optimizer source drift: unexpected document language or chat bundle reference');
+  }
+  return replaceOnce(html, tags[0], tags[0].replace(' lang="en">', ' lang="sw">'));
+}
+
 function build() {
   let html = fs.readFileSync(SOURCE, "utf8");
-  html = replaceOnce(html, '<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">', '<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="sw">');
+  html = localizeDocumentLanguage(html);
   html = replaceOnce(html, "<title>LinkedIn Profile Optimizer for African Professionals | AfroTools</title>", "<title>Boresha Wasifu wa LinkedIn kwa Wataalamu Afrika | AfroTools</title>");
   html = replaceOnce(html, '<meta name="description" content="Check your LinkedIn All-Star status, score your profile completeness, get keyword recommendations and headline suggestions tailored for African professionals.">', `<meta name="description" content="Kagua ukamilifu wa wasifu wa LinkedIn, pata score, mapengo, maneno muhimu na mifano ya kichwa cha wasifu kwa wataalamu Afrika.">
 <meta name="afrotools-sw-native-owner" content="linkedin-optimizer">
@@ -118,4 +126,5 @@ reset.addEventListener('click',resetCore);
   console.log(`Built ${path.relative(ROOT, TARGET)} from maintained LinkedIn Optimizer owner.`);
 }
 
-build();
+if (require.main === module) build();
+module.exports = { localizeDocumentLanguage };

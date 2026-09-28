@@ -323,9 +323,9 @@ IMPORTANT RULES:
       this._dragMoved = false;
       this._suppressNextClick = false;
 
-      // Theme: use localStorage if set, otherwise default to light (white)
-      const stored = localStorage.getItem('afrobot_theme');
-      this._theme = stored || 'light';
+      this._returnFocus = null;
+      this._focusFrame = null;
+      this._theme = this._pageTheme();
     }
 
     _ui(key, fallback) {
@@ -335,28 +335,55 @@ IMPORTANT RULES:
       return fallback || '';
     }
 
+    _isMobile() {
+      return window.matchMedia('(max-width: 768px)').matches;
+    }
+
+    _pageTheme() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      return theme === 'dark' || theme === 'light' ? theme
+        : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
     connectedCallback() {
       this._render();
       this._restorePosition();
       this._bind();
       this._applyTheme();
       this._resizeHandler = () => {
-        if (this._position) this._setPosition(this._position.x, this._position.y, true);
+        if (!this._isMobile() && this._position) this._setPosition(this._position.x, this._position.y, false);
+        this._updatePanelAnchor();
+        if (this._open) {
+          const panel = this.shadowRoot.getElementById('panel');
+          const modal = this._isMobile();
+          if (panel.getAttribute('aria-modal') !== String(modal)) {
+            const focused = this.shadowRoot.activeElement;
+            panel.close();
+            modal ? panel.showModal() : panel.show();
+            panel.setAttribute('aria-modal', String(modal));
+            focused?.focus({ preventScroll: true });
+          }
+        }
       };
       window.addEventListener('resize', this._resizeHandler);
 
-      // Listen for system theme changes (only matters if user hasn't overridden)
+      this._themeObserver = new MutationObserver(() => {
+        this._theme = this._pageTheme();
+        this._applyTheme();
+      });
+      this._themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
       this._mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      this._mediaHandler = (e) => {
-        if (!localStorage.getItem('afrobot_theme')) {
-          this._theme = e.matches ? 'dark' : 'light';
-          this._applyTheme();
-        }
+      this._mediaHandler = () => {
+        this._theme = this._pageTheme();
+        this._applyTheme();
       };
       this._mediaQuery.addEventListener('change', this._mediaHandler);
     }
 
     disconnectedCallback() {
+      this._themeObserver?.disconnect();
+      if (this._outsideClickHandler) document.removeEventListener('click', this._outsideClickHandler);
+      if (this._focusFrame) cancelAnimationFrame(this._focusFrame);
       if (this._mediaQuery && this._mediaHandler) {
         this._mediaQuery.removeEventListener('change', this._mediaHandler);
       }
@@ -413,6 +440,11 @@ IMPORTANT RULES:
             box-shadow: var(--fab-hover-shadow, 0 4px 24px rgba(0,98,204,0.28), 0 8px 32px rgba(0,0,0,0.10));
           }
           .fab:active { transform: scale(.95); }
+          .fab:focus-visible, button:focus-visible, a:focus-visible, .chat-input:focus-visible {
+            outline: 3px solid var(--color-focus, #60a5fa);
+            outline-offset: 3px;
+          }
+          .fab-label { display: none; }
           :host(.dragging) .fab,
           .fab.dragging {
             cursor: grabbing;
@@ -436,6 +468,8 @@ IMPORTANT RULES:
           /* ── Panel ── */
           .panel-wrap {
             position: absolute;
+            top: auto;
+            left: auto;
             bottom: 68px;
             right: 0;
             width: 380px;
@@ -451,7 +485,11 @@ IMPORTANT RULES:
               transform .28s cubic-bezier(.34,1.56,.64,1),
               opacity .22s ease;
             overflow: hidden;
+            border: 1px solid var(--border, #E2E8F0);
+            padding: 0;
+            margin: 0;
           }
+          .panel-wrap:not([open]) { display: none; }
           .panel-wrap.from-left {
             left: 0;
             right: auto;
@@ -462,12 +500,20 @@ IMPORTANT RULES:
             opacity: 1;
             pointer-events: all;
           }
+          .panel-wrap.below { bottom: auto; top: 68px; }
 
           .panel {
             display: flex;
             flex-direction: column;
             max-height: min(560px, calc(100vh - 120px));
             transition: background .25s ease;
+          }
+          .panel-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
           }
 
           /* Header */
@@ -761,27 +807,72 @@ IMPORTANT RULES:
           .send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
           /* Responsive */
-          @media (max-width: 480px) {
-            :host { bottom: 16px; right: 14px; }
-            .panel-wrap { width: calc(100vw - 28px); right: -14px; }
-            .panel-wrap:not(.open) { display: none; }
-            .panel-wrap.from-left { left: -14px; right: auto; }
+          @media (max-width: 768px) {
+            :host {
+              position: static !important;
+              inset: auto !important;
+              width: fit-content;
+              max-width: 100%;
+              height: auto;
+              margin: 12px 0;
+              z-index: auto;
+              touch-action: auto;
+            }
+            .fab {
+              width: auto;
+              max-width: 100%;
+              min-height: 44px;
+              height: auto;
+              padding: 8px 12px;
+              gap: 8px;
+              border: 1px solid var(--color-border, #E2E8F0);
+              border-radius: 8px;
+              color: var(--color-text, #0f172a);
+              font: 600 14px/1.4 'DM Sans', system-ui, sans-serif;
+              cursor: pointer;
+              touch-action: auto;
+              box-shadow: none !important;
+            }
+            .fab:hover { transform: none; }
+            .fab svg { flex-shrink: 0; }
+            .fab-label { display: inline; overflow-wrap: anywhere; }
+            .badge { display: none !important; }
+            .panel-wrap, .panel-wrap.from-left, .panel-wrap.below {
+              position: fixed;
+              top: max(64px, env(safe-area-inset-top, 0px));
+              bottom: auto;
+              left: 14px;
+              right: 14px;
+              width: calc(100vw - 28px);
+              max-width: none;
+              max-height: calc(100dvh - 80px - env(safe-area-inset-bottom, 0px));
+              border-radius: 12px;
+            }
+            .panel-wrap::backdrop { background: rgba(0, 0, 0, .45); }
+            .panel { max-height: calc(100dvh - 80px - env(safe-area-inset-bottom, 0px)) !important; }
+            .p-head { flex-wrap: wrap; padding: 12px; gap: 8px; cursor: default; touch-action: auto; }
+            .head-actions { margin-left: auto; }
+            .head-btn { width: 44px; height: 44px; }
             .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .qn-item { min-width: 0; overflow-wrap: anywhere; }
             .input-row { flex-wrap: wrap; }
-            .chat-input { flex-basis: 100%; width: 100%; }
+            .chat-input { flex-basis: 100%; width: 100%; font-size: 16px; }
             .send-btn { width: 100%; white-space: normal; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; animation: none !important; }
           }
         </style>
 
         <!-- FAB button -->
-        <button class="fab" id="fab" aria-label="${this._ui('open', 'Open Ask AfroTools AI')}" title="${this._ui('drag', 'Ask AfroTools AI - drag to move')}">
+        <button class="fab" id="fab" type="button" aria-label="${this._ui('open', 'Open Ask AfroTools AI')}" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel" title="${this._ui('open', 'Open Ask AfroTools AI')}">
           ${BOT_SVG}
+          <span class="fab-label">${this._ui('title', 'Ask AfroTools AI')}</span>
           <div class="badge" id="badge"></div>
         </button>
 
         <!-- Expandable panel -->
-        <div class="panel-wrap" id="panel" aria-hidden="true">
+        <dialog class="panel-wrap" id="panel" aria-hidden="true" aria-labelledby="assistantTitle" inert>
           <div class="panel" id="panelInner">
 
             <!-- Header -->
@@ -800,7 +891,7 @@ IMPORTANT RULES:
                 <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
               </svg>
               <div class="p-head-text">
-                <div class="p-title">${this._ui('title', 'Ask AfroTools AI')}</div>
+                <div class="p-title" id="assistantTitle">${this._ui('title', 'Ask AfroTools AI')}</div>
                 <div class="p-sub">${this._ui('subtitle', 'Workflow helper')}</div>
               </div>
               <div class="live-dot"></div>
@@ -818,6 +909,7 @@ IMPORTANT RULES:
               </div>
             </div>
 
+            <div class="panel-body">
             <!-- Quick category navigation -->
             <div class="quick-nav" id="quicknav">
               ${quickLinks.map(l => `
@@ -836,6 +928,7 @@ IMPORTANT RULES:
             <div class="suggestions" id="sugs">
               ${suggestions.map(s => `<button class="sug-btn" data-q="${s}">${s}</button>`).join('')}
             </div>
+            </div>
 
             <!-- Input -->
             <div class="input-row">
@@ -844,7 +937,7 @@ IMPORTANT RULES:
             </div>
 
           </div>
-        </div>
+        </dialog>
       `;
     }
 
@@ -858,13 +951,38 @@ IMPORTANT RULES:
       const themeBtn = sr.getElementById('themeBtn');
       const clearBtn = sr.getElementById('clearBtn');
       const panelHead = sr.querySelector('.p-head');
+      const panel = sr.getElementById('panel');
+
+      panel.addEventListener('cancel', event => {
+        event.preventDefault();
+        this._close();
+      });
+      panel.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          event.stopPropagation();
+          this._close();
+          return;
+        }
+        if (event.key !== 'Tab' || !this._open || !this._isMobile()) return;
+        // Keep keyboard focus within this shadow-root dialog in every mobile browser.
+        const controls = Array.from(panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]'))
+          .filter(control => control.tabIndex >= 0 && control.getClientRects().length && getComputedStyle(control).visibility !== 'hidden');
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        const active = sr.activeElement;
+        if (first && ((event.shiftKey && active === first) || (!event.shiftKey && active === last))) {
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus({ preventScroll: true });
+        }
+      });
 
       fab.addEventListener('click', () => {
         if (this._suppressNextClick) {
           this._suppressNextClick = false;
           return;
         }
-        this._toggle();
+        this._toggle(fab);
       });
       fab.addEventListener('pointerdown', e => this._startDrag(e));
       panelHead?.addEventListener('pointerdown', e => {
@@ -887,8 +1005,9 @@ IMPORTANT RULES:
 
       // Theme toggle
       themeBtn.addEventListener('click', () => {
-        this._theme = this._theme === 'dark' ? 'light' : 'dark';
-        localStorage.setItem('afrobot_theme', this._theme);
+        if (window.AfroTools?.darkMode?.toggle) window.AfroTools.darkMode.toggle();
+        else document.documentElement.setAttribute('data-theme', this._theme === 'dark' ? 'light' : 'dark');
+        this._theme = this._pageTheme();
         this._applyTheme();
       });
 
@@ -917,10 +1036,11 @@ IMPORTANT RULES:
       });
 
       // Close on outside click
-      document.addEventListener('click', (e) => {
+      this._outsideClickHandler = (e) => {
         if (!this._open) return;
-        if (!this.contains(e.target) && !this.shadowRoot.contains(e.target)) this._close();
-      });
+        if (!this.contains(e.target) && !this.shadowRoot.contains(e.target)) this._close(false);
+      };
+      document.addEventListener('click', this._outsideClickHandler);
 
       // Show subtle blue dot badge only if panel has never been opened
       if (!this._hasBeenOpened) {
@@ -934,7 +1054,8 @@ IMPORTANT RULES:
         saved = JSON.parse(localStorage.getItem('afrobot_position') || 'null');
       } catch {}
       if (saved && Number.isFinite(Number(saved.x)) && Number.isFinite(Number(saved.y))) {
-        this._setPosition(Number(saved.x), Number(saved.y), false);
+        this._position = { x: Number(saved.x), y: Number(saved.y) };
+        if (!this._isMobile()) this._setPosition(this._position.x, this._position.y, false);
         return;
       }
       this._updatePanelAnchor();
@@ -971,9 +1092,18 @@ IMPORTANT RULES:
       const rect = this.getBoundingClientRect();
       const leftSide = rect.left + (rect.width || 56) / 2 < window.innerWidth / 2;
       panel.classList.toggle('from-left', leftSide);
+      const height = Math.min(560, window.innerHeight - 120);
+      // Account for the 12px FAB gap, 12px viewport inset and dialog border.
+      const above = rect.top - 26;
+      const below = window.innerHeight - rect.bottom - 26;
+      panel.classList.toggle('below', !this._isMobile() && below > above);
+      const available = panel.classList.contains('below') ? below : above;
+      const inner = this.shadowRoot.getElementById('panelInner');
+      if (inner && !this._isMobile()) inner.style.maxHeight = Math.max(140, Math.min(height, available)) + 'px';
     }
 
     _startDrag(e) {
+      if (this._isMobile()) return;
       if (typeof e.button === 'number' && e.button !== 0) return;
       if (this._dragMoveHandler) {
         window.removeEventListener('pointermove', this._dragMoveHandler);
@@ -1104,17 +1234,23 @@ IMPORTANT RULES:
       }
     }
 
-    _toggle() {
-      this._open ? this._close() : this._open_panel();
+    _toggle(opener) {
+      this._open ? this._close() : this._open_panel(opener);
     }
 
-    _open_panel() {
+    _open_panel(opener) {
+      if (this._open || window.AfroDisableAssistant === true) return;
+      this._returnFocus = opener || this.shadowRoot.activeElement || document.activeElement;
       this._open = true;
       const panel = this.shadowRoot.getElementById('panel');
       const badge = this.shadowRoot.getElementById('badge');
       this._updatePanelAnchor();
       panel.classList.add('open');
       panel.setAttribute('aria-hidden', 'false');
+      panel.inert = false;
+      panel.setAttribute('aria-modal', String(this._isMobile()));
+      this._isMobile() ? panel.showModal() : panel.show();
+      this.shadowRoot.getElementById('fab').setAttribute('aria-expanded', 'true');
 
       // Hide badge on first open and remember
       badge.classList.remove('show');
@@ -1127,14 +1263,30 @@ IMPORTANT RULES:
         this._welcomed = true;
         this._injectPageContext();
       }
-      setTimeout(() => this.shadowRoot.getElementById('inp').focus(), 300);
+      this._focusFrame = requestAnimationFrame(() => {
+        this._focusFrame = null;
+        if (this._open) this.shadowRoot.getElementById('inp').focus({ preventScroll: true });
+      });
     }
 
-    _close() {
+    _close(restoreFocus = true) {
+      if (!this._open) return;
+      if (this._focusFrame) cancelAnimationFrame(this._focusFrame);
+      this._focusFrame = null;
       this._open = false;
       const panel = this.shadowRoot.getElementById('panel');
+      // Firefox restores the dialog opener even when an outside field has focus.
+      let outsideFocus = document.activeElement;
+      while (outsideFocus?.shadowRoot?.activeElement) outsideFocus = outsideFocus.shadowRoot.activeElement;
+      if (outsideFocus === document.body || this.contains(outsideFocus) || this.shadowRoot.contains(outsideFocus)) outsideFocus = null;
       panel.classList.remove('open');
       panel.setAttribute('aria-hidden', 'true');
+      panel.inert = true;
+      panel.close();
+      this.shadowRoot.getElementById('fab').setAttribute('aria-expanded', 'false');
+      const target = restoreFocus ? this._returnFocus : outsideFocus;
+      this._returnFocus = null;
+      if (target?.isConnected && target.getClientRects().length) target.focus({ preventScroll: true });
     }
 
     _injectPageContext() {
@@ -1366,9 +1518,12 @@ IMPORTANT RULES:
      AUTO-INJECT — add <afro-site-assistant> to body
   ═══════════════════════════════════════════════════ */
   function inject() {
+    if (window.AfroDisableAssistant === true) return;
     if (!document.querySelector('afro-site-assistant')) {
       const el = document.createElement('afro-site-assistant');
-      document.body.appendChild(el);
+      const heading = document.querySelector('main h1, [role="main"] h1, h1');
+      if (heading && !heading.closest('form, dialog')) heading.insertAdjacentElement('afterend', el);
+      else (document.querySelector('main, [role="main"]') || document.body).appendChild(el);
     }
   }
 

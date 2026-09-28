@@ -33,10 +33,38 @@
     new MutationObserver(updateDock).observe(results, { attributes: true, attributeFilter: ['class'] });
 
     var closeObserver;
+    var openPending = false;
     askButton.addEventListener('click', function (event) {
       // The assistant closes on document clicks outside its shadow root.
       // Keep this inline launch click from immediately closing the panel.
       event.stopPropagation();
+      if (openPending || window.AfroDisableAssistant === true) return;
+      var openShared = window.AfroTools && window.AfroTools.openSiteAssistant;
+      if (openShared) {
+        openPending = true;
+        askButton.focus({ preventScroll: true });
+        askButton.setAttribute('aria-busy', 'true');
+        openShared({
+          opener: askButton,
+          isCurrent: function () { return askButton.isConnected && document.activeElement === askButton; },
+          beforeOpen: function () {
+            if (closeObserver) closeObserver.disconnect();
+            updateDock();
+            document.body.classList.remove('ug-paye-calculator-in-view');
+            return askButton;
+          },
+          onStatus: function (state) {
+            status.textContent = state === 'loading' ? 'Opening Ask AfroTools…'
+              : state === 'error' ? 'The assistant could not open. Try again in a moment.' : '';
+          }
+        }).then(function (opened) {
+          if (opened) updateDock();
+        }).finally(function () {
+          openPending = false;
+          askButton.removeAttribute('aria-busy');
+        });
+        return;
+      }
       var assistant = document.querySelector('afro-site-assistant');
       var shadow = assistant && assistant.shadowRoot;
       var fab = shadow && shadow.getElementById('fab');
