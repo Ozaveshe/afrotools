@@ -77,7 +77,7 @@
   .ak-planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
   .ak-planner-command-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   .ak-planner-command-actions [hidden]{display:none}
-  .ak-picked-recipes{margin:0 0 16px;padding:16px;border:1px solid rgba(124,58,35,0.16);border-radius:8px;background:#fffaf5}
+  .ak-picked-recipes{margin:0 0 16px;padding:16px;border:1px solid rgba(124,58,35,0.16);border-radius:8px;background:#fffaf5;scroll-margin-top:72px}
   .ak-picked-recipes[hidden]{display:none}
   .ak-picked-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
   .ak-picked-head h3{margin:0;color:#26180f;font-size:1.05rem}
@@ -1133,6 +1133,9 @@
   var planGenerationCount = 0;
   var SAVED_PLAN_KEY = 'ak_saved_plan_v1';
   var PICKED_RECIPES_KEY = 'ak_meal_plan_v1';
+  var pickedRecipesStorageIssue = '';
+  var pickedRecipesCatalogReady = false;
+  var pickedRecipesFragment = { started: false, initialScheduled: false, finalScheduled: false, waitingLoad: false, cancelled: false, finished: false };
   var SHOPPING_GROUP_ORDER = ['Grains', 'Vegetables', 'Protein', 'Spices', 'Liquids', 'Pantry', 'Garnish'];
 
   function planIcon(name) {
@@ -1695,14 +1698,24 @@
   }
 
   function readPickedRecipes() {
-    if (!mealPlannerRecipes.length) return [];
-    var stored;
+    pickedRecipesStorageIssue = '';
+    var raw, stored;
     try {
-      stored = JSON.parse(window.localStorage.getItem(PICKED_RECIPES_KEY) || '[]');
+      raw = window.localStorage.getItem(PICKED_RECIPES_KEY);
     } catch (error) {
+      pickedRecipesStorageIssue = 'unavailable';
       return [];
     }
-    if (!Array.isArray(stored)) return [];
+    try {
+      stored = raw === null ? [] : JSON.parse(raw);
+    } catch (error) {
+      pickedRecipesStorageIssue = 'corrupt';
+      return [];
+    }
+    if (!Array.isArray(stored)) {
+      pickedRecipesStorageIssue = 'corrupt';
+      return [];
+    }
     var bySlug = Object.create(null);
     mealPlannerRecipes.forEach(function (recipe) {
       if (recipe && typeof recipe.slug === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipe.slug)) bySlug[recipe.slug] = recipe;
@@ -1717,6 +1730,12 @@
     }, []);
   }
 
+  function pickedRecipesStorageMessage() {
+    return pickedRecipesStorageIssue === 'corrupt'
+      ? 'Your picked recipes could not be read because their saved data is damaged. Clear picks to remove only these picks, then add recipes again.'
+      : 'This browser could not read your picked recipes. Check browser storage access, then reload to try again. Your saved data has not been changed.';
+  }
+
   function writePickedRecipes(recipes) {
     try {
       window.localStorage.setItem(PICKED_RECIPES_KEY, JSON.stringify(recipes.map(function (recipe) { return { slug: recipe.slug }; })));
@@ -1727,15 +1746,80 @@
     }
   }
 
+  // Honor this recovery link across initial styles and catalog layout, until the user takes over.
+  function cancelPickedRecipesFragment(event) {
+    if (event && !event.isTrusted) return;
+    pickedRecipesFragment.cancelled = true;
+    stopPickedRecipesFragmentListeners();
+  }
+
+  function stopPickedRecipesFragmentListeners() {
+    ['wheel', 'keydown', 'pointerdown', 'touchstart'].forEach(function (type) {
+      window.removeEventListener(type, cancelPickedRecipesFragment, true);
+    });
+    window.removeEventListener('hashchange', checkPickedRecipesFragmentHash);
+    window.removeEventListener('load', revealPickedRecipesFragment);
+  }
+
+  function checkPickedRecipesFragmentHash() {
+    if (window.location.hash !== '#ak-picked-recipes') cancelPickedRecipesFragment();
+  }
+
+  function revealPickedRecipesFragment() {
+    var intent = pickedRecipesFragment;
+    if (intent.cancelled || intent.finished) return;
+    var panel = document.getElementById('ak-picked-recipes');
+    if (!panel || !panel.isConnected || panel.hidden || !panel.getClientRects().length || window.location.hash !== '#ak-picked-recipes') {
+      if (intent.started) cancelPickedRecipesFragment();
+      return;
+    }
+    if (!intent.started) {
+      intent.started = true;
+      ['wheel', 'keydown', 'pointerdown', 'touchstart'].forEach(function (type) {
+        window.addEventListener(type, cancelPickedRecipesFragment, { capture: true, passive: true });
+      });
+      window.addEventListener('hashchange', checkPickedRecipesFragmentHash);
+    }
+    if (document.readyState !== 'complete') {
+      if (!intent.waitingLoad) {
+        intent.waitingLoad = true;
+        window.addEventListener('load', revealPickedRecipesFragment, { once: true });
+      }
+      return;
+    }
+    var finalAlignment = pickedRecipesCatalogReady;
+    if (finalAlignment ? intent.finalScheduled : intent.initialScheduled) return;
+    if (finalAlignment) intent.finalScheduled = true;
+    else intent.initialScheduled = true;
+    window.requestAnimationFrame(function () {
+      if (intent.cancelled || intent.finished) return;
+      if (!panel.isConnected || panel.hidden || !panel.getClientRects().length || window.location.hash !== '#ak-picked-recipes') {
+        cancelPickedRecipesFragment();
+        return;
+      }
+      panel.scrollIntoView({ block: 'start', behavior: 'instant' });
+      if (pickedRecipesCatalogReady) {
+        intent.finished = true;
+        stopPickedRecipesFragmentListeners();
+      }
+    });
+  }
+
   function renderPickedRecipes() {
     var panel = document.getElementById('ak-picked-recipes');
     var list = document.getElementById('ak-picked-list');
     var status = document.getElementById('ak-picked-status');
     var buildButton = document.getElementById('ak-plan-from-picks');
-    if (!panel || !list || !status || !buildButton) return;
+    var clearButton = document.getElementById('ak-picks-clear');
+    if (!panel || !list || !status || !buildButton || !clearButton) return;
     var picks = readPickedRecipes();
-    panel.hidden = !picks.length;
+    panel.hidden = !picks.length && !pickedRecipesStorageIssue;
     list.replaceChildren();
+    clearButton.disabled = pickedRecipesStorageIssue === 'unavailable';
+    buildButton.disabled = !picks.length || !!pickedRecipesStorageIssue;
+    status.textContent = pickedRecipesStorageIssue ? pickedRecipesStorageMessage() : '';
+    revealPickedRecipesFragment();
+    if (pickedRecipesStorageIssue) return;
     if (!picks.length) return;
     var inputs = getPlanInputs();
     var mealPicks = picks.filter(isPlanMeal);
@@ -1762,12 +1846,20 @@
       remove.textContent = 'Remove';
       remove.setAttribute('aria-label', 'Remove ' + recipe.name + ' from picked recipes');
       remove.addEventListener('click', function () {
-        var next = readPickedRecipes().filter(function (pick) { return pick.slug !== recipe.slug; });
+        var current = readPickedRecipes();
+        if (pickedRecipesStorageIssue) {
+          renderPickedRecipes();
+          setPlanStatus(pickedRecipesStorageMessage());
+          var recoveryButton = document.getElementById('ak-picks-clear');
+          revealPlanControl(recoveryButton && !recoveryButton.disabled ? recoveryButton : document.getElementById('ak-plan-generate'));
+          return;
+        }
+        var next = current.filter(function (pick) { return pick.slug !== recipe.slug; });
         if (!writePickedRecipes(next)) return;
         renderPickedRecipes();
         setPlanStatus(recipe.name + ' removed from your picked recipes.');
         var nextFocus = list.querySelector('button') || (next.length ? buildButton : document.getElementById('ak-plan-generate'));
-        if (nextFocus) nextFocus.focus();
+        revealPlanControl(nextFocus);
       });
       item.appendChild(link);
       item.appendChild(remove);
@@ -1837,6 +1929,7 @@
       if (field) field.value = saved.inputs[key] == null ? '' : String(saved.inputs[key]);
     });
     clearPlanServingsError();
+    renderPickedRecipes();
     var detailed = await Promise.all(recipes.map(fetchRecipeDetails));
     if (generation !== planGenerationRevision) return;
     renderPlan(detailed, saved.inputs);
@@ -2206,6 +2299,14 @@
     setPlanStatus('Finding matching stored recipes…');
     pool = pool.filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); });
     var savedPicks = usePicked ? readPickedRecipes().filter(function (recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs); }).slice(0, inputs.days) : [];
+    if (usePicked && pickedRecipesStorageIssue) {
+      renderPickedRecipes();
+      setPlanStatus(pickedRecipesStorageMessage());
+      setPlanButtonState('idle');
+      var recoveryButton = document.getElementById('ak-picks-clear');
+      revealPlanControl(recoveryButton && !recoveryButton.disabled ? recoveryButton : generateButton);
+      return;
+    }
     if (usePicked && !savedPicks.length) {
       setPlanStatus('None of your picked recipes match these filters. Widen the filters to use them.');
       setPlanButtonState('idle');
@@ -2316,9 +2417,12 @@
       window.localStorage.removeItem(PICKED_RECIPES_KEY);
       renderPickedRecipes();
       setPlanStatus('Picked recipes cleared from this device.');
-      if (generatePlanButton) generatePlanButton.focus();
+      revealPlanControl(generatePlanButton);
     } catch (error) {
-      setPlanStatus('This browser could not clear your picked recipes.');
+      var message = 'This browser could not clear your picked recipes. Your picks have not been changed.';
+      var pickedStatus = document.getElementById('ak-picked-status');
+      if (pickedStatus) pickedStatus.textContent = message;
+      setPlanStatus(message);
     }
   });
   var restorePlanButton = document.getElementById('ak-plan-restore');
@@ -2368,10 +2472,12 @@
   smallFilterScreen.addEventListener('change', syncFilterDisclosure);
 
   // ── Init ──
-  loadLandingMeta();
-  loadFeatured();
-  loadRecipes();
-  loadCollections();
+  // Storage recovery must be reachable even before the recipe catalog finishes loading.
+  renderPickedRecipes();
+  Promise.all([loadLandingMeta(), loadFeatured(), loadRecipes(), loadCollections()]).then(function () {
+    pickedRecipesCatalogReady = true;
+    revealPickedRecipesFragment();
+  });
 })();
 
 // AI Advisor

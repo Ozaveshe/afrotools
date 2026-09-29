@@ -1441,7 +1441,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     .ak-static-page .ak-static-serving-note { max-width: 42ch; margin: 0; color: var(--ak-muted); font-size: .92rem; line-height: 1.55; }
     .ak-static-page .ak-recipe-layout { gap: 28px; padding: 0; align-items: start; }
     .ak-static-page .ak-ingredients-panel { border-radius: 24px; border-color: var(--ak-primary-border); background: linear-gradient(180deg, #fff, var(--ak-panel-tint)); box-shadow: 0 18px 36px rgba(60,30,10,.08); }
-    .ak-static-page .ak-panel-title-row { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .ak-static-page .ak-panel-title-row { display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
     .ak-static-page .ak-panel-title-row .ak-panel-title { margin: 0; }
     .ak-static-page .ak-panel-helper { margin: 6px 0 0; color: var(--ak-muted); font-size: .86rem; line-height: 1.55; }
     .ak-static-page .ak-panel-pill { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; background: var(--ak-accent); color: var(--ak-dark); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
