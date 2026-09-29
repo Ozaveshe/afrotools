@@ -2,6 +2,7 @@
   'use strict';
 
   var BETTING_TOOLS = ['betting-odds', 'betting-tax'];
+  var afconCopyAttempt = 0;
 
   function toolId() {
     return (document.body && document.body.getAttribute('data-sports-tool')) || '';
@@ -65,6 +66,15 @@
     if (preview) {
       preview.hidden = false;
       preview.setAttribute('tabindex', '0');
+      if (toolId() === 'afcon-predictor') {
+        preview.classList.add('on');
+        preview.setAttribute('aria-label', 'Local report text for manual copying');
+        var status = document.createElement('p');
+        status.setAttribute('data-afcon-report-status', '');
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+        gate.insertBefore(status, preview);
+      }
     }
     if (note) {
       note.textContent = 'Nothing is stored or sent by calculating, printing or copying. Use the separate save features only when you intentionally want device or account storage.';
@@ -81,7 +91,9 @@
         + '#sports-tool-root,#sports-tool-root *{min-width:0}'
         + '#sports-tool-root .sports-panel-kicker,#sports-tool-root span{white-space:normal;overflow-wrap:anywhere}'
         + '#sports-tool-root table{max-width:100%}'
-        + '#sports-tool-root .sports-table-wrap{display:block;max-width:100%;overflow-x:auto}';
+        + '#sports-tool-root .sports-table-wrap{display:block;max-width:100%;overflow-x:auto}'
+        + 'body[data-sports-tool="afcon-predictor"] .sports-report-preview{background:var(--color-bg-card);color:var(--color-text)}'
+        + 'body[data-sports-tool="afcon-predictor"] [data-afcon-report-status]{color:var(--color-text);font-size:1rem;line-height:1.5;min-height:1.5em}';
       document.head.appendChild(style);
     }
     var id = toolId();
@@ -100,9 +112,56 @@
       'Calculate locally, verify assumptions, then continue only if the next tool is useful.');
   }
 
+  function invalidateAfconCopy() {
+    afconCopyAttempt += 1;
+    var status = document.querySelector('[data-afcon-report-status]');
+    if (status) status.textContent = '';
+  }
+
+  function copyAfconReport(button) {
+    var preview = document.querySelector('[data-report-preview]');
+    var status = document.querySelector('[data-afcon-report-status]');
+    var text = preview ? preview.textContent : '';
+    var attempt = ++afconCopyAttempt;
+    if (!text || !status) return;
+    function current() {
+      return attempt === afconCopyAttempt && toolId() === 'afcon-predictor'
+        && button.isConnected && preview.isConnected && status.isConnected
+        && preview.textContent === text;
+    }
+    function unavailable() {
+      if (current()) status.textContent = 'Copy is unavailable. Select the report below and copy it manually, or use Print / save PDF.';
+    }
+    try {
+      var clipboard = window.navigator.clipboard;
+      if (!clipboard || typeof clipboard.writeText !== 'function') {
+        unavailable();
+        return;
+      }
+      status.textContent = 'Copying report…';
+      Promise.resolve(clipboard.writeText(text)).then(function () {
+        if (current()) status.textContent = 'Report copied locally.';
+      }, unavailable);
+    } catch (error) {
+      unavailable();
+    }
+  }
+
+  ['input', 'change', 'submit'].forEach(function (type) {
+    document.addEventListener(type, function (event) {
+      if (toolId() === 'afcon-predictor' && event.target.closest('#sports-tool-form')) invalidateAfconCopy();
+    });
+  });
+  window.addEventListener('pagehide', invalidateAfconCopy);
+
   document.addEventListener('click', function (event) {
+    if (toolId() === 'afcon-predictor' && event.target.closest('[data-reset]')) invalidateAfconCopy();
     var button = event.target.closest('[data-copy-local-report]');
     if (!button) return;
+    if (toolId() === 'afcon-predictor') {
+      copyAfconReport(button);
+      return;
+    }
     var preview = document.querySelector('[data-report-preview]');
     var text = preview ? preview.textContent : '';
     var status = document.querySelector('.sports-lead-msg');
