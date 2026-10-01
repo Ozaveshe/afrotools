@@ -177,20 +177,24 @@ function solarRoiCountryDatalistOptions() {
 
 function solarRoiCountryPickerMarkup(idPrefix, selectedCode, options = {}) {
   const selectedCountry = COUNTRIES.find(country => country.code === selectedCode) || COUNTRIES[0];
-  const label = options.label || "Country";
   const help = options.help || "Search by country name, currency, or two-letter code.";
   const ctaText = options.ctaText || "Open country page";
   const selectedText = `${selectedCountry.flag} ${selectedCountry.name} selected - ${solarRoiCountryCurrency(selectedCountry)}`;
   return `<div class="solar-country-picker" data-solar-country-picker data-selected-country="${escapeHtml(selectedCountry.slug)}">
-<label for="${idPrefix}Search">${escapeHtml(label)}</label>
 <div class="solar-country-picker-grid">
+<div class="solar-country-picker-field">
+<label for="${idPrefix}Search">Search country</label>
 <input id="${idPrefix}Search" type="search" autocomplete="off" list="${idPrefix}List" placeholder="Search Nigeria, KES, Ghana..." aria-describedby="${idPrefix}Help ${idPrefix}Status">
 <datalist id="${idPrefix}List">
 ${solarRoiCountryDatalistOptions()}
 </datalist>
+</div>
+<div class="solar-country-picker-field">
+<label for="${idPrefix}Select">Select country</label>
 <select id="${idPrefix}Select" aria-describedby="${idPrefix}Help ${idPrefix}Status">
 ${solarRoiCountryOptions(selectedCountry.code)}
 </select>
+</div>
 <a class="solar-country-btn" id="${idPrefix}Open" href="/tools/solar-roi/${escapeHtml(selectedCountry.slug)}/">${escapeHtml(ctaText)}</a>
 </div>
 <p id="${idPrefix}Help">${escapeHtml(help)}</p>
@@ -747,7 +751,6 @@ function makeSolarRoiCountryPage(tool, country) {
     return `<a class="solar-country-link" href="/tools/solar-roi/${c.slug}/">${escapeHtml(label)}<span>Compare another country assumption set.</span></a>`;
   }).join("\n");
   const countryPicker = solarRoiCountryPickerMarkup("solarCountryPage", country.code, {
-    label: "Selected country",
     help: "This page is preloaded with the selected country currency and assumptions. Search or choose another country to open its calculator.",
     ctaText: "Open selected country"
   });
@@ -878,6 +881,7 @@ function makeSolarRoiCountryPage(tool, country) {
 .solar-country-picker{margin-top:16px;padding-top:14px;border-top:1px solid rgba(18,32,51,.1);display:grid;gap:8px}
 .solar-country-picker label{font-weight:950;color:#122033}
 .solar-country-picker-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.solar-country-picker-field{display:grid;gap:6px;min-width:0}
 .solar-country-picker input,.solar-country-picker select{width:100%;min-height:48px!important;border:1px solid rgba(18,32,51,.18);border-radius:8px;background:#fff;color:#122033;font:inherit;font-size:16px;padding:10px 12px}
 .solar-country-picker input:focus,.solar-country-picker select:focus,.solar-country-picker .solar-country-btn:focus{outline:3px solid rgba(27,117,208,.28);outline-offset:2px}
 .solar-country-picker p{margin:0;color:#596577;font-size:.88rem;line-height:1.45}
@@ -2061,6 +2065,7 @@ ${renderFaqDetails(hubFaqs)}
 .solar-root-filter input,.solar-root-filter select{width:100%;min-height:48px;border:1px solid rgba(18,32,51,.18);border-radius:8px;padding:11px 12px;font:inherit;font-size:16px;color:#122033;background:#fff}
 .solar-country-picker{display:grid;gap:8px}
 .solar-country-picker-grid{display:grid;grid-template-columns:minmax(180px,.85fr) minmax(220px,1fr) auto;gap:10px;align-items:end}
+.solar-country-picker-field{display:grid;gap:6px;min-width:0}
 .solar-country-picker p{margin:0;color:#5d6978;line-height:1.45}
 .solar-country-picker-status{font-weight:850;color:#173f3a!important}
 .solar-root-filter input:focus,.solar-root-filter select:focus,.solar-country-picker .solar-country-btn:focus,.en-country-card:focus,.solar-faq summary:focus{outline:3px solid rgba(27,117,208,.28);outline-offset:2px}
@@ -2080,7 +2085,6 @@ ${renderFaqDetails(hubFaqs)}
 ` : "";
   const countrySearch = tool.slug === "solar-roi" ? `<div class="solar-root-filter" role="search" aria-label="Search Solar ROI countries">
 ${solarRoiCountryPickerMarkup("solarRootCountry", "NG", {
-  label: "Search or select country",
   help: "Choose from popular countries or all 54 African countries. The country page opens with local currency and Solar ROI assumptions.",
   ctaText: "Open country page"
 })}
@@ -2135,7 +2139,7 @@ ${solarRoiCountryPickerMarkup("solarRootCountry", "NG", {
   function formatAssumption(assumption){if(!assumption)return"Unavailable";var value=typeof assumption.value==="number"?new Intl.NumberFormat("en",{maximumFractionDigits:2}).format(assumption.value):String(assumption.value||"Unavailable");return value+(assumption.unit?" "+assumption.unit:"");}
   function countryDefaults(country){return solarData&&solarData.countries&&country?solarData.countries[country.code]||null:null;}
   function assumptionSnapshot(country){var defaults=countryDefaults(country);if(!defaults)return null;function field(key){var item=defaults.assumptions&&defaults.assumptions[key];return item?{value:item.value,unit:item.unit,confidence:item.confidence,source:item.sourceName,source_url:item.sourceUrl||null,freshness:item.freshness}:null;}return{dataset_reviewed:solarData.lastReviewed,country_data_confidence:defaults.confidenceLevel,electricity_tariff:field("electricityTariff"),generator_fuel:field("fuelPrice"),solar_yield:field("solarYield"),install_cost_per_kw:field("installCostPerKw")};}
-  function updateAssumptionPreview(country){var defaults=countryDefaults(country);if(!assumptionPreview)return;if(!defaults){assumptionPreview.hidden=true;return;}assumptionPreview.hidden=false;Object.keys(assumptionFields).forEach(function(key){var item=defaults.assumptions&&defaults.assumptions[key];var field=assumptionFields[key];if(field.value)field.value.textContent=formatAssumption(item);if(field.confidence)field.confidence.textContent=(item&&item.confidence?item.confidence:"Unknown")+" confidence";});if(assumptionStatus)assumptionStatus.textContent=country.name+" country data: "+(defaults.confidenceLevel||"Unrated")+" confidence overall. Reviewed "+(solarData.lastReviewed||"date unavailable")+"; field confidence varies.";if(assumptionNote)assumptionNote.textContent="Planning defaults for the country calculator. Edit them there using a current bill, fuel receipt, site assessment, and written installer quote.";var tariff=defaults.assumptions&&defaults.assumptions.electricityTariff;var yieldData=defaults.assumptions&&defaults.assumptions.solarYield;if(assumptionSourceText)assumptionSourceText.textContent="Tariff context: "+(tariff&&tariff.sourceName?tariff.sourceName:"source unavailable")+". Solar resource: "+(yieldData&&yieldData.sourceName?yieldData.sourceName:"source unavailable")+". ";if(assumptionSourceLink){var sourceUrl=yieldData&&yieldData.sourceUrl;if(sourceUrl&&/^https:\/\//i.test(sourceUrl)){assumptionSourceLink.href=sourceUrl;assumptionSourceLink.hidden=false;}else{assumptionSourceLink.hidden=true;}}}
+  function updateAssumptionPreview(country){var defaults=countryDefaults(country);if(!assumptionPreview)return;if(!defaults){assumptionPreview.hidden=true;return;}assumptionPreview.hidden=false;Object.keys(assumptionFields).forEach(function(key){var item=defaults.assumptions&&defaults.assumptions[key];var field=assumptionFields[key];if(field.value)field.value.textContent=formatAssumption(item);if(field.confidence)field.confidence.textContent=(item&&item.confidence?item.confidence:"Unknown")+" confidence";});if(assumptionStatus)assumptionStatus.textContent=country.name+" country data: "+(defaults.confidenceLevel||"Unrated")+" confidence overall. Reviewed "+(solarData.lastReviewed||"date unavailable")+"; field confidence varies.";if(assumptionNote)assumptionNote.textContent="Planning defaults for the country calculator. Edit them there using a current bill, fuel receipt, site assessment, and written installer quote.";var tariff=defaults.assumptions&&defaults.assumptions.electricityTariff;var yieldData=defaults.assumptions&&defaults.assumptions.solarYield;if(assumptionSourceText)assumptionSourceText.textContent="Tariff context: "+(tariff&&tariff.sourceName?tariff.sourceName:"source unavailable")+". Solar resource: "+(yieldData&&yieldData.sourceName?yieldData.sourceName:"source unavailable")+". ";if(assumptionSourceLink){var sourceUrl=yieldData&&yieldData.sourceUrl;if(typeof sourceUrl==="string"&&sourceUrl.toLowerCase().startsWith("https://")){assumptionSourceLink.href=sourceUrl;assumptionSourceLink.hidden=false;}else{assumptionSourceLink.hidden=true;}}}
   function findCountry(value){
     var query=normalize(value);if(!query)return null;
     return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||normalize(country.name)===query||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return normalize(country.name).indexOf(query)>=0||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;

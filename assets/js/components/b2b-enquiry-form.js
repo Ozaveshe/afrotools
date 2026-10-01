@@ -88,8 +88,16 @@
     return payload;
   }
 
+  function measure(form, eventName) {
+    var analytics = window.AfroTools && window.AfroTools.analytics;
+    if (!analytics || !analytics.track) return;
+    var raw = existingField(form, 'source_route').split('?')[0];
+    var surface = ['/widgets/','/api/','/api/pricing.html','/developers/','/custom-calculators/','/pro/'].indexOf(raw) >= 0 ? raw : 'other';
+    analytics.track(eventName, {offer_type: contract ? contract.normalizeOffer(existingField(form,'requested_offer')) : 'other', source_surface: surface});
+  }
   function bindForm(form) {
     applyContext(form);
+    form.addEventListener('focusin', function () { measure(form, 'b2b_enquiry_start'); }, {once:true});
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       if (!form.checkValidity()) {
@@ -121,6 +129,7 @@
           });
         })
         .then(function () {
+          measure(form, 'b2b_enquiry_completed');
           form.reset();
           applyContext(form);
           setStatus(form, 'Enquiry received. We will reply with the next practical step.', 'success');

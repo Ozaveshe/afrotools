@@ -215,3 +215,26 @@ test('source-checked AI review retains date, content, source and structural gate
   assert.ok(assessQuestion(question, ledger).reasons.includes('permission_unverified'));
   assert.ok(assessQuestion({ ...question, question: 'According to the passage, what does this mean?' }, ledger).reasons.includes('missing_passage_or_context'));
 });
+
+test('explicit English stress notation preserves capitalized syllables without relaxing ordinary duplicate checks', () => {
+  const { question, ledger } = fixture();
+  const prompt = 'Choose the appropriate stress pattern. The stressed syllable is written in capital letters. immunity';
+  const choices = { A: 'iMMUnity', B: 'immuNIty', C: 'Immunity', D: 'immuniTY' };
+  Object.assign(question, { subject: 'english', question: prompt, options: choices, answer: 'A' });
+  const assess = changes => {
+    const candidate = { ...question, ...changes };
+    ledger.questions[question.id].content_sha256 = questionFingerprint(candidate);
+    return assessQuestion(candidate, ledger);
+  };
+  assert.equal(assess({}).state, 'eligible');
+  assert.equal(assess({ options: { A: 'RAdioactive', B: 'raDIOactive', C: 'radioACtive', D: 'radioacTIVE' } }).state, 'eligible');
+  for (const changes of [
+    { subject: 'mathematics' },
+    { question: prompt.replace('stress pattern', 'spelling') },
+    { question: prompt.replace('capital letters', 'letters') },
+    { question: prompt.replace('stressed syllable', 'word') },
+    ...['iMMUnity', 'immunity', 'IMMUNITY', 'imMUniTY', 'imMU-nity', 'imMU nity', 'imMU1nity', 'imMUnіty', 'different', 'I'].map(value => ({ options: { ...choices, B: value } }))
+  ]) assert.ok(assess(changes).reasons.includes('duplicate_option_text'), JSON.stringify(changes));
+  delete ledger.questions[question.id].answer_review;
+  assert.ok(assess({}).reasons.includes('answer_review_missing'));
+});

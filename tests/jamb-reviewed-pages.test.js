@@ -272,3 +272,15 @@ test('all JAMB documents retain complete structure and original routes after reg
   assert.ok(total >= routeBaseline.files.length);
   for (const file of routeBaseline.files) assert.ok(fs.existsSync(path.resolve(root,'..',file)), 'Original route disappeared: '+file);
 });
+
+test('recent reviewed collections expose a separate ten-question quick route without reducing full-session gates', () => {
+  const pool = require('../ops/jamb/source-pool.json');
+  const ledger = require('../data/jamb/review-ledger.json');
+  const rows = pool.questions.filter(q => q.subject === 'english' && q.year === 2022);
+  const page = renderYear('english', 2022, rows, ledger);
+  assert.ok(page.html.includes('subject=english&amp;year=2022&amp;mode=quick'));
+  assert.ok(page.html.includes('Answer 10 distinct reviewed Use of English questions'));
+  assert.ok(page.html.includes('in 30 minutes'));
+  assert.equal(page.html.includes('aria-label="Timed CBT practice"'), false);
+  assert.equal(renderYear('english', 2022, rows.slice(0, 9), ledger).html.includes('mode=quick'), false);
+});

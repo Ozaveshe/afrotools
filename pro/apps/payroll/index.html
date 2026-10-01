@@ -21,11 +21,12 @@
   <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
   <script src="/assets/js/bundles/core.44e524d4.min.js" defer></script>
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
-  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
-  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
-  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=6b3de5f2"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=da354cb9" defer></script>
   <style>
     :root{
       --apo-bg:#f4f7fb;
@@ -126,7 +127,9 @@
     .apo-task{padding:12px 13px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
     .apo-task-meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
     .apo-table-wrap{overflow:auto;border:1px solid var(--apo-line);border-radius:12px;background:#fff}
+    .apo-table-wrap:focus-visible{outline:2px solid var(--apo-blue);outline-offset:3px}
     .apo-table{width:100%;min-width:760px;border-collapse:collapse}
+    @media(max-width:768px){.apo-table-wrap .apo-table{display:table!important;overflow:visible!important;min-width:760px!important}}
     .apo-table th,.apo-table td{padding:10px 11px;border-bottom:1px solid #edf2f7;text-align:left;vertical-align:top;font-size:.78rem}
     .apo-table th{background:#f8fafc;color:#52627a;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em}
     .apo-table tr:last-child td{border-bottom:0}
@@ -395,7 +398,7 @@
                 </div>
               </div>
               <div class="apo-body">
-                <div class="apo-table-wrap">
+                <div class="apo-table-wrap" role="region" aria-label="Recent payroll runs table" tabindex="0">
                   <table class="apo-table" aria-label="Recent payroll runs">
                     <thead>
                       <tr>

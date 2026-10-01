@@ -10,8 +10,9 @@ const nigeria = readJson("data/trade/car-import-cost-ng.json");
 const data = Engine.mergeData(core, [nigeria], { NGN: 1535.5 });
 
 assert.equal(nigeria.ageRules.basis, "manufactureYear");
-assert.equal(nigeria.ageRules.maxYearsExclusive, 15);
+assert.equal(nigeria.ageRules.maxYearsExclusive, 13);
 assert.ok(nigeria.sourceNotes.some((source) => source.url === "https://tip.nsw.gov.ng/trade-information/importing-motor-vehicles"));
+assert.ok(nigeria.sourceNotes.some((source) => source.url === "https://tip.nsw.gov.ng/trade-information/prohibited-items"));
 
 function ageWarning(year, asOfDate, firstRegistrationMonth = 12) {
   const result = Engine.calculate({
@@ -27,10 +28,10 @@ function ageWarning(year, asOfDate, firstRegistrationMonth = 12) {
   return result.warnings.find((warning) => warning.code === "age-ineligible");
 }
 
-assert.equal(ageWarning(2012, "2026-09-27T00:00:00Z"), undefined, "14-year-old manufacture year stays below the gate");
-assert.equal(ageWarning(2010, "2024-09-27T00:00:00Z", 1), undefined, "a supplied calculation date overrides the data build date");
-assert.equal(ageWarning(2011, "2025-09-27T00:00:00Z"), undefined, "calculation date overrides the older data build date");
-assert.match(ageWarning(2011, "2026-09-27T00:00:00Z").message, /less than 15 years/, "15-year-old manufacture year is flagged even when first registration was in December");
+assert.equal(ageWarning(2014, "2026-09-27T00:00:00Z"), undefined, "12-year-old manufacture year stays below the stricter prohibition gate");
+assert.equal(ageWarning(2011, "2023-09-27T00:00:00Z"), undefined, "a supplied calculation date overrides the data build date");
+assert.match(ageWarning(2011, "2024-09-27T00:00:00Z", 12).message, /above 12 years/, "13-year-old manufacture year is flagged even when first registration was in December");
+assert.match(ageWarning(2012, "2026-09-27T00:00:00Z").message, /official pages conflict/, "14-year-old manufacture year requires verification under conflicting official pages");
 assert.ok(ageWarning(2005, "2026-09-27T00:00:00Z"), "2005 Camry is outside the portal's stated import age limit");
 
 console.log("car-import-cost-age-rule.test.js passed");
