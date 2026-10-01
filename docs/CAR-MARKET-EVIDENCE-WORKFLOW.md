@@ -10,6 +10,13 @@ Use a written partner feed or independently submitted dealer inventory with expl
 
 ## Intake and review
 
+### Browser research before source approval
+
+`car_market_research` holds minimal manually checked facts for sources awaiting policy review, without treating them as approved listing observations. Use `node scripts/car-market-research.js validate|sql INPUT.json data/cars/market-source-registry.json`. Supply actual make/model/year, condition, ask, currency, URL, observed timestamp and posting date when visible. Original mileage units are preserved. A catalog ID must match make, model and year; unmatched cars keep a null ID. Blocked/retired sources are refused. Do not copy images, seller contact, VIN, page text or query-string identifiers.
+
+Research is append-only, private under RLS, and never queried by the snapshot generator. All rows carry `availability-unconfirmed`; postings older than 90 days carry an age flag. A fresh browser visit does not prove an old listing is still for sale. Source rights, active inventory and suspicious specifications must be resolved separately before using the normal observation intake. Motorka is `review-needed`, not authorized for scheduled scraping or public reuse.
+
+
 1. Verify the AfroTools Supabase project ref `zpclagtgczsygrgztlts` with the configured MCP before SQL.
 2. Read the feed or individual listing and create JSON `{ "listings": [...] }` with fields accepted by `scripts/car-market-evidence.js`. Use actual observed timestamp and individual HTTPS listing URL. Preserve make, model, year, condition, currency, and asking price; never infer a missing price.
 3. Run `node scripts/car-market-evidence.js validate INPUT.json data/cars/market-source-registry.json`.
