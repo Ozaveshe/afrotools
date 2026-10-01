@@ -27,9 +27,11 @@ jobs:
       - run: node --test tests/election-reader-desk.test.js tests/election-monitor.test.js
       - run: node tests/scheduled-event-auth.test.js
       - run: npm run elections:validate && npm run elections:calendar:check && npm run elections:news:check
-      - run: npm run audit:automation-registry && npm run audit:public-claims && npm run check-links
+      - name: Probe configured original sources (read only)
+        run: node scripts/check-election-monitor-live.js
       - run: npx playwright install chromium --with-deps
       - run: npx playwright test tests/e2e/election-reader-desk.spec.js --project=chromium --workers=1
+      - run: npm run audit:automation-registry && npm run audit:public-claims && npm run check-links
       - uses: actions/upload-artifact@v4
         if: always()
         with:

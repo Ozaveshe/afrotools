@@ -1291,7 +1291,9 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 12000);
     try {
-      return await fetch(url, { cache: 'no-store', signal: controller.signal });
+      const response = await fetch(url, { cache: 'no-store', signal: controller.signal });
+      const body = await response.text();
+      return { ok: response.ok, status: response.status, json: async () => JSON.parse(body) };
     } finally {
       clearTimeout(timer);
     }
@@ -1299,7 +1301,7 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
 
   function sourceReview(record, cadence) {
     const dates = (record.sources || []).map((source) => source.checkedAt)
-      .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && Number.isFinite(dateUtc(value)));
+      .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && Number.isFinite(dateUtc(value)) && new Date(dateUtc(value)).toISOString().slice(0,10) === value);
     const earliest = dates.slice().sort()[0];
     const latest = dates.slice().sort().pop();
     const missing = dates.length !== (record.sources || []).length || !dates.length;
@@ -1362,6 +1364,7 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
         typeof survey.includesAllResponseOptions === 'boolean' && Array.isArray(options) && options.length > 0 &&
         options.every((option) => typeof option.label === 'string' && option.label.trim() &&
           Number.isFinite(option.percent) && option.percent >= 0 && option.percent <= 100) &&
+        new Set(options.map((option) => option.label.trim().toLowerCase())).size === options.length &&
         (!survey.includesAllResponseOptions || Math.abs(options.reduce((sum, option) => sum + option.percent,0) - 100) <= 1);
     }).sort((a,b) => b.fieldworkEnd.localeCompare(a.fieldworkEnd));
   }

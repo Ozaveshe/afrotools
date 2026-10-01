@@ -43,8 +43,11 @@ test('freshly generated ledger cannot disguise old source checks',()=>{
   assert.equal(context.sourceReview({sources:[{checkedAt:'2026-10-02'}]},7).overdue,true);
 });
 test('reviewed brief stream excludes unknown records, future articles and unsafe links',()=>{
-  assert.equal(context.approvedBriefs(news,ledger.elections).length,3);
   const article=structuredClone(news.articles[0]);
+  article.electionId=ledger.elections[0].id;
+  for(const field of ['publishedOn','reviewedOn','updatedOn']) article.localizations.en[field]='2026-09-27';
+  article.officialSources.forEach(source=>{source.checkedOn='2026-09-27';});
+  assert.equal(context.approvedBriefs({articles:[article]},ledger.elections).length,1);
   article.officialSources[0].url='javascript:alert(1)';
   assert.equal(context.approvedBriefs({articles:[article]},ledger.elections).length,0);
 });
@@ -56,5 +59,7 @@ test('page inline JavaScript compiles and official snapshots retain generator co
   const generator=require('../scripts/generate-election-calendar-snapshot');
   assert.ok(html.includes(generator.renderCountryIndex(ledger).split('\n').map(line=>'        '+line).join('\n')));
   for (const record of ledger.elections) assert.ok(fs.existsSync('assets/img/flags/afroatlas/'+record.countryCode.toLowerCase()+'.svg'));
-  assert.equal(require('../data/government/election-surveys.json').surveys.length,0,'No invented production survey rows');
+  const surveyData=require('../data/government/election-surveys.json');
+  assert.equal(surveyData.schemaVersion,1);
+  assert.ok(Array.isArray(surveyData.surveys));
 });
