@@ -3,6 +3,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const dataset = require(path.join(ROOT, "data", "energy", "solar-roi-country-dataset.js"));
@@ -10,7 +11,13 @@ const dataset = require(path.join(ROOT, "data", "energy", "solar-roi-country-dat
 function read(relPath) {
   const file = path.join(ROOT, relPath);
   assert.ok(fs.existsSync(file), `Missing file: ${file}`);
-  return { file, html: fs.readFileSync(file, "utf8") };
+  const html = fs.readFileSync(file, "utf8");
+  for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    if (!/\bsrc\s*=|application\/ld\+json/i.test(match[1]) && match[2].trim()) {
+      assert.doesNotThrow(() => new vm.Script(match[2], { filename: file }), `Generated inline script must parse in ${file}`);
+    }
+  }
+  return { file, html };
 }
 
 function assertIncludes(html, needle, label, file) {
@@ -56,7 +63,8 @@ for (const country of countries) {
   assertIncludes(allGroup, `data-currency="${country.currency}"`, `all-country currency for ${country.countryName}`, root.file);
 
   const page = read(`tools/solar-roi/${country.slug}/index.html`);
-  assertIncludes(page.html, '<label for="solarCountryPageSearch">Selected country</label>', `country picker label for ${country.countryName}`, page.file);
+  assertIncludes(page.html, '<label for="solarCountryPageSearch">Search country</label>', `country search label for ${country.countryName}`, page.file);
+  assertIncludes(page.html, '<label for="solarCountryPageSelect">Select country</label>', `country select label for ${country.countryName}`, page.file);
   assertIncludes(page.html, 'id="solarCountryPageSelect"', `country picker select for ${country.countryName}`, page.file);
   assertIncludes(page.html, '<optgroup label="Popular countries">', `popular countries group for ${country.countryName}`, page.file);
   assertIncludes(page.html, '<optgroup label="All countries">', `all countries group for ${country.countryName}`, page.file);

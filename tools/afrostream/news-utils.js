@@ -140,13 +140,14 @@
     var body = wire ? '<p>' + escapeHTML(brief) + '</p>' : renderMarkdown(row.body || row.excerpt);
     var read = Math.max(1, Math.ceil(wordCount(row.body || row.excerpt) / 200));
     return '<a class="scene-back" href="/tools/afrostream/news">← Back to the scene</a>' +
+      '<div class="scene-article-columns"><div class="scene-article-main">' +
       '<header class="scene-article-header"><div class="scene-eyebrow">' + escapeHTML(categoryLabel(item.category)) + ' · ' + escapeHTML(item.kind) + '</div>' +
       '<h1>' + escapeHTML(item.title) + '</h1>' + (!wire && item.excerpt ? '<p class="scene-deck">' + escapeHTML(item.excerpt) + '</p>' : '') +
       '<div class="as-story-meta"><span>' + escapeHTML(wire ? item.source : (row.author || 'AfroStream editorial')) + '</span><time datetime="' + escapeHTML(item.published_at) + '">' + escapeHTML(dateLabel(item.published_at)) + '</time><span>' + read + ' min read</span></div></header>' +
       (!isPlaceholderImage(item.image_url) ? '<figure class="scene-article-visual">' + media(row, true) + '</figure>' : '') +
-      '<div class="scene-article-columns"><article class="scene-article-body">' + body +
-      (wire && sourceUrl ? '<p><a class="scene-button" href="' + escapeHTML(sourceUrl) + '" target="_blank" rel="noopener">Continue at ' + escapeHTML(item.source) + ' ↗</a></p>' : '') + '</article>' +
-      '<aside><section class="scene-source"><h2>' + (wire ? 'From the newswire' : 'Sources & context') + '</h2><p>' + escapeHTML(item.source) + '</p>' +
+      '<article class="scene-article-body">' + body +
+      (wire && sourceUrl ? '<p><a class="scene-button" href="' + escapeHTML(sourceUrl) + '" target="_blank" rel="noopener">Continue at ' + escapeHTML(item.source) + ' ↗</a></p>' : '') + '</article></div>' +
+      '<aside class="scene-article-sidebar"><section class="scene-source"><h2>' + (wire ? 'From the newswire' : 'Sources & context') + '</h2><p>' + escapeHTML(item.source) + '</p>' +
       (sourceUrl ? '<a href="' + escapeHTML(sourceUrl) + '" target="_blank" rel="noopener">Read the original source ↗</a>' : '') +
       '<p>' + (wire ? 'This is a brief from the publisher’s feed. Follow the source for their full reporting.' : 'This report adds AfroStream’s analysis to the linked source material. Availability and eligibility can vary by country.') + '</p><a href="/tools/afrostream/editorial/">Editorial & corrections →</a></section>' +
       '<div class="scene-share"><button type="button" id="copyArticleLink">Copy article link</button><a href="https://wa.me/?text=' + encodeURIComponent(item.title + ' ' + ORIGIN + prettyPath(item.slug)) + '" target="_blank" rel="noopener">Share on WhatsApp</a><a href="/tools/afrostream/university/">Creator Playbook →</a><span id="shareStatus" role="status" aria-live="polite"></span></div></aside></div>' +

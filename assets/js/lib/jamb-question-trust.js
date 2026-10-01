@@ -74,12 +74,22 @@
     for (var question of pool.questions) {
       var options = question.options;
       var keys = options && !Array.isArray(options) ? Object.keys(options).sort() : [];
+      var optionTexts = keys.map(function (key) { return typeof options[key] === 'string' ? options[key].trim() : ''; });
+      // Capitals encode the stressed syllable only when the question explicitly
+      // says so. This mirrors the source trust gate; review digests remain required.
+      var stressChoices = question.subject === 'english'
+        && /\bstress pattern\b/i.test(question.question || '')
+        && /\bstressed syllable\b/i.test(question.question || '')
+        && /\bcapital letters\b/i.test(question.question || '')
+        && optionTexts.every(function (value) { return /^[a-z]*[A-Z]+[a-z]*$/.test(value) && /[a-z]/.test(value); })
+        && new Set(optionTexts.map(function (value) { return value.toLowerCase(); })).size === 1;
+      var identities = optionTexts.map(function (value) { return (stressChoices ? value : value.toLowerCase()).replace(/\s+/g, ' '); });
       if (typeof question.id !== 'string' || !question.id.trim() || ids.has(question.id) ||
           typeof question.subject !== 'string' || !question.subject.trim() ||
           typeof question.question !== 'string' || question.question.trim().length < 12 ||
           !/^(ABCD|ABCDE|ABCDEF)$/.test(keys.join('')) || question.format !== keys.length ||
           !keys.includes(question.answer) || keys.some(function (key) { return typeof options[key] !== 'string' || !options[key].trim(); }) ||
-          new Set(keys.map(function (key) { return options[key].trim().toLowerCase(); })).size !== keys.length) {
+          new Set(identities).size !== keys.length) {
         throw new Error('A reviewed question has invalid or duplicate content.');
       }
       ids.add(question.id);

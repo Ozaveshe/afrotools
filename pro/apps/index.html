@@ -20,12 +20,13 @@
   <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
   <script src="/assets/js/bundles/core.44e524d4.min.js" defer></script>
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
-  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
-  <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
-  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
-  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+  <script src="/assets/js/lib/pro-architecture.js?v=40653737"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=6b3de5f2"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=da354cb9" defer></script>
   <style>
     :root{
       --pad-bg:var(--color-bg,#f8fafd);
@@ -130,8 +131,8 @@
 
       <section class="pad-metrics" aria-label="Pro app summary">
         <div class="pad-metric"><strong id="metricTotal">0</strong><span>Pro apps</span></div>
-        <div class="pad-metric"><strong id="metricActive">0</strong><span>Apps you can open</span></div>
-        <div class="pad-metric"><strong id="metricShell">0</strong><span>Early previews</span></div>
+        <div class="pad-metric"><strong id="metricActive">0</strong><span>Implemented cores</span></div>
+        <div class="pad-metric"><strong id="metricShell">0</strong><span>Previews and concepts</span></div>
         <div class="pad-metric"><strong id="metricPlanned">0</strong><span>Coming soon</span></div>
         <div class="pad-metric"><strong id="metricBlocked">0</strong><span>Limited previews</span></div>
       </section>
@@ -179,7 +180,7 @@
                 <th>Priority</th>
                 <th>Customers</th>
                 <th>Paid reason</th>
-                <th>Benchmarks</th>
+                <th>Account save/load</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -241,42 +242,8 @@
       return api && api.getApps ? api.getApps() : [];
     }
 
-    var appNavOverrides = {
-      payroll: { routeStatus: "active", shellState: "Active", statusTone: "active", routeExists: true },
-      "tax-compliance": { routeStatus: "shell", shellState: "Review packet only", statusTone: "shell", routeExists: true },
-      books: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
-      hr: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
-      "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "legal-desk": {
-        route: "/pro/apps/legal-desk/",
-        fallbackRoute: "/pro/apps/legal/",
-        routeStatus: "shell",
-        shellState: "Workspace preview",
-        statusTone: "shell",
-        routeExists: true,
-        buildStatus: "Legal workspace opens the current document and review workspace.",
-        dataSurface: "Saved legal workspace data on this device while account save is planned.",
-        needsAttention: "Keep the document storage boundary and legal disclaimer language honest."
-      },
-      "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "stream-intelligence": {
-        routeStatus: "limited preview",
-        shellState: "Limited preview",
-        statusTone: "schema",
-        routeExists: true,
-        buildStatus: "Verified source controls and privacy boundaries are being finalized before broader Pro use.",
-        dataSurface: "Public source review, freshness notes, and account features marked as coming later.",
-        needsAttention: "Account-saved review queues and private intelligence controls are still being finalized."
-      },
-      "property-projects": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true }
-    };
 
-    function controlApps() {
-      return apps().map(function (app) {
-        return Object.assign({}, app, appNavOverrides[app.id] || {});
-      });
-    }
+    function controlApps() { var api = architecture(); return api ? api.getControlApps() : apps(); }
 
     function supportRoutes() {
       return [
@@ -363,7 +330,7 @@
       var arch = architecture();
       var summary = arch && arch.getSummary ? arch.getSummary() : null;
       setText("metricTotal", summary ? summary.totalApps : allItems.length);
-      setText("metricActive", summary ? summary.appRoutesReady : allItems.filter(function (app) { return app.routeExists !== false; }).length);
+      setText("metricActive", summary ? summary.implementedCores : allItems.filter(function (app) { return app.routeExists !== false; }).length);
       setText("metricShell", summary ? summary.shellApps : allItems.filter(function (app) { return app.routeStatus === "shell" || app.statusTone === "local" || /shell/i.test(app.shellState || ""); }).length);
       setText("metricPlanned", allItems.filter(function (app) { return app.routeStatus === "planned"; }).length);
       setText("metricBlocked", summary ? summary.blockedApps : allItems.filter(function (app) { return app.routeStatus === "blocked" || app.routeExists === false; }).length);
@@ -383,7 +350,7 @@
           "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.domain || ""), " / ", escapeHtml(app.owner || ""), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
           "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(statusLabel(app.routeStatus, app.shellState)), "</span></td>",
-          "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Workspace preview"), "</span><div class=\"pad-meta\">", escapeHtml(app.buildStatus || ""), "</div></td>",
+          "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Workspace preview"), "</span><div class=\"pad-meta\">", escapeHtml((app.buildStatus || "") + (app.capabilities ? " Device: " + app.capabilities.devicePersistence + ". Account: " + app.capabilities.accountSaveLoad + ". Sync/automation: not established." : "")), "</div></td>",
           "<td>", escapeHtml(app.dataSurface || app.dataModel || "Not connected"), "</td>",
           "<td>", escapeHtml(app.needsAttention || ""), "</td>",
           "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.id === "payroll" ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">", escapeHtml(actionLabel), "</a><a class=\"pad-btn\" href=\"/pro/workspace/\">Workspace</a></div></td>",
@@ -403,10 +370,10 @@
           "<tr>",
           "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.category || ""), " / ", escapeHtml(app.shellState || "Workspace preview"), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
-          "<td><span class=\"pad-pill ", app.priority <= 3 ? "active" : "local", "\">P", escapeHtml(app.priority), "</span></td>",
+          "<td><span class=\"pad-pill local\">", escapeHtml(app.shellState), "</span></td>",
           "<td>", escapeHtml((app.customers || []).slice(0, 4).join(", ")), "</td>",
-          "<td>", escapeHtml(app.paidReason || ""), "</td>",
-          "<td>", escapeHtml((app.competitors || []).join(", ")), "</td>",
+          "<td>", escapeHtml(app.summary || ""), "</td>",
+          "<td>", escapeHtml(app.capabilities ? app.capabilities.accountSaveLoad : "not established"), "</td>",
           "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.priority <= 3 ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">Open workspace</a></div></td>",
           "</tr>"
         ].join("");
@@ -445,5 +412,6 @@
   })();
   </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/lib/pro-capability-labels.js?v=15a59e23"></script>
 </body>
 </html>

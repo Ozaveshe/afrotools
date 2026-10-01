@@ -37,18 +37,15 @@ test('NECO 2023 Mathematics Q29–36 is a separate complete selection with descr
  assert.equal(guides[6].answer,'92°.');assert.equal(guides[7].answer,'315 m.');
 });
 
-test('NECO 2023 Mathematics Q21–28 keeps seven checked guides and holds the conflicting graph equation',()=>{
+test('NECO 2023 Mathematics Q21–28 has eight adapted companions including the zero equation',()=>{
  const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q21-q28-partial');
- assert.ok(section);assert.equal(section.complete_selected_prompts,false);assert.equal(section.complete_paper,false);
- assert.deepEqual(section.heldNumbers,[23]);
+ assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);assert.deepEqual(section.heldNumbers,[]);
  const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=21&&q.number<=28);
- assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
- assert.deepEqual(guides.map(q=>q.number),[21,22,24,25,26,27,28]);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);assert.deepEqual(guides.map(q=>q.number),[21,22,23,24,25,26,27,28]);
  assert.match(section.review,/pages 5–6/);assert.match(section.sourceRights,/rights-reserved/);
- assert.match(guides[0].prompt,/linked page 5 graph/);assert.match(guides[2].prompt,/linked page 6 diagram/);
- for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
- assert.equal(guides[4].answer,'x = 2/3 or x = −4/7.');
- assert.equal(guides[6].answer,'49/8.');
+ assert.match(guides[0].prompt,/linked page 5 graph/);assert.match(guides[3].prompt,/linked page 6 diagram/);
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,q.number===23?3:2);assert.match(q.sourceUse,/not a complete paper/);}
+ assert.equal(guides[5].answer,'x = 2/3 or x = −4/7.');assert.equal(guides[7].answer,'49/8.');
 });
 
 test('NECO 2023 Mathematics Q37–44 has eight checked teaching companions with linked figures',()=>{
@@ -63,25 +60,22 @@ test('NECO 2023 Mathematics Q37–44 has eight checked teaching companions with 
  assert.equal(guides[3].answer,'66°.');assert.equal(guides[7].answer,'386 km.');
 });
 
-test('NECO 2023 Mathematics Q45–50 has five checked guides and holds the conflicting Q48',()=>{
+test('NECO 2023 Mathematics Q45–50 has six adapted guides while raw Q48 precision remains held',()=>{
  const section=manifest.components.find(row=>row.id==='neco-2023-mathematics-p3-q45-q50-partial');
- assert.ok(section);assert.equal(section.complete_selected_prompts,false);assert.equal(section.complete_paper,false);
- assert.deepEqual(section.heldNumbers,[48]);
+ assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);assert.deepEqual(section.heldNumbers,[]);assert.deepEqual(section.raw_mcq_heldNumbers,[48]);
  const guides=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics'&&q.number>=45&&q.number<=50);
- assert.deepEqual(guides.map(q=>q.id),section.expectedIds);
- assert.deepEqual(guides.map(q=>q.number),[45,46,47,49,50]);
+ assert.deepEqual(guides.map(q=>q.id),section.expectedIds);assert.deepEqual(guides.map(q=>q.number),[45,46,47,48,49,50]);
  assert.match(section.review,/pages 9–10/);assert.match(section.sourceRights,/rights-reserved/);
- for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
+ for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,q.number===48?3:2);assert.match(q.sourceUse,/not a complete paper/);}
  assert.equal(guides[0].answer,'72°.');
  assert.ok(Math.abs(Math.sqrt(1-0.8**2)/0.8-3/4)<1e-12);assert.equal(guides[1].answer,'3/4.');
  assert.equal((12/Math.sin(54*Math.PI/180)).toPrecision(3),'14.8');assert.equal(guides[2].answer,'14.8 m.');
  const scores=[4,5,3,2,1],mean=scores.reduce((sum,value)=>sum+value,0)/scores.length;
- assert.equal(scores.reduce((sum,value)=>sum+Math.abs(value-mean),0)/scores.length,1.2);assert.equal(guides[3].answer,'1.2.');
+ assert.equal(scores.reduce((sum,value)=>sum+Math.abs(value-mean),0)/scores.length,1.2);assert.equal(guides[4].answer,'1.2.');
  const prime=n=>n>1&&Array.from({length:Math.floor(Math.sqrt(n))-1},(_,i)=>i+2).every(d=>n%d!==0);
- assert.equal(Array.from({length:30},(_,i)=>i+1).filter(prime).length/30,1/3);assert.equal(guides[4].answer,'1/3.');
- assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
- assert.deepEqual(intake.visual_review.numbers.slice(43,48),[45,46,47,49,50]);
- assert.deepEqual(intake.visual_review.correctOptions.slice(43,48),['C','B','B','A','E']);
+ assert.equal(Array.from({length:30},(_,i)=>i+1).filter(prime).length/30,1/3);assert.equal(guides[5].answer,'1/3.');
+ assert.deepEqual(intake.held_items.map(q=>q.number),[48]);
+ assert.deepEqual(intake.visual_review.numbers.slice(43,48),[45,46,47,49,50]);assert.deepEqual(intake.visual_review.correctOptions.slice(43,48),['C','B','B','A','E']);
 });
 
 test('NECO 2023 Mathematics Q51–60 adds ten adapted guides without releasing held items',()=>{
@@ -93,7 +87,7 @@ test('NECO 2023 Mathematics Q51–60 adds ten adapted guides without releasing h
  assert.match(section.review,/pages 10–12/);assert.match(section.sourceRights,/rights-reserved/);
  for(const q of guides){assert.equal(q.year,2023);assert.equal(q.paper,'III');assert.equal(q.steps.length,3);assert.equal(q.checks.length,2);assert.match(q.sourceUse,/not a complete paper/);}
  assert.deepEqual(guides.map(q=>q.answer),['8/15.','120°.','42%.','6.3.','1/2.','21/50.','3.','4/3 (1⅓).','2/3.','40 m.']);
- assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
+ assert.deepEqual(intake.held_items.map(q=>q.number),[48]);
  assert.ok(!bank.items.some(q=>q.id==='neco-2023-mathematics-p3-q23'||q.id==='neco-2023-mathematics-p3-q48'));
 });
 
@@ -112,7 +106,7 @@ test('NECO 2023 English B and C retain two identities with complete matching pas
  assert.deepEqual(section.expectedIds,['neco-2023-english-p2-q5','neco-2023-english-p2-q6']);
  assert.equal(section.complete_selected_prompts,true);assert.equal(section.complete_paper,false);
  assert.equal(section.sitting_authenticated,false);assert.equal(section.official_mark_scheme,false);
- assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);assert.equal(bank.items.length,136);
+ assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);assert.equal(bank.items.length,138);
  const passageHashes=['fa57c43585a2431dd930e05c394dca864a27c6d22fdeb917767d54848a8943bb','1311e175390abfcc7c5ea3081f7bdfa7b0e7c0c77322e4b85fed5021d90f4158'];
  for(const id of section.expectedIds){
   const q=bank.items.find(item=>item.id===id);assert.ok(q,id);

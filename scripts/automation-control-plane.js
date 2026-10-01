@@ -574,6 +574,10 @@ function evaluateRelease(policy, definitionsResult, queue, worktrees, options) {
       add('release_candidate_unavailable', 'Selected receipt is missing, invalid, or not ready: ' + id, id);
       continue;
     }
+    const sourceOwner = policy.active_automations.find((lane) => lane.id === item.automation_id);
+    if (sourceOwner && sourceOwner.release_source_allowed === false) {
+      add('release_candidate_source_forbidden', 'This account-wide monitor has no source integration authority for the release repository.', id);
+    }
     if (!Number.isFinite(Date.parse(item.created_at)) || Date.parse(item.created_at) > options.now.getTime()) {
       add('release_candidate_timestamp_invalid', 'Selected receipt creation time is invalid or in the future.', id);
     }

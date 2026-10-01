@@ -40,7 +40,8 @@
     .auth-panel{background:#fff;border:1px solid var(--auth-line);border-radius:8px;box-shadow:0 18px 45px rgba(15,23,42,.08);overflow:hidden}
     .auth-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--auth-line);background:#fbfdff}
     .auth-tab{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 10px;color:#445266;text-decoration:none;font-weight:700;font-size:0.88rem;border-bottom:3px solid transparent}
-    .auth-tab[aria-selected="true"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
+    .auth-tab[aria-current="page"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
+    .auth-tab:focus-visible{outline:2px solid var(--auth-accent);outline-offset:-4px}
     .auth-body{padding:28px}
     .auth-body h2{margin:0 0 8px;font-size:1.45rem;line-height:1.2;letter-spacing:0}
     .auth-body p{margin:0 0 18px;color:var(--auth-muted);line-height:1.6;font-size:0.94rem}
@@ -58,7 +59,7 @@
     .oauth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
     .oauth-btn{background:#fff;border:1px solid #cbd5e1;color:#1f2937}
     .oauth-btn:hover{border-color:var(--auth-accent);color:var(--auth-accent)}
-    .auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#728197;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+    .auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#52627a;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
     .auth-divider:before,.auth-divider:after{content:"";height:1px;background:#e2e8f0;flex:1}
     .auth-status{min-height:22px;margin:0 0 16px;color:#475569;font-weight:600;font-size:0.9rem}
     .auth-status.error{color:#b42318}
@@ -106,9 +107,9 @@
 
       <section class="auth-panel" id="auth-panel" aria-label="AfroTools account form">
         <nav class="auth-tabs" aria-label="Auth modes">
-          <a class="auth-tab" href="/auth/?mode=login" data-mode-link="login" aria-selected="true">Sign in</a>
-          <a class="auth-tab" href="/auth/?mode=signup" data-mode-link="signup" aria-selected="false">Create account</a>
-          <a class="auth-tab" href="/auth/?mode=reset" data-mode-link="reset" aria-selected="false">Reset password</a>
+          <a class="auth-tab" href="/auth/?mode=login" data-mode-link="login" aria-current="page">Sign in</a>
+          <a class="auth-tab" href="/auth/?mode=signup" data-mode-link="signup">Create account</a>
+          <a class="auth-tab" href="/auth/?mode=reset" data-mode-link="reset">Reset password</a>
         </nav>
 
         <div class="auth-body">
@@ -296,6 +297,9 @@
         setMode(link.getAttribute('data-mode-link'));
       });
     });
+    window.addEventListener('popstate', function(){
+      setMode(new URLSearchParams(window.location.search).get('mode'), true);
+    });
 
     function continueAfterLogin(method, destination) {
       var navigated = false;
@@ -437,7 +441,8 @@
       });
       document.querySelectorAll('[data-mode-link]').forEach(function(tab){
         var tabMode = tab.getAttribute('data-mode-link');
-        tab.setAttribute('aria-selected', tabMode === mode ? 'true' : 'false');
+        if (tabMode === mode) tab.setAttribute('aria-current', 'page');
+        else tab.removeAttribute('aria-current');
         var href = '/auth/?mode=' + tabMode + '&next=' + encodeURIComponent(next);
         if (intent) href += '&intent=' + encodeURIComponent(intent);
         tab.href = href;

@@ -17,7 +17,7 @@ test('every written task has provenance and a self-review guide, with linked sca
   assert.ok(q.prompt&&q.answer&&q.steps.length>=3&&q.checks.length>=2);
   if(q.exam==='NECO'){
    assert.equal(q.year,2023);
-   if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok((q.number>=1&&q.number<=22)||(q.number>=24&&q.number<=47)||(q.number>=49&&q.number<=60));}
+   if(q.subject==='Mathematics'){assert.equal(q.source,'https://www.scribd.com/document/842881920/NECO-20230001');assert.equal(q.paper,'III');assert.ok(q.number>=1&&q.number<=60);}
    else{assert.equal(q.subject,'English');assert.equal(q.source,'https://www.myschoolbrod.com.ng/2024/12/neco-ssce-english-language-theory-2023.html');assert.equal(q.paper,'II');assert.ok([1,2,3,4,5,6].includes(q.number));if(q.number<=4)assert.match(q.sourceUse,/at least 450 words/);else {assert.ok(q.passage);assert.match(q.sourceUse,/complete selected passage/);assert.match(q.sourceUse,/not an official mark scheme or complete paper/);}}
    continue;
   }
@@ -134,7 +134,7 @@ test('WAEC 2022 graph and probability guides have independently checked results 
 
 test('WAEC 2022 Q6 graph localization preserves saved slots, identities and concealed derivations',()=>{
  const id='waec-2022-mathematics-p2-q6',source=bank.items.find(q=>q.id===id),locales=require('../scripts/build-ssce-practice-locales');
- assert.equal(bank.items.length,136);assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);
+ assert.equal(bank.items.length,138);assert.equal(bank.id,'ssce-written-v1');assert.equal(bank.version,1);
  const saved={version:1,bankId:bank.id,entries:{[id]:{answer:'Synthetic saved graph reasoning',checks:[true,false,true,false]},'written-m1':{answer:'45',checks:[false,true]}}};
  for(const locale of ['fr','sw']){
   const translated=locales.writtenBank(locale),q=translated.items.find(q=>q.id===id);

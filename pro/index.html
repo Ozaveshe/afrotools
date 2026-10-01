@@ -304,7 +304,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   <div class="pro-hero-inner">
     <span class="badge">AFROTOOLS PRO</span>
     <h1>AfroTools Pro</h1>
-    <p>Run African payroll work, export packets, saved histories, and early-access operating workspaces from one account-backed Pro dashboard.</p>
+    <p>Run African payroll work, export packets, saved histories, and early-access operating workspaces with clear device and account saving limits.</p>
     <div class="hero-actions">
       <a href="#pricing" class="hero-cta">Start or manage Pro</a>
       <a href="/pro/workspace/" class="hero-cta secondary">Open Pro Workspace</a>
@@ -323,7 +323,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <section class="pro-lab" aria-labelledby="pro-lab-title">
   <div class="pro-lab-head">
     <div class="pro-lab-eyebrow">Your workspaces</div>
-    <h2 id="pro-lab-title">Keep recurring work organised</h2>
+    <h2 id="pro-lab-title">Keep recurring work organised</h2><p><span data-pro-count="totalApps">—</span> registered apps · <span data-pro-count="implementedCores">—</span> implemented cores. Other routes are previews or concepts.</p>
     <p>Start with payroll records, payslip packets or a website audit. Each app explains where your work is saved and which features are available.</p>
     <div class="pro-lab-grid" aria-label="Workspace availability">
       <article class="pro-lab-card"><h3>AfroPayroll · Available</h3><p>Prepare payroll runs and review export packets. Account-backed records are labelled when supported; device-only work is labelled separately.</p><a href="/pro/apps/payroll/">Open AfroPayroll</a></article>
@@ -381,7 +381,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <aside class="pro-lab-card">
       <h3>Move work forward with clear handoffs</h3>
       <p>Keep records, review outstanding tasks and prepare export packets or notes for your team.</p>
-      <div class="pro-lab-small">Explore AfroSeller, AfroEvents and AfroBeauty as device-saved Daily OS previews. Each workspace explains its account-save limits.</div>
+      <div class="pro-lab-small">Seller and Events have local previews. Beauty is a concept page that saves a checkpoint only, not booking records.</div>
     </aside>
   </div>
 </section>
@@ -423,9 +423,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       <h3>Daily OS and control previews</h3>
       <p>For sellers, service teams, schools, clinics, creators, farms, and operators who want structured local workspaces before full account sync.</p>
       <ul>
-        <li>Explore AfroSeller, AfroEvents and AfroBeauty for daily business records.</li>
+        <li>Seller and Events offer local previews; Beauty and six other Daily OS concepts do not create operational records.</li>
         <li>Tax, Books, HR, Trade, Legal, Grants, Creator, Property, and Stream surfaces stay labelled by readiness.</li>
-        <li>Try the device-saved workspace and review its available exports.</li>
+        <li>Read each capability label before entering records or buying for a particular task.</li>
       </ul>
       <div class="product-note">Shell apps do not claim bank sync, official filing, legal certification, payment collection, or cloud sync.</div>
     </article>
@@ -600,7 +600,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
 <script src="/assets/js/lib/pro-plan.js?v=9db2c402"></script>
-<script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
+<script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
 <script src="/assets/js/lib/analytics.js?v=8134382e"></script>
 <script>
 (function(){
@@ -636,7 +637,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       if (status.isPro) {
         var expires = profile.subscription_expires_at ? ' until ' + profile.subscription_expires_at.slice(0, 10) : '';
         setStatus('is-pro', 'Signed in as ' + email + '. Pro access is active' + expires + '.', 'Pro active', [
-          { label: 'Open Pro Workspace', href: '/pro/workspace/', primary: true },
+          { label: 'Open Pro Workspace', href: window.AfroProReturn.current(), primary: true },
           { label: 'Pro settings', href: '/pro/settings/' },
           { label: 'Dashboard', href: '/dashboard/' }
         ]);
@@ -647,8 +648,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         ]);
       } else {
         setStatus('is-signed-out', 'Sign in or create a free account to start Pro checkout, manage billing, or open an active Pro workspace.', 'Account needed', [
-          { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=/pro/' },
-          { label: 'Create account', href: '/auth/?mode=signup&intent=pro-checkout&next=/pro/', primary: true }
+          { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=' + (location.search ? encodeURIComponent('/pro/?next=' + encodeURIComponent(window.AfroProReturn.current())) : '/pro/') },
+          { label: 'Create account', href: '/auth/?mode=signup&intent=pro-checkout&next=' + (location.search ? encodeURIComponent('/pro/?next=' + encodeURIComponent(window.AfroProReturn.current())) : '/pro/'), primary: true }
         ]);
       }
     } catch (err) {
@@ -700,6 +701,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     window.AfroTools.analytics.trackProPricing('pro-index');
   }
 
+  var returnRoute = window.AfroProReturn.current();
+  var checkoutReturn = '/pro/?next=' + encodeURIComponent(returnRoute);
+  var loginReturn = '/auth/?mode=signup&intent=pro-checkout&next=' + encodeURIComponent(checkoutReturn);
   // Checkout via Paystack
   async function startCheckout(interval) {
     var currency = currencySelect.value;
@@ -713,12 +717,12 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
     // Require login to subscribe
     if (!window.AfroAuth || !window.AfroAuth.isLoggedIn || !window.AfroAuth.isLoggedIn()) {
-      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
+      window.location.href = loginReturn;
       return;
     }
     var token = window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null;
     if (!token) {
-      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
+      window.location.href = loginReturn;
       return;
     }
 
@@ -817,5 +821,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=71d30df9" defer></script>
+<script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+<script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+<script src="/assets/js/lib/pro-architecture.js?v=40653737"></script>
+<script src="/assets/js/lib/pro-capability-labels.js?v=15a59e23"></script>
 </body>
 </html>
