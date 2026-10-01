@@ -45,7 +45,8 @@ function validate(rows, sources, vehicles, now = new Date()) {
     if (!/^[A-Z]{2}$/.test(row.country_code || '') || !/^[A-Z]{3}$/.test(row.currency || '')) throw new Error(`${label}: invalid country or currency`);
     if (!Number.isSafeInteger(row.asking_price) || row.asking_price < 1000 || row.asking_price > 1000000000000) throw new Error(`${label}: invalid asking_price`);
     if (!['foreign-used', 'local-used', 'new'].includes(row.condition_label)) throw new Error(`${label}: condition_label required`);
-    for (const key of ['engine_cc', 'mileage_km']) if (row[key] != null && (!Number.isSafeInteger(row[key]) || row[key] < 0)) throw new Error(`${label}: invalid ${key}`);
+    if (row.engine_cc != null && (!Number.isSafeInteger(row.engine_cc) || row.engine_cc < 100 || row.engine_cc > 12000)) throw new Error(`${label}: invalid engine_cc`);
+    if (row.mileage_km != null && (!Number.isSafeInteger(row.mileage_km) || row.mileage_km < 0)) throw new Error(`${label}: invalid mileage_km`);
     for (const key of ['source_listing_id', 'market', 'trim_label']) if (row[key] != null && (typeof row[key] !== 'string' || row[key].length > 120)) throw new Error(`${label}: invalid ${key}`);
     const listing_url = url.toString();
     const listing_key = crypto.createHash('sha256').update(`${row.source_id}\n${listing_url}`).digest('hex');
@@ -64,7 +65,17 @@ function sqlValue(value) {
 function intakeSql(rows) {
   const columns = ['listing_key', ...fields, 'review_status'];
   const values = rows.map(row => `(${columns.map(field => sqlValue(row[field])).join(', ')})`).join(',\n  ');
-  return `insert into public.car_market_listing_observations (${columns.join(', ')}) values\n  ${values}\non conflict (listing_key) do update set\n  asking_price = excluded.asking_price, mileage_km = excluded.mileage_km,\n  listing_updated_at = excluded.listing_updated_at, observed_at = excluded.observed_at,\n  last_seen_at = now(), review_status = 'pending', review_reason = null, reviewed_at = null;`;
+  return `insert into public.car_market_listing_observations (${columns.join(', ')}) values
+  ${values}
+on conflict (listing_key) do update set
+  vehicle_id = excluded.vehicle_id, source_listing_id = excluded.source_listing_id,
+  country_code = excluded.country_code, market = excluded.market,
+  condition_label = excluded.condition_label, trim_label = excluded.trim_label,
+  engine_cc = excluded.engine_cc, asking_price = excluded.asking_price,
+  currency = excluded.currency, mileage_km = excluded.mileage_km,
+  listing_updated_at = excluded.listing_updated_at, observed_at = excluded.observed_at,
+  last_seen_at = now(), review_status = 'pending', review_reason = null, reviewed_at = null
+where excluded.observed_at > car_market_listing_observations.observed_at;`;
 }
 
 if (require.main === module) {

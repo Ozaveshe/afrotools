@@ -30,3 +30,17 @@ test('rejects blocked sources, outside domains, stale observations and duplicate
 test('rejects seller contact or image payloads', () => {
   assert.throws(() => validate([{ ...fixture, seller_phone: '123' }], sources, vehicleIds(), now), /unsupported field/);
 });
+
+test('refresh updates identity and comparable facts, and ignores older observations', () => {
+  const sql = intakeSql(validate([fixture], sources, vehicleIds(), now));
+  for (const field of ['vehicle_id', 'country_code', 'condition_label', 'trim_label', 'engine_cc', 'currency']) {
+    assert.ok(sql.includes(`${field} = excluded.${field}`), `${field} must refresh`);
+  }
+  assert.match(sql, /excluded.observed_at > car_market_listing_observations.observed_at/);
+});
+
+test('engine validation matches the live database bounds', () => {
+  for (const engine_cc of [0, 99, 12001, 1800.5]) {
+    assert.throws(() => validate([{ ...fixture, engine_cc }], sources, vehicleIds(), now), /invalid engine_cc/);
+  }
+});
