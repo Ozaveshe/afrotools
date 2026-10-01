@@ -486,7 +486,7 @@ async function collectUgMtnMerchantWallet(source) {
   const text = cleanHtmlText(await fetchText(source.base_url));
   const normalizedText = text.replace(/\u2013/g, '-').replace(/\u00e2\u20ac\u201c/g, '-');
   const tiers = [
-    { amount_band: 'UGX 1-2,500', fee_amount: 25, pattern: /1-\s*2,500\s+25/i },
+    { amount_band: 'UGX 1-2,500', fee_amount: 25, pattern: /(?:^|\s)1\s*-\s*2,500\s+25(?:\s|$)/i },
     { amount_band: 'UGX 2,501-5,000', fee_amount: 50, pattern: /2,501\s*[–-]\s*5,000\s+50/i },
     { amount_band: 'UGX 5,001-10,000', fee_amount: 100, pattern: /5,001\s*[–-]\s*10,000\s+100/i }
   ];
