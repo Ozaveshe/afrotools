@@ -1938,6 +1938,30 @@
         "npm run automation:control-plane:strict",
         "npm run audit:schedules"
       ]
+    },
+    {
+      "id": "netlify:scheduled-election-monitor",
+      "display_name": "Election Source Monitor",
+      "runner": "netlify",
+      "production_required": false,
+      "expected_schedule": "23 * * * *",
+      "netlify_function": "scheduled-election-monitor",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 2,
+      "product_surface": "government",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "election-monitor-latest"
+      ],
+      "health_endpoint": "/api/election-monitor",
+      "owner_category": "Election source observations",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --test tests/election-reader-desk.test.js tests/election-monitor.test.js",
+        "npm run elections:validate",
+        "npm run audit:automation-registry"
+      ]
     }
   ],
   "updated_at": "2026-09-11T08:02:56.072Z"

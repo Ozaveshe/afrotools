@@ -291,6 +291,49 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
   .et-filter-panel{padding:var(--space-3)}
   .et-civic-links{padding-inline:var(--page-gutter-sm)}
 }
+
+
+/* Reader workspace: shared tokens preserve light/dark mode and small-screen reflow. */
+.et-reader-desk{padding:var(--space-8) 0;border-bottom:1px solid var(--color-border)}
+.et-reader-heading{display:flex;align-items:start;justify-content:space-between;gap:var(--space-5)}
+.et-reader-heading h2{font:700 clamp(1.8rem,3vw,2.5rem)/1.15 var(--font-body);margin:0 0 var(--space-3)}
+.et-reader-heading p{max-width:65ch;line-height:1.65}
+.et-icon{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.et-reader-heading .btn{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.et-reader-controls{display:grid;grid-template-columns:minmax(160px,1fr) minmax(200px,2fr) minmax(150px,1fr);gap:var(--space-4);margin-top:var(--space-5)}
+.et-coverage-status{border-left:3px solid var(--color-primary);padding:var(--space-3) var(--space-4);background:var(--color-surface);line-height:1.65}
+.et-brief-entry{padding:var(--space-5) 0;border-bottom:1px solid var(--color-border)}
+.et-brief-entry h3{font:700 1.25rem/1.35 var(--font-body);margin:var(--space-2) 0}
+.et-brief-entry p,.et-coverage-details p,.et-coverage-details li,.et-country-dossier p{line-height:1.7;max-width:75ch}
+.et-brief-entry details summary,.et-coverage-details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--color-primary)}
+.et-coverage-details{margin:var(--space-5) 0;padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-sm)}
+#countryDesk{margin-top:var(--space-6)}
+.et-country-dossier{padding:var(--space-4) 0;border-bottom:1px solid var(--color-border)}
+.et-country-dossier h4{font-size:1.1rem;margin:0 0 var(--space-2)}
+.et-reader-actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin:var(--space-4) 0}
+.et-reader-actions .et-source-link{min-height:44px;font-size:.8rem}
+.et-review-age{font-size:.75rem;line-height:1.6;color:var(--color-text-muted)}
+.et-review-age[data-overdue="true"]{color:var(--color-warning)}
+body.election-desk-page .et-hero{background:var(--color-surface)!important;color:var(--color-text);border-bottom:1px solid var(--color-border)}
+body.election-desk-page .et-hero :is(.et-title,.et-masthead-note,.et-breadcrumb,.et-breadcrumb a,.et-edition-line,.et-edition-line span,.et-issue-nav a,.et-mobile-contents summary,.et-mobile-contents nav a){color:var(--color-text)}
+body.election-desk-page .et-hero .et-kicker{color:var(--color-primary)}
+body.election-desk-page .et-title{font:800 clamp(2rem,5vw,3.5rem)/1.1 var(--font-body)}
+body.election-desk-page .et-edition-line,body.election-desk-page .et-issue-nav,body.election-desk-page .et-mobile-contents summary{border-color:var(--color-border)}
+body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-primary)}
+.et-masthead-note{font-size:.95rem}
+@media(max-width:700px){.et-reader-heading{display:block}.et-reader-controls{grid-template-columns:1fr}.et-reader-heading .btn{white-space:normal}.et-reader-actions>*{max-width:100%}}
+
+
+.et-country-flag{width:36px;height:24px;object-fit:cover;border:1px solid var(--color-border);border-radius:2px;flex-shrink:0}
+.et-country-file h3 a{display:inline-flex;align-items:center;gap:var(--space-3);color:var(--color-text);text-decoration:none;min-height:44px}
+.et-country-file h3 a:hover{text-decoration:underline}
+.et-election-title a{color:inherit;text-decoration:none}
+.et-election-title a:hover{text-decoration:underline}
+.et-contestants{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);margin-top:var(--space-4)}
+.et-contestant{border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:var(--space-3);min-width:0}
+.et-contestant summary{cursor:pointer;min-height:44px;font-weight:700}
+.et-contestant p{font-size:.85rem}
+@media(max-width:700px){.et-contestants{grid-template-columns:1fr}.et-country-records li{grid-template-columns:1fr}.et-country-records time{white-space:normal}}
 </style>
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
@@ -319,13 +362,13 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
       </div>
       <div class="et-masthead">
         <div>
-          <p class="et-kicker">Election notices, dates and public records</p>
+          <p class="et-kicker">Understand African elections, every day</p>
           <h1 class="et-title">Africa Election Tracker</h1>
         </div>
-        <p class="et-masthead-note">Reviewed notices from electoral authorities, with dates and source records you can inspect.</p>
+        <p class="et-masthead-note">Explore reviewed updates, election timelines and candidate records. See the sources, coverage gaps and next developments to watch.</p>
       </div>
       <nav class="et-issue-nav" aria-label="Election desk sections">
-        <a href="#leadStoryTitle">Latest</a>
+        <a href="#dailyUpdates">Daily briefing</a>
         <a href="#countryCoverage">Country files</a>
         <a href="#calendar">Calendar</a>
         <a href="#candidateFiles">Candidate files</a>
@@ -337,7 +380,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
       <details class="et-mobile-contents">
         <summary>Browse this edition</summary>
         <nav aria-label="Election desk mobile sections">
-          <a href="#leadStoryTitle">Latest</a>
+          <a href="#dailyUpdates">Daily briefing</a>
           <a href="#countryCoverage">Country files</a>
           <a href="#calendar">Calendar</a>
           <a href="#candidateFiles">Candidate files</a>
@@ -352,6 +395,30 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
 
   <section class="et-main" aria-labelledby="trackerTitle">
     <h2 id="trackerTitle" class="et-sr-status">Election desk</h2>
+
+
+    <section class="et-reader-desk" id="dailyUpdates" aria-labelledby="dailyUpdatesTitle">
+      <div class="et-reader-heading">
+        <div><p class="et-kicker">Follow the election cycle</p><h2 id="dailyUpdatesTitle">Daily election briefing</h2>
+        <p>Find reviewed developments, understand the current record, and see what needs checking next.</p></div>
+        <a class="btn btn-secondary" href="/tools/africa-election-tracker/news/feed.xml"><svg class="et-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="1"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/></svg>Follow by RSS</a>
+      </div>
+      <section class="et-coverage-details" aria-labelledby="electionMonitorTitle"><h3 id="electionMonitorTitle">Source monitor</h3><p id="electionMonitorStatus" role="status">Checking for a persisted monitoring run. A successful source check does not verify an election fact.</p><div id="electionMonitorSources"></div></section>
+      <p id="coverageStatus" class="et-coverage-status" role="status">Coverage is partial. The dated calendar and reviewed briefs below remain available while the briefing loads.</p>
+      <div class="et-reader-controls">
+        <div class="et-field"><label for="briefCountry">Country</label><select class="et-select" id="briefCountry" disabled><option value="all">All covered countries</option></select></div>
+        <div class="et-field"><label for="briefQuery">Search reviewed updates</label><input class="et-input" id="briefQuery" type="search" placeholder="Candidate, issue or election" disabled></div>
+        <div class="et-field"><label for="briefPeriod">Published within</label><select class="et-select" id="briefPeriod" disabled><option value="7">Past 7 days</option><option value="30">Past 30 days</option><option value="all">All dates</option></select></div>
+      </div>
+      <p id="briefStatus" role="status" aria-live="polite">Loading reviewed updates…</p>
+      <div id="briefStream"></div>
+      <details class="et-coverage-details"><summary>Coverage and editorial goals</summary>
+        <p>Our mission is to make deep, source-linked election updates across Africa accessible every day. Daily review is the goal; publication depends on verified developments. The date of an article is always shown.</p>
+        <p id="coverageDetail">Country coverage is limited to the published ledger. A missing update does not mean nothing happened.</p>
+        <ul><li>Daily: review active election sources and report what changed, why it matters and what happens next.</li><li>Depth: build country timelines, electoral-rule explainers, candidate evidence, and official results with their dispute status.</li><li>Reach: expand to all 54 African countries, with visible gaps until each country has sourced coverage.</li><li>Trust: keep source-check dates, corrections and failed checks visible; never infer winners from polling dates.</li></ul>
+      </details>
+      <section id="countryDesk" aria-labelledby="countryDeskTitle"><h3 id="countryDeskTitle">Explore a country</h3><div id="countryDeskContent"><p>Select a country after the calendar loads to read its election record and next watch.</p></div></section>
+    </section>
 
     <!-- ELECTION_FRONT_PAGE_START -->
 <section class="et-frontpage" aria-labelledby="leadStoryTitle">
@@ -417,47 +484,47 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
       </div>
       <ol class="et-country-index">
         <!-- ELECTION_COUNTRY_INDEX_START -->
-        <li class="et-country-file">
-        <h3>Cabo Verde</h3>
+        <li class="et-country-file" id="country-CV">
+        <h3><a href="#country-CV" data-country-code="CV"><img class="et-country-flag" src="/assets/img/flags/afroatlas/cv.svg" width="36" height="24" alt="" loading="lazy">Cabo Verde</a></h3>
         <p class="et-country-region">West Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-cv-president-2026" aria-label="Cabo Verde: President — 15 Nov 2026 calendar record">President</a><time datetime="2026-11-15">15 Nov 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://cne.cv/sala_de_imprensa_/presidenciais-2026-tc-admite-candidatura-de-loisito-tavares-de-sousa-e-eleva-para-seis-o-numero-de-candidatos/" rel="noopener noreferrer" target="_blank">CNE Constitutional Court candidacy-appeal notice, 27 September 2026</a> · Checked 27 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>Kenya</h3>
+        <li class="et-country-file" id="country-KE">
+        <h3><a href="#country-KE" data-country-code="KE"><img class="et-country-flag" src="/assets/img/flags/afroatlas/ke.svg" width="36" height="24" alt="" loading="lazy">Kenya</a></h3>
         <p class="et-country-region">East Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-ke-general-2027" aria-label="Kenya: President and county governors — 10 Aug 2027 calendar record">President and county governors</a><time datetime="2027-08-10">10 Aug 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.iebc.or.ke/news/?PUBLICATION_OF_NOTICE_OF_GENERAL_ELECTION" rel="noopener noreferrer" target="_blank">IEBC publication of the 2027 General Election notice, 14 September 2026</a> · Checked 15 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>Nigeria</h3>
+        <li class="et-country-file" id="country-NG">
+        <h3><a href="#country-NG" data-country-code="NG"><img class="et-country-flag" src="/assets/img/flags/afroatlas/ng.svg" width="36" height="24" alt="" loading="lazy">Nigeria</a></h3>
         <p class="et-country-region">West Africa · 4 elections on file</p>
         <ul class="et-country-records"><li><a href="#election-ng-ekiti-governor-2026" aria-label="Nigeria: Ekiti State: Governor — 20 Jun 2026 calendar record">Ekiti State: Governor</a><time datetime="2026-06-20">20 Jun 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/" rel="noopener noreferrer" target="_blank">INEC homepage election update</a> · Checked 9 Sep 2026</span></li>
         <li><a href="#election-ng-osun-governor-2026" aria-label="Nigeria: Osun State: Governor — 15 Aug 2026 calendar record">Osun State: Governor</a><time datetime="2026-08-15">15 Aug 2026</time><span>Date: Official revised</span><span class="et-country-record-source">Official link in record: <a href="https://inecelectionresults.ng/elections/6a7f788adcbc755a763f082a?type=gov" rel="noopener noreferrer" target="_blank">INEC IReV Osun result-sheet listing</a> · Checked 9 Sep 2026</span></li>
         <li><a href="#election-ng-president-2027" aria-label="Nigeria: President — 16 Jan 2027 calendar record">President</a><time datetime="2027-01-16">16 Jan 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a> · Checked 9 Sep 2026</span></li>
         <li><a href="#election-ng-governors-general-2027" aria-label="Nigeria: Governors — 6 Feb 2027 calendar record">Governors</a><time datetime="2027-02-06">6 Feb 2027</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://inecnigeria.org/elections/calendar" rel="noopener noreferrer" target="_blank">INEC current official election calendar</a> · Checked 9 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>Sao Tome and Principe</h3>
+        <li class="et-country-file" id="country-ST">
+        <h3><a href="#country-ST" data-country-code="ST"><img class="et-country-flag" src="/assets/img/flags/afroatlas/st.svg" width="36" height="24" alt="" loading="lazy">Sao Tome and Principe</a></h3>
         <p class="et-country-region">Central Africa · 2 elections on file</p>
         <ul class="et-country-records"><li><a href="#election-stp-president-2026" aria-label="Sao Tome and Principe: President — 19 Jul 2026 calendar record">President</a><time datetime="2026-07-19">19 Jul 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">Sao Tome and Principe CEN</a> · Checked 30 Aug 2026</span></li>
         <li><a href="#election-stp-local-2026" aria-label="Sao Tome and Principe: Local government — 27 Sep 2026 calendar record">Local government</a><time datetime="2026-09-27">27 Sep 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.stpcen.st/" rel="noopener noreferrer" target="_blank">CEN current 2026 electoral calendar</a> · Checked 27 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>South Africa</h3>
+        <li class="et-country-file" id="country-ZA">
+        <h3><a href="#country-ZA" data-country-code="ZA"><img class="et-country-flag" src="/assets/img/flags/afroatlas/za.svg" width="36" height="24" alt="" loading="lazy">South Africa</a></h3>
         <p class="et-country-region">Southern Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-za-local-government-2026" aria-label="South Africa: Local councils — 4 Nov 2026 calendar record">Local councils</a><time datetime="2026-11-04">4 Nov 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://www.gov.za/news/media-statements/electoral-commission-opens-special-vote-applications-2026-local-government" rel="noopener noreferrer" target="_blank">IEC special-vote application notice, 21 September 2026</a> · Checked 27 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>South Sudan</h3>
+        <li class="et-country-file" id="country-SS">
+        <h3><a href="#country-SS" data-country-code="SS"><img class="et-country-flag" src="/assets/img/flags/afroatlas/ss.svg" width="36" height="24" alt="" loading="lazy">South Sudan</a></h3>
         <p class="et-country-region">East Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-ss-president-2026" aria-label="South Sudan: President — Dec 2026 calendar record">President</a><time datetime="2026-12">Dec 2026</time><span>Date: Tentative</span><span class="et-country-record-source">Official link in record: <a href="https://nec.gov.ss/press-statement-on-false-reports-about-voter-registration/" rel="noopener noreferrer" target="_blank">South Sudan NEC registration-status clarification, 2 September 2026</a> · Checked 8 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>The Gambia</h3>
+        <li class="et-country-file" id="country-GM">
+        <h3><a href="#country-GM" data-country-code="GM"><img class="et-country-flag" src="/assets/img/flags/afroatlas/gm.svg" width="36" height="24" alt="" loading="lazy">The Gambia</a></h3>
         <p class="et-country-region">West Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-gm-president-2026" aria-label="The Gambia: President — 5 Dec 2026 calendar record">President</a><time datetime="2026-12-05">5 Dec 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://iec.gm/electoral-calendar-2026-2027/" rel="noopener noreferrer" target="_blank">The Gambia IEC 2026-2027 electoral calendar</a> · Checked 9 Sep 2026</span></li></ul>
         </li>
-        <li class="et-country-file">
-        <h3>Zambia</h3>
+        <li class="et-country-file" id="country-ZM">
+        <h3><a href="#country-ZM" data-country-code="ZM"><img class="et-country-flag" src="/assets/img/flags/afroatlas/zm.svg" width="36" height="24" alt="" loading="lazy">Zambia</a></h3>
         <p class="et-country-region">Southern Africa · 1 election on file</p>
         <ul class="et-country-records"><li><a href="#election-zm-president-2026" aria-label="Zambia: President — 13 Aug 2026 calendar record">President</a><time datetime="2026-08-13">13 Aug 2026</time><span>Date: Official</span><span class="et-country-record-source">Official link in record: <a href="https://results.elections.org.zm/?type=PRESIDENTIAL&amp;year=2026" rel="noopener noreferrer" target="_blank">ECZ official 2026 presidential results portal</a> · Checked 30 Aug 2026</span></li></ul>
         </li>
@@ -834,7 +901,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
 
   function todayUtc() {
     const now = new Date();
-    return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   }
 
   function dateUtc(value) {
@@ -1011,7 +1078,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
           </div>
           <div>
             <div class="et-election-title-row">
-              <h3 class="et-election-title">${escapeHtml(record.country)}: ${escapeHtml(record.office)}</h3>
+              <h3 class="et-election-title"><a href="#country-${escapeHtml(record.countryCode)}" data-country-code="${escapeHtml(record.countryCode)}"><img class="et-country-flag" src="/assets/img/flags/afroatlas/${escapeHtml(record.countryCode.toLowerCase())}.svg" width="36" height="24" alt="" loading="lazy"> ${escapeHtml(record.country)}</a>: ${escapeHtml(record.office)}</h3>
               <span class="et-pill ${sourceClass(record.sourceStatus)}">${escapeHtml(sourceLabel(record.sourceStatus))}</span>
               <span class="et-pill et-pill-blue">Date: ${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
             </div>
@@ -1023,6 +1090,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
           <summary>Official notices and next watch for ${escapeHtml(record.country)} ${escapeHtml(record.office)}</summary>
           <div class="et-election-bottom">
             <div class="et-source-links">${sourceLinks}</div>
+            <p class="et-review-age" data-overdue="${sourceReview(record, Number(state.data.reviewCadenceDays || 7)).overdue}">${escapeHtml(sourceReview(record, Number(state.data.reviewCadenceDays || 7)).text)}</p>
             <div class="et-watch"><strong>Watch:</strong> ${escapeHtml(record.nextWatch)}</div>
           </div>
         </details>
@@ -1042,7 +1110,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
 
   function renderReviewQueue() {
     const queue = state.records
-      .filter((record) => record.sourceStatus !== 'official' || record.dateStatus === 'tentative' || record.dateStatus === 'projected')
+      .filter((record) => record.sourceStatus !== 'official' || record.dateStatus === 'tentative' || record.dateStatus === 'projected' || sourceReview(record, Number(state.data.reviewCadenceDays || 7)).overdue)
       .sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate));
 
     if (!queue.length) {
@@ -1054,6 +1122,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
       <div class="et-side-item">
         <strong>${escapeHtml(record.country)} - ${escapeHtml(record.office)}</strong>
         <span>${escapeHtml(displayDate(record))} / ${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
+        <span>${escapeHtml(sourceReview(record, Number(state.data.reviewCadenceDays || 7)).text)}</span>
         <span>${escapeHtml(record.nextWatch)}</span>
       </div>
     `).join('');
@@ -1217,8 +1286,366 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
     });
   }
 
+
+  async function fetchWithDeadline(url) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      return await fetch(url, { cache: 'no-store', signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function sourceReview(record, cadence) {
+    const dates = (record.sources || []).map((source) => source.checkedAt)
+      .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && Number.isFinite(dateUtc(value)));
+    const earliest = dates.slice().sort()[0];
+    const latest = dates.slice().sort().pop();
+    const missing = dates.length !== (record.sources || []).length || !dates.length;
+    const overdue = missing || dates.some((value) => dateUtc(value) > todayUtc() || todayUtc() - dateUtc(value) > cadence * MS_PER_DAY);
+    const text = missing ? 'Source-check date missing; review needed.' :
+      'Source checks: ' + formatDate(earliest) + (earliest === latest ? '' : ' to ' + formatDate(latest)) +
+      (overdue ? ' · Some sources need a new review.' : ' · Within the review cadence.');
+    return { earliest, latest, overdue, text };
+  }
+
+  function safeSourceUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && !url.username && !url.password ? url.href : '';
+    } catch (_) { return ''; }
+  }
+
+  function approvedBriefs(news, records) {
+    if (!news || !Array.isArray(news.articles)) throw new Error('Invalid newsroom data');
+    const ids = new Set(records.map((record) => record.id));
+    return news.articles.filter((article) => {
+      const copy = article.localizations && article.localizations.en;
+      const sources = article.officialSources;
+      return ids.has(article.electionId) && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug || '') &&
+        copy && copy.reviewStatus === 'source-reviewed' && typeof copy.headline === 'string' &&
+        typeof copy.summary === 'string' && Array.isArray(copy.paragraphs) &&
+        copy.paragraphs.every((paragraph) => typeof paragraph === 'string') &&
+        [copy.publishedOn, copy.reviewedOn, copy.updatedOn].every((value) =>
+          /^\d{4}-\d{2}-\d{2}$/.test(value || '') && Number.isFinite(dateUtc(value)) && dateUtc(value) <= todayUtc()) &&
+        Array.isArray(sources) && sources.length && sources.every((source) => safeSourceUrl(source.url) &&
+          /^\d{4}-\d{2}-\d{2}$/.test(source.checkedOn || '') && dateUtc(source.checkedOn) <= todayUtc());
+    }).sort((a, b) => b.localizations.en.publishedOn.localeCompare(a.localizations.en.publishedOn) ||
+      b.localizations.en.updatedOn.localeCompare(a.localizations.en.updatedOn) || a.slug.localeCompare(b.slug));
+  }
+
+
+  function verifiedSurveys(payload, records) {
+    if (!payload || payload.schemaVersion !== 1 || !Array.isArray(payload.surveys)) throw new Error('Invalid survey dataset');
+    const ids = new Set(records.map((record) => record.id));
+    const validDay = (value) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return false;
+      const parsed = new Date(value + 'T00:00:00Z');
+      return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0,10) === value && dateUtc(value) <= todayUtc();
+    };
+    return payload.surveys.filter((survey) => {
+      const options = survey.results;
+      return survey.reviewStatus === 'source-reviewed' && ids.has(survey.electionId) &&
+        ['voting-intention','approval'].includes(survey.measure) &&
+        ['probability','non-probability','self-selected'].includes(survey.samplingType) &&
+        ['pollster','reader-survey'].includes(survey.sourceType) &&
+        !(survey.sourceType === 'reader-survey' && survey.samplingType !== 'self-selected') &&
+        [survey.id,survey.pollster,survey.sponsor,survey.population,survey.method,survey.question,survey.limitations,survey.sourceLabel]
+          .every((value) => typeof value === 'string' && value.trim().length > 0) &&
+        safeSourceUrl(survey.sourceUrl) && Number.isInteger(survey.sampleSize) && survey.sampleSize > 0 &&
+        [survey.fieldworkStart,survey.fieldworkEnd,survey.publishedOn,survey.reviewedOn].every(validDay) &&
+        survey.fieldworkStart <= survey.fieldworkEnd && survey.fieldworkEnd <= survey.publishedOn &&
+        survey.publishedOn <= survey.reviewedOn && typeof survey.weighting === 'string' && survey.weighting.length > 0 &&
+        (survey.marginOfError === null || (survey.samplingType === 'probability' &&
+          Number.isFinite(survey.marginOfError) && survey.marginOfError >= 0 && survey.marginOfError <= 100)) &&
+        typeof survey.includesAllResponseOptions === 'boolean' && Array.isArray(options) && options.length > 0 &&
+        options.every((option) => typeof option.label === 'string' && option.label.trim() &&
+          Number.isFinite(option.percent) && option.percent >= 0 && option.percent <= 100) &&
+        (!survey.includesAllResponseOptions || Math.abs(options.reduce((sum, option) => sum + option.percent,0) - 100) <= 1);
+    }).sort((a,b) => b.fieldworkEnd.localeCompare(a.fieldworkEnd));
+  }
+
+  function initializeReaderDesk(data) {
+    const country = document.getElementById('briefCountry');
+    const query = document.getElementById('briefQuery');
+    const period = document.getElementById('briefPeriod');
+    const status = document.getElementById('briefStatus');
+    const stream = document.getElementById('briefStream');
+    const dossier = document.getElementById('countryDeskContent');
+    const countries = [...new Set(data.elections.map((record) => record.country))].sort();
+    const cadence = Number(data.reviewCadenceDays || 7);
+    const overdue = data.elections.filter((record) => sourceReview(record, cadence).overdue).length;
+    let briefs = [];
+    let surveys = [];
+    let surveysReady = false;
+    let newsReady = false;
+    country.innerHTML = '<option value="all">All covered countries</option>' + countries.map((name) =>
+      '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>').join('');
+    country.disabled = false;
+    try {
+      const saved = localStorage.getItem('afrotools-election-country');
+      if (countries.includes(saved)) country.value = saved;
+    } catch (_) { /* Device preferences are optional. */ }
+    document.getElementById('coverageStatus').textContent = countries.length + ' countries · ' +
+      data.elections.length + ' election records · ' + overdue + ' records need source rechecks · Ledger dated ' + formatDate(data.generatedAt);
+    document.getElementById('coverageDetail').textContent = 'Currently covered: ' + countries.join(', ') +
+      '. The mission is continent-wide; the published ledger is not yet comprehensive. Rechecks use a ' + cadence +
+      '-day cadence per source, not the date the data file was generated.';
+
+    function sourceLinks(sources) {
+      return sources.map((source) => {
+        const href = safeSourceUrl(source.url);
+        return href ? '<a class="et-source-link" href="' + escapeHtml(href) +
+          '" target="_blank" rel="noopener noreferrer">' + escapeHtml(source.label || 'Source') + '</a>' : '';
+      }).join('');
+    }
+
+
+    function candidateFiles(entries) {
+      return entries.map((entry) => '<section class="et-country-dossier"><h4>' + escapeHtml(entry.title) +
+        ' · Candidate evidence</h4><p>' + escapeHtml(entry.publicNote) +
+        '</p><p class="et-review-age">Roster checked ' + escapeHtml(formatDate(entry.rosterSource.checkedAt)) +
+        '. This roster applies to this election only, not to candidacy in a later election.</p><div class="et-source-links">' +
+        sourceLinks([entry.rosterSource]) + '</div><div class="et-contestants">' +
+        (entry.contestants || []).map((person) => {
+          const groups = [['Previous roles',person.previousRoles],['Published promises',person.promises],
+            ['Delivery checks',person.promiseChecks],['Public records',person.publicRecords]];
+          return '<details class="et-contestant"><summary>' + escapeHtml(person.name) +
+            ' <span class="et-election-meta"> · ' + escapeHtml(person.party) +
+            '</span></summary><p><strong>Running mate:</strong> ' + escapeHtml(person.runningMate) +
+            '</p><p>' + escapeHtml(person.rosterNote || 'Official roster only') + '</p>' +
+            groups.map(([label, facts]) => '<p><strong>' + label + ':</strong></p>' +
+              ((facts || []).length ? facts.map((fact) => '<p>' + escapeHtml(fact.title || fact.claim || fact.role || fact.summary || fact.description) +
+                '</p><div class="et-source-links">' + sourceLinks([fact.source]) + '</div>').join('') :
+                '<p>No individually sourced evidence is published yet.</p>')).join('') + '</details>';
+        }).join('') + '</div></section>').join('');
+    }
+
+
+    function renderSurveys(name) {
+      const target = document.getElementById('countrySurveys');
+      if (!target) return;
+      if (!surveysReady) {
+        target.innerHTML = '<p>Survey data is unavailable or still loading. No approval rating or poll percentage is inferred.</p>'; return;
+      }
+      const list = surveys.filter((survey) => data.elections.some((record) => record.country === name && record.id === survey.electionId));
+      target.innerHTML = list.length ? list.map((survey) => {
+        const record = data.elections.find((item) => item.id === survey.electionId);
+        return '<article class="et-country-dossier"><h4>' + escapeHtml(survey.measure === 'approval' ? 'Approval survey' : 'Voting-intention poll') +
+          ' · ' + escapeHtml(survey.pollster) + '</h4><p>' + escapeHtml(record.jurisdiction + ': ' + record.office) +
+          '</p><p><strong>Question:</strong> ' + escapeHtml(survey.question) + '</p><ul>' +
+          survey.results.map((option) => '<li>' + escapeHtml(option.label) + ': <strong>' + escapeHtml(option.percent) + '%</strong></li>').join('') +
+          '</ul><p>Fieldwork: ' + escapeHtml(formatDate(survey.fieldworkStart) + ' to ' + formatDate(survey.fieldworkEnd)) +
+          ' · Sample: ' + survey.sampleSize + ' · ' + escapeHtml(survey.population) + '</p><p>Method: ' + escapeHtml(survey.method) +
+          ' · Sampling: ' + escapeHtml(survey.samplingType) + ' · Weighting: ' + escapeHtml(survey.weighting) +
+          ' · Sponsor: ' + escapeHtml(survey.sponsor) + '</p><p>' +
+          (survey.marginOfError === null ? 'Margin of error not reported or not applicable.' : 'Reported margin of error: ±' + escapeHtml(survey.marginOfError) + ' percentage points.') +
+          '</p><p><strong>Limits:</strong> ' + escapeHtml(survey.limitations) + '</p><p class="et-review-age">Published ' +
+          escapeHtml(formatDate(survey.publishedOn)) + ' · Reviewed ' + escapeHtml(formatDate(survey.reviewedOn)) +
+          '. A poll is an observation from its fieldwork period, not a live result or forecast.</p>' +
+          sourceLinks([{url:survey.sourceUrl,label:survey.sourceLabel}]) + '</article>';
+      }).join('') : '<p>No source-reviewed polling or approval survey is published for this country yet. No percentage is assumed, modelled or generated. An open website vote would be a self-selected reader sample, not a representative national poll.</p>';
+    }
+
+    function renderCountry() {
+      const selected = data.elections.filter((record) => record.country === country.value);
+      if (country.value === 'all') {
+        dossier.innerHTML = '<p>Choose a country above for its election timeline, reviewed developments, source-check dates and next watch. Covered countries: ' +
+          escapeHtml(countries.join(', ')) + '.</p>';
+        return;
+      }
+      const related = briefs.filter((article) => selected.some((record) => record.id === article.electionId));
+      const evidence = (data.candidateEvidence && data.candidateEvidence.elections || [])
+        .filter((entry) => selected.some((record) => record.id === entry.electionId));
+      const rosterCount = evidence.reduce((sum, entry) => sum + (entry.contestants || []).length, 0);
+      dossier.innerHTML = '<p><strong>' + escapeHtml(country.value) + '</strong> · ' + selected.length +
+        ' election records · ' + related.length + (newsReady ? ' reviewed briefs' : ' loaded briefs (news unavailable)') +
+        ' · ' + rosterCount + ' candidates in published rosters.</p>' +
+        selected.slice().sort((a, b) => a.electionDate.localeCompare(b.electionDate)).map((record) => {
+          const review = sourceReview(record, cadence);
+          return '<article class="et-country-dossier"><h4>' + escapeHtml(record.jurisdiction + ': ' + record.office) +
+            '</h4><p class="et-election-meta">' + escapeHtml(displayDate(record) + ' · ' +
+              dateStatusLabel(record.dateStatus) + ' · ' + String(record.stage || 'Stage not recorded').replace(/-/g, ' ')) +
+            '</p><p>' + escapeHtml(record.notes) + '</p><p><strong>What to watch next:</strong> ' +
+            escapeHtml(record.nextWatch) + '</p><p class="et-review-age" data-overdue="' + review.overdue + '">' +
+            escapeHtml(review.text) + '</p><div class="et-source-links">' + sourceLinks(record.sources || []) +
+            '</div><a class="et-story-read" href="#election-' + escapeHtml(record.id) + '">Open calendar record →</a></article>';
+        }).join('') +
+        '<p>Candidate biographies, policy comparisons, turnout and declared results appear only when separately sourced. A roster or polling date does not establish an outcome.</p>' +
+        (evidence.length ? candidateFiles(evidence) : '<p>No reviewed candidate roster is published for this country yet.</p>') + '<section class="et-country-dossier"><h4>Polling and approval surveys</h4><div id="countrySurveys"></div></section>';
+      renderSurveys(country.value);
+    }
+
+    function renderBriefs() {
+      if (!newsReady) { renderCountry(); return; }
+      const matches = briefs.filter((article) => {
+        const record = data.elections.find((item) => item.id === article.electionId);
+        const copy = article.localizations.en;
+        const age = (todayUtc() - dateUtc(copy.publishedOn)) / MS_PER_DAY;
+        return (country.value === 'all' || record.country === country.value) &&
+          (period.value === 'all' || age <= Number(period.value)) &&
+          [record.country, record.office, copy.headline, copy.summary, ...copy.paragraphs]
+            .join(' ').toLowerCase().includes(query.value.trim().toLowerCase());
+      });
+      status.textContent = matches.length + ' reviewed update' + (matches.length === 1 ? '' : 's') +
+        ' shown. Latest published brief: ' + (briefs.length ? formatDate(briefs[0].localizations.en.publishedOn) : 'none') + '.';
+      stream.innerHTML = matches.length ? matches.map((article) => {
+        const copy = article.localizations.en;
+        const record = data.elections.find((item) => item.id === article.electionId);
+        const route = '/tools/africa-election-tracker/news/' + article.slug + '/';
+        return '<article class="et-brief-entry"><p class="et-story-meta"><span>' + escapeHtml(record.country + ' · ' + record.office) +
+          '</span><time datetime="' + escapeHtml(copy.publishedOn) + '">' + escapeHtml(formatDate(copy.publishedOn)) +
+          '</time></p><h3><a href="' + route + '">' + escapeHtml(copy.headline) +
+          '</a></h3><p>' + escapeHtml(copy.summary) + '</p><details><summary>Read context and sources</summary>' +
+          copy.paragraphs.map((paragraph) => '<p>' + escapeHtml(paragraph) + '</p>').join('') +
+          '<p class="et-review-age">Editorial review: ' + escapeHtml(formatDate(copy.reviewedOn)) +
+          '. Source checks: ' + escapeHtml(article.officialSources.map((source) => formatDate(source.checkedOn)).join(', ')) +
+          '.</p><div class="et-source-links">' + sourceLinks(article.officialSources) +
+          '</div><a class="et-story-read" href="' + route + '">Open full brief →</a></details></article>';
+      }).join('') : '<div class="et-empty">No reviewed updates match these filters. This is a coverage gap, not confirmation that nothing happened. Try all dates or <a href="/tools/africa-election-tracker/news/">open the archive</a>.</div>';
+      renderCountry();
+    }
+
+
+    document.querySelector('.et-main').addEventListener('click', (event) => {
+      const link = event.target.closest('a[data-country-code]');
+      if (!link) return;
+      const record = data.elections.find((item) => item.countryCode === link.dataset.countryCode);
+      if (!record) return;
+      event.preventDefault();
+      country.value = record.country;
+      country.dispatchEvent(new Event('change'));
+      history.replaceState(null, '', '#country-' + record.countryCode);
+      document.getElementById('countryDesk').scrollIntoView({ behavior: 'auto' });
+      country.focus({ preventScroll: true });
+    });
+    const hashCountry = /^#country-([A-Z]{2})$/.exec(location.hash);
+    if (hashCountry) {
+      const record = data.elections.find((item) => item.countryCode === hashCountry[1]);
+      if (record) country.value = record.country;
+    }
+    country.addEventListener('change', () => {
+      try { localStorage.setItem('afrotools-election-country', country.value); } catch (_) {}
+      renderBriefs();
+    });
+    query.addEventListener('input', renderBriefs);
+    period.addEventListener('change', renderBriefs);
+    dossier.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#election-"]');
+      if (!link) return;
+      clearFilters(false, true);
+      const target = document.getElementById(link.getAttribute('href').slice(1));
+      if (target) requestAnimationFrame(() => target.scrollIntoView());
+    });
+
+    renderCountry();
+
+    fetchWithDeadline('/api/election-monitor').then(async (response) => {
+      if (!response.ok) throw new Error('Monitor unavailable');
+      const report = await response.json();
+      if (report.schemaVersion !== 1 || !Array.isArray(report.sources) || !Number.isFinite(Date.parse(report.lastCheckedAt))) throw new Error('Invalid monitor evidence');
+      const age = Date.now() - Date.parse(report.lastCheckedAt);
+      const stale = age < 0 || age > 2 * 3600000 || report.status === 'stale';
+      document.getElementById('electionMonitorStatus').textContent = 'Last persisted run: ' +
+        new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(report.lastCheckedAt)) +
+        ' UTC · ' + (stale ? 'Monitoring evidence is stale.' : report.status === 'degraded' ? 'Some sources could not be checked.' : 'Source observations available.') +
+        ' Facts and poll results still require separate editorial review.';
+      document.getElementById('electionMonitorSources').innerHTML = report.sources.map((source) =>
+        '<details><summary>' + escapeHtml(source.country + ': ' + source.label) +
+        ' · ' + escapeHtml(stale ? 'stale observation' : source.status) +
+        '</summary><p>' + escapeHtml(source.error || (source.requiresReview ? 'Source needs editorial review.' : 'Reachability observed; this is not fact verification.')) +
+        '</p><div class="et-source-links">' + sourceLinks([source]) + '</div></details>').join('');
+    }).catch(() => {
+      document.getElementById('electionMonitorStatus').textContent = 'No recent monitoring run can be confirmed. The published ledger is a dated snapshot; live operation is not established.';
+    });
+
+    fetchWithDeadline('/data/government/election-surveys.json').then(async (response) => {
+      if (!response.ok) throw new Error('Survey data unavailable');
+      surveys = verifiedSurveys(await response.json(), data.elections);
+      surveysReady = true;
+      renderSurveys(country.value);
+    }).catch(() => { surveysReady = false; renderSurveys(country.value); });
+    fetchWithDeadline('/data/government/election-news.json').then(async (response) => {
+      if (!response.ok) throw new Error('News unavailable');
+      briefs = approvedBriefs(await response.json(), data.elections);
+      newsReady = true;
+      query.disabled = false;
+      period.disabled = false;
+      renderBriefs();
+    }).catch(() => {
+      status.textContent = 'The briefing stream is unavailable. Read the published briefs below or open the news archive. Country records remain available.';
+      renderCountry();
+    });
+    const actions = document.createElement('div');
+    actions.className = 'et-reader-actions';
+    actions.innerHTML = '<button type="button" class="et-source-link" id="exportElectionCsv">Download filtered calendar (CSV)</button>' +
+      '<button type="button" class="et-source-link" id="exportElectionIcs">Add confirmed dates to calendar (.ics)</button>';
+    document.querySelector('.et-filter-panel .et-card-body').appendChild(actions);
+    const exportStatus = document.createElement('p');
+    exportStatus.setAttribute('role', 'status');
+    exportStatus.setAttribute('aria-live', 'polite');
+    actions.after(exportStatus);
+    function download(content, type, name) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url; link.download = name;
+      document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    document.getElementById('exportElectionCsv').addEventListener('click', () => {
+      const rows = filteredRecords();
+      if (!rows.length) { exportStatus.textContent = 'No matching records to export.'; return; }
+      const cell = (value) => {
+        let text = String(value == null ? '' : value);
+        if (/^[\s]*[=+@-]/.test(text)) text = "'" + text;
+        return '"' + text.replace(/"/g, '""') + '"';
+      };
+      const fields = ['Country','Jurisdiction','Office','Date','Date precision','Date status','Source state','Stage','Notes','Next watch','Source checks','Source URLs','Ledger date'];
+      const csv = [fields, ...rows.map((record) => [record.country,record.jurisdiction,record.office,record.electionDate,
+        record.datePrecision,record.dateStatus,record.sourceStatus,record.stage,record.notes,record.nextWatch,
+        (record.sources || []).map((source) => source.checkedAt).join('; '),
+        (record.sources || []).map((source) => safeSourceUrl(source.url)).filter(Boolean).join('; '),data.generatedAt])]
+        .map((row) => row.map(cell).join(',')).join('\r\n');
+      download('\uFEFF' + csv, 'text/csv;charset=utf-8', 'africa-election-calendar.csv');
+      exportStatus.textContent = rows.length + ' records exported with source and freshness metadata.';
+    });
+    document.getElementById('exportElectionIcs').addEventListener('click', () => {
+      const rows = filteredRecords();
+      const confirmed = rows.filter((record) => record.datePrecision === 'day' &&
+        ['official','official-revised'].includes(record.dateStatus) && record.sourceStatus === 'official');
+      if (!confirmed.length) { exportStatus.textContent = 'No exact, official dates in these filters. Tentative or projected dates are excluded.'; return; }
+      const escapeIcs = (value) => String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
+      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const events = confirmed.flatMap((record) => {
+        const end = new Date(dateUtc(record.dateEnd || record.electionDate) + MS_PER_DAY).toISOString().slice(0,10).replace(/-/g,'');
+        return ['BEGIN:VEVENT','UID:' + record.id + '@afrotools.com','DTSTAMP:' + stamp,
+          'DTSTART;VALUE=DATE:' + record.electionDate.replace(/-/g,''),
+          'DTEND;VALUE=DATE:' + end,'SUMMARY:' + escapeIcs(record.country + ': ' + record.office),
+          'DESCRIPTION:' + escapeIcs(record.notes + '\n' + sourceReview(record,cadence).text +
+            '\nDates may change. This is a downloaded snapshot; it does not update automatically.'),
+          'URL:https://afrotools.com/tools/africa-election-tracker/#election-' + record.id,'END:VEVENT'];
+      });
+      // RFC 5545 limits physical lines to 75 UTF-8 octets, including continuation space.
+      function fold(line) {
+        const encoder = new TextEncoder(); let output = ''; let width = 0;
+        for (const character of line) {
+          const size = encoder.encode(character).length;
+          if (width + size > 75) { output += '\r\n '; width = 1; }
+          output += character; width += size;
+        }
+        return output;
+      }
+      download(['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//AfroTools//Election Tracker//EN','CALSCALE:GREGORIAN',
+        ...events,'END:VCALENDAR'].map(fold).join('\r\n') + '\r\n', 'text/calendar;charset=utf-8', 'africa-election-dates.ics');
+      exportStatus.textContent = confirmed.length + ' official dates exported; ' + (rows.length - confirmed.length) +
+        ' uncertain records excluded. This file is a snapshot and will not update automatically.';
+    });
+  }
+
   async function loadData() {
-    const response = await fetch(DATA_URL, { cache: 'no-store' });
+    const response = await fetchWithDeadline(DATA_URL);
     if (!response.ok) throw new Error(`Election data returned HTTP ${response.status}`);
     const data = await response.json();
     if (!data || !Array.isArray(data.elections) || !data.elections.length) throw new Error('Election data was invalid');
@@ -1239,6 +1666,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
       populateFilters();
       bindEvents();
       renderAll();
+      initializeReaderDesk(data);
       const targetId = requestedElectionId();
       if (targetId) {
         if (!document.getElementById(targetId) && state.records.some((record) => `election-${record.id}` === targetId)) {
@@ -1251,6 +1679,7 @@ body.election-desk-page .et-hero .et-mobile-contents summary:is(:focus,:focus-vi
     .catch((error) => {
       [els.searchInput, els.regionFilter, els.typeFilter, els.sourceFilter, els.executiveOnly, els.upcomingOnly, els.resetFilters]
         .forEach((control) => { control.disabled = true; });
+      document.getElementById('briefStatus').textContent = 'Interactive briefing unavailable. Read the published calendar and briefs below.';
       els.electionList.innerHTML = snapshotHtml;
       [els.reviewQueue, els.newsWatch, els.candidateFacts]
         .forEach((panel) => { panel.innerHTML = ''; });

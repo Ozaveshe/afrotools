@@ -50,3 +50,7 @@ when the live JSON request fails. Generate it with
 independent fact source: it carries the ledger generation date and date-status
 labels. Regenerate it whenever the election ledger changes, including when an
 earlier handoff is integrated before this one.
+
+## Published surveys and country reader views
+
+Published polling and approval survey evidence is a separate, explicitly requested reader feature, governed by `docs/ELECTION-READER-DESK.md` and `data/government/election-surveys.json`. Original pollster reports require their own methodological review; they do not enter the official-source newsroom generator. Keep voting intention, approval surveys and any future self-selected reader responses distinct. The source monitor observes reachability and changes; it never verifies claims or generates polling values.
