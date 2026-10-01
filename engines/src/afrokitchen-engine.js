@@ -1962,24 +1962,28 @@ var AfroKitchenEngine = function() {
       return o && n ? void 0 !== o.ml && void 0 !== n.ml ? e * o.ml / n.ml : void 0 !== o.g && void 0 !== n.g ? e * o.g / n.g : null : null;
     },
     scaleNutrition: function(e, t) {
-      if (!e.calories) {
-        return null;
+      function nutrientValue(value) {
+        if (typeof value !== 'number' && typeof value !== 'string') return null;
+        if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?\s*$/i.test(value)) return null;
+        var number = Number(value);
+        return Number.isFinite(number) && number >= 0 ? number : null;
       }
-      var r = t / e.default_servings;
-      return {
-        calories: Math.round(e.calories * r),
-        protein_g: Math.round((e.protein_g || 0) * r * 10) / 10,
-        carbs_g: Math.round((e.carbs_g || 0) * r * 10) / 10,
-        fat_g: Math.round((e.fat_g || 0) * r * 10) / 10,
-        fiber_g: Math.round((e.fiber_g || 0) * r * 10) / 10,
-        per_serving: {
-          calories: e.calories,
-          protein_g: e.protein_g,
-          carbs_g: e.carbs_g,
-          fat_g: e.fat_g,
-          fiber_g: e.fiber_g
-        }
-      };
+      if (nutrientValue(e.calories) === null) return null;
+      // Legacy recipe fields have no documented portion basis. Do not infer one or scale them.
+      var basis = ['per_serving', 'batch'].indexOf(e.nutrition_basis) !== -1 ? e.nutrition_basis : 'unverified';
+      var ratio = basis === 'batch' && Number(e.default_servings) > 0 ? t / e.default_servings : 1;
+      var result = { basis: basis, per_serving: null };
+      ['calories', 'protein_g', 'carbs_g', 'fat_g', 'fiber_g'].forEach(function(key) {
+        var value = nutrientValue(e[key]);
+        result[key] = value === null ? null : Math.round(value * ratio * (key === 'calories' ? 1 : 10)) / (key === 'calories' ? 1 : 10);
+      });
+      if (basis === 'per_serving') result.per_serving = Object.assign({}, result, { per_serving: undefined });
+      return result;
+    },
+    nutritionLabel: function(nutrition, servings) {
+      if (nutrition.basis === 'per_serving') return 'Estimated nutrition per serving. Batch size changes ingredient quantities, not this portion estimate.';
+      if (nutrition.basis === 'batch') return 'Estimated nutrition for the whole batch (' + servings + ' servings).';
+      return 'Stored nutrition estimates: serving or batch basis not recorded. These values are not recalculated when servings change.';
     },
     calculateRecipeCost: function(e, t, r, o, n) {
       var a = r / t, s = 0, c = "", u = [];

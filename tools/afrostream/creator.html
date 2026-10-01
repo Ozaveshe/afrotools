@@ -24,8 +24,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=7f33039a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d5f7e46e">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
 <link rel="stylesheet" href="style.css?v=780e4d2b">
 <style>
 img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!important;vertical-align:-.1em!important;display:inline!important}
@@ -126,12 +126,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 </style>
 <script src="/assets/js/components/navbar.min.js?v=596f44a5" defer></script>
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
-<link rel="stylesheet" href="/tools/afrostream/subnav.css?v=d9e1e45b">
-<link rel="stylesheet" href="/tools/afrostream/creator-profile.css?v=e8989159">
+<link rel="stylesheet" href="/tools/afrostream/subnav.css?v=92b594e5">
+<link rel="stylesheet" href="/tools/afrostream/creator-profile.css?v=f9312c3c">
 <link rel="stylesheet" href="/tools/afrostream/creator-live-count.css?v=276a50bd">
 <link rel="stylesheet" href="/tools/afrostream/creator-tracking.css?v=1e71af7e">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
-<script src="/tools/afrostream/subnav.js?v=ec96070c" defer></script>
+<script src="/tools/afrostream/subnav.js?v=a2f490f3" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/creator">
 </head>
 <body class="as-page as-body top-level-page-ui-refresh">
@@ -325,6 +325,21 @@ function asNumber(value) {
   var cleaned = raw.replace(/[$,\s]/g, '').replace(/[bmk]$/, '');
   var parsed = Number(cleaned) * multiplier;
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function escapeStreamText(value) {
+  return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function reportedMetric(row, fields) {
+  for (var i = 0; i < fields.length; i++) {
+    var value = row[fields[i]];
+    if (typeof value !== 'number' && typeof value !== 'string') continue;
+    if (!/^\s*\$?\s*\d[\d,]*(?:\.\d+)?\s*[kmb]?\s*$/i.test(String(value))) continue;
+    var number = asNumber(value);
+    if (Number.isFinite(number) && number >= 0) return number;
+  }
+  return null;
 }
 
 function isImageUrl(value) {
@@ -851,13 +866,16 @@ function normalizeApiStreams(rows) {
   return rows.filter(function(row) {
     return row && row.is_published !== false;
   }).map(function(row) {
+    var date = new Date(row.stream_date || row.created_at || '');
     return {
-      date: new Date(row.stream_date || row.created_at || Date.now()),
+      date: Number.isFinite(date.getTime()) ? date : null,
       title: row.title || 'Stream update',
       platform: String(row.platform || 'youtube').toLowerCase(),
-      duration: asNumber(row.duration || row.duration_minutes),
-      peakViewers: asNumber(row.viewer_count || row.peak_viewers),
-      gifts: asNumber(row.gifts || row.gift_revenue),
+      duration: reportedMetric(row, ['duration', 'duration_minutes']),
+      peakViewers: reportedMetric(row, ['viewer_count', 'peak_viewers']),
+      gifts: reportedMetric(row, ['gifts', 'gift_revenue']),
+      // The schedule producer writes this exact prefix; these are watch windows, not observations.
+      scheduledWindow: /^Scheduled watch window:/i.test(String(row.title || '')),
       url: row.url || '',
       isLive: row.is_live === true
     };
@@ -935,7 +953,8 @@ function renderMissingProfile() {
 
   var apiStreams = normalizeApiStreams(creator._apiStreams);
   var nowTime = Date.now();
-  var streams = apiStreams.filter(function(s) { return !s.date || s.date.getTime() <= nowTime; });
+  var streams = apiStreams.filter(function(s) { return !s.scheduledWindow && (!s.date || s.date.getTime() <= nowTime); });
+  var expiredWindows = apiStreams.filter(function(s) { return s.scheduledWindow && s.date && s.date.getTime() <= nowTime; }).length;
   var upcoming = apiStreams.filter(function(s) { return s.date && s.date.getTime() > nowTime; })
     .sort(function(a, b) { return a.date - b.date; });
   var gifters = creator._apiSupporters || [];
@@ -1244,8 +1263,9 @@ function renderMissingProfile() {
 
   /* ===== RENDER STREAM HISTORY ===== */
   (function renderStreams() {
+    var scheduleNote = expiredWindows ? '<p class="as-history-note">' + expiredWindows + ' past scheduled watch windows are excluded. A watch window does not confirm a broadcast.</p>' : '';
     if (!streams.length) {
-      document.getElementById('streamHistory').innerHTML = emptyCard('No recent stream records are published for this creator yet.');
+      document.getElementById('streamHistory').innerHTML = emptyCard('No recent observed stream records are published for this creator yet.') + scheduleNote;
       return;
     }
     var html = '<div class="as-stream-table"><div class="as-stream-header">' +
@@ -1255,16 +1275,17 @@ function renderMissingProfile() {
       var pm = PLATFORM_META[s.platform] || { color: '#0062CC', icon: '\u25B6', name: s.platform || 'Stream' };
       var streamTitle = String(s.title || '').trim();
       if (!streamTitle || streamTitle.length < 3) streamTitle = creator.name + ' stream';
+      streamTitle = escapeStreamText(streamTitle);
       html += '<div class="as-stream-row">' +
-        '<span class="as-stream-date">' + s.date.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + '</span>' +
+        '<span class="as-stream-date"><span class="as-stream-label">Date</span>' + (s.date ? s.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'Not reported') + '</span>' +
         '<span class="as-stream-title">' + (s.isLive ? '<span class="as-live-dot"></span>' : '') + streamTitle + '</span>' +
-        '<span class="as-stream-plat" style="color:' + pm.color + '">' + pm.icon + ' ' + pm.name + '</span>' +
-        '<span>' + (s.duration ? s.duration + ' min' : '-') + '</span>' +
-        '<span>' + fmtNum(s.peakViewers) + '</span>' +
-        '<span class="as-stream-gifts">' + fmtUSD(s.gifts) + '</span>' +
+        '<span class="as-stream-plat" style="color:' + pm.color + '"><span class="as-stream-label">Platform</span>' + pm.icon + ' ' + escapeStreamText(pm.name) + '</span>' +
+        '<span><span class="as-stream-label">Duration</span>' + (s.duration == null ? 'Not reported' : s.duration + ' min') + '</span>' +
+        '<span><span class="as-stream-label">Peak viewers</span>' + (s.peakViewers == null ? 'Not reported' : fmtNum(s.peakViewers)) + '</span>' +
+        '<span class="as-stream-gifts"><span class="as-stream-label">Gifts</span>' + (s.gifts == null ? 'Not reported' : fmtUSD(s.gifts)) + '</span>' +
       '</div>';
     });
-    html += '</div>';
+    html += '</div>' + scheduleNote;
     document.getElementById('streamHistory').innerHTML = html;
   })();
 
@@ -1284,7 +1305,8 @@ function renderMissingProfile() {
           '<div class="as-upcoming-month">' + u.date.toLocaleDateString('en-US',{month:'short'}) + '</div>' +
         '</div>' +
         '<div class="as-upcoming-info">' +
-          '<div class="as-upcoming-title">' + u.title + '</div>' +
+          '<div class="as-upcoming-title">' + escapeStreamText(u.title) + '</div>' +
+          (u.scheduledWindow ? '<p>Suggested watch window; broadcast not confirmed.</p>' : '') +
           '<div class="as-upcoming-meta">' +
             '<span style="color:' + pm.color + '">' + pm.icon + ' ' + pm.name + '</span>' +
             '<span>' + u.date.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + '</span>' +

@@ -116,11 +116,18 @@ async function verifyShopping(page, text, servings) {
   for (const group of groups) {
     expect(text).toContain(`${group.heading}:\n`);
   }
-  expect(text.split('\n').filter(line => line.startsWith('- '))).toEqual(groups.flatMap(group => group.rows.map(row => `- ${row}`)));
+  expect(text.split('\n').filter(line => line.startsWith('- ')).map(line => line.replace(/^- \[[ x]\] /, '- '))).toEqual(groups.flatMap(group => group.rows.map(row => `- ${row}`)));
   expect(text).toContain(`${servings === 5 ? '2½' : '3'} cups long-grain parboiled rice (Day 1: Jollof Rice)`);
 }
 
 async function downloadPlan(page, testInfo, servings) {
+  await page.evaluate(() => {
+    const create = URL.createObjectURL, revoke = URL.revokeObjectURL;
+    window.__planDownloadProbe = { created: [], revoked: [] };
+    URL.createObjectURL = function(blob) { const value = create.call(URL, blob); window.__planDownloadProbe.created.push(value); return value; };
+    URL.revokeObjectURL = function(value) { window.__planDownloadProbe.revoked.push(value); return revoke.call(URL, value); };
+    window.__restorePlanDownloadProbe = () => { URL.createObjectURL = create; URL.revokeObjectURL = revoke; };
+  });
   const waiting = page.waitForEvent('download').then(value => ({ value }), error => ({ error }));
   await pointer(page, txt);
   const event = await waiting;
@@ -139,6 +146,11 @@ async function downloadPlan(page, testInfo, servings) {
   }
   await verifyShopping(page, content.slice(content.indexOf('Shopping list\n')), servings);
   await expect(page.locator(status)).toHaveText('Plan exported as a text file.');
+  const created = await page.evaluate(() => window.__planDownloadProbe.created);
+  expect(created).toHaveLength(1);
+  // Finish real download cleanup before a later phase replaces the URL APIs.
+  await expect.poll(() => page.evaluate(() => window.__planDownloadProbe.revoked)).toEqual(created);
+  await page.evaluate(() => window.__restorePlanDownloadProbe());
   return content;
 }
 

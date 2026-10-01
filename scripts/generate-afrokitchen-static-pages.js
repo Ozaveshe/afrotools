@@ -303,10 +303,11 @@ function renderNutritionHtml(engine, recipe) {
 
   return `<div class="ak-nutrition" id="ak-static-nutrition">
     <div class="ak-nutrition-card"><span>Calories</span><strong>${escapeHtml(String(nutrition.calories))}</strong></div>
-    <div class="ak-nutrition-card"><span>Protein</span><strong>${escapeHtml(String(nutrition.protein_g || 0))}g</strong></div>
-    <div class="ak-nutrition-card"><span>Carbs</span><strong>${escapeHtml(String(nutrition.carbs_g || 0))}g</strong></div>
-    <div class="ak-nutrition-card"><span>Fat</span><strong>${escapeHtml(String(nutrition.fat_g || 0))}g</strong></div>
-    <div class="ak-nutrition-card"><span>Fiber</span><strong>${escapeHtml(String(nutrition.fiber_g || 0))}g</strong></div>
+    <div class="ak-nutrition-card"><span>Protein</span><strong>${nutrition.protein_g == null ? 'Not reported' : escapeHtml(String(nutrition.protein_g)) + 'g'}</strong></div>
+    <div class="ak-nutrition-card"><span>Carbs</span><strong>${nutrition.carbs_g == null ? 'Not reported' : escapeHtml(String(nutrition.carbs_g)) + 'g'}</strong></div>
+    <div class="ak-nutrition-card"><span>Fat</span><strong>${nutrition.fat_g == null ? 'Not reported' : escapeHtml(String(nutrition.fat_g)) + 'g'}</strong></div>
+    <div class="ak-nutrition-card"><span>Fiber</span><strong>${nutrition.fiber_g == null ? 'Not reported' : escapeHtml(String(nutrition.fiber_g)) + 'g'}</strong></div>
+    <p class="ak-nutrition-note">${escapeHtml(engine.nutritionLabel(nutrition, recipe.default_servings || 1))}</p>
   </div>`;
 }
 
@@ -2862,7 +2863,7 @@ function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">First bites</div>
         <h2 class="ak-section-title">Popular dishes to open first</h2>
-        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. ${summary ? `${escapeHtml(String(summary.recipe_count))} recipes, ${escapeHtml(String(summary.country_count))} country hubs, and ${escapeHtml(String(summary.curated_collection_count))} new chef-built collections are now wired into the archive.` : "Open one now, or keep browsing by country, collection, ingredient, or difficulty."}</p>
+        <p class="ak-section-sub">Start with a popular dish, then explore recipes and collections from across Africa.</p>
         <div class="ak-hero-route-grid">
           ${featuredLinks}
         </div>
@@ -3004,6 +3005,21 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-recipe-nutrition')) {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const engine = loadAfroKitchenEngine();
+    let changed = 0;
+    for (const recipe of manifest.recipes.filter(item => item.generated_in_wave && item.calories != null)) {
+      const file = path.join(RECIPES_DIR, recipe.slug, 'index.html');
+      const existing = fs.readFileSync(file, 'utf8');
+      const pattern = /<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate<\/h3>[\s\S]*?<\/div><\/div>(\s*<\/aside>)/;
+      if (!pattern.test(existing)) throw new Error('Nutrition footer not found: ' + file);
+      const next = existing.replace(pattern, (_, ending) => '<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate</h3>' + renderNutritionHtml(engine, recipe) + '</div>' + ending);
+      if (next !== existing) { fs.writeFileSync(file, next, 'utf8'); changed++; }
+    }
+    console.log('Refreshed nutrition from saved manifest: ' + changed + ' pages. No live source or ingredient values changed.');
+    return;
+  }
   if (process.argv.includes("--refresh-recipe-descriptions")) {
     refreshRecipeDescriptions();
     return;

@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=7f33039a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d5f7e46e">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
 <link rel="stylesheet" href="/assets/css/bj-vat-vip.css?v=3691fdad">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script src="/assets/js/engines/bj-vat.js?v=fbed2d94"></script>
@@ -99,8 +99,9 @@
             <div class="f-label"><span class="f-label-text" id="amountLabel">Montant hors taxe (HT)</span><span class="f-hint">En franc CFA</span></div>
             <div class="f-wrap">
               <span class="f-prefix">FCFA</span>
-              <input aria-label="montant" type="number" class="f-input" id="amount" placeholder="500 000" min="0" step="1000" oninput="calculate()">
+              <input aria-label="montant" aria-describedby="calcStatus" type="number" class="f-input" id="amount" placeholder="500 000" min="0" step="1000" oninput="calculate()">
             </div>
+            <p id="calcStatus" role="status" aria-live="polite" style="font-size:.875rem;min-height:1.3em"></p>
           </div>
           <div class="field">
             <div class="f-label"><span class="f-label-text">Taux de TVA</span></div>
@@ -231,8 +232,19 @@ function setMode(mode, btn) {
 }
 
 function calculate() {
-  var input = parseFloat(document.getElementById('amount').value) || 0;
-  if (input <= 0) return;
+  var amountInput = document.getElementById('amount');
+  var input = Number(amountInput.value);
+  if (amountInput.value.trim() === '' || !Number.isFinite(input) || input < 0) {
+    RESULT = null;
+    amountInput.setAttribute('aria-invalid', 'true');
+    document.getElementById('calcStatus').textContent = 'Saisissez un montant de 0 ou plus.';
+    document.getElementById('resultsCard').classList.remove('on');
+    document.getElementById('resAmount').textContent = '—';
+    document.getElementById('resContent').textContent = '';
+    return null;
+  }
+  amountInput.setAttribute('aria-invalid', 'false');
+  document.getElementById('calcStatus').textContent = '';
   var rate = parseFloat(document.getElementById('rate').value);
   var engineResult = window.AfroTools.BJVatEngine.calculate({
     amount: input,
@@ -300,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() { calculate(); });
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
 <script src="/assets/js/lib/local-vat-pdf.js?v=f342835c" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/share-image-inject.js?v=5adaadcb" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>

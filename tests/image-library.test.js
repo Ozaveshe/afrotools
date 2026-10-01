@@ -82,6 +82,17 @@ for(const [slug,canonical] of Object.entries(aliases)) {
   assert.ok(!batch.images.some(i=>i.path==='/assets/img/kitchen/'+slug+'.webp'),'Aliased recipe must not request a duplicate image');
 }
 const sharedArtwork = require('../data/image-generation/reviewed-shared-artwork.json');
+const reviewedImages = require('../data/image-generation/reviewed-images.json');
+assert.equal(new Set(reviewedImages.images.map(i=>i.path)).size,reviewedImages.images.length,'Reviewed image paths must be unique');
+for(const review of reviewedImages.images) {
+  const entry=libraryByPath.get(review.path);
+  assert.ok(entry,'Missing reviewed image '+review.path);
+  assert.equal(entry.sha256,review.sha256,'Reviewed image hash drift '+review.path);
+  assert.equal(entry.text_status,review.text_status,'Reviewed image text state '+review.path);
+  assert.equal(entry.locale_reuse,review.locale_reuse,'Reviewed image reuse state '+review.path);
+  assert.ok(entry.placements.some(p=>p.path===routeFile(review.route)),'Missing reviewed subject binding '+review.path);
+  assert.ok(review.note.includes('equivalent article'),'Review must constrain same-subject reuse '+review.path);
+}
 for(const id of sharedArtwork.tool_ids) {
   const entry=libraryByPath.get('/assets/img/tools/'+id+'.webp');
   assert.ok(entry,'Missing reviewed shared artwork '+id);

@@ -65,6 +65,31 @@ The importer writes to live Supabase and merges matching entries into `data/afro
 
 `npm run afrokitchen:research-queue`
 
+## Nutrition Meaning
+
+Treat recipe nutrition as unverified unless its maintained record explicitly
+documents the portion basis. The engine accepts `nutrition_basis: "per_serving"`
+for values for one person and `nutrition_basis: "batch"` for the entire recipe at
+`default_servings`. The scaled result exposes that meaning as `nutrition.basis`.
+Serving values stay constant when the batch size changes; batch values scale by
+the requested servings divided by the recorded default servings.
+
+An absent or unsupported basis stays `unverified`: do not scale those legacy
+values or expose them as per-person figures. Missing measurements stay unknown;
+a reported zero remains zero. Do not assign a basis from the apparent calorie
+value, recipe title, or household serving count. Confirm it through the research
+workflow before maintaining the source record. Current repository seed and
+manifest values have no documented basis; this is not a claim about live data.
+
+For an engine or nutrition-label change, regenerate the browser engine through
+`node scripts/minify.js --only=engines/src/afrokitchen-engine.js`, then use
+`node scripts/generate-afrokitchen-static-pages.js --refresh-recipe-nutrition`
+to refresh existing recipe nutrition footers from the saved manifest. This
+targeted owner operation preserves ingredient content, routes and other page
+metadata; it does not fetch live nutrition, establish source correctness or
+update the manifest. Run `node --test tests/afrokitchen-nutrition-basis.test.js`
+and the relevant serving-adjustment browser checks.
+
 ## Recipe Images
 
 Recipe pages support one hero image plus optional gallery images. Store persistent production image metadata in `public.recipe_media` with `role` set to `hero`, `gallery`, `step`, or `source`. The generator also accepts `recipes.image_url`, manifest gallery fields, step image URLs, and local generated assets named after the recipe slug.

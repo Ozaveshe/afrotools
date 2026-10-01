@@ -98,8 +98,8 @@
     :root[data-theme="light"] .home-tool-card p,:root[data-theme="light"] .home-section-heading p,:root[data-theme="light"] .home-about-card p{color:#475569}
   </style>
   <!-- Full CSS loaded async — non-blocking -->
-  <link rel="preload" href="/assets/css/tokens.min.css?v=7f33039a" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="/assets/css/global.min.css?v=d5f7e46e" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/assets/css/tokens.min.css?v=af93284c" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/assets/css/global.min.css?v=d5e22908" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <script src="/assets/js/data/african-countries.js?v=0d872b4b" defer></script>
   <script src="/assets/js/components/country-selector.js?v=a55dcf5d" defer></script>
   <script src="/assets/js/data/registry-counts.js?v=3e01d9d3" defer></script>
@@ -142,8 +142,8 @@
     @media (max-width:820px){.home-model-grid{grid-template-columns:1fr}.home-model-card{padding:18px}.home-faq-item summary{padding:16px}.home-faq-item p{padding:0 16px 16px}}
   </style>
   <noscript>
-    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=7f33039a">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=d5f7e46e">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
     <link rel="stylesheet" href="/assets/css/homepage.css?v=c6bf81e4">
     <link rel="stylesheet" href="/assets/css/homepage-refine.css?v=9d0a64b5">
     <style>.sec,.sec--dark2,.sec--countries{opacity:1!important}.sec--countries .rv{opacity:1!important;transform:none!important}</style>
@@ -1013,7 +1013,7 @@
       .ai-example-chip { min-height:40px !important; padding:7px 10px !important; font-size:.7rem !important; }
     }
   </style>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=b353fc1d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
 <style id="homepage-tool-image-fit">
   body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
@@ -2894,6 +2894,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function normalizeSearchHref(value) {
       return String(value || '').split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
     }
+    function homepageSearchTools() {
+      var locale = aiHomeLocale();
+      var seen = Object.create(null);
+      return AFRO_TOOLS.filter(function(tool) {
+        var routeLocale = String(tool.href || '').match(/^\/(fr|sw|ha|yo)\//);
+        var language = tool.lang || (routeLocale && routeLocale[1]) || 'en';
+        if (language !== locale) return false;
+        var key = normalizeSearchHref(tool.href) || normalizeSearchText(tool.id);
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      });
+    }
     function generatedAliases(tool) {
       var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
       var terms = [];
@@ -2931,7 +2944,9 @@ document.addEventListener('DOMContentLoaded', function() {
           s += tokenScore;
         }
       });
-      return matchedTokens === tokens.length ? s : 0;
+      if (matchedTokens !== tokens.length) return 0;
+      if (normalizeSearchText(tool.id) === tokens.join(' ')) s += 1000;
+      return s;
     }
 
     function tokenise(q) {
@@ -3018,7 +3033,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var selectedId = normalizeSearchText(plan.selectedTool.id);
       var selectedRoute = normalizeSearchHref(plan.selectedTool.route);
       if (!selectedId || selectedId === 'tool search') return null;
-      return AFRO_TOOLS.find(function(tool) {
+      return homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === selectedId || normalizeSearchHref(tool.href) === selectedRoute;
       }) || null;
     }
@@ -3115,7 +3130,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
-      var baseResults = AFRO_TOOLS
+      var baseResults = homepageSearchTools()
         .map(function(t){ return {t:t, s:score(t,tokens)}; })
         .filter(function(r){ return r.s > 0; })
         .sort(function(a,b){
@@ -3128,7 +3143,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var results = mergeAIHeroResult(baseResults, q).slice(0, 7);
 
       if (!results.length) {
-        dropdown.innerHTML = '<div class="sd-empty">Press Start to ask AfroTools AI about "' + esc(q) + '"</div>';
+        dropdown.innerHTML = '<div class="sd-empty">Select Find my tool to ask AfroTools AI about "' + esc(q) + '"</div>';
         dropdown.classList.add('open');
         input.setAttribute('aria-expanded', 'true');
         return;
@@ -3178,6 +3193,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
+      var exactTool = window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+        return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
+      });
+      if (exactTool) { navigate(exactTool.href); return; }
       var aiEnabled = isAiFrontdoorEnabled();
       trackAiFrontdoor('ai_frontdoor_submit', {
         ai_frontdoor_enabled: aiEnabled,

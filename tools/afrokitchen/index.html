@@ -22,8 +22,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=7f33039a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d5f7e46e">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
 <link rel="stylesheet" href="style.css?v=b73d8c8f">
 <link rel="stylesheet" href="icon-system.css?v=e947352b">
 <link rel="stylesheet" href="cuisine-intelligence.css?v=d0ebe756">
@@ -161,9 +161,9 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=b353fc1d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
-<link rel="stylesheet" href="home-improvements.css?v=5635dedb">
+<link rel="stylesheet" href="home-improvements.css?v=17955642">
 <link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/">
@@ -387,7 +387,7 @@
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">First bites</div>
         <h2 class="ak-section-title">Popular dishes to open first</h2>
-        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. 410 recipes, 55 country and territory hubs, and 11 new chef-built collections are now wired into the archive.</p>
+        <p class="ak-section-sub">Start with a popular dish, then explore recipes and collections from across Africa.</p>
         <div class="ak-hero-route-grid">
           <a class="ak-support-link" href="/tools/afrokitchen/recipes/couscous-royal-dz/">Couscous Royal</a>
 <a class="ak-support-link" href="/tools/afrokitchen/recipes/amiwo-bj/">Amiwo</a>
@@ -525,6 +525,8 @@
         <h2 class="ak-section-title">Browse by country</h2>
         <p class="ak-section-sub">Pick a country to see its dishes, staples, cooking notes, and nearby collections.</p>
       </div>
+      <details class="ak-directory-disclosure">
+        <summary>Choose a country <span>Browse all country hubs</span></summary>
       <div class="ak-country-grid" id="country-grid">
         <!-- ak-static-country-links:start -->
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/algeria/">
@@ -804,6 +806,7 @@
       </a>
 <!-- ak-static-country-links:end -->
       </div>
+      </details>
     </div>
   </section>
 
@@ -815,6 +818,8 @@
         <h2 class="ak-section-title">Follow a craving</h2>
         <p class="ak-section-sub">Collections group dishes by occasion, pace, and style so it is easier to choose.</p>
       </div>
+      <details class="ak-directory-disclosure">
+        <summary>Choose a collection <span>Browse by occasion and cooking style</span></summary>
       <div class="ak-collection-grid" id="collections-grid">
         <!-- ak-static-collection-links:start -->
 <a class="ak-collection-card" href="/tools/afrokitchen/collections/party-favorites/">
@@ -921,6 +926,7 @@
       </a>
 <!-- ak-static-collection-links:end -->
       </div>
+      </details>
     </div>
   </section>
 
@@ -1023,7 +1029,7 @@
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/engines/afrokitchen-engine.js?v=5c7a30c1"></script>
+<script src="/engines/afrokitchen-engine.js?v=f2b0c162"></script>
 <script src="cuisine-intelligence-data.js?v=f0841dd2"></script>
 <script src="image-manifest.js?v=80421c10"></script>
 <script src="image-pipeline.js?v=f8570562"></script>
@@ -1125,6 +1131,10 @@
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
+  var currentPlanRecipes = [];
+  var currentPlanInputs = null;
+  var planLocks = Object.create(null);
+  var shoppingChecked = Object.create(null);
   var planCopyAttempt = 0;
   var planCopyRevision = 0;
   window.addEventListener('pagehide', invalidatePlanCopy);
@@ -1502,7 +1512,7 @@
 
   function shoppingBucket(name) {
     var value = String(name || '').toLowerCase();
-    if (/\b(?:vanilla beans?|alligator pepper)\b/.test(value)) return 'Spices';
+    if (/\b(?:vanilla beans?|alligator pepper|salt|black pepper|white pepper|ground pepper)\b/.test(value)) return 'Spices';
     if (/\b(?:chicken|beef|fish|goat|lamb|eggs?|tilapia|shrimp|prawn|meat|stockfish|crayfish|sausage|mutton|turkey|lobster|crab|oyster|mussel|clam|periwinkle)s?\b/.test(value)) return 'Protein';
     if (/\b(?:rice|maize|flour|cassava|yam|plantain|potato|macaroni|pasta|couscous|millet|sorghum|beans?|lentils?|peas?|chickpeas?|bread|garri|fufu|semolina)\b/.test(value)) return 'Grains';
     if (/\b(?:oil|butter|milk|cream|water|vinegar|stock|coconut|yogurt|broth|juice)\b/.test(value)) return 'Liquids';
@@ -1523,10 +1533,12 @@
       scaled.forEach(function (item) {
         if (!item || !item.name) return;
         var bucket = shoppingBucket(item.name);
-        var key = bucket + '|' + String(item.unit || '').toLowerCase() + '|' + String(item.name).toLowerCase();
+        var canonicalName = String(item.name).trim().toLowerCase().replace(/^onions$/, 'onion');
+        var unit = String(item.unit || '').trim().toLowerCase().replace(/^tablespoons?$/, 'tbsp').replace(/^teaspoons?$/, 'tsp');
+        var key = bucket + '|' + unit + '|' + canonicalName;
         if (!groups[bucket]) groups[bucket] = {};
         if (!groups[bucket][key]) {
-          groups[bucket][key] = { name: item.name, unit: item.unit || '', amount: 0, hasAmount: false, recipes: [] };
+          groups[bucket][key] = { key: key, name: canonicalName === 'onion' ? 'onion' : String(item.name).trim(), unit: unit, amount: 0, hasAmount: false, recipes: [] };
         }
         if (Number(item.scaled_amount || 0) > 0) {
           groups[bucket][key].amount += Number(item.scaled_amount || 0);
@@ -1563,6 +1575,7 @@
       var fractions = ['', '⅛', '¼', '⅜', '½', '⅝', '¾', '⅞'];
       return (whole ? String(whole) : '') + fractions[remainder];
     }
+    if (/^(tbsp|tsp)$/i.test(unit || '')) return String(Math.ceil(amount * 4 - 1e-9) / 4);
     if (/^(g|gram|grams|ml|millilitre|millilitres)$/i.test(unit || '')) {
       return amount >= 10 ? String(Math.ceil(amount - 1e-9)) : String(Math.ceil(amount * 10 - 1e-9) / 10);
     }
@@ -1590,7 +1603,7 @@
       if (!items.length) return;
       html += '<article class="ak-plan-shopping-group"><h4>' + planIcon('shopping') + '<span>' + esc(groupName) + '</span></h4><ul>';
       items.forEach(function (item) {
-        html += '<li>' + esc(groupedShoppingLine(item)) + '</li>';
+        html += '<li><label class="ak-shopping-check"><input type="checkbox" data-ak-shopping="' + esc(item.key) + '"' + (shoppingChecked[item.key] ? ' checked' : '') + '><span>' + esc(groupedShoppingLine(item)) + '</span></label></li>';
       });
       html += '</ul></article>';
     });
@@ -1607,7 +1620,7 @@
       lines.push('');
       lines.push(groupName + ':');
       items.forEach(function (item) {
-        lines.push('- ' + groupedShoppingLine(item));
+        lines.push((shoppingChecked[item.key] ? '- [x] ' : '- [ ] ') + groupedShoppingLine(item));
       });
     });
     if (!hasItems) lines.push('Open recipe pages for stored ingredients.');
@@ -1634,6 +1647,10 @@
     document.body.removeAttribute('data-ak-print-plan');
     currentPlanText = '';
     currentShoppingText = '';
+    currentPlanRecipes = [];
+    currentPlanInputs = null;
+    planLocks = Object.create(null);
+    shoppingChecked = Object.create(null);
     var chips = inputs ? '<div class="ak-plan-chip-row">' + planFilterChips(inputs) + '</div>' : '';
     var warning = typeof matchedCount === 'number'
       ? '<div class="ak-plan-warning">' + planIcon('warning') + '<span>' + esc(matchedCount + ' matching meal recipes found. Widen the time, country, diet, or occasion filters to build a fuller plan.') + '</span></div>'
@@ -1881,6 +1898,8 @@
       if (typeof plan.inputs.diet !== 'string' || (plan.inputs.diet && AK.DIETS.indexOf(plan.inputs.diet) === -1)) return null;
       if (typeof plan.inputs.country !== 'string' || (plan.inputs.country && !AK.COUNTRIES[plan.inputs.country])) return null;
       if (typeof plan.inputs.occasion !== 'string' || ['', 'everyday', 'celebration', 'festive', 'budget-friendly', 'street-food'].indexOf(plan.inputs.occasion) === -1) return null;
+      if (plan.lockedSlugs && (!Array.isArray(plan.lockedSlugs) || plan.lockedSlugs.some(function(slug) { return plan.slugs.indexOf(slug) === -1; }))) return null;
+      if (plan.checked && (typeof plan.checked !== 'object' || Array.isArray(plan.checked) || Object.keys(plan.checked).length > 1000 || Object.keys(plan.checked).some(function(key) { return key.length > 300 || plan.checked[key] !== true; }))) return null;
       return plan;
     } catch (error) {
       return null;
@@ -1900,6 +1919,8 @@
       version: 1,
       slugs: recipes.map(function (recipe) { return recipe.slug; }),
       inputs: inputs,
+      lockedSlugs: recipes.filter(function(recipe) { return planLocks[recipe.slug]; }).map(function(recipe) { return recipe.slug; }),
+      checked: shoppingChecked,
       savedAt: new Date().toISOString()
     };
     try {
@@ -1932,6 +1953,9 @@
     renderPickedRecipes();
     var detailed = await Promise.all(recipes.map(fetchRecipeDetails));
     if (generation !== planGenerationRevision) return;
+    planLocks = Object.create(null);
+    (saved.lockedSlugs || []).forEach(function(slug) { planLocks[slug] = true; });
+    shoppingChecked = Object.assign(Object.create(null), saved.checked || {});
     renderPlan(detailed, saved.inputs);
     setPlanStatus('Saved plan restored from this device.');
     if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_restored', { days: saved.inputs.days, recipe_count: detailed.length });
@@ -2158,9 +2182,11 @@
     invalidatePlanCopy();
     var result = document.getElementById('ak-plan-result');
     if (!result) return;
+    currentPlanRecipes = recipes;
+    currentPlanInputs = inputs;
     var savedPlan = readSavedPlan();
     var planSlugs = recipes.map(function (recipe) { return recipe.slug; });
-    var isSaved = !!savedPlan && JSON.stringify(savedPlan.slugs) === JSON.stringify(planSlugs) && JSON.stringify(savedPlan.inputs) === JSON.stringify(inputs);
+    var isSaved = !!savedPlan && JSON.stringify(savedPlan.slugs) === JSON.stringify(planSlugs) && JSON.stringify(savedPlan.inputs) === JSON.stringify(inputs) && JSON.stringify(savedPlan.lockedSlugs || []) === JSON.stringify(recipes.filter(function(recipe) { return planLocks[recipe.slug]; }).map(function(recipe) { return recipe.slug; })) && JSON.stringify(savedPlan.checked || {}) === JSON.stringify(shoppingChecked);
     currentPlanText = buildPlanText(recipes, inputs);
     var shoppingGroups = buildGroupedShoppingList(recipes, inputs.servings);
     currentShoppingText = buildShoppingTextFromGroups(shoppingGroups);
@@ -2193,7 +2219,7 @@
             ((recipe.region || countryInfo.region) ? '<span>' + planIcon('country') + '<strong>' + esc(recipe.region || countryInfo.region) + '</strong></span>' : '') +
           '</div>' +
           '<p>' + esc(excerptText(recipe.description, 132)) + '</p>' +
-          '<div class="ak-planner-actions"><a class="ak-btn ak-btn-secondary" href="' + esc(href) + '">' + planIcon('action') + '<span>Open recipe</span></a></div>' +
+          '<div class="ak-planner-actions"><a class="ak-btn ak-btn-secondary" href="' + esc(href) + '">' + planIcon('action') + '<span>Open recipe</span></a><button type="button" class="ak-btn ak-btn-outline" data-ak-swap="' + index + '" aria-label="Swap meal for day ' + (index + 1) + '"' + (planLocks[recipe.slug] ? ' disabled' : '') + '>Swap this meal</button><button type="button" class="ak-btn ak-btn-outline" data-ak-lock="' + index + '" aria-pressed="' + !!planLocks[recipe.slug] + '" aria-label="Keep meal for day ' + (index + 1) + '">' + (planLocks[recipe.slug] ? 'Meal kept' : 'Keep this meal') + '</button></div>' +
         '</div>' +
       '</article>';
     }).join('');
@@ -2218,7 +2244,7 @@
         warning +
         '<div class="ak-plan-output-grid">' +
           '<div class="ak-plan-days"><h4>Cooking rhythm</h4><div class="ak-plan-day-grid">' + cards + '</div></div>' +
-          '<div class="ak-plan-shopping"><h3>' + planIcon('shopping') + '<span>Grouped shopping list</span></h3><div class="ak-plan-shopping-grid">' + shopping + '</div></div>' +
+          '<div class="ak-plan-shopping"><h3>' + planIcon('shopping') + '<span>Grouped shopping list</span></h3><p>Check items you already have or have bought. Save the plan to keep checks on this device. Different sizes and alternative ingredients stay separate.</p><div class="ak-plan-shopping-grid">' + shopping + '</div></div>' +
         '</div>' +
       '</section>';
     document.body.setAttribute('data-ak-print-plan', '');
@@ -2227,6 +2253,51 @@
     var copyButton = document.getElementById('ak-plan-copy');
     var exportButton = document.getElementById('ak-plan-export');
     var printButton = document.getElementById('ak-plan-print');
+    function markPlanUnsaved() {
+      if (saveButton) { saveButton.disabled = false; saveButton.querySelector('span').textContent = 'Save plan on this device'; }
+    }
+    result.querySelectorAll('[data-ak-lock]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var index = Number(button.dataset.akLock), recipe = recipes[index];
+        if (planLocks[recipe.slug]) delete planLocks[recipe.slug]; else planLocks[recipe.slug] = true;
+        renderPlan(recipes, inputs);
+        revealPlanControl(result.querySelector('[data-ak-lock="' + index + '"]'));
+        setPlanStatus('Day ' + (index + 1) + (planLocks[recipe.slug] ? ' will be kept when regenerating.' : ' can be changed again.'));
+      });
+    });
+    result.querySelectorAll('[data-ak-swap]').forEach(function(button) {
+      button.addEventListener('click', async function() {
+        var index = Number(button.dataset.akSwap), generation = ++planGenerationRevision;
+        var candidates = mealPlannerRecipes.filter(function(recipe) { return isPlanMeal(recipe) && matchesPlan(recipe, inputs) && !recipes.some(function(pick) { return pick.slug === recipe.slug; }); });
+        if (!candidates.length) { setPlanStatus('No different meal matches these filters. Your plan has been kept; widen the filters to find more recipes.'); return; }
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+        setPlanStatus('Loading a replacement for day ' + (index + 1) + '…');
+        try {
+          var detail = await fetchRecipeDetails(candidates[planGenerationCount++ % candidates.length]);
+          if (generation !== planGenerationRevision || !button.isConnected) return;
+          var next = recipes.slice(); next[index] = detail;
+          shoppingChecked = Object.create(null);
+          renderPlan(next, inputs);
+          revealPlanControl(result.querySelector('[data-ak-swap="' + index + '"]'));
+          setPlanStatus('Day ' + (index + 1) + ' replaced. Other meals kept; shopping quantities refreshed. Check items again for the new quantities.');
+        } catch (error) {
+          if (generation !== planGenerationRevision || !button.isConnected) return;
+          button.disabled = false; button.removeAttribute('aria-busy');
+          setPlanStatus('Replacement could not load. Your plan has been kept. Try again.');
+        }
+      });
+    });
+    result.querySelectorAll('[data-ak-shopping]').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        invalidatePlanCopy();
+        if (checkbox.checked) shoppingChecked[checkbox.dataset.akShopping] = true; else delete shoppingChecked[checkbox.dataset.akShopping];
+        currentShoppingText = buildShoppingTextFromGroups(shoppingGroups);
+        currentPlanText = buildPlanText(recipes, inputs);
+        markPlanUnsaved();
+        setPlanStatus('Shopping checklist updated. Save the plan to keep your checks on this device.');
+      });
+    });
     if (regenerateButton) {
       regenerateButton.addEventListener('click', generateMealPlan);
     }
@@ -2334,10 +2405,20 @@
     }
     planGenerationCount += 1;
     try {
-      var savedSlugs = new Set(savedPicks.map(function (recipe) { return recipe.slug; }));
-      var picked = savedPicks.concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - savedPicks.length));
+      var keepCurrent = currentPlanInputs && JSON.stringify(currentPlanInputs) === JSON.stringify(inputs);
+      var locked = keepCurrent ? currentPlanRecipes.filter(function(recipe) { return planLocks[recipe.slug]; }) : [];
+      var fixed = locked.concat(savedPicks.filter(function(recipe) { return !locked.some(function(pick) { return pick.slug === recipe.slug; }); }));
+      var savedSlugs = new Set(fixed.map(function (recipe) { return recipe.slug; }));
+      var replacements = savedPicks.filter(function(recipe) { return !locked.some(function(pick) { return pick.slug === recipe.slug; }); }).concat(choosePlanRecipes(pool.filter(function (recipe) { return !savedSlugs.has(recipe.slug); }), inputs.days - fixed.length));
+      var picked = [];
+      for (var slot = 0; slot < inputs.days; slot++) {
+        var existing = keepCurrent && currentPlanRecipes[slot];
+        var pick = existing && planLocks[existing.slug] ? existing : replacements.shift();
+        if (pick) picked.push(pick);
+      }
       var detailed = await Promise.all(picked.map(fetchRecipeDetails));
       if (generation !== planGenerationRevision) return;
+      shoppingChecked = Object.create(null);
       renderPlan(detailed, inputs);
       if (window.AfroTools && AfroTools.analytics) AfroTools.analytics.track('afrokitchen_plan_created', {
         days: inputs.days, recipe_count: detailed.length, country_code: inputs.country || 'all', picked_count: savedPicks.length
