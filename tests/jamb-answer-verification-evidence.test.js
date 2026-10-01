@@ -8,7 +8,7 @@ const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const evidenceDir = path.join(root, 'ops/jamb/verification');
 const { assessQuestion } = require('../scripts/lib/jamb-content-trust');
-const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3}\.json$/.test(name));
+const batches = fs.readdirSync(evidenceDir).filter(name => /^[a-z]+-\d{4}-publishable-\d{3,4}\.json$/.test(name));
 
 test('student explanations contain learning content instead of internal repair history', () => {
   const bank = JSON.parse(fs.readFileSync(path.join(root, 'data/jamb/pools/practice-pool.json'), 'utf8'));
@@ -23,11 +23,20 @@ test('AI reviews are backed by current batch evidence and reproducible integrity
   const covered = new Map();
   for (const filename of batches) {
     const batch = JSON.parse(fs.readFileSync(path.join(evidenceDir, filename), 'utf8'));
-    const script = 'check-' + filename.replace('-publishable-', '-').replace('.json', '.cjs');
+    const combinedMath = /^mathematics-(2021|2022)-publishable-002\.json$/.exec(filename);
+    const script = combinedMath ? 'check-mathematics-2021-2022-002.cjs'
+      : 'check-' + filename.replace('-publishable-', '-').replace('.json', '.cjs');
     assert.ok(fs.existsSync(path.join(evidenceDir, script)), 'Missing review evidence check for ' + filename);
-    const result = JSON.parse(execFileSync(process.execPath, [path.join(evidenceDir, script)], {
+    let result = JSON.parse(execFileSync(process.execPath, [path.join(evidenceDir, script)], {
       cwd: root, encoding: 'utf8', timeout: 30000, maxBuffer: 1024 * 1024
     }));
+    if (combinedMath) {
+      assert.equal(result.status, 'PASS', filename);
+      assert.equal(result.verified, 22, filename);
+      const { ACCEPTED } = require(path.join(evidenceDir, script));
+      result = { passed: true, question_ids: ACCEPTED[Number(combinedMath[1])]
+        .map(id => `mathematics-${combinedMath[1]}-myschool-${id}`) };
+    }
     assert.equal(result.passed, true, filename);
     assert.deepEqual([...result.question_ids].sort(), batch.records.map(r => r.id).sort());
     assert.equal(new Set(result.question_ids).size, batch.records.length);
@@ -91,7 +100,12 @@ test('2024 English publisher collection imports only eight independently checked
     prepared.batch.records.filter(record => !sourcePool.questions.some(question => question.id === record.id)).length);
   assert.deepEqual(prepared.pool.questions.filter(question => question.subject === 'english'
     && [2022, 2023].includes(question.year)), beforeEnglish);
-  assert.equal(beforeEnglish.length, 50, 'Expected reviewed 2022-23 comparison cohort');
+  const new2023 = require('../ops/jamb/verification/check-english-2023-1001.cjs').ACCEPTED
+    .map(id => 'english-2023-myschool-' + id);
+  assert.equal(beforeEnglish.filter(question => !new2023.includes(question.id)).length,
+    50, 'The original reviewed 2022-23 comparison cohort is preserved');
+  assert.equal(new2023.length, 13);
+  for (const id of new2023) assert.ok(beforeEnglish.some(question => question.id === id), id);
   assert.equal(verify(manifest, hash, prepared.pool, prepared.ledger, prepared.batch).passed, true);
   for (const record of prepared.batch.records) {
     const question = prepared.pool.questions.find(candidate => candidate.id === record.id);

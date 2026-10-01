@@ -10,12 +10,12 @@ const DOCUMENT_RECOMMENDATION_ICON = "<svg viewBox=\"0 0 24 24\" fill=\"none\" s
 const DOCUMENT_RECOMMENDATION_ICON_IDS = new Set(['cv-builder', 'invoice-generator', 'pdf-editor']);
 
 const HA_RELATED_FALLBACK = [
-  { id:'ng-paye-ha', name:'Kalkuleta PAYE Najeriya', icon:'PAYE', desc:'Lissafa albashin hannu da cire-ciren PAYE a Hausa.', href:'/ha/najeriya/harajin-albashi/', category:'financial', status:'live', lang:'ha' },
-  { id:'vat-calculator-ha', name:'Kalkuletan VAT', icon:'VAT', desc:'Kara ko cire VAT sannan ka tabbatar da adadin da hukumar da ta dace.', href:'/ha/kayan-aiki/kalkuletan-vat/', category:'ecommerce', status:'live', lang:'ha' },
-  { id:'pdf-workspace-ha', name:'Wurin Aikin PDF', icon:'PDF', desc:'Zabi hada, raba, matsa ko saka lambobin shafi a PDF.', href:'/ha/kayan-aiki/wurin-aikin-pdf/', category:'document-pdf', status:'live', lang:'ha' },
-  { id:'jamb-aggregate-ha', name:'Kalkuletan JAMB', icon:'JAMB', desc:'Lissafa jimillar UTME da Post-UTME don shirin admission.', href:'/ha/kayan-aiki/kalkuletan-jamb/', category:'education', status:'live', lang:'ha' },
-  { id:'cv-builder-ha', name:'Mai Gina CV a Hausa', icon:'CV', desc:'Shirya bayanan CV a burauzarka ba tare da loda fayil ba.', href:'/ha/kayan-aiki/gina-cv/', category:'document-pdf', status:'live', lang:'ha' },
-  { id:'farm-profit-nigeria-ha', name:'Ribar Gona Najeriya', icon:'ROI', desc:'Kiyasta kudin shiga, kashe kudi da ribar gona.', href:'/ha/kayan-aiki/ribar-gona/', category:'agriculture', status:'live', lang:'ha' }
+  { id:'ng-paye-ha', imageId:'ng-paye', name:'Kalkuleta PAYE Najeriya', icon:'PAYE', desc:'Lissafa albashin hannu da cire-ciren PAYE a Hausa.', href:'/ha/najeriya/harajin-albashi/', category:'financial', status:'live', lang:'ha' },
+  { id:'vat-calculator-ha', imageId:'vat-calc-pan-african', name:'Kalkuletan VAT', icon:'VAT', desc:'Kara ko cire VAT sannan ka tabbatar da adadin da hukumar da ta dace.', href:'/ha/kayan-aiki/kalkuletan-vat/', category:'ecommerce', status:'live', lang:'ha' },
+  { id:'pdf-workspace-ha', imageId:'pdf-workspace', name:'Wurin Aikin PDF', icon:'PDF', desc:'Zabi hada, raba, matsa ko saka lambobin shafi a PDF.', href:'/ha/kayan-aiki/wurin-aikin-pdf/', category:'document-pdf', status:'live', lang:'ha' },
+  { id:'jamb-aggregate-ha', imageId:'jamb-aggregate', name:'Kalkuletan JAMB', icon:'JAMB', desc:'Lissafa jimillar UTME da Post-UTME don shirin admission.', href:'/ha/kayan-aiki/kalkuletan-jamb/', category:'education', status:'live', lang:'ha' },
+  { id:'cv-builder-ha', imageId:'cv-builder', name:'Mai Gina CV a Hausa', icon:'CV', desc:'Shirya bayanan CV a burauzarka ba tare da loda fayil ba.', href:'/ha/kayan-aiki/gina-cv/', category:'document-pdf', status:'live', lang:'ha' },
+  { id:'farm-profit-nigeria-ha', imageId:'farm-profit-calculator', name:'Ribar Gona Najeriya', icon:'ROI', desc:'Kiyasta kudin shiga, kashe kudi da ribar gona.', href:'/ha/kayan-aiki/ribar-gona/', category:'agriculture', status:'live', lang:'ha' }
 ];
 
 class AfroRelatedTools extends HTMLElement {

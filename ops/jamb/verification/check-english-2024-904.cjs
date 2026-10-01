@@ -119,6 +119,32 @@ function validateManifest(manifest, snapshot, independentReview, options = {}) {
   return answers;
 }
 
+// Historical held decisions remain immutable. Only these later reviewed source identities
+// may be present, and only after verification of the entire frozen batch 04 evidence.
+const LATER_RECOVERIES = Object.freeze([70064, 70066, 70067, 70070, 70083]);
+function verifyLaterRecoveries(pool, ledger, options = {}) {
+  const present = HELD.filter(id => pool.questions.some(q => q.id === 'english-2024-myschool-' + id));
+  for (const id of present) assert(LATER_RECOVERIES.includes(id), 'unlisted historical held source item must not be introduced: ' + id);
+  if (!present.length) return [];
+  const referenceRoot = options.referenceRoot || ROOT;
+  const later = require(path.join(referenceRoot, 'ops/jamb/verification/check-english-2024-1001.cjs'));
+  const laterBytes = Object.fromEntries([['manifest', later.manifestPath], ['snapshot', later.snapshotPath], ['review', later.reviewPath]]
+    .map(([key, relative]) => [key, fs.readFileSync(path.join(referenceRoot, relative))]));
+  const read = relative => JSON.parse(fs.readFileSync(path.join(referenceRoot, relative), 'utf8'));
+  const laterReceipt = read(later.receiptPath);
+  const verified = later.verify(JSON.parse(laterBytes.manifest), JSON.parse(laterBytes.snapshot), JSON.parse(laterBytes.review),
+    pool, ledger, laterReceipt, laterBytes, { referenceRoot });
+  assert.equal(verified.passed, true, 'later full-batch verification');
+  assert.equal(verified.accepted, later.ACCEPTED.length, 'complete later batch required');
+  for (const id of present) {
+    const questionId = 'english-2024-myschool-' + id;
+    assert(later.ACCEPTED.includes(id), 'later frozen accepted identity');
+    assert.equal(ledger.questions[questionId].source_id, 'owner-directed-myschool-english-2024-' + id, 'exact recovered source owner identity');
+    assert(laterReceipt.records.some(record => record.id === questionId && record.source_question_id === id), 'exact recovered receipt identity');
+  }
+  return present;
+}
+
 function verify(manifest, snapshot, independentReview, pool, ledger, receipt, bytes, options = {}) {
   const trust = trustFor(options.referenceRoot);
   const answers = validateManifest(manifest, snapshot, independentReview, options);
@@ -150,7 +176,7 @@ function verify(manifest, snapshot, independentReview, pool, ledger, receipt, by
     assert.equal(trust.assessQuestion(question, ledger).state, 'eligible', id);
     checked.push(id);
   }
-  for (const heldId of HELD) assert(!pool.questions.some(row => row.id === 'english-2024-myschool-' + heldId), 'held source item must not be introduced');
+  verifyLaterRecoveries(pool, ledger, options);
   return { passed: true, accepted: checked.length, held_or_excluded: HELD.length, question_ids: checked, scope: 'source-faithful publisher collection; formal sitting unconfirmed' };
 }
 
@@ -161,4 +187,4 @@ if (require.main === module) {
     read('ops/jamb/source-pool.json'), read('data/jamb/review-ledger.json'), read(receiptPath), bytes);
   process.stdout.write(JSON.stringify(result) + '\n');
 }
-module.exports = { validateManifest, verify, displayPrompt, sha, trustFor, ACCEPTED, HELD, WINDOW, ANSWER_TEXT, SOURCE_HASH, manifestPath, snapshotPath, reviewPath, receiptPath };
+module.exports = { validateManifest, verify, displayPrompt, sha, trustFor, ACCEPTED, HELD, WINDOW, ANSWER_TEXT, SOURCE_HASH, manifestPath, snapshotPath, reviewPath, receiptPath, LATER_RECOVERIES, verifyLaterRecoveries };

@@ -17,11 +17,12 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
-  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
-  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
-  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=6b3de5f2"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=da354cb9" defer></script>
   <script src="/assets/js/lib/afrohr-sync.js?v=cb95f7ac"></script>
   <style>
     :root{
@@ -225,8 +226,12 @@
 <link rel="canonical" href="https://afrotools.com/pro/apps/hr/">
 </head>
 <body class="top-level-page-ui-refresh">
-  <main class="hr-workspace pro-gated-content">
   <div data-pro-waitlist-host data-app-label="Hr" data-source-route="/pro/apps/hr/"></div>
+  <section aria-label="Device record recovery" style="position:relative;z-index:11;padding:12px;background:var(--hr-bg)">
+  <div class="hr-note" id="hrRecordStatus" role="status" aria-live="polite"></div>
+  <button class="hr-btn" type="button" id="hrRawRecovery">Export original device records</button>
+  </section>
+  <main class="hr-workspace pro-gated-content">
 
     <aside class="hr-side" aria-label="AfroHR navigation">
       <div class="hr-brand">
@@ -303,7 +308,7 @@
           <a class="hr-btn" href="/pro/apps/">Browse apps</a>
           <a class="hr-btn" href="/dashboard/">Account</a>
           <button class="hr-btn" type="button" id="refreshBtn">Refresh</button>
-          <button class="hr-btn warn" type="button" id="resetBtn">Reset device data</button>
+          <button class="hr-btn warn" type="button" id="resetBtn" disabled title="Export and review existing employee records before resetting">Reset device data</button>
           <button class="hr-btn primary" type="button" id="sendPayrollTopBtn">Payroll handoff draft</button>
         </div>
       </header>
@@ -520,7 +525,7 @@
                 <span class="hr-pill open">Onboarding</span>
                 <h3>Complete onboarding</h3>
                 <p>Mark identity, contact, appointment letter, payroll details, payment route, and policy tasks for review.</p>
-                <button class="hr-btn" type="button" id="completeOnboardingBtn">Complete onboarding</button>
+                <button class="hr-btn" type="button" id="completeOnboardingBtn">Review onboarding tasks</button>
               </article>
               <article class="hr-workflow">
                 <span class="hr-pill leave">Leave</span>
@@ -648,7 +653,7 @@
                   <p class="hr-note">Leave tracker and attendance record items for review. Use the public calculator for estimates before approving.</p>
                 </div>
                 <div class="hr-actions">
-                  <button class="hr-btn" type="button" id="leaveBtn">Add leave request</button>
+                  <button class="hr-btn" type="button" id="leaveBtn">Leave entry unavailable</button>
                   <button class="hr-btn" type="button" id="attendanceBtn">Add attendance record</button>
                   <a class="hr-btn" href="/tools/leave-calculator/">Leave calculator</a>
                 </div>
@@ -1006,18 +1011,28 @@
       while (node.firstChild) node.removeChild(node.firstChild);
     }
 
+    var hrStorageUnreadable = false, expectedHrRaw = null;
     function readJson(key, fallback) {
       try {
         var raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
+        if (key === STORAGE_KEY) expectedHrRaw = raw;
+        var parsed = raw ? JSON.parse(raw) : fallback;
+        if (key === STORAGE_KEY && (!parsed || typeof parsed !== "object" || Array.isArray(parsed))) throw new Error("Unreadable HR records");
+        return parsed;
       } catch (err) {
+        if (key === STORAGE_KEY) hrStorageUnreadable = true;
         return fallback;
       }
     }
 
     function saveState(options) {
       if (!options || !options.preserveUpdatedAt) state.updatedAt = new Date().toISOString();
+      if (hrStorageUnreadable) throw new Error("Unreadable HR records preserved. Export recovery before editing.");
+      var currentRaw = localStorage.getItem(STORAGE_KEY);
+      if (currentRaw !== expectedHrRaw) throw new Error("HR records changed in another tab. Export your draft and reload before editing.");
+      if (currentRaw && !localStorage.getItem(STORAGE_KEY + "_phase1_recovery")) localStorage.setItem(STORAGE_KEY + "_phase1_recovery", currentRaw);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      expectedHrRaw = localStorage.getItem(STORAGE_KEY);
     }
 
     function asArray(value) {
@@ -1456,14 +1471,7 @@
       return Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
     }
 
-    function firstWorkEmployee() {
-      if (!state.employees.length) {
-        var employee = hrEmployee(0);
-        state.employees.push(employee);
-        ensureOnboardingRecords(employee);
-      }
-      return state.employees[0];
-    }
+    function firstWorkEmployee() { return state.employees[0] || null; }
 
     function buildLeaveRequest(overrides) {
       overrides = overrides || {};
@@ -2715,7 +2723,7 @@
 
     function openEmployeeDrawer(employeeId) {
       var employee = employeeId ? localEmployeeById(employeeId) : null;
-      if (!employee) employee = hrEmployee(state.employees.length);
+      if (!employee) employee = {};
       els.employeeDrawerTitle.textContent = employeeId ? "Edit employee" : "Add employee";
       els.employeeEditId.value = employeeId || "";
       els.employeeCodeInput.value = employee.employeeCode || "";
@@ -2758,7 +2766,7 @@
       existing = existing || {};
       var fullName = text(els.employeeFullNameInput.value, "New employee");
       return Object.assign({}, existing, {
-        id: existing.id || "hr-" + Date.now(),
+        id: existing.id || "hr-" + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(16).slice(2)),
         employeeCode: text(els.employeeCodeInput.value, "HR-" + String(state.employees.length + 1).padStart(3, "0")),
         name: fullName,
         preferredName: text(els.employeePreferredNameInput.value, fullName.split(" ")[0] || ""),
@@ -2837,6 +2845,8 @@
     }
 
     function saveEmployeeFromDrawer() {
+      if (!els.employeeFullNameInput.value.trim()) { document.getElementById("hrRecordStatus").textContent = "Enter the employee full name before saving."; els.employeeFullNameInput.focus(); return; }
+      var before = JSON.parse(JSON.stringify(state));
       var existing = selectedEmployee();
       var employee = employeeFromDrawer(existing);
       var index = existing ? employeeIndexById(existing.id) : -1;
@@ -2844,7 +2854,7 @@
       else state.employees.push(employee);
       upsertEmployeeAuxiliary(employee);
       ensureOnboardingRecords(employee);
-      saveState();
+      try { saveState(); } catch (err) { state = before; document.getElementById("hrRecordStatus").textContent = err.message + " Employee entry remains in the editor."; return; }
       closeEmployeeDrawer();
       renderAll();
     }
@@ -2934,19 +2944,9 @@
     }
 
     function completeOnboarding() {
-      if (!state.employees.length) {
-        onboardEmployee();
-      }
-      state.employees.forEach(function (employee) {
-        ONBOARDING_TASKS.forEach(function (task) {
-          upsertOnboardingTask(employee, task[0], {
-            status: "completed",
-            note: task[1] + " prepared and marked completed for review."
-          });
-        });
-      });
-      saveState();
-      renderAll();
+      document.getElementById('onboarding').scrollIntoView({block:'start'});
+      var control = document.querySelector('[data-onboarding-status]');
+      if(control) control.focus();
     }
 
     function requestMissingDetails() {
@@ -2974,6 +2974,7 @@
 
     function generateLetter() {
       var employee = firstLocalEmployee();
+      if (!employee) { openEmployeeDrawer(); return; }
       var letter = buildLetterRecord(employee);
       state.letters.push(letter);
       upsertOnboardingTask(employee, "contract", { status: "ready-for-review", note: "Employment letter draft prepared. Legal review needed before use." });
@@ -3425,17 +3426,11 @@
       downloadText("afrohr-employment-letter-" + slug(letter.employee || letter.id) + "-" + todayIso() + ".md", letter.markdown || "", "text/markdown;charset=utf-8");
     }
 
-    function firstLocalEmployee() {
-      if (!state.employees.length) {
-        var employee = hrEmployee(0);
-        state.employees.push(employee);
-        ensureOnboardingRecords(employee);
-      }
-      return state.employees[0];
-    }
+    function firstLocalEmployee() { return state.employees[0] || null; }
 
     function prepareContractChecklist() {
       var employee = firstLocalEmployee();
+      if (!employee) { openEmployeeDrawer(); return; }
       [
         ["ID", "ID/document metadata", "received", addDaysIso(365), "Confirm name, ID reference, address/location, and emergency contact metadata."],
         ["contract", "Contract checklist", "needs review", "", "Review role, start date, probation, pay note, working location, notice, and country-specific terms."],
@@ -3584,6 +3579,8 @@
         refreshAccountOrganizations();
       });
       els.resetBtn.addEventListener("click", resetLocalDemo);
+      document.getElementById("hrRawRecovery").addEventListener("click", function () { var raw = localStorage.getItem(STORAGE_KEY) || "{}"; var url = URL.createObjectURL(new Blob([raw], {type:"application/json"})); var link = document.createElement("a"); link.href=url; link.download="afrohr-original-device-recovery.json"; document.body.appendChild(link); link.click(); link.remove(); setTimeout(function(){URL.revokeObjectURL(url)},500); });
+      if (hrStorageUnreadable) { document.getElementById("hrRecordStatus").textContent="Unreadable HR records preserved. Export original device records for recovery; editing is disabled."; document.querySelectorAll("main button, #employeeDrawer button").forEach(function(button){button.disabled=true}); }
       els.addEmployeeBtn.addEventListener("click", function () { openEmployeeDrawer(); });
       els.onboardBtn.addEventListener("click", function () { openEmployeeDrawer(); });
       els.completeOnboardingBtn.addEventListener("click", completeOnboarding);
@@ -3592,9 +3589,9 @@
       els.exportLetterMarkdownBtn.addEventListener("click", exportEmploymentLetterMarkdown);
       els.exportOnboardingPacketBtn.addEventListener("click", exportOnboardingPacketMarkdown);
       els.exportOnboardingCsvBtn.addEventListener("click", exportOnboardingChecklistCsv);
-      els.leaveWorkflowBtn.addEventListener("click", trackLeave);
-      els.leaveBtn.addEventListener("click", trackLeave);
-      els.attendanceBtn.addEventListener("click", addAttendanceRecord);
+      els.leaveWorkflowBtn.disabled = true; els.leaveWorkflowBtn.title = "Real leave entry is unavailable; no sample record is created.";
+      els.leaveBtn.disabled = true; els.leaveBtn.title = "Real leave entry is not available; no sample record will be written.";
+      els.attendanceBtn.disabled = true; els.attendanceBtn.title = "Real attendance entry is not available; no sample record will be written.";
       els.exportLeaveRegisterBtn.addEventListener("click", exportLeaveRegisterCsv);
       els.exportAttendanceBtn.addEventListener("click", exportAttendanceCsv);
       els.exportPayrollImpactBtn.addEventListener("click", exportPayrollImpactCsv);

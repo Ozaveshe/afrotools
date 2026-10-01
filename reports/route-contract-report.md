@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11695 |
-| Indexable pages | 7880 |
+| Public pages | 11696 |
+| Indexable pages | 7881 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4254 |
-| Documented fallbacks | 14967 |
-| Routes eligible for primary sitemaps | 7880 |
+| Genuine equivalence groups | 4255 |
+| Documented fallbacks | 14968 |
+| Routes eligible for primary sitemaps | 7881 |
 
 ## Locale Coverage
 
-- en: 6140 page records
+- en: 6141 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 514
 - legal: 4
-- page: 5550
+- page: 5551
 - tool: 4010
 - widget: 379
 
@@ -3652,6 +3652,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:26c3d7557e13: en=`/agriculture/vaccination-schedule/somalia`; x-default=`/agriculture/vaccination-schedule/somalia`
 - equivalence:26cf016d96da: en=`/tools/nollywood-pitch/`, fr=`/fr/tools/pitch-nollywood/`, sw=`/sw/zana/bajeti-ya-filamu-afrika/`; x-default=`/tools/nollywood-pitch/`
 - equivalence:26d25680272f: en=`/tools/tin-guide/mauritania`, sw=`/sw/zana/mwongozo-tin/mauritania/`; x-default=`/tools/tin-guide/mauritania`
+- equivalence:26e6804ce0b4: en=`/jamb/english/2021/`; x-default=`/jamb/english/2021/`
 - equivalence:26ea5fc9124f: en=`/tools/afrokitchen/recipes/sishwala-emasi-sz/`; x-default=`/tools/afrokitchen/recipes/sishwala-emasi-sz/`
 - equivalence:2726d55379aa: en=`/tools/tin-guide/ghana`, sw=`/sw/zana/mwongozo-tin/ghana/`; x-default=`/tools/tin-guide/ghana`
 - equivalence:272a76a604cc: en=`/tools/employment-contract/`, fr=`/fr/tools/contrat-travail/`, sw=`/sw/zana/mkataba-wa-ajira/`; x-default=`/tools/employment-contract/`

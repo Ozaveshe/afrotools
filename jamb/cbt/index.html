@@ -3,7 +3,8 @@
 <head>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>
 <meta charset="UTF-8">
-<script src="/assets/js/lib/jamb-question-trust.js?v=0ae71207"></script>
+<script src="/assets/js/lib/jamb-year-practice.js?v=7109c176"></script>
+<script src="/assets/js/lib/jamb-question-trust.js?v=57fbd9ff"></script>
 <script src="/assets/js/lib/jamb-reviewed-figure.js?v=407d43cb"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB CBT Mock Exam — AfroJAMB</title>
@@ -27,7 +28,7 @@
 
 <script src="/assets/js/components/navbar.min.js?v=596f44a5" defer></script>
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
-<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=59120510" defer></script>
+<script src="/assets/js/bundles/core.44e524d4.min.js" defer></script><script src="/engines/jamb-cbt-engine.js?v=5318a462" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
@@ -69,7 +70,7 @@
 
       <section id="collection-setup" class="cbt-collection-setup" aria-labelledby="collection-title" hidden>
         <h2 id="collection-title"></h2>
-        <p>Timed practice draws up to 40 reviewed questions from this year and subject. You have 40 minutes. This selection is not a confirmed complete UTME paper or original question order.</p>
+        <p id="collection-description">Timed practice draws up to 40 reviewed questions from this year and subject. You have 40 minutes. This selection is not a confirmed complete UTME paper or original question order.</p>
         <p><a id="collection-page-link" href="/jamb/">Read the year collection</a> · <a href="/jamb/cbt/">Choose a different mock</a></p>
       </section>
 
@@ -653,32 +654,23 @@ var SUBJ_META = {
 };
 
 function parseYearScope(search) {
-  var params = new URLSearchParams(search);
-  if (!params.has("subject") && !params.has("year")) return { scope: null, error: null };
-  var subject = params.get("subject");
-  var rawYear = params.get("year");
-  if (params.getAll("subject").length !== 1 || params.getAll("year").length !== 1 ||
-      !Object.prototype.hasOwnProperty.call(SUBJ_META, subject) ||
-      !/^\d{4}$/.test(rawYear || "") || Number(rawYear) < 1978 || Number(rawYear) > new Date().getFullYear()) {
-    return { scope: null, error: "This year and subject link is invalid. Choose a reviewed year page or open the general CBT setup." };
-  }
-  return { scope: { subject: subject, year: Number(rawYear) }, error: null };
+  return AfroJAMB.YearPractice.parse(search, SUBJ_META, new Date().getFullYear());
 }
 
 var YEAR_LINK = parseYearScope(location.search);
 var YEAR_SCOPE = YEAR_LINK.scope;
 var SESSION_YEAR = YEAR_SCOPE ? YEAR_SCOPE.year : null;
 if (YEAR_SCOPE) {
-  SELECTED_MODE = "subject";
+  SELECTED_MODE = YEAR_SCOPE.mode;
   SELECTED_SUBJECTS = [YEAR_SCOPE.subject];
 }
 
-function scopedCbtUrl(subject, year) {
-  return "/jamb/cbt/?subject=" + encodeURIComponent(subject) + "&year=" + encodeURIComponent(year);
+function scopedCbtUrl(subject, year, mode) {
+  return AfroJAMB.YearPractice.url(subject, year, mode);
 }
 
 function startButtonLabel() {
-  return YEAR_SCOPE ? "Start " + YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " practice →" : "Start Reviewed Practice →";
+  return YEAR_SCOPE ? "Start " + YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + (YEAR_SCOPE.mode === "quick" ? " 10-question quick practice →" : " practice →") : "Start Reviewed Practice →";
 }
 
 function trackCbt(name, details) {
@@ -835,10 +827,13 @@ renderSubjectPicker();
 (function(){
   var p = new URLSearchParams(location.search);
   if (YEAR_SCOPE) {
-    document.getElementById("setup-badge-label").textContent = "Reviewed collection practice";
+    document.getElementById("setup-badge-label").textContent = YEAR_SCOPE.mode === "quick" ? "10-question collection practice" : "Reviewed collection practice";
     document.getElementById("setup-heading").textContent = YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " CBT practice";
     document.getElementById("setup-intro").textContent = "Answer reviewed year-labelled questions in a timed CBT session, then see your raw score and explanations.";
     document.getElementById("collection-title").textContent = YEAR_SCOPE.year + " " + SUBJ_META[YEAR_SCOPE.subject].label + " reviewed collection";
+    if (YEAR_SCOPE.mode === "quick") {
+      document.getElementById("collection-description").textContent = "Practise 10 distinct reviewed questions from this year and subject in 30 minutes. This selection is not a confirmed complete UTME paper or original question order.";
+    }
     document.getElementById("collection-page-link").href = "/jamb/" + YEAR_SCOPE.subject + "/" + YEAR_SCOPE.year + "/";
     document.getElementById("collection-setup").hidden = false;
     document.getElementById("mode-setup").hidden = true;
@@ -871,6 +866,9 @@ async function ensurePoolLoaded() {
   if (YEAR_SCOPE && !POOL.some(function(question) {
     return question.subject === YEAR_SCOPE.subject && question.year === YEAR_SCOPE.year;
   })) throw new Error("No reviewed questions are available for this year and subject yet. Return to the year page or choose another mock.");
+  if (YEAR_SCOPE && YEAR_SCOPE.mode === "quick" && POOL.filter(function(question) {
+    return question.subject === YEAR_SCOPE.subject && question.year === YEAR_SCOPE.year;
+  }).length < 10) throw new Error("This collection does not yet have 10 reviewed questions for quick practice. Read the year collection or choose another session.");
   return POOL;
 }
 
@@ -892,8 +890,7 @@ function maybeShowResume() {
     return;
   }
 
-  if (YEAR_SCOPE && (snapshot.year !== YEAR_SCOPE.year || snapshot.mode !== "subject" ||
-      !Array.isArray(snapshot.subjects) || snapshot.subjects.length !== 1 || snapshot.subjects[0] !== YEAR_SCOPE.subject)) {
+  if (YEAR_SCOPE && !AfroJAMB.YearPractice.matches(snapshot, YEAR_SCOPE)) {
     var conflict = document.getElementById("resume-conflict");
     conflict.textContent = "A different CBT session is saved on this device. ";
     var link = document.createElement("a");
@@ -1059,7 +1056,7 @@ async function startCBT(resumeSnapshot) {
   document.getElementById("cbt-shell").hidden = false;
   var sessionContext = document.getElementById("cbt-session-context");
   sessionContext.hidden = SESSION_YEAR === null;
-  if (SESSION_YEAR !== null) sessionContext.textContent = SESSION_YEAR + " " + SUBJ_META[SELECTED_SUBJECTS[0]].label + " collection practice · year-labelled reviewed questions";
+  if (SESSION_YEAR !== null) sessionContext.textContent = SESSION_YEAR + " " + SUBJ_META[SELECTED_SUBJECTS[0]].label + (SELECTED_MODE === "quick" ? " 10-question quick practice · year-labelled reviewed questions" : " collection practice · year-labelled reviewed questions");
 
   lastMilestoneSpoken = null;
   closeSubmitDialog(false);
@@ -1380,7 +1377,7 @@ function submitTest(timedOut) {
     document.getElementById("result-score-label").textContent = "Questions correct";
     document.getElementById("result-aggregate").textContent = score.total + "/" + score.outOf;
     document.getElementById("result-score-detail").textContent = score.pctCorrect + "% correct in this practice selection";
-    document.getElementById("result-again").href = scopedCbtUrl(SELECTED_SUBJECTS[0], SESSION_YEAR);
+    document.getElementById("result-again").href = scopedCbtUrl(SELECTED_SUBJECTS[0], SESSION_YEAR, SELECTED_MODE);
     document.getElementById("result-again").textContent = "Practise this collection again";
   } else {
     document.getElementById("result-aggregate").textContent = score.aggregate;

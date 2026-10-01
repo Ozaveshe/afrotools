@@ -17,13 +17,14 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=d5e22908">
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
+  <script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
   <script src="/assets/js/lib/analytics.js?v=8134382e"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
-  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
-  <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
-  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
-  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+  <script src="/assets/js/lib/pro-architecture.js?v=40653737"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=6b3de5f2"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=da354cb9" defer></script>
   <style>
     :root{
       --pc-bg:var(--color-bg,#F8FAFD);
@@ -234,8 +235,8 @@
 
       <nav class="pc-nav" aria-label="Workspace sections">
         <a href="#overview">Overview <span class="pc-nav-small">00</span></a>
-        <a href="#apps">Apps <span class="pc-nav-small">10</span></a>
-        <a href="#daily-os">Daily OS <span class="pc-nav-small">10</span></a>
+        <a href="#apps">Apps <span class="pc-nav-small" data-pro-count="controlApps">—</span></a>
+        <a href="#daily-os">Daily OS <span class="pc-nav-small" data-pro-count="dailyApps">—</span></a>
         <a href="/pro/apps/">App directory <span class="pc-nav-small">Index</span></a>
         <a href="#work-queue">Work queue <span class="pc-nav-small" id="sideQueueCount">0</span></a>
         <a href="#data-vault">Data vault <span class="pc-nav-small">Device</span></a>
@@ -308,7 +309,7 @@
                 <span>Businesses and clients</span>
               </div>
               <div class="pc-attention-tile">
-                <strong id="liveAppCount">0/20</strong>
+                <strong id="liveAppCount">—</strong>
                 <span>Apps you can open</span>
               </div>
             </div>
@@ -350,7 +351,7 @@
         </section>
 
         <section class="pc-metrics" aria-label="Dashboard metrics">
-          <div class="pc-metric"><strong id="metricApps">20</strong><span>Pro apps</span><small>Workspace suite</small></div>
+          <div class="pc-metric"><strong id="metricApps">—</strong><span>Pro apps</span><small>Workspace suite</small></div>
           <div class="pc-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Account-backed payroll if signed in</small></div>
           <div class="pc-metric"><strong id="metricRuns">0</strong><span>Payroll runs</span><small>Account and device saves</small></div>
           <div class="pc-metric"><strong id="metricQueue">0</strong><span>Work queue</span><small>Open tasks</small></div>
@@ -466,7 +467,7 @@
               </div>
               <div class="pc-panel-body">
                 <div class="pc-usage-grid">
-                  <div class="pc-usage-cell"><strong id="usageRoutes">20</strong><span>Linked app routes</span></div>
+                  <div class="pc-usage-cell"><strong id="usageRoutes">—</strong><span>Linked app routes</span></div>
                   <div class="pc-usage-cell"><strong id="usageLive">1</strong><span>Live-backed app</span></div>
                   <div class="pc-usage-cell"><strong id="usageLocal">0</strong><span>Device payroll saves</span></div>
                   <div class="pc-usage-cell"><strong id="usageCloud">0</strong><span>Account payroll runs</span></div>
@@ -523,35 +524,6 @@
     };
 
     var els = {};
-    var appNavOverrides = {
-      payroll: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
-      "tax-compliance": { routeStatus: "shell", shellState: "Review packet only", statusTone: "shell", routeExists: true },
-      books: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
-      hr: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
-      "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "legal-desk": {
-        route: "/pro/apps/legal-desk/",
-        fallbackRoute: "/pro/apps/legal/",
-        routeStatus: "shell",
-        shellState: "Workspace preview",
-        statusTone: "shell",
-        routeExists: true,
-        buildStatus: "Legal workspace opens the current document and review workspace.",
-        dataModel: "Saved legal workspace data on this device while account save is planned."
-      },
-      "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      "stream-intelligence": {
-        routeStatus: "limited preview",
-        shellState: "Limited preview",
-        statusTone: "schema",
-        routeExists: true,
-        buildStatus: "Verified source controls and privacy boundaries are being finalized before broader Pro use.",
-        dataModel: "Limited preview built around public source checks and review notes.",
-        needsAttention: "Account-saved review queues and private intelligence controls are still being finalized."
-      },
-      "property-projects": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true }
-    };
 
     function byId(id) {
       return document.getElementById(id);
@@ -654,8 +626,8 @@
 
     function getApps() {
       var api = registry();
-      var apps = (api && api.getApps ? api.getApps() : []).map(function (app) {
-        return Object.assign({}, app, appNavOverrides[app.id] || {});
+      var apps = (window.AfroProArchitecture ? window.AfroProArchitecture.getControlApps() : api && api.getApps ? api.getApps() : []).map(function (app) {
+        return app;
       });
       return orderForBusiness(apps);
     }
@@ -918,7 +890,7 @@
       els.metricVault.textContent = String(vaultCount());
       els.attentionCount.textContent = String(dashboardReviewCount());
       els.activeWorkspaceCount.textContent = String(knownWorkspaceCount());
-      els.liveAppCount.textContent = String(readyAppRoutes) + "/" + String(totalApps);
+      els.liveAppCount.textContent = String(archSummary ? archSummary.implementedCores : summary.live) + "/" + String(totalApps);
       els.usageRoutes.textContent = String(totalApps);
       els.usageLive.textContent = String(summary.live || 0);
       els.usageLocal.textContent = String(localRuns);
@@ -980,7 +952,7 @@
         var top = create("div", "pc-app-top");
         top.appendChild(create("div", "pc-app-mark", app.mark));
         var hasPayrollData = isPayroll && (asArray(state.cloud.runs).length || state.local.savedRuns.length);
-        var appStatus = humanePill(app.routeStatus, app.shellState);
+        var appStatus = { label: app.shellState, tone: app.statusTone };
         top.appendChild(pill(hasPayrollData ? "Your data is in" : appStatus.label, hasPayrollData ? "real" : appStatus.tone));
         card.appendChild(top);
 
@@ -1019,7 +991,7 @@
         var card = create("article", "pc-app");
         var top = create("div", "pc-app-top");
         top.appendChild(create("div", "pc-app-mark", app.mark));
-        var dailyStatus = humanePill("", app.shellState);
+        var dailyStatus = {label:app.shellState,tone:app.statusTone};
         top.appendChild(pill(dailyStatus.label, dailyStatus.tone));
         card.appendChild(top);
 
@@ -1030,13 +1002,13 @@
         card.appendChild(create("p", "", app.oneLine));
 
         var tags = create("div", "pc-app-tags");
-        asArray(app.firstBuild).slice(0, 3).forEach(function (tag) {
+        asArray(app.capabilities ? [app.capabilities.devicePersistence, app.capabilities.liveSync] : []).slice(0, 3).forEach(function (tag) {
           tags.appendChild(pill(tag, ""));
         });
         card.appendChild(tags);
 
         var actions = create("div", "pc-app-actions");
-        var openDaily = linkButton("Open workspace", safeDailyRoute(app), app.priority <= 3);
+        var openDaily = linkButton(app.primaryAction || "Open preview", safeDailyRoute(app), app.priority <= 3);
         openDaily.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-daily"); });
         var launchPlan = linkButton("Launch plan", safeDailyRoute(app) + "#setup-brief", false);
         launchPlan.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-launch-plan"); });
@@ -1360,5 +1332,6 @@
   })();
   </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/lib/pro-capability-labels.js?v=15a59e23"></script>
 </body>
 </html>

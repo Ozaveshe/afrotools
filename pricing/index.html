@@ -55,8 +55,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .card h2{font-size:22px;font-weight:800;margin:0 0 8px;color:#111827}
 .card .card-desc{font-size:14px;color:#6B7280;line-height:1.6;margin-bottom:24px}
 .card .price{font-size:48px;font-weight:800;color:#111827;margin-bottom:4px;line-height:1}
-.card .price span{font-size:16px;font-weight:500;color:#9CA3AF}
-.card .price-sub{font-size:13px;color:#9CA3AF;margin-bottom:24px}
+.card .price span{font-size:16px;font-weight:500;color:#4B5563}
+.card .price-sub{font-size:13px;color:#4B5563;margin-bottom:24px}
 .card ul{list-style:none;padding:0;margin:0 0 32px}
 .card li{font-size:14px;color:#374151;padding:8px 0;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
 .card li::before{content:'';flex-shrink:0;width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23ECFDF5'/%3E%3Cpath d='M6 10l3 3 5-5' stroke='%23008751' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
@@ -182,9 +182,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   <p>Core public calculators for guests, with paid workspaces where the readiness matrix marks them active.</p>
   <div class="billing-toggle">
     <span class="monthly-label active">Monthly</span>
-    <div class="toggle-switch" id="billingToggle" role="switch" aria-checked="false" tabindex="0"></div>
+    <div class="toggle-switch" id="billingToggle" role="switch" aria-label="Annual billing" aria-checked="false" tabindex="0"></div>
     <span class="yearly-label">Yearly</span>
-    <span class="save-badge">SAVE 18%</span>
+    <span class="save-badge">Annual savings</span>
   </div>
 </section>
 
@@ -309,6 +309,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       mLabel.classList.add('active');
       yLabel.classList.remove('active');
     }
+    var plans = window.AfroProPlan.displayMap().usd;
+    document.querySelector('.save-badge').textContent = 'SAVE ' + Math.round((1 - plans.annual.amount / (plans.monthly.amount * 12)) * 100) + '%';
     price.innerHTML = plan.label + ' <span>' + plan.suffix + '</span>';
     sub.textContent = plan.detail;
   }
@@ -317,6 +319,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   toggle.addEventListener('keydown', function(e){
     if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); yearly = !yearly; update(); }
   });
+
+  update();
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(btn){
@@ -341,7 +345,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   "mainEntity": {
     "@type": "WebApplication",
     "name": "AfroTools Pro",
-    "description": "Active Payroll Pro workspace with other app workspaces labelled as preview or pending according to the readiness matrix.",
+    "description": "Payroll and single-page SEO audit cores, with other registered apps labelled as previews or concepts.",
     "offers": [
       {
         "@type": "Offer",
@@ -379,5 +383,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 }
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+<script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+<script src="/assets/js/lib/pro-architecture.js?v=40653737"></script>
+<script src="/assets/js/lib/pro-capability-labels.js?v=15a59e23"></script>
 </body>
 </html>

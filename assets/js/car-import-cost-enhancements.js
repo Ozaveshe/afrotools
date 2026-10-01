@@ -266,8 +266,8 @@
         : "the selected source market";
     const guideMarkup =
       "fr" === document.documentElement.lang
-        ? `<strong>Lecture rapide :</strong> Cette estimation pour ${n(r)} inclut davantage que les seuls droits de douane. Utilisez <strong>Coûts présentés comme officiels</strong> pour isoler les coûts douaniers, ou ouvrez <strong>Comparer</strong> pour vérifier si ${n(i)} reste préférable aux autres marchés sources.`
-        : `<strong>Fast read:</strong> This ${n(r)} quote already includes more than customs. Use <strong>Official Charges</strong> to isolate customs-only costs, or open <strong>Compare</strong> to see whether ${n(i)} still looks best against the other source markets.`;
+        ? `<strong>Lecture rapide :</strong> Cette estimation pour ${n(r)} inclut davantage que les seuls droits de douane. Utilisez <strong>Coûts présentés comme officiels</strong> pour examiner les coûts douaniers, ou ouvrez <strong>Comparer</strong> pour examiner les hypothèses de prix et de fret de chaque marché source.`
+        : `<strong>Fast read:</strong> This ${n(r)} estimate includes more than customs. Use <strong>Official Charges</strong> to review customs costs, or open <strong>Compare</strong> to review modeled price and freight assumptions for each source.`;
     if (o.innerHTML !== guideMarkup) o.innerHTML = guideMarkup;
   }
   function p(i) {

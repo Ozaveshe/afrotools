@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-11",
+  "updated_at": "2026-10-01",
   "objective": "Useful source freshness, user journey reliability, bounded product maintenance and verified per-product releases.",
   "active": [
     {
@@ -273,8 +273,6 @@
       "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
       "absorbed_specialists": [
-        "afrotools-car-market-data-refresh",
-        "car-price-intelligence-refresh-agent",
         "japa-visa-cost-automation"
       ]
     },
@@ -286,6 +284,18 @@
       "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
       "absorbed_specialists": []
+    },
+    {
+      "id": "car-market-evidence-and-price-freshness",
+      "name": "Car market evidence and price freshness",
+      "project_id": "f2059636-dcc9-4c03-85e8-5730dd5e1b1a",
+      "schedule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=0",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "absorbed_specialists": [
+        "afrotools-car-market-data-refresh",
+        "car-price-intelligence-refresh-agent"
+      ]
     }
   ],
   "retired": [
@@ -334,8 +344,8 @@
     {
       "id": "afrotools-car-market-data-refresh",
       "name": "AfroTools car market data refresh",
-      "owner": "transport-source-freshness-sweep",
-      "reason": "Consolidated into the named owner's bounded rotation; original scope is preserved in the local backup."
+      "owner": "car-market-evidence-and-price-freshness",
+      "reason": "Car market/catalog evidence consolidated into the user-authorized dedicated daily Car Pricer lane; retired definitions remain unscheduled."
     },
     {
       "id": "agri-farmops-automation",
@@ -376,8 +386,8 @@
     {
       "id": "car-price-intelligence-refresh-agent",
       "name": "Car Price Intelligence Refresh Agent",
-      "owner": "transport-source-freshness-sweep",
-      "reason": "Consolidated into the named owner's bounded rotation; original scope is preserved in the local backup."
+      "owner": "car-market-evidence-and-price-freshness",
+      "reason": "Car market/catalog evidence consolidated into the user-authorized dedicated daily Car Pricer lane; retired definitions remain unscheduled."
     },
     {
       "id": "clinic-desk-followup-automation",

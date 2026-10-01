@@ -204,3 +204,22 @@ test('regenerated locale pages retain the release runtime shell and current bank
     assert.equal(generator.preserveReleaseShell(generated.get(file), html), html);
   }
 });
+
+test('localized NECO coverage includes all sixty guides and does not exclude the new Q23/Q48 companions', () => {
+  const targets = ['neco-2023-mathematics-p3-q23-worked', 'neco-2023-mathematics-p3-q48-worked'];
+  const outputs = generator.outputs();
+  for (const [locale, route, coverageCopy] of [
+    ['fr', 'fr/tools/pratique-waec-neco/index.html', /toutes les questions numérotées 1–60/],
+    ['sw', 'sw/zana/mazoezi-waec-neco/index.html', /maswali yote yaliyowekwa namba 1–60/]
+  ]) {
+    const bank = generator.writtenBank(locale);
+    const maths = bank.items.filter(q => q.exam === 'NECO' && q.subject === 'Mathematics' && q.year === 2023);
+    assert.equal(maths.length, 60);
+    assert.deepEqual(maths.map(q => q.number).sort((a, b) => a - b), Array.from({ length: 60 }, (_, i) => i + 1));
+    for (const id of targets) assert.ok(maths.some(q => q.id === id), locale + '/' + id);
+    const html = outputs.get(route);
+    assert.match(html, coverageCopy);
+    assert.doesNotMatch(html, /1–22, 24–47/);
+    assert.doesNotMatch(html, /maswali 23 na 48 yamewekwa pembeni/);
+  }
+});
