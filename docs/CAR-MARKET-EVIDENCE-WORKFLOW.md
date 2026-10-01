@@ -29,6 +29,14 @@ Research is append-only, private under RLS, and never queried by the snapshot ge
 
 The intake scripts do not fetch third-party pages. No cron may scrape a source whose registry status is blocked, review-needed, or manual-only. Recheck terms and freshness periodically; record blocked runs rather than inventing a price. BE FORWARD's terms section 5 also restricts website data reuse; its source is blocked pending an agreement. The existing 27 starter price profiles and 455 expansion identities must be reported separately from newly verified snapshots.
 
+## Public snapshot export
+
+Run `node scripts/car-market-public-export.js sql` and execute that read-only query through the verified AfroTools MCP. Save the returned `capture` object locally; then run `node scripts/car-market-public-export.js export CAPTURE.json data/cars/market-source-registry.json OUTPUT.json`. The output is a public-data pack for the static product. Do not commit the private capture.
+
+The exporter requires a capture less than one day old, a published and reviewed snapshot, at least three distinct current accepted listing revisions, matching vehicle/country/condition/currency, source approval in both the live capture and repository registry, and all observations within 14 days. It recomputes quartiles from the member prices and refuses changed revisions, unsafe source URLs, stale evidence or permission withdrawal. Output contains attributed listing links and range summaries; private keys, history IDs, contacts and research rows are excluded. Exclusions are operator diagnostics, not product copy.
+
+This exporter does not approve sources or publish snapshots. Its output still needs a static-page consumer and publisher integration; do not replace the existing price pack with an empty export. The live ledger currently has zero published snapshots. Refresh/export again after source permission and listing reviews, and enforce each range's `expiresAt` in its eventual consumer.
+
 ## Price history and refreshes
 
 Each intake revision is preserved in the private append-only `car_market_observation_history` table. Refreshes require a newer observed timestamp, update all comparable facts, and reset review to pending. An older or repeated timestamp does not overwrite current facts. If a listing's facts change or its approval is withdrawn, contributing draft/reviewed/published snapshots expire. A new snapshot points to immutable observation IDs, so the same seller URLs with newer prices can produce a new reviewed range without losing earlier evidence. Review-only updates do not create price-history revisions. New facts at an unchanged timestamp are rejected by the database.
