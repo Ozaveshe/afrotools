@@ -29,6 +29,41 @@ function installConsoleGuard(page) {
   return errors;
 }
 
+for (const viewport of [{ width: 320, height: 844 }, { width: 390, height: 844 }]) {
+  test(`planner waits for its recipe catalog before the first click at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await quietExternalNoise(page);
+    const errors = installConsoleGuard(page);
+    let releaseCatalog;
+    const heldCatalog = new Promise(resolve => { releaseCatalog = resolve; });
+    let catalogRequested;
+    const requested = new Promise(resolve => { catalogRequested = resolve; });
+    await page.route('**/tools/afrokitchen/recipe-index.json', async route => {
+      catalogRequested();
+      await heldCatalog;
+      await route.continue();
+    });
+    try {
+      await page.goto('/tools/afrokitchen/', { waitUntil: 'domcontentloaded' });
+      await requested;
+      const generate = page.locator('#ak-plan-generate');
+      await expect(generate).toBeDisabled();
+      await expect(generate).toHaveAttribute('aria-busy', 'true');
+      await expect(generate).toContainText('Loading recipes');
+      releaseCatalog();
+      await expect(generate).toBeEnabled();
+      await expect(generate).toHaveAttribute('aria-busy', 'false');
+      await generate.click();
+      await expect(page.locator('.ak-plan-day')).toHaveCount(7);
+      await expect(page.locator('#ak-plan-status')).toHaveText('Plan generated from 7 existing recipes.');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+      expect(errors).toEqual([]);
+    } finally {
+      releaseCatalog();
+    }
+  });
+}
+
 test('single meal swaps respect filters, locks survive regeneration and checked shopping items recover locally', async ({ page }, testInfo) => {
   await quietExternalNoise(page);
   await page.goto('/tools/afrokitchen/');

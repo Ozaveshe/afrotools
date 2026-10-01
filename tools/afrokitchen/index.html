@@ -164,6 +164,7 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
 <link rel="stylesheet" href="home-improvements.css?v=17955642">
+<link rel="stylesheet" href="cookbook.css?v=e665f64b">
 <link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/">
@@ -173,6 +174,7 @@
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 <div class="ak-page">
+  <nav class="ak-cookbook-nav" aria-label="AfroKitchen cookbook"><a class="ak-cookbook-nav-brand" href="/tools/afrokitchen/">AfroKitchen</a><a href="#browse-panel">Recipes</a><a href="#country-grid">Countries</a><a href="#collections-grid">Collections</a><a href="#cook-this-week">Weekly planner</a><a href="?saved=1#browse-panel">My cookbook</a></nav>
 
   <!-- HERO -->
   <section class="ak-hero ak-home-hero">
@@ -226,7 +228,9 @@
           <button type="button" data-quick-filter="vegetarian">Vegetarian</button>
           <button type="button" data-quick-filter="easy">Easy recipes</button>
           <button type="button" data-quick-filter="breakfast">Breakfast</button>
+          <button type="button" data-ak-saved-filter aria-pressed="false">My cookbook</button>
         </div>
+        <div class="ak-cookbook-sort"><label for="ak-recipe-sort">Sort recipes</label><select id="ak-recipe-sort"><option value="recommended">Recommended</option><option value="quickest">Quickest first</option><option value="name">Name A–Z</option></select><span>Save recipes on this device from any recipe page.</span></div>
 
         <details class="ak-filter-deck ak-filters-light" id="ak-more-filters">
           <summary>More filters <span aria-hidden="true">▾</span></summary>
@@ -341,12 +345,12 @@
         <div class="ak-planner-command-actions">
           <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-restore" hidden>Open saved plan</button>
           <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-clear" hidden>Clear saved plan</button>
-          <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="idle">
+          <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="catalog-loading" aria-busy="true" disabled>
             <svg class="ak-planner-cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M7 3v3M17 3v3M4.5 9.5h15M6.5 5h11A2.5 2.5 0 0 1 20 7.5v10A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 6.5 5Z"></path>
               <path d="M8 13h3M8 16h6"></path>
             </svg>
-            <span class="ak-planner-cta-label">Generate plan</span>
+            <span class="ak-planner-cta-label">Loading recipes…</span>
           </button>
         </div>
       </div>
@@ -1029,6 +1033,7 @@
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script src="/tools/afrokitchen/cookbook.js?v=023779dc"></script>
 <script src="/engines/afrokitchen-engine.js?v=f2b0c162"></script>
 <script src="cuisine-intelligence-data.js?v=f0841dd2"></script>
 <script src="image-manifest.js?v=80421c10"></script>
@@ -1128,6 +1133,8 @@
   var recipesMoreWrap = document.getElementById('recipes-more-wrap');
   var recipesMoreBtn = document.getElementById('recipes-more');
   var mealPlannerRecipes = [];
+  var savedOnly = new URLSearchParams(window.location.search).get('saved') === '1';
+  var mealPlannerCatalogReady = false;
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
@@ -1186,6 +1193,7 @@
 
   function getFilterLabels(filters) {
     var labels = [];
+    if (filters.savedOnly) labels.push('your cookbook');
     if (filters.country && AK.COUNTRIES[filters.country]) {
       labels.push(AK.COUNTRIES[filters.country].name);
     }
@@ -1232,7 +1240,8 @@
       diet: dietSelect.value || undefined,
       difficulty: diffSelect.value || undefined,
       maxTime: timeSelect.value ? Number(timeSelect.value) : undefined,
-      search: document.getElementById('search-input').value.trim() || undefined
+      search: document.getElementById('search-input').value.trim() || undefined,
+      savedOnly: savedOnly || undefined
     };
   }
 
@@ -1324,6 +1333,7 @@
     empty.style.display = 'none';
 
     var filters = getFilters();
+    document.querySelector('[data-ak-saved-filter]').setAttribute('aria-pressed', String(savedOnly));
     var activeFilterKeys = Object.keys(filters).filter(function (key) { return !!filters[key]; });
     document.getElementById('clear-recipe-filters').hidden = activeFilterKeys.length === 0;
     var quickPick = '';
@@ -1348,6 +1358,19 @@
       search: filters.search
     });
     if (requestId !== recipeRequestId) return;
+    if (savedOnly) {
+      try {
+        var savedSlugs = window.AfroKitchenCookbook.read();
+        recipes = (recipes || []).filter(function (recipe) { return savedSlugs.indexOf(recipe.slug) !== -1; });
+      } catch (error) {
+        loading.style.display = 'none';
+        empty.style.display = '';
+        empty.querySelector('h3').textContent = 'Your saved cookbook is unavailable';
+        empty.querySelector('p').textContent = 'This browser could not read saved recipes. Clear filters to browse the full recipe collection; your saved data has been kept.';
+        resultsSummary.textContent = 'Your cookbook could not be read on this device. Browse recipes or use print and TXT instead.';
+        return;
+      }
+    }
     if (filters.maxTime) {
       recipes = (recipes || []).filter(function (recipe) {
         var total = (Number(recipe.prep_time_minutes) || 0) + (Number(recipe.cook_time_minutes) || 0);
@@ -1356,8 +1379,19 @@
     }
 
     loading.style.display = 'none';
+    var sort = document.getElementById('ak-recipe-sort').value;
+    recipes = (recipes || []).slice();
+    if (sort !== 'recommended') recipes.sort(function (left, right) {
+      if (sort === 'quickest') {
+        var a = recipeTotalMinutes(left) || Infinity, b = recipeTotalMinutes(right) || Infinity;
+        if (a !== b) return a - b;
+      }
+      return String(left.name || '').localeCompare(String(right.name || ''));
+    });
     if (!recipes || !recipes.length) {
       empty.style.display = '';
+      empty.querySelector('h3').textContent = savedOnly ? 'No saved recipes match these filters' : 'No recipes match your search';
+      empty.querySelector('p').textContent = savedOnly ? 'Open any recipe and choose Save recipe to build your cookbook on this device. Clear filters to keep exploring.' : 'Try another dish or country, allow more cooking time, or clear the filters to see everything again.';
       updateResultsSummary([], filters);
       return;
     }
@@ -1457,6 +1491,7 @@
   async function loadLandingMeta() {
     var allRecipes = await AK.fetchRecipes({});
     mealPlannerRecipes = allRecipes || [];
+    mealPlannerCatalogReady = true;
     if (recipeTotal && allRecipes && allRecipes.length) {
       recipeTotal.textContent = String(allRecipes.length);
     }
@@ -1464,6 +1499,7 @@
     renderPickedRecipes();
     renderPlanEmpty('Use the filters, then generate a 3-day or 7-day plan from existing recipes.');
     updateSavedPlanControls();
+    setPlanButtonState('idle');
     if (readSavedPlan()) await restoreSavedPlan();
   }
 
@@ -2160,17 +2196,19 @@
   function setPlanButtonState(state) {
     var button = document.getElementById('ak-plan-generate');
     if (!button) return;
-    var nextState = state || 'idle';
+    var nextState = mealPlannerCatalogReady ? (state || 'idle') : 'catalog-loading';
     var label = button.querySelector('.ak-planner-cta-label');
     var labels = {
       idle: 'Generate plan',
+      'catalog-loading': 'Loading recipes…',
       loading: 'Building your plan…',
       success: 'Plan ready',
       partial: 'Partial plan'
     };
     button.dataset.state = nextState;
-    button.disabled = nextState === 'loading';
-    button.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
+    var busy = nextState === 'loading' || nextState === 'catalog-loading';
+    button.disabled = busy;
+    button.setAttribute('aria-busy', busy ? 'true' : 'false');
     if (label) {
       label.textContent = labels[nextState] || labels.idle;
     } else {
@@ -2444,12 +2482,16 @@
   });
   var clearFiltersButton = document.getElementById('clear-recipe-filters');
   function clearRecipeFilters() {
+    savedOnly = false;
     document.getElementById('search-input').value = '';
     [countrySelect, catSelect, dietSelect, diffSelect, timeSelect].forEach(function (el) { el.value = ''; });
     clearTimeout(searchTimeout);
     loadRecipes();
   }
   if (clearFiltersButton) clearFiltersButton.addEventListener('click', clearRecipeFilters);
+  document.querySelector('[data-ak-saved-filter]').addEventListener('click', function () { savedOnly = !savedOnly; loadRecipes(); });
+  document.getElementById('ak-recipe-sort').addEventListener('change', loadRecipes);
+  window.addEventListener('storage', function (event) { if ((event.key === 'ak_cookbook_v1' || event.key === null) && savedOnly) loadRecipes(); });
   document.querySelectorAll('[data-quick-filter]').forEach(function (button) {
     button.addEventListener('click', function () {
       clearTimeout(searchTimeout);
