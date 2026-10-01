@@ -29,6 +29,63 @@ function installConsoleGuard(page) {
   return errors;
 }
 
+test('single meal swaps respect filters, locks survive regeneration and checked shopping items recover locally', async ({ page }, testInfo) => {
+  await quietExternalNoise(page);
+  await page.goto('/tools/afrokitchen/');
+  await page.locator('#ak-plan-days').selectOption('3');
+  await page.locator('#ak-plan-generate').click();
+  await expect(page.locator('.ak-plan-day')).toHaveCount(3);
+  const before = await page.locator('.ak-plan-day h4 a').evaluateAll(links => links.map(link => link.getAttribute('href')));
+  await page.locator('[data-ak-lock="0"]').press('Enter');
+  await expect(page.locator('[data-ak-lock="0"]')).toBeFocused();
+  await expect(page.locator('[data-ak-swap="0"]')).toBeDisabled();
+  await page.locator('[data-ak-swap="1"]').press('Enter');
+  await expect(page.locator('#ak-plan-status')).toContainText('Day 2 replaced');
+  const swapped = await page.locator('.ak-plan-day h4 a').evaluateAll(links => links.map(link => link.getAttribute('href')));
+  expect(swapped[0]).toBe(before[0]);
+  expect(swapped[1]).not.toBe(before[1]);
+  expect(swapped[2]).toBe(before[2]);
+  await expect(page.locator('[data-ak-swap="1"]')).toBeFocused();
+  await page.locator('#ak-plan-regenerate').click();
+  await expect(page.locator('.ak-plan-day h4 a').first()).toHaveAttribute('href', before[0]);
+  await expect(page.locator('[data-ak-lock="0"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-ak-shopping]').first().check();
+  const checkedKey = await page.locator('[data-ak-shopping]').first().getAttribute('data-ak-shopping');
+  await page.locator('#ak-plan-save').click();
+  await page.reload();
+  await expect(page.locator('#ak-plan-status')).toContainText('Saved plan restored');
+  await expect(page.locator('[data-ak-lock="0"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('[data-ak-shopping]').first()).toHaveAttribute('data-ak-shopping', checkedKey);
+  await expect(page.locator('[data-ak-shopping]').first()).toBeChecked();
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('ak_saved_plan_v1')));
+  expect(saved.lockedSlugs).toHaveLength(1);
+  expect(saved.checked[checkedKey]).toBe(true);
+  const downloadWait = page.waitForEvent('download');
+  await page.locator('#ak-plan-export').click();
+  const download = await downloadWait;
+  expect(await fs.readFile(await download.path(), 'utf8')).toContain('- [x] ');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await page.locator('.ak-plan-day').first().screenshot({ path: testInfo.outputPath('editable-meal-mobile.png') });
+  await page.locator('#ak-plan-country').selectOption('LS');
+  await page.locator('#ak-plan-generate').click();
+  await expect(page.locator('.ak-plan-day')).toHaveCount(1);
+  const onlyMeal = await page.locator('.ak-plan-day h4').innerText();
+  await page.locator('[data-ak-swap="0"]').click();
+  await expect(page.locator('#ak-plan-status')).toContainText('No different meal matches these filters');
+  await expect(page.locator('.ak-plan-day h4')).toHaveText(onlyMeal);
+});
+
+test('nutrition reference clearly states its unknown basis and stays constant when portions change', async ({ page }) => {
+  await quietExternalNoise(page);
+  await page.goto('/tools/afrokitchen/recipes/amiwo-bj/');
+  await expect(page.locator('#ak-static-nutrition')).toContainText('basis not recorded');
+  const calories = await page.locator('#ak-static-nutrition strong').first().innerText();
+  await page.evaluate(() => window.AKStaticRecipePage.adjustServings(1));
+  await expect(page.locator('#ak-static-nutrition strong').first()).toHaveText(calories);
+  await expect(page.locator('#ak-static-nutrition')).toContainText('not recalculated');
+});
+
 test("AfroKitchen default plan uses meals and labels a short filtered plan honestly", async ({ page }) => {
   await quietExternalNoise(page);
   await page.goto("/tools/afrokitchen/", { waitUntil: "domcontentloaded" });
@@ -264,7 +321,7 @@ for (const width of [320, 390]) {
       expect(copiedText).toContain("10½ cups water");
       groups.forEach(function (group) {
         expect(copiedText).toContain(group.name + ":");
-        group.lines.forEach(function (line) { expect(copiedText).toContain("- " + line); });
+        group.lines.forEach(function (line) { expect(copiedText).toContain("- [ ] " + line); });
       });
       const download = await Promise.all([
         page.waitForEvent("download"),

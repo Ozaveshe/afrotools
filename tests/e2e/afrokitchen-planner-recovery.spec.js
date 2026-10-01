@@ -116,7 +116,7 @@ async function verifyShopping(page, text, servings) {
   for (const group of groups) {
     expect(text).toContain(`${group.heading}:\n`);
   }
-  expect(text.split('\n').filter(line => line.startsWith('- '))).toEqual(groups.flatMap(group => group.rows.map(row => `- ${row}`)));
+  expect(text.split('\n').filter(line => line.startsWith('- ')).map(line => line.replace(/^- \[[ x]\] /, '- '))).toEqual(groups.flatMap(group => group.rows.map(row => `- ${row}`)));
   expect(text).toContain(`${servings === 5 ? '2½' : '3'} cups long-grain parboiled rice (Day 1: Jollof Rice)`);
 }
 

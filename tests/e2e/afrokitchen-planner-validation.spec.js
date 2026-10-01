@@ -234,7 +234,7 @@ async function exportProof(page, testInfo, servings) {
   expect(content).toContain(`Servings per recipe: ${servings}\n`);
   expect((content.match(new RegExp(`plan_servings=${servings}\\n`, 'g')) || []).length).toBe(3);
   const rows = await page.locator('.ak-plan-shopping-group li').allTextContents();
-  expect(content.split('\n').filter(line => line.startsWith('- '))).toEqual(rows.map(row => `- ${row.trim()}`));
+  expect(content.split('\n').filter(line => line.startsWith('- ')).map(line => line.replace(/^- \[[ x]\] /, '- '))).toEqual(rows.map(row => `- ${row.trim()}`));
 }
 
 async function releaseReads(page, count) {
