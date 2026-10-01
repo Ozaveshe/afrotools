@@ -70,8 +70,8 @@ function audit() {
       file_exists: fs.existsSync(path.join(root, imagePath.slice(1))),
       media_source_type: linked?.sourceType || 'unassigned',
       rights_evidence: linked?.licenseUrl || linked?.licenseId || linked?.rightsHolder ? 'recorded' : 'missing',
-      visual_review: inventory?.text_status || 'not-recorded',
-      exact_model_review: 'not-recorded'
+      visual_review: linked?.visualReview?.status || inventory?.text_status || 'not-recorded',
+      exact_model_review: linked?.modelReview?.vehicleId === entry.vehicle_id ? linked.modelReview.status : 'not-recorded'
     });
   }
   const details = [...rows.values()].sort((left, right) => left.vehicle_id.localeCompare(right.vehicle_id));

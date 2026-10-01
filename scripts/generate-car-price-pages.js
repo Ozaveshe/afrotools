@@ -155,7 +155,7 @@ ${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
 function vehicleImageHTML(vehicle) {
   const binding = (data.mediaLibrary && data.mediaLibrary.bindings || []).find((entry) => entry.vehicleId === vehicle.id && entry.isPrimary && entry.status === "approved");
   const asset = binding && (data.mediaLibrary.assets || []).find((entry) => entry.id === binding.assetId && ["licensed", "generated"].includes(entry.sourceType));
-  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="640" height="400"><figcaption>${asset.sourceType === "generated" ? "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."}</figcaption></figure>` : "";
+  return asset ? `<figure class="cars-static-image"><img src="${escapeHtml(asset.imageUrl)}" alt="${escapeHtml(asset.alt || `${vehicle.year} ${vehicle.make} ${vehicle.model}`)}" loading="lazy" width="640" height="400"><figcaption>${escapeHtml((asset.sourceUrl && asset.caption) || (asset.sourceType === "generated" ? "Illustrative generated image; it is not a photo of a listed car." : "Illustrative model image; the marketplace sample refers to different cars."))}${asset.sourceUrl && /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(asset.sourceUrl) ? ` <a href="${escapeHtml(asset.sourceUrl)}" target="_blank" rel="noopener noreferrer">Photo source and reuse rights</a>` : ""}</figcaption></figure>` : "";
 }
 
 function sourceMarketEvidenceHTML(vehicle) {
