@@ -3,10 +3,11 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const intake=require('../ops/nigeria-exams/neco-2023-mathematics-intake.json');
 const bank=require('../assets/js/lib/ssce-written-bank');
 
-test('NECO 2023 Mathematics source intake keeps 58 selected companions and two held questions',()=>{
+test('NECO 2023 Mathematics source intake keeps 60 adapted companions and the separate raw Q48 precision hold',()=>{
  assert.equal(intake.status,'reviewed-selected-companions');
  const numbers=[...Array.from({length:22},(_,i)=>i+1),...Array.from({length:24},(_,i)=>i+24),...Array.from({length:12},(_,i)=>i+49)];
- assert.deepEqual(intake.items.map(q=>q.number),numbers);
+ assert.deepEqual(intake.items.map(q=>q.number),Array.from({length:60},(_,i)=>i+1));
+ const originalItems=intake.items.filter(q=>numbers.includes(q.number));
  assert.deepEqual(intake.visual_review.numbers,numbers);
  assert.deepEqual(intake.visual_review.pages,[2,3,4,5,6,7,8,9,10,11,12]);
  assert.deepEqual(intake.visual_review.correctOptions,['C','A','C','C','D','C','D','E','C','E','B','B','D','A','B','A','D','C','B','B','E','C','E','E','B','E','D','C','A','D','A','D','A','C','E','E','B','E','B','E','E','C','B','C','B','B','A','E','B','E','E','C','E','C','E','C','C','C']);
@@ -39,14 +40,14 @@ test('NECO 2023 Mathematics source intake keeps 58 selected companions and two h
  for(const [x,y] of item(19).given.points)assert.equal(x-1,y);
  for(const x of [2,-1/3])assert.ok(Math.abs(3*x*x-5*x-2)<1e-12);
  assert.equal(item(20).answer,'3x²-5x-2=0');
- assert.deepEqual(intake.items.slice(12,20).map(q=>q.source_page),[4,4,4,4,4,4,5,5]);
- assert.deepEqual(intake.items.slice(20,27).map(q=>q.source_page),[5,5,6,6,6,6,6]);
- assert.deepEqual(intake.items.slice(27,35).map(q=>q.source_page),Array(8).fill(7));
- assert.deepEqual(intake.items.slice(35,40).map(q=>q.source_page),Array(5).fill(8));
- assert.deepEqual(intake.items.slice(40,46).map(q=>q.source_page),Array(6).fill(9));
- assert.deepEqual(intake.items.slice(46,50).map(q=>q.source_page),Array(4).fill(10));
- assert.deepEqual(intake.items.slice(50,56).map(q=>q.source_page),Array(6).fill(11));
- assert.deepEqual(intake.items.slice(56).map(q=>q.source_page),Array(2).fill(12));
+ assert.deepEqual(originalItems.slice(12,20).map(q=>q.source_page),[4,4,4,4,4,4,5,5]);
+ assert.deepEqual(originalItems.slice(20,27).map(q=>q.source_page),[5,5,6,6,6,6,6]);
+ assert.deepEqual(originalItems.slice(27,35).map(q=>q.source_page),Array(8).fill(7));
+ assert.deepEqual(originalItems.slice(35,40).map(q=>q.source_page),Array(5).fill(8));
+ assert.deepEqual(originalItems.slice(40,46).map(q=>q.source_page),Array(6).fill(9));
+ assert.deepEqual(originalItems.slice(46,50).map(q=>q.source_page),Array(4).fill(10));
+ assert.deepEqual(originalItems.slice(50,56).map(q=>q.source_page),Array(6).fill(11));
+ assert.deepEqual(originalItems.slice(56).map(q=>q.source_page),Array(2).fill(12));
  assert.deepEqual(item(21).answer,[[-1,0],[3,7]]);
  assert.equal((item(22).given.xIntercepts[0]+item(22).given.xIntercepts[1])/2,0.5);
  assert.equal(item(22).answer,'x=0.5');
@@ -57,8 +58,8 @@ test('NECO 2023 Mathematics source intake keeps 58 selected companions and two h
  for(const x of [-3,0,4])assert.equal((x*x+6*x-27)-(x+2),x*x+5*x-29);
  assert.equal(item(27).answer,'y=x+2');
  assert.equal(2*(7/4)**2,49/8);assert.equal(item(28).answer,'49/8');
- assert.deepEqual(intake.held_items.map(row=>row.number),[23,48]);
- assert.match(intake.held_items.find(row=>row.number===48).reason,/two significant figures.*four significant figures/);
+ assert.deepEqual(intake.held_items.map(row=>row.number),[48]);
+ assert.match(intake.held_items.find(row=>row.number===48).reason,/two significant figures.*four/);
  assert.notEqual((3+1)*(3-2),7,'monic option cannot reproduce the graph point (3,7)');
  assert.deepEqual(item(29).answer,{x:2,y:-3});
  for(const [a,b] of [[2,1],[-1,3]])assert.equal(12*a*a-3*(a-3*b)**2,9*(a+3*b)*(a-b));
@@ -86,8 +87,9 @@ test('NECO 2023 Mathematics source intake keeps 58 selected companions and two h
  assert.equal(scores.reduce((sum,score)=>sum+Math.abs(score-mean),0)/scores.length,item(49).answer);
  const primes=[2,3,5,7,11,13,17,19,23,29];
  assert.equal(primes.length/(item(50).given.integersThrough-item(50).given.integersFrom+1),Number(item(50).answer.split('/')[0])/Number(item(50).answer.split('/')[1]));
- assert.match(intake.publication_status,/58 of 60/);
- assert.ok(!intake.items.some(q=>q.number===48));
+ assert.match(intake.publication_status,/All 60.*adapted/);
+ assert.match(intake.publication_status,/Raw Q48.*held/);
+ assert.ok(intake.items.some(q=>q.number===48));
  assert.match(intake.source_rights,/Link only/);
 });
 
@@ -105,7 +107,7 @@ test('NECO Q51–60 answers are independently recomputed from recorded source fa
  assert.ok(Math.abs(((2**2-2**3/3)-(0**2-0**3/3))-fraction(item(58).answer))<1e-12);
  assert.equal(4/6,fraction(item(59).answer));
  assert.equal((3/2)*4**2+4*4,item(60).answerMetres);
- assert.deepEqual(intake.held_items.map(q=>q.number),[23,48]);
+ assert.deepEqual(intake.held_items.map(q=>q.number),[48]);
 });
 
 test('NECO starter draft remains a three-item source record',()=>{
@@ -117,14 +119,15 @@ test('NECO starter draft remains a three-item source record',()=>{
 
 test('public NECO Mathematics guides are selected, ordered and explain independently checked answers',()=>{
  const items=bank.items.filter(q=>q.exam==='NECO'&&q.subject==='Mathematics');
- assert.deepEqual(items.map(q=>q.number),[...Array.from({length:22},(_,i)=>i+1),...Array.from({length:24},(_,i)=>i+24),...Array.from({length:12},(_,i)=>i+49)]);
- assert.deepEqual(items.slice(0,20).map(q=>q.answer),['90.','1000010₂.','5.02304.','√2.','2/3 hour.','6.','0.9084.','y = p⁴q².','₦432.59.','{a, 1, c, 4, d, 9}.','0.4%.','43.','17 took at least two subjects; 36 students in the school.','2.','42 cm.','−15.','12 hours.','3/5.','y = x − 1.','3x² − 5x − 2 = 0.']);
- assert.deepEqual(items.slice(20,27).map(q=>q.answer),['(−1, 0) and (3, 7).','x = 0.5.','Region Z.','x ≥ −1.','x = 2/3 or x = −4/7.','y = x + 2.','49/8.']);
- assert.deepEqual(items.slice(27,35).map(q=>q.answer),['x = 2; y = −3.','9(a + 3b)(a − b).','T ≈ 7.95.','x² + 4x − 12.','3(x − 6), with x ≠ 2 and x ≠ −3.','93°.','92°.','315 m.']);
- assert.deepEqual(items.slice(35,43).map(q=>q.answer),['21.','5 sides.','68°.','66°.','27°.','140°.','65°.','386 km.']);
- assert.deepEqual(items.slice(43,48).map(q=>q.answer),['72°.','3/4.','14.8 m.','1.2.','1/3.']);
- assert.deepEqual(items.slice(48).map(q=>q.answer),['8/15.','120°.','42%.','6.3.','1/2.','21/50.','3.','4/3 (1⅓).','2/3.','40 m.']);
+ assert.deepEqual(items.map(q=>q.number),Array.from({length:60},(_,i)=>i+1));
+ const oldItems=items.filter(q=>q.number!==23&&q.number!==48);
+ assert.deepEqual(oldItems.slice(0,20).map(q=>q.answer),['90.','1000010₂.','5.02304.','√2.','2/3 hour.','6.','0.9084.','y = p⁴q².','₦432.59.','{a, 1, c, 4, d, 9}.','0.4%.','43.','17 took at least two subjects; 36 students in the school.','2.','42 cm.','−15.','12 hours.','3/5.','y = x − 1.','3x² − 5x − 2 = 0.']);
+ assert.deepEqual(oldItems.slice(20,27).map(q=>q.answer),['(−1, 0) and (3, 7).','x = 0.5.','Region Z.','x ≥ −1.','x = 2/3 or x = −4/7.','y = x + 2.','49/8.']);
+ assert.deepEqual(oldItems.slice(27,35).map(q=>q.answer),['x = 2; y = −3.','9(a + 3b)(a − b).','T ≈ 7.95.','x² + 4x − 12.','3(x − 6), with x ≠ 2 and x ≠ −3.','93°.','92°.','315 m.']);
+ assert.deepEqual(oldItems.slice(35,43).map(q=>q.answer),['21.','5 sides.','68°.','66°.','27°.','140°.','65°.','386 km.']);
+ assert.deepEqual(oldItems.slice(43,48).map(q=>q.answer),['72°.','3/4.','14.8 m.','1.2.','1/3.']);
+ assert.deepEqual(oldItems.slice(48).map(q=>q.answer),['8/15.','120°.','42%.','6.3.','1/2.','21/50.','3.','4/3 (1⅓).','2/3.','40 m.']);
  assert.match(items.find(q=>q.number===13).prompt,/4 took all three.*4 took none/);
- assert.ok(!items.some(q=>q.number===23||q.number===48));
+ assert.ok(items.some(q=>q.number===23)&&items.some(q=>q.number===48));
  for(const q of items){assert.equal(q.source,intake.source_url);assert.equal(q.steps.length,3);assert.ok(q.checks.length>=2);assert.match(q.sourceUse,/not a complete paper/);}
 });
