@@ -18,7 +18,7 @@ function duplicateQuestion(a,b) {
   const x=stemCore(a.question), y=stemCore(b.question);
   if (x !== y) return false;
   // An option-dependent instruction has no substantive stem to deduplicate alone.
-  const choiceOnly = text => /^choose the word that does not have the same vowel sound as the others[.!]?$/iu.test(text.trim());
+  const choiceOnly = text => /^(?:choose the word that does not have the same vowel sound as the others|choose the option with the correct spelling from the options lettered A-E)[.!]?$/iu.test(text.trim());
   if (x.length > 45 && !(choiceOnly(a.question) && choiceOnly(b.question))) return true;
   const target = q => norm(q.question.match(/Target(?: word)?:\s*(.*)$/iu)?.[1] || '');
   if (target(a) !== target(b)) return false;
