@@ -172,7 +172,7 @@ Do not send a `featured` field through the fallback admin or REST publish path u
 
 ### Newswire archive expansion
 
-Expand the Kumasi YMCA/Metro story first, then the existing published newswire archive in verified batches. Inspect live `as_news` through the configured AfroTools Supabase MCP; rows whose author does not start with `AfroStream` or `AfroTools` form the remaining brief queue. Start with recent, source-rich stories, and check related slugs before drafting so duplicate coverage does not become duplicate reports.
+Expand the Kumasi YMCA/Metro story first, then the existing published archive in verified batches. Inspect live `as_news` through the configured AfroTools Supabase MCP. Queue publisher-byline newswire rows and existing first-party reports with fewer than 600 body prose words, using the shared editorial policy's word count. Start with recent, source-rich stories, and check related slugs before drafting so duplicate coverage does not become duplicate reports.
 
 - Replace a brief in its existing row after verifying the material and writing an original 600+ word body. Keep the slug, `external_id`, original `published_at` and feed `source_url` stable. The monitor uses `source_url` to detect feed identity collisions; put additional primary-source links in the body.
 - Clearly separate confirmed facts, proposed plans and editorial analysis. Retain source and image credits; do not claim reporting from a venue or interview we did not conduct.
