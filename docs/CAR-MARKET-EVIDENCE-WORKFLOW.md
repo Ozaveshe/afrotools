@@ -14,6 +14,8 @@ Use a written partner feed or independently submitted dealer inventory with expl
 
 `car_market_research` holds minimal manually checked facts for sources awaiting policy review, without treating them as approved listing observations. Use `node scripts/car-market-research.js validate|sql INPUT.json data/cars/market-source-registry.json`. Supply actual make/model/year, condition, ask, currency, URL, observed timestamp and posting date when visible. Original mileage units are preserved. A catalog ID must match make, model and year; unmatched cars keep a null ID. Blocked/retired sources are refused. Do not copy images, seller contact, VIN, page text or query-string identifiers.
 
+CarLoaded Nigeria is also `review-needed`. Its 2026-10-01 terms inspection found limited recopy permissions with attribution and downstream terms conditions; this is not approval for public price aggregation, image use, or scheduled collection. Individual detail-page facts may be retained for private manual review. Keep reported mileage units literally (do not expand a value such as 193 km into 193,000 km); missing posting dates remain null, and an updated date is not a posting date. Confirm suspicious mileage and condition labels before normal observation intake. Browser security verification is not bypassed.
+
 Research is append-only, private under RLS, and never queried by the snapshot generator. All rows carry `availability-unconfirmed`; postings older than 90 days carry an age flag. A fresh browser visit does not prove an old listing is still for sale. Source rights, active inventory and suspicious specifications must be resolved separately before using the normal observation intake. Motorka is `review-needed`, not authorized for scheduled scraping or public reuse.
 
 
