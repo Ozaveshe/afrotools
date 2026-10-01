@@ -14,7 +14,10 @@ test('the new English unit is complete, original and yearless', () => {
   assert.ok(tasks.every(Boolean));
   assert.equal(new Set(bank.items.map(item => item.id)).size, bank.items.length);
   assert.equal(bank.items.filter(item => item.subject === 'English' && item.origin === 'AfroTools original exercise').length, 5);
-  assert.equal(bank.items.length, 136);
+  assert.deepEqual(
+    bank.items.filter(item => item.subject === 'English' && item.origin === 'AfroTools original exercise').map(item => item.id).sort(),
+    ['written-e-comprehension', 'written-e-summary', 'written-e-library-comprehension', 'written-e-library-summary', 'written-e-library-letter'].sort()
+  );
   for (const task of tasks) {
     assert.equal(task.exam, null);
     assert.equal(task.year, null);
