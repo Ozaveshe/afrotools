@@ -182,9 +182,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   <p>Core public calculators for guests, with paid workspaces where the readiness matrix marks them active.</p>
   <div class="billing-toggle">
     <span class="monthly-label active">Monthly</span>
-    <div class="toggle-switch" id="billingToggle" role="switch" aria-checked="false" tabindex="0"></div>
+    <div class="toggle-switch" id="billingToggle" role="switch" aria-label="Annual billing" aria-checked="false" tabindex="0"></div>
     <span class="yearly-label">Yearly</span>
-    <span class="save-badge">SAVE 18%</span>
+    <span class="save-badge">Annual savings</span>
   </div>
 </section>
 
@@ -309,6 +309,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       mLabel.classList.add('active');
       yLabel.classList.remove('active');
     }
+    var plans = window.AfroProPlan.displayMap().usd;
+    document.querySelector('.save-badge').textContent = 'SAVE ' + Math.round((1 - plans.annual.amount / (plans.monthly.amount * 12)) * 100) + '%';
     price.innerHTML = plan.label + ' <span>' + plan.suffix + '</span>';
     sub.textContent = plan.detail;
   }
@@ -317,6 +319,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   toggle.addEventListener('keydown', function(e){
     if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); yearly = !yearly; update(); }
   });
+
+  update();
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(btn){
@@ -341,7 +345,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   "mainEntity": {
     "@type": "WebApplication",
     "name": "AfroTools Pro",
-    "description": "Active Payroll Pro workspace with other app workspaces labelled as preview or pending according to the readiness matrix.",
+    "description": "Payroll and single-page SEO audit cores, with other registered apps labelled as previews or concepts.",
     "offers": [
       {
         "@type": "Offer",
@@ -379,5 +383,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 }
 </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/lib/pro-app-registry.js?v=052d41e0"></script>
+<script src="/assets/js/lib/pro-daily-os-registry.js?v=1d172704"></script>
+<script src="/assets/js/lib/pro-architecture.js?v=40653737"></script>
+<script src="/assets/js/lib/pro-capability-labels.js?v=15a59e23"></script>
 </body>
 </html>

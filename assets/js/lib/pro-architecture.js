@@ -1,1 +1,40 @@
-!function(t){"use strict";function e(){return t.AfroProAppRegistry||t.AfroTools&&t.AfroTools.proAppRegistry||null}function o(){return t.AfroProDailyOsRegistry||t.AfroTools&&t.AfroTools.proDailyOsRegistry||null}function r(t){return JSON.parse(JSON.stringify(t))}function n(){var t=e();return t&&t.getApps?t.getApps():[]}function u(){var t=o();return t&&t.getApps?t.getApps():[]}function a(){var t=e();return t&&t.getSupportRoutes?t.getSupportRoutes():[]}function s(t,e){return(o=t,Array.isArray(o)?o:[]).map(function(t){var o=r(t);return o.group=e,o.safeRoute=i(o),o});var o}function i(t){if(!t)return"/pro/workspace/";if("daily"===t.group){var r=o();return r&&r.safeRoute?r.safeRoute(t):t.route||"/pro/apps/daily-os/"}var n=e();return n&&n.safeRoute?n.safeRoute(t):t.route||"/pro/apps/"}function l(){return s(n(),"control").concat(s(u(),"daily"))}function p(t){return t&&!1!==t.routeExists}function f(t){var e=[t.routeStatus,t.shellState,t.statusTone].join(" ").toLowerCase();return-1!==e.indexOf("shell")||-1!==e.indexOf("local")||-1!==e.indexOf("priority")}function c(t){return-1!==[t.routeStatus,t.shellState,t.statusTone].join(" ").toLowerCase().indexOf("blocked")}function g(){var t=s(n(),"control"),e=s(u(),"daily"),o=t.concat(e),r=a();return{totalApps:o.length,controlApps:t.length,dailyApps:e.length,appRoutesReady:o.filter(p).length,activeApps:o.filter(function(t){return"active"===t.routeStatus}).length,shellApps:o.filter(f).length,blockedApps:o.filter(c).length,backboneRoutes:r.length,backboneReady:r.filter(p).length,totalRoutableSurfaces:o.length+r.length,readyRoutableSurfaces:o.filter(p).length+r.filter(p).length}}var A={getControlApps:n,getDailyApps:u,getBackboneRoutes:a,getApps:l,getApp:function(t){for(var e=l(),o=0;o<e.length;o+=1)if(e[o].id===t)return r(e[o]);return null},getGroups:function(){return{control:s(n(),"control"),daily:s(u(),"daily"),backbone:a()}},getRouteManifest:function(){var t=l().map(function(t){return{id:t.id,name:t.name,group:t.group,route:t.route,aliasRoute:t.aliasRoute||"",routeExists:!1!==t.routeExists,routeStatus:t.routeStatus||"shell",shellState:t.shellState||"Workspace preview",safeRoute:t.safeRoute||i(t)}}),e=a().map(function(t){return{id:t.id,name:t.name,group:"backbone",route:t.route,aliasRoute:"",routeExists:!1!==t.routeExists,routeStatus:t.routeStatus||"active",shellState:t.routeStatus||"active",safeRoute:t.safeRoute||t.route}});return t.concat(e)},getSummary:g,isReadyForTwentyApps:function(){var t=g();return 10===t.controlApps&&10===t.dailyApps&&20===t.totalApps&&20===t.appRoutesReady},safeRoute:i};t.AfroTools=t.AfroTools||{},t.AfroTools.proArchitecture=A,t.AfroProArchitecture=A}("undefined"!=typeof window?window:globalThis);
+(function (root) {
+  'use strict';
+  function controlRegistry() { return root.AfroProAppRegistry || null; }
+  function dailyRegistry() { return root.AfroProDailyOsRegistry || null; }
+  function copy(value) { return JSON.parse(JSON.stringify(value)); }
+  function group(registry, name) {
+    return registry && registry.getApps ? registry.getApps().map(function (app) { app.group = name; app.safeRoute = registry.safeRoute(app); return app; }) : [];
+  }
+  function control() { return group(controlRegistry(), 'control'); }
+  function daily() { return group(dailyRegistry(), 'daily'); }
+  function apps() { return control().concat(daily()); }
+  function backbone() { var registry = controlRegistry(); return registry && registry.getSupportRoutes ? registry.getSupportRoutes() : []; }
+  function routable(app) { return app.routeExists !== false; }
+  function summary() {
+    var c = control(), d = daily(), all = c.concat(d), support = backbone();
+    return {
+      totalApps: all.length, controlApps: c.length, dailyApps: d.length,
+      appRoutesReady: all.filter(routable).length, // Compatibility: route presence, not workflow readiness.
+      activeApps: all.filter(function (a) { return a.routeStatus === 'active'; }).length,
+      implementedCores: all.filter(function (a) { return a.capabilities && a.capabilities.workflow === 'Implemented core'; }).length,
+      conceptApps: all.filter(function (a) { return a.capabilities && a.capabilities.workflow === 'Concept only'; }).length,
+      shellApps: all.filter(function (a) { return a.routeStatus !== 'active'; }).length,
+      blockedApps: all.filter(function (a) { return a.routeStatus === 'blocked'; }).length,
+      backboneRoutes: support.length, backboneReady: support.filter(routable).length,
+      totalRoutableSurfaces: all.length + support.length,
+      readyRoutableSurfaces: all.filter(routable).length + support.filter(routable).length
+    };
+  }
+  var api = {
+    getControlApps: control, getDailyApps: daily, getBackboneRoutes: backbone, getApps: apps,
+    getApp: function (id) { return apps().find(function (a) { return a.id === id; }) || null; },
+    getGroups: function () { return { control: control(), daily: daily(), backbone: backbone() }; },
+    getRouteManifest: function () { return apps().concat(backbone().map(function (a) { a.group = 'backbone'; return a; })).map(function (a) { return copy({ id: a.id, name: a.name, group: a.group, route: a.route, aliasRoute: a.aliasRoute || '', routeExists: routable(a), routeStatus: a.routeStatus || 'shell', shellState: a.shellState || 'Shared route', safeRoute: a.safeRoute || a.route }); }); },
+    getSummary: summary,
+    isReadyForRegisteredRoutes: function () { var all = apps(); return all.length > 0 && all.every(routable) && new Set(all.map(function (a) { return a.id; })).size === all.length; },
+    isReadyForTwentyApps: function () { return api.isReadyForRegisteredRoutes(); }, // Historical API name retained.
+    safeRoute: function (a) { return a && (a.safeRoute || a.route) || '/pro/workspace/'; }
+  };
+  root.AfroTools = root.AfroTools || {}; root.AfroTools.proArchitecture = api; root.AfroProArchitecture = api;
+})(typeof window !== 'undefined' ? window : globalThis);
