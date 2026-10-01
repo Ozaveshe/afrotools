@@ -43,3 +43,13 @@ test('failed live JSON retains dated published snapshot and honest monitor state
   await expect(page.locator('#electionList')).toContainText('Nigeria');
   await expect(page.locator('#briefCountry')).toBeDisabled();
 });
+
+test('country watchlist persists on this device and can be removed',async({page})=>{
+  await page.goto('/tools/africa-election-tracker/#country-NG');
+  await page.locator('#toggleCountryWatch').click();
+  await expect(page.locator('#watchedCountries')).toContainText('Nigeria');
+  await page.reload();
+  await expect(page.locator('#toggleCountryWatch')).toHaveAttribute('aria-pressed','true');
+  await page.locator('#toggleCountryWatch').click();
+  await expect(page.locator('#watchedCountries')).toContainText('No saved countries');
+});

@@ -15,6 +15,11 @@ const FAIL_ON_STALE = process.argv.includes('--fail-on-stale');
 const ALLOW_MISSING_ENV = process.argv.includes('--allow-missing-env');
 
 const EXPLICIT_HEALTH = {
+  'scheduled-election-monitor': {
+    type: 'live_data_key',
+    key: 'election-monitor-latest',
+    note: 'Hourly election source observations; failures remain visible in the public monitor.',
+  },
   'afrostream-livecheck': {
     type: 'scraper_run',
     scraperId: 'afrostream-livecheck',

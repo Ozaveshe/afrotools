@@ -410,6 +410,7 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
         <div class="et-field"><label for="briefQuery">Search reviewed updates</label><input class="et-input" id="briefQuery" type="search" placeholder="Candidate, issue or election" disabled></div>
         <div class="et-field"><label for="briefPeriod">Published within</label><select class="et-select" id="briefPeriod" disabled><option value="7">Past 7 days</option><option value="30">Past 30 days</option><option value="all">All dates</option></select></div>
       </div>
+      <nav id="countryShortcuts" class="et-reader-actions" aria-label="Covered countries"></nav><section class="et-coverage-details" aria-labelledby="watchedTitle"><h3 id="watchedTitle">Your country watchlist</h3><p>Saved on this device. Open a country, then save it here for your next visit.</p><div id="watchedCountries" class="et-reader-actions"></div><p id="watchStatus" role="status" aria-live="polite"></p></section>
       <p id="briefStatus" role="status" aria-live="polite">Loading reviewed updates…</p>
       <div id="briefStream"></div>
       <details class="et-coverage-details"><summary>Coverage and editorial goals</summary>
@@ -1396,6 +1397,39 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
       '. The mission is continent-wide; the published ledger is not yet comprehensive. Rechecks use a ' + cadence +
       '-day cadence per source, not the date the data file was generated.';
 
+    const watchKey = 'afrotools-election-watchlist-v1';
+    let watched = [];
+    let watchStorage = true;
+    try {
+      const saved = JSON.parse(localStorage.getItem(watchKey) || '[]');
+      if (Array.isArray(saved)) watched = [...new Set(saved.filter((name) => countries.includes(name)))];
+    } catch (_) { watchStorage = false; }
+    function countryShortcut(name) {
+      const record = data.elections.find((entry) => entry.country === name);
+      return '<a class="et-source-link" href="#country-' + record.countryCode + '" data-country-code="' + record.countryCode +
+        '"><img class="et-country-flag" src="/assets/img/flags/afroatlas/' + record.countryCode.toLowerCase() +
+        '.svg" width="24" height="16" alt="">' + escapeHtml(name) + '</a>';
+    }
+    document.getElementById('countryShortcuts').innerHTML = countries.map(countryShortcut).join('');
+    function renderWatchlist() {
+      document.getElementById('watchedCountries').innerHTML = watched.length ? watched.map(countryShortcut).join('') :
+        '<p>No saved countries yet.</p>';
+      if (!watchStorage) document.getElementById('watchStatus').textContent = 'Device storage is unavailable. Your watchlist lasts for this visit only.';
+    }
+    renderWatchlist();
+    dossier.addEventListener('click', (event) => {
+      if (!event.target.closest('#toggleCountryWatch') || country.value === 'all') return;
+      const name = country.value;
+      watched = watched.includes(name) ? watched.filter((entry) => entry !== name) : [...watched, name];
+      try { localStorage.setItem(watchKey, JSON.stringify(watched)); } catch (_) { watchStorage = false; }
+      document.getElementById('watchStatus').textContent = name + (watched.includes(name) ? ' added to' : ' removed from') +
+        ' your watchlist.' + (watchStorage ? '' : ' Saved for this visit only.');
+      renderWatchlist();
+      const button = document.getElementById('toggleCountryWatch');
+      button.textContent = watched.includes(name) ? 'Remove from watchlist' : 'Save to watchlist';
+      button.setAttribute('aria-pressed', String(watched.includes(name)));
+    });
+
     function sourceLinks(sources) {
       return sources.map((source) => {
         const href = safeSourceUrl(source.url);
@@ -1465,6 +1499,8 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
       dossier.innerHTML = '<p><strong>' + escapeHtml(country.value) + '</strong> · ' + selected.length +
         ' election records · ' + related.length + (newsReady ? ' reviewed briefs' : ' loaded briefs (news unavailable)') +
         ' · ' + rosterCount + ' candidates in published rosters.</p>' +
+        '<button id="toggleCountryWatch" type="button" class="et-source-link" aria-pressed="' + watched.includes(country.value) + '">' + (watched.includes(country.value) ? 'Remove from watchlist' : 'Save to watchlist') + '</button>' +
+        '<nav class="et-reader-actions" aria-label="Country details"><a href="#countryTimeline">Election timeline</a><a href="#countryCandidates">Contestants</a><a href="#countryPolling">Polls and approval</a></nav><section id="countryTimeline" aria-label="Election timeline">' +
         selected.slice().sort((a, b) => a.electionDate.localeCompare(b.electionDate)).map((record) => {
           const review = sourceReview(record, cadence);
           return '<article class="et-country-dossier"><h4>' + escapeHtml(record.jurisdiction + ': ' + record.office) +
@@ -1475,8 +1511,8 @@ body.election-desk-page .et-hero a:focus-visible{outline-color:var(--color-prima
             escapeHtml(review.text) + '</p><div class="et-source-links">' + sourceLinks(record.sources || []) +
             '</div><a class="et-story-read" href="#election-' + escapeHtml(record.id) + '">Open calendar record →</a></article>';
         }).join('') +
-        '<p>Candidate biographies, policy comparisons, turnout and declared results appear only when separately sourced. A roster or polling date does not establish an outcome.</p>' +
-        (evidence.length ? candidateFiles(evidence) : '<p>No reviewed candidate roster is published for this country yet.</p>') + '<section class="et-country-dossier"><h4>Polling and approval surveys</h4><div id="countrySurveys"></div></section>';
+        '</section><section id="countryCandidates" aria-label="Contestant evidence"><p>Candidate biographies, policy comparisons, turnout and declared results appear only when separately sourced. A roster or polling date does not establish an outcome.</p>' +
+        (evidence.length ? candidateFiles(evidence) : '<p>No reviewed candidate roster is published for this country yet.</p>') + '</section><section id="countryPolling" class="et-country-dossier"><h4>Polling and approval surveys</h4><div id="countrySurveys"></div></section>';
       renderSurveys(country.value);
     }
 

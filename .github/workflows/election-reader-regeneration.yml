@@ -1,0 +1,44 @@
+name: Election reader generated reports
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/africa-election-tracker/**'
+      - 'netlify/functions/*election*.mjs'
+      - '.github/workflows/election-reader-regeneration.yml'
+permissions:
+  contents: write
+concurrency:
+  group: election-reader-reports
+  cancel-in-progress: false
+jobs:
+  reports:
+    if: github.head_ref == 'improve/election-reader-desk-2026-10-01' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Regenerate reports from source
+        run: |
+          node scripts/build-public-claims.js --write
+          node scripts/build-route-contract.js --write
+      - name: Commit only the five generated reports to the review branch
+        run: |
+          git diff --check
+          git add data/registry/route-graph.json reports/public-claims.json reports/public-claims.md reports/route-contract-report.json reports/route-contract-report.md
+          if git diff --cached --quiet; then
+            echo "Generated reports already match their sources."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh election reader source-generated release reports"
+          git push origin HEAD:improve/election-reader-desk-2026-10-01

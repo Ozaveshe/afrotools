@@ -24,8 +24,9 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: node --test tests/election-reader-desk.test.js tests/election-monitor.test.js
+      - run: node --test tests/election-reader-desk.test.js tests/election-monitor.test.js tests/election-calendar-snapshot.test.js
       - run: node tests/scheduled-event-auth.test.js
+      - run: node tests/live-automation-health-coverage.test.js
       - run: npm run elections:validate && npm run elections:calendar:check && npm run elections:news:check
       - name: Probe configured original sources (read only)
         run: node scripts/check-election-monitor-live.js
