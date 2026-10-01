@@ -10,14 +10,16 @@
  *   2. an EN -> FR country-name map with correct locative prepositions
  *   3. JSON-LD url corrections (/tools/solar-roi/x -> /fr/tools/roi-solaire/x)
  *
- * Scope: text nodes + JSON-LD only. Plain <script> blocks are never touched —
- * the calculator engine matches countryName strings for logic.
+ * Copy repair covers text nodes + JSON-LD. Route repair changes only known
+ * Solar URL string literals and anchors; calculator and country-name logic stay
+ * intact.
  *
  * Usage: node scripts/repair-fr-solar-country-pages.js [--fix]
  */
 
 const fs = require("fs");
 const path = require("path");
+const { localizeFrenchSolarRoutes } = require("./lib/french-solar-country-routes");
 
 const ROOT = path.resolve(__dirname, "..");
 const DIR = path.join(ROOT, "fr", "tools", "roi-solaire");
@@ -482,6 +484,7 @@ function translateSegment(text) {
 }
 
 function processHtml(html) {
+  html = localizeFrenchSolarRoutes(html);
   // Preserve distinct, visible names when repairing older translated pickers.
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
   if (html.includes('id="solarCountryPageSelect"') && !html.includes('for="solarCountryPageSelect"')) {

@@ -1,6 +1,6 @@
 # AfroTools completion program
 
-Started: 2026-10-01 (Asia/Tashkent). Status: active; completion is not certified.
+Started: 2026-10-01 (Asia/Tashkent). Status: credit closeout; completion is not certified.
 
 ## Objective and ownership
 

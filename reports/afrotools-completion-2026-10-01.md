@@ -1,6 +1,6 @@
 # AfroTools completion audit — 2026-10-01
 
-**Goal active. AfroTools is not yet certified complete or ready for weekly-only human maintenance.**
+**Credit closeout: new implementation has stopped. AfroTools is not yet certified complete or ready for weekly-only human maintenance.**
 
 The coordinator owns the completion backlog and acceptance evidence. Existing
 specialist work and the sole publisher retain their implementation/release roles.
@@ -14,9 +14,10 @@ has already been exercised. Those unknowns remain explicit in the register.
 - Executed checks and attempts: [command ledger](afrotools-completion-checks-2026-10-01.json).
 - Detailed local evidence: `artifacts/completion-20261001/` (ignored, not deployed).
 
-The current backlog contains 103 entries: 53 P1 and 50 P2. Entries include 21 Pro
+The initial backlog contained 103 entries: 53 P1 and 50 P2. Entries include 21 Pro
 app acceptance cases and 39 static quality-review candidates, so this count is not
-a count of broken apps. One repair is implemented locally and awaiting release.
+a count of broken apps. The working backlog now contains 107 entries; local
+repair candidates await publisher integration and production acceptance.
 
 ## Baseline and evidence boundaries
 
@@ -329,6 +330,15 @@ the country resets the action link to an English route, and Enter from the Frenc
 hub opens the English Ghana calculator at all three tested widths. French country
 labels now have a source repair, but the locale-preserving route continuation
 still needs its own source fix and acceptance proof.
+
+The follow-up routing candidate now repairs those destinations in the French
+owners. An AST pass changes only known Solar URL literals and canonicalizes
+country anchors after verifying the 54 French destination files. Four Node
+regressions and the 20-app Energy parity check pass. Three browser cases cover
+1365/390/320px, all 54 hub and country-selector destinations, country cards,
+keyboard continuations and links in the downloaded planning brief. French
+country repair is stable on a repeat dry run (zero changes). These are local
+proofs; production closeout and broader French editorial completion remain open.
 
 The French repair's substring translation also changed existing “Installation”
 to “Installationation” on repeated runs. Its owner now matches the standalone
