@@ -19,6 +19,8 @@ test('Nigeria opens real roster evidence without invented polls; exports preserv
   await expect(page.locator('#briefStream')).toContainText('Cabo Verde court admits sixth presidential bid');
   await page.locator('#briefQuery').fill('not-a-real-headline');
   await expect(page.locator('#briefStream')).toContainText('coverage gap');
+  await page.locator('#findElection > summary').click();
+  await expect(page.locator('#exportElectionCsv')).toBeVisible();
   const csvDownload=page.waitForEvent('download');
   await page.locator('#exportElectionCsv').click();
   expect((await csvDownload).suggestedFilename()).toBe('africa-election-calendar.csv');
