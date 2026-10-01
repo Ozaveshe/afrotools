@@ -114,6 +114,9 @@
         }), c = t.filter(function(e) {
           return !e.answer;
         });
+        if (Number.isInteger(e.year) && e.mode === "quick" && t.length < r) {
+          throw new Error("CBT.init: not enough reviewed questions for this year quick practice");
+        }
         o(u), o(s), o(c);
         var i = u.concat(s).concat(c).slice(0, r);
         f.push.apply(f, i);
@@ -328,7 +331,8 @@
       var scopedSubject = Number.isInteger(e.year) && Array.isArray(e.subjects) && e.subjects.length === 1 ? e.subjects[0] : null;
       // A link for another collection must not discard a valid saved attempt.
       if ((Number.isInteger(e.year) && e.year !== savedYear) ||
-          (scopedSubject !== null && (n.mode !== "subject" || !Array.isArray(n.subjects) || n.subjects.length !== 1 ||
+          (scopedSubject !== null && (n.mode !== (e.mode || "subject") ||
+            (e.mode === "quick" && u.length !== (e.questionsPerSubject || 10)) || !Array.isArray(n.subjects) || n.subjects.length !== 1 ||
             n.subjects[0] !== scopedSubject))) {
         t = null;
         throw new Error("CBT.restore: saved collection changed; start a new practice session");

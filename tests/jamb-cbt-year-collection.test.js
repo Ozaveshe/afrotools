@@ -8,7 +8,7 @@ const vm = require('node:vm');
 const { webcrypto } = require('node:crypto');
 const { bank, questions, reviewed } = require('./support/jamb-reviewed-fixtures');
 
-async function createSession(enginePath = '../engines/src/jamb-cbt-engine.js') {
+async function createSession(enginePath = '../engines/src/jamb-cbt-engine.js', extraEnglish = 0) {
   const { review, ...base } = questions()[0];
   const rows = [
     reviewed({ ...base, id: 'english-2025-a', subject: 'english', year: 2025 }),
@@ -18,6 +18,8 @@ async function createSession(enginePath = '../engines/src/jamb-cbt-engine.js') {
     reviewed({ ...base, id: 'mathematics-2025-b', subject: 'mathematics', year: 2025 }),
     reviewed({ ...base, id: 'mathematics-2024-a', subject: 'mathematics', year: 2024 })
   ];
+  for (let i = 0; i < extraEnglish; i++) rows.push(reviewed({ ...base,
+    id: 'english-2025-extra-' + i, question: base.question + ' Fixture ' + i, subject: 'english', year: 2025 }));
   const fixture = bank(rows);
   const storage = new Map();
   const posts = [];
@@ -93,5 +95,27 @@ for (const enginePath of ['../engines/src/jamb-cbt-engine.js', '../engines/jamb-
     assert.equal(result.pctCorrect, 50);
     assert.ok(result.reviewItems.every(item => item.subject === 'mathematics' && item.year === 2025 && item.explanation));
     assert.equal(posts.length, 0);
+  });
+}
+
+for (const enginePath of ['../engines/src/jamb-cbt-engine.js', '../engines/jamb-cbt-engine.js']) {
+  test(`${enginePath}: scoped quick practice requires ten distinct questions and restores only the same mode`, async () => {
+    const { cbt, pool, revision, storage, posts } = await createSession(enginePath, 9);
+    const config = { pool, poolRevision: revision, subjects: ['english'], year: 2025, mode: 'quick', questionsPerSubject: 10, durationMinutes: 30 };
+    const selected = cbt.selectQuestions(config);
+    assert.equal(selected.length, 10);
+    assert.equal(new Set(selected.map(q => q.id)).size, 10);
+    assert.ok(selected.every(q => q.subject === 'english' && q.year === 2025));
+    assert.throws(() => cbt.selectQuestions({ ...config, year: 2024 }), /not enough reviewed questions/);
+    cbt.init(config); cbt.selectAnswer('B');
+    const snapshot = JSON.parse(storage.get('afrojamb-cbt-state'));
+    assert.equal(snapshot.mode, 'quick'); assert.equal(snapshot.durationMs, 1800000);
+    const before = storage.get('afrojamb-cbt-state');
+    assert.throws(() => cbt.restore({ ...config, mode: 'subject' }, snapshot), /saved collection changed/);
+    assert.throws(() => cbt.restore({ ...config, year: 2024 }, snapshot), /saved collection changed/);
+    assert.throws(() => cbt.restore(config, { ...snapshot, questionIds: snapshot.questionIds.slice(0, 9) }), /saved collection changed/);
+    assert.equal(storage.get('afrojamb-cbt-state'), before);
+    cbt.restore(config, snapshot); assert.equal(cbt.getCurrentQuestion().selectedAnswer, 'B');
+    const score = cbt.submit(); assert.equal(score.outOf, 10); assert.equal(posts.length, 0);
   });
 }
