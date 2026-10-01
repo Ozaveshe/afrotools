@@ -1938,6 +1938,33 @@
         "npm run automation:control-plane:strict",
         "npm run audit:schedules"
       ]
+    },
+    {
+      "id": "codex:car-market-evidence-and-price-freshness",
+      "display_name": "Car market evidence and price freshness",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "car-market-evidence-and-price-freshness",
+      "sla_hours": 48,
+      "product_surface": "car_pricer",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "public.car_market_research",
+        "public.car_market_listing_observations",
+        "public.car_market_price_snapshots",
+        "data/cars/market-source-registry.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Car catalog, image provenance and market evidence",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run cars:catalog:refresh",
+        "npm run audit:automation-registry"
+      ],
+      "codex_kind": "cron"
     }
   ],
   "updated_at": "2026-09-11T08:02:56.072Z"

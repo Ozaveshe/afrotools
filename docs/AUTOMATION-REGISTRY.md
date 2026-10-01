@@ -37,6 +37,14 @@ remain unchanged. At the program closeout, pause the heartbeat and reconcile its
 allowlist entry and budget with the remaining active lanes. Do not leave an expired
 heartbeat listed as required active work.
 
+## Car Pricer evidence ownership
+
+The user-authorized `car-market-evidence-and-price-freshness` job owns car catalog and listing evidence, image provenance review, private research coverage, and reviewed price-snapshot proposals. It runs daily at 09:00 Asia/Tashkent. Private browser research is distinct from accepted listing observations and public prices; source approval and image rights remain separate gates. The retired car specialist definitions remain unscheduled and map to this owner.
+
+`transport-source-freshness-sweep` retains official transport and relocation/visa source review. Customs rates remain owned by `trade-desk-source-automation`. Car evidence refreshes consume those verified inputs and hand validated candidates to the sole publisher. No job may fabricate prices or bypass marketplace challenges.
+
+The policy now accounts for 28 lanes: the 27 existing allowlisted lanes plus the dedicated car lane. The previous cap of 26 already lagged the existing 27 entries; this reconciliation changes no unrelated lane, schedule or model. Registration does not prove collection or production freshness.
+
 ## Validation
 
 Run:
