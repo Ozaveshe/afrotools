@@ -8,6 +8,7 @@ const SCHEDULED_ONLY_FUNCTIONS = Object.freeze([
   'afrostream-news-monitor',
   'afrostream-sync',
   'scheduled-cleanup-scraper-runs',
+  'scheduled-election-monitor',
   'scheduled-reconcile-scholarship-deadlines',
   'scheduled-refresh-market-data',
   'scheduled-send-jamb-daily',

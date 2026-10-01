@@ -166,7 +166,7 @@ function renderCountryIndex(data) {
     assert(validDate(record.electionDate), record.id + ': invalid election date');
     assert(data.dateStatusLabels[record.dateStatus], record.id + ': unknown date status');
     if (!countries.has(record.countryCode)) {
-      countries.set(record.countryCode, { name: record.country, region: record.region, records: [] });
+      countries.set(record.countryCode, { code: record.countryCode, name: record.country, region: record.region, records: [] });
     }
     const country = countries.get(record.countryCode);
     assert(country.name === record.country && country.region === record.region, record.id + ': country identity changed within the ledger');
@@ -196,8 +196,8 @@ function renderCountryIndex(data) {
         ].join('');
       }).join('\n');
       return [
-        '<li class="et-country-file">',
-        '<h3>' + escapeHtml(country.name) + '</h3>',
+        '<li class="et-country-file" id="country-' + country.code + '">',
+        '<h3><a href="#country-' + country.code + '" data-country-code="' + country.code + '"><img class="et-country-flag" src="/assets/img/flags/afroatlas/' + country.code.toLowerCase() + '.svg" width="36" height="24" alt="" loading="lazy">' + escapeHtml(country.name) + '</a></h3>',
         '<p class="et-country-region">' + escapeHtml(country.region) + ' · ' + records.length + ' ' + (records.length === 1 ? 'election' : 'elections') + ' on file</p>',
         '<ul class="et-country-records">' + notices + '</ul>',
         '</li>'

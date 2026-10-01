@@ -1,0 +1,41 @@
+name: Election reader and monitor checks
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/africa-election-tracker/**'
+      - 'data/government/election-*.json'
+      - 'netlify/functions/*election*.mjs'
+      - 'netlify/functions/_shared/election-monitor.js'
+      - 'tests/election-*.test.js'
+      - 'tests/e2e/election-reader-desk.spec.js'
+      - '.github/workflows/election-reader-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  election-reader:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test tests/election-reader-desk.test.js tests/election-monitor.test.js tests/election-calendar-snapshot.test.js
+      - run: node tests/scheduled-event-auth.test.js
+      - run: node tests/live-automation-health-coverage.test.js
+      - run: npm run elections:validate && npm run elections:calendar:check && npm run elections:news:check
+      - name: Probe configured original sources (read only)
+        run: node scripts/check-election-monitor-live.js
+      - run: npx playwright install chromium --with-deps
+      - run: npx playwright test tests/e2e/election-reader-desk.spec.js --project=chromium --workers=1
+      - run: npm run audit:automation-registry && npm run audit:public-claims && npm run check-links
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: election-reader-browser-evidence
+          path: test-results/
+          if-no-files-found: ignore

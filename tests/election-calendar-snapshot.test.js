@@ -62,7 +62,7 @@ test('country files are a deterministic, source-linked static index into every c
   assert.match(index, /Ekiti State: Governor/);
   assert.match(index, /Osun State: Governor/);
   assert.match(index, /href="#election-ng-ekiti-governor-2026" aria-label="Nigeria: Ekiti State: Governor — 20 Jun 2026 calendar record"/);
-  const nigeria = index.slice(index.indexOf('<h3>Nigeria</h3>'), index.indexOf('<h3>Sao Tome and Principe</h3>'));
+  const nigeria = index.slice(index.indexOf('<li class="et-country-file" id="country-NG">'), index.indexOf('<li class="et-country-file" id="country-ST">'));
   assert.equal((nigeria.match(/class="et-country-record-source"/g) || []).length, 4, 'each Nigeria election needs its own scoped source');
   for (const record of tracker.elections.filter((entry) => entry.countryCode === 'NG')) {
     const latestOfficial = record.sources.filter((source) => source.type === 'official')

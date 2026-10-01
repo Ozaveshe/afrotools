@@ -126,13 +126,14 @@ for (const line of config.split(/\r?\n/)) {
   if (currentFunction && /^\s*schedule\s*=\s*"[^"\r\n]+"/.test(line)) declaredSchedules.add(currentFunction);
 }
 const callers = new Set();
-for (const file of fs.readdirSync(path.join(root, 'netlify/functions')).filter(name => name.endsWith('.js'))) {
+for (const file of fs.readdirSync(path.join(root, 'netlify/functions')).filter(name => /\.(?:m?js)$/.test(name))) {
   const source = fs.readFileSync(path.join(root, 'netlify/functions', file), 'utf8');
-  const name = file.slice(0, -3);
-  if (!source.includes("require('./_shared/scheduled-event')") && !source.includes("require('./_shared/scheduled-proof')")) continue;
+  const name = file.replace(/\.(?:m?js)$/, '');
+  const usesDetector = source.includes("require('./_shared/scheduled-event')") || source.includes("from './_shared/scheduled-event.js'");
+  if (!usesDetector && !source.includes("require('./_shared/scheduled-proof')")) continue;
   callers.add(name);
   assert.ok(SCHEDULED_ONLY_FUNCTIONS.includes(name), name + ' must explicitly opt in');
-  if (source.includes("require('./_shared/scheduled-event')")) {
+  if (usesDetector) {
     const calls = [...source.matchAll(/isScheduledEvent\(([^)]*)\)/g)];
     assert.ok(calls.length > 0, name + ' must call the scheduled detector');
     calls.forEach(call => assert.strictEqual(call[1], "event, '" + name + "'", name + ' must use its own literal name, never request data'));
