@@ -27,6 +27,7 @@ const JS_PAIRS = [
   ['assets/js/pages/src/receipt-generator.js', 'assets/js/pages/receipt-generator.js'],
   ['assets/js/pages/src/meeting-minutes.js', 'assets/js/pages/meeting-minutes.js'],
   ['assets/js/lib/src/net-to-gross.js', 'assets/js/lib/net-to-gross.js'],
+  ['assets/js/lib/src/source-confidence.js', 'assets/js/lib/source-confidence.js'],
   ['assets/js/engines/src/ng-paye.js', 'assets/js/engines/ng-paye.js'],
   ['assets/js/engines/src/gh-paye.js', 'assets/js/engines/gh-paye.js'],
   ['assets/js/components/navbar.js',         'assets/js/components/navbar.min.js'],

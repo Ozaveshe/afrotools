@@ -180,6 +180,13 @@ function normalizeHtmlFormulaPresentation(source) {
     "$1__FORMULA_DIGEST_CACHE__",
     )
     .replace(
+      /(assets\/js\/lib\/source-confidence\.js\?v=)[a-f0-9]{8}/gi,
+      // This helper renders evidence labels and cautions; it does not compute
+      // results. Preserve the reviewed baseline cache representation while
+      // retaining its path, query shape and every calculator script.
+      "$1e7c3ebe4",
+    )
+    .replace(
       /(assets\/css\/top-level-page-ui-refresh\.css\?v=)[a-f0-9]{8}/gi,
       // Preserve the reviewed baseline representation. This shared stylesheet
       // also occurs inside legacy print templates; its cache key is not a

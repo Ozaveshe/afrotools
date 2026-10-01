@@ -4,7 +4,8 @@ AfroTools data tools should make the source state visible before users rely on a
 
 - `data/source-registry.json`
 - `data/source-registry.schema.json`
-- `assets/js/lib/source-confidence.js`
+- `assets/js/lib/src/source-confidence.js` (readable owner)
+- `assets/js/lib/source-confidence.js` (generated browser helper)
 - `tests/source-confidence.test.js`
 
 ## DataSourceMeta
@@ -77,6 +78,10 @@ Add this near the relevant result, selected data card, or page-level trust area:
 ```
 
 The helper renders source, freshness, confidence, and stale-data warnings. It does not make any data official by itself.
+
+The panel follows the document's `lang` for English, French and Swahili. Its badges and caution notes change language without changing source identity, links, dates, freshness or confidence. Institution names and source titles remain attribution text. Direct render callers can pass `{ locale: 'fr' }` or `{ locale: 'sw' }` to `renderSourceSummary`.
+
+Edit the readable owner, then run `node scripts/minify.js --only=source-confidence` and `node scripts/cachebust.js --only=assets/js/lib/source-confidence.js`. Review generated helper and cache-reference diffs separately. Native cautions match the complete English source note exactly: changed or new notes retain their original text with an explicit English-language label until translated. `npm run test:source-confidence` checks current registry translation coverage and unchanged evidence states; `tests/e2e/source-confidence-locales.spec.js` checks actual mobile panels, stale warnings and fallbacks.
 
 ## Current Migrations
 

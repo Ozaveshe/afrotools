@@ -142,6 +142,27 @@ test('HTML formula digests ignore reviewed presentation-asset cache versions onl
   );
 });
 
+test('source-confidence cache updates preserve protected route digests without hiding code or wiring changes', function () {
+  const shell = (hash) => '<html><body><script src="/assets/js/lib/source-confidence.js?v=' + hash + '" defer></script><script src="/engines/tva.js" defer></script></body></html>';
+  const baseline = shell('e7c3ebe4');
+  const current = shell('38ba92ae');
+  const digest = quality.digestHtmlFormulaSource(baseline);
+  assert.strictEqual(quality.digestHtmlFormulaSource(current), digest);
+  for (const variant of [
+    current.replace('source-confidence.js', 'source-confidence-v2.js'),
+    current.replace('38ba92ae', '38ba92ae&mode=debug'),
+    current.replace('/engines/tva.js', '/engines/tva-v2.js'),
+    current.replace(' defer>', ' async>'),
+    current.replace('src="/assets/js/lib/source-confidence.js?v=38ba92ae"', 'src="/assets/js/lib/source-confidence.js"')
+  ]) {
+    assert.notStrictEqual(quality.digestHtmlFormulaSource(variant), digest);
+  }
+  const formula = (hash, rate) => '<html><body><script>const rate=' + rate + ';function calculate(amount){return amount * rate;}const print=\'<script src="/assets/js/lib/source-confidence.js?v=' + hash + '"><\\/script>\';</script></body></html>';
+  assert.strictEqual(quality.digestHtmlFormulaSource(formula('e7c3ebe4', '0.18')), quality.digestHtmlFormulaSource(formula('38ba92ae', '0.18')));
+  assert.notStrictEqual(quality.digestHtmlFormulaSource(formula('38ba92ae', '0.18')), quality.digestHtmlFormulaSource(formula('38ba92ae', '0.19')));
+  assert.notStrictEqual(quality.digestHtmlFormulaSource(formula('38ba92ae', '0.18')), quality.digestHtmlFormulaSource(formula('38ba92ae', '0.18').replace('source-confidence.js', 'source-confidence-v2.js')));
+});
+
 test('HTML formula digests ignore release decorations but retain route workflow changes', function () {
   const sourceOwned = '<!doctype html><html lang="sw" data-afrotools-source-owner="scripts/build-sw-itax-guide.js"><head>' +
     '<meta name="robots" content="index,follow">' +
