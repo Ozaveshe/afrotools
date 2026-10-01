@@ -13,7 +13,8 @@ test.describe('manifest-driven localization platform', () => {
     await expect(navbar.locator('.lang-opt .lang-opt-partial')).toHaveCount(2);
 
     const french = navbar.locator('.lang-opt[data-locale-target="fr"]');
-    await expect(french).toHaveAttribute('href', '/fr/all-tools/');
+    // The bootstrap uses the same-site hreflang URL; the loaded resolver uses its path.
+    await expect(french).toHaveAttribute('href', /^(?:https:\/\/afrotools\.com)?\/fr\/all-tools\/$/);
     await expect(french).toHaveAttribute('data-locale-relationship', 'equivalent');
   });
 
