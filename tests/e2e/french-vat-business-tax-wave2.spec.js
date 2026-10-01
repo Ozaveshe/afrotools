@@ -61,7 +61,28 @@ test("French Burkina Faso VAT uses the shared formula and keeps PDF export free"
   expect(burkinaPdf).toMatch(/TVA|Burkina/i);
   expect(burkinaPdf).toContain("100");
   await expect(page.locator("afro-email-gate")).toHaveCount(0);
-  await expect(page.getByText(/Source officielle à confirmer/i)).toBeVisible();
+  const sourcePanel = page.locator("[data-tool-verification-panel]");
+  await expect(
+    sourcePanel.getByRole("heading", {
+      name: "Sources, méthode et prochaine vérification",
+    }),
+  ).toBeVisible();
+  await expect(
+    sourcePanel.getByRole("link", { name: "CGI DGI, article 317" }),
+  ).toHaveAttribute("href", "https://dgi.bf/verification/CGI");
+  await expect(
+    sourcePanel.getByRole("link", {
+      name: "imprimé officiel de déclaration TVA",
+    }),
+  ).toHaveAttribute(
+    "href",
+    "https://dgi.bf/wp-content/uploads/2023/10/DECLARATION-DE-LA-TAXE-SUR-LA-VALEUR-AJOUTEE.pdf",
+  );
+  await expect(sourcePanel).toContainText("Révisé le 17 août 2026.");
+  await expect(sourcePanel).toContainText("Estimation de planification uniquement.");
+  await expect(sourcePanel).toContainText(
+    "Le taux de 10 % reste bloqué sans confirmation de l'agrément et de la nature exacte de la prestation.",
+  );
   expect(
     await page.evaluate(
       () =>
