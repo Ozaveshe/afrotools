@@ -2,7 +2,7 @@
 const {test,expect}=require('@playwright/test');
 test.beforeEach(async({page})=>{
   await page.route('**/data/government/election-surveys.json',route=>route.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"surveys":[]}'}));
-  await page.clock.install({time:new Date('2026-10-01T12:00:00Z')});
+  await page.clock.setFixedTime(new Date('2026-10-01T12:00:00Z'));
   await page.route('**/api/election-monitor',route=>route.fulfill({status:503,contentType:'application/json',body:'{"status":"unavailable","sources":[]}'}));
 });
 test('Nigeria opens real roster evidence without invented polls; exports preserve provenance',async({page})=>{
