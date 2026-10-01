@@ -32,6 +32,11 @@
         }
       });
       group.hidden = groupShown === 0;
+      var total = group.querySelectorAll('[data-creator]').length;
+      var label = group.querySelector('h2 small');
+      if (label) label.textContent = term || selectedCountry
+        ? groupShown + (groupShown === 1 ? ' match' : ' matches') + ' · ' + total + ' in directory'
+        : total + ' profiles';
     });
     count.textContent = shown + ' of ' + rows.length + ' profiles shown';
     empty.hidden = shown !== 0;

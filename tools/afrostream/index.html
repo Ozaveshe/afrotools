@@ -592,6 +592,8 @@ function creatorSlug(cr){
 
 function hydrateCreatorRuntimeMetrics(cr){
   var raw = cr && cr._raw || {};
+  var gifts = cr._raw ? raw.gift_revenue : cr.gifts;
+  cr.gifts = gifts == null || gifts === '' ? null : parseNum(gifts);
   cr.followers = Math.max(parseNum(raw.total_followers), parseNum(raw.subscribers), parseNum(cr.followers), parseNum(cr.subs));
   cr.subs = cr.followers;
   cr.views = Math.max(parseNum(raw.total_views), parseNum(raw.yt_views), parseNum(cr.views));
@@ -1322,7 +1324,7 @@ function renderTopThree(creators){
       (cr.score ? '<div class="as-afro-score" title="AfroScore: weighted ranking across followers, views, growth, consistency, engagement &amp; multi-platform presence"><span class="as-score-num">'+cr.score+'</span><span class="as-score-label">AfroScore</span><span class="as-tier as-tier-'+cr.tier+'">'+cr.tier+'</span></div>' : '') +
       '<div class="as-creator-stats">' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.followers)+'</span><span class="as-creator-stat-label">Followers</span></div>' +
-        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtUSD(cr.gifts)+'</span><span class="as-creator-stat-label">Gifts</span></div>' +
+        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+(cr.gifts == null ? 'Not reported' : fmtUSD(cr.gifts))+'</span><span class="as-creator-stat-label">Gifts</span></div>' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.views)+'</span><span class="as-creator-stat-label">Views</span></div>' +
       '</div>' +
       '<div class="as-creator-links">' +

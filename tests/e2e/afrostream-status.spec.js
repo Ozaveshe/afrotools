@@ -41,3 +41,8 @@ test('Stream hero counts describe visible rows and conflicting live checks are f
   expect(result.streamLane.detail).toContain('marked 8');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
+
+test('creator-card gifts keep unavailable values distinct from a reported zero', async ({ page }) => {
+  await page.goto('/tools/afrostream/');
+  expect(await page.evaluate(() => [hydrateCreatorRuntimeMetrics({ _raw: {}, gifts: 0 }).gifts, hydrateCreatorRuntimeMetrics({ _raw: { gift_revenue: 0 } }).gifts])).toEqual([null, 0]);
+});

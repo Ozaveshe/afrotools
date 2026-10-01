@@ -2,10 +2,20 @@
 // Build an indexable, no-JavaScript creator directory from a reviewed public snapshot.
 const fs = require('node:fs');
 const path = require('node:path');
+const { renderSubnav } = require('../tools/afrostream/subnav');
 
 const ROOT = path.resolve(__dirname, '..');
 const sourcePath = path.join(ROOT, 'data', 'afrostream', 'creator-directory-snapshot.json');
 const outputPath = path.join(ROOT, 'tools', 'afrostream', 'directory', 'index.html');
+if (process.argv.includes('--refresh-navigation')) {
+  let html = fs.readFileSync(outputPath, 'utf8');
+  if (!html.includes('aria-label="AfroStream navigation"')) html = html.replace('<afro-navbar></afro-navbar>', '<afro-navbar></afro-navbar>\n' + renderSubnav());
+  if (!html.includes('/tools/afrostream/subnav.css')) html = html.replace('</head>', '<link rel="stylesheet" href="/tools/afrostream/subnav.css">\n</head>');
+  if (!html.includes('/tools/afrostream/subnav.js')) html = html.replace('</body>', '<script src="/tools/afrostream/subnav.js" defer></script>\n</body>');
+  fs.writeFileSync(outputPath, html);
+  console.log('Refreshed directory navigation; snapshot and release metadata preserved.');
+  process.exit(0);
+}
 const snapshot = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
@@ -95,6 +105,7 @@ const html = [
   '<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">',
   '<link rel="stylesheet" href="/tools/afrostream/style.css?v=780e4d2b">',
   '<link rel="stylesheet" href="/tools/afrostream/directory.css">',
+  '<link rel="stylesheet" href="/tools/afrostream/subnav.css">',
   '<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>',
   '<script src="/assets/js/components/navbar.min.js?v=4bbc4536" defer></script>',
   '<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>',
@@ -102,6 +113,7 @@ const html = [
   '</head>',
   '<body class="as-page as-directory-page">',
   '<afro-navbar></afro-navbar>',
+  renderSubnav(),
   '<main class="as-directory" id="main">',
   '<nav class="as-directory-breadcrumbs" aria-label="Breadcrumb"><a href="/tools/afrostream/">AfroStream</a><span aria-hidden="true">/</span><span>Creator directory</span></nav>',
   '<header class="as-directory-header">',
@@ -123,6 +135,7 @@ const html = [
   '</main>',
   '<afro-footer></afro-footer>',
   '<script src="/tools/afrostream/directory.js" defer></script>',
+  '<script src="/tools/afrostream/subnav.js" defer></script>',
   '<script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>',
   '</body>',
   '</html>'
