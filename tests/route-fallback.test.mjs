@@ -242,7 +242,7 @@ for (const publicPath of ['/api/', '/api/index.html', '/api/docs/', '/api/docs/i
   const response = await routeFallback(new Request(`https://afrotools.com${publicPath}`), {
     next:async()=>new Response('public documentation',{status:200})
   });
-  check(`${publicPath} remains indexable`, response.headers.get('X-Robots-Tag'), null);
+  check(`${publicPath} stays outside the endpoint noindex rule`, response.headers.get('X-Robots-Tag'), null);
 }
 for (const method of ['POST','HEAD','OPTIONS']) {
   let calls=0;
