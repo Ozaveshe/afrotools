@@ -8,6 +8,8 @@ The 27 September ledger has 12 records across 8 countries. The newsroom has 3 re
 The Nigeria candidate file is the Ekiti 2026 roster, with 15 contestants; it is not a 2027 presidential roster.
 No polling or approval observations have been admitted. These counts are a baseline, not proof of full coverage.
 
+The country shortcut bar and watchlist help returning readers reach the countries they follow. The watchlist stores only country names on the device, requires no account, and supports removal. If storage is blocked it remains usable for the current visit.
+
 Acceptance goals:
 - Readers can open a country from its flag/name or a calendar entry and inspect candidates, source-check dates, timelines and next-watch items.
 - Every published survey includes original source, pollster, sponsor, population, exact question, fieldwork dates, sample size, method, sampling type, weighting, review date and limitations.
