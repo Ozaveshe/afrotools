@@ -464,7 +464,9 @@ async function processNewsCandidate(source, item, matches, summary, dryRun, inse
         source_name: source.name || 'RSS source',
         external_id: externalId,
         is_featured: false,
-        is_published: true,
+        // Feed excerpts are research leads. Editors publish verified original
+        // reports with at least 600 words after reviewing the source material.
+        is_published: false,
         published_at: item.published_at
       }, true);
     } catch (error) {
