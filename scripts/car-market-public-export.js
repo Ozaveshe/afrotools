@@ -74,7 +74,7 @@ function exportCapture(capture, registry, { now = new Date(), vehicles = vehicle
       for (const m of s.members) {
         const source = registry.sources[m.source_id];
         if (!source || !approved(source.access_status) || !approved(m.source_access_status) || source.domain !== m.source_domain) throw Error('Source permission withdrawn or unapproved');
-        if (!m.current_revision || m.review_status !== 'accepted' || m.vehicle_id !== s.vehicle_id || m.country_code !== s.country_code || m.currency !== s.currency || m.condition_label !== s.condition_label) throw Error('Observation changed or not accepted');
+        if (m.current_revision !== true || m.review_status !== 'accepted' || m.vehicle_id !== s.vehicle_id || m.country_code !== s.country_code || m.currency !== s.currency || m.condition_label !== s.condition_label) throw Error('Observation changed or not accepted');
         const time = timestamp(m.observed_at), checked = timestamp(m.reviewed_at);
         if (time < from || time > to || checked < time || checked > reviewed) throw Error('Invalid member review dates');
         const url = new URL(m.listing_url);
