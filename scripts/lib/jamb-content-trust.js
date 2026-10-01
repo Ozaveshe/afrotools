@@ -101,7 +101,17 @@ function assessQuestion(question, ledger = { questions: {}, sources: {} }, conte
   if (prompt.length < 12) reasons.push('incomplete_prompt');
   if (![4, 5, 6].includes(keys.length) || keys.join('') !== 'ABCDEF'.slice(0, keys.length)) reasons.push('incomplete_options');
   if (optionTexts.some(value => !value)) reasons.push('empty_option');
-  if (new Set(optionTexts.map(value => value.toLowerCase().replace(/\s+/g, ' '))).size !== optionTexts.length) reasons.push('duplicate_option_text');
+  // In explicitly instructed English stress questions, capitalization is the
+  // answer notation. Keep it only for well-formed patterns of the same word;
+  // the existing independent review still determines the correct stress.
+  const stressChoices = q.subject === 'english'
+    && /\bstress pattern\b/i.test(prompt)
+    && /\bstressed syllable\b/i.test(prompt)
+    && /\bcapital letters\b/i.test(prompt)
+    && optionTexts.every(value => /^[a-z]*[A-Z]+[a-z]*$/.test(value) && /[a-z]/.test(value))
+    && new Set(optionTexts.map(value => value.toLowerCase())).size === 1;
+  const optionIdentities = optionTexts.map(value => (stressChoices ? value : value.toLowerCase()).replace(/\s+/g, ' '));
+  if (new Set(optionIdentities).size !== optionTexts.length) reasons.push('duplicate_option_text');
   if (q.format !== keys.length) reasons.push('option_format_mismatch');
   if (!nonempty(q.answer)) reasons.push('missing_answer');
   else if (!keys.includes(q.answer)) reasons.push('answer_not_in_options');
