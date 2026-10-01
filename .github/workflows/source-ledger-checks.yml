@@ -27,6 +27,9 @@ jobs:
       - name: Check transport source ledger
         run: npm run transport:sources:check
 
+      - name: Flag stale car asking-price evidence
+        run: npm run cars:market:observations:check -- --fail-on-stale
+
       - name: Upload source ledger evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -35,6 +35,8 @@ For the first run after changing source-classification logic, run `node scripts/
 
 ## Automation Model
 
+The daily `source-ledger-checks.yml` run also audits the Car Pricer's dated asking-price observations with `--fail-on-stale`. It fails when a local observation review or source-market snapshot is over 14 days old, and lists the exact model/source pairs due for review. This is a freshness alarm: it does not scrape protected pages, rewrite prices, advance review dates, or establish that an asking price is still available. Refresh an observation only after reviewing current accessible listings and preserving the sample method, condition, variant, exclusions, source URL, and date. The separate transport source review automation owns that human-reviewed candidate and sends it through the publisher.
+
 GitHub Actions owns the routine source-ledger maintenance:
 
 - `.github/workflows/source-ledger-checks.yml` runs `npm run transport:sources:check` daily. It is read/check-only and uploads the current status/report files as evidence when available.

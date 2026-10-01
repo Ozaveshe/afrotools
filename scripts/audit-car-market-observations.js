@@ -82,6 +82,10 @@ const uncovered = priceData.vehicles.filter((vehicle) => !seen.has(`NG:${vehicle
 console.log(`Car market evidence: ${observations.length} local and ${sourceSeen.size} source-market samples, ${stale.length} local and ${staleSources.length} source-market older than ${staleDays} days, ${uncovered.length}/${priceData.vehicles.length} starter vehicles without a Nigeria sample.`);
 console.log(`Next Nigeria research: ${uncovered.slice(0, 8).map((vehicle) => `${vehicle.year} ${vehicle.make} ${vehicle.model}`).join("; ") || "none"}`);
 if (staleSources.length) console.log(`Source-market refresh due: ${staleSources.map((item) => `${item.sourceMarket}:${item.vehicleId}`).join("; ")}`);
+if (process.argv.includes("--fail-on-stale") && (stale.length || staleSources.length)) {
+  for (const item of stale) problems.push(`${item.countryCode}:${item.vehicleId}: local asking-price observation reviewed ${item.reviewedAt}, older than ${staleDays} days; review source before updating`);
+  for (const item of staleSources) problems.push(`${item.sourceMarket}:${item.vehicleId}: source-market asking-price snapshot ${item.sourceSnapshotAt}, older than ${staleDays} days; review source before updating`);
+}
 if (problems.length) {
   problems.forEach((problem) => console.error(problem));
   process.exitCode = 1;
