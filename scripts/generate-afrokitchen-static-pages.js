@@ -3032,12 +3032,13 @@ async function main() {
     const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
     const recipes = manifest.recipes.filter(recipe => recipe.generated_in_wave);
     const analytics = require('./inject-analytics-loader');
+    const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
     const { execFileSync } = require('child_process');
     const files = [];
     function refreshPage(directory, html) {
       const normalized = analytics.normalizeLoaderInHtml(html, analytics.canonicalLoaderTag());
       if (normalized.duplicate) throw new Error('Duplicate analytics loader: ' + directory);
-      writeHtmlPage(directory, normalized.html);
+      writeHtmlPage(directory, dedupeRepeatedParagraphs(normalized.html).html.normalize('NFC'));
       files.push(path.relative(ROOT, path.join(directory, 'index.html')).replace(/\\/g, '/'));
     }
     recipes.forEach(recipe => refreshPage(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
