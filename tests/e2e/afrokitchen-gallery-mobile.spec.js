@@ -43,6 +43,8 @@ async function settled(page) {
 }
 
 async function revealPhoto(page, image) {
+  const disclosure = page.locator('.ak-cookbook-more > summary').filter({ hasText: 'Cooking notes, photos & serving ideas' });
+  if (await disclosure.count() && !await image.isVisible()) await disclosure.click();
   await page.mouse.move(page.viewportSize().width / 2, 420);
   await settled(page);
   // Firefox caps a single wheel's travel; keep observing the actual painted target.
@@ -79,6 +81,7 @@ for (const { width, theme } of variants) {
       await page.goto(`/tools/afrokitchen/recipes/${slug}/`, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await page.waitForFunction(() => document.querySelector('afro-navbar')?.shadowRoot?.querySelector('nav'));
+      await page.locator('.ak-cookbook-more > summary').filter({ hasText: 'Cooking notes, photos & serving ideas' }).click();
       const gallery = page.locator('.ak-photo-gallery');
       await expect(gallery).toHaveAccessibleName(/photos/);
       const photos = gallery.locator('img');
