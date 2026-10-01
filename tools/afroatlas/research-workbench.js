@@ -229,7 +229,7 @@
           : api.format(key, Math.abs(difference), true);
         gap = difference === 0 ? 'Same value' : (difference > 0 ? first.name : second.name) + ' is ' + amount + ' higher';
       }
-      return '<tr class="aa-cmp-metric"><th scope="row">' + definition.label + '<small>' + definition.unit + '</small></th><td>' + cell(row.a) + '</td><td>' + cell(row.b) + '</td><td>' + (row.comparable ? esc(row.note) + '<small>' + gap + '</small>' : 'No comparable pair<small>' + esc(row.note) + '</small>') + '</td></tr>';
+      return '<tr class="aa-cmp-metric"><th scope="row">' + definition.label + '<small>' + definition.unit + '</small></th><td><span class="aa-mobile-label" aria-hidden="true">' + esc(first.name) + '</span>' + cell(row.a) + '</td><td><span class="aa-mobile-label" aria-hidden="true">' + esc(second.name) + '</span>' + cell(row.b) + '</td><td class="aa-comparison-reading"><span class="aa-mobile-label" aria-hidden="true">Reading the difference</span>' + (row.comparable ? esc(row.note) + '<small>' + gap + '</small>' : 'No comparable pair<small>' + esc(row.note) + '</small>') + '</td></tr>';
     }).join('');
     var html = '<p class="aa-cmp-source-note">' + comparisonSource(a) + '; ' + comparisonSource(b) + '. All nine measures use the dated WDI snapshot.</p>'
       + '<div class="aa-table-wrap" tabindex="0" role="region" aria-label="Country comparison table"><table class="aa-data-table aa-comparison-table"><caption>' + esc(first.name) + ' and ' + esc(second.name) + ' · ' + (mode === 'latest' ? 'latest observations' : 'latest shared year per indicator') + '</caption>'

@@ -7,6 +7,23 @@ async function noOverflow(page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 }
 
+test('mobile comparison keeps country labels, source years and the full reading inside each row', async ({ page }) => {
+  await page.goto('/tools/afroatlas/compare?a=NG&b=KE');
+  await expect(page.locator('.aa-cmp-metric')).toHaveCount(9);
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await noOverflow(page);
+    await expect(page.locator('.aa-cmp-metric').first().getByText('Nigeria', { exact: true })).toBeVisible();
+    await expect(page.locator('.aa-cmp-metric').first().getByText('Kenya', { exact: true })).toBeVisible();
+    expect(await page.locator('.aa-cmp-metric td').evaluateAll(cells => cells.every(cell => cell.scrollWidth <= cell.clientWidth + 1 && cell.getBoundingClientRect().right <= innerWidth))).toBe(true);
+    await expect(page.locator('.aa-cmp-metric').first().getByRole('link', { name: /WDI/ })).toHaveCount(2);
+    await expect(page.getByRole('table')).toHaveCount(1);
+  }
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.getByRole('columnheader', { name: 'Reading the difference' })).toBeVisible();
+  await expect(page.locator('.aa-mobile-label').first()).toBeHidden();
+});
+
 test('country navigation, local flags and two-name search work from the slashless route', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));

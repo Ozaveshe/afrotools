@@ -2894,6 +2894,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function normalizeSearchHref(value) {
       return String(value || '').split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
     }
+    function homepageSearchTools() {
+      var locale = aiHomeLocale();
+      var seen = Object.create(null);
+      return AFRO_TOOLS.filter(function(tool) {
+        var routeLocale = String(tool.href || '').match(/^\/(fr|sw|ha|yo)\//);
+        var language = tool.lang || (routeLocale && routeLocale[1]) || 'en';
+        if (language !== locale) return false;
+        var key = normalizeSearchHref(tool.href) || normalizeSearchText(tool.id);
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      });
+    }
     function generatedAliases(tool) {
       var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
       var terms = [];
@@ -2931,7 +2944,9 @@ document.addEventListener('DOMContentLoaded', function() {
           s += tokenScore;
         }
       });
-      return matchedTokens === tokens.length ? s : 0;
+      if (matchedTokens !== tokens.length) return 0;
+      if (normalizeSearchText(tool.id) === tokens.join(' ')) s += 1000;
+      return s;
     }
 
     function tokenise(q) {
@@ -3018,7 +3033,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var selectedId = normalizeSearchText(plan.selectedTool.id);
       var selectedRoute = normalizeSearchHref(plan.selectedTool.route);
       if (!selectedId || selectedId === 'tool search') return null;
-      return AFRO_TOOLS.find(function(tool) {
+      return homepageSearchTools().find(function(tool) {
         return normalizeSearchText(tool.id) === selectedId || normalizeSearchHref(tool.href) === selectedRoute;
       }) || null;
     }
@@ -3115,7 +3130,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
-      var baseResults = AFRO_TOOLS
+      var baseResults = homepageSearchTools()
         .map(function(t){ return {t:t, s:score(t,tokens)}; })
         .filter(function(r){ return r.s > 0; })
         .sort(function(a,b){
@@ -3128,7 +3143,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var results = mergeAIHeroResult(baseResults, q).slice(0, 7);
 
       if (!results.length) {
-        dropdown.innerHTML = '<div class="sd-empty">Press Start to ask AfroTools AI about "' + esc(q) + '"</div>';
+        dropdown.innerHTML = '<div class="sd-empty">Select Find my tool to ask AfroTools AI about "' + esc(q) + '"</div>';
         dropdown.classList.add('open');
         input.setAttribute('aria-expanded', 'true');
         return;
@@ -3178,6 +3193,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function doSearch(source) {
       var q = input.value.trim();
+      var exactTool = window.AFRO_TOOLS && homepageSearchTools().find(function(tool) {
+        return normalizeSearchText(tool.id) === normalizeSearchText(q) && /^(live|new)$/.test(tool.status);
+      });
+      if (exactTool) { navigate(exactTool.href); return; }
       var aiEnabled = isAiFrontdoorEnabled();
       trackAiFrontdoor('ai_frontdoor_submit', {
         ai_frontdoor_enabled: aiEnabled,
