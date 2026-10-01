@@ -341,12 +341,12 @@
         <div class="ak-planner-command-actions">
           <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-restore" hidden>Open saved plan</button>
           <button class="ak-btn ak-btn-outline" type="button" id="ak-plan-clear" hidden>Clear saved plan</button>
-          <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="idle">
+          <button class="ak-btn ak-btn-primary ak-planner-cta" type="button" id="ak-plan-generate" data-state="catalog-loading" aria-busy="true" disabled>
             <svg class="ak-planner-cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M7 3v3M17 3v3M4.5 9.5h15M6.5 5h11A2.5 2.5 0 0 1 20 7.5v10A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 6.5 5Z"></path>
               <path d="M8 13h3M8 16h6"></path>
             </svg>
-            <span class="ak-planner-cta-label">Generate plan</span>
+            <span class="ak-planner-cta-label">Loading recipes…</span>
           </button>
         </div>
       </div>
@@ -1128,6 +1128,7 @@
   var recipesMoreWrap = document.getElementById('recipes-more-wrap');
   var recipesMoreBtn = document.getElementById('recipes-more');
   var mealPlannerRecipes = [];
+  var mealPlannerCatalogReady = false;
   var recipeDetailCache = {};
   var currentPlanText = '';
   var currentShoppingText = '';
@@ -1457,6 +1458,7 @@
   async function loadLandingMeta() {
     var allRecipes = await AK.fetchRecipes({});
     mealPlannerRecipes = allRecipes || [];
+    mealPlannerCatalogReady = true;
     if (recipeTotal && allRecipes && allRecipes.length) {
       recipeTotal.textContent = String(allRecipes.length);
     }
@@ -1464,6 +1466,7 @@
     renderPickedRecipes();
     renderPlanEmpty('Use the filters, then generate a 3-day or 7-day plan from existing recipes.');
     updateSavedPlanControls();
+    setPlanButtonState('idle');
     if (readSavedPlan()) await restoreSavedPlan();
   }
 
@@ -2160,17 +2163,19 @@
   function setPlanButtonState(state) {
     var button = document.getElementById('ak-plan-generate');
     if (!button) return;
-    var nextState = state || 'idle';
+    var nextState = mealPlannerCatalogReady ? (state || 'idle') : 'catalog-loading';
     var label = button.querySelector('.ak-planner-cta-label');
     var labels = {
       idle: 'Generate plan',
+      'catalog-loading': 'Loading recipes…',
       loading: 'Building your plan…',
       success: 'Plan ready',
       partial: 'Partial plan'
     };
     button.dataset.state = nextState;
-    button.disabled = nextState === 'loading';
-    button.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
+    var busy = nextState === 'loading' || nextState === 'catalog-loading';
+    button.disabled = busy;
+    button.setAttribute('aria-busy', busy ? 'true' : 'false');
     if (label) {
       label.textContent = labels[nextState] || labels.idle;
     } else {
