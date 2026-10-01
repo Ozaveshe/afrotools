@@ -3032,18 +3032,30 @@ async function main() {
     const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
     const recipes = manifest.recipes.filter(recipe => recipe.generated_in_wave);
     const analytics = require('./inject-analytics-loader');
+    const routes = require('./lib/route-contract');
+    const routeGraph = routes.buildRouteGraph();
     const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
     const { execFileSync } = require('child_process');
     const files = [];
     function refreshPage(directory, html) {
+      const relative = path.relative(ROOT, path.join(directory, 'index.html')).replace(/\\/g, '/');
       const normalized = analytics.normalizeLoaderInHtml(html, analytics.canonicalLoaderTag());
       if (normalized.duplicate) throw new Error('Duplicate analytics loader: ' + directory);
-      writeHtmlPage(directory, dedupeRepeatedParagraphs(normalized.html).html.normalize('NFC'));
-      files.push(path.relative(ROOT, path.join(directory, 'index.html')).replace(/\\/g, '/'));
+      const bootstrap = analytics.normalizeBootstrapInHtml(normalized.html, analytics.earlyBootstrapTag(), analytics.shouldUseEarlyBootstrap(relative));
+      if (bootstrap.duplicate) throw new Error('Duplicate analytics bootstrap: ' + directory);
+      let next = bootstrap.html;
+      const socialUrl = next.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+      const size = socialUrl ? imageSizeFromUrl(socialUrl, ROOT) : null;
+      if (size) next = next.replace('</head>', '<meta property="og:image:width" content="' + size.w + '">\n<meta property="og:image:height" content="' + size.h + '">\n</head>');
+      writeHtmlPage(directory, dedupeRepeatedParagraphs(next).html.normalize('NFC'));
+      files.push(relative);
     }
     recipes.forEach(recipe => refreshPage(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
     manifest.countries.forEach(country => refreshPage(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
     manifest.collections.forEach(collection => refreshPage(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages)));
+    // Preserve the established canonical and locale contracts through their owner.
+    const refreshedFiles = new Set(files);
+    routes.syncRouteMetadata({ ...routeGraph, routes: routeGraph.routes.filter(record => refreshedFiles.has(record.source?.file)) }, { write: true });
     // Use the same owner as build:seo, with bounded argument lists for Windows.
     for (let offset = 0; offset < files.length; offset += 80) {
       execFileSync(process.execPath, [path.join(ROOT, 'scripts/add-webapplication-schema.js'), '--fix', '--files=' + files.slice(offset, offset + 80).join(',')], { cwd: ROOT, stdio: 'pipe' });
