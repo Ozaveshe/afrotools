@@ -211,7 +211,36 @@
                 });
             }
             e.target.closest("[data-export-download-ats]") && d(), e.target.closest("[data-export-download-ats-pdf]") && c();
-        })), t.querySelector("[data-export-ats-text]").value = s(), t.classList.add("open");
+        }));
+        if (!t.__atsFocusManaged) {
+            t.__atsFocusManaged = true;
+            function closePlain() {
+                t.classList.remove("open");
+                if (t.__returnFocus && t.__returnFocus.isConnected) t.__returnFocus.focus();
+            }
+            t.addEventListener("click", function(event) {
+                if (event.target === t || event.target.closest("[data-export-close]")) closePlain();
+            });
+            t.addEventListener("keydown", function(event) {
+                if (event.key === "Escape") {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    closePlain();
+                } else if (event.key === "Tab") {
+                    var controls = t.querySelectorAll("button:not([disabled]), textarea:not([disabled])");
+                    var first = controls[0], last = controls[controls.length - 1];
+                    if (event.shiftKey && e.activeElement === first) {
+                        event.preventDefault(); last.focus();
+                    } else if (!event.shiftKey && e.activeElement === last) {
+                        event.preventDefault(); first.focus();
+                    }
+                }
+            });
+        }
+        t.__returnFocus = e.activeElement;
+        t.querySelector("[data-export-ats-text]").value = s();
+        t.classList.add("open");
+        t.querySelector("[data-export-ats-text]").focus();
     }
     function f() {
         var e = n(), a = e.data || {}, o = t.CVTemplateRegistry && t.CVTemplateRegistry.get ? t.CVTemplateRegistry.get(e.template || "") : null, r = o && (!1 === o.atsFriendly || "Creative" === o.atsSafety || /creative|portfolio/i.test(o.category || "")), i = a.showPhoto || a.photo || o && o.photoSupport;

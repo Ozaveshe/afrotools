@@ -3,7 +3,7 @@
   "program": "AfroTools completion",
   "status": "active",
   "completionCertified": false,
-  "observedAt": "2026-10-01T16:01:42.653Z",
+  "observedAt": "2026-10-01T17:54:40.575Z",
   "sourceCommit": "d7680c772414f6cfb50714833398ce946d81f7f7",
   "openingProductionCommit": "d97f16f18b7d8ca5c8a70f8facac97e1b4a3b594",
   "closingProductionDeploy": {
@@ -69,8 +69,8 @@
     }
   },
   "issueCounts": {
-    "P1": 53,
-    "P2": 50
+    "P1": 56,
+    "P2": 51
   },
   "limitations": [
     "This is an evidence-backed initial inventory, not certification of every action or formula.",
@@ -685,13 +685,13 @@
       "priority": "P1",
       "domain": "accessibility",
       "title": "Critical accessible-name and ARIA defects in production",
-      "status": "open",
+      "status": "partially-implemented-awaiting-release",
       "evidenceDate": "2026-10-01",
       "evidenceLayer": "production axe",
       "evidence": "CV builder: tracker roles and copilot role/company labels. Solar ROI: solarRootCountrySelect missing name. Auth: data-mode-link ARIA mismatch. Pricing: billingToggle missing accessible name. Payroll: scroll-region keyboard focus. Reconfirmed in the closing 14-observation production check at the audited deployment.",
-      "nextAction": "Repair controls in source components; preserve visible labels and keyboard behavior; retest at both widths using axe and manual keyboard actions.",
+      "nextAction": "Reconcile existing Pricing/Payroll owner changes; final local build/artifact/hreflang/security/actions pass. Publisher integration and exact-SHA production acceptance remain required.",
       "acceptance": "No relevant critical/serious violations; controls retain functional behavior and visible focus.",
-      "owner": "completion coordinator; assign source owner before repair",
+      "owner": "completion coordinator; existing Phase 1 owner for Pricing switch name",
       "routes": [
         "/tools/cv-builder/",
         "/tools/solar-roi/",
@@ -700,8 +700,10 @@
         "/pro/apps/payroll/"
       ],
       "evidenceFiles": [
-        "artifacts/completion-20261001/production-current-sha-check/results.json"
-      ]
+        "artifacts/completion-20261001/production-current-sha-check/results.json",
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ],
+      "implementationEvidence": "Local repairs for Auth, CV and Payroll pass action and axe checks at 1365/390/320. English/French Solar ROI country labels repaired through owners. Pricing switch accessible name remains with an existing owner candidate. No production closeout."
     },
     {
       "id": "COMP-A11Y-CONTRAST",
@@ -718,7 +720,8 @@
       "evidenceFiles": [
         "artifacts/completion-20261001/production-browser/results.json",
         "artifacts/completion-20261001/production-failed-routes/results.json"
-      ]
+      ],
+      "implementationEvidence": "Auth divider, Pricing secondary price and saved/summary CV contrast repaired and locally tested. Other baseline surfaces still require review."
     },
     {
       "id": "COMP-AFROSTREAM-IMAGE-API",
@@ -1919,6 +1922,84 @@
       "sourceOwner": "yo/awon-ise/naira-si-oro/index.html",
       "score": 44,
       "rank": "F"
+    },
+    {
+      "id": "COMP-AUTH-HISTORY-MODE",
+      "priority": "P1",
+      "domain": "account",
+      "title": "Auth browser history leaves the wrong form visible",
+      "status": "implemented-awaiting-release",
+      "evidenceLayer": "local action reproduction and regression",
+      "evidence": "Before repair Back changed mode URL but left the reset form visible. Added popstate synchronization. Three width-specific keyboard Back/Forward regression cases pass, with next destination preserved.",
+      "nextAction": "Publisher integration and exact-SHA production history checks.",
+      "acceptance": "Keyboard switching and browser Back/Forward retain one current mode and matching visible panel.",
+      "routes": [
+        "/auth/"
+      ],
+      "sourceOwner": "auth/index.html",
+      "evidenceDate": "2026-10-01",
+      "owner": "completion coordinator",
+      "evidenceFiles": [
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
+    },
+    {
+      "id": "COMP-SOLAR-GENERATOR-JS",
+      "priority": "P1",
+      "domain": "build",
+      "title": "Solar ROI generation emits invalid hub JavaScript",
+      "status": "implemented-awaiting-release",
+      "evidenceLayer": "source generator and generated-script syntax",
+      "evidence": "Regeneration emits an unescaped HTTPS regular expression from a template literal, causing a browser syntax error and inert country controls. Source fix passes script parsing on hub plus 54 country pages; local hub-to-country actions pass at three widths.",
+      "nextAction": "Final source/dist validation, publisher integration and exact-SHA production action acceptance.",
+      "acceptance": "Clean regeneration keeps scripts parseable and country search/selection functional.",
+      "routes": [
+        "/tools/solar-roi/"
+      ],
+      "sourceOwner": "scripts/generate-energy-x54.js",
+      "evidenceDate": "2026-10-01",
+      "owner": "completion coordinator",
+      "evidenceFiles": [
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
+    },
+    {
+      "id": "COMP-FR-SOLAR-COUNTRY-CONTINUATION",
+      "priority": "P1",
+      "domain": "localization",
+      "title": "French Solar ROI country continuation leaves French",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "local generated source action",
+      "evidence": "At 1365/390/320, selecting Kenya sets the action link to /tools/solar-roi/kenya/. Typing Ghana and pressing Enter opens /tools/solar-roi/ghana/ with lang=en. The visible label repair does not repair the locale continuation.",
+      "nextAction": "Repair canonical country routing through the French source owners, cover selection/search/card/JSON continuation, and verify local and exact-SHA production routes.",
+      "acceptance": "French country selection, search and continuation remain on supported French canonical routes; fallback is explicit where necessary.",
+      "owner": "completion coordinator",
+      "routes": [
+        "/fr/tools/roi-solaire/"
+      ],
+      "sourceOwner": "scripts/build-french-energy-parity.js",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/french-solar-action.json"
+      ]
+    },
+    {
+      "id": "COMP-FR-SOLAR-REPEATABLE-REPAIR",
+      "priority": "P2",
+      "domain": "localization",
+      "title": "French Solar repair corrupts Installation on repeated runs",
+      "status": "implemented-awaiting-release",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "generated output review and repeatability test",
+      "evidence": "The Install-to-Installation substring rule also matched existing French Installation and produced Installationation. The owner now matches the standalone English word and normalizes earlier corruption. Focused repeatability test proves one selector label, unchanged calculator script and stable reruns.",
+      "nextAction": "Publisher integration and exact-SHA production text verification.",
+      "acceptance": "Repeated repairs preserve French wording, labels and calculator scripts.",
+      "owner": "completion coordinator",
+      "sourceOwner": "scripts/repair-fr-solar-country-pages.js",
+      "evidenceFiles": [
+        "tests/french-solar-picker-repair.test.js",
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
     }
   ]
 }

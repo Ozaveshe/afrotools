@@ -303,6 +303,49 @@ Three legacy repair scripts have parse errors and one historical audit JSON is
 truncated. These are maintenance/evidence debt, not four broken live apps. Some
 replacement maps are unsafe; do not execute them after merely escaping their quotes.
 
+## Accessibility and action repair progress
+
+The working backlog now contains 107 grouped entries (56 P1 and 51 P2). The
+103-entry count above remains the initial audit snapshot, not the current count.
+
+The next local candidate repairs Auth mode semantics and browser history, visible
+CV field labels, tracker view semantics, saved/summary CV contrast, keyboard
+scrolling in the CV decision board and Payroll table, and secondary Pricing text.
+The Solar ROI generator now preserves separate search/select labels and emits
+parseable hub JavaScript. English and French country-label contracts cover 54
+pages each. French CV runtime regeneration also propagates the existing English
+ATS modal focus handling.
+
+The final scoped action pass covers five English routes at 1365, 390 and 320px:
+15 observations pass the action gate, with the outstanding Pricing switch-name
+rule explicitly retained in all three Pricing observations. That name repair is
+already in the separate Phase 1 owner's candidate. The 18 Auth/CV browser
+regressions and 23 targeted Node tests passed. French CV labels, tracker keyboard
+controls, decision-board focus and ATS modal focus trapping/Escape passed at
+three widths. These checks do not certify the complete site or paid/account flows.
+
+French Solar ROI action checks exposed another pending language defect: changing
+the country resets the action link to an English route, and Enter from the French
+hub opens the English Ghana calculator at all three tested widths. French country
+labels now have a source repair, but the locale-preserving route continuation
+still needs its own source fix and acceptance proof.
+
+The French repair's substring translation also changed existing “Installation”
+to “Installationation” on repeated runs. Its owner now matches the standalone
+English word, restores prior corruption and passes a repeatability regression
+that preserves calculator scripts.
+
+The detailed candidate proof is in
+`reports/afrotools-completion-accessibility-2026-10-01.json`. It retains unsuccessful
+attempts, the generator syntax failure and the pre-build hreflang failure. Build,
+artifact/security validation and exact-SHA production acceptance are separate
+gates. The full source rebuild passed, but the combined deploy command exited 1
+during post-processing without a diagnostic. The resumed postbuild and both
+remaining deploy-build phases passed; final artifact, security, hreflang,
+whitespace and scoped action checks passed. The failed command is retained rather
+than reclassified as success. Pricing and Payroll source files overlap active owner work and require
+line-level reconciliation by the publisher before integration.
+
 ## Next completion batches
 
 1. Reconcile current Pro/UX/car/publisher work and remaining QA cases. Close critical

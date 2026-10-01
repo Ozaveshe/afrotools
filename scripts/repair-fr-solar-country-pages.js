@@ -466,12 +466,14 @@ const COUNTRY_RULES = COUNTRIES
   }));
 
 function translateSegment(text) {
-  let out = text;
+  let out = text.replace(/\bInstallation(?:ation)+\b/g, "Installation");
   for (const [re, to] of REGEX_RULES) {
     re.lastIndex = 0;
     out = out.replace(re, to);
   }
-  for (const [from, to] of FIXED) out = out.split(from).join(to);
+  for (const [from, to] of FIXED) {
+    out = from === "Install" ? out.replace(/\bInstall\b/g, to) : out.split(from).join(to);
+  }
   for (const { re, to } of COUNTRY_RULES) {
     re.lastIndex = 0;
     out = out.replace(re, to);
@@ -480,6 +482,11 @@ function translateSegment(text) {
 }
 
 function processHtml(html) {
+  // Preserve distinct, visible names when repairing older translated pickers.
+  html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
+  if (html.includes('id="solarCountryPageSelect"') && !html.includes('for="solarCountryPageSelect"')) {
+    html = html.replace('<select id="solarCountryPageSelect"', '<label for="solarCountryPageSelect">Sélectionner un pays</label>\n<select id="solarCountryPageSelect"');
+  }
   const parts = html.split(/(<[^>]*>)/);
   let out = "";
   let inPlainScript = false;
@@ -533,4 +540,5 @@ function main() {
   console.log(JSON.stringify({ mode: APPLY ? "fix" : "dry-run", countryPages: dirs.length, changed }, null, 2));
 }
 
-main();
+if (require.main === module) main();
+module.exports = { processHtml };
