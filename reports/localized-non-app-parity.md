@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 159 | 2 | 298 |
-| sw | 137 | 1 | 321 |
+| fr | 159 | 2 | 299 |
+| sw | 137 | 1 | 322 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 331 | 40 | 0 | 291 | 21 | 0 | 310 |
+| editorial | 332 | 40 | 0 | 292 | 21 | 0 | 311 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -299,6 +299,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/inflation-rates-africa-2026-guide/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/inventory-reorder-point-small-business-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/inventory-reorder-point-small-business-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/irrigation-pump-quotation-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/irrigation-pump-quotation-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/jamb-aggregate-score-calculator-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/jamb-aggregate-score-calculator-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/japa-cost-nigeria/ | editorial | fr | — | missing | no localized route or owner file |

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11694 |
-| Indexable pages | 7879 |
+| Public pages | 11695 |
+| Indexable pages | 7880 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4253 |
-| Documented fallbacks | 14966 |
-| Routes eligible for primary sitemaps | 7879 |
+| Genuine equivalence groups | 4254 |
+| Documented fallbacks | 14967 |
+| Routes eligible for primary sitemaps | 7880 |
 
 ## Locale Coverage
 
-- en: 6139 page records
+- en: 6140 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 536
+- article: 537
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4723,6 +4723,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:657d1593ed7e: en=`/tools/water-bill/south-africa/`; x-default=`/tools/water-bill/south-africa/`
 - equivalence:65944f8805dc: en=`/tools/contractor-vs-employee/south-sudan/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-soudan-du-sud/`; x-default=`/tools/contractor-vs-employee/south-sudan/`
 - equivalence:659a2add3c0d: en=`/tools/za-dividend-tax/`, fr=`/fr/tools/za-impot-dividendes/`, sw=`/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/`; x-default=`/tools/za-dividend-tax/`
+- equivalence:65caf47bae89: en=`/blog/irrigation-pump-quotation-checklist-africa/`; x-default=`/blog/irrigation-pump-quotation-checklist-africa/`
 - equivalence:65cb69bd6b2d: en=`/agriculture/livestock-feed/south-africa`, fr=`/fr/agriculture/livestock-feed/south-africa`, sw=`/sw/kilimo/chakula-cha-mifugo/south-africa/`; x-default=`/agriculture/livestock-feed/south-africa`
 - equivalence:65e03b2e5be7: en=`/tools/meme-generator/`, fr=`/fr/tools/generateur-memes/`, sw=`/sw/zana/kitengeneza-meme/`; x-default=`/tools/meme-generator/`
 - equivalence:65e0cc29eefd: en=`/agriculture/export-docs/togo`; x-default=`/agriculture/export-docs/togo`
