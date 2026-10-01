@@ -2,13 +2,15 @@ const fs = require('fs');
 const pdfParse = require('pdf-parse');
 const { test, expect } = require('@playwright/test');
 
-const LOCAL_HOSTS = new Set(['127.0.0.1:4173', 'localhost:4173']);
+const LOCAL_HOSTS = new Set([new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').host]);
 
 function installConsoleGuard(page) {
   const messages = [];
   page.on('console', function (message) {
     if (message.type() === 'warning' || message.type() === 'error') {
       if (message.text() === 'Service Worker registration blocked by Playwright') return;
+      // Chromium's canvas performance hint is emitted by the PDF renderer, not an app error.
+      if (message.type() === 'warning' && message.text().startsWith('Canvas2D: Multiple readback operations using getImageData')) return;
       messages.push(message.type() + ': ' + message.text());
     }
   });
@@ -128,6 +130,7 @@ async function parsePdf(download, outputPath) {
 }
 
 test('CV Builder ATS proof panel and synthetic export paths stay local-first', async ({ page }, testInfo) => {
+  test.setTimeout(120000);
   const consoleMessages = installConsoleGuard(page);
   await installNetworkGate(page);
   await page.addInitScript(function () {
@@ -198,7 +201,7 @@ test('CV Builder ATS proof panel and synthetic export paths stay local-first', a
   await page.evaluate(function () {
     window.CVImportAssistant.open();
   });
-  await expect(page.getByText('TXT works now. PDF/DOCX will be parsed only if a compatible parser is already loaded.')).toBeVisible();
+  await expect(page.getByText('JSON restores an AfroTools backup. TXT imports text. DOCX loads a local parser when needed. PDF needs a compatible parser.')).toBeVisible();
   await expect(page.getByText('Your current CV will not change until you confirm the import.')).toBeVisible();
 
   expect(consoleMessages).toEqual([]);

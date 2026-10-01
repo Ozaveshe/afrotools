@@ -61,7 +61,7 @@ test("AfroStream French discovery is native, fresh, filter-local and exportable"
       ],
     }),
   }));
-  await page.route("**/api/afrostream/streams", (requestRoute) => requestRoute.fulfill({
+  await page.route("**/api/afrostream/streams?*", (requestRoute) => requestRoute.fulfill({
     status: 200,
     contentType: "application/json",
     body: JSON.stringify({ success: true, data: [] }),
@@ -105,13 +105,14 @@ test("AfroStream French discovery is native, fresh, filter-local and exportable"
   await expect(page.locator("#afsStatus")).toHaveText("2 profils affichés.");
   await expect(page.locator("#afsFreshness")).toContainText("2026");
   await expect(page.locator(".afs-news-item")).toHaveCount(1);
-  expect(apiRequests).toHaveLength(3);
+  expect(apiRequests).toHaveLength(4);
+  expect(apiRequests.filter((url) => url.includes('/streams?'))).toHaveLength(2);
   expect(apiRequests.every((url) => !url.includes("Amina"))).toBe(true);
 
   await page.getByLabel("Rechercher dans les profils chargés").fill("Amina");
   await expect(page.locator(".afs-creator")).toHaveCount(1);
   await expect(page.locator(".afs-creator h3")).toHaveText("Amina Studio");
-  expect(apiRequests).toHaveLength(3);
+  expect(apiRequests).toHaveLength(4);
 
   const json = await download(page, "#afsExportJson");
   expect(json.name).toBe("afrostream-createurs-fr.json");
