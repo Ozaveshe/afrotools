@@ -59,13 +59,16 @@ test('loaded stream history stays readable on phones and distinguishes missing m
   await mockCreatorApi(page, creator, [
     { title: 'A long published broadcast title '.repeat(8), stream_date: '2026-01-01', platform: 'youtube' },
     { title: 'A broadcast with reported zero', stream_date: '2026-01-02', platform: 'youtube', viewer_count: 0, gifts: 0, duration: 0 },
+    { title: 'A broadcast with invalid metrics', stream_date: '2026-01-02', platform: 'youtube', viewer_count: ' ', gifts: '$', duration: '..' },
     { title: 'Scheduled watch window: Test Creator', stream_date: '2026-01-03', viewer_count: 0 },
     { title: 'Scheduled watch window: Test Creator', stream_date: '2099-01-01', viewer_count: 0 }
   ]);
   await page.goto('/tools/afrostream/creator?id=test-creator');
-  await expect(page.locator('.as-stream-row')).toHaveCount(2);
+  await expect(page.locator('.as-stream-row')).toHaveCount(3);
   await expect(page.locator('.as-stream-row').first()).toContainText('Not reported');
   await expect(page.locator('.as-stream-row').nth(1)).toContainText('$0');
+  await expect(page.locator('.as-stream-row').nth(2)).toContainText('Not reported');
+  await expect(page.locator('.as-stream-row').nth(2)).not.toContainText('$0');
   await expect(page.locator('#streamHistory')).toContainText('1 past scheduled watch windows are excluded');
   await expect(page.locator('#upcomingStreams')).toContainText('broadcast not confirmed');
   for (const width of [320, 390, 768]) {

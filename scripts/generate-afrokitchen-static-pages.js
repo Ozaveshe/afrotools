@@ -2863,7 +2863,7 @@ function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">First bites</div>
         <h2 class="ak-section-title">Popular dishes to open first</h2>
-        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. ${summary ? `${escapeHtml(String(summary.recipe_count))} recipes, ${escapeHtml(String(summary.country_count))} country hubs, and ${escapeHtml(String(summary.curated_collection_count))} new chef-built collections are now wired into the archive.` : "Open one now, or keep browsing by country, collection, ingredient, or difficulty."}</p>
+        <p class="ak-section-sub">Start with a popular dish, then explore recipes and collections from across Africa.</p>
         <div class="ak-hero-route-grid">
           ${featuredLinks}
         </div>

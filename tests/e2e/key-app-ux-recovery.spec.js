@@ -53,10 +53,41 @@ test('Cover Letter local save and restore survive delayed script loading', async
   await contained(page);
 });
 
-test('Payroll device setup survives delayed country-pack loading without an account', async ({ page, baseURL }) => {
+test('Payroll guests see the access boundary instead of an editable paid workspace', async ({ page, baseURL }) => {
+  await page.route('**/*', (route) => {
+    const url = new URL(route.request().url());
+    if (url.origin !== new URL(baseURL).origin) return route.fulfill({ status: 204 });
+    if (url.pathname === '/assets/js/afro-auth.js') return route.fulfill({
+      status: 200, contentType: 'application/javascript',
+      body: 'window.AfroAuth={onReady:function(cb){cb(null);},getUser:function(){return null;},getSessionToken:function(){return "";},isLoggedIn:function(){return false;},getSupabase:function(){return null;}};'
+    });
+    return route.continue();
+  });
+  await page.goto('/tools/afropayroll-os/workspace.html');
+  const lock = page.locator('#afro-pro-lock');
+  await expect(lock).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-pro-gate', 'locked');
+  await expect(lock).toContainText('Sign in to open AfroPayroll Pro');
+  const signIn = lock.getByRole('link', { name: 'Sign in', exact: true });
+  await signIn.focus();
+  await expect(signIn).toBeFocused();
+  await contained(page);
+});
+
+test('Payroll device setup survives delayed country-pack loading with mocked Pro access', async ({ page, baseURL }) => {
   await page.route('**/*', async (route) => {
     const url = new URL(route.request().url());
     if (url.origin !== new URL(baseURL).origin) return route.fulfill({ status: 204 });
+    // Isolate device recovery from paid access, as in afropayroll-pro.spec.js.
+    // This fixture does not establish live entitlement or guest access.
+    if (url.pathname === '/assets/js/pro-gate.js') return route.fulfill({
+      status: 200, contentType: 'application/javascript',
+      body: 'window.AfroProGate={getStatus:async function(){return {isPro:true};},check:async function(){return {ok:true,active:true};}}; document.documentElement.setAttribute("data-pro-gate","mock-pro");'
+    });
+    if (url.pathname === '/assets/js/afro-auth.js') return route.fulfill({
+      status: 200, contentType: 'application/javascript',
+      body: 'window.AfroAuth={onReady:function(cb){cb(null);},getUser:function(){return null;},getSessionToken:function(){return "";},isLoggedIn:function(){return false;},getSupabase:function(){return null;}};'
+    });
     if (url.pathname === '/data/hr/afropayroll-country-packs.js') await new Promise((resolve) => setTimeout(resolve, 1500));
     if (url.pathname.startsWith('/api/')) return route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
     return route.continue();

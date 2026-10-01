@@ -334,8 +334,8 @@ function escapeStreamText(value) {
 function reportedMetric(row, fields) {
   for (var i = 0; i < fields.length; i++) {
     var value = row[fields[i]];
-    if (value == null || value === '' || typeof value === 'boolean') continue;
-    if (!/^[\d.,\s$]+[kmb]?$/i.test(String(value))) continue;
+    if (typeof value !== 'number' && typeof value !== 'string') continue;
+    if (!/^\s*\$?\s*\d[\d,]*(?:\.\d+)?\s*[kmb]?\s*$/i.test(String(value))) continue;
     var number = asNumber(value);
     if (Number.isFinite(number) && number >= 0) return number;
   }

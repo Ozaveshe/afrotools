@@ -22,3 +22,12 @@ test('explicit serving and batch bases preserve their meaning as ingredient quan
   assert.equal(batch.calories, 2660);
   assert.match(engine.nutritionLabel(batch, 7), /whole batch \(7 servings\)/);
 });
+
+test('blank and malformed nutrition never becomes a reported zero', () => {
+  for (const invalid of [' ', false, [], {}, 'not reported', -1, NaN, Infinity]) {
+    assert.equal(engine.scaleNutrition({ calories: invalid }, 4), null);
+    const nutrition = engine.scaleNutrition({ calories: 380, protein_g: invalid }, 4);
+    assert.equal(nutrition.protein_g, null);
+  }
+  assert.equal(engine.scaleNutrition({ calories: '0', protein_g: '0.0' }, 4).protein_g, 0);
+});
