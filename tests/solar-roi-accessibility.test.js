@@ -58,7 +58,8 @@ const rootFile = path.join(ROOT, "tools", "solar-roi", "index.html");
 const rootHtml = read(rootFile);
 
 assertIncludes(rootHtml, 'role="search" aria-label="Search Solar ROI countries"', "root search landmark", rootFile);
-assertIncludes(rootHtml, '<label for="solarRootCountrySearch">Search or select country</label>', "root search label", rootFile);
+assertIncludes(rootHtml, '<label for="solarRootCountrySearch">Search country</label>', "root search label", rootFile);
+assertIncludes(rootHtml, '<label for="solarRootCountrySelect">Select country</label>', "root select label", rootFile);
 assertIncludes(rootHtml, 'id="solarRootCountrySelect"', "root country dropdown", rootFile);
 assertIncludes(rootHtml, 'id="solarRootCountryOpen"', "root open country CTA", rootFile);
 assertIncludes(rootHtml, 'aria-describedby="solarRootCountryHelp solarRootCountryStatus"', "root picker helper/status association", rootFile);
@@ -91,6 +92,13 @@ const countryFieldIds = [
 for (const country of Object.values(dataset.countries)) {
   const file = path.join(ROOT, "tools", "solar-roi", country.slug, "index.html");
   const html = read(file);
+
+  assertIncludes(html, '<label for="solarCountryPageSearch">Search country</label>', "country search label", file);
+  assertIncludes(html, '<label for="solarCountryPageSelect">Select country</label>', "country select label", file);
+  const frenchFile = path.join(ROOT, "fr", "tools", "roi-solaire", country.slug, "index.html");
+  const frenchHtml = read(frenchFile);
+  assertIncludes(frenchHtml, '<label for="solarCountryPageSearch">Rechercher un pays</label>', "French country search label", frenchFile);
+  assertIncludes(frenchHtml, '<label for="solarCountryPageSelect">Sélectionner un pays</label>', "French country select label", frenchFile);
 
   assertIncludes(html, '<a class="solar-skip-link" href="#calculator-title">Skip to solar calculator</a>', "skip link", file);
   assertIncludes(html, 'id="calcErrorSummary" role="alert" aria-live="assertive"', "assertive error summary", file);

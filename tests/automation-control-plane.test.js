@@ -200,6 +200,22 @@ assert.ok(deadlockHealth.some((issue) => issue.code === 'expected_automation_ina
 assert.ok(deadlockHealth.some((issue) => issue.code === 'active_automation_worktree_budget_exceeded'));
 const recovered = evaluateRelease(releasePolicy, releaseDefinitions, originalQueue, protectedWorktrees, releaseOptions);
 assert.strictEqual(recovered.ready, true);
+const externalMonitorPolicy = {
+  ...releasePolicy,
+  active_automation_budget: 3,
+  active_automations: [...releasePolicy.active_automations, {
+    id: 'producer', kind: 'heartbeat', role: 'monitor', expected_schedule: 'FREQ=WEEKLY',
+    release_source_allowed: false,
+  }],
+};
+const externalMonitorDefinitions = { available: true, definitions: [
+  ...releaseDefinitions.definitions,
+  { id: 'producer', status: 'ACTIVE', kind: 'heartbeat', target_thread_id: 'external-fixture', rrule: 'FREQ=WEEKLY' },
+] };
+const externalSourceAttempt = evaluateRelease(externalMonitorPolicy, externalMonitorDefinitions, originalQueue, protectedWorktrees, releaseOptions);
+assert.strictEqual(externalSourceAttempt.ready, false, 'account-wide monitor recognition never grants repository source authority');
+assert.deepStrictEqual(externalSourceAttempt.blockers.map((issue) => issue.code), ['release_candidate_source_forbidden'],
+  'even an exact remote/allowlist candidate from a source-forbidden monitor must be rejected');
 assert.strictEqual(recovered.maintenance_issues.filter((issue) => issue.severity === 'error').length, 2);
 assert.strictEqual(evaluateRelease(releasePolicy, { available: true, definitions: [] }, originalQueue, protectedWorktrees, releaseOptions).ready, false, 'missing release publisher blocks');
 assert.strictEqual(evaluateRelease(releasePolicy, { available: false, definitions: [] }, originalQueue, protectedWorktrees, releaseOptions).ready, false, 'unavailable definitions cannot prove publisher');

@@ -49,6 +49,13 @@ The calculator needs to remain maintainable as country rules and official valuat
 - Upload precise valuation/specific-duty tables for Kenya, Uganda, and Zambia.
 - Confirm current partner lead forms before enabling clearing, shipping, finance, insurance, or dealer referral zones.
 
+## Local quote comparison, 2026-10-01
+
+- The readable engine owner is now `assets/js/lib/src/car-import-cost-engine.js`; `scripts/minify.js` generates its browser output.
+- Local comparison requires an explicitly entered positive on-road quote in USD. Missing quotes return `quote-required`; critical policy, eligibility, stale-rule or missing-valuation warnings return `review-required` and suppress savings recommendations.
+- Removed the invented local-price multiplier and resale markup band. Source-market rows are labeled modeled planning scenarios; a local row appears only for an entered quote.
+- Comparisons remain planning estimates, not dealer quotes or verified marketplace prices. Country-rule validation remains a separate prerequisite for trustworthy import decisions.
+
 ## Nigeria tariff review, 2026-09-27
 
 - The saved Nigeria pack still models 35% passenger duty plus 35% vehicle levy and omits VAT, ETLS, a duty surcharge, and the announced 2026 green surcharge. Its status is `policy-review-required`; all Nigeria calculations must surface the critical warning, and the country page links to the official calculator before the form.

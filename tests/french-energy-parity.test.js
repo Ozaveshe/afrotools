@@ -4,6 +4,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { rewriteSolarRouteLiterals } = require("../scripts/lib/french-solar-country-routes");
 const {
   FRENCH_ENERGY_APPS,
   REVIEWED_AT,
@@ -122,7 +123,8 @@ for (const app of FRENCH_ENERGY_APPS) {
   assert.deepStrictEqual(frenchSources, englishSources, `${app.id}: DOM-free engines and energy datasets must match English`);
 
   for (const formulaScript of formulaScripts(source)) {
-    assert.ok(french.includes(formulaScript), `${app.id}: inline formula/controller script changed`);
+    const expected = app.id === "solar-roi" ? rewriteSolarRouteLiterals(formulaScript) : formulaScript;
+    assert.ok(french.includes(expected), `${app.id}: inline formula/controller changed beyond owned locale routes`);
   }
 
   const registryRow = tools.find((tool) =>

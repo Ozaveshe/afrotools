@@ -67,19 +67,19 @@ test('later quality holds remove ambiguous items from scored data and public pag
   const pool = read('ops/jamb/source-pool.json');
   const ledger = read('data/jamb/review-ledger.json');
   const held = [
-    ['english-2023-poscholars-49', 2023, 19, 18],
-    ['english-2024-myschool-69979', 2024, 35, 34]
+    ['english-2023-poscholars-49', 2023, 19],
+    ['english-2024-myschool-69979', 2024, 52]
   ];
   const published = buildPublications(pool, read('ops/jamb/source-flashcards.json'), ledger);
   const scoredIds = new Set(published.files['pools/practice-pool.json'].questions.map(question => question.id));
-  for (const [id, year, rawCount, reviewedCount] of held) {
+  for (const [id, year, minimumRawCount] of held) {
     const raw = pool.questions.filter(question => question.subject === 'english' && question.year === year);
-    assert.equal(raw.length, rawCount);
+    assert.ok(raw.length >= minimumRawCount, 'Existing cohort records disappeared');
     assert.ok(raw.some(question => question.id === id));
     assert.equal(ledger.publication_holds[id].content_sha256, digest(raw.find(question => question.id === id)));
     assert.equal(scoredIds.has(id), false);
     const page = renderYear('english', String(year), pool.questions, ledger);
-    assert.equal(page.approvedIds.length, reviewedCount);
+    assert.deepEqual([...page.approvedIds].sort(), raw.filter(question => question.id !== id).map(question => question.id).sort(), 'Every other reviewed cohort record must remain available');
     assert.equal(page.approvedIds.includes(id), false);
     assert.equal(page.html.includes(`data-reviewed-question="${id}"`), false);
     assert.equal(page.html.includes(`#q-${id}`), false);

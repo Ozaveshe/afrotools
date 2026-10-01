@@ -112,7 +112,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <afro-footer></afro-footer>
 
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/assets/js/pro-gate.js?v=fa38ad4c"></script>
+<script src="/assets/js/lib/pro-return-route.js?v=854d84a0"></script>
+<script src="/assets/js/pro-gate.js?v=de865c99"></script>
 <script src="/assets/js/lib/analytics.js?v=8134382e"></script>
 <script>
 (function(){
@@ -124,6 +125,11 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   var params = new URLSearchParams(window.location.search);
   var reference = params.get('reference') || params.get('trxref') || params.get('transaction_id') || '';
 
+  var continuation = window.AfroProReturn.current();
+  document.getElementById('workspaceLink').href = continuation;
+  document.getElementById('workspaceLink').addEventListener('click', function(event){
+    if(this.getAttribute('aria-disabled') === 'true') event.preventDefault();
+  });
   function setState(kind, copy, detail) {
     title.textContent = kind === 'active' ? 'Welcome to AfroTools Pro' : kind === 'timeout' ? 'Payment received, activation pending' : 'Activating AfroTools Pro';
     message.textContent = copy;

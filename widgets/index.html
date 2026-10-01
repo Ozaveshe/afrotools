@@ -231,6 +231,9 @@
         </div>
         <pre class="widget-code"><code id="free-widget-code">&lt;div data-afrotools="nigeria-paye"&gt;&lt;/div&gt;
 &lt;script src="https://afrotools.com/widgets/embed.js" async&gt;&lt;/script&gt;</code></pre>
+        <label for="widget-pro-choice">Widget for your enquiry</label><select id="widget-pro-choice" class="form-select"><option value="nigeria-paye">Nigeria PAYE</option></select>
+        <p>Need partner styling or setup? Widget Pro is a scoped enquiry for a curated widget pack, setup support, analytics snapshot and optional opt-in lead capture. The existing media-kit range is $99–$299/month; scope and availability are confirmed before purchase.</p>
+        <a class="btn btn-primary" id="widget-pro-request" href="/business-enquiry/?offer=widget-pro&amp;tool=nigeria-paye&amp;source=widgets&amp;source_route=/widgets/&amp;cta_type=widget-pro-request">Request Widget Pro</a>
         <div class="widget-copy-status" data-copy-status aria-live="polite"></div>
       </div>
     </div>
@@ -334,7 +337,28 @@
     }
   }
 
+  function updatePaidChoice() {
+    var choice = document.getElementById('widget-pro-choice');
+    if (registry.length && choice.options.length === 1) registry.forEach(function(widget) {
+      if(widget.id === 'nigeria-paye') return;
+      var option=document.createElement('option');option.value=widget.id;option.textContent=widget.name;choice.appendChild(option);
+    });
+    var href=new URL('/business-enquiry/', location.origin);
+    var source=new URLSearchParams(location.search);
+    href.searchParams.set('offer','widget-pro');href.searchParams.set('tool',choice.value);
+    href.searchParams.set('source','widgets');href.searchParams.set('source_route','/widgets/');href.searchParams.set('cta_type','widget-pro-request');
+    ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(key){if(source.has(key)) href.searchParams.set(key,source.get(key));});
+    document.getElementById('widget-pro-request').href=href.pathname+href.search;
+    if (code) code.textContent='<div data-afrotools="'+choice.value+'"></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
+  }
+  document.getElementById('widget-pro-choice').addEventListener('change',updatePaidChoice);
+  document.getElementById('widget-pro-request').addEventListener('click',function(){
+    var analytics=window.AfroTools&&window.AfroTools.analytics;
+    if(analytics&&analytics.track) analytics.track('commercial_cta',{offer:'widget_pro',tool:document.getElementById('widget-pro-choice').value,source_route:'/widgets/',cta_type:'widget-pro-request'});
+  });
+  updatePaidChoice();
   function updateCounts() {
+    updatePaidChoice();
     var canonicalCounts = window.AFRO_REGISTRY_COUNTS || {};
     var categories = {};
     var countryTools = 0;

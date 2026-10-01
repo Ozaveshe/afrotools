@@ -1,0 +1,2008 @@
+{
+  "schemaVersion": 1,
+  "program": "AfroTools completion",
+  "status": "active",
+  "completionCertified": false,
+  "observedAt": "2026-10-01T18:26:41.036Z",
+  "sourceCommit": "d7680c772414f6cfb50714833398ce946d81f7f7",
+  "openingProductionCommit": "d97f16f18b7d8ca5c8a70f8facac97e1b4a3b594",
+  "closingProductionDeploy": {
+    "id": "6abe706162461e0008b16ea9",
+    "site_id": "8aa543db-b4bd-4631-98f8-221440055c41",
+    "state": "ready",
+    "commit_ref": "d7680c772414f6cfb50714833398ce946d81f7f7",
+    "published_at": "2026-10-01T14:56:57.110Z",
+    "context": "production",
+    "url": "https://afrotools.com"
+  },
+  "scope": {
+    "trackedFiles": 29782,
+    "publicPages": 11695,
+    "indexablePages": 7880,
+    "registeredLoadRoutes": 3690,
+    "proApps": 21,
+    "locales": {
+      "en": {
+        "pages": 6140,
+        "indexable": 4013,
+        "coverage": {
+          "native": 6140
+        }
+      },
+      "fr": {
+        "pages": 3807,
+        "indexable": 2179,
+        "coverage": {
+          "native": 2188,
+          "localized-shell": 1618,
+          "deprecated": 1
+        }
+      },
+      "sw": {
+        "pages": 1596,
+        "indexable": 1584,
+        "coverage": {
+          "native": 763,
+          "localized-shell": 828,
+          "english-fallback": 5
+        }
+      },
+      "ha": {
+        "pages": 106,
+        "indexable": 81,
+        "coverage": {
+          "native": 23,
+          "english-fallback": 25,
+          "localized-shell": 58
+        }
+      },
+      "yo": {
+        "pages": 46,
+        "indexable": 23,
+        "coverage": {
+          "native": 10,
+          "unavailable": 20,
+          "english-fallback": 3,
+          "localized-shell": 13
+        }
+      }
+    }
+  },
+  "issueCounts": {
+    "P1": 56,
+    "P2": 51
+  },
+  "limitations": [
+    "This is an evidence-backed initial inventory, not certification of every action or formula.",
+    "Issue count includes grouped defects, coverage gaps and static review candidates; it is not a count of broken apps.",
+    "Native language declarations and old accepted records are not fresh native-speaker or production workflow proof.",
+    "Full raw evidence is local and ignored; committed report and route register retain aggregate findings."
+  ],
+  "issues": [
+    {
+      "id": "COMP-WORKFLOW-COVERAGE",
+      "priority": "P1",
+      "domain": "apps",
+      "title": "Complete action and correctness evidence for every advertised workflow",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "coverage gap",
+      "evidence": "3,690 routes received load smoke. This does not execute every input, result oracle, export, backup or failure path. The full page register explicitly leaves action certification unverified.",
+      "nextAction": "Expand route entries into workflow cases; use synthetic fixtures and jurisdiction-specific answer oracles; test promised downloads and failure states.",
+      "acceptance": "Each available workflow has passed action evidence at the intended release SHA; remaining unknowns have an explicit approved disposition.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "evidenceFiles": [
+        "reports/afrotools-completion-route-register.csv"
+      ]
+    },
+    {
+      "id": "COMP-PRO-ACCOUNT-BILLING",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Account, entitlement, billing and team workflows lack completion certification",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry and missing action/live proof",
+      "evidence": "21 Pro apps exist. Current registries and readiness matrices do not establish save/reload, team roles, checkout, cancellation, webhook reconciliation or paid-access failure behavior.",
+      "nextAction": "Reconcile active Phase 1 and Pro improvement work first; characterize entitlement mismatch with server/client tests; establish synthetic/test-mode account and billing evidence.",
+      "acceptance": "Promised Pro journeys work with correct permissions and explicit device/account boundaries, with release and production proof.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-PAYROLL",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroPayroll completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Reads payroll dashboard when the signed-in account has saved runs. Pending: Review warnings, unsigned runs, and device saves that have not been saved to the account.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/payroll/"
+      ],
+      "registryStatus": "active",
+      "registryReadiness": 84,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-TAX-COMPLIANCE",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Tax Compliance completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "First-run setup, tax calendar, import review data, evidence packs, source review, checklist, and accountant packet handoff are available with device save. Pending: Complete account-save validation and verified source refresh before offering shared team history or current official deadline confidence.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/tax-compliance/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 64,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-BOOKS",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Books completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Business setup, invoices, expenses, payments, imports, month close, and accountant packet exports are available on the Books route. Pending: Complete account-save validation before offering shared team records or automatic sync.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/books/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 74,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-HR",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "HR completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "First-run setup, employee records, onboarding, leave, documents, payroll readiness, people reports, and people packet export are available. Pending: Complete account-save validation before offering shared HR records or automatic payroll handoff.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/hr/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 68,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-TRADE-DESK",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Trade Desk completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Device-saved trade operations workspace for shipments, landed costs, AfCFTA notes, suppliers, duty review, and exports. Pending: Create saved trade scenarios and client-level shipment records.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/trade-desk/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 34,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-LEGAL-DESK",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Legal Desk completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Legal Desk opens the current document and review workspace. Pending: Define document storage boundary and legal-disclaimer language.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/legal-desk/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 30,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-GRANTS-TENDERS",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Grants & Tenders completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Opportunity workspace for tenders, grants, requirements, deadlines, reviewers, and submission packets. Pending: Create a source and deadline model before adding alerts.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/grants-tenders/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 34,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-CREATOR-STUDIO",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Creator Studio completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Device-saved creator business workspace for media kits, rate cards, pitches, campaign calendars, sponsors, and handoff packs. Pending: Separate public creator intelligence from private client workspaces.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/creator-studio/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 34,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-STREAM-INTELLIGENCE",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Stream Intelligence completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Verified source controls and privacy boundaries are being finalized before broader Pro use. Pending: Account-saved review queues and private intelligence controls are still being finalized.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/stream-intelligence/"
+      ],
+      "registryStatus": "limited preview",
+      "registryReadiness": 14,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-SEO-STUDIO",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "SEO Studio completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Live single-page audits with graded fixes, device-saved history with score deltas, Google preview editor, and schema generators. Pending: Account-synced audit history and multi-page crawl mode are planned.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/seo-studio/"
+      ],
+      "registryStatus": "active",
+      "registryReadiness": 62,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-PROPERTY-PROJECTS",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "Property Projects completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Device-saved property and project workspace for budgets, contractors, procurement, inspections, documents, and milestones. Pending: Decide how milestone reminders should work before offering automated alerts.",
+      "nextAction": "Inspect the actual workspace and reconcile existing owner work. Verify each advertised input, record lifecycle, output and account boundary.",
+      "acceptance": "All promised workflows pass synthetic action, persistence and permission evidence; truthful previews remain pending until implemented or explicitly scoped.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/property-projects/"
+      ],
+      "registryStatus": "shell",
+      "registryReadiness": 44,
+      "sourceOwner": "assets/js/lib/pro-app-registry.js",
+      "existingWork": [
+        "Audit and implement Phase 1 fixes",
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-SELLER",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroSeller Social Commerce OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Shop workspace. Promised workflows: Shop setup and selling workflow; Products and stock; Orders and customer balances; Payment records and receipts; Delivery notes and WhatsApp copy",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/seller/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-EVENTS",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroEvents & Ceremony OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Event workspace. Promised workflows: Guest list and RSVP states; Vendor and payment schedule; Budget and contribution tracker; Seating and running order; Ceremony handoff packet",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/events/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-BEAUTY",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroBeauty Booking OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Priority workspace. Promised workflows: Booking calendar; Deposit and no-show rules; Client history; Stylist commission; Product inventory",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/beauty/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-FOOD-KITCHEN",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroFood & Kitchen OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Menu costing; Recipe costing; Ingredient stock; Kitchen prep list; Daily sales and wastage",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/food-kitchen/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-FIELD-SERVICE",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroFix Field Service OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Job cards; Quotes and invoices; Before and after photos; Parts used; Warranty reminders",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/field-service/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-SCHOOL-ACADEMY",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroSchool & Academy OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Student records; Attendance; Fee reminders; Report cards; Parent portal packets",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/school-academy/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-CLINIC-DESK",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroClinic Desk Pro completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Clinic operations workspace. Promised workflows: Appointment book; Patient cards; Visit notes; Prescription templates; Queue and billing",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/clinic-desk/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-FAITH-COMMUNITY",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroFaith & Community OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Member database; Giving or zakat records; Volunteer rosters; Event calendar; Welfare cases",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/faith-community/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-AGRI-FARMOPS",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroAgri FarmOps & Co-op OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Season calendar; Input records; Livestock health logs; Feed tracker; Harvest and buyer records",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/agri-farmops/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-PRO-LIFE-ADMIN",
+      "priority": "P1",
+      "domain": "pro",
+      "title": "AfroLife Admin & Diaspora OS completion acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "registry declaration; action proof pending",
+      "evidence": "Current declared state: Workspace preview. Promised workflows: Family document vault; Passport and ID reminders; School application tracker; Emergency info; Travel checklist",
+      "nextAction": "Inspect record creation/edit/delete, calculations, receipts/export, backup/recovery, privacy, account saves and reloads for this app.",
+      "acceptance": "Each promised workflow has an action oracle and production evidence; no seeded/demo record is represented as a user-completed task.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/pro/apps/life-admin/"
+      ],
+      "sourceOwner": "assets/js/lib/pro-daily-os-registry.js",
+      "existingWork": [
+        "Pro improvement"
+      ]
+    },
+    {
+      "id": "COMP-LANG-FR",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "fr full workflow translation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "route/coverage inventories; editorial/action gaps",
+      "evidence": "Route contract states: {\"pages\":3807,\"indexable\":2179,\"coverage\":{\"native\":2188,\"localized-shell\":1618,\"deprecated\":1}}. These declarations are not native-speaker certification.",
+      "nextAction": "Prioritize real translated task inputs, results, errors, exports and account/privacy text. Reconcile shell/native definitions across route, parity and snippet inventories.",
+      "acceptance": "All claimed translated workflows operate in the language; remaining fallbacks are clearly labelled; editorial review and route-equivalence checks pass.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "sourceOwner": "data/registry/locale-manifest.json; locale-coverage-policy.json",
+      "evidenceFiles": [
+        "reports/afrotools-completion-route-register.csv"
+      ]
+    },
+    {
+      "id": "COMP-LANG-SW",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "sw full workflow translation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "route/coverage inventories; editorial/action gaps",
+      "evidence": "Route contract states: {\"pages\":1596,\"indexable\":1584,\"coverage\":{\"native\":763,\"localized-shell\":828,\"english-fallback\":5}}. These declarations are not native-speaker certification.",
+      "nextAction": "Prioritize real translated task inputs, results, errors, exports and account/privacy text. Reconcile shell/native definitions across route, parity and snippet inventories.",
+      "acceptance": "All claimed translated workflows operate in the language; remaining fallbacks are clearly labelled; editorial review and route-equivalence checks pass.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "sourceOwner": "data/registry/locale-manifest.json; locale-coverage-policy.json",
+      "evidenceFiles": [
+        "reports/afrotools-completion-route-register.csv"
+      ]
+    },
+    {
+      "id": "COMP-LANG-HA",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "ha full workflow translation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "route/coverage inventories; editorial/action gaps",
+      "evidence": "Route contract states: {\"pages\":106,\"indexable\":81,\"coverage\":{\"native\":23,\"english-fallback\":25,\"localized-shell\":58}}. These declarations are not native-speaker certification.",
+      "nextAction": "Prioritize real translated task inputs, results, errors, exports and account/privacy text. Reconcile shell/native definitions across route, parity and snippet inventories.",
+      "acceptance": "All claimed translated workflows operate in the language; remaining fallbacks are clearly labelled; editorial review and route-equivalence checks pass.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "sourceOwner": "data/registry/locale-manifest.json; locale-coverage-policy.json",
+      "evidenceFiles": [
+        "reports/afrotools-completion-route-register.csv"
+      ]
+    },
+    {
+      "id": "COMP-LANG-YO",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "yo full workflow translation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "route/coverage inventories; editorial/action gaps",
+      "evidence": "Route contract states: {\"pages\":46,\"indexable\":23,\"coverage\":{\"native\":10,\"unavailable\":20,\"english-fallback\":3,\"localized-shell\":13}}. These declarations are not native-speaker certification.",
+      "nextAction": "Prioritize real translated task inputs, results, errors, exports and account/privacy text. Reconcile shell/native definitions across route, parity and snippet inventories.",
+      "acceptance": "All claimed translated workflows operate in the language; remaining fallbacks are clearly labelled; editorial review and route-equivalence checks pass.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "sourceOwner": "data/registry/locale-manifest.json; locale-coverage-policy.json",
+      "evidenceFiles": [
+        "reports/afrotools-completion-route-register.csv"
+      ]
+    },
+    {
+      "id": "COMP-LANG-CLASSIFICATION",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "Language acceptance metrics use different meanings",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "FR route coverage declares 2,188 native pages, while the snippet audit identifies 733 native indexable pages and 1,446 localized shells. FR parity accepts 1,256 app entries under its recorded contract. SW parity accepts 589 native and 667 shells.",
+      "nextAction": "Document and reconcile page-native, embedded-engine, localized-shell and fully translated workflow acceptance. Review French home wording \"Langues lancées 5\" against partial Hausa/Yoruba coverage.",
+      "acceptance": "No report or homepage implies full translation from shell/load acceptance; task-level completion is separately demonstrated.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-LANG-NONAPP",
+      "priority": "P1",
+      "domain": "languages",
+      "title": "French and Swahili non-app route cohorts are incomplete",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Current non-app parity generation compares 460 English routes: French 159 pass, two under-standard and 299 missing; Swahili 137 pass, one under-standard and 322 missing. Passing build/check contracts preserve this explicit incomplete coverage.",
+      "nextAction": "Use the existing non-app parity inventory to work country/category/guide/discovery cohorts, preserving proper source owner, canonicals and fallback honesty.",
+      "acceptance": "Required translated non-app cohorts have meaningful local-language content and intended route/metadata behavior; no undisposed missing or under-standard required routes.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-HA-RELATED-IMAGES",
+      "priority": "P1",
+      "domain": "assets",
+      "title": "Hausa related-tool images return production 404",
+      "status": "implemented-awaiting-release",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production browser",
+      "evidence": "Production desktop probes on /ha/kayan-aiki/lambobin-ussd/ and /ha/kayan-aiki/matsa-pdf/ returned 404 for both .webp and .svg images using six -ha IDs: vat-calculator, farm-profit-nigeria, jamb-aggregate, cv-builder, pdf-workspace and ng-paye.",
+      "nextAction": "Inspect related-tool image identity/fallback mapping; use existing source images with accurate alt text; regenerate through owner.",
+      "acceptance": "All referenced images load at desktop/mobile widths; no duplicate or fabricated artwork.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/lambobin-ussd/",
+        "/ha/kayan-aiki/matsa-pdf/"
+      ],
+      "evidenceFiles": [
+        "artifacts/completion-20261001/production-special-reviews/results.json"
+      ],
+      "localRepair": "Mapped six Hausa fallback cards to existing artwork IDs in assets/js/components/related-tools.js; regenerated minified owner. Focused Hausa/artwork tests and both affected-route browser checks pass (zero console/page errors). Final release checks recorded in baseline report; production still pending."
+    },
+    {
+      "id": "COMP-A11Y-NAMES-ROLES",
+      "priority": "P1",
+      "domain": "accessibility",
+      "title": "Critical accessible-name and ARIA defects in production",
+      "status": "partially-implemented-awaiting-release",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production axe",
+      "evidence": "CV builder: tracker roles and copilot role/company labels. Solar ROI: solarRootCountrySelect missing name. Auth: data-mode-link ARIA mismatch. Pricing: billingToggle missing accessible name. Payroll: scroll-region keyboard focus. Reconfirmed in the closing 14-observation production check at the audited deployment.",
+      "nextAction": "Reconcile existing Pricing/Payroll owner changes; final local build/artifact/hreflang/security/actions pass. Publisher integration and exact-SHA production acceptance remain required.",
+      "acceptance": "No relevant critical/serious violations; controls retain functional behavior and visible focus.",
+      "owner": "completion coordinator; existing Phase 1 owner for Pricing switch name",
+      "routes": [
+        "/tools/cv-builder/",
+        "/tools/solar-roi/",
+        "/auth/",
+        "/pricing/",
+        "/pro/apps/payroll/"
+      ],
+      "evidenceFiles": [
+        "artifacts/completion-20261001/production-current-sha-check/results.json",
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ],
+      "implementationEvidence": "Local repairs for Auth, CV and Payroll pass action and axe checks at 1365/390/320. English/French Solar ROI country labels repaired through owners. Pricing switch accessible name remains with an existing owner candidate. No production closeout."
+    },
+    {
+      "id": "COMP-A11Y-CONTRAST",
+      "priority": "P1",
+      "domain": "accessibility",
+      "title": "Repeated contrast and link-identification defects",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production axe",
+      "evidence": "Production probes report contrast issues across home, country/category, language and app surfaces; Atlas/Stream have link-in-text-block findings. Automated hits require contextual review, not a blanket CSS darkening.",
+      "nextAction": "Group by shared token/component, validate computed colors, fix source tokens, and inspect focus/hover/dark mode.",
+      "acceptance": "Touched surfaces pass contrast and distinguish links, with desktop/mobile and keyboard evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/production-browser/results.json",
+        "artifacts/completion-20261001/production-failed-routes/results.json"
+      ],
+      "implementationEvidence": "Auth divider, Pricing secondary price and saved/summary CV contrast repaired and locally tested. Other baseline surfaces still require review."
+    },
+    {
+      "id": "COMP-AFROSTREAM-IMAGE-API",
+      "priority": "P1",
+      "domain": "live-data",
+      "title": "AfroStream image requests intermittently fail",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production request failures",
+      "evidence": "The initial /tools/afrostream/ production probes returned two image API 502 responses at each width. Page rendering succeeded.",
+      "nextAction": "Correlate upstream/function logs and caching/fallback behavior; reproduce before changing provider logic.",
+      "acceptance": "Image handling degrades honestly and normal requests succeed on repeated production checks.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/tools/afrostream/"
+      ],
+      "existingWork": [
+        "Review key app UI and UX"
+      ]
+    },
+    {
+      "id": "COMP-DASHBOARD-NAV",
+      "priority": "P2",
+      "domain": "accounts",
+      "title": "Dashboard desktop navigation intermittently times out",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production browser; unresolved",
+      "evidence": "Two desktop probes timed out at navigation; the focused mobile probe returned HTTP 200 without page exceptions or overflow.",
+      "nextAction": "Measure redirect/auth/network behavior in a fresh context; separate first-load conditions from test timeout.",
+      "acceptance": "Guest and signed-in desktop/mobile navigation settle reliably within an agreed bound.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/dashboard/"
+      ]
+    },
+    {
+      "id": "COMP-SW-CSP",
+      "priority": "P1",
+      "domain": "privacy",
+      "title": "Swahili scripts conflict with privacy CSP in local load smoke",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "local CSP; production consent proof pending",
+      "evidence": "CSP findings affect certificate maker, creator-rate and personal-brand audit. Live load checks did not capture console CSP, so absence of page errors does not resolve them.",
+      "nextAction": "Inspect analytics-loader/consent ownership; collect production console and network evidence with consent off/on; fix through source/generator.",
+      "acceptance": "No blocked expected scripts, no analytics before consent, and no raw sensitive data sent.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/sw/zana/kitengeneza-cheti/",
+        "/sw/zana/bei-za-mtayarishi/",
+        "/sw/zana/ukaguzi-wa-personal-brand/"
+      ]
+    },
+    {
+      "id": "COMP-SEO-SNIPPETS",
+      "priority": "P2",
+      "domain": "seo",
+      "title": "653 pages need snippet review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Across 7,776 indexable EN/FR/SW pages: 531 long-title, 153 long-description and 22 short-title signals; signals overlap. These are editorial signals, not proven Google penalties.",
+      "nextAction": "Prioritize high-intent and measured high-impression routes; align snippets with actual task/value and country, preserving canonicals.",
+      "acceptance": "Each signal is corrected or explicitly accepted; current query/page data informs click-performance claims.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/search-snippets.csv"
+      ]
+    },
+    {
+      "id": "COMP-SEO-SOCIAL-TAGS",
+      "priority": "P2",
+      "domain": "seo",
+      "title": "Social metadata has omissions",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Across all 7,880 indexable pages: 214 missing Twitter cards, 23 OG titles, 32 OG descriptions, 22 OG images and one OG URL; counts overlap. No missing title, description, static H1 or viewport and no malformed JSON-LD found.",
+      "nextAction": "Patch source/generator omissions and check resolved URLs and image fetches; rerun all-language metadata scan.",
+      "acceptance": "Applicable social metadata is complete and matches canonical content.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/metadata-all-locales.json"
+      ]
+    },
+    {
+      "id": "COMP-SEO-SCHEMA-SEMANTICS",
+      "priority": "P2",
+      "domain": "seo",
+      "title": "Structured-data applicability and search quality still need review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "54 pages lack JSON-LD; applicability varies. Valid JSON does not prove correct schema, rich-result eligibility or useful unique content. Static content-integrity passes.",
+      "nextAction": "Review schema applicability, factual entity fields, representative families and repetitive localized landing pages. Obtain current GSC evidence where accessible.",
+      "acceptance": "Correct semantic schema and useful content for intended indexable pages; no unsupported rich-result or ranking claims.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-PRODUCT-TASK-FLOW",
+      "priority": "P1",
+      "domain": "concept",
+      "title": "Task discovery and product promise need end-to-end acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "production visual review and coverage gap",
+      "evidence": "Home exposes many tasks, country hubs, AI and Pro. Mobile first-screen banners and cookie layer compete for space. This review has not tested all country/task/result/export journeys with real user task scenarios.",
+      "nextAction": "Evaluate representative first-time journeys per category/country/language; verify AI routes into existing tools, free/paid boundaries, and preview claims; reconcile ongoing UX owner work.",
+      "acceptance": "Users can find the right workflow, understand sources/assumptions, produce a useful result and export without misleading gates.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "existingWork": [
+        "Audit and improve site UX"
+      ]
+    },
+    {
+      "id": "COMP-SOURCES-COVERAGE",
+      "priority": "P1",
+      "domain": "trust",
+      "title": "Official-source binding is incomplete across major country tool families",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "source-ledger diagnostics",
+      "evidence": "Reported authority URL gaps: salary 32/54; VAT 31/51; employer contributions 40/54; energy 42/54; insurance 29/54; trade 9/24; telecom 9/12. Property has seven authority gaps and six unsourced claim classes; fintech four regulator gaps and seven unsourced claim classes.",
+      "nextAction": "Create jurisdiction/claim-level acceptance cases from existing ledgers; verify primary sources, effective dates, formula oracles and visible confidence.",
+      "acceptance": "Every changing claim/calculation has appropriate dated evidence or an explicit truthful planning/unknown state; pass source gate is not treated as coverage completion.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-SOURCES-STALE",
+      "priority": "P1",
+      "domain": "trust",
+      "title": "115 source-registry entries are stale",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Fresh generation reports 243 source entries and 458 tool hooks, including 115 stale entries. Mining July data is 92 days old against a 90-day high-risk cadence. Snapshot generator dates can advance without a new official review.",
+      "nextAction": "Refresh evidence using source owners; distinguish observedAt, effectiveFrom and lastReviewed; inspect clock-based snapshot regeneration before publishing it.",
+      "acceptance": "No generator timestamp manufactures freshness; user-visible stale/low-confidence behavior and current source evidence agree.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-FUEL-COVERAGE",
+      "priority": "P1",
+      "domain": "live-data",
+      "title": "Fuel price product has no current reference coverage",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "source diagnostic and live DB aggregate",
+      "evidence": "Fuel source check passes its contract but reports zero current references across 54 legacy rows / 11 maintained markets. Separate live scraper rows can be fresh without proving reviewed public-reference coverage.",
+      "nextAction": "Reconcile fuel ledger, public cards, DB provider rows and updater ownership; verify actual displayed values and fallbacks.",
+      "acceptance": "Advertised fuel markets have reviewed current references or honest unavailable states.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-SOURCE-WATCHDOG",
+      "priority": "P1",
+      "domain": "operations",
+      "title": "Source watchdog is not healthy",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "live Supabase aggregate",
+      "evidence": "Latest inspected watchdog: ok=false, one stale source and nine degraded sources. Market feed ug-mtn-merchant-wallet has 84 failed runs and zero successes in the inspected seven-day window; last success September 23.",
+      "nextAction": "Use existing released MTN parser owner/candidate; await and inspect natural scheduled success. Reconcile GlobalPetrolPrices, South Africa medicine and LAMATA source ownership; avoid duplicate manual replays.",
+      "acceptance": "Scheduled execution produces current success and published valid rows; watchdog degrades only for explicitly accepted sources.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "existingWork": [
+        "live-data-product-upgrade-agent-20261001t0516z"
+      ]
+    },
+    {
+      "id": "COMP-GOV-TRANSPORT",
+      "priority": "P1",
+      "domain": "trust",
+      "title": "Government and transport source review queue remains open",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Government: 69 sources, 14 changed, 22 blocked/manual and one broken Nigeria Interior request (503). Transport: 41 sources, six changed and 12 blocked/manual. Changed hashes are review signals.",
+      "nextAction": "Bounded primary-source/manual review; retry transient errors up to three times; verify public-copy changes separately.",
+      "acceptance": "Each changed/broken/manual source has dated review or an explicit unavailable state; no speculative rule changes.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-DB-SECURITY",
+      "priority": "P1",
+      "domain": "security",
+      "title": "Live auth security warning and policy review are pending",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "live Supabase advisors",
+      "evidence": "Supabase advises leaked-password protection disabled. Other findings: 28 RLS-enabled/no-policy INFO, 37 multiple-permissive-policy WARN, 40 unindexed foreign keys INFO, 350 unused indexes INFO. Several tables belong to other product lanes.",
+      "nextAction": "Assess leaked-password setting and affected access contract. Review table ownership and actual access tests; do not add broad policies or drop indexes automatically.",
+      "acceptance": "Appropriate password protection and tenant/access boundaries are verified; each relevant advisor has a documented disposition.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "projectRef": "zpclagtgczsygrgztlts"
+    },
+    {
+      "id": "COMP-RELEASE-ALIGNMENT",
+      "priority": "P1",
+      "domain": "release",
+      "title": "Live migrations and future repairs need release reconciliation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "Git, Netlify metadata, Supabase migrations",
+      "evidence": "Source audit baseline d7680c772414f6cfb50714833398ce946d81f7f7; opening ready production deployment d97f16f18b7d8ca5c8a70f8facac97e1b4a3b594. Closing refresh found ready deployment 6abe706162461e0008b16ea9 at the audited d768 baseline. The broad browser run spans that transition. Live migrations include seven recent car migrations not present in the audited baseline.",
+      "nextAction": "Reconcile publisher and car candidate history by exact commit and migration identity; preserve owner work. Verify new repairs at their own exact production SHA.",
+      "acceptance": "Final integrated candidate and live migrations align; exact-SHA deployment and action proof are recorded.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-CAR-COVERAGE",
+      "priority": "P1",
+      "domain": "cars",
+      "title": "Car price and image coverage is not fully evidenced",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "existing receipts; independent acceptance pending",
+      "evidence": "Existing car receipts report 482 private identity rows without new public priced listings; image receipt claims 228 local images, 254 missing and 27 priced profiles without final rights/exact-model review. These receipt counts are not independently certified here. Two candidates overlap six source files and two conflict keys.",
+      "nextAction": "Reconcile current car owner work; audit rights, exact model matching, authentic source/listing prices, immutable histories and honest empty coverage.",
+      "acceptance": "Public images and price evidence are sourced and dated; unsupported listings are not fabricated; one reconciled integration candidate.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/cars/"
+      ],
+      "existingWork": [
+        "Improve car price comparison"
+      ]
+    },
+    {
+      "id": "COMP-EXISTING-QA",
+      "priority": "P1",
+      "domain": "coordination",
+      "title": "Finish already-owned app QA and article-layout candidates",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "existing owner reports; final proof pending",
+      "evidence": "Key-app receipt reports 113/120 production QA cases passed, seven remaining. AfroStream article sidebar candidate has 14 server and eight browser checks, but production deployment was not verified in the inspected chat.",
+      "nextAction": "Read current owner evidence and publisher status; incorporate existing fixes instead of repeating them.",
+      "acceptance": "All required QA cases pass and candidate behavior is verified at the deployed SHA.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "existingWork": [
+        "Review key app UI and UX",
+        "AfroTools Publisher and Recovery"
+      ]
+    },
+    {
+      "id": "COMP-HANDOFF-QUEUE",
+      "priority": "P2",
+      "domain": "coordination",
+      "title": "Historical handoff queue needs reconciliation",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Queue scan: six ready, 126 informational, 29 blocked, 43 quarantined, eight conflicts and zero invalid receipts. Some ready receipts explicitly describe already-deployed commits. These are not 178 current website defects.",
+      "nextAction": "Match issue keys, integration commit and current release; clear resolved historical blockers only with evidence; quarantine unsafe siblings independently.",
+      "acceptance": "Each genuine open issue has one owner/candidate; no duplicate integration or stale receipt masquerades as current work.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-LIVE-DATA-TESTS",
+      "priority": "P2",
+      "domain": "tests",
+      "title": "Live-data browser tests use obsolete selectors/routes",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Four of six tests fail; old tests select #last-updated and an obsolete /tools/afrofx/ route while current AfroRates uses ar-status and currency converter has another route.",
+      "nextAction": "Update tests to current product behavior and meaningful freshness/failure assertions after inspecting current source.",
+      "acceptance": "Tests exercise real intended routes/status states and pass without weakening coverage.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/test-live-data-status.log"
+      ]
+    },
+    {
+      "id": "COMP-LOCAL-HARNESS",
+      "priority": "P2",
+      "domain": "tests",
+      "title": "Strict local browser gate contains environment gaps",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "After focused retries: 3,470 passed, 220 review and zero hard failures. Of these, 207 are local redirect emulation gaps; all 220 review URLs return production HTTP 200 with canonicals. Seven local API routes still need live action evidence.",
+      "nextAction": "Align local routing/API harness with intended production semantics; preserve API and third-party unknowns as explicit action cases.",
+      "acceptance": "Local strict gate passes applicable cases; provider-dependent actions have separate production proof.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-LEGACY-SCRIPTS",
+      "priority": "P2",
+      "domain": "maintenance",
+      "title": "Four tracked syntax defects in maintenance/evidence files",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Malformed JavaScript: scripts/fix-blog-encoding.js, scripts/fix-sw-paye-batch3.js and scripts/repair-fr-wrappers-and-paye.js. One truncated audit-results/v8-mutating-process-check-final.json. No live app syntax defect found in this parse scan.",
+      "nextAction": "Determine whether scripts should be repaired or retired; inspect unsafe broad replacement mappings before any execution; repair or quarantine invalid historical evidence.",
+      "acceptance": "Maintained scripts parse and have safe dry-run/target boundaries; invalid evidence is not consumed as proof.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-PRIVACY-EXPORTS",
+      "priority": "P1",
+      "domain": "privacy",
+      "title": "Sensitive workflows require comprehensive action and parser proof",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Privacy-AI consent targeted tests passed, but every CV/JD/PDF/invoice/account workflow, parser-compatible export, backup/recovery and optional network send was not exercised here.",
+      "nextAction": "Use synthetic fixtures; trace network with consent off/on; verify PDF/DOCX/TXT contents with independent parsers; inspect analytics metadata and save boundaries.",
+      "acceptance": "Required local-first paths work without gates or sensitive logging; opt-in sends are explicit and exports are parser-compatible.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-API-CONTRACTS",
+      "priority": "P1",
+      "domain": "api",
+      "title": "Public and account API action acceptance is incomplete",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Observed production deployment contains 181 functions and two edge functions. Schema/log counts and HTTP page loads do not exercise every endpoint, permission, validation, rate limit, timeout or provider failure.",
+      "nextAction": "Inventory deployed functions against repository handlers; group endpoint contracts; test safe synthetic requests and authorization isolation; inspect aggregate error statuses.",
+      "acceptance": "Every advertised endpoint has contract, failure, permission and live evidence; unsupported integrations are visibly unavailable.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-AI-ROUTING",
+      "priority": "P1",
+      "domain": "ai",
+      "title": "AI routing and export journeys need full acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Privacy consent tests pass, but the baseline scan does not certify every router intent, clarification, prefill, stale-source label or model/schema failure on deployed functions.",
+      "nextAction": "Exercise existing deterministic contracts, unknown intent, sensitive-data blocking, consent off/on and safe export plans; verify configured provider/cost/failure boundaries.",
+      "acceptance": "AI routes only to known tools, validates outputs and preserves consent/local alternatives; user claims match tested functionality.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-WIDGET-EMBEDS",
+      "priority": "P2",
+      "domain": "widgets",
+      "title": "Embed and partner-host compatibility needs action evidence",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Route graph includes 379 widget pages; route/SEO validators do not certify host integration, responsive resize, messaging, calculation accuracy or third-party cookies.",
+      "nextAction": "Test representative families embedded on a synthetic separate origin with small widths, keyboard and restricted storage.",
+      "acceptance": "Advertised widget contract works across supported hosts and widths; source attribution and result accuracy preserved.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-OFFLINE-CACHE",
+      "priority": "P1",
+      "domain": "reliability",
+      "title": "Offline, stale cache and update recovery require testing",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Local broad browser harness blocks service workers; production probes use fresh contexts and do not certify upgrade from older cached assets or offline exports.",
+      "nextAction": "Exercise online-to-offline, old-to-new cache update, cache invalidation, saved draft recovery and rollback with synthetic fixtures.",
+      "acceptance": "Supported offline workflows and upgrades remain usable; no mixed-version code, lost drafts or stale-current claims.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-CONTENT-EDITORIAL",
+      "priority": "P1",
+      "domain": "content",
+      "title": "Editorial and factual acceptance is incomplete",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Static content integrity passes across the HTML inventory, but facts, author/source provenance, original utility and translated meaning were not individually certified for all 537 articles and other guides.",
+      "nextAction": "Review content by owner/family; source changing claims; prioritize advice/rates/deadlines and repetitive generated pages; keep thin imported briefs labelled.",
+      "acceptance": "Each public content family is useful, sourced and accurately attributed; high-stakes/dated claims have specific review evidence.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-ELECTION-SCHOLARSHIP",
+      "priority": "P1",
+      "domain": "data",
+      "title": "Election and scholarship task freshness needs live acceptance",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Calendar/news/source-truth validators pass their contracts, but committed scholarship status is stale and tracker owner work is active. No exhaustive deadline/link/opportunity/provider snapshot audit is complete here.",
+      "nextAction": "Reconcile current tracker owner and freshness lanes; validate dated official notices, deadlines, live links, source status and honest empty results.",
+      "acceptance": "Changing election/deadline/opportunity records are dated and verified; expired/unknown records cannot imply current availability.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "existingWork": [
+        "Improve Africa Election Tracker"
+      ]
+    },
+    {
+      "id": "COMP-FORMS-DELIVERY",
+      "priority": "P1",
+      "domain": "integrations",
+      "title": "Contact, partner, quote and account follow-up delivery is unverified",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Static forms and API existence do not prove authorized provider delivery, spam prevention, consent, opt-out, error feedback or correct partner labels.",
+      "nextAction": "Inventory form submissions and delivery providers; prepare synthetic test-mode acceptance before any externally delivered test; verify no silent sensitive payloads.",
+      "acceptance": "Advertised submissions have explicit opt-in and confirmed test-mode delivery/error handling; sponsor logic cannot alter calculations/rankings.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-PERFORMANCE",
+      "priority": "P2",
+      "domain": "performance",
+      "title": "Performance needs representative-family and repeat-visit evidence",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "One Netlify mobile Lighthouse probe reports performance 90, accessibility 98, best practices/SEO 100. It does not represent every app, country page, large document or returning cached user.",
+      "nextAction": "Measure representative page/app families on data-light mobile conditions; inspect JS payloads, slow providers, uploads and lazy assets against practical task budgets.",
+      "acceptance": "Required task families remain responsive under supported constraints; any heavy task has usable progress/failure feedback.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-DEPENDENCY-RECOVERY",
+      "priority": "P2",
+      "domain": "operations",
+      "title": "Operational recovery review is incomplete",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Security publish-surface scan passes; npm audit reports zero vulnerabilities across 105 dependencies. These checks do not certify secrets rotation, migration rollback or provider outage recovery.",
+      "nextAction": "Maintain dependency advisory monitoring; inspect relevant backup/restore and rollback procedures without destructive tests.",
+      "acceptance": "Relevant vulnerabilities remain disposed with evidence; recovery and rollback procedures are documented and exercised safely.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-AUTOMATION-EVIDENCE",
+      "priority": "P1",
+      "domain": "operations",
+      "title": "Scheduled completion lanes need post-update run evidence",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Schedule validator passes its contract but reports nine failed/blocked/interrupted historical lanes whose definitions changed October 1; several await October 2-6 runs. Six-week SEO director and command-centre hourly-sync IDs are absent from disk; a car evidence automation is not registered. No missing production runner schedules were reported.",
+      "nextAction": "Reconcile intended active/retired IDs and registry; verify natural post-update runs and current receipts before calling automation healthy.",
+      "acceptance": "Each required lane has an accurate registered owner and recent successful execution or explicitly accepted state; contract presence is not execution proof.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-WEEKLY-HANDOVER",
+      "priority": "P1",
+      "domain": "operations",
+      "title": "Weekly-only maintenance readiness is not achieved",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "repository/static",
+      "evidence": "Open completion issues and unverified required workflows remain. No completed recovery/weekly handover exercise exists for this program.",
+      "nextAction": "Close completion gates, document source owners/alerts/cadences and rollback/recovery, then exercise the weekly checklist.",
+      "acceptance": "No open completion blockers or undisposed required unknowns; maintenance checklist and recovery proof recorded.",
+      "owner": "completion coordinator; assign source owner before repair"
+    },
+    {
+      "id": "COMP-QUALITY-AFROPAYROLL-OS-SW-COVERAGE-AFROPAYROLL-OS",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "AfroPayroll OS static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface; thin visible copy; no input path; no completion path; browser smoke not run; missing official/verification evidence; missing disclaimer/limitations; no verification panel; lags category-required features",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/sw/zana/afropayroll-os/"
+      ],
+      "sourceOwner": "sw/zana/afropayroll-os/index.html",
+      "score": 21,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-DOC-GENERATOR-SW-COVERAGE-DOC-GENERATOR",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kitengeneza nyaraka static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface; thin visible copy; no input path; no completion path; browser smoke not run; lags category-required features; missing benchmark feature: inputSurface; missing benchmark feature: download; missing benchmark feature: resultOutput",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/sw/zana/kitengeneza-nyaraka/"
+      ],
+      "sourceOwner": "sw/zana/kitengeneza-nyaraka/index.html",
+      "score": 32,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-INVOICE-GENERATOR-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kíriíro ìwé owó static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing benchmark feature: download",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/kiriiro-invoice/"
+      ],
+      "sourceOwner": "yo/awon-ise/kiriiro-invoice/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-VAT-CALCULATOR-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kalkuletan VAT static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing disclaimer/limitations; missing benchmark feature: disclaimer",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/kalkuletan-vat/"
+      ],
+      "sourceOwner": "yo/awon-ise/kalkuletan-vat/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-HEALTH-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìlera àti Ìdílé ni Yorùbá static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/ilera/"
+      ],
+      "sourceOwner": "yo/ilera/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-TELECOM-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìbáraẹnisọrọ ni Yorùbá static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/ibaraenisoro/"
+      ],
+      "sourceOwner": "yo/ibaraenisoro/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-WAEC-NECO-CALCULATOR-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kalkuletan WAEC/NECO static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/kalkuletan-waec-neco/"
+      ],
+      "sourceOwner": "yo/awon-ise/kalkuletan-waec-neco/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-GENOTYPE-CHECKER-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Duba genotype ati blood group static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/duba-genotype/"
+      ],
+      "sourceOwner": "yo/awon-ise/duba-genotype/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-RECEIPT-GENERATOR-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kíriíro risiti static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing benchmark feature: download",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/kiriiro-risiti/"
+      ],
+      "sourceOwner": "yo/awon-ise/kiriiro-risiti/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-CROP-YIELD-NIGERIA-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Àfiyèsí èso irúgbìn static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/eso-irugbin/"
+      ],
+      "sourceOwner": "yo/awon-ise/eso-irugbin/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-AGGREGATE-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kalkuletan JAMB static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; missing benchmark feature: disclaimer",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/kalkuletan-jamb/"
+      ],
+      "sourceOwner": "yo/awon-ise/kalkuletan-jamb/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-PDF-MERGE-SPLIT-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Hàdà àti pín PDF static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/hada-ati-pin-pdf/"
+      ],
+      "sourceOwner": "yo/awon-ise/hada-ati-pin-pdf/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-FERTILIZER-NIGERIA-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Iwọn ajílẹ̀ Naijiria static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/iwon-ajile/"
+      ],
+      "sourceOwner": "yo/awon-ise/iwon-ajile/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-PDF-COMPRESS-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Dín ìwọ̀n PDF static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/din-iwon-pdf/"
+      ],
+      "sourceOwner": "yo/awon-ise/din-iwon-pdf/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-CASSAVA-PROCESSING-NIGERIA-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ṣíṣe rogo Naijiria static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/sise-rogo/"
+      ],
+      "sourceOwner": "yo/awon-ise/sise-rogo/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-HOSPITAL-COST-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìṣirò owó ilé ìwòsàn static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions; high-intent money tool lacks business CTA",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/owo-ile-iwosan/"
+      ],
+      "sourceOwner": "yo/awon-ise/owo-ile-iwosan/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-FARM-BUDGET-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìsúná ọ̀gbìn Naijiria static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/isuna-ogbin/"
+      ],
+      "sourceOwner": "yo/awon-ise/isuna-ogbin/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-STAPLE-BASKET-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Àgbọn ọjà oúnjẹ static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/agbon-oja/"
+      ],
+      "sourceOwner": "yo/awon-ise/agbon-oja/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-COMMODITY-PRICES-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Iye ọjà ọ̀gbìn static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/owo-oja-ogbin/"
+      ],
+      "sourceOwner": "yo/awon-ise/owo-oja-ogbin/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-NYSC-ALLOWANCE-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kalkuletan alawus NYSC static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; missing benchmark feature: disclaimer",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/alawus-na-nysc/"
+      ],
+      "sourceOwner": "yo/awon-ise/alawus-na-nysc/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-BUSINESS-REGISTRATION-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Rajistar Kasuwanci static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "no app/script evidence; browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/rajistar-kasuwanci/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/rajistar-kasuwanci/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-FISH-FARMING-NIGERIA-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Èrè oko ẹja Naijiria static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/ere-oko-eja/"
+      ],
+      "sourceOwner": "yo/awon-ise/ere-oko-eja/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-LIVESTOCK-FEED-NIGERIA-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Oúnjẹ ẹranko Naijiria static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing methodology/breakdown",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/ounje-eranko/"
+      ],
+      "sourceOwner": "yo/awon-ise/ounje-eranko/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-PDF-WORKSPACE-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Wurin Aikin PDF static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/wurin-aikin-pdf/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/wurin-aikin-pdf/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-SCHOOL-FEES-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kwatanta Kudin Makaranta static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/kwatanta-kudin-makaranta/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/kwatanta-kudin-makaranta/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-TELECOM-DATA-USAGE-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìṣirò GB oṣooṣù static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing disclaimer/limitations; missing benchmark feature: disclaimer",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/amulo-data/"
+      ],
+      "sourceOwner": "yo/awon-ise/amulo-data/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-WHATSAPP-LINK-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Ìjápọ̀ WhatsApp static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; missing disclaimer/limitations; missing benchmark feature: disclaimer",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/whatsapp-link/"
+      ],
+      "sourceOwner": "yo/awon-ise/whatsapp-link/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-CBT-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Jagorar JAMB CBT a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/cbt/"
+      ],
+      "sourceOwner": "ha/jamb/cbt/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-PDF-CONVERT-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Canja PDF static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/canza-pdf/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/canza-pdf/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-TELECOM-DATA-PLAN-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Kwatanta Kunshin Intanet static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/kwatanta-kunshin-intanet/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/kwatanta-kunshin-intanet/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-ENGLISH-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "JAMB Turanci a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/turanci/"
+      ],
+      "sourceOwner": "ha/jamb/turanci/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-MATHEMATICS-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "JAMB Lissafi a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/lissafi/"
+      ],
+      "sourceOwner": "ha/jamb/lissafi/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-TUTOR-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Jagorar Mai Taimakon JAMB AI static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/tutor/"
+      ],
+      "sourceOwner": "ha/jamb/tutor/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-PDF-SIGN-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Sa Hannu a PDF static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/kayan-aiki/sanya-hannu-pdf/"
+      ],
+      "sourceOwner": "ha/kayan-aiki/sanya-hannu-pdf/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-PAST-QUESTIONS-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Hanyar Tsoffin Tambayoyin JAMB static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/past-questions/"
+      ],
+      "sourceOwner": "ha/jamb/past-questions/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-BIOLOGY-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "JAMB Nazarin Halittu a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/halittu/"
+      ],
+      "sourceOwner": "ha/jamb/halittu/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-CHEMISTRY-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "JAMB Kimiyya a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions; weak meta description length",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/kimiyya/"
+      ],
+      "sourceOwner": "ha/jamb/kimiyya/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-JAMB-PHYSICS-HA",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "JAMB Fisiks a Hausa static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run; stale or undated assumptions",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/ha/jamb/fisiks/"
+      ],
+      "sourceOwner": "ha/jamb/fisiks/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-QUALITY-NAIRA-TO-WORDS-YO",
+      "priority": "P2",
+      "domain": "quality",
+      "title": "Naira sí ọ̀rọ̀ static quality review",
+      "status": "open",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "static heuristic; not a proven broken app",
+      "evidence": "browser smoke not run",
+      "nextAction": "Inspect real rendered workflow and appropriate category rubric. Do not add meaningless controls/text just to raise score.",
+      "acceptance": "Confirmed defects resolved; score-only false positives explicitly disposed with action evidence.",
+      "owner": "completion coordinator; assign source owner before repair",
+      "routes": [
+        "/yo/awon-ise/naira-si-oro/"
+      ],
+      "sourceOwner": "yo/awon-ise/naira-si-oro/index.html",
+      "score": 44,
+      "rank": "F"
+    },
+    {
+      "id": "COMP-AUTH-HISTORY-MODE",
+      "priority": "P1",
+      "domain": "account",
+      "title": "Auth browser history leaves the wrong form visible",
+      "status": "implemented-awaiting-release",
+      "evidenceLayer": "local action reproduction and regression",
+      "evidence": "Before repair Back changed mode URL but left the reset form visible. Added popstate synchronization. Three width-specific keyboard Back/Forward regression cases pass, with next destination preserved.",
+      "nextAction": "Publisher integration and exact-SHA production history checks.",
+      "acceptance": "Keyboard switching and browser Back/Forward retain one current mode and matching visible panel.",
+      "routes": [
+        "/auth/"
+      ],
+      "sourceOwner": "auth/index.html",
+      "evidenceDate": "2026-10-01",
+      "owner": "completion coordinator",
+      "evidenceFiles": [
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
+    },
+    {
+      "id": "COMP-SOLAR-GENERATOR-JS",
+      "priority": "P1",
+      "domain": "build",
+      "title": "Solar ROI generation emits invalid hub JavaScript",
+      "status": "implemented-awaiting-release",
+      "evidenceLayer": "source generator and generated-script syntax",
+      "evidence": "Regeneration emits an unescaped HTTPS regular expression from a template literal, causing a browser syntax error and inert country controls. Source fix passes script parsing on hub plus 54 country pages; local hub-to-country actions pass at three widths.",
+      "nextAction": "Final source/dist validation, publisher integration and exact-SHA production action acceptance.",
+      "acceptance": "Clean regeneration keeps scripts parseable and country search/selection functional.",
+      "routes": [
+        "/tools/solar-roi/"
+      ],
+      "sourceOwner": "scripts/generate-energy-x54.js",
+      "evidenceDate": "2026-10-01",
+      "owner": "completion coordinator",
+      "evidenceFiles": [
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
+    },
+    {
+      "id": "COMP-FR-SOLAR-COUNTRY-CONTINUATION",
+      "priority": "P1",
+      "domain": "localization",
+      "title": "French Solar ROI country continuation leaves French",
+      "status": "implemented-awaiting-release",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "local generated source action",
+      "evidence": "At 1365/390/320, selecting Kenya sets the action link to /tools/solar-roi/kenya/. Typing Ghana and pressing Enter opens /tools/solar-roi/ghana/ with lang=en. The visible label repair does not repair the locale continuation.",
+      "nextAction": "Publisher source integration, Pricing/Payroll overlap reconciliation for the cumulative candidate, and exact-SHA production French country/action checks.",
+      "acceptance": "French country selection, search and continuation remain on supported French canonical routes; fallback is explicit where necessary.",
+      "owner": "completion coordinator",
+      "routes": [
+        "/fr/tools/roi-solaire/"
+      ],
+      "sourceOwner": "scripts/build-french-energy-parity.js",
+      "evidenceFiles": [
+        "artifacts/completion-20261001/french-solar-action.json",
+        "tests/french-solar-country-routes.test.js",
+        "tests/e2e/french-solar-country-routing.spec.js"
+      ],
+      "implementationEvidence": "French source owners now rewrite only known Solar route literals through AST parsing and anchor destinations. All 54 root/country selector links and root country cards are checked at 1365/390/320. Keyboard root/country search and navigation stay French, and downloaded brief links remain French. Four Node regressions, 20-app static parity and 54-country repeat generation pass."
+    },
+    {
+      "id": "COMP-FR-SOLAR-REPEATABLE-REPAIR",
+      "priority": "P2",
+      "domain": "localization",
+      "title": "French Solar repair corrupts Installation on repeated runs",
+      "status": "implemented-awaiting-release",
+      "evidenceDate": "2026-10-01",
+      "evidenceLayer": "generated output review and repeatability test",
+      "evidence": "The Install-to-Installation substring rule also matched existing French Installation and produced Installationation. The owner now matches the standalone English word and normalizes earlier corruption. Focused repeatability test proves one selector label, unchanged calculator script and stable reruns.",
+      "nextAction": "Publisher integration and exact-SHA production text verification.",
+      "acceptance": "Repeated repairs preserve French wording, labels and calculator scripts.",
+      "owner": "completion coordinator",
+      "sourceOwner": "scripts/repair-fr-solar-country-pages.js",
+      "evidenceFiles": [
+        "tests/french-solar-picker-repair.test.js",
+        "reports/afrotools-completion-accessibility-2026-10-01.json"
+      ]
+    }
+  ]
+}

@@ -36,6 +36,26 @@ test('an empty reviewed bank is valid but contains no gradable objects', async (
   assert.equal((await trust.loadPool()).questions.length, 0);
 });
 
+test('browser preserves explicit stress notation and rejects ordinary or malformed case duplicates', async () => {
+  const { review: ignored, ...base } = questions()[0];
+  const q = { ...base, subject: 'english', question: 'Choose the stress pattern. The stressed syllable is written in capital letters. immunity',
+    options: { A: 'iMMUnity', B: 'immuNIty', C: 'Immunity', D: 'immuniTY' }, answer: 'A', format: 4 };
+  const { trust } = browser(bank([reviewed(q)]));
+  const pool = await trust.loadPool();
+  assert.equal(trust.assertEligible(pool.questions, revision), true);
+  assert.deepEqual(JSON.parse(JSON.stringify(pool.questions[0].options)), q.options);
+  for (const changes of [
+    { subject: 'mathematics' },
+    { question: q.question.replace('stress pattern', 'spelling') },
+    { question: q.question.replace('capital letters', 'letters') },
+    { question: q.question.replace('stressed syllable', 'word') },
+    ...['iMMUnity', 'immunity', 'IMMUNITY', 'imMUniTY', 'imMU-nity', 'imMU nity', 'imMU1nity', 'imMUnіty', 'different', 'I']
+      .map(value => ({ options: { ...q.options, B: value } }))
+  ]) await assert.rejects(browser(bank([reviewed({ ...q, ...changes })])).trust.loadPool(), /invalid|duplicate/);
+  const unreviewed = { ...q };
+  await assert.rejects(browser(bank([unreviewed])).trust.loadPool(), /review/);
+});
+
 test('browser accepts reviewed A-F questions and rejects gaps or a seventh option', async () => {
   const { review: ignored, ...base } = questions()[0];
   const six = { ...base, options: { A: '36', B: '40', C: '48', D: '49', E: '41', F: '42' }, answer: 'F', format: 6 };

@@ -37,6 +37,14 @@ remain unchanged. At the program closeout, pause the heartbeat and reconcile its
 allowlist entry and budget with the remaining active lanes. Do not leave an expired
 heartbeat listed as required active work.
 
+## Car Pricer evidence ownership
+
+The user-authorized `car-market-evidence-and-price-freshness` job owns car catalog and listing evidence, image provenance review, private research coverage, and reviewed price-snapshot proposals. It runs daily at 09:00 Asia/Tashkent. Private browser research is distinct from accepted listing observations and public prices; source approval and image rights remain separate gates. The retired car specialist definitions remain unscheduled and map to this owner.
+
+`transport-source-freshness-sweep` retains official transport and relocation/visa source review. Customs rates remain owned by `trade-desk-source-automation`. Car evidence refreshes consume those verified inputs and hand validated candidates to the sole publisher. No job may fabricate prices or bypass marketplace challenges.
+
+The policy now accounts for 28 lanes: the 27 existing allowlisted lanes plus the dedicated car lane. The previous cap of 26 already lagged the existing 27 entries; this reconciliation changes no unrelated lane, schedule or model. Registration does not prove collection or production freshness.
+
 ## Validation
 
 Run:
@@ -331,3 +339,9 @@ are not classified as missed runs. Keep global memory registries untouched.
 The image queue runs at 09:30 independently of any task lifecycle. The former
 image heartbeat disappeared during configuration verification; the existing
 image queue was activated instead of recreating a duplicate schedule.
+
+## Existing external Friday draft registration (October 1, 2026)
+
+The account-wide control plane also records the existing human-authorized `raalhu-solar-friday-blog-draft` heartbeat. It drafts weekly at Friday 09:00 in its Raalhu Solar target chat and separate `C:\Users\Oza\Desktop\RS\Website` project. Its original human schedule answer is retained in publisher evidence. This monitor entry does not grant AfroTools source integration or publication authority, or permission to publish a Raalhu draft. Source/release identity, exact remote ownership and producer-role checks still apply.
+
+The current account policy contains 29 declared existing lanes after the car owner and external draft registration. The budget matches that declared inventory; no saved schedule, model, execution settings or target was changed by registration. Unknown active definitions remain integrity errors. Historical 24-cron descriptions remain historical operating-model evidence.

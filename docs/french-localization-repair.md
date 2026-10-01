@@ -26,6 +26,14 @@ Note: `generate-fr-tool-gap-pages.js` now pipes its output through the accent
 repairer at write time, so regenerating legacy PAGES entries can no longer
 reintroduce unaccented copy.
 
+Solar country navigation is also owned by the French generation pipeline.
+`scripts/lib/french-solar-country-routes.js` verifies the 54 existing French
+destinations, then updates exact Solar route literals through an AST parser and
+updates anchor destinations. The Energy hub owner and country repair owner both
+apply it. Calculator expressions, country data, external source URLs and English
+hreflang are preserved. Verify dropdown/search/card continuations and links in
+downloaded briefs; a French title alone does not prove a French workflow.
+
 ## Post-generation pipeline (run after any FR generation batch)
 
 ```

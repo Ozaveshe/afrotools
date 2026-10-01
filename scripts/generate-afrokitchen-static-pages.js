@@ -41,6 +41,9 @@ const {
 } = require("./lib/afrokitchen-cuisine-intelligence");
 
 const LANDING_PATH = path.join(TOOL_DIR, "index.html");
+function renderCookbookNav() {
+  return '<nav class="ak-cookbook-nav" aria-label="AfroKitchen cookbook"><a class="ak-cookbook-nav-brand" href="/tools/afrokitchen/">AfroKitchen</a><a href="/tools/afrokitchen/#browse-panel">Recipes</a><a href="/tools/afrokitchen/#country-grid">Countries</a><a href="/tools/afrokitchen/#collections-grid">Collections</a><a href="/tools/afrokitchen/#cook-this-week">Weekly planner</a><a href="/tools/afrokitchen/?saved=1#browse-panel">My cookbook</a></nav>';
+}
 const RECIPE_RESEARCH_AUDIT_PATH = path.join(ROOT, "data", "afrokitchen", "recipe-research-audit.json");
 const AK_FONT_HREF = "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap";
 const LEGACY_RECIPE_ALIASES = [
@@ -1239,7 +1242,7 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
     recipeSchema.publisher = {
       "@type": "Organization",
       name: "AfroTools",
-      url: SITE_ORIGIN
+      url: SITE_ORIGIN + '/'
     };
     recipeSchema.datePublished = isoDate(recipe.created_at) || undefined;
     recipeSchema.dateModified = isoDate(recipe.updated_at) || undefined;
@@ -1547,12 +1550,14 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     }
   </style>
   <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
+  <link rel="stylesheet" href="/tools/afrokitchen/cookbook.css">
 ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema-blockers" content="${escapeHtml(schemaBlockers.join(","))}">\n` : ""}
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 <div class="ak-page ak-static-page">
+${renderCookbookNav()}
   <section class="ak-hero"${heroStyle}>
     <div class="ak-hero-inner ak-hero-single">
       <div class="ak-hero-text">
@@ -1574,9 +1579,11 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
           <a href="${recipe.country_route_path}" class="ak-btn ak-btn-secondary">${akIcon("country", "ak-icon-sm")}<span>Explore ${escapeHtml(recipe.country_name)} recipes</span></a>
         </div>
       </div>
-      <aside class="ak-static-hero-card">
+      <aside class="ak-static-hero-card ak-cookbook-cover">
+        ${galleryImages.length ? `<img class="ak-cookbook-cover-photo" src="${escapeHtml(galleryImages[0].src)}" alt="${escapeHtml(galleryImages[0].alt)}" width="1200" height="900" fetchpriority="high" decoding="async">` : ''}
+        <div class="ak-cookbook-cover-note">
         <div class="ak-support-label">Kitchen snapshot</div>
-        <h2>${escapeHtml(recipe.name)}</h2>
+        <h2>Before you cook</h2>
         <p>${escapeHtml(storyLead)}</p>
         <div class="ak-static-facts">
           <div><span>Best served with</span><strong>${escapeHtml(recipe.best_served_with || "Browse the country hub for pairing ideas and nearby dishes.")}</strong></div>
@@ -1586,6 +1593,7 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
           ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
         ${media.credit ? `<div class="ak-static-credit">${akIcon("source", "ak-icon-sm ak-icon-muted")}<span>Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</span></div>` : ""}
+        </div>
       </aside>
     </div>
   </section>
@@ -1602,6 +1610,8 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
+        <div class="ak-cookbook-tools"><button type="button" class="ak-btn ak-btn-outline" data-ak-save-recipe aria-pressed="false">Save recipe</button><button type="button" class="ak-btn ak-btn-primary" data-ak-cook-mode>Open cook mode</button><a class="ak-btn ak-btn-outline" href="#recipe-method">Jump to method</a><a href="/tools/afrokitchen/?saved=1#browse-panel">My cookbook</a></div>
+        <p class="ak-cookbook-status" data-ak-cookbook-status role="status" aria-live="polite"></p>
 
         <div class="ak-recipe-layout">
           <aside class="ak-ingredients-panel">
@@ -1640,6 +1650,7 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
         </div>
       </div>
 
+      <details class="ak-cookbook-more"><summary>Cooking notes, photos &amp; serving ideas</summary>
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe context</div>
         <h2 class="ak-section-title">More about this dish</h2>
@@ -1661,12 +1672,14 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
       ${renderedGallery}
       ${renderedPairingRail}
       ${renderedSocialPlate}
+      </details>
 
-      ${relatedSection}
+      <details class="ak-cookbook-more"><summary>Explore more recipes</summary>${relatedSection}</details>
     </div>
   </section>
 </div>
 <afro-footer></afro-footer>
+<script src="/tools/afrokitchen/cookbook.js" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=3"></script>
@@ -2453,6 +2466,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
     }
   </style>
   <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
+  <link rel="stylesheet" href="/tools/afrokitchen/cookbook.css">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
@@ -2461,6 +2475,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
 <body>
 <afro-navbar></afro-navbar>
 <div class="ak-page ak-country-static-page">
+${renderCookbookNav()}
   <section class="ak-hero">
     <div class="ak-hero-inner ak-hero-single">
       <div class="ak-hero-text">
@@ -2526,6 +2541,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
   </section>
 </div>
 <afro-footer></afro-footer>
+<script src="/tools/afrokitchen/cookbook.js" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 </body>
@@ -2625,6 +2641,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
     }
   </style>
   <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
+  <link rel="stylesheet" href="/tools/afrokitchen/cookbook.css">
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
@@ -2632,6 +2649,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
 <body>
 <afro-navbar></afro-navbar>
 <div class="ak-page ak-collection-static-page">
+${renderCookbookNav()}
   <section class="ak-hero">
     <div class="ak-hero-inner ak-hero-single">
       <div class="ak-hero-text">
@@ -2683,6 +2701,7 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
   </section>
 </div>
 <afro-footer></afro-footer>
+<script src="/tools/afrokitchen/cookbook.js" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 </body>
@@ -3005,6 +3024,45 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-cookbook')) {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const engine = loadAfroKitchenEngine();
+    const recipeImages = loadRecipeImages();
+    const researchAudit = loadRecipeResearchAudit();
+    const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
+    const recipes = manifest.recipes.filter(recipe => recipe.generated_in_wave);
+    const analytics = require('./inject-analytics-loader');
+    const routes = require('./lib/route-contract');
+    const routeGraph = routes.buildRouteGraph();
+    const { dedupeRepeatedParagraphs } = require('./lib/content-integrity');
+    const { execFileSync } = require('child_process');
+    const files = [];
+    function refreshPage(directory, html) {
+      const relative = path.relative(ROOT, path.join(directory, 'index.html')).replace(/\\/g, '/');
+      const normalized = analytics.normalizeLoaderInHtml(html, analytics.canonicalLoaderTag());
+      if (normalized.duplicate) throw new Error('Duplicate analytics loader: ' + directory);
+      const bootstrap = analytics.normalizeBootstrapInHtml(normalized.html, analytics.earlyBootstrapTag(), analytics.shouldUseEarlyBootstrap(relative));
+      if (bootstrap.duplicate) throw new Error('Duplicate analytics bootstrap: ' + directory);
+      let next = bootstrap.html;
+      const socialUrl = next.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+      const size = socialUrl ? imageSizeFromUrl(socialUrl, ROOT) : null;
+      if (size) next = next.replace('</head>', '<meta property="og:image:width" content="' + size.w + '">\n<meta property="og:image:height" content="' + size.h + '">\n</head>');
+      writeHtmlPage(directory, dedupeRepeatedParagraphs(next).html.normalize('NFC'));
+      files.push(relative);
+    }
+    recipes.forEach(recipe => refreshPage(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
+    manifest.countries.forEach(country => refreshPage(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
+    manifest.collections.forEach(collection => refreshPage(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages)));
+    // Preserve the established canonical and locale contracts through their owner.
+    const refreshedFiles = new Set(files);
+    routes.syncRouteMetadata({ ...routeGraph, routes: routeGraph.routes.filter(record => refreshedFiles.has(record.source?.file)) }, { write: true });
+    // Use the same owner as build:seo, with bounded argument lists for Windows.
+    for (let offset = 0; offset < files.length; offset += 80) {
+      execFileSync(process.execPath, [path.join(ROOT, 'scripts/add-webapplication-schema.js'), '--fix', '--files=' + files.slice(offset, offset + 80).join(',')], { cwd: ROOT, stdio: 'pipe' });
+    }
+    console.log('Refreshed cookbook presentation from saved manifest: ' + recipes.length + ' recipes, ' + manifest.countries.length + ' countries, ' + manifest.collections.length + ' collections. No live data reads or route pruning.');
+    return;
+  }
   if (process.argv.includes('--refresh-recipe-nutrition')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();

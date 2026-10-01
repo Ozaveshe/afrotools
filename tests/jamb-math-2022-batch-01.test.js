@@ -34,7 +34,7 @@ test('2022 batch has traceable publisher positions, unique answers and repeatabl
 
 test('2022 Mathematics page discloses collection provenance and keeps solutions closed', () => {
   const page = renderYear('mathematics', '2022', pool.questions, ledger, ['2022', '2023', '2024', '2025']);
-  assert.equal(page.approvedIds.length, 16);
+  assert.ok(page.approvedIds.length >= 16, 'All original batch items must remain available as later batches grow');
   assert.match(page.html, /publisher-labelled 2022 collection/);
   assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   assert.match(page.html, /Practice selection: full-paper coverage has not been confirmed/);

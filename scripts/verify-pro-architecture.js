@@ -107,12 +107,19 @@ function assertIds(label, actual, expected) {
 assertIds("control app", controlApps, expectedControlIds);
 assertIds("daily app", dailyApps, expectedDailyIds);
 
-if (allApps.length !== 21) addFailure(`architecture expected 21 apps, got ${allApps.length}`);
-if (summary.totalApps !== 21) addFailure(`summary.totalApps expected 21, got ${summary.totalApps}`);
-if (summary.controlApps !== 11) addFailure(`summary.controlApps expected 11, got ${summary.controlApps}`);
-if (summary.dailyApps !== 10) addFailure(`summary.dailyApps expected 10, got ${summary.dailyApps}`);
-if (summary.appRoutesReady !== 21) addFailure(`summary.appRoutesReady expected 21, got ${summary.appRoutesReady}`);
+if (allApps.length !== expectedControlIds.length + expectedDailyIds.length) addFailure(`architecture expected 21 apps, got ${allApps.length}`);
+if (summary.totalApps !== allApps.length) addFailure(`summary.totalApps expected 21, got ${summary.totalApps}`);
+if (summary.controlApps !== controlApps.length) addFailure(`summary.controlApps expected 11, got ${summary.controlApps}`);
+if (summary.dailyApps !== dailyApps.length) addFailure(`summary.dailyApps expected 10, got ${summary.dailyApps}`);
+if (summary.appRoutesReady !== allApps.filter(app => app.routeExists !== false).length) addFailure(`summary.appRoutesReady expected 21, got ${summary.appRoutesReady}`);
 
+if (!architecture.isReadyForRegisteredRoutes()) addFailure('registered route manifest is incomplete');
+for (const app of allApps) {
+  for (const field of ['workflow','devicePersistence','accountSaveLoad','liveSync','sharing','automation','externalExecution','reviewedAt']) {
+    if (!app.capabilities || !app.capabilities[field]) addFailure(app.id + ' missing capability dimension ' + field);
+  }
+  if (typeof app.readiness === 'number') addFailure(app.id + ' exposes an unverified readiness percentage');
+}
 const idSet = new Set();
 allApps.forEach((app) => {
   if (idSet.has(app.id)) addFailure(`duplicate app id ${app.id}`);

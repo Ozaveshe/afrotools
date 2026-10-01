@@ -353,8 +353,8 @@ function normalizeProApps(apps) {
     publicationStatus: app.routeExists === false ? 'unpublished' : 'published',
     routeStatus: app.routeStatus,
     shellState: app.shellState,
-    readiness: app.readiness,
-    source: 'assets/js/lib/pro-app-registry.js'
+    capabilities: app.capabilities,
+    source: app.priority != null ? 'assets/js/lib/pro-daily-os-registry.js' : 'assets/js/lib/pro-app-registry.js'
   })).sort((a, b) => a.id.localeCompare(b.id));
 }
 
