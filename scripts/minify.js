@@ -23,6 +23,7 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['assets/js/lib/src/car-import-cost-engine.js', 'assets/js/lib/car-import-cost-engine.js'],
   ['assets/js/pages/src/business-plan.js', 'assets/js/pages/business-plan.js'],
   ['assets/js/pages/src/receipt-generator.js', 'assets/js/pages/receipt-generator.js'],
   ['assets/js/pages/src/meeting-minutes.js', 'assets/js/pages/meeting-minutes.js'],
