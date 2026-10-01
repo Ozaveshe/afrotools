@@ -36,6 +36,17 @@ function isSkippablePath(path) {
   );
 }
 
+// Function responses do not inherit _headers. Keep machine endpoints crawlable
+// so search engines can read noindex, without changing their auth or payloads.
+function isApiEndpoint(path) {
+  if (path.startsWith('/.netlify/functions/')) return true;
+  const unprefixed = path.replace(/^\/(?:fr|sw|ha|yo)(?=\/api(?:\/|$))/, '');
+  if (unprefixed !== '/api' && !unprefixed.startsWith('/api/')) return false;
+  const normalized = normalizeBody(unprefixed);
+  return normalized !== '/api' && normalized !== '/api/pricing' &&
+    normalized !== '/api/docs' && !normalized.startsWith('/api/docs/');
+}
+
 /** Normalize a path into a LOCALE_ROUTES key: lowercase, no /index.html, no .html, no trailing slash. */
 function normalizeBody(value) {
   const body = String(value || '')
@@ -102,6 +113,17 @@ function permanentRedirect(url) {
 export default async (request, context) => {
   const url = new URL(request.url);
   const path = url.pathname;
+
+  if (isApiEndpoint(path)) {
+    const response = await context.next({ sendConditionalRequest: true });
+    const headers = new Headers(response.headers);
+    headers.set('X-Robots-Tag', 'noindex');
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
+  }
 
   if (isSkippablePath(path)) return context.next();
 
