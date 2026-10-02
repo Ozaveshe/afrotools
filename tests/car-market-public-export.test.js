@@ -29,6 +29,7 @@ const cases = {
   'changed revision': s => s.members[0].current_revision = false,
   'rejected listing': s => s.members[0].review_status = 'rejected',
   'withdrawn live source': s => s.members[0].source_access_status = 'blocked',
+  'unreviewed live source': s => s.members[0].source_access_status = 'review-needed',
   'mixed currency': s => s.members[0].currency = 'USD',
   'mixed condition': s => s.members[0].condition_label = 'local-used',
   'duplicate URL': s => s.members[0].listing_url = s.members[1].listing_url,

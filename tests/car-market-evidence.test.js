@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const { validate, intakeSql, vehicleIds } = require('../scripts/car-market-evidence');
 
 const now = new Date('2026-10-01T12:00:00Z');
-const sources = { 'approved-test': { domain: 'example.org', access_status: 'automated-approved' }, blocked: { domain: 'example.org', access_status: 'blocked' } };
+const sources = { 'approved-test': { domain: 'example.org', access_status: 'automated-approved' }, blocked: { domain: 'example.org', access_status: 'blocked' }, unreviewed: { domain: 'example.org', access_status: 'review-needed' } };
 const fixture = {
   vehicle_id: 'toyota-camry-2005', source_id: 'approved-test',
   listing_url: 'https://example.org/cars/123#details', observed_at: '2026-10-01T11:00:00Z',
@@ -23,9 +23,10 @@ test('valid listing becomes pending and retains a source URL', () => {
   assert.match(intakeSql(rows), /Lagos'' Island/);
   assert.doesNotMatch(intakeSql(rows), /published/);
 });
-test('rejects blocked sources, outside domains, stale observations and duplicate listings', () => {
+test('rejects blocked and review-needed sources, outside domains, stale observations and duplicate listings', () => {
   for (const change of [
     { source_id: 'blocked' },
+    { source_id: 'unreviewed' },
     { listing_url: 'https://example.org.evil.test/cars/123' },
     { observed_at: '2026-08-01T11:00:00Z' }
   ]) assert.throws(() => validate([{ ...fixture, ...change }], sources, vehicleIds(), now));
