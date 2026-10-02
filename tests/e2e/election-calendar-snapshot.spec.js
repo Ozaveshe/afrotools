@@ -24,7 +24,11 @@ test('calendar is source-readable without JavaScript', async ({ browser }) => {
     await expect(page.getByRole('heading', { name: /Upcoming as of/ })).toBeVisible();
     const first = page.locator('[data-snapshot-election-id]').first();
     await first.locator('summary').click();
-    await expect(first.locator('a[href^="https://"]')).toBeVisible();
+    const firstRecordId = await first.getAttribute('data-snapshot-election-id');
+    const firstRecord = tracker.elections.find((record) => record.id === firstRecordId);
+    const sourceLinks = first.locator('a[href^="https://"]');
+    await expect(sourceLinks).toHaveCount(firstRecord.sources.filter((source) => source.type === 'official').length);
+    for (const link of await sourceLinks.all()) await expect(link).toBeVisible();
     const countryLink = page.locator('.et-country-records a[href^="#election-"]').last();
     const target = (await countryLink.getAttribute('href')).slice(1);
     await countryLink.click();
