@@ -18,7 +18,7 @@
   --dash-bg-page: #F8FAFD;
   --dash-text-primary: #0A1628;
   --dash-text-secondary: #5B6B82;
-  --dash-text-muted: #8E9BB3;
+  --dash-text-muted: #52637A;
   --dash-accent: #0062CC;
   --dash-accent-dark: #0063D1;
   --dash-accent-light: #4DA3FF;
@@ -1224,7 +1224,7 @@
     --dash-bg-page: #0A1628;
     --dash-text-primary: #E2E8F0;
     --dash-text-secondary: #94A3B8;
-    --dash-text-muted: #5A6F8A;
+    --dash-text-muted: #B8C7DC;
     --dash-accent-pale: rgba(0,98,204,.12);
     --dash-shadow-sm: 0 1px 3px rgba(0,0,0,.15);
     --dash-shadow-md: 0 4px 12px rgba(0,0,0,.2);
@@ -1415,3 +1415,17 @@
 :root[data-theme="dark"] #myWorkspaceContent .workspace-scenario-open:hover {
   background: var(--color-primary-light);
 }
+
+/* Selected themes keep guest guidance readable independently of the device theme. */
+:root[data-theme] {
+  --dash-bg-card: var(--color-surface);
+  --dash-bg-subtle: var(--color-surface-muted);
+  --dash-bg-page: var(--color-bg);
+  --dash-border: var(--color-border);
+  --dash-text-primary: var(--color-text);
+  --dash-text-secondary: var(--color-text-muted);
+}
+:root[data-theme="light"] { --dash-text-muted: #52637A; }
+:root[data-theme="dark"] { --dash-text-muted: #B8C7DC; }
+:root[data-theme="dark"] a[data-dashboard-auth-link="login"] { color: #fff !important; }
+:root[data-theme="light"] .breadcrumb a { color: var(--color-primary); }
