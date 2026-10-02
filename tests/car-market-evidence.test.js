@@ -14,7 +14,7 @@ const fixture = {
 test('catalog retains the original identities and includes real-listing gaps without price profiles', () => {
   const ids = vehicleIds();
   assert.ok(ids.size >= 482);
-  for (const id of ['ford-edge-2016', 'lexus-lx-2018', 'toyota-camry-2013', 'toyota-highlander-2018']) assert.ok(ids.has(id), id);
+  for (const id of ['ford-edge-2016', 'lexus-lx-2018', 'toyota-camry-2013', 'toyota-corolla-2015', 'toyota-highlander-2018']) assert.ok(ids.has(id), id);
 });
 test('valid listing becomes pending and retains a source URL', () => {
   const rows = validate([fixture], sources, vehicleIds(), now);
