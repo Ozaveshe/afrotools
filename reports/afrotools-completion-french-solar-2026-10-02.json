@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-02T06:21:59.409Z",
+  "status": "implemented-awaiting-publisher-integration-and-production-proof",
+  "completionCertified": false,
+  "goalStatus": "active",
+  "baseCommit": "4f1eb4ec903ec5378561aa3106de6998fcfb9eef",
+  "implementationCommit": "7ded6570793a5d0d764f985c20022ea2e184b37e",
+  "scope": {
+    "rootPages": 1,
+    "countryPages": 54,
+    "locale": "fr",
+    "workflow": "Solar country discovery and continuation"
+  },
+  "productionBaseline": {
+    "siteId": "8aa543db-b4bd-4631-98f8-221440055c41",
+    "deployId": "6abf441dd4a9040008566f0b",
+    "commit": "4f1eb4ec903ec5378561aa3106de6998fcfb9eef",
+    "publishedAt": "2026-10-02T06:00:02.940Z",
+    "providerState": "ready",
+    "publicReleaseMarkerMatches": true,
+    "scope": "Existing publisher recovery only; this French runtime-copy source is not deployed."
+  },
+  "finding": {
+    "id": "COMP-FR-SOLAR-RUNTIME-COPY",
+    "priority": "P1",
+    "status": "implemented-awaiting-release",
+    "reproductionCommit": "2a96c9782736464c208ae42b8195d7a1236753d5",
+    "evidence": "At 390px the deployed root picker showed Senegal, Ouvrir Senegal Calculateur and Senegal selected - XOF. Country pages also retained Open <country> calculator. Accented French country names were absent from country discovery.",
+    "sourceOwners": [
+      "scripts/lib/french-solar-country-picker.js",
+      "scripts/repair-fr-solar-country-pages.js",
+      "scripts/build-french-energy-parity.js"
+    ],
+    "implementation": "Localize only country discovery/presentation functions, datalists, root card filtering and status text. Preserve English/code/slug lookup and canonical French destinations.",
+    "acceptance": "Publisher integrates the reviewed source, regenerates outputs and records exact-SHA production root/country actions at desktop, 390px and 320px. Full native-language acceptance requires separate results, assumptions and export-content review."
+  },
+  "validation": {
+    "targetedNode": {
+      "status": "pass",
+      "tests": 12,
+      "failures": 0,
+      "evidence": "artifacts/completion-fr-runtime-20261002/targeted-rebased.log"
+    },
+    "sourceBrowser": {
+      "status": "pass",
+      "stats": {
+        "startTime": "2026-10-02T05:37:10.822Z",
+        "duration": 111255.569,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "widths": [
+        1365,
+        390,
+        320
+      ],
+      "evidence": "artifacts/completion-fr-runtime-20261002/browser-final.json"
+    },
+    "optimizedArtifactBrowser": {
+      "status": "pass",
+      "stats": {
+        "startTime": "2026-10-02T06:18:13.256Z",
+        "duration": 157611.63199999998,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "widths": [
+        1365,
+        390,
+        320
+      ],
+      "port": 4318,
+      "evidence": "artifacts/completion-fr-runtime-20261002/browser-artifact.json"
+    },
+    "browserScope": "All 54 root and country-picker labels/routes, accented discovery, French datalist values, keyboard continuations, brief JSON route, overflow and uncaught page errors. Remote requests blocked; cookies declined; no live accounts or sensitive data.",
+    "buildDeploy": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/build-deploy-final.log",
+      "files": 18666
+    },
+    "distAudit": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/audit-dist-final.log"
+    },
+    "securityScan": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/security-final.log"
+    },
+    "lint": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/lint-final.log"
+    },
+    "typeCheck": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/type-check-final.log"
+    },
+    "i18nContracts": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/i18n-final.log"
+    },
+    "hreflang": {
+      "status": "pass",
+      "evidence": "artifacts/completion-fr-runtime-20261002/hreflang.log",
+      "publicPages": 11696,
+      "equivalenceGroups": 4255
+    },
+    "buildBaseReconciliation": "Final build and optimized artifact were produced before rebasing onto4f1eb4ec. The 2a96-to4f diff changes only CI/image/education and AfroStream surfaces; French Solar owners, data, shared browser assets and calculator engines are unchanged. Focused Node tests and locale contracts pass after rebase. This is local artifact proof, not an exact integrated release artifact.",
+    "notRun": [
+      "Full npm test on this French candidate: focused owner tests and full build/audit stack used; hosted candidate CI pending.",
+      "Production acceptance for this new source: publisher-owned and pending.",
+      "Native-speaker review of all task results and exports: pending."
+    ],
+    "discardedPreliminaryProof": "Initial browser run overlapped owner generation; only the stable final source and optimized-artifact runs count as acceptance. Initial synthetic fixture failures were corrected and retained in ignored logs."
+  },
+  "safeguards": {
+    "countryDataAndCalculationLogic": "Independent AST tests preserve data, identities, source records, defaults, exports and all logic outside owned discovery/presentation functions.",
+    "privacy": "No network/provider/account/database changes. Synthetic country choices only; local JSON export route checked.",
+    "accessibility": "Visible accessible picker names, keyboard navigation, status text and narrow-width overflow checked.",
+    "seo": "Routes/canonicals preserved; existing French route ownership retained; hreflang and locale contracts passed.",
+    "generatedOutput": "55 generated HTML pages; rebuild through existing source owners. No hand edits to dist, engine bundles, sitemap or translations.",
+    "liveMutations": []
+  },
+  "remaining": [
+    {
+      "id": "COMP-FR-SOLAR-EARLY-INPUT",
+      "status": "needs-investigation",
+      "evidence": "Earlier production root-to-Kenya-to-Nigeria action failed at390px. A later direct-ready probe passed. This presentation/search patch does not establish its cause or close it."
+    },
+    {
+      "id": "COMP-PRODUCTION-TRANSITION-REJECTION",
+      "status": "open",
+      "evidence": "Earlier 320px production navigation emitted Transition was skipped. Final local source/artifact checks are clean; production and early-load failure acceptance remain pending."
+    },
+    {
+      "id": "COMP-FR-SOLAR-NATIVE-WORKFLOW",
+      "status": "open",
+      "evidence": "Assumptions, calculation results and planning-brief/export payload remain separate translation work; country discovery proof is not complete native localization."
+    },
+    {
+      "id": "COMP-FR-SOLAR-COUNTRY-CONTINUATION",
+      "status": "published-revalidation-incomplete",
+      "evidence": "Earlier route repair is already on main; do not replay its source or mark its receipt consumed without required production acceptance."
+    }
+  ]
+}
