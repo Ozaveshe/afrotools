@@ -91,7 +91,11 @@ for(const review of reviewedImages.images) {
   assert.equal(entry.text_status,review.text_status,'Reviewed image text state '+review.path);
   assert.equal(entry.locale_reuse,review.locale_reuse,'Reviewed image reuse state '+review.path);
   assert.ok(entry.placements.some(p=>p.path===routeFile(review.route)),'Missing reviewed subject binding '+review.path);
-  assert.ok(review.note.includes('equivalent article'),'Review must constrain same-subject reuse '+review.path);
+  assert.match(review.note,/same equivalent (?:article|country page)/,'Review must constrain same-subject reuse '+review.path);
+  if(review.path.startsWith('/assets/img/og/countries/country-')) {
+    const slug=path.basename(review.path,'.webp').replace(/^country-/,'');
+    assert.equal(review.route,'/tools/afroatlas/country/'+slug+'/','Country review must retain its exact subject '+review.path);
+  }
 }
 for(const id of sharedArtwork.tool_ids) {
   const entry=libraryByPath.get('/assets/img/tools/'+id+'.webp');
