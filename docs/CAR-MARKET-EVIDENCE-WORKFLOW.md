@@ -1,6 +1,6 @@
 # Car market evidence workflow
 
-The private Supabase ledger stores 482 active catalog identities. An identity is not a verified price. Public asking-price claims must come from separately reviewed listing observations and a published snapshot. Keep the current static Car Pricer price pack independent until reviewed snapshot export is wired into its generator.
+The original catalog has 482 identities. Derive the current identity count from `node scripts/build-car-market-vehicle-seed.js --count`, which includes validated identity-only additions in `data/cars/market-identity-additions.csv`; audit the live active count separately through the verified Supabase MCP. Report coverage against both the original 482 and the current active catalog so additions cannot hide unfinished baseline coverage. An identity is not a verified price. Public asking-price claims must come from separately reviewed listing observations and a published snapshot. Keep the current static Car Pricer price pack independent until reviewed snapshot export is wired into its generator.
 
 ## Source access
 
@@ -19,6 +19,12 @@ Use a written partner feed or independently submitted dealer inventory with expl
 CarLoaded Nigeria is also `review-needed`. Its 2026-10-01 terms inspection found limited recopy permissions with attribution and downstream terms conditions; this is not approval for public price aggregation, image use, or scheduled collection. Individual detail-page facts may be retained for private manual review. Keep reported mileage units literally (do not expand a value such as 193 km into 193,000 km); missing posting dates remain null, and an updated date is not a posting date. Confirm suspicious mileage and condition labels before normal observation intake. Browser security verification is not bypassed.
 
 Research is append-only, private under RLS, and never queried by the snapshot generator. All rows carry `availability-unconfirmed`; postings older than 90 days carry an age flag. A fresh browser visit does not prove an old listing is still for sale. Source rights, active inventory and suspicious specifications must be resolved separately before using the normal observation intake. Motorka is `review-needed`, not authorized for scheduled scraping or public reuse.
+
+### Catalog gaps revealed by real listings
+
+Validate an absent make/model/year against dated manufacturer model-year evidence and a separately checked detail listing before adding it to `market-identity-additions.csv`. Preserve the original catalog and keep additions free of prices, inferred engines, image rights or valuation claims. Seed only the selected new IDs through `build-car-market-vehicle-seed.js --ids` and the verified AfroTools MCP. A new identity may then match private research; it does not approve that research for public prices.
+
+On 2026-10-02, separate Sportage 2016 and Sorento 2015 detail listings were corroborated by Kia's dated US model-year material. Earlier Sorento 2016 ads that described a different family or year remain specification conflicts: the new catalog rows do not resolve those ads. Kia's US variants do not prove the specification or availability of an individual Nigerian vehicle. Keep city, condition, trim, engine and stated drivetrain distinct when comparing asks; leave unshown fields unknown.
 
 
 1. Verify the AfroTools Supabase project ref `zpclagtgczsygrgztlts` with the configured MCP before SQL.

@@ -25,6 +25,10 @@ assert.match(app, /hreflang="en" href="https:\/\/afrotools\.com\/engineering\/af
 assert.match(app, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/ingenierie\/afrodraft\/app"/);
 assert.match(app, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/afrodraft-cad\/app"/);
 assert.match(app, /"inLanguage":"sw"/);
+assert.match(app, /property="og:title" content="AfroDraft CAD v7.0 — Uchoraji wa 2D \| AfroTools"/);
+assert.match(app, /property="og:description" content="Chora, pima, hariri na uhifadhi/);
+assert.strictEqual((app.match(/<meta property="og:image" /g) || []).length, 1, 'one workspace-owned social image');
+assert.doesNotMatch(app, /<meta property="og:image" content="[^"\n]*og-default/);
 assert.match(app, /\/assets\/img\/tools\/afrodraft\.webp/);
 assert.match(app, /afrotools-source-owner" content="scripts\/build-sw-afrodraft-final\.js"/);
 

@@ -7,6 +7,11 @@ test('snapshot uses only accepted recent comparables and stays draft', () => {
   assert.match(sql, /review_status = 'accepted'/);
   assert.match(sql, /interval '14 days'/);
   assert.match(sql, /sample_size >= 3/);
+  assert.match(sql, /distinct_urls = sample_size/);
+  assert.match(sql, /group by market_key, trim_key, engine_cc/);
+  assert.match(sql, /o.engine_cc between 100 and 12000/);
+  assert.match(sql, /o.reviewed_at >= o.observed_at/);
+  assert.match(sql, /o.observed_at <= now\(\)/);
   assert.match(sql, /join public.car_market_observation_history/);
   assert.match(sql, /s.observation_ids = a.observation_ids/);
   assert.match(sql, /s.access_status in \('manual-only', 'automated-approved'\)/);

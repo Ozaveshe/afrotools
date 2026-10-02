@@ -6,6 +6,7 @@ const path = require("path");
 const vm = require("vm");
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require("./lib/safe-write");
 const { imageSizeFromUrl } = require("./lib/image-size");
+const { decodeHtml } = require("./audit-search-snippets");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -172,15 +173,15 @@ function getMetaContent(html, attrName, attrValue) {
   const tag = findMetaTag(html, attrName, attrValue);
   if (!tag) return null;
 
-  const contentMatch = tag.match(/\bcontent=["']([^"']+)["']/i);
-  return contentMatch ? contentMatch[1] : null;
+  const contentMatch = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+  return contentMatch ? decodeHtml(contentMatch[2]) : null;
 }
 
 function getPageTitle(html) {
   const match = html.match(/<title>([\s\S]*?)<\/title>/i);
   if (!match) return null;
 
-  return String(match[1] || "")
+  return decodeHtml(String(match[1] || ""))
     .replace(/<[^>]*>/g, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -457,19 +458,15 @@ function applyFallbacks(html, filePath) {
   }
 
   const preferredToolImage = getPreferredToolImage(filePath, html);
-  const hasOgTitle = /<meta\s+(property|name)=["']og:title["']/i.test(html);
-
-  if (!hasOgTitle && !preferredToolImage) {
-    return { html: next, changed, usedToolImage: false };
-  }
-
   const targetImage = preferredToolImage ? preferredToolImage.absoluteUrl : DEFAULT_IMAGE;
   const existingOgImage = getMetaContent(next, "property", "og:image");
   const existingTwitterImage = getMetaContent(next, "name", "twitter:image");
   const pageTitle = getPageTitle(next);
   const pageDescription = getMetaContent(next, "name", "description");
 
-  if (preferredToolImage) {
+  // Institutional, author, locale hub and country pages also need complete cards.
+  // The image registry determines artwork, not whether a public page gets metadata.
+  {
     if (pageTitle && !getMetaContent(next, "property", "og:title")) {
       next = upsertMetaContent(next, "property", "og:title", pageTitle, "name", "description");
       changed = true;
@@ -485,12 +482,12 @@ function applyFallbacks(html, filePath) {
       changed = true;
     }
 
-    if (pageTitle && !getMetaContent(next, "name", "twitter:title")) {
+    if ((preferredToolImage || !getMetaContent(html, "name", "twitter:card")) && pageTitle && !getMetaContent(next, "name", "twitter:title")) {
       next = upsertMetaContent(next, "name", "twitter:title", pageTitle, "name", "twitter:card");
       changed = true;
     }
 
-    if (pageDescription && !getMetaContent(next, "name", "twitter:description")) {
+    if ((preferredToolImage || !getMetaContent(html, "name", "twitter:card")) && pageDescription && !getMetaContent(next, "name", "twitter:description")) {
       next = upsertMetaContent(next, "name", "twitter:description", pageDescription, "name", "twitter:title");
       changed = true;
     }
@@ -502,8 +499,9 @@ function applyFallbacks(html, filePath) {
   }
 
   if (preferredToolImage || !existingTwitterImage) {
-    next = upsertMetaContent(next, "name", "twitter:image", targetImage, "name", "twitter:description");
-    changed = existingTwitterImage !== targetImage || changed;
+    const twitterImage = preferredToolImage ? targetImage : (existingOgImage || targetImage);
+    next = upsertMetaContent(next, "name", "twitter:image", twitterImage, "name", "twitter:description");
+    changed = existingTwitterImage !== twitterImage || changed;
   }
 
   if (preferredToolImage) {
@@ -557,7 +555,9 @@ function applyFallbacks(html, filePath) {
 }
 
 function main() {
-  const files = findHtmlFiles(ROOT);
+  const files = require('./lib/route-contract').buildRouteGraph().routes
+    .filter(record => record.state === 'page' && record.indexability === 'indexable')
+    .map(record => path.join(ROOT, record.source.file));
   const patched = [];
   let toolImagePages = 0;
 
@@ -582,4 +582,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { applyFallbacks, getMetaContent, getPageTitle };
