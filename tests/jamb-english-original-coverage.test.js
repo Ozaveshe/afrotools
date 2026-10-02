@@ -64,6 +64,26 @@ test('recent reviewed collection intake is excluded only with exact source and l
  assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required/);
 });
 
+test('four-digit publisher receipts account for recent intake without hiding altered or unreviewed questions',()=>{
+ const {batches}=load(),ledger=require('../data/jamb/review-ledger.json');
+ const pool=new Map(require('../ops/jamb/source-pool.json').questions.map(q=>[q.id,q]));
+ for(const year of [2021,2023,2024]){
+  const release=require('../ops/jamb/verification/english-'+year+'-publishable-1001.json');
+  assert.ok(release.records.length>0);
+  for(const proof of release.records){
+   const row=pool.get(proof.id);assert.ok(row,proof.id);
+   assert.deepEqual(reconstructOriginals([row],batches,ledger),[],proof.id);
+  }
+  const row=pool.get(release.records[0].id);
+  assert.throws(()=>reconstructOriginals([{...row,answer:row.answer==='A'?'B':'A'}],batches,ledger),/recent intake fingerprint/);
+  const missing=structuredClone(ledger);delete missing.questions[row.id].answer_review;
+  assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required/);
+  const wrongSource=structuredClone(ledger);
+  wrongSource.sources[wrongSource.questions[row.id].source_id].source_url='https://example.com/unverified';
+  assert.throws(()=>reconstructOriginals([row],batches,wrongSource),/recent intake source URL/);
+ }
+});
+
 test('recent collection quality holds require pinned fingerprints, reasons and no other trust failure',()=>{
  const ledger=require('../data/jamb/review-ledger.json');
  const pool=require('../ops/jamb/source-pool.json').questions;

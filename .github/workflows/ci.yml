@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # Intake preservation tests compare against immutable historical source commits.
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
