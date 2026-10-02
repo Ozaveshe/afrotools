@@ -182,6 +182,8 @@ Expand the Kumasi YMCA/Metro story first, then the existing published archive in
 
 `tools/afrostream/editorial-policy.js` owns the word count and admin publication guard. It applies to new publications and published-body/byline revisions; metadata-only corrections to older articles remain possible. Admin news-tip approval uses the same guard. Direct Supabase publishing must follow this standard too, because the application guard does not enforce a database constraint.
 
+The admin HTML remains an internal editing surface and is excluded from the public deployment. Its source browser checks verify the form; artifact checks verify the private-page boundary and shipped policy helper. The protected admin API enforces the publication standard in production.
+
 ### AfroStream verification
 
 After publishing, verify:

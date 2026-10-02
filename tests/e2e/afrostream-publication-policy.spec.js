@@ -3,7 +3,27 @@ const { test, expect } = require('@playwright/test');
 const prose = count => Array.from({ length: count }, (_, i) => 'word' + i).join(' ');
 const original = { id: 42, slug: 'stable-story', external_id: 'stable-feed-id', title: 'Synthetic existing article', category: 'business', author: 'AfroStream Editorial', excerpt: 'Synthetic summary', body: prose(610), published_at: '2026-09-29T12:00:00Z', is_published: true };
 
-for (const width of [1280, 390, 320]) {
+// The release intentionally excludes the private admin HTML. Verify its
+// deployment boundary and the shipped helper separately from the source form.
+if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT === '1') {
+  for (const width of [1280, 390, 320]) {
+    test(`artifact preserves private admin and serves the policy at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      const response = await page.goto('/tools/afrostream/admin.html');
+      expect(response.status()).toBe(404);
+      await expect(page.locator('#adminPanel')).toHaveCount(0);
+      const helper = await page.request.get('/tools/afrostream/editorial-policy.js');
+      expect(helper.status()).toBe(200);
+      await page.addScriptTag({ url: '/tools/afrostream/editorial-policy.js' });
+      const result = await page.evaluate(() => {
+        const policy = window.AfroStreamEditorialPolicy;
+        const row = { author: 'AfroStream Editorial', is_published: true, body: Array(599).fill('prose').join(' ') };
+        return { minimum: policy.minWords, count: policy.wordCount(row.body), rejected: policy.publicationError(row), accepted: policy.publicationError({ ...row, body: row.body + ' prose' }), draft: policy.publicationError({ ...row, is_published: false }) };
+      });
+      expect(result).toEqual({ minimum: 600, count: 599, rejected: 'Article body needs at least 600 words before publishing (599 now). Drafts can be shorter.', accepted: null, draft: null });
+    });
+  }
+} else for (const width of [1280, 390, 320]) {
   test(`admin drafts, minimum and edit preserve the article at ${width}px`, async ({ page }) => {
     const errors = [];
     const writes = [];
