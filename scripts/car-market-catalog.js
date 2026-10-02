@@ -12,6 +12,12 @@ function safeUrl(value) {
   return url.protocol === 'https:' && !url.username && !url.password && !url.port && !url.search && !url.hash;
 }
 
+function safeListingUrl(value) {
+  // Cars-ZM's car ID is a public advert reference, not a contact/tracking token.
+  // Keep manufacturer URLs and every other source query-free.
+  return safeUrl(value) || (typeof value === 'string' && /^https:\/\/cars-zambia\.com\/listing\.php\?type=car&id=[1-9]\d{0,9}$/.test(value));
+}
+
 function mergeCatalog(pricedRows, additions = []) {
   const rows = new Map();
   const tuples = new Map();
@@ -20,7 +26,7 @@ function mergeCatalog(pricedRows, additions = []) {
       const fail = message => { throw Error(`Catalog ${input.vehicle_id || 'missing id'}: ${message}`); };
       if (identityOnly) {
         if (Object.keys(input).some(field => !additionFields.has(field))) fail('identity additions cannot contain price or other fields');
-        if (!safeUrl(input.identity_evidence_url) || !safeUrl(input.market_listing_url)) fail('identity and listing evidence URLs required');
+        if (!safeUrl(input.identity_evidence_url) || !safeListingUrl(input.market_listing_url)) fail('identity and listing evidence URLs required');
         const date = String(input.reviewed_at || '');
         if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(date + 'T00:00:00Z')) || new Date(date + 'T00:00:00Z').toISOString().slice(0, 10) !== date) fail('invalid review date');
       }
