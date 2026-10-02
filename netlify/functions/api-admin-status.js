@@ -162,6 +162,9 @@ function buildScraperSummary(scraperHealth) {
     total_count: scraperHealth && typeof scraperHealth.total_count === 'number' ? scraperHealth.total_count : scrapers.length,
     healthy_count: scraperHealth && typeof scraperHealth.healthy_count === 'number' ? scraperHealth.healthy_count : (scrapers.length - unhealthy.length),
     unhealthy_scrapers: unhealthy,
+    health_scope: scraperHealth && scraperHealth.health_scope ? scraperHealth.health_scope : 'unknown',
+    scheduled_proof_status: scraperHealth && scraperHealth.scheduled_proof_status ? scraperHealth.scheduled_proof_status : 'not_checked',
+    unknown_owner_count: scraperHealth && typeof scraperHealth.unknown_owner_count === 'number' ? scraperHealth.unknown_owner_count : null,
     overall_health: scraperHealth && scraperHealth.overall_health ? scraperHealth.overall_health : 'offline',
   };
 }

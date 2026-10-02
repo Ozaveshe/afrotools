@@ -3,6 +3,7 @@ const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared
 const { getCollector } = require('./_shared/market-data-refresh');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
 const { isScheduledEvent } = require('./_shared/scheduled-event');
+const { summarizeScrapers } = require('./_shared/scraper-run-health');
 
 const WATCHDOG_KEY = 'automation-health-latest';
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -208,31 +209,37 @@ async function checkLiveDataMeta(summary, nowMs) {
   };
 }
 
-async function checkScraperHealth(summary, nowMs) {
+async function checkScraperHealth(summary, nowMs = null) {
   try {
     const result = await supabaseGet('scraper_health?select=*&order=last_run_at.desc&limit=100');
     if (result.skipped) {
       summary.warnings.push({ id: 'scraper_health', severity: 'p3', message: result.reason });
+      pushIssue(summary, 'degraded', { id: 'scraper_health', surface: 'scraper_health', severity: 'p2', message: 'Collector run history was not checked' });
       return;
     }
 
-    const rows = Array.isArray(result.rows) ? result.rows : [];
+    // Evaluate after the read so a run completed during the request is not
+    // mistaken for a future timestamp. Tests can supply a fixed observation.
+    const observedMs = nowMs == null ? Date.now() : nowMs;
+    const scraperSummary = summarizeScrapers(result.rows, { now: observedMs });
+    const rows = scraperSummary.scrapers;
     const unhealthy = [];
     const stale = [];
 
     rows.forEach(function (row) {
       const id = row.scraper_id || row.id || row.name || 'unknown-scraper';
-      const status = String(row.status || '').toLowerCase();
-      const isHealthy = row.is_healthy !== false && !['error', 'failed', 'anomaly'].includes(status);
-      if (!isHealthy) unhealthy.push({ id, status: status || 'unhealthy' });
+      if (!row.is_healthy) unhealthy.push({ id, status: row.health_status });
 
       const lastRun = toIso(row.last_run_at || row.fetched_at || row.last_success_at);
-      const age = ageMinutes(lastRun, nowMs);
-      if (age !== null && age > 1440) stale.push({ id, age_minutes: age, updated_at: lastRun });
+      const age = ageMinutes(lastRun, observedMs);
+      if (row.health_status === 'stale') stale.push({ id, age_minutes: age, updated_at: lastRun });
     });
 
     summary.sources.scraper_health = {
       checked: true,
+      health_scope: scraperSummary.health_scope,
+      scheduled_proof_status: scraperSummary.scheduled_proof_status,
+      unknown_owner_count: scraperSummary.unknown_owner_count,
       total: rows.length,
       unhealthy_count: unhealthy.length,
       stale_count: stale.length,
@@ -250,6 +257,7 @@ async function checkScraperHealth(summary, nowMs) {
     });
   } catch (error) {
     summary.warnings.push({ id: 'scraper_health', severity: 'p2', message: sanitizeError(error) });
+    pushIssue(summary, 'degraded', { id: 'scraper_health', surface: 'scraper_health', severity: 'p2', message: 'Collector run history is unavailable' });
   }
 }
 
@@ -524,6 +532,9 @@ function safeSummary(summary, includeDetails) {
       } : null,
       scraper_health: summary.sources.scraper_health ? {
         checked: true,
+        health_scope: summary.sources.scraper_health.health_scope || 'unknown',
+        scheduled_proof_status: summary.sources.scraper_health.scheduled_proof_status || 'not_checked',
+        unknown_owner_count: summary.sources.scraper_health.unknown_owner_count == null ? null : summary.sources.scraper_health.unknown_owner_count,
         total: summary.sources.scraper_health.total,
         unhealthy_count: summary.sources.scraper_health.unhealthy_count,
         stale_count: summary.sources.scraper_health.stale_count,
@@ -556,7 +567,7 @@ async function runWatchdog() {
   };
 
   await checkLiveDataMeta(summary, now.getTime());
-  await checkScraperHealth(summary, now.getTime());
+  await checkScraperHealth(summary);
   await checkMarketDataRuns(summary, now.getTime());
   await checkScholarshipRuns(summary, now.getTime());
   await checkScholarshipFeed(summary);
