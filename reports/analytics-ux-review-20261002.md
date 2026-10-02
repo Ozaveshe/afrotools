@@ -53,6 +53,10 @@ elements with neither a keyboard stop nor an announced state.
 - Synchronize `aria-pressed` with the pension toggle and `aria-expanded` with the bands disclosure.
 - Connect the disclosure to its panel and retain visible keyboard focus.
 
+The protected inline calculation script remains byte-identical to the baseline.
+State announcements are updated by the native buttons' HTML event handlers.
+This preserves the reviewed formula digest while making both controls keyboard usable.
+
 Tax bands, deduction formulas, source evidence, calculation modes, annual/monthly
 presentation, and optional AI behavior are preserved. Checks use synthetic salary
 values and block third-party requests; they do not re-certify the tax rules.
@@ -64,14 +68,17 @@ values and block third-party requests; they do not re-certify the tax rules.
 - PASS: 6 Eswatini browser checks for keyboard controls, annual/monthly and gross/net consistency, Swahili continuity, and English/French source evidence.
 - PASS: 4 additional Eswatini keyboard cases in Firefox and WebKit, light/dark themes.
 - PASS: Lobola cluster contract and 2 Eswatini verification unit checks.
+- PASS: calculation-quality gate — 798 artifacts, 417/417 fixtures, no stale dataset warnings; the reviewed Eswatini formula digest is unchanged.
 - PASS: link audit — 151,511 internal links across 11,933 HTML files.
 - Release artifact, security, and production evidence are recorded in the publisher handoff separately.
 
 Automated axe checks cover the changed result region, not a site-wide accessibility certification.
 Static mobile risk findings require browser reproduction before source changes.
-The focused static scan covered 13 high-priority pages and found one remaining
-homepage collapse heuristic; browser reproduction is the next step before changing
-the shared homepage layout. A zero static score does not prove runtime accessibility,
+The full static scan covered 11,857 HTML files and flagged 2,604 for browser triage.
+These include generated translations and templates, not just public routes. The
+focused scan covered 13 high-priority pages. Its homepage collapse flag did not
+reproduce at 700px: the rendered hero collapsed without overflow, and keyboard
+search reached the Lobola calculator. A zero static score does not prove runtime accessibility,
 as the Eswatini keyboard issue demonstrates.
 No routes, canonicals, hreflang targets, analytics event names, tax assumptions,
 private-data transmission, or account/export gates are introduced by this batch.
