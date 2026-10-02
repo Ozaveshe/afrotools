@@ -314,6 +314,27 @@ function renderNutritionHtml(engine, recipe) {
   </div>`;
 }
 
+function recipeNutritionFields(recipe) {
+  return Object.fromEntries(['nutrition_basis', 'calories', 'protein_g', 'carbs_g', 'fat_g', 'fiber_g'].map(key => [key, recipe[key] ?? null]));
+}
+
+function refreshRecipeNutrition(existing, recipe, engine) {
+  const pattern = /<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate<\/h3>[\s\S]*?<\/div><\/div>(\s*<\/aside>)/;
+  if (recipe.calories != null && !pattern.test(existing)) throw new Error('Nutrition footer not found: ' + recipe.slug);
+  let next = existing.replace(pattern, (_, ending) => '<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate</h3>' + renderNutritionHtml(engine, recipe) + '</div>' + ending);
+  const nutrition = engine.getStructuredData(recipe, recipe.default_servings || 1).nutrition;
+  next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+    const schema = JSON.parse(body);
+    if (schema['@type'] !== 'Recipe') return all;
+    if (nutrition) schema.nutrition = nutrition;
+    else delete schema.nutrition;
+    return start + safeJson(schema) + end;
+  });
+  const payload = /(<script>window\.__AK_STATIC_RECIPE = )([\s\S]*?)(;<\/script>)/;
+  if (!payload.test(next)) throw new Error('Recipe runtime data not found: ' + recipe.slug);
+  return next.replace(payload, (_, start, body, end) => start + safeJson({ ...JSON.parse(body), ...recipeNutritionFields(recipe) }) + end);
+}
+
 function formatSchemaIngredient(engine, ingredient) {
   const amount = Number(ingredient.scaled_amount || 0);
   const amountText = amount > 0 ? engine.formatAmount(amount) : "";
@@ -1364,11 +1385,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     region: recipe.region,
     difficulty: recipe.difficulty || "medium",
     category: recipe.category,
-    calories: recipe.calories || null,
-    protein_g: recipe.protein_g || null,
-    carbs_g: recipe.carbs_g || null,
-    fat_g: recipe.fat_g || null,
-    fiber_g: recipe.fiber_g || null,
+    ...recipeNutritionFields(recipe),
     ingredients: recipe.ingredients || [],
     steps: recipe.steps || [],
     gallery_images: galleryImages,
@@ -3067,12 +3084,10 @@ async function main() {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();
     let changed = 0;
-    for (const recipe of manifest.recipes.filter(item => item.generated_in_wave && item.calories != null)) {
+    for (const recipe of manifest.recipes.filter(item => item.generated_in_wave)) {
       const file = path.join(RECIPES_DIR, recipe.slug, 'index.html');
       const existing = fs.readFileSync(file, 'utf8');
-      const pattern = /<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate<\/h3>[\s\S]*?<\/div><\/div>(\s*<\/aside>)/;
-      if (!pattern.test(existing)) throw new Error('Nutrition footer not found: ' + file);
-      const next = existing.replace(pattern, (_, ending) => '<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate</h3>' + renderNutritionHtml(engine, recipe) + '</div>' + ending);
+      const next = refreshRecipeNutrition(existing, recipe, engine);
       if (next !== existing) { fs.writeFileSync(file, next, 'utf8'); changed++; }
     }
     console.log('Refreshed nutrition from saved manifest: ' + changed + ' pages. No live source or ingredient values changed.');
@@ -3200,4 +3215,4 @@ function refreshRecipeImages(existing, generated) {
   });
   return trimTrailingWhitespace(next);
 }
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, buildRecipeMetaDescription };
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription };
