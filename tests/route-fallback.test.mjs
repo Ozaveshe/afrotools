@@ -94,10 +94,16 @@ async function loadRouteFallback() {
 
 const routeFallback = await loadRouteFallback();
 
+const generalRobots = fs.readFileSync(path.join(ROOT, 'robots.txt'), 'utf8').split('User-agent: OAI-SearchBot')[0];
+assert.ok(!/^Disallow:\s*\/(?:fr\/)?api\//m.test(generalRobots), 'Google must be able to fetch API responses to observe noindex');
+assert.ok(!/^Disallow:\s*\/\.netlify\/functions\//m.test(generalRobots), 'Direct function responses must remain crawlable for noindex');
+const headerPolicy = fs.readFileSync(path.join(ROOT, '_headers'), 'utf8');
+assert.ok(!/^\/(?:fr\/)?api\/\*\r?\n\s+X-Robots-Tag:\s*noindex/m.test(headerPolicy), 'Static wildcard headers must not noindex public API docs or pricing');
+
 async function request(pathname) {
   const context = {
     next: async (req) => new Response(null, {
-      status: originStatus(req ? new URL(req.url).pathname : pathname)
+      status: originStatus(req instanceof Request ? new URL(req.url).pathname : pathname)
     })
   };
   const response = await routeFallback(new Request(`https://afrotools.com${pathname}`), context);
@@ -208,6 +214,41 @@ for (const dead of ['/nonexistent-page/', '/fr/nonexistent-page/', '/bin/sh']) {
 for (const passthrough of ['/assets/js/app.js', '/api/forex', '/.netlify/functions/ai-advisor']) {
   const { status } = await request(passthrough);
   check(`${passthrough} passes through`, status, 404); // origin's answer, unmodified
+}
+
+// Endpoint exclusions must preserve the API contract, including errors and
+// conditional responses. No real provider or authenticated endpoint is called.
+for (const endpoint of ['/api/forex?base=USD', '/fr/api/vat', '/api/schemas/v1/tools.json', '/.netlify/functions/api-commodity-prices']) {
+  for (const status of [200, 401, 405, 500, 204, 304]) {
+    const body = status === 204 || status === 304 ? null : '{"synthetic":true}';
+    let calls = 0;
+    const response = await routeFallback(new Request(`https://afrotools.com${endpoint}`), {
+      next: async (options) => {
+        calls += 1;
+        assert.deepEqual(options, { sendConditionalRequest: true });
+        return new Response(body, {status,headers:{'Content-Type':'application/json','Cache-Control':'private, max-age=0','Access-Control-Allow-Origin':'https://afrotools.com','Set-Cookie':'fixture=synthetic; Secure; HttpOnly'}});
+      }
+    });
+    check(`${endpoint} ${status} preserves response and adds noindex`, {
+      status:response.status, body:await response.text(), calls,
+      robots:response.headers.get('X-Robots-Tag'),
+      cache:response.headers.get('Cache-Control'),
+      cors:response.headers.get('Access-Control-Allow-Origin'),
+      cookie:response.headers.get('Set-Cookie')
+    }, {status,body:body || '',calls:1,robots:'noindex',cache:'private, max-age=0',cors:'https://afrotools.com',cookie:'fixture=synthetic; Secure; HttpOnly'});
+  }
+}
+for (const publicPath of ['/api/', '/api/index.html', '/api/docs/', '/api/docs/index.html', '/api/pricing', '/api/pricing.html', '/fr/api/', '/fr/api/pricing']) {
+  const response = await routeFallback(new Request(`https://afrotools.com${publicPath}`), {
+    next:async()=>new Response('public documentation',{status:200})
+  });
+  check(`${publicPath} stays outside the endpoint noindex rule`, response.headers.get('X-Robots-Tag'), null);
+}
+for (const method of ['POST','HEAD','OPTIONS']) {
+  let calls=0;
+  const req=new Request('https://afrotools.com/api/forex',{method});
+  const response=await routeFallback(req,{next:async()=>{calls+=1;return new Response(null,{status:204});}});
+  check(`${method} endpoint status survives`,{status:response.status,calls,robots:response.headers.get('X-Robots-Tag')},{status:204,calls:1,robots:'noindex'});
 }
 
 if (failures) {
