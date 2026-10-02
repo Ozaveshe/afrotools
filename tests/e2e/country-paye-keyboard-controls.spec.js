@@ -35,6 +35,17 @@ for (const calculator of calculators) {
         await expect(deduction).toHaveAttribute('aria-pressed', 'true');
         const focusStyle = await deduction.evaluate(el => getComputedStyle(el).outlineStyle);
         expect(focusStyle).not.toBe('none');
+        const contrast = await deduction.evaluate(el => {
+          const rgb = value => value.match(/[\d.]+/g).slice(0, 3).map(Number);
+          const luminance = color => rgb(color).map(value => {
+            const channel = value / 255;
+            return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+          }).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+          const foreground = luminance(getComputedStyle(el.querySelector('.tog-rate')).color);
+          const background = luminance(getComputedStyle(el).backgroundColor);
+          return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
+        });
+        expect(contrast).toBeGreaterThanOrEqual(4.5);
         await page.locator('.calc-btn').click();
         const withDeduction = await page.locator('#resAmount').innerText();
         await deduction.focus();

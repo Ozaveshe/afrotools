@@ -8,11 +8,12 @@ Native browser inspection of the public Zimbabwe and Zambia PAYE pages found tha
 
 - Use native buttons for NSSA/NAPSA deductions and the two existing disclosures on each English page.
 - Expose pressed/expanded state, associate each disclosure with its panel, hide decorative arrows from the accessible name, and show a visible keyboard focus outline.
+- Increase the deduction label/rate text size and fix its low light-mode contrast, with explicit dark-mode colors.
 - Preserve the existing labels, appearance, route metadata, calculation functions, analytics events and exports. All inline script contents are byte-identical to baseline `4f1eb4ec903ec5378561aa3106de6998fcfb9eef`.
 
 ## Source checks
 
-- 36 browser cases passed: Chromium, Firefox and WebKit; 320/390/1280px; light/dark. Checks include tab order, Enter/Space, pressed state, deduction effect and restoration, disclosure visibility/state, visible focus, 44px targets, no horizontal overflow and no page errors.
+- 36 browser cases passed: Chromium, Firefox and WebKit; 320/390/1280px; light/dark. Checks include tab order, Enter/Space, pressed state, deduction effect and restoration, disclosure visibility/state, visible focus, text contrast of at least 4.5:1, 44px targets, no horizontal overflow and no page errors.
 - Calculation-quality validation passed: 798 artifacts, 417/417 fixtures and zero stale dataset warnings.
 - Salary/PAYE workflow validation passed.
 - Link validation passed: 151,416 links across 11,930 HTML files.
