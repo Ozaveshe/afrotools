@@ -1,25 +1,14 @@
 #!/usr/bin/env node
 // Private browser research only. This does not approve sources or publish prices.
 const fs = require('node:fs');
-const path = require('node:path');
 const crypto = require('node:crypto');
-const { parseCsv } = require('./car-catalog-manager');
-const root = path.join(__dirname, '..');
+const { loadCatalog } = require('./car-market-catalog');
 const fields = ['source_id', 'listing_url', 'source_listing_id', 'observed_at', 'listing_added_on', 'vehicle_id', 'make', 'model', 'model_year', 'country_code', 'market', 'condition_label', 'trim_label', 'asking_price', 'currency', 'mileage_value', 'mileage_unit', 'verification_level', 'quality_flags'];
 const flags = new Set(['availability-unconfirmed', 'listing-age-over-90-days', 'specification-conflict', 'possible-duplicate']);
 const normalize = value => String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
 
 function catalog() {
-  const result = new Map();
-  for (const name of ['master-vehicle-catalog.csv', 'import-duty-vehicle-estimates.csv']) {
-    const rows = parseCsv(fs.readFileSync(path.join(root, 'data/cars', name), 'utf8'));
-    const headers = rows.shift();
-    for (const cells of rows) {
-      const row = Object.fromEntries(headers.map((key, i) => [key, cells[i]]));
-      if (row.vehicle_id && !result.has(row.vehicle_id)) result.set(row.vehicle_id, row);
-    }
-  }
-  return result;
+  return new Map(loadCatalog().filter(row => row.catalog_status === 'active').map(row => [row.vehicle_id, row]));
 }
 
 function validate(rows, sources, vehicles = catalog(), now = new Date()) {

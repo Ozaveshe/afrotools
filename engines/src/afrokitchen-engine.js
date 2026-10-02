@@ -2072,6 +2072,17 @@ var AfroKitchenEngine = function() {
     formatTime: m,
     getStructuredData: function(e, t) {
       var r = s(e.ingredients || [], e.default_servings, t || e.default_servings);
+      // Recipe rich-result nutrition describes one serving, never an unknown stored basis.
+      var nutrition, servings = Number(e.default_servings);
+      if (Number.isFinite(servings) && servings > 0 && ['per_serving', 'batch'].indexOf(e.nutrition_basis) !== -1) {
+        var values = this.scaleNutrition(e, 1);
+        if (values) {
+          nutrition = { '@type': 'NutritionInformation', servingSize: '1 serving' };
+          [['calories', 'calories', ' calories'], ['protein_g', 'proteinContent', 'g'], ['carbs_g', 'carbohydrateContent', 'g'], ['fat_g', 'fatContent', 'g'], ['fiber_g', 'fiberContent', 'g']].forEach(function(field) {
+            if (values[field[0]] !== null) nutrition[field[1]] = values[field[0]] + field[2];
+          });
+        }
+      }
       return {
         "@context": "https://schema.org",
         "@type": "Recipe",
@@ -2086,17 +2097,10 @@ var AfroKitchenEngine = function() {
         prepTime: "PT" + e.prep_time_minutes + "M",
         cookTime: "PT" + e.cook_time_minutes + "M",
         totalTime: "PT" + (e.prep_time_minutes + e.cook_time_minutes) + "M",
-        recipeYield: e.default_servings + " " + (e.serving_unit || "servings"),
+        recipeYield: (t || e.default_servings) + " " + (e.serving_unit || "servings"),
         recipeCategory: "main" === e.category ? "Main Course" : e.category,
         recipeCuisine: e.country_name + ", " + e.region,
-        nutrition: e.calories ? {
-          "@type": "NutritionInformation",
-          calories: e.calories + " calories",
-          proteinContent: (e.protein_g || 0) + "g",
-          carbohydrateContent: (e.carbs_g || 0) + "g",
-          fatContent: (e.fat_g || 0) + "g",
-          fiberContent: (e.fiber_g || 0) + "g"
-        } : void 0,
+        nutrition: nutrition,
         recipeIngredient: r.map(function(e) {
           return u(e.scaled_amount) + " " + e.unit + " " + e.name + (e.prep_note ? ", " + e.prep_note : "");
         }),

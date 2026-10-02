@@ -12,17 +12,20 @@ owners below are technical owners, not instructions sent to another chat.
 
 ## Progress checkpoint
 
-Evidence baseline: `origin/main` and the production marker both matched
-`4f1eb4ec903ec5378561aa3106de6998fcfb9eef` during this refresh. Netlify production
-deploy `6abf441dd4a9040008566f0b` was ready and matched that commit. PR #179 and
-PR #183 remained open; their green CI does not establish production delivery.
+Current baseline: `origin/main`, the public production marker and Netlify deploy
+`6abf70c9d4b0db0008c641be` match `5ebe63a0110857ed6acd50ea6734d5fd2b755a1b`.
+PR #179 and PR #183 source is included in that release. French Solar still has
+a reproduced desktop initialization failure, so its own acceptance stays open.
+The earlier `4f1eb4ec903ec5378561aa3106de6998fcfb9eef` snapshot is retained in
+the execution register. The metadata and shared accessibility candidates are
+being validated separately against the current main source.
 
 | Area | Verified progress | Still required |
 | --- | --- | --- |
-| Languages | Source-integrated French Solar route/label repairs; PR #183 passes CI and local source/dist browser checks for root plus 54 country pickers. | Reference cohort still records FR 299 and SW 322 missing routes. FR/SW shells, results, errors, exports and editorial quality remain separate. Hausa: 23 native, 58 shells, 25 fallbacks; Yoruba: 10 native, 13 shells, 3 fallbacks, 20 unavailable in the recorded inventory. These labels are inventory declarations, not workflow certificates. |
-| SEO/tags | Current committed snippet report records 654 review candidates across 7,777 EN/FR/SW indexable pages, zero error pages. A fresh all-language scan of 7,881 indexable routes reproduces 214 missing Twitter cards, 23 OG titles, 32 OG descriptions, 22 OG images and one OG URL. | The metadata source repair is a new candidate, not production acceptance. Snippet signals need individual editorial dispositions. The browser redirect at `/business/` remains misclassified as an indexable page and needs route-owner reconciliation. |
+| Languages | Source-integrated French Solar route/label repairs; PR #183 passes CI and local source/dist browser checks for root plus 54 country pickers. | Reference cohort still records FR 300 and SW 323 missing routes. FR/SW shells, results, errors, exports and editorial quality remain separate. Hausa: 23 native, 58 shells, 25 fallbacks; Yoruba: 10 native, 13 shells, 3 fallbacks, 20 unavailable in the recorded inventory. These labels are inventory declarations, not workflow certificates. |
+| SEO/tags | Current committed snippet report records 654 review candidates across 7,778 EN/FR/SW indexable pages, zero error pages. A fresh all-language scan of 7,881 indexable routes reproduces 214 missing Twitter cards, 23 OG titles, 32 OG descriptions, 22 OG images and one OG URL. | The metadata source repair is a new candidate, not production acceptance. Snippet signals need individual editorial dispositions. The browser redirect at `/business/` remains misclassified as an indexable page and needs route-owner reconciliation. |
 | Sources | Correct-project Supabase read: MTN Uganda now has 9 successful runs and 27 published records in seven days; latest success Oct 2. Public watchdog at 06:57 UTC records zero stale and five degraded sources. | Registry freshness recalculated as of Oct 2: 118 stale of 243 recorded entries. Official-source/formula gaps remain. MTN still has 75 failed historical runs in that window; do not erase history or replay jobs to manufacture success. Five degraded health lanes need investigation. |
-| Accessibility | Auth, CV Builder, Payroll, Pricing contrast and Solar label/focus source repairs are integrated. Their local acceptance recorded 15 passing route/width checks. | Production route/action and assistive-technology proof is incomplete. Shared contrast/link identification and unverified app workflows remain open. Historical French early-input and transition failures retain separate reproductions; PR #183 does not itself explain them. |
+| Accessibility | Focused anonymous production checks passed for Auth, CV Builder, English Solar and Pricing at three widths. The shared contrast/Payroll prompt candidate passed 27 optimized-artifact checks and 1,200 repository test files before its current-main refresh. | Payroll's paid region is correctly inert for guests, but its guest prompt links were also inert; the candidate fixes their placement. Paid workspace acceptance and assistive-technology proof remain open. The broader contrast survey still has findings in 44 of 54 observations. French country initialization has a separate candidate and original negative assertions remain intact. |
 | Other workflows | Published CI recovery and car/image policy work; live profile privilege guard installed with a separately tested source candidate in PR #184. Some AfroStream scheduled scrapers show successful aggregate runs. | Car listing/price evidence, image rights, AfroStream profile/playback actions, API authorization/errors, widget embed actions, offline update recovery and sensitive export contents require their own acceptance. Successful scrape counts do not prove playback or user workflows. |
 
 ## Work packages and acceptance

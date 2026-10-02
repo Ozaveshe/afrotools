@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { rewriteSolarRouteLiterals } = require("../scripts/lib/french-solar-country-routes");
+const { localizeFrenchSolarCountryPicker } = require("../scripts/lib/french-solar-country-picker");
+const { frenchSolarCountryDisplayNames } = require("../scripts/repair-fr-solar-country-pages");
 const {
   FRENCH_ENERGY_APPS,
   REVIEWED_AT,
@@ -123,7 +125,7 @@ for (const app of FRENCH_ENERGY_APPS) {
   assert.deepStrictEqual(frenchSources, englishSources, `${app.id}: DOM-free engines and energy datasets must match English`);
 
   for (const formulaScript of formulaScripts(source)) {
-    const expected = app.id === "solar-roi" ? rewriteSolarRouteLiterals(formulaScript) : formulaScript;
+    const expected = app.id === "solar-roi" ? localizeFrenchSolarCountryPicker(rewriteSolarRouteLiterals(formulaScript), frenchSolarCountryDisplayNames()) : formulaScript;
     assert.ok(french.includes(expected), `${app.id}: inline formula/controller changed beyond owned locale routes`);
   }
 

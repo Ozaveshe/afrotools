@@ -11,7 +11,11 @@ const fixture = {
   currency: 'NGN', market: "Lagos' Island", mileage_km: 128000
 };
 
-test('catalog identities include the full deduplicated 482', () => assert.equal(vehicleIds().size, 482));
+test('catalog retains the original identities and includes real-listing gaps without price profiles', () => {
+  const ids = vehicleIds();
+  assert.ok(ids.size >= 482);
+  for (const id of ['ford-edge-2016', 'lexus-lx-2018', 'toyota-camry-2013', 'toyota-highlander-2018']) assert.ok(ids.has(id), id);
+});
 test('valid listing becomes pending and retains a source URL', () => {
   const rows = validate([fixture], sources, vehicleIds(), now);
   assert.equal(rows[0].review_status, 'pending');

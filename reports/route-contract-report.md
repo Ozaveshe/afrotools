@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11696 |
-| Indexable pages | 7881 |
+| Public pages | 11697 |
+| Indexable pages | 7882 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4255 |
-| Documented fallbacks | 14968 |
-| Routes eligible for primary sitemaps | 7881 |
+| Genuine equivalence groups | 4256 |
+| Documented fallbacks | 14969 |
+| Routes eligible for primary sitemaps | 7882 |
 
 ## Locale Coverage
 
-- en: 6141 page records
+- en: 6142 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 537
+- article: 538
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6775,6 +6775,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e1184eda7e48: en=`/jamb/biology/2004/`; x-default=`/jamb/biology/2004/`
 - equivalence:e118cba16141: en=`/gabon/ga-paye`, fr=`/fr/gabon/calculateur-salaire-net`, sw=`/sw/gabon/kikokotoo-kodi-mshahara/`; x-default=`/gabon/ga-paye`
 - equivalence:e11def52d091: en=`/tools/car-insurance/eritrea`, fr=`/fr/tools/assurance-auto/eritrea`; x-default=`/tools/car-insurance/eritrea`
+- equivalence:e13f5b94a2a7: en=`/blog/kenya-tax-compliance-certificate-2026/`; x-default=`/blog/kenya-tax-compliance-certificate-2026/`
 - equivalence:e151608032b9: en=`/jamb/english/2016/`; x-default=`/jamb/english/2016/`
 - equivalence:e16e972c8de2: en=`/tools/freelancer-rate/angola/`, fr=`/fr/tools/calculateur-de-tarif-independant-angola/`; x-default=`/tools/freelancer-rate/angola/`
 - equivalence:e17f0a53050b: en=`/blog/overdue-invoice-email-templates-africa/`; x-default=`/blog/overdue-invoice-email-templates-africa/`

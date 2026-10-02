@@ -70,6 +70,34 @@ function decodeHtml(value) {
     .replace(/&gt;/g, ">");
 }
 
+function validateNutritionSchema(recipe, nutrition) {
+  const errors = [];
+  const numeric = value => {
+    if (typeof value !== 'number' && typeof value !== 'string') return null;
+    if (typeof value === 'string' && !/^\s*(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?\s*$/i.test(value)) return null;
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 ? number : null;
+  };
+  const servings = Number(recipe.default_servings);
+  const documented = ['per_serving', 'batch'].includes(recipe.nutrition_basis) && Number.isFinite(servings) && servings > 0 && numeric(recipe.calories) !== null;
+  if (!documented) {
+    if (nutrition != null) errors.push('nutrition metadata requires a documented portion basis and valid serving count');
+    return errors;
+  }
+  if (!nutrition || nutrition['@type'] !== 'NutritionInformation') return ['nutrition missing for documented portion data'];
+  if (nutrition.servingSize !== '1 serving') errors.push('nutrition servingSize must identify one serving');
+  const divisor = recipe.nutrition_basis === 'batch' ? servings : 1;
+  for (const [field, property, unit, precision] of [['calories', 'calories', ' calories', 1], ['protein_g', 'proteinContent', 'g', 10], ['carbs_g', 'carbohydrateContent', 'g', 10], ['fat_g', 'fatContent', 'g', 10], ['fiber_g', 'fiberContent', 'g', 10]]) {
+    const value = numeric(recipe[field]);
+    if (value === null) {
+      if (Object.hasOwn(nutrition, property)) errors.push('unreported nutrition must be omitted: ' + property);
+    } else if (nutrition[property] !== Math.round(value / divisor * precision) / precision + unit) {
+      errors.push('nutrition does not match its documented per-serving value: ' + property);
+    }
+  }
+  return errors;
+}
+
 function validateRecipePage(recipe) {
   const filePath = routeToFile(recipe.route_path);
   const relativeFile = path.relative(ROOT, filePath).replace(/\\/g, "/");
@@ -143,9 +171,7 @@ function validateRecipePage(recipe) {
       }
     });
   }
-  if (recipe.calories && (!recipeSchema.nutrition || recipeSchema.nutrition["@type"] !== "NutritionInformation")) {
-    errors.push("nutrition missing although nutrition data is available");
-  }
+  errors.push(...validateNutritionSchema(recipe, recipeSchema.nutrition));
   if (!recipeSchema.mainEntityOfPage || recipeSchema.mainEntityOfPage["@id"] !== recipe.route_url) {
     errors.push("mainEntityOfPage missing or mismatched");
   }
@@ -200,4 +226,5 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+module.exports = { validateNutritionSchema };

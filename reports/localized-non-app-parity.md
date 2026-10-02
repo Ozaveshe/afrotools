@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 159 | 2 | 299 |
-| sw | 137 | 1 | 322 |
+| fr | 159 | 2 | 300 |
+| sw | 137 | 1 | 323 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 332 | 40 | 0 | 292 | 21 | 0 | 311 |
+| editorial | 333 | 40 | 0 | 293 | 21 | 0 | 312 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -342,6 +342,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/kenya-solar-battery-sizing-guide/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-solar-roi-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-solar-roi-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/kenya-tax-compliance-certificate-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/kenya-tax-compliance-certificate-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-tenancy-agreement-checklist/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-tenancy-agreement-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
