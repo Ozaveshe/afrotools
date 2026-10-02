@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # Preservation tests compare current records with pinned release baselines.
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v5

@@ -160,12 +160,29 @@ Do not send a `featured` field through the fallback admin or REST publish path u
 
 - Focus on African creators, platforms, business moves, rankings, audience growth, or monetization.
 - Keep stories tighter than the main blog.
+- Publish original AfroStream reports with at least **600 words of visible body prose**, excluding headings, URLs and image markup. A shorter draft is allowed; do not pad an excerpt or reproduce a publisher's full article to meet the minimum.
+- Use an `AfroStream` byline (for example, `AfroStream Editorial`) for our reports, and link the evidence in the body. The public renderer treats external publisher bylines as newswire briefs.
+- RSS imports are unpublished research leads. Source checking and original writing happen before publication; the monitor does not generate articles or certify facts.
 - Use specific names, dates, platforms, and countries.
 - No em dashes anywhere in publishable copy.
 - No invented milestones, fake creator stories, synthetic drama, or placeholder events.
 - If a story cannot be tied to a real verified source, do not publish it.
 - Avoid unverified gossip. If a claim is not verified, do not present it as fact.
 - Favor clean, skimmable structure over long-form essay writing.
+
+### Newswire archive expansion
+
+Expand the Kumasi YMCA/Metro story first, then the existing published archive in verified batches. Inspect live `as_news` through the configured AfroTools Supabase MCP. Queue publisher-byline newswire rows and existing first-party reports with fewer than 600 body prose words, using the shared editorial policy's word count. Start with recent, source-rich stories, and check related slugs before drafting so duplicate coverage does not become duplicate reports.
+
+- Replace a brief in its existing row after verifying the material and writing an original 600+ word body. Keep the slug, `external_id`, original `published_at` and feed `source_url` stable. The monitor uses `source_url` to detect feed identity collisions; put additional primary-source links in the body.
+- Clearly separate confirmed facts, proposed plans and editorial analysis. Retain source and image credits; do not claim reporting from a venue or interview we did not conduct.
+- Save the old row fields and source/word-count evidence before updating. Use the observed `updated_at` as an optimistic concurrency condition, and verify the public API and article route after the write.
+- Keep entries lacking sufficient reliable material queued for research. Do not fabricate details, inflate prose, mass-unpublish the existing archive or announce a complete backfill after a partial batch.
+- Content batches should include a source-verified archive expansion when suitable material is available, while maintaining their existing static-blog obligations. Report exact changed row IDs/slugs, completed and remaining counts, and any research blockers.
+
+`tools/afrostream/editorial-policy.js` owns the word count and admin publication guard. It applies to new publications and published-body/byline revisions; metadata-only corrections to older articles remain possible. Admin news-tip approval uses the same guard. Direct Supabase publishing must follow this standard too, because the application guard does not enforce a database constraint.
+
+The admin HTML remains an internal editing surface and is excluded from the public deployment. Its source browser checks verify the form; artifact checks verify the private-page boundary and shipped policy helper. The protected admin API enforces the publication standard in production.
 
 ### AfroStream verification
 

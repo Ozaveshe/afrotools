@@ -35,6 +35,7 @@ function createFetchHarness() {
   const state = {
     newsPosts: 0,
     mentionPosts: 0,
+    newsPayloads: [],
     writes: [],
   };
 
@@ -68,6 +69,7 @@ function createFetchHarness() {
       return jsonResponse([]);
     }
     if (method === 'POST' && requestUrl.includes('/rest/v1/as_news?on_conflict=external_id')) {
+      state.newsPayloads.push(JSON.parse(options.body));
       const newsId = ++state.newsPosts;
       // Keep all eligible workers in flight so the test exercises the shared
       // reservation boundary rather than accidentally serializing the writes.
@@ -131,6 +133,7 @@ test('news monitor enforces its live insert cap under concurrency and dry-run ne
       assert.strictEqual(live.summary.inserted_news, 5);
       assert.strictEqual(live.state.newsPosts, 5);
       assert.strictEqual(live.state.mentionPosts, 5);
+      assert.ok(live.state.newsPayloads.every(row => row.is_published === false), 'RSS excerpts must remain unpublished research leads');
       assert.strictEqual(live.summary.skipped_matches, 1);
       assert.ok(
         live.summary.insert_limit - live.summary.inserted_news >= 0,
