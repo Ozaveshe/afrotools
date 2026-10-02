@@ -20,10 +20,19 @@ async function settleRenderedContent(page) {
   }
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-  await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation =>
-    animation.playState === 'running' && Number.isFinite(animation.effect.getComputedTiming().endTime) &&
-    (animation.effect.target?.checkVisibility?.({ contentVisibilityAuto: true, visibilityProperty: true }) ?? true)
-  ).length)).toBe(0);
+  await expect.poll(() => page.evaluate(() => {
+    const roots = [document];
+    for (let index = 0; index < roots.length; index++) {
+      for (const element of roots[index].querySelectorAll('*')) {
+        if (element.shadowRoot) roots.push(element.shadowRoot);
+      }
+    }
+    const animations = new Set(roots.flatMap(root => root.getAnimations()));
+    return [...animations].filter(animation =>
+      animation.playState === 'running' && Number.isFinite(animation.effect.getComputedTiming().endTime) &&
+      (animation.effect.target?.checkVisibility?.({ contentVisibilityAuto: true, visibilityProperty: true }) ?? true)
+    ).length;
+  })).toBe(0);
 }
 
 for (const route of routes) {
