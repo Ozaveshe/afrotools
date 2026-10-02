@@ -3,6 +3,7 @@
 // No network credentials, research rows, contacts or private observation IDs are exported.
 const fs = require('node:fs');
 const { vehicleIds } = require('./car-market-evidence');
+const { cohort } = require('./car-market-cohort');
 const PROJECT = 'zpclagtgczsygrgztlts';
 const DAY = 86400000;
 const approved = value => ['manual-only', 'automated-approved'].includes(value);
@@ -20,6 +21,9 @@ from (
       'current_revision', o.observed_at = h.observed_at,
       'review_status', o.review_status, 'reviewed_at', o.reviewed_at,
       'vehicle_id', o.vehicle_id, 'country_code', o.country_code,
+      'market', o.market, 'trim_label', o.trim_label, 'engine_cc', o.engine_cc,
+      'history_cohort', jsonb_build_object('market', h.facts->'market',
+        'trim_label', h.facts->'trim_label', 'engine_cc', h.facts->'engine_cc'),
       'condition_label', o.condition_label, 'currency', o.currency,
       'asking_price', o.asking_price, 'observed_at', o.observed_at,
       'listing_url', o.listing_url, 'source_id', o.source_id,
@@ -71,10 +75,16 @@ function exportCapture(capture, registry, { now = new Date(), vehicles = vehicle
       if (from > to || from < at - 14 * DAY || to > captured + 300000 || reviewed < to || published < reviewed || published > captured + 300000) throw Error('Stale or unordered review dates');
       if (!Number.isInteger(s.sample_size) || s.sample_size < 3 || !Array.isArray(s.members) || s.members.length !== s.sample_size) throw Error('Insufficient or inconsistent sample');
       const urls = new Set(), ids = new Set(), keys = new Set(), sources = new Map(), prices = [], observed = [];
+      let group;
       for (const m of s.members) {
         const source = registry.sources[m.source_id];
         if (!source || !approved(source.access_status) || !approved(m.source_access_status) || source.domain !== m.source_domain) throw Error('Source permission withdrawn or unapproved');
         if (m.current_revision !== true || m.review_status !== 'accepted' || m.vehicle_id !== s.vehicle_id || m.country_code !== s.country_code || m.currency !== s.currency || m.condition_label !== s.condition_label) throw Error('Observation changed or not accepted');
+        const current = cohort(m), historical = cohort(m.history_cohort || {});
+        if (current.key !== historical.key) throw Error('Observation cohort differs from history');
+        if (cohort({ ...m, market: s.market }).key !== current.key) throw Error('Snapshot market differs from members');
+        if (group && current.key !== group.key) throw Error('Mixed market, trim or engine group');
+        group = group || current;
         const time = timestamp(m.observed_at), checked = timestamp(m.reviewed_at);
         if (time < from || time > to || checked < time || checked > reviewed) throw Error('Invalid member review dates');
         const url = new URL(m.listing_url);
@@ -88,9 +98,9 @@ function exportCapture(capture, registry, { now = new Date(), vehicles = vehicle
       prices.sort((a, b) => a - b);
       const band = [s.lower_quartile, s.median_ask, s.upper_quartile].map(number);
       if (band.some((value, index) => Math.abs(value - quantile(prices, [0.25, 0.5, 0.75][index])) > 0.011)) throw Error('Snapshot prices differ from members');
-      const key = [s.vehicle_id, s.country_code, s.condition_label, s.currency].join('|');
+      const key = JSON.stringify([s.vehicle_id, s.country_code, s.condition_label, s.currency, group.key]);
       if (seen.has(key)) throw Error('Older comparable snapshot');
-      const result = { snapshotId: s.snapshot_id, vehicleId: s.vehicle_id, countryCode: s.country_code, condition: s.condition_label, currency: s.currency, market: s.market == null ? s.country_code : text(s.market, 'market', 120), lowerQuartile: band[0], median: band[1], upperQuartile: band[2], sampleSize: s.sample_size, observedFrom: new Date(from).toISOString(), observedTo: new Date(to).toISOString(), reviewedAt: new Date(reviewed).toISOString(), expiresAt: new Date(from + 14 * DAY).toISOString(), method: text(s.method, 'method'), limitations: text(s.limitations, 'limitations'), sources: [...sources.values()] };
+      const result = { snapshotId: s.snapshot_id, vehicleId: s.vehicle_id, countryCode: s.country_code, condition: s.condition_label, currency: s.currency, market: text(s.market, 'market', 120).trim(), trimLabel: group.trimLabel, engineCc: group.engineCc, lowerQuartile: band[0], median: band[1], upperQuartile: band[2], sampleSize: s.sample_size, observedFrom: new Date(from).toISOString(), observedTo: new Date(to).toISOString(), reviewedAt: new Date(reviewed).toISOString(), expiresAt: new Date(from + 14 * DAY).toISOString(), method: text(s.method, 'method'), limitations: text(s.limitations, 'limitations'), sources: [...sources.values()] };
       seen.add(key); observations.push(result);
     } catch (error) { excluded.push({ snapshotId: s.snapshot_id || null, reason: error.message }); }
   }
