@@ -95,4 +95,22 @@ assert.strictEqual(
   'Update this expected scheduled-function count when netlify.toml intentionally changes'
 );
 
+// The central-bank collector uses shared meta evidence, not the legacy
+// bank-rates scraper identity or the separate forex collector's cache.
+const ratesHealth = inferHealth('scheduled-fetch-central-bank-rates');
+const ratesRecord = registryByFunction.get('scheduled-fetch-central-bank-rates');
+assert.strictEqual(ratesHealth.type, 'meta');
+assert.strictEqual(ratesHealth.metaKey, 'rates');
+assert.deepStrictEqual(
+  ratesRecord.live_data_tables_or_blobs.slice().sort(),
+  ['live_data_store:meta', 'live_data_store:' + ratesHealth.fallbackKey].sort(),
+  'Central-bank registry storage ownership must match the live-health evidence contract'
+);
+assert.strictEqual(ratesRecord.health_endpoint, '/api/rates');
+const ratesApi = fs.readFileSync(path.join(ROOT, 'netlify/functions/api-rates.js'), 'utf8');
+assert.ok(
+  ratesApi.includes("getOrFetch('" + ratesHealth.fallbackKey + "'"),
+  'The registered central-bank endpoint must read the same fallback snapshot as its collector'
+);
+
 console.log('live-automation-health-coverage: ok');
