@@ -31,7 +31,7 @@
     .auth-context{padding-top:18px}
     .auth-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;padding:7px 12px;border:1px solid #c7ddf8;border-radius:8px;background:#fff;color:var(--auth-accent-dark);font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
     .country-enhanced-field{grid-column:1/-1}
-    .country-fallback-field.is-enhanced{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    .country-fallback-field[hidden],.country-enhanced-field[hidden]{display:none!important}
     .auth-title{margin:0 0 16px;font-size:clamp(2rem,4.8vw,3.75rem);line-height:1.04;letter-spacing:0;font-weight:760;color:#111827}
     .auth-copy{max-width:56ch;margin:0 0 22px;color:var(--auth-muted);font-size:1rem;line-height:1.7}
     .auth-proof{display:grid;gap:10px;max-width:520px;margin-top:24px}
@@ -42,6 +42,8 @@
     .auth-tab{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 10px;color:#445266;text-decoration:none;font-weight:700;font-size:0.88rem;border-bottom:3px solid transparent}
     .auth-tab[aria-current="page"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
     .auth-tab:focus-visible{outline:2px solid var(--auth-accent);outline-offset:-4px}
+    :root[data-theme="dark"] body.auth-page .auth-tab[aria-current="page"]{color:#bfdbfe!important;border-bottom-color:#60a5fa!important}
+    :root[data-theme="dark"] body.auth-page .auth-tab:focus-visible{outline-color:#93c5fd}
     .auth-body{padding:28px}
     .auth-body h2{margin:0 0 8px;font-size:1.45rem;line-height:1.2;letter-spacing:0}
     .auth-body p{margin:0 0 18px;color:var(--auth-muted);line-height:1.6;font-size:0.94rem}
@@ -53,6 +55,7 @@
     .field textarea{min-height:92px;resize:vertical}
     .field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(0,98,204,.16);border-color:var(--auth-accent)}
     .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .auth-row:has(.country-fallback-field[hidden])>.field:first-child{grid-column:1/-1}
     .auth-submit,.oauth-btn,.api-copy-btn{border:0;border-radius:8px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer}
     .auth-submit{background:var(--auth-accent);color:#fff}
     .auth-submit:hover{background:var(--auth-accent-dark)}
@@ -100,8 +103,8 @@
         <p class="auth-copy">Use one account for saved tools, dashboard workspaces, AfroPoints, API keys, and Pro checkout. Free accounts remain available for everyday calculators and saved history.</p>
         <div class="auth-proof" aria-label="Account benefits">
           <div><span>1</span><strong>Save calculations and tool shortcuts across sessions.</strong></div>
-          <div><span>2</span><strong>Open dashboard, API key, and AfroPoints gates from a real route.</strong></div>
-          <div><span>3</span><strong>Continue even when inline modal scripts are unavailable.</strong></div>
+          <div><span>2</span><strong>Manage your dashboard, API keys and AfroPoints.</strong></div>
+          <div><span>3</span><strong>Return to your tool or dashboard after signing in.</strong></div>
         </div>
       </section>
 
@@ -270,11 +273,13 @@
     }
 
     function getSignupCountry() {
+      var fallback = document.getElementById('signupCountryFallback');
+      var select = document.getElementById('signupCountry');
+      if (fallback && !fallback.hidden) return select && select.value ? { name: select.value } : null;
       if (window.AfroCountry && typeof window.AfroCountry.getSelected === 'function') {
         var selected = window.AfroCountry.getSelected();
         if (selected && selected.name) return selected;
       }
-      var select = document.getElementById('signupCountry');
       return select && select.value ? { name: select.value } : null;
     }
 
@@ -283,13 +288,26 @@
       applySignupCountry(country);
     });
 
-    setTimeout(function() {
-      if (window.customElements && customElements.get('afro-country-selector')) {
-        var fallback = document.getElementById('signupCountryFallback');
-        if (fallback) fallback.classList.add('is-enhanced');
-        if (window.AfroCountry && typeof window.AfroCountry.getSelected === 'function') applySignupCountry(window.AfroCountry.getSelected());
+    function enhanceSignupCountry() {
+      var fallback = document.getElementById('signupCountryFallback');
+      var select = document.getElementById('signupCountry');
+      var picker = document.getElementById('signupCountrySelector');
+      if (!fallback || !select || !picker) return;
+      // Keep a choice made while the deferred component was loading.
+      if (select.value) {
+        picker.parentElement.hidden = true;
+        return;
       }
-    }, 0);
+      var hadFocus = fallback.contains(document.activeElement);
+      fallback.hidden = true;
+      if (window.AfroCountry && typeof window.AfroCountry.getSelected === 'function') applySignupCountry(window.AfroCountry.getSelected());
+      var trigger = picker.shadowRoot && picker.shadowRoot.querySelector('.cs-trigger');
+      if (hadFocus && trigger) trigger.focus();
+    }
+    if (window.customElements) {
+      if (customElements.get('afro-country-selector')) enhanceSignupCountry();
+      else customElements.whenDefined('afro-country-selector').then(enhanceSignupCountry);
+    }
 
     document.querySelectorAll('[data-mode-link]').forEach(function(link){
       link.addEventListener('click', function(evt){
