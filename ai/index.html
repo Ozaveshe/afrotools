@@ -4218,11 +4218,9 @@
      */
     function handleLowConfidence(query, generation) {
       if (generation !== routeGeneration) return;
-      if (!getRouterManifest().length) {
-        ensureToolDirectory().then(function () { handleLowConfidenceNow(query, generation); });
-        return;
-      }
-      handleLowConfidenceNow(query, generation);
+      // The navbar may supply a nonempty but partial registry. Only the full
+      // directory can establish that a query has no matching public tool.
+      ensureToolDirectory().then(function () { handleLowConfidenceNow(query, generation); });
     }
 
     function handleLowConfidenceNow(query, generation) {
@@ -4330,7 +4328,9 @@
           var fallbackCopy = routerFallbackCopy(payload, payload && payload.decision);
           modelStatus.textContent = fallbackCopy || (consentToModel ? "AI help was requested with consent. Review the selected tool before opening it." : "");
         }
-      }).catch(function (err) {
+      }).catch(async function (err) {
+        if (generation !== routeGeneration) return;
+        await ensureToolDirectory();
         if (generation !== routeGeneration) return;
         var routerDisabled = err && err.message === "Router disabled for this session.";
         var catalogMatch = routerDisabled ? null : localCatalogRoute(clean);

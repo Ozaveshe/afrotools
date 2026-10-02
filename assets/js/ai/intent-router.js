@@ -138,6 +138,7 @@
   ];
 
   var ROUTING_RULES = FRENCH_FINTECH_ROUTING_RULES.concat(FRENCH_TELECOM_ROUTING_RULES, [
+    rule("african", "afrokitchen", ["recipe", "cookbook", "afrokitchen", "jollof", "injera", "thieboudienne", "cook tonight", "weekly cooking plan"], ["none"]),
     rule("career-documents", "cover-letter", ["cover letter", "application letter", "motivation letter"], ["employment"]),
     rule("cv-jobs", "cv-builder", ["cv", "resume", "curriculum vitae", "ats", "linkedin profile", "job application pack", "application pack", "graduate trainee role"], ["employment", "career"]),
     rule("government", "passport-checklist", ["passport checklist", "passport application", "passport documents", "passport fees", "ghana passport", "passport next steps"], ["none"]),
