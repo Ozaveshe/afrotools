@@ -10,9 +10,10 @@
  *   2. an EN -> FR country-name map with correct locative prepositions
  *   3. JSON-LD url corrections (/tools/solar-roi/x -> /fr/tools/roi-solaire/x)
  *
- * Copy repair covers text nodes + JSON-LD. Route repair changes only known
- * Solar URL string literals and anchors; calculator and country-name logic stay
- * intact.
+ * Copy repair covers text nodes + JSON-LD and the owned country-picker labels.
+ * Route repair changes only known Solar URL string literals and anchors. French
+ * display names also participate in country search; engine identities, source
+ * data and calculator logic stay intact.
  *
  * Usage: node scripts/repair-fr-solar-country-pages.js [--fix]
  */
@@ -20,6 +21,8 @@
 const fs = require("fs");
 const path = require("path");
 const { localizeFrenchSolarRoutes } = require("./lib/french-solar-country-routes");
+const { localizeFrenchSolarCountryPickerHtml } = require("./lib/french-solar-country-picker");
+const solarDataset = require("../data/energy/solar-roi-country-dataset");
 
 const ROOT = path.resolve(__dirname, "..");
 const DIR = path.join(ROOT, "fr", "tools", "roi-solaire");
@@ -483,8 +486,14 @@ function translateSegment(text) {
   return out;
 }
 
+function frenchSolarCountryDisplayNames() {
+  return Object.fromEntries(Object.values(solarDataset.countries)
+    .map(country => [country.code, frName(country.countryName)]));
+}
+
 function processHtml(html) {
   html = localizeFrenchSolarRoutes(html);
+  html = localizeFrenchSolarCountryPickerHtml(html, frenchSolarCountryDisplayNames());
   // Preserve distinct, visible names when repairing older translated pickers.
   html = html.replace(/(<label\b[^>]*for="solarCountryPageSearch"[^>]*>)[^<]*(<\/label>)/, '$1Rechercher un pays$2');
   if (html.includes('id="solarCountryPageSelect"') && !html.includes('for="solarCountryPageSelect"')) {
@@ -544,4 +553,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { processHtml };
+module.exports = { processHtml, frenchSolarCountryDisplayNames };
