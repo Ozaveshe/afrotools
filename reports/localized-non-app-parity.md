@@ -6,14 +6,14 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 159 | 2 | 301 |
+| fr | 160 | 2 | 300 |
 | sw | 137 | 1 | 324 |
 
 ## By surface class
 
 | Class | English routes | FR pass | FR under standard | FR missing | SW pass | SW under standard | SW missing |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
+| category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
 | editorial | 334 | 40 | 0 | 294 | 21 | 0 | 313 |
@@ -639,7 +639,6 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/zimbabwe-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
-| /career/ | category-hub | fr | — | missing | no localized route or owner file |
 | /cars/ | product-entry | fr | /fr/cars/ | under-standard | form controls 1/2 |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |

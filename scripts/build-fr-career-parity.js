@@ -1,6 +1,9 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { stableId } = require('./lib/content-integrity');
 
 const ROOT = path.resolve(__dirname, '..');
 const countries = `
@@ -84,6 +87,8 @@ function page(tool) {
   return `<!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="afrotools-source-owner" content="scripts/build-fr-career-parity.js">
+<meta name="afrotools-content-id" content="${stableId(`/fr/tools/${tool.slug}/`)}">
 <title>${tool.title} Afrique | AfroTools</title>
 <meta name="description" content="${tool.description}">
 <link rel="canonical" href="${canonical}">
@@ -94,8 +99,9 @@ function page(tool) {
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="${tool.title}"><meta property="og:description" content="${tool.description}">
 <meta property="og:url" content="${canonical}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${tool.image}.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${tool.title}"><meta name="twitter:description" content="${tool.description}"><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/${tool.image}.webp">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-career-tools.css">
-<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/lib/dark-mode.js" defer></script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/engines/career-planning.js" defer></script><script src="/assets/js/pages/fr-career-tools.js" defer></script>
 <script type="application/ld+json">${JSON.stringify({
     '@context': 'https://schema.org', '@type': 'WebApplication', name: tool.title,
@@ -106,11 +112,13 @@ function page(tool) {
 </head><body>
 <afro-navbar lang="fr"></afro-navbar>
 <main class="fr-career-main" data-fr-career-tool="${tool.kind}" data-export-name="${tool.exportName}">
+  <nav class="fr-career-breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">AfroTools</a> / <a href="/fr/jobs/">Carrière et emploi</a> / <span>${tool.title}</span></nav>
   <section class="fr-career-hero"><p class="eyebrow">Carrière et développement · calcul local</p><h1>${tool.title}</h1><p>${tool.description}</p></section>
   <div class="fr-career-grid">
     <section class="fr-career-card" aria-labelledby="form-title">
       <h2 id="form-title">Vos hypothèses</h2><p>Les valeurs restent dans votre navigateur. Aucun compte n’est requis.</p>
       <form class="fr-career-form" novalidate>${tool.form}<div class="fr-span"><button class="fr-action" type="submit">Calculer mon scénario</button><p class="fr-status" data-status role="status" aria-live="polite"></p></div></form>
+      <div class="fr-actions"><button type="button" class="fr-action secondary" data-restore>Rouvrir le rapport enregistré</button><button type="button" class="fr-action secondary" data-delete>Effacer le rapport enregistré</button></div>
       <section class="fr-results" data-results hidden aria-live="polite"><h2>Votre scénario</h2><div class="fr-metrics" data-metrics></div><pre class="fr-report" data-report></pre>
         <div class="fr-actions"><button type="button" class="fr-action secondary" data-copy>Copier</button><button type="button" class="fr-action secondary" data-download>Télécharger TXT</button><button type="button" class="fr-action secondary" data-save>Enregistrer sur cet appareil</button></div>
       </section>
@@ -124,9 +132,15 @@ function page(tool) {
 </body></html>`;
 }
 
+let stale = false;
 for (const tool of tools) {
   const target = path.join(ROOT, 'fr', 'tools', tool.slug, 'index.html');
+  const expected = page(tool);
+  const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
+  if (normalizeBuildManagedHtml(current).trim() === normalizeBuildManagedHtml(expected).trim()) continue;
+  if (process.argv.includes('--check')) { console.error(`French Career page is stale: ${tool.slug}`); stale = true; continue; }
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, page(tool), 'utf8');
+  writeFileSyncWithRetry(target, expected, 'utf8');
 }
-console.log(`Built ${tools.length} native French Career pages.`);
+if (stale) process.exitCode = 1;
+else console.log(`${process.argv.includes('--check') ? 'Validated' : 'Built'} ${tools.length} native French Career pages.`);

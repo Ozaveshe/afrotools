@@ -31,7 +31,7 @@ const FRENCH_CATEGORIES = [
   { key: 'travel-tourism', title: 'Voyage et tourisme', href: '/fr/travel/', nativeHub: true, icon: 'VOY', bg: '#e0f2fe', description: 'Budget, préparation, visas, santé du voyage et tourisme.' },
   { key: 'personal-finance', title: 'Finances personnelles', href: '/fr/all-tools/?category=personal-finance', nativeHub: false, icon: 'FP', bg: '#f5f3ff', description: 'Budget, dette, épargne et décisions financières du foyer.' },
   { key: 'diaspora', title: 'Diaspora', href: '/fr/all-tools/?category=diaspora', nativeHub: false, icon: 'DI', bg: '#e0f2fe', description: 'Transferts, mobilité, fiscalité et projets transfrontaliers.' },
-  { key: 'career', title: 'Carrière et développement', href: '/fr/all-tools/?category=career', nativeHub: false, icon: 'CA', bg: '#f5f3ff', description: 'CV, emploi, négociation et progression professionnelle.' },
+  { key: 'career', title: 'Carrière et développement', href: '/fr/jobs/', nativeHub: true, icon: 'CA', bg: '#f5f3ff', description: 'CV, emploi, négociation et progression professionnelle.' },
   { key: 'religious-cultural', title: 'Religion et culture', href: '/fr/religion-culture/', nativeHub: true, icon: 'RC', bg: '#fef3c7', description: '22 outils locaux avec calculs, sources, limites d’autorité et exports réouvrables.' },
   { key: 'climate', title: 'Climat et environnement', href: '/fr/climat-environnement/', nativeHub: true, icon: 'CL', bg: '#f0fdf4', description: 'Carbone, eau, risques climatiques et durabilité.' },
   { key: 'sports', title: 'Sports et divertissement', href: '/fr/all-tools/?category=sports', nativeHub: false, icon: 'SP', bg: '#fef2f2', description: 'Performance, événements, équipes et activités sportives.' },
