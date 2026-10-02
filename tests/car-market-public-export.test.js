@@ -22,6 +22,40 @@ test('exports reviewed comparable bands and strips private fields', () => {
 test('wrong project and stale capture fail before writing', () => {
   for (const edit of [c => c.project_ref = 'wrong-project', c => c.queried_at = '2026-09-01T00:00:00Z']) { const c = fixture(); edit(c); assert.throws(() => exportCapture(c, registry, options)); }
 });
+test('capture timestamps require a real calendar date, time and explicit timezone', () => {
+  for (const value of ['2026-09-31T18:00:00Z', '2026-02-29T18:00:00Z', '2026-10-01T24:00:00Z', '2026-10-01T18:60:00Z', '2026-10-01T18:00:60Z', '2026-10-01T18:00:00', '2026-10-01T18:00:00+00:60']) {
+    const c = fixture(); c.queried_at = value;
+    assert.throws(() => exportCapture(c, registry, options), /Invalid timestamp/, value);
+  }
+});
+test('valid leap days, timezone offsets and PostgreSQL fractional seconds retain their instant', () => {
+  const c = fixture(); c.queried_at = '2026-10-01T23:00:00.000000+05:00';
+  const s = c.snapshots[0];
+  s.observed_from = s.observed_to = '2026-10-01T21:00:00.000000+05:00';
+  for (const member of s.members) member.observed_at = s.observed_from;
+  const result = exportCapture(c, registry, options);
+  assert.equal(result.publicPack.observations[0].observedFrom, '2026-10-01T16:00:00.000Z');
+  c.queried_at = '2024-02-29T18:00:00Z'; c.snapshots = [];
+  assert.deepEqual(exportCapture(c, registry, { ...options, now: new Date(c.queried_at) }).publicPack.observations, []);
+});
+test('impossible dates exclude only the affected snapshot or member', () => {
+  for (const field of ['observed_from', 'observed_to', 'reviewed_at', 'published_at', 'member.observed_at', 'member.reviewed_at']) {
+    const c = fixture(), bad = c.snapshots[0], good = structuredClone(bad);
+    good.snapshot_id = 'unaffected-snapshot'; good.market = 'Abuja';
+    for (const member of good.members) {
+      member.market = member.history_cohort.market = 'Abuja';
+      member.observation_id += '-good'; member.listing_key += '-good'; member.listing_url += '-good';
+    }
+    const target = field.startsWith('member.') ? bad.members[0] : bad;
+    const name = field.replace('member.', '');
+    target[name] = target[name].replace('2026-10-01', '2026-09-31');
+    c.snapshots.push(good);
+    const result = exportCapture(c, registry, options);
+    assert.equal(result.publicPack.observations.length, 1, field);
+    assert.equal(result.publicPack.observations[0].snapshotId, good.snapshot_id, field);
+    assert.deepEqual(result.excluded, [{ snapshotId: bad.snapshot_id, reason: 'Invalid timestamp' }], field);
+  }
+});
 const cases = {
   draft: s => s.status = 'draft',
   stale: s => s.observed_from = '2026-09-01T00:00:00Z',
