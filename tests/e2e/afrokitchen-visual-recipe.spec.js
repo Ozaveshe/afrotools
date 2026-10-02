@@ -49,6 +49,7 @@ for (const variant of [{width:320,theme:'light'},{width:390,theme:'dark'},{width
       await expect(page.locator('#ak-timer-display-1')).toHaveText(pausedTime);
       await page.locator('[data-ak-full-method]').click();
       await expect(page.locator('.ak-step:visible')).toHaveCount(6);
+      await expect(page.locator('.ak-visual-pager')).toBeHidden();
       await page.locator('[data-ak-cook-mode]').click();
       await expect(page.getByRole('dialog')).toBeVisible();
       await page.keyboard.press('Escape');
