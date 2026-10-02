@@ -1,6 +1,6 @@
 # Car market evidence workflow
 
-The private Supabase ledger stores 482 active catalog identities. An identity is not a verified price. Public asking-price claims must come from separately reviewed listing observations and a published snapshot. Keep the current static Car Pricer price pack independent until reviewed snapshot export is wired into its generator.
+The private Supabase ledger starts with 482 catalog identities from the existing price catalogs. Identity-only additions in `data/cars/market-identity-additions.csv` extend this without inventing USD valuations; the first four fill verified real-listing gaps. Use `node scripts/build-car-market-vehicle-seed.js --count` and live SQL for current counts. An identity is not a verified price. Public asking-price claims must come from separately reviewed listing observations and a published snapshot. Keep the current static Car Pricer price pack independent until reviewed snapshot export is wired into its generator.
 
 ## Source access
 
@@ -42,3 +42,9 @@ This exporter does not approve sources or publish snapshots. Its output still ne
 Each intake revision is preserved in the private append-only `car_market_observation_history` table. Refreshes require a newer observed timestamp, update all comparable facts, and reset review to pending. An older or repeated timestamp does not overwrite current facts. If a listing's facts change or its approval is withdrawn, contributing draft/reviewed/published snapshots expire. A new snapshot points to immutable observation IDs, so the same seller URLs with newer prices can produce a new reviewed range without losing earlier evidence. Review-only updates do not create price-history revisions. New facts at an unchanged timestamp are rejected by the database.
 
 Withdrawing source access also expires its accepted observations and active snapshots. Re-approving a source requires reviewing its observations again. To check these database behaviors, generate a transaction with `node tests/support/car-market-history-regression-sql.js` and run it through the verified AfroTools MCP. It uses synthetic `example.org` records and rolls all test data back; confirm the zero-data counts afterwards.
+
+## Identity-only catalog gaps
+
+Add a missing make/model/year to `data/cars/market-identity-additions.csv` after checking its identity against manufacturer evidence and a real listing. Keep price, engine, mileage and image claims out of this file. Existing USD price catalogs and their public pages remain independent. `scripts/car-market-catalog.js` provides the shared identity view for research, accepted-observation intake and private seed SQL; it rejects conflicting duplicate IDs and unknown or price-bearing fields in additions. Lexus's 2018 LX identity includes the listing alias LX570 without treating an alias as another car.
+
+Seed the added identities through the verified AfroTools MCP before assigning them to new research. Research is append-only: do not rewrite old null-ID facts. Append a newly observed matched revision after rechecking a listing, and report historical unmatched rows separately from unresolved make/model/year gaps. A newly matched research revision still does not approve an observation, image or public price.
