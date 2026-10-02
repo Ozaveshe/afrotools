@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-10-02",
+  "status": "candidate-validation-in-progress",
+  "productionCommit": "4f1eb4ec903ec5378561aa3106de6998fcfb9eef",
+  "productionProof": {
+    "environment": "anonymous Chromium; read-only same-origin requests; service workers blocked; synthetic CV fixtures",
+    "widths": [1365, 390, 320],
+    "passedRoutes": ["/auth/", "/tools/cv-builder/", "/tools/solar-roi/", "/pricing/"],
+    "passedObservations": 12,
+    "checks": ["focused workflow controls", "keyboard actions", "WCAG axe scan", "horizontal overflow", "page errors"],
+    "stableReleaseMarkerBeforeAndAfter": true,
+    "limitations": ["Anonymous checks do not certify login, billing, paid workspace operations or all WCAG requirements.", "Pricing checks changed and restored the billing display only; no checkout occurred."]
+  },
+  "payroll": {
+    "route": "/pro/apps/payroll/",
+    "initialTableKeyboardFailures": 3,
+    "tableFailureClassification": "The anonymous paid workspace is correctly inert; paid table behavior requires separate acceptance.",
+    "confirmedGuestDefect": "Visible Sign in and View Pro links were inserted inside the inert payroll shell and could not receive keyboard focus.",
+    "candidateFix": "Insert the existing access prompt before the outermost gated ancestor. Keep the protected workspace inert and keep authentication and entitlement decisions unchanged.",
+    "localKeyboardObservationsPassed": 3,
+    "paidSessionAcceptance": "pending"
+  },
+  "sharedContrast": {
+    "productionSurvey": { "routes": 9, "observations": 54, "themes": ["light", "dark"], "widths": [1365, 390, 320], "allObservationsHadFindings": true },
+    "repairedOwners": [
+      "assets/css/navbar.css",
+      "assets/js/lib/dark-mode.js",
+      "assets/css/sw-climate-tools.css",
+      "assets/css/homepage-hero.css",
+      "assets/css/homepage.css",
+      "assets/css/country-intelligence-hub.css"
+    ],
+    "localTargetedObservationsPassed": 24,
+    "test": "tests/e2e/shared-contrast-and-pro-gate.spec.js",
+    "testScope": "Axe checks rendered contrast for the affected labels, including shadow DOM, across four routes, two themes and three widths. Decorative previews intentionally hidden on mobile are checked on desktop. Visible mobile labels and document overflow are checked at mobile widths.",
+    "remainingFindings": [
+      "Homepage education cards and region labels in dark mode",
+      "Other French and Swahili homepage counters and preview labels",
+      "Country featured chips and inline links",
+      "Country PAYE tab keyboard scroll region",
+      "French LPG panel and trust-note contrast",
+      "French packaging explanatory link differentiation"
+    ],
+    "optimizedArtifactSurvey": {
+      "observations": 54,
+      "passed": 10,
+      "withFindings": 44,
+      "executionFailures": 0,
+      "pageErrors": 0,
+      "horizontalOverflow": 0,
+      "contrastNodeObservationsBefore": 1176,
+      "contrastNodeObservationsAfter": 882,
+      "residualNodeObservationsByRule": { "color-contrast": 882, "target-size": 4, "link-in-text-block": 18, "scrollable-region-focusable": 10 },
+      "countBoundary": "Node observations repeat across screen widths and themes; these counts are not unique defects or completed workflows. Before is production 4f; after is this local optimized artifact."
+    },
+    "fullSurveyAcceptance": "Survey completed; 44 observations still have findings. Targeted fixes pass, and the complete contrast backlog remains open."
+  },
+  "releaseAcceptance": {
+    "sourceBrowser": "27 passed",
+    "finalDeployBuild": "passed; 18,667-file artifact",
+    "fullRepositoryTests": "passed: 1,200 test files and all seven audits after final generation; earlier concurrent attempt stopped and excluded",
+    "optimizedArtifactBrowser": "27 passed, including guest Payroll axe scan",
+    "distAuditAndSecurity": "passed; lint and type-check also passed",
+    "hostedCI": "pending",
+    "production": "pending; fixes are not claimed deployed"
+  }
+}
