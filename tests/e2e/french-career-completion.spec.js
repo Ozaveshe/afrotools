@@ -3,6 +3,15 @@ const fs = require('fs');
 const routes = ['/fr/tools/croissance-carriere/', '/fr/tools/changement-carriere/', '/fr/tools/preparation-retraite/', '/fr/tools/negociation-salaire/'];
 const storageKey = 'afrotools-fr-career-hub-v1';
 
+test('English career companion stays on the served AfroTools workflow', async ({ page }) => {
+  await page.goto('/career/');
+  const link = page.getByRole('link', { name: 'Open Evaluator', exact: true });
+  await expect(link).toHaveAttribute('href', '/tools/job-offer-evaluator/');
+  await link.click();
+  await expect(page).toHaveURL(/\/tools\/job-offer-evaluator\/$/);
+  await expect(page.getByRole('heading', { level: 1, name: 'Compare two job offers on your terms.' })).toBeVisible();
+});
+
 for (const width of [320, 390, 1365]) {
   test(`French career discovery and keyboard checklist at ${width}px`, async ({ page }) => {
     const errors = [];

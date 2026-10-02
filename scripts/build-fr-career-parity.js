@@ -4,6 +4,7 @@ const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const { stableId } = require('./lib/content-integrity');
+const { analyticsVersion, canonicalLoaderTag } = require('./inject-analytics-loader');
 
 const ROOT = path.resolve(__dirname, '..');
 const countries = `
@@ -91,11 +92,6 @@ function page(tool) {
 <meta name="afrotools-content-id" content="${stableId(`/fr/tools/${tool.slug}/`)}">
 <title>${tool.title} Afrique | AfroTools</title>
 <meta name="description" content="${tool.description}">
-<link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="fr" href="${canonical}">
-<link rel="alternate" hreflang="en" href="${english}">
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/${tool.sw}/">
-<link rel="alternate" hreflang="x-default" href="${english}">
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="${tool.title}"><meta property="og:description" content="${tool.description}">
 <meta property="og:url" content="${canonical}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${tool.image}.webp">
@@ -103,12 +99,19 @@ function page(tool) {
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-career-tools.css">
 <script src="/assets/js/lib/dark-mode.js" defer></script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/engines/career-planning.js" defer></script><script src="/assets/js/pages/fr-career-tools.js" defer></script>
-<script type="application/ld+json">${JSON.stringify({
+<script type="application/ld+json">
+${JSON.stringify({
     '@context': 'https://schema.org', '@type': 'WebApplication', name: tool.title,
     url: canonical, applicationCategory: 'BusinessApplication', operatingSystem: 'Any',
     inLanguage: 'fr', isAccessibleForFree: true, isBasedOn: english,
-    description: tool.description
-  })}</script>
+    description: tool.description, image: `https://afrotools.com/assets/img/tools/${tool.image}.webp`
+  }, null, 2)}
+</script>
+<link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="en" href="${english}">
+<link rel="alternate" hreflang="fr" href="${canonical}">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/${tool.sw}/">
+<link rel="alternate" hreflang="x-default" href="${english}">
 </head><body>
 <afro-navbar lang="fr"></afro-navbar>
 <main class="fr-career-main" data-fr-career-tool="${tool.kind}" data-export-name="${tool.exportName}">
@@ -128,7 +131,7 @@ function page(tool) {
       <h2>À vérifier avant d’agir</h2><ul class="fr-source-list"><li>preuves et documents récents ;</li><li>conditions écrites de l’employeur ou du prestataire ;</li><li>frais, impôts et réglementation du pays ;</li><li>hypothèses avec un scénario prudent.</li></ul>
     </aside>
   </div>
-</main><afro-footer></afro-footer>
+</main><afro-footer></afro-footer>${canonicalLoaderTag(analyticsVersion())}
 </body></html>`;
 }
 
@@ -137,7 +140,8 @@ for (const tool of tools) {
   const target = path.join(ROOT, 'fr', 'tools', tool.slug, 'index.html');
   const expected = page(tool);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
-  if (normalizeBuildManagedHtml(current).trim() === normalizeBuildManagedHtml(expected).trim()) continue;
+  const comparable = html => normalizeBuildManagedHtml(html).replace(/>\s+</g, '><').trim();
+  if (comparable(current) === comparable(expected)) continue;
   if (process.argv.includes('--check')) { console.error(`French Career page is stale: ${tool.slug}`); stale = true; continue; }
   fs.mkdirSync(path.dirname(target), { recursive: true });
   writeFileSyncWithRetry(target, expected, 'utf8');

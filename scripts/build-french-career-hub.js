@@ -6,6 +6,7 @@ const path = require('path');
 const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const { stableId } = require('./lib/content-integrity');
+const { analyticsVersion, canonicalLoaderTag } = require('./inject-analytics-loader');
 const ROOT = path.resolve(__dirname, '..');
 const paths = {
   negotiate: { title: 'Négocier mon salaire', description: 'Préparer une contre-offre avec une référence mensuelle vérifiée et des arguments précis.', href: '/fr/tools/negociation-salaire/', checks: ['Noter le salaire et les avantages actuels', 'Vérifier une référence récente pour un poste comparable', 'Préparer des preuves de contribution', 'Définir un minimum acceptable et les conditions écrites'] },
@@ -30,18 +31,21 @@ function render() {
 <meta name="afrotools-source-owner" content="scripts/build-french-career-hub.js">
 <meta name="afrotools-content-id" content="${stableId('/fr/jobs/')}">
 <title>${title}</title><meta name="description" content="${description}">
-<link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="fr" href="${canonical}"><link rel="alternate" hreflang="en" href="https://afrotools.com/career/">
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/kazi-na-ajira/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/career/">
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="AfroTools">
 <meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical}">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-career-tools.css"><link rel="stylesheet" href="/assets/css/fr-career-hub.css">
 <script src="/assets/js/lib/dark-mode.js" defer></script><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/pages/fr-career-hub.js" defer></script>
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: 'fr', isPartOf: { '@type': 'WebSite', name: 'AfroTools', url: 'https://afrotools.com/fr/' } })}</script>
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: 'fr', mainEntity: questions.map(row => ({ '@type': 'Question', name: row.question, acceptedAnswer: { '@type': 'Answer', text: row.answer } })) })}</script>
+<link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/career/">
+<link rel="alternate" hreflang="fr" href="${canonical}">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/kazi-na-ajira/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/career/">
 </head><body>
 <afro-navbar lang="fr" active="career"></afro-navbar>
 <main class="fr-career-main fr-career-hub">
@@ -54,14 +58,16 @@ function render() {
 <section class="fr-career-card"><h2>Confidentialité et partage</h2><p>La liste est enregistrée dans le navigateur. Si le stockage est bloqué, vous pouvez continuer sur la page et télécharger votre liste. Le lien copié contient uniquement un identifiant de parcours prédéfini ; il ne contient pas vos cases cochées ou les montants saisis dans les calculateurs. Effacez la liste sur un appareil partagé.</p><p><a href="/fr/privacy/">Lire la politique de confidentialité</a> · <a href="/fr/contact/">Signaler un problème</a> · <a href="/fr/all-tools/?category=career">Explorer les autres outils de carrière</a></p></section>
 <section class="fr-career-card"><h2>Questions sur la liste et les rapports</h2>${questions.map(row => `<details><summary>${row.question}</summary><p>${row.answer}</p></details>`).join('\n')}</section>
 <script type="application/json" id="fr-career-paths">${JSON.stringify(paths)}</script>
-</main><afro-footer></afro-footer></body></html>\n`;
+</main><afro-footer></afro-footer>${canonicalLoaderTag(analyticsVersion())}</body></html>\n`;
 }
 
 function main() {
   const target = path.join(ROOT, 'fr/jobs/index.html');
   const expected = render();
   const current = fs.readFileSync(target, 'utf8');
-  if (normalizeBuildManagedHtml(current).trim() === normalizeBuildManagedHtml(expected).trim()) {
+  // Release passes preserve the tags while changing only inter-tag formatting.
+  const comparable = html => normalizeBuildManagedHtml(html).replace(/>\s+</g, '><').trim();
+  if (comparable(current) === comparable(expected)) {
     console.log('French Career hub is current.');
     return;
   }
