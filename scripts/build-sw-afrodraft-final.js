@@ -44,6 +44,8 @@ function buildSwApp() {
     .replace(/<html([^>]*)\blang="en"/, '<html$1lang="sw"')
     .replace(/<title>[\s\S]*?<\/title>/, '<title>AfroDraft CAD v7.0 — Uchoraji wa 2D | AfroTools</title>')
     .replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="Chora, pima, hariri na uhifadhi michoro ya CAD ya 2D ndani ya kivinjari. Hamisha ADRAFT, DXF, SVG, PNG na PDF bila kutuma mradi wako mtandaoni.">')
+    .replace(/<meta property="og:title" content="[^"]*">/, '<meta property="og:title" content="AfroDraft CAD v7.0 — Uchoraji wa 2D | AfroTools">')
+    .replace(/<meta property="og:description" content="[^"]*">/, '<meta property="og:description" content="Chora, pima, hariri na uhifadhi michoro ya CAD ya 2D ndani ya kivinjari. Hamisha ADRAFT, DXF, SVG, PNG na PDF bila kutuma mradi wako mtandaoni.">')
     .replace(/<meta property="og:locale" content="[^"]*">/, '<meta property="og:locale" content="sw_KE">')
     .replace(/<meta property="og:locale:alternate" content="[^"]*">/, '<meta property="og:locale:alternate" content="en_US">')
     .replace(/<meta name="twitter:title" content="[^"]*">/, '<meta name="twitter:title" content="AfroDraft CAD v7.0 — Uchoraji wa 2D | AfroTools">')
@@ -76,6 +78,9 @@ function buildSwApp() {
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/afrodraft-cad/app">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/engineering/afrodraft/app">`);
 
+  // The English source can acquire fallback artwork during SEO generation.
+  // This workspace owns its artwork; remove inherited declarations before adding it.
+  html = html.replace(/\s*<meta property="og:image(?::width|:height)?" content="[^"]*">/g, '');
   const metadata = `<meta name="afrotools-content-id" content="sw-engineering:afrodraft-workspace">
 <meta name="afrotools-source-owner" content="scripts/build-sw-afrodraft-final.js">
 <meta name="afrotools-source-route" content="/engineering/afrodraft/app">
@@ -87,7 +92,9 @@ function buildSwApp() {
     '<script type="module" src="/engineering/afrodraft/app.js"></script>',
     '<script src="/assets/js/pages/sw-afrodraft-i18n.js"></script>\n  <script type="module" src="/engineering/afrodraft/app.js"></script>'
   );
-  return html;
+  // Use the same social metadata owner as the release build so regeneration
+  // and a subsequent owner check agree even when English fallback tags change.
+  return require('./apply-og-fallbacks').applyFallbacks(html, path.join(ROOT, SW_APP)).html;
 }
 
 function updateLanding() {
