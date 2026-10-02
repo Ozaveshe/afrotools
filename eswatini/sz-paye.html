@@ -40,6 +40,10 @@
   }
   .tool-hero::after { content: '🇸🇿'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #003DA5; }
+  button.tog, button.card-head { font: inherit; text-align: start; color: inherit; }
+  button.card-head { width: 100%; }
+  button.tog .tog-label, button.tog .tog-rate { display: block; }
+  button.tog:focus-visible, button.card-head:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 
   .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
   .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
@@ -172,10 +176,10 @@ html[data-theme="dark"] body.tool-page #employerStrip{color:#E8D6A4;}
           <div class="field">
             <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
             <div class="toggles">
-              <div class="tog on" data-tog="snpf" onclick="togItem(this)">
-                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">ENPF Pension</div><div class="tog-rate">5% employee (capped E215/mo)</div></div>
-              </div>
+              <button type="button" class="tog on" data-tog="snpf" aria-pressed="true" onclick="togItem(this); this.setAttribute('aria-pressed', String(this.classList.contains('on')))">
+                <span class="tog-box" aria-hidden="true"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span><span class="tog-label">ENPF Pension</span><span class="tog-rate">5% employee (capped E215/mo)</span></span>
+              </button>
             </div>
             <p class="f-note">ENPF employee contribution (5% annually, capped at E215/month) is deductible from taxable income before ERS PAYE is calculated. Employer ENPF (5%) is additional cost to employer.</p>
           </div>
@@ -259,11 +263,11 @@ html[data-theme="dark"] body.tool-page #employerStrip{color:#E8D6A4;}
       </div>
 
 <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
+        <button type="button" class="card-head" aria-expanded="false" aria-controls="ers-annual-bands" onclick="toggleBands(this); this.setAttribute('aria-expanded', String(this.nextElementSibling.classList.contains('open')))">
           <span class="card-title">ERS 2025/26 Annual Bands</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
+          <span class="tog-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="bands-body" id="ers-annual-bands">
           <div class="band-row"><span class="band-range">E0 – E100,000</span><span class="band-rate">20%</span></div>
           <div class="band-row"><span class="band-range">E100,001 – E150,000</span><span class="band-rate">25% on amount above E100k</span></div>
           <div class="band-row"><span class="band-range">E150,001 – E200,000</span><span class="band-rate">30% on amount above E150k</span></div>

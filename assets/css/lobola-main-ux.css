@@ -1,4 +1,118 @@
 /* Route-scoped contrast and control states for the family planner. */
+.lobola-page .lb-country-options summary,
+.lobola-page .planner-about summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: 700;
+}
+.lobola-page .lb-country-options summary::after,
+.lobola-page .planner-about summary::after {
+  content: "+";
+  margin-inline-start: auto;
+  padding-inline-start: 12px;
+}
+.lobola-page :is(.lb-country-options, .planner-about)[open] > summary::after {
+  content: "−";
+}
+.lobola-page .planner-about {
+  margin-block: 16px;
+}
+.lobola-page .planner-about .direct-answer {
+  margin-bottom: 0;
+}
+.lobola-page .plan-result-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block: 0 16px;
+}
+.lobola-page .plan-result-heading h2 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+.lobola-page .plan-result-heading p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.lobola-page .plan-result-heading .btn {
+  flex: 0 0 auto;
+}
+.lobola-page .stat-val,
+.lobola-page .negotiation-v,
+.lobola-page .po-value {
+  overflow-wrap: anywhere;
+}
+.lobola-page .breakdown-list li {
+  gap: 16px;
+}
+.lobola-page .breakdown-list li > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.lobola-page .breakdown-list li > span:last-child {
+  text-align: end;
+}
+.lobola-page .result-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.lobola-page .cattle-visual {
+  padding: 16px;
+}
+.lobola-page .cattle-grid {
+  margin-block: 12px 0;
+}
+.lobola-page .btn-primary {
+  background: var(--color-primary);
+}
+@media (max-width: 640px) {
+  .lobola-page .lb-hero {
+    padding-block: 24px !important;
+  }
+  .lobola-page .lb-badges {
+    display: none;
+  }
+  .lobola-page .plan-result-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lobola-page .plan-result-heading .btn {
+    width: auto;
+  }
+  .lobola-page .stat-row {
+    /* Override the shared emergency single-column fallback on this tested route. */
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+  .lobola-page .stat-card {
+    padding: 14px 10px;
+  }
+  .lobola-page .stat-val {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+  .lobola-page .result-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .lobola-page .result-actions .btn {
+    min-width: 0 !important;
+    padding: 10px;
+    white-space: normal !important;
+  }
+  .lobola-page .result-status {
+    grid-column: 1 / -1;
+  }
+}
 .lobola-page #lobola-planner .planner-step + .form-row {
   margin-top: var(--space-3);
 }

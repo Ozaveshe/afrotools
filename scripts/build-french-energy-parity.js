@@ -9,6 +9,8 @@ const { enhanceCategory } = require("./lib/localized-category-standard");
 const { analyticsVersion, bootstrapVersion, canonicalLoaderTag, earlyBootstrapTag } = require("./inject-analytics-loader");
 const FRENCH_VISIBLE_COPY = require("./lib/french-energy-visible-copy");
 const { localizeFrenchSolarRoutes } = require("./lib/french-solar-country-routes");
+const { localizeFrenchSolarCountryPickerHtml } = require("./lib/french-solar-country-picker");
+const { frenchSolarCountryDisplayNames } = require("./repair-fr-solar-country-pages");
 const {
   FRENCH_ENERGY_APPS,
   REVIEWED_AT,
@@ -262,7 +264,7 @@ function postProcess(app) {
 
   html = html.replace(/<script\s+src=["']\/assets\/js\/pages\/french-energy-parity\.js["'][^>]*><\/script>\s*/gi, "");
   html = html.replace("</body>", `<script src="/assets/js/pages/french-energy-parity.js"></script>\n</body>`);
-  if (app.id === "solar-roi") html = localizeFrenchSolarRoutes(html);
+  if (app.id === "solar-roi") html = localizeFrenchSolarCountryPickerHtml(localizeFrenchSolarRoutes(html), frenchSolarCountryDisplayNames());
   fs.writeFileSync(output, html);
 }
 

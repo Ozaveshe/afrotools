@@ -73,6 +73,18 @@
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 
   @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
+  body.country-tax-page-ui-refresh .tog[type="button"]{font:inherit;text-align:left;min-height:44px;background:#f4f7fa!important;color:#2d3a5a!important}
+  body.country-tax-page-ui-refresh .tog[type="button"].on{background:#eff6ff!important}
+  body.country-tax-page-ui-refresh .tog[type="button"] .tog-label,body.country-tax-page-ui-refresh .tog[type="button"] .tog-rate{display:block}
+  body.country-tax-page-ui-refresh .tog[type="button"] .tog-label{font-size:.875rem}
+  body.country-tax-page-ui-refresh .tog[type="button"] .tog-rate{font-size:.8125rem;color:#465b76}
+  html[data-theme="dark"] body.country-tax-page-ui-refresh .tog[type="button"]{background:#111d30!important;color:#eef5ff!important}
+  html[data-theme="dark"] body.country-tax-page-ui-refresh .tog[type="button"] .tog-label{color:#eef5ff}
+  html[data-theme="dark"] body.country-tax-page-ui-refresh .tog[type="button"] .tog-rate{color:#c8d8ee}
+  @media(prefers-color-scheme:dark){html:not([data-theme="light"]) body.country-tax-page-ui-refresh .tog[type="button"]{background:#111d30!important;color:#eef5ff!important}html:not([data-theme="light"]) body.country-tax-page-ui-refresh .tog[type="button"] .tog-label{color:#eef5ff}html:not([data-theme="light"]) body.country-tax-page-ui-refresh .tog[type="button"] .tog-rate{color:#c8d8ee}}
+  .bands-card button.card-head{width:100%;min-height:44px;text-align:left;font:inherit;border:0;border-bottom:1px solid var(--color-border,#e2e8f0)}
+  body.country-tax-page-ui-refresh .tog[type="button"]:focus-visible,.bands-card button.card-head:focus-visible{outline:3px solid var(--color-primary,#0062cc);outline-offset:3px}
+
 </style>
 <meta name="tool-id" content="zw-paye">
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
@@ -174,10 +186,10 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
             <div class="toggles">
-              <div class="tog on" data-tog="nssa" onclick="togItem(this)">
-                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">NSSA</div><div class="tog-rate">4.5% employee — capped</div></div>
-              </div>
+              <button type="button" class="tog on" data-tog="nssa" aria-pressed="true" onclick="togItem(this); this.setAttribute('aria-pressed', String(this.classList.contains('on')))">
+                <span class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span><span class="tog-label">NSSA</span><span class="tog-rate">4.5% employee — capped</span></span>
+              </button>
             </div>
             <p class="f-note">NSSA is modeled at 4.5% for the employee and 4.5% for the employer on pensionable earnings, capped at USD 700/month. A 3% AIDS levy is added after income tax is calculated.</p>
           </div>
@@ -261,11 +273,11 @@
 
 <!-- ZIMRA TAX BANDS -->
       <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
+        <button type="button" class="card-head" aria-expanded="false" aria-controls="zimra-annual-bands" onclick="toggleBands(this); this.setAttribute('aria-expanded', String(this.nextElementSibling.classList.contains('open')))">
           <span class="card-title">ZIMRA 2025/26 Annual Bands</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
+          <span class="tog-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="bands-body" id="zimra-annual-bands">
           <div class="band-row"><span class="band-range">$0 – 1,200</span><span class="band-zero">0% — exempt</span></div>
           <div class="band-row"><span class="band-range">$1,201 – 3,600</span><span class="band-rate">20% on excess above 1.2k</span></div>
           <div class="band-row"><span class="band-range">$3,601 – 12,000</span><span class="band-rate">25% on excess above 3.6k</span></div>
@@ -278,11 +290,11 @@
 
       <!-- NSSA RATES -->
       <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
+        <button type="button" class="card-head" aria-expanded="false" aria-controls="nssa-rates" onclick="toggleBands(this); this.setAttribute('aria-expanded', String(this.nextElementSibling.classList.contains('open')))">
           <span class="card-title">NSSA Rates 2025</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
+          <span class="tog-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="bands-body" id="nssa-rates">
           <div class="band-row"><span class="band-range">Employee NSSA</span><span class="band-rate">4.5% of pensionable earnings (deductible, capped at $700/mo)</span></div>
           <div class="band-row"><span class="band-range">Employer NSSA</span><span class="band-rate">4.5% of pensionable earnings (capped at $700/mo)</span></div>
           <p class="band-note">NSSA employee contribution is deducted before PAYE in this calculator. Employer NSSA is shown as a separate employer cost. AIDS levy is computed separately from NSSA.</p>

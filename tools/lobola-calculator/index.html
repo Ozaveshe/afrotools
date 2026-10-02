@@ -297,7 +297,7 @@
 </style>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
-<link rel="stylesheet" href="/assets/css/lobola-main-ux.css?v=b22591a3">
+<link rel="stylesheet" href="/assets/css/lobola-main-ux.css?v=3b2fc25d">
 <link rel="canonical" href="https://afrotools.com/tools/lobola-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/lobola-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-lobola/">
@@ -307,6 +307,7 @@
 <body class="top-level-page-ui-refresh lobola-page">
 <afro-navbar></afro-navbar>
 
+<main id="main-content">
 <section class="tool-hero lb-hero">
 <div class="lb-hero-inner">
 <div class="lb-hero-copy">
@@ -316,6 +317,8 @@
 <p class="lb-sub">Estimate a respectful family discussion budget across cash, livestock, gifts, and ceremony costs. Customs vary by family, community, and country &mdash; this is a planning aid, never a price.</p>
 <div class="lb-badges"><span>Planning estimate</span><span>Editable assumptions</span><span>Family summary</span><span>Local-first privacy</span></div>
 <div class="lb-primary-actions"><a href="#lobola-planner">Start the family plan</a><a href="#how-use-lobola">How it works</a></div>
+<details class="lb-country-options">
+<summary>Country quick planners</summary>
 <div class="lb-pills">
 <a href="/tools/lobola-calculator/zimbabwe/">Zimbabwe (roora)</a>
 <a href="/tools/lobola-calculator/south-africa/">South Africa</a>
@@ -324,6 +327,7 @@
 <a href="/tools/lobola-calculator/eswatini/">Eswatini (lilobolo)</a>
 <a href="/tools/lobola-calculator/zambia/">Zambia</a>
 </div>
+</details>
 </div>
 <div class="lb-hero-art" aria-hidden="true">
 <div class="lb-art-disc">
@@ -345,11 +349,9 @@
 
 <div class="wrap" style="padding-top:20px;padding-bottom:40px">
   <div class="disclaimer"><strong>This is an estimate, not a rule:</strong> Lobola is a family and community discussion, not an official tariff or a measure of a person's worth. Use this tool to prepare a respectful budget conversation, then confirm expectations directly with both families.</div>
-  <div class="direct-answer"><strong>What this tool does:</strong> This lobola calculator estimates a planning budget for family discussions by adding editable cash expectations, livestock or cattle equivalents, gifts, and ceremony or meeting costs. People may search for this as a bride price calculator, but the tool does not price a person, set an official amount, or replace family negotiators.</div>
-
   <!-- ── INPUT FORM ── -->
   <div class="card planner-card" id="lobola-planner">
-    <div class="card-title">Build a respectful family plan</div>
+    <h2 class="card-title">Build a respectful family plan</h2>
     <div class="planner-step first"><span>1</span><div><strong>Choose the family context</strong><small>This selects an editable starting point. It does not apply an official country rate.</small></div></div>
     <div class="form-row">
       <div class="field">
@@ -443,13 +445,9 @@
   <!-- ── RESULTS ── -->
   <p id="planStatus" role="status" aria-live="polite"></p>
   <div class="results" id="results" tabindex="-1" aria-label="Family planning results">
-
-    <!-- Cattle Visual -->
-    <div class="cattle-visual">
-      <h3>Your Lobola Estimate</h3>
-      <div class="cattle-grid" id="cattleGrid" aria-hidden="true"></div>
-      <div class="cattle-count" id="cattleCountDisplay">0</div>
-      <div class="cattle-label">editable livestock reference</div>
+    <div class="plan-result-heading">
+      <div><h2>Your family planning budget</h2><p>Planning estimate. Confirm the amounts with both families.</p></div>
+      <button type="button" class="btn btn-outline" onclick="editLobolaPlan()">Edit amounts</button>
     </div>
 
     <!-- Stat Cards -->
@@ -471,6 +469,16 @@
         <div class="stat-val" id="rCountry">—</div>
         <div class="stat-sub" id="rCurrency"></div>
       </div>
+    </div>
+
+    <div id="resultActions"></div>
+
+    <!-- Editable livestock reference, after the budget and summary actions. -->
+    <div class="cattle-visual">
+      <h3>Livestock reference</h3>
+      <div class="cattle-count" id="cattleCountDisplay">0</div>
+      <div class="cattle-label">editable livestock reference</div>
+      <div class="cattle-grid" id="cattleGrid" aria-hidden="true"></div>
     </div>
 
     <!-- Lobola Meter -->
@@ -520,8 +528,12 @@
       </div>
     </div>
 
-    <div id="resultActions"></div>
   </div>
+
+  <details class="planner-about">
+    <summary>About this planning estimate</summary>
+    <div class="direct-answer"><strong>What this tool does:</strong> This lobola calculator estimates a planning budget for family discussions by adding editable cash expectations, livestock or cattle equivalents, gifts, and ceremony or meeting costs. People may search for this as a bride price calculator, but the tool does not price a person, set an official amount, or replace family negotiators.</div>
+  </details>
 
 <section class="content-section" aria-labelledby="how-use-lobola">
   <h2 id="how-use-lobola">How to use this calculator</h2>
@@ -604,6 +616,7 @@
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
+</main>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -958,6 +971,10 @@ function revealLobolaControl(node) {
   if (!node || !node.isConnected) return;
   node.focus({ preventScroll:true });
   node.scrollIntoView({ block:'center', behavior:'instant' });
+}
+
+function editLobolaPlan() {
+  revealLobolaControl(document.getElementById('familyExpectation'));
 }
 
 function activeLobolaFocus() {

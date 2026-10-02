@@ -1,6 +1,6 @@
 # AfroTools completion program
 
-Started: 2026-10-01 (Asia/Tashkent). Status: credit closeout; completion is not certified.
+Started: 2026-10-01 (Asia/Tashkent). Status: resumed on 2026-10-02; completion is not certified.
 
 ## Objective and ownership
 
@@ -96,6 +96,8 @@ real payments as an audit shortcut.
   declared locale states and proof coverage; unknown actions stay unverified.
 - `reports/afrotools-completion-checks-2026-10-01.json`: baseline check outcomes,
   retries and candidate validation; failed attempts remain visible.
+- `reports/afrotools-completion-resume-2026-10-02.{json,md}`: resumed findings, corrected historical evidence and current publisher reconciliation.
+- `reports/afrotools-completion-french-solar-2026-10-02.{json,md}`: separate PR #183 candidate evidence and pending production/native-language gates.
 - `artifacts/completion-20261001/`: local detailed audit outputs and command logs.
 
 Local artifacts are ignored and are not a release candidate. Keep public reports

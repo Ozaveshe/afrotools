@@ -110,58 +110,58 @@ window.addEventListener('load', function() {
 <datalist id="solarRootCountryList">
 <option value="Nigeria">NGN - NG</option>
 <option value="Kenya">KES - KE</option>
-<option value="South Africa">ZAR - ZA</option>
+<option value="Afrique du Sud">ZAR - ZA</option>
 <option value="Ghana">GHS - GH</option>
-<option value="Egypt">EGP - EG</option>
-<option value="Ethiopia">ETB - ET</option>
-<option value="Tanzania">TZS - TZ</option>
-<option value="Uganda">UGX - UG</option>
+<option value="Égypte">EGP - EG</option>
+<option value="Éthiopie">ETB - ET</option>
+<option value="Tanzanie">TZS - TZ</option>
+<option value="Ouganda">UGX - UG</option>
 <option value="Rwanda">RWF - RW</option>
 <option value="Côte d'Ivoire">XOF - CI</option>
-<option value="Cameroon">XAF - CM</option>
-<option value="Senegal">XOF - SN</option>
-<option value="Morocco">MAD - MA</option>
-<option value="Tunisia">TND - TN</option>
+<option value="Cameroun">XAF - CM</option>
+<option value="Sénégal">XOF - SN</option>
+<option value="Maroc">MAD - MA</option>
+<option value="Tunisie">TND - TN</option>
 <option value="Angola">AOA - AO</option>
-<option value="Zambia">ZMW - ZM</option>
+<option value="Zambie">ZMW - ZM</option>
 <option value="Zimbabwe">USD - ZW</option>
 <option value="Mozambique">MZN - MZ</option>
 <option value="Malawi">MWK - MW</option>
 <option value="Madagascar">MGA - MG</option>
 <option value="Botswana">BWP - BW</option>
-<option value="Namibia">NAD - NA</option>
+<option value="Namibie">NAD - NA</option>
 <option value="Lesotho">LSL - LS</option>
 <option value="Eswatini">SZL - SZ</option>
-<option value="Mauritius">MUR - MU</option>
+<option value="Maurice">MUR - MU</option>
 <option value="Seychelles">SCR - SC</option>
 <option value="Djibouti">DJF - DJ</option>
-<option value="Eritrea">ERN - ER</option>
-<option value="Somalia">USD - SO</option>
-<option value="South Sudan">SSP - SS</option>
-<option value="Sudan">SDG - SD</option>
-<option value="Libya">LYD - LY</option>
-<option value="Algeria">DZD - DZ</option>
-<option value="DR Congo">CDF - CD</option>
-<option value="Republic of Congo">XAF - CG</option>
-<option value="Chad">XAF - TD</option>
-<option value="Central African Republic">XAF - CF</option>
+<option value="Érythrée">ERN - ER</option>
+<option value="Somalie">USD - SO</option>
+<option value="Soudan du Sud">SSP - SS</option>
+<option value="Soudan">SDG - SD</option>
+<option value="Libye">LYD - LY</option>
+<option value="Algérie">DZD - DZ</option>
+<option value="RD Congo">CDF - CD</option>
+<option value="République du Congo">XAF - CG</option>
+<option value="Tchad">XAF - TD</option>
+<option value="République centrafricaine">XAF - CF</option>
 <option value="Gabon">XAF - GA</option>
-<option value="Equatorial Guinea">XAF - GQ</option>
-<option value="São Tomé &amp; Príncipe">STN - ST</option>
-<option value="Comoros">KMF - KM</option>
+<option value="Guinée équatoriale">XAF - GQ</option>
+<option value="São Tomé-et-Príncipe">STN - ST</option>
+<option value="Comores">KMF - KM</option>
 <option value="Burundi">BIF - BI</option>
-<option value="Benin">XOF - BJ</option>
+<option value="Bénin">XOF - BJ</option>
 <option value="Burkina Faso">XOF - BF</option>
-<option value="Cape Verde">CVE - CV</option>
-<option value="Gambia">GMD - GM</option>
-<option value="Guinea">GNF - GN</option>
-<option value="Guinea-Bissau">XOF - GW</option>
+<option value="Cap-Vert">CVE - CV</option>
+<option value="Gambie">GMD - GM</option>
+<option value="Guinée">GNF - GN</option>
+<option value="Guinée-Bissau">XOF - GW</option>
 <option value="Liberia">LRD - LR</option>
 <option value="Mali">XOF - ML</option>
 <option value="Niger">XOF - NE</option>
 <option value="Sierra Leone">SLL - SL</option>
 <option value="Togo">XOF - TG</option>
-<option value="Mauritania">MRU - MR</option>
+<option value="Mauritanie">MRU - MR</option>
 </datalist>
 </div>
 <div class="solar-country-picker-field">
@@ -610,9 +610,10 @@ window.addEventListener('load', function() {
   function countryDefaults(country){return solarData&&solarData.countries&&country?solarData.countries[country.code]||null:null;}
   function assumptionSnapshot(country){var defaults=countryDefaults(country);if(!defaults)return null;function field(key){var item=defaults.assumptions&&defaults.assumptions[key];return item?{value:item.value,unit:item.unit,confidence:item.confidence,source:item.sourceName,source_url:item.sourceUrl||null,freshness:item.freshness}:null;}return{dataset_reviewed:solarData.lastReviewed,country_data_confidence:defaults.confidenceLevel,electricity_tariff:field("electricityTariff"),generator_fuel:field("fuelPrice"),solar_yield:field("solarYield"),install_cost_per_kw:field("installCostPerKw")};}
   function updateAssumptionPreview(country){var defaults=countryDefaults(country);if(!assumptionPreview)return;if(!defaults){assumptionPreview.hidden=true;return;}assumptionPreview.hidden=false;Object.keys(assumptionFields).forEach(function(key){var item=defaults.assumptions&&defaults.assumptions[key];var field=assumptionFields[key];if(field.value)field.value.textContent=formatAssumption(item);if(field.confidence)field.confidence.textContent=(item&&item.confidence?item.confidence:"Unknown")+" confidence";});if(assumptionStatus)assumptionStatus.textContent=country.name+" country data: "+(defaults.confidenceLevel||"Unrated")+" confidence overall. Reviewed "+(solarData.lastReviewed||"date unavailable")+"; field confidence varies.";if(assumptionNote)assumptionNote.textContent="Planning defaults for the country calculator. Edit them there using a current bill, fuel receipt, site assessment, and written installer quote.";var tariff=defaults.assumptions&&defaults.assumptions.electricityTariff;var yieldData=defaults.assumptions&&defaults.assumptions.solarYield;if(assumptionSourceText)assumptionSourceText.textContent="Tariff context: "+(tariff&&tariff.sourceName?tariff.sourceName:"source unavailable")+". Solar resource: "+(yieldData&&yieldData.sourceName?yieldData.sourceName:"source unavailable")+". ";if(assumptionSourceLink){var sourceUrl=yieldData&&yieldData.sourceUrl;if(typeof sourceUrl==="string"&&sourceUrl.toLowerCase().startsWith("https://")){assumptionSourceLink.href=sourceUrl;assumptionSourceLink.hidden=false;}else{assumptionSourceLink.hidden=true;}}}
-  function findCountry(value){
+  function solarFrenchCountryName(country){if(!country)return "";var names={"NG":"Nigeria","KE":"Kenya","ZA":"Afrique du Sud","GH":"Ghana","EG":"Égypte","ET":"Éthiopie","TZ":"Tanzanie","UG":"Ouganda","RW":"Rwanda","CI":"Côte d'Ivoire","CM":"Cameroun","SN":"Sénégal","MA":"Maroc","TN":"Tunisie","AO":"Angola","ZM":"Zambie","ZW":"Zimbabwe","MZ":"Mozambique","MW":"Malawi","MG":"Madagascar","BW":"Botswana","NA":"Namibie","LS":"Lesotho","SZ":"Eswatini","MU":"Maurice","SC":"Seychelles","DJ":"Djibouti","ER":"Érythrée","SO":"Somalie","SS":"Soudan du Sud","SD":"Soudan","LY":"Libye","DZ":"Algérie","CD":"RD Congo","CG":"République du Congo","TD":"Tchad","CF":"République centrafricaine","GA":"Gabon","GQ":"Guinée équatoriale","ST":"São Tomé-et-Príncipe","KM":"Comores","BI":"Burundi","BJ":"Bénin","BF":"Burkina Faso","CV":"Cap-Vert","GM":"Gambie","GN":"Guinée","GW":"Guinée-Bissau","LR":"Liberia","ML":"Mali","NE":"Niger","SL":"Sierra Leone","TG":"Togo","MR":"Mauritanie"};return names[country.code]||country.name;}
+function findCountry(value){
     var query=normalize(value);if(!query)return null;
-    return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||normalize(country.name)===query||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return normalize(country.name).indexOf(query)>=0||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;
+    return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||(normalize(country.name)===query||normalize(solarFrenchCountryName(country))===query)||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return (normalize(country.name).indexOf(query)>=0||normalize(solarFrenchCountryName(country)).indexOf(query)>=0)||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;
   }
   function storedCountry(){try{return localStorage.getItem(STORAGE_KEY)||"";}catch(error){return "";}}
   function storeCountry(country){try{if(country)localStorage.setItem(STORAGE_KEY,country.code);}catch(error){}}
@@ -620,11 +621,11 @@ window.addEventListener('load', function() {
   function applyCountry(country,updateQuery){
     if(!country)return;
     select.value=country.slug;
-    input.value=country.name;
+    input.value=solarFrenchCountryName(country);
     open.href=country.href;
-    open.textContent="Open "+country.name+" calculator";
-    if(pickerStatus)pickerStatus.textContent=country.flag+" "+country.name+" selected - "+country.currency;
-    if(exportStatus)exportStatus.textContent=country.name+" planning brief ready. Copy it for quotes or download JSON for your records.";
+    open.textContent="Ouvrir le calculateur ("+solarFrenchCountryName(country)+")";
+    if(pickerStatus)pickerStatus.textContent=("Pays sélectionné : " + country.flag)+" "+solarFrenchCountryName(country)+" — "+country.currency;
+    if(exportStatus)exportStatus.textContent=solarFrenchCountryName(country)+" — fiche de préparation disponible. Copiez-la pour demander des devis ou téléchargez le JSON.";
     updateAssumptionPreview(country);
     storeCountry(country);
     if(updateQuery)updateUrl(country);
@@ -633,17 +634,17 @@ window.addEventListener('load', function() {
     var query=input.value.trim().toLowerCase();
     var visible=0;
     cards.forEach(function(card){
-      var match=!query||card.getAttribute("data-country").indexOf(query)>=0;
+      var match=!query||card.getAttribute("data-country").indexOf(query)>=0||normalize(solarFrenchCountryName(findCountry(card.getAttribute("data-country-slug")))).indexOf(query)>=0;
       card.hidden=!match;
       if(match)visible++;
     });
-    status.textContent=query?("Showing "+visible+" matching "+(visible===1?"country":"countries")+"."):"Showing all "+cards.length+" countries.";
+    status.textContent=query?("Résultats : "+visible+" pays."):("Tous les pays : "+cards.length+".");
     if(empty)empty.hidden=visible!==0;
   }
   function currentCountry(){return findCountry(select.value)||findCountry(input.value)||findCountry("NG");}
   function solarBrief(country){country=country||currentCountry();return "Solar ROI planning brief for "+country.name+" ("+country.currency+"). Start at "+country.href+" and replace bundled planning defaults with recent utility bills, generator fuel receipts, a site assessment, and a written installer quote. Verify tariff, fuel price, warranty, usable battery capacity, protection devices, finance fees, and local safety rules before purchase.";}
   function downloadSolarBrief(country){country=country||currentCountry();var payload={tool:"solar-roi",country:country.name,country_code:country.code,currency:country.currency,route:country.href,brief:solarBrief(country),planning_defaults:assumptionSnapshot(country),freshness_note:"Verify tariffs, fuel prices, installer quotes, warranty terms, finance fees, and safety rules before acting.",privacy:"Created locally in the browser."};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="afrotools-solar-roi-"+country.slug+"-brief.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);if(exportStatus)exportStatus.textContent="JSON downloaded for "+country.name+". Replace planning assumptions with current quotes before acting.";}
-  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true);else if(pickerStatus)pickerStatus.textContent="No exact country match yet. Keep typing or use the dropdown.";});
+  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true);else if(pickerStatus)pickerStatus.textContent="Aucun pays trouvé. Continuez à saisir ou utilisez la liste.";});
   select.addEventListener("change",function(){var country=findCountry(select.value);applyCountry(country,true);trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
   input.addEventListener("keydown",function(event){
     if(event.key==="Enter"){

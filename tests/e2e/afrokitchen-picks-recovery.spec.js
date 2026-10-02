@@ -149,6 +149,7 @@ async function assetsReady(page, observation) {
 async function navigate(page, observation, url) {
   if (page.url() !== 'about:blank') await assetsReady(page, observation);
   await page.goto(url, { waitUntil: 'domcontentloaded' });
+  if (new URL(page.url()).pathname.includes('/afrokitchen/recipes/')) await page.locator('.ak-visual-exports > summary').click();
   await assetsReady(page, observation);
 }
 

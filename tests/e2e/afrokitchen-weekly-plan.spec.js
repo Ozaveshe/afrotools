@@ -114,6 +114,7 @@ test('single meal swaps respect filters, locks survive regeneration and checked 
 test('nutrition reference clearly states its unknown basis and stays constant when portions change', async ({ page }) => {
   await quietExternalNoise(page);
   await page.goto('/tools/afrokitchen/recipes/amiwo-bj/');
+  await page.locator('.ak-visual-nutrition > summary').click();
   await expect(page.locator('#ak-static-nutrition')).toContainText('basis not recorded');
   const calories = await page.locator('#ak-static-nutrition strong').first().innerText();
   await page.evaluate(() => window.AKStaticRecipePage.adjustServings(1));
@@ -372,6 +373,7 @@ for (const width of [320, 390]) {
 test("AfroKitchen saves a side as an idea and guides the visitor to a meal", async ({ page }) => {
   await quietExternalNoise(page);
   await page.goto("/tools/afrokitchen/recipes/gozo-cf/", { waitUntil: "domcontentloaded" });
+  await page.locator('.ak-visual-exports > summary').click();
   const saveIdea = page.locator("[data-ak-add-meal-plan]");
   await expect(saveIdea).toContainText("Save recipe idea");
   await saveIdea.click();
@@ -493,6 +495,7 @@ test("AfroKitchen recipe picks open in the planner and lead a filtered weekly pl
   await quietExternalNoise(page);
   const consoleErrors = installConsoleGuard(page);
   await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
+  await page.locator('.ak-visual-exports > summary').click();
   await page.locator("[data-ak-add-meal-plan]").click();
   const planLink = page.getByRole("link", { name: "Build a plan from your picks" });
   await expect(planLink).toHaveAttribute("href", "/tools/afrokitchen/#cook-this-week");
@@ -536,6 +539,7 @@ test("AfroKitchen remembers and reverses a cooked recipe mark on this device", a
   const consoleErrors = installConsoleGuard(page);
   await page.goto("/tools/afrokitchen/recipes/jollof-rice-ng/", { waitUntil: "domcontentloaded" });
   const cookedButton = page.locator("[data-ak-mark-cooked]");
+  await page.locator('.ak-visual-exports > summary').click();
   await expect(cookedButton).toHaveAttribute("aria-pressed", "false");
   await cookedButton.click();
   await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
@@ -544,6 +548,7 @@ test("AfroKitchen remembers and reverses a cooked recipe mark on this device", a
     expect.objectContaining({ slug: "jollof-rice-ng", cooked_at: expect.any(String) })
   ]);
   await page.reload({ waitUntil: "domcontentloaded" });
+  await page.locator('.ak-visual-exports > summary').click();
   await expect(cookedButton).toHaveAttribute("aria-pressed", "true");
   await cookedButton.click();
   await expect(cookedButton).toHaveAttribute("aria-pressed", "false");

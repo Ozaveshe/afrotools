@@ -111,10 +111,10 @@ for (const variant of [{ width: 320, theme: 'light' }, { width: 390, theme: 'dar
       const ingredients = dialog.locator('.ak-cook-ingredients');
       if (variant.width < 641) {
         await expect(ingredients).not.toHaveAttribute('open', '');
-        await ingredients.locator('summary').click();
+        await ingredients.locator(':scope > summary').click();
       }
       await dialog.locator('#ak-static-ingredients input').first().check();
-      if (variant.width < 641) await ingredients.locator('summary').click();
+      if (variant.width < 641) await ingredients.locator(':scope > summary').click();
       await dialog.locator('#ak-timer-toggle-1').click();
       await expect(dialog.locator('#step-1')).toHaveClass(/is-timer-running/);
       await dialog.locator('[data-ak-cook-next]').click();
