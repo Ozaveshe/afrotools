@@ -59,6 +59,31 @@ Internal surfaces must not ship as static source paths:
 - Service-role keys are server-only and must be referenced through `SUPABASE_DATA_SERVICE_ROLE_KEY`, `SUPABASE_AUTH_SERVICE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or the legacy `SUPABASE_SERVICE_KEY` fallback.
 - After any RLS change, run Supabase security advisors and record remaining owner-level items separately from repo migrations.
 
+### Profile access fields
+
+Profile ownership must not permit users to grant themselves Pro or admin access.
+The source migration `20261002064000_protect_profile_access_fields.sql` installs
+`private.protect_profile_access_fields()` before profile inserts and updates. It
+protects `tier`, `subscription_tier`, `subscription_expires_at`,
+`paystack_customer_id`, `paystack_subscription_code` and `role`. Ordinary profile
+edits, default free profiles and trusted billing/admin lifecycle writes remain
+supported. Existing account values are preserved; their legitimacy still needs
+separate review.
+
+Keep this function `SECURITY INVOKER` with a pinned empty search path. Check both
+the SQL execution role and the request role: `current_user` alone changes inside
+a client-called `SECURITY DEFINER` and must not grant a bypass. Keep the trigger
+function private and revoke direct execution from public, anon and authenticated.
+Do not log rejected field values.
+
+Run `node --test tests/profile-security-guard.test.js` for real PostgreSQL
+semantics through the pinned development-only PGlite engine. The test first
+reproduces the old permission gap using synthetic rows, then executes the actual
+migration and checks rejected writes, legitimate edits, server lifecycle writes,
+tenant isolation and nested-definer behavior. These tests do not establish live
+JWT/provider or payment-delivery proof. After a live migration, verify its exact
+function/trigger metadata and run security advisors through the correct MCP.
+
 ## Live Verification
 
 ### Scheduled worker authentication boundary
