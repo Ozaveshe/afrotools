@@ -10,6 +10,13 @@
 .ak-cookbook-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
 .ak-cookbook-tools .ak-btn{min-height:44px}
 .ak-cookbook-status{min-height:24px;margin-top:8px;color:var(--ak-muted);font-size:.9rem;line-height:1.5}
+/* Keep recipe photography in the cover instead of stretching it behind the text.
+   Generated recipe pages have an inline background-image, so this override is intentional. */
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover){background-color:var(--ak-dark);background-image:none!important}
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover)::before,
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover)::after{content:none}
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover) .ak-hero-text>.ak-eyebrow{color:var(--ak-accent)}
+[data-theme="dark"] .ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover){background-color:var(--ak-bg)}
 .ak-page.ak-static-page .ak-cookbook-cover{display:block;padding:0;overflow:hidden;background:var(--ak-panel);color:var(--ak-text)}
 .ak-cookbook-cover-photo{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
 .ak-cookbook-cover-note{padding:20px}
@@ -42,3 +49,9 @@
 @media(max-width:760px){.ak-page.ak-static-page .ak-hero{padding-top:24px;padding-bottom:28px}.ak-page.ak-static-page .ak-hero-inner{gap:20px}.ak-page.ak-static-page .ak-cookbook-cover-photo{aspect-ratio:16/9}.ak-page.ak-static-page .ak-cookbook-cover-note{display:none}.ak-page.ak-static-page .ak-hero-stats .ak-stat{min-width:0;flex:1}.ak-page.ak-static-page .ak-hero-stats .ak-stat:nth-child(-n+2){display:none}}
 @media(max-width:640px){.ak-cookbook-nav{gap:0 16px}.ak-page .ak-cookbook-nav-brand{width:100%}.ak-cookbook-sort{flex-wrap:wrap}.ak-cook-dialog{padding:14px}.ak-page.ak-cook-dialog .ak-recipe-layout{grid-template-columns:minmax(0,1fr)}.ak-cook-dialog .ak-method-panel{order:-1}.ak-cook-dialog-head{align-items:flex-start}.ak-cook-dialog-head .ak-btn{padding:8px;font-size:.82rem}.ak-cook-dialog-foot{bottom:-14px;flex-wrap:wrap}.ak-cook-dialog-foot p{order:-1;flex-basis:100%;text-align:center}.ak-cook-dialog-foot .ak-btn{flex:1;padding:10px}.ak-cookbook-cover-note{padding:16px}}
 @media print{.ak-cookbook-nav,.ak-cookbook-tools,.ak-cookbook-status,.ak-cook-dialog{display:none!important}.ak-cookbook-more{display:block}.ak-cookbook-more>summary{display:none}}
+/* Keep cookbook destinations reachable without stacking three navigation rows. */
+@media(max-width:640px){
+  .ak-page .ak-cookbook-nav{flex-wrap:nowrap;overflow-x:auto;padding-block:8px;gap:18px;scroll-padding-inline:16px}
+  .ak-page .ak-cookbook-nav a{flex:0 0 auto;white-space:nowrap}
+  .ak-page .ak-cookbook-nav-brand{width:auto;margin-right:0}
+}

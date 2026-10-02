@@ -81,6 +81,14 @@ value, recipe title, or household serving count. Confirm it through the research
 workflow before maintaining the source record. Current repository seed and
 manifest values have no documented basis; this is not a claim about live data.
 
+Recipe search metadata must follow the same contract. Google's Recipe
+`nutrition.calories` describes one serving: omit nutrition metadata when the
+basis is unverified. Normalize a documented batch to one serving, preserve
+recorded zero values, and omit missing macros. The static-page nutrition refresh
+also updates metadata and runtime nutrition fields from the saved manifest;
+it does not fetch or revise recipe records.
+Reference: https://developers.google.com/search/docs/appearance/structured-data/recipe
+
 For an engine or nutrition-label change, regenerate the browser engine through
 `node scripts/minify.js --only=engines/src/afrokitchen-engine.js`, then use
 `node scripts/generate-afrokitchen-static-pages.js --refresh-recipe-nutrition`

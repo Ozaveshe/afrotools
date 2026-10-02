@@ -64,6 +64,7 @@ for (const variant of variants) {
     test('a completed timer survives reload until the visitor resets it', async ({ page }) => {
       await seedTimer(page, 0);
       await page.goto(recipeRoute, { waitUntil: 'domcontentloaded' });
+      await page.locator('[data-ak-full-method]').click();
       const display = page.locator('#ak-timer-display-6');
       const status = page.locator('#ak-timer-status-6');
       const toggle = page.locator('#ak-timer-toggle-6');
@@ -74,6 +75,7 @@ for (const variant of variants) {
       await screenshot(page, variant, 'complete');
 
       await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('[data-ak-full-method]').click();
       await expect(display).toHaveText('00:00');
       await expect(toggle).toHaveAccessibleName('Restart timer for step 6');
       expect(await readRemaining(page)).toBe(0);
@@ -88,6 +90,7 @@ for (const variant of variants) {
     test('restart replenishes the timer and pause, resume and reset remain usable', async ({ page }) => {
       await seedTimer(page, 1);
       await page.goto(recipeRoute, { waitUntil: 'domcontentloaded' });
+      await page.locator('[data-ak-full-method]').click();
       const toggle = page.locator('#ak-timer-toggle-6');
       const display = page.locator('#ak-timer-display-6');
       const status = page.locator('#ak-timer-status-6');
@@ -138,6 +141,7 @@ for (const variant of variants) {
         { remaining: { unexpected: 1 }, display: '03:00', stored: 180 }
       ];
       await page.goto(recipeRoute, { waitUntil: 'domcontentloaded' });
+      await page.locator('[data-ak-full-method]').click();
       for (const fixture of cases) {
         await page.evaluate(({ key, value }) => {
           localStorage.setItem(key, JSON.stringify({
@@ -146,6 +150,7 @@ for (const variant of variants) {
           }));
         }, { key: storageKey, value: fixture.remaining });
         await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('[data-ak-full-method]').click();
         // Static HTML already says 03:00; wait for runtime recovery before reading saved state.
         const expectedStatus = fixture.stored === 0 ? 'Timer complete.' : fixture.stored === 180 ? 'Timer ready.' : 'Timer paused at ' + fixture.display + '.';
         await expect(page.locator('#ak-timer-status-6')).toHaveText(expectedStatus);

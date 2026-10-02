@@ -1,6 +1,6 @@
 # Pro App Readiness
 
-Updated: 2026-09-16
+Updated: 2026-10-02
 
 This matrix describes the 21 app routes in the current Pro registries: 11 control/growth apps and 10 daily OS apps. Payroll and SEO Studio have `active` route status. Payroll has account-backed workspace code; SEO Studio combines server-side audits with device-saved work. An active route or passing repository check does not prove live account access, provider configuration, or production readiness.
 
@@ -23,14 +23,14 @@ Commercial product strategy for the original 20 apps lives in `docs/AFROTOOLS-PR
 | Property Projects | Shell | localStorage plus workspace API bridge where available | Yes | Disclaim | Local/project packet only, no escrow, valuation, title, or filing claim. |
 | Seller | Shell | localStorage/device commerce records | Yes | Disclaim | Practical local workspace, no hosted storefront, checkout, or payment collection. |
 | Events | Shell | localStorage/device event records | Yes | Disclaim | Local ceremony workspace only. |
-| Beauty | Shell | localStorage/device booking records | Yes | Candidate | Priority daily OS candidate, but still no automated payment or message send claim. |
-| Food & Kitchen | Shell | localStorage/device menu and stock records | Yes | Disclaim | Local costing and prep workspace only. |
-| Field Service | Shell | localStorage/device job records | Yes | Disclaim | Quote/job-card workspace only, no live dispatch or payment collection. |
-| School & Academy | Shell | localStorage/device school records | Yes | Disclaim | Local record workspace only, no parent portal claim. |
-| Clinic Desk | Shell | localStorage/device admin records | Yes | Disclaim | Administrative only, not medical advice or diagnosis. |
+| Beauty | Shell | Device-saved concept checkpoint | Yes | Candidate | Review the proposed workflow; no booking records, reminders, payments, messaging or portal. |
+| Food & Kitchen | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no menu or stock records, reminders, payments, messaging or portal. |
+| Field Service | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no job records, dispatch, payments, messaging or portal. |
+| School & Academy | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no school records, reminders, payments, messaging or portal. |
+| Clinic Desk | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no patient or administrative records, reminders, payments, messaging or portal. |
 | Faith & Community | Shell | localStorage/device community records | Yes | Disclaim | Local community admin workspace only. |
-| Agri FarmOps | Shell | localStorage/device farm records | Yes | Disclaim | Seasonal record workspace only. |
-| Life Admin | Shell | localStorage/device family records | Yes | Disclaim | Family admin workspace only, no official document storage guarantee. |
+| Agri FarmOps | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no farm records, reminders, payments, messaging or portal. |
+| Life Admin | Shell | Device-saved concept checkpoint | Yes | Disclaim | Review the proposed workflow; no family records, reminders, payments, messaging or portal. |
 
 ## Shared Backbone
 

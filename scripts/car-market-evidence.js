@@ -11,18 +11,10 @@ const allowedFields = new Set([
   'engine_cc', 'mileage_km', 'asking_price', 'currency'
 ]);
 const fields = [...allowedFields];
-const root = path.join(__dirname, '..');
+const { loadCatalog } = require('./car-market-catalog');
 
 function vehicleIds() {
-  const ids = new Set();
-  for (const file of ['master-vehicle-catalog.csv', 'import-duty-vehicle-estimates.csv']) {
-    const input = fs.readFileSync(path.join(root, 'data/cars', file), 'utf8');
-    for (const line of input.split(/\r?\n/).slice(1)) {
-      const id = line.split(',')[0];
-      if (id) ids.add(id);
-    }
-  }
-  return ids;
+  return new Set(loadCatalog().filter(row => row.catalog_status === 'active').map(row => row.vehicle_id));
 }
 
 function validate(rows, sources, vehicles, now = new Date()) {

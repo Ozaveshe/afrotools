@@ -20,8 +20,15 @@ for (const width of [1365, 390, 320]) {
     for (const country of countries) {
       await select.selectOption(country.slug);
       await expect(page.locator('#solarRootCountryOpen')).toHaveAttribute('href', `/fr/tools/roi-solaire/${country.slug}/`);
+      await expect(page.locator('#solarRootCountryOpen')).toHaveText(/^Ouvrir le calculateur \(.+\)$/);
+      await expect(page.locator('#solarRootCountryStatus')).toHaveText(/^Pays sélectionné : .+ — [A-Z]{3}$/);
       await expect(page.locator(`[data-country-slug="${country.slug}"]`)).toHaveAttribute('href', `/fr/tools/roi-solaire/${country.slug}/`);
     }
+    await page.locator('#solarRootCountrySearch').fill('Sénégal');
+    await expect(select).toHaveValue('senegal');
+    await expect(page.locator('[data-country-slug="senegal"]')).toBeVisible();
+    await expect(page.locator('#solarRootCountryOpen')).toHaveText('Ouvrir le calculateur (Sénégal)');
+    await expect(page.locator('#solarRootCountryList option[value="Sénégal"]')).toHaveCount(1);
     await select.selectOption('kenya');
     const download = page.waitForEvent('download');
     await page.locator('#solarRootDownloadBrief').click();
@@ -36,7 +43,14 @@ for (const width of [1365, 390, 320]) {
     for (const country of countries) {
       await countrySelect.selectOption(country.slug);
       await expect(page.locator('#solarCountryPageOpen')).toHaveAttribute('href', `/fr/tools/roi-solaire/${country.slug}/`);
+      await expect(page.locator('#solarCountryPageOpen')).toHaveText(/^Ouvrir le calculateur \(.+\)$/);
+      await expect(page.locator('#solarCountryPageStatus')).toHaveText(/^Pays sélectionné : .+ — [A-Z]{3}$/);
     }
+    await page.locator('#solarCountryPageSearch').fill('Sénégal');
+    await expect(countrySelect).toHaveValue('senegal');
+    await expect(page.locator('#solarCountryPageOpen')).toHaveText('Ouvrir le calculateur (Sénégal)');
+    await page.locator('#solarCountryPageSearch').fill('unknown-country!!!');
+    await expect(page.locator('#solarCountryPageStatus')).toHaveText('Aucun pays trouvé. Continuez à saisir ou utilisez la liste.');
     await page.locator('#solarCountryPageSearch').fill('Ghana');
     await page.locator('#solarCountryPageSearch').press('Enter');
     await expect(page).toHaveURL(/\/fr\/tools\/roi-solaire\/ghana\/$/);
