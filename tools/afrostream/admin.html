@@ -162,7 +162,7 @@
        TAB: NEWS
        ═══════════════════════════════════════════════════ -->
   <section class="section" id="tab-news">
-    <h2 class="section-title">Post New Article</h2>
+    <h2 class="section-title" id="newsFormHeading">Post New Article</h2>
     <form class="admin-form" id="newsForm">
       <div class="form-row">
         <div class="form-group form-grow">
@@ -196,12 +196,15 @@
         <input aria-label="Short summary" type="text" name="excerpt" class="input" required placeholder="Short summary...">
       </div>
       <div class="form-group">
-        <label>Full Body (HTML allowed)</label>
-        <textarea name="body" class="input" rows="8" required placeholder="Write the article body. HTML is allowed."></textarea>
+        <label for="newsBody">Full article body (Markdown)</label>
+        <textarea id="newsBody" name="body" class="input" rows="8" required aria-describedby="newsWordCount" placeholder="Write a verified original report with at least 600 words. Link your sources."></textarea>
+        <p id="newsWordCount" role="status" aria-live="polite">0 / 600 words required to publish</p>
       </div>
       <div class="form-actions">
         <button type="button" class="btn btn-outline" id="previewNewsBtn">Preview</button>
+        <button type="submit" class="btn btn-outline" id="saveNewsDraftBtn">Save Draft</button>
         <button type="submit" class="btn btn-primary">Publish Article</button>
+        <button type="button" class="btn btn-outline" id="cancelNewsEditBtn" hidden>Cancel Edit</button>
       </div>
     </form>
 
@@ -212,7 +215,7 @@
     </div>
 
     <!-- Published Articles -->
-    <h2 class="section-title" style="margin-top:40px">Published Articles</h2>
+    <h2 class="section-title" style="margin-top:40px">Articles &amp; Drafts</h2>
     <div id="newsList" class="admin-list"></div>
   </section>
 
@@ -742,6 +745,7 @@
 
 </div><!-- /dash -->
 
+<script src="/tools/afrostream/editorial-policy.js?v=a2871ad3"></script>
 <script>
 /* ================================================================
    AfroStream — Admin Panel
@@ -1232,11 +1236,27 @@
     drama: 'Drama', business: 'Business', rising: 'Rising Stars'
   };
 
+  var newsBody = document.getElementById('newsBody');
+  var editingNewsId = null;
+  function resetNewsEditor() {
+    editingNewsId = null;
+    document.getElementById('newsForm').reset();
+    document.getElementById('newsFormHeading').textContent = 'Post New Article';
+    document.getElementById('cancelNewsEditBtn').hidden = true;
+    updateNewsWordCount();
+  }
+  document.getElementById('cancelNewsEditBtn').addEventListener('click', resetNewsEditor);
+  function updateNewsWordCount() {
+    document.getElementById('newsWordCount').textContent = AfroStreamEditorialPolicy.wordCount(newsBody.value) + ' / 600 words required to publish';
+  }
+  newsBody.addEventListener('input', updateNewsWordCount);
   document.getElementById('newsForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var fd = new FormData(this);
-    var btn = this.querySelector('[type="submit"]');
-    btn.disabled = true; btn.textContent = 'Publishing...';
+    var draft = e.submitter && e.submitter.id === 'saveNewsDraftBtn';
+    var btn = e.submitter || this.querySelector('.btn-primary[type="submit"]');
+    var buttonLabel = draft ? 'Save Draft' : 'Publish Article';
+    btn.disabled = true; btn.textContent = draft ? 'Saving...' : 'Publishing...';
 
     var article = {
       title: fd.get('title'),
@@ -1247,23 +1267,30 @@
       body: fd.get('body')
     };
 
+    article.is_published = !draft;
+    var policyError = AfroStreamEditorialPolicy.publicationError(article);
+    if (policyError) {
+      toast(policyError, true);
+      btn.disabled = false; btn.textContent = buttonLabel;
+      return;
+    }
     try {
-      var created = await api('POST', 'news', article);
-      DATA.news = (created || []).concat(DATA.news);
+      var created = await api(editingNewsId ? 'PUT' : 'POST', editingNewsId ? 'news/' + editingNewsId : 'news', article);
+      DATA.news = (created || []).concat(DATA.news.filter(function(row) { return row.id !== editingNewsId; }));
       lsSave(LS_KEY.news, DATA.news);
-      toast('Article published!');
+      toast(draft ? 'Draft saved. It is not public.' : 'Article published!');
     } catch(err) {
-      // Fallback: save locally
+      // A failed publish is a local draft, never a published article.
       article.id = Date.now();
       article.published_at = new Date().toISOString();
-      article.is_published = true;
+      article.is_published = false;
       article.is_featured = false;
       DATA.news.unshift(article);
       lsSave(LS_KEY.news, DATA.news);
-      toast('Saved locally (Supabase offline)', true);
+      toast('Publishing failed. Saved as a local draft: ' + err.message, true);
     }
-    this.reset();
-    btn.disabled = false; btn.textContent = 'Publish Article';
+    resetNewsEditor();
+    btn.disabled = false; btn.textContent = buttonLabel;
     renderNewsList();
     updateStats();
   });
@@ -1286,7 +1313,7 @@
     var articles = DATA.news;
     var el = document.getElementById('newsList');
     if (!articles.length) {
-      el.innerHTML = '<p class="as-empty-state">No articles published yet.</p>';
+      el.innerHTML = '<p class="as-empty-state">No articles or drafts yet.</p>';
       return;
     }
     el.innerHTML = articles.map(function(a) {
@@ -1294,6 +1321,7 @@
       return '<div class="as-admin-list-item">' +
         '<div class="as-admin-list-info">' +
           '<strong>' + a.title + '</strong>' +
+          '<span class="muted" style="margin-left:8px">' + (a.is_published === false ? 'Draft' : 'Published') + '</span>' +
           '<span class="as-cat-badge as-badge-sm" style="background:#0062CC;margin-left:8px">' + (CAT_LABELS[a.category] || a.category) + '</span>' +
           '<span class="muted" style="margin-left:8px">' + new Date(dateStr).toLocaleDateString() + '</span>' +
           (a.is_featured ? ' <span style="color:#F59E0B;margin-left:4px">&#9733;</span>' : '') +
@@ -1336,12 +1364,11 @@
     form.querySelector('[name="author"]').value = a.author || 'AfroStream Team';
     form.querySelector('[name="excerpt"]').value = a.excerpt;
     form.querySelector('[name="body"]').value = a.body;
-    // Set edit mode — delete old, form submit creates new
-    DATA.news = DATA.news.filter(function(x) { return x.id !== id; });
-    lsSave(LS_KEY.news, DATA.news);
-    try { api('DELETE', 'news/' + id); } catch(e) {}
-    renderNewsList();
-    updateStats();
+    // Edit in place so article links and RSS identities stay stable.
+    editingNewsId = id;
+    document.getElementById('newsFormHeading').textContent = 'Edit Article';
+    document.getElementById('cancelNewsEditBtn').hidden = false;
+    updateNewsWordCount();
     form.scrollIntoView({ behavior: 'smooth' });
   };
 

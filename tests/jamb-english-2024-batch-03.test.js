@@ -69,9 +69,16 @@ test('only nine records are added; every previous question, review, source, and 
   for (const [id, row] of Object.entries(before.ledger.questions)) assert.deepEqual(prepared.ledger.questions[id], row, id);
   for (const [id, row] of Object.entries(before.ledger.sources)) assert.deepEqual(prepared.ledger.sources[id], row, id);
   assert.deepEqual(prepared.ledger.publication_holds, before.ledger.publication_holds);
+  const recovered = new Set(checker.verifyLaterRecoveries(prepared.pool, prepared.ledger, { referenceRoot }));
   for (const sourceId of checker.HELD) {
-    assert(!prepared.pool.questions.some(row => row.id === 'english-2024-myschool-' + sourceId));
-    assert(!prepared.ledger.questions['english-2024-myschool-' + sourceId]);
+    const id = 'english-2024-myschool-' + sourceId;
+    if (recovered.has(sourceId)) {
+      assert.deepEqual(prepared.pool.questions.find(row => row.id === id), before.pool.questions.find(row => row.id === id));
+      assert.deepEqual(prepared.ledger.questions[id], before.ledger.questions[id]);
+    } else {
+      assert(!prepared.pool.questions.some(row => row.id === id));
+      assert(!prepared.ledger.questions[id]);
+    }
   }
 });
 
@@ -130,9 +137,10 @@ test('public projection preserves all old published objects, adds nine, and expo
   const before = beforeBatch(), prepared = prepare(before), flashcards = read(referenceRoot, 'ops/jamb/source-flashcards.json');
   const previous = buildPublications(before.pool, flashcards, before.ledger), current = buildPublications(prepared.pool, flashcards, prepared.ledger);
   const oldEnglish = previous.files['pools/english.json'], english = current.files['pools/english.json'];
-  assert.equal(oldEnglish.questions.length, 2333); assert.equal(english.questions.length, 2342);
-  assert.equal(oldEnglish.questions.filter(row => row.year === 2024).length, 25);
-  assert.equal(english.questions.filter(row => row.year === 2024).length, 34);
+  assert.equal(english.questions.length, oldEnglish.questions.length + ids.length);
+  assert.equal(english.questions.filter(row => row.year === 2024).length,
+    oldEnglish.questions.filter(row => row.year === 2024).length + ids.length);
+  assert.deepEqual(english.questions.filter(row => ids.includes(row.id)).map(row => row.id).sort(), [...ids].sort());
   assert.deepEqual(english.questions.filter(row => !ids.includes(row.id)), oldEnglish.questions);
   for (const [name, payload] of Object.entries(current.files)) validatePublication(payload, current.revision, name);
   for (const id of ids) {
@@ -145,8 +153,10 @@ test('public projection preserves all old published objects, adds nine, and expo
 });
 
 test('2024 page keeps every source option and answer disclosure closed; real browser trust accepts the CBT collection', async () => {
-  const prepared = prepare(), page = renderYear('english', '2024', prepared.pool.questions, prepared.ledger, ['2021', '2022', '2023', '2024', '2025']);
-  assert.equal(page.approvedIds.length, 34);
+  const before = beforeBatch(), prepared = prepare(before);
+  const page = renderYear('english', '2024', prepared.pool.questions, prepared.ledger, ['2021', '2022', '2023', '2024', '2025']);
+  const previous = renderYear('english', '2024', before.pool.questions, before.ledger, ['2021', '2022', '2023', '2024', '2025']);
+  assert.deepEqual([...page.approvedIds].sort(), [...previous.approvedIds, ...ids].sort());
   assert.match(page.html, /publisher-labelled 2024/); assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   for (const id of ids) {
     const card = page.html.match(new RegExp(`<article[^>]+data-reviewed-question="${id}"[^>]*>([\\s\\S]*?)<\\/article>`));
@@ -162,8 +172,9 @@ test('2024 page keeps every source option and answer disclosure closed; real bro
     vm.runInNewContext(fs.readFileSync(path.join(referenceRoot, 'assets/js/lib/jamb-question-trust.js'), 'utf8'), context);
     const loaded = await context.AfroJAMB.QuestionTrust.loadPool('/data/jamb/pools/english.json');
     vm.runInNewContext(fs.readFileSync(path.join(referenceRoot, engine), 'utf8'), context);
-    const selected = context.AfroJAMB.CBT.selectQuestions({ pool: loaded.questions, poolRevision: loaded.review_revision, subjects: ['english'], year: 2024, questionsPerSubject: 40, mode: 'subject' });
-    assert.equal(selected.length, 34); assert.equal(new Set(selected.map(row => row.id)).size, 34);
+    const selected = context.AfroJAMB.CBT.selectQuestions({ pool: loaded.questions, poolRevision: loaded.review_revision, subjects: ['english'], year: 2024, questionsPerSubject: page.approvedIds.length, mode: 'subject' });
+    assert.equal(selected.length, page.approvedIds.length);
+    assert.deepEqual(Array.from(selected, row => row.id).sort(), [...page.approvedIds].sort());
     assert(selected.every(row => row.subject === 'english' && row.year === 2024 && row.answer));
     for (const id of ids) assert(selected.some(row => row.id === id), engine + ': ' + id);
   }
