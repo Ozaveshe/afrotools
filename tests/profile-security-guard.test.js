@@ -5,7 +5,7 @@ const { test } = require('node:test');
 const { PGlite } = require('@electric-sql/pglite');
 const { resolveProfileEntitlement } = require('../netlify/functions/_shared/entitlements');
 
-const migration = fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261002064000_protect_profile_access_fields.sql'), 'utf8');
+const migration = fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261002071147_protect_profile_access_fields.sql'), 'utf8');
 const fixture = fs.readFileSync(path.join(__dirname, 'fixtures/profile-security-schema.sql'), 'utf8');
 const first = '00000000-0000-4000-8000-000000000001';
 const second = '00000000-0000-4000-8000-000000000002';

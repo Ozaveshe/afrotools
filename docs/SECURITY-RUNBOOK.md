@@ -62,7 +62,7 @@ Internal surfaces must not ship as static source paths:
 ### Profile access fields
 
 Profile ownership must not permit users to grant themselves Pro or admin access.
-The source migration `20261002064000_protect_profile_access_fields.sql` installs
+The source migration `20261002071147_protect_profile_access_fields.sql` installs
 `private.protect_profile_access_fields()` before profile inserts and updates. It
 protects `tier`, `subscription_tier`, `subscription_expires_at`,
 `paystack_customer_id`, `paystack_subscription_code` and `role`. Ordinary profile

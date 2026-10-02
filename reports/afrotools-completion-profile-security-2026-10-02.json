@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-02T07:18:22.662Z",
+  "completionCertified": false,
+  "goalStatus": "active",
+  "issue": {
+    "id": "COMP-PROFILE-ACCESS-PROTECTION",
+    "priority": "P0",
+    "status": "live-guard-installed-account-action-proof-pending",
+    "owner": "completion coordinator",
+    "title": "Profile ownership allowed client-controlled billing and admin access fields",
+    "evidenceLayer": "Live database metadata plus repository authorization consumers and isolated PostgreSQL action reproduction",
+    "before": {
+      "profileRls": true,
+      "triggerCount": 0,
+      "writableProtectedColumns": [
+        {
+          "column": "subscription_expires_at",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        },
+        {
+          "column": "tier",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        },
+        {
+          "column": "subscription_tier",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        },
+        {
+          "column": "paystack_customer_id",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        },
+        {
+          "column": "paystack_subscription_code",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        },
+        {
+          "column": "role",
+          "authenticated_insert": true,
+          "authenticated_update": true
+        }
+      ],
+      "clientPrivateSchemaCreate": false
+    },
+    "consumers": [
+      "netlify/functions/_shared/entitlements.js",
+      "netlify/functions/afropoints-review.js",
+      "netlify/functions/data-buyer-leads.js"
+    ],
+    "sourceOwner": "supabase/migrations/20261002071147_protect_profile_access_fields.sql",
+    "acceptance": "Exact guard source and enabled trigger installed; client protected-field writes rejected while ordinary edits and trusted server lifecycle writes work. Live JWT/profile/billing acceptance and existing privileged-assignment review remain separate required evidence."
+  },
+  "source": {
+    "baseCommit": "4f1eb4ec903ec5378561aa3106de6998fcfb9eef",
+    "implementationCommit": "b026ddc57773ad2d329e2f30877d7372f958585f",
+    "sourceSha256": "3caec37e40eacb1fee1715de76ff4fe2dcec9008fd3b035b39121b4377b9f0c5",
+    "bodyMd5": "b7a6d9eaf0c19e5ec4e43378ae57c0bf",
+    "file": "supabase/migrations/20261002071147_protect_profile_access_fields.sql",
+    "filenameAlignment": "Prepared source was committed before live application; filename then aligned to the actual live history version. Function body is byte-identical. Targeted 21 PostgreSQL tests pass after alignment."
+  },
+  "liveDatabase": {
+    "projectRef": "zpclagtgczsygrgztlts",
+    "url": "https://zpclagtgczsygrgztlts.supabase.co",
+    "serverVersion": "17.6",
+    "migration": {
+      "version": "20261002071147",
+      "name": "protect_profile_access_fields"
+    },
+    "historyCount": 122,
+    "proof": {
+      "trigger": "profiles_protect_access_fields",
+      "body_md5": "b7a6d9eaf0c19e5ec4e43378ae57c0bf",
+      "function": "private.protect_profile_access_fields()",
+      "profile_rls": true,
+      "search_path": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "trigger_enabled": "O",
+      "security_definer": false,
+      "trigger_definition": "CREATE TRIGGER profiles_protect_access_fields BEFORE INSERT OR UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION private.protect_profile_access_fields()",
+      "authenticated_execute": false
+    },
+    "mutations": [
+      "Created private.protect_profile_access_fields() with SECURITY INVOKER and empty search path.",
+      "Installed profiles_protect_access_fields BEFORE INSERT OR UPDATE.",
+      "Revoked direct trigger-function execution from PUBLIC, anon and authenticated."
+    ],
+    "dataBoundary": "DDL only. No existing user row, subscription, role, payment record, policy or table grant was changed. No real account, transaction or notification was used for tests.",
+    "semanticsBoundary": "Installed configuration/source digest is verified live; rejected-write behavior is verified in isolated PostgreSQL with synthetic RLS/JWT-context fixtures. Actual signed-session and billing-provider action acceptance remains pending."
+  },
+  "validation": {
+    "focusedPostgres": {
+      "status": "pass",
+      "tests": 21,
+      "evidence": "artifacts/completion-profile-guard-20261002/guard-postgres-final.log",
+      "runtime": "@electric-sql/pglite@0.5.8 (development only)",
+      "scope": "First reproduce old own-row admin/Pro assignment, then execute actual migration; reject six protected fields on inserts/updates, preserve free onboarding and ordinary edits, permit trusted billing/admin lifecycle writes, preserve tenant/anonymous isolation and deny nested-definer/inconsistent-role bypass."
+    },
+    "fullSuite": {
+      "status": "pass",
+      "files": 1201,
+      "nodeTests": 3550,
+      "batches": 6,
+      "auditsPassed": 7,
+      "quarantined": 0,
+      "evidence": "artifacts/completion-profile-guard-20261002/npm-test.log"
+    },
+    "buildDeploy": {
+      "status": "pass",
+      "copiedFiles": 18667,
+      "evidence": "artifacts/completion-profile-guard-20261002/build-deploy.log"
+    },
+    "distAudit": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/audit-dist.log"
+    },
+    "securityScan": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/security.log"
+    },
+    "lint": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/lint.log"
+    },
+    "typeCheck": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/type-check.log"
+    },
+    "i18n": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/i18n.log"
+    },
+    "hreflang": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/hreflang.log"
+    },
+    "seo": {
+      "status": "pass",
+      "evidence": "artifacts/completion-profile-guard-20261002/seo-report.log",
+      "limit": "Metadata checker found no auto-fix issues; search/editorial quality and rankings are not certified."
+    },
+    "postMigrationSecurityAdvisors": [
+      {
+        "name": "rls_enabled_no_policy",
+        "level": "INFO",
+        "count": 30
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "level": "WARN",
+        "count": 1
+      }
+    ],
+    "artifactComparison": "The one additional JS file versus the pre-rebase French artifact is existing 4f AfroStream editorial-policy.js, not the new test runtime or migration. Internal tests, SQL, package files and node_modules stay excluded."
+  },
+  "remaining": [
+    "Publisher source integration and exact integrated CI/artifact acceptance; database change is already applied and must not be blindly replayed under another history name.",
+    "Safe existing test-mode/synthetic signed-session profile and billing lifecycle acceptance; no real payments or user mutation as an audit shortcut.",
+    "Owner review of existing elevated roles/subscriptions and related audit history; this migration preserves existing values and does not establish their legitimacy.",
+    "Dashboard leaked-password protection warning remains. No password/Auth-provider setting changed.",
+    "Thirty RLS-enabled/no-policy INFO findings require ownership/access review; some are intentionally service-only or other-product tables, not 30 proven app defects.",
+    "Full Pro/app/translation/source/privacy/export/SEO/weekly-maintenance acceptance remains open."
+  ],
+  "references": [
+    "https://www.postgresql.org/docs/17/functions-info.html",
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://pglite.dev/docs/"
+  ]
+}
