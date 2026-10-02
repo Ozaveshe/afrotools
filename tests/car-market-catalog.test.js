@@ -8,7 +8,7 @@ const { catalog, validate } = require('../scripts/car-market-research');
 const identity = { vehicle_id: 'toyota-camry-2013', make: 'Toyota', make_slug: 'toyota', model: 'Camry', model_slug: 'camry', year: '2013', body_type: 'sedan', catalog_status: 'active' };
 const addition = { ...identity, identity_evidence_url: 'https://example.org/manufacturer', market_listing_url: 'https://example.org/car', reviewed_at: '2026-10-02' };
 
-test('all pre-existing IDs survive and four evidenced gaps have no valuation fields', () => {
+test('all pre-existing IDs survive and evidenced additions have no valuation fields', () => {
   const rows = loadCatalog();
   const ids = new Set(rows.map(row => row.vehicle_id));
   const baseline = new Set();
