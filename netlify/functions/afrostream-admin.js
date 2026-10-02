@@ -30,6 +30,7 @@
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
+var editorialPolicy = require('../../tools/afrostream/editorial-policy');
 
 // Extra admin coverage beyond the original CRUD:
 // - news-sources CRUD
@@ -311,6 +312,9 @@ exports.handler = async function(event) {
 
     if (path === 'news' && method === 'POST') {
       if (!body.title || !body.excerpt || !body.body) return err(headers, 'Missing: title, excerpt, body');
+      if (!body.author) body.author = 'AfroStream Team';
+      var createError = editorialPolicy.publicationError(body);
+      if (createError) return err(headers, createError);
       if (!body.slug) body.slug = slugify(body.title);
       if (!body.published_at) body.published_at = new Date().toISOString();
       var createdN = await sb('POST', 'as_news', body);
@@ -324,6 +328,10 @@ exports.handler = async function(event) {
     var newsMatch = path.match(/^news\/(\d+)$/);
     if (newsMatch && method === 'PUT') {
       var nid = newsMatch[1];
+      var previousNews = await sb('GET', 'as_news?id=eq.' + nid + '&select=id,author,body,is_published', null);
+      if (!previousNews || !previousNews[0]) return err(headers, 'Article not found', 404);
+      var updateError = editorialPolicy.publicationError(body, previousNews[0]);
+      if (updateError) return err(headers, updateError);
       delete body.id; delete body.created_at;
       body.updated_at = new Date().toISOString();
       var updatedN = await sb('PATCH', 'as_news?id=eq.' + nid, body);
@@ -485,6 +493,9 @@ exports.handler = async function(event) {
         if (!payload.title || !payload.excerpt || !payload.body) return err(headers, 'Invalid news payload');
         if (!payload.slug) payload.slug = slugify(payload.title);
         payload.is_published = true;
+        if (!payload.author) payload.author = 'AfroStream Team';
+        var approvalError = editorialPolicy.publicationError(payload);
+        if (approvalError) return err(headers, approvalError);
         payload.published_at = new Date().toISOString();
         await sb('POST', 'as_news', payload);
       }

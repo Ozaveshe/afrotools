@@ -2,6 +2,23 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {inspect,load,verify,reconstructOriginals,publisherCollectionRecords}=require('../ops/jamb/review-candidates/english/check-original-coverage.cjs');
 test('all original English imports have exactly one pinned candidate or private hold',()=>{const r=verify();assert.equal(r.original_records,4163);assert.equal(r.remaining,0);assert.equal(r.candidates,2162);assert.equal(r.held,2001);});
+test('four-digit collection receipts require exact content, source and accepted review before excluding new intake',()=>{
+ const {batches}=load(),pool=require('../ops/jamb/source-pool.json'),ledger=require('../data/jamb/review-ledger.json');
+ for(const year of [2021,2023,2024]){
+  const release=require('../ops/jamb/verification/english-'+year+'-publishable-1001.json');
+  for(const record of release.records){
+   const row=pool.questions.find(q=>q.id===record.id);
+   assert.ok(row,record.id);
+   assert.deepEqual(reconstructOriginals([row],batches,ledger),[],record.id);
+   assert.throws(()=>reconstructOriginals([{...row,answer:row.answer==='A'?'B':'A'}],batches,ledger),/recent intake fingerprint/);
+   const missing=structuredClone(ledger);delete missing.questions[row.id].answer_review;
+   assert.throws(()=>reconstructOriginals([row],batches,missing),/recent intake eligibility required|recent intake hold disposition/);
+   const wrongSource=structuredClone(ledger);
+   wrongSource.sources[wrongSource.questions[row.id].source_id].content_sha256='0'.repeat(64);
+   assert.throws(()=>reconstructOriginals([row],batches,wrongSource),/recent intake source fingerprint/);
+  }
+ }
+});
 test('coverage rejects omissions, duplicate dispositions and unknown IDs',()=>{
  const {originals,batches}=load();
  const omitted=structuredClone(batches);omitted[0].batch.records.pop();omitted[0].batch.examined_count--;assert.throws(()=>inspect(originals,omitted),/unexamined original IDs/);
