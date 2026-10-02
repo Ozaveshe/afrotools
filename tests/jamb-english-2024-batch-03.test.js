@@ -69,7 +69,8 @@ test('only nine records are added; every previous question, review, source, and 
   for (const [id, row] of Object.entries(before.ledger.questions)) assert.deepEqual(prepared.ledger.questions[id], row, id);
   for (const [id, row] of Object.entries(before.ledger.sources)) assert.deepEqual(prepared.ledger.sources[id], row, id);
   assert.deepEqual(prepared.ledger.publication_holds, before.ledger.publication_holds);
-  for (const sourceId of checker.HELD) {
+  const recovered = checker.verifyLaterRecoveries(prepared.pool, prepared.ledger, options);
+  for (const sourceId of checker.HELD.filter(id => !recovered.includes(id))) {
     assert(!prepared.pool.questions.some(row => row.id === 'english-2024-myschool-' + sourceId));
     assert(!prepared.ledger.questions['english-2024-myschool-' + sourceId]);
   }
@@ -130,9 +131,9 @@ test('public projection preserves all old published objects, adds nine, and expo
   const before = beforeBatch(), prepared = prepare(before), flashcards = read(referenceRoot, 'ops/jamb/source-flashcards.json');
   const previous = buildPublications(before.pool, flashcards, before.ledger), current = buildPublications(prepared.pool, flashcards, prepared.ledger);
   const oldEnglish = previous.files['pools/english.json'], english = current.files['pools/english.json'];
-  assert.equal(oldEnglish.questions.length, 2333); assert.equal(english.questions.length, 2342);
-  assert.equal(oldEnglish.questions.filter(row => row.year === 2024).length, 25);
-  assert.equal(english.questions.filter(row => row.year === 2024).length, 34);
+  assert.equal(english.questions.length, oldEnglish.questions.length + ids.length);
+  assert.equal(english.questions.filter(row => row.year === 2024).length,
+    oldEnglish.questions.filter(row => row.year === 2024).length + ids.length);
   assert.deepEqual(english.questions.filter(row => !ids.includes(row.id)), oldEnglish.questions);
   for (const [name, payload] of Object.entries(current.files)) validatePublication(payload, current.revision, name);
   for (const id of ids) {
@@ -146,7 +147,9 @@ test('public projection preserves all old published objects, adds nine, and expo
 
 test('2024 page keeps every source option and answer disclosure closed; real browser trust accepts the CBT collection', async () => {
   const prepared = prepare(), page = renderYear('english', '2024', prepared.pool.questions, prepared.ledger, ['2021', '2022', '2023', '2024', '2025']);
-  assert.equal(page.approvedIds.length, 34);
+  const approved = prepared.pool.questions.filter(row => row.subject === 'english' && row.year === 2024 &&
+    trust.assessQuestion(row, prepared.ledger).state === 'eligible');
+  assert.deepEqual([...page.approvedIds].sort(), approved.map(row => row.id).sort());
   assert.match(page.html, /publisher-labelled 2024/); assert.match(page.html, /original UTME sitting and question numbers are unconfirmed/i);
   for (const id of ids) {
     const card = page.html.match(new RegExp(`<article[^>]+data-reviewed-question="${id}"[^>]*>([\\s\\S]*?)<\\/article>`));
@@ -163,8 +166,16 @@ test('2024 page keeps every source option and answer disclosure closed; real bro
     const loaded = await context.AfroJAMB.QuestionTrust.loadPool('/data/jamb/pools/english.json');
     vm.runInNewContext(fs.readFileSync(path.join(referenceRoot, engine), 'utf8'), context);
     const selected = context.AfroJAMB.CBT.selectQuestions({ pool: loaded.questions, poolRevision: loaded.review_revision, subjects: ['english'], year: 2024, questionsPerSubject: 40, mode: 'subject' });
-    assert.equal(selected.length, 34); assert.equal(new Set(selected.map(row => row.id)).size, 34);
+    const expectedCount = Math.min(40, approved.length);
+    assert.equal(selected.length, expectedCount); assert.equal(new Set(selected.map(row => row.id)).size, expectedCount);
     assert(selected.every(row => row.subject === 'english' && row.year === 2024 && row.answer));
-    for (const id of ids) assert(selected.some(row => row.id === id), engine + ': ' + id);
+    assert(selected.every(row => approved.some(item => item.id === row.id)), 'Only approved collection items may be selected');
+    // A full 40-question draw need not contain all nine original batch items once
+    // the collection grows. Prove each original item still passes browser trust
+    // and selection using the exact reviewed batch as a separate, unpadded pool.
+    const batchOnly = context.AfroJAMB.CBT.selectQuestions({ pool: loaded.questions.filter(row => ids.includes(row.id)),
+      poolRevision: loaded.review_revision, subjects: ['english'], year: 2024, questionsPerSubject: 40, mode: 'subject' });
+    assert.equal(batchOnly.length, ids.length);
+    for (const id of ids) assert(batchOnly.some(row => row.id === id), engine + ': ' + id);
   }
 });

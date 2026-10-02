@@ -102,7 +102,14 @@ assert.equal(newCamryContext.sourcePrice.sourceType, "dated-marketplace-observat
 assert.equal(newCamryContext.sourcePrice.median, 10700);
 assert.equal(newCamryContext.sourcePrice.sourceUrl, newCamrySource.sourceUrl);
 assert.equal(Math.round(newCamryContext.localPrice.median * forex.rates.NGN), newCamryObservation.median, "the browser can display the reviewed NGN ask without conversion drift");
-assert.equal(newCamryContext.media.hero.sourceType, "generated");
+assert.equal(newCamryContext.media.hero.sourceType, "licensed");
+assert.equal(newCamryContext.media.hero.id, "toyota-camry-2018-hero");
+const camryHeroAsset = data.mediaLibrary.assets.find((asset) => asset.id === newCamryContext.media.hero.id);
+assert.equal(camryHeroAsset.status, "approved");
+assert.equal(camryHeroAsset.licenseId, "PD-self");
+assert.equal(camryHeroAsset.rightsHolder, "Bull-Doser");
+assert.equal(camryHeroAsset.visualReview.status, "reviewed");
+assert.equal(camryHeroAsset.modelReview.vehicleId, "toyota-camry-2018");
 
 const rav4Observation = observations.find((item) => item.vehicleId === "toyota-rav4-2018" && item.countryCode === "NG");
 const rav4Source = sourceObservations.find((item) => item.vehicleId === "toyota-rav4-2018" && item.sourceMarket === "uae");
