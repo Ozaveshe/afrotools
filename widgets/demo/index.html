@@ -85,8 +85,8 @@
   .widget-field label{font-size:var(--text-sm);font-weight:var(--weight-bold)}
   .widget-preview{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-sm);min-height:360px;padding:var(--space-5)}
   .widget-code{background:var(--color-bg-dark);border:1px solid var(--color-ondark-border);border-radius:var(--radius-sm);color:var(--color-text-inverse);font-family:var(--font-mono);font-size:var(--text-sm);line-height:var(--leading-relaxed);margin:0;overflow:auto;padding:var(--space-4);white-space:pre-wrap;word-break:break-word}
-  .widget-modal{align-items:center;background:rgba(15,23,42,.62);display:none;inset:0;justify-content:center;padding:var(--space-4);position:fixed;z-index:9999}
-  .widget-modal.is-open{display:flex}
+  .widget-modal{align-items:center;background:rgba(15,23,42,.62);border:0;color:inherit;display:none;height:100dvh;inset:0;justify-content:center;margin:0;max-height:none;max-width:none;padding:var(--space-4);position:fixed;width:100%;z-index:9999}
+  .widget-modal[open]{display:flex}
   .widget-modal__panel{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-sm);box-shadow:var(--shadow-xl);max-height:92vh;max-width:760px;overflow:auto;padding:var(--space-5);width:min(100%,760px)}
   .widget-modal__head{align-items:start;display:flex;gap:var(--space-4);justify-content:space-between;margin-bottom:var(--space-4)}
   .widget-modal__head h2{font-size:var(--text-xl);margin:0}
@@ -296,8 +296,8 @@
   </section>
 </main>
 
-<div class="widget-modal" id="widget-modal" aria-hidden="true">
-  <div class="widget-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<dialog class="widget-modal" id="widget-modal" aria-labelledby="modal-title" aria-describedby="modal-description">
+  <div class="widget-modal__panel">
     <div class="widget-modal__head">
       <div>
         <h2 id="modal-title">Widget preview</h2>
@@ -314,7 +314,7 @@
     <pre class="widget-code"><code id="modal-iframe-code"></code></pre>
     <p><button class="btn btn-secondary" type="button" data-copy-target="modal-iframe-code">Copy iframe</button></p>
   </div>
-</div>
+</dialog>
 
 <afro-footer></afro-footer>
 
@@ -392,9 +392,14 @@
     textarea.setAttribute('readonly', '');
     textarea.style.position = 'absolute';
     textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
+    var copyRoot = $('widget-modal').open ? $('widget-modal').querySelector('.widget-modal__panel') : document.body;
+    var copyFocus = document.activeElement;
+    copyRoot.appendChild(textarea);
     textarea.select();
-    try { document.execCommand('copy'); } finally { document.body.removeChild(textarea); }
+    try { document.execCommand('copy'); } finally {
+      copyRoot.removeChild(textarea);
+      if (copyFocus && copyFocus.focus) copyFocus.focus();
+    }
   }
 
   function renderPreview(container, id, options) {
@@ -475,14 +480,12 @@
     $('modal-iframe-code').textContent = iframeCode(widget);
     $('modal-tool-link').href = widget.fullToolLink || '/';
     renderPreview($('modal-preview'), widget.id);
-    $('widget-modal').classList.add('is-open');
-    $('widget-modal').setAttribute('aria-hidden', 'false');
+    $('widget-modal').showModal();
+    $('modal-close').focus();
   }
 
   function closeModal() {
-    $('widget-modal').classList.remove('is-open');
-    $('widget-modal').setAttribute('aria-hidden', 'true');
-    $('modal-preview').innerHTML = '';
+    $('widget-modal').close();
   }
 
   function renderBuilder() {
@@ -543,8 +546,20 @@
     $('widget-modal').addEventListener('click', function (event) {
       if (event.target === $('widget-modal')) closeModal();
     });
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') closeModal();
+    $('widget-modal').addEventListener('close', function () {
+      $('modal-preview').innerHTML = '';
+    });
+    $('widget-modal').addEventListener('keydown', function (event) {
+      if (event.key !== 'Tab') return;
+      var first = $('modal-close');
+      var last = document.querySelector('[data-copy-target="modal-iframe-code"]');
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
     document.querySelectorAll('[data-copy-target]').forEach(function (button) {
       button.addEventListener('click', function () {
