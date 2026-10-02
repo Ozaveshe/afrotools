@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 159 | 2 | 300 |
-| sw | 137 | 1 | 323 |
+| fr | 159 | 2 | 301 |
+| sw | 137 | 1 | 324 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 333 | 40 | 0 | 293 | 21 | 0 | 312 |
+| editorial | 334 | 40 | 0 | 294 | 21 | 0 | 313 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -207,6 +207,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/fleet-fuel-variance-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/flutterwave-vs-paystack-fees/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/flutterwave-vs-paystack-fees/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/food-batch-traceability-records-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/food-batch-traceability-records-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/free-event-flyer-maker-online/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/free-event-flyer-maker-online/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/free-gpa-calculator-nigerian-universities/ | editorial | fr | — | missing | no localized route or owner file |

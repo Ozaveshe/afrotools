@@ -7,8 +7,8 @@ const copy = () => structuredClone(data);
 const row = (trim, overrides = {}) => ({ vehicle_id: 'mercedes-e-class-2017', model_year: 2017, trim_label: trim, engine_cc: 1991, cylinders: 4, drivetrain: 'AWD', ...overrides });
 
 test('reviewed facts have dated OEM sources, distinct variants and no prices', () => {
-  assert.equal(validateRegistry(data).variants.length, 7);
-  assert.equal(new Set(data.variants.map(x => x.vehicle_id)).size, 3);
+  assert.equal(validateRegistry(data).variants.length, 19);
+  assert.equal(new Set(data.variants.map(x => x.vehicle_id)).size, 6);
   const bad = copy(); bad.variants[0].asking_price = 12000000;
   assert.throws(() => validateRegistry(bad), /Price/);
 });
@@ -57,6 +57,28 @@ test('Elantra ECO nominal1.4L and C4503.0L stay distinct from starter bands', ()
   assert.equal(amg.status, 'plausible-manufacturer-variant');
   assert.equal(inspectVariant({ vehicle_id: 'hyundai-elantra-2020', trim_label: 'eco', engine_cc: 2000, cylinders: 4 }, data).status, 'specification-conflict');
 });
+test('Civic sedan and hatchback labels retain distinct engines and unresolved bare badges', () => {
+  const civic = (trim, cc) => inspectVariant({ vehicle_id: 'honda-civic-2022', model_year: 2022, trim_label: trim, engine_cc: cc, cylinders: 4 }, data);
+  assert.equal(civic('Sport Sedan', 1996).issues.length, 0);
+  assert.equal(civic('Sport Sedan', 1500).status, 'specification-conflict');
+  assert.equal(civic('Sport Touring', 1498).variant_id, 'honda-civic-2022-us-sport-touring-hatchback');
+  assert.equal(civic('Sport Touring', 2000).status, 'specification-conflict');
+  for (const badge of ['Sport', 'Touring', 'LX', 'EX']) assert.equal(civic(badge, 1500).status, 'unresolved-variant');
+  const missing = inspectVariant({ vehicle_id: 'honda-civic-2010', trim_label: 'EX Sedan' }, data);
+  assert.deepEqual(missing.missing, ['engine_cc', 'cylinders', 'drivetrain']);
+  assert.equal(missing.publishable, false);
+});
+
+test('CR-V petrol AWD does not acquire a hybrid, plug-in or equipment alias', () => {
+  const crv = (trim, cc, drive = 'AWD') => inspectVariant({ vehicle_id: 'honda-cr-v-2023', model_year: 2023, trim_label: trim, engine_cc: cc, cylinders: 4, drivetrain: drive }, data);
+  assert.equal(crv('EX-L AWD', 1498).status, 'plausible-manufacturer-variant');
+  assert.equal(crv('EX-L AWD', 2000).status, 'specification-conflict');
+  assert.equal(crv('Sport Touring Hybrid AWD', 1993).status, 'plausible-manufacturer-variant');
+  assert.equal(crv('Sport Touring Hybrid AWD', 1993, 'FWD').status, 'specification-conflict');
+  for (const trim of ['EX-L AWD w/o BSI', 'PHEV 2.0 AWD', 'Sport']) assert.equal(crv(trim, 2000).status, 'unresolved-variant');
+  assert.equal(crv('Sport Touring Hybrid AWD', 1993).stock_verified, false);
+});
+
 test('source identity, invalid facts and colliding aliases fail validation', () => {
   let bad = copy(); bad.variants[1].aliases.push('SE'); assert.throws(() => validateRegistry(bad), /Ambiguous/);
   bad = copy(); bad.variants[0].model_year = 2021; assert.throws(() => validateRegistry(bad), /year/);

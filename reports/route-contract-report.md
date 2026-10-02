@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11697 |
-| Indexable pages | 7882 |
+| Public pages | 11698 |
+| Indexable pages | 7883 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4256 |
-| Documented fallbacks | 14969 |
-| Routes eligible for primary sitemaps | 7882 |
+| Genuine equivalence groups | 4257 |
+| Documented fallbacks | 14970 |
+| Routes eligible for primary sitemaps | 7883 |
 
 ## Locale Coverage
 
-- en: 6142 page records
+- en: 6143 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 538
+- article: 539
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3378,6 +3378,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1563b5fc8fe2: en=`/tools/contractor-vs-employee/cape-verde/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-cap-vert/`; x-default=`/tools/contractor-vs-employee/cape-verde/`
 - equivalence:1565e22c323a: en=`/rwanda/`, fr=`/fr/rwanda/`, sw=`/sw/rwanda/`; x-default=`/rwanda/`
 - equivalence:157785ea6b8d: en=`/tools/tin-guide/central-african-republic`, sw=`/sw/zana/mwongozo-tin/central-african-republic/`; x-default=`/tools/tin-guide/central-african-republic`
+- equivalence:158afdbe61fd: en=`/blog/food-batch-traceability-records-africa/`; x-default=`/blog/food-batch-traceability-records-africa/`
 - equivalence:15bf1b0218b8: en=`/agriculture/poultry-roi/uganda`; x-default=`/agriculture/poultry-roi/uganda`
 - equivalence:15c0be482876: en=`/tools/afrokitchen/recipes/banana-fritters-gq/`; x-default=`/tools/afrokitchen/recipes/banana-fritters-gq/`
 - equivalence:15c49099a4d5: en=`/tools/gratuity-calculator/angola/`; x-default=`/tools/gratuity-calculator/angola/`
