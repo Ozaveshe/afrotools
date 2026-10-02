@@ -20,7 +20,7 @@ test('all 108 country controllers preserve calculation, data, source, consent, s
     `tools/solar-roi/${country.slug}/index.html`, `fr/tools/roi-solaire/${country.slug}/index.html`
   ]);
   const blobs = cp.execFileSync('git', ['cat-file', '--batch'], {
-    input: paths.map(file => '5ebe63a0110857ed6acd50ea6734d5fd2b755a1b:' + file).join('\n') + '\n', maxBuffer: 40e6
+    input: paths.map(file => 'eac06a15a6f128d8b7ddfd5b8eecf1f074cfd4b0:' + file).join('\n') + '\n', maxBuffer: 40e6
   });
   let offset = 0;
   for (const file of paths) {

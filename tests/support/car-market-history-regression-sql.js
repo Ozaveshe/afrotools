@@ -13,7 +13,9 @@ const fixtures = [1, 2, 3].map(number => ({
   trim_label: 'Synthetic initial', market: 'Synthetic market'
 }));
 const initial = validate(fixtures, sources, vehicleIds(), now);
-const refresh = validate([{ ...fixtures[0], observed_at: timestamp(1), asking_price: 4800000, mileage_km: 125000, trim_label: 'Synthetic refreshed', engine_cc: 2500, market: 'Synthetic new market' }], sources, vehicleIds(), now);
+// Refresh the whole comparable group. One changed variant among two old members
+// must not silently form a second three-listing snapshot.
+const refresh = validate(fixtures.map((row, index) => ({ ...row, observed_at: timestamp(1), asking_price: index === 0 ? 4800000 : row.asking_price, mileage_km: 125000, trim_label: 'Synthetic refreshed', engine_cc: 2500, market: 'Synthetic new market' })), sources, vehicleIds(), now);
 const older = validate([{ ...fixtures[0], observed_at: timestamp(3), asking_price: 1000000 }], sources, vehicleIds(), now);
 const snapshot = snapshotSql({ vehicleId: 'toyota-camry-2005', countryCode: 'NG', condition: 'foreign-used', currency: 'NGN' });
 const sql = `begin;
@@ -31,7 +33,7 @@ do $$ begin
 end $$;
 ${intakeSql(refresh)}
 do $$ begin
-  if (select count(*) from public.car_market_observation_history where listing_key = any(array[${initial.map(row => `'${row.listing_key}'`).join(',')}])) <> 4 then
+  if (select count(*) from public.car_market_observation_history where listing_key = any(array[${initial.map(row => `'${row.listing_key}'`).join(',')}])) <> 6 then
     raise exception 'History did not retain initial and refreshed observations';
   end if;
   if not exists (select 1 from public.car_market_listing_observations where listing_key = '${initial[0].listing_key}' and asking_price = 4800000 and engine_cc = 2500 and trim_label = 'Synthetic refreshed' and review_status = 'pending') then
@@ -42,7 +44,7 @@ do $$ begin
   end if;
 end $$;
 update public.car_market_listing_observations set review_status = 'accepted', reviewed_at = now()
-where listing_key = '${initial[0].listing_key}';
+where source_id = 'history-regression';
 ${snapshot}
 do $$ declare blocked boolean := false; begin
   if (select count(*) from public.car_market_price_snapshots where 'history-regression' = any(source_ids)) <> 2 then
