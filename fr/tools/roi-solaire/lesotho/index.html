@@ -218,7 +218,7 @@ window.addEventListener('load', function() {
 <div class="solar-country-picker" data-solar-country-picker data-selected-country="lesotho">
 <label for="solarCountryPageSearch">Rechercher un pays</label>
 <div class="solar-country-picker-grid">
-<input id="solarCountryPageSearch" type="search" autocomplete="off" list="solarCountryPageList" placeholder="Rechercher Nigeria, KES, Ghana..." aria-describedby="solarCountryPageHelp solarCountryPageStatus">
+<input id="solarCountryPageSearch" type="search" autocomplete="off" list="solarCountryPageList" placeholder="Rechercher Nigeria, KES, Ghana..." aria-describedby="solarCountryPageHelp solarCountryPageStatus" disabled>
 <datalist id="solarCountryPageList">
 <option value="Nigeria">NGN - NG</option>
 <option value="Kenya">KES - KE</option>
@@ -276,7 +276,7 @@ window.addEventListener('load', function() {
 <option value="Mauritanie">MRU - MR</option>
 </datalist>
 <label for="solarCountryPageSelect">Sélectionner un pays</label>
-<select id="solarCountryPageSelect" aria-describedby="solarCountryPageHelp solarCountryPageStatus">
+<select id="solarCountryPageSelect" aria-describedby="solarCountryPageHelp solarCountryPageStatus" disabled>
 <optgroup label="Popular countries">
 <option value="nigeria" data-code="NG" data-currency="NGN">🇳🇬 Nigeria - NGN</option>
 <option value="kenya" data-code="KE" data-currency="KES">🇰🇪 Kenya - KES</option>
@@ -662,6 +662,8 @@ function setupCountryPicker(prefix,currentSlug){
   if(input){input.addEventListener("input",function(){var match=findCountry(input.value);if(match){apply(match,true);}else{status.textContent="Aucun pays trouvé. Continuez à saisir ou utilisez la liste.";}});input.addEventListener("keydown",function(event){if(event.key==="Enter"){var match=findCountry(input.value)||findCountry(select.value);if(match){event.preventDefault();apply(match,true);location.href=match.href;}}});}
   select.addEventListener("change",function(){var country=findCountry(select.value);apply(country,true);trackSolarEvent("country_selected","country_picker",country?country.slug:DEFAULTS.countrySlug);});
   open.addEventListener("click",function(){var country=findCountry(select.value)||current;storeSelectedCountry(country);trackSolarEvent("country_selected","country_picker",country?country.slug:DEFAULTS.countrySlug);});
+
+  select.disabled=false;if(input)input.disabled=false;
 }
 function money(value){var n=Number(value)||0;return DEFAULTS.currencySymbol+n.toLocaleString("en-US",{maximumFractionDigits:0});}
 function moneyAccessible(value){var n=Number(value)||0;return DEFAULTS.currency+" "+n.toLocaleString("en-US",{maximumFractionDigits:0});}

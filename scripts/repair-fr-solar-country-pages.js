@@ -22,6 +22,7 @@ const fs = require("fs");
 const path = require("path");
 const { localizeFrenchSolarRoutes } = require("./lib/french-solar-country-routes");
 const { localizeFrenchSolarCountryPickerHtml } = require("./lib/french-solar-country-picker");
+const { ensureSolarCountryPickerReadiness } = require("./lib/solar-country-picker-readiness");
 const solarDataset = require("../data/energy/solar-roi-country-dataset");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -492,6 +493,7 @@ function frenchSolarCountryDisplayNames() {
 }
 
 function processHtml(html) {
+  html = ensureSolarCountryPickerReadiness(html);
   html = localizeFrenchSolarRoutes(html);
   html = localizeFrenchSolarCountryPickerHtml(html, frenchSolarCountryDisplayNames());
   // Preserve distinct, visible names when repairing older translated pickers.

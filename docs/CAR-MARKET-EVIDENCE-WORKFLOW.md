@@ -10,6 +10,12 @@ On 2026-10-02, the user authorized browser-based Jiji price comparisons. Detail 
 
 Use a written partner feed or independently submitted dealer inventory with explicit permission for storage, aggregation, publication, and image use. Add its source row to the registry and the private database only after access review. A scheduled collector must require `automated-approved`; manual review intake may use `manual-only` only when its rights permit it. No seller contact details, VIN, or third-party photos belong in this evidence ledger.
 
+### Kenyan private comparison scope
+
+On 2026-10-02, Jiji Kenya's automatic security verification completed without agent interaction. Six individual Axio 2016 adverts were checked in Mombasa and Nairobi. The separate `jiji-ke` source is `review-needed` for minimal private factual comparison under the ongoing user-authorized market research. This records accessible pages and an operational research scope; it grants no marketplace licence, automatic collection, publication or image reuse rights. Its terms sections 7.16 and 7.17 retain user-content and contact-consent restrictions. Browser navigation to `https://jiji.co.ke/robots.txt` was refused with `ERR_BLOCKED_BY_CLIENT`; the file remains unverified and no alternate retrieval or bypass was used.
+
+Keep KE/KES observations separate from NG/NGN and compare cities, conditions and explicit variants independently. A hybrid trim claim does not fill missing engine, fuel, drivetrain or gearbox facts. Displayed hours ago are separate from an unconfirmed original posting date. Advert and description year conflicts remain held; the individual car's correct year and active stock require further evidence. The new source is excluded from accepted observations and public snapshots while its access status remains review-needed.
+
 ## Intake and review
 
 ### Browser research before source approval
