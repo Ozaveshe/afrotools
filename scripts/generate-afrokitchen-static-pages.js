@@ -40,6 +40,7 @@ const {
   mergeIntelligenceCollections
 } = require("./lib/afrokitchen-cuisine-intelligence");
 
+const visualAssets = require('../tools/afrokitchen/visual-assets');
 const LANDING_PATH = path.join(TOOL_DIR, "index.html");
 function renderCookbookNav() {
   return '<nav class="ak-cookbook-nav" aria-label="AfroKitchen cookbook"><a class="ak-cookbook-nav-brand" href="/tools/afrokitchen/">AfroKitchen</a><a href="/tools/afrokitchen/#browse-panel">Recipes</a><a href="/tools/afrokitchen/#country-grid">Countries</a><a href="/tools/afrokitchen/#collections-grid">Collections</a><a href="/tools/afrokitchen/#cook-this-week">Weekly planner</a><a href="/tools/afrokitchen/?saved=1#browse-panel">My cookbook</a></nav>';
@@ -291,6 +292,7 @@ function renderIngredientsHtml(engine, recipe, servings) {
 
     html += `<label class="ak-ing-item">
       <input type="checkbox" class="ak-ing-check">
+      <span class="ak-ing-art" aria-hidden="true">${visualAssets.ingredient(ingredient.name)}</span>
       <span class="ak-ing-text">
         ${amountHtml}${escapeHtml(ingredient.name)}${ingredient.prep_note ? `, <em>${escapeHtml(ingredient.prep_note)}</em>` : ""}${ingredient.is_optional ? ' <span class="ak-ing-optional">(optional)</span>' : ""}${ingredient.substitution ? ` <span class="ak-ing-optional">[Sub: ${escapeHtml(ingredient.substitution)}]</span>` : ""}
       </span>
@@ -1344,10 +1346,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedSocialPlate = renderRecipeSocialPlate(recipe, recipeInsight);
   const relatedSection = renderRelatedHtml(recipe, recipeInternalLinkGroups, recipeImages);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
-  const heroImage = media.pageImage || RECIPE_FALLBACK_IMAGE;
-  const heroStyle = heroImage
-    ? ` style="background-image:linear-gradient(140deg,rgba(36,18,8,.9),rgba(123,31,12,.72) 46%,rgba(199,62,29,.58)),url('${escapeHtml(heroImage)}')"`
-    : "";
+  const heroStyle = '';
+  const equipment = visualAssets.equipmentFor(recipe.steps);
+  const equipmentHtml = equipment.length ? '<section class="ak-equipment" aria-label="Suggested equipment"><div><h3>A few kitchen essentials</h3><p>Suggested from the recipe method. Use equivalent equipment you have.</p></div><div class="ak-equipment-list">' + equipment.map(item => '<div class="ak-equipment-item">' + item.svg + '<span>' + escapeHtml(item.name) + '</span></div>').join('') + '</div></section>' : '';
 
   const recipeData = {
     slug: recipe.slug,
@@ -1551,12 +1552,13 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   </style>
   <link rel="stylesheet" href="/tools/afrokitchen/experience.css?v=5f210e65">
   <link rel="stylesheet" href="/tools/afrokitchen/cookbook.css">
+  <link rel="stylesheet" href="/tools/afrokitchen/visual-recipe.css">
 ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema-blockers" content="${escapeHtml(schemaBlockers.join(","))}">\n` : ""}
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<div class="ak-page ak-static-page">
+<div class="ak-page ak-static-page ak-visual-recipe">
 ${renderCookbookNav()}
   <section class="ak-hero"${heroStyle}>
     <div class="ak-hero-inner ak-hero-single">
@@ -1601,6 +1603,7 @@ ${renderCookbookNav()}
   <section class="ak-section">
     <div class="ak-container">
       <div class="ak-cook-shell" id="recipe-ingredients">
+        <div class="ak-visual-intro"><div class="ak-panel-kicker">01 / Get ready</div><h2 class="ak-panel-title">Everything you need</h2><p class="ak-panel-helper">Tap each ingredient as you gather it. Illustrations are visual guides; follow the ingredient names and quantities.</p></div>
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
@@ -1623,14 +1626,15 @@ ${renderCookbookNav()}
               <span class="ak-panel-pill">${escapeHtml(categoryLabel(recipe))}</span>
             </div>
             <div id="ak-static-ingredients">${renderedIngredients}</div>
+            ${equipmentHtml}
             ${renderedNutrition ? `<div class="ak-ingredients-footer"><h3 class="ak-mini-title">Nutrition estimate</h3>${renderedNutrition}</div>` : ""}
           </aside>
 
           <section class="ak-method-panel" id="recipe-method">
             <div class="ak-method-head">
               <div>
-                <div class="ak-panel-kicker">How to cook it</div>
-                <h2 class="ak-panel-title">Step-by-step method</h2>
+                <div class="ak-panel-kicker">02 / Let’s cook</div>
+                <h2 class="ak-panel-title">One step at a time</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
               <a class="ak-btn ak-btn-outline" href="${recipe.country_route_path}">${akIcon("country", "ak-icon-sm")}<span>Back to ${escapeHtml(recipe.country_name)}</span></a>
@@ -1685,6 +1689,8 @@ ${renderCookbookNav()}
 <script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = ${safeJson(recipeData)};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260612a" defer></script>
+<script src="/tools/afrokitchen/visual-assets.js" defer></script>
+<script src="/tools/afrokitchen/visual-recipe.js" defer></script>
 </body>
 </html>
 `;
@@ -3024,6 +3030,26 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-ingredient-art')) {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    let changed = 0;
+    for (const recipe of manifest.recipes.filter(item => item.generated_in_wave)) {
+      const file = path.join(RECIPES_DIR, recipe.slug, 'index.html');
+      const existing = fs.readFileSync(file, 'utf8');
+      const payload = existing.match(/window\.__AK_STATIC_RECIPE = (.*?);<\/script>/);
+      if (!payload) throw new Error('Recipe data missing: ' + recipe.slug);
+      const ingredients = JSON.parse(payload[1]).ingredients;
+      let index = 0;
+      const next = existing.replace(/<span class="ak-ing-art" aria-hidden="true"><svg[\s\S]*?<\/svg><\/span>/g, () => {
+        if (!ingredients[index]) throw new Error('Ingredient art count mismatch: ' + recipe.slug);
+        return '<span class="ak-ing-art" aria-hidden="true">' + visualAssets.ingredient(ingredients[index++].name) + '</span>';
+      });
+      if (index !== ingredients.length) throw new Error('Missing ingredient artwork: ' + recipe.slug);
+      if (next !== existing) { fs.writeFileSync(file, next, 'utf8'); changed++; }
+    }
+    console.log('Refreshed ingredient illustrations: ' + changed + ' pages. Recipe content preserved.');
+    return;
+  }
   if (process.argv.includes('--refresh-cookbook')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();
@@ -3051,8 +3077,8 @@ async function main() {
       files.push(relative);
     }
     recipes.forEach(recipe => refreshPage(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
-    manifest.countries.forEach(country => refreshPage(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
-    manifest.collections.forEach(collection => refreshPage(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages)));
+    if (!process.argv.includes('--recipes-only')) manifest.countries.forEach(country => refreshPage(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
+    if (!process.argv.includes('--recipes-only')) manifest.collections.forEach(collection => refreshPage(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages)));
     // Preserve the established canonical and locale contracts through their owner.
     const refreshedFiles = new Set(files);
     routes.syncRouteMetadata({ ...routeGraph, routes: routeGraph.routes.filter(record => refreshedFiles.has(record.source?.file)) }, { write: true });

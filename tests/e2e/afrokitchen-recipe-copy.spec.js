@@ -183,6 +183,7 @@ for (const variant of variants) {
         }, true);
       }, variant.theme);
       await page.goto(recipeRoute, { waitUntil: 'domcontentloaded' });
+      await page.locator('.ak-visual-exports > summary').click();
       await expect(page.locator(copySelector)).toBeVisible();
       await expect(page.locator(txtSelector)).toBeVisible();
       await settled(page);
@@ -343,6 +344,7 @@ for (const variant of variants) {
       await page.screenshot({ path: testInfo.outputPath('guarded-late-copy.png') });
 
       await page.goto('/tools/afrokitchen/recipes/doro-wat/', { waitUntil: 'domcontentloaded' });
+      await page.locator('.ak-visual-exports > summary').click();
       await expect(page.getByRole('heading', { name: 'Doro Wat', exact: true, level: 1 })).toBeVisible();
       await expect(page.locator(statusSelector)).toBeEmpty();
       expect(await page.evaluate(() => window.__recipeCopyProbe.legacy.length)).toBe(0);

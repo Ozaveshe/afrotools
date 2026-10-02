@@ -119,6 +119,7 @@ for (const variant of variants) {
 
     test('Print plan shows only readable meals and shopping, with PDF content verified in Chromium', async ({ page, browserName }, testInfo) => {
       await page.goto('/tools/afrokitchen/recipes/jollof-rice-ng/', { waitUntil: 'domcontentloaded' });
+      await page.locator('.ak-visual-exports > summary').click();
       await page.locator('[data-ak-add-meal-plan]').click();
       await page.goto('/tools/afrokitchen/#cook-this-week', { waitUntil: 'domcontentloaded' });
       await expect(page.locator('#ak-picked-list li')).toHaveCount(1);

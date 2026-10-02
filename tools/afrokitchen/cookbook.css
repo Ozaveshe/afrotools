@@ -10,6 +10,13 @@
 .ak-cookbook-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
 .ak-cookbook-tools .ak-btn{min-height:44px}
 .ak-cookbook-status{min-height:24px;margin-top:8px;color:var(--ak-muted);font-size:.9rem;line-height:1.5}
+/* Keep recipe photography in the cover instead of stretching it behind the text.
+   Generated recipe pages have an inline background-image, so this override is intentional. */
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover){background-color:var(--ak-dark);background-image:none!important}
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover)::before,
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover)::after{content:none}
+.ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover) .ak-hero-text>.ak-eyebrow{color:var(--ak-accent)}
+[data-theme="dark"] .ak-page.ak-static-page .ak-hero:has(.ak-cookbook-cover){background-color:var(--ak-bg)}
 .ak-page.ak-static-page .ak-cookbook-cover{display:block;padding:0;overflow:hidden;background:var(--ak-panel);color:var(--ak-text)}
 .ak-cookbook-cover-photo{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
 .ak-cookbook-cover-note{padding:20px}
