@@ -23,7 +23,14 @@ function validate(rows, sources, vehicles = catalog(), now = new Date()) {
     if (!source || !['review-needed', 'manual-only', 'automated-approved'].includes(source.access_status)) fail('source unavailable for research');
     let url;
     try { url = new URL(row.listing_url); } catch { fail('invalid URL'); }
-    if (url.protocol !== 'https:' || url.username || url.password || url.port || url.search || url.hostname !== source.domain) fail('invalid source URL');
+    if (url.protocol !== 'https:' || url.username || url.password || url.port || url.hostname !== source.domain) fail('invalid source URL');
+    if (url.search || source.listing_url_policy === 'cars-zm-public-reference-v1') {
+      // This public advert reference is not a general query-string exception.
+      const entries = [...url.searchParams];
+      const id = url.searchParams.get('id');
+      if (source.listing_url_policy !== 'cars-zm-public-reference-v1' || url.hostname !== 'cars-zambia.com' || url.pathname !== '/listing.php' || url.hash || entries.length !== 2 || new Set(entries.map(([key]) => key)).size !== 2 || url.searchParams.get('type') !== 'car' || !/^[1-9]\d{0,9}$/.test(id || '')) fail('invalid source URL');
+      url.search = `?type=car&id=${id}`;
+    }
     url.hash = '';
     row.listing_url = url.toString();
     const observed = Date.parse(row.observed_at);
@@ -33,7 +40,8 @@ function validate(rows, sources, vehicles = catalog(), now = new Date()) {
     for (const key of ['trim_label', 'source_listing_id']) if (row[key] != null && (typeof row[key] !== 'string' || row[key].length > 120 || /[<>\r\n]/.test(row[key]))) fail(`invalid ${key}`);
     if (!Number.isInteger(row.model_year) || row.model_year < 1990 || row.model_year > 2100) fail('invalid model year');
     if (!/^[A-Z]{2}$/.test(row.country_code || '') || !/^[A-Z]{3}$/.test(row.currency || '')) fail('invalid country or currency');
-    if (!['foreign-used', 'local-used', 'new'].includes(row.condition_label)) fail('invalid condition');
+    if (row.condition_label != null && !['foreign-used', 'local-used', 'new'].includes(row.condition_label)) fail('invalid condition');
+    row.condition_label ??= null;
     if (!Number.isSafeInteger(row.asking_price) || row.asking_price < 1000 || row.asking_price > 1000000000000) fail('invalid asking price');
     if (row.mileage_value != null && (!Number.isSafeInteger(row.mileage_value) || row.mileage_value < 0 || !['km', 'mi'].includes(row.mileage_unit))) fail('invalid mileage');
     if (row.mileage_value == null && row.mileage_unit != null) fail('mileage unit without value');
