@@ -19,7 +19,7 @@ function publisherCollectionRecords(releases){
 }
 const verificationDir=path.join(root,'ops/jamb/verification');
 const recentRecords=publisherCollectionRecords(fs.readdirSync(verificationDir)
- .filter(file=>/^english-\d{4}-publishable-\d{3}\.json$/.test(file)).sort()
+ .filter(file=>/^english-\d{4}-publishable-\d{3,}\.json$/.test(file)).sort()
  .map(file=>JSON.parse(fs.readFileSync(path.join(verificationDir,file)))));
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 function inspect(originals,batches){
