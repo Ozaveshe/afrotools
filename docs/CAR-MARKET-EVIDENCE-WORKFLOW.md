@@ -16,6 +16,12 @@ On 2026-10-02, Jiji Kenya's automatic security verification completed without ag
 
 Keep KE/KES observations separate from NG/NGN and compare cities, conditions and explicit variants independently. A hybrid trim claim does not fill missing engine, fuel, drivetrain or gearbox facts. Displayed hours ago are separate from an unconfirmed original posting date. Advert and description year conflicts remain held; the individual car's correct year and active stock require further evidence. The new source is excluded from accepted observations and public snapshots while its access status remains review-needed.
 
+### Tanzanian private comparison scope
+
+On 2026-10-02, Jiji Tanzania's automatic security verification completed without interaction, and ordinary inventory and detail pages were accessible. The separate `jiji-tz` source is `review-needed` for minimal user-authorized private factual comparison. This operational scope does not approve a feed, scheduled collection, public aggregation/publication, storage rights or image reuse. Terms 7.16 and 7.17 retain user-content and contact-consent restrictions; the administrator's licence is not a third-party feed licence. The browser refused `https://jiji.co.tz/robots.txt` with `ERR_BLOCKED_BY_CLIENT`; its contents remain unverified and no alternate retrieval was used.
+
+Keep TZ/TZS asking prices separate from other markets. Compare exact model years, city, condition and explicit variants independently; leave unshown mileage, engines and trim unknown. A promoted or relative timestamp does not establish the original posting date or available stock. Conflicting title/specification/description facts remain held. Provider-computed market ranges are not independently reviewed price snapshots. No descriptions, contacts, seller identifiers, VINs or photos belong in the private intake.
+
 ## Intake and review
 
 ### Browser research before source approval
