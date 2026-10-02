@@ -12,7 +12,7 @@
 | Locale | Indexable pages | Native | Localized shell | Pages with errors | Pages with review signals |
 |---|---:|---:|---:|---:|---:|
 | en | 4016 | 4016 | 0 | 0 | 422 |
-| fr | 2179 | 733 | 1446 | 0 | 145 |
+| fr | 2179 | 737 | 1442 | 0 | 145 |
 | sw | 1584 | 762 | 822 | 0 | 87 |
 
 ## Signal counts
