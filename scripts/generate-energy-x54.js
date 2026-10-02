@@ -180,18 +180,19 @@ function solarRoiCountryPickerMarkup(idPrefix, selectedCode, options = {}) {
   const help = options.help || "Search by country name, currency, or two-letter code.";
   const ctaText = options.ctaText || "Open country page";
   const selectedText = `${selectedCountry.flag} ${selectedCountry.name} selected - ${solarRoiCountryCurrency(selectedCountry)}`;
+  const pendingCountryHandlers = idPrefix === "solarCountryPage" ? " disabled" : "";
   return `<div class="solar-country-picker" data-solar-country-picker data-selected-country="${escapeHtml(selectedCountry.slug)}">
 <div class="solar-country-picker-grid">
 <div class="solar-country-picker-field">
 <label for="${idPrefix}Search">Search country</label>
-<input id="${idPrefix}Search" type="search" autocomplete="off" list="${idPrefix}List" placeholder="Search Nigeria, KES, Ghana..." aria-describedby="${idPrefix}Help ${idPrefix}Status">
+<input id="${idPrefix}Search" type="search" autocomplete="off" list="${idPrefix}List" placeholder="Search Nigeria, KES, Ghana..." aria-describedby="${idPrefix}Help ${idPrefix}Status"${pendingCountryHandlers}>
 <datalist id="${idPrefix}List">
 ${solarRoiCountryDatalistOptions()}
 </datalist>
 </div>
 <div class="solar-country-picker-field">
 <label for="${idPrefix}Select">Select country</label>
-<select id="${idPrefix}Select" aria-describedby="${idPrefix}Help ${idPrefix}Status">
+<select id="${idPrefix}Select" aria-describedby="${idPrefix}Help ${idPrefix}Status"${pendingCountryHandlers}>
 ${solarRoiCountryOptions(selectedCountry.code)}
 </select>
 </div>
@@ -1247,6 +1248,7 @@ function setupCountryPicker(prefix,currentSlug){
   if(input){input.addEventListener("input",function(){var match=findCountry(input.value);if(match){apply(match,true);}else{status.textContent="No exact country match yet. Keep typing or use the dropdown.";}});input.addEventListener("keydown",function(event){if(event.key==="Enter"){var match=findCountry(input.value)||findCountry(select.value);if(match){event.preventDefault();apply(match,true);location.href=match.href;}}});}
   select.addEventListener("change",function(){var country=findCountry(select.value);apply(country,true);trackSolarEvent("country_selected","country_picker",country?country.slug:DEFAULTS.countrySlug);});
   open.addEventListener("click",function(){var country=findCountry(select.value)||current;storeSelectedCountry(country);trackSolarEvent("country_selected","country_picker",country?country.slug:DEFAULTS.countrySlug);});
+  select.disabled=false;if(input)input.disabled=false;
 }
 function money(value){var n=Number(value)||0;return DEFAULTS.currencySymbol+n.toLocaleString("en-US",{maximumFractionDigits:0});}
 function moneyAccessible(value){var n=Number(value)||0;return DEFAULTS.currency+" "+n.toLocaleString("en-US",{maximumFractionDigits:0});}
