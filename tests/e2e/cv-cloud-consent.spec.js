@@ -15,7 +15,7 @@ async function open(page, route, selected = false) {
   await page.route('**/api/workspace**',async route=>{
     const request=route.request(),body=request.postData()?JSON.parse(request.postData()):null;
     requests.push({method:request.method(),hasPayload:Boolean(body),hasCv:Boolean(body?.payload?.data),itemKey:body?.item_key||null,itemType:body?.item_type||null});
-    const remote={item_type:'cv-draft',payload:{data:{fn:'Cloud',ln:'Synthetic',summary:'Cloud synthetic draft'},country:'NG',template:'ats-classic'}};
+    const remote={item_type:'cv-draft',payload:{data:{fn:'Cloud',ln:'Synthetic',summary:'Cloud synthetic draft',altPhone:'SYNTHETIC_ALT_PHONE',github:'https://synthetic.example.test/github',portfolio:'https://synthetic.example.test/portfolio',futureProfile:{roles:['Synthetic role']},skills:{futureSkill:'Synthetic extension'}},country:'NG',template:'ats-classic'}};
     const targeted=new URL(request.url()).searchParams.get('item_key')==='selected-synthetic';
     if(selected&&targeted){remote.item_type='cv';remote.item_key='selected-synthetic';remote.payload.id='selected-synthetic';}
     await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({data:[remote],item:{}})});
@@ -120,11 +120,53 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
       await expect.poll(()=>page.evaluate(()=>window.CVApp.getState().data.summary==='Cloud synthetic draft')).toBe(true);
       expect(await page.evaluate(expected=>{
         const cv=window.CVApp.getState(),stored=JSON.parse(localStorage.getItem('afro_cv_data'));
-        return cv.data.email===''&&cv.data.exps.length===1&&cv.data.edus.length===1&&cv.data.skills.h===''&&cv.currentCVId===expected&&stored.data.email===''&&stored.data.exps.length===1;
+        return cv.data.email===''&&cv.data.exps.length===1&&cv.data.edus.length===1&&cv.data.skills.h===''&&cv.currentCVId===expected&&stored.data.email===''&&stored.data.exps.length===1&&cv.data.altPhone==='SYNTHETIC_ALT_PHONE'&&stored.data.github==='https://synthetic.example.test/github'&&stored.data.portfolio==='https://synthetic.example.test/portfolio'&&stored.data.futureProfile.roles[0]==='Synthetic role'&&stored.data.skills.futureSkill==='Synthetic extension';
       },selected?'selected-synthetic':null)).toBe(true);
       await expect(page.locator('#cvpreview')).toContainText('Cloud Synthetic');
       await expect(page.locator('#cvpreview')).toBeVisible();
       expect(proof.errors).toEqual([]);await page.locator('#cv-cloud-consent').uncheck();
+  });
+  test(`${locale}: imported dates remain text and cannot create HTML attributes`,async({page})=>{
+    const proof=await open(page,route);
+    const attribute='" onmouseover="window.__cvSyntheticAttributeProbe=true';
+    const text='<img src="data:image/png;base64,AA" onerror="window.__cvSyntheticAttributeProbe=true">';
+    await page.evaluate(({attribute,text})=>{
+      const cv=window.CVApp.getState();cv.template='slate';cv.data.sp=true;cv.data.dob=attribute;
+      cv.data.exps=[{t:'Synthetic role',c:'Synthetic employer',l:'',s:text,e:attribute,cur:false,d:''}];
+      window.__cvSyntheticAttributeProbe=false;window.CVApp.renderAll();
+    },{attribute,text});
+    await expect(page.locator('.cv-app [onmouseover], .cv-app [onerror]')).toHaveCount(0);
+    await expect(page.locator('[data-path="dob"]')).toHaveAttribute('value',attribute);
+    await expect(page.locator('#cvpreview')).toContainText(text);
+    expect(await page.evaluate(()=>window.__cvSyntheticAttributeProbe)).toBe(false);
+    await page.evaluate(()=>{
+      const cv=window.CVApp.getState();cv.data.dob='1996-02-03';cv.data.exps[0].s='2024-01';cv.data.exps[0].e='2025-03';window.CVApp.renderAll();
+    });
+    await expect(page.locator('[data-path="dob"]')).toHaveValue('1996-02-03');
+    await expect(page.locator('#cvpreview')).toContainText('Jan 2024');
+    await expect(page.locator('#cvpreview')).toContainText('Mar 2025');
+    expect(proof.requests).toEqual([]);expect(proof.errors).toEqual([]);
+  });
+  test(`${locale}: opaque saved identifiers remain safe and deletion still works`,async({page})=>{
+    const proof=await open(page,route);
+    const id='synthetic-id" onmouseover="window.__cvSyntheticAttributeProbe=true';
+    await page.evaluate(id=>{
+      const cv=window.CVApp.getState();
+      cv.savedCVs=[{id,title:'Synthetic saved CV',data:JSON.parse(JSON.stringify(cv.data)),country:'NG',template:'slate',updatedAt:Date.now()}];
+      localStorage.setItem('afro_cv_list',JSON.stringify(cv.savedCVs));
+      window.__cvSyntheticAttributeProbe=false;window.CVApp.renderAll();
+    },id);
+    await expect(page.locator('.cv-saved-card[onmouseover], .cv-saved-card [onmouseover]')).toHaveCount(0);
+    for(const attribute of ['data-cv-id','data-load','data-dup','data-del'])
+      await expect(page.locator('['+attribute+']').first()).toHaveAttribute(attribute,id);
+    const confirmed=page.waitForEvent('dialog').then(dialog=>dialog.accept());
+    await page.locator('[data-del]').click();await confirmed;
+    await expect.poll(()=>page.evaluate(()=>window.CVApp.getState().savedCVs.length)).toBe(0);
+    expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('afro_cv_list')).length)).toBe(0);
+    await expect(page.locator('.cv-saved-section')).not.toHaveClass(/\bshow\b/);
+    await expect(page.locator('.cv-saved-section')).not.toBeVisible();
+    expect(await page.evaluate(()=>window.__cvSyntheticAttributeProbe)).toBe(false);
+    expect(proof.requests).toEqual([]);expect(proof.errors).toEqual([]);
   });
   for(const template of ['slate','portfolio','franco','diaspora','creative-portfolio','lagosCorporate','accraGraduate']) test(`${locale}/${template}: photo values stay inside image attributes and normal photos remain visible`,async({page},testInfo)=>{
     const proof=await open(page,route);

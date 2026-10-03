@@ -5,6 +5,19 @@
   var selectedKey = new URLSearchParams(window.location.search).get('cv'), selectedCV = null;
   var checkbox, status, restoreButton;
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function jsonData(value) {
+    if (value === null || typeof value === 'string' || typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value))) return value;
+    if (Array.isArray(value)) return value.map(jsonData);
+    if (value && typeof value === 'object') {
+      var result = {};
+      Object.keys(value).forEach(function (key) {
+        if (key === '__proto__' || key === 'constructor' || key === 'prototype') throw new Error('Invalid cloud CV structure');
+        result[key] = jsonData(value[key]);
+      });
+      return result;
+    }
+    throw new Error('Invalid cloud CV structure');
+  }
   // Restore onto an empty model, never onto the current person's details.
   function model(value, defaults) {
     if (defaults === null) {
@@ -17,6 +30,10 @@
         Object.keys(defaults).forEach(function (key) {
           result[key] = Object.prototype.hasOwnProperty.call(value, key) ? model(value[key], defaults[key]) : clone(defaults[key]);
         });
+        Object.keys(value).forEach(function (key) {
+          if (key === '__proto__' || key === 'constructor' || key === 'prototype') throw new Error('Invalid cloud CV structure');
+          if (!Object.prototype.hasOwnProperty.call(defaults, key)) result[key] = jsonData(value[key]);
+        });
         return result;
       }
     } else if (typeof value === typeof defaults) return value;
@@ -24,9 +41,12 @@
   }
   function normalized(payload) {
     if (!payload || !payload.data || typeof createEmptyCV !== 'function') throw new Error('Invalid cloud CV structure');
-    var result = { data: model(payload.data, createEmptyCV()) };
-    ['id', 'title', 'country', 'template', 'accentColor', 'accentHex', 'createdAt', 'updatedAt', 'savedAt'].forEach(function (key) {
-      if (typeof payload[key] === 'string') result[key] = payload[key];
+    var result = jsonData(payload); result.data = model(payload.data, createEmptyCV());
+    ['id', 'title', 'country', 'template', 'accentColor', 'accentHex'].forEach(function (key) {
+      if (typeof payload[key] === 'string') result[key] = payload[key]; else delete result[key];
+    });
+    ['createdAt', 'updatedAt', 'savedAt'].forEach(function (key) {
+      if (typeof payload[key] === 'string' || (typeof payload[key] === 'number' && Number.isFinite(payload[key]))) result[key] = payload[key]; else delete result[key];
     });
     return result;
   }

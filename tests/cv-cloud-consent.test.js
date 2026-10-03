@@ -56,6 +56,24 @@ test('cloud data never silently overwrites a draft or same-id local saved CV; re
   h.setConfirm(false);await h.restore();assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');
   h.setConfirm(true);await h.restore();assert.equal(h.current.data.summary,'CLOUD_SENTINEL');assert.equal(h.current.data.email,'');assert.equal(h.current.data.exps.length,1);assert.equal(h.current.data.skills.h,'');assert.equal(JSON.parse(h.store.get('afro_cv_data')).data.summary,'CLOUD_SENTINEL');
 });
+test('restoration preserves extended portable contact fields and future JSON fields without inheriting local personal data',async()=>{
+  const h=harness({remote:[{item_type:'cv-draft',payload:{data:{fn:'Cloud synthetic',altPhone:'SYNTHETIC_ALT_PHONE',github:'https://synthetic.example.test/github',portfolio:'https://synthetic.example.test/portfolio',futureProfile:{verified:false,roles:['Synthetic role']},skills:{h:'Synthetic skill',futureSkill:'Synthetic extension'}}}}]});
+  await h.enable();await h.restore();assert.equal(h.current.data.email,'');assert.equal(h.current.data.altPhone,'SYNTHETIC_ALT_PHONE');assert.equal(h.current.data.github,'https://synthetic.example.test/github');assert.equal(h.current.data.portfolio,'https://synthetic.example.test/portfolio');assert.equal(h.current.data.futureProfile.roles[0],'Synthetic role');assert.equal(h.current.data.skills.futureSkill,'Synthetic extension');
+});
+test('imported saved CVs retain numeric and ISO timestamps for existing saved-list ordering and display',async()=>{
+  const h=harness({remote:[{item_type:'cv',item_key:'cloud-dated',payload:{id:'cloud-dated',data:{fn:'Synthetic dated'},createdAt:1700000000000,updatedAt:1700000001000,savedAt:'2026-10-03T07:00:00Z'}}]});
+  await h.enable();const imported=h.current.savedCVs.find(cv=>cv.id==='cloud-dated');
+  assert.equal(imported.createdAt,1700000000000);assert.equal(imported.updatedAt,1700000001000);assert.equal(imported.savedAt,'2026-10-03T07:00:00Z');
+});
+test('extended JSON restoration rejects prototype keys at every imported level without private diagnostics',async()=>{
+  for(const raw of ['{"data":{"__proto__":{"polluted":true}}}', '{"data":{"futureProfile":{"constructor":{"polluted":true}}}}', '{"data":{"futureProfile":[{"prototype":{"polluted":true}}]}}', '{"data":{},"__proto__":{"polluted":true}}']){
+    const h=harness({remote:[{item_type:'cv-draft',payload:JSON.parse(raw)}]});await h.enable();
+    assert.equal(h.requests.length,1);assert.equal(h.elements['cv-cloud-consent'].checked,false);
+    assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');assert.equal(h.logs.length,1);
+    assert.equal({}.polluted,undefined);assert.equal(vm.runInContext('({}).polluted',h.context),undefined);
+    assert.equal(JSON.stringify(h.logs).includes('PRIVATE_CV_SENTINEL'),false);
+  }
+});
 test('account change and logout withdraw permission; another account never inherits it',async()=>{
   const h=harness();await h.enable();const count=h.requests.length;h.setUser({id:'synthetic-account-b'});h.current.data.summary='Other account local';await h.tick();
   assert.equal(h.requests.length,count);assert.equal(h.elements['cv-cloud-consent'].checked,false);
