@@ -102,6 +102,10 @@
   const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=de173ea5';
   // NAVBAR_CSS_HREF_END
 
+  // ANIMATIONS_JS_HREF_START
+  const ANIMATIONS_JS_HREF = '/assets/js/animations.js?v=e06c1c80';
+  // ANIMATIONS_JS_HREF_END
+
   // NAVBAR_TOP_LEVEL_DATA_START
   let NAV_ITEMS = [
     {
@@ -2818,7 +2822,7 @@
       }
       if (!document.getElementById('afro-animations-js')) {
         var s = document.createElement('script'); s.id = 'afro-animations-js';
-        s.src = '/assets/js/animations.js'; s.defer = true;
+        s.src = ANIMATIONS_JS_HREF; s.defer = true;
         document.head.appendChild(s);
       }
     }
