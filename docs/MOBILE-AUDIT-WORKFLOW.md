@@ -65,3 +65,8 @@ This is a local browser smoke, not a carrier field measurement. Use it to catch 
 
 - This is a static source audit, not a browser render audit.
 - Scores are heuristic and should guide prioritization, not replace manual mobile spot-checks on the highest-risk clusters.
+## Localized Kenya chart guard maintenance
+
+When the English Kenya PAYE chart guard changes to wait for `AfroChartColors`, preserve the reviewed French page with `node scripts/build-i18n.js --lang fr --page kenya/ke-paye --refresh-chart-readiness`. This opt-in mode parses the existing runtime and replaces only its supported readiness guard. It preserves all translated copy, fallback notices, styles, routes and other runtime bytes; it refuses unfamiliar or duplicate guards. Full `--overwrite-existing` translation regeneration is a different operation and must not be used to carry this narrow runtime repair.
+
+Run `node --test tests/kenya-chart-readiness.test.js tests/localized-chart-readiness.test.js`, review the exact generated diff, and rerun the owner to verify idempotence. Cache references remain release-owned. Browser checks must retain the existing PAYE recovery assertions and exercise native repeated calculations/chart changes while the palette response is pending. No tax rules or source dates are changed by this guard maintenance.
