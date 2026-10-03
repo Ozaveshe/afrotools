@@ -124,7 +124,9 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
       },selected?'selected-synthetic':null)).toBe(true);
       await expect(page.locator('#cvpreview')).toContainText('Cloud Synthetic');
       await expect(page.locator('#cvpreview')).toBeVisible();
-      expect(proof.errors).toEqual([]);await page.locator('#cv-cloud-consent').uncheck();
+      expect(proof.errors).toEqual([]);
+      const permission=page.locator('#cv-cloud-consent');await permission.focus();await expect(permission).toBeFocused();
+      await page.keyboard.press('Space');await expect(permission).not.toBeChecked();
   });
   test(`${locale}: imported dates remain text and cannot create HTML attributes`,async({page})=>{
     const proof=await open(page,route);
