@@ -24,13 +24,18 @@ async function clickSettledControl(page, control) {
     previous = position;
     return settled >= 4;
   }, { intervals: [100] }).toBe(true);
-  await control.evaluate(node => {
+  const target = await control.elementHandle();
+  await target.evaluate(node => {
     node.setAttribute('data-ak-test-click', 'pending');
     node.addEventListener('click', event => node.setAttribute('data-ak-test-click', event.isTrusted ? 'trusted' : 'untrusted'), { once: true });
   });
-  const bounds = await control.boundingBox();
-  await page.mouse.click(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-  await expect(control).toHaveAttribute('data-ak-test-click', 'trusted');
+  try {
+    const bounds = await target.boundingBox();
+    await page.mouse.click(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await expect.poll(() => target.evaluate(node => node.getAttribute('data-ak-test-click'))).toBe('trusted');
+  } finally {
+    await target.dispose();
+  }
 }
 
 async function keepRequestsLocal(page, baseURL) {
