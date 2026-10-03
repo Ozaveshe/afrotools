@@ -84,6 +84,19 @@ for (const [name, edit] of Object.entries(cases)) test('excludes ' + name, () =>
 test('local source withdrawal excludes previously published snapshot', () => {
   assert.equal(exportCapture(fixture(), { sources: { dealer: { domain: 'example.org', access_status: 'review-needed' } } }, options).publicPack.observations.length, 0);
 });
+
+test('reconciled review-needed sources cannot export prices even if the captured source claims approval', () => {
+  const actualRegistry = require('../data/cars/market-source-registry.json');
+  for (const [source_id, source] of Object.entries(actualRegistry.sources)) {
+    const c = fixture();
+    for (const [index, member] of c.snapshots[0].members.entries()) {
+      Object.assign(member, { source_id, source_domain: source.domain, source_access_status: 'automated-approved', listing_url: `https://${source.domain}/cars/synthetic-policy-check-${index}` });
+    }
+    const result = exportCapture(c, actualRegistry, options);
+    assert.deepEqual(result.publicPack.observations, [], source_id);
+    assert.deepEqual(result.excluded, [{ snapshotId: 'synthetic-snapshot', reason: 'Source permission withdrawn or unapproved' }], source_id);
+  }
+});
 test('empty live ledger exports no fabricated range', () => {
   const c = fixture(); c.snapshots = []; assert.deepEqual(exportCapture(c, registry, options).publicPack.observations, []);
 });

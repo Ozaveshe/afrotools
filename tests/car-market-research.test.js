@@ -30,3 +30,24 @@ test('duplicate observations and photo, VIN or contact payloads are rejected', (
   assert.throws(() => validate([row, { ...row, observed_at: '2026-10-01T17:00:00+01:00' }], sources, catalog(), now), /duplicate/);
   for (const key of ['seller_phone', 'seller_email', 'vin', 'image_url', 'review_status']) assert.throws(() => validate([{ ...row, [key]: 'private' }], sources, catalog(), now), /unsupported field/);
 });
+
+test('reconciled source scopes allow private facts while keeping observation intake and withdrawal gates', () => {
+  const registry = require('../data/cars/market-source-registry.json').sources;
+  const { validate: validateObservation, vehicleIds } = require('../scripts/car-market-evidence');
+  for (const source_id of ['autochek-ng', 'beforward-jp', 'yallamotor-uae', 'jiji-ug', 'jiji-tz']) {
+    const source = registry[source_id];
+    const fact = { ...row, source_id, country_code: source.country_code, listing_url: `https://${source.domain}/cars/synthetic-policy-check` };
+    assert.deepEqual(validate([fact], registry, catalog(), now)[0].quality_flags, ['availability-unconfirmed', 'listing-age-over-90-days']);
+    const observation = { vehicle_id: fact.vehicle_id, source_id, listing_url: fact.listing_url, observed_at: fact.observed_at, country_code: fact.country_code, condition_label: fact.condition_label, asking_price: fact.asking_price, currency: fact.currency };
+    assert.throws(() => validateObservation([observation], registry, vehicleIds(), now), /source not approved for intake/, source_id);
+    assert.throws(() => validate([fact], { ...registry, [source_id]: { ...source, access_status: 'blocked' } }, catalog(), now), /source unavailable for research/, source_id);
+    assert.throws(() => validate([{ ...fact, listing_url: `https://${source.domain}.example.org/cars/synthetic-policy-check` }], registry, catalog(), now), /invalid source URL/, source_id);
+  }
+});
+
+test('registering Cars-ZM does not relax query or unknown-condition validation before its separate migration', () => {
+  const registry = require('../data/cars/market-source-registry.json').sources;
+  const fact = { ...row, source_id: 'cars-zambia-zm', country_code: 'ZM', listing_url: 'https://cars-zambia.com/listing.php?type=car&id=123' };
+  assert.throws(() => validate([fact], registry, catalog(), now), /invalid source URL/);
+  assert.throws(() => validate([{ ...fact, listing_url: 'https://cars-zambia.com/cars/synthetic-policy-check', condition_label: null }], registry, catalog(), now), /invalid condition/);
+});
