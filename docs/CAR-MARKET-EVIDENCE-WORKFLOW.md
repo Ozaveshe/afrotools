@@ -45,6 +45,8 @@ On 2026-10-02, separate Sportage 2016 and Sorento 2015 detail listings were corr
 
 The intake scripts do not fetch third-party pages. No cron may scrape a source whose registry status is blocked, review-needed, or manual-only. Recheck terms and freshness periodically; record blocked runs rather than inventing a price. BE FORWARD's terms section 5 also restricts website data reuse; its source is blocked pending an agreement. The existing 27 starter price profiles and 455 expansion identities must be reported separately from newly verified snapshots.
 
+The legacy `cars:market:online-prices` command now fails before any marketplace request or price-file write. At the 2026-10-03 review, its former DubiCars collector had no registered source and Autochek was blocked in the repository registry. It also copied regex price matches directly into an estimate CSV without individual listing validation, pending intake or snapshot review. Keep the compatibility command disabled even if a source is subsequently approved. An approved feed needs a separately validated adapter and the review/export stages above. `cars:market:refresh` invokes the same guard before any catalog or price regeneration; it is not a supported automatic price refresh. Existing dated evidence is preserved, and its freshness failures remain actionable.
+
 ## Public snapshot export
 
 Run `node scripts/car-market-public-export.js sql` and execute that read-only query through the verified AfroTools MCP. Save the returned `capture` object locally; then run `node scripts/car-market-public-export.js export CAPTURE.json data/cars/market-source-registry.json OUTPUT.json`. The output is a public-data pack for the static product. Do not commit the private capture.
