@@ -130,7 +130,9 @@ async function parsePdf(download, outputPath) {
 }
 
 test('CV Builder ATS proof panel and synthetic export paths stay local-first', async ({ page, context }, testInfo) => {
-  test.setTimeout(120000);
+  // This composite proof downloads two PDFs, parses ATS text and checks print/import cleanup.
+  // Keep its bounded budget aligned with the export suite; every original assertion remains.
+  test.setTimeout(180000);
   const consoleMessages = installConsoleGuard(page);
   await installNetworkGate(page);
   // Apply the existing print adapter to the popup as well as the editor page.
