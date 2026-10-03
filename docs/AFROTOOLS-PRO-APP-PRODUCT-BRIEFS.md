@@ -241,7 +241,7 @@ Sell the current Pro universe as a set of operating packets and saved workspaces
 
 ### 19. AfroAgri FarmOps & Co-op OS
 
-- Status: Shell/local farm operations workspace.
+- Status: Concept shell with a device-saved checkpoint. Farm records, reminders, account sync, payments, messaging, and portals are not available. The product ideas below describe future work.
 - Best buyers: Poultry farmers, crop farmers, livestock keepers, cooperatives, agro-dealers, and extension officers.
 - Market products: [Farmbrite](https://www.farmbrite.com/), [AgriWebb](https://www.agriwebb.com/), [Conservis](https://conservis.ag/), [Apollo Agriculture](https://apolloagriculture.com/).
 - Market pattern: Agri platforms sell crop/livestock records, farm maps, tasks, inputs, accounting, weather, reporting, and advisory services.
