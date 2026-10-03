@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
 
-async function keepRequestsLocal(page) {
+async function keepRequestsLocal(page, baseURL) {
+  const allowedOrigin = new URL(baseURL).origin;
   await page.route('**/*', route => {
-    const host = new URL(route.request().url()).hostname;
-    return ['127.0.0.1', 'localhost'].includes(host) ? route.continue() : route.abort();
+    const request = route.request(), url = new URL(request.url());
+    return url.origin === allowedOrigin && ['GET', 'HEAD'].includes(request.method()) ? route.continue() : route.abort();
   });
 }
 
@@ -13,8 +14,8 @@ async function expectNoHorizontalOverflow(page) {
   expect(overflow).toBeLessThanOrEqual(1);
 }
 
-test('recipe pages put cooking first and preserve serving controls on a phone', async ({ page }) => {
-  await keepRequestsLocal(page);
+test('recipe pages put cooking first and preserve serving controls on a phone', async ({ page, baseURL }) => {
+  await keepRequestsLocal(page, baseURL);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/tools/afrokitchen/recipes/jollof-rice-ng/');
   await expect(page.getByRole('heading', { name: 'Jollof Rice', exact: true, level: 1 })).toBeVisible();
@@ -40,8 +41,8 @@ test('recipe pages put cooking first and preserve serving controls on a phone', 
   servingTargets.forEach(width => expect(width).toBeGreaterThanOrEqual(44));
 });
 
-test('country and collection hubs reach their recipes before editorial panels', async ({ page }) => {
-  await keepRequestsLocal(page);
+test('country and collection hubs reach their recipes before editorial panels', async ({ page, baseURL }) => {
+  await keepRequestsLocal(page, baseURL);
   await page.setViewportSize({ width: 390, height: 844 });
   for (const [route, link, archive] of [
     ['/tools/afrokitchen/countries/nigeria/', 'See Nigeria recipes', '#country-recipes'],
@@ -63,8 +64,8 @@ test('country and collection hubs reach their recipes before editorial panels', 
   expect(order.archive).toBeLessThan(order.extras);
 });
 
-test('submission form stays accessible and dark recipe panels remain readable', async ({ page }) => {
-  await keepRequestsLocal(page);
+test('submission form stays accessible and dark recipe panels remain readable', async ({ page, baseURL }) => {
+  await keepRequestsLocal(page, baseURL);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/tools/afrokitchen/submit');
   await expect(page.getByRole('link', { name: 'Start your recipe' })).toBeVisible();

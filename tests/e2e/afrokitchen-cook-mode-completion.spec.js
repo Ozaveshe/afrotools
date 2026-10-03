@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 for (const variant of [{ width: 320, theme: 'light' }, { width: 390, theme: 'dark' }]) {
   test.describe(`${variant.width}px ${variant.theme}`, () => {
     test.use({ viewport: { width: variant.width, height: 844 }, colorScheme: variant.theme });
-    test('close resumes cooking, finish starts again, and both preserve the checklist', async ({ page }, testInfo) => {
+    test('close resumes cooking, finish starts again, and both preserve the checklist', async ({ page, baseURL }, testInfo) => {
       const errors = [], writes = [];
       page.on('pageerror', error => errors.push(error.message));
       page.on('request', request => { if (!['GET', 'HEAD'].includes(request.method())) writes.push(request.method()); });
@@ -11,9 +11,10 @@ for (const variant of [{ width: 320, theme: 'light' }, { width: 390, theme: 'dar
         localStorage.setItem('afrotools_cookie_consent', 'declined');
         localStorage.setItem('aft_theme', theme);
       }, variant.theme);
+      const allowedOrigin = new URL(baseURL).origin;
       await page.route('**/*', route => {
         const request = route.request(), url = new URL(request.url());
-        if (['127.0.0.1', 'localhost'].includes(url.hostname) && ['GET', 'HEAD'].includes(request.method())) return route.continue();
+        if (url.origin === allowedOrigin && ['GET', 'HEAD'].includes(request.method())) return route.continue();
         return route.fulfill({ status: 200, contentType: request.resourceType() === 'stylesheet' ? 'text/css' : request.resourceType() === 'script' ? 'application/javascript' : 'text/plain', body: '' });
       });
       await page.goto('/tools/afrokitchen/recipes/jollof-rice-ng/');

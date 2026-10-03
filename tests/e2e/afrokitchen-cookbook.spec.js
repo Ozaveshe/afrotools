@@ -1,11 +1,12 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, baseURL }) => {
   await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
+  const allowedOrigin = new URL(baseURL).origin;
   await page.route('**/*', route => {
     const request = route.request(), url = new URL(request.url());
-    if (['127.0.0.1', 'localhost'].includes(url.hostname) && ['GET', 'HEAD'].includes(request.method())) return route.continue();
+    if (url.origin === allowedOrigin && ['GET', 'HEAD'].includes(request.method())) return route.continue();
     return route.fulfill({ status: 200, contentType: request.resourceType() === 'stylesheet' ? 'text/css' : request.resourceType() === 'script' ? 'application/javascript' : 'text/plain', body: '' });
   });
 });
