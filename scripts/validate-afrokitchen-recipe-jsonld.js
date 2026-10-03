@@ -2,11 +2,13 @@
 
 const fs = require("fs");
 const path = require("path");
+const { resolveRecipeMedia, loadRecipeImages, isUsableRecipeImage } = require('./lib/afrokitchen-static');
 
 const ROOT = path.resolve(__dirname, "..");
 const MANIFEST_PATH = path.join(ROOT, "tools", "afrokitchen", "seo-manifest.json");
 const SITE_ORIGIN = "https://afrotools.com";
 const DEFAULT_SAMPLE_SIZE = 20;
+const recipeImages = loadRecipeImages();
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -113,6 +115,9 @@ function validateRecipePage(recipe) {
   const blocks = extractJsonLd(html);
   const recipeSchema = findSchema(blocks, "Recipe");
   const breadcrumbSchema = findSchema(blocks, "BreadcrumbList");
+  const blockers = html.match(/<meta name="afrokitchen-schema-blockers" content="([^"]*)"/);
+  const imageOnlyBlocker = blockers && blockers[1] === 'missing_image';
+  const media = resolveRecipeMedia(recipe, recipeImages);
 
   if (!canonical || canonical[1] !== recipe.route_url) {
     errors.push(`canonical missing or mismatched: expected ${recipe.route_url}`);
@@ -120,8 +125,16 @@ function validateRecipePage(recipe) {
 
   if (!recipeSchema) {
     const noindex = robots && /noindex/i.test(robots[1]);
-    if (!noindex) errors.push("missing Recipe JSON-LD without noindex fallback");
-    return { slug: recipe.slug, file: relativeFile, errors };
+    if (imageOnlyBlocker && media.isFallback) {
+      if (!robots || !/^index,\s*follow$/i.test(robots[1])) errors.push('photo-only blocker must preserve page indexability');
+      if (!breadcrumbSchema || breadcrumbSchema.itemListElement?.at(-1)?.item !== recipe.route_url) errors.push('photo-less recipe must preserve canonical breadcrumbs');
+      const payload = html.match(/window\.__AK_STATIC_RECIPE = (.*?);<\/script>/);
+      const data = payload && JSON.parse(payload[1]);
+      if (!data || data.name !== recipe.name || !data.ingredients?.length || !data.steps?.length) errors.push('photo-less page must preserve its complete recipe payload');
+      return { slug: recipe.slug, file: relativeFile, errors, schemaState: 'awaiting-dish-image' };
+    }
+    if (!noindex) errors.push("missing Recipe JSON-LD without a verified image-only or noindex fallback");
+    return { slug: recipe.slug, file: relativeFile, errors, schemaState: 'content-fallback' };
   }
 
   if (robots && /noindex/i.test(robots[1])) errors.push("complete Recipe JSON-LD page is marked noindex");
@@ -133,6 +146,7 @@ function validateRecipePage(recipe) {
   if (!visibleText.includes(recipeSchema.description)) errors.push("Recipe description is not visible in HTML");
   if (!Array.isArray(recipeSchema.image) || !recipeSchema.image.length) errors.push("Recipe image must be a non-empty array");
   (Array.isArray(recipeSchema.image) ? recipeSchema.image : []).forEach((imageUrl) => {
+    if (!isUsableRecipeImage(imageUrl)) errors.push('Recipe image must not be a generic category or social placeholder');
     if (!isAbsoluteUrl(imageUrl)) errors.push(`Recipe image is not absolute: ${imageUrl}`);
     if (isAbsoluteUrl(imageUrl) && !localImageExists(imageUrl)) errors.push(`Recipe image file is missing locally: ${imageUrl}`);
   });
@@ -169,6 +183,12 @@ function validateRecipePage(recipe) {
       if (!String(step.url || "").startsWith(`${recipe.route_url}#step-`)) {
         errors.push(`instruction ${index + 1} url must point to the canonical step anchor`);
       }
+      if (step.image) {
+        const explicitImage = recipe.steps?.[index]?.image_url;
+        const expected = explicitImage ? new URL(explicitImage, SITE_ORIGIN).href : '';
+        if (!expected || step.image !== expected || !isUsableRecipeImage(step.image)) errors.push(`instruction ${index + 1} image must come from its explicit preparation-step source`);
+        if (!isAbsoluteUrl(step.image) || !localImageExists(step.image)) errors.push(`instruction ${index + 1} image is invalid or missing`);
+      }
     });
   }
   errors.push(...validateNutritionSchema(recipe, recipeSchema.nutrition));
@@ -187,7 +207,7 @@ function validateRecipePage(recipe) {
     if (!lastCrumb || lastCrumb.item !== recipe.route_url) errors.push("BreadcrumbList final item must be recipe canonical");
   }
 
-  return { slug: recipe.slug, file: relativeFile, errors };
+  return { slug: recipe.slug, file: relativeFile, errors, schemaState: 'recipe-markup' };
 }
 
 function pickSample(recipes, sampleSize) {
@@ -215,6 +235,8 @@ function main() {
   console.log(`  Pages checked: ${results.length}${all ? " (all)" : " (sample)"}`);
   console.log(`  Passed: ${results.length - failures.length}`);
   console.log(`  Failed: ${failures.length}`);
+  console.log(`  Recipe markup present: ${results.filter(result => result.schemaState === 'recipe-markup').length}`);
+  console.log(`  Complete pages awaiting dish images: ${results.filter(result => result.schemaState === 'awaiting-dish-image').length}`);
 
   if (failures.length) {
     failures.slice(0, 25).forEach((failure) => {

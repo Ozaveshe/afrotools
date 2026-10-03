@@ -1199,7 +1199,7 @@ function collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients) {
 
 function canUseSchemaImage(value) {
   const absoluteUrl = toAbsoluteSchemaUrl(value);
-  if (!absoluteUrl || absoluteUrl === TOOL_OG_IMAGE) return false;
+  if (!absoluteUrl || absoluteUrl === TOOL_OG_IMAGE || !isUsableRecipeImage(absoluteUrl)) return false;
 
   if (absoluteUrl.startsWith(`${SITE_ORIGIN}/`)) {
     try {
@@ -1213,11 +1213,7 @@ function canUseSchemaImage(value) {
   return /^https?:\/\//i.test(absoluteUrl);
 }
 
-function buildRecipeInstructionSchemas(recipe, pageUrl, socialImage) {
-  const fallbackImage = canUseSchemaImage(socialImage)
-    ? toAbsoluteSchemaUrl(socialImage)
-    : "";
-
+function buildRecipeInstructionSchemas(recipe, pageUrl) {
   return (recipe.steps || []).map((step) => {
     const stepSchema = {
       "@type": "HowToStep",
@@ -1227,7 +1223,7 @@ function buildRecipeInstructionSchemas(recipe, pageUrl, socialImage) {
     };
     const stepImage = canUseSchemaImage(step.image_url)
       ? toAbsoluteSchemaUrl(step.image_url)
-      : fallbackImage;
+      : "";
 
     if (stepImage) {
       stepSchema.image = stepImage;
@@ -1278,8 +1274,7 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
     recipeSchema.recipeIngredient = schemaIngredients;
     recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
       recipe,
-      pageUrl,
-      normalizedSocialImage
+      pageUrl
     );
     recipeSchema.isAccessibleForFree = true;
     delete recipeSchema.aggregateRating;
@@ -1354,7 +1349,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     media.socialImage,
     galleryImages
   );
-  const robotsContent = recipeSchema ? "index, follow" : "noindex, follow";
+  const robotsContent = schemaBlockers.some(blocker => blocker !== "missing_image")
+    ? "noindex, follow"
+    : "index, follow";
   const recipeSchemaScript = recipeSchema
     ? `  <script type="application/ld+json">${safeJson(recipeSchema)}</script>\n`
     : "";
@@ -3047,6 +3044,29 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-recipe-schema')) {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const engine = loadAfroKitchenEngine();
+    const recipeImages = loadRecipeImages();
+    const researchAudit = loadRecipeResearchAudit();
+    let changed = 0, awaitingImage = 0;
+    for (const item of manifest.recipes.filter(recipe => recipe.generated_in_wave)) {
+      const recipe = cleanPatchedRecipeCopy(applyRecipeResearchPatch(item, researchAudit));
+      const media = resolveRecipeMedia(recipe, recipeImages);
+      const gallery = collectRecipeGalleryImages(recipe, media, recipeImages);
+      const { recipeSchema, schemaBlockers } = buildRecipeSchemas(recipe, engine, media.socialImage, gallery);
+      if (schemaBlockers.some(blocker => blocker !== 'missing_image')) {
+        throw new Error('Schema-only refresh cannot change content eligibility: ' + recipe.slug);
+      }
+      const file = path.join(RECIPES_DIR, recipe.slug, 'index.html');
+      const existing = fs.readFileSync(file, 'utf8');
+      const next = refreshRecipeSchema(existing, recipeSchema, schemaBlockers);
+      if (!recipeSchema) awaitingImage++;
+      if (next !== existing) { fs.writeFileSync(file, next, 'utf8'); changed++; }
+    }
+    console.log('Refreshed recipe image markup: ' + changed + ' pages; ' + awaitingImage + ' await dish images. Page content, routes, robots and asset references preserved.');
+    return;
+  }
   if (process.argv.includes('--refresh-ingredient-art')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     let changed = 0;
@@ -3241,4 +3261,38 @@ function refreshRecipeImages(existing, generated) {
   });
   return trimTrailingWhitespace(next);
 }
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription };
+function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
+  let found = 0;
+  let next = existing.replace(/^[ \t]*<script type="application\/ld\+json">([\s\S]*?)<\/script>\r?\n?/gm, (all, body) => {
+    const value = JSON.parse(body);
+    if (value['@type'] !== 'Recipe') return all;
+    found++;
+    if (!recipeSchema) return '';
+    if (!Array.isArray(value.recipeInstructions) || value.recipeInstructions.length !== recipeSchema.recipeInstructions.length) {
+      throw new Error('Schema-only refresh cannot change recipe steps');
+    }
+    value.image = recipeSchema.image;
+    value.recipeInstructions.forEach((step, index) => {
+      const source = recipeSchema.recipeInstructions[index];
+      if (step.name !== source.name || step.text !== source.text || step.url !== source.url) {
+        throw new Error('Schema-only refresh cannot change recipe instructions');
+      }
+      if (source.image) step.image = source.image;
+      else delete step.image;
+    });
+    return all.replace(body, safeJson(value));
+  });
+  if (found > 1) throw new Error('Duplicate Recipe schema in schema-only refresh');
+  const marker = /^[ \t]*<meta name="afrokitchen-schema-blockers"[^>]*>\r?\n?/gm;
+  next = next.replace(marker, '');
+  const additions = [];
+  if (recipeSchema && !found) additions.push('  <script type="application/ld+json">' + safeJson(recipeSchema) + '</script>');
+  if (schemaBlockers.length) additions.push('  <meta name="afrokitchen-schema-blockers" content="' + escapeHtml(schemaBlockers.join(',')) + '">');
+  if (additions.length) {
+    if (!next.includes('</head>')) throw new Error('Missing page head in schema-only refresh');
+    next = next.replace('</head>', additions.join('\n') + '\n</head>');
+  }
+  return next;
+}
+
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema };
