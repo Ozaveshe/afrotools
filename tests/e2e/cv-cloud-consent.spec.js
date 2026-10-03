@@ -33,8 +33,10 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
     // Re-load the served canonical module to exercise both its fallback catches.
     // The normal ATS path is overridden by cv-ats-plain-pdf-fix.js and proved by the export suite.
     const moduleUrl=await page.locator('script[src*="/cv-export-pdf-quality.js"]').first().getAttribute('src');
-    await page.addScriptTag({url:new URL(moduleUrl,page.url()).href});
-    await page.evaluate(()=>{window.__cvFallbackPdf=window.CVExportPdfQuality.exportPdf;window.__cvFallbackAts=window.CVExportPdfQuality.exportAtsPdf;});
+    const moduleResponse=await page.request.get(new URL(moduleUrl,page.url()).href);
+    expect(moduleResponse.status()).toBe(200);
+    // Capture the served module's callbacks in its own execution turn, before the normal ATS shim rebinds them.
+    await page.addScriptTag({content:await moduleResponse.text()+'\n;window.__cvFallbackPdf=window.CVExportPdfQuality.exportPdf;window.__cvFallbackAts=window.CVExportPdfQuality.exportAtsPdf;'});
     page.on('console',message=>{if(message.type()==='error')diagnostics.push(message.text());});
     await page.evaluate(()=>{
       window.__cvOriginalPdfLoader=window.loadPdfLibs;
@@ -43,7 +45,7 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
     });
     await expect.poll(()=>diagnostics.length).toBe(1);
     await expect.poll(()=>page.evaluate(()=>Array.from(document.querySelectorAll('[data-cv-export], [data-action="pdf"], [data-action="print"]')).every(button=>!button.disabled))).toBe(true);
-    await page.evaluate(()=>window.__cvFallbackAts('Synthetic local ATS content'));
+    await page.evaluate(()=>{window.loadPdfLibs=()=>Promise.reject(new Error('PRIVATE_EXPORT_FAILURE_SENTINEL synthetic-token'));return window.__cvFallbackAts('Synthetic local ATS content');});
     await expect.poll(()=>diagnostics.length).toBe(2);
     expect(await page.evaluate(()=>Array.from(document.querySelectorAll('[data-cv-export], [data-action="pdf"], [data-action="print"]')).every(button=>!button.disabled))).toBe(true);
     await page.evaluate(()=>window.loadPdfLibs=window.__cvOriginalPdfLoader);
@@ -52,6 +54,7 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
   });
   test(`${locale}: default-local CV permission is visible, accessible and never granted by sign-in or focus`,async({page},testInfo)=>{
     const proof=await open(page,route),panel=page.locator('.cv-cloud-backup'),choice=page.locator('#cv-cloud-consent');
+    await page.waitForLoadState('load');
     await expect(choice).not.toBeChecked();await expect(panel).toBeVisible();
     await expect(panel).toContainText(locale==='fr'?'coordonnées':'contact details');
     await expect(panel).toContainText(locale==='fr'?'photo':'photo');
