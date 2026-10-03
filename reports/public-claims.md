@@ -1,11 +1,11 @@
 # Public claims report
 
-Generated: 2026-10-02
+Generated: 2026-10-03
 
 - Canonical claims: 21
 - Feature data flows: 10
-- Public HTML/shared script files scanned: 13007
-- Approved claim hits: 46155
+- Public HTML/shared script files scanned: 13009
+- Approved claim hits: 46164
 - Validation errors: 0
 
 | Claim key | Meaning | Owner | Last verified | Review after | Detected hits |

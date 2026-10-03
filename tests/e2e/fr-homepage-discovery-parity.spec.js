@@ -1,14 +1,29 @@
 const { test, expect } = require('@playwright/test');
+const { isExpectedHomepageNavigationAbort } = require('../support/runtime-request-status');
 
 function watchRuntimeFailures(page) {
   const failures = [];
+  const annotations = test.info().annotations;
+  const origin = new URL(test.info().project.use.baseURL).origin;
+  const documentUrls = new WeakMap();
+  let navigation = null;
+  page.on('request', (request) => {
+    documentUrls.set(request, page.url());
+    if (request.isNavigationRequest() && request.frame() === page.mainFrame()) {
+      navigation = { from: page.url(), to: request.url() };
+    }
+  });
   page.on('console', (message) => {
     if (message.type() === 'error') failures.push(`console: ${message.text()}`);
   });
   page.on('pageerror', (error) => failures.push(`page: ${error.message}`));
   page.on('requestfailed', (request) => {
     const url = new URL(request.url());
-    if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') {
+    if (url.origin === origin) {
+      if (isExpectedHomepageNavigationAbort({ url: request.url(), error: request.failure()?.errorText || '', requestDocumentUrl: documentUrls.get(request), navigation })) {
+        annotations.push({ type: 'document-unload', description: url.pathname });
+        return;
+      }
       failures.push(`request: ${url.pathname} ${request.failure()?.errorText || ''}`);
     }
   });

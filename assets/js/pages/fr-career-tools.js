@@ -9,6 +9,11 @@
   var results = root.querySelector('[data-results]');
   var report = root.querySelector('[data-report]');
   var lastReport = '';
+  var storageKey = 'afrotools-fr-career-' + tool;
+  function countryName() {
+    var country = form.elements.country;
+    return country && country.selectedOptions.length ? country.selectedOptions[0].textContent : '';
+  }
 
   function value(name) {
     var element = form.elements[name];
@@ -56,6 +61,8 @@
   }
   function calculate(event) {
     event.preventDefault();
+    lastReport = '';
+    results.hidden = true;
     try {
       var input = inputObject();
       var output, html, text;
@@ -91,7 +98,7 @@
           metric('Cible selon la règle 25×', money(output.symbol, output.target)) +
           metric('Écart mensuel estimé', (output.shortfall >= 0 ? '+' : '−') + money(output.symbol, output.shortfall));
         text = 'ÉTAT DE PRÉPARATION À LA RETRAITE\n\n' +
-          'Pays : ' + output.countryName + '\n' +
+          'Pays : ' + countryName() + '\n' +
           'Années restantes : ' + output.years + '\n' +
           'Couverture : ' + output.score + '%\n' +
           'Épargne projetée : ' + money(output.symbol, output.projected) + '\n' +
@@ -133,9 +140,10 @@
       area.style.opacity = '0';
       document.body.appendChild(area);
       area.select();
-      document.execCommand('copy');
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (_) {}
       area.remove();
-      setStatus('Rapport copié.', true);
+      setStatus(copied ? 'Rapport copié.' : 'Copie indisponible. Téléchargez le fichier TXT pour conserver le rapport.', copied);
     };
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(lastReport).then(function () { setStatus('Rapport copié.', true); }, fallback);
@@ -156,7 +164,7 @@
   function save() {
     if (!lastReport) return setStatus('Calculez d’abord un résultat.', false);
     try {
-      localStorage.setItem('afrotools-fr-career-' + tool, JSON.stringify({ savedAt: Date.now(), report: lastReport }));
+      localStorage.setItem(storageKey, JSON.stringify({ savedAt: Date.now(), report: lastReport }));
       setStatus('Rapport enregistré uniquement sur cet appareil.', true);
     } catch (error) {
       setStatus('Enregistrement local indisponible. Téléchargez plutôt le fichier TXT.', false);
@@ -166,4 +174,19 @@
   root.querySelector('[data-copy]').addEventListener('click', copy);
   root.querySelector('[data-download]').addEventListener('click', download);
   root.querySelector('[data-save]').addEventListener('click', save);
+  root.querySelector('[data-restore]').addEventListener('click', function () {
+    try {
+      var saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      if (!saved) return setStatus('Aucun rapport enregistré sur cet appareil.', false);
+      if (typeof saved.report !== 'string' || !saved.report.trim() || saved.report.length > 200000 || !Number.isFinite(saved.savedAt)) {
+        return setStatus('Le rapport enregistré est illisible. Recalculez un scénario ou effacez cette sauvegarde.', false);
+      }
+      show('', saved.report);
+      setStatus('Rapport enregistré rouvert. Les champs du formulaire ne sont pas restaurés ; recalculez pour modifier les hypothèses.', true);
+    } catch (_) { setStatus('Lecture locale indisponible ou rapport illisible. Recalculez un scénario pour continuer.', false); }
+  });
+  root.querySelector('[data-delete]').addEventListener('click', function () {
+    try { localStorage.removeItem(storageKey); setStatus('Rapport enregistré effacé de cet appareil. Le scénario affiché reste disponible jusqu’à la fermeture de la page.', true); }
+    catch (_) { setStatus('Effacement local impossible. Vérifiez les autorisations de stockage du navigateur.', false); }
+  });
 }());

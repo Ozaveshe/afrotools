@@ -6,17 +6,17 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 159 | 2 | 301 |
-| sw | 137 | 1 | 324 |
+| fr | 160 | 2 | 301 |
+| sw | 137 | 1 | 325 |
 
 ## By surface class
 
 | Class | English routes | FR pass | FR under standard | FR missing | SW pass | SW under standard | SW missing |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| category-hub | 32 | 29 | 0 | 3 | 27 | 0 | 5 |
+| category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 334 | 40 | 0 | 294 | 21 | 0 | 313 |
+| editorial | 335 | 40 | 0 | 295 | 21 | 0 | 314 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -581,6 +581,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/tomato-irrigation-water-requirement-uganda/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/truck-load-planning-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/truck-load-planning-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/uganda-efris-credit-notes-vat-amendments-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/uganda-efris-credit-notes-vat-amendments-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/uganda-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/uganda-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/uganda-passport-renewal-documents-checklist/ | editorial | fr | — | missing | no localized route or owner file |
@@ -639,7 +641,6 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/zimbabwe-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/zimbabwe-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /business-roi/ | product-entry | sw | — | missing | no localized route or owner file |
-| /career/ | category-hub | fr | — | missing | no localized route or owner file |
 | /cars/ | product-entry | fr | /fr/cars/ | under-standard | form controls 1/2 |
 | /crypto/ | category-hub | sw | — | missing | no localized route or owner file |
 | /data-productivity/ | category-hub | fr | — | missing | no localized route or owner file |
