@@ -15,7 +15,7 @@ for (const variant of [{ width: 320, theme: 'dark' }, { width: 390, theme: 'ligh
         return route.continue();
       }
       if (request.resourceType() === 'stylesheet') return route.fulfill({ status: 200, contentType: 'text/css', body: '' });
-      if (request.resourceType() === 'script') return route.fulfill({ status: 200, contentType: 'application/javascript', body: url.hostname === 'cdnjs.cloudflare.com' ? 'window.__paletteTestCharts = []; window.Chart = class { constructor(canvas, config) { window.__paletteTestCharts.push(config); } destroy() {} };' : '' });
+      if (request.resourceType() === 'script') return route.fulfill({ status: 200, contentType: 'application/javascript', body: url.hostname === 'cdnjs.cloudflare.com' ? 'window.__paletteTestCharts = []; window.Chart = class { constructor(canvas, config) { this.record = { config, destroyed: false }; window.__paletteTestCharts.push(this.record); } destroy() { this.record.destroyed = true; } };' : '' });
       return route.abort();
     });
     await page.setViewportSize({ width: variant.width, height: 844 });
@@ -37,14 +37,20 @@ for (const variant of [{ width: 320, theme: 'dark' }, { width: 390, theme: 'ligh
       expect(currentAmount).toBeGreaterThan(0);
       expect(await page.evaluate(() => window.__paletteTestCharts.length)).toBe(0);
       releasePalette();
-      await expect.poll(() => page.evaluate(() => window.__paletteTestCharts.length)).toBe(1);
-      const chart = await page.evaluate(() => { const value = window.__paletteTestCharts[0]; return { type: value.type, labels: value.data.labels, net: value.data.datasets[0].data[0] }; });
+      await expect.poll(() => page.evaluate(() => window.__paletteTestCharts.filter(record => !record.destroyed).length)).toBe(1);
+      const chart = await page.evaluate(() => { const value = window.__paletteTestCharts.find(record => !record.destroyed).config; return { type: value.type, labels: value.data.labels, net: value.data.datasets[0].data[0] }; });
       expect(chart.type).toBe('bar');
       expect(chart.labels).toContain('Employer NSSF');
       expect(chart.net).toBeCloseTo(currentAmount, 0);
+      const constructions = await page.evaluate(() => window.__paletteTestCharts.map(record => ({ destroyed: record.destroyed, type: record.config.type, labels: record.config.data.labels, net: record.config.data.datasets[0].data[0] })));
+      for (const value of constructions) {
+        expect(value.type).toBe('bar');
+        expect(value.labels).toContain('Employer NSSF');
+        expect(value.net).toBeCloseTo(currentAmount, 0);
+      }
       expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth))).toBe(0);
       expect(errors).toEqual([]); expect(writes).toEqual([]);
-      await testInfo.attach('pending-palette-checkpoints', { body: JSON.stringify({ ...variant, pendingRequests, currentAmount, chart, errors, writes }, null, 2), contentType: 'application/json' });
+      await testInfo.attach('pending-palette-checkpoints', { body: JSON.stringify({ ...variant, pendingRequests, currentAmount, chart, constructions, errors, writes }, null, 2), contentType: 'application/json' });
     } finally { releasePalette(); }
   });
 }
