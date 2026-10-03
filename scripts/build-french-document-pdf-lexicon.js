@@ -225,9 +225,14 @@ async function main() {
   const allowlist = readJson(ALLOWLIST_PATH);
   const overrides = readJson(OVERRIDES_PATH);
   const previous = fs.existsSync(OUTPUT_PATH) ? readJson(OUTPUT_PATH) : { routes: {} };
+  const selectedId = process.argv.find((arg) => arg.startsWith('--app='))?.slice(6);
+  const reviewedOnly = process.argv.includes('--reviewed-only');
+  if (reviewedOnly && !selectedId) throw new Error('--reviewed-only requires --app=<route-id>');
+  if (selectedId && !config.apps.some((app) => app.id === selectedId)) throw new Error('Unknown French Document/PDF app: ' + selectedId);
+  const selectedApps = selectedId ? config.apps.filter((app) => app.id === selectedId) : config.apps;
   const candidates = new Map();
 
-  for (const app of config.apps) {
+  for (const app of selectedApps) {
     const files = [app.englishFile, app.englishWorkspaceFile].filter(Boolean);
     const strings = new Set();
     for (const relativeFile of files) {
@@ -240,6 +245,12 @@ async function main() {
     const entries = [];
     for (const source of strings) {
       if (!looksUserFacing(source) || protectedPhrase(source, allowlist, app.id)) continue;
+      // Reviewed route-owned copy takes precedence over cached or remote translation.
+      const reviewed = overrides.routes && overrides.routes[app.id];
+      if (reviewed && Object.prototype.hasOwnProperty.call(reviewed, source)) {
+        entries.push([source, reviewed[source]]);
+        continue;
+      }
       if (!REFRESH && previousRoute[source]) {
         entries.push([source, previousRoute[source]]);
         continue;
@@ -254,6 +265,7 @@ async function main() {
         continue;
       }
       const key = source;
+      if (reviewedOnly) continue;
       if (!candidates.has(key)) candidates.set(key, []);
       candidates.get(key).push(app.id);
     }
@@ -277,14 +289,15 @@ async function main() {
   });
   const translations = new Map(remoteSources.map((source, index) => [source, translated[index]]));
 
-  const routes = {};
-  for (const app of config.apps) {
+  const routes = selectedId ? { ...previous.routes } : {};
+  for (const app of selectedApps) {
     const entries = candidates.get(`\u0000route:${app.id}`) || [];
     for (const [source, owners] of candidates) {
       if (source.startsWith('\u0000route:') || !owners.includes(app.id)) continue;
       entries.push([source, translations.get(source)]);
     }
     routes[app.id] = stableObject([
+      ...Object.entries(reviewedOnly ? previous.routes[app.id] || {} : {}),
       ...entries,
       ...Object.entries((overrides.routes && overrides.routes[app.id]) || {})
     ]);

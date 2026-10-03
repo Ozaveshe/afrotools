@@ -182,7 +182,7 @@
                     density: e.density || "comfortable"
                 });
             } catch (t) {
-                console.error("CV PDF export failed:", t), n("PDF failed"), d("PDF export failed. Try Print or ATS Plain PDF.");
+                console.error("CV PDF export failed:", {"code":"operation_failed","tool_id":"cv-builder"}), n("PDF failed"), d("PDF export failed. Try Print or ATS Plain PDF.");
             } finally {
                 r = !1, c(!1);
             }
@@ -211,7 +211,7 @@
                     format: "pdf"
                 });
             } catch (t) {
-                console.error("ATS PDF export failed:", t), n("ATS PDF failed"), d("ATS Plain PDF export failed.");
+                console.error("ATS PDF export failed:", {"code":"operation_failed","tool_id":"cv-builder"}), n("ATS PDF failed"), d("ATS Plain PDF export failed.");
             } finally {
                 r = !1, c(!1);
             }
