@@ -3,6 +3,116 @@
 
   var BETTING_TOOLS = ['betting-odds', 'betting-tax'];
   var afconCopyAttempt = 0;
+  var afconInputsPending = false;
+
+  var AFCON_RANGE_FIELDS = ['formBoost', 'defenseBoost', 'hostBoost', 'upsetTolerance'];
+
+  function bindAfconRanges(form) {
+    if (!form || form.hasAttribute('data-afcon-ranges-bound')) return;
+    form.setAttribute('data-afcon-ranges-bound', '');
+    AFCON_RANGE_FIELDS.forEach(function (name) {
+      var field = form.elements[name];
+      if (!field) return;
+      field.min = '0';
+      field.max = '10';
+      field.step = 'any';
+      field.required = true;
+    });
+    var status = document.createElement('p');
+    status.id = 'afcon-input-status';
+    status.setAttribute('data-afcon-input-status', '');
+    status.setAttribute('role', 'alert');
+    status.hidden = true;
+    form.insertBefore(status, form.querySelector('.sports-actions'));
+  }
+
+  function afconRangeError(form) {
+    var first = null;
+    AFCON_RANGE_FIELDS.forEach(function (name) {
+      var field = form.elements[name];
+      if (!field) return;
+      var value = Number(field.value);
+      var invalid = field.value.trim() === '' || !isFinite(value) || value < 0 || value > 10;
+      var label = form.querySelector('label[for="' + field.id + '"]');
+      var message = invalid ? 'Enter a value from 0 to 10 for ' + (label ? label.textContent : name) + '.' : '';
+      field.setCustomValidity(message);
+      var describedBy = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(function (id) {
+        return id && id !== 'afcon-input-status';
+      });
+      if (invalid) {
+        field.setAttribute('aria-invalid', 'true');
+        describedBy.push('afcon-input-status');
+        if (!first) first = { field: field, message: message };
+      } else field.removeAttribute('aria-invalid');
+      if (describedBy.length) field.setAttribute('aria-describedby', describedBy.join(' '));
+      else field.removeAttribute('aria-describedby');
+    });
+    return first;
+  }
+
+  function afconInputStatus(message) {
+    var status = document.querySelector('[data-afcon-input-status]');
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = !message;
+  }
+
+  function clearAfconInvalidResult() {
+    afconInputsPending = true;
+    invalidateAfconCopy();
+    var results = document.getElementById('sports-results');
+    if (results) {
+      results.hidden = true;
+      results.textContent = '';
+    }
+  }
+
+  ['input', 'change', 'submit'].forEach(function (type) {
+    document.addEventListener(type, function (event) {
+      if (toolId() !== 'afcon-predictor') return;
+      var form = event.target.closest('#sports-tool-form');
+      if (!form) return;
+      bindAfconRanges(form);
+      var error = afconRangeError(form);
+      if (error) {
+        clearAfconInvalidResult();
+        afconInputStatus(error.message);
+        if (type !== 'input') {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+        if (type === 'submit') {
+          error.field.focus();
+          error.field.reportValidity();
+        }
+      } else if (type !== 'input') {
+        afconInputsPending = false;
+        afconInputStatus('');
+        var results = document.getElementById('sports-results');
+        if (results) results.hidden = false;
+      } else if (afconInputsPending) afconInputStatus('Use Calculate to update your report.');
+    }, true);
+  });
+
+  document.addEventListener('click', function (event) {
+    if (toolId() !== 'afcon-predictor' || !event.target.closest('[data-reset]')) return;
+    var form = document.getElementById('sports-tool-form');
+    if (form) AFCON_RANGE_FIELDS.forEach(function (name) {
+      var field = form.elements[name];
+      if (!field) return;
+      field.setCustomValidity('');
+      field.removeAttribute('aria-invalid');
+      var ids = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(function (id) {
+        return id && id !== 'afcon-input-status';
+      });
+      if (ids.length) field.setAttribute('aria-describedby', ids.join(' '));
+      else field.removeAttribute('aria-describedby');
+    });
+    afconInputsPending = false;
+    afconInputStatus('');
+    var results = document.getElementById('sports-results');
+    if (results) results.hidden = false;
+  }, true);
 
   function toolId() {
     return (document.body && document.body.getAttribute('data-sports-tool')) || '';
@@ -93,11 +203,21 @@
         + '#sports-tool-root table{max-width:100%}'
         + '#sports-tool-root .sports-table-wrap{display:block;max-width:100%;overflow-x:auto}'
         + 'body[data-sports-tool="afcon-predictor"] .sports-report-preview{background:var(--color-bg-card);color:var(--color-text)}'
-        + 'body[data-sports-tool="afcon-predictor"] [data-afcon-report-status]{color:var(--color-text);font-size:1rem;line-height:1.5;min-height:1.5em}';
+        + 'body[data-sports-tool="afcon-predictor"] [data-afcon-report-status]{color:var(--color-text);font-size:1rem;line-height:1.5;min-height:1.5em}'
+        + 'body[data-sports-tool="afcon-predictor"] [data-afcon-input-status]{color:var(--color-text);font-size:1rem;line-height:1.5}';
       document.head.appendChild(style);
     }
     var id = toolId();
     var results = root.querySelector('#sports-results');
+    if (id === 'afcon-predictor') {
+      bindAfconRanges(document.getElementById('sports-tool-form'));
+      var badge = root.querySelector('.sports-status');
+      if (badge) replaceText(badge, 'Live calculator', 'Local planning calculator');
+      if (afconInputsPending) return;
+      if (results) replaceText(results,
+        'Competitor tournament tools usually stop at a bracket. This version gives a reusable content angle: favorite rank, field pressure, and likely final path.',
+        "Compare your team's rank with the strongest contenders and the suggested final pairing.");
+    }
     if (results) {
       results.setAttribute('role', 'status');
       results.setAttribute('aria-live', 'polite');
