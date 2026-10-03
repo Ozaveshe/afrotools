@@ -369,3 +369,43 @@ for (const worktreePath of [undefined, '', '   ']) {
 }
 assert.strictEqual(matchingWorktreeReceipt(oldEntry, [oldOwned, { ...oldOwned, handoff_id: 'ambiguous-run' }]), null, 'ambiguous ownership is not guessed');
 console.log('retained storage and exact advisory ownership tests passed');
+
+// The human-authorized progress heartbeat is an observer, not another publisher.
+// Registering it must resolve its allowlist failure without accepting unknown
+// automations or weakening schedule checks for this or existing lanes.
+const progressPolicy = require('../data/automation/control-plane-policy.json');
+const progressId = 'afrotools-two-hour-progress-and-cleanup';
+const progressDefinition = {
+  id: progressId, kind: 'heartbeat', status: 'ACTIVE',
+  target_thread_id: '01a1004d-2bcc-7571-809e-9a396f835f8c',
+  rrule: 'FREQ=HOURLY;INTERVAL=2',
+};
+const progressDefinitions = {
+  available: true,
+  definitions: progressPolicy.active_automations.filter(lane => lane.id !== progressId).map(lane => ({
+    id: lane.id, kind: lane.kind || 'cron', status: 'ACTIVE',
+    target_thread_id: lane.target_thread_id || 'synthetic-existing-thread',
+    rrule: lane.expected_schedule, model: lane.model,
+    reasoning_effort: lane.reasoning_effort,
+  })).concat(progressDefinition),
+};
+assert.deepStrictEqual(evaluatePolicy(progressPolicy, progressDefinitions, queue, worktrees), [],
+  'the requested heartbeat and all existing lanes must pass registration together');
+const progressLane = progressPolicy.active_automations.find(lane => lane.id === progressId);
+assert.strictEqual(progressLane.role, 'observer');
+assert.strictEqual(progressLane.release_source_allowed, false);
+assert.strictEqual(progressLane.target_thread_id, progressDefinition.target_thread_id);
+const unknownProgressDefinitions = {
+  ...progressDefinitions,
+  definitions: progressDefinitions.definitions.concat({ ...progressDefinition, id: 'unapproved-progress-copy' }),
+};
+assert.ok(evaluatePolicy(progressPolicy, unknownProgressDefinitions, queue, worktrees)
+  .some(issue => issue.code === 'unexpected_active_automation' && issue.automation_id === 'unapproved-progress-copy'));
+const driftedProgressDefinitions = {
+  ...progressDefinitions,
+  definitions: progressDefinitions.definitions.map(definition => definition.id === progressId
+    ? { ...definition, rrule: 'FREQ=MINUTELY;INTERVAL=1' } : definition),
+};
+assert.ok(evaluatePolicy(progressPolicy, driftedProgressDefinitions, queue, worktrees)
+  .some(issue => issue.code === 'automation_definition_drift' && issue.automation_id === progressId));
+console.log('progress heartbeat registration and strict boundary tests passed');
