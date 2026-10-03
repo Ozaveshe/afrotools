@@ -653,7 +653,7 @@ function renderRelatedHtml(recipe, linkGroups, recipeImages) {
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
       <h2 class="ak-section-title">Cook around ${escapeHtml(recipe.name)}</h2>
-      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
+      <p class="ak-section-sub">Find a side dish or your next recipe from the same country or collection.</p>
     </div>
     ${primaryCards ? `<div class="ak-static-related-grid">${primaryCards}</div>` : ""}
     <div class="ak-internal-link-grid">${compactGroups}</div>
@@ -1072,7 +1072,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
             <div class="ak-section-kicker">Recipe photos</div>
             <h2 class="ak-section-title">See the dish before you cook</h2>
           </div>
-          <p>Each recipe supports one main image and up to four extra prep, serving, or step photos when they are available.</p>
+          <p>Take a closer look at the dish and its serving ideas.</p>
         </div>
         <div class="ak-photo-gallery-grid${supporting.length ? "" : " is-single"}">
           <figure class="ak-photo-main">

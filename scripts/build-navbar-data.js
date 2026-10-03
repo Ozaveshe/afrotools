@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, "..");
 const NAVBAR_SOURCE_PATH = path.join(ROOT, "assets", "js", "components", "navbar.js");
 const NAVBAR_CSS_PATH = path.join(ROOT, "assets", "css", "navbar.css");
 const NAVBAR_MIN_CSS_PATH = path.join(ROOT, "assets", "css", "navbar.min.css");
+const ANIMATIONS_JS_PATH = path.join(ROOT, "assets", "js", "animations.js");
 const DATA_SOURCE_PATH = path.join(ROOT, "data", "navigation", "navbar-data.json");
 const DATA_OUTPUT_PATH = path.join(ROOT, "assets", "js", "components", "navbar-data.json");
 
@@ -17,6 +18,8 @@ const TOP_LEVEL_START = "  // NAVBAR_TOP_LEVEL_DATA_START";
 const TOP_LEVEL_END = "  // NAVBAR_TOP_LEVEL_DATA_END";
 const CSS_HREF_START = "  // NAVBAR_CSS_HREF_START";
 const CSS_HREF_END = "  // NAVBAR_CSS_HREF_END";
+const ANIMATIONS_HREF_START = "  // ANIMATIONS_JS_HREF_START";
+const ANIMATIONS_HREF_END = "  // ANIMATIONS_JS_HREF_END";
 
 function writeAtomically(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -91,6 +94,13 @@ function buildNavbarData() {
     CSS_HREF_START,
     CSS_HREF_END,
     `  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=${cssHash}';`
+  );
+  // Version the dynamically loaded immutable asset on every navbar build.
+  const animationsSource = fs.readFileSync(ANIMATIONS_JS_PATH, "utf8").replace(/\r\n?/g, "\n");
+  const animationsHash = crypto.createHash("md5").update(animationsSource).digest("hex").slice(0, 8);
+  navbarSource = replaceGeneratedBlock(
+    navbarSource, ANIMATIONS_HREF_START, ANIMATIONS_HREF_END,
+    `  const ANIMATIONS_JS_HREF = '/assets/js/animations.js?v=${animationsHash}';`
   );
   const sourceChanged = writeIfChanged(NAVBAR_SOURCE_PATH, navbarSource);
 

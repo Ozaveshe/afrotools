@@ -134,6 +134,11 @@
 :root[data-theme="dark"] .cv-flow-hero-title,:root[data-theme="dark"] .cv-flow-head h2,:root[data-theme="dark"] .cv-flow-library-head h3,:root[data-theme="dark"] .cv-flow-side h3,:root[data-theme="dark"] .cv-flow-stat strong,:root[data-theme="dark"] .cv-flow-doc strong{color:#f1f5f9}
 :root[data-theme="dark"] .cv-export-options,:root[data-theme="dark"] .cv-export-review{background:#101a2b!important;border-color:#294164!important;color:#dbeafe!important}
 :root[data-theme="dark"] .cv-export-options input,:root[data-theme="dark"] .cv-export-options select{background:#0b1423!important;border-color:#35527b!important;color:#f1f5f9!important}
+
+.cv-cloud-backup{margin:12px 18px;padding:12px;min-width:0;border:1px solid var(--color-border);color:var(--color-text);background:var(--color-surface);border-radius:8px}
+.cv-cloud-backup legend{font-weight:700;padding:0 6px}.cv-cloud-backup p{margin:8px 0;line-height:1.5;overflow-wrap:anywhere}.cv-cloud-choice{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}.cv-cloud-choice input{width:22px;height:22px;flex:none;accent-color:var(--color-primary)}
+.cv-cloud-backup button{min-height:44px;max-width:100%;white-space:normal}.cv-cloud-choice:focus-within{outline:2px solid var(--color-primary);outline-offset:2px}.cv-cloud-backup button:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+@media(max-width:720px){.cv-cloud-backup{margin-left:12px;margin-right:12px}}
 </style>
 <script>
 window.addEventListener('unhandledrejection', function (event) {
@@ -148,7 +153,7 @@ window.addEventListener('unhandledrejection', function (event) {
 <link rel="stylesheet" href="./css/cv-related-tools.css?v=31a377c4">
 
 <!-- Components -->
-<script src="../../assets/js/components/navbar.min.js?v=8f0392e6" defer></script>
+<script src="../../assets/js/components/navbar.min.js?v=e5959261" defer></script>
 <script src="../../assets/js/components/footer.min.js?v=3579ade5" defer></script>
 
 <!-- Fonts (DM Sans via tokens, Instrument Serif for headings) -->
@@ -251,7 +256,7 @@ window.loadPdfLibs=function(){
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the AfroTools CV Builder free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can create, preview, and export a PDF CV without a watermark. AfroTools does not show paid partner placements in the CV Builder while no sponsorships are active."}},{"@type":"Question","name":"Does it work for Nigeria, Kenya, and South Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes. The builder includes country-aware guidance for all 54 African countries and an international or diaspora format. It gives suggestions and warnings rather than forcing sensitive personal fields."}},{"@type":"Question","name":"Can I use it as an ATS CV builder?","acceptedAnswer":{"@type":"Answer","text":"The builder includes ATS readiness checks, job-description matching, and plain-format export options. Helps readability; does not guarantee interviews or rankings."}},{"@type":"Question","name":"Can graduates use the CV templates?","acceptedAnswer":{"@type":"Answer","text":"Yes. Graduate and no-experience users can start with skills-first templates, project sections, education details, and editable examples."}},{"@type":"Question","name":"Where is my CV saved?","acceptedAnswer":{"@type":"Answer","text":"Draft CV data is saved in your browser unless you choose to sign in. Avoid using shared devices for private job-search documents."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the AfroTools CV Builder free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can create, preview, and export a PDF CV without a watermark. AfroTools does not show paid partner placements in the CV Builder while no sponsorships are active."}},{"@type":"Question","name":"Does it work for Nigeria, Kenya, and South Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes. The builder includes country-aware guidance for all 54 African countries and an international or diaspora format. It gives suggestions and warnings rather than forcing sensitive personal fields."}},{"@type":"Question","name":"Can I use it as an ATS CV builder?","acceptedAnswer":{"@type":"Answer","text":"The builder includes ATS readiness checks, job-description matching, and plain-format export options. Helps readability; does not guarantee interviews or rankings."}},{"@type":"Question","name":"Can graduates use the CV templates?","acceptedAnswer":{"@type":"Answer","text":"Yes. Graduate and no-experience users can start with skills-first templates, project sections, education details, and editable examples."}},{"@type":"Question","name":"Where is my CV saved?","acceptedAnswer":{"@type":"Answer","text":"Draft CV data is saved in your browser. Signing in does not enable CV uploads. Optional cloud backup requires separate permission. Avoid using shared devices for private job-search documents."}}]}
 </script>
 <meta property="article:modified_time" content="2026-05-20">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
@@ -420,9 +425,19 @@ window.loadPdfLibs=function(){
     <div class="cv-template-landing-grid" aria-label="Templates"></div>
   </section>
 
-  <p class="cv-privacy-note">Your CV stays in your browser unless you choose AI help or sign in.</p>
+  <p class="cv-privacy-note">Your CV stays in your browser unless you enable cloud backup or choose optional AI help.</p>
   <section data-ai-consent-notice data-consent-mode="ai_optional_content_included" data-tool-id="cv-builder" data-consent-title="AI help is optional for CV content" data-consent-copy="Build, edit, save, and export locally. If you choose AI help later, AfroTools must ask before sending CV, job description, profile, or document content to a model." aria-label="CV Builder AI consent notice"></section>
 </section>
+
+
+  <fieldset class="cv-cloud-backup" aria-describedby="cv-cloud-description cv-cloud-expiry">
+    <legend>Optional cloud backup</legend>
+    <p id="cv-cloud-description">This sends your full current draft and saved CVs, including contact details, photo, work history, education and any other entered fields, to your signed-in AfroTools account. Cloud saved CVs are added to the saved list in this browser. Further edits and saved-CV deletions sync while enabled. Existing cloud drafts are replaced by the current local draft; local CVs take priority when saved copies have the same ID. Export a local backup first if you want to keep both.</p>
+    <p id="cv-cloud-expiry">Permission ends when this page reloads or your account changes. Turning it off stops future requests and keeps existing cloud copies.</p>
+    <label class="cv-cloud-choice" for="cv-cloud-consent"><input type="checkbox" id="cv-cloud-consent" autocomplete="off" aria-describedby="cv-cloud-description cv-cloud-expiry">Allow cloud backup for this session</label>
+    <button type="button" class="btn btn-secondary" id="cv-cloud-restore" disabled>Replace local draft with cloud draft</button>
+    <p id="cv-cloud-status" role="status" aria-live="polite">Cloud backup is off. Local editing and exports still work.</p>
+  </fieldset>
 
 <!-- Saved CVs Section -->
 <div class="cv-saved-section">
@@ -517,7 +532,7 @@ window.loadPdfLibs=function(){
 <details class="cv-privacy-accordion" aria-label="CV Builder privacy and export notes">
   <summary>Privacy &amp; export notes</summary>
   <div class="cv-privacy-accordion-body">
-    <p><strong>Private by default</strong>Your CV stays in this browser unless you explicitly choose AI help, sign in, or export a file.</p>
+    <p><strong>Private by default</strong>Your CV stays in this browser. Cloud backup needs a separate permission; AI help needs its own consent. Local exports do not require an account.</p>
     <p><strong>Import path</strong>Paste CV text or upload TXT locally. PDF and DOCX parsing only run when a compatible browser parser is loaded, and nothing changes until you confirm the extracted sections.</p>
     <p><strong>Exports</strong>PDF uses the live preview. ATS Plain PDF, DOCX, TXT, JSON backup, and application-pack exports are available from the app toolbar where supported.</p>
     <p><strong>Methodology</strong>Guidance is based on editable CV fields, country norms, ATS readability signals, and job-description keyword matching. Your CV, the job advert, and the employer instructions remain the source of truth.</p>
@@ -760,7 +775,7 @@ window.loadPdfLibs=function(){
       </details>
       <details>
         <summary>Where is my CV saved?</summary>
-        <p>Draft CV data is saved in your browser unless you choose to sign in. Avoid using shared devices for private job-search documents.</p>
+        <p>Draft CV data is saved in your browser. Signing in does not enable CV uploads. Optional cloud backup requires separate permission. Avoid using shared devices for private job-search documents.</p>
       </details>
     </div>
   </div>
@@ -778,12 +793,12 @@ window.loadPdfLibs=function(){
 <!-- CV Builder Scripts (no React, no frameworks) -->
 <script src="./js/cv-analytics.js?v=eb28bb92"></script>
 <script src="./js/cv-data.js?v=6ea915e9"></script>
-<script src="./js/cv-app.js?v=51c1f350"></script>
+<script src="./js/cv-app.js?v=8467fee3"></script>
 <script src="./js/cv-country-rules.js?v=50dfb216"></script>
 <script src="./js/cv-country-advisor-compact.js?v=af37def0"></script>
-<script src="./js/cv-templates.js?v=508b55d9"></script>
-<script src="./js/cv-template-studio.js?v=0fba9f9c"></script>
-<script src="./js/cv-pdf-templates.js?v=b12d146d"></script>
+<script src="./js/cv-templates.js?v=b8d42ce3"></script>
+<script src="./js/cv-template-studio.js?v=8cc99008"></script>
+<script src="./js/cv-pdf-templates.js?v=3ff5e9c6"></script>
 <script src="./js/cv-template-registry.js?v=0441103c"></script>
 <script src="./js/cv-template-registry-studio.js?v=d7c9aab4"></script>
 <script src="./js/cv-template-expanded-renderers.js?v=0c6599e0"></script>
@@ -822,14 +837,14 @@ window.loadPdfLibs=function(){
 })();
 </script>
 <script src="./js/cv-docx-export.js?v=d24f9ca7"></script>
-<script src="./js/cv-export-pdf-quality.js?v=762dc98a"></script>
+<script src="./js/cv-export-pdf-quality.js?v=c72ce622"></script>
 <script src="./js/cv-export-pagination-fix.js?v=607d5836"></script>
 <script src="./js/cv-layout-decongestion.js?v=ada43aac"></script>
 <script src="./js/cv-export-empty-polish.js?v=cf6a36ff"></script>
 <script src="./js/cv-completion-flow-fix.js?v=f7435f9e"></script>
 <script src="./js/cv-ats-plain-pdf-fix.js?v=bb5d6538"></script>
 <script src="./js/cv-ats-plain-mode.js?v=26ede92b"></script>
-<script src="./js/cv-application-pack-export.js?v=37358e90"></script>
+<script src="./js/cv-application-pack-export.js?v=42e797cc"></script>
 <script src="./js/cv-design-foundation.js?v=50609f44"></script>
 <script src="./js/cv-next-steps-polish.js?v=0ca9a04c"></script>
 <script src="./js/cv-sample-mode.js?v=96bcee78"></script>
@@ -930,10 +945,10 @@ window.loadPdfLibs=function(){
 })();
 </script>
 
-<script src="../../assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
+<script src="../../assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
 <script src="../../assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="../../assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="./js/cv-workspace-sync.js?v=60bcdf21" defer></script>
+<script src="./js/cv-workspace-sync.js?v=ad47d678" defer></script>
 <script src="../../assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 
 <script>

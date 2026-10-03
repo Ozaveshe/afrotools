@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11699 |
-| Indexable pages | 7884 |
+| Public pages | 11700 |
+| Indexable pages | 7885 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4257 |
-| Documented fallbacks | 14971 |
-| Routes eligible for primary sitemaps | 7884 |
+| Genuine equivalence groups | 4258 |
+| Documented fallbacks | 14972 |
+| Routes eligible for primary sitemaps | 7885 |
 
 ## Locale Coverage
 
-- en: 6144 page records
+- en: 6145 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 540
+- article: 541
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6258,6 +6258,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c3042a415464: en=`/tools/afrokitchen/collections/party-favorites/`; x-default=`/tools/afrokitchen/collections/party-favorites/`
 - equivalence:c33de1a3817e: en=`/tools/car-insurance/tunisia`, fr=`/fr/tools/assurance-auto/tunisia`; x-default=`/tools/car-insurance/tunisia`
 - equivalence:c340627fe440: en=`/tools/health-contribution/gambia`; x-default=`/tools/health-contribution/gambia`
+- equivalence:c346f43aecca: en=`/blog/saqa-foreign-qualification-document-checklist-2026/`; x-default=`/blog/saqa-foreign-qualification-document-checklist-2026/`
 - equivalence:c34a8cf80daa: en=`/jamb/biology/1985/`; x-default=`/jamb/biology/1985/`
 - equivalence:c3875edc9c92: en=`/tools/freelancer-rate/south-africa/`, fr=`/fr/tools/calculateur-de-tarif-independant-afrique-du-sud/`; x-default=`/tools/freelancer-rate/south-africa/`
 - equivalence:c3aade5a9f38: en=`/tools/afrokitchen/recipes/amala-ewedu-gbegiri-ng/`; x-default=`/tools/afrokitchen/recipes/amala-ewedu-gbegiri-ng/`

@@ -1,1 +1,218 @@
-!function(t){"use strict";var e="cv-draft",a="cv",r="cv-builder",n="afro_cv_data",o="cv_builder_data",c="afro_cv_list",i=!1,l=!1,d="",p="",s={};function u(t){return JSON.parse(JSON.stringify(t))}function f(){return t.CVApp&&"function"==typeof t.CVApp.getState?t.CVApp.getState():null}function y(e){var a=t.AfroWorkspace;a&&(a.writeJson(n,e),a.writeJson(o,e))}function m(){var e=t.AfroWorkspace;if(!e)return[];var a=e.readJson(c,[]);return Array.isArray(a)?a:[]}function v(e){var a=t.AfroWorkspace;a&&a.writeJson(c,e)}function A(e){return e?t.AfroWorkspace.getTimestamp(e.updatedAt||e.savedAt):0}function C(){var a,n=(a=f())?{data:u(a.data),country:a.country,template:a.template,accentColor:a.accentColor,accentHex:a.accentHex,updatedAt:(new Date).toISOString()}:null;if(!n||!n.data)return null;var o=((n.data.fn||"")+" "+(n.data.ln||"")).trim()||"CV Draft",c=n.data.title||n.data.summary||"Continue editing your CV";return{itemType:e,itemKey:"current",toolSlug:r,title:o,summary:t.AfroWorkspace.summarizeText(c,120),href:"/tools/cv-builder/",payload:n,meta:{country:n.country||"",template:n.template||""}}}function g(e){var n=u(e),o="";return n.data&&(o=((n.data.fn||"")+" "+(n.data.ln||"")).trim()),{itemType:a,itemKey:n.id,toolSlug:r,title:n.title||o||"Untitled CV",summary:t.AfroWorkspace.summarizeText((o?o+" | ":"")+(n.template||"CV template"),120),href:"/tools/cv-builder/?cv="+encodeURIComponent(n.id),payload:n,meta:{country:n.country||"",template:n.template||""}}}function S(t){return JSON.stringify((t||[]).map(function(t){return[t.id,t.updatedAt||t.createdAt||""]}))}async function k(){if(!i&&t.AfroWorkspace&&t.AfroWorkspace.isSignedIn()&&t.CVApp&&"function"==typeof t.CVApp.getState){var r=[];try{r=await t.AfroWorkspace.list({itemTypes:[e,a],limit:80})}catch(t){return void console.warn("[CVWorkspaceSync] Remote bootstrap failed:",t.message||t)}var c=null,l=[];s={},r.forEach(function(t){t.item_type!==e?t.item_type===a&&t.payload&&t.item_key&&(l.push(u(t.payload)),s[t.item_key]={fingerprint:JSON.stringify(t.payload),updatedAt:t.updated_at||""}):c=t});var k,V=(k=t.AfroWorkspace)?k.readJson(n,k.readJson(o,null)):null,W=m(),w=f(),h=new URLSearchParams(t.location.search),J=h.get("cv"),O="1"===h.get("new");if(!l.length&&W.length){for(var x=0;x<W.length;x+=1)try{await t.AfroWorkspace.upsert(g(W[x])),s[W[x].id]={fingerprint:JSON.stringify(W[x]),updatedAt:W[x].updatedAt||""}}catch(t){console.warn("[CVWorkspaceSync] Failed to upload local CV:",t.message||t)}l=W.slice()}else l.length&&(v(l),w.savedCVs=l.slice());if(J){var N=l.find(function(t){return t.id===J})||W.find(function(t){return t.id===J});N&&function(e){var a=f();a&&e&&(a.data=Object.assign({},a.data,u(e.data||{})),a.country=e.country||a.country||"NG",a.template=e.template||a.template||"slate",a.accentColor=e.accentColor||a.accentColor||"var(--color-primary)",a.accentHex=e.accentHex||a.accentHex||"#0062CC",a.currentCVId=e.id||null,y({data:u(a.data),country:a.country,template:a.template,accentColor:a.accentColor,accentHex:a.accentHex,updatedAt:e.updatedAt||(new Date).toISOString()}),"function"==typeof t.CVApp.renderAll&&t.CVApp.renderAll())}(N)}else if(!O){var _=c&&c.payload?c.payload:null;if(_&&A(_)>=A(V))!function(e){if(e&&e.payload){var a=f();if(a){var r=e.payload;a.data=Object.assign({},a.data,u(r.data||{})),a.country=r.country||a.country||"NG",a.template=r.template||a.template||"slate",a.accentColor=r.accentColor||a.accentColor||"var(--color-primary)",a.accentHex=r.accentHex||a.accentHex||"#0062CC",y(r),"function"==typeof t.CVApp.renderAll&&t.CVApp.renderAll()}}}(c);else if(!_&&V)try{await t.AfroWorkspace.upsert(C())}catch(t){console.warn("[CVWorkspaceSync] Failed to upload local draft:",t.message||t)}}w&&Array.isArray(w.savedCVs)&&(p=S(w.savedCVs));var H=C();d=H?JSON.stringify(H.payload):"",i=!0}}async function V(){if(i&&!l&&t.AfroWorkspace&&t.AfroWorkspace.isSignedIn()){l=!0;try{var e=C();if(e){var r=JSON.stringify(e.payload);r!==d&&(await t.AfroWorkspace.upsert(e),y(e.payload),d=r)}var n=f(),o=n&&Array.isArray(n.savedCVs)?n.savedCVs.slice():m(),c=S(o);if(c!==p){for(var u={},A=0;A<o.length;A+=1){var k=o[A];u[k.id]=k;var V=JSON.stringify(k);s[k.id]&&s[k.id].fingerprint===V||await t.AfroWorkspace.upsert(g(k))}for(var W=Object.keys(s),w=0;w<W.length;w+=1){var h=W[w];u[h]||await t.AfroWorkspace.remove({itemType:a,itemKey:h})}s={},o.forEach(function(t){s[t.id]={fingerprint:JSON.stringify(t),updatedAt:t.updatedAt||""}}),v(o),p=c}}catch(t){console.warn("[CVWorkspaceSync] Sync failed:",t.message||t)}finally{l=!1}}}function W(){t.AfroWorkspace&&t.CVApp&&k().then(function(){i&&(t.setInterval(V,5e3),t.addEventListener("focus",function(){i=!1,k()}),t.addEventListener("beforeunload",V))})}Date.now(),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",W):W()}(window);
+(function (window) {
+  'use strict';
+  var consentAccount = '', generation = 0, initialized = false, busy = false;
+  var draftFingerprint = '', savedFingerprints = Object.create(null), cloudDraft = null;
+  var selectedKey = new URLSearchParams(window.location.search).get('cv'), selectedCV = null;
+  var checkbox, status, restoreButton;
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function jsonData(value) {
+    if (value === null || typeof value === 'string' || typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value))) return value;
+    if (Array.isArray(value)) return value.map(jsonData);
+    if (value && typeof value === 'object') {
+      var result = {};
+      Object.keys(value).forEach(function (key) {
+        if (key === '__proto__' || key === 'constructor' || key === 'prototype') throw new Error('Invalid cloud CV structure');
+        result[key] = jsonData(value[key]);
+      });
+      return result;
+    }
+    throw new Error('Invalid cloud CV structure');
+  }
+  // Restore onto an empty model, never onto the current person's details.
+  function model(value, defaults) {
+    if (defaults === null) {
+      if (value === null || typeof value === 'string') return value;
+    } else if (Array.isArray(defaults)) {
+      if (Array.isArray(value)) return value.map(function (row) { return model(row, defaults[0] || { title: '', content: '' }); });
+    } else if (typeof defaults === 'object') {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        var result = {};
+        Object.keys(defaults).forEach(function (key) {
+          result[key] = Object.prototype.hasOwnProperty.call(value, key) ? model(value[key], defaults[key]) : clone(defaults[key]);
+        });
+        Object.keys(value).forEach(function (key) {
+          if (key === '__proto__' || key === 'constructor' || key === 'prototype') throw new Error('Invalid cloud CV structure');
+          if (!Object.prototype.hasOwnProperty.call(defaults, key)) result[key] = jsonData(value[key]);
+        });
+        return result;
+      }
+    } else if (typeof value === typeof defaults) return value;
+    throw new Error('Invalid cloud CV structure');
+  }
+  function normalized(payload) {
+    if (!payload || !payload.data || typeof createEmptyCV !== 'function') throw new Error('Invalid cloud CV structure');
+    var result = jsonData(payload); result.data = model(payload.data, createEmptyCV());
+    ['id', 'title', 'country', 'template', 'accentColor', 'accentHex'].forEach(function (key) {
+      if (typeof payload[key] === 'string') result[key] = payload[key]; else delete result[key];
+    });
+    ['createdAt', 'updatedAt', 'savedAt'].forEach(function (key) {
+      if (typeof payload[key] === 'string' || (typeof payload[key] === 'number' && Number.isFinite(payload[key]))) result[key] = payload[key]; else delete result[key];
+    });
+    return result;
+  }
+  function state() { return window.CVApp && window.CVApp.getState(); }
+  function account() {
+    try {
+      if (window.AfroAuth && typeof window.AfroAuth.isLoggedIn === 'function' && !window.AfroAuth.isLoggedIn()) return '';
+      var user = window.AfroWorkspace && window.AfroWorkspace.getUser();
+      return user && user.id ? String(user.id) : '';
+    } catch (error) { return ''; }
+  }
+  function allowed(run) { return run === generation && Boolean(consentAccount) && account() === consentAccount; }
+  function options(run) { return { canRequest: function () { return allowed(run); } }; }
+  function show(message) { if (status) status.textContent = message; }
+  function stop(message) {
+    generation += 1; consentAccount = ''; initialized = false; cloudDraft = null; selectedCV = null; savedFingerprints = Object.create(null);
+    if (checkbox) checkbox.checked = false;
+    if (restoreButton) restoreButton.disabled = true;
+    show(message);
+  }
+  function current() {
+    var cv = state();
+    if (!cv || !cv.data) return null;
+    return { data: clone(cv.data), country: cv.country, template: cv.template, accentColor: cv.accentColor, accentHex: cv.accentHex };
+  }
+  function draftItem(payload) {
+    return { itemType: 'cv-draft', itemKey: 'current', toolSlug: 'cv-builder',
+      title: ((payload.data.fn || '') + ' ' + (payload.data.ln || '')).trim() || 'CV Draft',
+      summary: window.AfroWorkspace.summarizeText(payload.data.title || payload.data.summary || 'Continue editing your CV', 120),
+      href: '/tools/cv-builder/', payload: payload, meta: { country: payload.country || '', template: payload.template || '' } };
+  }
+  function savedItem(cv) {
+    var payload = clone(cv), name = ((payload.data && payload.data.fn || '') + ' ' + (payload.data && payload.data.ln || '')).trim();
+    return { itemType: 'cv', itemKey: payload.id, toolSlug: 'cv-builder', title: payload.title || name || 'Untitled CV',
+      summary: window.AfroWorkspace.summarizeText((name ? name + ' | ' : '') + (payload.template || 'CV template'), 120),
+      href: '/tools/cv-builder/?cv=' + encodeURIComponent(payload.id), payload: payload,
+      meta: { country: payload.country || '', template: payload.template || '' } };
+  }
+  function writeDraft(payload) {
+    var workspace = window.AfroWorkspace;
+    if (!workspace.writeJson('afro_cv_data', payload) || !workspace.writeJson('cv_builder_data', payload)) throw new Error('Local CV storage unavailable');
+  }
+  async function sync(run) {
+    if (!initialized || busy || !allowed(run)) return;
+    busy = true;
+    try {
+      var payload = current(), fingerprint = JSON.stringify(payload);
+      if (payload && fingerprint !== draftFingerprint) {
+        payload.updatedAt = new Date().toISOString();
+        await window.AfroWorkspace.upsert(draftItem(payload), options(run));
+        if (!allowed(run)) return;
+        draftFingerprint = fingerprint;
+      }
+      var cv = state(), saved = cv && Array.isArray(cv.savedCVs) ? cv.savedCVs.slice() : [], present = Object.create(null);
+      for (var index = 0; index < saved.length; index += 1) {
+        if (!allowed(run)) return;
+        var item = saved[index];
+        if (!item || !item.id) continue;
+        present[item.id] = true;
+        var savedFingerprint = JSON.stringify(item);
+        if (savedFingerprints[item.id] !== savedFingerprint) {
+          await window.AfroWorkspace.upsert(savedItem(item), options(run));
+          if (!allowed(run)) return;
+          savedFingerprints[item.id] = savedFingerprint;
+        }
+      }
+      var keys = Object.keys(savedFingerprints);
+      for (var n = 0; n < keys.length; n += 1) {
+        if (!allowed(run)) return;
+        if (!present[keys[n]]) {
+          await window.AfroWorkspace.remove({ itemType: 'cv', itemKey: keys[n] }, options(run));
+          if (!allowed(run)) return;
+          delete savedFingerprints[keys[n]];
+        }
+      }
+      if (allowed(run)) show('Cloud backup is on for this session.');
+    } catch (error) {
+      if (allowed(run)) {
+        console.warn('[CVWorkspaceSync] Sync failed:', { code: 'cv_sync_failed', tool_id: 'cv-builder' });
+        stop('Cloud backup failed. Your local CV is still available. Enable it again to retry.');
+      }
+    } finally { busy = false; }
+  }
+  async function start() {
+    var run = ++generation;
+    consentAccount = account(); initialized = false; draftFingerprint = ''; savedFingerprints = Object.create(null); cloudDraft = null; selectedCV = null;
+    restoreButton.disabled = true;
+    if (!consentAccount) return stop('Sign in to enable optional cloud backup.');
+    show('Opening your cloud backup…');
+    try {
+      var remote = await window.AfroWorkspace.list({ itemTypes: ['cv-draft', 'cv'], limit: 80, canRequest: options(run).canRequest });
+      if (!allowed(run)) return;
+      if (selectedKey && !remote.some(function (item) { return item.item_type === 'cv' && item.item_key === selectedKey; })) {
+        var selected = await window.AfroWorkspace.list({ itemType: 'cv', itemKey: selectedKey, limit: 1, canRequest: options(run).canRequest });
+        if (!allowed(run)) return;
+        remote = remote.concat(selected.filter(function (item) { return item.item_type === 'cv' && item.item_key === selectedKey; }));
+      }
+      var cv = state(), saved = cv && Array.isArray(cv.savedCVs) ? cv.savedCVs.slice() : [], ids = Object.create(null);
+      saved.forEach(function (item) { if (item && item.id) ids[item.id] = true; });
+      remote.forEach(function (item) {
+        if (item.item_type === 'cv-draft' && item.payload && item.payload.data) cloudDraft = normalized(item.payload);
+        if (item.item_type === 'cv' && item.item_key && item.payload) {
+          var restored = normalized(item.payload); restored.id = item.item_key;
+          if (item.item_key === selectedKey) selectedCV = restored;
+          savedFingerprints[item.item_key] = JSON.stringify(ids[item.item_key] ? item.payload : restored);
+          if (!ids[item.item_key]) {
+            saved.push(restored); ids[item.item_key] = true;
+          }
+        }
+      });
+      // Local drafts and same-id saved CVs win; restoring a cloud draft requires a separate action.
+      if (!window.AfroWorkspace.writeJson('afro_cv_list', saved)) throw new Error('Local CV storage unavailable');
+      if (cv) cv.savedCVs = saved;
+      if (remote.some(function (item) { return item.item_type === 'cv'; }) && typeof window.CVApp.renderAll === 'function') window.CVApp.renderAll();
+      restoreButton.textContent = selectedKey ? 'Open selected cloud CV' : 'Restore cloud draft';
+      restoreButton.disabled = selectedKey ? !selectedCV : !cloudDraft;
+      initialized = true;
+      await sync(run);
+    } catch (error) {
+      if (allowed(run)) {
+        console.warn('[CVWorkspaceSync] Remote bootstrap failed:', { code: 'cv_bootstrap_failed', tool_id: 'cv-builder' });
+        stop('Cloud backup failed. Your local CV is still available. Enable it again to retry.');
+      }
+    }
+  }
+  function restore() {
+    var run = generation;
+    var target = selectedKey ? selectedCV : cloudDraft;
+    if (!allowed(run) || !target || !window.confirm('Replace the draft in this browser with the selected cloud CV or draft? Export a local backup first if you want to keep both.')) return;
+    if (!allowed(run)) return;
+    try {
+      var payload = normalized(target), cv = state();
+      if (!cv) return;
+      writeDraft(payload); cv.data = clone(payload.data);
+      ['country', 'template', 'accentColor', 'accentHex'].forEach(function (key) { if (payload[key]) cv[key] = payload[key]; });
+      cv.currentCVId = selectedKey || null;
+      if (typeof window.CVApp.renderAll === 'function') window.CVApp.renderAll();
+      draftFingerprint = ''; show('Cloud draft restored in this browser.'); sync(run);
+    } catch (error) {
+      console.warn('[CVWorkspaceSync] Restore failed:', { code: 'cv_restore_failed', tool_id: 'cv-builder' });
+      stop('Local storage is unavailable. Cloud backup is off.');
+    }
+  }
+  function check() {
+    if (!window.CVApp) { checkbox.disabled = true; return; }
+    var signedIn = Boolean(account());
+    checkbox.disabled = !signedIn;
+    if (consentAccount && account() !== consentAccount) stop('Your account changed. Cloud backup is off.');
+    if (!consentAccount) { if (!signedIn) show('Sign in to enable optional cloud backup.'); return; }
+    sync(generation);
+  }
+  function init() {
+    checkbox = document.getElementById('cv-cloud-consent'); status = document.getElementById('cv-cloud-status'); restoreButton = document.getElementById('cv-cloud-restore');
+    if (!checkbox || !restoreButton || !window.AfroWorkspace) return;
+    checkbox.checked = false;
+    checkbox.addEventListener('change', function () {
+      if (checkbox.checked) start();
+      else stop('Cloud backup is off. Existing cloud copies are kept. Local editing and exports still work.');
+    });
+    restoreButton.addEventListener('click', restore);
+    check();
+    // The inline CV bridge exposes window.CVApp on DOMContentLoaded, after deferred scripts run.
+    if (document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', check, { once: true });
+    // One observer per page. Focus never grants permission or silently replaces a local draft.
+    window.setInterval(check, 5000); window.addEventListener('focus', check);
+    window.addEventListener('afro-auth-change', check);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+}(window));

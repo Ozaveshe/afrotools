@@ -26,6 +26,21 @@ Note: `generate-fr-tool-gap-pages.js` now pipes its output through the accent
 repairer at write time, so regenerating legacy PAGES entries can no longer
 reintroduce unaccented copy.
 
+For reviewed CV privacy copy, edit the English CV page/runtime and the
+`cv-builder` entries in `data/localization/fr-document-pdf-lexicon-overrides.json`.
+Run `node scripts/build-french-document-pdf-lexicon.js --write --app=cv-builder --reviewed-only`,
+then `node scripts/build-french-cv-runtime.js` and
+`node scripts/build-french-document-pdf-parity.js --write --app=cv-builder`.
+The scoped lexicon mode preserves other routes and cached entries and makes no
+translation-provider requests. Missing translations still require a reviewed
+override or the normal full translation workflow; this mode does not certify
+whole-route language completeness. Validate consent with
+`node --test tests/cv-cloud-consent.test.js tests/french-cv-consent-owner.test.js`
+and `tests/e2e/cv-cloud-consent.spec.js` against source and the deploy artifact.
+Signing in must not grant CV upload permission; cloud backup requires a separate,
+account-bound choice for the current page session, and cloud-draft restoration
+requires its own confirmed action. Keep local editing and exports available.
+
 Solar country navigation is also owned by the French generation pipeline.
 `scripts/lib/french-solar-country-routes.js` verifies the 54 existing French
 destinations, then updates exact Solar route literals through an AST parser and
