@@ -47,6 +47,26 @@ The policy now accounts for 28 lanes: the 27 existing allowlisted lanes plus the
 
 ## Validation
 
+### Collector run history and source freshness
+
+The protected scraper-health API and source-health watchdog classify scraper
+run history using registered ownership, `sla_hours`, and the UTC schedule in
+`netlify.toml`. `scripts/build-scraper-health-policy.js` generates the server-only
+`netlify/functions/_shared/scraper-health-policy.json`; `--check` verifies parity.
+The build regenerates it and the automatic test suite checks it. Change the
+registry/function owner or schedule, then regenerate; do not edit this output.
+
+The raw six-hour `scraper_health.is_healthy` flag remains in `view_is_healthy`.
+Unknown legacy rows and missing required collector evidence stay unhealthy.
+Recent errors/anomalies and a newer unsuccessful run also stay unhealthy.
+Weekday-only jobs can cover the last scheduled invocation during a weekend.
+
+These results explicitly have scope `collector_run_history` and scheduled proof
+`not_checked`. Successful run history does not certify provider values or a
+natural scheduled invocation. The separate live-data freshness thresholds and
+strict scheduled-evidence audit remain unchanged. No database view or schedule
+is altered by this policy.
+
 Run:
 
 ```bash

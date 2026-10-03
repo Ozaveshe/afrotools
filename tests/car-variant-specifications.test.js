@@ -7,11 +7,27 @@ const copy = () => structuredClone(data);
 const row = (trim, overrides = {}) => ({ vehicle_id: 'mercedes-e-class-2017', model_year: 2017, trim_label: trim, engine_cc: 1991, cylinders: 4, drivetrain: 'AWD', ...overrides });
 
 test('reviewed facts have dated OEM sources, distinct variants and no prices', () => {
-  assert.equal(validateRegistry(data).variants.length, 19);
-  assert.equal(new Set(data.variants.map(x => x.vehicle_id)).size, 6);
+  assert.equal(validateRegistry(data).variants.length, 23);
+  assert.equal(new Set(data.variants.map(x => x.vehicle_id)).size, 7);
   const bad = copy(); bad.variants[0].asking_price = 12000000;
   assert.throws(() => validateRegistry(bad), /Price/);
 });
+test('Rio US sedan gearbox aliases keep bare badges unresolved', () => {
+  const facts = trim => ({ vehicle_id: 'kia-rio-2015', model_year: 2015, trim_label: trim, engine_cc: 1600, cylinders: 4 });
+  const manual = inspectVariant(facts('LX 4dr Sedan (1.6L 4cyl 6M)'), data);
+  const automatic = inspectVariant(facts('LX 4dr Sedan (1.6L 4cyl 6A)'), data);
+  assert.equal(manual.variant_id, 'kia-rio-2015-us-lx-sedan-manual');
+  assert.equal(automatic.variant_id, 'kia-rio-2015-us-lx-sedan-automatic');
+  assert.notEqual(manual.variant_id, automatic.variant_id);
+  assert.equal(data.variants.find(x => x.variant_id === manual.variant_id).transmission, '6-speed manual');
+  assert.equal(data.variants.find(x => x.variant_id === automatic.variant_id).transmission, '6-speed automatic');
+  assert.deepEqual(manual.missing, ['drivetrain']);
+  assert.equal(manual.publishable, false);
+  assert.equal(manual.stock_verified, false);
+  for (const badge of ['LX', 'EX', 'SX', 'LX Hatchback']) assert.equal(inspectVariant(facts(badge), data).status, 'unresolved-variant');
+  assert.equal(inspectVariant({ ...facts('LX Sedan Manual'), engine_cc: 2000 }, data).status, 'specification-conflict');
+});
+
 test('exact and nominal E300 displacement preserve explicit AWD', () => {
   for (const cc of [1991, 2000]) {
     const result = inspectVariant(row('E300 4Matic AWD Sedan (2.0L 4cyl 9A)', { engine_cc: cc }), data);

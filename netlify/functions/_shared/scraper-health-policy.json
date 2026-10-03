@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "scope": "collector_run_history",
+  "generated_from": [
+    "data/automation/automation-registry.json",
+    "netlify.toml",
+    "scripts/audit-live-automation-health.js",
+    "netlify/functions/*.js"
+  ],
+  "collectors": {
+    "afrostream-livecheck": {
+      "function_name": "afrostream-livecheck",
+      "schedule": "4,34 * * * *",
+      "sla_hours": 1,
+      "requires_scheduled_source": true
+    },
+    "afrostream-news-monitor": {
+      "function_name": "afrostream-news-monitor",
+      "schedule": "46 */6 * * *",
+      "sla_hours": 36,
+      "requires_scheduled_source": true
+    },
+    "afrostream-sync": {
+      "function_name": "afrostream-sync",
+      "schedule": "16 */2 * * *",
+      "sla_hours": 4,
+      "requires_scheduled_source": true
+    },
+    "agri-inputs": {
+      "function_name": "scheduled-fetch-agri-inputs",
+      "schedule": "19 3 * * 4",
+      "sla_hours": 192,
+      "requires_scheduled_source": false
+    },
+    "commodity-prices": {
+      "function_name": "scheduled-fetch-commodity-prices",
+      "schedule": "21 2 * * *",
+      "sla_hours": 36,
+      "requires_scheduled_source": false
+    },
+    "crypto-prices": {
+      "function_name": "scheduled-fetch-crypto",
+      "schedule": "27 * * * *",
+      "sla_hours": 2,
+      "requires_scheduled_source": false
+    },
+    "electricity-tariffs": {
+      "function_name": "scheduled-fetch-electricity-tariffs",
+      "schedule": "33 3 * * *",
+      "sla_hours": 36,
+      "requires_scheduled_source": false
+    },
+    "fuel-prices": {
+      "function_name": "scheduled-fetch-fuel-prices",
+      "schedule": "13 */6 * * *",
+      "sla_hours": 12,
+      "requires_scheduled_source": false
+    },
+    "insurance-premiums": {
+      "function_name": "scheduled-fetch-insurance",
+      "schedule": "41 3 * * 1",
+      "sla_hours": 192,
+      "requires_scheduled_source": false
+    },
+    "property-prices": {
+      "function_name": "scheduled-fetch-property",
+      "schedule": "44 3 * * 3",
+      "sla_hours": 192,
+      "requires_scheduled_source": false
+    },
+    "salary-benchmarks": {
+      "function_name": "scheduled-fetch-salaries",
+      "schedule": "47 3 * * 5",
+      "sla_hours": 192,
+      "requires_scheduled_source": false
+    },
+    "shipping-rates": {
+      "function_name": "scheduled-fetch-shipping",
+      "schedule": "52 4 * * *",
+      "sla_hours": 36,
+      "requires_scheduled_source": false
+    },
+    "stock-indices": {
+      "function_name": "scheduled-fetch-stocks",
+      "schedule": "11 * * * 1-5",
+      "sla_hours": 2,
+      "requires_scheduled_source": false
+    },
+    "telecom-plans": {
+      "function_name": "scheduled-fetch-telecom-plans",
+      "schedule": "47 */12 * * *",
+      "sla_hours": 24,
+      "requires_scheduled_source": false
+    }
+  }
+}

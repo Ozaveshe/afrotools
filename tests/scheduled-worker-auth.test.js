@@ -72,6 +72,7 @@ test('watchdog natural payload enters health checks, not the cached public branc
     './_shared/scholarship-platform': {},
     './_shared/market-data-refresh': {},
     './_shared/email-adapter': {},
+    './_shared/scraper-run-health': require('../netlify/functions/_shared/scraper-run-health'),
   });
   for (const event of manualEvents) assert.strictEqual((await worker.exports.handler(event)).statusCode, 200);
   assert.deepStrictEqual(reads, manualEvents.map(() => 'automation-health-latest'));

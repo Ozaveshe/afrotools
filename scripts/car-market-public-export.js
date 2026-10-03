@@ -40,7 +40,11 @@ from (
 }
 
 function timestamp(value) {
-  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T/.test(value)) throw Error('Invalid timestamp');
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) throw Error('Invalid timestamp');
+  const date = value.slice(0, 10), midnight = Date.parse(date + 'T00:00:00Z');
+  // Date.parse rolls impossible days and 24:00 into the next date.
+  if (!Number.isFinite(midnight) || new Date(midnight).toISOString().slice(0, 10) !== date
+      || Number(value.slice(11, 13)) > 23 || Number(value.slice(14, 16)) > 59 || Number(value.slice(17, 19)) > 59) throw Error('Invalid timestamp');
   const time = Date.parse(value);
   if (!Number.isFinite(time)) throw Error('Invalid timestamp');
   return time;

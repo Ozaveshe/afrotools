@@ -18,10 +18,16 @@ The current catalog's representative engine bands are also averaged to prefill i
 
 ## Honda model-year references
 
-The registry now contains 19 variants across six catalog identities. Twelve additions use four dated Honda US sources: 2010 Civic sedan LX/EX, 2022 Civic sedan LX/Sport/EX/Touring, 2022 Civic hatchback EX-L/Sport Touring, and 2023 CR-V EX AWD/EX-L AWD/Sport Hybrid/Sport Touring Hybrid AWD. Source dates precede the named model years; the hatchback press kit is dated September 29, 2021 and embeds September 20 specifications.
+The Honda additions brought the registry to 19 variants across six catalog identities. Twelve additions use four dated Honda US sources: 2010 Civic sedan LX/EX, 2022 Civic sedan LX/Sport/EX/Touring, 2022 Civic hatchback EX-L/Sport Touring, and 2023 CR-V EX AWD/EX-L AWD/Sport Hybrid/Sport Touring Hybrid AWD. Source dates precede the named model years; the hatchback press kit is dated September 29, 2021 and embeds September 20 specifications.
 
 The 2010 Civic references supply exact 1799 cc. The 2022 sedan distinguishes 1996 cc LX/Sport from 1498 cc EX/Touring; the selected hatchback variants use 1498 cc. Bare sedan badges remain unresolved until the body variant is explicitly reviewed. EX-L and Sport Touring diagnostics refer to the US hatchback configuration and still need original-market and body confirmation. The cited 2022 tables do not establish drivetrain here, so it remains null.
 
 The 2023 US CR-V reference separates 1498 cc petrol EX/EX-L from 1993 cc hybrid Sport/Sport Touring. AWD is optional on EX/EX-L and standard on Sport Touring. Only explicit AWD aliases select the reviewed petrol variants. A plug-in-hybrid label, bare Sport, or an equipment variant marked `w/o BSI` remains unresolved; the July 2022 release does not establish those aliases.
 
 Manufacturer transmission options do not select an individual car's gearbox. The diagnostic command checks year, exact variant alias, engine, cylinders and literal drivetrain claims; it does not check body, original import market, transmission or equipment. Missing advert fields must stay missing. Review those facts, condition, inventory and source access separately before accepting observations or publishing prices. No catalog engine band, planning price, public selector, image permission or public price pack changes with these references.
+
+## Kia Rio model-year references
+
+Four US Rio 2015 sedan references bring the registry to 23 variants across seven catalog identities and eight sources. Kia's August 22, 2014 release supplies a nominal 1.6-litre gasoline four-cylinder engine, six-speed manual for LX, and six-speed automatic for LX/EX/SX. The release was read in the ordinary browser after web retrieval timed out. It does not establish exact displacement or drivetrain here, so both remain null where appropriate.
+
+LX manual and automatic aliases are separate and require an explicit sedan/gearbox label. Bare LX/EX/SX and hatchback labels remain unresolved. A listing titled LX 6M but showing Automatic stays held for gearbox review even when its nominal engine agrees; the diagnostic does not check transmission or prove the original market or physical specification. No manufacturer default is copied into private facts, and no stock, source permission, price, engine band or public selector is approved.

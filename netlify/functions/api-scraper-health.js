@@ -9,6 +9,7 @@
  */
 
 const { getAllowedOrigin } = require('./utils/cors');
+const { summarizeScrapers } = require('./_shared/scraper-run-health');
 
 var DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
@@ -32,10 +33,14 @@ exports.handler = async function(event) {
     'Access-Control-Allow-Headers': 'Content-Type, x-admin-key',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Content-Type': 'application/json',
+    'Cache-Control': 'private, no-store',
   };
 
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS, body: '' };
+  }
+  if (event.httpMethod !== 'GET') {
+    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
   // Admin-only endpoint
@@ -78,22 +83,10 @@ exports.handler = async function(event) {
 
     var scrapers = await res.json();
 
-    // Calculate overall health
-    var healthyCount = scrapers.filter(function(s) { return s.is_healthy; }).length;
-    var overallHealth = 'healthy';
-    if (healthyCount < scrapers.length * 0.5) overallHealth = 'critical';
-    else if (healthyCount < scrapers.length) overallHealth = 'degraded';
-
     return {
       statusCode: 200,
       headers: CORS,
-      body: JSON.stringify({
-        overall_health: overallHealth,
-        healthy_count: healthyCount,
-        total_count: scrapers.length,
-        scrapers: scrapers,
-        checked_at: new Date().toISOString(),
-      }),
+      body: JSON.stringify(summarizeScrapers(scrapers, { id: params.id || null })),
     };
   } catch (err) {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message }) };
