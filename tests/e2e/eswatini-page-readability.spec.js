@@ -77,6 +77,18 @@ for (const systemTheme of ['light', 'dark']) {
         await selectTheme(page, theme, width);
         await checkPage(page, theme, testInfo);
       }
+      await selectTheme(page, 'dark', width);
+      const pension = page.getByRole('button', { name: /ENPF Pension/ });
+      await page.locator('.preset-btn').last().focus();
+      await page.keyboard.press('Tab');
+      await expect(pension).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(pension).toHaveAttribute('aria-pressed', 'false');
+      await checkPage(page, 'dark-pension-off', testInfo);
+      await pension.focus();
+      await page.keyboard.press('Space');
+      await expect(pension).toHaveAttribute('aria-pressed', 'true');
+      await selectTheme(page, 'light', width);
       await page.locator('#grossSalary').fill('600000');
       await page.getByRole('button', { name: 'Calculate My Take-Home Pay →', exact: true }).click();
       await expect(page.locator('#resultsCard')).toBeVisible();
