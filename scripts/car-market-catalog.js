@@ -51,7 +51,13 @@ function loadCatalog(directory = path.join(__dirname, '../data/cars')) {
     const headers = lines.shift();
     return lines.filter(cells => cells.some(Boolean)).map(cells => Object.fromEntries(headers.map((field, index) => [field, cells[index] || ''])));
   };
-  return mergeCatalog([...read('master-vehicle-catalog.csv'), ...read('import-duty-vehicle-estimates.csv')], read('market-identity-additions.csv'));
+  // Private identity aliases preserve the priced catalogs and existing IDs.
+  // Toyota distinguishes Land Cruiser Prado from the wider Land Cruiser range:
+  // https://global.toyota/en/newsroom/toyota/40658942.html
+  return mergeCatalog([...read('master-vehicle-catalog.csv'), ...read('import-duty-vehicle-estimates.csv')], read('market-identity-additions.csv'))
+    .map(row => row.make_slug === 'toyota' && row.model_slug === 'prado' && row.model === 'Prado'
+      ? { ...row, model: 'Prado / Land Cruiser Prado' }
+      : row);
 }
 
 module.exports = { loadCatalog, mergeCatalog };

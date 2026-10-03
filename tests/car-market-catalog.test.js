@@ -50,3 +50,29 @@ test('seed only includes selected identities, stays bounded and carries no price
   assert.throws(() => seedSql(Array(101).fill(identity)), /1..100/);
   assert.throws(() => seedSql([{ ...identity, year: '2013); drop table x' }]), /identity year/);
 });
+
+test('Land Cruiser Prado matches existing Prado years without merging Land Cruiser', () => {
+  const vehicles = catalog();
+  const prados = [...vehicles.values()].filter(vehicle => vehicle.model_slug === 'prado');
+  assert.equal(prados.length, 9);
+  const base = { source_id: 'test', listing_url: 'https://example.org/prado', observed_at: '2026-10-02T05:00:00Z', make: 'Toyota', model: 'Land Cruiser Prado', country_code: 'KE', market: 'Nairobi', condition_label: 'foreign-used', asking_price: 6500000, currency: 'KES', verification_level: 'detail-page-checked' };
+  const sources = { test: { domain: 'example.org', access_status: 'review-needed' } };
+  const now = new Date('2026-10-02T05:01:00Z');
+  for (const vehicle of prados) {
+    const input = { ...base, vehicle_id: vehicle.vehicle_id, model_year: Number(vehicle.year) };
+    const checked = validate([input], sources, vehicles, now)[0];
+    assert.equal(checked.model, 'Land Cruiser Prado');
+    assert.equal(checked.vehicle_id, vehicle.vehicle_id);
+    assert.equal(validate([{ ...input, model: 'Prado' }], sources, vehicles, now)[0].vehicle_id, vehicle.vehicle_id);
+    for (const model of ['Land Cruiser', 'Land Cruiser 250', 'Prado TX']) {
+      assert.throws(() => validate([{ ...input, model }], sources, vehicles, now), /identity mismatch/);
+    }
+    assert.throws(() => validate([{ ...input, model_year: Number(vehicle.year) + 1 }], sources, vehicles, now), /identity mismatch/);
+    assert.throws(() => validate([{ ...input, make: 'Lexus' }], sources, vehicles, now), /identity mismatch/);
+  }
+  assert.throws(() => validate([{ ...base, vehicle_id: 'toyota-land-cruiser-2016', model_year: 2016 }], sources, vehicles, now), /identity mismatch/);
+  assert.equal(vehicles.get('toyota-land-cruiser-2016').model, 'Land Cruiser');
+  const sql = seedSql(prados.filter(vehicle => vehicle.year === '2024'));
+  assert.match(sql, /'toyota-prado-2024', 'Toyota', 'toyota', 'Prado \/ Land Cruiser Prado'/);
+  assert.doesNotMatch(sql, /asking_price|price_median|toyota-land-cruiser-2024/);
+});
