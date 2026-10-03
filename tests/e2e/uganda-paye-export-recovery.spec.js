@@ -2,6 +2,35 @@ const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
+for (const action of ['keyboard', 'preset']) {
+  test(`manual ${action} calculation keeps pending PDF feedback stable`, async ({ page }) => {
+    await open(page, 'dark', 390);
+    await page.evaluate(() => {
+      window.__ugQa.pdfHeld = [];
+      window.AfroTools.pdf.generate = () => new Promise(resolve => window.__ugQa.pdfHeld.push(resolve));
+    });
+    if (action === 'keyboard') {
+      await page.locator('#grossSalary').fill('500000');
+      await page.keyboard.press('Enter');
+    } else {
+      await page.getByRole('button', { name: 'UGX 500k', exact: true }).click();
+    }
+    await expect(page.locator('#resAmount')).toContainText('436,750');
+    await page.locator('#pdfBtn').press('Enter');
+    await expect(page.locator('#pdfStatus')).toHaveText('Preparing your PDF…');
+    // Cross the original 280ms automatic calculation window while the export
+    // is pending. Identical inputs must not discard this request's feedback.
+    await page.waitForTimeout(350);
+    await expect(page.locator('#pdfStatus')).toHaveText('Preparing your PDF…');
+    await expect(page.locator('#pdfBtn')).toBeDisabled();
+    await expect(page.locator('#pdfBtn')).toHaveAttribute('aria-busy', 'true');
+    await page.evaluate(() => window.__ugQa.pdfHeld.shift()());
+    await expect(page.locator('#pdfStatus')).toHaveText('PDF prepared. Check your downloads.');
+    await expect(page.locator('#pdfBtn')).toBeEnabled();
+    await expect(page.locator('#pdfBtn')).not.toHaveAttribute('aria-busy', 'true');
+  });
+}
+
 async function geometry(page, selector) {
   return page.evaluate(selector => {
     const element = document.querySelector(selector);

@@ -804,6 +804,7 @@ function calcAnnualLST(monthlyGross) { return ugandaPayeEngine().annualLst(month
   }
 
   function calculate() {
+  clearTimeout(window._sliderDebounce);
   const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
   if (!gross || gross <= 0) {
     invalidateResult('Enter a valid salary above zero.');
