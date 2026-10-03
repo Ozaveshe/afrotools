@@ -2,7 +2,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { buildRecipePageHtml } = require('../scripts/generate-afrokitchen-static-pages');
+const { buildRecipePageHtml, refreshRecipeSchema } = require('../scripts/generate-afrokitchen-static-pages');
+const { replaceHeadLinks } = require('../scripts/lib/route-contract');
 const { loadAfroKitchenEngine, loadRecipeImages } = require('../scripts/lib/afrokitchen-static');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../tools/afrokitchen/seo-manifest.json')));
@@ -43,4 +44,14 @@ test('missing recipe content keeps the existing noindex safeguard', () => {
   assert.equal(recipeSchema(html), undefined);
   assert.match(html, /<meta name="robots" content="noindex, follow">/);
   assert.match(html, /content="missing_ingredients"/);
+});
+
+test('a schema-only refresh preserves the route owner head ordering', () => {
+  const route = '/tools/afrokitchen/recipes/fisherman-soup-ng/';
+  const hreflangs = { en: route, 'x-default': route };
+  const existing = fs.readFileSync(path.join(__dirname, '../tools/afrokitchen/recipes/fisherman-soup-ng/index.html'), 'utf8');
+  const normalized = replaceHeadLinks(existing, route, hreflangs);
+  const refreshed = refreshRecipeSchema(normalized, null, ['missing_image']);
+  assert.equal(replaceHeadLinks(refreshed, route, hreflangs), refreshed);
+  assert.equal(refreshRecipeSchema(refreshed, null, ['missing_image']), refreshed);
 });

@@ -3290,7 +3290,10 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   if (schemaBlockers.length) additions.push('  <meta name="afrokitchen-schema-blockers" content="' + escapeHtml(schemaBlockers.join(',')) + '">');
   if (additions.length) {
     if (!next.includes('</head>')) throw new Error('Missing page head in schema-only refresh');
-    next = next.replace('</head>', additions.join('\n') + '\n</head>');
+    const headEnd = next.indexOf('</head>');
+    const canonical = /<link\b[^>]*\brel=["']canonical["'][^>]*>/i.exec(next.slice(0, headEnd));
+    const insertion = canonical ? canonical.index : headEnd;
+    next = next.slice(0, insertion) + additions.join('\n') + '\n' + next.slice(insertion);
   }
   return next;
 }
