@@ -26,6 +26,52 @@ async function settleRenderedContent(page) {
   })).toBe(0);
 }
 
+for (const width of [320, 1280]) {
+  test(`Eswatini FAQ label stays above its heading with normal motion at ${width}px`, async ({ page }, testInfo) => {
+    const errors = [], writes = [], origin = new URL(testInfo.project.use.baseURL).origin;
+    page.on('pageerror', error => errors.push({ name: error.name, message: error.message }));
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'no-preference' });
+    await page.route('**/*', handler => {
+      const request = handler.request(), url = new URL(request.url());
+      if (!['GET', 'HEAD'].includes(request.method())) {
+        writes.push({ path: url.pathname, method: request.method() });
+        return handler.abort();
+      }
+      return url.origin === origin || url.hostname === 'cdnjs.cloudflare.com'
+        ? handler.continue() : handler.fulfill({ status: 204, body: '' });
+    });
+    await page.addInitScript(() => {
+      localStorage.setItem('aft_theme', 'dark');
+      localStorage.setItem('afrotools_cookie_consent', 'declined');
+    });
+    await page.goto('/eswatini/sz-paye');
+    await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
+    const heading = page.getByRole('heading', { name: 'Common PAYE Questions', exact: true });
+    for (const theme of ['dark', 'light']) {
+      await selectTheme(page, theme, width);
+      await heading.scrollIntoViewIfNeeded();
+      const geometry = await page.locator('.ng-faq-header').evaluate(header => {
+        const label = header.querySelector('.eyebrow'), title = header.querySelector('.ng-faq-title');
+        return { labelBottom: label.getBoundingClientRect().bottom, titleTop: title.getBoundingClientRect().top, opacity: getComputedStyle(label).opacity };
+      });
+      expect(geometry.opacity).toBe('1');
+      expect(geometry.labelBottom).toBeLessThanOrEqual(geometry.titleTop);
+      await checkPage(page, theme, testInfo);
+      await heading.scrollIntoViewIfNeeded();
+      const settledGeometry = await page.locator('.ng-faq-header').evaluate(header => ({
+        labelBottom: header.querySelector('.eyebrow').getBoundingClientRect().bottom,
+        titleTop: header.querySelector('.ng-faq-title').getBoundingClientRect().top,
+        opacity: getComputedStyle(header.querySelector('.eyebrow')).opacity
+      }));
+      expect(settledGeometry.opacity).toBe('1');
+      expect(settledGeometry.labelBottom).toBeLessThanOrEqual(settledGeometry.titleTop);
+    }
+    expect(errors).toEqual([]);
+    expect(writes).toEqual([]);
+  });
+}
+
 async function selectTheme(page, theme, width) {
   if (await page.locator('html').getAttribute('data-theme') === theme) return;
   if (width === 320) await page.getByRole('button', { name: 'Open menu', exact: true }).click();
