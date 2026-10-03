@@ -12,6 +12,12 @@ function safeUrl(value) {
   return url.protocol === 'https:' && !url.username && !url.password && !url.port && !url.search && !url.hash;
 }
 
+function safeListingUrl(value) {
+  // Cars-ZM's car ID is a public advert reference, not a contact/tracking token.
+  // Keep manufacturer URLs and every other source query-free.
+  return safeUrl(value) || (typeof value === 'string' && /^https:\/\/cars-zambia\.com\/listing\.php\?type=car&id=[1-9]\d{0,9}$/.test(value));
+}
+
 function mergeCatalog(pricedRows, additions = []) {
   const rows = new Map();
   const tuples = new Map();
@@ -20,7 +26,7 @@ function mergeCatalog(pricedRows, additions = []) {
       const fail = message => { throw Error(`Catalog ${input.vehicle_id || 'missing id'}: ${message}`); };
       if (identityOnly) {
         if (Object.keys(input).some(field => !additionFields.has(field))) fail('identity additions cannot contain price or other fields');
-        if (!safeUrl(input.identity_evidence_url) || !safeUrl(input.market_listing_url)) fail('identity and listing evidence URLs required');
+        if (!safeUrl(input.identity_evidence_url) || !safeListingUrl(input.market_listing_url)) fail('identity and listing evidence URLs required');
         const date = String(input.reviewed_at || '');
         if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(date + 'T00:00:00Z')) || new Date(date + 'T00:00:00Z').toISOString().slice(0, 10) !== date) fail('invalid review date');
       }
@@ -51,7 +57,13 @@ function loadCatalog(directory = path.join(__dirname, '../data/cars')) {
     const headers = lines.shift();
     return lines.filter(cells => cells.some(Boolean)).map(cells => Object.fromEntries(headers.map((field, index) => [field, cells[index] || ''])));
   };
-  return mergeCatalog([...read('master-vehicle-catalog.csv'), ...read('import-duty-vehicle-estimates.csv')], read('market-identity-additions.csv'));
+  // Private aliases preserve the priced catalogs and existing IDs.
+  // Toyota describes Prado as the distinct light-duty Land Cruiser lineage:
+  // https://global.toyota/en/newsroom/toyota/40658942.html
+  return mergeCatalog([...read('master-vehicle-catalog.csv'), ...read('import-duty-vehicle-estimates.csv')], read('market-identity-additions.csv'))
+    .map(row => row.make_slug === 'toyota' && row.model_slug === 'prado' && row.model === 'Prado'
+      ? { ...row, model: 'Prado / Land Cruiser Prado' }
+      : row);
 }
 
 module.exports = { loadCatalog, mergeCatalog };
