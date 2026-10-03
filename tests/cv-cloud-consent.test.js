@@ -16,13 +16,13 @@ function harness(options={}) {
   store.set('afro_cv_data',JSON.stringify(current)); store.set('afro_cv_list',JSON.stringify(current.savedCVs));
   let user={id:'synthetic-account-a'},confirm=true;
   const window={CVApp:{getState:()=>current,renderAll:()=>{}},AfroAuth:{getUser:()=>user,isLoggedIn:()=>Boolean(user),getSessionTokenAsync:options.token || (async()=> 'synthetic-token')},
-    location:{search:''},setInterval:fn=>{intervals.push(fn);return intervals.length;},addEventListener:(name,fn)=>events[name]=fn,dispatchEvent:()=>{},confirm:()=>confirm};
+    location:{search:options.search||''},setInterval:fn=>{intervals.push(fn);return intervals.length;},addEventListener:(name,fn)=>events[name]=fn,dispatchEvent:()=>{},confirm:()=>confirm};
   const cvApp=window.CVApp;
   if(options.lateBridge)delete window.CVApp;
   const context=vm.createContext({window,document:{readyState:options.lateBridge?'interactive':'complete',getElementById:id=>elements[id],addEventListener:(name,fn)=>documentEvents[name]=fn},localStorage:{getItem:key=>store.get(key)||null,setItem(key,value){if(options.storageFails)throw Error('PRIVATE_CV_SENTINEL');store.set(key,value);}},
     console:{warn:(...args)=>logs.push(args),error:(...args)=>logs.push(args)},URLSearchParams,CustomEvent:function(){},
     fetch:async(url,init)=>{requests.push({url,method:init.method,body:init.body});if(options.fetch)return options.fetch(url,init);return{ok:true,text:async()=>JSON.stringify({data:options.remote||[],item:{}})};}});
-  ['assets/js/lib/workspace-sync.js','tools/cv-builder/js/cv-workspace-sync.js'].forEach(file=>vm.runInContext(fs.readFileSync(path.join(sourceRoot,file),'utf8'),context,{filename:file}));
+  ['tools/cv-builder/js/cv-data.js','assets/js/lib/workspace-sync.js','tools/cv-builder/js/cv-workspace-sync.js'].forEach(file=>vm.runInContext(fs.readFileSync(path.join(sourceRoot,file),'utf8'),context,{filename:file}));
   return {requests,logs,elements,current,store,window,intervals,context,setUser:value=>user=value,setConfirm:value=>confirm=value,
     exposeBridge(){window.CVApp=cvApp;documentEvents.DOMContentLoaded();},
     async enable(){elements['cv-cloud-consent'].checked=true;elements['cv-cloud-consent'].change();await flush();},
@@ -54,12 +54,31 @@ test('cloud data never silently overwrites a draft or same-id local saved CV; re
     {item_type:'cv',item_key:'saved-remote',payload:{id:'saved-remote',data:{summary:'Remote extra'}}}]});
   await h.enable();assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');assert.equal(h.current.savedCVs.length,2);assert.equal(h.current.savedCVs[0].data.summary,'PRIVATE_CV_SENTINEL');
   h.setConfirm(false);await h.restore();assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');
-  h.setConfirm(true);await h.restore();assert.equal(h.current.data.summary,'CLOUD_SENTINEL');assert.equal(JSON.parse(h.store.get('afro_cv_data')).data.summary,'CLOUD_SENTINEL');
+  h.setConfirm(true);await h.restore();assert.equal(h.current.data.summary,'CLOUD_SENTINEL');assert.equal(h.current.data.email,'');assert.equal(h.current.data.exps.length,1);assert.equal(h.current.data.skills.h,'');assert.equal(JSON.parse(h.store.get('afro_cv_data')).data.summary,'CLOUD_SENTINEL');
 });
 test('account change and logout withdraw permission; another account never inherits it',async()=>{
   const h=harness();await h.enable();const count=h.requests.length;h.setUser({id:'synthetic-account-b'});h.current.data.summary='Other account local';await h.tick();
   assert.equal(h.requests.length,count);assert.equal(h.elements['cv-cloud-consent'].checked,false);
   h.setUser(null);await h.tick();assert.equal(h.elements['cv-cloud-consent'].disabled,true);assert.equal(h.requests.length,count);
+});
+test('selected saved-CV links require consent and confirmation, including records outside the first page',async()=>{
+  const remote={item_type:'cv',item_key:'selected-synthetic',payload:{id:'selected-synthetic',data:{summary:'SELECTED_CLOUD_SENTINEL'},country:'NG',template:'slate'}};
+  const h=harness({search:'?cv=selected-synthetic',fetch:async(url)=>({ok:true,text:async()=>JSON.stringify({data:String(url).includes('item_key=selected-synthetic')?[remote]:[]})})});
+  assert.equal(h.requests.length,0);await h.enable();
+  assert.equal(h.requests.filter(r=>r.method==='GET').length,2);assert.match(h.requests[1].url,/item_type=cv&item_key=selected-synthetic/);
+  assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');h.setConfirm(false);await h.restore();assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');
+  h.setConfirm(true);await h.restore();assert.equal(h.current.currentCVId,'selected-synthetic');assert.equal(h.current.data.summary,'SELECTED_CLOUD_SENTINEL');assert.equal(h.current.data.email,'');assert.equal(h.current.data.exps.length,1);
+});
+test('malformed cloud structures fail closed without mutating local private fields',async()=>{
+  for(const data of [{skills:'invalid'}, {exps:[null]}, {fn:42}, {extras:[]}]){
+    const h=harness({remote:[{item_type:'cv-draft',payload:{data}}]});await h.enable();
+    assert.equal(h.requests.length,1);assert.equal(h.elements['cv-cloud-consent'].checked,false);assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');assert.equal(h.logs.length,1);
+  }
+});
+test('selected-CV lookup cannot send after consent is withdrawn during its token wait',async()=>{
+  let calls=0,release;const h=harness({search:'?cv=selected-synthetic',token:()=>++calls===1?Promise.resolve('synthetic-token'):new Promise(resolve=>release=resolve)});
+  await h.enable();assert.equal(h.requests.length,1);assert.equal(typeof release,'function');h.disable();release('synthetic-token');await flush();
+  assert.equal(h.requests.length,1);assert.equal(h.current.data.summary,'PRIVATE_CV_SENTINEL');assert.equal(h.logs.length,0);
 });
 test('logout remains revoked even when legacy workspace profile caches still contain the same account',async()=>{
   const h=harness();await h.enable();const count=h.requests.length;

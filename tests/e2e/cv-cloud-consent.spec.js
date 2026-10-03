@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const { test, expect } = require('@playwright/test');
 test.use({ trace: 'off', screenshot: 'off', video: 'off' });
 
-async function open(page, route) {
+async function open(page, route, selected = false) {
   const requests=[],errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   await page.addInitScript(()=>{
@@ -15,11 +15,15 @@ async function open(page, route) {
   await page.route('**/api/workspace**',async route=>{
     const request=route.request(),body=request.postData()?JSON.parse(request.postData()):null;
     requests.push({method:request.method(),hasPayload:Boolean(body),hasCv:Boolean(body?.payload?.data),itemKey:body?.item_key||null,itemType:body?.item_type||null});
-    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({data:[{item_type:'cv-draft',payload:{data:{fn:'Cloud',ln:'Synthetic',summary:'Cloud synthetic draft'},country:'NG',template:'ats-classic'}}],item:{}})});
+    const remote={item_type:'cv-draft',payload:{data:{fn:'Cloud',ln:'Synthetic',summary:'Cloud synthetic draft'},country:'NG',template:'ats-classic'}};
+    const targeted=new URL(request.url()).searchParams.get('item_key')==='selected-synthetic';
+    if(selected&&targeted){remote.item_type='cv';remote.item_key='selected-synthetic';remote.payload.id='selected-synthetic';}
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({data:[remote],item:{}})});
   });
   await page.route(/https:\/\/(?:fonts\.googleapis\.com|fonts\.gstatic\.com|www\.googletagmanager\.com)\//,route=>route.fulfill({status:200,body:''}));
   const response=await page.goto(route,{waitUntil:'domcontentloaded'});expect(response.status()).toBe(200);
   await page.waitForFunction(()=>window.CVApp&&window.AfroWorkspace);
+  await page.waitForLoadState('load');
   await expect(page.locator('#cv-cloud-consent')).toBeEnabled();
   await page.evaluate(()=>{
     const state=window.CVApp.getState();Object.assign(state.data,{fn:'Local',ln:'Synthetic',title:'Synthetic role',summary:'Local synthetic draft',email:'synthetic@example.test'});
@@ -100,5 +104,28 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
     await expect(choice).not.toBeChecked();const accountCount=proof.requests.length;
     await page.reload({waitUntil:'domcontentloaded'});await expect(choice).not.toBeChecked();
     await page.evaluate(()=>window.dispatchEvent(new Event('focus')));expect(proof.requests.length).toBe(accountCount);expect(proof.errors).toEqual([]);
+  });
+  test(`${locale}: confirmed partial cloud restoration and selected-CV links render complete empty defaults without retaining local details`,async({page})=>{
+    for(const selected of [false,true]){
+      const proof=await open(page,route+(selected?'?cv=selected-synthetic':''),selected);
+      expect(proof.requests).toEqual([]);
+      await page.locator('#cv-cloud-consent').check();
+      await expect(page.locator('#cv-cloud-restore')).toBeEnabled();
+      if(selected){
+        await expect(page.locator('#cv-cloud-restore')).toHaveText(locale==='fr'?'Ouvrir le CV cloud sélectionné':'Open selected cloud CV');
+        expect(proof.requests.filter(r=>r.method==='GET').length).toBe(2);
+      }
+      expect(await page.evaluate(()=>window.CVApp.getState().data.summary==='Local synthetic draft')).toBe(true);
+      const confirmed=page.waitForEvent('dialog').then(dialog=>dialog.accept());
+      await page.locator('#cv-cloud-restore').click();await confirmed;
+      await expect.poll(()=>page.evaluate(()=>window.CVApp.getState().data.summary==='Cloud synthetic draft')).toBe(true);
+      expect(await page.evaluate(expected=>{
+        const cv=window.CVApp.getState(),stored=JSON.parse(localStorage.getItem('afro_cv_data'));
+        return cv.data.email===''&&cv.data.exps.length===1&&cv.data.edus.length===1&&cv.data.skills.h===''&&cv.currentCVId===expected&&stored.data.email===''&&stored.data.exps.length===1;
+      },selected?'selected-synthetic':null)).toBe(true);
+      await expect(page.locator('#cvpreview')).toContainText('Cloud Synthetic');
+      await expect(page.locator('#cvpreview')).toBeVisible();
+      expect(proof.errors).toEqual([]);await page.locator('#cv-cloud-consent').uncheck();
+    }
   });
 }
