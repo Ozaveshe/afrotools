@@ -145,7 +145,7 @@
 
     var t = "undefined" != typeof CVTemplates ? CVTemplates : e.CVTemplates || {}, i = e.CVApp || {}, o = i.esc || function(t) {
         var i = e.document ? e.document.createElement("div") : null;
-        return i ? (i.textContent = t || "", i.innerHTML) : String(t || "").replace(/[&<>"']/g, function(e) {
+        return i ? (i.textContent = t || "", i.innerHTML.replace(/"/g,"&quot;").replace(/'/g,"&#39;")) : String(t || "").replace(/[&<>"']/g, function(e) {
             return {
                 "&": "&amp;",
                 "<": "&lt;",
@@ -604,7 +604,7 @@
             tight: !0
         }) : "", "</div>" ].join("");
     }, t.creativePortfolio = function(e, t, i) {
-        var o = p(e), n = i || "#1d4ed8", r = e.showPhoto && e.photo ? '<img src="' + e.photo + '" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:18px;border:3px solid rgba(255,255,255,.2);margin-bottom:14px">' : "";
+        var o = p(e), n = i || "#1d4ed8", r = e.showPhoto && e.photo ? '<img src="' + c(e.photo) + '" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:18px;border:3px solid rgba(255,255,255,.2);margin-bottom:14px">' : "";
         return [ '<div class="cv-prod cv-prod-creative" style="' + g("padding:0;display:grid;grid-template-columns:34% 66%") + '">', '<aside style="background:#102033;color:#e2e8f0;min-height:841px;padding:30px 18px">', r, '<h1 style="color:inherit;margin:0;color:#fff;font-size:25px;line-height:1;font-weight:950">' + o.name + "</h1>", '<div style="margin-top:6px;color:#bfdbfe;font-size:9.4px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">' + o.title + "</div>", o.contact.length ? '<div style="margin-top:14px;color:#cbd5e1;font-size:8px;line-height:1.55">' + o.contact.join("<br>") + "</div>" : "", f(copy.section32, j(o.hard.concat(o.soft).concat(o.tools), {
             bg: "rgba(255,255,255,.1)",
             color: "#fff",

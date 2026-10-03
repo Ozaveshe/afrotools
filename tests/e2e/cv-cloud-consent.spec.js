@@ -105,8 +105,7 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
     await page.reload({waitUntil:'domcontentloaded'});await expect(choice).not.toBeChecked();
     await page.evaluate(()=>window.dispatchEvent(new Event('focus')));expect(proof.requests.length).toBe(accountCount);expect(proof.errors).toEqual([]);
   });
-  test(`${locale}: confirmed partial cloud restoration and selected-CV links render complete empty defaults without retaining local details`,async({page})=>{
-    for(const selected of [false,true]){
+  for(const selected of [false,true]) test(`${locale}: confirmed ${selected?'selected-CV link':'partial cloud draft'} restoration renders complete empty defaults without retaining local details`,async({page})=>{
       const proof=await open(page,route+(selected?'?cv=selected-synthetic':''),selected);
       expect(proof.requests).toEqual([]);
       await page.locator('#cv-cloud-consent').check();
@@ -126,6 +125,30 @@ for(const [locale,route] of [['en','/tools/cv-builder/'],['fr','/fr/tools/genera
       await expect(page.locator('#cvpreview')).toContainText('Cloud Synthetic');
       await expect(page.locator('#cvpreview')).toBeVisible();
       expect(proof.errors).toEqual([]);await page.locator('#cv-cloud-consent').uncheck();
-    }
+  });
+  for(const template of ['slate','portfolio','franco','diaspora','creative-portfolio','lagosCorporate','accraGraduate']) test(`${locale}/${template}: photo values stay inside image attributes and normal photos remain visible`,async({page},testInfo)=>{
+    const proof=await open(page,route);
+    await page.evaluate(()=>Object.assign(window.CVApp.getState().data,{fn:'Synthetic "Quoted"',ln:"O'Candidate"}));
+    const malformed='data:image/png;base64,AA" onerror="window.__cvSyntheticPhotoProbe=true';
+    const valid='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aS1cAAAAASUVORK5CYII=';
+      await page.evaluate(({template,photo})=>{
+        const cv=window.CVApp.getState();cv.template=template;cv.data.showPhoto=true;cv.data.photo=photo;window.__cvSyntheticPhotoProbe=false;window.CVApp.renderAll();
+      },{template,photo:malformed});
+      const image=page.locator('#cvpreview img').first();await expect(image).toBeVisible();
+      expect(await image.evaluate(el=>el.hasAttribute('onerror'))).toBe(false);
+      await expect(page.locator('.cv-app [onerror]')).toHaveCount(0);
+      await expect(page.locator('.cv-inp[data-path="fn"]')).toHaveValue('Synthetic "Quoted"');
+      expect(await page.evaluate(()=>window.__cvSyntheticPhotoProbe)).toBe(false);
+      await page.evaluate(photo=>{window.CVApp.getState().data.photo=photo;window.CVApp.renderAll();},valid);
+      try {
+        await page.waitForFunction(valid=>{const el=document.querySelector('#cvpreview img');return el&&el.getAttribute('src')===valid&&el.complete&&el.naturalWidth===1;},valid,{timeout:10000});
+        await expect(page.locator('#cvpreview img').first()).toHaveAttribute('src',valid);
+      } catch(error) {
+        const metadata=await page.evaluate(({template,valid})=>({template,ready:document.readyState,templateMatches:window.CVApp.getState().template===template,dataMatches:window.CVApp.getState().data.photo===valid,images:Array.from(document.querySelectorAll('#cvpreview img')).map(el=>({sourceMatches:el.getAttribute('src')===valid,complete:el.complete,naturalWidth:el.naturalWidth,handler:el.hasAttribute('onerror')}))}),{template,valid});
+        await testInfo.attach('photo-decode-metadata',{body:Buffer.from(JSON.stringify(metadata)),contentType:'application/json'});throw error;
+      }
+      await expect(page.locator('#cvpreview img').first()).toBeVisible();
+      await expect(page.locator('#cvpreview')).toContainText("Synthetic \"Quoted\" O'Candidate");
+    expect(proof.requests).toEqual([]);expect(proof.errors).toEqual([]);
   });
 }
