@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
   <script src="/assets/js/components/navbar.min.js?v=8f0392e6" defer></script>
   <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
-  <script src="/assets/js/bundles/core.f020a576.min.js" defer></script>
+  <script src="/assets/js/bundles/core.23b1bcef.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5;--ai-shell:1080px;--ai-radius:12px;--ai-radius-lg:16px;--ai-measure:70ch}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -839,14 +839,14 @@
   <script src="/assets/js/ai/agriculture-workflow.js?v=9297fec5"></script>
   <script src="/assets/js/ai/workflow-export.js?v=365220fd"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
-<script src="/assets/js/ai/tool-manifest.js?v=93d4929a"></script>
+<script src="/assets/js/ai/tool-manifest.js?v=f987a469"></script>
 <script src="/assets/js/ai/afro-data.js?v=e3b5ce2d"></script>
 <script src="/assets/js/ai/afro-confidence.js?v=10634864"></script>
   <script src="/assets/js/ai/french-route-map.generated.js?v=1853aa60"></script>
   <script src="/assets/js/ai/french-transport-route-map.js?v=3a183e5b"></script>
   <script src="/assets/js/ai/swahili-route-map.generated.js?v=bb58ff0a"></script>
   <script src="/assets/js/ai/result-layout.js?v=4e85ace1" defer></script>
-  <script src="/assets/js/ai/intent-router.js?v=de8a606c"></script>
+  <script src="/assets/js/ai/intent-router.js?v=d57b3845"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
   <script src="/assets/js/ai/orchestrator.js?v=275e0f53"></script>
@@ -4218,11 +4218,9 @@
      */
     function handleLowConfidence(query, generation) {
       if (generation !== routeGeneration) return;
-      if (!getRouterManifest().length) {
-        ensureToolDirectory().then(function () { handleLowConfidenceNow(query, generation); });
-        return;
-      }
-      handleLowConfidenceNow(query, generation);
+      // The navbar may supply a nonempty but partial registry. Only the full
+      // directory can establish that a query has no matching public tool.
+      ensureToolDirectory().then(function () { handleLowConfidenceNow(query, generation); });
     }
 
     function handleLowConfidenceNow(query, generation) {
@@ -4330,7 +4328,9 @@
           var fallbackCopy = routerFallbackCopy(payload, payload && payload.decision);
           modelStatus.textContent = fallbackCopy || (consentToModel ? "AI help was requested with consent. Review the selected tool before opening it." : "");
         }
-      }).catch(function (err) {
+      }).catch(async function (err) {
+        if (generation !== routeGeneration) return;
+        await ensureToolDirectory();
         if (generation !== routeGeneration) return;
         var routerDisabled = err && err.message === "Router disabled for this session.";
         var catalogMatch = routerDisabled ? null : localCatalogRoute(clean);

@@ -4,6 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { normalizeJsonLdLanguageValues } = require('./lib/json-ld-preserving-normalizer');
+const { repairHtml: repairFrenchNavigation } = require('./repair-french-navigation-links');
 
 const root = path.resolve(__dirname, '..');
 const sourceRel = 'tools/api-tester/index.html';
@@ -34,6 +36,7 @@ const replacements = [
   ['provider secrets, and African API keys. Only non-secret values can be saved. Credentials stay in memory and are cleared after send, cancel or page exit.', 'les secrets fournisseur et les clés d’API africaines. Seules les valeurs non sensibles peuvent être enregistrées. Les identifiants restent en mémoire et sont effacés après envoi, annulation ou fermeture de la page.'],
   ['Request preflight', 'Contrôle avant envoi'],
   ['Request body', 'Corps de la requête'],
+  ['Request URL', 'URL de la requête'],
   ['Request', 'Requête'],
   ['Send', 'Envoyer'],
   ['Params', 'Paramètres'],
@@ -59,6 +62,13 @@ const replacements = [
   ['Max response time (ms)', 'Temps de réponse maximal (ms)'],
   ['Response contains', 'La réponse contient'],
   ['JSON path exists', 'Le chemin JSON existe'],
+  ['Status is ', 'Le statut est '],
+  ['Status ', 'Statut '],
+  ['Response time under ', 'Temps de réponse inférieur à '],
+  ['Response contains "', 'La réponse contient "'],
+  ['JSON path exists: ', 'Le chemin JSON existe : '],
+  ['PASS ', 'RÉUSSI '],
+  ['FAIL ', 'ÉCHEC '],
   ['Copy safe debug brief', 'Copier le résumé de diagnostic expurgé'],
   ['Save request', 'Enregistrer la requête'],
   ['Copy cURL', 'Copier le cURL expurgé'],
@@ -161,6 +171,9 @@ for (const match of source.matchAll(protectedBlock)) {
 }
 output += replaceAll(source.slice(cursor));
 output = output.replace(/(<html\b[^>]*\blang=")en(")/i, '$1fr$2');
+output = output.replace(/(<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>)([\s\S]*?)(<\/script>)/gi,
+  (_, open, json, close) => open + normalizeJsonLdLanguageValues(json, 'fr').content + close);
+output = repairFrenchNavigation(output).next;
 
 output = output
   .replace(/https:\/\/afrotools\.com\/tools\/api-tester\//g, 'https://afrotools.com/fr/tools/testeur-api/')

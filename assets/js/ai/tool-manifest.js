@@ -1196,6 +1196,14 @@
     }
   );
 
+  // Discovery opens the existing cookbook; it does not generate or prefill recipes.
+  MAJOR_TOOL_OVERRIDES.afrokitchen = major(
+    'african',
+    ['African recipes', 'cookbook', 'jollof rice recipe', 'injera recipe', 'thieboudienne recipe', 'cook tonight', 'weekly cooking plan'],
+    ['Find a jollof rice recipe', 'Open my cookbook'],
+    [], [], 'browser_local', ['route_only'], ['checklist', 'table'], 'reviewed', 'none', []
+  );
+
   function major(subcategory, intents, examples, required, optional, privacy, capabilities, outputs, source, stakes, monetization) {
     return { subcategory: subcategory, userIntents: intents, exampleQueries: examples, requiredInputs: required, optionalInputs: optional, privacyMode: privacy, aiCapabilities: capabilities, outputTypes: outputs, sourcePolicy: source, highStakesDomain: stakes, monetizationSurfaces: monetization };
   }

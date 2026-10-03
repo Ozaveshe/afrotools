@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script src="/assets/js/components/navbar.min.js?v=8f0392e6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
-<script src="/assets/js/bundles/core.f020a576.min.js" defer></script>
+<script src="/assets/js/bundles/core.23b1bcef.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 <script type="application/ld+json">
@@ -238,7 +238,7 @@
         <div class="card-body">
           <div class="request-line">
             <select id="method" class="method" aria-label="Method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
-            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
+            <input aria-label="Request URL" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
             <button type="button" class="send" id="send-request">Send</button>
           </div>
 
@@ -286,7 +286,7 @@
               <div><label for="test-time">Max response time (ms)</label><input id="test-time" type="number" value="3000" placeholder="1000"></div>
             </div>
             <div class="grid-2" style="margin-top:12px">
-              <div><label for="test-contains">Response contains</label><input id="test-contains" value="operational" placeholder="success"></div>
+              <div><label for="test-contains">Response contains</label><input id="test-contains" value="available" placeholder="success"></div>
               <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" value="$.status" placeholder="$.data.id"></div>
             </div>
           </div>
@@ -400,7 +400,7 @@
       url: DEFAULT_STATUS_URL,
       headers: [{key:'Accept', value:'application/json'}],
       body: '',
-      tests: {status:'200', contains:'operational', time:'1500', jsonpath:'$.status'}
+      tests: {status:'200', contains:'available', time:'1500', jsonpath:'$.status'}
     },
     {
       id: 'paystack-init',

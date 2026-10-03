@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="fr">
 <head>
-<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>
 <meta name="afrotools-content-id" content="fr-developer:api-tester">
 <meta name="afrotools-source-owner" content="scripts/build-french-developer-api-tester.js">
-<meta name="afrotools-source-hash" content="b4da16ef66ba61a7">
+<meta name="afrotools-source-hash" content="b57af63ae63471f4">
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script src="/assets/js/components/navbar.min.js?v=8f0392e6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
-<script src="/assets/js/bundles/core.f020a576.min.js" defer></script>
+<script src="/assets/js/bundles/core.23b1bcef.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 <script type="application/ld+json">
@@ -242,7 +242,7 @@
         <div class="card-body">
           <div class="request-line">
             <select id="method" class="method" aria-label="Method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
-            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
+            <input aria-label="URL de la requête" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
             <button type="button" class="send" id="send-request">Envoyer</button>
           </div>
 
@@ -290,7 +290,7 @@
               <div><label for="test-time">Temps de réponse maximal (ms)</label><input id="test-time" type="number" value="3000" placeholder="1000"></div>
             </div>
             <div class="grid-2" style="margin-top:12px">
-              <div><label for="test-contains">La réponse contient</label><input id="test-contains" value="operational" placeholder="success"></div>
+              <div><label for="test-contains">La réponse contient</label><input id="test-contains" value="available" placeholder="success"></div>
               <div><label for="test-jsonpath">Le chemin JSON existe</label><input id="test-jsonpath" value="$.status" placeholder="$.data.id"></div>
             </div>
           </div>
@@ -404,7 +404,7 @@
       url: DEFAULT_STATUS_URL,
       headers: [{key:'Accept', value:'application/json'}],
       body: '',
-      tests: {status:'200', contains:'operational', time:'1500', jsonpath:'$.status'}
+      tests: {status:'200', contains:'available', time:'1500', jsonpath:'$.status'}
     },
     {
       id: 'paystack-init',
@@ -870,20 +870,20 @@
 
   function runTests(req, result){
     var tests = [];
-    if (req.tests.status) tests.push({name:'Status is ' + req.tests.status, pass:String(result.status) === String(req.tests.status)});
-    if (req.tests.time) tests.push({name:'Response time under ' + req.tests.time + 'ms', pass:result.elapsed <= Number(req.tests.time)});
-    if (req.tests.contains) tests.push({name:'Response contains "' + req.tests.contains + '"', pass:result.body.indexOf(req.tests.contains) !== -1});
+    if (req.tests.status) tests.push({name:'Le statut est ' + req.tests.status, pass:String(result.status) === String(req.tests.status)});
+    if (req.tests.time) tests.push({name:'Temps de réponse inférieur à ' + req.tests.time + 'ms', pass:result.elapsed <= Number(req.tests.time)});
+    if (req.tests.contains) tests.push({name:'La réponse contient "' + req.tests.contains + '"', pass:result.body.indexOf(req.tests.contains) !== -1});
     if (req.tests.jsonpath) {
       var pass = false;
       try { pass = jsonPathExists(JSON.parse(result.body), req.tests.jsonpath); }
       catch(e){ pass = false; }
-      tests.push({name:'JSON path exists: ' + req.tests.jsonpath, pass:pass});
+      tests.push({name:'Le chemin JSON existe : ' + req.tests.jsonpath, pass:pass});
     }
     if (!tests.length) {
       $('test-results').innerHTML = '<div class="test skip">No assertions configured.</div>';
       return;
     }
-    $('test-results').innerHTML = tests.map(function(t){ return '<div class="test '+(t.pass ? 'pass' : 'fail')+'">'+(t.pass ? 'PASS ' : 'FAIL ')+esc(t.name)+'</div>'; }).join('');
+    $('test-results').innerHTML = tests.map(function(t){ return '<div class="test '+(t.pass ? 'pass' : 'fail')+'">'+(t.pass ? 'RÉUSSI ' : 'ÉCHEC ')+esc(t.name)+'</div>'; }).join('');
   }
 
   async function sendRequest(){
@@ -930,7 +930,7 @@
       $('response-body').textContent = redactSecrets(body || '(empty response)', secrets);
       $('response-headers').textContent = redactSecrets(headersText(res.headers), secrets);
       setResponseMeta([
-        {text:'Status ' + res.status + ' ' + res.statusText, kind:res.ok ? 'ok' : 'err'},
+        {text:'Statut ' + res.status + ' ' + res.statusText, kind:res.ok ? 'ok' : 'err'},
         {text:elapsed + 'ms', kind:'info'},
         {text:size + ' bytes', kind:'info'},
         {text:contentType || 'unknown type', kind:'info'}

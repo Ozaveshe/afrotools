@@ -73,3 +73,17 @@
   }
   .market-days-page .calendar-nav { width: 44px; height: 44px; }
 }
+
+/* Keep names readable while retaining each day's tinted background and border. */
+:root:not([data-theme="dark"]) .market-days-page { --color-text-subtle: #52637a; --color-text-muted: #52637a; }
+.market-days-page #selectedDayToken,
+.market-days-page .cycle-item-name,
+.market-days-page .calendar-market,
+.market-days-page .directory-badge { color: var(--color-text) !important; }
+:root[data-theme="dark"] .market-days-page .calendar-day { background: var(--color-surface); border-color: var(--color-border); }
+:root[data-theme="dark"] .market-days-page .calendar-market { background: var(--color-surface-muted); }
+
+/* Keep the small active-day alias readable on every night-mode day tint. */
+:root[data-theme="dark"] .market-days-page .cycle-item.is-active .cycle-item-alias {
+  color: #b8c7dc;
+}
