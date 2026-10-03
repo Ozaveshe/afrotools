@@ -122,11 +122,11 @@
           delete savedFingerprints[keys[n]];
         }
       }
-      if (allowed(run)) show('Cloud backup is on for this session.');
+      if (allowed(run)) show("La sauvegarde cloud est activée pour cette session.");
     } catch (error) {
       if (allowed(run)) {
         console.warn('[CVWorkspaceSync] Sync failed:', { code: 'cv_sync_failed', tool_id: 'cv-builder' });
-        stop('Cloud backup failed. Your local CV is still available. Enable it again to retry.');
+        stop("La sauvegarde cloud a échoué. Votre CV local reste disponible. Réactivez-la pour réessayer.");
       }
     } finally { busy = false; }
   }
@@ -134,8 +134,8 @@
     var run = ++generation;
     consentAccount = account(); initialized = false; draftFingerprint = ''; savedFingerprints = Object.create(null); cloudDraft = null; selectedCV = null;
     restoreButton.disabled = true;
-    if (!consentAccount) return stop('Sign in to enable optional cloud backup.');
-    show('Opening your cloud backup…');
+    if (!consentAccount) return stop("Connectez-vous pour activer la sauvegarde cloud facultative.");
+    show("Ouverture de votre sauvegarde cloud…");
     try {
       var remote = await window.AfroWorkspace.list({ itemTypes: ['cv-draft', 'cv'], limit: 80, canRequest: options(run).canRequest });
       if (!allowed(run)) return;
@@ -161,21 +161,21 @@
       if (!window.AfroWorkspace.writeJson('afro_cv_list', saved)) throw new Error('Local CV storage unavailable');
       if (cv) cv.savedCVs = saved;
       if (remote.some(function (item) { return item.item_type === 'cv'; }) && typeof window.CVApp.renderAll === 'function') window.CVApp.renderAll();
-      restoreButton.textContent = selectedKey ? 'Open selected cloud CV' : 'Restore cloud draft';
+      restoreButton.textContent = selectedKey ? "Ouvrir le CV cloud sélectionné" : "Restaurer le brouillon cloud";
       restoreButton.disabled = selectedKey ? !selectedCV : !cloudDraft;
       initialized = true;
       await sync(run);
     } catch (error) {
       if (allowed(run)) {
         console.warn('[CVWorkspaceSync] Remote bootstrap failed:', { code: 'cv_bootstrap_failed', tool_id: 'cv-builder' });
-        stop('Cloud backup failed. Your local CV is still available. Enable it again to retry.');
+        stop("La sauvegarde cloud a échoué. Votre CV local reste disponible. Réactivez-la pour réessayer.");
       }
     }
   }
   function restore() {
     var run = generation;
     var target = selectedKey ? selectedCV : cloudDraft;
-    if (!allowed(run) || !target || !window.confirm('Replace the draft in this browser with the selected cloud CV or draft? Export a local backup first if you want to keep both.')) return;
+    if (!allowed(run) || !target || !window.confirm("Remplacer le brouillon de ce navigateur par le CV ou le brouillon cloud sélectionné ? Exportez d’abord une sauvegarde locale si vous souhaitez conserver les deux.")) return;
     if (!allowed(run)) return;
     try {
       var payload = normalized(target), cv = state();
@@ -184,18 +184,18 @@
       ['country', 'template', 'accentColor', 'accentHex'].forEach(function (key) { if (payload[key]) cv[key] = payload[key]; });
       cv.currentCVId = selectedKey || null;
       if (typeof window.CVApp.renderAll === 'function') window.CVApp.renderAll();
-      draftFingerprint = ''; show('Cloud draft restored in this browser.'); sync(run);
+      draftFingerprint = ''; show("Le brouillon cloud a été restauré dans ce navigateur."); sync(run);
     } catch (error) {
       console.warn('[CVWorkspaceSync] Restore failed:', { code: 'cv_restore_failed', tool_id: 'cv-builder' });
-      stop('Local storage is unavailable. Cloud backup is off.');
+      stop("Le stockage local est indisponible. La sauvegarde cloud est désactivée.");
     }
   }
   function check() {
     if (!window.CVApp) { checkbox.disabled = true; return; }
     var signedIn = Boolean(account());
     checkbox.disabled = !signedIn;
-    if (consentAccount && account() !== consentAccount) stop('Your account changed. Cloud backup is off.');
-    if (!consentAccount) { if (!signedIn) show('Sign in to enable optional cloud backup.'); return; }
+    if (consentAccount && account() !== consentAccount) stop("Votre compte a changé. La sauvegarde cloud est désactivée.");
+    if (!consentAccount) { if (!signedIn) show("Connectez-vous pour activer la sauvegarde cloud facultative."); return; }
     sync(generation);
   }
   function init() {
@@ -204,7 +204,7 @@
     checkbox.checked = false;
     checkbox.addEventListener('change', function () {
       if (checkbox.checked) start();
-      else stop('Cloud backup is off. Existing cloud copies are kept. Local editing and exports still work.');
+      else stop("La sauvegarde cloud est désactivée. Les copies cloud existantes sont conservées. La modification et les exportations locales restent disponibles.");
     });
     restoreButton.addEventListener('click', restore);
     check();
