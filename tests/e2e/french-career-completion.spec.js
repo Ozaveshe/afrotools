@@ -50,8 +50,21 @@ for (const width of [320, 390, 1365]) {
   });
 }
 
-test('shared career link excludes unrelated query data and checklist values', async ({ page, context }) => {
-  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+test('shared career link excludes unrelated query data and checklist values', async ({ page, context, browserName }) => {
+  if (browserName === 'chromium') {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  } else {
+    // These runners cannot grant OS clipboard permissions. Exercise the same
+    // granted-API privacy boundary; real TXT downloads and denied copy are separate cases.
+    test.info().annotations.push({ type: 'clipboard-api-fixture', description: 'Simulated granted clipboard API; no OS clipboard availability claim.' });
+    await page.addInitScript(() => {
+      let copied = '';
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+        writeText: async value => { copied = String(value); },
+        readText: async () => copied
+      } });
+    });
+  }
   await page.goto('/fr/jobs/?path=switch&private_fixture=synthetic-career-marker#private-fragment');
   await page.locator('[data-career-checks] input').first().check();
   await page.getByRole('button', { name: 'Copier le lien du parcours' }).click();

@@ -8,6 +8,17 @@ const root = path.resolve(__dirname, '..', '..');
 const staticRoot = process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT === '1' ? path.join(root, 'dist') : root;
 if (!fs.existsSync(path.join(staticRoot, 'index.html'))) throw new Error('Static test root has no index.html: ' + staticRoot);
 const port = Number(process.env.PORT || 4173);
+const manifestRewrites = new Map();
+const rewriteFile = path.join(staticRoot, '_redirects');
+if (fs.existsSync(rewriteFile)) {
+  for (const line of fs.readFileSync(rewriteFile, 'utf8').split(/\r?\n/)) {
+    const parts = line.trim().split(/\s+/);
+    if (parts.length === 3 && /^\/(?:fr|sw|ha|yo)\/manifest\.json$/.test(parts[0])
+      && parts[1] === '/manifest.json' && parts[2] === '200') {
+      manifestRewrites.set(parts[0], 'manifest.json');
+    }
+  }
+}
 const vatProofMode = process.env.AFROTOOLS_SW_VAT_PROOF_MODE === '1';
 let vatProofIdentity = null;
 
@@ -84,6 +95,7 @@ const apiFunctionAliases = {
 
 function routeCandidates(url) {
   let pathname = decodeURIComponent(url.split('?')[0]);
+  if (manifestRewrites.has(pathname)) return [manifestRewrites.get(pathname)];
   if (pathname === '/') return ['index.html'];
   pathname = pathname.replace(/^\/+/, '');
   if (pathname.endsWith('/')) return [path.join(pathname, 'index.html')];
