@@ -59,6 +59,8 @@ const LEGACY_BUNDLE_ALIASES = {
     'core.52693c87.min.js',
     'core.009aa1e7.min.js',
     'core.78b8d771.min.js',
+    // Keep the previous production URL reachable when shared reporting changes.
+    'core.23b1bcef.min.js',
   ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML

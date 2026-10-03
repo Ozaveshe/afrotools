@@ -35,8 +35,13 @@ assert.strictEqual(frenchPublished.length, canonicalFrenchCount.value, 'French d
 
 assert.strictEqual(FRENCH_CATEGORIES.length, 32, 'French discovery must represent all 32 canonical categories');
 assert.strictEqual(new Set(FRENCH_CATEGORIES.map((category) => category.key)).size, 32, 'French category keys must be unique');
-assert.strictEqual(FRENCH_CATEGORIES.filter((category) => category.nativeHub).length, 20, 'only verified native French hubs receive direct hub links');
-assert.strictEqual(FRENCH_CATEGORIES.filter((category) => !category.nativeHub).length, 12, 'missing hubs must remain explicit filtered-directory routes');
+assert.strictEqual(FRENCH_CATEGORIES.filter((category) => category.nativeHub).length, 21, 'only verified native French hubs receive direct hub links');
+assert.strictEqual(FRENCH_CATEGORIES.filter((category) => !category.nativeHub).length, 11, 'missing hubs must remain explicit filtered-directory routes');
+const careerCategory = FRENCH_CATEGORIES.find((category) => category.key === 'career');
+assert.deepStrictEqual({ href: careerCategory.href, nativeHub: careerCategory.nativeHub }, { href: '/fr/jobs/', nativeHub: true }, 'Career discovery must use its existing native French workflow owner');
+const careerHub = read('fr/jobs/index.html');
+assert.match(careerHub, /name="afrotools-source-owner" content="scripts\/build-french-career-hub.js"/);
+assert.match(careerHub, /data-career-checklist/);
 const insuranceCategory = FRENCH_CATEGORIES.find((category) => category.key === 'insurance');
 assert.deepStrictEqual(
   { href: insuranceCategory.href, nativeHub: insuranceCategory.nativeHub },
