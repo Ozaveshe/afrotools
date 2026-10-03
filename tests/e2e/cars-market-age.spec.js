@@ -1,6 +1,8 @@
 const { test, expect } = require("@playwright/test");
 
-test.use({ viewport: { width: 390, height: 844 }, trace: "retain-on-failure" });
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("afrotools_cookie_consent", "declined"));
+});
 
 test("2005 Camry shows a sourced local price without an import action", async ({ page }) => {
   const errors = [];
@@ -30,9 +32,13 @@ test("2018 Camry shows reviewed local and UAE asks with an editable import hando
   await expect(page.locator("#carsApp .cars-price-layer", { hasText: "Dated local asking price" })).toContainText("25,300,000");
   await expect(page.locator("#carsApp .cars-price-layer", { hasText: "Dated source-market asking price" })).toContainText("USD $9,600 - $12,300");
   await expect(page.locator(".cars-market-evidence").first()).toContainText("AED 39,250");
-  await expect(page.locator("#carsApp .cars-hero-image")).toHaveAttribute("src", /toyota-camry-2018-hero\.webp/);
+  await expect(page.locator("#carsApp .cars-hero-image")).toHaveAttribute("src", /toyota-camry-2018-commons\.jpg/);
   expect(await page.locator("#carsApp .cars-hero-image").evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
-  await expect(page.locator("#carsApp a", { hasText: "Run Car Import Cost" })).toHaveAttribute("href", /source=uae.*price=10700/);
+  const link = new URL(await page.locator("#carsApp a", { hasText: "Run Car Import Cost" }).getAttribute("href"), page.url());
+  expect(link.searchParams.get("source")).toBe("uae");
+  expect(link.searchParams.has("price")).toBe(false);
+  expect(link.searchParams.get("newQuote")).toBe("1");
+  await expect(page.locator(".cars-market-evidence").filter({ hasText: "2026-09-16" }).first()).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });
@@ -47,12 +53,22 @@ test("2018 RAV4 shows reviewed Lagos and UAE asks with an editable import handof
   await expect(page.locator(".cars-market-evidence").first()).toContainText("AED 44,650");
   await expect(page.locator("#carsApp .cars-hero-image")).toHaveAttribute("src", /toyota-rav4-2018-hero\.webp/);
   expect(await page.locator("#carsApp .cars-hero-image").evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
-  await expect(page.locator("#carsApp a", { hasText: "Run Car Import Cost" })).toHaveAttribute("href", /source=uae.*price=12200/);
+  const link = new URL(await page.locator("#carsApp a", { hasText: "Run Car Import Cost" }).getAttribute("href"), page.url());
+  expect(link.searchParams.get("source")).toBe("uae");
+  expect(link.searchParams.has("price")).toBe(false);
+  expect(link.searchParams.get("newQuote")).toBe("1");
   await page.locator("#carsApp a", { hasText: "Run Car Import Cost" }).click();
-  await expect(page).toHaveURL(/\/tools\/car-import-cost\/nigeria\/\?.*source=uae.*price=12200/);
-  await expect(page.locator("#carImportPurchasePrice")).toHaveValue("12200");
+  await expect(page).toHaveURL(/\/tools\/car-import-cost\/nigeria\/\?.*source=uae/);
+  await expect(page.locator("#carImportPurchasePrice")).toHaveValue("");
   await expect(page.locator("#carImportSourceMarket")).toHaveValue("uae");
+  await expect(page.locator("#carImportResults")).toBeHidden();
+  await expect(page.locator("#carImportCurrentQuoteStatus")).toContainText("Enter a current");
+  await page.locator("#carImportForm button[type=submit]").click();
+  await expect(page.locator("#carImportResults")).toBeHidden();
+  await page.locator("#carImportPurchasePrice").fill("12345");
+  await page.locator("#carImportForm button[type=submit]").click();
   await expect(page.locator("#carImportResults")).toBeVisible();
+  await expect(page.locator("#carImportCurrentQuoteStatus")).toBeHidden();
   await expect(page.locator("#carImportTotal")).not.toBeEmpty();
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
@@ -92,6 +108,34 @@ test("catalog quote opens with a blank editable seller price despite a saved quo
   await expect(page.locator("#carImportCountry")).toHaveValue("NG");
   await expect(page.locator("#carImportYear")).toHaveValue("2018");
   await expect(page.locator("#carImportPurchasePrice")).toHaveValue("");
+  await expect(page.locator("#carImportResults")).toBeHidden();
   await page.locator("#carImportPurchasePrice").fill("12345");
   await expect(page.locator("#carImportPurchasePrice")).toHaveValue("12345");
+  await page.locator("#carImportForm button[type=submit]").click();
+  await expect(page.locator("#carImportResults")).toBeVisible();
+});
+
+test("static evidence quote ignores saved prices and accepts explicit FOB and CIF", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("carImportCostLastInput", JSON.stringify({
+    countryCode: "GH", make: "Honda", model: "Accord", year: 2014,
+    purchasePriceUsd: 99999, fobUsd: 88888, cifUsd: 77777, customsValueUsd: 66666, inputMode: "cif"
+  })));
+  await page.goto("/cars/nigeria/toyota/camry/2018/");
+  await page.locator(".cars-market-evidence a", { hasText: "Enter a current source quote" }).first().click();
+  for (const id of ["carImportPurchasePrice", "carImportFob", "carImportCif", "carImportCustomsValue"]) {
+    await expect(page.locator("#" + id)).toHaveValue("");
+  }
+  await expect(page.locator("#carImportMake")).toHaveValue("Toyota");
+  await expect(page.locator("#carImportModel")).toHaveValue("Camry");
+  await expect(page.locator("#carImportInputMode")).toHaveValue("purchase");
+  await expect(page.locator("#carImportResults")).toBeHidden();
+  for (const [mode, field, value] of [["fob", "carImportFob", "12345"], ["cif", "carImportCif", "14000"]]) {
+    await page.locator("#carImportInputMode").selectOption(mode);
+    await page.locator("#" + field).fill(value);
+    await page.locator("#carImportForm button[type=submit]").click();
+    await expect(page.locator("#carImportResults")).toBeVisible();
+    await page.locator("#" + field).fill("");
+    await page.locator("#carImportForm button[type=submit]").click();
+    await expect(page.locator("#carImportResults")).toBeHidden();
+  }
 });

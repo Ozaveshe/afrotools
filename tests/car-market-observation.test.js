@@ -136,7 +136,9 @@ assert.equal(rav4Context.sourcePrice.sourceUrl, rav4Source.sourceUrl);
 assert.equal(Math.round(rav4Context.localPrice.median * forex.rates.NGN), rav4Observation.median);
 assert.equal(rav4Context.media.hero.sourceType, "generated");
 assert.match(rav4Context.media.hero.imageUrl, /toyota-rav4-2018-hero\.webp$/);
-assert.match(rav4Context.calculatorUrl, /source=uae.*price=12200/);
+const rav4Calculator = new URL(rav4Context.calculatorUrl, "https://afrotools.com");
+assert.equal(rav4Calculator.searchParams.get("source"), "uae");
+assert.equal(rav4Calculator.searchParams.has("price"), Price.canPrefillSourcePrice(rav4Context), "only current source evidence can prefill a price");
 
 const directoryOnly = Price.buildVehicleContext(data, importData, {
   country: "south-africa", make: "toyota", model: "corolla", year: 2018

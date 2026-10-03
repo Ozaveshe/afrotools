@@ -135,7 +135,7 @@ function marketEvidenceHTML(country, vehicle) {
     ? Math.round((Number(vehicle.cc[0]) + Number(vehicle.cc[1] || vehicle.cc[0])) / 2)
     : null;
   const calculatorUrl = country.import_enabled && !importAgeRestricted
-    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}${engineCc ? `&engineCc=${engineCc}` : ""}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}&price=${Math.round(sourceMarketObservation(vehicle).median / sourceMarketObservation(vehicle).sourceCurrencyPerUsd / 100) * 100}` : ""}`
+    ? `/tools/car-import-cost/${country.slug}/?country=${encodeURIComponent(country.code)}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model.split("/")[0].trim())}&year=${vehicle.year}&newQuote=1${engineCc ? `&engineCc=${engineCc}` : ""}${sourceMarketObservation(vehicle) ? `&source=${encodeURIComponent(sourceMarketObservation(vehicle).sourceMarket)}` : ""}`
     : "";
   const comparisonCopy = importAgeRestricted
     ? "This is a local purchase snapshot. Nigeria's official trade portal conflicts on used-car age: its prohibition list says above 12 years is prohibited, while its import guide says less than 15 years is permitted. This model year falls outside the stricter threshold, so confirm import eligibility with Customs before paying."
@@ -148,7 +148,7 @@ function marketEvidenceHTML(country, vehicle) {
 <p><strong>Limits:</strong> ${escapeHtml(observation.limitations)}</p>
 ${corroboration ? `<h3>Other market check</h3><ul>${corroboration}</ul>` : ""}
 <p>${comparisonCopy}</p>
-<div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a>${calculatorUrl ? `<a href="${escapeHtml(calculatorUrl)}">Estimate import cost for this car</a>` : ""}</div>
+<div class="cars-evidence-links"><a href="${escapeHtml(observation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Check ${escapeHtml(observation.sourceName)}</a>${calculatorUrl ? `<a href="${escapeHtml(calculatorUrl)}">Enter a current source quote</a>` : ""}</div>
 </section>`;
 }
 

@@ -3,6 +3,7 @@
     var t = window.AfroCarImportCost, a = {
         data: null,
         lastResult: null,
+        requiresCurrentQuote: false,
         aiMessages: []
     };
     function localQuoteSummary(comparison) {
@@ -164,6 +165,17 @@
                 r("#carImportResults").hidden = true;
                 return;
             }
+            var quoteStatus = r("#carImportCurrentQuoteStatus");
+            var priceField = p("#carImportInputMode") === "fob" ? "#carImportFob"
+                : p("#carImportInputMode") === "cif" ? "#carImportCif" : "#carImportPurchasePrice";
+            if (a.requiresCurrentQuote && (!Number.isFinite(d(priceField)) || d(priceField) <= 0)) {
+                a.lastResult = null;
+                r("#carImportResults").hidden = true;
+                quoteStatus.hidden = false;
+                r(priceField).setAttribute("aria-describedby", "carImportCurrentQuoteStatus");
+                return;
+            }
+            quoteStatus.hidden = true;
             var e = {
                 countryCode: p("#carImportCountry"),
                 sourceMarket: p("#carImportSourceMarket") || "japan",
@@ -633,6 +645,20 @@
             }, Object.keys(s).forEach(function(t) {
                 d[t] = s[t];
             }), d)), function() {
+                var status = document.createElement("p");
+                status.id = "carImportCurrentQuoteStatus";
+                status.className = "car-import-help";
+                status.setAttribute("role", "status");
+                status.setAttribute("aria-live", "polite");
+                var messages = {
+                    en: "Enter a current purchase, FOB or CIF quote to calculate landed cost.",
+                    fr: "Saisissez un devis actuel d'achat, FOB ou CIF pour calculer le coût rendu.",
+                    sw: "Weka bei ya sasa ya ununuzi, FOB au CIF ili kukokotoa gharama ya kuagiza."
+                };
+                status.textContent = messages[document.documentElement.lang.split("-")[0]] || messages.en;
+                status.hidden = true;
+                r("#carImportForm h2").insertAdjacentElement("afterend", status);
+            }(), function() {
                 var t = new URLSearchParams(location.search), a = null;
                 try {
                     a = JSON.parse(localStorage.getItem("carImportCostLastInput") || "null");
@@ -640,6 +666,11 @@
                     a = null;
                 }
                 var r = "1" === t.get("newQuote") ? { inputMode: "purchase", purchasePriceUsd: "" } : a || {};
+                if ("1" === t.get("newQuote")) {
+                    ["carImportPurchasePrice", "carImportFob", "carImportCif", "carImportCustomsValue"].forEach(function(id) {
+                        document.getElementById(id).value = "";
+                    });
+                }
                 t.has("country") && (r.countryCode = t.get("country")), t.has("source") && (r.sourceMarket = t.get("source")),
                 t.has("make") && (r.make = t.get("make")), t.has("model") && (r.model = t.get("model")),
                 t.has("year") && (r.year = t.get("year")), t.has("price") && (r.purchasePriceUsd = t.get("price")),
@@ -648,7 +679,7 @@
                 t.has("bodyType") && (r.bodyType = t.get("bodyType"), r.vehicleClass = t.get("bodyType")),
                 Object.keys(r).length && f(r);
                 prepareCountryEntry(requestedEntryCountry(r.countryCode));
-            }(), m(), r("#carImportForm").addEventListener("submit", function(t) {
+            }(), a.requiresCurrentQuote = "1" === new URLSearchParams(location.search).get("newQuote"), m(), r("#carImportForm").addEventListener("submit", function(t) {
                 t.preventDefault(), m();
             }), r("#carImportCountry").addEventListener("change", u), r("#carImportSourceMarket").addEventListener("change", function() {
                 i("car_import_source_market_selected", {
