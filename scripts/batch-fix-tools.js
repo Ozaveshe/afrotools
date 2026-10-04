@@ -227,7 +227,7 @@ function addChartJS(content, filePath) {
     'favicon-', 'flyer-', 'logo-', 'meme-', 'thumbnail-', 'watermark-', 'certificate-',
     'password-', 'qr-', 'zulu-', 'yoruba-', 'swahili-', 'pidgin-', 'igbo-', 'hausa-', 'amharic-',
     'meeting-minutes', 'document-pdf', 'cover-letter', 'employment-contract', 'contract-gen',
-    'cv-builder', 'invoice-gen', 'payslip-gen', 'boq-builder', 'boq-gen', 'business-plan'];
+    'cv-builder', 'invoice-gen', 'payslip-gen', 'boq-builder', 'boq-gen', 'business-plan', 'afrokitchen'];
   if (skipPrefixes.some(p => slug.startsWith(p))) return { content, changed: false };
 
   // Add Chart.js CDN before </head>

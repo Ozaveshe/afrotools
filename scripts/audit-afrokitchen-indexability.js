@@ -3,6 +3,8 @@
 
 const fs = require("fs");
 const path = require("path");
+const { isDeepStrictEqual } = require("util");
+const { loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -46,21 +48,85 @@ function hasNoindex(html) {
   return /\bnoindex\b/i.test(extractMetaContent(html, "robots"));
 }
 
-function hasRecipeJsonLd(html) {
-  const blocks = html.match(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
-  return blocks.some((block) => {
-    const json = block.replace(/^<script\b[^>]*>/i, "").replace(/<\/script>$/i, "").trim();
-    try {
-      const parsed = JSON.parse(json);
-      const nodes = Array.isArray(parsed && parsed["@graph"]) ? parsed["@graph"] : [parsed];
-      return nodes.some((node) => {
-        const type = node && node["@type"];
-        return type === "Recipe" || (Array.isArray(type) && type.includes("Recipe"));
-      });
-    } catch {
-      return false;
+function inspectRecipeSchemaState(recipe, html, recipeImages) {
+  const errors = [];
+  const nodes = [];
+  const contexts = new Map();
+  const flatten = (value, inheritedContext) => {
+    if (Array.isArray(value)) return value.forEach(node => flatten(node, inheritedContext));
+    if (!value || typeof value !== "object") return errors.push("JSON-LD must contain objects");
+    nodes.push(value);
+    const context = value["@context"] || inheritedContext;
+    contexts.set(value, context);
+    if (value["@graph"] != null) {
+      if (!Array.isArray(value["@graph"])) errors.push("JSON-LD @graph must be an array");
+      else value["@graph"].forEach(node => flatten(node, context));
     }
-  });
+  };
+  for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try { flatten(JSON.parse(match[1])); }
+    catch { errors.push("malformed JSON-LD"); }
+  }
+  const typeIs = (node, type) => node["@type"] === type || (Array.isArray(node["@type"]) && node["@type"].includes(type));
+  const recipes = nodes.filter(node => typeIs(node, "Recipe"));
+  const markers = [...html.matchAll(/<meta\b(?=[^>]*\bname=["']afrokitchen-schema-blockers["'])(?=[^>]*\bcontent=["']([^"']*)["'])[^>]*>/gi)];
+  if (recipes.length) {
+    if (recipes.length !== 1) errors.push("duplicate Recipe JSON-LD");
+    if (markers.length) errors.push("Recipe JSON-LD conflicts with a schema blocker");
+    return { state: "recipe-markup", errors };
+  }
+
+  // A missing dish photo affects rich-result eligibility, not the complete page's indexability.
+  // Verify the source and rendered content; the marker alone is never an exemption.
+  if (markers.length !== 1 || markers[0][1] !== "missing_image") errors.push("missing or invalid image-only schema blocker");
+  if (!resolveRecipeMedia(recipe, recipeImages).isFallback) errors.push("dish image is available; Recipe JSON-LD is required");
+  const canonicalLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi)];
+  if (canonicalLinks.length !== 1 || extractCanonical(html) !== recipe.route_url) errors.push("photo-less page canonical is missing or mismatched");
+  if (!/^index,\s*follow$/i.test(extractMetaContent(html, "robots"))) errors.push("photo-less page must remain index, follow");
+  const breadcrumbs = nodes.filter(node => typeIs(node, "BreadcrumbList"));
+  const crumbs = breadcrumbs[0]?.itemListElement;
+  if (breadcrumbs.length !== 1 || contexts.get(breadcrumbs[0]) !== "https://schema.org" ||
+      !Array.isArray(crumbs) || crumbs.length < 5 ||
+      crumbs.some((item, index) => !item || !typeIs(item, "ListItem") || item.position !== index + 1 || !String(item.name || "").trim() || !String(item.item || "").startsWith(`${SITE_ORIGIN}/`)) ||
+      crumbs.at(-1)?.item !== recipe.route_url || crumbs.at(-1)?.name !== recipe.name) errors.push("photo-less page must preserve its canonical breadcrumb trail");
+  const payloads = [...html.matchAll(/window\.__AK_STATIC_RECIPE\s*=\s*([\s\S]*?);\s*<\/script>/g)];
+  let payload;
+  try { if (payloads.length === 1) payload = JSON.parse(payloads[0][1]); }
+  catch { errors.push("malformed static recipe payload"); }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) errors.push("photo-less page must have one complete static recipe payload");
+  const textFields = ["slug", "name", "description", "country_name", "category"];
+  const durationFields = ["prep_time_minutes", "cook_time_minutes", "total_time_minutes"];
+  for (const field of [...textFields, ...durationFields, "default_servings"]) {
+    if (!isDeepStrictEqual(payload?.[field], recipe[field])) errors.push(`static recipe payload does not match source: ${field}`);
+  }
+  // The editorial owner can replace database IDs and timestamps without changing cooking content.
+  const cookingContent = items => Array.isArray(items) ? items.map(item => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return item;
+    const { id, recipe_id, ingredient_id, created_at, updated_at, ...content } = item;
+    // A null or zero duration both mean that this step has no countdown timer.
+    if (Object.hasOwn(content, "timer_seconds") && content.timer_seconds == null) content.timer_seconds = 0;
+    return content;
+  }) : items;
+  for (const field of ["ingredients", "steps"]) {
+    if (!isDeepStrictEqual(cookingContent(payload?.[field]), cookingContent(recipe[field]))) errors.push(`static recipe payload does not match source: ${field}`);
+  }
+  const sourceIncomplete = !recipe.generated_in_wave ||
+    textFields.some(field => !String(recipe[field] || "").trim()) ||
+    durationFields.some(field => recipe[field] == null || !Number.isFinite(Number(recipe[field])) || Number(recipe[field]) < 0) ||
+    !Number.isFinite(Number(recipe.default_servings)) || Number(recipe.default_servings) <= 0 ||
+    !Array.isArray(recipe.ingredients) || !recipe.ingredients.length ||
+    recipe.ingredients.some(item => !String(item?.name || "").trim()) ||
+    !Array.isArray(recipe.steps) || !recipe.steps.length ||
+    recipe.steps.some(item => !String(item?.title || "").trim() || !String(item?.instruction || "").trim());
+  if (sourceIncomplete) errors.push("image-only deferral requires complete recipe source content");
+  const visibleText = html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]*>/g, " ").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ");
+  if (![recipe.name, recipe.description, ...(recipe.ingredients || []).map(item => item.name), ...(recipe.steps || []).map(item => item.instruction)].every(value => visibleText.includes(String(value || "").replace(/\s+/g, " ")))) errors.push("photo-less recipe content must be visible in HTML");
+  return { state: errors.length ? "invalid" : "awaiting-dish-image", errors };
 }
 
 function htmlRouteUrl(filePath) {
@@ -172,6 +238,7 @@ function main() {
   const sitemapEntries = readSitemapEntries();
   const recipeByUrl = new Map((manifest.recipes || []).map((recipe) => [recipe.route_url, recipe]));
   const generatedRecipes = (manifest.recipes || []).filter((recipe) => recipe.generated_in_wave);
+  const recipeImages = loadRecipeImages();
   const generatedRecipeUrls = new Set(generatedRecipes.map((recipe) => recipe.route_url));
   const countryUrls = new Set((manifest.countries || []).map((country) => country.route_url));
   const collectionUrls = new Set((manifest.collections || []).map((collection) => collection.route_url));
@@ -181,6 +248,9 @@ function main() {
   const missingCanonical = [];
   const missingImage = [];
   const missingJsonLd = [];
+  const invalidSchemaStates = [];
+  const awaitingDishImage = [];
+  const recipeMarkupPages = [];
   const missingIngredients = [];
   const missingInstructions = [];
   const noindexInSitemap = [];
@@ -200,7 +270,11 @@ function main() {
     const canonical = extractCanonical(html);
     if (canonical !== url) missingCanonical.push(url);
     if (!recipeImageValue(recipe, html)) missingImage.push(url);
-    if (!hasRecipeJsonLd(html)) missingJsonLd.push(url);
+    const schema = inspectRecipeSchemaState(recipe, html, recipeImages);
+    if (schema.state === "recipe-markup") recipeMarkupPages.push(url);
+    else if (schema.state === "awaiting-dish-image") awaitingDishImage.push(url);
+    else missingJsonLd.push(url);
+    if (schema.errors.length) invalidSchemaStates.push({ url, errors: schema.errors });
     if (!Array.isArray(recipe.ingredients) || recipe.ingredients.length === 0) missingIngredients.push(url);
     if (!Array.isArray(recipe.steps) || recipe.steps.length === 0) missingInstructions.push(url);
 
@@ -231,6 +305,8 @@ function main() {
       recipeHtmlPages: recipeHtmlFiles.length,
       sitemapIncludedRecipePages: includedRecipeUrls.length,
       noindexRecipePages: noindexRecipePages.length,
+      recipeMarkupPages: recipeMarkupPages.length,
+      completePagesAwaitingDishImage: awaitingDishImage.length,
       countryHubPages: countryUrls.size,
       sitemapIncludedCountryHubs: [...countryUrls].filter((url) => sitemapEntries.has(url)).length,
       collectionPages: collectionUrls.size,
@@ -246,12 +322,14 @@ function main() {
       missingCanonical,
       missingImage,
       missingJsonLd,
+      invalidSchemaStates,
       missingIngredients,
       missingInstructions,
       missingLastmod,
       lastmodMismatches
     },
-    noindexRecipePages
+    noindexRecipePages,
+    awaitingDishImage
   };
 
   if (fs.existsSync(REPORTS_DIR)) {
@@ -264,6 +342,8 @@ function main() {
   console.log(`  Recipe HTML pages: ${report.totals.recipeHtmlPages}`);
   console.log(`  Sitemap-included recipe pages: ${report.totals.sitemapIncludedRecipePages}`);
   console.log(`  Noindex recipe pages: ${report.totals.noindexRecipePages}`);
+  console.log(`  Recipe markup pages: ${report.totals.recipeMarkupPages}`);
+  console.log(`  Complete pages awaiting dish images: ${report.totals.completePagesAwaitingDishImage}`);
   console.log(`  Country hubs in sitemap: ${report.totals.sitemapIncludedCountryHubs}/${report.totals.countryHubPages}`);
   console.log(`  Collections in sitemap: ${report.totals.sitemapIncludedCollections}/${report.totals.collectionPages}`);
   console.log(`  Recipe image sitemap entries: ${report.totals.recipeImageSitemapEntries}/${report.totals.sitemapIncludedRecipePages}`);
@@ -280,6 +360,7 @@ function main() {
     ["Missing canonical", missingCanonical.length],
     ["Missing image", missingImage.length],
     ["Missing JSON-LD", missingJsonLd.length],
+    ["Invalid recipe schema states", invalidSchemaStates.length],
     ["Missing ingredients", missingIngredients.length],
     ["Missing instructions", missingInstructions.length],
     ["Missing lastmod", missingLastmod.length],
@@ -306,4 +387,5 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+module.exports = { inspectRecipeSchemaState };
