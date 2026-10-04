@@ -3,15 +3,16 @@
  * Runs weekly (Thursday 3am) via Netlify Scheduled Functions.
  *
  * Sources:
- *  1. FAO STAT food price index
- *  2. World Bank fertilizer/ag commodity prices
- *  3. Reference data per country
+ *  1. World Bank food production index (dated statistical context)
+ *  2. World Bank fertilizer benchmarks, when dated observations are available
+ *  3. Unreviewed reference input prices per country (not live market quotes)
  *
  * Writes to Netlify Blobs 'live-data' → key 'agri-inputs-latest'.
  */
 
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
 const { getData } = require('./_shared/data-store');
+const agri = require('./_shared/agri-reference');
 
 var INPUTS = {
   NG: { name: 'Nigeria', currency: 'NGN', inputs: { urea_50kg: 28000, npk_50kg: 32000, maize_seed_kg: 2500, rice_seed_kg: 3500, herbicide_l: 5000, insecticide_l: 6000 } },
@@ -29,67 +30,42 @@ var INPUTS = {
 };
 
 async function fetchAgriInputs() {
-  // Try FAO food price index
-  var faoData = {};
+  var now = new Date().toISOString(), codes = Object.keys(INPUTS), food = {}, fertilizer = {};
+  var externalSources = { food_production: { status: 'unavailable' }, fertilizer: { status: 'unavailable' } };
+  // Query the twelve supported countries, rather than the first page of ALL.
+  // Select the latest dated non-empty observation independently of row order.
   try {
-    var url = 'https://api.worldbank.org/v2/country/ALL/indicator/AG.PRD.FOOD.XD?date=2022:2025&format=json&per_page=500';
-    var res = await fetchWithRetry(url, { headers: { 'Accept': 'application/json' } });
-    var json = await res.json();
-    if (json && json[1]) {
-      json[1].forEach(function(e) {
-        if (e.value !== null && e.country) faoData[e.country.id] = e.value;
-      });
+    var url = 'https://api.worldbank.org/v2/country/' + codes.join(';') + '/indicator/' + agri.FOOD_INDICATOR + '?mrnev=5&format=json&per_page=1000';
+    var rows = [], pages = 1;
+    for (var page = 1; page <= pages; page++) {
+      var res = await fetchWithRetry(url + '&page=' + page, { headers: { 'Accept': 'application/json' } });
+      var json = await res.json();
+      if (!Array.isArray(json) || !Array.isArray(json[1])) throw new Error('Invalid food production response');
+      pages = Number(json[0]?.pages || 1);
+      if (!Number.isInteger(pages) || pages < 1 || pages > 5) throw new Error('Unexpected food production pagination');
+      rows = rows.concat(json[1]);
     }
-  } catch (e) { console.log('[agri] FAO/WB failed: ' + e.message); }
+    food = agri.latestFoodObservations(rows, codes, now);
+    externalSources.food_production = { status: Object.keys(food).length === codes.length ? 'available' : Object.keys(food).length ? 'partial' : 'unavailable',
+      countries_with_observations: Object.keys(food).length, retrieved_at: now, source: url };
+  } catch (e) { console.log('[agri] Food production context unavailable'); }
 
-  // Try WB fertilizer prices (global)
-  var fertPrices = {};
+  // Reuse the existing official Pink Sheet collector, preserving its actual
+  // observation month and source URL. Global benchmarks are not local quotes.
   try {
-    var fertUrl = 'https://api.worldbank.org/v2/sources/47/country/WLD/series/UREA_EE_BULK;DAP/time/last?format=json&per_page=50';
-    var fertRes = await fetchWithRetry(fertUrl, { headers: { 'Accept': 'application/json' } });
-    var fertJson = await fertRes.json();
-    var entries = (fertJson.source && fertJson.source[0] && fertJson.source[0].data) || [];
-    entries.forEach(function(e) {
-      if (e.series && e.value) fertPrices[e.series] = parseFloat(e.value);
-    });
-  } catch (e) { console.log('[agri] WB fertilizer failed: ' + e.message); }
+    var commoditySnapshot = await getData('commodity-prices-latest');
+    fertilizer = agri.fertilizerBenchmarks(commoditySnapshot, now);
+    externalSources.fertilizer = { status: Object.keys(fertilizer).length === 2 ? 'available' : Object.keys(fertilizer).length ? 'partial' : 'unavailable',
+      metrics_with_observations: Object.keys(fertilizer).length, snapshot_collected_at: agri.iso(commoditySnapshot?.timestamp),
+      source: 'World Bank Pink Sheet via commodity-prices-latest' };
+  } catch (e) { console.log('[agri] Fertilizer benchmark context unavailable'); }
 
   var forexData = await getData('forex-latest');
-  var rates = (forexData && forexData.rates) || {};
-  var now = new Date().toISOString().slice(0, 10);
-
-  var countries = Object.keys(INPUTS).map(function(code) {
-    var config = INPUTS[code];
-    var fxRate = rates[config.currency] || 1;
-
-    var inputs = Object.keys(config.inputs).map(function(key) {
-      var localPrice = config.inputs[key];
-      return {
-        item: key,
-        price_local: localPrice,
-        price_usd: Math.round(localPrice / fxRate * 100) / 100,
-        currency: config.currency,
-      };
-    });
-
-    return {
-      code: code,
-      name: config.name,
-      currency: config.currency,
-      inputs: inputs,
-      food_production_index: faoData[code] || null,
-      global_urea_usd_mt: fertPrices['UREA_EE_BULK'] || null,
-      global_dap_usd_mt: fertPrices['DAP'] || null,
-      last_updated: now,
-      source: 'reference-with-wb',
-    };
-  });
-
-  return countries;
+  return { ...agri.buildSnapshot(INPUTS, food, fertilizer, forexData, now), external_sources: externalSources };
 }
 
-function transformAgriData(countries) {
-  return { timestamp: new Date().toISOString(), countries: countries, record_count: countries.length };
+function transformAgriData(snapshot) {
+  return snapshot;
 }
 
 exports.handler = async function(event) {
@@ -97,7 +73,7 @@ exports.handler = async function(event) {
     id: 'agri-inputs',
     blobKey: 'agri-inputs-latest',
     metaKey: 'agriculture',
-    sources: [{ name: 'MultiSource', fn: fetchAgriInputs }],
+    sources: [{ name: 'AfroTools reference seed with optional World Bank context', fn: fetchAgriInputs }],
     transform: transformAgriData,
     validateOpts: { maxChangeRatio: 3.0 },
   });

@@ -72,7 +72,7 @@ const CATEGORY_CONFIGS = {
   },
   agri_inputs: {
     blobKey: 'agri-inputs-latest',
-    metaKey: 'agri_inputs',
+    metaKey: 'agriculture',
     thresholds: { live: 10080, ok: 20160, stale: 43200 },
   },
   crypto: {
@@ -190,6 +190,10 @@ async function supabaseGet(path) {
 
 async function buildCategoryStatus(cat, config, meta, now) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
+  if (cat === 'agri_inputs') {
+    const payload = await getData(config.blobKey);
+    return { ...require('./_shared/agri-reference').referenceStatus(payload, catMeta, now, config.thresholds.live), blob_key: config.blobKey };
+  }
   let updatedAt = findTimestamp(catMeta);
   let source = catMeta.source || null;
   let blobPresent = false;
@@ -409,6 +413,7 @@ exports.handler = async function(event) {
 };
 
 exports._test = {
+  buildCategoryStatus,
   CATEGORY_CONFIGS,
   ageMinutes,
   claimSafeStatus,

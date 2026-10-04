@@ -42,7 +42,8 @@ test('indexable public commercial roots remain in the primary sitemap', () => {
     ['/afrowork/api/', '2026-09-10'],
     ['/afrowork/whatsapp/', '2026-09-10'],
     ['/developers/', '2026-09-12'],
-    ['/pro/', '2026-09-12']
+    ['/pro/', '2026-09-12'],
+    ['/business/', '2026-10-04']
   ]);
   const graph = readJson('data/registry/route-graph.json');
   const records = new Map(graph.routes.filter((record) => record.state === 'page').map((record) => [record.route, record]));
@@ -60,7 +61,7 @@ test('indexable public commercial roots remain in the primary sitemap', () => {
 
 test('utility and retired neighbors stay outside the primary sitemap', () => {
   const urls = new Set(sitemapLastmods('sitemap-misc.xml').keys());
-  for (const route of ['/pro/apps/', '/pro/settings/', '/business/', '/matchday-os/']) {
+  for (const route of ['/pro/apps/', '/pro/settings/', '/matchday-os/']) {
     assert.ok(!urls.has(`${BASE_URL}${route}`), `${route} must not enter sitemap-misc.xml`);
   }
 });

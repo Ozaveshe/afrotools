@@ -91,7 +91,17 @@ for(const review of reviewedImages.images) {
   assert.equal(entry.text_status,review.text_status,'Reviewed image text state '+review.path);
   assert.equal(entry.locale_reuse,review.locale_reuse,'Reviewed image reuse state '+review.path);
   assert.ok(entry.placements.some(p=>p.path===routeFile(review.route)),'Missing reviewed subject binding '+review.path);
-  assert.match(review.note,/same equivalent (?:article|country page)/,'Review must constrain same-subject reuse '+review.path);
+  assert.match(review.note,/same equivalent (?:article|country page|recipe)/,'Review must constrain same-subject reuse '+review.path);
+  if(review.path.startsWith('/assets/img/kitchen/')) {
+    const slug=path.basename(review.path,'.webp').replace(/-2$/,'');
+    assert.equal(review.route,'/tools/afrokitchen/recipes/'+slug+'/','Recipe review must retain its exact subject '+review.path);
+    const recipe=require('../tools/afrokitchen/seo-manifest.json').recipes.find(r=>r.slug===slug);
+    assert.ok(recipe && recipe.route_path===review.route,'Missing saved recipe subject '+review.path);
+    const html=fs.readFileSync(path.join(ROOT,routeFile(review.route)),'utf8');
+    const schemas=[...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(match=>JSON.parse(match[1]));
+    const recipeSchema=schemas.find(schema=>schema['@type']==='Recipe' && schema.name===recipe.name && schema.url==='https://afrotools.com'+review.route);
+    assert.ok(recipeSchema && Array.isArray(recipeSchema.image) && recipeSchema.image.includes('https://afrotools.com'+review.path),'Review must match the exact recipe media, not a related card '+review.path);
+  }
   if(review.path.startsWith('/assets/img/og/countries/country-')) {
     const slug=path.basename(review.path,'.webp').replace(/^country-/,'');
     assert.equal(review.route,'/tools/afroatlas/country/'+slug+'/','Country review must retain its exact subject '+review.path);

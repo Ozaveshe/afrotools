@@ -20,7 +20,7 @@ const LIVE_DATA_WATCHES = [
   { id: 'salaries', blobKey: 'salary-benchmarks-latest', metaKey: 'salaries', staleAfterMinutes: 10080, severity: 'p3' },
   { id: 'stocks', blobKey: 'stock-indices-latest', metaKey: 'stocks', staleAfterMinutes: 1440, severity: 'p2' },
   { id: 'shipping', blobKey: 'shipping-rates-latest', metaKey: 'shipping', staleAfterMinutes: 10080, severity: 'p3' },
-  { id: 'agri_inputs', blobKey: 'agri-inputs-latest', metaKey: 'agri_inputs', staleAfterMinutes: 10080, severity: 'p3' },
+  { id: 'agri_inputs', blobKey: 'agri-inputs-latest', metaKey: 'agriculture', staleAfterMinutes: 10080, severity: 'p3' },
   { id: 'crypto', blobKey: 'crypto-latest', metaKey: 'crypto', staleAfterMinutes: 360, severity: 'p1' }
 ];
 
@@ -149,6 +149,18 @@ async function checkLiveDataMeta(summary, nowMs) {
 
   for (const watch of LIVE_DATA_WATCHES) {
     const catMeta = meta[watch.metaKey] || meta[watch.id] || {};
+    if (watch.id === 'agri_inputs') {
+      const payload = await getData(watch.blobKey);
+      const reference = require('./_shared/agri-reference').referenceStatus(payload, catMeta, nowMs, watch.staleAfterMinutes);
+      categories.push({id:watch.id, blob_key:watch.blobKey, ...reference, severity:watch.severity});
+      pushIssue(summary, reference.collection_status === 'offline' ? 'stale' : 'degraded', {
+        id:watch.id, surface:'live_data_meta', severity:watch.severity, age_minutes:reference.age_minutes,
+        updated_at:reference.collected_at,
+        message:reference.collection_status === 'offline' ? 'Agricultural reference data is unavailable or invalid' :
+          'Agricultural input prices remain unreviewed references; collection status: ' + reference.collection_status
+      });
+      continue;
+    }
     let updatedAt = firstTimestamp(catMeta);
     let blobSeen = false;
 
@@ -584,6 +596,8 @@ async function runWatchdog() {
 
   return summary;
 }
+
+exports._test = {checkLiveDataMeta};
 
 exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') {

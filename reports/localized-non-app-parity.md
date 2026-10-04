@@ -16,11 +16,11 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 336 | 40 | 0 | 296 | 21 | 0 | 315 |
+| editorial | 337 | 40 | 0 | 297 | 21 | 0 | 316 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 8 | 4 | 1 | 3 | 3 | 0 | 5 |
+| product-entry | 7 | 4 | 1 | 2 | 3 | 0 | 4 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
@@ -538,6 +538,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/south-africa-emp501-reconciliation-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-filing-season-2026-dates/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-filing-season-2026-dates/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-irp3a-tax-directive-employer-checklist-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-irp3a-tax-directive-employer-checklist-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-medical-tax-credits-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-medical-tax-credits-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-provisional-tax-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
@@ -650,8 +652,6 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | fr | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | sw | — | missing | no localized route or owner file |
-| /matchday-os/ | product-entry | fr | — | missing | no localized route or owner file |
-| /matchday-os/ | product-entry | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
