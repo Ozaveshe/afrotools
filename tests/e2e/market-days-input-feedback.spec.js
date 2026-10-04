@@ -44,7 +44,11 @@ for (const variant of [{ width: 320, theme: 'dark' }, { width: 390, theme: 'ligh
       await expect(page.locator('#selectedDayName')).toHaveText('Eke');
       await expect(page.locator('#selectedDateMeta')).toContainText('4 January 2026');
       await expect(page.locator('[data-date-key="2026-01-04"]')).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('#tripStatus')).toContainText('Build a new trip brief before copying');
+      await expect(page.getByRole('button', { name: 'Copy trip brief', exact: true })).toBeDisabled();
+      await page.getByRole('button', { name: 'Build trip brief', exact: true }).click();
       await expect(page.locator('#tripStatus')).toContainText('Trip brief ready');
+      await expect(page.getByRole('button', { name: 'Copy trip brief', exact: true })).toBeEnabled();
       await page.locator('#shareView').click();
       await expect(page.locator('#shareStatus')).toContainText('copied');
       const copied = await page.evaluate(() => window.syntheticCopiedURLs);
