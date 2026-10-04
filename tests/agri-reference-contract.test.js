@@ -9,7 +9,7 @@ function load(file,stubs){const exports={};vm.runInNewContext(fs.readFileSync(pa
 function storage(payload,meta={}){return {getData:async key=>key==='agri-inputs-latest'?payload:key==='meta'?meta:null,setData:async()=>{throw new Error('Unexpected live write');}};}
 
 test('latest food observation uses year, preserves zero and ignores invalid/future/unrelated records',()=>{
- const rows=[row('NG',2024,140),row('NG',2022,120),row('KE',2023,0),row('NG',2025,null),row('NG',2027,900),row('XX',2024,1),{...row('NG',2026,100),indicator:{id:'wrong'}}];
+ const rows=[null,row('NG',2024,140),row('NG',2022,120),row('KE',2023,0),row('NG',2025,null),row('NG',2027,900),row('XX',2024,1),{...row('NG',2026,100),indicator:{id:'wrong'}}];
  const observations=agri.latestFoodObservations(rows,['NG','KE'],now);
  assert.equal(observations.NG.value,140);assert.equal(observations.NG.year,2024);assert.equal(observations.KE.value,0);
  assert.deepEqual(observations,agri.latestFoodObservations(rows.slice().reverse(),['NG','KE'],now));
@@ -18,7 +18,7 @@ test('latest food observation uses year, preserves zero and ignores invalid/futu
 test('fertilizer benchmark needs a valid dated series and preserves a zero observation',()=>{
  const make=(id,period,price,extra={})=>({id,period,price,source:'worldbank-cmo-xlsx',currency:'USD',unit:'mt',
   source_url:'https://thedocs.worldbank.org/en/doc/synthetic/related/CMO-Historical-Data-Monthly.xlsx',...extra});
- const payload={timestamp:now,commodities:[make('phosphate','2025M09',10),make('phosphate','2026M08',0),
+ const payload={timestamp:now,commodities:[null,make('phosphate','2025M09',10),make('phosphate','2026M08',0),
  make('urea',null,80),make('phosphate','2026M12',500),make('urea','2026M09',50),make('urea','2026M10',70,{source:'reference-fallback'})]};
  const result=agri.fertilizerBenchmarks(payload,now);
  assert.equal(result.DAP.value,0);assert.equal(result.DAP.period,'2026M08');assert.equal(result.UREA_EE_BULK.period,'2026M09');
@@ -57,6 +57,29 @@ test('legacy references normalize without fake review dates, metrics, conversion
  assert.equal(agri.referenceStatus({...payload,timestamp:'2026-10-05T00:00:00Z'}, {},now,10080).status,'offline');
  assert.equal(agri.referenceStatus(payload,{status:'ok'},now,10080).status,'stale');
  assert.equal(agri.referenceStatus(payload,{status:'write-failed'},now,10080).collection_status,'degraded');
+});
+
+test('impossible collection dates and malformed retained rows cannot become available data',()=>{
+ for(const timestamp of ['2026-02-30T04:00:00Z','2025-02-29','2026-04-31','2026-10-04T04:00:00']) {
+  assert.equal(agri.iso(timestamp),null);
+  assert.equal(agri.normalizeSnapshot({...legacy(),timestamp},now),null);
+ }
+ assert.equal(agri.iso('2024-02-29'), '2024-02-29T00:00:00.000Z');
+ assert.equal(agri.iso('2026-10-04T09:00:00+05:00'),now);
+ for(const countries of [[null],[{...legacy().countries[0],inputs:[null]}]])
+  assert.equal(agri.normalizeSnapshot({...legacy(),countries},now),null);
+ assert.equal(agri.normalizeSnapshot({...legacy(),timestamp:'2026-10-05T00:00:00Z'},now),null);
+});
+
+test('public agriculture API fails closed on impossible or future collection dates',async()=>{
+ for(const timestamp of ['2026-02-30T04:00:00Z','9999-01-01T00:00:00Z']) {
+  const payload={...legacy(),timestamp};
+  const api=load('api-v1.js',{'./_shared/data-store':storage(payload),
+   './_lib/cache':{getOrFetch:async()=>({data:payload})},'./_shared/api-auth':{validateApiKey:async()=>({tier:'free'})}});
+  const response=await api.handler({httpMethod:'GET',path:'/api/v1/agriculture',queryStringParameters:{}});
+  assert.equal(response.statusCode,503);
+  assert.deepEqual(Object.keys(JSON.parse(response.body)),['error']);
+ }
 });
 
 test('public freshness reader uses agriculture owner and never calls retained references live',async()=>{

@@ -46,7 +46,7 @@ async function fetchAgriInputs() {
       rows = rows.concat(json[1]);
     }
     food = agri.latestFoodObservations(rows, codes, now);
-    externalSources.food_production = { status: Object.keys(food).length === codes.length ? 'available' : 'partial',
+    externalSources.food_production = { status: Object.keys(food).length === codes.length ? 'available' : Object.keys(food).length ? 'partial' : 'unavailable',
       countries_with_observations: Object.keys(food).length, retrieved_at: now, source: url };
   } catch (e) { console.log('[agri] Food production context unavailable'); }
 

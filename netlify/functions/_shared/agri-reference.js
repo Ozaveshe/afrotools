@@ -7,7 +7,9 @@ const contracts = require('../../../data/calculation-quality/external-data-contr
 const FX_MAX_AGE_MS = contracts.datasets.find(item => item.storageKey === 'forex-latest').maxAgeHours * 60 * 60 * 1000;
 
 function iso(value) {
-  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)) return null;
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2}))?$/.test(value)) return null;
+  const calendar = new Date(value.slice(0, 10) + 'T00:00:00Z');
+  if (!Number.isFinite(calendar.getTime()) || calendar.toISOString().slice(0, 10) !== value.slice(0, 10)) return null;
   const date = new Date(value);
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
 }
@@ -22,8 +24,8 @@ function number(value) {
 function latestFoodObservations(rows, codes, now) {
   const result = {}, year = new Date(now).getUTCFullYear();
   for (const row of rows || []) {
-    const code = row.country && row.country.id;
-    const value = number(row.value);
+    const code = row?.country?.id;
+    const value = number(row?.value);
     if (!codes.includes(code) || row.indicator?.id !== FOOD_INDICATOR || value === null || !/^\d{4}$/.test(String(row.date))) continue;
     const observedYear = Number(row.date);
     if (observedYear > year || observedYear < 1960) continue;
@@ -40,6 +42,7 @@ function fertilizerBenchmarks(payload, now) {
   const age = collectedAt ? new Date(now).getTime() - new Date(collectedAt).getTime() : Infinity;
   if (age < 0 || age > 7 * 24 * 60 * 60 * 1000 || !Array.isArray(payload?.commodities)) return result;
   for (const row of payload.commodities) {
+    if (!row || typeof row !== 'object') continue;
     const series = {urea:'UREA_EE_BULK',phosphate:'DAP'}[row.id];
     const period = String(row.period || ''), value = number(row.price);
     let url;
@@ -93,11 +96,13 @@ function buildSnapshot(configs, food, fertilizer, forex, now) {
 // successful collection reviewed the hard-coded local prices.
 function normalizeSnapshot(payload, now = new Date().toISOString()) {
   if (!payload || !Array.isArray(payload.countries) || !payload.countries.length || !iso(payload.timestamp)) return null;
+  const nowMs = new Date(now).getTime();
+  if (!Number.isFinite(nowMs) || new Date(iso(payload.timestamp)).getTime() > nowMs) return null;
   if (payload.schemaVersion !== undefined && payload.schemaVersion !== 2) return null;
   const modern = payload.schemaVersion === 2 && payload.snapshot_type === 'reference' && payload.source === SOURCE;
   if (payload.schemaVersion === 2 && !modern) return null;
-  if (!payload.countries.every(row => ['reference', 'reference-with-wb'].includes(row.source) && /^[A-Z]{2}$/.test(row.code || '') &&
-    Array.isArray(row.inputs) && row.inputs.length && row.inputs.every(input => number(input.price_local) !== null))) return null;
+  if (!payload.countries.every(row => row && ['reference', 'reference-with-wb'].includes(row.source) && /^[A-Z]{2}$/.test(row.code || '') &&
+    Array.isArray(row.inputs) && row.inputs.length && row.inputs.every(input => input && number(input.price_local) !== null))) return null;
   const collectedAt = iso(payload.timestamp);
   return {...payload, source: SOURCE, source_type: 'reference', snapshot_type: 'reference', current_prices: false,
     collected_at: collectedAt, price_status: 'unverified_reference', price_reviewed_at: null,
