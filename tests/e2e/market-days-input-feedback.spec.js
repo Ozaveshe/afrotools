@@ -29,6 +29,16 @@ for (const variant of [{ width: 320, theme: 'dark' }, { width: 390, theme: 'ligh
       await expect(page.locator('html')).toHaveAttribute('data-theme', variant.theme);
       await expect(page.locator('#selectedDayName')).toHaveText('Orie');
       const input = page.getByLabel('Pick any Gregorian date', { exact: true });
+      for (const unsupported of ['0001-01-01', '0100-01-01', '0999-01-01']) {
+        await input.fill(unsupported);
+        await expect(input).toHaveValue(unsupported);
+        await expect(input).toHaveAttribute('aria-invalid', 'true');
+        await expect(page.locator('#lookupDateStatus')).toHaveText('This calendar supports years 1000 onward. Choose a supported date.');
+        await expect(page.locator('#selectedDateResult')).toBeHidden();
+        await expect(page.locator('#tripPlannerOutput')).toBeHidden();
+        await expect(page.locator('#shareView')).toBeDisabled();
+        await expect(page.locator('#selectedDayName')).toHaveText('Orie');
+      }
       await input.fill('2026-01-04');
       await expect(input).toBeFocused();
       await expect(page.locator('#selectedDayName')).toHaveText('Eke');
