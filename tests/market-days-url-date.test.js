@@ -49,3 +49,55 @@ for (const input of ['2024-02-29', '2000-02-29', '2026-01-01']) {
 test('missing or malformed URL dates keep the existing Nigeria-today fallback', () => {
   for (const input of [null, '', '2026-2-1', 'not-a-date']) assert.equal(selectDate(input), today);
 });
+
+const lookupListeners = [], declarations = new Map();
+function inspectLookup(node) {
+  if (!node || typeof node !== 'object') return;
+  if (node.type === 'FunctionDeclaration' && node.id) declarations.set(node.id.name, node);
+  if (node.type === 'CallExpression' && node.callee.type === 'MemberExpression' &&
+      node.callee.property.name === 'addEventListener' &&
+      node.callee.object.type === 'MemberExpression' && node.callee.object.property.name === 'lookupDate' &&
+      ['input', 'change'].includes(node.arguments[0].value)) lookupListeners.push(node);
+  for (const value of Object.values(node)) {
+    if (Array.isArray(value)) value.forEach(inspectLookup);
+    else if (value && typeof value === 'object') inspectLookup(value);
+  }
+}
+inspectLookup(ast);
+assert.equal(lookupListeners.length, 2, 'actual date input and change registrations');
+function lookupSignal(type, value) {
+  const calls = [], callbacks = {}, state = { currentMonthDate: new Date(Date.UTC(2026, 0, 1)) };
+  const context = {
+    Date, a: engine, d: state,
+    s: key => calls.push(`selected:${key}`),
+    invalidateShare: () => calls.push('invalidate'),
+    l: { lookupDate: { addEventListener: (name, callback) => { callbacks[name] = callback; } } }
+  };
+  const named = new Set(lookupListeners.map(node => node.arguments[1])
+    .filter(node => node.type === 'Identifier' && node.name !== 'invalidateShare').map(node => node.name));
+  for (const name of named) {
+    assert.ok(declarations.has(name), `actual callback declaration ${name}`);
+    const node = declarations.get(name);
+    vm.runInNewContext(controller.slice(node.start, node.end), context, { timeout: 500 });
+  }
+  for (const node of lookupListeners) vm.runInNewContext(controller.slice(node.start, node.end), context, { timeout: 500 });
+  assert.equal(typeof callbacks[type], 'function');
+  callbacks[type]({ target: { value } });
+  return { calls, month: engine.toDateKey(state.currentMonthDate) };
+}
+for (const type of ['input', 'change']) {
+  for (const value of ['2026-01-04', '2024-02-29', '2000-02-29']) {
+    test(`${type} immediately selects valid date ${value} after invalidating old sharing`, () => {
+      const result = lookupSignal(type, value);
+      assert.deepEqual(result.calls, ['invalidate', `selected:${value}`]);
+      assert.equal(result.month, `${value.slice(0, 7)}-01`);
+    });
+  }
+  for (const value of ['2026-02-31', '2026-02-29', '2026-13-01', '2026-00-01', '2026-04-31', '2026-01-00', '', 'not-a-date']) {
+    test(`${type} rejects impossible or incomplete date ${JSON.stringify(value)}`, () => {
+      const result = lookupSignal(type, value);
+      assert.deepEqual(result.calls, ['invalidate']);
+      assert.equal(result.month, '2026-01-01');
+    });
+  }
+}
