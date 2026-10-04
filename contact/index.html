@@ -335,7 +335,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/contact/">
 </head>
 <body class="contact-ui-refresh site-shell-ui-refresh top-level-page-ui-refresh">
-<a class="contact-skip-link" href="#main-content">Skip to main content</a>
+<a class="contact-skip-link" href="#main-content" tabindex="0">Skip to main content</a>
 <afro-navbar></afro-navbar>
 
 <!-- ── Hero ── -->
@@ -501,6 +501,14 @@
   function trackContactDraft() {
     this._contactDraftRevision = (this._contactDraftRevision || 0) + 1;
   }
+
+  document.getElementById('contactForm').addEventListener('invalid', function(event) {
+    const firstInvalid = this.querySelector('input:invalid, select:invalid, textarea:invalid');
+    if (event.target !== firstInvalid) return;
+    // Keep the browser's first validation target clear of the fixed navigation.
+    firstInvalid.focus({ preventScroll: true });
+    firstInvalid.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+  }, true);
 
   document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
