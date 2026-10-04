@@ -94,7 +94,9 @@ function writeFileSyncWithRetry(filePath, data, encoding) {
 
 // Build lookup: relative path → bundle name
 const fileToBundleMap = {};
+const bundledPathToName = new Map();
 for (const [bundleName, info] of Object.entries(manifest)) {
+  bundledPathToName.set(info.path, bundleName);
   for (const filePath of info.files) {
     // Normalize to the format used in HTML src attributes: /assets/js/...
     const htmlSrc = '/' + filePath.replace(/\\/g, '/');
@@ -184,24 +186,26 @@ for (const htmlPath of htmlFiles) {
     const fullTag = match[0];
     const src = match[1];
 
-    // Skip bundle tags (already handled above)
-    if (src.includes('/bundles/')) continue;
-
-    const bundleName = fileToBundleMap[src];
+    // Existing bundles and individual members share one document-order pass.
+    // Refreshing a hash above does not mean the bundle has been injected once.
+    const existingBundleName = bundledPathToName.get(src);
+    const bundleName = existingBundleName || fileToBundleMap[src];
 
     if (!bundleName) continue; // Not in any bundle, keep as-is
 
     // Skip tool-page bundle on non-tool pages
-    if (bundleName === 'tool-page' && !isToolPage) continue;
+    if (!existingBundleName && bundleName === 'tool-page' && !isToolPage) continue;
 
     // Skip chat bundle — it's lazy-loaded, not in HTML
-    if (bundleName === 'chat') continue;
+    if (!existingBundleName && bundleName === 'chat') continue;
 
     if (!injectedBundles.has(bundleName)) {
       // First occurrence of a file from this bundle: replace with bundle tag
       const bundlePath = manifest[bundleName].path;
       const bundleTag = `<script src="${bundlePath}" defer></script>`;
-      replacements.push({ original: fullTag, replacement: bundleTag, index: match.index });
+      if (!existingBundleName) {
+        replacements.push({ original: fullTag, replacement: bundleTag, index: match.index });
+      }
       injectedBundles.add(bundleName);
     } else {
       // Subsequent occurrences: remove the tag

@@ -13,7 +13,9 @@ for (const width of [320, 390]) {
       await page.route('**/*', route => {
         const url = new URL(route.request().url());
         if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') return route.continue();
-        return route.fulfill({ status: 204, body: '' });
+        const type = route.request().resourceType();
+        return route.fulfill({ status: 204, body: '', contentType:
+          type === 'stylesheet' ? 'text/css' : type === 'script' ? 'application/javascript' : 'text/plain' });
       });
       // Model a visitor who declined analytics before testing calculator hit targets.
       await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
@@ -64,10 +66,21 @@ for (const width of [320, 390]) {
       await expect(ask).toBeFocused();
 
       await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-      await expect(assistant).toHaveCSS('visibility', 'visible');
-      await assistant.locator('#fab').tap();
+      // The shared mobile assistant is inline near the heading. Return to the
+      // page's visible Ask entry point instead of expecting a floating footer button.
+      await ask.scrollIntoViewIfNeeded();
+      const askHit = await ask.evaluate(node => {
+        const box = node.getBoundingClientRect();
+        const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+        return hit === node || node.contains(hit);
+      });
+      expect(askHit).toBe(true);
+      await ask.tap();
       await expect(panel).toHaveAttribute('aria-hidden', 'false');
+      await expect(assistant).toHaveCSS('visibility', 'visible');
       await assistant.locator('#close').tap();
+      await expect(panel).toHaveAttribute('aria-hidden', 'true');
+      await expect(ask).toBeFocused();
 
       const overflow = await page.evaluate(() =>
         document.documentElement.scrollWidth - document.documentElement.clientWidth);
