@@ -86,7 +86,7 @@ exports.handler = async function(event) {
     case 'rates':
       return handleGeneric('rates-latest', 'countries', params, CORS);
     case 'agriculture':
-      return handleGeneric('agri-inputs-latest', 'countries', params, CORS);
+      return handleAgriculture(params, CORS);
     case 'crypto':
       return handleCrypto(params, CORS);
     case 'health':
@@ -231,7 +231,27 @@ async function handleHealth(CORS) {
     };
   });
 
-  return jsonResp(200, { status: 'operational', categories: categories, checked_at: new Date().toISOString() }, CORS);
+  const agriculture = require('./_shared/agri-reference').referenceStatus(await getData('agri-inputs-latest'), meta.agriculture || {}, now, 10080);
+  categories.agriculture = {...categories.agriculture, ...agriculture, last_updated:null};
+  return jsonResp(200, { status: 'degraded', categories: categories, checked_at: new Date().toISOString() }, CORS);
+}
+
+async function handleAgriculture(params, CORS) {
+  const {data} = await getOrFetch('agri-inputs-latest', 600000);
+  const agri = require('./_shared/agri-reference');
+  const snapshot = agri.normalizeSnapshot(data);
+  if (!snapshot) return jsonResp(503, {error:'Agricultural reference data unavailable'}, CORS);
+  let items = snapshot.countries;
+  if (params.country) {
+    items = items.filter(row => row.code === params.country.toUpperCase());
+    if (!items.length) return jsonResp(404, {error:'Country not found'}, CORS);
+  }
+  if (params.region) items = items.filter(row => row.region === String(params.region).toLowerCase());
+  return jsonResp(200, {timestamp:snapshot.timestamp, data:items, count:items.length,
+    source:snapshot.source, source_type:'reference', price_status:snapshot.price_status,
+    price_reviewed_at:null, current_prices:false, collected_at:snapshot.collected_at,
+    external_sources:snapshot.external_sources || null,
+    status:agri.referenceStatus(data, {}, Date.now(), 10080)}, CORS);
 }
 
 // Generic handler for country-based datasets (insurance, property, salaries)
