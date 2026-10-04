@@ -96,7 +96,7 @@
     dialog.querySelector('[data-ak-cook-close]').addEventListener('click', function () { dialog.close(); });
     dialog.querySelector('[data-ak-cook-prev]').addEventListener('click', function () { if (index > 0) { index--; renderStep(); } });
     dialog.querySelector('[data-ak-cook-next]').addEventListener('click', function () {
-      if (index === steps.length - 1) { dialog.close(); return; }
+      if (index === steps.length - 1) { index = 0; dialog.close(); return; }
       index++; renderStep();
     });
     function restoreLayout() {
