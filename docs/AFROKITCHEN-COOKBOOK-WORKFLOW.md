@@ -10,6 +10,19 @@ node scripts/validate-afrokitchen-recipe-jsonld.js --all
 ```
 
 Use `--refresh-cookbook --recipes-only` for a recipe-only presentation refresh.
+
+For an image-attribution correction in structured data only, use
+`node scripts/generate-afrokitchen-static-pages.js --refresh-recipe-schema`.
+This reads the saved catalog and updates only Recipe image fields, preparation-step
+image fields and the head-only schema blocker marker. It preserves page content,
+robots, canonicals, route aliases, social previews and release-owned asset URLs.
+Generic category banners are social previews, not photos of a particular dish.
+A missing dish image defers Recipe rich markup while the complete recipe remains
+indexable; other missing content retains the existing noindex safeguard. Optional
+step images require an explicit step image source and never reuse a plated-dish
+photo. Run `tests/afrokitchen-schema-images.test.js` and the complete JSON-LD
+validator. These checks do not certify image provenance or actual Google results.
+
 The recipe canvas is owned by `visual-recipe.css` and `visual-recipe.js`.
 `visual-assets.js` supplies the same decorative ingredient SVGs to the generator
 and the browser. Unknown ingredients use a neutral bowl, with the stored name
