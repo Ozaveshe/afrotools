@@ -1571,8 +1571,9 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
 <body>
+<a class="ak-skip-link" href="#ak-main-content" tabindex="0">Skip to main content</a>
 <afro-navbar></afro-navbar>
-<div class="ak-page ak-static-page ak-visual-recipe">
+<div class="ak-page ak-static-page ak-visual-recipe" id="ak-main-content" role="main" tabindex="-1">
 ${renderCookbookNav()}
   <section class="ak-hero"${heroStyle}>
     <div class="ak-hero-inner ak-hero-single">
@@ -2493,8 +2494,9 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
   <script type="application/ld+json">${safeJson(faqPageSchema)}</script>
 </head>
 <body>
+<a class="ak-skip-link" href="#ak-main-content" tabindex="0">Skip to main content</a>
 <afro-navbar></afro-navbar>
-<div class="ak-page ak-country-static-page">
+<div class="ak-page ak-country-static-page" id="ak-main-content" role="main" tabindex="-1">
 ${renderCookbookNav()}
   <section class="ak-hero">
     <div class="ak-hero-inner ak-hero-single">
@@ -2667,8 +2669,9 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
 <body>
+<a class="ak-skip-link" href="#ak-main-content" tabindex="0">Skip to main content</a>
 <afro-navbar></afro-navbar>
-<div class="ak-page ak-collection-static-page">
+<div class="ak-page ak-collection-static-page" id="ak-main-content" role="main" tabindex="-1">
 ${renderCookbookNav()}
   <section class="ak-hero">
     <div class="ak-hero-inner ak-hero-single">
