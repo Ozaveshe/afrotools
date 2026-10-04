@@ -109,6 +109,21 @@ if (pageIdx !== -1 && args[pageIdx + 1] !== undefined) {
   flags.page = args[pageIdx + 1];
 }
 
+// Repair the source guard without regenerating translated copy or layout.
+if (args.includes('--refresh-chart-readiness')) {
+  if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) {
+    throw new Error('Chart readiness refresh requires --lang fr --page kenya/ke-paye only');
+  }
+  const { refreshChartReadiness } = require('./lib/localized-chart-readiness');
+  const target = path.join(ROOT, 'fr', 'kenya', 'ke-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const source = fs.readFileSync(path.join(ROOT, 'kenya', 'ke-paye.html'), 'utf8');
+  const refreshed = refreshChartReadiness(existing, source);
+  if (refreshed !== existing) writeFileWithRetry(target, refreshed);
+  console.log(`French Kenya chart readiness: ${refreshed === existing ? 'unchanged' : 'updated'}; all other page bytes preserved`);
+  process.exit(0);
+}
+
 // ── LOAD TRANSLATIONS ───────────────────────────────────────────────
 
 function loadJSON(filePath) {
