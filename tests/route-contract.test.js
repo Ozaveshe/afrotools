@@ -59,6 +59,24 @@ assert.strictEqual(routeApi.validateRedirectGraph(redirects).errors.length, 0, '
 
 const indexablePages = graph.routes.filter((record) => record.state === 'page' && record.indexability === 'indexable');
 assert.ok(indexablePages.length > 0, 'AC-4: indexable page set must not be empty');
+assert.match(
+  fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8'),
+  /^\/matchday-os\/\*\s+\/404\.html\s+410\s*$/m,
+  'Existing Matchday public tombstone must remain in place'
+);
+assert.strictEqual(
+  graph.routes.filter((record) => record.state === 'page' && record.route.startsWith('/matchday-os/')).length,
+  0,
+  'Retained Matchday source must not be counted as published pages under the existing HTTP 410 policy'
+);
+for (const route of ['/developers/', '/salary-tax/', '/business/']) {
+  const page = routeApi.getRouteRecord(graph, route);
+  assert.ok(page && page.state === 'page', `${route} must retain its published page owner`);
+  assert.strictEqual(page.indexability, 'indexable', `${route} must remain indexable`);
+}
+for (const relative of ['matchday-os/index.html', 'matchday-os/news/index.html', 'assets/img/matchday/world-cup-hero-banner.webp']) {
+  assert.ok(fs.existsSync(path.join(ROOT, relative)), `Retained future source must be preserved: ${relative}`);
+}
 for (const page of indexablePages) {
   assert.strictEqual(page.canonicalTags.length, 1, `AC-4: ${page.route} must have one canonical`);
   assert.strictEqual(page.canonicalRoute, page.route, `AC-4: ${page.route} must self-canonicalize`);

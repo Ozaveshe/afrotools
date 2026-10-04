@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 302 |
-| sw | 137 | 1 | 326 |
+| fr | 160 | 2 | 301 |
+| sw | 137 | 1 | 325 |
 
 ## By surface class
 
@@ -20,7 +20,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
-| product-entry | 8 | 4 | 1 | 3 | 3 | 0 | 5 |
+| product-entry | 7 | 4 | 1 | 2 | 3 | 0 | 4 |
 | public-status | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
 
 ## Gap Ledger
@@ -650,8 +650,6 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /hr-payroll/ | category-hub | sw | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | fr | — | missing | no localized route or owner file |
 | /jamb/ | product-entry | sw | — | missing | no localized route or owner file |
-| /matchday-os/ | product-entry | fr | — | missing | no localized route or owner file |
-| /matchday-os/ | product-entry | sw | — | missing | no localized route or owner file |
 | /mining/ | category-hub | sw | — | missing | no localized route or owner file |
 | /personal-finance/ | category-hub | sw | — | missing | no localized route or owner file |
 | /pro/ | product-entry | sw | — | missing | no localized route or owner file |
