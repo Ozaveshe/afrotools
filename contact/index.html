@@ -21,13 +21,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=af93284c">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <script src="/assets/js/components/navbar.min.js?v=e5959261" defer></script>
 <script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
 
 <style>
+  /* Move keyboard and validation destinations without an in-flight page scroll. */
+  html { scroll-behavior: auto; }
+  .contact-skip-link { position: fixed; top: 8px; left: 8px; z-index: 10050; max-width: calc(100vw - 16px); min-height: 44px; padding: 11px 16px; border-radius: 8px; background: #0f172a; color: #fff; font-weight: 800; text-decoration: none; transform: translateY(calc(-100% - 20px)); }
+  .contact-skip-link:focus, .contact-skip-link:focus-visible { transform: none; outline: 3px solid #60a5fa; outline-offset: 2px; }
+  .contact-ui-refresh #main-content { scroll-margin-top: 80px; }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -332,6 +337,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/contact/">
 </head>
 <body class="contact-ui-refresh site-shell-ui-refresh top-level-page-ui-refresh">
+<a class="contact-skip-link" href="#main-content" tabindex="0">Skip to main content</a>
 <afro-navbar></afro-navbar>
 
 <!-- ── Hero ── -->
@@ -344,7 +350,7 @@
 </section>
 
 <!-- ── Main ── -->
-<div class="main">
+<div class="main" id="main-content" role="main" tabindex="-1">
 
   <!-- Form -->
   <div class="form-card">
@@ -497,6 +503,14 @@
   function trackContactDraft() {
     this._contactDraftRevision = (this._contactDraftRevision || 0) + 1;
   }
+
+  document.getElementById('contactForm').addEventListener('invalid', function(event) {
+    const firstInvalid = this.querySelector('input:invalid, select:invalid, textarea:invalid');
+    if (event.target !== firstInvalid) return;
+    // Keep the browser's first validation target clear of the fixed navigation.
+    firstInvalid.focus({ preventScroll: true });
+    firstInvalid.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+  }, true);
 
   document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();

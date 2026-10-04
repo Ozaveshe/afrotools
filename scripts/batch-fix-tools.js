@@ -213,6 +213,8 @@ function fixShareSave(content, filePath) {
 function addChartJS(content, filePath) {
   // Only for tools/ pages
   if (!filePath.replace(/\\/g, '/').includes('/tools/')) return { content, changed: false };
+  // Amount wording has no charts; keep its conversion page free of the unused download.
+  if (slugFromPath(filePath) === 'naira-to-words') return { content, changed: false };
 
   // Skip if already has Chart.js
   if (content.includes('chart.js') || content.includes('Chart.js') || content.includes('chartjs')) {

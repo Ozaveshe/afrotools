@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11694 |
-| Indexable pages | 7879 |
+| Public pages | 11695 |
+| Indexable pages | 7880 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4252 |
-| Documented fallbacks | 14966 |
-| Routes eligible for primary sitemaps | 7879 |
+| Genuine equivalence groups | 4253 |
+| Documented fallbacks | 14967 |
+| Routes eligible for primary sitemaps | 7880 |
 
 ## Locale Coverage
 
-- en: 6139 page records
+- en: 6140 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 542
+- article: 543
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3091,6 +3091,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:04ffcf239cf4: en=`/agriculture/input-prices/rwanda`, fr=`/fr/agriculture/input-prices/rwanda`, sw=`/sw/kilimo/bei-za-pembejeo/rwanda/`; x-default=`/agriculture/input-prices/rwanda`
 - equivalence:0502a6a84eab: sw=`/sw/zana-za-pdf/`; x-default=`/sw/zana-za-pdf/`
 - equivalence:0513c73a8988: en=`/tools/csection-vs-natural/`, fr=`/fr/tools/cout-cesarienne-voie-basse/`, sw=`/sw/zana/upasuaji-dhidi-ya-kujifungua-kawaida/`; x-default=`/tools/csection-vs-natural/`
+- equivalence:054e08592a34: en=`/blog/household-water-tank-maintenance-checklist-africa/`; x-default=`/blog/household-water-tank-maintenance-checklist-africa/`
 - equivalence:0551d4cb2ece: en=`/agriculture/vaccination-schedule/`, fr=`/fr/agriculture/vaccination-schedule/`, sw=`/sw/zana/ratiba-ya-chanjo-za-mifugo/`; x-default=`/agriculture/vaccination-schedule/`
 - equivalence:055cf18a3d57: en=`/blog/kenya-birth-certificate-application-checklist/`; x-default=`/blog/kenya-birth-certificate-application-checklist/`
 - equivalence:0562578a24fb: en=`/tools/gas-lpg-cost/ethiopia/`, fr=`/fr/tools/calculateur-du-cout-du-gaz-gpl-ethiopie/`; x-default=`/tools/gas-lpg-cost/ethiopia/`

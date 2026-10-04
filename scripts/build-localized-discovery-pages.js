@@ -37,7 +37,20 @@ const CONTACT_FORM_ROUTES = new Set(["/business-enquiry/","/custom-calculators/"
 function esc(value){return String(value).replace(/[&<>"']/g,(ch)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function attr(tag,name){const match=String(tag).match(new RegExp("\\b"+name+"\\s*=\\s*([\"'])([\\s\\S]*?)\\1","i"));return match?match[2]:"";}
 function setMeta(html,key,value,content){let found=false;const next=html.replace(/<meta\b[^>]*>/gi,(tag)=>{if(attr(tag,key).toLowerCase()!==value.toLowerCase())return tag;found=true;return tag.replace(/\bcontent\s*=\s*([\"'])([\s\S]*?)\1/i,(_,quote)=>"content="+quote+esc(content)+quote)});return found?next:next.replace("</head>","<meta "+key+"=\""+value+"\" content=\""+esc(content)+"\"></head>");}
-function syncHeadMetadata(html,locale,row){const fr=locale==="fr",title=fr?row[3]:row[4],summary=fr?row[5]:row[6],fullTitle=title+" | AfroTools";let out=html.replace(/(<title\b[^>]*>)[\s\S]*?(<\/title>)/i,"$1"+esc(fullTitle)+"$2");out=setMeta(out,"name","description",summary);out=setMeta(out,"property","og:title",fullTitle);out=setMeta(out,"property","og:description",summary);return out;}
+function syncHeadMetadata(html,locale,row){
+  const fr=locale==="fr",title=fr?row[3]:row[4],summary=fr?row[5]:row[6],fullTitle=title+" | AfroTools";
+  let out=html.replace(/(<title\b[^>]*>)[\s\S]*?(<\/title>)/i,"$1"+esc(fullTitle)+"$2");
+  out=setMeta(out,"name","description",summary);
+  out=setMeta(out,"property","og:title",fullTitle);
+  out=setMeta(out,"property","og:description",summary);
+  if(fr&&row[0]==="/developers/"){
+    const image="https://afrotools.com/assets/img/og-fr-developers.png";
+    const alt="Ressources pour développeurs AfroTools : API, widgets et intégrations.";
+    for(const [name,value] of [["og:image",image],["og:image:type","image/png"],["og:image:width","1200"],["og:image:height","630"],["og:image:alt",alt]])out=setMeta(out,"property",name,value);
+    for(const [name,value] of [["twitter:card","summary_large_image"],["twitter:title",fullTitle],["twitter:description",summary],["twitter:image",image],["twitter:image:alt",alt]])out=setMeta(out,"name",name,value);
+  }
+  return out;
+}
 function fileFor(route){return path.join(ROOT,route==="/"?"index.html":`${route.replace(/^\//,"")}index.html`);}
 function addAlternate(html,lang,route){const tag=`<link rel="alternate" hreflang="${lang}" href="https://afrotools.com${route}">`;return html.includes(tag)?html:html.replace("</head>",`${tag}</head>`);}
 function schema(title,description,route,lang){return JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage",name:title,description,url:`https://afrotools.com${route}`,inLanguage:lang});}

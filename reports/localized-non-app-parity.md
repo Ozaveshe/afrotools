@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 302 |
-| sw | 137 | 1 | 326 |
+| fr | 160 | 2 | 303 |
+| sw | 137 | 1 | 327 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 337 | 40 | 0 | 297 | 21 | 0 | 316 |
+| editorial | 338 | 40 | 0 | 298 | 21 | 0 | 317 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -269,6 +269,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/health-insurance-africa-compared/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/household-appliance-electricity-audit-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/household-appliance-electricity-audit-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/household-water-tank-maintenance-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/household-water-tank-maintenance-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/housing-fund-programs-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/housing-fund-programs-africa-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/how-much-house-can-i-afford-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
