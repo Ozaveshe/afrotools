@@ -66,7 +66,8 @@
   function setInnerHtml(value) {
     var source = String(value == null ? '' : value);
     var localizer = window.AfroTools && window.AfroTools.SwahiliDocumentPdfLocalizer;
-    var next = !userContent(this) && localizer && typeof localizer.translate === 'function'
+    // Keep authored content in detached parser nodes literal.
+    var next = this.isConnected && !userContent(this) && localizer && typeof localizer.translate === 'function'
       ? localizeMarkup(source, localizer, this.id === 'cvpreview' || Boolean(this.closest && this.closest('#cvpreview')))
       : source;
     if (lastSource.get(this) === source && descriptor.get.call(this) === next) return;

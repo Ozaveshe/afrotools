@@ -66,7 +66,7 @@
     }
     function x(t, o) {
         var a = URL.createObjectURL(t), n = e.createElement("a");
-        n.href = a, n.download = o, n.dataset.noPdfGate = "true", e.body.appendChild(n), 
+        n.href = a, n.download = o, n.dataset.noPdfGate = "true", e.body.appendChild(n),
         n.click(), e.body.removeChild(n), setTimeout(function() {
             URL.revokeObjectURL(a);
         }, 1200);
@@ -83,9 +83,9 @@
     }
     function g() {
         var t = s(), e = [], o = i([ t.fn, t.ln ].filter(Boolean).join(" ")) || "Firstname Lastname";
-        e.push(o), e.push(i(t.title || d())), e.push([ t.email, [ t.phoneCode, t.phone ].filter(Boolean).join(" "), t.loc, t.linkedin, t.web ].map(i).filter(Boolean).join(" | ")), 
+        e.push(o), e.push(i(t.title || d())), e.push([ t.email, [ t.phoneCode, t.phone ].filter(Boolean).join(" "), t.loc, t.linkedin, t.web ].map(i).filter(Boolean).join(" | ")),
         y(e, "Professional Summary", i(t.summary)), y(e, "Work Experience", (t.exps || []).map(function(t) {
-            return r([ t.t, t.c, t.d ].join(" ")) ? [ [ t.t, t.c, t.l ].map(i).filter(Boolean).join(" - "), [ m(t.s), t.cur ? "Present" : m(t.e) ].filter(Boolean).join(" to "), (e = t.d, 
+            return r([ t.t, t.c, t.d ].join(" ")) ? [ [ t.t, t.c, t.l ].map(i).filter(Boolean).join(" - "), [ m(t.s), t.cur ? "Present" : m(t.e) ].filter(Boolean).join(" to "), (e = t.d,
             String(e || "").split(/\n+/).map(function(t) {
                 return i(t.replace(/^\s*(?:\u2022|\*|-|\d+\.)\s*/, ""));
             }).filter(Boolean).map(function(t) {
@@ -94,7 +94,7 @@
             var e;
         })), y(e, "Education", (t.edus || []).map(function(t) {
             return r([ t.deg, t.sch ].join(" ")) ? [ [ t.deg, t.sch, t.loc ].map(i).filter(Boolean).join(" - "), [ t.y1, t.y2 ].map(i).filter(Boolean).join(" to "), i(t.g) ].filter(Boolean).join("\n") : "";
-        })), y(e, "Skills", [ t.skills && t.skills.h ? "Technical: " + i(t.skills.h) : "", t.skills && t.skills.s ? "Professional: " + i(t.skills.s) : "", t.skills && t.skills.t ? "Tools: " + i(t.skills.t) : "" ]), 
+        })), y(e, "Skills", [ t.skills && t.skills.h ? "Technical: " + i(t.skills.h) : "", t.skills && t.skills.s ? "Professional: " + i(t.skills.s) : "", t.skills && t.skills.t ? "Tools: " + i(t.skills.t) : "" ]),
         y(e, "Certifications", (t.certs || []).map(function(t) {
             return [ t.n, t.i, t.y ].map(i).filter(Boolean).join(" - ");
         })), t.showProjs && y(e, "Projects", (t.projs || []).map(function(t) {
@@ -103,15 +103,15 @@
             return [ t.l, t.lv ].map(i).filter(Boolean).join(" - ");
         }));
         var a = [];
-        return t.extras && (t.extras.awards && a.push("Awards: " + i(t.extras.awards)), 
-        t.extras.volunteer && a.push("Volunteering: " + i(t.extras.volunteer)), t.extras.memberships && a.push("Memberships: " + i(t.extras.memberships))), 
+        return t.extras && (t.extras.awards && a.push("Awards: " + i(t.extras.awards)),
+        t.extras.volunteer && a.push("Volunteering: " + i(t.extras.volunteer)), t.extras.memberships && a.push("Memberships: " + i(t.extras.memberships))),
         y(e, "Additional Information", a), t.showRefs && y(e, "References", (t.refs || []).map(function(t) {
             return r(t.n) ? [ [ t.n, t.t, t.org ].map(i).filter(Boolean).join(" - "), [ t.e, t.p ].map(i).filter(Boolean).join(" | "), t.rel ? "Relationship: " + i(t.rel) : "" ].filter(Boolean).join("\n") : "";
         })), e.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }
     function h(t) {
         var o = e.createElement("textarea");
-        o.value = t, o.setAttribute("readonly", ""), o.style.position = "fixed", o.style.left = "-9999px", 
+        o.value = t, o.setAttribute("readonly", ""), o.style.position = "fixed", o.style.left = "-9999px",
         e.body.appendChild(o), o.select();
         try {
             e.execCommand("copy"), f("ATS plain version copied");
@@ -122,18 +122,18 @@
     }
     function C() {
         var t = g(), o = e.querySelector(".cv-export-modal-overlay");
-        o || ((o = e.createElement("div")).className = "cv-export-modal-overlay", o.innerHTML = [ '<div class="cv-export-modal" role="dialog" aria-modal="true" aria-label="ATS Plain Version">', '<div class="cv-export-modal-head">', "<div><h3>ATS Plain Version</h3><p>No columns, graphics, icons, photo, or decorative formatting. Edit before submitting.</p></div>", '<button type="button" data-export-close>Close</button>', "</div>", '<textarea data-export-ats-text spellcheck="true"></textarea>', '<div class="cv-export-modal-actions">', '<button type="button" data-export-copy-ats>Copy</button>', '<button type="button" data-export-download-ats>Download TXT</button>', '<button type="button" data-export-download-ats-pdf>Download ATS Plain PDF</button>', "</div>", "</div>" ].join(""), 
+        o || ((o = e.createElement("div")).className = "cv-export-modal-overlay", o.innerHTML = [ '<div class="cv-export-modal" role="dialog" aria-modal="true" aria-label="ATS Plain Version">', '<div class="cv-export-modal-head">', "<div><h3>ATS Plain Version</h3><p>No columns, graphics, icons, photo, or decorative formatting. Edit before submitting.</p></div>", '<button type="button" data-export-close>Close</button>', "</div>", '<textarea data-export-ats-text spellcheck="true"></textarea>', '<div class="cv-export-modal-actions">', '<button type="button" data-export-copy-ats>Copy</button>', '<button type="button" data-export-download-ats>Download TXT</button>', '<button type="button" data-export-download-ats-pdf>Download ATS Plain PDF</button>', "</div>", "</div>" ].join(""),
         e.body.appendChild(o), o.addEventListener("click", function(t) {
-            (t.target === o || t.target.closest("[data-export-close]")) && o.classList.remove("open"), 
+            (t.target === o || t.target.closest("[data-export-close]")) && o.classList.remove("open"),
             t.target.closest("[data-export-copy-ats]") && function(t) {
                 navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(t).then(function() {
                     f("ATS plain version copied");
                 }).catch(function() {
                     h(t);
                 }) : h(t);
-            }(o.querySelector("[data-export-ats-text]").value), t.target.closest("[data-export-download-ats]") && k(o.querySelector("[data-export-ats-text]").value), 
+            }(o.querySelector("[data-export-ats-text]").value), t.target.closest("[data-export-download-ats]") && k(o.querySelector("[data-export-ats-text]").value),
             t.target.closest("[data-export-download-ats-pdf]") && j(o.querySelector("[data-export-ats-text]").value);
-        })), o.querySelector("[data-export-ats-text]").value = t, o.classList.add("open"), 
+        })), o.querySelector("[data-export-ats-text]").value = t, o.classList.add("open"),
         v("ATS plain ready"), b("cv_plain_ats_exported", {
             template: l().template || "",
             format: "preview"
@@ -181,9 +181,9 @@
             var o = e.querySelector(".cv-export-options");
             o && o.remove();
             var a = t.querySelector(".cv-colors"), r = p(), i = e.createElement("section");
-            i.className = "cv-export-options", i.setAttribute("aria-label", "Export Options"), 
-            i.innerHTML = [ '<div class="cv-export-head">', "<div>", '<h2 class="cv-export-title">Export Options</h2>', '<p class="cv-export-note">PDF uses the live preview. ATS Plain removes columns, images, icons, photo, and risky formatting.</p>', "</div>", '<span class="cv-export-status" data-export-status>Ready</span>', "</div>", '<div class="cv-export-grid">', '<label class="cv-export-role"><span>Target role for filename</span><input data-export-role placeholder="e.g. Data Analyst" value="' + n(d()) + '"></label>', '<div class="cv-export-actions">', '<button type="button" class="cv-export-btn primary" data-cv-export="pdf">Download PDF</button>', '<button type="button" class="cv-export-btn" data-cv-export="print">Print</button>', '<button type="button" class="cv-export-btn" data-cv-export="ats-pdf">Download ATS Plain PDF</button>', '<button type="button" class="cv-export-btn" data-cv-export="ats">ATS Plain Text</button>', '<button type="button" class="cv-export-btn" data-cv-export="text">Download text version</button>', '<button type="button" class="cv-export-btn" data-cv-export="json">JSON Backup</button>', "</div>", "</div>", '<label class="cv-export-review"><input type="checkbox" data-cv-export-review><span>I reviewed the live preview, contact details, dates, page breaks, and target-role filename before export.</span></label>', '<fieldset class="cv-export-density">', "<legend>Content density</legend>", B("comfortable", "Comfortable", r.density), B("compact", "Compact", r.density), B("one-page", "One-page attempt", r.density), "</fieldset>", '<fieldset class="cv-export-breaks">', "<legend>Page break controls</legend>", w("avoidSplits", "Avoid splitting major sections", r), w("breakExp", "Break before experience", r), w("breakEdu", "Break before education", r), w("breakProjects", "Break before projects", r), w("breakRefs", "Break before references", r), "</fieldset>" ].join(""), 
-            a && a.parentNode ? a.parentNode.insertBefore(i, a.nextSibling) : t.insertBefore(i, t.firstChild), 
+            i.className = "cv-export-options", i.setAttribute("aria-label", "Export Options"),
+            i.innerHTML = [ '<div class="cv-export-head">', "<div>", '<h2 class="cv-export-title">Export Options</h2>', '<p class="cv-export-note">PDF uses the live preview. ATS Plain removes columns, images, icons, photo, and risky formatting.</p>', "</div>", '<span class="cv-export-status" data-export-status>Ready</span>', "</div>", '<div class="cv-export-grid">', '<label class="cv-export-role"><span>Target role for filename</span><input data-export-role placeholder="e.g. Data Analyst" value="' + n(d()) + '"></label>', '<div class="cv-export-actions">', '<button type="button" class="cv-export-btn primary" data-cv-export="pdf">Download PDF</button>', '<button type="button" class="cv-export-btn" data-cv-export="print">Print</button>', '<button type="button" class="cv-export-btn" data-cv-export="ats-pdf">Download ATS Plain PDF</button>', '<button type="button" class="cv-export-btn" data-cv-export="ats">ATS Plain Text</button>', '<button type="button" class="cv-export-btn" data-cv-export="text">Download text version</button>', '<button type="button" class="cv-export-btn" data-cv-export="json">JSON Backup</button>', "</div>", "</div>", '<label class="cv-export-review"><input type="checkbox" data-cv-export-review><span>I reviewed the live preview, contact details, dates, page breaks, and target-role filename before export.</span></label>', '<fieldset class="cv-export-density">', "<legend>Content density</legend>", B("comfortable", "Comfortable", r.density), B("compact", "Compact", r.density), B("one-page", "One-page attempt", r.density), "</fieldset>", '<fieldset class="cv-export-breaks">', "<legend>Page break controls</legend>", w("avoidSplits", "Avoid splitting major sections", r), w("breakExp", "Break before experience", r), w("breakEdu", "Break before education", r), w("breakProjects", "Break before projects", r), w("breakRefs", "Break before references", r), "</fieldset>" ].join(""),
+            a && a.parentNode ? a.parentNode.insertBefore(i, a.nextSibling) : t.insertBefore(i, t.firstChild),
             i.addEventListener("click", function(t) {
                 var e = t.target.closest("[data-cv-export]");
                 e && (t.preventDefault(), V(e.dataset.cvExport));
