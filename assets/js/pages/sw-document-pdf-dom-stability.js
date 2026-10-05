@@ -3,6 +3,35 @@
 
   var tool = document.querySelector('meta[name="tool-id"]');
   if (!tool || tool.content !== 'cv-builder') return;
+  // These local workspaces rerender their form after save/status changes.
+  // Keep their mobile dock context through the resulting focus loss: changing
+  // fixed/relative position during the next pointer click loses that click.
+  var documentControls = '.cv-application-pack-panel, .cv-job-tracker-panel';
+  var documentNavigation = '[data-cv-copilot="pack"], [data-cv-copilot="job-tracker"], [data-cv-version-open-tracker], [data-next-step-action="pack"], [data-next-step-action="tracker"]';
+  function enterDocumentControls() {
+    if (document.body) document.body.classList.add('sw-cv-document-controls-active');
+  }
+  function visibleDocumentControls() {
+    if (window.innerWidth > 700) return;
+    if (Array.from(document.querySelectorAll(documentControls)).some(function (panel) {
+      var bounds = panel.getBoundingClientRect();
+      return bounds.height > 0 && bounds.top < window.innerHeight - 100 && bounds.bottom > 110;
+    })) enterDocumentControls();
+  }
+  document.addEventListener('focusin', function (event) {
+    if (event.target.closest && event.target.closest(documentControls)) enterDocumentControls();
+  });
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!target.closest) return;
+    if (target.closest(documentNavigation)) enterDocumentControls();
+    else if (target.closest('.cv-toolbar [data-action], [data-cv-mobile-command], .cv-flow-hero-actions [data-cv-flow-action]')) {
+      document.body.classList.remove('sw-cv-document-controls-active');
+    }
+  }, true);
+  window.addEventListener('scroll', visibleDocumentControls, {passive:true});
+  window.addEventListener('resize', visibleDocumentControls, {passive:true});
+  window.addEventListener('load', visibleDocumentControls, {once:true});
   var descriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
   if (!descriptor || !descriptor.get || !descriptor.set || descriptor.set.__swDocumentPdfStable) return;
   var lastSource = new WeakMap();

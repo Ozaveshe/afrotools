@@ -25,8 +25,14 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['assets/js/components/src/ai-consent.js', 'assets/js/components/ai-consent.js'],
   ['assets/js/pages/src/invoice-generator-enhancements.js', 'assets/js/pages/invoice-generator-enhancements.js'],
+  ['tools/invoice-generator/js/src/invoice-workspace-sync.js', 'tools/invoice-generator/js/invoice-workspace-sync.js'],
   ['tools/cv-builder/js/src/cv-application-pack-export.js', 'tools/cv-builder/js/cv-application-pack-export.js'],
+  ['tools/cv-builder/js/src/cv-application-pack.js', 'tools/cv-builder/js/cv-application-pack.js'],
+  ['tools/cv-builder/js/src/cv-job-tracker.js', 'tools/cv-builder/js/cv-job-tracker.js'],
+  ['tools/cv-builder/js/src/cv-design-foundation.js', 'tools/cv-builder/js/cv-design-foundation.js'],
+  ['tools/cv-builder/js/src/cv-import-assistant.js', 'tools/cv-builder/js/cv-import-assistant.js'],
   ['assets/js/lib/src/car-import-cost-engine.js', 'assets/js/lib/car-import-cost-engine.js'],
   ['assets/js/pages/src/business-plan.js', 'assets/js/pages/business-plan.js'],
   ['assets/js/pages/src/receipt-generator.js', 'assets/js/pages/receipt-generator.js'],
