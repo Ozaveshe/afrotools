@@ -502,6 +502,15 @@
       <span class="card-sub" id="invAutoNum"></span>
     </div>
     <div class="card-body">
+      <div class="field">
+        <label class="f-label" for="documentType">Nau’in takarda</label>
+        <select class="f-input" id="documentType">
+          <option value="invoice">Takardar kuɗi</option>
+          <option value="receipt">Resit</option>
+          <option value="estimate">Kiyasin kuɗi</option>
+        </select>
+        <p class="f-hint">Nau’in takarda ba ya canza matsayin biya. Shigar da adadin da aka biya.</p>
+      </div>
       <div class="f-row-3">
         <div class="field">
           <label class="f-label" for="invoiceNumber">Lambar invoice *</label>
@@ -989,6 +998,12 @@ const LS_CLIENTS = 'afro_inv_clients';
 const LS_TEMPLATES = 'afro_invoice_templates';
 const LS_COUNTER = 'afro_inv_counter';
 
+const DOCUMENT_TYPES = Object.freeze({
+  invoice: { label: 'TAKARDAR KUƊI', title: 'Takardar kuɗi', file: 'invoice', numberLabel: 'Lambar takardar kuɗi' },
+  receipt: { label: 'RESIT', title: 'Resit', file: 'receipt', numberLabel: 'Lambar resit' },
+  estimate: { label: 'KIYASIN KUƊI', title: 'Kiyasin kuɗi', file: 'estimate', numberLabel: 'Lambar kiyasin kuɗi' }
+});
+
 /* ── DOM REFS ── */
 const $ = id => document.getElementById(id);
 const qsa = sel => document.querySelectorAll(sel);
@@ -1008,6 +1023,21 @@ function toast(msg, type) {
 
 function ga4(event, params) {
   if (typeof gtag === 'function') gtag('event', event, params);
+}
+
+function getDocumentType() {
+  const selected = $('documentType').value;
+  return Object.hasOwn(DOCUMENT_TYPES, selected) ? selected : 'invoice';
+}
+
+function getDocumentTypeInfo() {
+  return { ...DOCUMENT_TYPES[getDocumentType()] };
+}
+
+function updateDocumentTypeUI() {
+  const info = getDocumentTypeInfo();
+  $('previewTplTitle').textContent = info.label;
+  document.querySelector('label[for="invoiceNumber"]').textContent = info.numberLabel + ' *';
 }
 
 /* ── AUTO INVOICE NUMBER ── */
@@ -1058,10 +1088,10 @@ function renderClients() {
   list.innerHTML = clients.map((c, i) => `
     <div class="client-item" data-idx="${i}">
       <div>
-        <span class="client-item-name">${c.name}</span>
-        ${c.company ? `<span class="client-item-co"> - ${c.company}</span>` : ''}
+        <span class="client-item-name">${escapeHtml(c.name || '')}</span>
+        ${c.company ? `<span class="client-item-co"> - ${escapeHtml(c.company)}</span>` : ''}
       </div>
-      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" onclick="event.stopPropagation();deleteClient(${i})">X</button>
+      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" aria-label="Cire abokin ciniki ${escapeHtml(c.name || '')}" onclick="event.stopPropagation();deleteClient(${i})">X</button>
     </div>
   `).join('');
   list.querySelectorAll('.client-item').forEach(el => {
@@ -1164,7 +1194,7 @@ function applyTemplate(tpl) {
   const prev = $('invoicePreview');
   // Reset template-specific inline styles
   prev.style.cssText = '';
-  $('previewTplTitle').textContent = 'INVOICE';
+  updateDocumentTypeUI();
 
   switch(tpl) {
     case 'classic':
@@ -1181,7 +1211,7 @@ function applyTemplate(tpl) {
     case 'creative':
       prev.style.background = 'linear-gradient(135deg, #F5F9FF 0%, #f0f7ff 100%)';
       prev.style.borderColor = '#b8d4e3';
-      $('previewTplTitle').textContent = 'INVOICE';
+      updateDocumentTypeUI();
       break;
     case 'dark':
       prev.style.background = '#1a2420';
@@ -1244,6 +1274,7 @@ $('taxType').addEventListener('change', function() {
 
 /* ── CORE: UPDATE PREVIEW ── */
 function updatePreview() {
+  updateDocumentTypeUI();
   const cur = $('currency').value;
   const taxType = $('taxType').value;
   const taxRate = parseFloat($('taxRate').value) || 0;
@@ -1433,12 +1464,13 @@ $('btnPDF').addEventListener('click', () => {
 
   // Build sections for shared PDF template
   const sections = [];
+  const docInfo = getDocumentTypeInfo();
 
   // Business + Client info
   sections.push({
-    title: 'Bayanan invoice',
+    title: docInfo.title,
     rows: [
-      {label:'Lambar invoice', value: $('invoiceNumber').value},
+      {label:docInfo.numberLabel, value: $('invoiceNumber').value},
       {label:'Rana', value: $('invoiceDate').value},
       {label:'Ranar biya', value: $('dueDate').value},
       {label:'Sharadin biyan kudi', value: TERMS_MAP[$('paymentTerms').value] || 'Net 30'},
@@ -1496,16 +1528,16 @@ $('btnPDF').addEventListener('click', () => {
   // Use shared PDF library if available, otherwise fallback to print
   if (window.AfroTools && AfroTools.pdf && AfroTools.pdf.generate) {
     AfroTools.pdf.generate({
-      title: 'Invoice ' + ($('invoiceNumber').value || ''),
-      subtitle: ($('companyName').value || 'Invoice') + ' → ' + ($('clientName').value || 'Abokin ciniki'),
+      title: docInfo.title + ' ' + ($('invoiceNumber').value || ''),
+      subtitle: ($('companyName').value || docInfo.title) + ' → ' + ($('clientName').value || 'Abokin ciniki'),
       toolId: 'invoice-generator',
       heroStats: [
-        {label:'Lambar invoice', value: $('invoiceNumber').value},
+        {label:docInfo.numberLabel, value: $('invoiceNumber').value},
         {label:'Jimilla', value: $('sumTotal').textContent},
         {label:'Matsayi', value: $('markPaid').checked ? 'AN BIYA' : 'BA A BIYA BA'},
       ],
       sections,
-      disclaimer: 'An kirkiro wannan invoice da AfroTools. Takarda ce da kwamfuta ta samar.'
+      disclaimer: 'An ƙirƙira wannan takarda da AfroTools bisa bayanan da aka shigar.'
     });
     ga4('pdf_download', {tool:'invoice-generator'});
     toast('An sauke PDF!');
@@ -1537,6 +1569,7 @@ $('btnShare').addEventListener('click', () => {
 
 function gatherState() {
   return {
+    dt: getDocumentType(),
     cn: $('companyName').value, ba: $('businessAddress').value, be: $('businessEmail').value,
     bp: $('businessPhone').value, ti: $('taxID').value,
     cl: $('clientName').value, cc: $('clientCompany').value, ca: $('clientAddress').value, ce: $('clientEmail').value,
@@ -1556,6 +1589,7 @@ function gatherState() {
 function restoreState(s) {
   if (!s) return false;
   try {
+    $('documentType').value = Object.hasOwn(DOCUMENT_TYPES, s.dt) ? s.dt : 'invoice';
     if (s.cn !== undefined) $('companyName').value = s.cn;
     if (s.ba !== undefined) $('businessAddress').value = s.ba;
     if (s.be !== undefined) $('businessEmail').value = s.be;
@@ -1635,8 +1669,8 @@ function renderTemplates() {
         <span style="color:#93A3B8;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
       </div>
       <div style="display:flex;gap:6px;">
-        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Loda</button>
-        <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" onclick="deleteTemplate(${t.id})">X</button>
+        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" aria-label="Loda samfuri ${escapeHtml(t.name)}" onclick="loadTemplate(${t.id})">Loda</button>
+        <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" aria-label="Goge samfuri ${escapeHtml(t.name)}" onclick="deleteTemplate(${t.id})">X</button>
       </div>
     </div>
   `).join('');
@@ -1668,6 +1702,8 @@ window.deleteTemplate = function(id) {
 /* ── NEW INVOICE ── */
 $('btnNewInvoice').addEventListener('click', () => {
   if (!confirm('A fara sabon invoice? Za a share bayanan yanzu.')) return;
+  $('documentType').value = 'invoice';
+  $('paymentTerms').value = 'net-30';
   qsa('input[type="text"], input[type="email"], input[type="tel"], textarea').forEach(el => el.value = '');
   $('invoiceNumber').value = nextInvoiceNumber();
   $('invAutoNum').textContent = 'Kai tsaye: ' + $('invoiceNumber').value;
@@ -1740,10 +1776,12 @@ window.AfroInvoiceState = {
   gatherState: gatherState,
   restoreState: restoreState,
   updatePreview: updatePreview,
+  getDocumentTypeInfo: getDocumentTypeInfo,
   toast: toast,
   nextInvoiceNumber: nextInvoiceNumber
 };
 
+$('documentType').addEventListener('change', updatePreview);
 init();
 
 })();
