@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 303 |
-| sw | 137 | 1 | 327 |
+| fr | 160 | 2 | 304 |
+| sw | 137 | 1 | 328 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 338 | 40 | 0 | 298 | 21 | 0 | 317 |
+| editorial | 339 | 40 | 0 | 299 | 21 | 0 | 318 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -333,6 +333,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/kenya-nssf-contributions-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-nssf-rates-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-nssf-rates-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/kenya-overpayment-adjustment-voucher-oav-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/kenya-overpayment-adjustment-voucher-oav-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-passport-renewal-documents-checklist/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-passport-renewal-documents-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-paye-calculator-guide-2025/ | editorial | fr | — | missing | no localized route or owner file |

@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11695 |
-| Indexable pages | 7880 |
+| Public pages | 11696 |
+| Indexable pages | 7881 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4253 |
-| Documented fallbacks | 14967 |
-| Routes eligible for primary sitemaps | 7880 |
+| Genuine equivalence groups | 4254 |
+| Documented fallbacks | 14968 |
+| Routes eligible for primary sitemaps | 7881 |
 
 ## Locale Coverage
 
-- en: 6140 page records
+- en: 6141 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 543
+- article: 544
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6261,6 +6261,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c3abc15fefc5: en=`/tools/car-insurance/zimbabwe`, fr=`/fr/tools/assurance-auto/zimbabwe`; x-default=`/tools/car-insurance/zimbabwe`
 - equivalence:c3b39525d961: en=`/agriculture/export-docs/cabo-verde`; x-default=`/agriculture/export-docs/cabo-verde`
 - equivalence:c3bd3fb6ee00: en=`/agriculture/fish-farming/cote-d-ivoire`, fr=`/fr/agriculture/fish-farming/cote-d-ivoire`, sw=`/sw/kilimo/ufugaji-samaki/cote-divoire/`; x-default=`/agriculture/fish-farming/cote-d-ivoire`
+- equivalence:c3cb409a4429: en=`/blog/kenya-overpayment-adjustment-voucher-oav-guide-2026/`; x-default=`/blog/kenya-overpayment-adjustment-voucher-oav-guide-2026/`
 - equivalence:c3d66cae4a0e: en=`/eritrea/er-paye`, fr=`/fr/eritrea/er-paye`, sw=`/sw/eritrea/kikokotoo-kodi-mshahara/`; x-default=`/eritrea/er-paye`
 - equivalence:c3de121c8fbc: en=`/tools/afrokitchen/recipes/jarret-boeuf-td/`; x-default=`/tools/afrokitchen/recipes/jarret-boeuf-td/`
 - equivalence:c3ed9cbd3908: en=`/tools/afrokitchen/collections/vegetarian-african-classics/`; x-default=`/tools/afrokitchen/collections/vegetarian-african-classics/`
