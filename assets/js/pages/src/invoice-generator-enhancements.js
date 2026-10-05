@@ -517,13 +517,82 @@
         e.v = 2, e;
     }
     function F(e) {
-        if (!e) return !1;
-        var t = !1;
-        return window.AfroInvoiceState && "function" == typeof window.AfroInvoiceState.restoreState && (t = window.AfroInvoiceState.restoreState(e)),
-        c("poNumber", e.po || ""), c("paymentMethod", e.pm || "bank"), c("paymentLink", e.pl || ""),
-        c("mobileMoney", e.mm || ""), c("bankDetails", e.bd || ""), c("amountPaid", e.ap || "0"),
-        c("withholdingPercent", e.wh || "0"), window.AfroInvoiceState && "function" == typeof window.AfroInvoiceState.updatePreview && window.AfroInvoiceState.updatePreview(),
-        w(), t;
+        return !!(window.AfroInvoiceState && window.AfroInvoiceState.restoreState(e));
+    }
+    // Check structure before any field is changed. An incomplete draft is valid;
+    // an unrelated JSON object or object-valued field is not an invoice backup.
+    function invoiceStateShapeValid(state) {
+        if (!state || typeof state !== "object" || Array.isArray(state) || !Array.isArray(state.items) || !state.items.length) return false;
+        if (![ "cn", "cl", "in" ].every(function(key) { return Object.prototype.hasOwnProperty.call(state, key); })) return false;
+        var fields = [ "cn", "ba", "be", "bp", "ti", "cl", "cc", "ca", "ce", "in", "id", "dd", "dt", "cu", "pt", "tt", "tr", "dp", "nt", "mp", "tpl", "po", "pm", "pl", "mm", "bd", "ap", "wh" ];
+        function scalar(value) { return typeof value === "string" || typeof value === "number" && Number.isFinite(value); }
+        var selectors = { cu: "currency", dt: "documentType", pt: "paymentTerms", tt: "taxType", pm: "paymentMethod" };
+        if (!Object.keys(selectors).every(function(key) {
+            var select = o(selectors[key]);
+            return state[key] === undefined || !select || Array.prototype.some.call(select.options, function(option) { return option.value === String(state[key]); });
+        })) return false;
+        if (state.logo != null && (typeof state.logo !== "string" || !/^data:image\/(?:png|jpe?g|webp|gif|svg\+xml);base64,/i.test(state.logo))) return false;
+        return fields.every(function(key) { return state[key] === undefined || scalar(state[key]); }) && state.items.every(function(item) {
+            return item && typeof item === "object" && !Array.isArray(item) && typeof item.d === "string" && [ "q", "p", "t" ].every(function(key) { return item[key] === undefined || scalar(item[key]); });
+        });
+    }
+    function invoiceLogoState() {
+        var image = o("previewLogoImg"), container = o("previewLogo");
+        return image && container && container.style.display !== "none" && /^data:image\//.test(image.src) ? image.src : null;
+    }
+    function invoiceRestoreLogo(value) {
+        var image = o("previewLogoImg"), container = o("previewLogo"), thumbnail = o("logoPreview");
+        if (image) { if (value) image.src = value; else image.removeAttribute("src"); }
+        if (container) container.style.display = value ? "block" : "none";
+        if (thumbnail) {
+            thumbnail.textContent = "";
+            if (value) {
+                var preview = document.createElement("img");
+                preview.src = value; preview.alt = image ? image.alt : "";
+                preview.style.cssText = "max-width:100%;max-height:100%;object-fit:contain";
+                thumbnail.appendChild(preview);
+            } else thumbnail.textContent = "Logo";
+        }
+    }
+    function invoiceCompletionCopy(key) {
+        var language = (document.documentElement.lang || "en").split("-")[0];
+        var messages = {
+            review: { en: "Review the live invoice preview and confirm the commercial details before export.", fr: "Vérifiez l’aperçu de la facture et confirmez les informations commerciales avant l’exportation.", sw: "Kagua onyesho la ankara na uthibitishe taarifa za biashara kabla ya kuhamisha.", ha: "Duba takardar kuɗi ka tabbatar da bayanan kasuwanci kafin fitarwa." },
+            changed: { en: "Invoice changed. Review the preview again before export.", fr: "La facture a changé. Vérifiez à nouveau l’aperçu avant l’exportation.", sw: "Ankara imebadilika. Kagua onyesho tena kabla ya kuhamisha.", ha: "Takardar kuɗi ta canza. Sake duba ta kafin fitarwa." },
+            import: { en: "Import failed. Choose a valid invoice JSON file; your current draft has been kept.", fr: "Échec de l’importation. Choisissez un fichier de facture JSON valide ; votre brouillon actuel est conservé.", sw: "Uingizaji umeshindikana. Chagua faili halali ya JSON ya ankara; rasimu yako imehifadhiwa.", ha: "Shigo da fayil ya gaza. Zaɓi ingantaccen fayil ɗin JSON na takardar kuɗi; an kiyaye daftarin yanzu." },
+            numbers: { en: "Use valid non-negative amounts and percentages from 0 to 100.", fr: "Saisissez des montants valides non négatifs et des pourcentages entre 0 et 100.", sw: "Weka kiasi halali kisicho hasi na asilimia kati ya 0 na 100.", ha: "Saka ingantattun adadi marasa korau da kashi daga 0 zuwa 100." }
+        };
+        return messages[key][language] || messages[key].en;
+    }
+    function invoiceFeedback(message, field) {
+        var hint = o("invoiceActionHint");
+        if (hint) hint.textContent = message;
+        if (field) {
+            r("details", document).forEach(function(details) { if (details.contains(field)) details.open = true; });
+            field.focus();
+            field.scrollIntoView({ block: "center" });
+        }
+        m(message, "error");
+    }
+    function invoiceInvalidateReview() {
+        var review = o("invoiceReviewConfirm");
+        if (review) review.checked = false;
+        var hint = o("invoiceActionHint");
+        if (hint) hint.textContent = invoiceCompletionCopy("changed");
+    }
+    function invoiceReadyForOutput() {
+        if (invoiceMissingDescription(true)) return false;
+        var required = [ [ "companyName", "Company name is required." ], [ "clientName", "Client name is required." ], [ "invoiceNumber", "Invoice number is required." ], [ "invoiceDate", "Invoice date is required." ], [ "dueDate", "Due date is required." ] ];
+        var missing = required.find(function(pair) { return !l(pair[0]).trim(); });
+        if (missing) { invoiceFeedback(invoiceCopy(missing[1]), o(missing[0])); return false; }
+        if (!h().some(function(item) { return item.desc; })) {
+            invoiceFeedback(invoiceCopy("Add at least one line item with a description."), document.querySelector(".li-desc")); return false;
+        }
+        var badNumber = r(".li-qty,.li-price,.li-tax,#taxRate,#discountPercent,#amountPaid,#withholdingPercent").find(function(input) {
+            return input.value === "" || !Number.isFinite(Number(input.value)) || Number(input.value) < 0 || input.max && Number(input.value) > Number(input.max);
+        });
+        if (badNumber) { invoiceFeedback(invoiceCompletionCopy("numbers"), badNumber); return false; }
+        return true;
     }
     function T(event) {
         event.preventDefault();
@@ -645,18 +714,11 @@
     async function D(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        if (invoiceMissingDescription(true)) return;
+        if (!invoiceReadyForOutput()) return;
         var documentInfo = window.AfroInvoiceState && window.AfroInvoiceState.getDocumentTypeInfo ? window.AfroInvoiceState.getDocumentTypeInfo() : {
             label: "INVOICE",
             file: "invoice"
         };
-        var invalid = !l("companyName").trim() ? "Company name is required." : !l("clientName").trim() ? "Client name is required." : !l("invoiceNumber").trim() ? "Invoice number is required." : !l("invoiceDate") ? "Invoice date is required." : !l("dueDate") ? "Due date is required." : !h().some(function(item) {
-            return item.desc;
-        }) ? "Add at least one line item with a description." : "";
-        if (invalid) {
-            m(invoiceCopy(invalid), "error");
-            return;
-        }
         if (!window.jspdf || !window.jspdf.jsPDF) {
             m(invoiceCopy("PDF engine did not load. Refresh and try again."), "error");
             return;
@@ -733,7 +795,7 @@
                 align: "right"
             });
             var logo = o("previewLogoImg");
-            if (logo && logo.src && /^data:image\//.test(logo.src)) {
+            if (logo && invoiceLogoState()) {
                 try {
                     pdf.addImage(logo.src, "PNG", 145, 25, 42, 16, undefined, "FAST");
                 } catch (_) {}
@@ -864,7 +926,9 @@
             if (pendingButton) pendingButton.disabled = false;
         }
     }
-    function P() {
+    function P(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
         var e, t, n, a, i = invoiceCopy("invoice-") + (l("invoiceNumber") || "draft").replace(/[^a-z0-9_-]+/gi, "-") + ".json";
         e = new Blob([ JSON.stringify(x(), null, 2) ], {
             type: "application/json"
@@ -977,8 +1041,18 @@
     }
     function q() {
         document.addEventListener("click", function(event) {
-            var action = event.target.closest && event.target.closest("#btnPDF,#btnPDFMobile,#btnPrint");
-            if (action && invoiceMissingDescription(true)) {
+            var action = event.target.closest && event.target.closest("#btnPDF,#btnPDFMobile,#btnPrint,#btnExportJson,#btnShare,#btnReminder");
+            if (!action) return;
+            if (action.id === "btnShare" && !(o("includeInvoiceDataInLink") && o("includeInvoiceDataInLink").checked)) return;
+            var review = o("invoiceReviewConfirm");
+            if (review && !review.checked) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                invoiceFeedback(invoiceCompletionCopy("review"), review);
+                return;
+            }
+            // JSON is a portable draft backup, so incomplete invoices remain recoverable.
+            if (action.id !== "btnExportJson" && !invoiceReadyForOutput()) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
             }
@@ -1012,12 +1086,16 @@
                     var t = "function" == typeof e && e() || {};
                     return t.po = l("poNumber"), t.pm = l("paymentMethod"), t.pl = l("paymentLink"),
                     t.mm = l("mobileMoney"), t.bd = l("bankDetails"), t.ap = l("amountPaid"), t.wh = l("withholdingPercent"),
-                    t.v = 2, t;
+                    t.logo = invoiceLogoState(), t.v = 2, t;
                 }, window.AfroInvoiceState.restoreState = function(e) {
+                    if (!invoiceStateShapeValid(e)) return false;
                     var n = "function" == typeof t && t(e);
+                    if (!n) return false;
                     return c("poNumber", e && e.po || ""), c("paymentMethod", e && e.pm || "bank"),
                     c("paymentLink", e && e.pl || ""), c("mobileMoney", e && e.mm || ""), c("bankDetails", e && e.bd || ""),
-                    c("amountPaid", e && e.ap || "0"), c("withholdingPercent", e && e.wh || "0"), w(),
+                    c("amountPaid", e && e.ap || "0"), c("withholdingPercent", e && e.wh || "0"),
+                    invoiceRestoreLogo(e.logo || null), invoiceInvalidateReview(), window.AfroInvoiceState.updatePreview(),
+                    document.dispatchEvent(new CustomEvent("afro-invoice-restored")),
                     n;
                 }, window.AfroInvoiceState.updatePreview = function() {
                     "function" == typeof n && n(), w();
@@ -1028,14 +1106,18 @@
             e && e.addEventListener("click", D, !0), t && t.addEventListener("click", T, !0),
             n && n.addEventListener("click", N), a && a.addEventListener("click", function() {
                 window.print();
-            }), i && i.addEventListener("click", P), r && r.addEventListener("click", function() {
+            }), i && i.addEventListener("click", P, true), r && r.addEventListener("click", function() {
                 l && l.click();
             }), l && l.addEventListener("change", function() {
                 var e;
                 (e = l.files && l.files[0]) && e.text().then(function(e) {
-                    F(JSON.parse(e)), m(invoiceCopy("Invoice JSON imported"));
-                }).catch(function(e) {
-                    m(invoiceCopy("Import failed: ") + (e && e.message ? e.message : invoiceCopy("invalid file")), "error");
+                    if (!F(JSON.parse(e))) throw new Error("invalid_invoice_shape");
+                    m(invoiceCopy("Invoice JSON imported"));
+                }).catch(function() {
+                    // Parser diagnostics can include raw file content. Display fixed copy only.
+                    invoiceFeedback(invoiceCompletionCopy("import"));
+                }).finally(function() {
+                    l.value = "";
                 });
             }), c && c.addEventListener("click", R), s && s.addEventListener("click", E), d && d.addEventListener("click", M),
             [ "poNumber", "paymentMethod", "paymentLink", "mobileMoney", "bankDetails", "amountPaid", "withholdingPercent" ].forEach(function(e) {
@@ -1049,10 +1131,12 @@
         }(), C(), L(), w(), function() {
             var e = new URLSearchParams(window.location.search).get(n);
             if (e) try {
-                F(function(e) {
+                if (!F(function(e) {
                     for (var t = String(e || "").replace(/-/g, "+").replace(/_/g, "/"); t.length % 4; ) t += "=";
                     return JSON.parse(decodeURIComponent(escape(atob(t))));
-                }(e)), m(invoiceCopy("Shared invoice loaded"), "info");
+                }(e))) throw new Error("invalid_invoice_shape");
+                document.body.dataset.invoiceSharedRestored = "1";
+                m(invoiceCopy("Shared invoice loaded"), "info");
             } catch (e) {
                 m(invoiceCopy("Could not load shared invoice"), "error");
             }

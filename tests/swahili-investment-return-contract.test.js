@@ -91,11 +91,12 @@ test('all locale owners load the same current engine, controller and stylesheet'
   const cssHash = crypto.createHash('md5').update(read('assets/css/investment-return-vip.css')).digest('hex').slice(0, 8);
   assert.equal(controllerHash, '1b4431e9');
   assert.equal(cssHash, '044ad449');
+  const deliveredCssHash = require('../scripts/lib/asset-content-version').assetContentVersion(root, 'assets/css/investment-return-vip.css');
   for (const file of Object.values(owner.localeOwners)) {
     const html = read(file);
     assert.match(html, /\/engines\/investment-return-engine\.js\?v=4d9af4f6/);
     assert.match(html, new RegExp(`/assets/js/pages/investment-return-vip\\.js\\?v=${controllerHash}`));
-    assert.match(html, new RegExp(`/assets/css/investment-return-vip\\.css\\?v=${cssHash}`));
+    assert.match(html, new RegExp(`/assets/css/investment-return-vip\\.css\\?v=${deliveredCssHash}`));
     assert.match(html, /id="ir-final" tabindex="-1"/);
     for (const id of ['ir-copy', 'ir-csv', 'ir-pdf']) assert.match(html, new RegExp(`id="${id}"[^>]*disabled`));
   }

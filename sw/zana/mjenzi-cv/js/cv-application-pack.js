@@ -1,0 +1,342 @@
+"use strict";
+
+!function(e, t) {
+    var a = "afro_cv_copilot_target", n = "afro_cv_job_pipeline", o = "afro_cv_application_packs", r = [ {
+        id: "coverLetter",
+        label: "Barua ya maombi ya kazi"
+    }, {
+        id: "emailMessage",
+        label: "Ujumbe mfupi wa barua pepe wa kuomba kazi"
+    }, {
+        id: "linkedinHeadline",
+        label: "Kichwa cha wasifu wa LinkedIn"
+    }, {
+        id: "linkedinAbout",
+        label: "Maelezo ya wasifu wa LinkedIn"
+    }, {
+        id: "interviewPrep",
+        label: "Maswali ya kujiandaa kwa mahojiano"
+    }, {
+        id: "recruiterMessage",
+        label: "Ujumbe kwa mhusika wa uajiri"
+    }, {
+        id: "followupApplication",
+        label: "Barua pepe ya kufuatilia maombi ya kazi"
+    }, {
+        id: "followupInterview",
+        label: "Barua pepe ya kufuatilia mahojiano"
+    } ], i = [ [ "formal", "Rasmi" ], [ "confident", "Kujiamini" ], [ "graduate", "Mhitimu" ], [ "executive", "Uongozi" ], [ "diaspora", "Ughaibuni au kimataifa" ] ], c = {
+        pack: {},
+        active: "coverLetter"
+    };
+    function l(e) {
+        var a = t.createElement("div");
+        return a.textContent = null == e ? "" : String(e), a.innerHTML.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+    function p(e) {
+        return String(e || "").replace(/\s+/g, " ").trim();
+    }
+    function s(e, t) {
+        try {
+            var a = localStorage.getItem(e);
+            return a ? JSON.parse(a) : t;
+        } catch (e) {
+            return t;
+        }
+    }
+    function d(e, t) {
+        try {
+            localStorage.setItem(e, JSON.stringify(t));
+        } catch (e) {}
+    }
+    function u() {
+        return "undefined" != typeof CVApp && CVApp.getState && CVApp.getState().data || {};
+    }
+    function m() {
+        return "undefined" != typeof CVApp && CVApp.getState && CVApp.getState().country || "NG";
+    }
+    function f(e) {
+        var t = {
+            role: e.querySelector("[data-pack-role]").value.trim(),
+            company: e.querySelector("[data-pack-company]").value.trim(),
+            jd: e.querySelector("[data-pack-jd]").value.trim(),
+            tone: e.querySelector("[data-pack-tone]").value
+        };
+        return d(a, {
+            role: t.role,
+            company: t.company,
+            jd: t.jd,
+            industry: ""
+        }), t;
+    }
+    function y(e) {
+        return [ e.fn, e.ln ].filter(Boolean).join(" ").trim() || "[jina lako]";
+    }
+    function h(e) {
+        var t = {
+            and: 1,
+            the: 1,
+            for: 1,
+            with: 1,
+            you: 1,
+            your: 1,
+            our: 1,
+            role: 1,
+            job: 1,
+            work: 1,
+            this: 1,
+            that: 1,
+            are: 1,
+            will: 1,
+            from: 1,
+            have: 1,
+            has: 1,
+            into: 1,
+            across: 1,
+            within: 1,
+            must: 1,
+            should: 1,
+            candidate: 1,
+            experience: 1
+        }, a = {};
+        return p(e).toLowerCase().replace(/[^\p{L}\p{N}+#.\s-]/gu, " ").split(/\s+/).forEach(function(e) {
+            !e || e.length < 3 || t[e] || /^\d+$/.test(e) || (a[e] = (a[e] || 0) + 1);
+        }), Object.keys(a).sort(function(e, t) {
+            return a[t] - a[e] || t.length - e.length;
+        });
+    }
+    function v(e) {
+        return "[jina la kampuni]" === e.company ? "Kwa timu ya uajiri," : "Kwa timu ya uajiri ya " + e.company + ",";
+    }
+    function b(e, t) {
+        var a, n = function(e, t) {
+            var a, n = (a = [ e.skills && e.skills.h, e.skills && e.skills.s, e.skills && e.skills.t ].filter(Boolean).join(", "),
+            String(a || "").split(/[,;\n]/).map(function(e) {
+                return p(e);
+            }).filter(Boolean)), o = (e.exps || []).find(function(e) {
+                return e && (e.t || e.c || e.d);
+            }) || {}, r = (e.edus || []).find(function(e) {
+                return e && (e.deg || e.sch);
+            }) || {}, i = function(e) {
+                return String(e || "").split(/\n+/).map(function(e) {
+                    return e.trim();
+                }).filter(Boolean);
+            }(o.d || "").slice(0, 3).map(function(e) {
+                return e.replace(/^\s*(?:\u2022|\*|-)\s*/, "");
+            }), c = i.find(function(e) {
+                return /\d|%|revenue|customers|clients|users|saved|reduced|improved|increased/i.test(e);
+            }) || i[0] || "[ongeza mfano mmoja wa mafanikio halisi kutoka kwenye CV yako]", l = t.role || e.title || "[jina la nafasi unayolenga]", s = t.company || "[jina la kampuni]", d = e.title || o.t || l, u = "undefined" != typeof COUNTRY_NORMS && COUNTRY_NORMS[m()] ? COUNTRY_NORMS[m()].n : "African";
+            return {
+                name: y(e),
+                email: e.email || "[barua pepe]",
+                phone: [ e.phoneCode, e.phone ].filter(Boolean).join(" ").trim() || "[simu]",
+                location: e.loc || u,
+                role: l,
+                company: s,
+                headline: d,
+                summary: e.summary || "[ongeza muhtasari wa CV yako ya sasa]",
+                skills: n.slice(0, 8),
+                skillText: n.slice(0, 5).join(", ") || "[ujuzi unaofaa kutoka kwenye CV yako]",
+                // A profile/target title is not evidence of previous employment.
+                recentRole: p(o.t) ? o.t : "[ongeza nafasi uliyoshika au mradi kutoka kwenye CV yako]",
+                recentCompany: o.c || "[mwajiri au mradi wa hivi karibuni]",
+                evidence: c,
+                education: [ r.deg, r.sch ].filter(Boolean).join(", ") || "",
+                jdKeywords: h(t.jd).slice(0, 8),
+                country: u,
+                tone: t.tone || "formal"
+            };
+        }(e, t), o = n.jdKeywords.length ? n.jdKeywords.slice(0, 5).join(", ") : "[mahitaji muhimu ya nafasi ya kazi]", r = n.role + " - maombi ya kazi kutoka kwa " + n.name;
+        return {
+            coverLetter: [ v(n), "", "Ninaomba nafasi ya " + n.role + "" + ("[jina la kampuni]" !== n.company ? " katika " + n.company : "") + ". " + (a = n.tone,
+            "graduate" === a ? "Nina uwezo wa kujifunza haraka, uzoefu wa vitendo katika miradi, na utayari wa kuendelea kujifunza katika nafasi hii." : "executive" === a ? "Nina uzoefu wa kufanya maamuzi ya uongozi, kutekeleza mipango kwa utaratibu, na kuunganisha timu kufikia matokeo yanayopimika." : "diaspora" === a ? "Ninaweza kueleza uzoefu wangu kulingana na matarajio ya uajiri wa kimataifa, huku ushahidi katika CV yangu ukiwa wazi na unaoweza kuthibitishwa." : "confident" === a ? "Ninaamini ninaweza kuchangia mapema kwa sababu CV yangu inaonyesha utekelezaji na ukamilishaji wa kazi zinazohusiana na nafasi hii." : "Ninavutiwa na nafasi hii kwa sababu inaendana na uzoefu na ujuzi unaoonyeshwa katika CV yangu."), "", "Nina uzoefu wa " + n.recentRole + "" + ("[mwajiri au mradi wa hivi karibuni]" !== n.recentCompany ? " katika " + n.recentCompany : "") + ", huku CV yangu ikionyesha mfano huu: " + n.evidence + ". Ninaweza kuchangia katika nafasi hii kupitia " + n.skillText + ".", "", t.jd ? "Katika maelezo ya kazi, nimeona msisitizo kwenye " + o + ". Nitaeleza ushahidi ulio katika CV yangu kuhusu maeneo hayo bila kuongeza madai yasiyo na msingi." : "Nitafurahi kueleza jinsi uzoefu wangu unavyohusiana na nafasi hii baada ya kupitia maelezo kamili ya kazi.", "", "Asante kwa kuzingatia maombi yangu. Nitafurahi kupata nafasi ya kueleza jinsi uzoefu wangu unavyoweza kusaidia timu yenu.", "", "Wako kwa heshima,", n.name, n.email + " | " + n.phone ].join("\n"),
+            emailMessage: [ "Mada: " + r, "", v(n), "", "Nimeambatisha CV yangu kwa ajili ya nafasi ya " + n.role + "" + ("[jina la kampuni]" !== n.company ? " katika " + n.company : "") + ". Nina uzoefu wa " + n.skillText + ", na CV yangu inaonyesha ushahidi unaohusiana na kazi hii, kama vile " + n.evidence + ".", "", "Nitashukuru mkizingatia maombi yangu.", "", "Wako kwa heshima,", n.name ].join("\n"),
+            linkedinHeadline: [ n.role.replace(/\[target job title\]/, n.headline), n.skills.slice(0, 3).join(" | ") || n.country + " — mtaalamu", n.location ].filter(Boolean).join(" | ").slice(0, 220),
+            linkedinAbout: [ "Mimi ni " + n.headline + " ninayejikita katika " + n.skillText + ".", "", n.summary, "", "Mfano wa hivi karibuni kutoka kwenye CV yangu: " + n.evidence + ".", "", "Kwa sasa ninalenga nafasi za " + n.role + "" + ("[jina la kampuni]" !== n.company ? " katika timu kama " + n.company : "") + ". Ninaonyesha uwezo wangu kupitia ushahidi, mifano, na kazi yenye matokeo yanayopimika bila kutumia maneno yasiyo na msingi." ].join("\n"),
+            interviewPrep: [ "1. Eleza uzoefu wako unaoonyesha kuwa unafaa kwa nafasi ya " + n.role + ".", "2. Ni mafanikio gani katika CV yako yanayoonyesha ujuzi wa " + (n.skills[0] || "[ujuzi mkuu]") + "?", "3. Eleza wakati ulipopata matokeo ukiwa na rasilimali chache.", "4. Ungeanza vipi kazi katika siku 30 za kwanza kwenye " + n.company + "?", "5. Ni sehemu gani ya maelezo ya kazi inayolingana zaidi na uwezo wako: " + o + "?", "6. Ni pengo gani katika ujuzi wako ungejaza kwanza ukipewa kazi?", "7. Mwajiri atumie kipimo gani kutathmini mafanikio yako?", "8. Ni mfano gani katika CV yako unaoonyesha ushirikiano, uwajibikaji, au uwezo wa kufanya maamuzi?" ].join("\n"),
+            recruiterMessage: [ "Habari [jina la mhusika wa uajiri],", "", "Nimeona nafasi ya " + n.role + "" + ("[jina la kampuni]" !== n.company ? " katika " + n.company : "") + " na ningependa kujitambulisha. CV yangu inaonyesha uzoefu wa " + n.skillText + ", pamoja na mfano huu: " + n.evidence + ".", "", "Ikiwa nafasi hii bado iko wazi, nitafurahi kutuma CV yangu na kueleza jinsi uzoefu wangu unavyohusiana na kazi hiyo.", "", "Wako kwa heshima,", n.name ].join("\n"),
+            followupApplication: [ "Mada: Kufuatilia maombi ya nafasi ya " + n.role + "", "", v(n), "", "Natumaini unaendelea vizuri. Ninafuatilia maombi yangu ya nafasi ya " + n.role + "" + ("[jina la kampuni]" !== n.company ? " katika " + n.company : "") + ". Bado ninavutiwa na nafasi hii na ninaamini uzoefu wangu wa " + n.skillText + " unaweza kusaidia timu yenu.", "", "Tafadhali nijulishe ikiwa kuna taarifa nyingine ninazoweza kutoa.", "", "Wako kwa heshima,", n.name ].join("\n"),
+            followupInterview: [ "Mada: Asante kwa mahojiano ya nafasi ya " + n.role + "", "", v(n), "", "Asante kwa kupata muda wa kuzungumza nami kuhusu nafasi ya " + n.role + ". Nimefurahia kujifunza zaidi kuhusu timu, vipaumbele vya nafasi hii, na ushahidi mnaoutarajia.", "", "Mazungumzo yetu yameongeza hamu yangu ya nafasi hii. Maeneo ya " + o + " yanaendana na uzoefu wangu wa " + n.skillText + ".", "", "Asante tena kwa muda wenu. Ninasubiri taarifa kuhusu hatua zinazofuata.", "", "Wako kwa heshima,", n.name ].join("\n")
+        };
+    }
+    function k() {
+        if (!t.querySelector(".cv-application-pack-panel")) {
+            var n, o = t.querySelector(".cv-copilot-wrap") || t.querySelector(".cv-app") || t.body, d = function() {
+                if (e.CVCareerCopilot && e.CVCareerCopilot.getTarget) try {
+                    return e.CVCareerCopilot.getTarget();
+                } catch (e) {}
+                return s(a, {
+                    role: "",
+                    company: "",
+                    jd: "",
+                    industry: ""
+                });
+            }(), u = t.createElement("section");
+            u.className = "cv-application-pack-panel", u.setAttribute("aria-label", "Kifurushi cha maombi ya kazi"),
+            u.innerHTML = [ '<div class="cv-pack-head">', "<div><p>Kifurushi cha maombi ya kazi</p><h2>Tengeneza nyaraka za maombi ya kazi kwa kutumia CV hii</h2><span>Nyaraka hizi huandaliwa katika kivinjari kwa kutumia violezo pekee. Kagua na uhariri kila waraka kabla ya kuutuma.</span></div>", "<button type=\"button\" class=\"cv-pack-collapse\" data-pack-toggle aria-expanded=\"true\" aria-controls=\"cv-pack-body\">Kifurushi cha maombi ya kazi</button>", "</div>", '<div class="cv-pack-body" id="cv-pack-body" data-pack-body>', '<div class="cv-pack-inputs">', "<label><span>Jina la nafasi unayolenga</span><input data-pack-role value=\"" + l(d.role || "") + '" placeholder="e.g. Sales Associate"></label>', '<label><span>Company name</span><input data-pack-company value="' + l(d.company || "") + '" placeholder="e.g. Market Hub"></label>', "<label><span>Mtindo</span><select data-pack-tone>" + i.map(function(e) {
+                return '<option value="' + e[0] + '">' + e[1] + "</option>";
+            }).join("") + "</select></label>", "<label class=\"wide\"><span>Maelezo ya kazi</span><textarea data-pack-jd placeholder=\"Bandika maelezo ya kazi ili kifurushi kizingatie mahitaji halisi bila kubuni uzoefu.\">" + l(d.jd || "") + "</textarea></label>", "</div>", '<div class="cv-pack-toolbar">', "<button type=\"button\" class=\"primary\" data-pack-generate-all>Tengeneza kifurushi kamili</button>", "<button type=\"button\" data-pack-save>Hifadhi pamoja na maombi ya kazi</button>", "<button type=\"button\" data-pack-export=\"txt\">Pakua TXT</button>", "<button type=\"button\" data-pack-export=\"doc\">Pakua DOC</button>", "<button type=\"button\" data-pack-export=\"pdf\">Pakua PDF</button>", "<span data-pack-status role=\"status\" aria-live=\"polite\" translate=\"no\" data-cv-user-text>Tayari kutengeneza nyaraka kwa kutumia CV ya sasa.</span>", "</div>", "<div class=\"cv-pack-tabs\" role=\"tablist\" aria-label=\"Nyaraka za kifurushi cha maombi ya kazi\">" + r.map(function(e, t) {
+                return '<button type="button" role="tab" aria-selected="' + (0 === t ? "true" : "false") + '" class="' + (0 === t ? "active" : "") + '" id="cv-pack-tab-' + e.id + '" aria-controls="cv-pack-output-' + e.id + '" data-pack-tab="' + e.id + '">' + l(e.label) + "</button>";
+            }).join("") + "</div>", '<div class="cv-pack-output-list">' + r.map(function(e, t) {
+                return '<article class="cv-pack-output ' + (0 === t ? "active" : "") + '" id="cv-pack-output-' + e.id + '" role="tabpanel" aria-labelledby="cv-pack-tab-' + e.id + '" data-pack-output="' + e.id + '"><div class="cv-pack-output-head"><strong>' + l(e.label) + '</strong><div><button type="button" data-pack-generate="' + e.id + "\">Tengeneza</button><button type=\"button\" data-pack-copy=\"" + e.id + "\">Nakili</button></div></div><textarea aria-label=\"" + l(e.label) + '" data-pack-text="' + e.id + '" placeholder="Generate or write your ' + l(e.label.toLowerCase()) + ' here."></textarea></article>';
+            }).join("") + "</div>", "</div>" ].join(""), o.appendChild(u), (n = u).querySelector("[data-pack-toggle]").addEventListener("click", function() {
+                n.classList.toggle("collapsed");
+                this.setAttribute("aria-expanded", n.classList.contains("collapsed") ? "false" : "true");
+            }), n.querySelectorAll("[data-pack-tab]").forEach(function(e) {
+                e.addEventListener("keydown", function(event) {
+                    var tabs = Array.from(n.querySelectorAll("[data-pack-tab]")), index = tabs.indexOf(e), next;
+                    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+                    if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+                    if (event.key === "Home") next = 0;
+                    if (event.key === "End") next = tabs.length - 1;
+                    if (next !== undefined) { event.preventDefault(); tabs[next].focus(); tabs[next].click(); }
+                });
+                e.addEventListener("click", function() {
+                    c.active = e.dataset.packTab, n.querySelectorAll("[data-pack-tab]").forEach(function(t) {
+                        var a = t === e;
+                        t.classList.toggle("active", a), t.setAttribute("aria-selected", a ? "true" : "false");
+                    }), n.querySelectorAll("[data-pack-output]").forEach(function(e) {
+                        e.classList.toggle("active", e.dataset.packOutput === c.active);
+                    });
+                });
+            }), n.querySelector("[data-pack-generate-all]").addEventListener("click", function() {
+                j(n);
+            }), n.querySelectorAll("[data-pack-generate]").forEach(function(e) {
+                e.addEventListener("click", function() {
+                    j(n, e.dataset.packGenerate);
+                });
+            }), n.querySelectorAll("[data-pack-copy]").forEach(function(e) {
+                e.addEventListener("click", function() {
+                    (function(e) {
+                        if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(e);
+                        var a = t.createElement("textarea");
+                        a.value = e, a.setAttribute("readonly", ""), a.style.position = "fixed", a.style.left = "-9999px",
+                        t.body.appendChild(a), a.select();
+                        try {
+                            t.execCommand("copy");
+                        } finally {
+                            t.body.removeChild(a);
+                        }
+                        return Promise.resolve();
+                    })(n.querySelector('[data-pack-text="' + e.dataset.packCopy + '"]').value).then(function() {
+                        w(n, "Umenakili: " + C(e.dataset.packCopy) + ".");
+                    }).catch(function() {
+                        w(n, "Kunakili kumeshindwa. Chagua maandishi na uyanakili mwenyewe.");
+                    });
+                });
+            }), n.querySelector("[data-pack-save]").addEventListener("click", function() {
+                S(n);
+            }), n.querySelectorAll("[data-pack-export]").forEach(function(t) {
+                t.addEventListener("click", function() {
+                    !async function(t, a) {
+                        if (!Object.values(g(t)).some(function(text) { return text.trim(); })) {
+                            w(t, "Tengeneza au andika angalau waraka mmoja kabla ya kupakua.");
+                            return;
+                        }
+                        var exportSnapshot = JSON.stringify([ f(t), g(t) ]);
+                        var n = function(e) {
+                            var t = f(e), a = g(e);
+                            return [ "AFROTOOLS — KIFURUSHI CHA MAOMBI YA KAZI", "Nafasi unayolenga: " + (t.role || "[jina la nafasi unayolenga]"), "Kampuni: " + (t.company || "[jina la kampuni]"), "Mtindo: " + ({"formal":"Rasmi","confident":"Kujiamini","graduate":"Mhitimu","executive":"Uongozi","diaspora":"Ughaibuni au kimataifa"}[t.tone]||t.tone), "Umetengeneza: " + (new Date).toISOString().slice(0, 10), "" ].join("\n") + r.map(function(e) {
+                                return e.label.toUpperCase() + "\n" + (a[e.id] || "[bado haijatengenezwa]");
+                            }).join("\n\n---\n\n");
+                        }(t), o = p(f(t).role || "application-pack").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "application-pack";
+                        if ("txt" !== a) if ("doc" !== a) {
+                            if ("pdf" === a) try {
+                                if (!e.CVExportAtsPlainPdf || !e.CVExportAtsPlainPdf.buildPdf) throw new Error("Kipengele cha kuunda PDF hakipatikani");
+                                var pdfBytes = await e.CVExportAtsPlainPdf.buildPdf(n);
+                                if (exportSnapshot !== JSON.stringify([ f(t), g(t) ])) {
+                                    w(t, "Kifurushi cha maombi ya kazi kimebadilika. Kikague kisha ukipakue tena.");
+                                    return;
+                                }
+                                x(new e.Blob([ pdfBytes ], { type: "application/pdf" }), "afrotools-" + o + ".pdf", "application/pdf");
+                            } catch (failure) {
+                                w(t, e.CareerDocumentPdf ? e.CareerDocumentPdf.message(failure, t.ownerDocument.documentElement.lang, "cv") : "Upakuaji wa PDF haupatikani katika kivinjari hiki. Pakua TXT au DOC badala yake.");
+                            }
+                        } else x("<html><body><pre>" + l(n) + "</pre></body></html>", "afrotools-" + o + ".doc", "application/msword;charset=utf-8"); else x(n, "afrotools-" + o + ".txt", "text/plain;charset=utf-8");
+                    }(n, t.dataset.packExport);
+                });
+            });
+        }
+    }
+    function g(e) {
+        return r.forEach(function(t) {
+            c.pack[t.id] = e.querySelector('[data-pack-text="' + t.id + '"]').value;
+        }), Object.assign({}, c.pack);
+    }
+    function w(e, t) {
+        var a = e.querySelector("[data-pack-status]");
+        a && (a.textContent = t);
+    }
+    function j(e, t) {
+        var a, n = f(e), o = b(u(), n);
+        !function(e, t) {
+            c.pack = Object.assign({}, c.pack, t || {}), r.forEach(function(t) {
+                var a = e.querySelector('[data-pack-text="' + t.id + '"]');
+                a && null != c.pack[t.id] && (a.value = c.pack[t.id]);
+            });
+        }(e, t ? (a = {}, a[t] = o[t], a) : o), w(e, t ? "Imetengenezwa: " + C(t) + "." : "Kifurushi kamili cha maombi ya kazi kimetengenezwa kwa kutumia CV ya sasa.");
+    }
+    function C(e) {
+        var t = r.find(function(t) {
+            return t.id === e;
+        });
+        return t ? t.label : "output";
+    }
+    function x(e, a, n) {
+        var o = e instanceof Blob ? e : new Blob([ e ], {
+            type: n || "text/plain;charset=utf-8"
+        }), r = URL.createObjectURL(o), i = t.createElement("a");
+        i.href = r, i.download = a, i.dataset.noPdfGate = "true", t.body.appendChild(i),
+        i.click(), t.body.removeChild(i), URL.revokeObjectURL(r);
+    }
+    function S(e) {
+        var t = f(e), a = g(e);
+        if (t.role || t.company) {
+            var r = u(), i = s(n, []), c = p([ t.role, t.company, t.jd ].join("|")).toLowerCase().slice(0, 260) || "pack_" + Date.now(), l = i.find(function(e) {
+                return e.fingerprint === c;
+            });
+            l || (l = {
+                id: "lead_" + Date.now(),
+                createdAt: (new Date).toISOString().slice(0, 10),
+                status: "Saved",
+                role: t.role || r.title || "Target role",
+                company: t.company || "Kampuni unayolenga",
+                country: m(),
+                countryName: "undefined" != typeof COUNTRY_NORMS && COUNTRY_NORMS[m()] ? COUNTRY_NORMS[m()].n : m(),
+                score: 0,
+                match: 0,
+                ats: 0,
+                jd: t.jd || "",
+                cvTitle: y(r),
+                fingerprint: c
+            }, i.unshift(l)), l.role = t.role || l.role, l.company = t.company || l.company,
+            l.jd = t.jd || l.jd, l.applicationPack = a, l.packUpdatedAt = (new Date).toISOString(),
+            l.applicationPackId = "pack_" + Date.now(), l.coverLetterUsed = a.coverLetter || "",
+            l.updatedAt = (new Date).toISOString().slice(0, 10), d(n, i);
+            var h = s(o, []);
+            h.unshift({
+                id: l.applicationPackId,
+                leadId: l.id,
+                role: l.role,
+                company: l.company,
+                tone: t.tone,
+                pack: a,
+                createdAt: l.packUpdatedAt
+            }), d(o, h.slice(0, 30));
+            if (window.CVJobTracker && window.CVJobTracker.render) window.CVJobTracker.render();
+            w(e, "Imehifadhiwa pamoja na maombi ya kazi: " + l.role + " katika " + l.company + "."),
+            "undefined" != typeof CVApp && CVApp.showToast && CVApp.showToast("Kifurushi cha maombi ya kazi kimehifadhiwa kwenye mfuatiliaji wa maombi ya kazi.");
+        } else w(e, "Weka jina la nafasi ya kazi au kampuni unayolenga kabla ya kuhifadhi kwenye mfuatiliaji wa maombi ya kazi.");
+    }
+    function T() {
+        var e = 0, a = setInterval(function() {
+            e += 1, t.querySelector(".cv-copilot-wrap") || t.querySelector(".cv-app") ? (clearInterval(a),
+            k()) : e > 80 && clearInterval(a);
+        }, 100);
+    }
+    e.CVApplicationPack = {
+        generatePack: b,
+        render: k,
+        saveWithJob: S
+    }, "loading" === t.readyState ? t.addEventListener("DOMContentLoaded", T) : T();
+}(window, document);

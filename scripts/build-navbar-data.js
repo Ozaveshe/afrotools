@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require("./lib/safe-write");
+const { minifyCss: compactCss } = require("./lib/css-minification");
 
 const ROOT = path.resolve(__dirname, "..");
 const NAVBAR_SOURCE_PATH = path.join(ROOT, "assets", "js", "components", "navbar.js");
@@ -41,12 +42,7 @@ function writeIfChanged(filePath, content) {
 }
 
 function minifyCss(source) {
-  return source
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\s+/g, " ")
-    .replace(/\s*([{}:;,>~+])\s*/g, "$1")
-    .replace(/;}/g, "}")
-    .trim();
+  return compactCss(source);
 }
 
 function replaceGeneratedBlock(source, startMarker, endMarker, body) {

@@ -170,7 +170,44 @@ function normalizeHtmlFormulaPresentation(source) {
   // assets so paths, query shape and formula code remain covered by the gate.
   // The shared core bundle hash also changes when unrelated common UI/AI
   // helpers change; calculator engines remain separate protected artifacts.
+  // Frozen presentation representations reviewed against the pre-correction
+  // release. Do not rehash formula metadata when only delivered CSS changes.
+  const cssCacheBaselines = {
+    'calculator.min.css': '47ed0a43',
+    'paye-tool.css': '580fb90c',
+    'country-tax-page-ui-refresh.css': 'b9c830ac',
+    'theme-dark.min.css': 'e7def0f1',
+    'burundi-vat-vip.css': '502560ec',
+    'cbk-rates-vip.css': 'da893171',
+    'cnps-guide-vip.css': '0d9513b1',
+    'cnps-guide-workspace.css': 'd0d54d21',
+    'hr-payroll.css': '91474939',
+    'hr-payroll-focus.css': '088173e4',
+    'hr-payroll-ui-refinement.css': 'd6a454e9',
+    'print.css': 'ca13c10a',
+    'french-finance-mobile-fixes.css': 'e14fa05a',
+    'etims-guide-vip.css': 'f42811fa',
+    'ghana-vat-vip.css': '155c6402',
+    'guinea-vat-vip.css': '3ac55eab',
+    'sars-efiling-vip.css': '86fc0458',
+    'sudan-vat-vip.css': 'ba920759',
+    'togo-vat-vip.css': '2e952d67',
+    'tunisia-vat-vip.css': 'a90338e6',
+    'transfer-pricing-vip.css': '4b097f0c',
+    'paye-calculation-sync.css': '2df74017',
+    'za-gepf-vip.css': '2c83304e',
+    'za-gepf-sw.css': 'f5713435',
+    'za-transfer-duty-vip.css': '2983144d',
+    'za-transfer-duty-sw.css': 'ded50ef4',
+    'zambia-vat-vip.css': '62cd529b',
+    'zimbabwe-vat-vip.css': '74db33b9',
+  };
   const normalized = String(source)
+    .replace(
+      /(assets\/css\/([a-z0-9.-]+\.css)\?v=)[a-f0-9]{8}(?![a-f0-9])/gi,
+      (match, prefix, asset) => Object.hasOwn(cssCacheBaselines, asset)
+        ? prefix + cssCacheBaselines[asset] : match,
+    )
     .replace(
       /<script\s+[^>]*src=["'][^"']*\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi,
       "",

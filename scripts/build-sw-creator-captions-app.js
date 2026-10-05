@@ -77,7 +77,9 @@ const copy = new Map([
   [">Favorites<", ">Vipendwa<"]
 ]);
 
-let html = fs.readFileSync(source, "utf8");
+let html = require('./lib/asset-content-version').rewriteRelativeStylesheet(
+  fs.readFileSync(source, "utf8"), root, 'tools/creator-captions/style.css'
+);
 html = html
   .replace(/\n<link rel="alternate" hreflang="(?:en|fr|sw|x-default)" href="https:\/\/afrotools\.com\/(?:tools\/creator-captions|fr\/tools\/legendes-createur|sw\/zana\/caption-za-maudhui)\/app">/g, "")
   .replace(/\s*<script src="\/assets\/js\/analytics-bootstrap\.js[^>]*><\/script>\s*/g, "\n")
@@ -86,7 +88,6 @@ html = html
   .replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com"[^>]*>\s*/g, "\n")
   .replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com"[^>]*>\s*/g, "\n")
   .replace(/\s*<link href="https:\/\/fonts\.googleapis\.com[^>]*>\s*/g, "\n")
-  .replace('href="style.css?v=9083b950"', 'href="/tools/creator-captions/style.css?v=9083b950"')
   .replace('href="index.html"', 'href="/sw/zana/caption-za-maudhui/"')
   .replaceAll('href="index.html"', 'href="/sw/zana/caption-za-maudhui/"')
   .replace('/auth/?mode=login&amp;next=/tools/creator-captions/app.html', '/auth/?mode=login&amp;next=/sw/zana/caption-za-maudhui/app')
@@ -102,10 +103,6 @@ html = html
   ].join("\n"))
   .replace('<link rel="canonical" href="https://afrotools.com/tools/creator-captions/app">', [
     '<link rel="canonical" href="https://afrotools.com/sw/zana/caption-za-maudhui/app">',
-    '<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-captions/app">',
-    '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/legendes-createur/app">',
-    '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/caption-za-maudhui/app">',
-    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-captions/app">',
     '<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Caption za Maudhui","applicationCategory":"MultimediaApplication","operatingSystem":"Web","inLanguage":"sw","url":"https://afrotools.com/sw/zana/caption-za-maudhui/app","isBasedOn":"https://afrotools.com/tools/creator-captions/app","image":"https://afrotools.com/assets/img/tools/creator-captions.webp","offers":{"@type":"Offer","price":"0","priceCurrency":"TZS"}}</script>',
     '<style>',
     'html body[data-sw-creator-captions] :focus-visible{outline:3px solid #fbbf24!important;outline-offset:3px}',
@@ -152,9 +149,22 @@ html = html
   .replace('aria-label="Jumuisha a question"', 'aria-label="Jumuisha swali"')
   .replace('aria-label="Jumuisha a hook"', 'aria-label="Jumuisha kishawishi"');
 
+// This noindex workspace is skipped by indexable-page metadata repair. Keep
+// its existing release preview image in the source owner rather than losing
+// the tag whenever the app is regenerated.
+const twitterImage = '<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">';
+const twitterImagePattern = /<meta\b(?=[^>]*\bname=["']twitter:image["'])[^>]*>\s*/gi;
+html = html.replace(twitterImagePattern, '').replace('</head>', twitterImage + '\n</head>');
+
 fs.mkdirSync(outputDir, { recursive: true });
 const current = fs.existsSync(output) ? fs.readFileSync(output, "utf8") : "";
+const currentTwitterImages = current.match(twitterImagePattern) || [];
 const normalizeOptions = { stripReleaseMetadata: true, stripRouteContractLinks: true };
-const changed = normalizeReleaseOwnedHtml(current, normalizeOptions) !== normalizeReleaseOwnedHtml(html, normalizeOptions);
+// App workspaces are noindex. Language alternates belong to discovery routes;
+// do not emit them here or retain a stale generator copy after normalization.
+if (/<link\b[^>]*\bhreflang=/i.test(html)) throw new Error('Creator captions app must not emit language alternates');
+const changed = /<link\b[^>]*\bhreflang=/i.test(current) ||
+  currentTwitterImages.length !== 1 || currentTwitterImages[0].trim() !== twitterImage ||
+  normalizeReleaseOwnedHtml(current, normalizeOptions) !== normalizeReleaseOwnedHtml(html, normalizeOptions);
 if (changed) fs.writeFileSync(output, html);
 console.log(`${changed ? "Wrote" : "Checked"} ${path.relative(root, output)}`);
