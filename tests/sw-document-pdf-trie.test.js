@@ -47,3 +47,16 @@ test('exact dictionary mapping and unknown strings retain existing semantics', (
   assert.equal(api.translate('  Exact phrase  '), '  Sahihi  ');
   assert.equal(api.translate('filename-$9.pdf'), 'filename-$9.pdf');
 });
+
+test('legacy CV renderers identify author text without changing ordinary UI labels', () => {
+  const context = vm.createContext({ module: { exports: {} }, CVApp: { getState: () => ({data: {
+    fn: 'Global Compact', ln: 'Māori', title: 'Payment Instructions',
+    skills: { h: 'Balance Due, Invoice Date' }, exps: [{ d: 'Exact authored description.' }]
+  }}) } });
+  vm.runInContext(source, context);
+  const api = context.module.exports;
+  for (const value of ['Global Compact Māori', 'Payment Instructions', 'Balance Due', 'Exact authored description.']) {
+    assert.equal(api.isCvUserText(value), true);
+  }
+  assert.equal(api.isCvUserText('Preview full size'), false);
+});

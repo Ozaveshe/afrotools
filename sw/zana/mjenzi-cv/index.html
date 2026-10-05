@@ -133,6 +133,11 @@
 :root[data-theme="dark"] .cv-flow-hero-title,:root[data-theme="dark"] .cv-flow-head h2,:root[data-theme="dark"] .cv-flow-library-head h3,:root[data-theme="dark"] .cv-flow-side h3,:root[data-theme="dark"] .cv-flow-stat strong,:root[data-theme="dark"] .cv-flow-doc strong{color:#f1f5f9}
 :root[data-theme="dark"] .cv-export-options,:root[data-theme="dark"] .cv-export-review{background:#101a2b!important;border-color:#294164!important;color:#dbeafe!important}
 :root[data-theme="dark"] .cv-export-options input,:root[data-theme="dark"] .cv-export-options select{background:#0b1423!important;border-color:#35527b!important;color:#f1f5f9!important}
+
+.cv-cloud-backup{margin:12px 18px;padding:12px;min-width:0;border:1px solid var(--color-border);color:var(--color-text);background:var(--color-surface);border-radius:8px}
+.cv-cloud-backup legend{font-weight:700;padding:0 6px}.cv-cloud-backup p{margin:8px 0;line-height:1.5;overflow-wrap:anywhere}.cv-cloud-choice{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}.cv-cloud-choice input{width:22px;height:22px;flex:none;accent-color:var(--color-primary)}
+.cv-cloud-backup button{min-height:44px;max-width:100%;white-space:normal}.cv-cloud-choice:focus-within{outline:2px solid var(--color-primary);outline-offset:2px}.cv-cloud-backup button:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+@media(max-width:720px){.cv-cloud-backup{margin-left:12px;margin-right:12px}}
 </style>
 <script>
 window.addEventListener('unhandledrejection', function (event) {
@@ -193,16 +198,16 @@ window.loadPdfLibs=function(){
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=cad23564">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Mjenzi wa CV","description":"Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.","url":"https://afrotools.com/sw/zana/mjenzi-cv/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/cv-builder.webp"}</script>
-<meta name="afrotools-content-id" content="sw-document-pdf:cv-builder">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <script src="/assets/js/pages/sw-document-pdf-dom-stability.js?v=69f75f3e"></script>
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=379bc1ff">
 <link rel="canonical" href="https://afrotools.com/sw/zana/mjenzi-cv/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cv-builder/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-cv/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mjenzi-cv/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/gina-cv/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cv-builder/">
+  <meta name="afrotools-content-id" content="sw-document-pdf:cv-builder">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <script src="/assets/js/pages/sw-document-pdf-dom-stability.js"></script>
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
@@ -232,8 +237,8 @@ window.loadPdfLibs=function(){
 <section class="cv-landing" aria-labelledby="cv-landing-title">
   <div class="cv-landing-shell">
     <div class="cv-landing-copy">
-      <h1 id="cv-landing-title">Free CV Kijenzi for African & International Jobs</h1>
-      <p class="cv-landing-subheadline">Unda CV iliyo salama ya ATS, ibadilishe kulingana na kazi, hamisha faili za PDF na ATS, na utengeneze pakiti yako ya programu.</p>
+      <h1 id="cv-landing-title">Mjenzi wa CV bila malipo kwa kazi za Afrika na kimataifa</h1>
+      <p class="cv-landing-subheadline">Tengeneza CV inayosomeka na ATS, ibadilishe kulingana na kazi, pakua PDF na faili rahisi za ATS, kisha andaa kifurushi cha maombi ya kazi.</p>
       <div class="cv-landing-cta-row">
         <button type="button" class="cv-landing-cta primary" data-cv-entry="build">Jenga CV Yangu</button>
         <button type="button" class="cv-landing-cta secondary" data-action="import">Leta CV Iliyopo</button>
@@ -259,7 +264,7 @@ window.loadPdfLibs=function(){
       </div>
       <div class="cv-preview-badge template">
         <span>Kiolezo</span>
-        <strong>Lagos Corporate</strong>
+        <strong>Kampuni za Lagos</strong>
       </div>
       <article class="cv-mock-paper" aria-label="Onyesho la kukagua CV ya dhihaka">
         <div class="cv-mock-head">
@@ -316,11 +321,11 @@ window.loadPdfLibs=function(){
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="diaspora">
       <strong>Diaspora / Kimataifa</strong>
-      <span>Global kompakt CV na mafanikio kubebeka</span>
+      <span>CV fupi ya kimataifa yenye mafanikio yanayoeleweka katika nchi tofauti</span>
       <small>Bora kwa: kijijini, uhamisho, udhamini, na maombi ya kimataifa.</small>
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="trade">
-      <strong>Biashara / Uanafunzi</strong>
+      <strong>Ufundi / Mafunzo kazini</strong>
       <span>Ujuzi wa vitendo, zana, usalama, mafunzo, na marejeleo</span>
       <small>Bora kwa: mafundi, mafundi, wanagenzi, madereva, na ufundi stadi.</small>
     </button>
@@ -329,7 +334,7 @@ window.loadPdfLibs=function(){
   <section class="cv-template-landing-gallery" data-template-landing-gallery aria-labelledby="cv-template-gallery-title">
     <div class="cv-template-landing-head">
       <div>
-        <h2 id="cv-template-gallery-title">Chagua kutoka kwa violezo 30 vya malipo ya CV</h2>
+        <h2 id="cv-template-gallery-title">Chagua kati ya violezo 30 vya CV</h2>
         <p>Vinjari Mipangilio ya ATS-salama, kitaaluma, mhitimu, ubunifu, maendeleo, mtendaji, teknolojia, biashara, diaspora, Kifaransa, Kiarabu na kimataifa kabla ya kufungua kihariri.</p>
         <p class="cv-template-index-list">Violezo: Muundo rahisi wa Afrika; ATS isiyo na mapambo; Muundo mfupi wa kimataifa; Kampuni ya Lagos; Teknolojia Nairobi; Mhitimu Accra; Muundo wa kisasa Cape Town; Serikali Abuja; Msanidi wa Kigali; Lugha mbili Cairo; Kiwango cha Kifaransa; Kifaransa-Kiarabu Morocco; Uongozi wa bodi; Athari za NGO; Afisa ufuatiliaji na tathmini; Mwalimu / Elimu; Huduma za afya za kliniki; Fedha na utawala; Mauzo / Rejareja; Huduma kwa wateja; Ukarimu; Ufundi; Dereva / Usafirishaji; Ujenzi / HSE; Ufundi wa mafuta na gesi; Msaidizi wa mbali; CV ya ufadhili / Taaluma; Jalada la ubunifu; Mwanzilishi / Mshauri; Kuhamia ughaibuni.</p>
       </div>
@@ -337,9 +342,19 @@ window.loadPdfLibs=function(){
     <div class="cv-template-landing-grid" aria-label="Violezo"></div>
   </section>
 
-  <p class="cv-privacy-note">CV yako itasalia kwenye kivinjari chako isipokuwa uchague usaidizi wa AI au uingie katika akaunti.</p>
-  <section data-ai-consent-notice data-consent-mode="ai_optional_content_included" data-tool-id="cv-builder" data-consent-title="Usaidizi wa AI ni wa hiari kwa maudhui ya CV" data-consent-copy="Build, edit, save, and export locally. If you choose AI help later, AfroTools must ask before sending CV, job description, profile, or document content to a model." aria-label="CV Kijenzi AI consent notice"></section>
+  <p class="cv-privacy-note">CV yako inabaki kwenye kivinjari chako isipokuwa uwashe nakala rudufu mtandaoni au uchague usaidizi wa AI.</p>
+  <section data-ai-consent-notice data-consent-mode="ai_optional_content_included" data-tool-id="cv-builder" data-consent-title="Usaidizi wa AI ni wa hiari kwa maudhui ya CV" data-consent-copy="Tengeneza, hariri, hifadhi na pakua kwenye kifaa hiki. Ukichagua usaidizi wa AI baadaye, AfroTools lazima iombe ridhaa kabla ya kutuma CV, maelezo ya kazi, wasifu au maudhui ya hati kwa modeli." aria-label="CV Kijenzi AI consent notice"></section>
 </section>
+
+
+  <fieldset class="cv-cloud-backup" aria-describedby="cv-cloud-description cv-cloud-expiry">
+    <legend>Nakala rudufu mtandaoni (hiari)</legend>
+    <p id="cv-cloud-description">Hutuma rasimu nzima unayotumia na CV ulizohifadhi kwenye akaunti yako ya AfroTools, zikiwemo mawasiliano, picha, historia ya kazi, elimu na sehemu nyingine ulizojaza. CV zilizohifadhiwa mtandaoni huongezwa kwenye orodha ya kivinjari hiki. Ukiiwasha, mabadiliko na ufutaji wa CV husawazishwa. Rasimu ya kifaa hiki hubadilisha rasimu iliyopo mtandaoni; nakala zenye ID sawa hupewa kipaumbele kutoka kifaa hiki. Pakua nakala rudufu kwanza ukitaka kuhifadhi zote mbili.</p>
+    <p id="cv-cloud-expiry">Ruhusa inaisha ukurasa huu unapopakiwa upya au akaunti yako inapobadilika. Kuizima huzuia maombi mapya na huhifadhi nakala zilizopo mtandaoni.</p>
+    <label class="cv-cloud-choice" for="cv-cloud-consent"><input type="checkbox" id="cv-cloud-consent" autocomplete="off" aria-describedby="cv-cloud-description cv-cloud-expiry">Ruhusu nakala rudufu mtandaoni kwa kipindi hiki</label>
+    <button type="button" class="btn btn-secondary" id="cv-cloud-restore" disabled>Badilisha rasimu ya kifaa hiki kwa rasimu ya mtandaoni</button>
+    <p id="cv-cloud-status" role="status" aria-live="polite">Nakala rudufu mtandaoni imezimwa. Bado unaweza kuhariri na kupakua kwenye kifaa hiki.</p>
+  </fieldset>
 
 <!-- Saved CVs Section -->
 <div class="cv-saved-section">
@@ -364,7 +379,7 @@ window.loadPdfLibs=function(){
     </div>
     <div class="cv-toolbar-right">
       <select class="cv-country-sel" aria-label="Chagua nchi"></select>
-      <select class="cv-lang-sel" aria-label="Lugha ya UI" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--color-text-inverse);padding:6px 8px;border-radius:var(--radius-sm);font-size:11px;cursor:pointer;font-family:var(--font-body)">
+      <select class="cv-lang-sel" aria-label="Lugha ya kiolesura" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--color-text-inverse);padding:6px 8px;border-radius:var(--radius-sm);font-size:11px;cursor:pointer;font-family:var(--font-body)">
         <option value="en">EN</option>
         <option value="fr">FR</option>
         <option value="ar">AR</option>
@@ -434,7 +449,7 @@ window.loadPdfLibs=function(){
 <details class="cv-privacy-accordion" aria-label="CV Builder maelezo ya faragha na mauzo ya nje">
   <summary>Vidokezo vya faragha na usafirishaji</summary>
   <div class="cv-privacy-accordion-body">
-    <p><strong>Faragha kwa chaguo-msingi</strong>CV yako itasalia kwenye kivinjari hiki isipokuwa ukichagua kwa uwazi usaidizi wa AI, uingie katika akaunti au uhamishe faili.</p>
+    <p><strong>Faragha kwa chaguo-msingi</strong>CV yako inabaki kwenye kivinjari hiki. Nakala rudufu mtandaoni huhitaji ruhusa tofauti; usaidizi wa AI huhitaji ridhaa yake. Upakuaji wa ndani ya kifaa hauhitaji akaunti.</p>
     <p><strong>Njia ya kuingiza</strong>Bandika maandishi ya CV au pakia TXT ndani ya kifaa. Uchanganuzi wa PDF na DOCX huendeshwa tu wakati kichanganuzi kinachooana cha kivinjari kinapakiwa, na hakuna kinachobadilika hadi uthibitishe sehemu zilizotolewa.</p>
     <p><strong>Mauzo nje</strong>PDF hutumia onyesho la kukagua moja kwa moja. ATS Plain PDF, DOCX, TXT, JSON nakala rudufu, na uhamishaji wa pakiti ya programu-tumizi zinapatikana kutoka kwa upau wa vidhibiti wa programu inapotumika.</p>
     <p><strong>Mbinu</strong>Mwongozo unatokana na sehemu zinazoweza kuhaririwa za CV, kanuni za nchi, mawimbi ya kusomeka ya ATS, na ulinganishaji wa maneno muhimu ya maelezo ya kazi. Wasifu wako, tangazo la kazi, na maagizo ya mwajiri yanabaki kuwa chanzo cha ukweli.</p>
@@ -453,7 +468,7 @@ window.loadPdfLibs=function(){
         <span class="cv-info-kicker">Imeundwa kwa matumizi halisi</span>
         <h2 id="cvInfoTitle">CV ya bure na Mjenzi wa Kuanza tena kwa Masoko ya Ajira ya Kiafrika</h2>
         <p class="cv-info-lede"><strong>AfroTools CV Kijenzi</strong> husaidia wanafunzi, wahitimu na wataalamu kuandaa CV inayofahamu nchi kwa maombi ya Kiafrika na kimataifa. Inachanganya kihariri kinachoongozwa, hakikisho la moja kwa moja la A4, ukaguzi wa utayari wa ATS, kulinganisha maelezo ya kazi, barua za jalada, wasaidizi wa LinkedIn, na kifuatiliaji kazi cha ndani.</p>
-        <p class="cv-info-lede">Itumie kama kijenzi cha CV bila malipo kwa Afrika, kijenzi cha kuanza tena kwa programu za diaspora, au kijenzi cha ATS CV kinacholenga wakati tovuti ya kazi inapouliza hati rahisi na inayoweza kusomeka. Uhamishaji wa PDF ni bure, hauna Alama ya maji, na mwongozo unaendelea kuhaririwa.</p>
+        <p class="cv-info-lede">Tengeneza CV bila malipo kwa kazi za Afrika, ughaibuni au tovuti zinazohitaji hati rahisi kusomeka na ATS. PDF inapakuliwa bila malipo wala alama ya maji, na unaweza kuhariri maelezo na mwongozo.</p>
         <div class="cv-info-cta" aria-label="CV Kijenzi actions">
           <button type="button" class="primary" data-cv-entry="build">Anza kujenga</button>
           <a href="/sw/zana/barua-ombi/">Unda barua ya jalada</a>
@@ -483,7 +498,7 @@ window.loadPdfLibs=function(){
           <span>Muundo rahisi wa lango zinazopendelea hati zinazosomeka, zenye muundo wa chini.</span>
         </article>
         <article class="cv-info-tile">
-          <b>Kifurushi cha maombi</b>
+          <b>Kifurushi cha maombi ya kazi</b>
           <span>Barua ya jalada, ujumbe wa barua pepe, kichwa cha habari cha LinkedIn, na rasimu ya LinkedIn Kuhusu.</span>
         </article>
         <article class="cv-info-tile">
@@ -499,7 +514,7 @@ window.loadPdfLibs=function(){
 
     <div class="cv-info-block">
       <div class="cv-info-block-head">
-        <h3>Kiolezo gallery</h3>
+        <h3>Matunzio ya violezo</h3>
         <p>Kiteuzi cha ndani ya programu kinajumuisha chaguo 30 zilizo tayari kutumwa kwenye ATS rahisi, mhitimu, taaluma, mtendaji, teknolojia, ubunifu, NGO, serikali, biashara, huduma ya afya, elimu, diaspora, Kifaransa, na miundo ya CV ya Kiarabu au lugha mbili inapotumika.</p>
       </div>
       <div class="cv-info-template">
@@ -677,7 +692,7 @@ window.loadPdfLibs=function(){
       </details>
       <details>
         <summary>CV yangu imehifadhiwa wapi?</summary>
-        <p>Rasimu ya data ya CV huhifadhiwa kwenye kivinjari chako isipokuwa ukichagua kuingia. Epuka kutumia vifaa vinavyoshirikiwa kwa hati za kibinafsi za kutafuta kazi.</p>
+        <p>Rasimu ya CV huhifadhiwa kwenye kivinjari chako. Kuingia kwenye akaunti hakuwashi upakiaji wa CV. Nakala rudufu mtandaoni ni ya hiari na huhitaji ruhusa tofauti. Epuka vifaa vinavyotumiwa na watu wengi unaposhughulikia hati binafsi za kutafuta kazi.</p>
       </details>
     </div>
   </div>
@@ -686,7 +701,7 @@ window.loadPdfLibs=function(){
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
 <h2 class="seo-links-title">Zana zinazohusiana</h2>
-<ul class="seo-links-list"><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li><li><a href="/sw/zana/kubadilisha-format-pdf/" data-related-tool data-id="pdf-convert" data-name="Badilisha Muundo wa PDF" data-category="document-pdf" data-icon="PF" data-desc="Badilisha PDF kuwa maandishi au picha, na picha kuwa PDF.">Badilisha Muundo wa PDF</a></li></ul>
+<ul class="seo-links-list"><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li><li><a href="/sw/hati-na-pdf/" data-related-tool data-id="document-pdf" data-name="All PDF &amp; document tools" data-category="document-pdf" data-icon="PDF" data-desc="Choose from 31 browser PDF and document tools by task.">Zana zote za PDF na hati</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -928,9 +943,9 @@ window.loadPdfLibs=function(){
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"cv-builder","name":"Mjenzi wa CV","downloadContract":"sensitive-guest"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=e0e4b940" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3cafb6cc" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"cv-builder","name":"Mjenzi wa CV","phraseOverrides":{"Free CV Builder for African & International Jobs":"Mjenzi wa CV bila malipo kwa kazi za Afrika na kimataifa","Choose from 30 premium CV templates":"Chagua kati ya violezo 30 vya CV","Premium CV template gallery":"Matunzio ya violezo vya CV","Cross-market applications, simple recruiter review, and clean professional CVs.":"Maombi ya kazi katika nchi tofauti na CV za kitaalamu ambazo waajiri wanaweza kupitia kwa urahisi.","Cross-market applications":"Maombi ya kazi katika nchi tofauti","Global Compact":"Muundo mfupi wa kimataifa","Global compact CV with portable achievements":"CV fupi ya kimataifa yenye mafanikio yanayoeleweka katika nchi tofauti","Compact international resume format for diaspora, remote, and global applications.":"Muundo mfupi wa CV kwa maombi ya kazi ughaibuni, kazi za mbali na kazi za kimataifa.","International resumes, remote roles, concise experience, and relocation applications.":"CV za kimataifa, kazi za mbali, uzoefu kwa ufupi na maombi ya kazi yanayohitaji kuhamia nchi nyingine.","Strict job portals, parser-first uploads, and ATS plain PDF/TXT exports.":"Tovuti za ajira zinazohitaji hati rahisi kusomeka na nakala za PDF au TXT zinazolingana na ATS.","One-column, no-photo CV for online applications and ATS systems.":"CV ya safu moja bila picha kwa maombi ya kazi mtandaoni na mifumo ya ATS.","Banking, consulting, operations, administration, and corporate private-sector roles.":"Kazi za benki, ushauri, uendeshaji, utawala na kampuni binafsi.","Developers, analysts, product, QA, cloud, data, and startup candidates.":"Wasanidi, wachambuzi na waombaji wa kazi za bidhaa, QA, huduma za wingu, data na biashara changa.","No-experience CVs, internships, trainee roles, NYSC/NSS-style evidence, and projects.":"CV za wanaoanza kazi, mafunzo kazini, NYSC/NSS na miradi inayothibitisha ujuzi.","Modern professional CVs for managers, analysts, operations, and cross-functional roles.":"CV za kisasa kwa mameneja, wachambuzi na kazi za uendeshaji zinazohusisha idara tofauti.","Government, public sector, policy, administration, and formal institutional applications.":"Maombi ya kazi serikalini, katika taasisi za umma, sera na utawala.","Software developers, builders, technical projects, repositories, and portfolio evidence.":"Wasanidi wa programu wenye miradi ya kiufundi, hifadhi za msimbo na jalada la kazi.","Egypt, MENA-facing, bilingual, customer, operations, and international roles.":"Kazi za Misri na MENA, kazi za lugha mbili, huduma kwa wateja, uendeshaji na kazi za kimataifa.","Francophone Africa applications needing clear French section conventions.":"Maombi ya kazi katika Afrika inayotumia Kifaransa, yenye sehemu za CV zilizoandikwa kwa Kifaransa.","Morocco, North Africa, bilingual French-Arabic applications, and business roles.":"Maombi ya kazi Moroko na Afrika Kaskazini, kwa Kifaransa na Kiarabu, pamoja na kazi za biashara.","Executives, directors, consultants, senior managers, and board-facing profiles.":"Viongozi wakuu, wakurugenzi, washauri na mameneja wanaofanya kazi na bodi.","NGO, UN, grants, donor reporting, field delivery, and programme impact roles.":"Kazi za NGO, UN, ruzuku, ripoti kwa wafadhili, kazi za uwanjani na matokeo ya programu.","Monitoring, evaluation, learning, indicators, donor reports, and research officer roles.":"Kazi za ufuatiliaji, tathmini, kujifunza, viashiria, ripoti kwa wafadhili na utafiti.","Teachers, lecturers, trainers, tutors, school administrators, and curriculum roles.":"Walimu, wahadhiri, wakufunzi, wasimamizi wa shule na wataalamu wa mitaala.","Nurses, clinicians, allied health, public health, hospital, and clinic roles.":"Wauguzi, wahudumu wa afya, wataalamu wa afya ya umma na kazi za hospitali au kliniki.","Accountants, finance assistants, office administrators, payroll, and operations roles.":"Wahasibu, wasaidizi wa fedha, wasimamizi wa ofisi na kazi za mishahara au uendeshaji.","Sales reps, retail supervisors, account executives, merchandisers, and shop roles.":"Wawakilishi wa mauzo, wasimamizi wa rejareja, wasimamizi wa wateja na kazi za madukani.","Call centre, helpdesk, virtual support, customer success, and service roles.":"Kazi za kituo cha simu, dawati la msaada, usaidizi wa mtandaoni na huduma kwa wateja.","Hotels, restaurants, guest service, housekeeping, events, and tourism roles.":"Kazi za hoteli, migahawa, huduma kwa wageni, usafi, matukio na utalii.","Electricians, welders, mechanics, apprentices, artisans, and hands-on skilled work.":"Mafundi umeme, wachomeleaji, mekanika, wanafunzi wa ufundi na mafundi wengine.","Drivers, dispatch, fleet, warehousing, delivery, and logistics operations roles.":"Kazi za udereva, upangaji wa safari, magari, ghala na usafirishaji.","Construction, HSE, site supervision, safety records, and project-based technical roles.":"Kazi za ujenzi, HSE, usimamizi wa eneo la kazi na miradi ya kiufundi.","Oil, gas, energy, maintenance, field service, instrumentation, and technical operations.":"Kazi za mafuta, gesi, nishati, matengenezo, huduma za uwanjani, vifaa vya vipimo na uendeshaji wa kiufundi.","Virtual assistants, remote admin, calendar, inbox, data entry, and international support roles.":"Wasaidizi wa mtandaoni, utawala wa mbali, ratiba, barua pepe, uingizaji wa data na usaidizi wa kimataifa.","Scholarships, research assistant roles, academic applications, publications, and awards.":"Maombi ya ufadhili wa masomo, kazi za usaidizi wa utafiti, machapisho na tuzo.","Design, marketing, content, media, brand, and portfolio-led applications.":"Maombi ya kazi za usanifu, masoko, maudhui, vyombo vya habari na chapa, yanayoonyesha jalada la kazi.","Founders, independent consultants, advisors, fractional leaders, and proposal profiles.":"Waanzilishi, washauri huru na viongozi wa muda wanaohitaji kuonyesha uzoefu wao kwenye mapendekezo ya kazi.","Visa-aware, relocation, returnee, remote, and international employer applications.":"Maombi ya kazi kwa waajiri wa kimataifa, kazi za mbali na kazi zinazohitaji kuhamia au kurudi nchini, kwa kuzingatia masharti ya visa.","BEST FOR":"INAFAA KWA","Best for":"Inafaa kwa","Use template":"Tumia kiolezo","Preview full size":"Hakiki kwa ukubwa kamili","Template filters":"Vichujio vya violezo","Template gallery":"Matunzio ya violezo","Template preview":"Hakiki ya kiolezo","Template ready":"Kiolezo kiko tayari","Template selected":"Kiolezo kimechaguliwa","Keep browsing":"Endelea kuangalia","templates shown":"violezo vinaonyeshwa","export-ready templates. Use filters for role type, market, ATS safety, and application style.":"violezo vinavyopakuliwa. Chuja kwa aina ya kazi, nchi, ulinganifu wa ATS na muundo wa maombi.","Template includes visual styling, graphics, or photo conventions that may not parse cleanly in some ATS systems.":"Kiolezo kina mapambo, michoro au picha ambazo baadhi ya mifumo ya ATS huenda isisome kwa usahihi.","Template uses columns or sidebars. Keep a plain one-column version for strict ATS portals.":"Kiolezo kina safu au sehemu za pembeni. Weka pia toleo rahisi la safu moja kwa tovuti zinazohitaji hati zinazosomeka na ATS.","UI Language":"Lugha ya kiolesura","Manage applications from this CV":"Dhibiti maombi ya kazi yanayotumia CV hii","No applications tracked yet.":"Bado hakuna maombi ya kazi yaliyofuatiliwa.","Application Pack":"Kifurushi cha maombi ya kazi","Application pack":"Kifurushi cha maombi ya kazi","Application Pack export failed.":"Upakuaji wa kifurushi cha maombi ya kazi umeshindwa.","JSON backup exported":"Nakala rudufu ya JSON imepakuliwa","Use it as a free CV builder for Africa, a resume builder for diaspora applications, or a focused ATS CV builder when a job portal asks for a simple, readable document. PDF export is free, has no watermark, and the guidance stays editable.":"Tengeneza CV bila malipo kwa kazi za Afrika, ughaibuni au tovuti zinazohitaji hati rahisi kusomeka na ATS. PDF inapakuliwa bila malipo wala alama ya maji, na unaweza kuhariri maelezo na mwongozo.","Create an ATS-safe CV, tailor it to a job, export PDF and ATS plain files, and generate your application pack.":"Tengeneza CV inayosomeka na ATS, ibadilishe kulingana na kazi, pakua PDF na faili rahisi za ATS, kisha andaa kifurushi cha maombi ya kazi.","Your CV stays in your browser unless you enable cloud backup or choose optional AI help.":"CV yako inabaki kwenye kivinjari chako isipokuwa uwashe nakala rudufu mtandaoni au uchague usaidizi wa AI.","Your CV stays in this browser. Cloud backup needs a separate permission; AI help needs its own consent. Local exports do not require an account.":"CV yako inabaki kwenye kivinjari hiki. Nakala rudufu mtandaoni huhitaji ruhusa tofauti; usaidizi wa AI huhitaji ridhaa yake. Upakuaji wa ndani ya kifaa hauhitaji akaunti.","Draft CV data is saved in your browser. Signing in does not enable CV uploads. Optional cloud backup requires separate permission. Avoid using shared devices for private job-search documents.":"Rasimu ya CV huhifadhiwa kwenye kivinjari chako. Kuingia kwenye akaunti hakuwashi upakiaji wa CV. Nakala rudufu mtandaoni ni ya hiari na huhitaji ruhusa tofauti. Epuka vifaa vinavyotumiwa na watu wengi unaposhughulikia hati binafsi za kutafuta kazi.","Optional cloud backup":"Nakala rudufu mtandaoni (hiari)","This sends your full current draft and saved CVs, including contact details, photo, work history, education and any other entered fields, to your signed-in AfroTools account. Cloud saved CVs are added to the saved list in this browser. Further edits and saved-CV deletions sync while enabled. Existing cloud drafts are replaced by the current local draft; local CVs take priority when saved copies have the same ID. Export a local backup first if you want to keep both.":"Hutuma rasimu nzima unayotumia na CV ulizohifadhi kwenye akaunti yako ya AfroTools, zikiwemo mawasiliano, picha, historia ya kazi, elimu na sehemu nyingine ulizojaza. CV zilizohifadhiwa mtandaoni huongezwa kwenye orodha ya kivinjari hiki. Ukiiwasha, mabadiliko na ufutaji wa CV husawazishwa. Rasimu ya kifaa hiki hubadilisha rasimu iliyopo mtandaoni; nakala zenye ID sawa hupewa kipaumbele kutoka kifaa hiki. Pakua nakala rudufu kwanza ukitaka kuhifadhi zote mbili.","Permission ends when this page reloads or your account changes. Turning it off stops future requests and keeps existing cloud copies.":"Ruhusa inaisha ukurasa huu unapopakiwa upya au akaunti yako inapobadilika. Kuizima huzuia maombi mapya na huhifadhi nakala zilizopo mtandaoni.","Allow cloud backup for this session":"Ruhusu nakala rudufu mtandaoni kwa kipindi hiki","Replace local draft with cloud draft":"Badilisha rasimu ya kifaa hiki kwa rasimu ya mtandaoni","Cloud backup is off. Local editing and exports still work.":"Nakala rudufu mtandaoni imezimwa. Bado unaweza kuhariri na kupakua kwenye kifaa hiki.","Cloud backup is on for this session.":"Nakala rudufu mtandaoni imewashwa kwa kipindi hiki.","Cloud backup failed. Your local CV is still available. Enable it again to retry.":"Nakala rudufu mtandaoni imeshindwa. CV ya kifaa hiki bado ipo. Washa tena ili ujaribu upya.","Sign in to enable optional cloud backup.":"Ingia kwenye akaunti ili uwashe nakala rudufu mtandaoni ukipenda.","Opening your cloud backup…":"Inafungua nakala rudufu yako ya mtandaoni…","Replace the draft in this browser with the selected cloud CV or draft? Export a local backup first if you want to keep both.":"Ubadilishe rasimu ya kivinjari hiki kwa CV au rasimu uliyochagua mtandaoni? Pakua nakala rudufu kwanza ukitaka kuhifadhi zote mbili.","Cloud draft restored in this browser.":"Rasimu ya mtandaoni imerejeshwa kwenye kivinjari hiki.","Local storage is unavailable. Cloud backup is off.":"Hifadhi ya kifaa hiki haipatikani. Nakala rudufu mtandaoni imezimwa.","Your account changed. Cloud backup is off.":"Akaunti yako imebadilika. Nakala rudufu mtandaoni imezimwa.","Cloud backup is off. Existing cloud copies are kept. Local editing and exports still work.":"Nakala rudufu mtandaoni imezimwa. Nakala zilizopo mtandaoni zimehifadhiwa. Bado unaweza kuhariri na kupakua kwenye kifaa hiki.","Build, edit, save, and export locally. If you choose AI help later, AfroTools must ask before sending CV, job description, profile, or document content to a model.":"Tengeneza, hariri, hifadhi na pakua kwenye kifaa hiki. Ukichagua usaidizi wa AI baadaye, AfroTools lazima iombe ridhaa kabla ya kutuma CV, maelezo ya kazi, wasifu au maudhui ya hati kwa modeli.","All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.","Pan-African Minimal":"Muundo rahisi wa Afrika","ATS Plain":"ATS isiyo na mapambo","Lagos Corporate":"Kampuni za Lagos","Nairobi Tech":"Teknolojia ya Nairobi","Accra Graduate":"Mhitimu wa Accra","Cape Town Modern":"Muundo wa kisasa wa Cape Town","Abuja Government":"Serikali ya Abuja","Kigali Developer":"Msanidi wa Kigali","Cairo Bilingual":"Lugha mbili za Cairo","Francophone Standard":"Muundo wa Kifaransa","Morocco French-Arabic":"Kifaransa na Kiarabu cha Moroko","Boardroom Executive":"Kiongozi mkuu","M&E Officer":"Afisa wa ufuatiliaji na tathmini (M&E)","Teacher / Education":"Mwalimu / Elimu","Healthcare Clinical":"Huduma za afya za kliniki","Customer Support":"Huduma kwa wateja","Hospitality":"Hoteli na utalii","Trade Skills":"Ujuzi wa ufundi","Trade / Apprenticeship":"Ufundi / Mafunzo kazini","Driver / Logistics":"Dereva / Usafirishaji","Scholarship / Academic CV":"CV ya ufadhili wa masomo / Taaluma","Creative Portfolio":"Jalada la ubunifu","Founder / Consultant":"Mwanzilishi / Mshauri","Diaspora Relocation":"Kuhamia ughaibuni","Africa":"Afrika","ATS safety":"Ulinganifu wa ATS","Photo support":"Matumizi ya picha","Text-first":"Maandishi kwanza","Single-column":"Safu moja","No decorative layout":"Bila mapambo","Compact international style":"Muundo mfupi wa kimataifa","Good for long contact details":"Inafaa kwa maelezo marefu ya mawasiliano","Strong choice for portals and recruiter screening. For strict systems, export ATS Plain PDF or TXT.":"Inafaa kwa tovuti za ajira na ukaguzi wa waajiri. Kwa mifumo inayohitaji hati rahisi kusomeka, pakua PDF au TXT ya ATS isiyo na mapambo.","Balanced layout for human review with readable structure. Use ATS Plain for strict portals.":"Muundo unaosomeka vizuri kwa ukaguzi wa mwajiri. Tumia ATS isiyo na mapambo kwa tovuti zinazohitaji hati rahisi kusomeka.","Less ATS-safe visual layout for portfolio review. Use only when presentation matters more than strict ATS parsing.":"Muundo wa picha kwa kuonyesha jalada la kazi unaweza kuwa mgumu kusomeka na ATS. Utumie tu ikiwa mwonekano ni muhimu zaidi kwa maombi hayo.","Professional Summary":"Muhtasari wa kitaalamu","Professional Summary (50+ words)":"Muhtasari wa kitaalamu (maneno 50 au zaidi)","Technical Summary":"Muhtasari wa kiufundi","Projects":"Miradi","Native":"Lugha ya kwanza","e.g.":"k.m.","Company name":"Jina la kampuni","Company Name":"Jina la kampuni","Readability":"Urahisi wa kusoma","Generate application assets from this CV":"Andaa hati za maombi ya kazi kutoka CV hii","Graduate":"Mhitimu","Finance":"Fedha","Tech":"Teknolojia","Executive":"Kiongozi mkuu","Formal":"Rasmi","Confident":"Kujiamini","Contact":"Mawasiliano","Qualification":"Sifa ya elimu"},"downloadContract":"sensitive-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

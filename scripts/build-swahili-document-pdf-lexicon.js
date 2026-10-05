@@ -99,6 +99,9 @@ const ROUTE_OVERRIDES = {
     'Classic': 'Kawaida'
   }
 };
+Object.entries(require('../data/localization/sw-document-pdf-lexicon-overrides.json').routes).forEach(([id, entries]) => {
+  ROUTE_OVERRIDES[id] = { ...ROUTE_OVERRIDES[id], ...entries };
+});
 
 function clean(value) {
   return String(value || '')
@@ -314,11 +317,10 @@ function syncKnownOverrides(ids) {
     if (!ROUTE_OVERRIDES[id] || !output.routes[id]) throw new Error(`Unknown existing override route: ${id}`);
     for (const [phrase, value] of Object.entries(ROUTE_OVERRIDES[id])) {
       const owners = Object.keys(output.routes).filter((route) => Object.hasOwn(output.routes[route], phrase));
-      if (owners.length !== 1 || owners[0] !== id || !Object.hasOwn(combined, phrase)) {
-        throw new Error(`Override must have one existing route owner: ${id}: ${phrase}`);
-      }
       output.routes[id][phrase] = normalizeTranslation(value);
-      combined[phrase] = normalizeTranslation(value);
+      // Shared phrase collisions stay with their existing first route owner.
+      // The parity page carries its contextual overrides for runtime precedence.
+      if (!owners.length || owners[0] === id) combined[phrase] = normalizeTranslation(value);
     }
   }
   const json = `${JSON.stringify(output, null, 2)}\n`;
@@ -423,4 +425,5 @@ async function main() {
   console.log('Swahili Document/PDF lexicon outputs are current.');
 }
 
-main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
+if (require.main === module) main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
+module.exports = { ROUTE_OVERRIDES };

@@ -1216,3 +1216,11 @@ The Swahili product surface is generated and checked through `scripts/build-swah
 - `/sw/auth/`, `/sw/dashboard/`, and `/sw/vault/` are explicit, `noindex` English-fallback bridges. They require an intentional click, preserve a return path where possible, and must not emit hreflang as native equivalents.
 - Network-backed data must distinguish a verified snapshot from fallback, empty, malformed, offline, or failed states. Fallback rates must never be labelled live or real-time.
 - Shared navigation, footer, assistant, consent, favorites, validation, errors, and account entry points must use Swahili strings. Reviewed foreign terms are limited to glossary entries, proper nouns, statutory names, brands, code, and accepted acronyms.
+
+### Contextual Document/PDF copy (2026-10-05)
+
+`data/localization/sw-document-pdf-lexicon-overrides.json` owns reviewed contextual invoice and CV phrases. Keep complete sentences and template descriptions here; route-specific wording takes precedence over the generated combined dictionary in the page payload. This is an editorial ownership contract, not a claim of native-speaker review.
+
+After editing those two routes, run `node scripts/build-swahili-document-pdf-lexicon.js --sync-overrides=cv-builder,invoice-generator --write`, then `node scripts/build-swahili-document-pdf-parity.js --apps=cv-builder,invoice-generator --write`. Review generated outputs and use the corresponding `--check` mode for parity. Do not run an unbounded translation refresh for a contextual repair.
+
+Keep authored preview text, restored field values, saved document/client/item names, and accessible action suffixes out of the UI dictionary. Validate template dialogs, the editor, JSON save/restore, mobile widths 320/390, and actual document bytes. Rebuild these pages after shared English document/export owners change.
