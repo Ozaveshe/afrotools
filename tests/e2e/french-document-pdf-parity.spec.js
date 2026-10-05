@@ -15,6 +15,7 @@ test.beforeAll(async ({ request }) => {
 });
 
 test.afterAll(() => {
+  if (process.env.AFROTOOLS_FR_CURRENT_VERIFICATION === '1') return;
   const rows = config.apps.map((app) => {
     const receipt = browserReceipts.get(app.id) || {};
     const publicRoute = receipt.publicRoute || {

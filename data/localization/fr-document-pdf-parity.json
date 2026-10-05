@@ -280,10 +280,129 @@
       "title": "Créer un CV professionnel en français | AfroTools",
       "name": "Générateur de CV",
       "description": "Créez, prévisualisez, sauvegardez localement et exportez un CV en français sans envoyer vos données personnelles.",
-      "exports": ["pdf", "docx", "txt", "csv", "json", "zip", "print"],
+      "exports": [
+        "pdf",
+        "docx",
+        "txt",
+        "csv",
+        "json",
+        "zip",
+        "print"
+      ],
       "dynamicLocalization": false,
       "interactionLocalization": true,
-      "sensitive": true
+      "sensitive": true,
+      "verification": {
+        "scope": "invoice-cv-repair-2026-10-05",
+        "generators": [
+          "scripts/build-french-document-pdf-parity.js",
+          "scripts/build-french-document-pdf-lexicon.js",
+          "scripts/build-french-cv-runtime.js",
+          "scripts/minify.js"
+        ],
+        "inputs": [
+          "data/localization/fr-document-pdf-lexicon.json",
+          "data/localization/fr-document-pdf-lexicon-overrides.json",
+          "lang/fr.json",
+          "tools/cv-builder/js/src/cv-application-pack-export.js"
+        ],
+        "checks": [
+          {
+            "id": "cv-builder-served-source",
+            "kind": "browser",
+            "file": "tests/e2e/french-current-verification-source.spec.js",
+            "title": "cv-builder: served bytes match the current French verification snapshot",
+            "features": [
+              "served-source-identity"
+            ]
+          },
+          {
+            "id": "document-context-source",
+            "kind": "node",
+            "file": "tests/french-document-context.test.js",
+            "additionalFiles": [
+              "tests/cv-application-pack-pdf.test.js",
+              "tests/french-cv-consent-owner.test.js",
+              "tests/french-document-json-integrity.test.js"
+            ],
+            "title": "contextual labels, identifiers, consent ownership and parsed application-pack PDFs",
+            "features": [
+              "source-regressions",
+              "identifier-integrity",
+              "private-text-integrity"
+            ]
+          },
+          {
+            "id": "cv-builder-browser-smoke",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-pdf-parity.spec.js",
+            "title": "cv-builder: native French route, reflow, themes, keyboard and clean runtime",
+            "features": [
+              "mobile-reflow",
+              "themes",
+              "keyboard-focus",
+              "runtime-errors"
+            ]
+          },
+          {
+            "id": "cv-context",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-context.spec.js",
+            "title": "French CV template selection, editor, backup and ATS export preserve user text",
+            "features": [
+              "template-gallery",
+              "template-modal",
+              "editor",
+              "user-text",
+              "mobile-controls"
+            ],
+            "exports": [
+              "txt",
+              "json",
+              "csv"
+            ]
+          },
+          {
+            "id": "cv-private-exports",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-pdf-exports.spec.js",
+            "title": "CV: PDF, DOCX, TXT, JSON, CSV, ZIP et impression sont prouvés sans fuite",
+            "features": [
+              "parsed-exports",
+              "local-export-privacy",
+              "ungated-export",
+              "print-adapter"
+            ],
+            "exports": [
+              "pdf",
+              "docx",
+              "txt",
+              "csv",
+              "json",
+              "zip",
+              "print"
+            ]
+          }
+        ],
+        "workflowReview": {
+          "status": "partial",
+          "reviewer": null,
+          "reviewedAt": null,
+          "evidence": null,
+          "notYetProved": [
+            "all 30 exported template layouts",
+            "invalid and empty recovery",
+            "local draft and import recovery"
+          ]
+        },
+        "editorialReview": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewedAt": null,
+          "evidence": null
+        },
+        "unresolvedRegressions": []
+      }
     },
     {
       "id": "invoice-generator",
@@ -294,9 +413,134 @@
       "title": "Générateur de Factures Africain 2026 | AfroTools",
       "name": "Générateur de factures",
       "description": "Créez une facture en français, appliquez un taux vérifié et exportez un PDF local. Les clients, modèles et montants restent dans votre navigateur.",
-      "exports": ["pdf", "json", "print"],
+      "exports": [
+        "pdf",
+        "json",
+        "print"
+      ],
       "sensitive": true,
-      "preserveExisting": false
+      "preserveExisting": false,
+      "verification": {
+        "scope": "invoice-cv-repair-2026-10-05",
+        "generators": [
+          "scripts/build-french-document-pdf-parity.js",
+          "scripts/build-french-document-pdf-lexicon.js"
+        ],
+        "inputs": [
+          "data/localization/fr-document-pdf-lexicon.json",
+          "data/localization/fr-document-pdf-lexicon-overrides.json",
+          "lang/fr.json"
+        ],
+        "checks": [
+          {
+            "id": "invoice-generator-served-source",
+            "kind": "browser",
+            "file": "tests/e2e/french-current-verification-source.spec.js",
+            "title": "invoice-generator: served bytes match the current French verification snapshot",
+            "features": [
+              "served-source-identity"
+            ]
+          },
+          {
+            "id": "document-context-source",
+            "kind": "node",
+            "file": "tests/french-document-context.test.js",
+            "additionalFiles": [
+              "tests/cv-application-pack-pdf.test.js",
+              "tests/french-cv-consent-owner.test.js",
+              "tests/french-document-json-integrity.test.js"
+            ],
+            "title": "contextual labels, identifiers, consent ownership and parsed application-pack PDFs",
+            "features": [
+              "source-regressions",
+              "identifier-integrity",
+              "private-text-integrity"
+            ]
+          },
+          {
+            "id": "invoice-generator-browser-smoke",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-pdf-parity.spec.js",
+            "title": "invoice-generator: native French route, reflow, themes, keyboard and clean runtime",
+            "features": [
+              "mobile-reflow",
+              "themes",
+              "keyboard-focus",
+              "runtime-errors"
+            ]
+          },
+          {
+            "id": "invoice-context",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-context.spec.js",
+            "title": "French invoice currency, review, preview and exports retain literal synthetic values",
+            "features": [
+              "line-item-copy",
+              "currency-tax-preservation",
+              "preview",
+              "user-text",
+              "mobile-controls"
+            ],
+            "exports": [
+              "pdf",
+              "json"
+            ]
+          },
+          {
+            "id": "invoice-json-roundtrip",
+            "kind": "browser",
+            "file": "tests/e2e/french-invoice-export-values.spec.js",
+            "title": "French invoice JSON preserves user values that collide with export labels",
+            "features": [
+              "json-import-roundtrip"
+            ],
+            "exports": [
+              "json"
+            ]
+          },
+          {
+            "id": "invoice-private-pdf",
+            "kind": "browser",
+            "file": "tests/e2e/french-document-pdf-exports.spec.js",
+            "title": "facture: PDF synthétique est rouvert sans porte ni fuite",
+            "features": [
+              "local-export-privacy",
+              "ungated-export"
+            ],
+            "exports": [
+              "pdf"
+            ]
+          }
+        ],
+        "workflowReview": {
+          "status": "partial",
+          "reviewer": null,
+          "reviewedAt": null,
+          "evidence": null,
+          "notYetProved": [
+            "print adapter",
+            "invalid and empty recovery",
+            "share consent",
+            "local draft recovery"
+          ]
+        },
+        "editorialReview": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewedAt": null,
+          "evidence": null
+        },
+        "unresolvedRegressions": [
+          {
+            "id": "FR-INVOICE-COOKIE-OVERLAP",
+            "severity": "major",
+            "dimension": "accessibility",
+            "status": "open",
+            "evidence": "reports/french-invoice-cv-repair-2026-10-05.md",
+            "summary": "Mobile sticky PDF action overlaps cookie refusal controls until the integrated English owner is regenerated and exercised."
+          }
+        ]
+      }
     },
     {
       "id": "cover-letter",
