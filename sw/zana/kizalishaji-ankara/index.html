@@ -1518,7 +1518,8 @@ function updatePreview() {
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
-  return div.innerHTML;
+  // Also safe in quoted attributes when restoring imported or saved state.
+  return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 const debouncedUpdate = debounce(updatePreview, 300);
@@ -1751,9 +1752,9 @@ function restoreState(s) {
         tr.className = 'line-item';
         tr.innerHTML = `
           <td><input aria-label="Li desc" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input aria-label="Li qty" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input aria-label="Li price" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input aria-label="Li tax" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Li qty" type="number" class="li-qty" value="${escapeHtml(it.q ?? 1)}" min="0" step="0.01"></td>
+          <td><input aria-label="Li price" type="number" class="li-price" value="${escapeHtml(it.p ?? 0)}" min="0" step="0.01"></td>
+          <td><input aria-label="Li tax" type="number" class="li-tax" value="${escapeHtml(it.t ?? 0)}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
         `;
