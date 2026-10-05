@@ -31,8 +31,19 @@ const reviewedFragments = new Map([
   [
     'Fill your name, contact, and summary to open these private next steps. Readiness: ',
     'Renseignez votre nom, vos coordonnées et votre résumé pour ouvrir ces étapes privées. Progression : '
-  ]
+  ],
+  ['Choose from ', 'Choisissez parmi '],
+  [' export-ready templates. Use filters for role type, market, ATS safety, and application style.', ' modèles prêts à l’exportation. Filtrez-les par type de poste, marché, compatibilité ATS et style de candidature.'],
+  [' templates shown', ' modèles affichés'],
+  [' selected. Use ATS Plain or Global Compact for strict portals.', ' sélectionné. Utilisez ATS simple ou Compact international pour les portails aux exigences strictes.']
 ]);
+
+const trackerHeaderLabels = {
+  job_title: 'poste', company: 'entreprise', country: 'pays', city_remote: 'ville_ou_distanciel',
+  job_link: 'lien_offre', source: 'source', deadline: 'échéance', salary_range: 'fourchette_salariale',
+  status: 'statut', cv_version_used: 'version_cv_utilisée', cover_letter_attached: 'lettre_motivation_jointe',
+  application_pack_attached: 'dossier_candidature_joint', notes: 'notes', follow_up_date: 'date_relance', updated_at: 'mis_à_jour_le'
+};
 
 function clean(value) {
   return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
@@ -65,14 +76,14 @@ function translateValue(value) {
   return output;
 }
 
-function walk(node, visit) {
+function walk(node, visit, parent) {
   if (!node || typeof node !== 'object') return;
-  visit(node);
+  visit(node, parent);
   Object.keys(node).forEach((key) => {
     if (key === 'start' || key === 'end' || key === 'loc') return;
     const child = node[key];
-    if (Array.isArray(child)) child.forEach((entry) => walk(entry, visit));
-    else if (child && typeof child === 'object' && typeof child.type === 'string') walk(child, visit);
+    if (Array.isArray(child)) child.forEach((entry) => walk(entry, visit, node));
+    else if (child && typeof child === 'object' && typeof child.type === 'string') walk(child, visit, node);
   });
 }
 
@@ -83,9 +94,15 @@ function localizeSource(source, filename) {
     allowHashBang: true
   });
   const edits = [];
-  walk(ast, (node) => {
+  walk(ast, (node, parent) => {
     if (node.type === 'Literal' && typeof node.value === 'string') {
-      const translated = translateValue(node.value);
+      // Localize copy, never object keys, routing identifiers or data-field names.
+      if (parent && parent.type === 'Property' && parent.key === node && !parent.computed) return;
+      // CSV headings are presentation. The lead object's keys and values stay
+      // unchanged; applying a blanket Blob rewrite could change user text.
+      const isTrackerHeader = filename === 'cv-job-tracker.js' && parent && parent.type === 'ArrayExpression'
+        && parent.elements[0] && parent.elements[0].value === 'job_title';
+      const translated = isTrackerHeader ? trackerHeaderLabels[node.value] || node.value : translateValue(node.value);
       if (translated !== node.value) {
         edits.push({ start: node.start, end: node.end, value: JSON.stringify(translated) });
       }

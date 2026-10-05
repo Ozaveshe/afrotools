@@ -12,19 +12,19 @@
         label: "Work experience"
     }, {
         id: "education",
-        label: "Education"
+        label: "Formation"
     }, {
         id: "skills",
-        label: "Skills"
+        label: "Compétences"
     }, {
         id: "certifications",
         label: "Certifications"
     }, {
         id: "languages",
-        label: "Languages"
+        label: "Langues"
     }, {
         id: "references",
-        label: "References"
+        label: "Références"
     } ], r = [ {
         target: "summary",
         re: /^(professional\s+)?(summary|profile|objective|career objective|personal statement|profil|profil professionnel|muhtasari|muhtasari wa kitaaluma)$/i
@@ -321,7 +321,7 @@
         s.innerHTML = [ '<div class="cv-import-review-head">', "<div><strong>Review extracted sections</strong><span>" + a(r || "Pasted text") + " parsed locally. Edit anything before importing.</span></div>", '<div class="cv-import-selectors">', "<label>Country <select data-import-country>" + ("undefined" == typeof COUNTRY_NORMS ? '<option value="NG">Nigeria</option><option value="INTL">International</option>' : Object.keys(COUNTRY_NORMS).map(function(e) {
             var t = COUNTRY_NORMS[e];
             return '<option value="' + a(e) + '">' + a((t.f ? t.f + " " : "") + t.n) + "</option>";
-        }).join("")) + "</select></label>", "<label>Template <select data-import-template>" + ("undefined" == typeof TEMPLATES ? '<option value="slate">Slate</option>' : TEMPLATES.map(function(e) {
+        }).join("")) + "</select></label>", "<label>Modèle <select data-import-template>" + ("undefined" == typeof TEMPLATES ? '<option value="slate">Slate</option>' : TEMPLATES.map(function(e) {
             return '<option value="' + a(e.id) + '">' + a(e.name) + "</option>";
         }).join("")) + "</select></label>", "</div>", "</div>", c ? '<label class="cv-import-confirm"><input type="checkbox" data-import-replace-ok> I understand selected imported sections may replace existing CV fields.</label>' : "", '<div class="cv-import-cards">' + t.map(function(e, t) {
             return [ '<article class="cv-import-card ' + (e.uncertain ? "uncertain" : "") + (e.ignored ? " ignored" : "") + '" data-import-card="' + t + '">', '<div class="cv-import-card-top">', "<div><strong>" + a(e.label) + "</strong><span>" + (e.uncertain ? "Check this extraction before applying." : "Looks usable, still review it.") + "</span></div>", '<b class="' + (e.confidence >= 75 ? "good" : e.confidence >= 55 ? "warn" : "low") + '">' + Math.round(e.confidence) + "% confidence</b>", "</div>", '<label class="cv-import-move">Move to section <select data-import-target>' + (r = e.target,

@@ -895,7 +895,7 @@
     while ((node = walker.nextNode())) {
       var parent = node.parentElement;
       if (!parent || /^(SCRIPT|STYLE|CODE|PRE|TEXTAREA)$/i.test(parent.tagName)) continue;
-      if (parent.isContentEditable || parent.closest('[contenteditable="true"], #cvpreview')) continue;
+      if (parent.isContentEditable || parent.closest('[contenteditable="true"], [translate="no"], [data-cv-user-text], #cvpreview, .cv-flow-doc strong, .cv-flow-doc small')) continue;
       var translatedText = translate(node.nodeValue, routeExact);
       if (translatedText !== node.nodeValue) node.nodeValue = translatedText;
     }
@@ -905,7 +905,7 @@
     translateCvText(root, routeExact);
     if (root.querySelectorAll) {
       root.querySelectorAll('*').forEach(function (element) {
-        if (element.closest('.cv-preview-top, #cvpreview')) return;
+        if (element.closest('[data-cv-user-text], #cvpreview, .cv-flow-doc strong, .cv-flow-doc small')) return;
         translateElement(element, routeExact);
       });
     }
@@ -983,7 +983,8 @@
     var routeExact = context.exact || {};
     var run = function () {
       if (context.localFirstDownloads === true) keepDownloadsLocal(doc);
-      translateTree(doc.body, routeExact);
+      if (context.id === 'cv-builder') translateCvTree(doc.body, routeExact);
+      else translateTree(doc.body, routeExact);
       rewriteRoutes(doc, context.routeMap);
       if (doc.body) doc.body.classList.add('fr-document-pdf-native');
       doc.documentElement.dataset.frDocumentPdfReady = 'true';
