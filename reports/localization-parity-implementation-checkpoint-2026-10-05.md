@@ -55,6 +55,10 @@ chat's own model setting cannot be changed through the available tools.
 Integrated product commits on `codex/localization-parity-20261005`:
 `d874dabd`, `30597fcb`, `d068f5a0`, `309e4a99`, `62d489e3`, `2ef6c2d7`.
 The French and Swahili handoffs are preserved in their dated evidence reports.
+Generated release outputs are in `b412b2f3`. `baabe21a` additionally repairs
+invoice JSON import escaping in all four languages: quote-bearing description
+and numeric values cannot create DOM attributes/elements, and zero quantity is
+preserved. Four actual-upload browser cases passed in the isolated source.
 
 ## Verification already completed
 
@@ -80,10 +84,20 @@ The French and Swahili handoffs are preserved in their dated evidence reports.
 - An initial combined invocation preset declined cookies globally while the
   Hausa test expected the first-visit banner. The suite now explicitly starts
   with empty storage; its real decline-control assertion passes.
-- Broad `npm test` was stopped after detecting stale generated analytics/asset
-  pointers following source regeneration. The election-news failures show only
-  navbar/footer cache-version drift. A full `build:deploy` is running before the
-  broad suite is rerun; no broad-suite pass is claimed yet.
+- Initial broad `npm test` was stopped after detecting stale generated
+  analytics/asset pointers. The election-news failures showed navbar/footer
+  cache-version drift. No broad-suite pass is claimed until the final rerun.
+- First integrated `npm run build:deploy` and `npm run audit:dist`: passed.
+  Reviewed 10,383 generated changes: 10,368 contained only cache-pointer
+  replacements; the remaining 15 were inspected owner output/report changes.
+  Deletion review was empty, and `git diff --check` passed.
+- After the JSON repair, all six full-build stages passed again. Windows
+  interrupted postbuild with an `UNKNOWN` file-access error; the file was
+  immediately readable. Resuming the unchanged postbuild through the existing
+  safe-filesystem helper passed content, claims, route, election-news, snippet
+  and analytics checks. Final artifact construction/audit remains in progress
+  at this checkpoint. Generated source returned to a clean tree before the
+  checkpoint/report update; no generated drift was hidden.
 
 ## Required before this batch can be called released
 
@@ -93,6 +107,21 @@ The French and Swahili handoffs are preserved in their dated evidence reports.
 4. Coordinate with the existing publisher lease; do not override an active run.
 5. Merge/push current main without losing concurrent changes; verify CI and the
    exact deployed revision, then check the changed production journeys.
+
+## Separate follow-on work preserved for later integration
+
+- French current verification: `0d874a94`; historical counts remain historical,
+  current source-bound workflow/export evidence is separate, and full/native
+  reviews remain pending. Rerun the dedicated verifier after integration.
+- Swahili CV application pack: `0fc0737d`; native prose/export labels, actual
+  Unicode PDFs, CSV presentation and mobile pack controls. Its scoped checks
+  passed; it is not in the first frozen release candidate yet.
+- Hausa invoice modes/CV themes: `bcd35253`, `fbc760f7`; invoice/receipt/estimate
+  preview/PDF/JSON/local-save behavior, literal client cards, and readable CV
+  panels in both themes. New modes/theme tests and prior Hausa regressions
+  passed. Full Hausa CV and native review remain open.
+- Further invoice recovery/print guards and Swahili current verification are
+  active in isolated agent worktrees. None is production proof.
 
 ## Still open for the full goal
 
