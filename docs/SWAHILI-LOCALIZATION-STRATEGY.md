@@ -1224,3 +1224,11 @@ The Swahili product surface is generated and checked through `scripts/build-swah
 After editing those two routes, run `node scripts/build-swahili-document-pdf-lexicon.js --sync-overrides=cv-builder,invoice-generator --write`, then `node scripts/build-swahili-document-pdf-parity.js --apps=cv-builder,invoice-generator --write`. Review generated outputs and use the corresponding `--check` mode for parity. Do not run an unbounded translation refresh for a contextual repair.
 
 Keep authored preview text, restored field values, saved document/client/item names, and accessible action suffixes out of the UI dictionary. Validate template dialogs, the editor, JSON save/restore, mobile widths 320/390, and actual document bytes. Rebuild these pages after shared English document/export owners change.
+
+### Swahili CV application-pack output
+
+`data/localization/sw-cv-application-pack-copy.json` owns native generated prose, pack actions/failures, printable tone labels, and tracker CSV headings/status labels. `scripts/build-swahili-cv-application-pack-runtime.js` compiles four scoped English owner modules into `sw/zana/mjenzi-cv/js/`; it protects object keys and stored identifiers/enums. It also adapts the standalone pack PDF to the existing local PDF helper with an embedded font so authored Unicode survives parsing. English and French owners keep their behavior.
+
+`node scripts/build-swahili-document-pdf-parity.js --apps=cv-builder --write` rebuilds these modules and their page references. Use `node scripts/build-swahili-cv-application-pack-runtime.js --check` and the corresponding parity `--check` to verify output freshness. Do not translate an assembled editable letter or entire Blob: author slots and edited text must pass through unchanged. Keep CSV translation at presentation columns, with stored field names and status codes intact.
+
+Validate real TXT/DOC/PDF/ZIP downloads, reopened PDF text and JSON backup, authored phrases that collide with UI copy, native fallback/failure states, and pointer clicks at 320/390. The Swahili pack stylesheet keeps the mobile command bar in normal flow while pack controls have focus. Broader CV language approval and native-human review remain separate.
