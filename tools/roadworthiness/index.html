@@ -231,7 +231,7 @@ var RW_INFO = {
   kenya:       {fee:'KSh 500–KSh 2,000', where:'NTSA-approved inspection centres — book via eCitizen.go.ke', freq:'Annual'},
   nigeria:     {fee:'₦3,000–₦8,000', where:'VIO (Vehicle Inspection Office) state offices', freq:'Annual'},
   southafrica: {fee:'R150–R450', where:'Licensed DLTC (Driving Licence Testing Centre) or private testing stations', freq:'Annual'},
-  ghana:       {fee:'GH₵80–GH₵200', where:'DVLA (Driver and Vehicle Licensing Authority) offices', freq:'Annual'},
+  ghana:       {fee:'Confirm the current road use fee with DVLA/PVTS', where:'Designated private vehicle testing stations (PVTS) — bring your Vehicle Registration Certificate (VRC) and vehicle documents', freq:'Confirm the due date on your certificate with DVLA/PVTS', sourceUrl:'https://dvla.gov.gh/services', sourceObservedAt:'2026-10-05'},
   tanzania:    {fee:'TZS 20,000–TZS 60,000', where:'SUMATRA licensed vehicle inspection stations', freq:'Annual'},
   uganda:      {fee:'UGX 40,000–UGX 120,000', where:'UMA (Uganda Motor Industry Association) approved centres', freq:'Annual'},
   rwanda:      {fee:'RWF 5,000–RWF 15,000', where:'RURA-licensed technical control centres (CT)', freq:'Annual / 6 months for PSV'},
@@ -333,6 +333,9 @@ function updateScore() {
     }
     verdict.style.display = 'block';
     info.innerHTML = '&#x1f4cd; <strong>Test Centre (' + country.charAt(0).toUpperCase() + country.slice(1) + '):</strong> ' + d.where + ' | <strong>Fee:</strong> ' + d.fee + ' | <strong>Frequency:</strong> ' + d.freq;
+    if (d.sourceUrl) {
+      info.innerHTML += '<br><strong>Source:</strong> <a href="' + d.sourceUrl + '">DVLA Ghana service guidance</a> (observed ' + d.sourceObservedAt + '). Current fee amounts and inspection intervals are unverified; confirm before travel or payment.';
+    }
     info.style.display = 'block';
   }
 }
