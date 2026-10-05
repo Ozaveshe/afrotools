@@ -367,7 +367,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 120000;
+    z-index: 1000;
     display: grid;
     gap: 6px;
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
@@ -1075,8 +1075,8 @@
 <afro-footer></afro-footer>
 
 <!-- Required Scripts -->
-<script src="/assets/js/components/navbar.min.js?v=e5959261" defer></script>
-<script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17fb4d95" defer></script>
+<script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
@@ -1518,7 +1518,8 @@ function updatePreview() {
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
-  return div.innerHTML;
+  // Also safe in quoted attributes when restoring imported or saved state.
+  return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 const debouncedUpdate = debounce(updatePreview, 300);
@@ -1751,9 +1752,9 @@ function restoreState(s) {
         tr.className = 'line-item';
         tr.innerHTML = `
           <td><input aria-label="Li desc" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input aria-label="Li qty" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input aria-label="Li price" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input aria-label="Li tax" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Li qty" type="number" class="li-qty" value="${escapeHtml(it.q ?? 1)}" min="0" step="0.01"></td>
+          <td><input aria-label="Li price" type="number" class="li-price" value="${escapeHtml(it.p ?? 0)}" min="0" step="0.01"></td>
+          <td><input aria-label="Li tax" type="number" class="li-tax" value="${escapeHtml(it.t ?? 0)}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
         `;
@@ -2124,7 +2125,7 @@ init();
   else bind();
 })();
 </script>
-<script src="/assets/js/pages/invoice-generator-enhancements.js?v=cfe5289b"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=e2f8aef3"></script>
 <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {

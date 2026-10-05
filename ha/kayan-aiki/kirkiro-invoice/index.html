@@ -32,7 +32,6 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=56b4568f">
 <link rel="stylesheet" href="/assets/css/invoice-generator.css?v=f87ce708">
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
-<script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
 
 <style>
 :root { --color-brand: var(--color-primary); }
@@ -319,7 +318,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 120000;
+    z-index: 1000;
     display: grid;
     gap: 6px;
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
@@ -355,7 +354,7 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <a class="skip-link" href="#main">Tsallake zuwa babban abun ciki</a>
 <afro-navbar active="ecommerce"></afro-navbar>
 
@@ -717,7 +716,7 @@
 
       <div class="field-checkbox">
         <input type="checkbox" id="markPaid">
-        <label for="markPaid">Alama invoice a matsayin an biya</label>
+        <label for="markPaid">Rubuta cewa an biya duka (cire alamar don goge biyan da aka rubuta)</label>
       </div>
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Ayyukan invoice">
@@ -737,6 +736,11 @@
         </details>
         <input aria-label="Shigo da fayil din JSON" class="import-json-input" id="importJsonInput" type="file" accept="application/json,.json">
         <p class="action-hint" id="invoiceActionHint" aria-live="polite"></p>
+        <label class="invoice-review" for="invoiceReviewConfirm" style="display:flex;gap:8px;align-items:flex-start;grid-column:1/-1;font-size:.85rem;line-height:1.6">
+          <input type="checkbox" id="invoiceReviewConfirm">
+          <span>Na duba mai sayarwa, abokin ciniki, lambar takarda, ranaku, layukan kaya, haraji, bayanan biya, jimilla da yadda takardar ta fito kafin fitarwa.</span>
+        </label>
+        <p class="action-hint">PDF, bugawa, ajiyar daftari da JSON suna aiki a wannan burauza ba tare da asusu ba. Tabbatar da haraji da dokokin takardar kuɗi na ma’amalarka.</p>
       </div>
     </div>
   </div>
@@ -893,7 +897,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Ta yaya VAT ke lissafuwa?</div>
-      <div class="faq-a">Idan ka zabi kudi, kashin VAT yana cika bisa kasa, misali Najeriya 7.5%. Za ka iya gyara kashin idan abin da kake bukata ya bambanta.</div>
+      <div class="faq-a">Kai ne za ka saka kashin harajin da ya dace da ma’amalarka. Sauya kuɗi ba ya sauya kashin haraji ko adadin da ka shigar, kuma ba ya yin canjin kuɗi. Tabbatar da haraji kafin amfani da takardar.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Zan iya saka link din biya, kudin wayar hannu ko bayanan banki?</div>
@@ -945,8 +949,8 @@
 <afro-footer></afro-footer>
 
 <!-- Required Scripts -->
-<script src="/assets/js/components/navbar.min.js?v=e5959261" defer></script>
-<script src="/assets/js/components/footer.min.js?v=3579ade5" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17fb4d95" defer></script>
+<script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
@@ -1222,10 +1226,8 @@ function updateActionState() {
   if (mobileHint) mobileHint.textContent = state.valid ? 'A shirye don fitarwa.' : state.reason;
 }
 
-/* ── CURRENCY CHANGE → AUTO TAX ── */
+/* Currency changes preserve the user's tax and amounts; they do not convert money. */
 $('currency').addEventListener('change', function() {
-  const rate = TAX_RATES[this.value];
-  if (rate !== undefined) $('taxRate').value = rate;
   updatePreview();
 });
 
@@ -1288,11 +1290,11 @@ function updatePreview() {
   const compName = $('companyName').value || 'Sunan kasuwancinka';
   $('pCompany').textContent = compName;
   const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Haraji ID: ' + $('taxID').value : ''].filter(Boolean);
-  $('pBizDetail').innerHTML = bizParts.join('<br>');
+  $('pBizDetail').innerHTML = bizParts.map(escapeHtml).join('<br>');
 
   $('pClient').textContent = $('clientName').value || 'Sunan abokin ciniki';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
-  $('pClientDetail').innerHTML = cParts.join('<br>');
+  $('pClientDetail').innerHTML = cParts.map(escapeHtml).join('<br>');
 
   const hasPreviewBasics = Boolean($('companyName').value.trim() && $('clientName').value.trim() && items.length);
   const previewEmpty = $('previewEmptyState');
@@ -1358,7 +1360,8 @@ function updatePreview() {
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
-  return div.innerHTML;
+  // Also safe in quoted attributes when restoring imported or saved state.
+  return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 const debouncedUpdate = debounce(updatePreview, 300);
@@ -1504,7 +1507,7 @@ $('btnPDF').addEventListener('click', () => {
       sections,
       disclaimer: 'An kirkiro wannan invoice da AfroTools. Takarda ce da kwamfuta ta samar.'
     });
-    ga4('pdf_download', {tool:'invoice-generator', invoice: $('invoiceNumber').value});
+    ga4('pdf_download', {tool:'invoice-generator'});
     toast('An sauke PDF!');
   } else {
     window.print();
@@ -1521,11 +1524,10 @@ if (btnPDFMobile) {
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
     AfroTools.shareState.share({
-      title: 'Invoice ' + $('invoiceNumber').value,
-      text: 'Invoice daga ' + ($('companyName').value || 'AfroTools'),
-      state
+      title: 'Takardar kuɗi — AfroTools',
+      text: 'Ƙirƙiri takardar kuɗi da AfroTools',
+      state: {}
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {
@@ -1572,7 +1574,7 @@ function restoreState(s) {
     if (s.tr !== undefined) $('taxRate').value = s.tr;
     if (s.dp !== undefined) $('discountPercent').value = s.dp;
     if (s.nt !== undefined) $('notes').value = s.nt;
-    if (s.mp === '1') $('markPaid').checked = true;
+    if (s.mp !== undefined) $('markPaid').checked = s.mp === '1';
     if (s.tpl) {
       qsa('.tpl-btn').forEach(b => b.classList.toggle('on', b.dataset.tpl === s.tpl));
       $('invoicePreview').dataset.tpl = s.tpl;
@@ -1586,9 +1588,9 @@ function restoreState(s) {
         tr.className = 'line-item';
         tr.innerHTML = `
           <td><input aria-label="Bayanin kaya ko aiki" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input aria-label="Yawa" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input aria-label="Farashin guda" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input aria-label="Haraji" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Yawa" type="number" class="li-qty" value="${escapeHtml(it.q ?? 1)}" min="0" step="0.01"></td>
+          <td><input aria-label="Farashin guda" type="number" class="li-price" value="${escapeHtml(it.p ?? 0)}" min="0" step="0.01"></td>
+          <td><input aria-label="Haraji" type="number" class="li-tax" value="${escapeHtml(it.t ?? 0)}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Cire layi">&times;</button></td>
         `;
@@ -1675,6 +1677,11 @@ $('btnNewInvoice').addEventListener('click', () => {
   $('currency').value = 'NGN';
   $('taxRate').value = '7.5';
   $('taxType').value = 'vat';
+  $('amountPaid').value = '0';
+  $('withholdingPercent').value = '0';
+  $('paymentMethod').value = 'bank';
+  $('invoiceReviewConfirm').checked = false;
+  if ($('includeInvoiceDataInLink')) $('includeInvoiceDataInLink').checked = false;
   logoDataURL = null;
   $('logoPreview').innerHTML = 'Logo';
   $('previewLogo').style.display = 'none';
@@ -1741,12 +1748,11 @@ init();
 
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
-<script src="/ha/kayan-aiki/kirkiro-invoice/app.js?v=43f3a39e"></script>
-<script src="/ha/kayan-aiki/kirkiro-invoice/invoice-workspace-sync.js?v=a3154706" defer></script>
+<script src="/assets/js/pages/hausa-invoice-copy.js?v=ba3e76e6"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=e2f8aef3"></script>
+<script src="/assets/js/pages/hausa-invoice-review.js?v=a3145b2a" defer></script>
 <script>
 // Kirkiro takardar kudi — saved invoices
 (function(){

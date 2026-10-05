@@ -491,6 +491,14 @@ function applyInitialCategoryFilter(){
   html = html.replace(/<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_START -->[\s\S]*?<!-- FRENCH_DIRECTORY_COUNTRY_CONTROLS_END -->\r?\n?/g, '');
   html = html.replace('    <div class="filter-tabs" id="filterTabs">', controls + '\n    <div class="filter-tabs" id="filterTabs">');
   html = html.replace('let tools = frenchTools.slice();', 'let tools = frenchTools.filter(matchesDirectoryCountry);');
+  // Preserve canonical publication membership across hydration. The static
+  // directory is built from the canonical registry and excludes retired aliases.
+  const membership = "const frenchPublishedIds = new Set(Array.from(document.querySelectorAll('#toolsGrid [data-directory-record][data-id]'), node => node.dataset.id));";
+  if (!html.includes(membership)) html = html.replace('function renderTools(){', membership + '\n\nfunction renderTools(){');
+  html = html.replace(
+    "const frenchTools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/'));",
+    "const frenchTools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/') && frenchPublishedIds.has(t.id));"
+  );
   html = html.replace('  if(input && input.value.trim()) resetFilterToAll();', '  // Keep the selected category and country while searching.');
   output(rel, html);
 }

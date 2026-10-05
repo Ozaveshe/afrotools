@@ -181,6 +181,14 @@ Create a premium horizontal website banner for AfroTools Document & PDF Workspac
 
 ## Runtime Dependency Policy
 
+The invoice enhancement source is `assets/js/pages/src/invoice-generator-enhancements.js`;
+`scripts/minify.js` generates `assets/js/pages/invoice-generator-enhancements.js`.
+English, French, Swahili and Hausa reuse this workflow. Hausa UI/export labels live
+in `assets/js/pages/hausa-invoice-copy.js`; do not translate user-entered text.
+Use `tests/e2e/invoice-generator-parity-refresh.spec.js` and
+`tests/e2e/hausa-document-parity.spec.js` to verify local persistence, explicit
+sharing, payment totals and parsed PDF output when changing the shared owner.
+
 - Prefer local runtime assets under `assets/vendor/` for PDF generation, rendering, compression, encryption, and ZIP export.
 - Do not add new CDN-based PDF runtimes when a local vendor file already exists for the same library.
 - Treat `npm run pdf:verify` warnings as a queue for future hardening, not as cosmetic output.

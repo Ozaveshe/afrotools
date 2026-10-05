@@ -784,7 +784,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Pharmacy Package Quote Normalizer | Health & Wellness | `/tools/pharmacy-prices` | Native candidate | `/sw/zana/bei-za-famasia` | Yes |
 | Sickle Cell Inheritance Explorer | Health & Wellness | `/tools/sickle-cell` | Native candidate | `/sw/zana/selimundu-na-genotype` | Yes |
 | Prediabetes Screening Conversation Tool | Health & Wellness | `/tools/diabetes-risk` | Native candidate | `/sw/zana/hatari-ya-kisukari` | Yes |
-| Education Planning Dashboard | Education | `/tools/education-hub` | Localized shell candidate | `/sw/zana/kituo-elimu` | Yes |
+| My Study Space | Education | `/tools/education-hub` | Localized shell candidate | `/sw/zana/kituo-elimu` | Yes |
 | African Scholarship Finder | Education | `/tools/scholarship-finder` | Localized shell candidate | `/sw/zana/udhamini` | Yes |
 | African University Comparison Worksheet | Education | `/tools/university-ranking` | Localized shell candidate | `/sw/zana/orodha-vyuo-vikuu` | Yes |
 | Study Planner & Timetable | Education | `/tools/study-planner` | Localized shell candidate | `/sw/zana/mpango-masomo` | Yes |
@@ -1188,8 +1188,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Education Savings Plan Calculator Africa 2026 | Education | `/tools/edu-savings` | Localized shell candidate | `/sw/zana/akiba-ya-elimu` | Yes |
 | Exam Timetable Generator | Education | `/tools/exam-timetable` | Localized shell candidate | `/sw/zana/ratiba-ya-mtihani` | Yes |
 | Interview Preparation Checklist for Africa — By Company Type & Role | Education | `/tools/interview-prep` | Localized shell candidate | `/sw/zana/maandalizi-ya-mahojiano` | Yes |
-| Plagiarism Percentage Self-Check Tool | Education | `/tools/plagiarism-pct` | Localized shell candidate | `/sw/zana/asilimia-ya-ufanano` | Yes |
-| Tutoring Rate Calculator Africa 2026 | Education | `/tools/tutoring-rate` | Localized shell candidate | `/sw/zana/bei-ya-tutoring` | Yes |
+| Draft Repetition Checker | Education | `/tools/plagiarism-pct` | Localized shell candidate | `/sw/zana/asilimia-ya-ufanano` | Yes |
+| Tutoring Quote Planner | Education | `/tools/tutoring-rate` | Localized shell candidate | `/sw/zana/bei-ya-tutoring` | Yes |
 | Asset Finance Calculator — Africa | Fintech & Banking | `/tools/asset-finance` | Localized shell candidate | `/sw/zana/ufadhili-wa-mali` | Yes |
 | Cross-Border B2B Payment Comparator — Africa | Fintech & Banking | `/tools/b2b-payment` | Localized shell candidate | `/sw/zana/malipo-ya-biashara-kwa-biashara` | Yes |
 | Bill Split Calculator — Africa | Fintech & Banking | `/tools/bill-split` | Localized shell candidate | `/sw/zana/kigawanya-bili-na-bakshishi` | Yes |

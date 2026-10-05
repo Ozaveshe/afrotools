@@ -1227,6 +1227,7 @@
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
       var T = {
+        homeLabel:    isSw ? 'Ukurasa wa mwanzo wa AfroTools' : isFr ? 'Accueil AfroTools' : 'AfroTools home',
         homeHref:     isSw ? '/sw/'                         : isFr ? '/fr/'                                             : '/',
         tag:          isSw ? 'Zana za Afrika kwa Kiswahili'             : isFr ? 'La plateforme africaine'                          : "Africa's Everything Platform",
         allTools:     isSw ? 'Zana zote'                    : isFr ? 'Tous les outils'                                  : 'All Tools',
@@ -1350,6 +1351,7 @@
         },
         ha: {
           homeHref: '/ha/',
+          homeLabel: 'Shafin farko na AfroTools',
           tag: 'Dandalin kayan aikin Afirka',
           allTools: 'Dukkan kayan aiki',
           tools: 'Kayan aiki',
@@ -1448,7 +1450,7 @@
         </style>
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
-            <a href="${T.homeHref}" class="logo" aria-label="AfroTools home">
+            <a href="${T.homeHref}" class="logo" aria-label="${T.homeLabel}">
               ${MARK}
               <div>
                 <span class="logo-name">AFRO<b>TOOLS</b></span>

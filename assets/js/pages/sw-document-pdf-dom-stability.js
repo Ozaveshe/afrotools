@@ -9,10 +9,10 @@
 
   function userContent(node) {
     var element = node && (node.nodeType === 1 ? node : node.parentElement);
-    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], textarea');
+    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], .cv-flow-doc:not(.cv-flow-empty) strong, .cv-flow-doc:not(.cv-flow-empty) small, textarea');
   }
 
-  function localizeMarkup(source, localizer) {
+  function localizeMarkup(source, localizer, isPreview) {
     var template = document.createElement('template');
     descriptor.set.call(template, source);
     var walker = document.createTreeWalker(template.content, NodeFilter.SHOW_TEXT);
@@ -20,6 +20,7 @@
     while (walker.nextNode()) textNodes.push(walker.currentNode);
     textNodes.forEach(function (node) {
       if (userContent(node) || (node.parentElement && /^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(node.parentElement.tagName))) return;
+      if (isPreview && localizer.isCvUserText(node.nodeValue)) return;
       node.nodeValue = localizer.translate(node.nodeValue);
     });
     template.content.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(function (element) {
@@ -37,7 +38,7 @@
     var source = String(value == null ? '' : value);
     var localizer = window.AfroTools && window.AfroTools.SwahiliDocumentPdfLocalizer;
     var next = !userContent(this) && localizer && typeof localizer.translate === 'function'
-      ? localizeMarkup(source, localizer)
+      ? localizeMarkup(source, localizer, this.id === 'cvpreview' || Boolean(this.closest && this.closest('#cvpreview')))
       : source;
     if (lastSource.get(this) === source && descriptor.get.call(this) === next) return;
     if (descriptor.get.call(this) === next) return;

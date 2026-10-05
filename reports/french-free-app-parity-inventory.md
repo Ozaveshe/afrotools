@@ -929,7 +929,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Pharmacy Package Quote Normalizer | Health & Wellness | `/tools/pharmacy-prices` | Native candidate | `/fr/tools/prix-pharmacie` | Yes |
 | Sickle Cell Inheritance Explorer | Health & Wellness | `/tools/sickle-cell` | Native candidate | `/fr/tools/drepanocytose` | Yes |
 | Prediabetes Screening Conversation Tool | Health & Wellness | `/tools/diabetes-risk` | Native candidate | `/fr/tools/risque-diabete` | Yes |
-| Education Planning Dashboard | Education | `/tools/education-hub` | Native candidate | `/fr/tools/hub-education` | Yes |
+| My Study Space | Education | `/tools/education-hub` | Native candidate | `/fr/tools/hub-education` | Yes |
 | African Scholarship Finder | Education | `/tools/scholarship-finder` | Native candidate | `/fr/tools/recherche-bourses` | Yes |
 | African University Comparison Worksheet | Education | `/tools/university-ranking` | Native candidate | `/fr/tools/classement-universites` | Yes |
 | Study Planner & Timetable | Education | `/tools/study-planner` | Native candidate | `/fr/tools/planificateur-etudes` | Yes |
@@ -1333,8 +1333,8 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Education Savings Plan Calculator Africa 2026 | Education | `/tools/edu-savings` | Native candidate | `/fr/tools/epargne-etudes` | Yes |
 | Exam Timetable Generator | Education | `/tools/exam-timetable` | Native candidate | `/fr/tools/planning-examens` | Yes |
 | Interview Preparation Checklist for Africa — By Company Type & Role | Education | `/tools/interview-prep` | Native candidate | `/fr/tools/preparation-entretien` | Yes |
-| Plagiarism Percentage Self-Check Tool | Education | `/tools/plagiarism-pct` | Native candidate | `/fr/tools/pourcentage-plagiat` | Yes |
-| Tutoring Rate Calculator Africa 2026 | Education | `/tools/tutoring-rate` | Native candidate | `/fr/tools/calculateur-tarif-tutorat` | Yes |
+| Draft Repetition Checker | Education | `/tools/plagiarism-pct` | Native candidate | `/fr/tools/pourcentage-plagiat` | Yes |
+| Tutoring Quote Planner | Education | `/tools/tutoring-rate` | Native candidate | `/fr/tools/calculateur-tarif-tutorat` | Yes |
 | Asset Finance Calculator — Africa | Fintech & Banking | `/tools/asset-finance` | Native candidate | `/fr/tools/financement-actifs` | Yes |
 | Cross-Border B2B Payment Comparator — Africa | Fintech & Banking | `/tools/b2b-payment` | Native candidate | `/fr/tools/paiement-b2b-transfrontalier` | Yes |
 | Bill Split Calculator — Africa | Fintech & Banking | `/tools/bill-split` | Native candidate | `/fr/tools/partage-addition` | Yes |

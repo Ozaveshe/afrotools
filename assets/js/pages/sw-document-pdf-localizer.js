@@ -757,7 +757,37 @@
   // Career renderers own native labels; their document text and marked saved
   // values are user content, not a dictionary-translation surface.
   function careerUserContent(element) {
-    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content], .cv-app textarea, .cv-modal textarea, .cv-export-modal textarea');
+    return element && element.closest && element.closest('.cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content], .cv-flow-doc:not(.cv-flow-empty) strong, .cv-flow-doc:not(.cv-flow-empty) small, .cv-app textarea, .cv-modal textarea, .cv-export-modal textarea');
+  }
+
+  function isCvUserText(value) {
+    if (!root.CVApp || typeof root.CVApp.getState !== 'function') return false;
+    var state = root.CVApp.getState();
+    var text = String(value || '');
+    function containsUserValue(item) {
+      if (typeof item === 'string') {
+        if (!item.trim()) return false;
+        return text.includes(item) || item.split(/[,;\n]/).some(function (part) {
+          return part.trim().length > 1 && text.includes(part.trim());
+        });
+      }
+      if (!item || typeof item !== 'object') return false;
+      return Object.keys(item).some(function (key) { return containsUserValue(item[key]); });
+    }
+    return containsUserValue(state && state.data);
+  }
+
+  function invoiceUserContent(element) {
+    if (!element || !element.closest) return false;
+    // Preview values belong to the author, even when they match a UI phrase.
+    if (element.closest('#pBizDetail, #pClientDetail, #pInvNum, #pNotes, #pPaymentDetails, #pItems td:first-child:not([colspan])')) return true;
+    if (element.closest('#templatesContainer strong:not(.empty-state-copy strong), #clientList .client-item-name, #clientList .client-item-co, .invoice-saved-card')) return true;
+    var savedItem = element.closest('#savedItemSelect option');
+    if (savedItem && savedItem.value !== '') return true;
+    var party = element.closest('#pCompany, #pClient');
+    if (!party) return false;
+    var input = party.ownerDocument.getElementById(party.id === 'pCompany' ? 'companyName' : 'clientName');
+    return Boolean(input && input.value);
   }
 
   function translateElement(root) {
@@ -768,9 +798,10 @@
     var nodes = [];
     while (walker.nextNode()) {
       var parent = walker.currentNode.parentElement;
-      if (parent && !parent.closest('[translate="no"]') && !careerUserContent(parent) && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
+      if (parent && !parent.closest('[translate="no"]') && !careerUserContent(parent) && !invoiceUserContent(parent) && !/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE)$/i.test(parent.tagName)) nodes.push(walker.currentNode);
     }
     nodes.forEach(function (node) {
+      if (node.parentElement.closest('#cvpreview') && isCvUserText(node.nodeValue)) return;
       var translated = translate(node.nodeValue);
       if (translated !== node.nodeValue) node.nodeValue = translated;
     });
@@ -778,10 +809,10 @@
       var elements = Array.from(root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]'));
       if (root.matches && root.matches('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]')) elements.unshift(root);
       elements.forEach(function (element) {
-        if (element.closest('[translate="no"], .cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content]')) return;
+        if (element.closest('[translate="no"], .cv-prod, .cv-expanded-template, [data-cv-user-text], [data-cover-letter-user-content], [data-sw-user-label]')) return;
         ['placeholder', 'aria-label', 'title', 'value'].forEach(function (attribute) {
           if (!element.hasAttribute(attribute)) return;
-          if (attribute === 'value' && element.closest('.cv-app, .cv-modal, .cv-export-modal') && !/^(button|submit)$/i.test(element.type || '')) return;
+          if (attribute === 'value' && (element.closest('.cv-app, .cv-modal, .cv-export-modal') || doc.getElementById('invoicePreview')) && !/^(button|submit)$/i.test(element.type || '')) return;
           var value = element.getAttribute(attribute);
           var translated = translate(value);
           if (translated !== value) element.setAttribute(attribute, translated);
@@ -794,7 +825,14 @@
     var localePayload = doc.getElementById('sw-document-pdf-locale');
     if (localePayload) {
       try {
-        exactOnly = JSON.parse(localePayload.textContent || '{}').id === 'cv-builder';
+        var payload = JSON.parse(localePayload.textContent || '{}');
+        exactOnly = payload.id === 'cv-builder';
+        // Complete route-owned phrases take precedence over generic mappings.
+        // These translate UI only; the user-content exclusions above remain in force.
+        Object.keys(payload.phraseOverrides || {}).forEach(function (source) {
+          if (typeof payload.phraseOverrides[source] === 'string') phrases[source] = payload.phraseOverrides[source];
+        });
+        phraseTrie = null;
       } catch (_) {
         exactOnly = false;
       }
@@ -850,5 +888,5 @@
     else run();
   }
 
-  return Object.freeze({ phrases: phrases, translate: translate, install: install });
+  return Object.freeze({ phrases: phrases, translate: translate, install: install, isCvUserText: isCvUserText });
 });

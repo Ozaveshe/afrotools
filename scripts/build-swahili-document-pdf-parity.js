@@ -13,6 +13,7 @@ const DOCUMENT_PDF_LEXICON = JSON.parse(fs.readFileSync(
   path.join(ROOT, 'data', 'localization', 'sw-document-pdf-lexicon.json'),
   'utf8'
 ));
+const EDITORIAL_OVERRIDES = require('../data/localization/sw-document-pdf-lexicon-overrides.json').routes;
 const DIRECTORY_PATH = path.join(ROOT, 'data', 'tool-directory.json');
 const WRITE = process.argv.includes('--write');
 const CHECK = process.argv.includes('--check');
@@ -318,7 +319,10 @@ const legacyInlineRepairs = {
     "if (pdfBtn) pdfBtn.addEventListener('click', exportNonInvoicePdf, true);": "// The shared invoice-generator enhancements export all document types.",
     "bizParts.join('<br>')": "bizParts.map(escapeHtml).join('<br>')",
     "cParts.join('<br>')": "cParts.map(escapeHtml).join('<br>')",
-    ">Save Kiolezo</button>": ">Hifadhi kiolezo</button>"
+    ">Save Kiolezo</button>": ">Hifadhi kiolezo</button>",
+    'aria-label="Load template ${escapeHtml(t.name)}"': 'data-sw-user-label aria-label="Fungua kiolezo ${escapeHtml(t.name)}"',
+    'aria-label="Delete template ${escapeHtml(t.name)}"': 'data-sw-user-label aria-label="Futa kiolezo ${escapeHtml(t.name)}"',
+    'aria-label="Remove saved client ${escapeHtml(c.name || \'\')}"': 'data-sw-user-label aria-label="Futa mteja aliyehifadhiwa ${escapeHtml(c.name || \'\')}"'
   },
   'pdf-convert': {
     'resetPdfMaandishi()': 'resetPdfText()',
@@ -475,6 +479,7 @@ function injectParityRuntime(html, app) {
   const payload = JSON.stringify({
     id: app.id,
     name: app.name,
+    phraseOverrides: EDITORIAL_OVERRIDES[app.id] || {},
     downloadContract: app.sensitive === true ? 'sensitive-guest' : app.localFirstDownloads === true ? 'local-guest' : 'free-account'
   });
   const injection = `
@@ -582,7 +587,7 @@ function translateOwnedText(value, appId) {
     .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
     .replace(/\s+/g, ' ')
     .trim();
-  const exact = DOCUMENT_PDF_LEXICON.routes?.[appId]?.[lookup];
+  const exact = EDITORIAL_OVERRIDES[appId]?.[lookup] || DOCUMENT_PDF_LEXICON.routes?.[appId]?.[lookup];
   return exact ? text.replace(trimmed, exact) : swahiliLocalizer.translate(text);
 }
 
@@ -597,7 +602,7 @@ function localizeStaticOwnerMarkup(html, appId) {
   );
   localized = localized.replace(/<[^>]+>/g, (tag) =>
     tag.replace(
-      /\b(placeholder|aria-label|title)=(["'])(.*?)\2/gi,
+      /\b(placeholder|aria-label|aria-description|title|alt|data-consent-title|data-consent-copy)=(["'])(.*?)\2/gi,
       (match, attribute, quote, value) =>
         `${attribute}=${quote}${translateOwnedText(value, appId)}${quote}`
     )

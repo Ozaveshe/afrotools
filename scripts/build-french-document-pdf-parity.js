@@ -109,10 +109,24 @@ function localizeRouteOwnedRuntimeLiterals(html, app) {
       ['aria-label="Delete page ', 'aria-label="Supprimer la page ']
     ]
   };
-  return (literals[app.id] || []).reduce(
+  html = (literals[app.id] || []).reduce(
     (output, [source, localized]) => output.replaceAll(source, localized),
     html
   );
+  if (app.id === 'invoice-generator') {
+    // Preview values come from private form fields, not from the UI lexicon.
+    html = html.replace(/(<[a-z][^>]*\bid=["'](?:pCompany|pBizDetail|pClient|pClientDetail|pInvNum|pNotes|pItems|pPaymentDetails)["'])([^>]*>)/gi,
+      (match, open, close) => /\btranslate=/.test(match) ? match : open + ' translate="no"' + close);
+    html = html.replaceAll('Add line items to see them here', 'Ajoutez des lignes de facture pour les afficher ici');
+    // Currency codes are identifiers. Translate the country label while keeping
+    // the visible prefix aligned with the unchanged machine value.
+    html = html.replace(/(<select\b[^>]*\bid=["']currency["'][^>]*>)([\s\S]*?)(<\/select>)/i,
+      (match, open, options, close) => open + options.replace(
+        /(<option\b[^>]*\bvalue=["']([A-Z]{3})["'][^>]*>)([^<]*)(<\/option>)/g,
+        (option, prefix, code, label, suffix) => prefix + label.replace(/^\s*[A-Z]{3}(?=\s*[-–—])/, code) + suffix
+      ) + close);
+  }
+  return html;
 }
 
 function recursivelyLocalizeSchema(value, app, canonicalUrl, allRoutes, frenchApps, routeExact, artworkUrl) {
@@ -526,4 +540,6 @@ function main() {
   console.log(`${WRITE ? 'Built' : 'Checked'} French Document/PDF parity: ${selectedId ? 1 : config.apps.length} selected rows, ${changed.length} ${WRITE ? 'updated' : 'stale'} file(s).`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { transform, localizeRouteOwnedRuntimeLiterals };
