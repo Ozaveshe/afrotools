@@ -62,8 +62,11 @@ async function staleFixture(label, pages = 2) {
 
 test.beforeAll(() => {
   expect(config.apps).toHaveLength(32);
-  expect(config.apps.filter((app) => app.id !== 'document-pdf' && !app.sensitive)).toHaveLength(24);
-  expect(config.apps.filter((app) => app.sensitive)).toHaveLength(7);
+  expect(config.apps.filter((app) => app.id !== 'document-pdf' && !app.sensitive)).toHaveLength(23);
+  expect(config.apps.filter((app) => app.sensitive).map((app) => app.id).sort()).toEqual([
+    'business-plan', 'cover-letter', 'cv-builder', 'freelance-invoice',
+    'invoice-generator', 'meeting-minutes', 'pdf-redact', 'receipt-generator'
+  ]);
 });
 
 test.afterAll(() => {

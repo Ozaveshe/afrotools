@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const blogManifest = require('../../data/localization/fr-blog-manifest.json');
 
 const forbiddenImplementationCopy = /Version française premium|Moteur source conservé|localisation DOM|SEO plus propre|Canonical, hreflang|routes? wrapper/i;
 
@@ -25,7 +26,11 @@ test.describe('French product surface', () => {
     expect(directoryMatch).not.toBeNull();
     const directoryFrenchCount = Number(directoryMatch[1].replace(/\D/g, ''));
     expect(directoryFrenchCount).toBeGreaterThanOrEqual(1257);
-    expect(publishedFrenchCount).toBeGreaterThanOrEqual(directoryFrenchCount);
+    expect(publishedFrenchCount).toBe(directoryFrenchCount);
+    await page.locator('#searchInput').fill('transfert');
+    // The canonical tool remains; its retired duplicate registry ID must not add a second card.
+    await expect(page.locator('#toolsGrid a[href="/fr/tools/transfert-argent/"]')).toHaveCount(1);
+    await page.locator('#searchInput').fill('');
     const hrefs = await page.locator('#toolsGrid > a').evaluateAll((nodes) => nodes.slice(0, 50).map((node) => node.getAttribute('href')));
     expect(hrefs.length).toBeGreaterThan(10);
     expect(hrefs.every((href) => href && href.startsWith('/fr/'))).toBeTruthy();
@@ -43,10 +48,18 @@ test.describe('French product surface', () => {
 
     await page.goto('/fr/tools/compteur-prepaye/central-african-republic/');
     await expect(page.locator('h1')).toContainText('République centrafricaine');
-    await page.locator('#tokenAmount').fill('5000');
-    await page.locator('#calcBtn').click();
-    await expect(page.locator('#results')).toHaveClass(/on/);
-    await expect(page.locator('#rDays')).toContainText('Jours estimés');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    await expect(page.locator('main a[href="/fr/tools/compteur-prepaye/"]').first()).toBeVisible();
+    await page.goto('/fr/tools/compteur-prepaye/');
+    await page.waitForFunction(() => window.AFROTOOLS_ELECTRICITY_READY === true);
+    await page.locator('#electricityCountry').selectOption('GH');
+    await page.locator('#electricityCustomRate').fill('2.5');
+    await page.locator('#electricityCustomFixed').fill('10');
+    await page.locator('#electricityCustomTax').fill('10');
+    await page.locator('#electricityAmount').fill('66');
+    await page.locator('.electricity-button').click();
+    await expect(page.locator('#electricityPrimary')).toContainText('20 kWh');
+    await expect(page.locator('#electricitySourceTitle')).toContainText(/personnalisé/i);
     await expect(page.locator('main')).not.toContainText(/Recharge Amount|Units Received|Estimated Days|Disclaimer:/);
 
     await page.goto('/fr/tools/roi-solaire/madagascar/');
@@ -70,9 +83,9 @@ test.describe('French product surface', () => {
 
   test('French blog is manifest-bounded and its selected article remains French', async ({ page }) => {
     await page.goto('/fr/blog/');
-    await expect(page.locator('h1')).toHaveText('Guides AfroTools en français');
-    await expect(page.locator('#blogStatus')).toHaveText('8 guides en français');
-    await expect(page.locator('#blogGrid .article-card')).toHaveCount(8);
+    await expect(page.locator('h1')).toHaveText('Guides pratiques pour l’argent, le travail et les décisions du quotidien');
+    await expect(page.locator('#blogStatus')).toContainText(String(blogManifest.articles.length));
+    await expect(page.locator('[data-blog-card]')).toHaveCount(blogManifest.articles.length);
     await expect(page.locator('body')).not.toContainText(/Published guides|Tool-led articles|All Articles|Read article/);
     await page.goto('/fr/blog/tva-maroc-taux-calcul/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
