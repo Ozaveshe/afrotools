@@ -24,10 +24,10 @@ Historical acceptance preserves dated evidence. It does not prove current bytes.
 | **Historically accepted** | **1256** |
 | **Currently verified in full** | **0** |
 | Current verified | 0 |
-| Current partial | 0 |
+| Current partial | 1 |
 | Current not-run | 0 |
 | Current needs-revalidation | 1254 |
-| Current blocked | 2 |
+| Current blocked | 1 |
 
 ## Category reconciliation
 
@@ -292,7 +292,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Susu Group Tracker | Uniquely African | `/tools/susu-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-susu` | Yes | needs-revalidation |
 | WhatsApp Link Generator | Uniquely African | `/tools/whatsapp-link` | Localized shell candidate | `/sw/zana/kiungo-cha-whatsapp` | Yes | needs-revalidation |
 | CV / Resume Builder | Document & PDF | `/tools/cv-builder` | Localized shell candidate | `/sw/zana/mjenzi-cv` | Yes | blocked |
-| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Localized shell candidate | `/sw/zana/kizalishaji-ankara` | Yes | blocked |
+| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Localized shell candidate | `/sw/zana/kizalishaji-ankara` | Yes | partial |
 | Cover Letter Generator | Document & PDF | `/tools/cover-letter-generator` | Localized shell candidate | `/sw/zana/barua-ombi` | Yes | needs-revalidation |
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Localized shell candidate | `/sw/zana/kumbukumbu-za-mkutano` | Yes | needs-revalidation |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | Yes | needs-revalidation |

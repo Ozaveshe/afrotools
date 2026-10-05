@@ -46,10 +46,10 @@
     "currentlyVerified": 0,
     "currentVerificationCounts": {
       "verified": 0,
-      "partial": 0,
+      "partial": 1,
       "not-run": 0,
       "needs-revalidation": 1254,
-      "blocked": 2
+      "blocked": 1
     },
     "remainingUnaccepted": 0,
     "nativeCandidatePercent": 46.89
@@ -233,10 +233,10 @@
       "currentlyVerified": 0,
       "currentVerificationCounts": {
         "verified": 0,
-        "partial": 0,
+        "partial": 1,
         "not-run": 0,
         "needs-revalidation": 30,
-        "blocked": 2
+        "blocked": 1
       }
     },
     {
@@ -18251,11 +18251,11 @@
       "ownerConflict": false,
       "currentVerification": {
         "status": "blocked",
-        "workflowStatus": "not-run",
+        "workflowStatus": "verified",
         "scope": "Local CV JSON recovery/invalid review, parsed PDF/DOCX, TXT/CSV/ZIP bytes and print adapter; complete template/editor/native review pending.",
         "sourceFingerprint": {
           "algorithm": "sha256",
-          "value": "669a3adbc39224123f92914d9dd73aae8d27ac70b949af831d0c7c21d9d3cb13",
+          "value": "d6ea93577c6f79852dcc9c9e08e74e7605acf5122693ff044fbfaf646cb9b0dd",
           "files": [
             {
               "path": "assets/css/design-system.css",
@@ -18459,7 +18459,7 @@
             },
             {
               "path": "data/localization/sw-current-verification.json",
-              "sha256": "cbcbc16231db875d545475d8d382838f0b7ea9f7f8cebe319fc7087f6346702d"
+              "sha256": "84d527750b8d712217dc35aa83c2ed6631bcbdd2c6395fd33a10566c86019531"
             },
             {
               "path": "data/localization/sw-cv-application-pack-copy.json",
@@ -18527,11 +18527,11 @@
             },
             {
               "path": "scripts/run-swahili-free-app-verification.js",
-              "sha256": "51e5705097cdcbccc13cd8b0e998633a4182b6155a488c3c485c322f343699a4"
+              "sha256": "5237053418d8dda8a28e8cf0aef9f6d0e940f40d125cdc647d56052f720ec154"
             },
             {
               "path": "sw/zana/mjenzi-cv/index.html",
-              "sha256": "97f2da92d537ce0525900623eed6e264509779a0bebf16c003564e90101e75ef"
+              "sha256": "44ca8047ebaee07b9690dd837ba5c734e99f46e39627bea909dcc960dcb9a70c"
             },
             {
               "path": "sw/zana/mjenzi-cv/js/application-pack-manifest.json",
@@ -18563,7 +18563,7 @@
             },
             {
               "path": "tests/e2e/swahili-current-verification-workflows.spec.js",
-              "sha256": "773c1aef37e82a004c9120991f975c772588eb761e3ba053917383b5fcb2fbd8"
+              "sha256": "17221dc5e82eae18e1e6d796143155eb5738794bcddde122a423b37142673b18"
             },
             {
               "path": "tests/support/static-server.js",
@@ -18892,11 +18892,74 @@
           ],
           "missing": []
         },
-        "testedRevision": "4a47419a0a49dbb82f36e947d8f0de4adbef154f",
+        "testedRevision": "d77a04c08bef756c3534e06afbce9c7c741c66f8",
         "workspaceDirty": true,
-        "checkedAt": "2026-10-05T03:39:49.900Z",
+        "checkedAt": "2026-10-05T04:28:00.020Z",
         "executionReceipt": "reports/swahili-free-app-current-verification-receipts.json",
-        "checks": [],
+        "checks": [
+          {
+            "id": "sw-cv-source",
+            "status": "passed",
+            "features": [
+              "source-and-served-byte-identity"
+            ],
+            "exports": []
+          },
+          {
+            "id": "sw-cv-backup",
+            "status": "passed",
+            "features": [
+              "json-recovery",
+              "authored-unicode",
+              "pdf-docx-parser",
+              "synthetic-privacy"
+            ],
+            "exports": [
+              "json",
+              "pdf",
+              "docx"
+            ]
+          },
+          {
+            "id": "sw-cv-invalid-review",
+            "status": "passed",
+            "features": [
+              "malformed-backup",
+              "no-draft-mutation",
+              "keyboard-focus-escape",
+              "mobile-320"
+            ],
+            "exports": []
+          },
+          {
+            "id": "sw-cv-text-tracker-print",
+            "status": "passed",
+            "features": [
+              "txt-roundtrip",
+              "csv-reopen",
+              "prepared-print-window-adapter",
+              "synthetic-privacy",
+              "csv-module-button-adapter"
+            ],
+            "exports": [
+              "txt",
+              "csv",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-cv-zip-parser",
+            "status": "passed",
+            "features": [
+              "zip-reopen",
+              "pdf-bytes-parser",
+              "authored-backup"
+            ],
+            "exports": [
+              "zip"
+            ]
+          }
+        ],
         "editorialReview": {
           "status": "pending",
           "notYetProved": [
@@ -18917,9 +18980,9 @@
         "unresolvedDefects": [
           {
             "id": "cv-zip-async-pdf",
-            "status": "open",
+            "status": "resolved",
             "dimension": "export",
-            "detail": "Remote baseline ZIP embeds Promise text as PDF; shared awaited PDF fix is an integration prerequisite, followed by this parser rerun."
+            "detail": "Shared awaited PDF repair is integrated. The current ZIP parser case passed, reopening each embedded PDF and checking the synthetic Unicode name and JSON backup."
           },
           {
             "id": "sw-cv-pack-language-unicode",
@@ -18936,7 +18999,8 @@
         ],
         "production": null,
         "reasons": [
-          "source-changed-since-execution",
+          "native-owner-review-pending",
+          "native-editor-or-full-workflow-review-pending",
           "unresolved-defect"
         ]
       }
@@ -19000,12 +19064,12 @@
       "ambiguity": null,
       "ownerConflict": false,
       "currentVerification": {
-        "status": "blocked",
-        "workflowStatus": "not-run",
+        "status": "partial",
+        "workflowStatus": "verified",
         "scope": "Local invoice modes, authored values, saved/import state, review gate, PDF parsing, share opt-in, print adapter and mobile cookie control; full editorial/workflow acceptance pending.",
         "sourceFingerprint": {
           "algorithm": "sha256",
-          "value": "c527836a4208d74492b32c8966d86bc6ced5c375aab31293f14449867732ef38",
+          "value": "542faab42f22e8ba1f4941272c591d77cbc01046817180bf701ea7ece5c111ce",
           "files": [
             {
               "path": "assets/css/design-system.css",
@@ -19205,7 +19269,7 @@
             },
             {
               "path": "data/localization/sw-current-verification.json",
-              "sha256": "cbcbc16231db875d545475d8d382838f0b7ea9f7f8cebe319fc7087f6346702d"
+              "sha256": "84d527750b8d712217dc35aa83c2ed6631bcbdd2c6395fd33a10566c86019531"
             },
             {
               "path": "data/localization/sw-document-pdf-lexicon-overrides.json",
@@ -19265,11 +19329,11 @@
             },
             {
               "path": "scripts/run-swahili-free-app-verification.js",
-              "sha256": "51e5705097cdcbccc13cd8b0e998633a4182b6155a488c3c485c322f343699a4"
+              "sha256": "5237053418d8dda8a28e8cf0aef9f6d0e940f40d125cdc647d56052f720ec154"
             },
             {
               "path": "sw/zana/kizalishaji-ankara/index.html",
-              "sha256": "91ca50b602e1427741f94acbb63f8974594d2d61470a52a826c8785021d22625"
+              "sha256": "58a743f2017cefaf49b55d6a2c4738fc08c59de6068a764aee4682568873e151"
             },
             {
               "path": "tests/e2e/invoice-generator-parity-refresh.spec.js",
@@ -19281,7 +19345,7 @@
             },
             {
               "path": "tests/e2e/swahili-current-verification-workflows.spec.js",
-              "sha256": "773c1aef37e82a004c9120991f975c772588eb761e3ba053917383b5fcb2fbd8"
+              "sha256": "17221dc5e82eae18e1e6d796143155eb5738794bcddde122a423b37142673b18"
             },
             {
               "path": "tests/support/static-server.js",
@@ -19293,7 +19357,7 @@
             },
             {
               "path": "tools/invoice-generator/index.html",
-              "sha256": "a9ab9430b6da10624b633d8c58d9b9c39b3959a0ff36f216d8d339727081fa0e"
+              "sha256": "08e299544f581e741124d25a07b5c9597b89adc9d2563204a2a492abfd75d6f1"
             },
             {
               "path": "tools/invoice-generator/js/invoice-workspace-sync.js",
@@ -19306,11 +19370,50 @@
           ],
           "missing": []
         },
-        "testedRevision": "4a47419a0a49dbb82f36e947d8f0de4adbef154f",
+        "testedRevision": "d77a04c08bef756c3534e06afbce9c7c741c66f8",
         "workspaceDirty": true,
-        "checkedAt": "2026-10-05T03:39:49.900Z",
+        "checkedAt": "2026-10-05T04:28:00.020Z",
         "executionReceipt": "reports/swahili-free-app-current-verification-receipts.json",
-        "checks": [],
+        "checks": [
+          {
+            "id": "sw-invoice-source",
+            "status": "passed",
+            "features": [
+              "source-and-served-byte-identity"
+            ],
+            "exports": []
+          },
+          {
+            "id": "sw-invoice-workflow",
+            "status": "passed",
+            "features": [
+              "saved-client-item-invoice",
+              "json-roundtrip",
+              "review-invalidation",
+              "share-opt-in",
+              "invoice-estimate-receipt",
+              "calculation-values",
+              "synthetic-privacy",
+              "mobile-320",
+              "print-adapter"
+            ],
+            "exports": [
+              "pdf",
+              "json",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-invoice-consent-control",
+            "status": "passed",
+            "features": [
+              "mobile-320-390",
+              "natural-pointer-cookie-refusal",
+              "consent-storage-key"
+            ],
+            "exports": []
+          }
+        ],
         "editorialReview": {
           "status": "pending",
           "notYetProved": [
@@ -19328,15 +19431,15 @@
         "unresolvedDefects": [
           {
             "id": "invoice-cookie-sticky-overlap",
-            "status": "open",
+            "status": "resolved",
             "dimension": "accessibility",
-            "detail": "Baseline sticky PDF bar can cover cookie controls; parent repair must be integrated and this actual mobile case rerun before resolving."
+            "detail": "Shared invoice layout repair is integrated. The actual 320/390px cookie refusal case passed with the real first-party consent loader and normal pointer clicks; current source-bound receipts separately record each rerun."
           }
         ],
         "production": null,
         "reasons": [
-          "source-changed-since-execution",
-          "unresolved-defect"
+          "native-owner-review-pending",
+          "native-editor-or-full-workflow-review-pending"
         ]
       }
     },
