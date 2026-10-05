@@ -308,7 +308,8 @@ async function checkMarketDataRuns(summary, nowMs) {
       return ['failed', 'error'].includes(String(run.status || '').toLowerCase());
     });
 
-    refreshManagedSources.forEach(function (source) {
+    // Collector coverage does not exempt an active inventory source from freshness checks.
+    sources.forEach(function (source) {
       const cadenceHours = Number(source.cadence_hours || source.ttl_hours || 24);
       const thresholdMinutes = Math.max(cadenceHours * 2 * 60, 1440);
       const lastSuccess = toIso(source.last_success_at);
@@ -328,6 +329,7 @@ async function checkMarketDataRuns(summary, nowMs) {
       checked: true,
       active_sources: sources.length,
       refresh_managed_sources: refreshManagedSources.length,
+      unsupported_active_sources: sources.length - refreshManagedSources.length,
       recent_runs: recentRuns.length,
       failed_recent_runs: failedRuns.length,
       stale_sources: staleSources.slice(0, 25),

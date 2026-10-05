@@ -257,7 +257,8 @@ async function buildMarketDataSummary(includeAdmin) {
     const failedRuns = latestRecentRuns.filter(function (run) {
       return ['failed', 'error'].includes(String(run.status || '').toLowerCase());
     });
-    const staleSources = refreshManagedSources.filter(function (source) {
+    // Collector coverage does not exempt an active inventory source from freshness checks.
+    const staleSources = sources.filter(function (source) {
       const cadenceHours = Number(source.cadence_hours || source.ttl_hours || 24);
       const threshold = Math.max(cadenceHours * 2 * 60, 1440);
       const age = ageMinutes(source.last_success_at, now);
@@ -268,6 +269,7 @@ async function buildMarketDataSummary(includeAdmin) {
       available: true,
       active_sources: sources.length,
       refresh_managed_sources: refreshManagedSources.length,
+      unsupported_active_sources: sources.length - refreshManagedSources.length,
       recent_runs: recentRuns.length,
       failed_recent_runs: failedRuns.length,
       stale_sources: staleSources.length,
