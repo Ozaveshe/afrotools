@@ -520,13 +520,16 @@
     if (button.disabled) return;
     button.disabled = true;
     status.textContent = 'Sending your message…';
+    const controller = new AbortController();
+    const requestTimeout = setTimeout(function() { controller.abort(); }, 30000);
     try {
       const submittedRevision = form._contactDraftRevision || 0;
       const submittedBody = new URLSearchParams(new FormData(form)).toString();
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: submittedBody
+        body: submittedBody,
+        signal: controller.signal
       });
       if (!response.ok) throw new Error('Submission rejected');
       const draftChanged = submittedRevision !== (form._contactDraftRevision || 0);
@@ -541,8 +544,11 @@
       button.style.display = 'none';
       form.closest('.form-card').querySelector('.form-card-sub').style.display = 'none';
     } catch (error) {
-      status.textContent = 'Your message could not be sent. Your text is still here; please try again.';
+      status.textContent = controller.signal.aborted
+        ? 'We could not confirm your message was sent in time. Your text is still here; you can try again or email hello@afrotools.com.'
+        : 'Your message could not be sent. Your text is still here; please try again.';
     } finally {
+      clearTimeout(requestTimeout);
       button.disabled = false;
     }
   });
