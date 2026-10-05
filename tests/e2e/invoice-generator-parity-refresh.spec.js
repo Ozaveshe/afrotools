@@ -61,6 +61,8 @@ for(const [locale,route]of Object.entries(routes))test(`${locale} invoice has lo
  await page.locator('#importJsonInput').setInputFiles({name:'synthetic-invoice.json',mimeType:'application/json',buffer:json.bytes});
  await expect(page.locator('#companyName')).toHaveValue('Synthetic Local Studio INV-PRIVATE-42');
  await expect(page.locator('#sumBalance')).toContainText('45.32');
+ await expect(page.locator('#invoiceReviewConfirm')).not.toBeChecked();
+ await page.locator('#invoiceReviewConfirm').check();
  await (await reveal(page,'btnPrint')).click();
  expect(await page.evaluate(()=>window.__prints)).toBe(1);
  await expect(page.locator('#includeInvoiceDataInLink')).not.toBeChecked();
@@ -69,6 +71,7 @@ for(const [locale,route]of Object.entries(routes))test(`${locale} invoice has lo
  expect(new URL(await page.evaluate(()=>window.__copies[0])).search).toBe('');
  expect(await page.evaluate(()=>window.__copies[0])).not.toContain('INV-PRIVATE-42');
  await page.locator('#includeInvoiceDataInLink').check();
+ await page.locator('#invoiceReviewConfirm').check();
  await page.locator('#btnShare').click();
  await expect.poll(()=>page.evaluate(()=>window.__copies.length)).toBe(2);
  const shared=new URL(await page.evaluate(()=>window.__copies[1]));

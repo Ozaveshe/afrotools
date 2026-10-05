@@ -20,10 +20,10 @@ Native candidates are structural classifications. Historical acceptance is the d
 | **Historically accepted** | **1256** |
 | **Currently verified** | **0** |
 | Current: verified | 0 |
-| Current: partial | 0 |
+| Current: partial | 1 |
 | Current: not-run | 0 |
 | Current: needs-revalidation | 1255 |
-| Current: blocked | 1 |
+| Current: blocked | 0 |
 
 ## Category reconciliation
 
@@ -437,7 +437,7 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Susu Group Tracker | Uniquely African | `/tools/susu-tracker` | Native candidate | `/fr/tools/suivi-susu` | Yes | needs-revalidation |
 | WhatsApp Link Generator | Uniquely African | `/tools/whatsapp-link` | Native candidate | `/fr/tools/lien-whatsapp` | Yes | needs-revalidation |
 | CV / Resume Builder | Document & PDF | `/tools/cv-builder` | Native candidate | `/fr/tools/generateur-cv` | Yes | needs-revalidation |
-| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Native candidate | `/fr/tools/generateur-factures` | Yes | blocked |
+| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Native candidate | `/fr/tools/generateur-factures` | Yes | partial |
 | Cover Letter Generator | Document & PDF | `/tools/cover-letter-generator` | Native candidate | `/fr/tools/generateur-lettre-motivation` | Yes | needs-revalidation |
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Native candidate | `/fr/tools/compte-rendu-reunion` | Yes | needs-revalidation |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Native candidate | `/fr/tools/transfert-argent` | Yes | needs-revalidation |

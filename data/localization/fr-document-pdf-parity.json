@@ -421,15 +421,19 @@
       "sensitive": true,
       "preserveExisting": false,
       "verification": {
-        "scope": "invoice-cv-repair-2026-10-05",
+        "scope": "invoice-completion-2026-10-05",
         "generators": [
           "scripts/build-french-document-pdf-parity.js",
-          "scripts/build-french-document-pdf-lexicon.js"
+          "scripts/build-french-document-pdf-lexicon.js",
+          "scripts/minify.js"
         ],
         "inputs": [
           "data/localization/fr-document-pdf-lexicon.json",
           "data/localization/fr-document-pdf-lexicon-overrides.json",
-          "lang/fr.json"
+          "lang/fr.json",
+          "assets/js/components/analytics-consent-v2.js",
+          "assets/fonts/noto-sans/NotoSans-Regular.ttf",
+          "assets/fonts/noto-sans/NotoSans-Bold.ttf"
         ],
         "checks": [
           {
@@ -510,19 +514,100 @@
             "exports": [
               "pdf"
             ]
+          },
+          {
+            "id": "en-invoice-completion-controls",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-completion.spec.js",
+            "title": "en invoice guards review, private sharing and printable output",
+            "features": [
+              "commercial-review",
+              "private-share-consent",
+              "empty-output-validation",
+              "invalid-number-recovery",
+              "print-adapter",
+              "print-css-and-parsed-a4-output",
+              "reminder-review"
+            ],
+            "exports": [
+              "pdf",
+              "print"
+            ]
+          },
+          {
+            "id": "en-invoice-completion-recovery",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-completion.spec.js",
+            "title": "en invoice JSON and signed-out local drafts recover without corrupt imports",
+            "features": [
+              "single-json-download",
+              "atomic-invalid-import",
+              "saved-invoice-recovery",
+              "signed-out-draft-reload",
+              "payment-and-logo-recovery",
+              "shared-state-priority-and-invalid-link-recovery",
+              "new-invoice-reset"
+            ],
+            "exports": [
+              "json"
+            ]
+          },
+          {
+            "id": "fr-invoice-completion-controls",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-completion.spec.js",
+            "title": "fr invoice guards review, private sharing and printable output",
+            "features": [
+              "commercial-review",
+              "private-share-consent",
+              "empty-output-validation",
+              "invalid-number-recovery",
+              "print-adapter",
+              "print-css-and-parsed-a4-output",
+              "reminder-review"
+            ],
+            "exports": [
+              "pdf",
+              "print"
+            ]
+          },
+          {
+            "id": "fr-invoice-completion-recovery",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-completion.spec.js",
+            "title": "fr invoice JSON and signed-out local drafts recover without corrupt imports",
+            "features": [
+              "single-json-download",
+              "atomic-invalid-import",
+              "saved-invoice-recovery",
+              "signed-out-draft-reload",
+              "payment-and-logo-recovery",
+              "shared-state-priority-and-invalid-link-recovery",
+              "new-invoice-reset"
+            ],
+            "exports": [
+              "json"
+            ]
+          },
+          {
+            "id": "fr-invoice-cookie-refusal",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-completion.spec.js",
+            "title": "French invoice cookie refusal stays reachable at 390 and 320 pixels",
+            "features": [
+              "real-consent-loader",
+              "native-decline-click",
+              "mobile-reflow",
+              "sticky-favourite-separation"
+            ]
           }
         ],
         "workflowReview": {
-          "status": "partial",
-          "reviewer": null,
-          "reviewedAt": null,
-          "evidence": null,
-          "notYetProved": [
-            "print adapter",
-            "invalid and empty recovery",
-            "share consent",
-            "local draft recovery"
-          ]
+          "status": "approved",
+          "reviewer": "Codex synthetic workflow review",
+          "reviewedAt": "2026-10-05T03:29:44.733Z",
+          "evidence": "reports/french-invoice-completion-2026-10-05.md",
+          "notYetProved": []
         },
         "editorialReview": {
           "status": "pending",
@@ -530,14 +615,15 @@
           "reviewedAt": null,
           "evidence": null
         },
-        "unresolvedRegressions": [
+        "unresolvedRegressions": [],
+        "resolvedRegressions": [
           {
             "id": "FR-INVOICE-COOKIE-OVERLAP",
             "severity": "major",
             "dimension": "accessibility",
-            "status": "open",
-            "evidence": "reports/french-invoice-cv-repair-2026-10-05.md",
-            "summary": "Mobile sticky PDF action overlaps cookie refusal controls until the integrated English owner is regenerated and exercised."
+            "status": "closed",
+            "evidence": "reports/french-invoice-completion-2026-10-05.md",
+            "summary": "Explicit native French cookie refusal exercised at 390 and 320 pixels with real consent loader; sticky and favourite controls remain usable."
           }
         ]
       }
