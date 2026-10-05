@@ -8,7 +8,7 @@ const SWAHILI_CATEGORIES = [
   ['developer','Zana za wasanidi programu','/sw/zana-za-developer/','DEV','JSON, API, code, maandishi, encoding, hashing na zana za kiufundi zisizotuma data kimya kimya.'],
   ['education','Elimu na masomo','/sw/elimu/','EL','Alama, mitihani, GPA, bajeti ya shule, ufadhili na maandalizi ya mwanafunzi.'],
   ['health','Afya na ustawi','/sw/afya/','AF','Zana za maandalizi na ufuatiliaji zenye mipaka ya usalama na ushauri wa mtaalamu unaoonekana.'],
-  ['insurance','Bima','/sw/bima/','BI','Panga nukuu, michango, madai, vifuniko na maswali ya kumuuliza mtoa huduma wa bima.'],
+  ['insurance','Bima','/sw/bima/','BI','Panga nukuu, michango, madai, kinga ya bima na maswali ya kumuuliza mtoa huduma wa bima.'],
   ['fintech','Fintech na benki','/sw/fintech/','FT','Mobile money, malipo, ada za benki, mikopo ya kidijitali na ulinganisho wa huduma za fedha.'],
   ['agriculture','Kilimo na mifugo','/sw/kilimo/','KI','Mavuno, pembejeo, umwagiliaji, mifugo, gharama za shamba na njia za kufikia soko.'],
   ['ecommerce','Biashara na uzingatiaji','/sw/biashara-na-uzingatiaji/','BIZ','VAT, zuio, usajili, ankara, biashara mtandaoni na wajibu wa biashara kwa nchi.'],
