@@ -40,6 +40,12 @@ assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1257);
 assert.strictEqual(report.totals.excludedPaidRows, 1);
 assert.strictEqual(report.totals.englishFreeApps, 1256);
 assert.strictEqual(report.rows.length, 1256);
+assert.strictEqual(report.schemaVersion, 2);
+assert.strictEqual(report.totals.historicallyAccepted, acceptedEvidenceCount);
+assert.strictEqual(report.totals.currentlyVerified, report.rows.filter(row => row.currentVerification.status === 'verified').length);
+assert.strictEqual(Object.values(report.totals.currentVerificationCounts).reduce((sum, count) => sum + count, 0), 1256);
+assert.ok(report.rows.every(row => row.accepted === row.historicalAccepted));
+assert.ok(report.scope.acceptedFieldSemantics.includes('historical'));
 assert.strictEqual(report.categories.length, 32);
 assert.strictEqual(report.totals.accepted, acceptedEvidenceCount);
 assert.strictEqual(report.totals.remainingUnaccepted, 1256 - acceptedEvidenceCount);
@@ -100,5 +106,5 @@ assert.strictEqual(
 assert.strictEqual(kenyaPaye.accepted, true);
 
 console.log(
-  `Swahili free-app parity inventory contract passed: 1,256 rows, ${acceptedEvidenceCount} accepted.`
+  `Swahili free-app parity inventory contract passed: 1,256 rows, ${acceptedEvidenceCount} historically accepted, ${report.totals.currentlyVerified} currently verified.`
 );

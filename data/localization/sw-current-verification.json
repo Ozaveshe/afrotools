@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "locale": "sw",
+  "historicalAcceptance": {
+    "source": "data/audits/swahili-free-app-acceptance.json",
+    "meaning": "Dated historical evidence only; never assign current source hashes to these old runs.",
+    "expectedRecordedAcceptedApps": 1256
+  },
+  "apps": [
+    {
+      "id": "invoice-generator",
+      "englishFile": "tools/invoice-generator/index.html",
+      "swahiliFile": "sw/zana/kizalishaji-ankara/index.html",
+      "swahiliRoute": "/sw/zana/kizalishaji-ankara/",
+      "exports": [
+        "pdf"
+      ],
+      "verification": {
+        "scope": "Local invoice modes, authored values, saved/import state, review gate, PDF parsing, share opt-in, print adapter and mobile cookie control; full editorial/workflow acceptance pending.",
+        "generators": [
+          "scripts/build-swahili-document-pdf-parity.js",
+          "scripts/build-swahili-document-pdf-lexicon.js",
+          "scripts/minify.js",
+          "scripts/bundle.js"
+        ],
+        "inputs": [
+          "data/localization/sw-document-pdf-lexicon.json",
+          "assets/js/pages/sw-document-pdf-localizer.js",
+          "assets/js/pages/sw-document-pdf-lexicon.js",
+          "assets/js/pages/sw-document-pdf-dom-stability.js",
+          "assets/js/pages/sw-document-pdf-integrity.js",
+          "data/registry/locale-coverage-policy.json",
+          "data/registry/locale-page-coverage.json",
+          "assets/js/pages/invoice-generator-enhancements.js",
+          "assets/js/lib/storage.js",
+          "assets/js/lib/formatters.js",
+          "assets/js/lib/currency.js",
+          "assets/js/lib/validators.js",
+          "assets/js/lib/error-boundary.js",
+          "assets/js/lib/analytics.js",
+          "assets/js/lib/clarity.js",
+          "assets/js/lib/toast.js",
+          "assets/js/lib/dark-mode.js",
+          "assets/js/lib/a11y.js",
+          "assets/js/ai/prefill-adapters.js",
+          "assets/js/ai/prefill-consumer.js",
+          "assets/js/components/analytics-consent-v2.js"
+        ],
+        "inputDirectories": [
+          "assets/fonts/noto-sans"
+        ],
+        "servedFiles": [
+          "assets/vendor/jspdf/jspdf.umd.min.js",
+          "assets/fonts/noto-sans/NotoSans-Regular.ttf",
+          "assets/fonts/noto-sans/NotoSans-Bold.ttf"
+        ],
+        "checks": [
+          {
+            "id": "sw-invoice-source",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-source.spec.js",
+            "title": "invoice-generator: served bytes match the current Swahili verification snapshot",
+            "features": [
+              "source-and-served-byte-identity"
+            ]
+          },
+          {
+            "id": "sw-invoice-workflow",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-generator-parity-refresh.spec.js",
+            "title": "sw invoice has local saved state, explicit sharing and matching native PDF modes",
+            "features": [
+              "saved-client-item-invoice",
+              "json-roundtrip",
+              "review-invalidation",
+              "share-opt-in",
+              "invoice-estimate-receipt",
+              "calculation-values",
+              "synthetic-privacy",
+              "mobile-320",
+              "print-adapter"
+            ],
+            "exports": [
+              "pdf",
+              "json",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-invoice-consent-control",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "invoice: cookie refusal remains reachable at 320 and 390",
+            "features": [
+              "mobile-320-390",
+              "natural-pointer-cookie-refusal",
+              "consent-storage-key"
+            ]
+          }
+        ],
+        "editorialReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Native Kiswahili editor review of invoice states and exports"
+          ]
+        },
+        "workflowReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Full empty/invalid/draft recovery workflow",
+            "Native OS print output",
+            "Complete keyboard/light-dark review on final release bytes"
+          ]
+        },
+        "unresolvedDefects": [
+          {
+            "id": "invoice-cookie-sticky-overlap",
+            "status": "open",
+            "dimension": "accessibility",
+            "detail": "Baseline sticky PDF bar can cover cookie controls; parent repair must be integrated and this actual mobile case rerun before resolving."
+          }
+        ],
+        "optionalInputs": [
+          "data/localization/sw-document-pdf-lexicon-overrides.json"
+        ]
+      }
+    },
+    {
+      "id": "cv-builder",
+      "englishFile": "tools/cv-builder/index.html",
+      "swahiliFile": "sw/zana/mjenzi-cv/index.html",
+      "swahiliRoute": "/sw/zana/mjenzi-cv/",
+      "exports": [
+        "pdf",
+        "docx",
+        "txt",
+        "csv",
+        "json",
+        "zip",
+        "print"
+      ],
+      "verification": {
+        "scope": "Local CV JSON recovery/invalid review, parsed PDF/DOCX, TXT/CSV/ZIP bytes and print adapter; complete template/editor/native review pending.",
+        "generators": [
+          "scripts/build-swahili-document-pdf-parity.js",
+          "scripts/build-swahili-document-pdf-lexicon.js",
+          "scripts/minify.js",
+          "scripts/bundle.js"
+        ],
+        "inputs": [
+          "data/localization/sw-document-pdf-lexicon.json",
+          "assets/js/pages/sw-document-pdf-localizer.js",
+          "assets/js/pages/sw-document-pdf-lexicon.js",
+          "assets/js/pages/sw-document-pdf-dom-stability.js",
+          "assets/js/pages/sw-document-pdf-integrity.js",
+          "data/registry/locale-coverage-policy.json",
+          "data/registry/locale-page-coverage.json",
+          "assets/js/lib/storage.js",
+          "assets/js/lib/formatters.js",
+          "assets/js/lib/currency.js",
+          "assets/js/lib/validators.js",
+          "assets/js/lib/error-boundary.js",
+          "assets/js/lib/analytics.js",
+          "assets/js/lib/clarity.js",
+          "assets/js/lib/toast.js",
+          "assets/js/lib/dark-mode.js",
+          "assets/js/lib/a11y.js",
+          "assets/js/ai/prefill-adapters.js",
+          "assets/js/ai/prefill-consumer.js",
+          "assets/js/components/analytics-consent-v2.js",
+          "assets/vendor/html2canvas/html2canvas.min.js",
+          "assets/vendor/pdf-lib/pdf-lib.min.js"
+        ],
+        "inputDirectories": [
+          "tools/cv-builder/js",
+          "tools/cv-builder/css",
+          "assets/fonts/noto-sans"
+        ],
+        "servedFiles": [
+          "assets/vendor/jspdf/jspdf.umd.min.js",
+          "assets/vendor/html2canvas/html2canvas.min.js",
+          "assets/fonts/noto-sans/NotoSans-Regular.ttf",
+          "assets/fonts/noto-sans/NotoSans-Bold.ttf"
+        ],
+        "checks": [
+          {
+            "id": "sw-cv-source",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-source.spec.js",
+            "title": "cv-builder: served bytes match the current Swahili verification snapshot",
+            "features": [
+              "source-and-served-byte-identity"
+            ]
+          },
+          {
+            "id": "sw-cv-backup",
+            "kind": "browser",
+            "file": "tests/e2e/cv-json-backup.spec.js",
+            "title": "JSON restore survives reload and document exports: /sw/zana/mjenzi-cv/",
+            "features": [
+              "json-recovery",
+              "authored-unicode",
+              "pdf-docx-parser",
+              "synthetic-privacy"
+            ],
+            "exports": [
+              "json",
+              "pdf",
+              "docx"
+            ]
+          },
+          {
+            "id": "sw-cv-invalid-review",
+            "kind": "browser",
+            "file": "tests/e2e/cv-json-backup.spec.js",
+            "title": "JSON review safety and keyboard: /sw/zana/mjenzi-cv/",
+            "features": [
+              "malformed-backup",
+              "no-draft-mutation",
+              "keyboard-focus-escape",
+              "mobile-320"
+            ]
+          },
+          {
+            "id": "sw-cv-text-tracker-print",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "CV: TXT CSV and print adapter preserve authored values",
+            "features": [
+              "txt-roundtrip",
+              "csv-reopen",
+              "prepared-print-window-adapter",
+              "synthetic-privacy",
+              "csv-module-button-adapter"
+            ],
+            "exports": [
+              "txt",
+              "csv",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-cv-zip-parser",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "CV: downloaded application ZIP contains valid reopened PDFs and backup",
+            "features": [
+              "zip-reopen",
+              "pdf-bytes-parser",
+              "authored-backup"
+            ],
+            "exports": [
+              "zip"
+            ]
+          }
+        ],
+        "editorialReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Native Kiswahili editor review",
+            "Generated letter/email/recruiter/follow-up and CSV language review"
+          ]
+        },
+        "workflowReview": {
+          "status": "pending",
+          "notYetProved": [
+            "All 30 template output layouts",
+            "Full editor/saved/import/recovery/invalid workflow",
+            "Native OS print output",
+            "Complete final-release mobile/light-dark/keyboard review",
+            "Natural tracker toolbar navigation from the standard editor"
+          ]
+        },
+        "unresolvedDefects": [
+          {
+            "id": "cv-zip-async-pdf",
+            "status": "open",
+            "dimension": "export",
+            "detail": "Remote baseline ZIP embeds Promise text as PDF; shared awaited PDF fix is an integration prerequisite, followed by this parser rerun."
+          },
+          {
+            "id": "sw-cv-pack-language-unicode",
+            "status": "open",
+            "dimension": "language",
+            "detail": "Generated application prose, CSV labels and standalone pack PDF Unicode need the separate 0fc0737dd2ce00c2105bcbc2b5668908ce5767a8 repair and native editorial review."
+          },
+          {
+            "id": "cv-tracker-memory-refresh",
+            "status": "open",
+            "dimension": "workflow",
+            "detail": "Pack-written leads may require reload before the already-mounted tracker CSV reads them; in-memory tracker refresh remains unproved."
+          }
+        ],
+        "optionalInputs": [
+          "data/localization/sw-document-pdf-lexicon-overrides.json",
+          "data/localization/sw-cv-application-pack-copy.json",
+          "scripts/build-swahili-cv-application-pack-runtime.js",
+          "assets/css/sw-cv-application-pack.css"
+        ],
+        "optionalDirectories": [
+          "sw/zana/mjenzi-cv/js"
+        ]
+      }
+    }
+  ]
+}
