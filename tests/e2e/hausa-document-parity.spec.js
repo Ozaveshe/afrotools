@@ -2,6 +2,10 @@ const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
 const pdfParse = require('pdf-parse');
 
+// This suite exercises the first-visit consent controls, including decline.
+// Do not inherit the optional global pre-declined analytics fixture.
+test.use({ storageState: { cookies: [], origins: [] } });
+
 async function reveal(page, id) {
   const control = page.locator('#' + id);
   for (const parent of await control.locator('xpath=ancestor::details').all()) {
