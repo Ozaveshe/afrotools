@@ -1,6 +1,9 @@
 'use strict';
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
+const path = require('node:path');
+const net = require('node:net');
+const { spawn } = require('node:child_process');
 const pdfParse = require('pdf-parse');
 test.use({ trace: 'off', screenshot: 'off', video: 'off' });
 
@@ -21,11 +24,34 @@ function zipEntries(bytes) {
   expect(entries.length).toBeGreaterThan(0); return entries;
 }
 
-test('invoice: cookie refusal remains reachable at 320 and 390', async ({ page }) => {
-  await page.addInitScript(() => localStorage.removeItem('afrotools_cookie_consent'));
-  for (const width of [320, 390]) {
-    await page.setViewportSize({ width, height: 844 });
-    await page.goto('/sw/zana/kizalishaji-ankara/');
+test('invoice: cookie refusal remains reachable at 320 and 390', async ({ browser }) => {
+  // The normal verification adapter disables lazy-analytics and its consent
+  // loader. Use the real first-party loader; external requests stay blocked.
+  const port = await new Promise(resolve => {
+    const probe = net.createServer().listen(0, '127.0.0.1', () => {
+      const value = probe.address().port;
+      probe.close(() => resolve(value));
+    });
+  });
+  const server = spawn(process.execPath, ['tests/support/static-server.js'], {
+    cwd: path.resolve(__dirname, '../..'), windowsHide: true,
+    env: { ...process.env, PORT: String(port), AFROTOOLS_TEST_DISABLE_ANALYTICS: '0' },
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+  try {
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('Consent proof server did not start')), 10000);
+      server.stdout.once('data', () => { clearTimeout(timer); resolve(); });
+      server.once('error', error => { clearTimeout(timer); reject(error); });
+      server.once('exit', () => { clearTimeout(timer); reject(new Error('Consent proof server exited')); });
+    });
+    for (const width of [320, 390]) {
+    const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: 'block', storageState: { cookies: [], origins: [] } });
+    try {
+    const page = await context.newPage();
+    const origin = 'http://127.0.0.1:' + port;
+    await page.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
+    await page.goto(origin + '/sw/zana/kizalishaji-ankara/');
     const decline = page.locator('#afro-cc-decline');
     await expect(decline).toBeVisible();
     // A normal user click must work with the actual sticky toolbar in place.
@@ -33,6 +59,11 @@ test('invoice: cookie refusal remains reachable at 320 and 390', async ({ page }
     await expect(page.locator('#afro-cookie-consent')).toHaveCount(0);
     expect(await page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    } finally { await context.close(); }
+    }
+  } finally {
+    server.kill();
+    await new Promise(resolve => server.exitCode !== null ? resolve() : server.once('exit', resolve));
   }
 });
 

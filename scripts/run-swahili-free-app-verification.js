@@ -86,6 +86,7 @@ function buildRunReceipts(apps, before, results, metadata, root = ROOT) {
       runFailed: checks.some(check => ['failed', 'timedOut', 'interrupted'].includes(check.status)), checks,
       environment: { localStaticServer: true, analytics: 'disabled-test-adapter',
         consentFixture: { key: 'afrotools_cookie_consent', value: 'declined' },
+        consentControlException: 'isolated real-loader server, empty storage, external requests blocked',
         serviceWorkers: 'blocked', syntheticFixtures: true, artifacts: 'trace-video-screenshot-off',
         printProof: 'prepared-window-and-content-only; native OS printing not proved',
         liveProviderOrProductionProof: false }, production: null };
