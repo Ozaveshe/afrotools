@@ -10,8 +10,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { assetContentVersion } = require('./lib/asset-content-version');
 
 const ROOT = path.resolve(__dirname, '..');
 const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
@@ -32,12 +32,14 @@ const SKIP_DIRS = new Set([
   '.netlify',
   '.playwright',
   'artifacts',
+  'data',
   'dist',
   'netlify',
   'output',
   'reports',
   'scripts',
   'test-results',
+  'tests',
 ]);
 
 // Cache file hashes so we don't re-read the same file
@@ -46,8 +48,8 @@ const hashCache = new Map();
 function getFileHash(filePath) {
   if (hashCache.has(filePath)) return hashCache.get(filePath);
   if (!fs.existsSync(filePath)) return null;
-  const content = fs.readFileSync(filePath, 'utf8').replace(/\r\n?/g, '\n');
-  const hash = crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
+  const relative = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  const hash = assetContentVersion(ROOT, relative);
   hashCache.set(filePath, hash);
   return hash;
 }

@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
+const { rewriteRelativeStylesheet } = require("./lib/asset-content-version");
 
 const ROOT = path.resolve(__dirname, "..");
 const SOURCE = path.join(ROOT, "tools", "creator-record", "app.html");
@@ -28,7 +29,7 @@ function build() {
   html = replaceOnce(html, 'lang="en"', 'lang="sw"');
   html = replaceOnce(html, "<title>CreatorRecord Workspace | AfroTools</title>", "<title>Kirekodi Skrini na Sauti — CreatorRecord | AfroTools</title>");
   html = replaceOnce(html, '  <meta name="robots" content="noindex, follow">\n', "");
-  html = replaceOnce(html, '<link rel="stylesheet" href="style.css?v=d52841e8">', '<link rel="stylesheet" href="/tools/creator-record/style.css?v=d52841e8">');
+  html = rewriteRelativeStylesheet(html, ROOT, 'tools/creator-record/style.css');
   html = replaceOnce(html, '<meta property="og:url" content="https://afrotools.com/tools/creator-record/app">', `<meta name="description" content="Rekodi skrini, dirisha, kamera au sauti moja kwa moja kwenye kivinjari; simamisha, hakiki, hifadhi historia na pakua WebM bila kupakia rekodi kwenye seva.">
 <meta name="afrotools-sw-native-owner" content="creator-record">
 <meta name="afrotools-sw-source-owner" content="${OWNER}">

@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 /**
  * AfroTools Minification Script
- * Minifies JS (via terser) and CSS (regex-based) source files into .min.* counterparts.
+ * Minifies JS (via terser) and CSS (via CSS-tree) into .min.* counterparts.
  * Run: node scripts/minify.js
  */
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { minifyCss: compactCss } = require('./lib/css-minification');
 const { minify } = require('terser');
 const { buildNavbarData } = require('./build-navbar-data');
 const { buildUiTypography } = require('./build-ui-typography');
 const { getEngineTerserOptions } = require('./lib/engine-build');
+const { buildStylesheetLoaderVersions } = require('./lib/css-loader-versions');
 const {
   writeFileSyncWithRetry: writeTempFileSyncWithRetry,
   renameSyncWithRetry,
@@ -73,17 +75,7 @@ if (fs.existsSync(ENGINE_SOURCE_DIR)) {
 }
 
 function minifyCSS(src) {
-  return src
-    // Remove comments (but not inside url() or content strings)
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    // Collapse whitespace
-    .replace(/\s+/g, ' ')
-    // Remove space around selectors and braces
-    .replace(/\s*([{}:;,>~+])\s*/g, '$1')
-    // Remove trailing semicolons before }
-    .replace(/;}/g, '}')
-    // Remove leading/trailing whitespace
-    .trim();
+  return compactCss(src);
 }
 
 function isValidJavaScript(code, filename) {
@@ -190,7 +182,9 @@ async function run() {
     cssTotal.count++;
   }
 
-  // Unpaired source assets are intentionally left unchanged.
+  buildStylesheetLoaderVersions();
+
+  // Unpaired source assets keep their readable code; generated loader URLs are versioned above.
   // Unpaired public assets are optimized only after copying into dist.
   // build:assets must never rewrite readable source files in place.
   if (ONLY) {

@@ -187,6 +187,7 @@ test('every bank-charge consumer uses current controller and contrast-safe style
   const stylesheet = read('assets/css/bank-charge-offer-vip.css');
   const stylesheetHash = crypto.createHash('md5').update(stylesheet).digest('hex').slice(0, 8);
   assert.equal(stylesheetHash, '3e493436');
+  const deliveredStylesheetHash = require('../scripts/lib/asset-content-version').assetContentVersion(root, 'assets/css/bank-charge-offer-vip.css');
   assert.match(stylesheet, /\.bco-hero h1\{[^}]*color:var\(--bco-text,#172033\)/);
   assert.match(stylesheet, /\.bco-hero \.bco-lead\{[^}]*color:var\(--bco-muted,#526176\)/);
   assert.match(stylesheet, /\.bco-hero \.bco-badge\{[^}]*color:var\(--bco-text,#172033\)/);
@@ -204,7 +205,7 @@ test('every bank-charge consumer uses current controller and contrast-safe style
   for (const file of styleConsumers) {
     assert.match(
       read(file),
-      new RegExp(`/assets/css/bank-charge-offer-vip\\.css\\?v=${stylesheetHash}`)
+      new RegExp(`/assets/css/bank-charge-offer-vip\\.css\\?v=${deliveredStylesheetHash}`)
     );
   }
   for (const owner of [
@@ -245,7 +246,8 @@ test('every bank-charge consumer uses current controller and contrast-safe style
       .sort();
     assert.deepEqual(localeConsumers, owner.consumers);
     for (const file of localeConsumers) {
-      assert.match(read(file), new RegExp(`/assets/css/${basename}\\?v=${hash}`));
+      const deliveredHash = require('../scripts/lib/asset-content-version').assetContentVersion(root, owner.file);
+      assert.match(read(file), new RegExp(`/assets/css/${basename}\\?v=${deliveredHash}`));
     }
   }
 });
