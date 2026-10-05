@@ -29,6 +29,7 @@ const JS_PAIRS = [
   ['assets/js/pages/src/invoice-generator-enhancements.js', 'assets/js/pages/invoice-generator-enhancements.js'],
   ['tools/invoice-generator/js/src/invoice-workspace-sync.js', 'tools/invoice-generator/js/invoice-workspace-sync.js'],
   ['tools/cv-builder/js/src/cv-application-pack-export.js', 'tools/cv-builder/js/cv-application-pack-export.js'],
+  ['tools/cv-builder/js/src/cv-export-upgrade.js', 'tools/cv-builder/js/cv-export-upgrade.js'],
   ['tools/cv-builder/js/src/cv-application-pack.js', 'tools/cv-builder/js/cv-application-pack.js'],
   ['tools/cv-builder/js/src/cv-job-tracker.js', 'tools/cv-builder/js/cv-job-tracker.js'],
   ['tools/cv-builder/js/src/cv-design-foundation.js', 'tools/cv-builder/js/cv-design-foundation.js'],
