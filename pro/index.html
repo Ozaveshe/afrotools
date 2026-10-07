@@ -641,6 +641,11 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
           { label: 'Pro settings', href: '/pro/settings/' },
           { label: 'Dashboard', href: '/dashboard/' }
         ]);
+      } else if (status.user && status.reason === 'profile-unavailable') {
+        setStatus('is-free', 'Signed in as ' + email + '. We could not verify your Pro access. Reconnect and reload to check your account.', 'Access unverified', [
+          { label: 'Reload to check', href: location.pathname + location.search + location.hash, primary: true },
+          { label: 'Dashboard', href: '/dashboard/' }
+        ]);
       } else if (status.user) {
         setStatus('is-free', 'Signed in as ' + email + '. Choose a plan below, then the Pro nav entry will open your workspace directly.', 'Free account', [
           { label: 'Choose a plan', href: '#pricing', primary: true },

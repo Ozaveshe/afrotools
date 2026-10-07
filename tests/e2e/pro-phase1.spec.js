@@ -121,20 +121,20 @@ for(const width of [320,390,768,1440]) test('responsive controls, keyboard focus
     await page.goto('/pricing/');await page.getByRole('switch',{name:'Annual billing'}).focus();await page.keyboard.press('Space');await expect(page.locator('.save-badge')).toHaveText('SAVE 50%');await expect(page.getByRole('switch')).toHaveAttribute('aria-checked','true');
   }
 });
-test('gate states and unchanged malformed-expiry/cache policy are characterized',async({page})=>{
+test('gate states reject malformed expiry and unavailable profiles without local promotion',async({page})=>{
   await localPro(page);
   for(const [name,profile,expected] of [
     ['free',{id:'synthetic-phase1',subscription_tier:'free'},false],
     ['expired',{id:'synthetic-phase1',subscription_tier:'pro',subscription_expires_at:'2000-01-01'},false],
     ['active',{id:'synthetic-phase1',subscription_tier:'pro',subscription_expires_at:'2099-01-01'},true],
-    ['malformed browser policy',{id:'synthetic-phase1',subscription_tier:'pro',subscription_expires_at:'invalid'},true]
+    ['malformed expiry',{id:'synthetic-phase1',subscription_tier:'pro',subscription_expires_at:'invalid'},false]
   ]){
     await page.route('**/api/profile*',route=>route.fulfill({json:{profile}}));await page.goto('/pro/apps/books/');
     await expect.poll(()=>page.evaluate(()=>window.AfroProGate.getStatus().then(s=>s.isPro)),{message:name}).toBe(expected);
-    expect(require('../../netlify/functions/_shared/entitlements').resolveProfileEntitlement(profile).isPro).toBe(name==='malformed browser policy'?false:expected);
+    expect(require('../../netlify/functions/_shared/entitlements').resolveProfileEntitlement(profile).isPro).toBe(expected);
   }
   await page.route('**/api/profile*',route=>route.fulfill({status:503,json:{error:'synthetic outage'}}));await page.goto('/pro/apps/books/');
-  const fallback=await page.evaluate(()=>window.AfroProGate.getStatus());expect(fallback.isPro).toBe(true);expect(fallback.reason).toBe('local-pro-fallback');
+  const fallback=await page.evaluate(()=>window.AfroProGate.getStatus());expect(fallback.isPro).toBe(false);expect(fallback.reason).toBe('profile-unavailable');await expect(page.locator('#afro-pro-lock')).toContainText('could not verify');
   await page.route('**/assets/js/afro-auth.js*',route=>route.fulfill({contentType:'application/javascript',body:'window.AfroAuth={getUser:()=>null,getSessionToken:()=>null,onReady:f=>f(),getSupabase:()=>null};'}));await page.goto('/pro/apps/books/');await expect(page.locator('#afro-pro-lock')).toBeVisible();expect(await page.locator('.pro-gated-content').evaluate(el=>el.inert)).toBe(true);await expect(page.locator('#afro-pro-lock a.primary')).toBeFocused();
 });
 test('selected route survives guest gate, auth next, upgrade, cancel and pending activation',async({page})=>{

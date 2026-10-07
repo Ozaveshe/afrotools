@@ -92,12 +92,37 @@ test("Pro page active Pro state offers direct workspace access", async ({ page }
   await expect(page.locator('#pro-account-status a[href="/pro/workspace/"]')).toHaveText(/open pro workspace/i);
 });
 
+test("Pro page unavailable profile keeps account access unverified", async ({ page }) => {
+  const pageErrors = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  const user = { id: "unavailable-user", email: "unavailable@afrotools.test", tier: "pro" };
+  await stubSupabaseSdk(page);
+  await stubProfile(page, user);
+  await page.route("**/api/profile", (route) => route.fulfill({ status: 503, contentType: "application/json", body: '{}' }));
+  await page.addInitScript(seedAuth, { user, token: "unavailable-token" });
+  await page.goto("/pro/", { waitUntil: "domcontentloaded" });
+
+  await expect(page.locator("#pro-account-status")).toContainText(/access unverified/i);
+  await expect(page.locator("#pro-account-status")).toContainText(/reconnect and reload/i);
+  await expect(page.locator("#pro-account-status")).not.toContainText(/free account|choose a plan|pro active/i);
+  await expect(page.locator('#pro-account-status a[href="/pro/"]')).toHaveText(/reload to check/i);
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    const reload = page.getByRole("link", { name: "Reload to check" });
+    await reload.focus();
+    await expect(reload).toBeFocused();
+    expect((await reload.boundingBox()).height).toBeGreaterThanOrEqual(24);
+  }
+  expect(pageErrors).toEqual([]);
+});
+
 test("Pro page presents sellable products without generic generated filler", async ({ page }) => {
   await stubSupabaseSdk(page);
   await page.goto("/pro/", { waitUntil: "domcontentloaded" });
 
   await expect(page.getByRole("heading", { name: /^AfroTools Pro$/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /What a Pro customer is buying/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Tools for the work you repeat/i })).toBeVisible();
   await expect(page.getByText(/Payroll month-close workspace/i)).toBeVisible();
   await expect(page.getByText(/Local previews and waitlist modules/i)).toBeVisible();
   await expect(page.getByText(/Does not file statutory returns, remit tax, or disburse salaries/i)).toBeVisible();
