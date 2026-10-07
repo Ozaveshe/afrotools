@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 305 |
-| sw | 137 | 1 | 329 |
+| fr | 160 | 2 | 307 |
+| sw | 137 | 1 | 331 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 340 | 40 | 0 | 300 | 21 | 0 | 319 |
+| editorial | 342 | 40 | 0 | 302 | 21 | 0 | 321 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -364,6 +364,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/learn-african-languages-free/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/lesotho-paye-tax-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/lesotho-paye-tax-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/letter-of-credit-bank-quotation-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/letter-of-credit-bank-quotation-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/liberia-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/liberia-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/lobola-price-2026/ | editorial | sw | — | missing | no localized route or owner file |
@@ -563,6 +565,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/south-africa-turnover-tax-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-two-pot-retirement-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-two-pot-retirement-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-vat-deregistration-checklist-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-vat-deregistration-checklist-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-vat-invoice-requirements-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-vat-invoice-requirements-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-vat-registration-2026/ | editorial | fr | — | missing | no localized route or owner file |

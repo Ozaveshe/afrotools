@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11697 |
-| Indexable pages | 7882 |
+| Public pages | 11699 |
+| Indexable pages | 7884 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4255 |
-| Documented fallbacks | 14969 |
-| Routes eligible for primary sitemaps | 7882 |
+| Genuine equivalence groups | 4257 |
+| Documented fallbacks | 14971 |
+| Routes eligible for primary sitemaps | 7884 |
 
 ## Locale Coverage
 
-- en: 6142 page records
+- en: 6144 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 545
+- article: 547
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4301,6 +4301,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4c42327d12e4: en=`/tools/afrokitchen/recipes/caril-de-camarao/`; x-default=`/tools/afrokitchen/recipes/caril-de-camarao/`
 - equivalence:4c4e7c04467d: en=`/tools/gratuity-calculator/seychelles/`; x-default=`/tools/gratuity-calculator/seychelles/`
 - equivalence:4c6a25ffbc4e: en=`/agriculture/farm-profit/tunisia`, fr=`/fr/agriculture/farm-profit/tunisia`, sw=`/sw/kilimo/faida-ya-shamba/tunisia/`; x-default=`/agriculture/farm-profit/tunisia`
+- equivalence:4c9876e0a067: en=`/blog/south-africa-vat-deregistration-checklist-2026/`; x-default=`/blog/south-africa-vat-deregistration-checklist-2026/`
 - equivalence:4c9a435ffbde: en=`/tools/retrenchment-calculator/gambia/`; x-default=`/tools/retrenchment-calculator/gambia/`
 - equivalence:4ca027fb4ceb: en=`/jamb/english/1986/`; x-default=`/jamb/english/1986/`
 - equivalence:4cb1b9e4dde4: en=`/tools/employment-contract/libya`, fr=`/fr/tools/contrat-travail/libya`; x-default=`/tools/employment-contract/libya`
@@ -4953,6 +4954,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:7365cf8fc2a8: en=`/tools/afrokitchen/recipes/satini-reken-sc/`; x-default=`/tools/afrokitchen/recipes/satini-reken-sc/`
 - equivalence:736f56d3b3f8: en=`/blog/liberia-employer-payroll-compliance-2026/`; x-default=`/blog/liberia-employer-payroll-compliance-2026/`
 - equivalence:737488e0d052: en=`/tools/ndpa-checker/`, fr=`/fr/tools/verificateur-ndpa/`, sw=`/sw/zana/ukaguzi-wa-ndpa-nigeria/`; x-default=`/tools/ndpa-checker/`
+- equivalence:73783ff07f54: en=`/blog/letter-of-credit-bank-quotation-checklist-africa/`; x-default=`/blog/letter-of-credit-bank-quotation-checklist-africa/`
 - equivalence:738801c39ced: en=`/blog/professional-receipt-template-nigeria/`; x-default=`/blog/professional-receipt-template-nigeria/`
 - equivalence:73893a12fb6c: en=`/tools/work-permit-cost/madagascar/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-madagascar/`; x-default=`/tools/work-permit-cost/madagascar/`
 - equivalence:739140f7eb51: en=`/jamb/biology/1989/`; x-default=`/jamb/biology/1989/`
