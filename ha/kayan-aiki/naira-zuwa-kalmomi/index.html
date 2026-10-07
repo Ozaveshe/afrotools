@@ -200,7 +200,7 @@
         <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
         <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
       </select>
-      <input aria-label="Misali 250000.50" type="text" id="amount" placeholder="misali 250000.50" oninput="convert()" inputmode="decimal">
+      <input aria-label="Adadin kudi" type="text" id="amount" placeholder="misali 250000.50" oninput="convert()" inputmode="decimal">
     </div>
     <div class="format-display" id="formatted"></div>
     <div class="doc-grid">
@@ -312,7 +312,7 @@
   </section>
 </div>
 
-<div class="copy-toast" id="toast">An kwafi!</div>
+<div class="copy-toast" id="toast" role="status" aria-live="polite" aria-atomic="true">An kwafi!</div>
 
 <afro-related-tools category="document-pdf" current="naira-to-words-ha"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
@@ -407,47 +407,54 @@ function convert() {
   var raw = cleanAmountInput(document.getElementById('amount').value);
   var card = document.getElementById('resultCard');
   var formatted = document.getElementById('formatted');
+  lastWords = '';
+  lastDocumentLine = '';
+  formatted.textContent = '';
+  document.getElementById('result').textContent = '';
+  document.getElementById('docPreview').textContent = '';
+  renderQuality(0, '');
   if (!raw || isNaN(raw) || parseFloat(raw) < 0) {
     card.style.display = 'none';
-    formatted.textContent = '';
-    renderQuality(0, '');
-    return;
+    return false;
   }
   var amount = parseFloat(raw);
   if (amount > 999999999999999.99) {
     document.getElementById('result').innerHTML = '<span style="color:#ef4444;">Adadin ya yi yawa. Matsakaici shi ne 999,999,999,999,999.99</span>';
     card.style.display = '';
-    return;
+    return false;
   }
-  var sel = document.getElementById('currency');
-  var opt = sel.options[sel.selectedIndex];
-  var code = sel.value;
+  var code = document.getElementById('currency').value;
   var figure = amount.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  formatted.textContent = code + ' ' + figure;
-  var words = applyCaseMode(amountToWords(amount, opt));
+  var words = applyCaseMode(amountToWords(amount));
   lastWords = words;
   lastDocumentLine = buildDocumentLine(code, figure, words);
+  formatted.textContent = code + ' ' + figure;
   document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Adadi cikin kalmomi</span>' + words;
   document.getElementById('docPreview').textContent = lastDocumentLine;
   renderQuality(amount, raw);
   card.style.display = '';
+  return true;
+}
+
+function copyValidatedText(text, successMessage) {
+  function unavailable() { showToast('Ba a iya kwafi ba. Ka zabi rubutun ka kwafi da kanka.'); }
+  if (!navigator.clipboard || !navigator.clipboard.writeText) { unavailable(); return; }
+  Promise.resolve().then(function(){ return navigator.clipboard.writeText(text); })
+    .then(function(){ showToast(successMessage); }).catch(unavailable);
 }
 
 function copyResult() {
-  navigator.clipboard.writeText(lastWords).then(function(){ showToast('An kwafi!'); }).catch(function(){ window.prompt('Kwafi adadi cikin kalmomi', lastWords); });
+  if (!convert()) { showToast('Saka adadi mai inganci tukuna.'); return; }
+  copyValidatedText(lastWords, 'An kwafi!');
 }
 
 function copyDocumentLine() {
-  convert();
-  navigator.clipboard.writeText(lastDocumentLine).then(function(){ showToast('An kwafi layin takarda!'); }).catch(function(){ window.prompt('Kwafi layin takarda', lastDocumentLine); });
+  if (!convert()) { showToast('Saka adadi mai inganci tukuna.'); return; }
+  copyValidatedText(lastDocumentLine, 'An kwafi layin takarda!');
 }
 
 function downloadDocumentLine() {
-  convert();
-  if (!lastDocumentLine) {
-    showToast('Saka adadi tukuna.');
-    return;
-  }
+  if (!convert()) { showToast('Saka adadi mai inganci tukuna.'); return; }
   var blob = new Blob([lastDocumentLine + '\n'], { type: 'text/plain;charset=utf-8' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -455,14 +462,13 @@ function downloadDocumentLine() {
   a.download = 'adadi-cikin-kalmomi.txt';
   document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 0);
   showToast('An sauke TXT.');
 }
 
 function downloadJsonResult() {
-  convert();
-  if (!lastWords || !lastDocumentLine) { showToast('Saka adadi tukuna.'); return; }
+  if (!convert()) { showToast('Saka adadi mai inganci tukuna.'); return; }
   var payload = {
     tool: 'naira-to-words', language: 'ha', currency: document.getElementById('currency').value,
     amount: Number(cleanAmountInput(document.getElementById('amount').value)), words: lastWords,
@@ -476,11 +482,9 @@ function downloadJsonResult() {
 
 function clearAll() {
   document.getElementById('amount').value = '';
-  document.getElementById('formatted').textContent = '';
   document.getElementById('payeeName').value = '';
   document.getElementById('docReference').value = '';
-  document.getElementById('qualityRow').style.display = 'none';
-  document.getElementById('resultCard').style.display = 'none';
+  convert();
 }
 
 function showToast(msg) {
