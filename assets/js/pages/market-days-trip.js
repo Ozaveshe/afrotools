@@ -40,14 +40,17 @@
     // UTC components avoid device-timezone shifts and Date.UTC's 0–99 year remapping.
     var date = new Date(0);
     date.setUTCFullYear(parts[0], parts[1] - 1, parts[2]);
-    return parts[0] > 0 && date.getUTCFullYear() === parts[0] &&
-      date.getUTCMonth() === parts[1] - 1 && date.getUTCDate() === parts[2];
+    return parts[0] >= 1000 && date.getUTCFullYear() === parts[0] &&
+      date.getUTCMonth() === parts[1] - 1 && date.getUTCDate() === parts[2] &&
+      engine().toDateKey(engine().parseDateKey(value)) === value;
   }
 
   function validateLookup() {
     var input = document.getElementById('lookupDate');
     var valid = isValidLookupDate(input.value);
-    var message = valid ? '' : 'Choose a valid date. The month calendar stays on the last selection.';
+    var message = valid ? '' : /^\d{4}-/.test(input.value) && Number(input.value.slice(0, 4)) < 1000
+      ? 'This calendar supports years 1000 onward. Choose a supported date.'
+      : 'Choose a valid date. The month calendar stays on the last selection.';
     input.setAttribute('aria-invalid', String(!valid));
     document.getElementById('lookupDateStatus').textContent = message;
     document.getElementById('selectedDateResult').hidden = !valid;

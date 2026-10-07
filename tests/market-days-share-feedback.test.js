@@ -150,6 +150,16 @@ test('pagehide suppresses pending completion', async () => {
 test('invalid or mismatched current field never starts an export', async () => {
   let calls = 0; const f = fixture({ clipboard: { writeText() { calls++; return Promise.resolve(); } } });
   await f.date('', 'input'); await f.click('shareView');
-  await f.date('2026-10-02', 'input'); await f.click('shareView');
+  // A programmatic field replacement can leave the controller's selection unchanged.
+  f.node('lookupDate').value = '2026-10-02'; await f.click('shareView');
   assert.equal(calls, 0); assert.equal(f.status(), '');
+});
+
+test('valid date input exports the immediately updated selection', async () => {
+  const calls = [];
+  const f = fixture({ clipboard: { writeText(value) { calls.push(value); return Promise.resolve(); } } });
+  await f.date('2026-10-02', 'input');
+  await f.click('shareView');
+  assert.deepEqual(calls, ['https://local.test/tools/market-days/?date=2026-10-02']);
+  assert.equal(f.status(), 'Link copied to clipboard.');
 });
