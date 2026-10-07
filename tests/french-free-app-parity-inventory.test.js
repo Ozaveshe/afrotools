@@ -27,6 +27,20 @@ assert.strictEqual(new Set(report.rows.map((row) => row.englishId)).size, EXPECT
 assert.strictEqual(new Set(report.rows.map((row) => row.englishRoute)).size, EXPECTED_FREE_APP_COUNT, 'English routes must be unique');
 assert.strictEqual(report.totals.excludedPaidRows, 1, 'only /pro/ is excluded from the canonical directory');
 assert.strictEqual(report.totals.accepted, acceptedEvidenceCount, 'accepted total must come from the evidence registry');
+assert.strictEqual(report.schemaVersion, 2);
+assert.strictEqual(report.scope.acceptedFieldSemantics, 'historical');
+assert.strictEqual(report.totals.historicallyAccepted, acceptedEvidenceCount);
+assert.strictEqual(report.totals.currentlyVerified, report.rows.filter((row) => row.currentVerification.status === 'verified').length);
+assert.strictEqual(Object.values(report.totals.currentVerificationStates).reduce((sum, count) => sum + count, 0), EXPECTED_FREE_APP_COUNT);
+for (const id of ['invoice-generator', 'cv-builder']) {
+  const current = report.rows.find((row) => row.englishId === id);
+  assert.strictEqual(current.historicalAccepted, true);
+  const proof = current.currentVerification;
+  if (proof.editorialReview.status !== 'approved' || proof.workflowReview.status !== 'approved'
+    || (proof.workflowReview.notYetProved || []).length || proof.unresolvedRegressions.length) {
+    assert.notStrictEqual(proof.status, 'verified', `${id}: source-bound batch proof cannot replace pending full workflow/native editor reviews`);
+  }
+}
 assert.strictEqual(
   report.rows.filter((row) => row.accepted).length,
   acceptedEvidenceCount,
@@ -93,5 +107,5 @@ assert.strictEqual(pro, undefined, 'paid /pro/ must stay outside the free-app de
 
 console.log(
   `French free-app parity inventory verified: ${report.rows.length} rows, `
-  + `${report.totals.definiteBuildGaps} definite build gaps, ${report.totals.accepted} accepted.`
+  + `${report.totals.definiteBuildGaps} definite build gaps, ${report.totals.historicallyAccepted} historical acceptances; ${report.totals.currentlyVerified} current verifications.`
 );

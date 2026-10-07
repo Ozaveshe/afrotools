@@ -67,11 +67,12 @@ test('all locale consumers use current engine, controller and stylesheet hashes'
   const cssHash = crypto.createHash('md5').update(read('assets/css/inflation-scenario-vip.css')).digest('hex').slice(0, 8);
   assert.equal(controllerHash, '49d1794c');
   assert.equal(cssHash, '7a7ed40f');
+  const deliveredCssHash = require('../scripts/lib/asset-content-version').assetContentVersion(root, 'assets/css/inflation-scenario-vip.css');
   for (const file of Object.values(owner.localeOwners)) {
     const html = read(file);
     assert.match(html, /\/assets\/js\/engines\/inflation-scenario\.js\?v=b1de5b24/);
     assert.match(html, new RegExp(`/assets/js/pages/inflation-scenario-vip\\.js\\?v=${controllerHash}`));
-    assert.match(html, new RegExp(`/assets/css/inflation-scenario-vip\\.css\\?v=${cssHash}`));
+    assert.match(html, new RegExp(`/assets/css/inflation-scenario-vip\\.css\\?v=${deliveredCssHash}`));
   }
 });
 

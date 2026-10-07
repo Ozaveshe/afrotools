@@ -41,6 +41,7 @@ function addReceipt(id, format, proof) {
 }
 
 test.afterAll(() => {
+  if (process.env.AFROTOOLS_FR_CURRENT_VERIFICATION === '1') return;
   const rows = CONFIG.apps.map((app) => {
     const formats = receipts.get(app.id) || {};
     const missing = app.exports.filter((format) => !formats[format]);
@@ -1065,6 +1066,7 @@ test('facture: PDF synthétique est rouvert sans porte ni fuite', async ({ page 
   await page.locator('.li-desc').fill('Conseil local');
   await page.locator('.li-qty').fill('2');
   await page.locator('.li-price').fill('15000');
+  await page.locator('#invoiceReviewConfirm').check();
   const output = await captureDownload(page, '#btnPDF');
   await acceptPdf('invoice-generator', output);
   await assertNoPrivateLeak('invoice-generator', page);

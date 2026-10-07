@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { minifyCss: compactCss } = require('./lib/css-minification');
 const { minify } = require('terser');
 const productHealth = require('../assets/js/lib/product-health');
 
@@ -173,6 +174,7 @@ const BLOCKED_RELATIVE_FILES = new Set([
 const BLOCKED_RELATIVE_DIRS = new Set([
   'data/automation',
   'data/image-generation',
+  'data/localization/fr-fintech-banking-pages',
   'assets/img/new',
   'fr/docs',
   'matchday-os',
@@ -346,14 +348,7 @@ function copyTree(sourceDir, targetDir, counters) {
 }
 
 function minifyCss(source) {
-  return source
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\s+/g, ' ')
-    // A space before a pseudo-class is a descendant combinator, not formatting.
-    // Keep colons out of this token pass: `.hub :is(...)` must not become `.hub:is(...)`.
-    .replace(/\s*([{};,>~+])\s*/g, '$1')
-    .replace(/;}/g, '}')
-    .trim();
+  return compactCss(source);
 }
 
 function isValidJavaScript(code, filename) {
@@ -451,6 +446,7 @@ function verifyDist() {
     'artifacts',
     'audit-results',
     'fr/docs',
+    'data/localization/fr-fintech-banking-pages',
     'fr/widgets/iframe/template.html',
     'mc-7a2f9x.html',
     'missing-entries-formatted.txt',

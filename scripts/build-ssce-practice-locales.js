@@ -2,7 +2,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const crypto = require('node:crypto');
+const { assetContentVersion } = require('./lib/asset-content-version');
 const quick = require('../assets/js/lib/ssce-practice-bank');
 const written = require('../assets/js/lib/ssce-written-bank');
 const expansion = require('./lib/ssce-2022-physics-locale-content');
@@ -135,7 +135,7 @@ function preserveReleaseShell(content, previous) {
   const hash = asset => {
     const absolute = path.join(root, asset.slice(1));
     if (!fs.existsSync(absolute)) throw Error(`Missing release asset for SSCE locale page: ${asset}`);
-    return crypto.createHash('md5').update(fs.readFileSync(absolute, 'utf8').replace(/\r\n?/g, '\n')).digest('hex').slice(0, 8);
+    return assetContentVersion(root, asset.slice(1));
   };
   html = html.replace(/((?:src|href)=["'])(\/assets\/[^"']+)(["'])/gi, (tag, prefix, value, suffix) => {
     const asset = versioned.get(assetKey(value));

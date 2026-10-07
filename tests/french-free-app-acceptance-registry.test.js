@@ -17,6 +17,9 @@ const report = buildReport();
 
 validateCatalog(report, catalog);
 const acceptance = buildAcceptance(report, catalog);
+assert.strictEqual(acceptance.schemaVersion, 3);
+assert.strictEqual(acceptance.acceptanceKind, 'historical');
+assert.strictEqual(acceptance.totals.historicallyAcceptedApps, 1256);
 
 assert.strictEqual(acceptance.totals.acceptedApps, 1256);
 assert.strictEqual(acceptance.totals.acceptedCategories, 32);
@@ -47,4 +50,14 @@ for (const category of report.categories) {
   );
 }
 
-console.log('French free-app acceptance registry verified: 32 categories, 1,256 native owners.');
+const changedReport = structuredClone(report);
+changedReport.rows[0].primaryFrenchRoute = '/fr/synthetic-new-owner';
+const preserved = buildAcceptance(changedReport, catalog, acceptance);
+assert.strictEqual(preserved.entries[0].frenchRoute, acceptance.entries[0].frenchRoute, 'new source routes must not rewrite dated historical ownership');
+changedReport.rows[0].englishId = 'synthetic-new-app';
+const changedIds = buildAcceptance(changedReport, catalog, acceptance);
+assert.strictEqual(changedIds.entries[0].status, 'not-recorded', 'new IDs cannot gain historical acceptance from file existence');
+assert.strictEqual(changedIds.totals.historicallyAcceptedApps, 1255);
+assert.strictEqual(changedIds.totals.archivedApps, 1);
+
+console.log('French historical acceptance registry verified: 32 categories, 1,256 recorded owners; current verification remains separate.');

@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { localizedGeneratorEquivalent } = require("./lib/localized-generator-equivalence");
+const { rewriteRelativeStylesheet } = require("./lib/asset-content-version");
 
 const ROOT = path.resolve(__dirname, "..");
 const SOURCE = path.join(ROOT, "tools", "creator-voice", "app.html");
@@ -27,7 +28,7 @@ function build() {
   html = replaceOnce(html, 'lang="en"', 'lang="sw"');
   html = replaceOnce(html, "<title>CreatorVoice Studio | AfroTools</title>", "<title>Rekodi na Hariri Sauti — CreatorVoice | AfroTools</title>");
   html = replaceOnce(html, '  <meta name="robots" content="noindex, follow">\n', "");
-  html = replaceOnce(html, '<link rel="stylesheet" href="style.css?v=fe5e4b7b">', '<link rel="stylesheet" href="/tools/creator-voice/style.css?v=fe5e4b7b">');
+  html = rewriteRelativeStylesheet(html, ROOT, 'tools/creator-voice/style.css');
   html = replaceOnce(html, '<meta property="og:url" content="https://afrotools.com/tools/creator-voice/app">', `<meta name="description" content="Rekodi, hariri na changanya sauti ndani ya kivinjari; hifadhi mradi na pakua WAV, OGG au WebM bila kupakia sauti kwenye seva.">
 <meta name="afrotools-sw-native-owner" content="creator-voice">
 <meta name="afrotools-sw-source-owner" content="${OWNER}">

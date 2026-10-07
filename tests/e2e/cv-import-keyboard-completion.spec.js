@@ -1,0 +1,28 @@
+const { test, expect } = require('@playwright/test');
+test.use({ trace: 'off', screenshot: 'off', video: 'off' });
+for (const width of [390, 320]) test('English CV text import keyboard closes and preserves local draft at ' + width, async ({ page, baseURL }) => {
+  await page.route('**/*', route => new URL(route.request().url()).origin === new URL(baseURL).origin ? route.continue() : route.fulfill({ status: 204 }));
+  await page.setViewportSize({ width, height: 844 });
+  await page.goto('/tools/cv-builder/');
+  await page.waitForFunction(() => window.CVImportAssistant && window.CVApp);
+  await page.locator('[data-cv-entry=start]').click();
+  const opener = page.locator('[data-path=fn]').first();
+  await opener.fill('Synthetic draft');
+  await opener.focus();
+  await page.evaluate(() => CVImportAssistant.open());
+  await expect(page.locator('[data-import-text]')).toBeFocused();
+  const close = page.locator('#cv-import-assistant-modal [data-import-close]').first();
+  await close.focus();
+  await close.press('Shift+Tab');
+  await expect(page.locator('[data-import-parse]')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+  await page.locator('[data-import-text]').fill('Synthetic Candidate\nsummary\nSynthetic local experience for import review.');
+  await page.locator('[data-import-parse]').click();
+  await expect(page.locator('[data-import-review]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#cv-import-assistant-modal')).not.toHaveClass(/open/);
+  await expect(opener).toBeFocused();
+  expect(await page.evaluate(() => CVApp.getState().data.fn === 'Synthetic draft')).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
