@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { assetContentVersion } = require('./lib/asset-content-version');
 
 const ROOT = path.resolve(__dirname, '..');
 const REFERENCES = [
@@ -17,8 +17,7 @@ const REFERENCES = [
 ];
 
 function buildUiTypography() {
-  const source = fs.readFileSync(path.join(ROOT, 'assets/fonts/typography.css'), 'utf8').replace(/\r\n?/g, '\n');
-  const hash = crypto.createHash('md5').update(source).digest('hex').slice(0, 8);
+  const hash = assetContentVersion(ROOT, 'assets/fonts/typography.css');
   const href = `/assets/fonts/typography.css?v=${hash}`;
   let changed = 0;
   for (const relative of REFERENCES) {

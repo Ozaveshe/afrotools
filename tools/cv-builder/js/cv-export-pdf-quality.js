@@ -141,6 +141,12 @@
                 allowTaint: !0,
                 logging: !1,
                 backgroundColor: "#ffffff",
+                // Clone the export and its ancestors, retaining stylesheet nodes.
+                // Unrelated editor/gallery content adds image and font waits.
+                ignoreElements: function(node) {
+                    return node.tagName !== "STYLE" && node.tagName !== "LINK" &&
+                        e.body.contains(node) && !node.contains(i) && !i.contains(node);
+                },
                 windowWidth: 595,
                 width: i.scrollWidth,
                 height: i.scrollHeight

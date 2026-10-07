@@ -1,1 +1,1 @@
-!function(e){"use strict";if(!e.querySelector('link[data-afrotools-typography]')){var t=e.createElement("link");t.rel="stylesheet",t.href="/assets/fonts/typography.css?v=01967d7f",t.dataset.afrotoolsTypography="",e.head.appendChild(t)}}(document);
+!function(e){"use strict";if(!e.querySelector('link[data-afrotools-typography]')){var t=e.createElement("link");t.rel="stylesheet",t.href="/assets/fonts/typography.css?v=eb78d469",t.dataset.afrotoolsTypography="",e.head.appendChild(t)}}(document);

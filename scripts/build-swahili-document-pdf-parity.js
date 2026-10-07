@@ -7,6 +7,7 @@ const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
 const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
 const swahiliLocalizer = require('../assets/js/pages/sw-document-pdf-localizer.js');
+const swahiliApplicationPack = require('./build-swahili-cv-application-pack-runtime');
 
 const ROOT = path.resolve(__dirname, '..');
 const DOCUMENT_PDF_LEXICON = JSON.parse(fs.readFileSync(
@@ -665,7 +666,7 @@ function buildFullParityPage(app) {
     html = html.replace('id="htmlPreview" class="preview-frame html-preview-frame" title="HTML Preview" sandbox=""', 'id="htmlPreview" class="preview-frame html-preview-frame" title="HTML Preview" sandbox="allow-same-origin"');
     html = html.replace(/id="renderContainer"(?!\s+aria-hidden=)/, 'id="renderContainer" aria-hidden="true"');
   }
-  if (app.id === 'cv-builder') html = rewriteRelativeOwnerAssets(html, ownerFile);
+  if (app.id === 'cv-builder') html = swahiliApplicationPack.rewriteAssets(rewriteRelativeOwnerAssets(html, ownerFile));
   html = installFormFillerRuntime(html, app);
   html = installReorderRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
@@ -908,6 +909,9 @@ function validateOutputs() {
 
 function main() {
   validateDirectory();
+  if (selectedApps.some(app => app.id === 'cv-builder') && !CONTENT_IDS_ONLY && !process.argv.includes('--related-tools-only')) {
+    swahiliApplicationPack.build({write:WRITE});
+  }
   if (process.argv.includes('--related-tools-only')) {
     const stale = [];
     for (const app of selectedApps) {

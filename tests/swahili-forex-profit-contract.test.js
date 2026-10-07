@@ -61,11 +61,12 @@ test('all locale consumers use current source-owned engine, controller and style
   const controllerHash=crypto.createHash('md5').update(read(owner.controllerOwner)).digest('hex').slice(0,8);
   const cssHash=crypto.createHash('md5').update(read('assets/css/forex-profit-statement.css')).digest('hex').slice(0,8);
   assert.equal(controllerHash, 'fd67eac9'); assert.equal(cssHash, '093bad12');
+  const deliveredCssHash = require('../scripts/lib/asset-content-version').assetContentVersion(root, 'assets/css/forex-profit-statement.css');
   for(const file of Object.values(owner.localeOwners)) {
     const html=read(file);
     assert.match(html,/\/engines\/forex-profit-statement-engine\.js\?v=a68a776c/);
     assert.match(html,new RegExp(`/assets/js/pages/forex-profit-statement\\.js\\?v=${controllerHash}`));
-    assert.match(html,new RegExp(`/assets/css/forex-profit-statement\\.css\\?v=${cssHash}`));
+    assert.match(html,new RegExp(`/assets/css/forex-profit-statement\\.css\\?v=${deliveredCssHash}`));
   }
 });
 

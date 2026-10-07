@@ -160,12 +160,22 @@
             })
         };
     }
+    function exportSnapshot(panel) {
+        panel = panel || e.querySelector(".cv-application-pack-panel");
+        var state = r(), fields = panel ? Array.from(panel.querySelectorAll("[data-pack-text], [data-pack-role], [data-pack-company], [data-pack-jd], [data-pack-tone]")).map(function(field) { return field.value; }) : [];
+        return JSON.stringify([ state.data, state.country, state.template, state.accentHex, fields ]);
+    }
     async function h(a) {
         if (!t.Blob || !t.TextEncoder || !t.URL) return l("Application Pack ZIP is unavailable in this browser."),
         !1;
         try {
             l("Building application pack...");
+            var fingerprint = exportSnapshot(a);
             var n = await x(a || e.querySelector(".cv-application-pack-panel"));
+            if (fingerprint !== exportSnapshot(a)) {
+                l("CV or application pack changed. Review it and export again.");
+                return !1;
+            }
             return function(a, n) {
                 if (t.CVExportUpgrade && t.CVExportUpgrade.downloadBlob) return t.CVExportUpgrade.downloadBlob(a, n);
                 var r = URL.createObjectURL(a), o = e.createElement("a");
@@ -180,11 +190,13 @@
                 files: n.entries.length
             }, t.CVExportUpgrade && t.CVExportUpgrade.track ? t.CVExportUpgrade.track(o, i || {}) : t.CVAnalytics && t.CVAnalytics.track && t.CVAnalytics.track(o, i || {}),
             !0;
-        } catch (t) {
+        } catch (failure) {
             return console.error("Application Pack export failed:", {
                 code: "operation_failed",
                 tool_id: "cv-builder"
-            }), l(t && t.message ? t.message : "Application Pack export failed."), !1;
+            }), l(window.CareerDocumentPdf && /^CAREER_PDF_/.test(failure && failure.message || "")
+                ? window.CareerDocumentPdf.message(failure, e.documentElement.lang, "cv")
+                : failure && failure.message ? failure.message : "Application Pack export failed."), !1;
         }
         var o, i;
     }

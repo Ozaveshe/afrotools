@@ -3,7 +3,7 @@
   var o = "aft_theme",
     t = "afro-theme-standard",
     e = "afro-theme-dark-css",
-    r = "/assets/css/theme-dark.min.css?v=95760302",
+    r = "/assets/css/theme-dark.min.css?v=5b80bef1",
     a = "afro-country-theme",
     c = [
       ":host([data-theme-dark]){color:#EEF5FF}",

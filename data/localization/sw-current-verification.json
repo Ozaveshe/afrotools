@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 1,
+  "locale": "sw",
+  "historicalAcceptance": {
+    "source": "data/audits/swahili-free-app-acceptance.json",
+    "meaning": "Dated historical evidence only; never assign current source hashes to these old runs.",
+    "expectedRecordedAcceptedApps": 1256
+  },
+  "apps": [
+    {
+      "id": "invoice-generator",
+      "englishFile": "tools/invoice-generator/index.html",
+      "swahiliFile": "sw/zana/kizalishaji-ankara/index.html",
+      "swahiliRoute": "/sw/zana/kizalishaji-ankara/",
+      "exports": [
+        "pdf"
+      ],
+      "verification": {
+        "scope": "Local invoice modes, authored values, saved/import state, review gate, PDF parsing, share opt-in, print adapter and mobile cookie control; full editorial/workflow acceptance pending.",
+        "generators": [
+          "scripts/build-swahili-document-pdf-parity.js",
+          "scripts/build-swahili-document-pdf-lexicon.js",
+          "scripts/minify.js",
+          "scripts/bundle.js"
+        ],
+        "inputs": [
+          "data/localization/sw-document-pdf-lexicon.json",
+          "assets/js/pages/sw-document-pdf-localizer.js",
+          "assets/js/pages/sw-document-pdf-lexicon.js",
+          "assets/js/pages/sw-document-pdf-dom-stability.js",
+          "assets/js/pages/sw-document-pdf-integrity.js",
+          "data/registry/locale-coverage-policy.json",
+          "data/registry/locale-page-coverage.json",
+          "assets/js/pages/invoice-generator-enhancements.js",
+          "assets/js/lib/storage.js",
+          "assets/js/lib/formatters.js",
+          "assets/js/lib/currency.js",
+          "assets/js/lib/validators.js",
+          "assets/js/lib/error-boundary.js",
+          "assets/js/lib/analytics.js",
+          "assets/js/lib/clarity.js",
+          "assets/js/lib/toast.js",
+          "assets/js/lib/dark-mode.js",
+          "assets/js/lib/a11y.js",
+          "assets/js/ai/prefill-adapters.js",
+          "assets/js/ai/prefill-consumer.js",
+          "assets/js/components/analytics-consent-v2.js"
+        ],
+        "inputDirectories": [
+          "assets/fonts/noto-sans"
+        ],
+        "servedFiles": [
+          "assets/vendor/jspdf/jspdf.umd.min.js",
+          "assets/fonts/noto-sans/NotoSans-Regular.ttf",
+          "assets/fonts/noto-sans/NotoSans-Bold.ttf"
+        ],
+        "checks": [
+          {
+            "id": "sw-invoice-source",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-source.spec.js",
+            "title": "invoice-generator: served bytes match the current Swahili verification snapshot",
+            "features": [
+              "source-and-served-byte-identity"
+            ]
+          },
+          {
+            "id": "sw-invoice-workflow",
+            "kind": "browser",
+            "file": "tests/e2e/invoice-generator-parity-refresh.spec.js",
+            "title": "sw invoice has local saved state, explicit sharing and matching native PDF modes",
+            "features": [
+              "saved-client-item-invoice",
+              "json-roundtrip",
+              "review-invalidation",
+              "share-opt-in",
+              "invoice-estimate-receipt",
+              "calculation-values",
+              "synthetic-privacy",
+              "mobile-320",
+              "print-adapter"
+            ],
+            "exports": [
+              "pdf",
+              "json",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-invoice-consent-control",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "invoice: cookie refusal remains reachable at 320 and 390",
+            "features": [
+              "mobile-320-390",
+              "natural-pointer-cookie-refusal",
+              "consent-storage-key"
+            ]
+          }
+        ],
+        "editorialReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Native Kiswahili editor review of invoice states and exports"
+          ]
+        },
+        "workflowReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Full empty/invalid/draft recovery workflow",
+            "Native OS print output",
+            "Complete keyboard/light-dark review on final release bytes"
+          ]
+        },
+        "unresolvedDefects": [
+          {
+            "id": "invoice-cookie-sticky-overlap",
+            "status": "resolved",
+            "dimension": "accessibility",
+            "detail": "Shared invoice layout repair is integrated. The actual 320/390px cookie refusal case passed with the real first-party consent loader and normal pointer clicks; current source-bound receipts separately record each rerun."
+          }
+        ],
+        "optionalInputs": [
+          "data/localization/sw-document-pdf-lexicon-overrides.json"
+        ]
+      }
+    },
+    {
+      "id": "cv-builder",
+      "englishFile": "tools/cv-builder/index.html",
+      "swahiliFile": "sw/zana/mjenzi-cv/index.html",
+      "swahiliRoute": "/sw/zana/mjenzi-cv/",
+      "exports": [
+        "pdf",
+        "docx",
+        "txt",
+        "csv",
+        "json",
+        "zip",
+        "print"
+      ],
+      "verification": {
+        "scope": "Local CV JSON save/import/reload and invalid review, parsed PDF/DOCX, native application prose, authored tracker facts and immediate mounted-list/CSV refresh, TXT/DOC/PDF/ZIP downloads, export failure/retry/stale-edit guards, natural pack/tracker controls at 320/390 and print adapter; complete template/editor/native review pending.",
+        "generators": [
+          "scripts/build-swahili-document-pdf-parity.js",
+          "scripts/build-swahili-document-pdf-lexicon.js",
+          "scripts/minify.js",
+          "scripts/bundle.js"
+        ],
+        "inputs": [
+          "data/localization/sw-document-pdf-lexicon.json",
+          "assets/js/pages/sw-document-pdf-localizer.js",
+          "assets/js/pages/sw-document-pdf-lexicon.js",
+          "assets/js/pages/sw-document-pdf-dom-stability.js",
+          "assets/js/pages/sw-document-pdf-integrity.js",
+          "data/registry/locale-coverage-policy.json",
+          "data/registry/locale-page-coverage.json",
+          "assets/js/lib/storage.js",
+          "assets/js/lib/formatters.js",
+          "assets/js/lib/currency.js",
+          "assets/js/lib/validators.js",
+          "assets/js/lib/error-boundary.js",
+          "assets/js/lib/analytics.js",
+          "assets/js/lib/clarity.js",
+          "assets/js/lib/toast.js",
+          "assets/js/lib/dark-mode.js",
+          "assets/js/lib/a11y.js",
+          "assets/js/ai/prefill-adapters.js",
+          "assets/js/ai/prefill-consumer.js",
+          "assets/js/components/analytics-consent-v2.js",
+          "assets/vendor/html2canvas/html2canvas.min.js",
+          "assets/vendor/pdf-lib/pdf-lib.min.js",
+          "assets/js/components/src/ai-consent.js",
+          "assets/js/components/ai-consent.js",
+          "tools/cv-builder/js/src/cv-application-pack.js",
+          "tools/cv-builder/js/src/cv-job-tracker.js",
+          "tools/cv-builder/js/src/cv-import-assistant.js",
+          "tests/cv-ai-consent-boundary.test.js",
+          "tests/cv-application-pack-experience.test.js",
+          "tests/swahili-cv-country-guidance.test.js"
+        ],
+        "inputDirectories": [
+          "tools/cv-builder/js",
+          "tools/cv-builder/css",
+          "assets/fonts/noto-sans"
+        ],
+        "servedFiles": [
+          "assets/vendor/jspdf/jspdf.umd.min.js",
+          "assets/vendor/html2canvas/html2canvas.min.js",
+          "assets/fonts/noto-sans/NotoSans-Regular.ttf",
+          "assets/fonts/noto-sans/NotoSans-Bold.ttf",
+          "assets/vendor/mammoth/mammoth.browser.min.js"
+        ],
+        "checks": [
+          {
+            "id": "sw-cv-source",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-source.spec.js",
+            "title": "cv-builder: served bytes match the current Swahili verification snapshot",
+            "features": [
+              "source-and-served-byte-identity"
+            ]
+          },
+          {
+            "id": "sw-cv-backup",
+            "kind": "browser",
+            "file": "tests/e2e/cv-json-backup.spec.js",
+            "title": "JSON restore survives reload and document exports: /sw/zana/mjenzi-cv/",
+            "features": [
+              "json-recovery",
+              "authored-unicode",
+              "pdf-docx-parser",
+              "synthetic-privacy"
+            ],
+            "exports": [
+              "json",
+              "pdf",
+              "docx"
+            ]
+          },
+          {
+            "id": "sw-cv-invalid-review",
+            "kind": "browser",
+            "file": "tests/e2e/cv-json-backup.spec.js",
+            "title": "JSON review safety and keyboard: /sw/zana/mjenzi-cv/",
+            "features": [
+              "malformed-backup",
+              "no-draft-mutation",
+              "keyboard-focus-escape",
+              "mobile-320"
+            ]
+          },
+          {
+            "id": "sw-cv-text-tracker-print",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "CV: TXT CSV and print adapter preserve authored values",
+            "features": [
+              "txt-roundtrip",
+              "csv-reopen",
+              "prepared-print-window-adapter",
+              "synthetic-privacy",
+              "csv-module-button-adapter"
+            ],
+            "exports": [
+              "txt",
+              "csv",
+              "print"
+            ]
+          },
+          {
+            "id": "sw-cv-zip-parser",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-current-verification-workflows.spec.js",
+            "title": "CV: downloaded application ZIP contains valid reopened PDFs and backup",
+            "features": [
+              "zip-reopen",
+              "pdf-bytes-parser",
+              "authored-backup"
+            ],
+            "exports": [
+              "zip"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-exports",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "Swahili pack buttons download native TXT, DOC, PDF and ZIP without translating authored slots",
+            "features": [
+              "native-generated-prose",
+              "authored-slot-collisions",
+              "unicode-pdf-parser",
+              "zip-reopen",
+              "natural-mobile-pack-controls-320-390",
+              "synthetic-privacy"
+            ],
+            "exports": [
+              "txt",
+              "doc",
+              "pdf",
+              "zip"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-tracker",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "saved pack CSV has native headings and keeps user values, keys and statuses intact",
+            "features": [
+              "immediate-mounted-tracker-refresh",
+              "natural-mobile-tracker-controls-320-390",
+              "authored-card-facts",
+              "native-status-presentation",
+              "stable-storage-enums",
+              "csv-reopen",
+              "duplicate-save-preserves-lead-id"
+            ],
+            "exports": [
+              "csv"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-recovery",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "native validation, copy failure, missing PDF and missing ZIP messages remain local",
+            "features": [
+              "empty-export-validation",
+              "copy-failure",
+              "missing-pdf-retry",
+              "native-error-message",
+              "missing-zip-failure",
+              "txt-fallback",
+              "unsupported-pdf-character-native-fallback",
+              "authored-txt-fallback",
+              "parsed-zip-retry"
+            ],
+            "exports": [
+              "txt",
+              "pdf",
+              "zip"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-fallback",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "fallback email and ungenerated placeholders use native copy without changing author text",
+            "features": [
+              "ungenerated-native-placeholder",
+              "native-fallback-email",
+              "authored-content-preserved"
+            ],
+            "exports": [
+              "txt",
+              "zip"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-stale",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "edited pack rejects stale awaited PDF and recovers with exact authored content",
+            "features": [
+              "stale-await-rejection",
+              "no-stale-download",
+              "retry-pdf-parser",
+              "authored-unicode"
+            ],
+            "exports": [
+              "pdf"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-import",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "saved CV backup import and reload preserve local pack and tracker facts",
+            "features": [
+              "master-save-button",
+              "json-review-restore",
+              "reload-persistence",
+              "local-pack-store-preserved",
+              "natural-version-to-tracker-navigation",
+              "authored-card-collision"
+            ],
+            "exports": [
+              "json",
+              "csv"
+            ]
+          },
+          {
+            "id": "sw-cv-pack-stale-zip",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "edited CV rejects stale awaited ZIP and retry downloads current facts",
+            "features": [
+              "stale-zip-await-rejection",
+              "no-mixed-revision-download",
+              "retry-zip-reopen",
+              "current-cv-backup",
+              "pdf-parser"
+            ],
+            "exports": [
+              "zip"
+            ]
+          },
+          {
+            "id": "sw-cv-docx-review",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "local DOCX review preserves authored text and keyboard focus at 320 and 390",
+            "features": [
+              "local-docx-parser-review",
+              "authored-text-preserved",
+              "review-does-not-mutate-draft",
+              "focus-trap-tab-shift-tab",
+              "escape-return-focus",
+              "mobile-320-390",
+              "import-open-module-adapter"
+            ],
+            "exports": [
+              "docx"
+            ]
+          },
+          {
+            "id": "sw-cv-ai-consent-browser",
+            "kind": "browser",
+            "file": "tests/e2e/cv-ai-consent-localization.spec.js",
+            "title": "sw: actual CV assistant requires native content consent for every action",
+            "features": [
+              "actual-assistant-action",
+              "consent-negative-positive",
+              "fresh-action-consent",
+              "native-consent-copy"
+            ]
+          },
+          {
+            "id": "sw-cv-country-guidance",
+            "kind": "browser",
+            "file": "tests/e2e/swahili-cv-application-pack.spec.js",
+            "title": "Swahili country guidance and privacy controls stay native at 320 and 390 without rewriting the CV",
+            "features": [
+              "native-country-guidance",
+              "country-policy-warnings",
+              "privacy-controls",
+              "authored-value-preservation",
+              "mobile-320-390"
+            ]
+          },
+          {
+            "id": "sw-cv-quoted-restoration",
+            "kind": "browser",
+            "file": "tests/e2e/cv-restored-field-boundaries.spec.js",
+            "title": "sw restored CV target and tracker fields keep quotes inert and literal",
+            "features": [
+              "quoted-authored-values",
+              "attribute-boundaries",
+              "local-tracker-save"
+            ]
+          }
+        ],
+        "editorialReview": {
+          "status": "pending",
+          "notYetProved": [
+            "Native Kiswahili editor review",
+            "Generated letter/email/recruiter/follow-up and CSV language review"
+          ]
+        },
+        "workflowReview": {
+          "status": "pending",
+          "notYetProved": [
+            "All 30 template output layouts",
+            "Remaining editor/empty/invalid/draft recovery states beyond the exact named checks",
+            "Native OS print output",
+            "Complete final-release mobile/light-dark/keyboard review"
+          ]
+        },
+        "unresolvedDefects": [
+          {
+            "id": "cv-zip-async-pdf",
+            "status": "resolved",
+            "dimension": "export",
+            "detail": "Shared awaited PDF repair is integrated. The current ZIP parser case passed, reopening each embedded PDF and checking the synthetic Unicode name and JSON backup."
+          },
+          {
+            "id": "sw-cv-country-guidance",
+            "status": "open",
+            "dimension": "language",
+            "detail": "Complete country-guidance and privacy-warning source overrides cover 56 effective profiles; focused source checks pass. Owner regeneration and the natural-control 320/390 browser case remain pending, as do native-editor and country-fact review."
+          },
+          {
+            "id": "sw-cv-pack-language-unicode",
+            "status": "open",
+            "dimension": "language",
+            "detail": "Native pack/compiler repair is integrated into the parent candidate. Current combined generated-output, browser/export proof and native editorial review remain pending."
+          },
+          {
+            "id": "cv-tracker-memory-refresh",
+            "status": "open",
+            "dimension": "workflow",
+            "detail": "Shared immediate refresh and attachment-identity repairs are integrated. The current combined natural-control browser and CSV proof remain pending."
+          },
+          {
+            "id": "sw-cv-mobile-document-click-loss",
+            "status": "open",
+            "dimension": "accessibility",
+            "detail": "Natural CSV and ZIP retry clicks were lost after form rerender and focus loss moved the mobile command dock between pointer events. The persistent document-control context repair has unit proof; final 320/390 browser rerun is pending the coordinated release slot."
+          },
+          {
+            "id": "sw-cv-docx-review-diagnostic",
+            "status": "open",
+            "dimension": "workflow",
+            "detail": "A newly added DOCX review diagnostic omitted the required Extract sections click after local upload fills the textarea. Source review identified the harness omission and the test now follows that real action; the final keyboard/authored-text browser rerun remains pending and no passing receipt was emitted."
+          },
+          {
+            "id": "cv-ai-chat-content-consent",
+            "status": "open",
+            "dimension": "privacy",
+            "detail": "Mock execution of the committed shared runtime reused general prompt consent for CV chat-style requests. A readable-owner repair and nine source checks now require fresh native content consent; owner generation and actual-browser verification remain pending. No real user data was transmitted in the test."
+          },
+          {
+            "id": "cv-quoted-form-restoration",
+            "status": "open",
+            "dimension": "workflow",
+            "detail": "Pack, tracker and import attribute escaping is corrected in readable source. Generated output and exact literal-field browser regression remain pending."
+          }
+        ],
+        "optionalInputs": [
+          "data/localization/sw-document-pdf-lexicon-overrides.json",
+          "data/localization/sw-cv-application-pack-copy.json",
+          "scripts/build-swahili-cv-application-pack-runtime.js",
+          "assets/css/sw-cv-application-pack.css"
+        ],
+        "optionalDirectories": [
+          "sw/zana/mjenzi-cv/js"
+        ]
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
 const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-references");
+const { assetContentVersion } = require("../scripts/lib/asset-content-version");
 
 const ROOT = path.resolve(__dirname, "..");
 const BASELINE = require("../data/localization/fr-creative-english-baseline.json");
@@ -75,8 +76,18 @@ function normalizeCurrent(html, id) {
     .replace(/\r\n/g, "\n");
 }
 
+const WORKSPACE_CSS_BASELINES = Object.freeze({
+  'creator-clip': 'b26d717c',
+  'creator-record': 'd52841e8',
+  'creator-voice': 'fe5e4b7b',
+});
+
 function normalizeExtractedWorkspace(html, id) {
   return normalizeBuildManagedHtml(html)
+    // The relative stylesheet path remains protected by the frozen workspace
+    // receipt. Only its exact eight-character release cache key varies.
+    .replace(/(href="style\.css\?v=)[a-f0-9]{8}(")/g,
+      (_, prefix, suffix) => prefix + WORKSPACE_CSS_BASELINES[id] + suffix)
     .replace(
       '<link rel="stylesheet" href="/assets/css/creator-media-reflow.css">\n',
       ""
@@ -155,6 +166,10 @@ for (const id of ["creator-clip", "creator-record", "creator-voice"]) {
     const owner = BASELINE.owners.find((item) => item.id === id);
     const fixture = owner.files.find((file) => file.file.endsWith("/app.html"));
     const receipt = APP_WORKSPACE_RECEIPTS[id];
+    const source = fs.readFileSync(path.join(ROOT, 'tools', id, 'app.html'), 'utf8');
+    assert.ok(source.includes('href="style.css?v=' +
+      assetContentVersion(ROOT, `tools/${id}/style.css`) + '"'),
+      'workspace must load its current deployed stylesheet');
     const current = normalizeExtractedWorkspace(
       fs.readFileSync(path.join(ROOT, "tools", id, "app.html"), "utf8"),
       id
@@ -191,3 +206,26 @@ for (const id of ["creator-clip", "creator-record", "creator-voice"]) {
     );
   });
 }
+
+test('workspace cache normalization retains stylesheet paths, query shape, controls and schema', () => {
+  for (const id of Object.keys(WORKSPACE_CSS_BASELINES)) {
+    const source = fs.readFileSync(path.join(ROOT, 'tools', id, 'app.html'), 'utf8');
+    const normalized = normalizeExtractedWorkspace(source, id);
+    assert.equal(normalizeExtractedWorkspace(source.replace(/(href="style\.css\?v=)[a-f0-9]{8}/,
+      (_, prefix) => prefix + '11111111'), id), normalized);
+    const control = source.match(/\bid="[^"]+"/)[0];
+    assert.notEqual(normalizeExtractedWorkspace(source.replace(control, 'id="changed-control"'), id), normalized);
+    const withSchema = source.replace('</head>', '<script type="application/ld+json">{"@type":"WebApplication"}</script></head>');
+    assert.notEqual(normalizeExtractedWorkspace(withSchema.replace('"@type":"WebApplication"',
+      '"@type":"ChangedSchema"'), id), normalizeExtractedWorkspace(withSchema, id));
+    for (const [from, to] of [
+      ['href="style.css?', 'href="other.css?'],
+      ['style.css?v=', 'style.css?preview=1&v='],
+      ['<body', '<body data-workspace-changed="true"'],
+      [`${id}-app-controller.js`, `${id}-other-controller.js`],
+    ]) {
+      assert.ok(source.includes(from), 'negative fixture must exercise ' + from);
+      assert.notEqual(normalizeExtractedWorkspace(source.replace(from, to), id), normalized);
+    }
+  }
+});

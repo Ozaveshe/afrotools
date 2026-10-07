@@ -426,4 +426,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
-module.exports = { ROUTE_OVERRIDES };
+module.exports = { ROUTE_OVERRIDES, normalizeTranslation };

@@ -2,7 +2,6 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
-const crypto = require('node:crypto');
 
 const root = path.resolve(__dirname, '..');
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -23,7 +22,7 @@ test('canonical typography CSS self-hosts the supported AfroTools families', () 
 });
 
 test('shared stylesheets and runtime compatibility paths use canonical typography', () => {
-  const hash = crypto.createHash('md5').update(read('assets/fonts/typography.css').replace(/\r\n?/g, '\n')).digest('hex').slice(0, 8);
+  const hash = require('../scripts/lib/asset-content-version').assetContentVersion(root, 'assets/fonts/typography.css');
   const href = `/assets/fonts/typography.css?v=${hash}`;
   ['assets/css/tokens.css', 'assets/css/global.css', 'assets/css/design-system.css', 'assets/css/navbar.css', 'blog/assets/css/blog-typography.css'].forEach((relativePath) => {
     assert(read(relativePath).startsWith(`@import url('${href}');`), `${relativePath} must invalidate the old immutable stylesheet`);
@@ -40,7 +39,13 @@ test('shared stylesheets and runtime compatibility paths use canonical typograph
   assert(navbar.includes(href), 'Navigation font delivery must request the current stylesheet version');
 
   const navbarCss = read('assets/css/navbar.min.css');
-  assert(navbarCss.startsWith(`@import url('${href}');`), 'The deployed shadow stylesheet must request the current font policy');
+  const fontImport = require('css-tree').parse(navbarCss).children.first;
+  assert.equal(fontImport.type, 'Atrule');
+  assert.equal(fontImport.name, 'import');
+  assert.equal(fontImport.prelude.children.size, 1);
+  assert.equal(fontImport.prelude.children.first.type, 'Url');
+  assert.equal(fontImport.prelude.children.first.value, href,
+    'The deployed shadow stylesheet must request the current font policy');
   assert.doesNotMatch(navbarCss, /fonts\.googleapis\.com/);
 });
 
