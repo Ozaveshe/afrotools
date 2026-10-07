@@ -294,3 +294,42 @@ for (const variant of variants) test.describe(`contact ${variant.width} ${varian
     expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth))).toBe(0);
   });
 });
+
+// Exercise native abort and draft recovery without sending a real contact message.
+test('stalled contact submission restores controls and preserves newer edits', async ({ page }) => {
+  await page.clock.install();
+  await page.setViewportSize({ width: 320, height: 850 });
+  await page.addInitScript(() => {
+    localStorage.setItem('aft_theme', 'dark');
+    const originalFetch = window.fetch;
+    window.__syntheticContactPostCount = 0;
+    window.fetch = function(input, options) {
+      if (input === '/' && options && options.method === 'POST') {
+        window.__syntheticContactPostCount += 1;
+        if (window.__syntheticContactPostCount === 1) {
+          return new Promise((resolve, reject) => {
+            if (options.signal) options.signal.addEventListener('abort', () => reject(new DOMException('Synthetic timeout', 'AbortError')), { once: true });
+          });
+        }
+        return Promise.resolve(new Response('', { status: 200 }));
+      }
+      return originalFetch.apply(this, arguments);
+    };
+  });
+  await page.goto('/contact/', { waitUntil: 'domcontentloaded' });
+  await fillContact(page);
+  const send = page.locator(sendSelector);
+  await send.click();
+  await expect(send).toBeDisabled();
+  await page.getByLabel('Your Message').fill(newerMessage);
+  await page.clock.fastForward(30000);
+  await expect(send).toBeEnabled();
+  await expect(page.locator('#contactStatus')).toContainText('could not confirm');
+  await expect(page.locator('#successMsg')).toBeHidden();
+  await expect(page.locator('#message')).toHaveValue(newerMessage);
+  expect(await page.evaluate(() => window.__syntheticContactPostCount)).toBe(1);
+  await send.click();
+  await expect(page.locator('#successMsg')).toBeVisible();
+  await expect(page.locator('#message')).toHaveValue('');
+  expect(await page.evaluate(() => window.__syntheticContactPostCount)).toBe(2);
+});

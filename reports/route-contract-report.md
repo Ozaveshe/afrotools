@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11696 |
-| Indexable pages | 7881 |
+| Public pages | 11697 |
+| Indexable pages | 7882 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4254 |
-| Documented fallbacks | 14968 |
-| Routes eligible for primary sitemaps | 7881 |
+| Genuine equivalence groups | 4255 |
+| Documented fallbacks | 14969 |
+| Routes eligible for primary sitemaps | 7882 |
 
 ## Locale Coverage
 
-- en: 6141 page records
+- en: 6142 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 544
+- article: 545
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -4243,6 +4243,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:48a83672d490: en=`/jamb/mathematics/1985/`; x-default=`/jamb/mathematics/1985/`
 - equivalence:48b71469c2c0: en=`/agriculture/greenhouse/angola`, fr=`/fr/agriculture/greenhouse/angola`, sw=`/sw/kilimo/greenhouse/angola/`; x-default=`/agriculture/greenhouse/angola`
 - equivalence:48cd39b732c2: en=`/tools/outage-cost/ghana/`, fr=`/fr/tools/estimateur-du-cout-des-coupures-de-courant-ghana/`; x-default=`/tools/outage-cost/ghana/`
+- equivalence:48e5b5725420: en=`/blog/tractor-hire-quotation-checklist-africa/`; x-default=`/blog/tractor-hire-quotation-checklist-africa/`
 - equivalence:4914035c879a: en=`/jamb/biology/1987/`; x-default=`/jamb/biology/1987/`
 - equivalence:4915271f6084: en=`/tools/ke-nssf/`, fr=`/fr/tools/ke-nssf/`, sw=`/sw/zana/kikokotoo-nssf-kenya/`; x-default=`/tools/ke-nssf/`
 - equivalence:491cdad6d40b: en=`/tools/car-insurance/congo-brazzaville`, fr=`/fr/tools/assurance-auto/congo-brazzaville`; x-default=`/tools/car-insurance/congo-brazzaville`

@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 304 |
-| sw | 137 | 1 | 328 |
+| fr | 160 | 2 | 305 |
+| sw | 137 | 1 | 329 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 339 | 40 | 0 | 299 | 21 | 0 | 318 |
+| editorial | 340 | 40 | 0 | 300 | 21 | 0 | 319 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -587,6 +587,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/togo-paye-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/tomato-irrigation-water-requirement-uganda/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/tomato-irrigation-water-requirement-uganda/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/tractor-hire-quotation-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/tractor-hire-quotation-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/truck-load-planning-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/truck-load-planning-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/uganda-efris-credit-notes-vat-amendments-2026/ | editorial | fr | — | missing | no localized route or owner file |
