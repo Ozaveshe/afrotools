@@ -20,11 +20,11 @@ async function fillSynthetic(page) {
 }
 
 for (const route of routes) {
-  test(route + " native private evidence workflow", async ({ page }) => {
+  test(route + " native private evidence workflow", async ({ page, baseURL }) => {
     const errors = [], external = [];
     page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
     page.on("pageerror", e => errors.push(e.message));
-    page.on("request", r => { if (!r.url().startsWith("http://127.0.0.1:4173")) external.push(r.url()); });
+    page.on("request", r => { if (!r.url().startsWith(baseURL)) external.push(r.url()); });
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(route);
     await expect(page.locator("iframe")).toHaveCount(0);
@@ -50,8 +50,8 @@ for (const route of routes) {
     const pdf = await pdfWait, pdfBytes = await bytes(pdf);
     expect(pdfBytes.subarray(0, 4).toString()).toBe("%PDF");
     const pdfText = (await pdfParse(pdfBytes)).text;
-    expect(pdfText).toContain("Currency / unit: TEST");
-    expect(pdfText).toContain("Each method is independent");
+    expect(pdfText).toContain(route.startsWith("/fr/") ? "Devise / unité: TEST" : route.startsWith("/sw/") ? "Sarafu / kitengo: TEST" : "Currency / unit: TEST");
+    expect(pdfText).toContain(route.startsWith("/fr/") ? "Chaque méthode est indépendante" : route.startsWith("/sw/") ? "Kila mbinu ni huru" : "Each method is independent");
     for (const id of ["#sv-csv", "#sv-json"]) {
       const wait = page.waitForEvent("download");
       await page.locator(id).click();
