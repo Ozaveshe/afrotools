@@ -283,7 +283,10 @@
   }
 
   function csvCell(value) {
-    return '"' + String(value == null ? '' : value).replace(/"/g, '""') + '"';
+    var text = String(value == null ? '' : value);
+    var plainNumber = /^[\s]*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[\s]*$/i.test(text);
+    if (!plainNumber && /^[\s\u0000-\u001f]*[=+\-@]/.test(text)) text = "'" + text;
+    return '"' + text.replace(/"/g, '""') + '"';
   }
 
   function csvText(data) {
@@ -612,8 +615,8 @@
   function init() {
     var config = parseConfig();
     if (!config) return;
-    // The native leave owners export validated results and real calendar dates.
-    if (config.englishId === 'leave-calculator' || config.englishId === 'crypto-remittance') return;
+    // Preserve validated native exports, including the two-offer comparison schema.
+    if (config.englishId === 'leave-calculator' || config.englishId === 'crypto-remittance' || config.englishId === 'job-offer-evaluator') return;
     rememberInitialResultState();
     installStyles();
     var root = render(config);
