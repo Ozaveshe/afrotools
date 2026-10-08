@@ -75,3 +75,14 @@ function refreshGhanaControls(target){
  return target;
 }
 module.exports.refreshGhanaControls=refreshGhanaControls;
+
+function refreshGhanaSharing(target,source){
+ const names=['cleanCalculatorUrl','shareCalculator','shareSalaryWhatsApp'];
+ const functions=names.map(name=>{const node=calculation(source,name);return source.slice(node.offset+node.start,node.offset+node.end);}).join('\n  ');
+ if(!target.includes('function cleanCalculatorUrl'))target=target.replace('  // --- EVENTS ---','  '+functions+'\n\n  // --- EVENTS ---');
+ const start=target.indexOf('    // Actions\n'),end=target.indexOf('    // AI\n',start);
+ if(start>=0&&end>start)target=target.slice(0,start)+"    // Sharing a calculator link must not embed salary or saved-record parameters.\n    $('waBtn').addEventListener('click', shareSalaryWhatsApp);\n    $('shareBtn').addEventListener('click', shareCalculator);\n\n"+target.slice(end);
+ else if(!target.includes("$('waBtn').addEventListener('click', shareSalaryWhatsApp);"))throw Error('Missing sharing owner anchors');
+ return target;
+}
+module.exports.refreshGhanaSharing=refreshGhanaSharing;

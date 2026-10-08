@@ -25,7 +25,7 @@ for(const route of routes)test('modern PAYE real page restore: '+route,async({pa
    const geometry=await toggle.evaluate(el=>{const label=el.closest('label'),box=label.getBoundingClientRect();return {height:box.height,width:box.width,outline:getComputedStyle(label).outlineStyle}});
    expect(geometry.height).toBeGreaterThanOrEqual(44);expect(geometry.width).toBeGreaterThanOrEqual(44);expect(geometry.outline).toBe('solid');
   }
-  await page.locator('#calcBtn').click();await page.evaluate(()=>{window.__whatsappCalls=0;window.AfroTools.shareState.whatsappShare=()=>{window.__whatsappCalls++}});await page.locator('#waBtn').click();expect(await page.evaluate(()=>window.__whatsappCalls)).toBe(1);
+  await page.locator('#calcBtn').click();await page.evaluate(()=>{window.__whatsappCalls=0;window.AfroTools.shareState.whatsappShare=()=>{window.__whatsappCalls++}});page.once('dialog',d=>d.accept());await page.locator('#waBtn').click();expect(await page.evaluate(()=>window.__whatsappCalls)).toBe(1);
 
   await page.evaluate(()=>{window.__eventKeys=[];window.gtag=(type,name,meta)=>{if(name==='gh_paye_calculate')window.__eventKeys.push(Object.keys(meta).sort())};window.__exports=0;window.AfroTools.pdf={generate:()=>{window.__exports++}}});
   for(const control of ['#togMarriage','#basicSalary','#modeNet']){

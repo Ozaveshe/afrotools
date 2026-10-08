@@ -1099,6 +1099,21 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
     finally{sendChat.pending=false;if(button)button.disabled=false;}
   }
 
+  function cleanCalculatorUrl(){return new URL(window.location.pathname,window.location.origin).href;}
+  function shareCalculator(){
+    if(!window.AfroTools?.shareState)return;
+    const french=document.documentElement.lang==='fr';
+    return window.AfroTools.shareState.share({title:french?'Calculateur PAYE Ghana':'Ghana PAYE Calculator',text:french?'Calculer le salaire net au Ghana.':'Calculate take-home pay in Ghana.',state:{},baseUrl:cleanCalculatorUrl(),toolId:'gh-paye'});
+  }
+  function shareSalaryWhatsApp(){
+    if(!R||!window.AfroTools?.shareState)return;
+    const french=document.documentElement.lang==='fr';
+    const data={headline:french?'Mon salaire net':'My Take-Home Pay',mainValue:fmt(R.netMonthly)+'/mo',subValues:[{label:french?'Brut':'Gross',value:fmt(R.gross)+'/yr'},{label:french?'Impôt':'Tax',value:fmt(R.tax)+'/yr'},{label:french?'Taux effectif':'Effective Rate',value:pct(R.effectiveRate)}],state:{},baseUrl:cleanCalculatorUrl(),toolId:'gh-paye'};
+    const preview=data.headline+': '+data.mainValue+'\n'+data.subValues.map(item=>item.label+': '+item.value).join('\n')+'\n'+data.baseUrl;
+    if(!window.confirm((french?'Partager ces données salariales via WhatsApp ? Annulez pour les garder privées.':'Share these salary details through WhatsApp? Cancel to keep them private.')+'\n\n'+preview))return;
+    window.AfroTools.shareState.whatsappShare(data);
+  }
+
   // --- EVENTS ---
   document.addEventListener('DOMContentLoaded', () => {
     // Mode toggle
@@ -1157,32 +1172,9 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
       });
     });
 
-    // Actions
-    // Keep salary report downloads local and direct; this page bypasses the shared PDF gate.
-    $('waBtn').addEventListener('click', () => {
-      if (!R || !window.AfroTools?.shareState) return;
-      window.AfroTools.shareState.whatsappShare({
-        headline: 'My Take-Home Pay',
-        mainValue: fmt(R.netMonthly) + '/mo',
-        subValues: [
-          { label: 'Gross', value: fmt(R.gross) + '/yr' },
-          { label: 'Tax', value: fmt(R.tax) + '/yr' },
-          { label: 'Effective Rate', value: pct(R.effectiveRate) }
-        ],
-        state: { g: Math.round(R.gross), b: Math.round(R.basic), m: calcMode },
-        toolId: 'gh-paye'
-      });
-    });
-
-    $('shareBtn').addEventListener('click', () => {
-      if (!R || !window.AfroTools?.shareState) return;
-      window.AfroTools.shareState.share({
-        title: 'Ghana PAYE - AfroTools',
-        text: `Gross ${fmt(R.gross)}/yr \u2192 Take-home ${fmt(R.netMonthly)}/mo (${pct(R.effectiveRate)} rate)`,
-        state: { g: Math.round(R.gross), b: Math.round(R.basic), m: calcMode },
-        toolId: 'gh-paye'
-      });
-    });
+    // Sharing a calculator link must not embed salary or saved-record parameters.
+    $('waBtn').addEventListener('click', shareSalaryWhatsApp);
+    $('shareBtn').addEventListener('click', shareCalculator);
 
     // AI
     $('aiBtn').addEventListener('click', getAI);
