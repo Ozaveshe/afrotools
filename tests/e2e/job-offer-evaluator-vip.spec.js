@@ -14,14 +14,15 @@ const routes = [
 ];
 
 for (const route of routes) {
-  test(route + " is native, private, responsive and exports PDF", async ({ page }) => {
+  test(route + " is native, private, responsive and exports PDF", async ({ page, baseURL }) => {
     const errors = [], external = [], downloads = [];
     page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
     page.on("pageerror", e => errors.push(e.message));
-    page.on("request", r => { if (!r.url().startsWith("http://127.0.0.1:4173")) external.push(r.url()); });
+    page.on("request", r => { if (new URL(r.url()).origin !== new URL(baseURL).origin) external.push(r.url()); });
     page.on("download", d => downloads.push(d));
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(route);
+    const storageBefore = await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length }));
     await page.locator('[name="currency"]').fill("TEST");
     await expect(page.locator("iframe")).toHaveCount(0);
     await expect(page.locator("body")).toHaveJSProperty("scrollWidth", 375);
@@ -51,7 +52,7 @@ for (const route of routes) {
       expect(exported.suggestedFilename()).toMatch(/\.(csv|json)$/);
       expect((await downloadBuffer(exported)).toString()).toContain("TEST");
     }
-    expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length, hash: location.hash, search: location.search }))).toEqual({ local: 0, session: 0, hash: "", search: "" });
+    expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length, hash: location.hash, search: location.search }))).toEqual({ ...storageBefore, hash: "", search: "" });
     await page.emulateMedia({ colorScheme: "dark" });
     expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe("rgb(245, 247, 247)");
     await page.setViewportSize({ width: 640, height: 812 });

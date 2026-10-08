@@ -116,6 +116,20 @@ jobs:
           PORT: '4178'
         run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
 
+      - name: Verify Job Offer native export safety in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4182'
+        run: npx playwright test tests/e2e/job-offer-evaluator-vip.spec.js tests/e2e/job-offer-csv-safety.spec.js --grep-invert "capture synthetic director screenshots" --project=chromium --workers=2 --trace=off
+
+      - name: Verify Startup Valuation recovery and native exports in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4183'
+        run: npx playwright test tests/e2e/startup-valuation-recovery.spec.js tests/e2e/startup-valuation-vip.spec.js --grep-invert "capture synthetic" --project=chromium --workers=2 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
