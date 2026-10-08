@@ -25,6 +25,7 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['ha/kayan-aiki/kirkiro-resit/src/app.js', 'ha/kayan-aiki/kirkiro-resit/app.js'],
   ['assets/js/components/src/ai-consent.js', 'assets/js/components/ai-consent.js'],
   ['assets/js/pages/src/invoice-generator-enhancements.js', 'assets/js/pages/invoice-generator-enhancements.js'],
   ['tools/invoice-generator/js/src/invoice-workspace-sync.js', 'tools/invoice-generator/js/invoice-workspace-sync.js'],
