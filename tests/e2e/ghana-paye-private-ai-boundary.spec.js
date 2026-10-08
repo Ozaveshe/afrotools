@@ -27,3 +27,18 @@ for(const route of ['/ghana/gh-paye.html','/fr/ghana/gh-paye.html'])test('Ghana 
  await page.locator('#basicSalary').fill('60000');await expect(page.locator('#resultsCard')).toBeHidden();const response=page.waitForResponse(r=>r.url().includes('/.netlify/functions/ai-advisor'));release();await (await response).finished();await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await expect(page.locator('#aiResp')).toBeHidden();await expect(page.locator('#aiResp')).toHaveText('');await expect(page.locator('#aiBtn')).toBeDisabled();await expect(page.locator('#aiChat')).not.toHaveClass(/\bon\b/);expect(errors).toEqual([]);
 });
+
+for(const route of ['/ghana/gh-paye.html','/fr/ghana/gh-paye.html'])test('Ghana chat preserves drafts across refusal, failure and concurrent edits: '+route,async({page,baseURL})=>{
+ test.setTimeout(40000);const errors=[];page.on('pageerror',()=>errors.push('pageerror'));let allow=true,sends=0,mode='success',release;
+ page.on('dialog',d=>allow?d.accept():d.dismiss());
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
+ await page.route('**/assets/js/bundles/core.*',r=>r.fulfill({contentType:'application/javascript',body:coreBundle}));
+ await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ await page.route('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',r=>process.env.AFROTOOLS_TEST_CHART_JS?r.fulfill({contentType:'application/javascript',body:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS)}):r.continue());
+ await page.route('**/.netlify/functions/ai-advisor',async r=>{sends++;if(mode==='hold')await new Promise(resolve=>release=resolve);await r.fulfill({status:mode==='fail'?503:200,contentType:'application/json',body:'{"text":"Synthetic reply"}'})});
+ await page.goto(route);await page.locator('#salaryInput').focus();await page.locator('#salaryInput').fill('123456');await page.locator('#calcBtn').click();await page.locator('#aiBtn').click();await expect(page.locator('#aiChat')).toHaveClass(/\bon\b/);expect(sends).toBe(1);
+ const input=page.locator('#chatIn'),send=page.locator('#aiChat .chat-send');await input.fill('Synthetic follow-up');allow=false;await input.press('Enter');await expect(send).toBeEnabled();await expect(page.locator('#chatStatus')).toContainText(route.startsWith('/fr/')?'Aucun envoi':'Nothing sent');await expect(input).toHaveValue('Synthetic follow-up');expect(sends).toBe(1);
+ allow=true;mode='fail';await send.click();await expect(page.locator('#chatStatus')).toContainText(route.startsWith('/fr/')?'Réponse indisponible':'Reply unavailable');await expect(input).toHaveValue('Synthetic follow-up');expect(sends).toBe(2);
+ mode='hold';await input.press('Enter');await expect(send).toBeDisabled();await input.press('Enter');await input.fill('New unsent question');expect(sends).toBe(3);release();await expect(send).toBeEnabled();await expect(input).toHaveValue('New unsent question');await expect(page.locator('#chatMsgs')).toContainText('Synthetic reply');
+ mode='success';await send.click();await expect(input).toHaveValue('');expect(sends).toBe(4);expect(errors).toEqual([]);
+});

@@ -48,6 +48,7 @@ function refreshGhanaSafety(target,source){
 module.exports.refreshGhanaSafety=refreshGhanaSafety;
 
 function refreshGhanaAi(target,source){
+ if(!target.includes('window.sendChat = sendChat;')){if(!target.includes('window.calculate = calculate;'))throw Error('Missing Ghana public handlers');target=target.replace('window.calculate = calculate;','window.sendChat = sendChat;\n  window.calculate = calculate;');}
  for(const name of ['getAI','sendChat']){
   const src=calculation(source,name),dst=calculation(target,name);
   const start=src.offset+src.start,end=src.offset+src.end;

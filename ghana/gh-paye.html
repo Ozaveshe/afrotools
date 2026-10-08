@@ -1078,12 +1078,25 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
   }
 
   async function sendChat(){
-    const input=$('chatIn');const msg=input.value.trim();if(!msg)return;input.value='';
-    const msgs=$('chatMsgs');
-    msgs.innerHTML+='<div style="font-size:.78rem;padding:7px 11px;background:#EFF6FF;border-radius:6px;color:#0f172a;align-self:flex-end;max-width:85%">'+msg.replace(/</g,'&lt;')+'</div>';
-    const thinking=document.createElement('div');thinking.style.cssText='font-size:.78rem;padding:7px 11px;color:#64748b';thinking.textContent='Thinking...';msgs.appendChild(thinking);msgs.scrollTop=msgs.scrollHeight;
-    try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'gh-paye',system:'AfroTools AI Tax Advisor for Ghana PAYE, SSNIT, reliefs. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});const data=await res.json();thinking.textContent=data.text||'No response.';thinking.style.background='#F8FAFC';thinking.style.borderRadius='6px';}catch(e){thinking.textContent='Unable to respond right now.';}
-    msgs.scrollTop=msgs.scrollHeight;
+    const input=$('chatIn'),msg=input.value.trim();
+    if(!R||!msg||sendChat.pending)return;
+    const result=R,button=document.querySelector('#aiChat .chat-send'),french=document.documentElement.lang==='fr';
+    let status=$('chatStatus');
+    if(!status){status=document.createElement('p');status.id='chatStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');$('aiChat').appendChild(status);}
+    status.textContent='';sendChat.pending=true;if(button)button.disabled=true;
+    try{
+      const response=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'gh-paye',system:'AfroTools AI Tax Advisor for Ghana PAYE, SSNIT, reliefs. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});
+      if(R!==result)return;
+      if(response.status===428){status.textContent=french?'Aucun envoi. Votre question est conservée.':'Nothing sent. Your question has been kept.';return;}
+      if(!response.ok)throw Error('request_failed');
+      const data=await response.json();if(R!==result)return;
+      if(!data||typeof data.text!=='string'||!data.text.trim())throw Error('empty_response');
+      const messages=$('chatMsgs'),question=document.createElement('div'),answer=document.createElement('div');
+      question.textContent=msg;answer.textContent=data.text;messages.append(question,answer);
+      if(input.value.trim()===msg)input.value='';
+      messages.scrollTop=messages.scrollHeight;
+    }catch(_){if(R===result)status.textContent=french?'Réponse indisponible. Votre question est conservée ; réessayez.':'Reply unavailable. Your question has been kept; please retry.';}
+    finally{sendChat.pending=false;if(button)button.disabled=false;}
   }
 
   // --- EVENTS ---
@@ -1356,6 +1369,7 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
     };
   })();
 
+  window.sendChat = sendChat;
   window.calculate = calculate;
   window.exportPdf = exportPdf;
 })();
