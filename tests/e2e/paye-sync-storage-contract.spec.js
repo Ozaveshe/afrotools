@@ -16,7 +16,7 @@ async function open(page,baseURL,options={}){
   window.AfroData={logToolUse:()=>{},save:()=>{window.mock.deviceWrites++}};
   window.AfroHistory={save:async()=>{window.mock.historySends++;return {saved:false}}};
   window.AfroAuth={isLoggedIn:()=>false,getUser:()=>({id:window.mock.user}),onReady:()=>{}};
-  window.AfroWorkspace={isSignedIn:()=>false,list:async query=>{window.mock.lists++;if(window.mock.listFail)throw Error('SYNTHETIC_SECRET_SENTINEL');return query&&query.itemKey?window.mock.rows.filter(row=>row.item_key===query.itemKey):window.mock.rows},upsert:async item=>{window.mock.upserts++;if(window.mock.upsertMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.upsertMode==='null')return null;return {item_key:item.itemKey,payload:item.payload,title:item.title}},remove:async input=>{window.mock.removes++;if(window.mock.removeMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.removeMode==='noop')return null;window.mock.rows=window.mock.rows.filter(row=>row.item_key!==input.itemKey);if(window.mock.removeMode==='switch')window.mock.user='different-user';return null}};
+  window.AfroWorkspace={isSignedIn:()=>false,list:async query=>{window.mock.lists++;if(window.mock.listFail)throw Error('SYNTHETIC_SECRET_SENTINEL');return query&&query.itemKey?window.mock.rows.filter(row=>row.item_key===query.itemKey):window.mock.rows},upsert:async (item,guard)=>{if(window.mock.upsertMode==='switch-before')window.mock.user='different-user';if(guard&&guard.canRequest&&!guard.canRequest())throw Error('SYNTHETIC_SECRET_SENTINEL');window.mock.upserts++;if(window.mock.upsertMode==='switch-after')window.mock.user='different-user';if(window.mock.upsertMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.upsertMode==='null')return null;return {item_key:item.itemKey,payload:item.payload,title:item.title}},remove:async input=>{window.mock.removes++;if(window.mock.removeMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.removeMode==='noop')return null;window.mock.rows=window.mock.rows.filter(row=>row.item_key!==input.itemKey);if(window.mock.removeMode==='switch')window.mock.user='different-user';return null}};
   window.addEventListener('afro-saved-calculations-change',e=>{window.mock.lastAction=e.detail.action;if(e.detail.action==='init')window.mock.init=true});
  },{key,payload,options});
  await page.goto('/__paye_sync_fixture__');await page.waitForFunction(()=>window.mock.init||document.getElementById('calcSaveStatus').dataset.tone==='warning');return {errors,leaks};
@@ -94,4 +94,17 @@ test('modern PAYE: valid scenario restores',async({page,baseURL})=>{
 });
 test('modern PAYE: throwing restore adapter shows failure without generic fallback',async({page,baseURL})=>{
  const before=JSON.stringify([record]),proof=await open(page,baseURL,{raw:before,restoreThrows:true});await page.locator('[data-action=load]').click();await expect(page.locator('#calcSaveStatus')).toContainText('could not be restored');await expect(page.locator('#salaryInput')).toHaveValue('456');expect(await raw(page)).toBe(before);expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
+});
+
+for(const mode of ['switch-before','switch-after'])test('modern PAYE: '+mode+' save retains local copy without claiming dashboard success',async({page,baseURL})=>{
+ const proof=await open(page,baseURL,{upsertMode:mode});await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSaveStatus')).toContainText('Saved on this device');expect(JSON.parse(await raw(page))).toHaveLength(1);expect(await page.evaluate(()=>window.mock.upserts)).toBe(mode==='switch-before'?0:1);await expect(page.locator('.calc-save-badge')).toHaveText('This device');expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
+});
+test('modern PAYE: account switch followed by list failure drops old dashboard cache',async({page,baseURL})=>{
+ const row={item_key:'remote',title:'Synthetic remote',payload,updated_at:'2026-01-01T00:00:00Z'},proof=await open(page,baseURL,{rows:[row]});await page.evaluate(()=>{window.mock.user='different-user';window.mock.listFail=true;window.dispatchEvent(new Event('afro-auth-change'))});await expect(page.locator('#calcSaveStatus')).toContainText('Sync failed');await expect(page.locator('.calc-save-badge')).toHaveText('This device');expect(proof.errors).toEqual([]);
+});
+
+test('modern PAYE: real workspace helper blocks save when account changes during token lookup',async({page,baseURL})=>{
+ const proof=await open(page,baseURL);await page.addScriptTag({url:'/assets/js/lib/workspace-sync.js'});
+ await page.evaluate(()=>{window.__workspaceSends=0;window.AfroAuth.getSessionTokenAsync=async()=>{window.mock.user='different-user';return 'synthetic-token'};window.fetch=async()=>{window.__workspaceSends++;return new Response('{}',{status:200})}});
+ await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSaveStatus')).toContainText('Saved on this device');expect(await page.evaluate(()=>window.__workspaceSends)).toBe(0);expect(JSON.parse(await raw(page))).toHaveLength(1);await expect(page.locator('.calc-save-badge')).toHaveText('This device');expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
 });

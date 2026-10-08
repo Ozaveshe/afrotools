@@ -321,9 +321,9 @@
                                 await e.AfroWorkspace.remove({
                                     itemType: u,
                                     itemKey: t
-                                });
+                                },{canRequest:function(){return accountKey()===owner;}});
                                 if(accountKey()!==owner)throw new Error('account_changed');
-                                var remaining=await e.AfroWorkspace.list({itemType:u,itemKey:t,limit:1});
+                                var remaining=await e.AfroWorkspace.list({itemType:u,itemKey:t,limit:1,canRequest:function(){return accountKey()===owner;}});
                                 if(accountKey()!==owner||!Array.isArray(remaining)||remaining.length)throw new Error('delete_unconfirmed');
                             } catch (error) {
                                 delete deleting[t];
@@ -497,9 +497,12 @@
     async function X() {
         if (!T()) return [];
         var owner=accountKey();
+        if(!owner){y=Object.create(null);cacheOwner='';return [];}
+        if(cacheOwner&&cacheOwner!==owner){y=Object.create(null);cacheOwner='';}
         try {
             var t = await e.AfroWorkspace.list({
                 itemType: u,
+                canRequest:function(){return accountKey()===owner;},
                 limit: 60
             });
             if(!Array.isArray(t))throw new Error('workspace_list_unconfirmed');
@@ -513,7 +516,8 @@
         }
     }
     async function Z(t) {
-        if (!T()) return !1;
+        var owner=accountKey();
+        if (!T()||!owner) return !1;
         try {
             var a = await e.AfroWorkspace.upsert(function(e) {
                 var t = H(e), a = U(t), n = t && t.snapshot ? C(t.snapshot) : null, o = {
@@ -540,9 +544,10 @@
                     payload: t,
                     meta: o
                 };
-            }(t));
-            if(!a||a.item_key!==t.id)return false;
-            y[a.item_key]=a;return true;
+            }(t),{canRequest:function(){return accountKey()===owner;}});
+            if(accountKey()!==owner||!a||a.item_key!==t.id)return false;
+            if(cacheOwner!==owner)y=Object.create(null);
+            cacheOwner=owner;y[a.item_key]=a;return true;
         } catch (e) {
             return console.warn("[PayeCalculationSync] Workspace upsert failed:"), 
             !1;
