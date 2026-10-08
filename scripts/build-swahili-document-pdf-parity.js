@@ -347,7 +347,9 @@ const legacyInlineRepairs = {
     '<input type="file" id="fileInput" accept=".pdf,image/*">': '<input type="file" id="fileInput" class="ocr-file-input" accept=".pdf,image/*">'
   },
   'pdf-workspace': {
-    'id="exPrint">Print</button>': 'id="exPrint">Chapisha</button>'
+    'id="exPrint">Print</button>': 'id="exPrint">Chapisha</button>',
+    '<p id="workspaceLoadStatus" role="status" aria-live="polite">Preparing PDF tools. Your selected file will open automatically.</p>': '<p id="workspaceLoadStatus" role="status" aria-live="polite">Zana za PDF zinaandaliwa. Faili uliyochagua itafunguka kiotomatiki.</p>',
+    'id="workspaceLoadRetry" type="button" hidden>Retry PDF loading</button>': 'id="workspaceLoadRetry" type="button" hidden>Jaribu kupakia PDF tena</button>'
   }
 };
 

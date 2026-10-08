@@ -491,7 +491,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
 <meta name="afrotools-content-id" content="sw-document-pdf:pdf-workspace">
   <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=c176b075">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 <link rel="canonical" href="https://afrotools.com/sw/zana/nafasi-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workspace/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/espace-pdf/">
@@ -518,6 +518,7 @@
   <h1>Bure mtandaoni <b>Mhariri wa PDF</b> na eneo la kazi</h1>
   <p>Pakia PDF, kisha panga kurasa, ongeza maandishi, vivutio, saini, alama za maji, visanduku vya jalada vinavyoonekana, mbano na nambari za ukurasa kabla ya kupakua nakala iliyochaguliwa.</p>
   <div class="dz" id="dz"><div class="dz-mark" aria-hidden="true">PDF</div><h3>Dondosha PDF hapa ili kuanza</h3><p>or <span class="gr">bofya ili kuvinjari</span></p><input aria-label="Chagua faili ya PDF ili kuhariri katika nafasi ya kazi" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
+  <p id="workspaceLoadStatus" role="status" aria-live="polite">Zana za PDF zinaandaliwa. Faili uliyochagua itafunguka kiotomatiki.</p><button id="workspaceLoadRetry" type="button" hidden>Jaribu kupakia PDF tena</button>
   <section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="Faili za PDF hukaa ndani" data-consent-copy="Unganisha, gawanya, tia sahihi, fafanua, na hamisha PDF katika kivinjari hiki. AfroTools haitumi faili kwa AI au seva isipokuwa mtiririko wa kazi wa siku zijazo uulize waziwazi na uchague." aria-label="Notisi ya faragha ya Nafasi ya Kazi ya PDF"></section>
   <div class="pdf-fast-start" aria-label="Njia za mkato za mtiririko wa kazi wa PDF">
     <div class="pdf-fast-start-head">
@@ -805,11 +806,57 @@
 <script>
 function loadJS(u){return new Promise(function(r,j){var s=document.createElement("script");s.src=u;s.onload=r;s.onerror=j;document.head.appendChild(s)})}
 var hasPJ=false;
-async function init(){
-  try{await loadJS("/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1")}catch(e){toast("Cannot load PDF library",1);return}
-  try{await loadJS("/assets/vendor/pdfjs/pdf.min.js?v=96de3233");pdfjsLib.GlobalWorkerOptions.workerSrc="/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2";hasPJ=true}catch(e){}
-  run();
+var workspaceStartup={ready:false,loading:null,bound:false,pending:null,opening:false};
+function workspaceStartupCopy(){
+  var language=(document.documentElement.lang||"en").split("-")[0];
+  var copy={
+    en:{loading:"Preparing PDF tools. Your selected file will open automatically.",error:"PDF tools could not load. Retry to open your selected file; it stays in this browser.",retry:"Retry PDF loading",ready:"PDF tools are ready. Choose or drop a PDF."},
+    fr:{loading:"Préparation des outils PDF. Le fichier choisi s’ouvrira automatiquement.",error:"Les outils PDF n’ont pas pu charger. Réessayez pour ouvrir le fichier choisi ; il reste dans ce navigateur.",retry:"Réessayer le chargement PDF",ready:"Les outils PDF sont prêts. Choisissez ou déposez un PDF."},
+    sw:{loading:"Zana za PDF zinaandaliwa. Faili uliyochagua itafunguka kiotomatiki.",error:"Zana za PDF hazikuweza kupakia. Jaribu tena kufungua faili uliyochagua; inabaki kwenye kivinjari hiki.",retry:"Jaribu kupakia PDF tena",ready:"Zana za PDF ziko tayari. Chagua au dondosha PDF."}
+  };
+  return copy[language]||copy.en;
 }
+function workspaceStartupStatus(state){
+  var copy=workspaceStartupCopy();
+  document.getElementById("workspaceLoadStatus").textContent=copy[state];
+  var retry=document.getElementById("workspaceLoadRetry");retry.textContent=copy.retry;retry.hidden=state!=="error";
+}
+async function drainWorkspaceFiles(){
+  if(!workspaceStartup.ready||workspaceStartup.opening)return;
+  workspaceStartup.opening=true;
+  try{while(workspaceStartup.pending){var file=workspaceStartup.pending;workspaceStartup.pending=null;await openPDF(file)}}
+  finally{workspaceStartup.opening=false}
+}
+function queueWorkspaceFile(file){
+  if(!file)return;
+  workspaceStartup.pending=file;
+  if(workspaceStartup.ready)drainWorkspaceFiles();else init();
+}
+function init(){
+  if(workspaceStartup.ready){drainWorkspaceFiles();return Promise.resolve()}
+  if(workspaceStartup.loading)return workspaceStartup.loading;
+  workspaceStartupStatus("loading");
+  workspaceStartup.loading=(async function(){
+    await Promise.resolve();
+    try{
+      if(!window.PDFLib)await loadJS("/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1");
+      if(!window.pdfjsLib)await loadJS("/assets/vendor/pdfjs/pdf.min.js?v=96de3233");
+      pdfjsLib.GlobalWorkerOptions.workerSrc="/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2";hasPJ=true;
+      if(!workspaceStartup.bound){run();workspaceStartup.bound=true}
+      workspaceStartup.ready=true;workspaceStartupStatus("ready");
+    }catch(e){workspaceStartupStatus("error")}
+    finally{workspaceStartup.loading=null}
+    if(workspaceStartup.ready)await drainWorkspaceFiles();
+  })();
+  return workspaceStartup.loading;
+}
+// Capture the first selection before either asynchronous PDF library responds.
+var workspaceFileInput=document.getElementById("fileIn"),workspaceDropzone=document.getElementById("dz");
+workspaceFileInput.onchange=function(){var file=this.files[0];this.value="";queueWorkspaceFile(file)};
+workspaceDropzone.ondragover=function(e){e.preventDefault();e.stopPropagation();this.classList.add("over")};
+workspaceDropzone.ondragleave=function(){this.classList.remove("over")};
+workspaceDropzone.ondrop=function(e){e.preventDefault();e.stopPropagation();this.classList.remove("over");queueWorkspaceFile(e.dataTransfer.files[0])};
+document.getElementById("workspaceLoadRetry").onclick=function(){init().then(function(){var target=workspaceStartup.ready?(document.getElementById("ws").classList.contains("on")?document.getElementById("tbDL"):workspaceFileInput):document.getElementById("workspaceLoadRetry");target.focus()})};
 init();
 
 var pB=null,po=[],pr={},sel=0,th={},fn="document.pdf",zm=1.5;
@@ -1680,13 +1727,8 @@ function runPageOp(op){
 }
 
 function run(){
-  var dz=$("dz"),fi=$("fileIn");
   initPdfFastStarts();
   initPdfAiAssist();
-  dz.ondragover=function(e){e.preventDefault();e.stopPropagation();dz.classList.add("over")};
-  dz.ondragleave=function(){dz.classList.remove("over")};
-  dz.ondrop=function(e){e.preventDefault();e.stopPropagation();dz.classList.remove("over");if(e.dataTransfer.files.length)openPDF(e.dataTransfer.files[0])};
-  fi.onchange=function(){if(fi.files.length)openPDF(fi.files[0]);fi.value=""};
   $("tbAdd").onclick=function(){chooseInsertPDF("after")};
   $("mergeIn").onchange=function(){var f=Array.from(this.files);this.value="";addPDFs(f)};
   $("tbSplit").onclick=openSplit;$("tbRearr").onclick=openRearr;
@@ -2726,8 +2768,8 @@ function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" er
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=02d5184e" defer></script>
 
   <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-workspace","name":"Nafasi ya PDF","phraseOverrides":{"PDF tools":"Zana za PDF","Need help choosing a PDF action?":"Unahitaji msaada kuchagua hatua ya PDF?","All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.","Freehand":"Chora kwa mkono"},"downloadContract":"local-guest"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=65606a7e" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>
