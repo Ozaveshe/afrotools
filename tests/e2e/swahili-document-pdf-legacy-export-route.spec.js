@@ -24,6 +24,7 @@ const swConfig = {
     swahiliRoute: row.swahiliRoute,
     exports: row.exports,
     sensitive: row.sensitive === true,
+    localFirstDownloads: row.localFirstDownloads === true,
     requiresConsent: row.requiresConsent === true
   }))
 };
@@ -32,6 +33,7 @@ const target = swConfig.apps.find((app) => app.id === TARGET_ID);
 if (!target || target.id === 'document-pdf') {
   throw new Error(`SW_EXPORT_ID must identify one of the 31 export routes; received ${TARGET_ID}.`);
 }
+const guestAllowed = target.sensitive || target.localFirstDownloads;
 const currentEnglishOwnerIds = new Set(swConfig.apps.map((app) => app.id));
 
 const titlePatterns = {
@@ -87,16 +89,16 @@ source = source.replace(
 );
 source = source.replace(
   "locale: 'fr',",
-  "locale: 'sw',\n    scope: 'route-isolated-download-contract-export-proof',\n    proofVersion: 'download-contract-v3',\n    targetId: " + JSON.stringify(TARGET_ID) + ","
+  "locale: 'sw',\n    scope: 'route-isolated-download-contract-export-proof',\n    proofVersion: 'download-contract-v4',\n    targetId: " + JSON.stringify(TARGET_ID) + ","
 );
 source = source.replace(
   "primaryActionsUngated: accepted,",
-  "primaryActionsUngated: app.sensitive === true ? accepted : false,\n      guestUnauthenticated: app.sensitive === true ? accepted : false,\n      guestBlocked: app.sensitive === true ? null : true,\n      registeredDownload: app.sensitive === true ? null : accepted,\n      downloadContract: app.sensitive === true ? 'sensitive-guest' : 'free-account',"
+  "primaryActionsUngated: (app.sensitive || app.localFirstDownloads) ? accepted : false,\n      guestUnauthenticated: (app.sensitive || app.localFirstDownloads) ? accepted : false,\n      guestBlocked: null,\n      registeredDownload: (app.sensitive || app.localFirstDownloads) ? null : accepted,\n      downloadContract: app.sensitive === true ? 'sensitive-guest' : app.localFirstDownloads ? 'local-guest' : 'free-account',"
 );
 source = source.replace(
   "test.beforeEach(async ({ page }) => {",
   "test.beforeEach(async ({ page }) => {\n" +
-  (target.sensitive ? '' :
+  (guestAllowed ? '' :
     "  await page.addInitScript(() => { window.AfroAuth = { isLoggedIn: () => true, getUser: () => ({ id: 'registered-contract-user', email: 'registered@example.test', tier: 'free' }), getCachedProfile: () => null }; });\n")
 );
 source = source.replace(
@@ -121,7 +123,7 @@ source = source.replace(
 source = source.replace(
   "await expect(page.locator('html')).toHaveAttribute('lang', 'sw');",
   "await expect(page.locator('html')).toHaveAttribute('lang', 'sw');\n" +
-  `  await expect(page.locator('email-gate-modal')).toHaveCount(${target.sensitive ? 0 : 1});\n` +
+  `  await expect(page.locator('email-gate-modal')).toHaveCount(${guestAllowed ? 0 : 1});\n` +
   "  expect(await page.evaluate(() => ({ auth: localStorage.getItem('afro_auth_v2'), session: localStorage.getItem('afro_session_v3'), profile: localStorage.getItem('afro_profile_cache') }))).toEqual({ auth: null, session: null, profile: null });"
 );
 source = source.replace(
@@ -353,6 +355,10 @@ source = source.replace(
   /\n    if \(format === 'png'\) \{\n      await page\.getByRole\('button', \{ name: \/exporter un autre\|export another\/i \}\)\.click\(\);\n    \}/,
   ''
 );
+
+// Every selected export checks marker leakage; an untested route never receives a true privacy receipt.
+source = source.replaceAll('app.sensitive === true || app.requiresConsent === true', 'app.sensitive === true || app.localFirstDownloads === true || app.requiresConsent === true');
+source += `\ntest.afterEach(async ({ page }, testInfo) => { if (testInfo.status !== 'skipped') { await assertNoPrivateLeak(${JSON.stringify(TARGET_ID)}, page); ${guestAllowed ? "expect(await page.evaluate(() => Boolean(window.AfroAuth && window.AfroAuth.isLoggedIn && window.AfroAuth.isLoggedIn()))).toBe(false);" : ''} } });\n`;
 
 fs.mkdirSync(path.join(ROOT, 'reports/swahili-document-pdf-export-receipts'), { recursive: true });
 const compiled = new Module(__filename, module);
