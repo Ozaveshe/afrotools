@@ -21,20 +21,31 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Test government check evidence
+        run: node --test tests/government-source-evidence.test.js
+
       - name: Check government source ledger
-        run: npm run government:sources:check
+        run: npm run government:sources:check -- --evidence-dir "${{ runner.temp }}/government-source-check"
 
       - name: Check transport source ledger
         run: npm run transport:sources:check
 
-      - name: Upload source ledger evidence
+      - name: Upload current government source check evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: source-ledger-check-evidence
           if-no-files-found: ignore
           path: |
-            data/government/source-status.json
+            ${{ runner.temp }}/government-source-check/source-status.json
+            ${{ runner.temp }}/government-source-check/government-source-ledger.md
+
+      - name: Upload tracked transport baseline (not current check evidence)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: transport-source-ledger-tracked-baseline
+          if-no-files-found: ignore
+          path: |
             data/transport/source-status.json
-            reports/government-source-ledger.md
             reports/transport-source-ledger.md

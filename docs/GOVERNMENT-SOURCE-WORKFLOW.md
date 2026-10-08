@@ -22,6 +22,14 @@ Use `npm run government:sources` when refreshing the hub. It writes the status J
 
 Use `npm run government:sources:check` for CI or release review. It validates the manifest, probes sources, and fails only on broken required sources without writing files.
 
+To preserve the current check without refreshing tracked files, use
+`npm run government:sources:check -- --evidence-dir <run-directory>`.
+This writes `source-status.json` and `government-source-ledger.md` in that
+directory, including failed required-source probes. Evidence records the check
+timestamp, tracked baseline timestamp, manifest and checker hashes, source revision and whether
+fetching was skipped. Availability and hash checks do not verify statutory facts.
+The output directory must not overwrite the tracked baseline or report.
+
 For the first run after changing source-classification logic, run `node scripts/update-government-source-ledger.js --baseline` so the checker records a clean comparison point without treating the classification change itself as a public-source change.
 
 ## Review Rules
@@ -37,7 +45,7 @@ For the first run after changing source-classification logic, run `node scripts/
 
 GitHub Actions owns the routine source-ledger maintenance:
 
-- `.github/workflows/source-ledger-checks.yml` runs `npm run government:sources:check` daily. It is read/check-only and uploads the current status/report files as evidence when available.
+- `.github/workflows/source-ledger-checks.yml` runs `npm run government:sources:check` daily with a runner-temporary evidence directory. It uploads current government check results even when required sources fail; tracked government output and hub timestamps remain unchanged. Transport's tracked files are uploaded separately as a baseline, not current probe evidence; transport check output remains in its step log.
 - `.github/workflows/source-ledger-refresh-pr.yml` runs `npm run government:sources` weekly and opens a manual-review PR when generated ledger, report, or hub summary files change.
 
 Codex follow-up should:

@@ -16,6 +16,10 @@ const resetBaseline = args.has('--baseline');
 const timeoutMs = Number(process.env.GOVERNMENT_SOURCE_TIMEOUT_MS || 12000);
 const maxBodyBytes = Number(process.env.GOVERNMENT_SOURCE_MAX_BODY_BYTES || 240000);
 const concurrency = Number(process.env.GOVERNMENT_SOURCE_CONCURRENCY || 6);
+const evidenceArgIndex = process.argv.indexOf('--evidence-dir');
+const evidenceArg = process.argv.find((arg) => arg.startsWith('--evidence-dir='));
+const evidenceDirectory = evidenceArg ? evidenceArg.slice('--evidence-dir='.length)
+  : evidenceArgIndex === -1 ? null : process.argv[evidenceArgIndex + 1];
 
 function readJson(filePath, fallback) {
   try {
@@ -376,6 +380,16 @@ function updateHubSummary(status) {
 }
 
 async function main() {
+  if (evidenceArgIndex !== -1 || evidenceArg) {
+    if (!isCheck || !evidenceDirectory || evidenceDirectory.startsWith('--')) {
+      throw new Error('--evidence-dir requires a directory and --check.');
+    }
+    const output = path.resolve(evidenceDirectory);
+    if ([statusPath, reportPath, hubPath].some((file) =>
+      [path.join(output, 'source-status.json'), path.join(output, 'government-source-ledger.md')].includes(file))) {
+      throw new Error('Check evidence must not overwrite the tracked source baseline or report.');
+    }
+  }
   const manifest = readJson(manifestPath);
   validateManifest(manifest);
 
@@ -385,6 +399,39 @@ async function main() {
 
   const status = buildStatus(manifest, sourceResults);
   const brokenRequired = status.sources.filter((source) => source.status === 'broken' && source.required !== false);
+
+  if (evidenceDirectory) {
+    let sourceRevision = process.env.GITHUB_SHA || null;
+    if (!sourceRevision) {
+      try {
+        sourceRevision = require('child_process').execFileSync('git', ['rev-parse', 'HEAD'],
+          { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+      } catch (_) { /* Revision unavailable outside a Git checkout. */ }
+    }
+    const evidence = {
+      mode: 'check',
+      scope: 'source_availability_and_hashes',
+      factReview: 'not_performed',
+      fetchSkipped: noFetch,
+      baselineGeneratedAt: previous.summary ? previous.summary.generatedAt : null,
+      manifestSha256: hashText(fs.readFileSync(manifestPath, 'utf8')),
+      checkerSha256: hashText(fs.readFileSync(path.join(__dirname, 'update-government-source-ledger.js'), 'utf8')),
+      sourceRevision,
+      outcome: brokenRequired.length ? 'fail' : noFetch ? 'fetch_skipped' : 'pass'
+    };
+    const output = path.resolve(evidenceDirectory);
+    fs.mkdirSync(output, { recursive: true });
+    fs.writeFileSync(path.join(output, 'source-status.json'), `${JSON.stringify({ ...status, evidence }, null, 2)}\n`);
+    fs.writeFileSync(path.join(output, 'government-source-ledger.md'),
+      `${buildReport(status)}\n## Check provenance\n\n` +
+      `- Scope: ${evidence.scope}; factual review not performed.\n` +
+      `- Fetch skipped: ${evidence.fetchSkipped}\n` +
+      `- Outcome: ${evidence.outcome}\n` +
+      `- Tracked baseline generated: ${evidence.baselineGeneratedAt || 'unavailable'}\n` +
+      `- Source revision: ${evidence.sourceRevision || 'unavailable'}\n` +
+      `- Checker SHA-256: ${evidence.checkerSha256}\n` +
+      `- Manifest SHA-256: ${evidence.manifestSha256}\n`);
+  }
 
   if (!dryRun) {
     ensureDir(statusPath);
