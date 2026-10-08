@@ -125,12 +125,12 @@ if (args.includes('--refresh-chart-readiness')) {
 }
 
 // Refresh a verified source control contract while retaining translated page copy.
-if (args.includes('--refresh-paye-save-readiness') || args.includes('--refresh-ghana-result-safety')) {
+if (args.includes('--refresh-paye-save-readiness') || args.includes('--refresh-ghana-result-safety') || args.includes('--refresh-ghana-ai-boundary')) {
   if (flags.lang !== 'fr' || flags.page !== 'ghana/gh-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Save readiness refresh requires --lang fr --page ghana/gh-paye only');
-  const { refreshSaveReadiness, refreshGhanaSafety } = require('./lib/localized-paye-save-readiness');
+  const { refreshSaveReadiness, refreshGhanaSafety, refreshGhanaAi } = require('./lib/localized-paye-save-readiness');
   const target = path.join(ROOT, 'fr/ghana/gh-paye.html');
   const existing = fs.readFileSync(target, 'utf8');
-  const refresh = args.includes('--refresh-ghana-result-safety') ? refreshGhanaSafety : refreshSaveReadiness;
+  const refresh = args.includes('--refresh-ghana-ai-boundary') ? refreshGhanaAi : args.includes('--refresh-ghana-result-safety') ? refreshGhanaSafety : refreshSaveReadiness;
   const refreshed = refresh(existing, fs.readFileSync(path.join(ROOT, 'ghana/gh-paye.html'), 'utf8'));
   if (existing !== refreshed) writeFileWithRetry(target, refreshed);
   console.log('French Ghana save readiness: ' + (existing === refreshed ? 'unchanged' : 'updated'));

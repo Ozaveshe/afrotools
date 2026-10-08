@@ -46,3 +46,13 @@ function refreshGhanaSafety(target,source){
  return target;
 }
 module.exports.refreshGhanaSafety=refreshGhanaSafety;
+
+function refreshGhanaAi(target,source){
+ for(const name of ['getAI','sendChat']){
+  const src=calculation(source,name),dst=calculation(target,name);
+  const start=src.offset+src.start,end=src.offset+src.end;
+  target=target.slice(0,dst.offset+dst.start)+source.slice(start,end)+target.slice(dst.offset+dst.end);
+ }
+ return target;
+}
+module.exports.refreshGhanaAi=refreshGhanaAi;
