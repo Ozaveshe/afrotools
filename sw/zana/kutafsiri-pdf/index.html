@@ -649,14 +649,14 @@
 <meta property="article:modified_time" content="2026-04-28">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
+<meta name="afrotools-content-id" content="sw-document-pdf:pdf-translate">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=c176b075">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kutafsiri-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-translate/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/traduire-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kutafsiri-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-translate/">
-  <meta name="afrotools-content-id" content="sw-document-pdf:pdf-translate">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
@@ -1364,6 +1364,10 @@
           allowFallback: false
         })
       });
+      if (response.status === 428) {
+        if (cloudConsent) cloudConsent.checked = false;
+        throw new Error('external-translation-consent-required');
+      }
       if (response.status === 404 || response.status === 405 || response.status === 501 || response.status >= 500) {
         throw new Error('api-unavailable');
       }
@@ -1605,6 +1609,16 @@
       domain: domainPreset.value,
       preserveNumbers: preserveNumbers.checked
     };
+
+    if (cloudModeSelected(settings.mode) && cloudConsent && !cloudConsent.checked) {
+      showError('API/AI ya cloud hutuma maandishi yaliyotolewa kutoka PDF. Chagua idhini au badili hali iwe rasimu ya glossary ya ndani pekee.');
+      return;
+    }
+    if (cloudModeSelected(settings.mode) && !hasCloudContentConsent()) {
+      cloudConsent.checked = false;
+      showError('Tafsiri ya cloud inahitaji idhini ya maudhui ya hati. Soma taarifa ya idhini au tumia rasimu ya glossary ya ndani pekee.');
+      return;
+    }
 
     if (cloudModeSelected(settings.mode) && cloudConsent && !cloudConsent.checked) {
       showError('Cloud API/AI translation sends extracted PDF text. Tick consent or switch Translation Mode to Local glossary draft only.');
@@ -1973,8 +1987,8 @@
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
   <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-translate","name":"Tafsiri PDF","phraseOverrides":{"All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako."},"downloadContract":"local-guest"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=d2fb2e27" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>
