@@ -245,6 +245,7 @@ window.addEventListener('load', function() {
             </div>
           </div>
 
+          <p class="f-note" id="calculationStatus" role="status" aria-live="polite"></p>
           <button type="button" class="calc-btn" id="calcBtn">Calculer mon salaire net</button>
         </div>
       </div>
@@ -799,7 +800,34 @@ window.addEventListener('load', function() {
   }
 
   // --- MAIN CALCULATE ---
+  // Ghana result safety parity v1
+  let salaryRecalculationTimer = null;
+  function invalidateResult() {
+    clearTimeout(salaryRecalculationTimer);
+    salaryRecalculationTimer = null;
+    const hadResult = !!R;
+    R = null;
+    $('resultsCard').style.display = 'none';
+    $('resultsCard').setAttribute('aria-hidden', 'true');
+    $('bonusCard').style.display = 'none';
+    $('bonusResult').style.display = 'none';
+    $('aiBtn').disabled = true;
+    $('aiBtn').textContent = 'Get AI Tax Analysis';
+    $('aiStatus').textContent = 'Calculez votre salaire avant de demander une analyse fiscale.';
+    $('aiResp').style.display = 'none';
+    $('aiResp').textContent = '';
+    $('aiChat').classList.remove('on');
+    $('chatMsgs').replaceChildren();
+    const saveButton = $('calcSaveBtn');
+    if (saveButton) {
+      saveButton.disabled = true;
+      saveButton.textContent = 'Run a Calculation First';
+    }
+    if (hadResult) $('calculationStatus').textContent = 'Les données ont changé. Relancez le calcul pour actualiser les résultats.';
+  }
+
   function calculate() {
+    invalidateResult();
     let salary = parseAmt($('salaryInput').value);
     if (!salary || salary <= 0) {
       const el = $('salaryInput');
@@ -825,6 +853,8 @@ window.addEventListener('load', function() {
     renderResults();
     $('resultsCard').style.display = 'block';
     $('bonusCard').style.display = 'block';
+    $('resultsCard').removeAttribute('aria-hidden');
+    $('calculationStatus').textContent = '';
     const saveButton = $('calcSaveBtn');
     if (saveButton) {
       saveButton.disabled = false;
@@ -838,7 +868,7 @@ window.addEventListener('load', function() {
     showTier3Optimizer();
 
     setTimeout(() => $('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-    if (window.gtag) window.gtag('event', 'gh_paye_calculate', { gross: R.gross, effective_rate: R.effectiveRate });
+    if (window.gtag) window.gtag('event', 'gh_paye_calculate', { tool_id: 'gh-paye', country_code: 'GH', mode: calcMode });
   }
 
   function renderResults() {
@@ -847,7 +877,8 @@ window.addEventListener('load', function() {
     $('resLabel').textContent = period === 'monthly' ? 'Salaire net mensuel' : 'Salaire net annuel';
     $('resGross').textContent = `Gross ${period}: ${fmt(R.gross / d)}`;
     $('effRate').textContent = pct(R.effectiveRate);
-    setTimeout(() => { $('rateFill').style.width = Math.min(R.effectiveRate * 200, 100) + '%'; }, 50);
+    const renderedResult = R;
+    setTimeout(() => { if (R === renderedResult) $('rateFill').style.width = Math.min(R.effectiveRate * 200, 100) + '%'; }, 50);
 
     // Rows
     const row = (lbl, val, cls = '') => `<div class="res-row"><span>${lbl}</span><span class="${cls}">${val}</span></div>`;
@@ -957,6 +988,7 @@ window.addEventListener('load', function() {
   // --- CHART (lazy) ---
   async function renderChart(type) {
     if (!R) return;
+    const chartResult = R;
     if (!chartLoaded) {
       try {
         await new Promise((resolve, reject) => {
@@ -970,6 +1002,7 @@ window.addEventListener('load', function() {
       } catch { return; }
     }
 
+    if (R !== chartResult || type !== chartType) return;
     if (chartInstance) chartInstance.destroy();
     const ctx = $('mainChart').getContext('2d');
 
@@ -1083,12 +1116,13 @@ window.addEventListener('load', function() {
   // --- EVENTS ---
   document.addEventListener('DOMContentLoaded', () => {
     // Mode toggle
-    $('modeGross').addEventListener('click', () => { calcMode = 'gross'; $('modeGross').classList.add('on'); $('modeNet').classList.remove('on'); $('salaryLabel').textContent = 'Brut annuel Salary'; });
-    $('modeNet').addEventListener('click', () => { calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
+    $('modeGross').addEventListener('click', () => { if (calcMode !== 'gross') invalidateResult(); calcMode = 'gross'; $('modeGross').classList.add('on'); $('modeNet').classList.remove('on'); $('salaryLabel').textContent = 'Brut annuel Salary'; });
+    $('modeNet').addEventListener('click', () => { if (calcMode !== 'net') invalidateResult(); calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
 
     // Salary input
     const salaryEl = $('salaryInput');
-    salaryEl.addEventListener('input', debounce(calculate, 300));
+    salaryEl.addEventListener('input', () => { invalidateResult(); salaryRecalculationTimer = setTimeout(calculate, 300); });
+    ['basicSalary', 'tier3Amt'].forEach(id => $(id).addEventListener('input', invalidateResult));
     salaryEl.addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); this.select(); });
     salaryEl.addEventListener('blur', function() { const v = parseAmt(this.value); if (v > 0) this.value = v.toLocaleString('en-US'); });
 
@@ -1100,6 +1134,7 @@ window.addEventListener('load', function() {
     // Toggle .on class sync for all tog labels
     document.querySelectorAll('.tog input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', () => {
+        invalidateResult();
         cb.closest('.tog').classList.toggle('on', cb.checked);
       });
     });

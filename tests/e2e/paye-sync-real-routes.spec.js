@@ -17,6 +17,19 @@ for(const route of routes)test('modern PAYE real page restore: '+route,async({pa
  await page.goto(route);const salary=page.locator('#grossSalary,#salaryInput').first();await salary.focus();await salary.fill('123456');expect(Number((await salary.inputValue()).replace(/[^0-9.-]/g,''))).toBe(123456);await page.locator('.calc-btn').first().click();await expect(page.locator('#calcSaveBtn')).toBeEnabled();
  await page.locator('#calcSaveName').fill('Synthetic restore proof');await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSavedList [data-action=load]')).toHaveCount(1);
  await salary.focus();await salary.fill('234567');await page.locator('#calcSavedList [data-action=load]').click();await expect(page.locator('#calcSaveStatus')).toHaveAttribute('data-tone','info');expect(Number((await salary.inputValue()).replace(/[^0-9.-]/g,''))).toBe(123456);
+ if(route==='/fr/ghana/gh-paye.html'){
+  await page.evaluate(()=>{window.__eventKeys=[];window.gtag=(type,name,meta)=>{if(name==='gh_paye_calculate')window.__eventKeys.push(Object.keys(meta).sort())};window.__exports=0;window.AfroTools.pdf={generate:()=>{window.__exports++}}});
+  for(const control of ['#togMarriage','#basicSalary','#modeNet']){
+   if(control==='#basicSalary')await page.locator(control).fill('60000');else if(control==='#togMarriage')await page.locator('label.tog').filter({has:page.locator(control)}).click();else await page.locator(control).click();
+   await expect(page.locator('#resultsCard')).toBeHidden();await expect(page.locator('#calcSaveBtn')).toBeDisabled();
+   expect(await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload())).toBeNull();
+   await page.evaluate(()=>window.exportPdf());expect(await page.evaluate(()=>window.__exports)).toBe(0);
+   await page.locator('#calcBtn').click();await expect(page.locator('#resultsCard')).toBeVisible();await expect(page.locator('#calcSaveBtn')).toBeEnabled();
+  }
+  expect(await page.evaluate(()=>window.__eventKeys)).toEqual(Array(3).fill(['country_code','mode','tool_id']));
+  await page.evaluate(()=>window.exportPdf());expect(await page.evaluate(()=>window.__exports)).toBe(1);
+  await salary.focus();await salary.fill('');await expect(page.locator('#resultsCard')).toBeHidden();await expect(page.locator('#calcSaveBtn')).toBeDisabled();await salary.press('Enter');await expect(page.locator('#resultsCard')).toBeHidden();
+ }
  if(route.startsWith('/ha/'))await expect(page.locator('#calcSaveStatus')).toHaveText('An loda lissafin da aka ajiye.');
  expect(writes).toEqual([]);expect(errors).toEqual([]);
 });
