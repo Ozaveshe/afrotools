@@ -66,6 +66,7 @@
     if (!/^(low|medium|high)$/.test(confidence)) confidence = "";
     return {
       id:id,
+      recordOrigin:row.record_origin === "generated_example" || row.source === "seed" ? "generated_example" : "unknown",
       name:name,
       countryCode:country,
       countryName:text(row.country_name, 100),
@@ -81,7 +82,7 @@
       monthlyRevenue:revenue,
       breakevenMonths:breakeven,
       source:{
-        name:text(row.source_name || row.source, 200),
+        name:text(row.source_name || (row.source === "seed" ? "" : row.source), 200),
         url:url(row.source_url),
         asOf:date(row.source_as_of || row.data_as_of),
         confidence:confidence
@@ -155,6 +156,7 @@
   function normalizedToRaw(row) {
     if (!row || !row.countryCode) return row;
     return {
+      record_origin:row.recordOrigin,
       id:row.id, name:row.name, country_code:row.countryCode, country_name:row.countryName, sector:row.sector,
       risk:row.risk, currency:row.currency, description:row.description, why_africa:row.whyAfrica, revenue_model:row.revenueModel,
       risks:row.risks, best_cities:row.bestCities, startup_cost_min:row.startupCost && row.startupCost.min,

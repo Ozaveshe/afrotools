@@ -83,3 +83,10 @@ test("does not echo upstream errors and times out safely", async () => {
   assert.equal(timed.statusCode,504);
   assert.deepEqual(JSON.parse(timed.body),{error:"evidence_service_timeout"});
 });
+
+test("exposes only a restricted record origin and never raw provenance text", async()=>{
+ let upstream;
+ const handler=proxy.createHandler({env:goodEnv,fetchImpl:async url=>{upstream=url;return {ok:true,json:async()=>[{id:'seed',source:'seed'},{id:'unknown',source:'private internal note',record_origin:'official'}],headers:{get:()=>null}}}});
+ const response=await handler(event());const rows=JSON.parse(response.body).rows;
+ assert.match(upstream,/created_at,source/);assert.equal(rows[0].record_origin,'generated_example');assert.equal(rows[1].record_origin,'unknown');assert.equal('source' in rows[0],false);assert.doesNotMatch(response.body,/private internal note|official/);
+});
