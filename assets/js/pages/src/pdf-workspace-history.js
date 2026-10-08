@@ -79,6 +79,7 @@
     var messages = {
       blocked:['Close other PDF Workspace tabs, then retry. Existing files are unchanged.','Fermez les autres onglets de l’espace PDF, puis réessayez. Les fichiers existants sont conservés.','Funga vichupo vingine vya nafasi ya PDF, kisha ujaribu tena. Faili zilizopo hazijabadilishwa.'],
       missing:['This entry has no saved PDF copy. Your current document is unchanged.','Cette entrée ne contient pas de copie PDF enregistrée. Le document actuel est conservé.','Rekodi hii haina nakala ya PDF iliyohifadhiwa. Hati yako ya sasa haijabadilishwa.'],
+      invalid:['This saved PDF could not be opened.','Ce PDF enregistré n’a pas pu être ouvert.','PDF hii iliyohifadhiwa haikuweza kufunguliwa.'],
       remove:['Delete this saved PDF and its history entry?','Supprimer ce PDF enregistré et son historique ?','Ufute PDF hii iliyohifadhiwa na rekodi yake?'],
       resume:['Resume','Reprendre','Endelea'],delete:['Delete','Supprimer','Futa'],
       empty:['No saved PDF operations.','Aucune opération PDF enregistrée.','Hakuna shughuli za PDF zilizohifadhiwa.'],
@@ -91,7 +92,7 @@
     return messages[key][language()==='fr'?1:language()==='sw'?2:0];
   }
   function report(error) {
-    var message = error.code === 'BLOCKED' ? copy('blocked') : error.code === 'MISSING' ? copy('missing') : window.SaveState ? window.SaveState.message(error,language()) : copy('blocked');
+    var message = error.code === 'BLOCKED' ? copy('blocked') : error.code === 'MISSING' ? copy('missing') : error.code === 'INVALID_PDF' ? copy('invalid') : window.SaveState ? window.SaveState.message(error,language()) : copy('blocked');
     if (section) section.style.display='';
     var status=document.getElementById('pdfHistoryError');
     if (!status && grid) { status=document.createElement('p');status.id='pdfHistoryError';status.setAttribute('role','status');grid.before(status); }
@@ -122,7 +123,12 @@
   window.pdfSaveOp=async function(name,operation,bytes){try{var item=await store.save(name,operation,bytes);await render();return item;}catch(e){report(e);return null;}};
   window.pdfDelSaved=async function(id){if(!window.confirm(copy('remove')))return false;try{await store.remove(id);await render();var next=grid.querySelector('button')||section.querySelector('[data-pdf-history-status]');if(next){next.tabIndex=0;next.focus();}return true;}catch(e){report(e);return false;}};
   window.pdfResumeSaved=async function(id){
-    try{var result=await store.get(id);if(!result.item||!result.bytes)throw failure('MISSING');window.showP(copy('opening'),'');await window.loadPDFBytes(result.bytes,result.item.title);clearError();}
+    try{
+      var result=await store.get(id);if(!result.item||!result.bytes)throw failure('MISSING');
+      var opened=await window.queueWorkspaceFile(new File([result.bytes],result.item.title,{type:'application/pdf'}));
+      if(opened===false)throw failure('INVALID_PDF');
+      if(opened===true)clearError();
+    }
     catch(e){if(typeof window.hideP==='function')window.hideP();report(e.code?e:failure('READ_FAILED'));}
   };
   function readJson(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch(_){return null;}}

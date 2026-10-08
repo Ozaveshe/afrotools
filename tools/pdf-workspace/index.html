@@ -849,13 +849,18 @@ function workspaceStartupStatus(state){
 async function drainWorkspaceFiles(){
   if(!workspaceStartup.ready||workspaceStartup.opening)return;
   workspaceStartup.opening=true;
-  try{while(workspaceStartup.pending){var file=workspaceStartup.pending;workspaceStartup.pending=null;await openPDF(file)}}
+  try{while(workspaceStartup.pending){var request=workspaceStartup.pending;workspaceStartup.pending=null;request.resolve(await openPDF(request.file))}}
   finally{workspaceStartup.opening=false}
 }
 function queueWorkspaceFile(file){
-  if(!file)return;
-  workspaceStartup.pending=file;
-  if(workspaceStartup.ready)drainWorkspaceFiles();else init();
+  if(!file)return Promise.resolve(null);
+  // History and upload share one retained request across runtime retries.
+  // A newer selection supersedes only the request that has not started opening.
+  if(workspaceStartup.pending)workspaceStartup.pending.resolve(null);
+  return new Promise(function(resolve){
+    workspaceStartup.pending={file:file,resolve:resolve};
+    if(workspaceStartup.ready)drainWorkspaceFiles();else init();
+  });
 }
 function init(){
   if(workspaceStartup.ready){drainWorkspaceFiles();return Promise.resolve()}
@@ -1836,19 +1841,22 @@ async function ensurePDFRuntime(){
 }
 
 async function loadPDFBytes(bytes,name){
+  var committed=false;
   try{
     await ensurePDFRuntime();
-    pB=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);fn=name||"document.pdf";
+    var candidateBytes=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);
     var doc;
     // Do NOT pass ignoreEncryption here. This workspace cannot decrypt (see the
     // disabled "Remove password" command), and opening an encrypted file anyway
     // produced an export that could not be reopened even with the right password.
     // Refuse at the door instead of silently destroying the document.
-    try{ doc=await PDFLib.PDFDocument.load(pB.slice()); }
+    try{ doc=await PDFLib.PDFDocument.load(candidateBytes.slice()); }
     catch(encErr){
       if(/encrypt/i.test(encErr&&encErr.message||"")) throw new Error("This PDF is password-protected. AfroTools cannot open encrypted PDFs — remove the password in your PDF reader first, then upload it again.");
       throw encErr;
     }
+    // Reject unreadable replacements before changing the current document.
+    pB=candidateBytes;fn=name||"document.pdf";committed=true;
     objs=[];objSel=null;objEditing=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
     var n=doc.getPageCount();po=[];for(var i=0;i<n;i++)po.push(i);pr={};sel=0;th={};
     await genTh();$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active");$("tbFn").textContent=fn;if($("tbVault"))$("tbVault").setAttribute("file-name",fn);
@@ -1858,15 +1866,20 @@ async function loadPDFBytes(bytes,name){
     setCmdMode(getPdfFastStartMode(),false);closeCommandMenus();closeCommandSheet();
     rSB();await rMain();hideP();updateMobPg();
     trackPdfEvent("pdf_file_uploaded",{success:true});
-  }catch(e){hideP();trackPdfEvent("pdf_file_uploaded",{success:false});toast("Cannot read: "+e.message,1)}
+    return true;
+  }catch(e){
+    hideP();trackPdfEvent("pdf_file_uploaded",{success:false});
+    if(!committed&&pB&&po.length){$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active")}
+    toast("Cannot read: "+e.message,1);return false;
+  }
 }
 
 async function openPDF(file){
   showP("Loading PDF…","Reading "+file.name);
   try{
     var ab=await file.arrayBuffer();
-    await loadPDFBytes(new Uint8Array(ab),file.name);
-  }catch(e){hideP();toast("Cannot read: "+e.message,1)}
+    return await loadPDFBytes(new Uint8Array(ab),file.name);
+  }catch(e){hideP();toast("Cannot read: "+e.message,1);return false}
 }
 
 async function genTh(){
