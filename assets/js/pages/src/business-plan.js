@@ -2,6 +2,30 @@
 !function() {
     "use strict";
 
+    function savedFailure(error) {
+        var message = window.SaveState.message(error), list = document.getElementById("savedPlans");
+        var panel = document.getElementById("savedPanel");
+        if (panel) panel.hidden = false;
+        var status = document.getElementById("savedStorageStatus");
+        if (!status && list) { status = document.createElement("p"); status.id = "savedStorageStatus"; status.setAttribute("role", "status"); list.parentNode.insertBefore(status, list); }
+        if (status) status.textContent = message;
+        V(message);
+    }
+    function clearSavedFailure() { var status = document.getElementById("savedStorageStatus"); if (status) status.remove(); }
+    function readSavedItem(id) {
+        try { var item = n.load(id); clearSavedFailure(); return item; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function deleteSavedItem(id) {
+        try { var deleted = n.delete(id); clearSavedFailure(); return deleted; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function focusSavedAction() {
+        var target = document.querySelector('#savedPlans button') || document.querySelector('#savePlanBtn');
+        if (target) target.focus();
+    }
+
+
     function importRecord(value) {
         if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Invalid document backup");
         Object.keys(value).forEach(function(key) {
@@ -735,7 +759,8 @@
     }
     function R() {
         if (n) {
-            var e = n.getAll();
+            var e;
+            try { e = n.getAll(); clearSavedFailure(); } catch (error) { savedFailure(error); return; }
             u("savedPanel").hidden = !e.length, u("savedPlans").innerHTML = e.map(function(e) {
                 return '<article class="bp-saved-card"><div class="bp-saved-title">' + g(e.title || "Business plan") + '</div><div class="bp-saved-date">' + g(function(e) {
                     try {
@@ -792,12 +817,14 @@
     }
     function B() {
         if (n) {
+            try {
             var t = n.save({
                 id: i,
                 title: E(),
                 data: JSON.parse(JSON.stringify(e))
             });
             i = t.id, R(), V("Plan saved in this browser.");
+            } catch (error) { savedFailure(error); }
         } else V("Saved plans are unavailable in this browser.");
     }
     function q() {
@@ -937,7 +964,7 @@
                 V("The plan URL could not be opened.");
             }
             if (e.get("id") && n) {
-                var s = n.load(e.get("id"));
+                var s = readSavedItem(e.get("id"));
                 if (s && s.data) return i = s.id, p(s.data);
             }
             try {
@@ -1020,12 +1047,12 @@
         }), u("importJson").addEventListener("change", Y), u("savedPlans").addEventListener("click", function(t) {
             var r = t.target.closest("[data-open-saved]"), s = t.target.closest("[data-delete-saved]");
             r && function(t) {
-                var r = n && n.load(t);
+                var r = n && readSavedItem(t);
                 r && r.data && (i = r.id, e = p(r.data), a = 0, T(), V("Plan loaded."));
             }(r.getAttribute("data-open-saved")), s && function(e) {
-                var t = n && n.load(e);
-                window.confirm('Delete "' + (t ? t.title : "this plan") + '" from this browser?') && (n.delete(e),
-                R());
+                var t = n && readSavedItem(e);
+                if (t === false) return;
+                window.confirm('Delete "' + (t ? t.title : "this plan") + '" from this browser?') && deleteSavedItem(e) && (R(), focusSavedAction());
             }(s.getAttribute("data-delete-saved"));
         }), T(), R();
     }
