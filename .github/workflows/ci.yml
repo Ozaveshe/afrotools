@@ -116,6 +116,13 @@ jobs:
           PORT: '4178'
         run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
 
+      - name: Verify Idea Board recovery in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4181'
+        run: npx playwright test tests/e2e/idea-evidence-recovery.spec.js tests/e2e/idea-evidence-explorer-vip.spec.js --project=chromium --workers=2
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
