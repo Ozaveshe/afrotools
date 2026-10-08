@@ -103,18 +103,36 @@ function createSaveStateApi(root) {
     static message(failure, locale) { return message(failure, locale); }
   }
   function escapeHtml(value) { return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  function ago(timestamp) {
-    var seconds = Math.floor((Date.now() - timestamp) / 1000);
-    if (seconds < 60) return 'just now';
-    if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
-    if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+  var savedCopy = {
+    en: { open: 'Open', delete: 'Delete', item: 'this item', now: 'just now', empty: 'No saved items yet. Create one to get started!', confirm: function (title) { return 'Delete "' + title + '"?'; } },
+    fr: { open: 'Ouvrir', delete: 'Supprimer', item: 'cet élément', now: 'à l’instant', empty: 'Aucun élément enregistré. Créez-en un pour commencer.', confirm: function (title) { return 'Supprimer « ' + title + ' » ?'; } },
+    sw: { open: 'Fungua', delete: 'Futa', item: 'kipengee hiki', now: 'sasa hivi', empty: 'Hakuna vipengee vilivyohifadhiwa. Unda kipengee ili kuanza.', confirm: function (title) { return 'Ufute "' + title + '"?'; } }
+  };
+  function savedLanguage() {
+    var locale = String((root.document && root.document.documentElement.lang) || 'en').toLowerCase().split('-')[0];
+    return Object.prototype.hasOwnProperty.call(savedCopy, locale) ? locale : 'en';
+  }
+  function ago(timestamp, locale) {
+    var seconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
+    if (seconds < 60) return savedCopy[locale].now;
     var days = Math.floor(seconds / 86400);
-    return days < 30 ? days + 'd ago' : new Date(timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    if (locale === 'en') {
+      if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+      if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+      if (days < 30) return days + 'd ago';
+    } else if (days < 30 && typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat === 'function') {
+      var unit = seconds < 3600 ? 'minute' : seconds < 86400 ? 'hour' : 'day';
+      var count = Math.floor(seconds / (unit === 'minute' ? 60 : unit === 'hour' ? 3600 : 86400));
+      return new Intl.RelativeTimeFormat(locale, { numeric: 'always', style: 'short' }).format(-count, unit);
+    }
+    return new Date(timestamp).toLocaleDateString(locale === 'en' ? 'en-GB' : locale, { day: 'numeric', month: 'short', year: 'numeric' });
   }
   function renderSavedItems(slug, targetId, options) {
     options = options || {};
     var target = root.document.getElementById(targetId); if (!target) return;
     var store = new SaveState(slug), parent = target.closest('.landing-saved') || target.parentElement;
+    var locale = savedLanguage(), copy = savedCopy[locale];
+    var emptyMessage = options.emptyMessage || (locale === 'en' ? 'No saved ' + (options.itemNoun || 'item') + 's yet. Create one to get started!' : copy.empty);
     function showFailure(failure) {
       if (parent) parent.style.display = '';
       var status = target.querySelector('[data-save-state-status]');
@@ -127,14 +145,14 @@ function createSaveStateApi(root) {
     if (!items.length) {
       target.replaceChildren();
       if (parent && parent.classList.contains('landing-saved')) parent.style.display = 'none';
-      else target.innerHTML = '<div class="saved-empty">' + escapeHtml(options.emptyMessage || 'No saved ' + (options.itemNoun || 'item') + 's yet. Create one to get started!') + '</div>';
+      else target.innerHTML = '<div class="saved-empty">' + escapeHtml(emptyMessage) + '</div>';
       return;
     }
     if (parent) parent.style.display = '';
     var appUrl = options.appUrl || 'app.html';
     target.innerHTML = items.map(function(item) {
       var thumb = options.renderThumb ? options.renderThumb(item) : item.thumbnail ? '<div class="saved-card-thumb"><img src="' + escapeHtml(item.thumbnail) + '" alt="' + escapeHtml(item.title) + '"></div>' : '<div class="saved-card-thumb"><span style="font-size:.8rem;color:#9ca3af;">' + escapeHtml(item.title.slice(0, 2).toUpperCase()) + '</span></div>';
-      return '<div class="saved-card" data-id="' + escapeHtml(item.id) + '">' + thumb + '<div class="saved-card-title">' + escapeHtml(item.title) + '</div><div class="saved-card-date">' + ago(item.updatedAt) + '</div><div class="saved-card-actions"><a class="saved-card-open" href="' + escapeHtml(appUrl) + '?id=' + encodeURIComponent(item.id) + '">Open</a><button class="saved-card-delete" data-delete="' + escapeHtml(item.id) + '">Delete</button></div></div>';
+      return '<div class="saved-card" data-id="' + escapeHtml(item.id) + '">' + thumb + '<div class="saved-card-title">' + escapeHtml(item.title) + '</div><div class="saved-card-date">' + escapeHtml(ago(item.updatedAt, locale)) + '</div><div class="saved-card-actions"><a class="saved-card-open" href="' + escapeHtml(appUrl) + '?id=' + encodeURIComponent(item.id) + '">' + copy.open + '</a><button class="saved-card-delete" data-delete="' + escapeHtml(item.id) + '">' + copy.delete + '</button></div></div>';
     }).join('');
     target.querySelectorAll('[data-delete]').forEach(function(button) {
       button.addEventListener('click', function(event) {
@@ -142,13 +160,13 @@ function createSaveStateApi(root) {
         try {
           var id = button.getAttribute('data-delete'), item = store.load(id);
           if (options.onDelete && options.onDelete(item) === false) return;
-          if (!root.confirm('Delete "' + (item ? item.title : 'this item') + '"?')) return;
+          if (!root.confirm(copy.confirm(item ? item.title : copy.item))) return;
           store.delete(id); renderSavedItems(slug, targetId, options);
           var next = target.querySelector('button, a');
           if (next) next.focus();
           else {
             if (parent) parent.style.display = '';
-            target.textContent = options.emptyMessage || 'No saved ' + (options.itemNoun || 'item') + 's yet. Create one to get started!';
+            target.textContent = emptyMessage;
             target.setAttribute('tabindex', '-1'); target.setAttribute('role', 'status'); target.focus();
           }
         } catch (failure) { showFailure(failure); }
