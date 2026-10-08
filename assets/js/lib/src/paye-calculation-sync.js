@@ -360,7 +360,22 @@
         if(payload.toolSlug&&payload.toolSlug!==r)return false;
         if(payload.countryCode&&payload.countryCode!==c)return false;
         if(payload.currency&&payload.currency!==s)return false;
-        if(payload.version!==2)return payload.version===1&&object(payload.fields)&&Object.keys(payload.fields).some(function(key){return key==='grossSalary'||key==='salaryInput';})&&Object.keys(payload.fields).every(function(key){return key!=='__proto__'&&key!=='constructor'&&key!=='prototype'&&(typeof payload.fields[key]==='string'||typeof payload.fields[key]==='boolean'||typeof payload.fields[key]==='number'&&Number.isFinite(payload.fields[key]));});
+        if(payload.version!==2){
+            if(payload.version!==1||!object(payload.fields))return false;
+            var fields=payload.fields;
+            function amount(value){return (typeof value==='number'&&Number.isFinite(value)&&value>=0)||(typeof value==='string'&&/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value.trim()));}
+            var salary=Object.prototype.hasOwnProperty.call(fields,'salaryInput')?'salaryInput':'grossSalary';
+            if(!t.getElementById(salary)||!amount(fields[salary]))return false;
+            return Object.keys(fields).every(function(key){
+                if(key==='summary'||key==='_mode')return typeof fields[key]==='string';
+                if(key==='__proto__'||key==='constructor'||key==='prototype')return false;
+                var control=t.getElementById(key),value=fields[key];
+                if(!control||!['INPUT','SELECT'].includes(control.tagName))return false;
+                if(control.type==='checkbox')return typeof value==='boolean';
+                if(control.tagName==='SELECT')return Array.prototype.some.call(control.options,function(option){return option.value===String(value);});
+                return value===''||amount(value);
+            });
+        }
         var inputs=payload.inputs;
         if(!object(inputs)||typeof inputs.salaryValue!=='number'||!Number.isFinite(inputs.salaryValue)||inputs.salaryValue<0)return false;
         var enums={salaryPeriod:['monthly','annual'],period:['monthly','annual'],mode:['gross','net'],calcMode:['gross','net'],regime:['pita','nta'],sector:['private','public'],ageGroup:['under65','65to74','75plus']};
@@ -376,7 +391,7 @@
         if(!validRestorePayload(a))return false;
         var o = R();
         if (o && "function" == typeof o.restorePayload) try {
-            return !0 === o.restorePayload(a, n);
+            return !0 === o.restorePayload(a.version===1?a.fields:a, n);
         } catch (e) {
             console.warn("[PayeCalculationSync] restorePayload adapter failed:");
             return false;
@@ -473,7 +488,7 @@
         try {
             return await p;
         } catch(error) {
-            if(error&&error.name==='SaveStateError')storageFailure(error);else syncFailure();
+            if(error&&error.name==='SaveStateError')storageFailure(error);else {q();syncFailure();}
             return false;
         } finally {
             p = null;
