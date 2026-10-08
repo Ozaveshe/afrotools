@@ -50,8 +50,8 @@ for (const route of routes) {
     const pdf = await pdfWait, pdfBytes = await bytes(pdf);
     expect(pdfBytes.subarray(0, 4).toString()).toBe("%PDF");
     const pdfText = (await pdfParse(pdfBytes)).text;
-    expect(pdfText).toContain("Currency / unit: TEST");
-    expect(pdfText).toContain("Each method is independent");
+    expect(pdfText).toContain(route.startsWith("/fr/") ? "Devise / unité: TEST" : route.startsWith("/sw/") ? "Sarafu / kitengo: TEST" : "Currency / unit: TEST");
+    expect(pdfText).toContain(route.startsWith("/fr/") ? "Chaque méthode est indépendante" : route.startsWith("/sw/") ? "Kila mbinu ni huru" : "Each method is independent");
     for (const id of ["#sv-csv", "#sv-json"]) {
       const wait = page.waitForEvent("download");
       await page.locator(id).click();
