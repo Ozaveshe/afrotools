@@ -825,6 +825,11 @@ window.addEventListener('load', function() {
     renderResults();
     $('resultsCard').style.display = 'block';
     $('bonusCard').style.display = 'block';
+    const saveButton = $('calcSaveBtn');
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = 'Save to Dashboard';
+    }
     $('aiBtn').disabled = false;
     $('aiBtn').textContent = 'Get AI Tax Analysis';
     $('aiStatus').textContent = `Brut : ${fmt(R.gross)}/yr \u00B7 Net : ${fmt(R.netMonthly)}/mo \u00B7 Rate: ${pct(R.effectiveRate)}`;

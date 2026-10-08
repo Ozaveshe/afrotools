@@ -124,6 +124,18 @@ if (args.includes('--refresh-chart-readiness')) {
   process.exit(0);
 }
 
+// Refresh a verified source control contract while retaining translated page copy.
+if (args.includes('--refresh-paye-save-readiness')) {
+  if (flags.lang !== 'fr' || flags.page !== 'ghana/gh-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Save readiness refresh requires --lang fr --page ghana/gh-paye only');
+  const { refreshSaveReadiness } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, 'fr/ghana/gh-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = refreshSaveReadiness(existing, fs.readFileSync(path.join(ROOT, 'ghana/gh-paye.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('French Ghana save readiness: ' + (existing === refreshed ? 'unchanged' : 'updated'));
+  process.exit(0);
+}
+
 // ── LOAD TRANSLATIONS ───────────────────────────────────────────────
 
 function loadJSON(filePath) {

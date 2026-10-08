@@ -2013,6 +2013,7 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
     'This device': 'Wannan na\'urar',
     'Open link': 'Bude link',
     'Load': 'Loda',
+    'Loaded saved scenario.': 'An loda lissafin da aka ajiye.',
     'Delete': 'Goge',
     'No saved scenarios yet.': 'Babu lissafi da aka ajiye tukuna.',
     'Save a named result here and it will appear in your dashboard calculations tab.': 'Ajiye sakamako mai suna a nan, zai bayyana a bangaren lissafi na dashboard.',
@@ -2027,9 +2028,10 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
     if (!node) return;
     if (node.nodeType === 3) {
       var value = node.nodeValue;
-      Object.keys(replacements).forEach(function(key){
-        if (value.indexOf(key) !== -1) value = value.split(key).join(replacements[key]);
-      });
+      var key = value.trim();
+      if (Object.prototype.hasOwnProperty.call(replacements, key)) {
+        value = value.replace(key, function(){ return replacements[key]; });
+      }
       if (value !== node.nodeValue) node.nodeValue = value;
       return;
     }

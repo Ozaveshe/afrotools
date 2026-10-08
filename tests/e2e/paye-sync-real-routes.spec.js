@@ -17,5 +17,6 @@ for(const route of routes)test('modern PAYE real page restore: '+route,async({pa
  await page.goto(route);const salary=page.locator('#grossSalary,#salaryInput').first();await salary.focus();await salary.fill('123456');expect(Number((await salary.inputValue()).replace(/[^0-9.-]/g,''))).toBe(123456);await page.locator('.calc-btn').first().click();await expect(page.locator('#calcSaveBtn')).toBeEnabled();
  await page.locator('#calcSaveName').fill('Synthetic restore proof');await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSavedList [data-action=load]')).toHaveCount(1);
  await salary.focus();await salary.fill('234567');await page.locator('#calcSavedList [data-action=load]').click();await expect(page.locator('#calcSaveStatus')).toHaveAttribute('data-tone','info');expect(Number((await salary.inputValue()).replace(/[^0-9.-]/g,''))).toBe(123456);
+ if(route.startsWith('/ha/'))await expect(page.locator('#calcSaveStatus')).toHaveText('An loda lissafin da aka ajiye.');
  expect(writes).toEqual([]);expect(errors).toEqual([]);
 });
