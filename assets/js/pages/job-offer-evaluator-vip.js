@@ -13,12 +13,34 @@ var exportCopy={
   fr:{unit:"Devise / unité :",conversion:"sans conversion",points:"points",note:"Chaque montant et résultat utilise l’unité {unit} choisie ; aucune conversion monétaire n’est effectuée.",method:"Valeur annuelle = 12 × (rémunération mensuelle + allocations mensuelles + estimation mensuelle des avantages - frais professionnels mensuels) + prime annuelle attendue - frais ponctuels. Le score financier correspond à chaque valeur annuelle non négative divisée par la plus élevée des valeurs annuelles positives. Les autres notes sont saisies par vous de 0 à 10. Le score final est la moyenne pondérée normalisée. L’ordre des offres est conservé ; aucune recommandation n’est formulée."},
   sw:{unit:"Sarafu / kitengo:",conversion:"hakuna ubadilishaji",points:"alama",note:"Kila kiasi na matokeo hutumia kitengo cha {unit} ulichochagua; hakuna ubadilishaji wa sarafu.",method:"Thamani ya mwaka = 12 × (malipo ya mwezi + posho za pesa za mwezi + makadirio ya faida za mwezi - gharama za kazi za mwezi) + bonasi ya mwaka inayotarajiwa - gharama za mara moja. Alama ya kifedha ni kila thamani ya mwaka isiyo hasi ikigawanywa kwa thamani chanya ya juu zaidi ya mwaka. Alama nyingine za 0 hadi 10 zinatolewa na wewe. Alama ya mwisho ni wastani unaotumia uzito uliosawazishwa. Mpangilio wa ofa unabaki uleule; hakuna pendekezo linalotolewa."}
 };var exportLabels=exportCopy[lang]||exportCopy.en;
+var feedback={en:{copied:"Comparison copied.",copyFail:"Copy is unavailable. Download JSON to keep the comparison."},fr:{copied:"Comparaison copiée.",copyFail:"La copie est indisponible. Téléchargez le JSON pour conserver la comparaison."},sw:{copied:"Ulinganisho umenakiliwa.",copyFail:"Kunakili hakupatikani. Pakua JSON ili uwe na nakala ya ulinganisho."}}[lang]||{copied:"Comparison copied.",copyFail:"Copy is unavailable. Download JSON to keep the comparison."};
 var criteria=[["roleFit","fit"],["learning","learn"],["flexibility","flex"],["stability","stable"],["team","team"]];
 function e(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){n.setAttribute(k,attrs[k]);});if(text)n.textContent=text;return n}
 function field(parent,key,label,type,max){var l=e("label",{},label),i=e("input",{name:key,type:type||"number",min:"0",step:"any"});if(max)i.max=max;l.appendChild(i);parent.appendChild(l)}
 document.querySelectorAll("[data-offer]").forEach(function(box,idx){field(box,"label",T.offer+" "+(idx?"B":"A"),"text");["pay","cash","benefits","costs","bonus","once"].forEach(function(k){field(box,{pay:"monthlyPay",cash:"monthlyCash",benefits:"monthlyBenefits",costs:"monthlyCosts",bonus:"annualBonus",once:"oneOffCosts"}[k],T[k]);});criteria.forEach(function(r){field(box,r[0],T[r[1]]+" (0–10)","number",10);});box.querySelector('[name=label]').value=T.offer+" "+(idx?"B":"A")});
 var weightBox=document.querySelector("[data-weights]");field(weightBox,"currency",T.currency,"text");weightBox.querySelector('[name="currency"]').maxLength=8;[["financial","financial"]].concat(criteria).forEach(function(r){field(weightBox,r[0],T[r[1]]+" (%)","number")});var defaults=[40,20,15,10,10,5];weightBox.querySelectorAll('input[type="number"]').forEach(function(x,i){x.value=defaults[i]});
 var latest=null,status=document.getElementById("joe-status"),results=document.getElementById("joe-results");
+var validationAttempted=false;
+function invalidFields(){
+  var invalid=[],unit=weightBox.querySelector('[name="currency"]');
+  if(!unit.value.trim())invalid.push(unit);
+  document.querySelectorAll('[data-offer] input[type="number"]').forEach(function(input){
+    var value=Number(input.value),rating=criteria.some(function(row){return row[0]===input.name});
+    if(!input.validity.valid||!Number.isFinite(value)||value<0||value>(rating?10:1e15))invalid.push(input);
+  });
+  var weightInputs=Array.from(weightBox.querySelectorAll('input[type="number"]')),sum=0;
+  weightInputs.forEach(function(input){var value=Number(input.value);sum+=value;if(!input.validity.valid||!Number.isFinite(value)||value<0||value>1e6)invalid.push(input)});
+  if(sum===0)weightInputs.forEach(function(input){if(invalid.indexOf(input)===-1)invalid.push(input)});
+  return invalid;
+}
+function showValidation(invalid){
+  document.querySelectorAll('input').forEach(function(input){
+    var descriptions=(input.getAttribute('aria-describedby')||'').split(/\s+/).filter(function(id){return id&&id!=='joe-status'});
+    if(invalid.indexOf(input)!==-1){input.setAttribute('aria-invalid','true');descriptions.push('joe-status')}else input.removeAttribute('aria-invalid');
+    if(descriptions.length)input.setAttribute('aria-describedby',descriptions.join(' '));else input.removeAttribute('aria-describedby');
+  });
+  status.textContent=invalid.length?T.invalid:'';
+}
 function read(){return Array.from(document.querySelectorAll("[data-offer]")).map(function(box){var o={};box.querySelectorAll("input").forEach(function(x){o[x.name]=x.value});return o})}
 function weights(){var o={};weightBox.querySelectorAll("input").forEach(function(x){o[x.name]=x.value});return o}
 function currency(){var value=weightBox.querySelector('[name="currency"]').value.trim().slice(0,8);if(!value)throw new Error("CURRENCY_REQUIRED");return value}
@@ -27,9 +49,9 @@ function exportMethod(){return latest.methodology+" Every monetary amount and re
 function payload(){return JSON.stringify({currencyUnit:latest.currencyUnit,inputs:read(),weights:weights(),result:latest,methodology:exportMethod()},null,2)}
 function download(blob,name){var u=URL.createObjectURL(blob),a=e("a",{href:u,download:name});a.click();setTimeout(function(){URL.revokeObjectURL(u)},1000)}
 function csvText(value){var text=String(value);if(/^[\s\u0000-\u001f]*[=+\-@]/.test(text))text="'"+text;return '"'+text.replace(/"/g,'""')+'"'}
-document.getElementById("joe-calc").onclick=render;
-document.getElementById("joe-clear").onclick=function(){document.querySelectorAll("[data-offer] input").forEach(function(x){x.value=""});weightBox.querySelector('[name="currency"]').value="";latest=null;results.classList.remove("on");status.textContent=T.cleared};
-document.getElementById("joe-copy").onclick=function(){if(latest)navigator.clipboard.writeText(payload())};
+document.getElementById("joe-calc").onclick=function(){validationAttempted=true;var invalid=invalidFields();showValidation(invalid);if(invalid.length){latest=null;results.classList.remove('on');invalid[0].focus();return}validationAttempted=false;render()};
+document.getElementById("joe-clear").onclick=function(){document.querySelectorAll("[data-offer] input").forEach(function(x){x.value=""});weightBox.querySelector('[name="currency"]').value="";validationAttempted=false;showValidation([]);latest=null;results.classList.remove("on");status.textContent=T.cleared};
+document.getElementById("joe-copy").onclick=function(){if(!latest)return;try{if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function'){status.textContent=feedback.copyFail;return}Promise.resolve(navigator.clipboard.writeText(payload())).then(function(){status.textContent=feedback.copied},function(){status.textContent=feedback.copyFail})}catch(_){status.textContent=feedback.copyFail}};
 document.getElementById("joe-json").onclick=function(){if(latest)download(new Blob([payload()],{type:"application/json"}),"job-offer-comparison.json")};
 document.getElementById("joe-csv").onclick=function(){if(latest)download(new Blob(["currency_unit,offer,annual_value,weighted_score\n"+latest.offers.map(function(o){return csvText(latest.currencyUnit)+","+csvText(o.label)+","+o.annualValue+","+o.weightedScore}).join("\n")],{type:"text/csv"}),"job-offer-comparison.csv")};
 document.getElementById("joe-pdf").onclick=function(){
@@ -55,5 +77,5 @@ document.getElementById("joe-pdf").onclick=function(){
   }catch(_){status.textContent=T.pdfFail}
 };
 document.getElementById("joe-calc").textContent=T.calc;document.getElementById("joe-clear").textContent=T.clear;document.getElementById("joe-copy").textContent=T.copy;document.getElementById("joe-weights-title").textContent=T.weights;document.getElementById("joe-results-title").textContent=T.result;
-document.querySelectorAll("input").forEach(function(x){x.addEventListener("input",function(){if(latest){latest=null;results.classList.remove("on");status.textContent=""}})});
+document.querySelectorAll("input").forEach(function(x){x.addEventListener("input",function(){if(latest){latest=null;results.classList.remove("on");status.textContent=""}if(validationAttempted)showValidation(invalidFields())})});
 })();
