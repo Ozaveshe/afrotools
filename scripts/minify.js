@@ -125,6 +125,9 @@ function writeFileIfChanged(filePath, data, encoding) {
 async function run() {
   buildUiTypography();
   buildNavbarData();
+  if (!ONLY || 'assets/js/lib/src/save-state.js'.includes(ONLY)) {
+    await require('./build-save-state').buildSaveState();
+  }
   let errorCount = 0;
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };

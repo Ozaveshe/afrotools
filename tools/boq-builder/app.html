@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.9ca610bf.min.js" lang="en">
 <head>
+<script src="/assets/js/lib/save-state.global.js"></script>
 <script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d7e7b03e" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -282,45 +283,7 @@ var UNITS = ['m\u00B2','m\u00B3','lin.m','nr','kg','tonne','item','sum','lot','s
 var CURR_SYMBOLS = {NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',TZS:'TSh ',EGP:'E\u00A3',USD:'$',GBP:'\u00A3',EUR:'\u20AC'};
 var COUNTRY_VAT = {NG:7.5,KE:16,ZA:15,GH:15,TZ:18,EG:14,UG:18,RW:18,ET:15};
 
-if(typeof SaveState==='undefined'){
-  function SaveState(slug,opts){
-    opts=opts||{};
-    this.slug=slug;
-    this.key='afrotools-saved-'+slug;
-    this.maxFree=opts.maxFree||20;
-  }
-  SaveState.prototype._read=function(){
-    try{return JSON.parse(localStorage.getItem(this.key))||[];}catch(e){return[];}
-  };
-  SaveState.prototype._write=function(items){
-    try{localStorage.setItem(this.key,JSON.stringify(items));}catch(e){items.pop();try{localStorage.setItem(this.key,JSON.stringify(items));}catch(err){}}
-  };
-  SaveState.prototype.save=function(entry){
-    var items=this._read();
-    var now=Date.now();
-    var id=entry.id||('boq_'+now.toString(36)+'_'+Math.random().toString(36).slice(2,8));
-    var idx=items.findIndex(function(item){return item.id===id;});
-    var saved={id:id,title:entry.title||'Untitled',data:entry.data,thumbnail:entry.thumbnail||null,createdAt:idx>=0?items[idx].createdAt:now,updatedAt:now};
-    if(idx>=0)items[idx]=saved;else items.unshift(saved);
-    if(items.length>this.maxFree)items.length=this.maxFree;
-    this._write(items);
-    return saved;
-  };
-  SaveState.prototype.load=function(id){
-    return this._read().find(function(item){return item.id===id;})||null;
-  };
-  SaveState.prototype.getAll=function(){
-    return this._read().sort(function(a,b){return b.updatedAt-a.updatedAt;});
-  };
-  SaveState.prototype.delete=function(id){
-    var items=this._read();
-    var next=items.filter(function(item){return item.id!==id;});
-    if(next.length!==items.length){this._write(next);return true;}
-    return false;
-  };
-}
-
-var ss = new SaveState('boq-builder');
+var ss = window.SaveState ? new window.SaveState('boq-builder') : null;
 var _currentId = null;
 
 /* -- Templates -- */
@@ -699,6 +662,8 @@ function recalcSummary(){
 
 /* -- Save / Load -- */
 function saveBOQ(){
+  if (!ss) { alert('Saving is unavailable. Export a backup before leaving.'); return; }
+  try {
   var name=document.getElementById('projName').value||'Untitled BOQ';
   var entry=ss.save({
     id:_currentId,
@@ -721,10 +686,13 @@ function saveBOQ(){
   });
   _currentId=entry.id;
   alert('BOQ saved!');
+  } catch (error) { alert(SaveState.message(error)); }
 }
 
 function loadBOQ(id){
-  var item=ss.load(id);
+  if (!ss) { alert('Saved BOQs are unavailable in this browser.'); return; }
+  var item;
+  try { item=ss.load(id); } catch (error) { alert(SaveState.message(error)); return; }
   if(!item||!item.data)return;
   _currentId=item.id;
   var d=item.data;
