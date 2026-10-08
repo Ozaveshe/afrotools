@@ -803,14 +803,14 @@
 
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
-<meta name="afrotools-content-id" content="sw-document-pdf:pdf-bates">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=edc1faa9">
 <link rel="canonical" href="https://afrotools.com/sw/zana/namba-bates-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-bates/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/numerotation-bates-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/namba-bates-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-bates/">
+  <meta name="afrotools-content-id" content="sw-document-pdf:pdf-bates">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
@@ -894,7 +894,7 @@
           <div class="field">
             <label class="f-label-text" for="template">Kiolezo cha stempu</label>
             <input type="text" class="f-input" id="template" value="{prefix}{num}{suffix}" spellcheck="false">
-            <div class="help-text">Ishara: {prefix}, {num}, {suffix}, {file}, {page}, {jumla}, {date}</div>
+            <div class="help-text">Ishara: {prefix}, {num}, {suffix}, {file}, {page}, {total}, {date}</div>
           </div>
 
           <div class="field">
@@ -1039,7 +1039,7 @@
               <span>Niliangalia mpangilio wa faili, kila ukurasa uliowekwa mhuri, maadili ya Bates ya kwanza/ya mwisho, na faili ya ukaguzi.</span>
             </label>
             <div class="action-stack">
-              <button type="button" class="act-btn" id="downloadBtn">Pakua matokeo</button>
+              <button type="button" class="act-btn" id="downloadBtn">Pakua result</button>
               <button type="button" class="act-btn" id="downloadZipBtn">Pakua ZIP batch</button>
               <button type="button" class="act-btn" id="manifestBtn">Pakua audit CSV</button>
             </div>
@@ -1105,7 +1105,7 @@
 
   <div class="faq-item">
     <button type="button" class="faq-q" aria-expanded="false">Je, nitumie umbizo gani kwa kiambishi awali na kiambishi tamati?</button>
-    <div class="faq-a">Miundo ya kawaida hujumuisha kiambishi awali cha suala au kesi kama "CASE-" na kiambishi tamati kama "-CONF". Unaweza pia kutumia uga wa kiolezo pamoja na ishara {file}, {page}, {jumla} na {date} kwa mihuri inayotambua hati.</div>
+    <div class="faq-a">Miundo ya kawaida hujumuisha kiambishi awali cha suala au kesi kama "CASE-" na kiambishi tamati kama "-CONF". Unaweza pia kutumia uga wa kiolezo pamoja na ishara {file}, {page}, {total} na {date} kwa mihuri inayotambua hati.</div>
   </div>
 
   <div class="faq-item">
@@ -1162,7 +1162,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
 <h2 class="seo-links-title">Zana zinazohusiana</h2>
-<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li></ul>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/hati-na-pdf/" data-related-tool data-id="document-pdf" data-name="Zana zote za PDF na hati" data-category="document-pdf" data-icon="PDF" data-desc="Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.">Zana zote za PDF na hati</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -1402,12 +1402,9 @@
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-bates","name":"Namba za Bates za PDF","downloadContract":"free-account"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=d2fb2e27" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-bates","name":"Namba za Bates za PDF","phraseOverrides":{"All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako."},"downloadContract":"local-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

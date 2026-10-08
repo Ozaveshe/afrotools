@@ -28,7 +28,7 @@
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
 
-  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 30px 0 28px; position: relative; overflow: hidden; }
   .tool-hero::after { content: ''; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
   .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
   .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
@@ -192,7 +192,8 @@
   :root[data-theme="dark"] .act-copy { background: #12372f; border-color: #3d8b75; color: #d1fae5; }
 
   @media (max-width: 768px) {
-    .mode-row { grid-template-columns: 1fr; }
+    .mode-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .mode-btn { padding: 12px 8px; line-height: 1.25; }
     .settings-row, .settings-row-3 { grid-template-columns: 1fr; }
     .tips-grid { grid-template-columns: 1fr; }
     .result-actions { flex-direction: column; }
@@ -210,14 +211,14 @@
 <meta property="article:modified_time" content="2026-04-28">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
-<meta name="afrotools-content-id" content="sw-document-pdf:pdf-convert">
-  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=edc1faa9">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kubadilisha-format-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-convert/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertir-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-convert/">
+  <meta name="afrotools-content-id" content="sw-document-pdf:pdf-convert">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
@@ -228,11 +229,6 @@
     <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Zana</a> / <span>Kigeuzi cha PDF</span></div>
     <h1>PDF ya bure <em>Kigeuzi</em></h1>
     <p class="hero-sub">Badilisha faili za DOCX, XLSX, XLS, na CSV kuwa PDF, toa maandishi ya PDF yanayoweza kuchaguliwa, au hamisha kurasa za PDF kama PNG au JPG. Kila kitu kinaendeshwa ndani ya kivinjari chako.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Ndani ya kifaa</span>
-      <span class="badge b-green">Hakuna Upakiaji</span>
-      <span class="badge b-green">Ofisi, Maandishi na Picha</span>
-    </div>
   </div>
 </div>
 
@@ -242,10 +238,10 @@
     <div class="card-head"><span class="card-title">Hali ya Uongofu</span></div>
     <div class="card-body">
       <div class="mode-row">
-        <button type="button" class="mode-btn on" id="modeWord" onclick="switchMode('word2pdf')">Neno → PDF</button>
-        <button type="button" class="mode-btn" id="modeExcel" onclick="switchMode('excel2pdf')">Excel → PDF</button>
-        <button type="button" class="mode-btn" id="modePdfText" onclick="switchMode('pdf2text')">PDF → Maandishi</button>
-        <button type="button" class="mode-btn" id="modePdfImages" onclick="switchMode('pdf2images')">PDF → Picha</button>
+        <button type="button" class="mode-btn on" id="modeWord" aria-pressed="true" onclick="switchMode('word2pdf')">Neno → PDF</button>
+        <button type="button" class="mode-btn" id="modeExcel" aria-pressed="false" onclick="switchMode('excel2pdf')">Excel → PDF</button>
+        <button type="button" class="mode-btn" id="modePdfText" aria-pressed="false" onclick="switchMode('pdf2text')">PDF → Maandishi</button>
+        <button type="button" class="mode-btn" id="modePdfImages" aria-pressed="false" onclick="switchMode('pdf2images')">PDF → Picha</button>
       </div>
     </div>
   </div>
@@ -575,7 +571,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
 <h2 class="seo-links-title">Zana zinazohusiana</h2>
-<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li></ul>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/hati-na-pdf/" data-related-tool data-id="document-pdf" data-name="Zana zote za PDF na hati" data-category="document-pdf" data-icon="PDF" data-desc="Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.">Zana zote za PDF na hati</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -730,10 +726,12 @@ async function ensurePdfJs() {
 // ============================================================
 function switchMode(mode) {
   currentMode = mode;
-  document.getElementById('modeWord').classList.toggle('on', mode === 'word2pdf');
-  document.getElementById('modeExcel').classList.toggle('on', mode === 'excel2pdf');
-  document.getElementById('modePdfText').classList.toggle('on', mode === 'pdf2text');
-  document.getElementById('modePdfImages').classList.toggle('on', mode === 'pdf2images');
+  [['modeWord', 'word2pdf'], ['modeExcel', 'excel2pdf'], ['modePdfText', 'pdf2text'], ['modePdfImages', 'pdf2images']].forEach(function(entry) {
+    var button = document.getElementById(entry[0]);
+    var active = mode === entry[1];
+    button.classList.toggle('on', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
   document.getElementById('word2pdf-panel').classList.toggle('hidden', mode !== 'word2pdf');
   document.getElementById('excel2pdf-panel').classList.toggle('hidden', mode !== 'excel2pdf');
   document.getElementById('pdf2text-panel').classList.toggle('hidden', mode !== 'pdf2text');
@@ -1536,12 +1534,9 @@ Array.prototype.forEach.call(document.querySelectorAll('.faq-q'), function(q) {
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-convert","name":"Badilisha Muundo wa PDF","downloadContract":"free-account"}</script>
-  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=d2fb2e27" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
-  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-convert","name":"Badilisha Muundo wa PDF","phraseOverrides":{"All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako."},"downloadContract":"local-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>
