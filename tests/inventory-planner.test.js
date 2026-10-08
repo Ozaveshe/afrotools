@@ -60,3 +60,26 @@ test('merge preserves distinct records and formula-safe CSV neutralizes spreadsh
   assert.match(csv, /"'=HYPERLINK/);
   assert.match(csv, /"Stock cost value"/);
 });
+
+test('validation details retain record and field context without copying entered content', () => {
+  const base = { schemaVersion: 2, tool: 'inventory', items: [] };
+  assert.deepEqual(engine.parseBackupText('{bad').errorDetails, [{ code: 'invalid_json' }]);
+  assert.deepEqual(engine.parseBackupObject({}).errorDetails, [{ code: 'backup_version' }]);
+  assert.deepEqual(engine.parseBackupText('{}', engine.LIMITS.maxFileBytes + 1).errorDetails, [{ code: 'file_size' }]);
+  assert.deepEqual(engine.parseBackupObject({ ...base, items: Array(501).fill(null) }).errorDetails,
+    [{ code: 'record_limit', limit: 500 }]);
+  assert.deepEqual(engine.parseBackupObject({ ...base, items: [null] }).errorDetails,
+    [{ code: 'record_object', record: 1 }]);
+  assert.deepEqual(engine.parseBackupObject({ ...base, items: [{ name: 'x'.repeat(121) }] }).errorDetails,
+    [{ code: 'field_length', record: 1 }]);
+  const invalid = engine.parseBackupObject({ ...base, items: [item(), {
+    name: '', unitCost: -1, sellPrice: 1, quantity: 1, reorderPoint: 0, targetStock: 0
+  }] });
+  assert.equal(invalid.ok, false);
+  assert.deepEqual(invalid.items, []);
+  assert.deepEqual(invalid.errorDetails, [
+    { code: 'name_required', record: 2 },
+    { code: 'number', field: 'Unit cost', record: 2 }
+  ]);
+  assert.match(invalid.errors[0], /^Record 2: Product name is required\./);
+});

@@ -6,6 +6,45 @@
   var STORAGE_KEY = "afrotools_inventory_v2", state = { items: [], displayUnit: config.defaultUnit || "USD", editingId: null, opener: null };
   function id(value) { return document.getElementById(value); }
   function status(message, tone) { var node = id("invStatus"); node.textContent = message || ""; node.dataset.tone = tone || "neutral"; }
+  function validationMessage(result) {
+    var copy = {
+      fr: {
+        name_required: "Le nom du produit est obligatoire.",
+        number: "{field} doit être un nombre fini supérieur ou égal à zéro.",
+        items_array: "La liste des produits doit être un tableau JSON.",
+        record_limit: "L’inventaire dépasse la limite de {limit} produits.",
+        record_object: "Le produit doit être un objet JSON.",
+        field_length: "Le texte dépasse la longueur autorisée pour ce champ.",
+        backup_version: "Utilisez une sauvegarde JSON de l’inventaire AfroTools, version 2.",
+        file_size: "La sauvegarde dépasse la limite de 1 Mo.",
+        invalid_json: "La sauvegarde n’est pas un fichier JSON valide.",
+        record: "Enregistrement {record} : {message}",
+        unknown: "Les données ne peuvent pas être validées. Vérifiez le fichier de sauvegarde."
+      },
+      sw: {
+        name_required: "Jina la bidhaa linahitajika.",
+        number: "{field} lazima iwe namba halali isiyo hasi.",
+        items_array: "Orodha ya bidhaa lazima iwe safu ya JSON.",
+        record_limit: "Orodha ya bidhaa imezidi kikomo cha rekodi {limit}.",
+        record_object: "Bidhaa lazima iwe kitu cha JSON (object).",
+        field_length: "Maandishi yamezidi urefu unaoruhusiwa kwa sehemu hii.",
+        backup_version: "Tumia faili la akiba la JSON la orodha ya bidhaa ya AfroTools, toleo la 2.",
+        file_size: "Faili la akiba limezidi kikomo cha MB 1.",
+        invalid_json: "Faili la akiba si JSON halali.",
+        record: "Rekodi {record}: {message}",
+        unknown: "Data haiwezi kuthibitishwa. Kagua faili la akiba."
+      }
+    }[config.locale];
+    if (!copy) return result.errors.join(" ");
+    var fields = { "Unit cost": "invCost", "Selling price": "invSell", Quantity: "invQty", "Reorder point": "invReorder", "Target stock": "invTarget" };
+    return (result.errorDetails || [{ code: "unknown" }]).map(function (detail) {
+      var field = fields[detail.field] && id(fields[detail.field]);
+      var label = field && field.closest("label");
+      var fieldName = label ? Array.from(label.childNodes).filter(function (node) { return node.nodeType === 3; }).map(function (node) { return node.textContent; }).join(" ").trim() : "";
+      var message = (copy[detail.code] || copy.unknown).replace("{field}", fieldName).replace("{limit}", String(detail.limit));
+      return detail.record ? copy.record.replace("{record}", String(detail.record)).replace("{message}", message) : message;
+    }).join(" ");
+  }
   function safeJson(key) { try { var value = JSON.parse(localStorage.getItem(key) || "null"); return Array.isArray(value) ? value : []; } catch (error) { return []; } }
   function load() {
     try {
@@ -69,7 +108,7 @@
   }
   function saveForm(event) {
     event.preventDefault(); var parsed = engine.normalizeItem(readForm(), { source: "user", index: Date.now() });
-    if (!parsed.ok) { id("invModalError").textContent = parsed.errors.join(" "); return; }
+    if (!parsed.ok) { id("invModalError").textContent = validationMessage(parsed); return; }
     if (state.editingId) state.items = state.items.map(function (item) { return item.id === state.editingId ? parsed.item : item; });
     else state.items.push(parsed.item);
     persist(t.saved); render(); closeModal();
@@ -111,7 +150,7 @@
     var reader = new FileReader();
     reader.onload = function () {
       var parsed = engine.parseBackupText(reader.result, file.size);
-      if (!parsed.ok) { status(parsed.errors.join(" "), "error"); return; }
+      if (!parsed.ok) { status(validationMessage(parsed), "error"); return; }
       var mode = id("invImportMode").value;
       if (!window.confirm(mode === "merge" ? t.confirmMerge : t.confirmReplace)) { status(t.cancelled); return; }
       if (mode === "merge") { var merged = engine.mergeItems(state.items, parsed.items); state.items = merged.items; status((t.importedMerge || "").replace("{duplicates}", merged.duplicates), "ready"); }
