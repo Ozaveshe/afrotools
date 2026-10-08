@@ -116,6 +116,12 @@ jobs:
           PORT: '4178'
         run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
 
+      - name: Verify undecided consent controls at increased zoom
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          PORT: '4184'
+        run: npx playwright test tests/e2e/analytics-consent-zoom.spec.js --project=chromium --workers=2 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
