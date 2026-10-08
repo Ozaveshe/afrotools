@@ -27,3 +27,27 @@ for(const country of ['uganda','tanzania'])for(const fault of ['missing-label','
  await page.locator('.calc-btn').first().click();await expect(page.locator('#calcSaveBtn')).toBeEnabled();const draft=await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload());expect(draft.inputs.salaryValue).toBe(234567);expect(draft.inputs.period).toBe('monthly');expect(draft.inputs.toggles.nssf).toBe(false);if(tz)expect(draft.inputs.sector).toBe('private');
  await page.locator('[data-action=load]').click();await expect(page.locator('#calcSaveStatus')).toHaveAttribute('data-tone','info');const reopened=await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload());expect(reopened.inputs.salaryValue).toBe(123456);expect(reopened.inputs.period).toBe('annual');if(tz)expect(reopened.inputs.sector).toBe('public');else await expect(page.locator('[data-tog=nssf]')).toHaveAttribute('aria-pressed','true');expect(writes).toEqual([]);expect(errors).toEqual([]);
 });
+
+for(const fault of ['missing-library','constructor-failure'])test(`Tanzania PAYE chart resilience: ${fault}`,async({page,baseURL})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
+ await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ if(fault==='constructor-failure')await page.addInitScript(()=>{window.Chart=function(){throw Error('Synthetic chart failure')}});
+ await page.goto('/tanzania/tz-paye.html');
+ await page.locator('#grossSalary').fill('1000000');await page.locator('.calc-btn').first().click();
+ await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');
+ await expect(page.locator('#mainChart')).toBeHidden();await expect(page.locator('#aiBtn')).toBeEnabled();
+ const monthly=await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload());expect(monthly.inputs.salaryValue).toBe(1000000);
+ await page.locator('.per-btn').nth(1).click();await page.locator('#calcSaveName').fill('Synthetic offline chart');
+ await expect(page.locator('#calcSaveBtn')).toBeEnabled();await page.locator('#calcSaveBtn').click();await expect(page.locator('[data-action=load]')).toHaveCount(1);
+ await page.locator('#grossSalary').fill('2000000');await page.locator('.calc-btn').first().click();await page.locator('[data-action=load]').click();
+ const restored=await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload());expect(restored.inputs.salaryValue).toBe(1000000);expect(restored.inputs.period).toBe('annual');
+ for(const tab of await page.locator('.chart-tab').all())await tab.click();
+ await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');
+ // Verify export dispatch with current figures; actual PDF rendering is a separate gate.
+ expect(await page.evaluate(async()=>{let count=0;window.AfroTools.pdf={generate:()=>{count++}};await window.downloadPdfSummary();return count})).toBe(1);
+ // A later successful library load can restore charts without a reload or lost inputs.
+ expect(process.env.AFROTOOLS_TEST_CHART_JS).toBeTruthy();await page.addScriptTag({content:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS,'utf8')});
+ await page.locator('.chart-tab').first().click();await expect(page.locator('#chartStatus')).toBeHidden();await expect(page.locator('#mainChart')).toBeVisible();
+ expect(await page.evaluate(()=>window.PAYE_CALC_SYNC_ADAPTER.buildPayload())).toEqual(restored);expect(errors).toEqual([]);
+});
