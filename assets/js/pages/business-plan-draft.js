@@ -8,6 +8,7 @@
   var SCHEMA = 1;
   var current = null;
   var currentInputStamp = "";
+  var validationAttempted = false;
 
   var t = {
     en: {
@@ -27,6 +28,8 @@
       save: "Save draft", load: "Load saved draft", clear: "Clear saved draft", backup: "Download saved-draft JSON", import: "Import draft JSON",
       saved: "Draft saved only in this browser. Clear it before leaving a shared device.", loaded: "Saved draft loaded. Build the draft to create a current preview.",
       cleared: "Saved local draft cleared.", corrupt: "The saved draft is unreadable or from another schema. Clear it or import a valid backup.",
+      saveBad: "The draft could not be saved in this browser. Download JSON or TXT to keep a copy.", clearBad: "The saved draft could not be cleared. Check browser storage permissions before leaving a shared device.",
+      copyBad: "Copy is unavailable. Download TXT to keep the draft.",
       imported: "Backup imported into the form but not saved. Build the draft, then save explicitly if wanted.", importBad: "That file is not a valid Business Plan Draft Workshop backup.",
       stale: "Inputs changed. Build the draft again before exporting or saving.", copied: "Summary copied.", pdfBad: "PDF support is unavailable. Use Print instead.",
       narrative: "Draft narrative", advanced: "Need a longer lender-ready document with templates and review? Use the advanced Business Plan app. Need registration steps? Use the Business Registration Planner."
@@ -50,6 +53,8 @@
       cleared: "Brouillon local effacé.", corrupt: "Le brouillon est illisible ou utilise un autre schéma. Effacez-le ou importez une sauvegarde valide.",
       imported: "Sauvegarde importée dans le formulaire, sans enregistrement. Construisez puis enregistrez explicitement si souhaité.", importBad: "Ce fichier n’est pas une sauvegarde valide de cet atelier.",
       stale: "Les données ont changé. Reconstruisez avant d’exporter ou d’enregistrer.", copied: "Résumé copié.", pdfBad: "Le PDF est indisponible. Utilisez Imprimer.",
+      saveBad: "Impossible d’enregistrer le brouillon dans ce navigateur. Téléchargez le JSON ou le TXT pour garder une copie.", clearBad: "Impossible d’effacer le brouillon enregistré. Vérifiez les autorisations de stockage avant de quitter un appareil partagé.",
+      copyBad: "La copie est indisponible. Téléchargez le TXT pour conserver le brouillon.",
       narrative: "Texte du brouillon", advanced: "Besoin d’un document bancaire plus long avec modèles et relecture ? Utilisez l’application avancée. Pour les étapes d’immatriculation, utilisez le planificateur d’enregistrement."
     },
     sw: {
@@ -63,7 +68,7 @@
       result: "Rasimu ya sasa", incomplete: "Orodha ya ukamilifu", complete: "Imetolewa", missing: "Bado inahitajika", scope: "Rasimu ya kupanga kutoka ushahidi na makadirio uliyoingiza. Si idhini ya mkopo, ombi rasmi la ufadhili, ushauri wa uhasibu wala dhamana.",
       contribution: "Mchango ghafi", profit: "Faida ya uendeshaji ya mwezi", grossMargin: "Uwiano wa mchango", operatingMargin: "Ukingo wa uendeshaji",
       need: "Mahitaji ya kuanza + mtaji wa kuendesha", gap: "Pengo la ufadhili", surplus: "Ziada ya ufadhili", breakEven: "Mapato ya kutofanya hasara kwa mchanganyiko huohuo",
-      payback: "Muda rahisi wa kurejesha bila discount", annual: "Faida ya mwaka kwa kurudia mwezi", months: "miezi", unavailable: "Haipatikani",
+      payback: "Muda rahisi wa kurejesha bila kurekebisha thamani ya fedha kwa muda", annual: "Faida ya mwaka kwa kurudia mwezi", months: "miezi", unavailable: "Haipatikani",
       scenarios: "Makadirio ya chini, msingi na juu", scenario: "Hali", low: "Chini", base: "Msingi", high: "Juu",
       copy: "Nakili muhtasari", txt: "Pakua TXT", csv: "Pakua CSV", json: "Pakua JSON", pdf: "Pakua PDF", print: "Chapisha",
       save: "Hifadhi rasimu", load: "Fungua rasimu iliyohifadhiwa", clear: "Futa rasimu ya kifaa", backup: "Pakua nakala ya JSON", import: "Ingiza rasimu ya JSON",
@@ -71,11 +76,42 @@
       cleared: "Rasimu ya kifaa imefutwa.", corrupt: "Rasimu haisomeki au ni ya schema nyingine. Ifute au ingiza nakala halali.",
       imported: "Nakala imeingizwa kwenye fomu bila kuhifadhiwa. Jenga rasimu kisha uhifadhi wazi ukitaka.", importBad: "Faili hii si nakala halali ya warsha hii.",
       stale: "Taarifa zimebadilika. Jenga tena kabla ya kupakua au kuhifadhi.", copied: "Muhtasari umenakiliwa.", pdfBad: "PDF haipatikani. Tumia Chapisha.",
+      saveBad: "Rasimu haikuweza kuhifadhiwa katika kivinjari hiki. Pakua JSON au TXT ili uwe na nakala.", clearBad: "Rasimu iliyohifadhiwa haikuweza kufutwa. Kagua ruhusa za hifadhi ya kivinjari kabla ya kuondoka kwenye kifaa cha pamoja.",
+      copyBad: "Kunakili hakupatikani. Pakua TXT ili uwe na rasimu.",
       narrative: "Maelezo ya rasimu", advanced: "Unahitaji hati ndefu ya benki yenye violezo na ukaguzi? Tumia programu ya juu ya Mpango wa Biashara. Kwa hatua za usajili, tumia Mpangaji wa Usajili."
     }
   }[locale];
 
   var narrativeFields = ["name", "country", "sector", "problem", "customer", "evidence", "offer", "channel", "operations", "team", "risks", "mitigations", "milestones"];
+  var exportText = {
+    en: { section:"Section", metric:"Metric", value:"Value", currency:"Currency", draft:"Draft", input:"Input", output:"Output", method:"Method", formula:"Formula", formulas:"Formulas", engine:"Engine version", scope:"Scope", profit:"Operating profit" },
+    fr: { section:"Section", metric:"Indicateur", value:"Valeur", currency:"Devise", draft:"Brouillon", input:"Donnée", output:"Résultat", method:"Méthode", formula:"Formule", formulas:"Formules", engine:"Version du moteur", scope:"Portée", profit:t.profit },
+    sw: { section:"Sehemu", metric:"Kipimo", value:"Thamani", currency:"Sarafu", draft:"Rasimu", input:"Taarifa", output:"Matokeo", method:"Mbinu", formula:"Kanuni", formulas:"Kanuni za hesabu", engine:"Toleo la kikokotoo", scope:"Mipaka ya matumizi", profit:t.profit }
+  }[locale];
+  exportText.revenue = locale === "en" ? "Monthly revenue" : t.revenue;
+  exportText.variable = locale === "en" ? "Monthly variable costs" : t.variable;
+  exportText.fixed = locale === "en" ? "Monthly fixed costs" : t.fixed;
+  exportText.payback = locale === "en" ? "Simple undiscounted payback months" : t.payback + " (" + t.months + ")";
+  exportText.breakEven = locale === "en" ? "Break-even" : t.breakEven;
+  var translatedFormulas = {
+    fr: {
+      grossContribution:"revenu mensuel - coûts variables mensuels",
+      operatingProfit:"marge sur coûts variables - coûts fixes mensuels d’exploitation",
+      fundingGap:"maximum entre (besoin initial + besoin en fonds de roulement - financement confirmé) et zéro",
+      sameMixBreakEvenRevenue:"coûts fixes mensuels / taux de marge sur coûts variables, uniquement si ce taux est positif",
+      simplePaybackMonths:"(besoin initial + besoin en fonds de roulement) / résultat d’exploitation mensuel positif ; délai non actualisé, distinct du seuil de rentabilité",
+      scenarios:"variation basse/haute du revenu, avec le ratio de coûts variables de base et les coûts fixes maintenus constants"
+    },
+    sw: {
+      grossContribution:"mapato ya mwezi - gharama zinazobadilika za mwezi",
+      operatingProfit:"mchango ghafi - gharama za kudumu za uendeshaji za mwezi",
+      fundingGap:"thamani kubwa kati ya (hitaji la kuanza + hitaji la mtaji wa kuendesha - fedha zilizothibitishwa) na sifuri",
+      sameMixBreakEvenRevenue:"gharama za kudumu za mwezi / uwiano wa mchango, ikiwa uwiano huo ni chanya pekee",
+      simplePaybackMonths:"(hitaji la kuanza + hitaji la mtaji wa kuendesha) / faida chanya ya uendeshaji ya mwezi; bila kurekebisha thamani ya fedha kwa muda, si kiwango cha mapato cha kufidia gharama",
+      scenarios:"mabadiliko ya mapato ya chini/juu huku uwiano wa msingi wa gharama zinazobadilika na gharama za kudumu vikibaki vilevile"
+    }
+  };
+  function displayFormulas(data) { return translatedFormulas[locale] || data.formulas; }
   var financialFields = ["currency", "monthlyRevenue", "monthlyVariableCosts", "monthlyFixedCosts", "startupNeed", "workingCapitalNeed", "confirmedFunding", "scenarioChangePct"];
   var labels = { name:t.name,country:t.country,sector:t.sector,problem:t.problem,customer:t.customer,evidence:t.evidence,offer:t.offer,
     channel:t.channel,operations:t.operations,team:t.team,risks:t.risks,mitigations:t.mitigations,milestones:t.milestones,
@@ -92,6 +128,7 @@
     var label = el("label", { for:id }, labels[name]);
     var attrs = { id:id, name:name, maxlength: multiline ? "4000" : "120" };
     var input = multiline ? el("textarea", attrs) : el("input", Object.assign(attrs, { type: financialFields.includes(name) && name !== "currency" ? "number" : "text" }));
+    if (name === "name" || financialFields.includes(name)) input.required = true;
     if (financialFields.includes(name) && name !== "currency") { input.min = "0"; input.max = name === "scenarioChangePct" ? "100" : String(engine.MAX_AMOUNT); input.step = name === "scenarioChangePct" ? "1" : "0.01"; input.inputMode = "decimal"; }
     if (name === "currency") input.value = root.dataset.currency || "KES";
     if (name === "scenarioChangePct") input.value = "20";
@@ -105,7 +142,7 @@
     var ng = el("div", { class:"bpd-grid" }); narrativeFields.forEach(function (name) { ng.append(field(name, !["name","country","sector"].includes(name))); }); identity.append(ng);
     var finance = el("fieldset", { class:"bpd-panel" }); finance.append(el("legend", {}, t.finance));
     var fg = el("div", { class:"bpd-grid bpd-grid--finance" }); financialFields.forEach(function (name) { fg.append(field(name, false)); }); finance.append(fg);
-    var error = el("p", { class:"bpd-error", role:"alert", hidden:"", "data-error":"" });
+    var error = el("p", { id:"bpd-validation-error", class:"bpd-error", role:"alert", hidden:"", "data-error":"" });
     form.append(identity, finance, error, el("button", { type:"submit", class:"bpd-button bpd-build" }, t.build)); root.append(form);
     root.append(el("section", { class:"bpd-panel bpd-result", hidden:"", tabindex:"-1", "aria-live":"polite", "data-result":"" }));
     var drafts = el("section", { class:"bpd-panel bpd-drafts" }); drafts.append(el("h2", {}, t.save));
@@ -119,6 +156,25 @@
     return { narrative:narrative, finance:finance };
   }
   function stamp(x) { return JSON.stringify(x); }
+  function validation(input, financial) {
+    var errors = financial.errors || [];
+    return ["name"].concat(financialFields).filter(function (name) {
+      var control = root.querySelector("[name=" + name + "]");
+      return !control.validity.valid || (name === "name" && !input.narrative.name) || errors.includes(name) || (name !== "name" && errors.includes("moneyOverflow"));
+    });
+  }
+  function showValidation(invalid) {
+    var error = root.querySelector("[data-error]");
+    ["name"].concat(financialFields).forEach(function (name) {
+      var control = root.querySelector("[name=" + name + "]");
+      var descriptions = (control.getAttribute("aria-describedby") || "").split(/\s+/).filter(function (id) { return id && id !== error.id; });
+      if (invalid.includes(name)) { control.setAttribute("aria-invalid", "true"); descriptions.push(error.id); }
+      else control.removeAttribute("aria-invalid");
+      if (descriptions.length) control.setAttribute("aria-describedby", descriptions.join(" ")); else control.removeAttribute("aria-describedby");
+    });
+    error.hidden = !invalid.length;
+    error.textContent = invalid.length ? t.required + " " + invalid.map(function (name) { return labels[name]; }).join(", ") : "";
+  }
   function money(x, currency) { return x == null ? t.unavailable : currency + " " + Number(x).toLocaleString(locale,{maximumFractionDigits:2}); }
   function checklist(narrative) {
     return [
@@ -162,31 +218,52 @@
   }
   function safeCsv(value) { var s=String(value==null?"":value);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'; }
   function download(name,type,content){var url=URL.createObjectURL(new Blob([content],{type:type})),a=el("a",{href:url,download:name});document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000)}
-  function csv() { var p=payload(),o=p.financialOutputs,c=p.financialInputs.currency,rows=[["Section","Metric","Value","Currency"],["Draft","Business name",p.narrative.name,""],
-    ["Input","Monthly revenue",p.financialInputs.monthlyRevenue,c],["Input","Monthly variable costs",p.financialInputs.monthlyVariableCosts,c],["Input","Monthly fixed costs",p.financialInputs.monthlyFixedCosts,c],
-    ["Output","Gross contribution",o.grossContribution,c],["Output","Operating profit",o.operatingProfit,c],["Output","Funding gap",o.fundingGap,c],["Output","Same-mix break-even revenue",o.breakEvenRevenue,c],
-    ["Output","Simple undiscounted payback months",o.simplePaybackMonths,""],["Method","Engine version",p.engineVersion,""],["Method","Scope",p.scope,""],
-    ["Formula","Operating profit",p.formulas.operatingProfit,""],["Formula","Break-even",p.formulas.sameMixBreakEvenRevenue,""]];
+  function csv() { var p=payload(),o=p.financialOutputs,c=p.financialInputs.currency,f=displayFormulas(p),x=exportText,rows=[[x.section,x.metric,x.value,x.currency],[x.draft,t.name,p.narrative.name,""],
+    [x.input,x.revenue,p.financialInputs.monthlyRevenue,c],[x.input,x.variable,p.financialInputs.monthlyVariableCosts,c],[x.input,x.fixed,p.financialInputs.monthlyFixedCosts,c],
+    [x.output,t.contribution,o.grossContribution,c],[x.output,x.profit,o.operatingProfit,c],[x.output,t.gap,o.fundingGap,c],[x.output,t.breakEven,o.breakEvenRevenue,c],
+    [x.output,x.payback,o.simplePaybackMonths,""],[x.method,x.engine,p.engineVersion,""],[x.method,x.scope,p.scope,""],
+    [x.formula,x.profit,f.operatingProfit,""],[x.formula,x.breakEven,f.sameMixBreakEvenRevenue,""]];
     download("sme-business-plan-financials.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(r){return r.map(safeCsv).join(",")}).join("\n"));
   }
-  function savedRead(){try{var x=JSON.parse(localStorage.getItem(STORE)||"null");return x&&x.schemaVersion===SCHEMA&&x.tool==="business-plan-builder"&&x.form?x:null}catch(_){return null}}
-  function fill(data){if(!data||!data.narrative||!data.finance)return false;narrativeFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.narrative[n]||"")});financialFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.finance[n]??"")});current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;return true}
+  function validDraft(data) {
+    function object(value) { return value && typeof value === "object" && !Array.isArray(value); }
+    if (!object(data) || !object(data.narrative) || !object(data.finance)) return false;
+    var narrativeValid = narrativeFields.every(function (name) {
+      var value = data.narrative[name];
+      var limit = ["name", "country", "sector"].includes(name) ? 120 : 4000;
+      return typeof value === "string" && value.length <= limit;
+    });
+    var financeValid = financialFields.every(function (name) {
+      var value = data.finance[name];
+      if (name === "currency") return typeof value === "string" && value.length <= 120;
+      return (typeof value === "string" && value.trim() !== "" && value.length <= 120) || (typeof value === "number" && Number.isFinite(value));
+    });
+    return narrativeValid && financeValid && !!engine.cleanText(data.narrative.name, 120) && engine.calculate(data.finance).valid;
+  }
+  function savedRead(){try{var x=JSON.parse(localStorage.getItem(STORE)||"null");return x&&x.schemaVersion===SCHEMA&&x.tool==="business-plan-builder"&&validDraft(x.form)?x:null}catch(_){return null}}
+  function fill(data){if(!validDraft(data))return false;narrativeFields.forEach(function(n){root.querySelector("[name="+n+"]").value=data.narrative[n]});financialFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.finance[n])});validationAttempted=false;showValidation([]);current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;return true}
   function draftEnvelope(){var x=read();return{schemaVersion:SCHEMA,tool:"business-plan-builder",locale:locale,savedAt:new Date().toISOString(),form:x}}
   function stale(){if(!current||stamp(read())===currentInputStamp)return false;current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;var e=root.querySelector("[data-error]");e.hidden=false;e.textContent=t.stale;return true}
   build();
-  root.addEventListener("input",stale);
-  root.addEventListener("submit",function(event){event.preventDefault();var input=read(),financial=engine.calculate(input.finance),error=root.querySelector("[data-error]");if(!input.narrative.name||!financial.valid){error.hidden=false;error.textContent=t.required;return}error.hidden=true;current={narrative:input.narrative,financial:financial,completeness:checklist(input.narrative)};currentInputStamp=stamp(input);render()});
+  root.addEventListener("input",function(){stale();if(validationAttempted){var input=read();showValidation(validation(input,engine.calculate(input.finance)))}});
+  root.addEventListener("submit",function(event){event.preventDefault();var input=read(),financial=engine.calculate(input.finance),invalid=validation(input,financial);validationAttempted=true;showValidation(invalid);if(invalid.length){root.querySelector("[name="+invalid[0]+"]").focus();return}validationAttempted=false;current={narrative:input.narrative,financial:financial,completeness:checklist(input.narrative)};currentInputStamp=stamp(input);render()});
   root.addEventListener("click",function(event){var b=event.target.closest("[data-action]");if(!b)return;var a=b.dataset.action,status=root.querySelector("[data-draft-status]");
     if(a==="load"){var s=savedRead();if(!s){status.textContent=t.corrupt;return}fill(s.form);status.textContent=t.loaded}
-    else if(a==="clear"){localStorage.removeItem(STORE);status.textContent=t.cleared}
+    else if(a==="clear"){try{localStorage.removeItem(STORE);status.textContent=t.cleared}catch(_){status.textContent=t.clearBad}}
     else if(a==="backup"){var d=savedRead();if(!d){status.textContent=t.corrupt;return}download("sme-business-plan-saved-draft.json","application/json",JSON.stringify(d,null,2))}
     else if(a==="import")root.querySelector("[data-import]").click();
     else if(!current||stale())return;
-    else if(a==="save"){localStorage.setItem(STORE,JSON.stringify(draftEnvelope()));root.querySelector("[data-result-status]").textContent=t.saved}
-    else if(a==="copy")navigator.clipboard.writeText(summary()).then(function(){root.querySelector("[data-result-status]").textContent=t.copied});
+    else if(a==="save"){try{localStorage.setItem(STORE,JSON.stringify(draftEnvelope()));root.querySelector("[data-result-status]").textContent=t.saved}catch(_){root.querySelector("[data-result-status]").textContent=t.saveBad}}
+    else if(a==="copy"){
+      var resultStatus=root.querySelector("[data-result-status]");
+      try {
+        if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function"){resultStatus.textContent=t.copyBad;return}
+        Promise.resolve(navigator.clipboard.writeText(summary())).then(function(){resultStatus.textContent=t.copied},function(){resultStatus.textContent=t.copyBad});
+      }catch(_){resultStatus.textContent=t.copyBad}
+    }
     else if(a==="txt")download("sme-business-plan-draft.txt","text/plain;charset=utf-8",summary()+"\n\n"+narrativeFields.map(function(n){return labels[n]+": "+(current.narrative[n]||t.missing)}).join("\n"))
     else if(a==="csv")csv();else if(a==="json")download("sme-business-plan-draft.json","application/json",JSON.stringify(payload(),null,2));else if(a==="print")window.print();
-    else if(a==="pdf"){if(!window.jspdf||!window.jspdf.jsPDF){root.querySelector("[data-result-status]").textContent=t.pdfBad;return}var doc=new window.jspdf.jsPDF(),p=payload(),text=summary()+"\n\n"+t.narrative+"\n"+narrativeFields.map(function(n){return labels[n]+": "+(p.narrative[n]||t.missing)}).join("\n")+"\n\nFormulas\n"+Object.values(p.formulas).join("\n");var lines=doc.splitTextToSize(text,175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("sme-business-plan-draft.pdf")}
+    else if(a==="pdf"){if(!window.jspdf||!window.jspdf.jsPDF){root.querySelector("[data-result-status]").textContent=t.pdfBad;return}var doc=new window.jspdf.jsPDF(),p=payload(),text=summary()+"\n\n"+t.narrative+"\n"+narrativeFields.map(function(n){return labels[n]+": "+(p.narrative[n]||t.missing)}).join("\n")+"\n\n"+exportText.formulas+"\n"+Object.values(displayFormulas(p)).join("\n");var lines=doc.splitTextToSize(text,175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("sme-business-plan-draft.pdf")}
   });
-  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],status=root.querySelector("[data-draft-status]");if(!file)return;var reader=new FileReader();reader.onload=function(){try{var d=JSON.parse(String(reader.result));if(d.schemaVersion!==SCHEMA||d.tool!=="business-plan-builder"||!fill(d.form))throw new Error("bad");status.textContent=t.imported}catch(_){status.textContent=t.importBad}};reader.readAsText(file);this.value=""});
+  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],status=root.querySelector("[data-draft-status]");this.value="";if(!file)return;if(file.size>1024*1024){status.textContent=t.importBad;return}var reader=new FileReader();reader.onerror=function(){status.textContent=t.importBad};reader.onload=function(){try{var d=JSON.parse(String(reader.result));if(!d||d.schemaVersion!==SCHEMA||d.tool!=="business-plan-builder"||!fill(d.form))throw new Error("bad");status.textContent=t.imported}catch(_){status.textContent=t.importBad}};reader.readAsText(file)});
 })();
