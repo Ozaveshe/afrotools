@@ -1,5 +1,9 @@
 !function(e, t) {
     "use strict";
+    var deleting=Object.create(null),deleted=Object.create(null),cacheOwner='';
+    function accountKey(){
+        try {var auth=e.AfroAuth,user=auth&&typeof auth.getUser==='function'?auth.getUser():null;if(!user&&auth&&typeof auth.getCachedProfile==='function')user=auth.getCachedProfile();return user&&typeof user.id==='string'?user.id:'';}catch(_){return '';}
+    }
     function storageFailure(error) {
         var status=t.getElementById('calcSaveStatus');
         if(status){status.setAttribute('role','status');status.setAttribute('aria-live','polite');}
@@ -309,20 +313,28 @@
                 t.addEventListener("click", function() {
                     !async function(t) {
                         if (t && e.confirm("Delete this saved calculation?")) {
-                            var a = I();
-                            try { a && a.delete(t); } catch(error) { storageFailure(error);return; }
-                            var n = !1;
-                            if (y[t] && T()) try {
+                            var a = I(),remote=!!y[t],owner=accountKey();
+                            if(deleting[t])return;
+                            if(remote&&(!T()||!owner||cacheOwner!==owner)){j("Sign in to the original dashboard account before deleting this synced calculation.","warning");return;}
+                            deleting[t]=true;
+                            if (remote && T()) try {
                                 await e.AfroWorkspace.remove({
                                     itemType: u,
                                     itemKey: t
                                 });
-                            } catch (e) {
-                                n = !0, console.warn("[PayeCalculationSync] Workspace delete failed:");
+                                if(accountKey()!==owner)throw new Error('account_changed');
+                                var remaining=await e.AfroWorkspace.list({itemType:u,itemKey:t,limit:1});
+                                if(accountKey()!==owner||!Array.isArray(remaining)||remaining.length)throw new Error('delete_unconfirmed');
+                            } catch (error) {
+                                delete deleting[t];
+                                j("Dashboard deletion could not be confirmed. The device copy has been kept. Retry Delete when connected.", "warning");
+                                return;
                             }
-                            if (n) return q(), j("Removed on this device. We could not delete the dashboard copy just now.", "warning"), 
-                            z("delete-retry", 800), void k("delete-pending", t);
-                            delete y[t], q(), j("Saved calculation deleted.", "info"), k("delete", t);
+                            if(remote)delete y[t];
+                            try { a && a.delete(t); }
+                            catch(error){delete deleting[t];q();if(remote)j("Dashboard copy deleted. The device copy could not be deleted; retry Delete.","warning");else storageFailure(error);return;}
+                            deleted[t]=true;delete deleting[t];delete y[t];q();j("Saved calculation deleted.","info");k("delete",t);
+                            var next=e.document.querySelector('#calcSavedList button')||e.document.getElementById('calcSaveBtn');if(next)next.focus();
                         }
                     }(t.getAttribute("data-save-id"));
                 });
@@ -423,7 +435,7 @@
             !function(e) {
                 var t = I();
                 t && (e || []).forEach(function(e) {
-                    if (e && e.item_key) {
+                    if (e && e.item_key && !deleting[e.item_key] && !deleted[e.item_key]) {
                         var a = t.load(e.item_key), n = E(e.updated_at || e.created_at), o = a ? E(a.updatedAt || a.createdAt) : 0;
                         (!a || n > o) && t.save({
                             id: e.item_key,
@@ -437,12 +449,6 @@
                     }
                 });
             }(await X()), await async function() {
-                var e = I();
-                if (e && T()) for (var t = e.getAll(), a = 0; a < t.length; a += 1) {
-                    var n = t[a], o = y[n.id], r = E(n.updatedAt || n.createdAt);
-                    (o ? E(o.updated_at || o.created_at) : 0) >= r && o || await Z(n);
-                }
-            }(), await X(), await async function() {
                 A && N() && await ee(A);
             }(), q(), J(), k(e || "refresh");
         }();
@@ -457,15 +463,17 @@
     }
     async function X() {
         if (!T()) return [];
+        var owner=accountKey();
         try {
             var t = await e.AfroWorkspace.list({
                 itemType: u,
                 limit: 60
             });
             if(!Array.isArray(t))throw new Error('workspace_list_unconfirmed');
+            if(accountKey()!==owner)throw new Error('account_changed');
             var next=Object.create(null);
-            t.forEach(function(e) { e && e.item_key && (next[e.item_key]=e); });
-            y=next;return t;
+            t.forEach(function(e) { e && e.item_key && !deleted[e.item_key] && (next[e.item_key]=e); });
+            cacheOwner=owner;y=next;return t;
         } catch (e) {
             return console.warn("[PayeCalculationSync] Could not load saved calculations from workspace:"), 
             Promise.reject(new Error('workspace_list_failed'));
