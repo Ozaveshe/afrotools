@@ -66,3 +66,11 @@ for(const route of ['/zimbabwe/zw-paye.html','/sw/cote-divoire/kikokotoo-kodi-ms
  await expect(page.locator('#grossSalary')).toHaveValue('120000');await expect(page.locator('.mode-btn').first()).toHaveClass(/on/);
  expect(await page.evaluate(()=>localStorage.getItem('afrotools-saved-'+window.PAYE_SAVE_SLUG))).toBe(before);await expect(page.locator('#payeStorageStatus')).toHaveCount(0);expect(errors).toEqual([]);
 });
+
+for(const [country,slug] of [['liberia','lr-paye-sw'],['mauritania','mr-paye-sw'],['guinea-bissau','gw-paye-sw']])test(`legacy calc-card layout ${country}: save/reopen and denied write`,async({page,baseURL})=>{
+ const app={locale:'sw',slug,route:`/sw/${country}/kikokotoo-kodi-mshahara/`,input:'#salaryInput'};
+ const errors=await open(page,baseURL,app);await page.locator(app.input).fill('120000');await page.locator('.calc-btn').click();await page.locator('#payeSaveBtn').click();
+ await expect(page.locator('.paye-saved-card')).toHaveCount(1);const before=await raw(page,app);expect(JSON.parse(before)[0].data.salaryInput).toBe('120000');
+ await page.locator(app.input).fill('240000');await deny(page,app);await page.locator('#payeSaveBtn').click();expect(await raw(page,app)).toBe(before);await expect(page.locator('#payeStorageStatus')).toContainText(copy.sw.write);
+ await page.evaluate(()=>window.restoreStorage());await page.locator('.paye-open-btn').click();await page.waitForTimeout(800);await expect(page.locator(app.input)).toHaveValue('120000');expect(await raw(page,app)).toBe(before);expect(errors).toEqual([]);
+});

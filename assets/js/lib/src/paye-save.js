@@ -37,7 +37,7 @@
             });
             !function(e, n) {
                 var o = document.querySelector(".tool-page .container, .paye-page .container, main .container, .crumb");
-                if (o || (o = document.querySelector(".card")), o) {
+                if (o || (o = document.querySelector(".card, .calc-card")), o) {
                     var a = document.createElement("div");
                     a.id = "paye-saved-section", a.style.cssText = "max-width:900px;margin:0 auto;padding:20px 20px 0;", 
                     o.classList.contains("crumb") ? o.parentNode.insertBefore(a, o.nextSibling) : o.parentNode.insertBefore(a, o), 
@@ -61,7 +61,7 @@
                         if (o) {
                             var a, r = function() {
                                 var e = {};
-                                document.querySelectorAll('.card input[type="text"], .card input[type="number"], .card input[type="range"], .card select, .card input[type="checkbox"], .card input[type="radio"]').forEach(function(t) {
+                                document.querySelectorAll('.card input[type="text"], .card input[type="number"], .card input[type="range"], .card select, .card input[type="checkbox"], .card input[type="radio"], .calc-card input[type="text"], .calc-card input[type="number"], .calc-card input[type="range"], .calc-card select, .calc-card input[type="checkbox"], .calc-card input[type="radio"]').forEach(function(t) {
                                     t.id && ("checkbox" === t.type ? e[t.id] = t.checked : "radio" === t.type ? t.checked && (e[t.name || t.id] = t.value) : e[t.id] = t.value);
                                 });
                                 var t = document.querySelector(".mode-btn.on");
