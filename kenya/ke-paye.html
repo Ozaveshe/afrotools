@@ -1326,6 +1326,27 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       var inputs = payload.inputs;
       var grossMonthly = Number(inputs.salaryValue || 0);
       var slider = document.getElementById('salarySlider');
+      function retireFailedRestore() {
+        window.RESULT = null;
+        clearTimeout(_debounceTimer);
+        var result = document.getElementById('resultsCard');
+        if (result) result.classList.remove('on');
+        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=document.getElementById(id);if(node)node.disabled=true;});
+        var response=document.getElementById('aiResp');
+        if(response){response.textContent='';response.style.display='none';response.classList.remove('on');}
+        var chat=document.getElementById('aiChat');if(chat)chat.classList.remove('on');
+        var status=document.getElementById('aiStatus');
+        if(status){status.style.display='';status.setAttribute('role','status');status.textContent='Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.';}
+      }
+      var fieldIds=['salaryInput','salarySlider','insurancePremium','pensionContrib','mortgageInterest','prmfContrib'];
+      if(!Number.isFinite(grossMonthly)||grossMonthly<=0||fieldIds.concat(['sliderVal']).some(function(id){return !document.getElementById(id);})){
+        retireFailedRestore();return false;
+      }
+      var previousPeriod=window.PERIOD;
+      var previousFields=fieldIds.concat(['calcSaveName']).map(function(id){var node=document.getElementById(id);return node?{node:node,value:node.value}:null;}).filter(Boolean);
+      var previousViews=Array.from(document.querySelectorAll('[data-tog],.per-btn,#insuranceField,#pensionField,#mortgageField,#prmfField,#salarySlider')).map(function(node){return {node:node,className:node.className,style:node.getAttribute('style'),checked:node.getAttribute('aria-checked')};});
+      var previousSliderLabel=document.getElementById('sliderVal').textContent;
+      try {
 
       document.getElementById('salaryInput').value = formatInput(grossMonthly);
       if (slider) {
@@ -1374,7 +1395,16 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
         document.getElementById('calcSaveName').value = title || '';
       }
 
+      if(!window.RESULT)throw new Error('Restore calculation unavailable');
       return true;
+      } catch(error) {
+        retireFailedRestore();
+        window.PERIOD=previousPeriod;
+        previousFields.forEach(function(field){field.node.value=field.value;});
+        previousViews.forEach(function(view){view.node.className=view.className;[['style',view.style],['aria-checked',view.checked]].forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
+        var label=document.getElementById('sliderVal');if(label)label.textContent=previousSliderLabel;
+        return false;
+      }
     }
   };
 })();

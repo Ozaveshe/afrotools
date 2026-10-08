@@ -109,3 +109,10 @@ function refreshGhanaRestore(target,source){
  return target.slice(0,dst.start)+method+target.slice(dst.end);
 }
 module.exports.refreshGhanaRestore=refreshGhanaRestore;
+
+function refreshKenyaRestore(target,source){
+ const src=restoreMethod(source),dst=restoreMethod(target);
+ const method=source.slice(src.start,src.end).replace('Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.',"Le calcul enregistré n’a pas pu être chargé. Vos saisies précédentes sont conservées. Relancez le calcul avant d’enregistrer ou d’exporter.");
+ return target.slice(0,dst.start)+method+target.slice(dst.end);
+}
+module.exports.refreshKenyaRestore=refreshKenyaRestore;

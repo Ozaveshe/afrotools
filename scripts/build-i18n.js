@@ -124,6 +124,17 @@ if (args.includes('--refresh-chart-readiness')) {
   process.exit(0);
 }
 
+if (args.includes('--refresh-kenya-restore')) {
+  if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Kenya restore refresh requires --lang fr --page kenya/ke-paye only');
+  const { refreshKenyaRestore } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, 'fr/kenya/ke-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = refreshKenyaRestore(existing, fs.readFileSync(path.join(ROOT, 'kenya/ke-paye.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('French Kenya restore: ' + (existing === refreshed ? 'unchanged' : 'updated'));
+  process.exit(0);
+}
+
 // Refresh a verified source control contract while retaining translated page copy.
 if (args.includes('--refresh-paye-save-readiness') || args.includes('--refresh-ghana-result-safety') || args.includes('--refresh-ghana-ai-boundary') || args.includes('--refresh-ghana-controls') || args.includes('--refresh-ghana-sharing') || args.includes('--refresh-ghana-restore')) {
   if (flags.lang !== 'fr' || flags.page !== 'ghana/gh-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Save readiness refresh requires --lang fr --page ghana/gh-paye only');
