@@ -1,5 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
+
+test.use({ trace: 'off', video: 'off', screenshot: 'off' });
 const routes = [
   ['/tools/inventory/', 'Inventory calculator and tracker', 'Add product'],
   ['/fr/tools/gestion-stocks/', 'Calculateur d’inventaire et suivi des stocks', 'Ajouter un produit'],

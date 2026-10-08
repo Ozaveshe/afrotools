@@ -104,6 +104,21 @@ for (const p of WIDGET_PATHS) {
   );
 }
 
+// Document WASM exceptions must remain narrow and preserve every other directive.
+const documentRoutes = ['/tools/pdf-workflow', '/tools/pdf-ocr', '/fr/tools/flux-pdf', '/fr/tools/ocr-pdf', '/sw/zana/workflow-ya-pdf', '/sw/zana/ocr-pdf'];
+const wasmPaths = documentRoutes.flatMap(route => [route, route + '/*']).concat('/assets/vendor/tesseract/worker.min.js', '/assets/vendor/qpdf/qpdf-worker.js');
+assert(!globalCsp.includes("'wasm-unsafe-eval'"), 'Global CSP must not permit WASM compilation');
+for (const [pattern, block] of Object.entries(blocks)) {
+  const policy = block['content-security-policy'] || '';
+  assert(!policy.includes("'unsafe-eval'"), `${pattern} must not enable JavaScript eval`);
+  if (policy.includes("'wasm-unsafe-eval'")) assert(wasmPaths.includes(pattern), `${pattern} has an unapproved WASM exception`);
+}
+for (const pattern of wasmPaths) {
+  const policy = (blocks[pattern] || {})['content-security-policy'] || '';
+  assert(policy.includes("'wasm-unsafe-eval'"), `${pattern} must permit its local WASM runtime`);
+  assert(policy.replace(" 'wasm-unsafe-eval'", '') === globalCsp, `${pattern} must preserve the rest of the global CSP`);
+}
+
 if (failures.length) {
   console.error('security-headers.test.js FAILED:');
   for (const f of failures) console.error('  - ' + f);

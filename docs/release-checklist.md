@@ -39,6 +39,8 @@
 - `npm run automation:live-health:strict` when claiming live scheduled-function proof is green
 - Confirm `dist/` does not contain repo internals such as `package.json`, `AGENTS.md`, `netlify/`, `scripts/`, `supabase/`, `tests/`, `docs/`, `.codex/`, or `.agents/`.
 - Confirm production, deploy-preview, branch-deploy, and staging contexts all run the real build.
+- For document runtime/CSP changes, run `tests/e2e/document-wasm-policy.spec.js` with `AFROTOOLS_TEST_PUBLISH_ARTIFACT=1`, `AFROTOOLS_TEST_SECURITY_HEADERS=1`, and `AFROTOOLS_TEST_DISABLE_ANALYTICS=1`. This exercises real local QPDF/Tesseract workers and parsed PDF/TXT exports against the artifact's page and worker response policies. The analytics stub qualifies tool functionality only; retain unrestricted privacy checks separately.
+- The local CSP emulator models the observed CDN's matching-rule override, not the CDN itself. Before accepting a release, inspect every effective CSP policy on the six Workflow/OCR routes and both worker URLs, plus a normal-page control, at the exact deployed SHA. A restrictive overlapping policy still blocks WASM. Keep JavaScript `unsafe-eval` absent and verify the original native export assertions and deadlines in production. See [MDN script-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/script-src), [worker and multiple-policy behavior](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy), and [Netlify headers](https://docs.netlify.com/manage/routing/headers/).
 
 ## Manual Review
 
