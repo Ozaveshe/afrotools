@@ -46,20 +46,20 @@ function ensureSwAccessibilityRuntime(html) {
 }
 
 const apps = [
-  { id: 'pdf-workspace', englishRoute: '/tools/pdf-workspace/', englishFile: 'tools/pdf-workspace/index.html', swahiliRoute: '/sw/zana/nafasi-pdf/', swahiliFile: 'sw/zana/nafasi-pdf/index.html', name: 'Nafasi ya PDF', exports: ['pdf', 'png', 'zip', 'print'] },
+  { id: 'pdf-workspace', localFirstDownloads: true, englishRoute: '/tools/pdf-workspace/', englishFile: 'tools/pdf-workspace/index.html', swahiliRoute: '/sw/zana/nafasi-pdf/', swahiliFile: 'sw/zana/nafasi-pdf/index.html', name: 'Nafasi ya PDF', exports: ['pdf', 'png', 'zip', 'print'] },
   { id: 'pdf-merge-split', localFirstDownloads: true, englishRoute: '/tools/pdf-merge-split/', englishFile: 'tools/pdf-merge-split/index.html', swahiliRoute: '/sw/zana/unganisha-na-gawanya-pdf/', swahiliFile: 'sw/zana/unganisha-na-gawanya-pdf/index.html', name: 'Unganisha na Gawanya PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-form-filler', localFirstDownloads: true, englishRoute: '/tools/pdf-form-filler/', englishFile: 'tools/pdf-form-filler/index.html', swahiliRoute: '/sw/zana/kujaza-fomu-pdf/', swahiliFile: 'sw/zana/kujaza-fomu-pdf/index.html', name: 'Jaza Fomu ya PDF', exports: ['pdf'] },
   { id: 'pdf-redact', englishRoute: '/tools/pdf-redact/', englishFile: 'tools/pdf-redact/index.html', swahiliRoute: '/sw/zana/kuficha-taarifa-pdf/', swahiliFile: 'sw/zana/kuficha-taarifa-pdf/index.html', name: 'Ficha Taarifa za PDF', exports: ['pdf'], sensitive: true },
-  { id: 'pdf-header-footer', englishRoute: '/tools/pdf-header-footer/', englishFile: 'tools/pdf-header-footer/index.html', swahiliRoute: '/sw/zana/kichwa-na-kijachini-pdf/', swahiliFile: 'sw/zana/kichwa-na-kijachini-pdf/index.html', name: 'Kichwa na Kijachini cha PDF', exports: ['pdf'] },
-  { id: 'pdf-convert', englishRoute: '/tools/pdf-convert/', englishFile: 'tools/pdf-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-format-pdf/', swahiliFile: 'sw/zana/kubadilisha-format-pdf/index.html', name: 'Badilisha Muundo wa PDF', exports: ['pdf', 'txt', 'png', 'jpeg', 'zip'] },
+  { id: 'pdf-header-footer', localFirstDownloads: true, englishRoute: '/tools/pdf-header-footer/', englishFile: 'tools/pdf-header-footer/index.html', swahiliRoute: '/sw/zana/kichwa-na-kijachini-pdf/', swahiliFile: 'sw/zana/kichwa-na-kijachini-pdf/index.html', name: 'Kichwa na Kijachini cha PDF', exports: ['pdf'] },
+  { id: 'pdf-convert', localFirstDownloads: true, englishRoute: '/tools/pdf-convert/', englishFile: 'tools/pdf-convert/index.html', swahiliRoute: '/sw/zana/kubadilisha-format-pdf/', swahiliFile: 'sw/zana/kubadilisha-format-pdf/index.html', name: 'Badilisha Muundo wa PDF', exports: ['pdf', 'txt', 'png', 'jpeg', 'zip'] },
   { id: 'pdf-reorder', localFirstDownloads: true, englishRoute: '/tools/pdf-reorder/', englishFile: 'tools/pdf-reorder/index.html', swahiliRoute: '/sw/zana/kupanga-kurasa-pdf/', swahiliFile: 'sw/zana/kupanga-kurasa-pdf/index.html', name: 'Panga Kurasa za PDF', exports: ['pdf'] },
-  { id: 'pdf-translate', englishRoute: '/tools/pdf-translate/', englishFile: 'tools/pdf-translate/index.html', swahiliRoute: '/sw/zana/kutafsiri-pdf/', swahiliFile: 'sw/zana/kutafsiri-pdf/index.html', name: 'Tafsiri PDF', exports: ['pdf', 'txt'], requiresConsent: true },
-  { id: 'pdf-to-audio', englishRoute: '/tools/pdf-to-audio/', englishFile: 'tools/pdf-to-audio/index.html', swahiliRoute: '/sw/zana/pdf-kwenda-sauti/', swahiliFile: 'sw/zana/pdf-kwenda-sauti/index.html', name: 'PDF kwenda Sauti', exports: ['txt'] },
-  { id: 'pdf-bates', englishRoute: '/tools/pdf-bates/', englishFile: 'tools/pdf-bates/index.html', swahiliRoute: '/sw/zana/namba-bates-pdf/', swahiliFile: 'sw/zana/namba-bates-pdf/index.html', name: 'Namba za Bates za PDF', exports: ['pdf', 'zip', 'csv'] },
-  { id: 'html-to-pdf', englishRoute: '/tools/html-to-pdf/', englishFile: 'tools/html-to-pdf/index.html', swahiliRoute: '/sw/zana/html-kwenda-pdf/', swahiliFile: 'sw/zana/html-kwenda-pdf/index.html', name: 'HTML kwenda PDF', exports: ['pdf', 'html', 'json'] },
-  { id: 'pdf-find-replace', englishRoute: '/tools/pdf-find-replace/', englishFile: 'tools/pdf-find-replace/index.html', swahiliRoute: '/sw/zana/tafuta-na-badilisha-pdf/', swahiliFile: 'sw/zana/tafuta-na-badilisha-pdf/index.html', name: 'Tafuta na Badilisha kwenye PDF', exports: ['pdf', 'csv'] },
+  { id: 'pdf-translate', localFirstDownloads: true, englishRoute: '/tools/pdf-translate/', englishFile: 'tools/pdf-translate/index.html', swahiliRoute: '/sw/zana/kutafsiri-pdf/', swahiliFile: 'sw/zana/kutafsiri-pdf/index.html', name: 'Tafsiri PDF', exports: ['pdf', 'txt'], requiresConsent: true },
+  { id: 'pdf-to-audio', localFirstDownloads: true, englishRoute: '/tools/pdf-to-audio/', englishFile: 'tools/pdf-to-audio/index.html', swahiliRoute: '/sw/zana/pdf-kwenda-sauti/', swahiliFile: 'sw/zana/pdf-kwenda-sauti/index.html', name: 'PDF kwenda Sauti', exports: ['txt'] },
+  { id: 'pdf-bates', localFirstDownloads: true, englishRoute: '/tools/pdf-bates/', englishFile: 'tools/pdf-bates/index.html', swahiliRoute: '/sw/zana/namba-bates-pdf/', swahiliFile: 'sw/zana/namba-bates-pdf/index.html', name: 'Namba za Bates za PDF', exports: ['pdf', 'zip', 'csv'] },
+  { id: 'html-to-pdf', localFirstDownloads: true, englishRoute: '/tools/html-to-pdf/', englishFile: 'tools/html-to-pdf/index.html', swahiliRoute: '/sw/zana/html-kwenda-pdf/', swahiliFile: 'sw/zana/html-kwenda-pdf/index.html', name: 'HTML kwenda PDF', exports: ['pdf', 'html', 'json'] },
+  { id: 'pdf-find-replace', localFirstDownloads: true, englishRoute: '/tools/pdf-find-replace/', englishFile: 'tools/pdf-find-replace/index.html', swahiliRoute: '/sw/zana/tafuta-na-badilisha-pdf/', swahiliFile: 'sw/zana/tafuta-na-badilisha-pdf/index.html', name: 'Tafuta na Badilisha kwenye PDF', exports: ['pdf', 'csv'] },
   { id: 'pdf-repair', localFirstDownloads: true, englishRoute: '/tools/pdf-repair/', englishFile: 'tools/pdf-repair/index.html', swahiliRoute: '/sw/zana/kurekebisha-pdf/', swahiliFile: 'sw/zana/kurekebisha-pdf/index.html', name: 'Rekebisha PDF', exports: ['pdf', 'zip', 'json', 'csv'] },
-  { id: 'pdf-workflow', englishRoute: '/tools/pdf-workflow/', englishFile: 'tools/pdf-workflow/index.html', swahiliRoute: '/sw/zana/workflow-ya-pdf/', swahiliFile: 'sw/zana/workflow-ya-pdf/index.html', name: 'Mtiririko wa Kazi wa PDF', exports: ['pdf', 'json'] },
+  { id: 'pdf-workflow', localFirstDownloads: true, englishRoute: '/tools/pdf-workflow/', englishFile: 'tools/pdf-workflow/index.html', swahiliRoute: '/sw/zana/workflow-ya-pdf/', swahiliFile: 'sw/zana/workflow-ya-pdf/index.html', name: 'Mtiririko wa Kazi wa PDF', exports: ['pdf', 'json'] },
   { id: 'cv-builder', englishRoute: '/tools/cv-builder/', englishFile: 'tools/cv-builder/index.html', swahiliRoute: '/sw/zana/mjenzi-cv/', swahiliFile: 'sw/zana/mjenzi-cv/index.html', name: 'Mjenzi wa CV', exports: ['pdf', 'docx', 'txt', 'csv', 'json', 'zip', 'print'], sensitive: true },
   { id: 'invoice-generator', englishRoute: '/tools/invoice-generator/', englishFile: 'tools/invoice-generator/index.html', swahiliRoute: '/sw/zana/kizalishaji-ankara/', swahiliFile: 'sw/zana/kizalishaji-ankara/index.html', name: 'Kizalishaji Ankara', exports: ['pdf'], sensitive: true },
   { id: 'cover-letter', englishRoute: '/tools/cover-letter-generator/', englishFile: 'tools/cover-letter-generator/index.html', swahiliRoute: '/sw/zana/barua-ombi/', swahiliFile: 'sw/zana/barua-ombi/index.html', name: 'Barua ya Maombi', exports: ['pdf', 'doc', 'txt', 'json', 'print'], alternates: { fr: '/fr/tools/generateur-lettre-motivation/', ha: '/ha/kayan-aiki/rubuta-wasikar-aiki/' }, sensitive: true },
@@ -70,10 +70,10 @@ const apps = [
   { id: 'pdf-password', localFirstDownloads: true, englishRoute: '/tools/pdf-password/', englishFile: 'tools/pdf-password/index.html', swahiliRoute: '/sw/zana/kulinda-pdf-kwa-nenosiri/', swahiliFile: 'sw/zana/kulinda-pdf-kwa-nenosiri/index.html', name: 'Linda PDF kwa Nenosiri', exports: ['pdf', 'zip'] },
   { id: 'pdf-page-numbers', localFirstDownloads: true, englishRoute: '/tools/pdf-page-numbers/', englishFile: 'tools/pdf-page-numbers/index.html', swahiliRoute: '/sw/zana/namba-za-kurasa-pdf/', swahiliFile: 'sw/zana/namba-za-kurasa-pdf/index.html', name: 'Namba za Kurasa za PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-sign', localFirstDownloads: true, englishRoute: '/tools/pdf-sign/', englishFile: 'tools/pdf-sign/index.html', swahiliRoute: '/sw/zana/kusaini-pdf/', swahiliFile: 'sw/zana/kusaini-pdf/index.html', name: 'Saini PDF', exports: ['pdf'] },
-  { id: 'pdf-ocr', englishRoute: '/tools/pdf-ocr/', englishFile: 'tools/pdf-ocr/index.html', swahiliRoute: '/sw/zana/ocr-pdf/', swahiliFile: 'sw/zana/ocr-pdf/index.html', name: 'OCR ya PDF', exports: ['txt'] },
-  { id: 'pdf-editor', englishRoute: '/tools/pdf-editor/', englishFile: 'tools/pdf-editor/index.html', swahiliRoute: '/sw/zana/hariri-pdf/', swahiliFile: 'sw/zana/hariri-pdf/index.html', name: 'Hariri PDF', exports: ['pdf'] },
-  { id: 'pdf-chat', englishRoute: '/tools/pdf-chat/', englishFile: 'tools/pdf-chat/index.html', swahiliRoute: '/sw/zana/chat-na-pdf/', swahiliFile: 'sw/zana/chat-na-pdf/index.html', name: 'Uliza PDF', exports: ['txt'], requiresConsent: true },
-  { id: 'pdf-compare', englishRoute: '/tools/pdf-compare/', englishFile: 'tools/pdf-compare/index.html', swahiliRoute: '/sw/zana/kulinganisha-pdf/', swahiliFile: 'sw/zana/kulinganisha-pdf/index.html', name: 'Linganisha PDF', exports: ['txt'] },
+  { id: 'pdf-ocr', localFirstDownloads: true, englishRoute: '/tools/pdf-ocr/', englishFile: 'tools/pdf-ocr/index.html', swahiliRoute: '/sw/zana/ocr-pdf/', swahiliFile: 'sw/zana/ocr-pdf/index.html', name: 'OCR ya PDF', exports: ['txt'] },
+  { id: 'pdf-editor', localFirstDownloads: true, englishRoute: '/tools/pdf-editor/', englishFile: 'tools/pdf-editor/index.html', swahiliRoute: '/sw/zana/hariri-pdf/', swahiliFile: 'sw/zana/hariri-pdf/index.html', name: 'Hariri PDF', exports: ['pdf'] },
+  { id: 'pdf-chat', localFirstDownloads: true, englishRoute: '/tools/pdf-chat/', englishFile: 'tools/pdf-chat/index.html', swahiliRoute: '/sw/zana/chat-na-pdf/', swahiliFile: 'sw/zana/chat-na-pdf/index.html', name: 'Uliza PDF', exports: ['txt'], requiresConsent: true },
+  { id: 'pdf-compare', localFirstDownloads: true, englishRoute: '/tools/pdf-compare/', englishFile: 'tools/pdf-compare/index.html', swahiliRoute: '/sw/zana/kulinganisha-pdf/', swahiliFile: 'sw/zana/kulinganisha-pdf/index.html', name: 'Linganisha PDF', exports: ['txt'] },
   { id: 'meeting-minutes', englishRoute: '/tools/meeting-minutes/', englishFile: 'tools/meeting-minutes/index.html', swahiliRoute: '/sw/zana/kumbukumbu-za-mkutano/', swahiliFile: 'sw/zana/kumbukumbu-za-mkutano/index.html', name: 'Kumbukumbu za Mkutano', exports: ['pdf', 'doc', 'txt', 'csv', 'ics', 'json', 'print'], alternates: { fr: '/fr/tools/compte-rendu-reunion/' }, sensitive: true, generated: true },
   { id: 'receipt-generator', englishRoute: '/tools/receipt-generator/', englishFile: 'tools/receipt-generator/index.html', swahiliRoute: '/sw/zana/kizalishaji-risiti/', swahiliFile: 'sw/zana/kizalishaji-risiti/index.html', name: 'Kizalishaji Risiti', exports: ['pdf', 'txt', 'csv', 'json', 'print'], alternates: { fr: '/fr/tools/generateur-recu/', ha: '/ha/kayan-aiki/kirkiro-resit/' }, sensitive: true, generated: true },
   { id: 'business-plan', englishRoute: '/tools/business-plan/', englishFile: 'tools/business-plan/index.html', swahiliRoute: '/sw/zana/mpango-wa-biashara/', swahiliFile: 'sw/zana/mpango-wa-biashara/index.html', name: 'Mpango wa Biashara', exports: ['pdf', 'doc', 'txt', 'csv', 'json'], alternates: { fr: '/fr/tools/plan-affaires/' }, sensitive: true, generated: true }
@@ -343,6 +343,9 @@ const legacyInlineRepairs = {
   'cover-letter': {
     "pdf.hifadhi('barua-ya-ombi.pdf')": "pdf.save('barua-ya-ombi.pdf')"
   },
+  'pdf-ocr': {
+    '<input type="file" id="fileInput" accept=".pdf,image/*">': '<input type="file" id="fileInput" class="ocr-file-input" accept=".pdf,image/*">'
+  },
   'pdf-workspace': {
     'id="exPrint">Print</button>': 'id="exPrint">Chapisha</button>'
   }
@@ -603,7 +606,7 @@ function localizeStaticOwnerMarkup(html, appId) {
   );
   localized = localized.replace(/<[^>]+>/g, (tag) =>
     tag.replace(
-      /\b(placeholder|aria-label|aria-description|title|alt|data-consent-title|data-consent-copy)=(["'])(.*?)\2/gi,
+      /\b(placeholder|aria-label|aria-description|title|alt|data-name|data-desc|data-consent-title|data-consent-copy)=(["'])(.*?)\2/gi,
       (match, attribute, quote, value) =>
         `${attribute}=${quote}${translateOwnedText(value, appId)}${quote}`
     )

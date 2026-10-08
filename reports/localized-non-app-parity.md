@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 307 |
-| sw | 137 | 1 | 331 |
+| fr | 160 | 2 | 309 |
+| sw | 137 | 1 | 333 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 342 | 40 | 0 | 302 | 21 | 0 | 321 |
+| editorial | 344 | 40 | 0 | 304 | 21 | 0 | 323 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -257,6 +257,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/ghana-wedding-budget-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/ghana-withholding-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/ghana-withholding-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/grain-drying-weight-reconciliation-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/grain-drying-weight-reconciliation-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/grain-storage-loss-planning-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/grain-storage-loss-planning-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/gratuity-severance-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -354,6 +356,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/kenya-tenancy-agreement-checklist/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-vat-guide-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-vat-guide-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/kenya-withholding-certificate-tax-credit-reconciliation-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/kenya-withholding-certificate-tax-credit-reconciliation-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/kenya-withholding-tax-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/kenya-withholding-tax-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/land-survey-costs-nigeria-2026/ | editorial | fr | — | missing | no localized route or owner file |
