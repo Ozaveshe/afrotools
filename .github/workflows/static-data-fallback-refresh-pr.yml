@@ -33,6 +33,12 @@ jobs:
       - name: Verify refreshed fallback freshness
         run: npm run data:fallbacks:check
 
+      - name: Regenerate dependent AI context
+        run: npm run ai:tool-context
+
+      - name: Verify snapshot-bound AI context
+        run: npm run ai:tool-context:check && node tests/ai-tool-context-drift.test.js
+
       - name: Detect static fallback changes
         id: changes
         shell: bash
@@ -43,6 +49,7 @@ jobs:
             data/fuel/latest.json
             data/rates/latest.json
             data/commodities/latest.json
+            netlify/functions/_shared/ai-tool-context.generated.js
           )
           git status --short -- "${paths[@]}"
           if [ -n "$(git status --short -- "${paths[@]}")" ]; then
@@ -63,9 +70,10 @@ jobs:
             data/fuel/latest.json
             data/rates/latest.json
             data/commodities/latest.json
+            netlify/functions/_shared/ai-tool-context.generated.js
           title: "chore: refresh static data fallbacks"
           commit-message: "chore: refresh static data fallbacks"
           body: |
             Weekly refresh of the committed forex, fuel, rates, and commodities fallbacks from AfroTools live_data_store.
 
-            The refresh validates every snapshot against the public freshness thresholds before replacing committed files, then reconciles data/_meta.json.
+            The refresh validates every snapshot against the public freshness thresholds before replacing committed files, reconciles data/_meta.json, and regenerates and verifies the AI context that depends on those snapshots.

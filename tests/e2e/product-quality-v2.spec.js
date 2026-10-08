@@ -54,13 +54,18 @@ test('VAT calculator handles empty and normal calculation states', async ({ page
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/tools/vat-calculator/', { waitUntil: 'domcontentloaded' });
 
-  await expect(page.locator('#amountInput')).toBeVisible();
-  await page.locator('#countrySelect').selectOption('NG');
-  await page.locator('#calcBtn').click();
-  await page.locator('#amountInput').fill('10000');
-  await page.locator('#calcBtn').click();
-  await expect(page.locator('#resultsArea')).toBeVisible();
-  await expect(page.locator('#breakVat')).toContainText(/\d/);
+  await expect(page.locator('#amount')).toBeVisible();
+  await page.locator('#country').selectOption('NG');
+  await expect(page.locator('#rate')).toHaveValue('');
+  await page.locator('#rate').fill('15');
+  await page.locator('#calculateSingle').click();
+  await expect(page.locator('#singleResult')).toBeHidden();
+  await expect(page.locator('#amount')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#amount')).toBeFocused();
+  await page.locator('#amount').fill('10000');
+  await page.locator('#calculateSingle').click();
+  await expect(page.locator('#singleResult')).toBeVisible();
+  await expect(page.locator('#singleVat')).toHaveText('1,500.00');
   await assertNoHorizontalOverflow(page);
   expect(errors).toEqual([]);
 });

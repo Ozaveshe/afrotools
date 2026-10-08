@@ -8,6 +8,8 @@ async function load(page,route){await page.setViewportSize({width:390,height:844
 async function output(page){const download=page.waitForEvent('download');await page.locator('#downloadBtn').click();return PDFDocument.load(fs.readFileSync(await(await download).path()));}
 for(const [locale,route]of Object.entries(routes)){
  test(`${locale} keyboard upload reset and replacement export use current file at 320px`,async({page},info)=>{
+  // Subscribe before navigation so immediate keyboard activation is intercepted consistently.
+  page.on('filechooser',()=>{});
   await page.setViewportSize({width:320,height:740});await page.goto(route);
   await page.locator('#uploadZone').focus();const chooser=page.waitForEvent('filechooser');await page.keyboard.press('Enter');await(await chooser).setFiles({name:'first.pdf',mimeType:'application/pdf',buffer:fixture});
   await expect(page.locator('#pdf-form-field-0')).toHaveValue('SYNTHETIC');

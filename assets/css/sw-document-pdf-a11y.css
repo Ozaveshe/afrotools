@@ -749,3 +749,14 @@ body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(.cv-export-clo
     transition: none !important;
   }
 }
+/* The workspace command row is a compact toolbar, not a full-width form. */
+@media (max-width: 420px) {
+  html[lang="sw"] .ws-page .cmd-primary-row { flex-wrap: nowrap !important; }
+  html[lang="sw"] .ws-page .cmd-primary-row .cmd-right > button,
+  html[lang="sw"] .ws-page #cmdMoreBtn { width: auto !important; }
+  html[lang="sw"] .ws-page .cmd-primary-row .cmd-download { width: 44px !important; }
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope #cmdMoreMenu { max-width: calc(100vw - 32px) !important; }
+}
+
+/* Keep the native OCR upload input keyboard-focusable without expanding it offscreen. */
+html[lang="sw"] input.ocr-file-input { width: 1px !important; height: 1px !important; }
