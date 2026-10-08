@@ -163,6 +163,12 @@ const ALLOWED_RELATIVE_FILES = new Set([
 ]);
 
 const BLOCKED_RELATIVE_FILES = new Set([
+  // Same-stem compatibility HTML shadows these canonical directories on Netlify.
+  // Keep source wrappers for alias generation; publish the native index pages only.
+  'fr/cape-verde/cv-paye.html',
+  'fr/cape-verde/cv-vat.html',
+  'fr/eq-guinea/gq-paye.html',
+  'fr/eq-guinea/gq-vat.html',
   'data/jamb/review-ledger.json',
   'assets/js/ai/prompt-registry.js',
   'fr/widgets/iframe/template.html',
