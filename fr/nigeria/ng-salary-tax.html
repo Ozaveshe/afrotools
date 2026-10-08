@@ -1273,6 +1273,21 @@ updateSliderFill(slider);
 document.getElementById('grossSalary').value = '3,600,000';
 
 // -€-€ CALC MODE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function invalidateSavedScenarioResult() {
+  RESULT = null;
+  window.RESULT = null;
+  clearTimeout(_debounceTimer);
+  const card = document.getElementById('resultsCard');
+  if (card) card.classList.remove('on');
+  const employer = document.getElementById('employerCard');
+  if (employer) employer.classList.remove('on');
+  ['calcSaveBtn', 'aiBtn'].forEach(id => { const node = document.getElementById(id); if (node) node.disabled = true; });
+  const response = document.getElementById('aiResp');
+  if (response) { response.style.display = 'none'; response.textContent = ''; }
+  const chat = document.getElementById('aiChat');
+  if (chat) chat.classList.remove('on');
+}
+
 function setCalcMode(mode, btn) {
   CALC_MODE = mode;
   document.querySelectorAll('.mode-toggle')[0].querySelectorAll('.mode-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-checked', 'false'); });

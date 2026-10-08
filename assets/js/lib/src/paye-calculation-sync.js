@@ -396,6 +396,48 @@
             console.warn("[PayeCalculationSync] restorePayload adapter failed:");
             return false;
         }
+        return restoreFallback(a,n);
+    }
+    function retireFallbackResult(){
+        if(typeof e.invalidateSavedScenarioResult==='function')e.invalidateSavedScenarioResult();
+        e.RESULT=null;
+        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=t.getElementById(id);if(node)node.disabled=true;});
+    }
+    function restoreFallback(payload,title){
+        var nigeria=!!t.getElementById('grossSalary');
+        var fields=payload.version===1?payload.fields:{};
+        var ids=['grossSalary','salarySlider','nhisRate','lifeAmt','homeloanAmt','pensionableAmt','annualRent','calcSaveName'].concat(Object.keys(fields));
+        var modeButtons=t.querySelectorAll('.mode-toggle .mode-btn'),periodButtons=t.querySelectorAll('.per-btn');
+        if(nigeria&&(typeof e.invalidateSavedScenarioResult!=='function'||['salarySlider','sliderVal'].some(function(id){return !t.getElementById(id);})||
+            (payload.version===2&&(['nhisRate','nhisRateLabel','periodMonthly','periodAnnual','tabPita','tabNta'].some(function(id){return !t.getElementById(id);})||modeButtons.length<2||periodButtons.length<2)))){
+            retireFallbackResult();return false;
+        }
+        var state={calcMode:e.CALC_MODE,salaryPeriod:e.SALARY_PERIOD,regime:e.REGIME,period:e.PERIOD};
+        var controls=Array.from(new Set(ids)).map(function(id){var node=t.getElementById(id);return node?{node:node,value:node.value,checked:node.checked}:null;}).filter(Boolean);
+        var views=Array.from(t.querySelectorAll('[data-tog],.mode-btn,.regime-tab,.per-btn,#salarySlider,#lifeField,#homeloanField,#nhisField,#ntaPensionField,#ntaRentField,#regNotice')).map(function(node){return {node:node,attributes:['class','style','aria-checked','aria-selected'].map(function(name){return [name,node.getAttribute(name)];})};});
+        var labels=['sliderVal','nhisRateLabel','salaryLabel','sliderLabelText','salaryHint','homeLoanRateLabel','homeLoanLimitHint'].map(function(id){var node=t.getElementById(id);return node?{node:node,children:Array.from(node.childNodes),texts:Array.from(node.childNodes).filter(function(child){return child.nodeType===3;}).map(function(child){return {node:child,text:child.nodeValue};})}:null;}).filter(Boolean);
+        try{
+            if(nigeria)retireFallbackResult();
+            return applyFallback(payload,title);
+        }catch(error){
+            retireFallbackResult();
+            try{
+                if(nigeria){
+                    if(typeof e.setCalcMode==='function')e.setCalcMode(state.calcMode,modeButtons[state.calcMode==='net'?1:0]);
+                    if(typeof e.setSalaryPeriod==='function')e.setSalaryPeriod(state.salaryPeriod,t.getElementById(state.salaryPeriod==='monthly'?'periodMonthly':'periodAnnual'));
+                    if(typeof e.setRegime==='function')e.setRegime(state.regime,t.getElementById(state.regime==='nta'?'tabNta':'tabPita'));
+                }
+            }catch(recoveryError){/* Result stays retired when a control is unavailable. */}
+            finally{
+                e.CALC_MODE=state.calcMode;e.SALARY_PERIOD=state.salaryPeriod;e.REGIME=state.regime;e.PERIOD=state.period;
+                controls.forEach(function(field){field.node.value=field.value;if(field.node.type==='checkbox')field.node.checked=field.checked;});
+                views.forEach(function(view){view.attributes.forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
+                labels.forEach(function(label){label.node.replaceChildren.apply(label.node,label.children);label.texts.forEach(function(text){text.node.nodeValue=text.text;});});
+            }
+            return false;
+        }
+    }
+    function applyFallback(a,n){
         return a && 2 === a.version ? function(a, n) {
             if (!a || !a.inputs) return !1;
             var o = a.inputs, r = Number(o.salaryValue || 0), l = "monthly" === o.salaryPeriod ? 12 * r : r, i = t.querySelectorAll(".mode-toggle")[0].querySelectorAll(".mode-btn"), u = t.querySelectorAll(".per-btn");

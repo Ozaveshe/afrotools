@@ -144,3 +144,15 @@ function refreshNigeriaSaveState(target,source){
  return target;
 }
 module.exports.refreshNigeriaSaveState=refreshNigeriaSaveState;
+
+function refreshNigeriaRestore(target,source){
+ const src=calculation(source,'invalidateSavedScenarioResult');
+ const body=source.slice(src.offset+src.start,src.offset+src.end);
+ if(target.includes('function invalidateSavedScenarioResult(')){
+  const dst=calculation(target,'invalidateSavedScenarioResult');
+  return target.slice(0,dst.offset+dst.start)+body+target.slice(dst.offset+dst.end);
+ }
+ const anchor=calculation(target,'setCalcMode'),at=anchor.offset+anchor.start;
+ return target.slice(0,at)+body+'\n\n'+target.slice(at);
+}
+module.exports.refreshNigeriaRestore=refreshNigeriaRestore;

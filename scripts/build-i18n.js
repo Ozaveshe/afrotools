@@ -124,12 +124,13 @@ if (args.includes('--refresh-chart-readiness')) {
   process.exit(0);
 }
 
-if (args.includes('--refresh-nigeria-save-state')) {
+if (args.includes('--refresh-nigeria-save-state') || args.includes('--refresh-nigeria-restore')) {
   if (!['fr','ha'].includes(flags.lang) || flags.page !== 'nigeria/ng-salary-tax' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Nigeria state refresh requires --lang fr|ha --page nigeria/ng-salary-tax only');
-  const { refreshNigeriaSaveState } = require('./lib/localized-paye-save-readiness');
+  const { refreshNigeriaSaveState, refreshNigeriaRestore } = require('./lib/localized-paye-save-readiness');
   const target = path.join(ROOT, flags.lang === 'fr' ? 'fr/nigeria/ng-salary-tax.html' : 'ha/najeriya/harajin-albashi/index.html');
   const existing = fs.readFileSync(target, 'utf8');
-  const refreshed = refreshNigeriaSaveState(existing, fs.readFileSync(path.join(ROOT, 'nigeria/ng-salary-tax.html'), 'utf8'));
+  const refresh = args.includes('--refresh-nigeria-restore') ? refreshNigeriaRestore : refreshNigeriaSaveState;
+  const refreshed = refresh(existing, fs.readFileSync(path.join(ROOT, 'nigeria/ng-salary-tax.html'), 'utf8'));
   if (existing !== refreshed) writeFileWithRetry(target, refreshed);
   console.log('Nigeria ' + flags.lang + ' saved state: ' + (existing === refreshed ? 'unchanged' : 'updated'));
   process.exit(0);
