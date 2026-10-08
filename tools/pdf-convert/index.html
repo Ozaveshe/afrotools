@@ -409,7 +409,8 @@
           </label>
           <span class="toggle-label">Auto-fit columns to page width</span>
         </div>
-        <button type="button" class="calc-btn" id="excelConvertBtn" disabled onclick="convertExcel()">Convert to PDF</button>
+        <p id="excelLoadStatus" role="status" aria-live="polite" data-state="idle"></p>
+        <button type="button" class="calc-btn" id="excelConvertBtn" aria-describedby="excelLoadStatus" disabled onclick="convertExcel()">Convert to PDF</button>
         <div class="progress-bar" id="excelProgress"><div class="progress-fill" id="excelProgressFill"></div></div>
         <div class="progress-text" id="excelProgressText"></div>
       </div>
@@ -639,6 +640,8 @@ let excelFile = null;
 let excelWorkbook = null;
 let excelSelectedSheet = 0;
 let excelPdfBlob = null;
+let excelLoadVersion = 0;
+let excelConverting = false;
 let textPdfDoc = null;
 let textPages = []; // [{page, text}]
 let textCurrentPage = -1; // -1 = all
@@ -723,10 +726,10 @@ function loadScript(src, readyCheck) {
     s.src = src;
     s.onload = function() {
       s.dataset.loaded = 'true';
-      if (readyCheck && !readyCheck()) { reject(new Error('Library did not initialize: ' + src)); return; }
+      if (readyCheck && !readyCheck()) { s.remove(); reject(new Error('Library did not initialize: ' + src)); return; }
       resolve();
     };
-    s.onerror = function() { reject(new Error('Failed to load: ' + src)); };
+    s.onerror = function() { s.remove(); reject(new Error('Failed to load: ' + src)); };
     document.head.appendChild(s);
   });
 }
@@ -951,27 +954,50 @@ async function convertWord() {
 // EXCEL TO PDF
 // ============================================================
 function handleExcelFile(file) {
+  if (!file) return;
+  resetExcel();
   var name = file.name.toLowerCase();
   if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
-    showToast('Please select an .xlsx, .xls, or .csv file.', true);
+    setExcelLoadStatus('error', 'Please select an .xlsx, .xls, or .csv file.');
     return;
   }
   excelFile = file;
   document.getElementById('excelFileName').textContent = file.name;
   document.getElementById('excelFileSize').textContent = formatSize(file.size);
   document.getElementById('excelFileInfo').style.display = 'block';
-  document.getElementById('excelConvertBtn').disabled = false;
-  document.getElementById('excelResultCard').classList.add('hidden');
-
-  // Parse immediately to show sheets
-  parseExcelSheets(file);
+  setExcelLoadStatus('loading', 'Reading spreadsheet...');
+  parseExcelSheets(file, excelLoadVersion);
 }
 
-async function parseExcelSheets(file) {
+function isCurrentExcelFile(file, version) {
+  return excelFile === file && excelLoadVersion === version;
+}
+
+function setExcelLoadStatus(state, message) {
+  var status = document.getElementById('excelLoadStatus');
+  status.dataset.state = state;
+  status.textContent = message;
+  document.getElementById('excelSheetTabs').setAttribute('aria-busy', String(state === 'loading'));
+}
+
+function clearExcelOutput() {
+  excelPdfBlob = null;
+  document.getElementById('excelResultCard').classList.add('hidden');
+  document.getElementById('excelResultName').textContent = '';
+  document.getElementById('excelResultInfo').textContent = '';
+  document.getElementById('excelDownloadBtn').onclick = null;
+  document.getElementById('excelReviewConfirm').checked = false;
+}
+
+async function parseExcelSheets(file, version) {
   try {
     await ensureXlsx();
+    if (!isCurrentExcelFile(file, version)) return;
     var data = new Uint8Array(await file.arrayBuffer());
-    excelWorkbook = XLSX.read(data, { type: 'array' });
+    if (!isCurrentExcelFile(file, version)) return;
+    var workbook = XLSX.read(data, { type: 'array' });
+    if (!workbook.SheetNames.length) throw new Error('No sheets');
+    excelWorkbook = workbook;
 
     var names = excelWorkbook.SheetNames;
     document.getElementById('excelSheetCount').textContent = names.length + ' sheet' + (names.length !== 1 ? 's' : '');
@@ -984,6 +1010,8 @@ async function parseExcelSheets(file) {
         btn.className = 'sheet-tab' + (i === 0 ? ' on' : '');
         btn.textContent = name;
         btn.onclick = function() {
+          if (excelConverting || !isCurrentExcelFile(file, version)) return;
+          clearExcelOutput();
           excelSelectedSheet = i;
           tabsEl.querySelectorAll('.sheet-tab').forEach(function(b) { b.classList.remove('on'); });
           btn.classList.add('on');
@@ -995,34 +1023,50 @@ async function parseExcelSheets(file) {
       tabsEl.classList.add('hidden');
     }
     excelSelectedSheet = 0;
+    setExcelLoadStatus('ready', 'Spreadsheet ready. Select a sheet and convert to PDF.');
+    document.getElementById('excelConvertBtn').disabled = false;
   } catch (err) {
-    showToast('Failed to parse spreadsheet: ' + err.message, true);
+    if (!isCurrentExcelFile(file, version)) return;
+    excelWorkbook = null;
+    document.getElementById('excelConvertBtn').disabled = true;
+    setExcelLoadStatus('error', 'Could not read this spreadsheet. Select a valid spreadsheet and try again.');
   }
 }
 
 function resetExcel() {
+  excelLoadVersion++;
+  excelConverting = false;
   excelFile = null;
   excelWorkbook = null;
-  excelPdfBlob = null;
+  clearExcelOutput();
   excelSelectedSheet = 0;
   document.getElementById('excelFileInfo').style.display = 'none';
   document.getElementById('excelFileInput').value = '';
   document.getElementById('excelConvertBtn').disabled = true;
   document.getElementById('excelResultCard').classList.add('hidden');
   document.getElementById('excelSheetTabs').classList.add('hidden');
+  document.getElementById('excelSheetTabs').replaceChildren();
+  document.getElementById('excelSheetCount').textContent = '';
   document.getElementById('excelProgress').style.display = 'none';
   document.getElementById('excelProgressText').style.display = 'none';
+  setExcelLoadStatus('idle', '');
 }
 
 async function convertExcel() {
-  if (!excelWorkbook) return;
-  document.getElementById('excelReviewConfirm').checked = false;
+  if (!excelWorkbook || !excelFile || excelConverting) return;
+  var file = excelFile;
+  var workbook = excelWorkbook;
+  var selectedSheet = excelSelectedSheet;
+  var version = excelLoadVersion;
+  excelConverting = true;
+  clearExcelOutput();
   var btn = document.getElementById('excelConvertBtn');
   var bar = document.getElementById('excelProgress');
   var fill = document.getElementById('excelProgressFill');
   var ptext = document.getElementById('excelProgressText');
 
   btn.disabled = true;
+  document.querySelectorAll('#excelSheetTabs button').forEach(function(tab) { tab.disabled = true; });
   bar.style.display = 'block';
   ptext.style.display = 'block';
   fill.style.width = '20%';
@@ -1030,11 +1074,12 @@ async function convertExcel() {
 
   try {
     await ensureJsPdf();
+    if (!isCurrentExcelFile(file, version)) return;
     fill.style.width = '40%';
     ptext.textContent = 'Building table...';
 
-    var sheetName = excelWorkbook.SheetNames[excelSelectedSheet];
-    var sheet = excelWorkbook.Sheets[sheetName];
+    var sheetName = workbook.SheetNames[selectedSheet];
+    var sheet = workbook.Sheets[sheetName];
     var jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
 
     if (!jsonData.length) {
@@ -1169,8 +1214,10 @@ async function convertExcel() {
     fill.style.width = '90%';
     ptext.textContent = 'Finalizing...';
 
-    excelPdfBlob = doc.output('blob');
-    var outputName = excelFile.name.replace(/\.(xlsx|xls|csv)$/i, '') + '.pdf';
+    var outputBlob = doc.output('blob');
+    if (!isCurrentExcelFile(file, version)) return;
+    excelPdfBlob = outputBlob;
+    var outputName = file.name.replace(/\.(xlsx|xls|csv)$/i, '') + '.pdf';
 
     document.getElementById('excelResultName').textContent = outputName;
     document.getElementById('excelResultInfo').innerHTML = formatSize(excelPdfBlob.size) + ' &middot; ' + doc.internal.getNumberOfPages() + ' page(s) &middot; ' + rows.length + ' rows';
@@ -1178,21 +1225,26 @@ async function convertExcel() {
 
     var dlBtn = document.getElementById('excelDownloadBtn');
     dlBtn.onclick = function() {
-      downloadBlob(excelPdfBlob, outputName, true);
+      if (isCurrentExcelFile(file, version) && excelPdfBlob === outputBlob) downloadBlob(outputBlob, outputName, true);
     };
 
     fill.style.width = '100%';
     ptext.textContent = 'Done!';
+    setExcelLoadStatus('ready', 'Spreadsheet ready. Select a sheet and convert to PDF.');
     showToast('Spreadsheet converted to PDF successfully!');
 
   } catch (err) {
-    console.error('Excel conversion error:', err);
-    showToast('Conversion failed: ' + err.message, true);
+    if (!isCurrentExcelFile(file, version)) return;
+    setExcelLoadStatus('error', 'Could not convert this spreadsheet. Try again or select another spreadsheet.');
     fill.style.width = '0%';
     ptext.textContent = '';
+  } finally {
+    if (isCurrentExcelFile(file, version)) {
+      excelConverting = false;
+      btn.disabled = !excelWorkbook;
+      document.querySelectorAll('#excelSheetTabs button').forEach(function(tab) { tab.disabled = false; });
+    }
   }
-
-  btn.disabled = false;
 }
 
 // ============================================================
