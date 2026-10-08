@@ -46,7 +46,26 @@ document.getElementById("sv-copy").onclick=function(){
 };
 document.getElementById("sv-json").onclick=function(){if(latest)download(new Blob([payload()],{type:"application/json"}),"startup-valuation-evidence.json")};
 document.getElementById("sv-csv").onclick=function(){if(!latest)return;var noteMap={"revenue-multiple":latest.evidenceNotes.revenue,scorecard:latest.evidenceNotes.scorecard,"milestone-build-up":latest.evidenceNotes.milestones};var rows=["currency_unit,method,low,point,high,formula,assumptions,evidence_note"];latest.methods.forEach(function(m){rows.push([latest.currencyUnit,C.methods[m.id],m.low,m.point,m.high,m.formula,assumptions(m.id),noteMap[m.id]||""].map(csvCell).join(","))});download(new Blob([rows.join("\n")],{type:"text/csv"}),"startup-valuation-evidence.csv")};
-document.getElementById("sv-pdf").onclick=function(){if(!latest)return;try{var J=window.jspdf.jsPDF,d=new J(),y=18,noteMap={"revenue-multiple":latest.evidenceNotes.revenue,scorecard:latest.evidenceNotes.scorecard,"milestone-build-up":latest.evidenceNotes.milestones};d.setFontSize(17);d.text(C.result,15,y);d.setFontSize(9);d.text("Currency / unit: "+latest.currencyUnit+" (no conversion)",15,y+7);latest.methods.forEach(function(m){y+=18;d.setFontSize(12);d.text(C.methods[m.id],15,y);y+=7;d.setFontSize(9);d.text(fmt(m.low)+" - "+fmt(m.high)+" | point "+fmt(m.point),15,y);y+=6;var details=d.splitTextToSize(m.formula+" | Assumptions: "+assumptions(m.id)+" | Evidence: "+(noteMap[m.id]||"not provided"),175);d.text(details,15,y);y+=details.length*4+3});y+=6;d.setFontSize(8);d.text(d.splitTextToSize(methodology(),175),15,y);d.save("startup-valuation-evidence.pdf")}catch(_){status.textContent=C.pdfFail}};
+document.getElementById("sv-pdf").onclick=function(){if(!latest)return;try{
+ var J=window.jspdf.jsPDF,d=new J(),y=18,noteMap={"revenue-multiple":latest.evidenceNotes.revenue,scorecard:latest.evidenceNotes.scorecard,"milestone-build-up":latest.evidenceNotes.milestones};
+ function write(text,size,step){
+  d.setFontSize(size);
+  var normalized=String(text).replace(/[\u00a0\u202f]/g," ").replace(/\u2212/g,"-");
+  d.splitTextToSize(normalized,175).forEach(function(line){
+   if(y>280){d.addPage();y=18;d.setFontSize(size)}
+   d.text(line,15,y);y+=step;
+  });
+ }
+ write(C.result,17,8);
+ write("Currency / unit: "+latest.currencyUnit+" (no conversion)",9,5);
+ latest.methods.forEach(function(m){
+  y+=6;if(y>260){d.addPage();y=18}
+  write(C.methods[m.id],12,7);
+  write(fmt(m.low)+" - "+fmt(m.high)+" | point "+fmt(m.point),9,5);
+  write(m.formula+" | Assumptions: "+assumptions(m.id)+" | Evidence: "+(noteMap[m.id]||"not provided"),9,5);
+ });
+ y+=6;write(methodology(),8,4);d.save("startup-valuation-evidence.pdf");
+}catch(_){status.textContent=C.pdfFail}};
 document.getElementById("sv-calc").textContent=C.calc;document.getElementById("sv-clear").textContent=C.clear;document.getElementById("sv-copy").textContent=C.copy;document.getElementById("sv-results-title").textContent=C.result;
 document.querySelectorAll("input,textarea").forEach(function(node){node.addEventListener("input",function(){revision++;if(latest){latest=null;results.classList.remove("on");status.textContent=""}})});
 })();
