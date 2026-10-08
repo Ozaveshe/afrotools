@@ -237,7 +237,7 @@
     }
     function H(e) {
         var t = e && e.data ? e.data : {};
-        return t && 2 === t.version || (t = {
+        return t && void 0 !== t.version || (t = {
             version: 1,
             legacy: !0,
             fields: e && e.data && "object" == typeof e.data ? e.data : {},
@@ -354,12 +354,32 @@
             n.value = "";
         }
     }
+    function validRestorePayload(payload) {
+        function object(value){return !!value&&typeof value==='object'&&!Array.isArray(value);}
+        if(!object(payload))return false;
+        if(payload.toolSlug&&payload.toolSlug!==r)return false;
+        if(payload.countryCode&&payload.countryCode!==c)return false;
+        if(payload.currency&&payload.currency!==s)return false;
+        if(payload.version!==2)return payload.version===1&&object(payload.fields)&&Object.keys(payload.fields).some(function(key){return key==='grossSalary'||key==='salaryInput';})&&Object.keys(payload.fields).every(function(key){return key!=='__proto__'&&key!=='constructor'&&key!=='prototype'&&(typeof payload.fields[key]==='string'||typeof payload.fields[key]==='boolean'||typeof payload.fields[key]==='number'&&Number.isFinite(payload.fields[key]));});
+        var inputs=payload.inputs;
+        if(!object(inputs)||typeof inputs.salaryValue!=='number'||!Number.isFinite(inputs.salaryValue)||inputs.salaryValue<0)return false;
+        var enums={salaryPeriod:['monthly','annual'],period:['monthly','annual'],mode:['gross','net'],calcMode:['gross','net'],regime:['pita','nta'],sector:['private','public'],ageGroup:['under65','65to74','75plus']};
+        return Object.keys(inputs).every(function(key){
+            var value=inputs[key];
+            if(key==='__proto__'||key==='constructor'||key==='prototype')return false;
+            if(key==='toggles')return object(value)&&Object.keys(value).every(function(toggle){return toggle!=='__proto__'&&toggle!=='constructor'&&toggle!=='prototype'&&typeof value[toggle]==='boolean';});
+            if(Object.prototype.hasOwnProperty.call(enums,key))return enums[key].indexOf(value)!==-1;
+            return typeof value==='number'&&Number.isFinite(value)&&value>=0;
+        });
+    }
     function V(a, n) {
+        if(!validRestorePayload(a))return false;
         var o = R();
         if (o && "function" == typeof o.restorePayload) try {
             return !0 === o.restorePayload(a, n);
         } catch (e) {
             console.warn("[PayeCalculationSync] restorePayload adapter failed:");
+            return false;
         }
         return a && 2 === a.version ? function(a, n) {
             if (!a || !a.inputs) return !1;

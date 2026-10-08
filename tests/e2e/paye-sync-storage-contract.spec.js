@@ -6,12 +6,12 @@ const record={id:'existing',title:'Synthetic scenario',data:payload,createdAt:1,
 async function open(page,baseURL,options={}){
  const errors=[],leaks=[];page.on('pageerror',()=>errors.push('pageerror'));page.on('console',m=>{if(m.text().includes('SYNTHETIC_SECRET_SENTINEL'))leaks.push('sensitive-error-details')});page.on('dialog',d=>d.accept());
  await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
- await page.route('**/__paye_sync_fixture__',r=>r.fulfill({contentType:'text/html',body:`<!doctype html><html lang="en"><body><input id="calcSaveName" value="Synthetic scenario"><button id="calcSaveBtn">Save</button><div id="calcSaveStatus"></div><div id="calcSavedList"></div><div id="resultsCard"></div><script src="/assets/js/lib/save-state-classic.js"></script><script src="/assets/js/lib/paye-calculation-sync.js"></script></body></html>`}));
+ await page.route('**/__paye_sync_fixture__',r=>r.fulfill({contentType:'text/html',body:`<!doctype html><html lang="en"><body><input id="salaryInput" value="456"><input id="calcSaveName" value="Synthetic scenario"><button id="calcSaveBtn">Save</button><div id="calcSaveStatus"></div><div id="calcSavedList"></div><div id="resultsCard"></div><script src="/assets/js/lib/save-state-classic.js"></script><script src="/assets/js/lib/paye-calculation-sync.js"></script></body></html>`}));
  await page.addInitScript(({key,payload,options})=>{
   if(options.raw!==undefined)localStorage.setItem(key,options.raw);
   window.mock={upserts:0,removes:0,lists:0,historySends:0,deviceWrites:0,calculations:0,rows:options.rows||[],upsertMode:options.upsertMode||'null',listFail:false,restores:0,init:false,removeMode:options.removeMode||'success',user:'synthetic-user'};
   window.PAYE_CALC_SYNC_CONFIG={storageSlug:'synthetic-paye',toolSlug:'synthetic-paye',toolHref:'/__paye_sync_fixture__',toolName:'Synthetic PAYE'};
-  window.PAYE_CALC_SYNC_ADAPTER={hasResult:()=>true,buildPayload:()=>JSON.parse(JSON.stringify(payload)),getDefaultTitle:()=> 'Synthetic scenario',getPayloadSummary:()=> 'Synthetic summary',restorePayload:()=>{window.mock.restores++;return true}};
+  window.PAYE_CALC_SYNC_ADAPTER={hasResult:()=>true,buildPayload:()=>JSON.parse(JSON.stringify(payload)),getDefaultTitle:()=> 'Synthetic scenario',getPayloadSummary:()=> 'Synthetic summary',restorePayload:value=>{window.mock.restores++;if(options.restoreThrows)throw Error('SYNTHETIC_SECRET_SENTINEL');document.getElementById('salaryInput').value=value.inputs.salaryValue;return true}};
   window.calculate=()=>{window.mock.calculations++;return 'calculated'};
   window.AfroData={logToolUse:()=>{},save:()=>{window.mock.deviceWrites++}};
   window.AfroHistory={save:async()=>{window.mock.historySends++;return {saved:false}}};
@@ -70,4 +70,28 @@ for(const event of ['focus','afro-auth-change'])test('modern PAYE: calculation a
  await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSaveStatus')).toContainText('Saved to your dashboard and this device.');
  expect(await page.evaluate(()=>({history:window.mock.historySends,upserts:window.mock.upserts}))).toEqual({history:0,upserts:1});
  expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
+});
+
+const invalidRestores={
+ 'missing salary':{version:2,inputs:{}},
+ 'non-numeric salary':{version:2,inputs:{salaryValue:'wrong'}},
+ 'negative salary':{version:2,inputs:{salaryValue:-10}},
+ 'array inputs':{version:2,inputs:[]},
+ 'invalid period':{version:2,inputs:{salaryValue:123,salaryPeriod:'weekly'}},
+ 'nested amount':{version:2,inputs:{salaryValue:123,annualRent:{amount:1}}},
+ 'non-boolean toggle':{version:2,inputs:{salaryValue:123,toggles:{pension:'false'}}},
+ 'wrong tool':{...payload,toolSlug:'different-tool'},
+ 'wrong country':{...payload,countryCode:'KE'},
+ 'future version':{...payload,version:99},
+ 'summary-only legacy':{summary:'old summary'}
+};
+for(const [label,data] of Object.entries(invalidRestores))test('modern PAYE: reject '+label+' before touching salary form',async({page,baseURL})=>{
+ const before=JSON.stringify([{...record,data}]),proof=await open(page,baseURL,{raw:before});await page.locator('[data-action=load]').click();
+ await expect(page.locator('#calcSaveStatus')).toContainText('could not be restored');await expect(page.locator('#salaryInput')).toHaveValue('456');expect(await raw(page)).toBe(before);expect(await page.evaluate(()=>window.mock.restores)).toBe(0);expect(proof.errors).toEqual([]);
+});
+test('modern PAYE: valid scenario restores',async({page,baseURL})=>{
+ const before=JSON.stringify([record]);let proof=await open(page,baseURL,{raw:before});await page.locator('[data-action=load]').click();await expect(page.locator('#salaryInput')).toHaveValue('123');await expect(page.locator('#calcSaveStatus')).toContainText('Loaded saved scenario');expect(proof.errors).toEqual([]);
+});
+test('modern PAYE: throwing restore adapter shows failure without generic fallback',async({page,baseURL})=>{
+ const before=JSON.stringify([record]),proof=await open(page,baseURL,{raw:before,restoreThrows:true});await page.locator('[data-action=load]').click();await expect(page.locator('#calcSaveStatus')).toContainText('could not be restored');await expect(page.locator('#salaryInput')).toHaveValue('456');expect(await raw(page)).toBe(before);expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
 });
