@@ -94,6 +94,12 @@
     fr: { corrupt: "L'historique est illisible. Les donn\u00e9es existantes sont conserv\u00e9es. T\u00e9l\u00e9chargez le r\u00e9sultat actuel en JSON.", storage: "L'historique n'a pas pu \u00eatre modifi\u00e9. Les donn\u00e9es existantes sont conserv\u00e9es. T\u00e9l\u00e9chargez une sauvegarde JSON.", copy: "La copie est indisponible. T\u00e9l\u00e9chargez le r\u00e9sultat actuel en JSON." },
     sw: { corrupt: "Historia iliyohifadhiwa haisomeki. Data iliyopo imehifadhiwa bila mabadiliko. Pakua matokeo ya sasa kama JSON.", storage: "Historia haikuweza kubadilishwa. Data iliyopo imehifadhiwa bila mabadiliko. Pakua JSON kama nakala ya akiba.", copy: "Kunakili hakupatikani. Pakua matokeo ya sasa kama JSON." }
   }[locale];
+  var restoreCopy = {
+    en: { title: "Restore local history", file: "Choose history JSON", note: "Restores saved summaries, not worksheet inputs. Maximum 30 records and 64 KiB. The file stays in this browser.", confirm: "Replace all saved history in this browser, across every currency", action: "Restore selected backup", ready: "Backup contains {count} saved summaries. Confirm replacement to restore.", invalid: "This file is not a valid history backup. Existing history was kept.", failed: "The backup could not be read. Existing history was kept.", done: "Restored {count} saved summaries in this browser.", writing: "History could not be restored. Existing data was kept. You can try again." },
+    fr: { title: "Restaurer l'historique local", file: "Choisir un historique JSON", note: "Restaure les r\u00e9sum\u00e9s enregistr\u00e9s, pas les champs du calcul. Maximum 30 entr\u00e9es et 64 Kio. Le fichier reste dans ce navigateur.", confirm: "Remplacer tout l'historique enregistr\u00e9 dans ce navigateur, toutes devises confondues", action: "Restaurer la sauvegarde choisie", ready: "La sauvegarde contient {count} r\u00e9sum\u00e9s. Confirmez le remplacement.", invalid: "Ce fichier n'est pas une sauvegarde valide. L'historique existant est conserv\u00e9.", failed: "La sauvegarde est illisible. L'historique existant est conserv\u00e9.", done: "{count} r\u00e9sum\u00e9s restaur\u00e9s dans ce navigateur.", writing: "La restauration a \u00e9chou\u00e9. Les donn\u00e9es existantes sont conserv\u00e9es. Vous pouvez r\u00e9essayer." },
+    sw: { title: "Rejesha historia ya kifaa", file: "Chagua historia ya JSON", note: "Hurejesha mihtasari iliyohifadhiwa, si sehemu za kikokotoo. Hadi rekodi 30 na KiB 64. Faili hubaki kwenye kivinjari hiki.", confirm: "Badilisha historia yote iliyohifadhiwa kwenye kivinjari hiki, kwa sarafu zote", action: "Rejesha nakala iliyochaguliwa", ready: "Nakala ina mihtasari {count}. Thibitisha kubadilisha historia ili kurejesha.", invalid: "Faili hii si nakala halali ya historia. Historia iliyopo haijabadilishwa.", failed: "Nakala haikuweza kusomwa. Historia iliyopo haijabadilishwa.", done: "Mihtasari {count} imerejeshwa kwenye kivinjari hiki.", writing: "Historia haikuweza kurejeshwa. Data iliyopo haijabadilishwa. Unaweza kujaribu tena." }
+  }[locale];
+  var pendingHistory = null, restoreVersion = 0;
   var current = null;
   var currentStamp = "";
   var itemSeq = 0;
@@ -163,6 +169,15 @@
     var actions = el("div", { class: "msp-actions" });
     actions.append(button(copy.load, "load-history", true), button(copy.backup, "backup-history", true), button(copy.clear, "clear-history", true));
     history.append(actions, el("p", { class: "msp-status", role: "status", "data-status": "" }), el("div", { "data-history": "" }));
+    var restore = el("fieldset", { class: "msp-restore" });
+    restore.append(el("legend", {}, restoreCopy.title), el("p", { id: "msp-restore-note" }, restoreCopy.note));
+    var fileLabel = el("label", { for: "msp-restore-file" }, restoreCopy.file);
+    var fileInput = el("input", { id: "msp-restore-file", type: "file", accept: ".json,application/json", "aria-describedby": "msp-restore-note" });
+    var confirmLabel = el("label", { class: "msp-restore-confirm" });
+    confirmLabel.append(el("input", { id: "msp-restore-confirm", type: "checkbox" }), document.createTextNode(restoreCopy.confirm));
+    var restoreButton = button(restoreCopy.action, "restore-history", true); restoreButton.disabled = true;
+    restore.append(fileLabel, fileInput, confirmLabel, restoreButton, el("p", { id: "msp-restore-status", role: "status", tabindex: "-1" }));
+    history.append(restore);
     addItem();
     addExpense(copy.transport);
     addExpense(copy.fee);
@@ -224,9 +239,7 @@
     rows.push([], [exportCopy.metric, exportCopy.value], [exportCopy.scope, copy.scope], [exportCopy.engine, current.version], [exportCopy.currency, current.inputs.currency], [copy.profit, current.outputs.netDailyProfit], [copy.margin + " %", current.outputs.netMarginPct], [copy.breakEven, current.outputs.breakEvenRevenue], [copy.days, current.inputs.marketDays], [copy.monthly, current.outputs.monthlyScenario.netProfit], [exportCopy.formula, exportCopy.formulaText]);
     download("market-stall-profit.csv", "text/csv;charset=utf-8", "\ufeff" + rows.map(function (r) { return r.map(safeCsv).join(","); }).join("\n"));
   }
-  function historyRead() {
-    try {
-      var parsed = JSON.parse(localStorage.getItem(STORE) || '{"schemaVersion":1,"records":[]}');
+  function parseHistory(parsed) {
       if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.records) || parsed.records.length > 30) return null;
       var valid = parsed.records.every(function (r) {
         return r && typeof r === "object" && !Array.isArray(r) &&
@@ -238,7 +251,48 @@
           Number.isInteger(r.marketDays) && r.marketDays >= 1 && r.marketDays <= 31;
       });
       return valid ? parsed : null;
-    } catch (_) { return null; }
+  }
+  function historyRead() {
+    try { return parseHistory(JSON.parse(localStorage.getItem(STORE) || '{"schemaVersion":1,"records":[]}')); } catch (_) { return null; }
+  }
+  function importHistory(text) {
+    var data = parseHistory(JSON.parse(text.replace(/^\ufeff/, "")));
+    if (!data) return null;
+    var ids = new Set(), records = [];
+    for (var i = 0; i < data.records.length; i++) {
+      var r = data.records[i];
+      if (ids.has(r.id) || r.savedAt.length > 40 || !r.engineVersion.length || r.revenue < 0 ||
+          /[\u0000-\u001f\u007f]/.test(r.id + r.currency + r.engineVersion) ||
+          [r.netDailyProfit, r.revenue, r.monthlyNetProfit].some(function (n) { return Math.abs(n) > Math.floor(Number.MAX_SAFE_INTEGER / 100); })) return null;
+      ids.add(r.id);
+      records.push({ id: r.id, savedAt: r.savedAt, currency: r.currency, netDailyProfit: r.netDailyProfit, revenue: r.revenue, monthlyNetProfit: r.monthlyNetProfit, marketDays: r.marketDays, engineVersion: r.engineVersion });
+    }
+    return { schemaVersion: 1, records: records };
+  }
+  function syncRestore() {
+    root.querySelector('[data-action="restore-history"]').disabled = !pendingHistory || !root.querySelector("#msp-restore-confirm").checked;
+  }
+  function selectHistory() {
+    var version = ++restoreVersion, input = root.querySelector("#msp-restore-file"), file = input.files[0], status = root.querySelector("#msp-restore-status");
+    pendingHistory = null; root.querySelector("#msp-restore-confirm").checked = false; syncRestore(); status.textContent = "";
+    if (!file) return;
+    if (file.size > 65536) { status.textContent = restoreCopy.invalid; return; }
+    try {
+      Promise.resolve(file.text()).then(function (text) {
+        if (version !== restoreVersion) return;
+        try { pendingHistory = importHistory(text); } catch (_) { pendingHistory = null; }
+        status.textContent = pendingHistory ? restoreCopy.ready.replace("{count}", pendingHistory.records.length) : restoreCopy.invalid;
+        syncRestore();
+      }, function () { if (version === restoreVersion) status.textContent = restoreCopy.failed; });
+    } catch (_) { status.textContent = restoreCopy.failed; }
+  }
+  function restoreHistory() {
+    if (!pendingHistory || !root.querySelector("#msp-restore-confirm").checked) return;
+    var status = root.querySelector("#msp-restore-status"), count = pendingHistory.records.length;
+    if (!historyWrite(pendingHistory, status)) { status.textContent = restoreCopy.writing; return; }
+    pendingHistory = null; restoreVersion++; root.querySelector("#msp-restore-confirm").checked = false;
+    root.querySelector("#msp-restore-file").value = ""; syncRestore(); renderHistory();
+    status.textContent = restoreCopy.done.replace("{count}", count); status.focus();
   }
   function historyWrite(data, status) {
     try { localStorage.setItem(STORE, JSON.stringify(data)); return true; }
@@ -297,6 +351,8 @@
   }
   build();
   root.querySelector("[data-error]").id = "msp-validation-error";
+  root.querySelector("#msp-restore-file").addEventListener("change", selectHistory);
+  root.querySelector("#msp-restore-confirm").addEventListener("change", syncRestore);
   root.addEventListener("input", function () { stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); });
   root.addEventListener("submit", function (event) {
     event.preventDefault(); var input = readInput(); var result = engine.calculate(input); var error = root.querySelector("[data-error]");
@@ -309,6 +365,7 @@
     if (action === "add-item") addItem();
     else if (action === "add-expense") addExpense("");
     else if (action === "remove-row") { var row = trigger.closest(".msp-row"); var selector = row.classList.contains("msp-item") ? ".msp-item" : ".msp-expense"; if (root.querySelectorAll(selector).length > 1) { row.remove(); stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); } }
+    else if (action === "restore-history") restoreHistory();
     else if (action === "load-history") renderHistory();
     else if (action === "backup-history") { var h = historyRead(); if (!h) root.querySelector("[data-status]").textContent = recovery.corrupt; else download("market-stall-profit-history.json", "application/json", JSON.stringify(h, null, 2)); }
     else if (action === "clear-history" || action === "delete-history") {
