@@ -781,7 +781,8 @@ function normalizeHubPage() {
   html = upsertMeta(html, 'name', 'twitter:image', 'https://afrotools.com/assets/img/tools/document-pdf.webp');
   html = upsertMeta(html, 'name', 'afrotools-content-id', contentId('hub'));
   html = upsertMeta(html, 'name', 'afrotools-source-owner', 'scripts/build-swahili-document-pdf-parity.js');
-  html = html.replace(/\s*<link rel="stylesheet" href="\/assets\/css\/sw-document-pdf-a11y\.css">/g, '');
+  // The hub is normalized in place, including after native cache versioning.
+  html = html.replace(/\s*<link rel="stylesheet" href="\/assets\/css\/sw-document-pdf-a11y\.css(?:\?[^"\s]*)?">/g, '');
   html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">\n</head>');
   html = html.replace(/<body\b(?![^>]*\bid=["']sw-document-pdf-a11y-scope["'])/i, '<body id="sw-document-pdf-a11y-scope"');
   fs.writeFileSync(target, ensureSwAccessibilityRuntime(html), 'utf8');
