@@ -416,7 +416,11 @@
             var o = a && a.fields ? a.fields : a;
             if (!o || "object" != typeof o) return !1;
             if (Object.keys(o).forEach(function(e) {
-                "_mode" !== e && "summary" !== e && t.getElementById(e) && (t.getElementById(e).value = o[e]);
+                if (e === "_mode" || e === "summary") return;
+                var control = t.getElementById(e);
+                if (!control) return;
+                if (control.type === "checkbox") control.checked = o[e];
+                else control.value = o[e];
             }), o.grossSalary) {
                 var r = b(o.grossSalary);
                 t.getElementById("salarySlider").value = Math.min(Math.max(r, 5e5), 5e7), t.getElementById("sliderVal").textContent = L(r), 
