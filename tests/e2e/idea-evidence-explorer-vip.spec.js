@@ -66,6 +66,7 @@ test("shortlist is explicit, versioned, recoverable and clearable", async ({ pag
   await expect(page.locator(".iee-compare-card")).toHaveCount(1);
   const saved=JSON.parse(await page.evaluate(k=>localStorage.getItem(k),key));expect(saved.schemaVersion).toBe(1);expect(saved.items).toHaveLength(1);
   await page.evaluate(k=>localStorage.setItem(k,"{broken"),key);await page.reload();await expect(page.locator("[data-local-status]")).toContainText(/unreadable/i);
+  page.once("dialog", dialog => dialog.accept());
   await page.locator("[data-import]").setInputFiles({name:"shortlist.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(saved))});
   await expect(page.locator("[data-shortlist]")).toContainText("Solar cold storage");
   await expect(page.locator("[data-local-status]")).toContainText(/imported/i);

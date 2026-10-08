@@ -9,6 +9,10 @@
   var STORE = "afrotools:idea-evidence-shortlist:v1";
   var currentRows = [];
   var shortlist = [];
+  var storageProtected = false;
+  var localRevision = 0;
+  var copyAttempt = 0;
+  var importAttempt = 0;
   var requestController = null;
   var requestNumber = 0;
   var currentPage = 1;
@@ -77,6 +81,10 @@
     tableIdea:"Wazo", tableCountry:"Nchi", tableSector:"Sekta", source:"Chanzo na uhalisia", scope:"Rekodi zina makadirio ya mpango yaliyowasilishwa. AfroTools haijathibitisha faida, mahitaji, gharama, muda wa kufikia usawa wala kufaa kisheria.",
     links:"Endelea kwa tahadhari", draft:"Geuza ushahidi uliochagua kuwa rasimu ya mpango wa biashara", registration:"Kagua usajili na mipango ya leseni"
   };
+  var recoveryMessages = {"en": {"unsaved": "Changes are available for this session only. Download a JSON backup. Clear the saved shortlist explicitly before saving new changes.", "clearBad": "The saved shortlist could not be cleared. Your current comparison is unchanged.", "copyBad": "Copy failed. Download TXT instead.", "replace": "Replace the saved and current shortlist with this backup?", "importReadBad": "The backup could not be read. Your shortlist is unchanged."}, "fr": {"unsaved": "Les modifications restent dans cette session. T\u00e9l\u00e9chargez une sauvegarde JSON. Effacez explicitement la s\u00e9lection enregistr\u00e9e avant de sauvegarder de nouvelles modifications.", "clearBad": "La s\u00e9lection enregistr\u00e9e ne peut pas \u00eatre effac\u00e9e. Votre comparaison reste inchang\u00e9e.", "copyBad": "La copie a \u00e9chou\u00e9. T\u00e9l\u00e9chargez le fichier TXT.", "replace": "Remplacer la s\u00e9lection actuelle et enregistr\u00e9e par cette sauvegarde ?", "importReadBad": "La sauvegarde ne peut pas \u00eatre lue. Votre s\u00e9lection reste inchang\u00e9e."}, "sw": {"unsaved": "Mabadiliko yanapatikana katika kipindi hiki pekee. Pakua nakala ya JSON. Futa orodha iliyohifadhiwa kwa hiari kabla ya kuhifadhi mabadiliko mapya.", "clearBad": "Orodha iliyohifadhiwa haikuweza kufutwa. Ulinganisho wako haujabadilika.", "copyBad": "Kunakili kumeshindikana. Pakua TXT badala yake.", "replace": "Badilisha orodha ya sasa na iliyohifadhiwa kwa nakala hii?", "importReadBad": "Nakala haikuweza kusomwa. Orodha yako haijabadilika."}};
+  Object.keys(recoveryMessages).forEach(function (language) { Object.assign(dictionary[language], recoveryMessages[language]); });
+  var localeLabels = {"en": {"currency": "Currency", "sourceName": "Source", "sourceUrl": "Source URL", "low": "Low", "medium": "Medium", "high": "High", "unknown": "Unknown"}, "fr": {"currency": "Devise", "sourceName": "Source", "sourceUrl": "URL de la source", "low": "Faible", "medium": "Moyen", "high": "\u00c9lev\u00e9", "unknown": "Inconnu"}, "sw": {"currency": "Sarafu", "sourceName": "Chanzo", "sourceUrl": "URL ya chanzo", "low": "Ndogo", "medium": "Wastani", "high": "Kubwa", "unknown": "Haijulikani"}};
+  Object.keys(localeLabels).forEach(function(language){Object.assign(dictionary[language],localeLabels[language])});
   var t = dictionary[locale] || dictionary.en;
 
   function el(tag, attrs, value) {
@@ -102,6 +110,13 @@
     var sw = {transportation:"Usafiri",agriculture:"Kilimo",food:"Chakula na vinywaji",technology:"Teknolojia",retail:"Rejareja na biashara mtandao",fintech:"Huduma za kifedha",construction:"Ujenzi na mali",health:"Afya na ustawi",education:"Elimu na mafunzo",energy:"Nishati na huduma",fashion:"Mitindo na nguo",tourism:"Utalii na ukarimu",media:"Vyombo vya habari na ubunifu",manufacturing:"Utengenezaji",services:"Huduma za kitaalamu",mining:"Madini na rasilimali",beauty:"Urembo na utunzaji",logistics:"Maghala na ugavi",waste:"Taka na urejelezaji",telecom:"Mawasiliano"};
     return locale === "sw" ? (sw[value] || value) : sectorNames[value] ? sectorNames[value][locale === "fr" ? 1 : 0] : value;
   }
+  function countryLabel(code, fallback) {
+    if(locale!=="en"&&typeof Intl.DisplayNames==="function"){
+      try{return new Intl.DisplayNames([locale],{type:"region"}).of(code)||fallback||code}catch(_){}
+    }
+    return fallback||code;
+  }
+  function levelLabel(value){return t[value]||t.unknown}
   function formatDate(value) { return value ? new Intl.DateTimeFormat(locale,{dateStyle:"medium"}).format(new Date(value)) : t.unavailable; }
   function status(message, state) {
     var node = root.querySelector("[data-status]");
@@ -117,9 +132,9 @@
   function build() {
     root.append(el("h2",{},t.title),el("p",{class:"iee-lede"},t.intro),el("p",{class:"iee-privacy"},t.privacy));
     var form=el("form",{class:"iee-search","data-search-form":"",novalidate:""});
-    var country=el("select",{name:"country",id:"iee-country"});countries.forEach(function(c){country.append(option(c[0],c[1]))});
+    var country=el("select",{name:"country",id:"iee-country"});countries.forEach(function(c){country.append(option(c[0],countryLabel(c[0],c[1])))});
     var sector=el("select",{name:"sector",id:"iee-sector"});sector.append(option("",t.allSectors));engine.SECTORS.forEach(function(s){sector.append(option(s,sectorLabel(s)))});
-    var risk=el("select",{name:"risk",id:"iee-risk"});risk.append(option("",t.allRisks),option("low",locale==="sw"?"Ndogo":"Low / Faible"),option("medium",locale==="sw"?"Wastani":"Medium / Moyen"),option("high",locale==="sw"?"Kubwa":"High / Élevé"));
+    var risk=el("select",{name:"risk",id:"iee-risk"});risk.append(option("",t.allRisks),option("low",t.low),option("medium",t.medium),option("high",t.high));
     var budget=el("input",{name:"budget",id:"iee-budget",type:"number",inputmode:"decimal",min:"0",max:String(engine.MAX_AMOUNT),step:"0.01"});
     var search=el("input",{name:"query",id:"iee-query",type:"search",maxlength:"100",autocomplete:"off"});
     var sort=el("select",{name:"sort",id:"iee-sort"});sort.append(option("breakeven",t.fastest),option("cost",t.lowest),option("revenue",t.revenue),option("newest",t.newest));
@@ -152,14 +167,14 @@
     if (!row.source.name && !row.source.url && !row.source.asOf && !row.source.confidence) return t.sourceNo;
     var parts=[t.sourceYes];
     if(row.source.asOf)parts.push(t.asOf+" "+formatDate(row.source.asOf));
-    if(row.source.confidence)parts.push(t.confidence+": "+row.source.confidence);
+    if(row.source.confidence)parts.push(t.confidence+": "+levelLabel(row.source.confidence));
     return parts.join(" · ");
   }
   function metric(label, value) { var node=el("div",{class:"iee-metric"});node.append(el("span",{},label),el("strong",{},value),el("small",{},t.estimate));return node; }
   function card(row) {
     var article=el("article",{class:"iee-card","data-id":row.id});
-    var head=el("div",{class:"iee-card-head"});head.append(el("span",{class:"iee-sector"},sectorLabel(row.sector)),el("span",{class:"iee-risk"},row.risk));
-    article.append(head,el("h3",{},row.name),el("p",{class:"iee-country"},row.countryName || row.countryCode));
+    var head=el("div",{class:"iee-card-head"});head.append(el("span",{class:"iee-sector"},sectorLabel(row.sector)),el("span",{class:"iee-risk"},levelLabel(row.risk)));
+    article.append(head,el("h3",{},row.name),el("p",{class:"iee-country"},countryLabel(row.countryCode,row.countryName)));
     var metrics=el("div",{class:"iee-metrics"});metrics.append(metric(t.startup,money(row.startupCost,row.currency)),metric(t.monthly,money(row.monthlyRevenue,row.currency)),metric(t.breakeven,row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months));article.append(metrics);
     article.append(el("p",{class:"iee-source"},evidenceLabel(row)));
     var actions=el("div",{class:"iee-card-actions"});actions.append(button("details:"+row.id,t.details,true),button("add:"+row.id,t.add,false));article.append(actions);return article;
@@ -202,25 +217,38 @@
     if(!focusable.length)return;var first=focusable[0],last=focusable[focusable.length-1];
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
+  function localStatus(message) { root.querySelector("[data-local-status]").textContent=message; }
   function storeShortlist(message) {
-    try{localStorage.setItem(STORE,JSON.stringify(engine.shortlistEnvelope(shortlist,locale)));root.querySelector("[data-local-status]").textContent=message||t.saved}catch(_){root.querySelector("[data-local-status]").textContent=t.corrupt}
+    localRevision+=1;
+    if(storageProtected){localStatus(t.unsaved);return false}
+    try{localStorage.setItem(STORE,JSON.stringify(engine.shortlistEnvelope(shortlist,locale)));localStatus(message||t.saved);return true}
+    catch(_){storageProtected=true;localStatus(t.unsaved);return false}
   }
   function readStored() {
-    try{var raw=localStorage.getItem(STORE);if(!raw)return[];var valid=engine.validateEnvelope(JSON.parse(raw));if(!valid)throw new Error("bad");return valid.items}catch(_){root.querySelector("[data-local-status]").textContent=t.corrupt;return[]}
+    try{var raw=localStorage.getItem(STORE);if(!raw)return[];var valid=engine.validateEnvelope(JSON.parse(raw));if(!valid)throw new Error("bad");return valid.items}
+    catch(_){storageProtected=true;localStatus(t.corrupt);return[]}
+  }
+  function copyComparison() {
+    var revision=localRevision, attempt=++copyAttempt;
+    function feedback(message){if(revision===localRevision&&attempt===copyAttempt)localStatus(message)}
+    try{
+      if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function")throw new Error("unavailable");
+      Promise.resolve(navigator.clipboard.writeText(summary())).then(function(){feedback(t.copied)},function(){feedback(t.copyBad)});
+    }catch(_){feedback(t.copyBad)}
   }
   function renderShortlist() {
     var box=root.querySelector("[data-shortlist]");box.replaceChildren();document.body.classList.toggle("iee-has-shortlist",shortlist.length>0);if(!shortlist.length){box.append(el("p",{class:"iee-empty"},t.shortlistEmpty));return}
     var wrap=el("div",{class:"iee-table-wrap"}),table=el("table",{}),head=el("tr",{});
     [t.tableIdea,t.tableCountry,t.tableSector,t.startup,t.monthly,t.breakeven,t.source,""].forEach(function(label){head.append(el("th",{scope:"col"},label))});
     var thead=el("thead",{});thead.append(head);table.append(thead);var body=el("tbody",{});
-    shortlist.forEach(function(row){var tr=el("tr",{});[row.name,row.countryName||row.countryCode,sectorLabel(row.sector),money(row.startupCost,row.currency),money(row.monthlyRevenue,row.currency),row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months,evidenceLabel(row)].forEach(function(value){tr.append(el("td",{},value))});var td=el("td",{});td.append(button("remove:"+row.id,t.remove,true));tr.append(td);body.append(tr)});
+    shortlist.forEach(function(row){var tr=el("tr",{});[row.name,countryLabel(row.countryCode,row.countryName),sectorLabel(row.sector),money(row.startupCost,row.currency),money(row.monthlyRevenue,row.currency),row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months,evidenceLabel(row)].forEach(function(value){tr.append(el("td",{},value))});var td=el("td",{});td.append(button("remove:"+row.id,t.remove,true));tr.append(td);body.append(tr)});
     table.append(body);wrap.append(table);
     var cards=el("div",{class:"iee-compare-cards"});
     shortlist.forEach(function(row){
       var card=el("article",{class:"iee-compare-card"});
       card.append(el("h3",{},row.name));
       [
-        [t.tableCountry,row.countryName||row.countryCode],
+        [t.tableCountry,countryLabel(row.countryCode,row.countryName)],
         [t.tableSector,sectorLabel(row.sector)],
         [t.startup,money(row.startupCost,row.currency)],
         [t.monthly,money(row.monthlyRevenue,row.currency)],
@@ -232,10 +260,10 @@
     box.append(wrap,cards);
   }
   function exportPayload() { return {schemaVersion:engine.SCHEMA_VERSION,tool:"idea-board",generatedAt:new Date().toISOString(),scope:t.scope,items:shortlist}; }
-  function summary() { return [document.title,t.scope].concat(shortlist.map(function(row,i){return (i+1)+". "+row.name+" | "+(row.countryName||row.countryCode)+" | "+sectorLabel(row.sector)+" | "+t.startup+": "+money(row.startupCost,row.currency)+" | "+t.monthly+": "+money(row.monthlyRevenue,row.currency)+" | "+t.breakeven+": "+(row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months)+" | "+evidenceLabel(row)})).join("\n"); }
+  function summary() { return [document.title,t.scope].concat(shortlist.map(function(row,i){return (i+1)+". "+row.name+" | "+(countryLabel(row.countryCode,row.countryName))+" | "+sectorLabel(row.sector)+" | "+t.startup+": "+money(row.startupCost,row.currency)+" | "+t.monthly+": "+money(row.monthlyRevenue,row.currency)+" | "+t.breakeven+": "+(row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months)+" | "+evidenceLabel(row)})).join("\n"); }
   function exportCsv() {
-    var rows=[[t.tableIdea,t.tableCountry,t.tableSector,t.startup+" min",t.startup+" max","Currency",t.monthly+" min",t.monthly+" max",t.breakeven+" min",t.breakeven+" max","Source","Source URL","As of","Confidence"]];
-    shortlist.forEach(function(r){rows.push([r.name,r.countryName||r.countryCode,sectorLabel(r.sector),r.startupCost.min,r.startupCost.max,r.currency,r.monthlyRevenue.min,r.monthlyRevenue.max,r.breakevenMonths.min,r.breakevenMonths.max,r.source.name,r.source.url,r.source.asOf,r.source.confidence])});
+    var rows=[[t.tableIdea,t.tableCountry,t.tableSector,t.startup+" min",t.startup+" max",t.currency,t.monthly+" min",t.monthly+" max",t.breakeven+" min",t.breakeven+" max",t.sourceName,t.sourceUrl,t.asOf,t.confidence]];
+    shortlist.forEach(function(r){rows.push([r.name,countryLabel(r.countryCode,r.countryName),sectorLabel(r.sector),r.startupCost.min,r.startupCost.max,r.currency,r.monthlyRevenue.min,r.monthlyRevenue.max,r.breakevenMonths.min,r.breakevenMonths.max,r.source.name,r.source.url,r.source.asOf,r.source.confidence?levelLabel(r.source.confidence):""])});
     download("african-business-idea-comparison.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(row){return row.map(safeCsv).join(",")}).join("\n"));
   }
   function exportPdf() {
@@ -254,18 +282,35 @@
     if(action.indexOf("add:")===0){var add=findRow(action.slice(4));if(!add)return;if(shortlist.some(function(r){return r.id===add.id}))return;if(shortlist.length>=6){root.querySelector("[data-local-status]").textContent=t.maximum;return}shortlist.push(add);storeShortlist();renderShortlist();return}
     if(action.indexOf("remove:")===0){shortlist=shortlist.filter(function(r){return r.id!==action.slice(7)});storeShortlist();renderShortlist();return}
     if(action==="import"){root.querySelector("[data-import]").click();return}
-    if(action==="clear"){localStorage.removeItem(STORE);shortlist=[];renderShortlist();root.querySelector("[data-local-status]").textContent=t.cleared;return}
+    if(action==="clear"){localRevision+=1;importAttempt+=1;try{localStorage.removeItem(STORE)}catch(_){localStatus(t.clearBad);return}storageProtected=false;shortlist=[];renderShortlist();localStatus(t.cleared);return}
     if(action==="close-dialog"){closeDialog();return}
     if(!shortlist.length){root.querySelector("[data-local-status]").textContent=t.shortlistEmpty;return}
     if(action==="backup")download("african-business-idea-shortlist-backup.json","application/json",JSON.stringify(engine.shortlistEnvelope(shortlist,locale),null,2));
-    else if(action==="copy")navigator.clipboard.writeText(summary()).then(function(){root.querySelector("[data-local-status]").textContent=t.copied});
+    else if(action==="copy")copyComparison();
     else if(action==="txt")download("african-business-idea-comparison.txt","text/plain;charset=utf-8",summary());
     else if(action==="csv")exportCsv();
     else if(action==="json")download("african-business-idea-comparison.json","application/json",JSON.stringify(exportPayload(),null,2));
     else if(action==="pdf")exportPdf();
     else if(action==="print")window.print();
   });
-  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],statusNode=root.querySelector("[data-local-status]");if(!file)return;var reader=new FileReader();reader.onload=function(){try{var valid=engine.validateEnvelope(JSON.parse(String(reader.result)));if(!valid)throw new Error("bad");shortlist=valid.items;storeShortlist(t.imported);renderShortlist()}catch(_){statusNode.textContent=t.importBad}};reader.readAsText(file);this.value=""});
+  root.querySelector("[data-import]").addEventListener("change",function(){
+    var file=this.files&&this.files[0];this.value="";if(!file)return;
+    var attempt=++importAttempt, revision=localRevision;
+    function current(){return attempt===importAttempt&&revision===localRevision}
+    if(file.size>262144){localStatus(t.importBad);return}
+    var reader=new FileReader();
+    reader.onload=function(){
+      if(!current())return;
+      var valid;
+      try{valid=engine.validateEnvelope(JSON.parse(String(reader.result)))}catch(_){}
+      if(!valid){localStatus(t.importBad);return}
+      if((storageProtected||shortlist.length)&&!window.confirm(t.replace))return;
+      try{localStorage.setItem(STORE,JSON.stringify(valid))}catch(_){localStatus(t.importReadBad);return}
+      storageProtected=false;shortlist=valid.items;localRevision+=1;renderShortlist();localStatus(t.imported);
+    };
+    reader.onerror=reader.onabort=function(){if(current())localStatus(t.importReadBad)};
+    try{reader.readAsText(file)}catch(_){if(current())localStatus(t.importReadBad)}
+  });
   document.querySelector("[data-dialog-backdrop]").addEventListener("click",function(event){if(event.target===this)closeDialog()});
   document.addEventListener("keydown",trap);
   window.addEventListener("online",function(){status(t.changed,"stale")});
