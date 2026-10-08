@@ -13,7 +13,7 @@
         var locale=(t.documentElement.lang||'en').split('-')[0];
         j(locale==='fr'?'La synchronisation a échoué. Vérifiez les copies sur cet appareil et dans le tableau de bord avant de réessayer.':'Sync failed. Check the copies on this device and your dashboard before retrying.','warning');
     }
-    var a = e.PAYE_CALC_SYNC_CONFIG || {}, n = a.storageSlug || "ng-salary-tax", o = "afrotools-saved-" + n, r = a.toolSlug || "ng-paye", l = a.toolName || "Nigeria PAYE Calculator", i = a.toolHref || "/nigeria/ng-salary-tax/", u = a.workspaceItemType || "saved-calculation", s = a.currency || "NGN", c = a.countryCode || "NG", d = a.locale || "en-US", f = null, y = Object.create(null), m = "", g = 0, p = null, v = null, h = "", A = null;
+    var a = e.PAYE_CALC_SYNC_CONFIG || {}, n = a.storageSlug || "ng-salary-tax", o = "afrotools-saved-" + n, r = a.toolSlug || "ng-paye", l = a.toolName || "Nigeria PAYE Calculator", i = a.toolHref || "/nigeria/ng-salary-tax/", u = a.workspaceItemType || "saved-calculation", s = a.currency || "NGN", c = a.countryCode || "NG", d = a.locale || "en-US", f = null, y = Object.create(null), p = null, v = null, h = "";
     function S(e) {
         var a = t.createElement("div");
         return a.textContent = e || "", a.innerHTML;
@@ -448,9 +448,7 @@
                         });
                     }
                 });
-            }(await X()), await async function() {
-                A && N() && await ee(A);
-            }(), q(), J(), k(e || "refresh");
+            }(await X()), q(), J(), k(e || "refresh");
         }();
         try {
             return await p;
@@ -537,55 +535,6 @@
             } else j("Save support is not available on this page right now.", "warning");
         } else j("Run a calculation before saving it.", "warning");
     }
-    async function ee(t) {
-        if (N() && e.AfroHistory && "function" == typeof e.AfroHistory.save) {
-            var a = w(t);
-            if (a && a.snapshot) {
-                var n = function(e) {
-                    var t = R();
-                    if (t && "function" == typeof t.buildHistoryFingerprint) try {
-                        var a = t.buildHistoryFingerprint(e);
-                        if (a) return String(a);
-                    } catch (e) {
-                        console.warn("[PayeCalculationSync] buildHistoryFingerprint adapter failed:");
-                    }
-                    var n = w(e) || {}, o = n.inputs || {}, r = n.snapshot || {};
-                    return JSON.stringify({
-                        inputs: o,
-                        snapshot: {
-                            grossAnnual: r.grossAnnual || r.gross || null,
-                            netAnnual: r.netAnnual || null,
-                            netMonthly: r.netMonthly || null,
-                            taxAnnual: r.taxAnnual || r.tax || null,
-                            effectiveRate: r.effectiveRate || null,
-                            regime: r.regime || null
-                        }
-                    });
-                }(a), o = Date.now();
-                if (!(n === m && o - g < 3e4)) try {
-                    var i = R(), u = a.snapshot;
-                    if (i && "function" == typeof i.getHistoryOutputs) try {
-                        u = i.getHistoryOutputs(a) || a.snapshot;
-                    } catch (e) {
-                        console.warn("[PayeCalculationSync] getHistoryOutputs adapter failed:");
-                    }
-                    u && "object" == typeof u && (u = C(u) || u);
-                    var d = await e.AfroHistory.save({
-                        toolSlug: r,
-                        toolName: l,
-                        countryCode: c,
-                        currency: s,
-                        inputs: a.inputs,
-                        outputs: u
-                    });
-                    if (d && d.saved) return m = n, g = o, void (A = null);
-                    N() && (A = t);
-                } catch (e) {
-                    A = t, console.warn("[PayeCalculationSync] History save failed:");
-                }
-            }
-        }
-    }
     async function te() {
         if (x()) {
             W();
@@ -614,7 +563,7 @@
                         summary: U(o)
                     });
                 }
-            }(t), await ee(t));
+            }(t));
         }
     }
     async function ae() {

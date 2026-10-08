@@ -9,9 +9,12 @@ async function open(page,baseURL,options={}){
  await page.route('**/__paye_sync_fixture__',r=>r.fulfill({contentType:'text/html',body:`<!doctype html><html lang="en"><body><input id="calcSaveName" value="Synthetic scenario"><button id="calcSaveBtn">Save</button><div id="calcSaveStatus"></div><div id="calcSavedList"></div><div id="resultsCard"></div><script src="/assets/js/lib/save-state-classic.js"></script><script src="/assets/js/lib/paye-calculation-sync.js"></script></body></html>`}));
  await page.addInitScript(({key,payload,options})=>{
   if(options.raw!==undefined)localStorage.setItem(key,options.raw);
-  window.mock={upserts:0,removes:0,lists:0,rows:options.rows||[],upsertMode:options.upsertMode||'null',listFail:false,restores:0,init:false,removeMode:options.removeMode||'success',user:'synthetic-user'};
+  window.mock={upserts:0,removes:0,lists:0,historySends:0,deviceWrites:0,calculations:0,rows:options.rows||[],upsertMode:options.upsertMode||'null',listFail:false,restores:0,init:false,removeMode:options.removeMode||'success',user:'synthetic-user'};
   window.PAYE_CALC_SYNC_CONFIG={storageSlug:'synthetic-paye',toolSlug:'synthetic-paye',toolHref:'/__paye_sync_fixture__',toolName:'Synthetic PAYE'};
   window.PAYE_CALC_SYNC_ADAPTER={hasResult:()=>true,buildPayload:()=>JSON.parse(JSON.stringify(payload)),getDefaultTitle:()=> 'Synthetic scenario',getPayloadSummary:()=> 'Synthetic summary',restorePayload:()=>{window.mock.restores++;return true}};
+  window.calculate=()=>{window.mock.calculations++;return 'calculated'};
+  window.AfroData={logToolUse:()=>{},save:()=>{window.mock.deviceWrites++}};
+  window.AfroHistory={save:async()=>{window.mock.historySends++;return {saved:false}}};
   window.AfroAuth={isLoggedIn:()=>false,getUser:()=>({id:window.mock.user}),onReady:()=>{}};
   window.AfroWorkspace={isSignedIn:()=>false,list:async query=>{window.mock.lists++;if(window.mock.listFail)throw Error('SYNTHETIC_SECRET_SENTINEL');return query&&query.itemKey?window.mock.rows.filter(row=>row.item_key===query.itemKey):window.mock.rows},upsert:async item=>{window.mock.upserts++;if(window.mock.upsertMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.upsertMode==='null')return null;return {item_key:item.itemKey,payload:item.payload,title:item.title}},remove:async input=>{window.mock.removes++;if(window.mock.removeMode==='fail')throw Error('SYNTHETIC_SECRET_SENTINEL');if(window.mock.removeMode==='noop')return null;window.mock.rows=window.mock.rows.filter(row=>row.item_key!==input.itemKey);if(window.mock.removeMode==='switch')window.mock.user='different-user';return null}};
   window.addEventListener('afro-saved-calculations-change',e=>{window.mock.lastAction=e.detail.action;if(e.detail.action==='init')window.mock.init=true});
@@ -55,4 +58,16 @@ test('modern PAYE: cached rows from a previous account cannot be deleted under a
 });
 test('modern PAYE: refresh does not upload existing local scenarios without a save action',async({page,baseURL})=>{
  const before=JSON.stringify([record]),proof=await open(page,baseURL,{raw:before,upsertMode:'success'});await page.evaluate(()=>window.dispatchEvent(new CustomEvent('afro-workspace-change',{detail:{itemType:'saved-calculation'}})));await page.waitForFunction(()=>window.mock.lastAction==='workspace-change');expect(await page.evaluate(()=>window.mock.upserts)).toBe(0);expect(await raw(page)).toBe(before);expect(proof.errors).toEqual([]);
+});
+
+for(const event of ['focus','afro-auth-change'])test('modern PAYE: calculation and '+event+' keep salary history local',async({page,baseURL})=>{
+ const proof=await open(page,baseURL,{upsertMode:'success'});
+ expect(await page.evaluate(()=>window.calculate())).toBe('calculated');
+ await expect.poll(()=>page.evaluate(()=>window.mock.deviceWrites)).toBe(1);
+ await page.evaluate(event=>{if(event==='afro-auth-change')window.mock.user='different-user';window.dispatchEvent(new Event(event))},event);
+ await page.waitForFunction(event=>window.mock.lastAction===(event==='afro-auth-change'?'auth-change':event),event);
+ expect(await page.evaluate(()=>({history:window.mock.historySends,upserts:window.mock.upserts}))).toEqual({history:0,upserts:0});
+ await page.locator('#calcSaveBtn').click();await expect(page.locator('#calcSaveStatus')).toContainText('Saved to your dashboard and this device.');
+ expect(await page.evaluate(()=>({history:window.mock.historySends,upserts:window.mock.upserts}))).toEqual({history:0,upserts:1});
+ expect(proof.errors).toEqual([]);expect(proof.leaks).toEqual([]);
 });
