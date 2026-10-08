@@ -15,6 +15,7 @@ const config = {
       id: row.id,
       swahiliRoute: row.swahiliRoute,
       sensitive: row.sensitive === true,
+      localFirstDownloads: row.localFirstDownloads === true,
       requiresConsent: row.requiresConsent === true
     }))
   ]
@@ -82,7 +83,7 @@ test.afterAll(() => {
       checked: receipt?.checked || [],
       downloadContract: app.id === 'document-pdf'
         ? 'none'
-        : app.sensitive ? 'sensitive-guest' : 'free-account',
+        : app.sensitive ? 'sensitive-guest' : app.localFirstDownloads ? 'local-guest' : 'free-account',
       stateChecks: stateChecks.get(app.id) || [],
       noExternalRequests: receipt?.noExternalRequests === true
     };
@@ -150,7 +151,7 @@ for (const app of selectedApps) {
     await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'sw_TZ');
     await expect(page.locator('iframe[src^="/tools/"], iframe[src*="afrotools.com/tools/"]')).toHaveCount(0);
     await expect(page.locator('email-gate-modal')).toHaveCount(
-      app.id === 'document-pdf' || app.sensitive ? 0 : 1
+      app.id === 'document-pdf' || app.sensitive || app.localFirstDownloads ? 0 : 1
     );
     if (app.id === 'html-to-pdf') {
       await expect(page.locator('#htmlPreview')).toHaveAttribute('sandbox', 'allow-same-origin');
@@ -304,7 +305,7 @@ for (const app of selectedApps.filter((row) => ['pdf-merge-split', 'pdf-compress
       localStorage.removeItem('afro_profile_cache');
     });
     await page.goto(app.swahiliRoute, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('email-gate-modal')).toHaveCount(1);
+    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive || app.localFirstDownloads ? 0 : 1);
 
     const first = await staleFixture('SW STALE A', 2);
     const second = await staleFixture('SW STALE B', 1);
@@ -375,7 +376,7 @@ for (const app of selectedApps.filter((row) => [
       localStorage.removeItem('afro_profile_cache');
     });
     await page.goto(app.swahiliRoute, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive ? 0 : 1);
+    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive || app.localFirstDownloads ? 0 : 1);
 
     const required = page.locator('main input[required], main textarea[required]').first();
     let invalidProved = false;
