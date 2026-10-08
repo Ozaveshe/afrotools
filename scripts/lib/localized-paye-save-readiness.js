@@ -56,3 +56,21 @@ function refreshGhanaAi(target,source){
  return target;
 }
 module.exports.refreshGhanaAi=refreshGhanaAi;
+
+function refreshGhanaControls(target){
+ const names={togSSNIT:'SSNIT Niveaux I + II',togTier3:'SSNIT Niveau III',togMarriage:'Abattement pour Mariage',togChild1:'1 enfant',togChild2:'2 enfants',togChild3:'3 enfants ou plus',togDisabled:'Abattement Handicap',togOldAge:'Troisième Âge (60+)',togDependent:'Parent à Charge'};
+ let count=0;
+ target=target.replace(/<input\b[^>]*\bid="(tog[^"]+)"[^>]*>/g,(tag,id)=>{
+  if(!names[id])throw Error('Unknown Ghana checkbox');count++;
+  tag=tag.replace(/\s+hidden(?:="[^"]*")?/g,'').replace(/\s+aria-label="[^"]*"/g,'');
+  if(!/\bclass=/.test(tag))tag=tag.replace(/>$/,' class="sr-only">');
+  return tag.replace(/>$/,' aria-label="'+names[id]+'">');
+ });
+ if(count!==9)throw Error('Expected nine Ghana checkboxes');
+ for(const [oldText,newText] of [['1 Child','1 enfant'],['2 Children','2 enfants'],['3+ Children','3 enfants ou plus']])target=target.replace('class="tog-label">'+oldText+'<','class="tog-label">'+newText+'<');
+ const style='<style id="ghana-toggle-accessibility">.tog{position:relative;min-height:44px}.tog:focus-within{outline:2px solid var(--color-primary);outline-offset:3px}</style>';
+ if(!target.includes('id="ghana-toggle-accessibility"'))target=target.replace('</head>',style+'\n</head>');
+ target=target.replace('shareState.whatsappPartager(', 'shareState.whatsappShare(');
+ return target;
+}
+module.exports.refreshGhanaControls=refreshGhanaControls;
