@@ -46,7 +46,7 @@ function ensureSwAccessibilityRuntime(html) {
 }
 
 const apps = [
-  { id: 'pdf-workspace', englishRoute: '/tools/pdf-workspace/', englishFile: 'tools/pdf-workspace/index.html', swahiliRoute: '/sw/zana/nafasi-pdf/', swahiliFile: 'sw/zana/nafasi-pdf/index.html', name: 'Nafasi ya PDF', exports: ['pdf', 'png', 'zip', 'print'] },
+  { id: 'pdf-workspace', localFirstDownloads: true, englishRoute: '/tools/pdf-workspace/', englishFile: 'tools/pdf-workspace/index.html', swahiliRoute: '/sw/zana/nafasi-pdf/', swahiliFile: 'sw/zana/nafasi-pdf/index.html', name: 'Nafasi ya PDF', exports: ['pdf', 'png', 'zip', 'print'] },
   { id: 'pdf-merge-split', localFirstDownloads: true, englishRoute: '/tools/pdf-merge-split/', englishFile: 'tools/pdf-merge-split/index.html', swahiliRoute: '/sw/zana/unganisha-na-gawanya-pdf/', swahiliFile: 'sw/zana/unganisha-na-gawanya-pdf/index.html', name: 'Unganisha na Gawanya PDF', exports: ['pdf', 'zip'] },
   { id: 'pdf-form-filler', localFirstDownloads: true, englishRoute: '/tools/pdf-form-filler/', englishFile: 'tools/pdf-form-filler/index.html', swahiliRoute: '/sw/zana/kujaza-fomu-pdf/', swahiliFile: 'sw/zana/kujaza-fomu-pdf/index.html', name: 'Jaza Fomu ya PDF', exports: ['pdf'] },
   { id: 'pdf-redact', englishRoute: '/tools/pdf-redact/', englishFile: 'tools/pdf-redact/index.html', swahiliRoute: '/sw/zana/kuficha-taarifa-pdf/', swahiliFile: 'sw/zana/kuficha-taarifa-pdf/index.html', name: 'Ficha Taarifa za PDF', exports: ['pdf'], sensitive: true },
@@ -603,7 +603,7 @@ function localizeStaticOwnerMarkup(html, appId) {
   );
   localized = localized.replace(/<[^>]+>/g, (tag) =>
     tag.replace(
-      /\b(placeholder|aria-label|aria-description|title|alt|data-consent-title|data-consent-copy)=(["'])(.*?)\2/gi,
+      /\b(placeholder|aria-label|aria-description|title|alt|data-name|data-desc|data-consent-title|data-consent-copy)=(["'])(.*?)\2/gi,
       (match, attribute, quote, value) =>
         `${attribute}=${quote}${translateOwnedText(value, appId)}${quote}`
     )
