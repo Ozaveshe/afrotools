@@ -36,3 +36,18 @@ for(const app of apps){
   const before=JSON.stringify([{id:'synthetic',title:'Synthetic damaged scenario',data:{[app.input.slice(1)]:{value:1}},createdAt:1,updatedAt:1}]);const errors=await open(page,baseURL,app,before);await page.locator(app.input).fill('345678');await page.locator('.paye-open-btn').focus();await page.keyboard.press('Enter');await expect(page.locator('#payeStorageStatus')).toBeVisible();await expect.poll(()=>page.locator(app.input).inputValue()).toMatch(/345.?678/);expect(await raw(page,app)).toBe(before);expect(errors).toEqual([]);
  });
 }
+
+for(const fault of ['missing-library','constructor-failure'])test(`Egypt legacy PAYE chart resilience: ${fault}`,async({page,baseURL})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept(d.type()==='prompt'?'Synthetic chart recovery':undefined));
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
+ await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ if(fault==='constructor-failure')await page.addInitScript(()=>{window.Chart=function(){throw Error('Synthetic chart failure')}});
+ await page.goto('/egypt/eg-paye.html');await page.locator('#grossSalary').fill('120000');await page.locator('.calc-btn').first().click();
+ await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');await expect(page.locator('#aiBtn')).toBeEnabled();
+ await page.locator('#payeSaveBtn').click();await expect(page.locator('.paye-saved-card')).toHaveCount(1);
+ await page.locator('#grossSalary').fill('240000');await page.locator('.calc-btn').first().click();await page.locator('.paye-open-btn').click();await expect(page.locator('#grossSalary')).toHaveValue('120000');
+ for(const tab of await page.locator('.chart-tab').all())await tab.click();await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');
+ await page.locator('.per-btn').nth(1).click();await expect(page.locator('#resultsCard')).toBeVisible();
+ expect(process.env.AFROTOOLS_TEST_CHART_JS).toBeTruthy();await page.addScriptTag({content:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS,'utf8')});await page.locator('.chart-tab').first().click();await expect(page.locator('#chartStatus')).toBeHidden();await expect(page.locator('#mainChart')).toBeVisible();
+ expect(errors).toEqual([]);
+});
