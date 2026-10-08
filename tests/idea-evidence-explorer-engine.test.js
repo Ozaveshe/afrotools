@@ -75,3 +75,10 @@ test("validates a versioned shortlist backup and rejects malformed payloads", ()
   assert.equal(engine.validateEnvelope({ schemaVersion:99, tool:"idea-board", items:[] }), null);
   assert.equal(engine.validateEnvelope({ schemaVersion:1, tool:"idea-board", items:new Array(7).fill(record()) }), null);
 });
+
+test("preserves generated origin through backups without inventing source evidence",()=>{
+ const row=engine.normalizeRow(record({record_origin:'generated_example'}));assert.equal(row.recordOrigin,'generated_example');assert.equal(row.source.name,'');
+ const backup=engine.validateEnvelope(engine.shortlistEnvelope([row],'fr'));assert.equal(backup.items[0].recordOrigin,'generated_example');assert.equal(backup.items[0].source.url,'');
+ const legacy=engine.normalizeRow(record({source:'seed'}));assert.equal(legacy.recordOrigin,'generated_example');assert.equal(legacy.source.name,'');
+ const unknown=engine.normalizeRow(record({record_origin:'official'}));assert.equal(unknown.recordOrigin,'unknown');
+});

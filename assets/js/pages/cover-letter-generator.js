@@ -1,6 +1,6 @@
 !function() {
     "use strict";
-    var e = "afrotools-cover-letter-current-v2", t = "letter", n = null, r = !1, o = window.SaveState ? new window.SaveState("cover-letter") : null, a = [ {
+    var e = "afrotools-cover-letter-current-v2", t = "letter", n = null, r = !1, o = createLetterStore(), a = [ {
         id: "technology",
         name: "Technology",
         focus: "shipping reliable digital products",
@@ -143,6 +143,64 @@
     }
     function m(e, t) {
         return (String(e || t || "cover-letter").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "") || t || "cover-letter").toLowerCase();
+    }
+    var draftProblem = false, savedProblem = false;
+    function storageCopy(key) {
+        var locale = String(document.documentElement.lang || "en").split("-")[0];
+        var copy = {
+            draft: ["This draft is only in this tab. Local saving failed or the previous draft could not be read. Download JSON before leaving.", "Ce brouillon reste dans cet onglet. L’enregistrement local a échoué ou le brouillon précédent est illisible. Téléchargez le JSON avant de quitter.", "Rasimu hii iko kwenye kichupo hiki tu. Kuhifadhi kwenye kifaa kumeshindikana au rasimu ya awali haiwezi kusomwa. Pakua JSON kabla ya kuondoka."],
+            saved: ["Saved letters could not be read or changed. Existing data was kept. Download JSON to keep this draft.", "Impossible de lire ou modifier les lettres enregistrées. Les données existantes sont conservées. Téléchargez le JSON de ce brouillon.", "Barua zilizohifadhiwa hazikuweza kusomwa au kubadilishwa. Data ya awali imeachwa bila kubadilishwa. Pakua JSON ili kuhifadhi rasimu hii."],
+            limit: ["Saved-letter limit reached. Download a JSON backup and delete a saved letter before saving a new one.", "Limite de lettres enregistrées atteinte. Téléchargez une sauvegarde JSON et supprimez une lettre avant d’en ajouter une autre.", "Umefikia kikomo cha barua zilizohifadhiwa. Pakua nakala ya JSON na ufute barua moja kabla ya kuhifadhi nyingine."]
+        };
+        return copy[key][locale === "fr" ? 1 : locale === "sw" ? 2 : 0];
+    }
+    function updateStorageStatus() {
+        var status = u("storageStatus");
+        if (status) {
+            status.textContent = [draftProblem ? storageCopy("draft") : "", savedProblem ? storageCopy(savedProblem) : ""].filter(Boolean).join(" ");
+            status.hidden = !status.textContent;
+        }
+    }
+    function readCurrentDraft() {
+        var raw = localStorage.getItem(e);
+        if (raw === null) return null;
+        var value = JSON.parse(raw);
+        validateBackup(value);
+        return value;
+    }
+    // This workflow must not use SaveState's quota retry, which removes old records.
+    // Preserve the existing storage schema while requiring successful writes before UI success.
+    function createLetterStore() {
+        var key = "afrotools-saved-cover-letter";
+        function read() {
+            var raw = localStorage.getItem(key), records = raw === null ? [] : JSON.parse(raw);
+            if (!Array.isArray(records)) throw new Error("Invalid saved collection");
+            var ids = new Set();
+            records.forEach(function(record) {
+                if (!record || typeof record !== "object" || typeof record.id !== "string" || !record.id || ids.has(record.id) || typeof record.title !== "string" || !Number.isFinite(record.createdAt) || !Number.isFinite(record.updatedAt)) throw new Error("Invalid saved record");
+                validateBackup(record.data); ids.add(record.id);
+            });
+            return records;
+        }
+        return {
+            getAll: function() { return read().sort(function(a, b) { return b.updatedAt - a.updatedAt; }); },
+            load: function(id) { return read().find(function(record) { return record.id === id; }) || null; },
+            save: function(input) {
+                var records = read(), index = records.findIndex(function(record) { return record.id === input.id; });
+                if (index < 0 && records.length >= 20) { var error = new Error("Saved letter limit"); error.code = "LIMIT"; throw error; }
+                validateBackup(input.data);
+                var now = Date.now(), record = { id: index >= 0 ? records[index].id : Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8), title: input.title || "Untitled", data: input.data, thumbnail: null, createdAt: index >= 0 ? records[index].createdAt : now, updatedAt: now };
+                if (index >= 0) records[index] = record; else records.unshift(record);
+                localStorage.setItem(key, JSON.stringify(records));
+                return record;
+            },
+            delete: function(id) {
+                var records = read(), remaining = records.filter(function(record) { return record.id !== id; });
+                if (records.length === remaining.length) return false;
+                localStorage.setItem(key, JSON.stringify(remaining));
+                return true;
+            }
+        };
     }
     function nativeMessage(message) {
         var locale=String(document.documentElement.lang||"en").split("-")[0], copy={
@@ -413,8 +471,12 @@
     }
     function S(t) {
         try {
+            readCurrentDraft();
             localStorage.setItem(e, JSON.stringify(t || y()));
-        } catch (e) {}
+            draftProblem = false;
+        } catch (error) { draftProblem = true; }
+        updateStorageStatus();
+        return !draftProblem;
     }
     function T(e) {
         var locale=String(document.documentElement.lang||"en").split("-")[0];
@@ -423,7 +485,9 @@
     function C() {
         var e = u("savedList");
         if (e) if (o) {
-            var t = o.getAll();
+            var t;
+            try { t = o.getAll(); }
+            catch (error) { savedProblem = "saved"; updateStorageStatus(); e.textContent = storageCopy("saved"); return; }
             t.length ? e.innerHTML = t.map(function(e) {
                 var t = e.updatedAt ? new Date(e.updatedAt).toLocaleDateString(({fr:"fr-FR",sw:"sw-TZ"})[String(document.documentElement.lang||"en").split("-")[0]]||"en-GB", {
                     day: "numeric",
@@ -442,6 +506,11 @@
         setTimeout(function() {
             URL.revokeObjectURL(o);
         }, 5e3);
+    }
+    function downloadLetterBackup() {
+        var snapshot = y();
+        I(m(T(snapshot), "cover-letter") + ".json", "application/json;charset=utf-8", JSON.stringify(Object.assign({schemaVersion:1}, snapshot), null, 2));
+        h("JSON downloaded.");
     }
     function j(e) {
         var t = u("letterText");
@@ -474,12 +543,22 @@
         k();
     }
     function N() {
+        var storageStatus = document.createElement("p");
+        storageStatus.id = "storageStatus"; storageStatus.className = "helper";
+        storageStatus.setAttribute("role", "status"); storageStatus.setAttribute("aria-live", "polite"); storageStatus.hidden = true;
+        document.querySelector(".app-shell").prepend(storageStatus);
         var printStyle=document.createElement("style");
-        printStyle.id="cover-letter-print-feedback";printStyle.media="print";printStyle.textContent="#toast{display:none!important}";document.head.appendChild(printStyle);
+        printStyle.id="cover-letter-print-feedback";printStyle.media="print";printStyle.textContent="#toast,#storageStatus{display:none!important}";document.head.appendChild(printStyle);
         var mobileStyle=document.createElement("style");
         mobileStyle.id="cover-letter-mobile-navigation";
         mobileStyle.textContent="@media(max-width:900px){.app-shell .workflow-progress{position:static;top:auto}.app-shell .stage-tabs{top:0}}";
         document.head.appendChild(mobileStyle);
+        // A JSON backup preserves unfinished work; final-document review rules must not block recovery.
+        window.addEventListener("click", function(event) {
+            var action = event.target.closest && event.target.closest('[data-action="json"]');
+            if (!action) return;
+            event.preventDefault(); event.stopImmediatePropagation(); downloadLetterBackup();
+        }, true);
         document.addEventListener("click",function(event){
             var action=event.target.closest&&event.target.closest("[data-action]");
             if(!action||["pdf","word","txt","json","print"].indexOf(action.dataset.action)===-1)return;
@@ -507,14 +586,15 @@
                     var i = a.getAttribute("data-action");
                     "rebuild" === i && k(), "save" === i && function() {
                         if (o) {
-                            var e = y(), t = o.save({
-                                id: n || void 0,
-                                title: T(e),
-                                data: e,
-                                thumbnail: null
-                            });
-                            n = t.id, e.selectedId = n, S(e), history.replaceState(null, "", "?id=" + encodeURIComponent(n)),
-                            C(), h("Saved.");
+                            try {
+                                var e = y(), t = o.save({id: n || void 0, title: T(e), data: e});
+                                savedProblem = false;
+                                n = t.id, e.selectedId = n, S(e), history.replaceState(null, "", "?id=" + encodeURIComponent(n)),
+                                C(), updateStorageStatus(), h("Saved.");
+                            } catch (error) {
+                                savedProblem = error.code === "LIMIT" ? "limit" : "saved";
+                                updateStorageStatus(); h(storageCopy(savedProblem));
+                            }
                         } else h("Saving is not available in this browser.");
                     }(), "copy" === i && ((r = g("letterText")) ? navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(r).then(function() {
                         h("Copied to clipboard.");
@@ -545,23 +625,29 @@
                             return "<p>" + p(e).replace(/\n/g, "<br>") + "</p>";
                         }).join(""), n = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + p(T(e)) + "</title><style>body{font-family:Georgia,serif;font-size:12pt;line-height:1.6;margin:54pt;}p{margin:0 0 12pt;}</style></head><body>" + t + "</body></html>";
                         I(m(T(e), "cover-letter") + ".doc", "application/msword;charset=utf-8", n), h("Word-compatible document downloaded.");
-                    }(), "json" === i && function() {
-                        var e = y();
-                        I(m(T(e), "cover-letter") + ".json", "application/json;charset=utf-8", JSON.stringify(Object.assign({schemaVersion:1},e), null, 2)),
-                        h("JSON downloaded.");
-                    }(), "import" === i && u("importInput").click(), "print" === i && window.print();
+                    }(), "json" === i && downloadLetterBackup(), "import" === i && u("importInput").click(), "print" === i && window.print();
                 }
                 var l = e.target.closest("[data-load]");
                 l && function(e) {
                     if (o) {
-                        var t = o.load(e);
-                        t && t.data ? (n = t.id, w(t.data, !1), history.replaceState(null, "", "?id=" + encodeURIComponent(t.id)),
-                        h("Loaded saved letter.")) : h("Saved letter not found.");
+                        try {
+                            var t = o.load(e);
+                            t && t.data ? (n = t.id, w(t.data, !1), history.replaceState(null, "", "?id=" + encodeURIComponent(t.id)),
+                            h("Loaded saved letter.")) : h("Saved letter not found.");
+                        } catch (error) { savedProblem = "saved"; updateStorageStatus(); h(storageCopy("saved")); }
                     }
                 }(l.getAttribute("data-load"));
                 var c, s = e.target.closest("[data-delete]");
-                s && (c = s.getAttribute("data-delete"), o && (o.delete(c), n === c && (n = null),
-                C(), h("Deleted.")));
+                if (s && o) {
+                    c = s.getAttribute("data-delete");
+                    try {
+                        if (o.delete(c)) {
+                            savedProblem = false;
+                            if (n === c) { n = null; history.replaceState(null, "", window.location.pathname); S(); }
+                            C(); updateStorageStatus(); h("Deleted.");
+                        } else h("Saved letter not found.");
+                    } catch (error) { savedProblem = "saved"; updateStorageStatus(); h(storageCopy("saved")); }
+                }
             });
             var t = u("importInput");
             t && t.addEventListener("change", function() {
@@ -574,7 +660,7 @@
                             try {
                                 var e = validateBackup(JSON.parse(String(t.result || "{}")));
                                 n = null, w(e, !1), history.replaceState(null, "", window.location.pathname),
-                                h(importMessage(true));
+                                h(draftProblem ? storageCopy("draft") : importMessage(true));
                             } catch (e) {
                                 h(importMessage(false));
                             }
@@ -597,14 +683,16 @@
             }
             var l = r.get("id");
             if (l && o) {
-                var c = o.load(l);
-                if (c && c.data) return n = l, w(c.data, !1), !0;
+                try {
+                    var c = o.load(l);
+                    if (c && c.data) return n = l, w(c.data, !1), !0;
+                } catch (error) { savedProblem = "saved"; updateStorageStatus(); }
             }
             var s = function() {
                 try {
-                    return JSON.parse(localStorage.getItem(e) || "null");
-                } catch (e) {
-                    return null;
+                    return readCurrentDraft();
+                } catch (error) {
+                    draftProblem = true; updateStorageStatus(); return null;
                 }
             }();
             return !(!s || !(s.fullName || s.jobTitle || s.company || s.letterText) || (n = s.selectedId || null,

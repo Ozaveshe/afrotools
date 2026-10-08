@@ -44,7 +44,7 @@ function validAnonKey(value) {
   }
 }
 function buildUpstreamUrl(params) {
-  const query = [`select=${PUBLIC_FIELDS.join(",")}`];
+  const query = [`select=${PUBLIC_FIELDS.concat("source").join(",")}`];
   if (params.country) query.push(`country_code=eq.${encodeURIComponent(params.country)}`);
   if (params.sector) query.push(`sector=eq.${encodeURIComponent(params.sector)}`);
   if (params.risk) query.push(`risk=eq.${encodeURIComponent(params.risk)}`);
@@ -59,6 +59,7 @@ function publicRow(row) {
   const source = row && typeof row === "object" ? row : {};
   const output = {};
   PUBLIC_FIELDS.forEach(field => { output[field] = source[field] == null ? null : source[field]; });
+  output.record_origin = source.source === "seed" ? "generated_example" : "unknown";
   return output;
 }
 function parseParams(event) {

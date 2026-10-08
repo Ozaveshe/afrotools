@@ -6,6 +6,45 @@
   var STORAGE_KEY = "afrotools_inventory_v2", state = { items: [], displayUnit: config.defaultUnit || "USD", editingId: null, opener: null };
   function id(value) { return document.getElementById(value); }
   function status(message, tone) { var node = id("invStatus"); node.textContent = message || ""; node.dataset.tone = tone || "neutral"; }
+  function validationMessage(result) {
+    var copy = {
+      fr: {
+        name_required: "Le nom du produit est obligatoire.",
+        number: "{field} doit être un nombre fini supérieur ou égal à zéro.",
+        items_array: "La liste des produits doit être un tableau JSON.",
+        record_limit: "L’inventaire dépasse la limite de {limit} produits.",
+        record_object: "Le produit doit être un objet JSON.",
+        field_length: "Le texte dépasse la longueur autorisée pour ce champ.",
+        backup_version: "Utilisez une sauvegarde JSON de l’inventaire AfroTools, version 2.",
+        file_size: "La sauvegarde dépasse la limite de 1 Mo.",
+        invalid_json: "La sauvegarde n’est pas un fichier JSON valide.",
+        record: "Enregistrement {record} : {message}",
+        unknown: "Les données ne peuvent pas être validées. Vérifiez le fichier de sauvegarde."
+      },
+      sw: {
+        name_required: "Jina la bidhaa linahitajika.",
+        number: "{field} lazima iwe namba halali isiyo hasi.",
+        items_array: "Orodha ya bidhaa lazima iwe safu ya JSON.",
+        record_limit: "Orodha ya bidhaa imezidi kikomo cha rekodi {limit}.",
+        record_object: "Bidhaa lazima iwe kitu cha JSON (object).",
+        field_length: "Maandishi yamezidi urefu unaoruhusiwa kwa sehemu hii.",
+        backup_version: "Tumia faili la akiba la JSON la orodha ya bidhaa ya AfroTools, toleo la 2.",
+        file_size: "Faili la akiba limezidi kikomo cha MB 1.",
+        invalid_json: "Faili la akiba si JSON halali.",
+        record: "Rekodi {record}: {message}",
+        unknown: "Data haiwezi kuthibitishwa. Kagua faili la akiba."
+      }
+    }[config.locale];
+    if (!copy) return result.errors.join(" ");
+    var fields = { "Unit cost": "invCost", "Selling price": "invSell", Quantity: "invQty", "Reorder point": "invReorder", "Target stock": "invTarget" };
+    return (result.errorDetails || [{ code: "unknown" }]).map(function (detail) {
+      var field = fields[detail.field] && id(fields[detail.field]);
+      var label = field && field.closest("label");
+      var fieldName = label ? Array.from(label.childNodes).filter(function (node) { return node.nodeType === 3; }).map(function (node) { return node.textContent; }).join(" ").trim() : "";
+      var message = (copy[detail.code] || copy.unknown).replace("{field}", fieldName).replace("{limit}", String(detail.limit));
+      return detail.record ? copy.record.replace("{record}", String(detail.record)).replace("{message}", message) : message;
+    }).join(" ");
+  }
   function safeJson(key) { try { var value = JSON.parse(localStorage.getItem(key) || "null"); return Array.isArray(value) ? value : []; } catch (error) { return []; } }
   function load() {
     try {
@@ -69,7 +108,7 @@
   }
   function saveForm(event) {
     event.preventDefault(); var parsed = engine.normalizeItem(readForm(), { source: "user", index: Date.now() });
-    if (!parsed.ok) { id("invModalError").textContent = parsed.errors.join(" "); return; }
+    if (!parsed.ok) { id("invModalError").textContent = validationMessage(parsed); return; }
     if (state.editingId) state.items = state.items.map(function (item) { return item.id === state.editingId ? parsed.item : item; });
     else state.items.push(parsed.item);
     persist(t.saved); render(); closeModal();
@@ -78,12 +117,31 @@
   function exportPdf() {
     if (!window.jspdf || !window.jspdf.jsPDF) { status(t.pdfMissing, "error"); return; }
     var summary = engine.summarize(state.items), doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" }), y = 52;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.text(t.pdfTitle, 44, y); y += 25;
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-    [t.formulaCost, t.formulaSales, t.formulaProfit, t.formulaReorder, t.pdfLimits].forEach(function (line) { doc.text(doc.splitTextToSize(line, 500), 44, y); y += 24; });
-    [[t.products, summary.totalProducts], [t.lowStock, summary.lowStock], [t.stockValue, fmt(summary.stockCostValue)], [t.potentialSales, fmt(summary.potentialSales)], [t.potentialProfit, fmt(summary.potentialGrossProfit)]].forEach(function (row) { doc.text(row[0] + ": " + row[1], 44, y); y += 18; });
-    y += 8; doc.setFont("helvetica", "bold"); doc.text(t.lowList, 44, y); y += 18; doc.setFont("helvetica", "normal");
-    state.items.filter(function (item) { return engine.calculateItem(item).lowStock; }).slice(0, 25).forEach(function (item) { var result = engine.calculateItem(item); doc.text(doc.splitTextToSize(item.name + " | " + item.quantity + " on hand | reorder point " + item.reorderPoint + (result.suggestedReorder == null ? "" : " | suggested reorder " + result.suggestedReorder), 500), 44, y); y += 18; if (y > 760) { doc.addPage(); y = 52; } });
+    var bottom = doc.internal.pageSize.getHeight() - 44, lineHeight = 14;
+    function heading() {
+      doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.text(t.pdfTitle, 44, 52);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10); y = 77;
+    }
+    function newPage() { doc.addPage(); heading(); }
+    function paragraph(text, bold, gap) {
+      doc.setFont("helvetica", bold ? "bold" : "normal"); doc.setFontSize(10);
+      var lines = doc.splitTextToSize(String(text), 500), height = lines.length * lineHeight;
+      if (y + height > bottom && height <= bottom - 77) newPage();
+      lines.forEach(function (line) {
+        if (y + lineHeight > bottom) newPage();
+        doc.setFont("helvetica", bold ? "bold" : "normal"); doc.text(line, 44, y); y += lineHeight;
+      });
+      y += gap == null ? 6 : gap;
+    }
+    function fieldLabel(fieldId) { var label = id(fieldId).closest("label"); return label ? label.textContent.trim() : ""; }
+    heading();
+    [t.formulaCost, t.formulaSales, t.formulaProfit, t.formulaReorder, t.pdfLimits].forEach(function (line) { paragraph(line); });
+    [[t.products, summary.totalProducts], [t.lowStock, summary.lowStock], [t.stockValue, fmt(summary.stockCostValue)], [t.potentialSales, fmt(summary.potentialSales)], [t.potentialProfit, fmt(summary.potentialGrossProfit)]].forEach(function (row) { paragraph(row[0] + ": " + row[1], false, 4); });
+    paragraph(t.lowList, true);
+    state.items.filter(function (item) { return engine.calculateItem(item).lowStock; }).forEach(function (item) {
+      var result = engine.calculateItem(item);
+      paragraph(item.name + " | " + fieldLabel("invQty") + ": " + item.quantity + " | " + fieldLabel("invReorder") + ": " + item.reorderPoint + (result.suggestedReorder == null ? "" : " | " + t.reorderUnits + ": " + result.suggestedReorder));
+    });
     doc.save("afrotools-inventory-summary.pdf"); status(t.exported, "ready");
   }
   function importFile(file) {
@@ -92,7 +150,7 @@
     var reader = new FileReader();
     reader.onload = function () {
       var parsed = engine.parseBackupText(reader.result, file.size);
-      if (!parsed.ok) { status(parsed.errors.join(" "), "error"); return; }
+      if (!parsed.ok) { status(validationMessage(parsed), "error"); return; }
       var mode = id("invImportMode").value;
       if (!window.confirm(mode === "merge" ? t.confirmMerge : t.confirmReplace)) { status(t.cancelled); return; }
       if (mode === "merge") { var merged = engine.mergeItems(state.items, parsed.items); state.items = merged.items; status((t.importedMerge || "").replace("{duplicates}", merged.duplicates), "ready"); }

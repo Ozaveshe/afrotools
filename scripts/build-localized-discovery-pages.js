@@ -63,6 +63,35 @@ function standard(locale,row){
   const form=CONTACT_FORM_ROUTES.has(row[0])?`<h2>${fr?"Présenter le besoin":"Eleza hitaji"}</h2><form class="localized-discovery__form" name="${locale}-${row[0].replace(/\W/g,"-")}" method="POST" data-netlify="true" netlify-honeypot="bot-field"><input type="hidden" name="form-name" value="${locale}-${row[0].replace(/\W/g,"-")}"><p hidden><label>Bot<input name="bot-field"></label></p><label>${fr?"Organisation":"Shirika"}<input name="organisation" required></label><label>${fr?"Pays et public concernés":"Nchi na hadhira"}<input name="market" required></label><label>${fr?"Décision ou workflow attendu":"Uamuzi au workflow"}<textarea name="workflow" rows="5" required></textarea></label><label>${fr?"Source, méthode ou exemple":"Chanzo, mbinu au mfano"}<textarea name="evidence" rows="4"></textarea></label><label>${fr?"Adresse e-mail":"Barua pepe"}<input name="email" type="email" autocomplete="email" required></label><button class="btn btn-primary" type="submit">${fr?"Envoyer pour revue":"Tuma kwa ukaguzi"}</button><p>${fr?"L’envoi ouvre une revue et ne garantit ni prix, ni délai, ni réalisation.":"Kutuma huanzisha ukaguzi na hakuhakikishi bei, muda wala utekelezaji."}</p></form>`:`<form class="localized-discovery__form" action="${tools}" method="get" role="search"><label>${fr?"Rechercher une tâche ou un outil":"Tafuta kazi au zana"}<input name="q" type="search" autocomplete="off" placeholder="${fr?"Ex. budget, conformité, PDF":"Mfano: bajeti, compliance, PDF"}"></label><label>${fr?"Pays ou marché":"Nchi au soko"}<input name="country"></label><button class="btn btn-primary" type="submit">${fr?"Rechercher":"Tafuta"}</button></form>`;
   return `<section class="localized-discovery" data-localized-discovery-standard="${locale}" aria-labelledby="${locale}-${row[0].replace(/\W/g,"-")}-title"><div class="localized-discovery__wrap"><p class="localized-discovery__eyebrow">${fr?"Découverte responsable":"Ugunduzi wenye uwajibikaji"}</p><h2 id="${locale}-${row[0].replace(/\W/g,"-")}-title">${esc(title)}</h2><p>${esc(summary)} ${fr?"Cette page aide à choisir une route et à comprendre la preuve nécessaire; elle ne promet pas qu’une fonction, une donnée ou une intégration est disponible dans chaque pays.":"Ukurasa huu husaidia kuchagua route na kuelewa ushahidi unaohitajika; hauahidi kuwa kipengele, data au integration inapatikana katika kila nchi."}</p><p>${fr?"Commencez par un exemple sans données personnelles, puis vérifiez que le workflow final correspond au pays, à la période et au format de sortie attendus. Comparez toujours la date de révision, la provenance et les limites visibles avant d’utiliser un résultat dans une décision réelle. Si une route est indisponible, utilisez le catalogue ou le contact pour trouver une alternative explicite plutôt que de déduire une équivalence.":"Anza kwa mfano usio na data binafsi, kisha hakikisha workflow ya mwisho inalingana na nchi, kipindi na aina ya output inayotakiwa. Linganisha tarehe ya ukaguzi, asili ya chanzo na mipaka inayoonekana kabla ya kutumia matokeo katika uamuzi halisi. Ikiwa route haipatikani, tumia katalogi au mawasiliano kupata mbadala ulio wazi badala ya kudhani kuwa bidhaa mbili ni sawa."}</p>${form}<div class="localized-discovery__grid"><article><h3>${fr?"1. Nommer la décision":"1. Taja uamuzi"}</h3><p>${fr?"Décrivez le résultat attendu, la personne qui l’utilisera et ce qui doit pouvoir être modifié. Un annuaire, un calculateur, un document et une intégration ne répondent pas au même besoin.":"Eleza matokeo yanayotakiwa, atakayetumia na kile kinachopaswa kubadilishwa. Directory, calculator, hati na integration hazijibu hitaji moja."}</p></article><article><h3>${fr?"2. Choisir le contexte":"2. Chagua muktadha"}</h3><p>${fr?"Séparez langue, pays, devise, période, secteur et autorité. Une interface française ou swahili ne change pas la juridiction d’un calcul ou la disponibilité d’un service.":"Tenganisha lugha, nchi, sarafu, kipindi, sekta na mamlaka. Kiolesura cha Kiswahili hakibadilishi jurisdiction ya hesabu au upatikanaji wa huduma."}</p></article><article><h3>${fr?"3. Vérifier la preuve":"3. Kagua ushahidi"}</h3><p>${fr?"Pour les règles, prix, délais, taux ou disponibilités variables, ouvrez la source, contrôlez la date et refusez un résultat actuel lorsque la preuve est expirée ou incomplète.":"Kwa kanuni, bei, muda, viwango au upatikanaji unaobadilika, fungua chanzo, kagua tarehe na kataa matokeo ya sasa ikiwa ushahidi umekwisha muda au haujakamilika."}</p></article><article><h3>${fr?"4. Protéger les données":"4. Linda data"}</h3><p>${fr?"N’envoyez ni mot de passe, ni identifiant, ni dossier client, médical ou financier dans une demande de découverte. Un workflow sensible doit rester local ou demander un consentement explicite avant tout transfert.":"Usitume password, utambulisho, rekodi ya mteja, afya au fedha kwenye ombi la ugunduzi. Workflow nyeti lazima ibaki kifaani au iombe idhini wazi kabla ya kutuma."}</p></article><article><h3>${fr?"5. Confirmer la sortie":"5. Thibitisha output"}</h3><p>${fr?"Vérifiez que les actions annoncées existent réellement: copie, impression, fichier ou transfert. Un bouton, une fiche ou une page de découverte ne prouve pas à lui seul qu’un export est disponible.":"Hakikisha actions zilizotangazwa zipo kweli: copy, print, faili au uhamisho. Button, card au ukurasa wa ugunduzi peke yake hauthibitishi kuwa export inapatikana."}</p></article></div><h2>${fr?"Avant de continuer":"Kabla ya kuendelea"}</h2><details><summary>${fr?"Cette page garantit-elle une fonction disponible ?":"Ukurasa huu unahakikisha kipengele kinapatikana?"}</summary><p>${fr?"Non. Elle organise la découverte. La page finale du produit indique ses contrôles, ses sources, sa confidentialité, ses exports, son état et ses limites.":"Hapana. Unapanga ugunduzi. Ukurasa wa mwisho wa bidhaa hueleza controls, vyanzo, faragha, exports, hali na mipaka."}</p></details><details><summary>${fr?"Comment signaler une information obsolète ?":"Niripoti vipi taarifa ya zamani?"}</summary><p>${fr?"Envoyez la route, le pays, la date, la source et un exemple reproductible via le contact. Ne joignez pas de données personnelles réelles.":"Tuma route, nchi, tarehe, chanzo na mfano unaoweza kurudiwa kupitia mawasiliano. Usiambatishe data binafsi halisi."}</p></details><h2>${fr?"Explorer AfroTools":"Vinjari AfroTools"}</h2><nav class="localized-discovery__links" aria-label="${fr?"Routes de découverte":"Routes za ugunduzi"}"><a href="${tools}">${fr?"Tous les outils":"Zana zote"}</a><a href="${countries}">${fr?"Pays":"Nchi"}</a><a href="${categories}">${fr?"Catégories":"Makundi"}</a><a href="${blog}">${fr?"Guides":"Miongozo"}</a><a href="${privacy}">${fr?"Confidentialité":"Faragha"}</a><a href="${contact}">${fr?"Contact":"Wasiliana"}</a><a href="${fr?"/fr/about/":"/sw/kuhusu/"}">${fr?"À propos":"Kuhusu"}</a><a href="${fr?"/fr/faq/":"/sw/maswali-ya-mara-kwa-mara/"}">FAQ</a><a href="${fr?"/fr/terms/":"/sw/masharti/"}">${fr?"Conditions":"Masharti"}</a><a href="${fr?"/fr/editorial-policy/":"/sw/sera-ya-uhariri/"}">${fr?"Politique éditoriale":"Sera ya uhariri"}</a></nav></div></section>`;
 }
+function enquiryProspectFields(fr) {
+  const prospects = [
+    ['accounting_firm','Cabinet comptable','Kampuni ya uhasibu'],
+    ['hr_payroll','Ressources humaines ou paie','Rasilimali watu au mishahara'],
+    ['fintech','Services financiers numériques','Huduma za fedha za kidijitali'],
+    ['school_edtech','École ou technologies éducatives','Shule au teknolojia ya elimu'],
+    ['business_media','Média ou éditeur','Chombo cha habari au mchapishaji'],
+    ['immigration','Conseil en immigration ou mobilité','Ushauri wa uhamiaji au uhamisho'],
+    ['association_blog','Association, communauté ou blog','Chama, jumuiya au blogu'],
+    ['developer_api','Développeur ou utilisateur API','Msanidi au mtumiaji wa API'],
+    ['other','Autre organisation','Shirika jingine']
+  ];
+  return `<label>${fr?'Type d’organisation (facultatif)':'Aina ya shirika (si lazima)'}<select name="prospect_segment"><option value="">${fr?'Choisir une option':'Chagua aina'}</option>${prospects.map(([value, french, swahili])=>`<option value="${value}">${fr?french:swahili}</option>`).join('')}</select></label><input type="hidden" name="cta_type" value="">`;
+}
+function enquiryContextFields(locale) {
+  const fr = locale === 'fr';
+  const offers = [
+    ['widget_demo', 'Démonstration de widget', 'Onyesho la wijeti'],
+    ['widget_pro', 'Widget Pro', 'Wijeti Pro'],
+    ['sponsored_tool', 'Parrainage d’un outil', 'Udhamini wa zana'],
+    ['custom_calculator', 'Calculateur sur mesure', 'Kikokotoo maalum'],
+    ['api_pilot', 'Projet pilote API', 'Mradi wa majaribio wa API'],
+    ['media_kit', 'Kit média', 'Taarifa za vyombo vya habari'],
+    ['white_label', 'Version sous votre marque', 'Toleo lenye chapa yako'],
+    ['business_subscription', 'Abonnement entreprise', 'Usajili wa biashara'],
+    ['other', 'Autre demande', 'Ombi jingine']
+  ];
+  return `<label>${fr?'Objet de la demande':'Aina ya ombi'}<select name="requested_offer"><option value="">${fr?'Choisir une option':'Chagua aina'}</option>${offers.map(([value, french, swahili])=>`<option value="${value}">${fr?french:swahili}</option>`).join('')}</select></label><label>${fr?'Outil concerné (facultatif)':'Zana husika (si lazima)'}<input name="relevant_tool" maxlength="96" pattern="[a-z0-9][a-z0-9-]{0,95}" autocomplete="off"></label><label>${fr?'Page d’origine (facultatif)':'Ukurasa wa asili (si lazima)'}<input name="source_route" maxlength="200" readonly></label>`;
+}
 function safeStandard(locale,row){
   let output = standard(locale,row)
     .replace('Directory, calculator, hati na integration', 'Orodha, kikokotoo, hati na muunganisho')
@@ -87,6 +116,10 @@ function safeStandard(locale,row){
     .replaceAll('export inapatikana', 'faili la kupakua linapatikana')
     .replaceAll('controls, vyanzo, faragha, exports', 'vidhibiti, vyanzo, faragha na faili zinazopakuliwa')
     .replaceAll('Routes za ugunduzi', 'Njia za ugunduzi');
+  if (row[0] === '/business-enquiry/') {
+    output = output.replace('<form class="localized-discovery__form"', '<form data-localized-enquiry-context class="localized-discovery__form"');
+    output = output.replace('<label>'+ (locale === 'fr' ? 'Organisation' : 'Shirika'), enquiryProspectFields(locale === 'fr')+enquiryContextFields(locale)+'<label>'+ (locale === 'fr' ? 'Organisation' : 'Shirika'));
+  }
   return output;
 }
 function contentId(locale, row){
@@ -95,6 +128,11 @@ function contentId(locale, row){
 }
 function decorateDiscovery(html, locale, row){
   let output = html.includes('name="afrotools-source-owner"') ? html : html.replace('<head>', '<head><meta name="afrotools-source-owner" content="scripts/build-localized-discovery-pages.js">');
+  if (row[0] === '/business-enquiry/') {
+    for (const source of ['/assets/js/lib/b2b-choice-contract.js', '/assets/js/components/localized-enquiry-context.js']) {
+      if (!output.includes(source)) output = output.replace('</body>', `<script src="${source}" defer></script></body>`);
+    }
+  }
   if (!output.includes('name="afrotools-content-id"')) output = output.replace('<head>', `<head><meta name="afrotools-content-id" content="${contentId(locale,row)}">`);
   if (locale === 'sw' && !output.includes('/assets/js/lib/sw-accessibility.js')) {
     output = output.replace('</body>', '<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>');
