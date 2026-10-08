@@ -52,3 +52,17 @@ for(const app of [{name:'Egypt',route:'/egypt/eg-paye.html',message:'Chart unava
  expect(process.env.AFROTOOLS_TEST_CHART_JS).toBeTruthy();await page.addScriptTag({content:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS,'utf8')});await page.locator('.chart-tab').first().click();await expect(page.locator('#chartStatus')).toBeHidden();await expect(page.locator('#mainChart')).toBeVisible();
  expect(errors).toEqual([]);
 });
+
+for(const route of ['/zimbabwe/zw-paye.html','/sw/cote-divoire/kikokotoo-kodi-mshahara/'])for(const changedMode of [false,true])test(`legacy restore mode ordering ${route}: ${changedMode?'changed mode':'same mode'}`,async({page,baseURL})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept(d.type()==='prompt'?'Synthetic restore ordering':undefined));
+ await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
+ await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ await page.route('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',r=>r.fulfill({contentType:'application/javascript',body:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS)}));
+ await page.goto(route);await page.locator('#grossSalary').fill('120000');await page.locator('.calc-btn').first().click();await page.locator('#payeSaveBtn').click();
+ const before=await page.evaluate(()=>localStorage.getItem('afrotools-saved-'+window.PAYE_SAVE_SLUG));
+ await page.locator('#grossSalary').fill('240000');await page.locator('.calc-btn').first().click();
+ if(changedMode)await page.locator('.mode-btn').nth(1).click();
+ await page.locator('.paye-open-btn').click();await page.waitForTimeout(800);
+ await expect(page.locator('#grossSalary')).toHaveValue('120000');await expect(page.locator('.mode-btn').first()).toHaveClass(/on/);
+ expect(await page.evaluate(()=>localStorage.getItem('afrotools-saved-'+window.PAYE_SAVE_SLUG))).toBe(before);await expect(page.locator('#payeStorageStatus')).toHaveCount(0);expect(errors).toEqual([]);
+});

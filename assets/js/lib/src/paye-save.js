@@ -145,6 +145,11 @@
             var o = n.data;
             if(!validPayload(o)){report({code:'INVALID_PAYLOAD'});return;}
             clearFailure();
+            // Mode handlers may prefill from the current result. Select the mode
+            // first so the saved fields remain authoritative afterward.
+            if(o._mode)document.querySelectorAll('.mode-btn').forEach(function(button){
+                if(button.textContent.trim()===o._mode&&!button.classList.contains('on'))button.click();
+            });
             Object.keys(o).forEach(function(e) {
                 if ("summary" !== e && "_mode" !== e) {
                     var t = document.getElementById(e);
@@ -154,8 +159,6 @@
                         bubbles: !0
                     }))));
                 }
-            }), o._mode && document.querySelectorAll(".mode-btn").forEach(function(e) {
-                e.textContent.trim() === o._mode && e.click();
             }), setTimeout(function() {
                 "function" == typeof window.calculate && window.calculate();
             }, 200), setTimeout(function() {
