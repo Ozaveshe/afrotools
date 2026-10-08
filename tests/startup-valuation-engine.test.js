@@ -28,3 +28,14 @@ assert.ok(Number.isFinite(zeroWeightBlankScore.methods[1].point), "a zero-weight
 assert.throws(() => engine.calculate({ ...input, relativeScores: { ...input.relativeScores, team: 201 } }), /INVALID_NUMBER/);
 assert.throws(() => engine.calculate({ currencyUnit: "TEST", uncertaintyPct: 10 }), /METHOD_REQUIRED/);
 console.log("startup-valuation-engine: ok");
+
+for (const [change, fields] of [
+ [{currencyUnit:""}, ["currencyUnit"]],
+ [{uncertaintyPct:101}, ["uncertaintyPct"]],
+ [{annualRevenue:-1}, ["annualRevenue"]],
+ [{multipleLow:4}, ["multipleLow","multipleBase","multipleHigh"]],
+ [{weights:{...input.weights,team:-1}}, ["weights.team"]],
+ [{relativeScores:{...input.relativeScores,team:201}}, ["relativeScores.team"]],
+ [{milestones:{...input.milestones,teamEvidence:-1}}, ["milestones.teamEvidence"]],
+ [{weights:{}}, ["weights.team","weights.product","weights.traction","weights.market","weights.execution"]]
+]) assert.throws(()=>engine.calculate({...input,...change}),error=>{assert.deepStrictEqual(error.fields,fields);return true});

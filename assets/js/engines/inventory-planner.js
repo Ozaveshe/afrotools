@@ -16,9 +16,9 @@
   }
   function number(value, field, optional) {
     if (optional && (value == null || String(value).trim() === "")) return { ok: true, value: null };
-    if (typeof value === "string" && !/^(?:\d+\.?\d*|\.\d+)$/.test(value.trim())) return { ok: false, error: field + " must be a finite non-negative number." };
+    if (typeof value === "string" && !/^(?:\d+\.?\d*|\.\d+)$/.test(value.trim())) return { ok: false, error: field + " must be a finite non-negative number.", detail: { code: "number", field: field } };
     var parsed = Number(value);
-    return Number.isFinite(parsed) && parsed >= 0 ? { ok: true, value: parsed } : { ok: false, error: field + " must be a finite non-negative number." };
+    return Number.isFinite(parsed) && parsed >= 0 ? { ok: true, value: parsed } : { ok: false, error: field + " must be a finite non-negative number.", detail: { code: "number", field: field } };
   }
   function hash(text) {
     var value = 2166136261, i;
@@ -40,10 +40,10 @@
     var quantity = number(raw.quantity != null ? raw.quantity : (raw.stock != null ? raw.stock : raw.qty), "Quantity");
     var reorderPoint = number(raw.reorderPoint != null ? raw.reorderPoint : (raw.minStock != null ? raw.minStock : raw.low), "Reorder point");
     var targetStock = number(raw.targetStock, "Target stock", true);
-    var errors = [];
-    if (!name) errors.push("Product name is required.");
-    [unitCost, sellPrice, quantity, reorderPoint, targetStock].forEach(function (entry) { if (!entry.ok) errors.push(entry.error); });
-    if (errors.length) return { ok: false, errors: errors };
+    var errors = [], errorDetails = [];
+    if (!name) { errors.push("Product name is required."); errorDetails.push({ code: "name_required" }); }
+    [unitCost, sellPrice, quantity, reorderPoint, targetStock].forEach(function (entry) { if (!entry.ok) { errors.push(entry.error); errorDetails.push(entry.detail); } });
+    if (errors.length) return { ok: false, errors: errors, errorDetails: errorDetails };
     var item = {
       id: cleanText(raw.id, 100).replace(/[^a-zA-Z0-9_-]/g, ""),
       name: name, sku: sku, category: category, unitCost: unitCost.value, sellPrice: sellPrice.value,
@@ -76,18 +76,21 @@
     }, { totalProducts: 0, lowStock: 0, stockCostValue: 0, potentialSales: 0, potentialGrossProfit: 0, suggestedReorderUnits: 0 });
   }
   function normalizeList(rows, source) {
-    if (!Array.isArray(rows)) return { ok: false, errors: ["Items must be an array."], items: [] };
-    if (rows.length > LIMITS.maxRecords) return { ok: false, errors: ["Inventory exceeds the " + LIMITS.maxRecords + " record limit."], items: [] };
-    var items = [], errors = [];
+    if (!Array.isArray(rows)) return { ok: false, errors: ["Items must be an array."], errorDetails: [{ code: "items_array" }], items: [] };
+    if (rows.length > LIMITS.maxRecords) return { ok: false, errors: ["Inventory exceeds the " + LIMITS.maxRecords + " record limit."], errorDetails: [{ code: "record_limit", limit: LIMITS.maxRecords }], items: [] };
+    var items = [], errors = [], errorDetails = [];
     rows.forEach(function (row, index) {
-      if (!row || typeof row !== "object" || Array.isArray(row)) { errors.push("Record " + (index + 1) + ": item must be an object."); return; }
+      if (!row || typeof row !== "object" || Array.isArray(row)) { errors.push("Record " + (index + 1) + ": item must be an object."); errorDetails.push({ code: "record_object", record: index + 1 }); return; }
       if (String(row.name == null ? "" : row.name).length > LIMITS.maxName || String(row.sku == null ? "" : row.sku).length > LIMITS.maxSku || String(row.category == null ? "" : row.category).length > LIMITS.maxCategory) {
-        errors.push("Record " + (index + 1) + ": text exceeds the allowed field length."); return;
+        errors.push("Record " + (index + 1) + ": text exceeds the allowed field length."); errorDetails.push({ code: "field_length", record: index + 1 }); return;
       }
       var parsed = normalizeItem(row, { source: source, index: index });
-      if (parsed.ok) items.push(parsed.item); else errors.push("Record " + (index + 1) + ": " + parsed.errors.join(" "));
+      if (parsed.ok) items.push(parsed.item); else {
+        errors.push("Record " + (index + 1) + ": " + parsed.errors.join(" "));
+        parsed.errorDetails.forEach(function (detail) { errorDetails.push(Object.assign({}, detail, { record: index + 1 })); });
+      }
     });
-    return { ok: !errors.length, errors: errors, items: errors.length ? [] : items };
+    return { ok: !errors.length, errors: errors, errorDetails: errorDetails, items: errors.length ? [] : items };
   }
   function dedupeExact(items) {
     var seen = Object.create(null), ids = Object.create(null), output = [], duplicates = 0;
@@ -104,13 +107,13 @@
     var en = normalizeList(Array.isArray(enRows) ? enRows : [], "legacy-en");
     var sw = normalizeList(Array.isArray(swRows) ? swRows : [], "legacy-sw");
     var errors = en.errors.concat(sw.errors);
-    if (errors.length) return { ok: false, errors: errors, items: [], duplicates: 0 };
+    if (errors.length) return { ok: false, errors: errors, errorDetails: (en.errorDetails || []).concat(sw.errorDetails || []), items: [], duplicates: 0 };
     var result = dedupeExact(en.items.concat(sw.items));
     return { ok: true, errors: [], items: result.items, duplicates: result.duplicates, loaded: en.items.length + sw.items.length };
   }
   function parseBackupObject(payload) {
     if (!payload || typeof payload !== "object" || Array.isArray(payload) || payload.schemaVersion !== 2 || payload.tool !== "inventory" || !Array.isArray(payload.items)) {
-      return { ok: false, errors: ["Use a version 2 AfroTools inventory JSON backup."], items: [] };
+      return { ok: false, errors: ["Use a version 2 AfroTools inventory JSON backup."], errorDetails: [{ code: "backup_version" }], items: [] };
     }
     var unit = cleanText(payload.displayUnit || "", LIMITS.maxUnit);
     var parsed = normalizeList(payload.items, "import");
@@ -119,8 +122,8 @@
     return { ok: true, errors: [], items: deduped.items, duplicates: deduped.duplicates, displayUnit: unit || "USD" };
   }
   function parseBackupText(text, byteLength) {
-    if ((byteLength || String(text).length) > LIMITS.maxFileBytes) return { ok: false, errors: ["Backup exceeds the 1 MB file limit."], items: [] };
-    try { return parseBackupObject(JSON.parse(String(text))); } catch (error) { return { ok: false, errors: ["Backup is not valid JSON."], items: [] }; }
+    if ((byteLength || String(text).length) > LIMITS.maxFileBytes) return { ok: false, errors: ["Backup exceeds the 1 MB file limit."], errorDetails: [{ code: "file_size" }], items: [] };
+    try { return parseBackupObject(JSON.parse(String(text))); } catch (error) { return { ok: false, errors: ["Backup is not valid JSON."], errorDetails: [{ code: "invalid_json" }], items: [] }; }
   }
   function mergeItems(existing, incoming) {
     var result = dedupeExact((existing || []).concat(incoming || []));
