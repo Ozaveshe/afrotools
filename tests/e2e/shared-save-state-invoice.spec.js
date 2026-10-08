@@ -2,6 +2,16 @@ const {test,expect}=require('@playwright/test');
 test.use({trace:'off',video:'off',screenshot:'off'});
 const routes={en:'/tools/invoice-generator/',fr:'/fr/tools/generateur-factures/',sw:'/sw/zana/kizalishaji-ankara/',ha:'/ha/kayan-aiki/kirkiro-invoice/'};
 const key='afrotools-saved-invoice-generator';
+const scriptRequests=new WeakMap();
+test.beforeEach(async({page})=>{
+ const paths=[];scriptRequests.set(page,paths);
+ page.on('request',request=>{if(request.resourceType()==='script')paths.push(new URL(request.url()).pathname)});
+});
+test.afterEach(async({page},testInfo)=>{
+ if(!testInfo.title.startsWith('ha invoice:'))return;
+ expect(scriptRequests.get(page)).toContain('/assets/js/pages/invoice-generator-enhancements.js');
+ expect(scriptRequests.get(page)).not.toContain('/ha/kayan-aiki/kirkiro-invoice/app.js');
+});
 const copy={en:{write:'not saved',read:'cannot be read',invalid:'unreadable'},fr:{write:'pas été enregistrée',read:'Impossible de lire',invalid:'illisibles'},sw:{write:'hayajahifadhiwa',read:'haviwezi kusomwa',invalid:'haisomeki'},ha:{write:'Ba a ajiye wannan canjin ba',read:'Ba a iya karanta',invalid:'ba su karantu ba'}};
 async function open(page,baseURL,locale,raw){
  const errors=[];page.on('pageerror',()=>errors.push('pageerror'));page.on('dialog',d=>d.accept());await page.setViewportSize({width:390,height:844});
