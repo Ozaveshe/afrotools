@@ -212,6 +212,7 @@
     var p = payload(); return [p.title, copy.scope, copy.revenue + ": " + money(p.outputs.revenue, p.inputs.currency), copy.profit + ": " + money(p.outputs.netDailyProfit, p.inputs.currency), copy.margin + ": " + (p.outputs.netMarginPct == null ? "—" : p.outputs.netMarginPct + "%"), copy.monthly + ": " + money(p.outputs.monthlyScenario.netProfit, p.inputs.currency)].join("\n");
   }
   function safeCsv(value) {
+    if (typeof value === "number" && Number.isFinite(value)) return '"' + String(value) + '"';
     var text = String(value == null ? "" : value); if (/^[=+\-@]/.test(text)) text = "'" + text; return '"' + text.replace(/"/g, '""') + '"';
   }
   function download(name, type, content) {
@@ -267,18 +268,47 @@
     document.body.classList.remove("msp-has-result");
     root.querySelector("[data-results]").hidden = true; root.querySelector("[data-error]").hidden = false; root.querySelector("[data-error]").textContent = copy.stale; return true;
   }
+  var validationAttempted = false;
+  function showValidation(result, focus) {
+    var fields = [], itemRows = Array.from(root.querySelectorAll(".msp-item")).filter(function (row) {
+      return Array.from(row.querySelectorAll("input")).some(function (input) { return input.value !== "" && input.value !== "0"; });
+    }), expenseRows = Array.from(root.querySelectorAll(".msp-expense")).filter(function (row) { return row.querySelector(".js-expense-amount").value !== ""; });
+    var selectors = { currency: ".js-currency", marketDays: ".js-days", reinvestRate: ".js-reinvest", name: ".js-name", unitCost: ".js-cost", unitPrice: ".js-price", unitsSold: ".js-sold", unitsLost: ".js-lost" };
+    (result.errors || []).forEach(function (key) {
+      var parts = key.split("."), input;
+      if (parts[0] === "items") {
+        var item = parts.length > 1 ? itemRows[Number(parts[1])] : itemRows[20] || root.querySelector(".msp-item");
+        input = item && item.querySelector(selectors[parts[2] || "name"]);
+      } else if (parts[0] === "expenses") {
+        var expense = parts.length > 1 ? expenseRows[Number(parts[1])] : expenseRows[20];
+        input = expense && expense.querySelector(parts[2] === "name" ? ".js-expense-name" : ".js-expense-amount");
+      } else input = root.querySelector(selectors[key] || ".js-currency");
+      if (input && fields.indexOf(input) < 0) fields.push(input);
+    });
+    root.querySelectorAll(".msp-form input").forEach(function (input) {
+      var ids = (input.getAttribute("aria-describedby") || "").split(/\s+/).filter(function (id) { return id && id !== "msp-validation-error"; });
+      if (fields.indexOf(input) >= 0) { input.setAttribute("aria-invalid", "true"); ids.push("msp-validation-error"); }
+      else input.removeAttribute("aria-invalid");
+      if (ids.length) input.setAttribute("aria-describedby", ids.join(" ")); else input.removeAttribute("aria-describedby");
+    });
+    var error = root.querySelector("[data-error]");
+    error.hidden = result.valid; error.textContent = result.valid ? "" : copy.required;
+    if (focus && fields.length) fields[0].focus();
+  }
   build();
-  root.addEventListener("input", stale);
+  root.querySelector("[data-error]").id = "msp-validation-error";
+  root.addEventListener("input", function () { stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); });
   root.addEventListener("submit", function (event) {
     event.preventDefault(); var input = readInput(); var result = engine.calculate(input); var error = root.querySelector("[data-error]");
-    if (!result.valid) { error.hidden = false; error.textContent = copy.required; return; }
+    validationAttempted = !result.valid; showValidation(result, true);
+    if (!result.valid) { current = null; root.querySelector("[data-results]").hidden = true; document.body.classList.remove("msp-has-result"); return; }
     error.hidden = true; current = result; currentStamp = stamp(input); renderResult(result);
   });
   root.addEventListener("click", function (event) {
     var trigger = event.target.closest("[data-action]"); if (!trigger) return; var action = trigger.dataset.action;
     if (action === "add-item") addItem();
     else if (action === "add-expense") addExpense("");
-    else if (action === "remove-row") { var row = trigger.closest(".msp-row"); var selector = row.classList.contains("msp-item") ? ".msp-item" : ".msp-expense"; if (root.querySelectorAll(selector).length > 1) row.remove(); }
+    else if (action === "remove-row") { var row = trigger.closest(".msp-row"); var selector = row.classList.contains("msp-item") ? ".msp-item" : ".msp-expense"; if (root.querySelectorAll(selector).length > 1) { row.remove(); stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); } }
     else if (action === "load-history") renderHistory();
     else if (action === "backup-history") { var h = historyRead(); if (!h) root.querySelector("[data-status]").textContent = recovery.corrupt; else download("market-stall-profit-history.json", "application/json", JSON.stringify(h, null, 2)); }
     else if (action === "clear-history" || action === "delete-history") {
