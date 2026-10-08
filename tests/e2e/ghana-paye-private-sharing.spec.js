@@ -1,11 +1,12 @@
+const chartFixture = process.env.AFROTOOLS_TEST_CHART_JS || require('node:path').resolve(__dirname, '../fixtures/chart-4.4.1-test-fixture.js');
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),acorn=require('acorn');
 test.use({trace:'off',video:'off',screenshot:'off'});
 const root=path.resolve(__dirname,'../..'),bundleSource=fs.readFileSync(path.join(root,'scripts/bundle.js'),'utf8');
 const declaration=acorn.parse(bundleSource,{ecmaVersion:'latest'}).body.find(node=>node.type==='VariableDeclaration'&&node.declarations.some(d=>d.id.name==='BUNDLE_DEFS')).declarations.find(d=>d.id.name==='BUNDLE_DEFS');
 const files=vm.runInNewContext('('+bundleSource.slice(declaration.init.start,declaration.init.end)+')')['tool-page'];
-// Source-bundle preview only. Final hashed artifact and production checks remain
-// release gates; use the actual bundle owner's ordered inputs and export removal.
+// Source preview uses the bundle owner inputs. Artifact mode deliberately loads
+// the served hashed bundle; production acceptance remains a separate gate.
 const bundle=files.map(file=>fs.readFileSync(path.join(root,file),'utf8').replace(/;\s*export\s*\{[^}]*\}\s*;?/g,';').replace(/export\s*\{[^}]*\}\s*;?/g,'')).join(';\n');
 
 
@@ -15,9 +16,9 @@ const coreBundle=coreFiles.map(file=>fs.readFileSync(path.join(root,file),'utf8'
 for(const route of ['/ghana/gh-paye.html','/fr/ghana/gh-paye.html'])test('Ghana sharing keeps salary out of links and requires WhatsApp preview: '+route,async({page,baseURL})=>{
  const errors=[];page.on('pageerror',()=>errors.push('pageerror'));
  await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
- await page.route('**/assets/js/bundles/core.*',r=>r.fulfill({contentType:'application/javascript',body:coreBundle}));
- await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
- await page.route('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',r=>process.env.AFROTOOLS_TEST_CHART_JS?r.fulfill({contentType:'application/javascript',body:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS)}):r.continue());
+ if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT !== '1') await page.route('**/assets/js/bundles/core.*',r=>r.fulfill({contentType:'application/javascript',body:coreBundle}));
+ if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT !== '1') await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ await page.route('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',r=>chartFixture?r.fulfill({contentType:'application/javascript',body:fs.readFileSync(chartFixture)}):r.continue());
  await page.goto(route);await page.locator('#salaryInput').focus();await page.locator('#salaryInput').fill('123456');await page.locator('#calcBtn').click();
  await page.evaluate(()=>{history.replaceState({},'',location.pathname+'?g=123456&saved_calc=synthetic#private');window.__shared=[];window.__opened=[];Object.defineProperty(navigator,'share',{configurable:true,value:async data=>window.__shared.push(data)});window.open=url=>{window.__opened.push(url);return null}});
  await page.locator('#shareBtn').click();const shared=await page.evaluate(()=>window.__shared);expect(shared).toHaveLength(1);expect(new URL(shared[0].url).search).toBe('');expect(new URL(shared[0].url).hash).toBe('');expect(shared[0].text).not.toContain('123');

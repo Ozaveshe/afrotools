@@ -4,15 +4,15 @@ test.use({trace:'off',video:'off',screenshot:'off'});
 const root=path.resolve(__dirname,'../..'),bundleSource=fs.readFileSync(path.join(root,'scripts/bundle.js'),'utf8');
 const declaration=acorn.parse(bundleSource,{ecmaVersion:'latest'}).body.find(node=>node.type==='VariableDeclaration'&&node.declarations.some(d=>d.id.name==='BUNDLE_DEFS')).declarations.find(d=>d.id.name==='BUNDLE_DEFS');
 const files=vm.runInNewContext('('+bundleSource.slice(declaration.init.start,declaration.init.end)+')')['tool-page'];
-// Source-bundle preview only. Final hashed artifact and production checks remain
-// release gates; use the actual bundle owner's ordered inputs and export removal.
+// Source preview uses the bundle owner inputs. Artifact mode deliberately loads
+// the served hashed bundle; production acceptance remains a separate gate.
 const bundle=files.map(file=>fs.readFileSync(path.join(root,file),'utf8').replace(/;\s*export\s*\{[^}]*\}\s*;?/g,';').replace(/export\s*\{[^}]*\}\s*;?/g,'')).join(';\n');
 
 
 for(const locale of ['en','fr'])for(const fault of ['missing-label','after-result'])test(`Kenya restore recovery ${locale}: ${fault}`,async({page,baseURL})=>{
  test.setTimeout(40000);const errors=[],writes=[];page.on('pageerror',e=>errors.push(e.name+': '+e.message.slice(0,100)));
  await page.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push('write');return r.abort()}return new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort()});
- await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT !== '1') await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
  await page.goto(locale==='en'?'/kenya/ke-paye.html':'/fr/kenya/ke-paye.html');const salary=page.locator('#salaryInput');await salary.focus();await salary.fill('123456');await page.locator('.calc-btn').first().click();await page.locator('#calcSaveName').fill('Synthetic original');await page.locator('#calcSaveBtn').click();await expect(page.locator('[data-action=load]')).toHaveCount(1);
  await salary.focus();await salary.fill('234567');await page.locator('[data-tog=pension]').click();await page.locator('#pensionContrib').fill('4000');await page.locator('.calc-btn').first().click();await page.locator('.per-btn').nth(1).click();await page.locator('#calcSaveName').fill('Synthetic unsaved');await page.locator('#calcSaveName').blur();
  // Settle the owner's debounced input calculation before injecting a restore-only fault.

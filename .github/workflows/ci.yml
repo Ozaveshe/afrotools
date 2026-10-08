@@ -143,6 +143,13 @@ jobs:
           PORT: '4184'
         run: npx playwright test tests/e2e/analytics-consent-zoom.spec.js --project=chromium --workers=2 --trace=off
 
+      - name: Verify shared saved-work recovery with optimized scripts
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4185'
+        run: npx playwright test tests/e2e/east-africa-paye-restore-recovery.spec.js tests/e2e/ghana-paye-private-ai-boundary.spec.js tests/e2e/ghana-paye-private-sharing.spec.js tests/e2e/ghana-paye-restore-recovery.spec.js tests/e2e/kenya-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-restore-recovery.spec.js tests/e2e/nigeria-paye-saved-settings.spec.js tests/e2e/paye-legacy-storage-recovery.spec.js tests/e2e/paye-sync-real-routes.spec.js tests/e2e/paye-sync-storage-contract.spec.js tests/e2e/pdf-workspace-history-recovery.spec.js tests/e2e/shared-save-state-consumers.spec.js tests/e2e/shared-save-state-documents.spec.js tests/e2e/shared-save-state-freelance.spec.js tests/e2e/shared-save-state-invoice.spec.js tests/e2e/south-africa-paye-restore-recovery.spec.js tests/e2e/sw-paye-storage-recovery.spec.js --project=chromium --workers=2 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat

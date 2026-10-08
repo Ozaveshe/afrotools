@@ -4,8 +4,8 @@ test.use({trace:'off',video:'off',screenshot:'off'});
 const root=path.resolve(__dirname,'../..'),bundleSource=fs.readFileSync(path.join(root,'scripts/bundle.js'),'utf8');
 const declaration=acorn.parse(bundleSource,{ecmaVersion:'latest'}).body.find(node=>node.type==='VariableDeclaration'&&node.declarations.some(d=>d.id.name==='BUNDLE_DEFS')).declarations.find(d=>d.id.name==='BUNDLE_DEFS');
 const files=vm.runInNewContext('('+bundleSource.slice(declaration.init.start,declaration.init.end)+')')['tool-page'];
-// Source-bundle preview only. Final hashed artifact and production checks remain
-// release gates; use the actual bundle owner's ordered inputs and export removal.
+// Source preview uses the bundle owner inputs. Artifact mode deliberately loads
+// the served hashed bundle; production acceptance remains a separate gate.
 const bundle=files.map(file=>fs.readFileSync(path.join(root,file),'utf8').replace(/;\s*export\s*\{[^}]*\}\s*;?/g,';').replace(/export\s*\{[^}]*\}\s*;?/g,'')).join(';\n');
 
 
@@ -13,7 +13,7 @@ for(const locale of ['en','fr'])for(const fault of ['missing-input','after-resul
  const route=locale==='en'?'/ghana/gh-paye.html':'/fr/ghana/gh-paye.html',errors=[],writes=[];
  test.setTimeout(35000);page.on('dialog',dialog=>dialog.accept());page.on('pageerror',error=>errors.push(error.name+': '+error.message.slice(0,100)));
  await page.route('**/*',r=>{const url=new URL(r.request().url());if(!['GET','HEAD'].includes(r.request().method())){writes.push(url.pathname);return r.abort()}return url.origin===new URL(baseURL).origin?r.continue():r.abort()});
- await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
+ if (process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT !== '1') await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
  await page.goto(route);const salary=page.locator('#salaryInput');await salary.focus();await salary.fill('123456');await page.locator('#calcBtn').click();await page.locator('#calcSaveName').fill('Synthetic original');await page.locator('#calcSaveBtn').click();await expect(page.locator('[data-action=load]')).toHaveCount(1);
  await page.locator('#modeNet').click();await salary.focus();await salary.fill('234567');await page.locator('#basicSalary').fill('180000');await page.locator('label.tog').filter({has:page.locator('#togMarriage')}).click();await page.locator('#calcBtn').click();await page.locator('#calcSaveName').fill('Synthetic unsaved draft');await page.locator('#bonusAmt').fill('4000');await page.locator('.per-btn[data-period=annual]').click();
  await page.locator('#calcSaveName').focus();
