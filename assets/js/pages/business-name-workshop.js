@@ -8,6 +8,7 @@
   var copy = {
     en: {
       generate: "Build shortlist", next: "Try another deterministic set", saved: "Saved shortlist",
+      engine: "Engine", generated: "Current generated ideas", verification: "Verification checklist",
       empty: "Complete the brief, then build a shortlist.", ready: "ideas created. These are prompts, not availability results.",
       invalid: "Please add at least one useful keyword and check every field.", stale: "The brief changed. Build a fresh shortlist before exporting.",
       save: "Save", remove: "Remove", score: "Readability heuristic", factors: ["Length target", "One or two words", "Keyword connection", "No triple letters", "Simple characters"],
@@ -18,6 +19,7 @@
     },
     fr: {
       generate: "Créer la sélection", next: "Essayer une autre série déterministe", saved: "Sélection enregistrée",
+      engine: "Moteur", generated: "Idées générées pour le brief actuel", verification: "Liste de vérification",
       empty: "Complétez le brief, puis créez une sélection.", ready: "idées créées. Ce sont des pistes, pas des résultats de disponibilité.",
       invalid: "Ajoutez au moins un mot-clé utile et vérifiez chaque champ.", stale: "Le brief a changé. Créez une nouvelle sélection avant l’export.",
       save: "Garder", remove: "Retirer", score: "Heuristique de lisibilité", factors: ["Longueur cible", "Un ou deux mots", "Lien au mot-clé", "Pas de triple lettre", "Caractères simples"],
@@ -28,6 +30,7 @@
     },
     sw: {
       generate: "Unda orodha fupi", next: "Jaribu kundi jingine la kudumu", saved: "Majina yaliyohifadhiwa",
+      engine: "Injini", generated: "Mawazo yaliyoundwa kwa maelezo ya sasa", verification: "Orodha ya ukaguzi",
       empty: "Jaza maelezo, kisha unda orodha fupi.", ready: "mawazo yameundwa. Haya ni mapendekezo, si matokeo ya upatikanaji.",
       invalid: "Weka angalau neno moja la msingi na uhakiki kila sehemu.", stale: "Maelezo yamebadilika. Unda orodha mpya kabla ya kusafirisha.",
       save: "Hifadhi", remove: "Ondoa", score: "Kipimo cha usomekaji", factors: ["Urefu unaofaa", "Neno moja au mawili", "Uhusiano wa neno", "Hakuna herufi tatu", "Herufi rahisi"],
@@ -168,9 +171,13 @@
 
   function textSummary() {
     var data = payload();
-    var lines = [data.title, "", data.scope, "Engine: " + data.engineVersion, ""];
+    var lines = [data.title, "", data.scope, t.engine + ": " + data.engineVersion, "", t.generated + ":"];
     data.suggestions.forEach(function (item, index) { lines.push((index + 1) + ". " + item.name + " — " + item.score + "/100"); });
-    lines.push("", "Verification checklist:");
+    if (data.savedShortlist.length) {
+      lines.push("", t.saved + ":");
+      data.savedShortlist.forEach(function (name, index) { lines.push((index + 1) + ". " + name); });
+    }
+    lines.push("", t.verification + ":");
     data.verificationChecklist.forEach(function (item) { lines.push("- " + item); });
     return lines.join("\n");
   }
@@ -200,14 +207,24 @@
       else if (kind === "csv") {
         var rows = [["name", "style", "score", "within_length", "one_or_two_words", "keyword_connection", "no_triple_character", "simple_characters"]];
         current.suggestions.forEach(function (item) { rows.push([item.name, item.style, item.score, item.factors.withinLengthTarget, item.factors.oneOrTwoWords, item.factors.keywordConnection, item.factors.noTripleCharacter, item.factors.simpleCharacters]); });
+        if (saved.length) {
+          rows.push([], ["saved_shortlist"]);
+          saved.forEach(function (name) { rows.push(["saved_name", name]); });
+        }
         rows.push([], ["scope", t.scope], ["engine_version", current.version]);
         t.checklist.forEach(function (item, index) { rows.push(["check_" + (index + 1), item]); });
         download(rows.map(function (row) { return row.map(safeCell).join(","); }).join("\r\n"), "text/csv;charset=utf-8", "afrotools-business-name-shortlist.csv");
       } else if (kind === "pdf") {
         if (!window.jspdf || !window.jspdf.jsPDF) { status.textContent = t.nothing; return; }
         var doc = new window.jspdf.jsPDF();
+        doc.setFont("helvetica", "normal"); doc.setFontSize(10);
         var lines = doc.splitTextToSize(textSummary(), 175);
-        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.text(lines, 18, 20); doc.save("afrotools-business-name-shortlist.pdf");
+        var y = 20, lineHeight = 5, bottom = doc.internal.pageSize.getHeight() - 18;
+        lines.forEach(function (line) {
+          if (y + lineHeight > bottom) { doc.addPage(); doc.text(t.pdfTitle, 18, 14); y = 25; }
+          doc.text(line, 18, y); y += lineHeight;
+        });
+        doc.save("afrotools-business-name-shortlist.pdf");
         status.textContent = t.exported;
       } else window.print();
     });
