@@ -27,6 +27,7 @@
       save: "Save draft", load: "Load saved draft", clear: "Clear saved draft", backup: "Download saved-draft JSON", import: "Import draft JSON",
       saved: "Draft saved only in this browser. Clear it before leaving a shared device.", loaded: "Saved draft loaded. Build the draft to create a current preview.",
       cleared: "Saved local draft cleared.", corrupt: "The saved draft is unreadable or from another schema. Clear it or import a valid backup.",
+      saveBad: "The draft could not be saved in this browser. Download JSON or TXT to keep a copy.", clearBad: "The saved draft could not be cleared. Check browser storage permissions before leaving a shared device.",
       imported: "Backup imported into the form but not saved. Build the draft, then save explicitly if wanted.", importBad: "That file is not a valid Business Plan Draft Workshop backup.",
       stale: "Inputs changed. Build the draft again before exporting or saving.", copied: "Summary copied.", pdfBad: "PDF support is unavailable. Use Print instead.",
       narrative: "Draft narrative", advanced: "Need a longer lender-ready document with templates and review? Use the advanced Business Plan app. Need registration steps? Use the Business Registration Planner."
@@ -50,6 +51,7 @@
       cleared: "Brouillon local effacé.", corrupt: "Le brouillon est illisible ou utilise un autre schéma. Effacez-le ou importez une sauvegarde valide.",
       imported: "Sauvegarde importée dans le formulaire, sans enregistrement. Construisez puis enregistrez explicitement si souhaité.", importBad: "Ce fichier n’est pas une sauvegarde valide de cet atelier.",
       stale: "Les données ont changé. Reconstruisez avant d’exporter ou d’enregistrer.", copied: "Résumé copié.", pdfBad: "Le PDF est indisponible. Utilisez Imprimer.",
+      saveBad: "Impossible d’enregistrer le brouillon dans ce navigateur. Téléchargez le JSON ou le TXT pour garder une copie.", clearBad: "Impossible d’effacer le brouillon enregistré. Vérifiez les autorisations de stockage avant de quitter un appareil partagé.",
       narrative: "Texte du brouillon", advanced: "Besoin d’un document bancaire plus long avec modèles et relecture ? Utilisez l’application avancée. Pour les étapes d’immatriculation, utilisez le planificateur d’enregistrement."
     },
     sw: {
@@ -71,6 +73,7 @@
       cleared: "Rasimu ya kifaa imefutwa.", corrupt: "Rasimu haisomeki au ni ya schema nyingine. Ifute au ingiza nakala halali.",
       imported: "Nakala imeingizwa kwenye fomu bila kuhifadhiwa. Jenga rasimu kisha uhifadhi wazi ukitaka.", importBad: "Faili hii si nakala halali ya warsha hii.",
       stale: "Taarifa zimebadilika. Jenga tena kabla ya kupakua au kuhifadhi.", copied: "Muhtasari umenakiliwa.", pdfBad: "PDF haipatikani. Tumia Chapisha.",
+      saveBad: "Rasimu haikuweza kuhifadhiwa katika kivinjari hiki. Pakua JSON au TXT ili uwe na nakala.", clearBad: "Rasimu iliyohifadhiwa haikuweza kufutwa. Kagua ruhusa za hifadhi ya kivinjari kabla ya kuondoka kwenye kifaa cha pamoja.",
       narrative: "Maelezo ya rasimu", advanced: "Unahitaji hati ndefu ya benki yenye violezo na ukaguzi? Tumia programu ya juu ya Mpango wa Biashara. Kwa hatua za usajili, tumia Mpangaji wa Usajili."
     }
   }[locale];
@@ -169,8 +172,23 @@
     ["Formula","Operating profit",p.formulas.operatingProfit,""],["Formula","Break-even",p.formulas.sameMixBreakEvenRevenue,""]];
     download("sme-business-plan-financials.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(r){return r.map(safeCsv).join(",")}).join("\n"));
   }
-  function savedRead(){try{var x=JSON.parse(localStorage.getItem(STORE)||"null");return x&&x.schemaVersion===SCHEMA&&x.tool==="business-plan-builder"&&x.form?x:null}catch(_){return null}}
-  function fill(data){if(!data||!data.narrative||!data.finance)return false;narrativeFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.narrative[n]||"")});financialFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.finance[n]??"")});current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;return true}
+  function validDraft(data) {
+    function object(value) { return value && typeof value === "object" && !Array.isArray(value); }
+    if (!object(data) || !object(data.narrative) || !object(data.finance)) return false;
+    var narrativeValid = narrativeFields.every(function (name) {
+      var value = data.narrative[name];
+      var limit = ["name", "country", "sector"].includes(name) ? 120 : 4000;
+      return typeof value === "string" && value.length <= limit;
+    });
+    var financeValid = financialFields.every(function (name) {
+      var value = data.finance[name];
+      if (name === "currency") return typeof value === "string" && value.length <= 120;
+      return (typeof value === "string" && value.trim() !== "" && value.length <= 120) || (typeof value === "number" && Number.isFinite(value));
+    });
+    return narrativeValid && financeValid && !!engine.cleanText(data.narrative.name, 120) && engine.calculate(data.finance).valid;
+  }
+  function savedRead(){try{var x=JSON.parse(localStorage.getItem(STORE)||"null");return x&&x.schemaVersion===SCHEMA&&x.tool==="business-plan-builder"&&validDraft(x.form)?x:null}catch(_){return null}}
+  function fill(data){if(!validDraft(data))return false;narrativeFields.forEach(function(n){root.querySelector("[name="+n+"]").value=data.narrative[n]});financialFields.forEach(function(n){root.querySelector("[name="+n+"]").value=String(data.finance[n])});current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;return true}
   function draftEnvelope(){var x=read();return{schemaVersion:SCHEMA,tool:"business-plan-builder",locale:locale,savedAt:new Date().toISOString(),form:x}}
   function stale(){if(!current||stamp(read())===currentInputStamp)return false;current=null;document.body.classList.remove("bpd-has-result");root.querySelector("[data-result]").hidden=true;var e=root.querySelector("[data-error]");e.hidden=false;e.textContent=t.stale;return true}
   build();
@@ -178,15 +196,15 @@
   root.addEventListener("submit",function(event){event.preventDefault();var input=read(),financial=engine.calculate(input.finance),error=root.querySelector("[data-error]");if(!input.narrative.name||!financial.valid){error.hidden=false;error.textContent=t.required;return}error.hidden=true;current={narrative:input.narrative,financial:financial,completeness:checklist(input.narrative)};currentInputStamp=stamp(input);render()});
   root.addEventListener("click",function(event){var b=event.target.closest("[data-action]");if(!b)return;var a=b.dataset.action,status=root.querySelector("[data-draft-status]");
     if(a==="load"){var s=savedRead();if(!s){status.textContent=t.corrupt;return}fill(s.form);status.textContent=t.loaded}
-    else if(a==="clear"){localStorage.removeItem(STORE);status.textContent=t.cleared}
+    else if(a==="clear"){try{localStorage.removeItem(STORE);status.textContent=t.cleared}catch(_){status.textContent=t.clearBad}}
     else if(a==="backup"){var d=savedRead();if(!d){status.textContent=t.corrupt;return}download("sme-business-plan-saved-draft.json","application/json",JSON.stringify(d,null,2))}
     else if(a==="import")root.querySelector("[data-import]").click();
     else if(!current||stale())return;
-    else if(a==="save"){localStorage.setItem(STORE,JSON.stringify(draftEnvelope()));root.querySelector("[data-result-status]").textContent=t.saved}
+    else if(a==="save"){try{localStorage.setItem(STORE,JSON.stringify(draftEnvelope()));root.querySelector("[data-result-status]").textContent=t.saved}catch(_){root.querySelector("[data-result-status]").textContent=t.saveBad}}
     else if(a==="copy")navigator.clipboard.writeText(summary()).then(function(){root.querySelector("[data-result-status]").textContent=t.copied});
     else if(a==="txt")download("sme-business-plan-draft.txt","text/plain;charset=utf-8",summary()+"\n\n"+narrativeFields.map(function(n){return labels[n]+": "+(current.narrative[n]||t.missing)}).join("\n"))
     else if(a==="csv")csv();else if(a==="json")download("sme-business-plan-draft.json","application/json",JSON.stringify(payload(),null,2));else if(a==="print")window.print();
     else if(a==="pdf"){if(!window.jspdf||!window.jspdf.jsPDF){root.querySelector("[data-result-status]").textContent=t.pdfBad;return}var doc=new window.jspdf.jsPDF(),p=payload(),text=summary()+"\n\n"+t.narrative+"\n"+narrativeFields.map(function(n){return labels[n]+": "+(p.narrative[n]||t.missing)}).join("\n")+"\n\nFormulas\n"+Object.values(p.formulas).join("\n");var lines=doc.splitTextToSize(text,175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("sme-business-plan-draft.pdf")}
   });
-  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],status=root.querySelector("[data-draft-status]");if(!file)return;var reader=new FileReader();reader.onload=function(){try{var d=JSON.parse(String(reader.result));if(d.schemaVersion!==SCHEMA||d.tool!=="business-plan-builder"||!fill(d.form))throw new Error("bad");status.textContent=t.imported}catch(_){status.textContent=t.importBad}};reader.readAsText(file);this.value=""});
+  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],status=root.querySelector("[data-draft-status]");this.value="";if(!file)return;if(file.size>1024*1024){status.textContent=t.importBad;return}var reader=new FileReader();reader.onerror=function(){status.textContent=t.importBad};reader.onload=function(){try{var d=JSON.parse(String(reader.result));if(!d||d.schemaVersion!==SCHEMA||d.tool!=="business-plan-builder"||!fill(d.form))throw new Error("bad");status.textContent=t.imported}catch(_){status.textContent=t.importBad}};reader.readAsText(file)});
 })();
