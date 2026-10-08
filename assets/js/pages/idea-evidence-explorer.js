@@ -85,6 +85,8 @@
   Object.keys(recoveryMessages).forEach(function (language) { Object.assign(dictionary[language], recoveryMessages[language]); });
   var localeLabels = {"en": {"currency": "Currency", "sourceName": "Source", "sourceUrl": "Source URL", "low": "Low", "medium": "Medium", "high": "High", "unknown": "Unknown"}, "fr": {"currency": "Devise", "sourceName": "Source", "sourceUrl": "URL de la source", "low": "Faible", "medium": "Moyen", "high": "\u00c9lev\u00e9", "unknown": "Inconnu"}, "sw": {"currency": "Sarafu", "sourceName": "Chanzo", "sourceUrl": "URL ya chanzo", "low": "Ndogo", "medium": "Wastani", "high": "Kubwa", "unknown": "Haijulikani"}};
   Object.keys(localeLabels).forEach(function(language){Object.assign(dictionary[language],localeLabels[language])});
+  var originLabels = {"en": {"origin": "Record origin", "generatedExample": "Generated example; figures are not independently verified", "unknownOrigin": "Origin not supplied"}, "fr": {"origin": "Origine de la fiche", "generatedExample": "Exemple g\u00e9n\u00e9r\u00e9 ; chiffres non v\u00e9rifi\u00e9s ind\u00e9pendamment", "unknownOrigin": "Origine non fournie"}, "sw": {"origin": "Asili ya rekodi", "generatedExample": "Mfano uliotengenezwa; takwimu hazijathibitishwa kwa kujitegemea", "unknownOrigin": "Asili haijatolewa"}};
+  Object.keys(originLabels).forEach(function(language){Object.assign(dictionary[language],originLabels[language])});
   var t = dictionary[locale] || dictionary.en;
 
   function el(tag, attrs, value) {
@@ -164,11 +166,12 @@
     status(message,state);
   }
   function evidenceLabel(row) {
-    if (!row.source.name && !row.source.url && !row.source.asOf && !row.source.confidence) return t.sourceNo;
+    var origin=row.recordOrigin==="generated_example"?t.generatedExample+" \u00b7 ":"";
+    if (!row.source.name && !row.source.url && !row.source.asOf && !row.source.confidence) return origin+t.sourceNo;
     var parts=[t.sourceYes];
     if(row.source.asOf)parts.push(t.asOf+" "+formatDate(row.source.asOf));
     if(row.source.confidence)parts.push(t.confidence+": "+levelLabel(row.source.confidence));
-    return parts.join(" · ");
+    return origin+parts.join(" · ");
   }
   function metric(label, value) { var node=el("div",{class:"iee-metric"});node.append(el("span",{},label),el("strong",{},value),el("small",{},t.estimate));return node; }
   function card(row) {
@@ -262,8 +265,8 @@
   function exportPayload() { return {schemaVersion:engine.SCHEMA_VERSION,tool:"idea-board",generatedAt:new Date().toISOString(),scope:t.scope,items:shortlist}; }
   function summary() { return [document.title,t.scope].concat(shortlist.map(function(row,i){return (i+1)+". "+row.name+" | "+(countryLabel(row.countryCode,row.countryName))+" | "+sectorLabel(row.sector)+" | "+t.startup+": "+money(row.startupCost,row.currency)+" | "+t.monthly+": "+money(row.monthlyRevenue,row.currency)+" | "+t.breakeven+": "+(row.breakevenMonths.min==null?t.unavailable:money(row.breakevenMonths,"")+" "+t.months)+" | "+evidenceLabel(row)})).join("\n"); }
   function exportCsv() {
-    var rows=[[t.tableIdea,t.tableCountry,t.tableSector,t.startup+" min",t.startup+" max",t.currency,t.monthly+" min",t.monthly+" max",t.breakeven+" min",t.breakeven+" max",t.sourceName,t.sourceUrl,t.asOf,t.confidence]];
-    shortlist.forEach(function(r){rows.push([r.name,countryLabel(r.countryCode,r.countryName),sectorLabel(r.sector),r.startupCost.min,r.startupCost.max,r.currency,r.monthlyRevenue.min,r.monthlyRevenue.max,r.breakevenMonths.min,r.breakevenMonths.max,r.source.name,r.source.url,r.source.asOf,r.source.confidence?levelLabel(r.source.confidence):""])});
+    var rows=[[t.tableIdea,t.tableCountry,t.tableSector,t.startup+" min",t.startup+" max",t.currency,t.monthly+" min",t.monthly+" max",t.breakeven+" min",t.breakeven+" max",t.sourceName,t.sourceUrl,t.asOf,t.confidence,t.origin]];
+    shortlist.forEach(function(r){rows.push([r.name,countryLabel(r.countryCode,r.countryName),sectorLabel(r.sector),r.startupCost.min,r.startupCost.max,r.currency,r.monthlyRevenue.min,r.monthlyRevenue.max,r.breakevenMonths.min,r.breakevenMonths.max,r.source.name,r.source.url,r.source.asOf,r.source.confidence?levelLabel(r.source.confidence):"",r.recordOrigin==="generated_example"?t.generatedExample:t.unknownOrigin])});
     download("african-business-idea-comparison.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(row){return row.map(safeCsv).join(",")}).join("\n"));
   }
   function exportPdf() {
