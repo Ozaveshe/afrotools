@@ -23,3 +23,15 @@ test('localized guard refresh rejects unknown or duplicate runtime guards', () =
   assert.throws(() => refreshChartReadiness(translated.replace(/if \(!RESULT[^\n]+/, 'if (!RESULT) return;'), source), /differs/);
   assert.throws(() => refreshChartReadiness(translated + '<script>function renderChart() { ' + legacy + ' }</script>', source), /exactly one/);
 });
+
+const { addCameroonChartRecovery } = require('../scripts/lib/localized-chart-readiness');
+test('Cameroon chart owner preserves localized chart code and supports regeneration from English', () => {
+  const body="if(!RESULT)return;const canvas=document.getElementById('mainChart');new Chart(canvas,{label:'Libellé local'});";
+  const before='<div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div><script>function calculate(){return 123}function renderChart(type){'+body+'}</script>';
+  const english=addCameroonChartRecovery(before,'en');
+  const french=addCameroonChartRecovery(before,'fr');
+  assert.ok(french.includes(body));assert.ok(french.includes('function calculate(){return 123}'));
+  assert.ok(french.includes('Graphique indisponible'));assert.equal(addCameroonChartRecovery(french,'fr'),french);
+  assert.equal(addCameroonChartRecovery(english,'fr'),french);
+  assert.throws(()=>addCameroonChartRecovery(before.replace('new Chart(', 'new Unknown('),'fr'),/contract/);
+});

@@ -109,6 +109,18 @@ if (pageIdx !== -1 && args[pageIdx + 1] !== undefined) {
   flags.page = args[pageIdx + 1];
 }
 
+// Preserve localized copy while applying the optional chart dependency boundary.
+if (args.includes('--refresh-cameroon-chart-recovery')) {
+  if (flags.lang !== 'fr' || flags.page !== 'cameroon/cm-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Cameroon chart recovery requires --lang fr --page cameroon/cm-paye only');
+  const { addCameroonChartRecovery } = require('./lib/localized-chart-readiness');
+  const target = path.join(ROOT, 'fr/cameroon/cm-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = addCameroonChartRecovery(existing, 'fr');
+  if (refreshed !== existing) writeFileWithRetry(target, refreshed);
+  console.log(`French Cameroon chart recovery: ${refreshed === existing ? 'unchanged' : 'updated'}`);
+  process.exit(0);
+}
+
 // Repair the source guard without regenerating translated copy or layout.
 if (args.includes('--refresh-chart-readiness')) {
   if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) {
@@ -1663,7 +1675,8 @@ function build() {
         }
 
         const html = fs.readFileSync(sourceFile, 'utf8');
-        const processedHtml = processHTML(html, lang, pagePath);
+        let processedHtml = processHTML(html, lang, pagePath);
+        if (lang === 'fr' && clean === 'cameroon/cm-paye') processedHtml = require('./lib/localized-chart-readiness').addCameroonChartRecovery(processedHtml, 'fr');
 
         if (!flags.dryRun) {
           const outputDir = path.dirname(outputPath);

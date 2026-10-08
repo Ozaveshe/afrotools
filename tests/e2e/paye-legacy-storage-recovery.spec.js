@@ -37,17 +37,18 @@ for(const app of apps){
  });
 }
 
-for(const fault of ['missing-library','constructor-failure'])test(`Egypt legacy PAYE chart resilience: ${fault}`,async({page,baseURL})=>{
+for(const app of [{name:'Egypt',route:'/egypt/eg-paye.html',message:'Chart unavailable'},{name:'Cameroon EN',route:'/cameroon/cm-paye.html',message:'Chart unavailable'},{name:'Cameroon FR',route:'/fr/cameroon/cm-paye.html',message:'Graphique indisponible'}])for(const fault of ['missing-library','constructor-failure'])test(`${app.name} legacy PAYE chart resilience: ${fault}`,async({page,baseURL})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept(d.type()==='prompt'?'Synthetic chart recovery':undefined));
  await page.route('**/*',r=>new URL(r.request().url()).origin===new URL(baseURL).origin?r.continue():r.abort());
  await page.route('**/assets/js/bundles/tool-page.*',r=>r.fulfill({contentType:'application/javascript',body:bundle}));
  if(fault==='constructor-failure')await page.addInitScript(()=>{window.Chart=function(){throw Error('Synthetic chart failure')}});
- await page.goto('/egypt/eg-paye.html');await page.locator('#grossSalary').fill('120000');await page.locator('.calc-btn').first().click();
- await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');await expect(page.locator('#aiBtn')).toBeEnabled();
+ await page.goto(app.route);await page.locator('#grossSalary').fill('120000');await page.locator('.calc-btn').first().click();
+ await expect(page.locator('#chartStatus')).toContainText(app.message);await expect(page.locator('#aiBtn')).toBeEnabled();
  await page.locator('#payeSaveBtn').click();await expect(page.locator('.paye-saved-card')).toHaveCount(1);
  await page.locator('#grossSalary').fill('240000');await page.locator('.calc-btn').first().click();await page.locator('.paye-open-btn').click();await expect(page.locator('#grossSalary')).toHaveValue('120000');
- for(const tab of await page.locator('.chart-tab').all())await tab.click();await expect(page.locator('#chartStatus')).toContainText('Chart unavailable');
- await page.locator('.per-btn').nth(1).click();await expect(page.locator('#resultsCard')).toBeVisible();
+ for(const tab of await page.locator('.chart-tab').all())await tab.click();
+ await page.locator('.chart-tab').first().click();await expect(page.locator('#chartStatus')).toContainText(app.message);
+ if(app.name==='Egypt')await page.locator('.per-btn').nth(1).click();await expect(page.locator('#resultsCard')).toBeVisible();
  expect(process.env.AFROTOOLS_TEST_CHART_JS).toBeTruthy();await page.addScriptTag({content:fs.readFileSync(process.env.AFROTOOLS_TEST_CHART_JS,'utf8')});await page.locator('.chart-tab').first().click();await expect(page.locator('#chartStatus')).toBeHidden();await expect(page.locator('#mainChart')).toBeVisible();
  expect(errors).toEqual([]);
 });
