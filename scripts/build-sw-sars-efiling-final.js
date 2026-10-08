@@ -2,6 +2,7 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
+const { normalizeReleaseOwnedHtml } = require("./lib/release-owned-html-normalizer");
 const ROOT = path.resolve(__dirname, "..");
 const OUTPUT = path.join(ROOT, "sw", "zana", "mwongozo-wa-sars-efiling", "index.html");
 const canonical = "https://afrotools.com/sw/zana/mwongozo-wa-sars-efiling/";
@@ -36,12 +37,16 @@ function render() {
 }
 
 const expected = render();
+const current = fs.existsSync(OUTPUT) ? fs.readFileSync(OUTPUT, "utf8") : null;
+const isCurrent = current !== null && normalizeReleaseOwnedHtml(current) === normalizeReleaseOwnedHtml(expected);
 if (process.argv.includes("--check")) {
-  if (!fs.existsSync(OUTPUT) || fs.readFileSync(OUTPUT, "utf8") !== expected) {
+  if (!isCurrent) {
     console.error("Swahili SARS eFiling owner is stale. Run node scripts/build-sw-sars-efiling-final.js");
     process.exit(1);
   }
   console.log("Swahili SARS eFiling owner is current.");
+} else if (isCurrent) {
+  console.log("Swahili SARS eFiling owner is current; release processing preserved.");
 } else {
   fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
   fs.writeFileSync(OUTPUT, expected);
