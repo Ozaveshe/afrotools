@@ -312,13 +312,44 @@
   function savePdf(config) {
     if (!window.jspdf || !window.jspdf.jsPDF) { showStatus(config.statusId, tr('pdfUnavailable')); return; }
     var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.text(config.title, 18, 22);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.text(tr('pdfBrand'), 18, 30);
     var y = 43;
-    config.rows.forEach(function (row) { doc.setFont('helvetica', row.bold ? 'bold' : 'normal'); doc.text(pdfSafe(row.label), 18, y); doc.text(pdfSafe(row.value), 192, y, { align: 'right' }); y += 8; });
-    y += 4; doc.setFont('helvetica', 'bold'); doc.text(tr('pdfProvenance'), 18, y); y += 7;
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); var sourceLines = doc.splitTextToSize(config.source, 174); doc.text(sourceLines, 18, y); y += sourceLines.length * 4 + 5;
-    doc.setFont('helvetica', 'bold'); doc.text(tr('pdfDisclaimer'), 18, y);
+    var bottom = doc.internal.pageSize.getHeight() - 18;
+    function header() {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.text(config.title, 18, 22);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.text(tr('pdfBrand'), 18, 30);
+      y = 43;
+    }
+    function room(height) {
+      if (y + height > bottom) { doc.addPage(); header(); }
+    }
+    function paragraph(text, bold) {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal'); doc.setFontSize(8);
+      doc.splitTextToSize(pdfSafe(text), 174).forEach(function (line) {
+        room(4);
+        doc.setFont('helvetica', bold ? 'bold' : 'normal'); doc.setFontSize(8);
+        doc.text(line, 18, y); y += 4;
+      });
+    }
+    header();
+    config.rows.forEach(function (row) {
+      doc.setFont('helvetica', row.bold ? 'bold' : 'normal'); doc.setFontSize(10);
+      var lines = doc.splitTextToSize(pdfSafe(row.label), 118);
+      var height = Math.max(8, lines.length * 5 + 3);
+      if (height <= bottom - 43) room(height);
+      lines.forEach(function (line, index) {
+        room(5);
+        doc.setFont('helvetica', row.bold ? 'bold' : 'normal'); doc.setFontSize(10);
+        doc.text(line, 18, y);
+        if (index === 0) doc.text(pdfSafe(row.value), 192, y, { align: 'right' });
+        y += 5;
+      });
+      y += 3;
+    });
+    y += 4; room(14);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.text(tr('pdfProvenance'), 18, y); y += 7;
+    paragraph(config.source, false);
+    y += 5;
+    paragraph(tr('pdfDisclaimer'), true);
     var blob = doc.output('blob'); doc.save(config.filename);
     window.dispatchEvent(new CustomEvent('afro-pdf-generated', { detail: { blob: blob, fileName: config.filename, toolId: 'vat-calculator', category: 'vat-business-tax' } }));
   }

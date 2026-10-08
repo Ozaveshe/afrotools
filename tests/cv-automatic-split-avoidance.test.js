@@ -6,3 +6,5 @@ test('oversized blocks can continue without discarding their pixels',()=>assert.
 test('blocks already continued from earlier pages cannot cause backward cuts',()=>assert.equal(cut(840,1680,844,[{top:800,bottom:1700}]),1680));
 test('disabled avoidance keeps original cut',()=>assert.equal(cut(0,840,844,[]),840));
 test('multiple pages cover every source row exactly once',()=>{let start=0,total=3200,rows=0;while(start<total){let end=cut(start,Math.min(total,start+844),844,[{top:819,bottom:1011},{top:1600,bottom:1750},{top:2100,bottom:3100}]);assert.ok(end>start);assert.ok(end-start<=844);rows+=end-start;start=end;}assert.equal(rows,total);});
+
+test("fractional text-line bounds are not clipped by a one-pixel tolerance",()=>assert.equal(cut(0,1360,1688,[{top:1359.8125,bottom:1379.8125}]),1359));

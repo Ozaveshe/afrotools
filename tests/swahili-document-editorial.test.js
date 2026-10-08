@@ -5,15 +5,31 @@ const path = require('node:path');
 const vm = require('node:vm');
 const overrides = require('../data/localization/sw-document-pdf-lexicon-overrides.json').routes;
 const lexicon = require('../data/localization/sw-document-pdf-lexicon.json').routes;
+const { apps } = require('../scripts/build-swahili-document-pdf-parity.js');
 const root = path.join(__dirname, '..');
 
 test('contextual overrides survive the scoped generator and static page payload', () => {
   for (const [id, entries] of Object.entries(overrides)) {
-    const file = id === 'cv-builder' ? 'sw/zana/mjenzi-cv/index.html' : 'sw/zana/kizalishaji-ankara/index.html';
-    const html = fs.readFileSync(path.join(root, file), 'utf8');
+    const app = apps.find((row) => row.id === id);
+    assert.ok(app, `${id}: registered editorial route`);
+    const html = fs.readFileSync(path.join(root, app.swahiliFile), 'utf8');
     const payload = JSON.parse(html.match(/id="sw-document-pdf-locale">([^<]+)/)[1]);
+    assert.equal(payload.id, id);
     assert.deepEqual(payload.phraseOverrides, entries);
-    for (const [phrase, translated] of Object.entries(entries)) assert.equal(lexicon[id][phrase], translated, `${id}: ${phrase}`);
+    const context = vm.createContext({});
+    vm.runInContext(fs.readFileSync(path.join(root, 'assets/js/pages/sw-document-pdf-localizer.js'), 'utf8'), context);
+    const localizer = context.AfroTools.SwahiliDocumentPdfLocalizer;
+    localizer.install({
+      getElementById: () => ({ textContent: JSON.stringify(payload) }),
+      readyState: 'loading',
+      addEventListener() {}
+    });
+    for (const [phrase, translated] of Object.entries(entries)) {
+      assert.equal(localizer.translate(phrase), translated, `${id}: runtime override for ${phrase}`);
+      if (id === 'cv-builder' || id === 'invoice-generator') {
+        assert.equal(lexicon[id][phrase], translated, `${id}: ${phrase}`);
+      }
+    }
     assert.doesNotMatch(html, /pdf-download-gate\.js|<email-gate-modal/);
   }
 });

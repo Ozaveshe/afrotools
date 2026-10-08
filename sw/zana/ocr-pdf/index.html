@@ -23,7 +23,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=022379a3">
-<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=f6d61dcb">
+<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=7c08f141">
 <script src="/assets/js/components/navbar.min.js?v=0333a741" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="/assets/js/components/related-tools.js?v=ebcb4c9a" defer></script>
@@ -35,7 +35,7 @@
 
   .tool-hero {
     background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    padding: 30px 0 28px;
     position: relative;
     overflow: hidden;
   }
@@ -102,11 +102,11 @@
 
   .tool-main { padding: 28px 0 72px; }
   .tool-main-inner {
-    max-width: 1200px;
+    max-width: 840px;
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
     align-items: start;
   }
@@ -140,7 +140,7 @@
 
   .file-input-label {
     display: block;
-    padding: 36px 24px;
+    padding: 24px 18px;
     background: #EFF6FF;
     border: 2px dashed #BFDBFE;
     border-radius: 8px;
@@ -150,7 +150,7 @@
     font-size: 0.9rem;
     color: #334155;
     font-weight: 600;
-    min-height: 112px;
+    min-height: 96px;
     touch-action: manipulation;
   }
   .file-input-label:hover {
@@ -163,13 +163,25 @@
   }
   .file-input-label .drop-icon { display: none; }
   .file-input-label .drop-hint {
+    display: block;
     font-size: 0.72rem;
     color: #6B8CAE;
     font-weight: 500;
     margin-top: 6px;
   }
 
-  input[type="file"] { display: none; }
+  input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  input[type="file"]:focus-visible + .file-input-label {
+    outline: 3px solid var(--afro-blue);
+    outline-offset: 3px;
+  }
 
   .file-info {
     margin-top: 12px;
@@ -199,6 +211,17 @@
 
   .field { margin-bottom: 18px; }
   .field:last-child { margin-bottom: 0; }
+  .ocr-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 220px);
+    gap: 16px;
+    align-items: end;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #DBEAFE;
+  }
+  .ocr-controls .field, .ocr-controls .calc-btn { margin: 0; }
+  .ocr-controls .progress-section { grid-column: 1 / -1; }
   .f-label-text {
     font-size: 0.75rem;
     font-weight: 700;
@@ -438,7 +461,18 @@
     line-height: 1.6;
   }
   .info-text li { margin-bottom: 6px; }
-  .info-text ul { margin: 0; padding-left: 16px; }
+  .info-text ul, .info-text ol { margin: 0; padding-left: 20px; }
+  .ocr-help summary.info-title {
+    cursor: pointer;
+    min-height: 44px;
+    margin: 0;
+    padding: 12px 4px;
+  }
+  .ocr-help summary:focus-visible { outline: 3px solid var(--afro-blue); outline-offset: 3px; }
+  .ocr-help[open] .info-text { border-top: 1px solid #DBEAFE; padding-top: 12px; }
+  .ocr-help h3 { color: #1e293b; font-size: 0.82rem; margin: 14px 0 6px; }
+  .ocr-help h3:first-child { margin-top: 0; }
+  .ocr-help p { margin: 12px 0 0; }
 
   .note-box {
     background: #FFFBEB;
@@ -494,11 +528,15 @@
   :root[data-theme="dark"] .seo-section p,
   :root[data-theme="dark"] .extracted-text,
   :root[data-theme="dark"] .ocr-summary strong { color:#d8e4f5; }
+  :root[data-theme="dark"] .ocr-help h3 { color:#eef5ff; }
+  :root[data-theme="dark"] .ocr-help[open] .info-text { border-color:#3a4c68; }
+  :root[data-theme="dark"] .ocr-controls { border-color:#3a4c68; }
   :root[data-theme="dark"] .ocr-summary span,
   :root[data-theme="dark"] .status-line { color:#b8c7dc; }
 
   @media (max-width: 768px) {
     .tool-main-inner { grid-template-columns: 1fr; }
+    .ocr-controls { grid-template-columns: 1fr; }
     .action-row { grid-template-columns: 1fr; }
     .ocr-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .page-tabs { padding: 0 14px; }
@@ -525,9 +563,11 @@
 
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
+<!-- tool-structured-data:auto -->
+
 <meta name="afrotools-content-id" content="sw-document-pdf:pdf-ocr">
   <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=edc1faa9">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=c176b075">
 <link rel="canonical" href="https://afrotools.com/sw/zana/ocr-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-ocr/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ocr-pdf/">
@@ -543,13 +583,7 @@
       <a href="/">AfroTools</a> / <a href="/tools/">Zana</a> / <span>OCR ya PDF</span>
     </div>
     <h1>OCR ya PDF <em>Mtandaoni</em></h1>
-    <p class="hero-sub">Toa maandishi yanayoweza kunakiliwa kutoka kwa PDF zilizochanganuliwa na picha za hati. Chagua lugha ya hati, kagua uaminifu wa kiwango cha ukurasa, kisha unakili au upakue faili ya TXT.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">OCR ya ndani</span>
-      <span class="badge b-green">Kujiamini kwa ukurasa</span>
-      <span class="badge b-green">5 Lugha</span>
-      <span class="badge b-green">PDF na picha</span>
-    </div>
+    <p class="hero-sub">Toa maandishi yanayoweza kunakiliwa kutoka kwa PDF zilizochanganuliwa na picha. Chagua lugha, kagua matokeo, kisha pakua TXT. Faili zinabaki kwenye kifaa chako.</p>
   </div>
 </div>
 
@@ -559,46 +593,37 @@
       <!-- Upload -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Pakia Faili</span>
+          <span class="card-title">Toa maandishi kutoka kwenye faili</span>
         </div>
         <div class="card-body">
-          <input type="file" id="fileInput" accept=".pdf,image/*">
+          <input type="file" id="fileInput" class="ocr-file-input" accept=".pdf,image/*">
           <label for="fileInput" class="file-input-label" id="dropZone">
-            Chagua au dondosha PDF iliyochanganuliwa au picha ya hati
-            <span class="drop-hint">Inasaidia PDF, PNG, JPG, WEBP, BMP, TIFF</span>
+            Chagua PDF au picha
+            <span class="drop-hint">au idondoshe hapa</span>
           </label>
           <div class="file-info" id="fileInfo">
             <span class="file-name" id="fileName"></span>
             <button type="button" class="file-remove" id="fileRemove">Ondoa</button>
           </div>
           <div class="status-line" id="fileStatus" role="status" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Mipangilio ya OCR</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label-text" for="languageSelect">Lugha ya hati</label>
-            <select class="f-input" id="languageSelect">
-              <option value="eng">Kiingereza</option>
-              <option value="fra">Kifaransa (Francais)</option>
-              <option value="ara">Kiarabu</option>
-              <option value="swa">kiswahili</option>
-              <option value="por">Kireno (Kireno)</option>
-            </select>
-          </div>
-
-          <button type="button" class="calc-btn" id="extractBtn" disabled>Toa maandishi kwa OCR</button>
-
-          <div class="progress-section" id="progressSection">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Maendeleo ya OCR">
-              <div class="progress-fill" id="progressFill"></div>
+          <div class="ocr-controls">
+            <div class="field">
+              <label class="f-label-text" for="languageSelect">Lugha ya hati</label>
+              <select class="f-input" id="languageSelect">
+                <option value="eng">Kiingereza</option>
+                <option value="fra">Kifaransa (Francais)</option>
+                <option value="ara">Kiarabu</option>
+                <option value="swa">kiswahili</option>
+                <option value="por">Kireno (Kireno)</option>
+              </select>
             </div>
-            <div class="progress-text" id="progressText" role="status" aria-live="polite">Inatayarisha...</div>
+            <button type="button" class="calc-btn" id="extractBtn" disabled>Toa maandishi kwa OCR</button>
+            <div class="progress-section" id="progressSection">
+              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Maendeleo ya OCR">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-text" id="progressText" role="status" aria-live="polite">Inatayarisha...</div>
+            </div>
           </div>
         </div>
       </div>
@@ -627,39 +652,27 @@
       </div>
     </div>
 
-    <!-- Sidebar -->
+    <!-- Optional help follows the task controls. -->
     <div class="sidebar">
-      <div class="info-card">
-        <div class="info-title">Jinsi inavyofanya kazi</div>
+      <details class="info-card ocr-help">
+        <summary class="info-title">OCR hufanyaje kazi, na ninaweza kutumia faili zipi?</summary>
         <div class="info-text">
-          <ul>
+          <h3>Jinsi inavyofanya kazi</h3>
+          <ol>
             <li>Pakia PDF iliyochanganuliwa au picha</li>
             <li>Chagua lugha ya hati</li>
             <li>Kila ukurasa wa PDF huonyeshwa kama picha</li>
             <li>OCR ya Tesseract.js hutoa maandishi</li>
             <li>Kagua uhakika, kisha nakili au pakua maandishi</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Miundo Inayotumika</div>
-        <div class="info-text">
+          </ol>
+          <h3>Miundo inayokubaliwa</h3>
           <ul>
             <li><strong>PDF</strong> -- iliyochanganuliwa au yenye picha</li>
             <li><strong>PNG, JPG, JPEG</strong> -- picha za hati</li>
             <li><strong>WEBP, BMP, TIFF</strong> -- miundo mingine ya picha</li>
           </ul>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <strong>Kumbuka:</strong> OCR ya PDF kubwa inaweza kuchukua dakika kadhaa. Injini ya OCR na data ya lugha hupakiwa kutoka rasilimali za AfroTools. Uchakataji wote hufanyika kwenye kivinjari chako; zana hii haipakii faili wala maandishi yaliyotolewa.
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Vidokezo vya Matokeo Bora</div>
-        <div class="info-text">
+          <p>PDF kubwa zinaweza kuchukua dakika kadhaa. OCR hutumia rasilimali za ndani za AfroTools katika kivinjari chako; zana hii haipakii faili au maandishi yaliyotolewa.</p>
+          <h3>Ili kupata matokeo bora</h3>
           <ul>
             <li>Tumia nakala zenye ubora wa juu (DPI 300 au zaidi)</li>
             <li>Hakikisha maandishi hayajazungushwa wala kupinda</li>
@@ -667,7 +680,7 @@
             <li>Hati safi zenye utofauti mzuri hutoa matokeo bora</li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </main>
@@ -731,7 +744,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
 <h2 class="seo-links-title">Zana zinazohusiana</h2>
-<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li></ul>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="Nafasi ya PDF" data-category="document-pdf" data-icon="PW" data-desc="Panga, unganisha, gawanya au zungusha kurasa za PDF.">Nafasi ya PDF</a></li><li><a href="/sw/hati-na-pdf/" data-related-tool data-id="document-pdf" data-name="Zana zote za PDF na hati" data-category="document-pdf" data-icon="PDF" data-desc="Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.">Zana zote za PDF na hati</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -1168,10 +1181,7 @@ downloadBtn.addEventListener('click', () => {
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=02d5184e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-ocr","name":"OCR ya PDF","downloadContract":"free-account"}</script>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-ocr","name":"OCR ya PDF","phraseOverrides":{"All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.","Choose a PDF or image":"Chagua PDF au picha","Extract copyable text from scanned PDFs and images. Choose a language, review the result, and download TXT. Files stay on your device.":"Toa maandishi yanayoweza kunakiliwa kutoka kwa PDF zilizochanganuliwa na picha. Chagua lugha, kagua matokeo, kisha pakua TXT. Faili zinabaki kwenye kifaa chako.","Extract text from a file":"Toa maandishi kutoka kwenye faili","For better results":"Ili kupata matokeo bora","How does OCR work, and which files can I use?":"OCR hufanyaje kazi, na ninaweza kutumia faili zipi?","How it works":"Jinsi inavyofanya kazi","Large PDFs can take several minutes. OCR runs with AfroTools local assets in your browser; this tool does not upload the file or extracted text.":"PDF kubwa zinaweza kuchukua dakika kadhaa. OCR hutumia rasilimali za ndani za AfroTools katika kivinjari chako; zana hii haipakii faili au maandishi yaliyotolewa.","or drop it here":"au idondoshe hapa"},"downloadContract":"local-guest"}</script>
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=d2fb2e27" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>

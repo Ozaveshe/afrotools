@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11699 |
-| Indexable pages | 7884 |
+| Public pages | 11701 |
+| Indexable pages | 7886 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4257 |
-| Documented fallbacks | 14971 |
-| Routes eligible for primary sitemaps | 7884 |
+| Genuine equivalence groups | 4259 |
+| Documented fallbacks | 14973 |
+| Routes eligible for primary sitemaps | 7886 |
 
 ## Locale Coverage
 
-- en: 6144 page records
+- en: 6146 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 547
+- article: 549
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -6704,6 +6704,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:dcdf149d6d28: en=`/tools/domestic-worker/`, fr=`/fr/tools/salaire-employe-maison/`, sw=`/sw/zana/mshahara-wa-mfanyakazi-wa-nyumbani/`; x-default=`/tools/domestic-worker/`
 - equivalence:dcdf7905ede4: en=`/tools/countdown-timer/`, fr=`/fr/tools/compte-a-rebours/`, sw=`/sw/zana/hesabu-siku-za-tukio/`; x-default=`/tools/countdown-timer/`
 - equivalence:dce875074f84: en=`/jamb/mathematics/2000/`; x-default=`/jamb/mathematics/2000/`
+- equivalence:dced64af3c9d: en=`/blog/grain-drying-weight-reconciliation-africa/`; x-default=`/blog/grain-drying-weight-reconciliation-africa/`
 - equivalence:dcf12236ae90: en=`/tools/partnership-agreement/`, fr=`/fr/tools/accord-partenariat/`, sw=`/sw/zana/mkataba-wa-ubia/`; x-default=`/tools/partnership-agreement/`
 - equivalence:dcf35fd2f5b8: en=`/tools/afrokitchen/recipes/koki-beans-cm/`; x-default=`/tools/afrokitchen/recipes/koki-beans-cm/`
 - equivalence:dcf9995d7b6d: en=`/tools/board-resolution/`, fr=`/fr/tools/modele-resolution-conseil/`, sw=`/sw/zana/azimio-la-bodi/`; x-default=`/tools/board-resolution/`
@@ -7026,6 +7027,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f0f8fa6a07b4: en=`/blog/ghana-motor-insurance-claim-checklist-2026/`; x-default=`/blog/ghana-motor-insurance-claim-checklist-2026/`
 - equivalence:f108cd603c65: en=`/tools/afrokitchen/countries/ethiopia/`; x-default=`/tools/afrokitchen/countries/ethiopia/`
 - equivalence:f10978bd93f4: en=`/tools/childbirth-cost/`, fr=`/fr/tools/cout-accouchement/`, ha=`/ha/kayan-aiki/kudin-haihuwa/`, sw=`/sw/zana/gharama-za-kujifungua/`; x-default=`/tools/childbirth-cost/`
+- equivalence:f116ca281dcf: en=`/blog/kenya-withholding-certificate-tax-credit-reconciliation-2026/`; x-default=`/blog/kenya-withholding-certificate-tax-credit-reconciliation-2026/`
 - equivalence:f1302826da33: en=`/tools/life-insurance-calc/tunisia`, fr=`/fr/tools/assurance-vie/tunisia`; x-default=`/tools/life-insurance-calc/tunisia`
 - equivalence:f13155bd5cfc: en=`/agriculture/seed-rate/guinea-bissau`, fr=`/fr/agriculture/seed-rate/guinea-bissau`, sw=`/sw/kilimo/kiwango-cha-mbegu/guinea-bissau/`; x-default=`/agriculture/seed-rate/guinea-bissau`
 - equivalence:f1384bef5aeb: en=`/jamb/economics/2015/`; x-default=`/jamb/economics/2015/`

@@ -22,7 +22,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=aa9ca071">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=022379a3">
-  <link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=f6d61dcb">
+  <link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=7c08f141">
 <script src="/assets/js/components/navbar.min.js?v=0333a741" defer></script>
   <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <style>
@@ -32,7 +32,7 @@
     .ws-page img{display:block}
     .priv-bar{background:#0f172a;padding:8px 20px;text-align:center;font-size:13px;color:rgba(255,255,255,.72)}.priv-bar strong{color:#fff}
     .crumb{max-width:1200px;margin:0 auto;padding:12px 20px 0;font-size:12px;font-weight:500;color:#64748b}.crumb a{color:#64748b;text-decoration:none}.crumb a:hover{color:var(--color-primary)}.crumb span{margin:0 5px}
-    .up-screen{max-width:880px;margin:0 auto;padding:72px 24px 92px;text-align:center}
+    .up-screen{max-width:880px;margin:0 auto;padding:32px 24px 64px;text-align:center}
     .up-screen h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(28px,5vw,44px);font-weight:800;color:#111;margin-bottom:14px;line-height:1.08;letter-spacing:-.03em}
     .up-screen h1 b{background:linear-gradient(135deg,var(--color-primary),var(--color-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .up-screen>p{font-size:16px;color:#4b5563;max-width:620px;margin:0 auto 24px;line-height:1.7}
@@ -60,6 +60,11 @@
     .pdf-specialist-links{display:flex;flex-wrap:wrap;gap:7px}
     .pdf-specialist-links a{display:inline-flex;align-items:center;min-height:34px;padding:0 10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#1d4ed8;font-size:12px;font-weight:850;text-decoration:none}
     .pdf-specialist-links a:hover,.pdf-specialist-links a:focus-visible{border-color:#2563eb;background:#eff6ff;outline:2px solid rgba(37,99,235,.18);outline-offset:2px}
+    .pdf-help{max-width:760px;margin:14px auto 0;text-align:left}
+    .pdf-help>summary{display:flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#1e293b;font-size:13px;font-weight:800;cursor:pointer}
+    .pdf-help>summary:focus-visible{outline:3px solid rgba(37,99,235,.3);outline-offset:2px}
+    .pdf-help[open]>summary{border-color:#93c5fd;background:#eff6ff}
+    .pdf-help .pdf-ai-assist{margin-top:10px;box-shadow:none}
     .pdf-ai-assist{max-width:760px;margin:16px auto 0;padding:18px;border:1px solid #d1d5db;background:#fff;border-radius:14px;text-align:left;box-shadow:0 16px 40px rgba(15,23,42,.08)}
     .pdf-ai-kicker{display:inline-flex;margin-bottom:6px;font-size:11px;font-weight:900;color:#166534;text-transform:uppercase;letter-spacing:.06em}
     .pdf-ai-assist h2{margin:0 0 6px;font-size:18px;line-height:1.25;color:#111827}
@@ -88,9 +93,11 @@
     :root[data-theme="dark"] .pdf-workflow-card span,:root[data-theme="dark"] .pdf-fast-start-note,:root[data-theme="dark"] .pdf-ai-assist p{color:#b8c7dc!important}
     :root[data-theme="dark"] .pdf-fast-start-actions button,:root[data-theme="dark"] .pdf-specialist-links a,:root[data-theme="dark"] .pdf-ai-chip,:root[data-theme="dark"] .pdf-ai-result{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-ai-result strong{color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help>summary{background:#121f33;border-color:#3a4c68;color:#eef5ff}
+    :root[data-theme="dark"] .pdf-help[open]>summary{background:#1c3553}
     :root[data-theme="dark"] .pdf-pill-row span{background:#0b1524;border-color:#3a4c68;color:#eef5ff}
     :root[data-theme="dark"] .pdf-pill-row .primary{background:#17263d;border-color:#60a5fa;color:#bfdbfe}
-    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:44px 18px 64px}}
+    @media(max-width:780px){.pdf-workflow-summary{grid-template-columns:1fr}.pdf-fast-start-actions{grid-template-columns:1fr 1fr 1fr}.up-screen{padding:24px 18px 48px}}
     @media(max-width:640px){.pdf-fast-start-actions{grid-template-columns:1fr 1fr}.pdf-fast-start,.pdf-ai-assist{padding:14px}.pdf-ai-input-row{flex-direction:column}.pdf-ai-input-row button{width:100%}.pdf-ai-chip{flex:1 1 calc(50% - 8px)}.pdf-specialist-links{display:grid;grid-template-columns:1fr 1fr}.pdf-specialist-links a{justify-content:center}}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
     body.pdf-workspace-active{overflow:hidden}
@@ -484,7 +491,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9578ca0c">
 <meta name="afrotools-content-id" content="sw-document-pdf:pdf-workspace">
   <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
-  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=edc1faa9">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=c176b075">
 <link rel="canonical" href="https://afrotools.com/sw/zana/nafasi-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workspace/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/espace-pdf/">
@@ -493,9 +500,7 @@
 </head>
 <body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
-<div class="priv-bar"><strong>Faragha kwa chaguo-msingi:</strong> vitendo vya msingi vya PDF vinaendeshwa katika kivinjari hiki bila upakiaji wa faili-chanzo.</div>
-<section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="Faili za PDF hukaa ndani" data-consent-copy="Merge, split, sign, annotate, and export PDFs in this browser. AfroTools does not send files to AI or a server unless a future workflow clearly asks and you choose it." aria-label="Notisi ya faragha ya Nafasi ya Kazi ya PDF"></section>
-<nav class="crumb"><a href="/">Nyumbani</a><span>/</span><a href="/tools/">Zana</a><span>/</span>Nafasi ya kazi ya PDF</nav>
+<nav class="crumb"><a href="/">Nyumbani</a><span>/</span><a href="/sw/hati-na-pdf/">Zana za PDF</a><span>/</span>Nafasi ya kazi ya PDF</nav>
 <main id="main-content">
 <div class="ws-page">
 
@@ -512,19 +517,8 @@
 <div class="up-screen" id="upScreen">
   <h1>Bure mtandaoni <b>Mhariri wa PDF</b> na eneo la kazi</h1>
   <p>Pakia PDF, kisha panga kurasa, ongeza maandishi, vivutio, saini, alama za maji, visanduku vya jalada vinavyoonekana, mbano na nambari za ukurasa kabla ya kupakua nakala iliyochaguliwa.</p>
-  <div class="pdf-pill-row" aria-label="Uwezo wa Nafasi ya Kazi ya PDF">
-    <span class="primary">Unganisha na ugawanye PDF</span>
-    <span>Hariri na fafanua</span>
-    <span>Ishara na muhuri</span>
-    <span>Finyaza usafirishaji</span>
-    <span>Hakuna upakiaji wa chanzo kwa chaguomsingi</span>
-  </div>
-  <div class="pdf-workflow-summary" aria-label="Jinsi PDF nafasi ya kazi inavyofanya kazi">
-    <div class="pdf-workflow-card"><strong>1. Pakia locally</strong><span>Fungua PDF moja au ongeza faili zaidi. Faili chanzo husalia katika utendakazi wa kivinjari hiki.</span></div>
-    <div class="pdf-workflow-card"><strong>2. Chagua kikundi cha zana</strong><span>Kurasa, Hariri, Dokeza, Saini, Linda, na Hamisha ziakisi upau wa vidhibiti halisi.</span></div>
-    <div class="pdf-workflow-card"><strong>3. Pakua na uthibitishe</strong><span>Angalia mpangilio wa ukurasa, maandishi, saini, vifuniko, ruhusa na saizi ya faili kabla ya kushiriki.</span></div>
-  </div>
   <div class="dz" id="dz"><div class="dz-mark" aria-hidden="true">PDF</div><h3>Dondosha PDF hapa ili kuanza</h3><p>or <span class="gr">bofya ili kuvinjari</span></p><input aria-label="Chagua faili ya PDF ili kuhariri katika nafasi ya kazi" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
+  <section data-ai-consent-notice data-consent-mode="browser_local_only" data-tool-id="pdf-workspace" data-consent-title="Faili za PDF hukaa ndani" data-consent-copy="Unganisha, gawanya, tia sahihi, fafanua, na hamisha PDF katika kivinjari hiki. AfroTools haitumi faili kwa AI au seva isipokuwa mtiririko wa kazi wa siku zijazo uulize waziwazi na uchague." aria-label="Notisi ya faragha ya Nafasi ya Kazi ya PDF"></section>
   <div class="pdf-fast-start" aria-label="Njia za mkato za mtiririko wa kazi wa PDF">
     <div class="pdf-fast-start-head">
       <span class="pdf-fast-start-title">Haraka huanza</span>
@@ -551,6 +545,8 @@
         <a href="/sw/hati-na-pdf/">Vinjari zana zote za PDF</a>
       </div>
     </nav>
+    <details class="pdf-help" data-structured-data-exclude>
+      <summary>Unahitaji msaada kuchagua hatua ya PDF?</summary>
     <section class="pdf-ai-assist" data-pdf-ai-assist aria-labelledby="pdfAiAssistTitle">
     <span class="pdf-ai-kicker">Msaidizi wa mtiririko wa kazi, hakuna upakiaji wa faili</span>
     <h2 id="pdfAiAssistTitle">Chagua kitendo salama zaidi cha PDF</h2>
@@ -577,8 +573,8 @@
       Vipengele vya siku zijazo vinavyosoma kurasa za PDF au maandishi vitahitaji idhini ya wazi na vitaonyesha kile ambacho kitatumwa. Hakuna chochote hapa kinachotuma baiti za faili, maandishi ya OCR, manenosiri, au yaliyomo kwenye hati.
       <button id="pdfAiContentAssist" type="button" disabled aria-disabled="true">Changanua maudhui ya PDF - kibali cha moja kwa moja cha siku zijazo kinahitajika</button>
     </div>
-  </section>
-  <div class="up-feats"><div class="uf">Faragha kwa chaguo-msingi</div><div class="uf">Kulingana na kivinjari</div><div class="uf">Zana za kugusa</div><div class="uf">Hifadhi madokezo ya metadata pekee</div></div>
+   </section>
+    </details>
 </div>
 <div class="ws" id="ws">
   <div class="toolbar cmd-bar" id="cmdBar" data-mode="organize">
@@ -625,7 +621,7 @@
             <button type="button" data-run="tbRedact"><span>Funika yaliyomo kwa macho</span><small>Onyo la jalada linaloonekana</small></button>
             <button type="button" data-run="tbLock"><span>Kinga ikiwa inapatikana</span><small>Muda wa uendeshaji wa ndani</small></button>
             <div class="cmd-menu-section">Zana zilizowekwa kwenye foleni</div>
-            <button type="button" data-run="tbDraw"><span>Chora</span><small>Freehand</small></button>
+            <button type="button" data-run="tbDraw"><span>Chora</span><small>Chora kwa mkono</small></button>
             <button type="button" data-run="tbComment"><span>Maoni/kumbuka</span><small>Ujumbe unaonata</small></button>
             <button type="button" data-run="tbRect"><span>Mstatili</span><small>Umbo</small></button>
             <button type="button" data-run="tbCircle"><span>Mduara</span><small>Umbo</small></button>
@@ -788,7 +784,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
 <h2 class="seo-links-title">Zana zinazohusiana</h2>
-<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li><li><a href="/sw/zana/kubadilisha-format-pdf/" data-related-tool data-id="pdf-convert" data-name="Badilisha Muundo wa PDF" data-category="document-pdf" data-icon="PF" data-desc="Badilisha PDF kuwa maandishi au picha, na picha kuwa PDF.">Badilisha Muundo wa PDF</a></li></ul>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="Mjenzi wa CV" data-category="document-pdf" data-icon="CR" data-desc="Andaa CV yako na uipakue kama PDF.">Mjenzi wa CV</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Kizalishaji Ankara" data-category="document-pdf" data-icon="IG" data-desc="Tengeneza ankara yenye bidhaa, kodi na maelezo ya malipo.">Kizalishaji Ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="Hariri PDF" data-category="document-pdf" data-icon="PE" data-desc="Ongeza maandishi, picha na maelezo kwenye PDF ndani ya kivinjari.">Hariri PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="Unganisha na Gawanya PDF" data-category="document-pdf" data-icon="PM" data-desc="Unganisha au gawanya faili za PDF na uchague kurasa unazohitaji.">Unganisha na Gawanya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="Bana PDF" data-category="document-pdf" data-icon="PC" data-desc="Punguza ukubwa wa PDF na ukague ubora kabla ya kupakua.">Bana PDF</a></li><li><a href="/sw/hati-na-pdf/" data-related-tool data-id="document-pdf" data-name="Zana zote za PDF na hati" data-category="document-pdf" data-icon="PDF" data-desc="Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.">Zana zote za PDF na hati</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -2729,10 +2725,7 @@ function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" er
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=02d5184e" defer></script>
 
-  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
-  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-
-  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-workspace","name":"Nafasi ya PDF","downloadContract":"free-account"}</script>
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-workspace","name":"Nafasi ya PDF","phraseOverrides":{"PDF tools":"Zana za PDF","Need help choosing a PDF action?":"Unahitaji msaada kuchagua hatua ya PDF?","All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.","Freehand":"Chora kwa mkono"},"downloadContract":"local-guest"}</script>
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=d2fb2e27" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=42cd747a" defer></script>

@@ -116,6 +116,13 @@ jobs:
           PORT: '4178'
         run: npx playwright test tests/e2e/french-solar-country-initialization.spec.js tests/e2e/french-solar-country-routing.spec.js --project=chromium --workers=2
 
+      - name: Verify Profit Margin validation and exports in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4179'
+        run: npx playwright test tests/e2e/profit-margin-vip.spec.js tests/e2e/profit-margin-validation.spec.js --grep-invert "durable visual proof" --project=chromium --workers=2 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat

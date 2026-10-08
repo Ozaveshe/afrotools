@@ -7,6 +7,7 @@ const config = {
   apps: [
     {
       id: 'document-pdf',
+      ogImageId: 'pdf-workspace',
       swahiliRoute: '/sw/hati-na-pdf/',
       sensitive: false,
       requiresConsent: false
@@ -15,6 +16,7 @@ const config = {
       id: row.id,
       swahiliRoute: row.swahiliRoute,
       sensitive: row.sensitive === true,
+      localFirstDownloads: row.localFirstDownloads === true,
       requiresConsent: row.requiresConsent === true
     }))
   ]
@@ -82,7 +84,7 @@ test.afterAll(() => {
       checked: receipt?.checked || [],
       downloadContract: app.id === 'document-pdf'
         ? 'none'
-        : app.sensitive ? 'sensitive-guest' : 'free-account',
+        : app.sensitive ? 'sensitive-guest' : app.localFirstDownloads ? 'local-guest' : 'free-account',
       stateChecks: stateChecks.get(app.id) || [],
       noExternalRequests: receipt?.noExternalRequests === true
     };
@@ -146,11 +148,11 @@ for (const app of selectedApps) {
     await expect(page.locator('html')).toHaveAttribute('lang', 'sw');
     await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://afrotools.com${app.swahiliRoute}`);
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', new RegExp(`/assets/img/tools/${app.id}\\.webp$`));
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', new RegExp(`/assets/img/tools/${app.ogImageId || app.id}\\.webp$`));
     await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'sw_TZ');
     await expect(page.locator('iframe[src^="/tools/"], iframe[src*="afrotools.com/tools/"]')).toHaveCount(0);
     await expect(page.locator('email-gate-modal')).toHaveCount(
-      app.id === 'document-pdf' || app.sensitive ? 0 : 1
+      app.id === 'document-pdf' || app.sensitive || app.localFirstDownloads ? 0 : 1
     );
     if (app.id === 'html-to-pdf') {
       await expect(page.locator('#htmlPreview')).toHaveAttribute('sandbox', 'allow-same-origin');
@@ -304,7 +306,7 @@ for (const app of selectedApps.filter((row) => ['pdf-merge-split', 'pdf-compress
       localStorage.removeItem('afro_profile_cache');
     });
     await page.goto(app.swahiliRoute, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('email-gate-modal')).toHaveCount(1);
+    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive || app.localFirstDownloads ? 0 : 1);
 
     const first = await staleFixture('SW STALE A', 2);
     const second = await staleFixture('SW STALE B', 1);
@@ -317,7 +319,7 @@ for (const app of selectedApps.filter((row) => ['pdf-merge-split', 'pdf-compress
         { name: 'stale-a.pdf', mimeType: 'application/pdf', buffer: first },
         { name: 'stale-b.pdf', mimeType: 'application/pdf', buffer: second }
       ]);
-      await expect(page.locator('#mergeSummary')).toContainText(/3 (?:pages|kurasa)/i);
+      await expect(page.locator('#mergeSummary')).toContainText(/(?:\b3\s+pages\b|\bkurasa:\s*3\b)/i);
       await expect(run).toBeEnabled();
       await run.press('Enter');
       await expect(download).toBeVisible({ timeout: 30_000 });
@@ -328,8 +330,7 @@ for (const app of selectedApps.filter((row) => ['pdf-merge-split', 'pdf-compress
         { name: 'replacement-b.pdf', mimeType: 'application/pdf', buffer: second }
       ]);
       await expect(page.locator('html')).toHaveAttribute('data-sw-document-result', 'stale');
-      await expect(download).toBeDisabled();
-      await expect(download).toHaveAttribute('aria-disabled', 'true');
+      await expect(download, 'replacing merge inputs removes the stale download action').toHaveCount(0);
     } else {
       const input = page.locator('#pdfFileInput');
       const run = page.locator('#compressBtn');
@@ -375,7 +376,7 @@ for (const app of selectedApps.filter((row) => [
       localStorage.removeItem('afro_profile_cache');
     });
     await page.goto(app.swahiliRoute, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive ? 0 : 1);
+    await expect(page.locator('email-gate-modal')).toHaveCount(app.sensitive || app.localFirstDownloads ? 0 : 1);
 
     const required = page.locator('main input[required], main textarea[required]').first();
     let invalidProved = false;

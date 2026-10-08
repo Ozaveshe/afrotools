@@ -41,6 +41,9 @@
         t.style.boxShadow = "none", t.style.borderRadius = "0", t.style.overflow = "visible",
         t.style.background = "#ffffff", t.classList.add("cv-export-document", "cv-export-density-" + (e.density || "comfortable")),
         e.avoidSplits && Array.prototype.forEach.call(t.querySelectorAll("section, article, .prod-section, [class*='section'], [class*='card']"), function(t) {
+            // Sidebar lists can continue between rows; keeping an entire list
+            // together chains backward cuts across the independent main column.
+            if (t.closest(".cv-prod-creative > aside")) return;
             var e = t.textContent.replace(/\s+/g, " ").trim();
             e.length > 30 && e.length < 1100 && t.classList.add("cv-export-avoid-break");
          }), [[e.breakExp,"experience"],[e.breakEdu,"education"],[e.breakProjects,"projects"],[e.breakRefs,"references"]].forEach(function(entry) {
@@ -102,11 +105,44 @@
     function avoidBlockSplit(start, candidate, pageHeight, blocks) {
         var cut=candidate;
         for(var pass=0;pass<blocks.length;pass++) {
-            var crossings=blocks.filter(function(block){return block.bottom-block.top<=pageHeight && block.top>start+1 && block.top<cut-1 && block.bottom>cut+1;});
+            var crossings=blocks.filter(function(block){return block.bottom-block.top<=pageHeight && block.top>start+1 && block.top<cut && block.bottom>cut;});
             if(!crossings.length) break;
             cut=Math.min.apply(null,crossings.map(function(block){return block.top;}));
         }
         return Math.max(start+1,Math.min(candidate,Math.floor(cut)));
+    }
+    function sidebarInkBlocks(canvas, root) {
+        var sidebar = root.querySelector(".cv-prod-creative > aside"), blocks = [];
+        if (!sidebar) return blocks;
+        var rect = sidebar.getBoundingClientRect(), parent = root.getBoundingClientRect();
+        var ratio = canvas.width / root.scrollWidth;
+        // The Creative sidebar has a solid background and an empty padded edge.
+        // Read actual ink rows: canvas glyphs can extend beyond DOM text rectangles.
+        var left = Math.max(0, Math.ceil((rect.left - parent.left) * ratio) + 2);
+        var right = Math.min(canvas.width, Math.floor((rect.right - parent.left) * ratio) - 2);
+        var width = right - left;
+        if (width < 2) return blocks;
+        var pixels = canvas.getContext("2d", {willReadFrequently: true}).getImageData(left, 0, width, canvas.height).data;
+        var start = -1;
+        for (var y = 0; y < canvas.height; y++) {
+            var offset = y * width * 4, ink = false;
+            for (var x = 1; x < width; x++) {
+                var at = offset + x * 4;
+                if (Math.abs(pixels[at] - pixels[offset]) > 8 ||
+                    Math.abs(pixels[at + 1] - pixels[offset + 1]) > 8 ||
+                    Math.abs(pixels[at + 2] - pixels[offset + 2]) > 8) {
+                    ink = true;
+                    break;
+                }
+            }
+            if (ink && start < 0) start = y;
+            if (!ink && start >= 0) {
+                blocks.push({top: Math.max(0, start - 1), bottom: Math.min(canvas.height, y + 1)});
+                start = -1;
+            }
+        }
+        if (start >= 0) blocks.push({top: Math.max(0, start - 1), bottom: canvas.height});
+        return blocks;
     }
     function m(t, r, a) {
         var o = e.createElement("canvas");
@@ -153,7 +189,7 @@
             }));
             var origin=i.getBoundingClientRect().top, ratio=captured.width/i.scrollWidth;
             captured.cvManualBreaks=Array.prototype.map.call(i.querySelectorAll(".cv-export-break-before"),function(section){return Math.round((section.getBoundingClientRect().top-origin)*ratio);}).filter(function(y){return y>0&&y<captured.height;}).sort(function(a,b){return a-b;});
-            captured.cvAvoidBlocks=r.avoidSplits ? Array.prototype.map.call(i.querySelectorAll(".cv-export-avoid-break"),function(block){var rect=block.getBoundingClientRect();return {top:(rect.top-origin)*ratio,bottom:(rect.bottom-origin)*ratio};}).filter(function(block){return block.bottom>block.top;}) : [];
+            captured.cvAvoidBlocks=r.avoidSplits ? Array.prototype.map.call(i.querySelectorAll(".cv-export-avoid-break"),function(block){var rect=block.getBoundingClientRect();return {top:(rect.top-origin)*ratio,bottom:(rect.bottom-origin)*ratio};}).filter(function(block){return block.bottom>block.top;}).concat(sidebarInkBlocks(captured, i)) : [];
             return captured;
         } finally {
             o.parentNode && o.parentNode.removeChild(o);
