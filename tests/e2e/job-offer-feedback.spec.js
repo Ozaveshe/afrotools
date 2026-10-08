@@ -42,4 +42,34 @@ for (const [locale, route] of [['en','/tools/job-offer-evaluator/'],['fr','/fr/t
     }
     const pending=page.waitForEvent('download');await page.locator('#joe-json').click();expect((await pending).suggestedFilename()).toBe('job-offer-comparison.json');expect(errors).toEqual([]);
   });
+  test(`${locale} clear restores default weights and removes previous results`, async ({page}) => {
+    await page.goto(route);
+    await page.locator('[name=currency]').fill('TEST');
+    await page.locator('[data-weights] [name=financial]').fill('91');
+    await page.locator('#joe-calc').click();
+    await page.locator('#joe-clear').click();
+    await expect(page.locator('#joe-results')).not.toHaveClass(/on/);
+    await expect(page.locator('[name=currency]')).toHaveValue('');
+    expect(await page.locator('[data-weights] input[type=number]').evaluateAll(xs=>xs.map(x=>Number(x.value)))).toEqual([40,20,15,10,10,5]);
+    expect(await page.locator('[data-offer] input').evaluateAll(xs=>xs.every(x=>x.value===''))).toBe(true);
+  });
+  test(`${locale} delayed copy cannot overwrite newer clear or validation status`, async ({page}) => {
+    await page.goto(route);
+    for (const outcome of ['resolve','reject']) for (const action of ['clear','invalid','edited','recompare']) {
+      await page.locator('[name=currency]').fill('TEST');
+      await page.locator('#joe-calc').click();
+      await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:()=>new Promise((resolve,reject)=>{window.finishSyntheticCopy=resolve;window.rejectSyntheticCopy=()=>reject(new Error("Denied"));})}}));
+      await page.locator('#joe-copy').click();
+      if(action==='clear') await page.locator('#joe-clear').click();
+      else if(action==='recompare') await page.locator('#joe-calc').click();
+      else {
+        await page.locator('[name=currency]').fill('');
+        if(action==='invalid') await page.locator('#joe-calc').click();
+      }
+      const before=await page.locator('#joe-status').textContent();
+      await page.evaluate(async outcome=>{if(outcome==='resolve')window.finishSyntheticCopy();else window.rejectSyntheticCopy();await Promise.resolve();},outcome);
+      await expect(page.locator('#joe-status')).toHaveText(before);
+    }
+  });
+
 }
