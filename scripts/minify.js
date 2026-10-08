@@ -25,6 +25,7 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['assets/js/lib/src/paye-save.js', 'assets/js/lib/paye-save.js'],
   ['assets/js/pages/src/pdf-workspace-history.js', 'assets/js/pages/pdf-workspace-history.js'],
   ['assets/js/pages/src/freelance-invoice.js', 'assets/js/pages/freelance-invoice.js'],
   ['ha/kayan-aiki/kirkiro-resit/src/app.js', 'ha/kayan-aiki/kirkiro-resit/app.js'],
