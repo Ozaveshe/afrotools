@@ -78,12 +78,31 @@
   function exportPdf() {
     if (!window.jspdf || !window.jspdf.jsPDF) { status(t.pdfMissing, "error"); return; }
     var summary = engine.summarize(state.items), doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" }), y = 52;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.text(t.pdfTitle, 44, y); y += 25;
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-    [t.formulaCost, t.formulaSales, t.formulaProfit, t.formulaReorder, t.pdfLimits].forEach(function (line) { doc.text(doc.splitTextToSize(line, 500), 44, y); y += 24; });
-    [[t.products, summary.totalProducts], [t.lowStock, summary.lowStock], [t.stockValue, fmt(summary.stockCostValue)], [t.potentialSales, fmt(summary.potentialSales)], [t.potentialProfit, fmt(summary.potentialGrossProfit)]].forEach(function (row) { doc.text(row[0] + ": " + row[1], 44, y); y += 18; });
-    y += 8; doc.setFont("helvetica", "bold"); doc.text(t.lowList, 44, y); y += 18; doc.setFont("helvetica", "normal");
-    state.items.filter(function (item) { return engine.calculateItem(item).lowStock; }).slice(0, 25).forEach(function (item) { var result = engine.calculateItem(item); doc.text(doc.splitTextToSize(item.name + " | " + item.quantity + " on hand | reorder point " + item.reorderPoint + (result.suggestedReorder == null ? "" : " | suggested reorder " + result.suggestedReorder), 500), 44, y); y += 18; if (y > 760) { doc.addPage(); y = 52; } });
+    var bottom = doc.internal.pageSize.getHeight() - 44, lineHeight = 14;
+    function heading() {
+      doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.text(t.pdfTitle, 44, 52);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10); y = 77;
+    }
+    function newPage() { doc.addPage(); heading(); }
+    function paragraph(text, bold, gap) {
+      doc.setFont("helvetica", bold ? "bold" : "normal"); doc.setFontSize(10);
+      var lines = doc.splitTextToSize(String(text), 500), height = lines.length * lineHeight;
+      if (y + height > bottom && height <= bottom - 77) newPage();
+      lines.forEach(function (line) {
+        if (y + lineHeight > bottom) newPage();
+        doc.setFont("helvetica", bold ? "bold" : "normal"); doc.text(line, 44, y); y += lineHeight;
+      });
+      y += gap == null ? 6 : gap;
+    }
+    function fieldLabel(fieldId) { var label = id(fieldId).closest("label"); return label ? label.textContent.trim() : ""; }
+    heading();
+    [t.formulaCost, t.formulaSales, t.formulaProfit, t.formulaReorder, t.pdfLimits].forEach(function (line) { paragraph(line); });
+    [[t.products, summary.totalProducts], [t.lowStock, summary.lowStock], [t.stockValue, fmt(summary.stockCostValue)], [t.potentialSales, fmt(summary.potentialSales)], [t.potentialProfit, fmt(summary.potentialGrossProfit)]].forEach(function (row) { paragraph(row[0] + ": " + row[1], false, 4); });
+    paragraph(t.lowList, true);
+    state.items.filter(function (item) { return engine.calculateItem(item).lowStock; }).forEach(function (item) {
+      var result = engine.calculateItem(item);
+      paragraph(item.name + " | " + fieldLabel("invQty") + ": " + item.quantity + " | " + fieldLabel("invReorder") + ": " + item.reorderPoint + (result.suggestedReorder == null ? "" : " | " + t.reorderUnits + ": " + result.suggestedReorder));
+    });
     doc.save("afrotools-inventory-summary.pdf"); status(t.exported, "ready");
   }
   function importFile(file) {
