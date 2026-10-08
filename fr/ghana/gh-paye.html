@@ -949,7 +949,7 @@ window.addEventListener('load', function() {
 
   // --- BONUS CALCULATOR ---
   function calcBonus() {
-    if (!R) return;
+    if (!R || !$('bonusAmt')) return;
     const bonusAmt = parseAmt($('bonusAmt').value);
     if (bonusAmt <= 0) { $('bonusResult').style.display = 'none'; return; }
 
@@ -1363,8 +1363,35 @@ window.addEventListener('load', function() {
           };
         }
 
+        // Keep drafts local and retire every result path if restoring is interrupted.
+        function retireFailedRestore() {
+          R = null;
+          clearTimeout(salaryRecalculationTimer);
+          clearTimeout(debounceTimer);
+          salaryRecalculationTimer = null;
+          ['resultsCard', 'bonusCard', 'bonusResult', 'aiResp'].forEach(function (id) {
+            var node = $(id);
+            if (node) { node.style.display = 'none'; if (id === 'resultsCard') node.setAttribute('aria-hidden', 'true'); }
+          });
+          ['calcSaveBtn', 'aiBtn'].forEach(function (id) { var node = $(id); if (node) node.disabled = true; });
+          ['aiResp', 'chatMsgs'].forEach(function (id) { var node = $(id); if (node) node.textContent = ''; });
+          if ($('aiChat')) $('aiChat').classList.remove('on');
+          if ($('calculationStatus')) $('calculationStatus').textContent = 'Le calcul enregistré n’a pas pu être chargé. Vos saisies précédentes sont conservées. Relancez le calcul avant d’enregistrer ou d’exporter.';
+        }
         var inputs = restored.inputs || {};
         var toggles = inputs.toggles || {};
+        var inputIds = ['salaryInput', 'basicSalary', 'tier3Amt', 'bonusAmt', 'togSSNIT', 'togTier3', 'togMarriage', 'togChild1', 'togChild2', 'togChild3', 'togDisabled', 'togOldAge', 'togDependent'];
+        if (!Number.isFinite(inputs.salaryValue) || inputs.salaryValue <= 0 ||
+            inputIds.concat(['modeGross', 'modeNet', 'salaryLabel', 'tier3Field']).some(function (id) { return !$(id); })) {
+          retireFailedRestore();
+          return false;
+        }
+        var previousMode = calcMode, previousPeriod = period;
+        var previousFields = inputIds.concat(['calcSaveName']).map(function (id) {
+          var node = $(id);
+          return node ? { node: node, value: node.value, checked: node.checked } : null;
+        }).filter(Boolean);
+        try {
 
         $('salaryInput').value = inputs.salaryValue ? formatInput(inputs.salaryValue) : '';
         $('basicSalary').value = inputs.basicSalary ? formatInput(inputs.basicSalary) : '';
@@ -1388,7 +1415,29 @@ window.addEventListener('load', function() {
         calcBonus();
 
         if ($('calcSaveName')) $('calcSaveName').value = title || '';
+        if (!R) throw new Error('Restore calculation unavailable');
         return true;
+        } catch (error) {
+          retireFailedRestore();
+          // Do not call the restore/calculation path recursively during recovery.
+          calcMode = previousMode;
+          period = previousPeriod;
+          previousFields.forEach(function (field) {
+            field.node.value = field.value;
+            if (field.node.type === 'checkbox') {
+              field.node.checked = field.checked;
+              var toggle = field.node.closest('.tog');
+              if (toggle) toggle.classList.toggle('on', field.checked);
+            }
+          });
+          if ($('modeGross')) $('modeGross').classList.toggle('on', calcMode === 'gross');
+          if ($('modeNet')) $('modeNet').classList.toggle('on', calcMode === 'net');
+          if ($('salaryLabel')) $('salaryLabel').textContent = calcMode === 'net' ? 'Salaire net annuel souhaité' : 'Salaire brut annuel';
+          document.querySelectorAll('.per-btn').forEach(function (button) { button.classList.toggle('on', button.dataset.period === period); });
+          if ($('tier3Field') && $('togTier3')) $('tier3Field').style.display = $('togTier3').checked ? 'block' : 'none';
+          retireFailedRestore();
+          return false;
+        }
       }
     };
   })();

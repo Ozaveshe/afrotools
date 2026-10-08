@@ -86,3 +86,26 @@ function refreshGhanaSharing(target,source){
  return target;
 }
 module.exports.refreshGhanaSharing=refreshGhanaSharing;
+
+function restoreMethod(html) {
+ const found=[];
+ for(const match of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)){
+  if(!match[1].includes('restorePayload:'))continue;
+  const offset=match.index+match[0].indexOf(match[1]);
+  function walk(node){if(!node||typeof node!=='object')return;if(node.type==='Property'&&node.key.name==='restorePayload')found.push({start:offset+node.value.start,end:offset+node.value.end});for(const [key,value] of Object.entries(node)){if(key==='start'||key==='end')continue;if(Array.isArray(value))value.forEach(walk);else if(value&&typeof value==='object')walk(value);}}
+  walk(acorn.parse(match[1],{ecmaVersion:'latest'}));
+ }
+ if(found.length!==1)throw Error('Expected one Ghana restore adapter');return found[0];
+}
+function refreshGhanaRestore(target,source){
+ const srcBonus=calculation(source,'calcBonus'),dstBonus=calculation(target,'calcBonus');
+ if(srcBonus.body[0].type!=='IfStatement'||dstBonus.body[0].type!=='IfStatement')throw Error('Missing Ghana bonus guard');
+ target=target.slice(0,dstBonus.offset+dstBonus.body[0].start)+source.slice(srcBonus.offset+srcBonus.body[0].start,srcBonus.offset+srcBonus.body[0].end)+target.slice(dstBonus.offset+dstBonus.body[0].end);
+ const src=restoreMethod(source),dst=restoreMethod(target);
+ const method=source.slice(src.start,src.end)
+  .replaceAll('Desired Annual Net Pay','Salaire net annuel souhaité')
+  .replaceAll('Annual Gross Salary','Salaire brut annuel')
+  .replace('Saved scenario could not be loaded. Your previous inputs are preserved. Calculate again before saving or exporting.',"Le calcul enregistré n’a pas pu être chargé. Vos saisies précédentes sont conservées. Relancez le calcul avant d’enregistrer ou d’exporter.");
+ return target.slice(0,dst.start)+method+target.slice(dst.end);
+}
+module.exports.refreshGhanaRestore=refreshGhanaRestore;
