@@ -44,7 +44,8 @@ for (const route of routes) {
     expect(pdf.suggestedFilename()).toBe("job-offer-comparison.pdf");
     const pdfBytes = await downloadBuffer(pdf);
     expect(pdfBytes.subarray(0, 4).toString()).toBe("%PDF");
-    expect((await pdfParse(pdfBytes)).text).toContain("Currency / unit: TEST");
+    const unitLabel = route.startsWith('/fr/') ? 'Devise / unité :' : route.startsWith('/sw/') ? 'Sarafu / kitengo:' : 'Currency / unit:';
+    expect((await pdfParse(pdfBytes)).text).toContain(unitLabel + ' TEST');
     for (const id of ["#joe-csv", "#joe-json"]) {
       const exportDownload = page.waitForEvent("download");
       await page.locator(id).click();
