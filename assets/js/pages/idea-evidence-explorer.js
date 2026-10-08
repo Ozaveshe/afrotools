@@ -9,6 +9,10 @@
   var STORE = "afrotools:idea-evidence-shortlist:v1";
   var currentRows = [];
   var shortlist = [];
+  var storageProtected = false;
+  var localRevision = 0;
+  var copyAttempt = 0;
+  var importAttempt = 0;
   var requestController = null;
   var requestNumber = 0;
   var currentPage = 1;
@@ -77,6 +81,8 @@
     tableIdea:"Wazo", tableCountry:"Nchi", tableSector:"Sekta", source:"Chanzo na uhalisia", scope:"Rekodi zina makadirio ya mpango yaliyowasilishwa. AfroTools haijathibitisha faida, mahitaji, gharama, muda wa kufikia usawa wala kufaa kisheria.",
     links:"Endelea kwa tahadhari", draft:"Geuza ushahidi uliochagua kuwa rasimu ya mpango wa biashara", registration:"Kagua usajili na mipango ya leseni"
   };
+  var recoveryMessages = {"en": {"unsaved": "Changes are available for this session only. Download a JSON backup. Clear the saved shortlist explicitly before saving new changes.", "clearBad": "The saved shortlist could not be cleared. Your current comparison is unchanged.", "copyBad": "Copy failed. Download TXT instead.", "replace": "Replace the saved and current shortlist with this backup?", "importReadBad": "The backup could not be read. Your shortlist is unchanged."}, "fr": {"unsaved": "Les modifications restent dans cette session. T\u00e9l\u00e9chargez une sauvegarde JSON. Effacez explicitement la s\u00e9lection enregistr\u00e9e avant de sauvegarder de nouvelles modifications.", "clearBad": "La s\u00e9lection enregistr\u00e9e ne peut pas \u00eatre effac\u00e9e. Votre comparaison reste inchang\u00e9e.", "copyBad": "La copie a \u00e9chou\u00e9. T\u00e9l\u00e9chargez le fichier TXT.", "replace": "Remplacer la s\u00e9lection actuelle et enregistr\u00e9e par cette sauvegarde ?", "importReadBad": "La sauvegarde ne peut pas \u00eatre lue. Votre s\u00e9lection reste inchang\u00e9e."}, "sw": {"unsaved": "Mabadiliko yanapatikana katika kipindi hiki pekee. Pakua nakala ya JSON. Futa orodha iliyohifadhiwa kwa hiari kabla ya kuhifadhi mabadiliko mapya.", "clearBad": "Orodha iliyohifadhiwa haikuweza kufutwa. Ulinganisho wako haujabadilika.", "copyBad": "Kunakili kumeshindikana. Pakua TXT badala yake.", "replace": "Badilisha orodha ya sasa na iliyohifadhiwa kwa nakala hii?", "importReadBad": "Nakala haikuweza kusomwa. Orodha yako haijabadilika."}};
+  Object.keys(recoveryMessages).forEach(function (language) { Object.assign(dictionary[language], recoveryMessages[language]); });
   var t = dictionary[locale] || dictionary.en;
 
   function el(tag, attrs, value) {
@@ -202,11 +208,24 @@
     if(!focusable.length)return;var first=focusable[0],last=focusable[focusable.length-1];
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
+  function localStatus(message) { root.querySelector("[data-local-status]").textContent=message; }
   function storeShortlist(message) {
-    try{localStorage.setItem(STORE,JSON.stringify(engine.shortlistEnvelope(shortlist,locale)));root.querySelector("[data-local-status]").textContent=message||t.saved}catch(_){root.querySelector("[data-local-status]").textContent=t.corrupt}
+    localRevision+=1;
+    if(storageProtected){localStatus(t.unsaved);return false}
+    try{localStorage.setItem(STORE,JSON.stringify(engine.shortlistEnvelope(shortlist,locale)));localStatus(message||t.saved);return true}
+    catch(_){storageProtected=true;localStatus(t.unsaved);return false}
   }
   function readStored() {
-    try{var raw=localStorage.getItem(STORE);if(!raw)return[];var valid=engine.validateEnvelope(JSON.parse(raw));if(!valid)throw new Error("bad");return valid.items}catch(_){root.querySelector("[data-local-status]").textContent=t.corrupt;return[]}
+    try{var raw=localStorage.getItem(STORE);if(!raw)return[];var valid=engine.validateEnvelope(JSON.parse(raw));if(!valid)throw new Error("bad");return valid.items}
+    catch(_){storageProtected=true;localStatus(t.corrupt);return[]}
+  }
+  function copyComparison() {
+    var revision=localRevision, attempt=++copyAttempt;
+    function feedback(message){if(revision===localRevision&&attempt===copyAttempt)localStatus(message)}
+    try{
+      if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function")throw new Error("unavailable");
+      Promise.resolve(navigator.clipboard.writeText(summary())).then(function(){feedback(t.copied)},function(){feedback(t.copyBad)});
+    }catch(_){feedback(t.copyBad)}
   }
   function renderShortlist() {
     var box=root.querySelector("[data-shortlist]");box.replaceChildren();document.body.classList.toggle("iee-has-shortlist",shortlist.length>0);if(!shortlist.length){box.append(el("p",{class:"iee-empty"},t.shortlistEmpty));return}
@@ -254,18 +273,35 @@
     if(action.indexOf("add:")===0){var add=findRow(action.slice(4));if(!add)return;if(shortlist.some(function(r){return r.id===add.id}))return;if(shortlist.length>=6){root.querySelector("[data-local-status]").textContent=t.maximum;return}shortlist.push(add);storeShortlist();renderShortlist();return}
     if(action.indexOf("remove:")===0){shortlist=shortlist.filter(function(r){return r.id!==action.slice(7)});storeShortlist();renderShortlist();return}
     if(action==="import"){root.querySelector("[data-import]").click();return}
-    if(action==="clear"){localStorage.removeItem(STORE);shortlist=[];renderShortlist();root.querySelector("[data-local-status]").textContent=t.cleared;return}
+    if(action==="clear"){localRevision+=1;importAttempt+=1;try{localStorage.removeItem(STORE)}catch(_){localStatus(t.clearBad);return}storageProtected=false;shortlist=[];renderShortlist();localStatus(t.cleared);return}
     if(action==="close-dialog"){closeDialog();return}
     if(!shortlist.length){root.querySelector("[data-local-status]").textContent=t.shortlistEmpty;return}
     if(action==="backup")download("african-business-idea-shortlist-backup.json","application/json",JSON.stringify(engine.shortlistEnvelope(shortlist,locale),null,2));
-    else if(action==="copy")navigator.clipboard.writeText(summary()).then(function(){root.querySelector("[data-local-status]").textContent=t.copied});
+    else if(action==="copy")copyComparison();
     else if(action==="txt")download("african-business-idea-comparison.txt","text/plain;charset=utf-8",summary());
     else if(action==="csv")exportCsv();
     else if(action==="json")download("african-business-idea-comparison.json","application/json",JSON.stringify(exportPayload(),null,2));
     else if(action==="pdf")exportPdf();
     else if(action==="print")window.print();
   });
-  root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],statusNode=root.querySelector("[data-local-status]");if(!file)return;var reader=new FileReader();reader.onload=function(){try{var valid=engine.validateEnvelope(JSON.parse(String(reader.result)));if(!valid)throw new Error("bad");shortlist=valid.items;storeShortlist(t.imported);renderShortlist()}catch(_){statusNode.textContent=t.importBad}};reader.readAsText(file);this.value=""});
+  root.querySelector("[data-import]").addEventListener("change",function(){
+    var file=this.files&&this.files[0];this.value="";if(!file)return;
+    var attempt=++importAttempt, revision=localRevision;
+    function current(){return attempt===importAttempt&&revision===localRevision}
+    if(file.size>262144){localStatus(t.importBad);return}
+    var reader=new FileReader();
+    reader.onload=function(){
+      if(!current())return;
+      var valid;
+      try{valid=engine.validateEnvelope(JSON.parse(String(reader.result)))}catch(_){}
+      if(!valid){localStatus(t.importBad);return}
+      if((storageProtected||shortlist.length)&&!window.confirm(t.replace))return;
+      try{localStorage.setItem(STORE,JSON.stringify(valid))}catch(_){localStatus(t.importReadBad);return}
+      storageProtected=false;shortlist=valid.items;localRevision+=1;renderShortlist();localStatus(t.imported);
+    };
+    reader.onerror=reader.onabort=function(){if(current())localStatus(t.importReadBad)};
+    try{reader.readAsText(file)}catch(_){if(current())localStatus(t.importReadBad)}
+  });
   document.querySelector("[data-dialog-backdrop]").addEventListener("click",function(event){if(event.target===this)closeDialog()});
   document.addEventListener("keydown",trap);
   window.addEventListener("online",function(){status(t.changed,"stale")});
