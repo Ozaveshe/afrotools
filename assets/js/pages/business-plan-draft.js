@@ -68,7 +68,7 @@
       result: "Rasimu ya sasa", incomplete: "Orodha ya ukamilifu", complete: "Imetolewa", missing: "Bado inahitajika", scope: "Rasimu ya kupanga kutoka ushahidi na makadirio uliyoingiza. Si idhini ya mkopo, ombi rasmi la ufadhili, ushauri wa uhasibu wala dhamana.",
       contribution: "Mchango ghafi", profit: "Faida ya uendeshaji ya mwezi", grossMargin: "Uwiano wa mchango", operatingMargin: "Ukingo wa uendeshaji",
       need: "Mahitaji ya kuanza + mtaji wa kuendesha", gap: "Pengo la ufadhili", surplus: "Ziada ya ufadhili", breakEven: "Mapato ya kutofanya hasara kwa mchanganyiko huohuo",
-      payback: "Muda rahisi wa kurejesha bila discount", annual: "Faida ya mwaka kwa kurudia mwezi", months: "miezi", unavailable: "Haipatikani",
+      payback: "Muda rahisi wa kurejesha bila kurekebisha thamani ya fedha kwa muda", annual: "Faida ya mwaka kwa kurudia mwezi", months: "miezi", unavailable: "Haipatikani",
       scenarios: "Makadirio ya chini, msingi na juu", scenario: "Hali", low: "Chini", base: "Msingi", high: "Juu",
       copy: "Nakili muhtasari", txt: "Pakua TXT", csv: "Pakua CSV", json: "Pakua JSON", pdf: "Pakua PDF", print: "Chapisha",
       save: "Hifadhi rasimu", load: "Fungua rasimu iliyohifadhiwa", clear: "Futa rasimu ya kifaa", backup: "Pakua nakala ya JSON", import: "Ingiza rasimu ya JSON",
@@ -83,6 +83,35 @@
   }[locale];
 
   var narrativeFields = ["name", "country", "sector", "problem", "customer", "evidence", "offer", "channel", "operations", "team", "risks", "mitigations", "milestones"];
+  var exportText = {
+    en: { section:"Section", metric:"Metric", value:"Value", currency:"Currency", draft:"Draft", input:"Input", output:"Output", method:"Method", formula:"Formula", formulas:"Formulas", engine:"Engine version", scope:"Scope", profit:"Operating profit" },
+    fr: { section:"Section", metric:"Indicateur", value:"Valeur", currency:"Devise", draft:"Brouillon", input:"Donnée", output:"Résultat", method:"Méthode", formula:"Formule", formulas:"Formules", engine:"Version du moteur", scope:"Portée", profit:t.profit },
+    sw: { section:"Sehemu", metric:"Kipimo", value:"Thamani", currency:"Sarafu", draft:"Rasimu", input:"Taarifa", output:"Matokeo", method:"Mbinu", formula:"Kanuni", formulas:"Kanuni za hesabu", engine:"Toleo la kikokotoo", scope:"Mipaka ya matumizi", profit:t.profit }
+  }[locale];
+  exportText.revenue = locale === "en" ? "Monthly revenue" : t.revenue;
+  exportText.variable = locale === "en" ? "Monthly variable costs" : t.variable;
+  exportText.fixed = locale === "en" ? "Monthly fixed costs" : t.fixed;
+  exportText.payback = locale === "en" ? "Simple undiscounted payback months" : t.payback + " (" + t.months + ")";
+  exportText.breakEven = locale === "en" ? "Break-even" : t.breakEven;
+  var translatedFormulas = {
+    fr: {
+      grossContribution:"revenu mensuel - coûts variables mensuels",
+      operatingProfit:"marge sur coûts variables - coûts fixes mensuels d’exploitation",
+      fundingGap:"maximum entre (besoin initial + besoin en fonds de roulement - financement confirmé) et zéro",
+      sameMixBreakEvenRevenue:"coûts fixes mensuels / taux de marge sur coûts variables, uniquement si ce taux est positif",
+      simplePaybackMonths:"(besoin initial + besoin en fonds de roulement) / résultat d’exploitation mensuel positif ; délai non actualisé, distinct du seuil de rentabilité",
+      scenarios:"variation basse/haute du revenu, avec le ratio de coûts variables de base et les coûts fixes maintenus constants"
+    },
+    sw: {
+      grossContribution:"mapato ya mwezi - gharama zinazobadilika za mwezi",
+      operatingProfit:"mchango ghafi - gharama za kudumu za uendeshaji za mwezi",
+      fundingGap:"thamani kubwa kati ya (hitaji la kuanza + hitaji la mtaji wa kuendesha - fedha zilizothibitishwa) na sifuri",
+      sameMixBreakEvenRevenue:"gharama za kudumu za mwezi / uwiano wa mchango, ikiwa uwiano huo ni chanya pekee",
+      simplePaybackMonths:"(hitaji la kuanza + hitaji la mtaji wa kuendesha) / faida chanya ya uendeshaji ya mwezi; bila kurekebisha thamani ya fedha kwa muda, si kiwango cha mapato cha kufidia gharama",
+      scenarios:"mabadiliko ya mapato ya chini/juu huku uwiano wa msingi wa gharama zinazobadilika na gharama za kudumu vikibaki vilevile"
+    }
+  };
+  function displayFormulas(data) { return translatedFormulas[locale] || data.formulas; }
   var financialFields = ["currency", "monthlyRevenue", "monthlyVariableCosts", "monthlyFixedCosts", "startupNeed", "workingCapitalNeed", "confirmedFunding", "scenarioChangePct"];
   var labels = { name:t.name,country:t.country,sector:t.sector,problem:t.problem,customer:t.customer,evidence:t.evidence,offer:t.offer,
     channel:t.channel,operations:t.operations,team:t.team,risks:t.risks,mitigations:t.mitigations,milestones:t.milestones,
@@ -189,11 +218,11 @@
   }
   function safeCsv(value) { var s=String(value==null?"":value);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'; }
   function download(name,type,content){var url=URL.createObjectURL(new Blob([content],{type:type})),a=el("a",{href:url,download:name});document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000)}
-  function csv() { var p=payload(),o=p.financialOutputs,c=p.financialInputs.currency,rows=[["Section","Metric","Value","Currency"],["Draft","Business name",p.narrative.name,""],
-    ["Input","Monthly revenue",p.financialInputs.monthlyRevenue,c],["Input","Monthly variable costs",p.financialInputs.monthlyVariableCosts,c],["Input","Monthly fixed costs",p.financialInputs.monthlyFixedCosts,c],
-    ["Output","Gross contribution",o.grossContribution,c],["Output","Operating profit",o.operatingProfit,c],["Output","Funding gap",o.fundingGap,c],["Output","Same-mix break-even revenue",o.breakEvenRevenue,c],
-    ["Output","Simple undiscounted payback months",o.simplePaybackMonths,""],["Method","Engine version",p.engineVersion,""],["Method","Scope",p.scope,""],
-    ["Formula","Operating profit",p.formulas.operatingProfit,""],["Formula","Break-even",p.formulas.sameMixBreakEvenRevenue,""]];
+  function csv() { var p=payload(),o=p.financialOutputs,c=p.financialInputs.currency,f=displayFormulas(p),x=exportText,rows=[[x.section,x.metric,x.value,x.currency],[x.draft,t.name,p.narrative.name,""],
+    [x.input,x.revenue,p.financialInputs.monthlyRevenue,c],[x.input,x.variable,p.financialInputs.monthlyVariableCosts,c],[x.input,x.fixed,p.financialInputs.monthlyFixedCosts,c],
+    [x.output,t.contribution,o.grossContribution,c],[x.output,x.profit,o.operatingProfit,c],[x.output,t.gap,o.fundingGap,c],[x.output,t.breakEven,o.breakEvenRevenue,c],
+    [x.output,x.payback,o.simplePaybackMonths,""],[x.method,x.engine,p.engineVersion,""],[x.method,x.scope,p.scope,""],
+    [x.formula,x.profit,f.operatingProfit,""],[x.formula,x.breakEven,f.sameMixBreakEvenRevenue,""]];
     download("sme-business-plan-financials.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(r){return r.map(safeCsv).join(",")}).join("\n"));
   }
   function validDraft(data) {
@@ -234,7 +263,7 @@
     }
     else if(a==="txt")download("sme-business-plan-draft.txt","text/plain;charset=utf-8",summary()+"\n\n"+narrativeFields.map(function(n){return labels[n]+": "+(current.narrative[n]||t.missing)}).join("\n"))
     else if(a==="csv")csv();else if(a==="json")download("sme-business-plan-draft.json","application/json",JSON.stringify(payload(),null,2));else if(a==="print")window.print();
-    else if(a==="pdf"){if(!window.jspdf||!window.jspdf.jsPDF){root.querySelector("[data-result-status]").textContent=t.pdfBad;return}var doc=new window.jspdf.jsPDF(),p=payload(),text=summary()+"\n\n"+t.narrative+"\n"+narrativeFields.map(function(n){return labels[n]+": "+(p.narrative[n]||t.missing)}).join("\n")+"\n\nFormulas\n"+Object.values(p.formulas).join("\n");var lines=doc.splitTextToSize(text,175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("sme-business-plan-draft.pdf")}
+    else if(a==="pdf"){if(!window.jspdf||!window.jspdf.jsPDF){root.querySelector("[data-result-status]").textContent=t.pdfBad;return}var doc=new window.jspdf.jsPDF(),p=payload(),text=summary()+"\n\n"+t.narrative+"\n"+narrativeFields.map(function(n){return labels[n]+": "+(p.narrative[n]||t.missing)}).join("\n")+"\n\n"+exportText.formulas+"\n"+Object.values(displayFormulas(p)).join("\n");var lines=doc.splitTextToSize(text,175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("sme-business-plan-draft.pdf")}
   });
   root.querySelector("[data-import]").addEventListener("change",function(){var file=this.files&&this.files[0],status=root.querySelector("[data-draft-status]");this.value="";if(!file)return;if(file.size>1024*1024){status.textContent=t.importBad;return}var reader=new FileReader();reader.onerror=function(){status.textContent=t.importBad};reader.onload=function(){try{var d=JSON.parse(String(reader.result));if(!d||d.schemaVersion!==SCHEMA||d.tool!=="business-plan-builder"||!fill(d.form))throw new Error("bad");status.textContent=t.imported}catch(_){status.textContent=t.importBad}};reader.readAsText(file)});
 })();
