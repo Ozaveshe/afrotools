@@ -229,13 +229,18 @@ test('Swahili unit converter has labelled controls on mobile', async ({ page }) 
 test('dark VAT calculator keeps form and result text readable', async ({ page }) => {
   const errors = captureErrors(page);
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.addInitScript(() => localStorage.setItem('aft_theme', 'dark'));
   await page.goto('/tools/vat-calculator/', { waitUntil: 'domcontentloaded' });
 
-  await page.evaluate(() => window.AfroTools && window.AfroTools.darkMode && window.AfroTools.darkMode.set('dark'));
-  await page.locator('#countrySelect').selectOption('NG');
-  await page.locator('#amountInput').fill('10000');
-  await page.locator('#calcBtn').click();
-  await expect(page.locator('#resultsArea')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.locator('#country').selectOption('NG');
+  await expect(page.locator('#rate')).toHaveValue('');
+  await page.locator('#rate').fill('15');
+  await page.locator('#amount').fill('10000');
+  await page.locator('#calculateSingle').click();
+  await expect(page.locator('#singleResult')).toBeVisible();
+  await expect(page.locator('#singleVat')).toHaveText('1,500.00');
   await expectReadableDarkText(page, 'body');
   await assertNoHorizontalOverflow(page);
   expect(errors).toEqual([]);
