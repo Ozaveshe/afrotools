@@ -1263,8 +1263,8 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
         inputs: {
           salaryValue: parseFloat(document.getElementById('grossSalary').value) || 0,
           salaryPeriod: 'monthly',
-          period: window.PERIOD || 'monthly',
-          sector: window.SECTOR || 'private',
+          period: PERIOD,
+          sector: SECTOR,
           toggles: {
             nssf: isOn('nssf'),
             secondary: isOn('secondary')
@@ -1301,6 +1301,23 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       var salaryValue = Number(inputs.salaryValue || 0);
       var slider = document.getElementById('salarySlider');
       var salaryInput = document.getElementById('grossSalary');
+      function retireFailedRestore() {
+        RESULT=null;
+        clearTimeout(window._sliderDebounce);
+        ['resultsCard','employerStrip','aiChat'].forEach(function(id){var node=document.getElementById(id);if(node)node.classList.remove('on');});
+        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=document.getElementById(id);if(node)node.disabled=true;});
+        var response=document.getElementById('aiResp');if(response){response.textContent='';response.style.display='none';response.classList.remove('on');}
+        var status=document.getElementById('aiStatus');if(status){status.style.display='';status.setAttribute('role','status');status.textContent='Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.';}
+      }
+      if(!Number.isFinite(salaryValue)||salaryValue<=0||['grossSalary','salarySlider','sliderVal','btnPublic','btnPrivate','nssfLabel'].some(function(id){return !document.getElementById(id);})){
+        retireFailedRestore();return false;
+      }
+      var previousPeriod=PERIOD;
+      var previousSector=SECTOR;
+      var previousFields=['grossSalary','salarySlider','calcSaveName'].map(function(id){var node=document.getElementById(id);return node?{node:node,value:node.value}:null;}).filter(Boolean);
+      var previousViews=Array.from(document.querySelectorAll('[data-tog],.per-btn,.sec-btn,#salarySlider')).map(function(node){return {node:node,className:node.className,style:node.getAttribute('style'),checked:node.getAttribute('aria-checked')};});
+      var previousLabels=Array.from(document.querySelectorAll('#sliderVal,#nssfLabel,[data-tog=nssf] .tog-rate')).map(function(node){return {node:node,text:node.textContent};});
+      try {
 
       setSectorValue(inputs.sector);
       salaryInput.value = salaryValue || '';
@@ -1323,7 +1340,17 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       if (document.getElementById('calcSaveName')) {
         document.getElementById('calcSaveName').value = title || '';
       }
+      if(!RESULT)throw new Error('Restore calculation unavailable');
       return true;
+      } catch(error) {
+        retireFailedRestore();
+        PERIOD=previousPeriod;
+        SECTOR=previousSector;
+        previousFields.forEach(function(field){field.node.value=field.value;});
+        previousViews.forEach(function(view){view.node.className=view.className;[['style',view.style],['aria-checked',view.checked]].forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
+        previousLabels.forEach(function(label){label.node.textContent=label.text;});
+        return false;
+      }
     }
   };
 })();
