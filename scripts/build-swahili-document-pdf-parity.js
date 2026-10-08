@@ -675,6 +675,11 @@ function buildFullParityPage(app) {
   html = rewriteLocalDocumentAssets(html);
   html = hardenConsentBoundRequests(html, app);
   html = localizeStaticOwnerMarkup(html, app.id);
+  if (app.id === 'invoice-generator') {
+    html = html.replace(/<afro-business-cta\b[^>]*>/g, (tag) => tag
+      .replace(/tool-name="[^"]*"/, 'tool-id="invoice-generator" lang="sw" tool-name="Kizalishaji Ankara"')
+      .replace(/save-note="[^"]*"/, 'save-note="Tumia vitendo vya ukurasa huu kupakua PDF, kuchapisha, kuhifadhi ankara, kuchagua kiolezo, kushiriki au kuhamisha data katika JSON."'));
+  }
   Object.entries(legacyInlineRepairs[app.id] || {}).forEach(([source, localized]) => {
     html = html.split(source).join(localized);
   });

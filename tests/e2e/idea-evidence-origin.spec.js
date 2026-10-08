@@ -1,0 +1,10 @@
+const {test,expect}=require('@playwright/test');const fs=require('node:fs');const pdfParse=require('pdf-parse');
+for(const v of [{lang:'en',route:'/tools/idea-board/',label:'Generated example'},{lang:'fr',route:'/fr/tools/tableau-idees/',label:'Exemple g\u00e9n\u00e9r\u00e9'},{lang:'sw',route:'/sw/zana/kichunguzi-ushahidi-wa-mawazo/',label:'Mfano uliotengenezwa'}])test(`${v.lang} generated record origin remains visible through comparison exports and restore`,async({page})=>{
+ await page.route('**/.netlify/functions/idea-evidence**',r=>r.fulfill({status:200,contentType:'application/json',body:JSON.stringify({rows:[{id:'synthetic-seed',name:'Synthetic example',country_code:'KE',sector:'technology',risk:'low',currency:'KES',record_origin:'generated_example',startup_cost_min:100}],reportedTotal:1})}));
+ await page.goto(v.route);await page.locator('[data-search-form] button[type=submit]').click();await expect(page.locator('.iee-source')).toContainText(v.label);await page.locator('[data-action^="details:"]').click();await expect(page.locator('[data-dialog-backdrop]')).toContainText(v.label);await page.keyboard.press('Escape');await page.locator('[data-action^="add:"]').click();await expect(page.locator('.iee-compare-card')).toContainText(v.label);
+ async function download(action){const pending=page.waitForEvent('download');await page.locator(`[data-action=${action}]`).click();return fs.readFileSync(await (await pending).path())}
+ for(const action of ['csv','txt'])expect((await download(action)).toString('utf8')).toContain(v.label);
+ expect((await pdfParse(await download('pdf'))).text.replace(/\s+/g,' ')).toContain(v.label);
+ const backup=await download('backup');expect(JSON.parse(backup).items[0].recordOrigin).toBe('generated_example');expect(JSON.parse(await download('json')).items[0].recordOrigin).toBe('generated_example');
+ await page.locator('[data-action=clear]').click();await page.locator('[data-import]').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:backup});await expect(page.locator('.iee-compare-card')).toContainText(v.label);
+});

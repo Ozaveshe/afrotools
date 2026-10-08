@@ -116,6 +116,9 @@ function localizeRouteOwnedRuntimeLiterals(html, app) {
   );
   if (app.id === 'invoice-generator') {
     html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
+    html = html.replace(/<afro-business-cta\b[^>]*>/g, (tag) => tag
+      .replace(/tool-name="[^"]*"/, 'tool-id="invoice-generator" lang="fr" tool-name="Générateur de factures"')
+      .replace(/save-note="[^"]*"/, 'save-note="Utilisez les actions de cette page pour télécharger un PDF, imprimer, enregistrer une facture, choisir un modèle, partager ou exporter au format JSON."'));
     // Preview values come from private form fields, not from the UI lexicon.
     html = html.replace(/(<[a-z][^>]*\bid=["'](?:pCompany|pBizDetail|pClient|pClientDetail|pInvNum|pNotes|pItems|pPaymentDetails)["'])([^>]*>)/gi,
       (match, open, close) => /\btranslate=/.test(match) ? match : open + ' translate="no"' + close);

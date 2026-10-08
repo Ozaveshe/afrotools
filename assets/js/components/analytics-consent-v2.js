@@ -83,7 +83,7 @@
     var style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = [
-      '#afro-cookie-consent{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:99999;width:min(720px,calc(100vw - 24px));transform:translateX(-50%);background:#102033;border:1px solid rgba(203,213,225,.24);border-radius:10px;padding:12px;font-family:"DM Sans",system-ui,sans-serif;box-shadow:0 14px 34px rgba(2,8,23,.22)}',
+      '#afro-cookie-consent{box-sizing:border-box;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:99999;width:min(720px,calc(100% - 24px));transform:translateX(-50%);background:#102033;border:1px solid rgba(203,213,225,.24);border-radius:10px;padding:12px;font-family:"DM Sans",system-ui,sans-serif;box-shadow:0 14px 34px rgba(2,8,23,.22)}',
       '#afro-cookie-consent .afro-cc-inner{display:grid;gap:10px}',
       '#afro-cookie-consent .afro-cc-message{margin:0;color:#e5eef8;font-size:13px;line-height:1.5}',
       '#afro-cookie-consent .afro-cc-current{color:#bfdbfe;font-weight:700}',
@@ -95,7 +95,7 @@
       '#afro-cc-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#e5eef8;cursor:pointer;margin-left:auto;width:44px;padding:0}',
       '#afro-cookie-consent button:hover,#afro-cookie-consent a:hover{background:#004fa8;color:#fff}',
       '#afro-cookie-consent button:focus-visible,#afro-cookie-consent a:focus-visible{outline:3px solid rgba(147,197,253,.6);outline-offset:2px}',
-      '@media(max-width:560px){#afro-cookie-consent{bottom:calc(8px + env(safe-area-inset-bottom));width:calc(100vw - 20px);padding:10px}#afro-cookie-consent .afro-cc-actions{display:grid;grid-template-columns:1fr 1fr}#afro-cookie-consent button,#afro-cookie-consent a{font-size:12.4px;padding:0 8px}#afro-cc-close{grid-column:2;margin-left:auto}}'
+      '@media(max-width:560px){#afro-cookie-consent{bottom:calc(8px + env(safe-area-inset-bottom));width:calc(100% - 20px);padding:10px}#afro-cookie-consent .afro-cc-actions{display:grid;grid-template-columns:1fr 1fr}#afro-cookie-consent button,#afro-cookie-consent a{font-size:12.4px;padding:0 8px}#afro-cc-close{grid-column:2;margin-left:auto}}'
     ].join('');
     document.head.appendChild(style);
   }

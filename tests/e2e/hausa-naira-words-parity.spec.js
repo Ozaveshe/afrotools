@@ -10,7 +10,14 @@ test.describe('Hausa Naira words parity', () => {
   test('renders Hausa wording and reopens local JSON', async ({ page }) => {
     const requests = [];
     page.on('request', request => {
-      if (!['document', 'script', 'stylesheet', 'image', 'font'].includes(request.resourceType())) requests.push(request.url());
+      const url = new URL(request.url());
+      // Chromium reports this dynamically installed static favicon as "other".
+      // Do not exempt data-bearing URLs, bodies, external origins or other assets.
+      const staticFavicon = request.resourceType() === 'other'
+        && request.method() === 'GET' && request.postData() === null
+        && url.origin === new URL(page.url()).origin
+        && url.pathname === '/assets/img/logo-mark.svg' && !url.search && !url.hash;
+      if (!staticFavicon && !['document', 'script', 'stylesheet', 'image', 'font'].includes(request.resourceType())) requests.push(request.url());
     });
     await page.goto('/ha/kayan-aiki/naira-zuwa-kalmomi/');
     await page.locator('#amount').fill('125430.75');
