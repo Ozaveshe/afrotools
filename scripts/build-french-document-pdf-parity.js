@@ -114,6 +114,7 @@ function localizeRouteOwnedRuntimeLiterals(html, app) {
     html
   );
   if (app.id === 'invoice-generator') {
+    html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
     // Preview values come from private form fields, not from the UI lexicon.
     html = html.replace(/(<[a-z][^>]*\bid=["'](?:pCompany|pBizDetail|pClient|pClientDetail|pInvNum|pNotes|pItems|pPaymentDetails)["'])([^>]*>)/gi,
       (match, open, close) => /\btranslate=/.test(match) ? match : open + ' translate="no"' + close);
@@ -427,6 +428,7 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
 }
 
 function normalizeExisting(source, app, config, lexicon, artwork) {
+  if (app.id === 'invoice-generator') source = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(source);
   if (app.id === 'receipt-generator') {
     // Keep the reviewed PDF capture geometry aligned with the English active export owner.
     const capture = /  var pdfButton=document\.getElementById\('downloadPdfBtn'\);[\s\S]*?  \},true\);(?=\r?\n\}\)\(\);)/;

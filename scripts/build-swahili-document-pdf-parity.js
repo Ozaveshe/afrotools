@@ -780,6 +780,7 @@ function normalizeHubPage() {
 function normalizeExistingPage(app) {
   const target = path.join(ROOT, app.swahiliFile);
   let html = fs.readFileSync(target, 'utf8');
+  if (app.id === 'invoice-generator') html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
   html = installFormFillerRuntime(html, app);
   if (app.id === 'pdf-sign') {
     const english = fs.readFileSync(path.join(ROOT, app.englishFile), 'utf8');

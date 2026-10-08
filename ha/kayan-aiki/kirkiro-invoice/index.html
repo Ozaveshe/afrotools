@@ -1791,48 +1791,7 @@ init();
 <script src="/assets/js/pages/hausa-invoice-copy.js?v=ba3e76e6"></script>
 <script src="/assets/js/pages/invoice-generator-enhancements.js?v=b0460641"></script>
 <script src="/assets/js/pages/hausa-invoice-review.js?v=a3145b2a" defer></script>
-<script>
-// Kirkiro takardar kudi — saved invoices
-(function(){
-  if(typeof SaveState==='undefined')return;
-  var ss=new SaveState('invoice-generator',{maxKyauta:20});
-  var section=document.getElementById('inv-saved-section');
-  var grid=document.getElementById('inv-saved-grid');
-  if(!section||!grid)return;
-
-  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
-  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'yanzu-yanzu';if(s<3600)return Math.floor(s/60)+'m da suka wuce';if(s<86400)return Math.floor(s/3600)+'h da suka wuce';var d=Math.floor(s/86400);if(d<30)return d+'d da suka wuce';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
-
-  function render(){
-    var items=ss.getAll();
-    if(!items.length){section.style.display='none';return;}
-    section.style.display='';
-    grid.innerHTML=items.map(function(it){
-      var d=it.data||{};
-      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#0062CC\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
-        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
-        (d.client?'<div style="font-size:.72rem;color:#6b7280;">Abokin ciniki: '+esc(d.client)+'</div>':'')+
-        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#0062CC;margin-top:4px;">'+esc(d.total)+'</div>':'')+
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
-        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
-        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Goge</button>'+
-        '</div></div>';
-    }).join('');
-  }
-
-  window.invDelSaved=function(id){if(confirm('A goge invoice da aka ajiye?')){ss.delete(id);render();}};
-  window.invSaveCurrentInvoice=function(){
-    var name=prompt('Saka sunan wannan invoice (misali, "Invoice #001 - Acme Corp"):');
-    if(!name)return;
-    var clientEl=document.getElementById('clientName')||document.querySelector('[name="clientName"]');
-    var totalEl=document.querySelector('.total-amount,.inv-total');
-    ss.save({title:name,data:{client:clientEl?clientEl.value:'',total:totalEl?totalEl.textContent:''}});
-    render();
-    alert('An ajiye invoice!');
-  };
-  render();
-})();
-</script>
+<!-- Saved invoices are managed by invoice-generator-enhancements.js. -->
 
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
   <script src="/ha/assets/ha-surface.js?v=6a9f01c5" defer></script>

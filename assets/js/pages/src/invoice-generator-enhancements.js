@@ -937,8 +937,56 @@
             URL.revokeObjectURL(n);
         }, 3e3), m(invoiceCopy("Invoice JSON exported"));
     }
+    function invoiceSavedCopy(key) {
+        var lang = (document.documentElement.lang || 'en').split('-')[0];
+        var copy = {
+            remove: {en:'Delete',fr:'Supprimer',sw:'Futa',ha:'Goge'},
+            confirm: {en:'Delete this saved invoice?',fr:'Supprimer cette facture enregistrée ?',sw:'Ufute ankara hii iliyohifadhiwa?',ha:'A goge invoice da aka ajiye?'},
+            invalid: {en:'This saved invoice cannot be opened. Your current draft and saved data are unchanged.',fr:'Cette facture ne peut pas être ouverte. Le brouillon actuel et les données enregistrées sont conservés.',sw:'Ankara hii haiwezi kufunguliwa. Rasimu yako na data iliyohifadhiwa havijabadilishwa.',ha:'Ba a iya bude wannan invoice ba. Daftarin yanzu da bayanan da aka ajiye suna nan yadda suke.'}
+        };
+        return copy[key][lang] || copy[key].en;
+    }
+    function invoiceStorageFailure(error) {
+        var lang = (document.documentElement.lang || 'en').split('-')[0];
+        var ha = {
+            READ_FAILED:'Ba a iya karanta invoice da aka ajiye ba. Ba a canza bayanan da suke akwai ba.',
+            INVALID_STORAGE:'Bayanan da aka ajiye ba su karantu ba. Ba a canza su ba; fitar da aikin yanzu kafin ka fita.',
+            LIMIT_REACHED:'An kai iyakar invoice da za a ajiye. Fitar da kwafin ajiya, sannan ka goge daya kafin ka ajiye sabon invoice.'
+        };
+        var message = error && error.code === 'INVALID_INVOICE' ? invoiceSavedCopy('invalid') : lang === 'ha' ? ha[error && error.code] || 'Ba a ajiye wannan canjin ba. Invoice da aka ajiye suna nan yadda suke. Fitar da aikin yanzu kafin ka fita.' : window.SaveState.message(error, lang);
+        var section = o('inv-saved-section'), grid = o('inv-saved-grid'), status = o('invoiceStorageStatus');
+        if (section) section.style.display = '';
+        if (!status && grid) {
+            status = document.createElement('p'); status.id = 'invoiceStorageStatus';
+            status.setAttribute('role','status'); status.setAttribute('aria-live','polite'); grid.before(status);
+        }
+        if (status) status.textContent = message;
+        m(message, 'error');
+    }
+    function clearInvoiceStorageFailure() {
+        var status = o('invoiceStorageStatus'); if (status) status.remove();
+    }
+    function invoiceSavedStore() { return new window.SaveState(t, {maxFree:30}); }
+    function invoiceSavedItems() {
+        if (!window.SaveState) return null;
+        try { return invoiceSavedStore().getAll(); }
+        catch (error) { invoiceStorageFailure(error); return null; }
+    }
+    function deleteSavedInvoice(id) {
+        if (!window.confirm(invoiceSavedCopy('confirm'))) return;
+        try { invoiceSavedStore().delete(id); }
+        catch (error) { invoiceStorageFailure(error); return; }
+        C();
+        var next = document.querySelector('#inv-saved-grid button') || o('btnSaveInvoice');
+        if (next) next.focus();
+    }
+    // Legacy callers now save the complete current invoice through one owner.
+    window.AfroInvoiceSaved = { getAll: invoiceSavedItems };
+    window.invSaveCurrentInvoice = N;
+    window.invDelSaved = deleteSavedInvoice;
     function N() {
         if (void 0 !== window.SaveState) {
+            try {
             var e = x(), n = y(), a = (l("invoiceNumber") || invoiceCopy("Invoice")) + " - " + (l("clientName") || invoiceCopy("Client")), i = new window.SaveState(t, {
                 maxFree: 30
             }).save({
@@ -952,29 +1000,49 @@
                 }
             });
             C(), m(invoiceCopy("Invoice saved: ") + i.title);
+            } catch (error) { invoiceStorageFailure(error); }
         } else m(invoiceCopy("Saved invoices are not available yet"), "error");
     }
     function C() {
         if (void 0 !== window.SaveState) {
             var e = o("inv-saved-section"), n = o("inv-saved-grid");
             if (e && n) {
-                var a = new window.SaveState(t, {
-                    maxFree: 30
-                }).getAll();
+                var a = invoiceSavedItems();
+                if (a === null) return;
+                clearInvoiceStorageFailure();
                 a.length ? (e.style.display = "", n.innerHTML = a.map(function(e) {
                     var t = e.data || {};
                     return '<button type="button" class="invoice-saved-card" data-id="' + p(e.id) + '" style="text-align:left;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;"><span style="display:block;font-size:.82rem;font-weight:800;color:#111827;margin-bottom:3px;">' + p(e.title) + invoiceCopy('</span><span style="display:block;font-size:.72rem;color:#64748b;">Client: ') + p(t.client || "-") + '</span><span style="display:block;font-size:.78rem;font-weight:800;color:#0062CC;margin-top:4px;">' + p(t.balance || t.total || "") + '</span><span style="display:block;font-size:.65rem;color:#94a3b8;margin-top:5px;">' + new Date(e.updatedAt).toLocaleDateString("en-GB") + "</span></button>";
                 }).join(""), r(".invoice-saved-card", n).forEach(function(e) {
                     e.addEventListener("click", function() {
+                        try {
                         var n = new window.SaveState(t, {
                             maxFree: 30
                         }).load(e.dataset.id);
-                        n && n.data && n.data.state && (F(n.data.state), window.scrollTo({
+                        if (!n || !n.data || !invoiceStateShapeValid(n.data.state) || !F(n.data.state)) {
+                            invoiceStorageFailure({code:'INVALID_INVOICE'}); return;
+                        }
+                        clearInvoiceStorageFailure();
+                        (window.scrollTo({
                             top: 0,
                             behavior: "smooth"
                         }), m(invoiceCopy("Invoice loaded")));
+                        } catch (error) { invoiceStorageFailure(error); }
                     });
-                })) : e.style.display = "none";
+                })) : (n.replaceChildren(), e.style.display = "none");
+                // Keep deletion outside the open button: both actions remain
+                // independent keyboard controls, without nested interactive DOM.
+                r('.invoice-saved-card', n).forEach(function(card) {
+                    var row = document.createElement('div'), remove = document.createElement('button');
+                    row.className = 'invoice-saved-row'; card.before(row); row.appendChild(card);
+                    row.style.cssText = 'display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center';
+                    card.style.minWidth = '0'; card.style.overflowWrap = 'anywhere';
+                    remove.type = 'button'; remove.dataset.deleteInvoice = card.dataset.id;
+                    remove.textContent = invoiceSavedCopy('remove');
+                    remove.style.cssText = 'min-width:44px;min-height:44px';
+                    remove.addEventListener('click', function(){ deleteSavedInvoice(card.dataset.id); });
+                    row.appendChild(remove);
+                });
             }
         }
     }
