@@ -7,7 +7,8 @@ test.use({ trace: 'off', screenshot: 'off', video: 'off' });
 const routes = {
   en: '/tools/vat-calculator/',
   fr: '/fr/tools/calculateur-tva/',
-  sw: '/sw/zana/kikokotoo-vat/'
+  sw: '/sw/zana/kikokotoo-vat/',
+  ha: '/ha/kayan-aiki/kalkuletan-vat/'
 };
 
 for (const [locale, route] of Object.entries(routes)) {
