@@ -23,7 +23,7 @@ function load(relative, overrides = {}) {
     process: { env: { SUPABASE_SERVICE_ROLE_KEY: SENSITIVE_FIXTURE } },
     console: Object.fromEntries(['log', 'warn', 'error'].map(level => [level, (...args) => logs.push(args.join(' '))])),
     fetch: overrides.fetch || (async () => { throw new Error('Unexpected network attempt'); }),
-    URL, Date, setTimeout, clearTimeout, Buffer,
+    URL, Date, setTimeout, clearTimeout, Buffer, AbortController,
   });
   vm.runInContext(fs.readFileSync(filename, 'utf8'), context, { filename });
   return { api: module.exports, context, logs };

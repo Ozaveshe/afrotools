@@ -15,6 +15,37 @@ const { storageDiagnostic } = require('./storage-diagnostics');
 
 const STORE_NAME = 'live-data';
 
+// Bound each read tier so an unavailable primary cannot strand the fallback.
+const READ_TIMEOUT_MS = 3000;
+
+async function readWithDeadline(operation) {
+  var controller = new AbortController();
+  var timer;
+  var deadline = new Promise(function (_resolve, reject) {
+    timer = setTimeout(function () {
+      var error = new Error('Storage read deadline exceeded');
+      error.name = 'TimeoutError';
+      reject(error);
+      controller.abort(error);
+    }, READ_TIMEOUT_MS);
+  });
+  try {
+    return await Promise.race([Promise.resolve().then(function () {
+      return operation(controller.signal);
+    }), deadline]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchReadJson(url, options) {
+  return readWithDeadline(async function (signal) {
+    var response = await fetch(url, Object.assign({}, options, { signal: signal }));
+    // Include body consumption in the same deadline, not only the headers.
+    return { ok: response.ok, status: response.status, data: response.ok ? await response.json() : null };
+  });
+}
+
 const SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
                      process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
@@ -115,15 +146,15 @@ function withProvenance(data, servedFrom, storageUpdatedAt) {
 }
 
 async function getData(key, siteUrl) {
-  // 1. Try Supabase (primary — always available)
+  // 1. Try Supabase (primary)
   if (SUPABASE_KEY) {
     try {
-      var res = await fetch(
+      var res = await fetchReadJson(
         SUPABASE_URL + '/rest/v1/live_data_store?key=eq.' + encodeURIComponent(key) + '&select=data,updated_at',
         { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
       );
       if (res.ok) {
-        var rows = await res.json();
+        var rows = res.data;
         if (rows && rows.length > 0 && rows[0].data) {
           console.log('[data-store] Supabase hit for key: ' + key);
           return withProvenance(rows[0].data, 'live', rows[0].updated_at);
@@ -139,7 +170,9 @@ async function getData(key, siteUrl) {
   // 2. Try Netlify Blobs (fast cache — works in request context)
   try {
     var store = getStore(STORE_NAME);
-    var blob = await store.get(key, { type: 'json' });
+    var blob = await readWithDeadline(function () {
+      return store.get(key, { type: 'json' });
+    });
     if (blob) {
       console.log('[data-store] Blob hit for key: ' + key);
       return withProvenance(blob, 'blob');
@@ -159,9 +192,9 @@ async function getData(key, siteUrl) {
     var baseUrl = siteUrl || process.env.URL || process.env.DEPLOY_PRIME_URL || 'https://afrotools.com';
     var url = baseUrl + staticPath;
     console.log('[data-store] Fetching static fallback: ' + url);
-    var response = await fetch(url);
+    var response = await fetchReadJson(url);
     if (!response.ok) throw new Error('HTTP ' + response.status);
-    var data = await response.json();
+    var data = response.data;
     console.log('[data-store] Static fallback loaded for key: ' + key);
     return withProvenance(data, 'fallback');
   } catch (err) {
