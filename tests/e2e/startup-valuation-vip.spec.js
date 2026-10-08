@@ -20,11 +20,11 @@ async function fillSynthetic(page) {
 }
 
 for (const route of routes) {
-  test(route + " native private evidence workflow", async ({ page }) => {
+  test(route + " native private evidence workflow", async ({ page, baseURL }) => {
     const errors = [], external = [];
     page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
     page.on("pageerror", e => errors.push(e.message));
-    page.on("request", r => { if (!r.url().startsWith("http://127.0.0.1:4173")) external.push(r.url()); });
+    page.on("request", r => { if (!r.url().startsWith(baseURL)) external.push(r.url()); });
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(route);
     await expect(page.locator("iframe")).toHaveCount(0);
