@@ -116,3 +116,31 @@ function refreshKenyaRestore(target,source){
  return target.slice(0,dst.start)+method+target.slice(dst.end);
 }
 module.exports.refreshKenyaRestore=refreshKenyaRestore;
+
+function nigeriaStateDeclarations(html){
+ const names=new Set(['PERIOD','REGIME','CALC_MODE','SALARY_PERIOD']),found=[];
+ for(const match of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)){
+  if(!match[1].includes('SALARY_PERIOD'))continue;
+  const offset=match.index+match[0].indexOf(match[1]);
+  for(const node of acorn.parse(match[1],{ecmaVersion:'latest'}).body){
+   if(node.type!=='VariableDeclaration')continue;
+   for(const declaration of node.declarations){
+    if(!names.has(declaration.id.name))continue;
+    if(node.declarations.length!==1)throw Error('Expected isolated Nigeria state declaration');
+    found.push({name:declaration.id.name,kind:node.kind,start:offset+node.start});
+   }
+  }
+ }
+ if(found.length!==4||new Set(found.map(item=>item.name)).size!==4)throw Error('Expected four unique Nigeria runtime settings');
+ return found;
+}
+function refreshNigeriaSaveState(target,source){
+ if(nigeriaStateDeclarations(source).some(item=>item.kind!=='var'))throw Error('Nigeria source must expose settings to shared saver');
+ for(const item of nigeriaStateDeclarations(target).sort((a,b)=>b.start-a.start)){
+  if(item.kind==='var')continue;
+  if(item.kind!=='let')throw Error('Unexpected Nigeria target declaration');
+  target=target.slice(0,item.start)+'var'+target.slice(item.start+3);
+ }
+ return target;
+}
+module.exports.refreshNigeriaSaveState=refreshNigeriaSaveState;

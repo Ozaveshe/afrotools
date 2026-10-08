@@ -124,6 +124,17 @@ if (args.includes('--refresh-chart-readiness')) {
   process.exit(0);
 }
 
+if (args.includes('--refresh-nigeria-save-state')) {
+  if (!['fr','ha'].includes(flags.lang) || flags.page !== 'nigeria/ng-salary-tax' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Nigeria state refresh requires --lang fr|ha --page nigeria/ng-salary-tax only');
+  const { refreshNigeriaSaveState } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, flags.lang === 'fr' ? 'fr/nigeria/ng-salary-tax.html' : 'ha/najeriya/harajin-albashi/index.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = refreshNigeriaSaveState(existing, fs.readFileSync(path.join(ROOT, 'nigeria/ng-salary-tax.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('Nigeria ' + flags.lang + ' saved state: ' + (existing === refreshed ? 'unchanged' : 'updated'));
+  process.exit(0);
+}
+
 if (args.includes('--refresh-kenya-restore')) {
   if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Kenya restore refresh requires --lang fr --page kenya/ke-paye only');
   const { refreshKenyaRestore } = require('./lib/localized-paye-save-readiness');
