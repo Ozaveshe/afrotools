@@ -89,6 +89,11 @@
       assumptionsText: "mchanganyiko uleule wa bidhaa; siku ya soko inayorudiwa; sarafu ni ya kuonyesha pekee."
     }
   }[locale];
+  var recovery = {
+    en: { corrupt: "Saved history could not be read. Existing data was kept. Download the current result as JSON.", storage: "History could not be changed. Existing data was kept. Download JSON as a backup.", copy: "Copy is unavailable. Download the current result as JSON." },
+    fr: { corrupt: "L'historique est illisible. Les donn\u00e9es existantes sont conserv\u00e9es. T\u00e9l\u00e9chargez le r\u00e9sultat actuel en JSON.", storage: "L'historique n'a pas pu \u00eatre modifi\u00e9. Les donn\u00e9es existantes sont conserv\u00e9es. T\u00e9l\u00e9chargez une sauvegarde JSON.", copy: "La copie est indisponible. T\u00e9l\u00e9chargez le r\u00e9sultat actuel en JSON." },
+    sw: { corrupt: "Historia iliyohifadhiwa haisomeki. Data iliyopo imehifadhiwa bila mabadiliko. Pakua matokeo ya sasa kama JSON.", storage: "Historia haikuweza kubadilishwa. Data iliyopo imehifadhiwa bila mabadiliko. Pakua JSON kama nakala ya akiba.", copy: "Kunakili hakupatikani. Pakua matokeo ya sasa kama JSON." }
+  }[locale];
   var current = null;
   var currentStamp = "";
   var itemSeq = 0;
@@ -207,6 +212,7 @@
     var p = payload(); return [p.title, copy.scope, copy.revenue + ": " + money(p.outputs.revenue, p.inputs.currency), copy.profit + ": " + money(p.outputs.netDailyProfit, p.inputs.currency), copy.margin + ": " + (p.outputs.netMarginPct == null ? "—" : p.outputs.netMarginPct + "%"), copy.monthly + ": " + money(p.outputs.monthlyScenario.netProfit, p.inputs.currency)].join("\n");
   }
   function safeCsv(value) {
+    if (typeof value === "number" && Number.isFinite(value)) return '"' + String(value) + '"';
     var text = String(value == null ? "" : value); if (/^[=+\-@]/.test(text)) text = "'" + text; return '"' + text.replace(/"/g, '""') + '"';
   }
   function download(name, type, content) {
@@ -219,13 +225,29 @@
     download("market-stall-profit.csv", "text/csv;charset=utf-8", "\ufeff" + rows.map(function (r) { return r.map(safeCsv).join(","); }).join("\n"));
   }
   function historyRead() {
-    try { var parsed = JSON.parse(localStorage.getItem(STORE) || '{"schemaVersion":1,"records":[]}'); return parsed && parsed.schemaVersion === 1 && Array.isArray(parsed.records) ? parsed : null; } catch (_) { return null; }
+    try {
+      var parsed = JSON.parse(localStorage.getItem(STORE) || '{"schemaVersion":1,"records":[]}');
+      if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.records) || parsed.records.length > 30) return null;
+      var valid = parsed.records.every(function (r) {
+        return r && typeof r === "object" && !Array.isArray(r) &&
+          typeof r.id === "string" && r.id.length > 0 && r.id.length <= 100 &&
+          typeof r.savedAt === "string" && Number.isFinite(Date.parse(r.savedAt)) &&
+          typeof r.currency === "string" && r.currency.length > 0 && r.currency.length <= 12 &&
+          typeof r.engineVersion === "string" && r.engineVersion.length <= 100 &&
+          [r.netDailyProfit, r.revenue, r.monthlyNetProfit].every(function (n) { return typeof n === "number" && Number.isFinite(n); }) &&
+          Number.isInteger(r.marketDays) && r.marketDays >= 1 && r.marketDays <= 31;
+      });
+      return valid ? parsed : null;
+    } catch (_) { return null; }
   }
-  function historyWrite(data) { localStorage.setItem(STORE, JSON.stringify(data)); }
+  function historyWrite(data, status) {
+    try { localStorage.setItem(STORE, JSON.stringify(data)); return true; }
+    catch (_) { status.textContent = recovery.storage; return false; }
+  }
   function renderHistory() {
     var data = historyRead(), target = root.querySelector("[data-history]"), status = root.querySelector("[data-status]");
     target.replaceChildren();
-    if (!data) { status.textContent = copy.corrupt; return; }
+    if (!data) { status.textContent = recovery.corrupt; return; }
     status.textContent = "";
     var currency = engine.cleanText(root.querySelector(".js-currency").value, 12).toUpperCase();
     var records = data.records.filter(function (r) { return r && r.currency === currency; });
@@ -235,9 +257,10 @@
     target.append(list);
   }
   function saveHistory() {
-    var data = historyRead() || { schemaVersion: 1, records: [] };
+    var data = historyRead(), status = root.querySelector("[data-result-status]");
+    if (!data) { status.textContent = recovery.corrupt; return; }
     data.records.unshift({ id: Date.now() + "-" + Math.random().toString(36).slice(2, 8), savedAt: new Date().toISOString(), currency: current.inputs.currency, netDailyProfit: current.outputs.netDailyProfit, revenue: current.outputs.revenue, monthlyNetProfit: current.outputs.monthlyScenario.netProfit, marketDays: current.inputs.marketDays, engineVersion: current.version });
-    data.records = data.records.slice(0, 30); historyWrite(data); root.querySelector("[data-result-status]").textContent = copy.saved; renderHistory();
+    data.records = data.records.slice(0, 30); if (historyWrite(data, status)) { status.textContent = copy.saved; renderHistory(); }
   }
   function stale() {
     if (!current || stamp(readInput()) === currentStamp) return false;
@@ -245,24 +268,65 @@
     document.body.classList.remove("msp-has-result");
     root.querySelector("[data-results]").hidden = true; root.querySelector("[data-error]").hidden = false; root.querySelector("[data-error]").textContent = copy.stale; return true;
   }
+  var validationAttempted = false;
+  function showValidation(result, focus) {
+    var fields = [], itemRows = Array.from(root.querySelectorAll(".msp-item")).filter(function (row) {
+      return Array.from(row.querySelectorAll("input")).some(function (input) { return input.value !== "" && input.value !== "0"; });
+    }), expenseRows = Array.from(root.querySelectorAll(".msp-expense")).filter(function (row) { return row.querySelector(".js-expense-amount").value !== ""; });
+    var selectors = { currency: ".js-currency", marketDays: ".js-days", reinvestRate: ".js-reinvest", name: ".js-name", unitCost: ".js-cost", unitPrice: ".js-price", unitsSold: ".js-sold", unitsLost: ".js-lost" };
+    (result.errors || []).forEach(function (key) {
+      var parts = key.split("."), input;
+      if (parts[0] === "items") {
+        var item = parts.length > 1 ? itemRows[Number(parts[1])] : itemRows[20] || root.querySelector(".msp-item");
+        input = item && item.querySelector(selectors[parts[2] || "name"]);
+      } else if (parts[0] === "expenses") {
+        var expense = parts.length > 1 ? expenseRows[Number(parts[1])] : expenseRows[20];
+        input = expense && expense.querySelector(parts[2] === "name" ? ".js-expense-name" : ".js-expense-amount");
+      } else input = root.querySelector(selectors[key] || ".js-currency");
+      if (input && fields.indexOf(input) < 0) fields.push(input);
+    });
+    root.querySelectorAll(".msp-form input").forEach(function (input) {
+      var ids = (input.getAttribute("aria-describedby") || "").split(/\s+/).filter(function (id) { return id && id !== "msp-validation-error"; });
+      if (fields.indexOf(input) >= 0) { input.setAttribute("aria-invalid", "true"); ids.push("msp-validation-error"); }
+      else input.removeAttribute("aria-invalid");
+      if (ids.length) input.setAttribute("aria-describedby", ids.join(" ")); else input.removeAttribute("aria-describedby");
+    });
+    var error = root.querySelector("[data-error]");
+    error.hidden = result.valid; error.textContent = result.valid ? "" : copy.required;
+    if (focus && fields.length) fields[0].focus();
+  }
   build();
-  root.addEventListener("input", stale);
+  root.querySelector("[data-error]").id = "msp-validation-error";
+  root.addEventListener("input", function () { stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); });
   root.addEventListener("submit", function (event) {
     event.preventDefault(); var input = readInput(); var result = engine.calculate(input); var error = root.querySelector("[data-error]");
-    if (!result.valid) { error.hidden = false; error.textContent = copy.required; return; }
+    validationAttempted = !result.valid; showValidation(result, true);
+    if (!result.valid) { current = null; root.querySelector("[data-results]").hidden = true; document.body.classList.remove("msp-has-result"); return; }
     error.hidden = true; current = result; currentStamp = stamp(input); renderResult(result);
   });
   root.addEventListener("click", function (event) {
     var trigger = event.target.closest("[data-action]"); if (!trigger) return; var action = trigger.dataset.action;
     if (action === "add-item") addItem();
     else if (action === "add-expense") addExpense("");
-    else if (action === "remove-row") { var row = trigger.closest(".msp-row"); var selector = row.classList.contains("msp-item") ? ".msp-item" : ".msp-expense"; if (root.querySelectorAll(selector).length > 1) row.remove(); }
+    else if (action === "remove-row") { var row = trigger.closest(".msp-row"); var selector = row.classList.contains("msp-item") ? ".msp-item" : ".msp-expense"; if (root.querySelectorAll(selector).length > 1) { row.remove(); stale(); if (validationAttempted) showValidation(engine.validate(readInput()), false); } }
     else if (action === "load-history") renderHistory();
-    else if (action === "backup-history") { var h = historyRead(); if (!h) root.querySelector("[data-status]").textContent = copy.corrupt; else download("market-stall-profit-history.json", "application/json", JSON.stringify(h, null, 2)); }
-    else if (action === "clear-history") { var h2 = historyRead() || { schemaVersion: 1, records: [] }; var currency = engine.cleanText(root.querySelector(".js-currency").value, 12).toUpperCase(); h2.records = h2.records.filter(function (r) { return r.currency !== currency; }); historyWrite(h2); renderHistory(); }
-    else if (action === "delete-history") { var h3 = historyRead(); if (h3) { h3.records = h3.records.filter(function (r) { return r.id !== trigger.dataset.id; }); historyWrite(h3); renderHistory(); } }
+    else if (action === "backup-history") { var h = historyRead(); if (!h) root.querySelector("[data-status]").textContent = recovery.corrupt; else download("market-stall-profit-history.json", "application/json", JSON.stringify(h, null, 2)); }
+    else if (action === "clear-history" || action === "delete-history") {
+      var history = historyRead(), status = root.querySelector("[data-status]");
+      if (!history) { status.textContent = recovery.corrupt; return; }
+      var currency = engine.cleanText(root.querySelector(".js-currency").value, 12).toUpperCase();
+      history.records = history.records.filter(function (record) { return action === "clear-history" ? record.currency !== currency : record.id !== trigger.dataset.id; });
+      if (historyWrite(history, status)) renderHistory();
+    }
     else if (!current || stale()) return;
-    else if (action === "copy") navigator.clipboard.writeText(summaryText()).then(function () { root.querySelector("[data-result-status]").textContent = copy.copied; });
+    else if (action === "copy") {
+      var result = current, target = root.querySelector("[data-result-status]");
+      function announce(message) { if (current === result && target.isConnected) target.textContent = message; }
+      try {
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") { announce(recovery.copy); return; }
+        Promise.resolve(navigator.clipboard.writeText(summaryText())).then(function () { announce(copy.copied); }, function () { announce(recovery.copy); });
+      } catch (_) { announce(recovery.copy); }
+    }
     else if (action === "csv") csv();
     else if (action === "json") download("market-stall-profit.json", "application/json", JSON.stringify(payload(), null, 2));
     else if (action === "print") window.print();
@@ -278,7 +342,18 @@
             ", " + exportCopy.sold + " " + money(x.soldStockCost, current.inputs.currency) +
             ", " + exportCopy.loss + " " + money(x.stockLossCost, current.inputs.currency);
         }).join("\n");
-      var doc = new window.jspdf.jsPDF(); var lines = doc.splitTextToSize(pdfText, 175); doc.text(lines, 18, 20); doc.save("market-stall-profit.pdf");
+      var doc = new window.jspdf.jsPDF(), y = 20, fontSize = 10;
+      doc.setFontSize(fontSize);
+      var lineHeight = fontSize * 0.3528 * 1.3, bottom = doc.internal.pageSize.getHeight() - 15;
+      pdfText.replace(/\u2212/g, "-").replace(/[\u00a0\u202f]/g, " ").split("\n").forEach(function (paragraph) {
+        var lines = doc.splitTextToSize(paragraph, doc.internal.pageSize.getWidth() - 36);
+        if (lines.length * lineHeight <= bottom - 20 && y + lines.length * lineHeight > bottom) { doc.addPage(); y = 20; }
+        lines.forEach(function (line) {
+          if (y + lineHeight > bottom) { doc.addPage(); y = 20; }
+          doc.text(line, 18, y); y += lineHeight;
+        });
+      });
+      doc.save("market-stall-profit.pdf");
     }
   });
 })();
