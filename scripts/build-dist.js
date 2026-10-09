@@ -178,6 +178,9 @@ const BLOCKED_RELATIVE_FILES = new Set([
 ]);
 
 const BLOCKED_RELATIVE_DIRS = new Set([
+  // Native editorial/import evidence can retain withdrawn preparations.
+  // Public recipe data is projected under tools/afrokitchen instead.
+  'data/afrokitchen',
   'data/automation',
   'data/image-generation',
   'data/localization/fr-fintech-banking-pages',

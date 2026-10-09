@@ -630,6 +630,8 @@ function attachSocialRefsToRecipes(recipeInsights, socialShowcase) {
 }
 
 function buildCuisineIntelligence(manifest, options) {
+  const methodPolicy = require('../../engines/src/afrokitchen-engine');
+  manifest = { ...manifest, recipes: (manifest.recipes || []).filter(recipe => !methodPolicy.isMethodHeld(recipe)) };
   const settings = options || {};
   const rules = settings.rules || loadCuisineRules();
   const recipeImages = settings.recipeImages || {};

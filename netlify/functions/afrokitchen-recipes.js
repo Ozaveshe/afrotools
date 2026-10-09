@@ -1,6 +1,7 @@
 // netlify/functions/afrokitchen-recipes.js
 // Supabase CRUD for AfroKitchen recipes
 // Handles recipe fetching, filtering, and view count incrementing
+const methodPolicy = require('../../engines/src/afrokitchen-engine');
 
 // AfroKitchen uses the Auth/Kitchen Supabase instance (zpclagtgczsygrgztlts),
 // Prefer the explicit auth URL; all production Supabase variables now target the canonical project.
@@ -40,12 +41,16 @@ exports.handler = async function (event) {
   const headers = getCorsHeaders(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
 
+  const params = event.queryStringParameters || {};
+  const action = params.action || 'list';
+
+  if (action === 'get' && methodPolicy.isMethodHeld(params.slug)) {
+    return { statusCode: 200, headers, body: JSON.stringify(methodPolicy.applyMethodHold(params.slug)) };
+  }
+
   if (!SUPABASE_KEY) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'SUPABASE_KEY not configured' }) };
   }
-
-  const params = event.queryStringParameters || {};
-  const action = params.action || 'list';
 
   try {
     if (action === 'list') {
@@ -64,7 +69,7 @@ exports.handler = async function (event) {
       });
       if (!res.ok) throw new Error('Upstream ' + res.status);
       const data = await res.json();
-      return { statusCode: 200, headers, body: JSON.stringify(data) };
+      return { statusCode: 200, headers, body: JSON.stringify(data.filter(recipe => !methodPolicy.isMethodHeld(recipe))) };
     }
 
     if (action === 'get' && params.slug && /^[a-z0-9-]+$/.test(params.slug)) {

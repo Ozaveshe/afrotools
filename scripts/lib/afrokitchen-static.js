@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { createClient } = require("@supabase/supabase-js");
+const methodPolicy = require('../../engines/src/afrokitchen-engine');
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const TOOL_DIR = path.join(ROOT, "tools", "afrokitchen");
@@ -286,7 +287,7 @@ function fallbackCollectionUrl(collectionSlug) {
 }
 
 function loadAfroKitchenEngine() {
-  const enginePath = path.join(ROOT, "engines", "afrokitchen-engine.js");
+  const enginePath = path.join(ROOT, "engines", "src", "afrokitchen-engine.js");
   const code = fs.readFileSync(enginePath, "utf8");
   const sandbox = {
     window: {},
@@ -582,6 +583,7 @@ function buildCollectionDescription(collection) {
 }
 
 function normalizeRecipe(recipe) {
+  if (methodPolicy.isMethodHeld(recipe)) return methodPolicy.applyMethodHold(recipe);
   const description = cleanGeneratedDescription(recipe);
   const story = cleanGeneratedStory(recipe, description);
   const cleanedRecipe = {
@@ -617,6 +619,8 @@ function normalizeRecipe(recipe) {
 }
 
 function collectStaticRecipeBlockers(recipe) {
+  // A maintained hold has a canonical status page, never cooking instructions.
+  if (methodPolicy.isMethodHeld(recipe)) return [];
   const blockers = [];
 
   if (!normalizeText(recipe.slug)) blockers.push("missing_slug");
@@ -973,6 +977,12 @@ async function buildManifest(options) {
     });
   });
 
+  // Preserve existing status routes even after a held live row is withdrawn
+  // from the legacy verified-only query. No preparation payload is restored.
+  for (const slug of methodPolicy.METHOD_HOLD_SLUGS) {
+    if (!attachedRecipes.some(recipe => recipe.slug === slug)) attachedRecipes.push(methodPolicy.applyMethodHold(slug));
+  }
+
   const exclusions = [];
   const eligibleRecipes = [];
   const exclusionMap = new Map();
@@ -1004,9 +1014,10 @@ async function buildManifest(options) {
     }))
     .sort(compareRecipes);
 
-  const countries = buildCountryManifest(recipesWithWave);
+  const countries = buildCountryManifest(recipesWithWave.filter(recipe => !methodPolicy.isMethodHeld(recipe)));
   const imageManifest = loadRecipeImages();
   const recipesWithImages = recipesWithWave.map((recipe) => {
+    if (methodPolicy.isMethodHeld(recipe)) return methodPolicy.applyMethodHold(recipe);
     const media = resolveRecipeMedia(recipe, imageManifest);
     return {
       ...recipe,
@@ -1016,7 +1027,7 @@ async function buildManifest(options) {
     };
   });
 
-  const collections = buildCollectionManifest(recipesWithImages, countries, collectionRows);
+  const collections = buildCollectionManifest(recipesWithImages.filter(recipe => !methodPolicy.isMethodHeld(recipe)), countries, collectionRows);
   const recipesWithCollections = attachRecipeCollectionLinks(recipesWithImages, collections);
   const countriesWithCollections = attachCountryCollectionLinks(countries, collections);
   const collectionMembershipCount = collections.reduce(
@@ -1030,7 +1041,8 @@ async function buildManifest(options) {
       dataset: "supabase.public.recipes",
       collection_dataset: "supabase.public.collections",
       recipe_count: recipesWithCollections.length,
-      verified_recipe_count: recipesWithCollections.length,
+      verified_recipe_count: recipesWithCollections.filter(recipe => recipe.is_verified === true).length,
+      method_hold_count: recipesWithCollections.filter(recipe => methodPolicy.isMethodHeld(recipe)).length,
       static_eligible_recipe_count: eligibleRecipes.length,
       excluded_recipe_count: exclusions.length,
       featured_recipe_count: recipesWithCollections.filter((recipe) => recipe.is_featured).length,
@@ -1206,6 +1218,10 @@ module.exports = {
   isGenericRecipeImage,
   isUsableRecipeImage,
   resolveRecipeMedia,
+  buildCountryManifest,
+  buildCollectionManifest,
+  attachRecipeCollectionLinks,
+  attachCountryCollectionLinks,
   buildManifest,
   writeManifest,
   loadManifest,

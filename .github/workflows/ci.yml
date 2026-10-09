@@ -57,6 +57,9 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
+      - name: Verify AfroKitchen method hold boundaries
+        run: npm run test:afrokitchen:method-holds
+
       - name: Verify private command-centre contracts
         run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
 
@@ -72,7 +75,8 @@ jobs:
   build:
     name: Build and audit
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Retain every cumulative artifact suite, including method containment.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -195,6 +199,13 @@ jobs:
             git diff --name-only
             exit 1
           fi
+
+      - name: Verify withdrawn AfroKitchen methods in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4192'
+        run: npx playwright test tests/e2e/afrokitchen-method-holds.spec.js tests/e2e/afrokitchen-weekly-plan.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
   e2e:
     name: Playwright smoke

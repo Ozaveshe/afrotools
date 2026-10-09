@@ -7,6 +7,7 @@ const vm = require("vm");
 
 const ROOT = path.resolve(__dirname, "..");
 const TOOL_DIR = path.join(ROOT, "tools", "afrokitchen");
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 
 const paths = {
   manifest: path.join(TOOL_DIR, "seo-manifest.json"),
@@ -93,6 +94,7 @@ function verifyFilesExist() {
 
 function verifyManifest(manifest, intelligence, publicJsData, rules) {
   const recipes = manifest.recipes || [];
+  const availableCount = recipes.filter(recipe => !methodPolicy.isMethodHeld(recipe)).length;
   const generatedRecipes = recipes.filter((recipe) => recipe.generated_in_wave);
   const recipeRouteCount = ((manifest.routes && manifest.routes.generated_recipe_slugs) || []).length;
   const collectionRoutes = ((manifest.routes && manifest.routes.generated_collection_slugs) || []).length;
@@ -104,7 +106,8 @@ function verifyManifest(manifest, intelligence, publicJsData, rules) {
   assert(recipeRouteCount === generatedRecipes.length, "Generated recipe route count does not match generated recipe pages");
   assert(recipeRouteCount === recipes.length, "Generated recipe route count does not match manifest recipe count");
   assert((manifest.source || {}).recipe_count === recipes.length, "Manifest source recipe_count does not match recipe array length");
-  assert((manifest.source || {}).verified_recipe_count === recipes.length, "Manifest verified_recipe_count does not match recipe array length");
+  assert((manifest.source || {}).verified_recipe_count === recipes.filter(recipe => recipe.is_verified === true).length, "Manifest verified_recipe_count does not match verified source rows");
+  assert((manifest.source || {}).method_hold_count === recipes.length - availableCount, "Manifest method_hold_count does not match held source rows");
   assert(baseCollectionCount >= 5, `Expected at least 5 base collections before curated additions, found ${baseCollectionCount}`);
   assert(collectionCount === baseCollectionCount + expectedCuratedCount, "Collection count does not include every curated collection");
   assert(collectionRoutes === collectionCount, `Generated collection routes ${collectionRoutes} do not match collection count ${collectionCount}`);
@@ -113,10 +116,13 @@ function verifyManifest(manifest, intelligence, publicJsData, rules) {
   assert(((manifest.source || {}).curated_collection_count) === expectedCuratedCount, "Curated collection count does not match rules");
   assert(((manifest.source || {}).collection_membership_count) === membershipCount, "Collection membership count excludes generated collections");
 
-  assert(Object.keys(intelligence.recipes || {}).length === recipeRouteCount, "Public intelligence recipe count does not match manifest routes");
-  assert(Object.keys(publicJsData.recipes || {}).length === recipeRouteCount, "Cuisine intelligence JS recipe count does not match public JSON");
-  assert(((intelligence.summary || {}).recipe_count) === recipeRouteCount, "Public intelligence summary recipe count does not match routes");
-  assert(((publicJsData.summary || {}).recipe_count) === recipeRouteCount, "Cuisine intelligence JS summary recipe count does not match routes");
+  assert(Object.keys(intelligence.recipes || {}).length === availableCount, "Public intelligence recipe count does not match available methods");
+  assert(Object.keys(publicJsData.recipes || {}).length === availableCount, "Cuisine intelligence JS recipe count does not match available methods");
+  assert(((intelligence.summary || {}).recipe_count) === availableCount, "Public intelligence summary recipe count does not match available methods");
+  assert(((publicJsData.summary || {}).recipe_count) === availableCount, "Cuisine intelligence JS summary recipe count does not match available methods");
+  for (const slug of methodPolicy.METHOD_HOLD_SLUGS) {
+    assert(!intelligence.recipes?.[slug] && !publicJsData.recipes?.[slug], `Held method leaked into cooking intelligence: ${slug}`);
+  }
 }
 
 function verifySocialShowcase(intelligence, publicJsData) {
@@ -188,7 +194,7 @@ function verifyPages(manifest) {
   const showstoppers = readText(paths.showstoppers);
 
   includesAll(landing, ["Regional atlas", "Menu builder", "Chef-built collection", "Showstopper board", "Cook, post, compare notes"], "AfroKitchen landing");
-  for (const [count, label] of [[(manifest.recipes || []).length, 'recipes'], [(manifest.countries || []).length, 'country hubs']]) {
+  for (const [count, label] of [[(manifest.recipes || []).filter(recipe => !methodPolicy.isMethodHeld(recipe)).length, 'recipes'], [(manifest.countries || []).length, 'country hubs']]) {
     assert(hasVisibleInventoryCount(landing, count, label), `AfroKitchen landing inventory copy is missing "${count} ${label}"`);
   }
   ["164 recipes", "54 countries", "54 COUNTRIES", "160+ recipes", "160+ dishes"].forEach((staleCopy) => {
@@ -205,7 +211,7 @@ function verifyShotList(manifest, report, rules) {
   assert(exists(paths.shotListCsv), "Recipe image shot-list CSV is missing");
   if (exists(paths.shotListCsv)) {
     const lines = readText(paths.shotListCsv).trimEnd().split(/\r?\n/);
-    const expectedRows = (manifest.recipes || []).length * ((rules.image_roles || []).length || 5);
+    const expectedRows = (manifest.recipes || []).filter(recipe => !methodPolicy.isMethodHeld(recipe)).length * ((rules.image_roles || []).length || 5);
     assert(lines.length === expectedRows + 1, `Shot-list CSV should have ${expectedRows + 1} lines, found ${lines.length}`);
   }
 

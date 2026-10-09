@@ -11,7 +11,8 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, "tools/afrokitchen/s
 const published = JSON.parse(fs.readFileSync(path.join(root, "tools/afrokitchen/recipe-index.json"), "utf8"));
 const expected = buildRecipeIndex(manifest);
 assert.deepEqual(published, expected, "published index must match the static recipe route manifest");
-assert.equal(published.recipes.length, 410);
+assert.equal(manifest.recipes.length, 410, 'Every existing route identity remains');
+assert.equal(published.recipes.length, 399, 'Eleven held methods are excluded from cooking discovery');
 assert.ok(published.recipes.every((recipe) => recipe.id && recipe.slug && recipe.ingredients.length));
 
 const source = fs.readFileSync(path.join(root, "engines/src/afrokitchen-engine.js"), "utf8");
@@ -33,7 +34,7 @@ vm.runInNewContext(source, context);
 (async () => {
   const engine = context.AfroKitchenEngine;
   const all = await engine.fetchRecipes({});
-  assert.equal(all.length, 410, "planner should see every published recipe without Supabase");
+  assert.equal(all.length, 399, "planner should see every available recipe without Supabase");
   assert.equal((await engine.fetchRecipes({ country: "NG" })).every((recipe) => recipe.country_code === "NG"), true);
   const chosen = all.find((recipe) => recipe.country_code === "NG");
   const collection = await engine.fetchRecipes({ ids: [chosen.id] });
@@ -41,5 +42,5 @@ vm.runInNewContext(source, context);
   assert.equal(collection[0].id, chosen.id);
   assert.equal((await engine.fetchRecipes({ limit: 12 })).length, 12);
   assert.equal(fetchCount, 1, "the index should load only once per page");
-  console.log("AfroKitchen published recipe index verified: 410 routes, ingredients, filters");
+  console.log("AfroKitchen published recipe index verified: 410 identities, 399 available methods, ingredients and filters");
 })().catch((error) => { console.error(error); process.exitCode = 1; });

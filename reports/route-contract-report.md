@@ -7,15 +7,15 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 | State | Count |
 |---|---:|
 | Public pages | 11702 |
-| Indexable pages | 7887 |
+| Indexable pages | 7876 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4260 |
+| Genuine equivalence groups | 4249 |
 | Documented fallbacks | 14974 |
-| Routes eligible for primary sitemaps | 7887 |
+| Routes eligible for primary sitemaps | 7876 |
 
 ## Locale Coverage
 
@@ -3139,7 +3139,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:075f7cf6a77c: en=`/tools/work-permit-cost/zambia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zambie/`, sw=`/sw/zambia/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/zambia/`
 - equivalence:0761d5d1a4d6: fr=`/fr/widgets/generateur-mot-de-passe/`; x-default=`/fr/widgets/generateur-mot-de-passe/`
 - equivalence:076e474c0ed8: en=`/tools/employment-contract/cameroon`, fr=`/fr/tools/contrat-travail/cameroon`; x-default=`/tools/employment-contract/cameroon`
-- equivalence:0770f7626746: en=`/tools/afrokitchen/recipes/oshikundu-na/`; x-default=`/tools/afrokitchen/recipes/oshikundu-na/`
 - equivalence:0782767b00ab: en=`/agriculture/vaccination-schedule/zimbabwe`; x-default=`/agriculture/vaccination-schedule/zimbabwe`
 - equivalence:078c38e655ab: en=`/tools/employee-cost/nigeria/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-nigeria/`, sw=`/sw/nigeria/kikokotoo-gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/nigeria/`
 - equivalence:079fd4b960ae: en=`/tools/retrenchment-calculator/madagascar/`; x-default=`/tools/retrenchment-calculator/madagascar/`
@@ -3248,7 +3247,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0db4f8679c82: en=`/agriculture/irrigation/nigeria`, fr=`/fr/agriculture/irrigation/nigeria`, ha=`/ha/noma/ban-ruwa-najeriya/`, sw=`/sw/kilimo/umwagiliaji/nigeria/`; x-default=`/agriculture/irrigation/nigeria`
 - equivalence:0db724724590: en=`/tools/maternity-leave/guinea-bissau/`; x-default=`/tools/maternity-leave/guinea-bissau/`
 - equivalence:0dcc7ff3c624: en=`/tools/gratuity-calculator/libya/`, sw=`/sw/libya/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/libya/`
-- equivalence:0df54d63ebc5: en=`/tools/afrokitchen/recipes/thobwa-mw/`; x-default=`/tools/afrokitchen/recipes/thobwa-mw/`
 - equivalence:0e03834e029f: en=`/agriculture/input-prices/morocco`, fr=`/fr/agriculture/input-prices/morocco`, sw=`/sw/kilimo/bei-za-pembejeo/morocco/`; x-default=`/agriculture/input-prices/morocco`
 - equivalence:0e3be7cd96ff: en=`/tools/periodic-table/`, fr=`/fr/tools/tableau-periodique/`, sw=`/sw/zana/jedwali-la-vipengele/`; x-default=`/tools/periodic-table/`
 - equivalence:0e3e0e3bea32: en=`/tools/funeral-insurance/uganda`, fr=`/fr/tools/assurance-obseques/uganda`; x-default=`/tools/funeral-insurance/uganda`
@@ -3325,7 +3323,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:122175cd79db: en=`/tools/visa-checker/namibia`; x-default=`/tools/visa-checker/namibia`
 - equivalence:1222874bdcf1: en=`/eritrea/`, fr=`/fr/eritrea/`, sw=`/sw/eritrea/`; x-default=`/eritrea/`
 - equivalence:1255211950c7: en=`/agriculture/vaccination-schedule/morocco`; x-default=`/agriculture/vaccination-schedule/morocco`
-- equivalence:1257bc04d33e: en=`/tools/afrokitchen/recipes/maheu-zm/`; x-default=`/tools/afrokitchen/recipes/maheu-zm/`
 - equivalence:125937f8baba: fr=`/fr/widgets/pertes-stockage/`; x-default=`/fr/widgets/pertes-stockage/`
 - equivalence:12663d8381e4: en=`/tools/water-bill/morocco/`; x-default=`/tools/water-bill/morocco/`
 - equivalence:126f3b8352a7: en=`/tools/afrokitchen/countries/tunisia/`; x-default=`/tools/afrokitchen/countries/tunisia/`
@@ -3680,7 +3677,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2863854b2a68: en=`/blog/eswatini-employer-payroll-compliance-2026/`; x-default=`/blog/eswatini-employer-payroll-compliance-2026/`
 - equivalence:288938fd601b: en=`/tools/car-insurance/algeria`, fr=`/fr/tools/assurance-auto/algeria`; x-default=`/tools/car-insurance/algeria`
 - equivalence:2889d471ac6c: en=`/guinea/gn-vat`, fr=`/fr/guinee/calculateur-tva`, sw=`/sw/guinea/kikokotoo-vat/`; x-default=`/guinea/gn-vat`
-- equivalence:28b9a958538a: en=`/tools/afrokitchen/recipes/ikivuguto-rw/`; x-default=`/tools/afrokitchen/recipes/ikivuguto-rw/`
 - equivalence:28bb087315aa: en=`/tools/employee-cost/mali/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-mali/`; x-default=`/tools/employee-cost/mali/`
 - equivalence:28c4335661a4: en=`/tools/afrokitchen/recipes/shaah-cadays-dj/`; x-default=`/tools/afrokitchen/recipes/shaah-cadays-dj/`
 - equivalence:28e056573f21: fr=`/fr/widgets/roi-volaille/`; x-default=`/fr/widgets/roi-volaille/`
@@ -4342,7 +4338,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4f2e2684d9ee: en=`/tools/afroatlas/country/djibouti/`; x-default=`/tools/afroatlas/country/djibouti/`
 - equivalence:4f341e49bcae: en=`/tools/afrokitchen/recipes/suqaar/`; x-default=`/tools/afrokitchen/recipes/suqaar/`
 - equivalence:4f3b240685f8: en=`/tools/health-contribution/burundi`; x-default=`/tools/health-contribution/burundi`
-- equivalence:4f3c7a500b1f: en=`/tools/afrokitchen/recipes/malamba-gq/`; x-default=`/tools/afrokitchen/recipes/malamba-gq/`
 - equivalence:4f520aaa37fe: en=`/jamb/english/1982/`; x-default=`/jamb/english/1982/`
 - equivalence:4f54739a6cc6: en=`/tools/business-insurance/ethiopia`; x-default=`/tools/business-insurance/ethiopia`
 - equivalence:4f608835f18c: en=`/agriculture/vaccination-schedule/ghana`; x-default=`/agriculture/vaccination-schedule/ghana`
@@ -4860,7 +4855,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6d21cb99868d: en=`/tools/gratuity-calculator/burkina-faso/`; x-default=`/tools/gratuity-calculator/burkina-faso/`
 - equivalence:6d3e87f4d78e: fr=`/fr/widgets/decodeur-jwt/`; x-default=`/fr/widgets/decodeur-jwt/`
 - equivalence:6d4edba86601: en=`/tools/route-fares/`, fr=`/fr/tools/tarifs-itineraire/`, sw=`/sw/zana/nauli-za-ruti/`; x-default=`/tools/route-fares/`
-- equivalence:6d7819c4613e: en=`/tools/afrokitchen/recipes/urwagwa-rw/`; x-default=`/tools/afrokitchen/recipes/urwagwa-rw/`
 - equivalence:6d9aa6df9611: en=`/agriculture/poultry-roi/senegal`; x-default=`/agriculture/poultry-roi/senegal`
 - equivalence:6d9eccc9179c: en=`/tools/solar-roi/uganda/`, fr=`/fr/tools/roi-solaire/uganda/`; x-default=`/tools/solar-roi/uganda/`
 - equivalence:6da24b52a7d4: en=`/education/scholarships/`; x-default=`/education/scholarships/`
@@ -5699,7 +5693,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a077d73e3a24: en=`/blog/uif-calculator-south-africa-2026/`; x-default=`/blog/uif-calculator-south-africa-2026/`
 - equivalence:a0780c3339e1: en=`/tools/foreign-company-reg/`, fr=`/fr/tools/enregistrement-societe-etrangere/`, sw=`/sw/zana/usajili-wa-kampuni-ya-kigeni/`; x-default=`/tools/foreign-company-reg/`
 - equivalence:a084614ab8fc: en=`/tools/funeral-insurance/tunisia`, fr=`/fr/tools/assurance-obseques/tunisia`; x-default=`/tools/funeral-insurance/tunisia`
-- equivalence:a09232472093: en=`/tools/afrokitchen/recipes/vinho-caju-gw/`; x-default=`/tools/afrokitchen/recipes/vinho-caju-gw/`
 - equivalence:a0a11ba36f4e: en=`/tools/outage-cost/angola/`, fr=`/fr/tools/estimateur-du-cout-des-coupures-de-courant-angola/`; x-default=`/tools/outage-cost/angola/`
 - equivalence:a0b0212e0416: en=`/tools/university-admission/`, fr=`/fr/tools/parcours-admission-universite/`, sw=`/sw/zana/njia-ya-kuingia-chuo-kikuu/`; x-default=`/tools/university-admission/`
 - equivalence:a0be52c7a3f9: en=`/jamb/physics/1983/`; x-default=`/jamb/physics/1983/`
@@ -5888,7 +5881,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:abedb50cc850: en=`/tools/solar-roi/cameroon/`, fr=`/fr/tools/roi-solaire/cameroon/`; x-default=`/tools/solar-roi/cameroon/`
 - equivalence:abf4ddc2f885: en=`/tools/afrokitchen/recipes/ibiharage-bi/`; x-default=`/tools/afrokitchen/recipes/ibiharage-bi/`
 - equivalence:ac11c2fbd073: en=`/agriculture/farm-payroll/guinea-bissau`, fr=`/fr/agriculture/farm-payroll/guinea-bissau`, sw=`/sw/kilimo/mishahara-ya-shamba/guinea-bissau/`; x-default=`/agriculture/farm-payroll/guinea-bissau`
-- equivalence:ac2cbf2c991b: en=`/tools/afrokitchen/recipes/suwa-er/`; x-default=`/tools/afrokitchen/recipes/suwa-er/`
 - equivalence:ac327446dab5: en=`/tools/domestic-worker/nigeria/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-nigeria/`; x-default=`/tools/domestic-worker/nigeria/`
 - equivalence:ac3c5836a993: en=`/south-sudan/ss-vat`, fr=`/fr/south-sudan/ss-vat`, sw=`/sw/south-sudan/kikokotoo-vat/`; x-default=`/south-sudan/ss-vat`
 - equivalence:ac506e31519e: en=`/ethiopia/et-vat`, fr=`/fr/ethiopia/et-vat`, sw=`/sw/ethiopia/kikokotoo-vat/`; x-default=`/ethiopia/et-vat`
@@ -6292,7 +6284,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c512af5d028a: en=`/data-productivity/`, sw=`/sw/data-na-tija/`; x-default=`/data-productivity/`
 - equivalence:c51ad9778947: en=`/agriculture/seed-rate/mozambique`, fr=`/fr/agriculture/seed-rate/mozambique`, sw=`/sw/kilimo/kiwango-cha-mbegu/mozambique/`; x-default=`/agriculture/seed-rate/mozambique`
 - equivalence:c52dab1c2f70: en=`/agriculture/export-docs/egypt`; x-default=`/agriculture/export-docs/egypt`
-- equivalence:c544d9dbc65c: en=`/tools/afrokitchen/recipes/ikivuguto-bi/`; x-default=`/tools/afrokitchen/recipes/ikivuguto-bi/`
 - equivalence:c54f41a19783: en=`/tools/time-zone/`, fr=`/fr/tools/fuseaux-horaires/`, sw=`/sw/zana/kigeuzi-saa-za-maeneo/`; x-default=`/tools/time-zone/`
 - equivalence:c55a80504c91: en=`/tools/afrokitchen/recipes/mbatten-ly/`; x-default=`/tools/afrokitchen/recipes/mbatten-ly/`
 - equivalence:c574018c949a: en=`/tools/streaming-royalties/`, fr=`/fr/tools/redevances-streaming-musical/`; x-default=`/tools/streaming-royalties/`
@@ -6359,7 +6350,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c88f77fa24d4: en=`/tools/afrokitchen/countries/zimbabwe/`; x-default=`/tools/afrokitchen/countries/zimbabwe/`
 - equivalence:c8992c9eb74d: sw=`/sw/biashara-na-faida/`; x-default=`/sw/biashara-na-faida/`
 - equivalence:c8c83ccd162d: en=`/jamb/government/1990/`; x-default=`/jamb/government/1990/`
-- equivalence:c8d82c38455f: en=`/tools/afrokitchen/recipes/umcombotsi-sz/`; x-default=`/tools/afrokitchen/recipes/umcombotsi-sz/`
 - equivalence:c8e17379933b: en=`/jamb/english/1981/`; x-default=`/jamb/english/1981/`
 - equivalence:c8ebdc343638: en=`/tools/afrokitchen/recipes/taita-er/`; x-default=`/tools/afrokitchen/recipes/taita-er/`
 - equivalence:c8ee15898a0e: en=`/tools/afrokitchen/recipes/nyambeh-nyebeh-gm/`; x-default=`/tools/afrokitchen/recipes/nyambeh-nyebeh-gm/`
@@ -7235,7 +7225,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fe3e750c7718: en=`/tools/gratuity-calculator/cote-divoire/`, sw=`/sw/cote-divoire/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/cote-divoire/`
 - equivalence:fe436560fadb: en=`/tools/maternity-leave/egypt/`; x-default=`/tools/maternity-leave/egypt/`
 - equivalence:fe436c4a12d8: en=`/developers/`, fr=`/fr/developers/`, sw=`/sw/developers/`; x-default=`/developers/`
-- equivalence:fe530aa93195: en=`/tools/afrokitchen/recipes/kunu-zaki-ng/`; x-default=`/tools/afrokitchen/recipes/kunu-zaki-ng/`
 - equivalence:fe5d5571a4c8: en=`/tools/employee-cost/gambia/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-gambie/`; x-default=`/tools/employee-cost/gambia/`
 - equivalence:fe7cf61ffdd8: en=`/tools/afrokitchen/recipes/ntaba-cd/`; x-default=`/tools/afrokitchen/recipes/ntaba-cd/`
 - equivalence:fe8da5f1393e: en=`/jamb/mathematics/2025/`; x-default=`/jamb/mathematics/2025/`
