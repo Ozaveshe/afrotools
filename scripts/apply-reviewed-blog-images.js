@@ -6,6 +6,7 @@ const {imageSize}=require('./lib/image-size');
 const ROOT=path.resolve(__dirname,'..');
 const cohort=require('../data/image-generation/placement-review-cohort.json');
 const bindings=require('../data/image-generation/blog-artwork-bindings.json').images;
+const generatedArtwork=new Map(require('../data/image-generation/blog-generated-2026-10-09.json').images.map(row=>[row.slug,row]));
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 function applyBindings(check=false) {
@@ -14,14 +15,22 @@ function applyBindings(check=false) {
   if(!/^(?:fr\/)?blog\/[a-z0-9/-]+\.html$/.test(row.file)||row.file.includes('..')||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.webp$/.test(row.path)) throw new Error('Invalid reviewed article binding');
   const file=path.join(ROOT,row.file),image=path.join(ROOT,row.path),bytes=fs.readFileSync(image),size=imageSize(image);
   if(crypto.createHash('sha256').update(bytes).digest('hex')!==row.sha256||size.w!==row.width||size.h!==row.height) throw new Error('Reviewed artwork changed '+row.path);
+  const generated=row.generation_slug&&generatedArtwork.get(row.generation_slug);
+  if(row.generation_slug&&(!generated||generated.target!==row.path||!generated.routes.includes(row.route))) throw new Error('Unknown generated article binding');
+  if(generated) for(const variant of generated.variants) {
+   if(!/^\/assets\/img\/blog\/(?:responsive\/)?[a-z0-9-]+\.webp$/.test(variant.path)) throw new Error('Invalid responsive artwork path');
+   const variantFile=path.join(ROOT,variant.path),variantBytes=fs.readFileSync(variantFile),dimensions=imageSize(variantFile);
+   if(crypto.createHash('sha256').update(variantBytes).digest('hex')!==variant.sha256||dimensions.w!==variant.width||dimensions.h!==variant.height) throw new Error('Generated variant changed');
+  }
+  const responsive=generated?` srcset="${escapeHtml(generated.variants.map(v=>`${v.path} ${v.width}w`).join(', '))}" sizes="${row.placement==='listing-card'?'(max-width: 640px) 100vw, 400px':'(max-width: 800px) 100vw, 1200px'}"`:'';
   const before=fs.readFileSync(file,'utf8');let after=before;
   if(row.placement==='article-hero') {
    const custom=Boolean(row.layout);
-   const marker=row.layout==='car-import' ? before.match(/<h2\b[^>]*>/)?.[0] : row.layout==='main-layout' ? before.match(/<main\b[^>]*>/)?.[0] : '<article class="article-layout">';
+   const marker=row.layout==='car-import' ? before.match(/<h2\b[^>]*>/)?.[0] : row.layout==='main-layout' ? before.match(/<main\b[^>]*>/)?.[0] : row.layout==='article-layout' ? before.match(/<article\b[^>]*>/)?.[0] : '<article class="article-layout">';
    if(!marker||(!custom&&before.split(marker).length!==2)) throw new Error('Reviewed article layout changed '+row.file);
    const figureStyle=custom?' style="max-width:800px;margin:24px auto;padding:0 16px;box-sizing:border-box"':'';
    const imageStyle=custom?' style="display:block;width:100%;height:auto"':'';
-   const figure=`<figure class="article-featured-img" data-reviewed-blog-image="true"${figureStyle}>\n <div class="article-featured-img-inner"><img width="${row.width}" height="${row.height}" src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" decoding="async" loading="eager"${imageStyle}></div>\n <figcaption>${escapeHtml(row.caption)}</figcaption>\n</figure>`;
+   const figure=`<figure class="article-featured-img" data-reviewed-blog-image="true"${figureStyle}>\n <div class="article-featured-img-inner"><img width="${row.width}" height="${row.height}" src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" decoding="async" loading="eager"${responsive}${imageStyle}></div>\n <figcaption>${escapeHtml(row.caption)}</figcaption>\n</figure>`;
    const existing=/<figure class="article-featured-img" data-reviewed-blog-image="true"[^>]*>[\s\S]*?<\/figure>/g;
    const matches=before.match(existing)||[];
    if(matches.length>1) throw new Error('Duplicate reviewed article image '+row.file);
@@ -36,12 +45,25 @@ function applyBindings(check=false) {
     if(!card.includes(`href="${row.route}"`)) return card;
     matches++;
     const tag=card.match(/<img\b[^>]*>/)?.[0];
-    if(!tag||!['/assets/img/og-home.png',row.path].some(src=>tag.includes(`src="${src}"`))) throw new Error('Article card imagery changed '+row.route);
-    const next=tag.replace(/\s(?:src|alt|width|height)="[^"]*"/g,'').replace('<img',`<img src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" width="${row.width}" height="${row.height}"`);
+    if(!tag||!['/assets/img/og-home.png',row.previous_path,row.path].filter(Boolean).some(src=>tag.includes(`src="${src}"`))) throw new Error('Article card imagery changed '+row.route);
+    const next=tag.replace(/\s(?:src|alt|width|height|srcset|sizes)="[^"]*"/g,'').replace('<img',`<img src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" width="${row.width}" height="${row.height}"${responsive}`);
     return card.replace(tag,next);
    });
    if(matches!==1) throw new Error('Expected one reviewed article card '+row.route);
   } else throw new Error('Unknown article image placement');
+  if(row.update_social) {
+   const url='https://afrotools.com'+row.path;
+   for(const [key,value] of [['og:image',url],['twitter:image',url],['og:image:width',row.width],['og:image:height',row.height]]) {
+    const re=new RegExp(`(<meta\\b[^>]*(?:property|name)="${key}"[^>]*content=")[^"]*(")`,'g');
+    if(re.test(after)) after=after.replace(re,(_,start,end)=>start+value+end);
+    else after=after.replace('</head>',`<meta ${key.startsWith('og:')?'property':'name'}="${key}" content="${value}">\n</head>`);
+   }
+   after=after.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g,(all,start,json,end)=>{
+    const schema=JSON.parse(json);let updated=false;
+    function visit(value){if(!value||typeof value!=='object')return;const type=value['@type'];if(['Article','BlogPosting','WebPage'].includes(type)||(type==='WebApplication'&&value.image)){if(value.image!==url){value.image=url;updated=true;}}if(Array.isArray(value))value.forEach(visit);else if(value['@graph'])visit(value['@graph']);}
+    visit(schema);return updated?start+JSON.stringify(schema).replace(/</g,'\\u003c')+end:all;
+   });
+  }
   if(after!==before){changed++;if(!check)fs.writeFileSync(file,after);}
  }
  return changed;

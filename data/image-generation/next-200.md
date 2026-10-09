@@ -1,4 +1,4 @@
-# AfroTools image batch 2026-09-27
+# AfroTools image batch 2026-09-08
 
 200 images. Text-free artwork is shared by equivalent translated pages; localize alt text and captions in HTML. Review every generated result before placement. These prompts use the saved repository catalogue, not a fresh source audit.
 
