@@ -41,7 +41,23 @@ Outputs:
 
 Do not describe a recipe as source-confirmed unless it has an audit entry. Static route eligibility means the page can be generated; it does not mean the culinary facts have been externally checked.
 
-Keep source notes internal. AfroKitchen pages should read like a confident chef's recipe, not a research memo. Use the audit data to fix ingredients, timing, method, substitutions, and cultural context, but do not render citations or source-count cards on public recipe pages.
+Keep internal research deliberations in the audit. Reviewed adaptations show concise source links, the review date and whether AfroTools has kitchen-tested that version. Keep these disclosures with the recipe and its text export; do not imply that source review proves a kitchen test.
+
+Publication is separate from verification. `recipes.is_published` controls application list, detail and export eligibility; `is_verified` records verification separately. New records default to unpublished and unverified. The importer requires explicit boolean flags to change publication; omitting `is_published` on an existing recipe preserves its current value. Saved manifests without the new field retain the legacy verified-row fallback, but explicit `is_published: false` always excludes a row. Public database read policies are unchanged; this flag is not a confidentiality boundary.
+
+The publication migration `20261009185059_afrokitchen_publication_state.sql` was applied to AfroTools once on 2026-10-09. It backfilled the existing 410 public recipes without changing content or verification. Check the live migration history before any deployment; do not replay it.
+
+## Reviewed Method Corrections
+
+Maintain accepted method/image pairs in `data/afrokitchen/recipe-method-overrides.json`, their audit entries in `recipe-research-audit.json`, and image provenance in the dated image ledger. Run `npm run afrokitchen:reviewed-methods:build` to project the maintained corrections into the saved manifest, nine recipe pages, related cards, country/collection pages and discovery indexes. The normal build also invokes this owner. It does not read or write live data. The live manifest exporter uses the same projection so regeneration cannot silently restore an older method.
+
+Unmeasured quantities remain unmeasured. The existing database numeric contract represents them as zero with an explicit unit/note such as “as needed”; display and export that note without inventing a quantity. Uncalculated nutrition stays null. Timers accompany the documented method and doneness checks; never use the generic 12-minute fermentation placeholder.
+
+The projection also refreshes `page_image` and `social_image`, and records `source_reviewed_at` separately from the live database `updated_at`. The sitemap owner uses that maintained review date for the corrected recipe and its containing hubs; rebuilding alone does not advance it.
+
+Deploy and verify the publication consumers and local image assets before applying any guarded live method/image/verification correction. A source projection, a live update and a production deployment require separate evidence. The sequential expansion importer is not a transactional recipe-repair tool.
+
+Validate with `npm run test:afrokitchen:publication`, the reviewed-method browser suite at 320/390px in both themes, and the release build/security/artifact checks. Browser checks must operate visible step navigation before starting a timer, parse downloaded TXT, retain source/testing disclosures and reject console, accessibility or overflow failures.
 
 ## Expansion Batches
 

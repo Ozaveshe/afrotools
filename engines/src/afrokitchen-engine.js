@@ -1808,7 +1808,7 @@ var AfroKitchenEngine = function() {
         return h(e);
       }
       try {
-        var s = a.from("recipes").select("*").eq("is_verified", !0);
+        var s = a.from("recipes").select("*").eq("is_published", !0);
         e && (e.country && (s = s.eq("country_code", e.country)), e.region && (s = s.eq("region", e.region)),
         e.category && (s = s.eq("category", e.category)), e.difficulty && (s = s.eq("difficulty", e.difficulty)),
         e.diet && (s = s.contains("diet_tags", [ e.diet ])), e.search && (s = s.or("name.ilike.%" + e.search + "%,description.ilike.%" + e.search + "%,country_name.ilike.%" + e.search + "%")),
@@ -1837,7 +1837,7 @@ var AfroKitchenEngine = function() {
         return f(e);
       }
       try {
-        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_verified", !0).single();
+        var s = await a.from("recipes").select("*").eq("slug", e).eq("is_published", !0).single();
         if (s.error) {
           throw s.error;
         }

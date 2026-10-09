@@ -57,6 +57,9 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
+      - name: Verify AfroKitchen publication and reviewed method contracts
+        run: npm run test:afrokitchen:publication
+
       - name: Verify private command-centre contracts
         run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
 
@@ -186,6 +189,13 @@ jobs:
           for route in pdf-convert pdf-workflow pdf-ocr; do
             SW_EXPORT_ID="$route" npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off
           done
+
+      - name: Verify reviewed recipe methods and shared recipe controls in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4231'
+        run: npx playwright test tests/e2e/afrokitchen-reviewed-methods.spec.js tests/e2e/afrokitchen-cooking-timers.spec.js tests/e2e/afrokitchen-recipe-copy.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
       - name: Verify generated outputs are committed
         run: |

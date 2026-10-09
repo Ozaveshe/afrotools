@@ -288,7 +288,7 @@ function loadAfroKitchenSitemapMetadata() {
 
     for (const recipe of generatedRecipes) {
       metadata.set(recipe.route_url, {
-        lastmod: normalizeSitemapLastmod(maxDate([recipe.updated_at, recipe.created_at]) || manifest.generated_at),
+        lastmod: normalizeSitemapLastmod(maxDate([recipe.source_reviewed_at, recipe.updated_at, recipe.created_at]) || manifest.generated_at),
         images: uniqueImages([
           { loc: recipe.social_image || recipe.page_image || recipe.image_url, title: `${recipe.name} recipe from ${recipe.country_name}` }
         ])
@@ -300,7 +300,7 @@ function loadAfroKitchenSitemapMetadata() {
         .map((entry) => (typeof entry === 'string' ? recipeBySlug.get(entry) : recipeBySlug.get(entry.slug)))
         .filter(Boolean);
       metadata.set(country.route_url, {
-        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.updated_at, recipe.created_at])) || manifest.generated_at),
+        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.source_reviewed_at, recipe.updated_at, recipe.created_at])) || manifest.generated_at),
         images: uniqueImages([{ loc: `${BASE_URL}/assets/img/tools/afrokitchen.webp`, title: `${country.country_name} recipes` }])
       });
     }
@@ -310,7 +310,7 @@ function loadAfroKitchenSitemapMetadata() {
         .map((entry) => (typeof entry === 'string' ? recipeBySlug.get(entry) : recipeBySlug.get(entry.slug)))
         .filter(Boolean);
       metadata.set(collection.route_url, {
-        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.updated_at, recipe.created_at])) || manifest.generated_at),
+        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.source_reviewed_at, recipe.updated_at, recipe.created_at])) || manifest.generated_at),
         images: uniqueImages([{ loc: toAbsoluteSiteUrl(collection.image_url) || `${BASE_URL}/assets/img/tools/afrokitchen.webp`, title: `${collection.name} recipe collection` }])
       });
     }
