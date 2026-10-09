@@ -17,7 +17,7 @@ test('reviewed blog imagery retains exact subjects, hashes and explicit illustra
   assert.equal(row.original_prompt,null,'Do not reconstruct historical generation prompts');
   const html=fs.readFileSync(path.join(ROOT,row.file),'utf8');
   if(row.placement==='article-hero'){
-   const figures=html.match(/<figure class="article-featured-img" data-reviewed-blog-image="true">[\s\S]*?<\/figure>/g)||[];
+   const figures=html.match(/<figure class="article-featured-img" data-reviewed-blog-image="true"[^>]*>[\s\S]*?<\/figure>/g)||[];
    assert.equal(figures.length,1,row.file);
    assert.ok(figures[0].includes('src="'+row.path+'"'));
    assert.ok(figures[0].includes('<figcaption>'+row.caption+'</figcaption>'));

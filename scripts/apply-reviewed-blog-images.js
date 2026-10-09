@@ -11,20 +11,23 @@ const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<'
 function applyBindings(check=false) {
  let changed=0;
  for(const row of bindings) {
-  if(!/^blog\/[a-z0-9/-]+\.html$/.test(row.file)||row.file.includes('..')||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.webp$/.test(row.path)) throw new Error('Invalid reviewed article binding');
+  if(!/^(?:fr\/)?blog\/[a-z0-9/-]+\.html$/.test(row.file)||row.file.includes('..')||!/^\/assets\/img\/(?:blog|tools)\/[a-z0-9-]+\.webp$/.test(row.path)) throw new Error('Invalid reviewed article binding');
   const file=path.join(ROOT,row.file),image=path.join(ROOT,row.path),bytes=fs.readFileSync(image),size=imageSize(image);
   if(crypto.createHash('sha256').update(bytes).digest('hex')!==row.sha256||size.w!==row.width||size.h!==row.height) throw new Error('Reviewed artwork changed '+row.path);
   const before=fs.readFileSync(file,'utf8');let after=before;
   if(row.placement==='article-hero') {
-   const marker='<article class="article-layout">';
-   if(before.split(marker).length!==2) throw new Error('Reviewed article layout changed '+row.file);
-   const figure=`<figure class="article-featured-img" data-reviewed-blog-image="true">\n <div class="article-featured-img-inner"><img width="${row.width}" height="${row.height}" src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" decoding="async" loading="eager"></div>\n <figcaption>${escapeHtml(row.caption)}</figcaption>\n</figure>`;
-   const existing=/<figure class="article-featured-img" data-reviewed-blog-image="true">[\s\S]*?<\/figure>/g;
+   const custom=Boolean(row.layout);
+   const marker=row.layout==='car-import' ? before.match(/<h2\b[^>]*>/)?.[0] : row.layout==='main-layout' ? before.match(/<main\b[^>]*>/)?.[0] : '<article class="article-layout">';
+   if(!marker||(!custom&&before.split(marker).length!==2)) throw new Error('Reviewed article layout changed '+row.file);
+   const figureStyle=custom?' style="max-width:800px;margin:24px auto;padding:0 16px;box-sizing:border-box"':'';
+   const imageStyle=custom?' style="display:block;width:100%;height:auto"':'';
+   const figure=`<figure class="article-featured-img" data-reviewed-blog-image="true"${figureStyle}>\n <div class="article-featured-img-inner"><img width="${row.width}" height="${row.height}" src="${escapeHtml(row.path)}" alt="${escapeHtml(row.alt)}" decoding="async" loading="eager"${imageStyle}></div>\n <figcaption>${escapeHtml(row.caption)}</figcaption>\n</figure>`;
+   const existing=/<figure class="article-featured-img" data-reviewed-blog-image="true"[^>]*>[\s\S]*?<\/figure>/g;
    const matches=before.match(existing)||[];
    if(matches.length>1) throw new Error('Duplicate reviewed article image '+row.file);
    if(matches.length) after=before.replace(existing,figure);
    else {
-    if(/<img\b|class="article-featured-img"/.test(before)) throw new Error('Article already has imagery; review placement '+row.file);
+    if(/<img\b|class="article-featured-img"/.test(before)||/<iframe\b|http-equiv="refresh"|content="noindex/.test(before)) throw new Error('Article already has imagery or is navigation; review placement '+row.file);
     after=before.replace(marker,figure+'\n'+marker);
    }
   } else if(row.placement==='listing-card') {
