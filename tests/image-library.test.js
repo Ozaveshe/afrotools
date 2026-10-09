@@ -130,4 +130,4 @@ for(const file of ['tool-registry.js','tool-registry.min.js']) {
     assert.equal(tools.getToolCardImagePath(row),'/assets/img/tools/'+id+'.webp',file+' '+id);
   }
 }
-console.log('PASS: 63 incoming assets, 60 placements, 6 canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.');
+console.log(`PASS: 63 incoming assets, 60 placements, ${Object.keys(aliases).length} canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.`);
