@@ -4,13 +4,14 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { ROOT, loadManifest, loadAfroKitchenEngine, loadRecipeImages } = require('../scripts/lib/afrokitchen-static');
+const { ROOT, loadManifest, loadAfroKitchenEngine, loadRecipeImages, resolveRecipeMedia } = require('../scripts/lib/afrokitchen-static');
 const { buildRecipePageHtml, renderStaticRecipeCard } = require('../scripts/generate-afrokitchen-static-pages');
 const { imageSize } = require('../scripts/lib/image-size');
 const ledger = require('../data/image-generation/kitchen-generated-2026-10-09.json');
 const manifest = loadManifest();
 const engine = loadAfroKitchenEngine();
 const recipeImages = loadRecipeImages();
+const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
 
 for (const artwork of ledger.images) {
   test(`${artwork.slug}: reviewed image hashes, dimensions and mobile byte budget`, () => {
@@ -38,8 +39,33 @@ for (const artwork of ledger.images) {
     assert.ok(card.includes(artwork.alt));
   });
 }
+for (const artwork of aliasLedger.hero_reviews || []) {
+  test(`${artwork.slug}: reviewed secondary artwork becomes the same-recipe hero without invented provenance`, () => {
+    const recipe = manifest.recipes.find(row => row.slug === artwork.slug);
+    const bytes = fs.readFileSync(path.join(ROOT, artwork.path));
+    assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), artwork.sha256);
+    assert.deepEqual(imageSize(path.join(ROOT, artwork.path)), { w: artwork.width, h: artwork.height });
+    assert.equal(artwork.path, `/assets/img/kitchen/${aliasLedger.aliases[artwork.slug]}.webp`);
+    assert.equal(artwork.original_prompt, null);
+    assert.equal(resolveRecipeMedia(recipe, recipeImages).pageImage, artwork.path);
+    const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
+    assert.ok(html.includes(`content="https://afrotools.com${artwork.path}"`));
+    assert.ok(html.includes(artwork.alt));
+    assert.ok(html.includes('Recipe illustration'));
+    assert.ok(!html.includes('AI-generated illustration'));
+    const gallery = html.match(/<section class="ak-photo-gallery"[\s\S]*?<\/section>/)?.[0] || '';
+    assert.equal((gallery.match(new RegExp(`src="${artwork.path}"`, 'g')) || []).length, 1, 'Gallery must not duplicate the promoted secondary image');
+    const cover = html.match(/<img class="ak-cookbook-cover-photo"[^>]*>/)?.[0] || '';
+    assert.ok(cover.includes(artwork.alt));
+    assert.ok(cover.includes(`width="${artwork.width}" height="${artwork.height}"`));
+    const card = renderStaticRecipeCard(recipe, recipeImages);
+    assert.ok(card.includes(`src="${artwork.path}"`));
+    assert.ok(card.includes(`width="${artwork.width}" height="${artwork.height}"`));
+  });
+}
 test('existing unregistered recipe artwork gets no generated-image claim', () => {
   const recipe = manifest.recipes.find(row => row.slug === 'jollof-rice-ng');
   const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
   assert.ok(!html.includes('AI-generated illustration'));
+  assert.ok(!html.includes('Recipe illustration'));
 });
