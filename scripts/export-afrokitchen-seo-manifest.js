@@ -21,6 +21,7 @@ async function main() {
 
   console.log("AfroKitchen SEO manifest exported.");
   console.log(`Manifest path: ${MANIFEST_PATH}`);
+  console.log(`Published recipes: ${manifest.source.published_recipe_count}`);
   console.log(`Verified recipes: ${manifest.source.verified_recipe_count}`);
   console.log(`Generated recipe wave: ${manifest.wave.recipe_count}`);
   console.log(`Country hubs: ${manifest.wave.country_hub_count}`);

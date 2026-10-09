@@ -49,7 +49,7 @@ exports.handler = async function (event) {
 
   try {
     if (action === 'list') {
-      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_verified=eq.true&order=is_featured.desc,view_count.desc`;
+      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_published=eq.true&order=is_featured.desc,view_count.desc`;
       // Validate + encode filter values before interpolating into the PostgREST query
       // to prevent operator/filter injection. Invalid values silently skip the filter.
       if (params.country && /^[A-Za-z]{2}$/.test(params.country)) url += `&country_code=eq.${encodeURIComponent(params.country)}`;
@@ -70,7 +70,7 @@ exports.handler = async function (event) {
     if (action === 'get' && params.slug && /^[a-z0-9-]+$/.test(params.slug)) {
       // Get recipe with ingredients, steps, and reviews
       const recipeRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_verified=eq.true&select=*&limit=1`,
+        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_published=eq.true&select=*&limit=1`,
         { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
       );
       if (!recipeRes.ok) throw new Error('Upstream ' + recipeRes.status);

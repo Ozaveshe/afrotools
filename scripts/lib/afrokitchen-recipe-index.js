@@ -15,7 +15,10 @@ const RECIPE_FIELDS = [
 
 function buildRecipeIndex(manifest) {
   const recipes = (manifest.recipes || [])
-    .filter((recipe) => recipe.generated_in_wave && recipe.is_verified)
+    // Saved manifests predate the publication column. Explicit publication wins;
+    // only those legacy snapshots retain their original verified-row eligibility.
+    .filter((recipe) => recipe.generated_in_wave &&
+      (typeof recipe.is_published === "boolean" ? recipe.is_published : recipe.is_verified === true))
     .map((recipe) => ({
       ...Object.fromEntries(RECIPE_FIELDS.map((field) => [field, recipe[field] == null ? null : recipe[field]])),
       ingredients: (recipe.ingredients || []).map((item) => ({

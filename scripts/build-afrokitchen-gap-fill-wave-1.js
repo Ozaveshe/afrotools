@@ -563,7 +563,8 @@ const rows = [
   d("zobo-ng", "Zobo", "NG", "Nigeria", "West Africa", "beverage", "beverage", "dried hibiscus", "ginger, pineapple, and cloves", "cold over ice", ["zobo", "hibiscus"])
 ];
 
-const recipes = rows.map(recipe);
+const methodOverrides = require('../data/afrokitchen/recipe-method-overrides.json');
+const recipes = rows.map((row) => ({ ...recipe(row), ...(methodOverrides[row.slug] || {}) }));
 
 const seen = new Set();
 for (const item of recipes) {
