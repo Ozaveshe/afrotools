@@ -641,7 +641,7 @@ BEGIN
     'dambou-ne', 'Dambou', 'Dambou', 'Steamed moringa leaf couscous — tiny granules of millet flour mixed with dried moringa powder, steamed until fluffy and served with a spicy sauce.',
     'NE', 'Niger', 'West Africa', 'Hausa', 'main',
     ARRAY['moringa','millet','steamed','niger'],
-    ARRAY['vegan','gluten-free','dairy-free'],
+    ARRAY['vegan','dairy-free'],
     25, 30, 'medium', 6,
     'Dambou is a nutritional powerhouse from Niger, combining protein-rich moringa leaves with millet flour. Moringa, called "the miracle tree," grows abundantly in the Sahel and is central to Nigerien cuisine and health.',
     'Everyday meals', 'Spicy pepper sauce or stew',
