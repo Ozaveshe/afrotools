@@ -55,6 +55,7 @@ test('Swahili Seed Rate owns exactly 55 native physical routes', () => {
   assert.equal(countryRows.length, 54);
   assert.ok(hub);
   const html = fs.readFileSync(path.join(ROOT, hub.swahili.file), 'utf8');
+  assert.ok(html.includes('<img class="hero-art" src="/assets/img/tools/zana-kikokotoo-idadi-ya-mbegu-sw.webp"'));
   assert.equal((html.match(/<li><a href="\/sw\/kilimo\/kiwango-cha-mbegu\//g) || []).length, 54);
   assert.match(html, /<html\b[^>]*\blang="sw"/);
   assert.match(html, /data-seed-rate-family/);

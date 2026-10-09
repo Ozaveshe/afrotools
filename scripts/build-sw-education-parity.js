@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const inventory = require("../reports/swahili-free-app-parity-inventory.json");
 const assignedManifest = require("../data/localization/sw-education-parity.json");
+const { loadBindings, resolveReviewedToolArtwork } = require("./lib/reviewed-tool-image-bindings");
+const reviewedArtwork = loadBindings();
 
 const root = path.resolve(__dirname, "..");
 const assignedIds = new Set(assignedManifest.routes.map((route) => route.id));
@@ -13,6 +15,9 @@ const rows = inventory.rows.filter(
 );
 const acceptanceState = "candidate-proof-pending";
 const refreshTranslations = process.argv.includes("--refresh-translations");
+// Limit regeneration to named page owners without rewriting shared discovery or manifests.
+const appsArgument = process.argv.find((argument) => argument.startsWith("--apps="));
+const selectedApps = appsArgument === undefined ? null : new Set(appsArgument.slice(7).split(",").filter(Boolean));
 const translationCachePath = path.join(root, "data", "i18n", "sw-education-parity-translations.json");
 const missingRouteOwners = Object.freeze({
   "word-counter": "/sw/zana/kihesabu-maneno",
@@ -434,7 +439,7 @@ function fieldHtml(field) {
 function page(row, definition, route, existing) {
   const english = normalize(row.englishRoute);
   const swahili = normalize(route);
-  const art = `/assets/img/tools/${row.englishId}.webp`;
+  const art = resolveReviewedToolArtwork(swahili, `/assets/img/tools/${row.englishId}.webp`, reviewedArtwork);
   const config = JSON.stringify({ id: row.englishId, title: definition.title, recipe: definition.recipe, global: definition.global, metrics: definition.metrics });
   let prelude = "";
   if (definition.prelude === "periodic-elements") {
@@ -534,6 +539,15 @@ function updateAssignedDiscovery(manifest, localizedDefinitions) {
 
 async function main() {
   if (rows.length !== 32) throw new Error(`Assigned Education denominator drift: ${rows.length}/32`);
+  if (selectedApps) {
+    if (!selectedApps.size) throw new Error("--apps requires at least one assigned Education page owner.");
+    for (const id of selectedApps) {
+      if (!definitions[id] || !rows.some((row) => row.englishId === id)) {
+        throw new Error(`Unknown assigned Education page owner: ${id}`);
+      }
+    }
+    if (refreshTranslations) throw new Error("--apps cannot be combined with --refresh-translations.");
+  }
   const strings = definitionStrings();
   const cache = Object.assign({}, readJson(translationCachePath, {}), manualTranslations);
   if (refreshTranslations) await populateTranslationCache(strings, cache);
@@ -553,6 +567,7 @@ async function main() {
     routes: []
   };
   for (const row of rows) {
+    if (selectedApps && !selectedApps.has(row.englishId)) continue;
     const definition = localizedDefinitions[row.englishId];
     const swahiliRoute = normalize(
       (definition && definition.swahiliRoute)
@@ -575,6 +590,10 @@ async function main() {
     const existing = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, page(row, definition, swahiliRoute, existing), "utf8");
+  }
+  if (selectedApps) {
+    console.log(`Generated ${selectedApps.size} selected Education page owners; shared manifests and discovery preserved.`);
+    return;
   }
   fs.mkdirSync(path.join(root, "data", "i18n"), { recursive: true });
   fs.writeFileSync(translationCachePath, `${JSON.stringify(Object.fromEntries(

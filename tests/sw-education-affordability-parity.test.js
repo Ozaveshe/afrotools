@@ -29,7 +29,13 @@ for (const app of manifest.apps) {
   assert.ok(html.includes(`https://afrotools.com/sw/zana/${app.slug}/`));
   assert.ok(html.includes(`href="https://afrotools.com${app.english}"`));
   assert.ok(html.includes(`src="${app.engine}`));
-  const image = app.slug === 'mshahara-wa-mwalimu' ? 'zana-mshahara-wa-mwalimu-sw.webp' : app.image;
+  const reviewedImages = {
+    'mshahara-wa-mwalimu': 'zana-mshahara-wa-mwalimu-sw.webp',
+    'ada-za-shule': 'zana-ada-za-shule-sw.webp',
+    'marejesho-ya-mkopo-wa-mwanafunzi': 'zana-marejesho-ya-mkopo-wa-mwanafunzi-sw.webp',
+    'kikokotoo-helb-kenya': 'zana-kikokotoo-helb-kenya-sw.webp'
+  };
+  const image = reviewedImages[app.slug] || app.image;
   assert.ok(html.includes(`/assets/img/tools/${image}`));
   assert.ok(fs.existsSync(path.join(root, 'assets/img/tools', image)));
   assert.ok(!/<iframe\b/i.test(html));
