@@ -92,7 +92,13 @@ for (const [id, slug, fr] of rows) {
   );
   assert.match(sw, /application\/ld\+json/);
   assert.match(sw, /name="geo.region" content="002"/);
-  const imageId = id === "creator-invoice" ? "zana-ankara-ya-mtayarishi-sw" : id;
+  const reviewedImages = {
+    "creator-invoice": "zana-ankara-ya-mtayarishi-sw",
+    "creator-hashtags": "zana-hashtag-za-maudhui-sw",
+    "creator-hooks": "zana-hook-za-video-sw",
+    "creator-kit": "zana-media-kit-ya-mtayarishi-sw",
+  };
+  const imageId = reviewedImages[id] || id;
   assert.match(sw, new RegExp(`assets/img/tools/${q(imageId)}\\.webp`));
   assert.ok(
     fs.statSync(path.join(ROOT, `assets/img/tools/${imageId}.webp`)).size > 1000,
