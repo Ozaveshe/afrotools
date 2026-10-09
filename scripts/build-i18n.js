@@ -109,6 +109,18 @@ if (pageIdx !== -1 && args[pageIdx + 1] !== undefined) {
   flags.page = args[pageIdx + 1];
 }
 
+// Preserve localized copy while applying the optional chart dependency boundary.
+if (args.includes('--refresh-cameroon-chart-recovery')) {
+  if (flags.lang !== 'fr' || flags.page !== 'cameroon/cm-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Cameroon chart recovery requires --lang fr --page cameroon/cm-paye only');
+  const { addCameroonChartRecovery } = require('./lib/localized-chart-readiness');
+  const target = path.join(ROOT, 'fr/cameroon/cm-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = addCameroonChartRecovery(existing, 'fr');
+  if (refreshed !== existing) writeFileWithRetry(target, refreshed);
+  console.log(`French Cameroon chart recovery: ${refreshed === existing ? 'unchanged' : 'updated'}`);
+  process.exit(0);
+}
+
 // Repair the source guard without regenerating translated copy or layout.
 if (args.includes('--refresh-chart-readiness')) {
   if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) {
@@ -121,6 +133,42 @@ if (args.includes('--refresh-chart-readiness')) {
   const refreshed = refreshChartReadiness(existing, source);
   if (refreshed !== existing) writeFileWithRetry(target, refreshed);
   console.log(`French Kenya chart readiness: ${refreshed === existing ? 'unchanged' : 'updated'}; all other page bytes preserved`);
+  process.exit(0);
+}
+
+if (args.includes('--refresh-nigeria-save-state') || args.includes('--refresh-nigeria-restore')) {
+  if (!['fr','ha'].includes(flags.lang) || flags.page !== 'nigeria/ng-salary-tax' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Nigeria state refresh requires --lang fr|ha --page nigeria/ng-salary-tax only');
+  const { refreshNigeriaSaveState, refreshNigeriaRestore } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, flags.lang === 'fr' ? 'fr/nigeria/ng-salary-tax.html' : 'ha/najeriya/harajin-albashi/index.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refresh = args.includes('--refresh-nigeria-restore') ? refreshNigeriaRestore : refreshNigeriaSaveState;
+  const refreshed = refresh(existing, fs.readFileSync(path.join(ROOT, 'nigeria/ng-salary-tax.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('Nigeria ' + flags.lang + ' saved state: ' + (existing === refreshed ? 'unchanged' : 'updated'));
+  process.exit(0);
+}
+
+if (args.includes('--refresh-kenya-restore')) {
+  if (flags.lang !== 'fr' || flags.page !== 'kenya/ke-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Kenya restore refresh requires --lang fr --page kenya/ke-paye only');
+  const { refreshKenyaRestore } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, 'fr/kenya/ke-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refreshed = refreshKenyaRestore(existing, fs.readFileSync(path.join(ROOT, 'kenya/ke-paye.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('French Kenya restore: ' + (existing === refreshed ? 'unchanged' : 'updated'));
+  process.exit(0);
+}
+
+// Refresh a verified source control contract while retaining translated page copy.
+if (args.includes('--refresh-paye-save-readiness') || args.includes('--refresh-ghana-result-safety') || args.includes('--refresh-ghana-ai-boundary') || args.includes('--refresh-ghana-controls') || args.includes('--refresh-ghana-sharing') || args.includes('--refresh-ghana-restore')) {
+  if (flags.lang !== 'fr' || flags.page !== 'ghana/gh-paye' || flags.all || flags.dryRun || flags.validate || flags.overwriteExisting) throw new Error('Save readiness refresh requires --lang fr --page ghana/gh-paye only');
+  const { refreshSaveReadiness, refreshGhanaSafety, refreshGhanaAi, refreshGhanaControls, refreshGhanaSharing, refreshGhanaRestore } = require('./lib/localized-paye-save-readiness');
+  const target = path.join(ROOT, 'fr/ghana/gh-paye.html');
+  const existing = fs.readFileSync(target, 'utf8');
+  const refresh = args.includes('--refresh-ghana-restore') ? refreshGhanaRestore : args.includes('--refresh-ghana-sharing') ? refreshGhanaSharing : args.includes('--refresh-ghana-controls') ? refreshGhanaControls : args.includes('--refresh-ghana-ai-boundary') ? refreshGhanaAi : args.includes('--refresh-ghana-result-safety') ? refreshGhanaSafety : refreshSaveReadiness;
+  const refreshed = refresh(existing, fs.readFileSync(path.join(ROOT, 'ghana/gh-paye.html'), 'utf8'));
+  if (existing !== refreshed) writeFileWithRetry(target, refreshed);
+  console.log('French Ghana save readiness: ' + (existing === refreshed ? 'unchanged' : 'updated'));
   process.exit(0);
 }
 
@@ -1627,7 +1675,8 @@ function build() {
         }
 
         const html = fs.readFileSync(sourceFile, 'utf8');
-        const processedHtml = processHTML(html, lang, pagePath);
+        let processedHtml = processHTML(html, lang, pagePath);
+        if (lang === 'fr' && clean === 'cameroon/cm-paye') processedHtml = require('./lib/localized-chart-readiness').addCameroonChartRecovery(processedHtml, 'fr');
 
         if (!flags.dryRun) {
           const outputDir = path.dirname(outputPath);

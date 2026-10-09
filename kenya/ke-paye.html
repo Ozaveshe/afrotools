@@ -52,7 +52,7 @@
 <script src="/assets/js/components/navbar.min.js?v=0333a741" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/bundles/tool-page.9f8a94f8.min.js?v=9f8a94f8" defer></script><script src="/assets/js/bundles/core.aeb1b82d.min.js" defer></script><style>
+<script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script><script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><style>
   :root { --color-brand: #BB0000; }
   .grn { color: #2563EB !important; }
   .tool-hero { background: #1a1210; }
@@ -101,7 +101,7 @@
 </style>
   <link rel="stylesheet" href="/assets/css/print.css?v=84a2abc8" media="print">
   <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=ccbcafcf">
-<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=7cbfa474"></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="article:modified_time" content="2026-04-06">
 <style>
@@ -1326,6 +1326,27 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       var inputs = payload.inputs;
       var grossMonthly = Number(inputs.salaryValue || 0);
       var slider = document.getElementById('salarySlider');
+      function retireFailedRestore() {
+        window.RESULT = null;
+        clearTimeout(_debounceTimer);
+        var result = document.getElementById('resultsCard');
+        if (result) result.classList.remove('on');
+        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=document.getElementById(id);if(node)node.disabled=true;});
+        var response=document.getElementById('aiResp');
+        if(response){response.textContent='';response.style.display='none';response.classList.remove('on');}
+        var chat=document.getElementById('aiChat');if(chat)chat.classList.remove('on');
+        var status=document.getElementById('aiStatus');
+        if(status){status.style.display='';status.setAttribute('role','status');status.textContent='Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.';}
+      }
+      var fieldIds=['salaryInput','salarySlider','insurancePremium','pensionContrib','mortgageInterest','prmfContrib'];
+      if(!Number.isFinite(grossMonthly)||grossMonthly<=0||fieldIds.concat(['sliderVal']).some(function(id){return !document.getElementById(id);})){
+        retireFailedRestore();return false;
+      }
+      var previousPeriod=window.PERIOD;
+      var previousFields=fieldIds.concat(['calcSaveName']).map(function(id){var node=document.getElementById(id);return node?{node:node,value:node.value}:null;}).filter(Boolean);
+      var previousViews=Array.from(document.querySelectorAll('[data-tog],.per-btn,#insuranceField,#pensionField,#mortgageField,#prmfField,#salarySlider')).map(function(node){return {node:node,className:node.className,style:node.getAttribute('style'),checked:node.getAttribute('aria-checked')};});
+      var previousSliderLabel=document.getElementById('sliderVal').textContent;
+      try {
 
       document.getElementById('salaryInput').value = formatInput(grossMonthly);
       if (slider) {
@@ -1374,7 +1395,16 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
         document.getElementById('calcSaveName').value = title || '';
       }
 
+      if(!window.RESULT)throw new Error('Restore calculation unavailable');
       return true;
+      } catch(error) {
+        retireFailedRestore();
+        window.PERIOD=previousPeriod;
+        previousFields.forEach(function(field){field.node.value=field.value;});
+        previousViews.forEach(function(view){view.node.className=view.className;[['style',view.style],['aria-checked',view.checked]].forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
+        var label=document.getElementById('sliderVal');if(label)label.textContent=previousSliderLabel;
+        return false;
+      }
     }
   };
 })();
@@ -1382,7 +1412,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
-<script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=086ac120" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=e3cf7503" defer></script>

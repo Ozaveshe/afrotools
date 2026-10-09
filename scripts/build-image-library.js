@@ -32,6 +32,16 @@ function build() {
   const all = files();
   const incoming = JSON.parse(read(OUT + '/kitchen-import-2026-09-08.json')).images;
   const reviewed = new Map(incoming.map(r => [r.path, r]));
+  for (const file of fs.readdirSync(path.join(ROOT, OUT)).filter(f => /^kitchen-generated-\d{4}-\d{2}-\d{2}\.json$/.test(f))) {
+    for (const image of JSON.parse(read(OUT + '/' + file)).images) {
+      for (const variant of image.variants) reviewed.set(variant.path, {
+        sha256: variant.sha256,
+        text_status: 'text-free-reviewed',
+        locale_reuse: true,
+        review_note: image.provenance + ' Visually reviewed for the same recipe; generation prompt and variant hashes are recorded in ' + file + '.',
+      });
+    }
+  }
   const shared = JSON.parse(read(OUT + '/reviewed-shared-artwork.json'));
   for (const item of JSON.parse(read(OUT + '/reviewed-images.json')).images) reviewed.set(item.path, { ...item, review_note:item.note });
   for (const item of JSON.parse(read(OUT + '/blog-generated-2026-10-09.json')).images) {

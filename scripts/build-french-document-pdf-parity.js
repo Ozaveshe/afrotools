@@ -104,6 +104,7 @@ function translateMarkup(markup, routeExact) {
 }
 
 function localizeRouteOwnedRuntimeLiterals(html, app) {
+  if (app.id === 'pdf-workspace') html = require('./lib/pdf-workspace-history-runtime').installPdfWorkspaceHistory(html);
   const literals = {
     'pdf-workspace': [
       ['aria-label="Delete page ', 'aria-label="Supprimer la page '],
@@ -128,6 +129,7 @@ function localizeRouteOwnedRuntimeLiterals(html, app) {
     html = html.replace(/(<button\b[^>]*\bid="workspaceLoadRetry"[^>]*>)[^<]*(<\/button>)/g, '$1Réessayer le chargement PDF$2');
   }
   if (app.id === 'invoice-generator') {
+    html = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(html);
     html = html.replace(/<afro-business-cta\b[^>]*>/g, (tag) => tag
       .replace(/tool-name="[^"]*"/, 'tool-id="invoice-generator" lang="fr" tool-name="Générateur de factures"')
       .replace(/save-note="[^"]*"/, 'save-note="Utilisez les actions de cette page pour télécharger un PDF, imprimer, enregistrer une facture, choisir un modèle, partager ou exporter au format JSON."'));
@@ -444,6 +446,8 @@ function transform(source, app, config, lexicon, artwork, options = {}) {
 }
 
 function normalizeExisting(source, app, config, lexicon, artwork) {
+  if (app.id === 'pdf-workspace') source = require('./lib/pdf-workspace-history-runtime').installPdfWorkspaceHistory(source);
+  if (app.id === 'invoice-generator') source = require('./lib/invoice-saved-storage-html').installInvoiceSavedStorage(source);
   if (app.id === 'receipt-generator') {
     // Keep the reviewed PDF capture geometry aligned with the English active export owner.
     const capture = /  var pdfButton=document\.getElementById\('downloadPdfBtn'\);[\s\S]*?  \},true\);(?=\r?\n\}\)\(\);)/;
