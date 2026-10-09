@@ -14499,7 +14499,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kuficha-taarifa-pdf-sw",
+        "imageKey": "zana-kuficha-taarifa-pdf-sw"
       },
       {
         "id": "zana-kujaza-fomu-pdf-sw",

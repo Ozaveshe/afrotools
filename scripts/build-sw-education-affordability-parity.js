@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+const reviewedArtwork = loadBindings();
 
 const root = path.resolve(__dirname, '..');
 const manifestPath = path.join(root, 'data/localization/sw-education-affordability-parity.json');
@@ -12,6 +14,7 @@ function esc(value) {
 
 function comparableHtml(value) {
   return value
+    .replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g, (_, json) => `<script type="application/ld+json">${JSON.stringify(JSON.parse(json))}</script>`)
     .replace(/ data-chat-bundle="\/assets\/js\/bundles\/chat\.[0-9a-f]+\.min\.js"/g, '')
     .replace(/\?v=[0-9a-f]{8}(?=["'])/g, '')
     .replace(/\s*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>\r?\n?/g, '')
@@ -20,6 +23,7 @@ function comparableHtml(value) {
 
 function page(app) {
   const route = `/sw/zana/${app.slug}/`;
+  const artwork = resolveReviewedToolArtwork(route, `/assets/img/tools/${app.image}`, reviewedArtwork);
   const englishFile = path.join(root, app.english.replace(/^\//, ''), 'index.html');
   const englishHtml = fs.readFileSync(englishFile, 'utf8');
   const alternates = new Map();
@@ -40,15 +44,15 @@ function page(app) {
     .map(([language, href]) => `<link rel="alternate" hreflang="${esc(language)}" href="${esc(href)}">`)
     .join('\n');
   const fields = app.fields.map(field => `<div class="field"><label for="f-${esc(field[0])}">${esc(field[1])}</label><input id="f-${esc(field[0])}" name="${esc(field[0])}" type="${esc(field[2])}" value="${esc(field[3])}" ${field[2] === 'number' ? 'min="0" step="any" inputmode="decimal"' : 'maxlength="40"'}></div>`).join('');
-  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: app.title, description: app.summary, inLanguage: 'sw', applicationCategory: 'EducationalApplication', operatingSystem: 'Any', isAccessibleForFree: true, url: `https://afrotools.com${route}`, image: `https://afrotools.com/assets/img/tools/${app.image}`, isBasedOn: `https://afrotools.com${app.english}` }).replace(/</g, '\\u003c');
+  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: app.title, description: app.summary, inLanguage: 'sw', applicationCategory: 'EducationalApplication', operatingSystem: 'Any', isAccessibleForFree: true, url: `https://afrotools.com${route}`, image: `https://afrotools.com${artwork}`, isBasedOn: `https://afrotools.com${app.english}` }).replace(/</g, '\\u003c');
   return `<!doctype html>
 <html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(app.title)} | AfroTools</title><meta name="description" content="${esc(app.summary)}">
-<meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:title" content="${esc(app.title)}"><meta property="og:description" content="${esc(app.summary)}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${esc(app.image)}">
+<meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:title" content="${esc(app.title)}"><meta property="og:description" content="${esc(app.summary)}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:image" content="https://afrotools.com${esc(artwork)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(app.title)} | AfroTools">
 <meta name="twitter:description" content="${esc(app.summary)}">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/${esc(app.image)}"><script type="application/ld+json">${schema}</script>
+<meta name="twitter:image" content="https://afrotools.com${esc(artwork)}"><script type="application/ld+json">${schema}</script>
 <link rel="stylesheet" href="/assets/css/sw-education-affordability-parity.css"><link rel="canonical" href="https://afrotools.com${route}">
 ${alternateLinks}
 </head><body>
@@ -65,7 +69,7 @@ for (const app of manifest.apps) {
   const target = path.join(root, 'sw/zana', app.slug, 'index.html');
   const expected = page(app);
   if (check) {
-    if (!fs.existsSync(target) || comparableHtml(fs.readFileSync(target, 'utf8')) !== expected) { console.error(`STALE ${path.relative(root, target)}`); failed = true; }
+    if (!fs.existsSync(target) || comparableHtml(fs.readFileSync(target, 'utf8')) !== comparableHtml(expected)) { console.error(`STALE ${path.relative(root, target)}`); failed = true; }
   } else {
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, expected);

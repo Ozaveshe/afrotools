@@ -34,7 +34,9 @@ test('all Crop Yield routes are native Swahili, source-owned and route-correct',
     const html = fs.readFileSync(path.join(ROOT, row.swahili.file), 'utf8');
     assert.match(html, /<html\b[^>]*\blang="sw"/);
     assert.match(html, new RegExp(`https://afrotools.com${row.swahili.route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
-    assert.match(html, new RegExp(row.artwork.file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    const artwork = row.country ? row.artwork.file : 'assets/img/tools/zana-makisio-ya-mavuno-sw.webp';
+    assert.match(html, new RegExp(artwork.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.ok(html.includes(`<img class="hero-art" src="/${artwork}"`), `${row.swahili.route} visible artwork`);
     assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(|window\.__FR_AGRI_PAGE__|content-language" content="fr"/i);
     assert.doesNotMatch(html, /\b(?:Calculer|Choisissez|Confidentialité|Exporter|Rendement)\b/);
     const english = fs.readFileSync(path.join(ROOT, row.english.file), 'utf8');
