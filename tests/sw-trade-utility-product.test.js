@@ -8,6 +8,7 @@ const path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
 const { PAGES, html } = require("../scripts/build-sw-trade-utility-pages.js");
 const { localizedGeneratorEquivalent } = require("../scripts/lib/localized-generator-equivalence");
+const reviewedArtwork = require("../data/image-generation/reviewed-localized-tool-artwork.json").bindings;
 const runtime = require("../assets/js/pages/sw-trade-utility.js");
 const engine = require("../engines/src/trade-utility-engine.js");
 
@@ -53,12 +54,15 @@ for (const page of PAGES) {
   assert.match(sw, /data-shared-ai-handoff/);
   assert.match(sw, /href="\/sw\/ai\/"/);
   assert.doesNotMatch(sw, /\?tool=|candidate route|acceptance ledger|route map|iframe/i);
-  assert.match(sw, new RegExp(`/assets/img/tools/${page.id}\\.webp`));
+  const artworkPath = reviewedArtwork.find((binding) => binding.route === page.route)?.path || `/assets/img/tools/${page.id}.webp`;
+  assert.ok(sw.includes(`<img src="${artworkPath}"`), `${page.id}: visible artwork must match the reviewed route binding`);
+  assert.match(sw, new RegExp(`property="og:image" content="https://afrotools\\.com${artworkPath.replace(/\./g, "\\.")}"`));
+  if (page.id === "proforma-invoice") assert.equal(artworkPath, "/assets/img/tools/zana-ankara-proforma-sw.webp");
   assert.match(registry, new RegExp(`id:\\s*['"]${page.id}['"][\\s\\S]{0,500}category:\\s*['"]trade['"]`));
   for (const field of required[page.id]) assert.ok(runtime.FIELD_MATRICES[page.id].includes(field), `${page.id}: missing ${field}`);
   for (const marker of englishFields[page.id]) assert.ok(en.includes(marker), `${page.id}: English owner missing ${marker}`);
 
-  const artwork = fs.readFileSync(path.join(ROOT, "assets/img/tools", `${page.id}.webp`));
+  const artwork = fs.readFileSync(path.join(ROOT, artworkPath));
   const hash = crypto.createHash("sha256").update(artwork).digest("hex");
   assert.ok(!hashes.has(hash), `${page.id}: artwork duplicates another family member`);
   hashes.add(hash);

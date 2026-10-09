@@ -40,7 +40,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "car-import-cost",
+        "imageKey": "car-import-cost"
       },
       {
         "id": "zana-kushuka-thamani-ya-gari-sw",
@@ -52,7 +54,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "vehicle-depreciation",
+        "imageKey": "vehicle-depreciation"
       },
       {
         "id": "zana-nauli-za-ride-hailing-sw",
@@ -76,7 +80,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "boda-income",
+        "imageKey": "boda-income"
       },
       {
         "id": "zana-mapato-ya-okada-boda-sw",
@@ -100,7 +106,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "matatu-fare",
+        "imageKey": "matatu-fare"
       },
       {
         "id": "zana-ada-za-maegesho-sw",
@@ -536,7 +544,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "coo-generator",
+        "imageKey": "coo-generator"
       },
       {
         "id": "zana-gharama-last-mile-delivery-sw",
@@ -548,7 +558,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "last-mile-delivery",
+        "imageKey": "last-mile-delivery"
       },
       {
         "id": "zana-gharama-njia-za-logistics-sw",
@@ -560,7 +572,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "route-cost",
+        "imageKey": "route-cost"
       },
       {
         "id": "zana-uzito-wa-usafirishaji-sw",
@@ -584,7 +598,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "customs-time",
+        "imageKey": "customs-time"
       },
       {
         "id": "zana-orodha-nyaraka-usafirishaji-sw",
@@ -596,7 +612,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "export-docs-trade",
+        "imageKey": "export-docs-trade"
       },
       {
         "id": "zana-bill-of-lading-sw",
@@ -608,7 +626,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "bol-generator",
+        "imageKey": "bol-generator"
       },
       {
         "id": "zana-utafutaji-msimbo-hs-sw",
@@ -620,7 +640,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "hs-code-lookup",
+        "imageKey": "hs-code-lookup"
       },
       {
         "id": "zana-gharama-bidhaa-sw-wave8",
@@ -4768,7 +4790,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "student-budget",
+        "imageKey": "student-budget"
       },
       {
         "id": "zana-kadi-za-masomo-sw",
@@ -4840,7 +4864,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "kcse-calculator",
+        "imageKey": "kcse-calculator"
       },
       {
         "id": "zana-kikokotoo-waec-neco-sw",
@@ -6938,7 +6964,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "diabetes-risk",
+        "imageKey": "diabetes-risk"
       },
       {
         "id": "zana-hatari-ya-malaria-sw",
@@ -6974,7 +7002,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "drug-dosage",
+        "imageKey": "drug-dosage"
       },
       {
         "id": "zana-kikokotoo-maji-ya-kunywa-sw",
@@ -6986,7 +7016,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "water-intake",
+        "imageKey": "water-intake"
       },
       {
         "id": "zana-ratiba-ya-chanjo-sw",
@@ -6998,7 +7030,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "vaccine-schedule",
+        "imageKey": "vaccine-schedule"
       },
       {
         "id": "zana-selimundu-na-genotype-sw",
@@ -7010,7 +7044,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "zana-shinikizo-la-damu-sw",
@@ -7022,7 +7058,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "blood-pressure",
+        "imageKey": "blood-pressure"
       },
       {
         "id": "zana-tafsiri-ripoti-daktari-sw",
@@ -14035,7 +14073,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-algeria-sw",
@@ -14047,7 +14087,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-angola-sw",
@@ -14059,7 +14101,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-benin-sw",
@@ -14071,7 +14115,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "biashara-na-faida-sw",
@@ -14156,7 +14202,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-burkina-faso-sw",
@@ -14168,7 +14216,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-burundi-sw",
@@ -14180,7 +14230,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-cabo-verde-sw",
@@ -14192,7 +14244,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-chad-sw",
@@ -14204,7 +14258,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "zana-mwongozo-tin-comoros-sw",
@@ -14216,7 +14272,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       }
     ],
     "sw::document-pdf": [
@@ -14230,7 +14288,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "freelance-invoice",
+        "imageKey": "freelance-invoice"
       },
       {
         "id": "zana-ankara-ya-mtayarishi-sw",
@@ -14293,7 +14353,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "html-to-pdf",
+        "imageKey": "html-to-pdf"
       },
       {
         "id": "zana-kichwa-na-kijachini-pdf-sw",
@@ -14317,7 +14379,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "invoice-factoring",
+        "imageKey": "invoice-factoring"
       },
       {
         "id": "zana-kituo-cha-pdf-sw",
@@ -14353,7 +14417,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ankara-proforma-sw",
+        "imageKey": "zana-ankara-proforma-sw"
       },
       {
         "id": "zana-barua-ombi-sw",
@@ -14377,7 +14443,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-convert",
+        "imageKey": "pdf-convert"
       },
       {
         "id": "zana-kubadilisha-pdf-na-picha-sw",
@@ -14389,7 +14457,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-image-convert",
+        "imageKey": "pdf-image-convert"
       },
       {
         "id": "zana-kubana-pdf-sw",
@@ -14437,7 +14507,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compare",
+        "imageKey": "pdf-compare"
       }
     ],
     "sw::agriculture": [
@@ -14478,7 +14550,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "livestock-feed-calculator",
+        "imageKey": "livestock-feed-calculator"
       },
       {
         "id": "zana-faida-na-hasara-ya-shamba-sw",
@@ -14502,7 +14576,9 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "planting-calendar",
+        "imageKey": "planting-calendar"
       },
       {
         "id": "zana-kikokotoo-bima-ya-mazao-sw",
@@ -14704,7 +14780,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "employee-cost",
+        "imageKey": "employee-cost"
       },
       {
         "id": "ghana-kikokotoo-gharama-ya-mfanyakazi-sw",
@@ -14716,7 +14794,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "employee-cost",
+        "imageKey": "employee-cost"
       },
       {
         "id": "mozambique-kikokotoo-gharama-ya-mfanyakazi-sw",
@@ -14728,7 +14808,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "employee-cost",
+        "imageKey": "employee-cost"
       },
       {
         "id": "nigeria-kikokotoo-gharama-ya-mfanyakazi-sw",
@@ -14740,7 +14822,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "employee-cost",
+        "imageKey": "employee-cost"
       },
       {
         "id": "south-africa-kikokotoo-kiinua-mgongo-sw",
@@ -14752,7 +14836,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gratuity-calculator",
+        "imageKey": "gratuity-calculator"
       },
       {
         "id": "ghana-kikokotoo-kiinua-mgongo-sw",
@@ -14764,7 +14850,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gratuity-calculator",
+        "imageKey": "gratuity-calculator"
       },
       {
         "id": "mozambique-kikokotoo-kiinua-mgongo-sw",
@@ -14776,7 +14864,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gratuity-calculator",
+        "imageKey": "gratuity-calculator"
       },
       {
         "id": "nigeria-kikokotoo-kiinua-mgongo-sw",
@@ -14788,7 +14878,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gratuity-calculator",
+        "imageKey": "gratuity-calculator"
       },
       {
         "id": "south-africa-kikokotoo-malipo-ya-kuachishwa-kazi-sw",
@@ -14800,7 +14892,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "retrenchment-calculator",
+        "imageKey": "retrenchment-calculator"
       },
       {
         "id": "ghana-kikokotoo-malipo-ya-kuachishwa-kazi-sw",
@@ -14812,7 +14906,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "retrenchment-calculator",
+        "imageKey": "retrenchment-calculator"
       },
       {
         "id": "mozambique-kikokotoo-malipo-ya-kuachishwa-kazi-sw",
@@ -14824,7 +14920,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "retrenchment-calculator",
+        "imageKey": "retrenchment-calculator"
       },
       {
         "id": "nigeria-kikokotoo-malipo-ya-kuachishwa-kazi-sw",
@@ -14836,7 +14934,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "retrenchment-calculator",
+        "imageKey": "retrenchment-calculator"
       },
       {
         "id": "south-africa-kilinganisha-mkandarasi-na-mfanyakazi-sw",
@@ -14848,7 +14948,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "contractor-vs-employee",
+        "imageKey": "contractor-vs-employee"
       },
       {
         "id": "ghana-kilinganisha-mkandarasi-na-mfanyakazi-sw",
@@ -14860,7 +14962,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "contractor-vs-employee",
+        "imageKey": "contractor-vs-employee"
       },
       {
         "id": "mozambique-kilinganisha-mkandarasi-na-mfanyakazi-sw",
@@ -14872,7 +14976,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "contractor-vs-employee",
+        "imageKey": "contractor-vs-employee"
       },
       {
         "id": "nigeria-kilinganisha-mkandarasi-na-mfanyakazi-sw",
@@ -14884,7 +14990,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "contractor-vs-employee",
+        "imageKey": "contractor-vs-employee"
       },
       {
         "id": "employee-cost-sw-coverage-employee-cost",
@@ -15130,7 +15238,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "ghana-kikokotoo-gharama-ya-kibali-cha-kazi-sw",
@@ -15142,7 +15252,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "mozambique-kikokotoo-gharama-ya-kibali-cha-kazi-sw",
@@ -15154,7 +15266,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "nigeria-kikokotoo-gharama-ya-kibali-cha-kazi-sw",
@@ -15166,7 +15280,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       }
     ],
     "sw::energy": [
@@ -15195,7 +15311,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gas-lpg-cost",
+        "imageKey": "gas-lpg-cost"
       },
       {
         "id": "zana-kikokotoo-tariff-ya-umeme-sw",
@@ -15207,7 +15325,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "electricity-tariff",
+        "imageKey": "electricity-tariff"
       },
       {
         "id": "zana-ukaguzi-wa-nishati-nyumbani-sw",
@@ -15219,7 +15339,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "energy-audit",
+        "imageKey": "energy-audit"
       },
       {
         "id": "zana-faida-ya-biogas-sw",
@@ -15300,7 +15422,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "water-bill",
+        "imageKey": "water-bill"
       },
       {
         "id": "zana-gharama-za-mafuta-sw",
@@ -15338,7 +15462,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "backup-duration",
+        "imageKey": "backup-duration"
       },
       {
         "id": "zana-paygo-solar-sw",
@@ -15350,7 +15476,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "paygo-solar",
+        "imageKey": "paygo-solar"
       },
       {
         "id": "zana-solar-dhidi-ya-generator-sw",
@@ -15362,7 +15490,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "solar-vs-generator",
+        "imageKey": "solar-vs-generator"
       },
       {
         "id": "zana-ufuatiliaji-bei-za-mafuta-sw",
@@ -15374,7 +15504,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "fuel-tracker",
+        "imageKey": "fuel-tracker"
       },
       {
         "id": "zana-bei-mafuta-sw",
@@ -15398,7 +15530,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "electricity-bill-verify",
+        "imageKey": "electricity-bill-verify"
       }
     ],
     "sw::personal-finance": [
@@ -15448,7 +15582,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "fixed-deposit",
+        "imageKey": "fixed-deposit"
       },
       {
         "id": "zana-unganisha-mikopo-sw",
@@ -15460,7 +15596,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "loan-consolidation",
+        "imageKey": "loan-consolidation"
       },
       {
         "id": "zana-mfuko-wa-dharura-sw",
@@ -15472,7 +15610,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "emergency-fund",
+        "imageKey": "emergency-fund"
       },
       {
         "id": "zana-kikokotoo-mkopo-wa-microfinance-sw",
@@ -15484,7 +15624,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "microfinance-loan",
+        "imageKey": "microfinance-loan"
       },
       {
         "id": "zana-kikokotoo-sacco-na-vyama-vya-akiba-sw",
@@ -15508,7 +15650,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "net-worth",
+        "imageKey": "net-worth"
       },
       {
         "id": "zana-kilinganisha-mfuko-wa-soko-la-fedha-sw",
@@ -15520,7 +15664,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "money-market",
+        "imageKey": "money-market"
       },
       {
         "id": "zana-mikopo-ya-kidijitali-sw",
@@ -15532,7 +15678,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "digital-lending",
+        "imageKey": "digital-lending"
       },
       {
         "id": "zana-mpango-wa-kustaafu-mapema-sw",
@@ -15558,7 +15706,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "home-loan-eligibility",
+        "imageKey": "home-loan-eligibility"
       },
       {
         "id": "zana-orodha-ya-side-hustle-sw-finish",
@@ -16142,8 +16292,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "freelance-rate-card"
+        "imageExt": "webp",
+        "sourceId": "freelance-rate-card",
+        "imageId": "freelancer-rate",
+        "imageKey": "freelancer-rate"
       }
     ],
     "sw::creative": [
@@ -16182,7 +16334,9 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "creator-record",
+        "imageKey": "creator-record"
       },
       {
         "id": "zana-rekodi-na-hariri-sauti-sw-wave8",
@@ -16194,8 +16348,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "audio-recorder-editor"
+        "imageExt": "webp",
+        "sourceId": "audio-recorder-editor",
+        "imageId": "creator-voice",
+        "imageKey": "creator-voice"
       },
       {
         "id": "afrostream-sw-coverage-afrostream",
@@ -16419,7 +16575,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "api-tester",
+        "imageKey": "api-tester"
       },
       {
         "id": "zana-kizalishaji-docker-compose-sw-wave9",
@@ -16467,7 +16625,9 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "css-gradient",
+        "imageKey": "css-gradient"
       },
       {
         "id": "zana-kizalishaji-meta-tags-sw-wave9",
@@ -16491,7 +16651,9 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "url-encoder",
+        "imageKey": "url-encoder"
       },
       {
         "id": "zana-alama-za-html-sw",
@@ -16831,7 +16993,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "floor-plan",
+        "imageKey": "floor-plan"
       },
       {
         "id": "zana-kikokotoo-nondo-sw",
@@ -16843,7 +17007,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "rebar-calc",
+        "imageKey": "rebar-calc"
       },
       {
         "id": "zana-mchanganyiko-wa-zege-sw",
@@ -16855,7 +17021,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "concrete-calc",
+        "imageKey": "concrete-calc"
       },
       {
         "id": "zana-mjenzi-boq-sw",
@@ -17129,7 +17297,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "passport-photo",
+        "imageKey": "passport-photo"
       },
       {
         "id": "zana-kitengeneza-thumbnail-sw",
@@ -17183,7 +17353,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "image-format-convert",
+        "imageKey": "image-format-convert"
       },
       {
         "id": "zana-kubadilisha-ukubwa-wa-picha-sw",
@@ -17195,7 +17367,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "image-resize",
+        "imageKey": "image-resize"
       },
       {
         "id": "zana-kubana-picha-sw",
@@ -17234,7 +17408,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "image-filters",
+        "imageKey": "image-filters"
       },
       {
         "id": "zana-bei-za-mtayarishi-sw",
@@ -17768,7 +17944,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "payment-gateway",
+        "imageKey": "payment-gateway"
       },
       {
         "id": "zana-kikokotoo-hati-za-hazina-sw",
@@ -17999,7 +18177,9 @@
         "lang": "sw",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "carbon-credit",
+        "imageKey": "carbon-credit"
       },
       {
         "id": "zana-hatari-ya-mafuriko-sw",
@@ -18035,7 +18215,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "water-quality",
+        "imageKey": "water-quality"
       },
       {
         "id": "zana-ubora-wa-hewa-sw",
@@ -18109,7 +18291,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "cash-flow-forecast",
+        "imageKey": "cash-flow-forecast"
       },
       {
         "id": "zana-kifuatiliaji-inventory-sw-wave8",
@@ -18121,8 +18305,10 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "inventory-tracker"
+        "imageExt": "webp",
+        "sourceId": "inventory-tracker",
+        "imageId": "inventory",
+        "imageKey": "inventory"
       },
       {
         "id": "zana-startup-runway-sw-finish",
@@ -18294,7 +18480,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "hajj-budget",
+        "imageKey": "hajj-budget"
       },
       {
         "id": "zana-bajeti-ya-harusi-sw",
@@ -18306,7 +18494,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "wedding-budget",
+        "imageKey": "wedding-budget"
       },
       {
         "id": "zana-bajeti-ya-sherehe-ya-jina-sw",
@@ -18318,7 +18508,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "naming-ceremony",
+        "imageKey": "naming-ceremony"
       },
       {
         "id": "zana-nyakati-za-swala-na-qibla-sw",
@@ -18330,7 +18522,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "prayer-times",
+        "imageKey": "prayer-times"
       },
       {
         "id": "zana-ratiba-ya-ramadhani-sw",
@@ -18342,7 +18536,9 @@
         "lang": "sw",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "ramadan-timetable",
+        "imageKey": "ramadan-timetable"
       }
     ],
     "sw::diaspora": [
@@ -21035,8 +21231,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "african-french-translator"
+        "imageExt": "webp",
+        "sourceId": "african-french-translator",
+        "imageId": "french-african",
+        "imageKey": "french-african"
       },
       {
         "id": "zana-mtafsiri-wa-kihausa-sw-wave8",
@@ -21118,8 +21316,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "nigerian-pidgin-translator"
+        "imageExt": "webp",
+        "sourceId": "nigerian-pidgin-translator",
+        "imageId": "pidgin-translator",
+        "imageKey": "pidgin-translator"
       },
       {
         "id": "zana-nambari-za-kiarabu-sw-finish",
