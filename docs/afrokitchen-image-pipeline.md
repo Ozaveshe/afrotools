@@ -58,3 +58,9 @@ refresh of saved recipes and related cards, then
 The refresh validates hashes and dimensions before writing and preserves unrelated
 recipe content and release-owned page assets. Keep smaller responsive variants in
 `assets/img/kitchen/responsive/` so they do not become extra gallery photographs.
+
+When a legacy recipe destination changes, add `--refresh-legacy-aliases` to the
+offline refresh, then run the normal build to restore shared page assets and
+metadata. This regenerates the seven noindex navigation pages through their
+native owner. Verify their canonical destinations and browser navigation; do not
+add recipe imagery or Recipe markup to the navigation pages themselves.

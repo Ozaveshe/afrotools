@@ -81,8 +81,8 @@ const LEGACY_RECIPE_ALIASES = [
   },
   {
     legacySlug: "ghanaian-waakye",
-    targetCountryCode: "GH",
-    reason: "This older Waakye link now sends you to the Ghana cuisine hub while the dedicated recipe is being prepared."
+    targetRecipeSlug: "waakye-gh",
+    reason: "This older Waakye link now opens the current Ghanaian Waakye recipe."
   },
   {
     legacySlug: "dovi",
@@ -3325,4 +3325,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard };
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };

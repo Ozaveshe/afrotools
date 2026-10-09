@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { ROOT, loadManifest, loadAfroKitchenEngine, loadRecipeImages, resolveRecipeMedia } = require('../scripts/lib/afrokitchen-static');
-const { buildRecipePageHtml, renderStaticRecipeCard } = require('../scripts/generate-afrokitchen-static-pages');
+const { buildRecipePageHtml, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES } = require('../scripts/generate-afrokitchen-static-pages');
 const { imageSize } = require('../scripts/lib/image-size');
 const ledger = require('../data/image-generation/kitchen-generated-2026-10-09.json');
 const manifest = loadManifest();
@@ -68,4 +68,17 @@ test('existing unregistered recipe artwork gets no generated-image claim', () =>
   const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
   assert.ok(!html.includes('AI-generated illustration'));
   assert.ok(!html.includes('Recipe illustration'));
+});
+
+test('legacy Waakye navigation reaches the existing illustrated recipe without inventing shell imagery', () => {
+  const alias = LEGACY_RECIPE_ALIASES.find(row => row.legacySlug === 'ghanaian-waakye');
+  const target = manifest.recipes.find(row => row.slug === alias.targetRecipeSlug);
+  assert.equal(target.slug, 'waakye-gh');
+  assert.ok(resolveRecipeMedia(target, recipeImages).pageImage);
+  const html = buildLegacyAliasPage(alias, manifest);
+  assert.ok(html.includes(`content="0;url=${target.route_path}"`));
+  assert.ok(html.includes(`href="${target.route_path}"`));
+  assert.ok(html.includes('content="noindex, follow"'));
+  assert.ok(!html.includes('<img'));
+  assert.ok(!html.includes('"@type":"Recipe"'));
 });

@@ -7,11 +7,11 @@ const crypto = require('crypto');
 const { ROOT, loadManifest, loadRecipeImages, loadAfroKitchenEngine } = require('./lib/afrokitchen-static');
 const { imageSize } = require('./lib/image-size');
 const { buildCuisineIntelligence, writeCuisineIntelligenceFiles } = require('./lib/afrokitchen-cuisine-intelligence');
-const { buildRecipePageHtml, refreshRecipeImages, refreshRecipeSchema, renderStaticRecipeCard } = require('./generate-afrokitchen-static-pages');
+const { buildRecipePageHtml, refreshRecipeImages, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES, writeHtmlPage } = require('./generate-afrokitchen-static-pages');
 const ledger = require('../data/image-generation/kitchen-generated-2026-10-09.json');
 const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
 
-function run() {
+function run({ refreshLegacyAliases = false } = {}) {
   const manifest = loadManifest();
   const reused = aliasLedger.hero_reviews || [];
   const targets = new Set([...ledger.images, ...reused].map(image => image.slug));
@@ -67,7 +67,12 @@ function run() {
     }
   }
   visit(path.join(ROOT, 'tools/afrokitchen'));
+  if (refreshLegacyAliases) {
+    for (const alias of LEGACY_RECIPE_ALIASES) {
+      writeHtmlPage(path.join(ROOT, 'tools/afrokitchen/recipes', alias.legacySlug), buildLegacyAliasPage(alias, manifest));
+    }
+  }
   console.log(JSON.stringify({ images: targets.size, refreshed: [...new Set(changed)] }, null, 2));
 }
-if (require.main === module) run();
+if (require.main === module) run({ refreshLegacyAliases: process.argv.includes('--refresh-legacy-aliases') });
 module.exports = { run };
