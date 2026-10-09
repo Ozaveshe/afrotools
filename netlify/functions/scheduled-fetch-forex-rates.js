@@ -12,6 +12,8 @@
 
 const { setData, getData, updateMeta } = require('./_shared/data-store');
 const { storageDiagnostic } = require('./_shared/storage-diagnostics');
+const { fetchWithRetry } = require('./_shared/scraper-request');
+const fxEvidence = require('./_shared/reference-fx');
 
 // All African + global currencies we track
 const AFRICAN_CURRENCIES = [
@@ -78,7 +80,7 @@ async function fetchFromExchangeRateAPI() {
     ? 'https://open.er-api.com/v6/latest/USD'
     : `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 
-  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
   if (!res.ok) throw new Error(`ExchangeRate-API: HTTP ${res.status}`);
 
   const json = await res.json();
@@ -105,7 +107,7 @@ async function fetchFromExchangeRateAPI() {
  */
 async function fetchFromFrankfurter() {
   const url = 'https://api.frankfurter.app/latest?from=USD';
-  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
   if (!res.ok) throw new Error(`Frankfurter: HTTP ${res.status}`);
 
   const json = await res.json();
@@ -135,7 +137,7 @@ async function fetchFromFawazAhmed() {
   ];
   const candidates = await Promise.all(urls.map(async url => {
     try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      const res = await fetchWithRetry(url, { retries:1, timeoutMs:5000 });
       if (!res.ok) return null;
       const json = await res.json();
       const stamp = Date.parse(json.date);
@@ -197,7 +199,7 @@ exports.handler = async function (event) {
         console.log(`[forex-fetch] ${source.name} returned too few tracked currencies (${coverage}), trying next...`);
       }
     } catch (err) {
-      console.error(`[forex-fetch] ${source.name} failed: ${err.message}`);
+      console.error('[forex-fetch] '+source.name+' request or decoding failed');
     }
   }
 
@@ -223,7 +225,7 @@ exports.handler = async function (event) {
       const comparison = await fetchFromFawazAhmed();
       comparisonRates = comparison.rates;
     } catch (err) {
-      console.warn('[forex-fetch] Fawaz comparison fetch failed: ' + err.message);
+      console.warn('[forex-fetch] Fawaz comparison request or decoding failed');
     }
   }
 
@@ -247,17 +249,34 @@ exports.handler = async function (event) {
     timestamp: now,
     base: 'USD',
     rates: mergedRates,
-    crypto: existing && existing.crypto ? existing.crypto : {
-      BTC_USD: 87450.00,
-      ETH_USD: 3240.00,
-      USDT_USD: 1.0001,
-    },
+    // Fiat refreshes never manufacture or date crypto observations. Legacy
+    // crypto values are retained unchanged; the API qualifies them separately.
+    crypto: existing && existing.crypto ? existing.crypto : null,
     source: usedSource,
     next_update: nextUpdate,
     retained_rate_codes: Object.keys(mergedRates).filter(code =>
       !Object.hasOwn(fetchedRates, code) || stabilized.warnings.some(warning => warning.startsWith(code + ':'))),
     source_warnings: stabilized.warnings,
   };
+
+  // Persist each newly observed rate's provider date for later partial refreshes.
+  // Retained legacy values never acquire provenance from a collection timestamp.
+  data.rate_observations = {};
+  const retained = new Set(data.retained_rate_codes);
+  for (const [code, rate] of Object.entries(mergedRates)) {
+    if (!fxEvidence.SUPPORTED_CURRENCIES.includes(code) || typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0) continue;
+    if (retained.has(code)) {
+      const prior = existing?.rate_observations && Object.hasOwn(existing.rate_observations, code)
+        ? existing.rate_observations[code] : null;
+      const observedAt = fxEvidence.timestamp(prior?.observed_at);
+      if (existing?.schemaVersion === 1 && existing.base === 'USD' && prior?.rate === rate &&
+          existing.rates?.[code] === rate && observedAt && fxEvidence.REGISTERED_PROVIDERS.includes(prior.source)) {
+        data.rate_observations[code] = {rate, source:prior.source, observed_at:observedAt};
+      }
+    } else if (fxEvidence.timestamp(now) && fxEvidence.REGISTERED_PROVIDERS.includes(usedSource)) {
+      data.rate_observations[code] = {rate, source:usedSource, observed_at:fxEvidence.timestamp(now)};
+    }
+  }
 
   // Write to Blobs
   const written = await setData('forex-latest', data);

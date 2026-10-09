@@ -196,16 +196,28 @@ function normalizeLocale(locale) {
 }
 
 function availabilityFor(tool) {
+  // Explicit access describes the free core separately from Pro bundle membership.
+  if (Object.prototype.hasOwnProperty.call(tool, 'availability')) return tool.availability;
   const revenue = String(tool.revenue || '').toLowerCase();
   if (revenue === 'pro' || tool.proBundle === true) return 'pro';
   if (revenue.includes('freemium') || revenue.includes('pro')) return 'free-and-pro';
   return 'free';
 }
 
+function isValidFreshnessDate(value) {
+  if (value === null) return true;
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z)?$/.test(value)) return false;
+  const parsed = new Date(value);
+  if (!Number.isFinite(parsed.getTime())) return false;
+  return value.length === 10 ? parsed.toISOString().slice(0, 10) === value
+    : parsed.toISOString() === (value.length === 20 ? value.replace('Z', '.000Z') : value);
+}
+
 function normalizeFreshness(tool) {
   const asOf = tool.dataAsOf || tool.lastUpdated || tool.updatedAt || null;
   return {
-    status: asOf ? 'current' : 'unknown',
+    // A recorded date alone does not prove source review or a valid review interval.
+    status: 'unknown',
     asOf
   };
 }
@@ -499,6 +511,8 @@ function validateCanonicalRegistry(registry) {
     ['id', 'route', 'canonicalRoute', 'title', 'description', 'categoryId'].forEach((field) => {
       if (!tool[field]) errors.push(issue('TOOL_FIELD_REQUIRED', 'tool', tool.id || '(missing)', field, `${field} is required.`));
     });
+    if (!['free', 'free-and-pro', 'pro'].includes(tool.availability)) errors.push(issue('TOOL_AVAILABILITY_INVALID', 'tool', tool.id, 'availability', 'Availability must be free, free-and-pro or pro.'));
+    if (!tool.dataFreshness || !isValidFreshnessDate(tool.dataFreshness.asOf)) errors.push(issue('TOOL_FRESHNESS_DATE_INVALID', 'tool', tool.id, 'dataFreshness.asOf', 'Freshness dates must be null, a valid YYYY-MM-DD date or a UTC ISO timestamp.'));
     if (!VALID_PUBLICATION_STATES.has(tool.publicationStatus)) errors.push(issue('TOOL_PUBLICATION_STATE_INVALID', 'tool', tool.id, 'publicationStatus', `Unknown publication state ${tool.publicationStatus}.`));
     if (!categoryIds.has(tool.categoryId)) errors.push(issue('TOOL_CATEGORY_UNKNOWN', 'tool', tool.id, 'categoryId', `Category ${tool.categoryId} is not in the canonical category registry.`));
     tool.applicability.countryIds.forEach((countryId) => {

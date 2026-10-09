@@ -149,6 +149,16 @@ async function checkLiveDataMeta(summary, nowMs) {
 
   for (const watch of LIVE_DATA_WATCHES) {
     const catMeta = meta[watch.metaKey] || meta[watch.id] || {};
+    if (['insurance','property','salaries'].includes(watch.id)) {
+      const payload = await getData(watch.blobKey);
+      const reference = require('./_shared/reference-feeds').referenceStatus(watch.id,payload,catMeta,nowMs,watch.staleAfterMinutes);
+      categories.push({id:watch.id,blob_key:watch.blobKey,...reference,severity:watch.severity});
+      pushIssue(summary,reference.collection_status === 'offline' ? 'stale' : 'degraded',{
+        id:watch.id,surface:'live_data_meta',severity:watch.severity,age_minutes:reference.age_minutes,updated_at:reference.collected_at,
+        message:reference.collection_status === 'offline' ? 'Reference data is unavailable or invalid' :
+          'Market values remain unreviewed references; collection status: '+reference.collection_status});
+      continue;
+    }
     if (watch.id === 'agri_inputs') {
       const payload = await getData(watch.blobKey);
       const reference = require('./_shared/agri-reference').referenceStatus(payload, catMeta, nowMs, watch.staleAfterMinutes);

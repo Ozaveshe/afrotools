@@ -44,6 +44,7 @@ for (const filename of consumers) {
         './_shared/data-store': {},
       } });
       assert.equal((await owner.api.handler({})).statusCode, 503, 'owner must propagate the shared result');
+      assert.equal(captured.sourceType === 'reference', ['scheduled-fetch-insurance.js','scheduled-fetch-property.js','scheduled-fetch-salaries.js'].includes(filename), 'Review reference confidence scope explicitly');
       const runner = load('netlify/functions/_shared/scraper-base.js', {
         modules: { './data-store': {
           getData: async () => null, setData: async () => written,
@@ -60,7 +61,12 @@ for (const filename of consumers) {
         assert.match(response.body, /updated from SyntheticSource/);
         assert.equal(meta.status, 'ok');
         assert.notEqual(meta.last_fetch, previousMeta.last_fetch);
-        assert.ok(inserts.some(item => item.table === 'data_confidence'));
+        if (captured.sourceType === 'reference') {
+          assert.equal(meta.confidence, null);
+          assert.ok(!inserts.some(item => item.table === 'data_confidence'), 'A reference collection must not manufacture market confidence');
+        } else {
+          assert.ok(inserts.some(item => item.table === 'data_confidence'));
+        }
         assert.equal(inserts.find(item => item.table === 'scraper_runs').row.status, 'ok');
       } else {
         assert.match(response.body, /persistence failed/);

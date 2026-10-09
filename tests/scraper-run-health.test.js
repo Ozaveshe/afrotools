@@ -99,6 +99,7 @@ function loadFunction(name, { fetch, dependencies = {}, env = {} } = {}) {
     require(id) {
       if (id === './_shared/scraper-run-health') return health;
       if (id === './_shared/agri-reference') return require('../netlify/functions/_shared/agri-reference');
+      if (id === './_shared/reference-feeds') return require('../netlify/functions/_shared/reference-feeds');
       if (id === './utils/cors') return { getAllowedOrigin: () => 'https://example.invalid' };
       assert.ok(Object.hasOwn(dependencies, id), 'Unexpected dependency: ' + id);
       return dependencies[id];

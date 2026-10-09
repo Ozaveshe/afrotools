@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11701 |
-| Indexable pages | 7886 |
+| Public pages | 11702 |
+| Indexable pages | 7887 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4259 |
-| Documented fallbacks | 14973 |
-| Routes eligible for primary sitemaps | 7886 |
+| Genuine equivalence groups | 4260 |
+| Documented fallbacks | 14974 |
+| Routes eligible for primary sitemaps | 7887 |
 
 ## Locale Coverage
 
-- en: 6146 page records
+- en: 6147 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 549
+- article: 550
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -5403,6 +5403,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8e300dd47446: en=`/tools/afrokitchen/countries/ivory-coast/`; x-default=`/tools/afrokitchen/countries/ivory-coast/`
 - equivalence:8e37e62c00e3: en=`/tools/workers-comp/sao-tome-and-principe`; x-default=`/tools/workers-comp/sao-tome-and-principe`
 - equivalence:8e3fe1f3efe9: en=`/blog/cote-divoire-vat-filing-guide-2026/`; x-default=`/blog/cote-divoire-vat-filing-guide-2026/`
+- equivalence:8e4660724549: en=`/blog/signed-pdf-handoff-checklist-africa/`; x-default=`/blog/signed-pdf-handoff-checklist-africa/`
 - equivalence:8e4c1446bae0: en=`/tools/freelancer-rate/cote-divoire/`, fr=`/fr/tools/calculateur-de-tarif-independant-cote-d-ivoire/`; x-default=`/tools/freelancer-rate/cote-divoire/`
 - equivalence:8e4d044b2081: en=`/agriculture/vaccination-schedule/sierra-leone`; x-default=`/agriculture/vaccination-schedule/sierra-leone`
 - equivalence:8e635392ffc1: en=`/tools/employment-contract/djibouti`, fr=`/fr/tools/contrat-travail/djibouti`; x-default=`/tools/employment-contract/djibouti`

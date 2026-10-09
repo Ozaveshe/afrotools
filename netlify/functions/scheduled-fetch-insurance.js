@@ -2,15 +2,15 @@
  * AfroTools — Scheduled Insurance Premium Fetcher
  * Runs weekly (Monday 3am) via Netlify Scheduled Functions.
  *
- * Sources:
- *  1. CompareGuru / Hippo scrape (SA market — largest dataset)
- *  2. Seed data enriched with forex refresh
+ * Sources: undated AfroTools planning references, with separately qualified FX.
  *
  * Output: { timestamp, countries: [{ code, name, products: [{ type, avg_premium_usd, ... }] }] }
  * Writes to Netlify Blobs 'live-data' → key 'insurance-rates-latest'.
  */
 
-const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const { runScraper } = require('./_shared/scraper-base');
+const feeds = require('./_shared/reference-feeds');
+const { conversionReceipt } = require('./_shared/reference-fx');
 const { getData } = require('./_shared/data-store');
 
 // Insurance product types tracked per country
@@ -35,7 +35,7 @@ var MARKETS = {
   MU: { name: 'Mauritius', currency: 'MUR', providers: ['Swan', 'MUA', 'Mauritius Union'] },
 };
 
-// Reference premiums (USD/year) — baseline from industry reports
+// Reference premiums (USD/year) — undated planning references; source review remains open
 var REFERENCE_PREMIUMS = {
   ZA: { car_comprehensive: 850, car_third_party: 120, health_individual: 2400, health_family: 6000, life_term: 300, funeral: 80, home: 400 },
   KE: { car_comprehensive: 500, car_third_party: 80, health_individual: 800, health_family: 2000, life_term: 200, funeral: 50, home: 200 },
@@ -54,81 +54,30 @@ var REFERENCE_PREMIUMS = {
   MU: { car_comprehensive: 600, car_third_party: 100, health_individual: 1200, health_family: 3000, life_term: 250, funeral: 60, home: 300 },
 };
 
-/**
- * Source 1: Fetch from industry data APIs + web sources
- */
-async function fetchFromIndustrySources() {
-  // Try to get insurance penetration data from World Bank
-  // Indicator: IC.FRM.INS.ZS (firms with insurance)
-  var wbUrl = 'https://api.worldbank.org/v2/country/ALL/indicator/IC.FRM.INS.ZS?date=2020:2025&format=json&per_page=500';
-
-  var penetrationMap = {};
-  try {
-    var res = await fetchWithRetry(wbUrl, { headers: { 'Accept': 'application/json' } });
-    var json = await res.json();
-    if (json && json[1]) {
-      json[1].forEach(function(entry) {
-        if (entry.value !== null && entry.country) {
-          penetrationMap[entry.country.id] = entry.value;
-        }
-      });
-    }
-  } catch (e) {
-    console.log('[insurance] WB penetration data failed: ' + e.message);
-  }
-
-  // Build country data from reference premiums + forex adjustment
-  var forexData = await getData('forex-latest');
-  var rates = (forexData && forexData.rates) || {};
-  var now = new Date().toISOString().slice(0, 10);
-
-  var countries = Object.keys(MARKETS).map(function(code) {
-    var market = MARKETS[code];
-    var premiums = REFERENCE_PREMIUMS[code] || {};
-    var fxRate = rates[market.currency] || 1;
-
-    var products = INSURANCE_PRODUCTS.map(function(type) {
-      var usdPremium = premiums[type] || null;
-      return {
-        type: type,
-        avg_premium_usd: usdPremium,
-        avg_premium_local: usdPremium ? Math.round(usdPremium * fxRate) : null,
-        currency: market.currency,
-      };
-    }).filter(function(p) { return p.avg_premium_usd !== null; });
-
-    return {
-      code: code,
-      name: market.name,
-      currency: market.currency,
-      providers: market.providers,
-      products: products,
-      insurance_penetration: penetrationMap[code] || null,
-      last_updated: now,
-      source: 'reference-with-forex',
-    };
+// These are undated reference premiums, not current insurer quotes. The former
+// World Bank firms-insurance metric did not establish premium-price provenance.
+async function fetchReferenceInsurance() {
+  const forex = await getData('forex-latest'), now = new Date().toISOString();
+  return Object.keys(MARKETS).map(code => {
+    const market = MARKETS[code], premiums = REFERENCE_PREMIUMS[code] || {};
+    return {code, name:market.name, currency:market.currency, providers:market.providers,
+      provider_status:'unreviewed_reference', insurance_penetration:null,
+      source:'reference', ...feeds.referenceFields(), last_updated:null, collected_at:now,
+      conversion:conversionReceipt(forex,market.currency,feeds.options(now)),
+      products:INSURANCE_PRODUCTS.filter(type => feeds.amount(premiums[type])).map(type => ({
+        type, period:'annual', currency:market.currency, ...feeds.referenceFields(),
+        avg_premium_usd:premiums[type], avg_premium_local:feeds.localAmount(premiums[type],market.currency,forex,now)
+      }))};
   });
-
-  return countries;
 }
-
-function transformInsuranceData(countries) {
-  return {
-    timestamp: new Date().toISOString(),
-    countries: countries,
-    record_count: countries.length,
-  };
-}
-
-exports.handler = async function(event) {
+exports.handler = async function() {
   return runScraper({
     id: 'insurance-premiums',
-    blobKey: 'insurance-rates-latest',
+    blobKey: feeds.KEYS.insurance,
     metaKey: 'insurance',
-    sources: [
-      { name: 'IndustrySources', fn: fetchFromIndustrySources },
-    ],
-    transform: transformInsuranceData,
-    validateOpts: { maxChangeRatio: 3.0 },
+    sourceType: 'reference',
+    sources: [{name:'ReferenceInsurance',fn:fetchReferenceInsurance}],
+    transform: countries => feeds.buildSnapshot('insurance',countries,new Date().toISOString()),
+    validateOpts: {maxChangeRatio:3.0}
   });
 };

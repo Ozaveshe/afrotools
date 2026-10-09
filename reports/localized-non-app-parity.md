@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 309 |
-| sw | 137 | 1 | 333 |
+| fr | 160 | 2 | 310 |
+| sw | 137 | 1 | 334 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 344 | 40 | 0 | 304 | 21 | 0 | 323 |
+| editorial | 345 | 40 | 0 | 305 | 21 | 0 | 324 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -536,6 +536,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/side-hustle-tax-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/sierra-leone-employer-payroll-compliance-2026/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/signed-pdf-handoff-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/signed-pdf-handoff-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/small-business-waste-audit-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/small-business-waste-audit-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/solar-panel-costs-nigeria-2026/ | editorial | fr | — | missing | no localized route or owner file |
