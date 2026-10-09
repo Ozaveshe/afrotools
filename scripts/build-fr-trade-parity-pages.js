@@ -550,7 +550,7 @@ ${page.sw ? `<link rel="alternate" hreflang="sw" href="https://afrotools.com${pa
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="pdf">PDF</button>
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="csv">CSV</button>
             <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="json">JSON</button>
-            <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="txt">TXT</button>
+            <button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="txt">TXT</button>${page.tool === "landed-cost" ? '<button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="copy">Copier le résultat</button><button class="fr-trade-button fr-trade-button--secondary" type="button" data-export="print">Imprimer le résultat</button>' : ""}
             ${page.tool === "export-documents" ? '<label class="fr-trade-button fr-trade-button--secondary">Rouvrir JSON<input type="file" accept="application/json,.json" data-import-json aria-label="Rouvrir un export JSON"></label>' : ""}
           </div>
         </section>

@@ -72,7 +72,8 @@ jobs:
   build:
     name: Build and audit
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Preserve cumulative artifact checks, including customs export recovery.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -186,6 +187,13 @@ jobs:
           for route in pdf-convert pdf-workflow pdf-ocr; do
             SW_EXPORT_ID="$route" npx playwright test tests/e2e/swahili-document-pdf-legacy-export-route.spec.js --project=chromium --workers=1 --trace=off
           done
+
+      - name: Verify French customs print and copy in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4192'
+        run: npx playwright test tests/e2e/fr-customs-print-copy.spec.js tests/e2e/fr-trade-utility-workflows.spec.js tests/e2e/fr-trade-established-engine.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
       - name: Verify generated outputs are committed
         run: |
