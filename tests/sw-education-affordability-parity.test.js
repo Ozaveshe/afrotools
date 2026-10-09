@@ -6,6 +6,17 @@ const { execFileSync } = require('child_process');
 const root = path.resolve(__dirname, '..');
 const manifest = require('../data/localization/sw-education-affordability-parity.json');
 
+const builderSource = fs.readFileSync(path.join(root, 'scripts/build-sw-education-affordability-parity.js'), 'utf8');
+const compareNode = require('acorn').parse(builderSource, { ecmaVersion: 'latest' }).body
+  .find(node => node.type === 'FunctionDeclaration' && node.id.name === 'comparableHtml');
+const comparableHtml = require('vm').runInNewContext(`(${builderSource.slice(compareNode.start, compareNode.end)})`);
+const schemaTag = json => `<script type="application/ld+json">${json}</script>`;
+const schema = { '@type': 'WebApplication', image: '/reviewed.webp', name: 'Teacher salary' };
+assert.equal(comparableHtml(schemaTag(JSON.stringify(schema, null, 2))), comparableHtml(schemaTag(JSON.stringify(schema))));
+assert.notEqual(comparableHtml(schemaTag(JSON.stringify({ ...schema, image: '/old.webp' }))), comparableHtml(schemaTag(JSON.stringify(schema))));
+assert.notEqual(comparableHtml(schemaTag(JSON.stringify({ ...schema, name: 'Changed title' }))), comparableHtml(schemaTag(JSON.stringify(schema))));
+assert.throws(() => comparableHtml(schemaTag('{invalid}')), /JSON|property/);
+
 assert.equal(manifest.apps.length, 8);
 assert.equal(new Set(manifest.apps.map(app => app.id)).size, 8);
 assert.equal(new Set(manifest.apps.map(app => app.slug)).size, 8);
@@ -18,8 +29,9 @@ for (const app of manifest.apps) {
   assert.ok(html.includes(`https://afrotools.com/sw/zana/${app.slug}/`));
   assert.ok(html.includes(`href="https://afrotools.com${app.english}"`));
   assert.ok(html.includes(`src="${app.engine}`));
-  assert.ok(html.includes(`/assets/img/tools/${app.image}`));
-  assert.ok(fs.existsSync(path.join(root, 'assets/img/tools', app.image)));
+  const image = app.slug === 'mshahara-wa-mwalimu' ? 'zana-mshahara-wa-mwalimu-sw.webp' : app.image;
+  assert.ok(html.includes(`/assets/img/tools/${image}`));
+  assert.ok(fs.existsSync(path.join(root, 'assets/img/tools', image)));
   assert.ok(!/<iframe\b/i.test(html));
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
   assert.ok(!/Calculate|Download|Reset|Privacy|Results|School option|Save locally/.test(visible));

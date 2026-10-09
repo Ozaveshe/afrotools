@@ -716,6 +716,11 @@ function buildFullParityPage(app) {
       if (rows.some((row) => row && row['@type'] === 'FAQPage')) return '';
       rows.forEach((row) => {
         if (!row) return;
+        const originalArtwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
+        if (row.image === originalArtwork) row.image = artworkUrl(app);
+        if (row.primaryImageOfPage && row.primaryImageOfPage['@type'] === 'ImageObject' && row.primaryImageOfPage.url === originalArtwork) {
+          row.primaryImageOfPage.url = artworkUrl(app);
+        }
         if (['WebApplication', 'WebPage'].includes(row['@type'])) {
           row.name = app.name;
           row.description = metadata.description;
