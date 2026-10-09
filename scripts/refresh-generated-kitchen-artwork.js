@@ -7,13 +7,16 @@ const crypto = require('crypto');
 const { ROOT, loadManifest, loadRecipeImages, loadAfroKitchenEngine } = require('./lib/afrokitchen-static');
 const { imageSize } = require('./lib/image-size');
 const { buildCuisineIntelligence, writeCuisineIntelligenceFiles } = require('./lib/afrokitchen-cuisine-intelligence');
-const { buildRecipePageHtml, refreshRecipeImages, refreshRecipeSchema, renderStaticRecipeCard } = require('./generate-afrokitchen-static-pages');
+const { buildRecipePageHtml, refreshRecipeImages, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES, writeHtmlPage } = require('./generate-afrokitchen-static-pages');
 const ledger = require('../data/image-generation/kitchen-generated-2026-10-09.json');
+const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
+const importedArtwork = require('../data/image-generation/kitchen-imported-2026-10-09.json').images;
 
-function run() {
+function run({ refreshLegacyAliases = false } = {}) {
   const manifest = loadManifest();
-  const targets = new Set(ledger.images.map(image => image.slug));
-  for (const image of ledger.images) {
+  const reused = aliasLedger.hero_reviews || [];
+  const targets = new Set([...ledger.images, ...reused, ...importedArtwork].map(image => image.slug));
+  for (const image of [...ledger.images, ...importedArtwork]) {
     if (!manifest.recipes.some(recipe => recipe.slug === image.slug)) throw new Error(`Unknown recipe: ${image.slug}`);
     for (const variant of image.variants) {
       if (!variant.path.startsWith('/assets/img/kitchen/') || variant.path.includes('..')) throw new Error('Invalid artwork path');
@@ -22,6 +25,14 @@ function run() {
       const size = imageSize(file);
       if (hash !== variant.sha256 || size?.w !== variant.width || size?.h !== variant.height) throw new Error(`Artwork changed: ${file}`);
     }
+  }
+  for (const image of reused) {
+    if (!manifest.recipes.some(recipe => recipe.slug === image.slug)) throw new Error(`Unknown recipe: ${image.slug}`);
+    if (image.path !== `/assets/img/kitchen/${aliasLedger.aliases[image.slug]}.webp` || image.path.includes('..')) throw new Error(`Invalid recipe alias: ${image.slug}`);
+    const file = path.join(ROOT, image.path);
+    const hash = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+    const size = imageSize(file);
+    if (hash !== image.sha256 || size?.w !== image.width || size?.h !== image.height) throw new Error(`Reviewed artwork changed: ${file}`);
   }
   const recipeImages = loadRecipeImages();
   const researchAudit = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/afrokitchen/recipe-research-audit.json'))).recipes || {};
@@ -52,12 +63,17 @@ function run() {
       else if (entry.name.endsWith('.html')) {
         const current = fs.readFileSync(file, 'utf8');
         const next = current.replace(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g, (all, href) => cards.get(href) || all);
-        if (next !== current) { fs.writeFileSync(file, next); changed.push(path.relative(ROOT, file)); }
+        if (next !== current) { fs.writeFileSync(file, next.replace(/[ \t]+$/gm, '')); changed.push(path.relative(ROOT, file)); }
       }
     }
   }
   visit(path.join(ROOT, 'tools/afrokitchen'));
+  if (refreshLegacyAliases) {
+    for (const alias of LEGACY_RECIPE_ALIASES) {
+      writeHtmlPage(path.join(ROOT, 'tools/afrokitchen/recipes', alias.legacySlug), buildLegacyAliasPage(alias, manifest));
+    }
+  }
   console.log(JSON.stringify({ images: targets.size, refreshed: [...new Set(changed)] }, null, 2));
 }
-if (require.main === module) run();
+if (require.main === module) run({ refreshLegacyAliases: process.argv.includes('--refresh-legacy-aliases') });
 module.exports = { run };

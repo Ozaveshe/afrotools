@@ -11,6 +11,14 @@ const engine = loadAfroKitchenEngine();
 const images = loadRecipeImages();
 const fixture = (slug = 'fisherman-soup-ng') => {
   const recipe = structuredClone(manifest.recipes.find(item => item.slug === slug));
+  if (slug === 'fisherman-soup-ng') {
+    recipe.slug = 'synthetic-image-free-recipe';
+    recipe.route_path = '/tools/afrokitchen/recipes/synthetic-image-free-recipe/';
+    recipe.route_url = 'https://afrotools.com' + recipe.route_path;
+    recipe.image_url = '/assets/img/kitchen-category-banner.webp';
+    recipe.page_image = null;
+    recipe.media = [];
+  }
   return { recipe, html: buildRecipePageHtml(recipe, manifest, engine, images, { recipes: {} }) };
 };
 const inspect = ({ recipe, html }) => inspectRecipeSchemaState(recipe, html, images);
@@ -62,7 +70,7 @@ const invalidHtml = [
   ['wrong canonical', html => html.replace(/(<link rel="canonical" href=")[^"]+/, '$1https://example.test/wrong/')],
   ['malformed JSON-LD', html => html.replace('<script type="application/ld+json">', '<script type="application/ld+json">{broken')],
   ['missing breadcrumb', html => html.replace(/<script type="application\/ld\+json">(?=[\s\S]*?<\/script>)[\s\S]*?<\/script>/, '')],
-  ['wrong breadcrumb canonical', html => html.replace(/("item":")https:\/\/afrotools.com\/tools\/afrokitchen\/recipes\/fisherman-soup-ng\//, '$1https://example.test/wrong/')],
+  ['wrong breadcrumb canonical', html => html.replace(/("item":")https:\/\/afrotools.com\/tools\/afrokitchen\/recipes\/synthetic-image-free-recipe\//, '$1https://example.test/wrong/')],
   ['wrong breadcrumb context', html => html.replace('"@context":"https://schema.org"', '"@context":"https://example.test/invalid"')],
   ['wrong breadcrumb position', html => html.replace('"position":1', '"position":9')],
   ['missing payload', html => html.replace(/<script>window\.__AK_STATIC_RECIPE[\s\S]*?<\/script>/, '')],
