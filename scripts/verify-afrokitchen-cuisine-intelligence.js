@@ -46,6 +46,17 @@ function includesAll(haystack, needles, label) {
   });
 }
 
+function hasVisibleInventoryCount(html, count, label) {
+  const text = String(html)
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ');
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(?:^|[^0-9])${Number(count)}\\s+${escapedLabel}\\b`, 'i').test(text);
+}
+
 function countrySlug(country) {
   return country.country_slug || String(country.route_path || "").split("/").filter(Boolean).pop();
 }
@@ -177,15 +188,9 @@ function verifyPages(manifest) {
   const showstoppers = readText(paths.showstoppers);
 
   includesAll(landing, ["Regional atlas", "Menu builder", "Chef-built collection", "Showstopper board", "Cook, post, compare notes"], "AfroKitchen landing");
-  includesAll(
-    landing,
-    [
-      `${(manifest.recipes || []).length} recipes`,
-      `${(manifest.countries || []).length} country hubs`,
-      `${(manifest.countries || []).length} COUNTRY HUBS`
-    ],
-    "AfroKitchen landing inventory copy"
-  );
+  for (const [count, label] of [[(manifest.recipes || []).length, 'recipes'], [(manifest.countries || []).length, 'country hubs']]) {
+    assert(hasVisibleInventoryCount(landing, count, label), `AfroKitchen landing inventory copy is missing "${count} ${label}"`);
+  }
   ["164 recipes", "54 countries", "54 COUNTRIES", "160+ recipes", "160+ dishes"].forEach((staleCopy) => {
     assert(!landing.includes(staleCopy), `AfroKitchen landing still contains stale inventory copy "${staleCopy}"`);
   });
@@ -243,4 +248,5 @@ function main() {
   );
 }
 
-main();
+if (require.main === module) main();
+module.exports = { hasVisibleInventoryCount };
