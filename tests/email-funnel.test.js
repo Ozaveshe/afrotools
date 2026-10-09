@@ -46,5 +46,14 @@ const msg = messageFor({email:'reader@example.test', unsubscribe_token:'syntheti
   global.fetch = async () => ({ok:true,json:async()=>({id:'transactional'})});
   delivery.reserve = async () => { throw new Error('must not reserve transactional'); };
   assert.equal((await sendEmail({to:'reader@example.test',subject:'Account verification'})).id,'transactional');
+  const digest = require('../netlify/functions/send-monthly-digest');
+  const privateCalculations = [{tool_name:'Private salary detail',outputs:{netPay:'SECRET-FINANCIAL-VALUE'}}];
+  for (const build of [digest.buildDigestEmail,digest.buildDigestText]) {
+    const rendered = build('Reader','November',2026,'October',privateCalculations,'https://example.test/unsubscribe');
+    assert.ok(rendered.includes('1 calculation'));
+    assert.ok(rendered.includes('https://afrotools.com/dashboard/'));
+    assert.ok(!rendered.includes('Private salary detail'));
+    assert.ok(!rendered.includes('SECRET-FINANCIAL-VALUE'));
+  }
   console.log('email-funnel: all checks passed');
 })().catch(error => { console.error(error); process.exitCode=1; });
