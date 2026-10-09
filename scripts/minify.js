@@ -25,6 +25,11 @@ const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
+  ['assets/js/lib/src/paye-calculation-sync.js', 'assets/js/lib/paye-calculation-sync.js'],
+  ['assets/js/lib/src/paye-save.js', 'assets/js/lib/paye-save.js'],
+  ['assets/js/pages/src/pdf-workspace-history.js', 'assets/js/pages/pdf-workspace-history.js'],
+  ['assets/js/pages/src/freelance-invoice.js', 'assets/js/pages/freelance-invoice.js'],
+  ['ha/kayan-aiki/kirkiro-resit/src/app.js', 'ha/kayan-aiki/kirkiro-resit/app.js'],
   ['assets/js/components/src/ai-consent.js', 'assets/js/components/ai-consent.js'],
   ['assets/js/pages/src/invoice-generator-enhancements.js', 'assets/js/pages/invoice-generator-enhancements.js'],
   ['tools/invoice-generator/js/src/invoice-workspace-sync.js', 'tools/invoice-generator/js/invoice-workspace-sync.js'],
@@ -125,6 +130,9 @@ function writeFileIfChanged(filePath, data, encoding) {
 async function run() {
   buildUiTypography();
   buildNavbarData();
+  if (!ONLY || 'assets/js/lib/src/save-state.js'.includes(ONLY)) {
+    await require('./build-save-state').buildSaveState();
+  }
   let errorCount = 0;
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };

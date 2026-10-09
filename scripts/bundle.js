@@ -63,6 +63,8 @@ const LEGACY_BUNDLE_ALIASES = {
     'core.23b1bcef.min.js',
     // Keep the current production URL reachable while CSS loader versions roll out.
     'core.02ddca36.min.js',
+    // Preserve the 56a4c321 production URL for retained HTML during saved-work rollout.
+    'core.aeb1b82d.min.js',
   ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML
@@ -74,6 +76,8 @@ const LEGACY_BUNDLE_ALIASES = {
     'tool-page.4701dd1d.min.js',
     'tool-page.c4ee75a0.min.js',
     'tool-page.b3e6b709.min.js',
+    // Retained salary/tool HTML still needs this previous production URL.
+    'tool-page.9f8a94f8.min.js',
   ],
   // Current pages lazy-load this historical chat bundle through data-chat-bundle.
   chat: [
