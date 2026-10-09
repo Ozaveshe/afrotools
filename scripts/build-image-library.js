@@ -45,6 +45,9 @@ function build() {
   const shared = JSON.parse(read(OUT + '/reviewed-shared-artwork.json'));
   for (const item of JSON.parse(read(OUT + '/reviewed-images.json')).images) reviewed.set(item.path, { ...item, review_note:item.note });
   for (const item of JSON.parse(read(OUT + '/recipe-image-aliases.json')).hero_reviews || []) reviewed.set(item.path, { ...item, review_note:item.note });
+  for (const item of JSON.parse(read(OUT + '/kitchen-imported-2026-10-09.json')).images) {
+    for (const variant of item.variants) reviewed.set(variant.path, { ...item, ...variant, text_status:'text-free-reviewed', locale_reuse:true, review_note:item.note });
+  }
   for (const id of shared.tool_ids) reviewed.set('/assets/img/tools/' + id + '.webp', { text_status:'text-free-reviewed', locale_reuse:true, review_note:shared.note });
   for (const item of shared.language_specific_images || []) reviewed.set(item.path, { ...item, review_note:item.note });
   reviewed.set('/assets/img/kitchen/kondowole.webp', { text_status:'text-free-reviewed', locale_reuse:true, review_note:'Visually reviewed for same-dish image alias kondowole-mw; no visible text.' });

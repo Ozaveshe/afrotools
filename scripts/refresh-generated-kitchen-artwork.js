@@ -10,12 +10,13 @@ const { buildCuisineIntelligence, writeCuisineIntelligenceFiles } = require('./l
 const { buildRecipePageHtml, refreshRecipeImages, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES, writeHtmlPage } = require('./generate-afrokitchen-static-pages');
 const ledger = require('../data/image-generation/kitchen-generated-2026-10-09.json');
 const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
+const importedArtwork = require('../data/image-generation/kitchen-imported-2026-10-09.json').images;
 
 function run({ refreshLegacyAliases = false } = {}) {
   const manifest = loadManifest();
   const reused = aliasLedger.hero_reviews || [];
-  const targets = new Set([...ledger.images, ...reused].map(image => image.slug));
-  for (const image of ledger.images) {
+  const targets = new Set([...ledger.images, ...reused, ...importedArtwork].map(image => image.slug));
+  for (const image of [...ledger.images, ...importedArtwork]) {
     if (!manifest.recipes.some(recipe => recipe.slug === image.slug)) throw new Error(`Unknown recipe: ${image.slug}`);
     for (const variant of image.variants) {
       if (!variant.path.startsWith('/assets/img/kitchen/') || variant.path.includes('..')) throw new Error('Invalid artwork path');

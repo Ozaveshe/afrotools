@@ -12,6 +12,30 @@ const manifest = loadManifest();
 const engine = loadAfroKitchenEngine();
 const recipeImages = loadRecipeImages();
 const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
+const importedArtwork = require('../data/image-generation/kitchen-imported-2026-10-09.json').images;
+
+for (const artwork of importedArtwork) {
+  test(`${artwork.slug}: imported artwork stays responsive and keeps unknown generation history explicit`, () => {
+    assert.equal(artwork.original_prompt, null);
+    assert.match(artwork.source_sha256, /^[a-f0-9]{64}$/);
+    for (const variant of artwork.variants) {
+      const file = path.join(ROOT, variant.path), bytes = fs.readFileSync(file);
+      assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), variant.sha256);
+      assert.deepEqual(imageSize(file), { w: variant.width, h: variant.height });
+      assert.ok(bytes.length < (variant.width <= 640 ? 75000 : 200000));
+    }
+    const recipe = manifest.recipes.find(row => row.slug === artwork.slug);
+    const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
+    assert.equal(resolveRecipeMedia(recipe, recipeImages).pageImage, artwork.path);
+    assert.ok(html.includes(artwork.alt));
+    assert.ok(html.includes('Recipe illustration'));
+    assert.ok(!html.includes('AI-generated illustration'));
+    for (const variant of artwork.variants) assert.ok(html.includes(`${variant.path} ${variant.width}w`));
+    const card = renderStaticRecipeCard(recipe, recipeImages);
+    assert.ok(card.includes('srcset='));
+    assert.ok(card.includes(artwork.alt));
+  });
+}
 
 for (const artwork of ledger.images) {
   test(`${artwork.slug}: reviewed image hashes, dimensions and mobile byte budget`, () => {

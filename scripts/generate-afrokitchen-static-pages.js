@@ -7,7 +7,10 @@ const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
 const artworkBySlug = new Map(generatedArtwork.map(image => [image.slug, image]));
 const artworkByPath = new Map(generatedArtwork.map(image => [image.target, image]));
-const reusedArtwork = require('../data/image-generation/recipe-image-aliases.json').hero_reviews || [];
+const reusedArtwork = [
+  ...(require('../data/image-generation/recipe-image-aliases.json').hero_reviews || []),
+  ...require('../data/image-generation/kitchen-imported-2026-10-09.json').images
+];
 const reusedArtworkBySlug = new Map(reusedArtwork.map(image => [image.slug, image]));
 const reusedArtworkByPath = new Map(reusedArtwork.map(image => [image.path, image]));
 const { writeRecipeIndex } = require('./lib/afrokitchen-recipe-index');
@@ -569,12 +572,11 @@ function imageSizeAttributes(width, height) {
 }
 
 function recipeImageAttributes(src, width, height, card = false) {
-  const artwork = artworkByPath.get(src);
-  if (!artwork) {
-    const reviewed = reusedArtworkByPath.get(src);
-    return imageSizeAttributes(reviewed?.width || width, reviewed?.height || height);
+  const artwork = artworkByPath.get(src) || reusedArtworkByPath.get(src);
+  if (!artwork?.variants) {
+    return imageSizeAttributes(artwork?.width || width, artwork?.height || height);
   }
-  const full = artwork.variants.find(variant => variant.path === artwork.target);
+  const full = artwork.variants.find(variant => variant.path === (artwork.target || artwork.path));
   const srcset = artwork.variants.map(variant => `${variant.path} ${variant.width}w`).join(', ');
   const sizes = card ? '(max-width: 640px) 100vw, 400px' : '(max-width: 800px) 100vw, 1200px';
   return `${imageSizeAttributes(full.width, full.height)} srcset="${escapeHtml(srcset)}" sizes="${sizes}"`;
