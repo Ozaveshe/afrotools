@@ -55,11 +55,40 @@
   function download(name,type,content){var url=URL.createObjectURL(new Blob([content],{type:type})),a=node("a",{href:url,download:name});document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},0);status(t.downloaded,"ready")}
   function ensure(){if(lastResult)return true;status(t.changed,"error");return false}
   function exportCsv(){var r=lastResult,rows=[["country","currency","channel","gross","processing_fee","supported_tax","merchant_net","effective_rate_percent","monthly_count","monthly_gross","monthly_fee","monthly_net","source_updated","reviewed","review_due","effective_date"],[r.country,r.currency,r.channel,r.perTransaction.gross,r.perTransaction.fee,r.perTransaction.tax,r.perTransaction.net,r.perTransaction.effectiveRate,r.monthly.count,r.monthly.gross,r.monthly.fee,r.monthly.net,r.freshness.sourceUpdatedAt,r.freshness.reviewedAt,r.freshness.reviewDueAt,t.notPublished]];download("paystack-fee-plan.csv","text/csv;charset=utf-8","\ufeff"+rows.map(function(row){return row.map(safeCsv).join(",")}).join("\n"))}
-  function exportPdf(){if(!window.jspdf||!window.jspdf.jsPDF){status(t.pdfError,"error");return}var doc=new window.jspdf.jsPDF(),lines=doc.splitTextToSize(report(lastResult),175),y=18;lines.forEach(function(line){if(y>280){doc.addPage();y=18}doc.text(line,18,y);y+=6});doc.save("paystack-fee-plan.pdf");status(t.downloaded,"ready")}
+  var pdfFontPromise=null,pdfBusy=false;
+  function loadPdfFont(){
+    if(!pdfFontPromise){
+      var controller=typeof AbortController==='function'?new AbortController():null,timer;
+      var timeout=new Promise(function(_,reject){timer=setTimeout(function(){reject(new Error('PDF_FONT_TIMEOUT'));if(controller)controller.abort()},12000)});
+      var request=Promise.resolve().then(function(){return fetch('/assets/fonts/noto-sans/NotoSans-Regular.ttf',{cache:'no-store',credentials:'same-origin',signal:controller?controller.signal:undefined})}).then(function(response){if(!response.ok)throw new Error('PDF_FONT_HTTP');return response.arrayBuffer()}).then(function(buffer){var bytes=new Uint8Array(buffer),binary='';for(var i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(binary)});
+      pdfFontPromise=Promise.race([request,timeout]).catch(function(error){pdfFontPromise=null;throw error}).finally(function(){clearTimeout(timer)});
+    }
+    return pdfFontPromise;
+  }
+  async function exportPdf(){
+    if(pdfBusy)return;
+    var result=lastResult,button=root.querySelector('[data-action=pdf]');
+    pdfBusy=true;button.disabled=true;
+    try{
+      if(!window.jspdf||typeof window.jspdf.jsPDF!=='function')throw new Error('PDF_LIBRARY_UNAVAILABLE');
+      var font=await loadPdfFont();
+      if(lastResult!==result)return;
+      var doc=new window.jspdf.jsPDF({putOnlyUsedFonts:true,compress:true});
+      doc.addFileToVFS('PaystackNoto-Regular.ttf',font);doc.addFont('PaystackNoto-Regular.ttf','PaystackNoto','normal');doc.setFont('PaystackNoto','normal');doc.setFontSize(10);
+      var content=report(result),metadata=doc.getFont().metadata;
+      if(!metadata||typeof metadata.characterToGlyph!=='function')throw new Error('PDF_FONT_INVALID');
+      for(var character of content){if(character==='\n'||character==='\r'||character==='\t')continue;if(!metadata.characterToGlyph(character.codePointAt(0)))throw new Error('PDF_FONT_GLYPH');}
+      var lines=doc.splitTextToSize(content,174),y=18;
+      lines.forEach(function(line){if(y>277){doc.addPage();y=18}doc.text(line,18,y);y+=5});
+      if(lastResult!==result)return;
+      doc.save('paystack-fee-plan.pdf');status(t.downloaded,'ready');
+    }catch(error){pdfFontPromise=null;if(lastResult===result)status(t.pdfError,'error')}
+    finally{pdfBusy=false;button.disabled=false}
+  }
   build();
   if(!engine.freshness(new Date()).fresh){root.querySelector("[type=submit]").disabled=true;status(t.stale,"error")}
   root.querySelector("[data-form]").addEventListener("submit",calculate);
   root.querySelector("[name=country]").addEventListener("change",function(){updateChannels();lastResult=null;document.body.classList.remove("pfp-has-results");root.querySelector("[data-results]").hidden=true;status(t.changed,"stale")});
   root.querySelector("[data-form]").addEventListener("input",function(){lastResult=null;document.body.classList.remove("pfp-has-results");root.querySelector("[data-results]").hidden=true;status(t.changed,"stale")});
-  root.addEventListener("click",function(event){var target=event.target.closest("[data-action]");if(!target)return;var action=target.dataset.action;if(action==="reset"){root.querySelector("[data-form]").reset();updateChannels();lastResult=null;document.body.classList.remove("pfp-has-results");root.querySelector("[data-results]").hidden=true;status(t.initial);return}if(!ensure())return;if(action==="copy")navigator.clipboard.writeText(report(lastResult)).then(function(){status(t.copied,"ready")},function(){status(t.changed,"error")});else if(action==="txt")download("paystack-fee-plan.txt","text/plain;charset=utf-8",report(lastResult));else if(action==="csv")exportCsv();else if(action==="json")download("paystack-fee-plan.json","application/json",JSON.stringify({schemaVersion:1,tool:"paystack-calculator",scope:t.scope,result:lastResult},null,2));else if(action==="pdf")exportPdf();else if(action==="print")window.print()});
+  root.addEventListener("click",function(event){var target=event.target.closest("[data-action]");if(!target)return;var action=target.dataset.action;if(action==="reset"){root.querySelector("[data-form]").reset();updateChannels();lastResult=null;document.body.classList.remove("pfp-has-results");root.querySelector("[data-results]").hidden=true;status(t.initial);return}if(!ensure())return;if(action==="copy"){var copiedResult=lastResult,copyText=report(copiedResult);Promise.resolve().then(function(){if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function")throw new Error("CLIPBOARD_UNAVAILABLE");return navigator.clipboard.writeText(copyText)}).then(function(){if(lastResult===copiedResult)status(t.copied,"ready")}).catch(function(){if(lastResult===copiedResult)download("paystack-fee-plan.txt","text/plain;charset=utf-8",copyText)})}else if(action==="txt")download("paystack-fee-plan.txt","text/plain;charset=utf-8",report(lastResult));else if(action==="csv")exportCsv();else if(action==="json")download("paystack-fee-plan.json","application/json",JSON.stringify({schemaVersion:1,tool:"paystack-calculator",scope:t.scope,result:lastResult},null,2));else if(action==="pdf")exportPdf();else if(action==="print")window.print()});
 })();

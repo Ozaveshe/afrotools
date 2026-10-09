@@ -79,8 +79,8 @@ async function assertNoDocumentOverflow(page) {
 }
 
 for (const locale of [
-  { path: '/crypto/dca-calculator/', ready: /Replay complete/ },
-  { path: '/fr/crypto/dca-calculator/', ready: /Reconstitution terminée/ },
+  { path: '/crypto/dca-calculator/', ready: /Replay complete/, limitation: 'Historical reference replay' },
+  { path: '/fr/crypto/dca-calculator/', ready: /Reconstitution terminée/, limitation: 'Historical reference replay' },
 ]) {
   test(`${locale.path} mobile light/dark replay, privacy and exports`, async ({ page }, testInfo) => {
     const requests = [];
@@ -116,7 +116,7 @@ for (const locale of [
     const csv = await csvDownload;
     const csvText = await require('node:fs/promises').readFile(await csv.path(), 'utf8');
     expect(csvText).toContain('CoinGecko');
-    expect(csvText).toContain('Historical reference replay');
+    expect(csvText).toContain(locale.limitation);
 
     const jsonDownload = page.waitForEvent('download');
     await page.locator('#dca-export-json').click();
@@ -128,6 +128,7 @@ for (const locale of [
     await page.locator('#dca-export-pdf').click();
     const pdf = await require('node:fs/promises').readFile(await (await pdfDownload).path());
     expect(pdf.subarray(0, 4).toString()).toBe('%PDF');
+    expect((await require('pdf-parse')(pdf)).text).toContain('CoinGecko');
 
     await page.evaluate(() => {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -200,15 +201,19 @@ test('desktop replay remains contained and print is local', async ({ page }, tes
   await page.screenshot({ path: testInfo.outputPath('dca-en-desktop-light.png'), fullPage: true });
 });
 
-test('provider failure is explicit and never reveals stale results', async ({ page }) => {
+for (const [route, message] of [
+  ['/crypto/dca-calculator/', 'Historical prices are unavailable right now. No stale or estimated fallback was used.'],
+  ['/fr/crypto/dca-calculator/', 'Les prix historiques sont indisponibles. Aucun ancien prix ni aucune estimation de secours n’a été utilisé.']
+]) test(`${route} provider failure is explicit and never reveals stale results`, async ({ page }) => {
   const requests = [];
   await mockHistory(page, requests, 503);
-  await page.goto('/crypto/dca-calculator/');
+  await page.goto(route);
   await page.locator('#dca-submit').click();
-  await expect(page.locator('#dca-status')).toContainText('CoinGecko is unavailable.');
+  await expect(page.locator('#dca-status')).toContainText(message);
   await expect(page.locator('#dca-status')).toHaveAttribute('data-state', 'error');
   await expect(page.locator('#dca-results')).toBeHidden();
   await expect(page.locator('#dca-empty')).toBeVisible();
+  await expect(page.locator('.fr-finance-export-contract')).toHaveCount(0);
 });
 
 test('widget route is an accessible CTA, not a calculator', async ({ page }) => {

@@ -70,6 +70,7 @@ test('desktop visual receipt and accessible landmarks are present', async ({ pag
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   await expect(page.locator('#bpPlanner label')).toHaveCount(15);
-  await expect(page.locator('[role="status"]')).toHaveCount(1);
+  await expect(page.locator('#bpPlanner [role="status"]')).toHaveCount(1);
+  await expect(page.locator('#bpStatus')).toHaveAttribute('aria-live', 'polite');
   await page.screenshot({ path: 'test-results/backup-power-costs-desktop.png', fullPage: true });
 });

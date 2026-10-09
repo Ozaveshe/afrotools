@@ -35,6 +35,7 @@
     #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}.lobola-native{display:grid;gap:16px}.lobola-native-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.lobola-native-heading span{display:block;color:#0f766e;font-size:.76rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.lobola-native-heading h2{margin:4px 0 0;font-size:1.25rem;color:#0f172a}.lobola-native-heading button,.lobola-native-actions button{border:0;border-radius:999px;background:#0f766e;color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}.lobola-native-heading button:disabled{opacity:.48;cursor:not-allowed}.lobola-native-form{display:grid;gap:13px}.lobola-native-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lobola-native-form label{display:grid;gap:6px;color:#0f172a;font-size:.86rem;font-weight:800}.lobola-native-form input,.lobola-native-form select,.lobola-native-form textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.lobola-native-form textarea{min-height:84px;resize:vertical}.lobola-native-checks{display:grid;gap:8px;border:1px solid #dbe4ef;border-radius:8px;background:#f8fafc;padding:12px}.lobola-native-checks label{display:flex;grid-template-columns:none;align-items:flex-start;gap:8px;font-weight:650}.lobola-native-checks input{width:auto;margin-top:3px}.lobola-native-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.lobola-native-actions button.secondary{background:#0f172a}.lobola-native-actions span{color:#64748b;font-size:.86rem}.lobola-native-output{display:block;white-space:pre-line;border:1px solid #b6e4dd;border-left:4px solid #0f766e;border-radius:0 8px 8px 0;background:#f0fdf4;padding:14px;color:#334155;line-height:1.62;min-height:110px}
     .tool-status{color:#64748b}.tool-error{padding:18px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;color:#991b1b}.tool-error a{color:#1d4ed8}
     .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}.support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}.support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}.support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
+    html[data-theme=dark] main.fr-tool-shell .primary-action,html[data-theme=dark] main.fr-tool-shell .lobola-native-actions button{color:#07101d!important}html[data-theme=dark] main.fr-tool-shell .breadcrumb,html[data-theme=dark] main.fr-tool-shell [data-authority-status],html[data-theme=dark] main.fr-tool-shell .lobola-native-heading span{color:var(--color-text,#eef5ff)}.fr-tool-shell{overflow-wrap:anywhere}.fr-tool-shell .breadcrumb a{text-decoration:underline}.fr-tool-shell #tool-mount,.fr-tool-shell .support-grid section,.fr-tool-shell .lobola-native-output,.fr-tool-shell .privacy-note,.fr-tool-shell .secondary-action{background:var(--color-surface,#fff);color:var(--color-text,#0f172a)}.fr-tool-shell .primary-action,.fr-tool-shell .lobola-native-actions button{background:var(--color-primary,#2563eb);color:var(--color-text-inverse,#fff)!important;min-height:44px}.fr-tool-shell .lobola-native-output a:not(.primary-action){text-decoration:underline}.fr-tool-shell :is(button,a,input,select):focus-visible{outline:3px solid var(--color-primary,#2563eb);outline-offset:3px}
     @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid,.lobola-native-grid{grid-template-columns:1fr}#tool-mount{padding:12px}.lobola-native-heading{display:grid}.lobola-native-heading button,.lobola-native-actions button{width:100%}}
   </style>
   <script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Trouver l’administration PAYE","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/trouver-administration-paye/","description":"Identifiez le pays, l’administration fiscale et le calculateur PAYE correspondant aux sigles MRA, ERS, ZRA, URA, LRA ou RSL.","isBasedOn":"https://afrotools.com/tools/paye-authority-finder/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/all-tools/"},{"@type":"ListItem","position":3,"name":"Trouver l’administration PAYE","item":"https://afrotools.com/fr/tools/trouver-administration-paye/"}]},{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Quand utiliser Trouver l’administration PAYE ?","acceptedAnswer":{"@type":"Answer","text":"Utile lorsqu’une fiche de paie, un formulaire ou une recherche mentionne seulement MRA, ERS, ZRA, URA, LRA ou RSL."}},{"@type":"Question","name":"Comment lire le résultat ?","acceptedAnswer":{"@type":"Answer","text":"Le résultat oriente vers une administration et un calculateur; confirmez toujours l’obligation et la période sur le site officiel."}}]}]</script>
@@ -204,6 +205,19 @@
   var status = mount.querySelector('[data-authority-status]');
   var results = mount.querySelector('[data-authority-results]');
   var authorities = [];
+  var dataState = 'idle';
+  var submit = form.querySelector('button[type="submit"]');
+  submit.disabled = true;
+  country.disabled = true;
+  var retry = document.createElement('button');
+  retry.type = 'button';
+  retry.setAttribute('data-authority-retry', '');
+  retry.className = 'primary-action';
+  retry.textContent = 'Réessayer le chargement';
+  retry.hidden = true;
+  retry.style.display = 'none';
+  form.insertAdjacentElement('afterend', retry);
+  retry.addEventListener('click', loadAuthorities);
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]; }); }
   function setStatus(message) { status.textContent = message; }
   function card(item) {
@@ -218,7 +232,7 @@
   }
   function find(event) {
     if (event) event.preventDefault();
-    if (!engine || !authorities.length) return setStatus('Les donnees d orientation ne sont pas disponibles.');
+    if (dataState !== 'ready') return;
     var outcome = engine.resolve(authorities, { query: query.value, countryCode: country.value });
     if (outcome.status === 'resolved') return renderResolved(outcome.match);
     if (outcome.status === 'ambiguous') {
@@ -231,18 +245,51 @@
   }
   form.addEventListener('submit', find);
   country.addEventListener('change', function () { if (country.value) find(); });
-  results.addEventListener('click', function (event) { var button = event.target.closest('[data-authority-id]'); if (!button) return; var item = authorities.find(function (entry) { return entry.id === button.getAttribute('data-authority-id'); }); if (item) renderResolved(item); });
+  results.addEventListener('click', function (event) { var button = event.target.closest('[data-authority-id]'); if (!button) return; var item = authorities.find(function (entry) { return entry.id === button.getAttribute('data-authority-id'); }); if (item) { renderResolved(item); var destination = results.querySelector('a.primary-action'); if (destination) destination.focus(); } });
   if (!engine) return setStatus('Le moteur d orientation ne s est pas charge.');
-  fetch('/data/salary-tax/authority-router.json', { cache: 'no-store', credentials: 'same-origin' })
-    .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
-    .then(function (payload) {
+  function loadAuthorities() {
+    if (dataState === 'loading') return;
+    var restoreFocus = document.activeElement === retry;
+    dataState = 'loading';
+    submit.disabled = true;
+    country.disabled = true;
+    retry.hidden = true;
+    retry.style.display = 'none';
+    setStatus('Chargement des administrations prises en charge...');
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer;
+    var timeout = new Promise(function (_, reject) {
+      timer = setTimeout(function () {
+        reject(new Error('AUTHORITY_LOAD_TIMEOUT'));
+        if (controller) controller.abort();
+      }, 12000);
+    });
+    var request = Promise.resolve().then(function () {
+      return fetch('/data/salary-tax/authority-router.json', { cache: 'no-store', credentials: 'same-origin', signal: controller ? controller.signal : undefined });
+    }).then(function (response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    });
+    Promise.race([request, timeout]).then(function (payload) {
       var validation = engine.validateDataset(payload);
       if (!validation.valid) throw new Error(validation.errors[0]);
       authorities = payload.authorities;
       country.innerHTML = '<option value="">Choisir seulement si necessaire</option>' + authorities.slice().sort(function (a, b) { return a.country_name.localeCompare(b.country_name, 'fr'); }).map(function (item) { return '<option value="' + esc(item.country_code) + '">' + esc(item.country_name) + '</option>'; }).join('');
+      dataState = 'ready';
+      submit.disabled = false;
+      country.disabled = false;
       setStatus('Pret. Saisissez un sigle comme URA, ZRA ou MRA.');
-    })
-    .catch(function () { setStatus('Les donnees d orientation sont indisponibles. Utilisez les liens officiels de la page.'); });
+    }).catch(function () {
+      dataState = 'unavailable';
+      setStatus('Les donnees d orientation sont indisponibles. Réessayez ou utilisez les liens officiels de la page.');
+      retry.hidden = false;
+      retry.style.display = 'inline-flex';
+    }).finally(function () {
+      clearTimeout(timer);
+      if (restoreFocus && document.activeElement === document.body) (dataState === 'ready' ? query : retry).focus();
+    });
+  }
+  loadAuthorities();
 }());
 </script>
   <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>

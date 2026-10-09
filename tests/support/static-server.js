@@ -8,6 +8,9 @@ const root = path.resolve(__dirname, '..', '..');
 const staticRoot = process.env.AFROTOOLS_TEST_PUBLISH_ARTIFACT === '1' ? path.join(root, 'dist') : root;
 if (!fs.existsSync(path.join(staticRoot, 'index.html'))) throw new Error('Static test root has no index.html: ' + staticRoot);
 const port = Number(process.env.PORT || 4173);
+const financeProof = process.env.AFROTOOLS_FRENCH_FINANCE_PROOF === '1'
+  ? require('./french-finance-proof-identity') : null;
+if (financeProof) financeProof.readFinanceProofIdentity(root, port);
 const securityPolicy = process.env.AFROTOOLS_TEST_SECURITY_HEADERS === '1'
   ? require('./netlify-security-headers').readSecurityHeaders(path.join(staticRoot, '_headers'))
   : null;
@@ -189,6 +192,17 @@ function readRequestBody(request) {
 
 const server = http.createServer(function (request, response) {
   const pathname = request.url.split('?')[0];
+  if (financeProof && pathname === financeProof.ENDPOINT) {
+    try {
+      const identity = financeProof.readFinanceProofIdentity(root, port);
+      response.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+      response.end(JSON.stringify(identity));
+    } catch (error) {
+      response.writeHead(503, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+      response.end(JSON.stringify({ error: error.message }));
+    }
+    return;
+  }
   if (securityPolicy && securityPolicy(pathname)) {
     response.setHeader('Content-Security-Policy', securityPolicy(pathname));
   }
