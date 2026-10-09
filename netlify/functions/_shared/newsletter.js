@@ -10,7 +10,8 @@ function subscription(payload) {
   const source = payload?.form_name || data['form-name'];
   const email = String(data.email || '').trim().toLowerCase();
   if (!SOURCES.has(source) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return null;
-  if (source === 'newsletter' && data.source !== 'footer') return null;
+  if (source === 'newsletter' && data.source !== 'footer' &&
+      !(data.source === 'homepage' && data.consent_version === 'weekly-2026-10-09')) return null;
   return { email, source };
 }
 function messageFor(subscriber, welcome, now) {

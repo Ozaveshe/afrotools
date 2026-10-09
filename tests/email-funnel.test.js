@@ -10,6 +10,8 @@ const msg = messageFor({email:'reader@example.test', unsubscribe_token:'syntheti
 (async () => {
   assert.equal(subscription({form_name:'contact',data:{email:'reader@example.test'}}), null);
   assert.equal(subscription({form_name:'newsletter',data:{email:'reader@example.test'}}), null);
+  assert.equal(subscription({form_name:'newsletter',data:{email:'reader@example.test',source:'homepage'}}), null);
+  assert.deepEqual(subscription({form_name:'newsletter',data:{email:'reader@example.test',source:'homepage',consent_version:'weekly-2026-10-09'}}), {email:'reader@example.test',source:'newsletter'});
   assert.deepEqual(subscription({form_name:'newsletter',data:{email:' Reader@Example.test ',source:'footer'}}), {email:'reader@example.test',source:'newsletter'});
   assert.equal(subscription({form_name:'newsletter',data:{email:'invalid',source:'footer'}}), null);
   assert.match(msg.html, /You subscribed to the AfroTools newsletter/);
