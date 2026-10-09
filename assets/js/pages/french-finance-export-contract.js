@@ -657,7 +657,7 @@
     var config = parseConfig();
     if (!config) return;
     // Preserve validated native exports, including the two-offer comparison schema.
-    if (config.englishId === 'leave-calculator' || config.englishId === 'crypto-remittance' || config.englishId === 'job-offer-evaluator' || config.englishId === 'startup-valuation') return;
+    if (config.englishId === 'leave-calculator' || config.englishId === 'crypto-remittance' || config.englishId === 'job-offer-evaluator' || config.englishId === 'startup-valuation' || config.englishId === 'crypto-dca') return;
     rememberInitialResultState();
     installStyles();
     var root = render(config);

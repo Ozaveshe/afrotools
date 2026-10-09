@@ -149,6 +149,13 @@ jobs:
           npx playwright test tests/e2e/french-finance-export-contract.spec.js --config=playwright.french-finance.config.js --project=chromium --fully-parallel --workers=2 --retries=0 --trace=off --output="$RUNNER_TEMP/finance-export-browser"
           node scripts/collect-french-finance-export-evidence.js
 
+      - name: Verify finance native export owners and unavailable payroll guard
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4211'
+        run: npx playwright test tests/e2e/morocco-paye-parity.spec.js tests/e2e/tunisia-paye-parity.spec.js tests/e2e/day3-finance-backup-power-costs-vip.spec.js tests/e2e/day3-finance-route-fares-locales-vip.spec.js tests/e2e/french-leave-calendar.spec.js tests/e2e/crypto-remittance-export-state.spec.js tests/e2e/crypto-dca-replay.spec.js tests/e2e/microfinance-offer-vip.spec.js tests/e2e/bf-payroll-review.spec.js --project=chromium --workers=2 --retries=0 --trace=off
+
 
       - name: Verify reconciled completion workflows in the optimized artifact
         env:

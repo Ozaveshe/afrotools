@@ -69,8 +69,9 @@ function syntheticValue(input, rowIndex) {
     return '2026-07-28';
   }
   if (input.type === 'datetime-local') {
-    if (/(?:expir|expiry)/.test(signal)) return '2026-07-29T12:00';
-    return '2026-07-28T12:00';
+    // Fresh synthetic quote times; contexts use UTC so fixture and browser agree.
+    const offsetMinutes = /(?:expir|expiry)/.test(signal) ? 30 : -10;
+    return new Date(Date.now() + offsetMinutes * 60000).toISOString().slice(0, 16);
   }
   if (input.type === 'month') return '2026-07';
   if (input.type === 'url') return 'https://example.test/scenario-' + String(rowIndex + 1);
@@ -888,6 +889,7 @@ async function proveRequiredRow(browser, row, rowIndex) {
   debugLog('context:start');
   const context = await browser.newContext({
     viewport: { width: 375, height: 900 },
+    timezoneId: 'UTC',
     serviceWorkers: 'block',
     acceptDownloads: true
   });
@@ -1256,9 +1258,12 @@ async function proveWorkflowOnlyRow(browser, row, rowIndex) {
   return { fixture, validation };
 }
 
-expect(manifest.count).toBe(124);
+expect(manifest.count).toBe(116);
 expect(manifest.coverage.historicalRows).toBe(132);
-expect(manifest.coverage.logicalConsumers).toBe(122);
+expect(manifest.coverage.logicalConsumers).toBe(116);
+expect(manifest.coverage.nativeOwners).toHaveLength(9);
+expect(manifest.coverage.disabledOwners).toHaveLength(1);
+expect(manifest.coverage.excludedAliases).toHaveLength(2);
 
 async function assertFinanceServerIdentity(browser) {
   const EXPECTED_SERVER_IDENTITY = readFinanceProofIdentity(ROOT, FINANCE_PORT);
