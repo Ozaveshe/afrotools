@@ -15,11 +15,18 @@ const schemas = html => [...html.matchAll(/<script type="application\/ld\+json">
 const recipeSchema = html => schemas(html).find(item => item['@type'] === 'Recipe');
 
 test('a photo-less published recipe stays searchable without claiming the category banner is its dish photo', () => {
-  const html = page(recipe('fisherman-soup-ng'));
+  const item = recipe('fisherman-soup-ng');
+  item.slug = 'synthetic-image-free-recipe';
+  item.route_path = '/tools/afrokitchen/recipes/synthetic-image-free-recipe/';
+  item.route_url = 'https://afrotools.com' + item.route_path;
+  item.image_url = '/assets/img/kitchen-category-banner.webp';
+  item.page_image = null;
+  item.media = [];
+  const html = page(item);
   assert.equal(recipeSchema(html), undefined);
   assert.match(html, /<meta name="robots" content="index, follow">/);
   assert.match(html, /<meta name="afrokitchen-schema-blockers" content="missing_image">/);
-  assert.match(html, /<link rel="canonical" href="https:\/\/afrotools.com\/tools\/afrokitchen\/recipes\/fisherman-soup-ng\/">/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/afrotools.com\/tools\/afrokitchen\/recipes\/synthetic-image-free-recipe\/">/);
   assert.match(html, /property="og:image" content="https:\/\/afrotools.com\/assets\/img\/kitchen-category-banner.webp"/);
 });
 

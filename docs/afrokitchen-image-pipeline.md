@@ -51,6 +51,12 @@ variants for the reviewed illustration batch. Its assets are illustrations, not
 documentary photographs. The page generator uses that ledger to label their
 captions and galleries accurately and render the matching responsive image sizes.
 
+`data/image-generation/kitchen-imported-2026-10-09.json` records separately
+reviewed artwork imported from workspace staging. Preserve the original file and
+its hash, keep an unknown historical prompt explicitly null, and label these
+images as recipe illustrations without asserting AI or photography provenance.
+The same refresh validates and renders their responsive variants.
+
 After adding reviewed assets and their ledger entries, run
 `node scripts/refresh-generated-kitchen-artwork.js` for an offline image-only
 refresh of saved recipes and related cards, then
@@ -58,3 +64,9 @@ refresh of saved recipes and related cards, then
 The refresh validates hashes and dimensions before writing and preserves unrelated
 recipe content and release-owned page assets. Keep smaller responsive variants in
 `assets/img/kitchen/responsive/` so they do not become extra gallery photographs.
+
+When a legacy recipe destination changes, add `--refresh-legacy-aliases` to the
+offline refresh, then run the normal build to restore shared page assets and
+metadata. This regenerates the seven noindex navigation pages through their
+native owner. Verify their canonical destinations and browser navigation; do not
+add recipe imagery or Recipe markup to the navigation pages themselves.
