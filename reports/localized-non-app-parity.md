@@ -27,8 +27,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | English | Class | Locale | Localized route | Status | Reasons |
 | --- | --- | --- | --- | --- | --- |
-| / | home | fr | /fr/ | under-standard | form controls 5/6 |
-| / | home | sw | /sw/ | under-standard | form controls 5/6 |
+| / | home | fr | /fr/ | under-standard | form controls 5/7 |
+| / | home | sw | /sw/ | under-standard | form controls 5/7 |
 | /afrowork/ | product-entry | fr | — | missing | no localized route or owner file |
 | /afrowork/ | product-entry | sw | — | missing | no localized route or owner file |
 | /blog/afcfta-import-duties-africa-2026/ | editorial | fr | — | missing | no localized route or owner file |
