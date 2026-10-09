@@ -154,6 +154,15 @@
     function y(n) {
         var e = n || {}, o = s(e.mode), i = l(o), a = e.toolId || e.tool_id || "global";
         i = cvMode(i, a);
+        if (a === "gh-paye" && e.payload && Array.isArray(e.payload.messages)) {
+            var french = String(t.document && t.document.documentElement.lang || "").split("-")[0] === "fr";
+            i = Object.assign({}, i, {
+                title: french ? "Analyse fiscale facultative par IA" : "Optional AI tax analysis",
+                copy: french ? "Ce contenu sera envoyé aux serveurs AfroTools et au prestataire IA configuré. Annulez pour continuer avec le calculateur local, sans envoi." : "This content will be sent to AfroTools servers and the configured AI provider. Cancel to continue with the local calculator without sending it.",
+                sends: JSON.stringify(e.payload, null, 2),
+                continuePrompt: french ? "Autoriser cet envoi précis ?" : "Allow this specific send?"
+            });
+        }
         if (!i.requiresConsent) return f(Object.assign({}, e, {
             mode: o,
             toolId: a,
@@ -175,6 +184,7 @@
         // CV assistants send private text inside chat messages as well as named
         // CV fields. General prompt consent must never authorize those sends.
         if (isCvContentRequest(t)) return true;
+        if (t && t.tool === "gh-paye" && Array.isArray(t.messages)) return true;
         return !(!t || n > 4) && (Array.isArray(t) ? t.some(function(t) {
             return m(t, n + 1);
         }) : "object" == typeof t && Object.keys(t).some(function(e) {
@@ -255,7 +265,8 @@
                     toolId: c && c.tool || "ai-advisor",
                     action: "ai-advisor",
                     contentIncluded: s,
-                    requireFresh: Boolean(c && c.tool === "cv-builder" && s)
+                    requireFresh: Boolean(c && (c.tool === "cv-builder" || c.tool === "gh-paye") && s),
+                    payload: c
                 }) ? n.apply(t, function(t, n, e) {
                     var i = Object.assign({}, n || {}), a = i.headers || (t && "string" != typeof t ? t.headers : void 0), r = new Headers(a || {});
                     return r.set("x-afrotools-ai-consent", o), e && r.set("x-afrotools-ai-content-consent", o),

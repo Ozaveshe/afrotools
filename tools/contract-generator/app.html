@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
-<script src="/assets/js/lib/save-state.global.js?v=ff7c4414"></script>
+<script src="/assets/js/lib/save-state.global.js?v=a2d5e02d"></script>
 <style>
 :root{--color-primary:#0062CC;--blue-light:#EFF6FF}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -204,7 +204,7 @@ var TEMPLATES = {
 var currentTemplate = null;
 var currentCountry = 'nigeria';
 var DATA = {};
-var ss = new SaveState('contract-generator');
+var ss = window.SaveState ? new window.SaveState('contract-generator') : null;
 var _currentId = null;
 
 function pickTemplate(tpl) {
@@ -301,9 +301,12 @@ function generateContractHTML() {
 function saveContract() {
   if (!currentTemplate) { alert('Please choose a template first.'); return; }
   var name = TEMPLATES[currentTemplate].name + (DATA.landlordName||DATA.employerName||DATA.clientName||DATA.lenderName||DATA.disclosingParty ? ' - '+(DATA.tenantName||DATA.employeeName||DATA.contractorName||DATA.borrowerName||DATA.receivingParty||'') : '');
+  if (!ss) { alert('Saving is unavailable. Export your work before leaving.'); return; }
+  try {
   var entry = ss.save({ id: _currentId, title: name, data: { template: currentTemplate, country: currentCountry, fields: JSON.parse(JSON.stringify(DATA)) } });
   _currentId = entry.id;
   alert('Contract saved!');
+  } catch (error) { alert(SaveState.message(error)); }
 }
 
 function exportPDF() {
@@ -322,7 +325,9 @@ function exportPDF() {
   var params = new URLSearchParams(window.location.search);
   var id = params.get('id');
   if (id) {
-    var item = ss.load(id);
+    if (!ss) { alert('Saved contracts are unavailable in this browser.'); return; }
+    var item;
+    try { item = ss.load(id); } catch (error) { alert(SaveState.message(error)); return; }
     if (item && item.data) {
       _currentId = item.id;
       currentTemplate = item.data.template;

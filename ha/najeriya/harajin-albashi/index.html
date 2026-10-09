@@ -58,7 +58,7 @@
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
 
   <!-- Shared Libraries -->
-  <script src="/assets/js/bundles/tool-page.9f8a94f8.min.js?v=9f8a94f8" defer></script><script src="/assets/js/bundles/core.aeb1b82d.min.js" defer></script><meta name="tool-id" content="ng-paye-ha">
+  <script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script><script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><meta name="tool-id" content="ng-paye-ha">
   <link rel="stylesheet" href="/assets/css/print.css?v=84a2abc8" media="print">
   <style>
     /* NTA regime notice — contrast fix: white text needs dark bg */
@@ -1124,10 +1124,10 @@
 
 // -€-€ STATE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 let RESULT = null;
-let PERIOD = 'monthly';
-let REGIME = 'pita';
-let CALC_MODE = 'gross'; // 'gross' | 'net'
-let SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
+var PERIOD = 'monthly';
+var REGIME = 'pita';
+var CALC_MODE = 'gross'; // 'gross' | 'net'
+var SALARY_PERIOD = 'annual'; // 'annual' | 'monthly'
 let CHAT_HISTORY = [];
 let CHART = null;
 let CHART_TYPE = 'donut';
@@ -1179,6 +1179,21 @@ updateSliderFill(slider);
 document.getElementById('grossSalary').value = '3,600,000';
 
 // -€-€ CALC MODE -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
+function invalidateSavedScenarioResult() {
+  RESULT = null;
+  window.RESULT = null;
+  clearTimeout(_debounceTimer);
+  const card = document.getElementById('resultsCard');
+  if (card) card.classList.remove('on');
+  const employer = document.getElementById('employerCard');
+  if (employer) employer.classList.remove('on');
+  ['calcSaveBtn', 'aiBtn'].forEach(id => { const node = document.getElementById(id); if (node) node.disabled = true; });
+  const response = document.getElementById('aiResp');
+  if (response) { response.style.display = 'none'; response.textContent = ''; }
+  const chat = document.getElementById('aiChat');
+  if (chat) chat.classList.remove('on');
+}
+
 function setCalcMode(mode, btn) {
   CALC_MODE = mode;
   document.querySelectorAll('.mode-toggle')[0].querySelectorAll('.mode-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-checked', 'false'); });
@@ -2013,6 +2028,7 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
     'This device': 'Wannan na\'urar',
     'Open link': 'Bude link',
     'Load': 'Loda',
+    'Loaded saved scenario.': 'An loda lissafin da aka ajiye.',
     'Delete': 'Goge',
     'No saved scenarios yet.': 'Babu lissafi da aka ajiye tukuna.',
     'Save a named result here and it will appear in your dashboard calculations tab.': 'Ajiye sakamako mai suna a nan, zai bayyana a bangaren lissafi na dashboard.',
@@ -2027,9 +2043,10 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
     if (!node) return;
     if (node.nodeType === 3) {
       var value = node.nodeValue;
-      Object.keys(replacements).forEach(function(key){
-        if (value.indexOf(key) !== -1) value = value.split(key).join(replacements[key]);
-      });
+      var key = value.trim();
+      if (Object.prototype.hasOwnProperty.call(replacements, key)) {
+        value = value.replace(key, function(){ return replacements[key]; });
+      }
       if (value !== node.nodeValue) node.nodeValue = value;
       return;
     }
@@ -2048,7 +2065,7 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
 </script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
-<script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=086ac120" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=e3cf7503" defer></script>
 <script src="/assets/js/share-image-inject.js?v=5adaadcb" defer></script>
