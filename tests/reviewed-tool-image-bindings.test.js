@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
-const { loadBindings, applyReviewedBindings } = require('../scripts/lib/reviewed-tool-image-bindings');
+const { loadBindings, applyReviewedBindings, resolveReviewedToolArtwork } = require('../scripts/lib/reviewed-tool-image-bindings');
 const ROOT = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(ROOT, 'assets/js/components/tool-registry.js'), 'utf8');
 const bindings = loadBindings();
@@ -49,4 +49,16 @@ test('both registry consumers resolve the reviewed canonical asset', () => {
     assert.ok(fs.existsSync(path.join(ROOT, binding.route, 'index.html')), 'Missing localized route ' + binding.route);
     assert.ok(fs.existsSync(path.join(ROOT, binding.source_route, 'index.html')), 'Missing source route ' + binding.source_route);
   }
+});
+
+test('page artwork is exact-route scoped and rejects ambiguous or changed evidence', () => {
+  const binding = bindings.find(row => row.id === 'zana-kikokotoo-umwagiliaji-sw');
+  const fallback = '/assets/img/tools/irrigation-calculator.webp';
+  assert.equal(resolveReviewedToolArtwork(binding.route, fallback), binding.path);
+  for (const route of ['/tools/irrigation-calculator/', '/fr/outils/irrigation/', '/sw/zana/unreviewed/', binding.route + '?country=KE']) {
+    assert.equal(resolveReviewedToolArtwork(route, fallback), fallback);
+  }
+  assert.throws(() => resolveReviewedToolArtwork(binding.route, fallback, [binding, binding]), /Ambiguous/);
+  assert.throws(() => resolveReviewedToolArtwork(binding.route, fallback, [{ ...binding, sha256: '0'.repeat(64) }]), /hash drift/);
+  assert.throws(() => resolveReviewedToolArtwork(binding.route, fallback, [{ ...binding, status: 'pending' }]), /Unreviewed/);
 });

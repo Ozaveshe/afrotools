@@ -61,4 +61,17 @@ function applyReviewedBindings(source, bindings = loadBindings()) {
   return next;
 }
 
-module.exports = { loadBindings, applyReviewedBindings };
+function resolveReviewedToolArtwork(route, fallback, bindings = loadBindings()) {
+  if (!String(route).startsWith('/sw/')) return fallback;
+  const matches = bindings.filter(binding => binding.route === route);
+  if (!matches.length) return fallback;
+  if (matches.length !== 1) throw new Error('Ambiguous reviewed artwork route: ' + route);
+  const binding = matches[0];
+  if (binding.status !== 'reviewed_same_tool_binding' || !binding.mapping_evidence?.length) throw new Error('Unreviewed artwork route: ' + route);
+  if (!/^[a-z0-9-]+$/.test(binding.source_id) || binding.path !== '/assets/img/tools/' + binding.source_id + '.webp') throw new Error('Invalid artwork path: ' + route);
+  const hash = crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, binding.path))).digest('hex');
+  if (hash !== binding.sha256) throw new Error('Reviewed image hash drift: ' + route);
+  return binding.path;
+}
+
+module.exports = { loadBindings, applyReviewedBindings, resolveReviewedToolArtwork };

@@ -586,7 +586,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "shipping-weight",
+        "imageKey": "shipping-weight"
       },
       {
         "id": "zana-muda-wa-kupitisha-forodha-sw",
@@ -14047,7 +14049,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "merchant-fees",
+        "imageKey": "merchant-fees"
       },
       {
         "id": "zana-ada-usajili-wa-ardhi-sw",
@@ -14302,7 +14306,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ankara-ya-mtayarishi-sw",
+        "imageKey": "zana-ankara-ya-mtayarishi-sw"
       },
       {
         "id": "zana-chat-na-pdf-sw",
@@ -14326,7 +14332,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-hariri-pdf-sw",
+        "imageKey": "zana-hariri-pdf-sw"
       },
       {
         "id": "hati-na-pdf-sw",
@@ -14367,7 +14375,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kichwa-na-kijachini-pdf-sw",
+        "imageKey": "zana-kichwa-na-kijachini-pdf-sw"
       },
       {
         "id": "zana-ufadhili wa ankara-ankara-sw",
@@ -14405,7 +14415,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kizalishaji-ankara-sw",
+        "imageKey": "zana-kizalishaji-ankara-sw"
       },
       {
         "id": "zana-ankara-proforma-sw",
@@ -14431,7 +14443,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-barua-ombi-sw",
+        "imageKey": "zana-barua-ombi-sw"
       },
       {
         "id": "zana-kubadilisha-format-pdf-sw",
@@ -14471,7 +14485,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kubana-pdf-sw",
+        "imageKey": "zana-kubana-pdf-sw"
       },
       {
         "id": "zana-kuficha-taarifa-pdf-sw",
@@ -14495,7 +14511,9 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kujaza-fomu-pdf-sw",
+        "imageKey": "zana-kujaza-fomu-pdf-sw"
       },
       {
         "id": "zana-kulinganisha-pdf-sw",
@@ -14564,7 +14582,9 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-faida-na-hasara-ya-shamba-sw",
+        "imageKey": "zana-faida-na-hasara-ya-shamba-sw"
       },
       {
         "id": "zana-kalenda-ya-kupanda-mazao-sw",
@@ -14721,7 +14741,9 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-mbolea-sw",
+        "imageKey": "zana-kikokotoo-mbolea-sw"
       },
       {
         "id": "kilimo-mbolea-rwanda-sw",
@@ -15546,7 +15568,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-faida-halisi-baada-ya-mfumuko-sw",
+        "imageKey": "zana-faida-halisi-baada-ya-mfumuko-sw"
       },
       {
         "id": "zana-masharti-ya-mkopo-wa-biashara-sw",
@@ -15558,7 +15582,9 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "trade-credit",
+        "imageKey": "trade-credit"
       },
       {
         "id": "mali-na-mikopo-sw",
@@ -16147,7 +16173,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "ussd-flow-builder",
+        "imageKey": "ussd-flow-builder"
       },
       {
         "id": "zana-fiber-dhidi-ya-lte-na-5g-sw",
@@ -16309,7 +16337,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "social-media-calendar",
+        "imageKey": "social-media-calendar"
       },
       {
         "id": "zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8",
@@ -16589,7 +16619,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "docker-compose-gen",
+        "imageKey": "docker-compose-gen"
       },
       {
         "id": "zana-kubadilisha-data-sw-wave9",
@@ -18006,7 +18038,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pos-fees",
+        "imageKey": "pos-fees"
       },
       {
         "id": "zana-kibadilishaji-sarafu-sw",

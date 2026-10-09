@@ -6,6 +6,11 @@ const { localizeDocumentRelatedTools } = require('./lib/localized-document-relat
 const { installFormFillerRuntime } = require('./lib/pdf-form-filler-runtime');
 const { installReorderRuntime } = require('./lib/pdf-reorder-runtime');
 const path = require('path');
+const { loadBindings, resolveReviewedToolArtwork } = require('./lib/reviewed-tool-image-bindings');
+const reviewedArtwork = loadBindings();
+function artworkUrl(app) {
+  return 'https://afrotools.com' + resolveReviewedToolArtwork(app.swahiliRoute, '/assets/img/tools/' + app.id + '.webp', reviewedArtwork);
+}
 const swahiliLocalizer = require('../assets/js/pages/sw-document-pdf-localizer.js');
 const swahiliApplicationPack = require('./build-swahili-cv-application-pack-runtime');
 
@@ -357,7 +362,7 @@ function page(app) {
   const definition = newApps[app.id];
   const canonical = `https://afrotools.com${app.swahiliRoute}`;
   const english = `https://afrotools.com${app.englishRoute}`;
-  const artwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
+  const artwork = artworkUrl(app);
   const localeAlternates = Object.entries(app.alternates || {}).map(([locale, route]) =>
     `  <link rel="alternate" hreflang="${escapeHtml(locale)}" href="https://afrotools.com${escapeHtml(route)}">`
   ).join('\n');
@@ -646,7 +651,7 @@ function ensureSwahiliApplicationSchema(html, app, metadata, canonical) {
     browserRequirements: 'Requires JavaScript',
     offers: {'@type': 'Offer', price: '0', priceCurrency: 'USD'},
     author: {'@type': 'Organization', name: 'AfroTools', url: 'https://afrotools.com/'},
-    image: `https://afrotools.com/assets/img/tools/${app.id}.webp`
+    image: artworkUrl(app)
   });
   return html.replace('</head>', `  <script type="application/ld+json">${schema}</script>\n</head>`);
 }
@@ -694,13 +699,13 @@ function buildFullParityPage(app) {
   });
   html = upsertMeta(html, 'property', 'og:locale', 'sw_TZ');
   html = upsertMeta(html, 'property', 'og:url', canonical);
-  html = upsertMeta(html, 'property', 'og:image', `https://afrotools.com/assets/img/tools/${app.id}.webp`);
+  html = upsertMeta(html, 'property', 'og:image', artworkUrl(app));
   html = upsertMeta(html, 'property', 'og:title', `${app.name} | AfroTools`);
   html = upsertMeta(html, 'property', 'og:description', metadata.description);
   html = upsertMeta(html, 'name', 'description', metadata.description);
   html = upsertMeta(html, 'name', 'twitter:title', `${app.name} | AfroTools`);
   html = upsertMeta(html, 'name', 'twitter:description', metadata.description);
-  html = upsertMeta(html, 'name', 'twitter:image', `https://afrotools.com/assets/img/tools/${app.id}.webp`);
+  html = upsertMeta(html, 'name', 'twitter:image', artworkUrl(app));
   html = upsertMeta(html, 'name', 'afrotools-content-id', contentId(app.id));
   html = upsertMeta(html, 'name', 'afrotools-source-owner', 'scripts/build-swahili-document-pdf-parity.js');
   html = html.replace(/"inLanguage"\s*:\s*"en(?:-[A-Z]{2})?"/g, '"inLanguage":"sw"');
@@ -810,7 +815,7 @@ function normalizeExistingPage(app) {
   }
   html = installReorderRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
-  const artwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
+  const artwork = artworkUrl(app);
   html = upsertMeta(html, 'name', 'viewport', 'width=device-width, initial-scale=1');
   html = upsertMeta(html, 'property', 'og:image', artwork);
   html = upsertMeta(html, 'property', 'og:locale', 'sw_TZ');
