@@ -40,6 +40,7 @@ exports.handler = withScheduledProof('send-lead-followups', async function () {
     .is('email_followup_sent_at', null)
     .not('first_email_sent_at', 'is', null)
     .lte('first_email_sent_at', cutoff)
+    .gte('first_email_sent_at', new Date(now.getTime() - 30 * 86400000).toISOString())
     .order('first_email_sent_at', { ascending: true })
     .limit(BATCH_SIZE);
 
@@ -48,11 +49,13 @@ exports.handler = withScheduledProof('send-lead-followups', async function () {
     return { statusCode: 500, body: 'Lead fetch failed' };
   }
 
+  var started = Date.now();
   var sent = 0;
   var skipped = 0;
   var failed = 0;
 
   for (var i = 0; i < (leads || []).length; i++) {
+    if (Date.now() - started > 22000) break;
     var lead = leads[i];
     try {
       if (lead.email_status === 'unsubscribed') {
@@ -73,6 +76,10 @@ exports.handler = withScheduledProof('send-lead-followups', async function () {
         unsubscribeUrl: unsubscribeUrl,
       });
 
+      if (!result.ok && ['frequency_capped','duplicate','suppressed','not_subscribed'].includes(result.providerStatus)) {
+        skipped++;
+        continue;
+      }
       if (!result.ok) {
         failed++;
         await markLead(sb, lead.id, {

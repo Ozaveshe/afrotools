@@ -5,6 +5,9 @@ const path = require('path');
 const ADAPTER = path.join(__dirname, '..', 'netlify', 'functions', '_shared', 'email-adapter.js');
 const WEBHOOK = path.join(__dirname, '..', 'netlify', 'functions', 'resend-webhook.js');
 const WEEKLY = path.join(__dirname, '..', 'netlify', 'functions', 'send-weekly-newsletter.js');
+const delivery = require('../netlify/functions/_shared/marketing-delivery');
+const originalReserve = delivery.reserve;
+const originalFinish = delivery.finish;
 
 function loadAdapter(env) {
   delete require.cache[require.resolve(ADAPTER)];
@@ -43,6 +46,8 @@ function loadAdapter(env) {
       EMAIL_MARKETING_FROM: 'AfroTools Brief <brief@afrotools.com>',
       EMAIL_REPLY_TO: 'hello@afrotools.com',
     });
+    delivery.reserve = async () => ({ status: 'reserved', key: 'test-key' });
+    delivery.finish = async () => {};
     var sent = await active.sendEmail({
       to: 'person@example.test',
       subject: 'Useful update',
@@ -107,6 +112,8 @@ function loadAdapter(env) {
 
     console.log('email-delivery-safety: ok');
   } finally {
+    delivery.reserve = originalReserve;
+    delivery.finish = originalFinish;
     global.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.RESEND_API_KEY;
     else process.env.RESEND_API_KEY = originalKey;

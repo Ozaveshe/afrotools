@@ -2,7 +2,7 @@
  * Monthly Digest Email — scheduled Netlify function
  *
  * Runs on the 1st of each month at 8 AM UTC.
- * Sends personalized "Your Numbers" digest emails via Resend API.
+ * Sends an aggregate activity recap without private calculation content.
  *
  * Schedule configured in netlify.toml:
  *   [functions."send-monthly-digest"]
@@ -88,53 +88,30 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
         }
 
         // Fetch last month's calculations
-        var { data: calcs } = await sb
+        var { count: calculationCount, error: activityError } = await sb
           .from('calculation_history')
-          .select('tool_name, tool_slug, outputs, created_at')
+          .select('id', { count: 'exact', head: true })
           .eq('user_id', user.id)
           .gte('created_at', lastMonth.toISOString())
-          .lte('created_at', lastMonthEnd.toISOString())
-          .order('created_at', { ascending: false })
-          .limit(5);
+          .lte('created_at', lastMonthEnd.toISOString());
 
-        // Fetch FX rates for their currency
-        var fxData = null;
-        if (user.currency && user.currency !== 'USD') {
-          var { data: fx } = await sb
-            .from('fx_snapshots')
-            .select('base_currency, quote_currency, bank_rate, market_rate, remittance_rate, spread_pct, captured_at')
-            .eq('quote_currency', user.currency)
-            .order('captured_at', { ascending: false })
-            .limit(3);
-          if (fx && fx.length > 0) fxData = fx;
-        }
-
-        // Fetch salary benchmark
-        var benchmarkData = null;
-        if (user.country_code) {
-          var { data: benchRows } = await sb
-            .from('salary_benchmarks')
-            .select('role_category, experience_level, median_gross, median_net, currency, period, updated_at')
-            .eq('country_code', user.country_code)
-            .order('updated_at', { ascending: false })
-            .limit(1);
-          if (benchRows && benchRows[0]) benchmarkData = benchRows[0];
-        }
+        if (activityError) throw new Error('Monthly activity lookup failed');
 
         var displayName = (user.name || '').split(' ')[0] || 'there';
-        var hasActivity = calcs && calcs.length > 0;
+        var hasActivity = calculationCount > 0;
+        var calcs = { length: calculationCount || 0 };
         if (!hasActivity) {
           skipped++;
           continue;
         }
         var unsubUrl = 'https://afrotools.com/api/email/unsubscribe?token=' + user.email_unsubscribe_token;
 
-        var html = buildDigestEmail(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl);
-        var text = buildDigestText(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl);
+        var html = buildDigestEmail(displayName, monthName, year, lastMonthName, calcs, unsubUrl);
+        var text = buildDigestText(displayName, monthName, year, lastMonthName, calcs, unsubUrl);
 
         var res = await sendEmail({
           to: email,
-          subject: 'Your ' + monthName + ' ' + year + ' Financial Summary - AfroTools',
+          subject: 'Your ' + monthName + ' ' + year + ' Activity Recap - AfroTools',
           html: html,
           text: text,
           marketing: true,
@@ -175,52 +152,19 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
 
 // ─── HTML Email Builder (with activity) ───
 
-function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, benchmark, unsubUrl) {
+function buildDigestEmail(name, monthName, year, lastMonthName, calcs, unsubUrl) {
   var activityHtml = '';
   if (calcs && calcs.length > 0) {
     activityHtml += '<div style="margin-bottom:8px;font-size:14px;color:#475569;">' + calcs.length + ' calculation' + (calcs.length !== 1 ? 's' : '') + ' in ' + lastMonthName + '</div>';
-    var latest = calcs[0];
-    activityHtml += '<div style="font-size:14px;color:#1e293b;">Last: <strong>' + esc(latest.tool_name) + '</strong>';
-    var summary = summarizeCalculation(latest);
-    if (summary) activityHtml += ' - ' + esc(summary);
-    activityHtml += '</div>';
-  }
-
-  var fxHtml = '';
-  if (fxData && fxData.length > 0) {
-    fxHtml = '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCB1 FX Rates</div>';
-    for (var i = 0; i < fxData.length; i++) {
-      var fx = fxData[i];
-      var pair = (fx.base_currency || 'USD') + '/' + (fx.quote_currency || '');
-      var rate = fx.market_rate || fx.bank_rate || fx.remittance_rate || 0;
-      var spread = Number(fx.spread_pct || 0);
-      var color = spread <= 5 ? '#059669' : '#dc2626';
-      fxHtml += '<div style="font-size:14px;color:#1e293b;margin-bottom:4px;">' +
-        esc(pair) + ': <strong>' + Number(rate).toLocaleString() + '</strong> ' +
-        '<span style="color:' + color + ';">(' + Math.abs(spread).toFixed(1) + '% spread)</span></div>';
-    }
-    fxHtml += '</td></tr>';
-  }
-
-  var benchHtml = '';
-  if (benchmark) {
-    benchHtml = '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCC8 Salary Benchmark</div>' +
-      '<div style="font-size:14px;color:#1e293b;">Median salary in your country: <strong>' +
-      (benchmark.currency || '') + ' ' + Number(benchmark.median_gross || benchmark.median_net || 0).toLocaleString() + '</strong></div>' +
-      '</td></tr>';
   }
 
   return emailShell(
-    'Your ' + monthName + ' ' + year + ' Numbers',
+    'Your ' + monthName + ' ' + year + ' Activity Recap',
     'Hi ' + esc(name) + ',',
     '<tr><td style="padding:0 24px 24px;">' +
       '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCCA Your Activity</div>' +
       activityHtml +
     '</td></tr>' +
-    fxHtml +
-    benchHtml +
     '<tr><td style="padding:0 24px 24px;">' +
       '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDD27 Recommended For You</div>' +
       '<div style="font-size:14px;color:#1e293b;margin-bottom:4px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#0062CC;text-decoration:none;">Savings Goal Calculator</a> \u2014 plan your targets</div>' +
@@ -249,7 +193,7 @@ function emailShell(headline, greeting, bodyRows, unsubUrl) {
         // Greeting
         '<tr><td style="padding:24px 24px 16px;">' +
           '<div style="font-size:16px;font-weight:600;color:#1e293b;">' + greeting + '</div>' +
-          '<div style="font-size:14px;color:#64748b;margin-top:4px;">Here\'s your monthly financial snapshot from AfroTools.</div>' +
+          '<div style="font-size:14px;color:#64748b;margin-top:4px;">Here\'s your monthly activity recap from AfroTools.</div>' +
         '</td></tr>' +
         // Dynamic body sections
         bodyRows +
@@ -260,7 +204,7 @@ function emailShell(headline, greeting, bodyRows, unsubUrl) {
         // Footer
         '<tr><td style="background:#F8FAFD;padding:20px 24px;border-top:1px solid #E2E8F0;text-align:center;">' +
           '<div style="font-size:12px;color:#94a3b8;">AfroTools \u2014 Africa\'s Financial Toolkit</div>' +
-          '<div style="font-size:12px;color:#94a3b8;margin-top:6px;"><a href="' + esc(unsubUrl) + '" style="color:#94a3b8;text-decoration:underline;">Unsubscribe</a> from monthly digests</div>' +
+          '<div style="font-size:12px;color:#94a3b8;margin-top:6px;"><a href="' + esc(unsubUrl) + '" style="color:#94a3b8;text-decoration:underline;">Unsubscribe</a> from marketing emails</div>' +
         '</td></tr>' +
       '</table>' +
     '</td></tr>' +
@@ -270,9 +214,9 @@ function emailShell(headline, greeting, bodyRows, unsubUrl) {
 
 // ─── Plain-text fallbacks ───
 
-function buildDigestText(name, monthName, year, lastMonthName, calcs, fxData, benchmark, unsubUrl) {
+function buildDigestText(name, monthName, year, lastMonthName, calcs, unsubUrl) {
   var lines = [
-    'AFROTOOLS - Your ' + monthName + ' ' + year + ' Numbers',
+    'AFROTOOLS - Your ' + monthName + ' ' + year + ' Activity Recap',
     '',
     'Hi ' + name + ',',
     '',
@@ -280,25 +224,8 @@ function buildDigestText(name, monthName, year, lastMonthName, calcs, fxData, be
   ];
   if (calcs && calcs.length > 0) {
     lines.push(calcs.length + ' calculation(s) in ' + lastMonthName);
-    var latestSummary = summarizeCalculation(calcs[0]);
-    lines.push('Last: ' + calcs[0].tool_name + (latestSummary ? ' - ' + latestSummary : ''));
   }
   lines.push('');
-  if (fxData && fxData.length > 0) {
-    lines.push('FX RATES');
-    for (var i = 0; i < fxData.length; i++) {
-      var fx = fxData[i];
-      var pair = (fx.base_currency || 'USD') + '/' + (fx.quote_currency || '');
-      var rate = fx.market_rate || fx.bank_rate || fx.remittance_rate || 0;
-      lines.push(pair + ': ' + Number(rate).toLocaleString() + ' (' + Number(fx.spread_pct || 0).toFixed(1) + '% spread)');
-    }
-    lines.push('');
-  }
-  if (benchmark) {
-    lines.push('SALARY BENCHMARK');
-    lines.push('Median: ' + (benchmark.currency || '') + ' ' + Number(benchmark.median_gross || benchmark.median_net || 0).toLocaleString());
-    lines.push('');
-  }
   lines.push('Open your dashboard: https://afrotools.com/dashboard/');
   lines.push('');
   lines.push('---');
@@ -314,15 +241,5 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
-function summarizeCalculation(calc) {
-  var outputs = calc && calc.outputs && typeof calc.outputs === 'object' ? calc.outputs : null;
-  if (!outputs) return '';
-  var keys = ['result_summary', 'summary', 'takeHomePay', 'netPay', 'total', 'amount', 'monthlyPayment', 'result'];
-  for (var i = 0; i < keys.length; i++) {
-    var value = outputs[keys[i]];
-    if (value == null || value === '') continue;
-    if (typeof value === 'number') return keys[i] + ': ' + Number(value).toLocaleString();
-    if (typeof value === 'string') return value.slice(0, 120);
-  }
-  return '';
-}
+module.exports.buildDigestEmail = buildDigestEmail;
+module.exports.buildDigestText = buildDigestText;

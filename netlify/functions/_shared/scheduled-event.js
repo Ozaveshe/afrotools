@@ -17,6 +17,7 @@ const SCHEDULED_ONLY_FUNCTIONS = Object.freeze([
   'send-activity-milestones',
   'send-lead-followups',
   'send-monthly-digest',
+  'send-newsletter-subscribers',
   'send-onboarding-nudges',
   'send-signin-reminders',
   'send-weekly-newsletter',

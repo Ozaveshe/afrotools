@@ -36,7 +36,7 @@ exports.handler = withScheduledProof('send-activity-milestones', async function 
   var now = new Date();
 
   var { data: profiles, error } = await sb
-    .from('profiles')
+    .from('marketing_activity_candidates')
     .select('id,email,name,email_unsubscribe_token,email_welcome_sent_at,email_activity_milestone_sent_at')
     .eq('email_digest_enabled', true)
     .is('email_activity_milestone_sent_at', null)
@@ -49,11 +49,13 @@ exports.handler = withScheduledProof('send-activity-milestones', async function 
     return { statusCode: 500, body: 'Profile fetch failed' };
   }
 
+  var started = Date.now();
   var sent = 0;
   var skipped = 0;
   var failed = 0;
 
   for (var i = 0; i < (profiles || []).length; i++) {
+    if (Date.now() - started > 22000) break;
     var profile = profiles[i];
     try {
       if (isWithinDays(profile.email_welcome_sent_at, now, WELCOME_GRACE_DAYS)) {
@@ -78,6 +80,10 @@ exports.handler = withScheduledProof('send-activity-milestones', async function 
         unsubscribeUrl: unsubscribeUrl,
       });
 
+      if (!result.ok && ['frequency_capped','duplicate','suppressed','not_subscribed'].includes(result.providerStatus)) {
+        skipped++;
+        continue;
+      }
       if (!result.ok) {
         failed++;
         console.error('[activity-milestones] send failed for profile ' + profile.id + ':', result.providerStatus || result.error || 'unknown');
