@@ -92,10 +92,22 @@ for (const [id, slug, fr] of rows) {
   );
   assert.match(sw, /application\/ld\+json/);
   assert.match(sw, /name="geo.region" content="002"/);
-  assert.match(sw, new RegExp(`assets/img/tools/${q(id)}\\.webp`));
+  const imageId = id === "creator-invoice" ? "zana-ankara-ya-mtayarishi-sw" : id;
+  assert.match(sw, new RegExp(`assets/img/tools/${q(imageId)}\\.webp`));
   assert.ok(
-    fs.statSync(path.join(ROOT, `assets/img/tools/${id}.webp`)).size > 1000,
+    fs.statSync(path.join(ROOT, `assets/img/tools/${imageId}.webp`)).size > 1000,
   );
+  if (id === "creator-invoice") {
+    const imageUrl = `https://afrotools.com/assets/img/tools/${imageId}.webp`;
+    assert.ok(sw.includes(`<meta property="og:image" content="${imageUrl}">`));
+    assert.ok(sw.includes(`<meta name="twitter:image" content="${imageUrl}">`));
+    const schemas = [...sw.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .map((match) => JSON.parse(match[1]));
+    const app = schemas.find((schema) => schema["@type"] === "SoftwareApplication");
+    assert.ok(app, "Creator Invoice application schema is present");
+    assert.equal(app.image, imageUrl);
+    assert.doesNotMatch(sw, /assets\/img\/tools\/creator-invoice\.webp/);
+  }
   assert.doesNotMatch(sw, /<iframe\b/i);
   assert.doesNotMatch(sw, /<script\b[^>]*src="https?:\/\//i);
   assert.doesNotMatch(sw, /[ÃÂ]|â(?:€”|€™|€œ|€˜)/);
