@@ -1,92 +1,23 @@
-/**
- * Email Unsubscribe — one-click unsubscribe endpoint
- *
- * GET /api/email/unsubscribe?token=xxx
- *
- * Looks up profile by unsubscribe token, disables lifecycle/digest emails,
- * and returns a simple confirmation HTML page.
- */
-const { createClient } = require('@supabase/supabase-js');
-const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
-
-const MARKETING_SUPABASE = getMarketingSupabaseConfig();
-const SUPABASE_URL = MARKETING_SUPABASE.url;
-const SUPABASE_SERVICE_KEY = MARKETING_SUPABASE.serviceKey;
-
+/** One-click opt-out shared by account, lead and newsletter journeys. */
+const { client } = require('./_shared/marketing-delivery');
 exports.handler = async function (event) {
-  const token = event.queryStringParameters && event.queryStringParameters.token;
-  const leadToken = event.queryStringParameters && event.queryStringParameters.lead_token;
-
-  if (!token && !leadToken) {
-    return {
-      statusCode: 400,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: htmlPage('Invalid Link', 'This unsubscribe link is invalid or has expired.'),
-    };
+  const params = event.queryStringParameters || {};
+  const token = params.newsletter_token || params.lead_token || params.token;
+  const table = params.newsletter_token ? 'newsletter_subscribers' : params.lead_token ? 'email_leads' : 'profiles';
+  const column = params.newsletter_token ? 'unsubscribe_token' : 'email_unsubscribe_token';
+  const response = (statusCode, title, body) => ({ statusCode, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }, body: htmlPage(title, body) });
+  if (!/^[a-f0-9-]{36}$/i.test(token || '')) return response(400, 'Invalid Link', 'This unsubscribe link is invalid.');
+  try {
+    const sb = client();
+    const { data, error } = await sb.from(table).select('email').eq(column, token).maybeSingle();
+    if (error) return response(503, 'Please try again', 'We could not update your email preferences. Please try again shortly.');
+    if (!data) return response(404, 'Invalid Link', 'This unsubscribe link is invalid.');
+    const result = await sb.rpc('suppress_marketing_email', { p_email: data.email, p_reason: 'unsubscribed' });
+    if (result.error) throw new Error('Unsubscribe storage failed');
+    return response(200, 'Unsubscribed', "You've been unsubscribed from AfroTools marketing, newsletter and follow-up emails.");
+  } catch (_) {
+    return response(503, 'Please try again', 'We could not update your email preferences. Please try again shortly.');
   }
-
-  if (!SUPABASE_SERVICE_KEY) {
-    console.error('[email-unsubscribe] SUPABASE_SERVICE_ROLE_KEY not set');
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: htmlPage('Error', 'Server configuration error. Please try again later.'),
-    };
-  }
-
-  const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-
-  if (leadToken) {
-    const { data, error } = await sb
-      .from('email_leads')
-      .update({ opt_in_digest: false, email_status: 'unsubscribed', updated_at: new Date().toISOString() })
-      .eq('email_unsubscribe_token', leadToken)
-      .select('id')
-      .single();
-
-    if (error || !data) {
-      return {
-        statusCode: 404,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' },
-        body: htmlPage('Not Found', 'This unsubscribe link is invalid or has already been used.'),
-      };
-    }
-
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: htmlPage(
-        'Unsubscribed',
-        "You've been unsubscribed from AfroTools digest and follow-up emails."
-      ),
-    };
-  }
-
-  // Look up profile by unsubscribe token
-  const { data, error } = await sb
-    .from('profiles')
-    .update({ email_digest_enabled: false, email_weekly_enabled: false })
-    .eq('email_unsubscribe_token', token)
-    .select('id')
-    .single();
-
-  if (error || !data) {
-    return {
-      statusCode: 404,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: htmlPage('Not Found', 'This unsubscribe link is invalid or has already been used.'),
-    };
-  }
-
-  return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: htmlPage(
-        'Unsubscribed',
-        "You've been unsubscribed from AfroTools lifecycle, newsletter, and digest emails.<br><br>" +
-        'You can re-enable them anytime from your <a href="https://afrotools.com/dashboard/" style="color:#0062CC;">Dashboard</a>.'
-      ),
-  };
 };
 
 function htmlPage(title, message) {

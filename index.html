@@ -2446,16 +2446,17 @@
     <div class="nl-box">
       <div>
         <h2 class="nl-title">New Tools.<br>Every Week.<br>Free.</h2>
-        <p class="nl-sub">Get notified when we launch tools for your country. One email per major release. No spam, no marketing. Cancel anytime.</p>
+        <p class="nl-sub">Get one practical tool or useful AfroTools update each week. Unsubscribe anytime.</p>
       </div>
       <div>
         <form class="nl-form" name="newsletter" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/" id="nl-form">
           <input type="hidden" name="form-name" value="newsletter">
           <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
           <input type="hidden" name="source" value="homepage">
+          <input type="hidden" name="consent_version" value="weekly-2026-10-09">
           <div class="nl-row">
             <input class="nl-inp" type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
-            <button class="nl-btn" type="submit">Notify Me →</button>
+            <button class="nl-btn" type="submit" aria-live="polite">Notify Me →</button>
           </div>
           <p class="nl-note">Join people across all 54 countries getting more done with AfroTools.</p>
         </form>
@@ -2697,14 +2698,19 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     const btn = this.querySelector('button'), inp = this.querySelector('input[type=email]');
     if (!inp.value || !inp.checkValidity()) return;
+    btn.disabled = true;
+    btn.textContent = 'Subscribing…';
     try {
-      await fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: new URLSearchParams({'form-name': 'newsletter', email: inp.value}).toString() });
-    } catch(err) {}
-    btn.textContent = '✓ You\'re on the list!';
-    btn.style.background = '#0a1628';
-    inp.value = '';
-    setTimeout(() => { btn.textContent = 'Notify Me →'; btn.style.background = ''; }, 5000);
+      const response = await fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: new URLSearchParams(new FormData(this)).toString() });
+      if (!response.ok) throw new Error('Subscription failed');
+      btn.textContent = '✓ You\'re on the list!';
+      inp.value = '';
+    } catch(err) {
+      btn.textContent = 'Try again →';
+    } finally {
+      btn.disabled = false;
+    }
   });
 
   // ── LOAD SOURCE-AND-TIMESTAMPED DATA PREVIEWS FOR HOMEPAGE CARDS ──

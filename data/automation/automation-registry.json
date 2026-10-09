@@ -1619,7 +1619,7 @@
       "display_name": "Netlify Send Signin Reminders",
       "runner": "netlify",
       "production_required": true,
-      "expected_schedule": "29 9 * * 3",
+      "expected_schedule": "29,49 9-12 * * 3",
       "netlify_function": "send-signin-reminders",
       "github_workflow": null,
       "codex_automation_id": null,
@@ -1636,11 +1636,38 @@
       ]
     },
     {
+      "id": "netlify:send-newsletter-subscribers",
+      "display_name": "Netlify Newsletter Subscriber Funnel",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "4 * * * *",
+      "netlify_function": "send-newsletter-subscribers",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 3,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "newsletter_subscribers",
+        "marketing_email_deliveries",
+        "marketing_email_suppressions",
+        "live_data_store:scheduled-proof-send-newsletter-subscribers"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node tests/email-funnel.test.js",
+        "node tests/scheduled-event-auth.test.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
       "id": "netlify:send-weekly-newsletter",
       "display_name": "Netlify Send Weekly Newsletter",
       "runner": "netlify",
       "production_required": true,
-      "expected_schedule": "19 8 * * 1",
+      "expected_schedule": "19,39,59 8-11 * * 1",
       "netlify_function": "send-weekly-newsletter",
       "github_workflow": null,
       "codex_automation_id": null,
