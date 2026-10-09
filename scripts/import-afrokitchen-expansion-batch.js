@@ -6,13 +6,6 @@ const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
 
 const ROOT = path.resolve(__dirname, "..");
-const DEFAULT_BATCH_PATH = path.join(
-  ROOT,
-  "data",
-  "afrokitchen",
-  "recipe-expansion-batches",
-  "2026-04-28-wave-1.json"
-);
 const AUDIT_PATH = path.join(ROOT, "data", "afrokitchen", "recipe-research-audit.json");
 const SUPABASE_URL =
   process.env.SUPABASE_AUTH_URL || "https://zpclagtgczsygrgztlts.supabase.co";
@@ -20,12 +13,6 @@ const SUPABASE_KEY =
   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY;
-
-function readFlag(name) {
-  const index = process.argv.indexOf(name);
-  if (index === -1 || index === process.argv.length - 1) return "";
-  return String(process.argv[index + 1] || "").trim();
-}
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -284,9 +271,36 @@ function mergeAuditEntries(batch) {
   writeJson(AUDIT_PATH, audit);
 }
 
+function parseImportArgs(args) {
+  if (args.length === 1 && (args[0] === '--help' || args[0] === '-h')) return { help: true };
+  let batchPath = '', dryRun = false, apply = false;
+  const seen = new Set();
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    if (!['--batch', '--dry-run', '--apply'].includes(arg)) throw new Error('Unknown argument: ' + arg + '. Use --help.');
+    if (seen.has(arg)) throw new Error('Duplicate argument: ' + arg);
+    seen.add(arg);
+    if (arg === '--batch') {
+      const value = args[++i];
+      if (!value || value.startsWith('-')) throw new Error('--batch requires a file path.');
+      batchPath = value;
+    } else if (arg === '--dry-run') dryRun = true;
+    else apply = true;
+  }
+  if (dryRun === apply) throw new Error('Choose exactly one mode: --dry-run or --apply.');
+  if (!batchPath) throw new Error('An explicit --batch file is required.');
+  return { batchPath, dryRun, apply, help: false };
+}
+
 async function main() {
-  const batchPath = path.resolve(readFlag("--batch") || DEFAULT_BATCH_PATH);
-  const dryRun = process.argv.includes("--dry-run");
+  const options = parseImportArgs(process.argv.slice(2));
+  if (options.help) {
+    console.log('Usage: node scripts/import-afrokitchen-expansion-batch.js --batch <file> (--dry-run | --apply)');
+    console.log('--dry-run validates locally. --apply writes to the configured database and updates the research audit.');
+    return;
+  }
+  const batchPath = path.resolve(options.batchPath);
+  const dryRun = options.dryRun;
 
   if (!SUPABASE_KEY && !dryRun) {
     throw new Error(
