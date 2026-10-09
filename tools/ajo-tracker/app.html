@@ -12,7 +12,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
-<script src="/assets/js/lib/save-state.global.js?v=ff7c4414"></script>
+<script src="/assets/js/lib/save-state.global.js?v=a2d5e02d"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--pri:#0062CC;--bg:#f8fafc;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px;--green:#059669;--red:#dc2626}
@@ -476,7 +476,7 @@ function renderSchedule() {
 }
 
 // Save/Load
-const ss = new SaveState('ajo-tracker');
+const ss = window.SaveState ? new window.SaveState('ajo-tracker') : null;
 
 function saveGroup() {
   const data = {
@@ -497,15 +497,13 @@ function saveGroup() {
   const params = new URLSearchParams(window.location.search);
   const existingId = params.get('id');
 
-  ss.save({ id: existingId || undefined, label, data });
-  alert('Group saved!');
+  if (!ss) { alert('Saving is unavailable. Export a backup before leaving.'); return; }
+  try {
+    const saved = ss.save({ id: existingId || undefined, title: label, data });
+    history.replaceState(null, '', '?id=' + encodeURIComponent(saved.id));
+    alert('Group saved!');
+  } catch (error) { alert(SaveState.message(error)); }
 
-  if (!existingId) {
-    const all = ss.getAll();
-    if (all.length) {
-      history.replaceState(null, '', `?id=${all[all.length - 1].id}`);
-    }
-  }
 }
 
 function loadFromUrl() {
@@ -516,7 +514,9 @@ function loadFromUrl() {
     document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
     return;
   }
-  const item = ss.load(id);
+  if (!ss) { alert('Saved groups are unavailable in this browser.'); return; }
+  let item;
+  try { item = ss.load(id); } catch (error) { alert(SaveState.message(error)); return; }
   if (!item || !item.data) return;
   const d = item.data;
 

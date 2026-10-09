@@ -29,7 +29,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/invoice-generator.css?v=ae4ac974">
-<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
+<script src="/assets/js/lib/save-state-classic.js?v=a2d5e02d"></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
 
 <style>
@@ -1951,9 +1951,7 @@ init();
     return Array.isArray(clients) ? clients : [];
   }
   function getSavedInvoices() {
-    if (window.SaveState) return new window.SaveState('invoice-generator', { maxFree: 30 }).getAll();
-    var items = readJson('afrotools-saved-invoice-generator', []);
-    return Array.isArray(items) ? items.sort(function(a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); }) : [];
+    return window.AfroInvoiceSaved ? window.AfroInvoiceSaved.getAll() : null;
   }
   function scrollToField(id) {
     var el = $(id);
@@ -1967,6 +1965,7 @@ init();
   function updateStarterState() {
     var clients = getSavedClients();
     var invoices = getSavedInvoices();
+    if (!invoices) return;
     var clientMeta = $('starterClientMeta');
     var recentMeta = $('starterRecentMeta');
     if (clientMeta) clientMeta.textContent = clients.length ? clients.length + ' saved on this browser' : 'No saved client yet';
@@ -1992,6 +1991,7 @@ init();
   }
   function loadRecentInvoice() {
     var invoices = getSavedInvoices();
+    if (!invoices) return;
     var latest = invoices[0];
     if (!latest) {
       toast('No saved invoice on this browser yet', 'info');
@@ -2125,7 +2125,7 @@ init();
   else bind();
 })();
 </script>
-<script src="/assets/js/pages/invoice-generator-enhancements.js?v=b0460641"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=a7ec0e4a"></script>
 <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {
@@ -2198,54 +2198,12 @@ init();
 })();
 </script>
 <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=bc1a2d3c" defer></script>
-<script>
-// Invoice Generator — saved invoices
-(function(){
-  if(typeof SaveState==='undefined')return;
-  var ss=new SaveState('invoice-generator',{maxFree:20});
-  var section=document.getElementById('inv-saved-section');
-  var grid=document.getElementById('inv-saved-grid');
-  if(!section||!grid)return;
-
-  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
-  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
-
-  function render(){
-    var items=ss.getAll();
-    if(!items.length){section.style.display='none';return;}
-    section.style.display='';
-    grid.innerHTML=items.map(function(it){
-      var d=it.data||{};
-      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#0062CC\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
-        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
-        (d.client?'<div style="font-size:.72rem;color:#6b7280;">Client: '+esc(d.client)+'</div>':'')+
-        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#0062CC;margin-top:4px;">'+esc(d.total)+'</div>':'')+
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
-        '<span style="font-size:.6rem;color:#64748b;">'+ago(it.updatedAt)+'</span>'+
-        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
-        '</div></div>';
-    }).join('');
-  }
-
-  window.invDelSaved=function(id){if(confirm('Delete this saved invoice?')){ss.delete(id);render();}};
-  window.invSaveCurrentInvoice=function(){
-    var name=prompt('Name this invoice (e.g., "Invoice #001 - Acme Corp"):');
-    if(!name)return;
-    var clientEl=document.getElementById('clientName')||document.querySelector('[name="clientName"]');
-    var totalEl=document.querySelector('.total-amount,.inv-total');
-    ss.save({title:name,data:{client:clientEl?clientEl.value:'',total:totalEl?totalEl.textContent:''}});
-    render();
-    alert('Invoice saved!');
-  };
-  render();
-})();
-</script>
+<!-- Saved invoices are managed by invoice-generator-enhancements.js. -->
 
 <script src="/assets/js/ai/prefill-adapters.js?v=f5742764" defer></script>
 <script src="/assets/js/ai/prefill-consumer.js?v=63971f7c" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-
   <script type="application/json" id="sw-document-pdf-locale">{"id":"invoice-generator","name":"Kizalishaji Ankara","phraseOverrides":{"Company Name *":"Jina la kampuni *","Company name (optional)":"Jina la kampuni (hiari)","Company name is required.":"Jina la kampuni linahitajika.","Company logo":"Nembo ya kampuni","Business Logo":"Nembo ya biashara","Client Company":"Kampuni ya mteja","Client Address":"Anwani ya mteja","Client PO, job code, LPO, or reference":"PO ya mteja, msimbo wa kazi, LPO au rejea","Document Type":"Aina ya hati","Payment & Compliance":"Malipo na masharti ya ankara","Advanced payment and compliance options":"Chaguo zaidi za malipo na masharti ya ankara","Bank / Payment Instructions":"Maelekezo ya benki au malipo","Payment Instructions":"Maelekezo ya malipo","Payment instructions":"Maelekezo ya malipo","Payment instructions are included.":"Maelekezo ya malipo yameongezwa.","Payment Method":"Njia ya malipo","Payment Terms":"Masharti ya malipo","Payment Link":"Kiungo cha malipo","Payment reminder copied":"Kikumbusho cha malipo kimenakiliwa","Bank name, account name, account number, branch, SWIFT, payment reference, or local mobile-money instructions":"Jina la benki, jina na namba ya akaunti, tawi, SWIFT, rejea ya malipo au maelekezo ya malipo kwa simu","Saved Templates":"Violezo vilivyohifadhiwa","Save Template":"Hifadhi kiolezo","Template saved!":"Kiolezo kimehifadhiwa!","Template deleted":"Kiolezo kimefutwa","Template loaded with new invoice #":"Kiolezo kimefunguliwa na namba mpya ya ankara #","Saved client loaded from this browser":"Mteja aliyehifadhiwa amefunguliwa kutoka kivinjari hiki","Balance Due":"Salio linalodaiwa","Balance due":"Salio linalodaiwa","balance due":"salio linalodaiwa","Due date is required.":"Tarehe ya mwisho ya malipo inahitajika.","Due Date":"Tarehe ya mwisho ya malipo","Due Date *":"Tarehe ya mwisho ya malipo *","Due on Receipt":"Inalipwa ankara inapopokelewa",". Due date has passed.":". Tarehe ya mwisho ya malipo imepita.","Download invoice as PDF":"Pakua ankara ya PDF","Line Items":"Bidhaa na huduma","+ Add Line Item":"+ Ongeza bidhaa au huduma","Add a new line item":"Ongeza bidhaa au huduma","Remove line item":"Ondoa bidhaa au huduma","Invoice line items":"Bidhaa na huduma kwenye ankara","Add line items to see them here":"Ongeza bidhaa au huduma ili zionekane hapa","Add business, client, and line items to preview your invoice.":"Ongeza maelezo ya biashara, mteja na bidhaa au huduma ili kuhakiki ankara yako.","Line total":"Jumla ya kipengee","Per-Item Tax":"Kodi kwa kila bidhaa au huduma","Load":"Fungua","Quote / estimate":"Bei inayopendekezwa / makadirio","QUOTE / ESTIMATE":"BEI INAYOPENDEKEZWA / MAKADIRIO","Quote mode":"Makadirio ya bei","Estimate #":"Makadirio #","Clear use case":"Matumizi ya zana","BILL TO":"MTEJA","Bill To":"Mteja","Fill Bill To from a client saved on this browser.":"Jaza maelezo ya mteja kutoka orodha iliyohifadhiwa kwenye kivinjari hiki.","Include invoice data in the link (contains private client and payment details)":"Ongeza data ya ankara kwenye kiungo (ina taarifa binafsi za mteja na malipo)","Anyone with a data-included link can read its invoice content. A plain tool link shares no invoice data.":"Yeyote mwenye kiungo kilicho na data anaweza kusoma ankara hiyo. Kiungo cha kawaida cha zana hakina data ya ankara.","Invoice changed. Review the preview again before export.":"Ankara imebadilishwa. Kagua hakiki tena kabla ya kupakua.","Review the live invoice preview and confirm the commercial details before export.":"Kagua hakiki ya ankara na uthibitishe maelezo ya biashara kabla ya kupakua.","I reviewed the seller, client, invoice number, dates, line items, tax, payment details, totals, and live preview before export.":"Nimekagua muuzaji, mteja, namba ya ankara, tarehe, bidhaa na huduma, kodi, malipo, jumla na hakiki kabla ya kupakua.","Local-first by default: PDF, print, reminders, JSON export, and unsigned saved drafts run in this browser. Verify VAT, withholding, invoice numbering, and local invoicing rules before using an invoice for compliance.":"Kwa kawaida, PDF, uchapishaji, vikumbusho, nakala za JSON na rasimu za mtumiaji ambaye hajaingia kwenye akaunti huchakatwa kwenye kivinjari hiki. Thibitisha VAT, kodi ya zuio, namba za ankara na sheria za nchi husika kabla ya kutumia ankara kutimiza masharti rasmi.","If you stay signed out, your invoice data stays in your browser. If you sign in, the active invoice draft syncs to your AfroTools account so you can continue on another device. Client lists and saved templates still stay local for now.":"Usipoingia kwenye akaunti, data ya ankara inabaki kwenye kivinjari chako. Ukiingia, rasimu unayotumia husawazishwa na akaunti yako ya AfroTools ili uendelee kwenye kifaa kingine. Orodha za wateja na violezo vilivyohifadhiwa bado hubaki kwenye kifaa hiki.","Saved clients, reusable items, templates, and saved invoices use this browser's localStorage. Clearing browser data removes them from this device.":"Wateja, bidhaa na huduma, violezo na ankara ulizohifadhi hukaa kwenye hifadhi ya kivinjari hiki. Ukifuta data ya kivinjari, zitaondolewa kwenye kifaa hiki.","Which currencies are supported?":"Ni sarafu zipi zinazokubaliwa?","Net 7 days":"Inalipwa ndani ya siku 7","Net 15 days":"Inalipwa ndani ya siku 15","Net 30 days":"Inalipwa ndani ya siku 30","Net 45 days":"Inalipwa ndani ya siku 45","Net 60 days":"Inalipwa ndani ya siku 60"},"downloadContract":"sensitive-guest"}</script>
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=65606a7e" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>

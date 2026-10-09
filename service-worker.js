@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = '366586ab';
+const CACHE_VERSION = 'bdef484b';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -22,8 +22,8 @@ const PRECACHE = [
   // BUILD-GENERATED PRECACHE START
   '/assets/js/components/navbar.min.js?v=0333a741',
   '/assets/js/components/footer.min.js?v=6bd937ab',
-  '/assets/js/bundles/core.aeb1b82d.min.js',
-  '/assets/js/bundles/tool-page.9f8a94f8.min.js',
+  '/assets/js/bundles/core.9a4ccbbc.min.js',
+  '/assets/js/bundles/tool-page.295eac14.min.js',
   '/assets/js/bundles/chat.9ca610bf.min.js',
   // BUILD-GENERATED PRECACHE END
 ];

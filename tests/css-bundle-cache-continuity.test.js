@@ -55,3 +55,18 @@ test('repeated bundle regeneration preserves the live manifest and prior product
   assert.deepEqual(f.manifest(), before);
   assert.deepEqual(fs.readFileSync(path.join(f.root, 'assets/js/bundles/core.02ddca36.min.js')), previousUrl);
 });
+
+test('saved-work rollout retains both immediately preceding production bundle URLs', t => {
+  const f = fixture(t);
+  const previous = { core: 'core.aeb1b82d.min.js', 'tool-page': 'tool-page.9f8a94f8.min.js' };
+  for (let pass = 0; pass < 2; pass += 1) {
+    f.run();
+    const manifest = f.manifest();
+    for (const [name, filename] of Object.entries(previous)) {
+      assert(manifest[name].aliases.includes('/assets/js/bundles/' + filename));
+      const current = fs.readFileSync(path.join(f.root, 'assets/js/bundles', manifest[name].file));
+      const retained = fs.readFileSync(path.join(f.root, 'assets/js/bundles', filename));
+      assert.deepEqual(retained, current, 'Retained HTML receives the current compatible ' + name + ' runtime');
+    }
+  }
+});

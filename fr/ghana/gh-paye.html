@@ -71,7 +71,7 @@
 <meta http-equiv="last-modified" content="2026-03-26">
   <link rel="stylesheet" href="/assets/css/print.css?v=84a2abc8" media="print">
 <script src="/assets/js/lib/chart-config.js?v=b81750bb" defer></script>
-<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=7cbfa474"></script>
 <meta property="og:locale" content="fr_FR">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gh-paye.webp">
@@ -105,6 +105,7 @@ body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:
 <meta name="afrotools-language-fallback-owner" content="fr-generated-country-reference-copy: Localization platform">
 <link rel="stylesheet" href="/assets/css/french-finance-mobile-fixes.css?v=0298fb02">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
+<style id="ghana-toggle-accessibility">.tog{position:relative;min-height:44px}.tog:focus-within{outline:2px solid var(--color-primary);outline-offset:3px}</style>
 <link rel="canonical" href="https://afrotools.com/fr/ghana/gh-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/ghana/gh-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/ghana/gh-paye">
@@ -216,8 +217,8 @@ window.addEventListener('load', function() {
           <div class="field">
             <label>Pension (SSNIT)</label>
             <div class="toggles">
-              <label class="tog on"><input aria-label="TogSSNIT" type="checkbox" id="togSSNIT" checked hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Niveaux I + II</div><span class="tog-rate">5.5% of basic</span></div></label>
-              <label class="tog"><input aria-label="TogTier3" type="checkbox" id="togTier3" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Niveau III</div><span class="tog-rate">Volontaire, déductible fiscalement</span></div></label>
+              <label class="tog on"><input type="checkbox" id="togSSNIT" checked class="sr-only" aria-label="SSNIT Niveaux I + II"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Niveaux I + II</div><span class="tog-rate">5.5% of basic</span></div></label>
+              <label class="tog"><input type="checkbox" id="togTier3" class="sr-only" aria-label="SSNIT Niveau III"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Niveau III</div><span class="tog-rate">Volontaire, déductible fiscalement</span></div></label>
             </div>
           </div>
 
@@ -235,16 +236,17 @@ window.addEventListener('load', function() {
           <div class="field">
             <label>Abattements Personnels (enregistrés GRA)</label>
             <div class="toggles">
-              <label class="tog"><input aria-label="TogMarriage" type="checkbox" id="togMarriage" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Abattement pour Mariage</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
-              <label class="tog"><input aria-label="TogChild1" type="checkbox" id="togChild1" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">1 Child</div><span class="tog-rate">GHS 600/yr</span></div></label>
-              <label class="tog"><input aria-label="TogChild2" type="checkbox" id="togChild2" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">2 Children</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
-              <label class="tog"><input aria-label="TogChild3" type="checkbox" id="togChild3" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">3+ Children</div><span class="tog-rate">Capped at GHS 1,800/yr</span></div></label>
-              <label class="tog"><input aria-label="TogDisabled" type="checkbox" id="togDisabled" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Abattement Handicap</div><span class="tog-rate">25% of income</span></div></label>
-              <label class="tog"><input aria-label="TogOldAge" type="checkbox" id="togOldAge" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Troisième Âge (60+)</div><span class="tog-rate">GHS 1,500/yr</span></div></label>
-              <label class="tog"><input aria-label="TogDependent" type="checkbox" id="togDependent" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Parent à Charge</div><span class="tog-rate">GHS 1,000/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togMarriage" class="sr-only" aria-label="Abattement pour Mariage"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Abattement pour Mariage</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild1" class="sr-only" aria-label="1 enfant"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">1 enfant</div><span class="tog-rate">GHS 600/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild2" class="sr-only" aria-label="2 enfants"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">2 enfants</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild3" class="sr-only" aria-label="3 enfants ou plus"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">3 enfants ou plus</div><span class="tog-rate">Capped at GHS 1,800/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togDisabled" class="sr-only" aria-label="Abattement Handicap"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Abattement Handicap</div><span class="tog-rate">25% of income</span></div></label>
+              <label class="tog"><input type="checkbox" id="togOldAge" class="sr-only" aria-label="Troisième Âge (60+)"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Troisième Âge (60+)</div><span class="tog-rate">GHS 1,500/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togDependent" class="sr-only" aria-label="Parent à Charge"><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Parent à Charge</div><span class="tog-rate">GHS 1,000/yr</span></div></label>
             </div>
           </div>
 
+          <p class="f-note" id="calculationStatus" role="status" aria-live="polite"></p>
           <button type="button" class="calc-btn" id="calcBtn">Calculer mon salaire net</button>
         </div>
       </div>
@@ -696,7 +698,7 @@ window.addEventListener('load', function() {
 <script src="/assets/js/components/navbar.min.js?v=0333a741" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=139af780" defer></script>
-<script src="/assets/js/bundles/core.aeb1b82d.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
+<script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
 <meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
@@ -799,7 +801,34 @@ window.addEventListener('load', function() {
   }
 
   // --- MAIN CALCULATE ---
+  // Ghana result safety parity v1
+  let salaryRecalculationTimer = null;
+  function invalidateResult() {
+    clearTimeout(salaryRecalculationTimer);
+    salaryRecalculationTimer = null;
+    const hadResult = !!R;
+    R = null;
+    $('resultsCard').style.display = 'none';
+    $('resultsCard').setAttribute('aria-hidden', 'true');
+    $('bonusCard').style.display = 'none';
+    $('bonusResult').style.display = 'none';
+    $('aiBtn').disabled = true;
+    $('aiBtn').textContent = 'Get AI Tax Analysis';
+    $('aiStatus').textContent = 'Calculez votre salaire avant de demander une analyse fiscale.';
+    $('aiResp').style.display = 'none';
+    $('aiResp').textContent = '';
+    $('aiChat').classList.remove('on');
+    $('chatMsgs').replaceChildren();
+    const saveButton = $('calcSaveBtn');
+    if (saveButton) {
+      saveButton.disabled = true;
+      saveButton.textContent = 'Run a Calculation First';
+    }
+    if (hadResult) $('calculationStatus').textContent = 'Les données ont changé. Relancez le calcul pour actualiser les résultats.';
+  }
+
   function calculate() {
+    invalidateResult();
     let salary = parseAmt($('salaryInput').value);
     if (!salary || salary <= 0) {
       const el = $('salaryInput');
@@ -825,6 +854,13 @@ window.addEventListener('load', function() {
     renderResults();
     $('resultsCard').style.display = 'block';
     $('bonusCard').style.display = 'block';
+    $('resultsCard').removeAttribute('aria-hidden');
+    $('calculationStatus').textContent = '';
+    const saveButton = $('calcSaveBtn');
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = 'Save to Dashboard';
+    }
     $('aiBtn').disabled = false;
     $('aiBtn').textContent = 'Get AI Tax Analysis';
     $('aiStatus').textContent = `Brut : ${fmt(R.gross)}/yr \u00B7 Net : ${fmt(R.netMonthly)}/mo \u00B7 Rate: ${pct(R.effectiveRate)}`;
@@ -833,7 +869,7 @@ window.addEventListener('load', function() {
     showTier3Optimizer();
 
     setTimeout(() => $('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-    if (window.gtag) window.gtag('event', 'gh_paye_calculate', { gross: R.gross, effective_rate: R.effectiveRate });
+    if (window.gtag) window.gtag('event', 'gh_paye_calculate', { tool_id: 'gh-paye', country_code: 'GH', mode: calcMode });
   }
 
   function renderResults() {
@@ -842,7 +878,8 @@ window.addEventListener('load', function() {
     $('resLabel').textContent = period === 'monthly' ? 'Salaire net mensuel' : 'Salaire net annuel';
     $('resGross').textContent = `Gross ${period}: ${fmt(R.gross / d)}`;
     $('effRate').textContent = pct(R.effectiveRate);
-    setTimeout(() => { $('rateFill').style.width = Math.min(R.effectiveRate * 200, 100) + '%'; }, 50);
+    const renderedResult = R;
+    setTimeout(() => { if (R === renderedResult) $('rateFill').style.width = Math.min(R.effectiveRate * 200, 100) + '%'; }, 50);
 
     // Rows
     const row = (lbl, val, cls = '') => `<div class="res-row"><span>${lbl}</span><span class="${cls}">${val}</span></div>`;
@@ -912,7 +949,7 @@ window.addEventListener('load', function() {
 
   // --- BONUS CALCULATOR ---
   function calcBonus() {
-    if (!R) return;
+    if (!R || !$('bonusAmt')) return;
     const bonusAmt = parseAmt($('bonusAmt').value);
     if (bonusAmt <= 0) { $('bonusResult').style.display = 'none'; return; }
 
@@ -952,6 +989,7 @@ window.addEventListener('load', function() {
   // --- CHART (lazy) ---
   async function renderChart(type) {
     if (!R) return;
+    const chartResult = R;
     if (!chartLoaded) {
       try {
         await new Promise((resolve, reject) => {
@@ -965,6 +1003,7 @@ window.addEventListener('load', function() {
       } catch { return; }
     }
 
+    if (R !== chartResult || type !== chartType) return;
     if (chartInstance) chartInstance.destroy();
     const ctx = $('mainChart').getContext('2d');
 
@@ -1038,6 +1077,7 @@ window.addEventListener('load', function() {
   // --- AI ADVISOR ---
   async function getAI() {
     if (!R) return;
+    const analysisResult = R;
     $('aiBtn').disabled = true; $('aiBtn').textContent = 'Analysing...';
     $('aiResp').style.display = 'block'; $('aiResp').textContent = '';
 
@@ -1047,6 +1087,7 @@ window.addEventListener('load', function() {
       const res = await fetch('/.netlify/functions/ai-advisor', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          tool: 'gh-paye',
           system: 'AfroTools AI Tax Advisor specialising in Ghana PAYE, SSNIT, and reliefs. Concise, specific, practical. No markdown.',
           messages: [{ role: 'user', content: prompt }]
         })
@@ -1054,10 +1095,12 @@ window.addEventListener('load', function() {
       if (res.status === 429) throw new Error('rate-limit');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
+      if (R !== analysisResult) return;
       const text = data.text || 'Unable to generate analysis.';
       $('aiResp').textContent = text;
       $('aiBtn').textContent = 'Analysis complete';
     } catch(e) {
+      if (R !== analysisResult) return;
       $('aiResp').textContent = e.message === 'rate-limit'
         ? 'Too many requests - please try again in a minute.'
         : 'AI analysis temporarily unavailable. Your calculation results above are accurate.';
@@ -1067,23 +1110,52 @@ window.addEventListener('load', function() {
   }
 
   async function sendChat(){
-    const input=$('chatIn');const msg=input.value.trim();if(!msg)return;input.value='';
-    const msgs=$('chatMsgs');
-    msgs.innerHTML+='<div style="font-size:.78rem;padding:7px 11px;background:#EFF6FF;border-radius:6px;color:#0f172a;align-self:flex-end;max-width:85%">'+msg.replace(/</g,'&lt;')+'</div>';
-    const thinking=document.createElement('div');thinking.style.cssText='font-size:.78rem;padding:7px 11px;color:#64748b';thinking.textContent='Thinking...';msgs.appendChild(thinking);msgs.scrollTop=msgs.scrollHeight;
-    try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools AI Tax Advisor for Ghana PAYE, SSNIT, reliefs. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});const data=await res.json();thinking.textContent=data.text||'No response.';thinking.style.background='#F8FAFC';thinking.style.borderRadius='6px';}catch(e){thinking.textContent='Unable to respond right now.';}
-    msgs.scrollTop=msgs.scrollHeight;
+    const input=$('chatIn'),msg=input.value.trim();
+    if(!R||!msg||sendChat.pending)return;
+    const result=R,button=document.querySelector('#aiChat .chat-send'),french=document.documentElement.lang==='fr';
+    let status=$('chatStatus');
+    if(!status){status=document.createElement('p');status.id='chatStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');$('aiChat').appendChild(status);}
+    status.textContent='';sendChat.pending=true;if(button)button.disabled=true;
+    try{
+      const response=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'gh-paye',system:'AfroTools AI Tax Advisor for Ghana PAYE, SSNIT, reliefs. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});
+      if(R!==result)return;
+      if(response.status===428){status.textContent=french?'Aucun envoi. Votre question est conservée.':'Nothing sent. Your question has been kept.';return;}
+      if(!response.ok)throw Error('request_failed');
+      const data=await response.json();if(R!==result)return;
+      if(!data||typeof data.text!=='string'||!data.text.trim())throw Error('empty_response');
+      const messages=$('chatMsgs'),question=document.createElement('div'),answer=document.createElement('div');
+      question.textContent=msg;answer.textContent=data.text;messages.append(question,answer);
+      if(input.value.trim()===msg)input.value='';
+      messages.scrollTop=messages.scrollHeight;
+    }catch(_){if(R===result)status.textContent=french?'Réponse indisponible. Votre question est conservée ; réessayez.':'Reply unavailable. Your question has been kept; please retry.';}
+    finally{sendChat.pending=false;if(button)button.disabled=false;}
+  }
+
+  function cleanCalculatorUrl(){return new URL(window.location.pathname,window.location.origin).href;}
+  function shareCalculator(){
+    if(!window.AfroTools?.shareState)return;
+    const french=document.documentElement.lang==='fr';
+    return window.AfroTools.shareState.share({title:french?'Calculateur PAYE Ghana':'Ghana PAYE Calculator',text:french?'Calculer le salaire net au Ghana.':'Calculate take-home pay in Ghana.',state:{},baseUrl:cleanCalculatorUrl(),toolId:'gh-paye'});
+  }
+  function shareSalaryWhatsApp(){
+    if(!R||!window.AfroTools?.shareState)return;
+    const french=document.documentElement.lang==='fr';
+    const data={headline:french?'Mon salaire net':'My Take-Home Pay',mainValue:fmt(R.netMonthly)+'/mo',subValues:[{label:french?'Brut':'Gross',value:fmt(R.gross)+'/yr'},{label:french?'Impôt':'Tax',value:fmt(R.tax)+'/yr'},{label:french?'Taux effectif':'Effective Rate',value:pct(R.effectiveRate)}],state:{},baseUrl:cleanCalculatorUrl(),toolId:'gh-paye'};
+    const preview=data.headline+': '+data.mainValue+'\n'+data.subValues.map(item=>item.label+': '+item.value).join('\n')+'\n'+data.baseUrl;
+    if(!window.confirm((french?'Partager ces données salariales via WhatsApp ? Annulez pour les garder privées.':'Share these salary details through WhatsApp? Cancel to keep them private.')+'\n\n'+preview))return;
+    window.AfroTools.shareState.whatsappShare(data);
   }
 
   // --- EVENTS ---
   document.addEventListener('DOMContentLoaded', () => {
     // Mode toggle
-    $('modeGross').addEventListener('click', () => { calcMode = 'gross'; $('modeGross').classList.add('on'); $('modeNet').classList.remove('on'); $('salaryLabel').textContent = 'Brut annuel Salary'; });
-    $('modeNet').addEventListener('click', () => { calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
+    $('modeGross').addEventListener('click', () => { if (calcMode !== 'gross') invalidateResult(); calcMode = 'gross'; $('modeGross').classList.add('on'); $('modeNet').classList.remove('on'); $('salaryLabel').textContent = 'Brut annuel Salary'; });
+    $('modeNet').addEventListener('click', () => { if (calcMode !== 'net') invalidateResult(); calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
 
     // Salary input
     const salaryEl = $('salaryInput');
-    salaryEl.addEventListener('input', debounce(calculate, 300));
+    salaryEl.addEventListener('input', () => { invalidateResult(); salaryRecalculationTimer = setTimeout(calculate, 300); });
+    ['basicSalary', 'tier3Amt'].forEach(id => $(id).addEventListener('input', invalidateResult));
     salaryEl.addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); this.select(); });
     salaryEl.addEventListener('blur', function() { const v = parseAmt(this.value); if (v > 0) this.value = v.toLocaleString('en-US'); });
 
@@ -1095,6 +1167,7 @@ window.addEventListener('load', function() {
     // Toggle .on class sync for all tog labels
     document.querySelectorAll('.tog input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', () => {
+        invalidateResult();
         cb.closest('.tog').classList.toggle('on', cb.checked);
       });
     });
@@ -1131,32 +1204,9 @@ window.addEventListener('load', function() {
       });
     });
 
-    // Actions
-    // Keep salary report downloads local and direct; this page bypasses the shared PDF gate.
-    $('waBtn').addEventListener('click', () => {
-      if (!R || !window.AfroTools?.shareState) return;
-      window.AfroTools.shareState.whatsappPartager({
-        headline: 'Mon salaire net',
-        mainValue: fmt(R.netMonthly) + '/mo',
-        subValues: [
-          { label: 'Gross', value: fmt(R.gross) + '/yr' },
-          { label: 'Tax', value: fmt(R.tax) + '/yr' },
-          { label: 'Effective Rate', value: pct(R.effectiveRate) }
-        ],
-        state: { g: Math.round(R.gross), b: Math.round(R.basic), m: calcMode },
-        toolId: 'gh-paye'
-      });
-    });
-
-    $('shareBtn').addEventListener('click', () => {
-      if (!R || !window.AfroTools?.shareState) return;
-      window.AfroTools.shareState.share({
-        title: 'Ghana PAYE - AfroTools',
-        text: `Gross ${fmt(R.gross)}/yr \u2192 Take-home ${fmt(R.netMonthly)}/mo (${pct(R.effectiveRate)} rate)`,
-        state: { g: Math.round(R.gross), b: Math.round(R.basic), m: calcMode },
-        toolId: 'gh-paye'
-      });
-    });
+    // Sharing a calculator link must not embed salary or saved-record parameters.
+    $('waBtn').addEventListener('click', shareSalaryWhatsApp);
+    $('shareBtn').addEventListener('click', shareCalculator);
 
     // AI
     $('aiBtn').addEventListener('click', getAI);
@@ -1313,8 +1363,35 @@ window.addEventListener('load', function() {
           };
         }
 
+        // Keep drafts local and retire every result path if restoring is interrupted.
+        function retireFailedRestore() {
+          R = null;
+          clearTimeout(salaryRecalculationTimer);
+          clearTimeout(debounceTimer);
+          salaryRecalculationTimer = null;
+          ['resultsCard', 'bonusCard', 'bonusResult', 'aiResp'].forEach(function (id) {
+            var node = $(id);
+            if (node) { node.style.display = 'none'; if (id === 'resultsCard') node.setAttribute('aria-hidden', 'true'); }
+          });
+          ['calcSaveBtn', 'aiBtn'].forEach(function (id) { var node = $(id); if (node) node.disabled = true; });
+          ['aiResp', 'chatMsgs'].forEach(function (id) { var node = $(id); if (node) node.textContent = ''; });
+          if ($('aiChat')) $('aiChat').classList.remove('on');
+          if ($('calculationStatus')) $('calculationStatus').textContent = 'Le calcul enregistré n’a pas pu être chargé. Vos saisies précédentes sont conservées. Relancez le calcul avant d’enregistrer ou d’exporter.';
+        }
         var inputs = restored.inputs || {};
         var toggles = inputs.toggles || {};
+        var inputIds = ['salaryInput', 'basicSalary', 'tier3Amt', 'bonusAmt', 'togSSNIT', 'togTier3', 'togMarriage', 'togChild1', 'togChild2', 'togChild3', 'togDisabled', 'togOldAge', 'togDependent'];
+        if (!Number.isFinite(inputs.salaryValue) || inputs.salaryValue <= 0 ||
+            inputIds.concat(['modeGross', 'modeNet', 'salaryLabel', 'tier3Field']).some(function (id) { return !$(id); })) {
+          retireFailedRestore();
+          return false;
+        }
+        var previousMode = calcMode, previousPeriod = period;
+        var previousFields = inputIds.concat(['calcSaveName']).map(function (id) {
+          var node = $(id);
+          return node ? { node: node, value: node.value, checked: node.checked } : null;
+        }).filter(Boolean);
+        try {
 
         $('salaryInput').value = inputs.salaryValue ? formatInput(inputs.salaryValue) : '';
         $('basicSalary').value = inputs.basicSalary ? formatInput(inputs.basicSalary) : '';
@@ -1338,11 +1415,34 @@ window.addEventListener('load', function() {
         calcBonus();
 
         if ($('calcSaveName')) $('calcSaveName').value = title || '';
+        if (!R) throw new Error('Restore calculation unavailable');
         return true;
+        } catch (error) {
+          retireFailedRestore();
+          // Do not call the restore/calculation path recursively during recovery.
+          calcMode = previousMode;
+          period = previousPeriod;
+          previousFields.forEach(function (field) {
+            field.node.value = field.value;
+            if (field.node.type === 'checkbox') {
+              field.node.checked = field.checked;
+              var toggle = field.node.closest('.tog');
+              if (toggle) toggle.classList.toggle('on', field.checked);
+            }
+          });
+          if ($('modeGross')) $('modeGross').classList.toggle('on', calcMode === 'gross');
+          if ($('modeNet')) $('modeNet').classList.toggle('on', calcMode === 'net');
+          if ($('salaryLabel')) $('salaryLabel').textContent = calcMode === 'net' ? 'Salaire net annuel souhaité' : 'Salaire brut annuel';
+          document.querySelectorAll('.per-btn').forEach(function (button) { button.classList.toggle('on', button.dataset.period === period); });
+          if ($('tier3Field') && $('togTier3')) $('tier3Field').style.display = $('togTier3').checked ? 'block' : 'none';
+          retireFailedRestore();
+          return false;
+        }
       }
     };
   })();
 
+  window.sendChat = sendChat;
   window.calculate = calculate;
   window.exportPdf = exportPdf;
 })();
@@ -1350,7 +1450,7 @@ window.addEventListener('load', function() {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
-<script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=086ac120" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=e3cf7503" defer></script>
