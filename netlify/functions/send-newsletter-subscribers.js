@@ -10,8 +10,11 @@ exports.handler = withScheduledProof('send-newsletter-subscribers', async functi
   const started = Date.now();
   // Hourly welcome retry; weekly sends only on Monday morning UTC.
   const weekly = now.getUTCDay() === 1 && now.getUTCHours() >= 8 && now.getUTCHours() < 12;
+  const weekStart = new Date(now);
+  weekStart.setUTCDate(weekStart.getUTCDate() - ((weekStart.getUTCDay() + 6) % 7));
+  weekStart.setUTCHours(0, 0, 0, 0);
   let query = sb.from('newsletter_subscribers').select('*').is('unsubscribed_at', null);
-  if (weekly) query = query.or('last_weekly_at.is.null,last_weekly_at.lt.' + new Date(now - 7 * 86400000).toISOString());
+  if (weekly) query = query.or('last_weekly_at.is.null,last_weekly_at.lt.' + weekStart.toISOString());
   else query = query.is('welcome_sent_at', null).is('last_weekly_at', null).gte('subscribed_at', new Date(now - 7 * 86400000).toISOString());
   const { data, error } = await query.order('last_weekly_at', { ascending: true, nullsFirst: true }).order('subscribed_at').limit(50);
   if (error) throw new Error('Newsletter audience lookup failed');

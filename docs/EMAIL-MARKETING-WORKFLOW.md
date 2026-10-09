@@ -414,7 +414,7 @@ mail should move to separate sending subdomains before the list grows.
 ## Automatic funnel implementation - 2026-10-09
 
 The restart implementation removes the need to pause the whole funnel. Deploy
-this source together with the three `20261009` email migrations before setting
+this source together with the four `20261009` email migrations before setting
 production `EMAIL_MARKETING_PAUSED=0` and rebuilding the production deploy.
 Earlier paused-state notes above describe the pre-restart snapshot.
 
@@ -434,7 +434,8 @@ Earlier paused-state notes above describe the pre-restart snapshot.
   before any separate manual Broadcast so it cannot bypass cadence or opt-outs.
 - Every marketing send reserves an email/type/edition identity under a
   database lock. The shared adapter enforces one marketing email per seven
-  days across account, lead and newsletter streams. Transactional messages do
+  days across account, lead and newsletter streams, with five minutes of
+  scheduling tolerance so cron jitter cannot skip a weekly edition. Transactional messages do
   not use this cap. The provider receives the same idempotency key.
 - Provider acceptance is recorded separately from delivery. Ambiguous timeouts
   and provider server errors keep the reservation; reconcile them with Resend
