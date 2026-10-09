@@ -115,7 +115,7 @@ exports.handler = async function (event) {
       email: email,
       source: cleanStr(body.source, 50) || 'pdf-gate',
       tool_slug: cleanStr(body.toolSlug || body.tool_slug, 100),
-      opt_in_digest: body.optInDigest !== false && body.opt_in_digest !== false,
+      opt_in_digest: body.optInDigest === true || body.opt_in_digest === true,
 
       country_code: cleanEnum(body.countryCode || body.country_code, VALID_COUNTRY_CODES),
       currency: cleanStr(body.currency, 3),

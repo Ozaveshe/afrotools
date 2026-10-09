@@ -65,6 +65,7 @@ function verifyWebhook(event, secret, nowSeconds) {
 
 function suppressionReason(payload) {
   if (!payload || !payload.type) return '';
+  if (payload.type === 'contact.updated' && payload.data && payload.data.unsubscribed === true) return 'unsubscribed';
   if (payload.type === 'email.complained') return 'complained';
   if (payload.type === 'email.suppressed') return 'provider_suppressed';
   if (payload.type !== 'email.bounced') return '';
@@ -73,7 +74,7 @@ function suppressionReason(payload) {
 }
 
 function recipientEmails(payload) {
-  var values = payload && payload.data && payload.data.to;
+  var values = payload && payload.data && (payload.type === 'contact.updated' ? payload.data.email : payload.data.to);
   if (!Array.isArray(values)) values = values ? [values] : [];
   return values
     .map(function (value) { return String(value || '').trim().toLowerCase(); })
@@ -109,28 +110,12 @@ exports.handler = async function (event) {
   var sb = createClient(MARKETING_SUPABASE.url, MARKETING_SUPABASE.serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
-  var leadPatch = {
-    opt_in_digest: false,
-    email_status: reason,
-    email_error: String(payload.data && payload.data.bounce && payload.data.bounce.message || reason).slice(0, 500),
-    updated_at: new Date().toISOString(),
-  };
-
-  var profileResult = await sb
-    .from('profiles')
-    .update({ email_digest_enabled: false, email_weekly_enabled: false })
-    .in('email', emails);
-  var leadResult = await sb
-    .from('email_leads')
-    .update(leadPatch)
-    .in('email', emails);
-
-  if (profileResult.error || leadResult.error) {
-    console.error('[resend-webhook] suppression write failed', {
-      profile: profileResult.error && profileResult.error.message,
-      lead: leadResult.error && leadResult.error.message,
-    });
-    return { statusCode: 500, body: 'Suppression write failed' };
+  for (const email of emails) {
+    const result = await sb.rpc('suppress_marketing_email', { p_email: email, p_reason: reason });
+    if (result.error) {
+      console.error('[resend-webhook] suppression write failed');
+      return { statusCode: 500, body: 'Suppression write failed' };
+    }
   }
 
   console.log('[resend-webhook] recipient suppressed', {

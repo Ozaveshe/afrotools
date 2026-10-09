@@ -2,6 +2,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const EMAIL_FROM = process.env.EMAIL_FROM || 'AfroTools <hello@afrotools.com>';
 const EMAIL_MARKETING_FROM = process.env.EMAIL_MARKETING_FROM || '';
 const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || '';
+const delivery = require('./marketing-delivery');
 
 function isEmailConfigured() {
   return !!RESEND_API_KEY;
@@ -44,6 +45,17 @@ async function sendEmail(message) {
     };
   }
 
+  var reservation;
+  if (message.marketing === true) {
+    try {
+      reservation = await delivery.reserve(message);
+      if (reservation.status !== 'reserved') {
+        return { ok: false, provider: 'resend', providerStatus: reservation.status, error: '' };
+      }
+    } catch (_) {
+      return { ok: false, provider: 'resend', providerStatus: 'storage_unavailable', error: 'Marketing delivery could not be reserved' };
+    }
+  }
   var headers = Object.assign({}, message.headers || {});
   if (message.unsubscribeUrl) {
     headers['List-Unsubscribe'] = '<' + message.unsubscribeUrl + '>';
@@ -66,12 +78,18 @@ async function sendEmail(message) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + RESEND_API_KEY
+      Authorization: 'Bearer ' + RESEND_API_KEY,
+      ...(reservation ? { 'Idempotency-Key': reservation.key } : {})
     },
     body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
+    // Only explicit provider rejection is retryable. A timeout/5xx stays
+    // reserved because the provider may already have accepted the message.
+    if (reservation && response.status >= 400 && response.status < 500) {
+      await delivery.finish(reservation, 'failed');
+    }
     var rawError = await response.text();
     var providerStatus = 'failed';
     try {
@@ -94,6 +112,7 @@ async function sendEmail(message) {
   } catch (e) {
     data = {};
   }
+  if (reservation) await delivery.finish(reservation, 'accepted', data.id);
   return {
     ok: true,
     provider: 'resend',

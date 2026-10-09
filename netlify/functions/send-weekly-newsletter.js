@@ -38,6 +38,8 @@ exports.handler = withScheduledProof('send-weekly-newsletter', async function ()
     .select('id,email,name,email_unsubscribe_token,email_last_weekly_at,email_welcome_sent_at,email_activity_milestone_sent_at,country_code,currency')
     .eq('email_digest_enabled', true)
     .eq('email_weekly_enabled', true)
+    .or('email_last_weekly_at.is.null,email_last_weekly_at.lt.' + weekStart.toISOString())
+    .or('email_welcome_sent_at.is.null,email_welcome_sent_at.lte.' + new Date(now.getTime() - 7 * 86400000).toISOString())
     .or('email_activity_milestone_sent_at.not.is.null,email_welcome_sent_at.gte.' + recentWelcomeCutoff)
     .not('email', 'is', null)
     .order('email_last_weekly_at', { ascending: true, nullsFirst: true })
@@ -49,11 +51,13 @@ exports.handler = withScheduledProof('send-weekly-newsletter', async function ()
     return { statusCode: 500, body: 'Profile fetch failed' };
   }
 
+  var started = Date.now();
   var sent = 0;
   var skipped = 0;
   var failed = 0;
 
   for (var i = 0; i < (profiles || []).length; i++) {
+    if (Date.now() - started > 22000) break;
     var profile = profiles[i];
     if (isWithinDays(profile.email_welcome_sent_at, now, WELCOME_GRACE_DAYS)) {
       skipped++;
@@ -69,6 +73,10 @@ exports.handler = withScheduledProof('send-weekly-newsletter', async function ()
       var unsubscribeUrl = token ? SITE_URL + '/api/email/unsubscribe?token=' + encodeURIComponent(token) : '';
       var message = buildWeeklyMessage(profile, unsubscribeUrl);
       var result = await sendEmail(message);
+      if (!result.ok && ['frequency_capped','duplicate','suppressed','not_subscribed'].includes(result.providerStatus)) {
+        skipped++;
+        continue;
+      }
       if (!result.ok) {
         failed++;
         console.error('[weekly-newsletter] send failed for profile ' + profile.id + ':', result.providerStatus || result.error || 'unknown');
