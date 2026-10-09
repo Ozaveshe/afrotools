@@ -4182,6 +4182,7 @@ function getToolGridLabels(locale) {
   if (normalized.indexOf('sw') === 0) {
     return {
       available: 'Zana Zinazopatikana',
+      categoryNames: { education: 'Elimu' },
       coming: 'Zinakuja Hivi Karibuni',
       live: 'Hai',
       fresh: 'Mpya',
@@ -4224,6 +4225,7 @@ function getToolGridLabels(locale) {
   if (normalized.indexOf('fr') === 0) {
     return {
       available: 'Outils Disponibles',
+      categoryNames: { education: 'Éducation' },
       coming: 'Bientot Disponibles',
       live: 'En ligne',
       fresh: 'Nouveau',
@@ -4780,6 +4782,11 @@ function renderCountryFeaturedTools(tools, countryCode, labels, countryName) {
     '</section>';
 }
 
+function countryHubCategoryLabel(key, labels, fallback) {
+  var names = labels && labels.categoryNames;
+  return names && Object.prototype.hasOwnProperty.call(names, key) ? names[key] : fallback;
+}
+
 function renderCountryToolCard(tool, countryCode, labels, countryName) {
   var cat = AFRO_CATEGORIES[tool.category] || { name: tool.category || 'Tool', color: '#334155', bg: '#f1f5f9' };
   var local = tool.countries && tool.countries.indexOf(countryCode) !== -1;
@@ -4795,7 +4802,7 @@ function renderCountryToolCard(tool, countryCode, labels, countryName) {
         badge +
       '</div>' +
       '<div class="country-tool-card-body">' +
-        '<span class="country-tool-card-category" style="--cat-color:' + countryHubEsc(cat.color || '#334155') + ';--cat-bg:' + countryHubEsc(cat.bg || '#f1f5f9') + '">' + countryHubEsc(cat.name || tool.category || 'Tool') + '</span>' +
+        '<span class="country-tool-card-category" style="--cat-color:' + countryHubEsc(cat.color || '#334155') + ';--cat-bg:' + countryHubEsc(cat.bg || '#f1f5f9') + '">' + countryHubEsc(countryHubCategoryLabel(tool.category, labels, cat.name || tool.category || 'Tool')) + '</span>' +
         '<h3>' + countryHubEsc(tool.name || '') + '</h3>' +
         '<p>' + countryHubEsc(tool.desc || '') + '</p>' +
         '<div class="country-tool-card-meta"><span>' + countryHubEsc(local ? labels.madeFor.replace('{country}', countryName || countryCode) : labels.africaWide) + '</span><span class="country-tool-card-arrow" aria-hidden="true">&rsaquo;</span></div>' +
@@ -4851,7 +4858,7 @@ function renderToolGrid(containerId, countryCode, opts) {
   var goalItems = countryHubGoalCounts(allLive).slice(0, Number(opts.goalLimit || 8));
 
   function renderCategoryButton(item) {
-    return '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(item.category.name || item.key) + ' <span>' + item.count + '</span></button>';
+    return '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(countryHubCategoryLabel(item.key, labels, item.category.name || item.key)) + ' <span>' + item.count + '</span></button>';
   }
 
   function renderGoalButton(item) {
@@ -4915,7 +4922,7 @@ function renderToolGrid(containerId, countryCode, opts) {
       if (state.scope === 'pan' && (!tool.countries || tool.countries.indexOf('ALL') === -1)) return false;
       if (state.goal !== 'all' && !toolMatchesCountryGoal(tool, getCountryHubGoal(state.goal))) return false;
       if (!query) return true;
-      var haystack = countryHubToolHaystack(tool);
+      var haystack = countryHubToolHaystack(tool) + ' ' + countryHubCategoryLabel(tool.category, labels, '').toLowerCase();
       return haystack.indexOf(query) !== -1;
     });
   }
