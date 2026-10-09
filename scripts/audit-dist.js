@@ -9,6 +9,11 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
 const REQUIRED_PATHS = [
+  // Canonical French calculators must win over the retained source-only wrappers.
+  'fr/cape-verde/cv-paye/index.html',
+  'fr/cape-verde/cv-vat/index.html',
+  'fr/eq-guinea/gq-paye/index.html',
+  'fr/eq-guinea/gq-vat/index.html',
   'index.html',
   '404.html',
   '_headers',
@@ -23,6 +28,11 @@ const REQUIRED_PATHS = [
 ];
 
 const FORBIDDEN_PATHS = [
+  // Flat wrappers would shadow the canonical directories and create refresh loops.
+  'fr/cape-verde/cv-paye.html',
+  'fr/cape-verde/cv-vat.html',
+  'fr/eq-guinea/gq-paye.html',
+  'fr/eq-guinea/gq-vat.html',
   'data/automation',
   'data/jamb/review-ledger.json',
   'data/image-generation',

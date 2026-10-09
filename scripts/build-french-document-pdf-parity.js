@@ -106,13 +106,27 @@ function translateMarkup(markup, routeExact) {
 function localizeRouteOwnedRuntimeLiterals(html, app) {
   const literals = {
     'pdf-workspace': [
-      ['aria-label="Delete page ', 'aria-label="Supprimer la page ']
+      ['aria-label="Delete page ', 'aria-label="Supprimer la page '],
+      ['Need help choosing a PDF action?', 'Besoin d’aide pour choisir une action PDF ?']
     ]
   };
   html = (literals[app.id] || []).reduce(
     (output, [source, localized]) => output.replaceAll(source, localized),
     html
   );
+  if (app.id === 'pdf-workspace') {
+    // Keep the accepted French onboarding while runtime changes follow the
+    // English owner. These fragments were already visible on the French route.
+    const guidance = require('./lib/french-pdf-workspace-guidance.json');
+    html = html.replace('</afro-navbar>', '</afro-navbar>\n' + guidance.privacy);
+    html = html.replace('<div class="dz" id="dz">', guidance.pills + '\n' + guidance.workflow + '\n  <div class="dz" id="dz">');
+    html = html.replace(/<details class="pdf-help" data-structured-data-exclude>\s*<summary>[^<]*<\/summary>([\s\S]*?)<\/details>/, (_, content) => content.trim());
+    html = html.replace(/(<\/div>\s*<div class="ws" id="ws">)/, guidance.features + '\n$1');
+    html = html.replace('padding:32px 24px 64px;text-align:center', 'padding:72px 24px 92px;text-align:center');
+    html = html.replace('.up-screen{padding:24px 18px 48px}', '.up-screen{padding:44px 18px 64px}');
+    html = html.replace(/(<p\b[^>]*\bid="workspaceLoadStatus"[^>]*>)[^<]*(<\/p>)/g, '$1Préparation des outils PDF. Le fichier choisi s’ouvrira automatiquement.$2');
+    html = html.replace(/(<button\b[^>]*\bid="workspaceLoadRetry"[^>]*>)[^<]*(<\/button>)/g, '$1Réessayer le chargement PDF$2');
+  }
   if (app.id === 'invoice-generator') {
     html = html.replace(/<afro-business-cta\b[^>]*>/g, (tag) => tag
       .replace(/tool-name="[^"]*"/, 'tool-id="invoice-generator" lang="fr" tool-name="Générateur de factures"')
