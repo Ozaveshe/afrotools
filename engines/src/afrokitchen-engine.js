@@ -1,5 +1,177 @@
 var AfroKitchenEngine = function() {
   "use strict";
+  // These preparation methods are withheld until complete replacements are reviewed.
+  // This one source policy serves browser, native generation and server consumers.
+  var METHOD_HOLD_NOTICE = "Preparation instructions are temporarily unavailable while AfroTools reviews this recipe. We have withdrawn the previous method and timers. Please choose another recipe for cooking.";
+  var methodHolds = {
+    "ikivuguto-bi": {
+      "id": "71064942-c1d4-4661-8fe9-4e97c27103e7",
+      "slug": "ikivuguto-bi",
+      "name": "Ikivuguto",
+      "country_code": "BI",
+      "country_name": "Burundi",
+      "country_slug": "burundi",
+      "country_route_path": "/tools/afrokitchen/countries/burundi/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/burundi/",
+      "region": "East Africa",
+      "category": "beverage"
+    },
+    "malamba-gq": {
+      "id": "6ee2370f-5d79-4e44-80fc-e59133446dfb",
+      "slug": "malamba-gq",
+      "name": "Malamba",
+      "country_code": "GQ",
+      "country_name": "Equatorial Guinea",
+      "country_slug": "equatorial-guinea",
+      "country_route_path": "/tools/afrokitchen/countries/equatorial-guinea/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/equatorial-guinea/",
+      "region": "Central Africa",
+      "category": "beverage"
+    },
+    "suwa-er": {
+      "id": "74607ccc-05ce-41e1-be9e-fad5edc9a065",
+      "slug": "suwa-er",
+      "name": "Suwa",
+      "country_code": "ER",
+      "country_name": "Eritrea",
+      "country_slug": "eritrea",
+      "country_route_path": "/tools/afrokitchen/countries/eritrea/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/eritrea/",
+      "region": "East Africa",
+      "category": "beverage"
+    },
+    "umcombotsi-sz": {
+      "id": "e555bff4-b200-40d4-ad3c-e66840f02908",
+      "slug": "umcombotsi-sz",
+      "name": "Umcombotsi",
+      "country_code": "SZ",
+      "country_name": "Eswatini",
+      "country_slug": "eswatini",
+      "country_route_path": "/tools/afrokitchen/countries/eswatini/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/eswatini/",
+      "region": "Southern Africa",
+      "category": "beverage"
+    },
+    "vinho-caju-gw": {
+      "id": "2186ad56-502e-4696-808a-b3d31a729738",
+      "slug": "vinho-caju-gw",
+      "name": "Vinho de Caju",
+      "country_code": "GW",
+      "country_name": "Guinea-Bissau",
+      "country_slug": "guinea-bissau",
+      "country_route_path": "/tools/afrokitchen/countries/guinea-bissau/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/guinea-bissau/",
+      "region": "West Africa",
+      "category": "beverage"
+    },
+    "thobwa-mw": {
+      "id": "867385ac-0b81-44e9-b907-222dfbed7c08",
+      "slug": "thobwa-mw",
+      "name": "Thobwa",
+      "country_code": "MW",
+      "country_name": "Malawi",
+      "country_slug": "malawi",
+      "country_route_path": "/tools/afrokitchen/countries/malawi/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/malawi/",
+      "region": "East Africa",
+      "category": "beverage"
+    },
+    "oshikundu-na": {
+      "id": "f41d56c5-bc19-418e-a117-e560c49c14d8",
+      "slug": "oshikundu-na",
+      "name": "Oshikundu",
+      "country_code": "NA",
+      "country_name": "Namibia",
+      "country_slug": "namibia",
+      "country_route_path": "/tools/afrokitchen/countries/namibia/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/namibia/",
+      "region": "Southern Africa",
+      "category": "beverage"
+    },
+    "kunu-zaki-ng": {
+      "id": "8a2bb743-87d9-462e-bc09-335e78f9584a",
+      "slug": "kunu-zaki-ng",
+      "name": "Kunu Zaki",
+      "country_code": "NG",
+      "country_name": "Nigeria",
+      "country_slug": "nigeria",
+      "country_route_path": "/tools/afrokitchen/countries/nigeria/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/nigeria/",
+      "region": "West Africa",
+      "category": "beverage"
+    },
+    "ikivuguto-rw": {
+      "id": "f2850789-0ffd-41b3-bbaf-e3229132c9e6",
+      "slug": "ikivuguto-rw",
+      "name": "Rwandan Ikivuguto",
+      "country_code": "RW",
+      "country_name": "Rwanda",
+      "country_slug": "rwanda",
+      "country_route_path": "/tools/afrokitchen/countries/rwanda/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/rwanda/",
+      "region": "East Africa",
+      "category": "beverage"
+    },
+    "urwagwa-rw": {
+      "id": "027f312e-9ef4-43a5-bf7f-b1001e35b627",
+      "slug": "urwagwa-rw",
+      "name": "Urwagwa",
+      "country_code": "RW",
+      "country_name": "Rwanda",
+      "country_slug": "rwanda",
+      "country_route_path": "/tools/afrokitchen/countries/rwanda/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/rwanda/",
+      "region": "East Africa",
+      "category": "beverage"
+    },
+    "maheu-zm": {
+      "id": "626fd465-87e1-4f93-bca7-747decbf63d0",
+      "slug": "maheu-zm",
+      "name": "Zambian Maheu",
+      "country_code": "ZM",
+      "country_name": "Zambia",
+      "country_slug": "zambia",
+      "country_route_path": "/tools/afrokitchen/countries/zambia/",
+      "country_route_url": "https://afrotools.com/tools/afrokitchen/countries/zambia/",
+      "region": "East Africa",
+      "category": "beverage"
+    }
+  };
+  function isMethodHeld(recipe) {
+    var slug = typeof recipe === "string" ? recipe : recipe && recipe.slug;
+    return Object.prototype.hasOwnProperty.call(methodHolds, slug);
+  }
+  function applyMethodHold(recipe) {
+    if (!isMethodHeld(recipe)) return recipe;
+    var source = recipe && typeof recipe === "object" ? recipe : {};
+    var slug = typeof recipe === "string" ? recipe : recipe.slug;
+    var held = Object.assign({}, methodHolds[slug], {
+      name_local: "", description: METHOD_HOLD_NOTICE, story: "", occasion: "",
+      ethnic_group: "", best_served_with: "", regional_variations: "",
+      method_status: "under_review", method_hold: { since: "2026-10-09", notice: METHOD_HOLD_NOTICE },
+      is_published: true, is_verified: false, is_featured: false,
+      route_path: "/tools/afrokitchen/recipes/" + slug + "/",
+      route_url: "https://afrotools.com/tools/afrokitchen/recipes/" + slug + "/",
+      fallback_path: "/tools/afrokitchen/recipe.html?slug=" + slug,
+      fallback_url: "https://afrotools.com/tools/afrokitchen/recipe.html?slug=" + slug,
+      generated_in_wave: true, excluded_from_static: false, exclusion_reasons: [],
+      ingredients: [], steps: [], reviews: [], media: [], tags: [], diet_tags: [],
+      image_url: null, image_alt: "", image_credit: null, page_image: null, social_image: null, video_url: null,
+      default_servings: null, serving_unit: null, prep_time_minutes: null, cook_time_minutes: null, total_time_minutes: null, difficulty: null,
+      calories: null, protein_g: null, carbs_g: null, fat_g: null, fiber_g: null, nutrition_basis: null,
+      avg_rating: null, review_count: 0, author: "AfroTools", source: "Method under review",
+      created_at: source.created_at || null, updated_at: source.updated_at || null,
+      view_count: Number(source.view_count) || 0
+    });
+    held.collections = [];
+    held.collection_slugs = [];
+    held.collection_count = 0;
+    ["primary_collection_slug", "primary_collection_name", "primary_collection_route_path", "primary_collection_route_url"].forEach(function(key) { held[key] = ""; });
+    return held;
+  }
+  function availableMethods(rows) {
+    return (rows || []).filter(function(recipe) { return !isMethodHeld(recipe); });
+  }
   var e = null;
   function t() {
     return e || (window.AfroAuth && "function" == typeof AfroAuth.getSupabase ? e = AfroAuth.getSupabase() : window.supabase && window.supabase.createClient && (e = window.supabase.createClient("https://zpclagtgczsygrgztlts.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0")),
@@ -1719,7 +1891,7 @@ var AfroKitchenEngine = function() {
     return staticRecipePromise;
   }
   function h(e, rows) {
-    var t = rows || g;
+    var t = availableMethods(rows || g);
     if (!e) {
       return t;
     }
@@ -1758,6 +1930,10 @@ var AfroKitchenEngine = function() {
     return t && (t.reviews = [], t.avg_rating = null, t.review_count = 0), t || null;
   }
   return {
+    METHOD_HOLD_NOTICE: METHOD_HOLD_NOTICE,
+    METHOD_HOLD_SLUGS: Object.freeze(Object.keys(methodHolds)),
+    isMethodHeld: isMethodHeld,
+    applyMethodHold: applyMethodHold,
     COUNTRIES: i,
     REGIONS: [ "West Africa", "East Africa", "North Africa", "Southern Africa", "Central Africa" ],
     CATEGORIES: [ {
@@ -1795,7 +1971,7 @@ var AfroKitchenEngine = function() {
     fetchRecipes: async function(e) {
       var r = "recipes_" + JSON.stringify(e || {}), i = o(r);
       if (i) {
-        return i;
+        return availableMethods(i);
       }
       var published = await loadPublishedRecipeIndex();
       if (published) {
@@ -1822,12 +1998,14 @@ var AfroKitchenEngine = function() {
         if (c.error) {
           throw c.error;
         }
-        return n(r, c.data), c.data;
+        var available = availableMethods(c.data);
+        return n(r, available), available;
       } catch (t) {
         return console.warn("AfroKitchen: Supabase fetch failed, using seed data", t), h(e);
       }
     },
     fetchRecipeBySlug: async function(e) {
+      if (isMethodHeld(e)) return applyMethodHold(e);
       var r = "recipe_" + e, i = o(r);
       if (i) {
         return i;
@@ -2071,6 +2249,7 @@ var AfroKitchenEngine = function() {
     },
     formatTime: m,
     getStructuredData: function(e, t) {
+      if (isMethodHeld(e)) return null;
       var r = s(e.ingredients || [], e.default_servings, t || e.default_servings);
       // Recipe rich-result nutrition describes one serving, never an unknown stored basis.
       var nutrition, servings = Number(e.default_servings);
@@ -2131,6 +2310,7 @@ var AfroKitchenEngine = function() {
       return navigator.clipboard && navigator.clipboard.writeText(t), t;
     },
     printRecipe: function(e, t) {
+      if (isMethodHeld(e)) return false;
       var r = s(e.ingredients || [], e.default_servings, t), o = "<html><head><title>" + e.name + " - AfroKitchen</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 20px;color:#111}h1{font-size:1.8rem;margin-bottom:4px}h2{font-size:1.1rem;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}.meta{color:#666;font-size:.9rem;margin-bottom:20px}ul{padding-left:20px}li{margin-bottom:6px;font-size:.95rem}ol li{margin-bottom:12px}.tip{color:#666;font-style:italic;font-size:.85rem}@media print{body{margin:0}}</style></head><body><h1>" + e.name + '</h1><div class="meta">' + e.country_name + " | " + e.category + " | Serves " + t + " | " + e.prep_time_minutes + " min prep + " + e.cook_time_minutes + " min cook</div><h2>Ingredients</h2><ul>", n = "";
       r.forEach(function(e) {
         e.group_name && e.group_name !== n && (o += "</ul><strong>" + e.group_name + "</strong><ul>",
@@ -2146,3 +2326,5 @@ var AfroKitchenEngine = function() {
     }
   };
 }();
+
+if (typeof module === "object" && module.exports) module.exports = AfroKitchenEngine;

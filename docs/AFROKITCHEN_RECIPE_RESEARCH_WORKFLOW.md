@@ -104,6 +104,32 @@ and the relevant serving-adjustment browser checks.
 
 ## Recipe Images
 
+### Temporary preparation withdrawal
+
+The maintained `METHOD_HOLD_SLUGS` and bounded status projection in
+`engines/src/afrokitchen-engine.js` withhold eleven unsupported fermentation
+methods. This is containment, not a reviewed replacement or a safe duration.
+Canonical routes remain available as `noindex, follow` status pages. Held
+methods are excluded from cooking discovery, country/collection inventories,
+cuisine advice and image-generation prompts. Status pages and API detail omit
+ingredients, steps, timings, nutrition, images, exports and Recipe schema.
+Native editorial/import records under `data/afrokitchen/` remain in source for
+review and restoration but are excluded from the public artifact. Public
+consumers use the bounded projections under `tools/afrokitchen/`.
+
+Run `npm run afrokitchen:method-holds:build` to update saved outputs through the
+page, index and cuisine owners without live data access. Run
+`npm run test:afrokitchen:method-holds` and the method-hold browser suite on source
+and the optimized artifact. Keep historical methods and artwork in preserved
+review evidence; do not reinstate them through ordinary batch imports.
+
+Restoration requires a complete source-reviewed preparation, explicit review of
+any fermentation controls, matching images, and source/browser/artifact checks.
+Remove a hold only together with its accepted replacement and consumer tests.
+Deploy consumers before any live verification/content withdrawal. Live changes
+require a fresh correct-project snapshot, exact row guards and separate proof;
+do not replay earlier publication migrations, dietary updates or restorations.
+
 Recipe pages support one hero image plus optional gallery images. Store persistent production image metadata in `public.recipe_media` with `role` set to `hero`, `gallery`, `step`, or `source`. The generator also accepts `recipes.image_url`, manifest gallery fields, step image URLs, and local generated assets named after the recipe slug.
 
 For local generated images, use:

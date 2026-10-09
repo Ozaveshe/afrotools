@@ -8,6 +8,13 @@ const vm = require('vm');
 const ROOT = path.resolve(__dirname, '..');
 const { imageSize } = require('../scripts/lib/image-size');
 const { routeFile } = require('../scripts/build-image-library');
+const methodPolicy = require('../engines/src/afrokitchen-engine');
+const { inspectRecipeSchemaState } = require('../scripts/audit-afrokitchen-indexability');
+function assertHeldArtworkWithdrawn(slug, html) {
+  const recipe = require('../tools/afrokitchen/seo-manifest.json').recipes.find(recipe => recipe.slug === slug);
+  assert.deepEqual(inspectRecipeSchemaState(recipe, html, {}), { state: 'method-under-review', errors: [] });
+  assert(!html.includes('/assets/img/kitchen/' + slug), 'Held method must not imply a ready illustrated preparation');
+}
 const library = require('../data/image-generation/image-library.json');
 const batch = require('../data/image-generation/next-200.json');
 const intake = require('../data/image-generation/kitchen-import-2026-09-08.json');
@@ -36,6 +43,7 @@ for(const entry of intake.images) {
   assert.ok(!fs.existsSync(path.join(ROOT,entry.source)), 'Consolidated input should be moved: '+entry.slug);
   const page = 'tools/afrokitchen/recipes/'+entry.slug+'/index.html';
   const html=fs.readFileSync(path.join(ROOT,page),'utf8');
+  if (methodPolicy.isMethodHeld(entry.slug)) { assertHeldArtworkWithdrawn(entry.slug, html); continue; }
   assert.ok(html.includes('src="'+entry.path+'"'), 'Missing recipe img '+entry.slug);
   assert.ok(html.includes('content="https://afrotools.com'+entry.path+'"'));
   const size=imageSize(file);
@@ -49,6 +57,7 @@ assert.equal(new Set(batch.images.map(i=>i.id)).size,200);
 assert.equal(new Set(batch.images.map(i=>i.path)).size,200);
 const stems=new Set(library.images.map(i=>i.path.replace(/\.[^.]+$/,'')));
 for(const row of batch.images) {
+  assert(!methodPolicy.isMethodHeld(row.route.match(/\/recipes\/([^/]+)/)?.[1]), 'Held preparation must not receive a generation prompt');
   assert.ok(routeFile(row.route),'Missing route '+row.route);
   assert.ok(!stems.has(row.path.replace(/\.[^.]+$/,'')),'Already available '+row.path);
   assert.ok(row.prompt.length>250);
@@ -98,6 +107,12 @@ for(const review of reviewedImages.images) {
   assert.equal(entry.sha256,review.sha256,'Reviewed image hash drift '+review.path);
   assert.equal(entry.text_status,review.text_status,'Reviewed image text state '+review.path);
   assert.equal(entry.locale_reuse,review.locale_reuse,'Reviewed image reuse state '+review.path);
+  const heldSlug = review.route.match(/\/recipes\/([^/]+)/)?.[1];
+  if (methodPolicy.isMethodHeld(heldSlug)) {
+    assertHeldArtworkWithdrawn(heldSlug, fs.readFileSync(path.join(ROOT,routeFile(review.route)),'utf8'));
+    assert(!entry.placements.some(p=>p.path===routeFile(review.route)), 'Held artwork must not remain bound to a preparation page');
+    continue;
+  }
   assert.ok(entry.placements.some(p=>p.path===routeFile(review.route)),'Missing reviewed subject binding '+review.path);
   assert.match(review.note,/same equivalent (?:article|country page|recipe)/,'Review must constrain same-subject reuse '+review.path);
   if(review.path.startsWith('/assets/img/kitchen/')) {

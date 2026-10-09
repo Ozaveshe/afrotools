@@ -407,12 +407,14 @@ test("AfroKitchen only requests known local recipe image paths", async ({ page }
     return {
       count: known.size,
       recipeCount: catalog.recipes.length,
+      heldMethods: catalog.recipes.filter(recipe => window.AfroKitchenEngine.isMethodHeld(recipe)).map(recipe => recipe.slug),
       unknown: catalog.recipes.concat(legacySlugs).flatMap(recipe => window.AfroKitchenImages.getCandidatePaths(recipe))
         .filter(path => path.startsWith("/assets/img/kitchen/") && !known.has(path))
     };
   });
   expect(imagePaths.count).toBeGreaterThan(300);
-  expect(imagePaths.recipeCount).toBe(410);
+  expect(imagePaths.recipeCount).toBe(399);
+  expect(imagePaths.heldMethods).toEqual([]);
   expect(imagePaths.unknown).toEqual([]);
   expect(missingResponses).toEqual([]);
 });

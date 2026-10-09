@@ -13,6 +13,8 @@ const engine = loadAfroKitchenEngine();
 const recipeImages = loadRecipeImages();
 const aliasLedger = require('../data/image-generation/recipe-image-aliases.json');
 const importedArtwork = require('../data/image-generation/kitchen-imported-2026-10-09.json').images;
+const methodPolicy = require('../engines/src/afrokitchen-engine');
+const { inspectRecipeSchemaState } = require('../scripts/audit-afrokitchen-indexability');
 
 for (const artwork of importedArtwork) {
   test(`${artwork.slug}: imported artwork stays responsive and keeps unknown generation history explicit`, () => {
@@ -52,6 +54,14 @@ for (const artwork of ledger.images) {
   test(`${artwork.slug}: recipe and card use responsive artwork with honest labels`, () => {
     const recipe = manifest.recipes.find(row => row.slug === artwork.slug);
     const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, {});
+    if (methodPolicy.isMethodHeld(recipe)) {
+      assert.deepEqual(inspectRecipeSchemaState(recipe, html, recipeImages), { state: 'method-under-review', errors: [] });
+      for (const variant of artwork.variants) assert.ok(!html.includes(variant.path));
+      const card = renderStaticRecipeCard(recipe, recipeImages);
+      assert.ok(card.includes('Method under review'));
+      assert.ok(!/<img\b|srcset=|\d+ min/.test(card));
+      return;
+    }
     assert.ok(html.includes(artwork.alt));
     assert.ok(html.includes('AI-generated illustration'));
     assert.ok(html.includes(`content="https://afrotools.com${artwork.target}"`));

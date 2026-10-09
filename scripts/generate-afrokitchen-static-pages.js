@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
 const artworkBySlug = new Map(generatedArtwork.map(image => [image.slug, image]));
@@ -599,6 +600,10 @@ function renderRecipeFallbackMarkup(recipe, compact) {
 }
 
 function renderStaticRecipeCard(recipe, recipeImages) {
+  if (methodPolicy.isMethodHeld(recipe)) {
+    const held = methodPolicy.applyMethodHold(recipe);
+    return `<a class="ak-static-recipe-card ak-method-hold-card" href="${escapeHtml(held.route_path)}" aria-label="${escapeHtml(held.name)}: method under review"><span class="ak-static-recipe-card-body"><span class="ak-static-recipe-card-badges"><span class="ak-static-recipe-badge">${escapeHtml(held.country_name)}</span></span><span class="ak-static-recipe-card-title">${escapeHtml(held.name)}</span><span class="ak-static-recipe-card-desc">Preparation instructions are unavailable pending review.</span><span class="ak-static-recipe-card-cta">Method under review ${akIcon("action", "ak-static-card-icon")}</span></span></a>`;
+  }
   const media = resolveRecipeMedia(recipe, recipeImages);
   const imageSrc = media && media.pageImage ? String(media.pageImage) : "";
   const hasImage = Boolean(isUsableRecipeImage(imageSrc));
@@ -636,6 +641,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
 }
 
 function renderCompactRecipeLink(recipe, contextLabel) {
+  if (methodPolicy.isMethodHeld(recipe)) contextLabel = "Method under review";
   const meta = [
     recipe.country_name,
     categoryLabel(recipe),
@@ -1164,6 +1170,7 @@ function buildCountryMetaDescription(country) {
 }
 
 function buildRecipeMetaDescription(recipe) {
+  if (methodPolicy.isMethodHeld(recipe)) return metaDescription(methodPolicy.METHOD_HOLD_NOTICE, 158);
   const base = String(recipe.description || "").trim();
   const expanded = base.length < 90
     ? `${base}${/[.!?]$/.test(base) ? "" : "."} Get ingredients, steps and serving notes.`
@@ -1353,7 +1360,64 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
   };
 }
 
+function buildHeldRecipePageHtml(recipe) {
+  const held = methodPolicy.applyMethodHold(recipe);
+  const title = `${held.name}: Method Under Review | AfroKitchen`;
+  const description = buildRecipeMetaDescription(held);
+  const crumbs = [["Home", `${SITE_ORIGIN}/`], ["Tools", `${SITE_ORIGIN}/tools/`], ["AfroKitchen", `${SITE_ORIGIN}/tools/afrokitchen/`], [held.country_name, held.country_route_url], [held.name, held.route_url]];
+  const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs.map(([name, item], index) => ({ "@type": "ListItem", position: index + 1, name, item })) };
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="afrokitchen:recipe:${escapeHtml(held.slug)}">
+  <meta name="afrotools-source-owner" content="engines/src/afrokitchen-engine.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <link rel="canonical" href="${held.route_url}">
+  <meta name="robots" content="noindex, follow">
+  <meta name="afrokitchen-schema-blockers" content="method_under_review">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${held.route_url}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="${TOOL_OG_IMAGE}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${TOOL_OG_IMAGE}">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="/tools/afrokitchen/style.css">
+  <link rel="stylesheet" href="/tools/afrokitchen/cookbook.css">
+  <link rel="stylesheet" href="/tools/afrokitchen/experience.css">
+  <style>.ak-method-hold-page{min-height:60vh}.ak-method-hold{max-width:48rem;margin:0 auto;padding:clamp(24px,6vw,64px) 20px}.ak-method-hold h1{overflow-wrap:anywhere}.ak-method-hold p{line-height:1.7}.ak-method-hold a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:3px}.ak-method-hold a:focus-visible{outline:3px solid currentColor;outline-offset:4px}</style>
+  <script type="application/ld+json">${safeJson(breadcrumb)}</script>
+</head>
+<body>
+<a class="ak-skip-link" href="#ak-main-content">Skip to main content</a>
+<afro-navbar></afro-navbar>
+<main class="ak-page ak-method-hold-page" id="ak-main-content" tabindex="-1">
+${renderCookbookNav()}
+  <section class="ak-method-hold" aria-labelledby="method-hold-title">
+    <p>${escapeHtml(held.country_name)}</p>
+    <h1 id="method-hold-title">${escapeHtml(held.name)}</h1>
+    <h2>Method under review</h2>
+    <p>${escapeHtml(methodPolicy.METHOD_HOLD_NOTICE)}</p>
+    <a href="${held.country_route_path}">Browse ${escapeHtml(held.country_name)} recipes</a>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+</body>
+</html>`;
+}
+
 function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, cuisineIntelligence) {
+  if (methodPolicy.isMethodHeld(recipe)) return buildHeldRecipePageHtml(recipe);
   recipe = cleanPatchedRecipeCopy(applyRecipeResearchPatch(recipe, researchAudit));
   const recipeInsight = getRecipeInsight(recipe, cuisineIntelligence);
   const recipeInternalLinkGroups = pickRecipeInternalLinkGroups(recipe, manifest);
@@ -2980,24 +3044,24 @@ function buildLandingCollectionLinksMarkup(manifest) {
 }
 
 function updateLandingInventoryCopy(content, manifest) {
-  const recipeCount = manifest.recipes.length;
+  const recipeCount = manifest.recipes.filter(recipe => !methodPolicy.isMethodHeld(recipe)).length;
   const countryHubCount = manifest.countries.length;
   const collectionCount = (manifest.collections || []).length;
-  const description = `A warm African recipe atlas with ${recipeCount} dishes across ${countryHubCount} country hubs. Search by country, ingredient, occasion, difficulty, or collection.`;
-  const socialDescription = `Browse a warmer AfroKitchen recipe atlas with ${recipeCount} dishes across ${countryHubCount} African country hubs.`;
-  const faqAnswer = `AfroKitchen has ${recipeCount} recipes across ${countryHubCount} African country hubs, spanning`;
+  const description = `A warm African recipe atlas with ${recipeCount} dishes across ${countryHubCount} country and territory hubs. Search by country, ingredient, occasion, difficulty, or collection.`;
+  const socialDescription = `Browse a warmer AfroKitchen recipe atlas with ${recipeCount} dishes across ${countryHubCount} country and territory hubs.`;
+  const faqAnswer = `AfroKitchen has ${recipeCount} recipes across ${countryHubCount} country and territory hubs, spanning`;
 
   return content
     .replace(
-      /A warm African recipe atlas with \d+\+? dishes (?:from all \d+ countries|across \d+ country hubs)\. Search by country, ingredient, occasion, difficulty, or collection\./g,
+      /A warm African recipe atlas with \d+\+? dishes (?:from all \d+ countries|across \d+ country(?: and territory)? hubs)\. Search by country, ingredient, occasion, difficulty, or collection\./g,
       description
     )
     .replace(
-      /Browse a warmer AfroKitchen recipe atlas with \d+\+? dishes (?:from all \d+ African countries|across \d+ African country hubs)\./g,
+      /Browse a warmer AfroKitchen recipe atlas with \d+\+? dishes (?:from all \d+ African countries|across \d+ (?:African country|country and territory) hubs)\./g,
       socialDescription
     )
     .replace(
-      /AfroKitchen has \d+\+? recipes (?:from all \d+ African countries|across \d+ African country hubs), spanning/g,
+      /AfroKitchen has \d+\+? recipes (?:from all \d+ African countries|across \d+ (?:African country|country and territory) hubs), spanning/g,
       faqAnswer
     )
     .replace(/<span class="ak-badge ak-badge-live">\d+\+? recipes<\/span>/, `<span class="ak-badge ak-badge-live">${recipeCount} recipes</span>`)
@@ -3327,4 +3391,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
+module.exports = { buildRecipePageHtml, buildCountryPageHtml, buildCollectionPageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, renderCompactRecipeLink, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES, updateLandingSource, updateLandingInventoryCopy };

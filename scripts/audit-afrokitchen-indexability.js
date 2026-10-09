@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { isDeepStrictEqual } = require("util");
 const { loadRecipeImages, resolveRecipeMedia } = require("./lib/afrokitchen-static");
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -70,6 +71,22 @@ function inspectRecipeSchemaState(recipe, html, recipeImages) {
   const typeIs = (node, type) => node["@type"] === type || (Array.isArray(node["@type"]) && node["@type"].includes(type));
   const recipes = nodes.filter(node => typeIs(node, "Recipe"));
   const markers = [...html.matchAll(/<meta\b(?=[^>]*\bname=["']afrokitchen-schema-blockers["'])(?=[^>]*\bcontent=["']([^"']*)["'])[^>]*>/gi)];
+  if (methodPolicy.isMethodHeld(recipe)) {
+    if (recipes.length) errors.push("held method must not expose Recipe JSON-LD");
+    if (markers.length !== 1 || markers[0][1] !== 'method_under_review') errors.push("held method requires its explicit schema blocker");
+    if (!/^noindex,\s*follow$/i.test(extractMetaContent(html, 'robots'))) errors.push("held method must be noindex, follow");
+    if ([...html.matchAll(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi)].length !== 1 || extractCanonical(html) !== recipe.route_url) errors.push("held method canonical must be preserved");
+    if (recipe.is_verified !== false || recipe.method_status !== 'under_review' ||
+        !Array.isArray(recipe.ingredients) || recipe.ingredients.length ||
+        !Array.isArray(recipe.steps) || recipe.steps.length) errors.push("held source must contain only the bounded review state");
+    if (!isDeepStrictEqual(recipe, methodPolicy.applyMethodHold(recipe))) errors.push("held source contains unexpected retained content");
+    const visible = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+    if (!visible.includes(methodPolicy.METHOD_HOLD_NOTICE)) errors.push("held method requires the visible withdrawal notice");
+    if (/__AK_STATIC_RECIPE|static-recipe-runtime|recipe-page\.js|data-timer|ak-start-cook|ak-export|ak-servings|recipeInstructions|recipeIngredient/i.test(html)) errors.push("held page exposes a cooking payload or control");
+    const crumbs = nodes.filter(node => typeIs(node, 'BreadcrumbList'));
+    if (crumbs.length !== 1 || crumbs[0].itemListElement?.at(-1)?.item !== recipe.route_url) errors.push("held method must preserve its breadcrumb route");
+    return { state: errors.length ? 'invalid' : 'method-under-review', errors };
+  }
   if (recipes.length) {
     if (recipes.length !== 1) errors.push("duplicate Recipe JSON-LD");
     if (markers.length) errors.push("Recipe JSON-LD conflicts with a schema blocker");
@@ -237,7 +254,8 @@ function main() {
   const manifest = readJson(MANIFEST_PATH);
   const sitemapEntries = readSitemapEntries();
   const recipeByUrl = new Map((manifest.recipes || []).map((recipe) => [recipe.route_url, recipe]));
-  const generatedRecipes = (manifest.recipes || []).filter((recipe) => recipe.generated_in_wave);
+  const generatedRecipes = (manifest.recipes || []).filter((recipe) => recipe.generated_in_wave && !methodPolicy.isMethodHeld(recipe));
+  const heldRecipes = (manifest.recipes || []).filter(recipe => methodPolicy.isMethodHeld(recipe));
   const recipeImages = loadRecipeImages();
   const generatedRecipeUrls = new Set(generatedRecipes.map((recipe) => recipe.route_url));
   const countryUrls = new Set((manifest.countries || []).map((country) => country.route_url));
@@ -251,6 +269,7 @@ function main() {
   const invalidSchemaStates = [];
   const awaitingDishImage = [];
   const recipeMarkupPages = [];
+  const heldMethodPages = [];
   const missingIngredients = [];
   const missingInstructions = [];
   const noindexInSitemap = [];
@@ -264,6 +283,13 @@ function main() {
     const noindex = hasNoindex(html);
     if (noindex) noindexRecipePages.push(url);
     if (noindex && sitemapEntries.has(url)) noindexInSitemap.push(url);
+
+    if (recipe && methodPolicy.isMethodHeld(recipe)) {
+      const schema = inspectRecipeSchemaState(recipe, html, recipeImages);
+      if (schema.errors.length) invalidSchemaStates.push({ url, errors: schema.errors });
+      else heldMethodPages.push(url);
+      continue;
+    }
 
     if (!generatedRecipeUrls.has(url)) continue;
 
@@ -290,6 +316,8 @@ function main() {
   }
 
   const missingRecipeSitemap = [...generatedRecipeUrls].filter((url) => !sitemapEntries.has(url));
+  for (const recipe of heldRecipes) if (!heldMethodPages.includes(recipe.route_url) &&
+      !invalidSchemaStates.some(row => row.url === recipe.route_url)) invalidSchemaStates.push({ url: recipe.route_url, errors: ['missing method-under-review page'] });
   const includedRecipeUrls = [...generatedRecipeUrls].filter((url) => sitemapEntries.has(url));
   const missingCountrySitemap = [...countryUrls].filter((url) => !sitemapEntries.has(url));
   const missingCollectionSitemap = [...collectionUrls].filter((url) => !sitemapEntries.has(url));
@@ -302,6 +330,7 @@ function main() {
     totals: {
       manifestRecipePages: (manifest.recipes || []).length,
       completeRecipePages: generatedRecipes.length,
+      heldMethodPages: heldMethodPages.length,
       recipeHtmlPages: recipeHtmlFiles.length,
       sitemapIncludedRecipePages: includedRecipeUrls.length,
       noindexRecipePages: noindexRecipePages.length,
@@ -329,7 +358,8 @@ function main() {
       lastmodMismatches
     },
     noindexRecipePages,
-    awaitingDishImage
+    awaitingDishImage,
+    heldMethodPages
   };
 
   if (fs.existsSync(REPORTS_DIR)) {

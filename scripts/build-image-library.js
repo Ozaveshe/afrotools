@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const cp = require('child_process');
 const vm = require('vm');
 const { imageSize } = require('./lib/image-size');
+const methodPolicy = require('../engines/src/afrokitchen-engine');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = 'data/image-generation';
 const recipeAliases = require('../data/image-generation/recipe-image-aliases.json').aliases;
@@ -140,6 +141,7 @@ function nextBatch(library) {
   const queue = [];
   const add = row => { if (!existing.has(row.path.replace(/\.[^.]+$/, '')) && !queue.some(q=>q.path===row.path) && routeFile(row.route)) queue.push({ ...row, status:'pending', locale_reuse:true }); };
   for (const r of manifest.recipes) {
+    if (methodPolicy.isMethodHeld(r)) continue;
     if (recipeAliases[r.slug]) continue;
     if ([...existing].some(p => p === '/assets/img/kitchen/' + r.slug || p === '/assets/img/kitchen/' + r.slug + '-1')) continue;
     const held = images.find(i => i.path === '/assets/img/new/' + r.slug + '.webp' && i.status === 'needs-review');
@@ -158,6 +160,7 @@ function nextBatch(library) {
   // The existing cuisine pipeline consumes numbered serving/gallery shots.
   // Prefer missing heroes first, then a useful second view for recipes that already have one.
   for (const r of manifest.recipes) {
+    if (methodPolicy.isMethodHeld(r)) continue;
     if (recipeAliases[r.slug]) continue;
     const hero = images.find(i => i.path === '/assets/img/kitchen/' + r.slug + '.webp' || i.path === '/assets/img/kitchen/' + r.slug + '-1.webp');
     if (!hero) continue;
