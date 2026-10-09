@@ -1860,9 +1860,21 @@
   copyChatBtn.addEventListener('click', function() {
     const text = transcriptText();
     if (!text) return;
-    navigator.clipboard.writeText(text).then(function() {
+    const copyDocument = pdfData;
+    const copyHistory = chatHistory;
+    const copyStatus = chatFooter.textContent;
+    function copyIsCurrent() {
+      return pdfData === copyDocument && chatHistory === copyHistory &&
+        transcriptText() === text && chatFooter.textContent === copyStatus;
+    }
+    Promise.resolve().then(function() {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('COPY_UNAVAILABLE');
+      return navigator.clipboard.writeText(text);
+    }).then(function() {
+      if (!copyIsCurrent()) return;
       chatFooter.textContent = 'Transcript copied to clipboard.';
     }).catch(function() {
+      if (!copyIsCurrent()) return;
       chatFooter.textContent = 'Copy failed. Use Download instead.';
     });
   });

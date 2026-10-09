@@ -176,12 +176,14 @@ a{text-decoration:none;color:inherit}
 .country-search:focus{border-color:var(--color-primary,#0062CC);box-shadow:0 0 0 3px rgba(0,98,204,.1)}
 .country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:420px;overflow-y:auto;padding:4px}
 .country-card{
+  font-family:inherit;text-align:left;min-height:44px;
   display:flex;align-items:center;gap:8px;padding:11px 14px;
   border:1.5px solid var(--color-border,#E5E7EB);border-radius:12px;
   background:#fff;cursor:pointer;transition:all .15s;
   font-size:.82rem;font-weight:600;color:var(--color-text,#0f172a);
   box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
+.country-card:focus-visible{outline:3px solid var(--color-primary,#0062CC);outline-offset:2px}
 .country-card:hover{border-color:var(--color-primary,#0062CC);background:#EFF6FF;box-shadow:0 4px 12px rgba(0,98,204,.08)}
 .country-card.selected{border-color:var(--color-primary,#0062CC);background:#DBEAFE;box-shadow:0 0 0 3px rgba(0,98,204,.12)}
 .country-flag{font-size:1.3rem;flex-shrink:0}
@@ -676,6 +678,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       <div class="plan-actions">
         <button type="button" class="btn-sm" id="btn-print" title="Print plan">Print</button>
         <button type="button" class="btn-sm" id="btn-pdf">Download PDF</button>
+        <span id="business-pdf-status" role="status" aria-live="polite"></span>
         <button type="button" class="btn-sm primary" id="btn-chat-open">Ask AI Advisor</button>
       </div>
     </div>
@@ -719,7 +722,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
         <a href="/pro/" style="padding:12px 28px;background:#fff;color:var(--color-primary,#0062CC);border-radius:980px;font-weight:700;font-size:.85rem;text-decoration:none;transition:transform .15s,box-shadow .15s;display:inline-block">Start 7-Day Free Trial</a>
         <a href="/pro/#pricing" style="padding:12px 28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);border-radius:980px;font-weight:700;font-size:.85rem;text-decoration:none;display:inline-block">See Plans &mdash; $5/mo</a>
       </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.35);line-height:1.5">Free plan includes: action plan, 3 AI advisor questions/day, PDF with watermark.<br>Pro adds: full business plan, unlimited AI, clean PDFs, cloud history.</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.35);line-height:1.5">Free plan includes: action plan, 3 AI advisor questions/day, PDF with a free-edition footer.<br>Pro adds: full business plan, unlimited AI, clean PDFs, cloud history.</div>
     </div>
     <div class="premium-section pro-only" style="display:none">
       <span style="display:inline-block;background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:.6rem;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.1em;margin-bottom:14px">PRO</span>
@@ -792,7 +795,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="/assets/vendor/jspdf/jspdf-2.5.2.umd.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 (function(){
@@ -829,7 +832,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       if (activeRegion !== 'All' && c.region !== activeRegion) return;
       if (q && c.name.toLowerCase().indexOf(q) === -1 && c.code.toLowerCase().indexOf(q) === -1) return;
       var sel = state.country && state.country.code === c.code ? ' selected' : '';
-      html += '<div class="country-card' + sel + '" data-code="' + c.code + '"><span class="country-flag">' + (FLAG_MAP[c.code]||c.code) + '</span>' + c.name + '</div>';
+      html += '<button type="button" class="country-card' + sel + '" data-code="' + c.code + '" aria-pressed="' + (sel ? 'true' : 'false') + '"><span class="country-flag" aria-hidden="true">' + (FLAG_MAP[c.code]||c.code) + '</span>' + c.name + '</button>';
     });
     gridEl.innerHTML = html || '<p style="color:#94a3af;grid-column:1/-1;text-align:center;padding:24px;font-size:.88rem">No countries found.</p>';
     if (typeof twemoji !== 'undefined') twemoji.parse(gridEl, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
@@ -852,6 +855,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     state.country = countries.find(function(c){ return c.code === code; });
     renderCountries(document.getElementById('country-search').value);
     onCountrySelected();
+    document.getElementById('biz-type').focus({preventScroll:true});
   });
 
   function onCountrySelected(){
@@ -879,6 +883,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       industry: document.getElementById('biz-industry').value,
       hasEmployees: document.getElementById('emp-yes').classList.contains('active')
     }), document.getElementById('emp-yes').classList.contains('active'));
+    state.plan.industry = document.getElementById('biz-industry').value || 'General';
     state.chatHistory = [];
     renderPlan();
     document.getElementById('sec-plan').classList.remove('locked');
@@ -1042,12 +1047,71 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   // ── Print
   document.getElementById('btn-print').onclick = function(){ window.print(); };
 
+  var businessPdfFontsPromise;
+  function loadBusinessPdfFonts() {
+    if (!businessPdfFontsPromise) {
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, 12000);
+      businessPdfFontsPromise = Promise.all(['Regular', 'Bold'].map(async function(style) {
+        var response = await fetch('/assets/fonts/noto-sans/NotoSans-' + style + '.ttf', {
+          credentials: 'omit', referrerPolicy: 'no-referrer', signal: controller.signal
+        });
+        if (!response.ok) throw new Error('PDF_FONT_LOAD');
+        var bytes = new Uint8Array(await response.arrayBuffer());
+        var binary = '';
+        for (var offset = 0; offset < bytes.length; offset += 8192) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(offset, offset + 8192));
+        }
+        return btoa(binary);
+      })).catch(function(error) {
+        controller.abort();
+        businessPdfFontsPromise = null;
+        throw error;
+      }).finally(function(){ clearTimeout(timer); });
+    }
+    return businessPdfFontsPromise;
+  }
+
+  async function createBusinessActionPdf() {
+    if (!window.jspdf || typeof window.jspdf.jsPDF !== 'function') throw new Error('PDF_LIBRARY_LOAD');
+    var fonts = await loadBusinessPdfFonts();
+    var doc = new window.jspdf.jsPDF({putOnlyUsedFonts: true, compress: true});
+    ['normal', 'bold'].forEach(function(style, index) {
+      var filename = index ? 'BusinessNoto-Bold.ttf' : 'BusinessNoto-Regular.ttf';
+      doc.addFileToVFS(filename, fonts[index]);
+      doc.addFont(filename, 'BusinessNoto', style);
+      doc.setFont('BusinessNoto', style);
+      var metadata = doc.getFont().metadata;
+      if (!metadata || typeof metadata.characterToGlyph !== 'function') throw new Error('PDF_FONT_LOAD');
+    });
+    doc.setFont('BusinessNoto', 'normal');
+    var text = doc.text;
+    doc.text = function(value) {
+      var metadata = doc.getFont().metadata;
+      var content = Array.isArray(value) ? value.join('\n') : String(value);
+      for (var character of content) {
+        if (character === '\n' || character === '\r' || character === '\t') continue;
+        if (!metadata.characterToGlyph(character.codePointAt(0))) throw new Error('PDF_UNSUPPORTED_CHARACTER');
+      }
+      return text.apply(doc, arguments);
+    };
+    return doc;
+  }
+
   // ── PDF Download (Enhanced V2)
   document.getElementById('btn-pdf').onclick = async function(){
-    if (!state.plan || typeof jspdf === 'undefined') return;
-    var isProUser = window.AfroProGate ? await AfroProGate.isPro() : false;
+    if (!state.plan || this.disabled) return;
+    var button = this;
     var p = state.plan;
-    var doc = new jspdf.jsPDF();
+    var originalLabel = button.textContent;
+    var status = document.getElementById('business-pdf-status');
+    button.disabled = true;
+    button.textContent = 'Preparing PDF…';
+    status.textContent = 'Preparing PDF…';
+    try {
+    var doc = await createBusinessActionPdf();
+    var isProUser = window.AfroProGate ? await AfroProGate.isPro() : false;
+    if (state.plan !== p) { status.textContent = 'The plan changed. Download the updated plan.'; return; }
     var pageW = doc.internal.pageSize.getWidth();
     var pageH = doc.internal.pageSize.getHeight();
     var margin = 20;
@@ -1078,21 +1142,27 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       doc.rect(0, pageH - 16, pageW, 16, 'F');
       doc.setFontSize(7);
       doc.setTextColor(140, 140, 140);
-      doc.text('Generated by AfroTools AI Business Planner | afrotools.com | Page ' + pageNum, pageW / 2, pageH - 6, { align: 'center' });
+      doc.text((isProUser ? '' : 'Free edition | ') + 'Generated by AfroTools AI Business Planner | afrotools.com | Page ' + pageNum, pageW / 2, pageH - 6, { align: 'center' });
       doc.setTextColor(0, 0, 0);
     }
 
     function checkPage(needed){
       if (y + needed > pageH - 24) {
+        var contentFont = doc.getFont();
+        var contentSize = doc.getFontSize();
+        var contentColor = doc.getTextColor();
         addFooter();
         doc.addPage();
         pageNum++;
         addHeader();
+        doc.setFont(contentFont.fontName, contentFont.fontStyle);
+        doc.setFontSize(contentSize);
+        doc.setTextColor(contentColor);
       }
     }
 
     function sectionHeader(text, r, g, b){
-      checkPage(20);
+      checkPage(42);
       doc.setFillColor(r, g, b);
       doc.roundedRect(margin, y, contentW, 14, 2, 2, 'F');
       doc.setFontSize(10);
@@ -1110,7 +1180,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       else doc.setFont(undefined, 'normal');
       var x = margin + (indent || 0);
       var lines = doc.splitTextToSize(text, contentW - (indent || 0));
-      checkPage(lines.length * (size || 9) * 0.45 + 2);
+      checkPage(lines.length * (size || 9) * 0.45 + 2 + (bold ? 14 : 0));
       doc.text(lines, x, y);
       y += lines.length * (size || 9) * 0.45 + 2;
     }
@@ -1158,28 +1228,30 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     doc.setTextColor(180, 200, 230);
     doc.text((FLAG_MAP[p.countryCode] ? '' : '') + p.country + ' \u2014 ' + p.businessType, margin + 10, y + 24);
     doc.setFontSize(8);
-    doc.text('Industry: ' + (document.getElementById('biz-industry').value || 'General'), margin + 10, y + 31);
+    doc.text('Industry: ' + (p.industry || 'Not recorded'), margin + 10, y + 31);
     doc.setTextColor(0, 0, 0);
     y += 44;
 
-    // Quick facts row
-    doc.setFillColor(239, 246, 255);
-    doc.roundedRect(margin, y, contentW, 18, 2, 2, 'F');
+    // Quick facts wrap within independent columns.
     doc.setFontSize(7);
     doc.setFont(undefined, 'bold');
-    doc.setTextColor(26, 79, 160);
     var facts = [
       'Currency: ' + p.currency.code + ' (' + p.currency.symbol + ')',
       'Language: ' + p.language,
       'Region: ' + p.region
     ];
-    var factX = margin + 6;
-    facts.forEach(function(f){
-      doc.text(f, factX, y + 11);
-      factX += contentW / 3;
+    var factWidth = contentW / 3;
+    var factLines = facts.map(function(f){ return doc.splitTextToSize(f, factWidth - 12); });
+    var factHeight = Math.max(18, Math.max.apply(null, factLines.map(function(lines){ return lines.length; })) * 4 + 10);
+    checkPage(factHeight + 8);
+    doc.setFillColor(239, 246, 255);
+    doc.roundedRect(margin, y, contentW, factHeight, 2, 2, 'F');
+    doc.setTextColor(26, 79, 160);
+    factLines.forEach(function(lines, i){
+      doc.text(lines, margin + 6 + i * factWidth, y + 8);
     });
     doc.setTextColor(0, 0, 0);
-    y += 26;
+    y += factHeight + 8;
 
     // === PHASE 1 ===
     sectionHeader('Phase 1: ' + p.phase1_registration.title, 26, 79, 160);
@@ -1242,7 +1314,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     }
     if (p.phase3_licenses.note) {
       y += 2;
-      doc.setFontSize(7); doc.setFont(undefined, 'italic'); doc.setTextColor(100, 100, 100);
+      doc.setFontSize(7); doc.setFont(undefined, 'normal'); doc.setTextColor(100, 100, 100);
       var noteLines = doc.splitTextToSize(p.phase3_licenses.note, contentW - 8);
       checkPage(noteLines.length * 3.5 + 4);
       doc.text(noteLines, margin + 4, y);
@@ -1292,34 +1364,33 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     y += 26;
     doc.setTextColor(0, 0, 0);
 
-    // Disclaimer
+    // Measure the disclaimer using the same font used to draw it.
     y += 6;
-    checkPage(20);
-    doc.setFillColor(245, 247, 250);
+    doc.setFontSize(6.5);
+    doc.setFont(undefined, 'normal');
     var discLines = doc.splitTextToSize(buildPlanDisclaimer(p), contentW - 12);
     var discH = discLines.length * 3.5 + 8;
+    checkPage(discH + 4);
+    doc.setFillColor(245, 247, 250);
     doc.roundedRect(margin, y, contentW, discH, 2, 2, 'F');
-    doc.setFontSize(6.5);
     doc.setTextColor(140, 140, 140);
     doc.text(discLines, margin + 6, y + 6);
     doc.setTextColor(0, 0, 0);
 
     addFooter();
 
-    // Add watermark on every page for free users
-    if (!isProUser) {
-      var totalPages = doc.internal.getNumberOfPages();
-      for (var wp = 1; wp <= totalPages; wp++) {
-        doc.setPage(wp);
-        doc.setTextColor(200, 200, 200);
-        doc.setFontSize(48);
-        doc.setFont(undefined, 'bold');
-        doc.text('AFROTOOLS FREE', pageW / 2, pageH / 2, { align: 'center', angle: 45 });
-        doc.setTextColor(0, 0, 0);
-      }
-    }
+    // Free-edition identification stays in the footer, clear of report content.
 
     doc.save('AfroTools-Business-Plan-' + p.country.replace(/\s/g,'-') + '.pdf');
+    status.textContent = 'PDF downloaded.';
+    } catch (error) {
+      status.textContent = error && error.message === 'PDF_UNSUPPORTED_CHARACTER'
+        ? 'Some characters cannot be preserved in this PDF. Use Print to save the complete plan.'
+        : 'PDF could not be created. Try again, or use Print to save the plan.';
+    } finally {
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
   };
 
   // ── AI Chat
@@ -2080,6 +2151,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       return false;
     }
     state.plan = ensurePlannerTaxCoverage(saved.action_plan, null);
+    state.plan.industry = state.plan.industry || saved.industry || 'Not recorded';
     state.country = countries.find(function(c){ return c.code === saved.country_code; }) || null;
     if (state.country) {
       renderCountries(document.getElementById('country-search').value);
