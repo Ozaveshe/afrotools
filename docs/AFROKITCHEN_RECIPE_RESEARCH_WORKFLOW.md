@@ -55,7 +55,11 @@ Each new recipe needs at least two external sources, structured ingredients, at 
 
 When the dry run passes, import the batch:
 
-`npm run afrokitchen:import-expansion -- --batch data/afrokitchen/recipe-expansion-batches/YYYY-MM-DD-wave-N.json`
+`npm run afrokitchen:import-expansion -- --batch data/afrokitchen/recipe-expansion-batches/YYYY-MM-DD-wave-N.json --apply`
+
+The importer requires an explicit batch and exactly one mode. `--help` and `-h`
+show usage without creating a database client. Unknown, repeated, missing or
+conflicting arguments stop before database access; there is no default live batch.
 
 The importer writes to live Supabase and merges matching entries into `data/afrokitchen/recipe-research-audit.json`. After import, regenerate:
 

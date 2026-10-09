@@ -82,6 +82,14 @@ for(const [slug,canonical] of Object.entries(aliases)) {
   assert.ok(!batch.images.some(i=>i.path==='/assets/img/kitchen/'+slug+'.webp'),'Aliased recipe must not request a duplicate image');
 }
 const sharedArtwork = require('../data/image-generation/reviewed-shared-artwork.json');
+for (const review of sharedArtwork.tool_reviews || []) {
+  assert.ok(sharedArtwork.tool_ids.includes(review.id), 'Tool review must have an approved same-tool binding');
+  const entry = libraryByPath.get(review.path);
+  assert.ok(entry, 'Missing reviewed tool image ' + review.path);
+  assert.equal(entry.sha256, review.sha256, 'Reviewed tool image hash drift ' + review.path);
+  assert.equal(entry.review_note, review.note, 'Per-image tool review must survive library generation');
+  assert.equal(entry.locale_reuse, true, 'Approved shared tool image must support equivalent locales');
+}
 const reviewedImages = require('../data/image-generation/reviewed-images.json');
 assert.equal(new Set(reviewedImages.images.map(i=>i.path)).size,reviewedImages.images.length,'Reviewed image paths must be unique');
 for(const review of reviewedImages.images) {
@@ -130,4 +138,4 @@ for(const file of ['tool-registry.js','tool-registry.min.js']) {
     assert.equal(tools.getToolCardImagePath(row),'/assets/img/tools/'+id+'.webp',file+' '+id);
   }
 }
-console.log('PASS: 63 incoming assets, 60 placements, 6 canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.');
+console.log(`PASS: 63 incoming assets, 60 placements, ${Object.keys(aliases).length} canonical image aliases, metadata preserved, 200 unique gaps, reference scan clean.`);

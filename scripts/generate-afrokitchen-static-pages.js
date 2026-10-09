@@ -7,6 +7,12 @@ const { imageSizeFromUrl } = require('./lib/image-size');
 const generatedArtwork = require('../data/image-generation/kitchen-generated-2026-10-09.json').images;
 const artworkBySlug = new Map(generatedArtwork.map(image => [image.slug, image]));
 const artworkByPath = new Map(generatedArtwork.map(image => [image.target, image]));
+const reusedArtwork = [
+  ...(require('../data/image-generation/recipe-image-aliases.json').hero_reviews || []),
+  ...require('../data/image-generation/kitchen-imported-2026-10-09.json').images
+];
+const reusedArtworkBySlug = new Map(reusedArtwork.map(image => [image.slug, image]));
+const reusedArtworkByPath = new Map(reusedArtwork.map(image => [image.path, image]));
 const { writeRecipeIndex } = require('./lib/afrokitchen-recipe-index');
 const {
   ROOT,
@@ -78,8 +84,8 @@ const LEGACY_RECIPE_ALIASES = [
   },
   {
     legacySlug: "ghanaian-waakye",
-    targetCountryCode: "GH",
-    reason: "This older Waakye link now sends you to the Ghana cuisine hub while the dedicated recipe is being prepared."
+    targetRecipeSlug: "waakye-gh",
+    reason: "This older Waakye link now opens the current Ghanaian Waakye recipe."
   },
   {
     legacySlug: "dovi",
@@ -566,9 +572,11 @@ function imageSizeAttributes(width, height) {
 }
 
 function recipeImageAttributes(src, width, height, card = false) {
-  const artwork = artworkByPath.get(src);
-  if (!artwork) return imageSizeAttributes(width, height);
-  const full = artwork.variants.find(variant => variant.path === artwork.target);
+  const artwork = artworkByPath.get(src) || reusedArtworkByPath.get(src);
+  if (!artwork?.variants) {
+    return imageSizeAttributes(artwork?.width || width, artwork?.height || height);
+  }
+  const full = artwork.variants.find(variant => variant.path === (artwork.target || artwork.path));
   const srcset = artwork.variants.map(variant => `${variant.path} ${variant.width}w`).join(', ');
   const sizes = card ? '(max-width: 640px) 100vw, 400px' : '(max-width: 800px) 100vw, 1200px';
   return `${imageSizeAttributes(full.width, full.height)} srcset="${escapeHtml(srcset)}" sizes="${sizes}"`;
@@ -578,7 +586,7 @@ function recipeImageAlt(recipe, role) {
   if (role === "prep") return `${recipe.name} ingredients/prep step`;
   if (role === "process") return `${recipe.name} cooking/process step`;
   if (role === "serving") return `${recipe.name} serving/detail image`;
-  return artworkBySlug.get(recipe.slug)?.alt || `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
+  return artworkBySlug.get(recipe.slug)?.alt || reusedArtworkBySlug.get(recipe.slug)?.alt || `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
 }
 
 function renderRecipeFallbackMarkup(recipe, compact) {
@@ -624,7 +632,7 @@ function renderStaticRecipeCard(recipe, recipeImages) {
       </span>
       <span class="ak-static-recipe-card-cta">Open recipe ${akIcon("action", "ak-static-card-icon")}</span>
     </span>
-  </a>`;
+  </a>`.replace(/[ \t]+$/gm, '');
 }
 
 function renderCompactRecipeLink(recipe, contextLabel) {
@@ -956,8 +964,8 @@ function addGalleryImage(images, seen, src, alt, caption, credit) {
 
   images.push({
     src: input,
-    alt: artworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
-    caption: artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : caption || "",
+    alt: artworkByPath.get(input)?.alt || reusedArtworkByPath.get(input)?.alt || alt || "AfroKitchen recipe photo",
+    caption: artworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · AI-generated illustration` : reusedArtworkByPath.has(input) ? `${caption || 'Recipe serving suggestion'} · Recipe illustration` : caption || "",
     credit: credit || null
   });
 }
@@ -1077,7 +1085,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
 
   const featured = galleryImages[0];
   const supporting = galleryImages.slice(1);
-  const imageLabel = galleryImages.every(image => artworkByPath.has(image.src)) ? 'illustrations' : 'photos';
+  const imageLabel = galleryImages.every(image => artworkByPath.has(image.src) || reusedArtworkByPath.has(image.src)) ? 'illustrations' : 'photos';
 
   return `<section class="ak-photo-gallery" aria-label="${escapeHtml(recipe.name)} ${imageLabel}">
         <div class="ak-photo-gallery-head">
@@ -1610,7 +1618,7 @@ ${renderCookbookNav()}
         </div>
       </div>
       <aside class="ak-static-hero-card ak-cookbook-cover">
-        ${galleryImages.length ? `<img class="ak-cookbook-cover-photo" src="${escapeHtml(galleryImages[0].src)}" alt="${escapeHtml(galleryImages[0].alt)}" width="1200" height="900" fetchpriority="high" decoding="async">` : ''}
+        ${galleryImages.length ? `<img class="ak-cookbook-cover-photo" src="${escapeHtml(galleryImages[0].src)}" alt="${escapeHtml(galleryImages[0].alt)}"${recipeImageAttributes(galleryImages[0].src, imageSizeFromUrl(galleryImages[0].src, ROOT)?.w, imageSizeFromUrl(galleryImages[0].src, ROOT)?.h, true)} fetchpriority="high" decoding="async">` : ''}
         <div class="ak-cookbook-cover-note">
         <div class="ak-support-label">Kitchen snapshot</div>
         <h2>Before you cook</h2>
@@ -3243,6 +3251,11 @@ function refreshRecipeImages(existing, generated) {
   }
   const hero = /<section class="ak-hero"[^>]*>/;
   next = next.replace(hero, generated.match(hero)[0]);
+  const cover = /<img class="ak-cookbook-cover-photo"[^>]*>/;
+  const coverMarkup = generated.match(cover)?.[0];
+  if (coverMarkup) {
+    next = cover.test(next) ? next.replace(cover, coverMarkup) : next.replace('<aside class="ak-static-hero-card ak-cookbook-cover">', '<aside class="ak-static-hero-card ak-cookbook-cover">\n        ' + coverMarkup);
+  }
   const socialUrl = next.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
   const size = socialUrl ? imageSizeFromUrl(socialUrl, ROOT) : null;
   if (size) {
@@ -3314,4 +3327,4 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard };
+module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, buildLegacyAliasPage, LEGACY_RECIPE_ALIASES };
