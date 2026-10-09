@@ -496,19 +496,19 @@ function injectParityRuntime(html, app) {
 `;
   html = html
     .replace(/\s*<style id="sw-document-pdf-focus-proof">[\s\S]*?<\/style>/g, '')
-    .replace(/\s*<link rel="stylesheet" href="\/assets\/css\/sw-document-pdf-a11y\.css">/g, '')
+    .replace(/\s*<link\b(?=[^>]*\brel=["']stylesheet["'])(?=[^>]*\bhref=["']\/assets\/css\/sw-document-pdf-a11y\.css(?:[?#][^"']*)?["'])[^>]*>/gi, '')
     .replace(/\s*<script type="application\/json" id="sw-document-pdf-locale">[\s\S]*?<\/script>/g, '')
-    .replace(/\s*<script src="\/assets\/js\/pages\/sw-document-pdf-(?:lexicon|localizer|integrity)\.js" defer><\/script>/g, '')
-    .replace(/\s*<script src="\/assets\/js\/pages\/sw-document-pdf-dom-stability\.js"><\/script>/g, '')
+    .replace(/\s*<script\b(?=[^>]*\bsrc=["']\/assets\/js\/pages\/sw-document-pdf-(?:lexicon|localizer|integrity)\.js(?:[?#][^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
+    .replace(/\s*<script\b(?=[^>]*\bsrc=["']\/assets\/js\/pages\/sw-document-pdf-dom-stability\.js(?:[?#][^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
     .replace(/w\.document\.write\('\s*<\/body><\/html>'\);/g, "w.document.write('</body></html>');");
   const stabilityRuntime = app.id === 'cv-builder'
     ? '  <script src="/assets/js/pages/sw-document-pdf-dom-stability.js"></script>\n'
     : '';
-  html = html.replace('</head>', `${stabilityRuntime}  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">\n</head>`);
+  html = html.replace(/\s*<\/head>/i, `\n${stabilityRuntime}  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">\n</head>`);
   html = html.replace(/<body\b(?![^>]*\bid=["']sw-document-pdf-a11y-scope["'])/i, '<body id="sw-document-pdf-a11y-scope"');
   const closingBody = html.toLowerCase().lastIndexOf('</body>');
   if (closingBody === -1) throw new Error(`${app.id}: no closing body for parity runtime`);
-  return `${html.slice(0, closingBody)}${injection}${html.slice(closingBody)}`;
+  return `${html.slice(0, closingBody).replace(/[ \t\r\n]+$/, '')}${injection}${html.slice(closingBody)}`;
 }
 
 function rewriteDocumentPdfRoutes(html) {
@@ -771,9 +771,7 @@ function localizeHubOwnedText(html) {
   return html;
 }
 
-function normalizeHubPage() {
-  const target = path.join(ROOT, 'sw/hati-na-pdf/index.html');
-  let html = fs.readFileSync(target, 'utf8');
+function normalizeHubHtml(html) {
   html = localizeHubOwnedText(html);
   html = addMissingHubLinks(html);
   html = upsertMeta(html, 'property', 'og:locale', 'sw_TZ');
@@ -782,10 +780,15 @@ function normalizeHubPage() {
   html = upsertMeta(html, 'name', 'afrotools-content-id', contentId('hub'));
   html = upsertMeta(html, 'name', 'afrotools-source-owner', 'scripts/build-swahili-document-pdf-parity.js');
   // The hub is normalized in place, including after native cache versioning.
-  html = html.replace(/\s*<link rel="stylesheet" href="\/assets\/css\/sw-document-pdf-a11y\.css(?:\?[^"\s]*)?">/g, '');
-  html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">\n</head>');
+  html = html.replace(/\s*<link\b(?=[^>]*\brel=["']stylesheet["'])(?=[^>]*\bhref=["']\/assets\/css\/sw-document-pdf-a11y\.css(?:[?#][^"']*)?["'])[^>]*>/gi, '');
+  html = html.replace(/\s*<\/head>/i, '\n  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css">\n</head>');
   html = html.replace(/<body\b(?![^>]*\bid=["']sw-document-pdf-a11y-scope["'])/i, '<body id="sw-document-pdf-a11y-scope"');
-  fs.writeFileSync(target, ensureSwAccessibilityRuntime(html), 'utf8');
+  return ensureSwAccessibilityRuntime(html);
+}
+
+function normalizeHubPage() {
+  const target = path.join(ROOT, 'sw/hati-na-pdf/index.html');
+  fs.writeFileSync(target, normalizeHubHtml(fs.readFileSync(target, 'utf8')), 'utf8');
 }
 
 function normalizeExistingPage(app) {
@@ -920,6 +923,21 @@ function validateOutputs() {
 }
 
 function main() {
+  if (process.argv.includes('--hub-only')) {
+    if (APP_FILTER || CONTENT_IDS_ONLY || process.argv.includes('--related-tools-only') || WRITE === CHECK) {
+      throw new Error('Hub-only scope requires exactly --write or --check and no app/content filter');
+    }
+    const target = path.join(ROOT, 'sw/hati-na-pdf/index.html');
+    const before = fs.readFileSync(target, 'utf8');
+    const expected = normalizeHubHtml(before);
+    const { normalizeBuildManagedHtml } = require('./lib/shared-asset-references');
+    if (CHECK && normalizeBuildManagedHtml(before) !== normalizeBuildManagedHtml(expected)) {
+      throw new Error('Swahili Document/PDF hub is stale; run --hub-only --write');
+    }
+    if (WRITE && before !== expected) fs.writeFileSync(target, expected, 'utf8');
+    console.log('Swahili Document/PDF hub: ' + (WRITE ? 'regenerated' : 'checked') + ' one scoped route.');
+    return;
+  }
   validateDirectory();
   if (selectedApps.some(app => app.id === 'cv-builder') && !CONTENT_IDS_ONLY && !process.argv.includes('--related-tools-only')) {
     swahiliApplicationPack.build({write:WRITE});
@@ -974,4 +992,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = Object.freeze({ apps, documentPdfRoutes });
+module.exports = Object.freeze({ apps, documentPdfRoutes, normalizeHubHtml, injectParityRuntime });

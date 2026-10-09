@@ -145,7 +145,55 @@ function refreshNigeriaSaveState(target,source){
 }
 module.exports.refreshNigeriaSaveState=refreshNigeriaSaveState;
 
+function refreshHausaSavedStatus(target) {
+ if (!/<html\b[^>]*\blang=["']ha["']/i.test(target)) return target;
+ const maps=[];
+ for (const match of target.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) {
+  if (!match[1].includes('var replacements')) continue;
+  const offset=match.index+match[0].indexOf(match[1]);
+  function walk(node) {
+   if (!node || typeof node!=='object') return;
+   if (node.type==='VariableDeclarator' && node.id.name==='replacements' && node.init?.type==='ObjectExpression') {
+    const load=node.init.properties.find(p=>p.key.value==='Load' && p.value.value==='Loda');
+    if (load) maps.push({offset,properties:node.init.properties,load});
+   }
+   for (const [key,value] of Object.entries(node)) {
+    if (key==='start' || key==='end') continue;
+    if (Array.isArray(value)) value.forEach(walk); else if (value && typeof value==='object') walk(value);
+   }
+  }
+  walk(acorn.parse(match[1],{ecmaVersion:'latest'}));
+ }
+ if (maps.length!==1) throw Error('Expected one Hausa saved-status translation map');
+ const map=maps[0],edits=[];
+ const status=map.properties.filter(p=>p.key.value==='Loaded saved scenario.');
+ if (status.length>1 || (status.length===1 && status[0].value.value!=='An loda lissafin da aka ajiye.')) throw Error('Unexpected Hausa saved-status translation');
+ if (!status.length) {
+  const at=map.offset+map.load.end;
+  if (target[at]!==',') throw Error('Missing Hausa Load translation delimiter');
+  edits.push({start:at+1,end:at+1,value:"\n    'Loaded saved scenario.': 'An loda lissafin da aka ajiye.',"});
+ }
+ const localizer=calculation(target,'localizeText');
+ const textBlock=localizer.body.find(node=>node.type==='IfStatement' &&
+  node.test.type==='BinaryExpression' && node.test.operator==='===' &&
+  node.test.left.type==='MemberExpression' && node.test.left.object.name==='node' &&
+  node.test.left.property.name==='nodeType' && node.test.right.value===3)?.consequent;
+ if (!textBlock || textBlock.type!=='BlockStatement') throw Error('Missing Hausa text-node boundary');
+ const legacy="Object.keys(replacements).forEach(function(key){\n        if (value.indexOf(key) !== -1) value = value.split(key).join(replacements[key]);\n      });";
+ const exact="var key = value.trim();\n      if (Object.prototype.hasOwnProperty.call(replacements, key)) {\n        value = value.replace(key, function(){ return replacements[key]; });\n      }";
+ const ast=value=>JSON.stringify(value,(key,item)=>['start','end','raw'].includes(key)?undefined:item);
+ const legacyNode=acorn.parse(legacy,{ecmaVersion:'latest'}).body[0];
+ const exactNodes=acorn.parse(exact,{ecmaVersion:'latest'}).body;
+ const statements=textBlock.body;
+ if (ast(statements[1])===ast(legacyNode)) {
+  edits.push({start:localizer.offset+statements[1].start,end:localizer.offset+statements[1].end,value:exact});
+ } else if (ast(statements.slice(1,3))!==ast(exactNodes)) throw Error('Unexpected Hausa text translation guard');
+ for (const edit of edits.sort((a,b)=>b.start-a.start)) target=target.slice(0,edit.start)+edit.value+target.slice(edit.end);
+ return target;
+}
+
 function refreshNigeriaRestore(target,source){
+ target=refreshHausaSavedStatus(target);
  const src=calculation(source,'invalidateSavedScenarioResult');
  const body=source.slice(src.offset+src.start,src.offset+src.end);
  if(target.includes('function invalidateSavedScenarioResult(')){
