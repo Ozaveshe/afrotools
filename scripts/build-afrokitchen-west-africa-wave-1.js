@@ -1379,7 +1379,7 @@ const recipes = [
     ethnic_group: "Mauritanian",
     category: "main",
     tags: ["rice", "meat", "mustard", "one pot"],
-    diet_tags: ["gluten-free", "dairy-free"],
+    diet_tags: ["gluten-free"],
     prep_time_minutes: 25,
     cook_time_minutes: 75,
     difficulty: "medium",

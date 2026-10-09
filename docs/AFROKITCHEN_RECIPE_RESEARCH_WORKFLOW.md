@@ -65,6 +65,45 @@ The importer writes to live Supabase and merges matching entries into `data/afro
 
 `npm run afrokitchen:research-queue`
 
+## Dietary Label Corrections
+
+Review the listed ingredients and optional variants before keeping an unconditional
+dietary label. Distinguish a confirmed ingredient conflict from an unspecified
+variant. Withdrawing a label does not certify the remaining labels or recipes.
+
+Use the correct-project Supabase MCP first. For existing recipes, apply only the
+reviewed tag fields with exact recipe/tag/ingredient guards in one transaction;
+do not run a full seed or expansion importer to change tags. Preserve media,
+ingredients, editorial content and unrelated tags. Maintain the corresponding
+seed, generator or authored batch, and check `static_recipe_patch` in the research
+audit so it cannot restore a withdrawn label.
+
+After the live correction, refresh only the reviewed slugs through the native
+manifest owner:
+
+```sh
+node scripts/export-afrokitchen-seo-manifest.js --refresh-diet-tags --slugs slug-one,slug-two
+node scripts/build-afrokitchen-recipe-index.js
+node scripts/generate-afrokitchen-static-pages.js --refresh-diet-labels
+```
+
+The scoped exporter accepts ordered tag removals only, checks recipe identities
+and ingredients, and updates recipe summaries in country and collection data.
+It preserves unrelated live image changes, other fields and generation dates.
+Native curated collection membership and counts are recomputed from the saved
+recipes and existing editorial rules. The page refresh also updates public menu
+tags, collection references, collection cards/counts and collection structured
+data. Retained cards keep their accepted image markup. Recipe refreshes preserve
+image markup, head ordering and other content while changing keywords and labels.
+Review a rejected guard instead of bypassing it. A method correction such as a
+new plant-only variant needs its own content review and regeneration.
+
+Run `node --test tests/afrokitchen-diet*.test.js`, the existing index
+and schema checks, and browser checks for filters, recipe metadata and country
+cards on the actual artifact. Verify a fresh browser after deployment: an already
+open page can retain its loaded recipe index. Keep source/build, live mutation
+and publisher deployment proof separate.
+
 ## Nutrition Meaning
 
 Treat recipe nutrition as unverified unless its maintained record explicitly

@@ -39,6 +39,9 @@ const {
 } = require("./lib/afrokitchen-static");
 const {
   buildCuisineIntelligence,
+  refreshDietaryCollectionData,
+  loadCuisineIntelligence,
+  writePublicCuisineData,
   writeCuisineIntelligenceFiles,
   mergeIntelligenceCollections
 } = require("./lib/afrokitchen-cuisine-intelligence");
@@ -3060,6 +3063,32 @@ function refreshRecipeDescriptions() {
 }
 
 async function main() {
+  if (process.argv.includes('--refresh-diet-labels')) {
+    let manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    const engine = loadAfroKitchenEngine();
+    const recipeImages = loadRecipeImages();
+    const researchAudit = loadRecipeResearchAudit();
+    const intelligence = buildCuisineIntelligence(manifest, { recipeImages, researchAudit });
+    const derived = refreshDietaryCollectionData(manifest, loadCuisineIntelligence(), intelligence);
+    manifest = derived.manifest;
+    const pending = [];
+    function prepare(directory, generated, collection = false) {
+      const file = path.join(directory, 'index.html');
+      const existing = fs.readFileSync(file, 'utf8');
+      const normalized = collection ? require('./lib/content-integrity').dedupeRepeatedParagraphs(generated).html.normalize('NFC') : generated;
+      const next = trimTrailingWhitespace(collection ? refreshCollectionDietLabels(existing, normalized) : refreshRecipeDietLabels(existing, normalized));
+      if (next !== existing) pending.push({ file, next });
+    }
+    manifest.recipes.filter(recipe => recipe.generated_in_wave).forEach(recipe =>
+      prepare(path.join(RECIPES_DIR, recipe.slug), buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, intelligence)));
+    manifest.countries.forEach(country => prepare(path.join(COUNTRIES_DIR, country.country_slug), buildCountryPageHtml(country, manifest, intelligence, recipeImages)));
+    manifest.collections.forEach(collection => prepare(path.join(COLLECTIONS_DIR, collection.slug), buildCollectionPageHtml(collection, manifest, intelligence, recipeImages), true));
+    writeManifest(manifest, MANIFEST_PATH);
+    writePublicCuisineData(derived.publicData);
+    pending.forEach(({ file, next }) => writeTextFileSync(file, trimTrailingWhitespace(next), 'utf8'));
+    console.log('Refreshed dietary metadata, card labels and derived collection links on ' + pending.length + ' saved pages. Recipe content and retained card imagery preserved. No live data reads.');
+    return;
+  }
   if (process.argv.includes('--refresh-recipe-schema')) {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const engine = loadAfroKitchenEngine();
@@ -3314,4 +3343,75 @@ function refreshRecipeSchema(existing, recipeSchema, schemaBlockers) {
   return next;
 }
 
-module.exports = { buildRecipePageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard };
+function refreshRecipeDietLabels(existing, generated) {
+  const { isDeepStrictEqual } = require('node:util');
+  const schemas = html => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(match => JSON.parse(match[1])).filter(value => value['@type'] === 'Recipe');
+  const oldSchemas = schemas(existing), newSchemas = schemas(generated);
+  if (oldSchemas.length > 1 || newSchemas.length > 1) throw new Error('Duplicate Recipe schema in diet refresh');
+  let next = existing;
+  if (oldSchemas.length) {
+    if (!newSchemas.length) throw new Error('Diet refresh cannot remove Recipe schema');
+    const oldSchema = { ...oldSchemas[0] }, newSchema = { ...newSchemas[0] };
+    const oldKeywords = String(oldSchema.keywords || '').split(',').map(value => value.trim()).filter(Boolean);
+    const newKeywords = String(newSchema.keywords || '').split(',').map(value => value.trim()).filter(Boolean);
+    delete oldSchema.keywords;
+    delete newSchema.keywords;
+    if (!isDeepStrictEqual(oldSchema, newSchema)) throw new Error('Diet refresh cannot change recipe content or images');
+    if (!isDeepStrictEqual(newKeywords, oldKeywords.filter(value => newKeywords.includes(value)))) {
+      throw new Error('Diet refresh only permits ordered keyword removals');
+    }
+    next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+      const value = JSON.parse(body);
+      if (value['@type'] !== 'Recipe' || value.keywords === newSchemas[0].keywords) return all;
+      if (newSchemas[0].keywords) value.keywords = newSchemas[0].keywords;
+      else delete value.keywords;
+      return start + safeJson(value) + end;
+    });
+  }
+  const cards = new Map([...generated.matchAll(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g)].map(match => [match[1], match[0]]));
+  const diet = /<span><svg\b[^>]*>(?:(?!<\/svg>)[\s\S])*<\/svg><span><small>Diet<\/small><strong>[^<]*<\/strong><\/span><\/span>/;
+  next = next.replace(/<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g, (card, href) => {
+    if (!cards.has(href)) throw new Error('Diet refresh cannot remove a recipe card: ' + href);
+    const replacement = cards.get(href).match(diet)?.[0] || '';
+    if (!diet.test(card) && replacement) throw new Error('Diet refresh cannot add a previously absent card label: ' + href);
+    return card.replace(diet, replacement);
+  });
+  const collections = /<div class="ak-intel-mini">\s*<strong>Collections to keep cooking<\/strong>\s*<div class="ak-intel-links">[\s\S]*?<\/div>\s*<\/div>/;
+  const updatedCollections = generated.match(collections)?.[0];
+  if (collections.test(next)) {
+    if (!updatedCollections) throw new Error('Diet refresh cannot remove the collection continuation');
+    next = next.replace(collections, updatedCollections);
+  }
+  return next;
+}
+
+function refreshCollectionDietLabels(existing, generated) {
+  const canonical = html => html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
+  if (!canonical(existing) || canonical(existing) !== canonical(generated)) throw new Error('Collection identity changed in diet refresh');
+  const region = /<div class="ak-page ak-collection-static-page"[\s\S]*?(?=<afro-footer>)/;
+  const oldRegion = existing.match(region)?.[0], newRegion = generated.match(region)?.[0];
+  if (!oldRegion || !newRegion) throw new Error('Missing collection content in diet refresh');
+  // Reuse existing cards for retained members so accepted image markup is stable.
+  const cardPattern = /<a class="ak-static-recipe-card[^>]*href="([^"]+)"[\s\S]*?<\/a>/g;
+  const oldCards = new Map([...oldRegion.matchAll(cardPattern)].map(match => [match[1], match[0]]));
+  const updatedRegion = newRegion.replace(cardPattern, (card, href) =>
+    oldCards.has(href) ? refreshRecipeDietLabels(oldCards.get(href), card) : card);
+  let next = existing.replace(region, updatedRegion);
+  const generatedSchemas = new Map([...generated.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(match => { const value = JSON.parse(match[1]); return [value['@type'], value]; }));
+  next = next.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
+    const value = JSON.parse(body);
+    return ['CollectionPage', 'ItemList'].includes(value['@type'])
+      ? start + safeJson(generatedSchemas.get(value['@type'])) + end : all;
+  });
+  for (const attribute of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
+    const pattern = new RegExp('<meta ' + attribute + ' content="[^"]*">');
+    const replacement = generated.match(pattern)?.[0];
+    if (!replacement || !pattern.test(next)) throw new Error('Missing collection description in diet refresh');
+    next = next.replace(pattern, replacement);
+  }
+  return next;
+}
+
+module.exports = { buildRecipePageHtml, buildCollectionPageHtml, writeHtmlPage, refreshRecipeImages, refreshRecipeNutrition, buildRecipeMetaDescription, refreshRecipeSchema, renderStaticRecipeCard, refreshRecipeDietLabels, refreshCollectionDietLabels };

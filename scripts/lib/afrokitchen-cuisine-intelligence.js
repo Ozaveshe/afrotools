@@ -782,6 +782,56 @@ function publicPayload(intelligence) {
   };
 }
 
+// Refresh derived dietary discovery data without replacing saved imagery or dates.
+function refreshDietaryCollectionData(manifest, savedPublic, intelligence) {
+  const { isDeepStrictEqual } = require('node:util');
+  const next = structuredClone(manifest);
+  const changedCollections = [];
+  const membershipFields = ['total_recipes', 'generated_recipe_count', 'country_count',
+    'top_recipe_names', 'generated_recipe_slugs', 'related_countries', 'recipes'];
+  for (const generated of intelligence.curated_collections) {
+    const matches = next.collections.filter(collection => collection.slug === generated.slug);
+    if (matches.length !== 1 || !matches[0].is_cuisine_intelligence || matches[0].id !== generated.id) {
+      throw new Error('Diet refresh requires the saved curated collection: ' + generated.slug);
+    }
+    const saved = matches[0];
+    for (const field of Object.keys(generated).filter(field => !membershipFields.includes(field))) {
+      if (!isDeepStrictEqual(saved[field], generated[field])) {
+        throw new Error('Diet refresh cannot change collection metadata: ' + generated.slug + '.' + field);
+      }
+    }
+    if (membershipFields.some(field => !isDeepStrictEqual(saved[field], generated[field]))) {
+      changedCollections.push(generated.slug);
+      membershipFields.forEach(field => { saved[field] = structuredClone(generated[field]); });
+    }
+  }
+  next.source.collection_membership_count = next.collections.reduce((sum, collection) => sum + Number(collection.total_recipes || 0), 0);
+  if (!savedPublic) return { manifest: next, changedCollections };
+
+  const publicData = structuredClone(savedPublic);
+  const generatedPublic = publicPayload(intelligence);
+  if (!isDeepStrictEqual(Object.keys(publicData.recipes).sort(), Object.keys(generatedPublic.recipes).sort()) ||
+      !isDeepStrictEqual(publicData.curated_collections.map(row => row.slug), generatedPublic.curated_collections.map(row => row.slug))) {
+    throw new Error('Diet refresh cannot add or remove public recipe or collection identities');
+  }
+  for (const [slug, recipe] of Object.entries(generatedPublic.recipes)) {
+    publicData.recipes[slug].menu_tags = recipe.menu_tags;
+    publicData.recipes[slug].curated_collections = recipe.curated_collections;
+  }
+  publicData.curated_collections.forEach((collection, index) => {
+    const generated = generatedPublic.curated_collections[index];
+    for (const field of ['total_recipes', 'country_count', 'top_recipe_names', 'recipes']) {
+      collection[field] = structuredClone(generated[field]);
+    }
+  });
+  return { manifest: next, publicData, changedCollections };
+}
+
+function writePublicCuisineData(publicData) {
+  writeTextFileSync(PUBLIC_PATH, `${JSON.stringify(publicData, null, 2)}\n`, 'utf8');
+  writeTextFileSync(PUBLIC_JS_PATH, `window.AfroKitchenCuisineIntelligence = ${JSON.stringify(publicData)};\n`, 'utf8');
+}
+
 function csvEscape(value) {
   const input = String(value == null ? "" : value);
   if (!/[",\n\r]/.test(input)) return input;
@@ -858,6 +908,8 @@ module.exports = {
   SHOT_LIST_MD_PATH,
   loadCuisineRules,
   buildCuisineIntelligence,
+  refreshDietaryCollectionData,
+  writePublicCuisineData,
   writeCuisineIntelligenceFiles,
   mergeIntelligenceCollections,
   loadCuisineIntelligence
