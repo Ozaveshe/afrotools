@@ -72,7 +72,8 @@ jobs:
   build:
     name: Build and audit
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Retain every cumulative artifact suite and the profile boundary checks.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -195,6 +196,13 @@ jobs:
             git diff --name-only
             exit 1
           fi
+
+      - name: Verify creator profile HTML boundaries in the artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4193'
+        run: npx playwright test tests/e2e/afrostream-profile-html-boundaries.spec.js tests/e2e/afrostream-creator-action.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
   e2e:
     name: Playwright smoke
