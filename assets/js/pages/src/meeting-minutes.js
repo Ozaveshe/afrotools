@@ -2,6 +2,30 @@
 !function() {
     "use strict";
 
+    function savedFailure(error) {
+        var message = window.SaveState.message(error), list = document.getElementById("savedList");
+        var panel = document.getElementById("savedPanel");
+        if (panel) panel.hidden = false;
+        var status = document.getElementById("savedStorageStatus");
+        if (!status && list) { status = document.createElement("p"); status.id = "savedStorageStatus"; status.setAttribute("role", "status"); list.parentNode.insertBefore(status, list); }
+        if (status) status.textContent = message;
+        v(message);
+    }
+    function clearSavedFailure() { var status = document.getElementById("savedStorageStatus"); if (status) status.remove(); }
+    function readSavedItem(id) {
+        try { var item = a.load(id); clearSavedFailure(); return item; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function deleteSavedItem(id) {
+        try { var deleted = a.delete(id); clearSavedFailure(); return deleted; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function focusSavedAction() {
+        var target = document.querySelector('#savedList button') || document.querySelector('[data-action="save"]');
+        if (target) target.focus();
+    }
+
+
     function importRecord(value) {
         if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Invalid document backup");
         Object.keys(value).forEach(function(key) {
@@ -336,7 +360,8 @@
     function R() {
         var e = m("savedList");
         if (e) if (a) {
-            var t = a.getAll();
+            var t;
+            try { t = a.getAll(); clearSavedFailure(); } catch (error) { savedFailure(error); return; }
             t.length ? e.innerHTML = t.map(function(e) {
                 var t = e.updatedAt ? new Date(e.updatedAt).toLocaleDateString("en-GB", {
                     day: "numeric",
@@ -433,6 +458,7 @@
                     var y = w.getAttribute("data-action");
                     "rebuild" === y && E(), "save" === y && function() {
                         if (a) {
+                            try {
                             var e = x(), t = a.save({
                                 id: n || void 0,
                                 title: C(e),
@@ -441,6 +467,7 @@
                             });
                             n = t.id, e.selectedId = n, D(e), history.replaceState(null, "", "?id=" + encodeURIComponent(n)),
                             R(), v("Saved.");
+                            } catch (error) { savedFailure(error); }
                         } else v("Saving is not available in this browser.");
                     }(), "copy" === y && function() {
                         var e = T("minutesText");
@@ -556,14 +583,18 @@
                 var A = e.target.closest("[data-load]");
                 A && function(e) {
                     if (a) {
-                        var t = a.load(e);
+                        var t = readSavedItem(e);
+                        if (t === false) return;
                         t && t.data ? (n = t.id, S(t.data, !1), history.replaceState(null, "", "?id=" + encodeURIComponent(t.id)),
                         v("Loaded saved minutes.")) : v("Saved minutes not found.");
                     }
                 }(A.getAttribute("data-load"));
                 var N = e.target.closest("[data-delete]");
                 N && function(e) {
-                    a && (a.delete(e), n === e && (n = null), R(), v("Deleted."));
+                    if (a && deleteSavedItem(e)) {
+                        if (n === e) { n = null; history.replaceState(null, "", window.location.pathname); D(x()); }
+                        R(); v("Deleted."); focusSavedAction();
+                    }
                 }(N.getAttribute("data-delete"));
             });
             var t = m("importInput");
@@ -598,7 +629,7 @@
             }
             var s = i.get("id");
             if (s && a) {
-                var d = a.load(s);
+                var d = readSavedItem(s);
                 if (d && d.data) return n = s, S(d.data, !1), !0;
             }
             var c = function() {

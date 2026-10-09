@@ -79,7 +79,7 @@
   <link rel="stylesheet" href="/assets/css/print.css?v=84a2abc8" media="print">
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 <script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
-<script src="/assets/js/bundles/tool-page.9f8a94f8.min.js?v=9f8a94f8" defer></script><script>window.PAYE_SAVE_SLUG='eg-paye';</script>
+<script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script><script>window.PAYE_SAVE_SLUG='eg-paye';</script>
 <meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="article:modified_time" content="2026-03-28">
@@ -241,6 +241,7 @@
             <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+          <p id="chartStatus" role="status" hidden></p>
         </div>
 
         <div class="action-row">
@@ -878,7 +879,21 @@ function renderChart(type) {
   if (!RESULT) return;
   const R      = RESULT;
   const canvas = document.getElementById('mainChart');
+  const status = document.getElementById('chartStatus');
+  const unavailable = () => {
+    canvas.hidden = true;
+    status.hidden = false;
+    status.textContent = 'Chart unavailable. Your calculation and figures remain available above.';
+  };
+  if (typeof Chart !== 'function' || typeof AfroChartColors === 'undefined') {
+    unavailable();
+    return;
+  }
+  try {
   if (CHART) { CHART.destroy(); CHART = null; }
+  canvas.hidden = false;
+  status.hidden = true;
+  status.textContent = '';
 
   if (type === 'donut') {
     CHART = new Chart(canvas, {
@@ -909,6 +924,9 @@ function renderChart(type) {
       },
       options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'EGP'+(v/1000).toFixed(0)+'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText, font: { size: 9 } } } } }
     });
+  }
+  } catch (_) {
+    unavailable();
   }
 }
 

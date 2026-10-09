@@ -80,8 +80,8 @@
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 <script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
 <meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
-<script src="/assets/js/bundles/tool-page.9f8a94f8.min.js?v=9f8a94f8" defer></script>
-<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<script src="/assets/js/bundles/tool-page.295eac14.min.js?v=295eac14" defer></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=7cbfa474"></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tz-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
@@ -240,6 +240,7 @@
             <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+          <p id="chartStatus" role="status" hidden></p>
         </div>
 
         <div class="action-row">
@@ -897,7 +898,21 @@ function renderChart(type) {
   if (!RESULT) return;
   const R = RESULT;
   const canvas = document.getElementById('mainChart');
+  const status = document.getElementById('chartStatus');
+  const unavailable = () => {
+    canvas.hidden = true;
+    status.hidden = false;
+    status.textContent = 'Chart unavailable. Your calculation and figures remain available above.';
+  };
+  if (typeof Chart !== 'function' || typeof AfroChartColors === 'undefined') {
+    unavailable();
+    return;
+  }
+  try {
   if (CHART) { CHART.destroy(); CHART = null; }
+  canvas.hidden = false;
+  status.hidden = true;
+  status.textContent = '';
 
   if (type === 'donut') {
     CHART = new Chart(canvas, {
@@ -910,7 +925,12 @@ function renderChart(type) {
     });
   } else if (type === 'bar') {
     const bands = R.bandBreakdown.filter(b => b.tax > 0);
-    if (!bands.length) return;
+    if (!bands.length) {
+      canvas.hidden = true;
+      status.hidden = false;
+      status.textContent = 'No PAYE tax applies to this calculation.';
+      return;
+    }
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
@@ -928,6 +948,9 @@ function renderChart(type) {
       },
       options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{ backgroundColor:AfroChartColors.tooltipBg, titleColor:'#fff', bodyColor:'#fff', cornerRadius:8 } }, scales:{ x:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k', color:AfroChartColors.tickText}, grid:{color:AfroChartColors.grid} }, y:{ticks:{ color:AfroChartColors.tickText, font:{size:9}}} } }
     });
+  }
+  } catch (_) {
+    unavailable();
   }
 }
 
@@ -1263,8 +1286,8 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
         inputs: {
           salaryValue: parseFloat(document.getElementById('grossSalary').value) || 0,
           salaryPeriod: 'monthly',
-          period: window.PERIOD || 'monthly',
-          sector: window.SECTOR || 'private',
+          period: PERIOD,
+          sector: SECTOR,
           toggles: {
             nssf: isOn('nssf'),
             secondary: isOn('secondary')
@@ -1301,6 +1324,23 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       var salaryValue = Number(inputs.salaryValue || 0);
       var slider = document.getElementById('salarySlider');
       var salaryInput = document.getElementById('grossSalary');
+      function retireFailedRestore() {
+        RESULT=null;
+        clearTimeout(window._sliderDebounce);
+        ['resultsCard','employerStrip','aiChat'].forEach(function(id){var node=document.getElementById(id);if(node)node.classList.remove('on');});
+        ['calcSaveBtn','aiBtn'].forEach(function(id){var node=document.getElementById(id);if(node)node.disabled=true;});
+        var response=document.getElementById('aiResp');if(response){response.textContent='';response.style.display='none';response.classList.remove('on');}
+        var status=document.getElementById('aiStatus');if(status){status.style.display='';status.setAttribute('role','status');status.textContent='Saved scenario could not be loaded. Previous inputs are preserved. Calculate again before saving or exporting.';}
+      }
+      if(!Number.isFinite(salaryValue)||salaryValue<=0||['grossSalary','salarySlider','sliderVal','btnPublic','btnPrivate','nssfLabel'].some(function(id){return !document.getElementById(id);})){
+        retireFailedRestore();return false;
+      }
+      var previousPeriod=PERIOD;
+      var previousSector=SECTOR;
+      var previousFields=['grossSalary','salarySlider','calcSaveName'].map(function(id){var node=document.getElementById(id);return node?{node:node,value:node.value}:null;}).filter(Boolean);
+      var previousViews=Array.from(document.querySelectorAll('[data-tog],.per-btn,.sec-btn,#salarySlider')).map(function(node){return {node:node,className:node.className,style:node.getAttribute('style'),checked:node.getAttribute('aria-checked')};});
+      var previousLabels=Array.from(document.querySelectorAll('#sliderVal,#nssfLabel,[data-tog=nssf] .tog-rate')).map(function(node){return {node:node,text:node.textContent};});
+      try {
 
       setSectorValue(inputs.sector);
       salaryInput.value = salaryValue || '';
@@ -1323,7 +1363,17 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
       if (document.getElementById('calcSaveName')) {
         document.getElementById('calcSaveName').value = title || '';
       }
+      if(!RESULT)throw new Error('Restore calculation unavailable');
       return true;
+      } catch(error) {
+        retireFailedRestore();
+        PERIOD=previousPeriod;
+        SECTOR=previousSector;
+        previousFields.forEach(function(field){field.node.value=field.value;});
+        previousViews.forEach(function(view){view.node.className=view.className;[['style',view.style],['aria-checked',view.checked]].forEach(function(attribute){if(attribute[1]===null)view.node.removeAttribute(attribute[0]);else view.node.setAttribute(attribute[0],attribute[1]);});});
+        previousLabels.forEach(function(label){label.node.textContent=label.text;});
+        return false;
+      }
     }
   };
 })();
@@ -1332,7 +1382,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
-<script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=086ac120" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
 

@@ -2,6 +2,30 @@
 !function() {
     "use strict";
 
+    function savedFailure(error) {
+        var message = window.SaveState.message(error), list = document.getElementById("savedReceipts");
+        var panel = document.getElementById("savedPanel");
+        if (panel) panel.hidden = false;
+        var status = document.getElementById("savedStorageStatus");
+        if (!status && list) { status = document.createElement("p"); status.id = "savedStorageStatus"; status.setAttribute("role", "status"); list.parentNode.insertBefore(status, list); }
+        if (status) status.textContent = message;
+        Z(message);
+    }
+    function clearSavedFailure() { var status = document.getElementById("savedStorageStatus"); if (status) status.remove(); }
+    function readSavedItem(id) {
+        try { var item = n.load(id); clearSavedFailure(); return item; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function deleteSavedItem(id) {
+        try { var deleted = n.delete(id); clearSavedFailure(); return deleted; }
+        catch (error) { savedFailure(error); return false; }
+    }
+    function focusSavedAction() {
+        var target = document.querySelector('#savedReceipts button') || document.querySelector('#saveReceiptBtn');
+        if (target) target.focus();
+    }
+
+
     function importRecord(value) {
         if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Invalid document backup");
         Object.keys(value).forEach(function(key) {
@@ -388,7 +412,8 @@
     }
     function A() {
         if (n) {
-            var e = c("savedPanel"), t = c("savedReceipts"), a = n.getAll();
+            var e = c("savedPanel"), t = c("savedReceipts"), a;
+            try { a = n.getAll(); clearSavedFailure(); } catch (error) { savedFailure(error); return; }
             e.hidden = !a.length, a.length ? t.innerHTML = a.map(function(e) {
                 return '<article class="saved-card" data-saved-id="' + b(e.id) + '"><div class="saved-card-title">' + g(e.title || "Receipt") + '</div><div class="saved-card-date">' + g(function(e) {
                     try {
@@ -505,10 +530,12 @@
     function I() {
         if (n) {
             var t = (e.receipt.number || "Receipt") + " - " + (e.customer.name || e.business.name || "Customer");
+            try {
             n.save({
                 title: t,
                 data: JSON.parse(JSON.stringify(e))
             }), A(), Z("Receipt saved in this browser.");
+            } catch (error) { savedFailure(error); }
         } else Z("Saved receipts are unavailable in this browser.");
     }
     function G() {
@@ -682,7 +709,7 @@
                 Z("The shared receipt link could not be opened.");
             }
             if (e.get("id") && n) {
-                var r = n.load(e.get("id"));
+                var r = readSavedItem(e.get("id"));
                 if (r && r.data) return h(r.data);
             }
             try {
@@ -748,13 +775,13 @@
         }), c("savedReceipts").addEventListener("click", function(t) {
             var a = t.target.closest("[data-open-saved]"), r = t.target.closest("[data-delete-saved]");
             if (a) {
-                var i = n.load(a.getAttribute("data-open-saved"));
+                var i = readSavedItem(a.getAttribute("data-open-saved"));
                 i && i.data && (e = h(i.data), w(), M(), L(), N(), Z("Receipt loaded."));
             }
             if (r) {
-                var o = r.getAttribute("data-delete-saved"), s = n.load(o);
-                window.confirm('Delete "' + (s ? s.title : "this receipt") + '" from this browser?') && (n.delete(o),
-                A());
+                var o = r.getAttribute("data-delete-saved"), s = readSavedItem(o);
+                if (s === false) return;
+                window.confirm('Delete "' + (s ? s.title : "this receipt") + '" from this browser?') && deleteSavedItem(o) && (A(), focusSavedAction());
             }
         }), N(), A();
     }

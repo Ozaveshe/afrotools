@@ -29,7 +29,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=54359a01">
 <link rel="stylesheet" href="/assets/css/invoice-generator.css?v=ae4ac974">
-<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
+<script src="/assets/js/lib/save-state-classic.js?v=a2d5e02d"></script>
 <script src="/assets/js/lib/workspace-sync.js?v=3042ca28" defer></script>
 
 <style>
@@ -1951,9 +1951,7 @@ init();
     return Array.isArray(clients) ? clients : [];
   }
   function getSavedInvoices() {
-    if (window.SaveState) return new window.SaveState('invoice-generator', { maxFree: 30 }).getAll();
-    var items = readJson('afrotools-saved-invoice-generator', []);
-    return Array.isArray(items) ? items.sort(function(a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); }) : [];
+    return window.AfroInvoiceSaved ? window.AfroInvoiceSaved.getAll() : null;
   }
   function scrollToField(id) {
     var el = $(id);
@@ -1967,6 +1965,7 @@ init();
   function updateStarterState() {
     var clients = getSavedClients();
     var invoices = getSavedInvoices();
+    if (!invoices) return;
     var clientMeta = $('starterClientMeta');
     var recentMeta = $('starterRecentMeta');
     if (clientMeta) clientMeta.textContent = clients.length ? clients.length + ' saved on this browser' : 'No saved client yet';
@@ -1992,6 +1991,7 @@ init();
   }
   function loadRecentInvoice() {
     var invoices = getSavedInvoices();
+    if (!invoices) return;
     var latest = invoices[0];
     if (!latest) {
       toast('No saved invoice on this browser yet', 'info');
@@ -2125,7 +2125,7 @@ init();
   else bind();
 })();
 </script>
-<script src="/assets/js/pages/invoice-generator-enhancements.js?v=b0460641"></script>
+<script src="/assets/js/pages/invoice-generator-enhancements.js?v=a7ec0e4a"></script>
 <script>
 (function(){
   window.exportInvoiceJsonFallback = function(event) {
@@ -2198,48 +2198,7 @@ init();
 })();
 </script>
 <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=bc1a2d3c" defer></script>
-<script>
-// Invoice Generator — saved invoices
-(function(){
-  if(typeof SaveState==='undefined')return;
-  var ss=new SaveState('invoice-generator',{maxFree:20});
-  var section=document.getElementById('inv-saved-section');
-  var grid=document.getElementById('inv-saved-grid');
-  if(!section||!grid)return;
-
-  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
-  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
-
-  function render(){
-    var items=ss.getAll();
-    if(!items.length){section.style.display='none';return;}
-    section.style.display='';
-    grid.innerHTML=items.map(function(it){
-      var d=it.data||{};
-      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#0062CC\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
-        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
-        (d.client?'<div style="font-size:.72rem;color:#6b7280;">Client: '+esc(d.client)+'</div>':'')+
-        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#0062CC;margin-top:4px;">'+esc(d.total)+'</div>':'')+
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
-        '<span style="font-size:.6rem;color:#64748b;">'+ago(it.updatedAt)+'</span>'+
-        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
-        '</div></div>';
-    }).join('');
-  }
-
-  window.invDelSaved=function(id){if(confirm('Delete this saved invoice?')){ss.delete(id);render();}};
-  window.invSaveCurrentInvoice=function(){
-    var name=prompt('Name this invoice (e.g., "Invoice #001 - Acme Corp"):');
-    if(!name)return;
-    var clientEl=document.getElementById('clientName')||document.querySelector('[name="clientName"]');
-    var totalEl=document.querySelector('.total-amount,.inv-total');
-    ss.save({title:name,data:{client:clientEl?clientEl.value:'',total:totalEl?totalEl.textContent:''}});
-    render();
-    alert('Invoice saved!');
-  };
-  render();
-})();
-</script>
+<!-- Saved invoices are managed by invoice-generator-enhancements.js. -->
 
 <script src="/assets/js/ai/prefill-adapters.js?v=f5742764" defer></script>
 <script src="/assets/js/ai/prefill-consumer.js?v=63971f7c" defer></script>
