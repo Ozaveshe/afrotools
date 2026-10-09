@@ -198,6 +198,21 @@
   </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function () {
+  'use strict';
+  var campaign = new URLSearchParams(window.location.search);
+  document.querySelectorAll('a[href^="/business-enquiry/"]').forEach(function (link) {
+    var target = new URL(link.getAttribute('href'), window.location.origin);
+    target.searchParams.set('source_route', '/for-accountants/');
+    target.searchParams.set('prospect_segment', 'accounting');
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (key) {
+      if (campaign.get(key)) target.searchParams.set(key, campaign.get(key));
+    });
+    link.setAttribute('href', target.pathname + target.search);
+  });
+}());
+</script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 </body>
 </html>
