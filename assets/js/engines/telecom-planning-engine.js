@@ -565,25 +565,36 @@
     return state;
   }
 
-  function dataUsage(data, input) {
-    var state = context(data, input && input.country);
-    if (!state.ok) return state;
+  function estimateDataUsage(input) {
+    input = input || {};
     var breakdown = [];
     var totalMB = 0;
     var invalid = DATA_ACTIVITIES.some(function (activity) {
       return nonNegative(input[activity.id]) === null;
     });
-    if (invalid || !QUALITY_MULTIPLIERS[input.youtubeQuality]) {
-      return { ok: false, error: 'invalid_usage', source: state.source };
+    if (invalid || !Object.prototype.hasOwnProperty.call(QUALITY_MULTIPLIERS, input.youtubeQuality)) {
+      return { ok: false, error: 'invalid_usage' };
     }
     DATA_ACTIVITIES.forEach(function (activity) {
       var amount = nonNegative(input[activity.id]);
       var mb = amount * activity.mbPerUnit * (activity.monthly ? 1 : 30);
-      if (activity.quality) mb *= QUALITY_MULTIPLIERS[input.youtubeQuality] || 1;
+      if (activity.quality) mb *= QUALITY_MULTIPLIERS[input.youtubeQuality];
       breakdown.push({ id: activity.id, mb: mb });
       totalMB += mb;
     });
     var neededMB = totalMB * 1.1;
+    if (!Number.isFinite(totalMB) || !Number.isFinite(neededMB)) return { ok: false, error: 'invalid_usage' };
+    return { ok: true, breakdown: breakdown, totalMB: totalMB, totalGB: totalMB / 1024, bufferedNeedMB: neededMB };
+  }
+
+  function dataUsage(data, input) {
+    var state = context(data, input && input.country);
+    if (!state.ok) return state;
+    var estimate = estimateDataUsage(input);
+    if (!estimate.ok) return { ok: false, error: estimate.error, source: state.source };
+    var breakdown = estimate.breakdown;
+    var totalMB = estimate.totalMB;
+    var neededMB = estimate.bufferedNeedMB;
     var plans = [];
     (state.country.operators || []).forEach(function (operator) {
       (operator.dataBundles || []).forEach(function (bundle) {
@@ -631,6 +642,7 @@
     whatsappVsSms: whatsappVsSms,
     tv: tv,
     starlink: starlink,
+    estimateDataUsage: estimateDataUsage,
     dataUsage: dataUsage
   });
 });

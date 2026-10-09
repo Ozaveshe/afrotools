@@ -13,15 +13,29 @@
   var txtButton = document.getElementById('telecom-download-txt');
   var jsonButton = document.getElementById('telecom-download-json');
   var importInput = document.getElementById('telecom-import');
-  if (!data || !engine || !locale || !configNode || !form || !resultNode || !errorNode) return;
+  // Prevent native submission before any dependency/configuration early return.
+  if (form) form.addEventListener('submit', function preventNativeSubmission(event) { event.preventDefault(); });
+  var submitButton = form && form.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
+  if (importInput) importInput.disabled = true;
+  if (!engine || !locale || !configNode || !form || !resultNode || !errorNode || !exportStatus || !copyButton || !txtButton || !jsonButton || !importInput) {
+    if (errorNode) errorNode.textContent = "Le calcul n’est pas encore disponible. Vos champs restent modifiables.";
+    return;
+  }
 
   var config;
   try {
     config = JSON.parse(configNode.textContent);
+    if (!config || typeof config !== 'object' || !Object.prototype.hasOwnProperty.call(engine, config.kind) || typeof engine[config.kind] !== 'function') throw new Error('invalid_config');
   } catch (error) {
     errorNode.textContent = 'La configuration de cet outil est indisponible.';
     return;
   }
+
+  var catalogueAvailable = Boolean(data && data.countries && typeof data.countries === 'object' && Object.keys(data.countries).length);
+  var localEstimateOnly = !catalogueAvailable && config.kind === 'dataUsage' && typeof engine.estimateDataUsage === 'function';
+  if (!catalogueAvailable && !localEstimateOnly) { errorNode.textContent = "Le catalogue de cet outil est indisponible. Vos champs restent modifiables."; return; }
+  if (localEstimateOnly && submitButton) submitButton.textContent = "Estimer ma consommation";
 
   var latest = null;
   var errorMessages = {
@@ -102,7 +116,53 @@
       + '</tbody></table></div>';
   }
 
+  var catalogueRetryInFlight = false;
+  function retryCatalogue() {
+    if (!localEstimateOnly || catalogueRetryInFlight) return;
+    catalogueRetryInFlight = true;
+    var controls = document.querySelectorAll('[data-telecom-retry]');
+    Array.prototype.forEach.call(controls, function (button) { button.disabled = true; });
+    errorNode.textContent = "Chargement du catalogue…";
+    var script = document.createElement('script');
+    var finished = false;
+    function finish(loaded) {
+      if (finished) return;
+      finished = true;
+      root.clearTimeout(timer);
+      script.onload = script.onerror = null;
+      script.remove();
+      catalogueRetryInFlight = false;
+      Array.prototype.forEach.call(controls, function (button) { button.disabled = false; });
+      var recovered = loaded && (typeof TELECOM_DATA !== 'undefined' ? TELECOM_DATA : root.TELECOM_DATA);
+      if (!recovered || !recovered.countries || typeof recovered.countries !== 'object' || !Object.keys(recovered.countries).length) {
+        errorNode.textContent = "Le catalogue reste indisponible. Votre estimation locale et vos saisies sont conservées.";
+        return;
+      }
+      var preserved = snapshotInputs();
+      data = recovered;
+      localEstimateOnly = false;
+      Array.prototype.forEach.call(form.querySelectorAll('[data-country-select]'), function (select) { select.disabled = false; });
+      populateCountries();
+      Object.keys(preserved).forEach(function (name) { var field = form.elements.namedItem(name); if (field) field.value = preserved[name]; });
+      updateDependentFields();
+      clearLatestResult();
+      var pageSource = document.getElementById('telecom-page-source');
+      if (pageSource) pageSource.innerHTML = sourceNotice({ source: engine.snapshotState(data) });
+      errorNode.textContent = "Catalogue chargé. Choisissez un pays pour comparer les forfaits archivés.";
+    }
+    script.onload = function () { finish(true); };
+    script.onerror = function () { finish(false); };
+    var timer = root.setTimeout(function () { finish(false); }, 12000);
+    script.src = '/data/telecom/country-telecom-index.js';
+    document.head.appendChild(script);
+  }
+  document.addEventListener('click', function (event) {
+    var button = event.target && event.target.closest && event.target.closest('[data-telecom-retry]');
+    if (button) retryCatalogue();
+  });
+
   function sourceNotice(result) {
+    if (localEstimateOnly) return '<aside class="fr-telecom-source" data-source-state="unavailable" role="status"><strong>Estimation locale de consommation</strong><p>Les recommandations de forfaits sont indisponibles. Cette estimation utilise uniquement vos usages et des hypothèses locales.</p><button type="button" data-telecom-retry>Réessayer le catalogue</button></aside>';
     var source = result.source || engine.snapshotState(data);
     var date = source.reviewedAt || 'date inconnue';
     var age = source.ageDays === null ? '' : ' · ' + source.ageDays + ' jours';
@@ -319,7 +379,7 @@
           ];
         }));
     } else {
-      html += '<p>Aucun forfait mensuel archivé ne correspond au besoin estimé.</p>';
+      html += localEstimateOnly ? '<p>Les recommandations de forfaits sont indisponibles. Cette estimation utilise uniquement vos usages et des hypothèses locales.</p>' : '<p>Aucun forfait mensuel archivé ne correspond au besoin estimé.</p>';
     }
     return html;
   }
@@ -343,6 +403,7 @@
 
   function populateCountries() {
     Array.prototype.forEach.call(form.querySelectorAll('[data-country-select]'), function (select) {
+      if (localEstimateOnly) { select.disabled = true; return; }
       var requireKind = select.getAttribute('data-country-requires');
       var current = select.value;
       select.innerHTML = '<option value="">Choisir un pays…</option>';
@@ -363,7 +424,7 @@
 
   function updateDependentFields() {
     var countryInput = form.querySelector('[name="country"]');
-    var country = countryInput && data.countries[countryInput.value];
+    var country = countryInput && data && data.countries && data.countries[countryInput.value];
     var operator = form.querySelector('[name="operator"]');
     if (operator) {
       var current = operator.value;
@@ -449,6 +510,13 @@
     setResultActionsAvailable(false);
   }
 
+  function invalidateEditedResult() {
+    if (!latest) return;
+    clearLatestResult();
+    errorNode.textContent = '';
+    exportStatus.textContent = 'Le résultat précédent a été effacé après la modification du formulaire.';
+  }
+
   function syncRangeOutput(field) {
     if (!field || field.type !== 'range') return;
     var output = form.querySelector('[data-range-output="' + field.name + '"]');
@@ -494,12 +562,17 @@
       errorNode.textContent = 'Corrigez les champs obligatoires avant de recalculer.';
       return null;
     }
-    var calculate = engine[config.kind];
+    var calculate = localEstimateOnly ? engine.estimateDataUsage : engine[config.kind];
     if (typeof calculate !== 'function') {
       errorNode.textContent = 'Le moteur de cet outil est indisponible.';
       return null;
     }
-    var result = calculate(data, collect());
+    var result = localEstimateOnly ? calculate(collect()) : calculate(data, collect());
+    if (result && result.ok && localEstimateOnly) {
+      result.recommendedPlans = [];
+      result.recommendationsStatus = 'unavailable';
+      result.source = null;
+    }
     if (!result || !result.ok) {
       errorNode.textContent = errorMessages[result && result.error] || 'Impossible de produire un résultat avec ces données.';
       return null;
@@ -515,7 +588,7 @@
       kind: config.kind,
       route: config.route,
       engineVersion: engine.version,
-      datasetReviewedAt: data.lastUpdated || null,
+      datasetReviewedAt: localEstimateOnly ? null : ((data && data.lastUpdated) || null),
       inputs: snapshotInputs(),
       result: result
     };
@@ -542,17 +615,23 @@
   }
 
   function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    var area = document.createElement('textarea');
-    area.value = text;
-    area.setAttribute('readonly', '');
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand('copy');
-    area.remove();
-    return Promise.resolve();
+    return Promise.resolve().then(function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+      var previousFocus = document.activeElement;
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      try {
+        area.select();
+        if (!document.execCommand('copy')) throw new Error('Copy unavailable');
+      } finally {
+        area.remove();
+        if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+      }
+    });
   }
 
   function txtSummary() {
@@ -560,8 +639,8 @@
     return [
       config.title,
       'Route : ' + config.route,
-      'Snapshot : ' + (data.lastUpdated || 'inconnu'),
-      'Confiance : faible · données de planification archivées',
+      localEstimateOnly ? "Estimation locale de consommation" : 'Snapshot : ' + ((data && data.lastUpdated) || 'inconnu'),
+      localEstimateOnly ? "Les recommandations de forfaits sont indisponibles. Cette estimation utilise uniquement vos usages et des hypothèses locales." : 'Confiance : faible · données de planification archivées',
       '',
       resultNode.innerText.trim(),
       '',
@@ -585,9 +664,11 @@
     }, 0);
   });
   form.addEventListener('change', function (event) {
+    invalidateEditedResult();
     if (event.target && event.target.hasAttribute('data-country-select')) updateDependentFields();
   });
   form.addEventListener('input', function (event) {
+    invalidateEditedResult();
     var field = event.target;
     syncRangeOutput(field);
     if (field && ['marketing', 'utility', 'service'].includes(field.name)) syncWhatsappMix(field);
@@ -596,8 +677,9 @@
   copyButton.addEventListener('click', function () {
     var text = txtSummary();
     if (!text) { errorNode.textContent = 'Produisez d’abord un résultat.'; return; }
-    copyText(text).then(function () { exportStatus.textContent = 'Résumé copié.'; })
-      .catch(function () { exportStatus.textContent = 'Copie impossible. Utilisez le téléchargement TXT.'; });
+    var copiedResult = latest;
+    copyText(text).then(function () { if (latest === copiedResult) exportStatus.textContent = 'Résumé copié.'; })
+      .catch(function () { if (latest === copiedResult) exportStatus.textContent = 'Copie impossible. Utilisez le téléchargement TXT.'; });
   });
   txtButton.addEventListener('click', function () {
     var text = txtSummary();
@@ -647,4 +729,7 @@
   if (pageSource) {
     pageSource.innerHTML = sourceNotice({ source: state });
   }
+  if (submitButton) submitButton.disabled = false;
+  importInput.disabled = false;
+  errorNode.textContent = '';
 })(typeof window !== 'undefined' ? window : globalThis);
