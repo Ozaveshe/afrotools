@@ -38,7 +38,23 @@ Both manifests are generated from the live AfroKitchen recipe catalog and includ
 ## Practical Guidance
 
 - Save one hero-quality dish image per recipe using the exact slug filename.
-- When adding a browser-visible image before the next asset manifest automation exists, add the slug-to-file entry to `tools/afrokitchen/image-pipeline.js`.
+- After adding a browser-visible image, run `node scripts/build-afrokitchen-image-manifest.js`; `image-pipeline.js` reads that generated availability manifest.
 - Prefer landscape food photography that survives cropping on cards and large hero surfaces.
 - Keep filenames lowercase and hyphenated exactly as shown in the manifest.
 - Do not add generic or weakly matched remote photos to recipe pages. If a remote image is genuinely curated, put it in `recipe-images-override.json`; otherwise use the local image convention or let the fallback artwork stand.
+
+## Reviewed generated illustrations
+
+`data/image-generation/kitchen-generated-2026-10-09.json` records the exact prompts,
+recipe routes, descriptive alt text, provenance, hashes, dimensions and responsive
+variants for the reviewed illustration batch. Its assets are illustrations, not
+documentary photographs. The page generator uses that ledger to label their
+captions and galleries accurately and render the matching responsive image sizes.
+
+After adding reviewed assets and their ledger entries, run
+`node scripts/refresh-generated-kitchen-artwork.js` for an offline image-only
+refresh of saved recipes and related cards, then
+`node scripts/build-afrokitchen-image-manifest.js` to update runtime availability.
+The refresh validates hashes and dimensions before writing and preserves unrelated
+recipe content and release-owned page assets. Keep smaller responsive variants in
+`assets/img/kitchen/responsive/` so they do not become extra gallery photographs.
