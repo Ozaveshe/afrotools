@@ -34,9 +34,10 @@ exports.handler = withScheduledProof('send-signin-reminders', async function () 
   });
   var now = new Date();
   var { data: profiles, error } = await sb
-    .from('profiles')
+    .from('marketing_signin_candidates')
     .select('id,email,name,email_unsubscribe_token,email_welcome_sent_at,email_last_signin_reminder_at')
     .eq('email_digest_enabled', true)
+    .is('email_last_signin_reminder_at', null)
     .not('email', 'is', null)
     .order('created_at', { ascending: true })
     .limit(BATCH_SIZE);
@@ -46,11 +47,13 @@ exports.handler = withScheduledProof('send-signin-reminders', async function () 
     return { statusCode: 500, body: 'Profile fetch failed' };
   }
 
+  var started = Date.now();
   var sent = 0;
   var skipped = 0;
   var failed = 0;
 
   for (var i = 0; i < (profiles || []).length; i++) {
+    if (Date.now() - started > 22000) break;
     var profile = profiles[i];
     try {
       if (!eligibleByProfile(profile, now)) {
@@ -69,6 +72,10 @@ exports.handler = withScheduledProof('send-signin-reminders', async function () 
       var unsubscribeUrl = token ? SITE_URL + '/api/email/unsubscribe?token=' + encodeURIComponent(token) : '';
       var message = buildSigninReminder(profile, authUser, unsubscribeUrl);
       var result = await sendEmail(message);
+      if (!result.ok && ['frequency_capped','duplicate','suppressed','not_subscribed'].includes(result.providerStatus)) {
+        skipped++;
+        continue;
+      }
       if (!result.ok) {
         failed++;
         console.error('[signin-reminders] send failed for profile ' + profile.id + ':', result.providerStatus || result.error || 'unknown');
@@ -103,6 +110,8 @@ function eligibleByAuthUser(user, now) {
   var createdAt = user.created_at ? new Date(user.created_at) : null;
   if (lastSignIn && daysBetween(lastSignIn, now) < INACTIVE_DAYS) return false;
   if (!lastSignIn && createdAt && daysBetween(createdAt, now) < INACTIVE_DAYS) return false;
+  const lastActivity = lastSignIn || createdAt;
+  if (!lastActivity || daysBetween(lastActivity, now) > 60) return false;
   return true;
 }
 

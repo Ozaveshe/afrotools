@@ -41,6 +41,8 @@ exports.handler = withScheduledProof('send-onboarding-nudges', async function ()
     .is('email_onboarding_nudge_sent_at', null)
     .not('email', 'is', null)
     .lte('created_at', accountCutoff)
+    .gte('created_at', daysAgo(now, 30).toISOString())
+    .eq('onboarding_completed', false)
     .order('created_at', { ascending: true })
     .limit(BATCH_SIZE);
 
@@ -49,11 +51,13 @@ exports.handler = withScheduledProof('send-onboarding-nudges', async function ()
     return { statusCode: 500, body: 'Profile fetch failed' };
   }
 
+  var started = Date.now();
   var sent = 0;
   var skipped = 0;
   var failed = 0;
 
   for (var i = 0; i < (profiles || []).length; i++) {
+    if (Date.now() - started > 22000) break;
     var profile = profiles[i];
     try {
       if (profile.onboarding_completed || isWithinDays(profile.email_welcome_sent_at, now, WELCOME_GRACE_DAYS)) {
@@ -75,6 +79,10 @@ exports.handler = withScheduledProof('send-onboarding-nudges', async function ()
         unsubscribeUrl: unsubscribeUrl,
       });
 
+      if (!result.ok && ['frequency_capped','duplicate','suppressed','not_subscribed'].includes(result.providerStatus)) {
+        skipped++;
+        continue;
+      }
       if (!result.ok) {
         failed++;
         console.error('[onboarding-nudges] send failed for profile ' + profile.id + ':', result.providerStatus || result.error || 'unknown');
