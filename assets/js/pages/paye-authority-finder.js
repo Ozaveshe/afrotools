@@ -2,6 +2,8 @@
   'use strict';
   var engine = window.AfroTools && window.AfroTools.PayeAuthorityRouterEngine;
   var authorities = [];
+  var dataState = "idle";
+  var retryButton;
   var sw = document.documentElement.lang === 'sw';
   function text(english, swahili) { return sw ? swahili : english; }
   function calculatorRoute(item) {
@@ -28,6 +30,7 @@
   }
   function find(event) {
     if (event) event.preventDefault();
+    if (dataState !== "ready") return;
     var result = engine.resolve(authorities, { query: id('authority-query').value, countryCode: id('authority-country').value });
     if (result.status === 'resolved') return renderResolved(result.match);
     if (result.status === 'ambiguous') {
@@ -48,16 +51,71 @@
     id('authority-country').innerHTML = '<option value="">' + text('Choose only if needed', 'Chagua inapohitajika') + '</option>' + countries.map(function (item) { return '<option value="' + esc(item.country_code) + '">' + esc(item.country_name) + '</option>'; }).join('');
     id('authority-form').querySelector('button[type="submit"]').disabled = false;
   }
+  function loadAuthorities() {
+    if (dataState === 'loading') return;
+    var restoreRetryFocus = document.activeElement === retryButton;
+    dataState = 'loading';
+    var submit = id('authority-form').querySelector('button[type="submit"]');
+    submit.disabled = true;
+    id('authority-country').disabled = true;
+    retryButton.hidden = true;
+    retryButton.style.display = 'none';
+    status(text('Loading authority routing data…', 'Inapakia data ya mamlaka…'), false);
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer;
+    var timeout = new Promise(function (_, reject) {
+      timer = setTimeout(function () {
+        reject(new Error('AUTHORITY_LOAD_TIMEOUT'));
+        if (controller) controller.abort();
+      }, 12000);
+    });
+    var request = Promise.resolve().then(function () {
+      return fetch('/data/salary-tax/authority-router.json', {
+        cache: 'no-store', credentials: 'same-origin', signal: controller ? controller.signal : undefined
+      });
+    }).then(function (response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    });
+    Promise.race([request, timeout]).then(function (payload) {
+      populate(payload);
+      dataState = 'ready';
+      id('authority-country').disabled = false;
+      status(text('Try an acronym or choose a country.', 'Jaribu kifupisho au chagua nchi.'), false);
+    }).catch(function () {
+      dataState = 'unavailable';
+      submit.disabled = true;
+      status(text('Authority routing data is unavailable. Try again, or use the supported authority links below.', 'Data ya mamlaka haipatikani. Jaribu tena au tumia viungo vya nchi hapa chini.'), true);
+      retryButton.hidden = false;
+      retryButton.style.display = 'inline-flex';
+    }).finally(function () {
+      clearTimeout(timer);
+      if (restoreRetryFocus && document.activeElement === document.body) {
+        (dataState === 'ready' ? id('authority-query') : retryButton).focus();
+      }
+    });
+  }
   document.addEventListener('DOMContentLoaded', function () {
+    id('authority-form').querySelector('button[type="submit"]').disabled = true;
+    id('authority-country').disabled = true;
+    retryButton = document.createElement('button');
+    retryButton.type = 'button';
+    retryButton.id = 'authority-retry';
+    retryButton.className = 'authority-button';
+    retryButton.textContent = text('Retry loading authority data', 'Jaribu kupakia data ya mamlaka tena');
+    retryButton.hidden = true;
+    retryButton.style.display = 'none';
+    retryButton.addEventListener('click', loadAuthorities);
+    id('authority-status').insertAdjacentElement('afterend', retryButton);
     if (!engine || (sw && !window.AfroToolsPayeAuthorityRoutes)) return status(text('The authority matcher did not load.', 'Kitafutaji hakijapakia. Tumia viungo vya nchi hapa chini.'), true);
     id('authority-form').addEventListener('submit', find);
     id('authority-country').addEventListener('change', function () { track('paye_authority_country_selected', { country_code: this.value || 'none' }); if (this.value) find(); });
     id('authority-results').addEventListener('click', function (event) {
       var button = event.target.closest('[data-authority-id]');
-      if (button) { var item = authorities.find(function (authority) { return authority.id === button.getAttribute('data-authority-id'); }); if (item) renderResolved(item); }
+      if (button) { var item = authorities.find(function (authority) { return authority.id === button.getAttribute('data-authority-id'); }); if (item) { renderResolved(item); var nextLink = id('authority-results').querySelector('[data-open-calculator]'); if (nextLink) nextLink.focus(); } }
       var link = event.target.closest('[data-open-calculator]');
       if (link) track('paye_calculator_opened', { authority_id: link.getAttribute('data-open-calculator') });
     });
-    fetch('/data/salary-tax/authority-router.json', { cache: 'no-store', credentials: 'same-origin' }).then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(populate).catch(function () { status(text('Authority routing data is unavailable. Use the supported authority links below.', 'Data ya mamlaka haipatikani. Tumia viungo vya nchi hapa chini.'), true); });
+    loadAuthorities();
   });
 }());

@@ -5,6 +5,7 @@
   var ROOT_CLASS = 'fr-finance-export-contract';
   var COMPLETE_EVENT = 'afrotools-fr-finance-export-complete';
   var verifiedWorkflowEvidence = null;
+  var exportSequence = 0;
   var initialResultState = new WeakMap();
   var FORMAT_ORDER = ['copy', 'txt', 'csv', 'json', 'pdf', 'print', 'ics', 'svg', 'png', 'jpeg'];
   var FORMAT_LABELS = {
@@ -228,7 +229,36 @@
       privacy:{processing:'local',accountRequired:false,emailRequired:false},englishOwnerRoute:config.englishRoute};
   }
 
+  function homeLoanSnapshot(config) {
+    var region = document.getElementById('hl-result');
+    var owner = global.HomeLoanFile;
+    if (!region || !isVisible(region) || !region.classList.contains('on') || !owner) {
+      throw new Error('Actualisez le dossier avant l’export.');
+    }
+    var statuses = Array.prototype.map.call(document.querySelectorAll('[data-hl-status]'), function (select) { return select.value; });
+    var summary = owner.summarize(statuses);
+    if (!summary.valid || ['hl-lender', 'hl-application'].some(function (id) {
+      var input = document.getElementById(id);
+      return !input || owner.cleanLabel(input.value) === null;
+    })) throw new Error('Vérifiez les libellés et les états du dossier avant l’export.');
+    var fields = [['ready', 'Prêts'], ['gathering', 'En collecte'], ['update', 'À mettre à jour'], ['open', 'Non commencés']];
+    var results = fields.map(function (field) {
+      var displayed = document.getElementById('hl-' + field[0]);
+      if (!displayed || clean(displayed.textContent) !== String(summary.counts[field[0]])) {
+        throw new Error('Le dossier a changé. Actualisez le résumé avant l’export.');
+      }
+      return { label: field[1], value: String(summary.counts[field[0]]) };
+    });
+    results.push({ label: 'Non demandés', value: String(summary.counts.excluded) });
+    results.push({ label: 'Limite du résumé', value: clean(document.getElementById('hl-result-copy').textContent) });
+    return { schema: 'afrotools.fr.finance.export.v1', route: global.location.pathname.replace(/\/index\.html$/, '/'),
+      title: clean(document.querySelector('h1').textContent), generatedAt: new Date().toISOString(),
+      inputs: collectInputs(), results: results, privacy: { processing: 'local', accountRequired: false, emailRequired: false },
+      englishOwnerRoute: config.englishRoute };
+  }
+
   function snapshot(config) {
+    if (config.englishId === 'home-loan-eligibility') return homeLoanSnapshot(config);
     if (config.englishId === 'fuel-tracker') return fuelSnapshot(config);
     var data = {
       schema: 'afrotools.fr.finance.export.v1',
@@ -482,6 +512,16 @@
   }
 
   async function runExport(format, config, status) {
+    var operation = ++exportSequence;
+    try {
+      return await performExport(format, config, status, operation);
+    } catch (error) {
+      if (operation !== exportSequence) return null;
+      throw error;
+    }
+  }
+
+  async function performExport(format, config, status, operation) {
     if (config.englishId === 'minimum-wage') {
       global.dispatchEvent(new Event('afrotools-minimum-wage-validate'));
       var wageForm = document.getElementById('wageForm');
@@ -519,6 +559,7 @@
     } else {
       throw new Error('Format non pris en charge.');
     }
+    if (operation !== exportSequence) return data;
     status.textContent = format === 'copy'
       ? 'Résumé copié.'
       : format === 'print'
@@ -621,6 +662,14 @@
     installStyles();
     var root = render(config);
     var status = root.querySelector('[role="status"]');
+    var main = document.querySelector('main');
+    if (main) ['input', 'change', 'reset', 'submit'].forEach(function (eventName) {
+      main.addEventListener(eventName, function (event) {
+        if (root.contains(event.target)) return;
+        exportSequence += 1;
+        status.textContent = '';
+      }, true);
+    });
     global.addEventListener('click', function (event) {
       var control = event.target.closest('button,a,input[type="button"],input[type="submit"]');
       var format = controlFormat(control);

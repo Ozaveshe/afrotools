@@ -5,9 +5,9 @@
 })(typeof window!=="undefined"?window:null,function(){
   "use strict";
 
-  var VERSION="paystack-fee-planner-2026-07-23";
-  var SOURCE_UPDATED_AT="2026-05-20";
-  var REVIEWED_AT="2026-07-23";
+  var VERSION="paystack-fee-planner-2026-10-09";
+  var SOURCE_UPDATED_AT="2026-09-15";
+  var REVIEWED_AT="2026-10-09";
   var REVIEW_DUE_AT="2026-10-21";
   var MAX_AMOUNT=1000000000000;
   var MAX_COUNT=1000000;
@@ -28,7 +28,7 @@
       international:{rate:.038,fixed:0,label:"International card or Apple Pay"}
     }},
     ZA:{currency:"ZAR",name:"South Africa",pricingUrl:"https://paystack.com/za/pricing",taxRate:.15,channels:{
-      local:{rate:.029,fixed:1,label:"Local card"},
+      local:{rate:.029,fixed:1,waiveFixedBelow:10,label:"Local card"},
       eft:{rate:.02,fixed:0,label:"EFT"},
       international:{rate:.031,fixed:1,label:"International card"}
     }}
