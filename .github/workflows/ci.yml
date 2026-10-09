@@ -57,6 +57,9 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
+      - name: Verify forex context expiry at runtime
+        run: node tests/ai-forex-runtime-expiry.test.js && node tests/ai-tool-context-invariants.test.js && node tests/ai-consent-server.test.js
+
       - name: Verify private command-centre contracts
         run: node --test tests/operator-dashboard-auth.test.mjs tests/operator-engine.test.mjs
 
