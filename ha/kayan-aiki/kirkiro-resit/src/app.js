@@ -247,10 +247,10 @@
         var t = b(f(), a || {});
         return t.items = Array.isArray(t.items) && t.items.length ? t.items.map(function(a) {
             return v(a.desc || a.description, a.qty, a.unit, a.rate || a.price, a.discount, a.note);
-        }) : [ v("Kaya ko aiki", 1, "guda", 0, 0, "") ], G(t.business.logo) || (t.business.logo = ""), 
-        s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency), 
-        t.totals.taxRate = h(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = h(t.totals.discount, 0), 
-        t.totals.serviceCharge = h(t.totals.serviceCharge, 0), t.totals.shipping = h(t.totals.shipping, 0), 
+        }) : [ v("Kaya ko aiki", 1, "guda", 0, 0, "") ], G(t.business.logo) || (t.business.logo = ""),
+        s[t.country] || (t.country = "NG"), o[t.currency] || (t.currency = s[t.country].currency),
+        t.totals.taxRate = h(t.totals.taxRate, s[t.country].taxRate), t.totals.discount = h(t.totals.discount, 0),
+        t.totals.serviceCharge = h(t.totals.serviceCharge, 0), t.totals.shipping = h(t.totals.shipping, 0),
         t.totals.rounding = h(t.totals.rounding, 0), t;
     }
     function h(a, t) {
@@ -409,7 +409,7 @@
                 var t = h(a.qty, 0), e = h(a.rate, 0), i = t * e, r = i - i * Math.max(0, h(a.discount, 0)) / 100;
                 return n ? "<tr><td>" + k(a.desc || "Kaya") + (a.note ? '<span class="item-note">' + k(a.note) + "</span>" : "") + "</td><td>" + k(t + " " + (a.unit || "")) + "</td></tr>" : "<tr><td>" + k(a.desc || "Kaya") + (a.note ? '<span class="item-note">' + k(a.note) + "</span>" : "") + "</td><td>" + k(t + " " + (a.unit || "")) + "</td><td>" + w(e) + "</td><td>" + w(r) + "</td></tr>";
             }).join("");
-            e.className = "receipt-paper receipt-template-" + a.template, e.innerHTML = [ a.status ? '<div class="r-watermark">' + k(l(a.status)) + "</div>" : "", '<div class="r-head">', "<div>", a.business.logo ? '<div class="r-logo"><img src="' + x(a.business.logo) + '" alt="Logo na kasuwanci"></div>' : "", '<div class="r-biz">' + k(a.business.name || "Sunan kasuwanci") + "</div>", a.business.address ? '<div class="r-muted">' + k(a.business.address) + "</div>" : "", r ? '<div class="r-muted">' + r + "</div>" : "", a.business.taxId ? '<div class="r-small">' + k(a.taxLabel || "Haraji") + " ID: " + k(a.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + k(i) + "</div>", '<div class="r-small">Lamba ' + k(a.receipt.number || "") + "</div>", '<div class="r-small">' + k(A(a.receipt.date)) + (a.receipt.time ? " " + k(a.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">Abokin ciniki</span><div class="r-value">' + k(a.customer.name || "Abokin ciniki kai tsaye") + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (a.customer.address ? '<div class="r-muted">' + k(a.customer.address) + "</div>" : "") + (a.customer.taxId ? '<div class="r-small">ID na abokin ciniki: ' + k(a.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Maamala</span><div class="r-value">' + k(l(a.status)) + "</div>" + (a.receipt.branch ? '<div class="r-muted">Reshe: ' + k(a.receipt.branch) + "</div>" : "") + (a.receipt.cashier ? '<div class="r-muted">Wanda ya bayar: ' + k(a.receipt.cashier) + "</div>" : "") + (a.receipt.reference ? '<div class="r-muted">Shaida: ' + k(a.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Bayani</th><th>Yawa</th>' + (n ? "" : "<th>Farashi</th><th>Jimilla</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : P(t), E(t), a.notes ? '<div class="r-note"><strong>Bayanan kula:</strong><br>' + k(a.notes) + "</div>" : "", a.terms ? '<div class="r-note"><strong>Sharudda:</strong><br>' + k(a.terms) + "</div>" : "", '<div class="r-footer"><span>An kirkiro da AfroTools.com</span><span>' + k(a.currency) + "</span></div>" ].join(""), 
+            e.className = "receipt-paper receipt-template-" + a.template, e.innerHTML = [ a.status ? '<div class="r-watermark">' + k(l(a.status)) + "</div>" : "", '<div class="r-head">', "<div>", a.business.logo ? '<div class="r-logo"><img src="' + x(a.business.logo) + '" alt="Logo na kasuwanci"></div>' : "", '<div class="r-biz">' + k(a.business.name || "Sunan kasuwanci") + "</div>", a.business.address ? '<div class="r-muted">' + k(a.business.address) + "</div>" : "", r ? '<div class="r-muted">' + r + "</div>" : "", a.business.taxId ? '<div class="r-small">' + k(a.taxLabel || "Haraji") + " ID: " + k(a.business.taxId) + "</div>" : "", "</div>", "<div>", '<div class="r-type">' + k(i) + "</div>", '<div class="r-small">Lamba ' + k(a.receipt.number || "") + "</div>", '<div class="r-small">' + k(A(a.receipt.date)) + (a.receipt.time ? " " + k(a.receipt.time) : "") + "</div>", "</div>", "</div>", '<div class="r-grid">', '<div class="r-box"><span class="r-label">Abokin ciniki</span><div class="r-value">' + k(a.customer.name || "Abokin ciniki kai tsaye") + "</div>" + (o ? '<div class="r-muted">' + o + "</div>" : "") + (a.customer.address ? '<div class="r-muted">' + k(a.customer.address) + "</div>" : "") + (a.customer.taxId ? '<div class="r-small">ID na abokin ciniki: ' + k(a.customer.taxId) + "</div>" : "") + "</div>", '<div class="r-box"><span class="r-label">Maamala</span><div class="r-value">' + k(l(a.status)) + "</div>" + (a.receipt.branch ? '<div class="r-muted">Reshe: ' + k(a.receipt.branch) + "</div>" : "") + (a.receipt.cashier ? '<div class="r-muted">Wanda ya bayar: ' + k(a.receipt.cashier) + "</div>" : "") + (a.receipt.reference ? '<div class="r-muted">Shaida: ' + k(a.receipt.reference) + "</div>" : "") + "</div>", "</div>", '<table class="r-table"><thead><tr><th>Bayani</th><th>Yawa</th>' + (n ? "" : "<th>Farashi</th><th>Jimilla</th>") + "</tr></thead><tbody>" + s + "</tbody></table>", n ? "" : P(t), E(t), a.notes ? '<div class="r-note"><strong>Bayanan kula:</strong><br>' + k(a.notes) + "</div>" : "", a.terms ? '<div class="r-note"><strong>Sharudda:</strong><br>' + k(a.terms) + "</div>" : "", '<div class="r-footer"><span>An kirkiro da AfroTools.com</span><span>' + k(a.currency) + "</span></div>" ].join(""),
             function() {
                 if (N()) {
                     var a = u("receiptQr");
@@ -425,8 +425,8 @@
                     }));
                 }
             }();
-        })(), e = T(), u("metricSubtotal").textContent = w(e.subtotal), u("metricTax").textContent = w(e.tax), 
-        u("metricTotal").textContent = w(e.total), u("metricBalance").textContent = w(e.balance), 
+        })(), e = T(), u("metricSubtotal").textContent = w(e.subtotal), u("metricTax").textContent = w(e.tax),
+        u("metricTotal").textContent = w(e.total), u("metricBalance").textContent = w(e.balance),
         function() {
             var t = T(), e = ![ "Cash", "Other", "Store credit" ].includes(a.payment.method), n = [ {
                 label: "Bayanan kasuwanci",
@@ -469,8 +469,8 @@
             } ], i = n.reduce(function(a, t) {
                 return a + (t.ok ? t.points : 0);
             }, 0);
-            u("scoreValue").textContent = String(i), u("scoreMeter").style.width = i + "%", 
-            u("scoreBadge").textContent = i >= 90 ? "A shirye" : i >= 70 ? "A duba" : "Daftari", 
+            u("scoreValue").textContent = String(i), u("scoreMeter").style.width = i + "%",
+            u("scoreBadge").textContent = i >= 90 ? "A shirye" : i >= 70 ? "A duba" : "Daftari",
             u("checkList").innerHTML = n.map(function(a) {
                 return '<div class="check-item ' + (a.ok ? "ok" : "") + '"><span class="check-dot">' + (a.ok ? "OK" : "!") + "</span><span><strong>" + k(a.label) + "</strong></span></div>";
             }).join("");
@@ -485,7 +485,7 @@
     function j(t) {
         var e = t.target.files && t.target.files[0];
         if (e) {
-            if (!/^image\/(png|jpe?g|webp)$/i.test(e.type)) return _("Yi amfani da PNG, JPG, ko WebP kawai don logo."), 
+            if (!/^image\/(png|jpe?g|webp)$/i.test(e.type)) return _("Yi amfani da PNG, JPG, ko WebP kawai don logo."),
             void (t.target.value = "");
             if (e.size > 1228800) return _("Dole logo ya kasance kasa da 1.2 MB."), void (t.target.value = "");
             var n = new FileReader;
@@ -578,7 +578,7 @@
         a.items.forEach(function(a) {
             var t = h(a.qty, 0) * h(a.rate, 0), n = t * Math.max(0, h(a.discount, 0)) / 100;
             e.push([ a.desc, a.qty, a.unit, a.rate, a.discount, (t - n).toFixed(2) ]);
-        }), e.push([], [ "Jimillar farko", t.subtotal.toFixed(2) ], [ "Haraji", t.tax.toFixed(2) ], [ "Jimilla", t.total.toFixed(2) ], [ "An biya", t.paid.toFixed(2) ], [ "Ragowar biya", t.balance.toFixed(2) ]), 
+        }), e.push([], [ "Jimillar farko", t.subtotal.toFixed(2) ], [ "Haraji", t.tax.toFixed(2) ], [ "Jimilla", t.total.toFixed(2) ], [ "An biya", t.paid.toFixed(2) ], [ "Ragowar biya", t.balance.toFixed(2) ]),
         Y(e.map(W).join("\n"), Q() + "-items.csv", "text/csv;charset=utf-8");
     }
     function V() {
@@ -615,7 +615,7 @@
         return a.items.forEach(function(a) {
             var t = h(a.qty, 0) * h(a.rate, 0);
             e.push("- " + (a.desc || "Kaya") + " | " + a.qty + " " + a.unit + " x " + S(a.rate) + " = " + S(t));
-        }), e.push("", "Jimillar farko: " + S(t.subtotal), "Haraji: " + S(t.tax), "Jimilla: " + S(t.total), "An biya: " + S(t.paid), "Ragowar biya: " + S(t.balance), "", "Biyan kudi: " + (c(a.payment.method) || "") + " " + (c(a.payment.provider) || ""), "Shaida: " + (a.payment.reference || a.receipt.reference || ""), "", a.notes || "", a.terms || ""), 
+        }), e.push("", "Jimillar farko: " + S(t.subtotal), "Haraji: " + S(t.tax), "Jimilla: " + S(t.total), "An biya: " + S(t.paid), "Ragowar biya: " + S(t.balance), "", "Biyan kudi: " + (c(a.payment.method) || "") + " " + (c(a.payment.provider) || ""), "Shaida: " + (a.payment.reference || a.receipt.reference || ""), "", a.notes || "", a.terms || ""),
         e.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }
     function Q() {
@@ -625,7 +625,7 @@
         var n = a instanceof Blob ? a : new Blob([ a ], {
             type: e || "application/octet-stream"
         }), i = document.createElement("a");
-        i.href = URL.createObjectURL(n), i.download = t, document.body.appendChild(i), i.click(), 
+        i.href = URL.createObjectURL(n), i.download = t, document.body.appendChild(i), i.click(),
         i.remove(), setTimeout(function() {
             URL.revokeObjectURL(i.href);
         }, 500);
@@ -643,7 +643,7 @@
                     format: "a4",
                     orientation: "portrait"
                 }), e = t.internal.pageSize.getWidth(), n = t.internal.pageSize.getHeight(), i = e - 20, r = a.height * i / a.width, o = a.toDataURL("image/png"), s = n - 20, d = 10, c = r;
-                for (t.addImage(o, "PNG", 10, d, i, r), c -= s; c > 0; ) t.addPage(), d = 10 - (r - c), 
+                for (t.addImage(o, "PNG", 10, d, i, r), c -= s; c > 0; ) t.addPage(), d = 10 - (r - c),
                 t.addImage(o, "PNG", 10, d, i, r), c -= s;
                 t.save(Q() + ".pdf"), _("An sauke PDF.");
             }).catch(function() {
@@ -672,9 +672,9 @@
     }
     function _(a) {
         var t = u("receiptToast");
-        t || ((t = document.createElement("div")).id = "receiptToast", t.setAttribute("role", "status"), 
-        t.setAttribute("aria-live", "polite"), t.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:9999;max-width:320px;padding:11px 14px;border-radius:8px;background:#0f172a;color:#fff;font:700 13px DM Sans,system-ui;box-shadow:0 18px 36px rgba(15,23,42,.24);opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease;", 
-        document.body.appendChild(t)), t.textContent = a, t.style.opacity = "1", t.style.transform = "translateY(0)", 
+        t || ((t = document.createElement("div")).id = "receiptToast", t.setAttribute("role", "status"),
+        t.setAttribute("aria-live", "polite"), t.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:9999;max-width:320px;padding:11px 14px;border-radius:8px;background:#0f172a;color:#fff;font:700 13px DM Sans,system-ui;box-shadow:0 18px 36px rgba(15,23,42,.24);opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease;",
+        document.body.appendChild(t)), t.textContent = a, t.style.opacity = "1", t.style.transform = "translateY(0)",
         clearTimeout(_.timer), _.timer = setTimeout(function() {
             t.style.opacity = "0", t.style.transform = "translateY(8px)";
         }, 2400);
@@ -710,11 +710,11 @@
                 !function(t, e) {
                     for (var n = t.split("."), i = a, r = 0; r < n.length - 1; r += 1) i = i[n[r]];
                     i[n[n.length - 1]] = e;
-                }(e, i), "country" === e && (n = s[a.country] || s.NG, a.currency = n.currency, 
-                a.taxLabel = n.taxLabel, a.totals.taxRate = n.taxRate, a.payment.provider && R().includes(a.payment.method) || (a.payment.provider = n.provider, 
-                a.payment.method = n.methods[0] || "Cash"), C()), "status" === e && "DECLINED" === a.status && (a.docType = "declined"), 
-                "docType" === e && "refund" === a.docType && (a.status = "REFUNDED"), "docType" === e && "declined" === a.docType && (a.status = "DECLINED"), 
-                "payment.method" !== e || a.payment.provider || (a.payment.provider = a.payment.method), 
+                }(e, i), "country" === e && (n = s[a.country] || s.NG, a.currency = n.currency,
+                a.taxLabel = n.taxLabel, a.totals.taxRate = n.taxRate, a.payment.provider && R().includes(a.payment.method) || (a.payment.provider = n.provider,
+                a.payment.method = n.methods[0] || "Cash"), C()), "status" === e && "DECLINED" === a.status && (a.docType = "declined"),
+                "docType" === e && "refund" === a.docType && (a.status = "REFUNDED"), "docType" === e && "declined" === a.docType && (a.status = "DECLINED"),
+                "payment.method" !== e || a.payment.provider || (a.payment.provider = a.payment.method),
                 M(), F();
             });
         }), u("itemsList").addEventListener("input", function(t) {
@@ -734,7 +734,7 @@
                 var n = e.getAttribute("data-delete-item");
                 a.items = a.items.filter(function(a) {
                     return a.id !== n;
-                }), a.items.length || a.items.push(v("Kaya ko aiki", 1, "guda", 0, 0, "")), L(), 
+                }), a.items.length || a.items.push(v("Kaya ko aiki", 1, "guda", 0, 0, "")), L(),
                 F();
             }
         }), u("addItemBtn").addEventListener("click", function() {
@@ -745,15 +745,15 @@
             a.receipt.number = y(), M(), F();
         }), u("newReceiptBtn").addEventListener("click", function() {
             var t = U();
-            (a = g(t ? b(f(), t) : f())).receipt.number = y(), a.receipt.date = m(), a.receipt.time = p(), 
+            (a = g(t ? b(f(), t) : f())).receipt.number = y(), a.receipt.date = m(), a.receipt.time = p(),
             C(), M(), L(), F(), _("An fara sabon resit.");
-        }), u("saveReceiptBtn").addEventListener("click", I), u("saveProfileBtn").addEventListener("click", K), 
-        u("shareReceiptBtn").addEventListener("click", $), u("downloadPdfBtn").addEventListener("click", Z), 
+        }), u("saveReceiptBtn").addEventListener("click", I), u("saveProfileBtn").addEventListener("click", K),
+        u("shareReceiptBtn").addEventListener("click", $), u("downloadPdfBtn").addEventListener("click", Z),
         u("printBtn").addEventListener("click", function() {
             window.print();
-        }), u("copySummaryBtn").addEventListener("click", J), u("txtBtn").addEventListener("click", q), 
-        u("csvBtn").addEventListener("click", H), u("jsonBtn").addEventListener("click", V), 
-        u("importJson").addEventListener("change", z), u("logoInput").addEventListener("change", j), 
+        }), u("copySummaryBtn").addEventListener("click", J), u("txtBtn").addEventListener("click", q),
+        u("csvBtn").addEventListener("click", H), u("jsonBtn").addEventListener("click", V),
+        u("importJson").addEventListener("change", z), u("logoInput").addEventListener("change", j),
         u("clearLogoBtn").addEventListener("click", function() {
             a.business.logo = "", u("logoInput").value = "", B(), F();
         }), u("savedReceipts").addEventListener("click", function(t) {

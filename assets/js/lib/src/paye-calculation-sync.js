@@ -37,22 +37,22 @@
     function C(e) {
         if (!e || "object" != typeof e) return null;
         var t = Object.assign({}, e), a = M(t.effectiveRate), n = M(t.marginalRate);
-        return null !== a && (t.effectiveRate = a), null !== n && (t.marginalRate = n), 
-        void 0 !== t.grossAnnual && null !== t.grossAnnual || ("number" == typeof t.gross && Number.isFinite(t.gross) ? t.grossAnnual = t.gross : "number" == typeof t.grossMonthly && Number.isFinite(t.grossMonthly) && (t.grossAnnual = 12 * t.grossMonthly)), 
-        void 0 !== t.gross && null !== t.gross || "number" == typeof t.grossAnnual && Number.isFinite(t.grossAnnual) && (t.gross = t.grossAnnual), 
-        void 0 !== t.grossMonthly && null !== t.grossMonthly || "number" == typeof t.grossAnnual && Number.isFinite(t.grossAnnual) && (t.grossMonthly = t.grossAnnual / 12), 
-        void 0 !== t.netAnnual && null !== t.netAnnual || "number" == typeof t.netMonthly && Number.isFinite(t.netMonthly) && (t.netAnnual = 12 * t.netMonthly), 
-        void 0 !== t.netMonthly && null !== t.netMonthly || "number" == typeof t.netAnnual && Number.isFinite(t.netAnnual) && (t.netMonthly = t.netAnnual / 12), 
-        void 0 !== t.taxAnnual && null !== t.taxAnnual || ("number" == typeof t.tax && Number.isFinite(t.tax) ? t.taxAnnual = t.tax : "number" == typeof t.taxMonthly && Number.isFinite(t.taxMonthly) && (t.taxAnnual = 12 * t.taxMonthly)), 
-        void 0 !== t.tax && null !== t.tax || "number" == typeof t.taxAnnual && Number.isFinite(t.taxAnnual) && (t.tax = t.taxAnnual), 
-        void 0 !== t.taxMonthly && null !== t.taxMonthly || "number" == typeof t.taxAnnual && Number.isFinite(t.taxAnnual) && (t.taxMonthly = t.taxAnnual / 12), 
+        return null !== a && (t.effectiveRate = a), null !== n && (t.marginalRate = n),
+        void 0 !== t.grossAnnual && null !== t.grossAnnual || ("number" == typeof t.gross && Number.isFinite(t.gross) ? t.grossAnnual = t.gross : "number" == typeof t.grossMonthly && Number.isFinite(t.grossMonthly) && (t.grossAnnual = 12 * t.grossMonthly)),
+        void 0 !== t.gross && null !== t.gross || "number" == typeof t.grossAnnual && Number.isFinite(t.grossAnnual) && (t.gross = t.grossAnnual),
+        void 0 !== t.grossMonthly && null !== t.grossMonthly || "number" == typeof t.grossAnnual && Number.isFinite(t.grossAnnual) && (t.grossMonthly = t.grossAnnual / 12),
+        void 0 !== t.netAnnual && null !== t.netAnnual || "number" == typeof t.netMonthly && Number.isFinite(t.netMonthly) && (t.netAnnual = 12 * t.netMonthly),
+        void 0 !== t.netMonthly && null !== t.netMonthly || "number" == typeof t.netAnnual && Number.isFinite(t.netAnnual) && (t.netMonthly = t.netAnnual / 12),
+        void 0 !== t.taxAnnual && null !== t.taxAnnual || ("number" == typeof t.tax && Number.isFinite(t.tax) ? t.taxAnnual = t.tax : "number" == typeof t.taxMonthly && Number.isFinite(t.taxMonthly) && (t.taxAnnual = 12 * t.taxMonthly)),
+        void 0 !== t.tax && null !== t.tax || "number" == typeof t.taxAnnual && Number.isFinite(t.taxAnnual) && (t.tax = t.taxAnnual),
+        void 0 !== t.taxMonthly && null !== t.taxMonthly || "number" == typeof t.taxAnnual && Number.isFinite(t.taxAnnual) && (t.taxMonthly = t.taxAnnual / 12),
         t;
     }
     function w(e) {
         if (!e || "object" != typeof e) return null;
         var t = Object.assign({}, e);
-        return t.version = t.version || 2, t.toolSlug = t.toolSlug || r, t.toolName = t.toolName || l, 
-        t.countryCode = t.countryCode || c, t.currency = t.currency || s, t.snapshot && (t.snapshot = C(t.snapshot)), 
+        return t.version = t.version || 2, t.toolSlug = t.toolSlug || r, t.toolName = t.toolName || l,
+        t.countryCode = t.countryCode || c, t.currency = t.currency || s, t.snapshot && (t.snapshot = C(t.snapshot)),
         t;
     }
     function x() {
@@ -225,8 +225,8 @@
         var n = w(e);
         if (n && n.snapshot) {
             var o = n.snapshot, r = [];
-            if ("nta" === o.regime ? r.push("NTA 2026") : "pita" === o.regime && r.push("PITA 2025"), 
-            "number" == typeof o.netMonthly && Number.isFinite(o.netMonthly) ? r.push("Take-home " + L(o.netMonthly) + "/mo") : "number" == typeof o.netAnnual && Number.isFinite(o.netAnnual) ? r.push("Net " + L(o.netAnnual) + "/yr") : "number" == typeof o.tax && Number.isFinite(o.tax) && r.push("Tax " + L(o.tax)), 
+            if ("nta" === o.regime ? r.push("NTA 2026") : "pita" === o.regime && r.push("PITA 2025"),
+            "number" == typeof o.netMonthly && Number.isFinite(o.netMonthly) ? r.push("Take-home " + L(o.netMonthly) + "/mo") : "number" == typeof o.netAnnual && Number.isFinite(o.netAnnual) ? r.push("Net " + L(o.netAnnual) + "/yr") : "number" == typeof o.tax && Number.isFinite(o.tax) && r.push("Tax " + L(o.tax)),
             void 0 !== o.effectiveRate && null !== o.effectiveRate && r.push("Rate " + function(e) {
                 if (null == e || "" === e) return "--";
                 var t = M(e);
@@ -343,8 +343,8 @@
     }
     function G(e, a) {
         var n = t.querySelector('[data-tog="' + e + '"]');
-        n && (n.classList.toggle("on", !!a), n.setAttribute("aria-checked", a ? "true" : "false"), 
-        "life" === e && t.getElementById("lifeField").classList.toggle("on", !!a), "homeloan" === e && t.getElementById("homeloanField").classList.toggle("on", !!a), 
+        n && (n.classList.toggle("on", !!a), n.setAttribute("aria-checked", a ? "true" : "false"),
+        "life" === e && t.getElementById("lifeField").classList.toggle("on", !!a), "homeloan" === e && t.getElementById("homeloanField").classList.toggle("on", !!a),
         "nhis" === e && t.getElementById("nhisField").classList.toggle("on", !!a));
     }
     function Y(e, a) {
@@ -441,18 +441,18 @@
         return a && 2 === a.version ? function(a, n) {
             if (!a || !a.inputs) return !1;
             var o = a.inputs, r = Number(o.salaryValue || 0), l = "monthly" === o.salaryPeriod ? 12 * r : r, i = t.querySelectorAll(".mode-toggle")[0].querySelectorAll(".mode-btn"), u = t.querySelectorAll(".per-btn");
-            return "function" == typeof e.setCalcMode && e.setCalcMode("net" === o.calcMode ? "net" : "gross", "net" === o.calcMode ? i[1] : i[0]), 
-            "function" == typeof e.setSalaryPeriod && e.setSalaryPeriod("monthly" === o.salaryPeriod ? "monthly" : "annual", t.getElementById("monthly" === o.salaryPeriod ? "periodMonthly" : "periodAnnual")), 
-            "function" == typeof e.setRegime && e.setRegime("nta" === o.regime ? "nta" : "pita", t.getElementById("nta" === o.regime ? "tabNta" : "tabPita")), 
-            t.getElementById("grossSalary").value = Math.round(r).toLocaleString("en-NG"), t.getElementById("salarySlider").value = Math.min(Math.max(l, 5e5), 5e7), 
-            t.getElementById("sliderVal").textContent = L(l), "function" == typeof e.updateSliderFill && e.updateSliderFill(t.getElementById("salarySlider")), 
-            G("pension", !(!o.toggles || !o.toggles.pension)), G("nhf", !(!o.toggles || !o.toggles.nhf)), 
-            G("nhis", !(!o.toggles || !o.toggles.nhis)), G("life", !(!o.toggles || !o.toggles.life)), 
-            G("homeloan", !(!o.toggles || !o.toggles.homeloan)), Y("nhisRate", void 0 !== o.nhisRate && null !== o.nhisRate ? o.nhisRate : 5), 
-            Y("lifeAmt", o.lifeAmt), Y("homeloanAmt", o.homeloanAmt), Y("pensionableAmt", o.pensionableAmt), 
-            Y("annualRent", o.annualRent), "function" == typeof e.calculate && e.calculate(), 
-            "function" == typeof e.setPeriod && e.setPeriod("annual" === o.period ? "annual" : "monthly", "annual" === o.period ? u[1] : u[0]), 
-            t.getElementById("calcSaveName") && (t.getElementById("calcSaveName").value = n || ""), 
+            return "function" == typeof e.setCalcMode && e.setCalcMode("net" === o.calcMode ? "net" : "gross", "net" === o.calcMode ? i[1] : i[0]),
+            "function" == typeof e.setSalaryPeriod && e.setSalaryPeriod("monthly" === o.salaryPeriod ? "monthly" : "annual", t.getElementById("monthly" === o.salaryPeriod ? "periodMonthly" : "periodAnnual")),
+            "function" == typeof e.setRegime && e.setRegime("nta" === o.regime ? "nta" : "pita", t.getElementById("nta" === o.regime ? "tabNta" : "tabPita")),
+            t.getElementById("grossSalary").value = Math.round(r).toLocaleString("en-NG"), t.getElementById("salarySlider").value = Math.min(Math.max(l, 5e5), 5e7),
+            t.getElementById("sliderVal").textContent = L(l), "function" == typeof e.updateSliderFill && e.updateSliderFill(t.getElementById("salarySlider")),
+            G("pension", !(!o.toggles || !o.toggles.pension)), G("nhf", !(!o.toggles || !o.toggles.nhf)),
+            G("nhis", !(!o.toggles || !o.toggles.nhis)), G("life", !(!o.toggles || !o.toggles.life)),
+            G("homeloan", !(!o.toggles || !o.toggles.homeloan)), Y("nhisRate", void 0 !== o.nhisRate && null !== o.nhisRate ? o.nhisRate : 5),
+            Y("lifeAmt", o.lifeAmt), Y("homeloanAmt", o.homeloanAmt), Y("pensionableAmt", o.pensionableAmt),
+            Y("annualRent", o.annualRent), "function" == typeof e.calculate && e.calculate(),
+            "function" == typeof e.setPeriod && e.setPeriod("annual" === o.period ? "annual" : "monthly", "annual" === o.period ? u[1] : u[0]),
+            t.getElementById("calcSaveName") && (t.getElementById("calcSaveName").value = n || ""),
             !0;
         }(a, n) : function(a, n) {
             var o = a && a.fields ? a.fields : a;
@@ -465,14 +465,14 @@
                 else control.value = o[e];
             }), o.grossSalary) {
                 var r = b(o.grossSalary);
-                t.getElementById("salarySlider").value = Math.min(Math.max(r, 5e5), 5e7), t.getElementById("sliderVal").textContent = L(r), 
+                t.getElementById("salarySlider").value = Math.min(Math.max(r, 5e5), 5e7), t.getElementById("sliderVal").textContent = L(r),
                 "function" == typeof e.updateSliderFill && e.updateSliderFill(t.getElementById("salarySlider"));
             }
             if (o._mode && "function" == typeof e.setCalcMode) {
                 var l = t.querySelectorAll(".mode-toggle")[0].querySelectorAll(".mode-btn"), i = -1 !== String(o._mode).toLowerCase().indexOf("net");
                 e.setCalcMode(i ? "net" : "gross", i ? l[1] : l[0]);
             }
-            return "function" == typeof e.calculate && e.calculate(), t.getElementById("calcSaveName") && (t.getElementById("calcSaveName").value = n || ""), 
+            return "function" == typeof e.calculate && e.calculate(), t.getElementById("calcSaveName") && (t.getElementById("calcSaveName").value = n || ""),
             !0;
         }(a, n);
     }
@@ -486,7 +486,7 @@
             var l = y[e];
             r = V(l.payload || {}, l.title);
         }
-        if (!r) return n.deferIfMissing ? (h = e, !1) : (n.suppressMissingWarning || j("That saved scenario could not be restored on this device.", "warning"), 
+        if (!r) return n.deferIfMissing ? (h = e, !1) : (n.suppressMissingWarning || j("That saved scenario could not be restored on this device.", "warning"),
         !1);
         if (h = "", n.suppressSuccessStatus || j("Loaded saved scenario.", "info"), !n.suppressScroll) {
             var i = t.getElementById("resultsCard");
@@ -502,7 +502,7 @@
         var e = K(h, {
             suppressMissingWarning: !N()
         });
-        return e || N() || j("Sign in to reopen this saved scenario on this device.", "info"), 
+        return e || N() || j("Sign in to reopen this saved scenario on this device.", "info"),
         e;
     }
     function z(t, a) {
@@ -557,7 +557,7 @@
             t.forEach(function(e) { e && e.item_key && !deleted[e.item_key] && (next[e.item_key]=e); });
             cacheOwner=owner;y=next;return t;
         } catch (e) {
-            return console.warn("[PayeCalculationSync] Could not load saved calculations from workspace:"), 
+            return console.warn("[PayeCalculationSync] Could not load saved calculations from workspace:"),
             Promise.reject(new Error('workspace_list_failed'));
         }
     }
@@ -595,7 +595,7 @@
             if(cacheOwner!==owner)y=Object.create(null);
             cacheOwner=owner;y[a.item_key]=a;return true;
         } catch (e) {
-            return console.warn("[PayeCalculationSync] Workspace upsert failed:"), 
+            return console.warn("[PayeCalculationSync] Workspace upsert failed:"),
             !1;
         }
     }
@@ -614,8 +614,8 @@
                     }); } catch(error) { storageFailure(error);return; }
                     n && (n.value = o);
                     var l = await Z(r);
-                    q(), l ? j("Saved to your dashboard and this device.", "success") : N() ? (j("Saved on this device. We could not sync it just now.", "warning"), 
-                    z("save-retry", 800)) : j("Saved on this device. Sign in to sync it to your dashboard.", "info"), 
+                    q(), l ? j("Saved to your dashboard and this device.", "success") : N() ? (j("Saved on this device. We could not sync it just now.", "warning"),
+                    z("save-retry", 800)) : j("Saved on this device. Sign in to sync it to your dashboard.", "info"),
                     k("save", r.id);
                 } else j("We could not read this calculation state yet. Please run it again.", "warning");
             } else j("Save support is not available on this page right now.", "warning");
@@ -662,15 +662,15 @@
                     return te().catch(syncFailure), e;
                 }, e.__payeCalculationHookAttached[o] = !0;
             }
-        }(), a = t.getElementById("calcSaveBtn"), n = t.getElementById("calcSaveName"), 
+        }(), a = t.getElementById("calcSaveBtn"), n = t.getElementById("calcSaveName"),
         a && !a.dataset.bound && (a.dataset.bound = "true", a.addEventListener("click", function() {
             $().catch(syncFailure);
         })), n && !n.dataset.bound && (n.dataset.bound = "true", n.addEventListener("keydown", function(e) {
             "Enter" === e.key && (e.preventDefault(), $().catch(syncFailure));
         })), function() {
             var t;
-            e.__payeSavedCalculationLifecycleAttached = e.__payeSavedCalculationLifecycleAttached || {}, 
-            e.__payeSavedCalculationLifecycleAttached[o] || (e.__payeSavedCalculationLifecycleAttached[o] = !0, 
+            e.__payeSavedCalculationLifecycleAttached = e.__payeSavedCalculationLifecycleAttached || {},
+            e.__payeSavedCalculationLifecycleAttached[o] || (e.__payeSavedCalculationLifecycleAttached[o] = !0,
             e.addEventListener("afro-auth-change", function() {
                 z("auth-change", 150);
             }), e.addEventListener("afro-workspace-change", function(e) {
@@ -689,7 +689,7 @@
             }, 400), setTimeout(function() {
                 z("auth-delay-1200", 0);
             }, 1200)));
-        }(), W(), j("Name a scenario to reuse it later and see it in your dashboard.", "muted"), 
+        }(), W(), j("Name a scenario to reuse it later and see it in your dashboard.", "muted"),
         q(), await async function() {
             var t = new URLSearchParams(e.location.search).get("saved_calc");
             t && (h = t, J());

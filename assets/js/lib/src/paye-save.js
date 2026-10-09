@@ -39,16 +39,16 @@
                 var o = document.querySelector(".tool-page .container, .paye-page .container, main .container, .crumb");
                 if (o || (o = document.querySelector(".card, .calc-card")), o) {
                     var a = document.createElement("div");
-                    a.id = "paye-saved-section", a.style.cssText = "max-width:900px;margin:0 auto;padding:20px 20px 0;", 
-                    o.classList.contains("crumb") ? o.parentNode.insertBefore(a, o.nextSibling) : o.parentNode.insertBefore(a, o), 
+                    a.id = "paye-saved-section", a.style.cssText = "max-width:900px;margin:0 auto;padding:20px 20px 0;",
+                    o.classList.contains("crumb") ? o.parentNode.insertBefore(a, o.nextSibling) : o.parentNode.insertBefore(a, o),
                     t(e, n, a);
                 }
             }(o, e), function(e, n) {
                 var o = document.getElementById("calcBtn") || document.querySelector('.calc-btn');
                 if (o) {
                     var a = document.createElement("div");
-                    a.style.cssText = "display:none;margin-top:12px;text-align:center;", a.id = "paye-save-wrapper", 
-                    a.innerHTML = '<button id="payeSaveBtn" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#fff;border:1.5px solid #0062CC;border-radius:10px;color:#0062CC;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s;"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>Save This Calculation</button>', 
+                    a.style.cssText = "display:none;margin-top:12px;text-align:center;", a.id = "paye-save-wrapper",
+                    a.innerHTML = '<button id="payeSaveBtn" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#fff;border:1.5px solid #0062CC;border-radius:10px;color:#0062CC;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s;"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>Save This Calculation</button>',
                     o.parentElement.insertBefore(a, o.nextSibling);
                     document.getElementById('payeSaveBtn').type='button';
                     document.getElementById('payeSaveBtn').textContent=copy('save');
@@ -74,7 +74,7 @@
                             }); } catch(error) { report(error);return; }
                             clearFailure();
                             var i = document.getElementById("payeSaveBtn"), d = copy('save');
-                            i.textContent = copy('saved'), i.style.background = "#0062CC", i.style.color = "#fff", 
+                            i.textContent = copy('saved'), i.style.background = "#0062CC", i.style.color = "#fff",
                             setTimeout(function() {
                                 i.innerHTML = d, i.style.background = "#fff", i.style.color = "#0062CC";
                             }, 1500);

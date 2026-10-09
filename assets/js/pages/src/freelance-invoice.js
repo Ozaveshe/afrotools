@@ -369,10 +369,10 @@
     }
     function p(e) {
         var t = f(m(), e || {});
-        return t.meta.dueDays = Number(t.meta.dueDays) || 0, t.adjustments.discountPct = y(t.adjustments.discountPct), 
-        t.adjustments.taxPct = y(t.adjustments.taxPct), t.adjustments.withholdingPct = y(t.adjustments.withholdingPct), 
-        t.adjustments.paid = y(t.adjustments.paid), c[t.meta.currency] || (t.meta.currency = (o[t.meta.country] || o.Nigeria).currency), 
-        Array.isArray(t.lineItems) && t.lineItems.length || (t.lineItems = m().lineItems), 
+        return t.meta.dueDays = Number(t.meta.dueDays) || 0, t.adjustments.discountPct = y(t.adjustments.discountPct),
+        t.adjustments.taxPct = y(t.adjustments.taxPct), t.adjustments.withholdingPct = y(t.adjustments.withholdingPct),
+        t.adjustments.paid = y(t.adjustments.paid), c[t.meta.currency] || (t.meta.currency = (o[t.meta.country] || o.Nigeria).currency),
+        Array.isArray(t.lineItems) && t.lineItems.length || (t.lineItems = m().lineItems),
         t.lineItems = t.lineItems.map(function(e) {
             return {
                 id: e.id || u(),
@@ -490,8 +490,8 @@
     }
     function B() {
         var e = T();
-        d("metricSubtotal").textContent = x(e.subtotal), d("metricTax").textContent = x(e.tax), 
-        d("metricTotal").textContent = x(e.gross), d("metricBalance").textContent = x(e.balance), 
+        d("metricSubtotal").textContent = x(e.subtotal), d("metricTax").textContent = x(e.tax),
+        d("metricTotal").textContent = x(e.gross), d("metricBalance").textContent = x(e.balance),
         d("invoicePreview").innerHTML = C(!1), N();
     }
     function E(e, t) {
@@ -499,14 +499,14 @@
     }
     function C(t) {
         var n = T(), a = invoiceCopy(k(e.meta.status || "draft")), i = '<div class="fi-doc-top"><div><div class="fi-doc-title">' + v(L()) + '</div><div class="fi-doc-muted">' + v(e.meta.number || "") + '</div><span class="fi-doc-status">' + v(a) + '</span></div><div class="fi-doc-muted" style="text-align:right"><strong>' + v(e.freelancer.name || invoiceCopy("Freelancer")) + "</strong><br>" + v(e.freelancer.contact || "") + "<br>" + v(e.freelancer.address || "") + "</div></div>";
-        return i += invoiceCopy('<div class="fi-doc-parties"><div class="fi-doc-block"><h3>From</h3><p>') + E(e.freelancer, invoiceCopy("Freelancer")) + invoiceCopy('</p></div><div class="fi-doc-block"><h3>Bill to</h3><p>') + E(e.client, invoiceCopy("Client")) + "</p></div></div>", 
-        i += invoiceCopy('<div class="fi-doc-meta"><div><span>Issue date</span><strong>') + v(P(e.meta.issueDate)) + invoiceCopy("</strong></div><div><span>Due date</span><strong>") + v(P(S())) + invoiceCopy("</strong></div><div><span>Reference</span><strong>") + v(e.meta.reference || invoiceCopy("None")) + "</strong></div></div>", 
-        i += invoiceCopy('<table class="fi-doc-table"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'), 
+        return i += invoiceCopy('<div class="fi-doc-parties"><div class="fi-doc-block"><h3>From</h3><p>') + E(e.freelancer, invoiceCopy("Freelancer")) + invoiceCopy('</p></div><div class="fi-doc-block"><h3>Bill to</h3><p>') + E(e.client, invoiceCopy("Client")) + "</p></div></div>",
+        i += invoiceCopy('<div class="fi-doc-meta"><div><span>Issue date</span><strong>') + v(P(e.meta.issueDate)) + invoiceCopy("</strong></div><div><span>Due date</span><strong>") + v(P(S())) + invoiceCopy("</strong></div><div><span>Reference</span><strong>") + v(e.meta.reference || invoiceCopy("None")) + "</strong></div></div>",
+        i += invoiceCopy('<table class="fi-doc-table"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'),
         e.lineItems.forEach(function(e) {
             i += "<tr><td><strong>" + v(e.description || invoiceCopy("Line item")) + '</strong><br><span class="fi-doc-muted">' + v(invoiceCopy(k(e.type))) + (y(e.taxPct) ? " | Tax " + v(e.taxPct) + "%" : "") + "</span></td><td>" + v(e.quantity) + "</td><td>" + v(invoiceUnitRate(e.rate, false)) + "</td><td>" + v(x(I(e))) + "</td></tr>";
-        }), i += "</tbody></table>", i += '<div class="fi-doc-totals">' + j(invoiceCopy("Subtotal"), n.subtotal) + (n.discount ? j(invoiceCopy("Discount"), -n.discount) : "") + (n.tax ? j(invoiceCopy("Tax"), n.tax) : "") + j(invoiceCopy("Total"), n.gross, !0) + (n.withholding ? j(invoiceCopy("Withholding"), -n.withholding) : "") + (n.paid ? j(invoiceCopy("Paid"), -n.paid) : "") + j(invoiceCopy("Balance due"), n.balance, !0) + "</div>", 
-        i += invoiceCopy('<div class="fi-payment-box"><div><h3>Payment instructions</h3><p>') + v(A()) + "</p>" + (e.payment.link ? "<p><strong>Payment link:</strong> " + v(e.payment.link) + "</p>" : "") + '</div><div class="fi-qr" id="paymentQr" role="img" aria-label="Payment QR code"></div></div>', 
-        i += '<div class="fi-doc-footer"><p><strong>Note:</strong> ' + v(e.notes.clientNote || "") + "</p><p><strong>Terms:</strong> " + v(e.notes.terms || "") + invoiceCopy("</p><p>Generated with AfroTools.com</p></div>"), 
+        }), i += "</tbody></table>", i += '<div class="fi-doc-totals">' + j(invoiceCopy("Subtotal"), n.subtotal) + (n.discount ? j(invoiceCopy("Discount"), -n.discount) : "") + (n.tax ? j(invoiceCopy("Tax"), n.tax) : "") + j(invoiceCopy("Total"), n.gross, !0) + (n.withholding ? j(invoiceCopy("Withholding"), -n.withholding) : "") + (n.paid ? j(invoiceCopy("Paid"), -n.paid) : "") + j(invoiceCopy("Balance due"), n.balance, !0) + "</div>",
+        i += invoiceCopy('<div class="fi-payment-box"><div><h3>Payment instructions</h3><p>') + v(A()) + "</p>" + (e.payment.link ? "<p><strong>Payment link:</strong> " + v(e.payment.link) + "</p>" : "") + '</div><div class="fi-qr" id="paymentQr" role="img" aria-label="Payment QR code"></div></div>',
+        i += '<div class="fi-doc-footer"><p><strong>Note:</strong> ' + v(e.notes.clientNote || "") + "</p><p><strong>Terms:</strong> " + v(e.notes.terms || "") + invoiceCopy("</p><p>Generated with AfroTools.com</p></div>"),
         t ? '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + v(re()) + "</title></head><body>" + i + "</body></html>" : i;
     }
     function j(e, t, n) {
@@ -572,8 +572,8 @@
         } ], a = n.reduce(function(e, t) {
             return e + (t.ok ? t.points : 0);
         }, 0);
-        d("scoreValue").textContent = String(a), d("scoreMeter").style.width = a + "%", 
-        d("scoreLabel").textContent = a >= 90 ? "Ready" : a >= 70 ? "Review" : "Draft", 
+        d("scoreValue").textContent = String(a), d("scoreMeter").style.width = a + "%",
+        d("scoreLabel").textContent = a >= 90 ? "Ready" : a >= 70 ? "Review" : "Draft",
         d("checkList").innerHTML = n.map(function(e) {
             return '<div class="fi-check ' + (e.ok ? "ok" : "") + '"><span class="fi-check-dot">' + (e.ok ? "OK" : "!") + "</span><span><strong>" + v(e.label) + "</strong></span></div>";
         }).join("");
@@ -736,22 +736,22 @@
                 title: re(),
                 subject: invoiceCopy("Freelance invoice generated with AfroTools"),
                 creator: "AfroTools Freelance Invoice Generator"
-            }), t.setFont("helvetica", "bold"), t.setFontSize(20), r = $(t, L().toUpperCase(), i, r, o, 8, a - 16) + 1, 
-            t.setFontSize(10), t.setFont("helvetica", "normal"), r = $(t, e.meta.number + " | " + invoiceCopy(e.meta.country) + " | " + e.meta.currency + " | " + invoiceCopy(k(e.meta.status)), i, r, o, 5.5, a - 16) + 4, 
-            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("From"), i, r, o, 6, a - 16), 
-            t.setFont("times", "normal"), r = $(t, [ e.freelancer.name, e.freelancer.contact, e.freelancer.address, e.freelancer.taxId ? invoiceCopy("Tax ID: ") + e.freelancer.taxId : "" ].filter(Boolean).join("\n"), i, r, o, 5.2, a - 16) + 2, 
-            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Bill to"), i, r, o, 6, a - 16), 
-            t.setFont("times", "normal"), r = $(t, [ e.client.name, e.client.email, e.client.address ].filter(Boolean).join("\n"), i, r, o, 5.2, a - 16) + 3, 
-            r = $(t, invoiceCopy("Issue date: ") + P(e.meta.issueDate) + invoiceCopy(" | Due date: ") + P(S()) + (e.meta.reference ? invoiceCopy(" | Ref: ") + e.meta.reference : ""), i, r, o, 5.2, a - 16) + 4, 
-            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Line items"), i, r, o, 6, a - 16), 
+            }), t.setFont("helvetica", "bold"), t.setFontSize(20), r = $(t, L().toUpperCase(), i, r, o, 8, a - 16) + 1,
+            t.setFontSize(10), t.setFont("helvetica", "normal"), r = $(t, e.meta.number + " | " + invoiceCopy(e.meta.country) + " | " + e.meta.currency + " | " + invoiceCopy(k(e.meta.status)), i, r, o, 5.5, a - 16) + 4,
+            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("From"), i, r, o, 6, a - 16),
+            t.setFont("times", "normal"), r = $(t, [ e.freelancer.name, e.freelancer.contact, e.freelancer.address, e.freelancer.taxId ? invoiceCopy("Tax ID: ") + e.freelancer.taxId : "" ].filter(Boolean).join("\n"), i, r, o, 5.2, a - 16) + 2,
+            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Bill to"), i, r, o, 6, a - 16),
+            t.setFont("times", "normal"), r = $(t, [ e.client.name, e.client.email, e.client.address ].filter(Boolean).join("\n"), i, r, o, 5.2, a - 16) + 3,
+            r = $(t, invoiceCopy("Issue date: ") + P(e.meta.issueDate) + invoiceCopy(" | Due date: ") + P(S()) + (e.meta.reference ? invoiceCopy(" | Ref: ") + e.meta.reference : ""), i, r, o, 5.2, a - 16) + 4,
+            t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Line items"), i, r, o, 6, a - 16),
             t.setFont("times", "normal"), e.lineItems.forEach(function(e) {
                 r = $(t, e.description + " | " + e.quantity + " x " + invoiceUnitRate(e.rate, true) + " = " + w(I(e)), i, r, o, 5.2, a - 16);
             }), r += 3, [ [ invoiceCopy("Subtotal"), c.subtotal ], [ invoiceCopy("Discount"), -c.discount ], [ invoiceCopy("Tax"), c.tax ], [ invoiceCopy("Total"), c.gross ], [ invoiceCopy("Withholding"), -c.withholding ], [ invoiceCopy("Paid"), -c.paid ], [ invoiceCopy("Balance due"), c.balance ] ].forEach(function(e) {
                 (e[1] || invoiceCopy("Subtotal") === e[0] || invoiceCopy("Total") === e[0] || invoiceCopy("Balance due") === e[0]) && (r = $(t, e[0] + ": " + w(e[1]), i, r, o, 5.2, a - 16));
-            }), r += 4, t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Payment instructions"), i, r, o, 6, a - 16), 
-            t.setFont("times", "normal"), r = $(t, A() + (e.payment.link ? invoiceCopy("\nPayment link: ") + e.payment.link : ""), i, r, o, 5.2, a - 16) + 4, 
+            }), r += 4, t.setFont("helvetica", "bold"), r = $(t, invoiceCopy("Payment instructions"), i, r, o, 6, a - 16),
+            t.setFont("times", "normal"), r = $(t, A() + (e.payment.link ? invoiceCopy("\nPayment link: ") + e.payment.link : ""), i, r, o, 5.2, a - 16) + 4,
             r = $(t, invoiceCopy("Note: ") + e.notes.clientNote + invoiceCopy("\nTerms: ") + e.notes.terms, i, r, o, 5.2, a - 16);
-            for (var s = 1; s <= t.getNumberOfPages(); s += 1) t.setPage(s), t.setFont("helvetica", "normal"), 
+            for (var s = 1; s <= t.getNumberOfPages(); s += 1) t.setPage(s), t.setFont("helvetica", "normal"),
             t.setFontSize(8), t.setTextColor(140), t.text(invoiceCopy("Generated with AfroTools.com"), n / 2, a - 8, {
                 align: "center"
             }), t.text(String(s), n - i, a - 8, {
@@ -772,7 +772,7 @@
         var t = T(), n = [ re(), L() + " " + e.meta.number, invoiceCopy("Issue date: ") + P(e.meta.issueDate), invoiceCopy("Due date: ") + P(S()), "", invoiceCopy("FROM"), [ e.freelancer.name, e.freelancer.contact, e.freelancer.address, e.freelancer.taxId ].filter(Boolean).join("\n"), "", invoiceCopy("BILL TO"), [ e.client.name, e.client.email, e.client.address ].filter(Boolean).join("\n"), "", invoiceCopy("ITEMS") ];
         e.lineItems.forEach(function(e) {
             n.push(e.description + " | " + e.quantity + " x " + invoiceUnitRate(e.rate, true) + " = " + w(I(e)));
-        }), n.push("", invoiceCopy("Subtotal: ") + w(t.subtotal), invoiceCopy("Discount: ") + w(-t.discount), invoiceCopy("Tax: ") + w(t.tax), invoiceCopy("Total: ") + w(t.gross), invoiceCopy("Withholding: ") + w(-t.withholding), invoiceCopy("Paid: ") + w(-t.paid), invoiceCopy("Balance due: ") + w(t.balance), "", invoiceCopy("Payment: ") + A(), "", e.notes.clientNote, e.notes.terms), 
+        }), n.push("", invoiceCopy("Subtotal: ") + w(t.subtotal), invoiceCopy("Discount: ") + w(-t.discount), invoiceCopy("Tax: ") + w(t.tax), invoiceCopy("Total: ") + w(t.gross), invoiceCopy("Withholding: ") + w(-t.withholding), invoiceCopy("Paid: ") + w(-t.paid), invoiceCopy("Balance due: ") + w(t.balance), "", invoiceCopy("Payment: ") + A(), "", e.notes.clientNote, e.notes.terms),
         ie(n.join("\n") + "\n", oe() + ".txt", "text/plain;charset=utf-8");
     }
     function ee() {
@@ -781,7 +781,7 @@
             t.push([ e.type, e.description, e.quantity, e.rate, e.taxPct, I(e) ]);
         });
         var n = T();
-        t.push([], [ invoiceCopy("Subtotal"), n.subtotal ], [ invoiceCopy("Discount"), n.discount ], [ invoiceCopy("Tax"), n.tax ], [ invoiceCopy("Total"), n.gross ], [ invoiceCopy("Withholding"), n.withholding ], [ invoiceCopy("Paid"), n.paid ], [ invoiceCopy("Balance due"), n.balance ]), 
+        t.push([], [ invoiceCopy("Subtotal"), n.subtotal ], [ invoiceCopy("Discount"), n.discount ], [ invoiceCopy("Tax"), n.tax ], [ invoiceCopy("Total"), n.gross ], [ invoiceCopy("Withholding"), n.withholding ], [ invoiceCopy("Paid"), n.paid ], [ invoiceCopy("Balance due"), n.balance ]),
         ie(t.map(ae).join("\n"), oe() + "-items.csv", "text/csv;charset=utf-8");
     }
     function te() {
@@ -867,7 +867,7 @@
         var a = e instanceof Blob ? e : new Blob([ e ], {
             type: n || "application/octet-stream"
         }), i = document.createElement("a");
-        i.href = URL.createObjectURL(a), i.download = t, i.dataset.noPdfGate = "true", document.body.appendChild(i), 
+        i.href = URL.createObjectURL(a), i.download = t, i.dataset.noPdfGate = "true", document.body.appendChild(i),
         i.click(), i.remove(), setTimeout(function() {
             URL.revokeObjectURL(i.href);
         }, 500);
@@ -891,10 +891,10 @@
             name: "Kijani Foods Ltd",
             email: "finance@kijani.example",
             address: "Nairobi, Kenya"
-        }, e.meta.country = "Nigeria", e.meta.currency = "NGN", e.meta.status = "sent", 
-        e.meta.reference = "Brand launch sprint", e.adjustments.taxPct = 7.5, e.adjustments.withholdingPct = 5, 
-        e.adjustments.paid = 15e4, e.payment.method = "paystack", e.payment.link = "https://paystack.com/pay/sample-invoice", 
-        e.payment.instructions = "Pay via Paystack using the payment link. Bank transfer is also accepted with the invoice number as reference.", 
+        }, e.meta.country = "Nigeria", e.meta.currency = "NGN", e.meta.status = "sent",
+        e.meta.reference = "Brand launch sprint", e.adjustments.taxPct = 7.5, e.adjustments.withholdingPct = 5,
+        e.adjustments.paid = 15e4, e.payment.method = "paystack", e.payment.link = "https://paystack.com/pay/sample-invoice",
+        e.payment.instructions = "Pay via Paystack using the payment link. Bank transfer is also accepted with the invoice number as reference.",
         e.lineItems = l.design.lines.map(function(e) {
             return f({
                 id: u()
@@ -903,8 +903,8 @@
     }
     function le(e) {
         var t = document.querySelector(".fi-toast");
-        t || ((t = document.createElement("div")).className = "fi-toast", t.setAttribute("role", "status"), 
-        t.setAttribute("aria-live", "polite"), document.body.appendChild(t)), t.textContent = e, 
+        t || ((t = document.createElement("div")).className = "fi-toast", t.setAttribute("role", "status"),
+        t.setAttribute("aria-live", "polite"), document.body.appendChild(t)), t.textContent = e,
         t.classList.add("show"), clearTimeout(le.timer), le.timer = setTimeout(function() {
             t.classList.remove("show");
         }, 2400);
@@ -926,22 +926,22 @@
             return p(m());
         }(), document.body.addEventListener("input", function(t) {
             var n = t.target.closest("[data-bind]"), a = t.target.closest("[data-bind-number]"), i = t.target.closest("[data-item-field]");
-            if (n) return h(n.getAttribute("data-bind"), n.value), "paymentMethod" === n.id && K(), 
+            if (n) return h(n.getAttribute("data-bind"), n.value), "paymentMethod" === n.id && K(),
             void Q();
             if (a) return h(a.getAttribute("data-bind-number"), y(a.value)), void Q();
             if (i) {
                 var r = Number(i.getAttribute("data-item-index")), o = i.getAttribute("data-item-field");
-                e.lineItems[r][o] = [ "quantity", "rate", "taxPct" ].indexOf(o) >= 0 ? y(i.value) : i.value, 
+                e.lineItems[r][o] = [ "quantity", "rate", "taxPct" ].indexOf(o) >= 0 ? y(i.value) : i.value,
                 Q();
             }
         }), document.body.addEventListener("change", function(t) {
             var n, a = t.target.closest("[data-bind]"), i = t.target.closest("[data-item-field]");
-            if (a) return h(a.getAttribute("data-bind"), a.value), "country" === a.id && (n = o[e.meta.country] || o.Nigeria, 
-            e.meta.currency = n.currency, e.adjustments.taxPct = n.tax), "paymentMethod" === a.id && K(), 
+            if (a) return h(a.getAttribute("data-bind"), a.value), "country" === a.id && (n = o[e.meta.country] || o.Nigeria,
+            e.meta.currency = n.currency, e.adjustments.taxPct = n.tax), "paymentMethod" === a.id && K(),
             void ("country" === a.id || "paymentMethod" === a.id ? H() : Q());
             if (i) {
                 var r = Number(i.getAttribute("data-item-index")), c = i.getAttribute("data-item-field");
-                e.lineItems[r][c] = [ "quantity", "rate", "taxPct" ].indexOf(c) >= 0 ? y(i.value) : i.value, 
+                e.lineItems[r][c] = [ "quantity", "rate", "taxPct" ].indexOf(c) >= 0 ? y(i.value) : i.value,
                 Q();
             }
         }), document.body.addEventListener("click", function(t) {
@@ -974,10 +974,10 @@
             z("time");
         }), d("addExpenseBtn").addEventListener("click", function() {
             z("expense");
-        }), d("saveClientBtn").addEventListener("click", U), d("saveInvoiceBtn").addEventListener("click", J), 
-        d("newInvoiceBtn").addEventListener("click", ce), d("loadSampleBtn").addEventListener("click", se), 
-        d("pdfBtn").addEventListener("click", Y), d("docBtn").addEventListener("click", V), 
-        d("txtBtn").addEventListener("click", _), d("csvBtn").addEventListener("click", ee), 
+        }), d("saveClientBtn").addEventListener("click", U), d("saveInvoiceBtn").addEventListener("click", J),
+        d("newInvoiceBtn").addEventListener("click", ce), d("loadSampleBtn").addEventListener("click", se),
+        d("pdfBtn").addEventListener("click", Y), d("docBtn").addEventListener("click", V),
+        d("txtBtn").addEventListener("click", _), d("csvBtn").addEventListener("click", ee),
         d("jsonBtn").addEventListener("click", te), d("printBtn").addEventListener("click", function() {
             window.print();
         }), d("importJson").addEventListener("change", ne), d("copyEmailBtn").addEventListener("click", function() {
