@@ -15,6 +15,11 @@ const DEFAULT_WIDTH = "1200";
 const DEFAULT_HEIGHT = "630";
 const TOOL_REGISTRY_PATH = path.join(ROOT, "assets", "js", "components", "tool-registry.js");
 const TOOL_IMAGE_EXTENSIONS = [".webp", ".png", ".jpg", ".jpeg"];
+const REVIEWED_BLOG_SOCIAL_IMAGES = new Map(
+  require('../data/image-generation/blog-artwork-bindings.json').images
+    .filter(row => row.placement === 'article-hero' && row.update_social)
+    .map(row => [row.file, SITE_ORIGIN + row.path])
+);
 const IGNORE_DIRS = new Set([
   ".git",
   ".claude",
@@ -457,7 +462,10 @@ function applyFallbacks(html, filePath) {
     changed = true;
   }
 
-  const preferredToolImage = getPreferredToolImage(filePath, html);
+  // A reviewed article hero owns its social image even when the article embeds a tool.
+  const reviewedBlogImage = REVIEWED_BLOG_SOCIAL_IMAGES.get(path.relative(ROOT, filePath).replace(/\\/g, '/'));
+  const retainsReviewedBlogImage = reviewedBlogImage && getMetaContent(next, "property", "og:image") === reviewedBlogImage;
+  const preferredToolImage = retainsReviewedBlogImage ? null : getPreferredToolImage(filePath, html);
   const targetImage = preferredToolImage ? preferredToolImage.absoluteUrl : DEFAULT_IMAGE;
   const existingOgImage = getMetaContent(next, "property", "og:image");
   const existingTwitterImage = getMetaContent(next, "name", "twitter:image");

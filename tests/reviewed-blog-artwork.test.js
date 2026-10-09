@@ -41,3 +41,19 @@ test('reviewed blog imagery retains exact subjects, hashes and explicit illustra
 test('native blog image owner is idempotent',()=>{
  assert.equal(require('../scripts/apply-reviewed-blog-images').apply(true),0);
 });
+
+test('later OG fallback passes preserve reviewed article imagery around embedded tools',()=>{
+ const {applyFallbacks,getMetaContent}=require('../scripts/apply-og-fallbacks');
+ for(const row of bindings.filter(row=>row.placement==='article-hero'&&row.update_social)){
+  const file=path.join(ROOT,row.file),html=fs.readFileSync(file,'utf8');
+  const result=applyFallbacks(html,file),url='https://afrotools.com'+row.path;
+  assert.equal(getMetaContent(result.html,'property','og:image'),url,row.file);
+  assert.equal(getMetaContent(result.html,'name','twitter:image'),url,row.file);
+  assert.equal(getMetaContent(result.html,'property','og:image:width'),String(row.width),row.file);
+  assert.equal(getMetaContent(result.html,'property','og:image:height'),String(row.height),row.file);
+  for(const match of result.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)){
+   const schema=JSON.parse(match[1]);
+   if(['Article','BlogPosting','WebPage','WebApplication'].includes(schema['@type'])&&schema.image)assert.equal(schema.image,url,row.file);
+  }
+ }
+});
