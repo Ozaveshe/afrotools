@@ -4726,7 +4726,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-ada-za-shule-sw",
+        "imageKey": "zana-ada-za-shule-sw"
       },
       {
         "id": "binary-converter-sw-coverage-binary-converter",
@@ -4818,7 +4820,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-aps-matric-sw",
+        "imageKey": "zana-kikokotoo-aps-matric-sw"
       },
       {
         "id": "zana-kikokotoo-gpa-sw",
@@ -4830,7 +4834,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-gpa-sw",
+        "imageKey": "zana-kikokotoo-gpa-sw"
       },
       {
         "id": "zana-kikokotoo-helb-kenya-sw",
@@ -4842,7 +4848,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-helb-kenya-sw",
+        "imageKey": "zana-kikokotoo-helb-kenya-sw"
       },
       {
         "id": "zana-kikokotoo-jamb-sw",
@@ -4854,7 +4862,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-jamb-sw",
+        "imageKey": "zana-kikokotoo-jamb-sw"
       },
       {
         "id": "zana-kikokotoo-kcse-sw",
@@ -4880,7 +4890,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kikokotoo-waec-neco-sw",
+        "imageKey": "zana-kikokotoo-waec-neco-sw"
       },
       {
         "id": "zana-udhamini-sw",
@@ -4916,7 +4928,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-marejesho-ya-mkopo-wa-mwanafunzi-sw",
+        "imageKey": "zana-marejesho-ya-mkopo-wa-mwanafunzi-sw"
       }
     ],
     "fr::education": [
@@ -14558,7 +14572,9 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-gharama-za-greenhouse-sw",
+        "imageKey": "zana-gharama-za-greenhouse-sw"
       },
       {
         "id": "zana-kikokotoo-chakula-cha-mifugo-sw",
