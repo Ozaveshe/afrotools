@@ -478,8 +478,8 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Nafasi ya PDF","alternateName":"Free Online PDF Editor","description":"Panga, zungusha, unganisha, gawanya na uhifadhi kurasa za PDF ndani ya kivinjari bila kupakia faili zako mtandaoni.","url":"https://afrotools.com/sw/zana/nafasi-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser with local file APIs","featureList":["Merge PDF files","Split and extract PDF pages","Rearrange and rotate pages","Add text, highlights, images, stamps, signatures, and dates","Add page numbers and watermarks","Create password-protected copies when the local encryption runtime is available","Compress and export PDF copies","Create visual cover boxes and flattened review copies"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-workspace.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Nafasi ya PDF","url":"https://afrotools.com/sw/zana/nafasi-pdf/","description":"Panga, zungusha, unganisha, gawanya na uhifadhi kurasa za PDF ndani ya kivinjari bila kupakia faili zako mtandaoni.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-workspace.webp"}</script>
-<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
-<script src="/assets/js/bundles/core.aeb1b82d.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=6030279d" defer></script>
+<script src="/assets/js/lib/save-state-classic.js?v=a2d5e02d"></script>
+<script src="/assets/js/bundles/core.9a4ccbbc.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=3265eae9" defer></script>
 <meta property="og:locale" content="sw_TZ">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-workspace.webp">
@@ -824,13 +824,18 @@ function workspaceStartupStatus(state){
 async function drainWorkspaceFiles(){
   if(!workspaceStartup.ready||workspaceStartup.opening)return;
   workspaceStartup.opening=true;
-  try{while(workspaceStartup.pending){var file=workspaceStartup.pending;workspaceStartup.pending=null;await openPDF(file)}}
+  try{while(workspaceStartup.pending){var request=workspaceStartup.pending;workspaceStartup.pending=null;request.resolve(await openPDF(request.file))}}
   finally{workspaceStartup.opening=false}
 }
 function queueWorkspaceFile(file){
-  if(!file)return;
-  workspaceStartup.pending=file;
-  if(workspaceStartup.ready)drainWorkspaceFiles();else init();
+  if(!file)return Promise.resolve(null);
+  // History and upload share one retained request across runtime retries.
+  // A newer selection supersedes only the request that has not started opening.
+  if(workspaceStartup.pending)workspaceStartup.pending.resolve(null);
+  return new Promise(function(resolve){
+    workspaceStartup.pending={file:file,resolve:resolve};
+    if(workspaceStartup.ready)drainWorkspaceFiles();else init();
+  });
 }
 function init(){
   if(workspaceStartup.ready){drainWorkspaceFiles();return Promise.resolve()}
@@ -1811,19 +1816,22 @@ async function ensurePDFRuntime(){
 }
 
 async function loadPDFBytes(bytes,name){
+  var committed=false;
   try{
     await ensurePDFRuntime();
-    pB=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);fn=name||"document.pdf";
+    var candidateBytes=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);
     var doc;
     // Do NOT pass ignoreEncryption here. This workspace cannot decrypt (see the
     // disabled "Remove password" command), and opening an encrypted file anyway
     // produced an export that could not be reopened even with the right password.
     // Refuse at the door instead of silently destroying the document.
-    try{ doc=await PDFLib.PDFDocument.load(pB.slice()); }
+    try{ doc=await PDFLib.PDFDocument.load(candidateBytes.slice()); }
     catch(encErr){
       if(/encrypt/i.test(encErr&&encErr.message||"")) throw new Error("This PDF is password-protected. AfroTools cannot open encrypted PDFs — remove the password in your PDF reader first, then upload it again.");
       throw encErr;
     }
+    // Reject unreadable replacements before changing the current document.
+    pB=candidateBytes;fn=name||"document.pdf";committed=true;
     objs=[];objSel=null;objEditing=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
     var n=doc.getPageCount();po=[];for(var i=0;i<n;i++)po.push(i);pr={};sel=0;th={};
     await genTh();$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active");$("tbFn").textContent=fn;if($("tbVault"))$("tbVault").setAttribute("file-name",fn);
@@ -1833,15 +1841,20 @@ async function loadPDFBytes(bytes,name){
     setCmdMode(getPdfFastStartMode(),false);closeCommandMenus();closeCommandSheet();
     rSB();await rMain();hideP();updateMobPg();
     trackPdfEvent("pdf_file_uploaded",{success:true});
-  }catch(e){hideP();trackPdfEvent("pdf_file_uploaded",{success:false});toast("Cannot read: "+e.message,1)}
+    return true;
+  }catch(e){
+    hideP();trackPdfEvent("pdf_file_uploaded",{success:false});
+    if(!committed&&pB&&po.length){$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active")}
+    toast("Cannot read: "+e.message,1);return false;
+  }
 }
 
 async function openPDF(file){
   showP("Loading PDF…","Reading "+file.name);
   try{
     var ab=await file.arrayBuffer();
-    await loadPDFBytes(new Uint8Array(ab),file.name);
-  }catch(e){hideP();toast("Cannot read: "+e.message,1)}
+    return await loadPDFBytes(new Uint8Array(ab),file.name);
+  }catch(e){hideP();toast("Cannot read: "+e.message,1);return false}
 }
 
 async function genTh(){
@@ -2760,145 +2773,12 @@ function pPr(p){$("pF").style.width=p+"%"}
 function hideP(){$("pOv").classList.remove("on")}
 function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" err":"")+" on";setTimeout(function(){t.classList.remove("on")},3500)}
 </script>
-<script>
-// PDF Workspace - saved recent operations
-(function(){
-  if(typeof SaveState==='undefined')return;
-  var FREE_LIMIT=2,PRO_LIMIT=10,DB_NAME='afrotools-pdf-workspace',DB_STORE='recent-files';
-  var ss=new SaveState('pdf-workspace',{maxFree:PRO_LIMIT});
-  var section=document.getElementById('pdf-saved-section');
-  var grid=document.getElementById('pdf-saved-grid');
-  var isPro=false,limit=FREE_LIMIT;
-  if(!section||!grid)return;
-
-  function openDb(){
-    return new Promise(function(resolve,reject){
-      if(!window.indexedDB){reject(new Error('This browser cannot save files offline.'));return;}
-      var req=indexedDB.open(DB_NAME,1);
-      req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(DB_STORE))db.createObjectStore(DB_STORE);};
-      req.onsuccess=function(){resolve(req.result);};
-      req.onerror=function(){reject(req.error||new Error('Unable to open browser storage.'));};
-    });
-  }
-  function putBytes(id,bytes){
-    return openDb().then(function(db){return new Promise(function(resolve,reject){
-      var tx=db.transaction(DB_STORE,'readwrite');
-      tx.objectStore(DB_STORE).put(bytes instanceof Uint8Array?bytes:new Uint8Array(bytes),id);
-      tx.oncomplete=function(){db.close();resolve();};
-      tx.onerror=function(){db.close();reject(tx.error||new Error('Unable to save PDF copy.'));};
-    });});
-  }
-  function getBytes(id){
-    return openDb().then(function(db){return new Promise(function(resolve,reject){
-      var tx=db.transaction(DB_STORE,'readonly'),req=tx.objectStore(DB_STORE).get(id);
-      req.onsuccess=function(){db.close();resolve(req.result||null);};
-      req.onerror=function(){db.close();reject(req.error||new Error('Unable to read PDF copy.'));};
-    });});
-  }
-  function delBytes(id){
-    return openDb().then(function(db){return new Promise(function(resolve){
-      var tx=db.transaction(DB_STORE,'readwrite');
-      tx.objectStore(DB_STORE).delete(id);
-      tx.oncomplete=function(){db.close();resolve();};
-      tx.onerror=function(){db.close();resolve();};
-    });}).catch(function(){});
-  }
-  function trimBytes(ids){
-    openDb().then(function(db){
-      var tx=db.transaction(DB_STORE,'readwrite'),store=tx.objectStore(DB_STORE),req=store.getAllKeys();
-      req.onsuccess=function(){(req.result||[]).forEach(function(id){if(ids.indexOf(id)===-1)store.delete(id);});};
-      tx.oncomplete=function(){db.close();};
-      tx.onerror=function(){db.close();};
-    }).catch(function(){});
-  }
-  function readJson(key){
-    try{return JSON.parse(localStorage.getItem(key)||'null')}catch(e){return null}
-  }
-  function validExpiry(value){
-    if(!value)return true;
-    var ms=Date.parse(value);
-    return Number.isNaN(ms)||ms>Date.now();
-  }
-  function localIsPro(){
-    var cache=readJson('afro_pro_status_cache');
-    if(cache&&cache.isPro&&validExpiry(cache.expiresAt))return true;
-    var profile=readJson('afro_profile_cache');
-    var user=(profile&&profile.user)||readJson('afro_auth_v2')||{};
-    var tier=String(user.subscription_tier||user.tier||user.plan||'').toLowerCase();
-    var role=String(user.role||'').toLowerCase();
-    return (role==='admin'||role==='owner'||['pro','premium','team','business','enterprise','lifetime','trialing'].indexOf(tier)!==-1)&&validExpiry(user.subscription_expires_at||user.pro_expires_at||user.expires_at);
-  }
-  function refreshPlan(){
-    isPro=localIsPro();limit=isPro?PRO_LIMIT:FREE_LIMIT;render();
-    if(window.AfroProGate&&window.AfroProGate.getStatus){
-      window.AfroProGate.getStatus().then(function(status){
-        isPro=!!(status&&status.isPro);limit=isPro?PRO_LIMIT:FREE_LIMIT;render();
-      }).catch(function(){});
-    }
-  }
-  function render(){
-    var all=ss.getAll(),items=all.slice(0,limit),hidden=Math.max(0,all.length-items.length);
-    trimBytes(all.slice(0,PRO_LIMIT).map(function(it){return it.id;}));
-    if(!items.length){section.style.display='none';return;}
-    section.style.display='';
-    var head=section.querySelector('[data-pdf-history-status]');
-    if(!head){
-      head=document.createElement('div');
-      head.setAttribute('data-pdf-history-status','');
-      head.style.cssText='font-size:.7rem;color:#64748b;margin:2px 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
-      grid.parentNode.insertBefore(head,grid);
-    }
-    head.innerHTML='<span>'+esc(isPro?'Pro: showing last 10 PDF operations':'Free: showing last 2 PDF operations')+'</span>'+
-      (hidden?'<a href="/pro/" style="font-weight:800;color:#0062CC;text-decoration:none;">Upgrade to see '+hidden+' more</a>':'');
-    grid.innerHTML=items.map(function(it){
-      return '<div style="flex:1;min-width:180px;max-width:240px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px;position:relative;">'+
-        '<div style="font-size:.8rem;font-weight:700;color:#111827;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(it.title)+'</div>'+
-        '<div style="font-size:.68rem;color:#6b7280;">'+esc(it.data&&it.data.operation||'')+'</div>'+
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
-        '<span style="font-size:.6rem;color:#64748b;">'+ago(it.updatedAt)+'</span>'+
-        '<span style="display:flex;gap:8px;align-items:center;">'+
-        '<button type="button" onclick="pdfResumeSaved(\''+it.id+'\')" style="background:none;border:none;color:#0062CC;font-size:.65rem;font-weight:800;cursor:pointer;">Resume</button>'+
-        '<button type="button" onclick="pdfDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
-        '</span>'+
-        '</div></div>';
-    }).join('');
-  }
-
-  function ago(ts){
-    var s=Math.floor((Date.now()-ts)/1000);
-    if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';
-    if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);
-    if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-  }
-  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
-
-  window.pdfResumeSaved=function(id){
-    var item=ss.load(id);
-    if(!item){toast('This recent PDF was not found.',1);return;}
-    showP('Opening recent PDF...','Loading '+item.title+' from this browser');
-    getBytes(id).then(function(bytes){
-      if(!bytes){hideP();toast('This older recent entry has no saved browser copy. Download it again to make it resumable.',1);return;}
-      return loadPDFBytes(bytes,item.title);
-    }).catch(function(e){hideP();toast('Cannot open recent PDF: '+e.message,1);});
-  };
-  window.pdfDelSaved=function(id){if(confirm('Delete this entry?')){ss.delete(id);delBytes(id);render();}};
-  window.pdfSaveOp=function(name,operation,bytes){
-    var item=ss.save({title:name,data:{operation:operation,hasFile:!!bytes}});
-    if(bytes)putBytes(item.id,bytes).catch(function(){toast('PDF downloaded, but this browser could not save it for resume.',1);});
-    render();
-  };
-
-  refreshPlan();
-  window.addEventListener('afro-auth-change',refreshPlan);
-  window.addEventListener('afro-pro-gate-ready',refreshPlan);
-})();
-</script>
+<script src="/assets/js/pages/pdf-workspace-history.js?v=6637c930"></script>
 
 <script>
  </script>
 <script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=02d5184e" defer></script>
-
   <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-workspace","name":"Nafasi ya PDF","phraseOverrides":{"PDF tools":"Zana za PDF","Need help choosing a PDF action?":"Unahitaji msaada kuchagua hatua ya PDF?","All PDF & document tools":"Zana zote za PDF na hati","Choose from 31 browser PDF and document tools by task.":"Chagua zana kati ya 31 za PDF na hati kulingana na kazi yako.","Freehand":"Chora kwa mkono"},"downloadContract":"local-guest"}</script>
   <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=65606a7e" defer></script>
   <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=dfa089e4" defer></script>

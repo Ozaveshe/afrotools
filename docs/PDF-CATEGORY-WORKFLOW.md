@@ -181,6 +181,30 @@ Create a premium horizontal website banner for AfroTools Document & PDF Workspac
 
 ## Runtime Dependency Policy
 
+### PDF Workspace local history
+
+`assets/js/pages/src/pdf-workspace-history.js` owns history persistence;
+`scripts/minify.js` generates its public runtime. Use
+`node scripts/build-pdf-workspace-history.js --check` to check the runtime
+installation on English, French and Swahili routes without regenerating unrelated
+localized copy. The French full-page owner also installs this runtime; Swahili
+inherits the script from the English page.
+
+The browser database `afrotools-pdf-workspace` uses version 2. Its `recent-files`
+and `recent-operations` stores are written or deleted in the same transaction.
+`history-state` records the completed legacy import. Import reads validated
+`afrotools-saved-pdf-workspace` metadata, preserves the original localStorage
+value and unindexed file bytes, and commits its marker only with the imported
+records. Rendering must never delete files. A failed import must remain retryable.
+
+Run `tests/e2e/pdf-workspace-history-recovery.spec.js` for transaction failures,
+legacy migration, capacity, missing files, local resume and mobile keyboard flow.
+Use synthetic files and keep document bytes out of logs and screenshots.
+Rollback must retain a version-2-compatible adapter: returning to an old runtime
+that opens version 1 will fail after upgrade. Never delete or downgrade user
+stores as a rollback shortcut. New history lives in IndexedDB; the retained
+localStorage value is a legacy recovery copy, not the current history index.
+
 The invoice enhancement source is `assets/js/pages/src/invoice-generator-enhancements.js`;
 `scripts/minify.js` generates `assets/js/pages/invoice-generator-enhancements.js`.
 English, French, Swahili and Hausa reuse this workflow. Hausa UI/export labels live
