@@ -126,8 +126,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "toll-calc"
+        "imageExt": "webp",
+        "sourceId": "toll-calc",
+        "imageKey": "toll-calc"
       },
       {
         "id": "zana-gharama-mafuta-ya-fleet-sw",
@@ -153,8 +154,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "vehicle-operating-cost"
+        "imageExt": "webp",
+        "sourceId": "vehicle-operating-cost",
+        "imageKey": "vehicle-operating-cost"
       },
       {
         "id": "zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish",
@@ -942,9 +944,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "travel-vaccination-cost",
-        "imageId": "travel-vaccination-cost"
+        "imageId": "travel-vaccination-cost",
+        "imageKey": "travel-vaccination-cost"
       },
       {
         "id": "festival-travel-budget-sw-parity",
@@ -986,9 +989,10 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "travel-packing-list",
-        "imageId": "travel-packing-list"
+        "imageId": "travel-packing-list",
+        "imageKey": "travel-packing-list"
       },
       {
         "id": "zana-gharama-za-visa-sw",
@@ -1509,9 +1513,10 @@
         "lang": "ha",
         "priority": 77,
         "estTraffic": 3000,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "tin-guide",
-        "imageId": "tin-guide"
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       },
       {
         "id": "profit-margin-ha",
@@ -2586,9 +2591,10 @@
         "lang": "yo",
         "priority": 78,
         "estTraffic": 3000,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "tin-guide",
-        "imageId": "tin-guide"
+        "imageId": "tin-guide",
+        "imageKey": "tin-guide"
       }
     ],
     "yo::document-pdf": [
@@ -5787,7 +5793,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "shipping-weight"
       }
     ],
     "en::agriculture": [
@@ -7859,9 +7866,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "film-budget",
-        "imageId": "film-budget"
+        "imageId": "film-budget",
+        "imageKey": "film-budget"
       },
       {
         "id": "security-emergency-fund-fr-coverage-security-emergency-fund",
@@ -7873,9 +7881,10 @@
         "lang": "fr",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "security-emergency-fund",
-        "imageId": "security-emergency-fund"
+        "imageId": "security-emergency-fund",
+        "imageKey": "security-emergency-fund"
       },
       {
         "id": "side-hustle-ranker-fr-coverage-side-hustle-ranker",
@@ -7887,9 +7896,10 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "side-hustle-ranker",
-        "imageId": "side-hustle-ranker"
+        "imageId": "side-hustle-ranker",
+        "imageKey": "side-hustle-ranker"
       },
       {
         "id": "planificateur-budget-fr",
@@ -8022,9 +8032,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "tailoring-pricing",
-        "imageId": "tailoring-pricing"
+        "imageId": "tailoring-pricing",
+        "imageKey": "tailoring-pricing"
       },
       {
         "id": "plan-continuite-activite-fr",
@@ -8186,9 +8197,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "youtube-revenue",
-        "imageId": "youtube-revenue"
+        "imageId": "youtube-revenue",
+        "imageKey": "youtube-revenue"
       }
     ],
     "fr::energy": [
@@ -8896,9 +8908,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "islamic-calendar",
-        "imageId": "islamic-calendar"
+        "imageId": "islamic-calendar",
+        "imageKey": "islamic-calendar"
       },
       {
         "id": "calendrier-ramadan-fr",
@@ -9590,9 +9603,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "docker-compose-gen",
-        "imageId": "docker-compose-gen"
+        "imageId": "docker-compose-gen",
+        "imageKey": "docker-compose-gen"
       },
       {
         "id": "verificateur-domaines-africains-fr",
@@ -10427,9 +10441,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "toll-calc",
-        "imageId": "toll-calc"
+        "imageId": "toll-calc",
+        "imageKey": "toll-calc"
       },
       {
         "id": "cout-utilisation-vehicule-fr",
@@ -10441,9 +10456,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "vehicle-operating-cost",
-        "imageId": "vehicle-operating-cost"
+        "imageId": "vehicle-operating-cost",
+        "imageKey": "vehicle-operating-cost"
       },
       {
         "id": "roi-traceur-vehicule-fr",
@@ -10455,9 +10471,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "vehicle-tracker-roi",
-        "imageId": "vehicle-tracker-roi"
+        "imageId": "vehicle-tracker-roi",
+        "imageKey": "vehicle-tracker-roi"
       },
       {
         "id": "budget-carburant-flotte-fr",
@@ -10695,9 +10712,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "trade-credit",
-        "imageId": "trade-credit"
+        "imageId": "trade-credit",
+        "imageKey": "trade-credit"
       },
       {
         "id": "comparateur-fonds-monetaires-fr",
@@ -10724,9 +10742,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "merchant-fees",
-        "imageId": "merchant-fees"
+        "imageId": "merchant-fees",
+        "imageKey": "merchant-fees"
       },
       {
         "id": "frais-pos-fr",
@@ -10738,9 +10757,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "pos-fees",
-        "imageId": "pos-fees"
+        "imageId": "pos-fees",
+        "imageKey": "pos-fees"
       },
       {
         "id": "immobilier-vs-actions-fr",
@@ -10934,9 +10954,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "microinsurance",
-        "imageId": "microinsurance"
+        "imageId": "microinsurance",
+        "imageKey": "microinsurance"
       },
       {
         "id": "prime-responsabilite-auto-fr",
@@ -10963,9 +10984,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "professional-indemnity",
-        "imageId": "professional-indemnity"
+        "imageId": "professional-indemnity",
+        "imageKey": "professional-indemnity"
       },
       {
         "id": "comparateur-assurance-sante-fr",
@@ -11294,9 +11316,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "africa-election-tracker",
-        "imageId": "africa-election-tracker"
+        "imageId": "africa-election-tracker",
+        "imageKey": "africa-election-tracker"
       },
       {
         "id": "work-permit-cost-fr-coverage-work-permit-cost-south-africa",
@@ -11308,9 +11331,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "work-permit-cost",
-        "imageId": "work-permit-cost"
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "work-permit-cost-fr-coverage-work-permit-cost-algeria",
@@ -11322,9 +11346,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "work-permit-cost",
-        "imageId": "work-permit-cost"
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "work-permit-cost-fr-coverage-work-permit-cost-angola",
@@ -11336,9 +11361,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "work-permit-cost",
-        "imageId": "work-permit-cost"
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "work-permit-cost-fr-coverage-work-permit-cost-benin",
@@ -11350,9 +11376,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "work-permit-cost",
-        "imageId": "work-permit-cost"
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       }
     ],
     "fr::career": [
@@ -11773,9 +11800,10 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "travel-vaccination-cost",
-        "imageId": "travel-vaccination-cost"
+        "imageId": "travel-vaccination-cost",
+        "imageKey": "travel-vaccination-cost"
       },
       {
         "id": "transfert-aeroport-fr",
@@ -11847,9 +11875,10 @@
         "lang": "fr",
         "priority": 56,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "travel-packing-list",
-        "imageId": "travel-packing-list"
+        "imageId": "travel-packing-list",
+        "imageKey": "travel-packing-list"
       },
       {
         "id": "calculateur-japa-fr",
@@ -12212,9 +12241,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "legal-aid",
-        "imageId": "legal-aid"
+        "imageId": "legal-aid",
+        "imageKey": "legal-aid"
       },
       {
         "id": "calculateur-caution-penale-fr",
@@ -14898,9 +14928,10 @@
         "lang": "sw",
         "priority": 84,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "africa-election-tracker",
-        "imageId": "africa-election-tracker"
+        "imageId": "africa-election-tracker",
+        "imageKey": "africa-election-tracker"
       },
       {
         "id": "budget-comparator-sw-coverage-budget-comparator",
@@ -14927,9 +14958,10 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "work-permit-cost",
-        "imageId": "work-permit-cost"
+        "imageId": "work-permit-cost",
+        "imageKey": "work-permit-cost"
       },
       {
         "id": "national-pension-sw-parity",
@@ -15538,9 +15570,10 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "side-hustle-ranker",
-        "imageId": "side-hustle-ranker"
+        "imageId": "side-hustle-ranker",
+        "imageKey": "side-hustle-ranker"
       },
       {
         "id": "50-30-20-budget-sw-coverage-50-30-20-budget",
@@ -15567,9 +15600,10 @@
         "lang": "sw",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "security-emergency-fund",
-        "imageId": "security-emergency-fund"
+        "imageId": "security-emergency-fund",
+        "imageKey": "security-emergency-fund"
       },
       {
         "id": "album-budget-sw-coverage-album-budget",
@@ -15596,9 +15630,10 @@
         "lang": "sw",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "film-budget",
-        "imageId": "film-budget"
+        "imageId": "film-budget",
+        "imageKey": "film-budget"
       }
     ],
     "sw::data-productivity": [
@@ -17309,8 +17344,9 @@
         "lang": "sw",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "microinsurance"
+        "imageExt": "webp",
+        "sourceId": "microinsurance",
+        "imageKey": "microinsurance"
       },
       {
         "id": "zana-bima-ya-lazima-ya-gari-sw",
@@ -17392,8 +17428,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "professional-indemnity"
+        "imageExt": "webp",
+        "sourceId": "professional-indemnity",
+        "imageKey": "professional-indemnity"
       },
       {
         "id": "zana-kikokotoo-bima-ya-moto-sw",
@@ -17626,9 +17663,10 @@
         "lang": "sw",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "inheritance-tax",
-        "imageId": "inheritance-tax"
+        "imageId": "inheritance-tax",
+        "imageKey": "inheritance-tax"
       },
       {
         "id": "ng-nhf-sw-parity",
@@ -17854,9 +17892,10 @@
         "lang": "sw",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "bill-split",
-        "imageId": "bill-split"
+        "imageId": "bill-split",
+        "imageKey": "bill-split"
       },
       {
         "id": "dividend-yield-sw-coverage-dividend-yield",
@@ -18332,9 +18371,10 @@
         "lang": "sw",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "visa-tracker",
-        "imageId": "visa-tracker"
+        "imageId": "visa-tracker",
+        "imageKey": "visa-tracker"
       },
       {
         "id": "immigration-points-sw-native",
@@ -18346,9 +18386,10 @@
         "lang": "sw",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "immigration-points",
-        "imageId": "immigration-points"
+        "imageId": "immigration-points",
+        "imageKey": "immigration-points"
       }
     ],
     "en::mining": [
@@ -18814,7 +18855,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "microinsurance"
       },
       {
         "id": "professional-indemnity",
@@ -18826,7 +18868,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "professional-indemnity"
       }
     ],
     "en::fintech": [
@@ -18996,7 +19039,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "bill-split"
       },
       {
         "id": "credit-score",
@@ -19586,7 +19630,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "toll-calc"
       },
       {
         "id": "truck-load",
@@ -19611,7 +19656,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "vehicle-operating-cost"
       },
       {
         "id": "vehicle-tracker-roi",
@@ -19623,7 +19669,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "vehicle-tracker-roi"
       }
     ],
     "en::career": [
@@ -20098,7 +20145,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "immigration-points"
       },
       {
         "id": "visa-tracker",
@@ -20110,7 +20158,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "visa-tracker"
       }
     ],
     "en::government": [
@@ -20137,7 +20186,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "work-permit-cost"
       }
     ],
     "en::hr-payroll": [
@@ -20244,7 +20294,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "side-hustle-ranker"
       },
       {
         "id": "album-budget",
@@ -20269,7 +20320,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "film-budget"
       },
       {
         "id": "security-emergency-fund",
@@ -20281,7 +20333,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "security-emergency-fund"
       }
     ],
     "en::security": [
@@ -20596,7 +20649,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "tailoring-pricing"
       },
       {
         "id": "youtube-revenue",
@@ -20608,7 +20662,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "youtube-revenue"
       }
     ],
     "en::sports": [
@@ -20910,7 +20965,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "travel-packing-list"
       },
       {
         "id": "travel-vaccination-cost",
@@ -20922,7 +20978,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "travel-vaccination-cost"
       }
     ],
     "sw::language": [
@@ -21115,9 +21172,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "immigration-points",
-        "imageId": "immigration-points"
+        "imageId": "immigration-points",
+        "imageKey": "immigration-points"
       },
       {
         "id": "visa-tracker-fr-coverage-visa-tracker",
@@ -21129,9 +21187,10 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "visa-tracker",
-        "imageId": "visa-tracker"
+        "imageId": "visa-tracker",
+        "imageKey": "visa-tracker"
       }
     ]
   },

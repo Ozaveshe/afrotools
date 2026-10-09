@@ -1,13 +1,13 @@
 # Image library audit
 
-Generated 2026-10-09T06:15:56.400Z. Repository proof only; no deployment.
+Generated 2026-10-09T06:22:58.966Z. Repository proof only; no deployment.
 
 - images: 2842
 - placed: 2163
 - unassigned: 0
 - duplicates: 8
 - held: 3
-- text_free_reviewed: 209
+- text_free_reviewed: 248
 - shared_across_locales: 1202
 - bytes: 152158953
 - missing_reference_candidates: 0
