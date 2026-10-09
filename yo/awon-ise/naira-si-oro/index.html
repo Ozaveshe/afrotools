@@ -56,6 +56,12 @@
 <style data-yo-p1-planner-style>
 .yo-p1-planner{margin:22px auto;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px;max-width:1040px}.yo-p1-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.yo-p1-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.yo-p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.yo-p1-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.yo-p1-grid input,.yo-p1-grid select,.yo-p1-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.yo-p1-grid textarea{min-height:84px;resize:vertical}.yo-p1-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.yo-p1-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.yo-p1-buttons a,.yo-p1-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.yo-p1-buttons a{background:#0057b8;color:#fff}.yo-p1-buttons button{background:#0f172a;color:#fff}.yo-p1-status{font-size:.84rem;color:#64748b;align-self:center}.yo-p1-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.yo-p1-buttons a,.yo-p1-buttons button{width:100%}}
 </style>
+<style>
+  #main-content .btn{min-height:44px}
+  #main-content :focus-visible{outline:3px solid var(--color-primary, #0057b8);outline-offset:3px}
+  #exportStatus{min-height:1.5em;margin:12px 0 0}
+  #docLine{overflow-wrap:anywhere}
+</style>
 <link rel="stylesheet" href="/assets/css/yoruba-fallback.css?v=72ea27b7" data-yoruba-fallback-style>
 <link rel="canonical" href="https://afrotools.com/yo/awon-ise/naira-si-oro/">
 <meta name="afrotools-locale-coverage" content="english-fallback">
@@ -112,6 +118,7 @@
       <button type="button" class="btn" id="copyLine">Daakọ laini iwe</button>
       <button type="button" class="btn" id="downloadLine">Gba TXT</button>
     </div>
+    <p id="exportStatus" role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="mini">
       <div><b>Nọ́ńbà Naira</b><span id="nairaPart">₦125,000</span></div>
       <div><b>Kobo</b><span id="koboPart">75</span></div>
@@ -133,6 +140,17 @@
   const amount=document.getElementById('amount');
   const wordsBox=document.getElementById('words');
   const docLine=document.getElementById('docLine');
+  const exportStatus=document.getElementById('exportStatus');
+  async function copy(text){
+    exportStatus.textContent='';
+    try{
+      if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function')throw new Error('clipboard unavailable');
+      await navigator.clipboard.writeText(text);
+      exportStatus.textContent='A ti dàkọ.';
+    }catch(error){
+      exportStatus.textContent='Kò ṣeé dàkọ. Yan ọ̀rọ̀ náà kí o sì dàkọ fúnra rẹ.';
+    }
+  }
   function cap(text){return text.charAt(0).toUpperCase()+text.slice(1);}
   function underHundred(n){
     if(n<20)return small[n];
@@ -160,6 +178,7 @@
     return parts.join(', ');
   }
   function run(){
+    exportStatus.textContent='';
     const raw=Number(String(amount.value||'0').replace(/,/g,''));
     const safe=Number.isFinite(raw)&&raw>=0?raw:0;
     const naira=Math.floor(safe);
@@ -176,9 +195,17 @@
   }
   document.getElementById('convert').addEventListener('click',run);
   document.getElementById('clear').addEventListener('click',()=>{amount.value='';document.getElementById('purpose').value='';document.getElementById('payee').value='';run();});
-  document.getElementById('copyWords').addEventListener('click',async()=>{await navigator.clipboard.writeText(wordsBox.innerText.replace('Ọ̀rọ̀ Naira','').trim());document.getElementById('copyWords').textContent='A ti daakọ';});
-  document.getElementById('copyLine').addEventListener('click',async()=>{await navigator.clipboard.writeText(docLine.textContent);document.getElementById('copyLine').textContent='A ti daakọ';});
-  document.getElementById('downloadLine').addEventListener('click',()=>{var blob=new Blob([docLine.textContent+'\\n'],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='naira-si-oro.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('downloadLine').textContent='TXT ti gba';});
+  document.getElementById('copyWords').addEventListener('click',()=>copy(wordsBox.innerText.replace('Ọ̀rọ̀ Naira','').trim()));
+  document.getElementById('copyLine').addEventListener('click',()=>copy(docLine.textContent));
+  document.getElementById('downloadLine').addEventListener('click',()=>{
+    var blob=new Blob([docLine.textContent+'\n'],{type:'text/plain;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='naira-si-oro.txt';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    exportStatus.textContent='A ti gba TXT.';
+  });
   document.querySelectorAll('input').forEach((el)=>el.addEventListener('input',run));
   run();
 })();
