@@ -190,6 +190,10 @@ async function supabaseGet(path) {
 
 async function buildCategoryStatus(cat, config, meta, now) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
+  if (['insurance','property','salaries'].includes(cat)) {
+    const payload = await getData(config.blobKey);
+    return {...require('./_shared/reference-feeds').referenceStatus(cat,payload,catMeta,now,config.thresholds.live),blob_key:config.blobKey};
+  }
   if (cat === 'agri_inputs') {
     const payload = await getData(config.blobKey);
     return { ...require('./_shared/agri-reference').referenceStatus(payload, catMeta, now, config.thresholds.live), blob_key: config.blobKey };

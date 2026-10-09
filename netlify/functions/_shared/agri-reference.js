@@ -1,5 +1,6 @@
 'use strict';
 
+const fx = require('./reference-fx');
 const SOURCE = 'AfroTools reference inputs; World Bank indicators when available';
 const FOOD_INDICATOR = 'AG.PRD.FOOD.XD';
 const FOOD_SOURCE = 'https://api.worldbank.org/v2';
@@ -59,13 +60,11 @@ function fertilizerBenchmarks(payload, now) {
   return result;
 }
 
-function conversion(forex, currency, now) {
-  const timestamp = iso(forex?.timestamp), rate = number(forex?.rates?.[currency]);
-  const age = timestamp ? new Date(now).getTime() - new Date(timestamp).getTime() : Infinity;
-  if (forex?.base !== 'USD' || !forex?.source || !timestamp || rate === null || rate <= 0 || age < 0 || age > FX_MAX_AGE_MS) {
-    return {status: 'unavailable', rate: null, observed_at: timestamp};
-  }
-  return {status: 'available', rate, observed_at: timestamp, source: forex.source};
+function conversion(forex,currency,now) {
+  return fx.conversionReceipt(forex,currency,{now,maxAgeMs:FX_MAX_AGE_MS});
+}
+function dollars(value,currency,forex,now) {
+  return fx.convertReferenceAmount(value,currency,forex,{now,maxAgeMs:FX_MAX_AGE_MS,direction:'local-to-usd',decimals:2}).converted_amount;
 }
 
 function buildSnapshot(configs, food, fertilizer, forex, now) {
@@ -77,7 +76,7 @@ function buildSnapshot(configs, food, fertilizer, forex, now) {
     return {
       code, name: config.name, currency: config.currency,
       inputs: Object.keys(config.inputs).map(item => ({item, price_local: config.inputs[item],
-        price_usd: fx.rate ? Math.round(config.inputs[item] / fx.rate * 100) / 100 : null,
+        price_usd: dollars(config.inputs[item],config.currency,forex,now),
         currency: config.currency, price_status: 'unverified_reference', price_reviewed_at: null})),
       food_production_index: foodMetric?.value ?? null,
       global_urea_usd_mt: urea?.value ?? null, global_dap_usd_mt: dap?.value ?? null,
@@ -95,6 +94,7 @@ function buildSnapshot(configs, food, fertilizer, forex, now) {
 // Normalize retained legacy payloads without rewriting storage or pretending a
 // successful collection reviewed the hard-coded local prices.
 function normalizeSnapshot(payload, now = new Date().toISOString()) {
+  if (typeof now === 'number' && Number.isFinite(now)) now = new Date(now).toISOString();
   if (!payload || !Array.isArray(payload.countries) || !payload.countries.length || !iso(payload.timestamp)) return null;
   const nowMs = new Date(now).getTime();
   if (!Number.isFinite(nowMs) || new Date(iso(payload.timestamp)).getTime() > nowMs) return null;
@@ -107,17 +107,16 @@ function normalizeSnapshot(payload, now = new Date().toISOString()) {
   return {...payload, source: SOURCE, source_type: 'reference', snapshot_type: 'reference', current_prices: false,
     collected_at: collectedAt, price_status: 'unverified_reference', price_reviewed_at: null,
     countries: payload.countries.map(row => {
-      const fx = modern && row.conversion?.status === 'available' ? conversion({base:'USD',source:row.conversion.source,
-        timestamp:row.conversion.observed_at,rates:{[row.currency]:row.conversion.rate}},row.currency,now) :
-        {status:modern ? 'unavailable' : 'unverified',rate:null,observed_at:null};
+      const snapshot = modern ? fx.receiptSnapshot(row.conversion,row.currency) : null;
+      const qualified = fx.revalidateReceipt(modern ? row.conversion : null,row.currency,{now,maxAgeMs:FX_MAX_AGE_MS});
       return {...row, source:modern ? row.source : 'reference', last_updated: null, collected_at: collectedAt,
       price_status: 'unverified_reference', price_reviewed_at: null,
       inputs: row.inputs.map(input => ({...input, price_status: 'unverified_reference', price_reviewed_at: null,
-        price_usd: fx.rate ? Math.round(number(input.price_local)/fx.rate*100)/100 : null})),
+        price_usd: dollars(number(input.price_local),row.currency,snapshot,now)})),
       food_production_index: modern ? row.food_production_index : null,
       global_urea_usd_mt: modern ? row.global_urea_usd_mt : null,
       global_dap_usd_mt: modern ? row.global_dap_usd_mt : null,
-      conversion: fx,
+      conversion: qualified,
       metrics: modern ? row.metrics : {food_production_index:null, global_urea_usd_mt:null, global_dap_usd_mt:null}
     };})};
 }

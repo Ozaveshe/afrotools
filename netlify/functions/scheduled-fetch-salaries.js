@@ -15,7 +15,9 @@
  * Writes to live_data_store key: salary-benchmarks-latest
  */
 
-const { runScraper } = require('./_shared/scraper-base');
+const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const feeds = require('./_shared/reference-feeds');
+const { conversionReceipt } = require('./_shared/reference-fx');
 const { getData } = require('./_shared/data-store');
 
 const SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -85,150 +87,43 @@ const REFERENCE_SALARIES = {
   CM: { technology: 500, finance: 400, healthcare: 280, education: 200, oil_gas: 850, agriculture: 80, retail: 120, manufacturing: 200, government: 250, ngo: 300 },
 };
 
-function normalizeCommunityBenchmarks(rows) {
-  if (!Array.isArray(rows)) {
-    return [];
-  }
-
-  return rows.filter(function(row) {
-    return (
-      row &&
-      typeof row === 'object' &&
-      typeof row.country_code === 'string' &&
-      typeof row.role_category === 'string'
-    );
-  });
-}
-
 async function fetchCommunityBenchmarks() {
-  if (!SUPABASE_KEY) {
-    return [];
-  }
-
+  if (!SUPABASE_KEY) return [];
   try {
-    const response = await fetch(SUPABASE_URL + '/rest/v1/salary_benchmarks?select=*', {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: 'Bearer ' + SUPABASE_KEY,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('HTTP ' + response.status);
-    }
-
-    return normalizeCommunityBenchmarks(await response.json());
-  } catch (error) {
-    console.log('[salaries] Community benchmark fetch failed: ' + error.message);
+    // Only aggregate columns needed by the typed observation contract.
+    const fields = 'country_code,currency,role_category,experience_level,sample_size,median_gross,p25_gross,p75_gross,period,updated_at';
+    const response = await fetchWithRetry(SUPABASE_URL+'/rest/v1/salary_benchmarks?select='+fields, {
+      retries:1, timeoutMs:5000, headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}});
+    const rows = await response.json();
+    return Array.isArray(rows) ? rows : [];
+  } catch (_) {
+    console.warn('[salaries] Community benchmark request or decoding failed');
     return [];
   }
 }
-
-function summarizeCommunitySector(rows) {
-  const values = rows
-    .map(function(row) {
-      return parseFloat(row.median_gross);
-    })
-    .filter(function(value) {
-      return Number.isFinite(value) && value > 0;
-    });
-
-  if (values.length === 0) {
-    return null;
-  }
-
-  const total = values.reduce(function(sum, value) {
-    return sum + value;
-  }, 0);
-
-  return {
-    medianUsd: Math.round(total / values.length),
-    sampleSize: rows.reduce(function(sum, row) {
-      return sum + Math.max(0, parseInt(row.sample_size, 10) || 0);
-    }, 0),
-  };
-}
-
-async function buildSalaryDataset(options) {
-  const opts = options || {};
-  const forexData = await getData('forex-latest');
-  const rates =
-    forexData && forexData.rates && typeof forexData.rates === 'object'
-      ? forexData.rates
-      : {};
-  const communityData = Array.isArray(opts.communityData) ? opts.communityData : [];
-  const now = new Date().toISOString().slice(0, 10);
-
-  return Object.keys(REFERENCE_SALARIES).map(function(code) {
-    const currency = COUNTRY_CURRENCIES[code] || 'USD';
-    const fxRate =
-      typeof rates[currency] === 'number' && rates[currency] > 0 ? rates[currency] : 1;
-    let countryHasCommunityData = false;
-
-    const sectors = SECTORS.map(function(sector) {
-      let medianUsd = REFERENCE_SALARIES[code][sector] || null;
-      let sampleSize = 0;
-
-      const matches = communityData.filter(function(row) {
-        return row.country_code === code && row.role_category === sector;
-      });
-
-      const summary = summarizeCommunitySector(matches);
-      if (summary && summary.medianUsd > 0) {
-        medianUsd = summary.medianUsd;
-        sampleSize = summary.sampleSize;
-        countryHasCommunityData = true;
-      }
-
-      return {
-        sector: sector,
-        median_usd: medianUsd,
-        median_local: medianUsd ? Math.round(medianUsd * fxRate) : null,
-        p25_usd: medianUsd ? Math.round(medianUsd * 0.65) : null,
-        p75_usd: medianUsd ? Math.round(medianUsd * 1.45) : null,
-        sample_size: sampleSize,
-        currency: currency,
-      };
-    });
-
-    return {
-      code: code,
-      name: COUNTRY_NAMES[code] || code,
-      currency: currency,
-      sectors: sectors,
-      last_updated: now,
-      source: countryHasCommunityData ? 'community-enriched' : 'reference-with-forex',
-    };
+async function fetchSalaryData() {
+  const [forex,community] = await Promise.all([getData('forex-latest'),fetchCommunityBenchmarks()]);
+  const now = new Date().toISOString();
+  return Object.keys(REFERENCE_SALARIES).map(code => {
+    const currency = COUNTRY_CURRENCIES[code];
+    return {code,name:COUNTRY_NAMES[code],currency,source:'reference',...feeds.referenceFields(),
+      last_updated:null,collected_at:now,conversion:conversionReceipt(forex,currency,feeds.options(now)),
+      sectors:SECTORS.map(sector => {
+        const median = REFERENCE_SALARIES[code][sector] ?? null;
+        return {sector,currency,period:'monthly',...feeds.referenceFields(),median_usd:median,
+          median_local:feeds.localAmount(median,currency,forex,now),p25_usd:null,p75_usd:null,sample_size:0,
+          community_observations:feeds.communityObservations(community,code,sector,forex,now)};
+      })};
   });
 }
-
-async function fetchSalaryData() {
-  const communityData = await fetchCommunityBenchmarks();
-  return buildSalaryDataset({ communityData: communityData });
-}
-
-async function fetchReferenceSalaryData() {
-  return buildSalaryDataset({ communityData: [] });
-}
-
-function transformSalaryData(countries) {
-  return {
-    timestamp: new Date().toISOString(),
-    countries: countries,
-    record_count: Array.isArray(countries) ? countries.length : 0,
-  };
-}
-
 exports.handler = async function() {
   return runScraper({
     id: 'salary-benchmarks',
-    blobKey: 'salary-benchmarks-latest',
+    blobKey: feeds.KEYS.salaries,
     metaKey: 'salaries',
-    sources: [
-      { name: 'CommunityReference', fn: fetchSalaryData },
-      { name: 'ReferenceFallback', fn: fetchReferenceSalaryData },
-    ],
-    transform: transformSalaryData,
-    validateOpts: { maxChangeRatio: 3.0 },
+    sourceType: 'reference',
+    sources: [{name:'ReferenceAndSeparateCommunityObservations',fn:fetchSalaryData}],
+    transform: countries => feeds.buildSnapshot('salaries',countries,new Date().toISOString()),
+    validateOpts: {maxChangeRatio:3.0}
   });
 };

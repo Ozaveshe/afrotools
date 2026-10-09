@@ -10,8 +10,13 @@ function load(file, store = {}, fetch = async () => { throw new Error('Unexpecte
   const filename = path.resolve(__dirname, '../netlify/functions', file);
   const module = { exports: {} };
   const nativeRequire = createRequire(filename);
+  const requestModule = { exports: {} };
+  vm.runInNewContext(fs.readFileSync(path.resolve(__dirname, '../netlify/functions/_shared/scraper-request.js'), 'utf8'), {
+    module: requestModule, exports: requestModule.exports, fetch, Response, AbortController, setTimeout, clearTimeout,
+    console: { log() {}, warn() {}, error() {} }
+  });
   const context = vm.createContext({ module, exports: module.exports, __dirname: path.dirname(filename),
-    require: id => id === './_shared/data-store' ? store : nativeRequire(id),
+    require: id => id === './_shared/data-store' ? store : id === './_shared/scraper-request' ? requestModule.exports : nativeRequire(id),
     fetch, AbortSignal, Date, URL, process: { env: {} }, console: { log() {}, warn() {}, error() {} } });
   vm.runInContext(fs.readFileSync(filename, 'utf8'), context);
   return { api: module.exports, context };
@@ -93,7 +98,7 @@ test('forex write failure returns 503 and preserves success metadata', async () 
   const snapshot = require('../data/forex/latest.json');
   owner.context.fetchFromFawazAhmed = async () => ({ rates: snapshot.rates });
   // Use an observation in the past regardless of the test runner's date.
-  owner.context.fetchFromExchangeRateAPI = async () => ({ rates: snapshot.rates, source: 'fixture', last_updated: '2026-01-01T00:00:00Z' });
+  owner.context.fetchFromExchangeRateAPI = async () => ({ rates: snapshot.rates, source: 'exchangerate-api', last_updated: '2026-01-01T00:00:00Z' });
   assert.equal((await owner.api.handler()).statusCode, 503);
   assert.equal(meta.last_fetch, '2026-08-24T00:00:00Z');
   assert.equal(meta.source, 'previous');
@@ -106,7 +111,7 @@ test('forex selects the newer valid provider mirror and survives one failed mirr
   const owner = load('scheduled-fetch-forex-rates.js', {}, async (url, options) => {
     assert.ok(options.signal instanceof AbortSignal);
     if (url.includes('jsdelivr') && failCdn) throw new Error('transient provider outage');
-    return { ok: true, json: async () => ({ date: url.includes('jsdelivr') ? '2026-01-01' : '2026-01-02', usd }) };
+    return new Response(JSON.stringify({ date: url.includes('jsdelivr') ? '2026-01-01' : '2026-01-02', usd }));
   });
   assert.equal((await owner.context.fetchFromFawazAhmed()).last_updated, '2026-01-02T00:00:00.000Z');
   failCdn = true;

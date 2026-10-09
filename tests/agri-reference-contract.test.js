@@ -1,11 +1,12 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const agri=require('../netlify/functions/_shared/agri-reference');
+const feeds=require('../netlify/functions/_shared/reference-feeds');
 const now='2026-10-04T04:00:00.000Z';
 const configs={NG:{name:'Nigeria',currency:'NGN',inputs:{urea_50kg:28000}},KE:{name:'Kenya',currency:'KES',inputs:{urea_50kg:4500}}};
 const row=(code,year,value)=>({country:{id:code},indicator:{id:agri.FOOD_INDICATOR},date:String(year),value});
 const legacy=()=>({timestamp:now,countries:[{code:'NG',currency:'NGN',name:'Nigeria',inputs:[{item:'urea_50kg',price_local:28000,price_usd:28000}],last_updated:'2026-10-04',source:'reference-with-wb',food_production_index:100}]});
-function load(file,stubs){const exports={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../netlify/functions',file),'utf8'),{exports,console:{log(){},error(){},warn(){}},Date,URL,Set,Map,Buffer,process:{env:{}},require:name=>{if(name==='./_shared/agri-reference')return agri;if(Object.hasOwn(stubs,name))return stubs[name];throw new Error('Unstubbed dependency: '+name);}}, {filename:file});return exports;}
+function load(file,stubs){const exports={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../netlify/functions',file),'utf8'),{exports,console:{log(){},error(){},warn(){}},Date,URL,Set,Map,Buffer,process:{env:{}},require:name=>{if(name==='./_shared/agri-reference')return agri;if(name==='./_shared/reference-feeds')return feeds;if(Object.hasOwn(stubs,name))return stubs[name];throw new Error('Unstubbed dependency: '+name);}}, {filename:file});return exports;}
 function storage(payload,meta={}){return {getData:async key=>key==='agri-inputs-latest'?payload:key==='meta'?meta:null,setData:async()=>{throw new Error('Unexpected live write');}};}
 
 test('latest food observation uses year, preserves zero and ignores invalid/future/unrelated records',()=>{
@@ -27,13 +28,14 @@ test('fertilizer benchmark needs a valid dated series and preserves a zero obser
 });
 
 test('missing, invalid, stale, future and wrong-base FX never creates USD amounts',()=>{
- for(const forex of [null,{base:'USD',rates:{NGN:0}}, {base:'USD',source:'test',timestamp:now,rates:{NGN:' '}},
- {base:'USD',source:'test',timestamp:'2026-09-01T00:00:00Z',rates:{NGN:1400}},
- {base:'USD',source:'test',timestamp:'2026-10-05T00:00:00Z',rates:{NGN:1400}},
- {base:'NGN',source:'test',timestamp:now,rates:{NGN:1400}}]) {
+ const validFx={schemaVersion:1,base:'USD',source:'exchangerate-api',timestamp:now,rates:{NGN:1400},retained_rate_codes:[]};
+ for(const forex of [null,{...validFx,rates:{NGN:0}},{...validFx,rates:{NGN:' '}},
+ {...validFx,timestamp:'2026-09-01T00:00:00Z'},
+ {...validFx,timestamp:'2026-10-05T00:00:00Z'},
+ {...validFx,base:'NGN'}]) {
   const snapshot=agri.buildSnapshot(configs,{}, {},forex,now);assert.equal(snapshot.countries[0].inputs[0].price_usd,null);assert.equal(snapshot.countries[0].inputs[0].price_local,28000);
  }
- const snapshot=agri.buildSnapshot(configs,{}, {},{base:'USD',source:'synthetic source',timestamp:now,rates:{NGN:1400}},now);
+ const snapshot=agri.buildSnapshot(configs,{}, {},validFx,now);
  assert.equal(snapshot.countries[0].inputs[0].price_usd,20);assert.equal(snapshot.countries[1].inputs[0].price_usd,null);
  const expired=agri.normalizeSnapshot(snapshot,'2026-10-08T04:00:00Z');assert.equal(expired.countries[0].inputs[0].price_usd,null);
 });
@@ -98,7 +100,8 @@ test('agriculture API preserves filters, auth and provenance while unrelated gen
  const response=await call('agriculture',{country:'ng'}),body=JSON.parse(response.body);
  assert.equal(response.statusCode,200);assert.equal(body.count,1);assert.equal(body.source_type,'reference');assert.equal(body.current_prices,false);assert.equal(body.price_reviewed_at,null);
  assert.equal(body.data[0].inputs[0].price_usd,null);assert.equal((await call('agriculture',{country:'XX'})).statusCode,404);
- const insurance=JSON.parse((await call('insurance')).body);assert.deepEqual(Object.keys(insurance).sort(),['count','data','timestamp']);
+ const rates=JSON.parse((await call('rates')).body);assert.deepEqual(Object.keys(rates).sort(),['count','data','timestamp']);
+ assert.equal((await call('insurance')).statusCode,503,'An agriculture-shaped cache cannot pass the new insurance reference contract');
  deny=true;const previousReads=reads;assert.equal((await call('agriculture')).statusCode,403);assert.equal(reads,previousReads);
 });
 

@@ -2,15 +2,15 @@
  * AfroTools — Scheduled Property/Rent Price Fetcher
  * Runs weekly (Wednesday 3am) via Netlify Scheduled Functions.
  *
- * Sources:
- *  1. Numbeo Cost of Living API (rent data by city)
- *  2. Seed data enriched with forex refresh
+ * Sources: undated AfroTools planning references, with separately qualified FX.
  *
  * Output: { timestamp, countries: [{ code, name, cities: [{ city, rent_1br_usd, rent_3br_usd, buy_sqm_usd }] }] }
  * Writes to Netlify Blobs 'live-data' → key 'property-prices-latest'.
  */
 
-const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const { runScraper } = require('./_shared/scraper-base');
+const feeds = require('./_shared/reference-feeds');
+const { conversionReceipt } = require('./_shared/reference-fx');
 const { getData } = require('./_shared/data-store');
 
 // Key African cities tracked
@@ -32,7 +32,7 @@ var CITIES = {
   MU: { name: 'Mauritius', currency: 'MUR', cities: ['Port Louis', 'Curepipe'] },
 };
 
-// Reference rent data (USD/month) — from Numbeo/PropertyPro baselines
+// Reference rent data (USD/month) — undated planning references; source review remains open
 var REFERENCE_RENTS = {
   NG: { Lagos: { rent_1br_center: 400, rent_1br_outside: 180, rent_3br_center: 900, rent_3br_outside: 400, buy_sqm_center: 1200, buy_sqm_outside: 500 },
         Abuja: { rent_1br_center: 500, rent_1br_outside: 200, rent_3br_center: 1100, rent_3br_outside: 450, buy_sqm_center: 1500, buy_sqm_outside: 600 } },
@@ -45,83 +45,31 @@ var REFERENCE_RENTS = {
   MA: { Casablanca: { rent_1br_center: 400, rent_1br_outside: 200, rent_3br_center: 900, rent_3br_outside: 450, buy_sqm_center: 2000, buy_sqm_outside: 1000 } },
 };
 
-/**
- * Source 1: Numbeo API (if key available) + reference data with forex
- */
-async function fetchFromNumberoAndReference() {
-  var forexData = await getData('forex-latest');
-  var rates = (forexData && forexData.rates) || {};
-  var now = new Date().toISOString().slice(0, 10);
-
-  // Try Numbeo API first
-  var numbeoKey = process.env.NUMBEO_API_KEY;
-  var numbeoData = {};
-
-  if (numbeoKey) {
-    try {
-      var res = await fetchWithRetry(
-        'https://www.numbeo.com/api/country_prices?api_key=' + numbeoKey + '&currency=USD',
-        { headers: { 'Accept': 'application/json' } }
-      );
-      var json = await res.json();
-      if (json && !json.error) {
-        numbeoData = json;
-      }
-    } catch (e) {
-      console.log('[property] Numbeo API failed: ' + e.message);
-    }
-  }
-
-  var countries = Object.keys(CITIES).map(function(code) {
-    var config = CITIES[code];
-    var fxRate = rates[config.currency] || 1;
-    var refRents = REFERENCE_RENTS[code] || {};
-
-    var cities = config.cities.map(function(cityName) {
-      var ref = refRents[cityName] || {};
-      return {
-        city: cityName,
-        rent_1br_center_usd: ref.rent_1br_center || null,
-        rent_1br_outside_usd: ref.rent_1br_outside || null,
-        rent_3br_center_usd: ref.rent_3br_center || null,
-        rent_3br_outside_usd: ref.rent_3br_outside || null,
-        buy_sqm_center_usd: ref.buy_sqm_center || null,
-        buy_sqm_outside_usd: ref.buy_sqm_outside || null,
-        rent_1br_center_local: ref.rent_1br_center ? Math.round(ref.rent_1br_center * fxRate) : null,
-        rent_3br_center_local: ref.rent_3br_center ? Math.round(ref.rent_3br_center * fxRate) : null,
-      };
-    });
-
-    return {
-      code: code,
-      name: config.name,
-      currency: config.currency,
-      cities: cities,
-      last_updated: now,
-      source: numbeoKey ? 'numbeo-with-reference' : 'reference-with-forex',
-    };
+// No Numbeo request: its former response was unused and key presence cannot
+// establish that these reference amounts came from that provider.
+async function fetchReferenceProperty() {
+  const forex = await getData('forex-latest'), now = new Date().toISOString();
+  return Object.keys(CITIES).map(code => {
+    const config = CITIES[code], references = REFERENCE_RENTS[code] || {};
+    return {code,name:config.name,currency:config.currency,source:'reference',...feeds.referenceFields(),
+      last_updated:null,collected_at:now,conversion:conversionReceipt(forex,config.currency,feeds.options(now)),
+      cities:config.cities.map(city => {
+        const values = references[city] || {};
+        return {city,...feeds.referenceFields(),rent_period:'monthly',purchase_unit:'square_metre',
+          ...Object.fromEntries(feeds.PROPERTY_FIELDS.map(field => [field+'_usd',values[field] ?? null])),
+          rent_1br_center_local:feeds.localAmount(values.rent_1br_center,config.currency,forex,now),
+          rent_3br_center_local:feeds.localAmount(values.rent_3br_center,config.currency,forex,now)};
+      })};
   });
-
-  return countries;
 }
-
-function transformPropertyData(countries) {
-  return {
-    timestamp: new Date().toISOString(),
-    countries: countries,
-    record_count: countries.length,
-  };
-}
-
-exports.handler = async function(event) {
+exports.handler = async function() {
   return runScraper({
     id: 'property-prices',
-    blobKey: 'property-prices-latest',
+    blobKey: feeds.KEYS.property,
     metaKey: 'property',
-    sources: [
-      { name: 'NumbeoAndReference', fn: fetchFromNumberoAndReference },
-    ],
-    transform: transformPropertyData,
-    validateOpts: { maxChangeRatio: 3.0 },
+    sourceType: 'reference',
+    sources: [{name:'ReferenceProperty',fn:fetchReferenceProperty}],
+    transform: countries => feeds.buildSnapshot('property',countries,new Date().toISOString()),
+    validateOpts: {maxChangeRatio:3.0}
   });
 };

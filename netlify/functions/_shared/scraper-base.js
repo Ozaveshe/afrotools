@@ -59,38 +59,7 @@ async function supabaseInsert(table, row) {
  * @param {object} [opts] - fetch options + { retries, backoffMs }
  * @returns {Response}
  */
-async function fetchWithRetry(url, opts = {}) {
-  var retries = opts.retries || 3;
-  var backoffMs = opts.backoffMs || 1000;
-
-  for (var attempt = 1; attempt <= retries; attempt++) {
-    try {
-      var fetchOpts = Object.assign({}, opts);
-      delete fetchOpts.retries;
-      delete fetchOpts.backoffMs;
-
-      var res = await fetch(url, fetchOpts);
-      if (res.ok) return res;
-
-      // Retry on 429 (rate limit) and 5xx errors
-      if (res.status === 429 || res.status >= 500) {
-        if (attempt < retries) {
-          var delay = backoffMs * Math.pow(2, attempt - 1);
-          console.log(`[scraper-base] HTTP ${res.status} from ${url} — retry ${attempt}/${retries} in ${delay}ms`);
-          await sleep(delay);
-          continue;
-        }
-      }
-
-      throw new Error(`HTTP ${res.status} from ${url}`);
-    } catch (err) {
-      if (attempt === retries) throw err;
-      var delay = backoffMs * Math.pow(2, attempt - 1);
-      console.log(`[scraper-base] Error fetching ${url}: ${err.message} — retry ${attempt}/${retries} in ${delay}ms`);
-      await sleep(delay);
-    }
-  }
-}
+const { fetchWithRetry } = require('./scraper-request');
 
 function sleep(ms) {
   return new Promise(function(resolve) { setTimeout(resolve, ms); });
@@ -216,7 +185,7 @@ async function runScraper(config) {
       console.log('[' + id + '] Success from ' + source.name);
       break;
     } catch (err) {
-      console.error('[' + id + '] ' + source.name + ' failed: ' + err.message);
+      console.error('[' + id + '] ' + source.name + ' failed during source fetch or decoding');
     }
   }
 
@@ -244,10 +213,10 @@ async function runScraper(config) {
   } catch (err) {
     await logRun(id, 'error', {
       source: usedSource,
-      error_message: 'Transform failed: ' + err.message,
+      error_message: 'Transform failed',
       duration_ms: durationMs,
     });
-    return { statusCode: 500, body: id + ': transform error — ' + err.message };
+    return { statusCode: 500, body: id + ': transform error' };
   }
 
   // Step 3: Validate against previous data
@@ -323,8 +292,10 @@ async function runScraper(config) {
   if (usedSource && usedSource.toLowerCase().includes('seed')) sourceType = 'manual';
   if (usedSource && usedSource.toLowerCase().includes('community')) sourceType = 'community';
 
-  var confidence = sourceType === 'api' ? 0.9 : sourceType === 'scraper' ? 0.7 : sourceType === 'community' ? 0.6 : 0.5;
-  logConfidence(metaKey, usedSource, sourceType, confidence, recordCount);
+  if (config.sourceType === 'reference') sourceType = 'reference';
+
+  var confidence = sourceType === 'reference' ? null : sourceType === 'api' ? 0.9 : sourceType === 'scraper' ? 0.7 : sourceType === 'community' ? 0.6 : 0.5;
+  if (sourceType !== 'reference') logConfidence(metaKey, usedSource, sourceType, confidence, recordCount);
 
   // Step 6: Update meta
   var now = new Date().toISOString();

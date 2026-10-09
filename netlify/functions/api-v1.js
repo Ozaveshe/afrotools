@@ -74,11 +74,11 @@ exports.handler = async function(event) {
     case 'telecom':
       return handleTelecom(params, CORS);
     case 'insurance':
-      return handleGeneric('insurance-rates-latest', 'countries', params, CORS);
+      return handleReference('insurance', params, CORS);
     case 'property':
-      return handleGeneric('property-prices-latest', 'countries', params, CORS);
+      return handleReference('property', params, CORS);
     case 'salaries':
-      return handleGeneric('salary-benchmarks-latest', 'countries', params, CORS);
+      return handleReference('salaries', params, CORS);
     case 'stocks':
       return handleStocks(params, CORS);
     case 'shipping':
@@ -116,32 +116,25 @@ async function handleForex(params, CORS) {
   var { data } = await getOrFetch('forex-latest', 60000);
   if (!data) return jsonResp(503, { error: 'Forex data unavailable' }, CORS);
 
-  var result = { timestamp: data.timestamp, base: data.base || 'USD' };
-  var defaultBase = String(data.base || 'USD').toUpperCase();
-
-  if (params.base && params.target) {
-    var baseCode = params.base.toUpperCase();
-    var targetCode = params.target.toUpperCase();
-    var baseRate = baseCode === defaultBase ? 1 : data.rates[baseCode];
-    var targetRate = targetCode === defaultBase ? 1 : data.rates[targetCode];
-    if (!baseRate || !targetRate) return jsonResp(404, { error: 'Currency not found' }, CORS);
-    result.pair = baseCode + '/' + targetCode;
-    result.rate = Math.round((targetRate / baseRate) * 1000000) / 1000000;
-  } else if (params.base) {
-    var base = params.base.toUpperCase();
-    var baseR = base === defaultBase ? 1 : data.rates[base];
-    if (!baseR) return jsonResp(404, { error: 'Currency not found: ' + base }, CORS);
-    var rates = {};
-    Object.keys(data.rates).forEach(function(code) {
-      rates[code] = Math.round((data.rates[code] / baseR) * 1000000) / 1000000;
-    });
-    if (base === defaultBase) rates[defaultBase] = 1;
-    result.rates = rates;
-  } else {
-    result.rates = data.rates;
+  const qualified = require('./_shared/forex-response');
+  const now = new Date().toISOString(), base = String(params.base || 'USD').toUpperCase();
+  if (params.target) {
+    const target = String(params.target).toUpperCase(), quote = qualified.pairResponse(data,base,target,now);
+    return jsonResp(quote.status === 'available' ? 200 : quote.reason === 'invalid-currency' ? 404 : 503, {timestamp:data.timestamp,base,
+      pair:base+'/'+target,rate:quote.rate,status:quote.status,reason:quote.reason,
+      qualification:{base:quote.base,target:quote.target}},CORS);
   }
-
-  return jsonResp(200, result, CORS);
+  const baseQuote = qualified.pairResponse(data,base,'USD',now);
+  const result = qualified.ratesResponse(data,base,now);
+  // Preserve the v1 explicit-base response's self-currency entry, qualified by
+  // the same observation checks as every other pair.
+  if (params.base) {
+    const self = qualified.pairResponse(data,base,base,now);
+    result.rates[base] = self.rate;
+    result.qualification[base] = self;
+  }
+  return jsonResp(baseQuote.status === 'available' ? 200 : baseQuote.reason === 'invalid-currency' ? 404 : 503, {timestamp:data.timestamp,base,
+    ...result,status:baseQuote.status,reason:baseQuote.reason},CORS);
 }
 
 async function handleFuel(params, CORS) {
@@ -233,6 +226,10 @@ async function handleHealth(CORS) {
 
   const agriculture = require('./_shared/agri-reference').referenceStatus(await getData('agri-inputs-latest'), meta.agriculture || {}, now, 10080);
   categories.agriculture = {...categories.agriculture, ...agriculture, last_updated:null};
+  const feeds = require('./_shared/reference-feeds');
+  await Promise.all(Object.entries(feeds.KEYS).map(async ([category,key]) => {
+    categories[category] = {...feeds.referenceStatus(category,await getData(key),meta[category] || {},now,10080),last_updated:null};
+  }));
   return jsonResp(200, { status: 'degraded', categories: categories, checked_at: new Date().toISOString() }, CORS);
 }
 
@@ -254,7 +251,23 @@ async function handleAgriculture(params, CORS) {
     status:agri.referenceStatus(data, {}, Date.now(), 10080)}, CORS);
 }
 
-// Generic handler for country-based datasets (insurance, property, salaries)
+async function handleReference(category,params,CORS) {
+  const feeds = require('./_shared/reference-feeds');
+  const {data} = await getOrFetch(feeds.KEYS[category],600000);
+  const now = new Date().toISOString(), snapshot = feeds.normalizeSnapshot(category,data,now);
+  if (!snapshot) return jsonResp(503,{error:'Reference data unavailable'},CORS);
+  let items = snapshot.countries;
+  if (params.country) {
+    items = items.filter(row => row.code === String(params.country).toUpperCase());
+    if (!items.length) return jsonResp(404,{error:'Country not found'},CORS);
+  }
+  if (params.region) items = items.filter(row => row.region === String(params.region).toLowerCase());
+  return jsonResp(200,{timestamp:snapshot.timestamp,data:items,count:items.length,source:snapshot.source,
+    ...feeds.referenceFields(),collected_at:snapshot.collected_at,
+    status:feeds.referenceStatus(category,data,{},now,10080)},CORS);
+}
+
+// Generic handler for other country-based datasets
 async function handleGeneric(blobKey, arrayField, params, CORS) {
   var { data } = await getOrFetch(blobKey, 600000);
   if (!data) return jsonResp(503, { error: 'Data temporarily unavailable' }, CORS);

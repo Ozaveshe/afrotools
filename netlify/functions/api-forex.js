@@ -98,103 +98,35 @@ exports.handler = async function (event) {
   // Set cache headers for all 200 responses
   _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
-  // --- Single pair: ?from=USD&to=NGN ---
+  const qualified = require('./_shared/forex-response');
+  const now = new Date().toISOString();
+  const provenance = {timestamp:data.timestamp,source:data.source,served_from:data.served_from,
+    as_of:data.as_of || data.timestamp || null};
   if (params.from && params.to) {
-    const from = params.from.toUpperCase();
-    const to = params.to.toUpperCase();
-
-    let rate = null;
-
-    if (from === 'USD' && data.rates[to]) {
-      rate = data.rates[to];
-    } else if (to === 'USD' && data.rates[from] && data.rates[from] !== 0) {
-      rate = 1 / data.rates[from];
-    } else if (data.rates[from] && data.rates[to] && data.rates[from] !== 0) {
-      // Cross rate via USD
-      rate = data.rates[to] / data.rates[from];
-    }
-
-    if (rate === null) {
-      return jsonResponse(404, { error: `Pair ${from}/${to} not found` });
-    }
-
-    return jsonResponse(200, {
-      pair: `${from}/${to}`,
-      rate: Math.round(rate * 1000000) / 1000000,
-      timestamp: data.timestamp,
-      source: data.source,
-      served_from: data.served_from,
-      as_of: data.as_of || data.timestamp || null,
-    });
+    const from = params.from.toUpperCase(), to = params.to.toUpperCase();
+    const quote = qualified.pairResponse(data,from,to,now);
+    return jsonResponse(quote.status === 'available' ? 200 : quote.reason === 'invalid-currency' ? 404 : 503, {
+      ...provenance,pair:from+'/'+to,rate:quote.rate,status:quote.status,reason:quote.reason,
+      qualification:{base:quote.base,target:quote.target}});
   }
-
-  // --- Multiple pairs: ?pairs=USD-NGN,USD-KES ---
   if (params.pairs) {
-    const pairList = params.pairs.split(',').map(p => p.trim().toUpperCase());
-    const results = {};
-
-    for (const pairStr of pairList) {
-      const [from, to] = pairStr.split('-');
-      if (!from || !to) continue;
-
-      let rate = null;
-      if (from === 'USD' && data.rates[to]) {
-        rate = data.rates[to];
-      } else if (to === 'USD' && data.rates[from] && data.rates[from] !== 0) {
-        rate = 1 / data.rates[from];
-      } else if (data.rates[from] && data.rates[to] && data.rates[from] !== 0) {
-        rate = data.rates[to] / data.rates[from];
-      }
-
-      results[`${from}/${to}`] = rate ? Math.round(rate * 1000000) / 1000000 : null;
+    const pairs = {}, qualification = {};
+    for (const pair of params.pairs.split(',').map(value => value.trim().toUpperCase())) {
+      const parts = pair.split('-');
+      if (parts.length !== 2 || !parts[0] || !parts[1]) continue;
+      const quote = qualified.pairResponse(data,parts[0],parts[1],now);
+      pairs[parts.join('/')] = quote.rate;
+      qualification[parts.join('/')] = quote;
     }
-
-    return jsonResponse(200, {
-      pairs: results,
-      timestamp: data.timestamp,
-      source: data.source,
-      served_from: data.served_from,
-      as_of: data.as_of || data.timestamp || null,
-    });
+    return jsonResponse(200,{...provenance,pairs,qualification});
   }
-
-  // --- All rates for base: ?base=USD (or default) ---
   const base = (params.base || 'USD').toUpperCase();
-
-  if (base === 'USD') {
-    return jsonResponse(200, {
-      base: 'USD',
-      rates: data.rates,
-      crypto: data.crypto,
-      timestamp: data.timestamp,
-      source: data.source,
-      next_update: data.next_update,
-      served_from: data.served_from,
-      as_of: data.as_of || data.timestamp || null,
-    });
-  }
-
-  // Convert rates to requested base
-  const baseRate = data.rates[base];
-  if (!baseRate || baseRate === 0) {
-    return jsonResponse(404, { error: `Base currency ${base} not found or has zero rate` });
-  }
-
-  const convertedRates = {};
-  convertedRates['USD'] = Math.round((1 / baseRate) * 1000000) / 1000000;
-  for (const [code, rate] of Object.entries(data.rates)) {
-    if (code !== base) {
-      convertedRates[code] = Math.round((rate / baseRate) * 1000000) / 1000000;
-    }
-  }
-
-  return jsonResponse(200, {
-    base,
-    rates: convertedRates,
-    timestamp: data.timestamp,
-    source: data.source,
-    served_from: data.served_from,
-    as_of: data.as_of || data.timestamp || null,
+  const baseQuote = qualified.pairResponse(data,base,'USD',now);
+  const result = qualified.ratesResponse(data,base,now);
+  const crypto = qualified.cryptoResponse(data.crypto,now);
+  return jsonResponse(baseQuote.status === 'available' ? 200 : baseQuote.reason === 'invalid-currency' ? 404 : 503,{
+    ...provenance,base,...result,status:baseQuote.status,reason:baseQuote.reason,
+    ...(base === 'USD' ? {crypto:crypto.quotes,crypto_qualification:crypto.observations,next_update:data.next_update} : {})
   });
 };
 
