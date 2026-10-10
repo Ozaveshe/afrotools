@@ -3,6 +3,7 @@
   var storageKey = "afrotools.health.calorieDiary.v2";
   var entries = [];
   var form;
+  var isFrench = document.documentElement.lang.toLowerCase().split("-")[0] === "fr";
 
   function readEntries() {
     try {
@@ -26,7 +27,7 @@
   }
 
   function displayNumber(value) {
-    return Number(value).toLocaleString(undefined, { maximumFractionDigits: 1 });
+    return Number(value).toLocaleString(isFrench ? "fr-FR" : undefined, { maximumFractionDigits: 1 });
   }
 
   function render() {
@@ -35,7 +36,7 @@
     document.getElementById("total-calories").textContent = displayNumber(total) + " kcal";
     document.getElementById("entry-count").textContent = entries.length ? entries.length + (entries.length === 1 ? " entry." : " entries.") : "No entries yet.";
     body.innerHTML = entries.map(function (entry, index) {
-      return "<tr><td>" + escapeHtml(entry.foodName) + "</td><td>" + displayNumber(entry.amount) + " " + escapeHtml(entry.unit) + "</td><td>" + escapeHtml(entry.sourceNote || "Not recorded") + "</td><td>" + displayNumber(entry.calories) + " kcal</td><td><button class=\"remove-btn\" type=\"button\" data-remove=\"" + index + "\" aria-label=\"Remove " + escapeHtml(entry.foodName) + "\">Remove</button></td></tr>";
+      return "<tr><td data-no-fr-health-translate data-no-sw-health-translate>" + escapeHtml(entry.foodName) + "</td><td>" + displayNumber(entry.amount) + " " + escapeHtml(entry.unit) + "</td><td" + (entry.sourceNote ? " data-no-fr-health-translate data-no-sw-health-translate" : "") + ">" + escapeHtml(entry.sourceNote || (isFrench ? "Non renseignée" : "Not recorded")) + "</td><td>" + displayNumber(entry.calories) + " kcal</td><td><button class=\"remove-btn\" type=\"button\" data-remove=\"" + index + "\" aria-label=\"Remove " + escapeHtml(entry.foodName) + "\">Remove</button></td></tr>";
     }).join("");
     document.getElementById("empty-state").hidden = entries.length > 0;
     document.getElementById("entries-wrap").hidden = entries.length === 0;
@@ -43,13 +44,13 @@
   }
 
   function buildReportText() {
-    var lines = ["AfroTools Daily Food Calorie Diary", "Created locally: " + new Date().toISOString().slice(0, 10), ""];
+    var lines = [isFrench ? "AfroTools — journal quotidien des calories alimentaires" : "AfroTools Daily Food Calorie Diary", (isFrench ? "Créé localement : " : "Created locally: ") + new Date().toISOString().slice(0, 10), ""];
     entries.forEach(function (entry, index) {
-      lines.push((index + 1) + ". " + entry.foodName + " — " + displayNumber(entry.amount) + " " + entry.unit + " — " + displayNumber(entry.calories) + " kcal");
-      lines.push("   Source: " + (entry.sourceNote || "Not recorded"));
+      lines.push((index + 1) + ". " + entry.foodName + " — " + displayNumber(entry.amount) + " " + (isFrench && entry.unit === "serving" ? (Number(entry.amount) === 1 ? "portion" : "portions") : entry.unit) + " — " + displayNumber(entry.calories) + " kcal");
+      lines.push((isFrench ? "   Source : " : "   Source: ") + (entry.sourceNote || (isFrench ? "Non renseignée" : "Not recorded")));
     });
-    lines.push("", "Total entered: " + displayNumber(CalorieDiaryEngine.total(entries)) + " kcal");
-    lines.push("", "Meaning: Sum of user-entered label/provider calorie values. This is a private record, not a calorie target, diet prescription, diagnosis or medical advice.");
+    lines.push("", (isFrench ? "Total saisi : " : "Total entered: ") + displayNumber(CalorieDiaryEngine.total(entries)) + " kcal");
+    lines.push("", isFrench ? "Signification : somme des valeurs caloriques de l’étiquette ou du fournisseur saisies par l’utilisateur. Ce journal privé ne constitue ni un objectif calorique, ni une prescription alimentaire, ni un diagnostic, ni un avis médical." : "Meaning: Sum of user-entered label/provider calorie values. This is a private record, not a calorie target, diet prescription, diagnosis or medical advice.");
     return lines.join("\n");
   }
 
@@ -77,7 +78,7 @@
     var doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4", compress: false });
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    var lines = doc.splitTextToSize(buildReportText(), 500);
+    var lines = doc.splitTextToSize(buildReportText().replace(/\u202f/g, " "), 500);
     var y = 48;
     lines.forEach(function (line) {
       if (y > 790) { doc.addPage(); y = 48; }
