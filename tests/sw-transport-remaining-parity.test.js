@@ -1,6 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { resolveReviewedToolArtwork } = require('../scripts/lib/reviewed-tool-image-bindings');
 
 const root = path.join(__dirname, '..');
 const apps = [
@@ -30,7 +31,9 @@ for (const [id, relative, kind] of apps) {
   assert.doesNotMatch(html, /var SWT_SYMBOLS|function\s+swtCalc/, `${id}: copied inline formula retired`);
   assert.match(html, new RegExp(`rel="canonical" href="https://afrotools\\.com${route}"`), `${id}: canonical`);
   assert.match(html, new RegExp(`hreflang="en" href="https://afrotools\\.com/tools/${id}/"`), `${id}: English peer`);
-  assert.match(html, new RegExp(`assets/img/tools/${id}\\.webp`), `${id}: dedicated artwork`);
+  const artwork = resolveReviewedToolArtwork(route, `/assets/img/tools/${id}.webp`);
+  assert.ok(html.includes(`content="https://afrotools.com${artwork}"`), `${id}: reviewed artwork metadata`);
+  assert.ok(fs.existsSync(path.join(root, artwork)), `${id}: reviewed artwork exists`);
   assert.doesNotMatch(html, /assets\/img\/og-default\.png/, `${id}: no generic social artwork`);
   assert.doesNotMatch(html, />(?:Vehicle class|Trips per month|Return multiplier|Base fee|Distance \(km\)|Maintenance allocation|Base nauli|Hours kwa siku)</, `${id}: form labels are native Swahili`);
   assert.ok(fs.existsSync(path.join(root, `assets/img/tools/${id}.webp`)), `${id}: artwork file exists`);

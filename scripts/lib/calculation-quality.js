@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { normalizeReviewedArtworkPresentation } = require("./reviewed-artwork-formula-presentation");
 
 function loadBrowserGlobal(root, artifactPath, globalName) {
   const context = { globalThis: {} };
@@ -250,7 +251,7 @@ function normalizeHtmlFormulaPresentation(source) {
         return prefix + "53e2e483" + suffix;
       },
     );
-  return normalizeMaternityLeaveSeoPresentation(normalized);
+  return normalizeReviewedArtworkPresentation(normalizeMaternityLeaveSeoPresentation(normalized));
 }
 
 function normalizeHtmlFormulaRouteShell(source) {

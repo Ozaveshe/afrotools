@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
-const { loadBindings, applyReviewedBindings } = require('./lib/reviewed-tool-image-bindings');
+const { loadBindings, artworkId, applyReviewedBindings } = require('./lib/reviewed-tool-image-bindings');
 
 const ROOT = path.resolve(__dirname, '..');
 const IMAGE_DIR = path.join(ROOT, 'assets', 'img', 'tools');
@@ -62,7 +62,13 @@ function buildIndex(source) {
   const ownedIds = agricultureImageIds(source);
   const reviewed = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/image-generation/reviewed-shared-artwork.json'), 'utf8'));
   reviewed.tool_ids.forEach((id) => ownedIds.add(id));
-  loadBindings().forEach((binding) => ownedIds.add(binding.source_id));
+  loadBindings().forEach((binding) => {
+    const id = artworkId(binding);
+    ownedIds.add(id);
+    // Explicit reviewed WebP bindings take priority over older SVG siblings.
+    // applyReviewedBindings has already checked the exact file hash.
+    current[id] = 'webp';
+  });
   ownedIds.forEach((id) => {
     if (!Object.prototype.hasOwnProperty.call(current, id) && available.has(id)) {
       current[id] = available.get(id);

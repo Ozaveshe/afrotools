@@ -30,7 +30,7 @@ assert(!/<(?:form|input|textarea|select)\b/i.test(sw), "guide must not collect t
 assert(!/analytics-bootstrap|lazy-analytics|related-tools(?:\.min)?/i.test(releaseNormalizedSw), "Sw route must not add non-release analytics or unrelated runtime egress");
 for (const page of [en, fr, sw]) assert(page.includes(`hreflang="sw" href="${route}"`), "hreflang group must be reciprocal");
 assert(en.includes('id="sarsPreparationWorkspace"') && sw.includes('id="sarsPreparationWorkspace"'));
-assert(sw.includes("sars-efiling.svg") && fs.existsSync(path.join(root, "assets/img/tools/sars-efiling.svg")));
+assert(sw.includes('content="https://afrotools.com/assets/img/tools/sars-efiling.webp"') && fs.existsSync(path.join(root, "assets/img/tools/sars-efiling.svg")));
 assert(registry.includes("id: 'sars-efiling-sw'") && registry.includes("href: '/sw/zana/mwongozo-wa-sars-efiling/'") && registry.includes("sourceId: 'sars-efiling'"));
 assert(generator.includes('meta name="generator" content="scripts/build-sw-sars-efiling-final.js"'));
 for (const id of ["domain", "device", "records", "evidence", "payment", "support"]) assert(controller.includes(`"${id}"`));
