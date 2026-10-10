@@ -57,8 +57,12 @@
   listNode.addEventListener("click", function (event) {
     var button = event.target.closest("[data-remove]");
     if (!button) return;
-    tasks.splice(Number(button.getAttribute("data-remove")), 1);
+    var removedIndex = Number(button.getAttribute("data-remove"));
+    tasks.splice(removedIndex, 1);
     render();
+    var remainingButtons = listNode.querySelectorAll("[data-remove]");
+    if (remainingButtons.length) remainingButtons[Math.min(removedIndex, remainingButtons.length - 1)].focus();
+    else form.elements.title.focus();
   });
   var resetButton = root.querySelector("[data-reset]");
   if (resetButton) resetButton.addEventListener("click", function () {

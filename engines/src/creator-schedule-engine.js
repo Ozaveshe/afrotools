@@ -14,7 +14,13 @@
   function sortPosts(posts) {
     return (posts || []).slice().sort(function (a, b) { return Date.parse(a.scheduledAt) - Date.parse(b.scheduledAt); });
   }
-  function csvCell(value) { return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"'; }
+  function csvCell(value) {
+    var text = String(value == null ? "" : value);
+    // Keep formula-like user text literal on the initial spreadsheet import.
+    // JSON remains the lossless source; CSV re-save behavior varies by reader.
+    if (/^[\s\u0000-\u001f]*[=+@\-\uFF1D\uFF0B\uFF0D\uFF20]/.test(text) || /^[\t\r\n]/.test(text)) text = "'" + text;
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
   function toCsv(posts) {
     return ["title,platform,scheduled_at,status,note"].concat(sortPosts(posts).map(function (post) {
       return [post.title, post.platform, post.scheduledAt, post.status, post.note].map(csvCell).join(",");
