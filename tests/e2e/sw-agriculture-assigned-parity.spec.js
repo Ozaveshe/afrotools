@@ -7,7 +7,7 @@ const { apps } = require("../../scripts/build-sw-agriculture-assigned-apps.js");
 test.describe.configure({ mode: "serial" });
 test.setTimeout(120000);
 
-// These 13 applications expose native controls; the other seven retain JSON input.
+// These 16 applications expose native controls; the other four retain JSON input.
 const nativeInputs = {
   "planting-calendar": { key: "zone", value: "highland", selector: "#agri-zone", invalid: null },
   "fertilizer-calc": { key: "area", value: 3, selector: "#agri-area", invalid: "-1" },
@@ -22,17 +22,17 @@ const nativeInputs = {
   "export-docs": { key: "query", value: "Ghana", selector: "#agri-query", invalid: "no-such-country-987654" },
   "tractor-calculator": { key: "farmHa", value: 30, selector: "#agri-farmHa", invalid: "-1" },
   "crop-insurance": { key: "farmValue", value: 600000, selector: "#agri-farmValue", invalid: "-1" },
+  "cooperative-calculator": { key: "revenue", value: 110000, selector: "#agri-coop-revenue", invalid: "-1" },
+  "warehouse-receipt": { key: "quantityTonnes", value: 11, selector: "#agri-wrs-quantityTonnes", invalid: "-1" },
+  "coffee-calculator": { key: "farmHa", value: 2, selector: "#agri-coffee-farmHa", invalid: "-1" },
 };
 const rawInputs = {
   "poultry-roi-calculator": { key: "flockSize", value: 101 },
   "pesticide-dosage-calculator": { key: "areaHa", value: 2 },
-  "coffee-calculator": { key: "farmHa", value: 2 },
   "cocoa-tracker": { key: "farmSizeHa", value: 2 },
   "commodity-prices": { key: "volumeTonnes", value: 2 },
-  "cooperative-calculator": { key: "revenue", value: 110000 },
-  "warehouse-receipt": { key: "quantityTonnes", value: 11 },
 };
-expect(Object.keys(nativeInputs)).toHaveLength(13);
+expect(Object.keys(nativeInputs)).toHaveLength(16);
 expect([...Object.keys(nativeInputs), ...Object.keys(rawInputs)].sort()).toEqual(apps.map(app => app.id).sort());
 
 async function downloadBytes(page, format) {
@@ -79,7 +79,13 @@ for (const app of apps) {
         expect(payload.privacy).toBe("local-only");
         await page.locator("[data-import]").setInputFiles(file);
         await expect(page.locator("[data-status]")).toContainText("imefunguliwa");
-      } else if (format === "csv") expect(bytes.toString("utf8")).toContain("sehemu,thamani");
+      } else if (format === "csv") {
+        const csv = bytes.toString("utf8");
+        if (["cooperative-calculator", "warehouse-receipt", "coffee-calculator"].includes(app.id)) {
+          expect(csv.split(/\r?\n/)[0]).toBe("maelezo");
+          expect(csv).toContain("Makisio ya kupanga");
+        } else expect(csv).toContain("sehemu,thamani");
+      }
       else if (format === "txt") {
         textExport = bytes.toString("utf8");
         expect(textExport).toContain(app.name);
@@ -155,7 +161,7 @@ test("assigned Agriculture layout reflows at 320, 375 and 200%", async ({ page }
 
 for (const theme of ["light", "dark"]) {
   for (const width of [320, 390]) {
-    test(`13 native Agriculture forms have labels, contrast and keyboard focus at ${width}px ${theme}`, async ({ page }, testInfo) => {
+    test(`16 native Agriculture forms have labels, contrast and keyboard focus at ${width}px ${theme}`, async ({ page }, testInfo) => {
       const rows = [];
       await page.setViewportSize({ width, height: 900 });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
@@ -177,12 +183,12 @@ for (const theme of ["light", "dark"]) {
         expect(focus.outline, `${app.id}: visible focus`).not.toBe("none");
         expect(focus.width, `${app.id}: visible focus width`).toBeGreaterThanOrEqual(2);
         rows.push({ tool: app.id, width, theme, violations, focus });
-        if (width === 390 && ["soil-ph-calculator", "farm-budget", "tractor-calculator"].includes(app.id)) {
+        if (width === 390 && ["cooperative-calculator", "warehouse-receipt", "coffee-calculator"].includes(app.id)) {
           await page.screenshot({ path: testInfo.outputPath(`${app.id}-${theme}.png`), fullPage: true });
         }
       }
       await testInfo.attach("native-form-accessibility.json", { body: Buffer.from(JSON.stringify(rows, null, 2)), contentType: "application/json" });
-      expect(rows).toHaveLength(13);
+      expect(rows).toHaveLength(16);
     });
   }
 }
