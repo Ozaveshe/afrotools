@@ -42,7 +42,7 @@ for (const [name, probe] of Object.entries(probes)) {
       expect(fs.readFileSync(path.join(directory, file), "utf8")).toBe(text);
     }
     for (const [file, text] of Object.entries(expected.pdfTextFiles)) {
-      const parsed = await pdfParse(fs.readFileSync(path.join(directory, file)));
+      const parsed = await pdfParse(Uint8Array.from(fs.readFileSync(path.join(directory, file))));
       expect(normalizedPdf(parsed.text)).toBe(normalizedPdf(text));
     }
     for (const file of Object.keys(expected.calendarFiles)) {
