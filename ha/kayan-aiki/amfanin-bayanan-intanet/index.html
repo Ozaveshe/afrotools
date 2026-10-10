@@ -33,5 +33,5 @@ function calcNet(){
     if(!field.checkValidity() || !Number.isFinite(Number(field.value)) || Number(field.value)<0){field.reportValidity();return false}
   }
 var gb=((Number(browse.value)||0)*0.08*30)+((Number(video.value)||0)*0.9*30)+((Number(calls.value)||0)*0.7*4)+((Number(study.value)||0)*0.15*30);var need=Math.ceil(gb*1.15);lastNetText='Kiyasin wata: '+need+' GB. Lilo: '+browse.value+'h/rana; bidiyo: '+video.value+'h/rana; kira: '+calls.value+'h/mako; karatu/aiki: '+study.value+'h/rana.';netResult.style.display='block';netResult.innerHTML='<strong>'+need+' GB</strong><br>Kiyasin wata tare da dan kari domin sauyin amfani.'}function copyNet(){if(calcNet()===false)return;if(navigator.clipboard)navigator.clipboard.writeText(lastNetText)}function downloadNet(){if(calcNet()===false)return;var blob=new Blob([lastNetText+'\\n'],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='kiyasin-amfanin-intanet.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}calcNet()</script>  <script src="/ha/assets/ha-surface.js?v=6a9f01c5" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=d7e7b03e" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=09c215fa" defer></script>
 </body></html>
