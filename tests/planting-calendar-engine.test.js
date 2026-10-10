@@ -61,3 +61,13 @@ console.log(JSON.stringify({
   scenarios: zoneIds.length * 2,
   status: 'passed',
 }, null, 2));
+
+// Only real zone keys and declared rainfall modes may produce a calendar.
+for (const zone of ['constructor', '__proto__', 'toString', 'hasOwnProperty', ['forest'], { toString: () => 'forest' }, null, 42]) {
+  assert.equal(engine.calculate({ zone, rainfall: 'unimodal' }, data).ok, false);
+}
+for (const rainfall of ['invalid', '', null, false, 0, [], {}, 'BIMODAL']) {
+  assert.deepEqual(engine.calculate({ zone: 'forest', rainfall }, data), { ok: false, status: 'invalid-rainfall' });
+}
+for (const zone of zoneIds) assert.deepEqual(engine.calculate({ zone }, data), engine.calculate({ zone, rainfall: 'unimodal' }, data));
+console.log('PASS Planting Calendar zone and rainfall validation');

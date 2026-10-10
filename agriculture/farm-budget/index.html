@@ -95,7 +95,7 @@
 <link rel="stylesheet" href="/assets/css/agriculture-tool-focus.css?v=997bd578">
 <script src="/assets/js/components/navbar.min.js?v=0333a741" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6bd937ab" defer></script>
-<script src="/assets/js/pages/agriculture-tool-focus.js?v=d66cf842" defer></script>
+<script src="/assets/js/pages/agriculture-tool-focus.js?v=6f1f09c8" defer></script>
 
 <style>
 :root{
@@ -252,12 +252,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 .err-msg{background:#FEE2E2;border:1.5px solid #FECACA;border-radius:10px;color:#991B1B;font-size:.85rem;font-weight:600;padding:.6rem .9rem;margin-top:.5rem;display:none}
 .err-msg.show{display:block}
 
+#farm-budget-print-report{display:none}
 @media print{
+  body > :not(main), .main > :not(#results), #results > :not(#farm-budget-print-report){display:none!important}
+  .main,#results{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
+  #farm-budget-print-report{display:block!important;white-space:pre-wrap;font:11pt/1.35 Arial,sans-serif;color:#000;background:#fff;margin:0;padding:12pt;overflow-wrap:anywhere}
   .hero,.breadcrumb,.badge-row,.add-crop-btn,.btn-calc,.print-btn,.agri-links,.faq,.seo-prose,afro-navbar,afro-footer{display:none!important}
   .card{border:1px solid #ccc;page-break-inside:avoid}
   body{background:#fff}
   .main{padding:0}
-  #results{display:block!important}
+  /* Preserve the current result visibility; never print invalidated totals. */
 }
 </style>
 <meta property="article:modified_time" content="2026-03-28">
@@ -421,7 +425,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
       </div>
       <div class="field">
         <label>Area (hectares)</label>
-        <input aria-label="E.g. 1.5" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5">
+        <input aria-label="Crop area in hectares" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5">
       </div>
       <button type="button" class="remove-btn" onclick="removeCrop(this)" style="display:none">Remove</button>
     </div>
@@ -479,7 +483,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
   </div>
 </div>
 
-<div id="form-error" class="err-msg">Please select a country and add at least one crop with a valid area.</div>
+<div id="form-error" class="err-msg" role="alert" aria-live="assertive">Choose a country and enter a positive area for every crop. For a loan, enter a non-negative annual rate and a positive term. A blank optional rent uses the static country estimate; zero means no rent.</div>
 <button type="button" class="btn-calc" onclick="calculate()">Plan my budget</button>
 
 <!-- RESULTS -->
@@ -520,6 +524,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
   <!-- MONTHLY CASH FLOW -->
   <div class="card">
     <p class="card-title">Monthly Cash Flow — When You Need Money</p>
+    <p>Planning cash allocation only: fertilizer spending is split equally between months 3 and 4. This is not a crop-specific application schedule. Actual timing and local costs need verification.</p>
     <div id="cashflow-grid" class="cashflow-grid"></div>
     <p style="font-size:.78rem;color:var(--muted);margin-top:.75rem">Bars show relative cash outflow per month. Tallest bar = highest spending month.</p>
   </div>
@@ -614,7 +619,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/commodity-prices.js?v=3e308ad4"></script>
 <script src="/data/agriculture/farm-budget-data.js?v=666f8cc1"></script>
-<script src="/engines/farm-budget-engine.js?v=ceab7205"></script>
+<script src="/engines/farm-budget-engine.js?v=f2dcb361"></script>
+<script src="/assets/js/lib/farm-budget-price-inputs.js?v=d8ff37a1"></script>
+<script src="/assets/js/lib/farm-budget-report.js?v=e0259edc"></script>
 
 <script>
 (function(){
@@ -650,7 +657,7 @@ window.addCrop = function(){
     + '<option value="sesame">🌱 Sesame</option>'
     + '</select></div>'
     + '<div class="field"><label>Area (hectares)</label>'
-    + '<input aria-label="E.g. 1.5" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5"></div>'
+    + '<input aria-label="Crop area in hectares" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5"></div>'
     + '<button type="button" class="remove-btn" onclick="removeCrop(this)">Remove</button>';
   wrap.appendChild(row);
   // show all remove buttons when >1 row
@@ -664,6 +671,7 @@ window.removeCrop = function(btn){
 };
 
 function updateRemoveBtns(){
+  window.FARM_BUDGET_LAST_RESULT=null;document.getElementById('results').style.display='none';
   var rows = document.querySelectorAll('.crop-row');
   rows.forEach(function(r){
     var btn = r.querySelector('.remove-btn');
@@ -700,20 +708,26 @@ function fmtFull(n, sym){
 
 var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+var quoteInputs=window.AfroTools.FarmBudgetPriceInputs.mount({locale:'en',countryId:'country-sel',rowsId:'crop-rows',cropSelector:'.crop-sel',rentId:'rent-override'});
+function budgetNumber(element, optional){var raw=element.value.trim();return raw===''?(optional?undefined:NaN):Number(raw);}
 // ── MAIN CALCULATION ──────────────────────────────────────────────────
+document.addEventListener('input',function(e){if(e.target.matches('input,select')){window.FARM_BUDGET_LAST_RESULT=null;document.getElementById('results').style.display='none';}});
+document.addEventListener('change',function(e){if(e.target.matches('input,select')){window.FARM_BUDGET_LAST_RESULT=null;document.getElementById('results').style.display='none';}});
 window.calculate = function(){
   var cc = document.getElementById('country-sel').value;
   var errEl = document.getElementById('form-error');
+  window.FARM_BUDGET_LAST_RESULT = null;
+  document.getElementById('results').style.display = 'none';
 
   var rows = document.querySelectorAll('.crop-row');
   var crops = [];
   rows.forEach(function(r){
     var crop = r.querySelector('.crop-sel').value;
-    var area = parseFloat(r.querySelector('.crop-area').value);
-    if(crop && area > 0) crops.push({crop:crop, area:area});
+    var area = budgetNumber(r.querySelector('.crop-area'));
+    crops.push({crop:crop, area:area});
   });
 
-  if(!cc || crops.length === 0){
+  if(!cc || crops.length === 0 || crops.some(function(c){return !c.crop || !Number.isFinite(c.area) || c.area <= 0;})){
     errEl.classList.add('show');
     return;
   }
@@ -723,12 +737,12 @@ window.calculate = function(){
   var laborMode = document.querySelector('input[name="labor"]:checked').value;
   var mechMode  = document.querySelector('input[name="mech"]:checked').value;
   var finMode   = document.querySelector('input[name="finance"]:checked').value;
-  var startMonth = parseInt(document.getElementById('start-month').value, 10);
+  var startMonth = budgetNumber(document.getElementById('start-month'));
 
   var engine = window.AfroTools && window.AfroTools.FarmBudgetEngine;
   var budgetData = window.AfroTools && window.AfroTools.FarmBudgetData;
   var farmCosts = window.AfroTools && window.AfroTools.farmCosts;
-  var result = engine.calculate({
+  var result = engine.calculate(quoteInputs.enrich({
     countryCode:cc,
     crops:crops,
     landMode:landMode,
@@ -736,11 +750,11 @@ window.calculate = function(){
     mechanizationMode:mechMode,
     financeMode:finMode,
     startMonth:startMonth,
-    rentOverride:document.getElementById('rent-override').value,
-    loanRate:document.getElementById('loan-rate').value,
-    loanTerm:document.getElementById('loan-term').value
-  }, {data:budgetData,farmCosts:farmCosts});
-  if(!result.ok){errEl.classList.add('show');return result;}
+    rentOverride:landMode === 'rent' ? budgetNumber(document.getElementById('rent-override'),true) : undefined,
+    loanRate:finMode === 'loan' ? budgetNumber(document.getElementById('loan-rate')) : undefined,
+    loanTerm:finMode === 'loan' ? budgetNumber(document.getElementById('loan-term')) : undefined
+  }), {data:budgetData,farmCosts:farmCosts});
+  if(!result.ok){errEl.textContent=quoteInputs.message(result);errEl.classList.add('show');return result;}
   var sym = result.currency.symbol;
   var totSeed=result.totals.seed,totFert=result.totals.fertilizer,totChemicals=result.totals.chemicals,
       totLabor=result.totals.labor,totMech=result.totals.mechanization,totLand=result.totals.land,
@@ -828,7 +842,7 @@ window.calculate = function(){
   var retGrid = document.getElementById('returns-grid');
   retGrid.innerHTML = '';
   var retItems = [
-    {label:'Expected Revenue', val:totRevenue, sub:'Based on average yields and current market prices', positive:true},
+    {label:'Expected Revenue', val:totRevenue, sub:'Based on modeled yields and entered or static reference prices', positive:true},
     {label:'Expected Profit', val:profit, sub:'Revenue minus total budget', positive: profit>=0},
     {label:'Total Budget', val:totalBudget, sub:'All costs including 10% contingency', positive:true},
     {label:'Return on Investment', val:null, roi:roi, sub:'Profit as % of total investment', positive: roi>=0}
@@ -848,7 +862,8 @@ window.calculate = function(){
   var bePlant = result.breakEvenYieldTonnesHa;
   document.getElementById('breakeven-text').innerHTML =
     'You need at least <strong>' + bePlant.toFixed(2) + ' t/ha</strong> to cover all costs. '
-    + 'Average break-even at <strong>' + fmtFull(bePlant * avgPricePerT, sym) + '/ha</strong> revenue.';
+    + 'Average break-even at <strong>' + fmtFull(bePlant * avgPricePerT, sym) + '/ha</strong> revenue. '
+    + 'This aggregate threshold keeps the modeled crop-output proportions and prices constant and holds the budget fixed. It is not a separate yield target for each crop.';
 
   // RISK SCENARIOS
   var scenarios = [

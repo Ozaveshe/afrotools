@@ -5,8 +5,8 @@ const data = require('../../../data/agriculture/farm-size-data.json');
 
 const UNIT_LABELS = Object.freeze({
   hectare:'Hectare (ha)',acre:'Acre',sqm:'Mètre carré (m²)',sqkm:'Kilomètre carré (km²)',sqft:'Pied carré (ft²)',
-  plot_ng_standard:'Parcelle — standard Nigeria (648 m²)',plot_ng_450:'Parcelle — Nigeria 450 m²',
-  plot_ng_460:'Parcelle — Nigeria FCT/Abuja (460 m²)',plot_ng_930:'Parcelle — Nigeria 930 m² (demi-acre)',
+  plot_ng_standard:'Parcelle — Nigeria (648 m²)',plot_ng_450:'Parcelle — Nigeria 450 m²',
+  plot_ng_460:'Parcelle — Nigeria FCT/Abuja (460 m²)',plot_ng_930:'Parcelle — Nigeria 930 m²',
   feddan:'Feddan (Égypte / Soudan)',kirat:'Kirat (Égypte)',sahm:'Sahm (Égypte)',qasaba:'Qasaba carrée (Égypte)',
   morgen:'Morgen (Afrique du Sud / Namibie)',timad:'Timad (Éthiopie)',tseri:'Tseri (Éthiopie / Érythrée)',
   gasha:'Gasha / Gasga (Éthiopie)',kert:'Kert (Éthiopie)',arpent:'Arpent (Maurice / Seychelles)',
@@ -20,10 +20,10 @@ const CATEGORY_LABELS = Object.freeze({
   ghana:'Ghana',francophone:'Afrique francophone',reference:'Repères visuels',
 });
 const NOTES = Object.freeze({
-  plot_ng_standard:'60 ft × 120 ft, soit environ 18 m × 36 m. Format courant à Lagos, Ogun et Oyo.',
+  plot_ng_standard:'Surface de référence : 18 m × 36 m = 648 m². Une parcelle de 60 ft × 120 ft vaut environ 668,90 m². Confirmez les dimensions mesurées.',
   plot_ng_450:'15 m × 30 m. Format rencontré notamment à Abuja, Kaduna et Enugu.',
   plot_ng_460:'Parcelle de référence AGIS dans le Territoire de la capitale fédérale, Abuja.',
-  plot_ng_930:'Désignée localement comme un demi-acre dans certaines zones du nord.',
+  plot_ng_930:'Surface de référence : 930 m², soit environ 0,2298 acre; ce n’est pas un demi-acre. Confirmez la surface mesurée.',
   feddan:'1 feddan = 24 kirat = 0,42 ha. Unité traditionnelle en Égypte et au Soudan.',
   kirat:'1/24 de feddan, unité traditionnelle secondaire.',
   sahm:'2 kirat = 1 sahm.',qasaba:'1 qasaba linéaire vaut environ 2,7 m; sa surface carrée vaut 7,29 m².',

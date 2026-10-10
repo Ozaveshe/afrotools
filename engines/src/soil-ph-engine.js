@@ -8,11 +8,41 @@ function suitability(ph,crop){if(!crop)return null;var margin=.3;if(ph>=crop.opt
 function targetPH(ph,crop){return crop?(ph>=crop.optLow?ph:crop.optLow):null;}
 function limeName(quality){if(quality>=95)return'Pure CaCO₃';if(quality>=88)return'Dolomitic lime';if(quality>=80)return'Agricultural limestone';return'Wood ash';}
 function adjustedRange(ph,target,textureMultiplier,depth,quality,data){var base=baseLimeRange(ph,target),factor=textureMultiplier*(depth/15)*(data.baseLimeCcePct/quality),low=base[0]*factor,high=base[1]*factor;return{baseLow:base[0],baseHigh:base[1],low:low,high:high,mid:(low+high)/2};}
-function calculate(input,data){var ph=finite(input.ph),crop=data&&data.crops&&data.crops[input.cropKey]||null,textureMultiplier=data&&data.textures&&data.textures[input.texture]||1,depth=finite(input.depth)||15,quality=finite(input.limeQuality)||100,farmHa=finite(input.farmHa)||1,limePrice=finite(input.limePrice)||0;if(!data||!Number.isFinite(ph)||ph<3||ph>10)return{ok:false,status:'invalid-input'};var target=targetPH(ph,crop),lime;
-if(ph>7.5){lime={kind:'alkaline',gypsumRate:ph<=8?{low:2,high:3,mid:2.5}:ph<=8.5?{low:3,high:5,mid:4}:{low:5,high:5,mid:5},sulphurRate:ph<=8?null:ph<=8.5?{low:1,high:2}:{low:2,high:3}};}
-else if(crop&&ph>=target){lime={kind:'none',targetPH:target};}
-else if(crop){var range=adjustedRange(ph,target,textureMultiplier,depth,quality,data);lime={kind:'crop',targetPH:target,range:range,totalMid:range.mid*farmHa,totalCost:limePrice>0?range.mid*farmHa*limePrice:null};}
-else{lime={kind:'scenarios',items:data.scenarioTargets.map(function(item){if(ph>=item.ph)return{id:item.id,targetPH:item.ph,met:true};var range=adjustedRange(ph,item.ph,textureMultiplier,depth,quality,data);return{id:item.id,targetPH:item.ph,met:false,range:range,totalMid:range.mid*farmHa,totalCost:limePrice>0?range.mid*farmHa*limePrice:null};})};}
-var amendmentTarget=crop?target:5.5,ashBase=baseLimeRange(ph,amendmentTarget),ashMid=(ashBase[0]+ashBase[1])/2,ashRate=ph>7.5?null:(ashMid>0?ashMid*textureMultiplier*(depth/15)*(data.baseLimeCcePct/30):0),suitable=[],marginal=[];Object.keys(data.crops).forEach(function(key){var item=data.crops[key];if(ph>=item.optLow&&ph<=item.optHigh)suitable.push(key);else if(ph>=item.optLow-.3&&ph<=item.optHigh+.3)marginal.push(key);});
-return{ok:true,status:'calculated',input:{ph:ph,cropKey:input.cropKey||'',texture:input.texture,depth:depth,limeQuality:quality,farmHa:farmHa,limePrice:limePrice},crop:crop,phInfo:phLabel(ph),descriptionCode:descriptionCode(ph),suitability:suitability(ph,crop),targetPH:target,currentPercent:phToPercent(ph),targetPercent:target==null?null:phToPercent(target),optimalRange:crop?{low:crop.optLow,high:crop.optHigh,lowPercent:phToPercent(crop.optLow),highPercent:phToPercent(crop.optHigh)}:null,limeName:limeName(quality),textureMultiplier:textureMultiplier,depthMultiplier:depth/15,qualityCorrection:data.baseLimeCcePct/quality,lime:lime,woodAshRate:ashRate,timingCode:ph<=7.5?'acid-neutral':'alkaline',suitableCropKeys:suitable,marginalCropKeys:marginal};}
-return{baseLimeRange:baseLimeRange,phLabel:phLabel,phToPercent:phToPercent,suitability:suitability,targetPH:targetPH,limeName:limeName,adjustedRange:adjustedRange,calculate:calculate};}));
+function calculate(input,data){
+var invalid={ok:false,status:'invalid-input'},own=function(object,key){return Object.prototype.hasOwnProperty.call(object,key);};
+if(!input||typeof input!=='object'||Array.isArray(input)||!data||!data.crops||!data.textures||!Array.isArray(data.scenarioTargets)||typeof data.baseLimeCcePct!=='number'||!Number.isFinite(data.baseLimeCcePct)||data.baseLimeCcePct<=0)return invalid;
+var ph=input.ph,cropKey=input.cropKey===undefined?'':input.cropKey,texture=input.texture===undefined?'loam':input.texture;
+var depth=input.depth===undefined?15:input.depth,quality=input.limeQuality===undefined?100:input.limeQuality,farmHa=input.farmHa===undefined?1:input.farmHa,limePrice=input.limePrice===undefined?0:input.limePrice;
+if(typeof ph!=='number'||!Number.isFinite(ph)||ph<3||ph>10||typeof cropKey!=='string'||(cropKey!==''&&!own(data.crops,cropKey))||typeof texture!=='string'||!own(data.textures,texture))return invalid;
+if([depth,quality,farmHa].some(function(value){return typeof value!=='number'||!Number.isFinite(value)||value<=0;})||typeof limePrice!=='number'||!Number.isFinite(limePrice)||limePrice<0)return invalid;
+var crop=cropKey?data.crops[cropKey]:null,textureMultiplier=data.textures[texture];
+if(typeof textureMultiplier!=='number'||!Number.isFinite(textureMultiplier)||textureMultiplier<=0)return invalid;
+var target=targetPH(ph,crop),lime;
+if(ph>7.5){lime={kind:'alkaline',status:'soil-testing-required',gypsumRate:null,sulphurRate:null,requiredTests:['salinity','exchangeable-sodium-or-SAR','carbonate-content','laboratory-amendment-recommendation'],rateBasis:'not-determined-from-ph'};}
+else{lime={kind:'testing-required',status:'laboratory-recommendation-required',targetPH:target,rateBasis:'not-determined-from-ph'};}
+var ashRate=null,suitable=[],marginal=[];Object.keys(data.crops).forEach(function(key){var item=data.crops[key];if(ph>=item.optLow&&ph<=item.optHigh)suitable.push(key);else if(ph>=item.optLow-.3&&ph<=item.optHigh+.3)marginal.push(key);});
+var result={ok:true,status:'calculated',input:{ph:ph,cropKey:cropKey},crop:crop,phInfo:phLabel(ph),descriptionCode:descriptionCode(ph),suitability:suitability(ph,crop),targetPH:target,currentPercent:phToPercent(ph),targetPercent:target==null?null:phToPercent(target),optimalRange:crop?{low:crop.optLow,high:crop.optHigh,lowPercent:phToPercent(crop.optLow),highPercent:phToPercent(crop.optHigh)}:null,lime:lime,woodAshRate:ashRate,timingCode:ph<=7.5?'acid-neutral':'alkaline',suitableCropKeys:suitable,marginalCropKeys:marginal};function finiteTree(value){if(typeof value==='number')return Number.isFinite(value);if(value&&typeof value==='object')return Object.keys(value).every(function(key){return finiteTree(value[key]);});return true;}return finiteTree(result)?result:invalid;}
+
+function planLaboratoryLime(input){
+var invalid={ok:false,status:'invalid-laboratory-input'};
+if(!input||typeof input!=='object'||Array.isArray(input))return invalid;
+var number=function(value){return typeof value==='number'&&Number.isFinite(value);};
+if(!number(input.recommendedTonnesPerHa)||input.recommendedTonnesPerHa<0||!number(input.farmHa)||input.farmHa<=0||!number(input.laboratoryDepthCm)||input.laboratoryDepthCm<=0||input.sameTreatmentDepthConfirmed!==true)return invalid;
+if(input.basis!=='specified-product'&&input.basis!=='effective-neutralizing-value')return invalid;
+var ratio=1,reference=null,product=null;
+if(input.basis==='specified-product'){if(input.sameProductConfirmed!==true)return{ok:false,status:'laboratory-product-confirmation-required'};}
+else{
+reference=input.referenceEffectivePercent;product=input.productEffectivePercent;
+if(!number(reference)||reference<=0||!number(product)||product<=0)return invalid;
+if(input.comparableEffectiveBasisConfirmed!==true)return{ok:false,status:'comparable-effective-basis-required'};
+ratio=reference/product;
+}
+var price=input.pricePerTonne===undefined?null:input.pricePerTonne;
+if(price!==null&&(!number(price)||price<0))return invalid;
+var currency=input.currency===undefined?'':input.currency;
+if(typeof currency!=='string'||(price!==null&&!/^[A-Z]{3}$/.test(currency)))return invalid;
+var rate=input.recommendedTonnesPerHa*ratio,total=rate*input.farmHa,cost=price===null?null:total*price;
+if(!Number.isFinite(ratio)||!Number.isFinite(rate)||!Number.isFinite(total)||(cost!==null&&!Number.isFinite(cost)))return invalid;
+return{ok:true,status:'laboratory-input-plan',input:{basis:input.basis,recommendedTonnesPerHa:input.recommendedTonnesPerHa,farmHa:input.farmHa,laboratoryDepthCm:input.laboratoryDepthCm,sameTreatmentDepthConfirmed:true,sameProductConfirmed:input.basis==='specified-product',referenceEffectivePercent:reference,productEffectivePercent:product,comparableEffectiveBasisConfirmed:input.basis==='effective-neutralizing-value',pricePerTonne:price,currency:currency},productTonnesPerHa:rate,totalProductTonnes:total,totalCost:cost,currency:currency,depthScalingApplied:false,textureScalingApplied:false,recommendationSource:'user-entered-laboratory-recommendation',recommendationIndependentlyVerified:false,scope:'Quantity and cost arithmetic only. Follow the laboratory recommendation for the sampled soil, crop, product, treatment depth, timing and application method. Effective-value adjustment requires matching units, moisture basis and testing methodology; CCE alone is not an effective-value rating.'};
+}
+return{planLaboratoryLime:planLaboratoryLime,baseLimeRange:baseLimeRange,phLabel:phLabel,phToPercent:phToPercent,suitability:suitability,targetPH:targetPH,limeName:limeName,adjustedRange:adjustedRange,calculate:calculate};}));

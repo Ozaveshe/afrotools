@@ -34,8 +34,11 @@ test('CLI gate does not misclassify deliberately blocked external requests', () 
   const path = require('path');
   const { spawnSync } = require('child_process');
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'afro-reliability-'));
+  const port = process.env.AFROTOOLS_SMOKE_TEST_PORT || '4221';
+  assert.match(port, /^\d+$/, 'smoke test port must be numeric');
+  assert.ok(Number(port) > 0 && Number(port) <= 65535, 'smoke test port must be valid');
   try {
-    const run = spawnSync(process.execPath, ['scripts/audit-tool-quality.js', '--browser', '--route=/tools/html-to-pdf/', '--port=4221', '--output-dir', output, '--gate'], { encoding: 'utf8', timeout: 45000 });
+    const run = spawnSync(process.execPath, ['scripts/audit-tool-quality.js', '--browser', '--route=/tools/html-to-pdf/', '--port=' + port, '--output-dir', output, '--gate'], { encoding: 'utf8', timeout: 45000 });
     assert.equal(run.status, 0, run.stdout + run.stderr);
     const report = JSON.parse(fs.readFileSync(path.join(output, 'tool-quality-ranking.json'), 'utf8'));
     const row = report.tools[0];
