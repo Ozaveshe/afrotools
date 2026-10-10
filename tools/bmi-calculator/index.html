@@ -74,14 +74,16 @@
       r.innerHTML=`<p class="value">${last.bmi.toFixed(1)}</p><h3>${last.band}</h3><p>${last.context}</p><p><strong>Calculation:</strong> ${last.working} = ${last.bmi.toFixed(3)}</p><p><strong>Converted measurements:</strong> ${last.normalized.weightKg.toFixed(2)} kg and ${last.normalized.heightCm.toFixed(1)} cm.</p><p><strong>Rounding note:</strong> ${last.boundaryNote}</p><p><strong>Warning:</strong> ${last.warning}</p>`;
       t.disabled=p.disabled=false;
       panel.focus();
-    }catch(error){
-      last=null;
+    }catch(error){invalidateResult();
       e.textContent=error.message;
       t.disabled=p.disabled=true;
     }
   });
 
-  const report=()=>`AfroTools adult BMI calculator\nReview date: 26 July 2026\n\nInputs\nApplicability: adult aged 20 or older\nUnits: ${u.value}\n${u.value==='metric'?`Height: ${f.heightCm.value} cm\nWeight: ${f.weightKg.value} kg`:`Height: ${f.feet.value} ft ${f.inches.value||0} in\nWeight: ${f.pounds.value} lb`}\n\nResult\nBMI: ${last.bmi.toFixed(1)} (unrounded ${last.bmi.toFixed(3)})\nScreening band: ${last.band}\nConverted measurements: ${last.normalized.weightKg.toFixed(2)} kg, ${last.normalized.heightCm.toFixed(1)} cm\n${last.context}\n${last.boundaryNote}\n\nAssumption\nAdult age 20+ population screening bands. Formula: ${last.formula}. Working: ${last.working}.\n\nWarning\n${last.warning}`;
+  const emptyResult=r.innerHTML;
+const invalidateResult=()=>{last=null;r.innerHTML=emptyResult;t.disabled=p.disabled=true;const errorNode=document.getElementById('error');if(errorNode)errorNode.textContent='';};
+f.addEventListener('input',invalidateResult);f.addEventListener('change',invalidateResult);
+const report=()=>`AfroTools adult BMI calculator\nReview date: 26 July 2026\n\nInputs\nApplicability: adult aged 20 or older\nUnits: ${u.value}\n${u.value==='metric'?`Height: ${f.heightCm.value} cm\nWeight: ${f.weightKg.value} kg`:`Height: ${f.feet.value} ft ${f.inches.value||0} in\nWeight: ${f.pounds.value} lb`}\n\nResult\nBMI: ${last.bmi.toFixed(1)} (unrounded ${last.bmi.toFixed(3)})\nScreening band: ${last.band}\nConverted measurements: ${last.normalized.weightKg.toFixed(2)} kg, ${last.normalized.heightCm.toFixed(1)} cm\n${last.context}\n${last.boundaryNote}\n\nAssumption\nAdult age 20+ population screening bands. Formula: ${last.formula}. Working: ${last.working}.\n\nWarning\n${last.warning}`;
   t.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='adult-bmi-screening.txt';a.click();URL.revokeObjectURL(a.href)});
   p.addEventListener('click',()=>last&&window.print());
   document.getElementById('clear').addEventListener('click',()=>{f.reset();syncUnits();last=null;r.innerHTML='<p>Confirm adult applicability and enter measurements to see the calculation and screening band.</p>';t.disabled=p.disabled=true;f.audience.focus()});

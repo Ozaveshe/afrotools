@@ -6,6 +6,21 @@
   var results = document.getElementById('childbirth-budget-results');
   var errorBox = document.getElementById('form-error');
   var lastResult = null;
+  var isFrench = document.documentElement.lang.toLowerCase().split('-')[0] === 'fr';
+  var frenchItems = {
+    plannedCare: 'Devis des soins prévus',
+    professionalFees: 'Honoraires, bloc opératoire ou anesthésie facturés séparément',
+    medicinesSupplies: 'Médicaments, sang ou fournitures',
+    testsCare: 'Examens, soins du nouveau-né ou soins postnataux',
+    transportStay: 'Transport, hébergement ou accompagnement',
+    contingency: 'Provision du ménage pour imprévus'
+  };
+  var frenchSources = {
+    'written-provider': 'Devis écrit du prestataire',
+    'written-payer': 'Confirmation écrite de l’assureur ou du payeur',
+    'verbal-provider': 'Estimation orale du prestataire à confirmer par écrit',
+    'household-assumption': 'Hypothèses de planification du ménage, non confirmées par un prestataire'
+  };
   var fieldIds = {
     plannedCare: 'planned-care',
     professionalFees: 'professional-fees',
@@ -22,7 +37,7 @@
 
   function formatMoney(cents, currency) {
     try {
-      return new Intl.NumberFormat('en', {
+      return new Intl.NumberFormat(isFrench ? 'fr-FR' : 'en', {
         style: 'currency',
         currency: currency,
         minimumFractionDigits: 2,
@@ -35,7 +50,7 @@
 
   function formatDate(iso) {
     var date = new Date(iso + 'T00:00:00Z');
-    return new Intl.DateTimeFormat('en-GB', {
+    return new Intl.DateTimeFormat(isFrench ? 'fr-FR' : 'en-GB', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -44,6 +59,12 @@
   }
 
   function freshnessText(result) {
+    if (isFrench) {
+      var age = result.ageDays + (result.ageDays === 1 ? ' jour' : ' jours');
+      if (result.freshness === 'recent') return 'Daté d’il y a ' + age;
+      if (result.freshness === 'review-soon') return 'À reconfirmer : ' + age;
+      return 'Actualisation nécessaire : ' + age;
+    }
     if (result.freshness === 'recent') return 'Dated ' + result.ageDays + ' day(s) ago';
     if (result.freshness === 'review-soon') return 'Reconfirm: ' + result.ageDays + ' days old';
     return 'Refresh required: ' + result.ageDays + ' days old';
@@ -57,14 +78,14 @@
     document.getElementById('freshness-badge').textContent = freshnessText(result);
     document.getElementById('freshness-badge').dataset.freshness = result.freshness;
     document.getElementById('source-summary').textContent =
-      result.sourceLabel + ', dated ' + formatDate(result.quoteDate) + '.';
+      (isFrench ? frenchSources[result.sourceType] + ', en date du ' : result.sourceLabel + ', dated ') + formatDate(result.quoteDate) + '.';
     var list = document.getElementById('breakdown-list');
     list.replaceChildren();
     result.lineItems.forEach(function (item) {
       var li = document.createElement('li');
       var label = document.createElement('span');
       var amount = document.createElement('strong');
-      label.textContent = item.label;
+      label.textContent = isFrench ? frenchItems[item.id] : item.label;
       amount.textContent = formatMoney(item.cents, result.currency);
       li.append(label, amount);
       list.appendChild(li);
@@ -101,6 +122,32 @@
   }
 
   function exportText(result) {
+    if (isFrench) return [
+      'AFROTOOLS — BUDGET D’ACCOUCHEMENT FONDÉ SUR UN DEVIS',
+      '',
+      'Source des montants : ' + frenchSources[result.sourceType],
+      'Date du devis ou de l’hypothèse : ' + formatDate(result.quoteDate),
+      'Ancienneté lors du calcul : ' + result.ageDays + (result.ageDays === 1 ? ' jour' : ' jours'),
+      'État des montants : ' + freshnessText(result),
+      'Devise : ' + result.currency,
+      '',
+      'Postes saisis :',
+      result.lineItems.map(function (item) {
+        return '- ' + frenchItems[item.id] + ' : ' + formatMoney(item.cents, result.currency);
+      }).join('\n'),
+      '',
+      'Total des coûts saisis : ' + formatMoney(result.grossCents, result.currency),
+      'Contribution confirmée du payeur : ' + formatMoney(result.contributionCents, result.currency),
+      'Montant à prévoir par le ménage : ' + formatMoney(result.householdCents, result.currency),
+      '',
+      'Chaque montant a été saisi par l’utilisateur. Il s’agit d’un calcul, sans devis du prestataire, garantie de couverture ni recommandation de soins.',
+      'Un champ à zéro signifie qu’aucun montant n’a été saisi, pas que les soins sont gratuits.',
+      'Confirmez directement le plan clinique, la validité du devis, les postes inclus et la couverture. Des soins imprévus peuvent modifier les coûts.',
+      'La planification des coûts ne doit pas retarder les soins de maternité nécessaires ou urgents.',
+      'Sources : OMS, couverture sanitaire universelle ; protection financière ; mortalité maternelle.',
+      'Sources vérifiées : 26 juillet 2026.',
+      'Créé localement. Aucun compte, e-mail, téléversement, envoi analytique ni enregistrement dans le navigateur.'
+    ].join('\n');
     return [
       'AFROTOOLS PROVIDER-QUOTE CHILDBIRTH BUDGET',
       '',
@@ -160,10 +207,10 @@
     setStatus('Preparing local PDF...');
     ensurePdfLibrary().then(function (JsPdf) {
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
-      pdf.setProperties({ title: 'AfroTools provider-quote childbirth budget' });
+      pdf.setProperties({ title: isFrench ? 'AfroTools — budget d’accouchement fondé sur un devis' : 'AfroTools provider-quote childbirth budget' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(exportText(lastResult), 500);
+      var lines = pdf.splitTextToSize(exportText(lastResult).replace(/\u202f/g, ' '), 500);
       var y = 54;
       lines.forEach(function (line) {
         if (y > 790) {
