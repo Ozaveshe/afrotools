@@ -135,7 +135,7 @@ test('all hydrated warnings and dynamic field controls use native presentation',
   });
   assert.match(french.rules.rules.NG.warning, /NIN.*passeport.*bancaires/);
   assert.match(french.rules.rules.ZA.warning, /demande légale.*procédure légitime/);
-  assert.match(french.rules.rules.INTL.warning, /sauf demande légale/);
+  assert.match(french.rules.rules.INTL.warning, /exigences varient.*consignes de l’offre.*sans rapport avec le poste/);
 });
 
 test('actual override and hide handlers preserve authored values and canonical storage keys', () => {

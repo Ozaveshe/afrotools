@@ -255,6 +255,14 @@ jobs:
           PORT: '4192'
         run: npx playwright test tests/e2e/fr-customs-print-copy.spec.js tests/e2e/fr-trade-utility-workflows.spec.js tests/e2e/fr-trade-established-engine.spec.js --project=chromium --workers=2 --retries=0 --trace=off
 
+      - name: Verify CV repairs and FX observation exports in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          AFROTOOLS_TEST_SECURITY_HEADERS: '1'
+          PORT: '4196'
+        run: npx playwright test tests/e2e/cv-root-repairs.spec.js tests/e2e/currency-observation-exports.spec.js tests/e2e/day3-finance-currency-converter-vip.spec.js tests/e2e/day3-finance-currency-converter-locales-vip.spec.js --project=chromium --workers=2 --retries=0 --trace=off
+
       - name: Verify generated outputs are committed
         run: |
           git diff --stat
