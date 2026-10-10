@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11702 |
-| Indexable pages | 7887 |
+| Public pages | 11704 |
+| Indexable pages | 7889 |
 | Permanent and temporary redirects | 2964 |
 | Rewrites | 111 |
 | Conditional redirects | 4 |
 | Gone routes | 17 |
 | Dynamic route patterns | 176 |
-| Genuine equivalence groups | 4260 |
-| Documented fallbacks | 14974 |
-| Routes eligible for primary sitemaps | 7887 |
+| Genuine equivalence groups | 4262 |
+| Documented fallbacks | 14976 |
+| Routes eligible for primary sitemaps | 7889 |
 
 ## Locale Coverage
 
-- en: 6147 page records
+- en: 6149 page records
 - fr: 3807 page records
 - ha: 106 page records
 - sw: 1596 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 550
+- article: 552
 - auth: 3
 - category: 695
 - country-tool: 514
@@ -3442,6 +3442,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:19164a0591c4: en=`/tools/employment-contract/kenya`, fr=`/fr/tools/contrat-travail/kenya`; x-default=`/tools/employment-contract/kenya`
 - equivalence:192c35454f12: en=`/jamb/cram/`; x-default=`/jamb/cram/`
 - equivalence:1934c75e3cbb: en=`/tools/life-insurance-calc/ghana`, fr=`/fr/tools/assurance-vie/ghana`; x-default=`/tools/life-insurance-calc/ghana`
+- equivalence:193512922e01: en=`/blog/replacement-tyre-quotation-checklist-africa/`; x-default=`/blog/replacement-tyre-quotation-checklist-africa/`
 - equivalence:193e7eba7ff1: en=`/tools/fuel-tracker/congo/`, fr=`/fr/tools/suivi-carburant/congo/`; x-default=`/tools/fuel-tracker/congo/`
 - equivalence:196106879c40: en=`/tools/fuel-tracker/dr-congo/`, fr=`/fr/tools/suivi-carburant/dr-congo/`; x-default=`/tools/fuel-tracker/dr-congo/`
 - equivalence:1967a7c23256: en=`/tools/car-insurance/angola`, fr=`/fr/tools/assurance-auto/angola`; x-default=`/tools/car-insurance/angola`
@@ -5797,6 +5798,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a697fd8f94bb: en=`/tools/tenancy-agreement/seychelles`, fr=`/fr/tools/contrat-bail/seychelles`; x-default=`/tools/tenancy-agreement/seychelles`
 - equivalence:a6a4f79e8de8: en=`/tools/employee-cost/seychelles/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-seychelles/`; x-default=`/tools/employee-cost/seychelles/`
 - equivalence:a6b230c5fabc: fr=`/fr/widgets/partage-cout-conteneur/`; x-default=`/fr/widgets/partage-cout-conteneur/`
+- equivalence:a6bd7d322529: en=`/blog/south-africa-sars-payment-arrangement-checklist-2026/`; x-default=`/blog/south-africa-sars-payment-arrangement-checklist-2026/`
 - equivalence:a6c654be0137: en=`/tools/vat-calculator/`, fr=`/fr/tools/calculateur-tva/`, ha=`/ha/kayan-aiki/kalkuletan-vat/`, sw=`/sw/zana/kikokotoo-vat/`; x-default=`/tools/vat-calculator/`
 - equivalence:a6d148f412a7: en=`/tools/afrokitchen/recipes/maakouda-ma/`; x-default=`/tools/afrokitchen/recipes/maakouda-ma/`
 - equivalence:a6f04411bf3d: en=`/jamb/economics/2010/`; x-default=`/jamb/economics/2010/`

@@ -99,7 +99,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=f8df4ae1';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=5210b10e';
   // NAVBAR_CSS_HREF_END
 
   // ANIMATIONS_JS_HREF_START
@@ -719,6 +719,7 @@
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
       if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
+      if (this._menuResizeFn) window.removeEventListener('resize', this._menuResizeFn);
       if (this._navigationRefreshFn) {
         document.removeEventListener('focusin', this._navigationRefreshFn);
         document.removeEventListener('click', this._navigationRefreshFn);
@@ -1259,6 +1260,7 @@
         signIn:       isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign in',
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
         ariaMenu:     isSw ? 'Menyu ya urambazaji'          : isFr ? 'Menu de navigation'                               : 'Navigation menu',
+        closeMenu:    isSw ? 'Funga menyu' : isFr ? 'Fermer le menu' : lang === 'ha' ? 'Rufe jerin zaɓi' : lang === 'yo' ? 'Pa àkójọ aṣàyàn' : 'Close menu',
         ariaSearch:   isSw ? 'Tafuta zana'                  : isFr ? 'Rechercher des outils'                            : 'Search tools',
         megaNote:     isSw ? 'Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '54 pays africains · gratuit · sans inscription': '54 African countries · Core use without a paid subscription · no sign-up required',
         browseAll:    isSw ? 'Tazama zana zote →'           : isFr ? 'Voir tous les outils →'                           : 'Browse all tools →',
@@ -1548,6 +1550,9 @@
         </div>
 
         <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}" aria-hidden="true">
+          <div class="mob-theme-section">
+            <button class="mob-theme-toggle" id="mobClose" type="button">${this._escapeHtml(T.closeMenu)}<span aria-hidden="true">×</span></button>
+          </div>
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
@@ -1769,6 +1774,7 @@
         if (mobileCountrySearchResults) mobileCountrySearchResults.innerHTML = '';
       };
       const setMenuOpen = (isOpen) => {
+        const wasOpen = this._menuOpen;
         this._menuOpen = isOpen;
         this.classList.toggle('menu-open', this._menuOpen);
         burger?.classList.toggle('open', this._menuOpen);
@@ -1778,10 +1784,38 @@
         if (this._menuOpen) {
           closeMenus();
           this._lockBodyScroll();
+          sr.getElementById('mobClose')?.focus({ preventScroll: true });
           return;
         }
         this._unlockBodyScroll();
         resetMobileSearch();
+        if (wasOpen) burger?.focus({ preventScroll: true });
+      };
+      sr.getElementById('mobClose')?.addEventListener('click', () => setMenuOpen(false));
+      if (this._menuResizeFn) window.removeEventListener('resize', this._menuResizeFn);
+      this._menuResizeFn = () => {
+        if (this._menuOpen && window.innerWidth > 940) {
+          setMenuOpen(false);
+          sr.querySelector('.logo')?.focus({ preventScroll: true });
+        }
+      };
+      window.addEventListener('resize', this._menuResizeFn);
+
+      // Include controls inside nested country-selector shadow roots in tab order.
+      const mobileTabStops = () => {
+        const stops = [];
+        const visit = root => {
+          root.querySelectorAll('*').forEach(element => {
+            if (element.matches('a[href], button, input, select, textarea, [tabindex]') &&
+                element.tabIndex >= 0 && !element.matches(':disabled') &&
+                element.getClientRects().length && getComputedStyle(element).visibility !== 'hidden') {
+              stops.push(element);
+            }
+            if (element.shadowRoot) visit(element.shadowRoot);
+          });
+        };
+        if (mob) visit(mob);
+        return stops;
       };
 
       // Click toggle
@@ -1868,6 +1902,17 @@
       // Escape
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
       this._keydownFn = e => {
+        // Nested country menus and native fallback dialogs own their keys first.
+        if (e.defaultPrevented || sr.querySelector('dialog[open]')) return;
+        if (e.key === 'Tab' && this._menuOpen) {
+          const stops = mobileTabStops();
+          const active = e.composedPath()[0];
+          const index = stops.indexOf(active);
+          if (stops.length && (index === -1 || (e.shiftKey ? index === 0 : index === stops.length - 1))) {
+            e.preventDefault();
+            stops[e.shiftKey ? stops.length - 1 : 0].focus();
+          }
+        }
         if (e.key === 'Escape') {
           closeMenus();
           closeLanguageMenu();

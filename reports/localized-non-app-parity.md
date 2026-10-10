@@ -6,8 +6,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 
 | Locale | Pass | Under standard | Missing |
 | --- | ---: | ---: | ---: |
-| fr | 160 | 2 | 310 |
-| sw | 137 | 1 | 334 |
+| fr | 160 | 2 | 312 |
+| sw | 137 | 1 | 336 |
 
 ## By surface class
 
@@ -16,7 +16,7 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | category-hub | 32 | 30 | 0 | 2 | 27 | 0 | 5 |
 | country-hub | 54 | 54 | 0 | 0 | 54 | 0 | 0 |
 | discovery-support | 18 | 18 | 0 | 0 | 18 | 0 | 0 |
-| editorial | 345 | 40 | 0 | 305 | 21 | 0 | 324 |
+| editorial | 347 | 40 | 0 | 307 | 21 | 0 | 326 |
 | editorial-hub | 1 | 1 | 0 | 0 | 1 | 0 | 0 |
 | home | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
 | institutional | 13 | 13 | 0 | 0 | 13 | 0 | 0 |
@@ -488,6 +488,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/remittance-fees-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/rental-yield-guide-africa/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/rental-yield-guide-africa/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/replacement-tyre-quotation-checklist-africa/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/replacement-tyre-quotation-checklist-africa/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/roofing-sheets-quantity-nigeria/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/roofing-sheets-quantity-nigeria/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/rwanda-digital-vat-online-services-2026/ | editorial | fr | — | missing | no localized route or owner file |
@@ -556,6 +558,8 @@ Indexable English top-level public routes plus English blog articles; shared Eng
 | /blog/south-africa-medical-tax-credits-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-provisional-tax-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-provisional-tax-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
+| /blog/south-africa-sars-payment-arrangement-checklist-2026/ | editorial | fr | — | missing | no localized route or owner file |
+| /blog/south-africa-sars-payment-arrangement-checklist-2026/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-small-business-tax-calendar-2026-27/ | editorial | fr | — | missing | no localized route or owner file |
 | /blog/south-africa-small-business-tax-calendar-2026-27/ | editorial | sw | — | missing | no localized route or owner file |
 | /blog/south-africa-tax-brackets-2025-26/ | editorial | sw | — | missing | no localized route or owner file |
