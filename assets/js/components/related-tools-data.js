@@ -4904,7 +4904,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-udhamini-sw",
+        "imageKey": "zana-udhamini-sw"
       },
       {
         "id": "zana-kituo-elimu-sw",
@@ -4916,7 +4918,9 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-kituo-elimu-sw",
+        "imageKey": "zana-kituo-elimu-sw"
       },
       {
         "id": "zana-marejesho-ya-mkopo-wa-mwanafunzi-sw",
@@ -16369,8 +16373,10 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "content-repurposer"
+        "imageExt": "webp",
+        "sourceId": "content-repurposer",
+        "imageId": "zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8",
+        "imageKey": "zana-kubadilisha-maudhui-kwa-majukwaa-sw-wave8"
       },
       {
         "id": "zana-kirekodi-skrini-sw-wave9",
@@ -17472,7 +17478,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "zana-bei-za-mtayarishi-sw",
+        "imageKey": "zana-bei-za-mtayarishi-sw"
       },
       {
         "id": "zana-kalenda-ya-mtayarishi-sw",
