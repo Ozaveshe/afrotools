@@ -136,7 +136,7 @@
     function s() {
         var t = n().data || {}, e = [];
         return e.push(r([ t.fn, t.ln ], " ") || t.name || copy.name), e.push(o(t.title || copy.target)),
-        e.push(r([ t.email, r([ t.phoneCode, t.phone ], " "), t.altPhone, t.loc || t.location, t.linkedin || t.li, t.github, t.web, t.portfolio ])),
+        e.push(r([ t.email, o(t.phone) ? r([ t.phoneCode, t.phone ], " ") : "", t.altPhone, t.loc || t.location, t.linkedin || t.li, t.github, t.web, t.portfolio ])),
         e.push(copy.notePrefix + a), l(e, copy.summary, t.summary), l(e, copy.experience, (t.exps || t.experience || []).map(function(t) {
             return o(r([ t.t, t.title, t.c, t.company, t.l, t.s, t.e, t.d, t.desc ], " ")) ? [ r([ t.t || t.title || copy.role, t.c || t.company || t.org, t.l || t.loc || t.location ], " - "), i(t), (e = t.d || t.desc || t.description,
             String(e || "").split(/\n+/).map(function(t) {
@@ -150,11 +150,11 @@
         })), l(e, copy.skills, [ t.skills && t.skills.h ? copy.technical + o(t.skills.h) : "", t.skills && t.skills.s ? copy.workplace + o(t.skills.s) : "", t.skills && t.skills.t ? copy.tools + o(t.skills.t) : "" ]),
         l(e, copy.projects, (t.showProjs ? (t.projs || t.projects || []) : []).map(function(t) {
             return o(r([ t.n, t.name, t.url, t.tech, t.d, t.desc ], " ")) ? [ t.n || t.name || copy.project, t.tech ? copy.tools + o(t.tech) : "", o(t.url), o(t.d || t.desc || t.description) ].filter(Boolean).join("\n") : "";
-        })), l(e, copy.certifications, (t.certs || t.certifications || []).map(function(t) {
+        })), l(e, copy.certifications, (t.certs || t.certifications || []).filter(function(t) { return t && r([ t.n, t.name, t.i, t.issuer, t.y, t.year ]); }).map(function(t) {
             return r([ t.n || t.name || copy.certification, t.i || t.issuer, t.y || t.year ], " - ");
-        })), l(e, copy.languages, (t.langs || t.languages || []).map(function(t) {
+        })), l(e, copy.languages, (t.langs || t.languages || []).filter(function(t) { return typeof t === "string" ? o(t) : t && o(t.l || t.name); }).map(function(t) {
             return "string" == typeof t ? o(t) : r([ t.l || t.name, t.lv || t.level ], " - ");
-        })), t.showRefs ? l(e, copy.references, (t.refs || t.references || []).map(function(t) {
+        })), t.showRefs ? l(e, copy.references, (t.refs || t.references || []).filter(function(t) { return typeof t === "string" ? o(t) : t && r([ t.n, t.name, t.t, t.title, t.org, t.e, t.email, t.p, t.phone, t.rel ]); }).map(function(t) {
             return "string" == typeof t ? o(t) : [ r([ t.n || t.name || copy.reference, t.t || t.title, t.org ], " - "), r([ t.e || t.email, t.p || t.phone, t.rel ], " | ") ].filter(Boolean).join("\n");
         })) : null, (window.CVDocumentModel && window.CVDocumentModel.portableSections ? window.CVDocumentModel.portableSections(t, n().template) : []).forEach(function(section){l(e, section.title, section.text);}), e.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
     }

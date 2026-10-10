@@ -18,7 +18,48 @@
   function mode() { var input = document.querySelector('input[name="rateMode"]:checked'); return input ? input.value : 'snapshot'; }
   function positive(value) { var number = Number(value); return Number.isFinite(number) && number > 0 ? number : null; }
   function timestamp(data) { var raw = data && (data.as_of || data.timestamp || data.updatedAt); var value = raw ? new Date(raw) : null; return value && Number.isFinite(value.getTime()) ? value : null; }
-  function acceptable(data) { var date = timestamp(data); var rates = data && data.rates; if (!data || String(data.base || '').toUpperCase() !== 'USD' || !date || !rates || typeof rates !== 'object') return false; var age = Date.now() - date.getTime(); return age >= -86400000 && age <= MAX_AGE_MS && Object.keys(rates).some(function (code) { return positive(rates[code]); }); }
+  function acceptable(data) { return !!acceptedSnapshot(data); }
+  function acceptedSnapshot(data) {
+    var providers = ['exchangerate-api', 'frankfurter', 'fawazahmed'];
+    function observation(rate, date, source) {
+      var stamp = typeof date === 'string' ? new Date(date) : null;
+      if (typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0 || !stamp || !Number.isFinite(stamp.getTime()) || providers.indexOf(source) < 0) return null;
+      var age = Date.now() - stamp.getTime();
+      return age >= 0 && age <= MAX_AGE_MS ? { rate: rate, observed_at: stamp.toISOString(), source: source } : null;
+    }
+    if (!data || data.base !== 'USD' || !data.rates || typeof data.rates !== 'object' || Array.isArray(data.rates)) return null;
+    var top = observation(1, data.as_of || data.timestamp, data.source);
+    if (!top) return null;
+    var qualified = data.qualification && typeof data.qualification === 'object';
+    if (!qualified && (data.schemaVersion !== 1 || !Array.isArray(data.retained_rate_codes))) return null;
+    var rates = {}, observations = { USD: top };
+    Object.keys(data.rates).forEach(function (code) {
+      if (!/^[A-Z]{3}$/.test(code) || code === 'USD') return;
+      var rate = data.rates[code], item = null;
+      if (qualified) {
+        var q = data.qualification[code];
+        if (!q || q.status !== 'available' || q.reason !== null || q.base?.status !== 'available' || q.target?.status !== 'available' || q.base.rate !== 1 || typeof q.target.rate !== 'number' || !Number.isFinite(q.target.rate) || Math.abs(q.target.rate - rate) > 0.0000005001) return;
+        var base = observation(1, q.base.observed_at, q.base.source);
+        item = observation(rate, q.target.observed_at, q.target.source);
+        if (!base) return;
+      } else if (data.retained_rate_codes.indexOf(code) >= 0) {
+        var prior = data.rate_observations && data.rate_observations[code];
+        if (prior && prior.rate === rate) item = observation(rate, prior.observed_at, prior.source);
+      } else item = observation(rate, top.observed_at, top.source);
+      if (item) { rates[code] = rate; observations[code] = item; }
+    });
+    if (!Object.keys(rates).length) return null;
+    var oldest = Object.values(observations).map(function (item) { return item.observed_at; }).sort()[0];
+    return { base: 'USD', rates: rates, timestamp: oldest, source: data.source, observations: observations };
+  }
+  function pairObservation(from, to) {
+    var a = state.observations && state.observations[from], b = state.observations && state.observations[to];
+    if (!a || !b) return null;
+    var date = a.observed_at < b.observed_at ? a.observed_at : b.observed_at;
+    if (Date.now() - new Date(date).getTime() > MAX_AGE_MS) return null;
+    return { date: date, source: a.source === b.source ? sourceName(a.source) : sourceName(a.source) + ' + ' + sourceName(b.source) };
+  }
+
   function sourceName(raw) { var source = String(raw || '').trim(); if (!source) return copy.sharedSource; if (source.toLowerCase().indexOf('fawaz') >= 0) source = 'fawazahmed currency-api'; else if (source.toLowerCase().indexOf('exchangerate') >= 0) source = 'exchangerate-api'; return source + ' ' + copy.sourceVia; }
   function setStatus(kind, text) { var element = byId('fxStatus'); element.className = 'fxv-status fxv-status--' + kind; element.textContent = text; }
   function formatMoney(value, code) { return new Intl.NumberFormat(copy.locale, { style: 'currency', currency: code, currencyDisplay: 'code', maximumFractionDigits: value >= 100 ? 2 : 6 }).format(value); }
@@ -33,13 +74,13 @@
     var params = new URLSearchParams(location.search); var from = (params.get('from') || 'USD').toUpperCase(); var to = (params.get('to') || 'NGN').toUpperCase();
     byId('fxFrom').value = codes.indexOf(from) >= 0 ? from : 'USD'; byId('fxTo').value = codes.indexOf(to) >= 0 ? to : (codes.indexOf('NGN') >= 0 ? 'NGN' : codes[1] || 'USD');
   }
-  function render(data) { state.rates = data.rates; state.timestamp = timestamp(data); state.source = sourceName(data.source); state.usable = true; fillSelects(state.rates); setStatus('ready', copy.ready); byId('fxSourceLabel').textContent = state.source; byId('fxSourceDate').textContent = copy.rateDate + new Intl.DateTimeFormat(copy.locale, { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(state.timestamp) + ' UTC'; updateControls(); }
+  function render(data) { state.rates = data.rates; state.observations = data.observations; state.timestamp = timestamp(data); state.source = sourceName(data.source); state.usable = true; fillSelects(state.rates); setStatus('ready', copy.ready); byId('fxSourceLabel').textContent = state.source; byId('fxSourceDate').textContent = copy.rateDate + new Intl.DateTimeFormat(copy.locale, { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(state.timestamp) + ' UTC'; updateControls(); }
   function failClosed(reason) { state.rates = null; state.timestamp = null; state.source = null; state.usable = false; fillSelects(FALLBACK_RATES); setStatus(reason === 'stale' ? 'stale' : 'error', reason === 'stale' ? copy.stale : copy.error); byId('fxSourceLabel').textContent = copy.paused; byId('fxSourceDate').textContent = reason === 'stale' ? copy.staleDetail : copy.errorDetail; updateControls(); }
-  async function load() { setStatus('loading', copy.loading); var sources = ['/api/forex?base=USD', '/data/forex/latest.json']; var sawStale = false; for (var i = 0; i < sources.length; i += 1) { try { var response = await fetch(sources[i], { cache: 'no-cache', credentials: 'same-origin' }); if (!response.ok) continue; var data = await response.json(); if (acceptable(data)) { render(data); return; } var date = timestamp(data); if (String(data && data.base || '').toUpperCase() === 'USD' && date && data.rates && Date.now() - date.getTime() > MAX_AGE_MS) sawStale = true; } catch (_) {} } failClosed(sawStale ? 'stale' : 'error'); }
+  async function load() { setStatus('loading', copy.loading); var sources = ['/api/forex?base=USD', '/data/forex/latest.json']; var sawStale = false; for (var i = 0; i < sources.length; i += 1) { try { var response = await fetch(sources[i], { cache: 'no-cache', credentials: 'same-origin' }); if (!response.ok) continue; var data = await response.json(); var accepted = acceptedSnapshot(data); if (accepted) { render(accepted); return; } var date = timestamp(data); if (String(data && data.base || '').toUpperCase() === 'USD' && date && data.rates && Date.now() - date.getTime() > MAX_AGE_MS) sawStale = true; } catch (_) {} } failClosed(sawStale ? 'stale' : 'error'); }
   function updateManualLabel() { byId('fxManualPair').textContent = '1 ' + byId('fxFrom').value + ' = ? ' + byId('fxTo').value; }
   function invalidateResult() { state.result = null; byId('fxResult').hidden = true; byId('fxEmpty').hidden = false; byId('fxActionStatus').textContent = ''; }
   function updateControls() { var manual = mode() === 'manual'; byId('fxManualGroup').hidden = !manual; byId('fxManualRate').required = manual; byId('fxConvert').disabled = !manual && !state.usable; byId('fxConvert').textContent = manual ? copy.manualButton : copy.snapshotButton; updateManualLabel(); byId('fxEmpty').textContent = manual ? copy.manualEmpty : (state.usable ? copy.snapshotEmpty : copy.unavailableEmpty); }
-  function calculate(event) { event.preventDefault(); invalidateResult(); byId('fxAmountError').textContent = ''; byId('fxManualError').textContent = ''; var amount = positive(byId('fxAmount').value); if (!amount) { byId('fxAmountError').textContent = copy.amountError; byId('fxAmount').focus(); return; } var from = byId('fxFrom').value, to = byId('fxTo').value, manual = mode() === 'manual'; var rate = manual ? positive(byId('fxManualRate').value) : rateFor(from, to); if (manual && !rate) { byId('fxManualError').textContent = copy.rateError; byId('fxManualRate').focus(); return; } if (!rate) { byId('fxAmountError').textContent = copy.pairError; return; } var converted = amount * rate; state.result = { amount: amount, from: from, to: to, rate: rate, converted: converted, mode: manual ? copy.manualMode : copy.snapshotMode, date: manual ? copy.checked : state.timestamp.toISOString(), source: manual ? copy.userSource : state.source }; byId('fxEmpty').hidden = true; byId('fxResult').hidden = false; byId('fxResultEquation').textContent = formatMoney(amount, from) + ' ' + copy.convertsTo; byId('fxResultValue').textContent = formatMoney(converted, to); byId('fxRateUsed').textContent = '1 ' + from + ' = ' + formatRate(rate) + ' ' + to; byId('fxRateStatus').textContent = manual ? copy.providerQuote : copy.dated + new Intl.DateTimeFormat(copy.locale, { dateStyle: 'medium' }).format(state.timestamp); byId('fxActionStatus').textContent = ''; }
+  function calculate(event) { event.preventDefault(); invalidateResult(); byId('fxAmountError').textContent = ''; byId('fxManualError').textContent = ''; var amount = positive(byId('fxAmount').value); if (!amount) { byId('fxAmountError').textContent = copy.amountError; byId('fxAmount').focus(); return; } var from = byId('fxFrom').value, to = byId('fxTo').value, manual = mode() === 'manual'; var rate = manual ? positive(byId('fxManualRate').value) : rateFor(from, to); if (manual && !rate) { byId('fxManualError').textContent = copy.rateError; byId('fxManualRate').focus(); return; } if (!rate) { byId('fxAmountError').textContent = copy.pairError; return; } var observed = manual ? null : pairObservation(from, to); if (!manual && !observed) { byId('fxAmountError').textContent = copy.pairError; return; } var converted = amount * rate; state.result = { amount: amount, from: from, to: to, rate: rate, converted: converted, mode: manual ? copy.manualMode : copy.snapshotMode, date: manual ? copy.checked : observed.date, source: manual ? copy.userSource : observed.source }; byId('fxEmpty').hidden = true; byId('fxResult').hidden = false; byId('fxResultEquation').textContent = formatMoney(amount, from) + ' ' + copy.convertsTo; byId('fxResultValue').textContent = formatMoney(converted, to); byId('fxRateUsed').textContent = '1 ' + from + ' = ' + formatRate(rate) + ' ' + to; byId('fxRateStatus').textContent = manual ? copy.providerQuote : copy.dated + new Intl.DateTimeFormat(copy.locale, { dateStyle: 'medium' }).format(new Date(observed.date)); byId('fxActionStatus').textContent = ''; }
   function summary() { var result = state.result; return result.amount + ' ' + result.from + ' = ' + result.converted.toFixed(6) + ' ' + result.to + '\n1 ' + result.from + ' = ' + result.rate.toFixed(8) + ' ' + result.to + '\n' + result.mode + '\n' + result.date + '\n' + result.source + '\n' + copy.feeNote; }
   async function copyResult() { if (!state.result) return; try { await navigator.clipboard.writeText(summary()); byId('fxActionStatus').textContent = copy.copied; } catch (_) { byId('fxActionStatus').textContent = copy.copyBlocked; } }
   function downloadCsv() { if (!state.result) return; var result = state.result; var rows = [copy.csvHeaders, [result.amount, result.from, result.to, result.rate, result.converted, result.mode, result.date, result.source, copy.feeNote]]; var body = rows.map(function (row) { return row.map(function (value) { return '"' + String(value).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n'); var url = URL.createObjectURL(new Blob(['\ufeff' + body], { type: 'text/csv;charset=utf-8' })); var link = document.createElement('a'); link.href = url; link.download = copy.csvFilename; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url); byId('fxActionStatus').textContent = copy.downloaded; }

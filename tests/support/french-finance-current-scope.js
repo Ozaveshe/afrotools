@@ -6,7 +6,7 @@ const crypto = require('node:crypto');
 
 const EXPORTER = '/assets/js/pages/french-finance-export-contract.js';
 const hash = value => crypto.createHash('sha256').update(value).digest('hex');
-const NATIVE_BYPASS_IDS = ['leave-calculator', 'crypto-remittance', 'job-offer-evaluator', 'startup-valuation', 'crypto-dca'];
+const NATIVE_BYPASS_IDS = ['leave-calculator', 'crypto-remittance', 'job-offer-evaluator', 'startup-valuation', 'crypto-dca', 'currency-converter'];
 const EXCLUDED_ALIASES = new Map([
   ['fr/cape-verde/cv-paye.html', '/fr/cape-verde/cv-paye/'],
   ['fr/eq-guinea/gq-paye.html', '/fr/eq-guinea/gq-paye/']
@@ -52,6 +52,12 @@ function readCurrentFinanceScope(root) {
       continue;
     }
     if (NATIVE_BYPASS_IDS.includes(config.englishId)) {
+      if (config.englishId === 'currency-converter') {
+        const runtime = 'assets/js/pages/currency-converter-locales-vip.js';
+        const test = 'tests/e2e/currency-observation-exports.spec.js';
+        if (primaryFrenchFile !== 'fr/tools/convertisseur-devises/index.html' || !html.includes('/' + runtime) || !html.includes('id="fxCsv"')) throw new Error('Currency native export owner is missing.');
+        Object.assign(owner, { runtime, runtimeSha256: hash(fs.readFileSync(path.join(root, runtime))), test, testSha256: hash(fs.readFileSync(path.join(root, test))) });
+      }
       nativeReferences.push({ ...owner, status: 'native-export-owner-shared-controller-returns-before-init' });
       continue;
     }
@@ -88,7 +94,7 @@ function readCurrentFinanceScope(root) {
     });
   }
   rows.sort((left, right) => left.primaryFrenchFile.localeCompare(right.primaryFrenchFile, 'en'));
-  if (rawSharedScriptReferences !== 124 || rows.length !== 116 || new Set(rows.map(row => row.englishRoute)).size !== 116 || nativeReferences.length !== 5 || disabledOwners.length !== 1 || excludedAliases.length !== 2) throw new Error('Current owner inventory changed; review every physical and logical owner.');
+  if (rawSharedScriptReferences !== 124 || rows.length !== 115 || new Set(rows.map(row => row.englishRoute)).size !== 115 || nativeReferences.length !== 6 || disabledOwners.length !== 1 || excludedAliases.length !== 2) throw new Error('Current owner inventory changed; review every physical and logical owner.');
   const currentRoutes = new Set([...rows.map(row => normalizeRoute(row.canonicalFrenchRoute)), ...nativeReferences.map(row => normalizeRoute(row.frenchRoute)), ...disabledOwners.map(row => normalizeRoute(row.frenchRoute))]);
   const removedSharedReferences = historical.rows.filter(row => row.exportContract.classification === 'required' && !currentRoutes.has(normalizeRoute(row.frenchRoute))).map(row => {
     const file = resolveRouteFile(root, row.frenchRoute);
@@ -106,7 +112,7 @@ function readCurrentFinanceScope(root) {
     nativeOwners, disabledOwners, excludedAliases, notApplicable,
     canonicalMetadataGaps: rows.filter(row => normalizeRoute(row.declaredCanonicalRoute) !== normalizeRoute(row.frenchRoute)).map(row => ({ file: row.primaryFrenchFile, servedRoute: row.frenchRoute, declaredCanonicalRoute: row.declaredCanonicalRoute })),
     parityGaps: rows.filter(row => row.currentEnglishParity.classification === 'productGap').map(row => ({ file: row.primaryFrenchFile, ...row.currentEnglishParity })),
-    qualification: '132 historical logical routes reconcile to116 active shared-export owners,9 native owners,1 source-review-blocked payroll owner and6 historical not-applicable rows.124 physical script references include5 native bypasses,1 disabled script and2 excluded aliases. Only the116 active shared owners receive workflow/export acceptance from this cohort; all other current proof is reported separately. No full English/French parity claim.'
+    qualification: '132 historical logical routes reconcile to115 active shared-export owners,10 native owners,1 source-review-blocked payroll owner and6 historical not-applicable rows.124 physical script references include6 native bypasses,1 disabled script and2 excluded aliases. Only the115 active shared owners receive workflow/export acceptance from this cohort; currency observation/CSV exports are checked by their named native test. All other current proof is reported separately. No full English/French parity claim.'
   };
   return { schemaVersion: 2, count: rows.length, rows, coverage, coverageSha256: hash(JSON.stringify(coverage)) };
 }

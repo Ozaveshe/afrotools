@@ -129,7 +129,7 @@
             return {
                 name: y(e),
                 email: e.email || "[barua pepe]",
-                phone: [ e.phoneCode, e.phone ].filter(Boolean).join(" ").trim() || "[simu]",
+                phone: String(e.phone || "").trim() ? [ e.phoneCode, e.phone ].filter(Boolean).join(" ").trim() : "[simu]",
                 location: e.loc || u,
                 role: l,
                 company: s,
