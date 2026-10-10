@@ -218,7 +218,7 @@
 
   function encodeText(){
     var text = input.value;
-    if(!text.trim()){
+    if(!text.length){
       status.textContent = "Collez du texte avant d'encoder.";
       input.focus();
       return;
@@ -266,6 +266,7 @@
   }
 
   function convert(){
+    output.value = "";
     var mode = document.getElementById("base64Mode").value;
     if(mode === "decode") decodeText();
     else if(mode === "file") encodeFile();
@@ -273,7 +274,7 @@
   }
 
   function copyOutput(){
-    var text = output.value.trim();
+    var text = output.value;
     if(!text){
       status.textContent = "Aucun résultat à copier.";
       return;
@@ -293,7 +294,7 @@
 
   function downloadOutput(){
     var text = output.value;
-    if(!text.trim()){
+    if(!text.length){
       status.textContent = "Aucun résultat à télécharger.";
       return;
     }
@@ -318,7 +319,7 @@
     input.focus();
   });
   document.getElementById("swapBase64Btn").addEventListener("click", function(){
-    if(!output.value.trim()){
+    if(!output.value.length){
       status.textContent = "Aucun résultat à échanger.";
       return;
     }
