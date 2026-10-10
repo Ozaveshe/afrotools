@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { resolveReviewedToolArtwork } = require('../scripts/lib/reviewed-tool-image-bindings');
 
 const ROOT = path.resolve(__dirname, '..');
 const read = (relative) => fs.readFileSync(path.join(ROOT, relative), 'utf8');
@@ -50,8 +51,9 @@ for (const row of manifest.routes) {
   assert.match(swahili, /data-import-file/);
   assert.match(swahili, /data-pdf/);
   assert.match(swahili, /role="status" aria-live="polite"/);
-  assert.ok(fs.existsSync(path.join(ROOT, row.artwork.replace(/^\//, ''))), `${row.toolId}: artwork missing`);
-  assert.match(swahili, new RegExp(`og:image" content="https://afrotools.com${row.artwork.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+  const artwork = resolveReviewedToolArtwork(row.swahili, row.artwork);
+  assert.ok(fs.existsSync(path.join(ROOT, artwork.replace(/^\//, ''))), `${row.toolId}: artwork missing`);
+  assert.match(swahili, new RegExp(`og:image" content="https://afrotools.com${artwork.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
   const rows = registryContext.AFRO_TOOLS.filter((tool) => tool.href === row.swahili);
   assert.equal(rows.length, 1, `${row.toolId}: expected one Swahili registry owner`);
   assert.equal(rows[0].lang, 'sw');

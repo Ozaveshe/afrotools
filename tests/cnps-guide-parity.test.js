@@ -54,8 +54,8 @@ test('English and Swahili owners expose the same private local workflow',()=>{
     assert.match(html,/engines\/cnps-guide-engine\.js/);
     assert.doesNotMatch(html,/<iframe|name="(?:cnpsNumber|password|salary|payroll|identity|payment)"/i);
   }
-  assert.match(en,/assets\/img\/og-default\.png/);
-  assert.match(sw,/assets\/img\/tools\/cnps-guide\.svg/);
+  assert.ok(en.includes('content="https://afrotools.com/assets/img/tools/cnps-guide.webp"'));
+  assert.ok(sw.includes('content="https://afrotools.com/assets/img/tools/cnps-guide.webp"'));
   assert.ok(fs.statSync(path.join(root,'assets/img/og-default.png')).size>1000);
   assert.ok(fs.statSync(path.join(root,'assets/img/tools/cnps-guide.svg')).size>1000);
 });
@@ -83,8 +83,8 @@ test('canonical, schema, artwork and reciprocal hreflang ownership remain exact'
   for(const html of Object.values(owners))for(const [lang,route] of Object.entries(routes))assert.ok(html.includes(`hreflang="${lang}" href="${route}"`));
   assert.match(owners.en,/"dateModified":"2026-08-09"/);
   assert.match(owners.sw,/"dateModified":"2026-08-09"/);
-  assert.match(owners.en,/assets\/img\/og-default\.png/);
-  assert.match(owners.sw,/assets\/img\/tools\/cnps-guide\.svg/);
+  assert.ok(owners.en.includes('content="https://afrotools.com/assets/img/tools/cnps-guide.webp"'));
+  assert.ok(owners.sw.includes('content="https://afrotools.com/assets/img/tools/cnps-guide.webp"'));
 });
 
 test('source owner is deterministic',()=>{

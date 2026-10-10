@@ -36,8 +36,8 @@ test('English and Swahili owners expose the same private local workflow',()=>{
     assert.match(html,/engines\/itax-guide-engine\.js/);
     assert.doesNotMatch(html,/<iframe|name="(?:pin|password|otp|income|taxRecord)"/i);
   }
-  assert.match(en,/assets\/img\/og-default\.png/);
-  assert.match(sw,/assets\/img\/tools\/itax-guide\.svg/);
+  assert.ok(en.includes('content="https://afrotools.com/assets/img/tools/itax-guide.webp"'));
+  assert.ok(sw.includes('content="https://afrotools.com/assets/img/tools/itax-guide.webp"'));
   assert.ok(fs.statSync(path.join(root,'assets/img/og-default.png')).size>1000);
   assert.ok(fs.statSync(path.join(root,'assets/img/tools/itax-guide.svg')).size>1000);
 });
