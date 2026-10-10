@@ -3,6 +3,8 @@
 
 const fs = require("fs");
 const path = require("path");
+const { loadBindings, resolveReviewedToolArtwork } = require("./lib/reviewed-tool-image-bindings");
+const reviewedArtwork = loadBindings();
 const { writeFileSyncWithRetry } = require("./lib/safe-write");
 const { getPresentation, COPY } = require("./lib/sw-uniquely-african-presentations");
 
@@ -188,6 +190,8 @@ function alternateLinks(row) {
 }
 
 function generatedPage(row, presentation) {
+  const image = resolveReviewedToolArtwork(row.swahili.route, "/" + row.artwork.path, reviewedArtwork);
+  row = { ...row, artwork: { ...row.artwork, path: image.slice(1) } };
   const title = `${presentation.title} | AfroTools`;
   const schema = { "@context":"https://schema.org", "@type":"WebApplication", name:presentation.title, description:presentation.description, url:absolute(row.swahili.route), inLanguage:"sw", applicationCategory:"UtilityApplication", operatingSystem:"Web", isBasedOn:absolute(row.english.route), offers:{"@type":"Offer",price:"0",priceCurrency:"USD"}, image:`https://afrotools.com/${row.artwork.path}` };
   const contract = { ...presentation, englishRoute:row.english.route, swahiliRoute:row.swahili.route, countryCodes:row.countryCodes, culturalScope:culturalScopeSw(row.english.id) };
@@ -290,7 +294,22 @@ function main() {
   const manifest = buildManifest();
   if (manifest.rows.length !== 33 || new Set(manifest.rows.map((row) => row.english.id)).size !== 33) throw new Error("African denominator must be exactly 33 unique apps");
   if (Object.keys(COPY).length !== 28) throw new Error("Expected exactly 28 shared-engine presentations");
+  const appsArgument = process.argv.find(argument => argument.startsWith("--apps="));
+  const selectedApps = appsArgument === undefined ? null : new Set(appsArgument.slice(7).split(",").filter(Boolean));
+  if (selectedApps && (FULL || !selectedApps.size || [...selectedApps].some(id => !manifest.rows.some(row => row.english.id === id && row.swahili.mode === "shared-engine")))) {
+    throw new Error("--apps requires known shared-engine African app owners and cannot be combined with --full");
+  }
   const changed = [];
+  if (selectedApps) {
+    for (const row of manifest.rows.filter(row => selectedApps.has(row.english.id))) {
+      const presentation = getPresentation(row.english.id);
+      if (!presentation) throw new Error(`Missing presentation for ${row.english.id}`);
+      writeOrCheck(routeFile(row.swahili.route), generatedPage(row, presentation), changed);
+    }
+    console.log(JSON.stringify({ mode: WRITE ? "write" : CHECK ? "check" : "plan", changedFiles: changed.length, files: changed }, null, 2));
+    if (CHECK && changed.length) process.exitCode = 1;
+    return;
+  }
   writeOrCheck(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, changed);
   writeOrCheck(SW_CSS_FILE, fs.readFileSync(SHARED_CSS_SOURCE, "utf8").replace(/data-fr-ua/g, "data-sw-ua"), changed);
   for (const row of manifest.rows.filter((item) => item.swahili.mode === "shared-engine" && (FULL || LANE_IDS.has(item.english.id)))) {
