@@ -59,6 +59,14 @@
     results.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function invalidateResult() {
+    if (!lastResult) return;
+    lastResult = null;
+    results.hidden = true;
+    errorBox.textContent = '';
+    setStatus('');
+  }
+
   function submit(event) {
     event.preventDefault();
     if (!engine) {
@@ -67,6 +75,7 @@
     }
     var result = engine.evaluate(readInput());
     if (!result.valid) {
+      invalidateResult();
       errorBox.textContent = result.error;
       document.getElementById('systolic-1').focus();
       return;
@@ -75,7 +84,14 @@
     render(result);
   }
 
+  function isFrenchReport(){return document.documentElement.lang.toLowerCase().split('-')[0]==='fr';}
+  function frenchExportText(result){
+    var bands={"emergency-symptoms":["Symptômes d’urgence","Demandez immédiatement une aide médicale d’urgence locale","N’attendez pas une autre mesure et n’utilisez pas ce résultat pour décider si les symptômes sont graves. En cas de grossesse ou d’accouchement récent, contactez également l’équipe de maternité pendant l’organisation des secours, si possible."],"pregnancy-severe":["Évaluation urgente en maternité","Contactez immédiatement les urgences de la maternité","Au moins une mesure atteint le seuil sévère de grossesse de 160 pour la pression systolique ou de 110 pour la pression diastolique. Demandez immédiatement une évaluation urgente en maternité ; faites appel aux secours locaux si l’équipe de maternité n’est pas rapidement joignable."],"pregnancy-review":["Contact avec la maternité le jour même","Contactez votre équipe de maternité aujourd’hui","Au moins une mesure atteint le seuil de grossesse de 140 pour la pression systolique ou de 90 pour la pression diastolique. Cela ne pose pas un diagnostic de prééclampsie ou d’hypertension, mais nécessite un examen rapide selon votre plan local de suivi de maternité."],"adult-very-high-repeat":["Contact clinique immédiat","La deuxième mesure reste très élevée","La deuxième mesure dépasse encore 180 pour la pression systolique ou 120 pour la pression diastolique. Contactez immédiatement un clinicien qualifié. Si un symptôme d’urgence apparaît, demandez immédiatement une aide médicale d’urgence locale."],"adult-very-high-first":["Contact clinique rapide","Une mesure dépassait le seuil très élevé","La première mesure dépassait 180 pour la pression systolique ou 120 pour la pression diastolique, même si la deuxième était plus basse. Contactez rapidement un clinicien qualifié pour vérifier l’appareil, la technique et la situation clinique ; demandez une aide d’urgence pour tout symptôme d’urgence."],"adult-review":["Évaluation clinique","Organisez une évaluation de la pression artérielle","Au moins une mesure atteint le seuil clinique de l’OMS de 140 pour la pression systolique ou de 90 pour la pression diastolique. Un diagnostic nécessite une évaluation professionnelle et des mesures répondant aux critères sur deux jours différents."],"repeat-technique":["Répéter avec une préparation complète","Répétez avec une préparation complète de la mesure","Les mesures sont inférieures au seuil utilisé par cette fiche pour votre contexte, mais au moins une vérification de la technique n’a pas été confirmée. Répétez correctement et suivez tout plan de surveillance donné par votre clinicien."],"pregnancy-below-boundary":["En dessous du seuil de la fiche","Ces deux mesures sont inférieures au seuil d’alerte de grossesse de cette fiche","Cela n’exclut pas une prééclampsie ni un autre problème. Contactez l’équipe de maternité en cas de symptômes d’alerte, de changement préoccupant, de diminution des mouvements du fœtus ou selon toute consigne de votre plan de soins."],"adult-below-threshold":["En dessous du seuil clinique de l’OMS","Ces deux mesures sont inférieures à 140/90","Ceci n’est ni un diagnostic, ni un objectif de traitement, ni une assurance concernant les symptômes. Continuez à suivre tout plan de surveillance prescrit par un clinicien et demandez un avis en cas d’inquiétude ou de changements répétés."]},review=bands[result.band];if(!review)return null;
+    return ['AFROTOOLS — VÉRIFICATION DES MESURES DE PRESSION ARTÉRIELLE','','Contexte : '+({adult:'Adulte, sans grossesse ni accouchement récent',pregnant:'Grossesse',postpartum:'Dans les 6 semaines après l’accouchement'}[result.context]),'Mesure 1 : '+formatReading(result.first),'Mesure 2 : '+formatReading(result.second),'Moyenne arithmétique : '+formatReading(result.average),'Préparation de la mesure confirmée : '+result.techniqueCount+' vérifications sur 4','Symptômes d’urgence sélectionnés : '+(result.urgentSymptoms?'Oui':'Non'),'','Priorité d’évaluation : '+review[0],review[1],review[2],'','Deux mesures à domicile ne permettent ni de confirmer ni d’exclure une hypertension, une prééclampsie, un besoin de traitement ou une autre affection.','Une moyenne arithmétique ne doit pas masquer une mesure élevée isolée. La fiche utilise la mesure la plus élevée pour la plupart des messages de sécurité.','Contexte général chez l’adulte : le diagnostic selon l’OMS nécessite des mesures répondant aux critères sur deux jours différents.','Grossesse ou 6 premières semaines après l’accouchement : 140/90 conduit à contacter la maternité ; 160/110 est un seuil sévère nécessitant une évaluation urgente.','Les symptômes peuvent nécessiter une aide d’urgence quelle que soit la valeur. Suivez le plan de votre clinicien ou de votre équipe de maternité.','','Sources : OMS, hypertension ; American Heart Association, surveillance à domicile ; NICE NG133 ; ACOG, prééclampsie après l’accouchement ; NHS, prééclampsie.','Sources vérifiées le 26 juillet 2026.','Créé localement. Sans compte, e-mail, téléversement, analyse d’utilisation ni historique enregistré dans le navigateur.','Cet export contient des données de santé sensibles. Vérifiez-le avant de le partager.'].join('\n');
+  }
+
   function exportText(result) {
+    if(isFrenchReport()){var french=frenchExportText(result);if(french)return french;}
     return [
       'AFROTOOLS BLOOD PRESSURE MEASUREMENT CHECK',
       '',
@@ -132,13 +148,15 @@
 
   function downloadPdf() {
     if (!lastResult) return setStatus('Review readings before exporting.');
+    var exportingResult = lastResult;
     setStatus('Preparing local PDF...');
     ensurePdfLibrary().then(function (JsPdf) {
+      if (lastResult !== exportingResult) return;
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
-      pdf.setProperties({ title: 'AfroTools blood pressure measurement check' });
+      pdf.setProperties({ title: isFrenchReport() ? 'AfroTools - vérification des mesures de pression artérielle' : 'AfroTools blood pressure measurement check' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(exportText(lastResult), 500);
+      var text=exportText(exportingResult);var lines = pdf.splitTextToSize(isFrenchReport()?text.replace(/\u202f/g,' '):text, 500);
       var y = 54;
       lines.forEach(function (line) {
         if (y > 790) {
@@ -155,6 +173,8 @@
     });
   }
 
+  form.addEventListener('input', invalidateResult);
+  form.addEventListener('change', invalidateResult);
   form.addEventListener('submit', submit);
   document.getElementById('download-txt').addEventListener('click', function () {
     if (!lastResult) return setStatus('Review readings before exporting.');

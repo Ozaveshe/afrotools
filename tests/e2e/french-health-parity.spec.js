@@ -95,8 +95,16 @@ for (const route of routes) {
     await expect(page.locator("h1").first()).toBeVisible();
     await expect(page.locator("main")).toHaveCount(1);
     await expect(page.locator("iframe")).toHaveCount(0);
-    await expect(page.locator("[data-fr-health-safety]")).toBeVisible();
-    await expect(page.locator("html")).toHaveAttribute("data-fr-health-ready", "true");
+    if (route === "/fr/tools/risque-paludisme/") {
+      // This route owns its French controller; require its real boundary and readiness.
+      await expect(page.locator(".urgent")).toBeVisible();
+      await expect(page.locator(".urgent")).toContainText("N’attendez pas ce questionnaire.");
+      await expect(page.locator("footer")).toContainText("ne sont ni stockées, ni envoyées");
+      await page.waitForFunction(() => typeof window.MalariaUrgencyFr?.assess === "function");
+    } else {
+      await expect(page.locator("[data-fr-health-safety]")).toBeVisible();
+      await expect(page.locator("html")).toHaveAttribute("data-fr-health-ready", "true");
+    }
     const controls = page.locator('main button,main input:not([type="hidden"]),main select,main textarea');
     expect(await controls.count()).toBeGreaterThan(0);
     const firstControl = controls.first();
@@ -178,6 +186,12 @@ const OWNER_SPECS = {
   "/fr/tools/entrainement-maison/": "tests/e2e/day5-health-external-lane-c.spec.js"
 };
 
+function recentLocalIso(daysAgo) {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+
 const ROUTE_OVERRIDES = {
   "/fr/tools/rapport-medical/": {
     values: {
@@ -203,7 +217,7 @@ const ROUTE_OVERRIDES = {
     result: "#result"
   },
   "/fr/tools/calculateur-ovulation/": {
-    values: { "#last-period-date": "2026-07-01", "#shortest-cycle": "28", "#longest-cycle": "30" },
+    values: { "#last-period-date": recentLocalIso(7), "#shortest-cycle": "28", "#longest-cycle": "30" },
     result: "#next-period-window"
   },
   "/fr/tools/dosage-medicament/": {

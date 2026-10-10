@@ -55,7 +55,29 @@
   const readEntries=()=>[...entriesNode.querySelectorAll('.entry')].map(row=>({time:row.querySelector('.drink-time').value,type:row.querySelector('.drink-type').value,volumeMl:row.querySelector('.drink-volume').value}));
   document.getElementById('addDrink').addEventListener('click',()=>{addEntry();entriesNode.lastElementChild.querySelector('.drink-time').focus()});
   f.addEventListener('submit',event=>{event.preventDefault();try{last=FluidLogEngine.total({entries:readEntries(),clinicalTargetMl:f.clinicalTarget.value,targetConfirmed:f.targetConfirmed.checked});e.textContent='';const categories=last.byType.map(item=>`<li>${item.label}: ${item.volumeMl.toLocaleString()} mL</li>`).join('');r.innerHTML=`<p class="value">${last.totalMl.toLocaleString()} mL</p><p><strong>${last.entryCount} drink ${last.entryCount===1?'entry':'entries'}</strong></p><ul>${categories}</ul><p>${last.targetContext}</p><p><strong>Warning:</strong> ${last.warning}</p>`;t.disabled=p.disabled=false;panel.focus()}catch(error){last=null;e.textContent=error.message;t.disabled=p.disabled=true}});
-  const report=()=>`AfroTools private fluid intake log\nReview date: 26 July 2026\n\nInputs — drink entries\n${last.entries.map((entry,index)=>`${index+1}. ${entry.time||'time not entered'} — ${entry.typeLabel}: ${entry.volumeMl} mL`).join('\n')}\n\nResult\nTotal logged fluid: ${last.totalMl} mL\nCategory totals:\n${last.byType.map(item=>`- ${item.label}: ${item.volumeMl} mL`).join('\n')}\nClinician-provided target: ${last.targetMl===null?'not entered':last.targetMl+' mL'}\n${last.targetContext}\n\nAssumption\nSimple addition of user-entered drinks only. Food moisture was not estimated. No personal fluid need was calculated.\n\nWarning\n${last.warning}`;
+  const frenchReport=()=>{
+    const labels={water:'Eau nature','tea-coffee':'Thé ou café',milk:'Lait ou boisson lactée',soup:'Soupe ou bouillon',other:'Autre boisson'};
+    const targetContext=last.targetMl===null
+      ? 'Aucun objectif fourni par un professionnel de santé n’a été confirmé ; aucune comparaison avec un objectif n’est donc affichée.'
+      : last.targetDifference===0
+        ? 'Le total enregistré est égal à l’objectif saisi, fourni par votre professionnel de santé. Il s’agit d’un calcul, pas d’un conseil.'
+        : 'Le total enregistré est '+Math.abs(last.targetDifference)+' mL '+(last.targetDifference>0?'au-dessus':'en dessous')+' de l’objectif saisi, fourni par votre professionnel de santé. Ce calcul ne constitue pas un conseil ; ne modifiez pas votre programme clinique d’apports hydriques sans l’équipe qui l’a prescrit.';
+    return [
+      'AfroTools — journal privé des apports hydriques',
+      'Date de révision : 26 juillet 2026',
+      '', 'Données saisies — boissons',
+      ...last.entries.map((entry,index)=>(index+1)+'. '+(entry.time||'heure non renseignée')+' — '+labels[entry.type]+': '+entry.volumeMl+' mL'),
+      '', 'Résultat', 'Volume total enregistré : '+last.totalMl+' mL', 'Totaux par catégorie :',
+      ...last.byType.map(item=>'- '+labels[item.type]+': '+item.volumeMl+' mL'),
+      'Objectif fourni par votre professionnel de santé : '+(last.targetMl===null?'non renseigné':last.targetMl+' mL'),
+      targetContext,
+      '', 'Hypothèse',
+      'Simple addition des boissons saisies uniquement. L’eau contenue dans les aliments n’est pas estimée. Aucun besoin hydrique personnel n’est calculé.',
+      '', 'Avertissement',
+      'Ce journal ne prescrit aucun apport hydrique et ne remplace pas les recommandations cliniques concernant les affections rénales ou cardiaques, la grossesse, l’allaitement, les médicaments, les maladies aiguës ou toute autre situation.'
+    ].join('\n');
+  };
+  const report=()=>document.documentElement.lang.toLowerCase().split('-')[0]==='fr'?frenchReport():`AfroTools private fluid intake log\nReview date: 26 July 2026\n\nInputs — drink entries\n${last.entries.map((entry,index)=>`${index+1}. ${entry.time||'time not entered'} — ${entry.typeLabel}: ${entry.volumeMl} mL`).join('\n')}\n\nResult\nTotal logged fluid: ${last.totalMl} mL\nCategory totals:\n${last.byType.map(item=>`- ${item.label}: ${item.volumeMl} mL`).join('\n')}\nClinician-provided target: ${last.targetMl===null?'not entered':last.targetMl+' mL'}\n${last.targetContext}\n\nAssumption\nSimple addition of user-entered drinks only. Food moisture was not estimated. No personal fluid need was calculated.\n\nWarning\n${last.warning}`;
   t.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='fluid-intake-log.txt';a.click();URL.revokeObjectURL(a.href)});
   p.addEventListener('click',()=>last&&window.print());
   document.getElementById('clear').addEventListener('click',()=>{f.reset();entriesNode.replaceChildren();addEntry({type:'water'});addEntry({type:'tea-coffee'});last=null;r.innerHTML='<p>Add drink entries to total the day.</p>';e.textContent='';t.disabled=p.disabled=true;entriesNode.querySelector('.drink-time').focus()});
