@@ -4,6 +4,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { spawn } = require('node:child_process');
 const { chromium } = require('playwright');
 
@@ -25,15 +26,23 @@ async function capture() {
     cwd: ROOT,
     env: { ...process.env, PORT },
     stdio: 'ignore',
+    windowsHide: true,
   });
   try {
     await ready();
-    const sentinel = await (await fetch(`${BASE}/tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt`)).text();
-    assert.match(sentinel, /worktree=7e83/);
-    assert.match(sentinel, /root=C:\\Users\\Oza\\\.codex\\worktrees\\7e83\\afrotools/);
+    const servedFiles = {};
+    for (const file of ['agriculture/tractor-calculator/index.html', 'engines/tractor-calculator-engine.js', 'data/agriculture/equipment-data.js']) {
+      const response = await fetch(new URL('/' + file, BASE));
+      assert.equal(response.status, 200, file + ' must be served');
+      const served = Buffer.from(await response.arrayBuffer());
+      const local = fs.readFileSync(path.join(ROOT, file));
+      assert.deepEqual(served, local, file + ' served bytes differ from the intended checkout');
+      servedFiles[file] = crypto.createHash('sha256').update(served).digest('hex');
+    }
     const browser = await chromium.launch({ headless: true });
     try {
-      const page = await browser.newPage({ locale: 'en-US' });
+      const page = await browser.newPage({ locale: 'en-US', serviceWorkers:'block' });
+      await page.route('**/*', route => new URL(route.request().url()).origin === new URL(BASE).origin && route.request().method() === 'GET' ? route.continue() : route.abort());
       await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'rejected'));
       await page.goto(`${BASE}/agriculture/tractor-calculator/`);
       const owner = await page.evaluate(() => JSON.parse(JSON.stringify(EQUIPMENT_DATA)));
@@ -51,7 +60,7 @@ async function capture() {
             equipmentKey,
             values: await page.evaluate(() => ({
               price: Number(document.getElementById('inp-price').value),
-              contractRate: Number(document.getElementById('inp-contract-rate').value),
+              contractRate: document.getElementById('inp-contract-rate').value.trim()===''?null:Number(document.getElementById('inp-contract-rate').value),
               financeRate: Number(document.getElementById('inp-rate').value),
               financeTerm: Number(document.getElementById('inp-term').value),
               currencyLabel: document.getElementById('currency-label').textContent,
@@ -77,10 +86,10 @@ async function capture() {
           const term = [3, 5, 7, 10][(yearIndex + passes) % 4];
           const downPct = [0, 20, 40][passes - 1];
           const buy = calcBuy(equip, hire, price, farmHa, passes, years, contractHa);
-          const hireResult = calcHire(hire, farmHa, passes);
-          const lease = calcLease(equip, price, farmHa, passes, years, rate, term, downPct);
-          const costs = { buy: buy.totalCost, hire: hireResult ? hireResult.annualCost * years : Infinity, lease: lease.totalCost };
-          const winner = Object.keys(costs).reduce((a, b) => costs[a] < costs[b] ? a : b);
+          const hireResult = calcHire(hire, farmHa, passes, equipmentKey);
+          const lease = window.AfroTools.TractorCalculatorEngine.calculateLease({price, farmHa, passes, years, rate, term, downPct}, buy);
+          const costs = { buy: buy.totalCost, hire: hireResult ? hireResult.annualCost * years : null, lease: lease.totalCost };
+          const winner = Object.keys(costs).filter(key => costs[key] !== null).reduce((a, b) => costs[a] < costs[b] ? a : b);
           rows.push({
             input: { countryCode, equipmentKey, price, farmHa, passes, years, contractHa, rate, term, downPct },
             output: { buy, hire: hireResult, lease, breakEvenHa: breakEvenHa(buy, hireResult, years, passes), costs, winner },
@@ -106,11 +115,13 @@ async function capture() {
           await page.check('[name=contract][value=yes]');
           await page.evaluate(() => toggleContract());
           await page.fill('#inp-contract-ha', String(20 + index));
+          await page.fill('#inp-contract-rate', '100'); // Explicit synthetic quote, not a missing-rate fallback.
         } else {
           await page.check('[name=contract][value=no]');
           await page.evaluate(() => toggleContract());
         }
         await page.evaluate(() => calculate());
+        assert.equal(await page.evaluate(() => !!(window.TRACTOR_CALCULATOR_LAST_RESULT && window.TRACTOR_CALCULATOR_LAST_RESULT.ok)), true, 'native scenario must calculate');
         domScenarios.push({
           input: { countryCode, equipmentKey, financeType },
           output: await page.evaluate(() => ({
@@ -131,12 +142,12 @@ async function capture() {
       return {
         schemaVersion: 1,
         source: 'agriculture/tractor-calculator/index.html#inline-controller+data/agriculture/equipment-data.js',
-        worktreeSentinel: '7e83',
+        servedFiles,
         owner,
         defaults,
         arithmetic,
         domScenarios,
-        limitations: ['The accepted controller coerces invalid or empty numeric inputs to fallback values and shows no validation error.'],
+        limitations: ['Static data and modeled equipment/finance assumptions require current primary-source review; fixture parity is not financial or production acceptance.'],
       };
     } finally {
       await browser.close();

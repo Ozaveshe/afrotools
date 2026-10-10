@@ -384,7 +384,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   </div>
 
   <!-- ═══ RESULTS ═══ -->
-  <div id="results">
+  <p id="tractor-input-error" role="alert" tabindex="-1" hidden></p>
+<div id="results">
+<p>Costs compare the selected years using the same modeled fuel, maintenance and resale assumptions. Financing includes interest incurred and any debt still owed at the comparison end. Loan and lease selections use a fixed-rate purchase model with ownership retained, no fees and no balloon payment; check actual lease ownership and end payments separately. Insurance, operator wages, storage, taxes and finance fees are not included.</p>
 
     <!-- Recommendation -->
     <div id="rec-banner" class="rec-banner hire">
@@ -469,7 +471,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       </details>
       <details>
         <summary>What is the real cost of owning a tractor in Africa?</summary>
-        <p>Beyond the purchase price, budget for: annual maintenance (4–8% of purchase price), fuel (typically the biggest annual cost), insurance, operator wages if you hire a driver, storage, and periodic overhaul costs. A ₦22.5M tractor in Nigeria might cost ₦3–4M per year to run. The "cost per hectare" metric in this calculator accounts for all these factors.</p>
+        <p>Beyond the purchase price, budget for: annual maintenance (4–8% of purchase price), fuel (typically the biggest annual cost), insurance, operator wages if you hire a driver, storage, and periodic overhaul costs. A ₦22.5M tractor in Nigeria might cost ₦3–4M per year to run. The model includes fuel, maintenance and estimated resale value. Operator wages, insurance, storage, taxes and financing fees need separate allowances.</p>
       </details>
       <details>
         <summary>What's the difference between a loan and a lease for agricultural equipment?</summary>
@@ -522,7 +524,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/equipment-data.js?v=01729236"></script>
-<script src="/engines/tractor-calculator-engine.js?v=b98c66c8"></script>
+<script src="/engines/tractor-calculator-engine.js?v=41dcaf3a"></script>
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // TRACTOR LEASE VS BUY CALCULATOR
@@ -583,11 +585,14 @@ function onEquipChange() {
   // Update hint
   document.getElementById('equip-hint').textContent = equip.examples;
   // Update contract rate
-  var hire = c.hire;
-  if (hire) {
-    var rate_ha = hire.tractor_ploughing_per_ha || 0;
-    document.getElementById('inp-contract-rate').value = rate_ha;
-  }
+  var equipmentKey = document.getElementById('sel-equip').value;
+  var defaults = window.AfroTools.TractorCalculatorEngine.defaults(c.code, equipmentKey, EQUIPMENT_DATA);
+  document.getElementById('inp-contract-rate').value = defaults.contractRate === null ? '' : defaults.contractRate;
+  document.getElementById('inp-contract-rate').placeholder = defaults.contractRate === null ? 'Enter your own quote' : '';
+  var harvest = equipmentKey === 'combine_harvester';
+  document.querySelector('label[for="inp-passes"]').textContent = harvest ? 'Harvest Cycles per Year' : 'Operations per Year';
+  var labels = harvest ? ['1 harvest cycle', '2 harvest cycles', '3 harvest cycles'] : ['Ploughing', 'Ploughing + harrowing', 'Ploughing + harrowing + ridging'];
+  Array.from(document.getElementById('inp-passes').options).forEach(function(option, index){ option.textContent = labels[index]; });
   updateFinanceHint();
 }
 
@@ -618,8 +623,8 @@ function calcBuy(equip, hire, price, farmHa, passes, years, contractHa) {
   }, equip, hire);
 }
 
-function calcHire(hire, farmHa, passes) {
-  return window.AfroTools.TractorCalculatorEngine.calculateHire(hire, farmHa, passes);
+function calcHire(hire, farmHa, passes, equipmentKey) {
+  return window.AfroTools.TractorCalculatorEngine.calculateHire(hire, farmHa, passes, equipmentKey);
 }
 
 function calcLease(equip, price, farmHa, passes, years, rate, term, downPct) {
@@ -632,22 +637,27 @@ function breakEvenHa(buy, hire, years, passes) {
   return window.AfroTools.TractorCalculatorEngine.breakEvenHa(buy, hire, years);
 }
 
+function invalidateTractorResult() { window.TRACTOR_CALCULATOR_LAST_RESULT=null;document.getElementById('results').style.display='none'; }
+function tractorNumber(id) { var raw=document.getElementById(id).value.trim();return raw===''?NaN:Number(raw); }
+document.addEventListener('input',function(e){if(e.target.matches('#inp-price,#inp-farm,#inp-passes,#inp-rate,#inp-term,#inp-down,#inp-contract-ha,#inp-contract-rate,#sel-country,#sel-equip,[name="finance"],[name="contract"]'))invalidateTractorResult();});
+document.addEventListener('change',function(e){if(e.target.matches('#inp-price,#inp-farm,#inp-passes,#inp-rate,#inp-term,#inp-down,#inp-contract-ha,#inp-contract-rate,#sel-country,#sel-equip,[name="finance"],[name="contract"]'))invalidateTractorResult();});
 function calculate() {
+  invalidateTractorResult();var inputError=document.getElementById('tractor-input-error');inputError.hidden=true;inputError.textContent='';
   var country = getCountryData();
   var equip = getEquipData();
-  var sym = country.meta.symbol;
+  var sym = country.meta ? country.meta.symbol : "";
 
-  var price   = parseFloat(document.getElementById('inp-price').value) || 0;
-  var farmHa  = parseFloat(document.getElementById('inp-farm').value)  || 0;
-  var passes  = parseInt(document.getElementById('inp-passes').value)  || 2;
+  var price   = tractorNumber('inp-price');
+  var farmHa  = tractorNumber('inp-farm');
+  var passes  = tractorNumber('inp-passes');
   var years   = selectedPeriod;
   var finType = document.querySelector('[name=finance]:checked').value;
-  var rate    = parseFloat(document.getElementById('inp-rate').value)  || 12;
-  var term    = parseInt(document.getElementById('inp-term').value)    || 5;
-  var downPct = parseFloat(document.getElementById('inp-down').value)  || 20;
+  var rate    = tractorNumber('inp-rate');
+  var term    = tractorNumber('inp-term');
+  var downPct = tractorNumber('inp-down');
   var doContract = document.querySelector('[name=contract]:checked').value === 'yes';
-  var contractHa   = doContract ? (parseFloat(document.getElementById('inp-contract-ha').value)   || 0) : 0;
-  var contractRate = doContract ? (parseFloat(document.getElementById('inp-contract-rate').value) || 0) : 0;
+  var contractHa   = doContract ? (tractorNumber('inp-contract-ha')) : 0;
+  var contractRate = doContract ? (tractorNumber('inp-contract-rate')) : 0;
 
   var result = window.AfroTools.TractorCalculatorEngine.calculate({
     countryCode: country.code,
@@ -664,12 +674,24 @@ function calculate() {
     contractHa: contractHa,
     contractRate: contractRate
   }, EQUIPMENT_DATA);
+  if(!result.ok){inputError.textContent='Check the country, equipment and numeric inputs. Use positive price and farm area, one to three operations, whole positive years and a deposit from 0 to 100%. Zero interest and zero deposit are allowed.';inputError.hidden=false;inputError.focus();return;}
   var buyR = result.buy;
   var hireR = result.hire;
   var leaseR = result.lease;
   var costs = result.costs;
   var winner = result.winner;
   window.TRACTOR_CALCULATOR_LAST_RESULT = result;
+  var workloadNote = document.getElementById('tractor-workload-note');
+  if (!workloadNote) {
+    workloadNote = document.createElement('p');
+    workloadNote.id = 'tractor-workload-note';
+    workloadNote.setAttribute('role', 'status');
+    document.getElementById('results').prepend(workloadNote);
+  }
+  workloadNote.textContent = 'Estimated workload: ' + Math.round(buyR.workloadHoursPerYear).toLocaleString() + ' hours/year. Fuel costs use the full workload, with the existing minimum assumption of 50 hours/year. ' +
+    (buyR.exceedsReferenceAnnualHours ? 'This exceeds the static equipment reference of ' + buyR.referenceAnnualHours.toLocaleString() + ' hours/year. Check seasonal availability, additional machinery and contractor costs before choosing an option. ' : '') +
+    'The annual reference is a planning assumption, not verified capacity. Maintenance remains a fixed percentage of purchase price and may understate heavy-use costs.';
+
 
   // ── Show results ──
   document.getElementById('results').style.display = 'block';
@@ -692,13 +714,13 @@ function renderRecommendation(winner, country, farmHa, years, costs, sym) {
   var saving = document.getElementById('rec-saving');
 
   var labels = { buy: 'BUYING', hire: 'HIRING', lease: 'LEASING' };
-  var sorted = Object.keys(costs).sort(function(a,b){ return costs[a]-costs[b]; });
+  var sorted = Object.keys(costs).filter(function(key){return costs[key] !== null;}).sort(function(a,b){ return costs[a]-costs[b]; });
   var second = sorted[1];
   var savedAmt = second && costs[second] !== Infinity ? costs[second] - costs[winner] : 0;
 
   banner.className = 'rec-banner ' + winner;
   icon.textContent  = winner === 'buy' ? '🛒' : winner === 'hire' ? '🤝' : '📋';
-  title.textContent = labels[winner] + ' is your best option';
+  title.textContent = labels[winner] + ' has the lowest modeled cost';
 
   var desc = {
     buy:  'Owning the machinery costs less over your ' + years + '-year horizon given your farm size and utilization.',
@@ -707,6 +729,10 @@ function renderRecommendation(winner, country, farmHa, years, costs, sym) {
   };
   text.textContent = 'For your ' + farmHa + ' ha farm in ' + country.meta.name + '. ' + desc[winner];
 
+  if (costs.hire === null) {
+    title.textContent = sorted.length === 1 ? 'Purchase estimate only' : labels[winner] + ' has the lowest modeled ownership cost';
+    text.textContent = 'A matching hire rate is unavailable for this equipment and operation selection. Hiring is excluded from the comparison. Request a quote before choosing whether to buy or hire.';
+  }
   if (savedAmt > 0) {
     saving.textContent = 'You save ' + fmt(savedAmt, sym) + ' over ' + years + ' years vs the next best option.';
   } else {
@@ -716,12 +742,12 @@ function renderRecommendation(winner, country, farmHa, years, costs, sym) {
 
 function renderTable(buyR, hireR, leaseR, years, sym, finType, passes) {
   var rows = [
-    { label: 'Capital Required Upfront', buy: fmt(buyR.capitalRequired, sym), hire: fmt(0, sym), lease: leaseR ? fmt(leaseR.capitalRequired, sym) : '—' },
-    { label: 'Annual Operating Cost',    buy: fmt(buyR.annualOp, sym),         hire: hireR ? fmt(hireR.annualCost, sym) : '—', lease: leaseR ? fmt(leaseR.annualPayment, sym) : '—' },
+    { label: 'Capital Required Upfront', buy: fmt(buyR.capitalRequired, sym), hire: hireR ? fmt(0, sym) : 'Unavailable', lease: leaseR ? fmt(leaseR.capitalRequired, sym) : '—' },
+    { label: 'Annual Operating / Hire Cost',    buy: fmt(buyR.annualOp, sym),         hire: hireR ? fmt(hireR.annualCost, sym) : '—', lease: leaseR ? fmt(buyR.annualOp, sym) : '—' },
     { label: 'Total Cost over ' + years + ' yrs', buy: fmt(buyR.totalCost, sym), hire: hireR ? fmt(hireR.annualCost * years, sym) : '—', lease: leaseR ? fmt(leaseR.totalCost, sym) : '—' },
-    { label: 'Cost per Hectare',         buy: fmt(buyR.costPerHa, sym),         hire: hireR ? fmt(hireR.costPerHa, sym) : '—',            lease: leaseR ? fmt(leaseR.costPerHa, sym) : '—' },
+    { label: 'Cost per Own-Farm Hectare / Year',         buy: fmt(buyR.costPerHa, sym),         hire: hireR ? fmt(hireR.costPerHa, sym) : '—',            lease: leaseR ? fmt(leaseR.costPerHa, sym) : '—' },
     { label: 'Cost per Machine Hour',    buy: fmt(buyR.costPerHour, sym),       hire: '<span class="badge-na">N/A</span>',                 lease: '<span class="badge-na">N/A</span>' },
-    { label: 'Residual/Resale Value',    buy: fmt(buyR.residual, sym),          hire: '<span class="badge-na">N/A</span>',                 lease: '<span class="badge-na">N/A</span>' }
+    { label: 'Residual/Resale Value',    buy: fmt(buyR.residual, sym),          hire: '<span class="badge-na">N/A</span>',                 lease: leaseR ? fmt(leaseR.residualAtPeriodEnd, sym) : '—' }
   ];
 
   // Determine best column per row
@@ -768,15 +794,13 @@ function renderChart(buyR, hireR, leaseR, years, sym) {
   var hireLine  = [];
   var leaseLine = [];
   for (var yr = 0; yr <= years; yr++) {
-    buyLine.push(yr === 0 ? buyR.capitalRequired : buyR.capitalRequired + buyR.annualOp * yr - (yr === years ? buyR.residual : 0));
-    hireLine.push(hireR ? hireR.annualCost * yr : 0);
-    if (leaseR) {
-      var leaseYrCost = yr === 0 ? leaseR.capitalRequired : leaseR.capitalRequired + leaseR.annualPayment * Math.min(yr, leaseR.term);
-      leaseLine.push(leaseYrCost);
-    }
+    var yearly = yr === 0 ? null : window.AfroTools.TractorCalculatorEngine.calculate(Object.assign({}, window.TRACTOR_CALCULATOR_LAST_RESULT.input, {years:yr}), EQUIPMENT_DATA);
+    buyLine.push(yearly ? yearly.costs.buy : 0);
+    hireLine.push(yearly && yearly.hire ? yearly.costs.hire : 0);
+    if (leaseR) leaseLine.push(yearly ? yearly.costs.lease : 0);
   }
 
-  var allVals = buyLine.concat(hireLine);
+  var allVals = hireR ? buyLine.concat(hireLine) : buyLine.slice();
   if (leaseR) allVals = allVals.concat(leaseLine);
   var maxVal = Math.max.apply(null, allVals);
   var minVal = 0;
@@ -820,13 +844,13 @@ function renderChart(buyR, hireR, leaseR, years, sym) {
     ctx.setLineDash([]);
   }
 
-  drawLine(hireLine, '#F97316');
+  if (hireR) drawLine(hireLine, '#F97316');
   if (leaseR) drawLine(leaseLine, '#8B5CF6', [6, 3]);
   drawLine(buyLine, '#0062CC');
 
   // Break-even point (where buy crosses hire)
   var bx = null;
-  for (var yr3 = 1; yr3 <= years; yr3++) {
+  for (var yr3 = 1; hireR && yr3 <= years; yr3++) {
     if (buyLine[yr3] <= hireLine[yr3] && buyLine[yr3-1] > hireLine[yr3-1]) {
       var frac = (buyLine[yr3-1] - hireLine[yr3-1]) / ((hireLine[yr3] - buyLine[yr3]) + (buyLine[yr3-1] - hireLine[yr3-1]));
       bx = yr3 - 1 + frac;
@@ -850,7 +874,9 @@ function renderChart(buyR, hireR, leaseR, years, sym) {
   // Break-even note
   var bNote = document.getElementById('breakeven-note');
   var beHa = hireR ? breakEvenHa(buyR, hireR, years, 1) : null;
-  if (bx !== null) {
+  if (!hireR) {
+    bNote.textContent = 'Hire comparison unavailable: no matching reference rate. No hire curve or break-even claim is shown.';
+  } else if (bx !== null) {
     bNote.innerHTML = '<strong>Break-even at ~' + bx.toFixed(1) + ' years:</strong> Buying becomes cheaper than hiring after this point. ' + (beHa ? 'To reach break-even within 1 year you would need to cultivate at least <strong>' + Math.round(beHa) + ' ha/year</strong>.' : '');
   } else if (buyLine[years] < hireLine[years]) {
     bNote.innerHTML = '<strong>Buying is cheaper for the entire comparison period.</strong> Your scale of operations justifies ownership.';
@@ -860,10 +886,12 @@ function renderChart(buyR, hireR, leaseR, years, sym) {
 
   // Show/hide lease legend
   document.getElementById('lease-legend').style.display = leaseR ? 'flex' : 'none';
+  Array.from(document.querySelectorAll('.legend-item')).forEach(function(item){if(/Hire|Hiring/i.test(item.textContent))item.hidden=!hireR;});
 }
 
 function renderHireInfo(country, sym) {
   var hire = country.hire;
+  if (window.TRACTOR_CALCULATOR_LAST_RESULT && !window.TRACTOR_CALCULATOR_LAST_RESULT.hire) { document.getElementById('hire-info').style.display = 'none'; return; }
   if (!hire) { document.getElementById('hire-info').style.display = 'none'; return; }
   document.getElementById('hire-info').style.display = '';
   document.getElementById('hi-country').textContent = country.meta.name;
@@ -910,13 +938,16 @@ function renderFinancing(finType, buyR, leaseR, price, sym, country, rate, term,
   if (finType === 'cash' || !leaseR) { box.style.display = 'none'; return; }
   box.style.display = '';
   var down = price * (downPct / 100);
-  var totalInterest = leaseR.totalCost - down - (price - down);
+  var totalInterest = leaseR.totalInterest;
   document.getElementById('fin-stats').innerHTML = [
     { v: fmt(down, sym),              l: 'Down Payment (' + downPct + '%)' },
     { v: fmt(leaseR.monthlyPayment, sym), l: 'Monthly Payment' },
     { v: fmt(leaseR.annualPayment, sym),  l: 'Annual Payment' },
-    { v: fmt(leaseR.totalCost, sym),      l: 'Total Cost incl. interest' },
-    { v: fmt(totalInterest, sym),         l: 'Total Interest Paid' },
+    { v: fmt(leaseR.totalRepayments, sym), l: 'Repayments over Full Finance Term' },
+    { v: fmt(leaseR.remainingBalance, sym), l: 'Loan Balance at Comparison End' },
+    { v: fmt(leaseR.interestWithinPeriod, sym), l: 'Interest within Comparison Period' },
+    { v: fmt(leaseR.totalCost, sym), l: 'Net Cost within Comparison Period' },
+    { v: fmt(totalInterest, sym),         l: 'Interest over Full Finance Term' },
     { v: rate + '% p.a.',                 l: 'Interest Rate' }
   ].map(function(s){ return '<div class="f-stat"><div class="fv">'+s.v+'</div><div class="fl">'+s.l+'</div></div>'; }).join('');
 }
