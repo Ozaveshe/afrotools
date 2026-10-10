@@ -9026,9 +9026,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "halal-compliance",
-        "imageId": "halal-compliance"
+        "imageId": "halal-compliance",
+        "imageKey": "halal-compliance"
       },
       {
         "id": "cout-aso-ebi-fr",
@@ -13388,8 +13389,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "imageId": "business-roi"
+        "imageExt": "webp",
+        "imageId": "business-roi",
+        "imageKey": "business-roi"
       },
       {
         "id": "suivi-notes-fr",
