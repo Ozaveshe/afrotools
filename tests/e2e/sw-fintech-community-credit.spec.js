@@ -1,4 +1,10 @@
 const { test, expect } = require('@playwright/test');
+const inventory = require('../../reports/swahili-free-app-parity-inventory.json');
+const acceptance = require('../../data/audits/swahili-free-app-acceptance.json');
+const routeMap = require('../../assets/js/ai/swahili-route-map.generated');
+const routeEntry = require('../../assets/js/pages/sw-ai-route-entry');
+const { assertLifecycle } = require('../support/swahili-acceptance-lifecycle');
+const acceptedIds = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
 
 const apps = [
   {
@@ -12,6 +18,8 @@ const apps = [
     result: '#cs-results', metrics: ['#cs-score', '#cs-factor-list .factor-item:nth-child(1) .factor-weight', '#cs-factor-list .factor-item:nth-child(5) .factor-weight'], dirty: '#cs-payment', invalid: '#cs-payment'
   }
 ];
+
+assertLifecycle({ inventory, acceptance, routeEntry, routeMap, apps: apps.map((app) => ({ id: app.id, swahiliRoute: app.swahili })) });
 
 async function fill(page, values) {
   for (const [selector, value] of Object.entries(values)) {
@@ -120,10 +128,31 @@ test('community credit routes pass mobile, zoom, themes, a11y, metadata, privacy
     page.off('request', onRequest); page.off('response', onResponse);
     expect(external).toEqual([]); expect(writes).toEqual([]); expect(badResources).toEqual([]);
     const ai = await page.context().newPage();
-    await ai.goto(`/sw/ai/?tool=${app.id}`);
-    await expect(ai).toHaveURL(new RegExp(`/sw/ai/\\?tool=${app.id}$`));
-    await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    const origin = new URL(page.url()).origin;
+    await ai.goto('/sw/ai/?tool=' + app.id);
+    if (acceptedIds.has(app.id)) {
+      await expect(ai).toHaveURL(origin + app.swahili + '?source=sw-ai-tool');
+      await expect(ai.locator('html')).toHaveAttribute('lang', 'sw');
+      await expect(ai.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://afrotools.com' + app.swahili);
+      await expect(ai.locator(app.result)).toHaveCount(1);
+    } else {
+      await expect(ai).toHaveURL(origin + '/sw/ai/?tool=' + app.id);
+      await expect(ai.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+    }
     await ai.close();
   }
   expect(failed).toEqual([]); expect(errors).toEqual([]);
+});
+
+test('an unmapped community-credit AI request retains the unaccepted fallback', async ({ page }) => {
+  const id = 'unaccepted-community-credit-fixture';
+  expect(acceptedIds.has(id)).toBe(false);
+  expect(routeEntry.resolveToolRoute(id, routeMap)).toBeNull();
+  const writes = [];
+  page.on('request', (request) => { if (!['GET', 'HEAD'].includes(request.method())) writes.push(request.method() + ' ' + request.url()); });
+  await page.goto('/sw/ai/?tool=' + id);
+  await expect(page).toHaveURL((url) => url.pathname === '/sw/ai/' && url.search === '?tool=' + id);
+  await expect(page.locator('.ai-local-note')).toHaveAttribute('data-ai-tool-status', 'not-accepted');
+  await expect(page.locator('#aiSwQuery')).toHaveValue('unaccepted community credit fixture');
+  expect(writes).toEqual([]);
 });

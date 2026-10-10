@@ -144,6 +144,22 @@ jobs:
           PORT: '4183'
         run: npx playwright test tests/e2e/localized-enquiry-context.spec.js tests/e2e/business-cta-locales.spec.js tests/e2e/hausa-naira-words-parity.spec.js --project=chromium --workers=2 --trace=off
 
+      - name: Verify Swahili community-credit AI lifecycle in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          PORT: '4251'
+        run: npx playwright test tests/e2e/sw-fintech-community-credit.spec.js --project=chromium --workers=1 --retries=0 --trace=off
+
+      - name: Verify Swahili fuel theme and workflow in the optimized artifact
+        env:
+          AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
+          AFROTOOLS_TEST_DISABLE_ANALYTICS: '1'
+          AFROTOOLS_SW_UNIQUELY_AFRICAN_EVIDENCE_PATH: '${{ runner.temp }}/sw-fuel-browser-evidence.json'
+          PORT: '4253'
+          PLAYWRIGHT_BASE_URL: 'http://127.0.0.1:4253'
+        run: npx playwright test tests/e2e/sw-uniquely-african-parity.spec.js --grep 'fuel-cost:' --project=chromium --workers=1 --retries=0 --trace=off
+
       - name: Verify undecided consent controls at increased zoom
         env:
           AFROTOOLS_TEST_PUBLISH_ARTIFACT: '1'
