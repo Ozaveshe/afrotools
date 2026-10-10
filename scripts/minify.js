@@ -39,6 +39,8 @@ const JS_PAIRS = [
   ['tools/cv-builder/js/src/cv-job-tracker.js', 'tools/cv-builder/js/cv-job-tracker.js'],
   ['tools/cv-builder/js/src/cv-design-foundation.js', 'tools/cv-builder/js/cv-design-foundation.js'],
   ['tools/cv-builder/js/src/cv-import-assistant.js', 'tools/cv-builder/js/cv-import-assistant.js'],
+  ['tools/cv-builder/js/src/cv-workspace-enhancer.js', 'tools/cv-builder/js/cv-workspace-enhancer.js'],
+  ['tools/cv-builder/js/src/cv-improvement-assistant.js', 'tools/cv-builder/js/cv-improvement-assistant.js'],
   ['assets/js/lib/src/car-import-cost-engine.js', 'assets/js/lib/car-import-cost-engine.js'],
   ['assets/js/pages/src/business-plan.js', 'assets/js/pages/business-plan.js'],
   ['assets/js/pages/src/receipt-generator.js', 'assets/js/pages/receipt-generator.js'],

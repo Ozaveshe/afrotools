@@ -39,11 +39,11 @@ function generatePage(c) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fish Farming ROI Calculator for ${c.name} &mdash; Catfish &amp; Tilapia | AfroTools</title>
+<title>Fish Farming ROI Calculator &mdash; ${c.name} | AfroTools</title>
 <meta name="description" content="Calculate fish farming profitability in ${c.name}. Full ROI for catfish, tilapia${c.species.includes('trout') ? ' and trout' : ''} with local feed prices, fingerling costs, and pond/tank setup costs.">
 <link rel="canonical" href="https://afrotools.com/agriculture/fish-farming/${c.slug}">
 
-<meta property="og:title" content="${c.name} Fish Farming ROI Calculator &mdash; AfroTools">
+<meta property="og:title" content="Fish Farming ROI Calculator &mdash; ${c.name} | AfroTools">
 <meta property="og:description" content="Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices, fingerling costs, and pond setup costs.">
 <meta property="og:url" content="https://afrotools.com/agriculture/fish-farming/${c.slug}">
 <meta property="og:type" content="website">
@@ -51,7 +51,7 @@ function generatePage(c) {
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${c.name} Fish Farming ROI Calculator &mdash; AfroTools">
+<meta name="twitter:title" content="Fish Farming ROI Calculator &mdash; ${c.name} | AfroTools">
 <meta name="twitter:description" content="Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices and pond setup costs.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 
@@ -756,7 +756,10 @@ let created = 0;
 COUNTRIES.forEach(function (c) {
   const html = generatePage(c);
   const outPath = path.join(outDir, c.slug + '.html');
-  fs.writeFileSync(outPath, html, 'utf8');
+  const output = process.argv.includes('--titles-only')
+    ? require('./lib/page-title-metadata').applyTitleMetadata(fs.readFileSync(outPath, 'utf8'), html)
+    : html;
+  fs.writeFileSync(outPath, output, 'utf8');
   console.log('  ✓ ' + c.slug + '.html');
   created++;
 });

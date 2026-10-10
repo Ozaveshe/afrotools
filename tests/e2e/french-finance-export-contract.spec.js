@@ -1258,10 +1258,13 @@ async function proveWorkflowOnlyRow(browser, row, rowIndex) {
   return { fixture, validation };
 }
 
-expect(manifest.count).toBe(116);
+expect(manifest.count).toBe(115);
 expect(manifest.coverage.historicalRows).toBe(132);
-expect(manifest.coverage.logicalConsumers).toBe(116);
-expect(manifest.coverage.nativeOwners).toHaveLength(9);
+expect(manifest.coverage.logicalConsumers).toBe(115);
+expect(manifest.coverage.nativeOwners).toHaveLength(10);
+expect(manifest.coverage.nativeOwners.filter(row => row.englishId === 'currency-converter')).toEqual([
+  expect.objectContaining({ file: 'fr/tools/convertisseur-devises/index.html', runtime: 'assets/js/pages/currency-converter-locales-vip.js', test: 'tests/e2e/currency-observation-exports.spec.js' })
+]);
 expect(manifest.coverage.disabledOwners).toHaveLength(1);
 expect(manifest.coverage.excludedAliases).toHaveLength(2);
 

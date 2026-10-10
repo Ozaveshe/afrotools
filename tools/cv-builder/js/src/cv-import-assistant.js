@@ -373,6 +373,65 @@
         });
         if (p) p.focus();
     }
+    var pdfParserPromise;
+    function ensureImportPdfParser() {
+        function configure(parser) {
+            parser.GlobalWorkerOptions.workerSrc = "/assets/vendor/pdfjs/pdf.worker.min.js";
+            return parser;
+        }
+        if (e.pdfjsLib) return Promise.resolve(configure(e.pdfjsLib));
+        if (!pdfParserPromise) pdfParserPromise = new Promise(function(resolve, reject) {
+            var script = t.createElement("script");
+            script.src = "/assets/vendor/pdfjs/pdf.min.js";
+            script.onload = function() {
+                if (e.pdfjsLib) resolve(configure(e.pdfjsLib));
+                else fail();
+            };
+            function fail() {
+                script.remove();
+                pdfParserPromise = null;
+                reject(new Error("CV_PDF_PARSER_UNAVAILABLE"));
+            }
+            script.onerror = fail;
+            t.head.appendChild(script);
+        });
+        return pdfParserPromise;
+    }
+    function importPdfPageText(items) {
+        var text = "", previousY = null;
+        items.forEach(function(item) {
+            if (typeof item.str !== "string") return;
+            var y = item.transform && Number.isFinite(item.transform[5]) ? item.transform[5] : null;
+            if (text && !/\n$/.test(text) && y !== null && previousY !== null && Math.abs(y - previousY) > 2) text += "\n";
+            text += item.str;
+            if (item.hasEOL) text += "\n";
+            else if (item.str && !/\s$/.test(item.str)) text += " ";
+            if (y !== null) previousY = y;
+        });
+        return text.trim();
+    }
+    async function readImportPdf(file) {
+        var parser = await ensureImportPdfParser(), task = parser.getDocument({data: await file.arrayBuffer()}), document;
+        try {
+            document = await task.promise;
+            var pages = [];
+            for (var pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
+                var page = await document.getPage(pageNumber), content = await page.getTextContent();
+                pages.push(importPdfPageText(content.items));
+                page.cleanup();
+            }
+            var extracted = pages.join("\n\n");
+            if (!extracted.trim()) return {ok: false, text: "", message: {
+                fr: "Aucun texte sélectionnable trouvé dans ce PDF. Collez le texte de votre CV pour continuer.",
+                sw: "Hakuna maandishi yanayoweza kuchaguliwa yaliyopatikana katika PDF hii. Bandika maandishi ya CV yako ili kuendelea.",
+                ha: "Ba a sami rubutun da za a iya zaɓa a wannan PDF ba. Liƙa rubutun CV ɗinka don ci gaba."
+            }[String(t.documentElement.lang || "en").split("-")[0]] || "No selectable text was found in this PDF. Paste your CV text to continue."};
+            return {ok: true, text: extracted, source: "PDF"};
+        } finally {
+            if (document) await document.destroy();
+            else await task.destroy();
+        }
+    }
     var docxParserPromise;
     function ensureDocxParser() {
         if (e.mammoth) return Promise.resolve(e.mammoth);
@@ -445,7 +504,7 @@
             return e || ((e = t.createElement("div")).id = "cv-import-assistant-modal", e.className = "cv-modal-overlay cv-import-overlay",
             t.body.appendChild(e), e.addEventListener("click", function(t) {
                 t.target === e && closeImportModal(e);
-            })), e.innerHTML = [ '<div class="cv-modal cv-import-modal" role="dialog" aria-modal="true" aria-labelledby="cv-import-title">', '<div class="cv-import-head"><div><span>Import Existing CV</span><h3 id="cv-import-title">Review before anything changes</h3></div><button type="button" data-import-close aria-label="Close">&times;</button></div>', "<section data-import-input-panel>", '<p class="cv-import-privacy">Private by default: pasted text is parsed in your browser first. File parsing only runs locally when a compatible parser is available. Your current CV will not change until you confirm the import.</p>', '<div class="cv-import-grid">', '<label class="cv-import-upload"><strong>Upload CV file</strong><span>TXT works now. PDF/DOCX will be parsed only if a compatible parser is already loaded.</span><input type="file" data-import-file accept=".json,.txt,.pdf,.docx,application/json,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></label>', '<label class="cv-import-paste"><strong>Or paste CV text</strong><textarea data-import-text placeholder="Paste the full text of your CV here. Include headings like Experience, Education, Skills, Certifications, Languages, and References for best results."></textarea></label>', "</div>", '<div class="cv-import-status" data-import-status>Paste text or choose a supported file to begin.</div>', '<div class="cv-import-actions"><button type="button" class="cv-btn cv-btn-ghost" data-import-close>Cancel</button><button type="button" class="cv-btn cv-btn-ghost" data-import-ai>Try AI extraction</button><button type="button" class="cv-btn cv-btn-primary" data-import-parse>Extract sections</button></div>', "</section>", "<section data-import-review hidden></section>", "</div>" ].join(""),
+            })), e.innerHTML = [ '<div class="cv-modal cv-import-modal" role="dialog" aria-modal="true" aria-labelledby="cv-import-title">', '<div class="cv-import-head"><div><span>Import Existing CV</span><h3 id="cv-import-title">Review before anything changes</h3></div><button type="button" data-import-close aria-label="Close">&times;</button></div>', "<section data-import-input-panel>", '<p class="cv-import-privacy">Private by default: pasted text is parsed in your browser first. File parsing only runs locally when a compatible parser is available. Your current CV will not change until you confirm the import.</p>', '<div class="cv-import-grid">', '<label class="cv-import-upload"><strong>Upload CV file</strong><span>TXT works now. PDF/DOCX will be parsed only if a compatible parser is already loaded.</span><input type="file" data-import-file accept=".json,.txt,.pdf,.docx,application/json,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></label>', '<label class="cv-import-paste"><strong>Or paste CV text</strong><textarea data-import-text placeholder="Paste the full text of your CV here. Include headings like Experience, Education, Skills, Certifications, Languages, and References for best results."></textarea></label>', "</div>", '<div class="cv-import-status" data-import-status role="status" aria-live="polite">Paste text or choose a supported file to begin.</div>', '<div class="cv-import-actions"><button type="button" class="cv-btn cv-btn-ghost" data-import-close>Cancel</button><button type="button" class="cv-btn cv-btn-ghost" data-import-ai>Try AI extraction</button><button type="button" class="cv-btn cv-btn-primary" data-import-parse>Extract sections</button></div>', "</section>", "<section data-import-review hidden></section>", "</div>" ].join(""),
             e.querySelectorAll("[data-import-close]").forEach(function(t) {
                 t.addEventListener("click", function() {
                     closeImportModal(e);
@@ -475,9 +534,9 @@
         }
         var backupLocale = String(t.documentElement.lang || "en").split("-")[0];
         n.querySelector(".cv-import-upload span").textContent = {
-            fr: "JSON restaure une sauvegarde AfroTools. TXT importe du texte. DOCX charge un analyseur local à la demande. PDF nécessite un analyseur compatible.",
-            sw: "JSON hurejesha nakala ya AfroTools. TXT huingiza maandishi. DOCX hupakia kichanganuzi cha ndani inapohitajika. PDF inahitaji kichanganuzi kinachofaa."
-        }[backupLocale] || "JSON restores an AfroTools backup. TXT imports text. DOCX loads a local parser when needed. PDF needs a compatible parser.";
+            fr: "JSON restaure une sauvegarde AfroTools. TXT, DOCX et le texte sélectionnable des PDF sont lus localement. Vérifiez l’ordre des colonnes avant l’extraction. Pour un PDF numérisé, collez le texte.",
+            sw: "JSON hurejesha nakala ya AfroTools. TXT, DOCX na maandishi yanayochagulika kwenye PDF husomwa kwenye kifaa hiki. Kagua mpangilio wa safu kabla ya kutoa sehemu. Kwa PDF iliyochanganuliwa kama picha, bandika maandishi."
+        }[backupLocale] || "JSON restores an AfroTools backup. TXT, DOCX and selectable PDF text are read locally. Review column order before extracting. For scanned PDFs, paste the text.";
         i("cv_import_started", {
             source: "modal"
         }), n.__returnFocus = t.activeElement, n.classList.add("open"), a.hidden = !0, r.hidden = !1,
@@ -497,9 +556,10 @@
                     });
                     if (t.size > 10 * 1024 * 1024) throw new Error("CV_BACKUP_INVALID");
                     var backupText = await t.text();
-                    if (l.files[0] !== t) return;
+                    if (!l.isConnected || l.files[0] !== t) return;
                     e.CVJsonBackup.review(e, l.closest(".cv-modal-overlay"), backupText);
                 } catch (_) {
+                    if (!l.isConnected || l.files[0] !== t) return;
                     var lang = String(document.documentElement.lang || "en").split("-")[0];
                     s.textContent = e.CVJsonBackup ? e.CVJsonBackup.labels(lang).invalid : {
                         fr: "Import JSON indisponible. Réessayez.",
@@ -521,21 +581,7 @@
                         text: await t.text(),
                         source: "text file"
                     };
-                    if (("application/pdf" === t.type || /\.pdf$/i.test(n)) && e.pdfjsLib) {
-                        for (var r = await t.arrayBuffer(), a = await e.pdfjsLib.getDocument({
-                            data: r
-                        }).promise, i = [], o = 1; o <= a.numPages; o += 1) {
-                            var s = await a.getPage(o), c = await s.getTextContent();
-                            i.push(c.items.map(function(e) {
-                                return e.str;
-                            }).join(" "));
-                        }
-                        return {
-                            ok: !0,
-                            text: i.join("\n"),
-                            source: "PDF"
-                        };
-                    }
+                    if ("application/pdf" === t.type || /\.pdf$/i.test(n)) return await readImportPdf(t);
                     if (/\.docx$/i.test(n) || /officedocument\.wordprocessingml\.document/i.test(t.type)) return await readDocxFile(t);
                     return /\.pdf$/i.test(n) || /pdf/i.test(t.type) ? {
                         ok: !1,
@@ -551,8 +597,10 @@
                         message: "This file type is not supported here. Paste the CV text below instead."
                     };
                 }(t);
+                if (!l.isConnected || l.files[0] !== t) return;
                 n.ok ? (c.value = o(n.text), s.textContent = n.source + " text loaded. Review it, then extract sections.") : s.textContent = n.message;
             } catch (e) {
+                if (!l.isConnected || l.files[0] !== t) return;
                 s.textContent = "File parsing failed. Paste the CV text manually and try again.";
             }
         }), n.querySelector("[data-import-parse]").addEventListener("click", function() {
