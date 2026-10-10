@@ -24,3 +24,21 @@ test("native report copy cannot enter English translation input", () => {
 test("malformed JavaScript fails collection instead of hiding missing translations", () => {
   assert.throws(() => collectEnglishLiteralText("const broken = 'unterminated"), SyntaxError);
 });
+
+test("native report functions and locale predicates preserve English collection", () => {
+  const source = `
+    function frenchBriefText() { return 'Questions pour la clinique'; }
+    function frenchPlanText() { return 'Contacts prénatals'; }
+    function frenchWorksheetText() { return 'Fiche de calcul'; }
+    function frenchExportText() { return 'Mesures de pression'; }
+    function frenchWaterCopy() { return { 'Engine wording': 'Texte français' }; }
+    const title = isFrench() ? 'Calendrier français' : 'English calendar';
+    const summary = isFrenchReport() ? 'Rapport français' : 'English report';
+    if (isFrenchReport()) { show('Préparé localement'); } else { show('Prepared locally'); }
+    show('New English control still needs translation');
+  `;
+  const strings = collectEnglishLiteralText(source);
+  assert.deepEqual([...strings].sort(), [
+    "English calendar", "English report", "New English control still needs translation", "Prepared locally"
+  ].sort());
+});

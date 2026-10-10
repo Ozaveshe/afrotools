@@ -7,12 +7,20 @@ const { parse } = require("acorn");
 // report branches or mistaking code between quote marks for visible text.
 const NATIVE_EXPORT_ROUTES = new Set([
   "/health/calorie-counter", "/tools/childbirth-cost", "/tools/ovulation-calc",
-  "/tools/water-intake", "/tools/waist-hip-ratio"
+  "/tools/water-intake", "/tools/waist-hip-ratio", "/tools/water-quality",
+  "/tools/vaccine-schedule", "/health/pregnancy-due-date", "/tools/drug-dosage",
+  "/health/bmi-calculator", "/tools/blood-pressure"
 ]);
-const FRENCH_BINDINGS = new Set(["frenchItems", "frenchSources", "frenchText", "frenchReport"]);
+const FRENCH_BINDINGS = new Set([
+  "frenchItems", "frenchSources", "frenchText", "frenchReport", "frenchWaterCopy",
+  "frenchBriefText", "frenchDate", "frenchPlanText", "foldFrenchCalendar",
+  "frenchWorksheetText", "frenchExportText"
+]);
 
 function isFrenchCondition(node) {
   if (node?.type === "Identifier" && node.name === "isFrench") return true;
+  if (node?.type === "CallExpression" && node.callee?.type === "Identifier" &&
+      ["isFrench", "isFrenchReport"].includes(node.callee.name)) return true;
   return node?.type === "BinaryExpression" && node.operator === "===" &&
     node.right?.type === "Literal" && node.right.value === "fr";
 }
