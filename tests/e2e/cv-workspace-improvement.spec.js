@@ -51,6 +51,45 @@ async function triggerDialog(page, section) {
 }
 
 for (const locale of locales) for (const width of [320, 1280]) {
+  test(`Apply restores focus when editor decoration follows dialog close: ${locale.lang} ${width}`, async ({ page, baseURL }) => {
+    // Exercise the other valid scheduling order explicitly. Original workflow
+    // cases below still run with the browser's unmodified frame scheduler.
+    await page.addInitScript(() => {
+      const frame = window.requestAnimationFrame.bind(window);
+      window.requestAnimationFrame = callback => new Error().stack.includes('/cv-workspace-enhancer.js')
+        ? frame(() => frame(callback)) : frame(callback);
+    });
+    const observed = await openWorkspace(page, baseURL, locale, width);
+    const trigger = await triggerDialog(page, 'skills');
+    await page.locator('[data-generate-options]').click();
+    await page.locator('[data-generate-options]').click();
+    await page.locator('[data-option-edit="0"]').fill('Reviewed synthetic skills');
+    await page.evaluate(() => {
+      const render = CVApp.renderEditor;
+      window.__workspaceApplyRenders = 0;
+      CVApp.renderEditor = function(...args) {
+        window.__workspaceApplyRenders++;
+        return render.apply(this, args);
+      };
+    });
+    // Allow input work to settle before applying the selected option.
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelector('[data-apply-option="0"]').click();
+      resolve();
+    }))));
+    await expect(trigger).toBeFocused();
+    expect(await page.evaluate(() => window.__workspaceApplyRenders)).toBe(1);
+    expect(await page.evaluate(() => CVApp.getState().data.skills.h)).toBe('Reviewed synthetic skills');
+    const nextField = page.locator('[data-path="fn"]');
+    await nextField.focus();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await expect(nextField).toBeFocused();
+    expect(observed.sends).toBe(0);
+    expect(observed.errors).toEqual([]);
+  });
+}
+
+for (const locale of locales) for (const width of [320, 1280]) {
   test(`workspace rewrites only the selected field after Apply: ${locale.lang} ${width}`, async ({ page, baseURL }) => {
     const observed = await openWorkspace(page, baseURL, locale, width);
     for (const item of [

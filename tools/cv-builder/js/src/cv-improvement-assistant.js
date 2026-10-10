@@ -17,7 +17,12 @@
     overlay.classList.remove("open");
     var target = overlay._cvImproveReturnFocus;
     var needsRecreatedTarget = !target || !target.isConnected || !target.getClientRects().length;
-    if (!target || !target.isConnected || !target.getClientRects().length) {
+    if (needsRecreatedTarget) {
+      // Apply replaces the editor. Recreate its owned controls before restoring
+      // focus instead of racing the enhancer's queued animation frame.
+      if (overlay._cvImproveReturnSection && e.CVWorkspaceEnhancer && typeof e.CVWorkspaceEnhancer.refresh === "function") {
+        e.CVWorkspaceEnhancer.refresh();
+      }
       target = null;
       if (overlay._cvImproveReturnSection) {
         var sections = t.querySelectorAll(".cv-section[data-section]");
@@ -42,26 +47,6 @@
     if (target && target.isConnected && target.getClientRects().length) {
       target.focus({
         preventScroll: true
-      });
-    }
-    if (needsRecreatedTarget) {
-      var fallbackTarget = target, returnSection = overlay._cvImproveReturnSection;
-      e.requestAnimationFrame(function() {
-        if (overlay.classList.contains("open") || t.activeElement !== fallbackTarget && t.activeElement !== t.body) {
-          return;
-        }
-        var sections = t.querySelectorAll(".cv-section[data-section]");
-        for (var index = 0; index < sections.length; index++) {
-          if (sections[index].getAttribute("data-section") === returnSection) {
-            var button = sections[index].querySelector(".cv-ai-placeholder");
-            if (button && button.getClientRects().length) {
-              button.focus({
-                preventScroll: true
-              });
-            }
-            break;
-          }
-        }
       });
     }
   }
@@ -273,7 +258,7 @@
       return e || ((e = t.createElement("div")).id = "cv-improve-assistant-modal", e.className = "cv-modal-overlay cv-improve-overlay",
       t.body.appendChild(e), e.addEventListener("click", function(t) {
         t.target === e && closeImproveDialog(e);
-      })), e.innerHTML = [ '<div class="cv-modal cv-improve-modal" role="dialog" aria-modal="true" aria-labelledby="cv-improve-title">', '<div class="cv-improve-head"><div><span>CV improvement assistant</span><h3 id="cv-improve-title">Choose a rewrite before replacing text</h3></div><button type="button" data-improve-close aria-label="Close">&times;</button></div>', '<div class="cv-improve-tools" role="group" aria-label="Improvement tools"></div>', '<div class="cv-improve-tone" role="group" aria-label="Rewrite style"></div>', '<label class="cv-improve-label" for="cv-improve-input">Input text or facts</label>', '<textarea id="cv-improve-input" class="cv-improve-input" placeholder="Add your rough text, role target, gap reason, project, or achievement facts. Use real facts only."></textarea>', '<div class="cv-improve-actions"><button type="button" class="cv-btn cv-btn-primary" data-generate-options>Generate 3 options</button><button type="button" class="cv-btn cv-btn-ghost" data-ai-options>Try AI enhancement</button><span data-improve-status role="status" aria-live="polite">Deterministic templates are ready offline.</span></div>', '<div class="cv-improve-output" aria-live="polite"></div>', "</div>" ].join(""),
+      })), e.replaceChildren(), e.innerHTML = [ '<div class="cv-modal cv-improve-modal" role="dialog" aria-modal="true" aria-labelledby="cv-improve-title">', '<div class="cv-improve-head"><div><span>CV improvement assistant</span><h3 id="cv-improve-title">Choose a rewrite before replacing text</h3></div><button type="button" data-improve-close aria-label="Close">&times;</button></div>', '<div class="cv-improve-tools" role="group" aria-label="Improvement tools"></div>', '<div class="cv-improve-tone" role="group" aria-label="Rewrite style"></div>', '<label class="cv-improve-label" for="cv-improve-input">Input text or facts</label>', '<textarea id="cv-improve-input" class="cv-improve-input" placeholder="Add your rough text, role target, gap reason, project, or achievement facts. Use real facts only."></textarea>', '<div class="cv-improve-actions"><button type="button" class="cv-btn cv-btn-primary" data-generate-options>Generate 3 options</button><button type="button" class="cv-btn cv-btn-ghost" data-ai-options>Try AI enhancement</button><span data-improve-status role="status" aria-live="polite">Deterministic templates are ready offline.</span></div>', '<div class="cv-improve-output" aria-live="polite"></div>', "</div>" ].join(""),
       e.querySelector("[data-improve-close]").addEventListener("click", function() {
         closeImproveDialog(e);
       }), e;
@@ -287,6 +272,9 @@
       return e ? e.dataset.improveMode : a.mode;
     }
     function f(e, t) {
+      // Locale DOM stabilization may preserve identical markup. These owned
+      // controls need fresh nodes so repeated generation cannot stack handlers.
+      u.replaceChildren();
       u.innerHTML = e.map(function(e, t) {
         return '<article class="cv-improve-option"><div><strong>Option ' + (t + 1) + '</strong><textarea aria-label="' + i(rewriteOptionLabel(t + 1)) + '" data-option-edit="' + t + '">' + i(e) + '</textarea></div><button type="button" data-apply-option="' + t + '">Use this option</button></article>';
       }).join(""), d.textContent = "ai" === t ? "AI suggestions loaded. Check every placeholder before applying." : "Template suggestions loaded. Replace placeholders with real facts.",

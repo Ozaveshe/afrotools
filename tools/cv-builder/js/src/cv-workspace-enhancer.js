@@ -458,6 +458,9 @@
   function A() {
     r || (r = !0, window.requestAnimationFrame(x));
   }
+  // Dialogs that replace the editor can restore focus to a recreated control
+  // synchronously. The normal observer still handles other editor updates.
+  window.CVWorkspaceEnhancer = { refresh: x };
   e = function() {
     x();
     var e = s(".cv-form-inner");
