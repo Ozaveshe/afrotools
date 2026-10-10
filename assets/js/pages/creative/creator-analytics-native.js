@@ -11,6 +11,8 @@
   var locale = fr ? 'fr-FR' : (sw ? 'sw' : 'en');
   var storageKey = 'afrotools.creatorAnalytics.local.v2';
   var posts = [];
+  var copyOperation = 0;
+  window.addEventListener("pagehide", function () { copyOperation += 1; });
   var summary = engine.summarize(posts);
   var text = fr ? {
     invalid: 'Ajoutez une date et une portée supérieure à zéro. Vérifiez aussi les métriques.',
@@ -66,7 +68,13 @@
   }
 
   function save() {
-    localStorage.setItem(storageKey, JSON.stringify(posts));
+    try { localStorage.setItem(storageKey, JSON.stringify(posts)); return true; }
+    catch (_) { return false; }
+  }
+
+  function storageWarning(clearing) {
+    if (clearing) return fr ? 'Session effacée, mais les données enregistrées n’ont pas pu être supprimées. Elles peuvent réapparaître au rechargement.' : sw ? 'Kipindi kimefutwa, lakini data iliyohifadhiwa haikuweza kuondolewa. Inaweza kurudi ukurasa ukipakiwa upya.' : 'Session cleared, but saved data could not be removed. It may return when you reload.';
+    return fr ? 'Modifications conservées pour cette session uniquement. Téléchargez JSON avant de quitter ; l’enregistrement local a échoué.' : sw ? 'Mabadiliko yapo katika kipindi hiki pekee. Pakua JSON kabla ya kuondoka; kuhifadhi kwenye kifaa kumeshindikana.' : 'Changes are kept for this session only. Download JSON before leaving; local saving failed.';
   }
 
   function load() {
@@ -84,6 +92,7 @@
   }
 
   function render() {
+    copyOperation += 1;
     summary = engine.summarize(posts);
     window.__creatorAnalyticsSummary = summary;
     byId('caPosts').textContent = String(summary.totalPosts);
@@ -117,48 +126,61 @@
     var checked = engine.validatePost(collect());
     if (!checked.valid) return setStatus(text.invalid, true);
     posts.push(checked.post);
-    save();
+    var saved = save();
     render();
-    setStatus(text.added, false);
+    setStatus(saved ? text.added : storageWarning(false), !saved);
   });
 
   byId('caTableBody').addEventListener('click', function (event) {
     var button = event.target.closest('[data-remove-post]');
     if (!button) return;
+    var removedIndex = Array.prototype.indexOf.call(byId('caTableBody').querySelectorAll('[data-remove-post]'), button);
     posts = posts.filter(function (post) { return post.id !== button.dataset.removePost; });
-    save();
+    var saved = save();
     render();
-    setStatus(text.deleted, false);
+    setStatus(saved ? text.deleted : storageWarning(!posts.length), !saved);
+    var remaining = byId('caTableBody').querySelectorAll('[data-remove-post]');
+    var nextControl = remaining[Math.min(removedIndex, remaining.length - 1)] || byId('caLabel');
+    nextControl.focus();
   });
 
   byId('caClear').addEventListener('click', function () {
     posts = [];
-    localStorage.removeItem(storageKey);
+    var cleared = true;
+    try { localStorage.removeItem(storageKey); } catch (_) { cleared = false; }
     render();
-    setStatus(text.cleared, false);
+    setStatus(cleared ? text.cleared : storageWarning(true), !cleared);
   });
 
   byId('caCopy').addEventListener('click', async function () {
-    var brief = engine.brief(summary, locale);
+    if (!posts.length) return;
+    var operation = ++copyOperation;
+    var capturedSummary = summary;
+    var brief = engine.brief(capturedSummary, locale);
+    function current() { return operation === copyOperation && summary === capturedSummary; }
     try {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(brief);
+      if (current()) setStatus(text.copied, false);
     } catch (_) {
-      var area = document.createElement('textarea');
-      area.value = brief;
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand('copy');
-      area.remove();
+      if (!current()) return;
+      try {
+        download(new Blob([brief], { type: 'text/plain;charset=utf-8' }), 'creator-analytics-summary.txt');
+        setStatus(fr ? 'Copie indisponible. Synthèse téléchargée en TXT.' : sw ? 'Kunakili hakupatikani. Muhtasari umepakuliwa kama TXT.' : 'Copy unavailable. Summary downloaded as TXT.', false);
+      } catch (_) {
+        setStatus(fr ? 'Impossible de copier ou de télécharger la synthèse. Réessayez.' : sw ? 'Imeshindikana kunakili au kupakua muhtasari. Jaribu tena.' : 'Unable to copy or download the summary. Try again.', true);
+      }
     }
-    setStatus(text.copied, false);
   });
 
   byId('caCsv').addEventListener('click', function () {
+    copyOperation += 1;
     download(new Blob([engine.toCsv(posts)], { type: 'text/csv;charset=utf-8' }), 'creator-analytics.csv');
     setStatus(text.downloaded, false);
   });
 
   byId('caJson').addEventListener('click', function () {
+    copyOperation += 1;
     download(new Blob([JSON.stringify({ posts: posts, summary: summary }, null, 2)], { type: 'application/json;charset=utf-8' }), 'creator-analytics.json');
     setStatus(text.downloaded, false);
   });

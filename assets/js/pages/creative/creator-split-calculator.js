@@ -24,6 +24,16 @@
   var output = root.querySelector("[data-output]");
   var status = root.querySelector("[data-status]");
   var lastResult = null;
+  var copyOperation = 0;
+  function invalidate() {
+    copyOperation += 1;
+    lastResult = null;
+    output.innerHTML = ""; output.hidden = true;
+    root.querySelector("[data-actions]").hidden = true;
+    status.textContent = "";
+  }
+  form.addEventListener("input", invalidate);
+  form.addEventListener("change", invalidate);
 
   function memberRow(name, role, percentage) {
     var row = document.createElement("fieldset");
@@ -34,7 +44,11 @@
       '<label>' + (lang === "fr" ? "Part (%)" : lang === "sw" ? "Mgao (%)" : "Share (%)") + '<input name="member-share" type="number" min="0" max="100" step="0.01" required value="' + escapeHtml(percentage == null ? "" : percentage) + '"></label>' +
       '<button type="button" class="cs-calc-remove" aria-label="' + (lang === "fr" ? "Supprimer ce collaborateur" : lang === "sw" ? "Ondoa mshiriki huyu" : "Remove this collaborator") + '">×</button>';
     row.querySelector(".cs-calc-remove").addEventListener("click", function () {
-      if (rows.children.length > 2) row.remove();
+      if (rows.children.length > 2) {
+        var next = row.nextElementSibling || row.previousElementSibling;
+        row.remove(); invalidate();
+        if (next) next.querySelector("input").focus();
+      }
     });
     rows.appendChild(row);
   }
@@ -81,6 +95,7 @@
     status.textContent = copy.ready;
   }
   function download(name, type, content) {
+    copyOperation += 1;
     var link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([content], {type: type}));
     link.download = name;
@@ -96,9 +111,10 @@
     memberRow(lang === "fr" ? "Créateur 2" : lang === "sw" ? "Mtayarishi 2" : "Creator 2", lang === "fr" ? "Producteur" : lang === "sw" ? "Mtayarishaji" : "Producer", 50);
   }
   addDefaults();
-  root.querySelector("[data-add-member]").addEventListener("click", function () { memberRow("", "", ""); });
+  root.querySelector("[data-add-member]").addEventListener("click", function () { invalidate(); memberRow("", "", ""); rows.lastElementChild.querySelector("input").focus(); });
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+    invalidate();
     try {
       lastResult = window.CreatorSplitEngine.calculateShares({
         project: form.elements.project.value,
@@ -117,18 +133,21 @@
   });
   root.querySelector("[data-copy]").addEventListener("click", function () {
     if (!lastResult) return;
-    var text = agreement(lastResult);
-    var fallback = function () {
-      var area = document.createElement("textarea");
-      area.value = text;
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand("copy");
-      area.remove();
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(fallback);
-    else fallback();
-    status.textContent = copy.copied;
+    var result = lastResult;
+    var operation = ++copyOperation;
+    var text = agreement(result);
+    function current() { return operation === copyOperation && result === lastResult; }
+    function fallback() {
+      if (!current()) return;
+      download("creator-split.txt", "text/plain;charset=utf-8", text);
+    }
+    status.textContent = "";
+    try {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") return fallback();
+      Promise.resolve(navigator.clipboard.writeText(text)).then(function () {
+        if (current()) status.textContent = copy.copied;
+      }, fallback);
+    } catch (_) { fallback(); }
   });
   root.querySelector("[data-json]").addEventListener("click", function () {
     if (lastResult) download("creator-split.json", "application/json", JSON.stringify(lastResult, null, 2));
@@ -138,7 +157,7 @@
   });
   var reset = root.querySelector("[data-reset]");
   if (reset) reset.addEventListener("click", function () {
-    form.reset(); rows.innerHTML = ""; addDefaults(); lastResult = null; output.innerHTML = ""; output.hidden = true;
+    invalidate(); form.reset(); rows.innerHTML = ""; addDefaults(); lastResult = null; output.innerHTML = ""; output.hidden = true;
     root.querySelector("[data-actions]").hidden = true; status.textContent = copy.reset || "Example restored.";
     form.elements.project.focus();
   });
