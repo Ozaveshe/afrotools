@@ -489,7 +489,6 @@ function renderMarkdown(report) {
   lines.push('## Assumptions');
   lines.push('');
   for (const item of report.assumptions) lines.push(`- ${item}`);
-  lines.push('');
   return `${lines.join('\n')}\n`;
 }
 
