@@ -69,7 +69,7 @@ test("mobile, reflow, themes, focus and metadata", async ({ page }) => {
   await expect(page.locator('link[hreflang="en"]')).toHaveCount(1);
   await expect(page.locator('link[hreflang="fr"]')).toHaveCount(1);
   await expect(page.locator('link[hreflang="sw"]')).toHaveCount(1);
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /sars-efiling\.svg$/);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /sars-efiling\.webp$/);
 });
 
 test("invalid stored state fails closed and English owner retains workflow", async ({ page }) => {
