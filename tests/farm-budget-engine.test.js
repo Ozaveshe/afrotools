@@ -20,7 +20,10 @@ for (const countryCode of Object.keys(farmCosts)) {
           for (const financeMode of ['cash', 'loan']) {
             const input = {
               countryCode,
-              crops: [{ crop, area: 0.5 }, { crop: 'groundnut', area: 2.25 }],
+              // Explicit synthetic prices exercise arithmetic, not real market data.
+              priceCurrency: farmCosts[countryCode].currency,
+              fertilizerPricePerKg: 10,
+              crops: [{ crop, area: 0.5, seedPricePerKg: 20, marketPricePerTonne: 1000 }, { crop: 'groundnut', area: 2.25, seedPricePerKg: 20, marketPricePerTonne: 1000 }],
               landMode,
               laborMode,
               mechanizationMode,

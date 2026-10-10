@@ -70,7 +70,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/assets/js/pages/agriculture-tool-focus.js?v=d66cf842" defer></script>
+<script src="/assets/js/pages/agriculture-tool-focus.js?v=6f1f09c8" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -259,7 +259,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/related-tools.js?v=ebcb4c9a" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
 <script src="/data/agriculture/agric-profit-data.js?v=0f5ca931"></script>
-<script src="/engines/agric-profit-engine.js?v=2b55fa17"></script>
+<script src="/engines/agric-profit-engine.js?v=78eeb66f"></script>
 <script>
 var SYMS=window.AGRIC_PROFIT_DATA.symbols;
 var USD_RATES=window.AGRIC_PROFIT_DATA.usdRates;
@@ -267,15 +267,21 @@ var CROP_DATA=window.AGRIC_PROFIT_DATA.crops;
 
 function loadCropDefaults(){
   var defaults=window.AfroTools.AgricProfitEngine.getDefaults({crop:document.getElementById('crop').value,country:document.getElementById('country').value,method:document.getElementById('method').value},window.AGRIC_PROFIT_DATA);
-  if(!defaults)return;
+  var note=document.getElementById('profit-default-note');if(!note){note=document.createElement('p');note.id='profit-default-note';note.setAttribute('role','status');document.getElementById('method').parentElement.appendChild(note);}
+  window.AGRIC_PROFIT_LAST_RESULT=null;document.getElementById('results').style.display='none';
+  if(!defaults){['landPrep','seeds','fertilizer','chemicals','labour','irrigation','transport','otherCost','yieldPerHa','pricePerKg'].forEach(function(key){document.getElementById(key).value='';});note.textContent='No local reference is available for this crop, country and method. Enter your own costs, yield and selling price in the selected country currency; no currency conversion has been applied.';return;}
+  note.textContent='Undated static example for this country, not current market prices. Replace every cost, yield and price with your own local assumptions before relying on the result.';
   ['landPrep','seeds','fertilizer','chemicals','labour','irrigation','transport'].forEach(function(id){document.getElementById(id).value=defaults[id];});
   document.getElementById('otherCost').value=defaults.other;
   document.getElementById('yieldPerHa').value=defaults.yield;
   document.getElementById('pricePerKg').value=defaults.price;
 }
 
+function profitNumber(id){var value=document.getElementById(id).value;return value.trim()===''?NaN:Number(value);}
+function profitMetric(value,digits){return value===null?'Not calculable':value.toFixed(digits);}
 function calculate(){
-  var model=window.AfroTools.AgricProfitEngine.calculate({crop:document.getElementById('crop').value,country:document.getElementById('country').value,method:document.getElementById('method').value,area:document.getElementById('area').value,postHarvestLossPct:document.getElementById('postHarvestLoss').value,seasons:document.getElementById('seasons').value,costs:{landPrep:document.getElementById('landPrep').value,seeds:document.getElementById('seeds').value,fertilizer:document.getElementById('fertilizer').value,chemicals:document.getElementById('chemicals').value,labour:document.getElementById('labour').value,irrigation:document.getElementById('irrigation').value,transport:document.getElementById('transport').value,other:document.getElementById('otherCost').value},yieldPerHa:document.getElementById('yieldPerHa').value,pricePerKg:document.getElementById('pricePerKg').value},window.AGRIC_PROFIT_DATA);
+  var model=window.AfroTools.AgricProfitEngine.calculate({crop:document.getElementById('crop').value,country:document.getElementById('country').value,method:document.getElementById('method').value,area:profitNumber('area'),postHarvestLossPct:profitNumber('postHarvestLoss'),seasons:profitNumber('seasons'),costs:{landPrep:profitNumber('landPrep'),seeds:profitNumber('seeds'),fertilizer:profitNumber('fertilizer'),chemicals:profitNumber('chemicals'),labour:profitNumber('labour'),irrigation:profitNumber('irrigation'),transport:profitNumber('transport'),other:profitNumber('otherCost')},yieldPerHa:profitNumber('yieldPerHa'),pricePerKg:profitNumber('pricePerKg')},window.AGRIC_PROFIT_DATA);
+  if(!model.ok){window.AGRIC_PROFIT_LAST_RESULT=null;document.getElementById('results').style.display='none';alert('Check positive area, whole seasons, loss from 0 to 100%, and non-negative numeric costs, yield and price.');return null;}
   window.AGRIC_PROFIT_LAST_RESULT=model;
   var area=model.input.area,country=model.input.country,sym=model.symbol,phlPct=model.input.postHarvestLossPct/100,seasons=model.input.seasons;
   var costs={'Land Preparation':model.input.costs.landPrep,'Seeds / Seedlings':model.input.costs.seeds,'Fertilizer':model.input.costs.fertilizer,'Chemicals (Pesticide/Herbicide)':model.input.costs.chemicals,'Labour':model.input.costs.labour,'Irrigation':model.input.costs.irrigation,'Transport / Logistics':model.input.costs.transport,'Other Costs':model.input.costs.other};
@@ -288,9 +294,9 @@ function calculate(){
     '<div class="result-card"><div class="result-label">Total Revenue'+seasonNote+'</div><div class="result-value" style="color:#0369a1">'+sym+Math.round(totalRevenue).toLocaleString()+'</div></div>'+
     '<div class="result-card"><div class="result-label">Total Cost'+seasonNote+'</div><div class="result-value" style="color:#dc2626">'+sym+Math.round(totalCost).toLocaleString()+'</div></div>'+
     '<div class="result-card '+(isProfit?'profit':'loss')+'"><div class="result-label">Net '+(isProfit?'Profit':'Loss')+'</div><div class="result-value">'+sym+Math.round(Math.abs(profit)).toLocaleString()+'</div></div>'+
-    '<div class="result-card"><div class="result-label">ROI</div><div class="result-value" style="color:'+(roi>=0?'#16a34a':'#dc2626')+'">'+roi.toFixed(1)+'%</div></div>'+
-    '<div class="result-card"><div class="result-label">Break-Even Yield</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+Math.round(breakEvenYield).toLocaleString()+' kg/ha</div></div>'+
-    '<div class="result-card"><div class="result-label">Break-Even Price</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+sym+breakEvenPrice.toFixed(1)+'/kg</div></div>';
+    '<div class="result-card"><div class="result-label">ROI</div><div class="result-value" style="color:'+(roi>=0?'#16a34a':'#dc2626')+'">'+profitMetric(roi,1)+'%</div></div>'+
+    '<div class="result-card"><div class="result-label">Break-Even Harvested Yield</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+(breakEvenYield===null?'Not calculable':Math.round(breakEvenYield).toLocaleString())+' kg/ha</div></div>'+
+    '<div class="result-card"><div class="result-label">Break-Even Price</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+sym+profitMetric(breakEvenPrice,1)+'/kg</div></div>';
 
   var maxVal=Math.max(totalRevenue,totalCost);
   var costPct=maxVal>0?(totalCost/maxVal*100):0;
@@ -314,10 +320,10 @@ function calculate(){
     table+='<tr><td>Net Marketable Yield'+phlNote+'</td><td style="text-align:right">'+Math.round(effectiveYieldPerHa).toLocaleString()+' kg/ha</td><td style="text-align:right">'+Math.round(totalYield).toLocaleString()+' kg</td><td></td></tr>';
   }
   table+='<tr><td>Market Price</td><td style="text-align:right">'+sym+pricePerKg+'/kg</td><td></td><td></td></tr>';
-  table+='<tr><td>Cost per kg sold</td><td style="text-align:right">'+sym+costPerKg.toFixed(1)+'/kg</td><td></td><td></td></tr>';
-  table+='<tr><td>Break-Even Yield</td><td style="text-align:right">'+Math.round(breakEvenYield).toLocaleString()+' kg/ha</td><td colspan="2" style="font-size:.82rem;color:#64748b">Minimum yield needed to cover costs at current price</td></tr>';
-  table+='<tr><td>Break-Even Price</td><td style="text-align:right">'+sym+breakEvenPrice.toFixed(1)+'/kg</td><td colspan="2" style="font-size:.82rem;color:#64748b">Minimum price needed to cover costs at current yield</td></tr>';
-  table+='<tr style="font-weight:700;background:'+(isProfit?'#f0fdf4':'#fef2f2')+'"><td>NET '+(isProfit?'PROFIT':'LOSS')+'</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit/area/seasons)).toLocaleString()+'/ha/season</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit)).toLocaleString()+'</td><td style="text-align:right">ROI: '+roi.toFixed(1)+'%</td></tr>';
+  table+='<tr><td>Cost per kg sold</td><td style="text-align:right">'+sym+profitMetric(costPerKg,1)+'/kg</td><td></td><td></td></tr>';
+  table+='<tr><td>Break-Even Harvested Yield</td><td style="text-align:right">'+(breakEvenYield===null?'Not calculable':Math.round(breakEvenYield).toLocaleString())+' kg/ha</td><td colspan="2" style="font-size:.82rem;color:#64748b">Harvested yield before losses needed to cover fixed entered costs at the current price and loss rate</td></tr>';
+  table+='<tr><td>Break-Even Price</td><td style="text-align:right">'+sym+profitMetric(breakEvenPrice,1)+'/kg</td><td colspan="2" style="font-size:.82rem;color:#64748b">Minimum price needed to cover costs at current yield</td></tr>';
+  table+='<tr style="font-weight:700;background:'+(isProfit?'#f0fdf4':'#fef2f2')+'"><td>NET '+(isProfit?'PROFIT':'LOSS')+'</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit/area/seasons)).toLocaleString()+'/ha/season</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit)).toLocaleString()+'</td><td style="text-align:right">ROI: '+profitMetric(roi,1)+'%</td></tr>';
   table+='</tbody>';
   document.getElementById('costTable').innerHTML=table;
 
@@ -346,8 +352,8 @@ function calculate(){
         totalCost: sym + totalCost.toLocaleString(),
         netProfit: sym + Math.abs(profit).toLocaleString(),
         profitOrLoss: isProfit ? 'Profit' : 'Loss',
-        roi: roi.toFixed(1) + '%',
-        costPerKg: sym + costPerKg.toFixed(1) + '/kg'
+        roi: profitMetric(roi,1) + '%',
+        costPerKg: sym + profitMetric(costPerKg,1) + '/kg'
       }
     });
   }
@@ -360,7 +366,7 @@ function calculate(){
       subValues: [
         { label: 'Revenue', value: sym + totalRevenue.toLocaleString() },
         { label: 'Total Cost', value: sym + totalCost.toLocaleString() },
-        { label: 'ROI', value: roi.toFixed(1) + '%' }
+        { label: 'ROI', value: profitMetric(roi,1) + '%' }
       ]
     });
   }

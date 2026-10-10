@@ -516,7 +516,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
     <p class="card-title">How This Calculator Works</p>
     <div class="seo-prose">
       <p>Post-harvest losses are calculated using loss rates from the <strong>APHLIS (African Postharvest Losses Information System)</strong> database and the World Bank's "Missing Food" report. Loss rates represent typical percentage weight loss over the stated storage period for each method.</p>
-      <p>The <strong>ROI calculation</strong> compares the cost of improved storage technology against the value of grain saved. For PICS bags, cost is based on bag price × quantity needed. For metal silos, the annual cost is amortized over the 15-year lifespan.</p>
+      <p>The <strong>ROI calculation</strong> compares the cost of improved storage technology against the value of grain saved. For PICS bags, cost is based on bag price × quantity needed. For metal silos, the purchase cost is spread evenly over an assumed 15-year life and allocated to the selected storage period. The silo savings percentage compares that period's grain value saved with its allocated cost; it is not a return on the full purchase price.</p>
       <p>The <strong>price timing benefit</strong> reflects the well-documented pattern across sub-Saharan Africa where farm-gate prices at harvest (glut period) are 30–60% lower than prices 3–6 months later (lean season). Improved storage enables farmers to choose when to sell.</p>
     </div>
   </div>
@@ -585,7 +585,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/storage-data.js?v=79bc240c"></script>
-<script src="/engines/storage-loss-engine.js?v=04192a17"></script>
+<script src="/engines/storage-loss-engine.js?v=f12965f3"></script>
 <script>
 (function() {
   'use strict';
@@ -660,13 +660,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 
   // ── MAIN CALCULATION ───────────────────────────────────────────────────────
 
+  function invalidateResult() { window.STORAGE_LOSS_LAST_RESULT = null; document.getElementById('results').style.display = 'none'; }
+  ['crop-select','country-select','method-select','quantity-input','duration-input','price-input'].forEach(function(id) { var field = document.getElementById(id); field.addEventListener('input', invalidateResult); field.addEventListener('change', invalidateResult); });
   function calculate() {
+    invalidateResult();
     var crop      = document.getElementById('crop-select').value;
     var cc        = document.getElementById('country-select').value || 'ALL';
-    var qty       = parseFloat(document.getElementById('quantity-input').value);
+    var qty       = Number(document.getElementById('quantity-input').value);
     var methodKey = document.getElementById('method-select').value;
-    var duration  = parseInt(document.getElementById('duration-input').value) || 6;
-    var price     = parseFloat(document.getElementById('price-input').value);
+    var duration  = Number(document.getElementById('duration-input').value);
+    var price     = Number(document.getElementById('price-input').value);
 
     if (!crop || !methodKey || !qty || !price) {
       alert('Please fill in all fields before calculating.');
@@ -674,7 +677,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
     }
 
     var model = window.AfroTools.StorageLossEngine.calculate({ crop: crop, countryCode: cc, methodKey: methodKey, quantityTonnes: qty, durationMonths: duration, pricePerTonne: price }, STORAGE_DATA);
-    if (!model.ok) { alert('Please fill in all fields before calculating.'); return; }
+    if (!model.ok) { alert('Use positive quantities and prices, a positive whole number of months, and valid crop, country and storage selections.'); return; }
     window.STORAGE_LOSS_LAST_RESULT = model;
     var cropData = model.cropData;
     var country = model.country;
@@ -736,9 +739,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
     document.getElementById('silo-loss-pct').textContent   = adjSiloLoss.toFixed(2) + '%';
     document.getElementById('silo-grain-lost').textContent  = fmtTonnes(siloLossTonnes);
     document.getElementById('silo-val-lost').textContent    = fmtFull(siloLossVal, symbol);
-    document.getElementById('silo-tech-cost').textContent   = fmtFull(siloAnnualCost, symbol) + '/yr (' + siloLabel + ')';
+    document.getElementById('silo-tech-cost').textContent   = fmtFull(model.siloPeriodCost, symbol) + ' / ' + model.input.durationMonths + ' months (' + siloLabel + '; 15-year straight-line cost assumption)';
     document.getElementById('silo-net-save').textContent    = fmtFull(siloNetSave, symbol);
-    document.getElementById('silo-roi').textContent         = siloROI > 0 ? Math.round(siloROI) + '% ROI' : 'N/A';
+    document.getElementById('silo-roi').textContent         = Number.isFinite(siloROI) ? Math.round(siloROI) + '% for ' + model.input.durationMonths + ' months' : 'N/A';
     document.getElementById('silo-payback').textContent     = siloPaybackSeasons + ' seasons';
 
     // Price timing

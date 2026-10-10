@@ -43,8 +43,8 @@ for (const profile of fixture.arithmetic) {
   const equipment = data.equipment[input.equipmentKey];
   const hireRates = data.hireRates[input.countryCode];
   assert.deepEqual(engine.calculateBuy(input, equipment, hireRates), profile.output.buy);
-  assert.deepEqual(engine.calculateHire(hireRates, input.farmHa, input.passes), profile.output.hire);
-  assertNumericRecordClose(engine.calculateLease(input), profile.output.lease, 'lease');
+  assert.deepEqual(engine.calculateHire(hireRates, input.farmHa, input.passes, input.equipmentKey), profile.output.hire);
+  assertNumericRecordClose(engine.calculateLease(input, profile.output.buy), profile.output.lease, 'lease');
   assert.equal(engine.breakEvenHa(profile.output.buy, profile.output.hire, input.years), profile.output.breakEvenHa);
   const result = engine.calculate({
     ...input,

@@ -33,7 +33,8 @@ vm.runInContext(fs.readFileSync(path.join(ROOT, 'data/agriculture/farm-costs.js'
 const farmCosts = context.window.AfroTools.farmCosts;
 const profiles = [
   { countryCode: 'NG', crops: [{ crop: 'maize', area: 1 }], landMode: 'own', laborMode: 'family', mechanizationMode: 'manual', financeMode: 'cash', startMonth: 4 },
-  { countryCode: 'SN', crops: [{ crop: 'groundnut', area: 2.5 }, { crop: 'millet', area: 1 }], landMode: 'rent', rentOverride: 30000, laborMode: 'mixed', mechanizationMode: 'ox', financeMode: 'loan', loanRate: 9, loanTerm: 6, startMonth: 6 },
+  // Synthetic local prices; no currency-free defaults.
+  { countryCode: 'SN', priceCurrency: 'XOF', fertilizerPricePerKg: 10, crops: [{ crop: 'groundnut', area: 2.5, seedPricePerKg: 20, marketPricePerTonne: 1000 }, { crop: 'millet', area: 1, seedPricePerKg: 20, marketPricePerTonne: 1000 }], landMode: 'rent', rentOverride: 30000, laborMode: 'mixed', mechanizationMode: 'ox', financeMode: 'loan', loanRate: 9, loanTerm: 6, startMonth: 6 },
   { countryCode: 'KE', crops: [{ crop: 'tomato', area: 0.75 }], landMode: 'rent', laborMode: 'hired', mechanizationMode: 'tractor', financeMode: 'loan', startMonth: 3 },
 ];
 const oracles = profiles.map(profile => ({ profile, result: engine.calculate(profile, { data, farmCosts }) }));

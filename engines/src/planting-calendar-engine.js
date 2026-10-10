@@ -20,10 +20,11 @@
   function calculate(input, data) {
     input = input || {};
     if (!data || !data.zones) return { ok: false, status: 'missing-data' };
-    var zone = String(input.zone || '');
+    var zone = typeof input.zone === 'string' ? input.zone : '';
+    if (!Object.prototype.hasOwnProperty.call(data.zones, zone)) return { ok: false, status: 'unknown-zone', zone: zone };
+    if (input.rainfall !== undefined && input.rainfall !== 'bimodal' && input.rainfall !== 'unimodal') return { ok: false, status: 'invalid-rainfall' };
     var rainfall = input.rainfall === 'bimodal' ? 'bimodal' : 'unimodal';
     var crops = data.zones[zone];
-    if (!crops) return { ok: false, status: 'unknown-zone', zone: zone };
     var note = 'none';
     if (rainfall === 'bimodal' && data.bimodalZones.indexOf(zone) >= 0) note = 'bimodal-two-seasons';
     else if (rainfall === 'unimodal' && zone === 'forest') note = 'forest-unimodal-warning';

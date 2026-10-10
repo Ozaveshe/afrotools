@@ -3,6 +3,9 @@
 const assert = require('node:assert/strict');
 const data = require('../data/agriculture/farm-size-data.json');
 const engine = require('../engines/src/farm-size-engine');
+const browserData = require('../data/agriculture/farm-size-data');
+
+assert.deepEqual(browserData, data, 'browser and Node calculations use the same unit data');
 
 const keys = Object.keys(data.units);
 let scenarios = 0;
