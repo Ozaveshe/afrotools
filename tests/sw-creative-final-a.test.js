@@ -97,6 +97,7 @@ for (const [id, slug, fr] of rows) {
     "creator-hashtags": "zana-hashtag-za-maudhui-sw",
     "creator-hooks": "zana-hook-za-video-sw",
     "creator-kit": "zana-media-kit-ya-mtayarishi-sw",
+    "creator-money": "zana-mapato-ya-mtayarishi-sw-finish",
   };
   const imageId = reviewedImages[id] || id;
   assert.match(sw, new RegExp(`assets/img/tools/${q(imageId)}\\.webp`));

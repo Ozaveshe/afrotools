@@ -27,7 +27,8 @@ for (const [id, file, sw, en, fr] of apps) {
   assert.ok(html.includes('lang="sw"'), id);
   assert.ok(html.includes('content="scripts/build-sw-fintech-community-credit.js"'), id);
   assert.ok(html.includes(`href="https://afrotools.com${sw}"`), id);
-  assert.ok(html.includes(`/assets/img/tools/${id}.webp`), id);
+  const imageId = id === 'sacco-calc' ? 'zana-kikokotoo-sacco-na-vyama-vya-akiba-sw' : id;
+  assert.ok(html.includes(`/assets/img/tools/${imageId}.webp`), id);
   assert.ok(html.includes(`fintech-shared-controllers/${id}.js`), id);
   assert.ok(html.includes(`href="/sw/ai/?tool=${id}"`), id);
   assert.ok(html.includes('Udhamini au ushirika wa kibiashara'), id);

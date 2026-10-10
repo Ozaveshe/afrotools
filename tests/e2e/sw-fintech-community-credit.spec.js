@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 const apps = [
   {
-    id: 'sacco-calc', english: '/tools/sacco-calc/', swahili: '/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/', art: [600, 400],
+    id: 'sacco-calc', english: '/tools/sacco-calc/', swahili: '/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/', art: [800, 533],
     values: { '#sc-currency': 'KES', '#sc-monthly': '7500', '#sc-years': '5', '#sc-div': '10', '#sc-bank-rate': '4', '#sc-loan-mult': '3' },
     result: '#sc-results', metrics: ['#sc-total', '#sc-principal', '#sc-dividend', '#sc-loan-cap', '#sc-bank-total', '#sc-advantage'], dirty: '#sc-div', invalid: '#sc-monthly'
   },
