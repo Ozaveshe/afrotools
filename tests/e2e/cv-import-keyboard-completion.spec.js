@@ -7,6 +7,8 @@ for (const width of [390, 320]) test('English CV text import keyboard closes and
   await page.waitForFunction(() => window.CVImportAssistant && window.CVApp);
   await page.locator('[data-cv-entry=start]').click();
   const opener = page.locator('[data-path=fn]').first();
+  // Finish the landing page's delayed focus before opening a second dialog.
+  await expect(opener).toBeFocused();
   await opener.fill('Synthetic draft');
   await opener.focus();
   await page.evaluate(() => CVImportAssistant.open());
