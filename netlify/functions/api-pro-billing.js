@@ -107,11 +107,11 @@ exports.handler = async function (event) {
       ok: true,
       billing: {
         plan: profile.subscription_tier || profile.tier || "free",
-        renewalDate: subscription && subscription.next_payment_date ? subscription.next_payment_date : profile.subscription_expires_at || null,
+        renewalDate: subscription && subscription.next_payment_date ? subscription.next_payment_date : null,
         subscriptionCode: subscriptionCode,
         customerCode: profile.paystack_customer_id || null,
         cardLast4: cardLast4(subscription),
-        status: subscription && subscription.status ? subscription.status : (profile.subscription_tier || profile.tier || "free"),
+        status: subscription && subscription.status ? subscription.status : "unverified",
         invoices: invoiceRows(subscription)
       }
     }, responseHeaders);
