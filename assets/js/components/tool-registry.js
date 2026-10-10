@@ -4182,7 +4182,7 @@ function getToolGridLabels(locale) {
   if (normalized.indexOf('sw') === 0) {
     return {
       available: 'Zana Zinazopatikana',
-      categoryNames: { education: 'Elimu' },
+      categoryNames: { education: 'Elimu', 'image-design': 'Picha na Ubunifu' },
       coming: 'Zinakuja Hivi Karibuni',
       live: 'Hai',
       fresh: 'Mpya',
@@ -4225,7 +4225,7 @@ function getToolGridLabels(locale) {
   if (normalized.indexOf('fr') === 0) {
     return {
       available: 'Outils Disponibles',
-      categoryNames: { education: 'Éducation' },
+      categoryNames: { education: 'Éducation', 'image-design': 'Image et design' },
       coming: 'Bientot Disponibles',
       live: 'En ligne',
       fresh: 'Nouveau',
