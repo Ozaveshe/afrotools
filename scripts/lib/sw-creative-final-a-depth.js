@@ -206,6 +206,15 @@ function render(owner, canonical) {
 }
 
 function inject(html, owner, canonical) {
+  const nativeLogoClass = {
+    "creator-hashtags": "cht-app-logo",
+  }[owner];
+  if (nativeLogoClass && !/<h1\b/i.test(html)) {
+    const title = new RegExp(`<a\\b(?=[^>]*\\bclass=["']${nativeLogoClass}["'])[^>]*>[\\s\\S]*?<\\/a>`, "g");
+    const matches = html.match(title) || [];
+    if (matches.length !== 1) throw new Error(`${owner}: expected one native visible title`);
+    html = html.replace(title, '<h1 class="swfa-native-app-title" style="margin:0;font:inherit">$&</h1>');
+  }
   const depth = render(owner, canonical);
   if (!depth) return html;
   const clean = html.replace(/\s*<!-- SW_CREATIVE_DEPTH_START -->[\s\S]*?<!-- SW_CREATIVE_DEPTH_END -->\s*/i, "");

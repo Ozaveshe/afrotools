@@ -821,6 +821,28 @@ function normalizeExistingPage(app) {
   html = installReorderRuntime(html, app);
   html = rewriteLocalDocumentAssets(html);
   const artwork = artworkUrl(app);
+  const originalArtwork = `https://afrotools.com/assets/img/tools/${app.id}.webp`;
+  html = html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g, (match, source) => {
+    try {
+      const data = JSON.parse(source);
+      const rows = Array.isArray(data) ? data : [data];
+      let changed = false;
+      for (const row of rows) {
+        if (!row || typeof row !== 'object') continue;
+        if (row.image === originalArtwork && artwork !== originalArtwork) {
+          row.image = artwork;
+          changed = true;
+        }
+        if (row.primaryImageOfPage && row.primaryImageOfPage['@type'] === 'ImageObject' && row.primaryImageOfPage.url === originalArtwork && artwork !== originalArtwork) {
+          row.primaryImageOfPage.url = artwork;
+          changed = true;
+        }
+      }
+      return changed ? `<script type="application/ld+json">${JSON.stringify(data)}</script>` : match;
+    } catch {
+      return match;
+    }
+  });
   html = upsertMeta(html, 'name', 'viewport', 'width=device-width, initial-scale=1');
   html = upsertMeta(html, 'property', 'og:image', artwork);
   html = upsertMeta(html, 'property', 'og:locale', 'sw_TZ');
