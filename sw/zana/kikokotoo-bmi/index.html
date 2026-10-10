@@ -57,6 +57,9 @@
   const p=document.getElementById('print');
   const theme=document.getElementById('theme');
   let last=null;
+  const invalidateResult=()=>{last=null;t.disabled=p.disabled=true;e.textContent='';r.innerHTML='<p>Enter your measurements to calculate an adult BMI and observed repeat-reading range.</p>';};
+  f.addEventListener('input',invalidateResult);
+  f.addEventListener('change',invalidateResult);
 
   f.addEventListener('submit',event=>{
     event.preventDefault();
@@ -73,7 +76,7 @@
       t.disabled=p.disabled=false;
       panel.focus();
     }catch(error){
-      last=null;
+      invalidateResult();
       e.textContent=error.message;
       t.disabled=p.disabled=true;
     }

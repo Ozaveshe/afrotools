@@ -9,6 +9,14 @@
   var errorBox = document.getElementById('form-error');
   var results = document.getElementById('cycle-window-results');
   var lastResult = null;
+  var isFrench = document.documentElement.lang.toLowerCase().split('-')[0] === 'fr';
+
+  function uncertaintyText(result) {
+    if (!isFrench) return result.uncertaintyCopy;
+    if (result.outsideCommonRange) return 'Au moins un cycle saisi dépasse la plage habituelle de 21 à 35 jours indiquée par le NHS ; une estimation fondée uniquement sur le calendrier est donc extrêmement incertaine.';
+    if (result.variation <= 3) return 'Les cycles saisis varient de ' + result.variation + ' jour(s), mais le calendrier biologique peut encore changer d’un cycle à l’autre.';
+    return 'Les cycles saisis varient de ' + result.variation + ' jours ; une estimation fondée uniquement sur le calendrier est donc particulièrement incertaine.';
+  }
 
   function todayIso() {
     var now = new Date();
@@ -17,7 +25,7 @@
 
   function formatDate(iso) {
     var parts = iso.split('-').map(Number);
-    return new Intl.DateTimeFormat('en-GB', {
+    return new Intl.DateTimeFormat(isFrench ? 'fr-FR' : 'en-GB', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -25,7 +33,7 @@
   }
 
   function rangeText(start, end) {
-    return formatDate(start) + ' to ' + formatDate(end);
+    return formatDate(start) + (isFrench ? ' au ' : ' to ') + formatDate(end);
   }
 
   function render(result) {
@@ -36,7 +44,7 @@
       rangeText(result.ovulationStart, result.ovulationEnd);
     document.getElementById('pregnancy-possible-window').textContent =
       rangeText(result.pregnancyPossibleStart, result.pregnancyPossibleEnd);
-    document.getElementById('uncertainty-copy').textContent = result.uncertaintyCopy;
+    document.getElementById('uncertainty-copy').textContent = uncertaintyText(result);
     document.getElementById('uncertainty-badge').textContent =
       result.uncertainty === 'low' ? 'Low-confidence estimate' :
         result.uncertainty === 'very-low' ? 'Very low-confidence estimate' :
@@ -70,6 +78,22 @@
   }
 
   function exportText(result) {
+    if (isFrench) return [
+      'AFROTOOLS — ESTIMATION DES FENÊTRES DU CYCLE',
+      '',
+      'Début des dernières règles : ' + formatDate(result.inputDate),
+      'Durées des cycles saisies : de ' + result.shortestCycle + ' à ' + result.longestCycle + ' jours',
+      'Estimation des prochaines règles : ' + rangeText(result.nextPeriodStart, result.nextPeriodEnd),
+      'Estimation de l’ovulation possible : ' + rangeText(result.ovulationStart, result.ovulationEnd),
+      'Une grossesse peut être possible pendant cette période plus large : ' + rangeText(result.pregnancyPossibleStart, result.pregnancyPossibleEnd),
+      '',
+      uncertaintyText(result),
+      'Les dates du calendrier ne peuvent confirmer ni l’ovulation, ni la fertilité, ni l’infertilité, ni une grossesse, ni la sécurité contraceptive.',
+      'Ne considérez pas les dates hors de cette période comme sûres pour des rapports sexuels non protégés.',
+      'Sources : ACOG, méthodes d’observation de la fertilité ; NHS, informations sur les règles ; CDC, méthodes contraceptives.',
+      'Sources vérifiées : 26 juillet 2026.',
+      'Créé localement. Aucun compte, e-mail, téléversement, envoi analytique ni enregistrement dans le navigateur.'
+    ].join('\n');
     return [
       'AFROTOOLS CYCLE WINDOW ESTIMATE',
       '',
@@ -121,7 +145,7 @@
     setStatus('Preparing local PDF...');
     ensurePdfLibrary().then(function (JsPdf) {
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
-      pdf.setProperties({ title: 'AfroTools cycle window estimate' });
+      pdf.setProperties({ title: isFrench ? 'AfroTools — estimation des fenêtres du cycle' : 'AfroTools cycle window estimate' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
       var lines = pdf.splitTextToSize(exportText(lastResult), 500);
