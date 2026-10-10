@@ -59,6 +59,14 @@
     results.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function invalidateResult() {
+    if (!lastResult) return;
+    lastResult = null;
+    results.hidden = true;
+    errorBox.textContent = '';
+    setStatus('');
+  }
+
   function submit(event) {
     event.preventDefault();
     if (!engine) {
@@ -67,6 +75,7 @@
     }
     var result = engine.evaluate(readInput());
     if (!result.valid) {
+      invalidateResult();
       errorBox.textContent = result.error;
       document.getElementById('systolic-1').focus();
       return;
@@ -132,13 +141,15 @@
 
   function downloadPdf() {
     if (!lastResult) return setStatus('Review readings before exporting.');
+    var exportingResult = lastResult;
     setStatus('Preparing local PDF...');
     ensurePdfLibrary().then(function (JsPdf) {
+      if (lastResult !== exportingResult) return;
       var pdf = new JsPdf({ unit: 'pt', format: 'a4' });
       pdf.setProperties({ title: 'AfroTools blood pressure measurement check' });
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      var lines = pdf.splitTextToSize(exportText(lastResult), 500);
+      var lines = pdf.splitTextToSize(exportText(exportingResult), 500);
       var y = 54;
       lines.forEach(function (line) {
         if (y > 790) {
@@ -155,6 +166,8 @@
     });
   }
 
+  form.addEventListener('input', invalidateResult);
+  form.addEventListener('change', invalidateResult);
   form.addEventListener('submit', submit);
   document.getElementById('download-txt').addEventListener('click', function () {
     if (!lastResult) return setStatus('Review readings before exporting.');

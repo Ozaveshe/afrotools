@@ -148,6 +148,9 @@
   const print=document.getElementById('print');
   const theme=document.getElementById('theme');
   let last=null;
+  const invalidateResult=()=>{last=null;txt.disabled=print.disabled=true;err.textContent='';out.innerHTML='<p>Complete the inputs to see the score, assumptions and next-step conversation.</p>';};
+  form.addEventListener('input',invalidateResult);
+  form.addEventListener('change',invalidateResult);
 
   const values=()=>({
     age:Number(form.age.value),
@@ -187,7 +190,7 @@
       txt.disabled=print.disabled=false;
       panel.focus();
     }catch(ex){
-      last=null;
+      invalidateResult();
       err.textContent=ex.message;
       txt.disabled=print.disabled=true;
       err.focus?.();

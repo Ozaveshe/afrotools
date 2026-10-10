@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { NATIVE_EXPORT_ROUTES, collectEnglishLiteralText } = require("./lib/health-native-export-literals");
 
 const ROOT = path.resolve(__dirname, "..");
 const INVENTORY = path.join(ROOT, "reports", "french-free-app-parity-inventory.json");
@@ -212,8 +213,12 @@ function collectScriptStrings(html, englishRoute) {
     return _all;
   });
   sources.forEach((source) => {
+    const nativeEnglish = NATIVE_EXPORT_ROUTES.has(normalizeRoute(englishRoute))
+      ? new Set([...collectEnglishLiteralText(source)].map((value) => cleanText(value.replace(/\n/g, " "))))
+      : null;
     source.replace(/(["'`])((?:\\.|(?!\1)[\s\S]){3,600})\1/g, (_all, _quote, raw) => {
       const value = cleanText(raw.replace(/\\n/g, " ").replace(/\\(["'`])/g, "$1"));
+      if (nativeEnglish && !nativeEnglish.has(value)) return _all;
       if (!isTranslatable(value) || !/\s/.test(value)) return _all;
       if (/^(?:[#.\[]|data-|aria-|health-|afro|application\/|text\/|image\/)/i.test(value)) return _all;
       if (/[{}();]|=>|===|querySelector|localStorage|addEventListener|classList|innerHTML/.test(value)) return _all;
