@@ -33,6 +33,8 @@
 
   function csvCell(value) {
     var text = normalize(value);
+    // Preserve numeric values; guard formula-like text on initial CSV import.
+    if (typeof value !== "number" && (/^[\s\u0000-\u001f]*[=+@\-\uFF1D\uFF0B\uFF0D\uFF20]/.test(text) || /^[\t\r\n]/.test(text))) text = "\'" + text;
     return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
   }
 

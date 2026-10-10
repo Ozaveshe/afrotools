@@ -7,7 +7,13 @@
     if(!license)throw new Error("License note is required.");
     return{title:title,sourceUrl:sourceUrl,creator:String(source.creator||"").trim(),license:license,usage:String(source.usage||"").trim(),checkedOn:String(source.checkedOn||"").trim(),note:String(source.note||"").trim()};
   }
-  function csvCell(value){return'"'+String(value==null?"":value).replace(/"/g,'""')+'"';}
+  function csvCell(value) {
+    var text = String(value == null ? "" : value);
+    // Keep formula-like user text literal on the initial spreadsheet import.
+    // JSON remains the lossless source; CSV re-save behavior varies by reader.
+    if (/^[\s\u0000-\u001f]*[=+@\-\uFF1D\uFF0B\uFF0D\uFF20]/.test(text) || /^[\t\r\n]/.test(text)) text = "'" + text;
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
   function toCsv(assets){return["title,source_url,creator,license,usage,checked_on,note"].concat((assets||[]).map(function(asset){return[asset.title,asset.sourceUrl,asset.creator,asset.license,asset.usage,asset.checkedOn,asset.note].map(csvCell).join(",");})).join("\r\n");}
   window.AfroTools=window.AfroTools||{};window.AfroTools.CreatorStockEngine={createAsset:createAsset,toCsv:toCsv};
 }());
